@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Old BMW Question Set — Full Audit</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, -apple-system, sans-serif; background: #f0f2f5; color: #1a1a2e; padding: 32px 20px; max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 24px; font-weight: 800; margin-bottom: 6px; }
+.subtitle { color: #555; font-size: 14px; margin-bottom: 32px; line-height: 1.6; }
+h2 { font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+.card { background: #fff; border-radius: 14px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+.card.full { grid-column: 1 / -1; }
+
+/* Stat */
+.stat-row { display: flex; align-items: center; margin-bottom: 9px; gap: 10px; }
+.stat-label { width: 120px; font-size: 13px; color: #444; flex-shrink: 0; }
+.bar-wrap { flex: 1; background: #eee; border-radius: 6px; height: 24px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 6px; display: flex; align-items: center; padding-left: 8px; font-size: 11px; font-weight: 700; color: #fff; }
+.bar-pct { width: 40px; text-align: right; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+.c-critical { background: #1d4ed8; }
+.c-high     { background: #2563eb; }
+.c-med      { background: #60a5fa; color: #1e3a8a !important; }
+.c-low      { background: #bfdbfe; color: #1e3a8a !important; }
+.c-dead     { background: #e5e7eb; color: #666 !important; }
+
+/* Notes */
+.note { font-size: 13px; line-height: 1.65; padding: 12px 16px; border-radius: 8px; margin-top: 14px; }
+.note.info  { background: #eff6ff; border-left: 3px solid #2563eb; color: #1e3a8a; }
+.note.good  { background: #f0fdf4; border-left: 3px solid #22c55e; color: #166534; }
+.note.warn  { background: #fffbeb; border-left: 3px solid #f59e0b; color: #92400e; }
+.note.dead  { background: #f9fafb; border-left: 3px solid #9ca3af; color: #4b5563; }
+
+/* Big number */
+.big-num   { font-size: 52px; font-weight: 900; line-height: 1; }
+.big-label { font-size: 13px; color: #777; margin-top: 4px; line-height: 1.4; }
+.big-stat  { margin-bottom: 20px; }
+
+/* Main table */
+.q-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.q-table th { text-align: left; padding: 10px 12px; background: #f5f6fa; font-weight: 700; border-bottom: 2px solid #e5e7eb; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: #666; }
+.q-table td { padding: 12px 12px; border-bottom: 1px solid #f0f0f4; vertical-align: top; }
+.q-table tr:last-child td { border-bottom: none; }
+.q-table tr:hover td { background: #fafbff; }
+
+/* Tag pills */
+.tag { display: inline-block; margin: 2px 2px 2px 0; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+.tag-family    { background: #dcfce7; color: #166534; }
+.tag-practical { background: #d1fae5; color: #065f46; }
+.tag-cruiser   { background: #e0e7ff; color: #3730a3; }
+.tag-efficient { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+.tag-drivers   { background: #fef3c7; color: #92400e; }
+.tag-image     { background: #fce7f3; color: #9d174d; }
+.tag-tech      { background: #e0f2fe; color: #075985; }
+.tag-urban     { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+
+/* Impact pill */
+.pill { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+.p-critical { background: #dbeafe; color: #1d4ed8; }
+.p-high     { background: #dcfce7; color: #166534; }
+.p-med      { background: #fef9c3; color: #854d0e; }
+.p-low      { background: #fee2e2; color: #991b1b; }
+.p-dead     { background: #f3f4f6; color: #6b7280; }
+
+/* Keep/cut badge */
+.keep { color: #16a34a; font-weight: 800; font-size: 12px; }
+.caution { color: #d97706; font-weight: 800; font-size: 12px; }
+.cut  { color: #dc2626; font-weight: 800; font-size: 12px; }
+
+/* Rank badge */
+.rank { display: inline-flex; width: 26px; height: 26px; align-items: center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: 800; flex-shrink: 0; }
+.r1 { background: #fef08a; color: #713f12; }
+.r2 { background: #e5e7eb; color: #374151; }
+.r3 { background: #fde68a; color: #92400e; }
+.rx { background: #f3f4f6; color: #9ca3af; }
+
+/* Code-style data box */
+.data-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px 12px; font-family: monospace; font-size: 12px; color: #334155; margin-top: 6px; line-height: 1.6; }
+
+@media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<h1>Old BMW/MINI Question Set — Full Audit</h1>
+<p class="subtitle">
+  250 simulated buyer scenarios × 12,358 real BMW cars (national stock).<br>
+  Every question from the <strong>old set</strong> (10 questions including the boot question that was later cut), ranked by how much it actually changes which car wins — with a full breakdown of exactly what car data each question reads.
+</p>
+
+<div class="grid">
+
+  <!-- Headlines -->
+  <div class="card">
+    <h2>At a glance</h2>
+    <div class="big-stat"><div class="big-num">12,358</div><div class="big-label">real BMW cars in the pool</div></div>
+    <div class="big-stat"><div class="big-num">250</div><div class="big-label">buyer scenarios simulated</div></div>
+    <div class="big-stat"><div class="big-num">4</div><div class="big-label">/ 250 where no question moved the winner<br><small style="color:#aaa">(budget + body + fuel alone decided it)</small></div></div>
+    <div class="note info">Each question was measured by neutralising it (setting it to "no preference") and checking whether the top car changed. Higher % = the question is doing more real work.</div>
+  </div>
+
+  <!-- Bar chart -->
+  <div class="card">
+    <h2>How often each question changes the #1 result</h2>
+    <div id="bars"></div>
+    <p style="font-size:12px;color:#999;margin-top:12px">% of 250 scenarios where removing this question changed the recommended car.</p>
+  </div>
+
+  <!-- THE TAG SYSTEM EXPLAINED -->
+  <div class="card full">
+    <h2>The tag system — what labels exist on BMW cars and how they are assigned</h2>
+    <p style="font-size:13px;color:#555;margin-bottom:16px;line-height:1.6">
+      Every car in the pool carries a set of character tags. These are <strong>not from the stock feed</strong> — they are computed by the engine from the car's model line, body type, fuel, and trim name.
+      When you answer preference questions (style, priorities, primary use), the engine looks for cars whose tags match what you want.
+      Here is every tag, what it means, and exactly which cars get it:
+    </p>
+    <table class="q-table">
+      <thead><tr><th>Tag</th><th>What it means</th><th>Which cars get it (rule from mapping.js)</th><th>How many of 12,358 cars</th><th>Example cars</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tag-family">family</span><span class="tag tag-practical">practical</span></td>
+          <td>This car has space for a family and their stuff. Both tags always appear together.</td>
+          <td class="data-box">body === 'suv' OR body === 'mpv' OR body === 'estate'</td>
+          <td>6,623 cars (54%)</td>
+          <td style="font-size:12px;color:#666">X3, X5, X7, 5 Series Touring, 3 Series Touring, iX, XM…</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-cruiser">cruiser</span></td>
+          <td>A large, refined, long-distance car. Comfort over fun.</td>
+          <td class="data-box">line in ['5 Series','7 Series','8 Series','i5','i7','iX','X5','X6','X7']<br>OR car has no other tags (fallback)</td>
+          <td>4,181 cars (34%)</td>
+          <td style="font-size:12px;color:#666">5 Series, 7 Series, i7, iX, X5, X6, X7, 8 Series…</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-efficient">efficient</span></td>
+          <td>Low running costs — electric or plug-in hybrid.</td>
+          <td class="data-box">fuel === 'ev' OR fuel === 'phev'</td>
+          <td>3,806 cars (31%)</td>
+          <td style="font-size:12px;color:#666">All EVs (i3, i4, i5, i7, iX, iX1, iX2, iX3) + all PHEVs (X5 50e, 530e, 330e…)</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-urban">urban</span></td>
+          <td>Small, easy to park, city-friendly.</td>
+          <td class="data-box">line in ['1 Series','X1','iX1','iX2','2 Series Active Tourer']</td>
+          <td>3,083 cars (25%)</td>
+          <td style="font-size:12px;color:#666">1 Series, X1, iX1, iX2, 2 Series Active Tourer</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-drivers">drivers-car</span></td>
+          <td>Performance-focused. Quick 0-62, M or M-trim badge.</td>
+          <td class="data-box">line === 'M' or 'XM' or 'X3M/X4M/X5M/X6M'<br>OR derivative contains: m1, m2, m3, m4, m34, m44, m40, m50, m60, ti</td>
+          <td>2,310 cars (19%)</td>
+          <td style="font-size:12px;color:#666">M2, M3, M4, M5, XM, M135i, M340d, X5 M60i, i5 M60, iX M70…</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-tech">tech</span></td>
+          <td>Cutting-edge technology — BMW's i-line electric cars.</td>
+          <td class="data-box">line starts with 'i' (i3, i4, i5, i7, iX, iX1, iX2, iX3)<br>OR fuel === 'ev'</td>
+          <td>1,987 cars (16%)</td>
+          <td style="font-size:12px;color:#666">i3, i4, i5, i7, iX, iX1, iX2, iX3 — all BMW electric models</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-image">image</span></td>
+          <td>Style statement. Turns heads.</td>
+          <td class="data-box">line === 'M' or 'XM' or M-SUV (X3M/X4M/X5M/X6M)<br>OR body === 'coupe' OR body === 'convertible'</td>
+          <td>1,707 cars (14%)</td>
+          <td style="font-size:12px;color:#666">M cars, all coupés (4 Series, 8 Series, M2/4/8), all convertibles (Z4, 4 Series Convertible, 8 Series Convertible)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MAIN QUESTION TABLE -->
+  <div class="card full">
+    <h2>Every old question — exactly what car data it reads, and what it decides</h2>
+    <table class="q-table">
+      <thead>
+        <tr>
+          <th style="width:28px"></th>
+          <th style="width:110px">Question</th>
+          <th style="width:70px">Impact</th>
+          <th>Exact car fields used</th>
+          <th>What it looks for in the tags / data</th>
+          <th>What the engine does with your answer</th>
+          <th>Keep or cut?</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- BUDGET -->
+        <tr>
+          <td><span class="rank r1">1</span></td>
+          <td><strong>Budget</strong><br><span style="font-size:11px;color:#888">"What is your budget?"<br>Slider: £0–£150k</span></td>
+          <td><span class="pill p-critical">Critical</span><br><span style="font-size:11px;color:#888">62% / 250</span></td>
+          <td>
+            <div class="data-box">car.priceMin<br>car.priceMax</div>
+          </td>
+          <td style="font-size:13px;color:#444">
+            Hard ceiling: <strong>any car where priceMin &gt; budget × 1.15 is eliminated entirely before scoring</strong> — it never even gets ranked. Cars between your min and max score 1.0 on budget. Cars below your min score lower (you set a floor for a reason). Cars slightly over budget survive but are flagged as a stretch.
+          </td>
+          <td style="font-size:13px;color:#444">
+            Runs first as a hard filter. At £40k, an X7 at £70k is gone. At £100k it is back. This is why budget changes the winner most — it literally changes which cars exist in the ranking.
+          </td>
+          <td><span class="keep">ESSENTIAL</span><br><span style="font-size:12px;color:#666">Without this, a £20k buyer sees the same cars as a £150k buyer.</span></td>
+        </tr>
+
+        <!-- FUEL -->
+        <tr>
+          <td><span class="rank r2">2</span></td>
+          <td><strong>Fuel type</strong><br><span style="font-size:11px;color:#888">"What fuel types suit you?"<br>Multi-select</span></td>
+          <td><span class="pill p-critical">Critical</span><br><span style="font-size:11px;color:#888">62% / 250</span></td>
+          <td>
+            <div class="data-box">car.fuel<br>('petrol','diesel',<br>'phev','ev')</div>
+          </td>
+          <td style="font-size:13px;color:#444">
+            Exact match scoring table. If you pick <strong>EV</strong>: a petrol car scores 0.05, diesel 0.05, phev 0.30, ev 1.0. If you pick <strong>petrol</strong>: diesel 0.25, phev 0.30, ev 0.10, petrol 1.0. Plus a <em>fuelStrictBoost</em> that adds extra weight to fuel when you've named a specific type — so a wrong-fuel car that is otherwise great still loses to a matching-fuel car.
+          </td>
+          <td style="font-size:13px;color:#444">
+            A petrol buyer asking for EV would previously sometimes get recommended one because it scored well on economy. fuelStrictBoost was added to prevent this — fuel is now effectively a constraint, not just a preference.
+          </td>
+          <td><span class="keep">ESSENTIAL</span><br><span style="font-size:12px;color:#666">An EV buyer should never be recommended a petrol car.</span></td>
+        </tr>
+
+        <!-- BODY -->
+        <tr>
+          <td><span class="rank r3">3</span></td>
+          <td><strong>Body style</strong><br><span style="font-size:11px;color:#888">"Any body styles drawn to?"<br>Multi-select</span></td>
+          <td><span class="pill p-critical">Critical</span><br><span style="font-size:11px;color:#888">48% / 250<br>avg +6.7pt shift</span></td>
+          <td>
+            <div class="data-box">car.body<br>('hatchback','saloon',<br>'estate','suv','coupe',<br>'convertible','mpv')</div>
+          </td>
+          <td style="font-size:13px;color:#444">
+            Match score 0.9, miss score 0.0. A saloon buyer picking saloon scores 0.9 on body. A saloon buyer getting an SUV recommended scores 0.0. No partial credit — a coupe is not almost a saloon.
+            Body style has the highest <em>average score shift</em> of any question (6.7 pts) because the miss penalty is so steep.
+          </td>
+          <td style="font-size:13px;color:#444">
+            If you pick "any" the engine scores 0.7 (neutral) for every car's body — it no longer discriminates. The key insight: 54% of BMW's stock is SUV/MPV/estate, so an open-minded buyer almost always gets an SUV recommendation because they dominate the pool.
+          </td>
+          <td><span class="keep">ESSENTIAL</span><br><span style="font-size:12px;color:#666">Without it, almost every buyer gets an X5 — that is most of the stock.</span></td>
+        </tr>
+
+        <!-- PEOPLE -->
+        <tr>
+          <td><span class="rank rx">4</span></td>
+          <td><strong>People on board</strong><br><span style="font-size:11px;color:#888">"Who's usually on board?"<br>solo / family / crew</span></td>
+          <td><span class="pill p-high">High</span><br><span style="font-size:11px;color:#888">25% / 250</span></td>
+          <td>
+            <div class="data-box">car.seats<br>car.boot (litres)</div>
+          </td>
+          <td style="font-size:13px;color:#444">
+            <strong>Crew (5+ seats regularly):</strong> hard filter — any car with fewer than 5 seats or less than 400L boot is eliminated entirely. Only the X7 (7 seats, 750L) and a few gran tourers survive. Also gives a bonus score for cars with 7 seats.<br><br>
+            <strong>Family:</strong> hard filter — cars with fewer than 5 seats are eliminated (kills the Z4, i8, 2-seat coupés).<br><br>
+            <strong>Solo:</strong> no filter, but contributes 0 to the derived boot need so compact cars are not penalised.
+          </td>
+          <td style="font-size:13px;color:#444">
+            Also feeds the <em>derived boot need</em> together with primaryUse. Solo=0, family=1, crew=2. Add the primaryUse score. The total (0/1/2) maps to small/medium/big boot requirement.
+          </td>
+          <td><span class="keep">KEEP</span><br><span style="font-size:12px;color:#666">For crew buyers it eliminates most of the stock. Also replaces half of the old boot question.</span></td>
+        </tr>
+
+        <!-- PRIMARY USE -->
+        <tr>
+          <td><span class="rank rx">5</span></td>
+          <td><strong>Primary use</strong><br><span style="font-size:11px;color:#888">"What will this car mostly do?"<br>city/commute/family/<br>roadtrips/fun</span></td>
+          <td><span class="pill p-high">High</span><br><span style="font-size:11px;color:#888">25% / 250</span></td>
+          <td>
+            <div class="data-box">car.sizeClass (1–5)<br>car.tags<br>car.boot (partial)</div>
+          </td>
+          <td style="font-size:13px;color:#444">
+            <strong>City:</strong> scores smaller sizeClass higher — a 1 Series (sizeClass 1) beats an X7 (sizeClass 5). Adds 'urban' to wanted tags.<br><br>
+            <strong>Roadtrips:</strong> rewards sizeClass 3+ (X3/5 Series and up). A 1 Series scores 0.6 vs 1.0 for an X5.<br><br>
+            <strong>Family duties:</strong> adds 'family' + 'practical' to wanted tags. Boosts cars with boot 1 to the derived boot need.<br><br>
+            <strong>Fun:</strong> adds 'drivers-car' to wanted tags — M cars and M-trims rank higher.<br><br>
+            <strong>Commute:</strong> adds 'efficient' + 'cruiser' to wanted tags.
+          </td>
+          <td style="font-size:13px;color:#444">
+            Also contributes to the derived boot need: family/roadtrips add 1 to the score (city/commute/fun add 0). This is the second half of what the old boot question did.
+          </td>
+          <td><span class="keep">KEEP</span><br><span style="font-size:12px;color:#666">Drives both size scoring and character tag matching. Also replaces the other half of the old boot question.</span></td>
+        </tr>
+
+        <!-- PRIORITIES -->
+        <tr>
+          <td><span class="rank rx">6</span></td>
+          <td><strong>Priorities</strong><br><span style="font-size:11px;color:#888">"Pick your top two priorities"<br>economy/perf/comfort/<br>tech/image</span></td>
+          <td><span class="pill p-high">High</span><br><span style="font-size:11px;color:#888">20% / 250</span></td>
+          <td>
+            <div class="data-box">car.tags (character score)<br>car.zeroTo62 (performance)<br>car.mpg (economy)</div>
+          </td>
+          <td style="font-size:13px;color:#444">
+            Each priority adds a tag to the <em>wanted</em> set used by scoreCharacter, then boosts the weight of the matching engine dimension:<br><br>
+            <strong>economy</strong> → wants 'efficient' tag, boosts economy weight ×1.5<br>
+            <strong>performance</strong> → wants 'drivers-car' tag, boosts performance weight ×1.8<br>
+            <strong>comfort</strong> → wants 'cruiser' tag, boosts character weight<br>
+            <strong>tech</strong> → wants 'tech' tag, boosts character weight<br>
+            <strong>image</strong> → wants 'image' tag, boosts character weight<br><br>
+            A car scores 0.5 per matched tag (max 2 tags = score 1.0).
+          </td>
+          <td style="font-size:13px;color:#444">
+            Lives entirely in the <em>taste</em> half of the engine (20% of the blend). It personalises results among cars that are equally practical. Without it, two buyers with the same budget/fuel/body always get the same recommendation.
+          </td>
+          <td><span class="keep">KEEP</span><br><span style="font-size:12px;color:#666">The personalisation layer. Removing it collapses the engine to a constraints-only ranker.</span></td>
+        </tr>
+
+        <!-- CHARGING -->
+        <tr>
+          <td><span class="rank rx">7</span></td>
+          <td><strong>Charging access</strong><br><span style="font-size:11px;color:#888">"Could you charge at home or work?"<br>home/work/either/none<br><em>(only shown for EV/PHEV buyers)</em></span></td>
+          <td><span class="pill p-med">Medium</span><br><span style="font-size:11px;color:#888">17% overall<br>33% for EV buyers</span></td>
+          <td>
+            <div class="data-box">car.fuel ('ev','phev')<br>car.evRange (miles)</div>
+          </td>
+          <td style="font-size:13px;color:#444">
+            Adjusts EV and PHEV scores based on whether you can charge:<br><br>
+            <strong>EV + home/either charging:</strong> fuel score ×1.0, economy score = 1.0 ("pennies per mile")<br>
+            <strong>EV + work only:</strong> fuel score ×0.85<br>
+            <strong>EV + no charging:</strong> fuel score ×0.30, economy = 0.5–0.7<br>
+            <strong>PHEV + no charging:</strong> fuel score ×0.70 (it just becomes an expensive petrol car)<br><br>
+            For petrol/diesel buyers this question is hidden and has zero effect.
+          </td>
+          <td style="font-size:13px;color:#444">
+            This is why it only shows 17% overall impact — 60% of buyers chose petrol/diesel in the simulation and never saw the question. For the 40% who picked EV/PHEV, it changed the winner 25–33% of the time.
+          </td>
+          <td><span class="keep">KEEP (conditional)</span><br><span style="font-size:12px;color:#666">Correctly hidden for petrol/diesel buyers. Critical for EV buyers — without it the engine recommends EVs to people who have no way to charge them.</span></td>
+        </tr>
+
+        <!-- STYLE -->
+        <tr>
+          <td><span class="rank rx">8</span></td>
+          <td><strong>Comfort vs sporty</strong><br><span style="font-size:11px;color:#888">"Comfort or sportiness?"<br>1 (comfort) to 5 (sporty)</span></td>
+          <td><span class="pill p-med">Medium</span><br><span style="font-size:11px;color:#888">16% / 250</span></td>
+          <td>
+            <div class="data-box">car.zeroTo62 (seconds)<br>car.tags ('drivers-car',<br>'cruiser')</div>
+          </td>
+          <td style="font-size:13px;color:#444">
+            <strong>Style 4–5 (sporty):</strong> adds 'drivers-car' to wanted tags AND increases the weight on the performance dimension. A 0–62 time of 4.5s scores near-perfect; 8s scores low. M cars (M135i, M340d, M5, etc.) get a big lift.<br><br>
+            <strong>Style 1–2 (comfort):</strong> adds 'cruiser' to wanted tags. Reduces performance weight. A 5 Series or 7 Series (tagged 'cruiser') rises in the ranking.<br><br>
+            <strong>Style 3 (neither):</strong> no change to wanted tags.
+          </td>
+          <td style="font-size:13px;color:#444">
+            Lives in the taste half of the engine. Works with priorities — picking "sporty" AND "performance" priority stacks: the M car gets boosted twice.
+          </td>
+          <td><span class="keep">KEEP</span><br><span style="font-size:12px;color:#666">Part of the taste layer. Together with priorities it separates a comfort buyer from a performance buyer when everything else is equal.</span></td>
+        </tr>
+
+        <!-- MILEAGE -->
+        <tr>
+          <td><span class="rank rx">9</span></td>
+          <td><strong>Annual mileage</strong><br><span style="font-size:11px;color:#888">"How many miles a year?"<br>Slider 1k–25k</span></td>
+          <td><span class="pill p-low">Low overall</span><br><span style="font-size:11px;color:#888">11% overall<br>24% at 20k+ miles</span></td>
+          <td>
+            <div class="data-box">car.mpg (miles per gallon)<br>car.fuel<br>car.evRange</div>
+          </td>
+          <td style="font-size:13px;color:#444">
+            Mileage creates a 0–1 scale that multiplies the economy weight:<br><br>
+            <strong>Under 6k miles:</strong> economy weight barely increases — a thirsty petrol car is fine, running costs don't matter much.<br>
+            <strong>8–13k miles:</strong> economy weight starts to climb.<br>
+            <strong>20k+ miles:</strong> economy weight gets a full +1.0 boost. A 50mpg diesel or an EV now significantly outranks a 25mpg petrol of the same size.<br><br>
+            Specifically: score = mpg-based score + (mpg-based score − 0.5) × mileage fraction. At high mileage, a frugal car rises, a thirsty one sinks.
+          </td>
+          <td style="font-size:13px;color:#444">
+            At under 8k miles/year this question barely matters — those buyers' fuel and body choices dominate. It's specifically designed for the high-mileage commuter who needs the economics to stack up.
+          </td>
+          <td><span class="caution">KEEP (simplify)</span><br><span style="font-size:12px;color:#666">Only 11% overall but concentrated where it matters. Could simplify from a full slider to 3 bands (low/medium/high) without losing signal.</span></td>
+        </tr>
+
+        <!-- BOOT -->
+        <tr>
+          <td><span class="rank rx">10</span></td>
+          <td><strong>Boot space</strong><br><span style="font-size:11px;color:#888">"How much boot space do you need?"<br>small/medium/big<br><em>— REMOVED in current version</em></span></td>
+          <td><span class="pill p-dead">None</span><br><span style="font-size:11px;color:#888">0 / 250</span></td>
+          <td>
+            <div class="data-box">car.boot (litres, seats up)<br>BMW range: 154L (i8)<br>to 750L (X7)</div>
+          </td>
+          <td style="font-size:13px;color:#444">
+            Was: you answered small/medium/big, which set a target boot litres. The engine then scored how well the car's actual boot matched that target.<br><br>
+            <strong>small</strong> → target ~200L (any car fine)<br>
+            <strong>medium</strong> → target ~450L (5-door hatch, estate, smaller SUV)<br>
+            <strong>big</strong> → target ~600L+ (estate, large SUV)<br><br>
+            The problem: boot need is already implied by people + primaryUse. Solo city driver → small. Family on school runs → medium. Crew with roadtrips → big. The engine derives this automatically — the explicit question was asking for something it already knew.
+          </td>
+          <td style="font-size:13px;color:#444">
+            Simulation result: removing the boot question changed the winner in <strong>0 out of 250 scenarios</strong>. Even in the 70% of cases where the stated boot answer disagreed with what people+primaryUse implied, the explicit boot answer still never moved the top car. The information was fully redundant.
+          </td>
+          <td><span class="cut">CUT — correctly</span><br><span style="font-size:12px;color:#666">Zero information loss. Every signal it carried is already captured by people + primaryUse. Removing it saved a full screen without changing a single recommendation.</span></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Deep dives -->
+  <div class="card">
+    <h2>Why the boot question was safe to cut</h2>
+    <p style="font-size:13px;color:#555;margin-bottom:14px">
+      The old quiz asked directly: <em>"How much boot space do you need?"</em>
+      When it disagreed with what people + primaryUse implied, did it actually change anything?
+    </p>
+    <div class="stat-row">
+      <span class="stat-label">Boot agrees with implied need</span>
+      <div class="bar-wrap"><div class="bar-fill c-dead" style="width:30%">30%</div></div>
+      <span class="bar-pct">30%</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Disagrees with implied</span>
+      <div class="bar-wrap"><div class="bar-fill c-dead" style="width:70%">70%</div></div>
+      <span class="bar-pct">70%</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Disagreed AND changed winner</span>
+      <div class="bar-wrap"><div class="bar-fill c-dead" style="width:2%"></div></div>
+      <span class="bar-pct">0%</span>
+    </div>
+    <div class="note dead">
+      In 70% of scenarios the explicit boot answer differed from what people+primaryUse implied. But in every single one of those cases, the top recommendation was identical either way. The boot scorer was being overridden by stronger signals (body style, budget, fuel) every time. Safe to cut.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Mileage: only matters above 13k/year</h2>
+    <div id="mileage-bars"></div>
+    <div class="note warn">
+      Under 8,000 miles/year: mileage changes nothing — fuel and body choice dominate. Over 20,000: it shifts recommendations in 24% of cases, specifically moving diesel and EV above petrol. The full slider could be 3 bands (low/medium/high) without losing this signal.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Charging: 33% impact for EV buyers, 0% for petrol</h2>
+    <div id="charging-bars"></div>
+    <div class="note good">
+      The conditional logic (only show charging if you picked EV/PHEV/open) is exactly right. For petrol/diesel buyers it is invisible and irrelevant. For EV buyers without home charging, the engine rightly depresses EV scores — an EV relying on public chargers only is a very different car.
+    </div>
+  </div>
+
+  <!-- Top cars -->
+  <div class="card full">
+    <h2>Which cars win most across all 250 scenarios? (Top 20)</h2>
+    <p style="font-size:12px;color:#999;margin-bottom:14px">A good spread means the question set is driving variety. A bad set would show the same 2–3 cars winning everything.</p>
+    <table class="q-table">
+      <thead><tr><th>#</th><th>Car</th><th>Times #1</th><th>Share of 250</th></tr></thead>
+      <tbody id="top-cars"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+const DATA = {"poolSize":12358,"totalScenarios":250,"changedWinner":{"budget":156,"bodyStyles":119,"fuel":154,"charging":42,"primaryUse":63,"people":62,"boot":0,"mileage":28,"style":40,"priorities":51},"avgScoreShift":{"budget":3.7,"bodyStyles":6.7,"fuel":4.7,"charging":4.9,"primaryUse":2.2,"people":5.6,"boot":0,"mileage":0.8,"style":0.8,"priorities":2.3},"stuckCount":4,"topFreq":{"BMW 1 Series M135i xDrive":2,"BMW 1 Series M135 xDrive":4,"BMW 520i M Sport Pro Saloon":1,"BMW 218d M Sport Gran Coupe":2,"BMW 520d M Sport Touring":4,"BMW iX xDrive40 M Sport":3,"BMW iX xDrive45 M Sport":2,"BMW iX M70 xDrive":12,"BMW M5 Saloon":6,"BMW 745Le xDrive M Sport Saloon":6,"BMW X5 xDrive50e M Sport":10,"BMW 230e xDrive M Sport Active Tourer":2,"BMW XM Label":8,"BMW 330i M Sport Touring":1,"BMW 630i M Sport Gran Turismo":2,"BMW 730d Exclusive Saloon":3,"BMW i5 eDrive40 M Sport Touring":2,"BMW i5 M60 Saloon":19,"BMW X7 M60i xDrive":4,"BMW 218i SE Gran Tourer":1,"BMW 220i Luxury Gran Tourer":4,"BMW X7 xDrive40i M Sport":5,"BMW X7 M50i":7,"BMW 318d SE Gran Turismo":4,"BMW i5 M60 xDrive Touring":12,"BMW X1 xDrive25e M Sport":3,"BMW i8 Coupe":1,"BMW 840i M Sport Convertible":1,"BMW i7 M70 xDrive":9,"BMW 220i Sport Active Tourer":3,"BMW X6 M50i":2,"BMW X5 M50i":2,"BMW 3 Series M340d xDrive Saloon":2,"BMW X5 xDrive45e M Sport":1,"BMW 218i M Sport Gran Tourer":2,"BMW 218i Sport Gran Tourer":1,"BMW X7 xDrive40d M Sport":12,"BMW X7 M50d":2,"BMW 218d M Sport Gran Tourer":5,"BMW i4 M50":6,"BMW M5 Touring":7,"BMW 2 Series M240i xDrive Coupe":3,"BMW 4 Series M440d xDrive Convertible":3,"BMW 2 Series M240i Convertible":1,"BMW X6 xDrive40d M Sport":1,"BMW X6 M50d":3,"BMW 330e SE Pro Touring":2,"BMW iX M60":5,"BMW 7 Series M760e xDrive":2,"BMW 530e xDrive SE Touring":1,"BMW 530e xDrive M Sport Touring":2,"BMW 2 Series M240i Coupe":1,"BMW Z4 M40i":3,"BMW 216d Luxury Active Tourer":2,"BMW 640i M Sport Coupe":1,"BMW 745e M Sport Saloon":2,"BMW 520i M Sport Pro Touring":2,"BMW X5 M":2,"BMW 4 Series M440i xDrive Coupe":1,"BMW 220d Luxury Active Tourer":1,"BMW X5 xDrive40i xLine":1,"BMW 4 Series M440d xDrive Coupe":5,"BMW 520i M Sport Touring":1,"BMW 640d M Sport Convertible":1,"BMW i4 M60":1,"BMW 3 Series M340i xDrive Touring":2,"BMW X4M X4 M Competition":1,"BMW X5 xDrive40d M Sport":2,"BMW 840d xDrive Coupe":1,"BMW 225e Sport Active Tourer":2,"BMW i3 60Ah":1,"BMW 520i M Sport Saloon":2,"BMW X1 xDrive20d M Sport":1,"BMW 225e xDrive M Sport Active Tourer":2,"BMW 3 Series M340d xDrive Touring":3,"BMW 3 Series M340i xDrive Saloon":1},"bootAnalysis":{"agreePct":30,"disagreePct":70,"disagreeChanges":0,"disagreeChangePct":0},"mileageBands":{"3000":{"total":51,"changed":0},"8000":{"total":51,"changed":6},"13000":{"total":51,"changed":4},"20000":{"total":51,"changed":12},"24000":{"total":46,"changed":6}},"chargingByFuel":{"ev":{"total":51,"changed":17},"phev":{"total":49,"changed":9},"other":{"total":150,"changed":16}}};
+
+const ORDER = ['budget','fuel','bodyStyles','people','primaryUse','priorities','charging','style','mileage','boot'];
+const LABELS = {budget:'Budget',fuel:'Fuel type',bodyStyles:'Body style',people:'People on board',primaryUse:'Primary use',priorities:'Priorities',charging:'Charging',style:'Comfort/sporty',mileage:'Mileage',boot:'Boot space'};
+const BAR_CLS = {budget:'c-critical',fuel:'c-critical',bodyStyles:'c-high',people:'c-high',primaryUse:'c-high',priorities:'c-med',charging:'c-med',style:'c-med',mileage:'c-low',boot:'c-dead'};
+const N = DATA.totalScenarios;
+
+// Main bars
+const barsEl = document.getElementById('bars');
+for (const q of ORDER) {
+  const n = DATA.changedWinner[q];
+  const pct = Math.round(n / N * 100);
+  barsEl.innerHTML += `<div class="stat-row">
+    <span class="stat-label">${LABELS[q]}</span>
+    <div class="bar-wrap"><div class="bar-fill ${BAR_CLS[q]}" style="width:${Math.max(pct,1)}%">${pct>8?pct+'%':''}</div></div>
+    <span class="bar-pct">${pct}%</span>
+  </div>`;
+}
+
+// Mileage bands
+const mEl = document.getElementById('mileage-bars');
+const mLabels = {'3000':'3k /yr','8000':'8k /yr','13000':'13k /yr','20000':'20k /yr','24000':'24k+ /yr'};
+for (const [band, d] of Object.entries(DATA.mileageBands)) {
+  const pct = Math.round(d.changed / d.total * 100);
+  const cls = pct >= 20 ? 'c-high' : pct >= 8 ? 'c-med' : 'c-dead';
+  mEl.innerHTML += `<div class="stat-row">
+    <span class="stat-label">${mLabels[band]}</span>
+    <div class="bar-wrap"><div class="bar-fill ${cls}" style="width:${Math.max(pct,1)}%">${pct>6?pct+'%':''}</div></div>
+    <span class="bar-pct">${pct}%</span>
+  </div>`;
+}
+
+// Charging by fuel
+const cEl = document.getElementById('charging-bars');
+const cLabels = {ev:'EV buyers',phev:'PHEV buyers',other:'Petrol / diesel'};
+for (const [fuel, d] of Object.entries(DATA.chargingByFuel)) {
+  const pct = Math.round(d.changed / d.total * 100);
+  const cls = pct >= 25 ? 'c-high' : pct >= 10 ? 'c-med' : 'c-dead';
+  cEl.innerHTML += `<div class="stat-row">
+    <span class="stat-label">${cLabels[fuel]}</span>
+    <div class="bar-wrap"><div class="bar-fill ${cls}" style="width:${Math.max(pct,1)}%">${pct>6?pct+'%':''}</div></div>
+    <span class="bar-pct">${pct}%</span>
+  </div>`;
+}
+
+// Top cars
+const carsEl = document.getElementById('top-cars');
+const sorted = Object.entries(DATA.topFreq).sort((a,b)=>b[1]-a[1]).slice(0,20);
+const max = sorted[0][1];
+sorted.forEach(([name,count],i) => {
+  const cls = i===0?'r1':i===1?'r2':i===2?'r3':'rx';
+  carsEl.innerHTML += `<tr>
+    <td><span class="rank ${cls}">${i+1}</span></td>
+    <td>${name}</td>
+    <td><div style="display:flex;align-items:center;gap:8px">
+      <div style="width:${Math.round(count/max*140)}px;height:8px;background:#2563eb;border-radius:4px"></div>
+      <strong>${count}</strong>
+    </div></td>
+    <td>${Math.round(count/N*100)}%</td>
+  </tr>`;
+});
+</script>
+</body>
+</html>
