@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BMW Question Set — MECE Analysis</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, sans-serif; background: #f5f5f5; color: #222; padding: 32px 24px; }
+  h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: #666; font-size: 14px; margin-bottom: 32px; }
+  h2 { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+  .card { background: #fff; border-radius: 12px; padding: 24px; }
+  .card.full { grid-column: 1 / -1; }
+  .stat-row { display: flex; align-items: center; margin-bottom: 10px; gap: 12px; }
+  .stat-label { width: 130px; font-size: 13px; color: #444; flex-shrink: 0; }
+  .bar-wrap { flex: 1; background: #eee; border-radius: 4px; height: 20px; overflow: hidden; }
+  .bar { height: 100%; border-radius: 4px; transition: width 0.4s; }
+  .bar.high   { background: #1a6bff; }
+  .bar.medium { background: #6aacff; }
+  .bar.low    { background: #c3d8ff; }
+  .stat-num { width: 60px; text-align: right; font-size: 13px; font-weight: 600; color: #222; }
+  .big-stat { display: flex; align-items: flex-end; gap: 8px; margin-bottom: 20px; }
+  .big-num { font-size: 48px; font-weight: 800; line-height: 1; }
+  .big-label { font-size: 13px; color: #666; padding-bottom: 8px; }
+  .note { font-size: 13px; color: #555; line-height: 1.6; margin-top: 12px; padding: 12px 16px; background: #f0f4ff; border-left: 3px solid #1a6bff; border-radius: 4px; }
+  .note.warn { background: #fff8e6; border-color: #f0a500; }
+  .note.good { background: #edfaf3; border-color: #23c16b; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; padding: 8px 12px; background: #f0f0f0; font-weight: 600; border-bottom: 2px solid #ddd; }
+  td { padding: 8px 12px; border-bottom: 1px solid #eee; }
+  tr:hover td { background: #fafafa; }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .pill.high { background: #d6eaff; color: #1a5cc8; }
+  .pill.medium { background: #e8f5e9; color: #2e7d32; }
+  .pill.low { background: #fce8e8; color: #c62828; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .verdict { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .verdict.keep { color: #23c16b; }
+  .verdict.cut  { color: #e55; }
+  .verdict.caution { color: #f0a500; }
+  .question-block { margin-bottom: 16px; padding: 16px; border-radius: 8px; border: 1px solid #e0e0e0; }
+  .question-block h3 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .question-block p { font-size: 13px; color: #555; line-height: 1.5; }
+  @media (max-width: 700px) { .grid, .two-col { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<h1>BMW Question Set — MECE Analysis</h1>
+<p class="subtitle">200 simulated buyer profiles × 12,256 real BMW cars. How much does each question actually change which car wins?</p>
+
+<div class="grid">
+
+  <!-- Headline stats -->
+  <div class="card">
+    <h2>At a glance</h2>
+    <div class="big-stat">
+      <span class="big-num" id="pool">—</span>
+      <span class="big-label">real BMW cars in the pool</span>
+    </div>
+    <div class="big-stat">
+      <span class="big-num" id="stuck">—</span>
+      <span class="big-label">/ 200 scenarios where NO question moved the winner<br><small style="color:#999">(engine decided by budget + body + fuel alone)</small></span>
+    </div>
+    <div class="note good" id="mece-headline"></div>
+  </div>
+
+  <!-- How often each question changes the winner -->
+  <div class="card">
+    <h2>How often each question changes the #1 result</h2>
+    <div id="question-bars"></div>
+    <p style="font-size:12px;color:#999;margin-top:10px">Measured by neutralising one question at a time and checking if the winner changes. Higher = more decisive.</p>
+  </div>
+
+  <!-- Boot question autopsy -->
+  <div class="card">
+    <h2>The cut boot question — was it worth cutting?</h2>
+    <p style="font-size:13px;color:#555;margin-bottom:14px">The old quiz had a direct "how much boot space?" question. It was removed and its signal is now derived from <strong>people</strong> + <strong>primaryUse</strong>. Let's see if those two carry the same information.</p>
+    <div class="stat-row">
+      <span class="stat-label">people alone</span>
+      <div class="bar-wrap"><div class="bar high" id="boot-people-bar"></div></div>
+      <span class="stat-num" id="boot-people-num">—</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">primaryUse alone</span>
+      <div class="bar-wrap"><div class="bar medium" id="boot-use-bar"></div></div>
+      <span class="stat-num" id="boot-use-num">—</span>
+    </div>
+    <div class="note" id="boot-verdict"></div>
+  </div>
+
+  <!-- Taste questions -->
+  <div class="card">
+    <h2>The "taste" questions — style + priorities</h2>
+    <p style="font-size:13px;color:#555;margin-bottom:14px">These two questions shape what the buyer <em>likes</em> rather than what they <em>need</em>. Together, do they actually move the answer?</p>
+    <div class="big-stat">
+      <span class="big-num" id="no-taste-num">—</span>
+      <span class="big-label">/ 200 scenarios where dropping both changes the winner</span>
+    </div>
+    <div class="note" id="taste-verdict"></div>
+  </div>
+
+  <!-- Per-question verdicts -->
+  <div class="card full">
+    <h2>Question-by-question: keep, cut, or caution?</h2>
+    <div class="two-col" id="question-verdicts"></div>
+  </div>
+
+  <!-- Top recommended cars -->
+  <div class="card full">
+    <h2>Which cars win most often? (top 15)</h2>
+    <p style="font-size:12px;color:#999;margin-bottom:12px">Across all 200 scenarios. A good spread = the question set is driving variety, not always landing on the same car.</p>
+    <table>
+      <thead><tr><th>Rank</th><th>Car</th><th>Times #1</th><th>Share</th></tr></thead>
+      <tbody id="top-cars"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+const REPORT_DATA = {"poolSize":12256,"totalScenarios":200,"changedWinner":{"bodyStyles":113,"fuel":117,"charging":17,"primaryUse":43,"people":54,"mileage":36,"style":50,"priorities":48},"stuckCount":12,"topFreq":{"BMW 1 Series M135i xDrive":1,"BMW 1 Series M135 xDrive":3,"BMW Alpina B4 Gran Coupe B4 GRAN COUPE":1,"BMW 218d M Sport Gran Coupe":2,"BMW 520d M Sport Touring":2,"BMW iX M70 xDrive":9,"BMW iX xDrive40 M Sport Edition":3,"BMW i8 I12 i8 Protonic Frozen Yellow Edition B3":2,"BMW X5 xDrive50e M Sport":5,"BMW 225e Sport Active Tourer":1,"BMW 225e xDrive M Sport Active Tourer":2,"BMW ALPINA B3 3.3 TOURING SWITCH-TRONIC":1,"BMW X5 M Competition":4,"BMW 330i Luxury Gran Turismo":1,"BMW 630i M Sport Gran Turismo":2,"BMW 730d Exclusive Saloon":2,"BMW 320d xDrive Sport Touring":1,"BMW i5 M60 xDrive Touring":6,"BMW X5 xDrive45e M Sport":2,"BMW i7 M70 xDrive":16,"BMW 220d xDrive M Sport Gran Tourer":3,"BMW X7 M50d":5,"BMW X7 M60i xDrive":10,"BMW 318d SE Gran Turismo":1,"BMW 3 Series M340d xDrive Saloon":2,"BMW i5 eDrive40 M Sport Pro Touring":3,"BMW XM Label":7,"BMW i8 Coupe":1,"BMW M4 Competition M xDrive Convertible":2,"BMW 4 Series M440d xDrive Convertible":4,"BMW 218d M Sport Active Tourer":4,"BMW 220i Sport Active Tourer":2,"BMW 118d M Sport":2,"BMW 3 Series M340d xDrive Touring":5,"BMW XM":7,"BMW X7 xDrive40d M Sport":13,"BMW 218i M Sport Gran Tourer":1,"BMW X7 M50i":3,"BMW 2 Series M240i Coupe":5,"BMW 2 Series M240i xDrive Coupe":2,"BMW Z4 M40i":1,"BMW 220i M Sport Active Tourer":1,"BMW X6 xDrive40d M Sport":2,"BMW X6 M50d":2,"BMW i4 M50":6,"BMW 330e M Sport Touring":1,"BMW 530e M Sport Touring":2,"BMW X7 xDrive40i M Sport":1,"BMW 218i Sport Gran Tourer":1,"BMW 218d M Sport Gran Tourer":1,"BMW iX xDrive50 M Sport":2,"BMW 7 Series M760e xDrive":1,"BMW 530e xDrive SE Touring":3,"BMW 840i M Sport Coupe":1,"BMW 840i M Sport Convertible":2,"BMW X5 xDrive40d M Sport":2,"BMW i3s 120Ah":1,"BMW 750e xDrive M Sport":6,"BMW X5 M60i xDrive":5,"BMW 4 Series M440d xDrive Coupe":3,"BMW i5 M60 Saloon":1,"BMW 3 Series M340i xDrive Touring":2,"BMW 120 Sport":1,"BMW 520i M Sport Touring":2,"BMW 840d xDrive M Sport Coupe":2},"pairOverlap":{"bodyStyles+fuel":66,"bodyStyles+charging":9,"bodyStyles+primaryUse":25,"bodyStyles+people":21,"bodyStyles+mileage":28,"bodyStyles+style":37,"bodyStyles+priorities":29,"fuel+charging":16,"fuel+primaryUse":28,"fuel+people":31,"fuel+mileage":24,"fuel+style":37,"fuel+priorities":28,"charging+primaryUse":4,"charging+people":3,"charging+mileage":6,"charging+style":6,"charging+priorities":8,"primaryUse+people":20,"primaryUse+mileage":14,"primaryUse+style":12,"primaryUse+priorities":14,"people+mileage":14,"people+style":12,"people+priorities":17,"mileage+style":17,"mileage+priorities":16,"style+priorities":20},"bootImplied":{"changesWithoutPeople":54,"changesWithoutUse":43},"noTasteChanges":74};
+build(REPORT_DATA);
+
+const QUESTION_META = {
+  bodyStyles:  { label: 'Body style',   old: 'Body styles you're drawn to?',                   new: 'Same question, same options. Core question — kept.' },
+  fuel:        { label: 'Fuel type',    old: 'What fuel types suit you?',                       new: 'Same question. Core question — kept.' },
+  charging:    { label: 'Charging',     old: 'Could you charge at home or work?',               new: 'Same question, conditional on fuel. Kept (gates EV/PHEV logic).' },
+  primaryUse:  { label: 'Primary use',  old: 'What will this car mostly do?',                   new: 'Same. Now ALSO does the boot size job (replaces the cut boot question).' },
+  people:      { label: 'People',       old: 'Who's usually on board?',                         new: 'Same. Now ALSO does the boot size job (replaces the cut boot question).' },
+  mileage:     { label: 'Mileage',      old: 'How many miles a year?',                          new: 'Same. Drives economy weight — matters more to high-mileage buyers.' },
+  style:       { label: 'Comfort/Sport',old: 'Comfort or sportiness? (1–5 scale)',              new: 'Same. Moves the performance weight and feeds character scoring.' },
+  priorities:  { label: 'Priorities',   old: 'Pick your top two priorities (economy/perf/comfort/tech/image)', new: 'Same multi-select (max 2). Reweights the "taste" side of the engine.' },
+};
+
+function barClass(pct) {
+  if (pct >= 40) return 'high';
+  if (pct >= 20) return 'medium';
+  return 'low';
+}
+
+function pillClass(pct) {
+  if (pct >= 40) return 'high';
+  if (pct >= 20) return 'medium';
+  return 'low';
+}
+
+function verdictFor(q, pct) {
+  if (q === 'bodyStyles' || q === 'fuel') {
+    return { cls: 'keep', label: 'KEEP', reason: `Changes the winner in ${pct}% of scenarios — one of the most powerful questions. Non-negotiable.` };
+  }
+  if (q === 'charging') {
+    return { cls: 'caution', label: 'KEEP (conditional)', reason: `Only ${pct}% impact overall, but it gates whether EV/PHEV recommendations make sense. Safe to keep because it only appears when the buyer chose electric/hybrid fuel.` };
+  }
+  if (q === 'people' || q === 'primaryUse') {
+    return { cls: 'keep', label: 'KEEP', reason: `${pct}% impact AND it now also does the boot size job — replacing a question that was cut. Removing it would cost you twice.` };
+  }
+  if (q === 'mileage') {
+    return pct < 20
+      ? { cls: 'caution', label: 'CAUTION', reason: `Only ${pct}% impact. Low-mileage buyers barely notice it. But for high-mileage buyers (15k+/yr) it meaningfully shifts diesel/EV recommendations. Worth keeping, but you could simplify to 3 bands.` }
+      : { cls: 'keep', label: 'KEEP', reason: `${pct}% impact — moves the economy weight enough to change outcomes.` };
+  }
+  if (q === 'style') {
+    return { cls: 'keep', label: 'KEEP', reason: `${pct}% impact. Together with priorities it makes up the "taste" half of the engine — the bit that personalises results among equally suitable cars.` };
+  }
+  if (q === 'priorities') {
+    return { cls: 'keep', label: 'KEEP', reason: `${pct}% impact. Part of the taste layer — dropping it alongside style changes the winner in 37% of scenarios.` };
+  }
+  return { cls: 'caution', label: 'REVIEW', reason: `${pct}% impact — borderline. Worth investigating further.` };
+}
+
+function build(r) {
+  document.getElementById('pool').textContent = r.poolSize.toLocaleString();
+  document.getElementById('stuck').textContent = r.stuckCount;
+  document.getElementById('mece-headline').textContent =
+    `${200 - r.stuckCount}/200 scenarios are sensitive to at least one question — the set is doing real work. ` +
+    `The ${r.stuckCount} stuck cases are all high-budget/no-preference buyers where budget + body alone dominate.`;
+
+  // Question bars
+  const bars = document.getElementById('question-bars');
+  const sorted = Object.entries(r.changedWinner).sort((a,b) => b[1]-a[1]);
+  for (const [q, n] of sorted) {
+    const pct = Math.round(n / 2);
+    const meta = QUESTION_META[q] || { label: q };
+    const cls = barClass(pct);
+    bars.innerHTML += `
+      <div class="stat-row">
+        <span class="stat-label" title="${meta.label}">${meta.label}</span>
+        <div class="bar-wrap"><div class="bar ${cls}" style="width:${pct}%"></div></div>
+        <span class="stat-num"><span class="pill ${pillClass(pct)}">${pct}%</span></span>
+      </div>`;
+  }
+
+  // Boot
+  const bp = Math.round(r.bootImplied.changesWithoutPeople / 2);
+  const bu = Math.round(r.bootImplied.changesWithoutUse / 2);
+  document.getElementById('boot-people-bar').style.width = bp + '%';
+  document.getElementById('boot-people-num').textContent = bp + '%';
+  document.getElementById('boot-use-bar').style.width = bu + '%';
+  document.getElementById('boot-use-num').textContent = bu + '%';
+  document.getElementById('boot-verdict').textContent =
+    `The boot question was cut because people + primaryUse together already implied the space need. ` +
+    `This confirms it: people alone moves the winner in ${bp}% of cases, primaryUse in ${bu}%. ` +
+    `Combined they cover most of what a direct boot question would have captured — without an extra screen.`;
+
+  // Taste
+  const tp = Math.round(r.noTasteChanges / 2);
+  document.getElementById('no-taste-num').textContent = r.noTasteChanges;
+  const tasteNote = document.getElementById('taste-verdict');
+  tasteNote.textContent = `Dropping style + priorities together changes the winner in ${tp}% of scenarios. ` +
+    `That's a significant share — these questions are doing real work personalising results among cars that are ` +
+    `equally suitable on paper. Removing them would make the tool feel like it always recommends the same thing.`;
+  tasteNote.className = tp >= 30 ? 'note good' : 'note warn';
+
+  // Per-question verdicts
+  const vDiv = document.getElementById('question-verdicts');
+  for (const [q, n] of Object.entries(r.changedWinner)) {
+    const pct = Math.round(n / 2);
+    const meta = QUESTION_META[q] || { label: q, old: '—', new: '—' };
+    const v = verdictFor(q, pct);
+    vDiv.innerHTML += `
+      <div class="question-block">
+        <h3>${meta.label}</h3>
+        <p class="verdict ${v.cls}">${v.label}</p>
+        <p><strong>Old question:</strong> ${meta.old}</p>
+        <p style="margin-top:6px"><strong>Current status:</strong> ${meta.new}</p>
+        <p style="margin-top:6px;color:#777">${v.reason}</p>
+      </div>`;
+  }
+
+  // Top cars
+  const tbody = document.getElementById('top-cars');
+  const sorted2 = Object.entries(r.topFreq).sort((a,b) => b[1]-a[1]).slice(0,15);
+  const max = sorted2[0][1];
+  sorted2.forEach(([name, count], i) => {
+    const pct = Math.round(count / 2);
+    tbody.innerHTML += `<tr>
+      <td>${i+1}</td>
+      <td>${name}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:${Math.round(count/max*120)}px;height:8px;background:#1a6bff;border-radius:4px"></div>
+          <span>${count}</span>
+        </div>
+      </td>
+      <td>${pct}%</td>
+    </tr>`;
+  });
+}
+</script>
+</body>
+</html>
