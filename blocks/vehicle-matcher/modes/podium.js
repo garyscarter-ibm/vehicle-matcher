@@ -47,7 +47,7 @@ import {
   visibleQuestions, renderRangeSlider, renderOptionList, formatSliderValue,
 } from './question-ui.js';
 import { createPreviewFeed } from './preview-feed.js';
-import { matchCard } from './result-card.js';
+import { matchCard, bmwPodiumCard, bmwTailTile } from './result-card.js';
 import {
   WEAK_SCORE, celebrate, shadeOf, cap, idOf,
 } from './match-signal.js';
@@ -951,20 +951,22 @@ function mount(root, ctx) {
     // the eyebrow, tallest on the gold tile, which is where the chip used to
     // float. The dismissal target stays the step so the whole tile still fades.
     const cardWrap = el('div', 'vm-podium-card');
-    cardWrap.append(
-      matchCard(safeMatch(m), {
+    const card = ctx.brand === 'bmw'
+      ? bmwPodiumCard(safeMatch(m))
+      : matchCard(safeMatch(m), {
         big: Boolean(state.committed) && gold,
         compact: !gold,
         brand: ctx.brand,
-      }),
-      rejectTrigger(m, step),
-    );
+      });
+    cardWrap.append(card, rejectTrigger(m, step));
     step.append(cardWrap);
     return step;
   };
 
   const buildTailTile = (m) => {
-    const tile = matchCard(safeMatch(m), { compact: true, brand: ctx.brand });
+    const tile = ctx.brand === 'bmw'
+      ? bmwTailTile(safeMatch(m))
+      : matchCard(safeMatch(m), { compact: true, brand: ctx.brand });
     tile.append(rejectTrigger(m, tile));
     return tile;
   };

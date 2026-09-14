@@ -545,6 +545,185 @@ export function matchCard(match, {
 }
 
 /**
+ * BMW podium card — the redesigned tile matching the BMW Approved Used style.
+ * Used only by the podium mode when brand === 'bmw'.
+ */
+export function bmwPodiumCard(match) {
+  const { car, reasons } = match;
+
+  // Split name into model line (e.g. "BMW X6") and trim (e.g. "XDrive40d M Sport")
+  // car.name is typically "BMW X6 XDrive40d M Sport" — split on the line name
+  const lineName = car.line ? `BMW ${car.line}` : car.name;
+  const trimName = car.line && car.name.startsWith(lineName)
+    ? car.name.slice(lineName.length).trim()
+    : null;
+
+  const priceNum = car.listingCount > 1 && car.priceFrom !== car.priceTo
+    ? gbp(car.priceFrom)
+    : (car.priceMin === car.priceMax ? gbp(car.priceMin) : gbp(car.priceMin));
+  const isFrom = (car.listingCount > 1 && car.priceFrom !== car.priceTo)
+    || car.priceMin !== car.priceMax;
+
+  const card = el('article', 'vm-card vm-bmw-card');
+  const { media } = mediaWell(car);
+  card.append(media);
+
+  const body = el('div', 'vm-card-body vm-bmw-body');
+
+  // Header: left = model name + trim, right = roundel + from/price
+  const header = el('div', 'vm-bmw-header');
+
+  const nameStack = el('div', 'vm-bmw-name-stack');
+  nameStack.append(el('h3', 'vm-bmw-name', lineName));
+  if (trimName) nameStack.append(el('span', 'vm-bmw-trim', trimName));
+  header.append(nameStack);
+
+  const priceStack = el('div', 'vm-bmw-price-stack');
+  const roundel = el('span', 'vm-bmw-roundel');
+  roundel.innerHTML = `<svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="#1c69d4" stroke-width="2"/><path d="M16 1v15H1A15 15 0 0 1 16 1z" fill="#1c69d4"/><path d="M16 16v15A15 15 0 0 1 1 16z" fill="#fff"/><path d="M16 1a15 15 0 0 1 15 15H16z" fill="#fff"/><path d="M31 16a15 15 0 0 1-15 15V16z" fill="#1c69d4"/><circle cx="16" cy="16" r="15" fill="none" stroke="#999" stroke-width="1"/></svg>`;
+  if (isFrom) priceStack.append(el('span', 'vm-bmw-from', 'from'));
+  const priceRow = el('div', 'vm-bmw-price-row');
+  priceRow.append(roundel, el('span', 'vm-bmw-price', priceNum));
+  priceStack.append(priceRow);
+  header.append(priceStack);
+
+  body.append(header);
+
+  // Blue spec band — 2 lines: line 1 bold (body/fuel/gearbox/mpg), line 2 normal (colour/seats/boot + 0-62)
+  const specBand = el('div', 'vm-bmw-spec-band');
+  const line1Parts = [SPEC_LABELS[car.body], FUEL_SPEC[car.fuel]];
+  if (car.transmission === 'auto') line1Parts.push('Automatic');
+  else if (car.transmission === 'manual') line1Parts.push('Manual');
+  if (car.mpg) line1Parts.push(`${car.mpg} mpg`);
+  specBand.append(el('p', 'vm-bmw-spec-line1', line1Parts.filter(Boolean).join(' - ')));
+
+  const line2Parts = [];
+  if (car.colour?.manufacturerColour || car.colour?.colour) {
+    line2Parts.push(car.colour.manufacturerColour || car.colour.colour);
+  }
+  if (car.seats) line2Parts.push(`${car.seats} Seats`);
+  if (car.boot) line2Parts.push(`${car.boot}l Boot`);
+  if (car.zeroTo62) line2Parts.push(`0-62mph in ${car.zeroTo62}s`);
+  if (line2Parts.length) specBand.append(el('p', 'vm-bmw-spec-line2', line2Parts.join(' - ')));
+  body.append(specBand);
+
+  // Detail rows — SVG icons, no emojis
+  const details = el('div', 'vm-bmw-details');
+
+  const calIcon = `<svg class="vm-bmw-svg-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="4" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M2 8h16" stroke="currentColor" stroke-width="1.5"/><path d="M6 2v4M14 2v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`;
+  const milesIcon = `<svg class="vm-bmw-svg-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M10 6v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`;
+  const pinIcon = `<svg class="vm-bmw-svg-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2a6 6 0 0 1 6 6c0 4-6 10-6 10S4 12 4 8a6 6 0 0 1 6-6z" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="8" r="2" stroke="currentColor" stroke-width="1.5"/></svg>`;
+
+  if (car.plate || car.year) {
+    const row = el('div', 'vm-bmw-detail-row');
+    row.innerHTML = calIcon;
+    const label = [
+      car.year ? `${car.year}` : null,
+      car.plate ? `(${car.plate})` : null,
+    ].filter(Boolean).join(' ');
+    const txt = el('span', 'vm-bmw-detail-text');
+    txt.append(`Approved-used `);
+    txt.append(el('strong', null, label));
+    txt.append(` registered ${car.line || ''}`);
+    row.append(txt);
+    details.append(row);
+  }
+
+  if (car.mileage != null) {
+    const row = el('div', 'vm-bmw-detail-row');
+    row.innerHTML = milesIcon;
+    const txt = el('span', 'vm-bmw-detail-text');
+    txt.append(`Approx. `);
+    txt.append(el('strong', null, `${car.mileage.toLocaleString('en-GB')} miles`));
+    row.append(txt);
+    details.append(row);
+  }
+
+  if (car.retailerName) {
+    const row = el('div', 'vm-bmw-detail-row');
+    row.innerHTML = pinIcon;
+    const txt = el('span', 'vm-bmw-detail-text');
+    txt.append(`Ready for pickup from `);
+    txt.append(el('strong', null, car.retailerName));
+    if (car.distance != null) {
+      txt.append(el('span', 'vm-bmw-distance', ` · ${distanceLabel(car.distance)}`));
+    }
+    row.append(txt);
+    details.append(row);
+  }
+
+  if (details.children.length) body.append(details);
+
+  // Features
+  const have = new Set(car.features || []);
+  const named = Object.entries(CONCEPT_LABELS).filter(([k]) => have.has(k)).map(([, v]) => v);
+  if (named.length) {
+    body.append(el('p', 'vm-bmw-section-label', 'Features'));
+    body.append(el('p', 'vm-bmw-features', named.slice(0, KIT_SHOWN).join(' - ')));
+  }
+
+  // Matched because
+  if (reasons && reasons.length) {
+    body.append(el('p', 'vm-bmw-section-label', 'Matched to you because...'));
+    const list = el('ul', 'vm-bmw-reasons');
+    reasons.slice(0, 4).forEach((r) => list.append(el('li', null, r)));
+    body.append(list);
+  }
+
+  card.append(body);
+  return card;
+}
+
+/**
+ * BMW "also worth a look" tail tile — compact, minimal.
+ * Shows: photo, car name, body/fuel, price, retailer/distance. Nothing else.
+ */
+export function bmwTailTile(match) {
+  const { car } = match;
+
+  const lineName = car.line ? `BMW ${car.line}` : car.name;
+  const trimName = car.line && car.name.startsWith(lineName)
+    ? car.name.slice(lineName.length).trim()
+    : null;
+
+  const priceText = car.listingCount > 1 && car.priceFrom !== car.priceTo
+    ? `from ${gbp(car.priceFrom)}`
+    : (car.priceMin === car.priceMax ? gbp(car.priceMin) : `from ${gbp(car.priceMin)}`);
+
+  const tile = el('article', 'vm-bmw-tail-tile');
+  const { media } = mediaWell(car);
+  tile.append(media);
+
+  const body = el('div', 'vm-bmw-tail-body');
+  body.append(el('h4', 'vm-bmw-tail-name', lineName));
+  if (trimName) body.append(el('span', 'vm-bmw-trim', trimName));
+
+  const specParts = [SPEC_LABELS[car.body], FUEL_SPEC[car.fuel], GEARBOX_SPEC[car.transmission]].filter(Boolean);
+  if (specParts.length) body.append(el('p', 'vm-bmw-tail-specs', specParts.join(' · ')));
+
+  const metaParts = [];
+  if (car.year) metaParts.push(car.year);
+  else if (car.plate) metaParts.push(`'${car.plate} reg`);
+  if (car.mileage != null) metaParts.push(`${car.mileage.toLocaleString('en-GB')} miles`);
+  if (metaParts.length) body.append(el('p', 'vm-bmw-tail-meta', metaParts.join(' · ')));
+
+  body.append(el('p', 'vm-bmw-tail-price', priceText));
+
+  if (car.retailerName || car.distance != null) {
+    const where = el('p', 'vm-bmw-tail-where');
+    if (car.distance != null) {
+      where.textContent = `${distanceLabel(car.distance)} · ${car.retailerName || ''}`;
+    } else {
+      where.textContent = car.retailerName;
+    }
+    body.append(where);
+  }
+
+  tile.append(body);
+  return tile;
+}
+
+/**
  * A small "mini" tile for the live preview strip — deliberately lighter than the
  * results-page compact card (matchCard): a small photo (or the "Images coming
  * soon" placeholder), the model name + match score, and one spec line. The whole
