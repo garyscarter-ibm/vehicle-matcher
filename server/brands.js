@@ -111,34 +111,20 @@ const BMW_TUNING = {
    * shallow merge would let a brand silently blank the tags it didn't restate.
    */
   reasons: {
-    boot: (car) => `${car.boot} litres of boot with all ${car.seats} seats up`,
-    // Fires between 90% and 100% of the space the answers imply. Saying so is
-    // the point: Sam & Jordan Reyes walk away when practicality claims read
-    // like brochure copy, and a reason that admits it is only just enough is
-    // the opposite of a brochure.
-    bootTight: (car) => `${car.boot} litres of boot with the seats up, which is `
-      + 'enough for what you described rather than generous',
-    crew: (car) => `${car.seats} seats, and ${car.boot} litres behind them`,
-    roadtrip: () => 'Big enough to be comfortable on a long motorway run',
-    city: () => 'Compact enough for city streets and tight parking',
-    /*
-     * Character, the taste dimension. These were the page's purest brochure
-     * copy ("Serious kerb appeal", "Packed with the latest cabin tech",
-     * "Genuinely practical day to day") — unfalsifiable adjectives asserting a
-     * verdict rather than giving a reason. Rewritten to state the basis, and
-     * the two practicality ones now point at the seats and boot figures the
-     * card prints, so the buyer can check the claim instead of believing it.
-     * Only one of these ever reaches a card (scoreCharacter takes hits[0]).
-     */
+    boot: (car) => `<strong>${car.boot}L</strong> of boot`,
+    bootTight: (car) => `<strong>${car.boot}L</strong> of boot — enough for what you need`,
+    crew: (car) => `<strong>${car.seats} seats</strong> with ${car.boot}L of boot`,
+    roadtrip: () => 'Good size for <strong>long runs</strong>',
+    city: () => '<strong>Compact</strong> — easy to park',
     tags: {
-      'drivers-car': 'Tuned for the driving rather than the ride',
-      family: 'A family shape, and the seats and boot above are the size of it',
-      cruiser: 'A big car, and quiet with it at motorway speed',
-      urban: 'Short enough to park without thinking about it',
-      efficient: 'Cheap per mile next to the rest of the range',
-      tech: 'The current cabin, not the outgoing one',
-      image: 'A car people look at twice',
-      practical: 'A load-carrier first, as the boot figure above says',
+      'drivers-car': 'A <strong>driver\'s car</strong>',
+      family: '<strong>Family-friendly</strong> shape and space',
+      cruiser: '<strong>Relaxed</strong> at motorway speed',
+      urban: 'Easy to <strong>park</strong> in the city',
+      efficient: '<strong>Cheap</strong> to run per mile',
+      tech: 'Latest <strong>cabin tech</strong>',
+      image: '<strong>Turns heads</strong>',
+      practical: '<strong>Practical</strong> — big boot',
     },
   },
 };

@@ -373,7 +373,11 @@ export function matchCard(match, {
    */
   if (!compact && reasons.length) {
     const why = el('ul', 'vm-reasons');
-    reasons.slice(0, big ? reasons.length : 2).forEach((r) => why.append(el('li', null, r)));
+    reasons.slice(0, big ? reasons.length : 2).forEach((r) => {
+      const li = el('li', null);
+      li.innerHTML = r;
+      why.append(li);
+    });
     body.append(el('p', 'vm-why-label', 'Why it suits you'), why);
   }
 
@@ -548,7 +552,7 @@ export function matchCard(match, {
  * BMW podium card — the redesigned tile matching the BMW Approved Used style.
  * Used only by the podium mode when brand === 'bmw'.
  */
-export function bmwPodiumCard(match) {
+export function bmwPodiumCard(match, { rank = 0, sharedFeatureOrder = null } = {}) {
   const { car, reasons } = match;
 
   // Split name into model line (e.g. "BMW X6") and trim (e.g. "XDrive40d M Sport")
@@ -654,20 +658,66 @@ export function bmwPodiumCard(match) {
 
   if (details.children.length) body.append(details);
 
-  // Features
+  // Features — sorted so shared features (same across all podium cards) appear first
   const have = new Set(car.features || []);
-  const named = Object.entries(CONCEPT_LABELS).filter(([k]) => have.has(k)).map(([, v]) => v);
+  let featureKeys = Object.keys(CONCEPT_LABELS).filter((k) => have.has(k));
+  if (sharedFeatureOrder) {
+    const sharedSet = new Set(sharedFeatureOrder);
+    featureKeys = [
+      ...sharedFeatureOrder.filter((k) => featureKeys.includes(k)),
+      ...featureKeys.filter((k) => !sharedSet.has(k)),
+    ];
+  }
+  const named = featureKeys.slice(0, KIT_SHOWN).map((k) => CONCEPT_LABELS[k]);
   if (named.length) {
     body.append(el('p', 'vm-bmw-section-label', 'Features'));
-    body.append(el('p', 'vm-bmw-features', named.slice(0, KIT_SHOWN).join(' - ')));
+    body.append(el('p', 'vm-bmw-features', named.join(' - ')));
   }
 
-  // Matched because
-  if (reasons && reasons.length) {
-    body.append(el('p', 'vm-bmw-section-label', 'Matched to you because...'));
-    const list = el('ul', 'vm-bmw-reasons');
-    reasons.slice(0, 4).forEach((r) => list.append(el('li', null, r)));
-    body.append(list);
+  // Gold: "Matched to you because..." / Silver+Bronze: "The decision to make" with tradeoffs as BUTs
+  if (rank === 0) {
+    if (reasons && reasons.length) {
+      body.append(el('p', 'vm-bmw-section-label', 'Matched to you because...'));
+      const list = el('ul', 'vm-bmw-reasons');
+      reasons.slice(0, 4).forEach((r) => {
+        const li = el('li', null);
+        li.innerHTML = r;
+        list.append(li);
+      });
+      body.append(list);
+    }
+  } else {
+    body.append(el('p', 'vm-bmw-section-label', 'The decision to make'));
+    // Two-column layout: positives left, buts right
+    const decisionRow = el('div', 'vm-bmw-decision-row');
+
+    const prosCol = el('ul', 'vm-bmw-reasons vm-bmw-decision-pros');
+    (reasons || []).slice(0, 2).forEach((r) => {
+      const li = el('li', null);
+      li.innerHTML = r;
+      prosCol.append(li);
+    });
+
+    const consCol = el('ul', 'vm-bmw-reasons vm-bmw-decision-cons');
+    const trades = match.tradeOffs || [];
+    trades.slice(0, 2).forEach((t) => {
+      const li = el('li', 'vm-bmw-reason-but');
+      const gotLabel = t.dim === 'fuel'
+        ? (FUEL_SPEC[t.got] || t.got)
+        : (SPEC_LABELS[t.got] || t.got);
+      const wantLabel = (t.wants || []).map((w) => (t.dim === 'fuel' ? FUEL_SPEC[w] : SPEC_LABELS[w]) || w).join(' or ');
+      li.innerHTML = `<strong>But:</strong> ${gotLabel}, not ${wantLabel}`;
+      consCol.append(li);
+    });
+    // If no tradeoffs from the API, generate a score-gap note
+    if (!consCol.children.length) {
+      const li = el('li', 'vm-bmw-reason-but');
+      li.innerHTML = '<strong>But:</strong> pipped to first on overall match score';
+      consCol.append(li);
+    }
+
+    decisionRow.append(prosCol, consCol);
+    body.append(decisionRow);
   }
 
   card.append(body);

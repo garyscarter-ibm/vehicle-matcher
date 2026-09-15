@@ -3365,6 +3365,10 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
   white-space: nowrap;
 }
 
+/* BMW: hide the answered badge and the "01 / Budget" eyebrow — question title alone is enough */
+.vm.vm-bmw .vm-podium-q-badge,
+.vm.vm-bmw .vm-podium-q-label { display: none; }
+
 /* A plain CSS chevron (no icon font/SVG), rotated by aria-expanded so it needs
    no separate open/closed asset. */
 .vm-podium-q-chevron {
@@ -3610,7 +3614,7 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 .vm-podium-step.is-gold .vm-podium-rank {
   --vm-podium-rule: var(--vm-space-6);
   font-size: var(--vm-text-label);
-  color: var(--vm-accent-spot);
+  color: var(--vm-ink-muted);
 }
 .vm-podium-step.is-silver .vm-podium-rank { --vm-podium-rule: var(--vm-space-4); }
 
@@ -4539,13 +4543,20 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
    Only applied in podium mode for brand=bmw via .vm-bmw-card.
    ============================================================ */
 
+.vm.vm-bmw .vm-podium-results {
+  background: #f2f2f2;
+  border-radius: 4px;
+  padding: 16px;
+}
+
 .vm-bmw-card {
-  border: 2px solid #1c69d4;
+  border: none;
   border-radius: 4px;
   overflow: hidden;
   background: #fff;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .vm-bmw-body {
@@ -4712,6 +4723,34 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 
 .vm-bmw-reasons li { margin-bottom: 2px; }
 
+/* "But:" tradeoff items in the decision section — slightly muted */
+.vm-bmw-reason-but { color: #555; }
+.vm-bmw-reason-but strong { color: #c0392b; }
+
+/* Two-column decision row: positives left, buts right, fills the card width */
+.vm-bmw-decision-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+
+.vm-bmw-decision-pros { border-right: 1px solid #e8e8e8; padding-right: 12px; }
+.vm-bmw-decision-cons { padding-left: 4px; }
+
+/* Equal height for silver/bronze BMW cards — stretch the card wrapper so
+   shorter cards fill the same height as the tallest in the column. */
+.vm-podium-step.is-silver .vm-podium-card,
+.vm-podium-step.is-bronze .vm-podium-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.vm-podium-step.is-silver .vm-bmw-card,
+.vm-podium-step.is-bronze .vm-bmw-card {
+  flex: 1;
+}
+
 /* "Not this one" pill overlaid on the photo top-right */
 .vm-podium-card { position: relative; }
 
@@ -4744,13 +4783,14 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 
 /* BMW "also worth a look" tail tiles — compact, photo + 4 lines only */
 .vm-bmw-tail-tile {
-  border: 1px solid #d0d8e8;
+  border: none;
   border-radius: 4px;
   overflow: hidden;
   background: #fff;
   display: flex;
   flex-direction: column;
   position: relative;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
 }
 
 .vm-bmw-tail-tile .vm-card-media {
@@ -4840,4 +4880,29 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 .vm.vm-bmw .vm-podium-step.is-silver,
 .vm.vm-bmw .vm-podium-step.is-bronze {
   margin-inline: 0;
+}
+
+/* BMW silver+bronze sit in the same grid row — stretch so they match height. */
+@media (min-width: 720px) {
+  .vm.vm-bmw .vm-podium-steps:not(.is-tied) {
+    align-items: stretch;
+  }
+  .vm.vm-bmw .vm-podium-steps:not(.is-tied) .vm-podium-step.is-silver,
+  .vm.vm-bmw .vm-podium-steps:not(.is-tied) .vm-podium-step.is-bronze {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* BMW: no accent ring on gold — card elevation does the work instead */
+.vm.vm-bmw .vm-podium-step.is-gold .vm-card,
+.vm.vm-bmw .vm-podium.is-committed .vm-podium-step.is-gold .vm-card {
+  border-color: transparent;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+}
+
+/* Gold gets a slightly deeper shadow to read as the winner */
+.vm.vm-bmw .vm-podium-step.is-silver .vm-bmw-card,
+.vm.vm-bmw .vm-podium-step.is-bronze .vm-bmw-card {
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
 }

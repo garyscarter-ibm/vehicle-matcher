@@ -101,26 +101,26 @@ const PODIUM_COPY = {
   mini: {
     wordmark: 'MINI Podium',
     title: 'YOUR TOP THREE, LIVE.',
-    bannerStart: 'Nothing decided yet. We’ve made a start from your budget anyway.',
-    bannerProgress: ({ done, total }) => `${done} of ${total} down. The order moves with every answer.`,
-    bannerComplete: 'That’s the lot answered. Go on then, make it official.',
+    bannerStart: "Nothing decided yet. We've made a start from your budget anyway.",
+    bannerProgress: ({ done, total }) => `${done}/${total} answered — questions you answer go to the bottom`,
+    bannerComplete: "That's the lot answered. Go on then, make it official.",
     commitCta: 'Find my perfect match',
     commitBusy: 'Having a proper look',
-    commitDone: 'That’s your match',
-    commitError: 'Couldn’t reach the matcher there. Give it another go.',
-    ranks: ['1st', '2nd', '3rd'],
-    jointRank: 'Joint 1st',
+    commitDone: "That's your match",
+    commitError: "Couldn't reach the matcher there. Give it another go.",
+    ranks: ['Best pick for you', '2nd', '3rd'],
+    jointRank: 'Equal best fit for you',
     tailHeading: 'Also worth a look',
-    liveUpdated: ({ model }) => `The ${model}’s out in front so far.`,
-    emptyNote: 'That’s the lot ruled out. Loosen the brief and we’ll find you some more.',
-    // The honest note, committed only. Names what’s missing with the shared
+    liveUpdated: ({ model }) => `The ${model}'s out in front so far.`,
+    emptyNote: "That's the lot ruled out. Loosen the brief and we'll find you some more.",
+    // The honest note, committed only. Names what's missing with the shared
     // UNMET_PHRASES vocabulary, then owns it. A shrug, never an apology.
     unmetNote: ({ list, retailer }) => `No ${list} at ${retailer} just now. `
-      + 'This lot is the closest we’ve got to the rest of your brief.',
-    weakNote: ({ retailer }) => `We haven’t got your MINI at ${retailer} this week. `
-      + 'Here’s the nearest we’ve got, but none of them is it.',
+      + "This lot is the closest we've got to the rest of your brief.",
+    weakNote: ({ retailer }) => `We haven't got your MINI at ${retailer} this week. `
+      + "Here's the nearest we've got, but none of them is it.",
     rejectLabel: 'Not this one',
-    popTitle: 'Go on then, what’s wrong with it?',
+    popTitle: "Go on then, what's wrong with it?",
     popCancel: 'Keep it',
     popBack: 'Back',
     popDone: 'Off the list',
@@ -130,7 +130,7 @@ const PODIUM_COPY = {
       size: 'Size',
       mileage: 'Mileage',
       colour: 'Colour',
-      just: 'Just not feeling it',
+      just: "Just not feeling it",
     },
     prompts: {
       price: 'What would you rather spend?',
@@ -141,31 +141,31 @@ const PODIUM_COPY = {
     },
     colourOption: ({ shade }) => `Nothing in ${shade}, thanks`,
     errKicker: 'Sorry',
-    errTitle: 'We couldn’t reach the matcher',
-    errLede: 'The matching service didn’t respond. Check your connection and try again.',
+    errTitle: "We couldn't reach the matcher",
+    errLede: "The matching service didn't respond. Check your connection and try again.",
     retryLabel: 'Try again',
   },
   // BMW: assured and understated, the approved-used register. States the fact,
-  // names the retailer, doesn’t dress it up.
+  // names the retailer, doesn't dress it up.
   bmw: {
     wordmark: 'Your Shortlist',
     title: 'Your top three, live.',
-    bannerStart: 'Nothing committed yet. The podium is already working from your budget.',
-    bannerProgress: ({ done, total }) => `${done} of ${total} answered. The order updates with each one.`,
-    bannerComplete: 'That’s everything answered. Confirm when you’re ready.',
+    bannerStart: '0/9 answered — questions you answer go to the bottom',
+    bannerProgress: ({ done, total }) => `${done}/${total} answered — questions you answer go to the bottom`,
+    bannerComplete: 'All answered. Confirm when you\'re ready.',
     commitCta: 'Find my perfect match',
     commitBusy: 'Checking the stock',
     commitDone: 'Match confirmed',
-    commitError: 'We couldn’t reach the matcher. Try that again.',
-    ranks: ['1st', '2nd', '3rd'],
-    jointRank: 'Joint 1st',
+    commitError: "We couldn't reach the matcher. Try that again.",
+    ranks: ['Best pick for you', '2nd', '3rd'],
+    jointRank: 'Equal best fit for you',
     tailHeading: 'Also worth a look',
     liveUpdated: ({ model }) => `The ${model} leads on your answers so far.`,
-    emptyNote: 'Nothing left to show. Widen the brief and we’ll fill it back up.',
+    emptyNote: "Nothing left to show. Widen the brief and we'll fill it back up.",
     unmetNote: ({ list, retailer }) => `No ${list} at ${retailer} right now. `
-      + 'This order is the closest to everything else you asked for.',
+      + "This order is the closest to everything else you asked for.",
     weakNote: ({ retailer }) => `Nothing at ${retailer} is close to what you asked for. `
-      + 'These are the nearest we hold.',
+      + "These are the nearest we hold.",
     rejectLabel: 'Not this one',
     popTitle: 'Why not this one?',
     popCancel: 'Keep this one',
@@ -177,7 +177,7 @@ const PODIUM_COPY = {
       size: 'Size',
       mileage: 'Mileage',
       colour: 'Colour',
-      just: 'Just not for me',
+      just: "Just not for me",
     },
     prompts: {
       price: 'What would you rather spend?',
@@ -188,8 +188,8 @@ const PODIUM_COPY = {
     },
     colourOption: ({ shade }) => `Nothing in ${shade}`,
     errKicker: 'Sorry',
-    errTitle: 'We couldn’t reach the matcher',
-    errLede: 'The matching service didn’t respond. Check your connection and try again.',
+    errTitle: "We couldn't reach the matcher",
+    errLede: "The matching service didn't respond. Check your connection and try again.",
     retryLabel: 'Try again',
   },
   // Honda: plain, warm and practical. Talks about fit and sense rather than
@@ -197,22 +197,22 @@ const PODIUM_COPY = {
   honda: {
     wordmark: 'Your Shortlist',
     title: 'Your top three, live.',
-    bannerStart: 'Nothing committed yet. The shortlist is already working from your budget.',
-    bannerProgress: ({ done, total }) => `${done} of ${total} answered. The order updates with each one.`,
-    bannerComplete: 'That’s everything answered. Confirm when you’re ready.',
+    bannerStart: "Nothing committed yet. The shortlist is already working from your budget.",
+    bannerProgress: ({ done, total }) => `${done}/${total} answered — questions you answer go to the bottom`,
+    bannerComplete: "That's everything answered. Confirm when you're ready.",
     commitCta: 'Find my perfect match',
     commitBusy: 'Checking the stock',
     commitDone: 'Match confirmed',
-    commitError: 'We couldn’t reach the matcher. Try that again.',
-    ranks: ['1st', '2nd', '3rd'],
-    jointRank: 'Joint 1st',
+    commitError: "We couldn't reach the matcher. Try that again.",
+    ranks: ['Best pick for you', '2nd', '3rd'],
+    jointRank: 'Equal best fit for you',
     tailHeading: 'Also worth a look',
     liveUpdated: ({ model }) => `The ${model} leads on your answers so far.`,
-    emptyNote: 'Nothing left to show. Widen the brief and we’ll fill it back up.',
+    emptyNote: "Nothing left to show. Widen the brief and we'll fill it back up.",
     unmetNote: ({ list, retailer }) => `No ${list} at ${retailer} right now. `
-      + 'This order is the closest to everything else you told us.',
+      + "This order is the closest to everything else you told us.",
     weakNote: ({ retailer }) => `Nothing at ${retailer} is close to what you asked for. `
-      + 'These are the nearest we hold.',
+      + "These are the nearest we hold.",
     rejectLabel: 'Not this one',
     popTitle: 'Why not this one?',
     popCancel: 'Keep this one',
@@ -224,7 +224,7 @@ const PODIUM_COPY = {
       size: 'Size',
       mileage: 'Mileage',
       colour: 'Colour',
-      just: 'Just not for me',
+      just: "Just not for me",
     },
     prompts: {
       price: 'What would you rather spend?',
@@ -235,31 +235,31 @@ const PODIUM_COPY = {
     },
     colourOption: ({ shade }) => `Nothing in ${shade}`,
     errKicker: 'Sorry',
-    errTitle: 'We couldn’t reach the matcher',
-    errLede: 'The matching service didn’t respond. Check your connection and try again.',
+    errTitle: "We couldn't reach the matcher",
+    errLede: "The matching service didn't respond. Check your connection and try again.",
     retryLabel: 'Try again',
   },
   // Ford: friendly, confident and plainly British, with a little more spirit
-  // than Honda’s. Proud of being the sensible choice, happy to enjoy itself.
+  // than Honda's. Proud of being the sensible choice, happy to enjoy itself.
   ford: {
     wordmark: 'Your Shortlist',
     title: 'Your top three, live.',
-    bannerStart: 'Nothing committed yet. We’ve made a start from your budget.',
-    bannerProgress: ({ done, total }) => `${done} of ${total} answered. The order shifts with each one.`,
-    bannerComplete: 'That’s everything answered. Confirm whenever you’re ready.',
+    bannerStart: "Nothing committed yet. We've made a start from your budget.",
+    bannerProgress: ({ done, total }) => `${done}/${total} answered — questions you answer go to the bottom`,
+    bannerComplete: "That's everything answered. Confirm whenever you're ready.",
     commitCta: 'Find my perfect match',
     commitBusy: 'Checking the stock',
     commitDone: 'Match confirmed',
-    commitError: 'We couldn’t reach the matcher. Give it another go.',
-    ranks: ['1st', '2nd', '3rd'],
-    jointRank: 'Joint 1st',
+    commitError: "We couldn't reach the matcher. Give it another go.",
+    ranks: ['Best pick for you', '2nd', '3rd'],
+    jointRank: 'Equal best fit for you',
     tailHeading: 'Also worth a look',
     liveUpdated: ({ model }) => `The ${model} leads on your answers so far.`,
-    emptyNote: 'Nothing left to show. Widen the brief and we’ll fill it back up.',
+    emptyNote: "Nothing left to show. Widen the brief and we'll fill it back up.",
     unmetNote: ({ list, retailer }) => `No ${list} at ${retailer} right now. `
-      + 'This order is the closest to everything else you told us.',
+      + "This order is the closest to everything else you told us.",
     weakNote: ({ retailer }) => `Nothing at ${retailer} is close to what you asked for. `
-      + 'These are the nearest we hold.',
+      + "These are the nearest we hold.",
     rejectLabel: 'Not this one',
     popTitle: 'Why not this one?',
     popCancel: 'Keep this one',
@@ -271,7 +271,7 @@ const PODIUM_COPY = {
       size: 'Size',
       mileage: 'Mileage',
       colour: 'Colour',
-      just: 'Just not for me',
+      just: "Just not for me",
     },
     prompts: {
       price: 'What would you rather spend?',
@@ -282,8 +282,8 @@ const PODIUM_COPY = {
     },
     colourOption: ({ shade }) => `Nothing in ${shade}`,
     errKicker: 'Sorry',
-    errTitle: 'We couldn’t reach the matcher',
-    errLede: 'The matching service didn’t respond. Check your connection and try again.',
+    errTitle: "We couldn't reach the matcher",
+    errLede: "The matching service didn't respond. Check your connection and try again.",
     retryLabel: 'Try again',
   },
   // Motorrad: rider-first and technical. Every car word becomes a bike word,
@@ -291,22 +291,22 @@ const PODIUM_COPY = {
   motorrad: {
     wordmark: 'Your Shortlist',
     title: 'Your top three bikes, live.',
-    bannerStart: 'Nothing committed yet. The shortlist is already working from your budget.',
-    bannerProgress: ({ done, total }) => `${done} of ${total} answered. The order updates with each one.`,
-    bannerComplete: 'That’s everything answered. Confirm when you’re ready.',
+    bannerStart: "Nothing committed yet. The shortlist is already working from your budget.",
+    bannerProgress: ({ done, total }) => `${done}/${total} answered — questions you answer go to the bottom`,
+    bannerComplete: "That's everything answered. Confirm when you're ready.",
     commitCta: 'Find my perfect match',
     commitBusy: 'Checking the stock',
     commitDone: 'Match confirmed',
-    commitError: 'We couldn’t reach the matcher. Try that again.',
-    ranks: ['1st', '2nd', '3rd'],
-    jointRank: 'Joint 1st',
+    commitError: "We couldn't reach the matcher. Try that again.",
+    ranks: ['Best pick for you', '2nd', '3rd'],
+    jointRank: 'Equal best fit for you',
     tailHeading: 'Also worth a look',
     liveUpdated: ({ model }) => `The ${model} leads on your answers so far.`,
-    emptyNote: 'Nothing left to show. Widen the brief and we’ll fill it back up.',
+    emptyNote: "Nothing left to show. Widen the brief and we'll fill it back up.",
     unmetNote: ({ list, retailer }) => `No ${list} at ${retailer} right now. `
-      + 'This order is the closest to everything else you asked for.',
+      + "This order is the closest to everything else you asked for.",
     weakNote: ({ retailer }) => `Nothing at ${retailer} is close to what you asked for. `
-      + 'These are the nearest we hold.',
+      + "These are the nearest we hold.",
     rejectLabel: 'Not this one',
     popTitle: 'Why not this one?',
     popCancel: 'Keep this one',
@@ -318,7 +318,7 @@ const PODIUM_COPY = {
       size: 'Style of bike',
       mileage: 'Mileage',
       colour: 'Colour',
-      just: 'Just not for me',
+      just: "Just not for me",
     },
     prompts: {
       price: 'What would you rather spend?',
@@ -329,8 +329,8 @@ const PODIUM_COPY = {
     },
     colourOption: ({ shade }) => `Nothing in ${shade}`,
     errKicker: 'Sorry',
-    errTitle: 'We couldn’t reach the matcher',
-    errLede: 'The matching service didn’t respond. Check your connection and try again.',
+    errTitle: "We couldn't reach the matcher",
+    errLede: "The matching service didn't respond. Check your connection and try again.",
     retryLabel: 'Try again',
   },
   // Ferrari: warm, unhurried and heritage-proud, and the one brand for which
@@ -341,21 +341,21 @@ const PODIUM_COPY = {
     wordmark: 'The Podium',
     title: 'Your top three, live.',
     bannerStart: 'Nothing settled yet. The order has started from your budget.',
-    bannerProgress: ({ done, total }) => `${done} of ${total} answered. The order changes with each one.`,
-    bannerComplete: 'That’s everything answered. Settle it when you’re ready.',
+    bannerProgress: ({ done, total }) => `${done}/${total} answered — questions you answer go to the bottom`,
+    bannerComplete: "That's everything answered. Settle it when you're ready.",
     commitCta: 'Find my perfect match',
     commitBusy: 'Looking through the stock',
     commitDone: 'Match confirmed',
-    commitError: 'We couldn’t reach the matcher. Please try again.',
+    commitError: "We couldn't reach the matcher. Please try again.",
     ranks: ['P1', 'P2', 'P3'],
     jointRank: 'Joint P1',
     tailHeading: 'Also worth a look',
     liveUpdated: ({ model }) => `The ${model} heads the order so far.`,
-    emptyNote: 'Nothing left to show. Open the brief up and we’ll fill it again.',
+    emptyNote: "Nothing left to show. Open the brief up and we'll fill it again.",
     unmetNote: ({ list, retailer }) => `No ${list} at ${retailer} just now. `
-      + 'This order is the closest to everything else you told us.',
+      + "This order is the closest to everything else you told us.",
     weakNote: ({ retailer }) => `Nothing at ${retailer} is close to what you asked for. `
-      + 'These are the nearest we hold, and none of them is quite it.',
+      + "These are the nearest we hold, and none of them is quite it.",
     rejectLabel: 'Not this one',
     popTitle: 'Why not this one?',
     popCancel: 'Keep this one',
@@ -367,7 +367,7 @@ const PODIUM_COPY = {
       size: 'Body style',
       mileage: 'Mileage',
       colour: 'Colour',
-      just: 'Just not for me',
+      just: "Just not for me",
     },
     prompts: {
       price: 'What would you rather spend?',
@@ -378,8 +378,8 @@ const PODIUM_COPY = {
     },
     colourOption: ({ shade }) => `Nothing in ${shade}`,
     errKicker: 'Sorry',
-    errTitle: 'We couldn’t reach the matcher',
-    errLede: 'The matching service didn’t respond. Check your connection and try again.',
+    errTitle: "We couldn't reach the matcher",
+    errLede: "The matching service didn't respond. Check your connection and try again.",
     retryLabel: 'Try again',
   },
 };
@@ -406,7 +406,7 @@ const Q_LABELS = {
   fuel: 'Fuel type',
   charging: 'Charging',
   primaryUse: 'Main use',
-  people: 'Who’s on board',
+  people: "Who's on board",
   miniVibe: 'Character',
   mileage: 'Yearly miles',
   style: 'Character',
@@ -680,7 +680,7 @@ function mount(root, ctx) {
       const current = questionsWrap.children[i];
       if (current !== node) questionsWrap.insertBefore(node, current || null);
       const label = node.querySelector('.vm-podium-q-label');
-      if (label) label.textContent = `${String(i + 1).padStart(2, '0')} / ${shortLabel(q, ctx.brand)}`;
+      if (label) label.textContent = String(i + 1).padStart(2, '0');
     });
 
     updateProgress(visible);
@@ -704,7 +704,7 @@ function mount(root, ctx) {
     toggle.setAttribute('aria-controls', panelId);
     const text = el('span', 'vm-podium-q-text');
     text.append(
-      el('span', 'vm-podium-q-label', `${String(index + 1).padStart(2, '0')} / ${shortLabel(q, ctx.brand)}`),
+      el('span', 'vm-podium-q-label', String(index + 1).padStart(2, '0')),
       el('span', 'vm-podium-q-title', q.title),
     );
     const chevron = el('span', 'vm-podium-q-chevron');
@@ -778,6 +778,14 @@ function mount(root, ctx) {
     if (state.committed) dropToLive();
     syncQuestions();
     scheduleRefresh();
+    // Move answered questions to the end, preserving their relative order
+    // among answered ones; unanswered questions stay at the top.
+    const visible = visibleQuestions(state.questions, state.answers);
+    const answeredNodes = visible
+      .filter(isAnswered)
+      .map((q) => blocks.get(q.id))
+      .filter(Boolean);
+    answeredNodes.forEach((node) => questionsWrap.append(node));
   }
 
   const scheduleRefresh = () => {
@@ -891,12 +899,14 @@ function mount(root, ctx) {
     noteEl.hidden = true;
     noteEl.textContent = '';
 
+    if (ctx.brand !== 'bmw') liveEl.hidden = false;
+
     if (!list.length) {
       stepsEl.classList.remove('is-tied');
       // Before the first preview lands there is nothing to say; once a result
       // has been through and everything in it has been ruled out, say so.
       const hadResult = state.live.length > 0 || Boolean(state.committed);
-      liveEl.textContent = hadResult ? copy.emptyNote : '';
+      if (ctx.brand !== 'bmw') liveEl.textContent = hadResult ? copy.emptyNote : '';
       return;
     }
 
@@ -909,7 +919,7 @@ function mount(root, ctx) {
     // claims the engine did not make; the rest of the field is still on screen,
     // in the tail, where nothing is ranked.
     const leaders = list.slice(0, joint ? tied : STEP_MAX);
-    leaders.forEach((m, i) => stepsEl.append(buildStep(m, i, joint)));
+    leaders.forEach((m, i) => stepsEl.append(buildStep(m, i, joint, leaders)));
 
     const tail = list.slice(leaders.length, leaders.length + TAIL_MAX);
     if (tail.length) {
@@ -922,9 +932,13 @@ function mount(root, ctx) {
     // Capitalised on the way out: BMW's tiedTitle opens on a spelled-out number
     // ("three of these fit you equally well"), which is a headline in the
     // questionnaire and the first word of a sentence here.
-    liveEl.textContent = joint
-      ? cap(`${brandCopy.tiedTitle({ count: tied })} ${brandCopy.tiedLede()}`)
-      : copy.liveUpdated({ model: list[0].car.name });
+    if (ctx.brand === 'bmw') {
+      liveEl.hidden = true;
+    } else {
+      liveEl.textContent = joint
+        ? cap(`${brandCopy.tiedTitle({ count: tied })} ${brandCopy.tiedLede()}`)
+        : copy.liveUpdated({ model: list[0].car.name });
+    }
 
     if (state.committed) paintNote(list[0]);
 
@@ -934,7 +948,15 @@ function mount(root, ctx) {
     }
   };
 
-  const buildStep = (m, i, joint) => {
+  /** Keys of features present on ALL matches in the list — used to sort
+   *  features so shared ones align top-to-top across every card. */
+  const sharedFeatureKeys = (matches) => {
+    if (matches.length < 2) return [];
+    const sets = matches.map((m) => new Set(m.car.features || []));
+    return [...sets[0]].filter((k) => sets.every((s) => s.has(k)));
+  };
+
+  const buildStep = (m, i, joint, allLeaders) => {
     const step = el('div', 'vm-podium-step');
     // Rank treatment. Every joint-first step is gold and nothing else, so no
     // element on screen claims a silver the engine did not award.
@@ -952,7 +974,10 @@ function mount(root, ctx) {
     // float. The dismissal target stays the step so the whole tile still fades.
     const cardWrap = el('div', 'vm-podium-card');
     const card = ctx.brand === 'bmw'
-      ? bmwPodiumCard(safeMatch(m))
+      ? bmwPodiumCard(safeMatch(m), {
+        rank: joint ? 0 : i,
+        sharedFeatureOrder: sharedFeatureKeys(allLeaders || []),
+      })
       : matchCard(safeMatch(m), {
         big: Boolean(state.committed) && gold,
         compact: !gold,

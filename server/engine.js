@@ -109,7 +109,7 @@ function scoreBudget(car, answers) {
   const [min, max] = budgetRange(answers);
   // A slider budget has min 0, so phrase the "in budget" reason as an upper
   // limit ("up to £62k") rather than a "£0k–£62k" band.
-  const budgetReason = min > 0 ? `Sits right in your ${gbp(min)}–${gbp(max)} budget` : `Comfortably within your ${gbp(max)} budget`;
+  const budgetReason = `Well within <strong>budget</strong>`;
   if (car.priceMin > max) {
     // Survivor of the hard filter → it's a stretch buy.
     return { score: 0.35, stretch: true };
@@ -125,7 +125,7 @@ function scoreBudget(car, answers) {
     // it sits: right at the floor ≈ 0.7, half the floor ≈ 0.35, far below → ~0.1.
     // Without this, a car £50k under a £92k floor still scored 0.7 and, since
     // budget is only ~1/5 of the blend, out-ranked in-budget cars on merit.
-    if (!min) return { score: 0.7, reason: 'Comes in under budget' };
+    if (!min) return { score: 0.7, reason: 'Under <strong>budget</strong>' };
     const shortfall = (min - car.priceMax) / min; // 0 at the floor → 1 at £0
     const score = clamp(0.7 - shortfall, 0.1, 0.7);
     return { score };
@@ -201,13 +201,11 @@ function scoreOneFuel(pref, car, answers, tuning) {
   let reason;
   if (score >= 0.85) {
     if (car.fuel === 'ev') {
-      reason = canCharge
-        ? `Fully electric with a ${car.evRange}-mile range, ideal with your charging setup`
-        : `Fully electric with a ${car.evRange}-mile range`;
+      reason = car.evRange ? `Fully <strong>electric</strong> — ${car.evRange}-mile range` : 'Fully <strong>electric</strong>';
     } else if (pref !== 'open') {
-      reason = `The ${FUEL_LABELS[car.fuel]} power you wanted`;
+      reason = `Is a <strong>${FUEL_LABELS[car.fuel]}</strong> car`;
     } else if (car.fuel === 'diesel' && isHighMileage(answers, tuning)) {
-      reason = 'Diesel torque and economy suit your big annual mileage';
+      reason = '<strong>Diesel</strong> suits your high mileage';
     }
   }
   return { score, reason };
@@ -325,7 +323,7 @@ function scorePerformance(car, answers, tuning) {
   const score = clamp((base - car.zeroTo62) / range);
   let reason;
   if (score >= 0.85 && wantsIt) {
-    reason = `0–62 in ${car.zeroTo62}s, as quick as you hoped`;
+    reason = `0–62 in <strong>${car.zeroTo62}s</strong>`;
   }
   return { score, reason };
 }
@@ -343,13 +341,11 @@ function scoreEconomy(car, answers, tuning) {
     // EVs are cheapest per mile — the higher the mileage, the more that wins.
     score = canCharge ? 1 : clamp(0.5 + 0.2 * miles);
     if (canCharge) {
-      reason = miles >= 0.66
-        ? 'Pennies per mile charging at home or work, ideal for your big annual mileage'
-        : 'Pennies per mile charging at home or work';
+      reason = 'Pennies per mile to <strong>charge</strong>';
     }
   } else if (car.fuel === 'phev') {
     score = canCharge ? clamp(0.85 + 0.1 * miles) : clamp(0.6 - 0.1 * miles);
-    if (canCharge && car.evRange) reason = `Around ${car.evRange} electric miles covers most daily driving`;
+    if (canCharge && car.evRange) reason = `${car.evRange} electric miles per charge`;
   } else {
     // Petrol/diesel: base on mpg, then tilt by mileage — a frugal car is worth
     // more the further you drive, a thirsty one worth less. A car the feed
@@ -363,9 +359,7 @@ function scoreEconomy(car, answers, tuning) {
     // sink, frugal cars rise); at low mileage, soften both extremes toward 0.7.
     score = clamp(base + (base - 0.5) * miles);
     if (score >= 0.8) {
-      reason = miles >= 0.66
-        ? `Frugal at around ${car.mpg}mpg, kind on a big annual mileage`
-        : `Frugal for what it is, around ${car.mpg}mpg`;
+      reason = `Frugal at <strong>${car.mpg}mpg</strong>`;
     }
   }
   return { score, reason };
