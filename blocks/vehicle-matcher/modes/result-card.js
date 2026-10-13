@@ -190,7 +190,7 @@ const rrmcLocation = (name) => (name || 'RRMC').replace(/Rolls-Royce Motor Cars\
 
 /** RRMC's purple side panel ("Why this one?", "View Options"): rolls in from the right and settles
  *  pinned to the screen's right edge. One per block, one size; `wide` marks the tiles panel. */
-function openRrmcPanel(trigger, { eyebrow, heading, content, wide = false }) {
+function openRrmcPanel(trigger, { heading, content, wide = false }) {
   // On the block root, not inside a results area: those are CSS containers, which would trap position: fixed.
   const host = trigger.closest('.vm') || document.body;
   let panel = host.querySelector(':scope > .vm-rrmc-why-panel');
@@ -209,7 +209,7 @@ function openRrmcPanel(trigger, { eyebrow, heading, content, wide = false }) {
   close.setAttribute('aria-label', 'Close');
   const title = el('h3', 'vm-rrmc-why-title', heading);
   title.id = 'vm-rrmc-why-title';
-  panel.replaceChildren(close, ...(eyebrow ? [el('p', 'vm-rrmc-why-eyebrow', eyebrow)] : []), title, ...content);
+  panel.replaceChildren(close, title, ...content);
   panel.scrollTop = 0;
 
   const onKey = (e) => { if (e.key === 'Escape') shut(); };
@@ -231,7 +231,8 @@ function openRrmcPanel(trigger, { eyebrow, heading, content, wide = false }) {
   requestAnimationFrame(() => requestAnimationFrame(() => {
     panel.classList.add('is-open');
     announceWhyPanel(true);
-    panel.focus({ preventScroll: true });
+    // The tiles panel doesn't scroll itself: focus its scroller so arrows and Space still scroll.
+    (panel.querySelector('.vm-rrmc-alt-scroll') || panel).focus({ preventScroll: true });
   }));
 }
 
@@ -334,7 +335,8 @@ function openWhyPanel(trigger, match) {
   openRrmcPanel(trigger, { heading: 'Why this one?', content });
 }
 
-/** One alternative version, as an "Explore the full range" tile; the whole tile opens its listing. */
+/** One alternative version, with only an "Explore the full range" tile's lines: name, miles and fuel,
+ *  and who presents it. The whole tile opens its listing; a grouped card's versions share its fuel. */
 function altTile(listing, car, baseName) {
   const tile = el(listing.link ? 'a' : 'div', 'vm-rrmc-alt');
   if (listing.link) {
@@ -352,40 +354,36 @@ function altTile(listing, car, baseName) {
     media.append(img);
   }
   const mileage = listing.mileage ? `${listing.mileage.toLocaleString('en-GB')} Miles` : 'Mileage Negligible';
+  const fuel = FUEL_SPEC[car.fuel] || car.fuel || '';
+  // A span, not a link: the tile itself is the link.
+  const presented = el('p', 'vm-rrmc-alt-presented');
+  presented.append('Presented by ', el('span', 'vm-rrmc-alt-location',
+    rrmcLocation(listing.retailerName || car.retailerName)));
   const body = el('div', 'vm-rrmc-alt-body');
   body.append(
     el('p', 'vm-rrmc-alt-name', `${listing.year || car.year || ''} ${baseName}`.trim()),
-    el('p', 'vm-rrmc-alt-line', [mileage, listing.colour].filter(Boolean).join(' – ')),
-    el('p', 'vm-rrmc-alt-price', listing.poa || !listing.priceMin ? 'POA' : gbp(listing.priceMin)),
+    el('p', 'vm-rrmc-alt-line', [mileage, fuel].filter(Boolean).join(' – ')),
+    presented,
   );
-  if (listing.retailerName) {
-    body.append(el('p', 'vm-rrmc-alt-presented', `Presented by ${rrmcLocation(listing.retailerName)}`));
-  }
   tile.append(media, body);
   return tile;
 }
 
-/** "View Options": the other versions grouped under this card, as the BMW page's picker offered
- *  them, laid out as "Explore the full range" tiles. */
+/** "View Options": the other versions grouped under this card, six tiles at a time in a scroller
+ *  beneath the fixed title; each tile opens its own listing. */
 function openOptionsPanel(trigger, match, { displayName, baseName }) {
   const { car } = match;
   const others = (match.listings || []).filter((l) => l.id !== car.id);
-  const content = [];
+  const scroll = el('div', 'vm-rrmc-alt-scroll');
+  scroll.tabIndex = -1;
   if (others.length) {
     const grid = el('div', 'vm-rrmc-alt-grid');
     others.forEach((l) => grid.append(altTile(l, car, baseName)));
-    content.push(el('p', 'vm-rrmc-why-label', 'Alternative versions'), grid);
+    scroll.append(grid);
   } else {
-    content.push(el('p', 'vm-rrmc-why-none', 'This is the only version we hold at the moment.'));
+    scroll.append(el('p', 'vm-rrmc-why-none', 'This is the only version we hold at the moment.'));
   }
-  if (car.link) {
-    const view = el('a', 'vm-rrmc-why-cta', 'View this listing');
-    view.href = car.link;
-    view.target = '_blank';
-    view.rel = 'noopener noreferrer';
-    content.push(view);
-  }
-  openRrmcPanel(trigger, { eyebrow: 'View Options', heading: displayName, content, wide: true });
+  openRrmcPanel(trigger, { heading: displayName, content: [scroll], wide: true });
 }
 
 const EXTENDED = /\bExtended\b/i;

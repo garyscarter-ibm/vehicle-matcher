@@ -4619,7 +4619,7 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
   box-sizing: border-box;
   width: min(680px, 92vw);
   height: min(480px, calc(100vh - 132px));
-  padding: 56px 40px 40px;
+  padding: 40px;
   overflow-y: auto;
   background: #281432;
   color: #ffffff;
@@ -4650,28 +4650,15 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
   cursor: pointer;
 }
 .vm.vm-rrmc .vm-rrmc-why-close:focus-visible { outline: 2px solid #ffffff; outline-offset: 2px; }
-.vm.vm-rrmc .vm-rrmc-why-eyebrow {
-  margin: 0 0 8px;
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  opacity: 0.8;
-}
+/* Right padding keeps a long title clear of the ✕, which now overlaps the title's top line. */
 .vm.vm-rrmc .vm-rrmc-why-title {
   margin: 0;
+  padding-right: 16px;
   font-size: 32px;
   font-weight: 300;
   letter-spacing: 0.05em;
   line-height: 1.2;
   color: #ffffff;
-}
-/* Section labels in the progress bar's rose gold. */
-.vm.vm-rrmc .vm-rrmc-why-label {
-  margin: 32px 0 12px;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #f7a177;
 }
 .vm.vm-rrmc .vm-rrmc-why-list { margin: 0; padding: 0; list-style: none; }
 .vm.vm-rrmc .vm-rrmc-why-list li,
@@ -4721,53 +4708,88 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
   text-decoration: underline;
 }
 .vm.vm-rrmc .vm-rrmc-why-more:focus-visible { outline: 2px solid #ffffff; outline-offset: 3px; }
-/* "View Options": the same panel, wider, holding the alternative versions as the
-   "Explore the full range" tiles look on their purple backing. */
 .vm.vm-rrmc .vm-rrmc-why-panel:not(.is-wide) .vm-rrmc-why-title {
   font-size: 32px;
   font-weight: 300;
   letter-spacing: 0.02em;
 }
+/* "View Options": the same panel, but a non-scrolling column; the title (and the ✕) stay put
+   while the tiles scroll beneath, a whole row per step. */
+.vm.vm-rrmc .vm-rrmc-why-panel.is-wide {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-bottom: 24px;
+}
+.vm.vm-rrmc .vm-rrmc-why-panel.is-wide .vm-rrmc-why-title { flex: none; font-size: 28px; }
+/* A size container, so rows can be cut to exactly half its height. The 6px padding (bled back
+   out sideways) keeps tile focus rings clear of the scroller's clipping edge. */
+.vm.vm-rrmc .vm-rrmc-alt-scroll {
+  flex: 1 1 0;
+  min-height: 0;
+  /* A 4px bar with 4px of padding before it: it sits 4px clear of the pictures, and the -8px
+     right margin (4 + 4) keeps the tiles exactly where they were. */
+  margin: 12px -8px 0 -6px;
+  padding: 6px 4px 6px 6px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  container-type: size;
+  scroll-snap-type: y mandatory;
+  scroll-padding: 6px;
+}
+/* Styled bars take their own space (rather than floating over the tiles), so the gap is exact. */
+.vm.vm-rrmc .vm-rrmc-alt-scroll::-webkit-scrollbar { width: 4px; }
+.vm.vm-rrmc .vm-rrmc-alt-scroll::-webkit-scrollbar-track { background: transparent; }
+.vm.vm-rrmc .vm-rrmc-alt-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.4); border-radius: 2px; }
+@supports not selector(::-webkit-scrollbar) {
+  .vm.vm-rrmc .vm-rrmc-alt-scroll { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.4) transparent; }
+}
+/* Focused by script only, so arrows and Space scroll the tiles; no ring needed. */
+.vm.vm-rrmc .vm-rrmc-alt-scroll:focus { outline: none; }
+/* 3 x 2 window: two rows plus one gap fill the scroller. The 100px floor stops a very short
+   window crushing the text; it then shows fewer than six instead. */
 .vm.vm-rrmc .vm-rrmc-alt-grid {
+  --vm-alt-gap: 28px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 48px 36px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: max(100px, calc((100cqh - var(--vm-alt-gap)) / 2));
+  gap: var(--vm-alt-gap) 36px;
+}
+@container (max-width: 440px) {
+  .vm.vm-rrmc .vm-rrmc-alt-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; }
 }
 .vm.vm-rrmc .vm-rrmc-alt {
   display: flex;
   flex-direction: column;
+  min-height: 0;
   color: #ffffff;
   text-decoration: none;
+  scroll-snap-align: start;
 }
 .vm.vm-rrmc a.vm-rrmc-alt:focus-visible { outline: 2px solid #ffffff; outline-offset: 4px; }
+/* The photo takes whatever height the row leaves after the text. */
 .vm.vm-rrmc .vm-rrmc-alt-media {
-  aspect-ratio: 16 / 9;
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.08);
 }
-.vm.vm-rrmc .vm-rrmc-alt-photo { display: block; width: 100%; height: 100%; object-fit: cover; }
-.vm.vm-rrmc .vm-rrmc-alt-body { padding-top: var(--vm-space-2); }
+.vm.vm-rrmc .vm-rrmc-alt-photo {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.vm.vm-rrmc .vm-rrmc-alt-body { flex: none; padding-top: var(--vm-space-2); }
 .vm.vm-rrmc .vm-rrmc-alt-body p { margin: 0; }
 .vm.vm-rrmc .vm-rrmc-alt-name { font-size: 14px; font-weight: 300; letter-spacing: 0.05em; line-height: 1.3; }
-.vm.vm-rrmc .vm-rrmc-alt-line { margin-top: 6px !important; font-size: 12px; letter-spacing: 0.02em; }
-.vm.vm-rrmc .vm-rrmc-alt-price { margin-top: 2px !important; font-size: 12px; letter-spacing: 0.02em; }
-.vm.vm-rrmc .vm-rrmc-alt-presented { margin-top: 8px !important; font-size: 9px; letter-spacing: 0.02em; opacity: 0.85; }
+.vm.vm-rrmc .vm-rrmc-alt-line { margin-top: 4px !important; font-size: 12px; letter-spacing: 0.02em; line-height: 1.4; }
+.vm.vm-rrmc .vm-rrmc-alt-presented { margin-top: 6px !important; font-size: 9px; letter-spacing: 0.02em; line-height: 1.4; }
+.vm.vm-rrmc .vm-rrmc-alt-location { text-decoration: underline; }
 .vm.vm-rrmc a.vm-rrmc-alt:hover .vm-rrmc-alt-name { text-decoration: underline; }
-/* The way out to the card's own listing, as a white-outlined pill. */
-.vm.vm-rrmc .vm-rrmc-why-cta {
-  display: inline-block;
-  margin-top: var(--vm-space-8);
-  padding: 12px 28px;
-  border: 1px solid #ffffff;
-  border-radius: 999px;
-  color: #ffffff;
-  font-size: 14px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  text-decoration: none;
-}
-.vm.vm-rrmc .vm-rrmc-why-cta:hover { background: #ffffff; color: #281432; }
-.vm.vm-rrmc .vm-rrmc-why-cta:focus-visible { outline: 2px solid #ffffff; outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) {
   .vm.vm-rrmc .vm-rrmc-why-panel,
   .vm.vm-rrmc .vm-rrmc-why-panel.is-open { transition: none; }
