@@ -4580,7 +4580,7 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 /* RRMC rank eyebrows carry no leading rule, in podium or the questionnaire. */
 .vm.vm-rrmc .vm-podium-rank::before { display: none; }
 /* Gold's "Your Top Pick" sits inside the wide tile, 12px above the vertically centred 300px 16:9
-   photo and flush with its left edge (40px in). Light, and white on the purple. */
+   photo and flush with its left edge (40px in). White on the purple, in the stage's Ultralight. */
 .vm.vm-rrmc .vm-podium-steps:not(.is-tied) .vm-podium-step.is-gold { position: relative; }
 .vm.vm-rrmc .vm-podium-steps:not(.is-tied) .vm-podium-step.is-gold > .vm-podium-rank,
 .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium > .vm-card > .vm-podium-rank {
@@ -4591,7 +4591,6 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
   z-index: 3;
   margin: 0;
   color: #ffffff;
-  font-weight: 300 !important;
 }
 /* Portrait gold (narrow screens): the eyebrow takes the top-left corner and the photo drops below it. */
 @container (max-width: 659px) {
