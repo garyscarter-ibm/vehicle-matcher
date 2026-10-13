@@ -4696,6 +4696,49 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
   align-self: baseline;
 }
 .vm.vm-rrmc .vm-rrmc-why-facts dd { margin: 0; font-size: 16px; letter-spacing: 0.02em; }
+/* "View Options": the same panel, wider, holding the alternative versions as the
+   "Explore the full range" tiles look on their purple backing. */
+.vm.vm-rrmc .vm-rrmc-why-panel.is-wide { width: min(760px, 96vw); }
+.vm.vm-rrmc .vm-rrmc-alt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 48px 36px;
+}
+.vm.vm-rrmc .vm-rrmc-alt {
+  display: flex;
+  flex-direction: column;
+  color: #ffffff;
+  text-decoration: none;
+}
+.vm.vm-rrmc a.vm-rrmc-alt:focus-visible { outline: 2px solid #ffffff; outline-offset: 4px; }
+.vm.vm-rrmc .vm-rrmc-alt-media {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+}
+.vm.vm-rrmc .vm-rrmc-alt-photo { display: block; width: 100%; height: 100%; object-fit: cover; }
+.vm.vm-rrmc .vm-rrmc-alt-body { padding-top: var(--vm-space-2); }
+.vm.vm-rrmc .vm-rrmc-alt-body p { margin: 0; }
+.vm.vm-rrmc .vm-rrmc-alt-name { font-size: 14px; font-weight: 300; letter-spacing: 0.05em; line-height: 1.3; }
+.vm.vm-rrmc .vm-rrmc-alt-line { margin-top: 6px !important; font-size: 12px; letter-spacing: 0.02em; }
+.vm.vm-rrmc .vm-rrmc-alt-price { margin-top: 2px !important; font-size: 12px; letter-spacing: 0.02em; }
+.vm.vm-rrmc .vm-rrmc-alt-presented { margin-top: 8px !important; font-size: 9px; letter-spacing: 0.02em; opacity: 0.85; }
+.vm.vm-rrmc a.vm-rrmc-alt:hover .vm-rrmc-alt-name { text-decoration: underline; }
+/* The way out to the card's own listing, as a white-outlined pill. */
+.vm.vm-rrmc .vm-rrmc-why-cta {
+  display: inline-block;
+  margin-top: var(--vm-space-8);
+  padding: 12px 28px;
+  border: 1px solid #ffffff;
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.vm.vm-rrmc .vm-rrmc-why-cta:hover { background: #ffffff; color: #281432; }
+.vm.vm-rrmc .vm-rrmc-why-cta:focus-visible { outline: 2px solid #ffffff; outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) {
   .vm.vm-rrmc .vm-rrmc-why-panel,
   .vm.vm-rrmc .vm-rrmc-why-panel.is-open { transition: none; }

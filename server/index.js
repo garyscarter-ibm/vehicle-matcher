@@ -443,6 +443,9 @@ function publicMatch({
       transmission: c.transmission,
       features: c.features,
       link: c.link,
+      // For RRMC's "View Options" tiles, which name each version and where it is.
+      year: c.year,
+      retailerName: c.retailerName,
     })),
   };
 }

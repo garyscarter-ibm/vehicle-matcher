@@ -182,13 +182,15 @@ function announceWhyPanel(open) {
   window.dispatchEvent(new CustomEvent('vm-why-panel', { detail: { open } }));
 }
 
-/** The open "Why this one?" panel's teardown, so opening another car's swaps the content. */
-let closeWhyPanel = null;
+/** The open RRMC panel's teardown, so opening another swaps the content in place. */
+let closeRrmcPanel = null;
 
-/** RRMC "Why this one?": a purple panel that rolls in from the right and settles pinned to the
- *  screen's right edge, setting the car against what was asked for. One panel per block. */
-function openWhyPanel(trigger, match, { displayName, location, price }) {
-  const { car, reasons = [], tradeOffs = [] } = match;
+/** "Rolls-Royce Motor Cars London" as RRMC's tiles print it: "RRMC London". */
+const rrmcLocation = (name) => (name || 'RRMC').replace(/Rolls-Royce Motor Cars\s*/i, 'RRMC ').trim();
+
+/** RRMC's purple side panel ("Why this one?", "View Options"): rolls in from the right and settles
+ *  pinned to the screen's right edge. One per block; `wide` makes room for a grid of tiles. */
+function openRrmcPanel(trigger, { eyebrow, heading, content, wide = false }) {
   // On the block root, not inside a results area: those are CSS containers, which would trap position: fixed.
   const host = trigger.closest('.vm') || document.body;
   let panel = host.querySelector(':scope > .vm-rrmc-why-panel');
@@ -199,14 +201,43 @@ function openWhyPanel(trigger, match, { displayName, location, price }) {
     panel.tabIndex = -1;
     host.append(panel);
   }
-  closeWhyPanel?.({ restoreFocus: false, keepOpen: true });
+  closeRrmcPanel?.({ restoreFocus: false, keepOpen: true });
+  panel.classList.toggle('is-wide', wide);
 
   const close = el('button', 'vm-rrmc-why-close', '✕');
   close.type = 'button';
   close.setAttribute('aria-label', 'Close');
-  const title = el('h3', 'vm-rrmc-why-title', displayName);
+  const title = el('h3', 'vm-rrmc-why-title', heading);
   title.id = 'vm-rrmc-why-title';
+  panel.replaceChildren(close, el('p', 'vm-rrmc-why-eyebrow', eyebrow), title, ...content);
+  panel.scrollTop = 0;
 
+  const onKey = (e) => { if (e.key === 'Escape') shut(); };
+  function shut({ restoreFocus = true, keepOpen = false } = {}) {
+    document.removeEventListener('keydown', onKey);
+    closeRrmcPanel = null;
+    trigger.setAttribute('aria-expanded', 'false');
+    if (!keepOpen) {
+      panel.classList.remove('is-open');
+      announceWhyPanel(false);
+    }
+    if (restoreFocus && trigger.isConnected) trigger.focus();
+  }
+  close.addEventListener('click', () => shut());
+  document.addEventListener('keydown', onKey);
+  closeRrmcPanel = shut;
+  trigger.setAttribute('aria-expanded', 'true');
+  // A frame's pause so a first open starts off-screen right and rolls in to the right edge.
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    panel.classList.add('is-open');
+    announceWhyPanel(true);
+    panel.focus({ preventScroll: true });
+  }));
+}
+
+/** "Why this one?": the engine's reasons, anything it misses, and the car at a glance. */
+function openWhyPanel(trigger, match, { displayName, location, price }) {
+  const { car, reasons = [], tradeOffs = [] } = match;
   const matched = el('ul', 'vm-rrmc-why-list');
   reasons.forEach((r) => matched.append(el('li', null, r)));
   const facts = el('dl', 'vm-rrmc-why-facts');
@@ -221,41 +252,71 @@ function openWhyPanel(trigger, match, { displayName, location, price }) {
     ['Presented by', location],
   ].filter(([, v]) => v).forEach(([k, v]) => facts.append(el('dt', null, k), el('dd', null, String(v))));
 
-  panel.replaceChildren(
-    close,
-    el('p', 'vm-rrmc-why-eyebrow', 'Why this one?'),
-    title,
+  const content = [
     el('p', 'vm-rrmc-why-label', 'How it matches what you asked for'),
     reasons.length ? matched : el('p', 'vm-rrmc-why-none', 'It meets everything you have set so far.'),
-  );
+  ];
   if (tradeOffs.length) {
     const differs = el('ul', 'vm-rrmc-why-list is-differs');
     tradeLines('rrmc', tradeOffs).forEach((line) => differs.append(el('li', null, line)));
-    panel.append(el('p', 'vm-rrmc-why-label', 'Worth knowing'), differs);
+    content.push(el('p', 'vm-rrmc-why-label', 'Worth knowing'), differs);
   }
-  panel.append(el('p', 'vm-rrmc-why-label', 'At a glance'), facts);
+  content.push(el('p', 'vm-rrmc-why-label', 'At a glance'), facts);
+  openRrmcPanel(trigger, { eyebrow: 'Why this one?', heading: displayName, content });
+}
 
-  const onKey = (e) => { if (e.key === 'Escape') shut(); };
-  function shut({ restoreFocus = true, keepOpen = false } = {}) {
-    document.removeEventListener('keydown', onKey);
-    closeWhyPanel = null;
-    trigger.setAttribute('aria-expanded', 'false');
-    if (!keepOpen) {
-      panel.classList.remove('is-open');
-      announceWhyPanel(false);
-    }
-    if (restoreFocus && trigger.isConnected) trigger.focus();
+/** One alternative version, as an "Explore the full range" tile; the whole tile opens its listing. */
+function altTile(listing, car, baseName) {
+  const tile = el(listing.link ? 'a' : 'div', 'vm-rrmc-alt');
+  if (listing.link) {
+    tile.href = listing.link;
+    tile.target = '_blank';
+    tile.rel = 'noopener noreferrer';
   }
-  close.addEventListener('click', () => shut());
-  document.addEventListener('keydown', onKey);
-  closeWhyPanel = shut;
-  trigger.setAttribute('aria-expanded', 'true');
-  // A frame's pause so a first open starts off-screen right and rolls in to the right edge.
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    panel.classList.add('is-open');
-    announceWhyPanel(true);
-    panel.focus({ preventScroll: true });
-  }));
+  const media = el('div', 'vm-rrmc-alt-media');
+  if (listing.photo) {
+    const img = el('img', 'vm-rrmc-alt-photo');
+    img.src = listing.photo;
+    img.alt = '';
+    img.loading = 'lazy';
+    img.addEventListener('error', () => img.remove());
+    media.append(img);
+  }
+  const mileage = listing.mileage ? `${listing.mileage.toLocaleString('en-GB')} Miles` : 'Mileage Negligible';
+  const body = el('div', 'vm-rrmc-alt-body');
+  body.append(
+    el('p', 'vm-rrmc-alt-name', `${listing.year || car.year || ''} ${baseName}`.trim()),
+    el('p', 'vm-rrmc-alt-line', [mileage, listing.colour].filter(Boolean).join(' – ')),
+    el('p', 'vm-rrmc-alt-price', listing.poa || !listing.priceMin ? 'POA' : gbp(listing.priceMin)),
+  );
+  if (listing.retailerName) {
+    body.append(el('p', 'vm-rrmc-alt-presented', `Presented by ${rrmcLocation(listing.retailerName)}`));
+  }
+  tile.append(media, body);
+  return tile;
+}
+
+/** "View Options": the other versions grouped under this card, as the BMW page's picker offered
+ *  them, laid out as "Explore the full range" tiles. */
+function openOptionsPanel(trigger, match, { displayName, baseName }) {
+  const { car } = match;
+  const others = (match.listings || []).filter((l) => l.id !== car.id);
+  const content = [];
+  if (others.length) {
+    const grid = el('div', 'vm-rrmc-alt-grid');
+    others.forEach((l) => grid.append(altTile(l, car, baseName)));
+    content.push(el('p', 'vm-rrmc-why-label', 'Alternative versions'), grid);
+  } else {
+    content.push(el('p', 'vm-rrmc-why-none', 'This is the only version we hold at the moment.'));
+  }
+  if (car.link) {
+    const view = el('a', 'vm-rrmc-why-cta', 'View this listing');
+    view.href = car.link;
+    view.target = '_blank';
+    view.rel = 'noopener noreferrer';
+    content.push(view);
+  }
+  openRrmcPanel(trigger, { eyebrow: 'View Options', heading: displayName, content, wide: true });
 }
 
 const EXTENDED = /\bExtended\b/i;
@@ -370,16 +431,21 @@ export function matchCard(match, {
     const mileageText = car.mileage ? `${car.mileage.toLocaleString('en-GB')} Miles` : 'Mileage Negligible';
     const line = [mileageText, fuel].filter(Boolean).join(' – ');
     if (line) body.append(el('p', 'vm-rrmc-mileage', line));
-    body.append(el('p', 'vm-rrmc-view-options', 'View Options'));
-    const location = (car.retailerName || 'RRMC').replace(/Rolls-Royce Motor Cars\s*/i, 'RRMC ').trim();
-    // Opens the shared purple panel; `price` is read at click time, by when it is set below.
-    const whyBtn = el('button', 'vm-rrmc-why-btn', 'Why this one?');
-    whyBtn.type = 'button';
-    whyBtn.setAttribute('aria-haspopup', 'dialog');
-    whyBtn.setAttribute('aria-expanded', 'false');
-    whyBtn.addEventListener('click', () => openWhyPanel(whyBtn, match, { displayName, location, price }));
+    const location = rrmcLocation(car.retailerName);
+    // Both lines open the shared purple panel; `price` is read at click time, by when it is set below.
+    const panelButton = (text, open) => {
+      const btn = el('button', 'vm-rrmc-why-btn', text);
+      btn.type = 'button';
+      btn.setAttribute('aria-haspopup', 'dialog');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.addEventListener('click', () => open(btn));
+      return btn;
+    };
+    const options = el('p', 'vm-rrmc-view-options');
+    options.append(panelButton('View Options', (btn) => openOptionsPanel(btn, match, { displayName, baseName })));
+    body.append(options);
     const why = el('p', 'vm-rrmc-why');
-    why.append(whyBtn);
+    why.append(panelButton('Why this one?', (btn) => openWhyPanel(btn, match, { displayName, location, price })));
     body.append(why);
     const presented = el('p', 'vm-rrmc-presented');
     // Links to the retailer's homepage when the feed names one; plain text otherwise.
