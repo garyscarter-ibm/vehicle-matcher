@@ -4609,15 +4609,16 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 .vm.vm-rrmc .vm-stage .vm-rrmc-why-btn { text-decoration: underline !important; }
 .vm.vm-rrmc .vm-rrmc-why-btn:focus-visible { outline: 2px solid currentcolor; outline-offset: 2px; }
 
-/* Rolls in leftwards from beyond the right edge and settles pinned to the screen's right edge. */
+/* Rolls in leftwards from beyond the right edge and settles pinned to the screen's right edge.
+   One size for both panels: 680 x 480 on a full screen, shrinking to fit smaller windows. */
 .vm.vm-rrmc .vm-rrmc-why-panel {
   position: fixed;
-  top: 0;
-  bottom: 0;
+  top: 132px;
   right: 0;
   z-index: 1000;
   box-sizing: border-box;
-  width: min(440px, 92vw);
+  width: min(680px, 92vw);
+  height: min(480px, calc(100vh - 132px));
   padding: 56px 40px 40px;
   overflow-y: auto;
   background: #281432;
@@ -4696,9 +4697,37 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
   align-self: baseline;
 }
 .vm.vm-rrmc .vm-rrmc-why-facts dd { margin: 0; font-size: 16px; letter-spacing: 0.02em; }
+/* "Why this one?" in prose: two short paragraphs, the drawbacks, then the way to the listing. */
+.vm.vm-rrmc .vm-rrmc-why-prose {
+  margin: 24px 0 0;
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+}
+.vm.vm-rrmc .vm-rrmc-why-sub {
+  margin: 40px 0 0;
+  font-size: 24px;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  line-height: 1.25;
+  color: #ffffff;
+}
+.vm.vm-rrmc .vm-rrmc-why-more {
+  display: inline-block;
+  margin-top: 40px;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  text-decoration: underline;
+}
+.vm.vm-rrmc .vm-rrmc-why-more:focus-visible { outline: 2px solid #ffffff; outline-offset: 3px; }
 /* "View Options": the same panel, wider, holding the alternative versions as the
    "Explore the full range" tiles look on their purple backing. */
-.vm.vm-rrmc .vm-rrmc-why-panel.is-wide { width: min(760px, 96vw); }
+.vm.vm-rrmc .vm-rrmc-why-panel:not(.is-wide) .vm-rrmc-why-title {
+  font-size: 32px;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
 .vm.vm-rrmc .vm-rrmc-alt-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));

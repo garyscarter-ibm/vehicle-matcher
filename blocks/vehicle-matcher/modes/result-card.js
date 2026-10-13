@@ -15,9 +15,9 @@
  * Brand voice comes from ./brand-copy.js; the card holds no copy of its own.
  */
 
-import { el, gbp } from '../ui.js';
+import { el, gbp, cardinal } from '../ui.js';
 import { BRAND_COPY, TRADE_COPY, tradeLines, orList } from './brand-copy.js';
-import { PILL_LABEL } from '../quiz-meta.js';
+import { PILL_LABEL, BUDGET_BANDS } from '../quiz-meta.js';
 
 export const SPEC_LABELS = {
   hatchback: 'Hatchback', saloon: 'Saloon', estate: 'Estate', suv: 'SUV',
@@ -175,7 +175,7 @@ export function rrmcTaglines() {
   return [tagline, sub];
 }
 
-const DRIVE_LABEL = { lhd: 'Left-hand drive', rhd: 'Right-hand drive' };
+const DRIVE_PROSE = { lhd: 'Left-Hand-Drive', rhd: 'Right-Hand-Drive' };
 
 /** Tells the host page the panel is rolling on or off, so its chrome can move in step (index.html). */
 function announceWhyPanel(open) {
@@ -189,7 +189,7 @@ let closeRrmcPanel = null;
 const rrmcLocation = (name) => (name || 'RRMC').replace(/Rolls-Royce Motor Cars\s*/i, 'RRMC ').trim();
 
 /** RRMC's purple side panel ("Why this one?", "View Options"): rolls in from the right and settles
- *  pinned to the screen's right edge. One per block; `wide` makes room for a grid of tiles. */
+ *  pinned to the screen's right edge. One per block, one size; `wide` marks the tiles panel. */
 function openRrmcPanel(trigger, { eyebrow, heading, content, wide = false }) {
   // On the block root, not inside a results area: those are CSS containers, which would trap position: fixed.
   const host = trigger.closest('.vm') || document.body;
@@ -209,7 +209,7 @@ function openRrmcPanel(trigger, { eyebrow, heading, content, wide = false }) {
   close.setAttribute('aria-label', 'Close');
   const title = el('h3', 'vm-rrmc-why-title', heading);
   title.id = 'vm-rrmc-why-title';
-  panel.replaceChildren(close, el('p', 'vm-rrmc-why-eyebrow', eyebrow), title, ...content);
+  panel.replaceChildren(close, ...(eyebrow ? [el('p', 'vm-rrmc-why-eyebrow', eyebrow)] : []), title, ...content);
   panel.scrollTop = 0;
 
   const onKey = (e) => { if (e.key === 'Escape') shut(); };
@@ -235,34 +235,103 @@ function openRrmcPanel(trigger, { eyebrow, heading, content, wide = false }) {
   }));
 }
 
-/** "Why this one?": the engine's reasons, anything it misses, and the car at a glance. */
-function openWhyPanel(trigger, match, { displayName, location, price }) {
-  const { car, reasons = [], tradeOffs = [] } = match;
-  const matched = el('ul', 'vm-rrmc-why-list');
-  reasons.forEach((r) => matched.append(el('li', null, r)));
-  const facts = el('dl', 'vm-rrmc-why-facts');
-  const colour = typeof car.colour === 'string' ? car.colour : (car.colour?.manufacturerColour || car.colour?.colour);
-  [
-    ['Price', price],
-    ['Mileage', car.mileage ? `${car.mileage.toLocaleString('en-GB')} miles` : 'Negligible'],
-    ['Year', car.year],
-    ['Drive', DRIVE_LABEL[car.handDrive]],
-    ['Region', PILL_LABEL.regions[car.region]],
-    ['Colour', colour],
-    ['Presented by', location],
-  ].filter(([, v]) => v).forEach(([k, v]) => facts.append(el('dt', null, k), el('dd', null, String(v))));
+/** The answers the shown tiles were matched against; each mode sets them before it paints. */
+let rrmcAnswers = {};
+export function setRrmcAnswers(answers) { rrmcAnswers = answers || {}; }
 
-  const content = [
-    el('p', 'vm-rrmc-why-label', 'How it matches what you asked for'),
-    reasons.length ? matched : el('p', 'vm-rrmc-why-none', 'It meets everything you have set so far.'),
-  ];
-  if (tradeOffs.length) {
-    const differs = el('ul', 'vm-rrmc-why-list is-differs');
-    tradeLines('rrmc', tradeOffs).forEach((line) => differs.append(el('li', null, line)));
-    content.push(el('p', 'vm-rrmc-why-label', 'Worth knowing'), differs);
+const RRMC_BODY = { saloon: 'Saloon', suv: 'SUV', coupe: 'Coupé', convertible: 'Drophead' };
+const RRMC_FUEL = { ev: 'fully electric', petrol: 'petrol-powered' };
+const RRMC_REGION = {
+  europe: 'the UK & Europe', mea: 'Africa & the Middle East', apac: 'Asia & the Pacific', americas: 'the Americas',
+};
+const asList = (v) => (Array.isArray(v) ? v : (v != null ? [v] : []));
+const withArticle = (word) => `${/^(SUV|[AEIOU])/i.test(word) ? 'an' : 'a'} ${word}`;
+const asSentence = (s) => {
+  const t = String(s).trim();
+  return `${t.charAt(0).toUpperCase()}${t.slice(1)}${/[.!?]$/.test(t) ? '' : '.'}`;
+};
+
+/** The budget answer as [min, max] GBP, or null when none was set (or "No parameters"). */
+function budgetBand(answers) {
+  if (answers.budgetGate === 'no') return null;
+  const b = answers.budget;
+  if (Array.isArray(b)) return b;
+  if (typeof b === 'number') return [0, b];
+  return BUDGET_BANDS[b] || null;
+}
+
+/** "Why this one?" in prose: what it matches, what it is, and its drawbacks against the answers. */
+function whyProse(car, answers, reasons, tradeOffs) {
+  const asked = [];
+  // Body style is said once, in the facts sentence below, as the format has it.
+  const body = RRMC_BODY[car.body];
+  if (RRMC_FUEL[car.fuel] && asList(answers.fuel).includes(car.fuel)) {
+    asked.push(`It's ${RRMC_FUEL[car.fuel]} like you asked for.`);
   }
-  content.push(el('p', 'vm-rrmc-why-label', 'At a glance'), facts);
-  openRrmcPanel(trigger, { eyebrow: 'Why this one?', heading: displayName, content });
+  const regions = asList(answers.regions);
+  if (car.region && regions.includes(car.region) && regions.length < 4) {
+    asked.push(`It's held in ${RRMC_REGION[car.region]}, one of the regions you chose.`);
+  }
+  if (answers.handDrive && car.handDrive === answers.handDrive) {
+    asked.push(`It's configured in ${DRIVE_PROSE[car.handDrive]} like you asked for.`);
+  }
+  if (answers.people === 'crew' && car.seats >= 5) {
+    asked.push(`It seats ${cardinal(car.seats)}, room for everyone you mentioned.`);
+  }
+  // Nothing asked for to point at (no answers yet): the engine's own reasons stand in.
+  if (!asked.length) reasons.slice(0, 2).forEach((r) => asked.push(asSentence(r)));
+
+  const miles = car.mileage || 0;
+  let wear = `${miles.toLocaleString('en-GB')} miles`;
+  if (miles < 10000) wear = 'low mileage';
+  else if (miles < 30000) wear = 'moderate mileage';
+  const seats = car.seats ? ` and ${cardinal(car.seats)} seats` : '';
+  const facts = [body ? `It's ${withArticle(body)} with ${wear}${seats}.` : `It has ${wear}${seats}.`];
+  // The drive side is said once: a match above, a drawback below, or (unasked) a plain fact here.
+  if (DRIVE_PROSE[car.handDrive] && !answers.handDrive) {
+    facts.push(`It's configured in ${DRIVE_PROSE[car.handDrive]}.`);
+  }
+
+  const drawbacks = tradeLines('rrmc', tradeOffs);
+  if (answers.handDrive && car.handDrive && car.handDrive !== answers.handDrive) {
+    drawbacks.push(`It's configured in ${DRIVE_PROSE[car.handDrive]}, where you asked for ${DRIVE_PROSE[answers.handDrive]}.`);
+  }
+  const band = budgetBand(answers);
+  if (band && car.priceMin && !car.poa) {
+    const [lo, hi] = band;
+    const lead = miles
+      ? `With just ${miles.toLocaleString('en-GB')} miles on the clock, it's`
+      : "With negligible mileage, it's";
+    const at = `at ${gbp(car.priceMin)}`;
+    if (car.priceMin > hi) drawbacks.push(`${lead} above your price range ${at}.`);
+    else if (hi > lo && (car.priceMin - lo) / (hi - lo) >= 2 / 3) {
+      drawbacks.push(`${lead} at the higher end of your price range ${at}.`);
+    }
+  }
+  return { asked, facts, drawbacks };
+}
+
+/** "Why this one?": what it matches, what it is, its drawbacks, and the way to its listing. */
+function openWhyPanel(trigger, match) {
+  const { car, reasons = [], tradeOffs = [] } = match;
+  const { asked, facts, drawbacks } = whyProse(car, rrmcAnswers, reasons, tradeOffs);
+  const content = [];
+  if (asked.length) content.push(el('p', 'vm-rrmc-why-prose', asked.join(' ')));
+  content.push(
+    el('p', 'vm-rrmc-why-prose', facts.join(' ')),
+    el('h4', 'vm-rrmc-why-sub', 'What are the drawbacks?'),
+    el('p', 'vm-rrmc-why-prose', drawbacks.length
+      ? drawbacks.join(' ')
+      : 'Nothing stands out against what you asked for.'),
+  );
+  if (car.link) {
+    const more = el('a', 'vm-rrmc-why-more', 'View more details here');
+    more.href = car.link;
+    more.target = '_blank';
+    more.rel = 'noopener noreferrer';
+    content.push(more);
+  }
+  openRrmcPanel(trigger, { heading: 'Why this one?', content });
 }
 
 /** One alternative version, as an "Explore the full range" tile; the whole tile opens its listing. */
@@ -432,7 +501,7 @@ export function matchCard(match, {
     const line = [mileageText, fuel].filter(Boolean).join(' – ');
     if (line) body.append(el('p', 'vm-rrmc-mileage', line));
     const location = rrmcLocation(car.retailerName);
-    // Both lines open the shared purple panel; `price` is read at click time, by when it is set below.
+    // Both lines open the shared purple panel.
     const panelButton = (text, open) => {
       const btn = el('button', 'vm-rrmc-why-btn', text);
       btn.type = 'button';
@@ -445,7 +514,7 @@ export function matchCard(match, {
     options.append(panelButton('View Options', (btn) => openOptionsPanel(btn, match, { displayName, baseName })));
     body.append(options);
     const why = el('p', 'vm-rrmc-why');
-    why.append(panelButton('Why this one?', (btn) => openWhyPanel(btn, match, { displayName, location, price })));
+    why.append(panelButton('Why this one?', (btn) => openWhyPanel(btn, match)));
     body.append(why);
     const presented = el('p', 'vm-rrmc-presented');
     // Links to the retailer's homepage when the feed names one; plain text otherwise.

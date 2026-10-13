@@ -47,7 +47,7 @@ import {
   visibleQuestions, renderRangeSlider, renderOptionList, formatSliderValue,
 } from './question-ui.js';
 import { createPreviewFeed } from './preview-feed.js';
-import { matchCard, rrmcTaglines } from './result-card.js';
+import { matchCard, rrmcTaglines, setRrmcAnswers } from './result-card.js';
 import {
   WEAK_SCORE, celebrate, shadeOf, cap, idOf,
 } from './match-signal.js';
@@ -1009,6 +1009,8 @@ function mount(root, ctx) {
       return;
     }
     const list = visibleMatches();
+    // RRMC's "Why this one?" panel phrases each car against the live answers.
+    setRrmcAnswers(state.answers);
 
     stepsEl.replaceChildren();
     tailGrid.replaceChildren();

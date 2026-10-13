@@ -45,7 +45,7 @@ import { el, gbp } from '../ui.js';
 import { BRAND_COPY } from './brand-copy.js';
 import { renderRangeSlider, renderOptionList } from './question-ui.js';
 import {
-  matchCard, SPEC_LABELS, FUEL_SPEC, SWATCH_HEX, CONCEPT_LABELS,
+  matchCard, SPEC_LABELS, FUEL_SPEC, SWATCH_HEX, CONCEPT_LABELS, setRrmcAnswers,
 } from './result-card.js';
 import { celebrate, cap } from './match-signal.js';
 
@@ -750,6 +750,8 @@ const blankTint = (i) => {
 
 function mount(root, ctx) {
   const copy = copyFor(ctx.brand);
+  // Guess-who filters rather than asks, so "Why this one?" mustn't phrase against another mode's answers.
+  setRrmcAnswers({});
   const brandCopy = BRAND_COPY[ctx.brand] || BRAND_COPY.bmw;
   const reducedMotion = window.matchMedia
     && window.matchMedia('(prefers-reduced-motion: reduce)').matches;

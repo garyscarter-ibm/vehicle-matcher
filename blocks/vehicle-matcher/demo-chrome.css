@@ -267,8 +267,13 @@
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
 }
-/* The bar's blur, extended: a sheet from the bar's foot down the screen, unrolled in step with
-   the panel (same 0.7s and easing) and rolled back up as it leaves. Sits under the bar and panel. */
+/* The bar's own blur fades on the panel's 0.7s, in step with the sheet below it. */
+.vm-rrmc .demo-nav.is-why-moving {
+  transition: backdrop-filter 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+    -webkit-backdrop-filter 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+/* The bar's blur, extended: a sheet from the bar's foot down the screen that fades in as the panel
+   rolls on (same 0.7s and easing) and out as it leaves. Sits under the bar and panel. */
 .vm-rrmc .demo-nav-veil {
   position: fixed;
   top: 110px;
@@ -279,10 +284,10 @@
   pointer-events: none;
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
-  clip-path: inset(0 0 100% 0);
-  transition: clip-path 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+  opacity: 0;
+  transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
-.vm-rrmc .demo-nav-veil.is-open { clip-path: inset(0); }
+.vm-rrmc .demo-nav-veil.is-open { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
   .vm-rrmc .demo-nav-veil,
   .vm-rrmc .demo-nav.is-why-moving::after { transition: none; }

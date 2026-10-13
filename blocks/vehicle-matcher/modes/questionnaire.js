@@ -24,7 +24,7 @@ import {
   BRAND_COPY, UNMET_PHRASES, TRADE_COPY, orList, andList, tradeLines,
 } from './brand-copy.js';
 import {
-  CONCEPT_LABELS, listingsOf, distanceLabel, matchCard, previewTile,
+  CONCEPT_LABELS, listingsOf, distanceLabel, matchCard, previewTile, setRrmcAnswers,
 } from './result-card.js';
 import {
   isVisible, visibleQuestions, formatSliderValue, renderRangeSlider, renderOptionList,
@@ -1692,6 +1692,8 @@ function fillNearbyBand(band, ctx, nearby) {
 
 async function renderResults(root, ctx, answers) {
   renderResultsSkeleton(root);
+  // RRMC's "Why this one?" panel phrases each car against these.
+  setRrmcAnswers(answers);
 
   // Two-phase load. The retailer's own matches (fast: one feed) render first;
   // the nearby-retailer carousel (slow: a national distance search) is fetched
