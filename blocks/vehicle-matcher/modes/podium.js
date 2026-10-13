@@ -748,7 +748,7 @@ function mount(root, ctx) {
     window.addEventListener('scroll', onScroll, { passive: true });
   };
 
-  // RRMC tiles are laid out for the 860px gold tile (mirrors the CSS); a narrower column
+  // RRMC tiles are laid out for the 700px gold tile (mirrors the CSS); a narrower column
   // zooms them down as a miniature; once stacked, gold (360px) and silver/bronze (300px)
   // zoom back up to their own widths.
   const fitSteps = (results) => {
@@ -756,7 +756,7 @@ function mount(root, ctx) {
       if (!results.isConnected) { observer.disconnect(); return; }
       const width = entry.contentRect.width;
       if (!width) return;
-      const zoom = Math.min(1, width / 860);
+      const zoom = Math.min(1, width / 700);
       results.style.setProperty('--vm-podium-zoom', zoom);
       results.style.setProperty('--vm-podium-zoom-stack', Math.min(1, width / 300) / zoom);
       results.style.setProperty('--vm-podium-zoom-gold', Math.min(1, width / 360) / zoom);

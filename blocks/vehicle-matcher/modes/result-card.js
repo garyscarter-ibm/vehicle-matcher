@@ -371,7 +371,7 @@ function altTile(listing, car, baseName) {
 
 /** "View Options": the other versions grouped under this card, six tiles at a time in a scroller
  *  beneath the fixed title; each tile opens its own listing. */
-function openOptionsPanel(trigger, match, { displayName, baseName }) {
+function openOptionsPanel(trigger, match, { baseName }) {
   const { car } = match;
   const others = (match.listings || []).filter((l) => l.id !== car.id);
   const scroll = el('div', 'vm-rrmc-alt-scroll');
@@ -383,7 +383,7 @@ function openOptionsPanel(trigger, match, { displayName, baseName }) {
   } else {
     scroll.append(el('p', 'vm-rrmc-why-none', 'This is the only version we hold at the moment.'));
   }
-  openRrmcPanel(trigger, { heading: displayName, content: [scroll], wide: true });
+  openRrmcPanel(trigger, { heading: `Rolls-Royce ${baseName}`, content: [scroll], wide: true });
 }
 
 const EXTENDED = /\bExtended\b/i;
@@ -509,7 +509,7 @@ export function matchCard(match, {
       return btn;
     };
     const options = el('p', 'vm-rrmc-view-options');
-    options.append(panelButton('View Options', (btn) => openOptionsPanel(btn, match, { displayName, baseName })));
+    options.append(panelButton('View Options', (btn) => openOptionsPanel(btn, match, { baseName })));
     body.append(options);
     const why = el('p', 'vm-rrmc-why');
     why.append(panelButton('Why this one?', (btn) => openWhyPanel(btn, match)));
