@@ -891,7 +891,10 @@ function renderRefine(
       const top = list.slice(0, 3);
       into.classList.remove('vm-grid-tied');
       into.classList.add('vm-rrmc-podium');
-      into.append(rank('Your Top Pick', 'gold'), full(top[0], true, true));
+      // Gold's eyebrow sits inside its tile, above the photo (CSS places it); silver/bronze's sit above theirs.
+      const gold = full(top[0], true, true);
+      gold.append(rank('Your Top Pick', 'gold'));
+      into.append(gold);
       if (top.length > 1) {
         const side = el('div', 'vm-rrmc-podium-side');
         top.slice(1).forEach((m, i) => {

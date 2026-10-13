@@ -4567,17 +4567,45 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
   flex-direction: column;
   gap: 60px;
 }
-/* Rank eyebrows above the tiles: gold's sits on its own row so the silver eyebrow lines up with it. */
+/* Gold (its eyebrow now inside the tile) and the silver/bronze column share the first row. */
 .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid.vm-rrmc-podium { row-gap: 0; }
-.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium > .vm-podium-rank { grid-column: 1; grid-row: 1; }
-.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium > .vm-card { grid-column: 1; grid-row: 2; }
-.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium > .vm-rrmc-podium-side { grid-column: 2; grid-row: 1 / span 2; }
+.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium > .vm-card { grid-column: 1; grid-row: 1; }
+.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium > .vm-rrmc-podium-side { grid-column: 2; grid-row: 1; }
 .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-podium-rank.is-gold {
   --vm-podium-rule: var(--vm-space-6);
   font-size: var(--vm-text-label);
   color: var(--vm-accent-spot);
 }
 .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-podium-rank.is-silver { --vm-podium-rule: var(--vm-space-4); }
+/* RRMC rank eyebrows carry no leading rule, in podium or the questionnaire. */
+.vm.vm-rrmc .vm-podium-rank::before { display: none; }
+/* Gold's "Your Top Pick" sits inside the wide tile, 12px above the vertically centred 300px 16:9
+   photo and flush with its left edge (40px in). Light, and white on the purple. */
+.vm.vm-rrmc .vm-podium-steps:not(.is-tied) .vm-podium-step.is-gold { position: relative; }
+.vm.vm-rrmc .vm-podium-steps:not(.is-tied) .vm-podium-step.is-gold > .vm-podium-rank,
+.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium > .vm-card > .vm-podium-rank {
+  position: absolute;
+  left: 40px;
+  top: calc(50% - 300px * 9 / 32);
+  transform: translateY(calc(-100% - 12px));
+  z-index: 3;
+  margin: 0;
+  color: #ffffff;
+  font-weight: 300 !important;
+}
+/* Portrait gold (narrow screens): the eyebrow takes the top-left corner and the photo drops below it. */
+@container (max-width: 659px) {
+  .vm.vm-rrmc .vm-podium-steps:not(.is-tied) .vm-podium-step.is-gold > .vm-podium-rank,
+  .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium > .vm-card > .vm-podium-rank {
+    top: 24px;
+    left: 24px;
+    transform: none;
+  }
+  .vm.vm-rrmc .vm-podium-steps:not(.is-tied) .vm-podium-step.is-gold > .vm-podium-card > .vm-card > .vm-card-media,
+  .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid.vm-rrmc-podium:not(.vm-grid-tied) > .vm-card > .vm-card-media {
+    margin-top: calc(36px + 1.2 * var(--vm-text-label));
+  }
+}
 .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium-slot > .vm-card { width: 100%; }
 /* Compact cards, as podium's silver/bronze; drop the carousel's flex basis, which would set height here. */
 .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium-side > .vm-rrmc-podium-slot { flex: none; width: 100%; }
@@ -4587,7 +4615,7 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
   .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid.vm-rrmc-podium { grid-template-columns: minmax(0, 700px); }
   .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium > .vm-rrmc-podium-side {
     grid-column: 1;
-    grid-row: 3;
+    grid-row: 2;
     margin-top: 60px;
   }
   .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium-side {
