@@ -768,6 +768,9 @@
 .vm.vm-rrmc .vm-card-line { display: none; }
 /* "Presented by" location, when it links to the retailer: the line's own colour, not link blue. */
 .vm.vm-rrmc a.vm-rrmc-presented-location { color: inherit; }
+/* "RRMC <location>" wraps as one unit, so a two-line "Presented by" breaks before it (and only
+   inside it when the name alone is wider than the line). */
+.vm.vm-rrmc :is(.vm-rrmc-presented-location, .vm-rrmc-alt-location) { display: inline-block; }
 /* Year-and-name and photo open the listing; the name reads as the heading, not a link. */
 .vm.vm-rrmc a.vm-rrmc-listing-name { color: inherit; text-decoration: none; }
 .vm.vm-rrmc .vm-rrmc-listing-photo {
