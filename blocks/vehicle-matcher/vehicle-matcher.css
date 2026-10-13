@@ -4099,9 +4099,10 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 }
 .vm.vm-rrmc .vm-podium-step.is-silver,
 .vm.vm-rrmc .vm-podium-step.is-bronze { margin-inline: 0; }
-/* 1st place: fixed 700x360px, horizontal orientation, spanning the row. */
+/* 1st place: fixed 700x360px, horizontal orientation, spanning the row and centred in it. */
 .vm.vm-rrmc .vm-podium-steps:not(.is-tied) .vm-podium-step.is-gold {
   grid-column: 1 / -1;
+  justify-self: center;
   width: 100%;
   max-width: 700px;
 }
