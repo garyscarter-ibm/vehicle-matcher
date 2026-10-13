@@ -1019,7 +1019,7 @@ function mount(root, ctx) {
     }
     const list = visibleMatches();
     // RRMC's "Why this one?" panel phrases each car against the live answers.
-    setRrmcAnswers(state.answers);
+    setRrmcAnswers(state.answers, state.questions);
 
     stepsEl.replaceChildren();
     tailGrid.replaceChildren();

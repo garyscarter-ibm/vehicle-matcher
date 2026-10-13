@@ -538,11 +538,18 @@ export function questionsForBrand(brand = 'bmw') {
  * Contributions merge conservatively: array fields (priorities, fuel,
  * bodyStyles) are unioned; scalar fields (style) only fill a gap the user left
  * blank, so an explicit answer always wins over a bespoke nudge.
+ *
+ * An `openTop` budget (RRMC) whose top handle sits at the slider's "+" ceiling becomes
+ * [min, Infinity]: no upper limit, though the chosen minimum still counts.
  */
 export function applyBespokeAnswers(brand, answers) {
-  const adds = brandConfig(brand).questions?.add || [];
-  if (!adds.length) return answers;
+  const { budget, questions } = brandConfig(brand);
+  const adds = questions?.add || [];
+  const b = answers?.budget;
+  const openTop = budget?.openTop && Array.isArray(b) && b.length === 2 && Number(b[1]) >= budget.max;
+  if (!adds.length && !openTop) return answers;
   const merged = { ...answers };
+  if (openTop) merged.budget = [Number(b[0]), Infinity];
   for (const q of adds) {
     const picked = merged[q.id];
     if (picked == null) continue;

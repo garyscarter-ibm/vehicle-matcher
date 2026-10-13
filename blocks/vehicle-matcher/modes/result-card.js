@@ -249,7 +249,13 @@ function rrmcMileageText({ moa, mileage }) {
 
 /** The answers the shown tiles were matched against; each mode sets them before it paints. */
 let rrmcAnswers = {};
-export function setRrmcAnswers(answers) { rrmcAnswers = answers || {}; }
+// An open-top budget's "+" ceiling: a top handle at or past it means no upper limit.
+let rrmcBudgetCeiling = Infinity;
+export function setRrmcAnswers(answers, questions = []) {
+  rrmcAnswers = answers || {};
+  const budgetQ = questions.find((q) => q.id === 'budget');
+  rrmcBudgetCeiling = budgetQ?.openTop ? budgetQ.max : Infinity;
+}
 
 const RRMC_BODY = { saloon: 'Saloon', suv: 'SUV', coupe: 'Coupé', convertible: 'Drophead' };
 const RRMC_FUEL = { ev: 'fully electric', petrol: 'petrol-powered' };
@@ -267,7 +273,7 @@ const asSentence = (s) => {
 function budgetBand(answers) {
   if (answers.budgetGate === 'no') return null;
   const b = answers.budget;
-  if (Array.isArray(b)) return b;
+  if (Array.isArray(b)) return b[1] >= rrmcBudgetCeiling ? [b[0], Infinity] : b;
   if (typeof b === 'number') return [0, b];
   return BUDGET_BANDS[b] || null;
 }

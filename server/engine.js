@@ -61,7 +61,8 @@ export function budgetRange(answers) {
   const b = answers.budget;
   if (Array.isArray(b) && b.length === 2) {
     const [lo, hi] = b.map(Number);
-    if (Number.isFinite(lo) && Number.isFinite(hi) && hi > 0) {
+    // hi may be Infinity: an open-top budget (applyBespokeAnswers) with no upper limit.
+    if (Number.isFinite(lo) && (Number.isFinite(hi) || hi === Infinity) && hi > 0) {
       return [Math.max(0, Math.min(lo, hi)), Math.max(lo, hi)];
     }
     return null;
@@ -120,7 +121,8 @@ function scoreBudget(car, answers, tuning) {
   const [min, max] = range;
   // A slider budget has min 0, so phrase the "in budget" reason as an upper
   // limit ("up to £62k") rather than a "£0k–£62k" band.
-  const budgetReason = min > 0 ? `Sits right in your ${gbp(min)}–${gbp(max)} budget` : `Comfortably within your ${gbp(max)} budget`;
+  let budgetReason = min > 0 ? `Sits right in your ${gbp(min)}–${gbp(max)} budget` : `Comfortably within your ${gbp(max)} budget`;
+  if (max === Infinity) budgetReason = `Above your ${gbp(min)} minimum, with no upper limit set`;
   if (car.priceMin > max) {
     // Survivor of the hard filter → it's a stretch buy.
     return { score: 0.35, stretch: true };

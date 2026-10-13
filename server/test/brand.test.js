@@ -9,6 +9,7 @@ import {
 import { questionsForBrand, applyBespokeAnswers } from '../questions.js';
 import { normalizeBrand, brandConfig, brandTuning } from '../brands.js';
 import { rankCars } from '../engine.js';
+import { CARS } from '../data.js';
 import { motorradRowsFromEnvelope, motorradRowToRaw, parseMotorradSid } from '../stock.js';
 import { parseListingHtml, parseCard, listingUrl } from '../honda-listing.js';
 import { parseResTable, parseRow, splitRows } from '../motorrad-listing.js';
@@ -1495,4 +1496,26 @@ test('questionsForBrand(ferrari) drops charging and offers only the bodies/fuels
   assert.ok(fuelValues.includes('petrol'), 'ferrari offers petrol');
   assert.ok(fuelValues.includes('phev'), 'ferrari offers the plug-in hybrids (296, SF90)');
   assert.ok(!fuelValues.includes('diesel'), 'ferrari never offers diesel');
+});
+
+test('RRMC budget runs £60k to £1m+, and the top means no upper limit while the minimum binds', () => {
+  const budget = questionsForBrand('rrmc').find((q) => q.id === 'budget');
+  assert.equal(budget.min, 60000);
+  assert.equal(budget.max, 1000000);
+  assert.equal(budget.plusAtMax, true);
+  assert.equal(budget.minGap, 20000);
+  // At the "+" ceiling: open top, minimum kept.
+  assert.deepEqual(applyBespokeAnswers('rrmc', { budget: [200000, 1000000] }).budget, [200000, Infinity]);
+  // Below the ceiling: unchanged.
+  assert.deepEqual(applyBespokeAnswers('rrmc', { budget: [200000, 900000] }).budget, [200000, 900000]);
+  // Other brands' "+" ceilings are untouched.
+  assert.deepEqual(applyBespokeAnswers('bmw', { budget: [40000, 150000] }).budget, [40000, 150000]);
+  // The engine then keeps a £1.5m car (no hard cap) but still ranks under-minimum cars lower.
+  const cars = [
+    { ...CARS[0], id: 'big', priceMin: 1500000, priceMax: 1500000 },
+    { ...CARS[0], id: 'cheap', priceMin: 90000, priceMax: 90000 },
+  ];
+  const ranked = rankCars(applyBespokeAnswers('rrmc', { budgetGate: 'yes', budget: [200000, 1000000] }), cars, brandTuning('rrmc'));
+  assert.deepEqual(ranked.map((r) => r.car.id).sort(), ['big', 'cheap']);
+  assert.ok(ranked.find((r) => r.car.id === 'big').score > ranked.find((r) => r.car.id === 'cheap').score);
 });

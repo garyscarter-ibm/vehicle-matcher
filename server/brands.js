@@ -914,9 +914,11 @@ export const BRANDS = {
     origin: 'https://approved.rolls-roycemotorcars.com',
     defaultRetailer: 'rrmc-approved',
     source: 'live-rrmc',
-    // Rolls-Royce used stock runs £160k (Wraith) to £430k+ (Phantom).
-    // Cap at £500k with a default bracket around the Ghost/Cullinan range.
-    budget: { max: 500000, default: [180000, 320000] },
+    // Stock runs ~£80k to £1.6m (GBP at today's rate). £60k to £1m+, where `openTop` makes the
+    // "£1,000,000+" top mean no upper limit (applyBespokeAnswers) while the lower handle still binds.
+    // minGap: the handles can be set as close as £20k (they sit either side of their values,
+    // so they never overlap; see the RRMC .vm-range rules).
+    budget: { min: 60000, max: 1000000, default: [180000, 320000], openTop: true, minGap: 20000 },
     tuning: mergeTuning(RRMC_TUNING),
     questions: {
       drop: ['charging'],

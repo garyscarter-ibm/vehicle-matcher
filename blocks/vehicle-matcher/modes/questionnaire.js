@@ -1708,7 +1708,7 @@ function fillNearbyBand(band, ctx, nearby) {
 async function renderResults(root, ctx, answers) {
   renderResultsSkeleton(root);
   // RRMC's "Why this one?" panel phrases each car against these.
-  setRrmcAnswers(answers);
+  setRrmcAnswers(answers, ctx.questions);
 
   // Two-phase load. The retailer's own matches (fast: one feed) render first;
   // the nearby-retailer carousel (slow: a national distance search) is fetched

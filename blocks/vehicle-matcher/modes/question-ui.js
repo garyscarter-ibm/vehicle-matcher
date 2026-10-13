@@ -49,7 +49,7 @@ export function formatRange([lo, hi], q) {
 /**
  * A dual-thumb range slider (budget): two native range inputs overlaid on one
  * track, writing a [min, max] pair to answers[q.id]. The thumbs can't cross
- * (one step apart; RRMC a thumb's width, so they can't overlap). Appends readout + track + bounds.
+ * (kept `minGap` or one step apart). Appends readout + track + bounds to `list`.
  *
  * `onChange` fires after every commit, including the one below that happens
  * before the user has touched anything: the starting value is persisted
@@ -90,24 +90,18 @@ export function renderRangeSlider(list, q, answers, { onChange } = {}) {
   const maxInput = mkInput('vm-range-max', `Maximum ${noun}`, hi);
 
   const span = q.max - q.min || 1;
+  // Native thumbs travel thumb/2 in from each end, so the fill runs between their centres when a
+  // brand sets --vm-thumb-half (RRMC); at 0 this is the plain percentage, as before.
+  const at = (v) => `calc(var(--vm-thumb-half, 0px) + (100% - 2 * var(--vm-thumb-half, 0px)) * ${(v - q.min) / span})`;
   const paintFill = () => {
-    const a = ((lo - q.min) / span) * 100;
-    const b = ((hi - q.min) / span) * 100;
-    fill.style.left = `${a}%`;
-    fill.style.right = `${100 - b}%`;
+    fill.style.left = at(lo);
+    fill.style.right = `calc(100% - ${at(hi)})`;
   };
-  // RRMC keeps the handles a thumb's width apart (18px plus its 1px ring each side), so they
-  // never sit over each other; elsewhere one step apart. Read live, as the track's width varies.
-  const THUMB_PX = 20;
-  const minGap = () => {
-    const width = minInput.clientWidth;
-    if (!list.closest('.vm.vm-rrmc') || width <= THUMB_PX) return q.step;
-    const raw = (THUMB_PX * span) / (width - THUMB_PX);
-    return Math.max(q.step, Math.ceil(raw / q.step) * q.step);
-  };
+  // The closest the two values may come: the question's `minGap` (RRMC's budget: £20k), else one
+  // step. RRMC's handles sit either side of their values in CSS, so even that close they don't overlap.
+  const gap = Math.max(q.step, Number(q.minGap) || 0);
   const sync = () => {
-    // Clamp so the thumbs never cross or overlap.
-    const gap = minGap();
+    // Clamp so the thumbs never cross.
     lo = Math.min(Number(minInput.value), hi - gap);
     hi = Math.max(Number(maxInput.value), lo + gap);
     lo = Math.max(q.min, lo);
