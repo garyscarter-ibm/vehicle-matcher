@@ -27,7 +27,7 @@ import {
   CONCEPT_LABELS, listingsOf, distanceLabel, matchCard, previewTile, setRrmcAnswers,
 } from './result-card.js';
 import {
-  isVisible, visibleQuestions, formatSliderValue, renderRangeSlider, renderOptionList,
+  isVisible, visibleQuestions, formatSliderValue, renderRangeSlider, renderOptionList, renderBudgetDrawer,
 } from './question-ui.js';
 import { createPreviewFeed } from './preview-feed.js';
 
@@ -1221,7 +1221,7 @@ function renderIntro(root, ctx) {
   // Count the questions a typical run sees ("Help me decide" shows the
   // conditional charging question, matching the longest common path). fuel is
   // multi-select now, so pass it as an array.
-  const count = visibleQuestions(ctx.questions, { fuel: ['open'] }).length;
+  const count = visibleQuestions(flowQuestions(ctx), { fuel: ['open'] }).length;
   const copy = BRAND_COPY[ctx.brand] || BRAND_COPY.bmw;
   // Authored overrides win; a blank row suppresses the line entirely, which is
   // how the block sits under a host page's own "FIND YOUR MINI." heading
@@ -1401,8 +1401,14 @@ function renderAnswerPills(ctx, questions, index) {
   return row.children.length ? row : null;
 }
 
+/** The questions that get a screen: RRMC asks its budget inside "Is there an ideal price
+ *  range?" (renderBudgetDrawer), so the budget never has a screen of its own there. */
+function flowQuestions(ctx) {
+  return ctx.brand === 'rrmc' ? ctx.questions.filter((q) => q.id !== 'budget') : ctx.questions;
+}
+
 function renderQuestion(root, ctx, index) {
-  const questions = visibleQuestions(ctx.questions, ctx.answers);
+  const questions = visibleQuestions(flowQuestions(ctx), ctx.answers);
   const q = questions[index];
 
   root.replaceChildren();
@@ -1426,7 +1432,7 @@ function renderQuestion(root, ctx, index) {
   if (q.help) screen.append(el('p', 'vm-help', q.help));
 
   const advance = () => {
-    const total = visibleQuestions(ctx.questions, ctx.answers).length;
+    const total = visibleQuestions(flowQuestions(ctx), ctx.answers).length;
     // Editing a pill sets a return point: once this (earlier) question is
     // re-answered, jump straight back rather than walking forward again. Only
     // honour it when returning would actually move forward, and clamp to the
@@ -1451,6 +1457,8 @@ function renderQuestion(root, ctx, index) {
   // The option list's live selection, which is what the Next button below is
   // enabled by. A slider always has a value, so it has no such set.
   let selected = null;
+  // Set below on RRMC's price-range screen; the option list syncs it on every pick.
+  let budgetDrawer = null;
   if (isSlider && q.range) {
     // Dual-thumb range (budget): two overlaid inputs writing a [min, max] pair.
     list = el('div', 'vm-options vm-slider');
@@ -1499,6 +1507,7 @@ function renderQuestion(root, ctx, index) {
       onChange: () => {
         // Option lists that commit via Next keep the button in step with the selection.
         if (waitForNext) next.disabled = selected.size === 0;
+        budgetDrawer?.sync();
         // Refresh before advancing: the debounced fetch belongs to the mode
         // rather than to this screen, so the next question's freshly-built
         // drawer picks up the result (via the feed's latest-wins guard) even
@@ -1514,6 +1523,12 @@ function renderQuestion(root, ctx, index) {
     if (middle) list.append(middle);
   }
   screen.append(list);
+  // RRMC: Yes on "Is there an ideal price range?" rolls the budget slider down right here.
+  const budgetQ = ctx.brand === 'rrmc' && q.id === 'budgetGate' && ctx.questions.find((x) => x.id === 'budget');
+  if (budgetQ) {
+    budgetDrawer = renderBudgetDrawer(budgetQ, ctx.answers, { onChange: () => schedulePreviewRefresh(ctx) });
+    screen.append(budgetDrawer.drawer);
+  }
 
   const nav = el('div', 'vm-nav');
   const back = el('button', 'vm-btn vm-btn-ghost', 'Back');
@@ -1927,7 +1942,7 @@ async function renderResults(root, ctx, answers) {
   });
   const tweak = el('button', 'vm-btn vm-btn-ghost', 'Tweak my answers');
   tweak.type = 'button';
-  tweak.addEventListener('click', () => ctx.showQuestion(visibleQuestions(ctx.questions, ctx.answers).length - 1));
+  tweak.addEventListener('click', () => ctx.showQuestion(visibleQuestions(flowQuestions(ctx), ctx.answers).length - 1));
   const retake = el('button', 'vm-btn vm-btn-ghost', 'Start over');
   retake.type = 'button';
   retake.addEventListener('click', () => {

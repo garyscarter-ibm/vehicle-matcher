@@ -49,7 +49,7 @@ export function formatRange([lo, hi], q) {
 /**
  * A dual-thumb range slider (budget): two native range inputs overlaid on one
  * track, writing a [min, max] pair to answers[q.id]. The thumbs can't cross
- * (kept at least one step apart). Appends readout + track + bounds to `list`.
+ * (one step apart; RRMC a thumb's width, so they can't overlap). Appends readout + track + bounds.
  *
  * `onChange` fires after every commit, including the one below that happens
  * before the user has touched anything: the starting value is persisted
@@ -96,10 +96,20 @@ export function renderRangeSlider(list, q, answers, { onChange } = {}) {
     fill.style.left = `${a}%`;
     fill.style.right = `${100 - b}%`;
   };
+  // RRMC keeps the handles a thumb's width apart (18px plus its 1px ring each side), so they
+  // never sit over each other; elsewhere one step apart. Read live, as the track's width varies.
+  const THUMB_PX = 20;
+  const minGap = () => {
+    const width = minInput.clientWidth;
+    if (!list.closest('.vm.vm-rrmc') || width <= THUMB_PX) return q.step;
+    const raw = (THUMB_PX * span) / (width - THUMB_PX);
+    return Math.max(q.step, Math.ceil(raw / q.step) * q.step);
+  };
   const sync = () => {
-    // Clamp so the thumbs never cross (keep a one-step gap).
-    lo = Math.min(Number(minInput.value), hi - q.step);
-    hi = Math.max(Number(maxInput.value), lo + q.step);
+    // Clamp so the thumbs never cross or overlap.
+    const gap = minGap();
+    lo = Math.min(Number(minInput.value), hi - gap);
+    hi = Math.max(Number(maxInput.value), lo + gap);
     lo = Math.max(q.min, lo);
     hi = Math.min(q.max, hi);
     minInput.value = String(lo);
@@ -125,6 +135,51 @@ export function renderRangeSlider(list, q, answers, { onChange } = {}) {
   );
 
   list.append(readout, track, bounds);
+}
+
+// Matches the drawer's CSS roll (vehicle-matcher.css .vm-budget-drawer).
+const DRAWER_MS = 450;
+
+/**
+ * RRMC's budget folded into "Is there an ideal price range?": Yes rolls the range slider down
+ * beneath the options, anything else rolls it back up and drops the budget. Call `sync()`
+ * after every change to the gate's answer; `onChange` fires on slider moves.
+ */
+export function renderBudgetDrawer(budgetQ, answers, { onChange } = {}) {
+  const drawer = el('div', 'vm-budget-drawer');
+  const inner = el('div', 'vm-budget-drawer-inner');
+  drawer.append(inner);
+  let clearing = 0;
+  const sync = () => {
+    const open = answers.budgetGate === 'yes';
+    drawer.classList.toggle('is-open', open);
+    inner.inert = !open;
+    if (open) {
+      clearTimeout(clearing);
+      if (!inner.firstChild) {
+        const box = el('div', 'vm-options vm-slider');
+        renderRangeSlider(box, budgetQ, answers, { onChange });
+        // The range in words, beneath the track; screen readers already hear it from the handles.
+        const value = el('span', 'vm-budget-range-value');
+        const range = el('div', 'vm-budget-range');
+        range.setAttribute('aria-hidden', 'true');
+        range.append(el('span', 'vm-budget-range-label', 'Current Range:'), value);
+        const paint = () => {
+          const [lo, hi] = answers[budgetQ.id] || [];
+          value.textContent = `${formatSliderValue(lo, budgetQ)} - ${formatSliderValue(hi, budgetQ)}`;
+        };
+        paint();
+        box.addEventListener('input', paint);
+        inner.append(box, range);
+      }
+      return;
+    }
+    delete answers[budgetQ.id];
+    // Emptied once the roll-up has played, so the slider doesn't vanish mid-animation.
+    if (inner.firstChild) clearing = setTimeout(() => inner.replaceChildren(), DRAWER_MS);
+  };
+  sync();
+  return { drawer, sync };
 }
 
 /**

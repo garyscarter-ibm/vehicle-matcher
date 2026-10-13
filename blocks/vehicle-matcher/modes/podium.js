@@ -44,7 +44,7 @@ import { apiGetQuestions, apiMatch } from '../engine.js';
 import { el } from '../ui.js';
 import { BRAND_COPY, UNMET_PHRASES, orList } from './brand-copy.js';
 import {
-  visibleQuestions, renderRangeSlider, renderOptionList, formatSliderValue,
+  visibleQuestions, renderRangeSlider, renderOptionList, formatSliderValue, renderBudgetDrawer,
 } from './question-ui.js';
 import { createPreviewFeed } from './preview-feed.js';
 import { matchCard, rrmcTaglines, setRrmcAnswers } from './result-card.js';
@@ -780,7 +780,9 @@ function mount(root, ctx) {
    * blocks below it.
    */
   const syncQuestions = () => {
-    const visible = visibleQuestions(state.questions, state.answers);
+    // RRMC asks its budget inside the price-range block (renderBudgetDrawer), not as its own.
+    const asked = ctx.brand === 'rrmc' ? state.questions.filter((q) => q.id !== 'budget') : state.questions;
+    const visible = visibleQuestions(asked, state.answers);
     const wanted = new Set(visible.map((q) => q.id));
 
     [...questionsWrap.children].forEach((node) => {
@@ -837,7 +839,14 @@ function mount(root, ctx) {
     const panel = el('div', 'vm-podium-q-panel');
     panel.id = panelId;
     if (q.help) panel.append(el('p', 'vm-podium-q-help', q.help));
-    panel.append(buildControl(q, state.answers, answerChanged));
+    // RRMC: Yes on the price-range question rolls the budget slider down beneath it.
+    const budgetQ = ctx.brand === 'rrmc' && q.id === 'budgetGate' && state.questions.find((x) => x.id === 'budget');
+    const budgetDrawer = budgetQ && renderBudgetDrawer(budgetQ, state.answers, { onChange: answerChanged });
+    panel.append(buildControl(q, state.answers, () => {
+      budgetDrawer?.sync();
+      answerChanged();
+    }));
+    if (budgetDrawer) panel.append(budgetDrawer.drawer);
 
     toggle.addEventListener('click', () => {
       const expanded = toggle.getAttribute('aria-expanded') === 'true';

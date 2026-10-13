@@ -2230,6 +2230,60 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
   max-width: calc(2 * 260px + var(--vm-space-2));
   margin-inline: auto;
 }
+/* The budget slider rolls down beneath "Is there an ideal price range?" on Yes (question-ui.js
+   renderBudgetDrawer, whose DRAWER_MS matches the 0.45s); 0fr to 1fr rolls it to its own height. */
+.vm.vm-rrmc .vm-budget-drawer {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.45s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.45s ease;
+}
+.vm.vm-rrmc .vm-budget-drawer.is-open { grid-template-rows: 1fr; opacity: 1; }
+.vm.vm-rrmc .vm-budget-drawer-inner { min-height: 0; overflow: hidden; }
+/* Room above and below the track so the handles and their ring aren't clipped by the roll. */
+.vm.vm-rrmc .vm-budget-drawer-inner > .vm-options { margin-top: var(--vm-space-6); padding: 4px 2px 12px; }
+@media (prefers-reduced-motion: reduce) {
+  .vm.vm-rrmc .vm-budget-drawer { transition: none; }
+}
+/* No figures on the rolled-down budget: a minus and a plus above the track's ends instead. The
+   readout and bounds stay in the DOM (and each handle keeps its aria-valuetext) for screen readers. */
+.vm.vm-rrmc .vm-budget-drawer .vm-options.vm-slider { display: flex; flex-direction: column; }
+.vm.vm-rrmc .vm-budget-drawer .vm-slider-value {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.vm.vm-rrmc .vm-budget-drawer .vm-slider-bounds {
+  order: -1;
+  margin: 0 0 var(--vm-space-3);
+  font-size: 0;
+  line-height: 1;
+  color: var(--vm-ink);
+}
+.vm.vm-rrmc .vm-budget-drawer .vm-slider-bounds > span::before { font-size: 24px; font-weight: 300; }
+.vm.vm-rrmc .vm-budget-drawer .vm-slider-min::before { content: '−'; }
+.vm.vm-rrmc .vm-budget-drawer .vm-slider-max::before { content: '+'; }
+/* "Current Range:" in a 300 x 70 purple tile centred beneath the slider, copy left-aligned. */
+.vm.vm-rrmc .vm-budget-range {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 300px;
+  max-width: 100%;
+  height: 70px;
+  margin: var(--vm-space-2) auto 4px;
+  padding: 0 var(--vm-space-4);
+  background: #281432;
+  color: #ffffff;
+  text-align: left;
+}
+.vm.vm-rrmc .vm-budget-range-label { font-size: 14px; letter-spacing: 0.02em; line-height: 1.3; }
+.vm.vm-rrmc .vm-budget-range-value { font-size: 18px; font-weight: 300; letter-spacing: 0.02em; line-height: 1.3; }
 .vm.vm-rrmc .vm-screen[data-qid] .vm-slider-value { text-align: center; }
 /* Questionnaire titles hold one line at a flat 8%, outranking the per-question widths and first-line tracking below. */
 .vm.vm-rrmc .vm-screen[data-qid] .vm-question { width: auto; text-align: center; white-space: nowrap; letter-spacing: 0.08em; }
