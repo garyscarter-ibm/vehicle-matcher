@@ -2197,7 +2197,8 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 
 /* RRMC podium: progress bar moves into the switcher row, fills the left side. */
 .vm-switcher.has-progress { align-items: center; }
-.vm.vm-rrmc .vm-podium-progress-bar { background: #f7a177; }
+/* Rose gold for every RRMC progress bar: podium's and the questionnaire's. */
+.vm.vm-rrmc :is(.vm-podium-progress-bar, .vm-progress-bar) { background: #f7a177; }
 /* Question pills in every mode that asks: podium, questionnaire screens, guess-who popovers. */
 .vm.vm-rrmc :is(.vm-podium, .vm-screen[data-qid], .vm-gw-pop-body) .vm-option {
   border-radius: 9999px;
@@ -4356,22 +4357,22 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 /* RRMC questionnaire results wear the podium tiles: a lone lead card is the wide gold,
    a tie's first card the portrait gold, its others silver/bronze, compact tiles the tail. */
 .vm.vm-rrmc .vm-results { container-type: inline-size; }
-.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid > .vm-card:first-child {
+.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid > .vm-card:first-of-type {
   background: #281432;
   color: #ffffff;
 }
-.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid > .vm-card:first-child * {
+.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid > .vm-card:first-of-type * {
   color: #ffffff;
   border-color: rgba(255, 255, 255, 0.2);
 }
-.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid > .vm-card:first-child > .vm-card-media {
+.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid > .vm-card:first-of-type > .vm-card-media {
   width: 300px;
   height: auto;
   max-height: unset;
   aspect-ratio: 16 / 9;
   overflow: hidden;
 }
-.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) :is(.vm-grid > .vm-card:not(:first-child), .vm-rrmc-podium-side > .vm-card) {
+.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) :is(.vm-grid > .vm-card:not(:first-of-type), .vm-rrmc-podium-slot > .vm-card) {
   background: #ffffff;
   box-shadow: none;
 }
@@ -4382,7 +4383,7 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
   justify-content: center;
   align-items: start;
 }
-.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) :is(.vm-grid > .vm-card:not(:first-child), .vm-rrmc-podium-side > .vm-card) .vm-card-name {
+.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) :is(.vm-grid > .vm-card:not(:first-of-type), .vm-rrmc-podium-slot > .vm-card) .vm-card-name {
   font-size: 32px;
   letter-spacing: 0.05em;
 }
@@ -4393,7 +4394,7 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
   margin: 0;
 }
 .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid .vm-rrmc-presented-location,
-.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) :is(.vm-grid > .vm-card:not(:first-child), .vm-rrmc-podium-side > .vm-card) .vm-rrmc-why,
+.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) :is(.vm-grid > .vm-card:not(:first-of-type), .vm-rrmc-podium-slot > .vm-card) .vm-rrmc-why,
 .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-tail-grid .vm-rrmc-presented-location {
   text-decoration: underline !important;
 }
@@ -4442,11 +4443,11 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 }
 /* "Not this one" is the podium's ✕ chip in the tile's top-right corner (questionnaire.js
    lifts it out of the body); cards stop clipping so its reasons menu can drop below. */
-.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) :is(.vm-grid, .vm-rrmc-podium-side) > .vm-card {
+.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) :is(.vm-grid, .vm-rrmc-podium-slot) > .vm-card {
   position: relative;
   overflow: visible;
 }
-.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) :is(.vm-grid, .vm-rrmc-podium-side) > .vm-card > .vm-reject {
+.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) :is(.vm-grid, .vm-rrmc-podium-slot) > .vm-card > .vm-reject {
   position: absolute;
   top: var(--vm-space-2);
   right: var(--vm-space-2);
@@ -4454,7 +4455,7 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
   z-index: 2;
 }
 /* Dark ink on the chip and menu, even inside the purple gold card's white-text rule. */
-.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) :is(.vm-grid, .vm-rrmc-podium-side) > .vm-card > .vm-reject * { color: var(--vm-ink); }
+.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) :is(.vm-grid, .vm-rrmc-podium-slot) > .vm-card > .vm-reject * { color: var(--vm-ink); }
 /* The shared button's column layout and full width give way to the chip's own. */
 .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-card > .vm-reject .vm-reject-open.vm-podium-reject {
   position: static;
@@ -4491,16 +4492,33 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
   flex-direction: column;
   gap: 60px;
 }
+/* Rank eyebrows above the tiles: gold's sits on its own row so the silver eyebrow lines up with it. */
+.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid.vm-rrmc-podium { row-gap: 0; }
+.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium > .vm-podium-rank { grid-column: 1; grid-row: 1; }
+.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium > .vm-card { grid-column: 1; grid-row: 2; }
+.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium > .vm-rrmc-podium-side { grid-column: 2; grid-row: 1 / span 2; }
+.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-podium-rank.is-gold {
+  --vm-podium-rule: var(--vm-space-6);
+  font-size: var(--vm-text-label);
+  color: var(--vm-accent-spot);
+}
+.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-podium-rank.is-silver { --vm-podium-rule: var(--vm-space-4); }
+.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium-slot > .vm-card { width: 100%; }
 /* Compact cards, as podium's silver/bronze; drop the carousel's flex basis, which would set height here. */
-.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium-side > .vm-card { flex: none; width: 100%; }
+.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium-side > .vm-rrmc-podium-slot { flex: none; width: 100%; }
 /* Too narrow for a side column: gold spans the top, silver and bronze sit side by side beneath. */
 @container (max-width: 1099px) {
   .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid.vm-rrmc-podium { grid-template-columns: minmax(0, 860px); }
+  .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium > .vm-rrmc-podium-side {
+    grid-column: 1;
+    grid-row: 3;
+    margin-top: 60px;
+  }
   .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium-side {
     flex-direction: row;
     justify-content: center;
   }
-  .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium-side > .vm-card { flex: 0 1 300px; }
+  .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium-side > .vm-rrmc-podium-slot { flex: 0 1 300px; }
 }
 /* Same 659px breakpoint as the podium: tiles stack, and the wide gold turns portrait. */
 @container (max-width: 659px) {
@@ -4529,7 +4547,7 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
     flex-direction: column;
     align-items: center;
   }
-  .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium-side > .vm-card { flex: none; width: 300px; max-width: 100%; }
+  .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium-side > .vm-rrmc-podium-slot { flex: none; width: 300px; max-width: 100%; }
   .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid:not(.vm-grid-tied) > .vm-card .vm-rrmc-why { margin-top: 24px; }
 }
 /* Tail tiles, as the podium's extra tiles. */
@@ -4570,8 +4588,117 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) :is(.vm-grid, .vm-tail-grid) :is(
   .vm-specs, .vm-blurb, .vm-distance, .vm-avail, .vm-why-label, .vm-reasons, .vm-usedmeta, .vm-pick, .vm-card-link
 ),
-.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) :is(.vm-grid > .vm-card:not(:first-child), .vm-rrmc-podium-side > .vm-card) .vm-kit {
+.vm.vm-rrmc .vm-results:not(.vm-results-skeleton) :is(.vm-grid > .vm-card:not(:first-of-type), .vm-rrmc-podium-slot > .vm-card) .vm-kit {
   display: none;
+}
+
+/* RRMC "Why this one?": the tile's line is a bare button that opens the purple panel. */
+.vm.vm-rrmc .vm-rrmc-why-btn {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.vm.vm-rrmc .vm-rrmc-why-btn,
+.vm.vm-rrmc .vm-stage .vm-rrmc-why-btn { text-decoration: underline !important; }
+.vm.vm-rrmc .vm-rrmc-why-btn:focus-visible { outline: 2px solid currentcolor; outline-offset: 2px; }
+
+/* Rolls in leftwards from beyond the right edge and settles pinned to the screen's right edge. */
+.vm.vm-rrmc .vm-rrmc-why-panel {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1000;
+  box-sizing: border-box;
+  width: min(440px, 92vw);
+  padding: 56px 40px 40px;
+  overflow-y: auto;
+  background: #281432;
+  color: #ffffff;
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.25);
+  transform: translateX(100%);
+  visibility: hidden;
+  transition: transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1), visibility 0s linear 0.7s;
+}
+.vm.vm-rrmc .vm-rrmc-why-panel.is-open {
+  transform: none;
+  visibility: visible;
+  transition: transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1), visibility 0s;
+}
+.vm.vm-rrmc .vm-rrmc-why-panel:focus { outline: none; }
+.vm.vm-rrmc .vm-rrmc-why-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  background: none;
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+.vm.vm-rrmc .vm-rrmc-why-close:focus-visible { outline: 2px solid #ffffff; outline-offset: 2px; }
+.vm.vm-rrmc .vm-rrmc-why-eyebrow {
+  margin: 0 0 8px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+.vm.vm-rrmc .vm-rrmc-why-title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+  color: #ffffff;
+}
+/* Section labels in the progress bar's rose gold. */
+.vm.vm-rrmc .vm-rrmc-why-label {
+  margin: 32px 0 12px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #f7a177;
+}
+.vm.vm-rrmc .vm-rrmc-why-list { margin: 0; padding: 0; list-style: none; }
+.vm.vm-rrmc .vm-rrmc-why-list li,
+.vm.vm-rrmc .vm-rrmc-why-none {
+  margin: 0;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+.vm.vm-rrmc .vm-rrmc-why-facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px 24px;
+  margin: 0;
+}
+.vm.vm-rrmc .vm-rrmc-why-facts dt {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  align-self: baseline;
+}
+.vm.vm-rrmc .vm-rrmc-why-facts dd { margin: 0; font-size: 16px; letter-spacing: 0.02em; }
+@media (prefers-reduced-motion: reduce) {
+  .vm.vm-rrmc .vm-rrmc-why-panel,
+  .vm.vm-rrmc .vm-rrmc-why-panel.is-open { transition: none; }
 }
 
 /* ---------------------------- brand fit ------------------------------ */

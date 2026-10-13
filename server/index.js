@@ -199,6 +199,9 @@ function publicCar(car) {
     // is fair game (see ageInYears in match-signal.js for the derivation order).
     year: car.year,
     firstReg: car.firstReg,
+    // RRMC's own question facts, so "Why this one?" can say where the car sits against them.
+    handDrive: car.handDrive,
+    region: car.region,
     photo: car.photo,
     // Granular facts the life-fit questions never ask about, for the
     // refinement step: equipment concepts (mapping.js FEATURE_CONCEPTS),

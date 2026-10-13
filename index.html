@@ -559,6 +559,27 @@ main {
         soe.alt = '';
         soe.className = 'demo-nav-logo-soe';
         nav.querySelector('.demo-nav-logo').append(soe);
+        // "Why this one?" panel (result-card.js): the bar's blur extends down the screen and
+        // its rule drops in as the panel rolls on, and both reverse as it rolls off.
+        const veil = document.createElement('div');
+        veil.className = 'demo-nav-veil';
+        veil.setAttribute('aria-hidden', 'true');
+        nav.after(veil);
+        const placeVeil = () => {
+          veil.style.top = `${nav.getBoundingClientRect().bottom}px`;
+          veil.style.background = nav.style.background || 'transparent';
+        };
+        let settle = 0;
+        window.removeEventListener('vm-why-panel', window.vmWhyChrome || (() => {}));
+        window.vmWhyChrome = (e) => {
+          placeVeil();
+          nav.classList.add('is-why-moving');
+          clearTimeout(settle);
+          settle = setTimeout(() => nav.classList.remove('is-why-moving'), 750);
+          nav.classList.toggle('is-why-open', e.detail.open);
+          veil.classList.toggle('is-open', e.detail.open);
+        };
+        window.addEventListener('vm-why-panel', window.vmWhyChrome);
         window.addEventListener('scroll', () => {
           const progress = Math.min(Math.max(window.scrollY - 110, 0) / 300, 1);
           // Purple (40,20,50) blends to dark grey (34,34,34) along the same curve as the alpha.
@@ -571,6 +592,7 @@ main {
           // The hero scrolls out over (its bottom - the bar); the rule is gone by halfway.
           const heroRun = heroEl ? heroEl.offsetTop + heroEl.offsetHeight - nav.offsetHeight : 0;
           nav.style.setProperty('--nav-rule', heroRun > 0 ? Math.max(1 - window.scrollY / (heroRun / 2), 0) : 0);
+          if (veil.isConnected) placeVeil();
         }, { passive: true });
       }
     }

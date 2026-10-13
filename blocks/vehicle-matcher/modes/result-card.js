@@ -17,6 +17,7 @@
 
 import { el, gbp } from '../ui.js';
 import { BRAND_COPY, TRADE_COPY, tradeLines, orList } from './brand-copy.js';
+import { PILL_LABEL } from '../quiz-meta.js';
 
 export const SPEC_LABELS = {
   hatchback: 'Hatchback', saloon: 'Saloon', estate: 'Estate', suv: 'SUV',
@@ -174,6 +175,89 @@ export function rrmcTaglines() {
   return [tagline, sub];
 }
 
+const DRIVE_LABEL = { lhd: 'Left-hand drive', rhd: 'Right-hand drive' };
+
+/** Tells the host page the panel is rolling on or off, so its chrome can move in step (index.html). */
+function announceWhyPanel(open) {
+  window.dispatchEvent(new CustomEvent('vm-why-panel', { detail: { open } }));
+}
+
+/** The open "Why this one?" panel's teardown, so opening another car's swaps the content. */
+let closeWhyPanel = null;
+
+/** RRMC "Why this one?": a purple panel that rolls in from the right and settles pinned to the
+ *  screen's right edge, setting the car against what was asked for. One panel per block. */
+function openWhyPanel(trigger, match, { displayName, location, price }) {
+  const { car, reasons = [], tradeOffs = [] } = match;
+  // On the block root, not inside a results area: those are CSS containers, which would trap position: fixed.
+  const host = trigger.closest('.vm') || document.body;
+  let panel = host.querySelector(':scope > .vm-rrmc-why-panel');
+  if (!panel) {
+    panel = el('aside', 'vm-rrmc-why-panel');
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-labelledby', 'vm-rrmc-why-title');
+    panel.tabIndex = -1;
+    host.append(panel);
+  }
+  closeWhyPanel?.({ restoreFocus: false, keepOpen: true });
+
+  const close = el('button', 'vm-rrmc-why-close', '✕');
+  close.type = 'button';
+  close.setAttribute('aria-label', 'Close');
+  const title = el('h3', 'vm-rrmc-why-title', displayName);
+  title.id = 'vm-rrmc-why-title';
+
+  const matched = el('ul', 'vm-rrmc-why-list');
+  reasons.forEach((r) => matched.append(el('li', null, r)));
+  const facts = el('dl', 'vm-rrmc-why-facts');
+  const colour = typeof car.colour === 'string' ? car.colour : (car.colour?.manufacturerColour || car.colour?.colour);
+  [
+    ['Price', price],
+    ['Mileage', car.mileage ? `${car.mileage.toLocaleString('en-GB')} miles` : 'Negligible'],
+    ['Year', car.year],
+    ['Drive', DRIVE_LABEL[car.handDrive]],
+    ['Region', PILL_LABEL.regions[car.region]],
+    ['Colour', colour],
+    ['Presented by', location],
+  ].filter(([, v]) => v).forEach(([k, v]) => facts.append(el('dt', null, k), el('dd', null, String(v))));
+
+  panel.replaceChildren(
+    close,
+    el('p', 'vm-rrmc-why-eyebrow', 'Why this one?'),
+    title,
+    el('p', 'vm-rrmc-why-label', 'How it matches what you asked for'),
+    reasons.length ? matched : el('p', 'vm-rrmc-why-none', 'It meets everything you have set so far.'),
+  );
+  if (tradeOffs.length) {
+    const differs = el('ul', 'vm-rrmc-why-list is-differs');
+    tradeLines('rrmc', tradeOffs).forEach((line) => differs.append(el('li', null, line)));
+    panel.append(el('p', 'vm-rrmc-why-label', 'Worth knowing'), differs);
+  }
+  panel.append(el('p', 'vm-rrmc-why-label', 'At a glance'), facts);
+
+  const onKey = (e) => { if (e.key === 'Escape') shut(); };
+  function shut({ restoreFocus = true, keepOpen = false } = {}) {
+    document.removeEventListener('keydown', onKey);
+    closeWhyPanel = null;
+    trigger.setAttribute('aria-expanded', 'false');
+    if (!keepOpen) {
+      panel.classList.remove('is-open');
+      announceWhyPanel(false);
+    }
+    if (restoreFocus && trigger.isConnected) trigger.focus();
+  }
+  close.addEventListener('click', () => shut());
+  document.addEventListener('keydown', onKey);
+  closeWhyPanel = shut;
+  trigger.setAttribute('aria-expanded', 'true');
+  // A frame's pause so a first open starts off-screen right and rolls in to the right edge.
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    panel.classList.add('is-open');
+    announceWhyPanel(true);
+    panel.focus({ preventScroll: true });
+  }));
+}
+
 const EXTENDED = /\bExtended\b/i;
 // Tracking floor for the squeeze: tighter than this and the name stops reading.
 const MIN_TRACKING_EM = -0.05;
@@ -287,8 +371,16 @@ export function matchCard(match, {
     const line = [mileageText, fuel].filter(Boolean).join(' – ');
     if (line) body.append(el('p', 'vm-rrmc-mileage', line));
     body.append(el('p', 'vm-rrmc-view-options', 'View Options'));
-    body.append(el('p', 'vm-rrmc-why', 'Why this one?'));
     const location = (car.retailerName || 'RRMC').replace(/Rolls-Royce Motor Cars\s*/i, 'RRMC ').trim();
+    // Opens the shared purple panel; `price` is read at click time, by when it is set below.
+    const whyBtn = el('button', 'vm-rrmc-why-btn', 'Why this one?');
+    whyBtn.type = 'button';
+    whyBtn.setAttribute('aria-haspopup', 'dialog');
+    whyBtn.setAttribute('aria-expanded', 'false');
+    whyBtn.addEventListener('click', () => openWhyPanel(whyBtn, match, { displayName, location, price }));
+    const why = el('p', 'vm-rrmc-why');
+    why.append(whyBtn);
+    body.append(why);
     const presented = el('p', 'vm-rrmc-presented');
     // Links to the retailer's homepage when the feed names one; plain text otherwise.
     const locationSpan = el(car.retailerUrl ? 'a' : 'span', 'vm-rrmc-presented-location', location);

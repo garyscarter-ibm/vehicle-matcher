@@ -24,7 +24,7 @@ import {
   BRAND_COPY, UNMET_PHRASES, TRADE_COPY, orList, andList, tradeLines,
 } from './brand-copy.js';
 import {
-  CONCEPT_LABELS, listingsOf, distanceLabel, matchCard, previewTile, rrmcTaglines,
+  CONCEPT_LABELS, listingsOf, distanceLabel, matchCard, previewTile,
 } from './result-card.js';
 import {
   isVisible, visibleQuestions, formatSliderValue, renderRangeSlider, renderOptionList,
@@ -363,8 +363,6 @@ function renderRefine(
   // Set by renderResults; see `noteShown` below for why it matters.
   let notedCarId = null;
   hereGroup.append(hereLabel, grid, hereRestGrid);
-  // RRMC: the podium's taglines stand above the top three in place of the "AT …" heading.
-  if (ctx.brand === 'rrmc') grid.before(...rrmcTaglines());
   awayGroup.append(awayLabel, awayPending, awayGrid, awayRestGrid);
   /*
    * The working, under the cars.
@@ -679,7 +677,8 @@ function renderRefine(
     }
     // "We can't split them" only holds while there are several to split — but a
     // lede about the single named car (the taste pick) survives narrowing.
-    lede.hidden = !frame.lede || (shown.length <= 1 && !frame.ledeSurvivesNarrowing);
+    lede.hidden = ctx.brand === 'rrmc' || !frame.lede
+      || (shown.length <= 1 && !frame.ledeSurvivesNarrowing);
     lede.textContent = frame.lede || '';
     // A car waved away with no reason narrows the count but adds no words —
     // there's nothing to report about "just not that one".
@@ -885,15 +884,21 @@ function renderRefine(
       }
       return card;
     };
-    // RRMC lays the leading group out as a podium: gold on the left, silver and bronze down the right.
+    // RRMC lays the leading group out as a podium: gold on the left, silver and bronze down the
+    // right, each under the podium's rank eyebrow (same words as podium.js's RRMC `ranks`).
+    const rank = (text, tier) => el('p', `vm-podium-rank is-${tier}`, text);
     const podium = (into, rest, list) => {
       const top = list.slice(0, 3);
       into.classList.remove('vm-grid-tied');
       into.classList.add('vm-rrmc-podium');
-      into.append(full(top[0], true, true));
+      into.append(rank('Your Top Pick', 'gold'), full(top[0], true, true));
       if (top.length > 1) {
         const side = el('div', 'vm-rrmc-podium-side');
-        top.slice(1).forEach((m) => side.append(full(m, false, 'line', true)));
+        top.slice(1).forEach((m, i) => {
+          const slot = el('div', 'vm-rrmc-podium-slot');
+          slot.append(rank('Another Option', i === 0 ? 'silver' : 'bronze'), full(m, false, 'line', true));
+          side.append(slot);
+        });
         into.append(side);
       }
       drop(list, top).forEach((m) => rest.append(tile(m)));
@@ -1861,8 +1866,9 @@ async function renderResults(root, ctx, answers) {
 
     const title = el('h2', 'vm-title', '');
     const lede = el('p', 'vm-lede', '');
-    // Still built and rewritten on every redraw, just not shown for RRMC.
+    // Still built and rewritten on every redraw, just not shown for RRMC (nor the line beneath).
     title.hidden = rrmc;
+    lede.hidden = rrmc;
     screen.append(title, lede);
 
     /*

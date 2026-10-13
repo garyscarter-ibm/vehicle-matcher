@@ -254,7 +254,38 @@
   height: 1px;
   background: #ffffff;
   opacity: var(--nav-rule, 1);
+  /* Hidden by scroll, it waits a little above its line, so it drops in from above. */
+  transform: translateY(calc(-10px * (1 - var(--nav-rule, 1))));
   pointer-events: none;
+}
+/* While the "Why this one?" panel is open the rule stays in; index.html times the easing. */
+.vm-rrmc .demo-nav.is-why-open::after { opacity: 1; transform: none; }
+.vm-rrmc .demo-nav.is-why-moving::after {
+  transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.vm-rrmc .demo-nav.is-why-open {
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+/* The bar's blur, extended: a sheet from the bar's foot down the screen, unrolled in step with
+   the panel (same 0.7s and easing) and rolled back up as it leaves. Sits under the bar and panel. */
+.vm-rrmc .demo-nav-veil {
+  position: fixed;
+  top: 110px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.vm-rrmc .demo-nav-veil.is-open { clip-path: inset(0); }
+@media (prefers-reduced-motion: reduce) {
+  .vm-rrmc .demo-nav-veil,
+  .vm-rrmc .demo-nav.is-why-moving::after { transition: none; }
 }
 /* Set by index.html once the hero has scrolled out from under the bar. */
 .vm-rrmc .demo-nav.is-past-hero {
