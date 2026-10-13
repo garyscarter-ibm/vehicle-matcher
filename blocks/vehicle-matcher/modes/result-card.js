@@ -236,6 +236,17 @@ function openRrmcPanel(trigger, { heading, content, wide = false }) {
   }));
 }
 
+// Under this many miles a reading reads as new: "Mileage Negligible".
+const NEGLIGIBLE_MILES = 50;
+
+/** RRMC's mileage line for a car or listing: "MOA" (mileage on application, as POA is for price)
+ *  when no reading was published, "Mileage Negligible" under 50 miles, else "N Miles". */
+function rrmcMileageText({ moa, mileage }) {
+  if (moa) return 'MOA';
+  const miles = mileage || 0;
+  return miles < NEGLIGIBLE_MILES ? 'Mileage Negligible' : `${miles.toLocaleString('en-GB')} Miles`;
+}
+
 /** The answers the shown tiles were matched against; each mode sets them before it paints. */
 let rrmcAnswers = {};
 export function setRrmcAnswers(answers) { rrmcAnswers = answers || {}; }
@@ -282,12 +293,17 @@ function whyProse(car, answers, reasons, tradeOffs) {
   // Nothing asked for to point at (no answers yet): the engine's own reasons stand in.
   if (!asked.length) reasons.slice(0, 2).forEach((r) => asked.push(asSentence(r)));
 
+  // With no published reading (MOA) the facts say nothing about mileage rather than guess.
   const miles = car.mileage || 0;
   let wear = `${miles.toLocaleString('en-GB')} miles`;
-  if (miles < 10000) wear = 'low mileage';
+  if (miles < NEGLIGIBLE_MILES) wear = 'negligible mileage';
+  else if (miles < 10000) wear = 'low mileage';
   else if (miles < 30000) wear = 'moderate mileage';
-  const seats = car.seats ? ` and ${cardinal(car.seats)} seats` : '';
-  const facts = [body ? `It's ${withArticle(body)} with ${wear}${seats}.` : `It has ${wear}${seats}.`];
+  const seatsText = car.seats ? `${cardinal(car.seats)} seats` : '';
+  const traits = (car.moa ? [seatsText] : [wear, seatsText]).filter(Boolean).join(' and ');
+  const facts = [];
+  if (body) facts.push(traits ? `It's ${withArticle(body)} with ${traits}.` : `It's ${withArticle(body)}.`);
+  else if (traits) facts.push(`It has ${traits}.`);
   // The drive side is said once: a match above, a drawback below, or (unasked) a plain fact here.
   if (DRIVE_PROSE[car.handDrive] && !answers.handDrive) {
     facts.push(`It's configured in ${DRIVE_PROSE[car.handDrive]}.`);
@@ -300,9 +316,9 @@ function whyProse(car, answers, reasons, tradeOffs) {
   const band = budgetBand(answers);
   if (band && car.priceMin && !car.poa) {
     const [lo, hi] = band;
-    const lead = miles
-      ? `With just ${miles.toLocaleString('en-GB')} miles on the clock, it's`
-      : "With negligible mileage, it's";
+    let lead = `With just ${miles.toLocaleString('en-GB')} miles on the clock, it's`;
+    if (car.moa) lead = "It's";
+    else if (miles < NEGLIGIBLE_MILES) lead = "With negligible mileage, it's";
     const at = `at ${gbp(car.priceMin)}`;
     if (car.priceMin > hi) drawbacks.push(`${lead} above your price range ${at}.`);
     else if (hi > lo && (car.priceMin - lo) / (hi - lo) >= 2 / 3) {
@@ -353,7 +369,7 @@ function altTile(listing, car, baseName) {
     img.addEventListener('error', () => img.remove());
     media.append(img);
   }
-  const mileage = listing.mileage ? `${listing.mileage.toLocaleString('en-GB')} Miles` : 'Mileage Negligible';
+  const mileage = rrmcMileageText(listing);
   const fuel = FUEL_SPEC[car.fuel] || car.fuel || '';
   // A span, not a link: the tile itself is the link.
   const presented = el('p', 'vm-rrmc-alt-presented');
@@ -495,7 +511,7 @@ export function matchCard(match, {
 
   if (brandKey === 'rrmc') {
     const fuel = FUEL_SPEC[car.fuel] || car.fuel || '';
-    const mileageText = car.mileage ? `${car.mileage.toLocaleString('en-GB')} Miles` : 'Mileage Negligible';
+    const mileageText = rrmcMileageText(car);
     const line = [mileageText, fuel].filter(Boolean).join(' – ');
     if (line) body.append(el('p', 'vm-rrmc-mileage', line));
     const location = rrmcLocation(car.retailerName);

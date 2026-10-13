@@ -625,6 +625,7 @@ function matchAt(pool, i, big) {
       priceMax: price,
       listingCount: 1,
       mileage: pool.mileage[i] < 0 ? null : pool.mileage[i],
+      moa: Boolean(pool.moa?.[i]),
       plate: pool.plate[i],
       seats: pool.seats[i] < 0 ? null : pool.seats[i],
       boot: pool.boot[i],

@@ -612,7 +612,30 @@ async function ferrariLiveStock() {
 
 const RRMC_PAGE_LIMIT = Number(process.env.RRMC_PAGE_LIMIT) || 30;
 
+/* RRMC dealers price in their own currency (19 of them); this daily public feed, which covers
+   every one (the ECB's omits SAR, AED, KWD, QAR, TWD), turns them into pounds. */
+const FX_URL = 'https://open.er-api.com/v6/latest/GBP';
+const FX_TTL_MS = 6 * 60 * 60 * 1000;
+let fxCache = null;
+
+/** Units of each currency per £1: fresh within FX_TTL_MS, else the last good set, else null. */
+async function gbpRates() {
+  if (fxCache && Date.now() - fxCache.at < FX_TTL_MS) return fxCache.rates;
+  try {
+    const res = await httpsGet(FX_URL);
+    const data = JSON.parse(res.body);
+    if (res.status === 200 && data?.result === 'success' && data.rates) {
+      fxCache = { at: Date.now(), rates: data.rates };
+      console.log(`[fx] GBP rates as of ${data.time_last_update_utc}`);
+    }
+  } catch (err) {
+    console.warn('[fx] rates unavailable, using the feed\'s own GBP figures:', err?.message);
+  }
+  return fxCache?.rates || null;
+}
+
 async function rrmcLiveStock() {
+  const rates = await gbpRates();
   const first = await httpsPostJson(RRMC_FEED_URL, rrmcFeedBody(1), {
     Origin: RRMC_FEED_ORIGIN,
     Referer: `${RRMC_FEED_ORIGIN}/`,
@@ -625,7 +648,7 @@ async function rrmcLiveStock() {
   const cars = [];
   const addFrom = (items) => {
     for (const v of items) {
-      const projected = projectRRMCListing(v);
+      const projected = projectRRMCListing(v, rates);
       if (!projected.id || seen.has(projected.id)) continue;
       seen.add(projected.id);
       const car = mapRRMCRaw(projected);

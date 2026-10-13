@@ -5,7 +5,7 @@ import {
   matchCars, rankCars, budgetRange, unmetWants, tradeOffs, STRETCH_FACTOR, MAX_SHOWN,
 } from '../engine.js';
 import { CARS } from '../data.js';
-import { rrmcRegion, rrmcListingUrl, rrmcHandDrive } from '../rrmc-listing.js';
+import { rrmcRegion, rrmcListingUrl, rrmcHandDrive, rrmcPriceGBP, rrmcMiles, projectRRMCListing } from '../rrmc-listing.js';
 import { BUDGET_BANDS, QUESTIONS } from '../questions.js';
 
 function run(answers) {
@@ -531,4 +531,31 @@ test('drive side is a hard filter only when the regions answer is not specific',
   const lhd = soft.find((r) => r.car.id === b.id).score;
   const unpenalised = rankCars({ ...base, budget: 'any', regions: ['europe'] }, pool).find((r) => r.car.id === b.id).score;
   assert.ok(lhd < unpenalised, `${lhd} should be below ${unpenalised}`);
+});
+
+test('rrmcPriceGBP converts the dealer\'s local price at today\'s rate, else the feed\'s GBP', () => {
+  const rates = { GBP: 1, JPY: 200, USD: 1.25 };
+  const at = (retail, code, gbp) => ({ price: { retail }, currency: { code }, normalisedPrice: gbp ? { GBP: { retail: gbp } } : undefined });
+  assert.equal(rrmcPriceGBP(at(95000, 'GBP'), rates), 95000);
+  assert.equal(rrmcPriceGBP(at(16800000, 'JPY', 80200), rates), 84000);
+  assert.equal(rrmcPriceGBP(at(125000, 'USD'), rates), 100000);
+  // No rate for the currency (or no rates at all): the feed's own GBP figure.
+  assert.equal(rrmcPriceGBP(at(70000, 'KWD', 170194), rates), 170194);
+  assert.equal(rrmcPriceGBP(at(70000, 'KWD', 170194), null), 170194);
+  // Neither: no price rather than a wrong one, so the card shows POA.
+  assert.equal(rrmcPriceGBP(at(70000, 'KWD'), null), 0);
+  assert.equal(rrmcPriceGBP({ price: {} }, rates), 0);
+  const p = projectRRMCListing({ id: 1, ...at(16800000, 'JPY'), vehicle: { model: { name: 'Phantom' } } }, rates);
+  assert.equal(p.price, 84000);
+  assert.equal(p.poa, false);
+});
+
+test('rrmcMiles converts kilometre readings, by the reading\'s units or else the dealer\'s', () => {
+  assert.equal(rrmcMiles({ odometer: { value: 10850, units: 'mi' } }), 10850);
+  assert.equal(rrmcMiles({ odometer: { value: 58500, units: 'km' } }), 36350);
+  assert.equal(rrmcMiles({ odometer: { value: 8000 }, dealer: { odometerUnit: 'km' } }), 4971);
+  // The reading's own units win over the dealer's.
+  assert.equal(rrmcMiles({ odometer: { value: 100, units: 'mi' }, dealer: { odometerUnit: 'km' } }), 100);
+  assert.equal(rrmcMiles({ odometer: {} }), 0);
+  assert.equal(projectRRMCListing({ id: 1, odometer: { value: 1000, units: 'km' } }).mileage, 621);
 });

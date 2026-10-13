@@ -102,6 +102,27 @@ export function rrmcHandDrive(v) {
   return undefined;
 }
 
+/** The price in whole pounds: the listing's local price at `rates` (units per £1, today's), else
+ *  the feed's own GBP conversion; 0 (shown as POA) when neither is known, never a wrong figure. */
+export function rrmcPriceGBP(v, rates) {
+  const retail = v?.price?.retail;
+  if (!retail) return 0;
+  const code = String(v?.currency?.code || v?.currency || 'GBP').toUpperCase();
+  if (code === 'GBP') return Math.round(retail);
+  const rate = rates?.[code];
+  if (rate > 0) return Math.round(retail / rate);
+  return Math.round(v?.normalisedPrice?.GBP?.retail || 0);
+}
+
+const MILES_PER_KM = 0.621371;
+
+/** The odometer in whole miles: the reading's own `units`, else the dealer's, with km converted. */
+export function rrmcMiles(v) {
+  const value = Number(v?.odometer?.value) || 0;
+  const units = String(v?.odometer?.units || v?.dealer?.odometerUnit || 'mi').toLowerCase();
+  return units.startsWith('k') ? Math.round(value * MILES_PER_KM) : Math.round(value);
+}
+
 /** The retailer's own homepage, or undefined. The feed sends `dealer.website`; the rest are fallbacks. */
 export function rrmcDealerUrl(v) {
   const d = v?.dealer || {};
@@ -118,9 +139,11 @@ export function rrmcDealerUrl(v) {
 /**
  * Project one MTK Connect listing into the flat shape mapRRMCRaw consumes.
  * Colour is already available in appearanceOptions, so no separate PDP needed.
+ * `rates` (units per £1) converts the dealer's local price; see rrmcPriceGBP.
  */
-export function projectRRMCListing(v) {
+export function projectRRMCListing(v, rates = null) {
   const model = v?.vehicle?.model;
+  const price = rrmcPriceGBP(v, rates);
   const name = model?.name || model?.groupName || '';
   const fuelType = (v?.vehicle?.engine?.fuelType || '').toLowerCase();
   const fuel = (fuelType === 'electric' || fuelType === 'ev') ? 'ev' : undefined;
@@ -131,9 +154,11 @@ export function projectRRMCListing(v) {
   return {
     id: String(v.id || ''),
     name,
-    price: v?.price?.retail || 0,
-    poa: !v?.price?.retail,
-    mileage: v?.odometer?.value || 0,
+    price,
+    poa: !price,
+    mileage: rrmcMiles(v),
+    // The dealer hasn't published a reading: shown as "MOA", like POA for price.
+    moa: Boolean(v?.odometer?.odometerOnApplication),
     year: v?.vehicle?.registrationYear || v?.vehicle?.modelYear || 0,
     photo: cover?.url || undefined,
     cc: v?.vehicle?.engine?.capacity || 0,

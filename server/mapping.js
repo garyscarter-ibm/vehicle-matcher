@@ -1853,6 +1853,7 @@ export function mapRRMCRaw(raw) {
     link: raw?.link || 'https://approved.rolls-roycemotorcars.com/',
     ...(raw?.handDrive && { handDrive: raw.handDrive }),
     ...(raw?.region && { region: raw.region }),
+    ...(raw?.moa && { moa: true }),
     ...(spec.prestigeRank != null && { prestigeRank: spec.prestigeRank }),
   };
 }

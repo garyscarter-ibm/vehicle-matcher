@@ -191,6 +191,8 @@ function publicCar(car) {
     blurb: car.blurb,
     // Live retailer detail (present when sourced from the live feed).
     mileage: car.mileage,
+    // Mileage on application (RRMC): no reading was published, so cards print "MOA".
+    moa: car.moa || undefined,
     plate: car.plate,
     // Age source for the swipe card's dating frame ("3 years old" instead of a
     // reg plate). The plate encodes the age code for plated brands, but bikes
@@ -396,6 +398,8 @@ function publicPool(brand, cars, directory = null) {
     retailerId: cars.map((c) => c.retailerId ?? null),
     price: cars.map((c) => c.priceMin ?? null),
     mileage: cars.map((c) => c.mileage ?? null),
+    // Only sent when some car has no published reading (RRMC's "MOA").
+    ...(cars.some((c) => c.moa) && { moa: cars.map((c) => (c.moa ? 1 : 0)) }),
     year: cars.map((c) => c.year ?? null),
     plate: cars.map((c) => c.plate ?? null),
     seats: cars.map((c) => c.seats ?? null),
@@ -440,6 +444,7 @@ function publicMatch({
       priceMin: c.priceMin,
       poa: c.poa || undefined,
       mileage: c.mileage,
+      moa: c.moa || undefined,
       transmission: c.transmission,
       features: c.features,
       link: c.link,
