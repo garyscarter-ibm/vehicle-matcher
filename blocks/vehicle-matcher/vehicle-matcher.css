@@ -4816,6 +4816,9 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
   font-weight: 300;
   letter-spacing: 0.02em;
 }
+/* "Why this one?": headings in Light, body copy and its link in Ultralight. */
+.vm.vm-rrmc .vm-rrmc-why-panel:not(.is-wide) .vm-rrmc-why-sub { font-size: 24px; font-weight: 300; letter-spacing: 0.02em; }
+.vm.vm-rrmc .vm-rrmc-why-panel:not(.is-wide) :is(.vm-rrmc-why-prose, .vm-rrmc-why-more) { font-weight: 100; }
 /* "View Options": the same panel, but a non-scrolling column; the title (and the ✕) stay put
    while the tiles scroll beneath, a whole row per step. */
 .vm.vm-rrmc .vm-rrmc-why-panel.is-wide {
