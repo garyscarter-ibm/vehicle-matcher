@@ -264,10 +264,6 @@ const RRMC_REGION = {
 };
 const asList = (v) => (Array.isArray(v) ? v : (v != null ? [v] : []));
 const withArticle = (word) => `${/^(SUV|[AEIOU])/i.test(word) ? 'an' : 'a'} ${word}`;
-const asSentence = (s) => {
-  const t = String(s).trim();
-  return `${t.charAt(0).toUpperCase()}${t.slice(1)}${/[.!?]$/.test(t) ? '' : '.'}`;
-};
 
 /** The budget answer as [min, max] GBP, or null when none was set (or "No parameters"). */
 function budgetBand(answers) {
@@ -279,7 +275,7 @@ function budgetBand(answers) {
 }
 
 /** "Why this one?" in prose: what it matches, what it is, and its drawbacks against the answers. */
-function whyProse(car, answers, reasons, tradeOffs) {
+function whyProse(car, answers, tradeOffs) {
   const asked = [];
   // Body style is said once, in the facts sentence below, as the format has it.
   const body = RRMC_BODY[car.body];
@@ -296,8 +292,7 @@ function whyProse(car, answers, reasons, tradeOffs) {
   if (answers.people === 'crew' && car.seats >= 5) {
     asked.push(`It seats ${cardinal(car.seats)}, room for everyone you mentioned.`);
   }
-  // Nothing asked for to point at (no answers yet): the engine's own reasons stand in.
-  if (!asked.length) reasons.slice(0, 2).forEach((r) => asked.push(asSentence(r)));
+  // Only answers the car meets: no engine-wide reasons, so with none the paragraph is simply left out.
 
   // With no published reading (MOA) the facts say nothing about mileage rather than guess.
   const miles = car.mileage || 0;
@@ -326,29 +321,37 @@ function whyProse(car, answers, reasons, tradeOffs) {
     if (car.moa) lead = "It's";
     else if (miles < NEGLIGIBLE_MILES) lead = "With negligible mileage, it's";
     const at = `at ${gbp(car.priceMin)}`;
+    // Inside the range (an open top counts from the minimum up): the paragraph's last line says so.
+    if (car.priceMin >= lo && car.priceMin <= hi) facts.push(`It falls within your price range ${at}.`);
+    // A price inside the range is never a drawback, however near the top; only one above it is.
     if (car.priceMin > hi) drawbacks.push(`${lead} above your price range ${at}.`);
-    else if (hi > lo && (car.priceMin - lo) / (hi - lo) >= 2 / 3) {
-      drawbacks.push(`${lead} at the higher end of your price range ${at}.`);
-    }
   }
   return { asked, facts, drawbacks };
 }
 
 /** "Why this one?": what it matches, what it is, its drawbacks, and the way to its listing. */
 function openWhyPanel(trigger, match) {
-  const { car, reasons = [], tradeOffs = [] } = match;
-  const { asked, facts, drawbacks } = whyProse(car, rrmcAnswers, reasons, tradeOffs);
-  const content = [];
-  if (asked.length) content.push(el('p', 'vm-rrmc-why-prose', asked.join(' ')));
-  content.push(
-    el('p', 'vm-rrmc-why-prose', facts.join(' ')),
+  const { car, tradeOffs = [] } = match;
+  const { asked, facts, drawbacks } = whyProse(car, rrmcAnswers, tradeOffs);
+  // A paragraph whose sentences each start on a new line.
+  const prose = (sentences) => {
+    const p = el('p', 'vm-rrmc-why-prose');
+    sentences.forEach((line, i) => p.append(...(i ? [el('br'), line] : [line])));
+    return p;
+  };
+  // The copy in one block, with the link pinned beneath it at the foot of the panel.
+  const body = el('div', 'vm-rrmc-why-body');
+  if (asked.length) body.append(prose(asked));
+  body.append(
+    prose(facts),
     el('h4', 'vm-rrmc-why-sub', 'What are the drawbacks?'),
-    el('p', 'vm-rrmc-why-prose', drawbacks.length
-      ? drawbacks.join(' ')
-      : 'Nothing stands out against what you asked for.'),
+    prose(drawbacks.length ? drawbacks : ['Nothing stands out against what you asked for.']),
   );
+  const content = [body];
   if (car.link) {
-    const more = el('a', 'vm-rrmc-why-more', 'View more details here');
+    // The whole line opens the listing; only "here" carries the underline.
+    const more = el('a', 'vm-rrmc-why-more');
+    more.append('View more details ', el('span', 'vm-rrmc-why-here', 'here'), '.');
     more.href = car.link;
     more.target = '_blank';
     more.rel = 'noopener noreferrer';

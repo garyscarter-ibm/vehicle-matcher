@@ -4816,9 +4816,39 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
   font-weight: 300;
   letter-spacing: 0.02em;
 }
+/* "Why this one?" cushions: 84px top and bottom, 80px down its inner (left, page-facing) side.
+   No inner scroller: the panel grows downwards past 480px to fit its copy, the link at its foot;
+   only a window too short for that scrolls the panel itself. */
+.vm.vm-rrmc .vm-rrmc-why-panel:not(.is-wide) {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  min-height: min(480px, calc(100vh - 132px));
+  max-height: calc(100vh - 132px);
+  overflow-y: auto;
+  padding-block: 84px;
+  padding-left: 80px;
+}
+.vm.vm-rrmc .vm-rrmc-why-panel:not(.is-wide) .vm-rrmc-why-title { flex: none; }
+.vm.vm-rrmc .vm-rrmc-why-body { flex: none; }
+/* Headings sit 12px above their copy; paragraphs keep 24px between them. */
+.vm.vm-rrmc .vm-rrmc-why-body > .vm-rrmc-why-prose:first-child,
+.vm.vm-rrmc .vm-rrmc-why-body > .vm-rrmc-why-sub + .vm-rrmc-why-prose { margin-top: 12px; }
+/* Pinned to the bottom-right corner of the text area. */
+/* margin-top: auto keeps it at the foot when the panel is taller than its copy; 24px is the least gap. */
+.vm.vm-rrmc .vm-rrmc-why-panel:not(.is-wide) .vm-rrmc-why-more { flex: none; align-self: flex-end; margin-top: auto; padding-top: 24px; }
+.vm.vm-rrmc .vm-rrmc-why-more { text-decoration: none; letter-spacing: 0.01em; font-size: 24px; }
+.vm.vm-rrmc .vm-rrmc-why-here { text-decoration: underline; }
 /* "Why this one?": headings in Light, body copy and its link in Ultralight. */
 .vm.vm-rrmc .vm-rrmc-why-panel:not(.is-wide) .vm-rrmc-why-sub { font-size: 24px; font-weight: 300; letter-spacing: 0.02em; }
 .vm.vm-rrmc .vm-rrmc-why-panel:not(.is-wide) :is(.vm-rrmc-why-prose, .vm-rrmc-why-more) { font-weight: 100; }
+/* The drawbacks paragraph: 16px, no tracking. */
+.vm.vm-rrmc .vm-rrmc-why-body > .vm-rrmc-why-sub ~ .vm-rrmc-why-prose { font-size: 16px; letter-spacing: 0; }
+/* The copy under "Why this one?" (before the drawbacks heading) at 24px, no tracking. */
+.vm.vm-rrmc .vm-rrmc-why-body > .vm-rrmc-why-prose:not(.vm-rrmc-why-sub ~ *) {
+  font-size: 24px;
+  letter-spacing: 0;
+}
 /* "View Options": the same panel, but a non-scrolling column; the title (and the ✕) stay put
    while the tiles scroll beneath, a whole row per step. */
 .vm.vm-rrmc .vm-rrmc-why-panel.is-wide {
