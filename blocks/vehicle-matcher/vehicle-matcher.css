@@ -4831,9 +4831,12 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 }
 .vm.vm-rrmc .vm-rrmc-why-panel:not(.is-wide) .vm-rrmc-why-title { flex: none; }
 .vm.vm-rrmc .vm-rrmc-why-body { flex: none; }
-/* Headings sit 12px above their copy; paragraphs keep 24px between them. */
+/* Headings sit 8px above their copy. Every line of copy is 28px from the next, paragraph to
+   paragraph included, so the lines run evenly with no blank gap between them. */
 .vm.vm-rrmc .vm-rrmc-why-body > .vm-rrmc-why-prose:first-child,
-.vm.vm-rrmc .vm-rrmc-why-body > .vm-rrmc-why-sub + .vm-rrmc-why-prose { margin-top: 12px; }
+.vm.vm-rrmc .vm-rrmc-why-body > .vm-rrmc-why-sub + .vm-rrmc-why-prose { margin-top: 8px; }
+.vm.vm-rrmc .vm-rrmc-why-body > .vm-rrmc-why-prose + .vm-rrmc-why-prose { margin-top: 0; }
+.vm.vm-rrmc .vm-rrmc-why-panel:not(.is-wide) .vm-rrmc-why-prose { line-height: 28px; }
 /* The foot row, pinned to the bottom of the text area (margin-top: auto; 24px is the least gap):
    the no-drawbacks line bottom-left, the listing link bottom-right. */
 .vm.vm-rrmc .vm-rrmc-why-foot {

@@ -279,15 +279,17 @@ function whyProse(car, answers, tradeOffs) {
   const asked = [];
   // Body style is said once, in the facts sentence below, as the format has it.
   const body = RRMC_BODY[car.body];
-  if (RRMC_FUEL[car.fuel] && asList(answers.fuel).includes(car.fuel)) {
-    asked.push(`It's ${RRMC_FUEL[car.fuel]} like you asked for.`);
+  // Only when one powertrain was picked and this is it: both (or neither) picked asks for nothing.
+  const powers = asList(answers.fuel).filter((f) => RRMC_FUEL[f]);
+  if (powers.length === 1 && powers[0] === car.fuel) {
+    asked.push(`It's ${RRMC_FUEL[car.fuel]}, like you asked for.`);
   }
   const regions = asList(answers.regions);
   if (car.region && regions.includes(car.region) && regions.length < 4) {
     asked.push(`It's held in ${RRMC_REGION[car.region]}.`);
   }
   if (answers.handDrive && car.handDrive === answers.handDrive) {
-    asked.push(`It's configured in ${DRIVE_PROSE[car.handDrive]} like you asked for.`);
+    asked.push(`It's configured in ${DRIVE_PROSE[car.handDrive]}.`);
   }
   if (answers.people === 'crew' && car.seats >= 5) {
     asked.push(`It seats ${cardinal(car.seats)}, room for everyone you mentioned.`);
@@ -333,7 +335,7 @@ function whyProse(car, answers, tradeOffs) {
 function openWhyPanel(trigger, match) {
   const { car, tradeOffs = [] } = match;
   const { asked, facts, drawbacks } = whyProse(car, rrmcAnswers, tradeOffs);
-  // A paragraph whose sentences each start on a new line.
+  // A paragraph whose sentences each start on a new line (all lines 28px apart, in CSS).
   const prose = (sentences) => {
     const p = el('p', 'vm-rrmc-why-prose');
     sentences.forEach((line, i) => p.append(...(i ? [el('br'), line] : [line])));
