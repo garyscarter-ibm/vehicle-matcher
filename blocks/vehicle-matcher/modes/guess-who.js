@@ -43,7 +43,7 @@
 import {
   apiPool, apiGeocode, apiGetQuestions, apiField,
 } from '../engine.js';
-import { el, gbp, centreOnPage } from '../ui.js';
+import { el, gbp } from '../ui.js';
 import { BRAND_COPY } from './brand-copy.js';
 import {
   renderRangeSlider, renderOptionList, renderBudgetDrawer, formatRange, formatSliderValue, visibleQuestions,
@@ -265,10 +265,15 @@ const RRMC_AXIS_ORDER = [
 const RRMC_NEGLIGIBLE_MILES = 50;
 // Seats each `people` answer needs, as the engine's RRMC hard filter has it (brands.js RRMC_TUNING.hardFilter).
 const RRMC_SEATS_FOR = { family: 4, crew: 4 };
-// How many high-end suggestions sit under the opening questions.
-const SUGGESTIONS = 6;
 // The engine's widest scored slice (server FIELD_MAX), used to order level cars on the board.
 const SCORE_SLICE = 16;
+// How long the answers must settle before the board is re-scored, and before a new undo step starts.
+const SCORE_DEBOUNCE_MS = 350;
+const UNDO_SETTLE_MS = 1000;
+// RRMC: each filter a podium question now sets, keyed by the question that sets it (chips hidden).
+const COVERED_BY = {
+  body: 'bodyStyles', fuel: 'fuel', region: 'regions', handDrive: 'handDrive', seats: 'people', price: 'budgetGate',
+};
 
 /*
  * A single-thumb slider (mileage) writing a NUMBER to answers[q.id]: a mirror of podium.js's private
@@ -600,6 +605,8 @@ const GUESS_WHO_COPY = {
   // wordmark (the podium shows none), and the count reads on into the title.
   rrmc: {
     wordmark: '',
+    // The sub line under podium's tagline, for a board that narrows as the answers come in.
+    taglineSub: "As you narrow down your choices, we'll fetch you increasingly personalised options until your perfect match comes along.",
     title: 'in our Provenance collection.',
     startNote: () => 'Set aside what does not suit you. What remains is yours to consider.',
     liveNote: ({ left, gone }) => `${gone} set aside. ${left} remain.`,
@@ -609,9 +616,6 @@ const GUESS_WHO_COPY = {
     emptyNote: 'Nothing in the collection meets all of that at once. Relax one filter and the collection returns.',
     resetLabel: 'Begin again',
     undoLabel: 'Undo the last change',
-    askCta: 'Show me the collection',
-    tailHeading: 'Explore the full range of Rolls-Royce provenance',
-    revisitLabel: 'Revisit my answers',
     prompts: {
       price: 'Is there an ideal price range?',
       fuel: 'How would you prefer to be powered?',
@@ -935,12 +939,11 @@ function mount(root, ctx) {
   let popTitle = null;
   let popBody = null;
   let progressBar = null;
-  let askEl = null;
   let askList = null;
-  let askCta = null;
-  let askTail = null;
-  let askTailGrid = null;
   const askBlocks = new Map();
+  // The answers as they stood after the last handled change: what an undo step hands back.
+  let settledAnswers = '{}';
+  const settle = () => { settledAnswers = JSON.stringify(state.answers); };
 
   /* ------------------------- RRMC's podium look ------------------------- */
 
@@ -1028,7 +1031,7 @@ function mount(root, ctx) {
     setRrmcAnswers(answers, price?.q.openTop ? [{ id: 'budget', openTop: true, max: price.q.max }] : []);
   };
 
-  /* ------------- RRMC: ask the podium's questions, then filter ------------- */
+  /* --------- RRMC: the podium's questions down the side, the board live beside them --------- */
 
   // Answered = a value that would reach the engine (podium.js isAnswered); sliders persist on render.
   const isAnswered = (q) => {
@@ -1038,6 +1041,8 @@ function mount(root, ctx) {
   };
   // The budget is asked inside budgetGate's drawer, never as its own block (as in the podium).
   const askedQuestions = () => visibleQuestions(state.questions.filter((q) => q.id !== 'budget'), state.answers);
+  // The board filter a question now sets, when that question is being asked.
+  const coveredBy = (key) => (rrmc && state.questions.some((q) => q.id === COVERED_BY[key]) ? COVERED_BY[key] : null);
 
   const buildControl = (q, onChange) => {
     if (q.type === 'slider') {
@@ -1049,64 +1054,44 @@ function mount(root, ctx) {
     return renderOptionList(q, state.answers, { onChange }).list;
   };
 
-  // One question as a questionnaire screen (its classes, so the RRMC questionnaire rules apply), all on one page.
+  // One question as the podium's twisty block (podium.js buildQuestion's markup, so its RRMC rules apply).
   const buildQuestion = (q) => {
-    const block = el('div', 'vm-screen vm-gw-ask-q');
+    const block = el('div', 'vm-podium-q');
     block.dataset.qid = q.id;
-    block.append(el('h2', 'vm-question', q.title));
+    const panelId = `vm-gw-q-panel-${q.id}`;
+    const heading = el('h3', 'vm-podium-q-heading');
+    const toggle = el('button', 'vm-podium-q-toggle');
+    toggle.type = 'button';
+    toggle.setAttribute('aria-expanded', 'true');
+    toggle.setAttribute('aria-controls', panelId);
+    const text = el('span', 'vm-podium-q-text');
+    text.append(el('span', 'vm-podium-q-title', q.title));
+    const chevron = el('span', 'vm-podium-q-chevron');
+    chevron.setAttribute('aria-hidden', 'true');
+    toggle.append(text, el('span', 'vm-podium-q-badge', 'Answered'), chevron);
+    heading.append(toggle);
+
+    const panel = el('div', 'vm-podium-q-panel');
+    panel.id = panelId;
     const budgetQ = q.id === 'budgetGate' && state.questions.find((x) => x.id === 'budget');
-    const drawer = budgetQ && renderBudgetDrawer(budgetQ, state.answers, { onChange: syncAsk });
-    const list = buildControl(q, () => {
+    const drawer = budgetQ && renderBudgetDrawer(budgetQ, state.answers, { onChange: () => answersChanged(q.id) });
+    panel.append(buildControl(q, () => {
       drawer?.sync();
-      syncAsk();
+      answersChanged(q.id);
+    }));
+    if (drawer) panel.append(drawer.drawer);
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      panel.hidden = expanded;
     });
-    // As the questionnaire: "A combination" is the odd fifth pill, centred beneath the two pairs.
-    if (q.id === 'style') {
-      const middle = list.querySelector(':scope > .vm-option[data-value="3"]');
-      if (middle) list.append(middle);
-    }
-    block.append(list);
-    if (drawer) block.append(drawer.drawer);
+    block.append(heading, panel);
     return block;
   };
 
-  // The podium tail's high-end strip under the questions: the dearest priced car of each model line,
-  // taken from inside the price range once one is set.
-  let tailFor = '';
-  const paintSuggestions = () => {
-    const p = state.pool;
-    const a = state.answers;
-    const price = axisFor('price');
-    const band = a.budgetGate === 'yes' && Array.isArray(a.budget) ? a.budget : null;
-    const top = band && price && band[1] >= price.q.max ? Infinity : band?.[1];
-    const priced = [];
-    for (let i = 0; i < p.n; i += 1) {
-      if (p.poa?.[i] === 1 || !(p.price[i] > 0)) continue;
-      if (band && (p.price[i] < band[0] || p.price[i] > top)) continue;
-      priced.push(i);
-    }
-    priced.sort((x, y) => p.price[y] - p.price[x]);
-    const lines = new Set();
-    const picks = [];
-    for (const i of priced) {
-      if (picks.length === SUGGESTIONS) break;
-      if (lines.has(p.line[i])) continue;
-      lines.add(p.line[i]);
-      picks.push(i);
-    }
-    // A slider drag fires this on every move; only a different set is repainted.
-    const key = picks.join(',');
-    if (key === tailFor) return;
-    tailFor = key;
-    const all = () => Array.from({ length: p.n }, (_, i) => i);
-    askTailGrid.replaceChildren(...picks.map((i) => matchCard(
-      matchAt(p, i, true, versionsFrom(all)), { compact: true, brand: ctx.brand },
-    )));
-    askTail.hidden = !picks.length;
-  };
-
-  // Splice the visible blocks in place (as podium.js syncQuestions); the CTA waits for every answer.
-  function syncAsk() {
+  // Splice the visible blocks in place (podium.js syncQuestions); the switcher bar shows how many are answered.
+  const syncAsk = () => {
+    if (!askList) return;
     const visible = askedQuestions();
     const wanted = new Set(visible.map((q) => q.id));
     askBlocks.forEach((node, id) => {
@@ -1118,49 +1103,28 @@ function mount(root, ctx) {
       if (!askBlocks.has(q.id)) askBlocks.set(q.id, buildQuestion(q));
       const node = askBlocks.get(q.id);
       if (askList.children[i] !== node) askList.insertBefore(node, askList.children[i] || null);
+      node.querySelector('.vm-podium-q-badge').hidden = !isAnswered(q);
     });
-    paintSuggestions();
     const done = visible.filter(isAnswered).length;
-    askCta.disabled = done < visible.length;
     if (progressBar) progressBar.style.width = `${Math.round((done / (visible.length || 1)) * 100)}%`;
-  }
-
-  const buildAsk = () => {
-    askEl = el('section', 'vm-gw-ask');
-    askList = el('div', 'vm-gw-ask-questions');
-    askCta = el('button', 'vm-btn vm-btn-primary vm-gw-ask-cta', copy.askCta);
-    askCta.type = 'button';
-    askCta.addEventListener('click', confirmAsk);
-    const pane = el('div', 'vm-gw-ask-pane');
-    pane.append(askList, askCta);
-    askTail = el('div', 'vm-podium-tail');
-    askTailGrid = el('div', 'vm-podium-tail-grid');
-    askTail.append(el('h3', 'vm-subhead vm-podium-tail-head', copy.tailHeading), askTailGrid);
-    // Wider than the question column and centred on the page, with equal space either side.
-    centreOnPage(askTail);
-    askEl.append(...rrmcTaglines(), pane, askTail);
   };
-
-  const showAsk = () => {
-    if (!askEl) buildAsk();
+  // Rebuilds the blocks so their controls show answers changed from outside them (undo, a rejection).
+  const repaintAsk = (qid) => {
+    askBlocks.forEach((node, id) => {
+      if (qid && id !== qid) return;
+      node.remove();
+      askBlocks.delete(id);
+    });
     syncAsk();
-    if (shell) {
-      closePop();
-      shell.hidden = true;
-      root.append(askEl);
-      askList.querySelector('button')?.focus();
-    } else {
-      root.replaceChildren(askEl);
-    }
   };
 
-  // Answers that are car facts preset their filters; "any" or no preference leaves a filter open.
+  // Answers that are car facts set their filters; "any" or no preference leaves a filter open.
   const presetFromAnswers = () => {
     const a = state.answers;
     const f = state.filters;
     const setFrom = (key, allowed) => {
       const axis = axisFor(key);
-      if (!axis) return;
+      if (!axis || !coveredBy(key)) return;
       const at = axis.q.options.filter((o) => allowed(o.raw ?? o.value)).map((o) => o.value);
       f[key] = at.length < axis.q.options.length ? at : [];
     };
@@ -1175,16 +1139,30 @@ function mount(root, ctx) {
     setFrom('handDrive', among(a.handDrive));
     setFrom('seats', (seats) => seats >= (RRMC_SEATS_FOR[a.people] || 0));
     const price = axisFor('price');
-    if (price) {
+    if (price && coveredBy('price')) {
       const { min, max } = price.q;
       const b = a.budgetGate === 'yes' && Array.isArray(a.budget) ? a.budget : null;
       f.price = b ? [Math.max(min, Math.min(b[0], max)), Math.min(max, Math.max(b[1], min))] : [min, max];
     }
   };
 
-  // Orders the board's level cars by the engine's scores for the answers; a failed or late reply changes nothing.
+  // A filter value from the board (a rejection) written back as the answer that now owns it.
+  const answerFrom = (key, value) => {
+    const a = state.answers;
+    if (key === 'price') {
+      Object.assign(a, { budgetGate: 'yes', budget: value });
+      return;
+    }
+    const axis = axisFor(key);
+    const raws = value.map((at) => axis.q.options.find((o) => o.value === at)?.raw).filter(Boolean);
+    a[COVERED_BY[key]] = key === 'handDrive' ? raws[0] : raws;
+  };
+
+  // Orders the board's level cars by the engine's scores for the answers; latest wins, failure changes nothing.
   let scoreGen = 0;
+  let scoreTimer = 0;
   const fetchScores = async () => {
+    if (!stillMounted()) return;
     scoreGen += 1;
     const gen = scoreGen;
     const matches = await apiField(ctx.api, { ...state.answers }, ctx.retailer, ctx.brand, ctx.scope, SCORE_SLICE);
@@ -1197,35 +1175,76 @@ function mount(root, ctx) {
       if (i != null && Number.isFinite(m.score)) rank.set(i, m.score);
     });
     state.rank = rank;
-    if (shell && !shell.hidden) render();
+    if (board?.isConnected) render();
+  };
+  const scheduleScores = () => {
+    if (!state.questions.length) return;
+    window.clearTimeout(scoreTimer);
+    scoreTimer = window.setTimeout(fetchScores, SCORE_DEBOUNCE_MS);
   };
 
-  // The board, built on first entry and shown again after a revisit.
-  const openBoard = () => {
-    if (shell) {
-      askEl?.remove();
-      shell.hidden = false;
-      return;
-    }
-    buildStage();
-    buildChips();
-    firstPaint();
-    trackHeader();
-    // The retailer label is authored config; the mode names the pool it searched
-    // in its own note only when the shell gave it one.
-    if (ctx.retailerLabel && ctx.retailerLabel !== brandCopy.name) {
-      shell.dataset.retailer = ctx.retailerLabel;
-    }
-  };
-
-  function confirmAsk() {
-    const first = !shell;
-    bank();
+  // Every answer change: one undo step per stretch of edits to a question, then filters, board and scores.
+  let lastEdit = { qid: null, at: 0 };
+  function answersChanged(qid) {
+    const now = Date.now();
+    if (lastEdit.qid !== qid || now - lastEdit.at > UNDO_SETTLE_MS) bank();
+    lastEdit = { qid, at: now };
     presetFromAnswers();
-    openBoard();
-    render({ animate: !first });
-    fetchScores();
+    syncAsk();
+    settle();
+    render();
+    scheduleScores();
   }
+
+  // Page scroll moves the sticky pane 1:1; scrolling the pane itself shifts where that resumes from
+  // (a mirror of podium.js linkAskScroll).
+  const linkAskScroll = (ask, grid) => {
+    let frame = 0;
+    let offset = 0;
+    let written = null;
+    const pageTravel = () => {
+      const style = getComputedStyle(ask);
+      if (style.position !== 'sticky' || ask.scrollHeight <= ask.clientHeight) return null;
+      const start = grid.getBoundingClientRect().top + window.scrollY - parseFloat(style.top || 0);
+      return window.scrollY - start;
+    };
+    const sync = () => {
+      frame = 0;
+      const travel = pageTravel();
+      if (travel === null) return;
+      const max = ask.scrollHeight - ask.clientHeight;
+      if (travel + offset > max) offset = max - travel;
+      if (travel + offset < 0 && offset < 0) offset = Math.min(0, -travel);
+      ask.scrollTop = Math.max(0, travel + offset);
+      written = ask.scrollTop;
+    };
+    const onAskScroll = () => {
+      if (written !== null && Math.abs(ask.scrollTop - written) < 1) return;
+      const travel = pageTravel();
+      if (travel !== null) offset = ask.scrollTop - travel;
+      written = null;
+    };
+    const onScroll = () => {
+      if (!ask.isConnected) {
+        window.removeEventListener('scroll', onScroll);
+        return;
+      }
+      if (!frame) frame = requestAnimationFrame(sync);
+    };
+    ask.addEventListener('scroll', onAskScroll, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
+  };
+
+  // The taglines scale as podium.js fitSteps scales them: --vm-podium-zoom is the column over 700px.
+  const fitTaglines = (results) => {
+    if (typeof ResizeObserver === 'undefined') return;
+    const observer = new ResizeObserver(([entry]) => {
+      if (!results.isConnected) { observer.disconnect(); return; }
+      const width = entry.contentRect.width;
+      if (width) results.style.setProperty('--vm-podium-zoom', Math.min(1, width / 700));
+    });
+    observer.observe(results);
+  };
 
   // The podium's rose-gold bar in the switcher row, filling here as cars are set aside.
   const mountProgress = () => {
@@ -2097,7 +2116,7 @@ function mount(root, ctx) {
     })();
     undoBtn.hidden = !state.history.length;
     if (progressBar) {
-      progressBar.style.width = `${Math.round((gone / total) * 100)}%`;
+      if (!state.questions.length) progressBar.style.width = `${Math.round((gone / total) * 100)}%`;
       // Re-asserted: a mode switched away from may clear the row's class after this one set it.
       progressBar.parentElement.parentElement?.classList.add('has-progress');
     }
@@ -2148,6 +2167,8 @@ function mount(root, ctx) {
   const buildChips = () => {
     chipsEl.replaceChildren();
     state.axes.forEach((axis) => {
+      // A filter a question sets is changed there; the board keeps chips only for the rest.
+      if (coveredBy(axis.key)) return;
       const chip = el('button', 'vm-gw-chip');
       chip.type = 'button';
       chip.dataset.axis = axis.key;
@@ -2274,7 +2295,13 @@ function mount(root, ctx) {
   const snapshot = () => ({
     filters: JSON.parse(JSON.stringify(state.filters)),
     out: new Set(state.out),
+    answers: JSON.parse(settledAnswers),
   });
+  // Answers are replaced in place: the pane's widgets write into this very object.
+  const restoreAnswers = (next) => {
+    Object.keys(state.answers).forEach((k) => { delete state.answers[k]; });
+    Object.assign(state.answers, next);
+  };
 
   const bank = () => {
     state.history.push(snapshot());
@@ -2286,6 +2313,12 @@ function mount(root, ctx) {
     if (!prev) return;
     Object.keys(prev.filters).forEach((k) => { state.filters[k] = prev.filters[k]; });
     state.out = prev.out;
+    if (state.questions.length) {
+      restoreAnswers(prev.answers);
+      repaintAsk();
+      settle();
+      scheduleScores();
+    }
     closePop();
     render();
   };
@@ -2298,6 +2331,13 @@ function mount(root, ctx) {
     // two fields under one chip and neither of them is an array.
     state.axes.forEach((axis) => axis.clear());
     state.out = new Set();
+    if (state.questions.length) {
+      restoreAnswers({});
+      repaintAsk();
+      presetFromAnswers();
+      settle();
+      scheduleScores();
+    }
     closePop();
     render();
   };
@@ -2306,7 +2346,17 @@ function mount(root, ctx) {
    *  into a filter change is undoable, including a rejection. */
   const setAxis = (key, value) => {
     bank();
-    state.filters[key] = value;
+    // RRMC: a rejection on a filter a question owns is written as that answer, and the pane shows it.
+    const qid = coveredBy(key);
+    if (qid) {
+      answerFrom(key, value);
+      presetFromAnswers();
+      repaintAsk(qid);
+      settle();
+      scheduleScores();
+    } else {
+      state.filters[key] = value;
+    }
     render();
   };
 
@@ -2469,12 +2519,6 @@ function mount(root, ctx) {
     resetBtn.type = 'button';
     resetBtn.addEventListener('click', reset);
     tools.append(undoBtn, resetBtn);
-    if (state.questions.length) {
-      const revisit = el('button', 'vm-gw-tool', copy.revisitLabel);
-      revisit.type = 'button';
-      revisit.addEventListener('click', showAsk);
-      tools.prepend(revisit);
-    }
 
     barEl.append(lead, chipsEl, tools);
 
@@ -2491,8 +2535,31 @@ function mount(root, ctx) {
       emptyReset,
     );
 
-    shell.append(barEl, board, emptyEl, buildPopover());
-    root.append(shell);
+    shell.append(barEl, board, emptyEl);
+    if (!state.questions.length) {
+      shell.append(buildPopover());
+      root.append(shell);
+      return;
+    }
+    // RRMC: podium.js buildStage's frame, questions left and the board where the podium's tiles sit.
+    // The popover stays outside the results column, whose container query would trap position: fixed.
+    const frame = el('div', 'vm-podium vm-gw-podium');
+    const grid = el('div', 'vm-podium-grid');
+    const ask = el('section', 'vm-podium-ask');
+    askList = el('div', 'vm-podium-questions');
+    ask.append(askList);
+    const results = el('section', 'vm-podium-results');
+    // Podium's tagline, with a sub line for a board that narrows live rather than a shortlist to come.
+    const [tagline, sub] = rrmcTaglines();
+    sub.textContent = copy.taglineSub || sub.textContent;
+    results.append(tagline, sub, shell);
+    grid.append(ask, results);
+    frame.append(grid, buildPopover());
+    root.append(frame);
+    linkAskScroll(ask, grid);
+    fitTaglines(results);
+    syncAsk();
+    settle();
   };
 
   /*
@@ -2573,13 +2640,19 @@ function mount(root, ctx) {
     mountProgress();
     const asked = (await questions)?.questions;
     if (!stillMounted()) return;
-    if (asked?.length) {
-      state.questions = asked;
-      showAsk();
-      return;
-    }
+    if (asked?.length) state.questions = asked;
+    buildStage();
+    presetFromAnswers();
     syncWhy();
-    openBoard();
+    buildChips();
+    firstPaint();
+    trackHeader();
+    scheduleScores();
+    // The retailer label is authored config; the mode names the pool it searched
+    // in its own note only when the shell gave it one.
+    if (ctx.retailerLabel && ctx.retailerLabel !== brandCopy.name) {
+      shell.dataset.retailer = ctx.retailerLabel;
+    }
   };
 
   renderSkeleton();

@@ -415,14 +415,14 @@ const KNOCKOUT_COPY = {
   rrmc: {
     wordmark: '',
     seedTitle: 'Some choices are clearer side by side.',
-    seedLede: 'Answer these simple questions to the best of your ability. We will set motor cars from our Provenance '
+    seedLede: 'Answer these simple questions to the best of your ability. We will set choices from our Provenance '
       + 'collection beside one another, two at a time, until the one that is yours remains.',
     budgetLabel: 'Is there an ideal price range?',
     useLabel: 'Where will you go?',
     seedCta: 'Find my perfect match',
     tailHeading: 'Explore the full range of Rolls-Royce provenance',
     versus: 'or',
-    pickHint: 'Two motor cars from our Provenance collection. Choose the one you would rather own.',
+    pickHint: 'Two choices from our Provenance collection. Choose the one you would rather own.',
     pickCta: 'Choose this one',
     pickLabel: ({ model }) => `Choose the ${model}`,
     roundName: (entrants) => ({
@@ -436,7 +436,7 @@ const KNOCKOUT_COPY = {
     finalLede: 'Each has held its place so far. Choose the one that is yours.',
     finalCta: 'Continue',
     verdictForm: ({ model }) => `The ${model} was the closer match to your brief.`,
-    verdictUpset: ({ model }) => `You chose the ${model}, though the numbers leaned the other way.`,
+    verdictUpset: ({ model }) => `You chose the ${model}.`,
     // Mileage reads MOA as MOA (never "0 miles", never crowned); year is per listing; 0 to 62 supports.
     taleTitle: 'Side by side',
     showTally: false,
@@ -447,7 +447,7 @@ const KNOCKOUT_COPY = {
     ],
     matchKicker: 'Your Choice',
     matchTitle: () => 'The one that is yours.',
-    matchLede: 'Set beside every motor car you considered, it held its place.',
+    matchLede: 'Set beside every option you considered, it held its place.',
     rankOther: 'Another Option',
     whyIntro: '',
     crownCallback: ({ beaten }) => `You preferred it to ${beaten}.`,
@@ -462,7 +462,7 @@ const KNOCKOUT_COPY = {
     againCta: 'Begin again',
     shareText: ({ model, retailer }) => `My choice from ${retailer}: the ${model}.`,
     retailerFallback: 'Rolls-Royce Approved',
-    emptyPoolTitle: 'Too few motor cars within that brief.',
+    emptyPoolTitle: 'Too few options within that brief.',
     emptyPoolLede: ({ retailer }) => `${retailer} holds too few within that brief to set side by side. `
       + 'Widen the regions or the price range, and we will begin again.',
     emptyPoolCta: 'Adjust my answers',
@@ -766,7 +766,11 @@ function mount(root, ctx) {
       switcher.prepend(track);
       // Never touch .has-progress: podium's own listener and the next mount share it.
       switcher.querySelector('.vm-switcher-select')
-        ?.addEventListener('change', () => track.remove(), { once: true });
+        ?.addEventListener('change', () => {
+          track.remove();
+          // The stage is the next mode's too: don't leave it a held scroll height.
+          root.style.minHeight = '';
+        }, { once: true });
     } else {
       root.before(track);
     }
@@ -1118,6 +1122,25 @@ function mount(root, ctx) {
     return tag;
   };
 
+  /* RRMC: a pick holds the page where it is. The stage keeps its height through the swap (and any
+   * round banner), the scroll is put back once the next pair paints, and the hold lifts when its
+   * photos have loaded, so choosing never jumps the page. */
+  let heldScroll = null;
+  const holdScroll = () => {
+    heldScroll = window.scrollY;
+    root.style.minHeight = `${root.offsetHeight}px`;
+  };
+  const releaseScroll = ({ restore = false } = {}) => {
+    if (heldScroll === null) return;
+    const y = heldScroll;
+    heldScroll = null;
+    if (restore) window.scrollTo({ top: y, behavior: 'instant' });
+    const photos = [...root.querySelectorAll('img')].map((img) => (img.complete
+      ? Promise.resolve() : new Promise((done) => { img.addEventListener('load', done, { once: true }); img.addEventListener('error', done, { once: true }); })));
+    const lift = () => { if (heldScroll === null) root.style.minHeight = ''; };
+    Promise.race([Promise.all(photos), new Promise((done) => { setTimeout(done, 2000); })]).then(lift);
+  };
+
   const renderMatchup = () => {
     root.replaceChildren();
     const [a, b] = state.pairings[state.matchIndex];
@@ -1159,6 +1182,8 @@ function mount(root, ctx) {
     if (tale) screen.append(tale);
 
     root.append(screen);
+    // The next pair is on the page: put the scroll back where the pick left it.
+    if (rrmc) releaseScroll({ restore: true });
 
     // Arrow-key a11y: ← picks the left contender, → the right.
     screen.tabIndex = -1;
@@ -1317,6 +1342,7 @@ function mount(root, ctx) {
     // Read the engine's take on the tie just settled, to show on the next paint.
     state.lastVerdict = verdictFor(winner, loser);
 
+    if (rrmc) holdScroll();
     const advance = () => {
       if (!isMounted()) return;
       state.busy = false;
@@ -1382,6 +1408,8 @@ function mount(root, ctx) {
   // the flow, and only ever once. Reduced motion keeps the screen (it's content,
   // not motion) — the JS just doesn't animate the crest entrance.
   const renderRoundInterstitial = () => {
+    // The Final is a new moment: no scroll to keep, so just let the stage size itself again.
+    if (rrmc) releaseScroll();
     root.replaceChildren();
     const [a, b] = state.round;
     const screen = el('div', 'vm-screen vm-knockout-interstitial');
@@ -1434,6 +1462,7 @@ function mount(root, ctx) {
   // champion is always the hero, decision "champion, engine validates") but to
   // attach its real "why" reasons and to know when to add the honest note.
   const showResult = async (champion) => {
+    if (rrmc) releaseScroll();
     renderResultSkeleton();
     const inferred = bracketToAnswers(state.rounds, state.seed);
     // RRMC answered every question outright, so its own answers outrank anything the picks inferred.

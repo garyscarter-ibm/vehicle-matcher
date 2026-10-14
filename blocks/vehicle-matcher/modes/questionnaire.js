@@ -52,7 +52,7 @@ const RRMC_COPY = {
   disclaimer: 'An unofficial tool, not affiliated with or endorsed by Rolls-Royce Motor Cars. '
     + 'Prices and specifications are indicative, and the retailer will confirm every detail.',
   // No scores or points: RRMC never shows a match score, so the working can't quote one.
-  working: ({ total, eligible }, budgeted) => `We considered all ${total} motor cars in the Provenance collection. `
+  working: ({ total, eligible }, budgeted) => `We considered all ${total} options in the Provenance collection. `
     + `${eligible === 1 ? 'One was' : `${eligible} were`} ${budgeted ? 'within your price range and ' : ''}suited to your needs.`,
   workingClear: ' Nothing else in the collection came close.',
   workingWeak: ' None of them are quite what you described.',

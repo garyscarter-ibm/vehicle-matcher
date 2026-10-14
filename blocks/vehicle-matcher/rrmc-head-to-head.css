@@ -377,6 +377,15 @@
   .vm.vm-rrmc .vm-knockout-step.is-gold .vm-rrmc-why { margin-top: 24px; }
   .vm.vm-rrmc .vm-knockout-step.is-gold > .vm-knockout-rank { top: 24px; left: 24px; transform: none; }
 }
+/* Wide gold grows down for a name past two lines, as the podium's (same in-flow stand-in). */
+@container vm-knockout-podium (min-width: 660px) {
+  .vm.vm-rrmc .vm-knockout-step.is-gold > .vm-card { height: auto; min-height: 360px; }
+  .vm.vm-rrmc .vm-knockout-step.is-gold > .vm-card > .vm-card-body { overflow-y: visible; padding-bottom: 86px; }
+  .vm.vm-rrmc .vm-knockout-step.is-gold .vm-rrmc-view-options { margin-bottom: 12px; }
+  .vm.vm-rrmc .vm-knockout-step.is-gold :is(.vm-rrmc-why, .vm-rrmc-presented) { position: static; order: 1; }
+  .vm.vm-rrmc .vm-knockout-step.is-gold .vm-rrmc-why { margin-top: auto; }
+  .vm.vm-rrmc .vm-knockout-step.is-gold .vm-rrmc-presented { margin-top: calc(22px - 1lh); }
+}
 
 /* The honest note and the actions: plain lines in the tile's register, no grey field, no italic. */
 .vm.vm-rrmc .vm-knockout-result .vm-mingle-weak-note {
@@ -439,4 +448,29 @@
     white-space: normal;
     line-height: 1.2;
   }
+}
+
+/* Side by side, both contenders take the taller one's height and their "Choose this one" pills sit
+   on one baseline at the foot; stacked (under 659px) the tiles keep their own heights. */
+.vm.vm-rrmc .vm-knockout-stage .vm-knockout-faceoff { align-items: stretch; }
+.vm.vm-rrmc .vm-knockout-card.vm-knockout-tile { display: flex; flex-direction: column; }
+.vm.vm-rrmc .vm-knockout-tile .vm-knockout-pick { margin-top: auto; }
+
+/* The comparison's winner tick, drawn as podium's clean two-stroke tick rather than the font's glyph. */
+.vm.vm-rrmc .vm-knockout-tale .vm-knockout-stat-tick {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 16px;
+  font-size: 0;
+}
+.vm.vm-rrmc .vm-knockout-tale .vm-knockout-stat-tick::before {
+  content: '';
+  width: 5px;
+  height: 9px;
+  margin-bottom: 2px;
+  border-right: 1.5px solid currentcolor;
+  border-bottom: 1.5px solid currentcolor;
+  transform: rotate(45deg);
 }

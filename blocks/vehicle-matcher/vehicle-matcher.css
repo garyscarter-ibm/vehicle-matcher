@@ -4409,6 +4409,16 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
   }
   .vm.vm-rrmc .vm-podium-steps:not(.is-tied) .vm-podium-step.is-gold .vm-rrmc-why { margin-top: 24px; }
 }
+/* Wide gold: a name past two lines grows the tile down instead of running into "Why this one?".
+   The auto margin and 22px step put both lines exactly where the old bottom: 108/86px had them. */
+@container (min-width: 660px) {
+  .vm.vm-rrmc .vm-podium-steps:not(.is-tied) .vm-podium-step.is-gold > .vm-podium-card > .vm-card { height: auto; min-height: 360px; }
+  .vm.vm-rrmc .vm-podium-steps:not(.is-tied) .vm-podium-step.is-gold > .vm-podium-card > .vm-card > .vm-card-body { overflow-y: visible; padding-bottom: 86px; }
+  .vm.vm-rrmc .vm-podium-steps:not(.is-tied) .vm-podium-step.is-gold .vm-rrmc-view-options { margin-bottom: 12px; }
+  .vm.vm-rrmc .vm-podium-steps:not(.is-tied) .vm-podium-step.is-gold :is(.vm-rrmc-why, .vm-rrmc-presented) { position: static; order: 1; }
+  .vm.vm-rrmc .vm-podium-steps:not(.is-tied) .vm-podium-step.is-gold .vm-rrmc-why { margin-top: auto; }
+  .vm.vm-rrmc .vm-podium-steps:not(.is-tied) .vm-podium-step.is-gold .vm-rrmc-presented { margin-top: calc(22px - 1lh); }
+}
 .vm.vm-rrmc .vm-podium-step.is-silver > .vm-podium-card > .vm-card,
 .vm.vm-rrmc .vm-podium-step.is-bronze > .vm-podium-card > .vm-card,
 .vm.vm-rrmc .vm-podium-tail-grid > .vm-card {
@@ -4714,6 +4724,15 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
   }
   .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium-side > .vm-rrmc-podium-slot { flex: none; width: 300px; max-width: 100%; }
   .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid:not(.vm-grid-tied) > .vm-card .vm-rrmc-why { margin-top: 24px; }
+}
+/* Wide gold grows down for a name past two lines, as the podium's (same in-flow stand-in). */
+@container (min-width: 660px) {
+  .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid:not(.vm-grid-tied) > .vm-card { height: auto; min-height: 360px; }
+  .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid:not(.vm-grid-tied) > .vm-card > .vm-card-body { overflow-y: visible; padding-bottom: 86px; }
+  .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid:not(.vm-grid-tied) > .vm-card .vm-rrmc-view-options { margin-bottom: 12px; }
+  .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid:not(.vm-grid-tied) > .vm-card :is(.vm-rrmc-why, .vm-rrmc-presented) { position: static; order: 1; }
+  .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid:not(.vm-grid-tied) > .vm-card .vm-rrmc-why { margin-top: auto; }
+  .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid:not(.vm-grid-tied) > .vm-card .vm-rrmc-presented { margin-top: calc(22px - 1lh); }
 }
 /* Tail tiles, as the podium's extra tiles. */
 .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-tail-grid > .vm-card {
