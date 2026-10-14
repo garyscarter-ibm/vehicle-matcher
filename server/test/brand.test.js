@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 import {
-  mapVehicle, mapHondaRaw, mapFordRaw, mapMotorradRaw, mapFerrariRaw,
+  mapVehicle, mapHondaRaw, mapFordRaw, mapMotorradRaw, mapFerrariRaw, mapRRMCRaw,
 } from '../mapping.js';
 import { questionsForBrand, applyBespokeAnswers } from '../questions.js';
 import { normalizeBrand, brandConfig, brandTuning } from '../brands.js';
@@ -1518,4 +1518,24 @@ test('RRMC budget runs £60k to £1m+, and the top means no upper limit while th
   const ranked = rankCars(applyBespokeAnswers('rrmc', { budgetGate: 'yes', budget: [200000, 1000000] }), cars, brandTuning('rrmc'));
   assert.deepEqual(ranked.map((r) => r.car.id).sort(), ['big', 'cheap']);
   assert.ok(ranked.find((r) => r.car.id === 'big').score > ranked.find((r) => r.car.id === 'cheap').score);
+});
+
+test('RRMC passengers: being driven favours the Extended cars, more people the largest cabins', () => {
+  const car = (name) => ({ ...mapRRMCRaw({ id: name, name, price: 300000 }), id: name });
+  const cars = ['Ghost', 'Ghost Extended', 'Phantom', 'Phantom Extended', 'Cullinan', 'Wraith', 'Spectre'].map(car);
+  const order = (people) => rankCars(applyBespokeAnswers('rrmc', { budgetGate: 'no', people }), cars, brandTuning('rrmc'))
+    .map((r) => r.car.id);
+  const driven = order('family');
+  // Each Extended model outranks its standard equivalent, and the two-doors trail.
+  assert.ok(driven.indexOf('Ghost Extended') < driven.indexOf('Ghost'), driven.join());
+  assert.ok(driven.indexOf('Phantom Extended') < driven.indexOf('Phantom'), driven.join());
+  assert.ok(driven.indexOf('Ghost') < driven.indexOf('Wraith'), driven.join());
+  const crew = order('crew');
+  assert.ok(crew.indexOf('Cullinan') < crew.indexOf('Ghost'), crew.join());
+  assert.ok(crew.indexOf('Phantom Extended') < crew.indexOf('Spectre'), crew.join());
+  // Driving yourself carries no space preference: the Extended car earns no edge on space.
+  const solo = rankCars(applyBespokeAnswers('rrmc', { budgetGate: 'no', people: 'solo' }), cars, brandTuning('rrmc'));
+  const fitOf = (list, id) => list.find((r) => r.car.id === id).fit;
+  const drivenRanked = rankCars(applyBespokeAnswers('rrmc', { budgetGate: 'no', people: 'family' }), cars, brandTuning('rrmc'));
+  assert.ok(fitOf(drivenRanked, 'Ghost Extended') - fitOf(drivenRanked, 'Ghost') > fitOf(solo, 'Ghost Extended') - fitOf(solo, 'Ghost'));
 });

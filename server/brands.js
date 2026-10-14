@@ -555,7 +555,22 @@ const RRMC_TUNING = {
     // Dawn and Wraith are 4-seaters; Phantom/Ghost/Cullinan seat 5. Floor at 4.
     seatsFloor: 4,
     crewBonusSeats: 99, // no 7-seaters in this range
+    // Cabin space by passengers answer, per model line (0..1). Being driven: rear room, so the
+    // Extended cars lead their standard equivalents. More people: the largest footprints lead.
+    cabin: {
+      family: {
+        'Phantom EWB': 1, 'Ghost EWB': 1, Phantom: 0.85, Cullinan: 0.75, Ghost: 0.7,
+        'Silver Shadow': 0.6, Wraith: 0.25, Spectre: 0.25, Dawn: 0.2, 'Silver Ghost': 0.2, default: 0.5,
+      },
+      crew: {
+        'Phantom EWB': 1, Cullinan: 0.95, Phantom: 0.9, 'Ghost EWB': 0.9, Ghost: 0.75,
+        'Silver Shadow': 0.6, Wraith: 0.35, Spectre: 0.3, Dawn: 0.3, 'Silver Ghost': 0.2, default: 0.5,
+      },
+    },
+    cabinReasonAt: 0.9,
   },
+  // Either passengers answer makes cabin space count for more of the match.
+  peopleWeight: { family: 2.5, crew: 2.5 },
   crewSeatShortfall: 1,
   size: { roadtripMinClass: 4, cityDivisor: 5 },
   // Never hard-exclude a Rolls on seats/boot: the 4-seat cars are the driver's
@@ -575,6 +590,10 @@ const RRMC_TUNING = {
       family: 'Four or five seats, and the space for everything they bring',
       tech: 'The current electric drivetrain, silent and immediate',
       lifestyle: 'Roof down, V12 behind you, no finer way to travel',
+    },
+    cabin: {
+      family: () => 'Real room in the rear, for being driven in comfort',
+      crew: () => 'Generous room for everyone travelling with you',
     },
   },
 };

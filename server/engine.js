@@ -292,6 +292,14 @@ function phrase(tuning, key, car) {
 
 function scorePracticality(car, answers, tuning) {
   const { bootNeed, seatsFloor, crewBonusSeats } = tuning.practicality;
+  // Brands that rank on cabin space for the passengers answer (RRMC: the Extended
+  // models for being driven, the largest cabins for more people) score that instead.
+  const cabin = tuning.practicality.cabin?.[answers.people];
+  if (cabin) {
+    const score = cabin[car.line] ?? cabin.default ?? 0.5;
+    const say = tuning.reasons?.cabin?.[answers.people];
+    return { score, reason: say && score >= (tuning.practicality.cabinReasonAt ?? 0.9) ? say(car) : undefined };
+  }
   // Boot targets are per-brand (a MINI's "big" is smaller than a BMW's), so
   // the derived key is looked up in the brand's own table.
   const need = bootNeed[bootNeedKey(answers)] ?? 0;
@@ -530,6 +538,9 @@ function fitWeights(answers, tuning) {
   // Running costs matter more the further you drive. Objective, so it stays
   // on the fit side.
   w.economy += mileageFraction(answers, tuning);
+  // A passengers answer can make cabin space weigh more (RRMC's peopleWeight).
+  const peopleBoost = tuning.peopleWeight?.[answers.people];
+  if (peopleBoost) w.practicality = (w.practicality ?? 0) + peopleBoost;
   // A named fuel binds hard (see the fuelStrictBoost note below).
   const prefs = fuelPrefs(answers);
   if (prefs.length > 0 && !prefs.includes('open')) w.fuel += tuning.fuelStrictBoost;
