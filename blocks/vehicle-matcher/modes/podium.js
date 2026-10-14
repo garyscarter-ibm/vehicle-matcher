@@ -674,6 +674,12 @@ function mount(root, ctx) {
     const ask = el('section', 'vm-podium-ask');
     questionsWrap = el('div', 'vm-podium-questions');
     ask.append(questionsWrap);
+    // Safety net for "Match confirmed": any edit in the brief that moves an answer off what was
+    // confirmed drops back to the live state and re-arms the button, whatever path made it.
+    if (ctx.brand === 'rrmc') {
+      const guard = () => { if (answersMoved()) answerChanged(); };
+      ['input', 'change', 'click'].forEach((type) => questionsWrap.addEventListener(type, guard));
+    }
 
     commitBtn = el('button', 'vm-btn vm-btn-primary vm-podium-commit', copy.commitCta);
     commitBtn.type = 'button';
@@ -907,6 +913,10 @@ function mount(root, ctx) {
    * podium showing /api/match results must not keep claiming them once the
    * brief underneath has moved.
    */
+  /** True once the answers differ from those the current "Match confirmed" was reached on. */
+  const answersMoved = () => Boolean(state.committed)
+    && JSON.stringify(state.answers) !== state.committedAnswers;
+
   function answerChanged() {
     if (state.committed) dropToLive();
     syncQuestions();
@@ -931,6 +941,8 @@ function mount(root, ctx) {
     // Drop any pending preview: its answer set is the one we are about to ask
     // the full question about, and a late live paint would undo the commit.
     feed.cancel();
+    // The answers this match is for, taken as the request goes out.
+    const asked = JSON.stringify(state.answers);
     let result;
     try {
       // The identical call the questionnaire mode makes. THROWS on failure.
@@ -945,10 +957,16 @@ function mount(root, ctx) {
       return;
     }
     state.committed = result;
+    state.committedAnswers = asked;
     state.dismissedSinceCommit = false;
     stage.classList.add('is-committed');
     commitBtn.textContent = copy.commitDone;
     paintResults();
+    // An answer moved while the match was loading: it no longer stands, so back to live.
+    if (ctx.brand === 'rrmc' && answersMoved()) {
+      answerChanged();
+      return;
+    }
     // The payoff for pressing the button. Gated on reduced motion here as well
     // as in the CSS, so the JS never even builds the layer.
     if (!reducedMotion) celebrate(stage, { brand: ctx.brand });
@@ -958,6 +976,7 @@ function mount(root, ctx) {
    *  prototype artefact: a live panel whose controls stop working is a bug. */
   const dropToLive = () => {
     state.committed = null;
+    state.committedAnswers = null;
     state.dismissedSinceCommit = false;
     stage.classList.remove('is-committed');
     commitBtn.disabled = false;
