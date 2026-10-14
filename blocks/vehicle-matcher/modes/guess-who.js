@@ -43,7 +43,7 @@
 import {
   apiPool, apiGeocode, apiGetQuestions, apiField,
 } from '../engine.js';
-import { el, gbp } from '../ui.js';
+import { el, gbp, centreOnPage } from '../ui.js';
 import { BRAND_COPY } from './brand-copy.js';
 import {
   renderRangeSlider, renderOptionList, renderBudgetDrawer, formatRange, formatSliderValue, visibleQuestions,
@@ -265,6 +265,8 @@ const RRMC_AXIS_ORDER = [
 const RRMC_NEGLIGIBLE_MILES = 50;
 // Seats each `people` answer needs, as the engine's RRMC hard filter has it (brands.js RRMC_TUNING.hardFilter).
 const RRMC_SEATS_FOR = { family: 4, crew: 4 };
+// How many high-end suggestions sit under the opening questions.
+const SUGGESTIONS = 6;
 // The engine's widest scored slice (server FIELD_MAX), used to order level cars on the board.
 const SCORE_SLICE = 16;
 
@@ -608,6 +610,7 @@ const GUESS_WHO_COPY = {
     resetLabel: 'Begin again',
     undoLabel: 'Undo the last change',
     askCta: 'Show me the collection',
+    tailHeading: 'Explore the full range of Rolls-Royce provenance',
     revisitLabel: 'Revisit my answers',
     prompts: {
       price: 'Is there an ideal price range?',
@@ -935,6 +938,8 @@ function mount(root, ctx) {
   let askEl = null;
   let askList = null;
   let askCta = null;
+  let askTail = null;
+  let askTailGrid = null;
   const askBlocks = new Map();
 
   /* ------------------------- RRMC's podium look ------------------------- */
@@ -957,11 +962,11 @@ function mount(root, ctx) {
     return [wear, FUEL_SPEC[p.fuels[p.fuel[i]]]].filter(Boolean).join(' – ');
   };
 
-  // "View Options": the cars still on the board that group with this one as groupListings does
-  // (line, body, fuel, 0-62), so the panel offers only versions that pass the filters.
-  const versionsOf = (i) => {
+  // "View Options": the cars in `source` that group with this one as groupListings does (line, body,
+  // fuel, 0-62); on the board that's its survivors, so the panel offers only versions passing the filters.
+  const versionsFrom = (source) => (i) => {
     const p = state.pool;
-    return state.keep
+    return source()
       .filter((j) => j !== i && p.line[j] === p.line[i] && p.body[j] === p.body[i]
         && p.fuel[j] === p.fuel[i] && p.zeroTo62[j] === p.zeroTo62[i])
       .map((j) => ({
@@ -974,6 +979,7 @@ function mount(root, ctx) {
         retailerName: p.retailers[p.retailer[j]],
       }));
   };
+  const versionsOf = versionsFrom(() => state.keep);
 
   // The podium's ✕ "Not this one" chip (its classes, so it reads identically); the label stays for screen readers.
   const asChip = (open) => {
@@ -1043,39 +1049,60 @@ function mount(root, ctx) {
     return renderOptionList(q, state.answers, { onChange }).list;
   };
 
-  // One question as the podium's twisty block (its classes, so its RRMC title and badge rules apply).
+  // One question as a questionnaire screen (its classes, so the RRMC questionnaire rules apply), all on one page.
   const buildQuestion = (q) => {
-    const block = el('div', 'vm-podium-q');
+    const block = el('div', 'vm-screen vm-gw-ask-q');
     block.dataset.qid = q.id;
-    const panelId = `vm-gw-q-panel-${q.id}`;
-    const heading = el('h3', 'vm-podium-q-heading');
-    const toggle = el('button', 'vm-podium-q-toggle');
-    toggle.type = 'button';
-    toggle.setAttribute('aria-expanded', 'true');
-    toggle.setAttribute('aria-controls', panelId);
-    const text = el('span', 'vm-podium-q-text');
-    text.append(el('span', 'vm-podium-q-title', q.title));
-    const chevron = el('span', 'vm-podium-q-chevron');
-    chevron.setAttribute('aria-hidden', 'true');
-    toggle.append(text, el('span', 'vm-podium-q-badge', 'Answered'), chevron);
-    heading.append(toggle);
-
-    const panel = el('div', 'vm-podium-q-panel');
-    panel.id = panelId;
+    block.append(el('h2', 'vm-question', q.title));
     const budgetQ = q.id === 'budgetGate' && state.questions.find((x) => x.id === 'budget');
     const drawer = budgetQ && renderBudgetDrawer(budgetQ, state.answers, { onChange: syncAsk });
-    panel.append(buildControl(q, () => {
+    const list = buildControl(q, () => {
       drawer?.sync();
       syncAsk();
-    }));
-    if (drawer) panel.append(drawer.drawer);
-    toggle.addEventListener('click', () => {
-      const expanded = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', String(!expanded));
-      panel.hidden = expanded;
     });
-    block.append(heading, panel);
+    // As the questionnaire: "A combination" is the odd fifth pill, centred beneath the two pairs.
+    if (q.id === 'style') {
+      const middle = list.querySelector(':scope > .vm-option[data-value="3"]');
+      if (middle) list.append(middle);
+    }
+    block.append(list);
+    if (drawer) block.append(drawer.drawer);
     return block;
+  };
+
+  // The podium tail's high-end strip under the questions: the dearest priced car of each model line,
+  // taken from inside the price range once one is set.
+  let tailFor = '';
+  const paintSuggestions = () => {
+    const p = state.pool;
+    const a = state.answers;
+    const price = axisFor('price');
+    const band = a.budgetGate === 'yes' && Array.isArray(a.budget) ? a.budget : null;
+    const top = band && price && band[1] >= price.q.max ? Infinity : band?.[1];
+    const priced = [];
+    for (let i = 0; i < p.n; i += 1) {
+      if (p.poa?.[i] === 1 || !(p.price[i] > 0)) continue;
+      if (band && (p.price[i] < band[0] || p.price[i] > top)) continue;
+      priced.push(i);
+    }
+    priced.sort((x, y) => p.price[y] - p.price[x]);
+    const lines = new Set();
+    const picks = [];
+    for (const i of priced) {
+      if (picks.length === SUGGESTIONS) break;
+      if (lines.has(p.line[i])) continue;
+      lines.add(p.line[i]);
+      picks.push(i);
+    }
+    // A slider drag fires this on every move; only a different set is repainted.
+    const key = picks.join(',');
+    if (key === tailFor) return;
+    tailFor = key;
+    const all = () => Array.from({ length: p.n }, (_, i) => i);
+    askTailGrid.replaceChildren(...picks.map((i) => matchCard(
+      matchAt(p, i, true, versionsFrom(all)), { compact: true, brand: ctx.brand },
+    )));
+    askTail.hidden = !picks.length;
   };
 
   // Splice the visible blocks in place (as podium.js syncQuestions); the CTA waits for every answer.
@@ -1091,8 +1118,8 @@ function mount(root, ctx) {
       if (!askBlocks.has(q.id)) askBlocks.set(q.id, buildQuestion(q));
       const node = askBlocks.get(q.id);
       if (askList.children[i] !== node) askList.insertBefore(node, askList.children[i] || null);
-      node.querySelector('.vm-podium-q-badge').hidden = !isAnswered(q);
     });
+    paintSuggestions();
     const done = visible.filter(isAnswered).length;
     askCta.disabled = done < visible.length;
     if (progressBar) progressBar.style.width = `${Math.round((done / (visible.length || 1)) * 100)}%`;
@@ -1100,13 +1127,18 @@ function mount(root, ctx) {
 
   const buildAsk = () => {
     askEl = el('section', 'vm-gw-ask');
-    askList = el('div', 'vm-podium-questions vm-gw-ask-questions');
+    askList = el('div', 'vm-gw-ask-questions');
     askCta = el('button', 'vm-btn vm-btn-primary vm-gw-ask-cta', copy.askCta);
     askCta.type = 'button';
     askCta.addEventListener('click', confirmAsk);
     const pane = el('div', 'vm-gw-ask-pane');
     pane.append(askList, askCta);
-    askEl.append(...rrmcTaglines(), pane);
+    askTail = el('div', 'vm-podium-tail');
+    askTailGrid = el('div', 'vm-podium-tail-grid');
+    askTail.append(el('h3', 'vm-subhead vm-podium-tail-head', copy.tailHeading), askTailGrid);
+    // Wider than the question column and centred on the page, with equal space either side.
+    centreOnPage(askTail);
+    askEl.append(...rrmcTaglines(), pane, askTail);
   };
 
   const showAsk = () => {

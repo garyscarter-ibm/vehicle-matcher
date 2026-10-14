@@ -19,7 +19,7 @@
 
 import { BUDGET_BANDS, pillFor } from '../quiz-meta.js';
 import { apiGetQuestions, apiMatch, apiNearby } from '../engine.js';
-import { el, cardinal, gbp } from '../ui.js';
+import { el, cardinal, gbp, keepOneRow } from '../ui.js';
 import {
   BRAND_COPY, UNMET_PHRASES, TRADE_COPY, orList, andList, tradeLines,
 } from './brand-copy.js';
@@ -55,7 +55,7 @@ const RRMC_COPY = {
   working: ({ total, eligible }, budgeted) => `We considered all ${total} motor cars in the Provenance collection. `
     + `${eligible === 1 ? 'One was' : `${eligible} were`} ${budgeted ? 'within your price range and ' : ''}suited to your needs.`,
   workingClear: ' Nothing else in the collection came close.',
-  workingWeak: ' None of them is quite what you described.',
+  workingWeak: ' None of them are quite what you described.',
   searchedWider: ({ model, miles, where }) => 'We looked further afield. '
     + `The ${model} at ${where} suits you more closely, and it is ${miles}.`,
 };
@@ -367,6 +367,8 @@ function renderRefine(
   const awayLabel = el('h3', 'vm-subhead vm-group-label', copy.awayHeading);
   const awayGrid = el('div', 'vm-grid vm-grid-tied');
   const awayRestGrid = el('div', 'vm-tail-grid');
+  // RRMC: the extra tiles keep to one row, however many there are, and never scroll sideways.
+  if (ctx.brand === 'rrmc') [hereRestGrid, awayRestGrid].forEach(keepOneRow);
 
   /*
    * Two things were moved below the cards together in the rebuild, and only
@@ -950,7 +952,12 @@ function renderRefine(
         });
         into.append(side);
       }
-      drop(list, top).forEach((m) => rest.append(tile(m)));
+      // The next best after bronze, as podium's explore row shows them: no relevance cut, which
+      // RRMC's narrow answers often leave empty. They sit beneath gold (CSS places them).
+      list.slice(top.length, top.length + TAIL_SHOWN).forEach((m) => rest.append(tile(m)));
+      const more = el('div', 'vm-rrmc-podium-more');
+      more.append(...(tailHead ? [tailHead] : []), rest);
+      into.append(more);
     };
     const tile = (m) => matchCard(m, { compact: true, brand: ctx.brand });
     // The grid holding the LEAD goes full width for a single car; the other
@@ -962,6 +969,8 @@ function renderRefine(
     if (ctx.brand === 'rrmc' && leadIsHere) {
       podium(grid, hereRestGrid, here);
     } else {
+      // Back below the grid if a podium redraw had moved them up beside it.
+      if (hereRestGrid.parentNode !== hereGroup) hereGroup.append(...(tailHead ? [tailHead] : []), hereRestGrid);
       hereLead.forEach((m) => grid.append(full(m, single)));
       drop(here, hereLead).forEach((m) => hereRestGrid.append(tile(m)));
     }
@@ -1386,6 +1395,8 @@ function renderPreviewSection(ctx) {
   section.append(el('h3', 'vm-subhead vm-nearby-heading vm-preview-heading',
     rrmc ? RRMC_COPY.previewHeading : 'SHORTLISTING FOR YOU'));
   const track = el('div', 'vm-nearby vm-preview-track');
+  // RRMC: one row of shortlist tiles that fits the width, with no sideways scroll (see the CSS).
+  if (rrmc) keepOneRow(track);
   track.tabIndex = 0;
   track.setAttribute('role', 'region');
   track.setAttribute('aria-label', rrmc

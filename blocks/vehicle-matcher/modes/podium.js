@@ -41,7 +41,7 @@
  */
 
 import { apiGetQuestions, apiMatch } from '../engine.js';
-import { el } from '../ui.js';
+import { el, keepOneRow } from '../ui.js';
 import { BRAND_COPY, UNMET_PHRASES, orList } from './brand-copy.js';
 import {
   visibleQuestions, renderRangeSlider, renderOptionList, formatSliderValue, renderBudgetDrawer,
@@ -697,6 +697,8 @@ function mount(root, ctx) {
     tailEl = el('div', 'vm-podium-tail');
     tailEl.hidden = true;
     tailGrid = el('div', 'vm-podium-tail-grid');
+    // RRMC: the extra tiles keep to one row, however many there are, and never scroll sideways.
+    if (ctx.brand === 'rrmc') keepOneRow(tailGrid);
     tailEl.append(el('h3', 'vm-subhead vm-podium-tail-head', copy.tailHeading), tailGrid);
     noteEl = el('p', 'vm-podium-note');
     noteEl.hidden = true;

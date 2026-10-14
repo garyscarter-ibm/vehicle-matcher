@@ -26,28 +26,45 @@
   transition: width 0.3s ease;
 }
 
-/* --- seed: the podium's question titles, pills and budget drawer --- */
+/* --- seed: the questionnaire's question screens, every question on the one page --- */
 .vm.vm-rrmc .vm-knockout-qs { max-width: calc(2 * 260px + var(--vm-space-2)); margin: 0 auto; }
-/* Podium's pane rhythm: 16px above and below the title, 20px under the control, no rule between. */
-.vm.vm-rrmc .vm-knockout-q { padding: var(--vm-space-4) 0 var(--vm-space-5); text-align: center; }
+.vm.vm-rrmc .vm-knockout-q { text-align: center; }
+.vm.vm-rrmc .vm-knockout-q + .vm-knockout-q { margin-top: var(--vm-space-6); }
+/* Questionnaire pills: two abreast, an odd last pill centred beneath; 20px under the title, 8px apart. */
+/* As the questionnaire's: two abreast, each pill as wide as the widest, an odd last one centred. */
 .vm.vm-rrmc .vm-knockout-seed .vm-options:not(.vm-slider) {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: stretch;
   gap: var(--vm-space-2);
-  margin: var(--vm-space-4) auto 0;
+  max-width: calc(2 * 260px + var(--vm-space-2));
+  margin: var(--vm-space-5) auto var(--vm-space-6);
 }
-/* The mileage slider: podium's value slider (teal via the shared RRMC rules), readout centred. */
-.vm.vm-rrmc .vm-knockout-q > .vm-options.vm-slider { margin: var(--vm-space-4) 0 0; padding-top: var(--vm-space-1); }
-.vm.vm-rrmc .vm-knockout-q > .vm-options.vm-slider .vm-slider-value {
-  margin-bottom: var(--vm-space-3);
-  font-size: var(--vm-text-body-lg);
-  text-align: center;
+@media (min-width: 560px) {
+  .vm.vm-rrmc .vm-knockout-seed .vm-options:not(.vm-slider) {
+    grid-template-columns: repeat(2, minmax(260px, 1fr));
+    width: max-content;
+    max-width: none;
+  }
+  .vm.vm-rrmc .vm-knockout-seed .vm-options:not(.vm-slider) > .vm-option:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc((100% - var(--vm-space-2)) / 2);
+  }
 }
+/* Sliders at the same centred width, readout centred over the track, as the questionnaire's. */
+.vm.vm-rrmc .vm-knockout-q > .vm-options.vm-slider {
+  max-width: calc(2 * 260px + var(--vm-space-2));
+  margin: var(--vm-space-5) auto var(--vm-space-6);
+}
+.vm.vm-rrmc .vm-knockout-q > .vm-options.vm-slider .vm-slider-value { text-align: center; }
 .vm.vm-rrmc .vm-knockout-seed .vm-option {
   border-radius: 9999px;
-  width: 260px;
+  width: auto;
+  min-width: min(260px, 100%);
+  justify-self: stretch;
   height: 40px;
+  white-space: nowrap;
   padding: 0 var(--vm-space-4);
   justify-content: center;
   align-items: center;
@@ -387,4 +404,39 @@
 @media (prefers-reduced-motion: reduce) {
   .vm.vm-rrmc .vm-knockout-card.vm-knockout-tile { transition: none; }
   .vm.vm-rrmc .vm-knockout-progress-bar { transition: none; }
+}
+
+/* Before the field loads, the seed is all there is on the page: its taglines centre over the questions. */
+.vm.vm-rrmc .vm-stage .vm-knockout-seed :is(.vm-rrmc-tagline, .vm-rrmc-tagline-sub) { text-align: center; margin-inline: auto; }
+
+/* The "Explore the full range" suggestions keep to one row, never scrolling: the strip widens past
+   the column into the side cushions (24px clear of the window, at most 1400px) to fit them. */
+.vm.vm-rrmc .vm-knockout-seed .vm-podium-tail {
+  width: min(100vw - 48px, 1400px);
+  max-width: none;
+  margin-inline: calc(50% - min(50vw - 24px, 700px));
+  container-type: inline-size;
+}
+.vm.vm-rrmc .vm-knockout-seed .vm-podium-tail .vm-podium-tail-grid {
+  grid-template-columns: none;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  overflow: hidden;
+}
+/* Where even that can't seat every tile at 160px, the row keeps only the whole tiles that fit. */
+@container (max-width: 1067px) { .vm.vm-rrmc .vm-knockout-seed .vm-podium-tail .vm-podium-tail-grid > :nth-child(n + 6) { display: none; } }
+@container (max-width: 895px) { .vm.vm-rrmc .vm-knockout-seed .vm-podium-tail .vm-podium-tail-grid > :nth-child(n + 5) { display: none; } }
+@container (max-width: 723px) { .vm.vm-rrmc .vm-knockout-seed .vm-podium-tail .vm-podium-tail-grid > :nth-child(n + 4) { display: none; } }
+@container (max-width: 551px) { .vm.vm-rrmc .vm-knockout-seed .vm-podium-tail .vm-podium-tail-grid > :nth-child(n + 3) { display: none; } }
+@container (max-width: 379px) { .vm.vm-rrmc .vm-knockout-seed .vm-podium-tail .vm-podium-tail-grid > :nth-child(n + 2) { display: none; } }
+
+/* Phones can't hold a wide pill: there a long answer may wrap, on tighter lines, and the pill grows. */
+@media (max-width: 559px) {
+  .vm.vm-rrmc .vm-knockout-seed .vm-option {
+    height: auto;
+    min-height: 40px;
+    padding-block: 8px;
+    white-space: normal;
+    line-height: 1.2;
+  }
 }

@@ -32,8 +32,10 @@
  * fields the API returns.
  */
 
-import { apiGetQuestions, apiField, apiMatch } from '../engine.js';
-import { el, cardinal } from '../ui.js';
+import {
+  apiGetQuestions, apiField, apiMatch, apiPreview,
+} from '../engine.js';
+import { el, cardinal, centreOnPage } from '../ui.js';
 import {
   WEAK_SCORE,
   budgetBandsFromQuestion, useTilesFromQuestion,
@@ -54,6 +56,9 @@ const MAX_FIELD = 16;
  * send the player back to the seed to widen the budget. Exactly two still makes a
  * one-match "final", which is a legitimate (if short) tournament. */
 const MIN_FIELD = 2;
+
+// RRMC seed: how many high-end suggestions sit in the provenance strip beneath the questions.
+const TAIL_MAX = 6;
 
 /* ------------------------------ copy ------------------------------ */
 
@@ -414,7 +419,8 @@ const KNOCKOUT_COPY = {
       + 'collection beside one another, two at a time, until the one that is yours remains.',
     budgetLabel: 'Is there an ideal price range?',
     useLabel: 'Where will you go?',
-    seedCta: 'Begin your journey',
+    seedCta: 'Find my perfect match',
+    tailHeading: 'Explore the full range of Rolls-Royce provenance',
     versus: 'or',
     pickHint: 'Two motor cars from our Provenance collection. Choose the one you would rather own.',
     pickCta: 'Choose this one',
@@ -772,7 +778,7 @@ function mount(root, ctx) {
     progress.firstChild.style.width = `${Math.round(Math.min(1, fraction) * 100)}%`;
   };
   // "Why this one?" reads module-wide answers; only the mounted run may set them.
-  const setPanelAnswers = () => { if (isMounted()) setRrmcAnswers(state.seed, state.questions); };
+  const setPanelAnswers = (answers = state.seed) => { if (isMounted()) setRrmcAnswers(answers, state.questions); };
 
   // The field's match for a car (listings, tradeOffs against the seed); matchCard needs `reasons`.
   const fieldMatch = (car, fallback) => {
@@ -946,6 +952,41 @@ function mount(root, ctx) {
         if (wrap.children[i] !== node) wrap.insertBefore(node, wrap.children[i] || null);
       });
       cta.disabled = !visible.every((q) => isAnswered(chosen[q.id]));
+      refreshTail();
+    }
+
+    /* The provenance strip in podium's own tail markup (so its RRMC tail styling applies): the
+     * highest-value stock until a price range is set, then the closest to the answers so far. */
+    const tail = el('div', 'vm-podium-tail');
+    tail.hidden = true;
+    const tailGrid = el('div', 'vm-podium-tail-grid');
+    tail.append(el('h3', 'vm-subhead vm-podium-tail-head', copy.tailHeading), tailGrid);
+    // Wider than the seed column and centred on the page, with equal space either side.
+    centreOnPage(tail);
+    let tailKey = null;
+    let tailTimer = 0;
+    let tailSeq = 0;
+    function refreshTail() {
+      const query = chosen.budgetGate === 'yes' ? { ...chosen } : { budgetGate: 'no' };
+      const key = JSON.stringify(query);
+      if (key === tailKey) return;
+      const first = tailKey === null;
+      tailKey = key;
+      clearTimeout(tailTimer);
+      tailTimer = setTimeout(async () => {
+        if (!tail.isConnected || !isMounted()) return;
+        tailSeq += 1;
+        const seq = tailSeq;
+        const matches = await apiPreview(ctx.api, query, ctx.retailer, ctx.brand, ctx.scope, true);
+        // Gone once the field loads (the seed screen is replaced), and a newer request wins.
+        if (seq !== tailSeq || !tail.isConnected || !isMounted()) return;
+        const shown = matches.filter((m) => m?.car).slice(0, TAIL_MAX);
+        setPanelAnswers(query);
+        tailGrid.replaceChildren(...shown.map((m) => matchCard(
+          { ...m, reasons: m.reasons || [] }, { compact: true, brand: ctx.brand },
+        )));
+        tail.hidden = !shown.length;
+      }, first ? 0 : 400);
     }
     sync();
 
@@ -955,7 +996,7 @@ function mount(root, ctx) {
     });
     const list = el('div', 'vm-knockout-qs');
     list.append(wrap, cta);
-    screen.append(list);
+    screen.append(list, tail);
     root.append(screen);
     return true;
   };
