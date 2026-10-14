@@ -419,6 +419,83 @@
   opacity: 0.7;
 }
 
+/* RRMC: the official site's footer (index.html rrFooter), sized from a 1512px-wide screenshot. */
+.vm-rrmc .demo-footer {
+  padding: 88px max(24px, 6vw) 0;
+  background: #161616;
+  border-top: none;
+  font-weight: 400;
+}
+.vm-rrmc .demo-footer-inner { display: block; max-width: none; }
+.rr-footer-mark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  margin: 0 0 38px;
+  line-height: 1;
+}
+.rr-footer-mark-name { font-size: 23px; font-variant: small-caps; letter-spacing: 0.01em; }
+.rr-footer-mark-sub { font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; }
+/* Five link columns on a 224px pitch, social icons right; ruled above and below. */
+.rr-footer-nav {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 224px)) 1fr;
+  padding: 16px 0;
+  border-block: 1px solid #3a3a3a;
+}
+.rr-footer-col { display: flex; flex-direction: column; align-items: flex-start; }
+.rr-footer-col a {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  padding: 11px 0;
+  color: #ffffff;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  line-height: 14px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.rr-footer-col a:hover { opacity: 0.7; }
+.rr-footer-flag { flex: none; width: 20px; height: 10px; }
+.rr-footer-social {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;
+}
+.rr-footer-social a { display: flex; color: #5c5c5c; }
+.rr-footer-social a:hover { color: #ffffff; }
+.rr-footer-social svg { width: auto; height: 18px; fill: currentcolor; }
+.rr-footer-social a[aria-label="YouTube"] svg { height: 17px; }
+.rr-footer-social a[aria-label="X"] svg { height: 15px; }
+/* The demo disclaimer sits quietly under the bottom rule. */
+.vm-rrmc .demo-footer-note {
+  margin: 0;
+  padding: 20px 0 0;
+  border-top: none;
+  color: #8a8a8a;
+  opacity: 1;
+}
+/* The copyright line closes the footer, in the note's grey. */
+.rr-footer-copy {
+  margin: 0;
+  padding: 12px 0 28px;
+  color: #8a8a8a;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+/* Narrower: the columns fold to three then two, and the icons drop to their own row. */
+@media (max-width: 1359px) {
+  .rr-footer-nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .rr-footer-social { grid-column: 1 / -1; justify-content: flex-start; padding: 16px 0 6px; }
+}
+@media (max-width: 759px) {
+  .rr-footer-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
 /* ================= brand picker (no ?brand=) ================= */
 
 /*

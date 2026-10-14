@@ -183,7 +183,15 @@ main {
         heroTitleHtml: '<span style="letter-spacing:0.05em">Explore</span> <span style="font-weight:300;letter-spacing:0.05em">Ecstasy</span>.',
         heroSubHtml: '<span style="letter-spacing:0.04em">Find the car that\'s waiting for you,</span><br><span style="letter-spacing:0.03em">matched to your driving style.</span>',
         heroCta: 'Start the search',
-        footerLinks: ['Legal', 'Privacy', 'Cookies', 'Contact'],
+        // The official site's footer, column by column; rendered by rrFooter.
+        footerColumns: [
+          ['Pre-owned', 'Find a dealer', 'Privacy', 'Language'],
+          ['Cookies', 'EU tyre labels', 'Careers'],
+          ['Pressclub', 'Battery regulation', 'Site map'],
+          ['Legal', 'FAQs', 'Whispers'],
+          ['Complaints', 'Contact', 'Sustainability'],
+        ],
+        footerCopyright: '© IBM Corporation 2026',
         footerNote: 'Internal demonstration only. This is a prototype of the '
           + 'vehicle-matcher tool shown inside representative brand furniture. It '
           + 'is not an official Rolls-Royce Motor Cars site and is not affiliated '
@@ -261,6 +269,34 @@ main {
     const linkList = (items) => items
       .map((l) => `<a href="#" onclick="return false">${esc(l)}</a>`)
       .join('');
+
+    // RRMC's footer, after the official site's: set wordmark, link columns, social icons.
+    const UK_FLAG = '<svg class="rr-footer-flag" viewBox="0 0 60 30" aria-hidden="true">'
+      + '<clipPath id="rr-flag-clip"><path d="M30,15h30v15zv15h-30zh-30v-15zv-15h30z"/></clipPath>'
+      + '<path d="M0,0v30h60v-30z" fill="#012169"/>'
+      + '<path d="M0,0L60,30M60,0L0,30" stroke="#fff" stroke-width="6"/>'
+      + '<path d="M0,0L60,30M60,0L0,30" clip-path="url(#rr-flag-clip)" stroke="#C8102E" stroke-width="4"/>'
+      + '<path d="M30,0v30M0,15h60" stroke="#fff" stroke-width="10"/>'
+      + '<path d="M30,0v30M0,15h60" stroke="#C8102E" stroke-width="6"/></svg>';
+    const SOCIAL_ICONS = {
+      YouTube: '<svg viewBox="0 0 24 17"><path fill-rule="evenodd" d="M23.5 2.65A3 3 0 0 0 21.4.53C19.5 0 12 0 12 0S4.5 0 2.6.53A3 3 0 0 0 .5 2.65C0 4.55 0 8.5 0 8.5s0 3.95.5 5.85a3 3 0 0 0 2.1 2.12C4.5 17 12 17 12 17s7.5 0 9.4-.53a3 3 0 0 0 2.1-2.12c.5-1.9.5-5.85.5-5.85s0-3.95-.5-5.85ZM9.6 12.1V4.9l6.3 3.6-6.3 3.6Z"/></svg>',
+      Facebook: '<svg viewBox="0 0 24 24"><path d="M22 0H2a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h10.7v-9.3H9.6v-3.6h3.1V8.4c0-3.1 1.9-4.8 4.7-4.8 1.3 0 2.5.1 2.8.1v3.3h-1.9c-1.5 0-1.8.7-1.8 1.8v2.3h3.6l-.5 3.6h-3.1V24H22a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Z"/></svg>',
+      Instagram: '<svg viewBox="0 0 24 24"><rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="6" r="1.3"/></svg>',
+      LinkedIn: '<svg viewBox="0 0 24 24"><path d="M21.6 0H2.4A2.4 2.4 0 0 0 0 2.4v19.2A2.4 2.4 0 0 0 2.4 24h19.2a2.4 2.4 0 0 0 2.4-2.4V2.4A2.4 2.4 0 0 0 21.6 0ZM7.1 20.5H3.6V9h3.5v11.5ZM5.3 7.4a2 2 0 1 1 0-4.1 2 2 0 0 1 0 4.1Zm15.2 13.1H17v-5.6c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9v5.7H9.5V9h3.4v1.6h.1a3.7 3.7 0 0 1 3.3-1.8c3.6 0 4.2 2.4 4.2 5.4v6.3Z"/></svg>',
+      X: '<svg viewBox="0 0 24 24"><path d="M18.9 1.2h3.7l-8 9.2 9.4 12.4h-7.4l-5.8-7.6-6.6 7.6H.5l8.6-9.8L0 1.2h7.6l5.2 6.9 6.1-6.9Zm-1.3 19.4h2L6.5 3.3H4.3l13.3 17.3Z"/></svg>',
+    };
+    const rrFooter = (b) => `
+      <p class="rr-footer-mark" aria-label="Rolls-Royce Motor Cars">
+        <span class="rr-footer-mark-name">Rolls-Royce</span><span class="rr-footer-mark-sub">Motor Cars</span>
+      </p>
+      <div class="rr-footer-nav">
+        ${b.footerColumns.map((col) => `<nav class="rr-footer-col">${col
+          .map((l) => `<a href="#" onclick="return false">${esc(l)}${l === 'Language' ? UK_FLAG : ''}</a>`)
+          .join('')}</nav>`).join('')}
+        <nav class="rr-footer-social" aria-label="Social media">${Object.entries(SOCIAL_ICONS)
+          .map(([name, svg]) => `<a href="#" onclick="return false" aria-label="${name}">${svg}</a>`)
+          .join('')}</nav>
+      </div>`;
 
     // A brand logo as a real DOM node: an <img> pointing at the committed SVG,
     // that quietly replaces ITSELF with a styled text wordmark if the file is
@@ -393,9 +429,10 @@ main {
 
           <footer class="demo-footer">
             <div class="demo-footer-inner">
-              <nav class="demo-footer-links">${linkList(b.footerLinks)}</nav>
-              <span class="demo-footer-spacer"></span>
+              ${b.footerColumns ? rrFooter(b) : `<nav class="demo-footer-links">${linkList(b.footerLinks)}</nav>
+              <span class="demo-footer-spacer"></span>`}
               <p class="demo-footer-note">${esc(b.footerNote)}</p>
+              ${b.footerCopyright ? `<p class="rr-footer-copy">${esc(b.footerCopyright)}</p>` : ''}
             </div>
           </footer>
         </div>`;
