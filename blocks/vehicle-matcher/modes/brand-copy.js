@@ -639,6 +639,15 @@ export const UNMET_PHRASES = {
       coupe: 'coupés', convertible: 'Spiders', suv: 'the Purosangue',
     },
   },
+  rrmc: {
+    // Rolls-Royce's own vocabulary: motor cars, not cars, and a convertible is a Drophead.
+    fuel: {
+      petrol: 'petrol motor cars', ev: 'fully electric motor cars',
+    },
+    bodyStyles: {
+      saloon: 'saloons', suv: 'SUVs', coupe: 'coupés', convertible: 'Dropheads',
+    },
+  },
 };
 
 /*
@@ -701,6 +710,14 @@ export const TRADE_COPY = {
     fuel: { petrol: 'petrol', phev: 'a plug-in hybrid' },
     bodyStyles: {
       coupe: 'a coupé', convertible: 'a Spider', suv: 'the Purosangue',
+    },
+  },
+  rrmc: {
+    // The "Why this one?" drawbacks, in the panel's own words ("It's petrol-powered", "a Drophead").
+    label: 'Worth knowing',
+    fuel: { petrol: 'petrol-powered', ev: 'fully electric' },
+    bodyStyles: {
+      saloon: 'a saloon', suv: 'an SUV', coupe: 'a coupé', convertible: 'a Drophead',
     },
   },
 };

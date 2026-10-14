@@ -26,7 +26,7 @@ import {
   startTestServer, post, get, request,
   fakeStock, fakeEnrich, throwingStock, bmwPool, miniPool, bmwFeedVehicle,
 } from './helpers.js';
-import { mapVehicle } from '../mapping.js';
+import { mapVehicle, mapRRMCRaw } from '../mapping.js';
 
 /* A budget that keeps every fixture car eligible (fixtures sit 24k–40k). */
 const OPEN_BRIEF = { budget: [10000, 60000] };
@@ -682,6 +682,37 @@ test('GET /api/pool ships every column index-aligned to n', async () => {
     for (const mask of json.features) {
       assert.equal(typeof mask, 'number');
       assert.ok(mask < 2 ** json.featureKeys.length, 'a feature bit is set past featureKeys');
+    }
+  });
+});
+
+// Guess Who's RRMC cards need POA, drive side and region per car, plus the brand's price range.
+test('GET /api/pool ships RRMC poa/handDrive/region columns and price range, and only for RRMC', async () => {
+  const rrmc = [
+    mapRRMCRaw({ id: 'a', name: 'Cullinan', price: 310000, year: 2021, handDrive: 'rhd', region: 'europe' }),
+    mapRRMCRaw({ id: 'b', name: 'Phantom', price: 0, poa: true, year: 2022, handDrive: 'lhd', region: 'mea' }),
+    mapRRMCRaw({ id: 'c', name: 'Ghost', price: 190000, year: 2020 }),
+  ];
+  await withServer({ fetchRetailerStock: fakeStock({ bmw: rrmc }) }, async (base) => {
+    const { status, json } = await get(base, '/api/pool?brand=rrmc');
+    assert.equal(status, 200);
+    assert.deepEqual(json.poa, [0, 1, 0], 'POA rides as its own column, not as the placeholder price');
+    for (const [col, dict] of [['handDrive', 'handDrives'], ['region', 'regions']]) {
+      assert.equal(json[col].length, json.n, `${col} is not n long`);
+      assert.ok(json[col].every((at) => at >= 0 && at < json[dict].length), `${col} indexes past ${dict}`);
+    }
+    assert.equal(json.handDrives[json.handDrive[0]], 'rhd');
+    assert.equal(json.regions[json.region[1]], 'mea');
+    assert.equal(json.handDrives[json.handDrive[2]], null, 'an unknown side stays unknown');
+    assert.equal(json.labels.handDrive.rhd, 'Right Hand Drive');
+    assert.equal(json.labels.region.europe, 'The UK & Europe');
+    assert.deepEqual(json.priceRange, { min: 60000, max: 1000000, step: 1000, minGap: 20000 });
+  });
+  // BMW's 12k-car payload must not grow by a single column.
+  await withServer({ fetchRetailerStock: fakeStock({ bmw: bmwPool(3) }) }, async (base) => {
+    const { json } = await get(base, '/api/pool');
+    for (const key of ['poa', 'handDrive', 'handDrives', 'region', 'regions', 'labels', 'priceRange']) {
+      assert.equal(json[key], undefined, `BMW's pool should not carry ${key}`);
     }
   });
 });

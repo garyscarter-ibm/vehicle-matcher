@@ -1,0 +1,210 @@
+/* RRMC questionnaire: the podium's look carried over. Written by the questionnaire pass; see vehicle-matcher.css. */
+/* Loaded before vehicle-matcher.css, so every rule here out-specifies the one it overrides. */
+
+/* ---- intro: the podium's tagline and sub line, then the hero's 260 x 40 pill CTA ---- */
+.vm.vm-rrmc .vm-stage .vm-intro { padding-top: 0; }
+.vm.vm-rrmc .vm-stage .vm-intro .vm-title {
+  margin: 0 0 var(--vm-space-3);
+  font-size: 32px;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: none;
+}
+.vm.vm-rrmc .vm-stage .vm-intro .vm-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 260px;
+  height: 40px;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  border-radius: 9999px;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+
+/* ---- progress: the podium's 8px rose-gold bar, in the switcher row (questionnaire.js rrmcProgress) ---- */
+.vm.vm-rrmc .vm-switcher.has-progress > .vm-progress {
+  flex: 1 1 auto;
+  height: 8px;
+  margin: 0 var(--vm-space-4) 0 0;
+}
+/* A locked page has no switcher row, so the bar stays on the screen at the same weight. */
+.vm.vm-rrmc .vm-stage .vm-screen > .vm-progress { height: 8px; }
+
+/* ---- answered pills: the question pill's outline in the tail heading's small tracked caps ---- */
+.vm.vm-rrmc .vm-screen[data-qid] .vm-pills {
+  justify-content: center;
+  max-width: calc(2 * 260px + var(--vm-space-2));
+  margin: 0 auto var(--vm-space-6);
+}
+.vm.vm-rrmc .vm-screen[data-qid] .vm-pill {
+  gap: 0;
+  height: 28px;
+  padding: 0 14px;
+  border: 1px solid rgba(40, 20, 50, 0.9);
+  border-radius: 9999px;
+  background: var(--vm-surface);
+  color: var(--vm-ink);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.vm.vm-rrmc .vm-screen[data-qid] .vm-pill:hover {
+  border-color: var(--vm-ink-muted);
+  background: var(--vm-surface-alt);
+}
+
+/* ---- Back / Next: under the pills, one pill column each ---- */
+.vm.vm-rrmc .vm-screen[data-qid] .vm-nav {
+  max-width: calc(2 * 260px + var(--vm-space-2));
+  margin-inline: auto;
+  gap: var(--vm-space-2);
+}
+.vm.vm-rrmc .vm-screen[data-qid] .vm-nav > .vm-btn { flex: 1 1 0; }
+
+/* ---- live shortlist strip: the podium tail's heading, borderless tiles, purple backing from 1080px ---- */
+.vm.vm-rrmc .vm-screen[data-qid] .vm-preview {
+  margin: var(--vm-space-8) 0 0;
+  padding: 0;
+  background: transparent;
+}
+.vm.vm-rrmc .vm-screen[data-qid] .vm-preview-heading {
+  margin: 0 0 var(--vm-space-3);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.vm.vm-rrmc .vm-screen[data-qid] .vm-preview-track { gap: var(--vm-space-3); }
+.vm.vm-rrmc .vm-screen[data-qid] .vm-ptile { border-color: transparent; }
+.vm.vm-rrmc .vm-screen[data-qid] a.vm-ptile:hover { border-color: transparent; box-shadow: none; }
+/* Name and line in View Options' small-tile register; hover underlines the name, as there. */
+.vm.vm-rrmc .vm-screen[data-qid] .vm-ptile-name { font-size: 14px; letter-spacing: 0.05em; line-height: 1.3; }
+.vm.vm-rrmc .vm-screen[data-qid] .vm-ptile-specs { font-size: 12px; letter-spacing: 0.02em; line-height: 1.4; color: var(--vm-ink); }
+.vm.vm-rrmc .vm-stage .vm-screen[data-qid] a.vm-ptile:hover .vm-ptile-name { text-decoration: underline !important; }
+@media (min-width: 1080px) {
+  .vm.vm-rrmc .vm-screen[data-qid] .vm-preview-track {
+    margin: 0;
+    padding: var(--vm-space-6);
+    background: #281432;
+    border-radius: var(--vm-radius);
+  }
+  .vm.vm-rrmc .vm-screen[data-qid] .vm-preview-track .vm-ptile { background: transparent; }
+  .vm.vm-rrmc .vm-screen[data-qid] .vm-preview-track .vm-ptile * {
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  /* Loading tiles shimmer in white on the purple, from the alt tile's 8% placeholder. */
+  .vm.vm-rrmc .vm-screen[data-qid] .vm-preview-track .vm-skel {
+    background-color: rgba(255, 255, 255, 0.08);
+    background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.08) 100%);
+  }
+}
+
+/* ---- results: tail heading over the tiles beneath the podium, as podium's ---- */
+.vm.vm-rrmc .vm-results .vm-rrmc-q-tail-head {
+  margin: 0 0 var(--vm-space-3);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.vm.vm-rrmc .vm-results .vm-group > .vm-rrmc-q-tail-head + .vm-tail-grid { margin-top: 0; }
+/* The away group's place heading, if ever shown, in the same register. */
+.vm.vm-rrmc .vm-results .vm-group-label {
+  margin: 0 0 var(--vm-space-3);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.vm.vm-rrmc .vm-results .vm-pending { font-size: 12px; letter-spacing: 0.02em; color: var(--vm-ink); }
+
+/* ---- refine chips: the question pill (40px, uppercase 15px at 8%, purple when on), centred ---- */
+.vm.vm-rrmc .vm-results .vm-refine-tools { text-align: center; }
+.vm.vm-rrmc .vm-results .vm-refine-label {
+  margin: 0 0 var(--vm-space-3);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  color: var(--vm-ink);
+}
+.vm.vm-rrmc .vm-results .vm-chips { justify-content: center; }
+.vm.vm-rrmc .vm-results .vm-chip {
+  height: 40px;
+  padding: 0 var(--vm-space-6);
+  border-color: rgba(40, 20, 50, 0.9);
+  border-radius: 9999px;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.vm.vm-rrmc .vm-results .vm-chip:hover { border-color: var(--vm-ink-muted); background: var(--vm-surface-alt); }
+.vm.vm-rrmc .vm-results .vm-chip.is-on { background: #281432; border-color: #ffffff; color: #ffffff; }
+
+/* ---- "What gave you pause?": the podium popover's white card, grey reason rows ---- */
+.vm.vm-rrmc.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-card > .vm-reject .vm-reject-menu {
+  width: 272px;
+  max-width: calc(100vw - 16px);
+  padding: var(--vm-space-4);
+  background: var(--vm-surface);
+  border: var(--vm-border-width) solid var(--vm-line);
+  border-radius: var(--vm-radius);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.18);
+}
+.vm.vm-rrmc .vm-results .vm-reject-prompt { margin: 0 0 var(--vm-space-3); }
+.vm.vm-rrmc .vm-results .vm-reject-option { background: var(--vm-surface-alt); }
+/* White on the purple hover; the card's own ink rule would otherwise leave it unreadable. */
+.vm.vm-rrmc.vm-rrmc .vm-results .vm-card .vm-reject .vm-reject-option:hover {
+  background: var(--vm-accent-spot);
+  color: var(--vm-accent-ink);
+}
+
+/* ---- how we found this: no rule, tail-heading label, the tagline sub's 16px line ---- */
+.vm.vm-rrmc .vm-results .vm-working {
+  margin-top: var(--vm-space-8);
+  padding-top: 0;
+  border-top: none;
+}
+.vm.vm-rrmc .vm-results .vm-working-label {
+  margin: 0 0 var(--vm-space-2);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--vm-ink);
+}
+.vm.vm-rrmc .vm-results .vm-working-text {
+  max-width: 612px;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  color: var(--vm-ink);
+}
+
+/* ---- share / revisit / begin again, and the disclaimer: centred under the centred podium ---- */
+.vm.vm-rrmc .vm-results .vm-actions { justify-content: center; }
+.vm.vm-rrmc .vm-results .vm-disclaimer {
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: var(--vm-ink);
+  text-align: center;
+}
+
+/* ---- nothing at all: the band loses its BMW grey and bleed (RRMC .vm has no right padding) ---- */
+.vm.vm-rrmc .vm-results .vm-nearby-band {
+  margin: var(--vm-space-8) 0 0;
+  padding: 0;
+  background: transparent;
+}
+.vm.vm-rrmc .vm-results .vm-nearby-heading {
+  margin: 0 0 var(--vm-space-3);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.vm.vm-rrmc .vm-results .vm-nearby-lede { font-size: 16px; line-height: 1.5; }

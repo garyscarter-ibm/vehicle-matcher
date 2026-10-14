@@ -38,6 +38,11 @@
    self-contained. @import must precede all other rules (the @font-face run
    below included), so it stays first. See tokens.css for the :root vs .vm split. */
 @import url('./tokens.css');
+/* RRMC per-mode carry-overs of the podium's look (loaded before the rules below, so their
+   selectors out-specify what they override rather than relying on order). */
+@import url('./rrmc-questionnaire.css');
+@import url('./rrmc-head-to-head.css');
+@import url('./rrmc-guess-who.css');
 
 /* BMW Type Next — shared by BMW cars and BMW Motorrad. woff2 only. */
 @font-face {
@@ -228,6 +233,16 @@
   font-family: 'Riviera Nights';
   src: url('./fonts/RivieraNights-Light.woff') format('woff');
   font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+/* The RRMC stage asks for 'Riviera Nights Light' by name (see .vm.vm-rrmc .vm-stage). An
+   installed copy wins, so a Mac with the font renders as before; elsewhere it's the block's Light. */
+@font-face {
+  font-family: 'Riviera Nights Light';
+  src: local('Riviera Nights Light'), local('RivieraNights-Light'),
+    url('./fonts/RivieraNights-Light.woff') format('woff');
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
@@ -4951,6 +4966,28 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 @media (prefers-reduced-motion: reduce) {
   .vm.vm-rrmc .vm-rrmc-why-panel,
   .vm.vm-rrmc .vm-rrmc-why-panel.is-open { transition: none; }
+}
+
+/* From 1080px RRMC questions run on one line at 1% tracking, centred even past their column:
+   questionnaire, head-to-head seed and guess-who popover. Not podium, whose pane is too narrow. */
+@media (min-width: 1080px) {
+  .vm.vm-rrmc .vm-screen[data-qid] .vm-question,
+  .vm.vm-rrmc .vm-knockout-q[data-qid] .vm-question {
+    display: block;
+    position: relative;
+    left: 50%;
+    width: max-content;
+    max-width: none;
+    margin-inline: 0;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    text-align: center;
+    letter-spacing: 0.01em;
+  }
+  .vm.vm-rrmc .vm-screen[data-qid] .vm-question::first-line,
+  .vm.vm-rrmc .vm-knockout-q[data-qid] .vm-question::first-line { letter-spacing: 0.01em; }
+  .vm.vm-rrmc .vm-gw-pop { width: max-content; min-width: 300px; }
+  .vm.vm-rrmc .vm-gw-pop .vm-gw-pop-title { white-space: nowrap; letter-spacing: 0.01em; }
 }
 
 /* ---------------------------- brand fit ------------------------------ */

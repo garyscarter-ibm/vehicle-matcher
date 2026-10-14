@@ -40,12 +40,16 @@
  * nothing else.
  */
 
-import { apiPool, apiGeocode } from '../engine.js';
+import {
+  apiPool, apiGeocode, apiGetQuestions, apiField,
+} from '../engine.js';
 import { el, gbp } from '../ui.js';
 import { BRAND_COPY } from './brand-copy.js';
-import { renderRangeSlider, renderOptionList } from './question-ui.js';
 import {
-  matchCard, SPEC_LABELS, FUEL_SPEC, SWATCH_HEX, CONCEPT_LABELS, setRrmcAnswers,
+  renderRangeSlider, renderOptionList, renderBudgetDrawer, formatRange, formatSliderValue, visibleQuestions,
+} from './question-ui.js';
+import {
+  matchCard, SPEC_LABELS, FUEL_SPEC, SWATCH_HEX, CONCEPT_LABELS, setRrmcAnswers, rrmcTaglines,
 } from './result-card.js';
 import { celebrate, cap } from './match-signal.js';
 
@@ -242,12 +246,66 @@ const FILTER_LABELS = {
   age: 'Age',
   colour: 'Colour',
   place: 'Distance',
+  region: 'Region',
+  handDrive: 'Drive side',
 };
 const FILTER_LABELS_BY_BRAND = {
   // A bike has no body style and no seat count worth filtering on; the shape
   // question is what kind of riding it is for.
   motorrad: { body: 'Bike style' },
+  rrmc: { price: 'Price range', handDrive: 'Configuration' },
 };
+// RRMC's own body names, as its questions and tiles print them.
+const BODY_LABELS_BY_BRAND = { rrmc: { convertible: 'Drophead' } };
+// RRMC's chips follow the podium's question order, with the price range last as it is there.
+const RRMC_AXIS_ORDER = [
+  'body', 'fuel', 'region', 'handDrive', 'seats', 'mileage', 'age', 'colour', 'features', 'place', 'price',
+];
+// Under this many miles RRMC reads a car as new (result-card.js's NEGLIGIBLE_MILES).
+const RRMC_NEGLIGIBLE_MILES = 50;
+// Seats each `people` answer needs, as the engine's RRMC hard filter has it (brands.js RRMC_TUNING.hardFilter).
+const RRMC_SEATS_FOR = { family: 4, crew: 4 };
+// The engine's widest scored slice (server FIELD_MAX), used to order level cars on the board.
+const SCORE_SLICE = 16;
+
+/*
+ * A single-thumb slider (mileage) writing a NUMBER to answers[q.id]: a mirror of podium.js's private
+ * renderValueSlider, same markup and the same immediate persistence of the start value.
+ */
+function renderValueSlider(list, q, answers, { onChange } = {}) {
+  const stored = answers[q.id];
+  const start = typeof stored === 'number'
+    ? stored
+    : (typeof q.default === 'number' ? q.default : q.min);
+  answers[q.id] = start;
+
+  const readout = el('output', 'vm-slider-value', formatSliderValue(start, q));
+  const input = el('input', 'vm-slider-input');
+  input.type = 'range';
+  input.min = String(q.min);
+  input.max = String(q.max);
+  input.step = String(q.step);
+  input.value = String(start);
+  input.setAttribute('aria-label', q.title);
+  input.setAttribute('aria-valuetext', formatSliderValue(start, q));
+
+  input.addEventListener('input', () => {
+    const value = Number(input.value);
+    answers[q.id] = value;
+    const text = formatSliderValue(value, q);
+    readout.textContent = text;
+    input.setAttribute('aria-valuetext', text);
+    onChange?.();
+  });
+
+  const bounds = el('div', 'vm-slider-bounds');
+  bounds.append(
+    el('span', 'vm-slider-min', formatSliderValue(q.min, q)),
+    el('span', 'vm-slider-max', formatSliderValue(q.max, q)),
+  );
+
+  list.append(readout, input, bounds);
+}
 
 /*
  * Display copy, keyed by brand with a `bmw` fallback (every read is
@@ -536,6 +594,59 @@ const GUESS_WHO_COPY = {
     errLede: 'The service didn’t respond. Please check your connection and try again.',
     retryLabel: 'Try again',
   },
+  // RRMC: the podium's register. Unhurried and understated, it states rather than sells; no
+  // wordmark (the podium shows none), and the count reads on into the title.
+  rrmc: {
+    wordmark: '',
+    title: 'in our Provenance collection.',
+    startNote: () => 'Set aside what does not suit you. What remains is yours to consider.',
+    liveNote: ({ left, gone }) => `${gone} set aside. ${left} remain.`,
+    oneNote: 'One remains. This is your Rolls-Royce.',
+    fewNote: ({ left }) => `${left} remain. Take your time with these.`,
+    emptyTitle: 'Nothing remains.',
+    emptyNote: 'Nothing in the collection meets all of that at once. Relax one filter and the collection returns.',
+    resetLabel: 'Begin again',
+    undoLabel: 'Undo the last change',
+    askCta: 'Show me the collection',
+    revisitLabel: 'Revisit my answers',
+    prompts: {
+      price: 'Is there an ideal price range?',
+      fuel: 'How would you prefer to be powered?',
+      body: 'Let your dreams take shape in the form of a...',
+      seats: 'How many seats do you require?',
+      features: 'What must it have fitted?',
+      mileage: 'How far may it have travelled?',
+      age: 'How recent should it be?',
+      colour: 'Which colours appeal to you?',
+      place: 'Where are you looking from?',
+      region: 'Which regions shall we include?',
+      handDrive: 'Which is your preferred driving configuration?',
+    },
+    anySummary: 'Any',
+    rejectLabel: 'Not this one',
+    rejectPrompt: 'Why not this one?',
+    rejectKeep: 'Keep this one',
+    reject: {
+      price: ({ price }) => `Beyond my range at ${price}`,
+      fuel: ({ fuel }) => `Not ${fuel}`,
+      body: ({ label }) => `Not ${/^(SUV|[AEIOU])/i.test(label) ? 'an' : 'a'} ${label}`,
+      colour: ({ shade }) => `Nothing in ${shade}`,
+      mileage: ({ cap }) => `Under ${cap} miles only`,
+      age: ({ years }) => `Nothing older than ${years}`,
+      place: ({ cap }) => `Nothing further than ${cap} miles away`,
+      region: ({ label }) => `Not held in ${label.replace(/^The /, 'the ')}`,
+      handDrive: ({ label }) => `Not ${label}`,
+      just: 'Just not for me',
+    },
+    postcode: {
+      unknown: 'We do not recognise that postcode.',
+      failed: 'We could not check that just now. Please try again shortly.',
+    },
+    errKicker: 'Sorry',
+    errTitle: "We couldn't reach the collection",
+    errLede: "The service didn't respond. Check your connection and try again.",
+    retryLabel: 'Try again',
+  },
 };
 
 const copyFor = (brand) => GUESS_WHO_COPY[brand] || GUESS_WHO_COPY.bmw;
@@ -560,11 +671,17 @@ const labelFor = (brand, key) => FILTER_LABELS_BY_BRAND[brand]?.[key] || FILTER_
 function decodePool(raw) {
   const int32 = (col) => Int32Array.from(col, (v) => (v == null ? -1 : v));
   const idx = (col) => Uint16Array.from(col);
+  const moa = raw.moa || [];
   return {
     ...raw,
     price: int32(raw.price),
-    mileage: int32(raw.mileage),
-    year: int32(raw.year),
+    // MOA (no published reading, RRMC) is an unknown mileage, never zero; nor is a year of 0 a year.
+    mileage: Int32Array.from(raw.mileage, (v, i) => (v == null || moa[i] ? -1 : v)),
+    year: Int32Array.from(raw.year, (v) => (v > 0 ? v : -1)),
+    // RRMC-only columns, present only when the server sent them (see publicPool).
+    ...(raw.poa && { poa: Uint8Array.from(raw.poa) }),
+    ...(raw.handDrive && { handDrive: idx(raw.handDrive) }),
+    ...(raw.region && { region: idx(raw.region) }),
     seats: int32(raw.seats),
     features: Int32Array.from(raw.features),
     body: idx(raw.body),
@@ -594,23 +711,21 @@ function span(col) {
 /** Feature concept keys back out of a car's bitmask, for a card's kit list. */
 const featuresOf = (pool, i) => pool.featureKeys.filter((_, bit) => pool.features[i] & (1 << bit));
 
+/** A car's listing URL: shipped whole (RRMC) or as the brand's prefix plus the advert id. */
+const linkOf = (pool, i) => pool.links?.[i] || (pool.linkPrefix && pool.id[i] ? `${pool.linkPrefix}${pool.id[i]}` : null);
+
 /**
- * A pool row as the `match` shape ./result-card.js expects.
- *
- * `score` is deliberately absent and `showScore: false` is passed alongside it:
- * see matchCard. `reasons` has to be an array because the card destructures it,
- * and `listings` is empty because the pool is listing-level already — there is no
- * grouping here, since a game about eliminating individual cars cannot collapse
- * four of them into one card.
+ * A pool row as the `match` shape ./result-card.js expects, with no `score` (see showScore).
+ * The pool is listing-level, so `listings` is only RRMC's "View Options", read live via `versions`.
  */
-function matchAt(pool, i, big) {
+function matchAt(pool, i, big, versions = () => []) {
   const shade = pool.shades[pool.shade[i]];
   const paint = pool.paints[pool.paint[i]];
   const price = pool.price[i] < 0 ? null : pool.price[i];
   const photo = pool.photo[i];
   return {
     reasons: [],
-    listings: [],
+    get listings() { return versions(i); },
     car: {
       id: pool.id[i],
       name: pool.names[pool.name[i]],
@@ -626,6 +741,11 @@ function matchAt(pool, i, big) {
       listingCount: 1,
       mileage: pool.mileage[i] < 0 ? null : pool.mileage[i],
       moa: Boolean(pool.moa?.[i]),
+      // RRMC's cards and "Why this one?" read these; POA keeps the server's placeholder price off screen.
+      year: pool.year[i] > 0 ? pool.year[i] : undefined,
+      poa: pool.poa?.[i] === 1 || undefined,
+      handDrive: pool.handDrives?.[pool.handDrive?.[i]] || undefined,
+      region: pool.regions?.[pool.region?.[i]] || undefined,
       plate: pool.plate[i],
       seats: pool.seats[i] < 0 ? null : pool.seats[i],
       boot: pool.boot[i],
@@ -636,7 +756,7 @@ function matchAt(pool, i, big) {
       // server/index.js). A card-sized card deserves the bigger variant, so it
       // is reconstructed here rather than sent for all 12,000.
       photo: big ? fullPhoto(photo) : photo,
-      link: pool.links?.[i] || (pool.linkPrefix && pool.id[i] ? `${pool.linkPrefix}${pool.id[i]}` : null),
+      link: linkOf(pool, i),
     },
   };
 }
@@ -749,8 +869,21 @@ const blankTint = (i) => {
 
 /* ------------------------------- mount ------------------------------- */
 
+// Each mount's id, so a stale async boot can tell a newer guess-who mount from its own.
+let mountSeq = 0;
+
 function mount(root, ctx) {
   const copy = copyFor(ctx.brand);
+  const rrmc = ctx.brand === 'rrmc';
+  // The shell swaps modes in place, so a late boot must not act on a stage another mode (or a newer
+  // guess-who mount) now owns. A locked page has no switcher and is always this mode.
+  mountSeq += 1;
+  const mountId = String(mountSeq);
+  root.dataset.vmGwMount = mountId;
+  const stillMounted = () => {
+    const select = root.previousElementSibling?.querySelector?.('.vm-switcher-select');
+    return root.dataset.vmGwMount === mountId && (!select || select.value === 'guess-who');
+  };
   // Guess-who filters rather than asks, so "Why this one?" mustn't phrase against another mode's answers.
   setRrmcAnswers({});
   const brandCopy = BRAND_COPY[ctx.brand] || BRAND_COPY.bmw;
@@ -774,6 +907,9 @@ function mount(root, ctx) {
     exitTimer: 0,
     countGen: 0,
     resizeTimer: 0,
+    questions: [], // RRMC: the podium's question set, asked before the board opens
+    answers: {}, // RRMC: the brief those questions write
+    rank: null, // RRMC: pool index -> engine score for the answers, ordering level cars
   };
 
   // One DOM node per car, created once and re-painted in place when the stage
@@ -795,6 +931,321 @@ function mount(root, ctx) {
   let pop = null;
   let popTitle = null;
   let popBody = null;
+  let progressBar = null;
+  let askEl = null;
+  let askList = null;
+  let askCta = null;
+  const askBlocks = new Map();
+
+  /* ------------------------- RRMC's podium look ------------------------- */
+
+  // "<year> <Model>", without the marque, as matchCard names RRMC's tiles; other brands keep the feed's name.
+  const nameOf = (i) => {
+    const name = state.pool.names[state.pool.name[i]];
+    if (!rrmc) return name;
+    const base = name.replace(/^Rolls-Royce\s+/i, '');
+    return state.pool.year[i] > 0 ? `${state.pool.year[i]} ${base}` : base;
+  };
+
+  // RRMC's "N Miles – Fuel" line, worded exactly as matchCard's (rrmcMileageText isn't exported).
+  const rrmcLineOf = (i) => {
+    const p = state.pool;
+    const m = p.mileage[i];
+    let wear = `${miles(m)} Miles`;
+    if (p.moa?.[i]) wear = 'MOA';
+    else if (m < RRMC_NEGLIGIBLE_MILES) wear = 'Mileage Negligible';
+    return [wear, FUEL_SPEC[p.fuels[p.fuel[i]]]].filter(Boolean).join(' – ');
+  };
+
+  // "View Options": the cars still on the board that group with this one as groupListings does
+  // (line, body, fuel, 0-62), so the panel offers only versions that pass the filters.
+  const versionsOf = (i) => {
+    const p = state.pool;
+    return state.keep
+      .filter((j) => j !== i && p.line[j] === p.line[i] && p.body[j] === p.body[i]
+        && p.fuel[j] === p.fuel[i] && p.zeroTo62[j] === p.zeroTo62[i])
+      .map((j) => ({
+        id: p.id[j],
+        photo: fullPhoto(p.photo[j]),
+        link: linkOf(p, j),
+        mileage: p.mileage[j] < 0 ? null : p.mileage[j],
+        moa: Boolean(p.moa?.[j]),
+        year: p.year[j] > 0 ? p.year[j] : undefined,
+        retailerName: p.retailers[p.retailer[j]],
+      }));
+  };
+
+  // The podium's ✕ "Not this one" chip (its classes, so it reads identically); the label stays for screen readers.
+  const asChip = (open) => {
+    const icon = el('span', 'vm-podium-reject-icon', '✕');
+    icon.setAttribute('aria-hidden', 'true');
+    open.classList.add('vm-podium-reject');
+    open.replaceChildren(icon, el('span', 'vm-podium-reject-label', copy.rejectLabel));
+  };
+
+  // The podium popover's "Keep this one": folds the reasons away and leaves the car on the board.
+  const keepButton = (open, menu) => {
+    const keep = el('button', 'vm-gw-reject-keep', copy.rejectKeep);
+    keep.type = 'button';
+    keep.addEventListener('click', (e) => {
+      e.stopPropagation();
+      menu.hidden = true;
+      open.setAttribute('aria-expanded', 'false');
+      open.focus();
+    });
+    return keep;
+  };
+
+  // Lifts matchCard's reject block to the card's corner as the chip, as the RRMC questionnaire does.
+  const liftReject = (card) => {
+    const reject = card.querySelector(':scope > .vm-card-body > .vm-reject');
+    if (!reject) return;
+    const open = reject.querySelector('.vm-reject-open');
+    const menu = reject.querySelector('.vm-reject-menu');
+    asChip(open);
+    menu.append(keepButton(open, menu));
+    card.append(reject);
+  };
+
+  // "Why this one?" phrases against the filters, as the podium's phrases against its answers.
+  const syncWhy = () => {
+    if (!rrmc || !state.pool || !stillMounted()) return;
+    const p = state.pool;
+    const f = state.filters;
+    // Every answer the brief holds, with the live filters taking over the facts they now set.
+    const answers = { ...state.answers };
+    const price = state.axes.find((a) => a.key === 'price');
+    if (price?.narrowed()) Object.assign(answers, { budgetGate: 'yes', budget: f.price });
+    if (f.fuel?.length) answers.fuel = f.fuel.map((at) => p.fuels[at]);
+    if (f.region?.length) answers.regions = f.region.map((at) => p.regions[at]);
+    if (f.handDrive?.length === 1) answers.handDrive = p.handDrives[f.handDrive[0]];
+    setRrmcAnswers(answers, price?.q.openTop ? [{ id: 'budget', openTop: true, max: price.q.max }] : []);
+  };
+
+  /* ------------- RRMC: ask the podium's questions, then filter ------------- */
+
+  // Answered = a value that would reach the engine (podium.js isAnswered); sliders persist on render.
+  const isAnswered = (q) => {
+    const v = state.answers[q.id];
+    if (Array.isArray(v)) return v.length > 0;
+    return v != null && v !== '';
+  };
+  // The budget is asked inside budgetGate's drawer, never as its own block (as in the podium).
+  const askedQuestions = () => visibleQuestions(state.questions.filter((q) => q.id !== 'budget'), state.answers);
+
+  const buildControl = (q, onChange) => {
+    if (q.type === 'slider') {
+      const list = el('div', 'vm-options vm-slider');
+      if (q.range) renderRangeSlider(list, q, state.answers, { onChange });
+      else renderValueSlider(list, q, state.answers, { onChange });
+      return list;
+    }
+    return renderOptionList(q, state.answers, { onChange }).list;
+  };
+
+  // One question as the podium's twisty block (its classes, so its RRMC title and badge rules apply).
+  const buildQuestion = (q) => {
+    const block = el('div', 'vm-podium-q');
+    block.dataset.qid = q.id;
+    const panelId = `vm-gw-q-panel-${q.id}`;
+    const heading = el('h3', 'vm-podium-q-heading');
+    const toggle = el('button', 'vm-podium-q-toggle');
+    toggle.type = 'button';
+    toggle.setAttribute('aria-expanded', 'true');
+    toggle.setAttribute('aria-controls', panelId);
+    const text = el('span', 'vm-podium-q-text');
+    text.append(el('span', 'vm-podium-q-title', q.title));
+    const chevron = el('span', 'vm-podium-q-chevron');
+    chevron.setAttribute('aria-hidden', 'true');
+    toggle.append(text, el('span', 'vm-podium-q-badge', 'Answered'), chevron);
+    heading.append(toggle);
+
+    const panel = el('div', 'vm-podium-q-panel');
+    panel.id = panelId;
+    const budgetQ = q.id === 'budgetGate' && state.questions.find((x) => x.id === 'budget');
+    const drawer = budgetQ && renderBudgetDrawer(budgetQ, state.answers, { onChange: syncAsk });
+    panel.append(buildControl(q, () => {
+      drawer?.sync();
+      syncAsk();
+    }));
+    if (drawer) panel.append(drawer.drawer);
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      panel.hidden = expanded;
+    });
+    block.append(heading, panel);
+    return block;
+  };
+
+  // Splice the visible blocks in place (as podium.js syncQuestions); the CTA waits for every answer.
+  function syncAsk() {
+    const visible = askedQuestions();
+    const wanted = new Set(visible.map((q) => q.id));
+    askBlocks.forEach((node, id) => {
+      if (wanted.has(id)) return;
+      node.remove();
+      askBlocks.delete(id);
+    });
+    visible.forEach((q, i) => {
+      if (!askBlocks.has(q.id)) askBlocks.set(q.id, buildQuestion(q));
+      const node = askBlocks.get(q.id);
+      if (askList.children[i] !== node) askList.insertBefore(node, askList.children[i] || null);
+      node.querySelector('.vm-podium-q-badge').hidden = !isAnswered(q);
+    });
+    const done = visible.filter(isAnswered).length;
+    askCta.disabled = done < visible.length;
+    if (progressBar) progressBar.style.width = `${Math.round((done / (visible.length || 1)) * 100)}%`;
+  }
+
+  const buildAsk = () => {
+    askEl = el('section', 'vm-gw-ask');
+    askList = el('div', 'vm-podium-questions vm-gw-ask-questions');
+    askCta = el('button', 'vm-btn vm-btn-primary vm-gw-ask-cta', copy.askCta);
+    askCta.type = 'button';
+    askCta.addEventListener('click', confirmAsk);
+    const pane = el('div', 'vm-gw-ask-pane');
+    pane.append(askList, askCta);
+    askEl.append(...rrmcTaglines(), pane);
+  };
+
+  const showAsk = () => {
+    if (!askEl) buildAsk();
+    syncAsk();
+    if (shell) {
+      closePop();
+      shell.hidden = true;
+      root.append(askEl);
+      askList.querySelector('button')?.focus();
+    } else {
+      root.replaceChildren(askEl);
+    }
+  };
+
+  // Answers that are car facts preset their filters; "any" or no preference leaves a filter open.
+  const presetFromAnswers = () => {
+    const a = state.answers;
+    const f = state.filters;
+    const setFrom = (key, allowed) => {
+      const axis = axisFor(key);
+      if (!axis) return;
+      const at = axis.q.options.filter((o) => allowed(o.raw ?? o.value)).map((o) => o.value);
+      f[key] = at.length < axis.q.options.length ? at : [];
+    };
+    const want = (v) => (Array.isArray(v) ? v : (v != null ? [v] : [])).filter((x) => x !== 'any');
+    const among = (v) => {
+      const list = want(v);
+      return list.length ? (raw) => list.includes(raw) : () => true;
+    };
+    setFrom('body', among(a.bodyStyles));
+    setFrom('fuel', among(a.fuel));
+    setFrom('region', among(a.regions));
+    setFrom('handDrive', among(a.handDrive));
+    setFrom('seats', (seats) => seats >= (RRMC_SEATS_FOR[a.people] || 0));
+    const price = axisFor('price');
+    if (price) {
+      const { min, max } = price.q;
+      const b = a.budgetGate === 'yes' && Array.isArray(a.budget) ? a.budget : null;
+      f.price = b ? [Math.max(min, Math.min(b[0], max)), Math.min(max, Math.max(b[1], min))] : [min, max];
+    }
+  };
+
+  // Orders the board's level cars by the engine's scores for the answers; a failed or late reply changes nothing.
+  let scoreGen = 0;
+  const fetchScores = async () => {
+    scoreGen += 1;
+    const gen = scoreGen;
+    const matches = await apiField(ctx.api, { ...state.answers }, ctx.retailer, ctx.brand, ctx.scope, SCORE_SLICE);
+    if (gen !== scoreGen || !stillMounted() || !matches.length) return;
+    const at = new Map();
+    state.pool.id.forEach((id, i) => at.set(id, i));
+    const rank = new Map();
+    matches.forEach((m) => {
+      const i = at.get(m.car?.id);
+      if (i != null && Number.isFinite(m.score)) rank.set(i, m.score);
+    });
+    state.rank = rank;
+    if (shell && !shell.hidden) render();
+  };
+
+  // The board, built on first entry and shown again after a revisit.
+  const openBoard = () => {
+    if (shell) {
+      askEl?.remove();
+      shell.hidden = false;
+      return;
+    }
+    buildStage();
+    buildChips();
+    firstPaint();
+    trackHeader();
+    // The retailer label is authored config; the mode names the pool it searched
+    // in its own note only when the shell gave it one.
+    if (ctx.retailerLabel && ctx.retailerLabel !== brandCopy.name) {
+      shell.dataset.retailer = ctx.retailerLabel;
+    }
+  };
+
+  function confirmAsk() {
+    const first = !shell;
+    bank();
+    presetFromAnswers();
+    openBoard();
+    render({ animate: !first });
+    fetchScores();
+  }
+
+  // The podium's rose-gold bar in the switcher row, filling here as cars are set aside.
+  const mountProgress = () => {
+    const switcher = root.previousElementSibling;
+    if (!rrmc || !stillMounted() || !switcher?.classList.contains('vm-switcher')) return;
+    // Only guess-who's own bar (vm-gw-progress) is ever replaced; podium's is never touched.
+    switcher.querySelector(':scope > .vm-gw-progress')?.remove();
+    const progress = el('div', 'vm-podium-progress vm-gw-progress');
+    progressBar = el('div', 'vm-podium-progress-bar');
+    progress.append(progressBar);
+    switcher.prepend(progress);
+    switcher.classList.add('has-progress');
+    switcher.querySelector('.vm-switcher-select')?.addEventListener('change', () => {
+      progress.remove();
+      progressBar = null;
+      // Another mode may already have put its own bar in the row.
+      if (!switcher.querySelector(':scope > .vm-podium-progress')) switcher.classList.remove('has-progress');
+    }, { once: true });
+  };
+
+  // The demo nav is fixed over the window's top edge: the sticky bar settles beneath it, not under it.
+  let headerTracked = false;
+  const trackHeader = () => {
+    if (!rrmc || headerTracked) return;
+    headerTracked = true;
+    let frame = 0;
+    const measure = () => {
+      frame = 0;
+      if (!shell?.isConnected) return;
+      const hit = (document.elementsFromPoint?.((window.innerWidth || 0) / 2, 1) || [])
+        .find((n) => !root.contains(n));
+      let bottom = 0;
+      for (let n = hit; n && n !== document.body && n !== document.documentElement; n = n.parentElement) {
+        if (getComputedStyle(n).position === 'fixed') {
+          bottom = Math.max(0, Math.round(n.getBoundingClientRect().bottom));
+          break;
+        }
+      }
+      shell.style.setProperty('--vm-gw-sticky-top', `${bottom}px`);
+    };
+    const onScroll = () => {
+      if (!shell?.isConnected) {
+        window.removeEventListener('scroll', onScroll);
+        window.removeEventListener('resize', onScroll);
+        return;
+      }
+      if (!frame) frame = requestAnimationFrame(measure);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    measure();
+  };
 
   /* ---- error screen (the shared renderStatus pattern, as in podium.js) ---- */
   const showError = (onRetry) => {
@@ -866,25 +1317,45 @@ function mount(root, ctx) {
      * missing a price.
      */
     const priceSpan = span(pool.price);
+    // RRMC's own budget band (£60,000 to £1,000,000+), whose "+" top means no upper limit.
+    const band = pool.priceRange;
     if (priceSpan) {
-      const lo = Math.floor(priceSpan[0] / PRICE_STEP) * PRICE_STEP;
-      const hi = Math.ceil(priceSpan[1] / PRICE_STEP) * PRICE_STEP;
+      const lo = band ? band.min : Math.floor(priceSpan[0] / PRICE_STEP) * PRICE_STEP;
+      const hi = band ? band.max : Math.ceil(priceSpan[1] / PRICE_STEP) * PRICE_STEP;
       const q = {
-        id: 'price', type: 'slider', range: true, min: lo, max: hi, step: PRICE_STEP, format: 'gbp', thumbNoun: 'price', title: copy.prompts.price,
+        id: 'price', type: 'slider', range: true, min: lo, max: hi, step: band?.step || PRICE_STEP, format: 'gbp', thumbNoun: 'price', title: copy.prompts.price,
+        ...(band && { minGap: band.minGap, plusAtMax: true, openTop: true }),
       };
       f.price = [lo, hi];
       axes.push({
         key: 'price',
         q,
+        // The budget drawer brings its own frame, so the popover doesn't wrap it in one.
+        bare: Boolean(band),
         narrowed: () => f.price[0] > lo || f.price[1] < hi,
         // Always the actual figures, never "Any": the range IS set from the
         // start, and printing "Any" over a live filter would misdescribe it.
-        summary: () => `${gbp(f.price[0])} – ${gbp(f.price[1])}`,
-        build: (host) => renderRangeSlider(host, q, f, { onChange: filtersChanged }),
+        summary: () => (band ? formatRange(f.price, q) : `${gbp(f.price[0])} – ${gbp(f.price[1])}`),
+        build: (host) => {
+          if (!band) {
+            renderRangeSlider(host, q, f, { onChange: filtersChanged });
+            return;
+          }
+          // The podium's budget drawer, held open: "−" and "+" over the track and the "Current Range:" tile.
+          const view = { budgetGate: 'yes', get price() { return f.price; }, set price(v) { f.price = v; } };
+          host.append(renderBudgetDrawer(q, view, { onChange: filtersChanged }).drawer);
+        },
         clear: () => { f.price = [lo, hi]; },
         test: () => {
           const [a, b] = f.price;
-          return (i) => pool.price[i] >= a && pool.price[i] <= b;
+          if (!band) return (i) => pool.price[i] >= a && pool.price[i] <= b;
+          // Open at both ends is every car. POA is a price on request, so only an open top admits it.
+          if (a <= lo && b >= hi) return null;
+          const floor = a <= lo ? 0 : a;
+          const top = b >= hi ? Infinity : b;
+          return (i) => (pool.poa?.[i] === 1
+            ? top === Infinity
+            : pool.price[i] >= floor && pool.price[i] <= top);
         },
       });
     }
@@ -1010,7 +1481,7 @@ function mount(root, ctx) {
       : copy.anySummary);
 
     /* --- the dictionary multi-picks: fuel, body, colour --- */
-    const dictAxis = (key, dict, column, labels, swatches) => {
+    const dictAxis = (key, dict, column, labels, swatches, order) => {
       // Only values this pool actually holds, and never the null slot: a car we
       // hold no value for is excluded once the axis is in use, not offered as
       // "unknown" (see decodePool).
@@ -1019,9 +1490,11 @@ function mount(root, ctx) {
         .filter((o) => o.raw && o.label);
       if (options.length < 2) return;
       if (swatches) options.forEach((o) => { o.swatch = hexOf(o.raw); });
-      options.sort((a, b) => a.label.localeCompare(b.label));
+      // `order` keeps a question's own option order (RRMC's regions), else alphabetical.
+      if (order) options.sort((a, b) => order.indexOf(a.raw) - order.indexOf(b.raw));
+      else options.sort((a, b) => a.label.localeCompare(b.label));
       const q = {
-        id: key, multi: true, options, title: copy.prompts[key],
+        id: key, multi: true, options, title: copy.prompts[key] || labelFor(ctx.brand, key),
       };
       f[key] = [];
       axes.push({
@@ -1042,8 +1515,13 @@ function mount(root, ctx) {
       });
     };
     dictAxis('fuel', pool.fuels, pool.fuel, (v) => FUEL_SPEC[v] || cap(v), false);
-    dictAxis('body', pool.bodies, pool.body, (v) => SPEC_LABELS[v] || cap(v), false);
+    dictAxis('body', pool.bodies, pool.body, (v) => BODY_LABELS_BY_BRAND[ctx.brand]?.[v] || SPEC_LABELS[v] || cap(v), false);
     dictAxis('colour', pool.shades, pool.shade, (v) => cap(v), true);
+    // RRMC's region and drive-side questions, labelled as the server's questions label them.
+    [['region', pool.regions], ['handDrive', pool.handDrives]].forEach(([key, dict]) => {
+      const labels = pool.labels?.[key];
+      if (dict && pool[key]) dictAxis(key, dict, pool[key], (v) => labels?.[v] || v, false, Object.keys(labels || {}));
+    });
 
     /* --- seats: multi-pick over the counts the pool actually holds --- */
     const seatValues = [...new Set([...pool.seats].filter((v) => v > 0))].sort((a, b) => a - b);
@@ -1132,6 +1610,7 @@ function mount(root, ctx) {
       });
     }
 
+    if (rrmc) axes.sort((a, b) => RRMC_AXIS_ORDER.indexOf(a.key) - RRMC_AXIS_ORDER.indexOf(b.key));
     state.axes = axes;
   };
 
@@ -1254,6 +1733,9 @@ function mount(root, ctx) {
       }
       if (ok) keep.push(i);
     }
+    // RRMC: cars the engine scored for the answers lead, best first; the rest keep pool order (stable sort).
+    const { rank } = state;
+    if (rank?.size) keep.sort((a, b) => (rank.get(b) ?? -Infinity) - (rank.get(a) ?? -Infinity));
     return keep;
   };
 
@@ -1283,15 +1765,17 @@ function mount(root, ctx) {
     }
 
     if (stageKey === 'chip') {
-      node.append(photoFor(i, false, pool.names[pool.name[i]]));
+      node.append(photoFor(i, false, nameOf(i)));
       return;
     }
 
     if (stageKey === 'tile') {
-      node.append(photoFor(i, false, pool.names[pool.name[i]]));
+      node.append(photoFor(i, false, nameOf(i)));
       const body = el('div', 'vm-gw-tile-body');
-      body.append(el('span', 'vm-gw-tile-name', pool.names[pool.name[i]]));
-      if (pool.price[i] >= 0) body.append(el('span', 'vm-gw-tile-price', gbp(pool.price[i])));
+      body.append(el('span', 'vm-gw-tile-name', nameOf(i)));
+      // RRMC tiles print no price anywhere (as the podium's); their line is "N Miles – Fuel".
+      if (rrmc) body.append(el('span', 'vm-gw-tile-line', rrmcLineOf(i)));
+      else if (pool.price[i] >= 0) body.append(el('span', 'vm-gw-tile-price', gbp(pool.price[i])));
       node.append(body);
       node.append(rejectBlock(i));
       return;
@@ -1302,15 +1786,19 @@ function mount(root, ctx) {
     // it, so the card it filtered down to has to name it). "Not this one" comes
     // free: rejectOptions is entirely caller-driven, so the reject flow needed
     // no change to result-card.js at all.
-    node.append(matchCard(matchAt(pool, i, true), {
+    const card = matchCard(matchAt(pool, i, true, rrmc ? versionsOf : undefined), {
       compact: true,
       brand: ctx.brand,
       showScore: false,
       showPaint: true,
+      // RRMC: the podium's silver/bronze tile, its name held to one line.
+      ...(rrmc && { fitName: 'line' }),
       rejectLabel: copy.rejectLabel,
       rejectPrompt: copy.rejectPrompt,
       rejectOptions: () => rejectOptionsFor(i),
-    }));
+    });
+    if (rrmc) liftReject(card);
+    node.append(card);
   };
 
   /** The photo band for a chip or tile — deliberately not mediaWell(), which
@@ -1348,6 +1836,7 @@ function mount(root, ctx) {
     const open = el('button', 'vm-reject-open', copy.rejectLabel);
     open.type = 'button';
     open.setAttribute('aria-expanded', 'false');
+    if (rrmc) asChip(open);
     const menu = el('div', 'vm-reject-menu');
     menu.hidden = true;
     open.addEventListener('click', (e) => {
@@ -1360,6 +1849,7 @@ function mount(root, ctx) {
           b.addEventListener('click', o.apply);
           menu.append(b);
         });
+        if (rrmc) menu.append(keepButton(open, menu));
       }
       menu.hidden = !menu.hidden;
       open.setAttribute('aria-expanded', String(!menu.hidden));
@@ -1514,6 +2004,7 @@ function mount(root, ctx) {
    * whole point of the mode — watching cars be ruled out — is lost.
    */
   const render = ({ animate = true } = {}) => {
+    syncWhy();
     const keep = survivors();
     window.clearTimeout(state.exitTimer);
 
@@ -1573,6 +2064,11 @@ function mount(root, ctx) {
       return copy.liveNote({ left: miles(left), gone: miles(gone) });
     })();
     undoBtn.hidden = !state.history.length;
+    if (progressBar) {
+      progressBar.style.width = `${Math.round((gone / total) * 100)}%`;
+      // Re-asserted: a mode switched away from may clear the row's class after this one set it.
+      progressBar.parentElement.parentElement?.classList.add('has-progress');
+    }
 
     /*
      * The true figure lands FIRST, then the tween plays over it.
@@ -1666,7 +2162,7 @@ function mount(root, ctx) {
     // The widget writes straight into state.filters and calls filtersChanged, so
     // the board re-filters live under the open popover. That is the point: the
     // buyer watches the wall thin out as they tick boxes.
-    if (axis.q.type === 'slider') {
+    if (axis.q.type === 'slider' && !axis.bare) {
       const list = el('div', 'vm-options vm-slider');
       axis.build(list);
       popBody.append(list);
@@ -1800,14 +2296,17 @@ function mount(root, ctx) {
     const f = state.filters;
     const out = [];
 
-    // Too expensive → cap the range just under this car, snapped to the step.
+    // Too expensive → cap the range just under this car, snapped to the step. Never for POA,
+    // and RRMC's open top caps just under its "+", keeping the slider's minimum gap below.
     const price = axisFor('price');
-    if (price && pool.price[i] > 0) {
-      const capped = Math.floor((pool.price[i] - 1) / PRICE_STEP) * PRICE_STEP;
-      if (capped >= price.q.min && capped < f.price[1]) {
+    if (price && pool.price[i] > 0 && pool.poa?.[i] !== 1) {
+      const { min, max, step, minGap = 0, openTop } = price.q;
+      const top = openTop && f.price[1] >= max ? Infinity : f.price[1];
+      const capped = Math.min(Math.floor((pool.price[i] - 1) / step) * step, openTop ? max - step : Infinity);
+      if (capped - minGap >= min && capped < top) {
         out.push({
           label: copy.reject.price({ price: gbp(pool.price[i]) }),
-          apply: () => setAxis('price', [Math.min(f.price[0], capped), capped]),
+          apply: () => setAxis('price', [Math.min(f.price[0], capped - minGap), capped]),
         });
       }
     }
@@ -1834,8 +2333,11 @@ function mount(root, ctx) {
       out.push({ label: label(opt), apply: () => setAxis(key, next) });
     };
     dictReject('fuel', (o) => copy.reject.fuel({ fuel: o.label.toLowerCase() }));
-    dictReject('body', (o) => copy.reject.body({ body: withArticle(o.label) }));
+    dictReject('body', (o) => copy.reject.body({ body: withArticle(o.label), label: o.label }));
     dictReject('colour', (o) => copy.reject.colour({ shade: o.label.toLowerCase() }));
+    // Only RRMC's pool carries these axes, and only its copy words them.
+    if (copy.reject.region) dictReject('region', (o) => copy.reject.region({ label: o.label }));
+    if (copy.reject.handDrive) dictReject('handDrive', (o) => copy.reject.handDrive({ label: o.label }));
 
     // Too many miles → keep only the bands below this car's.
     const mileage = axisFor('mileage');
@@ -1913,7 +2415,7 @@ function mount(root, ctx) {
 
     barEl = el('div', 'vm-gw-bar');
     const lead = el('div', 'vm-gw-lead');
-    lead.append(el('p', 'vm-gw-wordmark', copy.wordmark));
+    if (copy.wordmark) lead.append(el('p', 'vm-gw-wordmark', copy.wordmark));
     const tally = el('div', 'vm-gw-tally');
     countEl = el('span', 'vm-gw-count', miles(state.pool.n));
     tally.append(countEl, el('h2', 'vm-gw-title', copy.title));
@@ -1935,6 +2437,12 @@ function mount(root, ctx) {
     resetBtn.type = 'button';
     resetBtn.addEventListener('click', reset);
     tools.append(undoBtn, resetBtn);
+    if (state.questions.length) {
+      const revisit = el('button', 'vm-gw-tool', copy.revisitLabel);
+      revisit.type = 'button';
+      revisit.addEventListener('click', showAsk);
+      tools.prepend(revisit);
+    }
 
     barEl.append(lead, chipsEl, tools);
 
@@ -2014,12 +2522,15 @@ function mount(root, ctx) {
    * ../vehicle-matcher.js for why that matters). */
   const boot = async () => {
     let raw;
+    // RRMC asks the podium's questions first; if they can't be fetched the board simply opens unasked.
+    const questions = rrmc ? apiGetQuestions(ctx.api, ctx.retailer, ctx.brand).catch(() => null) : null;
     try {
       raw = await apiPool(ctx.api, ctx.brand, ctx.retailer, ctx.scope);
     } catch {
-      showError(boot);
+      if (stillMounted()) showError(boot);
       return;
     }
+    if (!stillMounted()) return;
     if (!raw?.n) {
       showError(boot);
       return;
@@ -2027,14 +2538,16 @@ function mount(root, ctx) {
     state.pool = decodePool(raw);
     state.filters = {};
     buildAxes();
-    buildStage();
-    buildChips();
-    firstPaint();
-    // The retailer label is authored config; the mode names the pool it searched
-    // in its own note only when the shell gave it one.
-    if (ctx.retailerLabel && ctx.retailerLabel !== brandCopy.name) {
-      shell.dataset.retailer = ctx.retailerLabel;
+    mountProgress();
+    const asked = (await questions)?.questions;
+    if (!stillMounted()) return;
+    if (asked?.length) {
+      state.questions = asked;
+      showAsk();
+      return;
     }
+    syncWhy();
+    openBoard();
   };
 
   renderSkeleton();

@@ -1,0 +1,289 @@
+/* RRMC guess-who: the podium's look carried over. Written by the guess-who pass; see vehicle-matcher.css. */
+/* Loaded before vehicle-matcher.css's own rules, so every selector here out-specifies the one it
+   overrides, and the !important ones beat the stage-wide 250 / no-underline rule. */
+
+/* --- the bar: clear of a fixed host nav (guess-who.js trackHeader), no rule beneath --- */
+.vm.vm-rrmc .vm-gw-bar {
+  top: var(--vm-gw-sticky-top, 0px);
+  border-bottom: none;
+  padding: var(--vm-space-6) 0 var(--vm-space-4);
+}
+/* The count reads on into the title in the podium's 32px register ("1,204 in our Provenance collection."). */
+.vm.vm-rrmc .vm-gw-tally { flex-wrap: wrap; column-gap: 0.3em; }
+.vm.vm-rrmc .vm-gw-count,
+.vm.vm-rrmc .vm-gw-title {
+  font-size: 32px;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+  color: var(--vm-ink);
+}
+/* The tagline sub's register: 16px, 1.5, faintly tracked. */
+.vm.vm-rrmc .vm-gw-note {
+  margin-top: var(--vm-space-2);
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: var(--vm-ink);
+}
+
+/* --- chips: the question pill (uppercase, 8%, purple when set) carrying its value beneath --- */
+.vm.vm-rrmc .vm-gw-chip {
+  justify-content: center;
+  align-items: center;
+  min-height: 40px;
+  padding: 4px var(--vm-space-5);
+  border-color: rgba(40, 20, 50, 0.9);
+  border-radius: 9999px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--vm-ink);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.vm.vm-rrmc .vm-gw-chip-label {
+  font-size: var(--vm-text-eyebrow);
+  letter-spacing: 0.08em;
+  color: var(--vm-ink);
+}
+.vm.vm-rrmc .vm-gw-chip-value { font-size: var(--vm-text-label); letter-spacing: 0.08em; }
+/* Hover is the pill's own quiet neutral. */
+.vm.vm-rrmc .vm-gw-chip:hover {
+  border-color: var(--vm-ink-muted);
+  background: var(--vm-surface-alt);
+}
+.vm.vm-rrmc .vm-gw-chip[aria-expanded='true'] { border-color: var(--vm-accent); }
+/* A narrowed filter wears the selected pill: purple fill, white edge and text, no accent bar. */
+.vm.vm-rrmc .vm-gw-chip.is-on,
+.vm.vm-rrmc .vm-gw-chip.is-on:hover {
+  background: #281432;
+  border-color: #ffffff;
+  color: #ffffff;
+  box-shadow: none;
+}
+.vm.vm-rrmc .vm-gw-chip.is-on .vm-gw-chip-label { color: #ffffff; }
+/* Room for "£60,000 – £1,000,000+" in uppercase; phones keep the base 140px scroll strip. */
+@media (min-width: 768px) {
+  .vm.vm-rrmc .vm-gw-chip { max-width: 280px; }
+}
+
+/* --- undo / begin again: RRMC's underlined text-link register, as "View Options" --- */
+.vm.vm-rrmc .vm-gw-tools { gap: var(--vm-space-5); }
+.vm.vm-rrmc .vm-stage .vm-gw-tool {
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  color: var(--vm-ink);
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+}
+
+/* --- the board --- */
+/* Unknown-paint dots mix the line grey with RRMC purple rather than the BMW dark well. */
+.vm.vm-rrmc .vm-gw-board[data-stage='dot'] .vm-gw-cell { --vm-surface-dark: #281432; }
+
+/* Tile stage: flat like the podium's tail tiles; "<year> <Model>" over "N Miles – Fuel". */
+.vm.vm-rrmc .vm-gw-board[data-stage='tile'] .vm-gw-cell { border-color: transparent; }
+.vm.vm-rrmc .vm-gw-tile-body { gap: 2px; }
+.vm.vm-rrmc .vm-gw-tile-name,
+.vm.vm-rrmc .vm-gw-tile-line {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--vm-ink);
+}
+.vm.vm-rrmc .vm-gw-tile-name { font-size: 14px; letter-spacing: 0.05em; line-height: 1.3; }
+.vm.vm-rrmc .vm-gw-tile-line { font-size: 12px; letter-spacing: 0.02em; line-height: 1.4; }
+
+/* Card stage: the podium's silver/bronze tile. White and flat, the name fitted to one line at 32px. */
+.vm.vm-rrmc .vm-gw-board[data-stage='card'] .vm-card-compact {
+  position: relative;
+  overflow: visible;
+  background: #ffffff;
+  border-color: transparent;
+  box-shadow: none;
+}
+.vm.vm-rrmc .vm-gw-board[data-stage='card'] .vm-card-compact .vm-card-body {
+  padding: var(--vm-space-4);
+  gap: 0;
+}
+.vm.vm-rrmc .vm-gw-board[data-stage='card'] .vm-card-compact .vm-card-name {
+  font-size: 32px;
+  letter-spacing: 0.05em;
+}
+.vm.vm-rrmc .vm-gw-board[data-stage='card'] .vm-rrmc-why { margin: 24px 0 0; }
+.vm.vm-rrmc .vm-gw-board[data-stage='card'] .vm-rrmc-presented {
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+.vm.vm-rrmc .vm-gw-board[data-stage='card'] :is(.vm-rrmc-why, .vm-rrmc-presented-location) {
+  text-decoration: underline !important;
+}
+/* Nothing past "Presented by", as on the podium: no spec, distance, used meta or "View at" line. */
+.vm.vm-rrmc .vm-gw-board[data-stage='card'] :is(
+  .vm-specs, .vm-blurb, .vm-distance, .vm-avail, .vm-why-label, .vm-reasons, .vm-usedmeta, .vm-pick, .vm-kit, .vm-card-link
+) {
+  display: none;
+}
+
+/* --- "Not this one": the podium's ✕ chip in the corner, its reasons in the podium popover's look --- */
+.vm.vm-rrmc .vm-gw-board[data-stage='card'] .vm-card-compact > .vm-reject {
+  position: absolute;
+  top: var(--vm-space-2);
+  right: var(--vm-space-2);
+  z-index: 2;
+  margin: 0;
+}
+.vm.vm-rrmc .vm-gw-reject { top: var(--vm-space-2); right: var(--vm-space-2); }
+/* The shared button's column, full width and padding give way to the chip's own. */
+.vm.vm-rrmc .vm-gw-board .vm-reject-open.vm-podium-reject {
+  position: static;
+  width: auto;
+  flex-direction: row;
+  padding: 3px var(--vm-space-2);
+  text-align: left;
+}
+.vm.vm-rrmc .vm-gw-board .vm-reject-open.vm-podium-reject:hover { background: var(--vm-surface); }
+/* Tiles take the tail tile's 24px circled ✕; the label stays for screen readers. */
+.vm.vm-rrmc .vm-gw-board[data-stage='tile'] .vm-reject-open.vm-podium-reject {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 50%;
+}
+.vm.vm-rrmc .vm-gw-board[data-stage='tile'] .vm-reject-open .vm-podium-reject-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+/* Open, the chip stays shown (Safari doesn't focus a clicked button) and the cell stops clipping it. */
+.vm.vm-rrmc .vm-gw-reject .vm-reject-open[aria-expanded='true'] { opacity: 1; }
+.vm.vm-rrmc .vm-gw-board .vm-gw-cell:has(.vm-reject-open[aria-expanded='true']) {
+  z-index: 3;
+  overflow: visible;
+  content-visibility: visible;
+}
+.vm.vm-rrmc .vm-gw-board .vm-reject-menu {
+  position: absolute;
+  top: calc(100% + var(--vm-space-1));
+  right: 0;
+  z-index: 3;
+  width: 272px;
+  max-width: calc(100vw - 16px);
+  margin: 0;
+  padding: var(--vm-space-4);
+  background: var(--vm-surface);
+  border: var(--vm-border-width) solid var(--vm-line);
+  border-radius: var(--vm-radius);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.18);
+  text-align: left;
+}
+.vm.vm-rrmc .vm-gw-board .vm-reject-prompt {
+  margin: 0 0 var(--vm-space-3);
+  font-size: var(--vm-text-label);
+  color: var(--vm-ink);
+}
+.vm.vm-rrmc .vm-gw-board .vm-reject-option {
+  margin: 0 0 2px;
+  padding: var(--vm-space-2) var(--vm-space-3);
+  border-radius: var(--vm-radius);
+  background: var(--vm-surface-alt);
+  color: var(--vm-ink);
+  font-size: var(--vm-text-label);
+}
+.vm.vm-rrmc .vm-gw-board .vm-reject-option:hover {
+  background: var(--vm-accent-spot);
+  color: var(--vm-accent-ink);
+}
+/* "Keep this one", the popover's quiet text button. */
+.vm.vm-rrmc .vm-gw-reject-keep {
+  display: block;
+  appearance: none;
+  margin-top: var(--vm-space-3);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--vm-ink-muted);
+  font-family: var(--vm-font-body);
+  font-size: var(--vm-text-label);
+  cursor: pointer;
+}
+.vm.vm-rrmc .vm-gw-reject-keep:hover { color: var(--vm-ink); }
+.vm.vm-rrmc .vm-gw-reject-keep:focus-visible {
+  outline: 2px solid var(--vm-accent-spot);
+  outline-offset: 2px;
+}
+
+/* --- nothing remains: no dashed box, the title in the tile-name register --- */
+.vm.vm-rrmc .vm-gw-empty { border: none; }
+.vm.vm-rrmc .vm-gw-empty-title {
+  font-size: 32px;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+}
+.vm.vm-rrmc .vm-gw-empty-note {
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: var(--vm-ink);
+}
+
+/* The one-left burst in purple and rose gold (as head-to-head's), not the BMW teal accent-secondary token. */
+.vm.vm-rrmc .vm-gw .vm-mingle-confetti-bit:nth-child(even) { background: #f7a177; }
+
+/* --- ask first: the podium's question pane, then the board (guess-who.js showAsk) --- */
+.vm.vm-rrmc .vm-gw[hidden] { display: none; }
+.vm.vm-rrmc .vm-gw-ask {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  animation: vm-in 0.25s ease;
+}
+/* The podium pane's measure; its -24px title shift is mirrored below, so the same room is made. */
+.vm.vm-rrmc .vm-gw-ask-pane {
+  width: min(424px, 100%);
+  margin-left: -24px;
+  padding-left: 24px;
+  box-sizing: content-box;
+}
+.vm.vm-rrmc .vm-gw-ask .vm-podium-q + .vm-podium-q { border-top: none; }
+.vm.vm-rrmc .vm-gw-ask .vm-podium-q-title {
+  font-size: 32px;
+  text-align: center;
+  transform: translateX(-24px);
+}
+/* Unanswered, the tick keeps its room (the pills are centred against it) but isn't shown. */
+.vm.vm-rrmc .vm-gw-ask .vm-podium-q-badge[hidden] { display: inline-flex; visibility: hidden; }
+/* The podium's question pill, shifted with the title as the podium's are. */
+.vm.vm-rrmc .vm-gw-ask .vm-option {
+  border-radius: 9999px;
+  width: 260px;
+  height: 40px;
+  padding: 0 var(--vm-space-4);
+  justify-content: center;
+  justify-self: center;
+  align-items: center;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  border-color: rgba(40, 20, 50, 0.9);
+  transform: translateX(calc(-24px - 55px / 2));
+}
+.vm.vm-rrmc .vm-gw-ask .vm-option.is-selected {
+  background: #281432;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+.vm.vm-rrmc .vm-gw-ask .vm-option-sub { display: none; }
+.vm.vm-rrmc .vm-gw-ask .vm-slider-value { text-align: center; }
+/* The podium's commit button: full width, 24px above. */
+.vm.vm-rrmc .vm-gw-ask-cta {
+  width: 100%;
+  max-width: 100%;
+  margin-top: var(--vm-space-6);
+}

@@ -379,6 +379,24 @@ function publicPool(brand, cars, directory = null) {
   const links = cars.some((c) => c.link && c.link !== `${linkPrefix}${c.id}`)
     ? cars.map((c) => c.link ?? null) : undefined;
 
+  // RRMC's own facts, each sent only when some car carries it, so other brands' payloads don't grow.
+  // Option labels and the price range come from the brand's questions, which own that copy.
+  const extras = {};
+  const qs = questionsForBrand(brand);
+  if (cars.some((c) => c.poa)) extras.poa = cars.map((c) => (c.poa ? 1 : 0));
+  for (const [col, dict, qid] of [['handDrive', 'handDrives', 'handDrive'], ['region', 'regions', 'regions']]) {
+    if (!cars.some((c) => c[col])) continue;
+    [extras[dict], extras[col]] = dictionary(cars.map((c) => c[col] ?? null));
+    const opts = qs.find((q) => q.id === qid)?.options || [];
+    extras.labels = { ...extras.labels, [col]: Object.fromEntries(opts.map((o) => [o.value, o.label])) };
+  }
+  const budgetQ = qs.find((q) => q.id === 'budget');
+  if (budgetQ?.openTop) {
+    extras.priceRange = {
+      min: budgetQ.min, max: budgetQ.max, step: budgetQ.step, minGap: budgetQ.minGap || 0,
+    };
+  }
+
   return {
     brand,
     n: cars.length,
@@ -409,6 +427,7 @@ function publicPool(brand, cars, directory = null) {
     features: cars.map((c) => (c.features || [])
       .reduce((mask, k) => mask | (1 << featureBit.get(k)), 0)),
     photo: cars.map((c) => thumbnail(c.photo)),
+    ...extras,
   };
 }
 

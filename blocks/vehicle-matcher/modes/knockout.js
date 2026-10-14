@@ -33,13 +33,17 @@
  */
 
 import { apiGetQuestions, apiField, apiMatch } from '../engine.js';
-import { el } from '../ui.js';
+import { el, cardinal } from '../ui.js';
 import {
   WEAK_SCORE,
   budgetBandsFromQuestion, useTilesFromQuestion,
   shuffle, photosFirst, swatchFor, priceLabel, cap,
   bracketToAnswers, idOf, celebrate, ageInYears,
 } from './match-signal.js';
+import { matchCard, setRrmcAnswers } from './result-card.js';
+import {
+  renderOptionList, renderBudgetDrawer, renderRangeSlider, visibleQuestions, formatSliderValue,
+} from './question-ui.js';
 
 /* The most cars we'll ever field, even when stock is deep — four rounds
  * (16 → 8 → 4 → 2 → 1) is already a long-ish sitting for a promo. The field is
@@ -401,6 +405,66 @@ const KNOCKOUT_COPY = {
     errLede: 'The matching service didn’t respond. Check your connection and try again.',
     retryLabel: 'Try again',
   },
+  // Rolls-Royce: the podium's voice (measured, assured, no contest language, no em dashes).
+  // Names arrive as "<year> <Model>" via nameOf; CSS sets the case, as on podium.
+  rrmc: {
+    wordmark: '',
+    seedTitle: 'Some choices are clearer side by side.',
+    seedLede: 'Answer these simple questions to the best of your ability. We will set motor cars from our Provenance '
+      + 'collection beside one another, two at a time, until the one that is yours remains.',
+    budgetLabel: 'Is there an ideal price range?',
+    useLabel: 'Where will you go?',
+    seedCta: 'Begin your journey',
+    versus: 'or',
+    pickHint: 'Two motor cars from our Provenance collection. Choose the one you would rather own.',
+    pickCta: 'Choose this one',
+    pickLabel: ({ model }) => `Choose the ${model}`,
+    roundName: (entrants) => ({
+      2: 'The Final Choice', 4: 'The Last Four', 8: 'The Last Eight', 16: 'The First Sixteen',
+    }[entrants] || `The First ${entrants}`),
+    roundKicker: ({ round }) => round,
+    matchupProgress: ({ done, total }) => `${done} of ${total}`,
+    roundAdvance: ({ survivors }) => `${cap(cardinal(survivors))} remain`,
+    finalKicker: '',
+    finalTitle: 'Two remain.',
+    finalLede: 'Each has held its place so far. Choose the one that is yours.',
+    finalCta: 'Continue',
+    verdictForm: ({ model }) => `The ${model} was the closer match to your brief.`,
+    verdictUpset: ({ model }) => `You chose the ${model}, though the numbers leaned the other way.`,
+    // Mileage reads MOA as MOA (never "0 miles", never crowned); year is per listing; 0 to 62 supports.
+    taleTitle: 'Side by side',
+    showTally: false,
+    statRows: (a, b) => [
+      rrmcMileageRow(a, b),
+      yearRow(a, b),
+      zeroTo62Row(a, b),
+    ],
+    matchKicker: 'Your Choice',
+    matchTitle: () => 'The one that is yours.',
+    matchLede: 'Set beside every motor car you considered, it held its place.',
+    rankOther: 'Another Option',
+    whyIntro: '',
+    crownCallback: ({ beaten }) => `You preferred it to ${beaten}.`,
+    rivalWords: ['', 'one other', 'two others', 'three others', 'four others'],
+    weakNote: 'On the numbers alone, it is not the closest match to your brief. Our collection '
+      + 'changes often, so it is worth returning soon.',
+    alsoNote: ({ model }) => `On the numbers, the ${model} sits closest to what you asked for.`,
+    testDriveCta: 'Arrange a viewing',
+    detailsCta: null,
+    shareCta: 'Share your choice',
+    shareCopied: 'Link copied',
+    againCta: 'Begin again',
+    shareText: ({ model, retailer }) => `My choice from ${retailer}: the ${model}.`,
+    retailerFallback: 'Rolls-Royce Approved',
+    emptyPoolTitle: 'Too few motor cars within that brief.',
+    emptyPoolLede: ({ retailer }) => `${retailer} holds too few within that brief to set side by side. `
+      + 'Widen the regions or the price range, and we will begin again.',
+    emptyPoolCta: 'Adjust my answers',
+    errKicker: '',
+    errTitle: "We couldn't reach the matcher",
+    errLede: "The matching service didn't respond. Check your connection and try again.",
+    retryLabel: 'Try again',
+  },
 };
 
 /* ------------------------------ helpers ------------------------------ */
@@ -550,6 +614,80 @@ function fshRow(a, b) {
   };
 }
 
+// Under this many miles a reading reads as new, as on the RRMC tiles (result-card.js).
+const RRMC_NEGLIGIBLE_MILES = 50;
+const rrmcMilesText = (car) => {
+  if (car.moa) return 'MOA';
+  return car.mileage < RRMC_NEGLIGIBLE_MILES ? 'Mileage Negligible' : `${car.mileage.toLocaleString('en-GB')} Miles`;
+};
+
+/* RRMC mileage duel. An MOA car (no published reading) arrives as mileage 0, so it is shown as
+ * MOA and never crowned; two negligible readings are level too. null when neither side has a reading. */
+function rrmcMileageRow(a, b) {
+  const known = (car) => Boolean(car?.moa) || Number.isFinite(car?.mileage);
+  if (!known(a) || !known(b) || (a.moa && b.moa)) return null;
+  const level = a.moa || b.moa || a.mileage === b.mileage
+    || (a.mileage < RRMC_NEGLIGIBLE_MILES && b.mileage < RRMC_NEGLIGIBLE_MILES);
+  return {
+    label: 'Mileage',
+    aText: rrmcMilesText(a),
+    bText: rrmcMilesText(b),
+    winner: level ? null : (a.mileage < b.mileage ? 'a' : 'b'),
+    tier: 'listing',
+  };
+}
+
+/** Registration year duel, the newer wins. null when either year is missing (the feed's 0). */
+function yearRow(a, b) {
+  const av = Number(a?.year);
+  const bv = Number(b?.year);
+  if (!(av > 0) || !(bv > 0)) return null;
+  const winner = av === bv ? null : (av > bv ? 'a' : 'b');
+  return {
+    label: 'Year', aText: String(av), bText: String(bv), winner, tier: 'listing',
+  };
+}
+
+/** "Rolls-Royce Cullinan" as RRMC's tiles print it: "2021 Cullinan". */
+const rrmcName = (car) => {
+  const base = (car?.name || '').replace(/^Rolls-Royce\s+/i, '');
+  return car?.year ? `${car.year} ${base}` : base;
+};
+
+// Answered = a value that reaches the engine (podium's rule); sliders persist on render, so count.
+const isAnswered = (v) => (Array.isArray(v) ? v.length > 0 : v != null && v !== '');
+
+/* A single-value slider (RRMC's mileage), mirroring podium.js renderValueSlider: the start value
+ * is persisted at once, the readout and aria-valuetext follow every move. */
+function renderValueSlider(list, q, answers, { onChange } = {}) {
+  const stored = answers[q.id];
+  const start = typeof stored === 'number' ? stored : (typeof q.default === 'number' ? q.default : q.min);
+  answers[q.id] = start;
+  const readout = el('output', 'vm-slider-value', formatSliderValue(start, q));
+  const input = el('input', 'vm-slider-input');
+  input.type = 'range';
+  input.min = String(q.min);
+  input.max = String(q.max);
+  input.step = String(q.step);
+  input.value = String(start);
+  input.setAttribute('aria-label', q.title);
+  input.setAttribute('aria-valuetext', formatSliderValue(start, q));
+  input.addEventListener('input', () => {
+    const value = Number(input.value);
+    answers[q.id] = value;
+    const text = formatSliderValue(value, q);
+    readout.textContent = text;
+    input.setAttribute('aria-valuetext', text);
+    onChange?.();
+  });
+  const bounds = el('div', 'vm-slider-bounds');
+  bounds.append(
+    el('span', 'vm-slider-min', formatSliderValue(q.min, q)),
+    el('span', 'vm-slider-max', formatSliderValue(q.max, q)),
+  );
+  list.append(readout, input, bounds);
+}
+
 /* A short filter helper: keep the first `n` non-null rows from a list. */
 function firstRows(rows, n) {
   const out = [];
@@ -564,6 +702,10 @@ function firstRows(rows, n) {
 
 function mount(root, ctx) {
   const copy = copyFor(ctx.brand);
+  // RRMC plays on the podium's tiles, questions and progress; every other brand is untouched.
+  const rrmc = ctx.brand === 'rrmc';
+  const nameOf = (car) => (rrmc ? rrmcName(car) : car?.name);
+  const roundLabel = (entrants) => (copy.roundName ? copy.roundName(entrants) : roundName(entrants));
 
   // Per-run state — a fresh local object, NOT hung on the shared ctx, so a mode
   // swap and re-mount (the switcher re-calls mount with the same ctx) starts
@@ -586,6 +728,8 @@ function mount(root, ctx) {
     // pick or sent an underdog through. This surfaces the engine signal the mode
     // used to discard — as a concrete moment, not an abstract meter.
     scoreById: new Map(),
+    // The field's own match objects, keyed by idOf: RRMC tiles need their listings and tradeOffs.
+    matchById: new Map(),
     lastVerdict: null, // { kind: 'form'|'upset', winner } — shown on the next paint, once
     busy: false, // pick lock while a matchup transitions out
   };
@@ -593,15 +737,69 @@ function mount(root, ctx) {
   const reducedMotion = window.matchMedia
     && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* RRMC: is this run still the mounted mode? The shell swaps modes in place, so late fetches and
+   * timers must stand down. A locked page has no switcher; the token catches a remount of this mode. */
+  const mountToken = {};
+  if (rrmc) root.vmKnockoutMount = mountToken;
+  const isMounted = () => {
+    if (!rrmc) return true;
+    const select = root.parentElement?.querySelector(':scope > .vm-switcher .vm-switcher-select');
+    return root.vmKnockoutMount === mountToken && (!select || select.value === 'head-to-head');
+  };
+
+  /* RRMC: the podium's rose-gold bar, in the switcher row beside the dropdown (or above the stage
+   * when locked). Outside the stage so repaints keep it; removed when the mode is switched away. */
+  const mountProgress = () => {
+    root.parentElement?.querySelectorAll(':scope > .vm-knockout-progress, :scope > .vm-switcher > .vm-knockout-progress')
+      .forEach((node) => node.remove());
+    const track = el('div', 'vm-knockout-progress');
+    track.setAttribute('aria-hidden', 'true');
+    track.append(el('div', 'vm-knockout-progress-bar'));
+    const switcher = root.previousElementSibling;
+    if (switcher?.classList.contains('vm-switcher')) {
+      switcher.prepend(track);
+      // Never touch .has-progress: podium's own listener and the next mount share it.
+      switcher.querySelector('.vm-switcher-select')
+        ?.addEventListener('change', () => track.remove(), { once: true });
+    } else {
+      root.before(track);
+    }
+    return track;
+  };
+  const progress = rrmc ? mountProgress() : null;
+  const setProgress = (fraction) => {
+    if (!progress || !isMounted()) return;
+    progress.firstChild.style.width = `${Math.round(Math.min(1, fraction) * 100)}%`;
+  };
+  // "Why this one?" reads module-wide answers; only the mounted run may set them.
+  const setPanelAnswers = () => { if (isMounted()) setRrmcAnswers(state.seed, state.questions); };
+
+  // The field's match for a car (listings, tradeOffs against the seed); matchCard needs `reasons`.
+  const fieldMatch = (car, fallback) => {
+    const m = state.matchById.get(idOf(car)) || fallback || { car };
+    return { ...m, reasons: m.reasons || [] };
+  };
+
+  // An open RRMC panel describes a card about to be repainted away, so close it first.
+  const closeRrmcPanel = () => {
+    root.closest('.vm')?.querySelector(':scope > .vm-rrmc-why-panel.is-open .vm-rrmc-why-close')?.click();
+  };
+
+  // A status screen's head: RRMC in the podium's tagline register, everyone else as before.
+  const appendHead = (screen, { kicker, title, lede }) => {
+    if (rrmc) {
+      screen.append(el('p', 'vm-rrmc-tagline', title), el('p', 'vm-rrmc-tagline-sub', lede));
+      return;
+    }
+    if (kicker != null) screen.append(el('p', 'vm-kicker', kicker));
+    screen.append(el('h2', 'vm-title', title), el('p', 'vm-lede', lede));
+  };
+
   /* ---- error screen (local reimplementation of the renderStatus pattern) ---- */
   const showError = (onRetry) => {
     root.replaceChildren();
     const screen = el('div', 'vm-screen vm-status');
-    screen.append(
-      el('p', 'vm-kicker', copy.errKicker),
-      el('h2', 'vm-title', copy.errTitle),
-      el('p', 'vm-lede', copy.errLede),
-    );
+    appendHead(screen, { kicker: copy.errKicker, title: copy.errTitle, lede: copy.errLede });
     const retry = el('button', 'vm-btn vm-btn-primary', copy.retryLabel);
     retry.type = 'button';
     retry.addEventListener('click', onRetry);
@@ -634,6 +832,7 @@ function mount(root, ctx) {
    * questions (state.questions), never local copy. Reuses the .vm-mingle-seed /
    * .vm-mingle-tile classes so the two games' seed steps look the same. */
   const renderSeed = (preset) => {
+    if (rrmc && renderRrmcSeed(preset)) return;
     root.replaceChildren();
     const screen = el('div', 'vm-screen vm-mingle-seed vm-knockout-seed');
     screen.append(el('p', 'vm-kicker vm-mingle-wordmark', copy.wordmark));
@@ -696,6 +895,71 @@ function mount(root, ctx) {
     root.append(screen);
   };
 
+  /* RRMC's seed: every podium question, in its order, wording and controls; budget rides in the
+   * gate's drawer, never its own block. Returns false with no questions, so the generic seed paints. */
+  const renderRrmcSeed = (preset) => {
+    const asked = state.questions.filter((q) => q.id !== 'budget');
+    if (!asked.length) return false;
+    root.replaceChildren();
+    setProgress(0);
+    const screen = el('div', 'vm-screen vm-mingle-seed vm-knockout-seed');
+    screen.append(el('p', 'vm-rrmc-tagline', copy.seedTitle), el('p', 'vm-rrmc-tagline-sub', copy.seedLede));
+
+    const chosen = { ...(preset || {}) };
+    const budgetQ = state.questions.find((q) => q.id === 'budget');
+    const cta = el('button', 'vm-btn vm-btn-primary vm-mingle-seed-cta', copy.seedCta);
+    cta.type = 'button';
+    const blocks = new Map();
+    const wrap = el('div', 'vm-knockout-qs-list');
+
+    // Podium's buildControl: range or value slider, else the option pills.
+    const buildControl = (q, onChange) => {
+      if (q.type === 'slider') {
+        const box = el('div', 'vm-options vm-slider');
+        if (q.range) renderRangeSlider(box, q, chosen, { onChange });
+        else renderValueSlider(box, q, chosen, { onChange });
+        return box;
+      }
+      return renderOptionList(q, chosen, { onChange }).list;
+    };
+    const buildBlock = (q) => {
+      const block = el('div', 'vm-knockout-q');
+      // data-qid picks up the podium's per-question title tracking.
+      block.dataset.qid = q.id;
+      block.append(el('h3', 'vm-question', q.title));
+      const drawer = q.id === 'budgetGate' && budgetQ
+        ? renderBudgetDrawer(budgetQ, chosen, { onChange: () => sync() }) : null;
+      block.append(buildControl(q, () => { drawer?.sync(); sync(); }));
+      if (drawer) block.append(drawer.drawer);
+      return block;
+    };
+    // Podium's syncQuestions: splice conditional blocks in and out in place, keep the rest untouched.
+    function sync() {
+      const visible = visibleQuestions(asked, chosen);
+      const wanted = new Set(visible.map((q) => q.id));
+      [...wrap.children].forEach((node) => {
+        if (!wanted.has(node.dataset.qid)) { node.remove(); blocks.delete(node.dataset.qid); }
+      });
+      visible.forEach((q, i) => {
+        if (!blocks.has(q.id)) blocks.set(q.id, buildBlock(q));
+        const node = blocks.get(q.id);
+        if (wrap.children[i] !== node) wrap.insertBefore(node, wrap.children[i] || null);
+      });
+      cta.disabled = !visible.every((q) => isAnswered(chosen[q.id]));
+    }
+    sync();
+
+    cta.addEventListener('click', () => {
+      state.seed = { ...chosen };
+      loadField();
+    });
+    const list = el('div', 'vm-knockout-qs');
+    list.append(wrap, cta);
+    screen.append(list);
+    root.append(screen);
+    return true;
+  };
+
   /* --------------------------- field loading --------------------------- */
   const loadField = async () => {
     renderFieldSkeleton();
@@ -708,16 +972,19 @@ function mount(root, ctx) {
     const matches = await apiField(
       ctx.api, state.seed, ctx.retailer, ctx.brand, ctx.scope, MAX_FIELD,
     );
+    if (!isMounted()) return;
     // Field returns match objects { car, score, ... }; the game plays with the
     // display cars, exactly as the swipe game does with match.car — but we no
     // longer THROW AWAY the engine's per-car score. Stash it (keyed by stable
     // identity) so each tie can say whether the winner was the engine's form pick
     // or an underdog. This is the engine signal the mode used to discard.
     state.scoreById = new Map();
+    state.matchById = new Map();
     for (const m of matches) {
       if (m?.car && typeof m.score === 'number') {
         state.scoreById.set(idOf(m.car), m.score);
       }
+      if (m?.car) state.matchById.set(idOf(m.car), m);
     }
     // Shuffle for a fresh draw, then float the real-photo cars to the front (a
     // photo-less or shared-placeholder contender doesn't read as a head-to-head —
@@ -756,10 +1023,10 @@ function mount(root, ctx) {
   const renderEmptyPool = () => {
     root.replaceChildren();
     const screen = el('div', 'vm-screen vm-status');
-    screen.append(
-      el('h2', 'vm-title', copy.emptyPoolTitle),
-      el('p', 'vm-lede', copy.emptyPoolLede({ retailer: ctx.retailerLabel || 'this retailer' })),
-    );
+    appendHead(screen, {
+      title: copy.emptyPoolTitle,
+      lede: copy.emptyPoolLede({ retailer: ctx.retailerLabel || copy.retailerFallback || 'this retailer' }),
+    });
     const back = el('button', 'vm-btn vm-btn-primary', copy.emptyPoolCta);
     back.type = 'button';
     back.addEventListener('click', () => renderSeed(state.seed));
@@ -802,7 +1069,7 @@ function mount(root, ctx) {
     const v = state.lastVerdict;
     state.lastVerdict = null;
     if (!v) return null;
-    const model = v.winner?.name || 'your pick';
+    const model = nameOf(v.winner) || 'your pick';
     const tag = el('div', `vm-knockout-verdict vm-knockout-verdict-${v.kind}`);
     tag.setAttribute('role', 'status');
     tag.append(el('span', 'vm-knockout-verdict-text',
@@ -816,10 +1083,15 @@ function mount(root, ctx) {
     const entrants = state.round.length;
 
     const screen = el('div', 'vm-screen vm-knockout-stage');
+    if (rrmc) {
+      setProgress(state.rounds.length / Math.max(1, state.fieldSize - 1));
+      // "Why this one?" phrases each tile against what the seed actually asked.
+      setPanelAnswers();
+    }
 
     // Progress rail — where we are in the tournament (round name + match n of m).
     const rail = el('div', 'vm-knockout-rail');
-    rail.append(el('span', 'vm-knockout-round', roundName(entrants)));
+    rail.append(el('span', 'vm-knockout-round', roundLabel(entrants)));
     rail.append(el('span', 'vm-knockout-count',
       copy.matchupProgress({ done: state.matchIndex + 1, total: state.pairings.length })));
     screen.append(rail);
@@ -855,9 +1127,25 @@ function mount(root, ctx) {
     });
   };
 
+  /* RRMC contender: the podium's white tile (matchCard, so its links and panels work) with a
+   * pick button beneath. Not a <button> wrapper, which can't hold the tile's own buttons. */
+  const buildRrmcContender = (car, side) => {
+    const wrap = el('div', `vm-knockout-card vm-knockout-card-${side} vm-knockout-tile`);
+    wrap.append(matchCard(fieldMatch(car), { compact: true, brand: ctx.brand, fitName: 'line' }));
+    const choose = el('button', 'vm-btn vm-btn-primary vm-knockout-pick', copy.pickCta);
+    choose.type = 'button';
+    choose.setAttribute('aria-label', copy.pickLabel({ model: nameOf(car) }));
+    const [pa, pb] = state.pairings[state.matchIndex];
+    const other = car === pa ? pb : pa;
+    choose.addEventListener('click', () => pick(car, other, side));
+    wrap.append(choose);
+    return wrap;
+  };
+
   // One contender card — a lean face-off card (not the swipe stack). `side` is
   // 'a'|'b' for the fly-out direction of the loser.
   const buildContender = (car, side) => {
+    if (rrmc) return buildRrmcContender(car, side);
     const card = el('button', `vm-knockout-card vm-knockout-card-${side}`);
     card.type = 'button';
     card.style.setProperty('--vm-mingle-swatch', swatchFor(car));
@@ -944,7 +1232,8 @@ function mount(root, ctx) {
     // Tally chip: only when there's a clear leader across at least two rows, so a
     // single-row panel or a level face-off doesn't get a redundant "wins 1 of 1".
     const leader = wins.a > wins.b ? 'a' : (wins.b > wins.a ? 'b' : null);
-    if (leader && kept.length >= 2) {
+    // A brand without A/B corners (RRMC) has nothing for "A wins" to point at, so it opts out.
+    if (leader && kept.length >= 2 && copy.showTally !== false) {
       const label = leader === 'a' ? 'A' : 'B';
       head.append(el('span', 'vm-knockout-tale-tally',
         `${label} wins ${wins[leader]} of ${kept.length}`));
@@ -980,6 +1269,7 @@ function mount(root, ctx) {
   const pick = (winner, loser, side) => {
     if (state.busy) return;
     state.busy = true;
+    if (rrmc) closeRrmcPanel();
 
     state.rounds.push({ roundIndex: state.roundIndex, winner, loser });
     state.winners.push(winner);
@@ -987,6 +1277,7 @@ function mount(root, ctx) {
     state.lastVerdict = verdictFor(winner, loser);
 
     const advance = () => {
+      if (!isMounted()) return;
       state.busy = false;
       if (state.matchIndex + 1 < state.pairings.length) {
         state.matchIndex += 1;
@@ -1004,12 +1295,15 @@ function mount(root, ctx) {
     if (reducedMotion) { advance(); return; }
     // Fly the loser's card out; the winner's card lifts. Loser side is the
     // opposite of the winner's side (the winner is `side`).
-    const cards = root.querySelectorAll('.vm-knockout-card');
+    // RRMC's tiles are divs, so their pick buttons are what get disabled.
+    const cards = root.querySelectorAll('.vm-knockout-card, .vm-knockout-pick');
     const loserSel = side === 'a' ? '.vm-knockout-card-b' : '.vm-knockout-card-a';
     const winnerSel = side === 'a' ? '.vm-knockout-card-a' : '.vm-knockout-card-b';
     root.querySelector(loserSel)?.classList.add(side === 'a' ? 'is-out-right' : 'is-out-left');
     root.querySelector(winnerSel)?.classList.add('is-crowned');
     cards.forEach((c) => { c.disabled = true; });
+    // RRMC: the leaving pair's own buttons (Why, View Options, links) go quiet for the fly-out.
+    if (rrmc) root.querySelectorAll('.vm-knockout-tile').forEach((tile) => { tile.inert = true; });
     setTimeout(advance, 300);
   };
 
@@ -1034,12 +1328,12 @@ function mount(root, ctx) {
     root.replaceChildren();
     const screen = el('div', 'vm-screen vm-knockout-stage vm-knockout-sweep-stage');
     const banner = el('div', 'vm-knockout-sweep');
-    banner.append(el('span', 'vm-knockout-sweep-round', roundName(survivors)));
+    banner.append(el('span', 'vm-knockout-sweep-round', roundLabel(survivors)));
     banner.append(el('span', 'vm-knockout-sweep-sub',
-      copy.roundAdvance({ round: roundName(survivors), survivors })));
+      copy.roundAdvance({ round: roundLabel(survivors), survivors })));
     screen.append(banner);
     root.append(screen);
-    window.setTimeout(startRound, 800);
+    window.setTimeout(() => { if (isMounted()) startRound(); }, 800);
   };
 
   // The Final gets its own screen: the two finalists as crests, the "The Final"
@@ -1053,14 +1347,17 @@ function mount(root, ctx) {
     if (!reducedMotion) screen.classList.add('is-revealing');
     if (!reducedMotion) celebrate(screen, { brand: ctx.brand });
 
-    screen.append(el('p', 'vm-kicker vm-knockout-final-kicker', copy.finalKicker));
-    screen.append(el('h2', 'vm-title', copy.finalTitle));
-
     const crests = el('div', 'vm-knockout-crests');
     crests.append(buildCrest(a), el('div', 'vm-knockout-vs', copy.versus), buildCrest(b));
-    screen.append(crests);
-
-    screen.append(el('p', 'vm-lede', copy.finalLede));
+    if (rrmc) {
+      screen.append(el('p', 'vm-rrmc-tagline', copy.finalTitle),
+        el('p', 'vm-rrmc-tagline-sub', copy.finalLede), crests);
+    } else {
+      screen.append(el('p', 'vm-kicker vm-knockout-final-kicker', copy.finalKicker));
+      screen.append(el('h2', 'vm-title', copy.finalTitle));
+      screen.append(crests);
+      screen.append(el('p', 'vm-lede', copy.finalLede));
+    }
 
     const cta = el('button', 'vm-btn vm-btn-primary', copy.finalCta);
     cta.type = 'button';
@@ -1086,7 +1383,7 @@ function mount(root, ctx) {
       disc.append(el('span', 'vm-mingle-card-initial', (car.name || '?').charAt(0)));
     }
     crest.append(disc);
-    if (car.name) crest.append(el('span', 'vm-knockout-crest-name', car.name));
+    if (car.name) crest.append(el('span', 'vm-knockout-crest-name', nameOf(car)));
     return crest;
   };
 
@@ -1097,14 +1394,17 @@ function mount(root, ctx) {
   // attach its real "why" reasons and to know when to add the honest note.
   const showResult = async (champion) => {
     renderResultSkeleton();
-    const answers = bracketToAnswers(state.rounds, state.seed);
+    const inferred = bracketToAnswers(state.rounds, state.seed);
+    // RRMC answered every question outright, so its own answers outrank anything the picks inferred.
+    const answers = rrmc ? { ...inferred, ...state.seed } : inferred;
     let result;
     try {
       result = await apiMatch(ctx.api, answers, ctx.retailer, ctx.brand, ctx.scope);
     } catch {
-      showError(() => showResult(champion));
+      if (isMounted()) showError(() => showResult(champion));
       return;
     }
+    if (!isMounted()) return;
     renderResult(champion, result);
   };
 
@@ -1132,6 +1432,10 @@ function mount(root, ctx) {
     const weak = !engineMatch
       || (typeof engineMatch.score === 'number' && engineMatch.score < WEAK_SCORE)
       || hasUnmet(result.unmet);
+    if (rrmc) {
+      renderRrmcResult(champion, matches, weak);
+      return;
+    }
 
     const screen = el('div', 'vm-screen vm-mingle-result vm-knockout-result');
     if (!reducedMotion) celebrate(screen, { brand: ctx.brand });
@@ -1171,6 +1475,55 @@ function mount(root, ctx) {
     root.append(screen);
   };
 
+  /* RRMC's result, laid out as the podium: tagline, the champion as the wide purple tile, the
+   * finalist (and, when the numbers disagree, the engine's pick) as white "Another Option" tiles. */
+  const renderRrmcResult = (champion, matches, weak) => {
+    root.replaceChildren();
+    setProgress(1);
+    setPanelAnswers();
+    const screen = el('div', 'vm-screen vm-mingle-result vm-knockout-result');
+    if (!reducedMotion) celebrate(screen, { brand: ctx.brand });
+
+    const beaten = beatenLabel();
+    screen.append(
+      el('p', 'vm-rrmc-tagline', copy.matchTitle({ model: nameOf(champion) })),
+      el('p', 'vm-rrmc-tagline-sub', [copy.matchLede, beaten && copy.crownCallback({ beaten })]
+        .filter(Boolean).join(' ')),
+    );
+
+    const step = (car, rank, match) => {
+      const gold = rank === 'is-gold';
+      const node = el('div', `vm-knockout-step ${rank}${gold ? '' : ' vm-knockout-tile'}`);
+      node.append(
+        el('p', 'vm-knockout-rank', gold ? copy.matchKicker : copy.rankOther),
+        // Field matches carry tradeOffs against the seed, which is all "Why this one?" may claim.
+        matchCard(fieldMatch(car, match && { ...match, tradeOffs: [] }), {
+          compact: !gold, brand: ctx.brand, fitName: gold ? true : 'line',
+        }),
+      );
+      return node;
+    };
+    const runnerUp = state.rounds[state.rounds.length - 1]?.loser;
+    const top = matches[0];
+    const engineAlt = weak && top?.car && ![champion, runnerUp].some((c) => c && idOf(c) === idOf(top.car));
+    const steps = el('div', 'vm-knockout-steps');
+    steps.append(step(champion, 'is-gold'));
+    if (runnerUp) steps.append(step(runnerUp, 'is-silver'));
+    if (engineAlt) steps.append(step(top.car, 'is-bronze', top));
+    const podium = el('div', 'vm-knockout-podium');
+    podium.append(steps);
+    screen.append(podium);
+
+    if (weak) {
+      screen.append(el('p', 'vm-mingle-weak-note', copy.weakNote));
+      if (engineAlt) {
+        screen.append(el('p', 'vm-mingle-weak-note vm-knockout-also', copy.alsoNote({ model: nameOf(top.car) })));
+      }
+    }
+    screen.append(buildResultCtas(champion));
+    root.append(screen);
+  };
+
   // A short human phrase for who the champion beat — "three rivals", or the name
   // of the finalist if we can read it. Powers the crown callback in the "why".
   const beatenLabel = () => {
@@ -1178,10 +1531,10 @@ function mount(root, ctx) {
     if (wins <= 0) return null;
     if (wins === 1) {
       const final = state.rounds[state.rounds.length - 1];
-      const loserName = final?.loser?.name;
+      const loserName = final?.loser?.name && nameOf(final.loser);
       return loserName ? `the ${loserName}` : 'its rival';
     }
-    const words = ['', 'one rival', 'two rivals', 'three rivals', 'four rivals'];
+    const words = copy.rivalWords || ['', 'one rival', 'two rivals', 'three rivals', 'four rivals'];
     return words[wins] || `${wins} rivals`;
   };
   const championId = () => {
@@ -1228,9 +1581,12 @@ function mount(root, ctx) {
     if (champion.link) { drive.href = champion.link; drive.target = '_blank'; drive.rel = 'noopener'; }
     wrap.append(drive);
 
-    const details = el('a', 'vm-btn vm-btn-ghost', copy.detailsCta);
-    if (champion.link) { details.href = champion.link; details.target = '_blank'; details.rel = 'noopener'; }
-    wrap.append(details);
+    // RRMC's tile already links its listing twice, so it carries no separate details button.
+    if (copy.detailsCta) {
+      const details = el('a', 'vm-btn vm-btn-ghost', copy.detailsCta);
+      if (champion.link) { details.href = champion.link; details.target = '_blank'; details.rel = 'noopener'; }
+      wrap.append(details);
+    }
 
     const share = el('button', 'vm-btn vm-btn-ghost vm-mingle-share', copy.shareCta);
     share.type = 'button';
@@ -1245,7 +1601,9 @@ function mount(root, ctx) {
   };
 
   const doShare = async (champion, btn) => {
-    const text = copy.shareText({ model: champion.name, retailer: ctx.retailerLabel || 'MINI' });
+    const text = copy.shareText({
+      model: nameOf(champion), retailer: ctx.retailerLabel || copy.retailerFallback || 'MINI',
+    });
     const url = `${window.location.origin}${window.location.pathname}${window.location.search}#knockout=1`;
     if (navigator.share) {
       try { await navigator.share({ text, url }); } catch { /* user dismissed — no-op */ }
@@ -1271,9 +1629,10 @@ function mount(root, ctx) {
       const { questions } = await apiGetQuestions(ctx.api, ctx.retailer, ctx.brand);
       state.questions = Array.isArray(questions) ? questions : [];
     } catch {
-      showError(boot);
+      if (isMounted()) showError(boot);
       return;
     }
+    if (!isMounted()) return;
     renderSeed(state.seed);
   };
 
@@ -1291,6 +1650,8 @@ export const _stat = {
   zeroTo62Row,
   ageRow,
   fshRow,
+  rrmcMileageRow,
+  yearRow,
   firstRows,
   // accessors + formatters, for asserting the exact rendered text
   mileageOf,

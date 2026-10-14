@@ -1,0 +1,390 @@
+/* RRMC head-to-head: the podium's look carried over. Written by the head-to-head pass; see vehicle-matcher.css. */
+/* Loaded before vehicle-matcher.css, so every selector out-ranks the knockout/mingle rule it replaces. */
+
+/* --- the stage: one column, the podium results' width --- */
+.vm.vm-rrmc .vm-stage > :is(.vm-knockout-seed, .vm-knockout-stage, .vm-knockout-result, .vm-knockout-interstitial) {
+  max-width: 936px;
+  margin-inline: auto;
+}
+.vm.vm-rrmc .vm-knockout-stage { container: vm-knockout / inline-size; }
+
+/* --- progress: podium's 8px rose-gold bar, in the switcher row (or above the stage when locked) --- */
+.vm.vm-rrmc .vm-switcher:has(> .vm-knockout-progress) { align-items: center; }
+.vm.vm-rrmc .vm-knockout-progress {
+  flex: 1 1 auto;
+  height: 8px;
+  margin: 0 var(--vm-space-4) 0 0;
+  background: var(--vm-surface-alt);
+  border-radius: var(--vm-radius);
+  overflow: hidden;
+}
+.vm.vm-rrmc > .vm-knockout-progress { margin: 0 0 var(--vm-space-4); }
+.vm.vm-rrmc .vm-knockout-progress-bar {
+  height: 100%;
+  width: 0;
+  background: #f7a177;
+  transition: width 0.3s ease;
+}
+
+/* --- seed: the podium's question titles, pills and budget drawer --- */
+.vm.vm-rrmc .vm-knockout-qs { max-width: calc(2 * 260px + var(--vm-space-2)); margin: 0 auto; }
+/* Podium's pane rhythm: 16px above and below the title, 20px under the control, no rule between. */
+.vm.vm-rrmc .vm-knockout-q { padding: var(--vm-space-4) 0 var(--vm-space-5); text-align: center; }
+.vm.vm-rrmc .vm-knockout-seed .vm-options:not(.vm-slider) {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--vm-space-2);
+  margin: var(--vm-space-4) auto 0;
+}
+/* The mileage slider: podium's value slider (teal via the shared RRMC rules), readout centred. */
+.vm.vm-rrmc .vm-knockout-q > .vm-options.vm-slider { margin: var(--vm-space-4) 0 0; padding-top: var(--vm-space-1); }
+.vm.vm-rrmc .vm-knockout-q > .vm-options.vm-slider .vm-slider-value {
+  margin-bottom: var(--vm-space-3);
+  font-size: var(--vm-text-body-lg);
+  text-align: center;
+}
+.vm.vm-rrmc .vm-knockout-seed .vm-option {
+  border-radius: 9999px;
+  width: 260px;
+  height: 40px;
+  padding: 0 var(--vm-space-4);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  border-color: rgba(40, 20, 50, 0.9);
+}
+.vm.vm-rrmc .vm-knockout-seed .vm-option.is-selected {
+  background: #281432;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+.vm.vm-rrmc .vm-knockout-seed .vm-option-sub { display: none; }
+.vm.vm-rrmc .vm-knockout-seed .vm-mingle-seed-cta {
+  width: 100%;
+  min-width: 0;
+  margin-top: var(--vm-space-8);
+}
+
+/* --- the matchup rail, verdict and hint, set over the face-off's width --- */
+.vm.vm-rrmc .vm-knockout-stage :is(.vm-knockout-rail, .vm-knockout-verdict, .vm-knockout-hint, .vm-knockout-tale) {
+  max-width: calc(2 * 300px + 60px);
+  margin-inline: auto;
+}
+.vm.vm-rrmc .vm-knockout-rail .vm-knockout-round,
+.vm.vm-rrmc .vm-knockout-rail .vm-knockout-count {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--vm-ink);
+}
+.vm.vm-rrmc .vm-knockout-stage .vm-knockout-hint {
+  margin-bottom: var(--vm-space-6);
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--vm-ink);
+}
+/* A quiet ruled line, not a grey chip: purple for the form pick, rose gold (not BMW teal) for the other. */
+.vm.vm-rrmc .vm-knockout-stage .vm-knockout-verdict {
+  margin-bottom: var(--vm-space-4);
+  padding: var(--vm-space-1) 0 var(--vm-space-1) var(--vm-space-4);
+  background: none;
+  border-radius: 0;
+  border-left: 2px solid #281432;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+}
+.vm.vm-rrmc .vm-knockout-verdict.vm-knockout-verdict-upset { border-left-color: #f7a177; }
+
+/* --- the face-off: two of podium's 300px white tiles, 60px apart, "or" in the seam --- */
+.vm.vm-rrmc .vm-knockout-stage .vm-knockout-faceoff {
+  grid-template-columns: repeat(2, minmax(0, 300px));
+  justify-content: center;
+  align-items: start;
+  gap: 60px;
+}
+.vm.vm-rrmc .vm-knockout-faceoff .vm-knockout-vs {
+  top: calc(300px * 9 / 32);
+  width: auto;
+  height: auto;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--vm-ink);
+}
+.vm.vm-rrmc .vm-knockout-faceoff .vm-knockout-skel-card { aspect-ratio: auto; height: 420px; }
+/* Same 659px break as podium's silver and bronze: under it the tiles stack, "or" between them. */
+@container vm-knockout (max-width: 659px) {
+  .vm.vm-rrmc .vm-knockout-stage .vm-knockout-faceoff {
+    grid-template-columns: minmax(0, 300px);
+    gap: var(--vm-space-6);
+  }
+  .vm.vm-rrmc .vm-knockout-faceoff .vm-knockout-vs {
+    position: static;
+    transform: none;
+    justify-self: center;
+  }
+}
+
+/* The contender wrapper is a plain column (tile, then its pick button); flat like podium's tiles. */
+.vm.vm-rrmc .vm-knockout-card.vm-knockout-tile {
+  gap: var(--vm-space-6);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  overflow: visible;
+  cursor: default;
+  transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.3s ease;
+}
+.vm.vm-rrmc .vm-knockout-card.vm-knockout-tile:hover { border-color: transparent; box-shadow: none; transform: none; }
+.vm.vm-rrmc .vm-knockout-card.vm-knockout-tile.is-crowned { box-shadow: none; }
+/* The set-aside tile eases off its side rather than spinning away. */
+.vm.vm-rrmc .vm-knockout-card.vm-knockout-tile.is-out-left { transform: translateX(-24px); opacity: 0; }
+.vm.vm-rrmc .vm-knockout-card.vm-knockout-tile.is-out-right { transform: translateX(24px); opacity: 0; }
+.vm.vm-rrmc .vm-knockout-tile .vm-knockout-pick { width: 100%; }
+
+/* --- white tiles (contenders, and the result's "Another Option"): podium silver/bronze --- */
+.vm.vm-rrmc .vm-knockout-tile > .vm-card {
+  flex: none;
+  flex-direction: column;
+  background: #ffffff;
+  box-shadow: none;
+}
+.vm.vm-rrmc .vm-knockout-tile .vm-card-name {
+  font-size: 32px;
+  letter-spacing: 0.05em;
+}
+.vm.vm-rrmc :is(.vm-knockout-tile, .vm-knockout-step) .vm-rrmc-why { margin: 24px 0 0; }
+.vm.vm-rrmc :is(.vm-knockout-tile, .vm-knockout-step) .vm-rrmc-presented {
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+.vm.vm-rrmc .vm-stage :is(.vm-knockout-tile, .vm-knockout-step) .vm-rrmc-presented-location,
+.vm.vm-rrmc .vm-stage .vm-knockout-tile .vm-rrmc-why {
+  text-decoration: underline !important;
+}
+/* Name, miles and fuel, View Options, Why, Presented by: nothing else, as on podium. */
+.vm.vm-rrmc :is(.vm-knockout-tile, .vm-knockout-step) :is(
+  .vm-specs, .vm-blurb, .vm-distance, .vm-avail, .vm-why-label, .vm-reasons, .vm-usedmeta, .vm-pick, .vm-card-link, .vm-kit
+) {
+  display: none;
+}
+
+/* --- tale of the tape: a purple band, as podium's panels and tail backing --- */
+.vm.vm-rrmc .vm-knockout-stage .vm-knockout-tale {
+  margin-top: var(--vm-space-8);
+  padding: var(--vm-space-6);
+  background: #281432;
+  border: 0;
+  border-radius: 0;
+  color: #ffffff;
+}
+.vm.vm-rrmc .vm-knockout-tale .vm-knockout-tale-head { border-bottom-color: rgba(255, 255, 255, 0.15); }
+.vm.vm-rrmc .vm-knockout-tale .vm-knockout-tale-title {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+}
+.vm.vm-rrmc .vm-knockout-tale .vm-knockout-stat-row + .vm-knockout-stat-row { border-top-color: rgba(255, 255, 255, 0.15); }
+.vm.vm-rrmc .vm-knockout-tale .vm-knockout-stat-side,
+.vm.vm-rrmc .vm-knockout-tale .vm-knockout-stat-side.is-winner,
+.vm.vm-rrmc .vm-knockout-tale .vm-knockout-stat-tick {
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+}
+.vm.vm-rrmc .vm-knockout-tale .vm-knockout-stat-label {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+}
+
+/* --- round sweep and the final interstitial --- */
+.vm.vm-rrmc .vm-knockout-sweep-stage .vm-knockout-sweep {
+  background: #281432;
+  color: #ffffff;
+  animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.vm.vm-rrmc .vm-knockout-sweep .vm-knockout-sweep-round { font-size: 32px; letter-spacing: 0.05em; line-height: 1.2; }
+.vm.vm-rrmc .vm-knockout-sweep .vm-knockout-sweep-sub { font-size: 12px; letter-spacing: 0.06em; opacity: 1; }
+.vm.vm-rrmc .vm-knockout-interstitial .vm-rrmc-tagline { text-align: center; }
+.vm.vm-rrmc .vm-knockout-interstitial .vm-rrmc-tagline-sub { text-align: center; margin-inline: auto; }
+.vm.vm-rrmc .vm-knockout-interstitial .vm-knockout-crests { gap: var(--vm-space-8); }
+/* Finalists as 16:9 photographs, square-cornered like every RRMC tile, not paint-ringed discs. */
+.vm.vm-rrmc .vm-knockout-interstitial .vm-knockout-crest-disc {
+  width: 240px;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: 0;
+  background: var(--vm-surface-dark);
+}
+.vm.vm-rrmc .vm-knockout-interstitial .vm-knockout-crest-name { font-size: 18px; letter-spacing: 0.05em; }
+.vm.vm-rrmc .vm-knockout-crests .vm-knockout-vs {
+  width: auto;
+  height: auto;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--vm-ink);
+}
+
+/* --- result: podium's layout (gold spans the row, white tiles 60px apart beneath) --- */
+.vm.vm-rrmc .vm-knockout-result { text-align: left; }
+.vm.vm-rrmc .vm-knockout-podium { container: vm-knockout-podium / inline-size; }
+.vm.vm-rrmc .vm-knockout-podium .vm-knockout-steps {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 300px));
+  justify-content: center;
+  align-items: start;
+  gap: 60px;
+}
+.vm.vm-rrmc .vm-knockout-steps .vm-knockout-step.is-gold {
+  position: relative;
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 100%;
+  max-width: 700px;
+}
+.vm.vm-rrmc .vm-knockout-steps .vm-knockout-step.is-silver { justify-self: end; }
+.vm.vm-rrmc .vm-knockout-steps .vm-knockout-step.is-bronze { justify-self: start; }
+/* A lone white tile (no engine alternative) centres under gold. */
+.vm.vm-rrmc .vm-knockout-steps .vm-knockout-step.is-silver:last-child { grid-column: 1 / -1; justify-self: center; }
+.vm.vm-rrmc .vm-knockout-steps .vm-knockout-step.vm-knockout-tile { width: 300px; max-width: 100%; }
+
+/* Rank eyebrows: "Your Choice" inside the gold tile, "Another Option" above a white one. */
+.vm.vm-rrmc .vm-knockout-step .vm-knockout-rank {
+  margin: 0 0 var(--vm-space-2);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--vm-ink);
+}
+.vm.vm-rrmc .vm-knockout-step.is-gold > .vm-knockout-rank {
+  position: absolute;
+  left: 40px;
+  top: calc(50% - 300px * 9 / 32);
+  transform: translateY(calc(-100% - 12px));
+  z-index: 3;
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+}
+
+/* Gold: 700 x 360, horizontal, purple with white text; photo 300px at 16:9, 40px in. */
+.vm.vm-rrmc .vm-knockout-step.is-gold > .vm-card {
+  flex-direction: row;
+  height: 360px;
+  overflow: hidden;
+  background: #281432;
+  color: #ffffff;
+  border-color: #281432;
+  box-shadow: 0 0 0 1px #281432, 0 10px 28px rgba(0, 0, 0, 0.12);
+}
+.vm.vm-rrmc .vm-knockout-step.is-gold > .vm-card * {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.vm.vm-rrmc .vm-knockout-step.is-gold > .vm-card > .vm-card-media {
+  flex: 0 1 300px;
+  min-width: 120px;
+  width: 300px;
+  height: auto;
+  max-height: unset;
+  aspect-ratio: 16 / 9;
+  align-self: center;
+  margin-left: 40px;
+  overflow: hidden;
+}
+.vm.vm-rrmc .vm-knockout-step.is-gold > .vm-card > .vm-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding-top: 78px;
+  padding-inline: 40px;
+  position: relative;
+}
+.vm.vm-rrmc .vm-knockout-step.is-gold .vm-card-name { font-size: 36px; letter-spacing: 0.05em; }
+.vm.vm-rrmc .vm-knockout-step.is-gold .vm-rrmc-why {
+  position: absolute;
+  bottom: 108px;
+  left: 40px;
+  margin: 0;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+}
+.vm.vm-rrmc .vm-knockout-step.is-gold .vm-rrmc-presented {
+  position: absolute;
+  bottom: 86px;
+  left: 40px;
+}
+.vm.vm-rrmc .vm-stage .vm-knockout-step.is-gold .vm-rrmc-why { text-decoration: underline !important; }
+
+/* Podium's 659px break: tiles stack, and gold turns portrait at 360px with the eyebrow top-left. */
+@container vm-knockout-podium (max-width: 659px) {
+  .vm.vm-rrmc .vm-knockout-podium .vm-knockout-steps { grid-template-columns: minmax(0, 1fr); }
+  .vm.vm-rrmc .vm-knockout-steps .vm-knockout-step:is(.is-gold, .is-silver, .is-bronze) {
+    grid-column: 1;
+    justify-self: center;
+  }
+  .vm.vm-rrmc .vm-knockout-steps .vm-knockout-step.is-gold { width: 360px; max-width: 100%; }
+  .vm.vm-rrmc .vm-knockout-step.is-gold > .vm-card { flex-direction: column; height: auto; }
+  .vm.vm-rrmc .vm-knockout-step.is-gold > .vm-card > .vm-card-media {
+    flex: none;
+    width: auto;
+    align-self: stretch;
+    margin: calc(36px + 1.2 * 13px) 24px 0;
+  }
+  .vm.vm-rrmc .vm-knockout-step.is-gold > .vm-card > .vm-card-body {
+    padding-top: var(--vm-space-6);
+    padding-inline: var(--vm-space-6);
+    overflow-y: visible;
+  }
+  .vm.vm-rrmc .vm-knockout-step.is-gold :is(.vm-rrmc-why, .vm-rrmc-presented) { position: static; }
+  .vm.vm-rrmc .vm-knockout-step.is-gold .vm-rrmc-why { margin-top: 24px; }
+  .vm.vm-rrmc .vm-knockout-step.is-gold > .vm-knockout-rank { top: 24px; left: 24px; transform: none; }
+}
+
+/* The honest note and the actions: plain lines in the tile's register, no grey field, no italic. */
+.vm.vm-rrmc .vm-knockout-result .vm-mingle-weak-note {
+  max-width: 700px;
+  margin: var(--vm-space-8) auto 0;
+  padding: 0;
+  background: none;
+  border-radius: 0;
+  font-size: 16px;
+  font-style: normal;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  color: var(--vm-ink);
+}
+.vm.vm-rrmc .vm-knockout-result .vm-mingle-weak-note + .vm-mingle-weak-note { margin-top: var(--vm-space-2); }
+.vm.vm-rrmc .vm-knockout-result .vm-mingle-ctas { max-width: 300px; margin-top: var(--vm-space-8); }
+.vm.vm-rrmc .vm-knockout-result .vm-mingle-link { font-size: 16px; letter-spacing: 0.02em; color: var(--vm-ink); }
+.vm.vm-rrmc .vm-stage .vm-knockout-result .vm-mingle-again { text-decoration: underline !important; }
+
+/* Confetti in the brand's purple and rose gold, not the BMW teal accent-secondary token. */
+.vm.vm-rrmc :is(.vm-knockout-result, .vm-knockout-interstitial) .vm-mingle-confetti-bit:nth-child(even) {
+  background: #f7a177;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vm.vm-rrmc .vm-knockout-card.vm-knockout-tile { transition: none; }
+  .vm.vm-rrmc .vm-knockout-progress-bar { transition: none; }
+}

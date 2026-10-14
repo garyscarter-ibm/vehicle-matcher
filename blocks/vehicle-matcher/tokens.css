@@ -355,6 +355,8 @@
   --vm-accent: #281432;
   --vm-accent-spot: var(--vm-accent);
   --vm-accent-soft: rgba(40, 20, 50, 0.06);
+  /* Rose gold, so the confetti's second colour isn't the BMW teal it otherwise inherits. */
+  --vm-accent-secondary: #f7a177;
   --vm-radius-control: 999px;
   --vm-btn-padding: 13px 28px 14px;
   --vm-btn-transform: uppercase;

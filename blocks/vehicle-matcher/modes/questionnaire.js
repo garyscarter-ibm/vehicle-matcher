@@ -24,7 +24,7 @@ import {
   BRAND_COPY, UNMET_PHRASES, TRADE_COPY, orList, andList, tradeLines,
 } from './brand-copy.js';
 import {
-  CONCEPT_LABELS, listingsOf, distanceLabel, matchCard, previewTile, setRrmcAnswers,
+  CONCEPT_LABELS, FUEL_SPEC, listingsOf, distanceLabel, matchCard, previewTile, rrmcTaglines, setRrmcAnswers,
 } from './result-card.js';
 import {
   isVisible, visibleQuestions, formatSliderValue, renderRangeSlider, renderOptionList, renderBudgetDrawer,
@@ -33,7 +33,46 @@ import { createPreviewFeed } from './preview-feed.js';
 
 const HASH_KEY = 'm';
 
+// RRMC wording only this mode uses, in podium.js's RRMC register. BRAND_COPY.rrmc also feeds the
+// podium, so the questionnaire's own lines live here rather than there.
+const RRMC_COPY = {
+  lastNext: 'Find my perfect match',
+  previewHeading: 'Your shortlist so far',
+  previewRegion: ({ retailer }) => `Your shortlist so far, from ${retailer}`,
+  tailHeading: 'Explore the full range of Rolls-Royce provenance',
+  refineLabel: ({ count }) => `Refine ${count > 1 ? 'these' : 'this one'} by the detail that matters to you`,
+  share: 'Copy a link to share',
+  shared: 'Link copied',
+  tweak: 'Revisit my answers',
+  retake: 'Begin again',
+  clear: 'Begin again',
+  emptyNote: ({ retailer }) => `Nothing at ${retailer} answers that brief just now. `
+    + "Widen the brief and we'll look again.",
+  driveHeading: 'Further afield',
+  disclaimer: 'An unofficial tool, not affiliated with or endorsed by Rolls-Royce Motor Cars. '
+    + 'Prices and specifications are indicative, and the retailer will confirm every detail.',
+  // No scores or points: RRMC never shows a match score, so the working can't quote one.
+  working: ({ total, eligible }, budgeted) => `We considered all ${total} motor cars in the Provenance collection. `
+    + `${eligible === 1 ? 'One was' : `${eligible} were`} ${budgeted ? 'within your price range and ' : ''}suited to your needs.`,
+  workingClear: ' Nothing else in the collection came close.',
+  workingWeak: ' None of them is quite what you described.',
+  searchedWider: ({ model, miles, where }) => 'We looked further afield. '
+    + `The ${model} at ${where} suits you more closely, and it is ${miles}.`,
+};
+
+/** RRMC tiles' "12,400 Miles – Petrol" line (as matchCard prints it), for the preview strip. */
+function rrmcTileLine(car) {
+  const miles = car.moa ? 'MOA'
+    : ((car.mileage || 0) < 50 ? 'Mileage Negligible' : `${car.mileage.toLocaleString('en-GB')} Miles`);
+  return [miles, FUEL_SPEC[car.fuel] || car.fuel].filter(Boolean).join(' – ');
+}
+
 /* ------------------------------ helpers ------------------------------ */
+
+/** RRMC reads an unanswered or "No parameters" price range as no budget, as the server does. */
+function budgetOptional(brand, answers) {
+  return brand === 'rrmc' && answers.budgetGate !== 'yes';
+}
 
 /**
  * Is the budget answer usable? Budget drives the engine's one hard requirement.
@@ -362,7 +401,10 @@ function renderRefine(
   // The car a rescue note above the cards already points at, when there is one.
   // Set by renderResults; see `noteShown` below for why it matters.
   let notedCarId = null;
-  hereGroup.append(hereLabel, grid, hereRestGrid);
+  // RRMC heads the tiles under its podium as the podium mode heads its tail.
+  const tailHead = ctx.brand === 'rrmc' ? el('h3', 'vm-subhead vm-rrmc-q-tail-head', RRMC_COPY.tailHeading) : null;
+  if (tailHead) tailHead.hidden = true;
+  hereGroup.append(hereLabel, grid, ...(tailHead ? [tailHead] : []), hereRestGrid);
   awayGroup.append(awayLabel, awayPending, awayGrid, awayRestGrid);
   /*
    * The working, under the cars.
@@ -535,16 +577,19 @@ function renderRefine(
     // is, so a colour rejection keeps it rather than guessing it away.
     const shadeOf = (l) => l.shade || l.colour;
     const shade = shadeOf(shown) || car.colour?.colour || car.colour?.manufacturerColour;
+    const rrmc = ctx.brand === 'rrmc';
     if (shade && survives((l) => shadeOf(l) !== shade)) {
-      add(`!c:${shade}`, `Not the ${shade.toLowerCase()}`, (l) => shadeOf(l) !== shade);
+      add(`!c:${shade}`, `${rrmc ? 'Not in' : 'Not the'} ${shade.toLowerCase()}`, (l) => shadeOf(l) !== shade);
     }
     const dearer = Number.isFinite(shown.priceMin) ? shown.priceMin : car.priceMin;
-    if (Number.isFinite(dearer) && survives((l) => l.priceMin < dearer)) {
-      add(`!p:${dearer}`, `Under ${gbp(dearer)}`, (l) => l.priceMin < dearer);
+    // A POA car's price is the server's placeholder, so RRMC never offers a reason quoting it.
+    const poa = rrmc && (shown.poa || car.poa);
+    if (!poa && Number.isFinite(dearer) && survives((l) => l.priceMin < dearer)) {
+      add(`!p:${dearer}`, `${rrmc ? 'Below' : 'Under'} ${gbp(dearer)}`, (l) => l.priceMin < dearer);
     }
     const higher = Number.isFinite(shown.mileage) ? shown.mileage : car.mileage;
     if (Number.isFinite(higher) && survives((l) => l.mileage != null && l.mileage < higher)) {
-      add(`!m:${higher}`, `Fewer than ${higher.toLocaleString('en-GB')} miles`,
+      add(`!m:${higher}`, `Fewer than ${higher.toLocaleString('en-GB')} miles${rrmc ? ' on the clock' : ''}`,
         (l) => l.mileage != null && l.mileage < higher);
     }
     const gear = shown.transmission || car.transmission;
@@ -636,7 +681,7 @@ function renderRefine(
     // shows the cars and stops.
     if (chipRow.children.length) {
       refineBlock.append(
-        el('p', 'vm-refine-label', copy.refineLabel({ count: shown.length })),
+        el('p', 'vm-refine-label', (ctx.brand === 'rrmc' ? RRMC_COPY : copy).refineLabel({ count: shown.length })),
         chipRow,
       );
     }
@@ -669,7 +714,7 @@ function renderRefine(
     // both keep their line.
     notice.hidden = !scoped || away[0].car.id === notedCarId;
     if (!notice.hidden) {
-      notice.textContent = copy.searchedWider({
+      notice.textContent = (ctx.brand === 'rrmc' ? RRMC_COPY : copy).searchedWider({
         model: strip(away[0]),
         miles: distanceLabel(away[0].car.distance),
         where: away[0].car.retailerName || 'another retailer',
@@ -767,6 +812,7 @@ function renderRefine(
 
     grid.replaceChildren();
     hereRestGrid.replaceChildren();
+    if (tailHead) tailHead.hidden = true;
     awayGrid.replaceChildren();
     awayRestGrid.replaceChildren();
     hereGroup.hidden = false;
@@ -783,7 +829,7 @@ function renderRefine(
       dead.append(el('p', 'vm-refine-empty-text', wants.length
         ? copy.refineEmpty({ wants: andList(wants) })
         : copy.refineEmptyHidden));
-      const clear = el('button', 'vm-btn vm-btn-ghost', 'Start again');
+      const clear = el('button', 'vm-btn vm-btn-ghost', ctx.brand === 'rrmc' ? RRMC_COPY.clear : 'Start again');
       clear.type = 'button';
       clear.addEventListener('click', () => {
         active.clear();
@@ -919,6 +965,7 @@ function renderRefine(
       hereLead.forEach((m) => grid.append(full(m, single)));
       drop(here, hereLead).forEach((m) => hereRestGrid.append(tile(m)));
     }
+    if (tailHead) tailHead.hidden = !hereRestGrid.children.length;
     hereLabel.textContent = copy.hereHeading({ retailer: ctx.retailerLabel });
     hereLabel.hidden = !here.length || ctx.brand === 'rrmc';
     hereGroup.hidden = !here.length;
@@ -965,10 +1012,18 @@ function renderRefine(
        * keeps the two from repeating each other: the headline is the verdict,
        * this is the arithmetic behind it, checkable against the badges.
        */
-      const closing = state === 'weak'
-        ? copy.workingWeak({ top: shown[0].score })
-        : (margin != null && margin >= CLUSTER_PTS ? copy.workingMargin({ margin }) : '');
-      working.append(el('p', 'vm-working-text', copy.working(searched) + closing + copy.workingScore));
+      if (ctx.brand === 'rrmc') {
+        // Said without numbers, and "came close" only past the relevance bar, where it is true.
+        const tail = state === 'weak' ? RRMC_COPY.workingWeak
+          : (margin != null && margin >= RELEVANT_PTS ? RRMC_COPY.workingClear : '');
+        const budgeted = ctx.answers.budgetGate === 'yes';
+        working.append(el('p', 'vm-working-text', RRMC_COPY.working(searched, budgeted) + tail));
+      } else {
+        const closing = state === 'weak'
+          ? copy.workingWeak({ top: shown[0].score })
+          : (margin != null && margin >= CLUSTER_PTS ? copy.workingMargin({ margin }) : '');
+        working.append(el('p', 'vm-working-text', copy.working(searched) + closing + copy.workingScore));
+      }
     }
   }
 
@@ -1088,21 +1143,22 @@ function encodeAnswers(answers) {
     .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
-function decodeAnswers(encoded, questions) {
+function decodeAnswers(encoded, questions, brand) {
   try {
     const b64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
     const answers = JSON.parse(decodeURIComponent(escape(atob(b64))));
     // Minimal validation: every question that should be shown must be answered.
     const valid = questions.every((q) => !isVisible(q, answers) || answers[q.id] != null);
-    return valid && validBudget(answers.budget) ? answers : null;
+    // An RRMC "No parameters" link carries no budget at all, and must still open.
+    return valid && (budgetOptional(brand, answers) || validBudget(answers.budget)) ? answers : null;
   } catch {
     return null;
   }
 }
 
-function answersFromHash(questions) {
+function answersFromHash(questions, brand) {
   const match = window.location.hash.match(new RegExp(`${HASH_KEY}=([A-Za-z0-9_-]+)`));
-  return match ? decodeAnswers(match[1], questions) : null;
+  return match ? decodeAnswers(match[1], questions, brand) : null;
 }
 
 /*
@@ -1218,6 +1274,41 @@ function refinementAxes(groups) {
 
 /* ------------------------------ screens ------------------------------ */
 
+/** Is this mode still the one in the stage? The shell reuses the stage on a switch, so an await that
+ *  lands late must check before it paints. A locked page has no switcher and is always mounted. */
+function stillMounted(root) {
+  const select = root.previousElementSibling?.querySelector?.('.vm-switcher-select');
+  return !select || select.value === 'questionnaire';
+}
+// RRMC-only for now, so other brands' timing is exactly as it was.
+const staleRrmc = (root, ctx) => ctx.brand === 'rrmc' && !stillMounted(root);
+
+/**
+ * RRMC: the progress bar rides the switcher row, as the podium's does, kept across screens so it
+ * glides. Returns false when there is no switcher (a locked page) so the screen keeps its own.
+ */
+function rrmcProgress(root, ctx, fraction) {
+  const switcher = root.previousElementSibling;
+  if (!switcher?.classList.contains('vm-switcher')) return false;
+  // A late boot after a mode switch must not put its bar in another mode's row.
+  if (!stillMounted(root)) return true;
+  let progress = ctx.rrmcProgress;
+  if (!progress?.isConnected) {
+    progress = el('div', 'vm-progress');
+    progress.append(el('div', 'vm-progress-bar'));
+    switcher.classList.add('has-progress');
+    switcher.prepend(progress);
+    ctx.rrmcProgress = progress;
+    // The next mode may already have put its own bar in, so the row keeps its class for it.
+    switcher.querySelector('.vm-switcher-select')?.addEventListener('change', () => {
+      progress.remove();
+      if (!switcher.querySelector('.vm-podium-progress')) switcher.classList.remove('has-progress');
+    }, { once: true });
+  }
+  progress.firstChild.style.width = `${fraction * 100}%`;
+  return true;
+}
+
 function renderIntro(root, ctx) {
   root.replaceChildren();
   const intro = el('div', 'vm-intro');
@@ -1232,6 +1323,23 @@ function renderIntro(root, ctx) {
   const { title: titleOverride, kicker: kickerOverride } = ctx.overrides;
   const kicker = kickerOverride === undefined ? (copy.kicker || 'The unofficial UK matchmaker') : kickerOverride;
   const title = titleOverride === undefined ? copy.title : titleOverride;
+  if (ctx.brand === 'rrmc') {
+    // The podium's own tagline and sub line, and no default headline, as podium shows none.
+    const [tagline, sub] = rrmcTaglines();
+    if (kicker) {
+      tagline.textContent = kicker;
+      intro.append(tagline);
+    }
+    if (titleOverride) intro.append(el('h1', 'vm-title', titleOverride));
+    intro.append(sub);
+    const begin = el('button', 'vm-btn vm-btn-primary', copy.cta);
+    begin.type = 'button';
+    begin.addEventListener('click', () => ctx.showQuestion(0));
+    intro.append(begin);
+    root.append(intro);
+    rrmcProgress(root, ctx, 0);
+    return;
+  }
   if (kicker) intro.append(el('p', 'vm-kicker', kicker));
   if (title) intro.append(el('h1', 'vm-title', title));
   const ledeEl = el('p', 'vm-lede');
@@ -1258,7 +1366,8 @@ const PREVIEW_FADE_MS = 150;
 
 /** Can the engine score these answers yet? It hard-requires a valid budget. */
 function canPreview(ctx) {
-  return validBudget(ctx.answers.budget);
+  // RRMC scores without a budget (as podium's live list does), so its shortlist runs from Q1.
+  return budgetOptional(ctx.brand, ctx.answers) || validBudget(ctx.answers.budget);
 }
 
 // How many skeleton tiles to show while the first guess loads. A handful is
@@ -1272,15 +1381,33 @@ const PREVIEW_SKELETON_COUNT = 5;
  * first guess lands (see paintPreview), so it never snaps open.
  */
 function renderPreviewSection(ctx) {
+  const rrmc = ctx.brand === 'rrmc';
   const section = el('section', 'vm-preview');
-  section.append(el('h3', 'vm-subhead vm-nearby-heading vm-preview-heading', 'SHORTLISTING FOR YOU'));
+  section.append(el('h3', 'vm-subhead vm-nearby-heading vm-preview-heading',
+    rrmc ? RRMC_COPY.previewHeading : 'SHORTLISTING FOR YOU'));
   const track = el('div', 'vm-nearby vm-preview-track');
   track.tabIndex = 0;
   track.setAttribute('role', 'region');
-  track.setAttribute('aria-label', `Your closest matches so far at ${ctx.retailerLabel}`);
+  track.setAttribute('aria-label', rrmc
+    ? RRMC_COPY.previewRegion({ retailer: ctx.retailerLabel })
+    : `Your closest matches so far at ${ctx.retailerLabel}`);
   section.append(track);
   paintPreview(section, ctx);
   return section;
+}
+
+/** RRMC's mini tile: the tiles' own mileage line in place of specs and price, and no score. */
+function rrmcPreviewTile(match) {
+  const tile = previewTile(match, 'mini');
+  const line = rrmcTileLine(match.car);
+  tile.querySelector('.vm-ptile-score')?.remove();
+  const specs = tile.querySelector('.vm-ptile-specs');
+  if (specs) specs.textContent = line;
+  if (tile.hasAttribute('aria-label')) {
+    const name = tile.querySelector('.vm-ptile-name')?.textContent || match.car.name;
+    tile.setAttribute('aria-label', `${name}, ${line}. View the listing`);
+  }
+  return tile;
 }
 
 /** A shimmer placeholder shaped like a mini preview tile (media + two lines). */
@@ -1309,7 +1436,7 @@ function paintPreview(section, ctx) {
   const swap = () => {
     track.replaceChildren();
     if (hasMatches) {
-      ctx.preview.matches.forEach((m) => track.append(previewTile(m, 'mini')));
+      ctx.preview.matches.forEach((m) => track.append(ctx.brand === 'rrmc' ? rrmcPreviewTile(m) : previewTile(m, 'mini')));
     } else {
       for (let i = 0; i < PREVIEW_SKELETON_COUNT; i += 1) track.append(previewSkeletonTile());
     }
@@ -1368,6 +1495,8 @@ function schedulePreviewRefresh(ctx) {
   const run = ctx.preview.seq;
   ctx.previewFeed.schedule(ctx.answers, (matches) => {
     if (run !== ctx.preview.seq) return;
+    // A guess landing after a mode switch must not mount its strip in another mode's screen.
+    if (ctx.qRoot && staleRrmc(ctx.qRoot, ctx)) return;
     ctx.preview.matches = matches;
     ctx.preview.loaded = true; // first (and every) response has now landed
     showPreview(ctx);
@@ -1385,14 +1514,16 @@ function schedulePreviewRefresh(ctx) {
  */
 function renderAnswerPills(ctx, questions, index) {
   const row = el('div', 'vm-pills');
+  const rrmc = ctx.brand === 'rrmc';
   for (let i = 0; i < index; i += 1) {
     const question = questions[i];
-    const label = pillFor(question, ctx.answers);
+    const label = rrmc ? rrmcPillLabel(question, ctx) : pillFor(question, ctx.answers);
     if (!label) continue; // unanswered (shouldn't happen before `index`, but safe)
     const pill = el('button', 'vm-pill');
     pill.type = 'button';
     pill.append(el('span', 'vm-pill-text', label));
-    pill.append(el('span', 'vm-pill-edit', '✎'));
+    // RRMC's pill shape is the affordance; the podium carries no edit glyph either.
+    if (!rrmc) pill.append(el('span', 'vm-pill-edit', '✎'));
     pill.setAttribute('aria-label', `${question.title.replace(/[?？]$/, '')}: ${label}. Edit`);
     pill.addEventListener('click', () => {
       // Remember where we were so advance() returns here after the edit.
@@ -1402,6 +1533,23 @@ function renderAnswerPills(ctx, questions, index) {
     row.append(pill);
   }
   return row.children.length ? row : null;
+}
+
+/** RRMC's answered pill reads in the option's own words ("Around The City"), and the price range
+ *  pill names the range itself. pillFor's labels are BMW's ("City driving"). */
+function rrmcPillLabel(q, ctx) {
+  const value = ctx.answers[q.id];
+  if (value == null || (Array.isArray(value) && !value.length)) return null;
+  const budgetQ = q.id === 'budgetGate' && value === 'yes' && ctx.questions.find((x) => x.id === 'budget');
+  const range = budgetQ && ctx.answers.budget;
+  // Worded as the drawer's "Current Range" tile words it.
+  if (Array.isArray(range)) return range.map((n) => formatSliderValue(n, budgetQ)).join(' - ');
+  if (q.type === 'slider' && typeof value === 'number') {
+    return `${formatSliderValue(value, q)}${q.id === 'mileage' ? ' a year' : ''}`;
+  }
+  const label = (v) => q.options?.find((o) => String(o.value) === String(v))?.label || String(v);
+  const values = Array.isArray(value) ? value : [value];
+  return values.length > 1 ? `${label(values[0])} +${values.length - 1}` : label(values[0]);
 }
 
 /** The questions that get a screen: RRMC asks its budget inside "Is there an ideal price
@@ -1419,11 +1567,15 @@ function renderQuestion(root, ctx, index) {
   // Same per-question hook as the podium's blocks, so brand CSS keyed by data-qid reaches both.
   screen.dataset.qid = q.id;
 
-  const progress = el('div', 'vm-progress');
-  const bar = el('div', 'vm-progress-bar');
-  bar.style.width = `${((index + 1) / questions.length) * 100}%`;
-  progress.append(bar);
-  screen.append(progress, el('p', 'vm-step', `Question ${index + 1} of ${questions.length}`));
+  const done = (index + 1) / questions.length;
+  if (!(ctx.brand === 'rrmc' && rrmcProgress(root, ctx, done))) {
+    const progress = el('div', 'vm-progress');
+    const bar = el('div', 'vm-progress-bar');
+    bar.style.width = `${done * 100}%`;
+    progress.append(bar);
+    screen.append(progress);
+  }
+  screen.append(el('p', 'vm-step', `Question ${index + 1} of ${questions.length}`));
 
   // Summary pills for every question already answered before this one. Each is
   // a tap-to-edit button: it jumps back to that question, remembering the
@@ -1540,7 +1692,8 @@ function renderQuestion(root, ctx, index) {
   back.addEventListener('click', () => ctx.showQuestion(index - 1));
   nav.append(back);
 
-  const next = el('button', 'vm-btn vm-btn-primary', index + 1 === questions.length ? 'Explore my matches' : 'Next');
+  const last = ctx.brand === 'rrmc' ? RRMC_COPY.lastNext : 'Explore my matches';
+  const next = el('button', 'vm-btn vm-btn-primary', index + 1 === questions.length ? last : 'Next');
   next.type = 'button';
   // Multi-select, sliders and every RRMC question commit via Next (a slider always has
   // a value, so it's enabled from the off); other single-selects auto-advance on tap.
@@ -1709,9 +1862,11 @@ function fillNearbyBand(band, ctx, nearby) {
 }
 
 async function renderResults(root, ctx, answers) {
+  if (staleRrmc(root, ctx)) return;
   renderResultsSkeleton(root);
   // RRMC's "Why this one?" panel phrases each car against these.
   setRrmcAnswers(answers, ctx.questions);
+  if (ctx.brand === 'rrmc') rrmcProgress(root, ctx, 1);
 
   // Two-phase load. The retailer's own matches (fast: one feed) render first;
   // the nearby-retailer carousel (slow: a national distance search) is fetched
@@ -1761,6 +1916,7 @@ async function renderResults(root, ctx, answers) {
       alternatives = [], unmet: retailerUnmet = {}, searched = null,
     } = await apiMatch(ctx.api, answers, ctx.retailer, ctx.brand, ctx.scope));
   } catch {
+    if (staleRrmc(root, ctx)) return;
     renderStatus(root, {
       kicker: 'Sorry',
       title: 'We couldn’t reach the matcher.',
@@ -1786,6 +1942,8 @@ async function renderResults(root, ctx, answers) {
     nearbyPromise.catch(() => null),
     new Promise((resolve) => { setTimeout(() => resolve(null), GRACE_MS); }),
   ]);
+  // The shell reuses this stage for the next mode, so a late answer must not paint over it.
+  if (staleRrmc(root, ctx)) return;
 
   root.replaceChildren();
   const screen = el('div', 'vm-screen vm-results');
@@ -1796,7 +1954,10 @@ async function renderResults(root, ctx, answers) {
   const rrmc = ctx.brand === 'rrmc';
   if (!rrmc) screen.append(el('p', 'vm-kicker', 'Your results'));
 
-  if (matches.length === 0) {
+  if (matches.length === 0 && rrmc) {
+    // The podium's own empty register: one quiet note, no headline.
+    screen.append(el('p', 'vm-podium-note', RRMC_COPY.emptyNote({ retailer: ctx.retailerLabel })));
+  } else if (matches.length === 0) {
     screen.append(
       el('h2', 'vm-title', 'No matches found.'),
       el('p', 'vm-lede', `Nothing in ${ctx.retailerLabel}'s current stock fits those answers. Try loosening the budget or seating needs.`),
@@ -1911,8 +2072,9 @@ async function renderResults(root, ctx, answers) {
       ctx,
       [...matches, ...alternatives, ...(early?.nearby || [])],
       title, lede, frames, tasteLead, searched,
-      // Tell the list whether it is still waiting on anything.
-      !early,
+      // Tell the list whether it is still waiting on anything. RRMC's single feed has no other
+      // retailers (fetchNearbyStock returns none), so it never holds a place for them.
+      !early && !rrmc,
     );
     screen.append(refine.host);
   }
@@ -1928,25 +2090,27 @@ async function renderResults(root, ctx, answers) {
   const nearbyBand = emptyLocal
     ? renderNearbySkeleton(ctx, copy.driveLede.empty({ retailer: ctx.retailerLabel }))
     : null;
+  if (nearbyBand && rrmc) nearbyBand.querySelector('.vm-nearby-heading').textContent = RRMC_COPY.driveHeading;
   if (nearbyBand) screen.append(nearbyBand);
 
   const actions = el('div', 'vm-actions');
-  const share = el('button', 'vm-btn vm-btn-primary', 'Copy share link');
+  const shareLabel = rrmc ? RRMC_COPY.share : 'Copy share link';
+  const share = el('button', 'vm-btn vm-btn-primary', shareLabel);
   share.type = 'button';
   share.addEventListener('click', async () => {
     const url = `${window.location.origin}${window.location.pathname}#${HASH_KEY}=${encodeAnswers(answers)}`;
     try {
       await navigator.clipboard.writeText(url);
-      share.textContent = 'Link copied';
+      share.textContent = rrmc ? RRMC_COPY.shared : 'Link copied';
     } catch {
       window.prompt('Copy your results link:', url);
     }
-    setTimeout(() => { share.textContent = 'Copy share link'; }, 2000);
+    setTimeout(() => { share.textContent = shareLabel; }, 2000);
   });
-  const tweak = el('button', 'vm-btn vm-btn-ghost', 'Tweak my answers');
+  const tweak = el('button', 'vm-btn vm-btn-ghost', rrmc ? RRMC_COPY.tweak : 'Tweak my answers');
   tweak.type = 'button';
   tweak.addEventListener('click', () => ctx.showQuestion(visibleQuestions(flowQuestions(ctx), ctx.answers).length - 1));
-  const retake = el('button', 'vm-btn vm-btn-ghost', 'Start over');
+  const retake = el('button', 'vm-btn vm-btn-ghost', rrmc ? RRMC_COPY.retake : 'Start over');
   retake.type = 'button';
   retake.addEventListener('click', () => {
     ctx.answers = {};
@@ -1964,7 +2128,8 @@ async function renderResults(root, ctx, answers) {
 
   // Authorable: right for a public demo, wrong on a retailer's own site (see
   // copyRow). A blank "Disclaimer" row removes it; an authored one replaces it.
-  const defaultDisclaimer = `An unofficial tool, not affiliated with or endorsed by ${(BRAND_COPY[ctx.brand] || BRAND_COPY.bmw).name}. Prices and specs are indicative, always check with a retailer.`;
+  const defaultDisclaimer = rrmc ? RRMC_COPY.disclaimer
+    : `An unofficial tool, not affiliated with or endorsed by ${(BRAND_COPY[ctx.brand] || BRAND_COPY.bmw).name}. Prices and specs are indicative, always check with a retailer.`;
   const disclaimer = ctx.overrides.disclaimer === undefined
     ? defaultDisclaimer
     : ctx.overrides.disclaimer;
@@ -2108,6 +2273,8 @@ function mount(root, ctx) {
   // the Back/Next nav.
   ctx.mountPreview = (screen, section) => screen.append(section);
 
+  // The stage, so a late preview can tell whether this mode is still the one in it.
+  ctx.qRoot = root;
   ctx.showIntro = () => renderIntro(root, ctx);
   ctx.showQuestion = (i) => renderQuestion(root, ctx, i);
   ctx.showResults = (answers, { updateHash = false } = {}) => {
@@ -2125,8 +2292,11 @@ function mount(root, ctx) {
     renderIntroSkeleton(root);
     try {
       const meta = await apiGetQuestions(ctx.api, ctx.retailer, ctx.brand);
+      // Switched away while loading: the stage, switcher row and RRMC answers now belong to another mode.
+      if (staleRrmc(root, ctx)) return;
       ctx.questions = meta.questions;
     } catch {
+      if (staleRrmc(root, ctx)) return;
       renderStatus(root, {
         kicker: 'Sorry',
         title: 'We couldn’t load the matcher',
@@ -2137,7 +2307,7 @@ function mount(root, ctx) {
       return;
     }
 
-    const shared = answersFromHash(ctx.questions);
+    const shared = answersFromHash(ctx.questions, ctx.brand);
     if (shared) {
       ctx.answers = shared;
       ctx.showResults(shared);
