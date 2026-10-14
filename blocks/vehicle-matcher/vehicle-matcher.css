@@ -4855,6 +4855,8 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 /* "Why this one?": headings in Light, body copy and its link in Ultralight. */
 .vm.vm-rrmc .vm-rrmc-why-panel:not(.is-wide) .vm-rrmc-why-sub { font-size: 24px; font-weight: 300; letter-spacing: 0.02em; }
 .vm.vm-rrmc .vm-rrmc-why-panel:not(.is-wide) :is(.vm-rrmc-why-prose, .vm-rrmc-why-more) { font-weight: 100; }
+/* Price figures within that copy stand out a touch, in Light. */
+.vm.vm-rrmc .vm-rrmc-why-panel:not(.is-wide) .vm-rrmc-why-price { font-weight: 300; }
 /* The drawbacks paragraph: 16px, no tracking. */
 .vm.vm-rrmc .vm-rrmc-why-body > .vm-rrmc-why-sub ~ .vm-rrmc-why-prose { font-size: 16px; letter-spacing: 0; }
 /* No drawbacks: the line in the foot row, in the drawbacks copy's size but Light. */

@@ -335,10 +335,14 @@ function whyProse(car, answers, tradeOffs) {
 function openWhyPanel(trigger, match) {
   const { car, tradeOffs = [] } = match;
   const { asked, facts, drawbacks } = whyProse(car, rrmcAnswers, tradeOffs);
+  // A sentence as text with each £ figure in its own span (set in Light, in CSS).
+  const withPrices = (line) => line.split(/(£[\d,]+\+?)/)
+    .filter(Boolean)
+    .map((part) => (part.startsWith('£') ? el('span', 'vm-rrmc-why-price', part) : part));
   // A paragraph whose sentences each start on a new line (all lines 28px apart, in CSS).
   const prose = (sentences) => {
     const p = el('p', 'vm-rrmc-why-prose');
-    sentences.forEach((line, i) => p.append(...(i ? [el('br'), line] : [line])));
+    sentences.forEach((line, i) => p.append(...(i ? [el('br')] : []), ...withPrices(line)));
     return p;
   };
   // The copy in one block, with the link pinned beneath it at the foot of the panel.
