@@ -284,7 +284,7 @@ function whyProse(car, answers, tradeOffs) {
   }
   const regions = asList(answers.regions);
   if (car.region && regions.includes(car.region) && regions.length < 4) {
-    asked.push(`It's held in ${RRMC_REGION[car.region]}, one of the regions you chose.`);
+    asked.push(`It's held in ${RRMC_REGION[car.region]}.`);
   }
   if (answers.handDrive && car.handDrive === answers.handDrive) {
     asked.push(`It's configured in ${DRIVE_PROSE[car.handDrive]} like you asked for.`);
@@ -342,12 +342,16 @@ function openWhyPanel(trigger, match) {
   // The copy in one block, with the link pinned beneath it at the foot of the panel.
   const body = el('div', 'vm-rrmc-why-body');
   if (asked.length) body.append(prose(asked));
-  body.append(
-    prose(facts),
-    el('h4', 'vm-rrmc-why-sub', 'What are the drawbacks?'),
-    prose(drawbacks.length ? drawbacks : ['Nothing stands out against what you asked for.']),
-  );
-  const content = [body];
+  body.append(prose(facts));
+  if (drawbacks.length) body.append(el('h4', 'vm-rrmc-why-sub', 'What are the drawbacks?'), prose(drawbacks));
+  // The foot of the panel: with no drawbacks (and so no heading), the one line saying so sits
+  // bottom-left, and the listing link bottom-right.
+  const foot = el('div', 'vm-rrmc-why-foot');
+  if (!drawbacks.length) {
+    const none = prose(['Nothing stands out against what you asked for.']);
+    none.classList.add('is-no-drawbacks');
+    foot.append(none);
+  }
   if (car.link) {
     // The whole line opens the listing; only "here" carries the underline.
     const more = el('a', 'vm-rrmc-why-more');
@@ -355,9 +359,9 @@ function openWhyPanel(trigger, match) {
     more.href = car.link;
     more.target = '_blank';
     more.rel = 'noopener noreferrer';
-    content.push(more);
+    foot.append(more);
   }
-  openRrmcPanel(trigger, { heading: 'Why this one?', content });
+  openRrmcPanel(trigger, { heading: 'Why this one?', content: foot.firstChild ? [body, foot] : [body] });
 }
 
 /** One alternative version, with only an "Explore the full range" tile's lines: name, miles and fuel,

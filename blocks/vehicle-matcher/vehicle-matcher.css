@@ -4834,9 +4834,19 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 /* Headings sit 12px above their copy; paragraphs keep 24px between them. */
 .vm.vm-rrmc .vm-rrmc-why-body > .vm-rrmc-why-prose:first-child,
 .vm.vm-rrmc .vm-rrmc-why-body > .vm-rrmc-why-sub + .vm-rrmc-why-prose { margin-top: 12px; }
-/* Pinned to the bottom-right corner of the text area. */
-/* margin-top: auto keeps it at the foot when the panel is taller than its copy; 24px is the least gap. */
-.vm.vm-rrmc .vm-rrmc-why-panel:not(.is-wide) .vm-rrmc-why-more { flex: none; align-self: flex-end; margin-top: auto; padding-top: 24px; }
+/* The foot row, pinned to the bottom of the text area (margin-top: auto; 24px is the least gap):
+   the no-drawbacks line bottom-left, the listing link bottom-right. */
+.vm.vm-rrmc .vm-rrmc-why-foot {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px 24px;
+  margin-top: auto;
+  padding-top: 24px;
+}
+.vm.vm-rrmc .vm-rrmc-why-foot > .vm-rrmc-why-more { margin: 0 0 0 auto; }
 .vm.vm-rrmc .vm-rrmc-why-more { text-decoration: none; letter-spacing: 0.01em; font-size: 24px; }
 .vm.vm-rrmc .vm-rrmc-why-here { text-decoration: underline; }
 /* "Why this one?": headings in Light, body copy and its link in Ultralight. */
@@ -4844,6 +4854,13 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 .vm.vm-rrmc .vm-rrmc-why-panel:not(.is-wide) :is(.vm-rrmc-why-prose, .vm-rrmc-why-more) { font-weight: 100; }
 /* The drawbacks paragraph: 16px, no tracking. */
 .vm.vm-rrmc .vm-rrmc-why-body > .vm-rrmc-why-sub ~ .vm-rrmc-why-prose { font-size: 16px; letter-spacing: 0; }
+/* No drawbacks: the line in the foot row, in the drawbacks copy's size but Light. */
+.vm.vm-rrmc .vm-rrmc-why-panel:not(.is-wide) .vm-rrmc-why-foot > .vm-rrmc-why-prose.is-no-drawbacks {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+}
 /* The copy under "Why this one?" (before the drawbacks heading) at 24px, no tracking. */
 .vm.vm-rrmc .vm-rrmc-why-body > .vm-rrmc-why-prose:not(.vm-rrmc-why-sub ~ *) {
   font-size: 24px;
