@@ -24,8 +24,9 @@ import {
   BRAND_COPY, UNMET_PHRASES, TRADE_COPY, orList, andList, tradeLines,
 } from './brand-copy.js';
 import {
-  CONCEPT_LABELS, FUEL_SPEC, listingsOf, distanceLabel, matchCard, previewTile, rrmcTaglines, setRrmcAnswers,
+  CONCEPT_LABELS, FUEL_SPEC, listingsOf, distanceLabel, matchCard, previewTile, setRrmcAnswers,
 } from './result-card.js';
+import { renderRrmcIntro } from './rrmc-intro.js';
 import {
   isVisible, visibleQuestions, formatSliderValue, renderRangeSlider, renderOptionList, renderBudgetDrawer,
 } from './question-ui.js';
@@ -1333,19 +1334,8 @@ function renderIntro(root, ctx) {
   const kicker = kickerOverride === undefined ? (copy.kicker || 'The unofficial UK matchmaker') : kickerOverride;
   const title = titleOverride === undefined ? copy.title : titleOverride;
   if (ctx.brand === 'rrmc') {
-    // The podium's own tagline and sub line, and no default headline, as podium shows none.
-    const [tagline, sub] = rrmcTaglines();
-    if (kicker) {
-      tagline.textContent = kicker;
-      intro.append(tagline);
-    }
-    if (titleOverride) intro.append(el('h1', 'vm-title', titleOverride));
-    intro.append(sub);
-    const begin = el('button', 'vm-btn vm-btn-primary', copy.cta);
-    begin.type = 'button';
-    begin.addEventListener('click', () => ctx.showQuestion(0));
-    intro.append(begin);
-    root.append(intro);
+    // Shared with every other RRMC mode (the shell opens them with it); this bar glides on into the questions.
+    renderRrmcIntro(root, ctx, () => ctx.showQuestion(0));
     rrmcProgress(root, ctx, 0);
     return;
   }

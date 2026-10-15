@@ -23,6 +23,7 @@
  */
 
 import { MODES, DEFAULT_MODE, modeByKey } from './modes/index.js';
+import { renderRrmcIntro } from './modes/rrmc-intro.js';
 
 const DEFAULT_API = 'http://localhost:8787';
 
@@ -186,6 +187,19 @@ function resolveMode(block) {
 const BRAND_DISABLED_MODES = { rrmc: ['swipe'] };
 const BRAND_DEFAULT_MODES = { rrmc: 'podium' };
 
+/** Mount `mode` into the stage. RRMC opens every mode with the questionnaire's intro (which owns its own). */
+function startMode(mode, stage, ctx) {
+  stage.replaceChildren();
+  if (ctx.brand !== 'rrmc' || mode.key === 'questionnaire') {
+    mode.mount(stage, ctx);
+    return;
+  }
+  renderRrmcIntro(stage, ctx, () => {
+    stage.replaceChildren();
+    mode.mount(stage, ctx);
+  }, { progress: true });
+}
+
 function renderSwitcher(block, stage, ctx, current) {
   const disabled = BRAND_DISABLED_MODES[ctx.brand] || [];
   const modes = MODES.filter((m) => !disabled.includes(m.key));
@@ -207,8 +221,7 @@ function renderSwitcher(block, stage, ctx, current) {
   select.addEventListener('change', () => {
     const next = modeByKey(select.value);
     if (!next) return;
-    stage.replaceChildren();
-    next.mount(stage, ctx);
+    startMode(next, stage, ctx);
   });
 
   bar.append(select);
@@ -272,5 +285,5 @@ export default async function decorate(block) {
   // dead. A mode paints its own skeleton immediately and swaps in the real
   // thing when its data lands, so decorate() returns now and lets the page
   // finish loading.
-  mode.mount(stage, ctx);
+  startMode(mode, stage, ctx);
 }
