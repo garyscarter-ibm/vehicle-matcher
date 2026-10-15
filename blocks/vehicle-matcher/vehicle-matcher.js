@@ -190,11 +190,17 @@ const BRAND_DEFAULT_MODES = { rrmc: 'podium' };
 /** Mount `mode` into the stage. RRMC opens every mode with the questionnaire's intro (which owns its own). */
 function startMode(mode, stage, ctx) {
   stage.replaceChildren();
+  // Named on the stage so a brand's CSS can lay a mode out (intro included) without reaching into it.
+  stage.dataset.mode = mode.key;
+  delete stage.dataset.intro;
   if (ctx.brand !== 'rrmc' || mode.key === 'questionnaire') {
     mode.mount(stage, ctx);
     return;
   }
+  // Flagged while the intro shows, so podium's opening screen can be laid out apart from podium.
+  stage.dataset.intro = '';
   renderRrmcIntro(stage, ctx, () => {
+    delete stage.dataset.intro;
     stage.replaceChildren();
     mode.mount(stage, ctx);
   }, { progress: true });

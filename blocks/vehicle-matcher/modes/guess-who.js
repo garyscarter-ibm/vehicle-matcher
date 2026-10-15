@@ -45,6 +45,7 @@ import {
 } from '../engine.js';
 import { el, gbp } from '../ui.js';
 import { BRAND_COPY } from './brand-copy.js';
+import { pillFor } from '../quiz-meta.js';
 import {
   renderRangeSlider, renderOptionList, renderBudgetDrawer, formatRange, formatSliderValue, visibleQuestions,
 } from './question-ui.js';
@@ -253,7 +254,22 @@ const FILTER_LABELS_BY_BRAND = {
   // A bike has no body style and no seat count worth filtering on; the shape
   // question is what kind of riding it is for.
   motorrad: { body: 'Bike style' },
-  rrmc: { price: 'Price range', handDrive: 'Configuration' },
+  rrmc: {
+    price: 'Price range', handDrive: 'Configuration', features: 'Specification',
+  },
+};
+// RRMC's question pills along the top of the board: each question's short name above its answer.
+const RRMC_QUESTION_LABELS = {
+  bodyStyles: 'Body style',
+  fuel: 'Power',
+  charging: 'Charging',
+  regions: 'Region',
+  handDrive: 'Configuration',
+  people: 'Passengers',
+  mileage: 'Annual mileage',
+  style: 'Driving style',
+  priorities: 'Priorities',
+  budgetGate: 'Price range',
 };
 // RRMC's own body names, as its questions and tiles print them.
 const BODY_LABELS_BY_BRAND = { rrmc: { convertible: 'Drophead' } };
@@ -261,6 +277,10 @@ const BODY_LABELS_BY_BRAND = { rrmc: { convertible: 'Drophead' } };
 const RRMC_AXIS_ORDER = [
   'body', 'fuel', 'region', 'handDrive', 'seats', 'mileage', 'age', 'colour', 'features', 'place', 'price',
 ];
+// RRMC leaves these filters and questions off the board, and opens it only once the first two are answered.
+const RRMC_HIDDEN_AXES = ['age', 'mileage'];
+const RRMC_SKIPPED_QUESTIONS = ['primaryUse'];
+const RRMC_FIRST_QUESTIONS = ['regions', 'handDrive'];
 // Under this many miles RRMC reads a car as new (result-card.js's NEGLIGIBLE_MILES).
 const RRMC_NEGLIGIBLE_MILES = 50;
 // Seats each `people` answer needs, as the engine's RRMC hard filter has it (brands.js RRMC_TUNING.hardFilter).
@@ -606,6 +626,7 @@ const GUESS_WHO_COPY = {
   rrmc: {
     wordmark: '',
     // The sub line under podium's tagline, for a board that narrows as the answers come in.
+    gateNote: 'Select your region and preferred configuration, and the collection will begin to narrow to you.',
     taglineSub: "As you narrow down your choices, we'll fetch you increasingly personalised options until your perfect match comes along.",
     title: 'in our Provenance collection.',
     startNote: () => 'Set aside what does not suit you. What remains is yours to consider.',
@@ -613,9 +634,10 @@ const GUESS_WHO_COPY = {
     oneNote: 'One remains. This is your Rolls-Royce.',
     fewNote: ({ left }) => `${left} remain. Take your time with these.`,
     emptyTitle: 'Nothing remains.',
-    emptyNote: 'Nothing in the collection meets all of that at once. Relax one filter and the collection returns.',
+    emptyNote: 'Nothing in the collection meets all of that at once. Relax one of your preferences and the collection returns.',
     resetLabel: 'Begin again',
     undoLabel: 'Undo the last change',
+    doneLabel: 'Confirm',
     prompts: {
       price: 'Is there an ideal price range?',
       fuel: 'How would you prefer to be powered?',
@@ -629,7 +651,7 @@ const GUESS_WHO_COPY = {
       region: 'Which regions shall we include?',
       handDrive: 'Which is your preferred driving configuration?',
     },
-    anySummary: 'Any',
+    anySummary: 'Not yet selected',
     rejectLabel: 'Not this one',
     rejectPrompt: 'Why not this one?',
     rejectKeep: 'Keep this one',
@@ -939,8 +961,8 @@ function mount(root, ctx) {
   let popTitle = null;
   let popBody = null;
   let progressBar = null;
-  let askList = null;
-  const askBlocks = new Map();
+  // RRMC: qid -> { chip, axis }, the question pills that lead the chip row.
+  const askChips = new Map();
   // The answers as they stood after the last handled change: what an undo step hands back.
   let settledAnswers = '{}';
   const settle = () => { settledAnswers = JSON.stringify(state.answers); };
@@ -1031,7 +1053,7 @@ function mount(root, ctx) {
     setRrmcAnswers(answers, price?.q.openTop ? [{ id: 'budget', openTop: true, max: price.q.max }] : []);
   };
 
-  /* --------- RRMC: the podium's questions down the side, the board live beside them --------- */
+  /* --------- RRMC: the podium's questions as pills along the top, the board live beneath them --------- */
 
   // Answered = a value that would reach the engine (podium.js isAnswered); sliders persist on render.
   const isAnswered = (q) => {
@@ -1040,7 +1062,17 @@ function mount(root, ctx) {
     return v != null && v !== '';
   };
   // The budget is asked inside budgetGate's drawer, never as its own block (as in the podium).
-  const askedQuestions = () => visibleQuestions(state.questions.filter((q) => q.id !== 'budget'), state.answers);
+  // RRMC asks region and configuration first and leaves out the questions the board does without.
+  const firstRank = (q) => (rrmc && RRMC_FIRST_QUESTIONS.includes(q.id)
+    ? RRMC_FIRST_QUESTIONS.indexOf(q.id) : RRMC_FIRST_QUESTIONS.length);
+  const askedQuestions = () => visibleQuestions(state.questions
+    .filter((q) => q.id !== 'budget' && !(rrmc && RRMC_SKIPPED_QUESTIONS.includes(q.id))), state.answers)
+    .sort((a, b) => firstRank(a) - firstRank(b));
+  // RRMC: the whole collection shows until region and configuration are answered; only then does it narrow or score.
+  const gateOpen = () => !rrmc || RRMC_FIRST_QUESTIONS.every((id) => {
+    const q = state.questions.find((x) => x.id === id);
+    return !q || isAnswered(q);
+  });
   // The board filter a question now sets, when that question is being asked.
   const coveredBy = (key) => (rrmc && state.questions.some((q) => q.id === COVERED_BY[key]) ? COVERED_BY[key] : null);
 
@@ -1054,67 +1086,88 @@ function mount(root, ctx) {
     return renderOptionList(q, state.answers, { onChange }).list;
   };
 
-  // One question as the podium's twisty block (podium.js buildQuestion's markup, so its RRMC rules apply).
-  const buildQuestion = (q) => {
-    const block = el('div', 'vm-podium-q');
-    block.dataset.qid = q.id;
-    const panelId = `vm-gw-q-panel-${q.id}`;
-    const heading = el('h3', 'vm-podium-q-heading');
-    const toggle = el('button', 'vm-podium-q-toggle');
-    toggle.type = 'button';
-    toggle.setAttribute('aria-expanded', 'true');
-    toggle.setAttribute('aria-controls', panelId);
-    const text = el('span', 'vm-podium-q-text');
-    text.append(el('span', 'vm-podium-q-title', q.title));
-    const chevron = el('span', 'vm-podium-q-chevron');
-    chevron.setAttribute('aria-hidden', 'true');
-    toggle.append(text, el('span', 'vm-podium-q-badge', 'Answered'), chevron);
-    heading.append(toggle);
-
-    const panel = el('div', 'vm-podium-q-panel');
-    panel.id = panelId;
-    const budgetQ = q.id === 'budgetGate' && state.questions.find((x) => x.id === 'budget');
-    const drawer = budgetQ && renderBudgetDrawer(budgetQ, state.answers, { onChange: () => answersChanged(q.id) });
-    panel.append(buildControl(q, () => {
-      drawer?.sync();
-      answersChanged(q.id);
-    }));
-    if (drawer) panel.append(drawer.drawer);
-    toggle.addEventListener('click', () => {
-      const expanded = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', String(!expanded));
-      panel.hidden = expanded;
-    });
-    block.append(heading, panel);
-    return block;
+  const labelOf = (q, v) => (q.options || []).find((o) => String(o.value) === String(v))?.label ?? String(v);
+  // What a question's pill reads: its options' own labels ("Saloon +1"), or "Any" while unanswered.
+  const summaryOf = (q) => {
+    const a = state.answers;
+    if (!isAnswered(q)) return copy.anySummary;
+    if (q.id === 'budgetGate' && a.budgetGate === 'yes') {
+      const budgetQ = state.questions.find((x) => x.id === 'budget');
+      return (budgetQ && pillFor(budgetQ, a)) || labelOf(q, 'yes');
+    }
+    if (q.id === 'mileage') return pillFor(q, a) || copy.anySummary;
+    const values = [].concat(a[q.id]);
+    const first = labelOf(q, values[0]);
+    return values.length > 1 ? `${first} +${values.length - 1}` : first;
   };
 
-  // Splice the visible blocks in place (podium.js syncQuestions); the switcher bar shows how many are answered.
+  // A question opens in the filters' popover; its budget rolls down in the same drawer as the podium's.
+  const questionAxis = (q) => ({
+    key: `q:${q.id}`,
+    bare: true,
+    q: { title: q.title, type: q.type },
+    build: (host) => {
+      const changed = () => { if (!state.pop?.building) answersChanged(q.id); };
+      const budgetQ = q.id === 'budgetGate' && state.questions.find((x) => x.id === 'budget');
+      const drawer = budgetQ && renderBudgetDrawer(budgetQ, state.answers, { onChange: changed });
+      host.append(buildControl(q, () => {
+        drawer?.sync();
+        changed();
+      }));
+      if (drawer) host.append(drawer.drawer);
+    },
+    // A slider persists its start value as it renders: shown as answered, but no undo step for it.
+    built: () => {
+      syncAsk();
+      settle();
+      scheduleScores();
+    },
+  });
+
+  const questionChip = (q) => {
+    const axis = questionAxis(q);
+    const chip = el('button', 'vm-gw-chip vm-gw-chip-q');
+    chip.type = 'button';
+    chip.dataset.qid = q.id;
+    chip.setAttribute('aria-haspopup', 'dialog');
+    chip.setAttribute('aria-expanded', 'false');
+    chip.append(
+      el('span', 'vm-gw-chip-label', RRMC_QUESTION_LABELS[q.id] || q.title),
+      el('span', 'vm-gw-chip-value', copy.anySummary),
+    );
+    chip.addEventListener('click', () => {
+      if (state.pop?.axis === axis) closePop();
+      else openPop(chip, axis);
+    });
+    return { chip, axis };
+  };
+
+  // Splice the visible question pills in at the front of the chip row; the switcher bar shows how many are answered.
   const syncAsk = () => {
-    if (!askList) return;
+    if (!chipsEl || !state.questions.length) return;
     const visible = askedQuestions();
     const wanted = new Set(visible.map((q) => q.id));
-    askBlocks.forEach((node, id) => {
+    askChips.forEach(({ chip }, id) => {
       if (wanted.has(id)) return;
-      node.remove();
-      askBlocks.delete(id);
+      if (state.pop?.trigger === chip) closePop({ repaint: false });
+      chip.remove();
+      askChips.delete(id);
     });
     visible.forEach((q, i) => {
-      if (!askBlocks.has(q.id)) askBlocks.set(q.id, buildQuestion(q));
-      const node = askBlocks.get(q.id);
-      if (askList.children[i] !== node) askList.insertBefore(node, askList.children[i] || null);
-      node.querySelector('.vm-podium-q-badge').hidden = !isAnswered(q);
+      if (!askChips.has(q.id)) askChips.set(q.id, questionChip(q));
+      const { chip } = askChips.get(q.id);
+      if (chipsEl.children[i] !== chip) chipsEl.insertBefore(chip, chipsEl.children[i] || null);
+      // The open question's pill keeps its look until Confirm closes the popover (closePop repaints it).
+      if (state.pop?.trigger === chip) return;
+      chip.classList.toggle('is-on', isAnswered(q));
+      paintValue(chip, summaryOf(q));
     });
     const done = visible.filter(isAnswered).length;
     if (progressBar) progressBar.style.width = `${Math.round((done / (visible.length || 1)) * 100)}%`;
   };
-  // Rebuilds the blocks so their controls show answers changed from outside them (undo, a rejection).
-  const repaintAsk = (qid) => {
-    askBlocks.forEach((node, id) => {
-      if (qid && id !== qid) return;
-      node.remove();
-      askBlocks.delete(id);
-    });
+  // Answers changed from outside a question (undo, a rejection): its open popover would show stale picks.
+  const repaintAsk = () => {
+    if (state.pop?.axis.key.startsWith('q:')) closePop({ repaint: false });
     syncAsk();
   };
 
@@ -1178,7 +1231,7 @@ function mount(root, ctx) {
     if (board?.isConnected) render();
   };
   const scheduleScores = () => {
-    if (!state.questions.length) return;
+    if (!state.questions.length || !gateOpen()) return;
     window.clearTimeout(scoreTimer);
     scoreTimer = window.setTimeout(fetchScores, SCORE_DEBOUNCE_MS);
   };
@@ -1196,43 +1249,30 @@ function mount(root, ctx) {
     scheduleScores();
   }
 
-  // Page scroll moves the sticky pane 1:1; scrolling the pane itself shifts where that resumes from
-  // (a mirror of podium.js linkAskScroll).
-  const linkAskScroll = (ask, grid) => {
-    let frame = 0;
-    let offset = 0;
-    let written = null;
-    const pageTravel = () => {
-      const style = getComputedStyle(ask);
-      if (style.position !== 'sticky' || ask.scrollHeight <= ask.clientHeight) return null;
-      const start = grid.getBoundingClientRect().top + window.scrollY - parseFloat(style.top || 0);
-      return window.scrollY - start;
-    };
-    const sync = () => {
-      frame = 0;
-      const travel = pageTravel();
-      if (travel === null) return;
-      const max = ask.scrollHeight - ask.clientHeight;
-      if (travel + offset > max) offset = max - travel;
-      if (travel + offset < 0 && offset < 0) offset = Math.min(0, -travel);
-      ask.scrollTop = Math.max(0, travel + offset);
-      written = ask.scrollTop;
-    };
-    const onAskScroll = () => {
-      if (written !== null && Math.abs(ask.scrollTop - written) < 1) return;
-      const travel = pageTravel();
-      if (travel !== null) offset = ask.scrollTop - travel;
-      written = null;
-    };
-    const onScroll = () => {
-      if (!ask.isConnected) {
-        window.removeEventListener('scroll', onScroll);
+  // RRMC: the purple head sits midway between the switcher's progress bar and the count line beneath it.
+  const centreHead = (head) => {
+    const bar = root.previousElementSibling?.querySelector?.(':scope > .vm-gw-progress');
+    if (!bar || !head.isConnected || !countEl) return;
+    // Measured where the sticky bar sits unstuck, whatever the scroll.
+    barEl.style.position = 'static';
+    head.style.marginTop = '0px';
+    const h = head.getBoundingClientRect();
+    const above = h.top - bar.getBoundingClientRect().bottom;
+    const below = countEl.getBoundingClientRect().top - h.bottom;
+    head.style.marginTop = `${Math.round(below - above)}px`;
+    barEl.style.position = '';
+  };
+  const keepHeadCentred = (head) => {
+    const fit = () => {
+      if (!head.isConnected) {
+        window.removeEventListener('resize', fit);
         return;
       }
-      if (!frame) frame = requestAnimationFrame(sync);
+      centreHead(head);
     };
-    ask.addEventListener('scroll', onAskScroll, { passive: true });
-    window.addEventListener('scroll', onScroll, { passive: true });
+    fit();
+    document.fonts?.ready.then(fit);
+    window.addEventListener('resize', fit);
   };
 
   // The taglines scale as podium.js fitSteps scales them: --vm-podium-zoom is the column over 700px.
@@ -1662,7 +1702,7 @@ function mount(root, ctx) {
     }
 
     if (rrmc) axes.sort((a, b) => RRMC_AXIS_ORDER.indexOf(a.key) - RRMC_AXIS_ORDER.indexOf(b.key));
-    state.axes = axes;
+    state.axes = rrmc ? axes.filter((a) => !RRMC_HIDDEN_AXES.includes(a.key)) : axes;
   };
 
   /* ------------------------- the postcode box ------------------------- */
@@ -1773,6 +1813,7 @@ function mount(root, ctx) {
   /** The survivors, as pool indices in pool order. Measured at 0.035 ms for
    *  eight predicates over 12,012 cars, which is why nothing here is debounced. */
   const survivors = () => {
+    if (!gateOpen()) return Array.from({ length: state.pool.n }, (_, i) => i);
     const tests = state.axes.map((a) => a.test()).filter(Boolean);
     const { out } = state;
     const keep = [];
@@ -1960,6 +2001,7 @@ function mount(root, ctx) {
    * the browser can do the whole thing off the main thread.
    */
   const commit = (keep) => {
+    const gated = !gateOpen();
     const layout = pickLayout(Math.max(keep.length, 1), board.clientWidth || 1200, boardHeight());
     const flip = layout.stage !== 'dot'
       && keep.length <= FLIP_MAX_CELLS
@@ -2001,6 +2043,8 @@ function mount(root, ctx) {
     paintChips();
     emptyEl.hidden = keep.length > 0;
     board.hidden = keep.length === 0;
+    // Nothing to turn down before the answers can act on it.
+    shell.classList.toggle('is-gated', gated);
 
     // One car left is this game's win condition, and the only moment in the mode
     // that deserves a flourish. Fires once per run.
@@ -2109,6 +2153,7 @@ function mount(root, ctx) {
     const gone = total - left;
     noteEl.textContent = (() => {
       if (!left) return '';
+      if (!gateOpen()) return copy.gateNote;
       if (left === total) return copy.startNote({ total: miles(total) });
       if (left === 1) return copy.oneNote;
       if (left <= 6) return copy.fewNote({ left });
@@ -2154,13 +2199,20 @@ function mount(root, ctx) {
     window.requestAnimationFrame(tick);
   };
 
+  // A chip's value line; the unset placeholder is marked so RRMC can set it as the label above it.
+  function paintValue(chip, text) {
+    const value = chip.querySelector('.vm-gw-chip-value');
+    value.textContent = text;
+    value.classList.toggle('is-unset', text === copy.anySummary);
+  }
+
   /** The chip row: one per axis, showing what it is currently set to. */
   const paintChips = () => {
     state.axes.forEach((axis) => {
       const chip = chipsEl.querySelector(`[data-axis="${axis.key}"]`);
       if (!chip) return;
       chip.classList.toggle('is-on', axis.narrowed());
-      chip.querySelector('.vm-gw-chip-value').textContent = axis.summary();
+      paintValue(chip, axis.summary());
     });
   };
 
@@ -2184,6 +2236,8 @@ function mount(root, ctx) {
       });
       chipsEl.append(chip);
     });
+    // RRMC's question pills lead the row (kept across rebuilds, so an open popover's trigger survives).
+    syncAsk();
   };
 
   /* ---------------------------- the popover ---------------------------- */
@@ -2195,7 +2249,7 @@ function mount(root, ctx) {
     pop.hidden = true;
     popTitle = el('p', 'vm-gw-pop-title');
     popBody = el('div', 'vm-gw-pop-body');
-    const done = el('button', 'vm-btn vm-btn-primary vm-gw-pop-done', 'Done');
+    const done = el('button', 'vm-btn vm-btn-primary vm-gw-pop-done', copy.doneLabel || 'Done');
     done.type = 'button';
     done.addEventListener('click', () => closePop());
     pop.append(popTitle, popBody, done);
@@ -2211,6 +2265,9 @@ function mount(root, ctx) {
     };
     popTitle.textContent = axis.q.title;
     pop.setAttribute('aria-label', axis.q.title);
+    // A question's popover carries its id, so the per-question pill rules reach its options.
+    if (axis.key.startsWith('q:')) pop.dataset.qid = axis.key.slice(2);
+    else delete pop.dataset.qid;
     popBody.replaceChildren();
     // The widget writes straight into state.filters and calls filtersChanged, so
     // the board re-filters live under the open popover. That is the point: the
@@ -2223,6 +2280,7 @@ function mount(root, ctx) {
       axis.build(popBody);
     }
     state.pop.building = false;
+    axis.built?.();
     pop.hidden = false;
     trigger.setAttribute('aria-expanded', 'true');
     placePop(trigger);
@@ -2277,15 +2335,17 @@ function mount(root, ctx) {
     closePop();
   };
 
-  function closePop() {
+  function closePop({ repaint = true } = {}) {
     if (!state.pop) return;
-    const { trigger } = state.pop;
+    const { trigger, axis } = state.pop;
     document.removeEventListener('keydown', onPopKey);
     document.removeEventListener('pointerdown', onPopOutside, true);
     pop.hidden = true;
     trigger.setAttribute('aria-expanded', 'false');
     state.pop = null;
     trigger.focus?.();
+    // A question's pill turns to its answered look as the popover closes.
+    if (repaint && axis.key.startsWith('q:')) syncAsk();
   }
 
   /* -------------------------- "not this one" -------------------------- */
@@ -2351,7 +2411,7 @@ function mount(root, ctx) {
     if (qid) {
       answerFrom(key, value);
       presetFromAnswers();
-      repaintAsk(qid);
+      repaintAsk();
       settle();
       scheduleScores();
     } else {
@@ -2541,24 +2601,15 @@ function mount(root, ctx) {
       root.append(shell);
       return;
     }
-    // RRMC: podium.js buildStage's frame, questions left and the board where the podium's tiles sit.
-    // The popover stays outside the results column, whose container query would trap position: fixed.
-    const frame = el('div', 'vm-podium vm-gw-podium');
-    const grid = el('div', 'vm-podium-grid');
-    const ask = el('section', 'vm-podium-ask');
-    askList = el('div', 'vm-podium-questions');
-    ask.append(askList);
-    const results = el('section', 'vm-podium-results');
-    // Podium's tagline, with a sub line for a board that narrows live rather than a shortlist to come.
+    // RRMC: the podium's taglines over the board, its questions as pills along the top as BMW's filters are.
+    const head = el('div', 'vm-gw-head');
     const [tagline, sub] = rrmcTaglines();
     sub.textContent = copy.taglineSub || sub.textContent;
-    results.append(tagline, sub, shell);
-    grid.append(ask, results);
-    frame.append(grid, buildPopover());
-    root.append(frame);
-    linkAskScroll(ask, grid);
-    fitTaglines(results);
-    syncAsk();
+    head.append(tagline, sub);
+    shell.append(buildPopover());
+    root.append(head, shell);
+    fitTaglines(head);
+    keepHeadCentred(head);
     settle();
   };
 
@@ -2597,6 +2648,7 @@ function mount(root, ctx) {
     state.keep = Array.from({ length: pool.n }, (_, i) => i);
     paintCount(pool.n);
     paintChips();
+    shell.classList.toggle('is-gated', !gateOpen());
   };
 
   /* ------------------------------- resize ------------------------------- */

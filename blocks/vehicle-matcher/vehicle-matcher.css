@@ -778,6 +778,11 @@
 /* Rolls-Royce: all text in Riviera Nights; base weight 300 (Light). Elements
    with explicit font-weight: 700 still resolve to the Bold cut. */
 .vm.vm-rrmc { font-weight: 300; padding-right: 0; }
+/* Podium keeps that right gutter off; every other mode, and podium's opening screen, puts it back to centre on the page. */
+.vm.vm-rrmc:has(> .vm-stage:is(:not([data-mode="podium"]), [data-intro])) { padding-right: var(--vm-space-5); }
+@media (min-width: 900px) {
+  .vm.vm-rrmc:has(> .vm-stage:is(:not([data-mode="podium"]), [data-intro])) { padding-right: var(--vm-space-12); }
+}
 .vm.vm-rrmc .vm-btn { font-weight: 300; }
 .vm.vm-rrmc .vm-question { font-size: 32px; }
 .vm.vm-rrmc .vm-card-line { display: none; }

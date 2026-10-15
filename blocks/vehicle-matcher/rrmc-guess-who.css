@@ -160,6 +160,8 @@
   clip-path: inset(50%);
   white-space: nowrap;
 }
+/* Until region and configuration are answered the board shows the whole collection, so there is nothing to turn down. */
+.vm.vm-rrmc .vm-gw.is-gated .vm-gw-board :is(.vm-reject, .vm-gw-reject) { display: none; }
 /* Open, the chip stays shown (Safari doesn't focus a clicked button) and the cell stops clipping it. */
 .vm.vm-rrmc .vm-gw-reject .vm-reject-open[aria-expanded='true'] { opacity: 1; }
 .vm.vm-rrmc .vm-gw-board .vm-gw-cell:has(.vm-reject-open[aria-expanded='true']) {
@@ -235,10 +237,28 @@
 /* The one-left burst in purple and rose gold (as head-to-head's), not the BMW teal accent-secondary token. */
 .vm.vm-rrmc .vm-gw .vm-mingle-confetti-bit:nth-child(even) { background: #f7a177; }
 
-/* --- questions down the side: podium.js's frame (.vm-podium > .vm-podium-grid), so the podium's RRMC
-   pane, grid, sticky scroll and stacking rules apply as they are; the board sits in its results column. --- */
-/* Only the pane's pills take the podium's shift; the board's filter popover lives in the same frame. */
-.vm.vm-rrmc .vm-gw-podium .vm-gw-pop-body .vm-option { transform: none; }
+/* --- questions along the top: each is a chip in the bar's row (guess-who.js syncAsk), opening the popover --- */
+/* The popover asks in RRMC's question register (centred, light, 24px) and confirms with its 40px pill. */
+.vm.vm-rrmc .vm-gw-pop .vm-gw-pop-title {
+  margin: 0 0 var(--vm-space-4);
+  font-family: var(--vm-font-body);
+  font-size: 24px;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+  text-align: center;
+}
+.vm.vm-rrmc .vm-gw-pop .vm-gw-pop-done {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  min-height: 0;
+  padding: 0;
+  border-radius: 9999px;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
 /* Popover pills may grow downwards (40px is the least height) where a phone makes them wrap;
    chip values wrap rather than clip. */
 .vm.vm-rrmc .vm-gw-pop .vm-gw-pop-body .vm-option {
@@ -248,3 +268,34 @@
   line-height: 1.25;
 }
 .vm.vm-rrmc .vm-gw-chip .vm-gw-chip-value { white-space: normal; overflow: visible; text-overflow: clip; }
+/* "Not yet selected" is set as the label above it, and stays on its own single line. */
+.vm.vm-rrmc .vm-gw-chip .vm-gw-chip-value.is-unset {
+  font-family: var(--vm-font-bold);
+  font-size: var(--vm-text-eyebrow);
+  letter-spacing: 0.08em;
+  line-height: normal;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--vm-ink);
+}
+/* The pill row sits centred on the page; on a phone's scrolling strip the auto margins centre it
+   instead, so a row wider than the screen still scrolls from its first pill. */
+.vm.vm-rrmc .vm-gw-chips { justify-content: center; }
+@media (max-width: 767px) {
+  .vm.vm-rrmc .vm-gw-chips { justify-content: flex-start; }
+  .vm.vm-rrmc .vm-gw-chips > :first-child { margin-left: auto; }
+  .vm.vm-rrmc .vm-gw-chips > :last-child { margin-right: auto; }
+}
+/* Tagline and sub line centred over the board; the sub runs the full width rather than podium's 612px. */
+.vm.vm-rrmc .vm-gw-head :is(.vm-rrmc-tagline, .vm-rrmc-tagline-sub) { margin-inline: auto; text-align: center; }
+.vm.vm-rrmc .vm-gw-head .vm-rrmc-tagline-sub { max-width: none; }
+/* Past the opening screen the tagline and sub line sit on RRMC purple in white, as the gold tile does. */
+.vm.vm-rrmc .vm-gw-head {
+  margin: 40px 0 0;
+  padding: 40px var(--vm-space-6);
+  background: #281432;
+  border-radius: var(--vm-radius);
+  color: #ffffff;
+}
+.vm.vm-rrmc .vm-gw-head .vm-rrmc-tagline { margin-top: 0; color: #ffffff; }
+.vm.vm-rrmc .vm-gw-head .vm-rrmc-tagline-sub { margin-bottom: 0; color: #ffffff; }
