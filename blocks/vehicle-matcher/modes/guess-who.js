@@ -630,9 +630,9 @@ const GUESS_WHO_COPY = {
     taglineSub: "As you narrow down your choices, we'll fetch you increasingly personalised options until your perfect match comes along.",
     title: 'in our Provenance collection.',
     startNote: () => 'Set aside what does not suit you. What remains is yours to consider.',
-    liveNote: ({ left, gone }) => `${gone} set aside. ${left} remain.`,
+    // Once the collection narrows, its count rolls down in this line with the headline's (paintCount).
+    rollingNote: ['Set aside what does not suit you. The ', ' options left are yours to consider.'],
     oneNote: 'One remains. This is your Rolls-Royce.',
-    fewNote: ({ left }) => `${left} remain. Take your time with these.`,
     emptyTitle: 'Nothing remains.',
     emptyNote: 'Nothing in the collection meets all of that at once. Relax one of your preferences and the collection returns.',
     resetLabel: 'Begin again',
@@ -2151,7 +2151,13 @@ function mount(root, ctx) {
   const paintCount = (left) => {
     const total = state.pool.n;
     const gone = total - left;
-    noteEl.textContent = (() => {
+    // RRMC: the narrowed count sits in the note too, and rolls with the headline's below.
+    let noteCount = null;
+    noteEl.removeAttribute('aria-busy');
+    if (copy.rollingNote && left > 1 && left < total && gateOpen()) {
+      noteCount = el('span', 'vm-gw-note-count', miles(left));
+      noteEl.replaceChildren(copy.rollingNote[0], noteCount, copy.rollingNote[1]);
+    } else noteEl.textContent = (() => {
       if (!left) return '';
       if (!gateOpen()) return copy.gateNote;
       if (left === total) return copy.startNote({ total: miles(total) });
@@ -2187,6 +2193,8 @@ function mount(root, ctx) {
     state.countGen += 1;
     const gen = state.countGen;
     const started = performance.now();
+    // Held quiet while the note's figure rolls, so a screen reader hears only where it lands.
+    if (noteCount) noteEl.setAttribute('aria-busy', 'true');
     const tick = () => {
       if (gen !== state.countGen) return;
       const t = Math.min(1, (performance.now() - started) / COUNT_MS);
@@ -2194,7 +2202,9 @@ function mount(root, ctx) {
       // a drop rather than a slow scroll.
       const value = Math.round(from + (left - from) * (1 - (1 - t) ** 3));
       countEl.textContent = miles(value);
+      if (noteCount) noteCount.textContent = miles(value);
       if (t < 1) window.requestAnimationFrame(tick);
+      else noteEl.removeAttribute('aria-busy');
     };
     window.requestAnimationFrame(tick);
   };
