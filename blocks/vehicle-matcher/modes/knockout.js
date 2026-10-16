@@ -955,12 +955,13 @@ function mount(root, ctx) {
         const node = blocks.get(q.id);
         if (wrap.children[i] !== node) wrap.insertBefore(node, wrap.children[i] || null);
       });
-      cta.disabled = !visible.every((q) => isAnswered(chosen[q.id]));
+      // The price range is optional: unanswered reads as no limit, as the server takes it.
+      cta.disabled = !visible.every((q) => q.id === 'budgetGate' || isAnswered(chosen[q.id]));
       refreshTail();
     }
 
-    /* The provenance strip in podium's own tail markup (so its RRMC tail styling applies): the
-     * highest-value stock until a price range is set, then the closest to the answers so far. */
+    /* The provenance strip in podium's own tail markup (so its RRMC tail styling applies): the closest
+     * to the answers so far, leaning to the high end while no price range is set (a suggestion row). */
     const tail = el('div', 'vm-podium-tail');
     tail.hidden = true;
     const tailGrid = el('div', 'vm-podium-tail-grid');
@@ -971,7 +972,8 @@ function mount(root, ctx) {
     let tailTimer = 0;
     let tailSeq = 0;
     function refreshTail() {
-      const query = chosen.budgetGate === 'yes' ? { ...chosen } : { budgetGate: 'no' };
+      const { budget, ...rest } = chosen;
+      const query = chosen.budgetGate === 'yes' ? { ...chosen } : { ...rest, budgetGate: 'no' };
       const key = JSON.stringify(query);
       if (key === tailKey) return;
       const first = tailKey === null;
@@ -981,7 +983,7 @@ function mount(root, ctx) {
         if (!tail.isConnected || !isMounted()) return;
         tailSeq += 1;
         const seq = tailSeq;
-        const matches = await apiPreview(ctx.api, query, ctx.retailer, ctx.brand, ctx.scope, true);
+        const matches = await apiPreview(ctx.api, query, ctx.retailer, ctx.brand, ctx.scope, true, { suggest: true });
         // Gone once the field loads (the seed screen is replaced), and a newer request wins.
         if (seq !== tailSeq || !tail.isConnected || !isMounted()) return;
         const shown = matches.filter((m) => m?.car).slice(0, TAIL_MAX);

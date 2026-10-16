@@ -544,8 +544,10 @@ async function readMatchRequest(req) {
   // questions drawer's top-9 is tuned around listings and must not shift under
   // it: an absent or garbage flag has to leave that response untouched.
   const group = body.group === true;
+  // `suggest` marks a suggestion row (see handlePreview), the one place price may lead.
+  const suggest = body.suggest === true;
   return {
-    answers, retailer, brand, scope, size, enrich, group,
+    answers, retailer, brand, scope, size, enrich, group, suggest,
   };
 }
 
@@ -677,7 +679,7 @@ async function handleMatch(req, res, deps) {
  */
 async function handlePreview(req, res, deps) {
   const {
-    answers, retailer, brand, scope, group, error, status,
+    answers, retailer, brand, scope, group, suggest, error, status,
   } = await readMatchRequest(req);
   if (error) return sendJson(res, status, { error });
 
@@ -697,7 +699,11 @@ async function handlePreview(req, res, deps) {
   // never take the process down with an uncaught throw.
   let matches = [];
   try {
-    const ranked = rankCars(applyBespokeAnswers(brand, answers), cars, brandTuning(brand));
+    // A suggestion row may lean towards the high end where no price is set; the ranking itself never does.
+    const base = brandTuning(brand);
+    const tuning = suggest && base.suggestionPriceLean != null
+      ? { ...base, noBudgetPriceLean: base.suggestionPriceLean } : base;
+    const ranked = rankCars(applyBespokeAnswers(brand, answers), cars, tuning);
     // Group the WHOLE ranking before slicing. Slicing first would hand
     // groupListings nine listings that might be three cars, and the caller
     // would get three cards where it asked for nine — the shortfall growing

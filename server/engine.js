@@ -110,11 +110,12 @@ function canChargeAt(charging) {
 function scoreBudget(car, answers, tuning) {
   const range = budgetRange(answers);
   if (!range) {
-    // When the user explicitly has no budget limit, favour higher-value cars
-    // if the brand's tuning defines a price ceiling for normalisation.
+    // No budget limit: optionally lean towards higher-value cars (0..1 of the dimension). RRMC's
+    // ranking leans 0, so price only breaks ties; its suggestion rows ask for a lean (handlePreview).
     const ceiling = tuning?.noBudgetPriceCeiling;
-    if (ceiling && (!answers.budgetGate || answers.budgetGate === 'no')) {
-      return { score: Math.min((car.priceMin || 0) / ceiling, 1) };
+    const lean = tuning?.noBudgetPriceLean ?? 1;
+    if (ceiling && lean && (!answers.budgetGate || answers.budgetGate === 'no')) {
+      return { score: 1 - lean + lean * Math.min((car.priceMin || 0) / ceiling, 1) };
     }
     return { score: 1 };
   }
@@ -729,13 +730,13 @@ export function rankCars(answers, cars, tuning = DEFAULT_TUNING) {
     })
     // Fit first, then taste — so within a group of equally suitable cars the
     // buyer's stated preferences pick the order. Price and name remain as the
-    // final deterministic tie-break.
+    // final deterministic tie-break (dearest first where the brand's tuning asks).
     .sort(
       (a, b) =>
         b.score - a.score ||
         (a.car.prestigeRank ?? Infinity) - (b.car.prestigeRank ?? Infinity) ||
         b.taste - a.taste ||
-        a.car.priceMin - b.car.priceMin ||
+        (tuning.tieBreakHighPrice ? b.car.priceMin - a.car.priceMin : a.car.priceMin - b.car.priceMin) ||
         a.car.name.localeCompare(b.car.name),
     );
 }

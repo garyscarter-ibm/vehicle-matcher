@@ -576,9 +576,12 @@ const RRMC_TUNING = {
   // Never hard-exclude a Rolls on seats/boot: the 4-seat cars are the driver's
   // choices, not a disqualification. Floors near the range floor.
   hardFilter: { crewBoot: 200, crewSeats: 4, familySeats: 4 },
-  // When the user picks 'No parameters' on budget, score by price so higher-
-  // value cars rank first. Ceiling covers the top of the current stock range.
+  // Price never ranks a car for its own sake: with no range set it only breaks ties, dearest first.
+  // Suggestion rows (handlePreview's `suggest`) lean towards the high end; the ceiling tops the stock.
   noBudgetPriceCeiling: 800000,
+  noBudgetPriceLean: 0,
+  suggestionPriceLean: 0.5,
+  tieBreakHighPrice: true,
   reasons: {
     roadtrip: () => 'A touring car built to cover a continent in silence',
     city: () => 'A presence on any street, and quieter than you would believe',
@@ -960,9 +963,10 @@ export const BRANDS = {
           id: 'handDrive',
           title: 'Which is your preferred driving configuration?',
           insertAfter: 'regions',
+          // Left before right, so each pill sits on the side it names.
           options: [
-            { value: 'rhd', label: 'Right Hand Drive' },
             { value: 'lhd', label: 'Left Hand Drive' },
+            { value: 'rhd', label: 'Right Hand Drive' },
           ],
         },
         {
