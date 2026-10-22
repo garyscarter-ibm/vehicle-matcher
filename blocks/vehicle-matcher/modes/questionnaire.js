@@ -144,6 +144,11 @@ const CLUSTER_PTS = 3;
 /** Cars beyond a group's lead, shown as compact tiles under the same heading.
  *  A backstop, not the main control: RELEVANT_PTS below usually cuts first. */
 const TAIL_SHOWN = 6;
+// RRMC results: gold sits this far from the window's left edge and under the progress bar.
+const GOLD_LEFT_PX = 64;
+const GOLD_DROP_PX = 110;
+// Least gap kept between gold and the silver/bronze column in a narrow window.
+const GOLD_GAP_MIN_PX = 40;
 
 /*
  * How far behind the best car on the page a car may be and still be worth
@@ -1722,6 +1727,60 @@ function renderQuestion(root, ctx, index) {
   schedulePreviewRefresh(ctx);
 }
 
+/** RRMC results: place gold GOLD_DROP_PX under the progress bar and GOLD_LEFT_PX from the left edge.
+ *  Re-measured on resize, redraws and the entrance animation. */
+function placeRrmcGold(root, screen) {
+  if (typeof ResizeObserver === 'undefined') return;
+  let frame = 0;
+  const fit = () => {
+    frame = 0;
+    if (!screen.isConnected) {
+      resize.disconnect();
+      redraws.disconnect();
+      window.removeEventListener('resize', schedule);
+      return;
+    }
+    const bar = root.previousElementSibling?.querySelector?.(':scope > .vm-progress');
+    if (bar) {
+      screen.style.marginTop = '0px';
+      // Gold itself when there is one (refine chips above it included in the drop), else the first content.
+      const first = screen.querySelector('.vm-grid.vm-rrmc-podium > .vm-card')
+        || [...screen.children].find((n) => n.getClientRects().length);
+      if (first) {
+        const drop = bar.getBoundingClientRect().bottom + GOLD_DROP_PX - first.getBoundingClientRect().top;
+        // Never pulled up under the bar (refine chips above gold leave it lower instead).
+        screen.style.marginTop = `${Math.max(0, Math.round(drop))}px`;
+      }
+    }
+    const grid = screen.querySelector('.vm-grid.vm-rrmc-podium');
+    if (!grid) return;
+    Object.assign(grid.style, { marginLeft: '', columnGap: '', justifyContent: '' });
+    const gold = grid.querySelector(':scope > .vm-card');
+    const side = grid.querySelector(':scope > .vm-rrmc-podium-side');
+    // Only the side-by-side podium: stacked (narrow) layouts keep their own centring.
+    if (!gold || !side || getComputedStyle(grid).gridTemplateColumns.split(' ').length !== 2) return;
+    const box = grid.getBoundingClientRect();
+    const room = box.right - GOLD_LEFT_PX - gold.offsetWidth - side.offsetWidth;
+    if (room < GOLD_GAP_MIN_PX) return;
+    Object.assign(grid.style, {
+      justifyContent: 'start',
+      marginLeft: `${Math.round(GOLD_LEFT_PX - box.left)}px`,
+      columnGap: `${Math.min(GOLD_LEFT_PX, room)}px`,
+    });
+  };
+  const schedule = () => { if (!frame) frame = requestAnimationFrame(fit); };
+  const resize = new ResizeObserver(schedule);
+  resize.observe(screen);
+  resize.observe(document.documentElement);
+  // A refine redraw rebuilds the podium inside the same screen.
+  const redraws = new MutationObserver(schedule);
+  redraws.observe(screen, { childList: true, subtree: true });
+  window.addEventListener('resize', schedule, { passive: true });
+  // vm-in slides the screen up 8px as it enters; measure again once it has settled.
+  screen.addEventListener('animationend', schedule);
+  schedule();
+}
+
 /** Full-screen status message (loading / error), optionally with a retry button. */
 function renderStatus(root, { kicker, title, message, retryLabel, onRetry }) {
   root.replaceChildren();
@@ -2137,6 +2196,7 @@ async function renderResults(root, ctx, answers) {
   if (disclaimer) screen.append(el('p', 'vm-disclaimer', disclaimer));
 
   root.append(screen);
+  if (rrmc) placeRrmcGold(root, screen);
 
   /*
    * What to do with the national search, whenever it lands.

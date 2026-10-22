@@ -783,6 +783,8 @@
 @media (min-width: 900px) {
   .vm.vm-rrmc:has(> .vm-stage:is(:not([data-mode="podium"]), [data-intro])) { padding-right: var(--vm-space-12); }
 }
+/* The questionnaire's results run the block's full width: no side gutters either way. */
+.vm.vm-rrmc:has(> .vm-stage[data-mode="questionnaire"] > .vm-results) { padding-inline: 0; }
 .vm.vm-rrmc .vm-btn { font-weight: 300; }
 .vm.vm-rrmc .vm-question { font-size: 32px; }
 .vm.vm-rrmc .vm-card-line { display: none; }
@@ -4538,12 +4540,12 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-tail-grid .vm-rrmc-presented-location {
   text-decoration: underline !important;
 }
-/* Lone lead: the podium's fixed 700x360 horizontal gold, copy inset 40px. */
+/* Lone lead: the questionnaire's fixed 868x602 horizontal gold, copy inset 40px. */
 .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid:not(.vm-grid-tied) > .vm-card {
   flex-direction: row;
   width: 100%;
-  max-width: 700px;
-  height: 360px;
+  max-width: 868px;
+  height: 602px;
   overflow: visible;
 }
 .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid:not(.vm-grid-tied) > .vm-card > .vm-card-media {
@@ -4621,7 +4623,7 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid.vm-rrmc-podium {
   /* Podium's gap from the silver/bronze tiles down to the tiles that follow. */
   margin-bottom: var(--vm-space-8);
-  grid-template-columns: minmax(0, 700px) 300px;
+  grid-template-columns: minmax(0, 868px) 300px;
   /* Equal space from the outside edge to gold, gold to silver, and silver to the far edge. */
   column-gap: 0;
   row-gap: 60px;
@@ -4681,14 +4683,14 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium-slot > .vm-card { width: 100%; }
 /* Compact cards, as podium's silver/bronze; drop the carousel's flex basis, which would set height here. */
 .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium-side > .vm-rrmc-podium-slot { flex: none; width: 100%; }
-/* Under 1120px (700 gold + 300 side + three 40px spaces) there is no room for a side column:
+/* Under 1288px (868 gold + 300 side + three 40px spaces) there is no room for a side column:
    gold spans the top, silver and bronze sit side by side beneath, then the next best. */
-@container (max-width: 1119px) {
+@container (max-width: 1287px) {
   .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium > .vm-rrmc-podium-more {
     grid-row: 3;
     margin: 60px 0 0;
   }
-  .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid.vm-rrmc-podium { grid-template-columns: minmax(0, 700px); }
+  .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid.vm-rrmc-podium { grid-template-columns: minmax(0, 868px); }
   .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-rrmc-podium > .vm-rrmc-podium-side {
     grid-column: 1;
     grid-row: 2;
@@ -4732,7 +4734,7 @@ a.vm-ptile:focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 
 }
 /* Wide gold grows down for a name past two lines, as the podium's (same in-flow stand-in). */
 @container (min-width: 660px) {
-  .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid:not(.vm-grid-tied) > .vm-card { height: auto; min-height: 360px; }
+  .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid:not(.vm-grid-tied) > .vm-card { height: auto; min-height: 602px; }
   .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid:not(.vm-grid-tied) > .vm-card > .vm-card-body { overflow-y: visible; padding-bottom: 86px; }
   .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid:not(.vm-grid-tied) > .vm-card .vm-rrmc-view-options { margin-bottom: 12px; }
   .vm.vm-rrmc .vm-results:not(.vm-results-skeleton) .vm-grid:not(.vm-grid-tied) > .vm-card :is(.vm-rrmc-why, .vm-rrmc-presented) { position: static; order: 1; }
