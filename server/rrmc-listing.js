@@ -147,9 +147,10 @@ export function projectRRMCListing(v, rates = null) {
   const name = model?.name || model?.groupName || '';
   const fuelType = (v?.vehicle?.engine?.fuelType || '').toLowerCase();
   const fuel = (fuelType === 'electric' || fuelType === 'ev') ? 'ev' : undefined;
-  const cover = (v?.vehicleMedia || [])
-    .filter((m) => m.scope === 'vehicle-listing' && m.mediaType === 'IMAGE')
-    .sort((a, b) => (a.position ?? 99) - (b.position ?? 99))[0];
+  const shots = (v?.vehicleMedia || [])
+    .filter((m) => m.scope === 'vehicle-listing' && m.mediaType === 'IMAGE' && m.url)
+    .sort((a, b) => (a.position ?? 99) - (b.position ?? 99));
+  const cover = shots[0];
 
   return {
     id: String(v.id || ''),
@@ -161,6 +162,8 @@ export function projectRRMCListing(v, rates = null) {
     moa: Boolean(v?.odometer?.odometerOnApplication),
     year: v?.vehicle?.registrationYear || v?.vehicle?.modelYear || 0,
     photo: cover?.url || undefined,
+    // The first few frames, for the results tiles' photo galleries (cover first).
+    photos: shots.length > 1 ? shots.slice(0, 3).map((m) => m.url) : undefined,
     cc: v?.vehicle?.engine?.capacity || 0,
     fuel,
     colour: v?.vehicle?.appearanceOptions?.exteriorColour || '',

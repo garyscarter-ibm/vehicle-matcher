@@ -205,6 +205,8 @@ function publicCar(car) {
     handDrive: car.handDrive,
     region: car.region,
     photo: car.photo,
+    // RRMC's extra frames (cover first), for the results tiles' galleries.
+    photos: car.photos,
     // Granular facts the life-fit questions never ask about, for the
     // refinement step: equipment concepts (mapping.js FEATURE_CONCEPTS),
     // gearbox, and paint — the last fetched per shown car from the PDP, so
@@ -458,6 +460,7 @@ function publicMatch({
       // Colour is the reason this choice exists; a picture of a different
       // colour undoes it.
       photo: c.photo,
+      photos: c.photos,
       colour: c.colour?.manufacturerColour || c.colour?.colour,
       shade: c.colour?.colour,
       priceMin: c.priceMin,

@@ -42,7 +42,7 @@ const RRMC_COPY = {
   previewRegion: ({ retailer }) => `Your shortlist so far, from ${retailer}`,
   tailHeading: 'Explore the full range of Rolls-Royce provenance',
   refineLabel: ({ count }) => `Refine ${count > 1 ? 'these' : 'this one'} by the detail that matters to you`,
-  share: 'Copy a link to share',
+  share: 'Copy sharing link',
   shared: 'Link copied',
   tweak: 'Revisit my answers',
   retake: 'Begin again',
@@ -53,10 +53,11 @@ const RRMC_COPY = {
   disclaimer: 'An unofficial tool, not affiliated with or endorsed by Rolls-Royce Motor Cars. '
     + 'Prices and specifications are indicative, and the retailer will confirm every detail.',
   // No scores or points: RRMC never shows a match score, so the working can't quote one.
-  working: ({ total, eligible }, budgeted) => `We considered all ${total} options in the Provenance collection. `
+  working: ({ total, eligible }, budgeted) => `We've considered all ${total} options in the Provenance collection. `
     + `${eligible === 1 ? 'One was' : `${eligible} were`} ${budgeted ? 'within your price range and ' : ''}suited to your needs.`,
   workingClear: ' Nothing else in the collection came close.',
-  workingWeak: ' None of them are quite what you described.',
+  // Starts on a new line (the note sets white-space: pre-line).
+  workingWeak: '\nNone of them are exactly as you described, but displayed above are your closest matches.',
   searchedWider: ({ model, miles, where }) => 'We looked further afield. '
     + `The ${model} at ${where} suits you more closely, and it is ${miles}.`,
 };
@@ -144,11 +145,12 @@ const CLUSTER_PTS = 3;
 /** Cars beyond a group's lead, shown as compact tiles under the same heading.
  *  A backstop, not the main control: RELEVANT_PTS below usually cuts first. */
 const TAIL_SHOWN = 6;
-// RRMC results: gold sits this far from the window's left edge and under the progress bar.
+// RRMC results (Figma "Desktop"): gold sits 64px from the window's left edge, 110px under the bar.
 const GOLD_LEFT_PX = 64;
 const GOLD_DROP_PX = 110;
-// Least gap kept between gold and the silver/bronze column in a narrow window.
-const GOLD_GAP_MIN_PX = 40;
+// Gold to the silver/bronze column, and the least that gap may shrink to in a narrower window.
+const GOLD_GAP_PX = 60;
+const GOLD_GAP_MIN_PX = 32;
 
 /*
  * How far behind the best car on the page a car may be and still be worth
@@ -412,6 +414,8 @@ function renderRefine(
   // RRMC heads the tiles under its podium as the podium mode heads its tail.
   const tailHead = ctx.brand === 'rrmc' ? el('h3', 'vm-subhead vm-rrmc-q-tail-head', RRMC_COPY.tailHeading) : null;
   if (tailHead) tailHead.hidden = true;
+  // RRMC's tiles sit in a full-width band under the podium, outside the grid so redraws keep it.
+  const hereMore = ctx.brand === 'rrmc' ? el('div', 'vm-rrmc-podium-more') : null;
   hereGroup.append(hereLabel, grid, ...(tailHead ? [tailHead] : []), hereRestGrid);
   awayGroup.append(awayLabel, awayPending, awayGrid, awayRestGrid);
   /*
@@ -915,7 +919,8 @@ function renderRefine(
     const single = shown.length === 1;
     // `fit` is matchCard's fitName: the podium below fits gold's "Extended", silver/bronze's every name.
     // `compact` builds silver/bronze from the same compact card the podium mode uses for them.
-    const full = (m, big = false, fit = false, compact = false) => {
+    // `frames` is how many extra photos RRMC's tile shows beside the cover (gold two, silver/bronze one).
+    const full = (m, big = false, fit = false, compact = false, frames = 0) => {
       const card = matchCard(m, {
         big,
         compact,
@@ -936,6 +941,21 @@ function renderRefine(
         );
         card.append(reject);
       }
+      // A car with fewer frames than the tile has slots repeats its cover, so the tile keeps its layout.
+      const extras = (m.car.photos || []).slice(1, 1 + frames);
+      const shots = ctx.brand === 'rrmc' && m.car.photo
+        ? Array.from({ length: frames }, (_, i) => extras[i] || m.car.photo) : [];
+      if (ctx.brand === 'rrmc') card.classList.add(`vm-rrmc-frames-${shots.length}`);
+      if (shots.length) {
+        card.querySelector(':scope > .vm-card-media').after(...shots.map((src, i) => {
+          const frame = el('div', `vm-rrmc-extra is-${i ? 'b' : 'a'}`);
+          const img = el('img', 'vm-card-photo');
+          Object.assign(img, { src, alt: m.car.name, loading: 'lazy' });
+          img.addEventListener('error', () => frame.remove());
+          frame.append(img);
+          return frame;
+        }));
+      }
       return card;
     };
     // RRMC lays the leading group out as a podium: gold on the left, silver and bronze down the
@@ -946,24 +966,23 @@ function renderRefine(
       into.classList.remove('vm-grid-tied');
       into.classList.add('vm-rrmc-podium');
       // Gold's eyebrow sits inside its tile, above the photo (CSS places it); silver/bronze's sit above theirs.
-      const gold = full(top[0], true, true);
+      const gold = full(top[0], true, true, false, 2);
       gold.append(rank('Your Top Pick', 'gold'));
       into.append(gold);
       if (top.length > 1) {
         const side = el('div', 'vm-rrmc-podium-side');
         top.slice(1).forEach((m, i) => {
           const slot = el('div', 'vm-rrmc-podium-slot');
-          slot.append(rank('Another Option', i === 0 ? 'silver' : 'bronze'), full(m, false, 'line', true));
+          slot.append(rank('Another Option', i === 0 ? 'silver' : 'bronze'), full(m, false, 'line', true, 1));
           side.append(slot);
         });
         into.append(side);
       }
-      // The next best after bronze, as podium's explore row shows them: no relevance cut, which
-      // RRMC's narrow answers often leave empty. They sit beneath gold (CSS places them).
+      // The next best after bronze: no relevance cut, which RRMC's narrow answers often leave empty.
       list.slice(top.length, top.length + TAIL_SHOWN).forEach((m) => rest.append(tile(m)));
-      const more = el('div', 'vm-rrmc-podium-more');
-      more.append(...(tailHead ? [tailHead] : []), rest);
-      into.append(more);
+      hereMore.append(...(tailHead ? [tailHead] : []), rest);
+      hereMore.hidden = !rest.children.length;
+      into.after(hereMore);
     };
     const tile = (m) => matchCard(m, { compact: true, brand: ctx.brand });
     // The grid holding the LEAD goes full width for a single car; the other
@@ -975,8 +994,9 @@ function renderRefine(
     if (ctx.brand === 'rrmc' && leadIsHere) {
       podium(grid, hereRestGrid, here);
     } else {
-      // Back below the grid if a podium redraw had moved them up beside it.
+      // Back below the grid if a podium redraw had moved them into the band.
       if (hereRestGrid.parentNode !== hereGroup) hereGroup.append(...(tailHead ? [tailHead] : []), hereRestGrid);
+      hereMore?.remove();
       hereLead.forEach((m) => grid.append(full(m, single)));
       drop(here, hereLead).forEach((m) => hereRestGrid.append(tile(m)));
     }
@@ -1219,6 +1239,7 @@ function regroup(car, kept) {
   return {
     ...car,
     photo: head.photo || car.photo,
+    photos: head.photos || car.photos,
     colour: head.colour ? { manufacturerColour: head.colour, colour: head.shade } : car.colour,
     priceMin: head.priceMin ?? car.priceMin,
     mileage: head.mileage ?? car.mileage,
@@ -1727,8 +1748,8 @@ function renderQuestion(root, ctx, index) {
   schedulePreviewRefresh(ctx);
 }
 
-/** RRMC results: place gold GOLD_DROP_PX under the progress bar and GOLD_LEFT_PX from the left edge.
- *  Re-measured on resize, redraws and the entrance animation. */
+/** RRMC results: place gold GOLD_DROP_PX under the progress bar and GOLD_LEFT_PX from the left edge,
+ *  and run the tile band edge to edge. Re-measured on resize, redraws and the entrance animation. */
 function placeRrmcGold(root, screen) {
   if (typeof ResizeObserver === 'undefined') return;
   let frame = 0;
@@ -1752,20 +1773,28 @@ function placeRrmcGold(root, screen) {
         screen.style.marginTop = `${Math.max(0, Math.round(drop))}px`;
       }
     }
+    const page = document.documentElement.clientWidth;
+    const more = screen.querySelector('.vm-rrmc-podium-more');
+    if (more) {
+      Object.assign(more.style, { marginLeft: '', width: '' });
+      if (getComputedStyle(more).display !== 'none') {
+        Object.assign(more.style, { marginLeft: `${-Math.round(more.getBoundingClientRect().left)}px`, width: `${page}px` });
+      }
+    }
     const grid = screen.querySelector('.vm-grid.vm-rrmc-podium');
     if (!grid) return;
-    Object.assign(grid.style, { marginLeft: '', columnGap: '', justifyContent: '' });
+    Object.assign(grid.style, { marginLeft: '', columnGap: '' });
     const gold = grid.querySelector(':scope > .vm-card');
     const side = grid.querySelector(':scope > .vm-rrmc-podium-side');
     // Only the side-by-side podium: stacked (narrow) layouts keep their own centring.
     if (!gold || !side || getComputedStyle(grid).gridTemplateColumns.split(' ').length !== 2) return;
-    const box = grid.getBoundingClientRect();
-    const room = box.right - GOLD_LEFT_PX - gold.offsetWidth - side.offsetWidth;
-    if (room < GOLD_GAP_MIN_PX) return;
+    // Left margin and gap shrink together when the window is under the design's 1512px.
+    const k = Math.min(1, (page - gold.offsetWidth - side.offsetWidth) / (2 * GOLD_LEFT_PX + GOLD_GAP_PX));
+    const gap = Math.round(GOLD_GAP_PX * k);
+    if (gap < GOLD_GAP_MIN_PX) return;
     Object.assign(grid.style, {
-      justifyContent: 'start',
-      marginLeft: `${Math.round(GOLD_LEFT_PX - box.left)}px`,
-      columnGap: `${Math.min(GOLD_LEFT_PX, room)}px`,
+      marginLeft: `${Math.round(GOLD_LEFT_PX * k - grid.getBoundingClientRect().left)}px`,
+      columnGap: `${gap}px`,
     });
   };
   const schedule = () => { if (!frame) frame = requestAnimationFrame(fit); };
@@ -2155,7 +2184,8 @@ async function renderResults(root, ctx, answers) {
 
   const actions = el('div', 'vm-actions');
   const shareLabel = rrmc ? RRMC_COPY.share : 'Copy share link';
-  const share = el('button', 'vm-btn vm-btn-primary', shareLabel);
+  // RRMC fills "Revisit my answers" and outlines the other two, as the Figma desktop frame does.
+  const share = el('button', `vm-btn ${rrmc ? 'vm-btn-ghost' : 'vm-btn-primary'}`, shareLabel);
   share.type = 'button';
   share.addEventListener('click', async () => {
     const url = `${window.location.origin}${window.location.pathname}#${HASH_KEY}=${encodeAnswers(answers)}`;
@@ -2167,7 +2197,7 @@ async function renderResults(root, ctx, answers) {
     }
     setTimeout(() => { share.textContent = shareLabel; }, 2000);
   });
-  const tweak = el('button', 'vm-btn vm-btn-ghost', rrmc ? RRMC_COPY.tweak : 'Tweak my answers');
+  const tweak = el('button', `vm-btn ${rrmc ? 'vm-btn-primary' : 'vm-btn-ghost'}`, rrmc ? RRMC_COPY.tweak : 'Tweak my answers');
   tweak.type = 'button';
   tweak.addEventListener('click', () => ctx.showQuestion(visibleQuestions(flowQuestions(ctx), ctx.answers).length - 1));
   const retake = el('button', 'vm-btn vm-btn-ghost', rrmc ? RRMC_COPY.retake : 'Start over');

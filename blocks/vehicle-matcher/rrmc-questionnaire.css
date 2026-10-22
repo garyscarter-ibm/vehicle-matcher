@@ -175,29 +175,42 @@
   color: var(--vm-accent-ink);
 }
 
-/* ---- how we found this: no rule, tail-heading label, the tagline sub's 16px line ---- */
+/* ---- the closing note and the three pills, as the Figma desktop frame: centred 20px note, 260 x 40 pills ---- */
 .vm.vm-rrmc .vm-results .vm-working {
-  margin-top: var(--vm-space-8);
-  padding-top: 0;
+  margin: 0;
+  padding: 89px var(--vm-space-6) 0;
   border-top: none;
+  text-align: center;
 }
-.vm.vm-rrmc .vm-results .vm-working-label {
-  margin: 0 0 var(--vm-space-2);
-  font-size: 12px;
-  letter-spacing: 0.06em;
-  color: var(--vm-ink);
-}
+.vm.vm-rrmc .vm-results .vm-working-label { display: none; }
 .vm.vm-rrmc .vm-results .vm-working-text {
-  max-width: 612px;
-  font-size: 16px;
-  letter-spacing: 0.02em;
-  line-height: 1.5;
+  max-width: 929px;
+  margin: 0 auto;
+  font-size: 20px;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
   color: var(--vm-ink);
+  white-space: pre-line;
 }
-
-/* ---- share / revisit / begin again, and the disclaimer: centred under the centred podium ---- */
-.vm.vm-rrmc .vm-results .vm-actions { justify-content: center; }
+.vm.vm-rrmc .vm-results .vm-actions {
+  justify-content: center;
+  gap: 44px;
+  margin: 23px 0 0;
+}
+.vm.vm-rrmc .vm-results .vm-actions .vm-btn {
+  width: 260px;
+  height: 40px;
+  min-height: 0;
+  padding: 0;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+.vm.vm-rrmc .vm-results .vm-actions .vm-btn-ghost { border-color: #281432; background: transparent; color: #281432; }
+.vm.vm-rrmc .vm-results .vm-actions .vm-btn-ghost:hover { background: var(--vm-surface-alt); }
+.vm.vm-rrmc .vm-results .vm-actions .vm-btn-primary { background: #281432; border-color: #281432; color: #ffffff; }
 .vm.vm-rrmc .vm-results .vm-disclaimer {
+  margin: var(--vm-space-8) 0 0;
   font-size: 12px;
   letter-spacing: 0.02em;
   color: var(--vm-ink);

@@ -1844,6 +1844,7 @@ export function mapRRMCRaw(raw) {
     mileage: raw?.mileage || 0,
     year: raw?.year || 0,
     photo: raw?.photo || undefined,
+    ...(raw?.photos && { photos: raw.photos }),
     cc: raw?.cc || spec.cc || 0,
     power: raw?.power || 0,
     colour: raw?.colour || '',
