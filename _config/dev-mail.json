@@ -1,0 +1,12 @@
+{
+  "max_question_rounds_per_story": 2,
+  "max_counter_questions_per_question": 1,
+  "max_counter_question_chars": 400,
+  "max_body_chars": 4000,
+  "max_jobs_per_story": 2,
+  "max_chain_depth": 2,
+  "max_stories_spawned_per_thread": 3,
+  "max_open_threads": 10,
+  "max_posts_per_day": 100,
+  "stale_after_days": 3
+}
