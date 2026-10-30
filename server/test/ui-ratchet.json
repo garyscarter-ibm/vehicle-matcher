@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "roots": ["blocks/vehicle-matcher/"],
+  "exclude": ["blocks/vehicle-matcher/ui.js", "blocks/vehicle-matcher/modes/question-ui.js", "blocks/vehicle-matcher/modes/result-card.js", "blocks/vehicle-matcher/modes/match-signal.js", "blocks/vehicle-matcher/modes/preview-feed.js", "blocks/vehicle-matcher/modes/brand-copy.js", "blocks/vehicle-matcher/fonts/"],
+  "extensions": [".js", ".mjs"],
+  "patterns": {
+    "heading": {"re": "el\\('(p|h2)', 'vm-(kicker|title|lede)", "flags": "g", "use": "screenIntro({ kicker, title, lede }) (proposed, see COMPONENTS.md)"},
+    "button": {"re": "el\\('(a|button)', 'vm-btn vm-btn-(primary|ghost)", "flags": "g", "use": "button({ label, variant, onClick, href }) (proposed, see COMPONENTS.md)"},
+    "skeleton": {"re": "el\\('div', 'vm-skel[ ']", "flags": "g", "use": "skeleton(kind) / loadingScreen() (proposed, see COMPONENTS.md)"},
+    "status-screen": {"re": "el\\('div', 'vm-screen vm-status'", "flags": "g", "use": "statusScreen({ kicker, title, message, actions }) (proposed, see COMPONENTS.md)"},
+    "spec-pill": {"re": "el\\('span', 'vm-mingle-pill'", "flags": "g", "use": "specPills(car) (proposed, see COMPONENTS.md)"},
+    "mini-card": {"re": "el\\('div', 'vm-mingle-card-(media|body|colour)'", "flags": "g", "use": "miniCarCard(car) (proposed, see COMPONENTS.md)"},
+    "single-slider": {"re": "el\\('input', 'vm-slider-input'\\)", "flags": "g", "use": "a single option on renderRangeSlider (modes/question-ui.js)"}
+  },
+  "baseline": {
+    "blocks/vehicle-matcher/modes/guess-who.js": {"heading": 3, "button": 3, "skeleton": 1, "status-screen": 1},
+    "blocks/vehicle-matcher/modes/knockout.js": {"heading": 15, "button": 7, "skeleton": 9, "status-screen": 2, "spec-pill": 5, "mini-card": 6},
+    "blocks/vehicle-matcher/modes/mingle.js": {"heading": 11, "button": 6, "skeleton": 8, "status-screen": 2, "spec-pill": 5, "mini-card": 6},
+    "blocks/vehicle-matcher/modes/podium.js": {"heading": 3, "button": 3, "skeleton": 2, "status-screen": 1, "single-slider": 1},
+    "blocks/vehicle-matcher/modes/questionnaire.js": {"heading": 11, "button": 8, "skeleton": 8, "status-screen": 1, "single-slider": 1}
+  },
+  "stylesheet": {"path": "blocks/vehicle-matcher/vehicle-matcher.css", "max_lines": 4535}
+}
