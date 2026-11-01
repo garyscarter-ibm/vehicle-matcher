@@ -6,13 +6,15 @@ Three provisional personas were drafted on 31 October 2026 for review with Russe
 
 | Persona | Main outcome | Central tension |
 |---|---|---|
-| [P01: Employee car chooser](employee-car-chooser.md) | Get a suitable, affordable scheme car in time for renewal. | What I want versus what I can actually obtain. |
+| [P01: Paula, employee car chooser](employee-car-chooser.md) | Keep the comfort and carrying space she values, with a suitable, affordable next car in time for renewal. | A car that fits her life versus the effort and uncertainty of obtaining it. |
 | [P02: Scheme ordering lead](scheme-ordering-lead.md) | Order a vehicle mix that serves employees and the business with manageable administration. | Employee demand versus production, residual value and stock constraints. |
 | [P03: Platform IT director](platform-it-director.md) | Improve the service while keeping the platform dependable, maintainable and affordable. | Visible progress versus delivery risk and ongoing cost. |
 
 ## How to read these drafts
 
-These are name-agnostic role personas grounded in the scheme research and selected account-corpus records. Real contacts are identified only in the [source register](sources.md), so the persona narratives can be reused without presenting them as profiles of particular people. No ages, household details, grades, allowances, car preferences or personal quotes have been invented.
+P01 was revised on 1 November 2026 at Russell's request into a **Paula** scenario for the [live service blueprint](../service-blueprint.html). Her name, employer and Winchcombe locality come from the supplied account screen. The replacement-vehicle screen identifies her car as a **BMW 320i M Sport Touring (G21 LCI2), B48 2.0-litre petrol, automatic, Portimao Blue Metallic**; Russell's correction supersedes the initial 5 Series description. Personality, routines, charging circumstances and empathy-map quotations are creative scenario details, labelled in the persona. They are not interview findings or a profile of a real person.
+
+P02 and P03 remain name-agnostic role personas grounded in scheme research and selected account-corpus records. Real source contacts are identified only in the [source register](sources.md). No personal biography has been invented for those role personas.
 
 Each persona separates:
 
@@ -22,7 +24,7 @@ Each persona separates:
 
 The short job statements are authored summaries, not interview quotations. A historical proposal establishes an idea that was discussed; it does not prove a current workflow, employee preference or agreed feature.
 
-P01 uses a BMW Financial Services professional as its work-context anchor. Their actual participation in the scheme is unknown. This first employee persona does not establish the needs of production staff, shift workers or all employee populations. Those differences are validation questions, not additional personas agreed for this task.
+P01 now uses the Paula scenario rather than the earlier source-contact's development/product-owner role. Her assumed office pattern is informed by published Farnborough hybrid-work offerings, without claiming an FS-wide attendance rule. It does not establish the needs of production staff, shift workers or all employee populations. Those differences remain validation questions.
 
 The October 2024 eligibility matrices remain the agreed POC baseline. Individual grades and points amounts are unspecified. The source material does not establish current contract durations, release times, a live API contract or numerical KPI targets.
 

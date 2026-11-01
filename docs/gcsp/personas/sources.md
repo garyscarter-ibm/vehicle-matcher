@@ -1,6 +1,6 @@
 # Persona source register
 
-Reviewed 31 October 2026. Supports the three provisional, name-agnostic personas in [README.md](README.md). This is provenance for role-level statements, not a record of persona interviews.
+Reviewed 31 October 2026; Paula scenario added 1 November. Supports the provisional personas in [README.md](README.md). This is provenance for role-level statements and scenario anchors, not a record of persona interviews.
 
 Real contacts appear here only to make the source selection traceable. Their names, contact details, supplier relationship ratings and unrelated commercial information are not persona attributes.
 
@@ -14,7 +14,7 @@ Account Corpus references:
 - `role:bmwfs-devops-client-product-owner` — `model/role/bmwfs-devops-client-product-owner.json`.
 - Person history traces identity to signed agreement source `d-0cb032561cf7` and the current job title to ISC source `d-cac3b10570de`, effective 26 October 2026.
 
-**Limit:** This establishes work context only. It supplies no actual scheme participation, personal grade, allowance, household, age, travel needs, satisfaction or vehicle preference. P01 combines that limited context with scheme-level research; it is not a factual profile of Gillian as a car chooser.
+**Limit:** This establishes work context only. It supplies no actual scheme participation, personal grade, allowance, household, age, travel needs, satisfaction or vehicle preference. This was P01's original work-context anchor; the revised Paula scenario does not transfer Gillian's role or biography to Paula.
 
 ## E2: IT leadership role
 
@@ -104,6 +104,25 @@ Russell's instructions on 31 October 2026:
 - Sandeep is working on the backend and supplied the screenshots. Maintain questions for Russell to ask him, starting with points prices and allowances.
 
 **Limit:** This establishes the task and role selection; it does not validate every proposed motivation or measure.
+
+## E11: Paula scenario
+
+The [INT employee-account screen](../screens/00-employee-account.webp) displays Paula Robinson, BMW Financial Services (GB) Ltd and a Winchcombe address. Only the locality is retained in the persona. On 1 November 2026 Russell corrected the initial 5 Series description by pointing to the [replacement-vehicle screen](../screens/01-replace-vehicle.webp).
+
+That screen identifies **G21 320i M Sport Touring LCI2 B48 2.0i**, transmission **AUT**, **Portimao Blue Metallic**, and a black interior with grey contrast stitching. The interior name is truncated after “Verna”, so it is not silently expanded. Listed equipment includes heated steering wheel, panoramic glass sunroof, electric memory seats, adaptive LED headlights, Harman/Kardon audio, Technology Pack, Comfort Pack and M Sport package Pro. Use **BMW 320i M Sport Touring (G21 LCI2), B48 2.0-litre petrol, automatic** as Paula’s current-car anchor in this story.
+
+The [research record](../service-blueprint-research.md) transcribes the vehicle facts and separates them from optional connected-use data, contribution policy and minimum-input design. The earlier generic 5 Series assumption is superseded.
+
+**Limit:** These are test-screen anchors, not verified real-world personal details. The displayed vehicle is awaiting an appointment with no actual collection recorded; Russell’s narrative uses it as Paula’s current car. Screen consumption values are not observed MPG. Personality, weekend activities, working pattern, driveway without a chargepoint and empathy-map quotations are authored. No personal interviews were conducted. Grade, allowance, dates and other-driver records do not establish current operating rules. E1’s source-contact job is not Paula’s job.
+
+## E12: Farnborough and flexible working
+
+Official BMW careers sources, read 1 November 2026:
+
+- [Farnborough location](https://www.bmwgroup.jobs/gb/en/location/location-farnborough.html): Summit ONE houses BMW UK, BMW Financial Services and Alphabet.
+- [Data & Analytics Manager vacancy](https://www.bmwgroup.jobs/gb/en/jobfinder/job-description-copy.196327.html), dated 11 September 2026: advertises hybrid remote/office working and individually agreed flexible hours for a BMW UK role at Farnborough.
+
+**Limit:** The vacancy's legal entity is BMW UK, not BMW Financial Services. It demonstrates a published local hybrid offering, not an FS-wide attendance rule or Paula's arrangement. Two planned office days plus occasional workshops are representative scenario assumptions. No exact commute time, universal attendance requirement or home-charging provision is claimed.
 
 ## Reproducing the corpus checks
 

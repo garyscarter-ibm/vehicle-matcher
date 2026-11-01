@@ -16,7 +16,7 @@ Use Jira keys when opening a session; their numbers differ from the original num
 
 | Key | Intended outcome |
 |---|---|
-| [FUCQ-3](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-3) | Reviewable visual HTML process flow, including unresolved-renewal handling. |
+| [FUCQ-3](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-3) | [Paula's live service blueprint](service-blueprint.html): fifteen scrollable columns, 01–13 plus 01a / 04a, from her screen-identified 320i M Sport Touring and usage profile through a short brief, delegated search, rejection / revised offer and handover plan. Plain-language responsibilities connect to input data and proposed adapters / flows. Includes a [persona and empathy map](personas/employee-car-chooser.md), [UX / scheme research](service-blueprint-research.md) and [verification record](service-blueprint-review.md). |
 | [FUCQ-4](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-4) | Accepted research: proven BMW UK website/configurator interfaces and their limits; implementation tracked separately. |
 | [FUCQ-5](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-5) | Agreed HLD, including technical deployment and later BMW integration conditions. |
 | [FUCQ-6](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-6) | Current GCSP selection journey using shared components. |
