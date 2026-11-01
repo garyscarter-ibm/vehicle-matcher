@@ -1,0 +1,1693 @@
+{
+  "researchDate": "2026-11-01",
+  "status": "research evidence; not executable generator configuration",
+  "filingDiscoveryApi": "https://vpic.nhtsa.dot.gov/api/vehicles/GetParts?type=565&fromDate=1%2F1%2F2025&toDate=11%2F1%2F2026&format=json&manufacturer=bmw",
+  "filings": [
+    {
+      "id": "BMW-565-MY2026",
+      "modelYear": 2026,
+      "submissionDate": "2025-06-13",
+      "url": "https://vpic.nhtsa.dot.gov/mid/home/displayfile/01012fef-2728-447d-a23b-0448772ad75c",
+      "sha256": "3439af9d97286d60db34d56f655d3519a26cfa4c7655da228b5781cb121c3e67",
+      "bytes": 253143,
+      "pageCount": 1,
+      "extractedRowCount": 82,
+      "scope": "BMW manufacturer Part 565 filing; North American-market reference; not an approved UK/RHD generator profile"
+    },
+    {
+      "id": "BMW-565-MY2027",
+      "modelYear": 2027,
+      "submissionDate": "2026-10-09",
+      "url": "https://vpic.nhtsa.dot.gov/mid/home/displayfile/3c74b2f2-3650-480c-9466-ebff3cf81dbd",
+      "sha256": "376d6a69b837b2f049c6ebe191da258ba195efa0f028d9b71103eb1a0324dc96",
+      "bytes": 188820,
+      "pageCount": 1,
+      "extractedRowCount": 63,
+      "scope": "BMW manufacturer Part 565 filing; North American-market reference; not an approved UK/RHD generator profile"
+    }
+  ],
+  "wmiRegistryApi": "https://vpic.nhtsa.dot.gov/api/vehicles/GetWMIsForManufacturer/bmw?format=json",
+  "requiredWmis": [
+    "WBA",
+    "WBS",
+    "WBY",
+    "5UX",
+    "5YM"
+  ],
+  "otherBmwWmisInFilings": [
+    "3MF",
+    "3MW",
+    "WBX",
+    "WB5"
+  ],
+  "plantCodeDictionary": {
+    "C": "Dingolfing, Germany",
+    "F": "Munich, Germany",
+    "W": "Graz, Austria",
+    "3": "Born, Netherlands",
+    "5": "Regensburg, Germany",
+    "7": "Leipzig, Germany",
+    "8": "San Luis Potosi, Mexico",
+    "9": "Greer, South Carolina, USA"
+  },
+  "plantDictionaryWarning": "Independent dictionary, not a per-model assignment table. Row position 11 is a placeholder. Verify model/era production allocation before activation.",
+  "checksumSource": "https://www.ecfr.gov/current/title-49/subtitle-B/chapter-V/part-565/section-565.15",
+  "checksumResearchValidation": {
+    "testVector": "Public regulation Table VI; full VIN not retained",
+    "weightedSum": 411,
+    "remainder": 4,
+    "expectedCheckCharacter": "4",
+    "calculatedCheckCharacter": "4",
+    "result": "pass",
+    "scope": "throwaway independent arithmetic check only; no implementation tests or generator built"
+  },
+  "descriptors": [
+    {
+      "model": "228 Gran Coupe",
+      "wmi": "WBA",
+      "vds": "83GG0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "228 xDrive Gran Coupe",
+      "wmi": "WBA",
+      "vds": "23GG0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M235 xDrive Gran Coupe",
+      "wmi": "WBA",
+      "vds": "33GG0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "230i Coupe",
+      "wmi": "3MW",
+      "vds": "23CM0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "230i xDrive Coupe",
+      "wmi": "3MW",
+      "vds": "33CM0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M240i Coupe",
+      "wmi": "3MW",
+      "vds": "43CM0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M240i xDrive Coupe",
+      "wmi": "3MW",
+      "vds": "53CM0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M2 Coupe",
+      "wmi": "3MF",
+      "vds": "23DM0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M2 CS",
+      "wmi": "3MF",
+      "vds": "33DM0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "330i Sedan",
+      "wmi": "WBA",
+      "vds": "13LA0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "330i xDrive Sedan",
+      "wmi": "WBA",
+      "vds": "23LA0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "330i Sedan",
+      "wmi": "3MW",
+      "vds": "69CW0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "330i xDrive Sedan",
+      "wmi": "3MW",
+      "vds": "89CW0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M340i Sedan",
+      "wmi": "WBA",
+      "vds": "53FT0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M340i xDrive Sedan",
+      "wmi": "WBA",
+      "vds": "63FT0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M340i Sedan",
+      "wmi": "3MW",
+      "vds": "59FT0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M340i xDrive Sedan",
+      "wmi": "3MW",
+      "vds": "69FT0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M3",
+      "wmi": "WBS",
+      "vds": "13HJ0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M3 Competition",
+      "wmi": "WBS",
+      "vds": "23HJ0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M3 Competition xDrive",
+      "wmi": "WBS",
+      "vds": "33HJ0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "430i Coupe",
+      "wmi": "WBA",
+      "vds": "43DA0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "430i xDrive Coupe",
+      "wmi": "WBA",
+      "vds": "63DA0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "430i Convertible",
+      "wmi": "WBA",
+      "vds": "33DB0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "430i xDrive Convertible",
+      "wmi": "WBA",
+      "vds": "53DB0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "430i Gran Coupe",
+      "wmi": "WBA",
+      "vds": "23FB0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "430i xDrive Gran Coupe",
+      "wmi": "WBA",
+      "vds": "33FB0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M440i Coupe",
+      "wmi": "WBA",
+      "vds": "73DA0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M440i xDrive Coupe",
+      "wmi": "WBA",
+      "vds": "83DA0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M440i Convertible",
+      "wmi": "WBA",
+      "vds": "63DB0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M440i xDrive Convertible",
+      "wmi": "WBA",
+      "vds": "73DB0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M440i Gran Coupe",
+      "wmi": "WBA",
+      "vds": "53FB0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M440i xDrive Gran Coupe",
+      "wmi": "WBA",
+      "vds": "63FB0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M4 Coupe",
+      "wmi": "WBS",
+      "vds": "13HK0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M4 Competition Coupe",
+      "wmi": "WBS",
+      "vds": "23HK0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M4 Competition xDrive Coupe",
+      "wmi": "WBS",
+      "vds": "33HK0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M4 Competition xDrive Convertible",
+      "wmi": "WBS",
+      "vds": "43BA0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "530i",
+      "wmi": "WBA",
+      "vds": "43FJ0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "530i xDrive",
+      "wmi": "WBA",
+      "vds": "53FJ0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "i5 eDrive40",
+      "wmi": "WBY",
+      "vds": "63HG0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "540i xDrive",
+      "wmi": "WBA",
+      "vds": "63FJ0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "i5 xDrive40",
+      "wmi": "WBY",
+      "vds": "33HG0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "550e xDrive",
+      "wmi": "WBA",
+      "vds": "13FK0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M5",
+      "wmi": "WBS",
+      "vds": "83FK0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M5 Touring",
+      "wmi": "WBS",
+      "vds": "83GV0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "740i",
+      "wmi": "WBA",
+      "vds": "23EH0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "740i xDrive",
+      "wmi": "WBA",
+      "vds": "33EH0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "i7 eDrive50",
+      "wmi": "WBY",
+      "vds": "43EJ0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "750e xDrive",
+      "wmi": "WBA",
+      "vds": "43EH0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "760i xDrive",
+      "wmi": "WBA",
+      "vds": "33EJ0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "i7 xDrive60",
+      "wmi": "WBY",
+      "vds": "53EJ0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "i7 M70",
+      "wmi": "WBY",
+      "vds": "83EH0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "840i Convertible",
+      "wmi": "WBA",
+      "vds": "DZ2C0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "840i xDrive Convertible",
+      "wmi": "WBA",
+      "vds": "DZ4C0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "840i Coupe",
+      "wmi": "WBA",
+      "vds": "AE2C0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "840i xDrive Coupe",
+      "wmi": "WBA",
+      "vds": "AE4C0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "840i Gran Coupe",
+      "wmi": "WBA",
+      "vds": "GV2C0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "840i xDrive Gran Coupe",
+      "wmi": "WBA",
+      "vds": "GV4C0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M850i xDrive Convertible",
+      "wmi": "WBA",
+      "vds": "FY4C0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M850i xDrive Coupe",
+      "wmi": "WBA",
+      "vds": "BC4C0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M850i xDrive Gran Coupe",
+      "wmi": "WBA",
+      "vds": "GV8C0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "iX xDrive45",
+      "wmi": "WB5",
+      "vds": "43CF0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "iX xDrive60",
+      "wmi": "WB5",
+      "vds": "53CF0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "iX M70",
+      "wmi": "WB5",
+      "vds": "63CF0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "X1 xDrive28i",
+      "wmi": "WBX",
+      "vds": "73EF0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "X1 M35i",
+      "wmi": "WBX",
+      "vds": "13EF0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "X2 xDrive28i",
+      "wmi": "WBX",
+      "vds": "63GM0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "X2 M35i",
+      "wmi": "WBX",
+      "vds": "83GM0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "X3 30 xDrive",
+      "wmi": "5UX",
+      "vds": "53GP0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "X3 M50i",
+      "wmi": "5UX",
+      "vds": "73GP0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "X5 sDrive40i",
+      "wmi": "5UX",
+      "vds": "13EU0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "X5 xDrive40i",
+      "wmi": "5UX",
+      "vds": "23EU0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "X5 xDrive50e",
+      "wmi": "5UX",
+      "vds": "43EU0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "X5 M60i",
+      "wmi": "5UX",
+      "vds": "33EU0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "X5 M Competition",
+      "wmi": "5YM",
+      "vds": "13ET0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "X6 xDrive40i",
+      "wmi": "5UX",
+      "vds": "33EX0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "X6 M60i",
+      "wmi": "5UX",
+      "vds": "43EX0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "X6 M Competition",
+      "wmi": "5YM",
+      "vds": "23ET0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "X7 xDrive40i",
+      "wmi": "5UX",
+      "vds": "23EM0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "X7 M60i",
+      "wmi": "5UX",
+      "vds": "33EM0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "ALPINA XB7",
+      "wmi": "5UX",
+      "vds": "43EM0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "Z4 sDrive30i",
+      "wmi": "WBA",
+      "vds": "HF3C0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "Z4 M40i",
+      "wmi": "WBA",
+      "vds": "HF9C0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "228 Gran Coupe",
+      "wmi": "WBA",
+      "vds": "83GG0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "228 xDrive Gran Coupe",
+      "wmi": "WBA",
+      "vds": "23GG0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "330i Sedan",
+      "wmi": "WBA",
+      "vds": "13KB0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "330i xDrive Sedan",
+      "wmi": "WBA",
+      "vds": "23KB0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "430i Convertible",
+      "wmi": "WBA",
+      "vds": "33DB0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "430i Coupe",
+      "wmi": "WBA",
+      "vds": "43DA0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "430i Gran Coupe",
+      "wmi": "WBA",
+      "vds": "23FB0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "430i xDrive Convertible",
+      "wmi": "WBA",
+      "vds": "53DB0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "430i xDrive Coupe",
+      "wmi": "WBA",
+      "vds": "63DA0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "430i xDrive Gran Coupe",
+      "wmi": "WBA",
+      "vds": "33FB0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "530i Sedan",
+      "wmi": "WBA",
+      "vds": "43FJ0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "530i xDrive Sedan",
+      "wmi": "WBA",
+      "vds": "53FJ0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "540i xDrive Sedan",
+      "wmi": "WBA",
+      "vds": "63FJ0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "550e xDrive Sedan",
+      "wmi": "WBA",
+      "vds": "13FK0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "740 Sedan",
+      "wmi": "WBA",
+      "vds": "53HZ0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "740 xDrive Sedan",
+      "wmi": "WBA",
+      "vds": "63HZ0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "750e xDrive Sedan",
+      "wmi": "WBA",
+      "vds": "73HZ0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "i3 50 xDrive",
+      "wmi": "WBA",
+      "vds": "53JB0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "i5 eDrive40 Sedan",
+      "wmi": "WBY",
+      "vds": "63HG0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "i5 M60 xDrive Sedan",
+      "wmi": "WBY",
+      "vds": "43HG0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "i5 xDrive40 Sedan",
+      "wmi": "WBY",
+      "vds": "33HG0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "i7 50 xDrive Sedan",
+      "wmi": "WBY",
+      "vds": "63HY0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "i7 60 xDrive Sedan",
+      "wmi": "WBY",
+      "vds": "73HY0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "iX3 50 xDrive",
+      "wmi": "WBX",
+      "vds": "33HR0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "iX4 50 xDrive",
+      "wmi": "WBX",
+      "vds": "23HU0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "iX5 60",
+      "wmi": "5UX",
+      "vds": "63HV0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M2 Coupe",
+      "wmi": "3MF",
+      "vds": "23DM0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M2 M xDrive Coupe",
+      "wmi": "3MF",
+      "vds": "43DM0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M235 xDrive Gran Coupe",
+      "wmi": "WBA",
+      "vds": "33GG0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M240i Coupe",
+      "wmi": "3MW",
+      "vds": "43FA0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M240i xDrive Coupe",
+      "wmi": "3MW",
+      "vds": "53FA0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M3 Competition Sedan",
+      "wmi": "WBS",
+      "vds": "23HJ0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M3 Competition xDrive Sedan",
+      "wmi": "WBS",
+      "vds": "33HJ0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M3 CS Sedan",
+      "wmi": "WBS",
+      "vds": "13HJ0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only",
+      "note": "Source contains both M3 CS Sedan and M3 Sedan under this descriptor; do not infer a unique variant."
+    },
+    {
+      "model": "M3 Sedan",
+      "wmi": "WBS",
+      "vds": "13HJ0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only",
+      "note": "Source contains both M3 CS Sedan and M3 Sedan under this descriptor; do not infer a unique variant."
+    },
+    {
+      "model": "M350 xDrive Sedan",
+      "wmi": "WBA",
+      "vds": "43KB0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M4 Competition Coupe",
+      "wmi": "WBS",
+      "vds": "23HK0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M4 Competition xDrive Convertible",
+      "wmi": "WBS",
+      "vds": "43BA0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M4 Competition xDrive Coupe",
+      "wmi": "WBS",
+      "vds": "33HK0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M4 Coupe",
+      "wmi": "WBS",
+      "vds": "13HK0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M440i Convertible",
+      "wmi": "WBA",
+      "vds": "63DB0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M440i Coupe",
+      "wmi": "WBA",
+      "vds": "73DA0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M440i Gran Coupe",
+      "wmi": "WBA",
+      "vds": "53FB0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M440i xDrive Convertible",
+      "wmi": "WBA",
+      "vds": "73DB0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M440i xDrive Coupe",
+      "wmi": "WBA",
+      "vds": "83DA0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M440i xDrive Gran Coupe",
+      "wmi": "WBA",
+      "vds": "63FB0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M5 Sedan",
+      "wmi": "WBS",
+      "vds": "83FK0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M5 Touring",
+      "wmi": "WBS",
+      "vds": "83GV0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "X1 M35i",
+      "wmi": "WBX",
+      "vds": "13EF0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "X1 xDrive28i",
+      "wmi": "WBX",
+      "vds": "73EF0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "X2 M35i",
+      "wmi": "WBX",
+      "vds": "83GM0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "X2 xDrive28i",
+      "wmi": "WBX",
+      "vds": "63GM0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "X3 30 xDrive",
+      "wmi": "5UX",
+      "vds": "53KA0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "X3 M50 xDrive",
+      "wmi": "5UX",
+      "vds": "83GP0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "X5 40 sDrive",
+      "wmi": "5UX",
+      "vds": "53JF0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "X5 40 xDrive",
+      "wmi": "5UX",
+      "vds": "63JF0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "X5 50e",
+      "wmi": "5UX",
+      "vds": "73JF0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "X6 M Competition",
+      "wmi": "5YM",
+      "vds": "23ET0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "X6 M60i",
+      "wmi": "5UX",
+      "vds": "43EX0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "X6 xDrive40i",
+      "wmi": "5UX",
+      "vds": "33EX0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "X7 M60i",
+      "wmi": "5UX",
+      "vds": "33EM0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "X7 xDrive40i",
+      "wmi": "5UX",
+      "vds": "23EM0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "XM Label",
+      "wmi": "5YM",
+      "vds": "33CS0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    }
+  ],
+  "privacy": "No complete VINs, VRMs, individual serials, identifying VIN fragments, public website keys, trace identifiers or cookies retained. The authorised UK follow-up retains shared manufacturer/type codes and sanitised positional observations only.",
+  "partialPatternChecks": {
+    "inputKind": "Eleven-character manufacturer patterns with wildcard check position and omitted serial; no complete/generated VIN submitted",
+    "purpose": "Corroborate five North American MY2026 model/body/year/plant references, not a full-VIN/checksum validation",
+    "results": [
+      {
+        "partialPattern": "WBA33DB0*TC",
+        "httpStatus": 200,
+        "sourceUrl": "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/WBA33DB0%2ATC?format=json&modelyear=2026",
+        "Make": "BMW",
+        "Model": "430i",
+        "ModelYear": "2026",
+        "Series": "4-Series",
+        "BodyClass": "Convertible/Cabriolet",
+        "ElectrificationLevel": "",
+        "PlantCity": "DINGOLFING",
+        "PlantCountry": "GERMANY",
+        "PlantState": "",
+        "PlantCompanyName": "",
+        "ErrorCode": "6",
+        "ErrorText": "6 - Incomplete VIN"
+      },
+      {
+        "partialPattern": "WBS33HJ0*TF",
+        "httpStatus": 200,
+        "sourceUrl": "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/WBS33HJ0%2ATF?format=json&modelyear=2026",
+        "Make": "BMW",
+        "Model": "M3",
+        "ModelYear": "2026",
+        "Series": "3-Series",
+        "BodyClass": "Sedan/Saloon",
+        "ElectrificationLevel": "",
+        "PlantCity": "MUNICH",
+        "PlantCountry": "GERMANY",
+        "PlantState": "",
+        "PlantCompanyName": "",
+        "ErrorCode": "6",
+        "ErrorText": "6 - Incomplete VIN"
+      },
+      {
+        "partialPattern": "WBY63HG0*TC",
+        "httpStatus": 200,
+        "sourceUrl": "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/WBY63HG0%2ATC?format=json&modelyear=2026",
+        "Make": "BMW",
+        "Model": "i5",
+        "ModelYear": "2026",
+        "Series": "",
+        "BodyClass": "Sedan/Saloon",
+        "ElectrificationLevel": "BEV (Battery Electric Vehicle)",
+        "PlantCity": "DINGOLFING",
+        "PlantCountry": "GERMANY",
+        "PlantState": "",
+        "PlantCompanyName": "",
+        "ErrorCode": "6",
+        "ErrorText": "6 - Incomplete VIN"
+      },
+      {
+        "partialPattern": "5UX43EU0*T9",
+        "httpStatus": 200,
+        "sourceUrl": "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/5UX43EU0%2AT9?format=json&modelyear=2026",
+        "Make": "BMW",
+        "Model": "X5",
+        "ModelYear": "2026",
+        "Series": "",
+        "BodyClass": "Sport Utility Vehicle [SUV]/Multipurpose Vehicle [MPV]",
+        "ElectrificationLevel": "PHEV (Plug-in Hybrid Electric Vehicle)",
+        "PlantCity": "GREER",
+        "PlantCountry": "UNITED STATES (USA)",
+        "PlantState": "SOUTH CAROLINA",
+        "PlantCompanyName": "",
+        "ErrorCode": "6",
+        "ErrorText": "6 - Incomplete VIN"
+      },
+      {
+        "partialPattern": "5YM13ET0*T9",
+        "httpStatus": 200,
+        "sourceUrl": "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/5YM13ET0%2AT9?format=json&modelyear=2026",
+        "Make": "BMW",
+        "Model": "X5",
+        "ModelYear": "2026",
+        "Series": "",
+        "BodyClass": "Sport Utility Vehicle [SUV]/Multipurpose Vehicle [MPV]",
+        "ElectrificationLevel": "",
+        "PlantCity": "GREER",
+        "PlantCountry": "UNITED STATES (USA)",
+        "PlantState": "SOUTH CAROLINA",
+        "PlantCompanyName": "",
+        "ErrorCode": "6",
+        "ErrorText": "6 - Incomplete VIN"
+      }
+    ]
+  },
+  "ukDescriptorObservations": {
+    "observationDate": "2026-11-01",
+    "status": "bounded observational research; candidates only; no enabled UK generator profiles",
+    "authorisedMethod": "Read an AutoTrader vehicle advert and photographed UK registration, use the user's logged-in VINwiki UI to obtain its VIN, and retain only reusable profile observations after transient matching/checksum arithmetic.",
+    "sources": [
+      {
+        "service": "AutoTrader",
+        "url": "https://www.autotrader.co.uk/",
+        "role": "advertised vehicle and visible registration plate"
+      },
+      {
+        "service": "VINwiki",
+        "url": "https://web.vinwiki.com/",
+        "role": "third-party plate lookup and vehicle label; authenticated UI only"
+      }
+    ],
+    "checksumMethod": "Same transliteration, weights and modulo-11 arithmetic as checksumSource; full observed VIN used transiently only. A match does not establish universal positional semantics.",
+    "observations": [
+      {
+        "observationId": "UK-OBS-001",
+        "sampleCount": 1,
+        "source": "existing user-opened VINwiki vehicle page",
+        "reportedVehicle": "2026 BMW 120 M Sport MHEV Auto",
+        "generationCandidate": "F70",
+        "generationStatus": "candidate association; not independently verified",
+        "wmi": "WBA",
+        "positions4To8": "82GE0",
+        "position9": "9",
+        "position10": "0",
+        "position11": "7",
+        "serialShape": "ANNNNN",
+        "checksumArithmeticMatches": true,
+        "advertToLookupMatch": false,
+        "yearEvidence": "VINwiki label only; model year and build date unverified",
+        "marketSteeringEvidence": "UK research context; RHD/UK-market specification and import status unverified",
+        "confidence": "single third-party candidate; no corroborating second example"
+      },
+      {
+        "observationId": "UK-OBS-002",
+        "sampleCount": 1,
+        "source": "AutoTrader advert card/photo to VINwiki plate lookup and vehicle page",
+        "advertisedVehicle": "2026 BMW 2 Series Active Tourer 220i MHT M Sport DCT",
+        "reportedVehicle": "2026 BMW 220I M Sport MHEV Auto",
+        "generationCandidate": "U06",
+        "generationStatus": "candidate association from advertised current Active Tourer derivative; not independently verified",
+        "wmi": "WBA",
+        "positions4To8": "72BX0",
+        "position9": "6",
+        "position10": "0",
+        "position11": "7",
+        "serialShape": "ANNNNN",
+        "checksumArithmeticMatches": true,
+        "advertToLookupMatch": true,
+        "matchScope": "consistent 220i M Sport mild-hybrid automatic label; generation/body/steering not independently certified by VINwiki",
+        "yearEvidence": "advert and VINwiki label 2026; registration does not establish model year or build date",
+        "marketSteeringEvidence": "UK advert and UK registration lookup; RHD/UK-market specification and import status unverified",
+        "confidence": "single matched third-party candidate; no corroborating second example"
+      }
+    ],
+    "limitations": [
+      "One full advert-to-lookup route; two different derivatives, not corroboration of one profile.",
+      "No G61 example or UK coverage for all five required WMIs.",
+      "Position-ten zero is a literal observation, not decoded model/build year or universal BMW convention.",
+      "Position-eleven 7 is consistent with the separate Leipzig dictionary; exact UK model/era allocation remains unverified.",
+      "Two checksum matches do not establish the rule for all UK vehicles or historical generations.",
+      "No VINwiki API, automated access terms, bulk throughput or specification coverage proved."
+    ],
+    "profileRefinement": [
+      "Choose represented model/body/powertrain/market/era profiles first.",
+      "Match generation, derivative, drive/transmission and steering/market context; record imports, mismatches and unknowns.",
+      "Seek a second distinct consistent example; preserve observational versus manufacturer-verified confidence.",
+      "Resolve required type/year/plant/format semantics before enabling a bounded generator profile.",
+      "Generate serials independently; never mutate an observed identity."
+    ],
+    "excludedData": [
+      "full VINs",
+      "VRMs",
+      "individual serials",
+      "identifier-bearing advert/lookup URLs",
+      "identifier hashes",
+      "unredacted captures"
+    ]
+  }
+}

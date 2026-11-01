@@ -4,15 +4,17 @@ Observed **1 November 2026** for the **12 November demonstration**. [FUCQ-4](htt
 
 ## Findings and demo recommendation
 
-BMW's UK configurator supplies a useful dated catalogue, option descriptions, configuration rules, technical values and generated imagery. Its successful browser calls use a website-supplied `x-api-key`. Fifteen selected requests replayed without cookies or a key all returned **401**; the image-manifest API did too. These are observed website services, with no supported integration entitlement established. Do not extract the website's key for an adapter.
+BMW's UK configurator supplies a useful dated catalogue, option descriptions, configuration rules, technical values and generated imagery. Its successful browser calls use a website-supplied `x-api-key`. Fifteen selected requests replayed without cookies or a key all returned **401**; the image-manifest API did too. A [follow-up prompted by Russell's challenge](#follow-up-public-website-key-replay) proved that three catalogue/specification requests return **200** from a fresh native client using the key delivered in the public configurator settings. This is a technically viable demo-provider candidate. BMW support and intended external use remain unestablished; the initial blanket prohibition on extracting the website key was an agent recommendation, not a demonstrated technical restriction or recorded BMW decision.
 
 There is a repeatable BMW VIN route for **Driver's Guide content and an image**: a fresh native HTTPS client retrieved the public encryption key, encrypted the supplied VIN, and obtained the UK handbook and JPEG without cookies or an API key. That is useful for a current-car reference. It does **not** establish a full build sheet, installed equipment, exact exterior specification or connected-use data. Know Your BMW returned no match for the same input.
 
 Neither free third-party decoder produced a decoded result in the bounded tests. M Decoder's newer site advertises the documented **Outvin API**, using HTTP Basic authentication. It is a plausible future build-data provider, but access, successful payloads, use rights and fees remain unproved. Its terms constrain storage and reuse, so it must not inherit the BMW snapshot/cache policy by default.
 
-For a repeatable demo, build a **versioned snapshot-backed catalogue/specification adapter**, a separate **representative imagery adapter**, and a **VIN-linked content adapter**. Keep approved live providers replaceable and explicit. The snapshot may reproduce an observed catalogue configuration; it must not pretend to be an available GCSP car, a historical VIN's specification, or the October 2024 eligibility matrix. A live catalogue provider is separately gated on sanctioned BMW access. No free-decoder scraping or CAPTCHA dependency is recommended.
+For a repeatable demo, build a **versioned snapshot-backed catalogue/specification adapter**, a separate **representative imagery adapter**, and a **VIN-linked content adapter**. Keep live providers replaceable and explicit; an unsupported public-website-key provider can now be considered for the demo with a labelled snapshot fallback. The snapshot may reproduce an observed catalogue configuration; it must not pretend to be an available GCSP car, a historical VIN's specification, or the October 2024 eligibility matrix. The current live-provider Jira stories remain gated on sanctioned BMW access until that provider choice and any gate changes are agreed. No free-decoder scraping or CAPTCHA dependency is recommended.
 
-The [implementation story map](bmw-interface-stories.md) records the bounded children and their gates. FUCQ-5 must agree the HLD before new adapter wiring. The proposals below are inputs to that design, not an approved replacement for it.
+The [adapter capability map](bmw-interface-stories.md) records the independent delivery Epics and their gates. Russell accepted FUCQ-4's research at closeout and required FUCQ-13–17 to be tracked independently. FUCQ-5 must agree the HLD before new adapter wiring. The proposals below are inputs to that design, not an approved replacement for it.
+
+Russell's later [synthetic fleet proposal](synthetic-vin-fleet-proposal.md) adds a practical demo route: collect **10,000 distinct configurations**, assign fictional VINs and resolve them through a local VIN service and replaceable adapter. Three native rule-solver/OTD variants were proved as a small pilot; the requested corpus and VIN service are not implemented. Russell has now authorised [FUCQ-18](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-18) for the structure/generator and [FUCQ-19](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-19) for the populated corpus. Their [refined descriptions](synthetic-vin-fleet-proposal.md#authorised-bounded-backlog-capabilities) and [primary-source VIN rules](synthetic-vin-rules.md) preserve the existing FUCQ-13–17 scope and activation gates.
 
 ## Evidence and limits of the investigation
 
@@ -26,6 +28,7 @@ Retained evidence:
 
 - [Evidence index and checksums](evidence/fucq-4/README.md).
 - [Exact selected configurator requests and anonymous replay results](evidence/fucq-4/requests-2026-11-01.json), including the retail-calculation request body.
+- [Follow-up native public-website-key replay](evidence/fucq-4/public-website-key-native-2026-11-01.json), with paired 401/200 results and selected data checks; no key values retained.
 - [Selected observed model, option and technical values](evidence/fucq-4/observations-2026-11-01.json).
 - [Rule result and image-manifest excerpts](evidence/fucq-4/response-excerpts-2026-11-01.json), with ephemeral state and opaque asset URLs omitted.
 - [Redacted native Driver's Guide proof](evidence/fucq-4/drivers-guide-native-2026-11-01.json).
@@ -81,7 +84,7 @@ Normal website loading automatically called `POST /garage/applications/connext/b
 
 No-key native requests, and variants supplying Origin, Referer or both, returned 401. A first browser fetch without an explicit key appeared to succeed because it reused a cached response. Retesting with **`cache: 'no-store'`, `credentials: 'omit'`** returned 401, with no `x-api-key` in the captured request. An OPTIONS preflight returning 200 is also not successful data access.
 
-Only header **names** are retained. No website key was extracted for reuse. Browser success proves that the website has access; it does not prove an anonymous or supported server API. Production integration needs a supported endpoint/credential arrangement confirmed by BMW.
+Only header **names** are retained. The initial investigation did not test website-key reuse; the follow-up below did. Browser success alone proves website access; the fresh native tests additionally establish standalone technical access with its public application key. Neither proves a supported external API. Production integration needs a supported endpoint/credential arrangement confirmed by BMW.
 
 ### Repeatable request examples
 
@@ -92,7 +95,23 @@ curl --fail-with-body \
   'https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G61E&future-models=true&closest-fallback=true'
 ```
 
-For an approved live provider, supply credentials through backend secret configuration and use the exact request records in the evidence. Do not put keys in command arguments, browser code, captured HAR files or Jira. No successful authorised standalone UCP client was built in this research.
+For an approved live provider, supply credentials through backend configuration and use the exact request records in the evidence. Do not put key values in command arguments, our browser code, captured HAR files or Jira. No BMW-supported credential arrangement or application adapter was established in this research; the throwaway public-key client below succeeded.
+
+### Follow-up: public website key replay
+
+On 1 November Russell challenged the sentence “Do not extract the website's key for an adapter.” The binding brief contains no such prohibition. The earlier 401 tests only established that the header was required; they did not test whether an independently running client could supply the website's publicly delivered application key. Treating that missing test as a categorical exclusion was too strong.
+
+A fresh Node HTTPS client retrieved the anonymous [configurator page](https://configure.bmw.co.uk/en_GB/configure/G61E/T5MJ), discovered its [public settings JSON](https://configure.bmw.co.uk/en_GB/settings.ae894fd5.json), and held the relevant `APP.backend` profile's `x-api-key` in process memory. Selected existing read-only requests were replayed with and without that header. Neither variant supplied cookies, Origin or Referer; both used `cache: 'no-store'`. No account credentials, garage writes or private VINs were involved. Key values were neither printed nor persisted.
+
+| Request | Without key | With public website key | Selected response check |
+|---|---|---|---|
+| Model tree | 401 | 200 | Nonempty JSON with sampled `T5MJ` and `72HH` identifiers. |
+| Option descriptions | 401 | 200 | 254 option definitions, including `P0300`. |
+| OTD technical data | 401 | 200 | 72 technical values; `N_SITZE` seat count 5. Raw source status `1` retained without assigning it an unverified meaning. |
+
+The [sanitised evidence](evidence/fucq-4/public-website-key-native-2026-11-01.json) records the source/profile names, requests, HTTP results and selected checks. This proves a practical standalone route for these three requests. It does not establish all endpoints, COSY manifest access from a native client, key lifetime, quotas, reliability or BMW's intended external-use and data/image reuse conditions. A browser-distributed application key is not automatically a private customer credential; its public delivery also does not establish supported third-party integration.
+
+There is no better **proven live catalogue/specification API** in the findings. BMW-issued supported access or an agreed dated export is the preferred supported route, but neither has been obtained. Public technical pages are another possible source with narrower coverage. Snapshots improve demo repeatability rather than replace live access; Driver's Guide and Outvin address different VIN-related needs. The public website key therefore remains a reasonable **unsupported demo-provider option to select explicitly**, with bounded reads, isolated credential handling and a labelled snapshot fallback. The follow-up corrects the research recommendation; it does not implement a provider or silently change existing Jira activation gates.
 
 The initial rule request was:
 
@@ -282,7 +301,7 @@ Live browser verification of [Outvin terms v1.0](https://new.mdecoder.com/terms-
 
 ## 7. Adapter boundaries and story implications
 
-These are refinement recommendations for FUCQ-5 and the child stories, with the external-data boundaries already binding in the [demo brief](demo-brief.md).
+These are refinement recommendations for FUCQ-5 and the independent delivery capabilities, with the external-data boundaries already binding in the [demo brief](demo-brief.md).
 
 | Boundary | Input / output | Keep separate |
 |---|---|---|
@@ -303,7 +322,7 @@ The proposed narrow shared contract should carry:
 - Image role/fidelity/viewpoint and a purposeful missing-image outcome. A missing image must not suppress otherwise valid facts or fabricate another car.
 - Bounded timeouts, response validation, no secret/identifier logging, explicit provider choice and safe fallback provenance. Do not silently switch providers and preserve an “official” label. Provider-specific retention rules override generic caching.
 
-No new GCSP endpoint, screen, points calculation, VIN persistence or connected-data pipeline is designed/implemented in this session. Internal modules/contract tests can be specified now; FUCQ-5 agrees their placement and later consumer wiring. The [experience quality contract](experience-quality.md) applies to the presentation contract even for backend stories. No GCSP visual reference has been agreed, so these stories must not invent UI; future consuming screens need desktop/narrow/keyboard review against the agreed reference and `COMPONENTS.md`.
+No new GCSP endpoint, screen, points calculation, VIN persistence or connected-data pipeline is implemented in this session. The later authorised synthetic-fleet refinement specifies a closed VIN lookup capability and generator; FUCQ-5 agrees their placement and later consumer wiring. The initial adapter capabilities retain their narrower scope. The [experience quality contract](experience-quality.md) applies to the presentation contract even for backend stories. No GCSP visual reference has been agreed, so these specifications must not invent UI; future consuming screens need desktop/narrow/keyboard review against the agreed reference and `COMPONENTS.md`.
 
 ## 8. Questions and decisions still needed
 
@@ -319,3 +338,5 @@ Russell retains the human discussion with Sandeep. The running list's SAN-004 an
 ## Research and review record
 
 Read-only repository scoper: requested Haiku, selected `gpt-6-luna` / `high`, no fallback or descendants. Independent refinement reviewer: requested Opus, selected `gpt-6.1-sol` / `high`, no fallback or descendants. Both were resolved with `tiers spawn ... --harness codex`; effective runtime settings were not independently verified. Neither delegated agent performed live web research. Final review evidence is recorded in the story map after the written artefacts are checked.
+
+Website-key rationale follow-up: independent reviewer requested Opus, selected `gpt-6.1-sol` / `high`, no fallback or descendants; effective runtime settings unverified. It confirmed the original ban was an agent recommendation rather than a binding project/BMW decision. The main session performed the additional native probes and retained sanitised evidence. No adapter implementation or Jira scope change accompanied this correction.
