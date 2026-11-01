@@ -1,3 +1,8 @@
+# GCSP authors: read docs/gcsp/README.md and docs/gcsp/experience-quality.md first.
+# In decided, cite the contract and applicable agreed visual reference.
+# In acceptance and validate, add checkable UX/state/browser criteria for visible changes,
+# including code-kind stories; for other stories state why visual checks are not applicable.
+# Use these existing sections in Jira too. Pass the same criteria to every child-agent brief.
 id: DEV-YYYY-MM-DD-001      (from `python3 -B _tools/dev_mail.py next-story-id`)
 title: One line, what changes. From 2026-10-27: 80 characters or fewer, no backticks, not starting `Site:` or a story id (references/cowork.md, "Titles")
 kind: code | data | ui | docs

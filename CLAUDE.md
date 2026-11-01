@@ -16,6 +16,11 @@ This applies to every file and every contributor (human or agent).
 No em dashes in any on-screen string (house style) — enforced by a test in
 `server/test/render.test.js`. This rule is for user-facing copy only, not comments.
 
+### GCSP demo quality and context
+
+For every GCSP task, read `docs/gcsp/README.md` and `docs/gcsp/experience-quality.md`. Apply that contract
+to story authoring, UI and user-visible service changes, every child-agent brief and final review.
+
 ## Commands
 
 Zero runtime dependencies on both sides; Node 18+. The only dev dependency is `jsdom` (for tests).

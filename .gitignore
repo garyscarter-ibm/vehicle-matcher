@@ -2,8 +2,9 @@ node_modules/
 .DS_Store
 .logs/
 
-# Ignore local Claude Code state, but share the onboard-brand project skill.
+# Share project scaffolding and the onboard-brand skill; keep machine state local.
 .claude/*
+!.claude/scaffolding.json
 !.claude/skills/
 .claude/skills/*
 !.claude/skills/onboard-brand/

@@ -1,0 +1,27 @@
+# UK ZEV mandate: relevance to employee-car recommendations
+
+Checked 31 October 2026 against the locally supplied Department for Transport primary source, [The Vehicle Emissions Trading Schemes: How to Comply](https://assets.publishing.service.gov.uk/media/6a4233648cbc951a27d80d99/vets-how-to-comply.pdf). The parent research retrieved it from the [official GOV.UK publication](https://www.gov.uk/government/publications/vehicle-emissions-trading-schemes-how-to-comply), updated 29 June 2026. PDF metadata records 29 June 2026; Annex B, p. 125, dates its latest substantive revision 26 June 2026. This note uses that June 2026 version, which incorporates the 2025 No. 2 amendment, rather than older summaries. Page references below match PDF page numbers.
+
+## What the guidance establishes
+
+**The relevant event is an eligible new UK registration attributed to the manufacturer.** The car registration scheme (CRTS) applies an annual manufacturer-wide non-ZEV target, expressed as a proportion of new registrations. It covers the UK, including Northern Ireland from 2025, but excludes the Crown dependencies. Manufacturers participate when they register qualifying M1 cars as new, with special-purpose vehicles treated separately and small-volume derogations available. These are registration and manufacturer rules, rather than rules stated by customer sales channel. [Chapter 2, paras. 6 and 17, pp. 11 and 14](https://assets.publishing.service.gov.uk/media/6a4233648cbc951a27d80d99/vets-how-to-comply.pdf#page=11).
+
+**An employee or fleet channel is therefore generally consistent with counting, provided the vehicle is an eligible new registration in the manufacturer's scheme data.** However, searches of this guidance found no express treatment of employee schemes, fleet customer sales or self-registrations. Its references to a “fleet” concern manufacturer-wide averages. The general registration principle supports the proposition; it does not independently prove BMW's particular employee-car arrangement or attribution. That distinction should remain explicit in the business model.
+
+**A later domestic used-car resale is not another new-registration contribution.** Chapter 4 says first registration captures the required data. Chapter 2 defines “new” through DVLA registration, excludes Q plates, includes certain permanent imports within three months of initial overseas registration, and excludes permanent exports within three months of initial registration. Consequently, the employee vehicle's first eligible registration and its subsequent used disposal must be treated as separate commercial events, without counting the domestic resale again for the mandate. [Chapter 2, paras. 21–23, p. 15; Chapter 4, paras. 5–8, p. 71](https://assets.publishing.service.gov.uk/media/6a4233648cbc951a27d80d99/vets-how-to-comply.pdf#page=15).
+
+**“Electrified” is not sufficient to qualify as zero emission.** The ZEV definition requires WLTP CO₂ of 0 g/km, a range condition and warranty conditions, with specified exceptions. A suitable battery electric vehicle (BEV) can qualify; a PHEV or ordinary hybrid with positive WLTP CO₂ does not qualify as a ZEV merely because it has an electric motor. [Chapter 2, paras. 25–30, pp. 15–16](https://assets.publishing.service.gov.uk/media/6a4233648cbc951a27d80d99/vets-how-to-comply.pdf#page=15).
+
+## Compliance value and its limits
+
+CRTS requires an allowance for each new non-ZEV car. Free allowances are calculated from total eligible registrations multiplied by that year's non-ZEV target. A stronger ZEV mix can therefore improve a manufacturer's allowance position. Ordinary qualifying BEV registrations should not be described as each earning a special bonus credit or avoiding a fixed cash penalty. Bonus credits have particular qualifying routes, including special-purpose vehicles and car clubs. [Chapter 2, paras. 7–14, pp. 12–13, and 39–42, pp. 17–18](https://assets.publishing.service.gov.uk/media/6a4233648cbc951a27d80d99/vets-how-to-comply.pdf#page=12).
+
+Compliance also permits trading, banking, borrowing and conversions, subject to conditions. Connected manufacturers may apply annually to pool and be assessed as one participant. Payments arise for remaining allowance deficits after the trading window. Thus neither BMW's current shortfall nor the marginal cash value of another BEV follows from the mandate alone. [Chapter 2, paras. 11–16, pp. 13–14, and 93–105, pp. 28–29](https://assets.publishing.service.gov.uk/media/6a4233648cbc951a27d80d99/vets-how-to-comply.pdf#page=28).
+
+For recommendation planning, a suitable employee BEV may have additional compliance value alongside driver suitability and programme economics. That supports testing greater BEV emphasis among suitable recommendations, subject to owner validation; it does not imply that the employee expressed a BEV preference. Its eventual used supply and residual value still affect net lifecycle cost; this is a business-planning consideration, not a regulatory finding from this guidance.
+
+## Questions for the programme owner
+
+1. Which employee-car first registrations enter which BMW manufacturer or approved pool's VETS data, including any export exclusions?
+2. What BEV mix and marginal compliance value should this programme use, after existing allowances, flexibilities and pool arrangements?
+3. What residual-value, holding-period and used-disposal assumptions determine the programme's net lifecycle cost and residual exposure?

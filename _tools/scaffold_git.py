@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.3.0"      # first, so the update check finds it within its first lines, ahead of the long docstring
+VERSION = "1.4.0"      # first, so the update check finds it within its first lines, ahead of the long docstring
 __doc__ = """scaffold_git.py -- the one place a scaffolded project runs git for its dev inbox and its team. Vendored into a
 project's `_tools/` by project-scaffolding; a generic port of the Account Corpus's corpus_git.py.
 
@@ -10,12 +10,23 @@ Subcommands
   commit --message MSG [--paths P ...] [--dry-run]
                            lock-aware, identity-checked, size-guarded commit; with --paths it stages
                            (git add -A -- P) and commits only under P, leaving the rest of the tree as it was
+                           (the library's commit_paths also takes own_lock=True; see Extension)
   fetch [--branch B]       fetch the remote's B (default: the base branch) into <remote>/B; the working tree is untouched
   list-tree REF PREFIX     list files under PREFIX in REF; read-only
   show REF PATH            print PATH as held in REF; read-only
   diff BASE HEAD           list the files HEAD changed since it left BASE (three-dot); read-only
                            (these three refuse, exit 2, any REF, BASE, HEAD, PREFIX or PATH that starts with `-`, which
                            git could take for an option; the library functions list_tree, show and changed_files too)
+  publish-tree --prefix P --branch B [--extra NAME ...]
+                           replace the remote's branch B with one parentless commit whose tree is P/ as committed in
+                           the local base branch, re-rooted, plus empty files NAME (default: .nojekyll): a static
+                           site's publish branch. Plumbing only: the working tree, index and HEAD are untouched.
+                           Says `UNCHANGED B` and pushes nothing when the remote's B already holds that tree, else
+                           `PUBLISHED B <short>`. Refused (2): B equal to the base branch, a B git rejects as a branch
+                           name or that starts with `-` or `dev/`, a P that is empty, absolute, holds `..` or starts
+                           with `-`, a NAME with a `/`. Library: publish_tree(root, prefix, branch, extra_files)
+  bundle --out FILE        git bundle create FILE --all, then git bundle verify FILE (the weekly backup); parent folders
+                           are made; prints `BUNDLE <abs path> <n> bytes`. Refused (2) when FILE starts with `-`
   push                     push the base branch to the remote, refused if the remote's copy has commits the local one
                            lacks (never merges); done if git exits non-zero but the remote matches afterwards
   pull                     bring <remote>/<base> into the base branch in the shared checkout (fast-forward, else a
@@ -39,8 +50,12 @@ Settings: top-level keys of <project>/.claude/scaffolding.json (the record test_
                            else `master`.
   "remote": "origin"       the remote fetched from and pushed to. Absent: origin.
   "sweep_locks": false     true: before and after every git call, rename aside the .git lockfiles older than 10
-                           minutes (STALE_LOCK_SECS), for repos on mounts that refuse unlink (OneDrive, Box). Default
-                           false. Anything but true or false is refused with exit 2.
+                           minutes (STALE_LOCK_SECS), for repos on mounts that refuse unlink (OneDrive, Box). A whole
+                           number of seconds, at least 60 (e.g. 1800), does the same with that as the minimum age
+                           instead of 10 minutes: the one age every sweep uses (the automatic one, the retry after a
+                           git call fails on a lock, and the `sweep` command). Default false. Anything else (a bool
+                           other than true/false, a float, a string, a number under 60, a negative) is refused with
+                           exit 2, naming the key.
   A linked worktree with no record of its own reads the shared checkout's. A malformed value (empty, or a name git
   could take for an option) is refused with exit 2 and the key named.
   "team": {..., "data_writers": [...],
@@ -53,12 +68,21 @@ Settings: top-level keys of <project>/.claude/scaffolding.json (the record test_
                            Without `protected`, none of the pen or merge-check rules apply.
 
 Extension: <project>/_tools/scaffold_ext.py, optional
-  def commit_lock(root) -> ("held", detail) | ("free", "")
+  def commit_lock(root) -> ("held", detail) | ("free", detail)
       Whether something in the project is mid-write, so that a commit would capture half-finished files (the corpus's
-      apply lock). Held: commit, pull and merge refuse (exit 2) and say why. The file is loaded by path with importlib,
+      apply lock). Held: commit, pull and merge refuse (exit 2) and say why. ("free", "") is no lock. ("free", detail)
+      with a non-empty detail is no lock either, and commit says it first as `NOTE <detail>` (the corpus uses it for a
+      stale apply lock it is proceeding past). The file is loaded by path with importlib,
       so _tools is never put on sys.path for it; an extension that needs its siblings adds the path itself. An
       extension that raises, or answers with anything but those two shapes, is reported as a refusal naming the
       error, never as a traceback. No file, or no commit_lock in it: no lock.
+  def commit_lock_owner(root) -> int pid | None
+      Optional; the pid of the process that holds the lock commit_lock reports as held. Only the library's
+      commit_paths(..., own_lock=True) asks for it (there is no command-line flag): when the lock is held and
+      commit_lock_owner(root) == os.getpid(), the commit goes ahead, because the caller holds the lock across its own
+      write and this commit. Any other holder still refuses, as does an extension with no commit_lock_owner, one that
+      returns None, and one that raises or returns something that is not an int (that error is named in the refusal,
+      never a traceback).
   def pre_merge_checks(root, branch) -> list of refusal strings | [] | None
       Extra refusals for `merge --branch dev/ID`, asked after this tool's own checks and before it merges, only in
       team mode with protected paths. Any string refuses (exit 2) and is said. An extension that raises, or answers with
@@ -188,11 +212,13 @@ unlink of an object temp file, but a LEFTOVER .git/index.lock makes a later writ
 it. That rename is only right for a lock nobody holds, so sweeping is opt-in and age-limited: on an ordinary disk it can
 break git's own locking (a `git commit` in a dev worktree holds .git/worktrees/<id>/index.lock while its editor is
 open). The rule:
-  - "sweep_locks": true in the record (a repo on a mount that refuses unlink): sweep() runs before and after every git
-    call, moving aside only lockfiles whose mtime is older than 10 minutes (STALE_LOCK_SECS);
+  - "sweep_locks": true or a number of seconds in the record (a repo on a mount that refuses unlink): sweep() runs
+    before and after every git call, moving aside only lockfiles whose mtime is older than 10 minutes (STALE_LOCK_SECS)
+    or than that number;
   - otherwise (the default) never sweep beforehand. A git call that fails with "Unable to create '...lock': File exists"
-    sweeps that one lock, only if it is older than 10 minutes, and is retried once;
-  - the `sweep` command always sweeps the locks older than 10 minutes.
+    sweeps that one lock, only if it is older than the minimum age, and is retried once;
+  - the `sweep` command always sweeps the locks older than the minimum age.
+  The minimum age is the record's number when "sweep_locks" is one, else 10 minutes.
 
 Route every dev-inbox write through this module, so one place decides the base branch, the remote, the identity check,
 the size guard and the lock.
@@ -312,10 +338,13 @@ def _move_aside(src, stale_dir, rel):
         return False
 
 
-def sweep(root, verbose=False, min_age=STALE_LOCK_SECS):
+def sweep(root, verbose=False, min_age=None):
     """Rename aside every git lockfile (`*.lock`, `gc.pid`) under root/.git whose mtime is older than min_age seconds
-    (default STALE_LOCK_SECS, 10 minutes), worktrees' included. A younger lock may belong to a git command that is
-    running now (a commit with its editor open), so it is never touched. Returns how many were moved."""
+    (default lock_min_age(root): the record's number of seconds, else STALE_LOCK_SECS, 10 minutes), worktrees'
+    included. A younger lock may belong to a git command that is running now (a commit with its editor open), so it is
+    never touched. Returns how many were moved."""
+    if min_age is None:
+        min_age = lock_min_age(root)
     gitdir = os.path.join(root, ".git")
     stale = os.path.join(gitdir, "_stale")
     if not os.path.isdir(gitdir):
@@ -335,24 +364,55 @@ def sweep(root, verbose=False, min_age=STALE_LOCK_SECS):
     return moved
 
 
-def _sweeping_on(root):
-    """Whether root's own record sets "sweep_locks": true. Read straight from the file, because git() calls this; a bad
-    value counts as off here and is refused by main() (sweep_locks). A linked worktree has no .git directory to sweep."""
-    if not os.path.isdir(os.path.join(root, ".git")):
-        return False
+MIN_SWEEP_SECS = 60                 # the smallest "sweep_locks" number of seconds the record may name
+
+
+def _sweep_setting(value):
+    """(on, min_age) for one "sweep_locks" value: absent/False -> (False, STALE_LOCK_SECS), True -> (True,
+    STALE_LOCK_SECS), an int of at least MIN_SWEEP_SECS -> (True, that). None for anything else. A bool is an int in
+    Python, so it is tested first."""
+    if value is None or value is False:
+        return False, STALE_LOCK_SECS
+    if value is True:
+        return True, STALE_LOCK_SECS
+    if isinstance(value, int) and not isinstance(value, bool) and value >= MIN_SWEEP_SECS:
+        return True, value
+    return None
+
+
+def _own_sweep_value(root):
+    """The raw "sweep_locks" value of root's own record, read straight from the file because git() calls this, or None:
+    absent, unreadable, or not a JSON object. Never raises. A linked worktree has no .git directory to sweep."""
     try:
         with open(os.path.join(root, SCAFFOLDING_RECORD), encoding="utf-8") as f:
             rec = json.load(f)
     except (OSError, ValueError):
+        return None
+    return rec.get("sweep_locks") if isinstance(rec, dict) else None
+
+
+def _sweeping_on(root):
+    """Whether root's own record turns sweeping on: "sweep_locks" true or a number of seconds. Cheap and it never
+    raises, because git() calls this; a bad value counts as off here and is refused by main() (sweep_locks)."""
+    if not os.path.isdir(os.path.join(root, ".git")):
         return False
-    return isinstance(rec, dict) and rec.get("sweep_locks") is True
+    return (_sweep_setting(_own_sweep_value(root)) or (False, 0))[0]
+
+
+def lock_min_age(root):
+    """The minimum age in seconds of a git lockfile that may be swept: the record's "sweep_locks" number when it is one,
+    else STALE_LOCK_SECS. The one place every sweep (automatic, after a failed call, the `sweep` command) asks. Never
+    raises; a bad value gives STALE_LOCK_SECS (main() refuses it)."""
+    return (_sweep_setting(_own_sweep_value(root)) or (False, STALE_LOCK_SECS))[1]
 
 
 def sweep_locks(root):
-    """The record's `sweep_locks` setting: True or False (default). SettingsError for any other value."""
+    """The record's `sweep_locks` setting: False (default), True, or the number of seconds (an int of at least 60).
+    SettingsError for any other value."""
     value = read_record(root).get("sweep_locks", False)
-    if not isinstance(value, bool):
-        raise SettingsError("scaffolding.json: sweep_locks %r must be true or false" % (value,))
+    if _sweep_setting(value) is None:
+        raise SettingsError("scaffolding.json: sweep_locks %r must be true, false, or a whole number of seconds of at "
+                            "least %d" % (value, MIN_SWEEP_SECS))
     return value
 
 
@@ -361,7 +421,7 @@ LOCK_EXISTS = re.compile(r"Unable to create '([^'\n]+\.lock)': File exists")
 
 def _sweep_failed_lock(root, err):
     """After a git call failed: when git says it could not create one `.lock` because it exists, and that file is older
-    than STALE_LOCK_SECS, move just it aside. True when something was moved (the call is worth retrying)."""
+    than lock_min_age(root), move just it aside. True when something was moved (the call is worth retrying)."""
     m = LOCK_EXISTS.search(err or "")
     if not m:
         return False
@@ -372,14 +432,14 @@ def _sweep_failed_lock(root, err):
         if parent == gitdir:
             return False
         gitdir = parent
-    if not os.path.isfile(path) or not _lock_is_stale(path, STALE_LOCK_SECS):
+    if not os.path.isfile(path) or not _lock_is_stale(path, lock_min_age(root)):
         return False
     return _move_aside(path, os.path.join(gitdir, "_stale"), os.path.relpath(path, gitdir))
 
 
 def git(root, args, capture=True, input=None):
-    """Run git in root. Returns (rc, out, err). With "sweep_locks": true in the record, stale locks (STALE_LOCK_SECS) are
-    swept before and after. Either way, a call that fails on "Unable to create '...lock': File exists" sweeps that one
+    """Run git in root. Returns (rc, out, err). With "sweep_locks" true (or a number of seconds) in the record, stale
+    locks (older than lock_min_age) are swept before and after. Either way, a call that fails on "Unable to create '...lock': File exists" sweeps that one
     lock if it is stale, and is retried once."""
     sweeping = _sweeping_on(root)
     if sweeping:
@@ -679,17 +739,51 @@ def commit_lock_state(root):
     if (isinstance(answer, (tuple, list)) and len(answer) == 2 and answer[0] in ("held", "free")
             and isinstance(answer[1], str)):
         return answer[0], answer[1]
-    return "error", "_tools/scaffold_ext.py commit_lock returned %r, not ('held', detail) or ('free', '')" % (answer,)
+    return "error", ("_tools/scaffold_ext.py commit_lock returned %r, not ('held', detail) or ('free', detail)"
+                     % (answer,))
+
+
+def commit_lock_owner_pid(root):
+    """(pid, problem) from the extension's optional commit_lock_owner(root). pid is None when the extension has no
+    commit_lock_owner or it answers None; problem is '' unless the extension failed or answered with something that is
+    not an int (a bool is not one), in which case it names why."""
+    try:
+        ext = _load_ext(root)
+        fn = getattr(ext, "commit_lock_owner", None) if ext is not None else None
+        if fn is None:
+            return None, ""
+        answer = fn(root)
+    except (Exception, SystemExit) as e:
+        return None, "_tools/scaffold_ext.py commit_lock_owner failed: %s: %s" % (type(e).__name__, e)
+    if answer is None:
+        return None, ""
+    if isinstance(answer, int) and not isinstance(answer, bool):
+        return answer, ""
+    return None, "_tools/scaffold_ext.py commit_lock_owner returned %r, not an int pid or None" % (answer,)
+
+
+def lock_check(root, what, own_lock=False):
+    """(refusal, note) for `what` (commit, pull, merge): refusal is None when it may go ahead, else the text; note is
+    the detail of a ('free', detail) answer, '' otherwise. With own_lock, a lock the extension's commit_lock_owner names
+    as this process is not a reason to refuse; any other holder, or an owner that cannot be told, still is."""
+    state, detail = commit_lock_state(root)
+    if state == "held":
+        extra = ""
+        if own_lock:
+            pid, problem = commit_lock_owner_pid(root)
+            if pid is not None and pid == os.getpid():
+                return None, ""
+            extra = "; " + problem if problem else ""
+        return ("the project's commit lock is held (%s)%s; a write is in flight, so %s is refused"
+                % (detail, extra, what)), ""
+    if state == "error":
+        return "%s; %s is refused" % (detail, what), ""
+    return None, detail
 
 
 def lock_refusal(root, what):
     """None when `what` (commit, pull, merge) may go ahead, else the refusal text."""
-    state, detail = commit_lock_state(root)
-    if state == "held":
-        return "the project's commit lock is held (%s); a write is in flight, so %s is refused" % (detail, what)
-    if state == "error":
-        return "%s; %s is refused" % (detail, what)
-    return None
+    return lock_check(root, what)[0]
 
 
 # ---------------------------------------------------------------- read-only helpers
@@ -808,14 +902,52 @@ def dirty_paths(root, paths=None):
     return [l[3:] for l in status_lines(root, paths)]
 
 
+def dirty_entries(root, paths=None):
+    """(branch, {path: XY}) from one `git status --porcelain -z -b`, untracked files listed one by one, limited to the
+    pathspecs `paths` when given. XY is git's two-letter status. A rename or copy lists both halves, the new name and
+    the old, under the same XY. branch is the checked-out branch ('HEAD' when detached; on an unborn branch, its
+    name). One git call, for a caller that needs the branch and the dirty set together. Read-only; raises
+    RuntimeError on a folder that is not a repository or when git fails."""
+    if not is_repo(root):
+        raise RuntimeError("%s is not a git repository" % root)
+    rc, out, err = git(root, ["status", "--porcelain", "-z", "-b", "--untracked-files=all"] + _spec(paths))
+    if rc != 0:
+        raise RuntimeError("git status failed: %s" % err.strip()[:500])
+    parts = out.split("\0")
+    branch, entries, i = "", {}, 0
+    while i < len(parts):
+        e = parts[i]
+        i += 1
+        if not e:
+            continue
+        if e.startswith("## "):
+            b = e[3:]
+            for unborn in ("No commits yet on ", "Initial commit on "):
+                if b.startswith(unborn):
+                    branch = b[len(unborn):]
+                    break
+            else:
+                branch = "HEAD" if b.startswith("HEAD (no branch)") else b.split("...")[0].split(" ")[0]
+            continue
+        xy, path = e[:2], e[3:]
+        entries[path] = xy
+        if ("R" in xy or "C" in xy) and i < len(parts):      # -z puts the rename's old name in the next field
+            entries[parts[i]] = xy
+            i += 1
+    return branch, entries
+
+
 # ---------------------------------------------------------------- commit
 
 @_serialised
-def commit_paths(root, message, paths=None, dry_run=False, log=None, check_paths=True):
+def commit_paths(root, message, paths=None, own_lock=False, dry_run=False, log=None, check_paths=True):
     """Stage and commit `paths` (every pathspec when None) with message; the body of `commit`. Returns (rc, message):
     the closing line of the command (COMMITTED..., NOCHANGES..., DRYRUN... or an ERR line) and the exit code, 0 / 2 / 3
     as in the module doc. `log(stream, text)`, when given, receives the lines said on the way (stream 'out' or 'err').
-    check_paths=False skips the per-pathspec existence probe (two git calls each) for a caller whose paths come from
+    own_lock (library only, no command-line flag): a commit lock held by this process, as the extension's
+    commit_lock_owner(root) says, is not a reason to refuse -- the caller holds it across its own write and this
+    commit; one held by any other process still is. A ('free', detail) answer from commit_lock goes ahead and is said
+    as `NOTE <detail>`. check_paths=False skips the per-pathspec existence probe (two git calls each) for a caller whose paths come from
     `git status`."""
     say = log or (lambda stream, text: None)
     if not is_repo(root):
@@ -828,9 +960,11 @@ def commit_paths(root, message, paths=None, dry_run=False, log=None, check_paths
                    "run: git -C %s config user.name '...' && git -C %s config user.email '...'"
                    % (name, mail, root, root))
 
-    refusal = lock_refusal(root, "the commit")
+    refusal, note = lock_check(root, "the commit", own_lock=own_lock)
     if refusal:
         return 2, "ERR %s. Nothing staged, nothing committed; the tree is left dirty." % refusal
+    if note:
+        say("out", "NOTE " + note)
     ensure_ignored(root)                      # so `git add -A` leaves this machine's own files alone
 
     only = None                               # paths: stage and commit under these pathspecs only
@@ -924,6 +1058,97 @@ def push(root):
         return 3, "git push failed: %s" % _git_error(e or o)
     rc, o, e = git(root, ["rev-parse", "--short", base])
     return 0, "PUSHED %s %s" % (base, o.strip())
+
+
+def _publish_refusal(root, base, prefix, branch, extra_files):
+    """The reason publish_tree refuses its arguments (before any git call that writes), or None."""
+    if branch == base:
+        return "refusing to publish to %s: it is the base branch, which must never be replaced" % branch
+    if (not isinstance(branch, str) or not branch or branch.startswith(("-", "dev/"))
+            or git(root, ["check-ref-format", "--branch", branch])[0] != 0):
+        return "%r is not a usable publish branch (it must be a valid branch name, not start with '-' or 'dev/')" % (
+            branch,)
+    if (not isinstance(prefix, str) or not prefix.strip("/") or prefix.startswith(("/", "-")) or ".." in prefix
+            or prefix.strip("/") == "."):
+        return "%r is not a usable prefix (it must be a folder inside the repository: not empty, absolute or '..', and " \
+               "not starting with '-')" % (prefix,)
+    for name in extra_files:
+        if (not isinstance(name, str) or not name or "/" in name or name in (".", "..")
+                or any(ord(c) < 32 for c in name)):
+            return "extra file %r is not a usable name (a plain file name: not empty, no '/', no control characters)" % (
+                name,)
+    return None
+
+
+@_serialised
+def publish_tree(root, prefix, branch, extra_files=(".nojekyll",)):
+    """Replace the remote's `branch` with one parentless commit whose tree is `prefix` as committed in the local base
+    branch, re-rooted at the branch root, plus the empty `extra_files` (the commit message is `publish <prefix>/ from
+    <base> <short sha>`). Plumbing only: the working tree, index and HEAD are untouched, and nothing is pushed when the
+    remote's branch already holds that tree. Returns (rc, message): 0 `UNCHANGED <branch>` or `PUBLISHED <branch>
+    <short>`, 2 refused (branch is the base branch, or not a usable branch name; prefix empty, absolute, with `..` or
+    starting with `-`; an extra file name with a `/`), 3 git failed (or the base branch has no <prefix>/ committed).
+    Run under the checkout mutex."""
+    if not is_repo(root):
+        return 2, "%s is not a git repository" % root
+    base, remote = base_branch(root), remote_name(root)
+    extra_files = tuple(extra_files)
+    refusal = _publish_refusal(root, base, prefix, branch, extra_files)
+    if refusal:
+        return 2, refusal
+    src = prefix.strip("/")
+    rc, o, e = git(root, ["rev-parse", "--verify", "-q", "refs/heads/%s:%s" % (base, src)])
+    if rc != 0 or git(root, ["cat-file", "-t", o.strip()])[1].strip() != "tree":
+        return 3, "%s has no %s/ committed" % (base, src)
+    rc, listing, e = git(root, ["ls-tree", o.strip()])
+    if rc != 0:
+        return 3, "git ls-tree failed: %s" % _git_error(e or listing)
+    rc, blob, e = git(root, ["hash-object", "-w", "-t", "blob", "--stdin"], input="")      # the empty file
+    if rc != 0:
+        return 3, "git hash-object failed: %s" % _git_error(e or blob)
+    rows = [l for l in listing.splitlines() if l.split("\t", 1)[-1] not in extra_files]
+    rows += ["100644 blob %s\t%s" % (blob.strip(), f) for f in dict.fromkeys(extra_files)]
+    rc, tree, e = git(root, ["mktree"], input="\n".join(rows) + "\n")
+    if rc != 0:
+        return 3, "git mktree failed: %s" % _git_error(e or tree)
+    tree = tree.strip()
+    rc, msg = fetch(root, branch)
+    if rc != 0 and "couldn't find remote ref" not in msg:
+        return 3, "fetching %s/%s failed: %s" % (remote, branch, msg[:300])
+    if rc == 0:
+        rc, old, _ = git(root, ["rev-parse", "--verify", "-q", "%s/%s^{tree}" % (remote, branch)])
+        if rc == 0 and old.strip() == tree:
+            return 0, "UNCHANGED %s" % branch
+    rc, short, e = git(root, ["rev-parse", "--short", "refs/heads/" + base])
+    rc, commit, e = git(root, ["commit-tree", tree, "-m", "publish %s/ from %s %s" % (src, base, short.strip())])
+    if rc != 0:
+        return 3, "git commit-tree failed: %s" % _git_error(e or commit)
+    commit = commit.strip()
+    rc, o, e = git(root, ["push", "--quiet", "--force", remote, "%s:refs/heads/%s" % (commit, branch)])
+    if rc != 0:
+        return 3, "git push failed: %s" % _git_error(e or o)
+    rc, short, _ = git(root, ["rev-parse", "--short", commit])
+    return 0, "PUBLISHED %s %s" % (branch, short.strip())
+
+
+def bundle(root, out):
+    """Write every ref of the repository to the bundle file `out` (git bundle create --all) and check it (git bundle
+    verify); parent folders are made. Returns (rc, message): 0 `BUNDLE <abs path> <n> bytes`, 2 when out starts with
+    '-', 3 git failed."""
+    if isinstance(out, str) and out.startswith("-"):
+        return 2, "out %r starts with '-', so git could take it for an option; refused" % out
+    out = os.path.abspath(out)
+    try:
+        os.makedirs(os.path.dirname(out), exist_ok=True)
+    except OSError as e:
+        return 3, "cannot make the folder for %s: %s" % (out, e)
+    rc, o, e = git(root, ["bundle", "create", out, "--all"])
+    if rc != 0:
+        return 3, "git bundle create failed: %s" % (e.strip() or o.strip())[:500]
+    rc, o, e = git(root, ["bundle", "verify", out])
+    if rc != 0:
+        return 3, "git bundle verify failed: %s" % (e.strip() or o.strip())[:500]
+    return 0, "BUNDLE %s %d bytes" % (out, os.path.getsize(out))
 
 
 def _merge_failure(root, e, o, theirs=None):
@@ -1981,7 +2206,8 @@ def _fail(e):
 
 
 def cmd_sweep(args):
-    n = sweep(project_root(args.root), verbose=True)
+    root = project_root(args.root)
+    n = sweep(root, verbose=True, min_age=lock_min_age(root))
     print("SWEPT %d" % n)
     return 0
 
@@ -2064,6 +2290,15 @@ def cmd_pull(args):
     return _report(pull(project_root(args.root)))
 
 
+def cmd_publish_tree(args):
+    return _report(publish_tree(project_root(args.root), args.prefix, args.branch,
+                                tuple(args.extra) if args.extra else (".nojekyll",)))
+
+
+def cmd_bundle(args):
+    return _report(bundle(project_root(args.root), args.out))
+
+
 def cmd_worktree(args):
     return _report(worktree_add(project_root(args.root), args.id))
 
@@ -2125,6 +2360,16 @@ def _core_commands(sub):
                    ).set_defaults(func=cmd_push)
     sub.add_parser("pull", help="bring the remote's base branch into the base branch in the shared checkout; "
                                 "aborts on conflict").set_defaults(func=cmd_pull)
+    pt = sub.add_parser("publish-tree", help="replace the remote's branch B with one parentless commit holding the base "
+                                             "branch's P/ (plus empty NAME files); plumbing only")
+    pt.add_argument("--prefix", required=True, metavar="P")
+    pt.add_argument("--branch", required=True, metavar="B")
+    pt.add_argument("--extra", nargs="+", action="extend", metavar="NAME",
+                    help="empty files to add at the branch root (default: .nojekyll)")
+    pt.set_defaults(func=cmd_publish_tree)
+    bd = sub.add_parser("bundle", help="git bundle create FILE --all, then verify it")
+    bd.add_argument("--out", required=True, metavar="FILE")
+    bd.set_defaults(func=cmd_bundle)
     wt = sub.add_parser("worktree", help="new worktree .claude/worktrees/ID on a new branch dev/ID from the base branch")
     wt.add_argument("--id", required=True)
     wt.set_defaults(func=cmd_worktree)

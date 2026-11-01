@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "asked": "2026-10-30",
+  "pieces": {
+    "design": "on",
+    "inbox": "on",
+    "backlog": "on",
+    "components": "on"
+  },
+  "backlog": {
+    "backend": "jira",
+    "site": "ibm-consulting-sandbox003.atlassian.net",
+    "cloud_id": "3a0f53b1-e413-4550-a7f6-d099f165f74c",
+    "project": "FUCQ",
+    "board_id": 2132,
+    "epic_type": "Epic",
+    "story_type": "Story",
+    "label": "backlog",
+    "statuses": {
+      "To Do": "To Do",
+      "In Progress": "In Progress",
+      "In Review": "In Review",
+      "Done": "Done",
+      "Rejected": "Rejected"
+    },
+    "priorities": {
+      "1": "Highest",
+      "2": "High",
+      "3": "Medium",
+      "4": "Low",
+      "5": "Lowest"
+    },
+    "points_field": "customfield_10016",
+    "board_only": true,
+    "members": {
+      "usget": {
+        "jira_account_id": "557058:16dd887a-6b2b-4677-b36a-145a2ea69c92",
+        "name": "Russell Gowers"
+      }
+    }
+  },
+  "inbox": {
+    "test": "npm test",
+    "merge": "auto",
+    "owner": "Russell"
+  },
+  "base_branch": "gcsp-poc",
+  "team": {
+    "mode": "team",
+    "owner": "usget",
+    "members": {
+      "usget": {
+        "name": "Russell Gowers",
+        "prefix": ""
+      },
+      "garyscarter-ibm": {
+        "name": "Gary Carter",
+        "prefix": "GC"
+      }
+    },
+    "data_writers": [
+      "usget",
+      "garyscarter-ibm"
+    ],
+    "protected": []
+  }
+}

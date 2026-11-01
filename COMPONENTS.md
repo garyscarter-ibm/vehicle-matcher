@@ -4,6 +4,8 @@ The catalogue of shared UI for the vehicle-matcher block. Read this before build
 
 ## The rule
 
+For GCSP work, also follow the [experience quality contract](docs/gcsp/experience-quality.md), including its agreed visual reference and browser evidence. This catalogue and the ratchet establish component reuse; rendered review establishes the visual result.
+
 1. Reuse: if a component here draws it, use it.
 2. Extend: if one nearly fits, add an option to it (kit code, kit styles, this file, its test and the gallery), in the same commit as the view that needs it.
 3. New, only when none can be extended: add it to the kit the same way, never inside a view, and say which components you looked at and why none would do.

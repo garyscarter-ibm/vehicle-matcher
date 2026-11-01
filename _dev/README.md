@@ -19,3 +19,5 @@ The procedure for both sides is the managed `dev-inbox` skill.
 Story id: `DEV-<yyyy-mm-dd>-<nnn>`; `python3 -B _tools/dev_mail.py next-story-id` prints the next free one.
 Which story goes first: `python3 -B _tools/dev_mail.py queue` (expedite, then blockers, then priority, size and age).
 The format is `story-template.md`.
+
+For GCSP stories, read [the project context](../docs/gcsp/README.md) and [experience quality contract](../docs/gcsp/experience-quality.md). Put the applicable reference and UX criteria into the existing `decided`, `acceptance` and `validate` sections. This applies to Jira-authored stories and to code stories that alter user-visible behaviour as well as `kind: ui` stories. Pass the contract and relevant criteria through every agent handoff.

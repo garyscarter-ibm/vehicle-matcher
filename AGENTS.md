@@ -27,3 +27,25 @@ Rules for Codex working in this project. The scaffolding clone is the `repo` val
   in the plugin's dev-inbox skill, section Adapters, Codex.
 - **Commit trailer** for commits Codex makes: `Co-Authored-By: Codex <noreply@openai.com>`.
 <!-- END agent-scaffolding -->
+
+## GCSP discovery and Jira
+
+For GCSP discovery, story authoring, design, implementation or review, first read `docs/gcsp/README.md`
+and the binding purpose and adapter boundaries in `docs/gcsp/demo-brief.md`. The index distinguishes
+authorised backlog items from proposals. Capture further discussion in `docs/gcsp/` and agree additional
+backlog scope with Russell before discussion-driven Jira changes. This takes precedence over automatic
+backlog capture. FUCQ-1 remains discovery context. All scaffolding remains on.
+
+Use bounded feature capabilities for backlog items, including changes that span views and services.
+Keep the broad demo hills in the brief; Jira's Epic issue type does not determine item size.
+
+## GCSP experience quality
+
+Every GCSP role reads `docs/gcsp/experience-quality.md`. Apply its acceptance and visual-review gates to
+every change affecting a screen or user-visible behaviour, including code/backend stories. Follow the
+agreed visual reference and `COMPONENTS.md`; extend shared components and tokens to preserve consistency.
+
+Before every GCSP spawn, include the experience-contract path, applicable visual reference and relevant
+acceptance criteria in the self-contained brief. Require each child to read them and propagate the same
+obligations to its descendants. Story authors use the existing `decided`, `acceptance` and `validate`
+sections, including Jira-authored stories; reviewers require the corresponding evidence in the result.
