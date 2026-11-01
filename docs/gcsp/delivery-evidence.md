@@ -39,4 +39,12 @@ Russell suggests asking BMW “What would you change?” at the end of the demo,
 
 ## Review provenance
 
+### FUCQ-4 research and refinement, 1 November
+
+The [BMW interface investigation](bmw-interface-research.md) and [five adapter stories](bmw-interface-stories.md) retain a concrete refinement trail: a supplied VIN changed a generic availability question into a positive UK handbook/image proof, and Russell's subsequent third-party suggestion added bimmer.work/M Decoder checks and a documented but access-gated Outvin candidate. The final scope separates dated catalogue facts, representative visuals and VIN-linked content, with conditional live providers. A no-key browser cache hit was retested with no-store/native requests before access claims were recorded. No adapter was implemented in this session.
+
+This is evidence of research, human steering, boundary refinement and independent review. No elapsed-time baseline, human-hour saving, speed multiplier or Advantage Credit cost per completed story was measured.
+
+### Account context review
+
 The account context was checked read-only using the BMW Account Corpus. The implementer-tier researcher requested and selected `gpt-6.1-sol` / `medium`, with no fallback or descendants; effective runtime settings were not independently verified. Account model and source material were unchanged. Product conclusions are recorded here; detailed account evidence remains in the corpus.

@@ -1,0 +1,612 @@
+{
+  "sourcePage": "https://configure.bmw.co.uk/en_GB/configure/G61E/T5MJ/FKSFU,P0300,S0230,S02PA,S02VB,S02VD,S0302,S0337,S03DK,S03G9,S03M1,S0428,S043L,S0488,S0494,S04T2,S04U9,S04UR,S04V1,S0552,S05AS,S05AV,S05DM,S0654,S0674,S06AE,S06AF,S06AK,S06C4,S06NX,S06PA,S0704,S0710,S0760,S0775,S0812,S0853,S0880,S08R3,S08R9,S08SM,S08TF,S08TG,S08WM,S09QV,S09T1,S09T2/SE000001",
+  "model": {
+    "agBodyStyle": "TO",
+    "agModelCode": "72HH",
+    "bodyStyle": "TO",
+    "brand": "BM",
+    "derivative": "I5 40",
+    "driveType": "HR",
+    "driveTypeName": "Rear-wheel drive",
+    "effectDate": "2027-01-05",
+    "engConcept": "",
+    "engineSeries": "HA0",
+    "firstTvoChecked": true,
+    "fuelTypeCode": "E",
+    "hybridCode": "BEVE",
+    "isConvertible": false,
+    "lineMake": "B1",
+    "manufacturer": "WB",
+    "marketExcludedElements": [],
+    "modelCode": "T5MJ",
+    "modelName": "BMW i5 eDrive40 M Sport Touring ",
+    "modelNameRaw": "BMW i5 eDrive40 M Sport Touring ",
+    "modelRange": "G61E",
+    "orderDate": "2026-11-01",
+    "prodDate": "20270105",
+    "rawModelRange": "G61",
+    "series": "5",
+    "sportsFlag": "N",
+    "steering": "RL",
+    "taxDate": "2027-01-05",
+    "technicalData": {
+      "abeHub": "0000",
+      "cylinderCapacity": "0,00",
+      "engNumberOfCylinders": "",
+      "enginePower": "250",
+      "height": "0000",
+      "length": "0000",
+      "weight": "0000",
+      "width": "0000"
+    },
+    "transmission": "X"
+  },
+  "options": {
+    "FKSFU": {
+      "option": "FKSFU",
+      "optionType": "fabric",
+      "phrases": {
+        "longDescription": "Perforated and Quilted Veganza in Smoke White"
+      },
+      "marketingTexts": {}
+    },
+    "P0300": {
+      "option": "P0300",
+      "optionType": "paint",
+      "phrases": {
+        "longDescription": "Alpine White"
+      },
+      "marketingTexts": {
+        "category": "2.2 Exterior colours - solid",
+        "longText": "Alpine White non-metallic. Not available on Sport Edition model.",
+        "option": "P0300",
+        "salesText": "Alpine White solid",
+        "type": "Lack",
+        "xsText": "Alpine White non-metallic. Not available on Sport Edition model."
+      }
+    },
+    "P0475": {
+      "option": "P0475",
+      "optionType": "paint",
+      "phrases": {
+        "longDescription": "Black Sapphire"
+      },
+      "marketingTexts": {
+        "category": "2.3 Exterior colours – metallic",
+        "longText": "Black Sapphire metallic",
+        "option": "P0475",
+        "salesText": "Black Sapphire metallic",
+        "type": "Lack",
+        "xsText": "Black Sapphire metallic"
+      }
+    },
+    "S03AC": {
+      "option": "S03AC",
+      "optionType": "other",
+      "phrases": {
+        "longDescription": "Towbar"
+      },
+      "marketingTexts": {
+        "category": "8.3 Transport and storage",
+        "longText": "The towbar is operated by a switch in the luggage compartment. It can be swivelled electrically until completely recessed underneath the rear apron. Includes trailer stability control.<br><br>Please take note of the information on trailer load and trailer nose weight.<br><br>Optionally available.",
+        "option": "S03AC",
+        "publicationNotice": "The approved trailer load depends on your chosen engine specification and equipment.",
+        "salesText": "Towbar",
+        "shortText": "The towbar is operated by a switch in the luggage compartment. It can be swivelled electrically until completely recessed underneath the rear apron. Includes trailer stability control.<br><br>Please take note of the information on trailer load and trailer nose weight.<br><br>Optionally available.",
+        "type": "Sonderausstattung"
+      }
+    },
+    "S0488": {
+      "option": "S0488",
+      "optionType": "other",
+      "phrases": {
+        "longDescription": "Lumbar Support"
+      },
+      "marketingTexts": {
+        "category": "7.1 Seats and seat functions",
+        "longText": "With Lumbar Support for the driver and front passenger, the rear seat backrest height and depth can be adjusted. <br><br>Available as standard for M Sport, M Sport Pro and M60 xDrive, optional for Sport Edition.",
+        "option": "S0488",
+        "salesText": "Lumbar support",
+        "shortText": "With Lumbar Support for the driver and front passenger, the rear seat backrest height and depth can be adjusted.",
+        "type": "Sonderausstattung",
+        "xsText": "With Lumbar Support for the driver and front passenger, the rear seat backrest height and depth can be adjusted."
+      }
+    },
+    "S07BL": {
+      "option": "S07BL",
+      "optionType": "other",
+      "phrases": {
+        "longDescription": "BMW UK Service Inclusive"
+      },
+      "marketingTexts": {
+        "category": "10.1 Service Inclusive",
+        "longText": "Looking for servicing simplicity? We’ve got you covered. Keeping your Electric BMW running smoothly is hassle-free with BMW Service Inclusive, covering your servicing needs up until its fifth birthday with no mileage restriction. Enjoy complete peace of mind and BMW quality servicing, all in one payment.<br><br>Available at all participating BMW Service Partners worldwide. All services use Genuine Parts to help protect your vehicle's value and come with a two-year parts warranty. If the services within your BMW Service Inclusive package aren’t fully used, you can transfer the contract to subsequent owners too. <br><br>The following services are included:<br><br>Service Vehicle Check in accordance with BMW guidelines<br>Service micro filter<br>Service brake fluids",
+        "option": "S07BL",
+        "salesText": "Service Inclusive - 5 years",
+        "type": "Sonderausstattung"
+      }
+    }
+  },
+  "technicalData": {
+    "businessKey": "120618215",
+    "status": 1,
+    "values": {
+      "C_DREHM_GES_KOMM_FTLBS": {
+        "referenceName": "C_DREHM_GES_KOMM_FTLBS",
+        "targetValue": 295
+      },
+      "CHRG_LADERATE_DC_MAX_BC_MI_NEU": {
+        "referenceName": "CHRG_LADERATE_DC_MAX_BC_MI_NEU",
+        "targetValue": 127
+      },
+      "A_GEPR_V214": {
+        "referenceName": "A_GEPR_V214",
+        "targetValue": 1700
+      },
+      "C_LEIST_GES_30MIN_BHP": {
+        "referenceName": "C_LEIST_GES_30MIN_BHP",
+        "targetValue": 141
+      },
+      "B_ZULADUNG_GEN": {
+        "referenceName": "B_ZULADUNG_GEN",
+        "targetValue": 610
+      },
+      "CHRG_LADERATE_DC_MAX_WC_MI_NEU": {
+        "referenceName": "CHRG_LADERATE_DC_MAX_WC_MI_NEU",
+        "targetValue": 93
+      },
+      "C_DREHM_GES": {
+        "referenceName": "C_DREHM_GES",
+        "targetValue": 400
+      },
+      "CHRG_LADEVARIANTE_DC_1": {
+        "referenceName": "CHRG_LADEVARIANTE_DC_1",
+        "textValue": "DC charging with 125A EVSE limitation"
+      },
+      "CHRG_LADEVARIANTE_DC_2": {
+        "referenceName": "CHRG_LADEVARIANTE_DC_2",
+        "textValue": "DC charging with 250A EVSE limitation"
+      },
+      "E_0_100KMH": {
+        "referenceName": "E_0_100KMH",
+        "targetValue": 6.1
+      },
+      "CHRG_LADEVARIANTE_DC_3": {
+        "referenceName": "CHRG_LADEVARIANTE_DC_3",
+        "textValue": "DC charging with 500A EVSE limitation"
+      },
+      "CHRG_LADEDAUER_AC_2_0_100": {
+        "referenceName": "CHRG_LADEDAUER_AC_2_0_100",
+        "textValue": "12:45"
+      },
+      "CHRG_LADERATE_DC_MAX_BC_KM_NEU": {
+        "referenceName": "CHRG_LADERATE_DC_MAX_BC_KM_NEU",
+        "targetValue": 204
+      },
+      "B_DACHLAST": {
+        "referenceName": "B_DACHLAST",
+        "targetValue": 100
+      },
+      "E_ABGAS": {
+        "referenceName": "E_ABGAS",
+        "listValues": [
+          {
+            "de": "-",
+            "en": "-"
+          }
+        ]
+      },
+      "ID_LEIST_KONST": {
+        "referenceName": "ID_LEIST_KONST",
+        "textValue": "30"
+      },
+      "B_AHLAST_12_GEN": {
+        "referenceName": "B_AHLAST_12_GEN",
+        "targetValue": 1500
+      },
+      "BAT_REESS_ENERINH_BRUT": {
+        "referenceName": "BAT_REESS_ENERINH_BRUT",
+        "targetValue": 83.9
+      },
+      "P_ELEKS_SYS_H_DEMM": {
+        "referenceName": "P_ELEKS_SYS_H_DEMM",
+        "targetValue": 400
+      },
+      "E_VMAX_MPH": {
+        "referenceName": "E_VMAX_MPH",
+        "targetValue": 120
+      },
+      "B_VALAST": {
+        "referenceName": "B_VALAST",
+        "targetValue": 1290
+      },
+      "A_RADST": {
+        "referenceName": "A_RADST",
+        "targetValue": 2995
+      },
+      "A_BREITE_GES_SPIEGEL": {
+        "referenceName": "A_BREITE_GES_SPIEGEL",
+        "targetValue": 2156
+      },
+      "CHRG_LADEVARIANTE_AC_3": {
+        "referenceName": "CHRG_LADEVARIANTE_AC_3",
+        "textValue": "AC charging with 11kW (230V, 16A) x 3ph"
+      },
+      "CHRG_LADEVARIANTE_AC_2": {
+        "referenceName": "CHRG_LADEVARIANTE_AC_2",
+        "textValue": "AC charging with 7,4kW (230V, 32A) x 1ph"
+      },
+      "CHRG_LADEVARIANTE_AC_1": {
+        "referenceName": "CHRG_LADEVARIANTE_AC_1",
+        "textValue": "AC charging with 2,3kW (230V, 10A) x 1ph"
+      },
+      "CHRG_LADERATE_DC_MAX_WC_KM_NEU": {
+        "referenceName": "CHRG_LADERATE_DC_MAX_WC_KM_NEU",
+        "targetValue": 149
+      },
+      "A_HOEHE": {
+        "referenceName": "A_HOEHE",
+        "targetValue": 1515
+      },
+      "A_BODENF": {
+        "referenceName": "A_BODENF",
+        "targetValue": 147
+      },
+      "C_LEIST_GES_BHP": {
+        "referenceName": "C_LEIST_GES_BHP",
+        "targetValue": 335
+      },
+      "CHRG_LADEDAUER_DC_3_10_80": {
+        "referenceName": "CHRG_LADEDAUER_DC_3_10_80",
+        "textValue": "0:30"
+      },
+      "P_ELEKS_SYS_H_NENNLSTG_ECE_R85_BHP": {
+        "referenceName": "P_ELEKS_SYS_H_NENNLSTG_ECE_R85_BHP",
+        "targetValue": 335
+      },
+      "C_LEIST_GES_KOMM_BHP": {
+        "referenceName": "C_LEIST_GES_KOMM_BHP",
+        "targetValue": 335
+      },
+      "B_HALAST": {
+        "referenceName": "B_HALAST",
+        "targetValue": 1655
+      },
+      "B_ANHAEN_12_KAT2": {
+        "referenceName": "B_ANHAEN_12_KAT2",
+        "targetValue": 1500
+      },
+      "B_AHLAST_8": {
+        "referenceName": "B_AHLAST_8",
+        "targetValue": 1500
+      },
+      "C_DREHM_GES_KOMM": {
+        "referenceName": "C_DREHM_GES_KOMM",
+        "targetValue": 400
+      },
+      "BAT_REESS_KAP_BRUT": {
+        "referenceName": "BAT_REESS_KAP_BRUT",
+        "targetValue": 210.6
+      },
+      "C_LEIST_GES_30MIN_PS": {
+        "referenceName": "C_LEIST_GES_30MIN_PS",
+        "targetValue": 143
+      },
+      "A_BREITE": {
+        "referenceName": "A_BREITE",
+        "targetValue": 1900
+      },
+      "B_STUETZL": {
+        "referenceName": "B_STUETZL",
+        "targetValue": 80
+      },
+      "B_LGEW_DIN": {
+        "referenceName": "B_LGEW_DIN",
+        "targetValue": 2180
+      },
+      "E_VMAX": {
+        "referenceName": "E_VMAX",
+        "targetValue": 193
+      },
+      "C_AUFSTMOD_LSTG_ANT_BHP": {
+        "referenceName": "C_AUFSTMOD_LSTG_ANT_BHP",
+        "targetValue": 308
+      },
+      "BAT_REESS_ENERINH_NET": {
+        "referenceName": "BAT_REESS_ENERINH_NET",
+        "targetValue": 81.2
+      },
+      "N_SITZE": {
+        "referenceName": "N_SITZE",
+        "targetValue": 5
+      },
+      "CHRG_LADEDAUER_AC_3_0_100": {
+        "referenceName": "CHRG_LADEDAUER_AC_3_0_100",
+        "textValue": "8:30"
+      },
+      "CHRG_LADEDAUER_DC_2_10_80": {
+        "referenceName": "CHRG_LADEDAUER_DC_2_10_80",
+        "textValue": "0:41"
+      },
+      "C_LEIST_GES_KOMM_PS": {
+        "referenceName": "C_LEIST_GES_KOMM_PS",
+        "targetValue": 340
+      },
+      "C_LEIST_GES_30MIN": {
+        "referenceName": "C_LEIST_GES_30MIN",
+        "targetValue": 105
+      },
+      "CHRG_LADEDAUER_DC_1_10_80": {
+        "referenceName": "CHRG_LADEDAUER_DC_1_10_80",
+        "textValue": "1:13"
+      },
+      "P_ELEKS_SYS_H_NENNLSTG_ECE_R85_PS": {
+        "referenceName": "P_ELEKS_SYS_H_NENNLSTG_ECE_R85_PS",
+        "targetValue": 340
+      },
+      "CHRG_LADELEISTUNG_DC": {
+        "referenceName": "CHRG_LADELEISTUNG_DC",
+        "targetValue": 205
+      },
+      "GETR_ANZG": {
+        "referenceName": "GETR_ANZG",
+        "targetValue": 1
+      },
+      "GETR_ART": {
+        "referenceName": "GETR_ART",
+        "textValue": "automatisch"
+      },
+      "C_LEIST_GES_KOMM": {
+        "referenceName": "C_LEIST_GES_KOMM",
+        "targetValue": 250
+      },
+      "A_WENDEK": {
+        "referenceName": "A_WENDEK",
+        "targetValue": 12.3
+      },
+      "C_LEIST_GES_PS": {
+        "referenceName": "C_LEIST_GES_PS",
+        "targetValue": 340
+      },
+      "B_LGEW_EU": {
+        "referenceName": "B_LGEW_EU",
+        "targetValue": 2255
+      },
+      "GER_VORBFAHR": {
+        "referenceName": "GER_VORBFAHR",
+        "targetValue": 66
+      },
+      "A_UEBERH_V": {
+        "referenceName": "A_UEBERH_V",
+        "targetValue": 945
+      },
+      "CHRG_LADELEISTUNG_AC": {
+        "referenceName": "CHRG_LADELEISTUNG_AC",
+        "targetValue": 11
+      },
+      "P_ELEKS_SYS_H_NENNLSTG_ECE_R85": {
+        "referenceName": "P_ELEKS_SYS_H_NENNLSTG_ECE_R85",
+        "targetValue": 250
+      },
+      "B_ZGG": {
+        "referenceName": "B_ZGG",
+        "targetValue": 2790
+      },
+      "A_EINHOEHE": {
+        "referenceName": "A_EINHOEHE",
+        "targetValue": 670
+      },
+      "CHRG_LADEDAUER_AC_1_0_100": {
+        "referenceName": "CHRG_LADEDAUER_AC_1_0_100",
+        "textValue": "47:00"
+      },
+      "C_LEIST_GES": {
+        "referenceName": "C_LEIST_GES",
+        "targetValue": 250
+      },
+      "B_AHLAST_UB": {
+        "referenceName": "B_AHLAST_UB",
+        "targetValue": 750
+      },
+      "A_LAENGE": {
+        "referenceName": "A_LAENGE",
+        "targetValue": 5060
+      },
+      "B_ANHEAN_8_KAT2": {
+        "referenceName": "B_ANHEAN_8_KAT2",
+        "targetValue": 1500
+      },
+      "A_GEPR_V211": {
+        "referenceName": "A_GEPR_V211",
+        "targetValue": 570
+      },
+      "A_UEBERH_H": {
+        "referenceName": "A_UEBERH_H",
+        "targetValue": 1120
+      }
+    },
+    "preConfigurationOptions": [
+      "S0337",
+      "S0704",
+      "S08R3"
+    ]
+  },
+  "blackConfiguration": {
+    "model": "T5MJ",
+    "options": {
+      "P0300": {
+        "longDescription": "Alpine White"
+      },
+      "P0475": {
+        "longDescription": "Black Sapphire"
+      }
+    },
+    "selected": [
+      "FKSFU",
+      "P0475",
+      "S0230",
+      "S02PA",
+      "S02VB",
+      "S02VD",
+      "S0302",
+      "S0337",
+      "S03DK",
+      "S03G9",
+      "S03M1",
+      "S0428",
+      "S043L",
+      "S0488",
+      "S0494",
+      "S04T2",
+      "S04U9",
+      "S04UR",
+      "S04V1",
+      "S0552",
+      "S05AS",
+      "S05AV",
+      "S05DM",
+      "S0654",
+      "S0674",
+      "S06AE",
+      "S06AF",
+      "S06AK",
+      "S06C4",
+      "S06NX",
+      "S06PA",
+      "S0704",
+      "S0710",
+      "S0760",
+      "S0775",
+      "S0812",
+      "S0853",
+      "S0880",
+      "S08R3",
+      "S08R9",
+      "S08SM",
+      "S08TF",
+      "S08TG",
+      "S08WM",
+      "S09QV",
+      "S09T1",
+      "S09T2"
+    ],
+    "url": "https://configure.bmw.co.uk/en_GB/configure/G61E/T5MJ/FKSFU,P0475,S0230,S02PA,S02VB,S02VD,S0302,S0337,S03DK,S03G9,S03M1,S0428,S043L,S0488,S0494,S04T2,S04U9,S04UR,S04V1,S0552,S05AS,S05AV,S05DM,S0654,S0674,S06AE,S06AF,S06AK,S06C4,S06NX,S06PA,S0704,S0710,S0760,S0775,S0812,S0853,S0880,S08R3,S08R9,S08SM,S08TF,S08TG,S08WM,S09QV,S09T1,S09T2/SE000001"
+  },
+  "access": {
+    "browserHeaderNames": [
+      "Content-Type",
+      "DNT",
+      "Referer",
+      "User-Agent",
+      "sec-ch-ua",
+      "sec-ch-ua-mobile",
+      "sec-ch-ua-platform",
+      "traceparent",
+      "x-api-key"
+    ],
+    "anonymousReplay": "401 Unauthorized; cache:no-store browser also 401 without x-api-key"
+  },
+  "vinChecks": {
+    "source": "https://baonline.bmw.com/#/bmw/vin-search",
+    "input": "User-authorised VIN; full/partial/encrypted identifier omitted",
+    "knowyour": {
+      "httpStatus": 200,
+      "body": {
+        "status": 422,
+        "body": ""
+      },
+      "ui": "Vehicle not found",
+      "positiveLookup": false
+    },
+    "driversGuide": {
+      "defaultLocale": "en-us",
+      "defaultStatus": "MANUAL_NOT_AVAILABLE",
+      "ukLocale": "en-gb",
+      "httpStatus": 200,
+      "body": {
+        "interfaceVersion": "4.0",
+        "vin": "REDACTED",
+        "derivative": "F30",
+        "brand": "BMW",
+        "status": "OK",
+        "node": {
+          "carName": "THE BMW 3 SERIES WITH eDRIVE.",
+          "disclaimerText": "<p>The BMW Driver's Guide shows the most appropriate information for the selected vehicle. Standard, national and special equipment is described largely on a vehicle-specific basis. Where possible, only the equipment and functions actually installed in the vehicle will be described. However, in individual cases, equipment or functions may be described that are not available in the vehicle. This also applies to safety-relevant functions and systems.</p> <p>This BMW Driver's Guide does not replace the integrated Owner's Handbook in the vehicle or the printed Owner's Handbooks delivered with the vehicle; it is simply an additional, non-binding service provided by BMW.</p> <p>Once the vehicle's software has been updated, the integrated Owner's Handbook will contain the latest information.</p> <p>In the interests of safety, do not use the BMW Driver's Guide while driving.</p>",
+          "entryPoint": [
+            {
+              "typeinfo": "TOC",
+              "title": "Contents"
+            },
+            {
+              "typeinfo": "GRAPHIC_INDEX",
+              "title": "Search by pictures"
+            },
+            {
+              "typeinfo": "ANIMATIONS",
+              "title": "Animations"
+            },
+            {
+              "typeinfo": "SHORT_GUIDE",
+              "title": "Quick Reference"
+            },
+            {
+              "typeinfo": "WARNING_LIGHTS",
+              "title": "Indicator and warning lamps"
+            },
+            {
+              "typeinfo": "FAQ",
+              "title": "Frequently Asked Questions"
+            },
+            {
+              "typeinfo": "QUICK_LINKS",
+              "title": "Quick links"
+            },
+            {
+              "typeinfo": "INDEX",
+              "title": "Index A–Z"
+            }
+          ]
+        }
+      },
+      "pdf": {
+        "status": "OK",
+        "locale": "en-GB",
+        "documentTypes": [
+          "Navigation / Entertainment / Communication",
+          "Owner's Handbook"
+        ],
+        "downloadUrls": "Omitted; general model manuals, not build-sheet evidence"
+      },
+      "image": {
+        "bytes": 305724,
+        "cache": "no-store",
+        "credentials": "omit",
+        "dimensions": {
+          "height": 1000,
+          "width": 1825
+        },
+        "headersProvided": [],
+        "sha256": "946bf4c6ac588040205cdd7f911d04088b2ef42733f858dc9828932009936f58",
+        "status": 200,
+        "type": "image/jpg;charset=UTF-8"
+      }
+    }
+  },
+  "observedDate": "2026-11-01",
+  "evidenceType": "Selected observed values, not a complete API response or runtime fixture",
+  "modelSubstitution": {
+    "requested": {
+      "modelRange": "G21",
+      "modelCode": "T3MQ",
+      "source": "Official 330e Touring marketing-page configurator link"
+    },
+    "returned": {
+      "modelRange": "G21",
+      "modelCode": "T3SK",
+      "agModelCode": "22FY",
+      "modelName": "BMW 320i Sport Touring"
+    },
+    "observedDate": "2026-11-01",
+    "outcome": "Configurator changed requested PHEV link to a petrol model; never silently accept as requested vehicle"
+  }
+}

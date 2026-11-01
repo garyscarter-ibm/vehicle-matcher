@@ -62,6 +62,9 @@
       "usget",
       "garyscarter-ibm"
     ],
-    "protected": []
+    "protected": {
+      "paths": [],
+      "label": "protected data"
+    }
   }
 }

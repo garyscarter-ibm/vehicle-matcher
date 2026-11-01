@@ -27,6 +27,7 @@ Read the current Jira description and subsequent comments before starting. FUCQ-
 
 ## Supporting evidence and open decisions
 
+- [BMW interface research](bmw-interface-research.md) and [adapter story map](bmw-interface-stories.md), FUCQ-4 refinement, 1 November: dated catalogue/specification/image proof, a repeatable VIN-linked Driver's Guide route, unsuccessful free-decoder tests and conditional Outvin API findings. These establish source limits, not live GCSP integration or a VIN build sheet.
 - [Discovery and codebase findings](discovery-findings.md), [research background](background.md), [business model](business-model-exploration.md) and [personas](personas/README.md).
 - [Sandeep questions](questions-for-sandeep.md): interfaces and before/after availability, points/allowances, connected data, allocation and unresolved-renewal policy. Russell asks Sandeep.
 - [GC questions](questions-for-gc.md): deployment, shared state, adapters, email and future integration. Russell owns the human presentation practicalities.

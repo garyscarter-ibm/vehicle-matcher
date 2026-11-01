@@ -1,0 +1,34 @@
+{
+  "observedDate": "2026-11-01",
+  "method": "Native Node HTTPS; fresh RSA PKCS#1 v1.5 encryption using the service public key; no cookies, API key or Authorization",
+  "input": "User-authorised VIN omitted",
+  "publicEncryptionKey": {
+    "path": "/digital/v4.0/key",
+    "httpStatus": 200
+  },
+  "manual": [
+    {
+      "locale": "en-us",
+      "httpStatus": 200,
+      "applicationStatus": "MANUAL_NOT_AVAILABLE",
+      "derivative": "F30",
+      "brand": "BMW"
+    },
+    {
+      "locale": "en-gb",
+      "httpStatus": 200,
+      "applicationStatus": "OK",
+      "derivative": "F30",
+      "brand": "BMW",
+      "carName": "THE BMW 3 SERIES WITH eDRIVE.",
+      "handbookDisclaimer": "Non-binding; individual equipment may not be fitted"
+    }
+  ],
+  "image": {
+    "locale": "en-gb",
+    "httpStatus": 200,
+    "contentType": "image/jpg;charset=UTF-8",
+    "bytes": 305724,
+    "sha256": "946bf4c6ac588040205cdd7f911d04088b2ef42733f858dc9828932009936f58"
+  }
+}

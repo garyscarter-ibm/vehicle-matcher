@@ -1,0 +1,45 @@
+{
+  "observedDate": "2026-11-01",
+  "scope": "User-requested bimmer.work and mdecoder.com API investigation; no CAPTCHA bypass, registration, payment or vendor contact",
+  "input": "User-supplied VIN omitted from free-site results; vendor-published example used for unauthenticated Outvin request",
+  "bimmerWork": {
+    "source": "https://bimmer.work/",
+    "observedForm": {"method": "POST", "path": "/query.php", "fieldNames": ["vin", "recaptcha_token"], "vinMaxLength": 17},
+    "challenge": "Google reCAPTCHA Enterprise",
+    "ordinaryBrowserAttempts": 2,
+    "decodedResult": false,
+    "observedOutcome": "No result; token unpopulated when inspected; no successful query.php response captured",
+    "documentedPublicApiFound": false,
+    "homepageClaims": ["Factory option list", "Configuration images", "360 degree views"],
+    "claimVerification": "Not verified by a positive lookup in this session"
+  },
+  "mdecoderFree": {
+    "source": "https://www.mdecoder.com/",
+    "observedForm": {"method": "POST", "action": "Current page", "fieldNames": ["vin", "_token"]},
+    "observedResultRoute": {"method": "GET", "pathTemplate": "/decode/<VIN-suffix>", "httpStatus": 200, "contentType": "text/html"},
+    "decodedResult": false,
+    "observedOutcome": ["Please Wait; refresh after 30 seconds", "One refresh after advertised delay showed Solve Captcha"],
+    "affiliation": "Website disclaims BMW affiliation"
+  },
+  "outvinAdvertisedApi": {
+    "advertisement": "https://new.mdecoder.com/vin-decoder-api",
+    "docs": "https://app.swaggerhub.com/apis-docs/outvin/Outvin/1.0.3",
+    "openApi": "https://api.swaggerhub.com/apis/outvin/Outvin/1.0.3",
+    "openApiHttpStatus": 200,
+    "documentedVersion": "1.0.3",
+    "documentedProductionBase": "https://www.outvin.com/api/v1/",
+    "documentedAuthentication": "HTTP Basic using Outvin email/password",
+    "vehicleOperation": {"method": "GET", "pathTemplate": "/vehicle/{VIN}", "documentedStatuses": ["200", "400", "401", "402", "404", "5XX"], "successBodySchemaPresent": false},
+    "statusOperation": {"method": "GET", "path": "/status", "optionalType": "0 identification, 1 history", "documentedResponseFields": ["makes[].brandCode", "makes[].make"]},
+    "nativeNoCredentialProbes": [
+      {"path": "/status", "httpStatus": 403, "contentType": "text/plain; charset=UTF-8"},
+      {"pathTemplate": "/vehicle/<vendor-published-BMW-sample>", "httpStatus": 403, "contentType": "text/plain; charset=UTF-8"}
+    ],
+    "positiveDecodeProven": false,
+    "feesOrEntitlementVerified": false,
+    "relationshipLimit": "Advertised by first-party mdecoder subdomain; not proof the free website internally uses this API",
+    "terms": {"url": "https://new.mdecoder.com/terms-and-conditions", "version": "1.0", "verifiedInLiveBrowser": true, "relevantSections": ["1-3 professional aftermarket use and coverage", "7-9 display/reuse/storage restrictions; provider-side repeat access is not a local caching licence", "11 rate limits and changes", "12 fees", "14 availability", "15 accuracy"]},
+    "implementationGate": "Permitted demo/display/test/retention use, account access/fees, successful authorised payload and field dictionary required before implementation refinement"
+  },
+  "conclusion": "No successful third-party VIN decode in this session; documented Outvin API remains a conditional candidate, not an implementation-ready provider"
+}
