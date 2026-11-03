@@ -1,6 +1,6 @@
 # Plausible synthetic BMW VIN rules
 
-FUCQ-4 refinement, **1 November 2026**. Russell authorised [FUCQ-18](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-18), a synthetic VIN registry/service/adapter with a plausible VIN generator, and [FUCQ-19](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-19), a separate capability to populate it with **10,000 genuinely distinct configurations**. This note supplies the generator's evidence and remaining coverage gaps. It is research, not an implemented generator or an issued vehicle identity.
+FUCQ-5 refinement, **1 November 2026**. Russell authorised [FUCQ-19](https://ibm-consulting.atlassian.net/browse/FUCQ-19), a synthetic VIN registry/service/adapter with a plausible VIN generator, and [FUCQ-20](https://ibm-consulting.atlassian.net/browse/FUCQ-20), a separate capability to populate it with **10,000 genuinely distinct configurations**. This note supplies the generator's evidence and remaining coverage gaps. It is research, not an implemented generator or an issued vehicle identity.
 
 ## Findings and source quality
 
@@ -212,7 +212,7 @@ Synthetic/source provenance must survive HTTP responses and provider switches. T
 - The structure/generator epic proves profile validation, serial/checksum generation, immutable persistence/loading, actual HTTP lookup and consuming-adapter mapping on a small five-WMI fixture set. No 10,000-car collection is needed to accept that capability.
 - The population epic declares supported models/markets/eras, closes their profile gaps, gathers 10,000 distinct complete resolved configurations, assigns stable generated identities, loads and reconciles the registry, and proves lookup with all five required WMIs represented by multiple configurations.
 - Both follow [demo-brief.md](demo-brief.md), [experience-quality.md](experience-quality.md) and `COMPONENTS.md`. These backend capabilities introduce no screen; validate provenance, representative imagery, units, missing data and failure outcomes at the presentation contract. Consuming UI work supplies browser evidence against the visual reference when agreed.
-- FUCQ-5 agrees the canonical HLD, storage/deployment placement and runtime contract before implementation. This research does not alter FUCQ-13–17 or authorise bulk collection in this session.
+- FUCQ-6 agrees the canonical HLD, storage/deployment placement and runtime contract before implementation. This research does not alter FUCQ-14–18 or authorise bulk collection in this session.
 
 ## Follow-up review and verification
 

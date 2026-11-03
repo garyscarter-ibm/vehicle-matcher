@@ -1,6 +1,6 @@
-# BMW vehicle interfaces: FUCQ-4 research and refinement
+# BMW vehicle interfaces: FUCQ-5 research and refinement
 
-Observed **1 November 2026** for the **12 November demonstration**. [FUCQ-4](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-4). Scope authorised by Russell: research in the session and implementation-ready stories; no adapter implementation or dispatcher. Russell subsequently added bimmer.work and M Decoder to the investigation and supplied one VIN for lookup testing. Its plaintext, suffix and encrypted forms are omitted from retained evidence.
+Observed **1 November 2026** for the **12 November demonstration**. [FUCQ-5](https://ibm-consulting.atlassian.net/browse/FUCQ-5). Scope authorised by Russell: research in the session and implementation-ready stories; no adapter implementation or dispatcher. Russell subsequently added bimmer.work and M Decoder to the investigation and supplied one VIN for lookup testing. Its plaintext, suffix and encrypted forms are omitted from retained evidence.
 
 ## Findings and demo recommendation
 
@@ -12,9 +12,9 @@ Neither free third-party decoder produced a decoded result in the bounded tests.
 
 For a repeatable demo, build a **versioned snapshot-backed catalogue/specification adapter**, a separate **representative imagery adapter**, and a **VIN-linked content adapter**. Keep live providers replaceable and explicit; an unsupported public-website-key provider can now be considered for the demo with a labelled snapshot fallback. The snapshot may reproduce an observed catalogue configuration; it must not pretend to be an available GCSP car, a historical VIN's specification, or the October 2024 eligibility matrix. The current live-provider Jira stories remain gated on sanctioned BMW access until that provider choice and any gate changes are agreed. No free-decoder scraping or CAPTCHA dependency is recommended.
 
-The [adapter capability map](bmw-interface-stories.md) records the independent delivery Epics and their gates. Russell accepted FUCQ-4's research at closeout and required FUCQ-13–17 to be tracked independently. FUCQ-5 must agree the HLD before new adapter wiring. The proposals below are inputs to that design, not an approved replacement for it.
+The [adapter capability map](bmw-interface-stories.md) records the independent delivery Epics and their gates. Russell accepted FUCQ-5's research at closeout and required FUCQ-14–18 to be tracked independently. FUCQ-6 must agree the HLD before new adapter wiring. The proposals below are inputs to that design, not an approved replacement for it.
 
-Russell's later [synthetic fleet proposal](synthetic-vin-fleet-proposal.md) adds a practical demo route: collect **10,000 distinct configurations**, assign fictional VINs and resolve them through a local VIN service and replaceable adapter. Three native rule-solver/OTD variants were proved as a small pilot; the requested corpus and VIN service are not implemented. Russell has now authorised [FUCQ-18](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-18) for the structure/generator and [FUCQ-19](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-19) for the populated corpus. Their [refined descriptions](synthetic-vin-fleet-proposal.md#authorised-bounded-backlog-capabilities) and [primary-source VIN rules](synthetic-vin-rules.md) preserve the existing FUCQ-13–17 scope and activation gates.
+Russell's later [synthetic fleet proposal](synthetic-vin-fleet-proposal.md) adds a practical demo route: collect **10,000 distinct configurations**, assign fictional VINs and resolve them through a local VIN service and replaceable adapter. Three native rule-solver/OTD variants were proved as a small pilot; the requested corpus and VIN service are not implemented. Russell has now authorised [FUCQ-19](https://ibm-consulting.atlassian.net/browse/FUCQ-19) for the structure/generator and [FUCQ-20](https://ibm-consulting.atlassian.net/browse/FUCQ-20) for the populated corpus. Their [refined descriptions](synthetic-vin-fleet-proposal.md#authorised-bounded-backlog-capabilities) and [primary-source VIN rules](synthetic-vin-rules.md) preserve the existing FUCQ-14–18 scope and activation gates.
 
 ## Evidence and limits of the investigation
 
@@ -301,7 +301,7 @@ Live browser verification of [Outvin terms v1.0](https://new.mdecoder.com/terms-
 
 ## 7. Adapter boundaries and story implications
 
-These are refinement recommendations for FUCQ-5 and the independent delivery capabilities, with the external-data boundaries already binding in the [demo brief](demo-brief.md).
+These are refinement recommendations for FUCQ-6 and the independent delivery capabilities, with the external-data boundaries already binding in the [demo brief](demo-brief.md).
 
 | Boundary | Input / output | Keep separate |
 |---|---|---|
@@ -311,7 +311,7 @@ These are refinement recommendations for FUCQ-5 and the independent delivery cap
 | Future VIN build provider | Permitted provider contract + authorised lookup → provider-attributed identity/build fields with completeness. | Handbook-derived guesses and BMW-authoritative claims for third-party results. |
 | GCSP scheme/state | Scheme-specific dates, employee/grade, authoritative or labelled fixture rules, exact released vehicle ID. | Retail prices, catalogue constructibility and retailer used-stock inventory. |
 
-Existing code reinforces that split: `server/stock.js` dispatches retailer/dealer/national feeds; `server/mapping.js` maps listing data and supplies model-level defaults/estimates; VIN is currently an identifier fallback, not a decoder. `stock.js` separately enriches listing colours. `server/index.js` projects match display fields; the existing result-card image fallback belongs to the used-car experience. Reuse appropriate HTTP/normalisation patterns without overwriting those routes or presenting their estimates as exact BMW facts. See [discovery findings](discovery-findings.md) and FUCQ-7 for engine reuse scope.
+Existing code reinforces that split: `server/stock.js` dispatches retailer/dealer/national feeds; `server/mapping.js` maps listing data and supplies model-level defaults/estimates; VIN is currently an identifier fallback, not a decoder. `stock.js` separately enriches listing colours. `server/index.js` projects match display fields; the existing result-card image fallback belongs to the used-car experience. Reuse appropriate HTTP/normalisation patterns without overwriting those routes or presenting their estimates as exact BMW facts. See [discovery findings](discovery-findings.md) and FUCQ-8 for engine reuse scope.
 
 The proposed narrow shared contract should carry:
 
@@ -322,7 +322,7 @@ The proposed narrow shared contract should carry:
 - Image role/fidelity/viewpoint and a purposeful missing-image outcome. A missing image must not suppress otherwise valid facts or fabricate another car.
 - Bounded timeouts, response validation, no secret/identifier logging, explicit provider choice and safe fallback provenance. Do not silently switch providers and preserve an “official” label. Provider-specific retention rules override generic caching.
 
-No new GCSP endpoint, screen, points calculation, VIN persistence or connected-data pipeline is implemented in this session. The later authorised synthetic-fleet refinement specifies a closed VIN lookup capability and generator; FUCQ-5 agrees their placement and later consumer wiring. The initial adapter capabilities retain their narrower scope. The [experience quality contract](experience-quality.md) applies to the presentation contract even for backend stories. No GCSP visual reference has been agreed, so these specifications must not invent UI; future consuming screens need desktop/narrow/keyboard review against the agreed reference and `COMPONENTS.md`.
+No new GCSP endpoint, screen, points calculation, VIN persistence or connected-data pipeline is implemented in this session. The later authorised synthetic-fleet refinement specifies a closed VIN lookup capability and generator; FUCQ-6 agrees their placement and later consumer wiring. The initial adapter capabilities retain their narrower scope. The [experience quality contract](experience-quality.md) applies to the presentation contract even for backend stories. No GCSP visual reference has been agreed, so these specifications must not invent UI; future consuming screens need desktop/narrow/keyboard review against the agreed reference and `COMPONENTS.md`.
 
 ## 8. Questions and decisions still needed
 

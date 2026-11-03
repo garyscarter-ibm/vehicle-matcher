@@ -1,8 +1,8 @@
 # Synthetic BMW fleet and replaceable VIN lookup
 
-Refinement discussion, **1 November 2026**, for FUCQ-4 and the FUCQ-5 HLD. Russell proposed generating many BMW configurations through the configurator, assigning plausible invented VINs, storing the mappings in a stub database, and consuming a VIN lookup API through a replaceable adapter. He subsequently selected **10,000 genuinely distinct configurations**. Repeating one configuration under many VINs does not satisfy that target.
+Refinement discussion, **1 November 2026**, for FUCQ-5 and the FUCQ-6 HLD. Russell proposed generating many BMW configurations through the configurator, assigning plausible invented VINs, storing the mappings in a stub database, and consuming a VIN lookup API through a replaceable adapter. He subsequently selected **10,000 genuinely distinct configurations**. Repeating one configuration under many VINs does not satisfy that target.
 
-Russell subsequently **authorised two backlog epics**: structure/service/adapter plus the plausible VIN generator, followed by collection and population of the 10,000-configuration fleet. This remains a **research and backlog refinement only** session. No fleet generator, database, lookup API or application adapter has been implemented and no bulk collection has run. FUCQ-5 still owns the agreed HLD and deployment choices. The refined capability descriptions below are the source for [FUCQ-18](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-18) and [FUCQ-19](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-19). Jira is authoritative; its population description also names FUCQ-18 explicitly as the prerequisite.
+Russell subsequently **authorised two backlog epics**: structure/service/adapter plus the plausible VIN generator, followed by collection and population of the 10,000-configuration fleet. This remains a **research and backlog refinement only** session. No fleet generator, database, lookup API or application adapter has been implemented and no bulk collection has run. FUCQ-6 still owns the agreed HLD and deployment choices. The refined capability descriptions below are the source for [FUCQ-19](https://ibm-consulting.atlassian.net/browse/FUCQ-19) and [FUCQ-20](https://ibm-consulting.atlassian.net/browse/FUCQ-20). Jira is authoritative; its population description also names FUCQ-19 explicitly as the prerequisite.
 
 ## Recommendation and alternatives
 
@@ -10,7 +10,7 @@ Use an **offline collection and publication pipeline**, followed by a **local sy
 
 Two alternatives are less suitable for the requested outcome: making live configurator calls during every lookup would retain a network dependency and still require a fictional VIN mapping; manually inventing specifications would lose the source-backed option and technical-data evidence. A snapshot-backed VIN service combines real catalogue configurations with explicitly fictional vehicle identities.
 
-The stub may be a module and indexed data files in the existing Node deployment. It does not require a separate database server or microservice deployment merely to establish the HTTP boundary. FUCQ-5 chooses the actual storage, packaging and route. Ten thousand entries alone do not justify a new infrastructure dependency. Keep large generated payloads and image collections in reproducible dataset artifacts with manifests rather than committing every binary to Git.
+The stub may be a module and indexed data files in the existing Node deployment. It does not require a separate database server or microservice deployment merely to establish the HTTP boundary. FUCQ-6 chooses the actual storage, packaging and route. Ten thousand entries alone do not justify a new infrastructure dependency. Keep large generated payloads and image collections in reproducible dataset artifacts with manifests rather than committing every binary to Git.
 
 ```mermaid
 flowchart LR
@@ -25,7 +25,7 @@ flowchart LR
     Real -.-> Provider["Real VIN API"]
 ```
 
-The canonical draw.io HLD must incorporate the selected design in FUCQ-5 before implementation. This discussion diagram does not mark any proposed component as built or replace that agreement.
+The canonical draw.io HLD must incorporate the selected design in FUCQ-6 before implementation. This discussion diagram does not mark any proposed component as built or replace that agreement.
 
 ## What is proved
 
@@ -76,7 +76,7 @@ The demo provider resolves only its published dataset. A well-formed unknown VIN
 
 ## Consuming API and future replacement
 
-The conceptual route is `GET /vehicles/{vin}` on the demo source, reached through a backend adapter. Its final prefix, hosting and access boundary belong to FUCQ-5. It is a lookup over a closed synthetic registry, not a public forwarding proxy for arbitrary real VINs.
+The conceptual route is `GET /vehicles/{vin}` on the demo source, reached through a backend adapter. Its final prefix, hosting and access boundary belong to FUCQ-6. It is a lookup over a closed synthetic registry, not a public forwarding proxy for arbitrary real VINs.
 
 Return a narrow versioned vehicle-details result: vehicle identity, configuration identity, model/body/powertrain, paint/upholstery, selected equipment, evidenced technical values with units, image references/fidelity, source dates, completeness and synthetic/source provenance. Keep invalid input, not-found, partial data, unsupported, source unavailable and identity mismatch distinguishable. The application consumes this normalised result; source-specific transport and field names stay inside the selected adapter.
 
@@ -88,10 +88,10 @@ The user requested **two separate Epics**, created and read back on 1 November 2
 
 | Jira Epic | Outcome | Dependencies |
 |---|---|---|
-| [FUCQ-18](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-18) | Structure, plausible generator, closed VIN API and consuming adapter; small five-WMI fixture set | FUCQ-5, FUCQ-13 |
-| [FUCQ-19](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-19) | 10,000 distinct configurations collected, assigned VINs, loaded and reconciled | FUCQ-18, FUCQ-14; FUCQ-13 transitively |
+| [FUCQ-19](https://ibm-consulting.atlassian.net/browse/FUCQ-19) | Structure, plausible generator, closed VIN API and consuming adapter; small five-WMI fixture set | FUCQ-6, FUCQ-14 |
+| [FUCQ-20](https://ibm-consulting.atlassian.net/browse/FUCQ-20) | 10,000 distinct configurations collected, assigned VINs, loaded and reconciled | FUCQ-19, FUCQ-15; FUCQ-14 transitively |
 
-Both are unassigned **To Do** Epics with label `backlog`, default Medium priority and no points. Both relate to FUCQ-4; six issue links were verified in Jira readback. These are bounded outcomes spanning data, HTTP and the consuming adapter. FUCQ-13/14 remain foundations; FUCQ-15 remains the separate handbook/illustration capability. FUCQ-16/17 retain their existing live-access gates. No duplicate `_dev/` story files or implementation dispatch are created by this refinement.
+Both are unassigned **To Do** Epics with label `backlog`, default Medium priority and no points. Both relate to FUCQ-5; six issue links were verified in Jira readback. These are bounded outcomes spanning data, HTTP and the consuming adapter. FUCQ-14/15 remain foundations; FUCQ-16 remains the separate handbook/illustration capability. FUCQ-17/18 retain their existing live-access gates. No duplicate `_dev/` story files or implementation dispatch are created by this refinement.
 
 ### Look up synthetic BMW vehicles using plausible generated VINs
 
@@ -112,15 +112,15 @@ As a GCSP application consumer, retrieve a fictional BMW's stable source-backed 
 
 #### Files or areas
 
-Synthetic identity/profile registry, generator and loader, versioned seed artifacts, demo HTTP lookup route, narrow vehicle-details contract, backend consuming adapter and offline integration/contract checks at FUCQ-5 agreed locations. Reuse the FUCQ-13 snapshot identity/provenance work and FUCQ-14 image contract where applicable; preserve existing used-car `stock.js`/`mapping.js` behaviour.
+Synthetic identity/profile registry, generator and loader, versioned seed artifacts, demo HTTP lookup route, narrow vehicle-details contract, backend consuming adapter and offline integration/contract checks at FUCQ-6 agreed locations. Reuse the FUCQ-14 snapshot identity/provenance work and FUCQ-15 image contract where applicable; preserve existing used-car `stock.js`/`mapping.js` behaviour.
 
 #### Decided
 
-Russell authorised this epic on 1 November 2026 and required maximum plausible BMW VIN structure, all five requested WMIs, researched descriptors, correct check/year/plant coding and random final serials. Read this proposal, `synthetic-vin-rules.md`, `bmw-interface-research.md`, `demo-brief.md`, `experience-quality.md` and `COMPONENTS.md`. FUCQ-5 agrees the canonical HLD/storage/deployment path and FUCQ-13 supplies the snapshot foundation before implementation. The primary 2026/2027 BMW Part 565 tables establish North American references; UK/RHD coverage remains explicitly incomplete. There is no new screen or agreed GCSP visual reference: verify the backend presentation contract, provenance, units, missing values and error states. Every child inherits these obligations.
+Russell authorised this epic on 1 November 2026 and required maximum plausible BMW VIN structure, all five requested WMIs, researched descriptors, correct check/year/plant coding and random final serials. Read this proposal, `synthetic-vin-rules.md`, `bmw-interface-research.md`, `demo-brief.md`, `experience-quality.md` and `COMPONENTS.md`. FUCQ-6 agrees the canonical HLD/storage/deployment path and FUCQ-14 supplies the snapshot foundation before implementation. The primary 2026/2027 BMW Part 565 tables establish North American references; UK/RHD coverage remains explicitly incomplete. There is no new screen or agreed GCSP visual reference: verify the backend presentation contract, provenance, units, missing values and error states. Every child inherits these obligations.
 
 #### Out of scope
 
-The 10,000-configuration collection/load run, real-provider credentials/integration, public real-VIN forwarding, claiming BMW-issued identities, new infrastructure beyond FUCQ-5's decision, changes to scheme policy/state or fabricated connected data.
+The 10,000-configuration collection/load run, real-provider credentials/integration, public real-VIN forwarding, claiming BMW-issued identities, new infrastructure beyond FUCQ-6's decision, changes to scheme policy/state or fabricated connected data.
 
 #### Validate
 
@@ -137,7 +137,7 @@ As a demo scenario author, collect 10,000 genuinely different BMW configurations
 1. Declare model/derivative/body/powertrain coverage, source provider, market/locale, model/catalogue dates, bounded request and image budgets, seed and generator/profile versions before collection. Use a documented supported profile for every represented derivative; close selected UK/RHD descriptor/year/plant gaps rather than apply US codes silently. Cover **multiple distinct configurations under each of WBA, WBS, WBY, 5UX and 5YM**, with planned/actual distributions and explicit exclusions. Additional valid WMIs are allowed when required by the selected models. Current catalogue evidence does not redefine the October 2024 eligibility baseline.
 2. Implement offline dry-run planning and bounded resumable collection. Discover real model/AG mappings and selectable options. Submit sorted option candidates to the rule solver, retain the complete resolved selection and constructibility, detect added/removed/ignored requested options and model/date substitutions, and reject inconsistent/incomplete results. An unvalidated Cartesian product cannot count as vehicles.
 3. Publish **10,000 genuinely distinct complete resolved configurations**. Canonical resolved model/body/powertrain/options determine distinctness; VIN changes, requested choices resolving identically, option order, dates/timestamps, metadata or source-version aliases cannot pad the count. Preserve full market/date context for source identity without counting repeated model/options as novelty. A shortfall remains incomplete with a resumable checkpoint and a report.
-4. Enrich each accepted configuration using matching resolved identity and full options with configuration-specific technical data and the agreed representative-image coverage. Preserve meanings/units, selected versus available equipment, missing values, source context, image roles and fidelity. Share identical assets where appropriate. Extend/reuse FUCQ-13/FUCQ-14 rather than duplicate their contracts or claim that every option creates a visibly different image.
+4. Enrich each accepted configuration using matching resolved identity and full options with configuration-specific technical data and the agreed representative-image coverage. Preserve meanings/units, selected versus available equipment, missing values, source context, image roles and fidelity. Share identical assets where appropriate. Extend/reuse FUCQ-14/FUCQ-15 rather than duplicate their contracts or claim that every option creates a visibly different image.
 5. Collect with caching, checkpoints, finite retries, timeouts, conservative concurrency and stop/backoff on source access/rate failures. Record actual request counts, failures, resolved duplicates and coverage progress. Source access, retention, quotas and unsupported public-website dependencies are explicit run inputs. Bulk calls never start implicitly in CI or during a normal demo lookup.
 6. Use the first epic's generator/loader to create **at least 10,000 vehicle/VIN records, one for each distinct configuration**, and load/reconcile them into the actual registry. Preserve all earlier published associations; detect VIN collisions across datasets. Configuration and vehicle counts, checksums and every reference reconcile with the published manifest. Repeating a configuration under more VINs does not satisfy the configuration target.
 7. Atomically activate a versioned dataset with exact distinct count, WMI/model/option coverage, completeness, source/catalogue context, seed/tool versions and artifact checksums. Interrupted collection or failed validation/load leaves the previous active dataset usable. Resume, clean rebuild, idempotent reload and reset produce the documented stable identities. Keep large payloads/images as reproducible artifacts at the agreed location.
@@ -145,11 +145,11 @@ As a demo scenario author, collect 10,000 genuinely different BMW configurations
 
 #### Files or areas
 
-Resumable collection/enrichment tooling, canonical configuration keys, coverage/profile plan, publication manifests/artifacts, generator/registry integration, reconciliation/verification reports and runbook at FUCQ-5 agreed locations. Reuse the structure/generator epic and FUCQ-13/FUCQ-14 contracts.
+Resumable collection/enrichment tooling, canonical configuration keys, coverage/profile plan, publication manifests/artifacts, generator/registry integration, reconciliation/verification reports and runbook at FUCQ-6 agreed locations. Reuse the structure/generator epic and FUCQ-14/FUCQ-15 contracts.
 
 #### Decided
 
-Russell selected **10,000 genuinely distinct configurations** and authorised this separate population epic on 1 November 2026. Read this proposal, `synthetic-vin-rules.md`, `bmw-interface-research.md`, `demo-brief.md`, `experience-quality.md` and `COMPONENTS.md`. The three-configuration native pilot proves sorted rule-solver/OTD generation for one GB i5 Touring; it does not prove 10,000-config availability, broad model coverage, quotas or a UK VIN dictionary. Agree the FUCQ-5 HLD and selected source/coverage/image/request context before the bulk run. No new screen or GCSP visual reference is introduced: verify provenance, representative imagery, unknown values and failure outcomes at the presentation contract; propagate these requirements to descendants.
+Russell selected **10,000 genuinely distinct configurations** and authorised this separate population epic on 1 November 2026. Read this proposal, `synthetic-vin-rules.md`, `bmw-interface-research.md`, `demo-brief.md`, `experience-quality.md` and `COMPONENTS.md`. The three-configuration native pilot proves sorted rule-solver/OTD generation for one GB i5 Touring; it does not prove 10,000-config availability, broad model coverage, quotas or a UK VIN dictionary. Agree the FUCQ-6 HLD and selected source/coverage/image/request context before the bulk run. No new screen or GCSP visual reference is introduced: verify provenance, representative imagery, unknown values and failure outcomes at the presentation contract; propagate these requirements to descendants.
 
 #### Out of scope
 
@@ -163,4 +163,4 @@ Default checks use offline fixtures for sorted options, solver mutations, substi
 
 Independent read-only reviews requested Opus, selected `gpt-6.1-sol` / `high`, no fallback or descendants; effective runtime settings unverified. The final review passed the authorised two-epic split and verified all 41 cited MY2026 descriptors, 145 reference rows, filing counts and year codes against retained evidence. It found no blocking or major issue. All live research stayed in the main session.
 
-The count and two-epic split are agreed. Remaining implementation inputs are the supported derivative/UK VIN profile coverage, catalogue contexts, image/view coverage, collection budgets/source activation and FUCQ-5 storage/deployment placement. The [VIN rules research](synthetic-vin-rules.md) records the primary evidence and unresolved UK mappings. These inputs do not justify substituting repeated configurations for Russell's chosen target.
+The count and two-epic split are agreed. Remaining implementation inputs are the supported derivative/UK VIN profile coverage, catalogue contexts, image/view coverage, collection budgets/source activation and FUCQ-6 storage/deployment placement. The [VIN rules research](synthetic-vin-rules.md) records the primary evidence and unresolved UK mappings. These inputs do not justify substituting repeated configurations for Russell's chosen target.

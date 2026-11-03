@@ -18,7 +18,7 @@ Who controls GitHub Pages and the Render service? Which exact branch/revision is
 
 ### GC-002: Shared launcher and environment routing
 
-How should FUCQ-12 sit in front of the current launcher while retaining the brand switcher, current used-car modes and deep links? How will the employee and used-car experiences select the right API/environment without breaking existing demo links or duplicating configuration?
+How should FUCQ-13 sit in front of the current launcher while retaining the brand switcher, current used-car modes and deep links? How will the employee and used-car experiences select the right API/environment without breaking existing demo links or duplicating configuration?
 
 ### GC-003: State and background work
 

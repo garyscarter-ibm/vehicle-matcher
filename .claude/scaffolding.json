@@ -9,12 +9,14 @@
   },
   "backlog": {
     "backend": "jira",
-    "site": "ibm-consulting-sandbox003.atlassian.net",
-    "cloud_id": "3a0f53b1-e413-4550-a7f6-d099f165f74c",
+    "site": "ibm-consulting.atlassian.net",
+    "cloud_id": "9024e134-9d2e-4f15-af8d-4df1fd4c2cb1",
     "project": "FUCQ",
-    "board_id": 2132,
+    "board_id": 2336,
     "epic_type": "Epic",
     "story_type": "Story",
+    "bug_type": "Bug",
+    "story_link_type": "Relates",
     "label": "backlog",
     "statuses": {
       "To Do": "To Do",

@@ -2,7 +2,7 @@
 
 31 October 2026. Discussion prompted by Russell's ideas after the three personas were drafted. These are hypotheses and recommendations for discussion, not approved business policy, a product specification or an implementation plan.
 
-**Discussion boundary:** Agree the business/product shape and bounded backlog items with Russell before discussion-driven Jira updates. FUCQ-1 is the entry point to this conversation. On 1 November Russell authorised housekeeping and five foundation items: FUCQ-3 to FUCQ-7 were repurposed; FUCQ-8 to FUCQ-11 were retired as superseded. Further product capabilities remain proposals. Discussion and questions stay in this repository; all scaffolding remains on.
+**Discussion boundary:** Agree the business/product shape and bounded backlog items with Russell before discussion-driven Jira updates. FUCQ-2 is the entry point to this conversation. On 1 November Russell authorised housekeeping and five foundation items: FUCQ-4 to FUCQ-8 were repurposed; FUCQ-9 to FUCQ-12 were retired as superseded. Further product capabilities remain proposals. Discussion and questions stay in this repository; all scaffolding remains on.
 
 **Demo purpose:** Russell has clarified that this is a demonstration to BMW on 12 November, intended both to show what GCSP modernisation enables and to demonstrate IBM's AI-enabled delivery with reusable components. Bold possibilities are welcome; replaceable adapters and functioning behaviour are required. See the [demo brief](demo-brief.md) for the authoritative purpose and boundaries. This discussion evaluates the business proposition without treating live BMW deployment as the immediate deliverable.
 
@@ -159,19 +159,19 @@ My strongest additional thought is to make **voluntary flexibility** the item ex
 
 ## Historical exploratory Jira records
 
-These records were created prematurely during discussion using the backlog skill. Russell clarified that we should first agree the shape and then bounded backlog items. The table below preserves the original ideas and their historical keys; the links now open repurposed or superseded records. For current titles and status, use the [1 November foundation refresh](discovery-findings.md#foundation-backlog--refreshed-1-november). FUCQ-1 remains the conversation entry point. No implementation stories have been created.
+These records were created prematurely during discussion using the backlog skill. Russell clarified that we should first agree the shape and then bounded backlog items. The table below preserves the original ideas and their historical keys; the links now open repurposed or superseded records. For current titles and status, use the [1 November foundation refresh](discovery-findings.md#foundation-backlog--refreshed-1-november). FUCQ-2 remains the conversation entry point. No implementation stories have been created.
 
 | Historical Jira key | Original idea before housekeeping |
 |---|---|
-| [FUCQ-3](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-3) | Advance preferences and proactive selection. |
-| [FUCQ-4](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-4) | Stick or twist. |
-| [FUCQ-5](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-5) | Current route for people without preferences. |
-| [FUCQ-6](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-6) | A more exciting employee experience. |
-| [FUCQ-7](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-7) | Dynamic vehicle points pricing. |
-| [FUCQ-8](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-8) | Nudges when demand concentrates. |
-| [FUCQ-9](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-9) | Preferences informing Greg's orders. |
-| [FUCQ-10](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-10) | Lifestyle/taste preferences and x-or-y questions. |
-| [FUCQ-11](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-11) | Tuning towards EVs for UK sales targets. |
+| [FUCQ-4](https://ibm-consulting.atlassian.net/browse/FUCQ-4) | Advance preferences and proactive selection. |
+| [FUCQ-5](https://ibm-consulting.atlassian.net/browse/FUCQ-5) | Stick or twist. |
+| [FUCQ-6](https://ibm-consulting.atlassian.net/browse/FUCQ-6) | Current route for people without preferences. |
+| [FUCQ-7](https://ibm-consulting.atlassian.net/browse/FUCQ-7) | A more exciting employee experience. |
+| [FUCQ-8](https://ibm-consulting.atlassian.net/browse/FUCQ-8) | Dynamic vehicle points pricing. |
+| [FUCQ-9](https://ibm-consulting.atlassian.net/browse/FUCQ-9) | Nudges when demand concentrates. |
+| [FUCQ-10](https://ibm-consulting.atlassian.net/browse/FUCQ-10) | Preferences informing Greg's orders. |
+| [FUCQ-11](https://ibm-consulting.atlassian.net/browse/FUCQ-11) | Lifestyle/taste preferences and x-or-y questions. |
+| [FUCQ-12](https://ibm-consulting.atlassian.net/browse/FUCQ-12) | Tuning towards EVs for UK sales targets. |
 
 The questions behind these ideas are recorded in [questions for Sandeep](questions-for-sandeep.md), especially SAN-006 to SAN-012. Sandeep can route commercial and reward-policy questions to the owners; Russell will ask them.
 

@@ -16,3 +16,6 @@ node_modules/
 # Runtime national-stock index (see server/stock.js). Rebuilt from the live feed
 # on demand — machine-local cache, never a source of truth.
 /.cache/
+
+# Full Jira export stays private; retrieval is documented in the migration record.
+/docs/gcsp/jira-migration-2026-11-03/source-export.json

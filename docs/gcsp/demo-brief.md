@@ -92,7 +92,7 @@ Agree an explicit illustrative allocation principle and tie-break before impleme
 
 ### Unresolved renewals and recovery
 
-Russell has asked for this exception route to be defined in the visual process flow, FUCQ-3. When an employee cannot obtain a suitable replacement in time, explore automatic identification and a manual-intervention job on Greg's page, with reasons and feasible next-best options. The flow must identify who owns the case and how the employee hears about progress and resolution.
+Russell has asked for this exception route to be defined in the visual process flow, FUCQ-4. When an employee cannot obtain a suitable replacement in time, explore automatic identification and a manual-intervention job on Greg's page, with reasons and feasible next-best options. The flow must identify who owns the case and how the employee hears about progress and resolution.
 
 Candidate options are another suitable available vehicle, an employee-approved relaxation of a preference, a later release with a realistic date, or a manual scheme-team decision. An extension of the current contract is an option only if the real scheme permits it. Essential requirements, eligibility and affordability remain constraints.
 
@@ -137,11 +137,11 @@ The strongest story is likely to show a decision travelling between the employee
 
 ## Demo entry point and technical release path
 
-Russell requested a shared launcher in front of the current launcher, offering **employee cars** and **used cars** while retaining the brand switcher. This is recorded as [FUCQ-12](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-12). Preserve the existing used-car experience and supported brands; employee-scheme coverage follows the agreed scope.
+Russell requested a shared launcher in front of the current launcher, offering **employee cars** and **used cars** while retaining the brand switcher. This is recorded as [FUCQ-13](https://ibm-consulting.atlassian.net/browse/FUCQ-13). Preserve the existing used-car experience and supported brands; employee-scheme coverage follows the agreed scope.
 
 The supplied live frontend is on GitHub Pages. Its deployed script points to `https://bmw-matcher-api.onrender.com`; direct browser navigation to `/health` returned `{"ok":true}` on 1 November. The repository's Pages workflow targets `main`, and `render.yaml` declares the Node backend on Render. The actual deployed backend revision, plan and automatic-deployment branch still need Gary's confirmation.
 
-Russell owns the human presentation practicalities. The HLD, FUCQ-5, must cover the technical path from this branch to a functioning deployment and the conditions for later BMW integration. Keep future deployment requirements, including identity, authoritative rules and durable state, visible without claiming that the demo establishes production acceptance. Gary's questions for Tuesday 3 November are in [questions for GC](questions-for-gc.md).
+Russell owns the human presentation practicalities. The HLD, FUCQ-6, must cover the technical path from this branch to a functioning deployment and the conditions for later BMW integration. Keep future deployment requirements, including identity, authoritative rules and durable state, visible without claiming that the demo establishes production acceptance. Gary's questions for Tuesday 3 November are in [questions for GC](questions-for-gc.md).
 
 ## Existing foundations and remaining work
 
@@ -153,7 +153,7 @@ See the [codebase findings](discovery-findings.md#codebase-and-reuse), [componen
 
 ## Organising hills
 
-Russell identified these as hills rather than suitably granular backlog items. Retain them to organise the demo's intent. The smaller, cross-cutting feature intentions in the [capability-level proposal](capability-breakdown.md) are the proposed backlog unit; future sessions can refine each into implementation-ready stories. The current actionable Jira backlog contains the five separately authorised foundation items and the shared-launcher item FUCQ-12.
+Russell identified these as hills rather than suitably granular backlog items. Retain them to organise the demo's intent. The smaller, cross-cutting feature intentions in the [capability-level proposal](capability-breakdown.md) are the proposed backlog unit; future sessions can refine each into implementation-ready stories. The current actionable Jira backlog contains the five separately authorised foundation items and the shared-launcher item FUCQ-13.
 
 | Hill | Demonstrable outcome |
 |---|---|

@@ -43,7 +43,7 @@ For GCSP discovery, story authoring, design, implementation or review, first rea
 and the binding purpose and adapter boundaries in `docs/gcsp/demo-brief.md`. The index distinguishes
 authorised backlog items from proposals. Capture further discussion in `docs/gcsp/` and agree additional
 backlog scope with Russell before discussion-driven Jira changes. This takes precedence over automatic
-backlog capture. FUCQ-1 remains discovery context. All scaffolding remains on.
+backlog capture. FUCQ-2 remains discovery context. All scaffolding remains on.
 
 Use bounded feature capabilities for backlog items, including changes that span views and services.
 Keep the broad demo hills in the brief; Jira's Epic issue type does not determine item size.

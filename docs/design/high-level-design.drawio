@@ -2015,7 +2015,7 @@
             <mxGeometry height="60" width="40" y="390" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Shared launcher + role context / FUCQ-12; brand ≠ scenario" type="client" status="proposed" feature="gcsp-hld" link="data:page/id,wPzIfsWXvCVQO-DYsBWB" id="o-entry">
+        <UserObject label="Shared launcher + role context / FUCQ-13; brand ≠ scenario" type="client" status="proposed" feature="gcsp-hld" link="data:page/id,wPzIfsWXvCVQO-DYsBWB" id="o-entry">
           <mxCell parent="1" style="shape=mxgraph.flowchart.display;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="300" y="30" as="geometry" />
           </mxCell>
@@ -2211,7 +2211,7 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <UserObject label="Dated approved source inputs / FUCQ-13/14 + collection profile" type="external" status="proposed" feature="gcsp-hld" id="v-input">
+        <UserObject label="Dated approved source inputs / FUCQ-14/15 + collection profile" type="external" status="proposed" feature="gcsp-hld" id="v-input">
           <mxCell parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="110" width="240" as="geometry" />
           </mxCell>
@@ -2231,7 +2231,7 @@
             <mxGeometry height="400" width="680" x="700" y="220" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Synthetic VIN HTTP lookup / FUCQ-18; five WMI fixtures" type="service" status="proposed" feature="gcsp-hld" id="v-lookup">
+        <UserObject label="Synthetic VIN HTTP lookup / FUCQ-19; five WMI fixtures" type="service" status="proposed" feature="gcsp-hld" id="v-lookup">
           <mxCell parent="v-node" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="40" y="60" as="geometry" />
           </mxCell>
@@ -2260,17 +2260,17 @@
             </mxGeometry>
           </mxCell>
         </UserObject>
-        <UserObject label="Catalogue/spec port / FUCQ-13; model evidence" type="service" status="proposed" feature="gcsp-hld" id="v-catalogue">
+        <UserObject label="Catalogue/spec port / FUCQ-14; model evidence" type="service" status="proposed" feature="gcsp-hld" id="v-catalogue">
           <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" y="220" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Configuration-image port / FUCQ-14; representative" type="service" status="proposed" feature="gcsp-hld" id="v-images">
+        <UserObject label="Configuration-image port / FUCQ-15; representative" type="service" status="proposed" feature="gcsp-hld" id="v-images">
           <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" y="400" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="VIN handbook port / FUCQ-15; no build sheet" type="service" status="proposed" feature="gcsp-hld" id="v-handbook">
+        <UserObject label="VIN handbook port / FUCQ-16; no build sheet" type="service" status="proposed" feature="gcsp-hld" id="v-handbook">
           <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" y="580" as="geometry" />
           </mxCell>
@@ -2280,7 +2280,7 @@
             <mxGeometry height="100" width="260" x="350" y="310" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Authorised live provider gate / FUCQ-16/17; access unproved" type="external" status="proposed" feature="gcsp-hld" id="v-live">
+        <UserObject label="Authorised live provider gate / FUCQ-17/18; access unproved" type="external" status="proposed" feature="gcsp-hld" id="v-live">
           <mxCell parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="110" width="240" x="350" y="580" as="geometry" />
           </mxCell>

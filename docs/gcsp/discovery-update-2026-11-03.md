@@ -23,7 +23,7 @@ The full planned demonstration remains in scope. Preserve the existing shared po
 | Requested, confirmed and released supply | Retain separate requests, provider acknowledgements and selectable stock. Knowing a recording system does not establish amendment cut-offs, a complete production workflow or a usable write interface. |
 | Optional data and commercial claims | Keep connected-use summaries optional and their coverage/use permissions explicit. No report, current channel policy or future commercial change should be claimed from a promised follow-up or an absence of documentation. |
 
-The authorised synthetic VIN/corpus capabilities remain planned. Separate order identity and optional early-stage VIN availability do not remove FUCQ-18/19 or turn a specification lookup into stock/reservation authority.
+The authorised synthetic VIN/corpus capabilities remain planned. Separate order identity and optional early-stage VIN availability do not remove FUCQ-19/20 or turn a specification lookup into stock/reservation authority.
 
 ## Current disposition of the original twenty questions
 
@@ -56,6 +56,6 @@ Russell's actual email contained **fourteen questions: nine P2 and five P3**, wi
 
 ## Backlog and follow-up
 
-Use this as a source clarification for existing FUCQ-5 design, FUCQ-6 manual journey and FUCQ-7 shared recommendation work. Apply the identity/evidence boundaries to FUCQ-13–19, the supply-stage distinction to FUCQ-73, and relevant failure paths to the repeatable scenarios in FUCQ-74. This update does not create new backlog capabilities, change priorities/statuses, start implementation or provision live access.
+Use this as a source clarification for existing FUCQ-6 design, FUCQ-7 manual journey and FUCQ-8 shared recommendation work. Apply the identity/evidence boundaries to FUCQ-14–20, the supply-stage distinction to FUCQ-74, and relevant failure paths to the repeatable scenarios in FUCQ-75. This update does not create new backlog capabilities, change priorities/statuses, start implementation or provision live access.
 
 The private follow-up draft prioritises the applicable Choices rule pack, hold/interruption flow, order/approval/reconciliation example, current-car specification linkage and complete declarations. Existing promised evidence checks are tracked separately. No message to an external contact has been sent by this task.

@@ -1,6 +1,6 @@
 # Capability-level backlog proposal
 
-1 November 2026. Discussion proposal for Russell's review, not a second backlog and not created Jira records. Jira FUCQ remains the configured backlog. Russell has since authorised five foundation items, recorded by repurposing FUCQ-3 to FUCQ-7; FUCQ-8 to FUCQ-11 were retired as superseded. The product capabilities below remain proposals for later refinement, rather than newly created Jira items. See the [foundation refresh](discovery-findings.md#foundation-backlog--refreshed-1-november).
+1 November 2026. Discussion proposal for Russell's review, not a second backlog and not created Jira records. Jira FUCQ remains the configured backlog. Russell has since authorised five foundation items, recorded by repurposing FUCQ-4 to FUCQ-8; FUCQ-9 to FUCQ-12 were retired as superseded. The product capabilities below remain proposals for later refinement, rather than newly created Jira items. See the [foundation refresh](discovery-findings.md#foundation-backlog--refreshed-1-november).
 
 ## Meaning and size of an item
 
@@ -45,7 +45,7 @@ Current-car specification and connected-use data are separate because their sour
 
 ### Further direction from 1 November
 
-The original 22 capabilities above remain retained. Russell has since requested a shared employee-car/used-car entry point with a brand switcher; this bounded item is [FUCQ-12](https://ibm-consulting-sandbox003.atlassian.net/browse/FUCQ-12).
+The original 22 capabilities above remain retained. Russell has since requested a shared employee-car/used-car entry point with a brand switcher; this bounded item is [FUCQ-13](https://ibm-consulting.atlassian.net/browse/FUCQ-13).
 
 He has also asked the foundation process flow to define unresolved-renewal handling: automatic flags, jobs for Greg and feasible next-best options. Possible recovery priority at a later release or selection cycle remains a policy proposal. Refine the relevant later capabilities using that flow rather than silently treating a priority formula or contract extension as agreed.
 
