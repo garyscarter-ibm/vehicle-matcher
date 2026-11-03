@@ -38,6 +38,10 @@
       "usget": {
         "jira_account_id": "557058:16dd887a-6b2b-4677-b36a-145a2ea69c92",
         "name": "Russell Gowers"
+      },
+      "garyscarter-ibm": {
+        "jira_account_id": "5ae6eda0ba41192e23d86320",
+        "name": "Gary Carter"
       }
     }
   },

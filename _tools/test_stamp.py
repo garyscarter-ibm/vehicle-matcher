@@ -8,6 +8,10 @@ Usage (from anywhere; the project root is the parent of this file's folder unles
                                    languages that have an affected-test plug-in (python today). Prints its choice,
                                    then runs it. For any other language it says so and runs the full suite instead.
                                    BASE defaults to the record's `base_branch`, else main, else master.
+  test_stamp.py --targeted [BASE] [--command CMD] [--reason TEXT]
+                                   Strict scoped validation: select affected tests or run exactly CMD. Unsupported,
+                                   uncertain or empty automatic selections require --command (exit 2). Successful
+                                   runs write targeted evidence, including dirty code identity, never a full stamp.
   test_stamp.py --full [--jobs N] [--force]
                                    T2. The whole suite, once, at the end of a story. On a tree that already has a
                                    passing stamp it prints the stamp and exits 0 without running, unless --force.
@@ -16,7 +20,7 @@ Usage (from anywhere; the project root is the parent of this file's folder unles
                                    stamp. Variants are declared in the settings, e.g. one with ACM_SITE=1 that makes
                                    the suite also exercise a live site; the stamp for it is separate.
   --command CMD                    Use CMD instead of the settings' test command.
-  --dry-run (with --full or --affected)   print the plan and run nothing.
+  --dry-run (with --full, --affected or --targeted)   print the plan and run nothing.
 
 Settings: the "tests" block of <project>/.claude/scaffolding.json
   {"tests": {"command": "python3 -B -m unittest discover -s tests",   # run once for --full (through the shell)
@@ -68,7 +72,7 @@ import sys
 import tempfile
 import time
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 
 sys.dont_write_bytecode = True
 TOOLS = os.path.dirname(os.path.abspath(__file__))
@@ -496,6 +500,88 @@ def cmd_affected(args, say=print, classes_fn=None):
     return 0 if res[0] else 1
 
 
+def working_code_key(root, is_t0):
+    """Identity of actual non-T0 files, including uncommitted and untracked content (never ignored files)."""
+    paths = set(_git(root, ["ls-files", "-z", "--cached", "--others", "--exclude-standard"]).split("\0"))
+    digest = hashlib.sha256()
+    for path in sorted(p for p in paths if p and not is_t0(p)):
+        full = os.path.join(root, path)
+        digest.update(path.encode("utf-8", "surrogateescape") + b"\0")
+        try:
+            info = os.lstat(full)
+        except FileNotFoundError:
+            digest.update(b"deleted\0")
+            continue
+        # Include the file type and executable bits, as git does, plus the current bytes.
+        digest.update(("%o\0" % (info.st_mode & 0o170111)).encode("ascii"))
+        if os.path.islink(full):
+            content_key = hashlib.sha256(os.fsencode(os.readlink(full))).hexdigest()
+        elif os.path.isfile(full):
+            file_digest = hashlib.sha256()
+            with open(full, "rb") as f:
+                for block in iter(lambda: f.read(65536), b""):
+                    file_digest.update(block)
+            content_key = file_digest.hexdigest()
+        else:
+            raise RunError("cannot identify targeted code at %s; check submodules or special files" % path)
+        digest.update(content_key.encode("ascii") + b"\0")
+    return digest.hexdigest()
+
+
+def cmd_targeted(args, say=print, classes_fn=None):
+    root, st, variant = _context(args)  # Validate variants before any command runs.
+    base = resolve_base(root, args.targeted or None, st.base_branch)
+    base_commit = _git(root, ["rev-parse", "--verify", "--end-of-options", base + "^{commit}"]).strip()
+    changed = changed_paths(root, base_commit)
+    chosen, notes, commands = [], [], []
+    if args.command is not None:
+        if not args.command.strip():
+            raise RunError("--targeted requires a non-empty --command")
+        commands = [args.command]
+    else:
+        plugin, pcfg = plugin_for_run(st, False)
+        if plugin is None:
+            raise RunError("targeted selection is unsupported for language %s and its configured runner; "
+                           "supply an explicit scoped verification --command" % st.language)
+        modules = plugin.discover_modules(st.cwd, pcfg)
+        kind, chosen, notes = plugin.select_affected(st.cwd, st.cwd_rel, pcfg, changed, st.is_t0, modules)
+        if kind != "some" or not chosen:
+            why = "; ".join(notes) or "no tests selected"
+            raise RunError("targeted selection cannot establish coverage (%s): %s; "
+                           "supply an explicit regression or verification --command" % (kind, why))
+    say("targeted validation (base %s, commit %s, variant %s)" % (base, base_commit[:12], variant))
+    for note in notes:
+        say("  " + note)
+    if chosen:
+        say("modules: " + ", ".join(chosen))
+    code_key = working_code_key(root, st.is_t0)
+    head, tree = head_commit(root), tree_hash(root)
+    dirty = bool(dirty_code_lines(root, st.is_t0))
+    rdir = runs_dir(root)
+    res = run_suite(st, args, chosen, rdir, say, classes_fn)
+    if res is None:
+        return 0
+    ok, ran, skipped, wall = res
+    if not ok:
+        return 1
+    if chosen and (ran is None or ran <= skipped):
+        raise RunError("targeted selection executed no checks (zero tests or all skipped); "
+                       "supply an explicit regression or verification --command")
+    if working_code_key(root, st.is_t0) != code_key or head_commit(root) != head:
+        say("passed, but no targeted evidence recorded: code changed during validation; rerun for the new code")
+        return 0
+    proof = {"scope": "targeted", "result": "passed", "code_key": code_key, "head": head, "tree": tree,
+             "dirty": dirty, "base": base, "base_commit": base_commit, "changed_paths": changed,
+             "commands": commands, "modules": chosen, "cwd": st.cwd_rel, "variant": variant,
+             "reason": args.reason, "selection_notes": notes, "ran": ran, "skipped": skipped,
+             "wall": round(wall, 1), "time": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+             "python": platform.python_version()}
+    path = os.path.join(rdir, "targeted-%s-%s-%d.json" % (code_key, variant, time.time_ns()))
+    _atomic_write_json(path, proof)
+    say("recorded targeted evidence: " + path)
+    return 0
+
+
 def build_parser():
     ap = argparse.ArgumentParser(description="Run the project's tests: affected ones, or the whole suite once with a "
                                  "stamp. Settings: the \"tests\" block of .claude/scaffolding.json.")
@@ -505,9 +591,12 @@ def build_parser():
     g.add_argument("--affected", nargs="?", const="", metavar="BASE",
                    help="run the tests affected by BASE...HEAD plus uncommitted changes (BASE default: the record's "
                         "base_branch, else main, else master)")
+    g.add_argument("--targeted", nargs="?", const="", metavar="BASE",
+                   help="run strictly scoped validation and record targeted evidence; never fall back to full")
     g.add_argument("--full", action="store_true", help="run the whole suite once and stamp a pass")
     g.add_argument("--status", action="store_true", help="print the stamp for this tree, or none (exit 1)")
     ap.add_argument("--variant", metavar="NAME", help="a variant from tests.variants: its env, and its own stamp")
+    ap.add_argument("--reason", help="coverage rationale for --targeted evidence")
     ap.add_argument("--command", help="test command, instead of the settings' one")
     ap.add_argument("--jobs", type=int, default=None, help="parallel shards, python only (default: tests.jobs, else %d)"
                     % DEFAULT_JOBS)
@@ -530,6 +619,8 @@ def main(argv=None):
             return cmd_status(args)
         if args.full:
             return cmd_full(args)
+        if args.targeted is not None:
+            return cmd_targeted(args)
         return cmd_affected(args)
     except (RunError, RuntimeError) as e:
         print("ERR %s" % e, file=sys.stderr)

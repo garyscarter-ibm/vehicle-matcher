@@ -72,7 +72,7 @@ Commands (exit 0 done, 1 error, 2 refused by a limit):
   close THREAD [--withdraw]                       (Code) file an answered thread; --withdraw drops one still waiting
   spawn-story --thread THREAD --file DRAFT.md     (Cowork) write a stamped story into _dev/code-inbox/
   check-story ID                                  verify a story before building it (Code, at claim): its lineage (who asked),
-        a ui story's `ui:` line (when the project's components piece is on), and for new stories the epic, priority, size, depends_on, title and expedite lines; XL is a warning
+        a ui story's `ui:` line (when the components piece or inbox.require_ui is on), and for new stories the epic, priority, size, depends_on, title and expedite lines; XL is a warning
   queue [--stats]                                 the waiting stories in claim order, then `held` lines and ALERT lines; `NOTHING`
         when none is ready; --stats adds the counts and how well sizes matched story points
   epics [--id B-nnn|KEY] [--sync] [--json]        per backlog item: its stories (done, open, rejected), the things it waits on (its
@@ -101,9 +101,9 @@ project is imported.
 
 Run it from any checkout or worktree: the root is the project, found from this file's location (<root>/_tools/dev_mail.py).
 """
-import argparse, datetime, glob, importlib.util, json, os, re, subprocess, sys
+import argparse, datetime, glob, hashlib, importlib.util, json, os, re, subprocess, sys
 
-VERSION = "1.10.0"
+VERSION = "1.11.0"
 
 CONFIG_REL = os.path.join("_config", "dev-mail.json")
 LIMIT_MIN = {
@@ -255,7 +255,8 @@ def story_header(text):
 # A UI story names the kit components it uses (the project's COMPONENTS.md, see the component-kit skill), so the build
 # reuses them rather than building its own: `ui:` lists the kit's components, and any new one as
 # "new: <name>, because <why none fits>". A story needs the line only when the project has the components piece on
-# (`pieces.components` is "on" in .claude/scaffolding.json); a line that is there is checked either way. Stories written
+# (`pieces.components` is "on" in .claude/scaffolding.json), or sets `inbox.require_ui: true` there because its kit lives
+# in another repo (a site the project's stories build); a line that is there is checked either way. Stories written
 # before the field existed (ids dated before UI_FROM) are left as they were; their story-lead still makes the component
 # plan the poller brief's component-plan step asks for.
 UI_KINDS = ("ui", "dashboard")   # `dashboard` is the older name for kind `ui`
@@ -267,6 +268,18 @@ def components_on(root):
     try:
         with open(os.path.join(root, ".claude", "scaffolding.json"), encoding="utf-8") as f:
             return json.load(f)["pieces"]["components"] == "on"
+    except (OSError, ValueError, KeyError, TypeError):
+        return False
+
+
+def ui_required(root):
+    """True if a ui story here must carry a `ui:` line: the components piece is on, or `inbox.require_ui` is true (the
+    kit is in another repo, so the piece stays off). False if neither, or the file or JSON is bad."""
+    if components_on(root):
+        return True
+    try:
+        with open(os.path.join(root, ".claude", "scaffolding.json"), encoding="utf-8") as f:
+            return json.load(f)["inbox"]["require_ui"] is True
     except (OSError, ValueError, KeyError, TypeError):
         return False
 
@@ -804,12 +817,126 @@ def _new_depends_title_problems(fields):
     return out
 
 
+def work_item_type(fields):
+    """Legacy records are Stories. `kind` still describes the affected area."""
+    return fields.get("work_item_type", "story").strip().lower()
+
+
+def root_requester(fields, sid, owner=None, team=None):
+    """Validate root intake identity without needing an enabled mailbox or its config."""
+    requested = (fields.get("requested") or "").split("\n")[0]
+    line = requested.lower()
+    member = owner_of(sid, team)
+    asker = team["members"][member]["name"] if member else owner
+    key = story_jira_key(fields)
+    via = re.search(rf"\bby\s+\S.*?\s+via\s+jira\s+({JIRA_KEY})\b", requested, re.I)
+    if via and key and via.group(1).upper() == key and "spawned" not in line:
+        return f"root story (filed in Jira as {key}; the person who filed it is the requester)"
+    if "by " not in line or "spawned" in line or (asker and asker.lower() not in line):
+        who = f"name {asker} and " if asker else ""
+        raise MailError(f"{sid} has no origin thread and its 'requested' line does not {who}say who asked ('by <name>', "
+                        "without 'spawned'): a story that answers an inbox thread must be made with spawn-story")
+    return f"root story (written for {asker or 'the owner'}'s request)"
+
+
+def evidence_problems(fields, sid=None, root=None):
+    """Check stable image metadata, and local bytes when a checkout is available."""
+    try:
+        entries = json.loads(fields.get("evidence", ""))
+    except (TypeError, ValueError):
+        return ["evidence: write a JSON array (or [] when there are no screenshots)"]
+    if not isinstance(entries, list):
+        return ["evidence: write a JSON array"]
+    out, seen = [], set()
+    for entry in entries:
+        if not isinstance(entry, dict):
+            out.append("evidence: each image must be an object")
+            continue
+        name, mime = entry.get("filename"), entry.get("mime_type")
+        if (not isinstance(name, str) or not name.strip() or name in (".", "..") or
+                any(c in name for c in ("/", "\\", "\n", "\r", "\0"))):
+            out.append("evidence: filename must be a plain filename")
+        if mime not in ("image/png", "image/jpeg", "image/gif", "image/webp", "image/bmp"):
+            out.append("evidence: mime_type must name a supported raster image")
+        if set(entry) - {"filename", "mime_type", "path", "sha256", "attachment_id", "size"}:
+            out.append("evidence: use stable metadata only; URLs and unknown fields are not stored")
+        if "size" in entry and (type(entry["size"]) is not int or entry["size"] < 0):
+            out.append("evidence: size must be a non-negative integer")
+        if "attachment_id" in entry:
+            aid = entry["attachment_id"]
+            if not isinstance(aid, str) or not re.fullmatch(r"[0-9]+", aid):
+                out.append("evidence: attachment_id must be a numeric string")
+            if "path" in entry or "sha256" in entry:
+                out.append("evidence: Jira images use attachment_id; cache paths stay outside the report")
+            identity = ("jira", str(aid))
+        else:
+            path, digest = entry.get("path"), entry.get("sha256")
+            parts = path.split("/") if isinstance(path, str) else []
+            if (len(parts) < 4 or parts[:2] != ["_dev", "attachments"] or
+                    any(p in ("", ".", "..") for p in parts) or "\\" in str(path) or
+                    any(ord(c) < 32 for c in str(path)) or
+                    (sid and parts[2] != sid)):
+                out.append("evidence: path must be under _dev/attachments/<id>/ without traversal")
+                path = None
+            if not isinstance(digest, str) or not re.fullmatch(r"[a-f0-9]{64}", digest):
+                out.append("evidence: file image needs its sha256")
+            if root and path:
+                dest = os.path.join(root, *parts)
+                walks = [os.path.join(root, *parts[:n]) for n in range(1, len(parts) + 1)]
+                if any(os.path.islink(p) for p in walks) or not os.path.isfile(dest):
+                    out.append("evidence: missing or symlink image " + path)
+                else:
+                    with open(dest, "rb") as f:
+                        actual = hashlib.sha256(f.read()).hexdigest()
+                    if actual != digest:
+                        out.append("evidence: image checksum differs: " + path)
+            identity = ("file", str(path))
+        if identity in seen:
+            out.append("evidence: duplicate image reference")
+        seen.add(identity)
+    return out
+
+
+def _bug_problems(fields, sid, jira=None):
+    typ = work_item_type(fields)
+    if typ not in ("story", "bug"):
+        return ["work_item_type: write story or bug"]
+    if typ != "bug":
+        return []
+    out = []
+    for key in ("related_story", "story_link_basis", "reproduction_steps", "expected_behaviour", "actual_behaviour"):
+        value = fields.get(key, "").strip()
+        if not value or value.lower().startswith("unresolved:"):
+            out.append(key + ": unresolved; investigate and record verified detail before implementation")
+    related = fields.get("related_story", "").strip()
+    if related and not related.lower().startswith("unresolved:"):
+        if related == sid or not (STORY_RE.fullmatch(related) or
+                (jira and re.fullmatch(re.escape(jira) + r"-\d+", related))):
+            out.append("related_story: name the originating DEV Story (or same-project Jira Story), not this Bug")
+    return out + evidence_problems(fields, sid)
+
+
+def _related_story_problems(fields, sid, stories):
+    if work_item_type(fields) != "bug":
+        return []
+    related = fields.get("related_story", "").strip()
+    if STORY_RE.fullmatch(related):
+        origin = next((s for s in stories if s["id"] == related), None)
+        if not origin or origin["id"] == sid or work_item_type(origin.get("fields") or {}) != "story":
+            return ["related_story: " + related + " must name a known Story, including the closed archive"]
+    else:
+        origin = next((s for s in stories if story_jira_key(s.get("fields") or {}) == related), None)
+        if origin and work_item_type(origin.get("fields") or {}) != "story":
+            return ["related_story: " + related + " is a Bug, not a Story"]
+    return []
+
+
 def field_problems(fields, sid, owner=None, spawned=False, backlog_priority=None, has_backlog=None, jira=None, migrated=None):
     """Problems with a story's epic, priority, size, depends_on, title and expedite lines. New stories (see PRIORITY_FROM) must carry
     priority, size and depends_on; stories dated from FIELDS_FROM also carry epic and priority_reason and keep each field to its one form.
     has_backlog: bid -> bool, to check that an epic names a backlog item; None skips that check. jira: the Jira project key
     in Jira mode (epic may then be a key of that project, never looked up), else None."""
-    new, out = is_new(sid), []
+    new, out = is_new(sid), _bug_problems(fields, sid, jira)
     if fields_new(sid):
         out += _new_epic_priority_problems(fields, sid, owner, spawned, backlog_priority, has_backlog, jira, migrated)
     elif "priority" in fields:
@@ -856,7 +983,8 @@ def open_expedites(stories, owner=None, backlog_priority=None, has_backlog=None,
         elif s["where"] != "code-inbox" or "paused" in f:
             continue
         ex = parse_expedite(f["expedite"], owner, "origin" in f)[0]
-        if ex and not _problems(s, owner, backlog_priority, has_backlog, jira, migrated):
+        if (ex and not _problems(s, owner, backlog_priority, has_backlog, jira, migrated) and
+                not _related_story_problems(f, s["id"], stories)):
             out.append((ex[0], s["id"]))
     return sorted(out)
 
@@ -890,6 +1018,10 @@ def rank(stories, today, owner=None, backlog_priority=None, has_backlog=None, ji
                      "deps": deps[sid], "waits_for": [d for d in deps[sid] if state.get(d) != "merged"], "blocks": 0,
                      "state": state[sid], "why": None, "age_days": age,
                      "problems": [] if state[sid] in ("merged", "rejected") else _problems(s, owner, backlog_priority, has_backlog, jira, migrated)}
+        if state[sid] not in ("merged", "rejected"):
+            info[sid]["problems"] += _related_story_problems(f, sid, stories)
+        if work_item_type(f) == "bug":
+            info[sid]["work_item_type"] = "bug"
     closure = {}
     for sid in state:
         seen, stack = set(), list(deps[sid])
@@ -938,10 +1070,15 @@ def rank(stories, today, owner=None, backlog_priority=None, has_backlog=None, ji
         info[sid]["state"] = "held" if sid in held else "ready"
         info[sid]["why"] = held.get(sid)
 
+    bug_work = set()
+    for sid in waiting:
+        if info[sid].get("work_item_type") == "bug" and not info[sid]["problems"]:
+            bug_work.update(closure[sid] | {sid})
+
     def key(sid):
         i = info[sid]
-        group = 0 if i["expedite"] else (1 if i["blocks"] > 0 else 2)
-        return (group, -i["blocks"] if group == 1 else 0, i["priority_now"], SIZES.index(i["size"] or DEFAULT_SIZE), sid)
+        group = 0 if i["expedite"] else (1 if sid in bug_work else (2 if i["blocks"] > 0 else 3))
+        return (group, -i["blocks"] if group in (1, 2) else 0, i["priority_now"], SIZES.index(i["size"] or DEFAULT_SIZE), sid)
     return {"order": sorted((i for i in waiting if i not in held), key=key),
             "held": [(i, held[i]) for i in waiting if i in held], "info": info, "alerts": alerts}
 
@@ -985,6 +1122,8 @@ def format_queue(stories, result, stats=False):
     for sid in result["order"]:
         i = info[sid]
         tags = ["expedite"] if i["expedite"] else ([f"blocks {i['blocks']}"] if i["blocks"] else [])
+        if i.get("work_item_type") == "bug":
+            tags.insert(0, "bug")
         now, w, d = i["priority_now"], i["priority"], i["age_days"]
         aged = d is not None and d >= AGE_DAYS
         if w is None:
@@ -1649,11 +1788,14 @@ class Mail:
             if gone:
                 raise MailError(f"{sid}: a story from Jira {story_jira_key(fields)} lacks required fields: {', '.join(gone)} "
                                 "(the description needs a heading for each; the sync comments on the issue)")
-        ui = ui_problem(text, sid, components_on(self.root))
+        ui = ui_problem(text, sid, ui_required(self.root))
         if ui:
             raise MailError(f"{sid}: {ui}")
         bad = field_problems(fields, sid, self.owner, bool(s["origin"]), self.backlog_priority, self.has_backlog, self.jira,
                              load_migrated(self.root, self.jira))
+        if work_item_type(fields) == "bug":
+            bad += _related_story_problems(fields, sid, self.queue_stories())
+            bad += evidence_problems(fields, sid, self.root)
         if bad:
             raise MailError(f"{sid}: " + "; ".join(bad))
         if is_new(sid) or "expedite" in fields:
@@ -1671,19 +1813,7 @@ class Mail:
         if not s["origin"]:
             if s["depth"] != 0:
                 raise MailError(f"{sid} claims chain depth {s['depth']} but names no origin thread")
-            req = re.search(r"(?m)^requested:(.*)$", text)
-            line = req.group(1).lower() if req else ""
-            member = owner_of(sid, self.team)
-            asker = self.team["members"][member]["name"] if member else self.owner   # team mode: the member who owns the id
-            key = story_jira_key(fields)
-            via = re.search(rf"\bby\s+\S.*?\s+via\s+jira\s+({JIRA_KEY})\b", req.group(1) if req else "", re.I)
-            if via and key and via.group(1).upper() == key and "spawned" not in line:
-                return f"root story (filed in Jira as {key}; the person who filed it is the requester)"
-            if "by " not in line or "spawned" in line or (asker and asker.lower() not in line):
-                who = f"name {asker} and " if asker else ""
-                raise MailError(f"{sid} has no origin thread and its 'requested' line does not {who}say who asked ('by <name>', "
-                                "without 'spawned'): a story that answers an inbox thread must be made with spawn-story")
-            return f"root story (written for {asker or 'the owner'}'s request)"
+            return root_requester(fields, sid, self.owner, self.team)
         h, _, _ = self.load(s["origin"])
         if sid not in h["spawned"].split(", "):
             raise MailError(f"{sid} names origin {s['origin']}, which did not spawn it")
