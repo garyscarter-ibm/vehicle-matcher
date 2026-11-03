@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.2.0"      # first, so the update check finds it within its first lines, ahead of the long docstring
+VERSION = "1.3.1"      # first, so the update check finds it within its first lines, ahead of the long docstring
 __doc__ = """jira_sync.py -- the story sync between a Jira-backed project's Jira issues and its dev inbox. Vendored into a
 project's `_tools/` by project-scaffolding, beside scaffold_git.py and dev_mail.py, which it loads by path (sys.path is
 never touched): `inbox.git_tool` in .claude/scaffolding.json names the first (default _tools/scaffold_git.py).
@@ -9,8 +9,10 @@ It never calls Jira. Python cannot reach the MCP, so the code poller fetches (se
 
 Subcommands (exit 0 done, 2 refused, 3 git or tool failure)
   jql                      print {"jql": ..., "fields": [...]}: what the poller fetches. The JQL is
-                           project = <P> AND issuetype in (<story_type>, Bug) AND updated >= "<last pass>" ORDER BY updated ASC;
-                           with no last pass the `updated` clause is left out.
+                           project = <P> AND issuetype in (<story_type>, <bug_type>) AND updated >= "<last pass>" ORDER BY updated ASC;
+                           with no last pass the `updated` clause is left out. `reconcile_bugs` is null once the
+                           versioned upgrade finished; while pending it is {version, jql, fields}, an open-Bug query
+                           independent of the watermark. Fetch every page before pull --reconcile-bugs <version>.
   pull --issues FILE [--now ISO]
                            FILE is the JSON the poller got from searchJiraIssuesUsingJql: the tool's whole response
                            ({"data": {"issues": [...]}} or {"issues": [...]}) or a bare list of issues. After a
@@ -26,14 +28,18 @@ Subcommands (exit 0 done, 2 refused, 3 git or tool failure)
                              known, story in done: ignored. A new issue that is already Done or Rejected in Jira is
                                skipped, not imported.
                            Then the last pass is set to --now (else the newest `updated` seen) in .claude/jira-sync.json.
-                           Prints a JSON report: imported, updated, changed_in_progress, skipped, comments, notify, failed.
+                           Prints a JSON report: imported, updated, changed_in_progress, skipped, comments, notify, failed,
+                           evidence_downloads. Each evidence item is {key, story, attachment_id, filename, mime_type, size?};
+                           no URLs. Requests repeat for every open local Bug, even on an empty input page, until the
+                           session verifies its local cache. Metadata is never treated as delivered bytes.
                            `comments` are the once-only comments the poller posts on issues whose description lacks
                            headings; the state file remembers which set of missing fields each issue was told about.
   push [--json] [--mark-done FILE]
                            git to Jira. Reads git only (the stories in _dev/ with a `jira:` line, the story leases
                            refs/leases/story/*, the base branch's `Merge dev/<id>` commits and the team members) and prints
                            the Jira operations the poller makes through the MCP, one per line (`NOTHING` when there are
-                           none), or with --json as a JSON list. It never calls Jira, writes no story and takes no lease. Ops:
+                           none), or with --json as a JSON list. It journals pending Start dates in local state so retries
+                           survive release/merge. It never calls Jira, writes no story and takes no lease. Ops:
                              {"op": "transition", "key", "to": <kit status>, "board_status": <the board's name>,
                               "label"?, "resolution"?, "clear_labels"?}
                                In Progress: the story is in in-progress/ or holds a story lease. In Review: it is merged
@@ -49,6 +55,14 @@ Subcommands (exit 0 done, 2 refused, 3 git or tool failure)
                                plus label `review`, Rejected is Done plus label `wont-do`). `label` and `resolution` are in
                                the op when the entry has them; `clear_labels` lists the labels of the other statuses, for
                                the poller to remove from the issue.
+                             {"op": "start_date", "key", "date": "YYYY-MM-DD", "only_if_empty": true}
+                               emitted from claim/history evidence for every adopted item and its epic, including
+                               first sync after release, merge or rejection, independent of type, points or assignee.
+                               Uses the first committed claim date, then lease date, else this sync's local day for
+                               legacy records. Pending dates survive status changes. The poller resolves the Start date
+                               field, reads its current value and sets it to `date` only when confirmed empty. An
+                               existing date is preserved and acknowledged too; failed/unknown reads stay unmarked.
+                               Once acknowledged this operation is never repeated, even on another day or adoption.
                              {"op": "assign", "key", "login", "name"?, "account_id", "note"?}
                                the claimer: the story lease's login, else the story's `claimed_by:`; with no team block (a
                                single owner: no leases, no claimed_by) it is the one login in `backlog.members`, and with
@@ -87,14 +101,18 @@ Subcommands (exit 0 done, 2 refused, 3 git or tool failure)
 State: <shared checkout>/.claude/jira-sync.json, per machine, kept out of git (scaffold_git's LOCAL_FILES):
   {"last_pass": "yyyy-MM-dd HH:mm", "commented": {"SCAF-12": "goal,validate"}, "told": {"SCAF-12": "<digest>"},
    "pushed": {"SCAF-12": {"transition": "<hash>", "assign": "<hash>", "fields": "<hash>", "labels": "<hash>",
-                          "link": "<hash>"}}}
+                          "link": "<hash>"}}, "start_dates": {"SCAF-12": "yyyy-MM-dd"}}
   `commented`: the missing-fields comment each issue has had, keyed by the set it named. `told`: a digest of the last
   change to a claimed story that was reported, so the same change is not reported twice. `pushed`: the hash of each op
-  the poller applied (push --mark-done), per issue key and op name.
+  acknowledged by the poller. `start_dates`: first planned dates still awaiting acknowledgement, retried independently
+  of the current workflow status and removed only after the date operation is acknowledged.
 
 Fields: Jira owns a story's title, kind, design_impact, requested, epic, priority, priority_reason, size, depends_on,
 preconditions, goal, acceptance, files_or_areas, decided, out_of_scope and validate; git owns the
-claim (story_points, claimed_by, status). The description is read by markdown headings: Goal, Acceptance criteria (or
+claim (story_points, claimed_by, status). Bugs also carry work_item_type, related_story, story_link_basis,
+reproduction_steps, expected_behaviour, actual_behaviour, optional environment and evidence metadata. Native configured
+Story links are independent from the Epic parent and blocking links. Missing or conflicting origin is unresolved.
+The description is read by markdown headings: Goal, Acceptance criteria (or
 Acceptance), Files or areas, Decided, Out of scope, Validate. Any other line of a story (suggested_approach, say) is
 left as it is. Text before the first heading is the
 goal when there is no Goal heading. A field with no heading is left out, so dev_mail.py check-story names it.
@@ -120,11 +138,14 @@ STATE_REL = os.path.join(".claude", "jira-sync.json")
 LEASE_PREFIX = "jira/"
 KEY_RE = re.compile(r"^[A-Z][A-Z0-9]+-\d+$")
 FIELDS = ["summary", "description", "status", "issuetype", "parent", "labels", "priority", "updated", "created",
-          "reporter", "issuelinks"]
+          "reporter", "issuelinks", "attachment"]
 DEFAULT_GIT_TOOL = "_tools/scaffold_git.py"
+RASTER_MIMES = frozenset(("image/png", "image/jpeg", "image/gif", "image/webp", "image/bmp"))
 
 # Fields in the order a story file carries them; the ones after `jira` that Jira owns are OWNED.
-ORDER = ["id", "jira", "title", "kind", "design_impact", "requested", "epic", "priority", "priority_reason", "size",
+ORDER = ["id", "jira", "title", "work_item_type", "related_story", "story_link_basis",
+         "reproduction_steps", "expected_behaviour", "actual_behaviour", "environment", "evidence", "kind",
+         "design_impact", "requested", "epic", "priority", "priority_reason", "size",
          "depends_on", "preconditions", "goal", "acceptance", "files_or_areas", "decided", "out_of_scope", "validate"]
 OWNED = set(ORDER[2:])
 SECTION_FIELDS = ["goal", "acceptance", "files_or_areas", "decided", "out_of_scope", "validate"]
@@ -134,6 +155,12 @@ HEADINGS = {"goal": "goal", "acceptance criteria": "acceptance", "acceptance": "
             "files or areas": "files_or_areas", "files and areas": "files_or_areas", "files": "files_or_areas",
             "areas": "files_or_areas", "decided": "decided", "out of scope": "out_of_scope", "validate": "validate",
             "validation": "validate"}
+BUG_FIELDS = ("related_story", "story_link_basis", "reproduction_steps", "expected_behaviour", "actual_behaviour")
+BUG_RECONCILIATION_VERSION = 1
+SECTION_WORDS.update({"related_story": "Related story", "story_link_basis": "Story link basis",
+                      "reproduction_steps": "Steps to reproduce", "expected_behaviour": "Expected behaviour",
+                      "actual_behaviour": "Actual behaviour", "environment": "Environment"})
+HEADINGS.update({v.lower(): k for k, v in SECTION_WORDS.items()})
 KINDS = ("code", "data", "ui", "docs")
 SIZES = ("XS", "S", "M", "L", "XL")
 PRECOND_RE = re.compile(r"^Jira ([A-Z][A-Z0-9]+-\d+) done$")
@@ -194,6 +221,10 @@ def jira_record(root):
         raise Refused(".claude/scaffolding.json has no backlog block with backend jira")
     if not isinstance(b.get("project"), str) or not re.match(r"^[A-Z][A-Z0-9]+$", b["project"]):
         raise Refused("scaffolding.json backlog.project %r is not a Jira project key" % (b.get("project"),))
+    for field in ("story_type", "bug_type", "story_link_type"):
+        if field in b and (not isinstance(b[field], str) or not b[field].strip() or
+                           any(ord(c) < 32 for c in b[field])):
+            raise Refused("backlog.%s must be a nonempty single-line string" % field)
     return b
 
 
@@ -210,7 +241,7 @@ def load_state(root, sg):
     except (OSError, ValueError):
         st = {}
     st = st if isinstance(st, dict) else {}
-    for k in ("commented", "told"):
+    for k in ("commented", "told", "evidence", "work_item_types", "start_dates"):
         if not isinstance(st.get(k), dict):
             st[k] = {}
     return st
@@ -251,8 +282,12 @@ def now_wall(now):
 
 # ---------------------------------------------------------------- jql
 
+def jql_name(value):
+    return value if re.fullmatch(r"[A-Za-z][A-Za-z0-9_]*", value) else json.dumps(value)
+
+
 def build_jql(rec, last_pass):
-    types = [rec.get("story_type") or "Story", "Bug"]
+    types = [jql_name(rec.get("story_type") or "Story"), jql_name(rec.get("bug_type") or "Bug")]
     parts = ["project = %s" % rec["project"], "issuetype in (%s)" % ", ".join(types)]
     if last_pass:
         parts.append('updated >= "%s"' % last_pass)
@@ -296,6 +331,12 @@ def unescape_md(text):
     return MD_ESCAPE.sub(r"\1", text)
 
 
+def supported_screenshot(filename, mime):
+    return (isinstance(filename, str) and bool(filename.strip()) and filename not in (".", "..") and
+            "/" not in filename and "\\" not in filename and isinstance(mime, str) and
+            mime.casefold() in RASTER_MIMES and not any(ord(c) < 32 for c in filename + mime))
+
+
 def parse_issue(raw):
     """The parts of an issue the sync reads, as a flat dict. Raises ValueError for something that is not an issue."""
     if not isinstance(raw, dict) or not isinstance(raw.get("key"), str) or not KEY_RE.match(raw["key"]):
@@ -305,18 +346,42 @@ def parse_issue(raw):
     status = f.get("status")
     cat = ((status.get("statusCategory") or {}).get("key") if isinstance(status, dict) else None) or ""
     parent = f.get("parent")
-    blockers = []
+    blockers, relationships = [], []
     for link in f.get("issuelinks") or []:
-        if not isinstance(link, dict) or not isinstance(link.get("inwardIssue"), dict):
+        if not isinstance(link, dict):
             continue
         t = link.get("type") if isinstance(link.get("type"), dict) else {}
+        for direction in ("inwardIssue", "outwardIssue"):
+            other = link.get(direction)
+            if isinstance(other, dict) and isinstance(other.get("key"), str):
+                relationships.append({"key": other["key"], "link_type": t.get("name") or "",
+                                      "issue_type": _name((other.get("fields") or {}).get("issuetype"))})
+        if not isinstance(link.get("inwardIssue"), dict):
+            continue
         if (t.get("inward") or "").lower() == "is blocked by" or (t.get("name") or "").lower() == "blocks":
             other = link["inwardIssue"]
             ostat = (other.get("fields") or {}).get("status")
             ocat = ((ostat.get("statusCategory") or {}).get("key") if isinstance(ostat, dict) else None) or ""
             if other.get("key") and ocat != "done" and _name(ostat).lower() not in ("done", "rejected"):
                 blockers.append(other["key"])
+    attachments = []
+    for item in f.get("attachment") or []:
+        if not isinstance(item, dict):
+            continue
+        aid, filename, mime = str(item.get("id", "")), item.get("filename"), item.get("mimeType")
+        if not re.fullmatch(r"[0-9]+", aid) or not isinstance(filename, str) or not filename.strip() or \
+                not isinstance(mime, str) or not mime.strip():
+            continue
+        if not supported_screenshot(filename, mime):
+            continue
+        meta = {"attachment_id": aid, "filename": filename, "mime_type": mime.casefold()}
+        if isinstance(item.get("size"), int) and not isinstance(item["size"], bool) and item["size"] >= 0:
+            meta["size"] = item["size"]
+        attachments.append(meta)
+    attachments.sort(key=lambda a: (int(a["attachment_id"]), a["filename"]))
     return {"key": raw["key"], "summary": f.get("summary") or "",
+            "issue_type": _name(f.get("issuetype")), "relationships": relationships, "attachments": attachments,
+            "attachments_known": isinstance(f.get("attachment"), list),
             "description": unescape_md(_text_of_adf(desc) if isinstance(desc, dict) else (desc or "")),
             "status": _name(status), "status_category": cat,
             "labels": [l for l in (f.get("labels") or []) if isinstance(l, str)],
@@ -449,11 +514,38 @@ def label_value(labels, prefix, allowed):
     return None
 
 
+def bug_origin(issue, rec, key_to_story, secs):
+    """Keep origin independent from hierarchy and blockers; conflicting candidates hold implementation."""
+    project = rec["project"] + "-"
+    native = {r["key"] for r in issue.get("relationships", [])
+              if r["link_type"].casefold() == (rec.get("story_link_type") or "Relates").casefold()
+              and r["issue_type"].casefold() == (rec.get("story_type") or "Story").casefold()
+              and r["key"].startswith(project)}
+    stated = secs.get("related_story", "").strip()
+    if stated:
+        if stated.startswith("unresolved:"):
+            return stated
+        reverse = {sid: key for key, sid in key_to_story.items()}
+        stated = reverse.get(stated, stated)
+        if not KEY_RE.fullmatch(stated) or not stated.startswith(project):
+            return "unresolved: Related story must name a same-project Story or resolved DEV Story ID"
+        typed = [r for r in issue.get("relationships", []) if r["key"] == stated and r["issue_type"]]
+        if typed and any(r["issue_type"].casefold() != (rec.get("story_type") or "Story").casefold() for r in typed):
+            return "unresolved: Related story names an issue that is not a Story"
+        if stated not in native:
+            return "unresolved: configured native Story link missing or linked issue type unconfirmed; fetch its issue type"
+    if len(native) != 1:
+        return "unresolved: " + ("conflicting originating Stories" if native else "originating Story not established")
+    return next(iter(native))
+
+
 def issue_blocks(issue, rec, key_to_story):
     """{field: file lines} for the fields Jira owns, from a parsed issue. `key_to_story` maps an imported issue's key to
     its story id."""
     key, labels = issue["key"], issue["labels"]
     blocks = {"title": ["title: " + clean_title(issue["summary"], key)]}
+    is_bug = issue.get("issue_type", "").casefold() == (rec.get("bug_type") or "Bug").casefold()
+    blocks["work_item_type"] = ["work_item_type: " + ("bug" if is_bug else "story")]
     blocks["kind"] = ["kind: " + (label_value(labels, "kind:", KINDS) or "code")]
     blocks["design_impact"] = ["design_impact: " + ("yes" if "design-impact" in [l.lower() for l in labels] else "no")]
     day = (wall(issue["created"]) or ("", ""))[0] or issue["created"][:10]
@@ -473,7 +565,10 @@ def issue_blocks(issue, rec, key_to_story):
     if waits:
         blocks["preconditions"] = ["preconditions: " + "; ".join(waits)]
     secs = sections(issue["description"])
-    for field in SECTION_FIELDS:
+    if is_bug:
+        blocks["related_story"] = ["related_story: " + bug_origin(issue, rec, key_to_story, secs)]
+        blocks["evidence"] = ["evidence: " + json.dumps(issue.get("attachments", []), sort_keys=True)]
+    for field in SECTION_FIELDS + (list(BUG_FIELDS[1:]) + ["environment"] if is_bug else []):
         if field not in secs:
             continue
         if field == "acceptance":
@@ -484,7 +579,9 @@ def issue_blocks(issue, rec, key_to_story):
 
 
 def missing_fields(blocks):
-    return [f for f in SECTION_FIELDS if f not in blocks]
+    required = SECTION_FIELDS + (list(BUG_FIELDS) if blocks.get("work_item_type") == ["work_item_type: bug"] else [])
+    return [f for f in required if f not in blocks or
+            (f == "related_story" and blocks[f][0].startswith("related_story: unresolved:"))]
 
 
 def comment_body(key, missing):
@@ -571,7 +668,8 @@ def merge_owned(text, blocks_new):
 def differing(text, blocks_new):
     """The Jira-owned fields (in file order) the issue has and the story's text has differently."""
     have = {k: norm(ls) for k, ls in split_story(text)[0] if k in OWNED}
-    return [k for k in ORDER[2:] if k in blocks_new and have.get(k) != norm(blocks_new[k])]
+    return [k for k in ORDER[2:] if (k in blocks_new or k in have) and
+            have.get(k) != (norm(blocks_new[k]) if k in blocks_new else None)]
 
 
 def with_jira_changed(text, day, names):
@@ -590,11 +688,12 @@ class Pass:
         self.root, self.sg, self.dm, self.rec, self.issues = root, sg, dm, rec, issues
         self.day, self.hhmm = now
         self.nowgiven = False
+        self.reconcile_bugs = False
         self.state = load_state(root, sg)
         self.login = sg.member_login(root)
         self.team = sg.team_block(root)
         self.report = {"imported": [], "updated": [], "changed_in_progress": [], "skipped": [], "comments": [],
-                       "notify": [], "failed": []}
+                       "notify": [], "failed": [], "evidence_downloads": []}
         self.known = {}
         self.reserved = set()
 
@@ -677,6 +776,46 @@ class Pass:
             seen[key] = tag
             self.report["comments"].append({"key": key, "body": comment_body(key, missing)})
 
+    def plan_evidence(self, issue, sid):
+        is_bug = issue.get("issue_type", "").casefold() == (self.rec.get("bug_type") or "Bug").casefold()
+        self.state.setdefault("work_item_types", {})[issue["key"]] = "bug" if is_bug else "story"
+        if is_bug:
+            # This is remote metadata, never a downloaded/delivered marker. It also supersedes the
+            # preserved body of a claimed report when attachments were removed in Jira.
+            self.state.setdefault("evidence", {})[issue["key"]] = issue.get("attachments", [])
+        else:
+            self.state.setdefault("evidence", {}).pop(issue["key"], None)
+
+    def pending_evidence(self):
+        """Repeat requests until the session verifies its local cache, including on an empty Jira page."""
+        for key, (sid, where, path) in sorted(self.known.items()):
+            if where == "done" or self.state.get("work_item_types", {}).get(key) == "story":
+                continue
+            latest = self.state.get("evidence", {})
+            if key in latest:
+                evidence = latest[key]
+            else:
+                try:
+                    fields = dict(split_story(self.read(path))[0])
+                    if fields.get("work_item_type") != ["work_item_type: bug"]:
+                        continue
+                    evidence = json.loads(fields.get("evidence", ["evidence: []"])[0].split(":", 1)[1])
+                except (OSError, ValueError, IndexError):
+                    continue
+            if not isinstance(evidence, list):
+                continue
+            for item in evidence:
+                if not isinstance(item, dict) or not isinstance(item.get("attachment_id"), str) or not \
+                        re.fullmatch(r"[0-9]+", item["attachment_id"]):
+                    continue
+                if not supported_screenshot(item.get("filename"), item.get("mime_type")):
+                    continue
+                plan = {k: item[k] for k in ("attachment_id", "filename", "mime_type")}
+                plan["mime_type"] = plan["mime_type"].casefold()
+                if isinstance(item.get("size"), int) and not isinstance(item["size"], bool) and item["size"] >= 0:
+                    plan["size"] = item["size"]
+                self.report["evidence_downloads"].append(dict(plan, key=key, story=sid))
+
     # --- one issue
     def new_issue(self, issue):
         key = issue["key"]
@@ -731,6 +870,7 @@ class Pass:
         if rc != 0:
             self.fail(issue, sid, "push", msg)
         self.note_gap(issue, blocks)
+        self.plan_evidence(issue, sid)
 
     def dirty(self, path):
         try:
@@ -752,9 +892,11 @@ class Pass:
         if where == "in-progress":
             names = differing(text, blocks)
             if not names:
+                self.plan_evidence(issue, sid)
                 return
-            digest = hashlib.sha1(json.dumps({n: blocks[n] for n in names}, sort_keys=True).encode()).hexdigest()[:12]
+            digest = hashlib.sha1(json.dumps(blocks, sort_keys=True).encode()).hexdigest()[:12]
             if self.state["told"].get(key) == digest:
+                self.plan_evidence(issue, sid)
                 return                                 # this very change was reported already
             self.state["told"][key] = digest
             new = with_jira_changed(text, self.day, names)
@@ -763,6 +905,8 @@ class Pass:
             if rc != 0:
                 self.state["told"].pop(key, None)
                 return self.fail(issue, sid, "commit", msg)
+            self.plan_evidence(issue, sid)
+            self.note_gap(issue, blocks)
             self.report["changed_in_progress"].append({"key": key, "story": sid, "fields": names})
             self.report["notify"].append({
                 "key": key, "story": sid, "fields": names,
@@ -789,6 +933,7 @@ class Pass:
             else:
                 self.report["updated"].append({"key": key, "story": sid})
         self.note_gap(issue, blocks)
+        self.plan_evidence(issue, sid)
 
     # --- blockers imported after their dependants
     def resolve_preconditions(self):
@@ -862,6 +1007,19 @@ class Pass:
             raise Failed("listing the import leases failed: %s" % msg)
         self.reserved = {l["story"] for l in leases if isinstance(l.get("story"), str)}
         for issue in self.ordered():
+            allowed_types = {(self.rec.get("bug_type") or "Bug").casefold(),
+                             (self.rec.get("story_type") or "Story").casefold()}
+            if issue.get("issue_type", "").casefold() not in allowed_types:
+                known = self.known.get(issue["key"])
+                self.fail(issue, known[0] if known else None, "hydrate",
+                          "issuetype is missing or unsupported; fetch the configured Story/Bug type before pull")
+                continue
+            if (issue.get("issue_type", "").casefold() == (self.rec.get("bug_type") or "Bug").casefold() and
+                    issue.get("attachments_known") is False):
+                known = self.known.get(issue["key"])
+                self.fail(issue, known[0] if known else None, "hydrate",
+                          "attachment metadata is unknown; fetch fields ['attachment'] with view 'full' before pull")
+                continue
             if issue["key"] in self.known:
                 self.known_issue(issue)
             else:
@@ -876,12 +1034,15 @@ class Pass:
             if self.nowgiven:
                 self.state["last_pass"] = "%s %s" % (self.day, self.hhmm)
             elif newest:
-                self.state["last_pass"] = "%s %s" % newest
+                self.state["last_pass"] = max(self.state.get("last_pass", ""), "%s %s" % newest)
+            if self.reconcile_bugs and not self.report["skipped"]:
+                self.state["bug_reconciliation_version"] = BUG_RECONCILIATION_VERSION
+        self.pending_evidence()
         save_state(self.root, sg, self.state)
         return self.report
 
 
-def pull_issues(root, issues, now=None, sg=None, dm=None):
+def pull_issues(root, issues, now=None, sg=None, dm=None, reconcile_bugs=False):
     """Run the pull for parsed `issues`; returns the report dict. Raises Refused or Failed."""
     if sg is None or dm is None:
         sg, dm = load_tools(root)
@@ -896,6 +1057,7 @@ def pull_issues(root, issues, now=None, sg=None, dm=None):
                 raise (Refused if rc == 2 else Failed)("the pull failed: %s" % msg)
             p = Pass(root, sg, dm, rec, issues, day)
             p.nowgiven = bool(now)
+            p.reconcile_bugs = reconcile_bugs
             return p.run()
     except sg.MutexBusy as e:
         raise Refused(str(e))
@@ -915,9 +1077,10 @@ DEFAULT_STATUSES = {"To Do": {"status": "To Do"}, "In Progress": {"status": "In 
 CLOSED_REJECTED = re.compile(r"^\d{4}-\d{2}-\d{2}\s*[,;:]?\s*rejected\b", re.I)    # dev_mail's CLOSED_REJECTED_RE
 CLOSED_MERGED = re.compile(r"^\d{4}-\d{2}-\d{2}\s*[,;:]?\s*merged\b", re.I)
 MERGE_SUBJECT = re.compile(r"^Merge (dev/\S+)$")
-OP_NAMES = ("transition", "assign", "fields", "labels", "link")
+OP_NAMES = ("transition", "assign", "fields", "labels", "link", "start_date")
 OP_IDENTITY = {"transition": ("to", "board_status", "label", "resolution"), "assign": ("login", "account_id"),
-               "fields": ("story_points", "field"), "labels": ("add",), "link": ("branch", "pr")}
+               "fields": ("story_points", "field"), "labels": ("add",), "link": ("branch", "pr"),
+               "start_date": ("date", "only_if_empty")}
 POINTS_FIELD_RE = re.compile(r"^customfield_\d+$")
 TOKEN_MAX = 64
 HARNESS_ALIASES = {"claude": "claude-code"}
@@ -1052,6 +1215,23 @@ class Push:
         v = (s["fields"].get("epic") or "").strip()
         return v if re.match(r"^%s-\d+$" % re.escape(self.project), v) else None
 
+    def adoption_date(self, s, lease):
+        """First committed claim date, then lease date; legacy claim evidence falls back to this sync's local day."""
+        path = "_dev/in-progress/" + s["id"] + ".md"
+        rc, out, err = self.sg.git(self.root, ["log", "--all", "--no-renames", "--diff-filter=A", "--format=%cs", "--", path])
+        if rc != 0:
+            raise Failed("reading claim history failed: %s" % (err or out).strip()[:300])
+        dates = [line for line in out.splitlines() if re.fullmatch(r"\d{4}-\d{2}-\d{2}", line)]
+        if dates:
+            return min(dates)
+        taken = self.sg.parse_iso((lease or {}).get("taken"))
+        if taken is not None:
+            return datetime.datetime.fromtimestamp(taken).date().isoformat()
+        if lease or s["where"] == "in-progress" or s["fields"].get("claimed_by") \
+                or CLOSED_MERGED.match(s["fields"].get("closed", "")):
+            return datetime.date.today().isoformat()
+        return None
+
     # --- members and labels
     def member_entries(self, login):
         """The record's entries for `login`: backlog.members first, then team.members (each a dict, or absent)."""
@@ -1172,11 +1352,21 @@ class Push:
             key = jira_key_of(s["text"])
             if key and key.startswith(self.project + "-"):
                 by_key[key] = s
-        ops = []
+        ops, dates = [], {}
         for key in sorted(by_key, key=lambda k: int(k.rsplit("-", 1)[1])):
             s = by_key[key]
-            ops += self.story_ops(s, key, self.lease_map.get(s["id"]) if s["where"] != "done" else None, merged)
-        return ops + self.epic_ops()
+            lease = self.lease_map.get(s["id"]) if s["where"] != "done" else None
+            ops += self.story_ops(s, key, lease, merged)
+            date = self.adoption_date(s, lease)
+            if date:
+                dates[key] = date
+                epic = self.epic_of(s)
+                if epic:
+                    dates[epic] = min(date, dates.get(epic, date))
+        ops += self.epic_ops()
+        # Claim history survives merge, release and rejection, including when Jira was unavailable throughout.
+        return ops + [{"op": "start_date", "key": key, "date": date, "only_if_empty": True}
+                      for key, date in dates.items()]
 
 
 def pending(ops, pushed):
@@ -1185,6 +1375,8 @@ def pending(ops, pushed):
     out = []
     for op in ops:
         have = (pushed.get(op["key"]) or {})
+        if op["op"] == "start_date" and "start_date" in have:
+            continue                         # ensure once, rather than rewriting the first date on later days
         if op["op"] == "transition" and op["to"] == "To Do" and "transition" not in have:
             continue
         if have.get(op["op"]) != op_hash(op):
@@ -1200,13 +1392,32 @@ def push_ops(root, sg=None, dm=None):
     try:
         with sg.checkout_mutex(root):
             ops = Push(root, sg, dm, rec).run()
+            state = load_state(root, sg)
+            dates, pushed = state["start_dates"], state.get("pushed") or {}
+            before = dict(dates)
+            for op in ops:
+                if op["op"] == "start_date" and "start_date" not in (pushed.get(op["key"]) or {}):
+                    dates.setdefault(op["key"], op["date"])
+            # Retain the first planned date until confirmed, even when the item has since moved or disappeared.
+            ops = [op for op in ops if op["op"] != "start_date"]
+            for key, date in dates.items():
+                if not isinstance(key, str) or not KEY_RE.fullmatch(key) or not key.startswith(rec["project"] + "-"):
+                    raise Refused("invalid issue key in pending Start dates")
+                try:
+                    datetime.date.fromisoformat(date)
+                except (TypeError, ValueError):
+                    raise Refused("invalid pending Start date for %s" % key)
+            ops += [{"op": "start_date", "key": key, "date": dates[key], "only_if_empty": True}
+                    for key in sorted(dates, key=lambda k: int(k.rsplit("-", 1)[1]))]
+            if dates != before:
+                save_state(root, sg, state)
+            return pending(ops, pushed)
     except sg.MutexBusy as e:
         raise Refused(str(e))
     except sg.SettingsError as e:
         raise Refused(str(e))
     except dm.MailError as e:
         raise Refused(str(e))
-    return pending(ops, load_state(root, sg).get("pushed") or {})
 
 
 def read_ops(path):
@@ -1231,18 +1442,24 @@ def mark_done(root, ops, sg=None):
     """Record `ops` as pushed in the state file. Returns the list of {key, op} marked."""
     if sg is None:
         sg, _ = load_tools(root)
-    st = load_state(root, sg)
-    pushed = st.setdefault("pushed", {})
-    if not isinstance(pushed, dict):
-        pushed = st["pushed"] = {}
-    marked = []
-    for op in ops:
-        if not isinstance(pushed.get(op["key"]), dict):
-            pushed[op["key"]] = {}
-        pushed[op["key"]][op["op"]] = op_hash(op)
-        marked.append({"key": op["key"], "op": op["op"]})
-    save_state(root, sg, st)
-    return marked
+    try:
+        with sg.checkout_mutex(root):
+            st = load_state(root, sg)
+            pushed = st.setdefault("pushed", {})
+            if not isinstance(pushed, dict):
+                pushed = st["pushed"] = {}
+            marked = []
+            for op in ops:
+                if not isinstance(pushed.get(op["key"]), dict):
+                    pushed[op["key"]] = {}
+                pushed[op["key"]][op["op"]] = op_hash(op)
+                if op["op"] == "start_date":
+                    st["start_dates"].pop(op["key"], None)
+                marked.append({"key": op["key"], "op": op["op"]})
+            save_state(root, sg, st)
+            return marked
+    except sg.MutexBusy as e:
+        raise Refused(str(e))
 
 
 def op_line(op):
@@ -1258,6 +1475,8 @@ def op_line(op):
         return "FIELDS %s story_points=%s%s" % (op["key"], op["story_points"], " field=" + op["field"] if op.get("field") else "")
     if k == "labels":
         return "LABELS %s add %s" % (op["key"], " ".join(op["add"]))
+    if k == "start_date":
+        return "START_DATE %s %s (only if empty)" % (op["key"], op["date"])
     return "LINK %s branch=%s pr=%s" % (op["key"], op["branch"], op["pr"] or "none")
 
 
@@ -1267,7 +1486,14 @@ def cmd_jql(args, root):
     sg, _ = load_tools(root)
     rec = jira_record(root)
     sg.ensure_ignored(root)
-    print(json.dumps({"jql": build_jql(rec, load_state(root, sg).get("last_pass")), "fields": FIELDS}, indent=2))
+    state = load_state(root, sg)
+    reconciliation = None
+    if state.get("bug_reconciliation_version") != BUG_RECONCILIATION_VERSION:
+        reconciliation = {"version": BUG_RECONCILIATION_VERSION, "jql":
+            "project = %s AND issuetype = %s AND statusCategory != Done ORDER BY updated ASC" %
+            (rec["project"], jql_name(rec.get("bug_type") or "Bug")), "fields": FIELDS}
+    print(json.dumps({"jql": build_jql(rec, state.get("last_pass")), "fields": FIELDS,
+                      "reconcile_bugs": reconciliation}, indent=2))
     return 0
 
 
@@ -1276,7 +1502,7 @@ def cmd_pull(args, root):
         issues = read_issues(args.issues)
     except ValueError as e:
         raise Refused(str(e))
-    report = pull_issues(root, issues, args.now)
+    report = pull_issues(root, issues, args.now, reconcile_bugs=bool(args.reconcile_bugs))
     for line in report["skipped"]:
         if line.startswith("SKIP "):
             print(line, file=sys.stderr)
@@ -1314,6 +1540,8 @@ def build_parser():
     sub.add_parser("jql", help="print the poller's JQL and field list").set_defaults(func=cmd_jql)
     p = sub.add_parser("pull", help="import and update stories from the issues the poller fetched")
     p.add_argument("--issues", required=True, metavar="FILE")
+    p.add_argument("--reconcile-bugs", type=int, choices=[BUG_RECONCILIATION_VERSION],
+                   help="mark this reconciliation version complete; supply only after fetching every query page")
     p.add_argument("--now", metavar="ISO", help="the time to record as the last pass (default: the newest `updated` seen)")
     p.set_defaults(func=cmd_pull)
     p = sub.add_parser("push", help="print the Jira operations git calls for (offline), or record the ones applied")

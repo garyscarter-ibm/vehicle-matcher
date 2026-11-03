@@ -12,6 +12,8 @@ Rules for Codex working in this project. The scaffolding clone is the `repo` val
   `effort`, the turn cap, the tools and the agent's brief. Pass that `model` and `effort` to the spawn, and begin the
   child's brief with that brief. Don't map tiers from memory. `tiers spawn` is authoritative; as of 2026-10-30 on
   Global it gives Sol with `medium` effort for implementers and Sol with `high` effort for story-leads and reviewers.
+- **Before each batch of spawns,** run `/usr/bin/python3 -I <repo>/tools/capacity --line` and start no more than its
+  `can_start`. It counts the Claude and Codex agents already working on this machine, so there is no fixed number.
 - **Use `fork_turns: "none"`** and a self-contained brief (task, working directory, files, scope, acceptance criteria,
   permission limits). A full-history fork keeps the parent's model, so the model override would be ignored.
 - **One fallback.** If the spawn tool doesn't offer the pair `tiers spawn` gave, or refuses it as a model error, make
