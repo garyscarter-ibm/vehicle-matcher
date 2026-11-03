@@ -4,6 +4,8 @@ Purpose, boundaries and product direction supplied by Russell on 31 October 2026
 
 ## What the demonstration must achieve
 
+**Scheme decision, Russell, 3 November:** Paula’s main demonstration uses **points-based Choices**, preserving the agreed **October 2024 eligibility matrix**. Keep other schemes’ cash/contribution rules and histories separate. The [3 November discovery update](discovery-update-2026-11-03.md) records the current question dispositions and design constraints; private technical correspondence is retained outside this public repository.
+
 The deliverable is a demonstration to BMW on 12 November, rather than a service commissioned for employees to use operationally.
 
 Russell has confirmed a **30-minute slot** with **Stuart, Gareth, Raj, Ian, Stephen and other direct reports**. Their individual roles are not established by this brief. A working presentation recommendation is around 20 minutes of connected demonstration and 10 minutes of discussion; this running order has not been agreed.

@@ -1,10 +1,12 @@
 # Questions for Sandeep
 
+**Latest response update, 3 November 2026:** technical answers dated 2 November have been reviewed. Use the [current dispositions and design consequences](discovery-update-2026-11-03.md), which supersede the historical status statements below. The detailed assessment and follow-up draft remain with the private planning correspondence. Russell confirms Choices for Paula and retains the October 2024 eligibility baseline.
+
 Started 31 October 2026. Sandeep Sundar is our contact currently working on the backend system and supplied the portal screenshots. Russell will put these questions to him; record answers and their sources here as they arrive.
 
 Keep this as a running list of questions arising during discovery and backlog development. The October 2024 eligibility matrices in the research are the agreed POC baseline.
 
-## Open questions
+## Original questions — historical wording and status
 
 ### SAN-001: Vehicle points prices and employee allowances
 
@@ -170,6 +172,6 @@ Keep this as a running list of questions arising during discovery and backlog de
 
 **Answer/source/date:** Not yet received.
 
-## Answered questions
+## Current response status
 
-None yet.
+See the [3 November update](discovery-update-2026-11-03.md) for the current disposition of every SAN entry. The original questions above are preserved as discovery history; no broad entry is fully closed.

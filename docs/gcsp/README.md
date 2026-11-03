@@ -36,6 +36,8 @@ Russell confirmed at FUCQ-4 closeout on 1 November that backlog Epics are indepe
 
 ## Supporting evidence and open decisions
 
+- [Discovery update, 3 November](discovery-update-2026-11-03.md): latest question dispositions and general design constraints after private technical feedback. Russell confirms Choices for Paula; the detailed source assessment and follow-up draft remain with the private planning material.
+
 - [BMW interface research](bmw-interface-research.md) and [adapter capability map](bmw-interface-stories.md), FUCQ-4 refinement, 1 November: dated catalogue/specification/image proof, a repeatable VIN-linked Driver's Guide route, unsuccessful free-decoder tests and conditional Outvin API findings. These establish source limits, not live GCSP integration or a VIN build sheet.
 - [Synthetic VIN fleet refinement](synthetic-vin-fleet-proposal.md): authorised Epics FUCQ-18/19, the 10,000-distinct target, an offline lookup service and replaceable adapter. Includes a three-configuration native pilot and refined acceptance. [BMW VIN rules](synthetic-vin-rules.md) retain primary descriptor/checksum/year/plant evidence, explicit UK/RHD gaps and a bounded AutoTrader-to-VINwiki pilot with two sanitised candidate observations. The HLD and selected collection/profile context remain implementation inputs.
 - [Discovery and codebase findings](discovery-findings.md), [research background](background.md), [business model](business-model-exploration.md) and [personas](personas/README.md).
