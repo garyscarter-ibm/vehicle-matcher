@@ -1,0 +1,663 @@
+{
+  "date": "2026-11-01",
+  "scope": "User Stories for independent FUCQ-13–19; canonical HLD epic refresh",
+  "authorisation": "Russell requested child User Stories for independent Epics FUCQ-13–19 and confirmed the HLD is canonical; refresh outdated epics. Authoring only, no implementation/dispatcher/bulk/live activation.",
+  "storyCount": 27,
+  "epicCount": 7,
+  "epicAcceptanceItems": 49,
+  "nativeBlocks": [
+    {
+      "from": "FUCQ-36",
+      "to": "FUCQ-37",
+      "ref": "C13B"
+    },
+    {
+      "from": "FUCQ-36",
+      "to": "FUCQ-38",
+      "ref": "C13C"
+    },
+    {
+      "from": "FUCQ-37",
+      "to": "FUCQ-38",
+      "ref": "C13C"
+    },
+    {
+      "from": "FUCQ-36",
+      "to": "FUCQ-39",
+      "ref": "C14A"
+    },
+    {
+      "from": "FUCQ-39",
+      "to": "FUCQ-40",
+      "ref": "C14B"
+    },
+    {
+      "from": "FUCQ-39",
+      "to": "FUCQ-41",
+      "ref": "C14C"
+    },
+    {
+      "from": "FUCQ-40",
+      "to": "FUCQ-41",
+      "ref": "C14C"
+    },
+    {
+      "from": "FUCQ-36",
+      "to": "FUCQ-42",
+      "ref": "C15A"
+    },
+    {
+      "from": "FUCQ-42",
+      "to": "FUCQ-43",
+      "ref": "C15B"
+    },
+    {
+      "from": "FUCQ-43",
+      "to": "FUCQ-44",
+      "ref": "C15C"
+    },
+    {
+      "from": "FUCQ-38",
+      "to": "FUCQ-45",
+      "ref": "C16A"
+    },
+    {
+      "from": "FUCQ-45",
+      "to": "FUCQ-46",
+      "ref": "C16B"
+    },
+    {
+      "from": "FUCQ-45",
+      "to": "FUCQ-47",
+      "ref": "C16C"
+    },
+    {
+      "from": "FUCQ-46",
+      "to": "FUCQ-47",
+      "ref": "C16C"
+    },
+    {
+      "from": "FUCQ-41",
+      "to": "FUCQ-48",
+      "ref": "C17A"
+    },
+    {
+      "from": "FUCQ-48",
+      "to": "FUCQ-49",
+      "ref": "C17B"
+    },
+    {
+      "from": "FUCQ-48",
+      "to": "FUCQ-50",
+      "ref": "C17C"
+    },
+    {
+      "from": "FUCQ-49",
+      "to": "FUCQ-50",
+      "ref": "C17C"
+    },
+    {
+      "from": "FUCQ-36",
+      "to": "FUCQ-51",
+      "ref": "V18A"
+    },
+    {
+      "from": "FUCQ-51",
+      "to": "FUCQ-52",
+      "ref": "V18B"
+    },
+    {
+      "from": "FUCQ-52",
+      "to": "FUCQ-53",
+      "ref": "V18C"
+    },
+    {
+      "from": "FUCQ-38",
+      "to": "FUCQ-53",
+      "ref": "V18C"
+    },
+    {
+      "from": "FUCQ-53",
+      "to": "FUCQ-54",
+      "ref": "V18D"
+    },
+    {
+      "from": "FUCQ-54",
+      "to": "FUCQ-55",
+      "ref": "V18E"
+    },
+    {
+      "from": "FUCQ-38",
+      "to": "FUCQ-55",
+      "ref": "V18E"
+    },
+    {
+      "from": "FUCQ-55",
+      "to": "FUCQ-56",
+      "ref": "V18F"
+    },
+    {
+      "from": "FUCQ-51",
+      "to": "FUCQ-57",
+      "ref": "P19A"
+    },
+    {
+      "from": "FUCQ-36",
+      "to": "FUCQ-57",
+      "ref": "P19A"
+    },
+    {
+      "from": "FUCQ-57",
+      "to": "FUCQ-58",
+      "ref": "P19B"
+    },
+    {
+      "from": "FUCQ-38",
+      "to": "FUCQ-58",
+      "ref": "P19B"
+    },
+    {
+      "from": "FUCQ-58",
+      "to": "FUCQ-59",
+      "ref": "P19C"
+    },
+    {
+      "from": "FUCQ-38",
+      "to": "FUCQ-59",
+      "ref": "P19C"
+    },
+    {
+      "from": "FUCQ-41",
+      "to": "FUCQ-59",
+      "ref": "P19C"
+    },
+    {
+      "from": "FUCQ-59",
+      "to": "FUCQ-60",
+      "ref": "P19D"
+    },
+    {
+      "from": "FUCQ-60",
+      "to": "FUCQ-61",
+      "ref": "P19E"
+    },
+    {
+      "from": "FUCQ-52",
+      "to": "FUCQ-61",
+      "ref": "P19E"
+    },
+    {
+      "from": "FUCQ-53",
+      "to": "FUCQ-61",
+      "ref": "P19E"
+    },
+    {
+      "from": "FUCQ-61",
+      "to": "FUCQ-62",
+      "ref": "P19F"
+    },
+    {
+      "from": "FUCQ-54",
+      "to": "FUCQ-62",
+      "ref": "P19F"
+    },
+    {
+      "from": "FUCQ-55",
+      "to": "FUCQ-62",
+      "ref": "P19F"
+    },
+    {
+      "from": "FUCQ-56",
+      "to": "FUCQ-62",
+      "ref": "P19F"
+    }
+  ],
+  "stories": [
+    {
+      "key": "FUCQ-36",
+      "parent": "FUCQ-13",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-37",
+      "parent": "FUCQ-13",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-38",
+      "parent": "FUCQ-13",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-39",
+      "parent": "FUCQ-14",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-40",
+      "parent": "FUCQ-14",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-41",
+      "parent": "FUCQ-14",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-42",
+      "parent": "FUCQ-15",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-43",
+      "parent": "FUCQ-15",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-44",
+      "parent": "FUCQ-15",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-45",
+      "parent": "FUCQ-16",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-46",
+      "parent": "FUCQ-16",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-47",
+      "parent": "FUCQ-16",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-48",
+      "parent": "FUCQ-17",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-49",
+      "parent": "FUCQ-17",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-50",
+      "parent": "FUCQ-17",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-51",
+      "parent": "FUCQ-18",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-52",
+      "parent": "FUCQ-18",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-53",
+      "parent": "FUCQ-18",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-54",
+      "parent": "FUCQ-18",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-55",
+      "parent": "FUCQ-18",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-56",
+      "parent": "FUCQ-18",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-57",
+      "parent": "FUCQ-19",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-58",
+      "parent": "FUCQ-19",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-59",
+      "parent": "FUCQ-19",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-60",
+      "parent": "FUCQ-19",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-61",
+      "parent": "FUCQ-19",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-62",
+      "parent": "FUCQ-19",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "Medium",
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    }
+  ],
+  "epics": [
+    {
+      "key": "FUCQ-13",
+      "type": "Epic",
+      "parent": null,
+      "status": "In Progress",
+      "descriptionMatches": true,
+      "existingLinksPreserved": true,
+      "unassigned": true
+    },
+    {
+      "key": "FUCQ-14",
+      "type": "Epic",
+      "parent": null,
+      "status": "In Progress",
+      "descriptionMatches": true,
+      "existingLinksPreserved": true,
+      "unassigned": true
+    },
+    {
+      "key": "FUCQ-15",
+      "type": "Epic",
+      "parent": null,
+      "status": "In Progress",
+      "descriptionMatches": true,
+      "existingLinksPreserved": true,
+      "unassigned": true
+    },
+    {
+      "key": "FUCQ-16",
+      "type": "Epic",
+      "parent": null,
+      "status": "In Progress",
+      "descriptionMatches": true,
+      "existingLinksPreserved": true,
+      "unassigned": true
+    },
+    {
+      "key": "FUCQ-17",
+      "type": "Epic",
+      "parent": null,
+      "status": "In Progress",
+      "descriptionMatches": true,
+      "existingLinksPreserved": true,
+      "unassigned": true
+    },
+    {
+      "key": "FUCQ-18",
+      "type": "Epic",
+      "parent": null,
+      "status": "In Progress",
+      "descriptionMatches": true,
+      "existingLinksPreserved": true,
+      "unassigned": true
+    },
+    {
+      "key": "FUCQ-19",
+      "type": "Epic",
+      "parent": null,
+      "status": "In Progress",
+      "descriptionMatches": true,
+      "existingLinksPreserved": true,
+      "unassigned": true
+    }
+  ],
+  "nativeChildQuery": {
+    "isLast": true,
+    "count": 27,
+    "keys": [
+      "FUCQ-36",
+      "FUCQ-37",
+      "FUCQ-38",
+      "FUCQ-39",
+      "FUCQ-40",
+      "FUCQ-41",
+      "FUCQ-42",
+      "FUCQ-43",
+      "FUCQ-44",
+      "FUCQ-45",
+      "FUCQ-46",
+      "FUCQ-47",
+      "FUCQ-48",
+      "FUCQ-49",
+      "FUCQ-50",
+      "FUCQ-51",
+      "FUCQ-52",
+      "FUCQ-53",
+      "FUCQ-54",
+      "FUCQ-55",
+      "FUCQ-56",
+      "FUCQ-57",
+      "FUCQ-58",
+      "FUCQ-59",
+      "FUCQ-60",
+      "FUCQ-61",
+      "FUCQ-62"
+    ]
+  },
+  "descriptionComparison": "Exact text after canonicalising Markdown bullet marker, escaped punctuation and whitespace only.",
+  "review": {
+    "verdict": "PASS — no blocking or major issues found.",
+    "count": 27,
+    "epicAcceptanceItems": 49,
+    "tier": "Opus",
+    "requested": {
+      "model": "gpt-6.1-sol",
+      "effort": "high"
+    },
+    "selected": {
+      "model": "gpt-6.1-sol",
+      "effort": "high"
+    },
+    "fallback": false,
+    "effectiveRuntimeVerified": false
+  },
+  "gateway": {
+    "codex": "PASS",
+    "endpoint": "api.servicesessentials.ibm.com"
+  },
+  "implementationStarted": false,
+  "bulkCollectionStarted": false,
+  "applicationTestsRun": false
+}

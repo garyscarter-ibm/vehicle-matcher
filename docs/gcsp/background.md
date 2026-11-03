@@ -5,6 +5,8 @@ environment) with Sandeep Sundar. Background for a new set of features; nothing 
 Screenshots are in `screens/`, in wizard order. They're from the test environment with junk data:
 use them for layout and flow only, never as a source of facts (figures, rules, timings).
 
+**Platform clarification, 2 November 2026:** Russell confirms that GCSO means Global Car Scheme – Ordering, the mainframe ordering application; ISA means Internal Sales Appointment, formerly the separate handover system. GCSP unifies their UI over the mainframe for now, with Java modernisation to follow. See the [current platform context and supplied slides](platform-context.md); the dated research below remains historical evidence.
+
 ## Screens
 
 | File | Screen |

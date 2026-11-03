@@ -1,0 +1,12 @@
+{
+  "key": "FUCQ-73",
+  "id": "1076691",
+  "summary": "Recommend Greg's next vehicle order using predicted employee demand",
+  "issueType": "Epic",
+  "status": "To Do",
+  "priority": "Medium",
+  "labels": [
+    "backlog"
+  ],
+  "verifiedOn": "2026-11-02"
+}

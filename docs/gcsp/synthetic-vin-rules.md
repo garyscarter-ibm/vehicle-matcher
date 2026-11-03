@@ -1,6 +1,6 @@
 # Plausible synthetic BMW VIN rules
 
-FUCQ-5 refinement, **1 November 2026**. Russell authorised [FUCQ-19](https://ibm-consulting.atlassian.net/browse/FUCQ-19), a synthetic VIN registry/service/adapter with a plausible VIN generator, and [FUCQ-20](https://ibm-consulting.atlassian.net/browse/FUCQ-20), a separate capability to populate it with **10,000 genuinely distinct configurations**. This note supplies the generator's evidence and remaining coverage gaps. It is research, not an implemented generator or an issued vehicle identity.
+FUCQ-5 refinement, **1 November 2026**, with UK observations updated **2 November 2026**. Russell authorised [FUCQ-19](https://ibm-consulting.atlassian.net/browse/FUCQ-19), a synthetic VIN registry/service/adapter with a plausible VIN generator, and [FUCQ-20](https://ibm-consulting.atlassian.net/browse/FUCQ-20), a separate capability to populate it with **10,000 genuinely distinct configurations**. This note supplies the generator's evidence and remaining coverage gaps. It is research, not an implemented generator or an issued vehicle identity.
 
 ## Findings and source quality
 
@@ -32,6 +32,8 @@ The official [vPIC WMI registry query](https://vpic.nhtsa.dot.gov/api/vehicles/G
 The registry names the US manufacturer under BMW Manufacturer Corporation / BMW North America; the filing names above describe its submitted WMI classes. Preserve that source distinction. The registry's WMI-country label does not identify a precise assembly plant. The filing itself includes `WBA` Z4 with a Graz plant dictionary entry.
 
 Require all five in the platform fixture set, then **multiple genuinely different configurations under every WMI** in the population coverage plan/report. Do not allocate WMIs randomly or divide the entire corpus into five equal buckets without regard to model compatibility. These are a minimum coverage set, not an exhaustive whitelist: the filings also contain **`3MW`, `3MF`, `WBX`, `WB5`**. Add a separately evidenced profile when a represented model needs one. In particular, do not force M2 into WBS, iX into WBY, or every electric BMW into WBY: MY2026 iX uses WB5; MY2027 i3 uses WBA and iX3 uses WBX in these filings.
+
+The 2 November UK-registered samples below use **WBA for G05 X5 xDrive50e** and **WBS for F95 X5 M Competition**. This corrects the earlier sample shortlist’s expectation of 5UX/5YM from those vehicles. Assembly location and model badge do not by themselves select a WMI across markets. Keep these observations distinct from the North American 5UX/5YM references; the separate five-WMI fixture/population requirement remains unchanged and unresolved by this UK batch.
 
 ## Position rules and exact checksum
 
@@ -67,6 +69,18 @@ check character = X if remainder is 10, otherwise the remainder digit
 Choose every other character, including the random serial, **before** computing position nine. Use integer remainder arithmetic; floating-point rounding is unnecessary. The regulation's public Table VI vector was independently checked in throwaway research arithmetic: weighted sum **411**, remainder **4**, expected/calculated check character **4**. The evidence retains the arithmetic result without a complete VIN. This does not substitute for implementation tests.
 
 Implementation validation must cover the public vector, all eleven remainder outcomes including `X`, digit/letter transliteration, invalid letters, leading zeros and corruption cases. A checksum detects many transcription errors; it does not authenticate a VIN, uniquely decode every equipment choice, or guarantee every character substitution is detected.
+
+### Check-digit assurance — FUCQ-19 / FUCQ-53
+
+Confirmed with Russell on **2 November 2026**. This requirement belongs to [FUCQ-19](https://ibm-consulting.atlassian.net/browse/FUCQ-19), with implementation and test ownership in its existing generator/allocation story [FUCQ-53](https://ibm-consulting.atlassian.net/browse/FUCQ-53).
+
+- Finalise the other sixteen characters, including the independently generated fictional serial, before calculating position nine. Its calculation weight is zero. Recalculate if another character changes while constructing a new candidate; published VIN associations remain immutable. Keep VINs as strings so leading zeros survive.
+- Use the exact letter values and position weights above, integer arithmetic, remainder modulo eleven and `X` for remainder ten. Never copy an observed check character or choose it randomly.
+- Cross-check generated output with a **separately implemented offline test checker that does not call the generator's checksum helper**. Establish expected results independently, so generation and validation cannot repeat the same helper defect and pass each other.
+- Verify the regulatory example's weighted sum **411**, remainder **4** and check character **4**. Tests must cover all eleven possible remainder outcomes, letter/digit conversion, valid leading-zero cases, invalid lengths/characters and deliberately incorrect position-nine characters. Do not assert that every possible change elsewhere must be detected.
+- Apply the calculation only to enabled profiles whose market/era evidence establishes a position-nine checksum. Arithmetic correctness and profile applicability are separate acceptance checks; preserve each profile's literal year/era convention and serial shape.
+
+All twelve retained observations match this arithmetic. No further real VIN samples or Sandeep lookup are needed to establish the calculation; additional evidence may still be needed to enable particular model/market/era profiles. These are documented implementation requirements, not a claim that the generator or independent checker has been built or tested.
 
 ### Model year and production date
 
@@ -141,16 +155,32 @@ The generator therefore needs an evidence-bearing profile registry, and populati
 
 Russell authorised a manual route: identify the exact vehicle in an [AutoTrader](https://www.autotrader.co.uk/) advert, read its visible registration plate, and look it up through his logged-in [VINwiki](https://web.vinwiki.com/) session. This is useful for the UK gaps above. The US filings support the five-WMI structural reference fixtures, but **do not establish UK/RHD descriptors**, including the G61 i5 Touring used in the configurator pilot. A BMW generation/chassis designation such as `F70`, `U06` or `G61`, a four-character AG/model code, and the VIN's descriptor positions are separate fields; do not substitute one for another.
 
-A bounded browser-UI pilot on 1 November produced these sanitised observations. Positions 4–8 are recorded literally; calling them a five-character VDS is conditional on establishing the applicable format profile.
+A bounded browser-UI pilot on 1 November and Russell’s ten supplied pairs on 2 November produced these sanitised observations. Positions 4–8 are recorded literally; calling them a five-character VDS is conditional on establishing the applicable format profile.
 
 | Observation | Vehicle evidence | WMI | Positions 4–8 | Position 9 | Position 10 | Position 11 | Positions 12–17 shape | Checksum arithmetic |
 |---|---|---|---|---|---|---|---|---|
 | `UK-OBS-001` | Existing user-opened VINwiki page labelled “2026 BMW 120 M Sport MHEV Auto”; no advert cross-check | WBA | `82GE0` | `9` | `0` | `7` | One letter, five digits | Matches modulo-11 calculation |
 | `UK-OBS-002` | AutoTrader card advertised a 2026 220i MHT M Sport DCT Active Tourer; photographed plate lookup and VINwiki vehicle page returned “2026 BMW 220I M Sport MHEV Auto” | WBA | `72BX0` | `6` | `0` | `7` | One letter, five digits | Matches modulo-11 calculation |
+| `UK-OBS-003` | Russell supplied a G60 i5 Saloon registration/VIN pair on 2 November; source pages and exact derivative not independently checked | WBY | `62HG0` | `9` | `0` | `C` | One letter, five digits | Matches modulo-11 calculation |
+| `UK-OBS-004` | Russell supplied a G61 i5 Touring registration/VIN pair on 2 November; source pages and exact derivative not independently checked | WBY | `72HH0` | `2` | `0` | `C` | One letter, five digits | Matches modulo-11 calculation |
+| `UK-OBS-005` | User-reported G21 320i M Sport Touring, 2026 | WBA | `22FY0` | `0` | `0` | `F` | One letter, five digits | Matches modulo-11 calculation |
+| `UK-OBS-006` | User-reported G80 M3 Competition xDrive Saloon, 2026 | WBS | `32HJ0` | `3` | `0` | `F` | One letter, five digits | Matches modulo-11 calculation |
+| `UK-OBS-007` | User-reported G05 X5 xDrive50e, 2026 | WBA | `42EU0` | `6` | `0` | `9` | Six digits | Matches modulo-11 calculation |
+| `UK-OBS-008` | User-reported F95 X5 M Competition; AutoTrader reportedly gives manufacture in 2026 | WBS | `12ET0` | `3` | `0` | `9` | Six digits | Matches modulo-11 calculation |
+| `UK-OBS-009` | User-reported G21 330e M Sport Touring, 2026 | WBA | `42GL0` | `6` | `0` | `F` | One letter, five digits | Matches modulo-11 calculation |
+| `UK-OBS-010` | User-reported G26 i4 eDrive40 Gran Coupé, 2026 | WBY | `62HD0` | `3` | `0` | `F` | One letter, five digits | Matches modulo-11 calculation |
+| `UK-OBS-011` | User-reported U11 iX1 xDrive30, 2026 | WBY | `22HM0` | `0` | `0` | `5` | Six digits | Matches modulo-11 calculation |
+| `UK-OBS-012` | User-reported G42 220i Coupé, 2026 | WBA | `12CM0` | `7` | `0` | `8` | One letter, five digits | Matches modulo-11 calculation |
 
-Each row is **one candidate observation**, not an activated generator profile or manufacturer-certified dictionary. Only the second proves the complete plate-to-VINwiki route. Neither independently confirms RHD/UK-market specification, production date or model year. The first suggests the F70 family and the second the U06 family, but the precise generation association still needs corroboration. Position-eleven `7` is consistent with the filing's Leipzig dictionary; exact model/era allocation is still a separate check. No second example of either derivative, G61 example or other-WMI UK profile was collected in this pilot.
+Each row is **one candidate observation**, not an activated generator profile or manufacturer-certified dictionary. Only the second was independently observed through the complete plate-to-VINwiki route. The original two do not independently confirm RHD/UK-market specification, production date or model year. The first suggests the F70 family and the second the U06 family, but the precise generation association still needs corroboration. Position-eleven `7` is consistent with the filing's Leipzig dictionary; exact model/era allocation is still a separate check. The 1 November pilot collected no second example of either derivative or G61 sample.
 
-Both VINwiki labels say 2026 while position ten is `0`. That is direct reason to avoid inserting the US `T` year character into these candidates; it does not establish the true build/model year or a universal BMW zero convention. Both checksum calculations match, but two examples do not establish the position-nine rule for all UK vehicles or historical generations. Never copy these observed check characters into generated identities: calculate them after generating the fictional serial whenever the selected profile uses a checksum.
+**2 November follow-up:** Russell supplied the G60/G61 i5 pairs and all eight additional requested derivatives using the same method; no Sandeep lookup is required. Offline checks confirm canonical 17-character format and matching position-nine checksums for all ten supplied VINs. Their generation/body/derivative labels are user-reported, with UK/RHD/import context and source-page matching unverified. Exact i5 engine/drive badges remain unconfirmed. Full identifiers were used transiently and excluded from retained evidence. The [sample checklist](vin-sample-checklist.md) records completion of the first-pass collection; it does not enable a generator profile or alter the agreed eligibility baseline.
+
+Russell describes the latest eight as 2026 models. For the F95 he reports that AutoTrader states manufacture in 2026 despite a 75 plate. Record this as user-reported advertised manufacture evidence; it is not an independently established model year, build date or registration date. The M Sport 330e is suitable for this first pass. Retain its trim separately from the reusable model profile, without claiming from one sample that trim never affects type coding.
+
+The new observations establish two serial shapes: six digits for X5, X5 M and iX1; one letter plus five digits for the other five. Do not impose the earlier letter-plus-five-digit shape on every profile. The literal plant-position characters can be compared with the independent dictionary, but the dictionary alone does not prove UK allocation. In particular, G42 supplies WBA with position-eleven `8`; do not infer a Mexican WMI from a plant code. The observed `72HH0` remains no basis for a universal rule converting an AG code into a VIN descriptor.
+
+The original two VINwiki labels say 2026 while position ten is `0`; all ten supplied VINs also have position-ten `0`. Avoid inserting the US `T` year character into these candidates; the observations do not establish the true build/model year or a universal BMW zero convention. All twelve checksum calculations match, but they do not establish the position-nine rule for all UK vehicles or historical generations. Never copy these observed check characters into generated identities: calculate them after generating the fictional serial whenever the selected profile uses a checksum.
 
 For each derivative selected for the population coverage plan:
 
@@ -174,7 +204,7 @@ Both BMW filings provide this **independent dictionary** for position eleven:
 | `3` | Born, Netherlands | Dictionary entry alone does not establish current BMW production |
 | `5` | Regensburg, Germany | Validate model/era allocation |
 | `7` | Leipzig, Germany | Validate model/era allocation |
-| `8` | San Luis Potosi, Mexico | Validate model/era allocation and Mexican WMI |
+| `8` | San Luis Potosi, Mexico | Validate model/era allocation and the actual market-specific WMI |
 | `9` | Greer, South Carolina, USA | Spartanburg/Greer allocation, supported X variant |
 
 The vehicle rows leave plant position eleven as **`-`**, not a per-row code. The later `3`, `4`, `5` etc. in the explanation columns identify model lines and must not be parsed as plant codes. Do not cross-join every descriptor with every plant in the dictionary.
@@ -217,3 +247,5 @@ Synthetic/source provenance must survive HTTP responses and provider switches. T
 ## Follow-up review and verification
 
 The UK observational follow-up passed independent read-only review on 1 November 2026: reviewer requested/selected `gpt-6.1-sol` / `high`, no fallback or descendants; effective runtime settings were not independently verified. The review checked confidence, positional/chassis/type-code distinctions, identity exclusion, activation gates and the backend experience contract. Live lookups were not repeated by the reviewer. JSON parsing and consistency checks preserved all 145 filing rows and confirmed two single candidate observations with one complete advert-to-lookup route. Local file links, whitespace and complete-VIN exclusion checks passed. No application code changed or implementation tests were run.
+
+The 2 November sample update checked all eight newly supplied VINs transiently for canonical format and checksum arithmetic; all passed. JSON and cross-document checks confirmed twelve unique observations, matching descriptor/position tables, reported-year provenance, both serial shapes and the WBA/WBS X5 correction. A structural digest confirmed that all 145 manufacturer reference rows were unchanged by this update. Local links, whitespace and full-VIN/registration exclusion checks passed. No source-page lookup, profile activation, Jira change or application implementation formed part of this update.

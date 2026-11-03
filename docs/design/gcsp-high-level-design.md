@@ -1,0 +1,210 @@
+# GCSP demonstration high-level design
+
+FUCQ-6 · 1 November 2026 · Proposed for Russell/Gary's architecture agreement.
+
+Updated 2 November 2026 for the user-approved [FUCQ-74](https://ibm-consulting.atlassian.net/browse/FUCQ-74) capability: recommend Greg's next vehicle order using predicted employee demand. Diagram page **08 Predictive order planning** records the added design; all new components remain proposed/unbuilt.
+
+**Extend the existing canonical [draw.io HLD](high-level-design.drawio) with a GCSP overview and supporting views. The shared recommendation architecture is a child view within that design.** Keep the current implementation, reusable computation, employee transactions, vehicle evidence, planning/lifecycle and deployment views together. No second HLD or separate recommendation service is introduced.
+
+The design supports the 12 November demonstration and the proposed 2027 front-end roadmap discussion. It specifies functioning demo behaviour behind replaceable adapters, with later BMW integration conditions kept explicit. It does not authorise all proposed capability implementation, provision infrastructure or establish BMW production acceptance.
+
+**Later build direction, Russell, 2 November:** apply the [build rules](../gcsp/build-rules.md) to full planned scope and centrally stored, plausible assumptions that can improve through trials. Earlier stretch/defer descriptions are superseded. Architecture agreement and the agreed backlog/execution workflow remain in place.
+
+## Design hierarchy and evidence precedence
+
+| Option | Assessment |
+|---|---|
+| **Add a parent overview inside the existing HLD** | Recommended. Preserves the already agreed FUCQ-8 design and current-code baseline, gives FUCQ-6 a whole-service view, and keeps statuses and deployment assumptions in one artifact. Detail pages represent the same logical modules. |
+| New GCSP HLD linking the existing file as a child | Useful if GCSP later becomes a separately owned system/repository. Today it duplicates shared shell, APIs, adapters and release facts and leaves two places to maintain them. |
+| Expand the shared-recommendation page to contain everything | Makes the ranker appear to own allocation, orders and fulfilment, and makes the page harder to read. Keep those responsibilities in their own views. |
+
+The [HLD index](README.md) names every view. The new overview links to existing detail pages; it is a navigation and responsibility view, not another deployment. Most boxes inside the backend represent modules in the same Node process. The proposed VIN lookup will expose an actual HTTP endpoint in that backend; immutable vehicle data does not require a second database or microservice.
+
+Read current sources in this order when same-day records disagree:
+
+1. **Russell's direct clarification during FUCQ-6, 1 November: use preference sliders and separate importance weights.** This confirms the [demo brief](../gcsp/demo-brief.md). The saved [blueprint, version 4](../gcsp/service-blueprint.html), [research](../gcsp/service-blueprint-research.md) and [revision record](../gcsp/service-blueprint-review.md) incorrectly remove them; those input-control passages are superseded by this clarification. Retain the blueprint's other service responsibilities and walkthrough unless separately changed. The fourteen-step numbering remains historical context.
+2. The [experience contract](../gcsp/experience-quality.md) and [screen index](../gcsp/screens/README.md) establish the agreed header/sidebar/palette and consumer Used Cars body direction. Earlier research saying the reference is missing is superseded. A representative redesigned body still needs early review before parallel body work.
+3. [FUCQ-8's assessment](../gcsp/engine-reuse-assessment.md) establishes current functionality and defects; its [agreed shared design](../gcsp/shared-recommendation-design.md) establishes reusable contracts. Its version-2 step numbers do not override the version-4 journey.
+4. [FUCQ-5's interface evidence](../gcsp/bmw-interface-research.md) and the [VIN refinement](../gcsp/synthetic-vin-fleet-proposal.md) constrain provider claims. Jira capability numbers identify authorised scope; diagrams do not create additional backlog items.
+
+## Responsibilities and state ownership
+
+| Area | Responsibility | Current or proposed |
+|---|---|---|
+| Shared entry and shell | Select scenario and brand independently; retain Used Cars modes, links and themes. Employee/Greg navigation uses explicit demo role context initially, later authorised identity. | Existing retail picker/EDS shell; shared launcher FUCQ-13 and GCSP role shell proposed. |
+| Shared UI kit | Cards, photographs/fallbacks, facts, comparison rows, conditional controls, preview and feedback mechanics. Scenario view models supply labels, units and actions. | Existing primitives in [COMPONENTS.md](../../COMPONENTS.md); extensions/gallery proposed. |
+| Pure recommendation core | Exact-candidate scoring helpers, evidence and result projection. No network access, stock writes, email or lifecycle state. | Existing deterministic retail engine; extraction proposed under FUCQ-8. |
+| Retail policy and façade | Preserve existing HTTP/export contracts, six brands, five modes, current blend/tuning and local feedback meaning. | Existing behaviour; compatible internal restructuring proposed. |
+| Employee evaluation | Server-selected eligibility/unknown gates, driver/essential/affordability/timing checks, then explained preference ranking over complete relevant stock. | Proposed. Scores cannot override a failed or unknown essential. |
+| Brief and search activity | Confirmed versioned brief, search/hold permission, pause, meaningful last-check outcome and connection health. Drafts and inferred suggestions are separate from approved changes. | Proposed. FUCQ-8's read-only consumer does not supply durable saving. |
+| Allocation and offers | One shared authority for manual and buddy access, exact exclusive holds, current offer reads, decisions, expiry and uncertain-operation reconciliation. | Proposed. Rank order is not a fleet allocation rule. |
+| Greg's decision surface | Curate the next best action and proposed order list; explain predicted coverage, unwanted-stock risk, unmet needs, uncertainty and alternatives; edit constraints, recalculate and intentionally submit. | Approved capability FUCQ-74; proposed/unbuilt. Individual optional trip history is not an employer performance score. |
+| Demand prediction and learning | Join briefs, choice sets, terms and observed outcomes; train/evaluate offline; estimate choice/acceptance including alternatives and waiting through a replaceable prediction port. | FUCQ-74; synthetic demonstrator permitted, real BMW accuracy unverified. The deterministic fit score remains separate. |
+| Constrained order planning | Combine predicted demand with renewal needs, stock/inbound supply, Production availability, lead times, budget and model quantity bounds; compare feasible plans and replan after Production responds. | FUCQ-74; existing Node backend modules, exact model/solver refined through stories. Hard gates remain authoritative. |
+| Canonical policy/assumptions source | Shared rules, objective weights, bounds, fallback assumptions and active model reference; every consumer uses the same access interface. | Binding build rule; machine-readable runtime source not yet implemented. Learned coefficients live in the immutable artifact it references. |
+| Lifecycle and help | Selection handoff, approval/actions, document status, requested/confirmed appointments, readiness and owned renewal-risk cases. | Proposed boundaries. Detailed implementation requires separate refinement. |
+| Durable transaction repository | Brief/policy versions, exact available/held/allocated stock, offers/decisions/history, cases, event receipts, pending operations, notification outbox and versioned forecast/plan snapshots. | One shared PostgreSQL repository proposed behind a port; provider/cost/connectivity remain open. |
+| Vehicle corpus and descriptions | Versioned model/configuration facts and images; immutable synthetic VIN registry and published corpus. | Proposed static artifacts/lookup module, separate from the mutable fleet ledger. |
+
+## Paula's version-4 blueprint through the architecture
+
+Paula's current-car anchor is the supplied **G21 320i M Sport Touring LCI2, B48 petrol, automatic, Portimao Blue Metallic** record. Treat its equipment as supplied scenario evidence. Its status does not prove a completed real handover, and catalogue fuel figures are not observed personal MPG.
+
+| Blueprint column | Responsible modules and data | Observable state / constraint |
+|---|---|---|
+| **01 · Personal car and renewal** | Employee/contract, exact current-car and optional usage ports; personal-view projection; reminder policy. | Actual agreement dates and mileage baseline; usage shows period/coverage/update or absence. No unsupported driver score. |
+| **01a · Manual gallery** | Same employee eligibility and released-stock projection used by the buddy; shared card/comparison kit. | Browsing does not reserve. Manual claims later use the same allocation/hold authority. Monday is narrative context, not a universal release schedule. |
+| **02 · Express preferences** | Draft brief, preference sliders, separate importance/indifference controls and live explained preview. | Preferred values and their weights are distinct. Qualities such as comfort and sportiness may coexist; do not force false opposites. Preserve/change feedback and confirmed must-haves remain separate. Broad space/comfort wishes are preferences, not invented numeric essentials. |
+| **03 · Practical check and permission** | Employee/driver/contract prefill, conditional questions, scheme terms and BriefService. | Confirm known facts; resolve missing essentials; contribution only if scheme permits; charging not ready/unknown excludes plug-ins until resolved. Save approved version and explicit search/hold consent. |
+| **04 · Activity** | Brief/search controller and persisted activity projection. | Last successful check, active/paused, still searching or delayed source. Pausing prevents new searches/holds; existing offers are shown with their actual state and handled explicitly. |
+| **04a · Delegated work** | Full exact-stock evaluation → configured allocation → conditional hold/offer transaction → committed outbox. | Recheck current permission/versions before a hold. No offer or notification without a confirmed exclusive hold. |
+| **05 · First offer** | Offer read, exact quote/fact snapshot, current-car comparison, notification dispatcher. | Email and account show one offer; countdown derives from persisted expiry. Unknown equipment and representative images remain visible. |
+| **06 · Decline and history** | Offer decision, exact release, historical quote/comparison and typed rejection reason. | Idempotent decline; pending release stays unavailable until resolved; then car returns to ordinary shared eligibility. History cannot restore the hold. No penalty or recovery priority follows from rejection alone. |
+| **07 · Confirm one change** | Fixed reason-to-question follow-up, versioned BriefService, reevaluation and decline exclusion. | Lower contribution ceiling only after Paula confirms. Preserve other essentials/priorities; do not reoffer the unchanged declined car. No-match is calculated, not a prewritten outcome. |
+| **08 · Help available** | Help projection; owned case only on request or configured renewal-risk trigger; exception-decision port. | Merely opening help changes nothing. Extension or other remedy requires its authorised owner; actual dates remain authoritative. |
+| **09 · Next release** | Replayable release/event source, deduplication, full evaluation, allocation and hold transaction. | Uses current brief and permission, including the lower ceiling and decline history. Failed claims try appropriate remaining candidates; no hard-coded winner. |
+| **10 · Second offer** | Same offer/comparison/notification modules plus saved first-versus-second quote projection. | Explain measured changes from the stored quotes and current brief, not an inferred unspoken preference. |
+| **11 · Employee selects** | Offer acceptance/selection, entitlement checks, idempotent order handoff. | Stop further holds for this renewal/entitlement. Acknowledged selection, pending handoff and approved order are distinct. |
+| **12 · Approval and tasks** | Ordering/approval/document ports and employee-action projection. | Show who owns outstanding work and delays; do not invent approval from a local button. |
+| **13 · Handover plan** | Appointment request/acknowledgement, document/readiness status and separate old-car return plan. | Requested differs from confirmed. Signing may follow booking; completed documents and a ready vehicle gate physical handover. |
+
+Physical collection/return, after-use feedback and a later renewal remain outside the main walkthrough. Their ports preserve continuity: only confirmed collection/return changes the current-car relationship; acceptance alone does not. The retained brief is reviewed for changes on the next cycle. These boundaries are shown without adding lifecycle delivery stories to FUCQ-8.
+
+Optional connected summaries use comparable covered totals for MPG and contract start mileage/allowance for remaining miles. No feed, stale feed and zero mileage are distinct. They are optional personal information, do not establish charging readiness and do not affect eligibility/allocation priority. Greg sees aggregated demand/outcomes rather than individual trip history.
+
+## Vehicle evidence and adapter contracts
+
+Every adapter declares source mode (`synthetic`, `dated-snapshot`, `authorised-live`), schema/version, observation/effective date, identity scope, completeness/unknowns and capability/error status. A source failure is distinct from a valid not-found result. The application validates the result rather than interpreting a model default as exact fitted equipment. FUCQ-8's `VehicleSnapshot`/`CandidateDecision` remain the shared internal contracts.
+
+Catalogue/image results retain both requested and resolved market, model/AG identifiers, effective date and complete option selection. Reject or explicitly flag mismatches; the researched 330e-to-320i substitution must not silently enter a recommendation. Preserve units, per-field completeness, placeholder/unknown values and selected-versus-available-versus-verified-fitted options. An image records its role and fidelity (representative model/configuration or exact vehicle), rather than proving equipment from its appearance.
+
+| Capability | Proposed placement and verified limits |
+|---|---|
+| Catalogue/specification · FUCQ-14, later FUCQ-17 | Dated BMW configuration/model snapshots behind a description port. Live provider requires sanctioned access and contract proof; public website success is not enterprise access. Model facts do not prove exact-car options. |
+| Configuration imagery · FUCQ-15, later FUCQ-18 | Dated representative image artifacts behind an image port; normal browser image loading may use published assets. Do not put BMW credentials in static files or public image URLs. Live provider is access-gated. |
+| VIN-linked handbook · FUCQ-16 | Separate content/illustration port. The proven Driver's Guide route is not a build-sheet, eligibility, valuation or reservation API. |
+| Synthetic VIN registry/service · FUCQ-19 | Validated immutable registry + lookup/generator modules and actual HTTP endpoint in the existing Node backend. Vehicle adapter calls that service contract. Include five-WMI fixtures and explicit not-found/invalid/unavailable responses. Synthetic VINs must never fall through to a real decoder. |
+| Distinct configuration corpus · FUCQ-20 | Collector/validator/publisher produces a versioned 10,000-genuinely-distinct configuration corpus and registry manifest. Validate identity/signature counts and load through the same service; do not relabel repeated builds with new VINs as distinct configurations. Keep documented descriptor/checksum/year/plant and UK/RHD assurance gaps visible. |
+| Exact stock and actions | Separate released-stock/claim port supplies stable exact-car ID, revision, scheme/cohort/release-list visibility, terms and collection readiness. VIN lookup or catalogue presence never proves availability or exclusive hold authority. |
+
+Keep the immutable corpus and published asset artifacts separate from the SQL store for changing briefs/offers/holds. Synthetic VINs are scenario identifiers linked to independently retained configuration/source provenance, not claims about real registered vehicles. Some evidence can enrich a description without satisfying a decision-critical essential. Unknown essentials stay `needs-confirmation`.
+
+For FUCQ-19 refinement, the proposed lookup contract is `GET /api/gcsp/vehicle-evidence/synthetic-vins/:vin`, hosted by the existing backend and protected by its configured demo/service access boundary. The backend vehicle adapter consumes the actual HTTP contract through an injected base URL; it does not bypass it with a private lookup shortcut. A known record returns identity kind, registry/corpus version, configuration reference and attributed facts; invalid format, unknown record and unavailable/invalid corpus produce distinct 400/404/503 outcomes. No outcome invokes a live provider. The offline generator/publisher is not an unauthorised public write endpoint.
+
+Publish `manifest.json`, `configurations.jsonl` and an indexed VIN registry as versioned backend artifacts, validating them before atomically selecting a corpus version. Keep the source/configuration signature and `identityKind: synthetic` in server-owned records; a browser-supplied flag or valid-looking VIN cannot establish identity kind. Environment wiring and record provenance constrain all provider switches, unknown-record and outage paths. Generated identifiers must never be submitted to BMW, Driver's Guide or any real decoder. Resetting a demo run changes fleet/employee state references, not the immutable corpus. The population job must prove five-WMI/profile coverage and 10,000 distinct signatures without padding unsupported UK/RHD profiles from North American fixtures.
+
+Provider substitutions pass contract tests with equivalent fixture inputs before enabling the provider. No fallback silently widens eligibility, replaces unknown equipment, turns a failed source into “no cars”, or changes synthetic identifiers into real-world queries.
+
+## Greg's supply loop and the commitment boundary
+
+Greg reads the full saved-demand/evaluation picture, including unmet needs, successful holds, declines, expiries and accepted selections. Do not calculate demand from the small retail display sample or count a score as observed satisfaction. Rejection reasons and affordability constraints inform aggregates without exposing Paula's optional trip history.
+
+`FutureOrderRequest` records Greg's intent. A separate provider acknowledgement creates or updates `ConfirmedSupply`, with expected dates/status and provenance. Only an actual release creates `ReleasedStock` eligible for a hold. A request, an acknowledgement and a physical release are three different facts; a delayed/unconfirmed request cannot satisfy a current offer. Future return volume can be calculated from contract/supply data; used-market prices require an explicit scenario model.
+
+Greg publishes new effective versions of recommendation weights or points through authorised policy/terms operations. Changes steer appropriate cars only; they cannot relax essentials or silently alter an active quote. Stable active-offer terms are the proposed demo policy pending scheme-owner confirmation. Projections distinguish a what-if preview from a published policy and a submitted order request from confirmed supply.
+
+The post-selection lifecycle has separate state and provider references: `selection-received` → `handoff-pending` → `order-acknowledged` → required approval outcomes → booking `requested`/`confirmed` and readiness/document states. An uncertain external write stays pending and is reconciled before retry/reallocation. A firm commitment point must be defined by the ordering authority. In the demo, state transitions operate through the synthetic adapter; a live adapter must report unsupported writes rather than pretend success.
+
+## Greg's next best order: FUCQ-74
+
+Russell approved learned demand/choice prediction feeding constrained order planning on 2 November. This refines Greg's existing supply loop, with a dedicated **08 Predictive order planning** view in the canonical diagram. The [research record](../gcsp/greg-predictive-research.md) retains the historical ML proposals, available-data limits and candidate approaches. The backlog capability is authorised; algorithm selection and implementation remain to be refined through the normal story workflow.
+
+The dashboard leads with a recommended next action and a proposed model/derivative quantity list. Show expected acceptable coverage before renewal, unallocated-stock risk, unmet needs, binding constraints, uncertainty, reasons and alternative plans. Greg can change quantity bounds or other permitted constraints and recalculate a preview. Publishing policy/points and submitting an order request remain explicit separate actions. A Production response updates confirmed-supply evidence and triggers replanning; only actual release creates selectable exact stock.
+
+| Proposed contract | Required information and boundary |
+|---|---|
+| Learning records | Renewal cohort and brief/entitlement context, vehicle attributes, eligible/available alternatives and exposure, dated points/contribution terms, offered/selected/wait outcome and timestamps. Acceptance, rejection, expiry and later satisfaction remain distinct. Separate observed records from synthetic generation and retain provenance. |
+| `PredictionInput` → `DemandForecast` | Versioned cohort, horizon, permitted choice sets and terms produce choice/acceptance/wait probabilities, aggregate demand and uncertainty, model/data versions and limitations. Shared eligibility/essential checks constrain the choices first. A fit score is not an acceptance probability. |
+| Forecast + supply + policy → `OrderPlan` | Account for existing/released and confirmed inbound supply, Production constraints, lead times, budget and model min/max quantities. Return feasible integer quantities, objective trade-offs, unmet needs, uncertainty and baseline/alternative comparisons. Count each employee entitlement once and model competition/substitution. An infeasible request exposes conflicting constraints. |
+| Preview → `FutureOrderRequest` | Greg intentionally submits a selected plan after reviewing its current input versions. Retain plan, forecast, policy, model, cohort, stock and supply versions with the request; reject or recompute stale inputs. Submission, provider acknowledgement and release retain the existing distinct states and idempotent action contracts. |
+
+Place training/data validation and held-out evaluation offline. Publish an immutable model artifact containing learned parameters, feature/schema version, training-data manifest, evaluation and provenance. The [one canonical policy source](../gcsp/build-rules.md) owns the active artifact reference, objective weights, bounds and assumptions. Model activation is an explicit versioned reference change; all runtime consumers and synthetic generators use the shared policy interface. Historical plans retain their input/model versions so later changes remain explainable. No second policy registry or employee-state database is introduced.
+
+Inference and planning sit behind ports inside the existing Node backend; no new ML microservice is required by this HLD. An interpretable regularised discrete-choice model is the initial candidate. The precise model, feature specification, training runtime and optimisation solver remain refinement choices supported by evidence. The shared pure ranker retains deterministic preference-fit computation; training, prediction and optimisation do not add stock-write authority to it.
+
+Keep expressed-demand aggregation and shared deterministic-fit baselines for comparison and a visibly identified fallback. Evaluate probability quality on held-out later periods/cohorts, then evaluate complete plans through the same allocation/event services used by the demo. Compare acceptable coverage before renewal, unused vehicles and acceptance with identical feasible inputs and declared commercial assumptions. Synthetic multi-cycle training and separately held-out evaluation may demonstrate a real learned pipeline; report their generating assumptions and avoid claiming validated BMW employee behaviour. The 10,000-configuration corpus supplies vehicle features, not 10,000 employee-choice labels. Counterfactual points/nudge responses remain explicit assumptions until supported by suitable evidence.
+
+Implementation acceptance must show that one central assumption change updates forecasts, plans and Greg's displayed consequences consistently; hard gates still hold; changing constraints recomputes a feasible plan or explains infeasibility; Production responses cause replanning; and intentional submission preserves the request/confirmed/released boundary. Apply the [experience quality contract](../gcsp/experience-quality.md), including rendered desktop/narrow and error/empty/stale-state evidence, to the decision surface.
+
+## Demo access and offer links
+
+The proposed `DemoIdentityAdapter` resolves only configured fictional employees, scheme/entitlement context and presenter roles, behind the demo access gate. The backend owns that context and enforces it on every brief, stock, policy and decision route; a caller cannot gain Greg privileges or act for another employee by changing an ID. The shared password alone is not the employee principal. Keep this adapter replaceable by sanctioned BMW identity/roles.
+
+For an email opened in another browser, use an opaque, unguessable, environment-and-run-bound offer token, stored hashed by the backend and scoped to that exact synthetic offer. Resolve it to the same offer access context before reading or confirming a decision; do not expose the employee fleet or optional usage history through it. Use deployment configuration for the stable Pages landing URL, then exchange the token through the backend without logging it or embedding private briefs. Repeated/stale links read current state; they never revive a hold. Later BMW operation requires the approved sign-in/offer-access policy rather than promoting this demo mechanism into production identity.
+
+## Transaction and event invariants
+
+- Revalidate employee essentials, eligibility, current terms and permission before each claim. Before acceptance, check eligibility, essentials, permission, the current hold and its pinned quote's validity; a newly published points version does not silently reprice that hold. Version conflicts return a clear refresh/review outcome.
+- One exact car cannot have two active holders; employee/renewal/entitlement limits are configured explicitly. Manual and buddy commands use the same authority. Allocation/tie-break policy is versioned and inspectable; employee iteration order or mail speed cannot establish priority.
+- Demo hold, offer and outbox job commit in one SQL transaction. Mail failures leave a visible account offer and retryable stable job; they do not acquire another car or change priority. Microsoft Graph/Exchange, ACS Email or Brevo is selected behind the transport port after sender/permission setup.
+- For remote BMW authority, persist a pending operation and use conditional/idempotent claim/release/selection calls. Local SQL cannot make a remote call atomic. Only a confirmed claim permits an active offer; only confirmed release permits reallocation. Timeouts remain uncertain until reconciliation.
+- Offer reads derive current accepted/rejected/expired/pending state from the backend, including old email links and another browser. Browser countdowns and local undo never extend/revive a hold.
+- Declining, changing the brief and after-use satisfaction are separate records. The unchanged-declined-car exclusion belongs to employee policy; expiry/missed mail is not dislike or a priority entitlement.
+- Release/clock/rule/brief triggers retain event IDs, state versions and processing outcomes. Replaying a release or retrying a decision is idempotent. Startup and explicit demo ticks reconcile outstanding work.
+- A scenario reset is an authorised presenter operation over an isolated synthetic environment. It restores versioned input/clock/state coherently and prevents old offer links/outbox jobs from operating on a new run. It must never reset an operational provider.
+
+An always-running or scheduled runner is required for unattended background promises. Explicit presenter ticks can demonstrate the same services on the current host; sleeping Render processes do not establish reliable expiry or watch work. Roughly two hours is a configurable proposal, not a BMW rule.
+
+## Technical deployment and recovery
+
+Source facts, rather than an assumed dashboard setup:
+
+- [.github/workflows/pages.yml](../../.github/workflows/pages.yml) publishes the static repository from `main` or manual dispatch. It rewrites **`block.html`**'s `data-api` value. [index.html](../../index.html) resolves its remote default independently. GCSP/offer URLs must support the `/vehicle-matcher/` Pages base path and direct refresh.
+- [render.yaml](../../render.yaml) declares the existing `server/` Node service, `/health` and a free plan. Live branch/revision, plan, ownership and environment settings remain unverified. A prior health response proves reachability only.
+- [.github/workflows/sync-block.yml](../../.github/workflows/sync-block.yml) also publishes block changes pushed to `main` into `garyscarter-ibm/poc-ret-eds-sites` (plus manual source/target-ref controls). Treat this EDS consumer as a release dependency; confirm ownership, credentials and compatible timing before main receives shared block changes.
+
+The release path is:
+
+1. Review and integrate bounded stories on `gcsp-poc`; retain FUCQ-8 retail parity and FUCQ-13 URL/brand/API-context guarantees. Do not equate a local integration commit with a deployed release.
+2. Agree the backend release branch/revision and the Pages/EDS publication route with Gary. Record API/offer origin, CORS/authorisation, supported contract versions, fixture/corpus versions and enabled scenarios. No branch/dashboard configuration is changed by this document.
+3. Prepare durable SQL, migration/backup, runner and chosen mail sender before enabling transaction-backed employee behaviour. Deployment secrets remain backend-only. The VIN corpus uses versioned static deployment artifacts; changing fleet state uses the repository.
+4. Deploy an additive compatible backend first, verify retail plus employee capabilities and transaction/restart behaviour, then publish the corresponding static frontend through the agreed main/manual route. Preserve old Used Cars links and clients during mixed versions; unsupported employee capabilities fail clearly.
+5. Smoke the deployed scenario launcher, six-brand/five-mode retail matrix, employee/Greg shared state, release→hold→email/account→offer→decision, stale links, replay/expiry/restart and `/vehicle-matcher/` direct links. Inspect changed employee/offer/Greg surfaces at desktop and narrow sizes with keyboard controls, gallery/ratchet coverage and the agreed visual reference.
+6. Record frontend/backend/schema/policy/corpus versions and recovery commands. Disable employee entry separately if necessary while retaining compatible retail. Preserve/reconcile active holds, offers, quotes and outbox jobs; never roll a backend to code that cannot understand outstanding state without a controlled transition. Schema changes remain additive until recovery is proved.
+
+No deployment, database provisioning, live BMW action or mail send is part of FUCQ-6's design update. [Gary's questions](../gcsp/questions-for-gc.md) retain the owner decisions.
+
+## Later BMW-hosted integration gates
+
+| Gate | Evidence needed before substitution |
+|---|---|
+| Host and navigation | Sanctioned EDS/front-end host conventions, base paths, CSP/CORS, asset/image policy, deployment pipeline and design-system fit. Reusable components do not establish a drop-in BMW deployment. |
+| Identity and roles | Approved sign-in, employee/scheme/entitlement and Greg/administrator roles, server-side resource ownership and secure offer-link access. A shared demo key or public employee ID is insufficient. |
+| Authoritative facts and rules | Named source/owner, approved field mappings, dated eligibility/points/contributions, exact equipment assurance, stock freshness and charging/driver/collection rules. October 2024 remains the POC eligibility baseline; Choices contributions are not automatically PCS UKFS BMW terms. |
+| Operations and hooks | Supported conditional/idempotent claim/release/selection/approval/appointment contracts, authoritative acknowledgement, release/change events or polling fallback, and reconciliation. Readable web pages/files alone cannot provide exclusive reservations. |
+| Persistence and execution | Durable shared repository, schema/recovery strategy, event replay, reliable runner, operational ownership/monitoring and retention/access rules. Immutable VIN corpus needs its own version/provenance manifest, not employee-state semantics. |
+| Mail and privacy | Approved sender/transport, permissions, verified recipient, delivery/retry policy, secure environment-bound offer URLs and permitted optional usage summaries. Entra membership does not establish Mail.Send or ACS Email readiness. |
+
+These are capability conditions, not verified BMW API names. Sandeep/owners can supply contracts later without rewriting the experience or domain logic. The [Sandeep questions](../gcsp/questions-for-sandeep.md) and interface research retain source-level evidence.
+
+## Delivery boundaries and open decisions
+
+FUCQ-8's published FUCQ-21–31 stories cover recommendation reuse and a stateless read-only employee consumer. FUCQ-13's FUCQ-32–36 cover compatible routing/launcher/retail continuity and the real FUCQ-7 entry. FUCQ-14–20 cover the distinct provider/corpus capabilities. FUCQ-74 records the approved predictive order-planning capability; its implementation stories are not yet authored. This HLD does not create stories for all lifecycle boxes or nest independent capability Epics. Refine other capabilities with Russell before Jira expansion.
+
+| Decision | Owner / release effect |
+|---|---|
+| Allocation/tie-break, entitlement hold limits, duration and exact decline-exclusion rule | Scheme owner/Russell for explicit demo assumptions; BMW owner before live operation. Version/configure the selected rule and test competition. No automatic recovery priority. |
+| Effective PCS contribution applicability, eligibility and quote stability | Scheme owner/Sandeep. Use explicit synthetic/demo policy until confirmed; never assume Choices' £1/excess-point rule applies to PCS. |
+| Selection commitment, approvals, extensions and lifecycle authority | Ordering/fulfilment owner/Sandeep. Distinguish synthetic acknowledgements and approved real operations; keep unconfirmed writes pending. |
+| Backend branch/plan, SQL, runner, sender and publication/recovery route | Gary/platform owner. Gates enabling the corresponding employee capabilities; reference architecture can be agreed while those choices remain open. |
+| Representative employee body and Greg density | Russell/Gary under the agreed experience contract. Early rendered review before parallel body implementation; no new reference upload required. |
+| FUCQ-74 model, features, objective calibration and solver | Refine against held-out prediction and complete-plan baselines. Plausible central assumptions permit the demo build; usable real observations are required for claims of BMW predictive validity. |
+
+The planned 1,000-employee comparison consumes the same decision/allocation/event services with captured notifications under the [full-build direction](../gcsp/build-rules.md). It requires identical seeded cohort/stock/rules across baseline/proposed routes, explicit access/response assumptions and separate process-versus-order-mix experiments. Calculated fit is not observed satisfaction or a validated fleet forecast. Business-model and ZEV research inform scenario questions, not hardcoded wins, universal policy or verified economics.
+
+## Research coverage and FUCQ-6 acceptance
+
+The review covered the repository research to date as a team: the parent read the brief, current blueprint and its research/review records, engine assessment/evidence and shared design; independent reviewers read the business/discovery/deployment/story records and BMW/VIN/scheme/persona records. The current blueprint screen content was read in full; its duplicate print representation adds no different service scope.
+
+| Evidence set | Design consequence |
+|---|---|
+| [Background](../gcsp/background.md), [discovery](../gcsp/discovery-findings.md), [Mural source](../gcsp/sources/mural/timeline-2024-11-07.csv), [Choices guide](../gcsp/sources/choices-car-scheme-guidelines-v1.6.md), [eligibility](../gcsp/sources/choices-eligibility-matrices-2024-10.md) | Separate dated current-route evidence, authoritative source obligations and explicit demo assumptions. |
+| [Business model](../gcsp/business-model-exploration.md), [argument check](../gcsp/business-model-argument-check.md), [ZEV](../gcsp/zev-mandate-research.md), [capability proposals](../gcsp/capability-breakdown.md) | Greg's controllable scenario loop; no unsupported economic/employee-outcome claims or new authorised scope. |
+| [Personas/source register](../gcsp/personas/README.md), [blueprint research](../gcsp/service-blueprint-research.md), [v3 history](../gcsp/service-blueprint-review-v3.md), [v4 review](../gcsp/service-blueprint-review.md) | Precise current-car anchor, reuse of known practical inputs, rejection memory, help, acknowledgement and handover boundaries. Input controls follow Russell's FUCQ-6 correction: sliders plus separate weights. |
+| [BMW interfaces](../gcsp/bmw-interface-research.md), [adapter scope](../gcsp/bmw-interface-stories.md), [FUCQ-5 proof](../gcsp/evidence/fucq-4/README.md), [VIN proposal](../gcsp/synthetic-vin-fleet-proposal.md), [VIN rules](../gcsp/synthetic-vin-rules.md) | Separate catalogue, representative imagery, handbook, synthetic registry and exclusive stock authority. |
+| [Engine reuse](../gcsp/engine-reuse-assessment.md), [FUCQ-8 proof](../gcsp/evidence/fucq-7/README.md), [shared design](../gcsp/shared-recommendation-design.md), [FUCQ-8 stories](../gcsp/fucq-7-stories.md), [FUCQ-13 stories](../gcsp/fucq-12-stories.md) | Pure core, separate policies/workflows, exact decisions, compatible migration and URL/context preservation. |
+| [Sandeep questions](../gcsp/questions-for-sandeep.md), [GC questions](../gcsp/questions-for-gc.md), [delivery evidence](../gcsp/delivery-evidence.md), [experience contract](../gcsp/experience-quality.md), [components](../../COMPONENTS.md) | Named operational gates, reproducible delivery/reuse evidence and mandatory rendered acceptance for later UI work. |
+
+FUCQ-6 is ready for architecture review when the canonical diagram and this record agree on these responsibilities; the current/proposed distinction is visible; every blueprint column has an owner; supply stages and source limits are explicit; and release/BMW-hosting conditions are reviewable. Final agreement belongs to Russell/Gary. Keep the issue under review until that agreement is recorded; design agreement does not mark unbuilt components blue or accept undecided operational policies.
+
+Verification and reviewer results are recorded in [FUCQ-6 evidence](../gcsp/evidence/fucq-5/README.md). No application runtime changed, so existing application test results are historical evidence rather than a newly executed product acceptance claim.

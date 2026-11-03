@@ -1,0 +1,419 @@
+{
+  "epic": "FUCQ-6",
+  "date": "2026-11-01",
+  "status": "published-and-verified",
+  "template": "_dev/story-template.md",
+  "site": "https://ibm-consulting-sandbox003.atlassian.net",
+  "epic_title": "Modernise the manual GCSP selection journey with shared components",
+  "epic_status": "In Progress",
+  "story_count": 10,
+  "dependency_count": 19,
+  "preserved_epic_blocker": {
+    "blocker": "FUCQ-6",
+    "blocked": "FUCQ-34"
+  },
+  "review": {
+    "verdict": "PASS — no blocking or major issues found.",
+    "role": "reviewer/Opus",
+    "requested_model": "gpt-6.1-sol",
+    "requested_effort": "high",
+    "selected_model": "gpt-6.1-sol",
+    "selected_effort": "high",
+    "fallback": null,
+    "effective_runtime": "not independently inspected",
+    "minor_corrections": "Aligned upstream FUCQ-28 test paths, single-gallery wording, M2 repository-interface dependency and shared stock scope."
+  },
+  "agents": [
+    {
+      "role": "evidence reviewer (Opus)",
+      "requested_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "selected_model": "gpt-6.1-sol",
+      "selected_effort": "high",
+      "fallback": null
+    },
+    {
+      "role": "component researcher (Sonnet implementer)",
+      "requested_model": "gpt-6.1-sol",
+      "requested_effort": "medium",
+      "selected_model": "gpt-6.1-sol",
+      "selected_effort": "medium",
+      "fallback": null
+    }
+  ],
+  "checks": {
+    "native_parent_status_priority_labels": true,
+    "all_19_directed_blocks": true,
+    "description_parity": "Exact after equivalent unordered-list marker normalisation",
+    "story_points": "unset",
+    "epic_description": true
+  },
+  "stories": [
+    {
+      "key": "FUCQ-63",
+      "title": "Build the shared GCSP shell and review an employee body reference",
+      "parent": "FUCQ-6",
+      "status": "To Do",
+      "priority": "Medium",
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:ui",
+        "manual-journey",
+        "size:L"
+      ],
+      "story_points": "unset",
+      "blockers": [],
+      "description_headings": [
+        "Goal",
+        "Acceptance criteria",
+        "Files or areas",
+        "Decided",
+        "Out of scope",
+        "Validate"
+      ],
+      "description_chars": 5472,
+      "description_verified": true
+    },
+    {
+      "key": "FUCQ-64",
+      "title": "Resolve manual-selection context and validate employee journey drafts",
+      "parent": "FUCQ-6",
+      "status": "To Do",
+      "priority": "Medium",
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:code",
+        "manual-journey",
+        "size:L"
+      ],
+      "story_points": "unset",
+      "blockers": [
+        "FUCQ-25",
+        "FUCQ-28"
+      ],
+      "description_headings": [
+        "Goal",
+        "Acceptance criteria",
+        "Files or areas",
+        "Decided",
+        "Out of scope",
+        "Validate"
+      ],
+      "description_chars": 6074,
+      "description_verified": true
+    },
+    {
+      "key": "FUCQ-65",
+      "title": "Persist exact manual claims and expiry through a shared authority",
+      "parent": "FUCQ-6",
+      "status": "To Do",
+      "priority": "Medium",
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:code",
+        "manual-journey",
+        "size:L"
+      ],
+      "story_points": "unset",
+      "blockers": [
+        "FUCQ-64"
+      ],
+      "description_headings": [
+        "Goal",
+        "Acceptance criteria",
+        "Files or areas",
+        "Decided",
+        "Out of scope",
+        "Validate"
+      ],
+      "description_chars": 5936,
+      "description_verified": true
+    },
+    {
+      "key": "FUCQ-66",
+      "title": "Show current contracts and start the right new or replacement journey",
+      "parent": "FUCQ-6",
+      "status": "To Do",
+      "priority": "Medium",
+      "labels": [
+        "backlog",
+        "kind:ui",
+        "manual-journey",
+        "size:M"
+      ],
+      "story_points": "unset",
+      "blockers": [
+        "FUCQ-63",
+        "FUCQ-64"
+      ],
+      "description_headings": [
+        "Goal",
+        "Acceptance criteria",
+        "Files or areas",
+        "Decided",
+        "Out of scope",
+        "Validate"
+      ],
+      "description_chars": 5153,
+      "description_verified": true
+    },
+    {
+      "key": "FUCQ-67",
+      "title": "Collect scheme driver and collection choices without losing context",
+      "parent": "FUCQ-6",
+      "status": "To Do",
+      "priority": "Medium",
+      "labels": [
+        "backlog",
+        "kind:ui",
+        "manual-journey",
+        "size:L"
+      ],
+      "story_points": "unset",
+      "blockers": [
+        "FUCQ-66"
+      ],
+      "description_headings": [
+        "Goal",
+        "Acceptance criteria",
+        "Files or areas",
+        "Decided",
+        "Out of scope",
+        "Validate"
+      ],
+      "description_chars": 4971,
+      "description_verified": true
+    },
+    {
+      "key": "FUCQ-68",
+      "title": "Browse released cars with visual cards and complete vehicle details",
+      "parent": "FUCQ-6",
+      "status": "To Do",
+      "priority": "Medium",
+      "labels": [
+        "backlog",
+        "kind:ui",
+        "manual-journey",
+        "size:L"
+      ],
+      "story_points": "unset",
+      "blockers": [
+        "FUCQ-30",
+        "FUCQ-67"
+      ],
+      "description_headings": [
+        "Goal",
+        "Acceptance criteria",
+        "Files or areas",
+        "Decided",
+        "Out of scope",
+        "Validate"
+      ],
+      "description_chars": 5665,
+      "description_verified": true
+    },
+    {
+      "key": "FUCQ-69",
+      "title": "Review a claimed car with contact details and return mileage",
+      "parent": "FUCQ-6",
+      "status": "To Do",
+      "priority": "Medium",
+      "labels": [
+        "backlog",
+        "kind:ui",
+        "manual-journey",
+        "size:M"
+      ],
+      "story_points": "unset",
+      "blockers": [
+        "FUCQ-65",
+        "FUCQ-68"
+      ],
+      "description_headings": [
+        "Goal",
+        "Acceptance criteria",
+        "Files or areas",
+        "Decided",
+        "Out of scope",
+        "Validate"
+      ],
+      "description_chars": 4883,
+      "description_verified": true
+    },
+    {
+      "key": "FUCQ-70",
+      "title": "Submit manual selections through an idempotent ordering adapter",
+      "parent": "FUCQ-6",
+      "status": "To Do",
+      "priority": "Medium",
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:code",
+        "manual-journey",
+        "size:L"
+      ],
+      "story_points": "unset",
+      "blockers": [
+        "FUCQ-65"
+      ],
+      "description_headings": [
+        "Goal",
+        "Acceptance criteria",
+        "Files or areas",
+        "Decided",
+        "Out of scope",
+        "Validate"
+      ],
+      "description_chars": 5252,
+      "description_verified": true
+    },
+    {
+      "key": "FUCQ-71",
+      "title": "Review declarations and show the actual order handoff outcome",
+      "parent": "FUCQ-6",
+      "status": "To Do",
+      "priority": "Medium",
+      "labels": [
+        "backlog",
+        "kind:ui",
+        "manual-journey",
+        "size:L"
+      ],
+      "story_points": "unset",
+      "blockers": [
+        "FUCQ-69",
+        "FUCQ-70"
+      ],
+      "description_headings": [
+        "Goal",
+        "Acceptance criteria",
+        "Files or areas",
+        "Decided",
+        "Out of scope",
+        "Validate"
+      ],
+      "description_chars": 5755,
+      "description_verified": true
+    },
+    {
+      "key": "FUCQ-72",
+      "title": "Verify the complete manual journey and its employee entry contract",
+      "parent": "FUCQ-6",
+      "status": "To Do",
+      "priority": "Medium",
+      "labels": [
+        "backlog",
+        "kind:code",
+        "manual-journey",
+        "size:M"
+      ],
+      "story_points": "unset",
+      "blockers": [
+        "FUCQ-66",
+        "FUCQ-67",
+        "FUCQ-68",
+        "FUCQ-69",
+        "FUCQ-70",
+        "FUCQ-71"
+      ],
+      "description_headings": [
+        "Goal",
+        "Acceptance criteria",
+        "Files or areas",
+        "Decided",
+        "Out of scope",
+        "Validate"
+      ],
+      "description_chars": 5179,
+      "description_verified": true
+    }
+  ],
+  "links": [
+    {
+      "blocker": "FUCQ-25",
+      "blocked": "FUCQ-64"
+    },
+    {
+      "blocker": "FUCQ-28",
+      "blocked": "FUCQ-64"
+    },
+    {
+      "blocker": "FUCQ-64",
+      "blocked": "FUCQ-65"
+    },
+    {
+      "blocker": "FUCQ-63",
+      "blocked": "FUCQ-66"
+    },
+    {
+      "blocker": "FUCQ-64",
+      "blocked": "FUCQ-66"
+    },
+    {
+      "blocker": "FUCQ-66",
+      "blocked": "FUCQ-67"
+    },
+    {
+      "blocker": "FUCQ-67",
+      "blocked": "FUCQ-68"
+    },
+    {
+      "blocker": "FUCQ-30",
+      "blocked": "FUCQ-68"
+    },
+    {
+      "blocker": "FUCQ-65",
+      "blocked": "FUCQ-69"
+    },
+    {
+      "blocker": "FUCQ-68",
+      "blocked": "FUCQ-69"
+    },
+    {
+      "blocker": "FUCQ-65",
+      "blocked": "FUCQ-70"
+    },
+    {
+      "blocker": "FUCQ-69",
+      "blocked": "FUCQ-71"
+    },
+    {
+      "blocker": "FUCQ-70",
+      "blocked": "FUCQ-71"
+    },
+    {
+      "blocker": "FUCQ-66",
+      "blocked": "FUCQ-72"
+    },
+    {
+      "blocker": "FUCQ-67",
+      "blocked": "FUCQ-72"
+    },
+    {
+      "blocker": "FUCQ-68",
+      "blocked": "FUCQ-72"
+    },
+    {
+      "blocker": "FUCQ-69",
+      "blocked": "FUCQ-72"
+    },
+    {
+      "blocker": "FUCQ-70",
+      "blocked": "FUCQ-72"
+    },
+    {
+      "blocker": "FUCQ-71",
+      "blocked": "FUCQ-72"
+    }
+  ],
+  "limitations": [
+    "Authoring only: no application implementation, application tests, dispatcher, deployment, commit or external messages to Sandeep/Gary.",
+    "M1 representative rendered body review remains an implementation acceptance gate.",
+    "GC-003 must resolve SQL provider/deployment; SAN-017–020 and existing SAN questions remain open."
+  ]
+}
+

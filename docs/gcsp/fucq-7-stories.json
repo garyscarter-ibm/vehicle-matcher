@@ -1,0 +1,406 @@
+{
+  "epic": "FUCQ-8",
+  "date": "2026-11-01",
+  "status": "published-and-verified",
+  "template": "_dev/story-template.md",
+  "shared_decided": "Russell approved docs/gcsp/shared-recommendation-design.md and docs/design/high-level-design.drawio on 1 November 2026. Read docs/gcsp/README.md, demo-brief.md, experience-quality.md and COMPONENTS.md. Use the existing Node/vanilla-ES-module stack. Apply these same decisions and acceptance criteria in every child-agent brief; keep the HLD current and components proposed until verified.",
+  "scope": "Shared recommendation capability and a stateless read-only employee consumer. Lifecycle implementation, launcher, VIN collection and employee journey composition remain outside this Epic.",
+  "stories": [
+    {
+      "ref": "R1",
+      "jira_key": "FUCQ-21",
+      "title": "Capture the retail recommendation compatibility contract",
+      "size": "M",
+      "kind": "code",
+      "design_impact": "no",
+      "depends": [],
+      "goal": "As the owner of both experiences, I want a repeatable retail baseline so shared-code changes can be checked for unintended behaviour changes.",
+      "acceptance": [
+        "Commit versioned offline input snapshots and independently reviewed expected outcomes for representative full, partial, contradictory and brand-specific retail briefs; record HEAD, fixture versions, Node version and TASTE_SHARE.",
+        "Cover BMW, MINI, Ford, Honda, Motorrad and Ferrari; preserve the 30 brand/mode mount combinations using questionnaire, mingle, knockout, podium and guess-who keys.",
+        "Record current rank order, scores, reasons, trade-offs, stretch status, exact identities, groups/clusters/alternatives and endpoint-specific limits; include questions, match, preview, field, pool, nearby, geocode and health contracts and legacy answer hashes.",
+        "Separate documented correction cases for empty matches, stale sibling explanations, obsolete previews and lost share-link context from correct behaviour; this baseline introduces no failing default tests and does not declare known defects permanent requirements.",
+        "The compatibility command is deterministic offline, reports actionable differences and never updates expected outputs automatically. Existing runtime behaviour is unchanged."
+      ],
+      "files": [
+        "server/test/",
+        "server/test/fixtures/",
+        "docs/gcsp/evidence/fucq-7/",
+        "docs/gcsp/shared-recommendation-design.md"
+      ],
+      "decided": "Capture the configured retail blend, default 80/20, rather than retuning it. Guess Who remains a full-display-pool manual filter. This story changes tests/evidence only; no rendered product surface changes, so new screenshots are unnecessary.",
+      "out_of_scope": "Product fixes, scoring retuning, live-feed dependence, employee features and deployment.",
+      "validate": [
+        "node --test server/test/recommendation-compat.test.js — new versioned compatibility cases pass twice against identical inputs with no fixture rewrites.",
+        "node --test server/test/render.test.js — all existing brand/mode mounts pass.",
+        "npm test — full suite passes; report actual counts, do not freeze the historical count of 234 as the required future total."
+      ]
+    },
+    {
+      "ref": "R2",
+      "jira_key": "FUCQ-22",
+      "title": "Return a complete response when no used cars qualify",
+      "size": "S",
+      "kind": "code",
+      "design_impact": "no",
+      "depends": [
+        "R1"
+      ],
+      "goal": "As a used-car buyer, I want an honest no-match response so an empty search finishes and I can change my answers.",
+      "acceptance": [
+        "Empty stock and stock wholly excluded by current retail hard filters complete /api/match with the established successful no-match shape, including empty alternatives and other expected collections.",
+        "No unhandled rejection or unanswered HTTP request occurs; a bounded integration test observes normal completion rather than accepting a client timeout.",
+        "An upstream feed failure retains the current error distinction and is not converted into a claim that no car exists.",
+        "The existing no-match screen remains usable with a clear next action and no stuck loading state; non-empty results and other endpoint contracts retain compatibility."
+      ],
+      "files": [
+        "server/engine.js",
+        "server/index.js",
+        "server/test/api.test.js",
+        "server/test/engine.test.js",
+        "blocks/vehicle-matcher/modes/questionnaire.js"
+      ],
+      "decided": "Use the FUCQ-8 empty-result probe as the reproduction. Preserve existing retail status components and copy. Visual reference is the existing retail surface at reviewed HEAD 27cf841; no GCSP redesign or employee surface is introduced.",
+      "out_of_scope": "Changing retail eligibility/weights, adding alternative inventory, new error conventions and employee workflows.",
+      "validate": [
+        "node --test server/test/api.test.js server/test/engine.test.js — empty and all-filtered inputs complete normally; injected provider failures remain errors.",
+        "npm test — passes with the intentional corrected outcome documented against R1.",
+        "Browser: inspect the no-match/loading/retry path at desktop and narrow widths, including keyboard access to change answers; save evidence under docs/gcsp/evidence/fucq-7/."
+      ]
+    },
+    {
+      "ref": "R3",
+      "jira_key": "FUCQ-23",
+      "title": "Keep selected listing prices, scores and explanations consistent",
+      "size": "L",
+      "kind": "code",
+      "design_impact": "no",
+      "depends": [
+        "R1"
+      ],
+      "goal": "As a used-car buyer, I want every claim on a grouped card to describe the listing I selected so I can judge its real price, equipment and fit.",
+      "acceptance": [
+        "Retain each returned exact listing's decision, including score, reasons, trade-offs and stretch status; expose it additively without removing or reinterpreting existing representative response fields.",
+        "Selecting or filtering to a sibling updates price, imagery, kit, gearbox, link, score, stretch and reasons together. Reproduce the saved £30k/£39k example: the second car must not retain the first car's 96%/within-budget reassurance.",
+        "Aggregate group counts and equipment availability remain aggregate; no selected car inherits a union of equipment it does not have.",
+        "New clients against older compatible backends suppress unavailable exact scores/reasons after switching listing instead of reconstructing weights or showing stale representative claims.",
+        "Old clients continue to consume existing response fields; game/manual-mode behaviour and endpoint display limits remain compatible.",
+        "Extend the existing card helper, its catalogue and component gallery coverage as needed; keep focus, long names, absent images and keyboard listing selection usable without a visual redesign."
+      ],
+      "files": [
+        "server/engine.js",
+        "server/index.js",
+        "blocks/vehicle-matcher/modes/result-card.js",
+        "blocks/vehicle-matcher/modes/questionnaire.js",
+        "server/test/",
+        "COMPONENTS.md"
+      ],
+      "decided": "Exact identity is the source of truth; server decisions supply scores. Use matchCard, listingsOf, mediaWell and existing tokens. The current retail card at 27cf841 is the correction reference; no new employee visual reference is implied. Establish the required developer gallery alongside changed shared-kit behaviour.",
+      "out_of_scope": "Employee reservations, scheme quotes, new grouping strategy, scoring calibration and employee screen composition.",
+      "validate": [
+        "node --test server/test/exact-listing-decision.test.js — server/DOM tests cover expensive sibling selection, refinements, equipment, missing member decisions and old-client fields.",
+        "node --test server/test/ui-ratchet.test.js server/test/render.test.js — pass without raising the ratchet baseline.",
+        "npm test — passes; document the corrected R1 expectation separately from later extraction parity.",
+        "Browser: desktop/narrow and keyboard inspection of sibling selection, refinement, stretch warning, missing images and legacy-backend fallback; capture the actual changed card and gallery states."
+      ]
+    },
+    {
+      "ref": "R4",
+      "jira_key": "FUCQ-24",
+      "title": "Stop obsolete previews from replacing current answers",
+      "size": "S",
+      "kind": "code",
+      "design_impact": "no",
+      "depends": [
+        "R1"
+      ],
+      "goal": "As someone refining a brief, I want previews to follow my latest answers so an earlier response cannot replace my current results.",
+      "acceptance": [
+        "Scheduling newer answers invalidates an older dispatched request immediately, including while the newer request is still waiting for debounce.",
+        "cancel() and consumer teardown invalidate timers, dispatched success/error callbacks and visible loading updates; a cancelled result cannot revive a departed screen.",
+        "Keep preview-feed instances independent and retain current debounce and retail request parameters. Transport abortion may assist but correctness does not depend on abort support.",
+        "Current successful, loading, empty and error states still behave correctly; the shared helper documents its invalidation contract for future employee consumers."
+      ],
+      "files": [
+        "blocks/vehicle-matcher/modes/preview-feed.js",
+        "blocks/vehicle-matcher/modes/questionnaire.js",
+        "blocks/vehicle-matcher/modes/podium.js",
+        "server/test/",
+        "COMPONENTS.md"
+      ],
+      "decided": "Reuse createPreviewFeed rather than introduce a second timer implementation. The current retail preview strip and its existing loading/error treatment are the visual reference; no new employee layout.",
+      "out_of_scope": "Live background searching, persistence, feed refresh policy and offer notifications.",
+      "validate": [
+        "node --test server/test/preview-cancellation.test.js — controlled deferred promises cover newer-answer debounce, cancel, teardown, old rejection and independent instances.",
+        "npm test — passes; preview limits and payloads remain compatible.",
+        "Browser: change answers rapidly and leave/reopen the flow at desktop/narrow widths; verify the newest preview wins and keyboard focus remains usable; record evidence."
+      ]
+    },
+    {
+      "ref": "R5",
+      "jira_key": "FUCQ-25",
+      "title": "Preserve used-car context in generated share links",
+      "size": "S",
+      "kind": "code",
+      "design_impact": "no",
+      "depends": [
+        "R1"
+      ],
+      "goal": "As a used-car buyer, I want a shared answer link to reopen the intended brand and mode so the recipient sees the same search context.",
+      "acceptance": [
+        "Generated links preserve the supported brand, mode, retailer, dealer/national scope and configured API/environment context using an explicit allowlist.",
+        "Keep existing #m= answer decoding, legacy band/numeric/range budgets and scalar/multiple fuel forms working; completing, resetting and reopening a flow does not silently discard required routing context.",
+        "Do not include shared passwords, access tokens, employee identity or private brief data in public links.",
+        "Document that links rerun answers against current stock; they do not freeze a listing, reserve a car, or persist the local refinement/rejection history.",
+        "Existing direct block.html links and every supported retail brand/mode remain reachable; this change does not create the shared launcher."
+      ],
+      "files": [
+        "blocks/vehicle-matcher/modes/questionnaire.js",
+        "block.html",
+        "blocks/vehicle-matcher/vehicle-matcher.js",
+        "server/test/",
+        "README.md"
+      ],
+      "decided": "Use current retail share/reset behaviour as the reference and fix context loss only. FUCQ-13 owns launcher/navigation changes. Update stale README statements only where this story establishes the final behaviour.",
+      "out_of_scope": "Saved accounts, employee offer links, durable shortlists, stock snapshots and launcher implementation.",
+      "validate": [
+        "node --test server/test/share-context.test.js — round-trip allowlisted context and legacy hashes; assert credentials/unrelated query parameters are excluded.",
+        "npm test — passes.",
+        "Browser: share, open and reset one national BMW link and one other-brand locked-mode link at desktop/narrow widths; verify copied link behaviour and keyboard access."
+      ]
+    },
+    {
+      "ref": "R6",
+      "jira_key": "FUCQ-26",
+      "title": "Represent exact vehicle facts and scenario-specific financial terms",
+      "size": "M",
+      "kind": "code",
+      "design_impact": "yes",
+      "depends": [
+        "R1"
+      ],
+      "goal": "As a recommendation consumer, I want unambiguous vehicle facts and financial terms so retail and employee decisions use the right evidence and units.",
+      "acceptance": [
+        "Introduce validated immutable snapshot/projection contracts with namespaced candidate/source identity; keep advert, VIN/exact-stock and model-group keys distinct and preserve original keys.",
+        "Decision-critical facts carry units, source reference, observation/version and assurance; unknown, derived/model-reference and exact-build/listing evidence remain distinguishable.",
+        "Retail purchase GBP and employee points/contribution/currency/period/validity are distinct terms; employee inventory remains valid without a retail cash price.",
+        "Per-employee quotes, eligibility, scores and hold/offer state are never attached to shared cached source objects. Different employee evaluations cannot mutate each other's or retail inputs.",
+        "Preserve existing mapper/export signatures and public retail payloads through compatibility projections; annotate existing mapped fixtures honestly rather than claiming they were freshly remapped.",
+        "Provide small explicit synthetic adapter fixtures; no VIN fabrication, registry collection or authoritative equipment claim is introduced."
+      ],
+      "files": [
+        "server/vehicles/ (proposed)",
+        "server/mapping.js",
+        "server/stock.js",
+        "server/adapters/ (proposed)",
+        "server/test/",
+        "docs/design/"
+      ],
+      "decided": "Follow the agreed facts/terms boundaries in the shared design. Model defaults and parsed equipment do not automatically satisfy an employee essential; front/rear ISOFIX evidence stays explicit. FUCQ-19/20 own VIN generation/registry and configuration collection. Backend contract work changes no rendered surface; validate payload parity instead of new screenshots.",
+      "out_of_scope": "BMW integration procurement, 10,000-car collection, live scheme finance/tax calculations, database provisioning and lifecycle state.",
+      "validate": [
+        "node --test server/test/vehicle-snapshot.test.js — identity, provenance, units, missing price, immutability and employee isolation cases pass.",
+        "node --test server/test/recommendation-compat.test.js — legacy mapped inputs and public retail outputs remain compatible.",
+        "npm test — passes; update the HLD's relevant implementation status only after verification."
+      ]
+    },
+    {
+      "ref": "R7",
+      "jira_key": "FUCQ-27",
+      "title": "Share pure recommendation evaluation behind the retail compatibility layer",
+      "size": "L",
+      "kind": "code",
+      "design_impact": "yes",
+      "depends": [
+        "R2",
+        "R3",
+        "R6"
+      ],
+      "goal": "As the owner of both experiences, I want reusable decision computation so employee capability can improve without changing established retail recommendations.",
+      "acceptance": [
+        "Extract only common pure dimension/evidence/ordering helpers and introduce an explicit server-bound used-retail-v1 composition; keep current engine exports and public signatures callable.",
+        "For identical mapped facts, answers, brand tuning and TASTE_SHARE, the post-correction R1 reference and extracted retail path produce identical rankings, scores, reasons, trade-offs, stretch, groups and endpoint projections.",
+        "Preserve retail answer normalisation, brand additions/drops, budget stretch, family/crew floors, soft fuel/body behaviour, blend/rounding/tie-breaks and unknown-brand fallback where the existing retail route provides it.",
+        "Pure evaluation performs no HTTP, persistence, notification, source-cache mutation or reservation. Scenario policy owns dimensions, weights, interpretation and ordering; employee rules cannot mutate registry tuning.",
+        "Existing question, match, preview, field, pool, nearby, geocode and health contracts and legacy links remain compatible. Guess Who continues to bypass weighted matching.",
+        "Record the exact corrected reference revision/fixtures and rollback boundary; compare in-memory inputs without double-fetching or causing side effects. Update relevant root README and HLD descriptions to the actual final implementation."
+      ],
+      "files": [
+        "server/recommendation/ (proposed)",
+        "server/scenarios/retail/ (proposed)",
+        "server/engine.js",
+        "server/brands.js",
+        "server/questions.js",
+        "server/index.js",
+        "server/test/",
+        "README.md",
+        "docs/design/"
+      ],
+      "decided": "Keep logical modules inside the current deployment. Retail is the first compatibility consumer; brand and scenario are independent. No copied employee engine, universal flag-driven journey or wholesale private-function extraction. Backend-only parity work changes no product presentation; no new screenshots are required.",
+      "out_of_scope": "Retail calibration changes, new services/framework, employee lifecycle, rewritten games and fake employee purchase budgets.",
+      "validate": [
+        "node --test server/test/recommendation-compat.test.js server/test/scenario-isolation.test.js — zero unexplained retail differences; changing employee policy/terms cannot alter retail results.",
+        "node --test server/test/api.test.js server/test/render.test.js — existing endpoints and all brand/mode mounts pass.",
+        "npm test — passes; attach the differential result and tested revision/configuration to the story result."
+      ]
+    },
+    {
+      "ref": "R8",
+      "jira_key": "FUCQ-28",
+      "title": "Build grouped result views from complete exact-car decisions",
+      "size": "M",
+      "kind": "code",
+      "design_impact": "no",
+      "depends": [
+        "R3",
+        "R7"
+      ],
+      "goal": "As a recommendation consumer, I want display grouping to preserve exact decisions so a shortlist does not redefine which cars are suitable.",
+      "acceptance": [
+        "Separate candidate evaluation from scenario-owned display projection; groups retain member decision references, representative/selected keys and full/sample count or completeness information.",
+        "Retain current retail grouping keys, clusters, near-match rules, alternatives and endpoint-specific limits; the R3 exact-member fields remain available to cards.",
+        "Employee consumers can apply their gates to the complete authorised candidate set before any grouping/slicing; a viable thirteenth candidate must remain discoverable even when absent from a small display shortlist.",
+        "Unknown/incomplete source status stays explicit; no displayed-card absence becomes a claim that the full inventory lacks an attribute.",
+        "Group equipment unions remain labelled aggregate availability and never feed exact essential evaluation. The retail /api/pool manual mode retains its complete public display-pool semantics."
+      ],
+      "files": [
+        "server/recommendation/ (proposed)",
+        "server/scenarios/retail/ (proposed)",
+        "server/engine.js",
+        "server/index.js",
+        "server/test/"
+      ],
+      "decided": "Retain existing retail display behaviour; the full-pool change applies to employee evaluation, not to enlarging every retail response. No rendered layout change: contract and existing DOM tests establish presentation compatibility, so fresh screenshots are unnecessary unless implementation changes the surface.",
+      "out_of_scope": "New grouping UX, changing retail result caps, fleet allocation and global satisfaction/fairness scoring.",
+      "validate": [
+        "node --test server/test/result-projection.test.js — exact member selection, groups/completeness, aggregate equipment and the thirteenth-candidate case pass.",
+        "node --test server/test/recommendation-compat.test.js server/test/api.test.js — existing retail limits and projections remain unchanged.",
+        "npm test — passes."
+      ]
+    },
+    {
+      "ref": "R9",
+      "jira_key": "FUCQ-29",
+      "title": "Recommend employee cars through a separate policy using the shared core",
+      "size": "L",
+      "kind": "code",
+      "design_impact": "yes",
+      "depends": [
+        "R6",
+        "R7",
+        "R8"
+      ],
+      "goal": "As an employee, I want recommendations to respect scheme rules and my essentials before ranking my preferences so attractive but unsuitable cars are not presented as confirmed fits.",
+      "acceptance": [
+        "Provide a stateless read-only employee application consumer and explicitly bound /api/gcsp recommendation contract, disabled or rejected when no permitted scenario/context provider is configured.",
+        "The server resolves a supported fictional employee/scheme context, policy and stock source through injected adapters; browser-supplied employee IDs, grade, quotes, availability or retail-profile flags cannot widen permission or bypass the policy.",
+        "Consume a versioned, explicitly selected October 2024 matrix fixture from the agreed baseline; missing points/driver/stock details use labelled synthetic assumptions. Unknown scheme/grade/context fails explicitly, without BMW/retail fallback.",
+        "Evaluate eligibility, confirmed essentials including carrying/equipment/charging, contribution ceiling and required timing before preference scoring and display caps. Return eligible, ineligible or needs-confirmation outcomes with grounded blockers/unknowns; an essential-unknown car is not asserted suitable.",
+        "Use shared meaningful dimension curves with separately configured employee preferences, importance and indifference. Stated facts/essentials survive game inference and strategic steering; contribution/points are never fake retail prices or budgets.",
+        "Return exact decisions with brief/facts/policy/terms/stock versions, reasons and trade-offs; zero viable stock and unavailable data are distinct. Equivalent synthetic/real-shaped provider contract fixtures and changed inputs produce computed outcomes rather than named winners.",
+        "Retail contracts and six-brand/five-mode behaviour remain compatible; no route saves a brief, claims a car, creates an offer or sends a notification."
+      ],
+      "files": [
+        "server/scenarios/employee/ (proposed)",
+        "server/gcsp/ read-only recommendation service (proposed)",
+        "server/adapters/ (proposed)",
+        "server/index.js",
+        "server/test/",
+        "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "docs/design/"
+      ],
+      "decided": "Use the agreed core and adapter boundaries; this is the first read-only employee consumer, not a complete employee journey. The exact operational matrix variant and real scheme authority remain later integration decisions; small named fixtures do not depend on FUCQ-19/20 completing 10,000 configurations. This backend-only story validates response/view contracts; new employee screens and screenshots are outside scope.",
+      "out_of_scope": "Persistent accounts/briefs, production identity, live BMW integration, allowance/tax calculation products, allocation, holds/offers, notifications and Greg's dashboard.",
+      "validate": [
+        "node --test server/test/employee-recommendation.test.js — hard/unknown gates, importance/indifference, timing, synthetic-term units, full-pool evaluation and zero-match/failure cases pass.",
+        "node --test server/test/employee-recommendation-api.test.js server/test/scenario-isolation.test.js — server-owned profile/context, adapter parity, invalid/downgrade requests and retail isolation pass.",
+        "npm test — passes; attach computed case outputs, input/policy versions and the read-only endpoint contract."
+      ]
+    },
+    {
+      "ref": "R10",
+      "jira_key": "FUCQ-30",
+      "title": "Reuse scoped feedback actions in retail refinement and employee drafts",
+      "size": "L",
+      "kind": "code",
+      "design_impact": "no",
+      "depends": [
+        "R4",
+        "R8",
+        "R9"
+      ],
+      "goal": "As someone refining recommendations, I want dislikes and confirmed changes to affect the intended search scope so the service neither forgets my essentials nor changes more than I meant.",
+      "acceptance": [
+        "Define serialisable typed draft/browse actions for exact candidate exclusion, group exclusion and confirmed preference/essential changes, with target, reason, scope and expected version; do not persist JavaScript predicate closures.",
+        "Use shared pure action/reducer helpers in the existing questionnaire refinement adapter and a read-only employee draft consumer; do not rewrite all five retail mode state machines.",
+        "Preserve questionnaire colour, cheaper-purchase-price, lower-odometer and gearbox predicate operators, whole-group shrug, group reconstruction and undo. Preserve other modes' current semantics; Podium annual mileage remains distinct from odometer.",
+        "Employee feedback requires confirmation before changing a stated fact/essential. Inference can propose a change but cannot turn charging:none into either or silently remove an essential; unknown is not indifference.",
+        "An employee draft change recomputes from the complete authorised candidate input, supports no-match/unavailable-data outcomes and rejects stale expected versions without applying a partial change. Inputs remain immutable and the caller explicitly receives the next draft version.",
+        "Browse/draft undo is reversible within its local scope. Offer decline, expiry and acceptance are distinct future domain operations; this capability cannot release/restore a real hold or claim durable account learning.",
+        "Update shared-kit catalogue/gallery examples for changed controls, showing visible scope and an undo outcome; use existing retail controls/tokens and the employee draft fixture without creating a new employee application screen."
+      ],
+      "files": [
+        "blocks/vehicle-matcher/modes/questionnaire.js",
+        "blocks/vehicle-matcher/modes/result-card.js",
+        "blocks/vehicle-matcher/ shared feedback helpers (proposed)",
+        "server/scenarios/employee/ (proposed)",
+        "server/test/",
+        "COMPONENTS.md"
+      ],
+      "decided": "Reuse feedback mechanics and retain scenario-owned meaning. Source inference is not employee authority. Retail reference is the current questionnaire refinement interaction at 27cf841; no GCSP visual standard is established by developer examples. Follow the experience contract for visible scope, undo and no-match changes.",
+      "out_of_scope": "Durable saved briefs/learning, live offer rejection, expiry/reassignment, wholesale game rewrites and employee page composition.",
+      "validate": [
+        "node --test server/test/feedback-actions.test.js — exact/group scope, operators, undo, immutable inputs, confirmation and stale-version behaviour pass for both consumers.",
+        "node --test server/test/render.test.js server/test/ui-ratchet.test.js — retail modes and component ratchet pass.",
+        "npm test — passes.",
+        "Browser: desktop/narrow/keyboard inspection of changed retail rejection, undo and empty-result paths, plus developer examples; record the changed states and scope text."
+      ]
+    },
+    {
+      "ref": "R11",
+      "jira_key": "FUCQ-31",
+      "title": "Render retail and employee decision data through the shared UI kit",
+      "size": "L",
+      "kind": "ui",
+      "design_impact": "no",
+      "depends": [
+        "R3",
+        "R4",
+        "R8",
+        "R9",
+        "R10"
+      ],
+      "ui": "matchCard, previewTile, mediaWell, listingsOf, renderOptionList, renderRangeSlider, formatSliderValue, visibleQuestions, el; extend explicit view-data/action options and typed units rather than copy components",
+      "goal": "As an employee or used-car buyer, I want consistent vehicle facts and controls with the right scenario meaning so shared components remain useful in both experiences.",
+      "acceptance": [
+        "Extend existing shared cards/fact rows/question controls to accept explicit view data, typed terms/units and callbacks; the kit owns neither scenario HTTP requests nor brief/offer state.",
+        "Keep legacy retail helper signatures through adapters and preserve current retail appearance, purchase-price/odometer/dealer labels, missing-data treatment, question keys/defaults/visibility and mode behaviour.",
+        "Render an employee decision fixture through the same kit with points, cash contribution plus currency/period, exact facts, gate/unknown reasons and separately labelled preference/importance/indifference controls; never relabel purchase price as contribution.",
+        "Selecting an exact member updates its fact/term/decision view consistently. Ineligible or confirmation-needed data cannot render an active accept/reserve action; no real offer workflow is introduced.",
+        "Create/update the developer component gallery and COMPONENTS.md for both consumers, covering long names, absent imagery/data, loading, no-match and unknown states, plus callback-only feedback examples.",
+        "Retain native keyboard operation, visible focus, contrast, reduced motion and desktop/narrow layouts. Extend relevant ratchet coverage for newly introduced gallery/shared-kit paths without increasing existing debt.",
+        "Follow Russell's 1 November visual direction: supplied GCSP screenshots define the header/sidebar/palette, breadcrumbs are optional, and body components are redesigned toward the consumer-facing Used Cars experience. Gallery examples demonstrate reusable components; FUCQ-7 owns shell integration and employee page composition. Review a representative redesigned body early rather than waiting for another uploaded reference."
+      ],
+      "files": [
+        "blocks/vehicle-matcher/modes/result-card.js",
+        "blocks/vehicle-matcher/modes/question-ui.js",
+        "blocks/vehicle-matcher/modes/preview-feed.js",
+        "blocks/vehicle-matcher/ui.js",
+        "blocks/vehicle-matcher/tokens.css",
+        "COMPONENTS.md",
+        "developer component gallery (new, location recorded in catalogue)",
+        "server/test/",
+        "docs/gcsp/experience-quality.md"
+      ],
+      "decided": "ui: matchCard, previewTile, mediaWell, listingsOf, renderOptionList, renderRangeSlider, formatSliderValue, visibleQuestions and el. Extend the kit first; no duplicate employee card or form. Russell clarified the agreed visual direction on 1 November 2026 in docs/gcsp/experience-quality.md and docs/gcsp/screens/README.md: retain the supplied GCSP header, sidebar and palette, consider breadcrumbs, and redesign the body toward the consumer-facing Used Cars experience. All eight screenshots are available and inspected; the missing-reference blocker is cleared. Use scenario-scoped palette tokens so retail themes remain unchanged. Review a representative redesigned body early as part of design QA, without requiring another upload. FUCQ-7 owns shell integration and employee page composition; FUCQ-13 owns launcher/navigation.",
+      "out_of_scope": "Employee home/dashboard/offer-page composition, new launcher, persisted brief or offer actions, brand redesign and live BMW integration.",
+      "validate": [
+        "node --test server/test/shared-kit-contracts.test.js — legacy retail adapters, typed employee terms, missing/unknown states and callback ownership pass.",
+        "node --test server/test/render.test.js server/test/ui-ratchet.test.js — all retail brand/mode mounts and ratchet pass; no baseline increase.",
+        "npm test — passes.",
+        "Serve the gallery using npm run serve; inspect actual gallery and adjacent affected retail surfaces at desktop/narrow widths with keyboard and reduced-motion checks, against the recorded references. Save screenshots and reviewed states under docs/gcsp/evidence/fucq-7/; DOM tests alone do not satisfy visual acceptance."
+      ]
+    }
+  ],
+  "visual_direction_updated": "2026-11-01: existing GCSP shell/palette references accepted; body redesigned toward consumer-facing Used Cars; no upload prerequisite."
+}

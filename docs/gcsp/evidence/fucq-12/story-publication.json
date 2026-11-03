@@ -1,0 +1,194 @@
+{
+  "epic": "FUCQ-12",
+  "date": "2026-11-01",
+  "status": "published-and-verified",
+  "template": "_dev/story-template.md",
+  "site": "https://ibm-consulting-sandbox003.atlassian.net",
+  "story_count": 5,
+  "epic_status": "In Progress",
+  "stories": [
+    {
+      "key": "FUCQ-31",
+      "title": "Resolve experience and brand routes while preserving existing links",
+      "parent": "FUCQ-12",
+      "status": "To Do",
+      "priority": "Medium",
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:code",
+        "shared-launcher",
+        "size:M"
+      ],
+      "story_points": "unset",
+      "blockers": [],
+      "description_headings": [
+        "Goal",
+        "Acceptance criteria",
+        "Files or areas",
+        "Decided",
+        "Out of scope",
+        "Validate"
+      ],
+      "description_chars": 4415
+    },
+    {
+      "key": "FUCQ-32",
+      "title": "Choose a car experience and brand from the shared launcher",
+      "parent": "FUCQ-12",
+      "status": "To Do",
+      "priority": "Medium",
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:ui",
+        "shared-launcher",
+        "size:M"
+      ],
+      "story_points": "unset",
+      "blockers": [
+        "FUCQ-31"
+      ],
+      "description_headings": [
+        "Goal",
+        "Acceptance criteria",
+        "Files or areas",
+        "Decided",
+        "Out of scope",
+        "Validate"
+      ],
+      "description_chars": 4690
+    },
+    {
+      "key": "FUCQ-33",
+      "title": "Return to the launcher without losing the used-car journey context",
+      "parent": "FUCQ-12",
+      "status": "To Do",
+      "priority": "Medium",
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:ui",
+        "shared-launcher",
+        "size:M"
+      ],
+      "story_points": "unset",
+      "blockers": [
+        "FUCQ-24",
+        "FUCQ-32"
+      ],
+      "description_headings": [
+        "Goal",
+        "Acceptance criteria",
+        "Files or areas",
+        "Decided",
+        "Out of scope",
+        "Validate"
+      ],
+      "description_chars": 4483
+    },
+    {
+      "key": "FUCQ-34",
+      "title": "Open the supported employee experience through the shared entry point",
+      "parent": "FUCQ-12",
+      "status": "To Do",
+      "priority": "Medium",
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:ui",
+        "shared-launcher",
+        "size:M"
+      ],
+      "story_points": "unset",
+      "blockers": [
+        "FUCQ-32",
+        "FUCQ-6"
+      ],
+      "description_headings": [
+        "Goal",
+        "Acceptance criteria",
+        "Files or areas",
+        "Decided",
+        "Out of scope",
+        "Validate"
+      ],
+      "description_chars": 4502
+    },
+    {
+      "key": "FUCQ-35",
+      "title": "Package and verify both launcher routes for the existing static host",
+      "parent": "FUCQ-12",
+      "status": "To Do",
+      "priority": "Medium",
+      "labels": [
+        "backlog",
+        "kind:code",
+        "shared-launcher",
+        "size:M"
+      ],
+      "story_points": "unset",
+      "blockers": [
+        "FUCQ-33",
+        "FUCQ-34"
+      ],
+      "description_headings": [
+        "Goal",
+        "Acceptance criteria",
+        "Files or areas",
+        "Decided",
+        "Out of scope",
+        "Validate"
+      ],
+      "description_chars": 4584
+    }
+  ],
+  "blocks_links": [
+    {
+      "blocker": "FUCQ-31",
+      "blocked": "FUCQ-32"
+    },
+    {
+      "blocker": "FUCQ-32",
+      "blocked": "FUCQ-33"
+    },
+    {
+      "blocker": "FUCQ-24",
+      "blocked": "FUCQ-33"
+    },
+    {
+      "blocker": "FUCQ-32",
+      "blocked": "FUCQ-34"
+    },
+    {
+      "blocker": "FUCQ-6",
+      "blocked": "FUCQ-34"
+    },
+    {
+      "blocker": "FUCQ-33",
+      "blocked": "FUCQ-35"
+    },
+    {
+      "blocker": "FUCQ-34",
+      "blocked": "FUCQ-35"
+    }
+  ],
+  "review": {
+    "verdict": "passed",
+    "requested_model": "gpt-6.1-sol",
+    "requested_effort": "high",
+    "selected_model": "gpt-6.1-sol",
+    "selected_effort": "high",
+    "fallback": "none"
+  },
+  "verification": {
+    "native_parent_type_status_priority_labels_and_unset_points": "passed",
+    "native_blocks_direction_and_expected_dependencies": "passed",
+    "description_matches_source": "passed after normalising Jira unordered-list markers and trailing whitespace",
+    "template_sections": "six headings preserved in all five stories"
+  },
+  "limitations": [
+    "Authoring/metadata/link verification only; proposed application tests are implementation deliverables and were not run.",
+    "No code implementation, poller, commit, deployment or hosting change was started."
+  ]
+}

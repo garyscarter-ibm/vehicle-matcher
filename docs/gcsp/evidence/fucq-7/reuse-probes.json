@@ -1,0 +1,138 @@
+{
+  "inputs": "Synthetic vehicles; existing deterministic engine and real card DOM; no upstream calls.",
+  "softConstraints": [
+    {
+      "id": "probe-a",
+      "score": 49,
+      "fit": 39,
+      "taste": 90,
+      "stretch": false,
+      "reasons": [
+        "Sits right in your £25k–£35k budget",
+        "A big car, and quiet with it at motorway speed",
+        "560 litres of boot with all 5 seats up",
+        "Big enough to be comfortable on a long motorway run"
+      ],
+      "tradeOffs": [
+        {
+          "dim": "fuel",
+          "wants": [
+            "diesel"
+          ],
+          "got": "ev"
+        },
+        {
+          "dim": "bodyStyles",
+          "wants": [
+            "suv"
+          ],
+          "got": "estate"
+        }
+      ]
+    }
+  ],
+  "retailStretch": [
+    {
+      "id": "probe-a",
+      "score": 87,
+      "fit": 87,
+      "taste": 90,
+      "stretch": true,
+      "reasons": [
+        "The petrol power you wanted",
+        "The estate shape you asked for",
+        "A big car, and quiet with it at motorway speed",
+        "560 litres of boot with all 5 seats up",
+        "A stretch at £39k+, over the budget you set"
+      ],
+      "tradeOffs": []
+    }
+  ],
+  "emptyEngine": {
+    "matches": [],
+    "decisive": true,
+    "clusterSize": 0,
+    "tasteLead": false,
+    "searched": {
+      "total": 0,
+      "eligible": 0,
+      "margin": null
+    }
+  },
+  "emptyEngineHasAlternatives": false,
+  "grouped": {
+    "individual": [
+      {
+        "id": "probe-a",
+        "score": 96,
+        "fit": 97,
+        "taste": 90,
+        "stretch": false,
+        "reasons": [
+          "The petrol power you wanted",
+          "The estate shape you asked for",
+          "Sits right in your £25k–£35k budget",
+          "A big car, and quiet with it at motorway speed"
+        ],
+        "tradeOffs": []
+      },
+      {
+        "id": "probe-b",
+        "score": 87,
+        "fit": 87,
+        "taste": 90,
+        "stretch": true,
+        "reasons": [
+          "The petrol power you wanted",
+          "The estate shape you asked for",
+          "A big car, and quiet with it at motorway speed",
+          "560 litres of boot with all 5 seats up",
+          "A stretch at £39k+, over the budget you set"
+        ],
+        "tradeOffs": []
+      }
+    ],
+    "union": [
+      "heatedSeats",
+      "parkingCamera"
+    ],
+    "listings": [
+      {
+        "id": "probe-a",
+        "features": [
+          "heatedSeats"
+        ],
+        "price": 30000
+      },
+      {
+        "id": "probe-b",
+        "features": [
+          "parkingCamera"
+        ],
+        "price": 39000
+      }
+    ]
+  },
+  "selectedSecondListing": {
+    "scoreBadge": "96%",
+    "specs": "Estate  ·  Petrol  ·  Automatic  ·  Red  ·  £39,000  ·  5 seats  ·  560-litre boot, seats up  ·  0–62 7s  ·  48 mpg",
+    "reasons": "The petrol power you wantedThe estate shape you asked forSits right in your £25k–£35k budgetA big car, and quiet with it at motorway speed",
+    "actualScoreForSecondListing": 87
+  },
+  "resultCaps": {
+    "eligible": 13,
+    "clusterSize": 13,
+    "shown": 6,
+    "alternatives": 6,
+    "towbarPresentInReturnedListings": false
+  },
+  "inferredCharging": {
+    "before": "none",
+    "after": "either"
+  },
+  "previewCallbackAfterCancel": true,
+  "emptyApi": {
+    "clientError": "TimeoutError",
+    "serverUnhandledRejection": "Cannot read properties of undefined (reading 'map')"
+  }
+}

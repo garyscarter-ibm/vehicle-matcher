@@ -25,6 +25,8 @@ No em dashes in any on-screen string (house style) — enforced by a test in
 
 For every GCSP task, read `docs/gcsp/README.md` and `docs/gcsp/experience-quality.md`. Apply that contract
 to story authoring, UI and user-visible service changes, every child-agent brief and final review.
+Also read `docs/gcsp/build-rules.md`; apply its full-build scope and central assumptions rule to every
+story, implementation and review, and pass it to every child agent.
 
 ## Commands
 

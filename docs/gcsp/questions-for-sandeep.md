@@ -2,6 +2,8 @@
 
 **Latest response update, 3 November 2026:** technical answers dated 2 November have been reviewed. Use the [current dispositions and design consequences](discovery-update-2026-11-03.md), which supersede the historical status statements below. The detailed assessment and follow-up draft remain with the private planning correspondence. Russell confirms Choices for Paula and retains the October 2024 eligibility baseline.
 
+**Outbound list, 2 November 2026:** use the [short prioritised email](questions-for-sandeep-email.md), with [research review and SAN traceability](sandeep-question-review.md). Russell clarified that Sandeep can retrieve accessible Confluence/backend documents and directory details, but cannot canvass business owners or resolve arbitrary enterprise questions. The twenty original entries below preserve discovery history; they are not the email checklist. Their answers remain open.
+
 Started 31 October 2026. Sandeep Sundar is our contact currently working on the backend system and supplied the portal screenshots. Russell will put these questions to him; record answers and their sources here as they arrive.
 
 Keep this as a running list of questions arising during discovery and backlog development. The October 2024 eligibility matrices in the research are the agreed POC baseline.
@@ -42,7 +44,7 @@ Keep this as a running list of questions arising during discovery and backlog de
 
 **Question:** Which parts of GCSP's modernisation and interfaces are available or planned by 12 November, and which systems own employee eligibility, points, vehicle stock, orders and holds? Can you share API specifications or representative anonymised payloads, including any release/change events or other hooks, and distinguish read access from operations such as reserving or accepting a car?
 
-**Context:** Russell describes Sandeep's work as moving GCSP from mainframe/batch processing to Java on AWS, and the 12 November demonstration should show what the new capabilities could enable. The Account Corpus also contains 2026 GCSO/ISA modernisation proposals, but neither source establishes actual current contracts or hooks. We need enough detail to design replaceable adapters and identify which assumptions are synthetic. Confirm whether sandbox/sample access is possible and how access works; the demo can progress with documented assumptions if it is unavailable. No live BMW integration is a prerequisite.
+**Context:** [Russell clarified on 2 November](platform-context.md) that GCSP unifies the GCSO ordering and ISA handover UI over the mainframe today; Java modernisation follows. The supplied slide describes AWS hosting, and the Account Corpus contains 2026 GCSO/ISA modernisation proposals, but neither establishes actual current contracts or hooks. The 12 November demonstration should show what new capabilities could enable without claiming completed backend migration. We need enough detail to design replaceable adapters and identify which assumptions are synthetic. Confirm whether sandbox/sample access is possible and how access works; the demo can progress with documented assumptions if it is unavailable. No live BMW integration is a prerequisite.
 
 **FUCQ-5 refinement, 1 November:** [Website interface research](bmw-interface-research.md) proved browser catalogue/specification/rules and representative imagery calls, but native UCP/manifest requests without a key returned 401. Which supported services or anonymised exports can supply UK model/AG identifiers, dated configurations/options and image assets, with sanctioned credentials and demo/display/retention conditions? The sampled catalogue resolved to January 2027 production, so also confirm the join to the agreed October 2024 eligibility baseline. Catalogue constructibility and retail pricing do not establish released stock, eligibility or scheme points. These are research findings; no answer from Sandeep has been received.
 
@@ -156,7 +158,7 @@ Keep this as a running list of questions arising during discovery and backlog de
 
 **Question:** What is the actual before-and-after behaviour for vehicle-release visibility: which batch jobs, schedules and delays constrain the current experience, and what freshness, APIs or release events will the modernised platform offer? Which interfaces are live, planned or still backed by mainframe operations, and which observable behaviour could we credibly demonstrate on 12 November?
 
-**Context:** Russell's working explanation is instant availability compared with mainframe batch jobs, plus easier APIs. We need to substantiate that explanation rather than infer real-time behaviour from Java or AWS alone. SAN-004 covers interface contracts; this question establishes the specific improvement and its business consequence. The demo should support a 2027 cross-portfolio front-end roadmap discussion without implying every NSC or FS platform is already migrated.
+**Context:** [Russell's 2 November clarification](platform-context.md) establishes UI unification over the mainframe, with Java modernisation to follow. Instant release visibility and easier APIs remain possibilities to substantiate; neither the new UI nor the slide's AWS wording establishes real-time behaviour. SAN-004 covers interface contracts; this question establishes any specific improvement and its business consequence. The demo should support a 2027 cross-portfolio front-end roadmap discussion without implying every NSC or FS platform is already migrated.
 
 **Status:** Open; awaiting Russell's discussion with Sandeep.
 
@@ -171,6 +173,47 @@ Keep this as a running list of questions arising during discovery and backlog de
 **Status:** Open; awaiting Russell's discussion with Sandeep and the scheme/reward owners.
 
 **Answer/source/date:** Not yet received.
+
+### SAN-017: Manual entry, stock holds and interruption behaviour
+
+**Question:** For the current manual route, which first-order, replacement and second-car paths and status-dependent account/history actions should the demo represent? What do the history icons and Print/Finish actions do? Exactly when do preview and order-review timers start/change/end, and what happens on Previous, Cancel, another car, refresh, connection loss or expiry during submission? Can a lost submit response be retried safely?
+
+**Context:** FUCQ-7 now preserves the current manual decisions in a redesigned body. The eight INT captures are inconsistent example records, not one transaction. Walkthrough notes describe 120-second preview and five-minute terms periods, while screenshots show only remaining seconds. Confirm atomic stock claim/release and operation identifiers alongside SAN-004/013. The buddy's proposed two hours is a separate policy.
+
+**Status:** Open; awaiting Russell's discussion with Sandeep.
+
+**Answer/source/date:** Not yet received.
+
+### SAN-018: Nominated-driver, licence and entitlement rules
+
+**Question:** Can you supply the missing family-tree and age/licence eligibility figures, applicable schemes/grades, first/second-car entitlement rules, and representative anonymised driver/licence/eConsent responses? Which drivers may be nominated primary drivers versus occasional users, and which fields may the employee correct in the portal versus through HR/support?
+
+**Context:** FUCQ-7 needs self and permitted nominated-driver branches without copying an unverified INT relationship. The dated guide distinguishes primary and occasional drivers and requires licence-check consent, but extracted figures are missing. The G7/530e/second-slot example in the screenshots conflicts with the accepted FS/UK model matrix and dated second-car guidance; coherent synthetic records will be used.
+
+**Status:** Open; awaiting Russell's discussion with Sandeep and the scheme/HR/licence owners.
+
+**Answer/source/date:** Not yet received.
+
+### SAN-019: Manual contract, collection and cost-field semantics
+
+**Question:** Which contract length/mileage options, renewal windows, location/date constraints and expiring early-renewal/allowance overrides should this baseline use? How do exact vehicle availability and the old contract constrain requested collection? Which service returns requested, earliest, booked and actual collection/return separately? Do points price, allowance used/remaining and salary cash top-up have separate units/periods, and when is an over-allowance choice permitted or blocked?
+
+**Context:** Sources disagree on contract/window values. The INT monthly cost, retail price and allowance cannot define scheme policy. The dated Choices guide allows cash top-up at £1 per point; SAN-001/008 seek current authoritative prices/terms, so no universal over-allowance block or current conversion is inferred. A requested collection date is not a booked appointment. Expected return mileage refers to the old car.
+
+**Status:** Open; awaiting Russell's discussion with Sandeep and the scheme/collection owners.
+
+**Answer/source/date:** Not yet received.
+
+### SAN-020: Full declarations, order commitment and employee readback
+
+**Question:** Can you share the complete current terms/declaration text below the clipped summary, its version/source, required acknowledgement controls and stored acceptance record? What exact action creates the order/removes stock, what determines initial HR/IS/manager approval and employee-visible status/reason, and which changes/cancellations remain permitted? What fields and next steps should order readback/print show, including special-requirement handling and subsequent collection confirmation?
+
+**Context:** Screenshot 06 ends partway through declarations; screenshot 07 shows a generated GCSO reference and Awaiting IS Approval. It does not establish final approval, signing or a booked appointment. The 500-character special-requirements field is evidenced, but it cannot promise arbitrary changes to released stock. SAN-013 covers the wider commitment boundary. FUCQ-7 will use explicit synthetic versioned declarations and a functioning adapter-backed handoff until confirmed.
+
+**Status:** Open; awaiting Russell's discussion with Sandeep and the ordering/terms owners.
+
+**Answer/source/date:** Not yet received.
+
 
 ## Current response status
 

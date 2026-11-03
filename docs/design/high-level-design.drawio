@@ -1,4 +1,215 @@
-<mxfile host="app.diagrams.net" pages="10">
+<mxfile host="app.diagrams.net" pages="11">
+  <diagram id="IEwdkRteCB6ta1rAXDrL" name="00 GCSP architecture">
+    <mxGraphModel grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <UserObject label="Employee / Paula" type="actor" status="proposed" feature="gcsp-hld" id="o-paula">
+          <mxCell parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="60" width="40" y="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Greg / scheme team" type="actor" status="proposed" feature="gcsp-hld" id="o-greg">
+          <mxCell parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="60" width="40" y="210" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Demo operator" type="actor" status="proposed" feature="gcsp-hld" id="o-presenter">
+          <mxCell parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="60" width="40" y="390" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Shared launcher + role context / FUCQ-13; brand ≠ scenario" type="client" status="proposed" feature="gcsp-hld" link="data:page/id,wPzIfsWXvCVQO-DYsBWB" id="o-entry">
+          <mxCell parent="1" style="shape=mxgraph.flowchart.display;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="300" y="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Employee home + manual + buddy / sliders · weights · exact offers" type="client" status="proposed" feature="gcsp-hld" link="data:page/id,page-employee-transactions" id="o-employee">
+          <mxCell parent="1" style="shape=mxgraph.flowchart.display;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="650" y="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Greg next action + orders&lt;br&gt;points + weights / see 08" type="client" status="proposed" feature="greg-predictive-planning" id="o-greg-ui">
+          <mxCell parent="1" style="shape=mxgraph.flowchart.display;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="650" y="210" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Shared UI + recommendation / detail: 02 Shared target" type="service" status="proposed" feature="gcsp-hld" link="data:page/id,wPzIfsWXvCVQO-DYsBWB" id="o-reuse">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="1000" y="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Employee transactions / brief · allocation · hold · decision" type="service" status="proposed" feature="gcsp-hld" link="data:page/id,page-employee-transactions" id="o-workflows">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="1000" y="210" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Scheme + vehicle evidence ports / fixtures / later BMW" type="service" status="proposed" feature="gcsp-hld" link="data:page/id,page-employee-data-adapters" id="o-data">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="1350" y="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Shared transactional state / PostgreSQL proposed + outbox" type="datastore" status="proposed" feature="gcsp-hld" id="o-state">
+          <mxCell parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=12;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="100" width="260" x="1350" y="210" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Replayable release + clock / actual event processing" type="external" status="proposed" feature="gcsp-hld" id="o-events">
+          <mxCell parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="110" width="240" x="650" y="410" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Mail adapter + secure offer link / Microsoft or Brevo" type="external" status="proposed" feature="gcsp-hld" id="o-mail">
+          <mxCell parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="110" width="240" x="1350" y="410" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Planning + lifecycle&lt;br&gt;order prediction: see 08&lt;br&gt;request ≠ release; choice ≠ order" type="service" status="proposed" feature="greg-predictive-planning" link="data:page/id,f0u8uXmIPJF8ikzzwr1X" id="o-planning">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="1000" y="410" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Pages + Render + EDS release / later BMW integration gates" type="service" status="proposed" feature="gcsp-hld" link="data:page/id,CG7szUqNwnCKSjVtDKqx" id="o-deploy">
+          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="1000" y="610" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;Status&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#e1d5e7;border:1px dashed #9673a6;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Proposed — designed, not built yet&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#d5e8d4;border:1px solid #82b366;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;In progress — being built&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#dae8fc;border:1px solid #6c8ebf;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Built — implemented and tested&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#f5f5f5;border:1px dashed #b85450;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Retiring — built, being removed" legend="status" id="t61JLqsRFllT71-y7WFB-1">
+          <mxCell parent="1" style="text;html=1;align=left;verticalAlign=top;spacing=8;rounded=1;fillColor=#ffffff;strokeColor=#999999;" vertex="1">
+            <mxGeometry height="120" width="230" x="1350" y="610" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="scenario" status="proposed" feature="gcsp-hld" id="o01-f5">
+          <mxCell edge="1" parent="1" source="o-paula" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-entry">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="170" y="60" />
+                <mxPoint x="170" y="65" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="role" status="proposed" feature="gcsp-hld" id="o02-f5">
+          <mxCell edge="1" parent="1" source="o-greg" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-entry">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="430" y="240" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="employee" status="proposed" feature="gcsp-hld" id="o03-f5">
+          <mxCell edge="1" parent="1" source="o-entry" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-employee">
+            <mxGeometry relative="1" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Greg" status="proposed" feature="gcsp-hld" id="o04-f5">
+          <mxCell edge="1" parent="1" source="o-entry" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-greg-ui">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="430" y="245" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="UI kit" status="proposed" feature="gcsp-hld" id="o05-f5">
+          <mxCell edge="1" parent="1" source="o-employee" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-reuse">
+            <mxGeometry relative="1" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="actions" status="proposed" feature="gcsp-hld" id="o06-f5">
+          <mxCell edge="1" parent="1" source="o-employee" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-workflows">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="780" y="155" />
+                <mxPoint x="1130" y="155" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="plan + replan" status="proposed" feature="greg-predictive-planning" id="o07-f5">
+          <mxCell edge="1" parent="1" source="o-greg-ui" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-planning">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="780" y="352" />
+                <mxPoint x="1130" y="352" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="evaluate" status="proposed" feature="gcsp-hld" id="o08-f5">
+          <mxCell edge="1" parent="1" source="o-workflows" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-reuse">
+            <mxGeometry relative="1" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="data + actions" status="proposed" feature="gcsp-hld" id="o09-f5">
+          <mxCell edge="1" parent="1" source="o-data" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-workflows">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1300" y="65" />
+                <mxPoint x="1300" y="245" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="write" status="proposed" feature="gcsp-hld" id="o10-f5">
+          <mxCell edge="1" parent="1" source="o-workflows" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-state">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1300" y="245" />
+                <mxPoint x="1300" y="260" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="outbox" status="proposed" feature="gcsp-hld" id="o11-f5">
+          <mxCell edge="1" parent="1" source="o-state" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-mail">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1480" y="360" />
+                <mxPoint x="1470" y="360" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="replay / reset" status="proposed" feature="gcsp-hld" id="o12-f5">
+          <mxCell edge="1" parent="1" source="o-presenter" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-events">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="345" y="420" />
+                <mxPoint x="345" y="465" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="events" status="proposed" feature="gcsp-hld" id="o13-f5">
+          <mxCell edge="1" parent="1" source="o-events" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-workflows">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="770" y="338" />
+                <mxPoint x="1130" y="338" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="outcomes / selection" status="proposed" feature="gcsp-hld" id="o15-f5">
+          <mxCell edge="1" parent="1" source="o-workflows" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-planning">
+            <mxGeometry relative="1" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="release" status="proposed" feature="gcsp-hld" id="o16-f5">
+          <mxCell edge="1" parent="1" source="o-deploy" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-workflows">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1276" y="645" />
+                <mxPoint x="1276" y="245" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+      </root>
+    </mxGraphModel>
+  </diagram>
   <diagram id="1abb9b72-b608-44e6-9e90-dcd64c5f5122" name="01 Current implementation">
     <mxGraphModel grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -1744,7 +1955,7 @@
             <mxGeometry height="70" width="260" x="1078" y="74" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="1,000-employee simulation&lt;br&gt;stretch · captured notifications" type="client" status="proposed" feature="deployment" id="d-simulation">
+        <UserObject label="1,000-employee simulation&lt;br&gt;planned · captured notifications" type="client" status="proposed" feature="deployment" id="d-simulation">
           <mxCell parent="1" style="shape=mxgraph.flowchart.display;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="711" y="1529" as="geometry" />
           </mxCell>
@@ -1995,217 +2206,6 @@
       </root>
     </mxGraphModel>
   </diagram>
-  <diagram id="IEwdkRteCB6ta1rAXDrL" name="00 GCSP architecture">
-    <mxGraphModel grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
-      <root>
-        <mxCell id="0" />
-        <mxCell id="1" parent="0" />
-        <UserObject label="Employee / Paula" type="actor" status="proposed" feature="gcsp-hld" id="o-paula">
-          <mxCell parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
-            <mxGeometry height="60" width="40" y="30" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <UserObject label="Greg / scheme team" type="actor" status="proposed" feature="gcsp-hld" id="o-greg">
-          <mxCell parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
-            <mxGeometry height="60" width="40" y="210" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <UserObject label="Demo operator" type="actor" status="proposed" feature="gcsp-hld" id="o-presenter">
-          <mxCell parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
-            <mxGeometry height="60" width="40" y="390" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <UserObject label="Shared launcher + role context / FUCQ-13; brand ≠ scenario" type="client" status="proposed" feature="gcsp-hld" link="data:page/id,wPzIfsWXvCVQO-DYsBWB" id="o-entry">
-          <mxCell parent="1" style="shape=mxgraph.flowchart.display;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
-            <mxGeometry height="70" width="260" x="300" y="30" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <UserObject label="Employee home + manual + buddy / sliders · weights · exact offers" type="client" status="proposed" feature="gcsp-hld" link="data:page/id,page-employee-transactions" id="o-employee">
-          <mxCell parent="1" style="shape=mxgraph.flowchart.display;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
-            <mxGeometry height="70" width="260" x="650" y="30" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <UserObject label="Greg demand + points + weights / future order requests" type="client" status="proposed" feature="gcsp-hld" id="o-greg-ui">
-          <mxCell parent="1" style="shape=mxgraph.flowchart.display;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
-            <mxGeometry height="70" width="260" x="650" y="210" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <UserObject label="Shared UI + recommendation / detail: 02 Shared target" type="service" status="proposed" feature="gcsp-hld" link="data:page/id,wPzIfsWXvCVQO-DYsBWB" id="o-reuse">
-          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
-            <mxGeometry height="70" width="260" x="1000" y="30" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <UserObject label="Employee transactions / brief · allocation · hold · decision" type="service" status="proposed" feature="gcsp-hld" link="data:page/id,page-employee-transactions" id="o-workflows">
-          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
-            <mxGeometry height="70" width="260" x="1000" y="210" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <UserObject label="Scheme + vehicle evidence ports / fixtures / later BMW" type="service" status="proposed" feature="gcsp-hld" link="data:page/id,page-employee-data-adapters" id="o-data">
-          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
-            <mxGeometry height="70" width="260" x="1350" y="30" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <UserObject label="Shared transactional state / PostgreSQL proposed + outbox" type="datastore" status="proposed" feature="gcsp-hld" id="o-state">
-          <mxCell parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=12;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
-            <mxGeometry height="100" width="260" x="1350" y="210" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <UserObject label="Replayable release + clock / actual event processing" type="external" status="proposed" feature="gcsp-hld" id="o-events">
-          <mxCell parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
-            <mxGeometry height="110" width="240" x="650" y="410" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <UserObject label="Mail adapter + secure offer link / Microsoft or Brevo" type="external" status="proposed" feature="gcsp-hld" id="o-mail">
-          <mxCell parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
-            <mxGeometry height="110" width="240" x="1350" y="410" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <UserObject label="Planning + lifecycle / request ≠ release; choice ≠ order" type="service" status="proposed" feature="gcsp-hld" link="data:page/id,f0u8uXmIPJF8ikzzwr1X" id="o-planning">
-          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
-            <mxGeometry height="70" width="260" x="1000" y="410" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <UserObject label="Pages + Render + EDS release / later BMW integration gates" type="service" status="proposed" feature="gcsp-hld" link="data:page/id,CG7szUqNwnCKSjVtDKqx" id="o-deploy">
-          <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
-            <mxGeometry height="70" width="260" x="1000" y="610" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <UserObject label="&lt;b&gt;Status&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#e1d5e7;border:1px dashed #9673a6;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Proposed — designed, not built yet&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#d5e8d4;border:1px solid #82b366;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;In progress — being built&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#dae8fc;border:1px solid #6c8ebf;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Built — implemented and tested&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#f5f5f5;border:1px dashed #b85450;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Retiring — built, being removed" legend="status" id="t61JLqsRFllT71-y7WFB-1">
-          <mxCell parent="1" style="text;html=1;align=left;verticalAlign=top;spacing=8;rounded=1;fillColor=#ffffff;strokeColor=#999999;" vertex="1">
-            <mxGeometry height="120" width="230" x="1350" y="610" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <UserObject label="scenario" status="proposed" feature="gcsp-hld" id="o01-f5">
-          <mxCell edge="1" parent="1" source="o-paula" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-entry">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="170" y="60" />
-                <mxPoint x="170" y="65" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </UserObject>
-        <UserObject label="role" status="proposed" feature="gcsp-hld" id="o02-f5">
-          <mxCell edge="1" parent="1" source="o-greg" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-entry">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="430" y="240" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </UserObject>
-        <UserObject label="employee" status="proposed" feature="gcsp-hld" id="o03-f5">
-          <mxCell edge="1" parent="1" source="o-entry" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-employee">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <UserObject label="Greg" status="proposed" feature="gcsp-hld" id="o04-f5">
-          <mxCell edge="1" parent="1" source="o-entry" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-greg-ui">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="430" y="245" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </UserObject>
-        <UserObject label="UI kit" status="proposed" feature="gcsp-hld" id="o05-f5">
-          <mxCell edge="1" parent="1" source="o-employee" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-reuse">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <UserObject label="actions" status="proposed" feature="gcsp-hld" id="o06-f5">
-          <mxCell edge="1" parent="1" source="o-employee" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-workflows">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="780" y="155" />
-                <mxPoint x="1130" y="155" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </UserObject>
-        <UserObject label="planning" status="proposed" feature="gcsp-hld" id="o07-f5">
-          <mxCell edge="1" parent="1" source="o-greg-ui" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-planning">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="780" y="352" />
-                <mxPoint x="1130" y="352" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </UserObject>
-        <UserObject label="evaluate" status="proposed" feature="gcsp-hld" id="o08-f5">
-          <mxCell edge="1" parent="1" source="o-workflows" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-reuse">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <UserObject label="data + actions" status="proposed" feature="gcsp-hld" id="o09-f5">
-          <mxCell edge="1" parent="1" source="o-data" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-workflows">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="1300" y="65" />
-                <mxPoint x="1300" y="245" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </UserObject>
-        <UserObject label="write" status="proposed" feature="gcsp-hld" id="o10-f5">
-          <mxCell edge="1" parent="1" source="o-workflows" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-state">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="1300" y="245" />
-                <mxPoint x="1300" y="260" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </UserObject>
-        <UserObject label="outbox" status="proposed" feature="gcsp-hld" id="o11-f5">
-          <mxCell edge="1" parent="1" source="o-state" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-mail">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="1480" y="360" />
-                <mxPoint x="1470" y="360" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </UserObject>
-        <UserObject label="replay / reset" status="proposed" feature="gcsp-hld" id="o12-f5">
-          <mxCell edge="1" parent="1" source="o-presenter" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-events">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="345" y="420" />
-                <mxPoint x="345" y="465" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </UserObject>
-        <UserObject label="events" status="proposed" feature="gcsp-hld" id="o13-f5">
-          <mxCell edge="1" parent="1" source="o-events" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-workflows">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="770" y="338" />
-                <mxPoint x="1130" y="338" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </UserObject>
-        <UserObject label="outcomes / selection" status="proposed" feature="gcsp-hld" id="o15-f5">
-          <mxCell edge="1" parent="1" source="o-workflows" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-planning">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <UserObject label="release" status="proposed" feature="gcsp-hld" id="o16-f5">
-          <mxCell edge="1" parent="1" source="o-deploy" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="o-workflows">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="1276" y="645" />
-                <mxPoint x="1276" y="245" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </UserObject>
-      </root>
-    </mxGraphModel>
-  </diagram>
   <diagram id="5vg3sHFHkCQynRAosbFs" name="06 Vehicle evidence providers">
     <mxGraphModel grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -2414,7 +2414,7 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <UserObject label="Greg demand + policy / aggregate needs + outcomes" type="service" status="proposed" feature="gcsp-hld" link="data:page/id,page-employee-transactions" id="p-greg">
+        <UserObject label="Greg next order decision&lt;br&gt;predicted demand + constraints&lt;br&gt;08 Predictive planning" type="service" status="proposed" feature="greg-predictive-planning" link="data:page/id,page-employee-transactions" id="p-greg">
           <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" as="geometry" />
           </mxCell>
@@ -2504,7 +2504,7 @@
             <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="request mix" status="proposed" feature="gcsp-hld" id="p02-f5">
+        <UserObject label="intentional request mix" status="proposed" feature="greg-predictive-planning" id="p02-f5">
           <mxCell edge="1" parent="1" source="p-greg" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="p-request">
             <mxGeometry relative="1" as="geometry">
               <Array as="points">
@@ -2640,6 +2640,359 @@
                 <mxPoint x="130" y="162" />
               </Array>
             </mxGeometry>
+          </mxCell>
+        </UserObject>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="mlBdSEVKN0X3u76259hv" name="08 Predictive order planning">
+    <mxGraphModel grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <UserObject label="Offline learning and evaluation · FUCQ-74" type="boundary" status="proposed" feature="greg-predictive-planning" id="gpp-offline">
+          <mxCell parent="1" style="swimlane;html=1;startSize=24;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="652" width="556.17" x="543.95" y="594" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Learning records&lt;br&gt;briefs · choice sets · terms&lt;br&gt;choices / outcomes + dates" type="service" status="proposed" feature="greg-predictive-planning" id="gpp-data">
+          <mxCell parent="gpp-offline" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="159.17" y="34" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Train + held-out evaluation&lt;br&gt;synthetic / observed distinct&lt;br&gt;compare demand + fit baselines" type="service" status="proposed" feature="greg-predictive-planning" id="gpp-train">
+          <mxCell parent="gpp-offline" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="38" y="283" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Immutable model artifact&lt;br&gt;coefficients + evaluation&lt;br&gt;version + data manifest" type="datastore" status="proposed" feature="greg-predictive-planning" id="gpp-artifact">
+          <mxCell parent="gpp-offline" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=12;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="100" width="260" x="10" y="532" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="labelled choice sets" status="proposed" feature="greg-predictive-planning" id="gpp-e01">
+          <mxCell edge="1" parent="gpp-offline" source="gpp-data" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.5;exitY=1;entryX=0.6667;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="gpp-train">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint as="offset" />
+              <Array as="points">
+                <mxPoint x="352.67" y="193.5" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="evaluated candidate" status="proposed" feature="greg-predictive-planning" id="gpp-e02">
+          <mxCell edge="1" parent="gpp-offline" source="gpp-train" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.5;exitY=1;entryX=0.6667;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="gpp-artifact">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint as="offset" />
+              <Array as="points">
+                <mxPoint x="274" y="442.5" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="Canonical policy source&lt;br&gt;objectives · bounds · model ref&lt;br&gt;shared by every consumer" type="datastore" status="proposed" feature="greg-predictive-planning" id="gpp-policy">
+          <mxCell parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=12;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="100" width="260" x="378.75" y="310" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Existing Node backend · logical planning modules" type="boundary" status="proposed" feature="greg-predictive-planning" id="gpp-runtime">
+          <mxCell parent="1" style="swimlane;html=1;startSize=24;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="871" width="1377.5" x="420.95" y="1425" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Planning inputs&lt;br&gt;renewals · briefs · terms&lt;br&gt;stock · inbound · lead times" type="service" status="proposed" feature="greg-predictive-planning" id="gpp-input">
+          <mxCell parent="gpp-runtime" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="400.58" y="34" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Authoritative employee gates&lt;br&gt;eligibility + essential needs&lt;br&gt;shared evaluation services" type="service" status="proposed" feature="greg-predictive-planning" id="gpp-gates">
+          <mxCell parent="gpp-runtime" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="222.25" y="283" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Demand / choice prediction&lt;br&gt;accept · alternatives · wait&lt;br&gt;probabilities + uncertainty" type="service" status="proposed" feature="greg-predictive-planning" id="gpp-predict">
+          <mxCell parent="gpp-runtime" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="47" y="532" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Demand + fit baselines&lt;br&gt;shared deterministic core&lt;br&gt;comparison / visible fallback" type="service" status="proposed" feature="greg-predictive-planning" id="gpp-base">
+          <mxCell parent="gpp-runtime" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="663" y="532" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Constrained order planner&lt;br&gt;quantities · coverage · risk&lt;br&gt;budget + supply constraints" type="service" status="proposed" feature="greg-predictive-planning" id="gpp-planner">
+          <mxCell parent="gpp-runtime" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="75.71" y="781" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="FutureOrderRequest&lt;br&gt;Greg&#39;s intentional submission&lt;br&gt;supply stages: see 07" type="service" status="proposed" feature="greg-predictive-planning" id="gpp-request">
+          <mxCell parent="gpp-runtime" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="972.5" y="34" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="cohort + candidates" status="proposed" feature="greg-predictive-planning" id="gpp-e08">
+          <mxCell edge="1" parent="gpp-runtime" source="gpp-input" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.3334;exitY=1;entryX=0.6667;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="gpp-gates">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint as="offset" />
+              <Array as="points">
+                <mxPoint x="522.92" y="193.5" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="permitted choices" status="proposed" feature="greg-predictive-planning" id="gpp-e09">
+          <mxCell edge="1" parent="gpp-runtime" source="gpp-gates" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.25;exitY=1;entryX=0.6667;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="gpp-predict">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint as="offset" />
+              <Array as="points">
+                <mxPoint x="335" y="442.5" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="permitted choices" status="proposed" feature="greg-predictive-planning" id="gpp-e10">
+          <mxCell edge="1" parent="gpp-runtime" source="gpp-gates" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.75;exitY=1;entryX=0.5;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="gpp-base">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="82.25" y="73.5" as="offset" />
+              <Array as="points">
+                <mxPoint x="560.5" y="369" />
+                <mxPoint x="872" y="369" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="feasible choices" status="proposed" feature="greg-predictive-planning" id="gpp-e11">
+          <mxCell edge="1" parent="gpp-runtime" source="gpp-gates" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.5;exitY=1;entryX=0.5714;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="gpp-planner">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint y="-61.16" as="offset" />
+              <Array as="points">
+                <mxPoint x="447.75" y="379" />
+                <mxPoint x="571" y="379" />
+                <mxPoint x="571" y="722" />
+                <mxPoint x="325.43" y="722" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="forecast + uncertainty" status="proposed" feature="greg-predictive-planning" id="gpp-e12">
+          <mxCell edge="1" parent="gpp-runtime" source="gpp-predict" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.5;exitY=1;entryX=0.4286;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="gpp-planner">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint as="offset" />
+              <Array as="points">
+                <mxPoint x="263" y="691.5" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="baseline comparison" status="proposed" feature="greg-predictive-planning" id="gpp-e13">
+          <mxCell edge="1" parent="gpp-runtime" source="gpp-base" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.5;exitY=1;entryX=0.7143;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="gpp-planner">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="201.57" y="-40.5" as="offset" />
+              <Array as="points">
+                <mxPoint x="872" y="732" />
+                <mxPoint x="387.86" y="732" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="supply + terms" status="proposed" feature="greg-predictive-planning" id="gpp-e14">
+          <mxCell edge="1" parent="gpp-runtime" source="gpp-input" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.6667;exitY=1;entryX=0.8572;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="gpp-planner">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint y="-97.48" as="offset" />
+              <Array as="points">
+                <mxPoint x="645.25" y="120" />
+                <mxPoint x="1106" y="120" />
+                <mxPoint x="1106" y="742" />
+                <mxPoint x="450.29" y="742" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="Greg: next best action&lt;br&gt;order list · reasons · alternatives&lt;br&gt;edit / recalculate / submit" type="client" status="proposed" feature="greg-predictive-planning" id="gpp-greg">
+          <mxCell parent="1" style="shape=mxgraph.flowchart.display;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="12" y="2470" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Supply / ordering provider&lt;br&gt;synthetic or sanctioned&lt;br&gt;Production response" type="external" status="proposed" feature="greg-predictive-planning" id="gpp-supply">
+          <mxCell parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="110" width="240" x="1463.62" y="2470" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Shared transaction repository&lt;br&gt;forecasts · plans · input versions&lt;br&gt;same store as 00 / 07" type="datastore" status="proposed" feature="greg-predictive-planning" id="gpp-state">
+          <mxCell parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=12;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="100" width="260" x="494" y="2470" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Prediction never reserves&lt;br&gt;fit score ≠ acceptance chance&lt;br&gt;hard gates stay authoritative" type="note" status="proposed" feature="greg-predictive-planning" id="gpp-guard">
+          <mxCell parent="1" style="shape=note;whiteSpace=wrap;html=1;size=14;align=left;spacingLeft=6;" vertex="1">
+            <mxGeometry height="70" width="220" x="818.81" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Synthetic result ≠ BMW accuracy&lt;br&gt;model + solver refined later&lt;br&gt;immutable history stays explainable" type="note" status="proposed" feature="greg-predictive-planning" id="gpp-valid">
+          <mxCell parent="1" style="shape=note;whiteSpace=wrap;html=1;size=14;align=left;spacingLeft=6;" vertex="1">
+            <mxGeometry height="70" width="220" x="818.81" y="80" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="active model reference" status="proposed" feature="greg-predictive-planning" id="gpp-e03">
+          <mxCell edge="1" parent="1" source="gpp-policy" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.4;exitY=1;entryX=0.3333;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="gpp-artifact">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint y="-333.5" as="offset" />
+              <Array as="points">
+                <mxPoint x="555.95" y="589" />
+                <mxPoint x="555.95" y="1067" />
+                <mxPoint x="685.95" y="1067" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="versioned model" status="proposed" feature="greg-predictive-planning" id="gpp-e04">
+          <mxCell edge="1" parent="1" source="gpp-artifact" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.5;exitY=1;entryX=0.3333;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="gpp-predict">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="140" y="-191" as="offset" />
+              <Array as="points">
+                <mxPoint x="751.95" y="1241" />
+                <mxPoint x="751.95" y="1361" />
+                <mxPoint x="611.95" y="1361" />
+                <mxPoint x="611.95" y="1420" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="shared rules" status="proposed" feature="greg-predictive-planning" id="gpp-e05">
+          <mxCell edge="1" parent="1" source="gpp-policy" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.8;exitY=1;entryX=0.3333;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="gpp-gates">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint y="-113.8" as="offset" />
+              <Array as="points">
+                <mxPoint x="733.15" y="426" />
+                <mxPoint x="2206.95" y="426" />
+                <mxPoint x="2206.95" y="1361" />
+                <mxPoint x="793.54" y="1361" />
+                <mxPoint x="793.54" y="1420" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="objectives + bounds" status="proposed" feature="greg-predictive-planning" id="gpp-e06">
+          <mxCell edge="1" parent="1" source="gpp-policy" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.2;exitY=1;entryX=0.2857;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="gpp-planner">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint y="-470.08" as="offset" />
+              <Array as="points">
+                <mxPoint x="467.35" y="426" />
+                <mxPoint x="441.95" y="426" />
+                <mxPoint x="441.95" y="2147" />
+                <mxPoint x="621.52" y="2147" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="generator assumptions" status="proposed" feature="greg-predictive-planning" id="gpp-e07">
+          <mxCell edge="1" parent="1" source="gpp-policy" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.6;exitY=1;entryX=0.3333;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="gpp-train">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="6.33" y="-152.47" as="offset" />
+              <Array as="points">
+                <mxPoint x="644.55" y="426" />
+                <mxPoint x="683.45" y="426" />
+                <mxPoint x="683.45" y="530" />
+                <mxPoint x="677.12" y="530" />
+                <mxPoint x="677.12" y="818" />
+                <mxPoint x="739.29" y="818" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="recommended next action" status="proposed" feature="greg-predictive-planning" id="gpp-e15">
+          <mxCell edge="1" parent="1" source="gpp-planner" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.6667;exitY=1;entryX=0.5;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="gpp-greg">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="242" y="-30.5" as="offset" />
+              <Array as="points">
+                <mxPoint x="788" y="2291" />
+                <mxPoint x="788" y="2411" />
+                <mxPoint x="228" y="2411" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="what-if constraints" status="proposed" feature="greg-predictive-planning" id="gpp-e16">
+          <mxCell edge="1" parent="1" source="gpp-greg" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.25;exitY=0;entryX=0.1429;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="gpp-planner">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="-87.55" y="474.5" as="offset" />
+              <Array as="points">
+                <mxPoint x="120" y="2380.5" />
+                <mxPoint x="120" y="1381" />
+                <mxPoint x="430.95" y="1381" />
+                <mxPoint x="430.95" y="2157" />
+                <mxPoint x="559.1" y="2157" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="intentional submit" status="proposed" feature="greg-predictive-planning" id="gpp-e17">
+          <mxCell edge="1" parent="1" source="gpp-greg" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.75;exitY=0;entryX=0.5;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="gpp-request">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="92.98" y="-565.5" as="offset" />
+              <Array as="points">
+                <mxPoint x="336" y="2421" />
+                <mxPoint x="1894.45" y="2421" />
+                <mxPoint x="1894.45" y="1381" />
+                <mxPoint x="1590.95" y="1381" />
+                <mxPoint x="1590.95" y="1420" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="requested mix" status="proposed" feature="greg-predictive-planning" id="gpp-e18">
+          <mxCell edge="1" parent="1" source="gpp-request" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.5;exitY=1;entryX=0.3333;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="gpp-supply">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint y="381" as="offset" />
+              <Array as="points">
+                <mxPoint x="1590.95" y="2291" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="acknowledgement + replan" status="proposed" feature="greg-predictive-planning" id="gpp-e19">
+          <mxCell edge="1" parent="1" source="gpp-supply" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.6667;exitY=0;entryX=0.5;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="gpp-input">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint y="335.63" as="offset" />
+              <Array as="points">
+                <mxPoint x="1718.29" y="2441" />
+                <mxPoint x="2019.45" y="2441" />
+                <mxPoint x="2019.45" y="1371" />
+                <mxPoint x="1005.04" y="1371" />
+                <mxPoint x="1005.04" y="1420" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="versioned plan snapshots" status="proposed" feature="greg-predictive-planning" id="gpp-e20">
+          <mxCell edge="1" parent="1" source="gpp-planner" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.3333;exitY=1;entryX=0.3333;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="gpp-state">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint y="9.34" as="offset" />
+              <Array as="points">
+                <mxPoint x="642.33" y="2291" />
+                <mxPoint x="642.33" y="2307" />
+                <mxPoint x="646" y="2307" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="observed choice outcomes" status="proposed" feature="greg-predictive-planning" id="gpp-e21">
+          <mxCell edge="1" parent="1" source="gpp-state" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.6667;exitY=0;entryX=0.5;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="gpp-data">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint y="-169.81" as="offset" />
+              <Array as="points">
+                <mxPoint x="798" y="2431" />
+                <mxPoint x="2113.45" y="2431" />
+                <mxPoint x="2113.45" y="530" />
+                <mxPoint x="896.62" y="530" />
+                <mxPoint x="896.62" y="589" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;Status&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#e1d5e7;border:1px dashed #9673a6;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Proposed — designed, not built yet&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#d5e8d4;border:1px solid #82b366;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;In progress — being built&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#dae8fc;border:1px solid #6c8ebf;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Built — implemented and tested&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#f5f5f5;border:1px dashed #b85450;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Retiring — built, being removed" legend="status" id="Rr-tD7hwCEqkbv6zbOL5-1">
+          <mxCell parent="1" style="text;html=1;align=left;verticalAlign=top;spacing=8;rounded=1;fillColor=#ffffff;strokeColor=#999999;" vertex="1">
+            <mxGeometry height="120" width="230" x="1925.62" as="geometry" />
           </mxCell>
         </UserObject>
       </root>

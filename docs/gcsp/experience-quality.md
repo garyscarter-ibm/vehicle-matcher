@@ -6,11 +6,15 @@ Every GCSP story author, designer, implementer and reviewer reads this contract.
 
 ## Visual reference
 
-**Current status: no GCSP visual reference has been agreed.** The existing brand tokens and component catalogue are foundations. The supplied GCSP screenshots evidence the current journey and decisions; they do not establish the new visual standard. The component gallery is also not yet present.
+**Agreed direction, Russell, 1 November 2026:** the [eight supplied GCSP screenshots](screens/README.md) are the visual reference for the application **header, sidebar and palette**. Breadcrumbs may be retained where useful. Redesign the body toward the consumer-facing Used Cars experience, using shared components and a clearer, more visual presentation. The existing dense portal forms/tables and seven-step wizard are historical journey evidence, not body layouts to reproduce.
 
-Before parallel UI implementation, the first UI design/refinement work should establish a representative employee surface with Russell/Gary: typography, spacing, imagery, controls, navigation and key states. Record the agreed reference here as a repository path or stable URL with its version/date and the person who agreed it. Establish Greg's denser operational treatment when that surface is introduced, using the same shared visual language. Subsequent stories follow these references and raise deliberate changes through the same design review.
+The screenshots are already available under `docs/gcsp/screens/` and were inspected directly. No additional upload or separate pre-existing visual design is required. Retain the slim branded portal header/account context, narrow icon navigation and white/light-grey/neutral/teal palette. Apply that palette through scenario-scoped semantic tokens while preserving the existing Used Cars brand themes. Do not reproduce browser or operating-system chrome.
 
-Use the project's available product-design or Impeccable guidance to establish and critique the reference. Later agents use the chosen direction as their authority. A missing reference is a design task to resolve with Russell/Gary before UI implementation fans out.
+Use the consumer-facing site's vehicle imagery, hierarchy, spacing, cards, controls and explained recommendations as body-design direction. Adapt them to scheme facts, points/contribution, employee decisions and relevant states rather than copying retail labels or the old portal's page composition. Breadcrumbs and the legacy stepper are separate: retaining one does not require the other.
+
+The missing-reference blocker is cleared by this direction. The first body-design/refinement work should produce and review a representative employee surface with Russell/Gary early, recording its repository path/version as the implementation reference before multiple new body designs fan out. This is a design deliverable under the agreed direction, not a request for another screenshot upload. Establish Greg's denser operational treatment when introduced, using the same shell and shared visual language. The component gallery is also not yet present.
+
+Use the project's available product-design or Impeccable guidance to develop and critique the redesigned body. Later agents follow the supplied shell references, this direction and the resulting reviewed implementation reference. Raise deliberate departures through the same design review. The IBM Carbon service blueprint remains a separate explanatory artifact.
 
 ## Author and brief each story
 
@@ -22,6 +26,14 @@ Use the existing story sections so the obligations survive Jira import:
 4. Give every child agent the contract path, applicable reference and relevant acceptance criteria. Each child passes these to its descendants. A reviewer needs the same context as the implementer.
 
 A code-kind story that changes a response, error, offer state or visible timing follows the same user-experience obligations. Backend-only work can validate its presentation contract and explain why new screenshots are unnecessary. Use existing fields rather than adding new required story metadata.
+
+## Repeatable manual trials
+
+**Refinement direction, 2 November:** the first integrated build gives Russell something to try, inspect and improve. Follow the [manual acceptance scenario approach](manual-acceptance-scenarios.md), recorded as FUCQ-75: shared setup/reset and replay support, with each relevant implementation Epic supplying or linking a successful walkthrough and applicable difficult cases. Use existing Story acceptance/validation sections; add a separate scenario-preparation Story where the work needs it. Research-only Epics do not require artificial UI test Stories.
+
+When a connected capability is offered for Russell's review, include its known starting state, setup/reset instructions, short click-through steps, current expected outcome and a record of observed behaviour/feedback. Identify provisional UX/policy assumptions and refine them through trials. Runtime values still come from the canonical source in the [build rules](build-rules.md). Scenario delivery extends the existing functional checks and rendered review evidence.
+
+Walkthroughs with real employees and an ordering lead are expected after the 12 November demo, subject to BMW's mandate. The demo should communicate a coherent working intention that supports that mandate. Representative-user validation is not a pre-demo gate; the functional and visual quality obligations in this contract still govern the build.
 
 ## Build consistently
 

@@ -48,6 +48,9 @@ backlog capture. FUCQ-2 remains discovery context. All scaffolding remains on.
 Use bounded feature capabilities for backlog items, including changes that span views and services.
 Keep the broad demo hills in the brief; Jira's Epic issue type does not determine item size.
 
+Every GCSP role also reads `docs/gcsp/build-rules.md` for full-build scope and the single shared source
+for plausible, revisable assumptions. Apply it to stories, implementation and review, and pass it to every child agent.
+
 ## GCSP experience quality
 
 Every GCSP role reads `docs/gcsp/experience-quality.md`. Apply its acceptance and visual-review gates to
