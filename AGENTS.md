@@ -28,6 +28,15 @@ Rules for Codex working in this project. The scaffolding clone is the `repo` val
 - **Commit trailer** for commits Codex makes: `Co-Authored-By: Codex <noreply@openai.com>`.
 <!-- END agent-scaffolding -->
 
+## Commit and push during sessions
+
+- Commit and push each coherent, validated chunk of work during the session, including documentation changes.
+  Break longer tasks into reviewable checkpoints and push each checkpoint as soon as it is ready.
+- This is standing authorization to commit and push without waiting for the session to end or for another
+  user instruction or confirmation. Push promptly after each commit to the branch's configured remote.
+- Stage only changes belonging to the current task, run the relevant checks, and respect branch protection.
+  If a check or push fails, preserve the work and report the blocker. Force pushes need explicit authorization.
+
 ## GCSP discovery and Jira
 
 For GCSP discovery, story authoring, design, implementation or review, first read `docs/gcsp/README.md`

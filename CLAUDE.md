@@ -4,6 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Conventions
 
+### Commit and push during sessions
+
+Follow `AGENTS.md`, section "Commit and push during sessions", for this repository's standing authorization
+and checkpoint cadence.
+
 ### Comments
 - **Keep code comments to 2 lines max**, unless a longer note is genuinely unavoidable
   (e.g. a subtle gotcha that will bite the next person). Prefer explaining *why*, not *what*.
