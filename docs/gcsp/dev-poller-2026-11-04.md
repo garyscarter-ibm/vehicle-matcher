@@ -17,6 +17,7 @@ Russell also gives standing approval tonight for draw.io changes necessary for a
 ## Completed
 
 - FUCQ-80 / DEV-2026-11-04-038: shared contracts built, merged as `4866b85` and pushed. Versioned brief/hold/policy/repository/port contracts now unblock the foundation. Contract/link checks passed; required npm suite: 234 passed, zero failed/skipped. Application code was unchanged.
+- FUCQ-37 / DEV-2026-11-04-009: exact offline dated BMW catalogue adapter built, merged as `70ef690` and pushed. Narrow adapter tests 11/11, retail API/brand/render 169/169 and required npm suite 245/245 passed, zero skips. Integrated FUCQ-80 documentation without executable/input changes and reused the matching full stamp. No screen or diagram boundary changed.
 - Startup tools checkpoint `6c655c8` committed and pushed. All four updated Python files parse; test_stamp reports 1.2.0 and its CLI loads. These are scoped tool checks, not an application-suite result.
 
 ## Active / blocked
@@ -25,7 +26,6 @@ Initial Jira reconciliation completed: 107 Stories imported and pushed; two alre
 
 The importer has its own recoverable session and cleanup obligation in `.claude/dev-poller-runtime.json`; reconcile that before another sync or git mutation.
 
-- FUCQ-37 / DEV-2026-11-04-009: claimed at 8 points; branch `dev/DEV-2026-11-04-009`; story lead `/root/catalogue_fucq37`, requested/selected `gpt-6.1-sol` / `high`, no fallback, runtime not independently verified.
 - Both live Jira cards, assignees, points, host/agent labels, branch comments and adoption dates reconciled; existing Epic dates retained and an empty FUCQ-14 date populated/verified. Full-suite runs are serialised by a shared lock.
 
 ## Morning questions
@@ -38,3 +38,5 @@ Startup reads and small configuration/document writes required no generated test
 
 
 FUCQ-80 validation receipt: `.claude/test-runs/fucq80-20261104-contracts/cleanup.json`; 630,472 known bytes removed, peak scratch 562,689 bytes and peak RSS 369,983,488 bytes; no leftovers or compatibility exception. Compact evidence remains in its run directory and shared impact map.
+
+FUCQ-37 validation evidence: `.claude/test-runs/impact/fucq-37-final.json`; nine owned scratch roots independently verified absent, 552,064 bytes removed, sampled peak RSS 526,696,448 bytes; no leftovers or compatibility exception. When the first consumer is designed, review its source/date and future January 2027 presentation copy.
