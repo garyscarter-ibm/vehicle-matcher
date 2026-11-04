@@ -1,0 +1,299 @@
+{
+ "date": "2026-11-04",
+ "scope": "GCSP 1,000-employee comparison Epic FUCQ-132 (HLD readiness C8) and its 6 Stories",
+ "authorisation": "Gary agreed the HLD section and diagram page 09, and approved the Epic, Story titles, one-line outcomes and dependency order on 4 November 2026, with FUCQ-133 not depending on FUCQ-78. Story authoring only: no implementation, poller, provisioning or deployment.",
+ "source": [
+  "docs/design/handover-section-c7-c9-2026-11-04.md#c8--the-1000-employee-comparison",
+  "docs/design/hld-story-readiness-2026-11-04.md",
+  "docs/design/gcsp-high-level-design.md#the-1000-employee-comparison",
+  "docs/design/high-level-design.drawio (page 09 1,000-employee comparison)"
+ ],
+ "designCommit": "9ad2cac",
+ "epicCount": 1,
+ "storyCount": 6,
+ "acceptanceItems": 37,
+ "epics": [
+  {
+   "key": "FUCQ-132",
+   "type": "Epic",
+   "parent": null,
+   "status": "In Progress",
+   "startDate": "2026-11-04",
+   "labels": [
+    "backlog"
+   ],
+   "summary": "Compare today's release route with the buddy route over 1,000 fictional employees",
+   "unassigned": true
+  }
+ ],
+ "stories": [
+  {
+   "key": "FUCQ-133",
+   "parent": "FUCQ-132",
+   "type": "Story",
+   "summary": "Generate seeded employees, stock and releases from PolicyService keys",
+   "status": "To Do",
+   "priority": "High",
+   "priorityTag": "P2",
+   "priorityReason": "due 2026-11-12: GCSP demo",
+   "kind": "code",
+   "size": "M",
+   "dependsOn": [
+    "FUCQ-80",
+    "FUCQ-82"
+   ],
+   "labels": [
+    "backlog",
+    "design-impact",
+    "kind:code",
+    "size:M"
+   ],
+   "acceptanceItems": 6,
+   "unassigned": true,
+   "points": null,
+   "descriptionMatches": true,
+   "dependenciesMatch": true
+  },
+  {
+   "key": "FUCQ-134",
+   "parent": "FUCQ-132",
+   "type": "Story",
+   "summary": "Replay today's first-come-first-served release for a seeded cohort in an isolated run",
+   "status": "To Do",
+   "priority": "High",
+   "priorityTag": "P2",
+   "priorityReason": "due 2026-11-12: GCSP demo",
+   "kind": "code",
+   "size": "L",
+   "dependsOn": [
+    "FUCQ-133",
+    "FUCQ-29",
+    "FUCQ-66",
+    "FUCQ-81",
+    "FUCQ-85"
+   ],
+   "labels": [
+    "backlog",
+    "design-impact",
+    "kind:code",
+    "size:L"
+   ],
+   "acceptanceItems": 6,
+   "unassigned": true,
+   "points": null,
+   "descriptionMatches": true,
+   "dependenciesMatch": true
+  },
+  {
+   "key": "FUCQ-135",
+   "parent": "FUCQ-132",
+   "type": "Story",
+   "summary": "Replay the buddy route for the same cohort through allocation, holds and decisions",
+   "status": "To Do",
+   "priority": "High",
+   "priorityTag": "P2",
+   "priorityReason": "due 2026-11-12: GCSP demo",
+   "kind": "code",
+   "size": "L",
+   "dependsOn": [
+    "FUCQ-134",
+    "FUCQ-93",
+    "FUCQ-96",
+    "FUCQ-100",
+    "FUCQ-106"
+   ],
+   "labels": [
+    "backlog",
+    "design-impact",
+    "kind:code",
+    "size:L"
+   ],
+   "acceptanceItems": 6,
+   "unassigned": true,
+   "points": null,
+   "descriptionMatches": true,
+   "dependenciesMatch": true
+  },
+  {
+   "key": "FUCQ-136",
+   "parent": "FUCQ-132",
+   "type": "Story",
+   "summary": "Measure both routes across seeds and store an unchangeable comparison result",
+   "status": "To Do",
+   "priority": "High",
+   "priorityTag": "P2",
+   "priorityReason": "due 2026-11-12: GCSP demo",
+   "kind": "code",
+   "size": "M",
+   "dependsOn": [
+    "FUCQ-135"
+   ],
+   "labels": [
+    "backlog",
+    "design-impact",
+    "kind:code",
+    "size:M"
+   ],
+   "acceptanceItems": 6,
+   "unassigned": true,
+   "points": null,
+   "descriptionMatches": true,
+   "dependenciesMatch": true
+  },
+  {
+   "key": "FUCQ-137",
+   "parent": "FUCQ-132",
+   "type": "Story",
+   "summary": "Run comparison jobs in a worker, presenter-only, with a command-line twin",
+   "status": "To Do",
+   "priority": "High",
+   "priorityTag": "P2",
+   "priorityReason": "due 2026-11-12: GCSP demo",
+   "kind": "code",
+   "size": "M",
+   "dependsOn": [
+    "FUCQ-136",
+    "FUCQ-84"
+   ],
+   "labels": [
+    "backlog",
+    "design-impact",
+    "kind:code",
+    "size:M"
+   ],
+   "acceptanceItems": 6,
+   "unassigned": true,
+   "points": null,
+   "descriptionMatches": true,
+   "dependenciesMatch": true
+  },
+  {
+   "key": "FUCQ-138",
+   "parent": "FUCQ-132",
+   "type": "Story",
+   "summary": "Show the route comparison panel on Greg's dashboard with assumptions and a hold rerun",
+   "status": "To Do",
+   "priority": "High",
+   "priorityTag": "P2",
+   "priorityReason": "due 2026-11-12: GCSP demo",
+   "kind": "ui",
+   "size": "L",
+   "dependsOn": [
+    "FUCQ-137",
+    "FUCQ-101"
+   ],
+   "labels": [
+    "backlog",
+    "design-impact",
+    "kind:ui",
+    "size:L"
+   ],
+   "acceptanceItems": 7,
+   "unassigned": true,
+   "points": null,
+   "descriptionMatches": true,
+   "dependenciesMatch": true
+  }
+ ],
+ "nativeBlocks": [
+  {
+   "from": "FUCQ-80",
+   "to": "FUCQ-133"
+  },
+  {
+   "from": "FUCQ-82",
+   "to": "FUCQ-133"
+  },
+  {
+   "from": "FUCQ-133",
+   "to": "FUCQ-134"
+  },
+  {
+   "from": "FUCQ-29",
+   "to": "FUCQ-134"
+  },
+  {
+   "from": "FUCQ-66",
+   "to": "FUCQ-134"
+  },
+  {
+   "from": "FUCQ-81",
+   "to": "FUCQ-134"
+  },
+  {
+   "from": "FUCQ-85",
+   "to": "FUCQ-134"
+  },
+  {
+   "from": "FUCQ-134",
+   "to": "FUCQ-135"
+  },
+  {
+   "from": "FUCQ-93",
+   "to": "FUCQ-135"
+  },
+  {
+   "from": "FUCQ-96",
+   "to": "FUCQ-135"
+  },
+  {
+   "from": "FUCQ-100",
+   "to": "FUCQ-135"
+  },
+  {
+   "from": "FUCQ-106",
+   "to": "FUCQ-135"
+  },
+  {
+   "from": "FUCQ-135",
+   "to": "FUCQ-136"
+  },
+  {
+   "from": "FUCQ-136",
+   "to": "FUCQ-137"
+  },
+  {
+   "from": "FUCQ-84",
+   "to": "FUCQ-137"
+  },
+  {
+   "from": "FUCQ-137",
+   "to": "FUCQ-138"
+  },
+  {
+   "from": "FUCQ-101",
+   "to": "FUCQ-138"
+  }
+ ],
+ "linkReadback": "All 17 Blocks pairs read back on FUCQ-133..138 in the expected direction (first link FUCQ-80 blocks FUCQ-133 confirmed before the rest; FUCQ-135 spot-checked by the main session); every Story's depends_on equals its inward Blocks links.",
+ "descriptionComparison": "Descriptions read back with getJiraIssue (view evidence, markdown) by a runner agent; acceptance counts and depends_on extracted from the read-back. docs/gcsp/fucq-132-stories.md carries the read-back text.",
+ "followUps": {
+  "pngExportPending": [
+   "docs/design page 09 1,000-employee comparison"
+  ],
+  "siblingItems": [
+   "C7 lifecycle after selection",
+   "C9 FUCQ-74 and FUCQ-75 Stories"
+  ]
+ },
+ "agents": {
+  "author": {
+   "model": "opus",
+   "session": "Claude Code side session (C8)"
+  },
+  "links": {
+   "name": "Sylvester Jr",
+   "type": "runner",
+   "model": "haiku"
+  },
+  "readback": {
+   "name": "Sniffles",
+   "type": "runner",
+   "model": "haiku"
+  }
+ },
+ "implementationStarted": false,
+ "pollerStarted": false,
+ "provisioningStarted": false,
+ "applicationTestsRun": false
+}
