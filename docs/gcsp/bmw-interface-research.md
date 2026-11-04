@@ -146,6 +146,27 @@ Its normalised option list, rather than those four seed codes, belongs in the su
 
 This is a selected-field excerpt: many elements and `classifiedConfiguration` are omitted, and the state identifier is replaced. It is not a complete replay fixture.
 
+### Follow-up: opening a configuration in the configurator (4 Nov)
+
+**Yes: a configuration opens at exactly that build from the URL alone.** No saved configuration, login or API key is needed. The public bundle's router reads `/{locale}/{configure|summary}/{modelRange}/{modelCode}/{options}/{accessories}`. Options are a comma-separated list, with a leading `-` marking a deselected default. Paint and upholstery are ordinary codes in that list. The page de-duplicates and sorts the codes and sends them to the rule solver as `included-elements`, the same call the collector uses. Headless Chrome tests on a fresh profile ([evidence](evidence/fucq-4/configurator-deep-link-2026-11-04.json)):
+
+| Case | Result |
+|---|---|
+| Supplied iX link, 39 options plus `SE000001` | Constructible. The page showed all 39 options with nothing added or dropped, and the URL was left as given. The summary route also works. |
+| Same codes in reverse order | Same car; the URL was rewritten to sorted order. |
+| Three-code seed for `T5MJ` | The solver filled in 44 defaults and rewrote the URL to the 47-code resolved list. |
+| One unknown code appended | Dropped silently, no warning shown. |
+| Model code under the wrong range | A different car (`T5SC`) was substituted silently. |
+| Unknown model code | Fell back to the range default; paint and upholstery changed. |
+
+What this means for us:
+
+- **A link round-trips only for real, currently constructible codes.** The configurator never reports a mismatch; it shows a different car. A link must be built from the solver's resolved list, which is what the collector stores, and the page's resolved list must be compared with the record before the link is trusted.
+- **The `configurationId` lacks one input: the configurator model range** (`I20`, `G61E`). Store it on the configuration record. The raw range (`G61`) was also accepted.
+- **No date parameter was found.** The page uses today's catalogue, so an older configuration can resolve differently after a model-year change.
+- **Accessories are optional.** The solver adds `SE000001` itself, so excluding accessories from the ID is harmless.
+- **Side effects and display.** Each page load creates an anonymous garage record (HTTP 201) and shows a cookie banner. Prices are retail list prices, not scheme points, so label the link "See it in BMW's configurator".
+
 ## 3. Specifications, equipment and colours
 
 Selected OTD `values` entries are objects such as `{"referenceName":"N_SITZE","targetValue":5}`. The following meanings were cross-checked where possible against the official [i5 Touring technical page](https://www.bmw.co.uk/en/all-models/bmw-i/i5/i5-touring-technical-data.html), which is directly readable without an API key. Values apply to the sampled configuration/date.

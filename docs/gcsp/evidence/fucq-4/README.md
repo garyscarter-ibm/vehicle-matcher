@@ -11,6 +11,7 @@ Observed 1 November 2026. Interpretation and source URLs are in [the research re
 | `response-excerpts-2026-11-01.json` | Rule configuration/additions and image-manifest shape, counts and selected entries, without ephemeral IDs or opaque asset URLs. |
 | `drivers-guide-native-2026-11-01.json` | Fresh-key native RSA-encrypted lookup results, locale/application statuses and image byte count/hash, without private identifiers or URLs. |
 | `third-party-2026-11-01.json` | Bounded free-site failures, documented Outvin API/access/schema limitations and source terms. No vendor decode output retained. |
+| `configurator-deep-link-2026-11-04.json` | Follow-up: configurator URL grammar read from the public bundle, and eight headless-browser deep-link cases (exact round-trip, reordering, partial seed, unknown option, wrong range, unknown model). No garage IDs or response bodies. |
 | `i5-alpine-white-reference.webp` | BMW catalogue research render for `T5MJ` / `72HH`, effect date 2027-01-05, selected paint `P0300`. |
 | `i5-black-sapphire-reference.webp` | Same model/date/view with selected paint `P0475`; visually inspected colour change. |
 
@@ -28,6 +29,7 @@ python3 -B -m json.tool docs/gcsp/evidence/fucq-4/observations-2026-11-01.json >
 python3 -B -m json.tool docs/gcsp/evidence/fucq-4/response-excerpts-2026-11-01.json >/dev/null
 python3 -B -m json.tool docs/gcsp/evidence/fucq-4/drivers-guide-native-2026-11-01.json >/dev/null
 python3 -B -m json.tool docs/gcsp/evidence/fucq-4/third-party-2026-11-01.json >/dev/null
+python3 -B -m json.tool docs/gcsp/evidence/fucq-4/configurator-deep-link-2026-11-04.json >/dev/null
 shasum -a 256 docs/gcsp/evidence/fucq-4/*.webp
 ```
 

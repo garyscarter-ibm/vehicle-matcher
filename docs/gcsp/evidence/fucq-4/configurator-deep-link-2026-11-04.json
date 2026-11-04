@@ -1,0 +1,26 @@
+{
+  "observed": "2026-11-04",
+  "purpose": "Can a configurationId (model code + sorted option codes) open the BMW UK configurator at that exact configuration?",
+  "method": "Headless Chrome on a fresh profile, driven over the DevTools protocol; no cookies accepted, no login, no garage saves made. Route parsing read from the public bundle /js/index.1793364349.js and en_GB/settings.ae894fd5.json.",
+  "routeGrammar": {
+    "pattern": "https://configure.bmw.co.uk/{locale}/{page}/{modelRange}/{modelCode}/{options}/{accessories}",
+    "page": ["configure", "summary"],
+    "options": "comma-separated codes; a leading '-' marks a deselected default",
+    "accessories": "optional comma-separated accessory codes",
+    "modelRangeCase": "uppercased by LOCALE.transformURLModelRangeCodes",
+    "minimumDeepLinkOptions": 2,
+    "savedConfigurationRoute": "{locale}/configid/{configId} (garage record, about 90 days; not used)"
+  },
+  "solverRequest": "Options and accessories are de-duplicated, sorted and sent as included-elements to rulesolver constructibility-check; effect and order dates come from the model matrix, not the URL.",
+  "cases": [
+    { "label": "supplied iX link", "url": "/en_GB/configure/I20/IXSC/<39 options>/SE000001", "constructible": true, "resolvedOptions": 39, "missing": 0, "extra": 0, "urlRewritten": false, "page": "BMW iX xDrive45 Sport, total price shown" },
+    { "label": "same options reverse-sorted", "url": "/en_GB/configure/I20/IXSC/<39 options reversed>", "constructible": true, "resolvedOptions": 39, "note": "solver added SE000001 itself; URL rewritten to sorted order" },
+    { "label": "summary page", "url": "/en_GB/summary/I20/IXSC/<39 options>", "constructible": true, "resolvedOptions": 39, "page": "summary with price, 360 view, similar stock, request an offer" },
+    { "label": "unknown option appended", "url": "/en_GB/configure/I20/IXSC/<39 options>,S0ZZZ", "constructible": false, "resolvedOptions": 39, "note": "unknown code dropped silently; URL rewritten without it; no warning shown" },
+    { "label": "partial seed (3 codes)", "url": "/en_GB/configure/G61E/T5MJ/FKSFU,P0300,S0337", "constructible": true, "resolvedOptions": 47, "note": "solver added 44 default codes; URL rewritten to the full resolved list" },
+    { "label": "raw range G61 instead of G61E", "url": "/en_GB/configure/G61/T5MJ/FKSFU,P0300,S0337", "constructible": true, "resolvedOptions": 47, "note": "accepted; same result as G61E" },
+    { "label": "wrong model range", "url": "/en_GB/configure/G61E/IXSC/<iX options>", "resolvedModel": "T5SC", "note": "silently substituted a different car from the range; iX codes discarded" },
+    { "label": "unknown model code", "url": "/en_GB/configure/I20/ZZZZ/<iX options>", "resolvedModel": "IXSC", "note": "fell back to the range default model; paint and upholstery changed (P0C4F to P0300, FSACX to FSASW)" }
+  ],
+  "sideEffects": "Every page load POSTs an anonymous garage configuration (HTTP 201). No identifiers or response bodies retained here."
+}
