@@ -6,6 +6,14 @@ Russell requested the child stories, then confirmed: **“HLD is canonical. Upda
 
 Use the [structured stories](fucq-13-19-stories.json), [_dev story template](../../_dev/story-template.md) and [native publication verification](evidence/fucq-13-19/story-publication.json). Jira remains the backlog authority. No duplicate `_dev/` queue, implementation, dispatcher, live-provider activation or bulk collection was started.
 
+**Re-scope, 4 November 2026 (FUCQ-6 review Q7, Q13).** Each of FUCQ-52 to 63 now starts its Jira description with a re-scope section that overrides conflicting criteria. Vehicles have three identities:
+
+- **Configuration:** `configurationId`, in the immutable corpus.
+- **Exact stock car:** a synthetic order reference, in Postgres, generated per demo run.
+- **Delivered car:** a VIN, attached at delivery or for an employee's current car only.
+
+Backend consumers reach the lookup module in-process through its port. The HTTP route wraps the same module as `GET /api/gcsp/vehicle-evidence/{configurations|stock|vins}/:id`. The story text below predates the re-scope; Jira is the current version.
+
 | Epic | Capability | Child stories | Count |
 |---|---|---|---|
 | [FUCQ-14](https://ibm-consulting.atlassian.net/browse/FUCQ-14) | Dated catalogue/specification snapshots | [FUCQ-37](https://ibm-consulting.atlassian.net/browse/FUCQ-37), [FUCQ-38](https://ibm-consulting.atlassian.net/browse/FUCQ-38), [FUCQ-39](https://ibm-consulting.atlassian.net/browse/FUCQ-39) | 3 |
