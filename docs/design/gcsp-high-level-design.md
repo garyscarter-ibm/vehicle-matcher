@@ -176,6 +176,8 @@ For an email opened in another browser, use an opaque, unguessable, environment-
 
 ## Transaction and event invariants
 
+The versioned [shared GCSP contracts](../gcsp/shared-contracts.md) record the schemas, state machines, policy keys, repository and port interfaces implementing these invariants.
+
 - Revalidate employee essentials, eligibility, current terms and permission before each claim. Before acceptance, check eligibility, essentials, permission, the current hold and its pinned quote's validity; a newly published points version does not silently reprice that hold. Version conflicts return a clear refresh/review outcome.
 - Two hold types share that authority (review Q15). The manual cart hold is short, about two minutes and first come first served, as on the target platform. The buddy offer hold lasts hours, is a proposed new capability and is labelled as one. Both durations are keyed policy values.
 - One exact car cannot have two active holders; employee/renewal/entitlement limits are configured explicitly. Manual and buddy commands use the same authority. Allocation/tie-break policy is versioned and inspectable; employee iteration order or mail speed cannot establish priority.
