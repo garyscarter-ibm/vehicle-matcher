@@ -1,0 +1,85 @@
+# FUCQ-7 · Modern manual GCSP selection journey
+
+Refinement requested by Russell, 1 November 2026. This is the working manual route beside the proposed buddy experience. Preserve the information, choices and business commitments evidenced by the current journey while redesigning its body. Do not recreate the dense portal or seven-step wizard.
+
+The binding references are [the demo brief](demo-brief.md), [experience quality contract](experience-quality.md), [screens](screens/README.md), [component catalogue](../../COMPONENTS.md) and canonical [HLD](../design/README.md). [Implementation stories](fucq-6-stories.md) and [structured records](fucq-6-stories.json) carry the acceptance criteria. This refinement does not implement the journey.
+
+## Experience and information architecture
+
+Keep the screenshot-based slim branded header, account context, narrow sidebar and white/grey/neutral/teal palette. Use labelled, functioning navigation for implemented destinations; the screenshots do not establish every icon's destination. Breadcrumbs are optional.
+
+The body follows the consumer Used Cars experience: substantial vehicle images, precise hierarchy, generous useful spacing, cards and readable facts, clear actions and understandable consequences. These five content groups are an intended hierarchy, not five mandatory pages:
+
+1. **Your cars and contracts.** A strong current-car image and model/specification, actual contract end/countdown, mileage/term, scheme/driver and cost context; a clear New order or Replace action when permitted. Retain account/licence/additional-driver details and scheme histories in accessible detail sections.
+2. **Your order choices.** Confirm known scheme/employee facts, choose permitted driver, contract+mileage and requested collection location/date. Explain allowance and any authorised cash contribution. Avoid repetitive entry of known facts.
+3. **Available cars.** Visual series/body navigation and exact-car cards, text search and sorting; show the full permitted released-stock pool. Make colour/interior, points/contribution, availability and useful specification visible. Expand technical data/options without hiding decision-critical facts.
+4. **Review this car.** An explicit action acquires the exact car through the stock authority. Show real hold state, remaining time and consequences, required contact and replacement return-mileage information, plus optional bounded special requirements.
+5. **Check and submit.** Readable review sections, edit paths, complete versioned declarations and intentional submission. Show the generated reference and actual approval/handoff state, Print and Finish. A pending approval is not a completed approval or confirmed appointment.
+
+There are useful alternatives, but less suitable ones: copying the old seven-page layout would retain unnecessary density; replacing it with the buddy flow would lose the manual baseline. The chosen direction preserves the employee's manual decisions while redesigning composition and controls.
+
+Review one rendered representative employee body with Russell/Gary early, then record its repository path/revision as the implementation reference before other body designs fan out. FUCQ-64 owns this deliverable. The supplied screenshots already clear the missing-reference issue. No second upload or pre-existing design is required.
+
+## Shared-component ownership and dependencies
+
+| Owner | Responsibility and FUCQ-7 boundary |
+|---|---|
+| **FUCQ-7** | Portal shell/header/sidebar, scoped palette, account/contract and manual journey composition, manual draft/context services, exact short manual claim, order handoff, status/readback and relevant transaction-specific shared components. |
+| **FUCQ-31 under FUCQ-8** | Shared vehicle cards/facts, typed financial terms, controls/callbacks, exact-member presentation, gallery and catalogue updates. Consume/extend these contracts; create one gallery. FUCQ-7 adds shell/transaction examples there. |
+| **FUCQ-26/29 under FUCQ-8** | Exact identity/evidence/typed terms and server-owned employee eligibility/essential gates. The employee recommendation consumer is read-only; it does not persist drafts, reserve cars or submit orders. Reuse gates, without requiring weighted recommendations in manual browsing. |
+| **FUCQ-13, Stories 32–36** | Experience/brand routing, shared launcher and navigation integration. FUCQ-35 consumes the real FUCQ-7 entry and remains blocked by it. FUCQ-7 supplies mount/teardown/state contracts; it must not depend on FUCQ-35 and create a cycle. |
+| **FUCQ-14/15, Stories 37–42** | Dated catalogue/specification and representative image providers. A small contract-compatible synthetic/dated fixture supports initial integration. Catalogue presence/image identity never establishes released stock or fitted equipment. |
+| **FUCQ-16–20, Stories 43–63** | Optional handbook/live providers and synthetic VIN/corpus evidence. No blanket dependency on live access, a VIN generator or all 10,000 configurations. Handbook content is not a build sheet. |
+
+Reuse the kit, extend it when close, add a shared component only when no existing component fits. Current candidates include portalShell/accountNavigation, contractSummary/schemeHistory, labelled validation, expiry status and declaration/review sections. Their final interfaces belong in the kit/catalogue/gallery, not private copies in each page.
+
+Existing kit: el, mediaWell, matchCard, listingsOf, question controls and semantic tokens. Retail gbp rounds away pence, so typed salary contribution requires the FUCQ-31 money/period presentation contract. Preserve six retail brands and five modes. Extend the ratchet's roots and stylesheet coverage explicitly; its current scope is not enough for a new GCSP folder/CSS.
+
+Shell/design and server-contract work can progress independently. Final gallery composition consumes FUCQ-31. Claims/submission need the authoritative transaction adapter. Real BMW services are replaceable later; no provider failure is silently converted into empty stock or a successful order.
+
+## Complete information inventory
+
+All eight actual screenshots were inspected independently. They are INT evidence, not one internally consistent transaction. Values below are field names, not copied personal records or validated scheme figures. Every item must map to a rendered field/detail/action or a recorded, reviewed omission in the implementation evidence.
+
+| Source | Information and actions to carry forward | Proposed treatment |
+|---|---|---|
+| **00 · Employee account** | Employee name, date of birth, address, company, employee number, band/grade, allowance, override allowance and expiry, phone/email. Licence number, car/bike types and respective start/end dates. Additional-driver status/name/date of birth/address. Separate FS Choices, Motorcycle Choices and PCS UKFS BMW histories with vehicle slot, status, driver, model, registration, collection/contract-end/return dates, contextual actions and record counts. | Current contract/car cards; account/licence/driver details and per-scheme history sections. Unsupported ordering schemes may remain visible history, without an enabled order action. Do not invent the behaviour of unidentified history/sidebar icons. |
+| **01 · Replace vehicle** | Existing order reference/date/status, scheme, contract length+mileage, earliest collection, collection location, vehicle slot, requested collection, monthly cost, phone/email, expected return mileage, special requirements. Separate employee/nominated-driver identities, relationship, address/licence data. Vehicle model, registration/chassis/registration date, actual collection, contract end, returned date/mileage, insurance/transmission, emissions/consumption/range, exterior/interior, price/options. Cancel/Next. | Selected old-contract context with clear replacement action and accessible complete order/vehicle detail. Old order and proposed replacement stay distinct. |
+| **02 · New order** | Scheme context; required driver, term+mileage, collection date, collection location and brand; selector/date controls. Existing-order context. Cancel/Previous/Next. Available selector values and validation are not shown. | Grouped, prefilled choices with conditional validation and allowed values from adapters. New order and replacement branch explicitly. |
+| **03 · Vehicle series** | Persistent driver/scheme/term+mileage/location/date/allowance/brand summary. Illustrated series/body choices; ineligible M entries labelled Not Eligible. Cancel/Previous. Internal scrolling means visible 1–5 Series are not a complete catalogue. | Visual series/body navigation with honest eligibility explanations and complete available choices; no hard-coded screenshot catalogue. |
+| **04 · Vehicle models** | Persistent order/allowance summary; Quick Search, sortable headings, derivative/model, exterior/interior, cost, CO2 and WLTP CO2, transmission, insurance group, earliest collection, record count, selectable rows. | Exact-car visual cards, search/sort and readable details. Preserve full authorised stock reachability and each exact vehicle's facts/terms. |
+| **05 · Vehicle details** | Preview countdown; vehicle image with explicit representative-image disclaimer; exact selected model/exterior/interior/price/monthly cost/insurance/transmission, emissions/consumption/range and option codes/descriptions. Required phone/email and expected mileage of returning vehicle. Optional special requirements, 500-character counter. Cancel/Previous/Next. | Explicit claim followed by vehicle-led review, labelled provenance and contact/return form. Mileage is neither annual mileage nor new-car odometer. Free text requests do not reconfigure released stock or promise a modification. |
+| **06 · Summary** | Complete order/employee/nominated-driver/vehicle sections; order-placement countdown; required declarations. Visible terms concern Scheme Guidelines, authorised drivers and licences, permitted business use, bans/pending court/police matters. Capture cuts off before all terms, acknowledgement controls and submit buttons. | Readable review/edit sections and complete synthetic versioned declaration contract. Request approved wording/control semantics from Sandeep; do not invent hidden screenshot evidence. |
+| **07 · Order confirmation** | Generated GCSO reference and Awaiting IS Approval, with submitted order/employee/driver/vehicle/return-mileage/requirements information. Print/Finish. | Actual stored order readback, truthful pending approval/handoff state and next steps. Print the readback; Finish returns to account. |
+
+Technical vehicle detail includes **NEDC/correlated and WLTP CO2 separately**, fuel-consumption low/medium/high/extra-high and weighted combined with the supplied unit/measurement basis, electricity consumption, electric and city range, insurance group, transmission, exterior/interior, options and price basis. Validate units instead of repeating implausible INT values. Retail/list price, scheme points and monthly salary contribution are separate concepts.
+
+Requested collection, earliest vehicle availability, confirmed appointment, actual collection, contract end and return dates are different facts. Historic blank values remain absent where appropriate; they are not mandatory inputs simply because the legacy summary includes a cell.
+
+## Evidence, policy and functional boundaries
+
+- **Coherent fixtures:** screenshot 06 shows a G7 employee with a 530e and second vehicle slot. The accepted FS/UK October 2024 matrix excludes that model for G7; the dated Choices guide puts second-car entitlement at G9+. Drivers/slots/specifications also change between captures. Preserve fields/branches, use matrix-valid synthetic employee/car combinations and identify any assumed entitlement rule.
+- **Allowance and contribution:** matrices establish model/engine eligibility, not points prices/allowances. The dated 2024 guideline allows cash top-up at £1 per point, so a universal over-allowance block would be invented. Confirm current scheme semantics and any contribution ceiling; model/driver/insurance gates still apply.
+- **Driver eligibility:** distinguish nominated primary drivers from occasional household users. The extracted guide lacks its family-tree and age/licence figures. Do not infer the permitted set from an INT dropdown or example relationship.
+- **Timing:** walkthrough notes describe a 120-second preview hold and five-minute terms period; images show remaining seconds only. Defaults, triggers, extension/release and interruption behaviour need confirmation. Use explicitly documented configurable synthetic manual timing, separate from the buddy's proposed two hours.
+- **Contracts:** older sources disagree on contract periods and ordering windows. Use explicit dated assumptions, actual fixture contract dates and server-owned allowed values. No new extension/early-renewal authority follows from a UI control.
+- **Stock:** browsing is read-only. Explicit selection must conditionally claim one exact released car, with current eligibility/terms/slot checks. Another chooser can win. Catalogue/configuration images do not establish available stock.
+- **Persistence and recovery:** keep server-owned draft/claim/quote/order state in the HLD's transaction repository. PostgreSQL behind a repository port is proposed; **GC-003 remains the provider/deployment prerequisite with Gary**. No ephemeral Render memory/files as a completion shortcut and no new infrastructure provisioning in this refinement.
+- **Expiry and uncertain writes:** preserve server expiry across refresh/reopen. Reconcile on startup/reads/commands and explicit demo ticks; reliable unattended work requires a runner. Persist an unknown claim/release/submit outcome until reconciliation. No timeout manufactures success or permits premature reallocation.
+- **Commitment:** order receipt, pending handoff, awaiting HR/IS/manager approval and final approval differ. A selection cannot alter current-car/return/collection state. Stop FUCQ-7 at truthful order handoff/readback; approvals execution, booking, signing and physical handover remain separate.
+- **Privacy and access:** use coherent fictional records. Backend context owns employee/entitlement; the demo gate/URL is not employee authority. Avoid copying screenshot personal/licence/contact values into fixtures/evidence.
+
+## Sandeep follow-up and assumptions
+
+Russell asks Sandeep; no message has been sent. Existing questions cover points/allowances (SAN-001/008), platform/stock interfaces (SAN-004), current-car data (SAN-012), shared access and commitment (SAN-009/013), and renewal exceptions (SAN-010/016).
+
+The [running questions](questions-for-sandeep.md) now adds **SAN-017–020** for manual timing/entry/history actions, missing driver/licence rules, contract/collection semantics and full declarations/order-status readback. These answers validate the real-service adapter contract and policy; documented synthetic assumptions permit demo implementation without claiming BMW verification.
+
+Connected-use summaries, preference sliders/importance controls, saved buddy search, two-hour buddy offers/email, Greg's controls, a 1,000-employee comparison and downstream appointments are separate capabilities. Their brief direction remains intact; FUCQ-7 must not absorb them merely because it supplies the shared shell.
+
+## Acceptance evidence and authoring record
+
+Ten bounded implementation stories use the existing decided/acceptance/validate sections. Each relevant result needs meaningful automated checks and actual desktop/narrow/keyboard browser evidence against the reviewed body, including loading/empty/unavailable/validation/expired/conflict/pending/current-success states it introduces. FUCQ-73 closes the field/action trace and tests adapter-backed new/replacement paths, current readback and retail regression.
+
+Agents: evidence reviewer/Opus requested and selected gpt-6.1-sol/high; component researcher/Sonnet implementer requested and selected gpt-6.1-sol/medium. No fallback or descendants; effective runtime settings were not independently inspected. Independent final story review passed with no blocking or major findings; minor contract/test wording corrections were incorporated. Native publication and description/relationship verification are recorded in the publication evidence.
+

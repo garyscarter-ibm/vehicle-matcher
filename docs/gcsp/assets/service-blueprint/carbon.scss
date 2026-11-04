@@ -1,0 +1,15 @@
+// Official Carbon v11 component styles. Build instructions and licences are in README.md.
+@use '@carbon/styles/scss/config' with ($css--font-face: false);
+@use '@carbon/styles/scss/themes';
+@use '@carbon/styles/scss/theme';
+@use '@carbon/styles/scss/layout';
+@use '@carbon/styles/scss/layer';
+@use '@carbon/styles/scss/components/button';
+@use '@carbon/styles/scss/components/tag';
+@use '@carbon/styles/scss/components/select';
+@use '@carbon/styles/scss/components/text-input';
+@use '@carbon/styles/scss/components/text-area';
+@use '@carbon/styles/scss/components/data-table';
+@use '@carbon/styles/scss/components/link';
+
+:root { @include theme.theme(themes.$white); }

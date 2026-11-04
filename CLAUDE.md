@@ -4,6 +4,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Conventions
 
+### Equal collaborator authority
+
+Follow `AGENTS.md`, section "Equal collaborator authority", for contributor decisions and authorisation in every
+session, skill and workflow, including any requirement phrased as approval by a named person or owner.
+
+### Commit and push during sessions
+
+Follow `AGENTS.md`, section "Commit and push during sessions", for this repository's standing authorization
+and checkpoint cadence.
+
 ### Comments
 - **Keep code comments to 2 lines max**, unless a longer note is genuinely unavoidable
   (e.g. a subtle gotcha that will bite the next person). Prefer explaining *why*, not *what*.
@@ -15,6 +25,13 @@ This applies to every file and every contributor (human or agent).
 ### User-facing copy
 No em dashes in any on-screen string (house style) — enforced by a test in
 `server/test/render.test.js`. This rule is for user-facing copy only, not comments.
+
+### GCSP demo quality and context
+
+For every GCSP task, read `docs/gcsp/README.md` and `docs/gcsp/experience-quality.md`. Apply that contract
+to story authoring, UI and user-visible service changes, every child-agent brief and final review.
+Also read `docs/gcsp/build-rules.md`; apply its full-build scope and central assumptions rule to every
+story, implementation and review, and pass it to every child agent.
 
 ## Commands
 

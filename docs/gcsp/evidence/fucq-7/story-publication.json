@@ -1,0 +1,170 @@
+{
+  "date": "2026-11-01",
+  "epic": "FUCQ-7",
+  "epic_status": "In Progress",
+  "template": "_dev/story-template.md",
+  "story_count": 11,
+  "blocking_relationship_count": 21,
+  "verification": "Read back each native Jira issue's parent and links; parsed actual published descriptions with the vendored story parser.",
+  "reviewer": {
+    "requested_model": "gpt-6.1-sol",
+    "requested_effort": "high",
+    "selected_model": "gpt-6.1-sol",
+    "selected_effort": "high",
+    "fallback": false
+  },
+  "stories": [
+    {
+      "key": "FUCQ-20",
+      "title": "Capture the retail recommendation compatibility contract",
+      "parent": "FUCQ-7",
+      "status": "To Do",
+      "priority": "Medium",
+      "size": "M",
+      "kind": "code",
+      "blocked_by": []
+    },
+    {
+      "key": "FUCQ-21",
+      "title": "Return a complete response when no used cars qualify",
+      "parent": "FUCQ-7",
+      "status": "To Do",
+      "priority": "Medium",
+      "size": "S",
+      "kind": "code",
+      "blocked_by": [
+        "FUCQ-20"
+      ]
+    },
+    {
+      "key": "FUCQ-22",
+      "title": "Keep selected listing prices, scores and explanations consistent",
+      "parent": "FUCQ-7",
+      "status": "To Do",
+      "priority": "Medium",
+      "size": "L",
+      "kind": "code",
+      "blocked_by": [
+        "FUCQ-20"
+      ]
+    },
+    {
+      "key": "FUCQ-23",
+      "title": "Stop obsolete previews from replacing current answers",
+      "parent": "FUCQ-7",
+      "status": "To Do",
+      "priority": "Medium",
+      "size": "S",
+      "kind": "code",
+      "blocked_by": [
+        "FUCQ-20"
+      ]
+    },
+    {
+      "key": "FUCQ-24",
+      "title": "Preserve used-car context in generated share links",
+      "parent": "FUCQ-7",
+      "status": "To Do",
+      "priority": "Medium",
+      "size": "S",
+      "kind": "code",
+      "blocked_by": [
+        "FUCQ-20"
+      ]
+    },
+    {
+      "key": "FUCQ-25",
+      "title": "Represent exact vehicle facts and scenario-specific financial terms",
+      "parent": "FUCQ-7",
+      "status": "To Do",
+      "priority": "Medium",
+      "size": "M",
+      "kind": "code",
+      "blocked_by": [
+        "FUCQ-20"
+      ]
+    },
+    {
+      "key": "FUCQ-26",
+      "title": "Share pure recommendation evaluation behind the retail compatibility layer",
+      "parent": "FUCQ-7",
+      "status": "To Do",
+      "priority": "Medium",
+      "size": "L",
+      "kind": "code",
+      "blocked_by": [
+        "FUCQ-21",
+        "FUCQ-22",
+        "FUCQ-25"
+      ]
+    },
+    {
+      "key": "FUCQ-27",
+      "title": "Build grouped result views from complete exact-car decisions",
+      "parent": "FUCQ-7",
+      "status": "To Do",
+      "priority": "Medium",
+      "size": "M",
+      "kind": "code",
+      "blocked_by": [
+        "FUCQ-22",
+        "FUCQ-26"
+      ]
+    },
+    {
+      "key": "FUCQ-28",
+      "title": "Recommend employee cars through a separate policy using the shared core",
+      "parent": "FUCQ-7",
+      "status": "To Do",
+      "priority": "Medium",
+      "size": "L",
+      "kind": "code",
+      "blocked_by": [
+        "FUCQ-25",
+        "FUCQ-26",
+        "FUCQ-27"
+      ]
+    },
+    {
+      "key": "FUCQ-29",
+      "title": "Reuse scoped feedback actions in retail refinement and employee drafts",
+      "parent": "FUCQ-7",
+      "status": "To Do",
+      "priority": "Medium",
+      "size": "L",
+      "kind": "code",
+      "blocked_by": [
+        "FUCQ-23",
+        "FUCQ-27",
+        "FUCQ-28"
+      ]
+    },
+    {
+      "key": "FUCQ-30",
+      "title": "Render retail and employee decision data through the shared UI kit",
+      "parent": "FUCQ-7",
+      "status": "To Do",
+      "priority": "Medium",
+      "size": "L",
+      "kind": "ui",
+      "blocked_by": [
+        "FUCQ-22",
+        "FUCQ-23",
+        "FUCQ-27",
+        "FUCQ-28",
+        "FUCQ-29"
+      ]
+    }
+  ],
+  "application_code_changed": false,
+  "poller_started": false,
+  "story_points_authored": false,
+  "visual_direction_update": {
+    "date": "2026-11-01",
+    "source": "Russell clarification in the authoring chat",
+    "reference": "docs/gcsp/screens/README.md",
+    "story": "FUCQ-30",
+    "cleared_label": "needs-visual-reference",
+    "scope": "Retain GCSP header/sidebar/palette, optional breadcrumbs; redesign the body toward consumer-facing Used Cars. Ordinary body design review remains required."
+  }
+}

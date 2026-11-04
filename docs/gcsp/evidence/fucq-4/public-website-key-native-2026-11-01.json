@@ -1,0 +1,115 @@
+{
+  "observedDate": "2026-11-01",
+  "scope": "Follow-up after Russell challenged the blanket website-key prohibition; research only, no adapter implementation",
+  "publicSource": {
+    "pageUrl": "https://configure.bmw.co.uk/en_GB/configure/G61E/T5MJ",
+    "pageHttpStatus": 200,
+    "settingsUrl": "https://configure.bmw.co.uk/en_GB/settings.ae894fd5.json",
+    "settingsHttpStatus": 200,
+    "credentialHandling": "Anonymous public settings read in process memory; x-api-key values never printed or persisted"
+  },
+  "client": {
+    "runtime": "Node native fetch",
+    "cookies": false,
+    "originHeader": false,
+    "refererHeader": false,
+    "cache": "no-store",
+    "writes": false
+  },
+  "results": [
+    {
+      "requestId": "model-tree",
+      "requestEvidence": "requests-2026-11-01.json",
+      "profile": "settingsVehicleTree",
+      "method": "GET",
+      "url": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G61E&future-models=true&closest-fallback=true",
+      "tests": [
+        {
+          "withWebsiteKey": false,
+          "httpStatus": 401,
+          "contentType": "application/json",
+          "responseBytes": 26,
+          "jsonParsed": true
+        },
+        {
+          "withWebsiteKey": true,
+          "httpStatus": 200,
+          "contentType": "application/json;charset=utf-8",
+          "responseBytes": 139586,
+          "jsonParsed": true,
+          "selectedChecks": {
+            "containsT5MJ": true,
+            "contains72HH": true,
+            "topLevelGroups": [
+              "5",
+              "I"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestId": "options",
+      "requestEvidence": "requests-2026-11-01.json",
+      "profile": "settingsLocalisation",
+      "method": "GET",
+      "url": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en?trim=S0337",
+      "tests": [
+        {
+          "withWebsiteKey": false,
+          "httpStatus": 401,
+          "contentType": "application/json",
+          "responseBytes": 26,
+          "jsonParsed": true
+        },
+        {
+          "withWebsiteKey": true,
+          "httpStatus": 200,
+          "contentType": "application/json",
+          "responseBytes": 138863,
+          "jsonParsed": true,
+          "selectedChecks": {
+            "optionCount": 254,
+            "hasAlpineWhiteDefinition": true
+          }
+        }
+      ]
+    },
+    {
+      "requestId": "technical-data",
+      "requestEvidence": "requests-2026-11-01.json",
+      "profile": "settingsOtd",
+      "method": "GET",
+      "url": "https://prod.ucp.bmw.cloud/otd/country-groups/eu27+/ag-models/72HH/validity-dates/2027-01-05/otd-for-configuration?included-options=FKSFU,P0300,S0230,S02PA,S02VB,S02VD,S0302,S0337,S03DK,S03G9,S03M1,S0428,S043L,S0488,S0494,S04T2,S04U9,S04UR,S04V1,S0552,S05AS,S05AV,S05DM,S0654,S0674,S06AE,S06AF,S06AK,S06C4,S06NX,S06PA,S0704,S0710,S0760,S0775,S0812,S0853,S0880,S08R3,S08R9,S08SM,S08TF,S08TG,S08WM,S09QV,S09T1,S09T2",
+      "tests": [
+        {
+          "withWebsiteKey": false,
+          "httpStatus": 401,
+          "contentType": "application/json",
+          "responseBytes": 26,
+          "jsonParsed": true
+        },
+        {
+          "withWebsiteKey": true,
+          "httpStatus": 200,
+          "contentType": "application/json;charset=UTF-8",
+          "responseBytes": 5750,
+          "jsonParsed": true,
+          "selectedChecks": {
+            "sourceStatus": 1,
+            "valueCount": 72,
+            "seatCount": 5,
+            "hasBusinessKey": true
+          }
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "One GB configuration/date; not full catalogue or reliability coverage",
+    "No COSY manifest replay in this follow-up",
+    "No VIN lookup/build-sheet claim",
+    "No BMW support, intended external use, credential lifetime, quota or data/image reuse rights established",
+    "No application provider or automatic key-refresh mechanism implemented"
+  ]
+}
