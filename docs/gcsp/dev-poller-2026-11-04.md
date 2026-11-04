@@ -24,6 +24,10 @@ Initial Jira reconciliation completed: 107 Stories imported and pushed; two alre
 
 The importer has its own recoverable session and cleanup obligation in `.claude/dev-poller-runtime.json`; reconcile that before another sync or git mutation.
 
+- FUCQ-80 / DEV-2026-11-04-038: claimed at 5 points; branch `dev/DEV-2026-11-04-038`; story lead `/root/contracts_fucq80`, requested/selected `gpt-6.1-sol` / `high`, no fallback, runtime not independently verified.
+- FUCQ-37 / DEV-2026-11-04-009: claimed at 8 points; branch `dev/DEV-2026-11-04-009`; story lead `/root/catalogue_fucq37`, requested/selected `gpt-6.1-sol` / `high`, no fallback, runtime not independently verified.
+- Both live Jira cards, assignees, points, host/agent labels, branch comments and adoption dates reconciled; existing Epic dates retained and an empty FUCQ-14 date populated/verified. Full-suite runs are serialised by a shared lock.
+
 ## Morning questions
 
 No questions yet. Binding deferrals still exclude FUCQ-27/28/61 until after 12 November, even where their Jira descriptions omit that timing; the local run directive preserves the exclusions.
