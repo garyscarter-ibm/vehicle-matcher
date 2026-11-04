@@ -22,6 +22,7 @@ Gary's architecture review is recorded in [hld-review-gc.md](hld-review-gc.md) a
 - **Holds:** a short manual cart hold, plus a longer buddy offer hold as a proposed new capability.
 - **Integration target:** the target GCSP AWS platform, not the mainframe. The blocks also mount as web components for the target Angular app.
 - **Lifecycle:** the demo uses the target's approval and appointment state names.
+- **Paula's step 07:** after declining, she confirms one preference change rather than lowering a cash-contribution ceiling (agreed by Russell, `docs/gcsp/hld-agreement-2026-11-04.md`).
 - **Predictive planning:** the deterministic baseline drives the demo plan. The learned model is shown alongside, labelled synthetic-trained.
 
 ## Design hierarchy and evidence precedence
@@ -74,7 +75,7 @@ Paula's current-car anchor is the supplied **G21 320i M Sport Touring LCI2, B48 
 | **04a · Delegated work** | Full exact-stock evaluation → configured allocation → conditional hold/offer transaction → committed outbox. | Recheck current permission/versions before a hold. No offer or notification without a confirmed exclusive hold. |
 | **05 · First offer** | Offer read, exact quote/fact snapshot, current-car comparison, notification dispatcher. | Email and account show one offer; countdown derives from persisted expiry. Unknown equipment and representative images remain visible. |
 | **06 · Decline and history** | Offer decision, exact release, historical quote/comparison and typed rejection reason. | Idempotent decline; pending release stays unavailable until resolved; then car returns to ordinary shared eligibility. History cannot restore the hold. No penalty or recovery priority follows from rejection alone. |
-| **07 · Confirm one change** | Fixed reason-to-question follow-up, versioned BriefService, reevaluation and decline exclusion. | Lower contribution ceiling only after Paula confirms. Preserve other essentials/priorities; do not reoffer the unchanged declined car. No-match is calculated, not a prewritten outcome. |
+| **07 · Confirm one change** | Fixed reason-to-question follow-up, versioned BriefService, reevaluation and decline exclusion. | Change one preference (e.g. body style or an essential) only after Paula confirms (Q16, 4 Nov). Preserve other essentials/priorities; do not reoffer the unchanged declined car. No-match is calculated, not a prewritten outcome. |
 | **08 · Help available** | Help projection; owned case only on request or configured renewal-risk trigger; exception-decision port. | Merely opening help changes nothing. Extension or other remedy requires its authorised owner; actual dates remain authoritative. |
 | **09 · Next release** | Replayable release/event source, deduplication, full evaluation, allocation and hold transaction. | Uses current brief and permission, including the lower ceiling and decline history. Failed claims try appropriate remaining candidates; no hard-coded winner. |
 | **10 · Second offer** | Same offer/comparison/notification modules plus saved first-versus-second quote projection. | Explain measured changes from the stored quotes and current brief, not an inferred unspoken preference. |

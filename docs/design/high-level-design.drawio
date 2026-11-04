@@ -1071,7 +1071,7 @@
             <mxGeometry height="70" width="260" x="49" y="514" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Eligibility + terms&lt;br&gt;points + £1/point top-up assumption" type="service" status="proposed" feature="employee-target" id="e-rule-port">
+        <UserObject label="Eligibility + terms&lt;br&gt;points allowance · keyed assumptions" type="service" status="proposed" feature="employee-target" id="e-rule-port">
           <mxCell parent="e-ports" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="29.5" y="634" as="geometry" />
           </mxCell>
@@ -1240,7 +1240,7 @@
             <mxGeometry height="1120" width="1531.9" x="205.17" y="544" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Versioned brief + activity / sliders · weights · permission" type="service" status="proposed" feature="employee-target" id="e-brief">
+        <UserObject label="Versioned brief + activity&lt;br&gt;sliders · weights · one confirmed change" type="service" status="proposed" feature="employee-target" id="e-brief">
           <mxCell parent="e-app" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="1003.9" y="532" as="geometry" />
           </mxCell>
@@ -1649,7 +1649,7 @@
             </mxGeometry>
           </mxCell>
         </UserObject>
-        <UserObject label="Decline differs from brief amendment.&lt;br&gt;Undo cannot restore an expired hold.&lt;br&gt;Remote claims must be acknowledged." type="note" status="proposed" feature="employee-target" id="e-feedback-note">
+        <UserObject label="Decline, then one confirmed preference change.&lt;br&gt;Undo cannot restore an expired hold.&lt;br&gt;Remote claims must be acknowledged." type="note" status="proposed" feature="employee-target" id="e-feedback-note">
           <mxCell parent="1" style="shape=note;whiteSpace=wrap;html=1;size=14;align=left;spacingLeft=6;" vertex="1">
             <mxGeometry height="70" width="220" x="937.535" as="geometry" />
           </mxCell>
@@ -2479,7 +2479,7 @@
             <mxGeometry height="110" width="240" x="800" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Effective terms + policy&lt;br&gt;points · £1/point top-up assumption" type="service" status="proposed" feature="gcsp-hld" id="p-terms">
+        <UserObject label="Effective terms + policy&lt;br&gt;points allowance · keyed assumptions" type="service" status="proposed" feature="gcsp-hld" id="p-terms">
           <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="1200" as="geometry" />
           </mxCell>
