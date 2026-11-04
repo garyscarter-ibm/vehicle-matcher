@@ -1,0 +1,303 @@
+{
+  "date": "2026-11-04",
+  "scope": "GCSP foundation Epic FUCQ-79 and its six Stories; FUCQ-29, FUCQ-65 and FUCQ-66 re-pointed to it",
+  "authorisation": "Gary approved the Epic, Story titles, one-line outcomes and dependency order on 4 November 2026, including the PolicyService split (FUCQ-82/83), FUCQ-85 depending on FUCQ-84, and FUCQ-84 blocking FUCQ-65. Story authoring only: no implementation, poller, provisioning or deployment.",
+  "source": [
+    "docs/design/handover-section-c-2026-11-04.md",
+    "docs/design/hld-story-readiness-2026-11-04.md#c-capabilities-with-no-epic-or-story"
+  ],
+  "epic": {
+    "key": "FUCQ-79",
+    "type": "Epic",
+    "parent": null,
+    "status": "In Progress",
+    "startDate": "2026-11-04",
+    "labels": [
+      "backlog",
+      "foundation"
+    ],
+    "priority": "Medium",
+    "unassigned": true,
+    "descriptionMatches": true
+  },
+  "storyCount": 6,
+  "acceptanceItems": 40,
+  "stories": [
+    {
+      "key": "FUCQ-80",
+      "parent": "FUCQ-79",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "docs",
+      "size": "S",
+      "dependsOn": [],
+      "labels": [
+        "backlog",
+        "foundation",
+        "kind:docs",
+        "size:S"
+      ],
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-81",
+      "parent": "FUCQ-79",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "code",
+      "size": "L",
+      "dependsOn": [
+        "FUCQ-80"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "foundation",
+        "kind:code",
+        "size:L"
+      ],
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-82",
+      "parent": "FUCQ-79",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "code",
+      "size": "M",
+      "dependsOn": [
+        "FUCQ-80"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "foundation",
+        "kind:code",
+        "size:M"
+      ],
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-83",
+      "parent": "FUCQ-79",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "code",
+      "size": "M",
+      "dependsOn": [
+        "FUCQ-81",
+        "FUCQ-82"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "foundation",
+        "kind:code",
+        "size:M"
+      ],
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-84",
+      "parent": "FUCQ-79",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "code",
+      "size": "M",
+      "dependsOn": [
+        "FUCQ-81"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "foundation",
+        "kind:code",
+        "size:M"
+      ],
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    },
+    {
+      "key": "FUCQ-85",
+      "parent": "FUCQ-79",
+      "type": "Story",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "code",
+      "size": "M",
+      "dependsOn": [
+        "FUCQ-81",
+        "FUCQ-84"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "foundation",
+        "kind:code",
+        "size:M"
+      ],
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true,
+      "labelsMatch": true
+    }
+  ],
+  "nativeBlocks": [
+    {
+      "from": "FUCQ-80",
+      "to": "FUCQ-81"
+    },
+    {
+      "from": "FUCQ-80",
+      "to": "FUCQ-82"
+    },
+    {
+      "from": "FUCQ-81",
+      "to": "FUCQ-83"
+    },
+    {
+      "from": "FUCQ-82",
+      "to": "FUCQ-83"
+    },
+    {
+      "from": "FUCQ-81",
+      "to": "FUCQ-84"
+    },
+    {
+      "from": "FUCQ-81",
+      "to": "FUCQ-85"
+    },
+    {
+      "from": "FUCQ-84",
+      "to": "FUCQ-85"
+    },
+    {
+      "from": "FUCQ-82",
+      "to": "FUCQ-29"
+    },
+    {
+      "from": "FUCQ-81",
+      "to": "FUCQ-66"
+    },
+    {
+      "from": "FUCQ-85",
+      "to": "FUCQ-66"
+    },
+    {
+      "from": "FUCQ-84",
+      "to": "FUCQ-65"
+    }
+  ],
+  "linkDirectionCheck": "Created FUCQ-80 blocks FUCQ-81 first and read FUCQ-81 back as 'is blocked by FUCQ-80' before creating the other ten links.",
+  "existingStoriesEdited": [
+    {
+      "key": "FUCQ-29",
+      "dependsOnBefore": [
+        "FUCQ-26"
+      ],
+      "dependsOnAfter": [
+        "FUCQ-26",
+        "FUCQ-82"
+      ],
+      "change": "Foundation paragraph in Decided: policy reads through FUCQ-82 PolicyService; no separate fixture loader.",
+      "otherLinksPreserved": true
+    },
+    {
+      "key": "FUCQ-65",
+      "dependsOnBefore": [
+        "FUCQ-26",
+        "FUCQ-29"
+      ],
+      "dependsOnAfter": [
+        "FUCQ-26",
+        "FUCQ-29",
+        "FUCQ-84"
+      ],
+      "change": "Foundation paragraph in Decided: principal and run via FUCQ-84 DemoIdentityAdapter; contract tests use FUCQ-81 in-memory double.",
+      "otherLinksPreserved": true
+    },
+    {
+      "key": "FUCQ-66",
+      "dependsOnBefore": [
+        "FUCQ-65"
+      ],
+      "dependsOnAfter": [
+        "FUCQ-65",
+        "FUCQ-81",
+        "FUCQ-85"
+      ],
+      "change": "First acceptance item builds the manual claim slice on FUCQ-81's repository; files, out of scope and a Foundation paragraph updated; expiry registers as a FUCQ-85 tick handler.",
+      "otherLinksPreserved": true
+    }
+  ],
+  "staleLinksStillOpen": [
+    "FUCQ-27 blocks FUCQ-29",
+    "FUCQ-28 blocks FUCQ-29",
+    "FUCQ-28 blocks FUCQ-30",
+    "FUCQ-28 blocks FUCQ-31"
+  ],
+  "nativeChildQuery": {
+    "jql": "parent = FUCQ-79",
+    "keys": [
+      "FUCQ-80",
+      "FUCQ-81",
+      "FUCQ-82",
+      "FUCQ-83",
+      "FUCQ-84",
+      "FUCQ-85"
+    ]
+  },
+  "descriptionComparison": "Description read back with getJiraIssue (view evidence, markdown); compared with the submitted text after canonicalising bullet markers, escaped checkboxes and whitespace. docs/gcsp/fucq-79-stories.md carries the read-back text.",
+  "agents": {
+    "author": {
+      "model": "opus",
+      "session": "Claude Code main session"
+    },
+    "readback": {
+      "name": "Foghorn Leghorn",
+      "type": "runner",
+      "model": "haiku"
+    }
+  },
+  "implementationStarted": false,
+  "pollerStarted": false,
+  "provisioningStarted": false,
+  "applicationTestsRun": false
+}
