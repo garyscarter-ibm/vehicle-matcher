@@ -1,0 +1,23 @@
+{
+  "observed": "2026-11-04",
+  "purpose": "Which real BMW sources could supply demo data: real configurations with codes, and the shape of real new-car stock.",
+  "stockLocator": {
+    "site": "https://stock.bmw.co.uk (BMW UK new-car stock locator)",
+    "access": "Public: no API key, no login; plain HTTPS with a session cookie. robots.txt has no Disallow rules.",
+    "modelList": "60 selectable models on the start page, each with data-modelno, data-series and data-body.",
+    "searchRequest": "GET /results?f=..&v[vehicle_ids][]={modelno}&p=..&ds=..&d=..&min=..&max=..&debug=.. (scalar values Base64-encoded by the page script)",
+    "paging": "10 cars per response; the page calls ./results/more until finished=true.",
+    "responseShape": "JSON object { location: [car], filters, sortBy, finished }",
+    "carFields": ["type", "vin (encrypted, with iv)", "dealer_id", "dealer_name", "dealer_distance", "airstrip_stock", "image (COSY render)", "vehicle_images", "description", "range", "visible_cash_price", "numeric_monthly_price", "fuel_type", "transmission", "drive_type", "colour", "upholstery_type", "upholstery_text", "wheels", "seconds_from_0_to_62", "seat_count", "standard_options (titles)", "non_standard_options (titles)", "standard_packages", "non_standard_packages", "highlighted_options", "order_number (Base64 of a 7-digit number)", "eve_config_id", "confirmed_delivery_date_to", "lead_time_in_weeks_min", "lead_time_in_weeks_max", "on_hold", "vehicle_ids"],
+    "noCodes": "No model code, AG code or option codes anywhere in the results or vehicle detail page; options are display titles only.",
+    "detailRoute": "/vehicle/{encrypted vin}/{iv}?dn={dealer}&f={finance}: server-rendered page with technical data.",
+    "notRetained": "No order numbers, VINs, dealer IDs, prices, image URLs or response bodies are kept in this file."
+  },
+  "configuratorVssCode": {
+    "source": "Public bundle /js/index.1793364349.js, element vss-get-delivery-date",
+    "request": "POST /similarity-search/v2/search with searchContext.vssConfigurationId = agModelCode + ':' + sorted normalised option codes joined by ','",
+    "normalisedOptions": "Option elements only (accessories excluded), using the base code rather than any combined code",
+    "encoding": "No Base64 in the request body as built by the page",
+    "liveStatus": "Not observed: the UK settings have VSS.enable=false, so the call did not fire in a headless page load."
+  }
+}

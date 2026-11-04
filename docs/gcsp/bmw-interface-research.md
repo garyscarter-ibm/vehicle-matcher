@@ -167,6 +167,17 @@ What this means for us:
 - **Accessories are optional.** The solver adds `SE000001` itself, so excluding accessories from the ID is harmless.
 - **Side effects and display.** Each page load creates an anonymous garage record (HTTP 201) and shows a cookie banner. Prices are retail list prices, not scheme points, so label the link "See it in BMW's configurator".
 
+### Follow-up: real data for the demo (4 Nov)
+
+Two public BMW sources between them supply real configurations and the shape of real new-car stock ([evidence](evidence/fucq-4/stock-locator-2026-11-04.json)).
+
+| Source | What it gives | What it lacks |
+|---|---|---|
+| Configurator rule solver (public website key, above) | Real, constructible configurations: model code, AG code, range, the full resolved option list, technical data (OTD) and renders (COSY). Every result deep-links back into the configurator. | Any stock, order or availability data. Collection uses an undocumented key, so the provider must be named explicitly as unsupported. |
+| [New-car stock locator](https://stock.bmw.co.uk) | Real UK new stock as JSON with no key: model, colour, upholstery, wheels, option and package titles, 0-62, seats, price, retailer, delivery date and lead time (2 to 4 weeks in the sample), and a 7-digit order number. | Any codes, so a car can't be turned into a `configurationId` or a configurator link without fuzzy title matching. Order numbers and encrypted VINs are real identifiers and must not be stored. |
+
+The configurator's shared code also builds a VSS configuration ID for its similarity search: **AG model code** (`72HH`) + `:` + the sorted base option codes, comma-separated, accessories excluded, with no Base64 in the request. That confirms the comma and accessory assumptions, but the knowledge base named the **VG** code (`T5MJ`). The UK configurator has the feature switched off, so this comes from the code alone; the call was not observed.
+
 ## 3. Specifications, equipment and colours
 
 Selected OTD `values` entries are objects such as `{"referenceName":"N_SITZE","targetValue":5}`. The following meanings were cross-checked where possible against the official [i5 Touring technical page](https://www.bmw.co.uk/en/all-models/bmw-i/i5/i5-touring-technical-data.html), which is directly readable without an API key. Values apply to the sampled configuration/date.
