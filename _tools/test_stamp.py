@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""test_stamp.py -- the way to run a project's tests: only the affected ones while building, the whole suite once at
-the end, and a stamp so a reviewer does not run it again. Vendored into a project's `_tools/` by project-scaffolding;
+"""test_stamp.py -- scoped validation by default, bounded resumable execution, and full-suite stamps when required.
+Vendored into a project's `_tools/` by project-scaffolding;
 the project's own settings say what "the tests" are.
 
 Usage (from anywhere; the project root is the parent of this file's folder unless --root is given)
@@ -13,7 +13,8 @@ Usage (from anywhere; the project root is the parent of this file's folder unles
                                    uncertain or empty automatic selections require --command (exit 2). Successful
                                    runs write targeted evidence, including dirty code identity, never a full stamp.
   test_stamp.py --full [--jobs N] [--force]
-                                   T2. The whole suite, once, at the end of a story. On a tree that already has a
+                                   T2. The whole suite for a documented broad effect or required checkpoint.
+                                   On a tree that already has a
                                    passing stamp it prints the stamp and exits 0 without running, unless --force.
   test_stamp.py --status           Print the stamp that matches this tree, or `none` (exit 1).
   --variant NAME                   Run (or look up) a named variant of the suite: its extra environment, and its own
@@ -21,6 +22,8 @@ Usage (from anywhere; the project root is the parent of this file's folder unles
                                    the suite also exercise a live site; the stamp for it is separate.
   --command CMD                    Use CMD instead of the settings' test command.
   --dry-run (with --full, --affected or --targeted)   print the plan and run nothing.
+  --resume                        Resume a matching checkpoint; completed chunks are reused only for the same
+                                  code, configured inputs, environment, interpreter, variant and selected ids.
 
 Settings: the "tests" block of <project>/.claude/scaffolding.json
   {"tests": {"command": "python3 -B -m unittest discover -s tests",   # run once for --full (through the shell)
@@ -47,11 +50,13 @@ Stamp
   never committed (.claude/ should be git-ignored). $TEST_STAMP_DIR overrides the folder (the tests use it).
 
 Running
-  A command that is not run by the python plug-in runs once, through the shell, in `cwd`, with the variant's
-  environment added; its output goes to the console and to a log in <test-runs>/logs/, and its exit status is the
-  result. The python plug-in (affected/python.py next to this file) runs the tests in shards when the language is
-  python, no --command is given and the command mentions unittest: per-module timings from the last run plan the
-  shards (--jobs N parallel processes); see that file. Any other python command (pytest, say) runs once as above.
+  A command that is not run by the python plug-in runs through the shell, in `cwd`, with the variant's
+  environment added and owned temporary paths. Output is bounded in <test-runs>/logs/. The Python plug-in
+  (affected/python.py next to this file) runs independent unittest chunks when the language is python,
+  no --command is given and the command mentions unittest. Timings and resource headroom plan chunks;
+  --jobs is an upper bound and low headroom serialises work. Other commands are indivisible supervised units.
+  tests.resources configures the budgets, immutable input identities and output destination; see
+  docs/design/2026-11-03-test-resources.md in agent-scaffolding. Only finished owned log folders are pruned.
 
 Exit codes
   0  tests passed (or reused a stamp, or nothing was affected, or --status found a stamp)
@@ -72,7 +77,7 @@ import sys
 import tempfile
 import time
 
-VERSION = "1.1.0"
+VERSION = "1.2.0"
 
 sys.dont_write_bytecode = True
 TOOLS = os.path.dirname(os.path.abspath(__file__))
@@ -85,6 +90,13 @@ UNSPECIFIED = "unspecified"
 
 class RunError(Exception):
     pass
+
+
+def resource_module():
+    spec = importlib.util.spec_from_file_location("test_stamp_resources", os.path.join(TOOLS, "test_resources.py"))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 # ---------------------------------------------------------------- git and the shared folder
@@ -213,7 +225,9 @@ def _read_json(path, default=None):
 
 def _prune_logs(log_root):
     try:
-        names = sorted(n for n in os.listdir(log_root) if os.path.isdir(os.path.join(log_root, n)))
+        names = sorted(n for n in os.listdir(log_root) if os.path.isdir(os.path.join(log_root, n))
+                       and not os.path.islink(os.path.join(log_root, n))
+                       and (_read_json(os.path.join(log_root, n, "run.json"), {}) or {}).get("finished"))
     except OSError:
         return
     for n in names[:-KEEP_LOG_FOLDERS]:
@@ -238,6 +252,7 @@ class Settings:
         self.root, self.command, self.cwd_rel, self.language = root, command, cwd_rel, language
         self.t0_patterns, self.python, self.variants, self.jobs = t0, python, variants, jobs
         self.base_branch = base_branch
+        self.resources = {}
         self.cwd = os.path.normpath(os.path.join(root, cwd_rel))
 
     def is_t0(self, path):
@@ -287,7 +302,10 @@ def load_settings(root, command_override=None):
     language = tests.get("language") or UNSPECIFIED
     python = tests.get("python")
     base = record.get("base_branch") if isinstance(record.get("base_branch"), str) else None
-    return Settings(root, command, cwd_rel.rstrip("/") or ".", str(language), t0, python, variants, jobs, base)
+    st = Settings(root, command, cwd_rel.rstrip("/") or ".", str(language), t0, python, variants, jobs, base)
+    st.resources = tests.get("resources", {})
+    resource_module().Policy(st.resources)
+    return st
 
 
 def variant_env(st, name):
@@ -347,9 +365,10 @@ def format_stamp(s):
         s["key"][:12], s["tree"][:12], s["head"][:8], ran, s["wall"], s["time"], s["variant"], s["python"])
 
 
-def record_stamp(rdir, root, key, variant, ran, wall, skipped=0):
+def record_stamp(rdir, root, key, variant, ran, wall, skipped=0, identity=None):
     s = {"key": key, "tree": tree_hash(root), "head": head_commit(root), "time": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
-         "ran": ran, "skipped": skipped, "wall": round(wall, 1), "variant": variant, "python": platform.python_version()}
+         "ran": ran, "skipped": skipped, "wall": round(wall, 1), "variant": variant, "python": platform.python_version(),
+         "execution_identity": identity}
     _atomic_write_json(stamp_path(rdir, key, variant), s)
     return s
 
@@ -360,11 +379,75 @@ def new_log_dir(rdir):
     log_root = os.path.join(rdir, "logs")
     os.makedirs(log_root, exist_ok=True)
     d = tempfile.mkdtemp(prefix=time.strftime("%Y%m%d-%H%M%S-"), dir=log_root)
+    _atomic_write_json(os.path.join(d, "run.json"), {"owner": os.getpid(), "started": time.time(), "finished": False})
     _prune_logs(log_root)
     return d
 
 
-def run_command(st, command, env_extra, rdir, say=print, dry_run=False):
+def finish_logs(log_dir):
+    path = os.path.join(log_dir, "run.json")
+    record = _read_json(path, {}) or {}
+    record.update(finished=True, ended=time.time())
+    _atomic_write_json(path, record)
+
+
+def execution_identity(st, args, modules, env):
+    resources = resource_module()
+    policy = resources.Policy(st.resources)
+    # Session/focus/temp bookkeeping is not part of a test's environment. Hash other values without persisting them.
+    transient = {"TMPDIR", "TMP", "TEMP", "PWD", "OLDPWD", "SHLVL", "_", "TERM_SESSION_ID", "TERM",
+                 "TEST_STAMP_DIR", "TEST_RESOURCE_HOST_DIR", "TEST_STAMP_IMPACT_CONFIG",
+                 "CODEX_THREAD_ID"}
+    transient.add("TEST_RESOURCE_PARENT_RESERVATION")
+    environment = {k: v for k, v in env.items() if k not in transient and not k.endswith("_TEST_RUNS_DIR") and
+                   not k.startswith(("CODEX_", "CLAUDE_CODE_", "VSCODE_", "XPC_"))}
+    inputs = {}
+    for relative in policy.inputs:
+        path = os.path.abspath(os.path.join(st.root, relative))
+        paths = []
+        if os.path.isdir(path):
+            for folder, dirs, files in os.walk(path, followlinks=False):
+                dirs[:] = sorted(d for d in dirs if not os.path.islink(os.path.join(folder, d)))
+                paths.extend(os.path.join(folder, f) for f in sorted(files))
+        else:
+            paths = [path]
+        for item in paths:
+            digest = hashlib.sha256()
+            if os.path.islink(item):
+                raise RunError("configured test input is a symlink; identify its actual target explicitly: %s" % item)
+            with open(item, "rb") as f:
+                for block in iter(lambda: f.read(65536), b""):
+                    digest.update(block)
+            inputs[os.path.relpath(item, st.root)] = digest.hexdigest()
+    return {"version": 1, "code": working_code_key(st.root, st.is_t0),
+            "environment": resources.digest(environment), "inputs": inputs,
+            "interpreter": [os.path.realpath(sys.executable), sys.version], "platform": platform.platform(),
+            "settings": resources.digest({"command": st.command, "cwd": st.cwd_rel, "python": st.python,
+                                           "resources": st.resources}),
+            "variant": args.variant or "default", "selected": modules,
+            "scope": "full" if args.full else "targeted" if getattr(args, "targeted", None) is not None else "affected"}
+
+
+def validation_identity(st, args, modules=None, scope="full"):
+    """Use the actual selected command/modules and variant environment for stamps as well as checkpoints."""
+    context = argparse.Namespace(**vars(args))
+    context.full = scope == "full"
+    context.targeted = "" if scope == "targeted" else None
+    _suffix, extra = variant_env(st, args.variant)
+    env = dict(os.environ)
+    env.update(extra)
+    if modules is None:
+        plugin, config = plugin_for_run(st, bool(args.command))
+        modules = [st.command] if plugin is None else plugin.discover_modules(st.cwd, config)
+        if not modules:
+            raise RunError("no test modules found for the selected validation plan")
+    try:
+        return execution_identity(st, context, modules, env)
+    except OSError as error:
+        raise RunError("cannot identify configured test inputs: %s" % error) from error
+
+
+def run_command(st, command, env_extra, rdir, say=print, dry_run=False, args=None, identity=None):
     """Run the test command once, through the shell, in the settings' cwd. Returns (ok, ran, skipped, wall) or None
     for a dry run. Output goes to `say` and to a log file."""
     say("command: %s (in %s)" % (command, st.cwd_rel))
@@ -373,33 +456,45 @@ def run_command(st, command, env_extra, rdir, say=print, dry_run=False):
     env = dict(os.environ)
     env.update(env_extra)
     log_dir = new_log_dir(rdir)
-    log = os.path.join(log_dir, "command.log")
-    t0 = time.monotonic()
-    with open(log, "w", encoding="utf-8") as f:
-        p = subprocess.Popen(command, shell=True, cwd=st.cwd, env=env, stdout=subprocess.PIPE,
-                             stderr=subprocess.STDOUT, text=True, errors="replace")
-        try:
-            for line in p.stdout:
-                f.write(line)
-                say(line.rstrip("\n"))
-        except BaseException:
-            p.kill()
-            raise
-        finally:
-            p.stdout.close()
-            rc = p.wait()
-    wall = time.monotonic() - t0
-    say("%s (exit %d), wall %.1fs" % ("OK" if rc == 0 else "FAILED", rc, wall))
+    resources = resource_module()
+    policy = resources.Policy(st.resources)
+    identity = execution_identity(st, args, [command], env) if identity is None else identity
+    units = [{"id": command, "seconds": policy.chunk_seconds, "disk": int(policy.unit_scratch_mib * resources.MIB),
+              "ram": int(policy.unit_ram_mib * resources.MIB)}]
+
+    def launch(chunk, scratch, log, disk_limit, ram_limit, timeout, host, cancel):
+        result = resources.run_process(["/bin/sh", "-c", command], st.cwd, env, log, scratch, policy,
+                                       disk_limit, ram_limit, timeout, host, cancel)
+        with open(log, encoding="utf-8", errors="replace") as f:
+            text = f.read()
+        for line in text.splitlines()[-120:]:
+            say(line)
+        # A short command transcript is a useful summary; successful verbose output is disposable.
+        if result["rc"] == 0 and len(text) > 16384:
+            with open(log, "w", encoding="utf-8") as f:
+                f.write("Successful command output (last 16 KiB):\n" + text[-16384:])
+        return result
+
+    try:
+        data = resources.execute(units, identity, st.root, rdir, log_dir, policy, 1, launch,
+                                 resume=getattr(args, "resume", False), say=say)
+    finally:
+        finish_logs(log_dir)
+    results = [c["result"] for c in data["completed"].values()]
+    ok = data["state"] == "complete" and all(r["rc"] == 0 for r in results)
+    rc = 0 if ok else next((r["rc"] for r in results if r["rc"]), 1)
+    wall = data["wall"]
+    say("%s (exit %d), wall %.1fs" % ("OK" if ok else "FAILED", rc, wall))
     say("logs: %s" % log_dir)
-    return rc == 0, None, 0, wall
+    return ok, None, 0, wall
 
 
-def run_suite(st, args, modules, rdir, say, classes_fn=None):
+def run_suite(st, args, modules, rdir, say, classes_fn=None, identity=None):
     """Run `modules` (None for the whole suite) the way the settings say. Returns (ok, ran, skipped, wall) or None."""
     _suffix, env_extra = variant_env(st, args.variant)
     plugin, pcfg = plugin_for_run(st, bool(args.command))
     if plugin is None:
-        return run_command(st, st.command, env_extra, rdir, say, args.dry_run)
+        return run_command(st, st.command, env_extra, rdir, say, args.dry_run, args, identity)
     env = dict(os.environ)
     env.update(env_extra)
     if modules is None:
@@ -408,8 +503,13 @@ def run_suite(st, args, modules, rdir, say, classes_fn=None):
             raise RunError("no test modules found by test_glob %r under %s" % (pcfg["test_glob"], st.cwd))
     say("running %d module%s, jobs %d" % (len(modules), "" if len(modules) == 1 else "s", args.jobs))
     log_dir = os.path.join(rdir, "logs", "dry-run") if args.dry_run else new_log_dir(rdir)
-    kw = {"classes_fn": classes_fn} if classes_fn else {}
-    return plugin.run(st.cwd, pcfg, modules, args.jobs, rdir, log_dir, env, say, args.dry_run, **kw)
+    identity = execution_identity(st, args, modules, env) if identity is None else identity
+    try:
+        return plugin.run_bounded(st.cwd, pcfg, modules, args.jobs, rdir, log_dir, env, say, args.dry_run,
+                                  identity, st.resources, resume=getattr(args, "resume", False), project=st.root)
+    finally:
+        if not args.dry_run:
+            finish_logs(log_dir)
 
 
 # ---------------------------------------------------------------- commands
@@ -428,8 +528,8 @@ def cmd_status(args, say=print):
         say("none (the working tree has uncommitted changes, so no stamp applies)")
         return 1
     s = find_stamp(rdir, stamp_key(root, st.is_t0), variant)
-    if not s:
-        say("none (no passing --full run is stamped for this tree, variant %s)" % variant)
+    if not s or s.get("execution_identity") != validation_identity(st, args):
+        say("none (no passing --full run matches this tree, inputs, environment and plan; variant %s)" % variant)
         return 1
     say(format_stamp(s))
     return 0
@@ -440,25 +540,33 @@ def cmd_full(args, say=print, classes_fn=None):
     rdir = runs_dir(root)
     clean = not dirty_code_lines(root, st.is_t0)
     key = stamp_key(root, st.is_t0)
+    code_before, head_before = working_code_key(root, st.is_t0), head_commit(root)
+    identity = validation_identity(st, args)
     if clean and not args.force:
         s = find_stamp(rdir, key, variant)
-        if s:
+        if s and s.get("execution_identity") == identity:
             say("this tree already passed the full suite; not running it again (--force to run anyway)")
             say(format_stamp(s))
             return 0
     if not clean:
         say("working tree has uncommitted changes: no stamp will be recorded or reused")
     say("full suite%s" % ("" if variant == "default" else " (variant %s)" % variant))
-    res = run_suite(st, args, None, rdir, say, classes_fn)
+    res = run_suite(st, args, None, rdir, say, classes_fn, identity=identity)
     if res is None:
         return 0
     ok, ran, skipped, wall = res
-    if ok and clean and not dirty_code_lines(root, st.is_t0):
-        s = record_stamp(rdir, root, key, variant, ran, wall, skipped)
+    unchanged = working_code_key(root, st.is_t0) == code_before and head_commit(root) == head_before
+    try:
+        same_execution = validation_identity(load_settings(root, args.command), args) == identity
+    except (RunError, OSError, RuntimeError):
+        same_execution = False
+    if ok and clean and unchanged and same_execution and not dirty_code_lines(root, st.is_t0):
+        s = record_stamp(rdir, root, key, variant, ran, wall, skipped, identity=identity)
         say("recorded " + format_stamp(s))
     elif ok:
         say("passed, but no stamp recorded: the working tree is dirty" if not clean
-            else "passed, but no stamp recorded: the run left uncommitted changes in the working tree")
+            else "passed, but no stamp recorded: code identity changed during validation" if not unchanged
+            else "passed, but no stamp recorded: input/environment/plan identity changed during validation")
     return 0 if ok else 1
 
 
@@ -555,10 +663,11 @@ def cmd_targeted(args, say=print, classes_fn=None):
     if chosen:
         say("modules: " + ", ".join(chosen))
     code_key = working_code_key(root, st.is_t0)
+    identity = validation_identity(st, args, chosen or None, scope="targeted")
     head, tree = head_commit(root), tree_hash(root)
     dirty = bool(dirty_code_lines(root, st.is_t0))
     rdir = runs_dir(root)
-    res = run_suite(st, args, chosen, rdir, say, classes_fn)
+    res = run_suite(st, args, chosen, rdir, say, classes_fn, identity=identity)
     if res is None:
         return 0
     ok, ran, skipped, wall = res
@@ -567,11 +676,18 @@ def cmd_targeted(args, say=print, classes_fn=None):
     if chosen and (ran is None or ran <= skipped):
         raise RunError("targeted selection executed no checks (zero tests or all skipped); "
                        "supply an explicit regression or verification --command")
-    if working_code_key(root, st.is_t0) != code_key or head_commit(root) != head:
-        say("passed, but no targeted evidence recorded: code changed during validation; rerun for the new code")
+    try:
+        same_execution = validation_identity(load_settings(root, args.command), args, chosen or None,
+                                               scope="targeted") == identity
+    except (RunError, OSError, RuntimeError):
+        same_execution = False
+    if working_code_key(root, st.is_t0) != code_key or head_commit(root) != head or not same_execution:
+        say("passed, but no targeted evidence recorded: code, inputs, environment or plan changed during validation; "
+            "rerun for the new identity")
         return 0
     proof = {"scope": "targeted", "result": "passed", "code_key": code_key, "head": head, "tree": tree,
              "dirty": dirty, "base": base, "base_commit": base_commit, "changed_paths": changed,
+             "execution_identity": identity,
              "commands": commands, "modules": chosen, "cwd": st.cwd_rel, "variant": variant,
              "reason": args.reason, "selection_notes": notes, "ran": ran, "skipped": skipped,
              "wall": round(wall, 1), "time": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
@@ -602,6 +718,7 @@ def build_parser():
                     % DEFAULT_JOBS)
     ap.add_argument("--force", action="store_true", help="run --full even when this tree has a stamp")
     ap.add_argument("--dry-run", action="store_true", help="print the plan and run nothing")
+    ap.add_argument("--resume", action="store_true", help="resume only a matching code/input/environment/plan checkpoint")
     return ap
 
 
@@ -622,6 +739,9 @@ def main(argv=None):
         if args.targeted is not None:
             return cmd_targeted(args)
         return cmd_affected(args)
+    except KeyboardInterrupt:
+        print("Interrupted; owned children stopped, scratch teardown attempted, checkpoint retained", file=sys.stderr)
+        return 130
     except (RunError, RuntimeError) as e:
         print("ERR %s" % e, file=sys.stderr)
         return 2

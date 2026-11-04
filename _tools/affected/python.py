@@ -38,6 +38,7 @@ Shards
 Standard library only."""
 import ast
 import fnmatch
+import importlib.util
 import json
 import os
 import re
@@ -46,6 +47,7 @@ import sys
 import tempfile
 import time
 from contextlib import ExitStack
+from pathlib import Path
 
 sys.dont_write_bytecode = True
 
@@ -54,6 +56,14 @@ SKIP_DIRS = {"__pycache__", "node_modules", "venv", "site-packages", "build", "d
 RAN_RE = re.compile(r"^Ran (\d+) tests? in ")
 RESULT_RE = re.compile(r"^(OK|FAILED)(?: \((.*)\))?$")
 HEADER_RE = re.compile(r"^(FAIL|ERROR): (.*)$")
+
+
+def helper(name):
+    path = Path(__file__).resolve().parent.parent / (name + ".py")
+    spec = importlib.util.spec_from_file_location("test_stamp_" + name, path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 def settings(raw):
@@ -70,6 +80,15 @@ def settings(raw):
             raise ValueError('"python.%s" must be a non-empty string' % k)
     cfg["roots"] = [_norm(r) for r in cfg["roots"]]
     cfg["unittest_top"] = _norm(cfg["unittest_top"])
+    boundaries = cfg.get("boundaries", [])
+    if not isinstance(boundaries, list):
+        raise ValueError('"python.boundaries" must be a list of reviewed boundary rules')
+    for rule in boundaries:
+        if not isinstance(rule, dict) or not isinstance(rule.get("reason"), str) or not rule["reason"].strip():
+            raise ValueError('each "python.boundaries" rule needs a non-empty reason')
+        for key in ("paths", "tests"):
+            if not isinstance(rule.get(key), list) or not rule[key] or not all(isinstance(s, str) and s for s in rule[key]):
+                raise ValueError('each "python.boundaries" rule needs a non-empty %s list' % key)
     return cfg
 
 
@@ -254,12 +273,22 @@ def worker(argv):
     import unittest
     out, ids = argv[0], argv[1:]
     state = {}
+    impact_config = _read_json(os.environ.get("TEST_STAMP_IMPACT_CONFIG", ""), {}) or {}
+    observer = None
+    if impact_config:
+        impact = helper("test_impact")
+        observer = impact.FunctionContexts(impact_config["cwd"], impact_config["files"])
 
     class TimedResult(unittest.TextTestResult):
         def __init__(self, *a, **k):
             super().__init__(*a, **k)
             self.mods, self.classes = {}, {}
             self._last = time.monotonic()
+
+        def startTest(self, test):
+            if observer is not None:
+                observer.context = test.id()
+            super().startTest(test)
 
         def stopTest(self, test):
             super().stopTest(test)
@@ -270,17 +299,24 @@ def worker(argv):
             k = "%s.%s" % (c.__module__, c.__name__)
             self.classes[k] = self.classes.get(k, 0.0) + dt
             state["result"] = self
+            if observer is not None:
+                observer.context = "<imports-and-shared-fixtures>"
 
     class Runner(unittest.TextTestRunner):
         resultclass = TimedResult
 
-    prog = unittest.main(module=None, argv=["python -m unittest"] + ids, testRunner=Runner, exit=False)
+    with ExitStack() as resources:
+        if observer is not None:
+            resources.enter_context(observer)
+        prog = unittest.main(module=None, argv=["python -m unittest"] + ids, testRunner=Runner, exit=False)
     res = state.get("result")
-    if res is not None:
-        try:
-            _atomic_write_json(out, {"modules": res.mods, "classes": res.classes})
-        except OSError:
-            pass
+    data = {"modules": res.mods if res else {}, "classes": res.classes if res else {}}
+    if observer is not None:
+        data["observations"] = observer.result()
+    try:
+        _atomic_write_json(out, data)
+    except OSError:
+        pass
     return 0 if prog.result.wasSuccessful() else 1
 
 
@@ -372,7 +408,7 @@ def merge_timings(rdir, results):
     mods, classes = cur.get("modules", {}), cur.get("classes", {})
     summed, seen = {}, False
     for r in results:
-        data = _read_json(r["timings"], None)
+        data = r.get("timing_data") or _read_json(r.get("timings", ""), None)
         if not data:
             continue
         seen = True
@@ -387,9 +423,9 @@ def merge_timings(rdir, results):
                                   "updated": time.strftime("%Y-%m-%dT%H:%M:%S%z")})
 
 
-def summarise(results, wall, log_dir, say=print):
+def summarise(results, wall, log_dir, say=print, complete=True):
     """Print the one summary. Returns (ok, ran, skipped)."""
-    ok = True
+    ok = complete
     ran = 0
     skipped = 0
     bad = []
@@ -406,7 +442,7 @@ def summarise(results, wall, log_dir, say=print):
             if r["status"] != "FAILED" or not r["bad"]:
                 bad.append("SHARD %d: exit %d, result %s; see %s" % (i, r["rc"], r["status"], r["log"]))
     say("Ran %d tests in %d shard%s, %s%s, wall %.1fs" % (
-        ran, len(results), "" if len(results) == 1 else "s", "OK" if ok else "FAILED",
+        ran, len(results), "" if len(results) == 1 else "s", "INCOMPLETE" if not complete else "OK" if ok else "FAILED",
         " (skipped=%d)" % skipped if skipped else "", wall))
     for b in bad:
         say("  " + b)
@@ -435,6 +471,142 @@ def run(cwd, cfg, modules, jobs, rdir, log_dir, env=None, say=print, dry_run=Fal
         say("WARN could not record timings: %s" % e)
     ok, ran, skipped = summarise(results, wall, log_dir, say)
     return ok, ran, skipped, wall
+
+
+_INDEPENDENT_CODE = r'''
+import importlib, json, sys, unittest
+module, uid, top = sys.argv[1:]
+sys.path.insert(0, top)
+m = importlib.import_module(module)
+if any(hasattr(m, name) for name in ("load_tests", "setUpModule", "tearDownModule")):
+    print(json.dumps([])); sys.exit(0)
+tests = []
+def walk(suite):
+    for test in suite:
+        if isinstance(test, unittest.TestSuite): walk(test)
+        else: tests.append(test)
+walk(unittest.defaultTestLoader.loadTestsFromName(uid))
+classes = {}
+for test in tests:
+    cls = type(test)
+    if cls.__module__ != module or getattr(m, cls.__name__, None) is not cls:
+        print(json.dumps([])); sys.exit(0)
+    name = module + "." + cls.__name__
+    fixture = any(any(n in b.__dict__ for n in ("setUpClass", "tearDownClass"))
+                  for b in cls.__mro__ if b not in (unittest.TestCase, object))
+    entry = classes.setdefault(name, {"fixture": fixture, "tests": []})
+    entry["tests"].append(test.id())
+if uid == module and len(classes) > 1:
+    result = [{"id": name, "count": len(entry["tests"])} for name, entry in classes.items()]
+elif len(classes) == 1:
+    name, entry = next(iter(classes.items()))
+    result = [] if entry["fixture"] else [{"id": t, "count": 1} for t in entry["tests"]]
+else: result = []
+if len({r["id"] for r in result}) != len(result): result = []
+print(json.dumps(result))
+'''
+
+
+def independent_parts(cwd, cfg, unit, modules, rdir, policy, env):
+    """Ask unittest about safe class/case boundaries in a short, owned subprocess."""
+    resources = helper("test_resources")
+    module = next((m for m in sorted(modules, key=len, reverse=True)
+                   if unit["id"] == m or unit["id"].startswith(m + ".")), None)
+    if module is None:
+        return []
+    scratch = resources.Scratch(rdir, cwd, policy, 0)
+    log = Path(rdir) / "logs" / ("inventory-" + scratch.token + ".log")
+    try:
+        with scratch:
+            command = [sys.executable, "-B", "-c", _INDEPENDENT_CODE, module, unit["id"],
+                       os.path.abspath(os.path.join(cwd, cfg["unittest_top"]))]
+            result = resources.run_process(command, cwd, env, log, scratch, policy,
+                                           min(policy.scratch_limit, 64 * resources.MIB),
+                                           int(policy.chunk_ram_mib * resources.MIB), 30)
+        if result["rc"] or result["issue"]:
+            return []
+        parts = json.loads(log.read_text().splitlines()[-1])
+        count = sum(p["count"] for p in parts) or 1
+        return [dict(id=p["id"], seconds=unit["seconds"] * p["count"] / count,
+                     disk=max(resources.MIB, int(unit["disk"] * p["count"] / count)), ram=unit["ram"])
+                for p in parts]
+    except (OSError, ValueError, IndexError):
+        return []
+    finally:
+        if log.exists():
+            log.unlink()
+
+
+def run_bounded(cwd, cfg, modules, jobs, rdir, log_dir, env, say, dry_run, identity, resources_raw=None,
+                resume=False, project=None, return_details=False):
+    """Resource-aware execution used by test_stamp. The legacy shard API remains available to consumers."""
+    resources, impact = helper("test_resources"), helper("test_impact")
+    policy = resources.Policy(resources_raw)
+    timings = _read_json(os.path.join(rdir, "timings.json"), {}) or {}
+    units = []
+    for module in modules:
+        estimate = policy.estimates.get(module, {})
+        units.append({"id": module, "seconds": float(estimate.get("seconds", timings.get("modules", {}).get(module, 30))),
+                      "disk": int(estimate.get("scratch_mib", policy.unit_scratch_mib) * resources.MIB),
+                      "ram": int(estimate.get("ram_mib", policy.unit_ram_mib) * resources.MIB)})
+    say("plan: %d modules, up to %d worker(s); bounded independent chunks" % (len(modules), jobs))
+    if dry_run:
+        for u in units[:12]:
+            say("  %s: %.0fs, %.1f MiB estimated scratch" % (u["id"], u["seconds"], u["disk"] / resources.MIB))
+        return None
+    graph = Graph(cwd, cfg["roots"])
+    snapshot = impact.inventory(cwd, cfg, discover_modules(cwd, cfg), graph, module_rel)
+    config_file = Path(log_dir) / "impact-config.json"
+    _atomic_write_json(str(config_file), {"cwd": cwd, "files": list(snapshot["files"])})
+    child_env = dict(env, TEST_STAMP_IMPACT_CONFIG=str(config_file))
+    top = os.path.abspath(os.path.join(cwd, cfg["unittest_top"]))
+    code = WORKER_CODE % (top, os.path.abspath(__file__))
+
+    def launch(chunk, scratch, log, disk_limit, ram_limit, timeout, host, cancel):
+        tfile = str(log) + ".timings.json"
+        ids = [u["id"] for u in chunk]
+        result = resources.run_process([sys.executable, "-B", "-c", code, tfile] + ids, cwd, child_env,
+                                       log, scratch, policy, disk_limit, ram_limit, timeout, host, cancel)
+        result.update(parse_log(Path(log).read_text(encoding="utf-8", errors="replace")))
+        if result["ran"] is None or result["status"] is None:
+            result["issue"] = result.get("issue") or "worker CRASHED without a complete unittest result"
+        data = _read_json(tfile, {}) or {}
+        result.update(ids=ids, planned=sum(u["seconds"] for u in chunk),
+                      timing_data={"modules": data.get("modules", {}), "classes": data.get("classes", {})},
+                      observations=data.get("observations", {}))
+        if os.path.exists(tfile):
+            os.unlink(tfile)
+        result["log_retained"] = bool(result["rc"] or result.get("issue") or result["status"] != "OK")
+        if not result["log_retained"]:
+            Path(log).unlink()
+        return result
+
+    def split(unit):
+        return independent_parts(cwd, cfg, unit, modules, rdir, policy, env)
+
+    try:
+        data = resources.execute(units, identity, project or cwd, rdir, log_dir, policy, jobs, launch,
+                                 split=split, resume=resume, say=say)
+        results = [c["result"] for c in data["completed"].values()]
+        merge_timings(rdir, results)
+        impact_path = impact.record(rdir, snapshot, identity, results,
+                                    _read_json(os.path.join(rdir, "timings.json"), {}) or {})
+        # The current index owns observations. Checkpoints retain compact results rather than duplicate coverage trees.
+        for result in results:
+            result.pop("observations", None)
+        resources.atomic_json(Path(rdir) / "checkpoints" / (resources.digest(identity) + ".json"), data)
+        say("impact evidence: %s (observed calls + static imports; incomplete observations remain unknown)" % impact_path)
+        ok, ran, skipped = summarise(results, data["wall"], log_dir, say, complete=data["state"] == "complete")
+        if data["state"] != "complete":
+            say("INCOMPLETE: %d planned unit(s) still need validation; resume with --resume" %
+                len([u for u in data["units"] if u["id"] not in
+                     {i for c in data["completed"].values() for i in c["ids"]}]))
+            ok = False
+        summary = (ok, ran, skipped, data["wall"])
+        return summary + (results, log_dir) if return_details else summary
+    finally:
+        if config_file.exists():
+            config_file.unlink()
 
 
 # ---------------------------------------------------------------- affected
@@ -472,10 +644,14 @@ class Graph:
         for prefix in [""] + [r + "/" for r in self.roots]:
             for i in range(1, len(parts) + 1):
                 base = prefix + "/".join(parts[:i])
-                for f in (base + "/__init__.py", base + ".py"):
-                    if f in self.files:
-                        found.append(f)
-                        exact = True
+                package = base + "/__init__.py"
+                module = base + ".py"
+                if package in self.files:
+                    found.append(package)
+                    exact = True
+                elif module in self.files:
+                    found.append(module)
+                    exact = True
         if not exact:
             found.extend(self.by_stem.get(parts[-1], []))
         return found
@@ -560,6 +736,17 @@ def select_affected(cwd, cwd_rel, cfg, changed, is_t0, modules):
         if not path.startswith(prefix):
             return "full", [], ["%s is outside the test folder %s and outside the T0 paths" % (path, cwd_rel)]
         rel = path[len(prefix):]
+        reviewed = [r for r in cfg.get("boundaries", []) if any(
+            rel.startswith(pattern) if pattern.endswith("/") else fnmatch.fnmatchcase(rel, pattern)
+            for pattern in r["paths"])]
+        boundary_tests = {m for rule in reviewed for m in rule["tests"]}
+        if boundary_tests - set(modules):
+            return "full", [], ["reviewed boundary names missing test modules: " + ", ".join(sorted(boundary_tests - set(modules)))]
+        if reviewed:
+            chosen.update(boundary_tests)
+            notes.extend("reviewed boundary for %s: %s" % (path, rule["reason"]) for rule in reviewed)
+            if any(rule.get("override_static") for rule in reviewed) or not rel.endswith(".py"):
+                continue
         if not any(r == "." or rel.startswith(r + "/") for r in roots):
             return "full", [], ["%s is outside the T0 paths and outside the python roots (%s)" % (path, ", ".join(roots))]
         if not rel.endswith(".py"):
