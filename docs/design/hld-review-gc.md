@@ -80,6 +80,23 @@ section records only what they change for the design, in general terms.
 | Employee and driver data is now stored locally in GCSP's own database. | Matches the demo storing employee records in its own Postgres. |
 | No KPIs or reports exist for order volumes, time to order or unallocated stock. Order flow, allocation and cart designs are still drafts. | Greg's dashboard is net new, and the demo can inform designs that aren't settled yet. Worth saying in the pitch. |
 
+## HLD pages these decisions change
+
+Not yet applied. Gary's decision, 4 Nov: leave the canonical `high-level-design.drawio` (on `gcsp-poc`) unchanged until Russell has signed off the five † decisions, then update every page below in one pass.
+
+| Page | Changes |
+|---|---|
+| 00 GCSP architecture | Separate GCSP blocks, also packaged as web components (Q8, Q18); no EDS route (Q12); integration target is the AWS platform (Q14†) |
+| 02 Shared recommendation target | Interim: the employee policy calls `rankCars()` directly; shared evaluator after the demo (Q5†) |
+| 03 / Employee data adapters | Exact stock keyed by order reference + configuration (Q13†); connected-use marked future, synthetic only (Q17); adapters modelled on the target's fleet, pricing and eligibility services (Q14†) |
+| Employee transactions | Two hold types: short cart hold and proposed buddy offer hold (Q15); policy as dated tables behind one PolicyService (Q6); presenter ticks, no unattended runner (Q3) |
+| 04 Migration and regression | New order: FUCQ-21 + 26 first, 27/28 after the demo (Q5†) |
+| 05 Deployment and integration | Separate Render + Pages environment from `gcsp-poc` (Q1); managed Postgres (Q2); EDS sync isn't a GCSP dependency (Q12); BMW gates re-pointed at the AWS target (Q14†) |
+| 06 Vehicle evidence providers | VIN lookup in-process behind a port (Q7†); VIN only on delivered cars; corpus keyed by configuration (Q13†) |
+| 07 Planning and lifecycle | Target approval and appointment state names (Q19); Paula's step 07 is a preference change (Q16†) |
+| 08 Predictive order planning | Deterministic baseline drives the plan; learned model shown alongside, labelled synthetic (Q10) |
+| 01 Current implementation | No change |
+
 ## Fact checks for Gary (from GC-001)
 
 These are facts only the dashboard owner can confirm. They aren't design choices.
