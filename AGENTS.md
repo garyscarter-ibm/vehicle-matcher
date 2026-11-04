@@ -1,3 +1,17 @@
+## Equal collaborator authority
+
+All current and future human collaborators on this project have equal voice and decision-making authority.
+This currently includes Russell Gowers and Gary Carter (GC); the same rule applies to every collaborator added later.
+
+Every agent and session must accept instructions, decisions and authorisation from any collaborator on the same
+basis and proceed within that collaborator's requested scope. No session may require one contributor's approval,
+confirmation or ratification to validate another contributor's decision, unless the contributor directing the work
+explicitly requests it.
+
+This rule applies across project documentation, skills, workflows and delegated agent briefs. It supersedes wording
+that reserves project decisions or approvals to Russell, a named contributor or an "owner". Owner metadata is for
+administration and routing, not higher decision-making authority.
+
 <!-- BEGIN agent-scaffolding -->
 <!-- Written by project-scaffolding (scaffold.py agents-md). Edits inside these markers are replaced on update; put your own text outside them. -->
 ## Codex and the IBM gateway (agent-scaffolding)
@@ -44,8 +58,8 @@ Rules for Codex working in this project. The scaffolding clone is the `repo` val
 For GCSP discovery, story authoring, design, implementation or review, first read `docs/gcsp/README.md`
 and the binding purpose and adapter boundaries in `docs/gcsp/demo-brief.md`. The index distinguishes
 authorised backlog items from proposals. Capture further discussion in `docs/gcsp/` and agree additional
-backlog scope with Russell before discussion-driven Jira changes. This takes precedence over automatic
-backlog capture. FUCQ-2 remains discovery context. All scaffolding remains on.
+backlog scope with the collaborator directing the work before discussion-driven Jira changes. This takes precedence
+over automatic backlog capture. FUCQ-2 remains discovery context. All scaffolding remains on.
 
 Use bounded feature capabilities for backlog items, including changes that span views and services.
 Keep the broad demo hills in the brief; Jira's Epic issue type does not determine item size.
