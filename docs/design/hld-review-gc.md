@@ -60,7 +60,7 @@ Reassessed on 4 Nov after merging `gcsp-poc` into this branch, which was first c
 | Q15 | Holds | The target cart hold is about 2 minutes, first come first served. The demo's buddy holds for hours. | Two hold types | Answered | Keep the short manual cart hold as the target has it; present the longer buddy offer hold as a proposed new capability, labelled, with a configurable duration. |
 | Q16 | Paula's journey | Is "lower max contribution" (blueprint step 07) right for a Choices employee? | Change a preference instead | Answered | † After declining, Paula confirms one preference change (e.g. body style or an essential), not a contribution ceiling. Agreed by Russell, 4 Nov (`docs/gcsp/hld-agreement-2026-11-04.md`). The 2024 Choices guide's £1 per point top-up stays in the policy source as a keyed assumption but doesn't drive this step. |
 | Q17 | Connected-use data | The target has no usage or connected-car feed, but the demo opens with MPG/mileage summaries. | Keep, labelled future | Answered | Keep with synthetic data, explicitly labelled a future capability needing a new data source. |
-| Q18 | Reuse story | The target front end is Angular with the group design system, with no documented way to add external components. | Web components | Answered | Package the employee/Greg blocks so they also mount as standard custom elements, so the claim is "drops into the target Angular app". New build requirement on Q8's blocks. |
+| Q18 | Reuse story | The target front end is Angular with the group design system, with no documented way to add external components. | Web components | Answered | Package the employee/Greg blocks so they also mount as standard custom elements, so the claim is "drops into the target Angular app". New build requirement on Q8's blocks: no inline scripts, inline event handlers or `eval` (target CSP, round-2 answer 6). |
 | Q19 | Lifecycle states | Use the target's real approval and appointment stage names? | Adopt target states | Answered | Synthetic order/appointment lifecycle uses the target's approval stages and appointment states; HR approval configurable because the target may drop it. Replaces the HLD's own post-selection state names. |
 
 ## Knowledge-base findings that affect the HLD (4 Nov)
@@ -81,6 +81,17 @@ section records only what they change for the design, in general terms.
 | Approval stages and appointment states exist (HR and sales-manager approval, sent to ordering, appointment scheduled/completed). | Adopt them as the demo's synthetic lifecycle states rather than inventing new ones. |
 | Employee and driver data is now stored locally in GCSP's own database. | Matches the demo storing employee records in its own Postgres. |
 | No KPIs or reports exist for order volumes, time to order or unallocated stock. Order flow, allocation and cart designs are still drafts. | Greg's dashboard is net new, and the demo can inform designs that aren't settled yet. Worth saying in the pitch. |
+
+## Round-2 knowledge-base findings (4 Nov)
+
+| Finding (target platform) | Effect on the demo |
+|---|---|
+| The allowance is set by company and grade, with a monthly points cost per car. An order is blocked when the allowance is too low. A cash top-up is unconfirmed for the target. | Supports Q16 (preference change). The points allowance is the affordability gate; the top-up stays an unused keyed assumption. |
+| No rule requires home charging for electric or plug-in cars. | Paula's charging question is a demo assumption. Label it in the policy source, not as a BMW rule. |
+| Quota setting, order lead times and release sizes aren't documented. | Greg's planning inputs and the synthetic release sizes are plausible keyed assumptions. Nothing in the target contradicts them. |
+| Releases come in weekly windows plus campaigns, first come first served. | This is the problem the buddy solves (employees racing for stock). Use it in the pitch. |
+| The target captures no preferences, saved searches or stock alerts. | The buddy is genuinely new to the platform, not a reskin. |
+| Nothing rules out bundling web components into the Angular app. The content security policy forbids inline scripts and `eval`. | Q18 stands, with a build rule: GCSP blocks use no inline scripts, inline event handlers or `eval`. |
 
 ## HLD pages these decisions change
 
