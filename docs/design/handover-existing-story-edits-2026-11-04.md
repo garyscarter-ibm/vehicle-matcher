@@ -37,7 +37,7 @@ Before you edit, read each issue in Jira (`view: evidence`). Keep its migration 
 
 - Read each issue back and confirm `depends_on` matches its inward Blocks links.
 - Add a row to a new `docs/gcsp/evidence/existing-story-alignment-2026-11-04.json`, in the same shape as the other publication records, then commit and push it to `gcsp-poc`.
-- Still open, not yours: the four stale Blocks links FUCQ-27→29, FUCQ-28→29, FUCQ-28→30 and FUCQ-28→31, which need deleting in the Jira UI.
+- The four stale Blocks links (FUCQ-27→29, FUCQ-28→29, FUCQ-28→30, FUCQ-28→31) have been deleted; nothing to do.
 
 ## Read first
 

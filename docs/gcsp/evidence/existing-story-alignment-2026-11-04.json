@@ -14,10 +14,21 @@
   "storiesEdited": [
     {
       "key": "FUCQ-30",
-      "dependsOnBefore": ["FUCQ-24", "FUCQ-29"],
-      "dependsOnAfter": ["FUCQ-24", "FUCQ-29"],
+      "dependsOnBefore": [
+        "FUCQ-24",
+        "FUCQ-29"
+      ],
+      "dependsOnAfter": [
+        "FUCQ-24",
+        "FUCQ-29"
+      ],
       "change": "Foundation paragraph in Decided and an Out of scope sentence: the confirmed preference/essential change action is consumed by FUCQ-107 and FUCQ-91's single-change operation, not re-implemented.",
-      "newBlocksLinks": [{ "from": "FUCQ-30", "to": "FUCQ-107" }],
+      "newBlocksLinks": [
+        {
+          "from": "FUCQ-30",
+          "to": "FUCQ-107"
+        }
+      ],
       "otherLinksPreserved": true,
       "migrationRecordPreserved": true
     },
@@ -33,56 +44,131 @@
     },
     {
       "key": "FUCQ-69",
-      "dependsOnBefore": ["FUCQ-68", "FUCQ-31"],
-      "dependsOnAfter": ["FUCQ-68", "FUCQ-31", "FUCQ-92"],
+      "dependsOnBefore": [
+        "FUCQ-68",
+        "FUCQ-31"
+      ],
+      "dependsOnAfter": [
+        "FUCQ-68",
+        "FUCQ-31",
+        "FUCQ-92"
+      ],
       "change": "Live path reads only FUCQ-92's released pool, shared with the buddy search. Fixtures are for tests and the gallery. New distinct 'nothing released yet' state. Foundation paragraph added; stock generation and release moved to Out of scope.",
-      "newBlocksLinks": [{ "from": "FUCQ-92", "to": "FUCQ-69" }],
+      "newBlocksLinks": [
+        {
+          "from": "FUCQ-92",
+          "to": "FUCQ-69"
+        }
+      ],
       "otherLinksPreserved": true,
       "migrationRecordPreserved": true
     },
     {
       "key": "FUCQ-70",
-      "dependsOnBefore": ["FUCQ-66", "FUCQ-69"],
-      "dependsOnAfter": ["FUCQ-66", "FUCQ-69", "FUCQ-85"],
+      "dependsOnBefore": [
+        "FUCQ-66",
+        "FUCQ-69"
+      ],
+      "dependsOnAfter": [
+        "FUCQ-66",
+        "FUCQ-69",
+        "FUCQ-85"
+      ],
       "change": "Countdown and tests use FUCQ-85's demo clock and presenter ticks instead of an injected clock; hold length is FUCQ-82's hold.cart read through PolicyService. Foundation paragraph added.",
-      "newBlocksLinks": [{ "from": "FUCQ-85", "to": "FUCQ-70" }],
+      "newBlocksLinks": [
+        {
+          "from": "FUCQ-85",
+          "to": "FUCQ-70"
+        }
+      ],
       "otherLinksPreserved": true,
       "migrationRecordPreserved": true,
       "note": "A first edit mistyped the migration record's source ID and created time; a second edit restored it, and the final text was read back and checked against docs/gcsp/jira-migration-2026-11-03/mapping.json (source 1076687)."
     },
     {
       "key": "FUCQ-71",
-      "dependsOnBefore": ["FUCQ-66"],
-      "dependsOnAfter": ["FUCQ-66", "FUCQ-81", "FUCQ-85"],
+      "dependsOnBefore": [
+        "FUCQ-66"
+      ],
+      "dependsOnAfter": [
+        "FUCQ-66",
+        "FUCQ-81",
+        "FUCQ-85"
+      ],
       "change": "'Future buddy acceptance' replaced by 'FUCQ-108 calls this adapter'. Tables become FUCQ-81 migrations and repository-contract cases extend FUCQ-81's suite. Reconciliation of unknown or timed-out outcomes registers as a FUCQ-85 tick handler. Foundation paragraph added.",
       "newBlocksLinks": [
-        { "from": "FUCQ-81", "to": "FUCQ-71" },
-        { "from": "FUCQ-85", "to": "FUCQ-71" }
+        {
+          "from": "FUCQ-81",
+          "to": "FUCQ-71"
+        },
+        {
+          "from": "FUCQ-85",
+          "to": "FUCQ-71"
+        }
       ],
-      "existingLinkKept": { "from": "FUCQ-71", "to": "FUCQ-108" },
+      "existingLinkKept": {
+        "from": "FUCQ-71",
+        "to": "FUCQ-108"
+      },
       "otherLinksPreserved": true,
       "migrationRecordPreserved": true
     },
     {
       "key": "FUCQ-73",
-      "dependsOnBefore": ["FUCQ-67", "FUCQ-68", "FUCQ-69", "FUCQ-70", "FUCQ-71", "FUCQ-72"],
-      "dependsOnAfter": ["FUCQ-67", "FUCQ-68", "FUCQ-69", "FUCQ-70", "FUCQ-71", "FUCQ-72", "FUCQ-85", "FUCQ-92"],
+      "dependsOnBefore": [
+        "FUCQ-67",
+        "FUCQ-68",
+        "FUCQ-69",
+        "FUCQ-70",
+        "FUCQ-71",
+        "FUCQ-72"
+      ],
+      "dependsOnAfter": [
+        "FUCQ-67",
+        "FUCQ-68",
+        "FUCQ-69",
+        "FUCQ-70",
+        "FUCQ-71",
+        "FUCQ-72",
+        "FUCQ-85",
+        "FUCQ-92"
+      ],
       "change": "Expiry and reopen scenarios use FUCQ-85 ticks and reset; stock comes from FUCQ-78 via FUCQ-92. FUCQ-81's repository contract suite is named as an existing dependency, and the story is kept distinct from FUCQ-109. Foundation paragraph added.",
       "newBlocksLinks": [
-        { "from": "FUCQ-85", "to": "FUCQ-73" },
-        { "from": "FUCQ-92", "to": "FUCQ-73" }
+        {
+          "from": "FUCQ-85",
+          "to": "FUCQ-73"
+        },
+        {
+          "from": "FUCQ-92",
+          "to": "FUCQ-73"
+        }
       ],
       "otherLinksPreserved": true,
       "migrationRecordPreserved": true
     },
     {
       "key": "FUCQ-78",
-      "dependsOnBefore": ["FUCQ-77", "FUCQ-53"],
-      "dependsOnAfter": ["FUCQ-77", "FUCQ-53", "FUCQ-81", "FUCQ-82"],
+      "dependsOnBefore": [
+        "FUCQ-77",
+        "FUCQ-53"
+      ],
+      "dependsOnAfter": [
+        "FUCQ-77",
+        "FUCQ-53",
+        "FUCQ-81",
+        "FUCQ-82"
+      ],
       "change": "The 'port exists, else in-memory adapter' precondition is replaced by depends_on FUCQ-81 and FUCQ-82. Stock aggregates become keyed entries in FUCQ-82's seed file, read only through PolicyService. Run-scoped generateStock(runId, seed, policyVersion) exported for FUCQ-85's reset to call. Foundation paragraph added.",
       "newBlocksLinks": [
-        { "from": "FUCQ-81", "to": "FUCQ-78" },
-        { "from": "FUCQ-82", "to": "FUCQ-78" }
+        {
+          "from": "FUCQ-81",
+          "to": "FUCQ-78"
+        },
+        {
+          "from": "FUCQ-82",
+          "to": "FUCQ-78"
+        }
       ],
       "deliberatelyOmittedLink": "FUCQ-78 -> FUCQ-85 (would form a cycle: FUCQ-92 already waits on both, and FUCQ-85's reset calls the generator)",
       "otherLinksPreserved": true,
@@ -91,32 +177,62 @@
     }
   ],
   "nativeBlocksCreated": [
-    { "from": "FUCQ-30", "to": "FUCQ-107" },
-    { "from": "FUCQ-92", "to": "FUCQ-69" },
-    { "from": "FUCQ-85", "to": "FUCQ-70" },
-    { "from": "FUCQ-81", "to": "FUCQ-71" },
-    { "from": "FUCQ-85", "to": "FUCQ-71" },
-    { "from": "FUCQ-85", "to": "FUCQ-73" },
-    { "from": "FUCQ-92", "to": "FUCQ-73" },
-    { "from": "FUCQ-81", "to": "FUCQ-78" },
-    { "from": "FUCQ-82", "to": "FUCQ-78" }
+    {
+      "from": "FUCQ-30",
+      "to": "FUCQ-107"
+    },
+    {
+      "from": "FUCQ-92",
+      "to": "FUCQ-69"
+    },
+    {
+      "from": "FUCQ-85",
+      "to": "FUCQ-70"
+    },
+    {
+      "from": "FUCQ-81",
+      "to": "FUCQ-71"
+    },
+    {
+      "from": "FUCQ-85",
+      "to": "FUCQ-71"
+    },
+    {
+      "from": "FUCQ-85",
+      "to": "FUCQ-73"
+    },
+    {
+      "from": "FUCQ-92",
+      "to": "FUCQ-73"
+    },
+    {
+      "from": "FUCQ-81",
+      "to": "FUCQ-78"
+    },
+    {
+      "from": "FUCQ-82",
+      "to": "FUCQ-78"
+    }
   ],
   "linkDirectionCheck": "Created FUCQ-30 blocks FUCQ-107 first and read FUCQ-107 back as 'is blocked by FUCQ-30' (link 62590) before creating the other eight links. Each of the nine links was read back from the blocked Story as an inward 'is blocked by' link, and each was created once.",
   "dependsOnMatchesInwardBlocks": true,
   "dependsOnCheck": "For all seven Stories, the depends_on line (FUCQ-36: its Prerequisites sentence) was compared with the inward Blocks links in the Jira read-back; they agree.",
   "descriptionComparison": "Each description was read back with getJiraIssue (view evidence, markdown) and compared with the submitted text. The migration record, template header and existing links were kept.",
-  "staleLinksStillOpen": [
-    "FUCQ-27 blocks FUCQ-29",
-    "FUCQ-28 blocks FUCQ-29",
-    "FUCQ-28 blocks FUCQ-30",
-    "FUCQ-28 blocks FUCQ-31"
-  ],
-  "staleLinksNote": "Not part of this task. The connector cannot delete links, so Gary needs to remove these four in the Jira UI.",
+  "staleLinksNote": "Resolved: Gary deleted FUCQ-27→29, FUCQ-28→29, FUCQ-28→30 and FUCQ-28→31 in the Jira UI on 4 November 2026; confirmed by a linkedIssues read the same day.",
   "agents": {
-    "author": { "model": "sonnet", "session": "Claude Code side session gcsp-story-edits" }
+    "author": {
+      "model": "sonnet",
+      "session": "Claude Code side session gcsp-story-edits"
+    }
   },
   "implementationStarted": false,
   "pollerStarted": false,
   "provisioningStarted": false,
-  "applicationTestsRun": false
+  "applicationTestsRun": false,
+  "staleLinksResolved": [
+    "FUCQ-27 blocks FUCQ-29",
+    "FUCQ-28 blocks FUCQ-29",
+    "FUCQ-28 blocks FUCQ-30",
+    "FUCQ-28 blocks FUCQ-31"
+  ]
 }

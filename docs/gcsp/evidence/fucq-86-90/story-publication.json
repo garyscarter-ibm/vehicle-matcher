@@ -788,28 +788,19 @@
   "linkReadback": "All 70 link entries on FUCQ-86..109 read back as Blocks and match the 47 created pairs in both directions; every Story's depends_on equals its inward Blocks links.",
   "descriptionComparison": "Descriptions read back with getJiraIssue (view evidence, markdown) by a runner agent; acceptance counts and depends_on extracted from the read-back. docs/gcsp/fucq-86-90-stories.md carries the read-back text.",
   "followUps": {
-    "existingStoriesNeedingEdits": [
-      "FUCQ-30",
-      "FUCQ-36",
-      "FUCQ-69",
-      "FUCQ-70",
-      "FUCQ-71",
-      "FUCQ-73",
-      "FUCQ-74",
-      "FUCQ-75",
-      "FUCQ-78"
+    "existingStoriesNeedingEdits": "FUCQ-30, 36, 69, 70, 71, 73, 78 done (docs/gcsp/evidence/existing-story-alignment-2026-11-04.json); FUCQ-74 and FUCQ-75 moved to the C9 session",
+    "notYetAuthored": [
+      "C7 lifecycle after selection",
+      "C8 1,000-employee comparison",
+      "C9 FUCQ-74 and FUCQ-75 Stories"
     ],
-    "staleLinksStillOpen": [
+    "staleLinksResolved": [
       "FUCQ-27 blocks FUCQ-29",
       "FUCQ-28 blocks FUCQ-29",
       "FUCQ-28 blocks FUCQ-30",
       "FUCQ-28 blocks FUCQ-31"
     ],
-    "notYetAuthored": [
-      "C7 lifecycle after selection",
-      "C8 1,000-employee comparison",
-      "C9 FUCQ-74 and FUCQ-75 Stories"
-    ]
+    "staleLinksNote": "Resolved: Gary deleted FUCQ-27→29, FUCQ-28→29, FUCQ-28→30 and FUCQ-28→31 in the Jira UI on 4 November 2026; confirmed by a linkedIssues read the same day."
   },
   "agents": {
     "author": {

@@ -85,7 +85,7 @@ Also needed before Stories go in parallel: one owner for the shared contracts (t
   - FUCQ-71 and FUCQ-72: allocate the existing stock order, and use the target status names (Q19).
 - **FUCQ-1 and FUCQ-76:** Rejected.
 
-**Still open:** the connector cannot delete issue links. Four stale Blocks links must be removed in the Jira UI: FUCQ-27→29, FUCQ-28→29, FUCQ-28→30 and FUCQ-28→31. Until then, `jira_sync.py` still puts FUCQ-27/28 into those stories' `depends_on`, because it reads dependencies from links.
+**Resolved 4 Nov:** Gary deleted the four stale Blocks links (FUCQ-27→29, FUCQ-28→29, FUCQ-28→30 and FUCQ-28→31) in the Jira UI, so `jira_sync.py` no longer reads FUCQ-27/28 into those stories' `depends_on`.
 
 | Story | Problem | Fix |
 |---|---|---|

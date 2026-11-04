@@ -267,12 +267,6 @@
       "otherLinksPreserved": true
     }
   ],
-  "staleLinksStillOpen": [
-    "FUCQ-27 blocks FUCQ-29",
-    "FUCQ-28 blocks FUCQ-29",
-    "FUCQ-28 blocks FUCQ-30",
-    "FUCQ-28 blocks FUCQ-31"
-  ],
   "nativeChildQuery": {
     "jql": "parent = FUCQ-79",
     "keys": [
@@ -299,5 +293,12 @@
   "implementationStarted": false,
   "pollerStarted": false,
   "provisioningStarted": false,
-  "applicationTestsRun": false
+  "applicationTestsRun": false,
+  "staleLinksResolved": [
+    "FUCQ-27 blocks FUCQ-29",
+    "FUCQ-28 blocks FUCQ-29",
+    "FUCQ-28 blocks FUCQ-30",
+    "FUCQ-28 blocks FUCQ-31"
+  ],
+  "staleLinksNote": "Resolved: Gary deleted FUCQ-27→29, FUCQ-28→29, FUCQ-28→30 and FUCQ-28→31 in the Jira UI on 4 November 2026; confirmed by a linkedIssues read the same day."
 }

@@ -43,7 +43,7 @@ Source of the scope: [section C handover](../design/handover-section-c-2026-11-0
 All six Stories are backend or docs. Each Validate section says why there are no screenshots, and names the response-shape fixtures that consuming UI stories need.
 
 **Still open, not part of this set:**
-- Four stale Blocks links still need deleting in the Jira UI: FUCQ-27→29, FUCQ-28→29, FUCQ-28→30 and FUCQ-28→31. The connector cannot delete links.
+- The four stale Blocks links (FUCQ-27→29, FUCQ-28→29, FUCQ-28→30 and FUCQ-28→31) were deleted by Gary in the Jira UI on 4 November and confirmed gone the same day.
 - Gary is to provision the GCSP Render Postgres. FUCQ-81 and FUCQ-83 skip their PostgreSQL runs, and report them as skipped, until `GCSP_DATABASE_URL` is set.
 - The critical-path Epics C2–C6 are not yet authored.
 

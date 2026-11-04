@@ -57,7 +57,7 @@ UI stories carry the `blocks/gcsp/` placement (Q8), the custom-element and CSP r
 
 **Still open, not part of this set:**
 - Nine existing stories need follow-up edits so they consume this backlog instead of rebuilding parts of it: FUCQ-30, 36, 69, 70, 71, 73, 74, 75 and 78. Per-story findings are in the session notes, and the edits wait on Gary's go-ahead.
-- Four stale Blocks links still need deleting in the Jira UI: FUCQ-27→29, FUCQ-28→29, FUCQ-28→30 and FUCQ-28→31.
+- The four stale Blocks links (FUCQ-27→29, FUCQ-28→29, FUCQ-28→30 and FUCQ-28→31) were deleted by Gary in the Jira UI on 4 November and confirmed gone the same day.
 - Readiness items C7–C9 are not yet authored: the lifecycle after selection, the 1,000-employee comparison, and Stories for FUCQ-74 and FUCQ-75.
 
 The Story bodies below are the Jira descriptions as read back, with `id` and `title` added to each header. The only other changes are the bullet marker and escaped checkboxes, which are normalised.
