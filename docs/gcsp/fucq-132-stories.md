@@ -32,7 +32,7 @@ Gary approved the Epic, the Story titles, their one-line outcomes and the depend
 
 The comparison must be able to show a benefit, a trade-off or no improvement. Calculated fit is not observed satisfaction.
 
-**Still open, not part of this set:** Readiness items C7 and C9 are being authored by sibling sessions. The PNG export for page 09 has not been made.
+**Still open, not part of this set:** the PNG export for page 09 has not been made. The sibling readiness items are published separately: C7 as [FUCQ-110](https://ibm-consulting.atlassian.net/browse/FUCQ-110), and C9 as Stories under FUCQ-74 and FUCQ-75.
 
 The Story bodies below are the Jira descriptions as read back, with `id` and `title` added to each header. The only other changes are the bullet marker, escaped checkboxes and heading levels, which are normalised.
 
