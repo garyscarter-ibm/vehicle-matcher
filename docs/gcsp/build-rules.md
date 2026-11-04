@@ -6,6 +6,8 @@ Binding direction from Russell, 2 November 2026. Every GCSP story author, design
 
 All planned capabilities in the candidate demonstration journey and HLD must work. Russell confirms that there is time to build them. Plan sequencing and dependencies toward completing the whole build; the 30-minute presentation slot determines the walkthrough, not a reduced implementation scope. Earlier stretch labels do not justify deferring a planned capability.
 
+**Agreed exception, Russell, 4 November 2026:** follow Gary's FUCQ-6 Q5 recommendation. FUCQ-21 and FUCQ-26 go first; the employee policy uses `rankCars()` directly; FUCQ-22–25 may proceed in parallel; FUCQ-27/28 move to **after 12 November 2026**, protected by the retail baseline. This changes the timing of those two extraction stories. The remaining planned capabilities retain the full-build direction. The [HLD agreement](hld-agreement-2026-11-04.md) records all five accepted review changes.
+
 The existing distinction between functioning demonstration behaviour through adapters and future authorised BMW integration remains in force. Architecture review, backlog authoring and execution follow the agreed workflow; recording this direction does not start pollers or publish Jira changes.
 
 ## Plausible assumptions in one shared source
