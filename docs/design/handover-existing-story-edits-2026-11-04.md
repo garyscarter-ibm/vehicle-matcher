@@ -4,7 +4,7 @@
 
 ## Goal
 
-Edit nine existing Stories and Epics so each one uses the new foundation and critical-path Stories, instead of building its own clock, reset, repository, stock pool, policy source or order tracking. Gary must approve before you edit; if he hasn't yet, show him the table below and wait. Story authoring only: no application code.
+Edit seven existing Stories so each one uses the new foundation and critical-path Stories, instead of building its own clock, reset, repository, stock pool, policy source or order tracking. Gary approved these edits on 4 November ("kick off the nine edits"), as written here; you don't need to ask again. If reading an issue shows that an edit no longer fits, ask him before changing it. Story authoring only: no application code.
 
 ## Already done
 
@@ -13,7 +13,9 @@ Edit nine existing Stories and Epics so each one uses the new foundation and cri
 - **Re-pointed in Jira:** FUCQ-29, 65 and 66, each with a "Foundation, 4 November 2026" paragraph in Decided. Copy that paragraph style.
 - **No change needed:** FUCQ-31, 35, 64, 67, 68, 72 and 77.
 
-## The nine edits (corrected targets)
+## The seven edits (corrected targets)
+
+The FUCQ-74 and FUCQ-75 Epic edits moved to the C9 session ([handover-section-c7-c9-2026-11-04.md](handover-section-c7-c9-2026-11-04.md)), because that session also writes their Stories. Their rows stay below for reference only: don't make them.
 
 The keys below are the real Stories, not the Epics. Links read "A blocks B" and are created with `createJiraIssueLink` (`inwardIssue` = A). They cannot be deleted, so check each one before creating it.
 
@@ -25,8 +27,8 @@ The keys below are the real Stories, not the Epics. Links read "A blocks B" and 
 | FUCQ-70 | The countdown and its tests use FUCQ-85's demo clock and ticks, with the hold length read from FUCQ-82 (`hold.cart`) | FUCQ-85 → FUCQ-70 |
 | FUCQ-71 | Replace "future buddy acceptance" with "FUCQ-108 calls this adapter". Its tables become FUCQ-81 migrations, and its repository-contract cases extend FUCQ-81's suite. Reconciliation of unknown or timed-out outcomes registers as a FUCQ-85 tick handler. Add FUCQ-81 and FUCQ-85 to `depends_on` | FUCQ-81 → FUCQ-71, FUCQ-85 → FUCQ-71 (FUCQ-71 → FUCQ-108 already exists) |
 | FUCQ-73 | Expiry and reopen scenarios use FUCQ-85 ticks and reset. Stock comes from FUCQ-78 via FUCQ-92. Add FUCQ-85 and FUCQ-92 to `depends_on` | FUCQ-85 → FUCQ-73, FUCQ-92 → FUCQ-73 |
-| FUCQ-74 (Epic) | Add a paragraph (an Epic has no `depends_on`): prediction and the order plan layer on FUCQ-90's dashboard, and FUCQ-99 is the deterministic baseline (Q10). Submission and tracking go through FUCQ-104. Weights, bounds and the active model reference are dated policy rows via FUCQ-83, read through FUCQ-82 | FUCQ-90 relates to FUCQ-74 (Relates, not Blocks) |
-| FUCQ-75 (Epic) | Reset and replay call FUCQ-85, with no reset of their own. Roles and the starting state come from FUCQ-84. Name the presenter control UI (tick, reset, scenario picker) as a child Story still to be authored. FUCQ-109 supplies the first scenario | FUCQ-85 relates to FUCQ-75 |
+| FUCQ-74 (Epic), C9 session | Add a paragraph (an Epic has no `depends_on`): prediction and the order plan layer on FUCQ-90's dashboard, and FUCQ-99 is the deterministic baseline (Q10). Submission and tracking go through FUCQ-104. Weights, bounds and the active model reference are dated policy rows via FUCQ-83, read through FUCQ-82 | FUCQ-90 relates to FUCQ-74 (Relates, not Blocks) |
+| FUCQ-75 (Epic), C9 session | Reset and replay call FUCQ-85, with no reset of their own. Roles and the starting state come from FUCQ-84. Name the presenter control UI (tick, reset, scenario picker) as a child Story still to be authored. FUCQ-109 supplies the first scenario | FUCQ-85 relates to FUCQ-75 |
 | FUCQ-78 | Replace the "Postgres stock repository port... in-memory adapter" precondition with `depends_on` FUCQ-81 and FUCQ-82. Stock aggregates become keyed entries in FUCQ-82's seed file, read only through PolicyService. Expose a run-scoped generator that FUCQ-85's reset calls | FUCQ-81 → FUCQ-78, FUCQ-82 → FUCQ-78. **Do not** add FUCQ-78 → FUCQ-85 (no cycle; FUCQ-92 already waits on both) |
 
 Before you edit, read each issue in Jira (`view: evidence`). Keep its migration record and its other links. Send its full description back with `editJiraIssue`. Append to `depends_on`; don't replace it.
