@@ -1,0 +1,217 @@
+{
+  "activeVersion": {
+    "status": "ok",
+    "value": {
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z",
+      "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md"
+    },
+    "contractVersion": "1.0.0",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "eligibility": {
+    "status": "ok",
+    "value": {
+      "eligible": true,
+      "state": "eligible",
+      "ruleIds": [
+        "choices-fs-uk-012-include"
+      ],
+      "reasons": [
+        "explicit-include"
+      ],
+      "provenance": {
+        "rules": [
+          {
+            "key": "choices-fs-uk-012-include",
+            "value": "G20 Saloon|320i",
+            "unit": "model/engine key",
+            "status": "verified",
+            "basis": "Transcribed FS&UK Choices Vehicle Eligibility Matrix: G20 Saloon, 320i; source grade-band decisions only. Key mapping is a demo assumption.",
+            "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+            "sourceDate": "2024-07-29",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2024-10-01T00:00:00.000Z",
+            "ruleId": "choices-fs-uk-012-include",
+            "effect": "include",
+            "matchField": "eligibilityModelKey",
+            "operator": "equals",
+            "gradeIds": [
+              "G7",
+              "G8-10",
+              "G11-14"
+            ],
+            "model": "G20 Saloon",
+            "engine": "320i"
+          }
+        ],
+        "schemeRuleLinks": [
+          {
+            "key": "link-choices-fs-uk-012-include",
+            "value": "choices-fs-uk-012-include",
+            "unit": "rule reference",
+            "status": "verified",
+            "basis": "Dated link to the supplied FS&UK Choices Vehicle Eligibility Matrix; effective 1 October 2024.",
+            "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+            "sourceDate": "2024-07-29",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2024-10-01T00:00:00.000Z",
+            "linkId": "link-choices-fs-uk-012-include",
+            "schemeId": "choices-fs-uk",
+            "ruleId": "choices-fs-uk-012-include"
+          }
+        ],
+        "assumptions": [
+          {
+            "key": "eligibility.rule.matchField",
+            "value": "eligibilityModelKey",
+            "unit": "field name",
+            "status": "assumed",
+            "basis": "Assumed bridge of retained series/model/engine labels to matrix rows, since target matching code is undefined (round-3). Exact mapping is versioned/provenanced in the seed; unknown mapping fails.",
+            "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+            "sourceDate": "2026-11-04",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "eligibility.rule.precedence",
+            "value": "excludeThenInclude",
+            "unit": "enum",
+            "status": "assumed",
+            "basis": "Assumed deterministic include/exclude evaluation; unknowns cannot widen eligibility.",
+            "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+            "sourceDate": "2026-11-04",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "eligibility.context.mapping",
+            "value": [
+              {
+                "schemeId": "choices-fs-uk",
+                "companyId": "demo-bmw-fs-uk",
+                "sourceMatrix": "FS&UK Choices Vehicle Eligibility Matrix",
+                "gradeIds": [
+                  "G1-6",
+                  "G7",
+                  "G8-10",
+                  "G11-14"
+                ]
+              },
+              {
+                "schemeId": "choices-rr-production",
+                "companyId": "demo-bmw-rr-production",
+                "sourceMatrix": "RR&Production Choices Vehicle Eligibility Matrix",
+                "gradeIds": [
+                  "PG1",
+                  "G8-10",
+                  "G11-12"
+                ]
+              }
+            ],
+            "unit": "identifier mapping",
+            "status": "assumed",
+            "basis": "Demo scheme/company IDs and source grade bands preserve actual FS&UK and RR&Production matrices. RR&Production is not equated with UKNSC. eligibilityModelKey is exact source model + | + one source engine token; comma/slash alternatives expand without inventing engine prefixes.",
+            "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+            "sourceDate": "2026-11-04",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          }
+        ]
+      }
+    },
+    "contractVersion": "1.0.0",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "allowance": {
+    "status": "ok",
+    "value": {
+      "key": "allowance.choices-fs-uk.G7",
+      "value": 1300,
+      "unit": "points/month",
+      "status": "assumed",
+      "basis": "Synthetic monthly demo allowance; eligibility matrices contain no numeric allowances. Not a verified BMW amount.",
+      "source": "docs/gcsp/shared-contracts.md",
+      "sourceDate": "2026-11-04",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z",
+      "allowanceId": "allowance.choices-fs-uk.G7",
+      "companyId": "demo-bmw-fs-uk",
+      "schemeId": "choices-fs-uk",
+      "gradeId": "G7",
+      "monthlyPoints": 1300
+    },
+    "contractVersion": "1.0.0",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "pointsCost": {
+    "status": "ok",
+    "value": {
+      "key": "price.choices-fs-uk.012",
+      "value": 1100,
+      "unit": "points/month",
+      "status": "assumed",
+      "basis": "Synthetic monthly demo cost for source class KKL; matrices contain no prices. Not a verified BMW amount.",
+      "source": "docs/gcsp/shared-contracts.md",
+      "sourceDate": "2026-11-04",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z",
+      "pricePlanId": "choices-fs-uk-synthetic-monthly-v1",
+      "priceEntryId": "price.choices-fs-uk.012",
+      "schemeId": "choices-fs-uk",
+      "matchField": "eligibilityModelKey",
+      "matchValue": "G20 Saloon|320i",
+      "monthlyPoints": 1100
+    },
+    "contractVersion": "1.0.0",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "cartHold": {
+    "status": "ok",
+    "value": {
+      "key": "hold.cart.durationSeconds",
+      "value": 120,
+      "unit": "seconds",
+      "status": "assumed",
+      "basis": "Assumed exact value; target has about 2 minutes (Q15, round-1 findings).",
+      "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+      "sourceDate": "2026-11-04",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    "contractVersion": "1.0.0",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "orderReview": {
+    "status": "ok",
+    "value": {
+      "key": "hold.cart.orderReview.durationSeconds",
+      "value": 600,
+      "unit": "seconds",
+      "status": "assumed",
+      "basis": "Assumed separate form-review phase, FUCQ-66/SAN-017; test in manual trials.",
+      "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+      "sourceDate": "2026-11-04",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    "contractVersion": "1.0.0",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "buddyHold": {
+    "status": "ok",
+    "value": {
+      "key": "hold.buddy.durationSeconds",
+      "value": 7200,
+      "unit": "seconds",
+      "status": "assumed",
+      "basis": "Assumed new capability; roughly 2-hour proposal in demo brief/Q15.",
+      "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+      "sourceDate": "2026-11-04",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    "contractVersion": "1.0.0",
+    "policyVersion": "gcsp-policy-v1"
+  }
+}
