@@ -1,0 +1,839 @@
+{
+  "date": "2026-11-04",
+  "scope": "GCSP critical-path Epics FUCQ-86 to FUCQ-90 (HLD readiness C2-C6) and their 19 Stories",
+  "authorisation": "Gary approved the Epics, Story titles, one-line outcomes and dependency order on 4 November 2026, including FUCQ-98 with its sender-setup precondition. Story authoring only: no implementation, poller, provisioning or deployment.",
+  "source": [
+    "docs/design/hld-story-readiness-2026-11-04.md#c-capabilities-with-no-epic-or-story",
+    "docs/gcsp/fucq-79-stories.md"
+  ],
+  "epicCount": 5,
+  "storyCount": 19,
+  "acceptanceItems": 115,
+  "epics": [
+    {
+      "key": "FUCQ-86",
+      "type": "Epic",
+      "parent": null,
+      "status": "In Progress",
+      "startDate": "2026-11-04",
+      "labels": [
+        "backlog"
+      ],
+      "summary": "Save Paula's brief and let the buddy search for her",
+      "unassigned": true
+    },
+    {
+      "key": "FUCQ-87",
+      "type": "Epic",
+      "parent": null,
+      "status": "In Progress",
+      "startDate": "2026-11-04",
+      "labels": [
+        "backlog"
+      ],
+      "summary": "Release stock, allocate it and hold a buddy offer",
+      "unassigned": true
+    },
+    {
+      "key": "FUCQ-88",
+      "type": "Epic",
+      "parent": null,
+      "status": "In Progress",
+      "startDate": "2026-11-04",
+      "labels": [
+        "backlog"
+      ],
+      "summary": "Notify employees through a captured outbox",
+      "unassigned": true
+    },
+    {
+      "key": "FUCQ-89",
+      "type": "Epic",
+      "parent": null,
+      "status": "In Progress",
+      "startDate": "2026-11-04",
+      "labels": [
+        "backlog"
+      ],
+      "summary": "Decide on an offer and get a second one",
+      "unassigned": true
+    },
+    {
+      "key": "FUCQ-90",
+      "type": "Epic",
+      "parent": null,
+      "status": "In Progress",
+      "startDate": "2026-11-04",
+      "labels": [
+        "backlog"
+      ],
+      "summary": "Give Greg a demand and supply dashboard",
+      "unassigned": true
+    }
+  ],
+  "stories": [
+    {
+      "key": "FUCQ-91",
+      "parent": "FUCQ-86",
+      "type": "Story",
+      "summary": "Save and revise a versioned brief with essentials and search permission",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "code",
+      "size": "M",
+      "dependsOn": [
+        "FUCQ-80",
+        "FUCQ-81",
+        "FUCQ-82",
+        "FUCQ-84"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:code",
+        "size:M"
+      ],
+      "acceptanceItems": 8,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-92",
+      "parent": "FUCQ-87",
+      "type": "Story",
+      "summary": "Release synthetic stock on a presenter tick from the next pull",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "code",
+      "size": "M",
+      "dependsOn": [
+        "FUCQ-85",
+        "FUCQ-78"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:code",
+        "size:M"
+      ],
+      "acceptanceItems": 6,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-93",
+      "parent": "FUCQ-88",
+      "type": "Story",
+      "summary": "Dispatch outbox jobs through a transport port into a captured outbox",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "code",
+      "size": "M",
+      "dependsOn": [
+        "FUCQ-81",
+        "FUCQ-84"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:code",
+        "size:M"
+      ],
+      "acceptanceItems": 7,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-94",
+      "parent": "FUCQ-86",
+      "type": "Story",
+      "summary": "Set preferences, importance and essentials with a live explained preview",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "ui",
+      "size": "L",
+      "dependsOn": [
+        "FUCQ-91",
+        "FUCQ-29",
+        "FUCQ-31",
+        "FUCQ-64"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:ui",
+        "size:L"
+      ],
+      "acceptanceItems": 7,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-95",
+      "parent": "FUCQ-86",
+      "type": "Story",
+      "summary": "Show buddy activity and pause or resume the search",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "ui",
+      "size": "M",
+      "dependsOn": [
+        "FUCQ-91",
+        "FUCQ-64"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:ui",
+        "size:M"
+      ],
+      "acceptanceItems": 6,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-96",
+      "parent": "FUCQ-87",
+      "type": "Story",
+      "summary": "Allocate released cars across competing briefs by the policy tie-break",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "code",
+      "size": "L",
+      "dependsOn": [
+        "FUCQ-92",
+        "FUCQ-91",
+        "FUCQ-29"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:code",
+        "size:L"
+      ],
+      "acceptanceItems": 7,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-97",
+      "parent": "FUCQ-88",
+      "type": "Story",
+      "summary": "Show the presenter each captured offer email in an outbox viewer",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "ui",
+      "size": "S",
+      "dependsOn": [
+        "FUCQ-93",
+        "FUCQ-64"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:ui",
+        "size:S"
+      ],
+      "acceptanceItems": 5,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-98",
+      "parent": "FUCQ-88",
+      "type": "Story",
+      "summary": "Send offer emails through one real transport once a sender is set up",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "code",
+      "size": "S",
+      "dependsOn": [
+        "FUCQ-93"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:code",
+        "size:S"
+      ],
+      "acceptanceItems": 5,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-99",
+      "parent": "FUCQ-90",
+      "type": "Story",
+      "summary": "Aggregate saved demand and offer outcomes for Greg",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "code",
+      "size": "M",
+      "dependsOn": [
+        "FUCQ-91",
+        "FUCQ-81",
+        "FUCQ-84"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:code",
+        "size:M"
+      ],
+      "acceptanceItems": 6,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-100",
+      "parent": "FUCQ-87",
+      "type": "Story",
+      "summary": "Hold the allocated car and create its offer and outbox job in one transaction",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "code",
+      "size": "M",
+      "dependsOn": [
+        "FUCQ-96"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:code",
+        "size:M"
+      ],
+      "acceptanceItems": 7,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-101",
+      "parent": "FUCQ-90",
+      "type": "Story",
+      "summary": "Show Greg demand, outcomes and stock on one dashboard",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "ui",
+      "size": "L",
+      "dependsOn": [
+        "FUCQ-99",
+        "FUCQ-31",
+        "FUCQ-64"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:ui",
+        "size:L"
+      ],
+      "acceptanceItems": 6,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-102",
+      "parent": "FUCQ-89",
+      "type": "Story",
+      "summary": "Open an offer from a run-bound link that shows its current state",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "code",
+      "size": "M",
+      "dependsOn": [
+        "FUCQ-100",
+        "FUCQ-84",
+        "FUCQ-85"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:code",
+        "size:M"
+      ],
+      "acceptanceItems": 5,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-103",
+      "parent": "FUCQ-90",
+      "type": "Story",
+      "summary": "Preview and publish points and recommendation weights",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "ui",
+      "size": "M",
+      "dependsOn": [
+        "FUCQ-101",
+        "FUCQ-83"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:ui",
+        "size:M"
+      ],
+      "acceptanceItems": 6,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-104",
+      "parent": "FUCQ-90",
+      "type": "Story",
+      "summary": "Track order requests from requested to confirmed to released",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "ui",
+      "size": "M",
+      "dependsOn": [
+        "FUCQ-101",
+        "FUCQ-92"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:ui",
+        "size:M"
+      ],
+      "acceptanceItems": 6,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-105",
+      "parent": "FUCQ-89",
+      "type": "Story",
+      "summary": "Show the offer's exact quote, current-car comparison and countdown",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "ui",
+      "size": "L",
+      "dependsOn": [
+        "FUCQ-102",
+        "FUCQ-31",
+        "FUCQ-64"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:ui",
+        "size:L"
+      ],
+      "acceptanceItems": 6,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-106",
+      "parent": "FUCQ-89",
+      "type": "Story",
+      "summary": "Accept, decline or expire an offer with idempotent outcomes",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "code",
+      "size": "M",
+      "dependsOn": [
+        "FUCQ-102"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:code",
+        "size:M"
+      ],
+      "acceptanceItems": 6,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-107",
+      "parent": "FUCQ-89",
+      "type": "Story",
+      "summary": "Confirm one preference change after declining and receive a second offer",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "ui",
+      "size": "L",
+      "dependsOn": [
+        "FUCQ-106",
+        "FUCQ-91",
+        "FUCQ-96"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:ui",
+        "size:L"
+      ],
+      "acceptanceItems": 6,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-108",
+      "parent": "FUCQ-89",
+      "type": "Story",
+      "summary": "Hand off a selected buddy offer through the ordering adapter",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "code",
+      "size": "M",
+      "dependsOn": [
+        "FUCQ-106",
+        "FUCQ-71"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:code",
+        "size:M"
+      ],
+      "acceptanceItems": 5,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-109",
+      "parent": "FUCQ-89",
+      "type": "Story",
+      "summary": "Verify Paula's critical path end to end with browser evidence",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "code",
+      "size": "M",
+      "dependsOn": [
+        "FUCQ-105",
+        "FUCQ-107",
+        "FUCQ-108",
+        "FUCQ-97"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:code",
+        "size:M"
+      ],
+      "acceptanceItems": 5,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    }
+  ],
+  "nativeBlocks": [
+    {
+      "from": "FUCQ-80",
+      "to": "FUCQ-91"
+    },
+    {
+      "from": "FUCQ-81",
+      "to": "FUCQ-91"
+    },
+    {
+      "from": "FUCQ-82",
+      "to": "FUCQ-91"
+    },
+    {
+      "from": "FUCQ-84",
+      "to": "FUCQ-91"
+    },
+    {
+      "from": "FUCQ-91",
+      "to": "FUCQ-94"
+    },
+    {
+      "from": "FUCQ-29",
+      "to": "FUCQ-94"
+    },
+    {
+      "from": "FUCQ-31",
+      "to": "FUCQ-94"
+    },
+    {
+      "from": "FUCQ-64",
+      "to": "FUCQ-94"
+    },
+    {
+      "from": "FUCQ-91",
+      "to": "FUCQ-95"
+    },
+    {
+      "from": "FUCQ-64",
+      "to": "FUCQ-95"
+    },
+    {
+      "from": "FUCQ-85",
+      "to": "FUCQ-92"
+    },
+    {
+      "from": "FUCQ-78",
+      "to": "FUCQ-92"
+    },
+    {
+      "from": "FUCQ-92",
+      "to": "FUCQ-96"
+    },
+    {
+      "from": "FUCQ-91",
+      "to": "FUCQ-96"
+    },
+    {
+      "from": "FUCQ-29",
+      "to": "FUCQ-96"
+    },
+    {
+      "from": "FUCQ-96",
+      "to": "FUCQ-100"
+    },
+    {
+      "from": "FUCQ-81",
+      "to": "FUCQ-93"
+    },
+    {
+      "from": "FUCQ-84",
+      "to": "FUCQ-93"
+    },
+    {
+      "from": "FUCQ-93",
+      "to": "FUCQ-97"
+    },
+    {
+      "from": "FUCQ-64",
+      "to": "FUCQ-97"
+    },
+    {
+      "from": "FUCQ-93",
+      "to": "FUCQ-98"
+    },
+    {
+      "from": "FUCQ-100",
+      "to": "FUCQ-102"
+    },
+    {
+      "from": "FUCQ-84",
+      "to": "FUCQ-102"
+    },
+    {
+      "from": "FUCQ-85",
+      "to": "FUCQ-102"
+    },
+    {
+      "from": "FUCQ-102",
+      "to": "FUCQ-105"
+    },
+    {
+      "from": "FUCQ-31",
+      "to": "FUCQ-105"
+    },
+    {
+      "from": "FUCQ-64",
+      "to": "FUCQ-105"
+    },
+    {
+      "from": "FUCQ-102",
+      "to": "FUCQ-106"
+    },
+    {
+      "from": "FUCQ-106",
+      "to": "FUCQ-107"
+    },
+    {
+      "from": "FUCQ-91",
+      "to": "FUCQ-107"
+    },
+    {
+      "from": "FUCQ-96",
+      "to": "FUCQ-107"
+    },
+    {
+      "from": "FUCQ-106",
+      "to": "FUCQ-108"
+    },
+    {
+      "from": "FUCQ-71",
+      "to": "FUCQ-108"
+    },
+    {
+      "from": "FUCQ-105",
+      "to": "FUCQ-109"
+    },
+    {
+      "from": "FUCQ-107",
+      "to": "FUCQ-109"
+    },
+    {
+      "from": "FUCQ-108",
+      "to": "FUCQ-109"
+    },
+    {
+      "from": "FUCQ-97",
+      "to": "FUCQ-109"
+    },
+    {
+      "from": "FUCQ-91",
+      "to": "FUCQ-99"
+    },
+    {
+      "from": "FUCQ-81",
+      "to": "FUCQ-99"
+    },
+    {
+      "from": "FUCQ-84",
+      "to": "FUCQ-99"
+    },
+    {
+      "from": "FUCQ-99",
+      "to": "FUCQ-101"
+    },
+    {
+      "from": "FUCQ-31",
+      "to": "FUCQ-101"
+    },
+    {
+      "from": "FUCQ-64",
+      "to": "FUCQ-101"
+    },
+    {
+      "from": "FUCQ-101",
+      "to": "FUCQ-103"
+    },
+    {
+      "from": "FUCQ-83",
+      "to": "FUCQ-103"
+    },
+    {
+      "from": "FUCQ-101",
+      "to": "FUCQ-104"
+    },
+    {
+      "from": "FUCQ-92",
+      "to": "FUCQ-104"
+    }
+  ],
+  "linkReadback": "All 70 link entries on FUCQ-86..109 read back as Blocks and match the 47 created pairs in both directions; every Story's depends_on equals its inward Blocks links.",
+  "descriptionComparison": "Descriptions read back with getJiraIssue (view evidence, markdown) by a runner agent; acceptance counts and depends_on extracted from the read-back. docs/gcsp/fucq-86-90-stories.md carries the read-back text.",
+  "followUps": {
+    "existingStoriesNeedingEdits": [
+      "FUCQ-30",
+      "FUCQ-36",
+      "FUCQ-69",
+      "FUCQ-70",
+      "FUCQ-71",
+      "FUCQ-73",
+      "FUCQ-74",
+      "FUCQ-75",
+      "FUCQ-78"
+    ],
+    "staleLinksStillOpen": [
+      "FUCQ-27 blocks FUCQ-29",
+      "FUCQ-28 blocks FUCQ-29",
+      "FUCQ-28 blocks FUCQ-30",
+      "FUCQ-28 blocks FUCQ-31"
+    ],
+    "notYetAuthored": [
+      "C7 lifecycle after selection",
+      "C8 1,000-employee comparison",
+      "C9 FUCQ-74 and FUCQ-75 Stories"
+    ]
+  },
+  "agents": {
+    "author": {
+      "model": "opus",
+      "session": "Claude Code main session"
+    },
+    "links": {
+      "name": "Pussyfoot",
+      "type": "runner",
+      "model": "haiku"
+    },
+    "readback": {
+      "name": "Kronk",
+      "type": "runner",
+      "model": "haiku"
+    },
+    "existingStoryCheck": {
+      "name": "Maximus the Horse",
+      "type": "general-purpose",
+      "model": "sonnet"
+    }
+  },
+  "implementationStarted": false,
+  "pollerStarted": false,
+  "provisioningStarted": false,
+  "applicationTestsRun": false
+}
