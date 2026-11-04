@@ -55,7 +55,7 @@ Reassessed on 4 Nov after merging `gcsp-poc` into this branch, which was first c
 | Q10 | FUCQ-74 | Learned model trained on synthetic data as the primary planner signal? | Deterministic baseline primary; learned model shown, labelled synthetic | Answered | Deterministic expressed-demand/fit baseline drives the plan; learned model runs alongside, labelled synthetic-trained. |
 | Q11 | Mail | Which transport for the demo? | Captured outbox viewer always; one real transport if ready | Answered | Outbox viewer always; one real transport (Microsoft or Brevo) if sender setup is ready. |
 | Q12 | EDS sync | Gate `sync-block.yml` while GCSP changes the shared block? | Manual dispatch only until after the demo | Answered | Leave as is. GCSP blocks won't go to EDS; the demo wraps them in dummy pages hosted in the repo on GitHub Pages. |
-| Q13 | Vehicle identity | Is VIN the right key to synthesise (FUCQ-19/20)? | Key by synthetic order reference + configuration; VIN optional | Answered | † Resumed 4 Nov after the knowledge-base answers: exact stock keyed by synthetic order reference + configuration. VIN only on delivered cars (e.g. Paula's current car). Re-scope FUCQ-19/20 (stories FUCQ-52 to 63): keep the distinct-configuration corpus; the VIN generator covers current cars only. |
+| Q13 | Vehicle identity | Is VIN the right key to synthesise (FUCQ-19/20)? | Key by synthetic order reference + configuration; VIN optional | Answered | † Resumed 4 Nov after the knowledge-base answers: exact stock keyed by synthetic order reference + configuration. VIN only on delivered cars (e.g. Paula's current car). Re-scope FUCQ-19/20 (stories FUCQ-52 to 63): keep the distinct-configuration corpus; the VIN generator covers current cars only. Formats fixed after round 3: `orderUuid` key, 7-digit `orderNumber` for display, `configurationId` in the target's Base64 form. |
 | Q14 | Integration target | Which platform do the demo's adapters and later BMW integration gates model: the legacy mainframe or the target AWS platform? | Target AWS platform | Answered | † Gary, 4 Nov: build against the target AWS platform (built or in build), not the mainframe. HLD's demo brief says "GCSP remains a UI over the mainframe for now"; the BMW-integration gates and adapter contracts should be re-pointed at the AWS target once the knowledge-base answers are in. |
 | Q15 | Holds | The target cart hold is about 2 minutes, first come first served. The demo's buddy holds for hours. | Two hold types | Answered | Keep the short manual cart hold as the target has it; present the longer buddy offer hold as a proposed new capability, labelled, with a configurable duration. |
 | Q16 | Paula's journey | Is "lower max contribution" (blueprint step 07) right for a Choices employee? | Change a preference instead | Answered | † After declining, Paula confirms one preference change (e.g. body style or an essential), not a contribution ceiling. Agreed by Russell, 4 Nov (`docs/gcsp/hld-agreement-2026-11-04.md`). The 2024 Choices guide's £1 per point top-up stays in the policy source as a keyed assumption but doesn't drive this step. |
@@ -92,6 +92,16 @@ section records only what they change for the design, in general terms.
 | Releases come in weekly windows plus campaigns, first come first served. | This is the problem the buddy solves (employees racing for stock). Use it in the pitch. |
 | The target captures no preferences, saved searches or stock alerts. | The buddy is genuinely new to the platform, not a reskin. |
 | Nothing rules out bundling web components into the Angular app. The content security policy forbids inline scripts and `eval`. | Q18 stands, with a build rule: GCSP blocks use no inline scripts, inline event handlers or `eval`. |
+
+## Round-3 knowledge-base findings (4 Nov)
+
+| Finding (target platform) | Effect on the demo |
+|---|---|
+| A configuration ID exists, separate from the order: Base64 of the VG model code, a colon and the sorted option codes. It is used to group identical configurations. | `configurationId` follows this rule (HLD "Synthetic identifier formats"). Separator, paint/upholstery inclusion and padding are keyed assumptions. |
+| The allocation key is the order UUID. The order number is a short digit string with leading zeros; the wholesaler order ID is an integer. | Stock, holds and allocations key on a synthetic `orderUuid`; employees see a 7-digit `orderNumber`. |
+| Stability of order identifiers through amendment isn't settled. | Identifiers never change within a demo run (keyed assumption). |
+| Specification fields are named model codes, range, series, body, fuel, drive, colours, upholstery code and an equipment map keyed by option code. | Synthetic records use those field names, so a real source maps onto them directly. |
+| Which code eligibility rules and points prices match isn't defined. | Policy rules match on a keyed field in the policy source. |
 
 ## HLD pages these decisions change
 
