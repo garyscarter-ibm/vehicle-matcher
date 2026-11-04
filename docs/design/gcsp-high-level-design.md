@@ -10,6 +10,20 @@ The design supports the 12 November demonstration and the proposed 2027 front-en
 
 **Later build direction, Russell, 2 November:** apply the [build rules](../gcsp/build-rules.md) to full planned scope and centrally stored, plausible assumptions that can improve through trials. Earlier stretch/defer descriptions are superseded. Architecture agreement and the agreed backlog/execution workflow remain in place.
 
+## Review decisions, 4 November 2026
+
+Gary's architecture review is recorded in [hld-review-gc.md](hld-review-gc.md) and applied to the diagram. Where this record disagrees, the review takes precedence. The main changes:
+
+- **Hosting:** GCSP runs in its own Render environment (static frontend and backend) built from `gcsp-poc`. Pages, `main` and EDS sync stay retail-only until after the demo.
+- **State and policy:** managed PostgreSQL. The canonical policy source is dated tables shaped like the target model, seeded from the repo and read through one PolicyService.
+- **Background work and mail:** presenter ticks, with no unattended runner. A captured-outbox viewer always ships, with one real transport if ready.
+- **Recommendation core:** FUCQ-21 and FUCQ-26 come first. The employee policy calls `rankCars()` until FUCQ-27/28, which follow after the demo.
+- **Vehicle identity:** exact stock is keyed by synthetic order reference plus configuration. A VIN appears only on delivered cars. The VIN lookup is in-process behind a port.
+- **Holds:** a short manual cart hold, plus a longer buddy offer hold as a proposed new capability.
+- **Integration target:** the target GCSP AWS platform, not the mainframe. The blocks also mount as web components for the target Angular app.
+- **Lifecycle:** the demo uses the target's approval and appointment state names.
+- **Predictive planning:** the deterministic baseline drives the demo plan. The learned model is shown alongside, labelled synthetic-trained.
+
 ## Design hierarchy and evidence precedence
 
 | Option | Assessment |

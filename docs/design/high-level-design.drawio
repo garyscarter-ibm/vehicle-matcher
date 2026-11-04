@@ -24,12 +24,12 @@
             <mxGeometry height="70" width="260" x="300" y="30" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Employee home + manual + buddy / sliders · weights · exact offers" type="client" status="proposed" feature="gcsp-hld" link="data:page/id,page-employee-transactions" id="o-employee">
+        <UserObject label="Employee home + manual + buddy&lt;br&gt;separate blocks · web components" type="client" status="proposed" feature="gcsp-hld" link="data:page/id,page-employee-transactions" id="o-employee">
           <mxCell parent="1" style="shape=mxgraph.flowchart.display;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="650" y="30" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Greg next action + orders&lt;br&gt;points + weights / see 08" type="client" status="proposed" feature="greg-predictive-planning" id="o-greg-ui">
+        <UserObject label="Greg next action + orders&lt;br&gt;separate block · web component · see 08" type="client" status="proposed" feature="greg-predictive-planning" id="o-greg-ui">
           <mxCell parent="1" style="shape=mxgraph.flowchart.display;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="650" y="210" as="geometry" />
           </mxCell>
@@ -44,22 +44,22 @@
             <mxGeometry height="70" width="260" x="1000" y="210" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Scheme + vehicle evidence ports / fixtures / later BMW" type="service" status="proposed" feature="gcsp-hld" link="data:page/id,page-employee-data-adapters" id="o-data">
+        <UserObject label="Scheme + vehicle evidence ports&lt;br&gt;synthetic now · later AWS target" type="service" status="proposed" feature="gcsp-hld" link="data:page/id,page-employee-data-adapters" id="o-data">
           <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="1350" y="30" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Shared transactional state / PostgreSQL proposed + outbox" type="datastore" status="proposed" feature="gcsp-hld" id="o-state">
+        <UserObject label="Shared transactional state&lt;br&gt;managed PostgreSQL + outbox" type="datastore" status="proposed" feature="gcsp-hld" id="o-state">
           <mxCell parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=12;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="100" width="260" x="1350" y="210" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Replayable release + clock / actual event processing" type="external" status="proposed" feature="gcsp-hld" id="o-events">
+        <UserObject label="Presenter ticks: release + clock&lt;br&gt;no unattended runner" type="external" status="proposed" feature="gcsp-hld" id="o-events">
           <mxCell parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="110" width="240" x="650" y="410" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Mail adapter + secure offer link / Microsoft or Brevo" type="external" status="proposed" feature="gcsp-hld" id="o-mail">
+        <UserObject label="Mail adapter + offer link&lt;br&gt;outbox viewer · one real transport" type="external" status="proposed" feature="gcsp-hld" id="o-mail">
           <mxCell parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="110" width="240" x="1350" y="410" as="geometry" />
           </mxCell>
@@ -69,7 +69,7 @@
             <mxGeometry height="70" width="260" x="1000" y="410" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Pages + Render + EDS release / later BMW integration gates" type="service" status="proposed" feature="gcsp-hld" link="data:page/id,CG7szUqNwnCKSjVtDKqx" id="o-deploy">
+        <UserObject label="Separate Render env from gcsp-poc&lt;br&gt;later AWS target gates" type="service" status="proposed" feature="gcsp-hld" link="data:page/id,CG7szUqNwnCKSjVtDKqx" id="o-deploy">
           <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="1000" y="610" as="geometry" />
           </mxCell>
@@ -619,7 +619,7 @@
         <mxCell id="1" parent="0" />
         <UserObject label="Browser · shared EDS deployment" type="boundary" status="built" feature="shared-target" id="t-browser">
           <mxCell parent="1" style="swimlane;html=1;startSize=24;strokeColor=#6c8ebf;fillColor=#dae8fc;" vertex="1">
-            <mxGeometry height="612" width="900" x="650.33" y="390" as="geometry" />
+            <mxGeometry height="622" width="900" x="650.33" y="390" as="geometry" />
           </mxCell>
         </UserObject>
         <UserObject label="Shared launcher&lt;br&gt;scenario + brand" type="client" status="proposed" feature="shared-target" id="t-launcher">
@@ -642,7 +642,7 @@
             <mxGeometry height="70" width="260" x="10" y="283" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Shared UI kit&lt;br&gt;cards · controls · feedback" type="service" status="proposed" feature="shared-target" id="t-kit">
+        <UserObject label="Shared UI kit&lt;br&gt;cards · controls · custom elements" type="service" status="proposed" feature="shared-target" id="t-kit">
           <mxCell parent="t-browser" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="276.67" y="532" as="geometry" />
           </mxCell>
@@ -741,7 +741,7 @@
             <mxGeometry height="70" width="260" x="540.6" y="283" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Employee pipeline&lt;br&gt;essentials before ranking" type="service" status="proposed" feature="shared-target" id="t-emp-pipeline">
+        <UserObject label="Employee pipeline&lt;br&gt;gates first · rankCars() until FUCQ-27" type="service" status="proposed" feature="shared-target" id="t-emp-pipeline">
           <mxCell parent="t-node" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="475.6" y="532" as="geometry" />
           </mxCell>
@@ -751,12 +751,12 @@
             <mxGeometry height="70" width="260" x="1474.6" y="788" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Shared pure decision core&lt;br&gt;curves + evidence + reasons" type="service" status="proposed" feature="shared-target" id="t-core">
+        <UserObject label="Shared pure decision core&lt;br&gt;FUCQ-27 · after the demo" type="service" status="proposed" feature="shared-target" id="t-core">
           <mxCell parent="t-node" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="1118.6" y="788" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Shared result projection&lt;br&gt;exact decisions → groups" type="service" status="proposed" feature="shared-target" id="t-projection">
+        <UserObject label="Shared result projection&lt;br&gt;FUCQ-28 · after the demo" type="service" status="proposed" feature="shared-target" id="t-projection">
           <mxCell parent="t-node" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="792.6" y="788" as="geometry" />
           </mxCell>
@@ -918,7 +918,7 @@
             <mxGeometry height="70" width="220" x="1025.75" y="80" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Blue = current · purple = proposed.&lt;br&gt;Core/kit extraction is not built.&lt;br&gt;Feedback: local filter / brief / offer." type="note" status="proposed" feature="shared-target" id="t-status-note">
+        <UserObject label="Blue = current · purple = proposed.&lt;br&gt;Demo: employee policy calls rankCars().&lt;br&gt;Core extraction follows FUCQ-21 baseline." type="note" status="proposed" feature="shared-target" id="t-status-note">
           <mxCell parent="1" style="shape=note;whiteSpace=wrap;html=1;size=14;align=left;spacingLeft=6;" vertex="1">
             <mxGeometry height="70" width="220" x="1025.75" y="160" as="geometry" />
           </mxCell>
@@ -1053,7 +1053,7 @@
         <mxCell id="1" parent="0" />
         <UserObject label="Replaceable scheme data ports · same downstream logic" type="boundary" status="proposed" feature="employee-target" id="e-ports">
           <mxCell parent="1" style="swimlane;html=1;startSize=24;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
-            <mxGeometry height="714" width="329" x="623" y="180" as="geometry" />
+            <mxGeometry height="724" width="329" x="623" y="180" as="geometry" />
           </mxCell>
         </UserObject>
         <UserObject label="Employee + contract&lt;br&gt;renewal + entitlements" type="service" status="proposed" feature="employee-target" id="e-people-port">
@@ -1061,22 +1061,22 @@
             <mxGeometry height="70" width="260" x="49" y="274" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Vehicle evidence ports / exact vs model; see page 06" type="service" status="proposed" feature="employee-target" link="data:page/id,5vg3sHFHkCQynRAosbFs" id="e-vin-port">
+        <UserObject label="Vehicle evidence ports&lt;br&gt;order ref + configuration; see 06" type="service" status="proposed" feature="employee-target" link="data:page/id,5vg3sHFHkCQynRAosbFs" id="e-vin-port">
           <mxCell parent="e-ports" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="49" y="394" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Connected-use summary&lt;br&gt;optional + attributed" type="service" status="proposed" feature="employee-target" id="e-usage-port">
+        <UserObject label="Connected-use summary&lt;br&gt;future capability · synthetic only" type="service" status="proposed" feature="employee-target" id="e-usage-port">
           <mxCell parent="e-ports" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="49" y="514" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Eligibility + terms&lt;br&gt;points + contribution quote" type="service" status="proposed" feature="employee-target" id="e-rule-port">
+        <UserObject label="Eligibility + terms&lt;br&gt;points + £1/point top-up assumption" type="service" status="proposed" feature="employee-target" id="e-rule-port">
           <mxCell parent="e-ports" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="29.5" y="634" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Released stock + claim authority&lt;br&gt;revisions + conditional actions" type="service" status="proposed" feature="employee-target" id="e-stock-port">
+        <UserObject label="Released stock + claim authority&lt;br&gt;keyed by order reference" type="service" status="proposed" feature="employee-target" id="e-stock-port">
           <mxCell parent="e-ports" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="49" y="34" as="geometry" />
           </mxCell>
@@ -1086,12 +1086,12 @@
             <mxGeometry height="70" width="260" x="10" y="154" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Synthetic scenario provider&lt;br&gt;versioned fixtures + VIN service" type="external" status="proposed" feature="employee-target" id="e-synthetic">
+        <UserObject label="Synthetic scenario provider&lt;br&gt;versioned fixtures + corpus" type="external" status="proposed" feature="employee-target" id="e-synthetic">
           <mxCell parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="130" width="280" x="12" y="264" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Future BMW providers&lt;br&gt;contracts + authority unconfirmed" type="external" status="proposed" feature="employee-target" id="e-bmw">
+        <UserObject label="Future target AWS services&lt;br&gt;fleet · pricing · eligibility APIs" type="external" status="proposed" feature="employee-target" id="e-bmw">
           <mxCell parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="110" width="280" x="28" y="804" as="geometry" />
           </mxCell>
@@ -1255,7 +1255,7 @@
             <mxGeometry height="70" width="260" x="818.9" y="283" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Exact hold + offer service&lt;br&gt;revalidate · accept · reject · expire" type="service" status="proposed" feature="employee-target" id="e-offer">
+        <UserObject label="Two hold types + offers&lt;br&gt;~2 min cart hold · proposed buddy hold" type="service" status="proposed" feature="employee-target" id="e-offer">
           <mxCell parent="e-app" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="47" y="532" as="geometry" />
           </mxCell>
@@ -1275,7 +1275,26 @@
             <mxGeometry height="70" width="260" x="490.9" y="34" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Transactional SQL state&lt;br&gt;briefs · offers · cases · outbox" type="datastore" status="proposed" feature="employee-target" id="e-store">
+        <UserObject label="PolicyService&lt;br&gt;dated rule + price-plan tables" type="service" status="proposed" feature="employee-target" id="e-policy">
+          <mxCell parent="e-app" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="1125.1" y="1030" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="active rules" status="proposed" feature="employee-target" id="0Z4suRJO8P-oX9QzBl6A-1">
+          <mxCell edge="1" parent="e-app" source="e-evaluate" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="e-policy">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1254.83" y="816" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="publish dated version" status="proposed" feature="employee-target" id="0Z4suRJO8P-oX9QzBl6A-2">
+          <mxCell edge="1" parent="e-app" source="e-demand" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="e-policy">
+            <mxGeometry relative="1" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Managed PostgreSQL&lt;br&gt;briefs · holds · policy · outbox" type="datastore" status="proposed" feature="employee-target" id="e-store">
           <mxCell parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=12;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="100" width="260" x="503.5" y="1844" as="geometry" />
           </mxCell>
@@ -1285,7 +1304,7 @@
             <mxGeometry height="70" width="260" x="521.5" y="2147" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Mail provider adapter&lt;br&gt;Microsoft or Brevo" type="external" status="proposed" feature="employee-target" id="e-mail">
+        <UserObject label="Mail adapter&lt;br&gt;outbox viewer + one real transport" type="external" status="proposed" feature="employee-target" id="e-mail">
           <mxCell parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="110" width="280" x="511.5" y="2396" as="geometry" />
           </mxCell>
@@ -1300,12 +1319,12 @@
             <mxGeometry height="70" width="260" x="1585.07" y="290" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Replayable events + clock&lt;br&gt;explicit demo tick / future runner" type="external" status="proposed" feature="employee-target" id="e-clock">
+        <UserObject label="Presenter ticks + clock&lt;br&gt;replayable · no unattended runner" type="external" status="proposed" feature="employee-target" id="e-clock">
           <mxCell parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="130" width="280" x="382.57" y="230" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Lifecycle ports / selection → order → handover plan" type="external" status="proposed" feature="employee-target" link="data:page/id,f0u8uXmIPJF8ikzzwr1X" id="e-lifecycle">
+        <UserObject label="Lifecycle ports&lt;br&gt;target approval + appointment states" type="external" status="proposed" feature="employee-target" link="data:page/id,f0u8uXmIPJF8ikzzwr1X" id="e-lifecycle">
           <mxCell parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="130" width="280" x="101.5" y="1838" as="geometry" />
           </mxCell>
@@ -1413,11 +1432,10 @@
             <mxGeometry relative="1" as="geometry">
               <mxPoint y="446.22" as="offset" />
               <Array as="points">
-                <mxPoint x="755.5" y="2636" />
-                <mxPoint x="2134.07" y="2636" />
-                <mxPoint x="2134.07" y="480" />
-                <mxPoint x="1409.07" y="480" />
-                <mxPoint x="1409.07" y="539" />
+                <mxPoint x="756" y="2665" />
+                <mxPoint x="870" y="2665" />
+                <mxPoint x="870" y="1056" />
+                <mxPoint x="1382" y="1056" />
               </Array>
             </mxGeometry>
           </mxCell>
@@ -1427,11 +1445,10 @@
             <mxGeometry relative="1" as="geometry">
               <mxPoint y="391.55" as="offset" />
               <Array as="points">
-                <mxPoint x="703.5" y="2626" />
-                <mxPoint x="2018.57" y="2626" />
-                <mxPoint x="2018.57" y="490" />
-                <mxPoint x="1197.4" y="490" />
-                <mxPoint x="1197.4" y="539" />
+                <mxPoint x="704" y="2665" />
+                <mxPoint x="856" y="2665" />
+                <mxPoint x="856" y="807" />
+                <mxPoint x="1197" y="807" />
               </Array>
             </mxGeometry>
           </mxCell>
@@ -1455,10 +1472,8 @@
             <mxGeometry relative="1" as="geometry">
               <mxPoint y="339.32" as="offset" />
               <Array as="points">
-                <mxPoint x="1309.07" y="1162" />
-                <mxPoint x="909.27" y="1162" />
-                <mxPoint x="909.27" y="1779" />
-                <mxPoint x="681.1" y="1779" />
+                <mxPoint x="1296" y="1736" />
+                <mxPoint x="660" y="1736" />
               </Array>
             </mxGeometry>
           </mxCell>
@@ -1563,9 +1578,8 @@
             <mxGeometry relative="1" as="geometry">
               <mxPoint y="-787.9" as="offset" />
               <Array as="points">
-                <mxPoint x="1715.07" y="539" />
-                <mxPoint x="1715.07" y="1515" />
-                <mxPoint x="1174.27" y="1515" />
+                <mxPoint x="1715" y="1485" />
+                <mxPoint x="1140" y="1485" />
               </Array>
             </mxGeometry>
           </mxCell>
@@ -1575,12 +1589,8 @@
             <mxGeometry relative="1" as="geometry">
               <mxPoint y="206.01" as="offset" />
               <Array as="points">
-                <mxPoint x="740.3" y="1789" />
-                <mxPoint x="1850.07" y="1789" />
-                <mxPoint x="1850.07" y="500" />
-                <mxPoint x="1726.07" y="500" />
-                <mxPoint x="1726.07" y="1525" />
-                <mxPoint x="1256.27" y="1525" />
+                <mxPoint x="712" y="1554" />
+                <mxPoint x="1205" y="1554" />
               </Array>
             </mxGeometry>
           </mxCell>
@@ -1633,9 +1643,8 @@
             <mxGeometry relative="1" as="geometry">
               <mxPoint x="293.65" y="73.5" as="offset" />
               <Array as="points">
-                <mxPoint x="1174.27" y="1659" />
-                <mxPoint x="1174.27" y="1675" />
-                <mxPoint x="1893.57" y="1675" />
+                <mxPoint x="1140" y="1750" />
+                <mxPoint x="1894" y="1750" />
               </Array>
             </mxGeometry>
           </mxCell>
@@ -1650,6 +1659,15 @@
             <mxGeometry height="120" width="230" x="2073.5699999999997" as="geometry" />
           </mxCell>
         </UserObject>
+        <UserObject label="rule tables" status="proposed" feature="employee-target" id="0Z4suRJO8P-oX9QzBl6A-3">
+          <mxCell edge="1" parent="1" source="e-policy" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="e-store">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1460" y="1894" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
       </root>
     </mxGraphModel>
   </diagram>
@@ -1658,22 +1676,22 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <UserObject label="0 · Freeze retail contracts&lt;br&gt;234 tests + fixtures + environment" type="datastore" status="proposed" feature="migration" id="m-baseline">
+        <UserObject label="0 · FUCQ-21 freeze retail contracts&lt;br&gt;before the demo" type="datastore" status="proposed" feature="migration" id="m-baseline">
           <mxCell parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=12;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="100" width="260" x="104.25" y="390" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="1 · Focused correctness fixes&lt;br&gt;empty result · exact member · preview" type="service" status="proposed" feature="migration" id="m-fixes">
+        <UserObject label="1 · FUCQ-26 typed terms first&lt;br&gt;FUCQ-22 to 25 in parallel" type="service" status="proposed" feature="migration" id="m-fixes">
           <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="82.75" y="669" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="2 · Extract shared computation&lt;br&gt;retain retail exports + API façade" type="service" status="proposed" feature="migration" id="m-extract">
+        <UserObject label="2 · FUCQ-27/28 shared core&lt;br&gt;after the demo, under baseline" type="service" status="proposed" feature="migration" id="m-extract">
           <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="93.75" y="918" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="3 · Add employee consumer&lt;br&gt;scheme profile + durable briefs" type="service" status="proposed" feature="migration" id="m-employee">
+        <UserObject label="3 · Employee consumer (FUCQ-29)&lt;br&gt;calls rankCars() until step 2" type="service" status="proposed" feature="migration" id="m-employee">
           <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="105.75" y="1167" as="geometry" />
           </mxCell>
@@ -1708,7 +1726,7 @@
             <mxGeometry height="70" width="260" x="390" y="2163" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Compare old/new on identical inputs.&lt;br&gt;Zero unexplained output changes.&lt;br&gt;Intentional fixes get their own baseline." type="note" status="proposed" feature="migration" id="m-note">
+        <UserObject label="Compare old/new on identical inputs.&lt;br&gt;Zero unexplained output changes.&lt;br&gt;Re-point FUCQ-29 once FUCQ-27 lands." type="note" status="proposed" feature="migration" id="m-note">
           <mxCell parent="1" style="shape=note;whiteSpace=wrap;html=1;size=14;align=left;spacingLeft=6;" vertex="1">
             <mxGeometry height="70" width="220" x="439.5" as="geometry" />
           </mxCell>
@@ -1875,7 +1893,7 @@
             </mxGeometry>
           </mxCell>
         </UserObject>
-        <UserObject label="GitHub Pages / CDN&lt;br&gt;existing EDS frontend" type="service" status="built" feature="deployment" id="d-pages">
+        <UserObject label="GitHub Pages / CDN&lt;br&gt;retail demo only · from main" type="service" status="built" feature="deployment" id="d-pages">
           <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" vertex="1">
             <mxGeometry height="70" width="260" x="12" y="1176" as="geometry" />
           </mxCell>
@@ -1885,7 +1903,7 @@
             <mxGeometry height="70" width="260" x="12" y="1502.67" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Render · existing backend host" type="boundary" status="built" feature="deployment" id="d-render">
+        <UserObject label="Render · existing retail backend" type="boundary" status="built" feature="deployment" id="d-render">
           <mxCell parent="1" style="swimlane;html=1;startSize=24;strokeColor=#6c8ebf;fillColor=#dae8fc;" vertex="1">
             <mxGeometry height="176" width="625" x="2110.38" y="1825" as="geometry" />
           </mxCell>
@@ -1895,22 +1913,17 @@
             <mxGeometry height="70" width="260" x="10" y="86" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Employee modules&lt;br&gt;additive contracts + feature switch" type="service" status="proposed" feature="deployment" id="d-employee">
-          <mxCell parent="d-render" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
-            <mxGeometry height="70" width="260" x="320" y="86" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <UserObject label="Durable transactional SQL&lt;br&gt;provider/connectivity to agree" type="datastore" status="proposed" feature="deployment" id="d-db">
+        <UserObject label="Managed PostgreSQL&lt;br&gt;synthetic data only" type="datastore" status="proposed" feature="deployment" id="d-db">
           <mxCell parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=12;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="100" width="260" x="2472.04" y="2175" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Reliable background invocation&lt;br&gt;explicit ticks / future scheduler" type="service" status="proposed" feature="deployment" id="d-runner">
+        <UserObject label="Presenter ticks&lt;br&gt;no unattended runner for demo" type="service" status="proposed" feature="deployment" id="d-runner">
           <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="322" y="1529" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Mail provider + sender&lt;br&gt;Microsoft or Brevo" type="external" status="proposed" feature="deployment" id="d-mail">
+        <UserObject label="Mail adapter&lt;br&gt;outbox viewer + one real transport" type="external" status="proposed" feature="deployment" id="d-mail">
           <mxCell parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="110" width="240" x="2182.04" y="2175" as="geometry" />
           </mxCell>
@@ -1930,27 +1943,27 @@
             <mxGeometry height="100" width="260" x="728" y="1166" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Later BMW environment · integration conditions" type="boundary" status="proposed" feature="deployment" id="d-future">
+        <UserObject label="Later: target GCSP AWS platform · integration conditions" type="boundary" status="proposed" feature="deployment" id="d-future">
           <mxCell parent="1" style="swimlane;html=1;startSize=24;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="164" width="1426" x="1077" y="1445" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Identity + role authority&lt;br&gt;shared demo key insufficient" type="external" status="proposed" feature="deployment" id="d-identity">
+        <UserObject label="Target sign-in + roles&lt;br&gt;corporate SSO; demo key insufficient" type="external" status="proposed" feature="deployment" id="d-identity">
           <mxCell parent="d-future" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="110" width="240" x="10" y="34" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Authoritative BMW data&lt;br&gt;facts · scheme · quotes · stock" type="external" status="proposed" feature="deployment" id="d-data">
+        <UserObject label="Target AWS services&lt;br&gt;fleet · pricing · eligibility data" type="external" status="proposed" feature="deployment" id="d-data">
           <mxCell parent="d-future" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="110" width="240" x="346" y="34" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Sanctioned actions + events&lt;br&gt;exclusive claims + reconciliation" type="external" status="proposed" feature="deployment" id="d-actions">
+        <UserObject label="Target order + hold APIs&lt;br&gt;idempotent claims + reconciliation" type="external" status="proposed" feature="deployment" id="d-actions">
           <mxCell parent="d-future" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="110" width="240" x="695" y="34" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Approved host + operations&lt;br&gt;durability · ownership · monitoring" type="service" status="proposed" feature="deployment" id="d-ops">
+        <UserObject label="Target Angular host&lt;br&gt;web components bundled in app" type="service" status="proposed" feature="deployment" id="d-ops">
           <mxCell parent="d-future" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="1078" y="74" as="geometry" />
           </mxCell>
@@ -1960,7 +1973,7 @@
             <mxGeometry height="70" width="260" x="711" y="1529" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Confirm live Render branch/revision/plan.&lt;br&gt;render.yaml is declared configuration.&lt;br&gt;Sleeping timers are not a job runner." type="note" status="proposed" feature="deployment" id="d-unknown">
+        <UserObject label="Confirm live Render branch/plan (GC-001).&lt;br&gt;GCSP runs in its own environment.&lt;br&gt;Presenter ticks, not a job runner." type="note" status="proposed" feature="deployment" id="d-unknown">
           <mxCell parent="1" style="shape=note;whiteSpace=wrap;html=1;size=14;align=left;spacingLeft=6;" vertex="1">
             <mxGeometry height="70" width="220" x="1308" as="geometry" />
           </mxCell>
@@ -2003,19 +2016,6 @@
                 <mxPoint x="80.83" y="1804" />
                 <mxPoint x="2250.38" y="1804" />
                 <mxPoint x="2250.38" y="1820" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </UserObject>
-        <UserObject label="employee HTTP" status="proposed" feature="deployment" id="YrjZhiCApfQqZ6B8_1RV-6">
-          <mxCell edge="1" parent="1" source="d-browser" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.6667;exitY=1;entryX=0.125;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="d-employee">
-            <mxGeometry relative="1" as="geometry">
-              <mxPoint x="-1088.79" y="-100.5" as="offset" />
-              <Array as="points">
-                <mxPoint x="185.33" y="1794" />
-                <mxPoint x="2260.38" y="1794" />
-                <mxPoint x="2260.38" y="1895" />
-                <mxPoint x="2467.25" y="1895" />
               </Array>
             </mxGeometry>
           </mxCell>
@@ -2064,94 +2064,6 @@
             </mxGeometry>
           </mxCell>
         </UserObject>
-        <UserObject label="transactions + outbox" status="proposed" feature="deployment" id="YrjZhiCApfQqZ6B8_1RV-11">
-          <mxCell edge="1" parent="1" source="d-employee" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.6666;exitY=1;entryX=0.5;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="d-db">
-            <mxGeometry relative="1" as="geometry">
-              <mxPoint y="7.5" as="offset" />
-              <Array as="points">
-                <mxPoint x="2627.04" y="1996" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </UserObject>
-        <UserObject label="replayable job invocation" status="proposed" feature="deployment" id="YrjZhiCApfQqZ6B8_1RV-12">
-          <mxCell edge="1" parent="1" source="d-runner" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.5;exitY=1;entryX=0.25;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="d-employee">
-            <mxGeometry relative="1" as="geometry">
-              <mxPoint x="-977.31" y="-90.5" as="offset" />
-              <Array as="points">
-                <mxPoint x="491.5" y="1784" />
-                <mxPoint x="2270.38" y="1784" />
-                <mxPoint x="2270.38" y="1885" />
-                <mxPoint x="2504.13" y="1885" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </UserObject>
-        <UserObject label="committed jobs only" status="proposed" feature="deployment" id="YrjZhiCApfQqZ6B8_1RV-13">
-          <mxCell edge="1" parent="1" source="d-employee" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.3333;exitY=1;entryX=0.5;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="d-mail">
-            <mxGeometry relative="1" as="geometry">
-              <mxPoint x="-47.34" y="73.5" as="offset" />
-              <Array as="points">
-                <mxPoint x="2528.71" y="1996" />
-                <mxPoint x="2528.71" y="2012" />
-                <mxPoint x="2302.04" y="2012" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </UserObject>
-        <UserObject label="same application contracts" status="proposed" feature="deployment" id="YrjZhiCApfQqZ6B8_1RV-14">
-          <mxCell edge="1" parent="1" source="d-providers" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.5;exitY=1;entryX=0.875;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="d-employee">
-            <mxGeometry relative="1" as="geometry">
-              <mxPoint y="-61.5" as="offset" />
-              <Array as="points">
-                <mxPoint x="2688.5" y="1820" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </UserObject>
-        <UserObject label="replace identity adapter" status="proposed" feature="deployment" id="YrjZhiCApfQqZ6B8_1RV-15">
-          <mxCell edge="1" parent="1" source="d-identity" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="d-employee">
-            <mxGeometry relative="1" as="geometry">
-              <mxPoint x="-228.44" y="-60.5" as="offset" />
-              <Array as="points">
-                <mxPoint x="1230" y="1604" />
-                <mxPoint x="1230" y="1630" />
-                <mxPoint x="1671.5" y="1630" />
-                <mxPoint x="1671.5" y="1754" />
-                <mxPoint x="2577.88" y="1754" />
-                <mxPoint x="2577.88" y="1820" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </UserObject>
-        <UserObject label="replace data adapters" status="proposed" feature="deployment" id="YrjZhiCApfQqZ6B8_1RV-16">
-          <mxCell edge="1" parent="1" source="d-data" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.5;exitY=1;entryX=0.625;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="d-employee">
-            <mxGeometry relative="1" as="geometry">
-              <mxPoint x="-302.12" y="-50.5" as="offset" />
-              <Array as="points">
-                <mxPoint x="1572.5" y="1604" />
-                <mxPoint x="1572.5" y="1620" />
-                <mxPoint x="1797.5" y="1620" />
-                <mxPoint x="1797.5" y="1744" />
-                <mxPoint x="2614.75" y="1744" />
-                <mxPoint x="2614.75" y="1820" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </UserObject>
-        <UserObject label="replace action/event adapters" status="proposed" feature="deployment" id="YrjZhiCApfQqZ6B8_1RV-17">
-          <mxCell edge="1" parent="1" source="d-actions" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.5;exitY=1;entryX=0.75;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="d-employee">
-            <mxGeometry relative="1" as="geometry">
-              <mxPoint x="-372.57" y="-40.5" as="offset" />
-              <Array as="points">
-                <mxPoint x="1938.5" y="1604" />
-                <mxPoint x="1938.5" y="1734" />
-                <mxPoint x="2651.63" y="1734" />
-                <mxPoint x="2651.63" y="1820" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </UserObject>
         <UserObject label="later host transition" status="proposed" feature="deployment" id="YrjZhiCApfQqZ6B8_1RV-18">
           <mxCell edge="1" parent="1" source="d-ops" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.5;exitY=1;entryX=0.882;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="d-render">
             <mxGeometry relative="1" as="geometry">
@@ -2166,25 +2078,12 @@
             </mxGeometry>
           </mxCell>
         </UserObject>
-        <UserObject label="same decision/allocation services" status="proposed" feature="deployment" id="YrjZhiCApfQqZ6B8_1RV-19">
-          <mxCell edge="1" parent="1" source="d-simulation" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0.5;exitY=1;entryX=0.375;entryY=0;edgeStyle=orthogonalEdgeStyle;" target="d-employee">
-            <mxGeometry relative="1" as="geometry">
-              <mxPoint x="-817.25" y="-80.5" as="offset" />
-              <Array as="points">
-                <mxPoint x="868.5" y="1774" />
-                <mxPoint x="2280.38" y="1774" />
-                <mxPoint x="2280.38" y="1875" />
-                <mxPoint x="2541" y="1875" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </UserObject>
         <UserObject label="&lt;b&gt;Status&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#e1d5e7;border:1px dashed #9673a6;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Proposed — designed, not built yet&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#d5e8d4;border:1px solid #82b366;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;In progress — being built&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#dae8fc;border:1px solid #6c8ebf;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Built — implemented and tested&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#f5f5f5;border:1px dashed #b85450;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Retiring — built, being removed" legend="status" id="YrjZhiCApfQqZ6B8_1RV-20">
           <mxCell parent="1" style="text;html=1;align=left;verticalAlign=top;spacing=8;rounded=1;fillColor=#ffffff;strokeColor=#999999;" vertex="1">
             <mxGeometry height="120" width="230" x="2904" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Configured EDS sync target / poc-ret-eds-sites" type="external" status="built" feature="deployment" id="d-eds">
+        <UserObject label="Configured EDS sync target&lt;br&gt;retail block only, not GCSP" type="external" status="built" feature="deployment" id="d-eds">
           <mxCell parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" vertex="1">
             <mxGeometry height="110" width="240" x="100" y="950" as="geometry" />
           </mxCell>
@@ -2198,9 +2097,127 @@
             </mxGeometry>
           </mxCell>
         </UserObject>
-        <UserObject label="API defaults: block rewrite + index constant. / Verify both plus employee / offer origin. / Main also triggers EDS sync." type="note" status="proposed" feature="gcsp-hld" id="d-api-config">
+        <UserObject label="Retail API defaults unchanged.&lt;br&gt;GCSP frontend names its own backend.&lt;br&gt;main stays untouched until after demo." type="note" status="proposed" feature="gcsp-hld" id="d-api-config">
           <mxCell parent="1" style="shape=note;whiteSpace=wrap;html=1;size=14;align=left;spacingLeft=6;" vertex="1">
             <mxGeometry height="100" width="330" x="1900" y="400" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Render · separate GCSP environment" type="boundary" status="proposed" feature="deployment" id="d-gcsp-env">
+          <mxCell parent="1" style="swimlane;html=1;startSize=24;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="240" width="620" x="2795.38" y="1825" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="GCSP static frontend&lt;br&gt;demo pages + new blocks" type="client" status="proposed" feature="deployment" id="d-gcsp-static">
+          <mxCell parent="d-gcsp-env" style="shape=mxgraph.flowchart.display;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="20" y="44" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="GCSP Node backend&lt;br&gt;employee + Greg modules" type="service" status="proposed" feature="deployment" id="d-gcsp-api">
+          <mxCell parent="d-gcsp-env" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="340" y="44" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="employee HTTP" status="proposed" feature="deployment" id="uL1F5al8Hi2hmm2fJCul-3">
+          <mxCell edge="1" parent="d-gcsp-env" source="d-gcsp-static" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="d-gcsp-api">
+            <mxGeometry relative="1" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="deploys from gcsp-poc" status="proposed" feature="deployment" id="uL1F5al8Hi2hmm2fJCul-1">
+          <mxCell edge="1" parent="1" source="d-branch" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="d-gcsp-env">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="834" y="562" />
+                <mxPoint x="3105" y="562" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="employee + Greg" status="proposed" feature="deployment" id="uL1F5al8Hi2hmm2fJCul-2">
+          <mxCell edge="1" parent="1" source="d-browser" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="d-gcsp-static">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="142" y="1747" />
+                <mxPoint x="2945" y="1747" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="transactions + outbox" status="proposed" feature="deployment" id="uL1F5al8Hi2hmm2fJCul-4">
+          <mxCell edge="1" parent="1" source="d-gcsp-api" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="d-db">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="3265" y="2225" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="committed jobs only" status="proposed" feature="deployment" id="uL1F5al8Hi2hmm2fJCul-5">
+          <mxCell edge="1" parent="1" source="d-gcsp-api" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="d-mail">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="3265" y="2120" />
+                <mxPoint x="2302" y="2120" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="same contracts" status="proposed" feature="deployment" id="uL1F5al8Hi2hmm2fJCul-6">
+          <mxCell edge="1" parent="1" source="d-providers" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="d-gcsp-api">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="3265" y="1544" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="presenter ticks" status="proposed" feature="deployment" id="uL1F5al8Hi2hmm2fJCul-7">
+          <mxCell edge="1" parent="1" source="d-runner" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="d-gcsp-api">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="452" y="1733" />
+                <mxPoint x="3265" y="1733" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="same services" status="proposed" feature="deployment" id="uL1F5al8Hi2hmm2fJCul-8">
+          <mxCell edge="1" parent="1" source="d-simulation" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="d-gcsp-api">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="841" y="1719" />
+                <mxPoint x="3265" y="1719" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="replace identity adapter" status="proposed" feature="deployment" id="uL1F5al8Hi2hmm2fJCul-9">
+          <mxCell edge="1" parent="1" source="d-identity" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="d-gcsp-api">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1207" y="1705" />
+                <mxPoint x="3265" y="1705" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="replace data adapters" status="proposed" feature="deployment" id="uL1F5al8Hi2hmm2fJCul-10">
+          <mxCell edge="1" parent="1" source="d-data" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="d-gcsp-api">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1543" y="1691" />
+                <mxPoint x="3265" y="1691" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="replace action adapters" status="proposed" feature="deployment" id="uL1F5al8Hi2hmm2fJCul-11">
+          <mxCell edge="1" parent="1" source="d-actions" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="d-gcsp-api">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1892" y="1677" />
+                <mxPoint x="3265" y="1677" />
+              </Array>
+            </mxGeometry>
           </mxCell>
         </UserObject>
       </root>
@@ -2216,12 +2233,12 @@
             <mxGeometry height="110" width="240" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Collect · validate · publish / 10,000 distinct signatures" type="service" status="proposed" feature="gcsp-hld" id="v-publish">
+        <UserObject label="Collect · validate · publish&lt;br&gt;10,000 distinct configurations" type="service" status="proposed" feature="gcsp-hld" id="v-publish">
           <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="350" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Immutable corpus + manifest / configurations + VIN index" type="datastore" status="proposed" feature="gcsp-hld" id="v-corpus">
+        <UserObject label="Immutable corpus + manifest&lt;br&gt;keyed by configuration" type="datastore" status="proposed" feature="gcsp-hld" id="v-corpus">
           <mxCell parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=12;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="100" width="260" x="700" as="geometry" />
           </mxCell>
@@ -2231,12 +2248,12 @@
             <mxGeometry height="400" width="680" x="700" y="220" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Synthetic VIN HTTP lookup / FUCQ-19; five WMI fixtures" type="service" status="proposed" feature="gcsp-hld" id="v-lookup">
+        <UserObject label="Synthetic vehicle lookup module&lt;br&gt;HTTP route wraps same module" type="service" status="proposed" feature="gcsp-hld" id="v-lookup">
           <mxCell parent="v-node" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="40" y="60" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Vehicle evidence adapter / consumes real HTTP contract" type="service" status="proposed" feature="gcsp-hld" id="v-adapter">
+        <UserObject label="Vehicle evidence adapter&lt;br&gt;in-process port · contract tests" type="service" status="proposed" feature="gcsp-hld" id="v-adapter">
           <mxCell parent="v-node" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="370" y="60" as="geometry" />
           </mxCell>
@@ -2246,7 +2263,7 @@
             <mxGeometry height="70" width="260" x="370" y="220" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="HTTP lookup" status="proposed" feature="gcsp-hld" id="v04-f5">
+        <UserObject label="in-process port" status="proposed" feature="gcsp-hld" id="v04-f5">
           <mxCell edge="1" parent="v-node" source="v-adapter" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="v-lookup">
             <mxGeometry relative="1" as="geometry" />
           </mxCell>
@@ -2255,9 +2272,20 @@
           <mxCell edge="1" parent="v-node" source="v-lookup" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="v-guard">
             <mxGeometry relative="1" as="geometry">
               <Array as="points">
-                <mxPoint x="170" y="255" />
+                <mxPoint x="170" y="153" />
+                <mxPoint x="500" y="153" />
               </Array>
             </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="Synthetic VIN generator&lt;br&gt;delivered / current cars only" type="service" status="proposed" feature="gcsp-hld" id="v-vin">
+          <mxCell parent="v-node" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="40" y="190" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="VIN for current car" status="proposed" feature="gcsp-hld" id="o9erai_4YWw1Ws9iR0XT-1">
+          <mxCell edge="1" parent="v-node" source="v-vin" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="v-lookup">
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </UserObject>
         <UserObject label="Catalogue/spec port / FUCQ-14; model evidence" type="service" status="proposed" feature="gcsp-hld" id="v-catalogue">
@@ -2290,7 +2318,7 @@
             <mxGeometry height="70" width="260" x="1500" y="260" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Exact released stock + claims / separate authority, not VIN lookup" type="external" status="proposed" feature="gcsp-hld" link="data:page/id,page-employee-data-adapters" id="v-stock">
+        <UserObject label="Exact released stock + claims&lt;br&gt;synthetic order reference · no VIN yet" type="external" status="proposed" feature="gcsp-hld" link="data:page/id,page-employee-data-adapters" id="v-stock">
           <mxCell parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="110" width="240" x="1500" y="470" as="geometry" />
           </mxCell>
@@ -2352,7 +2380,9 @@
           <mxCell edge="1" parent="1" source="v-snapshots" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="v-guard">
             <mxGeometry relative="1" as="geometry">
               <Array as="points">
-                <mxPoint x="480" y="475" />
+                <mxPoint x="675" y="360" />
+                <mxPoint x="675" y="387" />
+                <mxPoint x="1200" y="387" />
               </Array>
             </mxGeometry>
           </mxCell>
@@ -2434,7 +2464,7 @@
             <mxGeometry height="100" width="260" x="800" y="210" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Released exact cars / available after real release" type="datastore" status="proposed" feature="gcsp-hld" id="p-released">
+        <UserObject label="Released exact cars&lt;br&gt;on scheme stock account · order ref" type="datastore" status="proposed" feature="gcsp-hld" id="p-released">
           <mxCell parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=12;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="100" width="260" x="1200" y="210" as="geometry" />
           </mxCell>
@@ -2449,7 +2479,7 @@
             <mxGeometry height="110" width="240" x="800" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Effective terms + policy / active quote stability proposed" type="service" status="proposed" feature="gcsp-hld" id="p-terms">
+        <UserObject label="Effective terms + policy&lt;br&gt;points · £1/point top-up assumption" type="service" status="proposed" feature="gcsp-hld" id="p-terms">
           <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="1200" as="geometry" />
           </mxCell>
@@ -2459,12 +2489,12 @@
             <mxGeometry height="70" width="260" x="1600" y="420" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Order handoff + reference / pending until acknowledged" type="service" status="proposed" feature="gcsp-hld" id="p-order">
+        <UserObject label="Order handoff + reference&lt;br&gt;sent to ordering after approval" type="service" status="proposed" feature="gcsp-hld" id="p-order">
           <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="1200" y="420" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Approval + employee tasks / named owner; explicit outcome" type="service" status="proposed" feature="gcsp-hld" id="p-approval">
+        <UserObject label="Approval stages (target names)&lt;br&gt;HR (configurable) · sales manager" type="service" status="proposed" feature="gcsp-hld" id="p-approval">
           <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="800" y="420" as="geometry" />
           </mxCell>
@@ -2474,7 +2504,7 @@
             <mxGeometry height="110" width="240" x="400" y="420" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Appointment request + ack / separate return + collection" type="service" status="proposed" feature="gcsp-hld" id="p-booking">
+        <UserObject label="Appointment (target states)&lt;br&gt;scheduled · completed · no-show" type="service" status="proposed" feature="gcsp-hld" id="p-booking">
           <mxCell parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="800" y="630" as="geometry" />
           </mxCell>
@@ -2710,12 +2740,12 @@
             <mxGeometry height="70" width="260" x="222.25" y="283" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Demand / choice prediction&lt;br&gt;accept · alternatives · wait&lt;br&gt;probabilities + uncertainty" type="service" status="proposed" feature="greg-predictive-planning" id="gpp-predict">
+        <UserObject label="Learned choice prediction&lt;br&gt;shown alongside · synthetic-trained&lt;br&gt;probabilities + uncertainty" type="service" status="proposed" feature="greg-predictive-planning" id="gpp-predict">
           <mxCell parent="gpp-runtime" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="47" y="532" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Demand + fit baselines&lt;br&gt;shared deterministic core&lt;br&gt;comparison / visible fallback" type="service" status="proposed" feature="greg-predictive-planning" id="gpp-base">
+        <UserObject label="Demand + fit baselines&lt;br&gt;drive the demo plan&lt;br&gt;shared deterministic core" type="service" status="proposed" feature="greg-predictive-planning" id="gpp-base">
           <mxCell parent="gpp-runtime" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="663" y="532" as="geometry" />
           </mxCell>
@@ -2808,6 +2838,15 @@
             </mxGeometry>
           </mxCell>
         </UserObject>
+        <UserObject label="primary demand" status="proposed" feature="greg-predictive-planning" id="TB7Ku38IE9SJnn1IFO---1">
+          <mxCell edge="1" parent="gpp-runtime" source="gpp-base" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="gpp-planner">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="793.05" y="816" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
         <UserObject label="Greg: next best action&lt;br&gt;order list · reasons · alternatives&lt;br&gt;edit / recalculate / submit" type="client" status="proposed" feature="greg-predictive-planning" id="gpp-greg">
           <mxCell parent="1" style="shape=mxgraph.flowchart.display;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="12" y="2470" as="geometry" />
@@ -2828,7 +2867,7 @@
             <mxGeometry height="70" width="220" x="818.81" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Synthetic result ≠ BMW accuracy&lt;br&gt;model + solver refined later&lt;br&gt;immutable history stays explainable" type="note" status="proposed" feature="greg-predictive-planning" id="gpp-valid">
+        <UserObject label="Synthetic result ≠ BMW accuracy.&lt;br&gt;Baseline drives the demo plan.&lt;br&gt;Immutable history stays explainable." type="note" status="proposed" feature="greg-predictive-planning" id="gpp-valid">
           <mxCell parent="1" style="shape=note;whiteSpace=wrap;html=1;size=14;align=left;spacingLeft=6;" vertex="1">
             <mxGeometry height="70" width="220" x="818.81" y="80" as="geometry" />
           </mxCell>
