@@ -35,7 +35,9 @@ story, implementation and review, and pass it to every child agent.
 
 ## Commands
 
-Zero runtime dependencies on both sides; Node 18+. The only dev dependency is `jsdom` (for tests).
+Zero runtime dependencies on both sides, with one exception: GCSP server code may use `pg` for its
+PostgreSQL repository (HLD review Q4). Any other runtime dependency needs Gary's approval. Node 18+.
+The only dev dependency is `jsdom` (for tests).
 
 ```sh
 cd server && npm start        # matching API on http://localhost:8787

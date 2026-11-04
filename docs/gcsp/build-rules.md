@@ -8,6 +8,10 @@ All planned capabilities in the candidate demonstration journey and HLD must wor
 
 **Agreed exception, Russell, 4 November 2026:** follow Gary's FUCQ-6 Q5 recommendation. FUCQ-21 and FUCQ-26 go first; the employee policy uses `rankCars()` directly; FUCQ-22–25 may proceed in parallel; FUCQ-27/28 move to **after 12 November 2026**, protected by the retail baseline. This changes the timing of those two extraction stories. The remaining planned capabilities retain the full-build direction. The [HLD agreement](hld-agreement-2026-11-04.md) records all five accepted review changes.
 
+**Agreed exception, Gary, 4 November 2026 (equal-authority rule, `AGENTS.md`):** the demo data route is real configurations with synthetic stock on top. FUCQ-77 collects at least 200 real, constructible configurations covering every scheme model line, and FUCQ-78 generates synthetic scheme stock on them. FUCQ-61's 10,000-configuration run moves to **after 12 November 2026** if still wanted; FUCQ-62 keeps corpus publication.
+
+**Runtime dependencies (review Q4, 4 November 2026):** the zero-runtime-dependency convention is relaxed for `pg` only, for the GCSP PostgreSQL repository. Any other runtime dependency needs Gary's approval first.
+
 The existing distinction between functioning demonstration behaviour through adapters and future authorised BMW integration remains in force. Architecture review, backlog authoring and execution follow the agreed workflow; recording this direction does not start pollers or publish Jira changes.
 
 ## Plausible assumptions in one shared source

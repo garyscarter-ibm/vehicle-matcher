@@ -16,6 +16,10 @@ The missing-reference blocker is cleared by this direction. The first body-desig
 
 Use the project's available product-design or Impeccable guidance to develop and critique the redesigned body. Later agents follow the supplied shell references, this direction and the resulting reviewed implementation reference. Raise deliberate departures through the same design review. The IBM Carbon service blueprint remains a separate explanatory artifact.
 
+## Embeddable blocks
+
+Employee and Greg UI are separate GCSP blocks that import the shared kit; `vehicle-matcher` stays retail-only (HLD review Q8). Each GCSP block also mounts as a standard custom element, so it can drop into the target platform's Angular app (Q18). That app's content security policy forbids inline scripts and `eval`, so GCSP blocks and their pages use no inline `<script>` bodies, inline event-handler attributes (`onclick=` and the like), `eval`, `new Function` or string timers. UI stories state this in `acceptance` and check it in `validate`.
+
 ## Author and brief each story
 
 Use the existing story sections so the obligations survive Jira import:
