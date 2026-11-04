@@ -1,7 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import pg from 'pg';
 import { createMemoryRepository, createMemoryStore } from '../gcsp/repository/memory.js';
+import { createPostgresRepository } from '../gcsp/repository/postgres.js';
 import { ok, result, inputDigest, TABLES, FOUNDATION_TABLES } from '../gcsp/repository/core.js';
+import { migrate, migrationStatus, loadMigrations } from '../gcsp/migrations/index.js';
+const responseFixtures = JSON.parse(readFileSync(new URL('./fixtures/gcsp-repository-outcomes.json', import.meta.url), 'utf8'));
 
 const ctx = (runId = 'run-a') => ({ environmentId: `environment-${runId}`, runId, principalId: 'trusted-principal', roles: ['employee'] });
 let serial = 0;
@@ -78,10 +83,11 @@ export function repositoryContract(provider, factory) {
       ]);
       assert.equal(outcomes.filter((outcome) => outcome.status === 'ok').length, 1);
       const stale = outcomes.find((outcome) => outcome.status === 'stale-version');
-      assert.deepEqual(stale, result('stale-version', { expectedVersion: 1, currentVersion: 2, resource: ref('stock', { orderUuid: 'car-a' }) }));
+      assert.deepEqual(stale, responseFixtures.staleVersion);
       assert.equal((await repository.query(ctx(), 'claims')).value.length, 1);
       const conflict = await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput({ holdId: 'hold-b', claimId: 'claim-b', employeeId: 'employee-b', entitlementSlotId: 'slot-b', quoteId: 'quote-ba', expectedStockVersion: 2 })));
       assert.equal(conflict.status, 'conflict'); assert.equal(conflict.reason, 'car-occupied');
+      assert.deepEqual(conflict, responseFixtures.conflict);
       assert.equal(JSON.stringify(conflict).includes('employee-a'), false);
     }));
     await t.test('configuration identity never collapses two exact cars', () => withRepository(async (repository) => {
@@ -206,10 +212,51 @@ export function repositoryContract(provider, factory) {
     }));
     await t.test('closed provider returns UI-safe unavailable shape', () => withRepository(async (repository) => {
       await repository.close();
-      assert.deepEqual(await repository.query(ctx(), 'stock'), result('unavailable', { reason: 'Repository is unavailable', retryable: true }));
+      assert.deepEqual(await repository.query(ctx(), 'stock'), responseFixtures.unavailable);
+    }));
+    await t.test('storage types protect occupancy constraints and the run environment', () => withRepository(async (repository) => {
+      const invalidHold = await repository.transaction(ctx(), command(), (tx) => tx.insert('holds', {
+        runId: 'run-a', holdId: 'unknown-state', orderUuid: 'car-a', employeeId: 'employee-a',
+        entitlementSlotId: 'slot-a', type: 'cart', state: 'unknown', quoteId: 'quote-a',
+      }));
+      assert.equal(invalidHold.status, 'invalid');
+      const moved = await repository.transaction(ctx(), command(), (tx) => tx.compareAndSwap(ref('runs', {}), 1, { environmentId: 'other-environment' }));
+      assert.equal(moved.status, 'forbidden');
+      assert.equal((await repository.query(ctx(), 'stock')).status, 'ok');
     }));
   });
 }
+
+test('postgresql native constraints reject a second occupying hold and claim', {
+  skip: process.env.GCSP_DATABASE_URL === undefined ? 'GCSP_DATABASE_URL is unset; native SQL constraints were not run' : false,
+}, async () => {
+  const schema = `gcsp_constraints_${process.pid}`;
+  const pool = new pg.Pool({ connectionString: process.env.GCSP_DATABASE_URL, connectionTimeoutMillis: 5000, statement_timeout: 10000 });
+  pool.on('error', () => {});
+  let created = false;
+  const repository = createPostgresRepository({ schema });
+  try {
+    try { await pool.query(`CREATE SCHEMA "${schema}"`); created = true; }
+    catch { throw new Error('PostgreSQL native-constraint fixture unavailable'); }
+    assert.equal((await repository.open()).status, 'ok'); await setup(repository);
+    const claimed = await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput()));
+    assert.equal(claimed.status, 'ok');
+    for (const state of ['active', 'claim-pending', 'release-pending', 'selection-pending']) {
+      const duplicate = { ...claimed.value.hold, holdId: `duplicate-${state}`, state };
+      await assert.rejects(pool.query(`INSERT INTO "${schema}".holds (data) VALUES ($1::jsonb)`, [JSON.stringify(duplicate)]), (error) => error.code === '23505');
+    }
+    await pool.query(`INSERT INTO "${schema}".holds (data) VALUES ($1::jsonb)`, [JSON.stringify({ ...claimed.value.hold, holdId: 'terminal', state: 'released' })]);
+    for (const state of ['active', 'claim-pending', 'release-pending', 'selection-pending']) {
+      const duplicate = { ...claimed.value.claim, claimId: `duplicate-${state}`, holdId: 'terminal', state };
+      await assert.rejects(pool.query(`INSERT INTO "${schema}".claims (data) VALUES ($1::jsonb)`, [JSON.stringify(duplicate)]), (error) => error.code === '23505');
+    }
+  } finally {
+    await repository.close();
+    try { if (created) await pool.query(`DROP SCHEMA "${schema}" CASCADE`); }
+    catch { throw new Error('PostgreSQL native-constraint fixture cleanup incomplete'); }
+    finally { await pool.end(); }
+  }
+});
 
 repositoryContract('memory', async () => {
   const store = createMemoryStore();
@@ -221,4 +268,153 @@ test('memory: explicit store and complete foundation vocabulary', async () => {
   assert.equal(FOUNDATION_TABLES.length, 17);
   assert.equal(Object.keys(TABLES).length, 23);
   assert.equal(inputDigest({ b: 2, a: 1 }), inputDigest({ a: 1, b: 2 }));
+});
+
+if (process.env.GCSP_DATABASE_URL === undefined) {
+  test('postgresql: shared TransactionRepository contract', { skip: 'GCSP_DATABASE_URL is unset; PostgreSQL integration was not run' }, () => {});
+} else {
+  let schemaSerial = 0;
+  repositoryContract('postgresql', async () => {
+    const schema = `gcsp_contract_${process.pid}_${++schemaSerial}`;
+    const pool = new pg.Pool({ connectionString: process.env.GCSP_DATABASE_URL, connectionTimeoutMillis: 5000, statement_timeout: 10000 });
+    pool.on('error', () => {});
+    try { await pool.query(`CREATE SCHEMA "${schema}"`); }
+    catch { await pool.end(); throw new Error('PostgreSQL contract schema setup unavailable'); }
+    return {
+      repository: createPostgresRepository({ schema }),
+      reopen: () => createPostgresRepository({ schema }),
+      async cleanup() {
+        try { await pool.query(`DROP SCHEMA "${schema}" CASCADE`); }
+        catch { throw new Error('PostgreSQL contract schema cleanup incomplete'); }
+        finally { await pool.end(); }
+      },
+    };
+  });
+}
+
+// This driver double tests adapter transaction/failure handling; it does not validate PostgreSQL SQL execution.
+function driverDouble({ state = { tables: Object.fromEntries(Object.keys(TABLES).map((table) => [table, []])) }, failTable, failMigration = false, uncertainCommit = false } = {}) {
+  let data = structuredClone(state);
+  let applied = [];
+  let exists = false;
+  let savepoint;
+  let ddlExecutions = 0;
+  const queries = [];
+  const client = {
+    async query(sql, values = []) {
+      queries.push(sql);
+      if (sql === 'BEGIN') { savepoint = { data: structuredClone(data), applied: structuredClone(applied), exists }; return { rows: [] }; }
+      if (sql === 'ROLLBACK') { if (savepoint) ({ data, applied, exists } = savepoint); savepoint = undefined; return { rows: [] }; }
+      if (sql === 'COMMIT') {
+        savepoint = undefined;
+        if (uncertainCommit && data.tables.holds.length) { uncertainCommit = false; throw new Error('PRIVATE_DATABASE_DETAIL'); }
+        return { rows: [] };
+      }
+      if (sql.startsWith('SELECT to_regclass')) return { rows: [{ name: exists ? 'schema_migrations' : null }] };
+      if (sql.startsWith('SELECT version, filename, checksum')) return { rows: structuredClone(applied) };
+      if (sql.includes('CREATE TABLE IF NOT EXISTS')) { exists = true; return { rows: [] }; }
+      if (sql.startsWith('INSERT INTO') && sql.includes('.schema_migrations')) {
+        applied.push({ version: values[0], filename: values[1], checksum: values[2] }); return { rows: [] };
+      }
+      if (sql.includes('CREATE TABLE "runs"')) {
+        ddlExecutions += 1;
+        if (failMigration) throw new Error('PRIVATE_DATABASE_DETAIL');
+        return { rows: [] };
+      }
+      const table = sql.match(/(?:FROM|INTO|UPDATE) "[a-z_0-9]+"\."([a-z_]+)"/)?.[1];
+      if (sql.startsWith('SELECT data')) return { rows: data.tables[table].filter((row) => !values.length || row.runId === values[0]).map((row) => ({ data: structuredClone(row) })) };
+      if (sql.startsWith('INSERT INTO') && table) {
+        if (table === failTable) throw new Error('PRIVATE_DATABASE_DETAIL');
+        data.tables[table].push(JSON.parse(values[0])); return { rowCount: 1, rows: [] };
+      }
+      if (sql.startsWith('UPDATE') && table) {
+        const replacement = JSON.parse(values[0]);
+        const index = data.tables[table].findIndex((row) => TABLES[table].key.every((key, i) => row[key] === values[i + 1]) && row.version === values.at(-1));
+        if (index < 0) return { rowCount: 0, rows: [] };
+        data.tables[table][index] = replacement; return { rowCount: 1, rows: [] };
+      }
+      return { rows: [] };
+    },
+    release() {},
+  };
+  let queue = Promise.resolve();
+  return {
+    pool: { async connect() {
+      const previous = queue; let release;
+      queue = new Promise((resolve) => { release = resolve; });
+      await previous;
+      return { ...client, release };
+    } },
+    read: () => structuredClone(data), ledger: () => applied, queries,
+    ddlExecutions: () => ddlExecutions,
+  };
+}
+
+repositoryContract('postgresql driver double (not live SQL)', async () => {
+  const driver = driverDouble();
+  return { repository: createPostgresRepository({ pool: driver.pool }), reopen: () => createPostgresRepository({ pool: driver.pool }) };
+});
+
+test('postgresql driver: migrations record checksums, rerun once and reject changed history', async () => {
+  const driver = driverDouble();
+  assert.deepEqual((await migrationStatus(driver.pool)).value, { current: false, appliedVersions: [], pendingVersions: ['0001'] });
+  assert.equal((await migrate(driver.pool)).status, 'ok');
+  assert.equal((await migrate(driver.pool)).status, 'ok');
+  assert.equal(driver.ddlExecutions(), 1);
+  const migrations = await loadMigrations();
+  assert.equal(driver.ledger()[0].checksum, migrations[0].checksum);
+  driver.ledger()[0].checksum = 'changed';
+  const changed = await migrate(driver.pool);
+  assert.equal(changed.reason, 'migration-history-mismatch');
+  assert.equal(changed.retryable, false);
+  assert.equal(driver.ddlExecutions(), 1);
+  const failed = driverDouble({ failMigration: true });
+  assert.equal((await migrate(failed.pool)).status, 'unavailable');
+  assert.deepEqual(failed.ledger(), []);
+  assert.equal(failed.queries.includes('ROLLBACK'), true);
+});
+
+test('postgresql driver: unavailable startup and configuration never expose credentials', async () => {
+  const secret = 'PRIVATE_DATABASE_DETAIL';
+  const repository = createPostgresRepository({ pool: { async connect() { throw new Error(secret); } } });
+  const opened = await repository.open();
+  assert.equal(opened.status, 'unavailable');
+  assert.equal(JSON.stringify(opened).includes(secret), false);
+  assert.equal((await repository.transaction(ctx(), command(), () => ok('fake-success'))).status, 'unavailable');
+  assert.equal((await createPostgresRepository({ connectionString: '' }).open()).code, 'missing-database-url');
+  assert.equal((await createPostgresRepository({ connectionString: 'https://user:PRIVATE_DATABASE_DETAIL@example.invalid' }).open()).code, 'invalid-database-url');
+  assert.equal((await createPostgresRepository({ schema: 'public; invalid' }).open()).code, 'invalid-schema');
+});
+
+test('postgresql driver: a flush failure rolls back claim, offer and outbox without memory fallback', async () => {
+  const store = createMemoryStore();
+  const memory = createMemoryRepository({ store }); await memory.open(); await setup(memory); await memory.close();
+  const driver = driverDouble({ state: store.state, failTable: 'notification_outbox' });
+  const repository = createPostgresRepository({ pool: driver.pool });
+  assert.equal((await repository.open()).status, 'ok');
+  const outcome = await repository.transaction(ctx(), command(), async (tx) => {
+    await tx.conditionalClaim(claimInput({ type: 'buddy-offer' }));
+    await tx.insert('offers', { runId: 'run-a', offerId: 'offer-a', holdId: 'hold-a', quoteId: 'quote-a' });
+    await tx.enqueueNotification({ jobId: 'job', idempotencyKey: 'job-key', inputDigest: 'digest', state: 'pending' });
+    return ok({ accepted: true });
+  });
+  assert.equal(outcome.status, 'unavailable');
+  assert.equal(JSON.stringify(outcome).includes('PRIVATE_DATABASE_DETAIL'), false);
+  for (const table of ['holds', 'claims', 'offers', 'notification_outbox']) assert.equal(driver.read().tables[table].length, 0);
+  assert.equal(driver.read().tables.stock[0].version, 1);
+  assert.equal(driver.queries.includes('ROLLBACK'), true);
+  await repository.close();
+});
+
+test('postgresql driver: uncertain commit is reconciled with the original command id', async () => {
+  const store = createMemoryStore(); const memory = createMemoryRepository({ store });
+  await memory.open(); await setup(memory); await memory.close();
+  const driver = driverDouble({ state: store.state, uncertainCommit: true });
+  const repository = createPostgresRepository({ pool: driver.pool }); await repository.open();
+  const stable = command('uncertain-commit');
+  assert.equal((await repository.transaction(ctx(), stable, (tx) => tx.conditionalClaim(claimInput()))).status, 'unavailable');
+  const replay = await repository.transaction(ctx(), stable, () => { throw new Error('must not repeat'); });
+  assert.equal(replay.status, 'ok'); assert.equal(replay.value.hold.holdId, 'hold-a');
+  assert.equal(driver.read().tables.holds.length, 1);
+  await repository.close();
 });

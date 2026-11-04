@@ -47,6 +47,11 @@ function validateObject(table, value, kind) {
     }
   }
   if (value.version !== undefined && !positive(value.version)) return invalid('invalid-version', 'version', 'Expected a positive integer');
+  if (['holds', 'claims'].includes(table)) {
+    if (value.state !== undefined && ![...OCCUPYING_STATES, 'released', 'expired', 'allocated', 'claim-failed'].includes(value.state)) return invalid('invalid-state', 'state', 'Unknown hold or claim state');
+    if (value.type !== undefined && !['cart', 'buddy-offer'].includes(value.type)) return invalid('invalid-hold-type', 'type', 'Unknown hold type');
+  }
+  if (table === 'entitlement_slots' && ['capacity', 'employeeCapacity'].some((key) => value[key] !== undefined && !positive(value[key]))) return invalid('invalid-capacity', 'capacity', 'Capacity must be a positive integer');
   return null;
 }
 function validateRef(ref) {
@@ -58,7 +63,8 @@ function scope(context, object) {
     ? result('stale-run', { reason: 'The requested run differs from the current context' }) : null;
 }
 function contextError(context, state, write = false) {
-  if (!plain(context) || !identifier(context.runId) || !identifier(context.environmentId)) return invalid('invalid-context', 'context', 'A trusted run and environment context is required');
+  if (!plain(context) || !identifier(context.runId) || !identifier(context.environmentId) || !identifier(context.principalId)
+    || !Array.isArray(context.roles) || !context.roles.every(identifier)) return invalid('invalid-context', 'context', 'A trusted run, environment and principal context is required');
   const run = state.tables.runs.find((row) => row.runId === context.runId);
   if (run && run.environmentId !== context.environmentId) return result('forbidden', { reason: 'Context environment does not own this run' });
   if (write && run && (run.status === 'historical' || run.current === false)) return result('stale-run', { reason: 'Historical runs cannot accept commands' });
@@ -143,6 +149,7 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
     const error = validateRef(ref) || supported(ref.table) || scope(context, ref.key) || validateObject(ref.table, patch, 'patch');
     if (error) return error;
     if (!positive(expectedVersion)) return invalid('invalid-version', 'expectedVersion', 'Expected a positive integer');
+    if (ref.table === 'runs' && patch.environmentId !== undefined && patch.environmentId !== context.environmentId) return result('forbidden', { reason: 'Run environment differs from context' });
     const schema = TABLES[ref.table];
     if (Object.keys(patch).some((key) => [...schema.key, 'version', 'createdAt', 'updatedAt'].includes(key))) return invalid('immutable-field', 'patch', 'Identity and version fields cannot be patched');
     const found = get(ref);
