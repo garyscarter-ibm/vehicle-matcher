@@ -1,0 +1,344 @@
+{
+  "date": "2026-11-04",
+  "scope": "GCSP lifecycle after selection, Epic FUCQ-110 (HLD readiness C7) and its 8 Stories",
+  "authorisation": "Gary approved the Epic, Story titles, one-line outcomes, P2 priority and dependency order on 4 November 2026. Story authoring only: no implementation, poller, provisioning or deployment.",
+  "source": [
+    "docs/design/handover-section-c7-c9-2026-11-04.md#c7--lifecycle-after-selection",
+    "docs/design/hld-story-readiness-2026-11-04.md#c-capabilities-with-no-epic-or-story"
+  ],
+  "epicCount": 1,
+  "storyCount": 8,
+  "acceptanceItems": 60,
+  "epics": [
+    {
+      "key": "FUCQ-110",
+      "type": "Epic",
+      "parent": null,
+      "status": "In Progress",
+      "startDate": "2026-11-04",
+      "labels": [
+        "backlog"
+      ],
+      "summary": "Take a selected car through approval, handover planning and renewal help",
+      "unassigned": true,
+      "descriptionEndsWithAddedBy": true
+    }
+  ],
+  "stories": [
+    {
+      "key": "FUCQ-111",
+      "parent": "FUCQ-110",
+      "type": "Story",
+      "summary": "Progress a selected order through the target approval states on presenter ticks",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "code",
+      "size": "M",
+      "dependsOn": [
+        "FUCQ-108",
+        "FUCQ-72"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:code",
+        "size:M"
+      ],
+      "acceptanceItems": 8,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-112",
+      "parent": "FUCQ-110",
+      "type": "Story",
+      "summary": "Open an owned renewal-risk case on request or a configured trigger",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "code",
+      "size": "M",
+      "dependsOn": [
+        "FUCQ-91",
+        "FUCQ-85"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:code",
+        "size:M"
+      ],
+      "acceptanceItems": 8,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-114",
+      "parent": "FUCQ-110",
+      "type": "Story",
+      "summary": "Request, confirm and complete a handover appointment, or record a no-show",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "code",
+      "size": "M",
+      "dependsOn": [
+        "FUCQ-111"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:code",
+        "size:M"
+      ],
+      "acceptanceItems": 8,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-116",
+      "parent": "FUCQ-110",
+      "type": "Story",
+      "summary": "Track documents and vehicle readiness with a named owner for each",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "code",
+      "size": "M",
+      "dependsOn": [
+        "FUCQ-111"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:code",
+        "size:M"
+      ],
+      "acceptanceItems": 7,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-118",
+      "parent": "FUCQ-110",
+      "type": "Story",
+      "summary": "Plan the old car's return separately from the new car's handover",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "code",
+      "size": "S",
+      "dependsOn": [
+        "FUCQ-114"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:code",
+        "size:S"
+      ],
+      "acceptanceItems": 7,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-120",
+      "parent": "FUCQ-110",
+      "type": "Story",
+      "summary": "Show Paula her order progress, handover plan and who owns each next step",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "ui",
+      "size": "L",
+      "dependsOn": [
+        "FUCQ-114",
+        "FUCQ-116",
+        "FUCQ-118",
+        "FUCQ-105",
+        "FUCQ-67"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:ui",
+        "size:L"
+      ],
+      "acceptanceItems": 8,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-122",
+      "parent": "FUCQ-110",
+      "type": "Story",
+      "summary": "Ask for help, and let the scheme team work the renewal-risk case",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "ui",
+      "size": "M",
+      "dependsOn": [
+        "FUCQ-112",
+        "FUCQ-95",
+        "FUCQ-101"
+      ],
+      "labels": [
+        "backlog",
+        "design-impact",
+        "kind:ui",
+        "size:M"
+      ],
+      "acceptanceItems": 8,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    },
+    {
+      "key": "FUCQ-124",
+      "parent": "FUCQ-110",
+      "type": "Story",
+      "summary": "Verify the lifecycle after selection end to end with browser evidence",
+      "status": "To Do",
+      "priority": "High",
+      "priorityTag": "P2",
+      "priorityReason": "due 2026-11-12: GCSP demo",
+      "kind": "code",
+      "size": "M",
+      "dependsOn": [
+        "FUCQ-120",
+        "FUCQ-122",
+        "FUCQ-109"
+      ],
+      "labels": [
+        "backlog",
+        "kind:code",
+        "size:M"
+      ],
+      "acceptanceItems": 6,
+      "unassigned": true,
+      "points": null,
+      "descriptionMatches": true,
+      "dependenciesMatch": true
+    }
+  ],
+  "nativeBlocks": [
+    {
+      "from": "FUCQ-72",
+      "to": "FUCQ-111"
+    },
+    {
+      "from": "FUCQ-108",
+      "to": "FUCQ-111"
+    },
+    {
+      "from": "FUCQ-85",
+      "to": "FUCQ-112"
+    },
+    {
+      "from": "FUCQ-91",
+      "to": "FUCQ-112"
+    },
+    {
+      "from": "FUCQ-111",
+      "to": "FUCQ-114"
+    },
+    {
+      "from": "FUCQ-111",
+      "to": "FUCQ-116"
+    },
+    {
+      "from": "FUCQ-114",
+      "to": "FUCQ-118"
+    },
+    {
+      "from": "FUCQ-67",
+      "to": "FUCQ-120"
+    },
+    {
+      "from": "FUCQ-105",
+      "to": "FUCQ-120"
+    },
+    {
+      "from": "FUCQ-114",
+      "to": "FUCQ-120"
+    },
+    {
+      "from": "FUCQ-116",
+      "to": "FUCQ-120"
+    },
+    {
+      "from": "FUCQ-118",
+      "to": "FUCQ-120"
+    },
+    {
+      "from": "FUCQ-95",
+      "to": "FUCQ-122"
+    },
+    {
+      "from": "FUCQ-101",
+      "to": "FUCQ-122"
+    },
+    {
+      "from": "FUCQ-112",
+      "to": "FUCQ-122"
+    },
+    {
+      "from": "FUCQ-109",
+      "to": "FUCQ-124"
+    },
+    {
+      "from": "FUCQ-120",
+      "to": "FUCQ-124"
+    },
+    {
+      "from": "FUCQ-122",
+      "to": "FUCQ-124"
+    }
+  ],
+  "linkReadback": "All 18 Blocks links read back on FUCQ-111..124 in the created direction (inward blocks outward); every Story's depends_on equals its inward Blocks links. FUCQ-108 blocks FUCQ-111 was created first and read back before the other 17.",
+  "descriptionComparison": "Descriptions read back with getJiraIssue (view evidence, markdown) by a runner agent; acceptance counts and depends_on extracted from the read-back. FUCQ-120 re-read directly and compared. docs/gcsp/fucq-110-stories.md carries the read-back text.",
+  "followUps": {
+    "notLinked": [
+      "FUCQ-71",
+      "FUCQ-73"
+    ],
+    "note": "FUCQ-110 Stories use FUCQ-72 for the manual route; FUCQ-71 and FUCQ-73 belong to the existing-story edits session."
+  },
+  "agents": {
+    "author": {
+      "model": "opus",
+      "session": "Claude Code side session (C7)"
+    },
+    "linksAndReadback": {
+      "name": "Grub",
+      "type": "runner",
+      "model": "haiku"
+    }
+  },
+  "implementationStarted": false,
+  "pollerStarted": false,
+  "provisioningStarted": false,
+  "applicationTestsRun": false
+}
