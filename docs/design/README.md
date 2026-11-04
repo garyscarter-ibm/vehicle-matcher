@@ -23,6 +23,7 @@ The target is a **shared pure recommendation core with separate retail and emplo
 | 06 Vehicle evidence providers | Catalogue, representative imagery, handbook and synthetic VIN contracts; immutable corpus publication/HTTP lookup; source isolation and exact-stock boundary. | [PNG](vehicle-evidence-providers.png) |
 | 07 Planning and lifecycle | Greg's request → confirmed supply → actual release; policy versions; employee selection, acknowledged order, approval, booking and readiness. | [PNG](planning-and-lifecycle.png) |
 | 08 Predictive order planning | FUCQ-74: learning records, offline training/evaluation, versioned model, central policy, demand prediction, constrained order planning and Greg's intentional submission/replanning. | [PNG](predictive-order-planning.png) |
+| 09 1,000-employee comparison | Readiness item C8: seeded cohort generator, isolated simulation harness, today's first-come-first-served route and the buddy route on identical inputs, cross-seed measures, immutable results and the route comparison panel on Greg's dashboard. | Not yet exported |
 
 The employee overview was split into area pages to keep connectors readable. Reference stubs denote the same component on another page; they do not create another service. Diagrams show dependencies and named data/actions rather than a complete sequence diagram. Repeated objects across distinct views refer to the same logical object.
 

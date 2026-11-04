@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" pages="11">
+<mxfile host="app.diagrams.net" pages="12">
   <diagram id="IEwdkRteCB6ta1rAXDrL" name="00 GCSP architecture">
     <mxGraphModel grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -1968,7 +1968,7 @@
             <mxGeometry height="70" width="260" x="1078" y="74" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="1,000-employee simulation&lt;br&gt;planned · captured notifications" type="client" status="proposed" feature="deployment" id="d-simulation">
+        <UserObject label="1,000-employee comparison / worker in GCSP backend · see 09" type="client" status="proposed" feature="employee-comparison" id="d-simulation">
           <mxCell parent="1" style="shape=mxgraph.flowchart.display;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
             <mxGeometry height="70" width="260" x="711" y="1529" as="geometry" />
           </mxCell>
@@ -2180,7 +2180,7 @@
             </mxGeometry>
           </mxCell>
         </UserObject>
-        <UserObject label="same services" status="proposed" feature="deployment" id="uL1F5al8Hi2hmm2fJCul-8">
+        <UserObject label="same modules, in-process" status="proposed" feature="employee-comparison" id="uL1F5al8Hi2hmm2fJCul-8">
           <mxCell edge="1" parent="1" source="d-simulation" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;" target="d-gcsp-api">
             <mxGeometry relative="1" as="geometry">
               <Array as="points">
@@ -3032,6 +3032,227 @@
         <UserObject label="&lt;b&gt;Status&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#e1d5e7;border:1px dashed #9673a6;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Proposed — designed, not built yet&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#d5e8d4;border:1px solid #82b366;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;In progress — being built&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#dae8fc;border:1px solid #6c8ebf;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Built — implemented and tested&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#f5f5f5;border:1px dashed #b85450;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Retiring — built, being removed" legend="status" id="Rr-tD7hwCEqkbv6zbOL5-1">
           <mxCell parent="1" style="text;html=1;align=left;verticalAlign=top;spacing=8;rounded=1;fillColor=#ffffff;strokeColor=#999999;" vertex="1">
             <mxGeometry height="120" width="230" x="1925.62" as="geometry" />
+          </mxCell>
+        </UserObject>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="nk2pAsPJMI8HT9nU1fwm" name="09 1,000-employee comparison">
+    <mxGraphModel grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <UserObject label="Presenter / on Greg&#39;s dashboard" type="actor" status="proposed" feature="employee-comparison" id="cmp-presenter">
+          <mxCell parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="60" width="40" x="12" y="235" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Route comparison panel / FUCQ-101 region · pick experiment / hold-duration rerun" type="client" status="proposed" feature="employee-comparison" id="cmp-panel">
+          <mxCell parent="1" style="shape=mxgraph.flowchart.display;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="437" y="230" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="GCSP Node backend · comparison module (worker thread)" type="boundary" status="proposed" feature="employee-comparison" id="cmp-backend">
+          <mxCell parent="1" style="swimlane;html=1;startSize=24;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="244" width="3631" x="1148" y="236" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Comparison job / presenter-started worker / CLI runs same module" type="service" status="proposed" feature="employee-comparison" id="cmp-job">
+          <mxCell parent="cmp-backend" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="10" y="45.67" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Seeded generator / 1,000 employees · stock · releases / from PolicyService keys" type="service" status="proposed" feature="employee-comparison" id="cmp-gen">
+          <mxCell parent="cmp-backend" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="576" y="94" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Simulation harness / in-memory repository per run / sim clock · captured outbox" type="service" status="proposed" feature="employee-comparison" id="cmp-harness">
+          <mxCell parent="cmp-backend" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="1245" y="142.33" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Evaluation matrix / FUCQ-29 gates + ranking / once per seed, both routes" type="service" status="proposed" feature="employee-comparison" id="cmp-eval">
+          <mxCell parent="cmp-backend" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="1904" y="142.33" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Current route / first come first served / FUCQ-66 cart claims" type="service" status="proposed" feature="employee-comparison" id="cmp-baseline">
+          <mxCell parent="cmp-backend" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="2584" y="154" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Buddy route / FUCQ-96 tie-break · FUCQ-100 hold / FUCQ-106 decisions" type="service" status="proposed" feature="employee-comparison" id="cmp-buddy">
+          <mxCell parent="cmp-backend" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="2547" y="34" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Measures across seeds / coverage before renewal / unused stock · declines · expiries" type="service" status="proposed" feature="employee-comparison" id="cmp-measure">
+          <mxCell parent="cmp-backend" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="70" width="260" x="3154" y="142.33" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="per seed" status="proposed" feature="employee-comparison" id="-07aHrmSOP6WsCGLD1qd-3">
+          <mxCell edge="1" parent="cmp-backend" source="cmp-job" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=1;exitY=0.5;entryX=0;entryY=0.3333;edgeStyle=orthogonalEdgeStyle;" target="cmp-gen">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="-18.33" as="offset" />
+              <Array as="points">
+                <mxPoint x="517" y="80.67" />
+                <mxPoint x="517" y="117.33" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="identical inputs" status="proposed" feature="employee-comparison" id="-07aHrmSOP6WsCGLD1qd-5">
+          <mxCell edge="1" parent="cmp-backend" source="cmp-gen" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=1;exitY=0.5;entryX=0;entryY=0.3334;edgeStyle=orthogonalEdgeStyle;" target="cmp-harness">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="-18.34" as="offset" />
+              <Array as="points">
+                <mxPoint x="1186" y="129" />
+                <mxPoint x="1186" y="165.67" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="evaluate once" status="proposed" feature="employee-comparison" id="-07aHrmSOP6WsCGLD1qd-7">
+          <mxCell edge="1" parent="cmp-backend" source="cmp-harness" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;edgeStyle=orthogonalEdgeStyle;" target="cmp-eval">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint as="offset" />
+              <Array as="points">
+                <mxPoint x="1791.5" y="177.33" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="same candidates" status="proposed" feature="employee-comparison" id="-07aHrmSOP6WsCGLD1qd-8">
+          <mxCell edge="1" parent="cmp-backend" source="cmp-eval" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=1;exitY=0.6667;entryX=0;entryY=0.5;edgeStyle=orthogonalEdgeStyle;" target="cmp-baseline">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="-18.5" as="offset" />
+              <Array as="points">
+                <mxPoint x="2446" y="189" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="same candidates" status="proposed" feature="employee-comparison" id="-07aHrmSOP6WsCGLD1qd-9">
+          <mxCell edge="1" parent="cmp-backend" source="cmp-eval" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=1;exitY=0.3334;entryX=0;entryY=0.5;edgeStyle=orthogonalEdgeStyle;" target="cmp-buddy">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="48.34" as="offset" />
+              <Array as="points">
+                <mxPoint x="2324" y="165.67" />
+                <mxPoint x="2324" y="69" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="outcomes" status="proposed" feature="employee-comparison" id="-07aHrmSOP6WsCGLD1qd-10">
+          <mxCell edge="1" parent="cmp-backend" source="cmp-baseline" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=1;exitY=0.5;entryX=0;entryY=0.6667;edgeStyle=orthogonalEdgeStyle;" target="cmp-measure">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="18.5" as="offset" />
+              <Array as="points">
+                <mxPoint x="3033.5" y="189" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="outcomes" status="proposed" feature="employee-comparison" id="-07aHrmSOP6WsCGLD1qd-11">
+          <mxCell edge="1" parent="cmp-backend" source="cmp-buddy" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=1;exitY=0.5;entryX=0;entryY=0.3334;edgeStyle=orthogonalEdgeStyle;" target="cmp-measure">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="-43" y="-5.33" as="offset" />
+              <Array as="points">
+                <mxPoint x="3095" y="69" />
+                <mxPoint x="3095" y="165.67" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="PolicyService (FUCQ-82) / comparison.* keys + seeds / assumed + basis" type="datastore" status="proposed" feature="employee-comparison" id="cmp-policy">
+          <mxCell parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=12;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="100" width="260" x="488" y="350" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Comparison results (FUCQ-81) / immutable · input manifest" type="datastore" status="proposed" feature="employee-comparison" id="cmp-results">
+          <mxCell parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=12;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+            <mxGeometry height="100" width="260" x="5018" y="346.66999999999996" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Identical inputs for both routes. / May show no improvement. / Calculated fit ≠ satisfaction." type="note" status="proposed" feature="employee-comparison" id="cmp-guard">
+          <mxCell parent="1" style="shape=note;whiteSpace=wrap;html=1;size=14;align=left;spacingLeft=6;" vertex="1">
+            <mxGeometry height="70" width="220" x="2569" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="choose experiment" status="proposed" feature="employee-comparison" id="-07aHrmSOP6WsCGLD1qd-1">
+          <mxCell edge="1" parent="1" source="cmp-presenter" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;edgeStyle=orthogonalEdgeStyle;" target="cmp-panel">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint as="offset" />
+              <Array as="points">
+                <mxPoint x="312.5" y="265" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="start · rerun" status="proposed" feature="employee-comparison" id="-07aHrmSOP6WsCGLD1qd-2">
+          <mxCell edge="1" parent="1" source="cmp-panel" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=1;exitY=0.6667;entryX=0;entryY=0.5;edgeStyle=orthogonalEdgeStyle;" target="cmp-job">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="-27.5" as="offset" />
+              <Array as="points">
+                <mxPoint x="1084" y="276.66999999999996" />
+                <mxPoint x="1084" y="316.66999999999996" />
+                <mxPoint x="1143" y="316.66999999999996" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="keys + seeds" status="proposed" feature="employee-comparison" id="-07aHrmSOP6WsCGLD1qd-4">
+          <mxCell edge="1" parent="1" source="cmp-policy" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=1;exitY=0.3333;entryX=0;entryY=0.6667;edgeStyle=orthogonalEdgeStyle;" target="cmp-gen">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="-287.17" as="offset" />
+              <Array as="points">
+                <mxPoint x="905" y="383.33000000000004" />
+                <mxPoint x="905" y="376.66999999999996" />
+                <mxPoint x="1143" y="376.66999999999996" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="rules + assumptions" status="proposed" feature="employee-comparison" id="-07aHrmSOP6WsCGLD1qd-6">
+          <mxCell edge="1" parent="1" source="cmp-policy" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=1;exitY=0.6667;entryX=0;entryY=0.6667;edgeStyle=orthogonalEdgeStyle;" target="cmp-harness">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="-620.83" y="-8.33" as="offset" />
+              <Array as="points">
+                <mxPoint x="1084" y="416.67" />
+                <mxPoint x="1084" y="425" />
+                <mxPoint x="1143" y="425" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="versioned result" status="proposed" feature="employee-comparison" id="-07aHrmSOP6WsCGLD1qd-12">
+          <mxCell edge="1" parent="1" source="cmp-measure" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=1;exitY=0.5;entryX=0;entryY=0.6666;edgeStyle=orthogonalEdgeStyle;" target="cmp-results">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="7.5" as="offset" />
+              <Array as="points">
+                <mxPoint x="4784" y="413.33" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="latest result" status="proposed" feature="employee-comparison" id="-07aHrmSOP6WsCGLD1qd-13">
+          <mxCell edge="1" parent="1" source="cmp-results" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;libavoidRouting=1;strokeColor=#9673a6;dashed=1;exitX=0;exitY=0.3333;entryX=1;entryY=0.3333;edgeStyle=orthogonalEdgeStyle;" target="cmp-panel">
+            <mxGeometry relative="1" as="geometry">
+              <mxPoint x="-53.34" as="offset" />
+              <Array as="points">
+                <mxPoint x="4959" y="380" />
+                <mxPoint x="4959" y="171" />
+                <mxPoint x="905" y="171" />
+                <mxPoint x="905" y="253.32999999999998" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="&lt;b&gt;Status&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#e1d5e7;border:1px dashed #9673a6;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Proposed — designed, not built yet&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#d5e8d4;border:1px solid #82b366;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;In progress — being built&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#dae8fc;border:1px solid #6c8ebf;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Built — implemented and tested&lt;br&gt;&lt;span style=&quot;display:inline-block;width:12px;height:12px;background:#f5f5f5;border:1px dashed #b85450;vertical-align:middle;&quot;&gt;&lt;/span&gt;&amp;nbsp;Retiring — built, being removed" legend="status" id="-07aHrmSOP6WsCGLD1qd-14">
+          <mxCell parent="1" style="text;html=1;align=left;verticalAlign=top;spacing=8;rounded=1;fillColor=#ffffff;strokeColor=#999999;" vertex="1">
+            <mxGeometry height="120" width="230" x="5426" as="geometry" />
           </mxCell>
         </UserObject>
       </root>
