@@ -16,6 +16,7 @@ Russell also gives standing approval tonight for draw.io changes necessary for a
 
 ## Completed
 
+- FUCQ-80 / DEV-2026-11-04-038: shared contracts built, merged as `4866b85` and pushed. Versioned brief/hold/policy/repository/port contracts now unblock the foundation. Contract/link checks passed; required npm suite: 234 passed, zero failed/skipped. Application code was unchanged.
 - Startup tools checkpoint `6c655c8` committed and pushed. All four updated Python files parse; test_stamp reports 1.2.0 and its CLI loads. These are scoped tool checks, not an application-suite result.
 
 ## Active / blocked
@@ -24,11 +25,16 @@ Initial Jira reconciliation completed: 107 Stories imported and pushed; two alre
 
 The importer has its own recoverable session and cleanup obligation in `.claude/dev-poller-runtime.json`; reconcile that before another sync or git mutation.
 
+- FUCQ-37 / DEV-2026-11-04-009: claimed at 8 points; branch `dev/DEV-2026-11-04-009`; story lead `/root/catalogue_fucq37`, requested/selected `gpt-6.1-sol` / `high`, no fallback, runtime not independently verified.
+- Both live Jira cards, assignees, points, host/agent labels, branch comments and adoption dates reconciled; existing Epic dates retained and an empty FUCQ-14 date populated/verified. Full-suite runs are serialised by a shared lock.
+
 ## Morning questions
 
-No questions yet. Binding deferrals still exclude FUCQ-27/28/61 until after 12 November, even where their Jira descriptions omit that timing; the local run directive preserves the exclusions.
+FUCQ-80 selected reversible synthetic defaults for trial review: `hold.cart.orderReview.durationSeconds = 600` and transition `once-from-preview`; `allocation.tieBreak.rule = renewalDueThenFitThenSeededLottery` and seed `gcsp-v1`. These are labelled assumptions, not verified BMW rules, and do not block consumers. Binding deferrals still exclude FUCQ-27/28/61 until after 12 November, even where their Jira descriptions omit that timing; the local run directive preserves the exclusions.
 
 ## Resource receipts
 
 Startup reads and small configuration/document writes required no generated test scratch. Jira import metadata scratch was removed and absence verified: 1042285 bytes; ownership/cleanup receipt `.claude/test-runs/ownership/dev-poller-jira-20261104T2320.json`; no leftovers or large-output compatibility exception. Each later proof/build/test allocation must register owned paths and a finalizer, retain compact evidence and verify cleanup. Large generated outputs go directly to the configured OneDrive destination.
 
+
+FUCQ-80 validation receipt: `.claude/test-runs/fucq80-20261104-contracts/cleanup.json`; 630,472 known bytes removed, peak scratch 562,689 bytes and peak RSS 369,983,488 bytes; no leftovers or compatibility exception. Compact evidence remains in its run directory and shared impact map.
