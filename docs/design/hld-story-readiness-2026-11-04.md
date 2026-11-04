@@ -76,6 +76,17 @@ Also needed before Stories go in parallel: one owner for the shared contracts (t
 
 ## D. Existing Stories that predate the review
 
+**Done in Jira, 4 Nov, except the links:**
+- **FUCQ-29, 30 and 31:** descriptions edited. `depends_on` drops FUCQ-27/28, the policy builds on `rankCars()`, the points allowance replaces the contribution ceiling, and FUCQ-31 also gets the CSP rule.
+- **FUCQ-35 and 36:** rewritten for the GCSP Render environment. FUCQ-36 is retitled "…for the GCSP static site".
+- **FUCQ-64–73:** each gets a "HLD review, 4 November 2026" paragraph in Decided covering Q2, Q4, Q6, Q8, Q13, Q16 and Q18, plus story-specific points:
+  - FUCQ-66: the cart hold of about two minutes; the GC-003 precondition cleared.
+  - FUCQ-70: the countdown follows that hold.
+  - FUCQ-71 and FUCQ-72: allocate the existing stock order, and use the target status names (Q19).
+- **FUCQ-1 and FUCQ-76:** Rejected.
+
+**Still open:** the connector cannot delete issue links. Four stale Blocks links must be removed in the Jira UI: FUCQ-27→29, FUCQ-28→29, FUCQ-28→30 and FUCQ-28→31. Until then, `jira_sync.py` still puts FUCQ-27/28 into those stories' `depends_on`, because it reads dependencies from links.
+
 | Story | Problem | Fix |
 |---|---|---|
 | FUCQ-29 | Description still says `depends_on: FUCQ-26, FUCQ-27, FUCQ-28`, and the Blocks links remain. A comment corrects this. AC still gates on a "contribution ceiling" rather than the points allowance. | Edit the description, remove the two links, and replace the ceiling with the allowance gate |
