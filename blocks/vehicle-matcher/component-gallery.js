@@ -117,12 +117,14 @@ function gcspExamples() {
   well.append(mediaWell({ name: 'Synthetic car', line: '', photo: '' }, 'vm-gallery-gcsp-media', { placeholder: 'No image for this car yet' }).media);
   const accounts = [
     ['portalShell: account loading', { status: 'loading' }],
-    ['portalShell: ready, long name', { status: 'ready', name: 'Bartholomew Featherstonehaugh-Cholmondeley-Wolverstone III (synthetic)', context: 'Choices, grade G7' }],
+    ['portalShell: compact account, long name', { status: 'ready', name: 'Bartholomew Featherstonehaugh-Cholmondeley-Wolverstone III (synthetic)', context: 'Choices, grade G7' }],
+    ['portalShell: account details open', { status: 'ready', name: 'Alex Morgan-Whitfield (synthetic)', context: 'Choices, grade G7' }, true],
     ['portalShell: account unavailable', { status: 'unavailable', message: 'Your account could not be loaded.' }],
   ];
-  for (const [title, account] of accounts) {
+  for (const [title, account, detailsOpen] of accounts) {
     const frame = el('div', 'vm-gallery-gcsp-frame');
     const shell = portalShell({ navigation: EMPLOYEE_NAVIGATION, active: 'cars', breadcrumbs: ['Your cars'], account });
+    if (detailsOpen) shell.root.querySelector('.gcsp-account-details').open = true;
     shell.main.append(el('p', 'gcsp-note', 'Page content goes here.'));
     frame.append(shell.root);
     group(title).append(frame);
@@ -130,7 +132,7 @@ function gcspExamples() {
   for (const expanded of [false, true]) {
     const frame = el('div', 'vm-gallery-gcsp-frame vm-gallery-gcsp-nav');
     frame.append(accountNavigation({ items: EMPLOYEE_NAVIGATION, active: 'cars', expanded }).root);
-    group(`accountNavigation: ${expanded ? 'expanded' : 'collapsed'}, with unavailable items`).append(frame);
+    group(`accountNavigation: ${expanded ? 'expanded' : 'collapsed'}, pale selected state and unavailable items`).append(frame);
   }
   group('messageList: sent, retrying and failed, first message open').append(messageList({ messages: fixtureMessages(), selectedId: 'job-004' }).root);
   section.append(scope);
