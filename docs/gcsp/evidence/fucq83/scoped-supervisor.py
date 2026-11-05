@@ -12,11 +12,15 @@ resources = stamp.resource_module()
 mode = sys.argv[1]
 saved_environment = dict(os.environ)
 saved_environment['SCAFFOLDING_HARNESS'] = 'codex'
-if mode in ('full', 'status'):
+plan = None
+if mode in ('full', 'status', 'identity'):
     if 'GCSP_DATABASE_URL' in os.environ:
         raise SystemExit('Offline final plan requires the documented unset native target; reassess configured validation first.')
-    saved_environment = json.loads((Path(__file__).parent / 'final-plan.json').read_text())['environment']
+    plan = json.loads((Path(__file__).parent / 'final-plan.json').read_text())
+    saved_environment = plan['environment']
 active_scratch = None
+owned_descendants = {}
+owned_logs = []
 run = 'fucq83-' + mode + '-' + uuid.uuid4().hex
 evidence = {'run': run, 'project': str(project), 'mode': mode, 'argv': [], 'samples': 0, 'maxTestWorkers': 0,
             'plannedScratchMiB': 128, 'plannedRssMiB': 512, 'timeoutSeconds': 180 if mode.startswith('install-') else 120,
@@ -52,6 +56,15 @@ class OwnedScratch(OriginalScratch):
 
     def __exit__(self, kind, value, tb):
         global active_scratch
+        for sig in (signal.SIGTERM, signal.SIGKILL):
+            for pid, start in owned_descendants.items():
+                if start and resources.process_identity(int(pid)) == start:
+                    try:
+                        os.kill(int(pid), sig)
+                    except ProcessLookupError:
+                        pass
+            if sig == signal.SIGTERM:
+                time.sleep(0.1)
         # run_process joins the primary group; this also handles any observed escaped descendant group.
         for group in self.record['groups']:
             for sig in (signal.SIGTERM, signal.SIGKILL):
@@ -67,14 +80,30 @@ class OwnedScratch(OriginalScratch):
         allocated = resources.allocated_bytes(self.root)
         super().__exit__(kind, value, tb)
         self.record.update(scratchAbsent=not os.path.lexists(self.root), removedBytes=allocated,
-                           groupsAbsent=all(resources.group_has_live_members(group) is False for group in self.record['groups']))
+                           groupsAbsent=all(resources.group_has_live_members(group) is False for group in self.record['groups']),
+                           descendantsAbsent=all(not start or resources.process_identity(int(pid)) != start for pid, start in owned_descendants.items()))
         resources.atomic_json(self.manifest, self.record)
         evidence.setdefault('manifests', []).append(str(self.manifest))
         active_scratch = None
-        if not self.record['groupsAbsent']:
+        if not self.record['groupsAbsent'] or not self.record['descendantsAbsent']:
             raise resources.ResourceError('Owned process-group cleanup uncertain')
 
 resources.Scratch = OwnedScratch
+def owned_log_dir(base):
+    path = Path(base) / 'logs' / (run + '-' + uuid.uuid4().hex)
+    manifest = rdir / 'ownership' / (path.name + '-log.json')
+    resources.atomic_json(manifest, {'state': 'planned', 'root': str(path), 'owner': resources.owner(), 'supervisor': __file__})
+    path.mkdir(parents=True)
+    resources.atomic_json(path / 'run.json', {'owner': os.getpid(), 'finished': False})
+    owned_logs.append((path, manifest))
+    return str(path)
+stamp.new_log_dir = owned_log_dir
+original_process = resources.run_process
+def tracked_process(*args, **kwargs):
+    result = original_process(*args, **kwargs)
+    evidence.setdefault('results', []).append(result)
+    return result
+resources.run_process = tracked_process
 def observed_rss(pgid):
     result = subprocess.run(['/bin/ps', '-axo', 'pid=,ppid=,pgid=,stat=,rss=,args='], capture_output=True, text=True, timeout=3)
     if result.returncode:
@@ -96,6 +125,7 @@ def observed_rss(pgid):
     for pid, ppid, group, state, memory, command in processes:
         if int(pid) not in owned:
             continue
+        owned_descendants.setdefault(pid, resources.process_identity(int(pid)))
         rss += int(memory) * 1024
         if int(group) != pgid:
             if int(group) == os.getpgrp() or active_scratch is None:
@@ -166,15 +196,34 @@ try:
         finally:
             if acquired:
                 host.release(scratch.token)
-    elif mode in ('full', 'status'):
+    elif mode in ('full', 'status', 'identity'):
         command = 'node --test --test-concurrency=1 server/test/**/*.test.js'
         evidence['command'] = command
         evidence['selectedReason'] = 'Explicit FUCQ-83 final npm test requirement after approved FUCQ-56 integration.'
-        evidence['pins'] = {str(path.relative_to(project)): hashlib.sha256(path.read_bytes()).hexdigest()
-                            for path in [project / 'package-lock.json', project / 'server/package-lock.json', project / '.claude/scaffolding.json']}
+        evidence['environment'] = saved_environment
+        evidence['pins'] = plan['pins']
+        for relative, expected in plan['pins'].items():
+            if hashlib.sha256((project / relative).read_bytes()).hexdigest() != expected:
+                raise resources.ResourceError('Pinned input changed: ' + relative)
+        if evidence['supervisorSha256'] != plan['supervisorSha256']:
+            raise resources.ResourceError('Supervisor changed after plan')
         evidence['planSha256'] = resources.digest({key: evidence[key] for key in
             ('command', 'selectedReason', 'pins', 'plannedScratchMiB', 'plannedRssMiB', 'timeoutSeconds', 'supervisorSha256')})
         args = ['--root', str(project), '--command', command]
+        parsed = stamp.build_parser().parse_args([*args, '--status'])
+        st = settings(str(project), command)
+        identity = {'head': stamp.head_commit(str(project)), 'tree': stamp.tree_hash(str(project)),
+                    'codeKey': stamp.working_code_key(str(project), st.is_t0), 'stampKey': stamp.stamp_key(str(project), st.is_t0),
+                    'executionIdentity': stamp.validation_identity(st, parsed)}
+        evidence['frozenIdentity'] = identity
+        evidence['savedPlanSha256'] = hashlib.sha256((Path(__file__).parent / 'final-plan.json').read_bytes()).hexdigest()
+        if mode == 'identity':
+            resources.atomic_json(rdir / 'ownership' / 'fucq83-final-freeze.json', {**identity, 'planSha256': evidence['savedPlanSha256']})
+            print(json.dumps(identity))
+            raise SystemExit(0)
+        freeze = json.loads((rdir / 'ownership' / 'fucq83-final-freeze.json').read_text())
+        if any(identity[key] != freeze[key] for key in ('codeKey', 'stampKey', 'executionIdentity')) or evidence['savedPlanSha256'] != freeze['planSha256']:
+            raise resources.ResourceError('Frozen code/input/environment/plan identity changed')
         if mode == 'status':
             raise SystemExit(stamp.main([*args, '--status']))
         lock_path = Path('/Users/usget/.cache/agent-scaffolding/test-resources/full-suite.lock')
@@ -184,6 +233,10 @@ try:
                 fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
             except BlockingIOError:
                 raise resources.ResourceError('Another full suite holds the machine full-test lock')
+            attempt = rdir / 'ownership' / 'fucq83-final-attempt.json'
+            if attempt.exists():
+                raise resources.ResourceError('Final full already attempted; dispatcher admission required for a repeat')
+            resources.atomic_json(attempt, {'run': run, 'freeze': freeze, 'planSha256': evidence['savedPlanSha256']})
             evidence['statusBefore'] = stamp.main([*args, '--status'])
             result = stamp.main([*args, '--full'])
             evidence['statusAfter'] = stamp.main([*args, '--status'])
@@ -203,6 +256,20 @@ try:
                 'FUCQ-83 explicit scoped policy publication/provider and reviewed boundary coverage; native target separately gated.']
         raise SystemExit(stamp.main(args))
 finally:
+    evidence['ownedDescendants'] = owned_descendants
+    evidence['ownedDescendantsAbsent'] = all(not start or resources.process_identity(int(pid)) != start for pid, start in owned_descendants.items())
+    evidence['logRoots'] = []
+    for path, manifest in owned_logs:
+        successful = any(Path(item['log']).parent == path and item['rc'] == 0 and not item['issue'] for item in evidence.get('results', []))
+        if successful:
+            transcript = (path / 'chunk-0001.log').read_text(errors='replace')
+            evidence.setdefault('successfulOutputCounts', []).append([line for line in transcript.splitlines() if line.startswith(('ℹ tests', 'ℹ pass', 'ℹ fail', 'ℹ skipped', 'ℹ duration'))])
+            removed = resources.allocated_bytes(path)
+            shutil.rmtree(path)
+            resources.atomic_json(manifest, {'state': 'removed', 'root': str(path), 'absent': not path.exists(), 'removedBytes': removed, 'supervisor': __file__})
+        evidence['logRoots'].append({'root': str(path), 'absent': not path.exists(), 'manifest': str(manifest)})
+    reservations = resources.read_json(Path.home() / '.cache/agent-scaffolding/test-resources/reservations.json', {})
+    evidence['tokensAbsent'] = all(resources.read_json(item['manifest'], {}).get('token') not in reservations for item in evidence.get('results', []))
     evidence['finishedAt'] = time.time()
     resources.atomic_json(rdir / 'ownership' / (run + '-summary.json'), evidence)
     print(json.dumps({'run': run, 'summary': str(rdir / 'ownership' / (run + '-summary.json'))}))
