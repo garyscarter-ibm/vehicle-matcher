@@ -325,6 +325,12 @@
   --vm-line: #2a2f37;
   --vm-surface-alt: #1c2027;
   --vm-accent-spot: #f2f4f7;
+  --vm-font-bold: 'Helvetica Neue', helvetica, arial, sans-serif;
+  --vm-btn-height: 48px;
+  --vm-btn-padding: var(--vm-space-3) var(--vm-space-6);
+  --vm-radius-control: var(--vm-radius-soft);
+  --vm-btn-transform: none;
+  --vm-btn-letter-spacing: normal;
   min-height: 100vh;
   box-sizing: border-box;
   display: flex;
@@ -335,7 +341,7 @@
   padding: var(--vm-space-12) var(--vm-space-6);
   background: #0d0f12;
   color: #f2f4f7;
-  font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
+  font-family: var(--vm-font-bold);
 }
 .demo-picker-intro { max-width: 54ch; text-align: center; }
 .demo-picker-intro h1 { margin: var(--vm-space-6) 0 var(--vm-space-3); }
