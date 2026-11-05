@@ -1,0 +1,70 @@
+# FUCQ-94 brief editor: refinement and checkpoint plan
+
+DEV-2026-11-04-052, 5 November 2026. This is an initial controller checkpoint plan for the 13-point UI story. No screen or complete story is built by this checkpoint. The dispatcher owns integration, merge and closure. All collaborators retain equal authority under AGENTS.md.
+
+## Authorised initial slice
+
+At most 8 points: one independent, DOM-free controller for employee brief state and requests. New paths only:
+
+- `blocks/gcsp/brief/brief-controller.js`.
+- `server/test/gcsp-brief-controller.test.js`.
+- This evidence directory and this story's result block.
+
+All existing block files, all `server/gcsp/`, `server/index.js`, `docs/gcsp/shared-contracts.md`, `COMPONENTS.md`, the gallery and ratchet remain read-only until the dispatcher releases exact paths. FUCQ-95 owns activity projection/GET. It does not own editor context or unsaved preview support. GC owns the launcher and shared kit seams. No descendants start before an actual child-tool slot is allocated.
+
+## Controller boundary
+
+Proposed export: `createBriefController({ context, initial, transport, createCommandId, onChange })`. Its public methods expose a defensive snapshot, subscribe/unsubscribe, update one registered preference value or importance, update one registered essential, set explicit independent consent, request preview, save, and destroy. Final names may be tightened before implementation; the acceptance behaviour is fixed below.
+
+`context` is an injected server-owned projection of the canonical registry, slider bounds, sourced known facts and edit permissions. There is no browser policy registry or default score/weight table. `initial` contains the existing draft/current versions and editable brief content. Unknown/unavailable context cannot silently create editable facts. Known facts remain separate from the editable brief payload and are not included in draft writes. The initial slice does not invent a known-fact editing endpoint.
+
+Preference value and importance are independent fields. Comfort and sportiness are independent keys. Indifference uses the registry's explicit minimum importance while preserving the chosen preference value; missing input remains distinct. Essentials preserve typed registered values and `needs-confirmation`/null unknowns. The controller must not guess how a yes/no practical answer maps to a numeric/list essential; the server-owned question projection will declare that mapping.
+
+The controller reuses `createPreviewFeed({ load })` from `blocks/vehicle-matcher/modes/preview-feed.js`, importing it read-only. It owns presentation state and teardown, while the shared feed owns debounce, request snapshots and stale success/failure rejection. It must not add another debounce implementation. `transport.preview(snapshot)` is injected; there is no default fake response or unimplemented endpoint advertised as working. Preview state distinguishes idle, loading, recommendations, zero eligible, essential unknown and unavailable. Preserve the actual response, reasons, trade-offs and versions rather than calculating suitability in the browser. Mixed confirmed/unknown candidate results retain their evidence.
+
+`transport.saveDraft(command)` and `transport.confirm(command)` consume the FUCQ-91 envelopes. Save takes one immutable draft/consent snapshot and expected versions, writes the draft, then confirms that exact draft version. Consent is a separate deliberate choice: `{ search, hold }`; save alone cannot infer either permission. Edits made while a save is pending remain in the live draft. Stale-version/conflict returns a refresh/review state and retains all current edits; it never automatically overwrites them with a returned current version. Failures remain typed outcomes and do not become success. Destroy cancels the preview feed, ignores late updates and removes subscriptions.
+
+## Existing API review and required additive support
+
+Reviewed `server/gcsp/brief/{index,http}.js`, `server/gcsp/recommendation/{index,http}.js`, `server/scenarios/employee/index.js`, the relevant `shared-contracts.md` sections and nearest service tests.
+
+FUCQ-91 already supplies `GET /api/gcsp/brief`, `/brief/draft`, `/brief/history`; `POST /brief/draft` and `/brief/confirm` use caller-stable `commandId`, `expectedBriefVersion` and `expectedDraftVersion`. Confirm returns the new immutable approved brief and activity. Stored known facts originate in the scoped repository employee record. The browser cannot supply them. A new employee has `not-found`, not an invented version. Consent choices are independently explicit. Version conflicts are HTTP 409 with `stale-version`, safe versions and `action: refresh`.
+
+FUCQ-29's real `POST /api/gcsp/recommendations` consumes `{ schemaVersion: 1, briefVersion, preferences, essentials, requiredBy? }`, requires a positive brief version, and scores only confirmed input values. It rejects a `charging` essential because charging is currently a trusted provider fact. Its output distinguishes recommendations, no-stock and no-viable-stock and retains complete exact-candidate decisions with blockers/unknowns. It performs no writes. The controller must not label an unsaved draft as an approved version or erase charging merely to satisfy this route.
+
+Minimum later support proposed for release by the dispatcher:
+
+1. Add a focused editor/context projection and unsaved-preview adapter under `server/gcsp/brief/editor.js` (new). It reads `employee.recommendation.v1`, `brief.slider.minimum`, `brief.slider.maximum`, `brief.lifecycle.v1` and charging policy through the injected PolicyService at the trusted current context/version. It exposes only presentation definitions and provenance, never scoring tuning. It composes the existing employee/current-car/driver/contract ports for sourced known facts and explicit edit permissions; unavailable inputs stay unavailable. Review whether existing `ManualContextService.readAccount` already supplies each fact rather than duplicating it. Immutable current car/identity facts stay read-only, with server-permitted selections validated against supplied choices.
+2. Add guarded `GET /api/gcsp/brief/editor` and read-only `POST /api/gcsp/brief/preview` in `server/gcsp/brief/http.js`; compose through a narrow additive option in `server/index.js` only if the existing BriefService injection is insufficient. The preview consumes unsaved employee intent and explicit charging, validates it against the same canonical registry, and delegates the real FUCQ-29 computation against trusted stock/context/clock. Its evaluation identity explicitly records draft/base versions and never claims a persisted approval. Any transient employee-confirmed projection remains labelled preview-only and is never saved. Preserve the provider's driver, eligibility, allowance, required-by and known essential gates. Charging overrides only the employee-editable charging answer via the server adapter, with provenance; identity, stock or policy cannot come from browser input. The endpoint introduces no allocation/hold/mail effect.
+3. Extend BriefService's allowed draft schema only if the server-owned yes/no question mapping requires a persisted explicit negative distinct from unknown or absent. Settle that exact additive representation before UI wiring; do not invent empty equipment lists rejected by the current validator. Keep current schema/reader compatibility. Prefer an existing registered value when it expresses the answer truthfully.
+4. Add new `server/test/gcsp-brief-editor.test.js` plus narrow existing `gcsp-brief.test.js` and `employee-recommendation-api.test.js` contract checks. Cover new unsaved employee, changed comfort/sportiness/importance effects, charging yes/no/unknown, immutable provider gates, canonical policy change, forged context/facts, no writes, unavailable source, stale run and version provenance. Update `docs/gcsp/shared-contracts.md` additively with the exact accepted route/schema. These paths are proposals, not a current write allocation.
+
+No schema, source, store or service topology replacement is proposed: this is internal composition inside the existing BriefService/recommendation components. The canonical HLD's blueprint columns 02/03 already specify these responsibilities. The draw.io skill requires no new component/connection proposal for an internal controller refactor; diagram rendering/status claims remain unverified until an authorised background runner can read the canonical `docs/design/high-level-design.drawio`. The old overnight override is not used.
+
+## Component and experience plan for later UI
+
+Follow `docs/gcsp/experience-quality.md`, `docs/gcsp/screens/README.md` and the Gary-approved FUCQ-64 body reference `docs/gcsp/evidence/fucq-6/README.md`, source revision `a7fc178`.
+
+- Reuse `portalShell`, `screenIntro`, `button`, `statusScreen`, `factList`, `el`, `previewTile`/explicit exact-member view and `mediaWell`.
+- Reuse the already implemented `renderRangeSlider({ single: true, value, onValueChange })` callback path independently for preference position and importance; `renderOptionList` supplies explicit indifference and yes/no/unknown choices. Inspect actual signatures when seams are released. No copied controls are planned. Any required extension belongs in the shared kit, styles, catalogue, gallery and test in the same commit as its consuming view. The baseline only falls.
+- Add the brief block/view, external module harness and custom element only after allocation. No inline scripts/handlers, eval, Function or string timers. Keep no-em-dash on-screen copy, labelled sliders/value readouts, keyboard/focus/reduced-motion behaviour, long names and absent images.
+
+## Proportionate validation and resources
+
+Run `fucq94-20261105-brief`. Scope: new independent browser controller and regression, no existing caller changed. Boundary review covers the shared preview feed and actual FUCQ-91/FUCQ-29 schemas. No full suite or browser run is authorised for this slice.
+
+The repository affected selector was inspected with `python3 -B _tools/test_stamp.py --affected gcsp-poc --dry-run`. It reports no affected-test plug-in for the unspecified language and proposes full `npm test`; that fallback is rejected for this isolated slice. Use strict explicit scoped verification:
+
+`python3 -B _tools/test_stamp.py --targeted gcsp-poc --command "node --test --test-concurrency=1 server/test/gcsp-brief-controller.test.js" --reason "New isolated browser controller; explicit JS regression and reviewed shared-feed/BriefService/recommendation boundaries"`.
+
+Tests must exercise real shared-feed debounce/cancellation and stale success/failure, independent fields/zero importance/unknown essentials, no mutation of context or caller snapshots, request payload allowlists, save snapshot/two-phase versions, independent consent, edits during save, conflict retention, typed failures and cleanup. Use only small synthetic inputs. The initial controller is not mounted; render/gallery/ratchet, actual HTTP/UI wiring and visual evidence remain incomplete. Whole-story validation retains authored `npm test`, copy/CSP/ratchet/render checks and desktop/375px keyboard evidence for empty, edited preview, zero eligible, essential unknown, preview unavailable, save success and conflict. No final built claim without those gates.
+
+External ownership manifest: `/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq94-20261105-brief.json`. Registered supervisor/finalizer: the adjacent `fucq94-20261105-brief-supervisor.py`. Exact disposable root: `/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq94-20261105-brief`. Use owned TMPDIR/TMP/TEMP. Initial expected peak is below 128 MiB scratch, 512 MiB RSS and two minutes, one Node worker. HostBudget uses its short-held machine-wide lock. Every command group is stopped/joined in the supervisor finalizer; exact scratch, group and reservation absence is verified. Replan into smaller chunks before retrying any budget failure. Preserve the 5 GiB emergency reserve; 30 GiB is an adjustment trigger.
+
+Retain compact receipts under `/Users/usget/Claude/vehicle-matcher/.claude/test-runs/receipts/fucq94-20261105-brief/` and a compact shared impact entry under `.claude/test-runs/impact/`. Archives or outputs expected at least 256 MiB go directly to `/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/fucq94-20261105-brief/`; none is expected initially. Preserve installed dependencies and worktrees. No dependency symlink has been created. The selector plan used zero scratch, 35,520,512 bytes sampled peak RSS and 0.71 s; scratch, process groups and reservation were absent afterward. An incidental owned Python bytecode file of 62,395 bytes was removed and exact absence verified; the supervisor now disables bytecode writes.
+
+## Agent allocation
+
+Story lead requested and selected `gpt-6.1-sol` / `high`; no fallback, effective runtime not independently confirmed. No descendants spawned. Before every descendant: read both AGENTS files, run live `tiers spawn ROLE --harness codex --gateway global` and capacity, map the concrete requested/selected model and effort, use a self-contained brief with `fork_turns: none`, carry this experience/reference/resource scope and propagate every depth. Admission also requires the dispatcher's real four-slot allocation; configured agent counts are advisory under the human session override.
+
+Current checkpoint: refinement and resource plan only, awaiting an actual child slot for the controller implementation. Server/shared seams remain coordinated future work, not a declaration that the whole story is blocked or built.
