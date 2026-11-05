@@ -66,7 +66,9 @@ export function preparePublication(records, context, input, now) {
     || records.some(({ seed }) => Date.parse(seed.effectiveFrom) >= Date.parse(input.effectiveFrom))) {
     return { outcome: publishInvalid('effectiveFrom', 'Use a new version and an effective date at or after now, later than every retained version.') };
   }
-  const next = structuredClone(active);
+  // Append to the latest scheduled snapshot so a later publication cannot discard its changes.
+  const predecessor = records.map(({ seed }) => seed).sort((a, b) => Date.parse(b.effectiveFrom) - Date.parse(a.effectiveFrom))[0];
+  const next = structuredClone(predecessor);
   next.policyVersion = input.policyVersion;
   next.effectiveFrom = input.effectiveFrom;
   delete next.effectiveTo;
@@ -85,7 +87,7 @@ export function preparePublication(records, context, input, now) {
   try { snapshotVersions([...records.map(({ seed }) => seed), next]); }
   catch { return { outcome: publishInvalid('changes', 'The complete changed policy must satisfy the seed schema, dates, references, units and provenance.') }; }
   const record = { seed: next, seedDigest: inputDigest(next), publisher: context.principalId, publishedAt: now,
-    sourceVersion: active.policyVersion, commandId: input.commandId, inputDigest: digest };
+    sourceVersion: predecessor.policyVersion, commandId: input.commandId, inputDigest: digest };
   return { record, outcome: acceptedPublication(record) };
 }
 

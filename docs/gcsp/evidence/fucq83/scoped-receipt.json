@@ -423,14 +423,342 @@
   ],
   "failureHistory": [
     "Expanded invalid input regression found non-finite input returned unavailable; corrected finite-JSON validation and reran successfully.",
-    "Migration orchestration hardcoded 0001/0003; narrow authorised additive expectation/count correction passed."
+    "Migration orchestration hardcoded 0001/0003; narrow authorised additive expectation/count correction passed.",
+    "Post-full review regression proved a third scheduled version copied current v1 and lost pending v2 change (120!==180). Rebased successor on latest retained snapshot;26passed/2native skips. Earlier873/869/4full is superseded for revised source; renewed full awaits dispatcher admission."
   ],
   "retainedDependencies": [
     "node_modules:27138292 bytes",
     "server/node_modules:858816 bytes"
   ],
   "compatibilityException": null,
-  "logCleanup": "Own success logs temporarily retained for dispatcher audit; compact rows and failure excerpts preserved here; exact owned logs only will be removed before Result.",
+  "logCleanup": "All exact receipt-linked finished successful log roots removed after dispatcher audit; bounded failure logs/excerpts retained.",
   "review": "Complete authored product diff reviewed: existing typed reads untouched; full successor validation and actor/time digests; parameterized values and validated schema names; per-run serialized atomic seed/publication; immutable SQL triggers; safe error outcomes; unchanged consumer/seed/core/clock/cases/0001/0003 boundaries. Native SQL remains unverified.",
-  "agents": "Requested/selected story lead gpt-6.1-sol/high; effective runtime unverified; no descendants authorised."
+  "agents": "Requested/selected story lead gpt-6.1-sol/high; effective runtime unverified; no descendants authorised.",
+  "successfulLogCleanup": [
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-064505-h7cju6fh",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-policy-011a5d994e7c498da4f848b510288608-fb1752e5d0754dbdbcd1bbb1c24ec928.json",
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/384c992e8bb84be5a6de6b5518fa0346ab32e4ea0c9d116d54b18aa2b3092390.json",
+      "allocatedBytesRemoved": 8192,
+      "absent": true
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-064438-qnux_h17",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-consumers-c21ea76605a54531bcc9d4b34ff44d67-c15d1e2c2d964094b678f02e403b4c31.json",
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/7c791608d54201fe410f39343042d81bb77ba0c22fbfadbcff9e65d69b18aebc.json",
+      "allocatedBytesRemoved": 12288,
+      "absent": true
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-064426-algt52oc",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-identity-clock-c0d844f236b7438fa5ed848eee1020aa-634f823cf1e8449290ea6660c432f35d.json",
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/a50ec8f7265876f051bda281609abc4a739d83843d9bc17ecf2964ec4cfc27d8.json",
+      "allocatedBytesRemoved": 12288,
+      "absent": true
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-064208-t4yypcb2",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-policy-e5dcca0c3ce74a05b84e554717ad76b7-2315f2a057cd4317afb1b545920c4fae.json",
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/ee42a2282d40de6b917eeda868725bdae3f6f13f4c52cf8d4e8bf49e6f41c0c4.json",
+      "allocatedBytesRemoved": 8192,
+      "absent": true
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-063944-4_qfgoyp",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-policy-a4c17da8ae58419c8f90347129edc817-349466500eb1403195dec3ac8dfd03d5.json",
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/76a8be8ecb6a44d2e06396e54953f538a8b8f07e3d25da2e7385d2eae09a241f.json",
+      "allocatedBytesRemoved": 8192,
+      "absent": true
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-064310-ctfaxi63",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-repository-bb4f8dde10624e5ca1fea83dbc2acca6-f627d9ec14794eb38c86bbfce70cbc1b.json",
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/f286c84d939c781befd848f3173252e0fe97d0bc30f59669d69a3b5911fc6e28.json",
+      "allocatedBytesRemoved": 12288,
+      "absent": true
+    }
+  ],
+  "scheduledSuccessorRegression": {
+    "rootCause": "Publication required a date after all versions but copied the active snapshot rather than the latest retained predecessor.",
+    "fix": "Copy latest retained snapshot, preserving already-scheduled changes; expectedActiveVersion still guards current clock-active state.",
+    "red": {
+      "argv": [
+        {
+          "argv": [
+            "node",
+            "--test",
+            "--test-concurrency=1",
+            "server/test/gcsp-policy-versions.test.js",
+            "server/test/gcsp-policy-service.test.js"
+          ],
+          "pgid": 78581,
+          "pid": 78581,
+          "ppid": 78550,
+          "testWorker": false
+        },
+        {
+          "argv": [
+            "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+            "--test-concurrency=1",
+            "--heap-prof-interval=524288",
+            "--stack-trace-limit=10",
+            "--report-signal=SIGUSR2",
+            "--max-http-header-size=16384",
+            "--watch-kill-signal=SIGTERM",
+            "--heapsnapshot-near-heap-limit=0",
+            "--inspect-publish-uid=stderr,http",
+            "--test-isolation=process",
+            "--test-coverage-lines=0",
+            "--cpu-prof-interval=1000",
+            "--test-coverage-functions=0",
+            "--test-timeout=0",
+            "--inspect-port=127.0.0.1:9229",
+            "--test-coverage-branches=0",
+            "--use-largepages=off",
+            "--experimental-addon-modules",
+            "--network-family-autoselection-attempt-timeout=500",
+            "--secure-heap-min=2",
+            "--v8-pool-size=4",
+            "--secure-heap=0",
+            "--tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA",
+            "--node-snapshot",
+            "--trace-event-file-pattern=node_trace.${rotation}.log",
+            "server/test/gcsp-policy-service.test.js"
+          ],
+          "pgid": 78581,
+          "pid": 78586,
+          "ppid": 78581,
+          "testWorker": true
+        },
+        {
+          "argv": [
+            "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+            "--test-concurrency=1",
+            "--heap-prof-interval=524288",
+            "--stack-trace-limit=10",
+            "--report-signal=SIGUSR2",
+            "--max-http-header-size=16384",
+            "--watch-kill-signal=SIGTERM",
+            "--heapsnapshot-near-heap-limit=0",
+            "--inspect-publish-uid=stderr,http",
+            "--test-isolation=process",
+            "--test-coverage-lines=0",
+            "--cpu-prof-interval=1000",
+            "--test-coverage-functions=0",
+            "--test-timeout=0",
+            "--inspect-port=127.0.0.1:9229",
+            "--test-coverage-branches=0",
+            "--use-largepages=off",
+            "--experimental-addon-modules",
+            "--network-family-autoselection-attempt-timeout=500",
+            "--secure-heap-min=2",
+            "--v8-pool-size=4",
+            "--secure-heap=0",
+            "--tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA",
+            "--node-snapshot",
+            "--trace-event-file-pattern=node_trace.${rotation}.log",
+            "server/test/gcsp-policy-versions.test.js"
+          ],
+          "pgid": 78581,
+          "pid": 78593,
+          "ppid": 78581,
+          "testWorker": true
+        }
+      ],
+      "command": "node --test --test-concurrency=1 server/test/gcsp-policy-versions.test.js server/test/gcsp-policy-service.test.js",
+      "environmentSha256": "182996b413c2d75086a41cbf49046a8c6206b8de7dbbc61e552e1d2ec55cd773",
+      "finalizer": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/docs/gcsp/evidence/fucq83/scoped-supervisor.py",
+      "finishedAt": 1793861524.256415,
+      "logRoots": [
+        {
+          "absent": false,
+          "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-policy-2f75d1f5fa3e4c1ba083430e55f6cdcc-84fc5722cf2e4354ac74fa86d3ad7476-log.json",
+          "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq83-policy-2f75d1f5fa3e4c1ba083430e55f6cdcc-84fc5722cf2e4354ac74fa86d3ad7476"
+        }
+      ],
+      "manifests": [
+        "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-policy-2f75d1f5fa3e4c1ba083430e55f6cdcc-808329a9e32e479b9ee7c4af56f23463.json"
+      ],
+      "maxTestWorkers": 1,
+      "mode": "policy",
+      "nativeConfigured": false,
+      "ownedDescendants": {
+        "78581": "Thu Nov  5 06:52:01 2026",
+        "78586": "Thu Nov  5 06:52:01 2026",
+        "78593": "Thu Nov  5 06:52:01 2026"
+      },
+      "ownedDescendantsAbsent": true,
+      "plannedRssMiB": 512,
+      "plannedScratchMiB": 128,
+      "project": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065",
+      "results": [
+        {
+          "cleanup": {
+            "local_scratch_reason": "",
+            "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-policy-2f75d1f5fa3e4c1ba083430e55f6cdcc-808329a9e32e479b9ee7c4af56f23463.json",
+            "peak": 0,
+            "removed": true,
+            "root": "/private/tmp/test-stamp-shard-808329a9e32e479b9ee7c4af56f23463"
+          },
+          "issue": null,
+          "issue_kind": null,
+          "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq83-policy-2f75d1f5fa3e4c1ba083430e55f6cdcc-84fc5722cf2e4354ac74fa86d3ad7476/chunk-0001.log",
+          "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-policy-2f75d1f5fa3e4c1ba083430e55f6cdcc-808329a9e32e479b9ee7c4af56f23463.json",
+          "peak_rss": 237617152,
+          "peak_scratch": 0,
+          "rc": 1,
+          "wall": 2.7800823750003474
+        }
+      ],
+      "run": "fucq83-policy-2f75d1f5fa3e4c1ba083430e55f6cdcc",
+      "samples": 10,
+      "supervisorSha256": "d368fa8bd2eec11c16139d1745d620a9a92f95263fbdf3f2b2c519b3daa3da04",
+      "timeoutSeconds": 120,
+      "tokensAbsent": true
+    },
+    "green": {
+      "argv": [
+        {
+          "argv": [
+            "node",
+            "--test",
+            "--test-concurrency=1",
+            "server/test/gcsp-policy-versions.test.js",
+            "server/test/gcsp-policy-service.test.js"
+          ],
+          "pgid": 78769,
+          "pid": 78769,
+          "ppid": 78742,
+          "testWorker": false
+        },
+        {
+          "argv": [
+            "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+            "--test-concurrency=1",
+            "--heap-prof-interval=524288",
+            "--stack-trace-limit=10",
+            "--report-signal=SIGUSR2",
+            "--max-http-header-size=16384",
+            "--watch-kill-signal=SIGTERM",
+            "--heapsnapshot-near-heap-limit=0",
+            "--inspect-publish-uid=stderr,http",
+            "--test-isolation=process",
+            "--test-coverage-lines=0",
+            "--cpu-prof-interval=1000",
+            "--test-coverage-functions=0",
+            "--test-timeout=0",
+            "--inspect-port=127.0.0.1:9229",
+            "--test-coverage-branches=0",
+            "--use-largepages=off",
+            "--experimental-addon-modules",
+            "--network-family-autoselection-attempt-timeout=500",
+            "--secure-heap-min=2",
+            "--v8-pool-size=4",
+            "--secure-heap=0",
+            "--tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA",
+            "--node-snapshot",
+            "--trace-event-file-pattern=node_trace.${rotation}.log",
+            "server/test/gcsp-policy-service.test.js"
+          ],
+          "pgid": 78769,
+          "pid": 78774,
+          "ppid": 78769,
+          "testWorker": true
+        },
+        {
+          "argv": [
+            "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+            "--test-concurrency=1",
+            "--heap-prof-interval=524288",
+            "--stack-trace-limit=10",
+            "--report-signal=SIGUSR2",
+            "--max-http-header-size=16384",
+            "--watch-kill-signal=SIGTERM",
+            "--heapsnapshot-near-heap-limit=0",
+            "--inspect-publish-uid=stderr,http",
+            "--test-isolation=process",
+            "--test-coverage-lines=0",
+            "--cpu-prof-interval=1000",
+            "--test-coverage-functions=0",
+            "--test-timeout=0",
+            "--inspect-port=127.0.0.1:9229",
+            "--test-coverage-branches=0",
+            "--use-largepages=off",
+            "--experimental-addon-modules",
+            "--network-family-autoselection-attempt-timeout=500",
+            "--secure-heap-min=2",
+            "--v8-pool-size=4",
+            "--secure-heap=0",
+            "--tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA",
+            "--node-snapshot",
+            "--trace-event-file-pattern=node_trace.${rotation}.log",
+            "server/test/gcsp-policy-versions.test.js"
+          ],
+          "pgid": 78769,
+          "pid": 78784,
+          "ppid": 78769,
+          "testWorker": true
+        }
+      ],
+      "command": "node --test --test-concurrency=1 server/test/gcsp-policy-versions.test.js server/test/gcsp-policy-service.test.js",
+      "environmentSha256": "355784446f4925f8b5c3142528adea5ba0eedfa3f84a3b140e2cb2276a947150",
+      "finalizer": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/docs/gcsp/evidence/fucq83/scoped-supervisor.py",
+      "finishedAt": 1793861538.743485,
+      "logRoots": [
+        {
+          "absent": true,
+          "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-policy-15692237a8bb474b9a7a3647787dfacf-daad93f595b04aee92f6f79441642267-log.json",
+          "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq83-policy-15692237a8bb474b9a7a3647787dfacf-daad93f595b04aee92f6f79441642267"
+        }
+      ],
+      "manifests": [
+        "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-policy-15692237a8bb474b9a7a3647787dfacf-51ab2c5b7f4441d9989ef428ea2bae0d.json"
+      ],
+      "maxTestWorkers": 1,
+      "mode": "policy",
+      "nativeConfigured": false,
+      "ownedDescendants": {
+        "78769": "Thu Nov  5 06:52:15 2026",
+        "78774": "Thu Nov  5 06:52:15 2026",
+        "78784": "Thu Nov  5 06:52:15 2026"
+      },
+      "ownedDescendantsAbsent": true,
+      "plannedRssMiB": 512,
+      "plannedScratchMiB": 128,
+      "project": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065",
+      "results": [
+        {
+          "cleanup": {
+            "local_scratch_reason": "",
+            "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-policy-15692237a8bb474b9a7a3647787dfacf-51ab2c5b7f4441d9989ef428ea2bae0d.json",
+            "peak": 0,
+            "removed": true,
+            "root": "/private/tmp/test-stamp-shard-51ab2c5b7f4441d9989ef428ea2bae0d"
+          },
+          "issue": null,
+          "issue_kind": null,
+          "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq83-policy-15692237a8bb474b9a7a3647787dfacf-daad93f595b04aee92f6f79441642267/chunk-0001.log",
+          "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-policy-15692237a8bb474b9a7a3647787dfacf-51ab2c5b7f4441d9989ef428ea2bae0d.json",
+          "peak_rss": 245645312,
+          "peak_scratch": 0,
+          "rc": 0,
+          "wall": 2.7970878749983967
+        }
+      ],
+      "run": "fucq83-policy-15692237a8bb474b9a7a3647787dfacf",
+      "samples": 10,
+      "successfulOutputCounts": [
+        [
+          "\u2139 tests 28",
+          "\u2139 pass 26",
+          "\u2139 fail 0",
+          "\u2139 skipped 2",
+          "\u2139 duration_ms 2457.758208"
+        ]
+      ],
+      "supervisorSha256": "d368fa8bd2eec11c16139d1745d620a9a92f95263fbdf3f2b2c519b3daa3da04",
+      "timeoutSeconds": 120,
+      "tokensAbsent": true
+    }
+  }
 }

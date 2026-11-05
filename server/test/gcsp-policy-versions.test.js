@@ -139,6 +139,17 @@ function providerContract(name, factory) {
       assert.equal(outcomes.filter(({ status }) => status === 'ok').length, 1);
       assert.equal((await f.provider.loadVersions(await f.read())).length, 2);
     }));
+    await t.test('later scheduled versions retain distinct changes already scheduled before them', () => withFixture(async (f) => {
+      assert.equal((await f.policy.publishPolicyVersion(f.greg, change())).status, 'ok');
+      const scheduled = await f.provider.loadVersions(await f.read());
+      assert.equal((await f.policy.publishPolicyVersion(f.greg, change({ commandId: 'publish-v3', policyVersion: 'policy-test-v3',
+        effectiveFrom: '2026-11-05T11:00:00.000Z', changes: [{ table: 'assumptions', key: 'hold.cart.orderReview.durationSeconds',
+          patch: { value: 900, ...provenance } }] }))).status, 'ok');
+      assert.equal((await f.clock.advance(f.presenter, { commandId: 'after-both', expectedClockVersion: '1', to: '2026-11-05T11:00:00.000Z' })).status, 'ok');
+      assert.equal((await f.policy.getAssumption(changedKey, await f.read())).value.value, 180);
+      assert.equal((await f.policy.getAssumption('hold.cart.orderReview.durationSeconds', await f.read())).value.value, 900);
+      assert.deepEqual((await f.provider.loadVersions(await f.read())).slice(0, 2), scheduled);
+    }));
   });
 }
 
