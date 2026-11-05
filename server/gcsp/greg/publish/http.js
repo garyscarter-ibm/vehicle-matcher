@@ -8,7 +8,8 @@ export function createGregPublishRoutes(service) {
   ].map(({ action, ...route }) => ({ ...route, role: 'greg', async handle({ context, searchParams, body }) {
     if (searchParams && [...searchParams.keys()].length) return result('invalid', { code: 'unsupported-query',
       reasons: [{ field: 'query', reason: 'Policy controls use the current trusted run and role.' }] });
-    if (route.method === 'GET' && body !== undefined && body !== null) return result('invalid', { code: 'unsupported-body',
+    if (route.method === 'GET' && body !== undefined && body !== null
+      && (typeof body !== 'object' || Array.isArray(body) || Object.keys(body).length)) return result('invalid', { code: 'unsupported-body',
       reasons: [{ field: 'body', reason: 'Policy reads do not accept a body.' }] });
     if (typeof service?.[action] !== 'function') return result('unavailable', { retryable: true,
       reason: 'The policy controls have not been configured.' });

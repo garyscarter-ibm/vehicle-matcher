@@ -19,6 +19,10 @@ shared = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs')
 run = 'fucq103-backend-' + uuid.uuid4().hex
 mode = sys.argv[1] if len(sys.argv) > 1 else 'publish'
 checks = {
+    'activation': ['server/test/gcsp-policy-activation.test.js'],
+    'activation-http': ['server/test/gcsp-greg-publish-http.test.js'],
+    'identity-clock': ['server/test/gcsp-identity.test.js', 'server/test/gcsp-clock-reset.test.js', 'server/test/gcsp-presenter-controls.test.js'],
+    'employee-boundaries': ['server/test/employee-recommendation-api.test.js', 'server/test/gcsp-brief-editor.test.js'],
     'publish': ['server/test/gcsp-greg-publish.test.js'],
     'scoring': ['server/test/employee-recommendation.test.js', 'server/test/feedback-actions.test.js', 'server/test/employee-recommendation-api.test.js', 'server/test/shared-kit-contracts.test.js'],
     'policy-demand': ['server/test/gcsp-policy-service.test.js', 'server/test/gcsp-policy-versions.test.js', 'server/test/gcsp-greg-demand.test.js'],
@@ -42,12 +46,12 @@ reserved = False
 finished = False
 adopted_links = []
 report = {'run': run, 'project': str(project), 'command': command, 'scope': 'scoped',
-          'impact': 'Greg projection/preview/publish and PolicyService snapshot; employee scoring and feedback callers. No native/database/UI/activation proof.',
+          'impact': 'Greg projection/preview/publish and PolicyService snapshot; employee scoring and feedback callers. Run/context activation and ordinary HTTP employee consumption; no native/database/UI proof.',
           'limits': {'seconds': 120, 'rssMiB': 768, 'scratchMiB': 128, 'logMiB': 2, 'workers': 1},
           'selection': 'Affected selector dry-run has no plug-in for unspecified JavaScript and proposes npm test. Reviewed and rejected broad fallback; explicit regression/caller commands selected.',
           'excluded': 'Full suite, PostgreSQL, browser and external integration; parent owns integration checkpoint.',
           'supervisor': str(Path(__file__).resolve()), 'manifest': str(scratch.manifest)}
-source_paths = ['server/gcsp/policy/index.js', 'server/gcsp/policy/publish.js', 'server/scenarios/employee/index.js', *checks[mode],
+source_paths = ['server/index.js', 'server/gcsp/policy/activation.js', 'server/test/helpers/greg-publish-run.js', 'server/test/helpers/employee-recommendation-http.js', 'server/gcsp/policy/index.js', 'server/gcsp/policy/publish.js', 'server/scenarios/employee/index.js', *checks[mode],
                 *[str(p.relative_to(project)) for p in (project / 'server/gcsp/greg/publish').glob('*.js')]]
 source_paths.extend([str(Path(__file__).relative_to(project)), '_tools/test_resources.py', 'server/gcsp/greg/index.js', 'server/gcsp/policy/seed-v1.json',
                      'server/test/helpers/greg-demand-run.js', 'server/test/helpers/employee-recommendation.js'])

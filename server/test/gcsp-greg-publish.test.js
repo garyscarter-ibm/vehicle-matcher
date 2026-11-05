@@ -13,23 +13,23 @@ const now = '2026-11-05T09:00:00.000Z';
 const edit = (id, value) => ({ expectedActiveVersion: initial, changes: [{ id, value }] });
 const command = (id, value, overrides = {}) => ({ ...edit(id, value), commandId: 'publish-1', policyVersion: 'greg-policy-v2', effectiveFrom: now, ...overrides });
 async function fixture(t, options) {
-  const f = await setup(options);
-  t.after(() => f.repository.close());
-  const snapshot = await f.policy.getPolicySnapshot({ runId: f.context.runId, asOf: now });
-  assert.equal(snapshot.status, 'ok');
   const store = createMemoryPolicyStore();
-  const source = structuredClone(snapshot.value);
-  const calibration = source.assumptions.find((row) => row.key === 'employee.recommendation.v1').value;
-  if (!options?.legacy) calibration.preferenceWeights = Object.fromEntries(Object.keys(calibration.preferences).map((key) => [key, 1]));
-  const policyProvider = new MemoryPolicyProvider({ store, seedProvider: { async loadVersions() { return [source]; } } });
+  let policyProvider;
+  const f = await setup({ ...options, policyProvider(source) {
+    const calibration = source.assumptions.find((row) => row.key === 'employee.recommendation.v1').value;
+    if (!options?.legacy) calibration.preferenceWeights = Object.fromEntries(Object.keys(calibration.preferences).map((key) => [key, 1]));
+    policyProvider = new MemoryPolicyProvider({ store, seedProvider: { async loadVersions() { return [source]; } } });
+    return policyProvider;
+  } });
+  t.after(() => f.repository.close());
   f.policy = new PolicyService({ provider: policyProvider, identity: f.identity, clock: f.clock });
-  await f.policy.getActiveVersion({ runId: f.context.runId, asOf: now });
+  f.source = good(await f.policy.getPolicySnapshot({ runId: f.context.runId, asOf: now }));
   f.publish = createGregPublishService(f);
   f.policyStore = store;
-  f.source = source;
-  f.price = source.pricePlans.find((row) => row.schemeId === f.employee.schemeId && row.matchValue === 'G21 Touring|320i');
+  f.price = f.source.pricePlans.find((row) => row.schemeId === f.employee.schemeId && row.matchValue === 'G21 Touring|320i');
   return f;
 }
+
 const queryAll = async (f) => Object.fromEntries(await Promise.all(['briefs', 'employees', 'stock', 'holds', 'offers', 'quotes', 'decisions', 'runs']
   .map(async (table) => [table, (await f.repository.query(f.context, table)).value])));
 const good = (out) => { assert.equal(out.status, 'ok', JSON.stringify(out)); return out.value; };
@@ -78,9 +78,14 @@ test('publish appends an immutable version and keeps pinned offers, holds and qu
   const input = command(`price:${f.price.key}`, 1200);
   const out = good(await f.publish.publish(f.context, input));
   assert.equal(out.policyVersion, 'greg-policy-v2'); assert.equal(out.publisher, f.context.principalId);
-  assert.equal(out.effectiveFrom, now); assert.equal(out.activationRequired, true);
+  assert.equal(out.effectiveFrom, now); assert.equal(out.activationRequired, false);
+  assert.equal(out.activation.status, 'active');
   assert.equal(out.heldOffers.count, 1); assert.match(out.heldOffers.message, /1 held offers/);
-  assert.deepEqual(await queryAll(f), before);
+  const after = await queryAll(f);
+  const { runs: beforeRuns, ...beforeRows } = before; const { runs: afterRuns, ...afterRows } = after;
+  assert.deepEqual(afterRows, beforeRows);
+  assert.equal(afterRuns[0].policyVersion, out.policyVersion);
+  assert.equal(afterRuns[0].versions.policy, out.policyVersion);
   const next = good(await f.policy.getPolicySnapshot({ runId: f.context.runId, asOf: now }));
   const changed = next.pricePlans.find((row) => row.key === f.price.key);
   assert.equal(changed.monthlyPoints, 1200); assert.equal(changed.value, 1200); assert.equal(changed.status, 'assumed');
@@ -134,7 +139,7 @@ test('route definitions enforce Greg role, strict queries and body delegation wi
   const f = await fixture(t); const routes = createGregPublishRoutes(f.publish);
   assert.deepEqual(routes.map((row) => row.role), ['greg', 'greg', 'greg']);
   assert.equal((await routes[0].handle({ context: f.context, searchParams: new URLSearchParams('runId=other') })).status, 'invalid');
-  assert.equal((await routes[0].handle({ context: f.context, searchParams: new URLSearchParams(), body: {} })).status, 'invalid');
+  assert.equal((await routes[0].handle({ context: f.context, searchParams: new URLSearchParams(), body: { extra: true } })).status, 'invalid');
   assert.equal((await routes[1].handle({ context: f.context, searchParams: new URLSearchParams(), body: edit('weight:body', 2) })).status, 'ok');
 });
 
@@ -179,7 +184,11 @@ test('legacy policy adopts neutral weights in a new version through real project
   assert.deepEqual(nextCalibration.preferenceWeights, { body: 0, fuel: 1, sportiness: 1, comfort: 1, economy: 1, size: 1 });
   const { preferenceWeights, ...retained } = nextCalibration;
   assert.deepEqual(retained, old.assumptions.find((row) => row.key === 'employee.recommendation.v1').value);
-  assert.deepEqual(await queryAll(f), before);
+  const after = await queryAll(f);
+  const { runs: beforeRuns, ...beforeRows } = before; const { runs: afterRuns, ...afterRows } = after;
+  assert.deepEqual(afterRows, beforeRows);
+  assert.equal(afterRuns[0].policyVersion, 'greg-policy-v2');
+  assert.equal(afterRuns[0].versions.policy, 'greg-policy-v2');
   assert.equal(good(await f.publish.readPolicy(f.context)).weightsAdoptionRequired, false);
 });
 

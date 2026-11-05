@@ -57,6 +57,8 @@ import { createManualContextRoutes } from './gcsp/manual-context/http.js';
 import { createVehicleEvidenceHandler, isVehicleEvidencePath } from './gcsp/vehicle-evidence/vehicle-evidence-handler.js';
 import { createLocalVehicleEvidenceLookup } from './gcsp/vehicle-evidence/local-vehicle-lookup.js';
 import { createGregRoutes } from './gcsp/greg/http.js';
+import { createGregPublishService } from './gcsp/greg/publish/index.js';
+import { createGregPublishRoutes } from './gcsp/greg/publish/http.js';
 
 const PORT = process.env.PORT === '0' ? 0 : Number(process.env.PORT) || 8787;
 const MAX_BODY_BYTES = 16 * 1024; // quiz answers are tiny; reject anything bigger
@@ -860,13 +862,15 @@ export function buildServer(deps = {}) {
     geocodePostcode,
     ...deps,
   };
+  const gregPublish = deps.gcspGregPublish ?? createGregPublishService({ repository: deps.gcspRepository,
+    policy: deps.gcspPolicy, clock: deps.gcspClock, identity: deps.gcspIdentity });
   const handleGcsp = createGcspHandler({
     identity: deps.gcspIdentity,
     routes: [...createEmployeeRecommendationRoutes(deps.gcspClock && deps.gcspRecommendations
       ? { ...deps.gcspRecommendations, time: deps.gcspClock } : deps.gcspRecommendations),
     ...createClockRoutes(deps.gcspClock), ...createOutboxRoutes(deps.gcspOutbox), ...createScenarioRoutes(deps.gcspScenarios, deps.gcspClock),
     ...createPresenterControlsRoutes({ clock: deps.gcspClock, identity: deps.gcspIdentity, scenarios: deps.gcspScenarios }),
-    ...createBriefRoutes(deps.gcspBrief, deps.gcspBriefEditor), ...createActivityRoutes(deps.gcspActivity), ...createCaseRoutes(deps.gcspCases), ...createManualContextRoutes(deps.gcspManual), ...createGregRoutes(deps.gcspGreg), ...(deps.gcspRoutes || [])],
+    ...createBriefRoutes(deps.gcspBrief, deps.gcspBriefEditor), ...createActivityRoutes(deps.gcspActivity), ...createCaseRoutes(deps.gcspCases), ...createManualContextRoutes(deps.gcspManual), ...createGregRoutes(deps.gcspGreg), ...createGregPublishRoutes(gregPublish), ...(deps.gcspRoutes || [])],
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
   const handleVehicleEvidence = createVehicleEvidenceHandler({

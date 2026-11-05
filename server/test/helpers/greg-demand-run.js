@@ -12,15 +12,15 @@ export { fact };
 const seed = JSON.parse(await readFile(new URL('../../gcsp/policy/seed-v1.json', import.meta.url)));
 
 /** Fresh in-memory run. `threshold` is an explicit alternative; `canonical` keeps the seed value (5). */
-export async function setup({ threshold = 1, canonical = false } = {}) {
+export async function setup({ threshold = 1, canonical = false, policyProvider, wrapRepository = (repository) => repository } = {}) {
   const source = structuredClone(seed);
   if (!canonical) {
     source.assumptions = source.assumptions.filter((a) => a.key !== 'greg.demand.smallCountThreshold');
     source.assumptions.push({ ...source.assumptions[0], key: 'greg.demand.smallCountThreshold', value: threshold,
       unit: 'count', status: 'assumed', basis: 'Explicit alternative fixture privacy threshold.' });
   }
-  const policy = new PolicyService({ provider: { async loadVersions() { return [source]; } } });
-  const repository = createMemoryRepository({ store: createMemoryStore() });
+  const policy = new PolicyService({ provider: policyProvider ? policyProvider(source) : { async loadVersions() { return [source]; } } });
+  const repository = wrapRepository(createMemoryRepository({ store: createMemoryStore() }));
   assert.equal((await repository.open()).status, 'ok');
   const runtime = await createDemoRuntime({ repository, policy, environmentId: 'greg-test', environmentKind: 'synthetic',
     policyAsOf: '2026-11-05T00:00:00.000Z', commandId: 'bootstrap', sessionNow: () => '2026-11-05T00:00:00.000Z' });

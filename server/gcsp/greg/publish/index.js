@@ -1,4 +1,5 @@
 import { PolicyService } from '../../policy/index.js';
+import { activateRunPolicy } from '../../policy/activation.js';
 import { validInstant } from '../../policy/file-provider.js';
 import { inputDigest, ok, result, OCCUPYING_STATES } from '../../repository/index.js';
 import { createGregDemandService } from '../index.js';
@@ -164,9 +165,14 @@ export function createGregPublishService({ repository, policy, clock, identity }
         const published = await policy.publishPolicyVersion(context, { ...input, effectiveFrom: input.effectiveFrom,
           changes: prepared.changes });
         if (published.status !== 'ok') return published;
-        const rows = await rowsFor(context);
-        return ok({ ...published.value, state: 'published', activationRequired: true,
-          activation: { policyVersion: published.value.policyVersion, effectiveFrom: published.value.effectiveFrom },
+        const activated = await activateRunPolicy({ repository, policy }, context);
+        let rows;
+        try { rows = await rowsFor(context); } catch { rows = { error: unavailable() }; }
+        return ok({ ...published.value, state: 'published', activationRequired: activated.status !== 'ok',
+          activation: activated.status === 'ok' ? { status: 'active', policyVersion: activated.value.policyVersion,
+            asOf: activated.value.asOf, publishedVersionActive: activated.value.policyVersion === published.value.policyVersion }
+            : { status: 'pending', policyVersion: published.value.policyVersion, retryable: true,
+              reason: 'Publication was saved. Retry to activate the run.', outcome: activated.status },
           heldOffers: rows.error ? { count: null, unit: 'offers', message: 'Refresh to see active offers keeping their earlier terms.' }
             : heldSummary(rows, time.value.now, published.value.policyVersion) });
       } catch { return unavailable(); }

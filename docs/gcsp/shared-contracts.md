@@ -385,6 +385,14 @@ New work must resolve the effective policy at the run's demo instant and refresh
 historical explanation versions remain unchanged. Ordinary employee reload/preview and Greg reload after a publish
 are required integration evidence, separately from isolated service tests.
 
+`activateRunPolicy({ repository, policy }, context)` resolves at persisted `run.clockInstant` and CAS-updates
+both references, preserving all other versions and pinned rows. Ordinary authenticated session/context
+resolution invokes it before minting new contexts; repeated role guards remain read-only. Session expiry
+uses wall time. Accepted publication reports `activation.status: active` or truthful `pending` with
+`activationRequired`; retry uses the unchanged original command to reconcile. Registered Greg policy
+routes and ordinary employee HTTP reload are verified with explicit runtime composition; delivered
+`createGcspRuntime` writable-service wiring and screen/browser evidence remain open.
+
 ### EmployeeRecommendationService · FUCQ-29
 
 `createEmployeeRecommendationService({ provider, policy, time }).recommend(context, brief)` is a stateless read. `context` is the server-resolved employee/run/environment/company/scheme/grade and retained `policyVersion`; browser data cannot replace it. The injected `provider.resolve(context)` returns an `ok` source with matching `runId`, `environmentId`, `employeeId`, `factsVersion`, `stockVersion`, `employeeFacts` and `stock`. It declares known essentials explicitly, including an empty essentials map where none are known, and provenance-bearing driver qualification, charging and required-by facts. Exact stock records contain `orderUuid`, `configurationId`, an immutable FUCQ-26 snapshot whose stock key equals the order UUID, and versioned availability. No stock VIN is permitted. Provider failure remains unavailable; a successful empty array is no stock.
