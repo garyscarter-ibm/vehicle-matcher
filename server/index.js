@@ -49,6 +49,7 @@ import { createEmployeeRecommendationRoutes } from './gcsp/recommendation/http.j
 import { createClockRoutes } from './gcsp/clock/http.js';
 import { createOutboxRoutes } from './gcsp/notify/http.js';
 import { createScenarioRoutes } from './gcsp/scenarios/http.js';
+import { createPresenterControlsRoutes } from './gcsp/presenter-controls/http.js';
 import { createCaseRoutes } from './gcsp/cases/http.js';
 import { createBriefRoutes } from './gcsp/brief/http.js';
 import { createActivityRoutes } from './gcsp/brief/activity-http.js';
@@ -863,7 +864,9 @@ export function buildServer(deps = {}) {
     identity: deps.gcspIdentity,
     routes: [...createEmployeeRecommendationRoutes(deps.gcspClock && deps.gcspRecommendations
       ? { ...deps.gcspRecommendations, time: deps.gcspClock } : deps.gcspRecommendations),
-    ...createClockRoutes(deps.gcspClock), ...createOutboxRoutes(deps.gcspOutbox), ...createScenarioRoutes(deps.gcspScenarios, deps.gcspClock), ...createBriefRoutes(deps.gcspBrief, deps.gcspBriefEditor), ...createActivityRoutes(deps.gcspActivity), ...createCaseRoutes(deps.gcspCases), ...createManualContextRoutes(deps.gcspManual), ...createGregRoutes(deps.gcspGreg), ...(deps.gcspRoutes || [])],
+    ...createClockRoutes(deps.gcspClock), ...createOutboxRoutes(deps.gcspOutbox), ...createScenarioRoutes(deps.gcspScenarios, deps.gcspClock),
+    ...createPresenterControlsRoutes({ clock: deps.gcspClock, identity: deps.gcspIdentity, scenarios: deps.gcspScenarios }),
+    ...createBriefRoutes(deps.gcspBrief, deps.gcspBriefEditor), ...createActivityRoutes(deps.gcspActivity), ...createCaseRoutes(deps.gcspCases), ...createManualContextRoutes(deps.gcspManual), ...createGregRoutes(deps.gcspGreg), ...(deps.gcspRoutes || [])],
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
   const handleVehicleEvidence = createVehicleEvidenceHandler({
