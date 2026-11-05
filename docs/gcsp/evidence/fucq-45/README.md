@@ -149,3 +149,13 @@ Agents: lead requested/selected/effective `gpt-6.1-sol/high`; implementer reques
 `turn_context`; lead session `01a1abf9-54a0-7333-94bc-a8ed856bcf08`, implementer session
 `01a1abfb-06e3-7a33-8ecf-a84e647da56e`, full paths in `agent-models.json`. One implementer, no descendants.
 No Cowork/Jira operation, scheduled job, credential discovery or live use. Dispatcher retains merge/close/drop.
+
+
+Dispatcher final integration, 5 November 2026: shared base 0c15b0ad2d22e96437060ab2daff6f936552bc57
+was merged as f91da3550c99d145946a96ec845be5e93e462fc6. The incoming delta since reviewed 6e5870d
+contains only docs/gcsp/dev-poller-2026-11-05.md and _dev/code-inbox/DEV-2026-11-04-054.md. No executable,
+test, dependency or configuration input changed. The exact owned-worktree supervisor status matches full stamp
+a2bbc0dca0e6ab1a6bb91f3a59aa48b9fb7a602932cf0724fff4a41739dc30f5; all original passing proof and
+21 independently verified cleanup manifests remain applicable. No new suite/allocation was needed for prose.
+Status receipt: .claude/test-runs/fucq45/dispatcher-owned-worktree-status-1793889332461232000-receipt.json.
+Gary's explicit FUCQ-98 pause remains binding despite removal of a duplicated preconditions line in the inbox.
