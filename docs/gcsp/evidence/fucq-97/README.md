@@ -3,7 +3,7 @@
 Story DEV-2026-11-04-062 (Jira FUCQ-97, Epic FUCQ-88). Rendered evidence for the presenter-only captured email viewer inside the GCSP shell.
 
 - **Path:** `gcsp-outbox.html` (harness), `blocks/gcsp/presenter/` (viewer, `messageList`, adapter, fixtures, styles), `server/gcsp/notify/http.js` (route). Gallery: `components.html`, "GCSP". Contract: `docs/gcsp/presenter-outbox-contract.md`.
-- **Revision:** `<rev>` (to be filled in by the story lead). `fucq-97-browser-matrix.json` records the full HEAD it was captured at, the SHA-256 of each source file and every check result.
+- **Revision:** Source commit `9a661ac` on `dev/DEV-2026-11-04-062` (base `gcsp-poc`). Captured on the working tree over `0cb78ad`; every source SHA-256 in `fucq-97-browser-matrix.json` matches `9a661ac`. The matrix records the HEAD it was captured at, the SHA-256 of each source file and every check result.
 - **How to reproduce:** `npm run serve`, then open `http://localhost:3000/gcsp-outbox.html?fixture=<name>` with `<name>` one of `messages`, `empty`, `retrying`, `failed`, `unavailable`, `refused`, `loading`. `capture-fucq-97.mjs` re-runs every capture in headless system Chrome: set `PLAYWRIGHT_CORE` to a playwright-core `index.mjs` and `BASE` to the static server.
 - **Data:** synthetic and labelled fictional. Fixture HTML and text follow the shape of `renderOfferMessage` output but are static strings.
 
