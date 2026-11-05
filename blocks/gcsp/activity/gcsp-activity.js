@@ -65,7 +65,13 @@ export function mountActivity(root, { adapter = {}, brand = 'bmw', navigation, o
 
 export class GcspActivityElement extends HTMLElement {
   static get observedAttributes() { return ['brand']; }
-  constructor() { super(); this._adapter = null; this._teardown = null; }
+  constructor() {
+    super();
+    const adapter = Object.hasOwn(this, 'adapter') ? this.adapter : null;
+    delete this.adapter;
+    this._adapter = adapter;
+    this._teardown = null;
+  }
   get adapter() { return this._adapter; }
   set adapter(value) { this._adapter = value || null; if (this.isConnected) this._mount(); }
   get brand() { return this.getAttribute('brand') || 'bmw'; }

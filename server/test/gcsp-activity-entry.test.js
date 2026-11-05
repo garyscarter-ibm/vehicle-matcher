@@ -48,6 +48,13 @@ test('a refresh preserves focus moved outside the body and account retry owns ac
   await settle(refused,(r) => r.querySelector('.gcsp-activity'));assert.equal(refused.querySelector('.gcsp-activity button').disabled,true);
 });
 
+test('an adapter assigned before custom element definition survives upgrade and reads the injected account',async () => {
+  const node=document.createElement('gcsp-activity');let reads=0;
+  node.adapter={loadAccount:async () => account,readActivity:async () => {reads++;return snapshot();}};
+  document.body.append(node);assert.equal(reads,0);mod.defineGcspActivity(dom.window.customElements);
+  await settle(node,(r) => r.querySelector('.gcsp-activity-status')?.textContent==='Active');assert.equal(reads,1);node.remove();
+});
+
 test('custom element registration, adapter remount, refresh and disconnect are isolated and abort owned requests',async () => {
   assert.equal(typeof mod.defineGcspActivity,'function');const Type=mod.defineGcspActivity(dom.window.customElements);assert.equal(mod.defineGcspActivity(dom.window.customElements),Type);
   const node=document.createElement('gcsp-activity');let calls=0;const first=deferred();let signal;
