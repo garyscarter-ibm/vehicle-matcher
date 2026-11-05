@@ -1,0 +1,4208 @@
+{
+  "kind": "computed-read-only-employee-recommendation-evidence",
+  "generatedAt": "2026-11-05T01:51:55.132Z",
+  "domainNow": "2026-11-05T12:00:00.000Z",
+  "codeCommit": "60419c10c1d353a2ca5ac63e87852b8ff19908c3",
+  "sourceIdentity": {
+    "server/gcsp/recommendation/index.js": "a2cf56c6f121cef8d6564acca8913524a71e66740e85c3ab6e095c698dc963af",
+    "server/scenarios/employee/index.js": "913967b47d39b764dba245221ffdceb0971659cd0b32331075380f4f69c9c549",
+    "server/engine.js": "4c226a25e4e93985c32a64714ed57b2f55c9ad10c95f45ce0cdc83768e4997ec",
+    "server/gcsp/policy/seed-v1.json": "4b9f70d7270cd343d13b08d0f33f4248c8a8b739041dc73f10f8f9509398be23",
+    "server/test/helpers/employee-recommendation.js": "39b7e47f9298d155759fa440bd412ebb86bfc009b7ec9d9d1167bdb88970ce9a"
+  },
+  "fixtureStatus": "Synthetic test inputs and illustrative points, not verified BMW employee/price facts.",
+  "service": "createEmployeeRecommendationService",
+  "sourceFixture": "server/test/helpers/employee-recommendation.js",
+  "policySource": "PolicyService over server/gcsp/policy/seed-v1.json",
+  "centralEdit": {
+    "policyVersion": "gcsp-policy-evidence-v2",
+    "table": "allowances",
+    "key": "allowance.choices-fs-uk.G7",
+    "before": 1300,
+    "after": 0,
+    "units": "points/month",
+    "historicalPin": "gcsp-policy-v1"
+  },
+  "cases": [
+    {
+      "name": "suitable-exact-car",
+      "input": {
+        "context": {
+          "runId": "run-employee",
+          "environmentId": "demo",
+          "employeeId": "employee-test",
+          "roles": [
+            "employee"
+          ],
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G7",
+          "policyVersion": "gcsp-policy-v1"
+        },
+        "brief": {
+          "schemaVersion": 1,
+          "briefVersion": 1,
+          "preferences": {
+            "body": {
+              "value": "estate",
+              "importance": 100,
+              "valueState": "confirmed",
+              "importanceState": "confirmed",
+              "source": "employee"
+            }
+          },
+          "essentials": {
+            "seats": {
+              "value": 5,
+              "operator": "gte",
+              "unit": "count",
+              "state": "confirmed",
+              "source": "employee"
+            }
+          }
+        },
+        "sourceVersions": {
+          "facts": "employee-facts-v1",
+          "stock": "stock-v1"
+        },
+        "exactStock": [
+          {
+            "orderUuid": "00000000-0000-4000-8000-000000000001",
+            "configurationId": "RzIxOlMx",
+            "facts": {
+              "eligibilityModelKey": {
+                "status": "known",
+                "value": "G21 Touring|320i",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "body": {
+                "status": "known",
+                "value": "estate",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "fuel": {
+                "status": "known",
+                "value": "petrol",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "seats": {
+                "status": "known",
+                "value": 5,
+                "unit": "count",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "boot": {
+                "status": "known",
+                "value": 500,
+                "unit": "L",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "zeroTo62": {
+                "status": "known",
+                "value": 7,
+                "unit": "s",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "mpg": {
+                "status": "known",
+                "value": 45,
+                "unit": "mpg-imperial",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "sizeClass": {
+                "status": "known",
+                "value": 3,
+                "unit": "ordinal-1-5",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "tags": {
+                "status": "known",
+                "value": [
+                  "cruiser"
+                ],
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              }
+            },
+            "availability": {
+              "state": "available",
+              "availableFrom": "2026-11-05T12:00:00.000Z",
+              "availableUntil": "2027-01-01T00:00:00.000Z",
+              "version": "availability-v1"
+            }
+          }
+        ],
+        "employeeFacts": {
+          "driverEligible": {
+            "status": "known",
+            "value": true,
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "essentials": {},
+          "charging": {
+            "status": "known",
+            "value": "home",
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "annualMileage": {
+            "status": "known",
+            "value": 12000,
+            "unit": "mi/year",
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "requiredBy": {
+            "status": "known",
+            "value": "2026-12-01T00:00:00.000Z",
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          }
+        }
+      },
+      "output": {
+        "status": "ok",
+        "contractVersion": "1.0.0",
+        "value": {
+          "scenarioId": "employee-scheme-demo-v1",
+          "runId": "run-employee",
+          "state": "recommendations",
+          "evaluatedAt": "2026-11-05T12:00:00.000Z",
+          "versions": {
+            "brief": 1,
+            "facts": "employee-facts-v1",
+            "policy": "gcsp-policy-v1",
+            "stock": "stock-v1",
+            "clock": "clock-v1"
+          },
+          "decisions": [
+            {
+              "orderUuid": "00000000-0000-4000-8000-000000000001",
+              "configurationId": "RzIxOlMx",
+              "gateStatus": "eligible",
+              "suitable": true,
+              "score": 100,
+              "components": [
+                {
+                  "code": "preference-fit",
+                  "field": "body",
+                  "score": 100,
+                  "importance": 100,
+                  "desired": "estate",
+                  "observed": 100,
+                  "facts": {
+                    "body": {
+                      "status": "known",
+                      "value": "estate",
+                      "unit": null,
+                      "provenance": {
+                        "sourceRef": "fixture:employee",
+                        "observedAt": "2026-11-05T12:00:00.000Z",
+                        "version": "facts-v1",
+                        "assurance": "synthetic-scenario"
+                      }
+                    }
+                  }
+                }
+              ],
+              "reasons": [
+                {
+                  "code": "driver-eligible",
+                  "fact": {
+                    "status": "known",
+                    "value": true,
+                    "unit": null,
+                    "provenance": {
+                      "sourceRef": "fixture:employee",
+                      "observedAt": "2026-11-05T12:00:00.000Z",
+                      "version": "facts-v1",
+                      "assurance": "synthetic-scenario"
+                    }
+                  }
+                },
+                {
+                  "code": "policy-include",
+                  "ruleIds": [
+                    "choices-fs-uk-015-include"
+                  ]
+                },
+                {
+                  "code": "allowance-sufficient",
+                  "allowance": 1300,
+                  "monthlyPoints": 1100,
+                  "unit": "points/month"
+                },
+                {
+                  "code": "essential-met",
+                  "field": "seats",
+                  "requirement": {
+                    "value": 5,
+                    "operator": "gte",
+                    "unit": "count",
+                    "state": "confirmed",
+                    "source": "employee"
+                  },
+                  "fact": {
+                    "status": "known",
+                    "value": 5,
+                    "unit": "count",
+                    "provenance": {
+                      "sourceRef": "fixture:employee",
+                      "observedAt": "2026-11-05T12:00:00.000Z",
+                      "version": "facts-v1",
+                      "assurance": "synthetic-scenario"
+                    }
+                  }
+                },
+                {
+                  "code": "required-by-met",
+                  "requiredBy": "2026-12-01T00:00:00.000Z"
+                },
+                {
+                  "code": "preference-fit",
+                  "field": "body",
+                  "score": 100,
+                  "importance": 100,
+                  "desired": "estate",
+                  "observed": 100,
+                  "facts": {
+                    "body": {
+                      "status": "known",
+                      "value": "estate",
+                      "unit": null,
+                      "provenance": {
+                        "sourceRef": "fixture:employee",
+                        "observedAt": "2026-11-05T12:00:00.000Z",
+                        "version": "facts-v1",
+                        "assurance": "synthetic-scenario"
+                      }
+                    }
+                  }
+                }
+              ],
+              "tradeOffs": [],
+              "blockers": [],
+              "unknowns": [],
+              "versions": {
+                "brief": 1,
+                "facts": "employee-facts-v1",
+                "policy": "gcsp-policy-v1",
+                "stock": "stock-v1",
+                "snapshot": "snapshot-v1",
+                "terms": "gcsp-policy-v1:price.choices-fs-uk.015:allowance.choices-fs-uk.G7:2026-11-05T12:00:00.000Z",
+                "clock": "clock-v1",
+                "availability": "availability-v1"
+              },
+              "terms": {
+                "termsVersion": "gcsp-policy-v1:price.choices-fs-uk.015:allowance.choices-fs-uk.G7:2026-11-05T12:00:00.000Z",
+                "points": {
+                  "value": 1100,
+                  "unit": "points"
+                },
+                "allowanceInputs": {
+                  "allowance": {
+                    "value": 1300,
+                    "unit": "points"
+                  }
+                },
+                "contribution": null,
+                "validFrom": "2026-11-05T12:00:00.000Z",
+                "validUntil": "2026-11-05T13:00:00.000Z",
+                "provenance": {
+                  "sourceRef": "docs/gcsp/shared-contracts.md",
+                  "version": "gcsp-policy-v1",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "assurance": "synthetic-scenario"
+                },
+                "kind": "employee-scheme"
+              },
+              "policyEvidence": {
+                "eligibility": {
+                  "eligible": true,
+                  "state": "eligible",
+                  "ruleIds": [
+                    "choices-fs-uk-015-include"
+                  ],
+                  "reasons": [
+                    "explicit-include"
+                  ],
+                  "provenance": {
+                    "rules": [
+                      {
+                        "key": "choices-fs-uk-015-include",
+                        "value": "G21 Touring|320i",
+                        "unit": "model/engine key",
+                        "status": "verified",
+                        "basis": "Transcribed FS&UK Choices Vehicle Eligibility Matrix: G21 Touring, 320i; source grade-band decisions only. Key mapping is a demo assumption.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2024-07-29",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2024-10-01T00:00:00.000Z",
+                        "ruleId": "choices-fs-uk-015-include",
+                        "effect": "include",
+                        "matchField": "eligibilityModelKey",
+                        "operator": "equals",
+                        "gradeIds": [
+                          "G7",
+                          "G8-10",
+                          "G11-14"
+                        ],
+                        "model": "G21 Touring",
+                        "engine": "320i"
+                      }
+                    ],
+                    "schemeRuleLinks": [
+                      {
+                        "key": "link-choices-fs-uk-015-include",
+                        "value": "choices-fs-uk-015-include",
+                        "unit": "rule reference",
+                        "status": "verified",
+                        "basis": "Dated link to the supplied FS&UK Choices Vehicle Eligibility Matrix; effective 1 October 2024.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2024-07-29",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2024-10-01T00:00:00.000Z",
+                        "linkId": "link-choices-fs-uk-015-include",
+                        "schemeId": "choices-fs-uk",
+                        "ruleId": "choices-fs-uk-015-include"
+                      }
+                    ],
+                    "assumptions": [
+                      {
+                        "key": "eligibility.rule.matchField",
+                        "value": "eligibilityModelKey",
+                        "unit": "field name",
+                        "status": "assumed",
+                        "basis": "Assumed bridge of retained series/model/engine labels to matrix rows, since target matching code is undefined (round-3). Exact mapping is versioned/provenanced in the seed; unknown mapping fails.",
+                        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      },
+                      {
+                        "key": "eligibility.rule.precedence",
+                        "value": "excludeThenInclude",
+                        "unit": "enum",
+                        "status": "assumed",
+                        "basis": "Assumed deterministic include/exclude evaluation; unknowns cannot widen eligibility.",
+                        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      },
+                      {
+                        "key": "eligibility.context.mapping",
+                        "value": [
+                          {
+                            "schemeId": "choices-fs-uk",
+                            "companyId": "demo-bmw-fs-uk",
+                            "sourceMatrix": "FS&UK Choices Vehicle Eligibility Matrix",
+                            "gradeIds": [
+                              "G1-6",
+                              "G7",
+                              "G8-10",
+                              "G11-14"
+                            ]
+                          },
+                          {
+                            "schemeId": "choices-rr-production",
+                            "companyId": "demo-bmw-rr-production",
+                            "sourceMatrix": "RR&Production Choices Vehicle Eligibility Matrix",
+                            "gradeIds": [
+                              "PG1",
+                              "G8-10",
+                              "G11-12"
+                            ]
+                          }
+                        ],
+                        "unit": "identifier mapping",
+                        "status": "assumed",
+                        "basis": "Demo scheme/company IDs and source grade bands preserve actual FS&UK and RR&Production matrices. RR&Production is not equated with UKNSC. eligibilityModelKey is exact source model + | + one source engine token; comma/slash alternatives expand without inventing engine prefixes.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      }
+                    ]
+                  }
+                },
+                "allowance": {
+                  "key": "allowance.choices-fs-uk.G7",
+                  "value": 1300,
+                  "unit": "points/month",
+                  "status": "assumed",
+                  "basis": "Synthetic monthly demo allowance; eligibility matrices contain no numeric allowances. Not a verified BMW amount.",
+                  "source": "docs/gcsp/shared-contracts.md",
+                  "sourceDate": "2026-11-04",
+                  "policyVersion": "gcsp-policy-v1",
+                  "effectiveFrom": "2026-11-04T00:00:00.000Z",
+                  "allowanceId": "allowance.choices-fs-uk.G7",
+                  "companyId": "demo-bmw-fs-uk",
+                  "schemeId": "choices-fs-uk",
+                  "gradeId": "G7",
+                  "monthlyPoints": 1300
+                },
+                "points": {
+                  "key": "price.choices-fs-uk.015",
+                  "value": 1100,
+                  "unit": "points/month",
+                  "status": "assumed",
+                  "basis": "Synthetic monthly demo cost for source class KKL; matrices contain no prices. Not a verified BMW amount.",
+                  "source": "docs/gcsp/shared-contracts.md",
+                  "sourceDate": "2026-11-04",
+                  "policyVersion": "gcsp-policy-v1",
+                  "effectiveFrom": "2026-11-04T00:00:00.000Z",
+                  "pricePlanId": "choices-fs-uk-synthetic-monthly-v1",
+                  "priceEntryId": "price.choices-fs-uk.015",
+                  "schemeId": "choices-fs-uk",
+                  "matchField": "eligibilityModelKey",
+                  "matchValue": "G21 Touring|320i",
+                  "monthlyPoints": 1100
+                }
+              }
+            }
+          ],
+          "recommendations": [
+            "00000000-0000-4000-8000-000000000001"
+          ],
+          "eligibleCount": 1
+        }
+      }
+    },
+    {
+      "name": "unknown-essential-never-suitable",
+      "input": {
+        "context": {
+          "runId": "run-employee",
+          "environmentId": "demo",
+          "employeeId": "employee-test",
+          "roles": [
+            "employee"
+          ],
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G7",
+          "policyVersion": "gcsp-policy-v1"
+        },
+        "brief": {
+          "schemaVersion": 1,
+          "briefVersion": 1,
+          "preferences": {
+            "body": {
+              "value": "estate",
+              "importance": 100,
+              "valueState": "confirmed",
+              "importanceState": "confirmed",
+              "source": "employee"
+            }
+          },
+          "essentials": {
+            "seats": {
+              "value": 5,
+              "operator": "gte",
+              "unit": "count",
+              "state": "confirmed",
+              "source": "employee"
+            }
+          }
+        },
+        "sourceVersions": {
+          "facts": "employee-facts-v1",
+          "stock": "stock-v1"
+        },
+        "exactStock": [
+          {
+            "orderUuid": "00000000-0000-4000-8000-000000000001",
+            "configurationId": "RzIxOlMx",
+            "facts": {
+              "eligibilityModelKey": {
+                "status": "known",
+                "value": "G21 Touring|320i",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "body": {
+                "status": "known",
+                "value": "estate",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "fuel": {
+                "status": "known",
+                "value": "petrol",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "seats": {
+                "status": "unknown",
+                "value": null,
+                "unit": "count",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "unknown"
+                }
+              },
+              "boot": {
+                "status": "known",
+                "value": 500,
+                "unit": "L",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "zeroTo62": {
+                "status": "known",
+                "value": 7,
+                "unit": "s",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "mpg": {
+                "status": "known",
+                "value": 45,
+                "unit": "mpg-imperial",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "sizeClass": {
+                "status": "known",
+                "value": 3,
+                "unit": "ordinal-1-5",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "tags": {
+                "status": "known",
+                "value": [
+                  "cruiser"
+                ],
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              }
+            },
+            "availability": {
+              "state": "available",
+              "availableFrom": "2026-11-05T12:00:00.000Z",
+              "availableUntil": "2027-01-01T00:00:00.000Z",
+              "version": "availability-v1"
+            }
+          }
+        ],
+        "employeeFacts": {
+          "driverEligible": {
+            "status": "known",
+            "value": true,
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "essentials": {},
+          "charging": {
+            "status": "known",
+            "value": "home",
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "annualMileage": {
+            "status": "known",
+            "value": 12000,
+            "unit": "mi/year",
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "requiredBy": {
+            "status": "known",
+            "value": "2026-12-01T00:00:00.000Z",
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          }
+        }
+      },
+      "output": {
+        "status": "ok",
+        "contractVersion": "1.0.0",
+        "value": {
+          "scenarioId": "employee-scheme-demo-v1",
+          "runId": "run-employee",
+          "state": "no-viable-stock",
+          "evaluatedAt": "2026-11-05T12:00:00.000Z",
+          "versions": {
+            "brief": 1,
+            "facts": "employee-facts-v1",
+            "policy": "gcsp-policy-v1",
+            "stock": "stock-v1",
+            "clock": "clock-v1"
+          },
+          "decisions": [
+            {
+              "orderUuid": "00000000-0000-4000-8000-000000000001",
+              "configurationId": "RzIxOlMx",
+              "gateStatus": "needs-confirmation",
+              "suitable": false,
+              "score": null,
+              "components": [],
+              "reasons": [
+                {
+                  "code": "driver-eligible",
+                  "fact": {
+                    "status": "known",
+                    "value": true,
+                    "unit": null,
+                    "provenance": {
+                      "sourceRef": "fixture:employee",
+                      "observedAt": "2026-11-05T12:00:00.000Z",
+                      "version": "facts-v1",
+                      "assurance": "synthetic-scenario"
+                    }
+                  }
+                },
+                {
+                  "code": "policy-include",
+                  "ruleIds": [
+                    "choices-fs-uk-015-include"
+                  ]
+                },
+                {
+                  "code": "allowance-sufficient",
+                  "allowance": 1300,
+                  "monthlyPoints": 1100,
+                  "unit": "points/month"
+                },
+                {
+                  "code": "required-by-met",
+                  "requiredBy": "2026-12-01T00:00:00.000Z"
+                }
+              ],
+              "tradeOffs": [],
+              "blockers": [],
+              "unknowns": [
+                {
+                  "code": "essential-unconfirmed",
+                  "field": "seats",
+                  "requirement": {
+                    "value": 5,
+                    "operator": "gte",
+                    "unit": "count",
+                    "state": "confirmed",
+                    "source": "employee"
+                  },
+                  "fact": {
+                    "status": "unknown",
+                    "value": null,
+                    "unit": "count",
+                    "provenance": {
+                      "sourceRef": "fixture:employee",
+                      "observedAt": "2026-11-05T12:00:00.000Z",
+                      "version": "facts-v1",
+                      "assurance": "unknown"
+                    }
+                  }
+                }
+              ],
+              "versions": {
+                "brief": 1,
+                "facts": "employee-facts-v1",
+                "policy": "gcsp-policy-v1",
+                "stock": "stock-v1",
+                "snapshot": "snapshot-v1",
+                "terms": "gcsp-policy-v1:price.choices-fs-uk.015:allowance.choices-fs-uk.G7:2026-11-05T12:00:00.000Z",
+                "clock": "clock-v1",
+                "availability": "availability-v1"
+              },
+              "terms": {
+                "termsVersion": "gcsp-policy-v1:price.choices-fs-uk.015:allowance.choices-fs-uk.G7:2026-11-05T12:00:00.000Z",
+                "points": {
+                  "value": 1100,
+                  "unit": "points"
+                },
+                "allowanceInputs": {
+                  "allowance": {
+                    "value": 1300,
+                    "unit": "points"
+                  }
+                },
+                "contribution": null,
+                "validFrom": "2026-11-05T12:00:00.000Z",
+                "validUntil": "2026-11-05T13:00:00.000Z",
+                "provenance": {
+                  "sourceRef": "docs/gcsp/shared-contracts.md",
+                  "version": "gcsp-policy-v1",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "assurance": "synthetic-scenario"
+                },
+                "kind": "employee-scheme"
+              },
+              "policyEvidence": {
+                "eligibility": {
+                  "eligible": true,
+                  "state": "eligible",
+                  "ruleIds": [
+                    "choices-fs-uk-015-include"
+                  ],
+                  "reasons": [
+                    "explicit-include"
+                  ],
+                  "provenance": {
+                    "rules": [
+                      {
+                        "key": "choices-fs-uk-015-include",
+                        "value": "G21 Touring|320i",
+                        "unit": "model/engine key",
+                        "status": "verified",
+                        "basis": "Transcribed FS&UK Choices Vehicle Eligibility Matrix: G21 Touring, 320i; source grade-band decisions only. Key mapping is a demo assumption.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2024-07-29",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2024-10-01T00:00:00.000Z",
+                        "ruleId": "choices-fs-uk-015-include",
+                        "effect": "include",
+                        "matchField": "eligibilityModelKey",
+                        "operator": "equals",
+                        "gradeIds": [
+                          "G7",
+                          "G8-10",
+                          "G11-14"
+                        ],
+                        "model": "G21 Touring",
+                        "engine": "320i"
+                      }
+                    ],
+                    "schemeRuleLinks": [
+                      {
+                        "key": "link-choices-fs-uk-015-include",
+                        "value": "choices-fs-uk-015-include",
+                        "unit": "rule reference",
+                        "status": "verified",
+                        "basis": "Dated link to the supplied FS&UK Choices Vehicle Eligibility Matrix; effective 1 October 2024.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2024-07-29",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2024-10-01T00:00:00.000Z",
+                        "linkId": "link-choices-fs-uk-015-include",
+                        "schemeId": "choices-fs-uk",
+                        "ruleId": "choices-fs-uk-015-include"
+                      }
+                    ],
+                    "assumptions": [
+                      {
+                        "key": "eligibility.rule.matchField",
+                        "value": "eligibilityModelKey",
+                        "unit": "field name",
+                        "status": "assumed",
+                        "basis": "Assumed bridge of retained series/model/engine labels to matrix rows, since target matching code is undefined (round-3). Exact mapping is versioned/provenanced in the seed; unknown mapping fails.",
+                        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      },
+                      {
+                        "key": "eligibility.rule.precedence",
+                        "value": "excludeThenInclude",
+                        "unit": "enum",
+                        "status": "assumed",
+                        "basis": "Assumed deterministic include/exclude evaluation; unknowns cannot widen eligibility.",
+                        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      },
+                      {
+                        "key": "eligibility.context.mapping",
+                        "value": [
+                          {
+                            "schemeId": "choices-fs-uk",
+                            "companyId": "demo-bmw-fs-uk",
+                            "sourceMatrix": "FS&UK Choices Vehicle Eligibility Matrix",
+                            "gradeIds": [
+                              "G1-6",
+                              "G7",
+                              "G8-10",
+                              "G11-14"
+                            ]
+                          },
+                          {
+                            "schemeId": "choices-rr-production",
+                            "companyId": "demo-bmw-rr-production",
+                            "sourceMatrix": "RR&Production Choices Vehicle Eligibility Matrix",
+                            "gradeIds": [
+                              "PG1",
+                              "G8-10",
+                              "G11-12"
+                            ]
+                          }
+                        ],
+                        "unit": "identifier mapping",
+                        "status": "assumed",
+                        "basis": "Demo scheme/company IDs and source grade bands preserve actual FS&UK and RR&Production matrices. RR&Production is not equated with UKNSC. eligibilityModelKey is exact source model + | + one source engine token; comma/slash alternatives expand without inventing engine prefixes.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      }
+                    ]
+                  }
+                },
+                "allowance": {
+                  "key": "allowance.choices-fs-uk.G7",
+                  "value": 1300,
+                  "unit": "points/month",
+                  "status": "assumed",
+                  "basis": "Synthetic monthly demo allowance; eligibility matrices contain no numeric allowances. Not a verified BMW amount.",
+                  "source": "docs/gcsp/shared-contracts.md",
+                  "sourceDate": "2026-11-04",
+                  "policyVersion": "gcsp-policy-v1",
+                  "effectiveFrom": "2026-11-04T00:00:00.000Z",
+                  "allowanceId": "allowance.choices-fs-uk.G7",
+                  "companyId": "demo-bmw-fs-uk",
+                  "schemeId": "choices-fs-uk",
+                  "gradeId": "G7",
+                  "monthlyPoints": 1300
+                },
+                "points": {
+                  "key": "price.choices-fs-uk.015",
+                  "value": 1100,
+                  "unit": "points/month",
+                  "status": "assumed",
+                  "basis": "Synthetic monthly demo cost for source class KKL; matrices contain no prices. Not a verified BMW amount.",
+                  "source": "docs/gcsp/shared-contracts.md",
+                  "sourceDate": "2026-11-04",
+                  "policyVersion": "gcsp-policy-v1",
+                  "effectiveFrom": "2026-11-04T00:00:00.000Z",
+                  "pricePlanId": "choices-fs-uk-synthetic-monthly-v1",
+                  "priceEntryId": "price.choices-fs-uk.015",
+                  "schemeId": "choices-fs-uk",
+                  "matchField": "eligibilityModelKey",
+                  "matchValue": "G21 Touring|320i",
+                  "monthlyPoints": 1100
+                }
+              }
+            }
+          ],
+          "recommendations": [],
+          "eligibleCount": 0
+        }
+      }
+    },
+    {
+      "name": "historical-policy-before-edit",
+      "input": {
+        "context": {
+          "runId": "run-employee",
+          "environmentId": "demo",
+          "employeeId": "employee-test",
+          "roles": [
+            "employee"
+          ],
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G7",
+          "policyVersion": "gcsp-policy-v1"
+        },
+        "brief": {
+          "schemaVersion": 1,
+          "briefVersion": 1,
+          "preferences": {
+            "body": {
+              "value": "estate",
+              "importance": 100,
+              "valueState": "confirmed",
+              "importanceState": "confirmed",
+              "source": "employee"
+            }
+          },
+          "essentials": {
+            "seats": {
+              "value": 5,
+              "operator": "gte",
+              "unit": "count",
+              "state": "confirmed",
+              "source": "employee"
+            }
+          }
+        },
+        "sourceVersions": {
+          "facts": "employee-facts-v1",
+          "stock": "stock-v1"
+        },
+        "exactStock": [
+          {
+            "orderUuid": "00000000-0000-4000-8000-000000000001",
+            "configurationId": "RzIxOlMx",
+            "facts": {
+              "eligibilityModelKey": {
+                "status": "known",
+                "value": "G21 Touring|320i",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "body": {
+                "status": "known",
+                "value": "estate",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "fuel": {
+                "status": "known",
+                "value": "petrol",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "seats": {
+                "status": "known",
+                "value": 5,
+                "unit": "count",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "boot": {
+                "status": "known",
+                "value": 500,
+                "unit": "L",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "zeroTo62": {
+                "status": "known",
+                "value": 7,
+                "unit": "s",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "mpg": {
+                "status": "known",
+                "value": 45,
+                "unit": "mpg-imperial",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "sizeClass": {
+                "status": "known",
+                "value": 3,
+                "unit": "ordinal-1-5",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "tags": {
+                "status": "known",
+                "value": [
+                  "cruiser"
+                ],
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              }
+            },
+            "availability": {
+              "state": "available",
+              "availableFrom": "2026-11-05T12:00:00.000Z",
+              "availableUntil": "2027-01-01T00:00:00.000Z",
+              "version": "availability-v1"
+            }
+          }
+        ],
+        "employeeFacts": {
+          "driverEligible": {
+            "status": "known",
+            "value": true,
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "essentials": {},
+          "charging": {
+            "status": "known",
+            "value": "home",
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "annualMileage": {
+            "status": "known",
+            "value": 12000,
+            "unit": "mi/year",
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "requiredBy": {
+            "status": "known",
+            "value": "2026-12-01T00:00:00.000Z",
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          }
+        }
+      },
+      "output": {
+        "status": "ok",
+        "contractVersion": "1.0.0",
+        "value": {
+          "scenarioId": "employee-scheme-demo-v1",
+          "runId": "run-employee",
+          "state": "recommendations",
+          "evaluatedAt": "2026-11-05T12:00:00.000Z",
+          "versions": {
+            "brief": 1,
+            "facts": "employee-facts-v1",
+            "policy": "gcsp-policy-v1",
+            "stock": "stock-v1",
+            "clock": "clock-v1"
+          },
+          "decisions": [
+            {
+              "orderUuid": "00000000-0000-4000-8000-000000000001",
+              "configurationId": "RzIxOlMx",
+              "gateStatus": "eligible",
+              "suitable": true,
+              "score": 100,
+              "components": [
+                {
+                  "code": "preference-fit",
+                  "field": "body",
+                  "score": 100,
+                  "importance": 100,
+                  "desired": "estate",
+                  "observed": 100,
+                  "facts": {
+                    "body": {
+                      "status": "known",
+                      "value": "estate",
+                      "unit": null,
+                      "provenance": {
+                        "sourceRef": "fixture:employee",
+                        "observedAt": "2026-11-05T12:00:00.000Z",
+                        "version": "facts-v1",
+                        "assurance": "synthetic-scenario"
+                      }
+                    }
+                  }
+                }
+              ],
+              "reasons": [
+                {
+                  "code": "driver-eligible",
+                  "fact": {
+                    "status": "known",
+                    "value": true,
+                    "unit": null,
+                    "provenance": {
+                      "sourceRef": "fixture:employee",
+                      "observedAt": "2026-11-05T12:00:00.000Z",
+                      "version": "facts-v1",
+                      "assurance": "synthetic-scenario"
+                    }
+                  }
+                },
+                {
+                  "code": "policy-include",
+                  "ruleIds": [
+                    "choices-fs-uk-015-include"
+                  ]
+                },
+                {
+                  "code": "allowance-sufficient",
+                  "allowance": 1300,
+                  "monthlyPoints": 1100,
+                  "unit": "points/month"
+                },
+                {
+                  "code": "essential-met",
+                  "field": "seats",
+                  "requirement": {
+                    "value": 5,
+                    "operator": "gte",
+                    "unit": "count",
+                    "state": "confirmed",
+                    "source": "employee"
+                  },
+                  "fact": {
+                    "status": "known",
+                    "value": 5,
+                    "unit": "count",
+                    "provenance": {
+                      "sourceRef": "fixture:employee",
+                      "observedAt": "2026-11-05T12:00:00.000Z",
+                      "version": "facts-v1",
+                      "assurance": "synthetic-scenario"
+                    }
+                  }
+                },
+                {
+                  "code": "required-by-met",
+                  "requiredBy": "2026-12-01T00:00:00.000Z"
+                },
+                {
+                  "code": "preference-fit",
+                  "field": "body",
+                  "score": 100,
+                  "importance": 100,
+                  "desired": "estate",
+                  "observed": 100,
+                  "facts": {
+                    "body": {
+                      "status": "known",
+                      "value": "estate",
+                      "unit": null,
+                      "provenance": {
+                        "sourceRef": "fixture:employee",
+                        "observedAt": "2026-11-05T12:00:00.000Z",
+                        "version": "facts-v1",
+                        "assurance": "synthetic-scenario"
+                      }
+                    }
+                  }
+                }
+              ],
+              "tradeOffs": [],
+              "blockers": [],
+              "unknowns": [],
+              "versions": {
+                "brief": 1,
+                "facts": "employee-facts-v1",
+                "policy": "gcsp-policy-v1",
+                "stock": "stock-v1",
+                "snapshot": "snapshot-v1",
+                "terms": "gcsp-policy-v1:price.choices-fs-uk.015:allowance.choices-fs-uk.G7:2026-11-05T12:00:00.000Z",
+                "clock": "clock-v1",
+                "availability": "availability-v1"
+              },
+              "terms": {
+                "termsVersion": "gcsp-policy-v1:price.choices-fs-uk.015:allowance.choices-fs-uk.G7:2026-11-05T12:00:00.000Z",
+                "points": {
+                  "value": 1100,
+                  "unit": "points"
+                },
+                "allowanceInputs": {
+                  "allowance": {
+                    "value": 1300,
+                    "unit": "points"
+                  }
+                },
+                "contribution": null,
+                "validFrom": "2026-11-05T12:00:00.000Z",
+                "validUntil": "2026-11-05T13:00:00.000Z",
+                "provenance": {
+                  "sourceRef": "docs/gcsp/shared-contracts.md",
+                  "version": "gcsp-policy-v1",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "assurance": "synthetic-scenario"
+                },
+                "kind": "employee-scheme"
+              },
+              "policyEvidence": {
+                "eligibility": {
+                  "eligible": true,
+                  "state": "eligible",
+                  "ruleIds": [
+                    "choices-fs-uk-015-include"
+                  ],
+                  "reasons": [
+                    "explicit-include"
+                  ],
+                  "provenance": {
+                    "rules": [
+                      {
+                        "key": "choices-fs-uk-015-include",
+                        "value": "G21 Touring|320i",
+                        "unit": "model/engine key",
+                        "status": "verified",
+                        "basis": "Transcribed FS&UK Choices Vehicle Eligibility Matrix: G21 Touring, 320i; source grade-band decisions only. Key mapping is a demo assumption.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2024-07-29",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2024-10-01T00:00:00.000Z",
+                        "ruleId": "choices-fs-uk-015-include",
+                        "effect": "include",
+                        "matchField": "eligibilityModelKey",
+                        "operator": "equals",
+                        "gradeIds": [
+                          "G7",
+                          "G8-10",
+                          "G11-14"
+                        ],
+                        "model": "G21 Touring",
+                        "engine": "320i"
+                      }
+                    ],
+                    "schemeRuleLinks": [
+                      {
+                        "key": "link-choices-fs-uk-015-include",
+                        "value": "choices-fs-uk-015-include",
+                        "unit": "rule reference",
+                        "status": "verified",
+                        "basis": "Dated link to the supplied FS&UK Choices Vehicle Eligibility Matrix; effective 1 October 2024.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2024-07-29",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2024-10-01T00:00:00.000Z",
+                        "linkId": "link-choices-fs-uk-015-include",
+                        "schemeId": "choices-fs-uk",
+                        "ruleId": "choices-fs-uk-015-include"
+                      }
+                    ],
+                    "assumptions": [
+                      {
+                        "key": "eligibility.rule.matchField",
+                        "value": "eligibilityModelKey",
+                        "unit": "field name",
+                        "status": "assumed",
+                        "basis": "Assumed bridge of retained series/model/engine labels to matrix rows, since target matching code is undefined (round-3). Exact mapping is versioned/provenanced in the seed; unknown mapping fails.",
+                        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      },
+                      {
+                        "key": "eligibility.rule.precedence",
+                        "value": "excludeThenInclude",
+                        "unit": "enum",
+                        "status": "assumed",
+                        "basis": "Assumed deterministic include/exclude evaluation; unknowns cannot widen eligibility.",
+                        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      },
+                      {
+                        "key": "eligibility.context.mapping",
+                        "value": [
+                          {
+                            "schemeId": "choices-fs-uk",
+                            "companyId": "demo-bmw-fs-uk",
+                            "sourceMatrix": "FS&UK Choices Vehicle Eligibility Matrix",
+                            "gradeIds": [
+                              "G1-6",
+                              "G7",
+                              "G8-10",
+                              "G11-14"
+                            ]
+                          },
+                          {
+                            "schemeId": "choices-rr-production",
+                            "companyId": "demo-bmw-rr-production",
+                            "sourceMatrix": "RR&Production Choices Vehicle Eligibility Matrix",
+                            "gradeIds": [
+                              "PG1",
+                              "G8-10",
+                              "G11-12"
+                            ]
+                          }
+                        ],
+                        "unit": "identifier mapping",
+                        "status": "assumed",
+                        "basis": "Demo scheme/company IDs and source grade bands preserve actual FS&UK and RR&Production matrices. RR&Production is not equated with UKNSC. eligibilityModelKey is exact source model + | + one source engine token; comma/slash alternatives expand without inventing engine prefixes.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      }
+                    ]
+                  }
+                },
+                "allowance": {
+                  "key": "allowance.choices-fs-uk.G7",
+                  "value": 1300,
+                  "unit": "points/month",
+                  "status": "assumed",
+                  "basis": "Synthetic monthly demo allowance; eligibility matrices contain no numeric allowances. Not a verified BMW amount.",
+                  "source": "docs/gcsp/shared-contracts.md",
+                  "sourceDate": "2026-11-04",
+                  "policyVersion": "gcsp-policy-v1",
+                  "effectiveFrom": "2026-11-04T00:00:00.000Z",
+                  "allowanceId": "allowance.choices-fs-uk.G7",
+                  "companyId": "demo-bmw-fs-uk",
+                  "schemeId": "choices-fs-uk",
+                  "gradeId": "G7",
+                  "monthlyPoints": 1300
+                },
+                "points": {
+                  "key": "price.choices-fs-uk.015",
+                  "value": 1100,
+                  "unit": "points/month",
+                  "status": "assumed",
+                  "basis": "Synthetic monthly demo cost for source class KKL; matrices contain no prices. Not a verified BMW amount.",
+                  "source": "docs/gcsp/shared-contracts.md",
+                  "sourceDate": "2026-11-04",
+                  "policyVersion": "gcsp-policy-v1",
+                  "effectiveFrom": "2026-11-04T00:00:00.000Z",
+                  "pricePlanId": "choices-fs-uk-synthetic-monthly-v1",
+                  "priceEntryId": "price.choices-fs-uk.015",
+                  "schemeId": "choices-fs-uk",
+                  "matchField": "eligibilityModelKey",
+                  "matchValue": "G21 Touring|320i",
+                  "monthlyPoints": 1100
+                }
+              }
+            }
+          ],
+          "recommendations": [
+            "00000000-0000-4000-8000-000000000001"
+          ],
+          "eligibleCount": 1
+        }
+      }
+    },
+    {
+      "name": "same-car-after-central-allowance-edit",
+      "input": {
+        "context": {
+          "runId": "run-employee",
+          "environmentId": "demo",
+          "employeeId": "employee-test",
+          "roles": [
+            "employee"
+          ],
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G7",
+          "policyVersion": "gcsp-policy-evidence-v2"
+        },
+        "brief": {
+          "schemaVersion": 1,
+          "briefVersion": 1,
+          "preferences": {
+            "body": {
+              "value": "estate",
+              "importance": 100,
+              "valueState": "confirmed",
+              "importanceState": "confirmed",
+              "source": "employee"
+            }
+          },
+          "essentials": {
+            "seats": {
+              "value": 5,
+              "operator": "gte",
+              "unit": "count",
+              "state": "confirmed",
+              "source": "employee"
+            }
+          }
+        },
+        "sourceVersions": {
+          "facts": "employee-facts-v1",
+          "stock": "stock-v1"
+        },
+        "exactStock": [
+          {
+            "orderUuid": "00000000-0000-4000-8000-000000000001",
+            "configurationId": "RzIxOlMx",
+            "facts": {
+              "eligibilityModelKey": {
+                "status": "known",
+                "value": "G21 Touring|320i",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "body": {
+                "status": "known",
+                "value": "estate",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "fuel": {
+                "status": "known",
+                "value": "petrol",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "seats": {
+                "status": "known",
+                "value": 5,
+                "unit": "count",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "boot": {
+                "status": "known",
+                "value": 500,
+                "unit": "L",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "zeroTo62": {
+                "status": "known",
+                "value": 7,
+                "unit": "s",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "mpg": {
+                "status": "known",
+                "value": 45,
+                "unit": "mpg-imperial",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "sizeClass": {
+                "status": "known",
+                "value": 3,
+                "unit": "ordinal-1-5",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "tags": {
+                "status": "known",
+                "value": [
+                  "cruiser"
+                ],
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              }
+            },
+            "availability": {
+              "state": "available",
+              "availableFrom": "2026-11-05T12:00:00.000Z",
+              "availableUntil": "2027-01-01T00:00:00.000Z",
+              "version": "availability-v1"
+            }
+          }
+        ],
+        "employeeFacts": {
+          "driverEligible": {
+            "status": "known",
+            "value": true,
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "essentials": {},
+          "charging": {
+            "status": "known",
+            "value": "home",
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "annualMileage": {
+            "status": "known",
+            "value": 12000,
+            "unit": "mi/year",
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "requiredBy": {
+            "status": "known",
+            "value": "2026-12-01T00:00:00.000Z",
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          }
+        }
+      },
+      "output": {
+        "status": "ok",
+        "contractVersion": "1.0.0",
+        "value": {
+          "scenarioId": "employee-scheme-demo-v1",
+          "runId": "run-employee",
+          "state": "no-viable-stock",
+          "evaluatedAt": "2026-11-05T12:00:00.000Z",
+          "versions": {
+            "brief": 1,
+            "facts": "employee-facts-v1",
+            "policy": "gcsp-policy-evidence-v2",
+            "stock": "stock-v1",
+            "clock": "clock-v1"
+          },
+          "decisions": [
+            {
+              "orderUuid": "00000000-0000-4000-8000-000000000001",
+              "configurationId": "RzIxOlMx",
+              "gateStatus": "ineligible",
+              "suitable": false,
+              "score": null,
+              "components": [],
+              "reasons": [
+                {
+                  "code": "driver-eligible",
+                  "fact": {
+                    "status": "known",
+                    "value": true,
+                    "unit": null,
+                    "provenance": {
+                      "sourceRef": "fixture:employee",
+                      "observedAt": "2026-11-05T12:00:00.000Z",
+                      "version": "facts-v1",
+                      "assurance": "synthetic-scenario"
+                    }
+                  }
+                },
+                {
+                  "code": "policy-include",
+                  "ruleIds": [
+                    "choices-fs-uk-015-include"
+                  ]
+                },
+                {
+                  "code": "essential-met",
+                  "field": "seats",
+                  "requirement": {
+                    "value": 5,
+                    "operator": "gte",
+                    "unit": "count",
+                    "state": "confirmed",
+                    "source": "employee"
+                  },
+                  "fact": {
+                    "status": "known",
+                    "value": 5,
+                    "unit": "count",
+                    "provenance": {
+                      "sourceRef": "fixture:employee",
+                      "observedAt": "2026-11-05T12:00:00.000Z",
+                      "version": "facts-v1",
+                      "assurance": "synthetic-scenario"
+                    }
+                  }
+                },
+                {
+                  "code": "required-by-met",
+                  "requiredBy": "2026-12-01T00:00:00.000Z"
+                }
+              ],
+              "tradeOffs": [],
+              "blockers": [
+                {
+                  "code": "allowance-exceeded",
+                  "allowance": 0,
+                  "monthlyPoints": 1100,
+                  "unit": "points/month"
+                }
+              ],
+              "unknowns": [],
+              "versions": {
+                "brief": 1,
+                "facts": "employee-facts-v1",
+                "policy": "gcsp-policy-evidence-v2",
+                "stock": "stock-v1",
+                "snapshot": "snapshot-v1",
+                "terms": "gcsp-policy-evidence-v2:price.choices-fs-uk.015:allowance.choices-fs-uk.G7:2026-11-05T12:00:00.000Z",
+                "clock": "clock-v1",
+                "availability": "availability-v1"
+              },
+              "terms": {
+                "termsVersion": "gcsp-policy-evidence-v2:price.choices-fs-uk.015:allowance.choices-fs-uk.G7:2026-11-05T12:00:00.000Z",
+                "points": {
+                  "value": 1100,
+                  "unit": "points"
+                },
+                "allowanceInputs": {
+                  "allowance": {
+                    "value": 0,
+                    "unit": "points"
+                  }
+                },
+                "contribution": null,
+                "validFrom": "2026-11-05T12:00:00.000Z",
+                "validUntil": "2026-11-05T13:00:00.000Z",
+                "provenance": {
+                  "sourceRef": "docs/gcsp/shared-contracts.md",
+                  "version": "gcsp-policy-evidence-v2",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "assurance": "synthetic-scenario"
+                },
+                "kind": "employee-scheme"
+              },
+              "policyEvidence": {
+                "eligibility": {
+                  "eligible": true,
+                  "state": "eligible",
+                  "ruleIds": [
+                    "choices-fs-uk-015-include"
+                  ],
+                  "reasons": [
+                    "explicit-include"
+                  ],
+                  "provenance": {
+                    "rules": [
+                      {
+                        "key": "choices-fs-uk-015-include",
+                        "value": "G21 Touring|320i",
+                        "unit": "model/engine key",
+                        "status": "verified",
+                        "basis": "Transcribed FS&UK Choices Vehicle Eligibility Matrix: G21 Touring, 320i; source grade-band decisions only. Key mapping is a demo assumption.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2024-07-29",
+                        "policyVersion": "gcsp-policy-evidence-v2",
+                        "effectiveFrom": "2024-10-01T00:00:00.000Z",
+                        "ruleId": "choices-fs-uk-015-include",
+                        "effect": "include",
+                        "matchField": "eligibilityModelKey",
+                        "operator": "equals",
+                        "gradeIds": [
+                          "G7",
+                          "G8-10",
+                          "G11-14"
+                        ],
+                        "model": "G21 Touring",
+                        "engine": "320i"
+                      }
+                    ],
+                    "schemeRuleLinks": [
+                      {
+                        "key": "link-choices-fs-uk-015-include",
+                        "value": "choices-fs-uk-015-include",
+                        "unit": "rule reference",
+                        "status": "verified",
+                        "basis": "Dated link to the supplied FS&UK Choices Vehicle Eligibility Matrix; effective 1 October 2024.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2024-07-29",
+                        "policyVersion": "gcsp-policy-evidence-v2",
+                        "effectiveFrom": "2024-10-01T00:00:00.000Z",
+                        "linkId": "link-choices-fs-uk-015-include",
+                        "schemeId": "choices-fs-uk",
+                        "ruleId": "choices-fs-uk-015-include"
+                      }
+                    ],
+                    "assumptions": [
+                      {
+                        "key": "eligibility.rule.matchField",
+                        "value": "eligibilityModelKey",
+                        "unit": "field name",
+                        "status": "assumed",
+                        "basis": "Assumed bridge of retained series/model/engine labels to matrix rows, since target matching code is undefined (round-3). Exact mapping is versioned/provenanced in the seed; unknown mapping fails.",
+                        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-evidence-v2",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      },
+                      {
+                        "key": "eligibility.rule.precedence",
+                        "value": "excludeThenInclude",
+                        "unit": "enum",
+                        "status": "assumed",
+                        "basis": "Assumed deterministic include/exclude evaluation; unknowns cannot widen eligibility.",
+                        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-evidence-v2",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      },
+                      {
+                        "key": "eligibility.context.mapping",
+                        "value": [
+                          {
+                            "schemeId": "choices-fs-uk",
+                            "companyId": "demo-bmw-fs-uk",
+                            "sourceMatrix": "FS&UK Choices Vehicle Eligibility Matrix",
+                            "gradeIds": [
+                              "G1-6",
+                              "G7",
+                              "G8-10",
+                              "G11-14"
+                            ]
+                          },
+                          {
+                            "schemeId": "choices-rr-production",
+                            "companyId": "demo-bmw-rr-production",
+                            "sourceMatrix": "RR&Production Choices Vehicle Eligibility Matrix",
+                            "gradeIds": [
+                              "PG1",
+                              "G8-10",
+                              "G11-12"
+                            ]
+                          }
+                        ],
+                        "unit": "identifier mapping",
+                        "status": "assumed",
+                        "basis": "Demo scheme/company IDs and source grade bands preserve actual FS&UK and RR&Production matrices. RR&Production is not equated with UKNSC. eligibilityModelKey is exact source model + | + one source engine token; comma/slash alternatives expand without inventing engine prefixes.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-evidence-v2",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      }
+                    ]
+                  }
+                },
+                "allowance": {
+                  "key": "allowance.choices-fs-uk.G7",
+                  "value": 0,
+                  "unit": "points/month",
+                  "status": "assumed",
+                  "basis": "Synthetic monthly demo allowance; eligibility matrices contain no numeric allowances. Not a verified BMW amount.",
+                  "source": "docs/gcsp/shared-contracts.md",
+                  "sourceDate": "2026-11-04",
+                  "policyVersion": "gcsp-policy-evidence-v2",
+                  "effectiveFrom": "2026-11-04T00:00:00.000Z",
+                  "allowanceId": "allowance.choices-fs-uk.G7",
+                  "companyId": "demo-bmw-fs-uk",
+                  "schemeId": "choices-fs-uk",
+                  "gradeId": "G7",
+                  "monthlyPoints": 0
+                },
+                "points": {
+                  "key": "price.choices-fs-uk.015",
+                  "value": 1100,
+                  "unit": "points/month",
+                  "status": "assumed",
+                  "basis": "Synthetic monthly demo cost for source class KKL; matrices contain no prices. Not a verified BMW amount.",
+                  "source": "docs/gcsp/shared-contracts.md",
+                  "sourceDate": "2026-11-04",
+                  "policyVersion": "gcsp-policy-evidence-v2",
+                  "effectiveFrom": "2026-11-04T00:00:00.000Z",
+                  "pricePlanId": "choices-fs-uk-synthetic-monthly-v1",
+                  "priceEntryId": "price.choices-fs-uk.015",
+                  "schemeId": "choices-fs-uk",
+                  "matchField": "eligibilityModelKey",
+                  "matchValue": "G21 Touring|320i",
+                  "monthlyPoints": 1100
+                }
+              }
+            }
+          ],
+          "recommendations": [],
+          "eligibleCount": 0
+        }
+      }
+    },
+    {
+      "name": "body-important-sportiness-indifferent",
+      "input": {
+        "context": {
+          "runId": "run-employee",
+          "environmentId": "demo",
+          "employeeId": "employee-test",
+          "roles": [
+            "employee"
+          ],
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G7",
+          "policyVersion": "gcsp-policy-v1"
+        },
+        "brief": {
+          "schemaVersion": 1,
+          "briefVersion": 1,
+          "preferences": {
+            "body": {
+              "value": "estate",
+              "importance": 100,
+              "valueState": "confirmed",
+              "importanceState": "confirmed",
+              "source": "employee"
+            },
+            "sportiness": {
+              "value": 100,
+              "importance": 0,
+              "valueState": "confirmed",
+              "importanceState": "confirmed",
+              "source": "employee"
+            }
+          },
+          "essentials": {
+            "seats": {
+              "value": 5,
+              "operator": "gte",
+              "unit": "count",
+              "state": "confirmed",
+              "source": "employee"
+            }
+          }
+        },
+        "sourceVersions": {
+          "facts": "employee-facts-v1",
+          "stock": "stock-v1"
+        },
+        "exactStock": [
+          {
+            "orderUuid": "00000000-0000-4000-8000-000000000001",
+            "configurationId": "RzIxOlMx",
+            "facts": {
+              "eligibilityModelKey": {
+                "status": "known",
+                "value": "G21 Touring|320i",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "body": {
+                "status": "known",
+                "value": "saloon",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "fuel": {
+                "status": "known",
+                "value": "petrol",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "seats": {
+                "status": "known",
+                "value": 5,
+                "unit": "count",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "boot": {
+                "status": "known",
+                "value": 500,
+                "unit": "L",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "zeroTo62": {
+                "status": "known",
+                "value": 4,
+                "unit": "s",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "mpg": {
+                "status": "known",
+                "value": 45,
+                "unit": "mpg-imperial",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "sizeClass": {
+                "status": "known",
+                "value": 3,
+                "unit": "ordinal-1-5",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "tags": {
+                "status": "known",
+                "value": [
+                  "cruiser"
+                ],
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              }
+            },
+            "availability": {
+              "state": "available",
+              "availableFrom": "2026-11-05T12:00:00.000Z",
+              "availableUntil": "2027-01-01T00:00:00.000Z",
+              "version": "availability-v1"
+            }
+          },
+          {
+            "orderUuid": "00000000-0000-4000-8000-000000000002",
+            "configurationId": "RzIxOlMx",
+            "facts": {
+              "eligibilityModelKey": {
+                "status": "known",
+                "value": "G21 Touring|320i",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "body": {
+                "status": "known",
+                "value": "estate",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "fuel": {
+                "status": "known",
+                "value": "petrol",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "seats": {
+                "status": "known",
+                "value": 5,
+                "unit": "count",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "boot": {
+                "status": "known",
+                "value": 500,
+                "unit": "L",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "zeroTo62": {
+                "status": "known",
+                "value": 10,
+                "unit": "s",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "mpg": {
+                "status": "known",
+                "value": 45,
+                "unit": "mpg-imperial",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "sizeClass": {
+                "status": "known",
+                "value": 3,
+                "unit": "ordinal-1-5",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "tags": {
+                "status": "known",
+                "value": [
+                  "cruiser"
+                ],
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              }
+            },
+            "availability": {
+              "state": "available",
+              "availableFrom": "2026-11-05T12:00:00.000Z",
+              "availableUntil": "2027-01-01T00:00:00.000Z",
+              "version": "availability-v1"
+            }
+          }
+        ],
+        "employeeFacts": {
+          "driverEligible": {
+            "status": "known",
+            "value": true,
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "essentials": {},
+          "charging": {
+            "status": "known",
+            "value": "home",
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "annualMileage": {
+            "status": "known",
+            "value": 12000,
+            "unit": "mi/year",
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "requiredBy": {
+            "status": "known",
+            "value": "2026-12-01T00:00:00.000Z",
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          }
+        }
+      },
+      "output": {
+        "status": "ok",
+        "contractVersion": "1.0.0",
+        "value": {
+          "scenarioId": "employee-scheme-demo-v1",
+          "runId": "run-employee",
+          "state": "recommendations",
+          "evaluatedAt": "2026-11-05T12:00:00.000Z",
+          "versions": {
+            "brief": 1,
+            "facts": "employee-facts-v1",
+            "policy": "gcsp-policy-v1",
+            "stock": "stock-v1",
+            "clock": "clock-v1"
+          },
+          "decisions": [
+            {
+              "orderUuid": "00000000-0000-4000-8000-000000000001",
+              "configurationId": "RzIxOlMx",
+              "gateStatus": "eligible",
+              "suitable": true,
+              "score": 0,
+              "components": [
+                {
+                  "code": "preference-fit",
+                  "field": "body",
+                  "score": 0,
+                  "importance": 100,
+                  "desired": "estate",
+                  "observed": 0,
+                  "facts": {
+                    "body": {
+                      "status": "known",
+                      "value": "saloon",
+                      "unit": null,
+                      "provenance": {
+                        "sourceRef": "fixture:employee",
+                        "observedAt": "2026-11-05T12:00:00.000Z",
+                        "version": "facts-v1",
+                        "assurance": "synthetic-scenario"
+                      }
+                    }
+                  }
+                }
+              ],
+              "reasons": [
+                {
+                  "code": "driver-eligible",
+                  "fact": {
+                    "status": "known",
+                    "value": true,
+                    "unit": null,
+                    "provenance": {
+                      "sourceRef": "fixture:employee",
+                      "observedAt": "2026-11-05T12:00:00.000Z",
+                      "version": "facts-v1",
+                      "assurance": "synthetic-scenario"
+                    }
+                  }
+                },
+                {
+                  "code": "policy-include",
+                  "ruleIds": [
+                    "choices-fs-uk-015-include"
+                  ]
+                },
+                {
+                  "code": "allowance-sufficient",
+                  "allowance": 1300,
+                  "monthlyPoints": 1100,
+                  "unit": "points/month"
+                },
+                {
+                  "code": "essential-met",
+                  "field": "seats",
+                  "requirement": {
+                    "value": 5,
+                    "operator": "gte",
+                    "unit": "count",
+                    "state": "confirmed",
+                    "source": "employee"
+                  },
+                  "fact": {
+                    "status": "known",
+                    "value": 5,
+                    "unit": "count",
+                    "provenance": {
+                      "sourceRef": "fixture:employee",
+                      "observedAt": "2026-11-05T12:00:00.000Z",
+                      "version": "facts-v1",
+                      "assurance": "synthetic-scenario"
+                    }
+                  }
+                },
+                {
+                  "code": "required-by-met",
+                  "requiredBy": "2026-12-01T00:00:00.000Z"
+                }
+              ],
+              "tradeOffs": [
+                {
+                  "code": "preference-fit",
+                  "field": "body",
+                  "score": 0,
+                  "importance": 100,
+                  "desired": "estate",
+                  "observed": 0,
+                  "facts": {
+                    "body": {
+                      "status": "known",
+                      "value": "saloon",
+                      "unit": null,
+                      "provenance": {
+                        "sourceRef": "fixture:employee",
+                        "observedAt": "2026-11-05T12:00:00.000Z",
+                        "version": "facts-v1",
+                        "assurance": "synthetic-scenario"
+                      }
+                    }
+                  }
+                }
+              ],
+              "blockers": [],
+              "unknowns": [],
+              "versions": {
+                "brief": 1,
+                "facts": "employee-facts-v1",
+                "policy": "gcsp-policy-v1",
+                "stock": "stock-v1",
+                "snapshot": "snapshot-v1",
+                "terms": "gcsp-policy-v1:price.choices-fs-uk.015:allowance.choices-fs-uk.G7:2026-11-05T12:00:00.000Z",
+                "clock": "clock-v1",
+                "availability": "availability-v1"
+              },
+              "terms": {
+                "termsVersion": "gcsp-policy-v1:price.choices-fs-uk.015:allowance.choices-fs-uk.G7:2026-11-05T12:00:00.000Z",
+                "points": {
+                  "value": 1100,
+                  "unit": "points"
+                },
+                "allowanceInputs": {
+                  "allowance": {
+                    "value": 1300,
+                    "unit": "points"
+                  }
+                },
+                "contribution": null,
+                "validFrom": "2026-11-05T12:00:00.000Z",
+                "validUntil": "2026-11-05T13:00:00.000Z",
+                "provenance": {
+                  "sourceRef": "docs/gcsp/shared-contracts.md",
+                  "version": "gcsp-policy-v1",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "assurance": "synthetic-scenario"
+                },
+                "kind": "employee-scheme"
+              },
+              "policyEvidence": {
+                "eligibility": {
+                  "eligible": true,
+                  "state": "eligible",
+                  "ruleIds": [
+                    "choices-fs-uk-015-include"
+                  ],
+                  "reasons": [
+                    "explicit-include"
+                  ],
+                  "provenance": {
+                    "rules": [
+                      {
+                        "key": "choices-fs-uk-015-include",
+                        "value": "G21 Touring|320i",
+                        "unit": "model/engine key",
+                        "status": "verified",
+                        "basis": "Transcribed FS&UK Choices Vehicle Eligibility Matrix: G21 Touring, 320i; source grade-band decisions only. Key mapping is a demo assumption.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2024-07-29",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2024-10-01T00:00:00.000Z",
+                        "ruleId": "choices-fs-uk-015-include",
+                        "effect": "include",
+                        "matchField": "eligibilityModelKey",
+                        "operator": "equals",
+                        "gradeIds": [
+                          "G7",
+                          "G8-10",
+                          "G11-14"
+                        ],
+                        "model": "G21 Touring",
+                        "engine": "320i"
+                      }
+                    ],
+                    "schemeRuleLinks": [
+                      {
+                        "key": "link-choices-fs-uk-015-include",
+                        "value": "choices-fs-uk-015-include",
+                        "unit": "rule reference",
+                        "status": "verified",
+                        "basis": "Dated link to the supplied FS&UK Choices Vehicle Eligibility Matrix; effective 1 October 2024.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2024-07-29",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2024-10-01T00:00:00.000Z",
+                        "linkId": "link-choices-fs-uk-015-include",
+                        "schemeId": "choices-fs-uk",
+                        "ruleId": "choices-fs-uk-015-include"
+                      }
+                    ],
+                    "assumptions": [
+                      {
+                        "key": "eligibility.rule.matchField",
+                        "value": "eligibilityModelKey",
+                        "unit": "field name",
+                        "status": "assumed",
+                        "basis": "Assumed bridge of retained series/model/engine labels to matrix rows, since target matching code is undefined (round-3). Exact mapping is versioned/provenanced in the seed; unknown mapping fails.",
+                        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      },
+                      {
+                        "key": "eligibility.rule.precedence",
+                        "value": "excludeThenInclude",
+                        "unit": "enum",
+                        "status": "assumed",
+                        "basis": "Assumed deterministic include/exclude evaluation; unknowns cannot widen eligibility.",
+                        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      },
+                      {
+                        "key": "eligibility.context.mapping",
+                        "value": [
+                          {
+                            "schemeId": "choices-fs-uk",
+                            "companyId": "demo-bmw-fs-uk",
+                            "sourceMatrix": "FS&UK Choices Vehicle Eligibility Matrix",
+                            "gradeIds": [
+                              "G1-6",
+                              "G7",
+                              "G8-10",
+                              "G11-14"
+                            ]
+                          },
+                          {
+                            "schemeId": "choices-rr-production",
+                            "companyId": "demo-bmw-rr-production",
+                            "sourceMatrix": "RR&Production Choices Vehicle Eligibility Matrix",
+                            "gradeIds": [
+                              "PG1",
+                              "G8-10",
+                              "G11-12"
+                            ]
+                          }
+                        ],
+                        "unit": "identifier mapping",
+                        "status": "assumed",
+                        "basis": "Demo scheme/company IDs and source grade bands preserve actual FS&UK and RR&Production matrices. RR&Production is not equated with UKNSC. eligibilityModelKey is exact source model + | + one source engine token; comma/slash alternatives expand without inventing engine prefixes.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      }
+                    ]
+                  }
+                },
+                "allowance": {
+                  "key": "allowance.choices-fs-uk.G7",
+                  "value": 1300,
+                  "unit": "points/month",
+                  "status": "assumed",
+                  "basis": "Synthetic monthly demo allowance; eligibility matrices contain no numeric allowances. Not a verified BMW amount.",
+                  "source": "docs/gcsp/shared-contracts.md",
+                  "sourceDate": "2026-11-04",
+                  "policyVersion": "gcsp-policy-v1",
+                  "effectiveFrom": "2026-11-04T00:00:00.000Z",
+                  "allowanceId": "allowance.choices-fs-uk.G7",
+                  "companyId": "demo-bmw-fs-uk",
+                  "schemeId": "choices-fs-uk",
+                  "gradeId": "G7",
+                  "monthlyPoints": 1300
+                },
+                "points": {
+                  "key": "price.choices-fs-uk.015",
+                  "value": 1100,
+                  "unit": "points/month",
+                  "status": "assumed",
+                  "basis": "Synthetic monthly demo cost for source class KKL; matrices contain no prices. Not a verified BMW amount.",
+                  "source": "docs/gcsp/shared-contracts.md",
+                  "sourceDate": "2026-11-04",
+                  "policyVersion": "gcsp-policy-v1",
+                  "effectiveFrom": "2026-11-04T00:00:00.000Z",
+                  "pricePlanId": "choices-fs-uk-synthetic-monthly-v1",
+                  "priceEntryId": "price.choices-fs-uk.015",
+                  "schemeId": "choices-fs-uk",
+                  "matchField": "eligibilityModelKey",
+                  "matchValue": "G21 Touring|320i",
+                  "monthlyPoints": 1100
+                }
+              }
+            },
+            {
+              "orderUuid": "00000000-0000-4000-8000-000000000002",
+              "configurationId": "RzIxOlMx",
+              "gateStatus": "eligible",
+              "suitable": true,
+              "score": 100,
+              "components": [
+                {
+                  "code": "preference-fit",
+                  "field": "body",
+                  "score": 100,
+                  "importance": 100,
+                  "desired": "estate",
+                  "observed": 100,
+                  "facts": {
+                    "body": {
+                      "status": "known",
+                      "value": "estate",
+                      "unit": null,
+                      "provenance": {
+                        "sourceRef": "fixture:employee",
+                        "observedAt": "2026-11-05T12:00:00.000Z",
+                        "version": "facts-v1",
+                        "assurance": "synthetic-scenario"
+                      }
+                    }
+                  }
+                }
+              ],
+              "reasons": [
+                {
+                  "code": "driver-eligible",
+                  "fact": {
+                    "status": "known",
+                    "value": true,
+                    "unit": null,
+                    "provenance": {
+                      "sourceRef": "fixture:employee",
+                      "observedAt": "2026-11-05T12:00:00.000Z",
+                      "version": "facts-v1",
+                      "assurance": "synthetic-scenario"
+                    }
+                  }
+                },
+                {
+                  "code": "policy-include",
+                  "ruleIds": [
+                    "choices-fs-uk-015-include"
+                  ]
+                },
+                {
+                  "code": "allowance-sufficient",
+                  "allowance": 1300,
+                  "monthlyPoints": 1100,
+                  "unit": "points/month"
+                },
+                {
+                  "code": "essential-met",
+                  "field": "seats",
+                  "requirement": {
+                    "value": 5,
+                    "operator": "gte",
+                    "unit": "count",
+                    "state": "confirmed",
+                    "source": "employee"
+                  },
+                  "fact": {
+                    "status": "known",
+                    "value": 5,
+                    "unit": "count",
+                    "provenance": {
+                      "sourceRef": "fixture:employee",
+                      "observedAt": "2026-11-05T12:00:00.000Z",
+                      "version": "facts-v1",
+                      "assurance": "synthetic-scenario"
+                    }
+                  }
+                },
+                {
+                  "code": "required-by-met",
+                  "requiredBy": "2026-12-01T00:00:00.000Z"
+                },
+                {
+                  "code": "preference-fit",
+                  "field": "body",
+                  "score": 100,
+                  "importance": 100,
+                  "desired": "estate",
+                  "observed": 100,
+                  "facts": {
+                    "body": {
+                      "status": "known",
+                      "value": "estate",
+                      "unit": null,
+                      "provenance": {
+                        "sourceRef": "fixture:employee",
+                        "observedAt": "2026-11-05T12:00:00.000Z",
+                        "version": "facts-v1",
+                        "assurance": "synthetic-scenario"
+                      }
+                    }
+                  }
+                }
+              ],
+              "tradeOffs": [],
+              "blockers": [],
+              "unknowns": [],
+              "versions": {
+                "brief": 1,
+                "facts": "employee-facts-v1",
+                "policy": "gcsp-policy-v1",
+                "stock": "stock-v1",
+                "snapshot": "snapshot-v1",
+                "terms": "gcsp-policy-v1:price.choices-fs-uk.015:allowance.choices-fs-uk.G7:2026-11-05T12:00:00.000Z",
+                "clock": "clock-v1",
+                "availability": "availability-v1"
+              },
+              "terms": {
+                "termsVersion": "gcsp-policy-v1:price.choices-fs-uk.015:allowance.choices-fs-uk.G7:2026-11-05T12:00:00.000Z",
+                "points": {
+                  "value": 1100,
+                  "unit": "points"
+                },
+                "allowanceInputs": {
+                  "allowance": {
+                    "value": 1300,
+                    "unit": "points"
+                  }
+                },
+                "contribution": null,
+                "validFrom": "2026-11-05T12:00:00.000Z",
+                "validUntil": "2026-11-05T13:00:00.000Z",
+                "provenance": {
+                  "sourceRef": "docs/gcsp/shared-contracts.md",
+                  "version": "gcsp-policy-v1",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "assurance": "synthetic-scenario"
+                },
+                "kind": "employee-scheme"
+              },
+              "policyEvidence": {
+                "eligibility": {
+                  "eligible": true,
+                  "state": "eligible",
+                  "ruleIds": [
+                    "choices-fs-uk-015-include"
+                  ],
+                  "reasons": [
+                    "explicit-include"
+                  ],
+                  "provenance": {
+                    "rules": [
+                      {
+                        "key": "choices-fs-uk-015-include",
+                        "value": "G21 Touring|320i",
+                        "unit": "model/engine key",
+                        "status": "verified",
+                        "basis": "Transcribed FS&UK Choices Vehicle Eligibility Matrix: G21 Touring, 320i; source grade-band decisions only. Key mapping is a demo assumption.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2024-07-29",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2024-10-01T00:00:00.000Z",
+                        "ruleId": "choices-fs-uk-015-include",
+                        "effect": "include",
+                        "matchField": "eligibilityModelKey",
+                        "operator": "equals",
+                        "gradeIds": [
+                          "G7",
+                          "G8-10",
+                          "G11-14"
+                        ],
+                        "model": "G21 Touring",
+                        "engine": "320i"
+                      }
+                    ],
+                    "schemeRuleLinks": [
+                      {
+                        "key": "link-choices-fs-uk-015-include",
+                        "value": "choices-fs-uk-015-include",
+                        "unit": "rule reference",
+                        "status": "verified",
+                        "basis": "Dated link to the supplied FS&UK Choices Vehicle Eligibility Matrix; effective 1 October 2024.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2024-07-29",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2024-10-01T00:00:00.000Z",
+                        "linkId": "link-choices-fs-uk-015-include",
+                        "schemeId": "choices-fs-uk",
+                        "ruleId": "choices-fs-uk-015-include"
+                      }
+                    ],
+                    "assumptions": [
+                      {
+                        "key": "eligibility.rule.matchField",
+                        "value": "eligibilityModelKey",
+                        "unit": "field name",
+                        "status": "assumed",
+                        "basis": "Assumed bridge of retained series/model/engine labels to matrix rows, since target matching code is undefined (round-3). Exact mapping is versioned/provenanced in the seed; unknown mapping fails.",
+                        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      },
+                      {
+                        "key": "eligibility.rule.precedence",
+                        "value": "excludeThenInclude",
+                        "unit": "enum",
+                        "status": "assumed",
+                        "basis": "Assumed deterministic include/exclude evaluation; unknowns cannot widen eligibility.",
+                        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      },
+                      {
+                        "key": "eligibility.context.mapping",
+                        "value": [
+                          {
+                            "schemeId": "choices-fs-uk",
+                            "companyId": "demo-bmw-fs-uk",
+                            "sourceMatrix": "FS&UK Choices Vehicle Eligibility Matrix",
+                            "gradeIds": [
+                              "G1-6",
+                              "G7",
+                              "G8-10",
+                              "G11-14"
+                            ]
+                          },
+                          {
+                            "schemeId": "choices-rr-production",
+                            "companyId": "demo-bmw-rr-production",
+                            "sourceMatrix": "RR&Production Choices Vehicle Eligibility Matrix",
+                            "gradeIds": [
+                              "PG1",
+                              "G8-10",
+                              "G11-12"
+                            ]
+                          }
+                        ],
+                        "unit": "identifier mapping",
+                        "status": "assumed",
+                        "basis": "Demo scheme/company IDs and source grade bands preserve actual FS&UK and RR&Production matrices. RR&Production is not equated with UKNSC. eligibilityModelKey is exact source model + | + one source engine token; comma/slash alternatives expand without inventing engine prefixes.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      }
+                    ]
+                  }
+                },
+                "allowance": {
+                  "key": "allowance.choices-fs-uk.G7",
+                  "value": 1300,
+                  "unit": "points/month",
+                  "status": "assumed",
+                  "basis": "Synthetic monthly demo allowance; eligibility matrices contain no numeric allowances. Not a verified BMW amount.",
+                  "source": "docs/gcsp/shared-contracts.md",
+                  "sourceDate": "2026-11-04",
+                  "policyVersion": "gcsp-policy-v1",
+                  "effectiveFrom": "2026-11-04T00:00:00.000Z",
+                  "allowanceId": "allowance.choices-fs-uk.G7",
+                  "companyId": "demo-bmw-fs-uk",
+                  "schemeId": "choices-fs-uk",
+                  "gradeId": "G7",
+                  "monthlyPoints": 1300
+                },
+                "points": {
+                  "key": "price.choices-fs-uk.015",
+                  "value": 1100,
+                  "unit": "points/month",
+                  "status": "assumed",
+                  "basis": "Synthetic monthly demo cost for source class KKL; matrices contain no prices. Not a verified BMW amount.",
+                  "source": "docs/gcsp/shared-contracts.md",
+                  "sourceDate": "2026-11-04",
+                  "policyVersion": "gcsp-policy-v1",
+                  "effectiveFrom": "2026-11-04T00:00:00.000Z",
+                  "pricePlanId": "choices-fs-uk-synthetic-monthly-v1",
+                  "priceEntryId": "price.choices-fs-uk.015",
+                  "schemeId": "choices-fs-uk",
+                  "matchField": "eligibilityModelKey",
+                  "matchValue": "G21 Touring|320i",
+                  "monthlyPoints": 1100
+                }
+              }
+            }
+          ],
+          "recommendations": [
+            "00000000-0000-4000-8000-000000000002",
+            "00000000-0000-4000-8000-000000000001"
+          ],
+          "eligibleCount": 2
+        }
+      }
+    },
+    {
+      "name": "sportiness-important-body-indifferent",
+      "input": {
+        "context": {
+          "runId": "run-employee",
+          "environmentId": "demo",
+          "employeeId": "employee-test",
+          "roles": [
+            "employee"
+          ],
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G7",
+          "policyVersion": "gcsp-policy-v1"
+        },
+        "brief": {
+          "schemaVersion": 1,
+          "briefVersion": 1,
+          "preferences": {
+            "body": {
+              "value": "estate",
+              "importance": 0,
+              "valueState": "confirmed",
+              "importanceState": "confirmed",
+              "source": "employee"
+            },
+            "sportiness": {
+              "value": 100,
+              "importance": 100,
+              "valueState": "confirmed",
+              "importanceState": "confirmed",
+              "source": "employee"
+            }
+          },
+          "essentials": {
+            "seats": {
+              "value": 5,
+              "operator": "gte",
+              "unit": "count",
+              "state": "confirmed",
+              "source": "employee"
+            }
+          }
+        },
+        "sourceVersions": {
+          "facts": "employee-facts-v1",
+          "stock": "stock-v1"
+        },
+        "exactStock": [
+          {
+            "orderUuid": "00000000-0000-4000-8000-000000000001",
+            "configurationId": "RzIxOlMx",
+            "facts": {
+              "eligibilityModelKey": {
+                "status": "known",
+                "value": "G21 Touring|320i",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "body": {
+                "status": "known",
+                "value": "saloon",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "fuel": {
+                "status": "known",
+                "value": "petrol",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "seats": {
+                "status": "known",
+                "value": 5,
+                "unit": "count",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "boot": {
+                "status": "known",
+                "value": 500,
+                "unit": "L",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "zeroTo62": {
+                "status": "known",
+                "value": 4,
+                "unit": "s",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "mpg": {
+                "status": "known",
+                "value": 45,
+                "unit": "mpg-imperial",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "sizeClass": {
+                "status": "known",
+                "value": 3,
+                "unit": "ordinal-1-5",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "tags": {
+                "status": "known",
+                "value": [
+                  "cruiser"
+                ],
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              }
+            },
+            "availability": {
+              "state": "available",
+              "availableFrom": "2026-11-05T12:00:00.000Z",
+              "availableUntil": "2027-01-01T00:00:00.000Z",
+              "version": "availability-v1"
+            }
+          },
+          {
+            "orderUuid": "00000000-0000-4000-8000-000000000002",
+            "configurationId": "RzIxOlMx",
+            "facts": {
+              "eligibilityModelKey": {
+                "status": "known",
+                "value": "G21 Touring|320i",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "body": {
+                "status": "known",
+                "value": "estate",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "fuel": {
+                "status": "known",
+                "value": "petrol",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "seats": {
+                "status": "known",
+                "value": 5,
+                "unit": "count",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "boot": {
+                "status": "known",
+                "value": 500,
+                "unit": "L",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "zeroTo62": {
+                "status": "known",
+                "value": 10,
+                "unit": "s",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "mpg": {
+                "status": "known",
+                "value": 45,
+                "unit": "mpg-imperial",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "sizeClass": {
+                "status": "known",
+                "value": 3,
+                "unit": "ordinal-1-5",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "tags": {
+                "status": "known",
+                "value": [
+                  "cruiser"
+                ],
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              }
+            },
+            "availability": {
+              "state": "available",
+              "availableFrom": "2026-11-05T12:00:00.000Z",
+              "availableUntil": "2027-01-01T00:00:00.000Z",
+              "version": "availability-v1"
+            }
+          }
+        ],
+        "employeeFacts": {
+          "driverEligible": {
+            "status": "known",
+            "value": true,
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "essentials": {},
+          "charging": {
+            "status": "known",
+            "value": "home",
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "annualMileage": {
+            "status": "known",
+            "value": 12000,
+            "unit": "mi/year",
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "requiredBy": {
+            "status": "known",
+            "value": "2026-12-01T00:00:00.000Z",
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          }
+        }
+      },
+      "output": {
+        "status": "ok",
+        "contractVersion": "1.0.0",
+        "value": {
+          "scenarioId": "employee-scheme-demo-v1",
+          "runId": "run-employee",
+          "state": "recommendations",
+          "evaluatedAt": "2026-11-05T12:00:00.000Z",
+          "versions": {
+            "brief": 1,
+            "facts": "employee-facts-v1",
+            "policy": "gcsp-policy-v1",
+            "stock": "stock-v1",
+            "clock": "clock-v1"
+          },
+          "decisions": [
+            {
+              "orderUuid": "00000000-0000-4000-8000-000000000001",
+              "configurationId": "RzIxOlMx",
+              "gateStatus": "eligible",
+              "suitable": true,
+              "score": 88,
+              "components": [
+                {
+                  "code": "preference-fit",
+                  "field": "sportiness",
+                  "score": 88,
+                  "importance": 100,
+                  "desired": 100,
+                  "observed": 88,
+                  "facts": {
+                    "zeroTo62": {
+                      "status": "known",
+                      "value": 4,
+                      "unit": "s",
+                      "provenance": {
+                        "sourceRef": "fixture:employee",
+                        "observedAt": "2026-11-05T12:00:00.000Z",
+                        "version": "facts-v1",
+                        "assurance": "synthetic-scenario"
+                      }
+                    }
+                  }
+                }
+              ],
+              "reasons": [
+                {
+                  "code": "driver-eligible",
+                  "fact": {
+                    "status": "known",
+                    "value": true,
+                    "unit": null,
+                    "provenance": {
+                      "sourceRef": "fixture:employee",
+                      "observedAt": "2026-11-05T12:00:00.000Z",
+                      "version": "facts-v1",
+                      "assurance": "synthetic-scenario"
+                    }
+                  }
+                },
+                {
+                  "code": "policy-include",
+                  "ruleIds": [
+                    "choices-fs-uk-015-include"
+                  ]
+                },
+                {
+                  "code": "allowance-sufficient",
+                  "allowance": 1300,
+                  "monthlyPoints": 1100,
+                  "unit": "points/month"
+                },
+                {
+                  "code": "essential-met",
+                  "field": "seats",
+                  "requirement": {
+                    "value": 5,
+                    "operator": "gte",
+                    "unit": "count",
+                    "state": "confirmed",
+                    "source": "employee"
+                  },
+                  "fact": {
+                    "status": "known",
+                    "value": 5,
+                    "unit": "count",
+                    "provenance": {
+                      "sourceRef": "fixture:employee",
+                      "observedAt": "2026-11-05T12:00:00.000Z",
+                      "version": "facts-v1",
+                      "assurance": "synthetic-scenario"
+                    }
+                  }
+                },
+                {
+                  "code": "required-by-met",
+                  "requiredBy": "2026-12-01T00:00:00.000Z"
+                }
+              ],
+              "tradeOffs": [
+                {
+                  "code": "preference-fit",
+                  "field": "sportiness",
+                  "score": 88,
+                  "importance": 100,
+                  "desired": 100,
+                  "observed": 88,
+                  "facts": {
+                    "zeroTo62": {
+                      "status": "known",
+                      "value": 4,
+                      "unit": "s",
+                      "provenance": {
+                        "sourceRef": "fixture:employee",
+                        "observedAt": "2026-11-05T12:00:00.000Z",
+                        "version": "facts-v1",
+                        "assurance": "synthetic-scenario"
+                      }
+                    }
+                  }
+                }
+              ],
+              "blockers": [],
+              "unknowns": [],
+              "versions": {
+                "brief": 1,
+                "facts": "employee-facts-v1",
+                "policy": "gcsp-policy-v1",
+                "stock": "stock-v1",
+                "snapshot": "snapshot-v1",
+                "terms": "gcsp-policy-v1:price.choices-fs-uk.015:allowance.choices-fs-uk.G7:2026-11-05T12:00:00.000Z",
+                "clock": "clock-v1",
+                "availability": "availability-v1"
+              },
+              "terms": {
+                "termsVersion": "gcsp-policy-v1:price.choices-fs-uk.015:allowance.choices-fs-uk.G7:2026-11-05T12:00:00.000Z",
+                "points": {
+                  "value": 1100,
+                  "unit": "points"
+                },
+                "allowanceInputs": {
+                  "allowance": {
+                    "value": 1300,
+                    "unit": "points"
+                  }
+                },
+                "contribution": null,
+                "validFrom": "2026-11-05T12:00:00.000Z",
+                "validUntil": "2026-11-05T13:00:00.000Z",
+                "provenance": {
+                  "sourceRef": "docs/gcsp/shared-contracts.md",
+                  "version": "gcsp-policy-v1",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "assurance": "synthetic-scenario"
+                },
+                "kind": "employee-scheme"
+              },
+              "policyEvidence": {
+                "eligibility": {
+                  "eligible": true,
+                  "state": "eligible",
+                  "ruleIds": [
+                    "choices-fs-uk-015-include"
+                  ],
+                  "reasons": [
+                    "explicit-include"
+                  ],
+                  "provenance": {
+                    "rules": [
+                      {
+                        "key": "choices-fs-uk-015-include",
+                        "value": "G21 Touring|320i",
+                        "unit": "model/engine key",
+                        "status": "verified",
+                        "basis": "Transcribed FS&UK Choices Vehicle Eligibility Matrix: G21 Touring, 320i; source grade-band decisions only. Key mapping is a demo assumption.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2024-07-29",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2024-10-01T00:00:00.000Z",
+                        "ruleId": "choices-fs-uk-015-include",
+                        "effect": "include",
+                        "matchField": "eligibilityModelKey",
+                        "operator": "equals",
+                        "gradeIds": [
+                          "G7",
+                          "G8-10",
+                          "G11-14"
+                        ],
+                        "model": "G21 Touring",
+                        "engine": "320i"
+                      }
+                    ],
+                    "schemeRuleLinks": [
+                      {
+                        "key": "link-choices-fs-uk-015-include",
+                        "value": "choices-fs-uk-015-include",
+                        "unit": "rule reference",
+                        "status": "verified",
+                        "basis": "Dated link to the supplied FS&UK Choices Vehicle Eligibility Matrix; effective 1 October 2024.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2024-07-29",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2024-10-01T00:00:00.000Z",
+                        "linkId": "link-choices-fs-uk-015-include",
+                        "schemeId": "choices-fs-uk",
+                        "ruleId": "choices-fs-uk-015-include"
+                      }
+                    ],
+                    "assumptions": [
+                      {
+                        "key": "eligibility.rule.matchField",
+                        "value": "eligibilityModelKey",
+                        "unit": "field name",
+                        "status": "assumed",
+                        "basis": "Assumed bridge of retained series/model/engine labels to matrix rows, since target matching code is undefined (round-3). Exact mapping is versioned/provenanced in the seed; unknown mapping fails.",
+                        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      },
+                      {
+                        "key": "eligibility.rule.precedence",
+                        "value": "excludeThenInclude",
+                        "unit": "enum",
+                        "status": "assumed",
+                        "basis": "Assumed deterministic include/exclude evaluation; unknowns cannot widen eligibility.",
+                        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      },
+                      {
+                        "key": "eligibility.context.mapping",
+                        "value": [
+                          {
+                            "schemeId": "choices-fs-uk",
+                            "companyId": "demo-bmw-fs-uk",
+                            "sourceMatrix": "FS&UK Choices Vehicle Eligibility Matrix",
+                            "gradeIds": [
+                              "G1-6",
+                              "G7",
+                              "G8-10",
+                              "G11-14"
+                            ]
+                          },
+                          {
+                            "schemeId": "choices-rr-production",
+                            "companyId": "demo-bmw-rr-production",
+                            "sourceMatrix": "RR&Production Choices Vehicle Eligibility Matrix",
+                            "gradeIds": [
+                              "PG1",
+                              "G8-10",
+                              "G11-12"
+                            ]
+                          }
+                        ],
+                        "unit": "identifier mapping",
+                        "status": "assumed",
+                        "basis": "Demo scheme/company IDs and source grade bands preserve actual FS&UK and RR&Production matrices. RR&Production is not equated with UKNSC. eligibilityModelKey is exact source model + | + one source engine token; comma/slash alternatives expand without inventing engine prefixes.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      }
+                    ]
+                  }
+                },
+                "allowance": {
+                  "key": "allowance.choices-fs-uk.G7",
+                  "value": 1300,
+                  "unit": "points/month",
+                  "status": "assumed",
+                  "basis": "Synthetic monthly demo allowance; eligibility matrices contain no numeric allowances. Not a verified BMW amount.",
+                  "source": "docs/gcsp/shared-contracts.md",
+                  "sourceDate": "2026-11-04",
+                  "policyVersion": "gcsp-policy-v1",
+                  "effectiveFrom": "2026-11-04T00:00:00.000Z",
+                  "allowanceId": "allowance.choices-fs-uk.G7",
+                  "companyId": "demo-bmw-fs-uk",
+                  "schemeId": "choices-fs-uk",
+                  "gradeId": "G7",
+                  "monthlyPoints": 1300
+                },
+                "points": {
+                  "key": "price.choices-fs-uk.015",
+                  "value": 1100,
+                  "unit": "points/month",
+                  "status": "assumed",
+                  "basis": "Synthetic monthly demo cost for source class KKL; matrices contain no prices. Not a verified BMW amount.",
+                  "source": "docs/gcsp/shared-contracts.md",
+                  "sourceDate": "2026-11-04",
+                  "policyVersion": "gcsp-policy-v1",
+                  "effectiveFrom": "2026-11-04T00:00:00.000Z",
+                  "pricePlanId": "choices-fs-uk-synthetic-monthly-v1",
+                  "priceEntryId": "price.choices-fs-uk.015",
+                  "schemeId": "choices-fs-uk",
+                  "matchField": "eligibilityModelKey",
+                  "matchValue": "G21 Touring|320i",
+                  "monthlyPoints": 1100
+                }
+              }
+            },
+            {
+              "orderUuid": "00000000-0000-4000-8000-000000000002",
+              "configurationId": "RzIxOlMx",
+              "gateStatus": "eligible",
+              "suitable": true,
+              "score": 0,
+              "components": [
+                {
+                  "code": "preference-fit",
+                  "field": "sportiness",
+                  "score": 0,
+                  "importance": 100,
+                  "desired": 100,
+                  "observed": 0,
+                  "facts": {
+                    "zeroTo62": {
+                      "status": "known",
+                      "value": 10,
+                      "unit": "s",
+                      "provenance": {
+                        "sourceRef": "fixture:employee",
+                        "observedAt": "2026-11-05T12:00:00.000Z",
+                        "version": "facts-v1",
+                        "assurance": "synthetic-scenario"
+                      }
+                    }
+                  }
+                }
+              ],
+              "reasons": [
+                {
+                  "code": "driver-eligible",
+                  "fact": {
+                    "status": "known",
+                    "value": true,
+                    "unit": null,
+                    "provenance": {
+                      "sourceRef": "fixture:employee",
+                      "observedAt": "2026-11-05T12:00:00.000Z",
+                      "version": "facts-v1",
+                      "assurance": "synthetic-scenario"
+                    }
+                  }
+                },
+                {
+                  "code": "policy-include",
+                  "ruleIds": [
+                    "choices-fs-uk-015-include"
+                  ]
+                },
+                {
+                  "code": "allowance-sufficient",
+                  "allowance": 1300,
+                  "monthlyPoints": 1100,
+                  "unit": "points/month"
+                },
+                {
+                  "code": "essential-met",
+                  "field": "seats",
+                  "requirement": {
+                    "value": 5,
+                    "operator": "gte",
+                    "unit": "count",
+                    "state": "confirmed",
+                    "source": "employee"
+                  },
+                  "fact": {
+                    "status": "known",
+                    "value": 5,
+                    "unit": "count",
+                    "provenance": {
+                      "sourceRef": "fixture:employee",
+                      "observedAt": "2026-11-05T12:00:00.000Z",
+                      "version": "facts-v1",
+                      "assurance": "synthetic-scenario"
+                    }
+                  }
+                },
+                {
+                  "code": "required-by-met",
+                  "requiredBy": "2026-12-01T00:00:00.000Z"
+                }
+              ],
+              "tradeOffs": [
+                {
+                  "code": "preference-fit",
+                  "field": "sportiness",
+                  "score": 0,
+                  "importance": 100,
+                  "desired": 100,
+                  "observed": 0,
+                  "facts": {
+                    "zeroTo62": {
+                      "status": "known",
+                      "value": 10,
+                      "unit": "s",
+                      "provenance": {
+                        "sourceRef": "fixture:employee",
+                        "observedAt": "2026-11-05T12:00:00.000Z",
+                        "version": "facts-v1",
+                        "assurance": "synthetic-scenario"
+                      }
+                    }
+                  }
+                }
+              ],
+              "blockers": [],
+              "unknowns": [],
+              "versions": {
+                "brief": 1,
+                "facts": "employee-facts-v1",
+                "policy": "gcsp-policy-v1",
+                "stock": "stock-v1",
+                "snapshot": "snapshot-v1",
+                "terms": "gcsp-policy-v1:price.choices-fs-uk.015:allowance.choices-fs-uk.G7:2026-11-05T12:00:00.000Z",
+                "clock": "clock-v1",
+                "availability": "availability-v1"
+              },
+              "terms": {
+                "termsVersion": "gcsp-policy-v1:price.choices-fs-uk.015:allowance.choices-fs-uk.G7:2026-11-05T12:00:00.000Z",
+                "points": {
+                  "value": 1100,
+                  "unit": "points"
+                },
+                "allowanceInputs": {
+                  "allowance": {
+                    "value": 1300,
+                    "unit": "points"
+                  }
+                },
+                "contribution": null,
+                "validFrom": "2026-11-05T12:00:00.000Z",
+                "validUntil": "2026-11-05T13:00:00.000Z",
+                "provenance": {
+                  "sourceRef": "docs/gcsp/shared-contracts.md",
+                  "version": "gcsp-policy-v1",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "assurance": "synthetic-scenario"
+                },
+                "kind": "employee-scheme"
+              },
+              "policyEvidence": {
+                "eligibility": {
+                  "eligible": true,
+                  "state": "eligible",
+                  "ruleIds": [
+                    "choices-fs-uk-015-include"
+                  ],
+                  "reasons": [
+                    "explicit-include"
+                  ],
+                  "provenance": {
+                    "rules": [
+                      {
+                        "key": "choices-fs-uk-015-include",
+                        "value": "G21 Touring|320i",
+                        "unit": "model/engine key",
+                        "status": "verified",
+                        "basis": "Transcribed FS&UK Choices Vehicle Eligibility Matrix: G21 Touring, 320i; source grade-band decisions only. Key mapping is a demo assumption.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2024-07-29",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2024-10-01T00:00:00.000Z",
+                        "ruleId": "choices-fs-uk-015-include",
+                        "effect": "include",
+                        "matchField": "eligibilityModelKey",
+                        "operator": "equals",
+                        "gradeIds": [
+                          "G7",
+                          "G8-10",
+                          "G11-14"
+                        ],
+                        "model": "G21 Touring",
+                        "engine": "320i"
+                      }
+                    ],
+                    "schemeRuleLinks": [
+                      {
+                        "key": "link-choices-fs-uk-015-include",
+                        "value": "choices-fs-uk-015-include",
+                        "unit": "rule reference",
+                        "status": "verified",
+                        "basis": "Dated link to the supplied FS&UK Choices Vehicle Eligibility Matrix; effective 1 October 2024.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2024-07-29",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2024-10-01T00:00:00.000Z",
+                        "linkId": "link-choices-fs-uk-015-include",
+                        "schemeId": "choices-fs-uk",
+                        "ruleId": "choices-fs-uk-015-include"
+                      }
+                    ],
+                    "assumptions": [
+                      {
+                        "key": "eligibility.rule.matchField",
+                        "value": "eligibilityModelKey",
+                        "unit": "field name",
+                        "status": "assumed",
+                        "basis": "Assumed bridge of retained series/model/engine labels to matrix rows, since target matching code is undefined (round-3). Exact mapping is versioned/provenanced in the seed; unknown mapping fails.",
+                        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      },
+                      {
+                        "key": "eligibility.rule.precedence",
+                        "value": "excludeThenInclude",
+                        "unit": "enum",
+                        "status": "assumed",
+                        "basis": "Assumed deterministic include/exclude evaluation; unknowns cannot widen eligibility.",
+                        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      },
+                      {
+                        "key": "eligibility.context.mapping",
+                        "value": [
+                          {
+                            "schemeId": "choices-fs-uk",
+                            "companyId": "demo-bmw-fs-uk",
+                            "sourceMatrix": "FS&UK Choices Vehicle Eligibility Matrix",
+                            "gradeIds": [
+                              "G1-6",
+                              "G7",
+                              "G8-10",
+                              "G11-14"
+                            ]
+                          },
+                          {
+                            "schemeId": "choices-rr-production",
+                            "companyId": "demo-bmw-rr-production",
+                            "sourceMatrix": "RR&Production Choices Vehicle Eligibility Matrix",
+                            "gradeIds": [
+                              "PG1",
+                              "G8-10",
+                              "G11-12"
+                            ]
+                          }
+                        ],
+                        "unit": "identifier mapping",
+                        "status": "assumed",
+                        "basis": "Demo scheme/company IDs and source grade bands preserve actual FS&UK and RR&Production matrices. RR&Production is not equated with UKNSC. eligibilityModelKey is exact source model + | + one source engine token; comma/slash alternatives expand without inventing engine prefixes.",
+                        "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                        "sourceDate": "2026-11-04",
+                        "policyVersion": "gcsp-policy-v1",
+                        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+                      }
+                    ]
+                  }
+                },
+                "allowance": {
+                  "key": "allowance.choices-fs-uk.G7",
+                  "value": 1300,
+                  "unit": "points/month",
+                  "status": "assumed",
+                  "basis": "Synthetic monthly demo allowance; eligibility matrices contain no numeric allowances. Not a verified BMW amount.",
+                  "source": "docs/gcsp/shared-contracts.md",
+                  "sourceDate": "2026-11-04",
+                  "policyVersion": "gcsp-policy-v1",
+                  "effectiveFrom": "2026-11-04T00:00:00.000Z",
+                  "allowanceId": "allowance.choices-fs-uk.G7",
+                  "companyId": "demo-bmw-fs-uk",
+                  "schemeId": "choices-fs-uk",
+                  "gradeId": "G7",
+                  "monthlyPoints": 1300
+                },
+                "points": {
+                  "key": "price.choices-fs-uk.015",
+                  "value": 1100,
+                  "unit": "points/month",
+                  "status": "assumed",
+                  "basis": "Synthetic monthly demo cost for source class KKL; matrices contain no prices. Not a verified BMW amount.",
+                  "source": "docs/gcsp/shared-contracts.md",
+                  "sourceDate": "2026-11-04",
+                  "policyVersion": "gcsp-policy-v1",
+                  "effectiveFrom": "2026-11-04T00:00:00.000Z",
+                  "pricePlanId": "choices-fs-uk-synthetic-monthly-v1",
+                  "priceEntryId": "price.choices-fs-uk.015",
+                  "schemeId": "choices-fs-uk",
+                  "matchField": "eligibilityModelKey",
+                  "matchValue": "G21 Touring|320i",
+                  "monthlyPoints": 1100
+                }
+              }
+            }
+          ],
+          "recommendations": [
+            "00000000-0000-4000-8000-000000000001",
+            "00000000-0000-4000-8000-000000000002"
+          ],
+          "eligibleCount": 2
+        }
+      }
+    },
+    {
+      "name": "no-stock-is-computed",
+      "input": {
+        "context": {
+          "runId": "run-employee",
+          "environmentId": "demo",
+          "employeeId": "employee-test",
+          "roles": [
+            "employee"
+          ],
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G7",
+          "policyVersion": "gcsp-policy-v1"
+        },
+        "brief": {
+          "schemaVersion": 1,
+          "briefVersion": 1,
+          "preferences": {
+            "body": {
+              "value": "estate",
+              "importance": 100,
+              "valueState": "confirmed",
+              "importanceState": "confirmed",
+              "source": "employee"
+            }
+          },
+          "essentials": {
+            "seats": {
+              "value": 5,
+              "operator": "gte",
+              "unit": "count",
+              "state": "confirmed",
+              "source": "employee"
+            }
+          }
+        },
+        "sourceVersions": {
+          "facts": "employee-facts-v1",
+          "stock": "stock-v1"
+        },
+        "exactStock": [],
+        "employeeFacts": {
+          "driverEligible": {
+            "status": "known",
+            "value": true,
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "essentials": {},
+          "charging": {
+            "status": "known",
+            "value": "home",
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "annualMileage": {
+            "status": "known",
+            "value": 12000,
+            "unit": "mi/year",
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "requiredBy": {
+            "status": "known",
+            "value": "2026-12-01T00:00:00.000Z",
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          }
+        }
+      },
+      "output": {
+        "status": "ok",
+        "contractVersion": "1.0.0",
+        "value": {
+          "scenarioId": "employee-scheme-demo-v1",
+          "runId": "run-employee",
+          "state": "no-stock",
+          "evaluatedAt": "2026-11-05T12:00:00.000Z",
+          "versions": {
+            "brief": 1,
+            "facts": "employee-facts-v1",
+            "policy": "gcsp-policy-v1",
+            "stock": "stock-v1",
+            "clock": "clock-v1"
+          },
+          "decisions": [],
+          "recommendations": [],
+          "eligibleCount": 0
+        }
+      }
+    },
+    {
+      "name": "source-outage-is-unavailable",
+      "input": {
+        "context": {
+          "runId": "run-employee",
+          "environmentId": "demo",
+          "employeeId": "employee-test",
+          "roles": [
+            "employee"
+          ],
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G7",
+          "policyVersion": "gcsp-policy-v1"
+        },
+        "brief": {
+          "schemaVersion": 1,
+          "briefVersion": 1,
+          "preferences": {
+            "body": {
+              "value": "estate",
+              "importance": 100,
+              "valueState": "confirmed",
+              "importanceState": "confirmed",
+              "source": "employee"
+            }
+          },
+          "essentials": {
+            "seats": {
+              "value": 5,
+              "operator": "gte",
+              "unit": "count",
+              "state": "confirmed",
+              "source": "employee"
+            }
+          }
+        },
+        "sourceVersions": null
+      },
+      "output": {
+        "status": "unavailable",
+        "code": "employee-source-unavailable",
+        "reason": "The employee recommendation source is unavailable.",
+        "retryable": true,
+        "contractVersion": "1.0.0"
+      }
+    },
+    {
+      "name": "browser-policy-downgrade-rejected",
+      "input": {
+        "context": {
+          "runId": "run-employee",
+          "environmentId": "demo",
+          "employeeId": "employee-test",
+          "roles": [
+            "employee"
+          ],
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G7",
+          "policyVersion": "gcsp-policy-v1"
+        },
+        "brief": {
+          "schemaVersion": 1,
+          "briefVersion": 1,
+          "preferences": {
+            "body": {
+              "value": "estate",
+              "importance": 100,
+              "valueState": "confirmed",
+              "importanceState": "confirmed",
+              "source": "employee"
+            }
+          },
+          "essentials": {
+            "seats": {
+              "value": 5,
+              "operator": "gte",
+              "unit": "count",
+              "state": "confirmed",
+              "source": "employee"
+            }
+          },
+          "retailBudgetEnabled": false
+        },
+        "sourceVersions": {
+          "facts": "employee-facts-v1",
+          "stock": "stock-v1"
+        },
+        "exactStock": [
+          {
+            "orderUuid": "00000000-0000-4000-8000-000000000001",
+            "configurationId": "RzIxOlMx",
+            "facts": {
+              "eligibilityModelKey": {
+                "status": "known",
+                "value": "G21 Touring|320i",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "body": {
+                "status": "known",
+                "value": "estate",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "fuel": {
+                "status": "known",
+                "value": "petrol",
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "seats": {
+                "status": "known",
+                "value": 5,
+                "unit": "count",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "boot": {
+                "status": "known",
+                "value": 500,
+                "unit": "L",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "zeroTo62": {
+                "status": "known",
+                "value": 7,
+                "unit": "s",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "mpg": {
+                "status": "known",
+                "value": 45,
+                "unit": "mpg-imperial",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "sizeClass": {
+                "status": "known",
+                "value": 3,
+                "unit": "ordinal-1-5",
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              },
+              "tags": {
+                "status": "known",
+                "value": [
+                  "cruiser"
+                ],
+                "unit": null,
+                "provenance": {
+                  "sourceRef": "fixture:employee",
+                  "observedAt": "2026-11-05T12:00:00.000Z",
+                  "version": "facts-v1",
+                  "assurance": "synthetic-scenario"
+                }
+              }
+            },
+            "availability": {
+              "state": "available",
+              "availableFrom": "2026-11-05T12:00:00.000Z",
+              "availableUntil": "2027-01-01T00:00:00.000Z",
+              "version": "availability-v1"
+            }
+          }
+        ],
+        "employeeFacts": {
+          "driverEligible": {
+            "status": "known",
+            "value": true,
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "essentials": {},
+          "charging": {
+            "status": "known",
+            "value": "home",
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "annualMileage": {
+            "status": "known",
+            "value": 12000,
+            "unit": "mi/year",
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          },
+          "requiredBy": {
+            "status": "known",
+            "value": "2026-12-01T00:00:00.000Z",
+            "unit": null,
+            "provenance": {
+              "sourceRef": "fixture:employee",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "version": "facts-v1",
+              "assurance": "synthetic-scenario"
+            }
+          }
+        }
+      },
+      "output": {
+        "status": "invalid",
+        "code": "invalid-brief",
+        "reasons": [
+          {
+            "field": "brief",
+            "reason": "Supply the supported read-only brief contract."
+          }
+        ],
+        "contractVersion": "1.0.0"
+      }
+    }
+  ]
+}
