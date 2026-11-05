@@ -48,6 +48,7 @@ import { createGcspHandler } from './gcsp/identity/http.js';
 import { createEmployeeRecommendationRoutes } from './gcsp/recommendation/http.js';
 import { createClockRoutes } from './gcsp/clock/http.js';
 import { createScenarioRoutes } from './gcsp/scenarios/http.js';
+import { createCaseRoutes } from './gcsp/cases/http.js';
 import { createBriefRoutes } from './gcsp/brief/http.js';
 import { createManualContextRoutes } from './gcsp/manual-context/http.js';
 import { createVehicleEvidenceHandler, isVehicleEvidencePath } from './gcsp/vehicle-evidence/vehicle-evidence-handler.js';
@@ -860,7 +861,7 @@ export function buildServer(deps = {}) {
     identity: deps.gcspIdentity,
     routes: [...createEmployeeRecommendationRoutes(deps.gcspClock && deps.gcspRecommendations
       ? { ...deps.gcspRecommendations, time: deps.gcspClock } : deps.gcspRecommendations),
-    ...createClockRoutes(deps.gcspClock), ...createScenarioRoutes(deps.gcspScenarios, deps.gcspClock), ...createBriefRoutes(deps.gcspBrief), ...createManualContextRoutes(deps.gcspManual), ...createGregRoutes(deps.gcspGreg), ...(deps.gcspRoutes || [])],
+    ...createClockRoutes(deps.gcspClock), ...createScenarioRoutes(deps.gcspScenarios, deps.gcspClock), ...createBriefRoutes(deps.gcspBrief), ...createCaseRoutes(deps.gcspCases), ...createManualContextRoutes(deps.gcspManual), ...createGregRoutes(deps.gcspGreg), ...(deps.gcspRoutes || [])],
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
   const handleVehicleEvidence = createVehicleEvidenceHandler({
@@ -876,6 +877,10 @@ export function buildServer(deps = {}) {
   const gcspStartup = deps.gcspClock ? Promise.resolve().then(async () => {
     // Notification registration precedes the clock sealing its registry. Startup
     // drains already committed jobs even though clock startup omits allocation.
+    if (deps.gcspCases) {
+      const cases = await deps.gcspCases.start();
+      if (cases.status !== 'ok') return cases;
+    }
     if (deps.gcspNotify) {
       const notifications = await deps.gcspNotify.start();
       if (notifications.status !== 'ok') return notifications;

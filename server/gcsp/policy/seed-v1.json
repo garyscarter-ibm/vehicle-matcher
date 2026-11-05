@@ -12260,6 +12260,99 @@
       "sourceDate": "2026-11-05",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "renewalCase.deadline.enabled",
+      "value": true,
+      "unit": "boolean",
+      "status": "assumed",
+      "basis": "A presenter tick checks unresolved renewals; no unattended background promise.",
+      "source": "docs/gcsp/shared-contracts.md#owned-renewal-risk-cases--fucq-112",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "renewalCase.deadline.withinDays",
+      "value": 14,
+      "unit": "calendar days",
+      "status": "assumed",
+      "basis": "Two weeks gives the scheme team a plausible review window before a fictional renewal; revise through trials.",
+      "source": "docs/gcsp/shared-contracts.md#owned-renewal-risk-cases--fucq-112",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "renewalCase.lifecycle.enabled",
+      "value": true,
+      "unit": "boolean",
+      "status": "assumed",
+      "basis": "Configured persisted lifecycle exceptions need an owned review; no approval or appointment producer is implied.",
+      "source": "docs/gcsp/shared-contracts.md#owned-renewal-risk-cases--fucq-112",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "renewalCase.lifecycle.eventTypes",
+      "value": [
+        "approval-declined",
+        "appointment-no-show"
+      ],
+      "unit": "event type keys",
+      "status": "assumed",
+      "basis": "Read only keyed completed lifecycle receipt types; producers remain separately owned capabilities.",
+      "source": "docs/gcsp/shared-contracts.md#owned-renewal-risk-cases--fucq-112",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "renewalCase.selection.eventTypes",
+      "value": [
+        "selection-acknowledged"
+      ],
+      "unit": "event type keys",
+      "status": "assumed",
+      "basis": "Only a persisted acknowledged selection suppresses the deadline rule; a pending request does not.",
+      "source": "docs/gcsp/shared-contracts.md#owned-renewal-risk-cases--fucq-112",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "renewalCase.owner.role",
+      "value": "scheme-team",
+      "unit": "role",
+      "status": "assumed",
+      "basis": "Greg and the presenter act for the scheme team in the isolated demonstration.",
+      "source": "docs/gcsp/shared-contracts.md#owned-renewal-risk-cases--fucq-112",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "renewalCase.response.dueHours",
+      "value": 24,
+      "unit": "hours",
+      "status": "assumed",
+      "basis": "One demo-clock day is a plausible first review target, not a BMW service-level agreement.",
+      "source": "docs/gcsp/shared-contracts.md#owned-renewal-risk-cases--fucq-112",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "renewalCase.extension.permitted",
+      "value": false,
+      "unit": "boolean",
+      "status": "assumed",
+      "basis": "Contract extension remains unavailable until the scheme explicitly permits it; no default entitlement.",
+      "source": "docs/gcsp/shared-contracts.md#owned-renewal-risk-cases--fucq-112",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
     }
   ]
 }
