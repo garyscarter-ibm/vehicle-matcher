@@ -70,6 +70,7 @@ Only the employee's scoped offers are read; no hold, offer or stock state is cha
 `changeAfterDecline` implements the single-change command above, with a registered path
 `preferences.<key>.value` or `essentials.<key>`; an essential value is its complete confirmed requirement object.
 The stored decline must belong to this employee and reference an approved historical brief in `versions.brief`.
+Unchanged business values are rejected without consuming the decline's change: source/timestamps are excluded from comparison, and `includes` equipment lists compare as sets while stored audit values retain their supplied order.
 Each decline can be answered once; a pause/resume does not consume that change. The expected version is the current
 brief being changed; all other preferences, weights, essentials and permission remain unchanged.
 
