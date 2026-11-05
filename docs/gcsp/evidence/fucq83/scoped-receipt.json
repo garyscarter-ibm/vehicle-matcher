@@ -1,0 +1,436 @@
+{
+  "story": "FUCQ-83",
+  "status": "source/scoped checkpoint; BLOCKED native Render SQL; full pending integrated frozen checkpoint",
+  "sourceTestIdentity": "e5d66222ec4d4e85874e3bcd9225a74ac8b044054e8c25873c0b874f52538e78",
+  "sha256": {
+    "server/gcsp/policy/index.js": "087267e81d4a780ef300dba144d9de5c4978ca530fe8ea5b2f53e2ec41395a2c",
+    "server/gcsp/policy/publish.js": "74f54d29f95b48a218dfc24c1dfde57ba25adbf880f6db8484d6c7dd5d91fc84",
+    "server/gcsp/policy/memory-provider.js": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
+    "server/gcsp/policy/postgres-provider.js": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+    "server/gcsp/migrations/0002_policy_tables.sql": "65346093f811df63b225436a0ca35cd4061990a78caacb44ffde7b1effd1edd0",
+    "server/test/gcsp-policy-versions.test.js": "e3d2c164e4e416f37f22cb6e3bf4069594c272b9516808db46aa4416994e379d",
+    "server/test/gcsp-policy-service.test.js": "85d64227db2ba685bb634b5175f8fe397fd82e792e6567a17cec33c3b32101a2",
+    "server/test/gcsp-repository-contract.test.js": "7880253bbeddb70e84d4f2a7727f327e398f8991146cad3504d383b5318da477",
+    "server/test/fixtures/gcsp-policy-version-outcomes.json": "051321061336e15719a7ae7ed52aabe6243622051f5db11bab0fa68fafcc2313",
+    "server/gcsp/policy/seed-v1.json": "82cc3271c8a0fc30f453e1163703a61a7c6b327a0f954a126db6f9bbf3574ff8",
+    "server/gcsp/migrations/0003_renewal_cases.sql": "e76750fddd75b9d363fd209c243169ce1f9b06c78f96b7dbb74fe3c296f08c98"
+  },
+  "providersRan": [
+    "explicit memory policy provider with real DemoIdentityAdapter/DemoClock over memory transaction repository",
+    "file provider unchanged read contract",
+    "PostgreSQL driver double (not native SQL)"
+  ],
+  "nativeRan": false,
+  "nativeGate": "GCSP_DATABASE_URL unset; Gary provisions/configures authorised Render Postgres; execute real isolated-schema parity and SQL immutability tests before completion.",
+  "scope": "scoped; not a full stamp",
+  "runs": [
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/3577b5f95097300df51ee7b1f250247c60b592fd274362028a0def4075d2e83c.json",
+      "identity": {
+        "code": "103b13a2127238556e0f263f748d193ef2f0369f7c24a6d9c3e2183d1b6d17a9",
+        "environment": "910e352808289aaa8b87d3c5255217ec54ed0e66e76b4c4f730b246612c05800",
+        "inputs": {},
+        "interpreter": [
+          "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+          "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+        ],
+        "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+        "scope": "targeted",
+        "selected": [
+          "node --test --test-concurrency=1 server/test/gcsp-policy-versions.test.js server/test/gcsp-policy-service.test.js"
+        ],
+        "settings": "61117f9af3a4e9d368e619c43f58e12db73fda7afba1e19b7fb0d661b346b33c",
+        "variant": "default",
+        "version": 1
+      },
+      "command": "node --test --test-concurrency=1 server/test/gcsp-policy-versions.test.js server/test/gcsp-policy-service.test.js",
+      "rc": 1,
+      "wallSeconds": 2.742,
+      "sampledPeakRssBytes": 261324800,
+      "sampledPeakScratchBytes": 0,
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-policy-f7886a52968442e7b88148c6bc2dbb01-028829b24ee74ce590a22adede5ff900.json",
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-064133-ukqha_b_/chunk-0001.log",
+      "counts": [
+        "\u2139 tests 27",
+        "\u2139 pass 23",
+        "\u2139 fail 2",
+        "\u2139 skipped 2"
+      ],
+      "failureExcerpt": "\u2714 typed reads retain all provenance, declared units and policy versions (1.335208ms)\n\u2714 all foundation assumption values match the documented baseline through service reads (3.038042ms)\n\u2714 every source matrix model/engine and grade has its exact independent decision (87.670083ms)\n\u2714 unknown assumptions, schemes, grades and companies fail without a fallback (0.388458ms)\n\u2714 missing and unmapped facts cannot become eligible or use a nearest price (1.181875ms)\n\u2714 exact configuration prices are supported and ambiguous matches fail explicitly (10.519417ms)\n\u2714 explicit exclude wins over an overlapping include (6.01175ms)\n\u2714 bad reads, missing pins and context run mismatches carry explicit versions (0.244375ms)\n\u2714 source failures are typed and never expose provider errors or file paths (0.580167ms)\n\u2714 malformed rows, duplicate IDs, invalid dates and inconsistent provenance fail as source errors (50.339916ms)\n\u2714 unsupported rule selections fail on the resolved version (8.1175ms)\n\u2714 retained historical pins keep activation-time rows after expiry and future versions wait (16.15225ms)\n\u2714 callers cannot mutate the provider snapshot or subsequent service results (12.116292ms)\n\u2714 one alternative file entry changes all consumer reads and projection while pins retain original terms (61.41625ms)\n\u2714 backend presentation projection matches the retained fixture (0.899167ms)\n\u25b6 in-memory (explicit test provider): immutable policy publication and dated/pinned reads\n  \u2714 reviewed seed is idempotent and all existing typed reads/provenance agree (265.713208ms)\n  \u2714 one entry changes new work at the injected clock boundary while held terms and history remain pinned (338.092458ms)\n  \u2716 invalid complete changes are rejected without writing a partial version (206.06175ms)\n  \u2714 real identity guards reject employee, presenter and copied Greg contexts, including stale runs (233.013375ms)\n  \u2714 command replay, conflicting input and stale active versions are atomic across reopen (214.526375ms)\n  \u2714 simultaneous same-date publishers have one accepted immutable successor (199.573542ms)\n\u2716 in-memory (explicit test provider): immutable policy publication and dated/pinned reads (1458.254625ms)\n\ufe63 PostgreSQL native parity: NOT RUN; GCSP_DATABASE_URL unset, Render integration gate remains blocked (0.043666ms) # SKIP\n\u2714 additive migration discovery retains existing 0001 and 0003 and includes dated policy tables (1.592ms)\n\u2714 configured database errors never fall back to file values or expose driver diagnostics (12.469542ms)\n\u2714 PostgreSQL driver double round-trips complete typed rows and rolls back failed publication (not native SQL proof) (563.484792ms)\n\ufe63 native PostgreSQL rows/dates, seed replay, immutable SQL and reopen agree with memory (0.111709ms) # SKIP\n\u2139 tests 27\n\u2139 suites 0\n\u2139 pass 23\n\u2139 fail 2\n\u2139 cancelled 0\n\u2139 skipped 2\n\u2139 todo 0\n\u2139 duration_ms 2485.781166\n\n\u2716 failing tests:\n\ntest at server/test/gcsp-policy-versions.test.js:93:13\n\u2716 invalid complete changes are rejected without writing a partial version (206.06175ms)\n  AssertionError [ERR_ASSERTION]: {\"status\":\"unavailable\",\"accepted\":false,\"reason\":\"The policy source is unavailable.\",\"retryable\":true,\"contractVersion\":\"1.0.0\",\"policyVersion\":null}\n  + actual - expected\n  \n  + 'unavailable'\n  - 'invalid'\n  \n      at file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/server/test/gcsp-policy-versions.test.js:106:16\n      at async withFixture (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/server/test/gcsp-policy-versions.test.js:58:48)\n      at async Test.run (node:internal/test_runner/test:1404:7)\n      at async TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/server/test/gcsp-policy-versions.test.js:93:5)\n      at async Test.run (node:internal/test_runner/test:1404:7)\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: 'unavailable',\n    expected: 'invalid',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/384c992e8bb84be5a6de6b5518fa0346ab32e4ea0c9d116d54b18aa2b3092390.json",
+      "identity": {
+        "code": "fa51ca0162302ecb9e10691c126981f19276d250ab31b5b64cd9f7956a99f180",
+        "environment": "910e352808289aaa8b87d3c5255217ec54ed0e66e76b4c4f730b246612c05800",
+        "inputs": {},
+        "interpreter": [
+          "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+          "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+        ],
+        "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+        "scope": "targeted",
+        "selected": [
+          "node --test --test-concurrency=1 server/test/gcsp-policy-versions.test.js server/test/gcsp-policy-service.test.js"
+        ],
+        "settings": "61117f9af3a4e9d368e619c43f58e12db73fda7afba1e19b7fb0d661b346b33c",
+        "variant": "default",
+        "version": 1
+      },
+      "command": "node --test --test-concurrency=1 server/test/gcsp-policy-versions.test.js server/test/gcsp-policy-service.test.js",
+      "rc": 0,
+      "wallSeconds": 2.411,
+      "sampledPeakRssBytes": 236486656,
+      "sampledPeakScratchBytes": 0,
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-policy-011a5d994e7c498da4f848b510288608-fb1752e5d0754dbdbcd1bbb1c24ec928.json",
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-064505-h7cju6fh/chunk-0001.log",
+      "counts": [
+        "\u2139 tests 27",
+        "\u2139 pass 25",
+        "\u2139 fail 0",
+        "\u2139 skipped 2"
+      ],
+      "failureExcerpt": null
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/76a8be8ecb6a44d2e06396e54953f538a8b8f07e3d25da2e7385d2eae09a241f.json",
+      "identity": {
+        "code": "10aced1f6c17a51df5b714d1b2f65049464dc707bb3b03fddf5213791cadf5e4",
+        "environment": "910e352808289aaa8b87d3c5255217ec54ed0e66e76b4c4f730b246612c05800",
+        "inputs": {},
+        "interpreter": [
+          "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+          "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+        ],
+        "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+        "scope": "targeted",
+        "selected": [
+          "node --test --test-concurrency=1 server/test/gcsp-policy-versions.test.js server/test/gcsp-policy-service.test.js"
+        ],
+        "settings": "61117f9af3a4e9d368e619c43f58e12db73fda7afba1e19b7fb0d661b346b33c",
+        "variant": "default",
+        "version": 1
+      },
+      "command": "node --test --test-concurrency=1 server/test/gcsp-policy-versions.test.js server/test/gcsp-policy-service.test.js",
+      "rc": 0,
+      "wallSeconds": 1.979,
+      "sampledPeakRssBytes": 219447296,
+      "sampledPeakScratchBytes": 0,
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-policy-a4c17da8ae58419c8f90347129edc817-349466500eb1403195dec3ac8dfd03d5.json",
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-063944-4_qfgoyp/chunk-0001.log",
+      "counts": [
+        "\u2139 tests 26",
+        "\u2139 pass 24",
+        "\u2139 fail 0",
+        "\u2139 skipped 2"
+      ],
+      "failureExcerpt": null
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/7c791608d54201fe410f39343042d81bb77ba0c22fbfadbcff9e65d69b18aebc.json",
+      "identity": {
+        "code": "fa51ca0162302ecb9e10691c126981f19276d250ab31b5b64cd9f7956a99f180",
+        "environment": "910e352808289aaa8b87d3c5255217ec54ed0e66e76b4c4f730b246612c05800",
+        "inputs": {},
+        "interpreter": [
+          "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+          "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+        ],
+        "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+        "scope": "targeted",
+        "selected": [
+          "node --test --test-concurrency=1 server/test/employee-recommendation.test.js server/test/gcsp-comparison-generator.test.js"
+        ],
+        "settings": "ddd3e643206c5fcb90e07b294f4a954eba15b10242d9a0ac1f627401b1da7c44",
+        "variant": "default",
+        "version": 1
+      },
+      "command": "node --test --test-concurrency=1 server/test/employee-recommendation.test.js server/test/gcsp-comparison-generator.test.js",
+      "rc": 0,
+      "wallSeconds": 1.942,
+      "sampledPeakRssBytes": 235061248,
+      "sampledPeakScratchBytes": 0,
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-consumers-c21ea76605a54531bcc9d4b34ff44d67-c15d1e2c2d964094b678f02e403b4c31.json",
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-064438-qnux_h17/chunk-0001.log",
+      "counts": [
+        "\u2139 tests 41",
+        "\u2139 pass 41",
+        "\u2139 fail 0",
+        "\u2139 skipped 0"
+      ],
+      "failureExcerpt": null
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/a50ec8f7265876f051bda281609abc4a739d83843d9bc17ecf2964ec4cfc27d8.json",
+      "identity": {
+        "code": "fa51ca0162302ecb9e10691c126981f19276d250ab31b5b64cd9f7956a99f180",
+        "environment": "910e352808289aaa8b87d3c5255217ec54ed0e66e76b4c4f730b246612c05800",
+        "inputs": {},
+        "interpreter": [
+          "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+          "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+        ],
+        "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+        "scope": "targeted",
+        "selected": [
+          "node --test --test-concurrency=1 server/test/gcsp-identity.test.js server/test/gcsp-clock-reset.test.js"
+        ],
+        "settings": "6a1160f1ed3fc71947abe13df6d245718892ee8ce66f78fb54db7d50d449f279",
+        "variant": "default",
+        "version": 1
+      },
+      "command": "node --test --test-concurrency=1 server/test/gcsp-identity.test.js server/test/gcsp-clock-reset.test.js",
+      "rc": 0,
+      "wallSeconds": 1.662,
+      "sampledPeakRssBytes": 255787008,
+      "sampledPeakScratchBytes": 0,
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-identity-clock-c0d844f236b7438fa5ed848eee1020aa-634f823cf1e8449290ea6660c432f35d.json",
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-064426-algt52oc/chunk-0001.log",
+      "counts": [
+        "\u2139 tests 37",
+        "\u2139 pass 37",
+        "\u2139 fail 0",
+        "\u2139 skipped 0"
+      ],
+      "failureExcerpt": null
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/c8bcd974455079275b0cc24c896eabbb76efc78bcb58a63a64e789d4fa63b9a1.json",
+      "identity": {
+        "code": "6b1297348aab6e0f3fb1a2977876eaf83092630dba015a1f4740164dfa684f8e",
+        "environment": "910e352808289aaa8b87d3c5255217ec54ed0e66e76b4c4f730b246612c05800",
+        "inputs": {},
+        "interpreter": [
+          "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+          "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+        ],
+        "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+        "scope": "targeted",
+        "selected": [
+          "node --test --test-concurrency=1 server/test/gcsp-repository-contract.test.js"
+        ],
+        "settings": "592f36ed4da78181abf35ce04d99e499023389f5d272ce34eeec12cf113a203b",
+        "variant": "default",
+        "version": 1
+      },
+      "command": "node --test --test-concurrency=1 server/test/gcsp-repository-contract.test.js",
+      "rc": 1,
+      "wallSeconds": 0.279,
+      "sampledPeakRssBytes": 32768,
+      "sampledPeakScratchBytes": 0,
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-repository-358a9dbc39f149659202fd9f48308bfa-a655a5dcaf334c17965ebbeca3ac8b49.json",
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-064233-v929rikg/chunk-0001.log",
+      "counts": [
+        "\u2139 tests 44",
+        "\u2139 pass 41",
+        "\u2139 fail 1",
+        "\u2139 skipped 2"
+      ],
+      "failureExcerpt": "\ufe63 postgresql native constraints reject a second occupying hold and claim (0.339375ms) # GCSP_DATABASE_URL is unset; native SQL constraints were not run\n\u25b6 memory: shared TransactionRepository contract\n  \u2714 scoped CRUD, filtering, clones and persistence on reopen (3.165708ms)\n  \u2714 atomic reset switches current run, preserves history and rolls back failed seeds (1.971833ms)\n  \u2714 thrown and typed failures roll back even if callback ignores failed operation (0.934459ms)\n  \u2714 simultaneous exact-car claims produce one owner and explicit stale resource (0.950542ms)\n  \u2714 configuration identity never collapses two exact cars (0.636791ms)\n  \u2714 pending phases occupy direct holds and claims; slot capacity is enforced (1.549958ms)\n  \u2714 slot versions, configured capacity, owner and allocation exclusion (0.712417ms)\n  \u2714 hold, offer and outbox form one atomic transaction (1.146084ms)\n  \u2714 CAS races have one winner; keys and historical rows are immutable (0.701375ms)\n  \u2714 command, event and notification replay preserves original outcomes (1.633834ms)\n  \u2714 run isolation, malformed inputs and future migration refusal (1.66075ms)\n  \u2714 configured capacity two permits two exact cars for the same slot (0.781667ms)\n  \u2714 read misses allow receipt creation; escaped transaction and malformed success fail safely (0.411ms)\n  \u2714 insert replay retains original row after later CAS; historical command replay is stable (0.622917ms)\n  \u2714 renewal case uniqueness and notification rollback share the provider transaction (0.709417ms)\n  \u2714 closed provider returns UI-safe unavailable shape (0.190834ms)\n  \u2714 storage types protect occupancy constraints and the run environment (0.31075ms)\n\u2714 memory: shared TransactionRepository contract (18.814167ms)\n\u2714 memory: explicit store and complete foundation vocabulary (0.036042ms)\n\ufe63 postgresql: shared TransactionRepository contract (0.013666ms) # GCSP_DATABASE_URL is unset; PostgreSQL integration was not run\n\u25b6 postgresql driver double (not live SQL): shared TransactionRepository contract\n  \u2714 scoped CRUD, filtering, clones and persistence on reopen (6.296667ms)\n  \u2714 atomic reset switches current run, preserves history and rolls back failed seeds (3.458042ms)\n  \u2714 thrown and typed failures roll back even if callback ignores failed operation (1.685375ms)\n  \u2714 simultaneous exact-car claims produce one owner and explicit stale resource (1.82125ms)\n  \u2714 configuration identity never collapses two exact cars (1.867916ms)\n  \u2714 pending phases occupy direct holds and claims; slot capacity is enforced (3.913959ms)\n  \u2714 slot versions, configured capacity, owner and allocation exclusion (2.077709ms)\n  \u2714 hold, offer and outbox form one atomic transaction (2.316542ms)\n  \u2714 CAS races have one winner; keys and historical rows are immutable (1.929708ms)\n  \u2714 command, event and notification replay preserves original outcomes (4.901791ms)\n  \u2714 run isolation, malformed inputs and future migration refusal (3.848667ms)\n  \u2714 configured capacity two permits two exact cars for the same slot (2.291542ms)\n  \u2714 read misses allow receipt creation; escaped transaction and malformed success fail safely (1.355125ms)\n  \u2714 insert replay retains original row after later CAS; historical command replay is stable (2.58175ms)\n  \u2714 renewal case uniqueness and notification rollback share the provider transaction (1.8375ms)\n  \u2714 closed provider returns UI-safe unavailable shape (0.658708ms)\n  \u2714 storage types protect occupancy constraints and the run environment (1.039375ms)\n\u2714 postgresql driver double (not live SQL): shared TransactionRepository contract (44.575959ms)\n\u2716 postgresql driver: migrations record checksums, rerun once and reject changed history (1.002084ms)\n\u2714 postgresql driver: unavailable startup and configuration never expose credentials (1.281167ms)\n\u2714 postgresql driver: a flush failure rolls back claim, offer and outbox without memory fallback (2.462ms)\n\u2714 postgresql driver: uncertain commit is reconciled with the original command id (1.468709ms)\n\u2714 postgresql driver: a reset flush failure restores current run and leaves no replacement fixture rows (1.768708ms)\n\u2139 tests 44\n\u2139 suites 0\n\u2139 pass 41\n\u2139 fail 1\n\u2139 cancelled 0\n\u2139 skipped 2\n\u2139 todo 0\n\u2139 duration_ms 138.568541\n\n\u2716 failing tests:\n\ntest at server/test/gcsp-repository-contract.test.js:402:1\n\u2716 postgresql driver: migrations record checksums, rerun once and reject changed history (1.002084ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n  + actual - expected\n  \n    {\n      appliedVersions: [],\n      current: false,\n      pendingVersions: [\n        '0001',\n  +     '0002',\n        '0003'\n      ]\n    }\n  \n      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/server/test/gcsp-repository-contract.test.js:404:10)\n      at async Test.run (node:internal/test_runner/test:1404:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: { current: false, appliedVersions: [], pendingVersions: [ '0001', '0002', '0003' ] },\n    expected: { current: false, appliedVersions: [], pendingVersions: [ '0001', '0003' ] },\n    operator: 'deepStrictEqual',\n    diff: 'simple'\n  }\n"
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/ee42a2282d40de6b917eeda868725bdae3f6f13f4c52cf8d4e8bf49e6f41c0c4.json",
+      "identity": {
+        "code": "e23b5a753529654fdbbceda54651f0d4c8663f3498567cb9d3fae7c70af068dd",
+        "environment": "910e352808289aaa8b87d3c5255217ec54ed0e66e76b4c4f730b246612c05800",
+        "inputs": {},
+        "interpreter": [
+          "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+          "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+        ],
+        "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+        "scope": "targeted",
+        "selected": [
+          "node --test --test-concurrency=1 server/test/gcsp-policy-versions.test.js server/test/gcsp-policy-service.test.js"
+        ],
+        "settings": "61117f9af3a4e9d368e619c43f58e12db73fda7afba1e19b7fb0d661b346b33c",
+        "variant": "default",
+        "version": 1
+      },
+      "command": "node --test --test-concurrency=1 server/test/gcsp-policy-versions.test.js server/test/gcsp-policy-service.test.js",
+      "rc": 0,
+      "wallSeconds": 2.522,
+      "sampledPeakRssBytes": 257392640,
+      "sampledPeakScratchBytes": 0,
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-policy-e5dcca0c3ce74a05b84e554717ad76b7-2315f2a057cd4317afb1b545920c4fae.json",
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-064208-t4yypcb2/chunk-0001.log",
+      "counts": [
+        "\u2139 tests 27",
+        "\u2139 pass 25",
+        "\u2139 fail 0",
+        "\u2139 skipped 2"
+      ],
+      "failureExcerpt": null
+    },
+    {
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/f286c84d939c781befd848f3173252e0fe97d0bc30f59669d69a3b5911fc6e28.json",
+      "identity": {
+        "code": "fa51ca0162302ecb9e10691c126981f19276d250ab31b5b64cd9f7956a99f180",
+        "environment": "910e352808289aaa8b87d3c5255217ec54ed0e66e76b4c4f730b246612c05800",
+        "inputs": {},
+        "interpreter": [
+          "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+          "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+        ],
+        "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+        "scope": "targeted",
+        "selected": [
+          "node --test --test-concurrency=1 server/test/gcsp-repository-contract.test.js"
+        ],
+        "settings": "592f36ed4da78181abf35ce04d99e499023389f5d272ce34eeec12cf113a203b",
+        "variant": "default",
+        "version": 1
+      },
+      "command": "node --test --test-concurrency=1 server/test/gcsp-repository-contract.test.js",
+      "rc": 0,
+      "wallSeconds": 0.287,
+      "sampledPeakRssBytes": 32768,
+      "sampledPeakScratchBytes": 0,
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-repository-bb4f8dde10624e5ca1fea83dbc2acca6-f627d9ec14794eb38c86bbfce70cbc1b.json",
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-064310-ctfaxi63/chunk-0001.log",
+      "counts": [
+        "\u2139 tests 44",
+        "\u2139 pass 42",
+        "\u2139 fail 0",
+        "\u2139 skipped 2"
+      ],
+      "failureExcerpt": null
+    },
+    {
+      "run": "fucq83-install-root-923a86e49ceb40db942fa15646c837ce",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/private/tmp/test-stamp-shard-df3cc7f8a87c4d91af784f8b3cba03f0/npm-ci.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-install-root-923a86e49ceb40db942fa15646c837ce-df3cc7f8a87c4d91af784f8b3cba03f0.json",
+        "peak_rss": 160841728,
+        "peak_scratch": 7002080,
+        "rc": 0,
+        "wall": 0.8352038329976494
+      },
+      "dependencies": {
+        "allocatedBytes": 27138292,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/node_modules"
+      },
+      "lockSha256": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+      "lockUnchanged": true,
+      "node": "v26.7.0",
+      "npm": "11.19.0"
+    },
+    {
+      "run": "fucq83-install-server-f0f6e103076e438d8ac0eb4a47757b83",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/private/tmp/test-stamp-shard-693d3de320fb48c4bdd7f9934a795964/npm-ci.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-install-server-f0f6e103076e438d8ac0eb4a47757b83-693d3de320fb48c4bdd7f9934a795964.json",
+        "peak_rss": 105103360,
+        "peak_scratch": 2924384,
+        "rc": 0,
+        "wall": 0.5596336669987068
+      },
+      "dependencies": {
+        "allocatedBytes": 858816,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/server/node_modules"
+      },
+      "lockSha256": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+      "lockUnchanged": true,
+      "node": "v26.7.0",
+      "npm": "11.19.0"
+    }
+  ],
+  "manifests": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-policy-f7886a52968442e7b88148c6bc2dbb01-028829b24ee74ce590a22adede5ff900.json",
+      "root": "/private/tmp/test-stamp-shard-028829b24ee74ce590a22adede5ff900",
+      "groups": [
+        71029
+      ],
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "removedBytes": 0
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-policy-011a5d994e7c498da4f848b510288608-fb1752e5d0754dbdbcd1bbb1c24ec928.json",
+      "root": "/private/tmp/test-stamp-shard-fb1752e5d0754dbdbcd1bbb1c24ec928",
+      "groups": [
+        74069
+      ],
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "removedBytes": 0
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-policy-a4c17da8ae58419c8f90347129edc817-349466500eb1403195dec3ac8dfd03d5.json",
+      "root": "/private/tmp/test-stamp-shard-349466500eb1403195dec3ac8dfd03d5",
+      "groups": [
+        69601
+      ],
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "removedBytes": 0
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-consumers-c21ea76605a54531bcc9d4b34ff44d67-c15d1e2c2d964094b678f02e403b4c31.json",
+      "root": "/private/tmp/test-stamp-shard-c15d1e2c2d964094b678f02e403b4c31",
+      "groups": [
+        73464
+      ],
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "removedBytes": 0
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-identity-clock-c0d844f236b7438fa5ed848eee1020aa-634f823cf1e8449290ea6660c432f35d.json",
+      "root": "/private/tmp/test-stamp-shard-634f823cf1e8449290ea6660c432f35d",
+      "groups": [
+        73259
+      ],
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "removedBytes": 0
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-repository-358a9dbc39f149659202fd9f48308bfa-a655a5dcaf334c17965ebbeca3ac8b49.json",
+      "root": "/private/tmp/test-stamp-shard-a655a5dcaf334c17965ebbeca3ac8b49",
+      "groups": [
+        71783
+      ],
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "removedBytes": 0
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-policy-e5dcca0c3ce74a05b84e554717ad76b7-2315f2a057cd4317afb1b545920c4fae.json",
+      "root": "/private/tmp/test-stamp-shard-2315f2a057cd4317afb1b545920c4fae",
+      "groups": [
+        71529
+      ],
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "removedBytes": 0
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-repository-bb4f8dde10624e5ca1fea83dbc2acca6-f627d9ec14794eb38c86bbfce70cbc1b.json",
+      "root": "/private/tmp/test-stamp-shard-f627d9ec14794eb38c86bbfce70cbc1b",
+      "groups": [
+        72293
+      ],
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "removedBytes": 0
+    }
+  ],
+  "failureHistory": [
+    "Expanded invalid input regression found non-finite input returned unavailable; corrected finite-JSON validation and reran successfully.",
+    "Migration orchestration hardcoded 0001/0003; narrow authorised additive expectation/count correction passed."
+  ],
+  "retainedDependencies": [
+    "node_modules:27138292 bytes",
+    "server/node_modules:858816 bytes"
+  ],
+  "compatibilityException": null,
+  "logCleanup": "Own success logs temporarily retained for dispatcher audit; compact rows and failure excerpts preserved here; exact owned logs only will be removed before Result.",
+  "review": "Complete authored product diff reviewed: existing typed reads untouched; full successor validation and actor/time digests; parameterized values and validated schema names; per-run serialized atomic seed/publication; immutable SQL triggers; safe error outcomes; unchanged consumer/seed/core/clock/cases/0001/0003 boundaries. Native SQL remains unverified.",
+  "agents": "Requested/selected story lead gpt-6.1-sol/high; effective runtime unverified; no descendants authorised."
+}
