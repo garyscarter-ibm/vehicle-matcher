@@ -11,6 +11,7 @@ import { messageList } from '../gcsp/presenter/message-list.js';
 import { fixtureMessages } from '../gcsp/presenter/fixtures.js';
 import { metricTile } from '../gcsp/kit/metric-tile.js';
 import { dataTable } from '../gcsp/kit/data-table.js';
+import { formControlsExample } from '../gcsp/kit/form-controls-gallery.js';
 
 const browseSession = `gallery-${Date.now().toString(36)}`;
 let sessionSequence = 0;
@@ -352,7 +353,7 @@ export function mountComponentGallery(root) {
   exactControls.append(legacyButton, refineButton, exactReset);
   exact.append(exactControls, exactCards);
   sections.append(exact);
-  root.append(heading, sections, employeeDecisionExample(), employeeControlsExample(), gcspExamples(), gregKitExamples(), launcherExamples());
+  root.append(heading, sections, employeeDecisionExample(), employeeControlsExample(), gcspExamples(), gregKitExamples(), launcherExamples(), formControlsExample());
 
   function dispatchBrowse(type, target, reason) {
     const result = reduceFeedback(browseFeedback, {
