@@ -1,0 +1,3 @@
+/* Harness page only: removes the default body margin so the shell fills the viewport. */
+body { margin: 0; }
+gcsp-employee { display: block; }

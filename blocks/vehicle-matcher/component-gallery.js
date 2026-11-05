@@ -1,6 +1,8 @@
 import { applyBrowseFeedback, applyConfirmedFeedbackChange, createFeedbackState, matchesFeedbackPredicate, reduceFeedback } from './feedback-actions.js';
-import { el } from './ui.js';
-import { feedbackButton, feedbackScope, feedbackUndo, matchCard } from './modes/result-card.js';
+import { el, screenIntro, button, statusScreen, factList } from './ui.js';
+import { feedbackButton, feedbackScope, feedbackUndo, matchCard, mediaWell } from './modes/result-card.js';
+import { portalShell, accountNavigation } from '../gcsp/shell/portal-shell.js';
+import { EMPLOYEE_NAVIGATION } from '../gcsp/employee/gcsp-employee.js';
 
 const browseSession = `gallery-${Date.now().toString(36)}`;
 let sessionSequence = 0;
@@ -62,6 +64,60 @@ export function exactListingExample({ legacy = false } = {}) {
 
 function displayName(match) {
   return match.car.name;
+}
+
+function gcspExamples() {
+  const section = el('section', 'vm-gallery-section vm-gallery-gcsp-section');
+  section.setAttribute('aria-label', 'GCSP');
+  section.append(
+    el('h2', 'vm-gallery-title', 'GCSP'),
+    el('p', 'vm-gallery-copy', 'Shared primitives and the portal shell under the scoped GCSP tokens. Synthetic examples only; retail examples above are unchanged.'),
+  );
+  const scope = el('div', 'gcsp vm-gallery-gcsp');
+  const group = (title) => {
+    const box = el('div', 'vm-gallery-gcsp-group');
+    box.append(el('h3', 'vm-gallery-gcsp-title', title));
+    const body = el('div', 'vm vm-gallery-gcsp-body');
+    box.append(body);
+    scope.append(box);
+    return body;
+  };
+  group('screenIntro').append(screenIntro({ kicker: 'Choices', title: 'Your cars', lede: 'A kicker, a title and a short lede.', level: 3 }));
+  const buttons = group('button');
+  buttons.append(
+    button({ label: 'Primary', variant: 'primary' }),
+    button({ label: 'Ghost', variant: 'ghost' }),
+    button({ label: 'Disabled', variant: 'primary', disabled: true, describedBy: 'gallery-gcsp-why' }),
+    el('span', 'vm-gallery-gcsp-why', 'Disabled actions say why.'),
+  );
+  buttons.lastChild.id = 'gallery-gcsp-why';
+  group('statusScreen').append(statusScreen({ kicker: 'Choices', title: 'Nothing to show', message: 'A status screen explains the state and offers the next step.', actions: [button({ label: 'Try again', variant: 'primary' })] }));
+  group('factList').append(factList([
+    { label: 'Registration', value: 'SY25 DEM' },
+    { label: 'Monthly cost', value: 1100, unit: 'points a month' },
+    { label: 'WLTP CO2', value: null },
+  ]));
+  const well = group('mediaWell placeholder');
+  well.append(mediaWell({ name: 'Synthetic car', line: '', photo: '' }, 'vm-gallery-gcsp-media', { placeholder: 'No image for this car yet' }).media);
+  const accounts = [
+    ['portalShell: account loading', { status: 'loading' }],
+    ['portalShell: ready, long name', { status: 'ready', name: 'Bartholomew Featherstonehaugh-Cholmondeley-Wolverstone III (synthetic)', context: 'Choices, grade G7' }],
+    ['portalShell: account unavailable', { status: 'unavailable', message: 'Your account could not be loaded.' }],
+  ];
+  for (const [title, account] of accounts) {
+    const frame = el('div', 'vm-gallery-gcsp-frame');
+    const shell = portalShell({ navigation: EMPLOYEE_NAVIGATION, active: 'cars', breadcrumbs: ['Your cars'], account });
+    shell.main.append(el('p', 'gcsp-note', 'Page content goes here.'));
+    frame.append(shell.root);
+    group(title).append(frame);
+  }
+  for (const expanded of [false, true]) {
+    const frame = el('div', 'vm-gallery-gcsp-frame vm-gallery-gcsp-nav');
+    frame.append(accountNavigation({ items: EMPLOYEE_NAVIGATION, active: 'cars', expanded }).root);
+    group(`accountNavigation: ${expanded ? 'expanded' : 'collapsed'}, with unavailable items`).append(frame);
+  }
+  section.append(scope);
+  return section;
 }
 
 export function mountComponentGallery(root) {
@@ -132,7 +188,7 @@ export function mountComponentGallery(root) {
   exactControls.append(legacyButton, refineButton, exactReset);
   exact.append(exactControls, exactCards);
   sections.append(exact);
-  root.append(heading, sections);
+  root.append(heading, sections, gcspExamples());
 
   function dispatchBrowse(type, target, reason) {
     const result = reduceFeedback(browseFeedback, {

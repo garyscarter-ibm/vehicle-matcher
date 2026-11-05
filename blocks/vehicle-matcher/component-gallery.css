@@ -75,3 +75,15 @@ main {
   .vm-component-gallery { padding: var(--vm-space-4); }
   .vm-gallery-cards { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* GCSP section: examples sit under the scoped GCSP tokens. */
+.vm-gallery-gcsp-section { margin-top: var(--vm-space-8); }
+.vm-gallery-gcsp { min-height: 0; gap: var(--vm-space-6); padding: var(--vm-space-6); }
+.vm-gallery-gcsp-group { min-width: 0; }
+.vm-gallery-gcsp-title { margin: 0 0 var(--vm-space-2); font-size: 15px; font-weight: 600; }
+.vm-gallery-gcsp-body { max-width: none; margin: 0; padding: var(--vm-space-4); background: var(--gcsp-surface); border: 1px solid var(--gcsp-divider); }
+.vm-gallery-gcsp-body .vm-btn { margin-right: var(--vm-space-3); }
+.vm-gallery-gcsp-media { max-width: 420px; }
+.vm-gallery-gcsp-frame { height: 280px; overflow: auto; border: 1px solid var(--gcsp-divider); }
+.vm-gallery-gcsp-frame .gcsp { min-height: 100%; }
+.vm-gallery-gcsp-nav { height: 320px; max-width: 260px; }
