@@ -9,9 +9,9 @@ export const fact = (value, unit = null, assurance = 'synthetic-scenario') => ({
 export const preference = (value, importance = 100) => ({ value, importance, valueState: 'confirmed', importanceState: 'confirmed', source: 'employee' });
 export const essential = (value, operator = 'gte', unit = 'count') => ({ value, operator, unit, state: 'confirmed', source: 'employee' });
 export const brief = () => ({ schemaVersion: 1, briefVersion: 1, preferences: { body: preference('estate') }, essentials: { seats: essential(5) } });
-export function stock(id = 1, facts = {}) {
+export function stock(id = 1, facts = {}, configurationId = 'RzIxOlMx') {
   const orderUuid = `00000000-0000-4000-8000-${String(id).padStart(12, '0')}`;
-  return { orderUuid, configurationId: 'RzIxOlMx', availability: { state: 'available', availableFrom: instant, availableUntil: '2027-01-01T00:00:00.000Z', version: 'availability-v1' },
+  return { orderUuid, configurationId, availability: { state: 'available', availableFrom: instant, availableUntil: '2027-01-01T00:00:00.000Z', version: 'availability-v1' },
     snapshot: createVehicleSnapshot({ sourceNamespace: 'fixture:employee', identityKind: 'exact-stock', sourceKeys: { stockId: orderUuid },
       snapshotVersion: 'snapshot-v1', observedAt: instant, display: { name: `Synthetic exact car ${id}` }, facts: {
         eligibilityModelKey: fact('G21 Touring|320i'), body: fact('estate'), fuel: fact('petrol'), seats: fact(5, 'count'), boot: fact(500, 'L'),

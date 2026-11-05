@@ -12,6 +12,14 @@ The configured provider explicitly supplies its known essential requirements and
 
 The service reads an injected `now(context)` port so the later `DemoClock` can supply domain time. Required dates and release readiness are gates; a caller cannot extend an authoritative required date. Unknown equipment or decision-critical carrying/charging facts produce `needs-confirmation`, with no suitable assertion or preference score.
 
+## HTTP contract
+
+`POST /api/gcsp/recommendations` accepts the brief directly: `{ schemaVersion: 1, briefVersion, preferences, essentials, requiredBy? }`. Each preference carries its separate value/importance and confirmation/source fields; essentials carry their registered operator, unit and confirmation/source. No query parameters are supported. The existing boundary limits the body to 16 KiB, resolves the HttpOnly acting session after the shared access gate, requires an employee role and an exactly allowed command Origin, and sets `Cache-Control: no-store`.
+
+Trusted composition supplies `buildServer({ gcspIdentity, gcspRecommendations: { provider, policy, time }, gcspAllowedOrigins })`. `provider.resolve(context)` supplies only that context's permitted employee facts and stock. `policy` is the shared PolicyService; `time.now(context)` is the DemoClock-compatible read. There is no implicit scenario provider or retail fallback. Custom registered GCSP routes cannot replace the built-in recommendation contract.
+
+The response uses the shared `{ status, value?, contractVersion }` envelope. Successful computed decisions are HTTP 200; invalid brief/context is 400, session failures are 401, role/origin refusals are 403, stale runs are 409, and absent/unavailable source configuration is 503. Request identity headers provide no authority. The route is a POST only because it evaluates a structured private brief; it performs no business-state write.
+
 ## Evaluation and presentation
 
 Every supplied exact car receives a decision before recommendation display limits. Eligibility, confirmed essentials, allowance versus monthly points and timing run first. Only suitable exact candidates enter preference ranking. The separate preference value and importance preserve indifference; comfort and sportiness can coexist. Inference and strategic steering do not replace confirmed facts or essentials.
