@@ -201,6 +201,9 @@ for (const legacy of [false, true]) test(`questionnaire equipment refinement use
   assert.ok(camera, 'aggregate availability offers the exact equipment refinement');
   camera.click();
   assert.match(stage.querySelector('.vm-card .vm-specs').textContent, /£39,000/);
+  const workingText = stage.querySelector('.vm-working').textContent;
+  assert.match(workingText, /2 passed the initial checks/, 'original aggregate count is preserved without a strict-budget claim');
+  assert.doesNotMatch(workingText, /in budget/i, 'screening includes stretch candidates and cannot promise they are within budget');
   if (legacy) {
     assert.equal(stage.querySelector('.vm-score'), null);
     assert.match(stage.querySelector('.vm-title').textContent, /selected listings/i);

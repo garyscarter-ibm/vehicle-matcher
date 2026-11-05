@@ -8,6 +8,8 @@ The shared `matchCard()` paints the selected listing's price, photo, equipment, 
 
 Selecting another member also changes the questionnaire heading to **Your selected listings.** and hides the representative-level lede, scoped notice and ranking working. Returning every card to its original member restores the original presentation. The picker updates the existing card in place, preserving keyboard focus.
 
+The stock-wide working summary calls the unchanged eligible count **passed the initial checks**. Initial screening includes stretch candidates, so that aggregate cannot promise all eligible cars are within budget. Exact decisions retain their own budget/stretch reasons, including after refinement and undo.
+
 With an older compatible backend, an unchanged representative can still use the old top-level decision. Switching or refining to another member without its decision clears unsupported score, reasons, trade-offs and stretch claims. The card states that score and reasons are unavailable. Refinement shows an unscored shortlist without claiming equally good fit or discarding the surviving car. No browser scoring weights or reconstruction are introduced.
 
 ## Corrected R1 expectation
