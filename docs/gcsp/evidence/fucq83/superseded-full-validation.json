@@ -1,0 +1,290 @@
+{
+  "status": "superseded; not current revised-source validation",
+  "reason": "Later review corrected scheduled successors after a real regression reproduced lost pending changes.",
+  "plan": {
+    "story": "FUCQ-83",
+    "state": "admitted",
+    "cwd": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065",
+    "command": "node --test --test-concurrency=1 server/test/**/*.test.js",
+    "environment": {
+      "HOME": "/Users/usget",
+      "USER": "usget",
+      "LOGNAME": "usget",
+      "SHELL": "/bin/zsh",
+      "PATH": "/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      "LANG": "en_GB.UTF-8",
+      "TZ": "Europe/London",
+      "SCAFFOLDING_HARNESS": "codex",
+      "npm_config_offline": "true",
+      "npm_config_audit": "false",
+      "npm_config_fund": "false"
+    },
+    "supervisor": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/docs/gcsp/evidence/fucq83/scoped-supervisor.py",
+    "supervisorSha256": "d368fa8bd2eec11c16139d1745d620a9a92f95263fbdf3f2b2c519b3daa3da04",
+    "pins": {
+      "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+      "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+      ".claude/scaffolding.json": "c55d2bf32288b5e19f6ac6e7c7b35d22013c80b757d5328c8257a4eac4ac560a",
+      "_tools/test_stamp.py": "88a16018b5b8fa225463b590f2283b4baa6be4951f258bba4846eacc3795a49e",
+      "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+      "_tools/scaffold_git.py": "787cad57c37f90884d67f391e8419c8141293fe99d8c02dec8d1abb521d2c7fd",
+      "node_modules/jsdom/package.json": "e87940b12f720a5b735a5df82108b634a238b8c6ebced71050a346a1675575b9",
+      "server/node_modules/pg/package.json": "b1e53333a3d0c2c47c49a5cb919d221135dc03145df740925b899bc2baacc435",
+      "node_modules/.package-lock.json": "92164c25104959a02c3ea16fa1643630b54cf5e8f5bce58608f076e4fcce9118",
+      "server/node_modules/.package-lock.json": "04a4016750d016025a0e662b3cc556212627eed4681ed7969296f20437a79517"
+    },
+    "requiredMergedBase": "ca96e7fdc26e79a890796bfd9d3493de939f4220",
+    "integrationCommit": "9f7873e3c46779c78ee400db37f659b84aec07af",
+    "sourceCheckpoint": "5359972752e5fc8ec9e3af9176a2ffec001853b5",
+    "gate": "Parent admitted sole final full after approved56integration, source checkpoint/push and freeze. Native target is intentionally UNSET; final remains BLOCKED regardless of offline full pass. No other full/browser or descendants.",
+    "budget": {
+      "seconds": 120,
+      "scratchBytes": 134217728,
+      "ramBytes": 536870912,
+      "actualTestWorkers": 1,
+      "expectedSeconds": 35,
+      "expectedPeakRssBytes": 348127232
+    },
+    "sequence": [
+      "identity freeze after pushed plan checkpoint",
+      "status-before \u2192 full once \u2192 status-after under identical complete replacement environment",
+      "BLOCKED Result commit/push",
+      "status-final with identical environment/plan/pins"
+    ],
+    "changedPaths": [
+      "server/gcsp/policy/index.js",
+      "server/gcsp/policy/publish.js",
+      "server/gcsp/policy/memory-provider.js",
+      "server/gcsp/policy/postgres-provider.js",
+      "server/gcsp/migrations/0002_policy_tables.sql",
+      "server/test/gcsp-policy-versions.test.js",
+      "server/test/fixtures/gcsp-policy-version-outcomes.json",
+      "server/test/gcsp-repository-contract.test.js"
+    ],
+    "selected": "Explicit story final npm test requirement and approved FUCQ-56 composition checkpoint. All selected scoped policy, migration, identity/clock and consumer checks pass. No automatic full fallback.",
+    "reassessedComposition": "Approved FUCQ-56 adds isolated vehicle-details consumer/lookup/alternate adapters and synthetic HTTP tests. No policy publication, policy factory, clock/core/identity/startup seam changed. Same policy seed and existing typed reads remain source-compatible. Existing001/003 and17comparison/8renewalCase keys stay unchanged. No duplicate scoped run needed; full now covers integrated current source.",
+    "excluded": "No native SQL target, UI/browser, live provider, provision/deploy, corpus regeneration, new dependencies, generic repository/clock/consumer implementation or alternate DB. Native SQL skips remain incomplete acceptance.",
+    "supervision": [
+      "Nonblocking /Users/usget/.cache/agent-scaffolding/test-resources/full-suite.lock before allocation; shared HostBudget reservations",
+      "Unique absolute owned scratch and log roots registered in outside manifests before mkdir; finalizer installed",
+      "One actual Node worker verified from argv, recursive descendants summed for RSS; identity-aware TERM/KILL/join and group absence",
+      "Owned TMPDIR/TMP/TEMP/cache;120-second chunk;128MiB scratch;512MiB process RSS;5GiB emergency reserve",
+      "No full repeat without dispatcher admission. Exact source/input/environment/plan freeze checked before full and final status",
+      "Remove successful verbose logs and disposable scratch; retain concise counts/resources/checkpoints/failure excerpts; no large output/archive/compatibility exception"
+    ],
+    "frozenIdentity": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-final-freeze.json",
+    "attemptGuard": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-final-attempt.json",
+    "impactMap": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/fucq83-e5d66222ec4d4e85874e3bcd9225a74ac8b044054e8c25873c0b874f52538e78.json",
+    "nativeRequired": "Gary must provision/configure authorised GCSP Render Postgres; run actual configured unique-schema provider parity, persistence/reopen, atomic publish/replay/race/invalid rollback and direct SQL immutability/row-date assertions. No in-memory or driver substitution."
+  },
+  "freeze": {
+    "codeKey": "810f6df9199e56fd5e685baf175d3e3181653f1364c5526bc1047361f3863875",
+    "executionIdentity": {
+      "code": "810f6df9199e56fd5e685baf175d3e3181653f1364c5526bc1047361f3863875",
+      "environment": "326bc7802333df720b088f9582c7aa86b993675111fe502528f09d27f096f148",
+      "inputs": {},
+      "interpreter": [
+        "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+      ],
+      "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+      "scope": "full",
+      "selected": [
+        "node --test --test-concurrency=1 server/test/**/*.test.js"
+      ],
+      "settings": "a872fcf4d366c7e38bdfeda9b52eb0548274f184c755ae66e86c1d54ac9f814d",
+      "variant": "default",
+      "version": 1
+    },
+    "head": "b47273e3d1296d93d80a7de99f18f1c53736b59d",
+    "planSha256": "1824064f0072b670e2571f30a53d117c13a18bb5e9856f12cda652c954c25752",
+    "stampKey": "03f2d50175bbf9be2d0fe8e87b72b6138d8bbd1abcef5070232c7ae97db512d0",
+    "tree": "7a110eb5ddefc38920de403c129fd257e2d25522"
+  },
+  "summary": {
+    "argv": {
+      "liveSummary": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-full-77ed32583d814807b4a71d4d6021f552-summary.json",
+      "maxActualWorkers": 1,
+      "samples": 126,
+      "observedProcesses": 39
+    },
+    "command": "node --test --test-concurrency=1 server/test/**/*.test.js",
+    "environment": {
+      "HOME": "/Users/usget",
+      "LANG": "en_GB.UTF-8",
+      "LOGNAME": "usget",
+      "PATH": "/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      "SCAFFOLDING_HARNESS": "codex",
+      "SHELL": "/bin/zsh",
+      "TZ": "Europe/London",
+      "USER": "usget",
+      "npm_config_audit": "false",
+      "npm_config_fund": "false",
+      "npm_config_offline": "true"
+    },
+    "environmentSha256": "326bc7802333df720b088f9582c7aa86b993675111fe502528f09d27f096f148",
+    "environmentUnchanged": true,
+    "finalizer": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/docs/gcsp/evidence/fucq83/scoped-supervisor.py",
+    "finishedAt": 1793861446.568063,
+    "frozenIdentity": {
+      "codeKey": "810f6df9199e56fd5e685baf175d3e3181653f1364c5526bc1047361f3863875",
+      "executionIdentity": {
+        "code": "810f6df9199e56fd5e685baf175d3e3181653f1364c5526bc1047361f3863875",
+        "environment": "326bc7802333df720b088f9582c7aa86b993675111fe502528f09d27f096f148",
+        "inputs": {},
+        "interpreter": [
+          "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+          "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+        ],
+        "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+        "scope": "full",
+        "selected": [
+          "node --test --test-concurrency=1 server/test/**/*.test.js"
+        ],
+        "settings": "a872fcf4d366c7e38bdfeda9b52eb0548274f184c755ae66e86c1d54ac9f814d",
+        "variant": "default",
+        "version": 1
+      },
+      "head": "b47273e3d1296d93d80a7de99f18f1c53736b59d",
+      "stampKey": "03f2d50175bbf9be2d0fe8e87b72b6138d8bbd1abcef5070232c7ae97db512d0",
+      "tree": "7a110eb5ddefc38920de403c129fd257e2d25522"
+    },
+    "fullLock": "/Users/usget/.cache/agent-scaffolding/test-resources/full-suite.lock",
+    "logRoots": [
+      {
+        "absent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-full-77ed32583d814807b4a71d4d6021f552-531c517e721b43a3b55042e422961318-log.json",
+        "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq83-full-77ed32583d814807b4a71d4d6021f552-531c517e721b43a3b55042e422961318"
+      }
+    ],
+    "manifests": [
+      "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-full-77ed32583d814807b4a71d4d6021f552-29209815903d4e43b249b89d3acdfb90.json"
+    ],
+    "maxTestWorkers": 1,
+    "mode": "full",
+    "nativeConfigured": false,
+    "ownedDescendants": {
+      "76832": "Thu  5 Nov 06:50:07 2026",
+      "76837": "Thu  5 Nov 06:50:07 2026",
+      "76871": "Thu  5 Nov 06:50:09 2026",
+      "76880": null,
+      "76887": "Thu  5 Nov 06:50:10 2026",
+      "76907": "Thu  5 Nov 06:50:11 2026",
+      "76929": null,
+      "76933": "Thu  5 Nov 06:50:11 2026",
+      "76999": "Thu  5 Nov 06:50:14 2026",
+      "77007": "Thu  5 Nov 06:50:14 2026",
+      "77018": "Thu  5 Nov 06:50:15 2026",
+      "77033": "Thu  5 Nov 06:50:15 2026",
+      "77058": "Thu  5 Nov 06:50:16 2026",
+      "77144": "Thu  5 Nov 06:50:20 2026",
+      "77164": "Thu  5 Nov 06:50:21 2026",
+      "77179": "Thu  5 Nov 06:50:22 2026",
+      "77187": null,
+      "77196": "Thu  5 Nov 06:50:22 2026",
+      "77207": "Thu  5 Nov 06:50:23 2026",
+      "77217": "Thu  5 Nov 06:50:23 2026",
+      "77265": "Thu  5 Nov 06:50:25 2026",
+      "77290": null,
+      "77298": "Thu  5 Nov 06:50:26 2026",
+      "77306": "Thu  5 Nov 06:50:27 2026",
+      "77312": "Thu  5 Nov 06:50:27 2026",
+      "77332": "Thu  5 Nov 06:50:28 2026",
+      "77350": "Thu  5 Nov 06:50:28 2026",
+      "77374": null,
+      "77385": "Thu  5 Nov 06:50:29 2026",
+      "77400": "Thu  5 Nov 06:50:29 2026",
+      "77440": "Thu  5 Nov 06:50:31 2026",
+      "77447": null,
+      "77474": null,
+      "77481": "Thu  5 Nov 06:50:33 2026",
+      "77495": "Thu  5 Nov 06:50:33 2026",
+      "77507": "Thu  5 Nov 06:50:33 2026",
+      "77516": "Thu  5 Nov 06:50:34 2026",
+      "77566": "Thu  5 Nov 06:50:36 2026",
+      "77681": "Thu  5 Nov 06:50:41 2026"
+    },
+    "ownedDescendantsAbsent": true,
+    "pins": {
+      ".claude/scaffolding.json": "c55d2bf32288b5e19f6ac6e7c7b35d22013c80b757d5328c8257a4eac4ac560a",
+      "_tools/scaffold_git.py": "787cad57c37f90884d67f391e8419c8141293fe99d8c02dec8d1abb521d2c7fd",
+      "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+      "_tools/test_stamp.py": "88a16018b5b8fa225463b590f2283b4baa6be4951f258bba4846eacc3795a49e",
+      "node_modules/.package-lock.json": "92164c25104959a02c3ea16fa1643630b54cf5e8f5bce58608f076e4fcce9118",
+      "node_modules/jsdom/package.json": "e87940b12f720a5b735a5df82108b634a238b8c6ebced71050a346a1675575b9",
+      "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+      "server/node_modules/.package-lock.json": "04a4016750d016025a0e662b3cc556212627eed4681ed7969296f20437a79517",
+      "server/node_modules/pg/package.json": "b1e53333a3d0c2c47c49a5cb919d221135dc03145df740925b899bc2baacc435",
+      "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e"
+    },
+    "planSha256": "65e3e89d233ec7e52772cfadc0179105d2d8ff0a5ad947448c791741b5d50fba",
+    "plannedRssMiB": 512,
+    "plannedScratchMiB": 128,
+    "project": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065",
+    "results": [
+      {
+        "cleanup": {
+          "local_scratch_reason": "",
+          "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-full-77ed32583d814807b4a71d4d6021f552-29209815903d4e43b249b89d3acdfb90.json",
+          "peak": 786560,
+          "removed": true,
+          "root": "/private/tmp/test-stamp-shard-29209815903d4e43b249b89d3acdfb90"
+        },
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq83-full-77ed32583d814807b4a71d4d6021f552-531c517e721b43a3b55042e422961318/chunk-0001.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-full-77ed32583d814807b4a71d4d6021f552-29209815903d4e43b249b89d3acdfb90.json",
+        "peak_rss": 339132416,
+        "peak_scratch": 786560,
+        "rc": 0,
+        "wall": 36.921591958001954
+      }
+    ],
+    "run": "fucq83-full-77ed32583d814807b4a71d4d6021f552",
+    "samples": 126,
+    "savedPlanSha256": "1824064f0072b670e2571f30a53d117c13a18bb5e9856f12cda652c954c25752",
+    "selectedReason": "Explicit FUCQ-83 final npm test requirement after approved FUCQ-56 integration.",
+    "statusAfter": 0,
+    "statusBefore": 1,
+    "successfulOutputCounts": [
+      [
+        "\u2139 tests 873",
+        "\u2139 pass 869",
+        "\u2139 fail 0",
+        "\u2139 skipped 4",
+        "\u2139 duration_ms 36786.173791"
+      ]
+    ],
+    "supervisorSha256": "d368fa8bd2eec11c16139d1745d620a9a92f95263fbdf3f2b2c519b3daa3da04",
+    "timeoutSeconds": 120,
+    "tokensAbsent": true
+  },
+  "stamp": {
+    "execution_identity": {
+      "code": "810f6df9199e56fd5e685baf175d3e3181653f1364c5526bc1047361f3863875",
+      "environment": "326bc7802333df720b088f9582c7aa86b993675111fe502528f09d27f096f148",
+      "inputs": {},
+      "interpreter": [
+        "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+      ],
+      "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+      "scope": "full",
+      "selected": [
+        "node --test --test-concurrency=1 server/test/**/*.test.js"
+      ],
+      "settings": "a872fcf4d366c7e38bdfeda9b52eb0548274f184c755ae66e86c1d54ac9f814d",
+      "variant": "default",
+      "version": 1
+    },
+    "head": "b47273e3d1296d93d80a7de99f18f1c53736b59d",
+    "key": "03f2d50175bbf9be2d0fe8e87b72b6138d8bbd1abcef5070232c7ae97db512d0",
+    "python": "3.14.7",
+    "ran": null,
+    "skipped": 0,
+    "time": "2026-11-05T06:50:46+0000",
+    "tree": "7a110eb5ddefc38920de403c129fd257e2d25522",
+    "variant": "default",
+    "wall": 38.3
+  }
+}
