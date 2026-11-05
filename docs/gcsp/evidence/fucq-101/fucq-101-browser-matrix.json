@@ -1,0 +1,1670 @@
+{
+  "story": "FUCQ-101",
+  "head": "3b4660aadbe7da2f84ba6cdd21873fa6f381428e",
+  "sourceTreeClean": true,
+  "base": "http://localhost:3141",
+  "browser": "system Chrome, headless",
+  "capturedAt": "2026-11-05T12:24:55.462Z",
+  "sources": {
+    "blocks/gcsp/greg/gcsp-greg.js": "8efd27d4ef73c138360a945a6e15dbd22abe8da4adc652312b17985ae9e11108",
+    "blocks/gcsp/greg/gcsp-greg.css": "c5ae9b0df04d042f633a5ed78efc75554cd6d0e108aeea07366bbb7e8b41ed5e",
+    "blocks/gcsp/greg/demand-view.js": "e1ec735bcf7c5435400c335835ace4fa1195552ce3682993eb7cedb6d3b22725",
+    "blocks/gcsp/greg/demand-copy.js": "431b55ff3e20eb618410c8fa76b52ac0f9f6e2e4fb3761dd219ba969a20152ee",
+    "blocks/gcsp/greg/fixtures.js": "6469fe209b50779115b3603c82cd38c5a9bf27a0e7090cb21e3179eeff8fe59f",
+    "blocks/gcsp/greg/http-adapter.js": "23cca7bdbc8da355fbdda9faba0c037bee564fc6eb1be1710929a0ad707a1cb4",
+    "blocks/gcsp/greg/harness.js": "381140e113ca7b4c146a65755758b77a826db648175a656c5894fc20bfaee265",
+    "blocks/gcsp/greg/register.js": "436fa5954592c1b14896f8db776b8c582c0826ee3f02be8e4a75c410098eda1e",
+    "blocks/gcsp/kit/metric-tile.js": "4679c5eb20710c4083540106efbcf2c1e6a64b11ebe331f89c02db2c4c2e9161",
+    "blocks/gcsp/kit/data-table.js": "d2fb64ed87b088d3f6f72d078c3cdf6ae37a18ade4e22236428e141acda4dc4b",
+    "blocks/gcsp/kit/gcsp-kit.css": "af1efe3c78e395b4e8f010994a180564e287635cd345b581564945ce0e5b4fb3",
+    "blocks/gcsp/shell/portal-shell.js": "4e6c3b52bb320f6254ce0a5ae62f481d022e2a24350264149352eb92caa50d8b",
+    "blocks/gcsp/shell/gcsp-shell.css": "d6f35911624c03ee82c22eb349d51228ba849eaf354976f19df905887e9f92a3",
+    "blocks/gcsp/shell/gcsp-tokens.css": "d939a355b945ecfd0ad185029dbe2b79c70bab8862052a7ec54cf7abfa7f8642",
+    "blocks/vehicle-matcher/ui.js": "49107097a7927e388ff78949045827f3a8903fea0bd758dbe1aa597bec82d8b2",
+    "blocks/vehicle-matcher/component-gallery.js": "6506b0b281967ea8916fbaa87304dce95eeb5dba77aa9630cd4af4201f0c96be",
+    "blocks/vehicle-matcher/component-gallery.css": "21b053f47d968c4a619340ee305816b70dba4905ad39783d8cdfb3db6db8b2c9",
+    "gcsp-greg.html": "8eab1ecc95082ee3c459d80467d1b9e0ecdaaceb0f3838170139f93900171d88",
+    "components.html": "857db74450dd912421f5e40ffee0b82925db851659a41b1d855cf11245bff19a"
+  },
+  "results": [
+    {
+      "name": "populated-desktop",
+      "file": "populated-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "populated",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "tables": 7,
+      "reservedHidden": false,
+      "regionHeadings": [
+        "Publishing",
+        "Order tracking",
+        "Prediction",
+        "Route comparison",
+        "Case queue"
+      ],
+      "view": {
+        "status": "Figures updated for 5 Nov 2026, 09:40 GMT.",
+        "headline": [
+          "Active briefs 28",
+          "Briefs with no suitable car 9",
+          "Offers made 30",
+          "Selected 7"
+        ],
+        "meta": "Figures for 5 Nov 2026, 09:40 GMT (demo clock) Policy version gcsp-policy-v1 Brief versions 1, 2, 3 Basis Expressed saved demand Figures version fx-popul",
+        "offers": [
+          "Offers made 30",
+          "Accepted 9",
+          "Declined 12",
+          "Expired fewer than 5 , a privacy band: the exact count is hidden",
+          "Selected 7"
+        ],
+        "unmetFirstRows": [
+          "Availability date not confirmed Needs confirmation 5",
+          "Declined car and the brief has not changed Blocks the offer fewer than 5 , a privacy band: the exact count is hidden"
+        ]
+      }
+    },
+    {
+      "name": "after-release-decline-desktop",
+      "file": "after-release-decline-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "after-release-decline",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "tables": 7,
+      "reservedHidden": false,
+      "regionHeadings": [
+        "Publishing",
+        "Order tracking",
+        "Prediction",
+        "Route comparison",
+        "Case queue"
+      ],
+      "view": {
+        "status": "Figures updated for 5 Nov 2026, 10:25 GMT.",
+        "headline": [
+          "Active briefs 28",
+          "Briefs with no suitable car 8",
+          "Offers made 30",
+          "Selected 7"
+        ],
+        "meta": "Figures for 5 Nov 2026, 10:25 GMT (demo clock) Policy version gcsp-policy-v1 Brief versions 1, 2, 3 Basis Expressed saved demand Figures version fx-after",
+        "offers": [
+          "Offers made 30",
+          "Accepted 9",
+          "Declined 13",
+          "Expired fewer than 5 , a privacy band: the exact count is hidden",
+          "Selected 7"
+        ],
+        "unmetFirstRows": [
+          "Availability date not confirmed Needs confirmation 5",
+          "Declined car and the brief has not changed Blocks the offer fewer than 5 , a privacy band: the exact count is hidden"
+        ]
+      }
+    },
+    {
+      "name": "empty-desktop",
+      "file": "empty-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "empty",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "tables": 1,
+      "reservedHidden": false,
+      "regionHeadings": [
+        "Publishing",
+        "Order tracking",
+        "Prediction",
+        "Route comparison",
+        "Case queue"
+      ],
+      "view": {
+        "status": "Figures updated for 5 Nov 2026, 09:00 GMT.",
+        "headline": [],
+        "meta": "Figures for 5 Nov 2026, 09:00 GMT (demo clock) Policy version gcsp-policy-v1 Brief versions None yet Basis Expressed saved demand Figures version fx-empty",
+        "offers": [],
+        "unmetFirstRows": []
+      }
+    },
+    {
+      "name": "no-stock-desktop",
+      "file": "no-stock-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "no-stock",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "tables": 7,
+      "reservedHidden": false,
+      "regionHeadings": [
+        "Publishing",
+        "Order tracking",
+        "Prediction",
+        "Route comparison",
+        "Case queue"
+      ],
+      "view": {
+        "status": "Figures updated for 5 Nov 2026, 09:15 GMT.",
+        "headline": [
+          "Active briefs 12",
+          "Briefs with no suitable car 12",
+          "Offers made fewer than 5 , a privacy band: the exact count is hidden",
+          "Selected fewer than 5 , a privacy band: the exact count is hidden"
+        ],
+        "meta": "Figures for 5 Nov 2026, 09:15 GMT (demo clock) Policy version gcsp-policy-v1 Brief version 1 Basis Expressed saved demand Figures version fx-nosto",
+        "offers": [
+          "Offers made fewer than 5 , a privacy band: the exact count is hidden",
+          "Accepted fewer than 5 , a privacy band: the exact count is hidden",
+          "Declined fewer than 5 , a privacy band: the exact count is hidden",
+          "Expired fewer than 5 , a privacy band: the exact count is hidden",
+          "Selected fewer than 5 , a privacy band: the exact count is hidden"
+        ],
+        "unmetFirstRows": [
+          "No stock has been released yet Blocks the offer 12"
+        ]
+      }
+    },
+    {
+      "name": "banded-desktop",
+      "file": "banded-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "banded",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "tables": 7,
+      "reservedHidden": false,
+      "regionHeadings": [
+        "Publishing",
+        "Order tracking",
+        "Prediction",
+        "Route comparison",
+        "Case queue"
+      ],
+      "view": {
+        "status": "Figures updated for 5 Nov 2026, 09:30 GMT.",
+        "headline": [
+          "Active briefs fewer than 5 , a privacy band: the exact count is hidden",
+          "Briefs with no suitable car fewer than 5 , a privacy band: the exact count is hidden",
+          "Offers made fewer than 5 , a privacy band: the exact count is hidden",
+          "Selected fewer than 5 , a privacy band: the exact count is hidden"
+        ],
+        "meta": "Figures for 5 Nov 2026, 09:30 GMT (demo clock) Policy version gcsp-policy-v1 Brief versions 1, 2 Basis Expressed saved demand Figures version fx-bande",
+        "offers": [
+          "Offers made fewer than 5 , a privacy band: the exact count is hidden",
+          "Accepted fewer than 5 , a privacy band: the exact count is hidden",
+          "Declined fewer than 5 , a privacy band: the exact count is hidden",
+          "Expired fewer than 5 , a privacy band: the exact count is hidden",
+          "Selected fewer than 5 , a privacy band: the exact count is hidden"
+        ],
+        "unmetFirstRows": [
+          "Driver eligibility not confirmed Needs confirmation fewer than 5 , a privacy band: the exact count is hidden",
+          "Essential not met: Seats Blocks the offer fewer than 5 , a privacy band: the exact count is hidden"
+        ]
+      }
+    },
+    {
+      "name": "unavailable-desktop",
+      "file": "unavailable-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "unavailable",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "tables": 0,
+      "reservedHidden": false,
+      "regionHeadings": [
+        "Publishing",
+        "Order tracking",
+        "Prediction",
+        "Route comparison",
+        "Case queue"
+      ],
+      "view": {
+        "status": "Figures unavailable.",
+        "headline": [],
+        "offers": [],
+        "unmetFirstRows": []
+      }
+    },
+    {
+      "name": "refused-desktop",
+      "file": "refused-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "refused",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "tables": 0,
+      "reservedHidden": true,
+      "regionHeadings": [
+        "Publishing",
+        "Order tracking",
+        "Prediction",
+        "Route comparison",
+        "Case queue"
+      ],
+      "view": {
+        "status": "Access refused.",
+        "headline": [],
+        "offers": [],
+        "unmetFirstRows": []
+      }
+    },
+    {
+      "name": "conflict-desktop",
+      "file": "conflict-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "conflict",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "tables": 0,
+      "reservedHidden": false,
+      "regionHeadings": [
+        "Publishing",
+        "Order tracking",
+        "Prediction",
+        "Route comparison",
+        "Case queue"
+      ],
+      "view": {
+        "status": "The figures changed while loading.",
+        "headline": [],
+        "offers": [],
+        "unmetFirstRows": []
+      }
+    },
+    {
+      "name": "loading-desktop",
+      "file": "loading-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "loading",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "status": "Loading the demand figures."
+    },
+    {
+      "name": "populated-narrow-320",
+      "file": "populated-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "populated",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "tables": 7,
+      "reservedHidden": false,
+      "regionHeadings": [
+        "Publishing",
+        "Order tracking",
+        "Prediction",
+        "Route comparison",
+        "Case queue"
+      ],
+      "view": {
+        "status": "Figures updated for 5 Nov 2026, 09:40 GMT.",
+        "headline": [
+          "Active briefs 28",
+          "Briefs with no suitable car 9",
+          "Offers made 30",
+          "Selected 7"
+        ],
+        "meta": "Figures for 5 Nov 2026, 09:40 GMT (demo clock) Policy version gcsp-policy-v1 Brief versions 1, 2, 3 Basis Expressed saved demand Figures version fx-popul",
+        "offers": [
+          "Offers made 30",
+          "Accepted 9",
+          "Declined 12",
+          "Expired fewer than 5 , a privacy band: the exact count is hidden",
+          "Selected 7"
+        ],
+        "unmetFirstRows": [
+          "Availability date not confirmed Needs confirmation 5",
+          "Declined car and the brief has not changed Blocks the offer fewer than 5 , a privacy band: the exact count is hidden"
+        ]
+      }
+    },
+    {
+      "name": "after-release-decline-narrow-320",
+      "file": "after-release-decline-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "after-release-decline",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "tables": 7,
+      "reservedHidden": false,
+      "regionHeadings": [
+        "Publishing",
+        "Order tracking",
+        "Prediction",
+        "Route comparison",
+        "Case queue"
+      ],
+      "view": {
+        "status": "Figures updated for 5 Nov 2026, 10:25 GMT.",
+        "headline": [
+          "Active briefs 28",
+          "Briefs with no suitable car 8",
+          "Offers made 30",
+          "Selected 7"
+        ],
+        "meta": "Figures for 5 Nov 2026, 10:25 GMT (demo clock) Policy version gcsp-policy-v1 Brief versions 1, 2, 3 Basis Expressed saved demand Figures version fx-after",
+        "offers": [
+          "Offers made 30",
+          "Accepted 9",
+          "Declined 13",
+          "Expired fewer than 5 , a privacy band: the exact count is hidden",
+          "Selected 7"
+        ],
+        "unmetFirstRows": [
+          "Availability date not confirmed Needs confirmation 5",
+          "Declined car and the brief has not changed Blocks the offer fewer than 5 , a privacy band: the exact count is hidden"
+        ]
+      }
+    },
+    {
+      "name": "empty-narrow-320",
+      "file": "empty-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "empty",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "tables": 1,
+      "reservedHidden": false,
+      "regionHeadings": [
+        "Publishing",
+        "Order tracking",
+        "Prediction",
+        "Route comparison",
+        "Case queue"
+      ],
+      "view": {
+        "status": "Figures updated for 5 Nov 2026, 09:00 GMT.",
+        "headline": [],
+        "meta": "Figures for 5 Nov 2026, 09:00 GMT (demo clock) Policy version gcsp-policy-v1 Brief versions None yet Basis Expressed saved demand Figures version fx-empty",
+        "offers": [],
+        "unmetFirstRows": []
+      }
+    },
+    {
+      "name": "no-stock-narrow-320",
+      "file": "no-stock-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "no-stock",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "tables": 7,
+      "reservedHidden": false,
+      "regionHeadings": [
+        "Publishing",
+        "Order tracking",
+        "Prediction",
+        "Route comparison",
+        "Case queue"
+      ],
+      "view": {
+        "status": "Figures updated for 5 Nov 2026, 09:15 GMT.",
+        "headline": [
+          "Active briefs 12",
+          "Briefs with no suitable car 12",
+          "Offers made fewer than 5 , a privacy band: the exact count is hidden",
+          "Selected fewer than 5 , a privacy band: the exact count is hidden"
+        ],
+        "meta": "Figures for 5 Nov 2026, 09:15 GMT (demo clock) Policy version gcsp-policy-v1 Brief version 1 Basis Expressed saved demand Figures version fx-nosto",
+        "offers": [
+          "Offers made fewer than 5 , a privacy band: the exact count is hidden",
+          "Accepted fewer than 5 , a privacy band: the exact count is hidden",
+          "Declined fewer than 5 , a privacy band: the exact count is hidden",
+          "Expired fewer than 5 , a privacy band: the exact count is hidden",
+          "Selected fewer than 5 , a privacy band: the exact count is hidden"
+        ],
+        "unmetFirstRows": [
+          "No stock has been released yet Blocks the offer 12"
+        ]
+      }
+    },
+    {
+      "name": "banded-narrow-320",
+      "file": "banded-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "banded",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "tables": 7,
+      "reservedHidden": false,
+      "regionHeadings": [
+        "Publishing",
+        "Order tracking",
+        "Prediction",
+        "Route comparison",
+        "Case queue"
+      ],
+      "view": {
+        "status": "Figures updated for 5 Nov 2026, 09:30 GMT.",
+        "headline": [
+          "Active briefs fewer than 5 , a privacy band: the exact count is hidden",
+          "Briefs with no suitable car fewer than 5 , a privacy band: the exact count is hidden",
+          "Offers made fewer than 5 , a privacy band: the exact count is hidden",
+          "Selected fewer than 5 , a privacy band: the exact count is hidden"
+        ],
+        "meta": "Figures for 5 Nov 2026, 09:30 GMT (demo clock) Policy version gcsp-policy-v1 Brief versions 1, 2 Basis Expressed saved demand Figures version fx-bande",
+        "offers": [
+          "Offers made fewer than 5 , a privacy band: the exact count is hidden",
+          "Accepted fewer than 5 , a privacy band: the exact count is hidden",
+          "Declined fewer than 5 , a privacy band: the exact count is hidden",
+          "Expired fewer than 5 , a privacy band: the exact count is hidden",
+          "Selected fewer than 5 , a privacy band: the exact count is hidden"
+        ],
+        "unmetFirstRows": [
+          "Driver eligibility not confirmed Needs confirmation fewer than 5 , a privacy band: the exact count is hidden",
+          "Essential not met: Seats Blocks the offer fewer than 5 , a privacy band: the exact count is hidden"
+        ]
+      }
+    },
+    {
+      "name": "unavailable-narrow-320",
+      "file": "unavailable-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "unavailable",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "tables": 0,
+      "reservedHidden": false,
+      "regionHeadings": [
+        "Publishing",
+        "Order tracking",
+        "Prediction",
+        "Route comparison",
+        "Case queue"
+      ],
+      "view": {
+        "status": "Figures unavailable.",
+        "headline": [],
+        "offers": [],
+        "unmetFirstRows": []
+      }
+    },
+    {
+      "name": "refused-narrow-320",
+      "file": "refused-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "refused",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "tables": 0,
+      "reservedHidden": true,
+      "regionHeadings": [
+        "Publishing",
+        "Order tracking",
+        "Prediction",
+        "Route comparison",
+        "Case queue"
+      ],
+      "view": {
+        "status": "Access refused.",
+        "headline": [],
+        "offers": [],
+        "unmetFirstRows": []
+      }
+    },
+    {
+      "name": "conflict-narrow-320",
+      "file": "conflict-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "conflict",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "tables": 0,
+      "reservedHidden": false,
+      "regionHeadings": [
+        "Publishing",
+        "Order tracking",
+        "Prediction",
+        "Route comparison",
+        "Case queue"
+      ],
+      "view": {
+        "status": "The figures changed while loading.",
+        "headline": [],
+        "offers": [],
+        "unmetFirstRows": []
+      }
+    },
+    {
+      "name": "loading-narrow-320",
+      "file": "loading-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "loading",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "status": "Loading the demand figures."
+    },
+    {
+      "name": "refresh-before-desktop",
+      "file": "refresh-before-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "refresh",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "keyboardOnly": true,
+      "tabOrderToRefresh": [
+        {
+          "tag": "A",
+          "role": null,
+          "tableRegion": false,
+          "name": "Skip to content",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Demand and supply",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Publish stock",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Order tracking",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Next order",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Show labels",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Refresh",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        }
+      ],
+      "foundRefresh": true,
+      "before": {
+        "status": "Figures updated for 5 Nov 2026, 09:40 GMT.",
+        "headline": [
+          "Active briefs 28",
+          "Briefs with no suitable car 9",
+          "Offers made 30",
+          "Selected 7"
+        ],
+        "meta": "Figures for 5 Nov 2026, 09:40 GMT (demo clock) Policy version gcsp-policy-v1 Brief versions 1, 2, 3 Basis Expressed saved demand Figures version fx-popul",
+        "offers": [
+          "Offers made 30",
+          "Accepted 9",
+          "Declined 12",
+          "Expired fewer than 5 , a privacy band: the exact count is hidden",
+          "Selected 7"
+        ],
+        "unmetFirstRows": [
+          "Availability date not confirmed Needs confirmation 5",
+          "Declined car and the brief has not changed Blocks the offer fewer than 5 , a privacy band: the exact count is hidden"
+        ]
+      }
+    },
+    {
+      "name": "refresh-after-desktop",
+      "file": "refresh-after-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "refresh",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "keyboardOnly": true,
+      "after": {
+        "status": "Figures updated for 5 Nov 2026, 10:25 GMT.",
+        "headline": [
+          "Active briefs 28",
+          "Briefs with no suitable car 8",
+          "Offers made 30",
+          "Selected 7"
+        ],
+        "meta": "Figures for 5 Nov 2026, 10:25 GMT (demo clock) Policy version gcsp-policy-v1 Brief versions 1, 2, 3 Basis Expressed saved demand Figures version fx-after",
+        "offers": [
+          "Offers made 30",
+          "Accepted 9",
+          "Declined 13",
+          "Expired fewer than 5 , a privacy band: the exact count is hidden",
+          "Selected 7"
+        ],
+        "unmetFirstRows": [
+          "Availability date not confirmed Needs confirmation 5",
+          "Declined car and the brief has not changed Blocks the offer fewer than 5 , a privacy band: the exact count is hidden"
+        ]
+      },
+      "focusAfter": {
+        "tag": "BUTTON",
+        "role": null,
+        "tableRegion": false,
+        "name": "Refresh",
+        "outline": "solid 2px rgb(10, 96, 112)"
+      },
+      "changed": {
+        "status": true,
+        "meta": true,
+        "headline": true,
+        "offers": true,
+        "unmet": false
+      },
+      "focusStillOnRefresh": true
+    },
+    {
+      "name": "refresh-before-narrow-320",
+      "file": "refresh-before-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "refresh",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "keyboardOnly": true,
+      "tabOrderToRefresh": [
+        {
+          "tag": "A",
+          "role": null,
+          "tableRegion": false,
+          "name": "Skip to content",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Menu",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Refresh",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        }
+      ],
+      "foundRefresh": true,
+      "before": {
+        "status": "Figures updated for 5 Nov 2026, 09:40 GMT.",
+        "headline": [
+          "Active briefs 28",
+          "Briefs with no suitable car 9",
+          "Offers made 30",
+          "Selected 7"
+        ],
+        "meta": "Figures for 5 Nov 2026, 09:40 GMT (demo clock) Policy version gcsp-policy-v1 Brief versions 1, 2, 3 Basis Expressed saved demand Figures version fx-popul",
+        "offers": [
+          "Offers made 30",
+          "Accepted 9",
+          "Declined 12",
+          "Expired fewer than 5 , a privacy band: the exact count is hidden",
+          "Selected 7"
+        ],
+        "unmetFirstRows": [
+          "Availability date not confirmed Needs confirmation 5",
+          "Declined car and the brief has not changed Blocks the offer fewer than 5 , a privacy band: the exact count is hidden"
+        ]
+      }
+    },
+    {
+      "name": "refresh-after-narrow-320",
+      "file": "refresh-after-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "refresh",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "keyboardOnly": true,
+      "after": {
+        "status": "Figures updated for 5 Nov 2026, 10:25 GMT.",
+        "headline": [
+          "Active briefs 28",
+          "Briefs with no suitable car 8",
+          "Offers made 30",
+          "Selected 7"
+        ],
+        "meta": "Figures for 5 Nov 2026, 10:25 GMT (demo clock) Policy version gcsp-policy-v1 Brief versions 1, 2, 3 Basis Expressed saved demand Figures version fx-after",
+        "offers": [
+          "Offers made 30",
+          "Accepted 9",
+          "Declined 13",
+          "Expired fewer than 5 , a privacy band: the exact count is hidden",
+          "Selected 7"
+        ],
+        "unmetFirstRows": [
+          "Availability date not confirmed Needs confirmation 5",
+          "Declined car and the brief has not changed Blocks the offer fewer than 5 , a privacy band: the exact count is hidden"
+        ]
+      },
+      "focusAfter": {
+        "tag": "BUTTON",
+        "role": null,
+        "tableRegion": false,
+        "name": "Refresh",
+        "outline": "solid 2px rgb(10, 96, 112)"
+      },
+      "changed": {
+        "status": true,
+        "meta": true,
+        "headline": true,
+        "offers": true,
+        "unmet": false
+      },
+      "focusStillOnRefresh": true
+    },
+    {
+      "name": "keyboard-walk-desktop",
+      "fixture": "populated",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "stops": 14,
+      "order": [
+        {
+          "tag": "A",
+          "role": null,
+          "tableRegion": false,
+          "name": "Skip to content",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Demand and supply",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Publish stock",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Order tracking",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Next order",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Show labels",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Refresh",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "DIV",
+          "role": "region",
+          "tableRegion": true,
+          "name": "By model line",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "DIV",
+          "role": "region",
+          "tableRegion": true,
+          "name": "By body style",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "DIV",
+          "role": "region",
+          "tableRegion": true,
+          "name": "By fuel type",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "DIV",
+          "role": "region",
+          "tableRegion": true,
+          "name": "By essential requirement",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "DIV",
+          "role": "region",
+          "tableRegion": true,
+          "name": "Briefs with no suitable car, by gate",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "DIV",
+          "role": "region",
+          "tableRegion": true,
+          "name": "Stock by model line",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "DIV",
+          "role": "region",
+          "tableRegion": true,
+          "name": "Declined offers, by reason",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        }
+      ],
+      "skipLinkFirst": true,
+      "tableRegions": 7,
+      "outlineMissing": [],
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": []
+    },
+    {
+      "name": "keyboard-scroll-narrow-320",
+      "fixture": "populated",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "regions": [
+        {
+          "name": "By model line",
+          "scrollWidth": 294,
+          "clientWidth": 294,
+          "overflows": false
+        },
+        {
+          "name": "By body style",
+          "scrollWidth": 294,
+          "clientWidth": 294,
+          "overflows": false
+        },
+        {
+          "name": "By fuel type",
+          "scrollWidth": 294,
+          "clientWidth": 294,
+          "overflows": false
+        },
+        {
+          "name": "By essential requirement",
+          "scrollWidth": 294,
+          "clientWidth": 294,
+          "overflows": false
+        },
+        {
+          "name": "Briefs with no suitable car, by gate",
+          "scrollWidth": 294,
+          "clientWidth": 294,
+          "overflows": false
+        },
+        {
+          "name": "Stock by model line",
+          "scrollWidth": 306,
+          "clientWidth": 294,
+          "overflows": true
+        },
+        {
+          "name": "Declined offers, by reason",
+          "scrollWidth": 294,
+          "clientWidth": 294,
+          "overflows": false
+        }
+      ],
+      "overflowingRegionFocused": true,
+      "tabStops": 9,
+      "scrollLeft": {
+        "start": 0,
+        "afterArrowRight": 12,
+        "afterEnd": 12
+      },
+      "focusedRegion": "Stock by model line",
+      "file": "keyboard-scroll-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": []
+    },
+    {
+      "name": "retry-after-desktop",
+      "file": "retry-after-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "unavailable",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "keyboardOnly": true,
+      "foundRetry": true,
+      "tabOrderToRetry": [
+        {
+          "tag": "A",
+          "role": null,
+          "tableRegion": false,
+          "name": "Skip to content",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Demand and supply",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Publish stock",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Order tracking",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Next order",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Show labels",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Refresh",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Retry",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        }
+      ],
+      "unavailableEventsBefore": 1,
+      "unavailableEventsAfterRetry": 2,
+      "status": "Figures unavailable.",
+      "focusAfter": {
+        "tag": "BUTTON",
+        "role": null,
+        "tableRegion": false,
+        "name": "Refresh",
+        "outline": "solid 2px rgb(10, 96, 112)"
+      },
+      "alertRole": 1
+    },
+    {
+      "name": "retry-after-narrow-320",
+      "file": "retry-after-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "unavailable",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "keyboardOnly": true,
+      "foundRetry": true,
+      "tabOrderToRetry": [
+        {
+          "tag": "A",
+          "role": null,
+          "tableRegion": false,
+          "name": "Skip to content",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Menu",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Refresh",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        },
+        {
+          "tag": "BUTTON",
+          "role": null,
+          "tableRegion": false,
+          "name": "Retry",
+          "outline": "solid 2px rgb(10, 96, 112)"
+        }
+      ],
+      "unavailableEventsBefore": 1,
+      "unavailableEventsAfterRetry": 2,
+      "status": "Figures unavailable.",
+      "focusAfter": {
+        "tag": "BUTTON",
+        "role": null,
+        "tableRegion": false,
+        "name": "Refresh",
+        "outline": "solid 2px rgb(10, 96, 112)"
+      },
+      "alertRole": 1
+    },
+    {
+      "name": "reduced-motion-desktop",
+      "file": "reduced-motion-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "populated",
+      "reducedMotion": "reduce",
+      "transitionDurations": {
+        ".gcsp-greg-body": "0s",
+        ".vm-btn": "0s",
+        ".gcsp-nav-btn": "0s",
+        ".gcsp-table-wrap": "0s"
+      }
+    },
+    {
+      "name": "gallery-greg-kit-desktop",
+      "file": "gallery-greg-kit-desktop.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "groups": [
+        "metricTile: exact, privacy band and with a note",
+        "dataTable: long model name and a band cell",
+        "dataTable: empty state"
+      ],
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": []
+    },
+    {
+      "name": "gallery-greg-kit-narrow-320",
+      "file": "gallery-greg-kit-narrow-320.png",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "groups": [
+        "metricTile: exact, privacy band and with a note",
+        "dataTable: long model name and a band cell",
+        "dataTable: empty state"
+      ],
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": []
+    },
+    {
+      "name": "contrast",
+      "threshold": 4.5,
+      "minimum": {
+        "label": "table header",
+        "ratio": 5.87
+      },
+      "failures": [],
+      "missing": [],
+      "contrast": [
+        {
+          "viewport": "desktop",
+          "populated": [
+            {
+              "label": "tile label (headline)",
+              "selector": ".gcsp-greg-headline .gcsp-tile-label",
+              "colour": "rgb(82, 96, 106)",
+              "background": "rgb(255, 255, 255)",
+              "fontSize": 13,
+              "weight": "600",
+              "ratio": 6.48,
+              "opacity": "1"
+            },
+            {
+              "label": "tile figure (headline)",
+              "selector": ".gcsp-greg-headline .gcsp-tile-figure",
+              "colour": "rgb(29, 42, 48)",
+              "background": "rgb(255, 255, 255)",
+              "fontSize": 40,
+              "weight": "600",
+              "ratio": 14.73,
+              "opacity": "1"
+            },
+            {
+              "label": "table header",
+              "selector": ".gcsp-table-th",
+              "colour": "rgb(82, 96, 106)",
+              "background": "rgb(242, 244, 245)",
+              "fontSize": 13,
+              "weight": "600",
+              "ratio": 5.87,
+              "opacity": "1"
+            },
+            {
+              "label": "table caption",
+              "selector": ".gcsp-table-caption",
+              "colour": "rgb(29, 42, 48)",
+              "background": "rgb(255, 255, 255)",
+              "fontSize": 15,
+              "weight": "600",
+              "ratio": 14.73,
+              "opacity": "1"
+            },
+            {
+              "label": "table row header",
+              "selector": ".gcsp-table-rowhead",
+              "colour": "rgb(29, 42, 48)",
+              "background": "rgb(255, 255, 255)",
+              "fontSize": 14,
+              "weight": "600",
+              "ratio": 14.73,
+              "opacity": "1"
+            },
+            {
+              "label": "table cell",
+              "selector": ".gcsp-table-td",
+              "colour": "rgb(29, 42, 48)",
+              "background": "rgb(255, 255, 255)",
+              "fontSize": 14,
+              "weight": "400",
+              "ratio": 14.73,
+              "opacity": "1"
+            },
+            {
+              "label": "muted note, meta strip",
+              "selector": ".gcsp-greg-meta .gcsp-note",
+              "colour": "rgb(82, 96, 106)",
+              "background": "rgb(255, 255, 255)",
+              "fontSize": 14,
+              "weight": "400",
+              "ratio": 6.48,
+              "opacity": "1"
+            },
+            {
+              "label": "muted note, section",
+              "selector": ".gcsp-greg-section > .gcsp-note",
+              "colour": "rgb(82, 96, 106)",
+              "background": "rgb(242, 244, 245)",
+              "fontSize": 14,
+              "weight": "400",
+              "ratio": 5.87,
+              "opacity": "1"
+            },
+            {
+              "label": "status line",
+              "selector": ".gcsp-greg-status",
+              "colour": "rgb(82, 96, 106)",
+              "background": "rgb(242, 244, 245)",
+              "fontSize": 14,
+              "weight": "400",
+              "ratio": 5.87,
+              "opacity": "1"
+            },
+            {
+              "label": "region heading",
+              "selector": ".gcsp-greg-region .gcsp-greg-h2",
+              "colour": "rgb(82, 96, 106)",
+              "background": "rgb(242, 244, 245)",
+              "fontSize": 15,
+              "weight": "600",
+              "ratio": 5.87,
+              "opacity": "1"
+            },
+            {
+              "label": "region note",
+              "selector": ".gcsp-greg-region .gcsp-note",
+              "colour": "rgb(82, 96, 106)",
+              "background": "rgb(242, 244, 245)",
+              "fontSize": 14,
+              "weight": "400",
+              "ratio": 5.87,
+              "opacity": "1"
+            },
+            {
+              "label": "section heading",
+              "selector": ".gcsp-greg-section > .gcsp-greg-h2",
+              "colour": "rgb(29, 42, 48)",
+              "background": "rgb(242, 244, 245)",
+              "fontSize": 20,
+              "weight": "600",
+              "ratio": 13.35,
+              "opacity": "1"
+            },
+            {
+              "label": "facts label",
+              "selector": ".gcsp-greg-facts dt",
+              "colour": "rgb(82, 96, 106)",
+              "background": "rgb(255, 255, 255)",
+              "fontSize": 13,
+              "weight": "400",
+              "ratio": 6.48,
+              "opacity": "1"
+            },
+            {
+              "label": "facts value",
+              "selector": ".gcsp-greg-facts dd",
+              "colour": "rgb(29, 42, 48)",
+              "background": "rgb(255, 255, 255)",
+              "fontSize": 16,
+              "weight": "600",
+              "ratio": 14.73,
+              "opacity": "1"
+            },
+            {
+              "label": "Refresh button",
+              "selector": ".gcsp-greg-bar .vm-btn",
+              "colour": "rgb(10, 96, 112)",
+              "background": "rgb(255, 255, 255)",
+              "fontSize": 16,
+              "weight": "600",
+              "ratio": 7.19,
+              "opacity": "1"
+            }
+          ],
+          "banded": [
+            {
+              "label": "band figure (tile)",
+              "selector": ".gcsp-tile-figure.is-band",
+              "colour": "rgb(29, 42, 48)",
+              "background": "rgb(233, 237, 239)",
+              "fontSize": 18,
+              "weight": "500",
+              "ratio": 12.5,
+              "opacity": "1"
+            },
+            {
+              "label": "band cell (table)",
+              "selector": ".gcsp-table .is-band",
+              "colour": "rgb(82, 96, 106)",
+              "background": "rgb(255, 255, 255)",
+              "fontSize": 14,
+              "weight": "400",
+              "ratio": 6.48,
+              "opacity": "1"
+            }
+          ]
+        },
+        {
+          "viewport": "narrow-320",
+          "populated": [
+            {
+              "label": "tile label (headline)",
+              "selector": ".gcsp-greg-headline .gcsp-tile-label",
+              "colour": "rgb(82, 96, 106)",
+              "background": "rgb(255, 255, 255)",
+              "fontSize": 13,
+              "weight": "600",
+              "ratio": 6.48,
+              "opacity": "1"
+            },
+            {
+              "label": "tile figure (headline)",
+              "selector": ".gcsp-greg-headline .gcsp-tile-figure",
+              "colour": "rgb(29, 42, 48)",
+              "background": "rgb(255, 255, 255)",
+              "fontSize": 40,
+              "weight": "600",
+              "ratio": 14.73,
+              "opacity": "1"
+            },
+            {
+              "label": "table header",
+              "selector": ".gcsp-table-th",
+              "colour": "rgb(82, 96, 106)",
+              "background": "rgb(242, 244, 245)",
+              "fontSize": 13,
+              "weight": "600",
+              "ratio": 5.87,
+              "opacity": "1"
+            },
+            {
+              "label": "table caption",
+              "selector": ".gcsp-table-caption",
+              "colour": "rgb(29, 42, 48)",
+              "background": "rgb(255, 255, 255)",
+              "fontSize": 15,
+              "weight": "600",
+              "ratio": 14.73,
+              "opacity": "1"
+            },
+            {
+              "label": "table row header",
+              "selector": ".gcsp-table-rowhead",
+              "colour": "rgb(29, 42, 48)",
+              "background": "rgb(255, 255, 255)",
+              "fontSize": 14,
+              "weight": "600",
+              "ratio": 14.73,
+              "opacity": "1"
+            },
+            {
+              "label": "table cell",
+              "selector": ".gcsp-table-td",
+              "colour": "rgb(29, 42, 48)",
+              "background": "rgb(255, 255, 255)",
+              "fontSize": 14,
+              "weight": "400",
+              "ratio": 14.73,
+              "opacity": "1"
+            },
+            {
+              "label": "muted note, meta strip",
+              "selector": ".gcsp-greg-meta .gcsp-note",
+              "colour": "rgb(82, 96, 106)",
+              "background": "rgb(255, 255, 255)",
+              "fontSize": 14,
+              "weight": "400",
+              "ratio": 6.48,
+              "opacity": "1"
+            },
+            {
+              "label": "muted note, section",
+              "selector": ".gcsp-greg-section > .gcsp-note",
+              "colour": "rgb(82, 96, 106)",
+              "background": "rgb(242, 244, 245)",
+              "fontSize": 14,
+              "weight": "400",
+              "ratio": 5.87,
+              "opacity": "1"
+            },
+            {
+              "label": "status line",
+              "selector": ".gcsp-greg-status",
+              "colour": "rgb(82, 96, 106)",
+              "background": "rgb(242, 244, 245)",
+              "fontSize": 14,
+              "weight": "400",
+              "ratio": 5.87,
+              "opacity": "1"
+            },
+            {
+              "label": "region heading",
+              "selector": ".gcsp-greg-region .gcsp-greg-h2",
+              "colour": "rgb(82, 96, 106)",
+              "background": "rgb(242, 244, 245)",
+              "fontSize": 15,
+              "weight": "600",
+              "ratio": 5.87,
+              "opacity": "1"
+            },
+            {
+              "label": "region note",
+              "selector": ".gcsp-greg-region .gcsp-note",
+              "colour": "rgb(82, 96, 106)",
+              "background": "rgb(242, 244, 245)",
+              "fontSize": 14,
+              "weight": "400",
+              "ratio": 5.87,
+              "opacity": "1"
+            },
+            {
+              "label": "section heading",
+              "selector": ".gcsp-greg-section > .gcsp-greg-h2",
+              "colour": "rgb(29, 42, 48)",
+              "background": "rgb(242, 244, 245)",
+              "fontSize": 20,
+              "weight": "600",
+              "ratio": 13.35,
+              "opacity": "1"
+            },
+            {
+              "label": "facts label",
+              "selector": ".gcsp-greg-facts dt",
+              "colour": "rgb(82, 96, 106)",
+              "background": "rgb(255, 255, 255)",
+              "fontSize": 13,
+              "weight": "400",
+              "ratio": 6.48,
+              "opacity": "1"
+            },
+            {
+              "label": "facts value",
+              "selector": ".gcsp-greg-facts dd",
+              "colour": "rgb(29, 42, 48)",
+              "background": "rgb(255, 255, 255)",
+              "fontSize": 16,
+              "weight": "600",
+              "ratio": 14.73,
+              "opacity": "1"
+            },
+            {
+              "label": "Refresh button",
+              "selector": ".gcsp-greg-bar .vm-btn",
+              "colour": "rgb(10, 96, 112)",
+              "background": "rgb(255, 255, 255)",
+              "fontSize": 16,
+              "weight": "600",
+              "ratio": 7.19,
+              "opacity": "1"
+            }
+          ],
+          "banded": [
+            {
+              "label": "band figure (tile)",
+              "selector": ".gcsp-tile-figure.is-band",
+              "colour": "rgb(29, 42, 48)",
+              "background": "rgb(233, 237, 239)",
+              "fontSize": 18,
+              "weight": "500",
+              "ratio": 12.5,
+              "opacity": "1"
+            },
+            {
+              "label": "band cell (table)",
+              "selector": ".gcsp-table .is-band",
+              "colour": "rgb(82, 96, 106)",
+              "background": "rgb(255, 255, 255)",
+              "fontSize": 14,
+              "weight": "400",
+              "ratio": 6.48,
+              "opacity": "1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "reference-comparison",
+      "compare": [
+        {
+          "label": "greg dashboard",
+          "path": "gcsp-greg.html?fixture=populated",
+          "log": {
+            "console": [],
+            "failed": [],
+            "external": []
+          },
+          "headerHeight": 56,
+          "headerBackground": "rgb(255, 255, 255)",
+          "sidebarWidth": 48,
+          "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", arial, sans-serif",
+          "pageBackground": "rgba(0, 0, 0, 0)",
+          "accent": "#0b6c7e",
+          "h1": "34px",
+          "buttonBackground": "rgb(255, 255, 255)",
+          "buttonLabel": "Refresh"
+        },
+        {
+          "label": "FUCQ-97 outbox",
+          "path": "gcsp-outbox.html?fixture=messages",
+          "log": {
+            "console": [],
+            "failed": [],
+            "external": []
+          },
+          "headerHeight": 56,
+          "headerBackground": "rgb(255, 255, 255)",
+          "sidebarWidth": 48,
+          "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", arial, sans-serif",
+          "pageBackground": "rgba(0, 0, 0, 0)",
+          "accent": "#0b6c7e",
+          "h1": "34px",
+          "buttonBackground": "rgb(255, 255, 255)",
+          "buttonLabel": "Refresh"
+        },
+        {
+          "label": "FUCQ-64 employee",
+          "path": "gcsp-employee.html",
+          "log": {
+            "console": [],
+            "failed": [],
+            "external": []
+          },
+          "headerHeight": 56,
+          "headerBackground": "rgb(255, 255, 255)",
+          "sidebarWidth": 48,
+          "bodyFont": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", arial, sans-serif",
+          "pageBackground": "rgba(0, 0, 0, 0)",
+          "accent": "#0b6c7e",
+          "h1": "34px",
+          "buttonBackground": "rgb(11, 108, 126)",
+          "buttonLabel": "Choose a replacement"
+        }
+      ],
+      "shellMatches": true
+    }
+  ]
+}
