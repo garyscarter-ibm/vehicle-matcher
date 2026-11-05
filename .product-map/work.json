@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "observed_at": "2026-11-05T23:00:45Z",
+  "stories": [
+    {
+      "id": "FUCQ-100",
+      "title": "Hold the allocated car and create its offer and outbox job in one transaction",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T23:01:19Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-100",
+      "source_observed_at": "2026-11-05T23:00:25Z",
+      "branch": "dev/DEV-2026-11-04-060",
+      "workers": [
+        {
+          "name": "FUCQ-100 story lead",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-05T23:00:59.317178+00:00",
+          "expires_at": "2026-11-05T23:15:59.317178+00:00",
+          "source": "Codex chat 01a1adbf-732b-7830-a17a-cf2b2f95a092 observed this active turn",
+          "status": "active; remote edit plan awaits dispatcher review"
+        }
+      ],
+      "slices": [
+        {
+          "id": "atomic-producer",
+          "status": "complete",
+          "title": "Atomic hold, quote, offer and outbox",
+          "observed_at": "2026-11-05T23:01:19Z",
+          "evidence": "Lead reviewed/pushed5451ec3:57/57 atomic/receipt;80/82 repository/outbox/case,2native skips. Delivery:_dev/in-progress/DEV-2026-11-04-060.md;shared test-runs/fucq100/parent-atomic-checkpoint-audit.json. Actual allocator/manual gates separately planned."
+        },
+        {
+          "id": "notification-custody",
+          "status": "complete",
+          "title": "Token custody through notification delivery and receipts",
+          "observed_at": "2026-11-05T23:01:19Z",
+          "evidence": "Lead reviewed/pushed6d6ecf0:28/28 cryptographic dispatch/recovery/races;57/57 strict boundaries;17manifests/dependencies audited. _dev/in-progress/DEV-2026-11-04-060.md;shared test-runs/fucq100/parent-notify-checkpoint-audit.json."
+        },
+        {
+          "id": "allocator-proof",
+          "status": "complete",
+          "title": "Actual published allocator invocation, replay and fallback",
+          "observed_at": "2026-11-05T23:01:19Z",
+          "evidence": "Lead reviewed2/2 exact6f15d4d allocator+identity invocation at frozen6d6ecf0, real stale-stock fallback and replay. Docs7eaa00b;shared test-runs/fucq100/pinned96-plan-v1.json and parent-pinned96-audit.json. Merged startup gate separate."
+        },
+        {
+          "id": "local-expiry",
+          "status": "complete",
+          "title": "Local buddy expiry through real ticks and startup",
+          "observed_at": "2026-11-05T23:01:19Z",
+          "evidence": "Lead reviewed/pushedb4154ce:28/28 exact deadline/startup/replay/rollback/exclusions,97/97 strict boundaries;22manifests/dependencies audited. _dev/in-progress/DEV-2026-11-04-060.md;shared test-runs/fucq100/parent-expiry-checkpoint-audit.json. Central registration separate."
+        },
+        {
+          "id": "remote-lifecycle",
+          "status": "blocked",
+          "title": "Remote claim/release intent and reconciliation",
+          "observed_at": "2026-11-05T23:01:19Z",
+          "evidence": "Explicit dispatcher hold on remote edits until exact frozen design/source plan reviewed. Current code supports local-only. Plan:docs/gcsp/buddy-remote-plan.md. No unavailable live adapter acceptance claimed."
+        },
+        {
+          "id": "manual-exclusivity",
+          "status": "not-started",
+          "title": "Actual completed manual and buddy services exclude each other"
+        },
+        {
+          "id": "runtime-integration",
+          "status": "not-started",
+          "title": "Merged producer, identity and central lifecycle composition"
+        },
+        {
+          "id": "full-validation",
+          "status": "not-started",
+          "title": "Authored full-suite acceptance at integrated checkpoint"
+        }
+      ],
+      "unsliced": false
+    }
+  ]
+}
