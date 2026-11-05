@@ -76,3 +76,45 @@ test('canonical signature uses canonical PolicyService rules and rejects unavail
   const changed = { getAssumption: async (key, read) => { const value = await options.policyService.getAssumption(key, read); return key.endsWith('modelCodeField') ? { ...value, value: { ...value.value, value: 'agModelCode' } } : value; } };
   assert.equal((await writeCorpusCandidate(join(root, 'changed'), input, { ...options, policyService: changed })).status, 'invalid-corpus');
 });
+
+test('source-backed corpus retains exact FUCQ-39 dates, options, units and unknown build facts without a synthetic VIN', async (t) => {
+  const { sourceBackedInput } = await import('./helpers/vin-corpus-fixture.js');
+  const root = await temporary(t); const input = await sourceBackedInput();
+  const result = await writeCorpusCandidate(join(root, 'source'), input, options);
+  assert.equal(result.status, 'ok', JSON.stringify(result));
+  const loaded = await validateCorpusDirectory(join(root, 'source'), options); assert.equal(loaded.status, 'ok');
+  assert.deepEqual(loaded.corpus.configurations[0].catalogue, input.configurations[0].catalogue);
+  assert.equal(loaded.corpus.configurations[0].configuration.modelYear, null);
+  assert.equal(loaded.corpus.configurations[0].configuration.steering, null);
+  assert.equal(loaded.corpus.configurations[0].catalogue.resolvedIdentity.effectDate, '2027-01-05');
+  assert.equal(loaded.corpus.vins.length, 0);
+  assert.equal(loaded.corpus.configurations[0].catalogue.facts.luggageNormal.unit, 'LITRES');
+});
+
+test('manifest contexts must agree with actual source facts and images require an exact preapproved presentation contract', async (t) => {
+  const root = await temporary(t); const input = await corpusInput();
+  input.metadata.sourceContexts[0].market = 'GB';
+  assert.equal((await writeCorpusCandidate(join(root, 'mislabelled'), input, options)).failure.code, 'source-context-mismatch');
+  input.metadata.sourceContexts[0].market = 'US';
+  const image = { imageId: 'synthetic-image-contract', configurationId: input.configurations[0].configurationId,
+    asset: 'fixture:already-published-representative-image', role: 'representative-model', fidelity: 'representative-model',
+    sourceKind: 'dated-snapshot', observedDate: '2026-11-01' };
+  input.images = [image]; input.configurations[0].imageIds = [image.imageId];
+  assert.equal((await writeCorpusCandidate(join(root, 'unapproved'), input, options)).failure.code, 'unapproved-image');
+  const approved = { ...options, approvedImages: [image] };
+  assert.equal((await writeCorpusCandidate(join(root, 'approved'), input, approved)).status, 'ok');
+  const loaded = await validateCorpusDirectory(join(root, 'approved'), approved);
+  assert.deepEqual(loaded.corpus.images[0], image);
+  assert.equal((await validateCorpusDirectory(join(root, 'approved'), options)).failure.code, 'unapproved-image');
+});
+
+test('bundled small corpus validates through the same port and declares its real/synthetic coverage honestly', async () => {
+  const { fileURLToPath } = await import('node:url');
+  const directory = fileURLToPath(new URL('../data/gcsp/vehicle-evidence/publication-reference.v1/', import.meta.url));
+  const result = await validateCorpusDirectory(directory, options);
+  assert.equal(result.status, 'ok', JSON.stringify(result));
+  assert.deepEqual(result.manifest.counts, { configurations: 2, distinctConfigurations: 2, vinMappings: 1, images: 0 });
+  assert.equal(result.manifest.qualification, 'bounded-fixture-or-partial-corpus');
+  assert.equal(result.manifest.completeness.sourceKinds['dated-snapshot'], 1);
+  assert.equal(result.manifest.completeness.sourceKinds['north-american-reference'], 1);
+});

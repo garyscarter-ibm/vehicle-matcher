@@ -1,6 +1,7 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { mkdir, open, readFile, rename, rm, stat } from 'node:fs/promises';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
+import { bmwCatalogueLookupIdentity } from '../../vehicle-evidence/bmw-catalogue-adapter.js';
 import { inputDigest } from '../repository/core.js';
 import { createVinProfileRegistry, VIN_PROFILE_REGISTRY_VERSION } from './vin-profiles.js';
 import { generateVin, VIN_GENERATOR_VERSION } from './vin-generator.js';
@@ -88,9 +89,10 @@ function validateConfiguration(row, policy) {
     && text(source.confidence) && Array.isArray(source.unresolvedFacts) && source.unresolvedFacts.every(text)
     && ['complete', 'partial', 'unknown'].includes(source.selectedOptionCompleteness)
     && bindingFields.every((key) => Object.hasOwn(config, key))
-    && ['market', 'region', 'steering', 'model', 'derivative', 'generation', 'body', 'powertrain', 'drive', 'productionEra', 'plant'].every((key) => text(config[key]))
-    && ['agModelCode', 'vgModelCode', 'transmission', 'engineCode'].every((key) => config[key] === null || text(config[key]))
-    && Number.isSafeInteger(config.modelYear) && (config.productionDate === null || date(config.productionDate)),
+    && bindingFields.filter((key) => !['modelYear', 'productionDate'].includes(key)).every((key) => config[key] === null || text(config[key]))
+    && /^[A-Z]{2}$/.test(config.market)
+    && bindingFields.filter((key) => config[key] === null).every((key) => source.unresolvedFacts.includes(key))
+    && (config.modelYear === null || Number.isSafeInteger(config.modelYear)) && (config.productionDate === null || date(config.productionDate)),
   'configuration-provenance', 'Keep source references, dates, market, steering, equipment completeness and explicit unknowns; VIN spelling supplies none of these facts.');
   for (const field of ['agModelCode', 'vgModelCode']) {
     if (config[field] !== null) requireValue(row.canonicalIdentity[field] === config[field], 'configuration-signature', 'A known source model code cannot be replaced by an identity alias.');
@@ -101,21 +103,30 @@ function validateConfiguration(row, policy) {
     'configuration-provenance', 'Partial North American structural references do not establish full selections, UK/RHD profiles or real canonical option codes.');
   } else {
     const c = row.catalogue;
+    const lookup = c?.resolvedIdentity ? bmwCatalogueLookupIdentity({ ...c.resolvedIdentity, selectionComplete: true },
+      { snapshotVersion: row.snapshotVersion }) : null;
     requireValue(object(c) && ['ok', 'partial'].includes(c.status) && c.schemaVersion === '1'
       && c.provider === 'bmw-catalogue-snapshot' && c.providerVersion === '1' && c.sourceKind === 'dated-snapshot'
       && c.snapshotVersion === row.snapshotVersion && c.observedDate === source.observedDate
       && date(c.retrievedDate) && object(c.requestedIdentity) && equal(c.requestedIdentity, c.resolvedIdentity)
-      && object(c.lookupIdentity) && equal(c.lookupIdentity, c.resolvedLookupIdentity)
+      && lookup && equal(lookup, c.lookupIdentity) && equal(c.lookupIdentity, c.resolvedLookupIdentity)
+      && row.canonicalIdentity.provenance.kind === 'observed' && validProvenance(c.identityProvenance)
+      && equal(c.catalogueValidity, Object.fromEntries(['orderDate', 'effectDate', 'productionDate', 'taxDate'].map((key) => [key, c.resolvedIdentity[key]])))
       && c.resolvedIdentity.market === config.market && c.resolvedIdentity.catalogueDate === source.catalogueDate
       && c.resolvedIdentity.modelCode === config.vgModelCode && c.resolvedIdentity.agModelCode === config.agModelCode
       && equal([...c.resolvedIdentity.selectedOptions].sort(), [...row.canonicalIdentity.factoryOptionCodes].sort())
       && c.equipment?.selected?.state === 'known' && c.equipment.selected.complete === true
+      && c.equipment.selected.completeness === 'complete' && c.completeness?.selectedConfiguration === 'complete'
       && equal(c.equipment.selected.options, c.resolvedIdentity.selectedOptions)
       && c.completeness?.selectedConfiguration === source.selectedOptionCompleteness
-      && c.equipment?.verifiedFitted?.state === 'unknown' && object(c.facts)
+      && c.equipment?.verifiedFitted?.state === 'unknown' && c.equipment.verifiedFitted.codes === null
+      && keys(c.facts, ['seats', 'luggageNormal', 'luggageExpanded', 'acceleration', 'bodyLength'])
+      && ['seats', 'luggageNormal', 'luggageExpanded', 'acceleration', 'bodyLength'].every((key) => Object.hasOwn(c.facts, key))
       && Object.values(c.facts).every((fact) => ['known', 'unknown'].includes(fact?.state)
-        && (fact.state === 'unknown' ? fact.value === null : typeof fact.value === 'number' && Number.isFinite(fact.value)
-          && text(fact.unit) && validProvenance(fact.provenance))),
+        && text(fact.unit) && text(fact.definition)
+        && (fact.state === 'unknown' ? fact.value === null && fact.provenance?.kind === 'unknown'
+          : typeof fact.value === 'number' && Number.isFinite(fact.value) && fact.value >= 0
+            && ['partial', 'complete'].includes(fact.completeness) && validProvenance(fact.provenance))),
     'configuration-provenance', 'Dated catalogue evidence must preserve the exact FUCQ-39 identity, selected options, dates, units, unknowns and fitted-equipment limits.');
   }
 }
@@ -123,8 +134,8 @@ function summary(configurations, vins, images) {
   const count = (items, selector) => items.reduce((result, item) => { const key = selector(item); result[key] = (result[key] || 0) + 1; return result; }, {});
   return { counts: { configurations: configurations.length, distinctConfigurations: new Set(configurations.map((r) => r.canonicalSignature)).size,
     vinMappings: vins.length, images: images.length },
-  coverage: { markets: count(configurations, (r) => r.configuration.market), steering: count(configurations, (r) => r.configuration.steering),
-    models: count(configurations, (r) => r.configuration.model), wmis: count(vins, (r) => r.vin17.slice(0, 3)) },
+  coverage: { markets: count(configurations, (r) => r.configuration.market), steering: count(configurations, (r) => r.configuration.steering ?? 'unknown'),
+    models: count(configurations, (r) => r.configuration.model ?? 'unknown'), wmis: count(vins, (r) => r.vin17.slice(0, 3)) },
   completeness: { selectedOptions: count(configurations, (r) => r.sourceContext.selectedOptionCompleteness),
     sourceKinds: count(configurations, (r) => r.sourceContext.sourceKind), imagesMissing: configurations.filter((r) => !r.imageIds.length).length } };
 }
@@ -154,13 +165,18 @@ async function validateRows(configurations, vins, images, manifest, options) {
     requireValue(!signatures.has(row.canonicalSignature), 'duplicate-configuration', 'Duplicate canonical configuration signature.');
     ids.set(row.configurationId, row); signatures.add(row.canonicalSignature);
   }
+  requireValue(configurations.every((row) => manifest.sourceContexts.some((context) =>
+    context.sourceKind === row.sourceContext.sourceKind && context.market === row.configuration.market
+    && context.steering === row.configuration.steering && context.observedDate === row.sourceContext.observedDate
+    && context.catalogueDate === row.sourceContext.catalogueDate)),
+  'source-context-mismatch', 'Manifest source contexts must match the configurations actually retained, including explicit unknown steering.');
   const imageIds = new Set();
   for (const image of images) {
     requireValue(keys(image, ['imageId', 'configurationId', 'asset', 'role', 'fidelity', 'sourceKind', 'observedDate'])
-      && text(image.imageId) && !imageIds.has(image.imageId) && ids.has(image.configurationId)
+      && text(image.imageId) && text(image.asset) && !imageIds.has(image.imageId) && ids.has(image.configurationId)
       && ['representative-model', 'representative-configuration'].includes(image.role)
       && ['representative-model', 'representative-configuration'].includes(image.fidelity)
-      && image.sourceKind === 'dated-snapshot' && date(image.observedDate)
+      && image.role === image.fidelity && image.sourceKind === 'dated-snapshot' && date(image.observedDate)
       && (options.approvedImages || []).some((approved) => equal(approved, image)),
     'unapproved-image', 'Reference only an explicitly approved existing published image with exact role, fidelity, source date and configuration association.');
     imageIds.add(image.imageId);
@@ -204,7 +220,7 @@ async function validateManifest(manifest, options) {
     && keys(manifest.seed, ['value', 'kind']) && text(manifest.seed.value) && manifest.seed.kind === 'synthetic'
     && Array.isArray(manifest.sourceContexts) && manifest.sourceContexts.length > 0
     && manifest.sourceContexts.every((c) => object(c) && text(c.sourceKind) && date(c.observedDate)
-      && (c.catalogueDate === null || date(c.catalogueDate)) && text(c.market) && text(c.steering) && text(c.note))
+      && (c.catalogueDate === null || date(c.catalogueDate)) && text(c.market) && (c.steering === null || text(c.steering)) && text(c.note))
     && manifest.qualification === 'bounded-fixture-or-partial-corpus'
     && keys(manifest.checksums, CORPUS_FILES) && CORPUS_FILES.every((file) => /^[a-f0-9]{64}$/.test(manifest.checksums[file])),
   'manifest-schema', 'Supply the compatible complete manifest with explicit versions, seed, source contexts, counts, coverage and every artifact checksum.');
@@ -255,7 +271,10 @@ export async function writeCorpusCandidate(directory, input, options = {}) {
     requireValue(typeof directory === 'string' && isAbsolute(directory), 'explicit-path-required', 'Supply an absolute candidate output directory.');
     const policy = await signaturePolicy(options);
     const configurations = structuredClone(input.configurations).sort((a, b) => a.configurationId.localeCompare(b.configurationId));
-    for (const row of configurations) row.canonicalSignature = configurationSignature(row, policy);
+    for (const row of configurations) {
+      row.canonicalSignature = configurationSignature(row, policy);
+      row.canonicalIdentity.factoryOptionCodes.sort();
+    }
     const vins = projectVins(input.allocationInventory); const images = structuredClone(input.images || []).sort((a, b) => a.imageId.localeCompare(b.imageId));
     const artifacts = [configurations, vins, images].map((rows) => rows.map(canonicalContent).join(''));
     const manifest = { ...structuredClone(input.metadata), signaturePolicy: policy, qualification: 'bounded-fixture-or-partial-corpus',

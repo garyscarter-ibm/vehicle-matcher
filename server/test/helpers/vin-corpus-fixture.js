@@ -33,3 +33,28 @@ export async function corpusInput({ count = 1, version = '1', datasetId = 'bound
       catalogueDate: null, note: 'Small structural reference fixture; no UK/RHD, full equipment or 200/10000 corpus claim' }] },
     configurations, allocationInventory: allocated.inventory, images: [] };
 }
+
+export async function sourceBackedInput() {
+  const snapshot = JSON.parse(await readFile(new URL('../../vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json', import.meta.url)));
+  const { createBmwCatalogueAdapter } = await import('../../vehicle-evidence/bmw-catalogue-adapter.js');
+  const m = snapshot.model;
+  const request = { catalogueDate: snapshot.observedDate, market: snapshot.market, locale: snapshot.locale,
+    modelCode: m.modelCode, modelRange: m.modelRange, rawModelRange: m.rawModelRange, agModelCode: m.agModelCode,
+    trim: snapshot.trim, orderDate: m.orderDate, effectDate: m.effectDate, productionDate: '2027-01-05', taxDate: m.taxDate,
+    selectedOptions: snapshot.selectedOptions, selectedAccessories: snapshot.selectedAccessories, selectionComplete: true };
+  const catalogue = await createBmwCatalogueAdapter().resolve(request);
+  const input = await corpusInput();
+  const configuration = Object.fromEntries(Object.keys(input.configurations[0].configuration).map((key) => [key, null]));
+  Object.assign(configuration, { market: snapshot.market, agModelCode: m.agModelCode, vgModelCode: m.modelCode, generation: m.rawModelRange });
+  const configurationId = Buffer.from(`${m.modelCode}:${[...snapshot.selectedOptions].sort().join(',')}`).toString('base64');
+  return { ...input, metadata: { ...input.metadata, datasetId: 'dated-catalogue',
+    sourceContexts: [{ sourceKind: 'dated-snapshot', observedDate: snapshot.observedDate, catalogueDate: snapshot.observedDate,
+      market: snapshot.market, steering: null, note: 'Exact retained FUCQ-39 GB catalogue; physical year, build, steering and plant remain unknown' }] },
+  configurations: [{ configurationId, snapshotVersion: snapshot.snapshotVersion, configuration,
+    canonicalIdentity: { vgModelCode: m.modelCode, agModelCode: m.agModelCode, factoryOptionCodes: snapshot.selectedOptions,
+      provenance: { kind: 'observed', source: 'BMW UK catalogue', observedDate: snapshot.observedDate } },
+    catalogue, sourceContext: { sourceRefs: snapshot.sources, observedDate: snapshot.observedDate, catalogueDate: snapshot.observedDate,
+      sourceKind: 'dated-snapshot', confidence: 'Exact dated catalogue observation; not a physical build',
+      unresolvedFacts: Object.keys(configuration).filter((key) => configuration[key] === null), selectedOptionCompleteness: catalogue.completeness.selectedConfiguration }, imageIds: [] }],
+  allocationInventory: emptyAllocationInventory() };
+}
