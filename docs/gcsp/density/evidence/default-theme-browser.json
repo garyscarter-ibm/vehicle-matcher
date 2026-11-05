@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-05",
+  "employee": {
+    "accent": "#037493",
+    "bodyClass": "",
+    "bodyFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+    "headingFamily": "BMWGroupTNCondensedPro-Medium, -apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+    "headingWeight": "500",
+    "scrollWidth": 900,
+    "url": "http://localhost:3087/gcsp-employee.html",
+    "viewport": [
+      900,
+      1087
+    ]
+  },
+  "narrow": {
+    "bodyClass": "",
+    "font": "BMWGroupTNCondensedPro-Medium, -apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+    "scrollWidth": 320,
+    "url": "http://localhost:3087/gcsp-employee.html",
+    "weight": "500",
+    "width": 320
+  },
+  "fontResources": [
+    {
+      "id": "eb36710dfd589e13",
+      "kind": "font",
+      "name": "BMWGroupTNCondensedPro-Medium.woff2",
+      "sources": [
+        {
+          "kind": "resource",
+          "property": "css"
+        }
+      ],
+      "url": "http://localhost:3087/blocks/gcsp/shell/fonts/BMWGroupTNCondensedPro-Medium.woff2"
+    }
+  ]
+}
