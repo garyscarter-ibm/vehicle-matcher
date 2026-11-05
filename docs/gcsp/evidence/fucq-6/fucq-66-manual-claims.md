@@ -1,6 +1,6 @@
 # FUCQ-66 implementation evidence
 
-5 November 2026, safe-shutdown checkpoint. **Paused and incomplete** at Gary's request. Product/test source `59ac078e6b1e57df6b698c430ae62bb2f3c164b9` is pushed on `dev/DEV-2026-11-04-069`; the branch/worktree/claim remain for resume. No native lane was entered, no synthetic schema was created, and there is no current full stamp or built/deployed claim.
+5 November 2026, clean transfer checkpoint. **Incomplete**. Frozen product/test source `03e8e9ef8315f23f503298f2df028c3a7d934a17` is pushed. One local native case reached its enforced 600-second limit without a final result; its exact schema was cleaned and the original baseline restored. No native pass, current full stamp or built/deployed claim. [The native transfer record](fucq-66-native-transfer.md) supersedes the earlier shutdown/resume details below and records exact ownership, diagnostics and remaining work.
 
 The [service contract and repeatable trials](../../manual-claims-contract.md) describes explicit conditional selection, pinned policy/quote, once-only review timing, release-first replacement, exact-order allocation and pending reconciliation on the existing foundation. Shared `078d45ea` and FUCQ-83 `3df3004b` are integrated without changing that topology. All routes, vehicle-evidence composition and case/notification startup registrations are retained.
 
