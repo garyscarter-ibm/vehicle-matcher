@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "observed_at": "2026-11-05T23:00:25Z",
+  "observed_at": "2026-11-05T23:21:35Z",
   "stories": [
     {
       "id": "FUCQ-2",
@@ -685,11 +685,11 @@
     {
       "id": "FUCQ-70",
       "title": "Review a claimed car with contact details and return mileage",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-05T23:21:35Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-70"
     },
     {
@@ -879,7 +879,7 @@
       "original_status": "In Progress",
       "assignee": "",
       "type": "Epic",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-05T23:21:35Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-89"
     },
     {
@@ -1005,11 +1005,11 @@
     {
       "id": "FUCQ-102",
       "title": "Open an offer from a run-bound link that shows its current state",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-05T23:21:35Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-102"
     },
     {
@@ -1035,11 +1035,11 @@
     {
       "id": "FUCQ-105",
       "title": "Show the offer's exact quote, current-car comparison and countdown",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-05T23:21:35Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-105"
     },
     {
