@@ -23,6 +23,7 @@
  */
 
 import { MODES, DEFAULT_MODE, modeByKey } from './modes/index.js';
+import { RETAIL_BRANDS } from './share-context.js';
 
 const DEFAULT_API = 'http://localhost:8787';
 
@@ -121,7 +122,7 @@ function retailerName(block) {
  * client mirror the shell needs to pick a theme class and reject typos. Keep it
  * in step when a brand is onboarded — one line per brand, no other client edit.
  * DEFAULT_BRAND is the fallback when no (or an unknown) "Brand" row is set. */
-const KNOWN_BRANDS = ['bmw', 'mini', 'ford', 'honda', 'motorrad', 'ferrari'];
+const KNOWN_BRANDS = RETAIL_BRANDS;
 const DEFAULT_BRAND = 'bmw';
 
 /** Brand for this block instance: authored "Brand" config row, lower-cased,
@@ -250,6 +251,7 @@ export default async function decorate(block) {
   const mountMode = (next) => {
     if (typeof cleanup === 'function') cleanup();
     stage.replaceChildren();
+    ctx.mode = next.key;
     cleanup = next.mount(stage, ctx);
   };
 

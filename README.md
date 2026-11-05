@@ -232,7 +232,21 @@ hand instead.
 Notes:
 - The block itself ships no dataset or weights — those stay behind the API.
 - Styles are scoped under `.vm` and won't fight your site's global CSS.
-- Share links use the URL hash (`#m=…`), which EDS passes through untouched.
+- Questionnaire share links use the existing answer hash (`#m=…`) plus an
+  explicit public context allowlist: `experience=used-cars`, supported brand and
+  mode, retailer ID/name, dealer/national scope and the configured API base.
+  Effective authored settings are included even when absent from the original
+  query. Completing or starting over preserves that context; starting over
+  removes the answer hash. Direct `block.html` links and all six retail brands
+  and five modes remain supported.
+- Links rerun those answers against **current stock**. They do not freeze a
+  listing, reserve a car, or save the local refinement/rejection history.
+  Legacy band, numeric and range budgets and single/multiple fuel answers still
+  reopen. Only public question answers are encoded; unrelated query fields,
+  shared passwords, access tokens, employee identity and private briefs are
+  excluded. API bases identify the environment; embedded credentials and API
+  query/hash parameters are removed. Recipients authenticate separately if the
+  selected environment requires access.
 - The block makes requests to your API's origin. If your site enforces CSP, allow
   that origin in `connect-src`; the API sends permissive CORS headers by default.
 
