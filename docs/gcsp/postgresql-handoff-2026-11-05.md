@@ -2,18 +2,20 @@
 
 Russell asked Gary's sessions to take work requiring the PostgreSQL credential, which is already on Gary's machine. Keep the credential there; use the existing private backend configuration. This supersedes requests to supply a database URL or key to Russell's machine.
 
-## Ready for Gary to claim
+## Transferred stories
 
-| Jira | Story | Published branch | Published checkpoint |
+| Jira | Story | Published branch | Source checkpoint at handoff |
 |---|---|---|---|
 | FUCQ-83 | DEV-2026-11-04-065 | `dev/DEV-2026-11-04-065` | `e3d19dc0d8658c41d7db88a278d316dfc4d999af` |
 | FUCQ-66 | DEV-2026-11-04-069 | `dev/DEV-2026-11-04-069` | `d645f581d2c9c166ea4112d871beb65ff5269aa0` |
 
-These existing stories are requeued for **`garyscarter-ibm` only**, retaining their IDs, acceptance, dependencies, 13-point estimates and unmerged implementation. Russell's pollers must not reclaim them. The normal remote lease decides which of Gary's Claude/Codex pollers owns each one. A Jira assignment is routing, not evidence Gary has claimed or started work.
+These existing stories were requeued for **`garyscarter-ibm` only**, retaining their IDs, acceptance, dependencies, 13-point estimates and unmerged implementation. Russell's pollers must not reclaim them. The normal remote lease decides which of Gary's Claude/Codex pollers owns each one.
 
-**Published handoff:** `22ccf93`; both source leases released. Jira read-back confirms Gary assigned and **To Do** pending pickup, with stale source-host/agent labels removed. Comments `132551` (FUCQ-83) and `132552` (FUCQ-66) deliver the branch, proof gaps and pickup instructions. Gary's acceptance/start is not yet observed.
+**Published handoff:** `22ccf93`; both source leases released. Comments `132551` (FUCQ-83) and `132552` (FUCQ-66) deliver the branch, proof gaps and pickup instructions. Jira was initially assigned to Gary and To Do pending pickup, with stale source-host/agent labels removed.
 
-This is an explicitly authorised transfer of existing stories, not new story intake. Scaffolding has no transfer/requeue command: the source dispatcher moves only its own two lifecycle files back to the inbox, commits/pushes the named paths and releases only its own leases using `claim-release`. It preserves both published branches and local worktrees. Claim and queue state remain authoritative; this document is a handoff record.
+**Pickup confirmed:** Gary's machine took the normal remote leases for DEV069 at **17:20:24 UTC** and DEV065 at **17:20:33 UTC**, 5 November 2026. Both identify `garyscarter-ibm` on `Garys-MacBook-Pro.local`; the shared claim files now identify Gary after pull to `ff1347b`. Jira is reconciled to **In Progress**, assigned to Gary. The source dispatcher has no remaining claim or implementation/merge/closure role on either story. Native validation/completion is still Gary's work to report.
+
+This was an explicitly authorised transfer of existing stories, not new story intake. Scaffolding has no transfer/requeue command: the source dispatcher moved only its own two lifecycle files back to the inbox, committed/pushed the named paths and released only its own leases using `claim-release`. Both published branches and local worktrees were preserved. Claim and queue state remain authoritative; this document is a handoff record. The retained local DEV069 dependency installation remains available for already-authorised immutable dependency reuse by other stories; that does not authorise editing its story or accessing any credential.
 
 ## Pickup without losing the implementation
 
