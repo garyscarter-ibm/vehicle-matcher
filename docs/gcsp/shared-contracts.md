@@ -112,6 +112,18 @@ all context still comes from the authenticated server session. Protected claims 
 Other GCSP routes retain their existing strict rejection. A different employee sees only their own brief/history;
 forged service contexts are refused and sessions from a reset run return `stale-run`. Stale version conflicts map to HTTP 409.
 
+### Activity HTTP binding · FUCQ-95, 5 November 2026
+
+`createActivityRoutes(service)` in `server/gcsp/brief/activity-http.js` registers employee-only `GET /api/gcsp/activity`.
+`buildServer({ gcspIdentity, gcspActivity, gcspAllowedOrigins })` injects the existing activity service instance; the route calls
+`gcspActivity.readActivity(context)` with the shared boundary's trusted current employee/run context. It accepts no query selectors
+and retains strict rejection of browser identity/run claims. Shared access, exact-origin, session/role/current-run and `no-store`
+guards and outcome/status mapping remain unchanged. Missing/nonfunctional service composition returns unavailable/503, with no
+fallback provider. Pause/resume remain the existing BriefService POST endpoints; subsequent GETs read their persisted state.
+The reader projects confirmed brief permission, valid existing change receipts and whitelisted stored offers with safe offer references.
+`lastSuccessfulCheck` stays null and search/source evidence explicitly unavailable until the real producer contract is integrated.
+No activity command, check producer, offer URL, storage schema or screen is introduced by this HTTP binding.
+
 ## Exact stock, holds and offers
 
 `orderUuid` is the exact-stock UUID v4 and the foreign key for claims, holds, offers and allocations. `orderNumber` is a unique **7-digit string per run**, retaining leading zeros; `wholesalerOrderId` is an 8-digit integer. `configurationId` identifies immutable configuration facts and is never an exclusive-car key. Two cars can share it. VIN is attached only to delivered/current cars, never required for stock browsing, matching or holding (Q13).
@@ -578,6 +590,7 @@ Retail `publicMatch.listings[]` additively retains the evaluator's exact `decisi
 
 | Version / date / owner | Change and keyed assumptions |
 |---|---|
+| 1.0.0 / 2026-11-05 / FUCQ-95 | Adds injected employee-only activity GET through the existing shared HTTP boundary, with strict query/context rejection, current-run/no-store reads and explicit missing composition. Consumes the existing read-only brief/receipt/offer projection; no new producer, schema, policy key, command or screen. |
 | 1.0.0 / 2026-11-05 / FUCQ-57 | Adds mandatory configured-provider identity classification and successful-result binding checks through the existing retained registry/current-run inventory, preserving the FUCQ-55 envelope and FUCQ-43 real guard. Actual five-WMI generated-store HTTP/in-process/start/reset proofs retain honest US/LHD, unknown and representative-image-contract states. No live authorisation, mutable stock/policy/retail change or new screen. |
 | 1.0.0 / 2026-11-05 / FUCQ-112 | Adds RenewalCaseService/routes, `renewal_cases` and migration `0003`, eight dated `renewalCase.*` assumptions, keyed completed-receipt trigger consumer and same-transaction captured case-update jobs. Employee-confirmed preference remedies verify FUCQ-91 history; no allocation/priority mutation, existing port meaning change or screen. |
 | 1.0.0 / 2026-11-05 / FUCQ-55 | Additive three-identity lookup/HTTP envelope and same-entry offline profile, with exact tiny selected-store packaging only. Preserves exact run/configuration/source identity, typed outcomes and presentation provenance; reuses existing registry, repository and shared gate. No new policy or storage meaning; scoped lookup/HTTP/offline checks and final23/99/125/133integrated whole suite passed (820pass,2configuredSQLskips; stampc06d774bea5a). |
