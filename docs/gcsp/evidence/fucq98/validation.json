@@ -2,7 +2,7 @@
   "run": "fucq98-20261105-brevo-transport",
   "date": "2026-11-05",
   "status": "blocked",
-  "reason": "Reversible implementation validated; configured sender/key, explicitly approved demo mapping, public actual offer route and deliberate live inbox/link check remain unverified. No live send.",
+  "reason": "Implementation and automated validation complete. The approved one-message live smoke stopped at noninteractive Keychain lookup (OSStatus -25293), before any HTTP request or send. Actual account/sender, offer URL, provider acceptance and inbox/link verification remain unverified.",
   "testedHead": "fdd058a879659574a677fb5bd21f43b710c45743",
   "testedTree": "da63073ecc9f149275bf8815f30e7113e27cb933",
   "integratedBase": "eab081e19ac26ff5afc7556149a8b461509b864e",
@@ -329,5 +329,12 @@
     "No repeat full for later unrelated FUCQ-34 root delta"
   ],
   "impactMap": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/fucq98-70a55a4d8bd66144c189feaec3a7870d2e8bb3fa423245854fbf1e3e2002170c.json",
-  "reproductionStatusReceipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/receipts/fucq98-20261105-brevo-transport/reproduction-status.json"
+  "reproductionStatusReceipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/receipts/fucq98-20261105-brevo-transport/reproduction-status.json",
+  "liveSmoke": "live-smoke-20261105.json",
+  "latestDispatcherReportedRootNotIntegrated": {
+    "head": "94302e6cd4231be5c4dc7b0c17325e67ff31d2cd",
+    "source": "Dispatcher message on 5 November 2026",
+    "scope": "Newer account UI/tests/manual-context/COMPONENTS/ratchet changes reported with no FUCQ-98 owned source overlap",
+    "reason": "Exact tested F98 base deliberately held unchanged for live smoke; integration/revalidation belongs to later completion"
+  }
 }
