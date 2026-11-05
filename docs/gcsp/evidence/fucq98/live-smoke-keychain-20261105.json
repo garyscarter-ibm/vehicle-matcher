@@ -1,0 +1,114 @@
+{
+  "run": "fucq98-20261105-live-smoke-prompt-1",
+  "date": "2026-11-05",
+  "scope": "One human-authorised interactive Keychain lookup, followed by bounded Brevo account preflight; no offer/link",
+  "status": "blocked-provider-authentication",
+  "startedAt": "2026-11-05T16:05:49.431Z",
+  "finishedAt": "2026-11-05T16:06:25.606Z",
+  "recipientAuthorisation": "Original immutable approval permits exactly one email to Russell IBM inbox; no send occurred in either run",
+  "promptAuthorisation": "Russell directly approved one Keychain prompt; marked used durably before exactly one lookup; no automated native UI input",
+  "priorZeroNetworkEvidence": "live-smoke-20261105.json",
+  "observed": {
+    "interactiveLookups": 1,
+    "promptApprovalConsumed": true,
+    "credentialAccess": "Succeeded, private pipe to backend Node process memory only; no key saved or printed",
+    "promptFinishedAt": "2026-11-05T16:06:25.088Z",
+    "httpRequests": 1,
+    "requests": [
+      {
+        "method": "GET",
+        "endpoint": "/account",
+        "startedAt": "2026-11-05T16:06:25.169Z",
+        "status": 401
+      }
+    ],
+    "postRequests": 0,
+    "automaticRetries": 0,
+    "accountVerified": false,
+    "senderVerified": false,
+    "adapterSendReached": false,
+    "providerAccepted": false,
+    "providerMessageId": null,
+    "inboxReceiptVerified": false,
+    "offerLinkVerified": false,
+    "safeGap": "preflight-http-refused"
+  },
+  "limits": {
+    "httpPhaseSeconds": 45,
+    "promptSeconds": 90,
+    "ramMiB": 256,
+    "scratchMiB": 32,
+    "seconds": 150,
+    "workers": 1
+  },
+  "httpPhase": {
+    "startedAt": "2026-11-05T16:06:25.105Z",
+    "maximumSeconds": 45,
+    "perRequestSeconds": 10,
+    "maximumRequests": 3,
+    "maximumPosts": 1,
+    "redirects": "refused"
+  },
+  "resourceObservation": {
+    "wallSeconds": 36.428423375,
+    "sampledPeakGroupRssBytes": 67239936,
+    "scratchBytes": 0,
+    "removedSuccessfulLogBytes": 259
+  },
+  "cleanup": {
+    "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq98-20261105-live-smoke-prompt-1",
+    "owner": {
+      "pid": 10306,
+      "start": "Thu Nov  5 16:05:49 2026"
+    },
+    "groups": [
+      10329
+    ],
+    "scratchAbsent": true,
+    "ownerStopped": true,
+    "groupsAbsent": {
+      "10329": true
+    },
+    "reservationAbsent": true,
+    "safeProcessLogAbsent": true,
+    "dependency139HashesUnchanged": true,
+    "dependencyTargetIdentityUnchanged": true,
+    "dependencyRootIdentityUnchanged": true,
+    "overlayCreated": false,
+    "largeOutputCreated": false,
+    "oneDriveOutputCreated": false,
+    "compatibilityException": null,
+    "leftovers": []
+  },
+  "durablePrivateEvidence": {
+    "directory": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/receipts/fucq98-20261105-live-smoke-prompt-1",
+    "outcome": "outcome.json",
+    "resource": "resource-receipt.json",
+    "cleanup": "cleanup-recheck.json",
+    "replayGuard": "attempt.lock",
+    "intent": "intent.json",
+    "intentState": "preflight-only",
+    "replayForbidden": true,
+    "manualScriptSha256": "c882c34e6fde608c148e115b78360047773d50a2e40d6049f2d98f5977372902"
+  },
+  "unchangedApplicationSourceHashes": {
+    "server/gcsp/notify/brevo.js": "22f9b813a81e93f57c9e31f539ec1a6194ed7ce338b1303cc45e175a1cbb9382",
+    "server/gcsp/notify/config.js": "a815c66c230445384b4ad3e8d9806d31dc4b4b3ac852a92e9277de0f7907b055",
+    "server/gcsp/repository/core.js": "c55c93c543886108f67aa12bc5c7519d50063e90ba4ec78df37aa0df56d6f311",
+    "server/gcsp/repository/memory.js": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866"
+  },
+  "nextBoundary": "Existing saved key did not authenticate to Brevo account endpoint (HTTP401). Stop with no repeated prompt, fallback key lookup, provisioning, network retry or send. A valid authorised backend key and separate direction for further live validation are required; account/sender, actual offer URL, provider/inbox/link acceptance remain unverified.",
+  "validationSelection": {
+    "selected": [
+      "Static Node syntax check of private prompt harness",
+      "Exactly one supervised interactive lookup and resulting bounded account preflight",
+      "Independent filesystem/group/reservation/dependency cleanup audit",
+      "JSON/evidence consistency and git diff whitespace checks"
+    ],
+    "excluded": [
+      "No application change/test rerun; exact tested source unchanged",
+      "No second prompt, credential fallback, retry, send, browser automation or provisioning",
+      "No base integration or Jira retry"
+    ]
+  }
+}
