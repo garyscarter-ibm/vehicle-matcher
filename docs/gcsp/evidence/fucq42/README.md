@@ -23,7 +23,7 @@ The generic choice is `resolve(request, { fallback: 'bmw-i5-generic-20261101-v1'
 
 ## Permission and removal
 
-Gary Carter's FUCQ-40 comment **132468**, **5 November 2026**, permits only the existing two images for the GCSP demo, including versioned runtime retention. Preserve opt-in `gcsp-demo`. After the demo, disable the composition, remove its runtime manifest and assets from source runtime, deployed artifacts and retained distributed copies, and verify removal. Immutable research remains separate. This story grants no further image registration, live access or retail publication.
+Gary Carter's FUCQ-40 comment **132468**, **5 November 2026**, records the historical two-image demo permission. The later [5 November source and collection authorisation](../../fucq-58-source-authorisation-2026-11-05.md) records Gary's confirmation of BMW approval to retain and display public UK configurator configuration data and images for this project for as long as needed, superseding the earlier retention/display restriction and mandatory post-demo deletion. Preserve dated source provenance, separate immutable research, opt-in `gcsp-demo`, and representative/unknown-fidelity labels. FUCQ-42 adds no runtime registration, live provider integration or retail publication permission.
 
 ## Validation scope
 
