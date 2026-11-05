@@ -393,6 +393,81 @@ The additive assumed key `manual.context.v1` owns synthetic driver/contract/loca
 
 `buildServer({ gcspIdentity, gcspClock, gcspManual, gcspAllowedOrigins })` exposes guarded GET account/draft/stock and POST draft under `/api/gcsp/manual`. Existing role/current-run/origin/no-store boundaries apply; query selectors and body authority overrides are invalid. Missing service composition is unavailable.
 
+## Comparison inputs · FUCQ-133
+
+`server/gcsp/comparison/generator.js` separates an explicit asynchronous read from pure generation.
+`loadComparisonPolicy({ policyService, policyRead, corpus? })` resolves the active or requested retained version once,
+then pins every assumption and exact grade-allowance read to it. The returned snapshot is deeply immutable.
+`generateComparisonInputs(seed, snapshot, { overlay? })` performs no provider, repository, network, clock or global
+random read. SHA-256 draws are addressed by seed, employee/car index and field; the generator version identifies
+that algorithm. An explicit seed may be a nonempty string or safe integer; `comparison.seeds` supplies the default list.
+There is no automatic job or route and no write to the live run, policy or corpus.
+
+All entries below are in the canonical `seed-v1.json` assumptions table and read through PolicyService. Each is
+`assumed`, with value, unit, basis, source/date (5 November 2026), effective date and policy version. They describe
+fictional scenario inputs, not BMW cohort measurements or a verified operating policy.
+
+| Key | Unit / purpose |
+|---|---|
+| `comparison.cohortSize` | Employees; requested default 1,000. |
+| `comparison.seeds` | Declared seed list; default comparison-a/b/c, without selecting a winning run. |
+| `comparison.startsAt` | Fixed UTC scenario origin, supplied rather than read from a clock. |
+| `comparison.horizonDays` | Days in the synthetic release/renewal window. |
+| `comparison.gradeDistribution` | Weighted exact company/scheme/grade contexts. Numeric monthly allowances come from canonical `getAllowance`, without a second copied allowance table. |
+| `comparison.pointsAllowanceMultiplier` | Baseline 1; explicit alternative-points multiplier over those canonical allowances. |
+| `comparison.renewalDays` | Inclusive uniform minimum/maximum day offsets within the horizon. |
+| `comparison.needs.v1` | Weighted underlying essential templates and separate registered preference-value distributions. |
+| `comparison.importanceDistribution` | Independent weighted importance distribution on the shared brief scale. |
+| `comparison.briefNoise.v1` | Probability of an accurate stated preference/value-importance pair; unsupported alternatives are never invented. Essentials are preserved. |
+| `comparison.accessGroups` | Weighted fictional group IDs, each with inclusive uniform access/response bounds in seconds. |
+| `comparison.buddyUptake` | Participation probability, applied independently of access group and needs. |
+| `comparison.carsPerEmployee` | Whole-cohort stock density, rounded once. Zero stock is permitted. |
+| `comparison.modelLineMix` | Weighted mix over explicitly available configuration model lines. |
+| `comparison.releaseCadence` | First release day, interval days and batch size; the final release must fit the horizon. |
+| `comparison.configurationSet.v1` | Reviewed limited fixtures or pinned corpus references, with dataset/version, basis and review date. |
+| `comparison.maximumGeneratedRows` | Bounded employees-plus-stock materialisation limit, checked before generation. |
+
+The reader also retains canonical allowance provenance, `employee.recommendation.v1`, `brief.slider.minimum` /
+`maximum`, the four `stock.configuration.*` signature rules and `hold.buddy.durationSeconds`. These are existing
+shared contracts, not duplicate comparison defaults. A missing key/allowance, unsupported value, mixed version or
+unavailable provider throws a safe `ComparisonInputError` with `code` and `key`; there is no fallback to local values.
+
+A fixture configuration has a target Base64 `configurationId` matching its explicit VG model code, colon and sorted
+factory-code list under Q13. The initial three **structural synthetic fixtures** use clearly fictional CMP/REF codes
+and limited source model labels (`G20 Saloon|320i`, `G21 Touring|320i`, `G61 i5|i5 40`). They have no observed factory
+options, complete specification or constructibility/full-scheme-coverage claim. This is the permitted temporary
+reviewed fixture route, not FUCQ-77 corpus publication or FUCQ-78 live stock. Their source review checks the retained
+Q13 rules and the existing allocator's UUID-v4 shape; executable signature/reader evidence remains a required check.
+
+For `kind: corpus`, the key supplies `datasetId`, `version`, `manifestDigest` and exact model-line/configuration /
+snapshot references. The reader calls the existing `getConfiguration(id)` port and requires each record and active
+manifest identity to match. Missing/changed/unavailable corpus records fail explicitly; they never silently switch
+to fixtures. It snapshots immutable configuration/source fields, without publishing or selecting a corpus.
+
+Output is `{ employees, stock, releaseSchedule, manifest }`, deeply immutable. Each employee has an opaque fictional
+ID, exact scheme/grade context, monthly points/unit, renewal instant, `underlyingNeeds` (essential values and
+preferences with independent importance), `statedBrief`, access group/delays and buddy participation. The stated
+brief uses the existing read-only brief schema v1 and labels confirmed values `synthetic-stated-brief`; it does not
+claim real employee confirmation or create an identity/session. Access and response delays are seconds relative to
+later route events. Each car has a deterministic synthetic UUID-v4 `orderUuid`, `configurationId`, snapshot and
+model-line reference (`eligibilityModelKey`), immutable descriptive configuration and explicit synthetic provenance.
+It has no VIN. A release has `{ releaseId, at, orderUuids }`; each generated car occurs in exactly one release.
+
+An overlay is an explicit map of supported comparison keys to replacement **values**, plus the existing buddy-hold
+duration for a later sweep. Grade-context and configuration-source replacement require preparing a new canonical
+snapshot; overlays cannot replace provenance or introduce configuration identities. Values are validated against
+the same units/types/ranges before any rows are generated. No publish method is called. The manifest retains the
+actual overlay and its canonical SHA-256 `overlayHash`, so object-key ordering does not change its identity. A hold
+sweep changes recorded assumptions without changing the shared cohort/stock/releases.
+
+The manifest carries `seed`, default `seeds`, `policyVersion`, `generatorVersion`, baseline `policyHash`,
+`configurationHash`/source identity, overlay/hash, origin/horizon, counts and `inputHash`. It retains every consumed
+assumption with provenance and the grade allowance rows; overlaid rows carry `baselineValue` and `overlay: true`.
+This is enough to inspect/repeat the input choice without inferring winners. It always states that the cohort and
+behaviour are fictional and calculated fit is not observed satisfaction. The backend shape fixture is
+`server/test/fixtures/gcsp-comparison-input-shapes.json`; later harness/panel consumers preserve these labels and
+follow the experience contract, shell/palette reference and COMPONENTS.md. No screen is introduced by this module.
+
 ## Ownership and extensions
 
 FUCQ-53's [synthetic identity allocation contract](synthetic-identity-allocation.md) adds offline `allocateSyntheticIdentities` / `allocateInventoryFile` ports, immutable whole-inventory replay, delivered/current-only VIN generation and `publishStockOrders` through the existing repository transaction port. Stock imports start unreleased, carry no VIN and preserve current operational state; `runs.versions.syntheticIdentityInventory` records the artifact revision/digest. Only the seven-digit order reference is exposed by the employee projection. File publication and PostgreSQL import are separate stages with independently atomic failure; this adds no repository table, public write endpoint or scheme-policy source.
@@ -422,6 +497,7 @@ An implementing story adds its schema/key/method and provenance here in the same
 
 | Version / date / owner | Change and keyed assumptions |
 |---|---|
+| 1.0.0 / 2026-11-05 / FUCQ-133 | Adds immutable pinned comparison-policy preparation, pure seeded fictional cohort/stock/releases, the comparison.* assumptions above, explicit what-if overlays and reproducible input manifests. Limited structural fixtures are labelled synthetic; corpus reads require exact retained identity. No runtime route, live-state write, policy publication, migration or existing contract meaning change. |
 | 1.0.0 / 2026-11-05 / FUCQ-30 | Adds local exact/group exclusion, retail predicate, confirmed preference/essential change and reversible undo/reset actions. The shared canonical helper replaces duplicate FUCQ-91 field-change/no-op logic while retaining its public command, transaction, versioning, audit and consent semantics. Complete read-only employee decisions recompute through existing policy/ranker gates. No new policy key, durable lifecycle operation or existing contract meaning change. |
 | 1.0.0 / 2026-11-05 / FUCQ-65 | Adds ManualContextService, five read ports, guarded account/draft/stock routes and assumed `manual.context.v1`. Existing identity/time/policy/repository and typed FUCQ-29 gates remain authority. Additive JSON/receipt conventions preserve consumers. Backend presentation fixtures cover synthetic/mapped employee reads; claims/quotes/expiry, screens, live integration and diagram rendering remain separate. |
 | 1.0.0 / 2026-11-05 / FUCQ-85 | Adds repository currentRun/resetRun, persisted DemoClock/registry/startup/reset and presenter HTTP binding. Adds canonical `clock.commands.v1`, `clock.handler.order.v1`, `clock.scenario.v1`; additive inventory snapshot retains allocator provenance. Same identity authority and employee time port; no existing consumer meaning changes. Backend response fixtures and memory/SQL-driver parity; managed PostgreSQL and draw.io rendering remain unverified. |
