@@ -1,0 +1,6 @@
+{
+  "accepted": { "status": "ok", "value": { "accepted": true, "policyVersion": "policy-test-v2", "effectiveFrom": "2026-11-05T10:00:00.000Z", "publisher": "demo-greg", "publishedAt": "2026-11-05T09:00:00.000Z" }, "contractVersion": "1.0.0", "policyVersion": "policy-test-v2" },
+  "invalid": { "status": "invalid", "code": "invalid-policy-change", "accepted": false, "reasons": [{ "field": "changeSet", "reason": "Supply commandId, expectedActiveVersion, new policyVersion, ISO effectiveFrom and 1 to 100 changes." }], "contractVersion": "1.0.0", "policyVersion": null },
+  "forbidden": { "status": "forbidden", "reason": "This person cannot perform that action.", "accepted": false, "contractVersion": "1.0.0", "policyVersion": null },
+  "stale": { "status": "stale-version", "accepted": false, "expectedVersion": "old", "currentVersion": "gcsp-policy-v1", "action": "refresh", "contractVersion": "1.0.0", "policyVersion": "gcsp-policy-v1" }
+}

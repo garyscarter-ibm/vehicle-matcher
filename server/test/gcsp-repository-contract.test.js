@@ -410,7 +410,7 @@ function driverDouble({ state = { tables: Object.fromEntries(Object.keys(TABLES)
       if (sql.startsWith('INSERT INTO') && sql.includes('.schema_migrations')) {
         applied.push({ version: values[0], filename: values[1], checksum: values[2] }); return { rows: [] };
       }
-      if ((sql.includes('CREATE TABLE "runs"') || sql.includes('CREATE TABLE renewal_cases'))) {
+      if ((sql.includes('CREATE TABLE "runs"') || sql.includes('CREATE TABLE policy_versions') || sql.includes('CREATE TABLE renewal_cases'))) {
         ddlExecutions += 1;
         if (failMigration) throw new Error('PRIVATE_DATABASE_DETAIL');
         return { rows: [] };
@@ -452,10 +452,10 @@ repositoryContract('postgresql driver double (not live SQL)', async () => {
 
 test('postgresql driver: migrations record checksums, rerun once and reject changed history', async () => {
   const driver = driverDouble();
-  assert.deepEqual((await migrationStatus(driver.pool)).value, { current: false, appliedVersions: [], pendingVersions: ['0001', '0003'] });
+  assert.deepEqual((await migrationStatus(driver.pool)).value, { current: false, appliedVersions: [], pendingVersions: ['0001', '0002', '0003'] });
   assert.equal((await migrate(driver.pool)).status, 'ok');
   assert.equal((await migrate(driver.pool)).status, 'ok');
-  assert.equal(driver.ddlExecutions(), 2);
+  assert.equal(driver.ddlExecutions(), 3);
   const migrations = await loadMigrations();
   assert.deepEqual(driver.ledger().map(({version, checksum}) => ({version, checksum})),
     migrations.map(({version, checksum}) => ({version, checksum})));
@@ -463,7 +463,7 @@ test('postgresql driver: migrations record checksums, rerun once and reject chan
   const changed = await migrate(driver.pool);
   assert.equal(changed.reason, 'migration-history-mismatch');
   assert.equal(changed.retryable, false);
-  assert.equal(driver.ddlExecutions(), 2);
+  assert.equal(driver.ddlExecutions(), 3);
   const failed = driverDouble({ failMigration: true });
   assert.equal((await migrate(failed.pool)).status, 'unavailable');
   assert.deepEqual(failed.ledger(), []);
