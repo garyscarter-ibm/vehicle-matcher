@@ -1,0 +1,420 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import pg from 'pg';
+import { createMemoryRepository, createMemoryStore } from '../gcsp/repository/memory.js';
+import { createPostgresRepository } from '../gcsp/repository/postgres.js';
+import { ok, result, inputDigest, TABLES, FOUNDATION_TABLES } from '../gcsp/repository/core.js';
+import { migrate, migrationStatus, loadMigrations } from '../gcsp/migrations/index.js';
+const responseFixtures = JSON.parse(readFileSync(new URL('./fixtures/gcsp-repository-outcomes.json', import.meta.url), 'utf8'));
+
+const ctx = (runId = 'run-a') => ({ environmentId: `environment-${runId}`, runId, principalId: 'trusted-principal', roles: ['employee'] });
+let serial = 0;
+const command = (id = `command-${++serial}`, input = id) => ({ commandId: id, inputDigest: inputDigest(input) });
+const ref = (table, key, context = ctx()) => ({ table, key: { runId: context.runId, ...key } });
+const expiresAt = '2026-11-04T15:00:00.000Z';
+const claimInput = (overrides = {}) => ({ orderUuid: 'car-a', holdId: 'hold-a', claimId: 'claim-a', employeeId: 'employee-a', entitlementSlotId: 'slot-a', type: 'cart', expiresAt, policyVersion: 'policy-1', quoteId: 'quote-a', expectedStockVersion: 1, expectedSlotVersion: 1, ...overrides });
+async function setup(repository, context = ctx()) {
+  const rows = [
+    ['runs', { environmentId: context.environmentId, status: 'active' }],
+    ['employees', { employeeId: 'employee-a' }], ['employees', { employeeId: 'employee-b' }],
+    ['entitlement_slots', { entitlementSlotId: 'slot-a', employeeId: 'employee-a', capacity: 1 }],
+    ['entitlement_slots', { entitlementSlotId: 'slot-b', employeeId: 'employee-b', capacity: 1 }],
+    ['stock', { orderUuid: 'car-a', orderNumber: '0000001', configurationId: 'same-config', state: 'available' }],
+    ['stock', { orderUuid: 'car-b', orderNumber: '0000002', configurationId: 'same-config', state: 'available' }],
+    ['quotes', { quoteId: 'quote-a', orderUuid: 'car-a', employeeId: 'employee-a', policyVersion: 'policy-1' }],
+    ['quotes', { quoteId: 'quote-b', orderUuid: 'car-b', employeeId: 'employee-b', policyVersion: 'policy-1' }],
+    ['quotes', { quoteId: 'quote-ba', orderUuid: 'car-a', employeeId: 'employee-b', policyVersion: 'policy-1' }],
+    ['quotes', { quoteId: 'quote-ab', orderUuid: 'car-b', employeeId: 'employee-a', policyVersion: 'policy-1' }],
+  ];
+  const out = await repository.transaction(context, command(), async (tx) => {
+    for (const [table, row] of rows) {
+      const inserted = await tx.insert(table, { runId: context.runId, ...row });
+      assert.equal(inserted.status, 'ok', JSON.stringify(inserted));
+    }
+    return ok({ seeded: true });
+  });
+  assert.equal(out.status, 'ok', JSON.stringify(out));
+}
+
+// Each factory owns cleanup and supplies reopen() against the exact same backing store/database.
+export function repositoryContract(provider, factory) {
+  test(`${provider}: shared TransactionRepository contract`, async (t) => {
+    const withRepository = async (work) => {
+      const fixture = await factory();
+      let repository = fixture.repository;
+      try {
+        const opened = await repository.open();
+        assert.equal(opened.status, 'ok', JSON.stringify(opened));
+        assert.equal(opened.contractVersion, '1.0.0');
+        await setup(repository);
+        await work(repository, async () => {
+          await repository.close(); repository = await fixture.reopen();
+          assert.equal((await repository.open()).status, 'ok');
+          return repository;
+        });
+      } finally { await repository.close(); await fixture.cleanup?.(); }
+    };
+    await t.test('scoped CRUD, filtering, clones and persistence on reopen', () => withRepository(async (repository, reopen) => {
+      const filtered = await repository.query(ctx(), 'stock', { configurationId: 'same-config' });
+      assert.equal(filtered.value.length, 2);
+      filtered.value[0].state = 'corrupted';
+      assert.equal((await repository.read(ctx(), ref('stock', { orderUuid: 'car-a' }))).value.state, 'available');
+      repository = await reopen();
+      assert.equal((await repository.query(ctx(), 'stock')).value.length, 2);
+      const write = await repository.transaction(ctx(), command(), (tx) => tx.compareAndSwap(ref('stock', { orderUuid: 'car-a' }), 1, { revision: 2 }));
+      assert.equal(write.value.version, 2);
+      assert.equal((await repository.migrationStatus()).value.current, true);
+    }));
+    await t.test('thrown and typed failures roll back even if callback ignores failed operation', () => withRepository(async (repository) => {
+      const thrown = await repository.transaction(ctx(), command(), async (tx) => { await tx.insert('employees', { runId: 'run-a', employeeId: 'throw' }); throw new Error('private detail'); });
+      assert.equal(thrown.status, 'unavailable');
+      assert.equal(JSON.stringify(thrown).includes('private detail'), false);
+      const typed = await repository.transaction(ctx(), command(), async (tx) => { await tx.insert('employees', { runId: 'run-a', employeeId: 'typed' }); return result('conflict', { reason: 'abort', current: {} }); });
+      assert.equal(typed.status, 'conflict');
+      const ignored = await repository.transaction(ctx(), command(), async (tx) => { await tx.insert('employees', { runId: 'run-a', employeeId: 'ignored' }); await tx.insert('stock', { runId: 'run-a', orderUuid: 'new-car', orderNumber: '0000001' }); return ok('would-commit'); });
+      assert.equal(ignored.status, 'conflict');
+      for (const employeeId of ['throw', 'typed', 'ignored']) assert.equal((await repository.read(ctx(), ref('employees', { employeeId }))).status, 'not-found');
+    }));
+    await t.test('simultaneous exact-car claims produce one owner and explicit stale resource', () => withRepository(async (repository) => {
+      const outcomes = await Promise.all([
+        repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput())),
+        repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput({ holdId: 'hold-b', claimId: 'claim-b', employeeId: 'employee-b', entitlementSlotId: 'slot-b', quoteId: 'quote-ba', type: 'buddy-offer' }))),
+      ]);
+      assert.equal(outcomes.filter((outcome) => outcome.status === 'ok').length, 1);
+      const stale = outcomes.find((outcome) => outcome.status === 'stale-version');
+      assert.deepEqual(stale, responseFixtures.staleVersion);
+      assert.equal((await repository.query(ctx(), 'claims')).value.length, 1);
+      const conflict = await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput({ holdId: 'hold-b', claimId: 'claim-b', employeeId: 'employee-b', entitlementSlotId: 'slot-b', quoteId: 'quote-ba', expectedStockVersion: 2 })));
+      assert.equal(conflict.status, 'conflict'); assert.equal(conflict.reason, 'car-occupied');
+      assert.deepEqual(conflict, responseFixtures.conflict);
+      assert.equal(JSON.stringify(conflict).includes('employee-a'), false);
+    }));
+    await t.test('configuration identity never collapses two exact cars', () => withRepository(async (repository) => {
+      assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput()))).status, 'ok');
+      const second = await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput({ orderUuid: 'car-b', holdId: 'hold-b', claimId: 'claim-b', employeeId: 'employee-b', entitlementSlotId: 'slot-b', quoteId: 'quote-b', type: 'buddy-offer' })));
+      assert.equal(second.status, 'ok'); assert.equal(second.value.slotVersion, 2);
+    }));
+    await t.test('pending phases occupy direct holds and claims; slot capacity is enforced', () => withRepository(async (repository) => {
+      await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput()));
+      for (const state of ['claim-pending', 'release-pending', 'selection-pending']) {
+        const current = (await repository.read(ctx(), ref('holds', { holdId: 'hold-a' }))).value;
+        assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.compareAndSwap(ref('holds', { holdId: 'hold-a' }), current.version, { state }))).status, 'ok');
+        const hold = { runId: 'run-a', holdId: 'bypass', orderUuid: 'car-a', employeeId: 'employee-b', entitlementSlotId: 'slot-b', type: 'buddy-offer', state, quoteId: 'quote-ba' };
+        assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.insert('holds', hold))).reason, 'car-occupied');
+      }
+      const capacity = await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput({ orderUuid: 'car-b', holdId: 'hold-other', claimId: 'claim-other', quoteId: 'quote-ab', expectedSlotVersion: 2 })));
+      assert.equal(capacity.reason, 'slot-capacity');
+      assert.equal((await repository.query(ctx(), 'holds')).value.length, 1);
+      assert.equal((await repository.read(ctx(), ref('stock', { orderUuid: 'car-b' }))).value.state, 'available');
+    }));
+    await t.test('slot versions, configured capacity, owner and allocation exclusion', () => withRepository(async (repository) => {
+      const missingCapacity = await repository.transaction(ctx(), command(), (tx) => tx.insert('entitlement_slots', { runId: 'run-a', employeeId: 'employee-a', entitlementSlotId: 'slot-empty' }));
+      assert.equal(missingCapacity.status, 'ok');
+      assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput({ entitlementSlotId: 'slot-empty' })))).code, 'invalid-capacity');
+      assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput({ expectedSlotVersion: 2 })))).resource.table, 'entitlement_slots');
+      assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput({ entitlementSlotId: 'slot-b' })))).status, 'forbidden');
+      await repository.transaction(ctx(), command(), (tx) => tx.compareAndSwap(ref('stock', { orderUuid: 'car-a' }), 1, { state: 'allocated' }));
+      assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput({ expectedStockVersion: 2 })))).reason, 'stock-unavailable');
+    }));
+    await t.test('hold, offer and outbox form one atomic transaction', () => withRepository(async (repository) => {
+      const execute = async (tx, fail) => {
+        const claim = await tx.conditionalClaim(claimInput({ type: 'buddy-offer' }));
+        if (claim.status !== 'ok') return claim;
+        await tx.insert('offers', { runId: 'run-a', offerId: 'offer-a', holdId: 'hold-a', quoteId: 'quote-a' });
+        await tx.enqueueNotification({ jobId: 'job-a', idempotencyKey: 'offer:offer-a:notification:offer:1', inputDigest: 'digest', offerId: 'offer-a', state: 'pending' });
+        return fail ? result('conflict', { reason: 'abort', current: {} }) : ok(claim.value);
+      };
+      assert.equal((await repository.transaction(ctx(), command(), (tx) => execute(tx, true))).status, 'conflict');
+      for (const table of ['holds', 'claims', 'offers', 'notification_outbox']) assert.equal((await repository.query(ctx(), table)).value.length, 0);
+      assert.equal((await repository.transaction(ctx(), command(), (tx) => execute(tx, false))).status, 'ok');
+      for (const table of ['holds', 'claims', 'offers', 'notification_outbox']) assert.equal((await repository.query(ctx(), table)).value.length, 1);
+    }));
+    await t.test('CAS races have one winner; keys and historical rows are immutable', () => withRepository(async (repository) => {
+      const outcomes = await Promise.all([1, 2].map((revision) => repository.transaction(ctx(), command(), (tx) => tx.compareAndSwap(ref('stock', { orderUuid: 'car-a' }), 1, { revision }))));
+      assert.deepEqual(outcomes.map((outcome) => outcome.status).sort(), ['ok', 'stale-version']);
+      assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.compareAndSwap(ref('stock', { orderUuid: 'car-a' }), 2, { orderUuid: 'new-id' }))).code, 'immutable-field');
+      assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.compareAndSwap(ref('quotes', { quoteId: 'quote-a' }), 1, { policyVersion: 'policy-2' }))).code, 'immutable-row');
+      await repository.transaction(ctx(), command(), (tx) => tx.insert('briefs', { runId: 'run-a', employeeId: 'employee-a', briefVersion: 1, status: 'confirmed' }));
+      assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.compareAndSwap(ref('briefs', { employeeId: 'employee-a', briefVersion: 1 }), 1, { status: 'draft' }))).code, 'immutable-row');
+    }));
+    await t.test('command, event and notification replay preserves original outcomes', () => withRepository(async (repository) => {
+      const stable = command('stable');
+      const first = await repository.transaction(ctx(), stable, (tx) => tx.compareAndSwap(ref('stock', { orderUuid: 'car-a' }), 1, { revision: 2 }));
+      const replay = await repository.transaction(ctx(), stable, () => { throw new Error('must not execute'); });
+      assert.deepEqual(replay, first);
+      assert.equal((await repository.transaction(ctx(), command('stable', 'changed'), () => ok(null))).reason, 'idempotency-input-changed');
+      const receipt = { consumerId: 'handler', eventId: 'event', inputDigest: 'same', outcome: ok({ original: 1 }) };
+      const recorded = await repository.transaction(ctx(), command(), (tx) => tx.recordReceipt(receipt));
+      assert.deepEqual(await repository.transaction(ctx(), command(), (tx) => tx.recordReceipt({ ...receipt, outcome: ok({ original: 2 }) })), recorded);
+      assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.recordReceipt({ ...receipt, inputDigest: 'changed' }))).status, 'conflict');
+      assert.deepEqual((await repository.transaction(ctx(), command(), (tx) => tx.getReceipt('handler', 'event'))).value, recorded.value);
+      const job = { jobId: 'job', idempotencyKey: 'stable-job', inputDigest: 'same', state: 'pending' };
+      const queued = await repository.transaction(ctx(), command(), (tx) => tx.enqueueNotification(job));
+      assert.deepEqual(await repository.transaction(ctx(), command(), (tx) => tx.enqueueNotification({ ...job, jobId: 'different-id' })), queued);
+      assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.enqueueNotification({ ...job, inputDigest: 'changed' }))).status, 'conflict');
+      const row = { runId: 'run-a', employeeId: 'replay-row', name: 'First' };
+      const inserted = await repository.transaction(ctx(), command(), (tx) => tx.insert('employees', row));
+      assert.deepEqual(await repository.transaction(ctx(), command(), (tx) => tx.insert('employees', row)), inserted);
+      assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.insert('employees', { ...row, name: 'Changed' }))).status, 'conflict');
+    }));
+    await t.test('run isolation, malformed inputs and future migration refusal', () => withRepository(async (repository) => {
+      await setup(repository, ctx('run-b'));
+      assert.equal((await repository.query(ctx(), 'stock')).value.length, 2);
+      for (const action of [
+        () => repository.read(ctx(), ref('stock', { orderUuid: 'car-a' }, ctx('run-b'))),
+        () => repository.query(ctx(), 'stock', { runId: 'run-b' }),
+        () => repository.transaction(ctx(), command(), (tx) => tx.insert('employees', { runId: 'run-b', employeeId: 'wrong' })),
+      ]) assert.equal((await action()).status, 'stale-run');
+      assert.equal((await repository.query({ ...ctx(), environmentId: 'other' }, 'stock')).status, 'forbidden');
+      assert.equal((await repository.query({}, 'stock')).status, 'invalid');
+      for (const table of ['stock; DROP TABLE stock', 'constructor', '__proto__']) assert.equal((await repository.query(ctx(), table)).code, 'unknown-table');
+      assert.equal((await repository.query(ctx(), 'stock', { unregistered: 1 })).code, 'unknown-field');
+      assert.equal((await repository.read(ctx(), { table: 'stock', key: { orderUuid: 'car-a' } })).code, 'invalid-key');
+      assert.equal((await repository.query(ctx(), 'policy_versions')).code, 'unsupported-table');
+      assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.compareAndSwap(ref('stock', { orderUuid: 'car-a' }), 0, {}))).code, 'invalid-version');
+      assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.insert('stock', JSON.parse('{"runId":"run-a","orderUuid":"bad","constructor":{}}')))).status, 'invalid');
+      await repository.transaction(ctx(), command(), (tx) => tx.compareAndSwap(ref('runs', {}), 1, { status: 'historical' }));
+      assert.equal((await repository.transaction(ctx(), command(), () => ok('forbidden'))).status, 'stale-run');
+      assert.equal((await repository.query(ctx(), 'stock')).status, 'ok');
+    }));
+    await t.test('configured capacity two permits two exact cars for the same slot', () => withRepository(async (repository) => {
+      await repository.transaction(ctx(), command(), (tx) => tx.compareAndSwap(ref('entitlement_slots', { entitlementSlotId: 'slot-a' }), 1, { capacity: 2 }));
+      assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput({ expectedSlotVersion: 2 })))).status, 'ok');
+      assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput({ orderUuid: 'car-b', holdId: 'second', claimId: 'second', quoteId: 'quote-ab', expectedSlotVersion: 3 })))).status, 'ok');
+      assert.equal((await repository.query(ctx(), 'claims')).value.length, 2);
+    }));
+    await t.test('read misses allow receipt creation; escaped transaction and malformed success fail safely', () => withRepository(async (repository) => {
+      let escaped;
+      const outcome = await repository.transaction(ctx(), command(), async (tx) => {
+        escaped = tx;
+        assert.equal((await tx.getReceipt('new-handler', 'new-event')).status, 'not-found');
+        return tx.recordReceipt({ consumerId: 'new-handler', eventId: 'new-event', inputDigest: 'same', outcome: ok('recorded') });
+      });
+      assert.equal(outcome.status, 'ok');
+      assert.equal((await escaped.insert('employees', { runId: 'run-a', employeeId: 'late' })).code, 'transaction-closed');
+      const bad = await repository.transaction(ctx(), command(), async (tx) => {
+        await tx.insert('employees', { runId: 'run-a', employeeId: 'malformed-result' });
+        return { status: 'ok' };
+      });
+      assert.equal(bad.code, 'invalid-outcome');
+      assert.equal((await repository.read(ctx(), ref('employees', { employeeId: 'malformed-result' }))).status, 'not-found');
+    }));
+    await t.test('insert replay retains original row after later CAS; historical command replay is stable', () => withRepository(async (repository) => {
+      const row = { runId: 'run-a', employeeId: 'history', name: 'Original' };
+      const inserted = await repository.transaction(ctx(), command(), (tx) => tx.insert('employees', row));
+      await repository.transaction(ctx(), command(), (tx) => tx.compareAndSwap(ref('employees', { employeeId: 'history' }), 1, { name: 'Updated' }));
+      assert.deepEqual(await repository.transaction(ctx(), command(), (tx) => tx.insert('employees', row)), inserted);
+      const stable = command('before-history');
+      const before = await repository.transaction(ctx(), stable, () => ok({ original: 1 }));
+      await repository.transaction(ctx(), command(), (tx) => tx.compareAndSwap(ref('runs', {}), 1, { status: 'historical' }));
+      assert.deepEqual(await repository.transaction(ctx(), stable, () => ok({ original: 2 })), before);
+    }));
+    await t.test('closed provider returns UI-safe unavailable shape', () => withRepository(async (repository) => {
+      await repository.close();
+      assert.deepEqual(await repository.query(ctx(), 'stock'), responseFixtures.unavailable);
+    }));
+    await t.test('storage types protect occupancy constraints and the run environment', () => withRepository(async (repository) => {
+      const invalidHold = await repository.transaction(ctx(), command(), (tx) => tx.insert('holds', {
+        runId: 'run-a', holdId: 'unknown-state', orderUuid: 'car-a', employeeId: 'employee-a',
+        entitlementSlotId: 'slot-a', type: 'cart', state: 'unknown', quoteId: 'quote-a',
+      }));
+      assert.equal(invalidHold.status, 'invalid');
+      const moved = await repository.transaction(ctx(), command(), (tx) => tx.compareAndSwap(ref('runs', {}), 1, { environmentId: 'other-environment' }));
+      assert.equal(moved.status, 'forbidden');
+      assert.equal((await repository.query(ctx(), 'stock')).status, 'ok');
+    }));
+  });
+}
+
+test('postgresql native constraints reject a second occupying hold and claim', {
+  skip: process.env.GCSP_DATABASE_URL === undefined ? 'GCSP_DATABASE_URL is unset; native SQL constraints were not run' : false,
+}, async () => {
+  const schema = `gcsp_constraints_${process.pid}`;
+  const pool = new pg.Pool({ connectionString: process.env.GCSP_DATABASE_URL, connectionTimeoutMillis: 5000, statement_timeout: 10000 });
+  pool.on('error', () => {});
+  let created = false;
+  const repository = createPostgresRepository({ schema });
+  try {
+    try { await pool.query(`CREATE SCHEMA "${schema}"`); created = true; }
+    catch { throw new Error('PostgreSQL native-constraint fixture unavailable'); }
+    assert.equal((await repository.open()).status, 'ok'); await setup(repository);
+    const claimed = await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput()));
+    assert.equal(claimed.status, 'ok');
+    for (const state of ['active', 'claim-pending', 'release-pending', 'selection-pending']) {
+      const duplicate = { ...claimed.value.hold, holdId: `duplicate-${state}`, state };
+      await assert.rejects(pool.query(`INSERT INTO "${schema}".holds (data) VALUES ($1::jsonb)`, [JSON.stringify(duplicate)]), (error) => error.code === '23505');
+    }
+    await pool.query(`INSERT INTO "${schema}".holds (data) VALUES ($1::jsonb)`, [JSON.stringify({ ...claimed.value.hold, holdId: 'terminal', state: 'released' })]);
+    for (const state of ['active', 'claim-pending', 'release-pending', 'selection-pending']) {
+      const duplicate = { ...claimed.value.claim, claimId: `duplicate-${state}`, holdId: 'terminal', state };
+      await assert.rejects(pool.query(`INSERT INTO "${schema}".claims (data) VALUES ($1::jsonb)`, [JSON.stringify(duplicate)]), (error) => error.code === '23505');
+    }
+  } finally {
+    await repository.close();
+    try { if (created) await pool.query(`DROP SCHEMA "${schema}" CASCADE`); }
+    catch { throw new Error('PostgreSQL native-constraint fixture cleanup incomplete'); }
+    finally { await pool.end(); }
+  }
+});
+
+repositoryContract('memory', async () => {
+  const store = createMemoryStore();
+  return { repository: createMemoryRepository({ store }), reopen: () => createMemoryRepository({ store }) };
+});
+
+test('memory: explicit store and complete foundation vocabulary', async () => {
+  assert.equal((await createMemoryRepository().open()).code, 'missing-store');
+  assert.equal(FOUNDATION_TABLES.length, 17);
+  assert.equal(Object.keys(TABLES).length, 23);
+  assert.equal(inputDigest({ b: 2, a: 1 }), inputDigest({ a: 1, b: 2 }));
+});
+
+if (process.env.GCSP_DATABASE_URL === undefined) {
+  test('postgresql: shared TransactionRepository contract', { skip: 'GCSP_DATABASE_URL is unset; PostgreSQL integration was not run' }, () => {});
+} else {
+  let schemaSerial = 0;
+  repositoryContract('postgresql', async () => {
+    const schema = `gcsp_contract_${process.pid}_${++schemaSerial}`;
+    const pool = new pg.Pool({ connectionString: process.env.GCSP_DATABASE_URL, connectionTimeoutMillis: 5000, statement_timeout: 10000 });
+    pool.on('error', () => {});
+    try { await pool.query(`CREATE SCHEMA "${schema}"`); }
+    catch { await pool.end(); throw new Error('PostgreSQL contract schema setup unavailable'); }
+    return {
+      repository: createPostgresRepository({ schema }),
+      reopen: () => createPostgresRepository({ schema }),
+      async cleanup() {
+        try { await pool.query(`DROP SCHEMA "${schema}" CASCADE`); }
+        catch { throw new Error('PostgreSQL contract schema cleanup incomplete'); }
+        finally { await pool.end(); }
+      },
+    };
+  });
+}
+
+// This driver double tests adapter transaction/failure handling; it does not validate PostgreSQL SQL execution.
+function driverDouble({ state = { tables: Object.fromEntries(Object.keys(TABLES).map((table) => [table, []])) }, failTable, failMigration = false, uncertainCommit = false } = {}) {
+  let data = structuredClone(state);
+  let applied = [];
+  let exists = false;
+  let savepoint;
+  let ddlExecutions = 0;
+  const queries = [];
+  const client = {
+    async query(sql, values = []) {
+      queries.push(sql);
+      if (sql === 'BEGIN') { savepoint = { data: structuredClone(data), applied: structuredClone(applied), exists }; return { rows: [] }; }
+      if (sql === 'ROLLBACK') { if (savepoint) ({ data, applied, exists } = savepoint); savepoint = undefined; return { rows: [] }; }
+      if (sql === 'COMMIT') {
+        savepoint = undefined;
+        if (uncertainCommit && data.tables.holds.length) { uncertainCommit = false; throw new Error('PRIVATE_DATABASE_DETAIL'); }
+        return { rows: [] };
+      }
+      if (sql.startsWith('SELECT to_regclass')) return { rows: [{ name: exists ? 'schema_migrations' : null }] };
+      if (sql.startsWith('SELECT version, filename, checksum')) return { rows: structuredClone(applied) };
+      if (sql.includes('CREATE TABLE IF NOT EXISTS')) { exists = true; return { rows: [] }; }
+      if (sql.startsWith('INSERT INTO') && sql.includes('.schema_migrations')) {
+        applied.push({ version: values[0], filename: values[1], checksum: values[2] }); return { rows: [] };
+      }
+      if (sql.includes('CREATE TABLE "runs"')) {
+        ddlExecutions += 1;
+        if (failMigration) throw new Error('PRIVATE_DATABASE_DETAIL');
+        return { rows: [] };
+      }
+      const table = sql.match(/(?:FROM|INTO|UPDATE) "[a-z_0-9]+"\."([a-z_]+)"/)?.[1];
+      if (sql.startsWith('SELECT data')) return { rows: data.tables[table].filter((row) => !values.length || row.runId === values[0]).map((row) => ({ data: structuredClone(row) })) };
+      if (sql.startsWith('INSERT INTO') && table) {
+        if (table === failTable) throw new Error('PRIVATE_DATABASE_DETAIL');
+        data.tables[table].push(JSON.parse(values[0])); return { rowCount: 1, rows: [] };
+      }
+      if (sql.startsWith('UPDATE') && table) {
+        const replacement = JSON.parse(values[0]);
+        const index = data.tables[table].findIndex((row) => TABLES[table].key.every((key, i) => row[key] === values[i + 1]) && row.version === values.at(-1));
+        if (index < 0) return { rowCount: 0, rows: [] };
+        data.tables[table][index] = replacement; return { rowCount: 1, rows: [] };
+      }
+      return { rows: [] };
+    },
+    release() {},
+  };
+  let queue = Promise.resolve();
+  return {
+    pool: { async connect() {
+      const previous = queue; let release;
+      queue = new Promise((resolve) => { release = resolve; });
+      await previous;
+      return { ...client, release };
+    } },
+    read: () => structuredClone(data), ledger: () => applied, queries,
+    ddlExecutions: () => ddlExecutions,
+  };
+}
+
+repositoryContract('postgresql driver double (not live SQL)', async () => {
+  const driver = driverDouble();
+  return { repository: createPostgresRepository({ pool: driver.pool }), reopen: () => createPostgresRepository({ pool: driver.pool }) };
+});
+
+test('postgresql driver: migrations record checksums, rerun once and reject changed history', async () => {
+  const driver = driverDouble();
+  assert.deepEqual((await migrationStatus(driver.pool)).value, { current: false, appliedVersions: [], pendingVersions: ['0001'] });
+  assert.equal((await migrate(driver.pool)).status, 'ok');
+  assert.equal((await migrate(driver.pool)).status, 'ok');
+  assert.equal(driver.ddlExecutions(), 1);
+  const migrations = await loadMigrations();
+  assert.equal(driver.ledger()[0].checksum, migrations[0].checksum);
+  driver.ledger()[0].checksum = 'changed';
+  const changed = await migrate(driver.pool);
+  assert.equal(changed.reason, 'migration-history-mismatch');
+  assert.equal(changed.retryable, false);
+  assert.equal(driver.ddlExecutions(), 1);
+  const failed = driverDouble({ failMigration: true });
+  assert.equal((await migrate(failed.pool)).status, 'unavailable');
+  assert.deepEqual(failed.ledger(), []);
+  assert.equal(failed.queries.includes('ROLLBACK'), true);
+});
+
+test('postgresql driver: unavailable startup and configuration never expose credentials', async () => {
+  const secret = 'PRIVATE_DATABASE_DETAIL';
+  const repository = createPostgresRepository({ pool: { async connect() { throw new Error(secret); } } });
+  const opened = await repository.open();
+  assert.equal(opened.status, 'unavailable');
+  assert.equal(JSON.stringify(opened).includes(secret), false);
+  assert.equal((await repository.transaction(ctx(), command(), () => ok('fake-success'))).status, 'unavailable');
+  assert.equal((await createPostgresRepository({ connectionString: '' }).open()).code, 'missing-database-url');
+  assert.equal((await createPostgresRepository({ connectionString: 'https://user:PRIVATE_DATABASE_DETAIL@example.invalid' }).open()).code, 'invalid-database-url');
+  assert.equal((await createPostgresRepository({ schema: 'public; invalid' }).open()).code, 'invalid-schema');
+});
+
+test('postgresql driver: a flush failure rolls back claim, offer and outbox without memory fallback', async () => {
+  const store = createMemoryStore();
+  const memory = createMemoryRepository({ store }); await memory.open(); await setup(memory); await memory.close();
+  const driver = driverDouble({ state: store.state, failTable: 'notification_outbox' });
+  const repository = createPostgresRepository({ pool: driver.pool });
+  assert.equal((await repository.open()).status, 'ok');
+  const outcome = await repository.transaction(ctx(), command(), async (tx) => {
+    await tx.conditionalClaim(claimInput({ type: 'buddy-offer' }));
+    await tx.insert('offers', { runId: 'run-a', offerId: 'offer-a', holdId: 'hold-a', quoteId: 'quote-a' });
+    await tx.enqueueNotification({ jobId: 'job', idempotencyKey: 'job-key', inputDigest: 'digest', state: 'pending' });
+    return ok({ accepted: true });
+  });
+  assert.equal(outcome.status, 'unavailable');
+  assert.equal(JSON.stringify(outcome).includes('PRIVATE_DATABASE_DETAIL'), false);
+  for (const table of ['holds', 'claims', 'offers', 'notification_outbox']) assert.equal(driver.read().tables[table].length, 0);
+  assert.equal(driver.read().tables.stock[0].version, 1);
+  assert.equal(driver.queries.includes('ROLLBACK'), true);
+  await repository.close();
+});
+
+test('postgresql driver: uncertain commit is reconciled with the original command id', async () => {
+  const store = createMemoryStore(); const memory = createMemoryRepository({ store });
+  await memory.open(); await setup(memory); await memory.close();
+  const driver = driverDouble({ state: store.state, uncertainCommit: true });
+  const repository = createPostgresRepository({ pool: driver.pool }); await repository.open();
+  const stable = command('uncertain-commit');
+  assert.equal((await repository.transaction(ctx(), stable, (tx) => tx.conditionalClaim(claimInput()))).status, 'unavailable');
+  const replay = await repository.transaction(ctx(), stable, () => { throw new Error('must not repeat'); });
+  assert.equal(replay.status, 'ok'); assert.equal(replay.value.hold.holdId, 'hold-a');
+  assert.equal(driver.read().tables.holds.length, 1);
+  await repository.close();
+});
