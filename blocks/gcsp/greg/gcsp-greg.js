@@ -174,7 +174,7 @@ export function mountGregDashboard(root, ctx = {}) {
   const retry = () => button({ label: 'Retry', variant: 'primary', onClick: () => load() });
 
   function drawMeta(m) {
-    if (!m) { meta.replaceChildren(); return; }
+    if (!m) { meta.replaceChildren(note('No figures loaded.')); return; }
     meta.replaceChildren(
       factList([
         { label: 'Figures for', value: m.asOfLabel },
@@ -218,7 +218,8 @@ export function mountGregDashboard(root, ctx = {}) {
       status.textContent = 'Refreshing the figures.';
     } else {
       status.textContent = 'Loading the demand figures.';
-      body.replaceChildren(note('Loading the demand figures.'));
+      body.replaceChildren();
+      body.setAttribute('aria-busy', 'true');
       drawMeta(null);
     }
     let state;
