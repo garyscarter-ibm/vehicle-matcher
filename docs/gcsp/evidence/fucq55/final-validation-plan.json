@@ -19,7 +19,7 @@
   "supervisor": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq55-20261105-lookup-full-stamp.py",
   "supervisorSha256": "6fcd7c540aa44e92ceb94ed647ff65c07cbd467818476f3463e126693e84994d",
   "phaseLauncher": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq55-20261105-lookup-full-phase.py",
-  "phaseLauncherSha256": "cac1e4af8e732f0e33502e80549f74cd6befb2dc60f0ecbfdc9c990cf5bc72b3",
+  "phaseLauncherSha256": "7fdbbbd6d390758e6b0ea4de64dd83d71c72305ddbaf02e2a05d377a438c9897",
   "gate": "Dispatcher admitted final solefull after source checkpoint incorporating merged133base8c9989c; freshstablehealth/cleanidentity/outsideownership required before launch",
   "budget": {
     "seconds": 600,
@@ -56,5 +56,6 @@
     "status-final"
   ],
   "scope": "Required integration checkpoint covers23/99/125/133+55; no duplicate old scoped suite for handoff",
-  "required_merged_base": "8c9989c"
+  "required_merged_base": "8c9989c",
+  "phase_launcher_change_after_full": "Added explicit PID/group-absence recording for later metadata-only status calls; supervisor hash/settings/environment unchanged, no full rerun"
 }
