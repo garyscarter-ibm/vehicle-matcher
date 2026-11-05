@@ -14,7 +14,7 @@ import { inputDigest, result } from '../../../../server/gcsp/repository/index.js
 
 const ROOT = process.cwd();
 const chunk = process.argv[process.argv.indexOf('--chunk') + 1];
-assert.ok(['flow', 'states'].includes(chunk), 'Use --chunk flow or --chunk states.');
+assert.ok(['flow', 'states', 'theme'].includes(chunk), 'Use --chunk flow, states or theme.');
 assert.ok(process.env.TMPDIR && existsSync(process.env.TMPDIR), 'Supervisor-owned TMPDIR is required.');
 assert.ok(process.env.FUCQ68_HEAD && process.env.FUCQ68_BASE, 'FUCQ68_HEAD and FUCQ68_BASE provenance is required.');
 const scratch = path.resolve(process.env.TMPDIR); const OUT = path.join(ROOT, 'docs/gcsp/evidence/fucq-68', chunk);
@@ -114,6 +114,39 @@ async function capture(name, data = {}) {
   assert.equal(overflow, false); assert.equal(labels, true); sampleProcesses();
 }
 async function saved() { await page.getByRole('heading', { name: 'Availability refreshed', exact: true }).waitFor(); }
+async function themeObservation(width) {
+  await page.evaluate(() => document.fonts.ready);
+  return page.evaluate((viewport) => {
+    const css = (selector, names) => {
+      const node = document.querySelector(selector); const style = getComputedStyle(node);
+      return Object.fromEntries(names.map((name) => [name, style[name]]));
+    };
+    const rgb = (color) => color.match(/[\d.]+/g).slice(0, 3).map(Number);
+    const luminance = (color) => rgb(color).map((part) => {
+      const value = part / 255; return value <= .04045 ? value / 12.92 : ((value + .055) / 1.055) ** 2.4;
+    }).reduce((sum, value, index) => sum + value * [.2126, .7152, .0722][index], 0);
+    const contrast = (a, b) => { const values = [luminance(a), luminance(b)].sort((x, y) => y - x);
+      return Number(((values[0] + .05) / (values[1] + .05)).toFixed(3)); };
+    const shell = css('.gcsp', ['backgroundColor', 'color', 'fontFamily']);
+    const primary = css('.gcsp-setup-actions .vm-btn-primary', ['backgroundColor', 'color', 'borderRadius', 'minHeight']);
+    const muted = css('.gcsp-setup-notice', ['color']); const focused = getComputedStyle(document.activeElement);
+    const focus = { tag: document.activeElement.tagName, name: document.activeElement.getAttribute('name'),
+      outlineColor: focused.outlineColor, outlineWidth: focused.outlineWidth, outlineStyle: focused.outlineStyle,
+      outlineOffset: focused.outlineOffset };
+    return { width: viewport, cssViewport: document.documentElement.clientWidth,
+      scrollWidth: document.documentElement.scrollWidth, shell, primary, muted, focus,
+      title: css('h1.vm-title', ['fontFamily', 'fontWeight', 'fontSize']),
+      fontLoaded: document.fonts.check('500 32px BMWGroupTNCondensedPro-Medium'),
+      loadedFaces: [...document.fonts].filter((face) => face.family.includes('BMWGroupTNCondensedPro')).map((face) => ({ family: face.family, status: face.status, weight: face.weight })),
+      fontResources: performance.getEntriesByType('resource').filter((entry) => /BMWGroupTNCondensedPro-Medium\.woff2/.test(entry.name)).map((entry) => new URL(entry.name).pathname),
+      geometry: { headerHeight: document.querySelector('.gcsp-header').getBoundingClientRect().height,
+        navWidth: document.querySelector('.gcsp-nav').getBoundingClientRect().width,
+        actionHeights: [...document.querySelectorAll('.gcsp-setup-actions button')].map((node) => node.getBoundingClientRect().height) },
+      contrast: { primaryText: contrast(primary.color, primary.backgroundColor), bodyText: contrast(shell.color, shell.backgroundColor),
+        mutedText: contrast(muted.color, shell.backgroundColor), focusOnWhite: contrast(focus.outlineColor, 'rgb(255,255,255)'),
+        focusOnPage: contrast(focus.outlineColor, shell.backgroundColor) } };
+  }, width);
+}
 
 try {
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve)); port = server.address().port; origin = `http://127.0.0.1:${port}`;
@@ -150,7 +183,33 @@ try {
     })());
   });
   for (const width of [1280, 320]) {
-    if (chunk === 'flow') {
+    if (chunk === 'theme') {
+      await prepare('theme', width); await page.evaluate(() => document.fonts.ready);
+      await page.getByRole('button', { name: 'Continue', exact: true }).click();
+      await page.waitForFunction(() => document.activeElement?.textContent === 'Check your choices');
+      await capture(`invalid-${width}`, { summaryFocused: true });
+      await page.keyboard.press('Tab'); await page.keyboard.press('Enter');
+      assert.equal(await field('driverId').evaluate((node) => document.activeElement === node), true);
+      const observation = await themeObservation(width);
+      assert.equal(observation.shell.backgroundColor, 'rgb(245, 246, 246)');
+      assert.equal(observation.primary.backgroundColor, 'rgb(3, 116, 147)');
+      assert.equal(observation.primary.borderRadius, '2px');
+      assert.match(observation.title.fontFamily, /BMWGroupTNCondensedPro-Medium/); assert.equal(observation.title.fontWeight, '500');
+      assert.equal(observation.fontLoaded, true); assert.ok(observation.fontResources.length > 0);
+      assert.ok(observation.loadedFaces.some((face) => face.status === 'loaded' && face.weight === '500'));
+      assert.equal(observation.geometry.headerHeight, 56); if (width === 1280) assert.equal(observation.geometry.navWidth, 48);
+      assert.ok(observation.geometry.actionHeights.every((height) => height >= 48));
+      assert.equal(observation.cssViewport, width); assert.equal(observation.scrollWidth, width);
+      assert.equal(observation.focus.outlineStyle, 'solid'); assert.equal(observation.focus.outlineWidth, '2px');
+      assert.equal(observation.focus.outlineColor, 'rgb(2, 145, 183)');
+      for (const name of ['primaryText', 'bodyText', 'mutedText']) assert.ok(observation.contrast[name] >= 4.5);
+      for (const name of ['focusOnWhite', 'focusOnPage']) assert.ok(observation.contrast[name] >= 3);
+      await capture(`keyboard-focus-${width}`);
+      await fill(); await page.getByRole('button', { name: 'Save choices', exact: true }).click(); await saved();
+      await capture(`saved-${width}`);
+      await prepare('long-unknown', width); await page.evaluate(() => document.fonts.ready); await capture(`long-unknown-${width}`);
+      results.cases.push({ name: 'default-density', ...observation, functionalTraceReused: 'flow/results.json and states/results.json at0a4ff5ac' });
+    } else if (chunk === 'flow') {
       await prepare('flow', width); await page.locator('.gcsp-feature').first().getByRole('button', { name: 'Choose a replacement', exact: true }).click();
       await page.getByRole('heading', { name: 'Your order choices', exact: true }).waitFor();
       await page.getByRole('button', { name: 'Continue', exact: true }).click();
