@@ -2,6 +2,7 @@ import { inputDigest, ok, result } from '../repository/index.js';
 import { validInstant } from '../policy/file-provider.js';
 import { validateBrief } from '../../scenarios/employee/index.js';
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
+import { applyConfirmedFeedbackChange } from '../../../blocks/vehicle-matcher/feedback-actions.js';
 
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v)
   && [Object.prototype, null].includes(Object.getPrototypeOf(v));
@@ -18,8 +19,6 @@ const sorted = (rows) => rows.filter((b) => b.status === 'confirmed').sort((a, b
 const draftRows = (rows) => rows.map((r) => r.outcome.value).sort((a, b) => a.draftVersion - b.draftVersion);
 const projection = (b) => ({ schemaVersion: 1, briefVersion: b.briefVersion, preferences: b.preferences,
   essentials: Object.fromEntries(Object.entries(b.essentials).filter(([key]) => key !== 'charging')) });
-const essentialMeaning = ({ operator, value, unit, state }) => ({ operator,
-  value: operator === 'includes' && Array.isArray(value) ? [...new Set(value)].sort() : value, unit, state });
 
 // Business data lives only behind the repository. Draft receipts are a separate append-only
 // stream; confirmed versions never acquire draft/inferred fields through an update.
@@ -178,20 +177,17 @@ export class BriefService {
         if (decision.value.decision !== 'decline' || !text(decision.value.offerId)) return invalid('decisionId', 'A recorded decline is required.');
         if (state.history.some((b) => b.postDeclineChange?.decisionId === input.decisionId)) return result('conflict', { reason: 'decline-change-already-recorded', current: { briefVersion: version } });
         if (!state.history.some((b) => b.briefVersion === decision.value.versions?.brief)) return invalid('decisionId', 'The decline must reference an approved brief version.');
-        const [section, key] = input.change.path.split('.');
-        if (!Object.hasOwn(brief[section], key)) return invalid('change.path', 'Change an existing registered field.');
-        const before = structuredClone(section === 'preferences' ? brief.preferences[key].value : brief.essentials[key]);
-        if (section === 'preferences') brief.preferences[key] = { ...brief.preferences[key], value: input.change.value, source: 'employee', valueState: 'confirmed', confirmedAt: prepared.now };
-        else brief.essentials[key] = { ...input.change.value, source: 'employee', confirmedAt: prepared.now };
+        const applied = applyConfirmedFeedbackChange(brief, { schemaVersion: 1, id: input.commandId, type: 'confirm-change',
+          target: input.change, reason: 'employee-confirmed-after-decline', scope: { kind: 'employee-draft', id: context.employeeId },
+          expectedVersion: version, confirmation: { actor: 'employee', confirmed: true, at: prepared.now } });
+        if (applied.status !== 'ok') return invalid(applied.code === 'unknown-field' ? 'change.path' : 'change.value',
+          applied.code === 'unchanged-value' ? 'Confirm a different value.' : 'Change an existing registered field with an explicitly confirmed value.');
+        brief = applied.brief;
         const error = this.#validate({ schemaVersion: brief.schemaVersion, preferences: brief.preferences, essentials: brief.essentials,
           ...(brief.currentCarFeedback ? { currentCarFeedback: brief.currentCarFeedback } : {}) }, prepared, true);
         if (error) return error;
-        if (section === 'essentials' && brief.essentials[key].state !== 'confirmed') return invalid('change.value', 'The changed essential must be explicitly confirmed.');
-        const after = section === 'preferences' ? input.change.value : brief.essentials[key];
-        if (inputDigest(section === 'preferences' ? before : essentialMeaning(before))
-          === inputDigest(section === 'preferences' ? after : essentialMeaning(after))) return invalid('change.value', 'Confirm a different value.');
         brief.postDeclineChange = { decisionId: input.decisionId, offerId: decision.value.offerId, fromBriefVersion: version,
-          path: input.change.path, before, after, confirmedBy: context.principalId, confirmedAt: prepared.now };
+          path: input.change.path, before: applied.before, after: applied.after, confirmedBy: context.principalId, confirmedAt: prepared.now };
       }
       brief = { ...brief, runId: context.runId, employeeId: context.employeeId, entitlementSlotId: context.entitlementSlotId,
         renewalId: context.renewalId ?? null, schemaVersion: 1, briefVersion: version + 1, previousBriefVersion: version || null,

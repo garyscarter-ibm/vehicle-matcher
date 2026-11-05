@@ -25,14 +25,19 @@ import {
 } from './brand-copy.js';
 import {
   CONCEPT_LABELS, listingsOf, distanceLabel, matchCard, previewTile,
+  feedbackScope, feedbackUndo,
 } from './result-card.js';
 import {
   isVisible, visibleQuestions, formatSliderValue, renderRangeSlider, renderOptionList,
 } from './question-ui.js';
 import { createPreviewFeed } from './preview-feed.js';
 import { retailContextUrl } from '../share-context.js';
+import {
+  applyBrowseFeedback, createFeedbackState, matchesFeedbackPredicate, reduceFeedback,
+} from '../feedback-actions.js';
 
 const HASH_KEY = 'm';
+let feedbackSessionSequence = 0;
 
 /* ------------------------------ helpers ------------------------------ */
 
@@ -279,15 +284,52 @@ function renderRefine(
    */
   const tasteLeader = tasteLead ? pool[0]?.car.id : null;
   const tasteLed = (alive) => Boolean(tasteLeader) && alive[0]?.car.id === tasteLeader;
-  const active = new Map(); // axis id -> axis
+  const scope = {
+    kind: 'browse', id: `browse-${Date.now().toString(36)}-${++feedbackSessionSequence}`,
+  };
+  let feedback = createFeedbackState(scope);
+  let actionSequence = 0;
+  const presentation = new Map();
+  const nextActionId = (kind) => `${kind}:${++actionSequence}`;
+  const filters = () => feedback.actions.filter((a) => a.type === 'filter');
+  const wants = () => filters().filter((a) => a.id.startsWith('want:'));
+  const hasAxis = (axisId) => wants().some((a) => presentation.get(a.id)?.key === axisId);
 
-  // Everything narrowing the set, positive or negative, in one place: a
-  // required feature and a rejected colour differ only in what they keep. Both
-  // render as removable chips, because a filter the user can't see is one they
-  // can't argue with — and at this stock depth two constraints can empty a
-  // tie, which must be explainable rather than mysterious.
-  const constraints = new Map(); // id -> { label, test(listing) }
-  const hidden = new Set(); // cars waved away with no reason given
+  function applyAction(type, target, reason, kind = 'rule', key = null) {
+    const previous = key && feedback.actions.find((a) => presentation.get(a.id)?.key === key);
+    if (previous) undoActions([previous.id]);
+    const id = nextActionId(kind);
+    const result = reduceFeedback(feedback, {
+      schemaVersion: 1, id, type, target, reason, scope: feedback.scope,
+      expectedVersion: feedback.version,
+    });
+    if (result.status !== 'ok') return false;
+    feedback = result.state;
+    presentation.set(id, { key });
+    return true;
+  }
+
+  function undoActions(actionIds) {
+    const result = reduceFeedback(feedback, {
+      schemaVersion: 1, id: nextActionId('undo'), type: 'undo', target: { actionIds },
+      reason: 'Undo feedback', scope: feedback.scope, expectedVersion: feedback.version,
+    });
+    if (result.status !== 'ok') return false;
+    feedback = result.state;
+    actionIds.forEach((id) => presentation.delete(id));
+    return true;
+  }
+
+  function resetFeedback() {
+    const result = reduceFeedback(feedback, {
+      schemaVersion: 1, id: nextActionId('reset'), type: 'reset', target: {},
+      reason: 'Start again', scope: feedback.scope, expectedVersion: feedback.version,
+    });
+    if (result.status !== 'ok') return false;
+    feedback = result.state;
+    presentation.clear();
+    return true;
+  }
 
   const host = el('div', 'vm-refine');
   const chipRow = el('div', 'vm-chips');
@@ -395,16 +437,7 @@ function renderRefine(
    * and rebuild what the card claims (count, price range, colours) from what
    * actually survived.
    */
-  function narrow(m) {
-    if (hidden.has(m.car.id)) return null;
-    const tests = [...active.values(), ...constraints.values()];
-    const all = listingsOf(m);
-    const kept = all.filter((l) => tests.every((t) => t.test(l)));
-    if (!kept.length) return null;
-    if (kept.length === all.length) return m;
-    return { ...m, car: regroup(m.car, kept), listings: kept };
-  }
-  const surviving = () => pool.map(narrow).filter(Boolean);
+  const surviving = () => applyBrowseFeedback(pool, feedback);
 
   /**
    * The lead of a sorted list: its top car plus anything tied with it. Nothing
@@ -504,11 +537,11 @@ function renderRefine(
     // Siblings count: on a two-colour card, turning down the red is answered
     // by the black one standing behind it, and the card stays.
     const alive = surviving().flatMap(listingsOf);
-    const survives = (test) => alive.some(test);
+    const survives = (predicate) => alive.some((listing) => matchesFeedbackPredicate(listing, predicate));
     const opts = [];
-    const add = (id, label, test) => opts.push({
-      label,
-      apply: () => { constraints.set(id, { label, test }); redraw(); },
+    const add = (key, label, predicate) => opts.push({
+      label, scope: 'Whole current search, across all retailers and listings.',
+      apply: () => { applyAction('filter', predicate, label, 'rule', key); redraw(); },
     });
 
     /*
@@ -534,28 +567,32 @@ function renderRefine(
     // is, so a colour rejection keeps it rather than guessing it away.
     const shadeOf = (l) => l.shade || l.colour;
     const shade = shadeOf(shown) || car.colour?.colour || car.colour?.manufacturerColour;
-    if (shade && survives((l) => shadeOf(l) !== shade)) {
-      add(`!c:${shade}`, `Not the ${shade.toLowerCase()}`, (l) => shadeOf(l) !== shade);
+    const shadeRule = { field: 'shade', operator: 'not-equals', value: shade };
+    if (shade && survives(shadeRule)) {
+      add(`!c:${shade}`, `Not the ${shade.toLowerCase()}`, shadeRule);
     }
     const dearer = Number.isFinite(shown.priceMin) ? shown.priceMin : car.priceMin;
-    if (Number.isFinite(dearer) && survives((l) => l.priceMin < dearer)) {
-      add(`!p:${dearer}`, `Under ${gbp(dearer)}`, (l) => l.priceMin < dearer);
+    const priceRule = { field: 'purchase-price', operator: 'less-than', value: dearer };
+    if (Number.isFinite(dearer) && survives(priceRule)) {
+      add(`!p:${dearer}`, `Under ${gbp(dearer)}`, priceRule);
     }
     const higher = Number.isFinite(shown.mileage) ? shown.mileage : car.mileage;
-    if (Number.isFinite(higher) && survives((l) => l.mileage != null && l.mileage < higher)) {
-      add(`!m:${higher}`, `Fewer than ${higher.toLocaleString('en-GB')} miles`,
-        (l) => l.mileage != null && l.mileage < higher);
+    const mileageRule = { field: 'odometer', operator: 'less-than', value: higher };
+    if (Number.isFinite(higher) && survives(mileageRule)) {
+      add(`!m:${higher}`, `Fewer than ${higher.toLocaleString('en-GB')} miles`, mileageRule);
     }
     const gear = shown.transmission || car.transmission;
-    if (gear && survives((l) => l.transmission && l.transmission !== gear)) {
+    const gearRule = { field: 'transmission', operator: 'not-equals', value: gear };
+    if (gear && alive.some((l) => Boolean(l.transmission) && matchesFeedbackPredicate(l, gearRule))) {
       const want = gear === 'auto' ? 'manual' : 'automatic';
-      add(`!g:${gear}`, `Only ${want}`, (l) => l.transmission !== gear);
+      add(`!g:${gear}`, `Only ${want}`, gearRule);
     }
     // The shrug stays whole-card: "just not this one" is about the model in
     // front of them, not about one of its copies.
     opts.push({
       label: copy.rejectJust,
-      apply: () => { hidden.add(car.id); redraw(); },
+      scope: 'This exact group and model only.',
+      apply: () => { applyAction('exclude-group', { id: car.id }, copy.rejectJust); redraw(); },
     });
     return opts;
   }
@@ -592,18 +629,15 @@ function renderRefine(
      * So the statements keep the state, and they keep the undo with it.
      */
     const learned = [
-      ...[...active.entries()].map(([id, a]) => ({
-        kind: 'want', text: a.label, undo: () => active.delete(id),
-      })),
-      ...[...constraints.entries()].map(([id, c]) => ({
-        kind: 'rule', text: c.label, undo: () => constraints.delete(id),
-      })),
+      ...wants().map((a) => ({ kind: 'want', text: a.reason, actionIds: [a.id] })),
+      ...filters().filter((a) => a.id.startsWith('rule:'))
+        .map((a) => ({ kind: 'rule', text: a.reason, actionIds: [a.id] })),
     ];
-    if (hidden.size) {
-      learned.push({
-        kind: 'rule', text: copy.hiddenChip({ count: hidden.size }), undo: () => hidden.clear(),
-      });
-    }
+    const hiddenActions = feedback.actions.filter((a) => a.type === 'exclude-group');
+    if (hiddenActions.length) learned.push({
+      kind: 'rule', text: copy.hiddenChip({ count: hiddenActions.length }),
+      actionIds: hiddenActions.map((a) => a.id),
+    });
 
     /*
      * Computed against what is ON SCREEN, on every redraw.
@@ -622,11 +656,20 @@ function renderRefine(
      * there for why the cap exists at all).
      */
     for (const axis of refinementAxes(shown.map(listingsOf))) {
-      if (active.has(axis.id)) continue;
+      if (hasAxis(axis.id)) continue;
       const chip = el('button', 'vm-chip', axis.label);
       chip.type = 'button';
       chip.setAttribute('aria-pressed', 'false');
-      chip.addEventListener('click', () => { active.set(axis.id, axis); redraw(); });
+      chip.addEventListener('click', () => {
+        const [kind, value] = axis.id.split(':', 2);
+        const target = kind === 'f'
+          ? { field: 'feature', operator: 'includes', value }
+          : kind === 'g'
+            ? { field: 'transmission', operator: 'equals', value }
+            : { field: 'shade', operator: 'equals', value };
+        applyAction('filter', target, axis.label, 'want', axis.id);
+        redraw();
+      });
       chipRow.append(chip);
     }
 
@@ -647,7 +690,6 @@ function renderRefine(
     // `scoped` picks the "at <retailer>" wording where a frame has one. A frame
     // without one is already scoped in its own copy (the closest frame names
     // the retailer outright), so it needs no variant.
-    const wants = [...active.values(), ...constraints.values()].map((a) => a.label.toLowerCase());
     const say = (kind) => (scoped && frame[`${kind}Here`]) || frame[kind];
     if (!shown.length) {
       // Nothing left to be a tie between — "a one-way tie" is the nonsense a
@@ -703,6 +745,7 @@ function renderRefine(
       briefBlock.append(status);
       status.append(el('p', 'vm-brief-label', copy.briefLabel));
       if (said.length) status.append(el('p', 'vm-brief-said', said.join('  ·  ')));
+      status.append(feedbackScope({ text: 'This session applies to the current search and is not saved.' }));
 
       // Then everything since, each with the means to take it back. The undo
       // lives here because this is now the only place the constraint is
@@ -712,10 +755,10 @@ function renderRefine(
         const row = el('p', `vm-brief-item is-${item.kind}`);
         row.append(el('span', 'vm-brief-mark', item.kind === 'want' ? '+' : '−'));
         row.append(el('span', 'vm-brief-text', item.text));
-        const undo = el('button', 'vm-brief-undo', '✕');
-        undo.type = 'button';
-        undo.setAttribute('aria-label', `Remove ${item.text}`);
-        undo.addEventListener('click', () => { item.undo(); redraw(); });
+        const undo = feedbackUndo({
+          text: item.text,
+          onUndo: () => { undoActions(item.actionIds); redraw(); },
+        });
         row.append(undo);
         status.append(row);
       });
@@ -734,7 +777,7 @@ function renderRefine(
        * by removing a card.
        */
       if (learned.length) {
-        const picked = [...active.values()].map((a) => a.label.toLowerCase());
+        const picked = wants().map((a) => a.reason.toLowerCase());
         /*
          * No denominator. It has been wrong three ways and the third is what
          * killed the idea:
@@ -778,15 +821,14 @@ function renderRefine(
       // stock, which we haven't checked. Rejection (the next step) can empty a
       // set for real, and this is what it will land on.
       const dead = el('div', 'vm-refine-empty');
-      dead.append(el('p', 'vm-refine-empty-text', wants.length
-        ? copy.refineEmpty({ wants: andList(wants) })
+      const appliedLabels = filters().map((a) => a.reason.toLowerCase());
+      dead.append(el('p', 'vm-refine-empty-text', appliedLabels.length
+        ? copy.refineEmpty({ wants: andList(appliedLabels) })
         : copy.refineEmptyHidden));
       const clear = el('button', 'vm-btn vm-btn-ghost', 'Start again');
       clear.type = 'button';
       clear.addEventListener('click', () => {
-        active.clear();
-        constraints.clear();
-        hidden.clear();
+        resetFeedback();
         redraw();
       });
       dead.append(clear);
@@ -1089,35 +1131,6 @@ function answersFromHash(questions) {
 
 /** A listing's normalised shade ("Blue"), falling back to its marketing name. */
 const shadeOf = (l) => l.shade || l.colour;
-
-/**
- * Rebuild a grouped card from the listings that survived filtering.
- *
- * Everything the card claims about stock depth — "4 available, £31,498 to
- * £36,890, in Portimao Blue, Brooklyn Grey or Alpine White" — is derived, so
- * once a filter removes two of those four the card must stop saying it has
- * them. The representative fields (paint, price, mileage, link) follow the
- * best-ranked survivor; `id` deliberately does not move, because it is what
- * "just not this one" remembers the card by.
- */
-function regroup(car, kept) {
-  const head = kept[0];
-  const prices = kept.map((l) => l.priceMin).filter(Number.isFinite);
-  return {
-    ...car,
-    photo: head.photo || car.photo,
-    colour: head.colour ? { manufacturerColour: head.colour, colour: head.shade } : car.colour,
-    priceMin: head.priceMin ?? car.priceMin,
-    mileage: head.mileage ?? car.mileage,
-    transmission: head.transmission ?? car.transmission,
-    link: head.link || car.link,
-    listingCount: kept.length,
-    priceFrom: prices.length ? Math.min(...prices) : car.priceFrom,
-    priceTo: prices.length ? Math.max(...prices) : car.priceTo,
-    colours: [...new Set(kept.map((l) => l.colour).filter(Boolean))],
-    features: [...new Set(kept.flatMap((l) => l.features || []))],
-  };
-}
 
 /**
  * The ways this set of cards can still be split, as chips.
