@@ -465,8 +465,11 @@ The manifest carries `seed`, default `seeds`, `policyVersion`, `generatorVersion
 assumption with provenance and the grade allowance rows; overlaid rows carry `baselineValue` and `overlay: true`.
 This is enough to inspect/repeat the input choice without inferring winners. It always states that the cohort and
 behaviour are fictional and calculated fit is not observed satisfaction. The backend shape fixture is
-`server/test/fixtures/gcsp-comparison-input-shapes.json`; later harness/panel consumers preserve these labels and
-follow the experience contract, shell/palette reference and COMPONENTS.md. No screen is introduced by this module.
+`server/test/fixtures/gcsp-comparison-input-shapes.json`. The complete representative output and manifest are
+`server/test/fixtures/gcsp-comparison-representative.json`: three fictional employees/cars and one release, with
+the small cohort/density overlay explicitly retained. Its regression reproduces the complete fixture from the
+pinned policy and recorded seed/overlay. Later harness/panel consumers preserve these labels and follow the
+experience contract, shell/palette reference and COMPONENTS.md. No screen is introduced by this module.
 
 ## Ownership and extensions
 

@@ -289,3 +289,12 @@ test('backend shape fixture supplies the harness and panel contract', async () =
   assert.deepEqual(Object.keys(output.manifest).sort(), fixture.manifestFields);
   assert.deepEqual(output.manifest.limitations, fixture.limitations);
 });
+
+test('representative complete output and manifest fixture reproduces its explicit synthetic overlay', async () => {
+  const fixture = JSON.parse(await readFile(new URL('./fixtures/gcsp-comparison-representative.json', import.meta.url), 'utf8'));
+  const output = generateComparisonInputs(fixture.manifest.seed, prepared, { overlay: fixture.manifest.overlay });
+  assert.deepEqual(output, fixture);
+  assert.equal(output.employees.length, 3, 'small presentation fixture, explicitly recorded in its overlay');
+  assert.equal(output.manifest.assumptions.length, Object.keys(prepared.assumptions).length);
+  assert.deepEqual(output.manifest.allowances, prepared.allowances);
+});
