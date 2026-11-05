@@ -34,7 +34,7 @@ The meta strip shows the demo-clock time, policy and brief versions, the basis (
 
 ## Reserved regions
 
-Four empty, labelled `<section>`s below the live figures hold the places for later work, with one honest line each and no figures: `data-region="publish"`, `"order-tracking"`, `"prediction"` (FUCQ-74) and `"route-comparison"` (FUCQ-132). `teardown.regions` (and the element's `regions`) is `{ publish, orderTracking, prediction, routeComparison }`, the nodes later stories fill.
+Five empty, labelled `<section>`s below the live figures hold the places for later work, with one honest line each and no figures: `data-region="publish"`, `"order-tracking"`, `"prediction"` (FUCQ-74), `"route-comparison"` (FUCQ-138) and `"case-queue"` (FUCQ-122). `teardown.regions` (and the element's `regions`) is `{ publish, orderTracking, prediction, routeComparison, caseQueue }`, the nodes later stories fill.
 
 ## Harness and CSP
 

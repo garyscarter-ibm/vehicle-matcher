@@ -26,6 +26,7 @@ const REGIONS = Object.freeze([
   ['orderTracking', 'order-tracking', 'Order tracking', 'Order tracking is not built in this demo yet.'],
   ['prediction', 'prediction', 'Prediction', 'The prediction panel is not built in this demo yet.'],
   ['routeComparison', 'route-comparison', 'Route comparison', 'Route comparison is not built in this demo yet.'],
+  ['caseQueue', 'case-queue', 'Case queue', 'The scheme team case queue is not built in this demo yet.'],
 ]);
 let uid = 0;
 
@@ -140,7 +141,7 @@ function reservedRegions() {
 /**
  * Mount the dashboard in root. ctx: { loadDemand({ signal }) -> state, signal, onUnavailable(reason) }.
  * State: { status: 'ready', projection } | { status: 'conflict' | 'unavailable' | 'refused', message }.
- * Returns a teardown function with refresh() and regions { publish, orderTracking, prediction, routeComparison }.
+ * Returns a teardown function with refresh() and regions { publish, orderTracking, prediction, routeComparison, caseQueue }.
  */
 export function mountGregDashboard(root, ctx = {}) {
   const abort = new AbortController();

@@ -161,10 +161,10 @@ test('refresh fixture: Refresh changes figures, as-of and versions, keeps focus 
 
 test('reserved regions are labelled, empty of figures and tables, and returned by teardown.regions', async () => {
   const { root, teardown } = await mountFixture('populated');
-  const names = ['publish', 'order-tracking', 'prediction', 'route-comparison'];
+  const names = ['publish', 'order-tracking', 'prediction', 'route-comparison', 'case-queue'];
   const nodes = names.map((n) => root.querySelector(`section[data-region="${n}"]`));
   assert.ok(nodes.every(Boolean));
-  assert.deepEqual(Object.keys(teardown.regions), ['publish', 'orderTracking', 'prediction', 'routeComparison']);
+  assert.deepEqual(Object.keys(teardown.regions), ['publish', 'orderTracking', 'prediction', 'routeComparison', 'caseQueue']);
   assert.deepEqual(Object.values(teardown.regions), nodes);
   for (const node of nodes) {
     assert.equal(node.querySelectorAll('table, .gcsp-tile, dl, svg').length, 0);
@@ -260,7 +260,7 @@ test('the custom element reads fixture and adapter, emits events, exposes region
   await tick();
   assert.deepEqual(events, ['dashboard']);
   assert.match(node.textContent, /09:40 GMT/);
-  assert.equal(Object.keys(node.regions).length, 4);
+  assert.equal(Object.keys(node.regions).length, 5);
   await node.refresh();
   await tick();
   assert.match(node.textContent, /10:25 GMT/);
