@@ -30,6 +30,7 @@ import {
   isVisible, visibleQuestions, formatSliderValue, renderRangeSlider, renderOptionList,
 } from './question-ui.js';
 import { createPreviewFeed } from './preview-feed.js';
+import { retailContextUrl } from '../share-context.js';
 
 const HASH_KEY = 'm';
 
@@ -1034,8 +1035,13 @@ function rescueNote(ctx, rescued, nearest) {
  * ./preview-feed.js for the debounced preview. The question widgets themselves
  * (visibility, the sliders, the option list) are shared too: ./question-ui.js. */
 
-function encodeAnswers(answers) {
-  const json = JSON.stringify(answers);
+function encodeAnswers(answers, questions) {
+  // A legacy hash may contain unrelated fields. Only public quiz question IDs
+  // belong in a newly generated answer link, never identity or private briefs.
+  const publicAnswers = Object.fromEntries(questions
+    .filter((q) => Object.hasOwn(answers, q.id))
+    .map((q) => [q.id, answers[q.id]]));
+  const json = JSON.stringify(publicAnswers);
   return btoa(unescape(encodeURIComponent(json)))
     .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
@@ -1851,7 +1857,7 @@ async function renderResults(root, ctx, answers) {
   const share = el('button', 'vm-btn vm-btn-primary', 'Copy share link');
   share.type = 'button';
   share.addEventListener('click', async () => {
-    const url = `${window.location.origin}${window.location.pathname}#${HASH_KEY}=${encodeAnswers(answers)}`;
+    const url = retailContextUrl(window.location.href, ctx, `#${HASH_KEY}=${encodeAnswers(answers, ctx.questions)}`);
     try {
       await navigator.clipboard.writeText(url);
       share.textContent = 'Link copied';
@@ -1873,7 +1879,7 @@ async function renderResults(root, ctx, answers) {
     ctx.previewFeed.cancel();
     ctx.preview = { matches: [], seq: ctx.preview.seq + 1, loaded: false };
     ctx.editReturnIndex = null;
-    window.history.replaceState(null, '', window.location.pathname);
+    window.history.replaceState(null, '', retailContextUrl(window.location.href, ctx));
     ctx.showIntro();
   });
   actions.append(share, tweak, retake);
@@ -2036,7 +2042,7 @@ function mount(root, ctx) {
   ctx.showResults = (answers, { updateHash = false } = {}) => {
     feed.cancel();
     if (updateHash) {
-      window.history.replaceState(null, '', `#${HASH_KEY}=${encodeAnswers(answers)}`);
+      window.history.replaceState(null, '', retailContextUrl(window.location.href, ctx, `#${HASH_KEY}=${encodeAnswers(answers, ctx.questions)}`));
     }
     renderResults(root, ctx, answers);
   };
