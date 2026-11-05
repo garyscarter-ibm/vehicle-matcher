@@ -1379,8 +1379,61 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-115"
+      "observed_at": "2026-11-05T23:57:58Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-115",
+      "slices": [
+        {
+          "id": "contract",
+          "status": "complete",
+          "title": "Contract-and-source-review",
+          "observed_at": "2026-11-05T23:57:58Z",
+          "evidence": "Lead read full story and contracts, verified existing demand-planning association, inspected published 113 transitive closure: docs/gcsp/models/fucq115-contract.md and source/policy proposals. Actual integrations retained as separate gates."
+        },
+        {
+          "id": "optimizer",
+          "status": "in-progress",
+          "title": "Features-splits-and-regularised-optimizer",
+          "observed_at": "2026-11-05T23:57:58Z"
+        },
+        {
+          "id": "dataset",
+          "status": "not-started",
+          "title": "Published-generator-and-meaningful-dataset"
+        },
+        {
+          "id": "evaluation",
+          "status": "not-started",
+          "title": "Actual-baselines-and-held-out-evaluation"
+        },
+        {
+          "id": "artifact",
+          "status": "not-started",
+          "title": "Immutable-artifact-and-safe-summary"
+        },
+        {
+          "id": "policy",
+          "status": "not-started",
+          "title": "Canonical-policy-adoption-and-dated-activation"
+        },
+        {
+          "id": "acceptance",
+          "status": "not-started",
+          "title": "Integration-and-final-acceptance"
+        }
+      ],
+      "unsliced": false,
+      "workers": [
+        {
+          "name": "Pluto",
+          "harness": "codex",
+          "role": "story-lead/direct initial slice",
+          "observed_at": "2026-11-05T23:57:00.180130Z",
+          "expires_at": "2026-11-06T01:57:00.180351Z",
+          "source": "thread 01a1ae22-e1cc-74a0-9717-21082afb1fd1",
+          "status": "contract and independent offline model slice"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-04-092"
     },
     {
       "id": "FUCQ-116",

@@ -1,0 +1,83 @@
+{
+  "status": "proposed-not-adopted",
+  "story": "FUCQ-115",
+  "definitions": [
+    {
+      "key": "choice.training.regularization",
+      "value": 0.001,
+      "unit": "dimensionless",
+      "status": "assumed",
+      "basis": "L2 penalty on average negative conditional log likelihood; small interpretable demo starting value.",
+      "source": "docs/gcsp/models/fucq115-contract.md",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "choice.training.split.v1",
+      "value": {
+        "lastTrainingCycleIndex": 1,
+        "evaluationCycleIndices": [
+          2,
+          3
+        ],
+        "cohortField": "gradeId",
+        "heldOutCohorts": [
+          "G8"
+        ]
+      },
+      "unit": "split-specification",
+      "status": "assumed",
+      "basis": "Earlier two cycles train; later two evaluate. Grade G8 is excluded from all training; verify support before running.",
+      "source": "docs/gcsp/models/fucq115-contract.md",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "choice.training.featureSet",
+      "value": "vehicle-preference-v1",
+      "unit": "feature-version",
+      "status": "assumed",
+      "basis": "Interpretable vehicle body/fuel/capacity/cost and stated-preference/importance/essential-capacity interactions.",
+      "source": "docs/gcsp/models/fucq115-contract.md",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "choice.training.optimizer.v1",
+      "value": {
+        "maxIterations": 1500,
+        "gradientTolerance": 1e-06,
+        "initialStep": 1,
+        "maxBacktracks": 30
+      },
+      "unit": "optimizer-settings",
+      "status": "assumed",
+      "basis": "Deterministic bounded full-batch gradient descent with Armijo line search.",
+      "source": "docs/gcsp/models/fucq115-contract.md",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "choice.evaluation.v1",
+      "value": {
+        "reliabilityBands": 10,
+        "thinClassMinimum": 20,
+        "logFloor": 1e-15
+      },
+      "unit": "evaluation-settings",
+      "status": "assumed",
+      "basis": "Ten probability bands; flag groups under 20 choices; explicit numerical logarithm floor, with zero-probability events counted.",
+      "source": "docs/gcsp/models/fucq115-contract.md",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "choice.model.reference",
+      "value": {
+        "artifactId": "unavailable",
+        "featureVersion": "unavailable",
+        "schemaVersion": 1
+      },
+      "unit": "immutable-model-reference",
+      "status": "assumed",
+      "basis": "No model is active until a reviewed artifact digest is published through the existing dated policy operation.",
+      "source": "docs/gcsp/models/fucq115-contract.md",
+      "sourceDate": "2026-11-05"
+    }
+  ]
+}
