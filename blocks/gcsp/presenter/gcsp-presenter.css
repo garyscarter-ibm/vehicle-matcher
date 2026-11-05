@@ -13,8 +13,8 @@
 .gcsp .gcsp-mail-row { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; width: 100%; min-height: 44px; padding: 12px 14px; text-align: left; font: inherit; color: var(--gcsp-text); background: var(--gcsp-surface-raised); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); cursor: pointer; }
 .gcsp .gcsp-mail-row:hover { background: var(--gcsp-surface-muted); }
 .gcsp .gcsp-mail-row[aria-current="true"] { background: var(--gcsp-accent-soft); border-color: var(--gcsp-accent); box-shadow: 0 0 0 1px var(--gcsp-accent); }
-.gcsp .gcsp-mail-row[aria-current="true"] .gcsp-mail-to { font-weight: 700; }
-.gcsp .gcsp-mail-to { font-weight: 600; overflow-wrap: anywhere; }
+.gcsp .gcsp-mail-row[aria-current="true"] .gcsp-mail-to { font-weight: var(--gcsp-font-strong-weight); }
+.gcsp .gcsp-mail-to { font-weight: var(--gcsp-font-weight); overflow-wrap: anywhere; }
 .gcsp .gcsp-mail-subject { overflow-wrap: anywhere; }
 .gcsp .gcsp-mail-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; color: var(--gcsp-text-muted); font-size: 14px; }
 .gcsp .gcsp-mail-hint { color: var(--gcsp-text-muted); font-size: 14px; overflow-wrap: anywhere; }
@@ -31,7 +31,7 @@
 .gcsp .gcsp-mail-sub { margin: 4px 0 0; font-size: 16px; font-weight: 600; }
 .gcsp .gcsp-mail-facts { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
 .gcsp .gcsp-mail-frame { display: block; width: 100%; height: 520px; border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); background: var(--gcsp-surface); }
-.gcsp .gcsp-mail-text { margin: 0; padding: 12px; font: 14px/1.5 ui-monospace, Menlo, Consolas, monospace; white-space: pre-wrap; overflow-wrap: anywhere; background: var(--gcsp-surface-page); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
+.gcsp .gcsp-mail-text { margin: 0; padding: 12px; font: var(--gcsp-font-weight) 14px/1.5 var(--gcsp-font-code); white-space: pre-wrap; overflow-wrap: anywhere; background: var(--gcsp-surface-page); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
 .gcsp .gcsp-mail-explain { margin: 0; padding: 12px 14px; font-weight: 600; background: var(--gcsp-surface-page); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); overflow-wrap: anywhere; }
 .gcsp .gcsp-mail-explain.is-warn { color: var(--gcsp-warning); }
 .gcsp .gcsp-mail-explain.is-bad { color: var(--gcsp-danger); }
