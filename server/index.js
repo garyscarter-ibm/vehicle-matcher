@@ -47,6 +47,7 @@ import { geocodePostcode } from './geocode.js';
 import { createGcspHandler } from './gcsp/identity/http.js';
 import { createEmployeeRecommendationRoutes } from './gcsp/recommendation/http.js';
 import { createClockRoutes } from './gcsp/clock/http.js';
+import { createScenarioRoutes } from './gcsp/scenarios/http.js';
 import { createBriefRoutes } from './gcsp/brief/http.js';
 import { createManualContextRoutes } from './gcsp/manual-context/http.js';
 
@@ -847,7 +848,7 @@ export function buildServer(deps = {}) {
     identity: deps.gcspIdentity,
     routes: [...createEmployeeRecommendationRoutes(deps.gcspClock && deps.gcspRecommendations
       ? { ...deps.gcspRecommendations, time: deps.gcspClock } : deps.gcspRecommendations),
-    ...createClockRoutes(deps.gcspClock), ...createBriefRoutes(deps.gcspBrief), ...createManualContextRoutes(deps.gcspManual), ...(deps.gcspRoutes || [])],
+    ...createClockRoutes(deps.gcspClock), ...createScenarioRoutes(deps.gcspScenarios, deps.gcspClock), ...createBriefRoutes(deps.gcspBrief), ...createManualContextRoutes(deps.gcspManual), ...(deps.gcspRoutes || [])],
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
 

@@ -1,15 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createPolicyService } from '../gcsp/policy/index.js';
+import { createPolicyService, PolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { createScenarioService } from '../gcsp/scenarios/index.js';
 import { prepareScenarioFixture } from '../gcsp/fixtures/scenarios/index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest } from '../gcsp/repository/index.js';
 
-async function setup() {
+async function setup({ policy = createPolicyService() } = {}) {
   const store = createMemoryStore();
   const repository = createMemoryRepository({ store }); await repository.open();
-  const policy = createPolicyService();
   const runtime = await createDemoRuntime({ repository, policy, environmentId: 'scenario-test', environmentKind: 'synthetic',
     policyAsOf: '2026-11-05T00:00:00.000Z', commandId: 'bootstrap', sessionNow: () => '2026-11-05T00:00:00.000Z', secureCookies: true });
   assert.equal(runtime.status, 'ok');
@@ -118,11 +117,10 @@ test('prepared fixture identity is trusted and immutable; fabricated functions a
 
 test('HTTP named controls use presenter cookie, exact Origin, no-store and85 cookie rollover/replay', async () => {
   const { buildServer } = await import('../index.js');
-  const { createScenarioRoutes } = await import('../gcsp/scenarios/http.js');
   const { once } = await import('node:events');
   const f = await setup();
   const server = buildServer({ gcspIdentity: f.identity, gcspClock: f.clock,
-    gcspRoutes: createScenarioRoutes(f.scenarios, f.clock), gcspAllowedOrigins: ['https://scenario.test'] });
+    gcspScenarios: f.scenarios, gcspAllowedOrigins: ['https://scenario.test'] });
   try {
     await server.gcspStartup; server.listen(0, '127.0.0.1'); await once(server, 'listening');
     const cookie = f.session.value.setCookie.map((c) => c.split(';')[0]).join('; ');
@@ -151,4 +149,49 @@ test('HTTP named controls use presenter cookie, exact Origin, no-store and85 coo
     const replay = await request('/reset', input); assert.deepEqual(replay.outcome, reset.outcome);
     assert.equal((await request('/reset', { ...input, commandId: 'changed' })).outcome.status, 'stale-run');
   } finally { await new Promise((resolve) => server.close(resolve)); }
+});
+
+test('presentation fixture agrees with computed catalogue/refusal/reset/current response contracts', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const fixture = JSON.parse(await readFile(new URL('../gcsp/fixtures/scenarios/presentation-v1.json', import.meta.url), 'utf8'));
+  const f = await setup(); const catalogue = (await f.scenarios.readCatalogue(f.presenter)).value;
+  assert.equal(catalogue.catalogueVersion, fixture.catalogueVersion);
+  assert.deepEqual(catalogue.scenarios.filter((s) => s.kind === 'journey').map((s) => s.scenarioId), fixture.journeyIds);
+  const mechanics = support(catalogue);
+  assert.deepEqual(Object.fromEntries(Object.keys(fixture.mechanics).map((key) => [key, mechanics[key]])), fixture.mechanics);
+  const state = (await f.scenarios.readState(f.presenter)).value;
+  assert.deepEqual(Object.keys(state), fixture.currentFields);
+  assert.deepEqual(await f.scenarios.reset(f.presenter, command(state, catalogue.scenarios[1])), fixture.unavailable);
+  const reset = await f.scenarios.reset(f.presenter, command(state, mechanics)); assert.equal(reset.status, 'ok');
+  assert.deepEqual(Object.keys(reset.value), fixture.resetFields);
+  assert.equal(JSON.stringify(reset).includes('snapshot'), false);
+  assert.equal(JSON.stringify(reset).includes('gcsp_session'), false);
+});
+
+test('catalogue and real reset use changed canonical clock configuration without local scenario defaults', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
+  const config = seed.assumptions.find((a) => a.key === 'clock.scenario.v1');
+  config.value.startsAt = '2026-11-05T08:00:00.000Z';
+  config.value.namedTimes.release = '2026-11-05T08:30:00.000Z';
+  const policy = new PolicyService({ provider: { loadVersions: async () => [seed] } });
+  const f = await setup({ policy }); const catalogue = (await f.scenarios.readCatalogue(f.presenter)).value;
+  assert.ok(catalogue.scenarios.every((s) => s.clockStart === config.value.startsAt && s.namedTimes.release === config.value.namedTimes.release));
+  const state = (await f.scenarios.readState(f.presenter)).value;
+  const outcome = await f.scenarios.reset(f.presenter, command(state, support(catalogue), 'x'.repeat(128)));
+  assert.equal(outcome.status, 'ok'); assert.equal(outcome.value.now, config.value.startsAt);
+});
+
+test('unavailable policy or a different policy authority cannot prepare or partly reset a run', async () => {
+  const f = await setup(); const state = (await f.clock.readState(f.presenter)).value;
+  const read = { runId: state.runId, asOf: state.now, policyVersion: state.versions.policy };
+  const before = snapshot(f);
+  const failedPolicy = new PolicyService({ provider: { loadVersions: async () => { throw new Error('offline'); } } });
+  assert.equal((await prepareScenarioFixture({ scenarioId: 'gcsp-clock-scenario-v1', policy: failedPolicy, read })).status, 'unavailable');
+  assert.equal((await prepareScenarioFixture({ scenarioId: 'gcsp-clock-scenario-v1', policy: { getAssumption: () => ({ status: 'ok' }) }, read })).status, 'unavailable');
+  const foreign = await prepareScenarioFixture({ scenarioId: 'gcsp-clock-scenario-v1', policy: createPolicyService(), read });
+  const input = { commandId: 'foreign', expectedRunId: state.runId, expectedRunVersion: state.runVersion,
+    scenarioVersion: state.versions.scenario, fixtureVersion: state.versions.fixture };
+  assert.equal((await f.clock.reset(f.presenter, input, foreign.value)).status, 'invalid');
+  assert.equal(snapshot(f), before);
 });

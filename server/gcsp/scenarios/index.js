@@ -2,7 +2,7 @@ import { DemoClock } from '../clock/index.js';
 import { DemoIdentityAdapter } from '../identity/index.js';
 import { PolicyService } from '../policy/index.js';
 import { loadScenarioCatalogue, prepareScenarioFixture } from '../fixtures/scenarios/index.js';
-import { ok, result } from '../repository/core.js';
+import { inputDigest, ok, result } from '../repository/core.js';
 
 const text = (v) => typeof v === 'string' && v.length > 0 && v.length <= 128;
 const invalid = () => result('invalid', { code: 'invalid-scenario-command', reasons: [{ field: 'reset', reason: 'Supply scenario, fixture and policy versions with the current run/version and commandId.' }] });
@@ -62,7 +62,7 @@ export class ScenarioService {
     if (allowed.value?.historical && scenario.kind !== 'mechanics') return result('stale-run', { reason: 'This request belongs to an earlier demonstration run.' });
     const fixture = await prepareScenarioFixture({ scenarioId: scenario.scenarioId, policy: this.#policy, read: this.#read(run.value) });
     if (fixture.status !== 'ok') return fixture;
-    return this.#clock.reset(context, { commandId: `scenario:${input.commandId}`, expectedRunId: input.expectedRunId,
+    return this.#clock.reset(context, { commandId: `scenario:${inputDigest(input.commandId)}`, expectedRunId: input.expectedRunId,
       expectedRunVersion: input.expectedRunVersion, scenarioVersion: input.scenarioVersion, fixtureVersion: input.fixtureVersion }, fixture.value);
   }
 }
