@@ -30,7 +30,6 @@
  * font-display: swap so text paints immediately in the fallback and swaps to
  * the brand face when it arrives.
  * ------------------------------------------------------------------------- */
-
 /* Design tokens (every --vm-* custom property) live in a sibling file so they
    can be shared with the demo chrome and the neutral brand picker. Imported
    here, at the very top, because a real EDS page auto-loads ONLY this file —
@@ -38,7 +37,7 @@
    self-contained. @import must precede all other rules (the @font-face run
    below included), so it stays first. See tokens.css for the :root vs .vm split. */
 @import url('./tokens.css');
-
+@import url('./decision-card.css');
 /* BMW Type Next — shared by BMW cars and BMW Motorrad. woff2 only. */
 @font-face {
   font-family: 'BMW Type Next';

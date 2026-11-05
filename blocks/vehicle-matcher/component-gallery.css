@@ -4,7 +4,6 @@ body {
   color: var(--vm-ink);
   font-family: var(--vm-font-body);
 }
-
 main {
   width: 100%;
   max-width: 1280px;
@@ -87,3 +86,8 @@ main {
 .vm-gallery-gcsp-frame { height: 280px; overflow: auto; border: 1px solid var(--gcsp-divider); }
 .vm-gallery-gcsp-frame .gcsp { min-height: 100%; }
 .vm-gallery-gcsp-nav { height: 320px; max-width: 260px; }
+
+.vm-gallery-employee-decision { margin-top: var(--vm-space-8); padding: var(--vm-space-6); }
+.vm-gallery-decision-body { max-width: 760px; margin: 0 auto; }
+.vm-gallery-decision-states { display: grid; gap: var(--vm-space-4); margin-top: var(--vm-space-6); }
+@media (max-width: 560px) { .vm-gallery-employee-decision { padding: var(--vm-space-3); } }

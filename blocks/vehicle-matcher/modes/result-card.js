@@ -15,7 +15,7 @@
  * Brand voice comes from ./brand-copy.js; the card holds no copy of its own.
  */
 
-import { el, gbp } from '../ui.js';
+import { el, gbp, button, factList, formatTerm } from '../ui.js';
 import { BRAND_COPY, TRADE_COPY, tradeLines, orList, EXACT_LISTING_COPY } from './brand-copy.js';
 
 export const SPEC_LABELS = {
@@ -130,7 +130,7 @@ export const KIT_SHOWN = 6;
  * entry for an ungrouped car and N for a grouped one, so nothing downstream
  * has to care which it is holding.
  */
-export const listingsOf = (m) => m.listings || [];
+export const listingsOf = (m, { view } = {}) => view ? (view.members || []) : (m.listings || []);
 
 
 /** Miles from the configured retailer, e.g. "18.1 miles away". */
@@ -139,21 +139,9 @@ export function distanceLabel(distance) {
   return `${miles} ${miles === 1 ? 'mile' : 'miles'} away`;
 }
 
-/**
- * The photo band every card surface shares: the retailer's picture when the
- * feed supplied one, the "Images coming soon" placeholder when it didn't, and
- * the line label pinned in the corner. Mirrors usedcars.bmw.co.uk's own PDP
- * for a photo-less listing — a white bold caption centred on the dark field.
- *
- * Returns the element and a `showPhoto` to change it later. The swap exists
- * because a hero card's listing picker can change which car the card is
- * describing, and colour is usually the entire reason that choice exists: a
- * card that renames the paint over a picture of the old one has argued against
- * itself. Tiles never call it a second time, but they get it from here anyway
- * — this was two near-identical copies, and the copy the picker didn't use was
- * the copy that quietly stopped matching.
- */
-export function mediaWell(car, extraClass = '', { placeholder = 'Images coming soon' } = {}) {
+/** Shared photo/placeholder well; showPhoto updates exact imagery, alt, line and optional caption. */
+export function mediaWell(car, extraClass = '', { placeholder = 'Images coming soon', view } = {}) {
+  if (view) car = { name: view.display?.name, line: view.display?.line, photo: view.media?.src, ...view.media };
   const media = el('div', `vm-card-media${extraClass ? ` ${extraClass}` : ''}`);
   media.append(
     el('span', 'vm-card-soon', placeholder),
@@ -161,47 +149,39 @@ export function mediaWell(car, extraClass = '', { placeholder = 'Images coming s
   );
 
   function showPhoto(src, selected = car) {
-    media.querySelector('.vm-card-line').textContent = selected.line || car.line || '';
+    media.querySelector('.vm-card-line').textContent = view ? selected.line || '' : selected.line || car.line || '';
     media.querySelector('.vm-card-photo')?.remove();
+    media.querySelector('.vm-media-caption')?.remove();
     media.classList.toggle('has-photo', Boolean(src));
     if (!src) return;
     const img = el('img', 'vm-card-photo');
     img.src = src;
-    img.alt = selected.name || car.name;
+    img.alt = selected.alt || selected.name || car.name;
     img.loading = 'lazy';
     // A broken image URL shouldn't leave a half-rendered card — drop back to
     // the placeholder, exactly as a photo-less car shows.
     img.addEventListener('error', () => {
-      if (img.parentElement === media) media.classList.remove('has-photo');
+      if (img.parentElement !== media) return;
+      media.classList.remove('has-photo');
+      media.querySelector('.vm-media-caption')?.remove();
       img.remove();
     });
     // Ahead of the caption and the line label, both of which sit over it.
     media.prepend(img);
+    if (selected.caption) media.append(el('span', 'vm-media-caption', selected.caption));
   }
   showPhoto(car.photo);
 
   return { media, showPhoto };
 }
 
-/**
- * One result card.
- * `big` adds the "why it suits you" reasons; `compact` is the carousel tile —
- * same anatomy, but trades the blurb and reasons for a distance line.
- *
- * `showScore` and `showPaint` exist for the hard-filter mode (modes/guess-who.js),
- * which is not a recommender:
- *  - showScore: false — there is no score. A hard filter says yes or no, so a
- *    badge would either print "undefined%" or invent a 100% the engine never
- *    awarded. Every scoring mode leaves it alone and keeps its badge.
- *  - showPaint: true — put the paint in a COMPACT card's spec line, which it
- *    normally omits for width. A mode whose whole premise is filtering by colour
- *    has to name the colour on the cars it filtered down to.
- */
+/** Shared result card: legacy retail options or explicit exact-member view data (see COMPONENTS.md). */
 export function matchCard(match, {
   big = false, compact = false, brand: brandKey = 'bmw',
   showScore = true, showPaint = false,
-  rejectOptions, rejectLabel, rejectPrompt, onListingSelect,
+  rejectOptions, rejectLabel, rejectPrompt, onListingSelect, view, onAction,
 } = {}) {
+  if (view) return explicitViewCard(view, { compact, showScore, onListingSelect, onAction });
   const { car } = match;
   const listings = listingsOf(match);
   const copy = BRAND_COPY[brandKey] || BRAND_COPY.bmw;
@@ -598,13 +578,9 @@ export function matchCard(match, {
   return card;
 }
 
-/**
- * A small "mini" tile for the live preview strip — deliberately lighter than the
- * results-page compact card (matchCard): a small photo (or the "Images coming
- * soon" placeholder), the model name + match score, and one spec line. The whole
- * tile is a link to the live listing when the feed gave us one.
- */
-export function previewTile(match) {
+/** Lightweight retail preview, or the shared explicit view contract without retail label inference. */
+export function previewTile(match, { view, onListingSelect, onAction } = {}) {
+  if (view) return matchCard(match, { view, compact: true, onListingSelect, onAction });
   const { car, score } = match;
   // A grouped card prices the whole group; a single listing prices itself.
   const price = car.listingCount > 1 && car.priceFrom !== car.priceTo
@@ -636,4 +612,89 @@ export function previewTile(match) {
   body.append(head, specs);
   tile.append(media, body);
   return tile;
+}
+
+
+let viewCardSequence = 0;
+const gateLabels = { eligible: 'Eligible', ineligible: 'Not eligible', 'needs-confirmation': 'Needs confirmation' };
+const decisionText = (entry) => typeof entry === 'string' ? entry : entry?.text || entry?.reason || entry?.code?.replaceAll('-', ' ') || 'Not supplied';
+
+// The explicit projection is display data only; the caller owns decisions, transport and state.
+function explicitViewCard(view, { compact, showScore, onListingSelect, onAction }) {
+  const members = listingsOf(null, { view });
+  if (!members.length) throw new TypeError('An explicit card view requires exact members');
+  let selected = members.find((member) => member.id === view.selectedId) || members[0];
+  const instance = ++viewCardSequence;
+  const card = el('article', `vm-card vm-card-explicit${compact ? ' vm-card-compact' : ''}`);
+  const { media, showPhoto } = mediaWell({}, '', { view: selected, placeholder: 'No image for this car yet' });
+  const body = el('div', 'vm-card-body');
+  const head = el('div', 'vm-card-head');
+  const name = el('h3', 'vm-card-name');
+  const score = el('span', 'vm-score');
+  head.append(name, score);
+  const terms = el('div', 'vm-card-terms');
+  const facts = el('div', 'vm-card-facts');
+  const decision = el('div', 'vm-card-decision');
+  decision.setAttribute('aria-live', 'polite');
+  const actions = el('div', 'vm-card-actions');
+  const picker = el('div', 'vm-pick');
+  picker.setAttribute('role', 'group');
+  picker.setAttribute('aria-label', 'Exact cars');
+  body.append(head, terms, facts, decision, picker, actions);
+  card.append(media, body);
+  function render() {
+    card.dataset.memberId = selected.id;
+    name.textContent = selected.display?.name || 'Car name not supplied';
+    const exact = selected.decision;
+    const eligible = exact?.gateStatus === 'eligible';
+    card.dataset.gate = exact?.gateStatus || 'unknown';
+    score.hidden = !showScore || !Number.isFinite(exact?.score);
+    score.textContent = score.hidden ? '' : `${exact.score}%`;
+    score.title = 'Preference match score';
+    showPhoto(selected.media?.src, { ...selected.display, ...selected.media });
+    terms.replaceChildren(...(selected.terms?.length ? selected.terms : [{}]).map((term) => el('p', 'vm-specs', formatTerm(term))));
+    facts.replaceChildren(factList((selected.facts || []).map((row) => ({ ...row, missingLabel: row.missingLabel || `Not supplied${row.unit ? ` (${row.unit})` : ''}` }))));
+    decision.replaceChildren(el('p', 'vm-card-gate', gateLabels[exact?.gateStatus] || 'Decision not supplied'));
+    for (const [key, label] of [['reasons', 'Why it suits you'], ['blockers', 'Why it is not eligible'], ['unknowns', 'Needs confirmation'], ['tradeOffs', 'Trade-offs']]) {
+      if (!exact?.[key]?.length) continue;
+      const list = el('ul', 'vm-reasons');
+      exact[key].forEach((entry) => list.append(el('li', null, decisionText(entry))));
+      decision.append(el('p', 'vm-why-label', label), list);
+    }
+    picker.querySelectorAll('button').forEach((node, i) => {
+      const active = members[i] === selected;
+      node.classList.toggle('is-on', active);
+      node.setAttribute('aria-pressed', String(active));
+    });
+    actions.replaceChildren();
+    for (const [index, action] of (selected.actions || []).entries()) {
+      const gated = ['accept', 'reserve'].includes(action.kind) && !eligible;
+      const disabled = gated || Boolean(action.disabled) || typeof onAction !== 'function';
+      const reason = action.disabledReason || (gated ? 'An eligible exact decision is required.' : disabled ? 'This action is not available.' : '');
+      const reasonId = `vm-card-action-${instance}-${index}`;
+      const control = button({ label: action.label, variant: action.variant, disabled,
+        describedBy: disabled ? reasonId : undefined,
+        onClick: () => { if (!disabled) onAction(action, selected); } });
+      control.dataset.actionId = action.id;
+      actions.append(control);
+      if (disabled) {
+        const why = feedbackScope({ text: reason });
+        why.id = reasonId;
+        actions.append(why);
+      }
+      if (action.scope) actions.append(feedbackScope({ text: action.scope }));
+    }
+  }
+  if (members.length > 1) members.forEach((member, i) => {
+    const choice = button({ label: member.display?.pickerLabel || member.display?.name || `Option ${i + 1}`, variant: 'ghost', onClick: () => {
+      selected = member;
+      render();
+      onListingSelect?.(member);
+    } });
+    choice.classList.add('vm-pick-opt');
+    picker.append(choice);
+  });
+  picker.hidden = members.length < 2;
+  render();
+  return card;
 }

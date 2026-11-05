@@ -1,3 +1,4 @@
+import { employeeCardFixture } from './employee-card-fixture.js';
 import { applyBrowseFeedback, applyConfirmedFeedbackChange, createFeedbackState, matchesFeedbackPredicate, reduceFeedback } from './feedback-actions.js';
 import { el, screenIntro, button, statusScreen, factList } from './ui.js';
 import { feedbackButton, feedbackScope, feedbackUndo, matchCard, mediaWell } from './modes/result-card.js';
@@ -120,6 +121,33 @@ function gcspExamples() {
   return section;
 }
 
+export function employeeDecisionExample() {
+  const section = el('section', 'vm-gallery-section vm-gallery-employee-decision gcsp');
+  section.setAttribute('aria-label', 'Employee decision card');
+  const scope = el('div', 'vm vm-gallery-decision-body');
+  scope.append(screenIntro({ kicker: 'Choices', title: 'Exact employee decisions', level: 2,
+    lede: 'Synthetic display snapshot from the FUCQ-29 recommendation service and canonical policy. Inspect each exact car to see its facts, points and eligibility together.' }));
+  const status = feedbackScope({ text: 'Selections and feedback affect this preview only. Nothing is saved or reserved.' });
+  status.setAttribute('role', 'status');
+  const view = structuredClone(employeeCardFixture);
+  const card = matchCard(null, { view,
+    onListingSelect: (member) => { status.textContent = `Inspecting ${member.display.name}. Preview only.`; },
+    onAction: (action, member) => {
+      status.replaceChildren(document.createTextNode(`${action.kind === 'feedback' ? 'Feedback shown for' : 'Selected for this preview:'} ${member.display.name}. Nothing is saved or reserved.`));
+      if (action.kind === 'feedback') status.append(feedbackUndo({ text: 'local feedback', onUndo: () => { status.textContent = 'Local feedback undone. Nothing is saved or reserved.'; } }));
+    },
+  });
+  const examples = el('div', 'vm-gallery-decision-states');
+  for (const [title, message] of [
+    ['Loading your matches', 'Checking exact vehicle facts and scheme terms.'],
+    ['No matching cars', 'No exact cars meet the current essentials. Review your choices.'],
+    ['Some details need confirmation', 'Unknown exact facts cannot establish eligibility.'],
+  ]) examples.append(statusScreen({ kicker: 'Choices', title, message }));
+  scope.append(status, card, examples);
+  section.append(scope);
+  return section;
+}
+
 export function mountComponentGallery(root) {
   const browseScope = { kind: 'browse', id: browseSession };
   let browseFeedback = createFeedbackState(browseScope);
@@ -188,7 +216,7 @@ export function mountComponentGallery(root) {
   exactControls.append(legacyButton, refineButton, exactReset);
   exact.append(exactControls, exactCards);
   sections.append(exact);
-  root.append(heading, sections, gcspExamples());
+  root.append(heading, sections, employeeDecisionExample(), gcspExamples());
 
   function dispatchBrowse(type, target, reason) {
     const result = reduceFeedback(browseFeedback, {
