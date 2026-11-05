@@ -1,5 +1,49 @@
-import { el } from '../vehicle-matcher/ui.js';
-import { ENTRY_REGISTRY, buildEntryUrl } from './entry-context.js';
+import { el, button } from '../vehicle-matcher/ui.js';
+import { ENTRY_REGISTRY, brandChangeUrl, buildEntryUrl } from './entry-context.js';
+
+const navigationObservers = new WeakMap();
+
+// Share one wrapper per window; observers never change native history outcomes.
+export function observeRetailNavigation(win, onNavigate) {
+  let observer = navigationObservers.get(win);
+  if (!observer) {
+    const callbacks = new Set();
+    const notify = () => callbacks.forEach((callback) => {
+      try { callback(); } catch { /* Optional navigation chrome cannot block history. */ }
+    });
+    const methods = ['pushState', 'replaceState'].map((name) => {
+      const original = win.history[name];
+      const descriptor = Object.getOwnPropertyDescriptor(win.history, name);
+      const wrapper = function (...args) {
+        const result = Reflect.apply(original, this, args);
+        notify();
+        return result;
+      };
+      win.history[name] = wrapper;
+      return { name, descriptor, wrapper };
+    });
+    const events = ['popstate', 'hashchange', 'pageshow'];
+    events.forEach((name) => win.addEventListener(name, notify));
+    observer = { callbacks, destroy() {
+      events.forEach((name) => win.removeEventListener(name, notify));
+      methods.forEach(({ name, descriptor, wrapper }) => {
+        if (win.history[name] !== wrapper) return;
+        if (descriptor) Object.defineProperty(win.history, name, descriptor);
+        else delete win.history[name];
+      });
+      navigationObservers.delete(win);
+    } };
+    navigationObservers.set(win, observer);
+  }
+  observer.callbacks.add(onNavigate);
+  let active = true;
+  return () => {
+    if (!active) return;
+    active = false;
+    observer.callbacks.delete(onNavigate);
+    if (!observer.callbacks.size) observer.destroy();
+  };
+}
 
 // The retained retail harness owns its chrome and pool-label overrides.
 export function createRetailChrome({ root, params, DEFAULT_API }) {
@@ -150,16 +194,23 @@ function brandAccent(key) {
 function renderPicker() {
   root.innerHTML = `
     <div class="demo-picker">
+      <div class="demo-picker-intro">
+        <h1>Choose your brand</h1>
+        <p>Choosing a brand starts a new search and resets your answers and retailer.</p>
+      </div>
       <div class="demo-picker-grid"></div>
     </div>`;
 
+  const intro = root.querySelector('.demo-picker-intro');
+  intro.prepend(button({ label: 'All car experiences', variant: 'ghost',
+    href: buildEntryUrl(window.location.href, { experience: 'launcher' }) }));
   const grid = root.querySelector('.demo-picker-grid');
   PICKER_ORDER.forEach((key) => {
     const b = BRANDS[key];
     const tile = el('a');
     tile.className = 'demo-picker-tile';
     tile.style.setProperty('--tile-accent', brandAccent(key));
-    tile.href = buildEntryUrl(window.location.href, { experience: 'used-cars', brand: key });
+    tile.href = buildEntryUrl(new URL(brandChangeUrl(window.location.href, key), window.location.href), { experience: 'used-cars' });
     const plate = el('span');
     plate.className = 'demo-picker-logo';
     plate.append(logoNode(key, b.label, 'demo-picker-tile-label'));
@@ -183,6 +234,7 @@ function renderShell(brandKey) {
         <span class="demo-nav-logo"></span>
         <nav class="demo-nav-links">${linkList(b.navLinks)}</nav>
         <span class="demo-nav-spacer"></span>
+        <nav class="demo-nav-experiences" aria-label="Car experiences"></nav>
         <a class="demo-nav-back" href="https://${b.origin}" target="_blank" rel="noopener">Back to the real ${esc(b.origin)}</a>
       </header>
 
@@ -216,6 +268,13 @@ function renderShell(brandKey) {
   root.querySelectorAll('.demo-nav-links a, .demo-footer-links a').forEach((link) => {
     link.addEventListener('click', (event) => event.preventDefault());
   });
+  const navigation = root.querySelector('.demo-nav-experiences');
+  for (const [route, label] of [['launcher', 'All car experiences'], ['brand', 'Change brand']]) {
+    const link = button({ label, variant: 'ghost', href: '#' });
+    link.dataset.retailRoute = route;
+    navigation.append(link);
+  }
+  updateNavigation(window.location.href);
   root.querySelector('.demo-nav-logo').append(logoNode(brandKey, b.label, 'demo-logo-text'));
 
   const hero = document.getElementById('demo-hero');
@@ -247,5 +306,12 @@ function applyOverrides(block, brandKey) {
   setRow('retailer name', params.get('retailerName') || poolNameFor(brandKey, retailerId));
 }
 
-return { renderPicker, renderShell, applyOverrides };
+function updateNavigation(input) {
+  const launcher = root.querySelector('[data-retail-route="launcher"]');
+  const picker = root.querySelector('[data-retail-route="brand"]');
+  if (launcher) launcher.href = buildEntryUrl(input, { experience: 'launcher' });
+  if (picker) picker.href = buildEntryUrl(new URL(brandChangeUrl(input, null), input), { experience: 'used-cars' });
+}
+
+return { renderPicker, renderShell, applyOverrides, updateNavigation };
 }

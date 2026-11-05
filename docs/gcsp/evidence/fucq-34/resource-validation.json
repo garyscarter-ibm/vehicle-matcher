@@ -1,0 +1,488 @@
+{
+  "story": "FUCQ-34",
+  "source_head": "91a473b3995d2d3573a80bfb0d1e3ec71f087c3a",
+  "date": "2026-11-05",
+  "all_owned_manifest_count": 38,
+  "receipt_file": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/final-cleanup-1793892743656078000-receipt.json",
+  "receipt_sha256": "18b404cd3150847dec874fccc4f91b205a5766d12fa8c734796d0b13deed69c5",
+  "receipt": {
+    "GCSP_DATABASE_URL_unset": true,
+    "all_owned_reservations_absent": true,
+    "host_registry": "/Users/garycarter/.cache/agent-scaffolding/test-resources/reservations.json",
+    "manifests": [
+      {
+        "groups": [
+          37419
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/04c228253a9b41648460f8495c8f7c2a.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-04c228253a9b41648460f8495c8f7c2a",
+        "root_absent": true,
+        "state": "removed",
+        "token": "04c228253a9b41648460f8495c8f7c2a"
+      },
+      {
+        "groups": [
+          87655
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/061f65361aea462aba6ba8d38ecab495.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/implementer/test-stamp-shard-061f65361aea462aba6ba8d38ecab495",
+        "root_absent": true,
+        "state": "removed",
+        "token": "061f65361aea462aba6ba8d38ecab495"
+      },
+      {
+        "groups": [
+          86322
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/0751c521456c4fb58d72433fac813f6f.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/implementer/test-stamp-shard-0751c521456c4fb58d72433fac813f6f",
+        "root_absent": true,
+        "state": "removed",
+        "token": "0751c521456c4fb58d72433fac813f6f"
+      },
+      {
+        "groups": [
+          2355
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/09a8c86b1455498586237ef583f5931a.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/implementer/test-stamp-shard-09a8c86b1455498586237ef583f5931a",
+        "root_absent": true,
+        "state": "removed",
+        "token": "09a8c86b1455498586237ef583f5931a"
+      },
+      {
+        "groups": [
+          28451
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/1696871ccd694303aea19c9be4c085d7.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-1696871ccd694303aea19c9be4c085d7",
+        "root_absent": true,
+        "state": "removed",
+        "token": "1696871ccd694303aea19c9be4c085d7"
+      },
+      {
+        "groups": [
+          2439
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/19d01d231ded46b1b50e904a6c55954e.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/implementer/test-stamp-shard-19d01d231ded46b1b50e904a6c55954e",
+        "root_absent": true,
+        "state": "removed",
+        "token": "19d01d231ded46b1b50e904a6c55954e"
+      },
+      {
+        "groups": [
+          28402
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/24dc0d1ed8504aed8e2da3ea6584ef65.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-24dc0d1ed8504aed8e2da3ea6584ef65",
+        "root_absent": true,
+        "state": "removed",
+        "token": "24dc0d1ed8504aed8e2da3ea6584ef65"
+      },
+      {
+        "groups": [
+          22071
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/250f639abd9d403298f27c350db89b46.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-250f639abd9d403298f27c350db89b46",
+        "root_absent": true,
+        "state": "removed",
+        "token": "250f639abd9d403298f27c350db89b46"
+      },
+      {
+        "groups": [
+          87747
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/2908e8d9c7f7408b9605e7c1833a8c8f.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/implementer/test-stamp-shard-2908e8d9c7f7408b9605e7c1833a8c8f",
+        "root_absent": true,
+        "state": "removed",
+        "token": "2908e8d9c7f7408b9605e7c1833a8c8f"
+      },
+      {
+        "groups": [
+          6866
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/2991a347f38d4e2baf740802cf5d767b.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-2991a347f38d4e2baf740802cf5d767b",
+        "root_absent": true,
+        "state": "removed",
+        "token": "2991a347f38d4e2baf740802cf5d767b"
+      },
+      {
+        "groups": [
+          4394
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/37219be15d6f4131a6739f9c5405e1fc.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/implementer/test-stamp-shard-37219be15d6f4131a6739f9c5405e1fc",
+        "root_absent": true,
+        "state": "removed",
+        "token": "37219be15d6f4131a6739f9c5405e1fc"
+      },
+      {
+        "groups": [
+          40010
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/4b89bd64fb4d4d52bc24678dd470130f.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-4b89bd64fb4d4d52bc24678dd470130f",
+        "root_absent": true,
+        "state": "removed",
+        "token": "4b89bd64fb4d4d52bc24678dd470130f"
+      },
+      {
+        "groups": [
+          87784
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/4ca904207a0d4fbd9ae1aa01ffa82850.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/implementer/test-stamp-shard-4ca904207a0d4fbd9ae1aa01ffa82850",
+        "root_absent": true,
+        "state": "removed",
+        "token": "4ca904207a0d4fbd9ae1aa01ffa82850"
+      },
+      {
+        "groups": [
+          21497
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/63a2b304a98e41c8866cf039a0bf64bb.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-63a2b304a98e41c8866cf039a0bf64bb",
+        "root_absent": true,
+        "state": "removed",
+        "token": "63a2b304a98e41c8866cf039a0bf64bb"
+      },
+      {
+        "groups": [
+          94264
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/6926c22e5ce84753b1cc438cf421be23.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-6926c22e5ce84753b1cc438cf421be23",
+        "root_absent": true,
+        "state": "removed",
+        "token": "6926c22e5ce84753b1cc438cf421be23"
+      },
+      {
+        "groups": [
+          16293
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/7c924f4a4dac4ce6a138a66ffa22f702.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-7c924f4a4dac4ce6a138a66ffa22f702",
+        "root_absent": true,
+        "state": "removed",
+        "token": "7c924f4a4dac4ce6a138a66ffa22f702"
+      },
+      {
+        "groups": [
+          23595
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/7d15849cda924c969bae3d8b0abb9a49.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-7d15849cda924c969bae3d8b0abb9a49",
+        "root_absent": true,
+        "state": "removed",
+        "token": "7d15849cda924c969bae3d8b0abb9a49"
+      },
+      {
+        "groups": [
+          88187
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/a1c537b1d068479b8d7647a35dbf7047.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/implementer/test-stamp-shard-a1c537b1d068479b8d7647a35dbf7047",
+        "root_absent": true,
+        "state": "removed",
+        "token": "a1c537b1d068479b8d7647a35dbf7047"
+      },
+      {
+        "groups": [
+          38293
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/a51d8eb00357426886441e7359083064.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-a51d8eb00357426886441e7359083064",
+        "root_absent": true,
+        "state": "removed",
+        "token": "a51d8eb00357426886441e7359083064"
+      },
+      {
+        "groups": [
+          2074
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/ae0c311be55940f7928b2d6fbb3c35a2.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/implementer/test-stamp-shard-ae0c311be55940f7928b2d6fbb3c35a2",
+        "root_absent": true,
+        "state": "removed",
+        "token": "ae0c311be55940f7928b2d6fbb3c35a2"
+      },
+      {
+        "groups": [
+          3094
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/b087e6d82ba04b13932e0c90867a81a5.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/implementer/test-stamp-shard-b087e6d82ba04b13932e0c90867a81a5",
+        "root_absent": true,
+        "state": "removed",
+        "token": "b087e6d82ba04b13932e0c90867a81a5"
+      },
+      {
+        "groups": [
+          25548
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/b1261d105ccd4e5ab2ba6ed4f8a5f5a2.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-b1261d105ccd4e5ab2ba6ed4f8a5f5a2",
+        "root_absent": true,
+        "state": "removed",
+        "token": "b1261d105ccd4e5ab2ba6ed4f8a5f5a2"
+      },
+      {
+        "groups": [
+          34945
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/b2bd1d92cdc44cf38d0b25b687e849f3.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-b2bd1d92cdc44cf38d0b25b687e849f3",
+        "root_absent": true,
+        "state": "removed",
+        "token": "b2bd1d92cdc44cf38d0b25b687e849f3"
+      },
+      {
+        "groups": [
+          4236
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/b710738d859648e3aa89c27fdf22464f.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/implementer/test-stamp-shard-b710738d859648e3aa89c27fdf22464f",
+        "root_absent": true,
+        "state": "removed",
+        "token": "b710738d859648e3aa89c27fdf22464f"
+      },
+      {
+        "groups": [
+          41641
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/b82f26ca739e47ed89af29f6cd3f1e5e.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-b82f26ca739e47ed89af29f6cd3f1e5e",
+        "root_absent": true,
+        "state": "removed",
+        "token": "b82f26ca739e47ed89af29f6cd3f1e5e"
+      },
+      {
+        "groups": [
+          10001
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/bd5b394668f740669db16a8538da5f82.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-bd5b394668f740669db16a8538da5f82",
+        "root_absent": true,
+        "state": "removed",
+        "token": "bd5b394668f740669db16a8538da5f82"
+      },
+      {
+        "groups": [
+          7156
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/dcb15ff54d5b41c08c002b59cf75b62e.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-dcb15ff54d5b41c08c002b59cf75b62e",
+        "root_absent": true,
+        "state": "removed",
+        "token": "dcb15ff54d5b41c08c002b59cf75b62e"
+      },
+      {
+        "groups": [
+          6964
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/e041e21be25e428ab5fce097017025fd.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-e041e21be25e428ab5fce097017025fd",
+        "root_absent": true,
+        "state": "removed",
+        "token": "e041e21be25e428ab5fce097017025fd"
+      },
+      {
+        "groups": [
+          7084
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/e5b57e625de84ec8b913020b9261edc6.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-e5b57e625de84ec8b913020b9261edc6",
+        "root_absent": true,
+        "state": "removed",
+        "token": "e5b57e625de84ec8b913020b9261edc6"
+      },
+      {
+        "groups": [
+          42626
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/e6e9c732095a480dbe2442127874b198.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-e6e9c732095a480dbe2442127874b198",
+        "root_absent": true,
+        "state": "removed",
+        "token": "e6e9c732095a480dbe2442127874b198"
+      },
+      {
+        "groups": [
+          87854
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/ead84c9c3ea54647a6095e6d61862b25.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/implementer/test-stamp-shard-ead84c9c3ea54647a6095e6d61862b25",
+        "root_absent": true,
+        "state": "removed",
+        "token": "ead84c9c3ea54647a6095e6d61862b25"
+      },
+      {
+        "groups": [
+          16836
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/f491d7b48bef4560ad51a4e618415455.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-f491d7b48bef4560ad51a4e618415455",
+        "root_absent": true,
+        "state": "removed",
+        "token": "f491d7b48bef4560ad51a4e618415455"
+      },
+      {
+        "groups": [
+          16448
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/fd585ba99db94baba7c5e48723784dae.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-fd585ba99db94baba7c5e48723784dae",
+        "root_absent": true,
+        "state": "removed",
+        "token": "fd585ba99db94baba7c5e48723784dae"
+      },
+      {
+        "groups": [
+          10133
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/fe738438b22548e585a1f1b975aef909.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-fe738438b22548e585a1f1b975aef909",
+        "root_absent": true,
+        "state": "removed",
+        "token": "fe738438b22548e585a1f1b975aef909"
+      },
+      {
+        "groups": [
+          17200
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/strict/ownership/47ee41c671e04149967c20add89e0077.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-47ee41c671e04149967c20add89e0077",
+        "root_absent": true,
+        "state": "removed",
+        "token": "47ee41c671e04149967c20add89e0077"
+      },
+      {
+        "groups": [
+          11423
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/strict/ownership/7112865b68804a68a842fa8f723123a1.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-7112865b68804a68a842fa8f723123a1",
+        "root_absent": true,
+        "state": "removed",
+        "token": "7112865b68804a68a842fa8f723123a1"
+      },
+      {
+        "groups": [
+          42679
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/strict/ownership/812c921f121e4bb980a7953443e8a826.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-812c921f121e4bb980a7953443e8a826",
+        "root_absent": true,
+        "state": "removed",
+        "token": "812c921f121e4bb980a7953443e8a826"
+      },
+      {
+        "groups": [
+          29083
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/strict/ownership/bf88906ea6c24751af1ec388bd964519.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-bf88906ea6c24751af1ec388bd964519",
+        "root_absent": true,
+        "state": "removed",
+        "token": "bf88906ea6c24751af1ec388bd964519"
+      }
+    ],
+    "onedrive_available": false,
+    "package_lock_hashes_unchanged": true,
+    "retained_dependencies": {
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/node_modules": 27138292,
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/server/node_modules": 858816
+    },
+    "retained_reconstruction": [
+      "lead-supervisor.py",
+      "finalize-cleanup.py",
+      "serial-runtime/node",
+      "full-effective-argv.nul"
+    ],
+    "scratch_parent_absent": true
+  },
+  "verification_history": "An initial finalizer assertion failed while matching status was pending, before any cleanup operation. After status completed, a separate per-manifest audit returned no failed predicates and the finalizer passed all38. Exact transient cause was not established; no process kill or forced removal was used.",
+  "browser_history": "browser-resource-summary.json retains per-run full descendant/profile/crashpad/port audits and the explicit historical matrix ownership/dynamic-port coverage gap.",
+  "persistent_configuration_changed": false,
+  "onedrive_export": "Configured OneDrive destination absent; no export claimed. Small local reconstruction scripts/receipts retained."
+}

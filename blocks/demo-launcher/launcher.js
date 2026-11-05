@@ -1,5 +1,5 @@
 import { el, screenIntro } from '../vehicle-matcher/ui.js';
-import { buildEntryUrl, resolveEntryContext } from './entry-context.js';
+import { ENTRY_REGISTRY, brandChangeUrl, buildEntryUrl, retailReturnUrl, resolveEntryContext } from './entry-context.js';
 import { experienceChoice, brandSelector, BRAND_LABELS } from './components.js';
 
 export function renderLauncher(root, initialContext, { input = window.location.href } = {}) {
@@ -29,7 +29,11 @@ export function renderLauncher(root, initialContext, { input = window.location.h
   root.replaceChildren(scope);
 
   function update(brand) {
-    const base = new URL(buildEntryUrl(input, { experience: 'launcher', brand }), input);
+    brand = ENTRY_REGISTRY.retailBrands.includes(brand) ? brand : null;
+    const changed = brand !== initialContext.brand;
+    const base = new URL(buildEntryUrl(new URL(brandChangeUrl(input, brand), input), { experience: 'launcher' }), input);
+    const usedCars = changed ? buildEntryUrl(base, { experience: 'used-cars' })
+      : retailReturnUrl(input, { brand, storage: window.sessionStorage });
     const context = resolveEntryContext(base, { employeeAvailable: initialContext.employeeAvailable });
     header.firstChild.href = context.links.launcher;
     selection.textContent = brand ? `Selected brand: ${BRAND_LABELS[brand] || brand}` : 'All six brands available for Used cars. Employee cars supports BMW.';
@@ -60,8 +64,9 @@ export function renderLauncher(root, initialContext, { input = window.location.h
       experienceChoice({ title: 'Used cars',
         description: 'Find a used car matched to how you drive. Explore the full choice of brands and ways to search.',
         image: `assets/brand-hero/${brand || 'mini'}.jpg`, imageLabel: `${BRAND_LABELS[brand] || 'MINI'} used-car experience`,
-        action: { label: brand ? `Explore ${BRAND_LABELS[brand]} Used cars` : 'Explore Used cars', href: context.links.usedCars },
-        reason: brand ? `Continue with ${BRAND_LABELS[brand]}.` : 'Choose from BMW, MINI, Ford, Honda, BMW Motorrad and Ferrari.' }),
+        action: { label: brand ? `Explore ${BRAND_LABELS[brand]} Used cars` : 'Explore Used cars', href: usedCars },
+        reason: changed && brand ? 'Changing brand starts a new search and resets your answers and retailer.'
+          : brand ? `Continue with ${BRAND_LABELS[brand]}.` : 'Choose from BMW, MINI, Ford, Honda, BMW Motorrad and Ferrari.' }),
     );
   }
   update(initialContext.brand);
