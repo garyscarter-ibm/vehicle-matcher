@@ -216,6 +216,19 @@ test('misaligned owner, quote, exact car, state or deadline fail closed', async 
   }
 });
 
+test('pinned explanations cannot silently refer to a different car, policy, brief or facts snapshot', async () => {
+  for (const change of [
+    (decision) => { decision.orderUuid = 'another-car'; },
+    (decision) => { decision.configurationId = 'another-configuration'; },
+    (decision) => { decision.versions.policy = 'another-policy'; },
+    (decision) => { decision.versions.brief += 1; },
+    (decision) => { decision.versions.snapshot = 'another-snapshot'; },
+  ]) {
+    const f = await fixture({ mutateDecision: change });
+    assert.equal((await f.exchange()).status, 'unavailable');
+  }
+});
+
 test('changed clock during the second snapshot refuses mixed state', async () => {
   const f = await fixture(); const access = await f.exchange(); assert.equal(access.status, 'ok');
   let calls = 0;
@@ -271,6 +284,15 @@ test('HTTP gate and exact origins precede exchange, including missing, null and 
     assert.equal((await request(f, '/api/gcsp/offers/access', { method: 'POST', body, origin })).status, 403);
   }
   assert.equal((await request(f, '/api/gcsp/offers/access', { method: 'POST', body, gateAuthorized: false })).status, 401);
+  assert.equal(f.store.state.tables.event_receipts.length, before);
+});
+
+test('HTTP preflight preserves the existing shared X-Access-Key contract without resolving a session', async () => {
+  const f = await fixture(); const before = f.store.state.tables.event_receipts.length;
+  const response = await request(f, '/api/gcsp/offers/access', { method: 'OPTIONS' });
+  assert.equal(response.status, 204);
+  assert.equal(response.headers['Access-Control-Allow-Headers'], 'Content-Type, X-Access-Key');
+  assert.equal(response.headers['Access-Control-Allow-Origin'], 'https://offer.test');
   assert.equal(f.store.state.tables.event_receipts.length, before);
 });
 

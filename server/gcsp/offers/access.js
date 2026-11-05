@@ -53,7 +53,12 @@ function presentation(offer, hold, quote, stock, clock) {
   if (snapshot.identityKind !== 'exact-stock' || snapshot.sourceKeys.stockId !== offer.orderUuid
     || snapshot.vin !== undefined || terms.termsVersion !== quote.eligibility?.decision?.versions?.terms) throw Error('Invalid pinned facts');
   const decision = quote.eligibility?.decision;
-  if (!['eligible', 'ineligible', 'needs-confirmation'].includes(decision?.gateStatus)) throw Error('Missing pinned decision');
+  if (!['eligible', 'ineligible', 'needs-confirmation'].includes(decision?.gateStatus)
+    || decision.orderUuid !== offer.orderUuid || decision.configurationId !== quote.configurationId
+    || decision.versions.policy !== quote.policyVersion || decision.versions.brief !== quote.briefVersion
+    || decision.versions.snapshot !== snapshot.snapshotVersion
+    || inputDigest(decision.snapshot) !== inputDigest(quote.facts)
+    || inputDigest(decision.terms) !== inputDigest(quote.terms)) throw Error('Inconsistent pinned decision');
   const facts = select(snapshot, ['contractVersion', 'candidateKey', 'sourceNamespace', 'identityKind', 'snapshotVersion', 'observedAt']);
   const image = (entry) => typeof entry === 'string' ? { src: entry }
     : textFields(entry, ['src', 'alt', 'caption', 'fidelity', 'sourceRef']);
@@ -185,7 +190,7 @@ export class OfferAccessService {
     } catch { return unavailable(); }
   }
 
-  async #guard(context) {
+  async #guard(context, action = 'read') {
     const auth = context && this.#contexts.get(context); if (!auth) return { error: missing() };
     const binding = this.#binding(context);
     if (auth.kind === 'session') {
@@ -197,7 +202,7 @@ export class OfferAccessService {
       if (stored?.schemaVersion !== 1 || ['environmentId', 'runId', 'offerId'].some((key) => stored[key] !== binding[key])
         || !instant(stored.expiresAt) || Date.parse(wall) >= Date.parse(stored.expiresAt)) return { error: missing() };
     } else {
-      const allowed = await this.#identity.authorizeResource(auth.identityContext, ref('offers', binding.runId, { offerId: binding.offerId }), 'read');
+      const allowed = await this.#identity.authorizeResource(auth.identityContext, ref('offers', binding.runId, { offerId: binding.offerId }), action === 'decide' ? 'write' : 'read');
       if (allowed.status !== 'ok') return { error: ['forbidden', 'not-found'].includes(allowed.status) ? missing() : allowed };
     }
     const located = await this.#offer(binding); if (located.error) return located;
@@ -209,7 +214,7 @@ export class OfferAccessService {
   async authorizeOffer(context, selector, action = 'read') {
     if (!only(selector, ['runId', 'offerId']) || !['read', 'decide'].includes(action)
       || selector.runId !== context?.runId || selector.offerId !== context?.offerId) return missing();
-    try { const state = await this.#guard(context); return state.error ?? ok({ ...state.binding }); } catch { return unavailable(); }
+    try { const state = await this.#guard(context, action); return state.error ?? ok({ ...state.binding }); } catch { return unavailable(); }
   }
 
   async read(context) {

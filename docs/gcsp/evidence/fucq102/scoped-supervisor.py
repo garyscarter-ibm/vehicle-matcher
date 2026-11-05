@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import re
+import shlex
 import subprocess
 import sys
 import time
@@ -107,8 +108,43 @@ try:
         env['GCSP_OFFER_TOKEN_MODULE'] = token_path.as_uri()
         env['GCSP_OFFER_ACCESS_SAMPLE'] = str(scratch.root / 'representative.json')
         command = ['node', '--no-warnings', '--loader', str(loader), '--test', '--test-reporter=tap', '--test-concurrency=1', 'server/test/gcsp-offer-access.test.js']
-        result = r.run_process(command, str(ROOT), env, log, scratch, policy,
-                               allocation['disk'], allocation['ram'], 120, host=host)
+        if '--strict' in sys.argv:
+            stamp = module('fucq102_stamp', ROOT / '_tools/test_stamp.py')
+            def adapter_git(root, arguments):
+                code, out, err = g.git(Path(root), arguments)
+                if code: raise stamp.RunError(err or out)
+                return out.rstrip()
+            stamp._git = adapter_git
+            stamp.ref_exists = lambda root, ref: g.git(Path(root), ['rev-parse','--verify','--quiet',ref+'^{commit}'])[0] == 0
+            stamp.resource_module = lambda: r
+            original_load = stamp.load_settings
+            def bounded_load(root, command_override=None):
+                settings = original_load(root, command_override)
+                settings.resources = dict(settings.resources, chunk_seconds=120, chunk_scratch_mib=128,
+                    chunk_ram_mib=768, log_mib=2, inputs=paths + [str(PG), str(token_path),
+                    '_tools/test_resources.py', '_tools/test_stamp.py', 'server/gcsp/policy/seed-v1.json',
+                    'server/test/helpers/employee-recommendation.js'])
+                return settings
+            stamp.load_settings = bounded_load
+            # Reuse this already-owned, bounded process launcher. No hidden second allocation or full fallback.
+            def selected_run(settings, args, chosen, rdir, say, classes_fn=None, identity=None):
+                global result
+                if chosen or settings.command != shlex.join(command): raise RuntimeError('Unexpected verification plan')
+                result = r.run_process(command, str(ROOT), env, log, scratch, policy,
+                                       allocation['disk'], allocation['ram'], 120, host=host)
+                observed = {key:int(value) for key,value in re.findall(r'^# (tests|pass|fail|skipped) (\d+)$', log.read_text(), re.M)}
+                passed = result['rc'] == 0 and not result['issue'] and observed.get('pass',0) > 0 and observed.get('fail') == 0
+                return passed, observed.get('tests',0), observed.get('skipped',0), result['wall']
+            stamp.run_suite = selected_run
+            os.environ.clear(); os.environ.update(env)
+            os.environ['TEST_STAMP_DIR'] = str(record_dir / 'strict')
+            strict_rc = stamp.main(['--root',str(ROOT),'--jobs','1','--targeted',plan['base'],
+                '--command',shlex.join(command),'--reason','Explicit new one-offer exchange/read/account/hash-session and streamed HTTP boundary checks; Node affected selector unsupported. Actual producer/native/host/browser/full remain excluded.'])
+            result['strict_rc'] = strict_rc
+            if strict_rc: raise RuntimeError('Strict targeted evidence failed')
+        else:
+            result = r.run_process(command, str(ROOT), env, log, scratch, policy,
+                                   allocation['disk'], allocation['ram'], 120, host=host)
         if result['rc'] == 0 and not result['issue']:
             sample = json.loads((scratch.root / 'representative.json').read_text())
             r.atomic_json(record_dir / 'representative.json', sample)

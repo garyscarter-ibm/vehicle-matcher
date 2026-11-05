@@ -38,10 +38,11 @@ export function createOfferAccessHandler({ service, identity, allowedOrigins = [
     if (req.method === 'OPTIONS') {
       res.setHeader('Cache-Control', 'no-store');
       res.writeHead(204, { ...headers, 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, X-Demo-Key' }); return res.end();
+        'Access-Control-Allow-Headers': 'Content-Type, X-Access-Key' }); return res.end();
     }
     if (!gateAuthorized) {
       res.setHeader('Cache-Control', 'no-store');
+      res.setHeader('Referrer-Policy', 'no-referrer');
       return sendJson(res, 401, { error: 'Unauthorized' }, headers);
     }
     if (!service || !identity) return send(outcome('unavailable', 'Offer access has not been configured.'));
