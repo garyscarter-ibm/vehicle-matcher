@@ -10,7 +10,7 @@ At most 8 points: one independent, DOM-free controller for employee brief state 
 - `server/test/gcsp-brief-controller.test.js`.
 - This evidence directory and this story's result block.
 
-All existing block files, all `server/gcsp/`, `server/index.js`, `docs/gcsp/shared-contracts.md`, `COMPONENTS.md`, the gallery and ratchet remain read-only until the dispatcher releases exact paths. FUCQ-95 owns activity projection/GET. It does not own editor context or unsaved preview support. GC owns the launcher and shared kit seams. No descendants start before an actual child-tool slot is allocated.
+The dispatcher released the exact supporting backend paths in `supporting-contract-proposal.md` on 5 November, after the controller checkpoint. Shared UI/kit/gallery/ratchet remain held for FUCQ-95. FUCQ-95 owns activity projection/GET, not editor context or unsaved preview support. One further implementer slot is allocated; its scoped validation/resource plan is `supporting-validation-plan.md`.
 
 ## Controller boundary
 
@@ -65,6 +65,12 @@ Retain compact receipts under `/Users/usget/Claude/vehicle-matcher/.claude/test-
 
 ## Agent allocation
 
-Story lead requested and selected `gpt-6.1-sol` / `high`; no fallback, effective runtime not independently confirmed. No descendants spawned. Before every descendant: read both AGENTS files, run live `tiers spawn ROLE --harness codex --gateway global` and capacity, map the concrete requested/selected model and effort, use a self-contained brief with `fork_turns: none`, carry this experience/reference/resource scope and propagate every depth. Admission also requires the dispatcher's real four-slot allocation; configured agent counts are advisory under the human session override.
+Story lead requested and selected `gpt-6.1-sol` / `high`; no fallback. Controller implementer `/root/brief_editor_fucq94/controller_impl` requested/selected `gpt-6.1-sol` / `medium`, no fallback; the dispatcher independently verified its effective runtime from session metadata and the first turn context. Before every descendant: read both AGENTS files, run live `tiers spawn ROLE --harness codex --gateway global` and capacity, map the concrete requested/selected model and effort, use a self-contained brief with `fork_turns: none`, carry this experience/reference/resource scope and propagate every depth. Admission requires the dispatcher's real four-slot allocation; configured counts are advisory under the explicit human session override.
 
-Current checkpoint: refinement and resource plan only, awaiting an actual child slot for the controller implementation. Server/shared seams remain coordinated future work, not a declaration that the whole story is blocked or built.
+## Controller checkpoint result
+
+Pushed `af2bdf7` contains the isolated controller, API note and 18 dedicated regression tests. The scoped command above passed all 18, with no skips. Controller SHA-256: `f65d19e307d3a4b3f42051e790d11491971fca1f49e98d2a2346e27e647bbd53`; test: `268d24ea9a9755240032650dc0f8de25de1aac7120e72b0db4ef7c83ab1fe6e4`. The source was tested before that commit and committed unchanged. Comparison base `95f7648ecef7b5c7664b83d56d48b13da71c0786` was reviewed, not integrated or tested.
+
+Proof: shared `.claude/test-runs/targeted-972091cca662b9042e16ed50b25abc78ac450ac65bbb473f0673fd5a07576e97-default-1793883121114861000.json`. Resource receipt: `.claude/test-runs/receipts/fucq94-20261105-brief/checkpoint-summary.json`. Supervisor wall 1.21 seconds, sampled peak RSS 35,160,064 bytes, scratch peak zero. Five nested scratch roots, owned groups and reservation were verified absent; at least 97,840 bytes were removed. Earlier removed log-tree sizes were unavailable and are not claimed. Compact proof/checkpoints, final pass log and bounded useful failures remain; no compatibility exception or leftovers.
+
+This is a partial story checkpoint. Mounted screen, actual HTTP wiring, shared kit/custom element, full story checks and desktop/375px visual evidence remain incomplete. The supporting backend slice is next; combined FUCQ-95 activity-route validation remains pending until both branches occur in one tree.
