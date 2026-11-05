@@ -45,6 +45,12 @@ Persist only sanitised reusable selected facts: source/date, exact resolved mode
 
 The machine-readable plan specifies absolute non-public local evidence/image destinations under this story's `docs/gcsp/evidence/fucq-58/authorised-pilot-2026-11-05/`, bounded at 12 MiB and 2 MiB respectively. These are useful approved artifacts, not browser/raw-response caches. Stage named sanitised files only. Disposable logs/responses/profiles belong under the owned scratch root and are deleted with verified absence. All archives or expected outputs at least 256 MiB go directly to `/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/fucq58-20261105-authorised-pilot/`; this bounded pilot needs no archive or browser profile. Placement does not prove upload or deployment.
 
+## Recorded pilot outcome — 5 November 2026
+
+The [sanitised pilot evidence](evidence/fucq-58/authorised-pilot-2026-11-05/README.md) records 3 of 12 permitted GET attempts: public page, settings and G61E model tree, all HTTP 200; 777,995 decoded bytes and 724 ms client time. It stopped at `catalogue-steering-unconfirmed`, before solver/OTD/manifest/image calls. No new configuration, image, profile activation or write resulted. Full collection remains unqualified.
+
+The selected compact model subtree lacked parser-recognised `RL`/`RHD`. This does not establish that the complete source lacks RHD. Historical retained evidence contains `RL`; two zero-request offline checks demonstrate the historical fact and a synthetic shortest-node counterexample. Raw live bodies were discarded, so their hierarchy cannot be recovered. A revised extractor needs a bounded allowlisted relational model/context projection and offline tests before any later pilot. This checkpoint grants no additional request budget; the dispatcher owns any subsequent collection step. Source/retention/display/pilot permission is already cleared.
+
 ## Remaining evidence and identity boundaries
 
 The trusted full-plan loader reads the FUCQ-52 registry, dated BMW GB snapshot and the three retained FUCQ-4 solver records. Exact context, complete selections and requested model/options must match. The current retained proof remains three configurations, each including `SE000001`: 48/48/49 selected elements are not factory-option counts or verified fitted equipment. Rim classification, model year, plant, production era/date and compatible GB profile remain unknown. Record new pilot observations separately; extend trusted evidence only after review, never through self-asserted booleans.

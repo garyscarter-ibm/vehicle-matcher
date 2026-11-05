@@ -1,0 +1,45 @@
+{
+  "version": "fleet-pilot-schema-review.v1",
+  "reviewedDate": "2026-11-05T15:51:46.810Z",
+  "networkRequests": 0,
+  "historicalEvidence": {
+    "source": "docs/gcsp/evidence/fucq-4/observations-2026-11-01.json",
+    "observedDate": "2026-11-01",
+    "selectedModel": {
+      "modelCode": "T5MJ",
+      "agModelCode": "72HH",
+      "modelRange": "G61E",
+      "rawModelRange": "G61",
+      "steering": "RL",
+      "orderDate": "2026-11-01",
+      "effectDate": "2027-01-05"
+    },
+    "meaning": "Historical matched model contains literal RL; not a new5November steering observation or profile activation"
+  },
+  "syntheticCounterexample": {
+    "kind": "synthetic",
+    "smallestCandidate": {
+      "modelCode": "T5MJ",
+      "agModelCode": "72HH"
+    },
+    "fullRecordSteering": "RL",
+    "result": "Shortest model/AG node selection can choose a cross-reference and miss RHD on its parent; this reproduces a parser limitation, not the actual retained live hierarchy"
+  },
+  "liveDisposition": {
+    "sourceHttp200": 3,
+    "stop": "catalogue-steering-unconfirmed",
+    "interpretation": "The live parser could not corroborate steering in its selected compact subtree. No evidence establishes that the complete source lacks RHD. Raw response was memory-only and discarded, so this run cannot recover its hierarchy.",
+    "retainedModelTree": false,
+    "sourcePermissions": "approved",
+    "additionalLiveRequests": 0
+  },
+  "remaining": [
+    "Review a bounded allowlisted model-tree projection containing model/AG/context/steering path before a revised pilot",
+    "Corroborate exact UK profile semantics/year/plant/era independently",
+    "Map every scheme model line to actual dated constructible catalogue context; historical/discontinued generations cannot be silently replaced"
+  ],
+  "checks": {
+    "historicalModelAndAgAndRl": "passed",
+    "syntheticShortestNodeCounterexample": "passed"
+  }
+}
