@@ -67,6 +67,13 @@ async function localAsset(assetId) {
   return readFile(new URL(`./assets/${VERSION}/${REGISTRY.get(assetId).file}`, import.meta.url));
 }
 
+function registeredMetadata(entry, registered = REGISTRY.get(entry?.assetId)) {
+  return registered && object(entry) && entry.contentType === 'image/webp'
+    && entry.bytes === registered.bytes && entry.sha256 === registered.sha256
+    && entry.viewpoint === 'HEROFRONT' && size(entry.size)
+    && entry.size.width === 2560 && entry.size.height === 1646;
+}
+
 function validManifest(data) {
   if (!object(data) || data.schemaVersion !== '1' || data.snapshotVersion !== VERSION
     || !date(data.observedDate) || !date(data.retrievedDate)
@@ -80,10 +87,9 @@ function validManifest(data) {
   return data.assets.every((entry) => {
     const registered = REGISTRY.get(entry?.assetId);
     const lookup = bmwImageLookupIdentity({ ...entry?.identity, viewpoint: entry?.viewpoint, size: entry?.size });
-    return registered && lookup && entry.contentType === 'image/webp' && entry.bytes === registered.bytes
-      && entry.sha256 === registered.sha256 && entry.paint?.code === registered.paint && entry.paint.label === registered.label
-      && entry.role === 'representative-catalogue-render' && entry.viewpoint === 'HEROFRONT'
-      && entry.size.width === 2560 && entry.size.height === 1646
+    return registeredMetadata(entry, registered) && lookup
+      && entry.paint?.code === registered.paint && entry.paint.label === registered.label
+      && entry.role === 'representative-catalogue-render'
       && lookup.market === 'GB' && lookup.locale === 'en-GB' && lookup.modelCode === 'T5MJ'
       && lookup.agModelCode === '72HH' && lookup.modelRange === 'G61E' && lookup.rawModelRange === 'G61'
       && lookup.catalogueDate === data.observedDate && lookup.orderDate === '2026-11-01'
@@ -198,7 +204,7 @@ export function presentBmwImage(result) {
   const expected = generic ? UNKNOWN_FIDELITY : FIDELITY;
   const fidelityLabels = (fidelity) => Object.fromEntries(Object.entries(fidelity).map(([key, state]) => [key,
     state === 'verified' ? `${ATTRIBUTE_LABELS[key]} matches catalogue selection` : `${ATTRIBUTE_LABELS[key]} unknown`]));
-  const valid = registered && image.role === ROLE && image.matchesRequestedConfiguration === !generic
+  const valid = registeredMetadata(image, registered) && image.role === ROLE && image.matchesRequestedConfiguration === !generic
     && (generic ? image.paint === null && GENERIC_FALLBACKS.get(result.fallback?.choice) === image.assetId
       : image.representation === 'configuration' && !result.fallback && image.paint?.code === registered.paint)
     && Object.entries(expected).every(([key, value]) => image.fidelity?.[key] === value);

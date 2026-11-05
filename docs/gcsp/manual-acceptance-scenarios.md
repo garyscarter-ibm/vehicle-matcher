@@ -8,6 +8,14 @@ Use one bounded capability for shared scenario preparation, reset/replay support
 
 The existing `decided`, `acceptance` and `validate` sections carry the obligation, alongside the [experience quality contract](experience-quality.md). Authors reference applicable scenarios, implementers keep their setup and observed behaviour current, and reviewers check that Russell can actually run them when the connected capability is offered for review. A cross-capability scenario records which dependencies must be available. Existing published Stories are reviewed against this requirement when picked up; this recording has not bulk-edited them or created a Story for every Epic.
 
+## Combined time simulation and release control
+
+5 November 2026. Russell asked to combine his time-passing simulation request with GC's request for a **Release cars** button. Keep this as one demonstration capability under **FUCQ-75**, using **FUCQ-126**'s presenter controls: advance simulated time, release vehicles and show the vehicle population changing as employees claim cars, so the agent's behaviour and resulting outcomes can be demonstrated.
+
+Gary's existing FUCQ-126 Story already specifies **Tick** and **Next release**, including a count of cars released. Use that release action as the common control when refining the connected walkthrough. Releases, the agent's response, employee claims and the resulting availability must reflect actual application state through the shared demo clock and services, following the [demo brief](demo-brief.md#binding-boundaries) and [build rules](build-rules.md). The existing presenter-driven tick boundary remains in force.
+
+**Jira reconciliation pending:** add this combined intent to FUCQ-75 and FUCQ-126 when Jira access is restored; do not create a separate time-simulation backlog item. This records the agreed clarification, not a Jira update or evidence that the walkthrough is runnable.
+
 ## Make each trial repeatable
 
 Each delivered scenario needs:
