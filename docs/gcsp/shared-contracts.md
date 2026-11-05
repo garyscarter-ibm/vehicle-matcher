@@ -47,6 +47,52 @@ FUCQ-91's single-change operation takes `{ decisionId, expectedBriefVersion, cha
 
 ## Exact stock, holds and offers
 
+### Implemented BriefService binding · FUCQ-91, 5 November 2026
+
+`server/gcsp/brief/index.js` exports `BriefService` and `createBriefService({ repository, policy, clock, identity })`.
+`readCurrent(context)`, `readDraft(context)` and `readHistory(context)` require a trusted employee context;
+history returns `{ versions }`, current returns `{ brief, activity }`, and absent approved/draft state is `not-found`.
+`saveDraft(context, { commandId, expectedBriefVersion, expectedDraftVersion, brief })` saves an append-only
+snapshot in `event_receipts` under `consumerId = brief:draft:<employeeId>`, with integer draft version as event ID.
+It never inserts or changes an approved `briefs` row. Draft `baseBriefVersion` must still match on confirmation.
+This uses the existing transactional repository contract; no SQL migration or parallel draft store is needed.
+
+`confirm(context, { commandId, expectedBriefVersion, expectedDraftVersion, consent?: { search, hold } })`
+appends an immutable approved version. Both consent choices are booleans when supplied; omission records both false.
+`buddy.searchConsent` enables new searches; `buddy.holdConsent` additionally permits new holds;
+`buddy.enabled` projects search consent, and `buddy.paused` prevents both. Resume preserves the saved consent choices.
+Inferred values must first be reviewed in a separate draft. Employee confirmation stamps draft values with the
+server principal and DemoClock time; unresolved essentials keep `value: null, state: needs-confirmation`.
+`knownFacts` is an additive brief field populated exclusively from the scoped repository employee record,
+with source, sourceVersion, observedAt and `supplied-demo-fact` label. Browser input cannot supply it.
+
+`pause`/`resume` take `{ commandId, expectedBriefVersion }` and append a version. Responses include
+`activity = { canSearch, canHold, existingOffersUnaffected: true, existingOffers: [{ offerId, state, briefVersion }] }`.
+Only the employee's scoped offers are read; no hold, offer or stock state is changed.
+`changeAfterDecline` implements the single-change command above, with a registered path
+`preferences.<key>.value` or `essentials.<key>`; an essential value is its complete confirmed requirement object.
+The stored decline must belong to this employee and reference the current brief in `versions.brief`.
+Each decline can be answered once; all other preferences, weights, essentials and permission remain unchanged.
+
+Confirm/change/pause/resume atomically append a durable `event_receipts` row with `consumerId = brief:changes`,
+`eventId = brief:<employeeId>:<briefVersion>`, `eventType = brief-changed`, input brief/policy versions and
+an outcome carrying the event's operation, identity, versions and DemoClock instant. Allocation reads these receipts;
+this service implements no allocation or hold engine. Commands are namespaced per employee and replay their original
+outcome. Changed input under a command ID conflicts; mismatched expected versions return `stale-version` with
+`action: refresh` and safe current/expected versions.
+
+The central assumed `brief.lifecycle.v1` registry defines charging readiness (`home`, `work`, `either`, `not-ready`)
+and Q16's one-change invariant. `essentials.charging` uses `equals`, null unit and an explicit unresolved null.
+`evaluateCandidate(context, { candidate, employeeFacts })` reads current approved permission and delegates
+driver, eligibility, points, availability and essential gates to FUCQ-29's employee recommendation service, using
+the approved charging input. The existing `eligibility.homeCharging.requiredForPlugIn` remains the labelled
+demo assumption controlling the plug-in gate. No contribution question is introduced. The shared validator now
+accepts a null essential only in `needs-confirmation`, preserving its fail-closed gate result.
+
+Backend presentation fixtures are `server/test/fixtures/gcsp-brief-outcomes.json`. Future brief/activity screens
+must show unknown requirements, explicit independent consent, refresh conflicts, provenance and assumption labels;
+they follow the supplied GCSP shell/palette and Used Cars body direction in the experience contract and COMPONENTS.md.
+
 `orderUuid` is the exact-stock UUID v4 and the foreign key for claims, holds, offers and allocations. `orderNumber` is a unique **7-digit string per run**, retaining leading zeros; `wholesalerOrderId` is an 8-digit integer. `configurationId` identifies immutable configuration facts and is never an exclusive-car key. Two cars can share it. VIN is attached only to delivered/current cars, never required for stock browsing, matching or holding (Q13).
 
 The target-format `configurationId` is standard padded Base64 of `vgModelCode + ':' + sortedUpperCaseCodes.join(',')`, including paint, upholstery and every factory equipment code, excluding dealer accessories. Retain both `agModelCode` and `vgModelCode`; the retail configurator's use of AG instead of the knowledge base's VG remains unconfirmed. Record corpus provenance and URL-encode IDs. The [HLD identifier formats](../design/gcsp-high-level-design.md#vehicle-evidence-and-adapter-contracts) contain the worked example; the runtime choices are keyed below. Identifiers remain stable within a run; reset creates new stock identifiers without replacing the immutable corpus.

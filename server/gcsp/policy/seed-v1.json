@@ -11606,6 +11606,30 @@
       "sourceDate": "2026-11-05",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "brief.lifecycle.v1",
+      "value": {
+        "charging": {
+          "operator": "equals",
+          "type": "enum",
+          "unit": null,
+          "values": [
+            "home",
+            "work",
+            "either",
+            "not-ready"
+          ]
+        },
+        "postDeclineChangeLimit": 1
+      },
+      "unit": "brief lifecycle registry",
+      "status": "assumed",
+      "basis": "Charging readiness is an explicit practical demo input, not a BMW home-charging rule. Q16 permits one confirmed field change for a recorded decline. Unknown is represented by null and needs-confirmation.",
+      "source": "docs/gcsp/shared-contracts.md#brief-schema-v1",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
     }
   ]
 }
