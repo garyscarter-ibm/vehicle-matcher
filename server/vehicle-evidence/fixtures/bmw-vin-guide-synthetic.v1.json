@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1",
+  "observedDate": "2026-11-05",
+  "source": "Authored fictional handbook contract fixture; no BMW vehicle lookup or private content",
+  "locale": "en-GB",
+  "completeness": { "handbook": "complete", "sections": "complete", "links": "complete" },
+  "guide": {
+    "title": "Fictional BMW handbook",
+    "derivative": "Fictional reference",
+    "brand": "BMW",
+    "disclaimer": "Fictional handbook example. Functions described may not be fitted to this car. This non-binding content does not replace the vehicle handbook or establish equipment, build or usage facts.",
+    "sections": [{ "id": "fictional-overview", "title": "Fictional overview" }],
+    "links": [{ "assetRef": "fictional-handbook", "label": "Fictional handbook metadata only", "format": "pdf", "availability": "available" }]
+  },
+  "illustration": { "status": "available", "assetRef": "fictional-illustration" }
+}
