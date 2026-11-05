@@ -1,6 +1,6 @@
 {
   "story": "FUCQ-55",
-  "state": "all named scoped checks passed on d718491 product identity; final125/133 integrated full/root install held",
+  "state": "FUCQ-125 merged base e88ea66 incorporated; prior scoped results historical for index identity; final133base/root install/full held",
   "chunks": [
     {
       "id": "lookup",
@@ -82,7 +82,7 @@
     "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "b2de4a7a6dd181c15615be702d6031b7a0cc10d34d8c92c87b5c371d16928e8a",
     "server/test/gcsp-vehicle-evidence-lookup.test.js": "021db46e480fab71c38fb62adad07e531c4fdf0a153d1f03a2ea652401c79c61",
     "server/test/gcsp-synthetic-vin-api.test.js": "ac86aa927c5cb1ee9094ab2eaf343e115104d428b67a445ecb11f6a706de5265",
-    "server/index.js": "52c02b20d3a0e1c3a75de7697af38b1032dfb453e39c96f35f2f440435da8b4c",
+    "server/index.js": "8569b91ea762c872213357f01a7b8dc586097a6d873439e48157c2ff5633767b",
     "server/test/gcsp-offline-start.test.js": "5f3dd0f700fbc9ceb948189766af2061db0f11707b9c4c2d17fb2a248a96435b"
   },
   "config_identity": {
@@ -100,5 +100,14 @@
     "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/manifest.json": "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709",
     "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/vins.jsonl": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd"
   },
-  "cleanup": "All6 execution scratch roots (packaging, initial lookup, count repair, server install, API, offline/retail) and owned groups/reservations/logs removed and verified. Largest scratch2,920,352B; largest sampled group RAM313,016,320B. Retain858,816B own server/node_modules environment. No large outputs/archive/compatibility exception. See receipts."
+  "cleanup": "All6 execution scratch roots (packaging, initial lookup, count repair, server install, API, offline/retail) and owned groups/reservations/logs removed and verified. Largest scratch2,920,352B; largest sampled group RAM313,016,320B. Retain858,816B own server/node_modules environment. No large outputs/archive/compatibility exception. See receipts.",
+  "integration_reassessment": {
+    "merged_base": "e88ea66256031321274b8092bd884fed9a586fe6",
+    "prior_tested_head": "d718491e13407d496017c6ec1b90f19850d35393",
+    "previous_index_sha256": "52c02b20d3a0e1c3a75de7697af38b1032dfb453e39c96f35f2f440435da8b4c",
+    "current_index_sha256": "8569b91ea762c872213357f01a7b8dc586097a6d873439e48157c2ff5633767b",
+    "changed_boundary": "Additive createScenarioRoutes import and generic GCSP route composition; lookup handler/raw dispatch/offline changes preserved",
+    "selection": "Required final explicit whole suite includes own lookup/API/offline/retail and scenario boundaries; await merged133base and dispatcher solefull admission; no immediate duplicate scoped execution",
+    "scope_note": "Prior scoped evidence remains valid for identical lookup modules/fixtures; current integrated index not yet runtime validated"
+  }
 }
