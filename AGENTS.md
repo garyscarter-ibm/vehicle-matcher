@@ -87,3 +87,14 @@ Before every GCSP spawn, include the experience-contract path, applicable visual
 acceptance criteria in the self-contained brief. Require each child to read them and propagate the same
 obligations to its descendants. Story authors use the existing `decided`, `acceptance` and `validate`
 sections, including Jira-authored stories; reviewers require the corresponding evidence in the result.
+
+## Technical readiness for pickup
+
+Gary's direction, 5 November 2026: assess story pickup from actual technical blockers in the current code and
+contracts. Jira `depends_on` links are context, not automatic admission gates; they may describe functional journey
+order. A story may proceed independently against an existing agreed interface while its broader journey is unfinished.
+Record the concrete interface/code evidence, independent scope, and any integration validation still outstanding.
+Completion still requires the story's acceptance evidence; fixtures do not prove an unavailable live integration.
+Keep explicit pauses and date holds, source/access limits, claim ownership, conflicting file ownership, and actual
+technical blockers. Retain Jira links unless a collaborator separately requests their amendment. See
+`docs/gcsp/technical-readiness-2026-11-05.md` and pass this rule to every story lead and descendant.
