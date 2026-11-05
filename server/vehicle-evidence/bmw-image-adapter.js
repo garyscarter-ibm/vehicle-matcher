@@ -14,6 +14,12 @@ const REGISTRY = new Map([
 ]);
 const FIDELITY = { model: 'verified', paint: 'verified', wheels: 'unknown', interior: 'unknown',
   equipment: 'unknown', exactVehicle: 'unknown' };
+const UNKNOWN_FIDELITY = Object.fromEntries(Object.keys(FIDELITY).map((key) => [key, 'unknown']));
+const ROLE = 'representative-catalogue-render';
+// A deliberate reuse of an already permitted demo asset, never a claim about the requested car.
+const GENERIC_FALLBACKS = new Map([['bmw-i5-generic-20261101-v1', 'bmw-i5-white-20261101-v1']]);
+const ATTRIBUTE_LABELS = { model: 'Model', paint: 'Paint', wheels: 'Wheels', interior: 'Interior',
+  equipment: 'Equipment', exactVehicle: 'Exact vehicle appearance' };
 const FAILURES = {
   'demo-only': ['These registered images are available only in the configured GCSP demo environment.', false],
   'invalid-request': ['Check the complete resolved catalogue identity, dates, selection, viewpoint and size.', false],
@@ -50,7 +56,7 @@ function envelope(status, lookup = null, code = STATUS_FAILURE[status]) {
   return { provider: PROVIDER, providerVersion: '1', schemaVersion: '1', snapshotVersion: lookup?.snapshotVersion || VERSION,
     sourceKind: 'dated-snapshot', status, failure: code ? failure(code) : null,
     lookupIdentity: lookup, resolvedLookupIdentity: null, requestedIdentity: sourceIdentity(lookup), resolvedIdentity: null,
-    observedDate: null, retrievedDate: null, identityProvenance: null, image: null };
+    observedDate: null, retrievedDate: null, identityProvenance: null, image: null, fallback: null };
 }
 
 async function localManifest() {
@@ -93,7 +99,8 @@ function validManifest(data) {
 
 function imageMetadata(entry) {
   return { assetId: entry.assetId, contentType: 'image/webp', bytes: entry.bytes, sha256: entry.sha256,
-    size: { width: 2560, height: 1646 }, viewpoint: 'HEROFRONT', role: 'representative-catalogue-render',
+    size: { width: 2560, height: 1646 }, viewpoint: 'HEROFRONT', role: ROLE,
+    representation: 'configuration', matchesRequestedConfiguration: true,
     paint: { code: entry.paint.code, label: entry.paint.label }, fidelity: { ...FIDELITY },
     origin: 'BMW COSY catalogue render', sourceDate: entry.source.sourceDate, observedDate: entry.source.observedDate,
     demoUse: { scope: 'gcsp-demo', retention: 'remove-after-demo', decision: { issue: 'FUCQ-40', commentId: '132468',
@@ -133,21 +140,43 @@ export function createBmwImageAdapter({ environment, loadManifest = localManifes
     } catch { /* Missing local bytes leave an explicit unavailable image. */ }
     return result;
   }
+  async function resolveRequested(lookup) {
+    const data = await manifest();
+    if (!data) return envelope('source-unavailable', lookup);
+    if (lookup.modelCode !== 'T5MJ') return envelope('unsupported', lookup);
+    const paints = lookup.selectedOptions.filter((code) => code.startsWith('P'));
+    const entry = paints.length === 1 && data.assets.find((item) => item.paint.code === paints[0]);
+    if (!entry) return envelope('unsupported', lookup);
+    return resolveEntry(entry, lookup, data, false);
+  }
+  async function resolveGeneric(lookup, choice, original) {
+    const data = await manifest();
+    if (!data) return envelope('source-unavailable', lookup);
+    const entry = data.assets.find((item) => item.assetId === GENERIC_FALLBACKS.get(choice));
+    const sourceLookup = bmwImageLookupIdentity({ ...entry.identity, viewpoint: entry.viewpoint, size: entry.size });
+    const result = await resolveEntry(entry, sourceLookup, data, false);
+    result.lookupIdentity = lookup; result.requestedIdentity = sourceIdentity(lookup);
+    // Source provenance belongs to the representative asset; it does not resolve the requested configuration.
+    result.resolvedLookupIdentity = null; result.resolvedIdentity = null;
+    result.fallback = { choice, originalStatus: original.status, reason: failure(original.failure.code) };
+    if (result.image) Object.assign(result.image, { representation: 'generic', matchesRequestedConfiguration: false,
+      paint: null, fidelity: { ...UNKNOWN_FIDELITY } });
+    return result;
+  }
   return Object.freeze({
     async resolve(request, options = {}) {
       if (!enabled) return refused();
+      if (!object(options) || (Object.hasOwn(options, 'fallback') && !GENERIC_FALLBACKS.has(options.fallback))) {
+        return envelope('invalid-input');
+      }
       const lookup = bmwImageLookupIdentity(request, options);
       if (!lookup) return envelope('invalid-input');
       if (lookup.provider !== PROVIDER || lookup.providerVersion !== '1' || lookup.schemaVersion !== '1'
         || lookup.snapshotVersion !== VERSION || lookup.market !== 'GB' || lookup.locale !== 'en-GB'
-        || lookup.modelCode !== 'T5MJ' || lookup.viewpoint !== 'HEROFRONT'
+        || (request.role !== undefined && request.role !== ROLE) || lookup.viewpoint !== 'HEROFRONT'
         || lookup.size.width !== 2560 || lookup.size.height !== 1646) return envelope('unsupported', lookup);
-      const data = await manifest();
-      if (!data) return envelope('source-unavailable', lookup);
-      const paints = lookup.selectedOptions.filter((code) => code.startsWith('P'));
-      const entry = paints.length === 1 && data.assets.find((item) => item.paint.code === paints[0]);
-      if (!entry) return envelope('unsupported', lookup);
-      return resolveEntry(entry, lookup, data, false);
+      const result = await resolveRequested(lookup);
+      return result.status !== 'ok' && options.fallback ? resolveGeneric(lookup, options.fallback, result) : result;
     },
     async readAsset(assetId) {
       if (!enabled) return refused();
@@ -163,16 +192,30 @@ export function createBmwImageAdapter({ environment, loadManifest = localManifes
 
 /** Safe display projection only; future consuming UI owns image delivery and its rendered acceptance. */
 export function presentBmwImage(result) {
-  if (result?.status !== 'ok' || !REGISTRY.has(result.image?.assetId)) {
+  const image = result?.image;
+  const registered = REGISTRY.get(image?.assetId);
+  const generic = image?.representation === 'generic';
+  const expected = generic ? UNKNOWN_FIDELITY : FIDELITY;
+  const fidelityLabels = (fidelity) => Object.fromEntries(Object.entries(fidelity).map(([key, state]) => [key,
+    state === 'verified' ? `${ATTRIBUTE_LABELS[key]} matches catalogue selection` : `${ATTRIBUTE_LABELS[key]} unknown`]));
+  const valid = registered && image.role === ROLE && image.matchesRequestedConfiguration === !generic
+    && (generic ? image.paint === null && GENERIC_FALLBACKS.get(result.fallback?.choice) === image.assetId
+      : image.representation === 'configuration' && !result.fallback && image.paint?.code === registered.paint)
+    && Object.entries(expected).every(([key, value]) => image.fidelity?.[key] === value);
+  if (result?.status !== 'ok' || !valid) {
     const status = Object.hasOwn(STATUS_FAILURE, result?.status) ? result.status : 'source-unavailable';
     const code = Object.hasOwn(FAILURES, result?.failure?.code) ? result.failure.code : STATUS_FAILURE[status];
-    return { status, assetId: null, role: 'representative-catalogue-render', observedDate: null,
+    return { status, assetId: null, role: ROLE, observedDate: null, label: 'Image unavailable', alt: null,
+      isFallback: false, fidelity: { ...UNKNOWN_FIDELITY }, fidelityLabels: fidelityLabels(UNKNOWN_FIDELITY),
       caption: null, message: failure(code).message };
   }
   const observedDate = date(result.observedDate) ? result.observedDate : null;
   const observed = observedDate ? new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric',
     timeZone: 'UTC' }).format(new Date(`${observedDate}T00:00:00Z`)) : 'unknown';
-  return { status: 'ok', assetId: result.image.assetId, role: 'representative-catalogue-render', observedDate,
-    caption: `Representative catalogue render, observed ${observed}. Observed model and paint verified; wheels, interior and equipment fidelity unknown.`,
+  return { status: 'ok', assetId: image.assetId, role: ROLE, observedDate, label: 'Representative image',
+    alt: generic ? 'Representative image; configuration match unknown' : 'Representative catalogue render',
+    isFallback: generic, fidelity: { ...expected }, fidelityLabels: fidelityLabels(expected),
+    caption: generic ? `Representative catalogue render, observed ${observed}. Model, paint and configuration match unknown.`
+      : `Representative catalogue render, observed ${observed}. Observed model and paint verified; wheels, interior and equipment fidelity unknown.`,
     message: null };
 }

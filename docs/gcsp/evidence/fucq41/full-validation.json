@@ -1,0 +1,123 @@
+{
+  "authoredFileCount": 58,
+  "base": "ade262aa81c7ccbf0043e0f5658a7052f501734e",
+  "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/71407add1fce260970ea5ef85c897171da00253e57ef57ae096f2edbfce5cffc.json",
+  "cleanup": {
+    "cloudScratchCreated": false,
+    "dependencyHashesUnchanged": true,
+    "dependencyOverlayAbsent": true,
+    "independentlyCheckedAt": "2026-11-05T14:57:58+0000",
+    "leftovers": [],
+    "localCompatibilityException": false,
+    "processGroupsAbsent": true,
+    "removedLogAllocatedBytes": 36864,
+    "removedLogLogicalBytes": 28195,
+    "removedScratchPeakBytes": 332928,
+    "removedSuccessfulLogs": [
+      {
+        "allocatedBytes": 20480,
+        "logicalBytes": 16911,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-145525-j9gv1xlc/chunk-0001.log"
+      },
+      {
+        "allocatedBytes": 4096,
+        "logicalBytes": 99,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-145525-j9gv1xlc/run.json"
+      },
+      {
+        "allocatedBytes": 12288,
+        "logicalBytes": 11185,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/receipts/fucq41-20261105-integrated-full-01/supervisor-full.log"
+      }
+    ],
+    "reservationTokenAbsent": true,
+    "scratchRootAbsent": true,
+    "sourceHashesUnchangedBeforeResultDocumentation": true
+  },
+  "command": "node --test --test-concurrency=1 'server/test/**/*.test.js'",
+  "dependency": {
+    "algorithm": "sha256 of canonical JSON mapping relative path to sha256 bytes; test_resources.digest",
+    "digest": "b8c0d07dc1e15162f68ded257c439341c3dcb4094ba3c5b3fa5e1b528da1dd77",
+    "files": 139,
+    "preserved": true,
+    "target": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules"
+  },
+  "head": "8fa94c10d3d84b2a6b0cba822616083127fc3dfc",
+  "limits": {
+    "recursiveRssBytes": 805306368,
+    "scratchBytes": 33554432,
+    "secondsPerChunk": 600,
+    "workers": 1
+  },
+  "measured": {
+    "peakRssBytes": 327942144,
+    "peakScratchBytes": 332928,
+    "wallSeconds": 52.456
+  },
+  "nativePostgreSQL": {
+    "configured": false,
+    "environmentVariable": "GCSP_DATABASE_URL",
+    "limitation": "No native PostgreSQL/durable database proof is claimed.",
+    "skips": [
+      "postgresql native constraints reject a second occupying hold and claim",
+      "postgresql: shared TransactionRepository contract"
+    ]
+  },
+  "nodeCounts": {
+    "cancelled": 0,
+    "failed": 0,
+    "passed": 1103,
+    "skipped": 2,
+    "tests": 1105,
+    "todo": 0
+  },
+  "ownershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq41-20261105-integrated-full-01.json",
+  "reproduction": {
+    "command": "node --test --test-concurrency=1 'server/test/**/*.test.js'",
+    "cwd": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-012",
+    "environment": "Same inherited environment hash in stamp; no secret values retained. Node/pg identities recorded separately. Restore only the identical locked pg installation before a new full run.",
+    "sourceAfterProof": "Only own Result/evidence documentation will change; stamp excludes documentation paths.",
+    "stampStatusCommand": "python3 -B _tools/test_stamp.py --status --command \"node --test --test-concurrency=1 'server/test/**/*.test.js'\""
+  },
+  "run": "fucq41-20261105-integrated-full-01",
+  "runtime": {
+    "nodePath": "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+    "nodeSha256": "1ef99ea25fe70c9b67e7efe768ef8ee22148d3cabc703db6131b57aeb617d040",
+    "nodeVersion": "v26.7.0"
+  },
+  "scope": "Explicit authored npm test complete file set; serialized one worker. Integrated brief/runtime/shared-control/Driver’s Guide changes are included.",
+  "sourceHashes": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/receipts/fucq41-20261105-integrated-full-01/source-identity.json",
+  "stamp": {
+    "execution_identity": {
+      "code": "7ef44117537d7abb610bb8f6f28ca997534cd339fc0160c5a14a8eddfbc6998d",
+      "environment": "a5ae6431dcc08f6071844c0598c47b95ede6deb22f53957db84192e7783d275e",
+      "inputs": {},
+      "interpreter": [
+        "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+      ],
+      "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+      "scope": "full",
+      "selected": [
+        "node --test --test-concurrency=1 'server/test/**/*.test.js'"
+      ],
+      "settings": "0479a8bf913ddb6a7f2208bd204b0c4fb70b17063c4774c733184a79fd516a62",
+      "variant": "default",
+      "version": 1
+    },
+    "head": "8fa94c10d3d84b2a6b0cba822616083127fc3dfc",
+    "key": "7a9071082ee3793c7e3fbdc17ffb6af533790d423ac8c0eed40b0fc92849ea23",
+    "python": "3.14.7",
+    "ran": null,
+    "skipped": 0,
+    "time": "2026-11-05T14:56:17+0000",
+    "tree": "73aecac45d545b06a24ac71a12aa303e129dd582",
+    "variant": "default",
+    "wall": 52.5
+  },
+  "stampCountLimitation": "The generic shell stamp records ran:null/skipped:0; actual Node counts above were read from the successful command output.",
+  "stampPath": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/stamp-7a9071082ee3793c7e3fbdc17ffb6af533790d423ac8c0eed40b0fc92849ea23-default.json",
+  "status": "passed",
+  "supervisor": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq41-20261105-integrated-full-01-supervisor.py",
+  "tree": "73aecac45d545b06a24ac71a12aa303e129dd582"
+}
