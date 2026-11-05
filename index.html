@@ -25,6 +25,11 @@ main {
   width: 100%; max-width: 1280px; margin: 0 auto; box-sizing: border-box;
   background: #fff;
 }
+/* The retail block is transparent, so this minimal entry host owns its surface.
+   Recovery anchors are flex items so their padded hit areas cannot overlap. */
+    .demo-entry-host { min-height: 100vh; background: var(--vm-surface); }
+    .demo-entry-actions { display: flex; flex-wrap: wrap; gap: var(--vm-space-3); }
+    .demo-entry-host :focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 2px; }
 /* Shared-password gate: a full-screen overlay over the harness's dark
    surface. Purely for capturing the demo password (see the module script);
    the server is the real gate. */
@@ -449,11 +454,11 @@ main {
       };
       const [title, message] = messages[context.state];
       root.innerHTML = `
-        <main class="vm" data-entry-host="${context.state}">
+        <main class="vm demo-entry-host" data-entry-host="${context.state}">
           <section class="vm-screen vm-status" aria-labelledby="entry-title">
             <h1 class="vm-title" id="entry-title">${title}</h1>
             <p class="vm-lede">${message}</p>
-            <nav aria-label="Car experiences"></nav>
+            <nav class="demo-entry-actions" aria-label="Car experiences"></nav>
           </section>
         </main>`;
       const actions = [
