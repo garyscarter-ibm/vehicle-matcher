@@ -76,3 +76,11 @@ Reset is disabled. Review compact Density styling, visible focus and overflow at
 1280x900 and 375x812. The gallery includes the standalone helper and both pickers.
 No browser was run for this alignment; the parent must grant the lane against the
 new reviewed exact commit after the FUCQ-122 work has completed.
+
+The corrected smoke at runtime `d4ce91ff` passed functional checks but its picker
+capture followed a pointer click and had no visible outline. The next harness
+revision restores each original selection with real arrow keys, captures each
+picker before any pointer click, and requires `:focus-visible` plus a non-none
+outline before and after ordinary readback. Existing captures remain unchanged.
+This harness-only correction requires an updated exact-revision grant before
+the desktop and narrow allocations; neither matrix has run yet.

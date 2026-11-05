@@ -147,16 +147,22 @@ try {
     await page.keyboard.press('ArrowLeft'); assert.ok(await radios.last().evaluate((node) => node === document.activeElement));
     await page.keyboard.press('Home'); assert.ok(await radios.first().evaluate((node) => node === document.activeElement));
     assert.equal(await picker(label).locator('[role="radio"][tabindex="0"]').count(), 1);
-    if (before) await option(label, before).click();
-    const focused = before ? option(label, before) : radios.first(); await focused.focus();
+    const beforeIndex = before ? await radios.evaluateAll((nodes, value) => nodes.findIndex((node) => node.dataset.value === value), before) : 0;
+    assert.ok(beforeIndex >= 0);
+    // Restore with real keys so the focus-ring proof precedes every pointer click.
+    for (let index = 0; index < beforeIndex; index++) await page.keyboard.press('ArrowRight');
+    const focused = radios.nth(beforeIndex);
+    assert.ok(await focused.evaluate((node) => node === document.activeElement && node.matches(':focus-visible') && getComputedStyle(node).outlineStyle !== 'none'));
+    await capture(`02a-${label === 'Scenario' ? 'scenario' : 'principal'}-keyboard-focus`);
     const identity = await focused.elementHandle(); const value = await selectedValue(label);
     await controls.getByRole('button', { name: 'Refresh readback', exact: true }).evaluate((node) => node.click());
     await idle();
     assert.ok(await identity.evaluate((node) => node.isConnected && node === document.activeElement));
+    assert.ok(await identity.evaluate((node) => node.matches(':focus-visible') && getComputedStyle(node).outlineStyle !== 'none'));
     assert.equal(await selectedValue(label), value); await identity.dispose();
   }
   await capture('02b-shared-options-keyboard-focus');
-  check('Both shared radio pickers wrap arrows, support Home/End and preserve focused node/value through ordinary readback');
+  check('Both shared radio pickers wrap arrows, support Home/End and preserve focused node/value and visible keyboard outline through ordinary readback');
   await tick().click(); await idle();
   const advanced = assertOk(await read('presenter/controls'));
   assert.equal(Date.parse(advanced.now) - Date.parse(first.now), first.controls.step.value * 1000);
