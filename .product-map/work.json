@@ -1009,9 +1009,17 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T23:45:03Z",
+      "observed_at": "2026-11-05T23:55:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-102",
-      "workers": [],
+      "workers": [
+        {
+          "id": "01a1ae02-7932-7a30-a010-17dda8df7122",
+          "name": "Hugo",
+          "harness": "codex",
+          "observed_at": "2026-11-05T23:50:37Z",
+          "expires_at": "2026-11-06T01:50:37Z"
+        }
+      ],
       "slices": [
         {
           "id": "contract",
@@ -1036,8 +1044,10 @@
         },
         {
           "id": "producer",
-          "status": "not-started",
-          "title": "Actual FUCQ100 token producer and local expiry integration"
+          "status": "complete",
+          "title": "Actual FUCQ100 token producer and local expiry integration",
+          "observed_at": "2026-11-05T23:55:07Z",
+          "evidence": "Lead checked actual published100 allocation/quote/model/token custody to access/account/cookie, real expiry tick/replay/reset; strict31/31 and exact35-module/six-overlay journal. docs/gcsp/evidence/fucq102/producer-proof-result.md. Scoped memory composition only; runtime/deployment/remote/browser/full gates separate."
         },
         {
           "id": "runtime",

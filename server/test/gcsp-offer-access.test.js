@@ -2,7 +2,6 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { Readable } from 'node:stream';
 import { writeFile } from 'node:fs/promises';
-import { once } from 'node:events';
 import { createMemoryRepository, createMemoryStore, inputDigest } from '../gcsp/repository/index.js';
 import { createPolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
@@ -358,23 +357,26 @@ test('HTTP refuses token URLs, duplicate run selectors, identity claims and over
   for (const rawBody of ['{', '[]', 'A'.repeat(16385)]) assert.equal((await request(f, '/api/gcsp/offers/access', { method: 'POST', rawBody })).status, 400);
 });
 
-test('actual buildServer registers link exchange, cookie reload, account parity and old-run reads behind the shared gate', async () => {
+test('actual buildServer request listener registers exchange, reload, account and old-run reads without opening a port', async () => {
   const f = await fixture(); const previous = process.env.DEMO_ACCESS_KEY;
   process.env.DEMO_ACCESS_KEY = 'offer-access-test-gate';
   const server = buildServer({ gcspIdentity:f.identity, gcspClock:f.clock, gcspOfferAccess:f.service, gcspAllowedOrigins:['https://offer.test'] });
-  let port; let listening = false;
-  const portRecord = async (closed) => {
-    if (process.env.GCSP_OFFER_ACCESS_PORT_RECORD) await writeFile(process.env.GCSP_OFFER_ACCESS_PORT_RECORD,
-      JSON.stringify({pid:process.pid,host:'127.0.0.1',port,closed})+'\n');
-  };
   try {
-    server.listen(0, '127.0.0.1'); await once(server,'listening'); listening = true;
-    port = server.address().port; await portRecord(false);
+    const listener = server.listeners('request')[0];
+    assert.equal(typeof listener, 'function'); assert.equal(server.listening, false);
     const call = async (path, {method='GET',body,cookie,gate=true,origin='https://offer.test'}={}) => {
-      const response = await fetch(`http://127.0.0.1:${port}${path}`, {method,
-        headers:{Origin:origin,...(gate ? {'X-Access-Key':'offer-access-test-gate'} : {}),...(cookie ? {cookie} : {}),...(body ? {'Content-Type':'application/json'} : {})},
-        ...(body ? {body:JSON.stringify(body)} : {})});
-      return {status:response.status,headers:response.headers,json:response.status===204?null:await response.json()};
+      const req = Readable.from(body ? [JSON.stringify(body)] : []);
+      req.url = path; req.method = method;
+      req.headers = {host:'api.test',origin,...(gate ? {'x-access-key':'offer-access-test-gate'} : {}),
+        ...(cookie ? {cookie} : {}),...(body ? {'content-type':'application/json'} : {})};
+      const headers = new Map();
+      const res = { setHeader(key,value) { headers.set(key.toLowerCase(),value); },
+        writeHead(status,more) { this.status=status; for (const [key,value] of Object.entries(more)) this.setHeader(key,value); },
+        end(value) { this.body=value; } };
+      await listener(req,res);
+      assert.equal(server.listening,false);
+      return {status:res.status,headers:{get:(key)=>headers.get(key.toLowerCase()),
+        getSetCookie:()=>[headers.get('set-cookie')].flat()},json:res.body?JSON.parse(res.body):null};
     };
     const body = {...f.selector,token:f.rawToken};
     assert.equal((await call('/api/gcsp/offers/access',{method:'OPTIONS',gate:false})).status,204);
@@ -393,7 +395,6 @@ test('actual buildServer registers link exchange, cookie reload, account parity 
     const old = await call(path,{cookie}); assert.equal(old.status,409); assert.equal(old.json.status,'stale-run');
     assert.deepEqual(Object.keys(old.json).sort(),['contractVersion','reason','status']);
   } finally {
-    if (listening) { server.closeAllConnections(); await new Promise((resolve,reject)=>server.close((error)=>error?reject(error):resolve())); await portRecord(true); }
     if (previous===undefined) delete process.env.DEMO_ACCESS_KEY; else process.env.DEMO_ACCESS_KEY=previous;
   }
 });
