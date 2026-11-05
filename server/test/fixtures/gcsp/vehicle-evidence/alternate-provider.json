@@ -1,0 +1,2017 @@
+{
+  "fixtureVersion": "1",
+  "qualification": "Fictional alternate provider shape transcribed from the two retained publication-reference records; no new BMW schema, source facts or imagery.",
+  "source": "server/data/gcsp/vehicle-evidence/publication-reference.v1",
+  "context": {
+    "runId": "consumer-run",
+    "environmentId": "consumer-test",
+    "principalId": "fictional-reader",
+    "roles": [
+      "employee"
+    ]
+  },
+  "entries": [
+    {
+      "key": {
+        "category": "composition",
+        "token": "UkVGMTpSRUZFUkVOQ0U="
+      },
+      "document": {
+        "edition": "offline-cards/1",
+        "result": "partial",
+        "card": {
+          "query": {
+            "kind": "configuration",
+            "id": "UkVGMTpSRUZFUkVOQ0U="
+          },
+          "answer": {
+            "kind": "configuration",
+            "id": "UkVGMTpSRUZFUkVOQ0U=",
+            "configurationId": "UkVGMTpSRUZFUkVOQ0U="
+          },
+          "identifiers": {
+            "category": "configuration",
+            "flavour": "synthetic",
+            "composition": "UkVGMTpSRUZFUkVOQ0U=",
+            "subject": null,
+            "collection": "publication-reference",
+            "origin": "publication-reference",
+            "order": null,
+            "displayOrder": null,
+            "chassis": null,
+            "purpose": "configuration"
+          },
+          "revisions": {
+            "corpus": "1",
+            "manifestDigest": "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709",
+            "snapshot": "reference-fixtures.v1",
+            "profileRegistry": null,
+            "generator": null
+          },
+          "narrative": {
+            "model": {
+              "state": "known",
+              "value": "430i",
+              "completeness": "partial",
+              "provenance": {
+                "kind": "reference",
+                "source": [
+                  "BMW-565-MY2026",
+                  "VIN-RULES",
+                  "VPIC-PARTIAL",
+                  "PLANT-C",
+                  "CFR-565"
+                ],
+                "observedDate": "2026-11-01"
+              }
+            },
+            "derivative": {
+              "state": "known",
+              "value": "430i Convertible",
+              "completeness": "partial",
+              "provenance": {
+                "kind": "reference",
+                "source": [
+                  "BMW-565-MY2026",
+                  "VIN-RULES",
+                  "VPIC-PARTIAL",
+                  "PLANT-C",
+                  "CFR-565"
+                ],
+                "observedDate": "2026-11-01"
+              }
+            },
+            "generation": {
+              "state": "known",
+              "value": "G23",
+              "completeness": "partial",
+              "provenance": {
+                "kind": "reference",
+                "source": [
+                  "BMW-565-MY2026",
+                  "VIN-RULES",
+                  "VPIC-PARTIAL",
+                  "PLANT-C",
+                  "CFR-565"
+                ],
+                "observedDate": "2026-11-01"
+              }
+            },
+            "bodyType": {
+              "state": "known",
+              "value": "Convertible",
+              "completeness": "partial",
+              "provenance": {
+                "kind": "reference",
+                "source": [
+                  "BMW-565-MY2026",
+                  "VIN-RULES",
+                  "VPIC-PARTIAL",
+                  "PLANT-C",
+                  "CFR-565"
+                ],
+                "observedDate": "2026-11-01"
+              }
+            },
+            "powertrain": {
+              "fuel": {
+                "state": "known",
+                "value": "petrol",
+                "completeness": "partial",
+                "provenance": {
+                  "kind": "reference",
+                  "source": [
+                    "BMW-565-MY2026",
+                    "VIN-RULES",
+                    "VPIC-PARTIAL",
+                    "PLANT-C",
+                    "CFR-565"
+                  ],
+                  "observedDate": "2026-11-01"
+                }
+              },
+              "drive": {
+                "state": "known",
+                "value": "rear-wheel",
+                "completeness": "partial",
+                "provenance": {
+                  "kind": "reference",
+                  "source": [
+                    "BMW-565-MY2026",
+                    "VIN-RULES",
+                    "VPIC-PARTIAL",
+                    "PLANT-C",
+                    "CFR-565"
+                  ],
+                  "observedDate": "2026-11-01"
+                }
+              },
+              "transmission": {
+                "state": "unknown",
+                "value": null,
+                "reason": "source-evidence-unavailable",
+                "completeness": "unknown",
+                "provenance": {
+                  "kind": "unknown",
+                  "source": null,
+                  "observedDate": null
+                }
+              },
+              "engine": {
+                "state": "unknown",
+                "value": null,
+                "reason": "source-evidence-unavailable",
+                "completeness": "unknown",
+                "provenance": {
+                  "kind": "unknown",
+                  "source": null,
+                  "observedDate": null
+                }
+              }
+            },
+            "paint": {
+              "state": "unknown",
+              "selections": [],
+              "reason": "source-selection-unavailable"
+            },
+            "upholstery": {
+              "state": "unknown",
+              "selections": [],
+              "reason": "source-selection-unavailable"
+            }
+          },
+          "dimensions": [
+            {
+              "state": "unknown",
+              "reason": "source-evidence-unavailable",
+              "completeness": "unknown",
+              "provenance": {
+                "kind": "unknown",
+                "source": null,
+                "observedDate": null
+              },
+              "name": "seats",
+              "reading": null,
+              "measure": "COUNT",
+              "meaning": "SEATS"
+            },
+            {
+              "state": "unknown",
+              "reason": "source-evidence-unavailable",
+              "completeness": "unknown",
+              "provenance": {
+                "kind": "unknown",
+                "source": null,
+                "observedDate": null
+              },
+              "name": "luggageNormal",
+              "reading": null,
+              "measure": "LITRES",
+              "meaning": "NORMAL"
+            },
+            {
+              "state": "unknown",
+              "reason": "source-evidence-unavailable",
+              "completeness": "unknown",
+              "provenance": {
+                "kind": "unknown",
+                "source": null,
+                "observedDate": null
+              },
+              "name": "luggageExpanded",
+              "reading": null,
+              "measure": "LITRES",
+              "meaning": "EXPANDED"
+            },
+            {
+              "state": "unknown",
+              "reason": "source-evidence-unavailable",
+              "completeness": "unknown",
+              "provenance": {
+                "kind": "unknown",
+                "source": null,
+                "observedDate": null
+              },
+              "name": "acceleration",
+              "reading": null,
+              "measure": "SECONDS",
+              "meaning": "0\u2013100 KM/H"
+            },
+            {
+              "state": "unknown",
+              "reason": "source-evidence-unavailable",
+              "completeness": "unknown",
+              "provenance": {
+                "kind": "unknown",
+                "source": null,
+                "observedDate": null
+              },
+              "name": "bodyLength",
+              "reading": null,
+              "measure": "MILLIMETRES",
+              "meaning": "BODY LENGTH"
+            }
+          ],
+          "features": {
+            "definitions": [],
+            "available": {
+              "state": "unknown",
+              "codes": null,
+              "completeness": "unknown"
+            },
+            "selected": {
+              "state": "unknown",
+              "options": null,
+              "accessories": null,
+              "complete": false,
+              "completeness": "unknown"
+            },
+            "verifiedFitted": {
+              "state": "unknown",
+              "codes": null,
+              "reason": "source-does-not-verify-fitting"
+            }
+          },
+          "portraits": {
+            "knowledge": "unknown",
+            "caption": "Images unavailable",
+            "pictures": []
+          },
+          "evidence": {
+            "kind": "north-american-reference",
+            "references": [
+              "BMW-565-MY2026",
+              "VIN-RULES",
+              "VPIC-PARTIAL",
+              "PLANT-C",
+              "CFR-565"
+            ],
+            "confidence": "Small matched structural reference, not a complete catalogue configuration or UK factory build",
+            "observedDate": "2026-11-01",
+            "retrievedDate": null,
+            "catalogueDate": null,
+            "catalogueValidity": null,
+            "requestedIdentity": null,
+            "resolvedIdentity": null,
+            "configurationIdentity": {
+              "agModelCode": null,
+              "factoryOptionCodes": [
+                "REFERENCE"
+              ],
+              "provenance": {
+                "kind": "synthetic",
+                "observedDate": null,
+                "source": "Bounded publication contract fixture; REF codes are fictional, not BMW codes"
+              },
+              "vgModelCode": "REF1"
+            },
+            "market": "US",
+            "region": "North America",
+            "steering": "LHD",
+            "agModelCode": null,
+            "vgModelCode": null,
+            "modelYear": 2026,
+            "productionEra": "MY2026 North American reference",
+            "productionDate": null,
+            "registrationDate": null,
+            "profile": null,
+            "profileSources": null,
+            "profileConfidence": null,
+            "completeVinDecoded": false,
+            "unresolvedFacts": [
+              "transmission",
+              "engineCode",
+              "agModelCode",
+              "vgModelCode",
+              "productionDate",
+              "registrationDate",
+              "exactEquipment",
+              "exactTrim"
+            ],
+            "identityProvenance": {
+              "kind": "synthetic",
+              "observedDate": null,
+              "source": "Bounded publication contract fixture; REF codes are fictional, not BMW codes"
+            }
+          },
+          "coverage": {
+            "record": "partial",
+            "selectedOptions": "unknown",
+            "measurements": "unknown",
+            "optionDefinitions": "unknown",
+            "availableOptions": "unknown",
+            "verifiedFitted": "unknown",
+            "images": "unknown"
+          },
+          "labels": {
+            "syntheticLabel": "Synthetic identity",
+            "associationLabel": "Fictional identity association to retained configuration evidence; not a factory build or authentication.",
+            "sourceLabel": "North American structural reference",
+            "verifiedFittedLabel": "VIN-fitted equipment unknown",
+            "unknownLabel": "Unknown",
+            "imageLabel": "Images unavailable"
+          }
+        }
+      }
+    },
+    {
+      "key": {
+        "category": "composition",
+        "token": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg=="
+      },
+      "document": {
+        "edition": "offline-cards/1",
+        "result": "complete",
+        "card": {
+          "query": {
+            "kind": "configuration",
+            "id": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg=="
+          },
+          "answer": {
+            "kind": "configuration",
+            "id": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+            "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg=="
+          },
+          "identifiers": {
+            "category": "configuration",
+            "flavour": "synthetic",
+            "composition": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+            "subject": null,
+            "collection": "publication-reference",
+            "origin": "publication-reference",
+            "order": null,
+            "displayOrder": null,
+            "chassis": null,
+            "purpose": "configuration"
+          },
+          "revisions": {
+            "corpus": "1",
+            "manifestDigest": "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709",
+            "snapshot": "bmw-gb-i5-2026-11-01.v1",
+            "profileRegistry": null,
+            "generator": null
+          },
+          "narrative": {
+            "model": {
+              "state": "unknown",
+              "value": null,
+              "reason": "source-evidence-unavailable",
+              "completeness": "unknown",
+              "provenance": {
+                "kind": "unknown",
+                "source": null,
+                "observedDate": null
+              }
+            },
+            "derivative": {
+              "state": "unknown",
+              "value": null,
+              "reason": "source-evidence-unavailable",
+              "completeness": "unknown",
+              "provenance": {
+                "kind": "unknown",
+                "source": null,
+                "observedDate": null
+              }
+            },
+            "generation": {
+              "state": "known",
+              "value": "G61",
+              "completeness": "partial",
+              "provenance": {
+                "kind": "observed",
+                "source": [
+                  "observations-2026-11-01.json",
+                  "requests-2026-11-01.json",
+                  "response-excerpts-2026-11-01.json"
+                ],
+                "observedDate": "2026-11-01"
+              }
+            },
+            "bodyType": {
+              "state": "unknown",
+              "value": null,
+              "reason": "source-evidence-unavailable",
+              "completeness": "unknown",
+              "provenance": {
+                "kind": "unknown",
+                "source": null,
+                "observedDate": null
+              }
+            },
+            "powertrain": {
+              "fuel": {
+                "state": "unknown",
+                "value": null,
+                "reason": "source-evidence-unavailable",
+                "completeness": "unknown",
+                "provenance": {
+                  "kind": "unknown",
+                  "source": null,
+                  "observedDate": null
+                }
+              },
+              "drive": {
+                "state": "unknown",
+                "value": null,
+                "reason": "source-evidence-unavailable",
+                "completeness": "unknown",
+                "provenance": {
+                  "kind": "unknown",
+                  "source": null,
+                  "observedDate": null
+                }
+              },
+              "transmission": {
+                "state": "unknown",
+                "value": null,
+                "reason": "source-evidence-unavailable",
+                "completeness": "unknown",
+                "provenance": {
+                  "kind": "unknown",
+                  "source": null,
+                  "observedDate": null
+                }
+              },
+              "engine": {
+                "state": "unknown",
+                "value": null,
+                "reason": "source-evidence-unavailable",
+                "completeness": "unknown",
+                "provenance": {
+                  "kind": "unknown",
+                  "source": null,
+                  "observedDate": null
+                }
+              }
+            },
+            "paint": {
+              "state": "known",
+              "selections": [
+                {
+                  "code": "P0300",
+                  "label": {
+                    "completeness": "complete",
+                    "provenance": {
+                      "kind": "observed",
+                      "observedDate": "2026-11-01",
+                      "source": "BMW UK catalogue"
+                    },
+                    "state": "known",
+                    "value": "Alpine White"
+                  },
+                  "claim": "selected-catalogue-equipment"
+                }
+              ]
+            },
+            "upholstery": {
+              "state": "known",
+              "selections": [
+                {
+                  "code": "FKSFU",
+                  "label": {
+                    "completeness": "complete",
+                    "provenance": {
+                      "kind": "observed",
+                      "observedDate": "2026-11-01",
+                      "source": "BMW UK catalogue"
+                    },
+                    "state": "known",
+                    "value": "Perforated and Quilted Veganza in Smoke White"
+                  },
+                  "claim": "selected-catalogue-equipment"
+                }
+              ]
+            }
+          },
+          "dimensions": [
+            {
+              "completeness": "complete",
+              "provenance": {
+                "kind": "observed",
+                "observedDate": "2026-11-01",
+                "source": "BMW UK catalogue"
+              },
+              "state": "known",
+              "name": "seats",
+              "reading": 5,
+              "measure": "COUNT",
+              "meaning": "SEATS"
+            },
+            {
+              "completeness": "complete",
+              "provenance": {
+                "kind": "observed",
+                "observedDate": "2026-11-01",
+                "source": "BMW UK catalogue"
+              },
+              "state": "known",
+              "name": "luggageNormal",
+              "reading": 570,
+              "measure": "LITRES",
+              "meaning": "NORMAL"
+            },
+            {
+              "completeness": "complete",
+              "provenance": {
+                "kind": "observed",
+                "observedDate": "2026-11-01",
+                "source": "BMW UK catalogue"
+              },
+              "state": "known",
+              "name": "luggageExpanded",
+              "reading": 1700,
+              "measure": "LITRES",
+              "meaning": "EXPANDED"
+            },
+            {
+              "completeness": "complete",
+              "provenance": {
+                "kind": "observed",
+                "observedDate": "2026-11-01",
+                "source": "BMW UK catalogue"
+              },
+              "state": "known",
+              "name": "acceleration",
+              "reading": 6.1,
+              "measure": "SECONDS",
+              "meaning": "0\u2013100 KM/H"
+            },
+            {
+              "completeness": "unknown",
+              "provenance": {
+                "kind": "unknown",
+                "observedDate": null,
+                "source": null
+              },
+              "reason": "placeholder-value",
+              "state": "unknown",
+              "name": "bodyLength",
+              "reading": null,
+              "measure": "MILLIMETRES",
+              "meaning": "BODY LENGTH"
+            }
+          ],
+          "features": {
+            "available": {
+              "codes": [
+                "FKSFU",
+                "FKSJX",
+                "FKSSW",
+                "FKTSW",
+                "FLKSW",
+                "FVCJL",
+                "FVCJM",
+                "FVCJN",
+                "P0300",
+                "P0416",
+                "P0475",
+                "P0490",
+                "P0A90",
+                "P0A96",
+                "P0C1M",
+                "P0C3Z",
+                "P0C4A",
+                "P0C4P",
+                "P0C5A",
+                "P0C5Y",
+                "P0C64",
+                "P0C68",
+                "P0X1E",
+                "PI071",
+                "PI138",
+                "PI266",
+                "PI275",
+                "PI276",
+                "PI283",
+                "PI287",
+                "PI299",
+                "PI303",
+                "PI312",
+                "PI314",
+                "PI327",
+                "PI336",
+                "PI337",
+                "PI359",
+                "PI375",
+                "PI379",
+                "PI381",
+                "PI405",
+                "PI406",
+                "PI430",
+                "PI440",
+                "PI448",
+                "PI453",
+                "PI621",
+                "PIA15",
+                "PIA30",
+                "PIA31",
+                "PIA32",
+                "PIA39",
+                "PIA43",
+                "PIA53",
+                "PIA73",
+                "PIB51",
+                "PIB53",
+                "PIB65",
+                "PIC17",
+                "PIC1A",
+                "PIC1K",
+                "PIC31",
+                "PIC36",
+                "PIC38",
+                "PIC39",
+                "PIC3D",
+                "PIC3E",
+                "PIC3N",
+                "PIC49",
+                "PIC4E",
+                "PIC4F",
+                "PIC4G",
+                "PIC4H",
+                "PIC4W",
+                "PIC55",
+                "PIC56",
+                "PIC57",
+                "PIC5L",
+                "PIC67",
+                "PIC7A",
+                "PIC7R",
+                "PIL38",
+                "PIL74",
+                "PIP28",
+                "PIP56",
+                "PIP5C",
+                "PIP5N",
+                "PIP5T",
+                "PIP5W",
+                "PIP60",
+                "PIP6E",
+                "PIP6F",
+                "PIP6H",
+                "PIP6K",
+                "PIP6L",
+                "PIP6M",
+                "PIP78",
+                "PIP7B",
+                "PIP7E",
+                "PIP7G",
+                "PIP7K",
+                "PIP7L",
+                "PIP7P",
+                "PIP7U",
+                "PIP7V",
+                "PIP80",
+                "PIP81",
+                "PIP85",
+                "PIP86",
+                "PIP8T",
+                "PIP8W",
+                "PIP8X",
+                "PIP8Y",
+                "PIP92",
+                "PIP93",
+                "PIP94",
+                "PIP9A",
+                "PIP9B",
+                "PIP9C",
+                "PIP9D",
+                "PIP9E",
+                "PIP9F",
+                "PIP9G",
+                "PIP9L",
+                "PIP9M",
+                "PIP9P",
+                "PIP9R",
+                "PIP9Y",
+                "PIR20",
+                "PIR61",
+                "PIR71",
+                "PIR94",
+                "PIR95",
+                "PIR9D",
+                "PIR9L",
+                "PIS03",
+                "PIS0A",
+                "PIS0F",
+                "PIS0G",
+                "PIS0H",
+                "PIS0K",
+                "PIS0M",
+                "PIS0N",
+                "PIS0P",
+                "PIS0R",
+                "PIS0V",
+                "PIS10",
+                "PIS1B",
+                "PIT09",
+                "PIT42",
+                "PIU80",
+                "PIU86",
+                "PIU91",
+                "PIU96",
+                "PIW24",
+                "PIW32",
+                "PIW37",
+                "PIW65",
+                "PIW67",
+                "PIW69",
+                "PIW81",
+                "PIW90",
+                "PIW97",
+                "PIX03",
+                "PIX16",
+                "PIX1G",
+                "S0248",
+                "S02VC",
+                "S02VD",
+                "S02VV",
+                "S0320",
+                "S0322",
+                "S0337",
+                "S03AC",
+                "S03DK",
+                "S03G9",
+                "S03GD",
+                "S03GN",
+                "S03GQ",
+                "S03GV",
+                "S03M1",
+                "S0402",
+                "S0417",
+                "S0420",
+                "S043H",
+                "S043K",
+                "S043L",
+                "S043N",
+                "S043P",
+                "S043R",
+                "S0453",
+                "S0456",
+                "S0488",
+                "S0494",
+                "S04A2",
+                "S04FL",
+                "S04HA",
+                "S04MA",
+                "S04NB",
+                "S04NR",
+                "S04T2",
+                "S04U6",
+                "S04U9",
+                "S04UR",
+                "S04V1",
+                "S0552",
+                "S05AS",
+                "S05AU",
+                "S05AV",
+                "S05DM",
+                "S05DN",
+                "S05DW",
+                "S0654",
+                "S0674",
+                "S06AE",
+                "S06AK",
+                "S06C4",
+                "S06F4",
+                "S06NX",
+                "S06PA",
+                "S06U3",
+                "S0704",
+                "S0710",
+                "S0760",
+                "S0775",
+                "S07BL",
+                "S07EW",
+                "S09QV",
+                "S0Z0T",
+                "S0ZGM",
+                "S0ZGX"
+              ],
+              "complete": false,
+              "completeness": "partial",
+              "provenance": {
+                "kind": "observed",
+                "observedDate": "2026-11-01",
+                "source": "BMW UK catalogue"
+              },
+              "state": "known"
+            },
+            "definitions": [
+              {
+                "category": "fabric",
+                "code": "FKSFU",
+                "label": {
+                  "completeness": "complete",
+                  "provenance": {
+                    "kind": "observed",
+                    "observedDate": "2026-11-01",
+                    "source": "BMW UK catalogue"
+                  },
+                  "state": "known",
+                  "value": "Perforated and Quilted Veganza in Smoke White"
+                }
+              },
+              {
+                "category": "paint",
+                "code": "P0300",
+                "label": {
+                  "completeness": "complete",
+                  "provenance": {
+                    "kind": "observed",
+                    "observedDate": "2026-11-01",
+                    "source": "BMW UK catalogue"
+                  },
+                  "state": "known",
+                  "value": "Alpine White"
+                }
+              },
+              {
+                "category": "paint",
+                "code": "P0475",
+                "label": {
+                  "completeness": "complete",
+                  "provenance": {
+                    "kind": "observed",
+                    "observedDate": "2026-11-01",
+                    "source": "BMW UK catalogue"
+                  },
+                  "state": "known",
+                  "value": "Black Sapphire"
+                }
+              },
+              {
+                "category": "other",
+                "code": "S03AC",
+                "label": {
+                  "completeness": "complete",
+                  "provenance": {
+                    "kind": "observed",
+                    "observedDate": "2026-11-01",
+                    "source": "BMW UK catalogue"
+                  },
+                  "state": "known",
+                  "value": "Towbar"
+                }
+              },
+              {
+                "category": "other",
+                "code": "S0488",
+                "label": {
+                  "completeness": "complete",
+                  "provenance": {
+                    "kind": "observed",
+                    "observedDate": "2026-11-01",
+                    "source": "BMW UK catalogue"
+                  },
+                  "state": "known",
+                  "value": "Lumbar Support"
+                }
+              },
+              {
+                "category": "other",
+                "code": "S07BL",
+                "label": {
+                  "completeness": "complete",
+                  "provenance": {
+                    "kind": "observed",
+                    "observedDate": "2026-11-01",
+                    "source": "BMW UK catalogue"
+                  },
+                  "state": "known",
+                  "value": "BMW UK Service Inclusive"
+                }
+              }
+            ],
+            "selected": {
+              "accessories": [
+                {
+                  "code": "SE000001",
+                  "quantity": 1,
+                  "type": "accessory"
+                }
+              ],
+              "complete": true,
+              "completeness": "complete",
+              "options": [
+                "FKSFU",
+                "P0300",
+                "S0230",
+                "S02PA",
+                "S02VB",
+                "S02VD",
+                "S0302",
+                "S0337",
+                "S03DK",
+                "S03G9",
+                "S03M1",
+                "S0428",
+                "S043L",
+                "S0488",
+                "S0494",
+                "S04T2",
+                "S04U9",
+                "S04UR",
+                "S04V1",
+                "S0552",
+                "S05AS",
+                "S05AV",
+                "S05DM",
+                "S0654",
+                "S0674",
+                "S06AE",
+                "S06AF",
+                "S06AK",
+                "S06C4",
+                "S06NX",
+                "S06PA",
+                "S0704",
+                "S0710",
+                "S0760",
+                "S0775",
+                "S0812",
+                "S0853",
+                "S0880",
+                "S08R3",
+                "S08R9",
+                "S08SM",
+                "S08TF",
+                "S08TG",
+                "S08WM",
+                "S09QV",
+                "S09T1",
+                "S09T2"
+              ],
+              "provenance": {
+                "kind": "observed",
+                "observedDate": "2026-11-01",
+                "source": "BMW UK catalogue"
+              },
+              "state": "known"
+            },
+            "verifiedFitted": {
+              "state": "unknown",
+              "codes": null,
+              "reason": "source-does-not-verify-fitting"
+            }
+          },
+          "portraits": {
+            "knowledge": "unknown",
+            "caption": "Images unavailable",
+            "pictures": []
+          },
+          "evidence": {
+            "kind": "dated-snapshot",
+            "references": [
+              "observations-2026-11-01.json",
+              "requests-2026-11-01.json",
+              "response-excerpts-2026-11-01.json"
+            ],
+            "confidence": "Exact dated catalogue observation; not a physical build",
+            "observedDate": "2026-11-01",
+            "retrievedDate": "2026-11-01",
+            "catalogueDate": "2026-11-01",
+            "catalogueValidity": {
+              "effectDate": "2027-01-05",
+              "orderDate": "2026-11-01",
+              "productionDate": "2027-01-05",
+              "taxDate": "2027-01-05"
+            },
+            "requestedIdentity": {
+              "agModelCode": "72HH",
+              "catalogueDate": "2026-11-01",
+              "effectDate": "2027-01-05",
+              "locale": "en-GB",
+              "market": "GB",
+              "modelCode": "T5MJ",
+              "modelRange": "G61E",
+              "orderDate": "2026-11-01",
+              "productionDate": "2027-01-05",
+              "rawModelRange": "G61",
+              "selectedAccessories": [
+                {
+                  "code": "SE000001",
+                  "quantity": 1,
+                  "type": "accessory"
+                }
+              ],
+              "selectedOptions": [
+                "FKSFU",
+                "P0300",
+                "S0230",
+                "S02PA",
+                "S02VB",
+                "S02VD",
+                "S0302",
+                "S0337",
+                "S03DK",
+                "S03G9",
+                "S03M1",
+                "S0428",
+                "S043L",
+                "S0488",
+                "S0494",
+                "S04T2",
+                "S04U9",
+                "S04UR",
+                "S04V1",
+                "S0552",
+                "S05AS",
+                "S05AV",
+                "S05DM",
+                "S0654",
+                "S0674",
+                "S06AE",
+                "S06AF",
+                "S06AK",
+                "S06C4",
+                "S06NX",
+                "S06PA",
+                "S0704",
+                "S0710",
+                "S0760",
+                "S0775",
+                "S0812",
+                "S0853",
+                "S0880",
+                "S08R3",
+                "S08R9",
+                "S08SM",
+                "S08TF",
+                "S08TG",
+                "S08WM",
+                "S09QV",
+                "S09T1",
+                "S09T2"
+              ],
+              "taxDate": "2027-01-05",
+              "trim": "S0337"
+            },
+            "resolvedIdentity": {
+              "agModelCode": "72HH",
+              "catalogueDate": "2026-11-01",
+              "effectDate": "2027-01-05",
+              "locale": "en-GB",
+              "market": "GB",
+              "modelCode": "T5MJ",
+              "modelRange": "G61E",
+              "orderDate": "2026-11-01",
+              "productionDate": "2027-01-05",
+              "rawModelRange": "G61",
+              "selectedAccessories": [
+                {
+                  "code": "SE000001",
+                  "quantity": 1,
+                  "type": "accessory"
+                }
+              ],
+              "selectedOptions": [
+                "FKSFU",
+                "P0300",
+                "S0230",
+                "S02PA",
+                "S02VB",
+                "S02VD",
+                "S0302",
+                "S0337",
+                "S03DK",
+                "S03G9",
+                "S03M1",
+                "S0428",
+                "S043L",
+                "S0488",
+                "S0494",
+                "S04T2",
+                "S04U9",
+                "S04UR",
+                "S04V1",
+                "S0552",
+                "S05AS",
+                "S05AV",
+                "S05DM",
+                "S0654",
+                "S0674",
+                "S06AE",
+                "S06AF",
+                "S06AK",
+                "S06C4",
+                "S06NX",
+                "S06PA",
+                "S0704",
+                "S0710",
+                "S0760",
+                "S0775",
+                "S0812",
+                "S0853",
+                "S0880",
+                "S08R3",
+                "S08R9",
+                "S08SM",
+                "S08TF",
+                "S08TG",
+                "S08WM",
+                "S09QV",
+                "S09T1",
+                "S09T2"
+              ],
+              "taxDate": "2027-01-05",
+              "trim": "S0337"
+            },
+            "configurationIdentity": {
+              "agModelCode": "72HH",
+              "factoryOptionCodes": [
+                "FKSFU",
+                "P0300",
+                "S0230",
+                "S02PA",
+                "S02VB",
+                "S02VD",
+                "S0302",
+                "S0337",
+                "S03DK",
+                "S03G9",
+                "S03M1",
+                "S0428",
+                "S043L",
+                "S0488",
+                "S0494",
+                "S04T2",
+                "S04U9",
+                "S04UR",
+                "S04V1",
+                "S0552",
+                "S05AS",
+                "S05AV",
+                "S05DM",
+                "S0654",
+                "S0674",
+                "S06AE",
+                "S06AF",
+                "S06AK",
+                "S06C4",
+                "S06NX",
+                "S06PA",
+                "S0704",
+                "S0710",
+                "S0760",
+                "S0775",
+                "S0812",
+                "S0853",
+                "S0880",
+                "S08R3",
+                "S08R9",
+                "S08SM",
+                "S08TF",
+                "S08TG",
+                "S08WM",
+                "S09QV",
+                "S09T1",
+                "S09T2"
+              ],
+              "provenance": {
+                "kind": "observed",
+                "observedDate": "2026-11-01",
+                "source": "BMW UK catalogue"
+              },
+              "vgModelCode": "T5MJ"
+            },
+            "market": "GB",
+            "region": null,
+            "steering": null,
+            "agModelCode": "72HH",
+            "vgModelCode": "T5MJ",
+            "modelYear": null,
+            "productionEra": null,
+            "productionDate": null,
+            "registrationDate": null,
+            "profile": null,
+            "profileSources": null,
+            "profileConfidence": null,
+            "completeVinDecoded": false,
+            "unresolvedFacts": [
+              "model",
+              "derivative",
+              "body",
+              "powertrain",
+              "drive",
+              "transmission",
+              "engineCode",
+              "region",
+              "steering",
+              "modelYear",
+              "productionEra",
+              "productionDate",
+              "plant"
+            ],
+            "identityProvenance": {
+              "kind": "observed",
+              "observedDate": "2026-11-01",
+              "source": "BMW UK catalogue"
+            }
+          },
+          "coverage": {
+            "record": "complete",
+            "selectedOptions": "complete",
+            "measurements": "complete",
+            "optionDefinitions": "partial",
+            "availableOptions": "partial",
+            "verifiedFitted": "unknown",
+            "images": "unknown"
+          },
+          "labels": {
+            "syntheticLabel": "Synthetic identity",
+            "associationLabel": "Fictional identity association to retained configuration evidence; not a factory build or authentication.",
+            "sourceLabel": "Dated catalogue snapshot",
+            "verifiedFittedLabel": "VIN-fitted equipment unknown",
+            "unknownLabel": "Unknown",
+            "imageLabel": "Images unavailable"
+          }
+        }
+      }
+    },
+    {
+      "key": {
+        "category": "delivered",
+        "token": "WBA33DB08TC426611"
+      },
+      "document": {
+        "edition": "offline-cards/1",
+        "result": "partial",
+        "card": {
+          "query": {
+            "kind": "vin",
+            "id": "WBA33DB08TC426611"
+          },
+          "answer": {
+            "kind": "vin",
+            "id": "WBA33DB08TC426611",
+            "configurationId": "UkVGMTpSRUZFUkVOQ0U="
+          },
+          "identifiers": {
+            "category": "vin",
+            "flavour": "synthetic",
+            "composition": "UkVGMTpSRUZFUkVOQ0U=",
+            "subject": "reference-vehicle-1",
+            "collection": "publication-reference",
+            "origin": "bounded-reference",
+            "order": null,
+            "displayOrder": null,
+            "chassis": "WBA33DB08TC426611",
+            "purpose": "current-car"
+          },
+          "revisions": {
+            "corpus": "1",
+            "manifestDigest": "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709",
+            "snapshot": "reference-fixtures.v1",
+            "profileRegistry": "vin-profiles.v1",
+            "generator": "synthetic-identities.sha256-v1"
+          },
+          "narrative": {
+            "model": {
+              "state": "known",
+              "value": "430i",
+              "completeness": "partial",
+              "provenance": {
+                "kind": "reference",
+                "source": [
+                  "BMW-565-MY2026",
+                  "VIN-RULES",
+                  "VPIC-PARTIAL",
+                  "PLANT-C",
+                  "CFR-565"
+                ],
+                "observedDate": "2026-11-01"
+              }
+            },
+            "derivative": {
+              "state": "known",
+              "value": "430i Convertible",
+              "completeness": "partial",
+              "provenance": {
+                "kind": "reference",
+                "source": [
+                  "BMW-565-MY2026",
+                  "VIN-RULES",
+                  "VPIC-PARTIAL",
+                  "PLANT-C",
+                  "CFR-565"
+                ],
+                "observedDate": "2026-11-01"
+              }
+            },
+            "generation": {
+              "state": "known",
+              "value": "G23",
+              "completeness": "partial",
+              "provenance": {
+                "kind": "reference",
+                "source": [
+                  "BMW-565-MY2026",
+                  "VIN-RULES",
+                  "VPIC-PARTIAL",
+                  "PLANT-C",
+                  "CFR-565"
+                ],
+                "observedDate": "2026-11-01"
+              }
+            },
+            "bodyType": {
+              "state": "known",
+              "value": "Convertible",
+              "completeness": "partial",
+              "provenance": {
+                "kind": "reference",
+                "source": [
+                  "BMW-565-MY2026",
+                  "VIN-RULES",
+                  "VPIC-PARTIAL",
+                  "PLANT-C",
+                  "CFR-565"
+                ],
+                "observedDate": "2026-11-01"
+              }
+            },
+            "powertrain": {
+              "fuel": {
+                "state": "known",
+                "value": "petrol",
+                "completeness": "partial",
+                "provenance": {
+                  "kind": "reference",
+                  "source": [
+                    "BMW-565-MY2026",
+                    "VIN-RULES",
+                    "VPIC-PARTIAL",
+                    "PLANT-C",
+                    "CFR-565"
+                  ],
+                  "observedDate": "2026-11-01"
+                }
+              },
+              "drive": {
+                "state": "known",
+                "value": "rear-wheel",
+                "completeness": "partial",
+                "provenance": {
+                  "kind": "reference",
+                  "source": [
+                    "BMW-565-MY2026",
+                    "VIN-RULES",
+                    "VPIC-PARTIAL",
+                    "PLANT-C",
+                    "CFR-565"
+                  ],
+                  "observedDate": "2026-11-01"
+                }
+              },
+              "transmission": {
+                "state": "unknown",
+                "value": null,
+                "reason": "source-evidence-unavailable",
+                "completeness": "unknown",
+                "provenance": {
+                  "kind": "unknown",
+                  "source": null,
+                  "observedDate": null
+                }
+              },
+              "engine": {
+                "state": "unknown",
+                "value": null,
+                "reason": "source-evidence-unavailable",
+                "completeness": "unknown",
+                "provenance": {
+                  "kind": "unknown",
+                  "source": null,
+                  "observedDate": null
+                }
+              }
+            },
+            "paint": {
+              "state": "unknown",
+              "selections": [],
+              "reason": "source-selection-unavailable"
+            },
+            "upholstery": {
+              "state": "unknown",
+              "selections": [],
+              "reason": "source-selection-unavailable"
+            }
+          },
+          "dimensions": [
+            {
+              "state": "unknown",
+              "reason": "source-evidence-unavailable",
+              "completeness": "unknown",
+              "provenance": {
+                "kind": "unknown",
+                "source": null,
+                "observedDate": null
+              },
+              "name": "seats",
+              "reading": null,
+              "measure": "COUNT",
+              "meaning": "SEATS"
+            },
+            {
+              "state": "unknown",
+              "reason": "source-evidence-unavailable",
+              "completeness": "unknown",
+              "provenance": {
+                "kind": "unknown",
+                "source": null,
+                "observedDate": null
+              },
+              "name": "luggageNormal",
+              "reading": null,
+              "measure": "LITRES",
+              "meaning": "NORMAL"
+            },
+            {
+              "state": "unknown",
+              "reason": "source-evidence-unavailable",
+              "completeness": "unknown",
+              "provenance": {
+                "kind": "unknown",
+                "source": null,
+                "observedDate": null
+              },
+              "name": "luggageExpanded",
+              "reading": null,
+              "measure": "LITRES",
+              "meaning": "EXPANDED"
+            },
+            {
+              "state": "unknown",
+              "reason": "source-evidence-unavailable",
+              "completeness": "unknown",
+              "provenance": {
+                "kind": "unknown",
+                "source": null,
+                "observedDate": null
+              },
+              "name": "acceleration",
+              "reading": null,
+              "measure": "SECONDS",
+              "meaning": "0\u2013100 KM/H"
+            },
+            {
+              "state": "unknown",
+              "reason": "source-evidence-unavailable",
+              "completeness": "unknown",
+              "provenance": {
+                "kind": "unknown",
+                "source": null,
+                "observedDate": null
+              },
+              "name": "bodyLength",
+              "reading": null,
+              "measure": "MILLIMETRES",
+              "meaning": "BODY LENGTH"
+            }
+          ],
+          "features": {
+            "definitions": [],
+            "available": {
+              "state": "unknown",
+              "codes": null,
+              "completeness": "unknown"
+            },
+            "selected": {
+              "state": "unknown",
+              "options": null,
+              "accessories": null,
+              "complete": false,
+              "completeness": "unknown"
+            },
+            "verifiedFitted": {
+              "state": "unknown",
+              "codes": null,
+              "reason": "source-does-not-verify-fitting"
+            }
+          },
+          "portraits": {
+            "knowledge": "unknown",
+            "caption": "Images unavailable",
+            "pictures": []
+          },
+          "evidence": {
+            "kind": "north-american-reference",
+            "references": [
+              "BMW-565-MY2026",
+              "VIN-RULES",
+              "VPIC-PARTIAL",
+              "PLANT-C",
+              "CFR-565"
+            ],
+            "confidence": "Small matched structural reference, not a complete catalogue configuration or UK factory build",
+            "observedDate": "2026-11-01",
+            "retrievedDate": null,
+            "catalogueDate": null,
+            "catalogueValidity": null,
+            "requestedIdentity": null,
+            "resolvedIdentity": null,
+            "configurationIdentity": {
+              "agModelCode": null,
+              "factoryOptionCodes": [
+                "REFERENCE"
+              ],
+              "provenance": {
+                "kind": "synthetic",
+                "observedDate": null,
+                "source": "Bounded publication contract fixture; REF codes are fictional, not BMW codes"
+              },
+              "vgModelCode": "REF1"
+            },
+            "market": "US",
+            "region": "North America",
+            "steering": "LHD",
+            "agModelCode": null,
+            "vgModelCode": null,
+            "modelYear": 2026,
+            "productionEra": "MY2026 North American reference",
+            "productionDate": null,
+            "registrationDate": null,
+            "profile": {
+              "profileId": "wba-430i-convertible-my2026",
+              "profileVersion": "1",
+              "referenceOnly": true,
+              "registryVersion": "vin-profiles.v1"
+            },
+            "profileSources": [
+              {
+                "id": "BMW-565-MY2026",
+                "kind": "manufacturer-filing",
+                "observedDate": "2026-11-01",
+                "scope": "BMW manufacturer Part 565 filing; North American-market reference; not an approved UK/RHD generator profile",
+                "source": "https://vpic.nhtsa.dot.gov/mid/home/displayfile/01012fef-2728-447d-a23b-0448772ad75c",
+                "sourceDate": "2025-06-13"
+              },
+              {
+                "id": "CFR-565",
+                "kind": "regulation",
+                "observedDate": "2026-11-01",
+                "scope": "US format, checksum and permitted serial structure; not a BMW sequence allocation",
+                "source": "https://www.ecfr.gov/current/title-49/subtitle-B/chapter-V/part-565/section-565.15",
+                "sourceDate": null
+              },
+              {
+                "id": "VIN-RULES",
+                "kind": "sanitised-research",
+                "observedDate": "2026-11-02",
+                "scope": "Bounded model/generation context and reference-fixture definition; no exact build sheet",
+                "source": "docs/gcsp/synthetic-vin-rules.md",
+                "sourceDate": "2026-11-02"
+              },
+              {
+                "id": "VPIC-PARTIAL",
+                "kind": "partial-pattern",
+                "observedDate": "2026-11-01",
+                "scope": "HTTP 200, business code 6 - Incomplete VIN; no successful complete-VIN decode",
+                "source": "docs/gcsp/evidence/fucq-4/bmw-vin-rules-2026-11-01.json#partialPatternChecks",
+                "sourceDate": "2026-11-01"
+              },
+              {
+                "id": "PLANT-C",
+                "kind": "production-source",
+                "observedDate": "2026-11-01",
+                "scope": "Model/era production corroboration paired with filed plant dictionary and matched vPIC partial pattern; publication date not retained",
+                "source": "https://www.bmwgroup-werke.com/dingolfing/en.html",
+                "sourceDate": null
+              }
+            ],
+            "profileConfidence": "Manufacturer-filed descriptor with matched production/partial-pattern corroboration; structural reference only",
+            "completeVinDecoded": false,
+            "unresolvedFacts": [
+              "transmission",
+              "engineCode",
+              "agModelCode",
+              "vgModelCode",
+              "productionDate",
+              "registrationDate",
+              "exactEquipment",
+              "exactTrim"
+            ],
+            "identityProvenance": {
+              "kind": "synthetic",
+              "observedDate": null,
+              "source": "Bounded publication contract fixture; REF codes are fictional, not BMW codes"
+            }
+          },
+          "coverage": {
+            "record": "partial",
+            "selectedOptions": "unknown",
+            "measurements": "unknown",
+            "optionDefinitions": "unknown",
+            "availableOptions": "unknown",
+            "verifiedFitted": "unknown",
+            "images": "unknown"
+          },
+          "labels": {
+            "syntheticLabel": "Synthetic identity",
+            "associationLabel": "Fictional identity association to retained configuration evidence; not a factory build or authentication.",
+            "sourceLabel": "North American structural reference",
+            "verifiedFittedLabel": "VIN-fitted equipment unknown",
+            "unknownLabel": "Unknown",
+            "imageLabel": "Images unavailable"
+          }
+        }
+      }
+    },
+    {
+      "key": {
+        "category": "order",
+        "token": "1d736acd-674c-4bb1-8b6b-45dc56906442"
+      },
+      "context": {
+        "runId": "consumer-run",
+        "environmentId": "consumer-test",
+        "principalId": "fictional-reader",
+        "roles": [
+          "employee"
+        ]
+      },
+      "document": {
+        "edition": "offline-cards/1",
+        "result": "partial",
+        "card": {
+          "query": {
+            "kind": "stock",
+            "id": "1d736acd-674c-4bb1-8b6b-45dc56906442"
+          },
+          "answer": {
+            "kind": "stock",
+            "id": "1d736acd-674c-4bb1-8b6b-45dc56906442",
+            "configurationId": "UkVGMTpSRUZFUkVOQ0U="
+          },
+          "identifiers": {
+            "category": "stock",
+            "flavour": "synthetic",
+            "composition": "UkVGMTpSRUZFUkVOQ0U=",
+            "subject": "fictional-stock-car",
+            "collection": "publication-reference",
+            "origin": "consumer-fixture",
+            "order": "1d736acd-674c-4bb1-8b6b-45dc56906442",
+            "displayOrder": "0000123",
+            "chassis": null,
+            "purpose": "stock"
+          },
+          "revisions": {
+            "corpus": "1",
+            "manifestDigest": "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709",
+            "snapshot": "reference-fixtures.v1",
+            "profileRegistry": null,
+            "generator": null
+          },
+          "narrative": {
+            "model": {
+              "state": "known",
+              "value": "430i",
+              "completeness": "partial",
+              "provenance": {
+                "kind": "reference",
+                "source": [
+                  "BMW-565-MY2026",
+                  "VIN-RULES",
+                  "VPIC-PARTIAL",
+                  "PLANT-C",
+                  "CFR-565"
+                ],
+                "observedDate": "2026-11-01"
+              }
+            },
+            "derivative": {
+              "state": "known",
+              "value": "430i Convertible",
+              "completeness": "partial",
+              "provenance": {
+                "kind": "reference",
+                "source": [
+                  "BMW-565-MY2026",
+                  "VIN-RULES",
+                  "VPIC-PARTIAL",
+                  "PLANT-C",
+                  "CFR-565"
+                ],
+                "observedDate": "2026-11-01"
+              }
+            },
+            "generation": {
+              "state": "known",
+              "value": "G23",
+              "completeness": "partial",
+              "provenance": {
+                "kind": "reference",
+                "source": [
+                  "BMW-565-MY2026",
+                  "VIN-RULES",
+                  "VPIC-PARTIAL",
+                  "PLANT-C",
+                  "CFR-565"
+                ],
+                "observedDate": "2026-11-01"
+              }
+            },
+            "bodyType": {
+              "state": "known",
+              "value": "Convertible",
+              "completeness": "partial",
+              "provenance": {
+                "kind": "reference",
+                "source": [
+                  "BMW-565-MY2026",
+                  "VIN-RULES",
+                  "VPIC-PARTIAL",
+                  "PLANT-C",
+                  "CFR-565"
+                ],
+                "observedDate": "2026-11-01"
+              }
+            },
+            "powertrain": {
+              "fuel": {
+                "state": "known",
+                "value": "petrol",
+                "completeness": "partial",
+                "provenance": {
+                  "kind": "reference",
+                  "source": [
+                    "BMW-565-MY2026",
+                    "VIN-RULES",
+                    "VPIC-PARTIAL",
+                    "PLANT-C",
+                    "CFR-565"
+                  ],
+                  "observedDate": "2026-11-01"
+                }
+              },
+              "drive": {
+                "state": "known",
+                "value": "rear-wheel",
+                "completeness": "partial",
+                "provenance": {
+                  "kind": "reference",
+                  "source": [
+                    "BMW-565-MY2026",
+                    "VIN-RULES",
+                    "VPIC-PARTIAL",
+                    "PLANT-C",
+                    "CFR-565"
+                  ],
+                  "observedDate": "2026-11-01"
+                }
+              },
+              "transmission": {
+                "state": "unknown",
+                "value": null,
+                "reason": "source-evidence-unavailable",
+                "completeness": "unknown",
+                "provenance": {
+                  "kind": "unknown",
+                  "source": null,
+                  "observedDate": null
+                }
+              },
+              "engine": {
+                "state": "unknown",
+                "value": null,
+                "reason": "source-evidence-unavailable",
+                "completeness": "unknown",
+                "provenance": {
+                  "kind": "unknown",
+                  "source": null,
+                  "observedDate": null
+                }
+              }
+            },
+            "paint": {
+              "state": "unknown",
+              "selections": [],
+              "reason": "source-selection-unavailable"
+            },
+            "upholstery": {
+              "state": "unknown",
+              "selections": [],
+              "reason": "source-selection-unavailable"
+            }
+          },
+          "dimensions": [
+            {
+              "state": "unknown",
+              "reason": "source-evidence-unavailable",
+              "completeness": "unknown",
+              "provenance": {
+                "kind": "unknown",
+                "source": null,
+                "observedDate": null
+              },
+              "name": "seats",
+              "reading": null,
+              "measure": "COUNT",
+              "meaning": "SEATS"
+            },
+            {
+              "state": "unknown",
+              "reason": "source-evidence-unavailable",
+              "completeness": "unknown",
+              "provenance": {
+                "kind": "unknown",
+                "source": null,
+                "observedDate": null
+              },
+              "name": "luggageNormal",
+              "reading": null,
+              "measure": "LITRES",
+              "meaning": "NORMAL"
+            },
+            {
+              "state": "unknown",
+              "reason": "source-evidence-unavailable",
+              "completeness": "unknown",
+              "provenance": {
+                "kind": "unknown",
+                "source": null,
+                "observedDate": null
+              },
+              "name": "luggageExpanded",
+              "reading": null,
+              "measure": "LITRES",
+              "meaning": "EXPANDED"
+            },
+            {
+              "state": "unknown",
+              "reason": "source-evidence-unavailable",
+              "completeness": "unknown",
+              "provenance": {
+                "kind": "unknown",
+                "source": null,
+                "observedDate": null
+              },
+              "name": "acceleration",
+              "reading": null,
+              "measure": "SECONDS",
+              "meaning": "0\u2013100 KM/H"
+            },
+            {
+              "state": "unknown",
+              "reason": "source-evidence-unavailable",
+              "completeness": "unknown",
+              "provenance": {
+                "kind": "unknown",
+                "source": null,
+                "observedDate": null
+              },
+              "name": "bodyLength",
+              "reading": null,
+              "measure": "MILLIMETRES",
+              "meaning": "BODY LENGTH"
+            }
+          ],
+          "features": {
+            "definitions": [],
+            "available": {
+              "state": "unknown",
+              "codes": null,
+              "completeness": "unknown"
+            },
+            "selected": {
+              "state": "unknown",
+              "options": null,
+              "accessories": null,
+              "complete": false,
+              "completeness": "unknown"
+            },
+            "verifiedFitted": {
+              "state": "unknown",
+              "codes": null,
+              "reason": "source-does-not-verify-fitting"
+            }
+          },
+          "portraits": {
+            "knowledge": "unknown",
+            "caption": "Images unavailable",
+            "pictures": []
+          },
+          "evidence": {
+            "kind": "north-american-reference",
+            "references": [
+              "BMW-565-MY2026",
+              "VIN-RULES",
+              "VPIC-PARTIAL",
+              "PLANT-C",
+              "CFR-565"
+            ],
+            "confidence": "Small matched structural reference, not a complete catalogue configuration or UK factory build",
+            "observedDate": "2026-11-01",
+            "retrievedDate": null,
+            "catalogueDate": null,
+            "catalogueValidity": null,
+            "requestedIdentity": null,
+            "resolvedIdentity": null,
+            "configurationIdentity": {
+              "agModelCode": null,
+              "factoryOptionCodes": [
+                "REFERENCE"
+              ],
+              "provenance": {
+                "kind": "synthetic",
+                "observedDate": null,
+                "source": "Bounded publication contract fixture; REF codes are fictional, not BMW codes"
+              },
+              "vgModelCode": "REF1"
+            },
+            "market": "US",
+            "region": "North America",
+            "steering": "LHD",
+            "agModelCode": null,
+            "vgModelCode": null,
+            "modelYear": 2026,
+            "productionEra": "MY2026 North American reference",
+            "productionDate": null,
+            "registrationDate": null,
+            "profile": null,
+            "profileSources": null,
+            "profileConfidence": null,
+            "completeVinDecoded": false,
+            "unresolvedFacts": [
+              "transmission",
+              "engineCode",
+              "agModelCode",
+              "vgModelCode",
+              "productionDate",
+              "registrationDate",
+              "exactEquipment",
+              "exactTrim"
+            ],
+            "identityProvenance": {
+              "kind": "synthetic",
+              "observedDate": null,
+              "source": "Bounded publication contract fixture; REF codes are fictional, not BMW codes"
+            }
+          },
+          "coverage": {
+            "record": "partial",
+            "selectedOptions": "unknown",
+            "measurements": "unknown",
+            "optionDefinitions": "unknown",
+            "availableOptions": "unknown",
+            "verifiedFitted": "unknown",
+            "images": "unknown"
+          },
+          "labels": {
+            "syntheticLabel": "Synthetic identity",
+            "associationLabel": "Fictional identity association to retained configuration evidence; not a factory build or authentication.",
+            "sourceLabel": "North American structural reference",
+            "verifiedFittedLabel": "VIN-fitted equipment unknown",
+            "unknownLabel": "Unknown",
+            "imageLabel": "Images unavailable"
+          },
+          "scope": {
+            "run": "consumer-run",
+            "environment": "consumer-test"
+          }
+        }
+      }
+    }
+  ]
+}
