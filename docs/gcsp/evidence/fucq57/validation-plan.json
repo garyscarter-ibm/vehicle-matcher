@@ -1,0 +1,119 @@
+{
+  "story": "FUCQ-57",
+  "run": "fucq57-20261105-offline-guard",
+  "state": "source checkpoint; scoped execution admitted after push; full held for dispatcher freeze/sole slot",
+  "authority": "4 November Q7/Q13: application in-process; actual ephemeral HTTP parity separate; immutable configuration, per-run stock UUID, delivered/current VIN only",
+  "base": "5aba043",
+  "changed_paths": [
+    "server/gcsp/vehicle-evidence/identity-routing.js",
+    "server/gcsp/vehicle-evidence/vin-allocation.js",
+    "server/gcsp/vehicle-evidence/synthetic-registry.js",
+    "server/gcsp/vehicle-evidence/vehicle-lookup.js",
+    "server/gcsp/vehicle-evidence/local-vehicle-lookup.js",
+    "server/gcsp/vehicle-evidence/lookup-adapter.js",
+    "server/gcsp/vehicle-evidence/alternate-offline-adapter.js",
+    "server/gcsp/vehicle-evidence/application-vehicle-details.js",
+    "server/test/gcsp-synthetic-vin-egress.test.js",
+    "server/test/gcsp-synthetic-vin-e2e.test.js",
+    "server/test/gcsp-offline-start.test.js",
+    "server/test/gcsp-vehicle-details-contract.test.js",
+    "server/test/gcsp-synthetic-http-adapter.test.js",
+    "server/test/helpers/offline-vehicle-fixture.js",
+    "server/test/helpers/offline-egress-guard.js",
+    "docs/gcsp/synthetic-vin-service.md",
+    "docs/gcsp/vehicle-details-consumer.md"
+  ],
+  "regression": "A provider switch, retry, delayed classifier, outage/miss, reset or corrupt/missing corpus must not reclassify a persisted synthetic identity or reach an external boundary. Returned facts must match retained associations.",
+  "boundaries": [
+    "FUCQ53 whole-inventory validator and current-run retained snapshot",
+    "independent registry history across deactivation/reload/restart",
+    "FUCQ55 read-only lookup/HTTP wrapper/shared gate",
+    "FUCQ56 bounded adapter/consumer mapping",
+    "already-merged FUCQ43 trusted real-lookup guard; key/encryption/guide/PDF/COSY/image/decoder/redirect spies"
+  ],
+  "selected_checks": [
+    {
+      "id": "egress",
+      "argv": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-synthetic-vin-egress.test.js"
+      ]
+    },
+    {
+      "id": "e2e",
+      "argv": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-synthetic-vin-e2e.test.js",
+        "server/test/gcsp-offline-start.test.js"
+      ]
+    },
+    {
+      "id": "consumer",
+      "argv": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-vehicle-details-contract.test.js",
+        "server/test/gcsp-synthetic-http-adapter.test.js"
+      ]
+    },
+    {
+      "id": "boundaries",
+      "argv": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-vehicle-evidence-lookup.test.js",
+        "server/test/gcsp-synthetic-vin-api.test.js",
+        "server/test/bmw-vin-guide-adapter.test.js",
+        "server/test/gcsp-vin-allocation.test.js",
+        "server/test/gcsp-vin-registry.test.js",
+        "server/test/gcsp-vin-publication.test.js"
+      ]
+    }
+  ],
+  "full_command": "node --test --test-concurrency=1 server/test/**/*.test.js",
+  "full_reason": "Explicit required story validation, only after dispatcher-approved integrated source freeze and sole full slot; no automatic fallback.",
+  "excluded": "No live/credential/SQL/browser/deployment/screen/retail/policy/telemetry/new infrastructure or full-corpus run. Shared index/HLD/contracts held with83.",
+  "impact_map": {
+    "known": "Reviewed ownership edges: routing -> lookup/local/56 adapters -> current-run53 inventory and registry; HTTP/raw-path/shared gate; node child entry offline-start; tests reuse five-WMI fixtures/profile registry/canonical policy. No JavaScript affected-selector plugin.",
+    "unknown": "New routing paths have no measured observations yet. Aggregate V8 functions during required checks will supplement reviewed fixture/config/subprocess edges; missing contexts never imply irrelevance.",
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/fucq57-<chunk>.json"
+  },
+  "resources": {
+    "scoped": {
+      "seconds": 120,
+      "scratch_mib": 32,
+      "ram_mib": 512,
+      "actual_test_workers": 1,
+      "bounded_log_mib": 2
+    },
+    "server_install": {
+      "argv": [
+        "npm",
+        "ci",
+        "--ignore-scripts",
+        "--no-audit",
+        "--no-fund"
+      ],
+      "cwd": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-030/server",
+      "seconds": 180,
+      "scratch_mib": 128,
+      "ram_mib": 512,
+      "state": "admitted after first checkpoint push; retain only own installed server environment, immutable locks"
+    },
+    "scratch": "Unique absolute /private/tmp/test-stamp-shard-<token>; manifest registered before root creation",
+    "outside_manifests": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq57-*.json",
+    "supervisor": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-030/docs/gcsp/evidence/fucq57/scoped-supervisor.py",
+    "finalizer": "handled_termination + owned Scratch context + run_process finite timeout/stop_group TERM-KILL/join + HostBudget release in finally; sampled argv/fanout<=1; verify exact roots/groups/tokens absent; keep concise receipts and useful bounded failure logs",
+    "owned_environment": "TMPDIR/TMP/TEMP/npm_config_cache/NODE_V8_COVERAGE inside scratch; saved allowlist environment, no keys/NODE_OPTIONS/database URLs",
+    "expected": "Each narrow chunk <120s/<32MiB scratch/<512MiB RAM; four chunks sequential; install <180s/<128MiB cache. No archive/output>=256MiB expected; no local compatibility exception. Root jsdom install/full separately held.",
+    "large_output_root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude"
+  },
+  "experience": "No screen/control/component changes. Contract assertions preserve source/synthetic/reference-market/date/unit/unknown/image role/fidelity states. Screens/README.md and COMPONENTS.md/Used Cars body apply to future consumers. No new screenshot required; disconnected drawio bridge, no invented render proof.",
+  "agents": "Lead requested/selected gpt-6.1-sol/high, effective runtime unverified, no fallback; no descendants authorised/spawned."
+}

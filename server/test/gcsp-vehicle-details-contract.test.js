@@ -2,13 +2,25 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { createLocalVehicleEvidenceLookup } from '../gcsp/vehicle-evidence/local-vehicle-lookup.js';
-import { createVehicleDetailsConsumer, createConfiguredVehicleDetails } from '../gcsp/vehicle-evidence/application-vehicle-details.js';
+import { createVehicleDetailsConsumer, createConfiguredVehicleDetails as configureVehicleDetails } from '../gcsp/vehicle-evidence/application-vehicle-details.js';
 import { createLookupVehicleAdapter } from '../gcsp/vehicle-evidence/lookup-adapter.js';
 import { createAlternateOfflineVehicleAdapter } from '../gcsp/vehicle-evidence/alternate-offline-adapter.js';
 import { vehicleEvidenceFailure } from '../gcsp/vehicle-evidence/vehicle-details-contract.js';
 
 const fixture = JSON.parse(await readFile(new URL('./fixtures/gcsp/vehicle-evidence/alternate-provider.json', import.meta.url)));
 const context = fixture.context;
+// Isolated adapter tests inject a trusted classification double. FUCQ-57's
+// integration suites use the actual retained registry and allocator inventory.
+const fixtureIdentityLookup = { async classifyRequest(request) {
+  const card = fixture.entries.find((e) => e.document.card.query.kind === request.kind
+    && e.document.card.query.id === request.id)?.document.card;
+  return card ? { status: 'ok', identityKind: 'synthetic', liveEligible: false,
+    configurationId: card.identifiers.composition,
+    ...(card.identifiers.subject ? { vehicleId: card.identifiers.subject } : {}) }
+    : { status: 'not-found', identityKind: 'unknown', liveEligible: false };
+} };
+const createConfiguredVehicleDetails = (options) => configureVehicleDetails({ identityLookup: fixtureIdentityLookup, ...options });
+
 const [vehicle] = (await readFile(new URL('../data/gcsp/vehicle-evidence/publication-reference.v1/vins.jsonl', import.meta.url), 'utf8')).trim().split('\n').map(JSON.parse);
 const stockEntry = fixture.entries.find((e) => e.key.category === 'order');
 const orderUuid = stockEntry.key.token;

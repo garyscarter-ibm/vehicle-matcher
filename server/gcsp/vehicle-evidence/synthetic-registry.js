@@ -253,7 +253,14 @@ export function createSyntheticRegistry({ root, onPhase = async () => {}, ...opt
     return { status: row ? 'ok' : 'not-found', identityKind: row ? 'synthetic' : 'unknown', liveEligible: false,
       ...(row ? { vehicleId: row.vehicleId, configurationId: row.configurationId, originatingDatasetId: row.originatingDatasetId } : {}) };
   }
-  return { load, publish, deactivate, getConfiguration, getVin, classifyIdentity,
+  async function classifyConfiguration(configurationId) {
+    const h = await history();
+    if (h.status !== 'ok') return { ...h, identityKind: 'unknown', liveEligible: false };
+    const row = h.history.configurations.find((r) => r.configurationId === configurationId);
+    return { status: row ? 'ok' : 'not-found', identityKind: row ? 'synthetic' : 'unknown', liveEligible: false,
+      ...(row ? { configurationId: row.configurationId, originatingDatasetId: row.originatingDatasetId } : {}) };
+  }
+  return { load, publish, deactivate, getConfiguration, getVin, classifyIdentity, classifyConfiguration,
     status: () => ({ status: snapshot ? 'ok' : 'source-unavailable', active: info() }) };
 }
 export function presentCorpusLoad(result) {

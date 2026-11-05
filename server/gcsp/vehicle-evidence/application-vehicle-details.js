@@ -3,6 +3,7 @@ import { canonicalVehicleIdentifier } from './vehicle-lookup.js';
 import { vehicleEvidenceFailure, VEHICLE_DETAILS_VERSION } from './vehicle-details-contract.js';
 import { createLookupVehicleAdapter } from './lookup-adapter.js';
 import { createAlternateOfflineVehicleAdapter } from './alternate-offline-adapter.js';
+import { createVehicleIdentityRouting } from './identity-routing.js';
 
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const text = (v) => typeof v === 'string' && v.length > 0 && v.length <= 8192;
@@ -216,9 +217,9 @@ export function createVehicleDetailsConsumer({ adapter } = {}) {
 }
 
 /** Construction is server-owned. Request objects cannot select a provider or a URL. */
-export function createConfiguredVehicleDetails({ provider = 'lookup', lookup, alternateRead, timeoutMs, maxAttempts } = {}) {
-  if (!['lookup', 'alternate-offline'].includes(provider)) throw new TypeError('Unsupported configured vehicle provider.');
-  const adapter = provider === 'lookup' ? createLookupVehicleAdapter({ lookup, timeoutMs, maxAttempts })
-    : createAlternateOfflineVehicleAdapter({ read: alternateRead, timeoutMs, maxAttempts });
+export function createConfiguredVehicleDetails({ provider = 'lookup', lookup, identityLookup = lookup, alternateRead, timeoutMs, maxAttempts } = {}) {
+  const route = createVehicleIdentityRouting({ identityLookup, provider });
+  const adapter = provider === 'lookup' ? createLookupVehicleAdapter({ lookup, route, timeoutMs, maxAttempts })
+    : createAlternateOfflineVehicleAdapter({ read: alternateRead, route, timeoutMs, maxAttempts });
   return createVehicleDetailsConsumer({ adapter });
 }
