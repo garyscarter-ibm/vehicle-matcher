@@ -7,7 +7,9 @@ import { decisionView, previewSummary } from './brief-view-model.js';
 let sequence = 0;
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 const titleCase = (v) => v[0].toUpperCase() + v.slice(1);
-const stateText = (state, context) => state === 'confirmed' ? 'Confirmed' : state === 'inferred' ? 'Inferred, please review' : context.unconfirmedLabel;
+const stateText = (state) => state === 'confirmed' ? 'Saved' : state === 'inferred' ? 'Suggested' : 'Draft';
+const sourceText = (source) => ({ employee: 'Your answers', 'manual-account': 'Scheme account', 'employee-provider': 'Scheme account' })[source] || source || 'Source not supplied';
+const scaleEnds = { sportiness: ['Less sporty', 'More sporty'], comfort: ['Less comfort', 'More comfort'], economy: ['Less economical', 'More economical'], size: ['Smaller', 'Larger'] };
 
 /** Mount one controller-owned draft. Async updates patch controls and never replace the editing form. */
 export function mountBriefBody(main, adapters = {}) {
@@ -33,38 +35,47 @@ export function mountBriefBody(main, adapters = {}) {
         createCommandId: adapters.createCommandId || ((kind) => `${kind}:${globalThis.crypto.randomUUID()}`) });
     } catch { unavailable(); return; }
     const page = el('div', 'vm gcsp-brief');
-    page.append(screenIntro({ title: 'Your car brief', level: 1, lede: 'Tell us what you would enjoy and what your next car needs to do. See how the cars compare before you save.' }));
-    if (adapters.notice) page.append(el('p', 'gcsp-brief-notice', adapters.notice));
+    page.append(screenIntro({ title: 'Your car brief', level: 1, lede: 'Choose what you enjoy and what your next car needs to do.' }));
+    const draftNotice = el('p', 'gcsp-note gcsp-brief-draft'); draftNotice.id = `${prefix}-draft`; page.append(draftNotice);
     const jump = button({ label: 'Go to your preview', href: `#${prefix}-preview`, variant: 'ghost' });
     page.append(jump);
     const current = el('details', 'gcsp-brief-known');
-    current.append(el('summary', null, 'What your scheme already knows'));
+    current.append(el('summary', null, 'Your scheme and starting answers'));
     const facts = context.knownFacts || {};
     const contract = facts.currentContract?.value;
     current.append(factList([
-      { label: `Current car · ${facts.currentContract?.source || 'Source not supplied'}`, value: contract?.model },
+      { label: 'Current car', value: contract?.model },
       { label: 'Contract ends', value: contract?.contractEndDate },
-      { label: `Drivers · ${facts.drivers?.source || 'Source not supplied'}`, value: facts.drivers?.value?.map((d) => d.name).join(', ') },
-      { label: `Annual mileage · ${facts.annualMileage?.source || 'Source not supplied'}`, value: facts.annualMileage?.value?.value, unit: facts.annualMileage?.value?.unit },
+      { label: 'Drivers', value: facts.drivers?.value?.map((d) => d.name).join(', ') },
+      { label: 'Annual mileage', value: facts.annualMileage?.value?.value, unit: facts.annualMileage?.value?.unit },
     ]));
-    current.append(el('p', 'gcsp-note', 'These are supplied account facts. You cannot change them in this brief.'));
+    current.append(el('p', 'gcsp-note', `${sourceText(facts.currentContract?.source)}. These facts are read-only. Starting answers are confirmed when saved; unanswered needs stay unknown.`));
+    const provenance = el('ul', 'gcsp-note'); const provenanceRows = new Map();
+    const recordProvenance = (key, label, text) => {
+      if (!provenanceRows.has(key)) { const row = el('li'); provenanceRows.set(key, row); provenance.append(row); }
+      provenanceRows.get(key).textContent = `${label}: ${text}`;
+    };
+    const checks = el('div', 'gcsp-brief-checks'); current.append(provenance, checks);
     page.append(current);
     const layout = el('div', 'gcsp-brief-layout');
     const form = el('form', 'gcsp-brief-form'); form.addEventListener('submit', (event) => event.preventDefault());
     const preferences = el('section', 'gcsp-brief-section');
-    preferences.append(el('h2', null, 'What matters to you'), el('p', 'gcsp-note', 'Choose a preference, then say how much it matters. Comfort and sportiness can both be high.'));
+    preferences.append(el('h2', null, 'What matters to you'), el('p', 'gcsp-note', 'Set each preference and its importance. Comfort and sportiness can both be high.'));
     const handles = new Map();
     for (const [key, definition] of Object.entries(context.preferences)) {
       const initial = controller.snapshot().brief.preferences[key];
       const field = el('fieldset', 'gcsp-brief-preference');
       field.append(el('legend', null, definition.label));
-      const help = el('p', 'gcsp-note'); help.id = `${prefix}-${key}-source`; field.append(help);
       const axes = el('div', 'gcsp-brief-axes');
       const valueWrap = el('div', 'gcsp-brief-axis'); const importanceWrap = el('div', 'gcsp-brief-axis');
-      valueWrap.append(el('p', 'gcsp-brief-axis-label', 'What you prefer')); importanceWrap.append(el('p', 'gcsp-brief-axis-label', 'How much it matters'));
-      const valueState = el('p', 'gcsp-note'); const importanceState = el('p', 'gcsp-note');
-      const range = (host, value, label, onValueChange) => renderRangeSlider(host, { id: `${prefix}-${key}-${label}`, min: context.slider.minimum, max: context.slider.maximum, step: 1 }, null,
-        { single: true, value, disabled: !definition.editable, ariaLabel: `${definition.label}: ${label}`, onValueChange });
+      valueWrap.append(el('p', 'gcsp-brief-axis-label', 'Preference')); importanceWrap.append(el('p', 'gcsp-brief-axis-label', 'Importance'));
+      const range = (host, value, label, onValueChange) => {
+        const control = renderRangeSlider(host, { id: `${prefix}-${key}-${label}`, min: context.slider.minimum, max: context.slider.maximum, step: 1 }, null,
+          { single: true, value, disabled: !definition.editable, ariaLabel: `${definition.label}: ${label}`, onValueChange });
+        const ends = label === 'how much it matters' ? ['Not important', 'Very important'] : scaleEnds[key] || ['Less', 'More'];
+        const scale = el('div', 'gcsp-brief-scale'); ends.forEach((text) => scale.append(el('span', null, text))); host.append(scale);
+        return control;
+      };
       let value;
       if (definition.type === 'slider') value = range(valueWrap, initial?.value, 'what you prefer', (v) => controller.updatePreference(key, { value: v }));
       else {
@@ -75,14 +86,14 @@ export function mountBriefBody(main, adapters = {}) {
       const importance = range(importanceWrap, initial?.importance, 'how much it matters', (v) => controller.updatePreference(key, { importance: v }));
       const indifferent = button({ label: "I don't mind", variant: 'ghost', disabled: !definition.editable, onClick: () => controller.updatePreference(key, { importance: context.slider.minimum }) });
       indifferent.dataset.indifference = key;
-      valueWrap.append(valueState); importanceWrap.append(importanceState, indifferent);
+      importanceWrap.append(indifferent);
       axes.append(valueWrap, importanceWrap); field.append(axes); preferences.append(field);
-      field.setAttribute('aria-describedby', help.id);
-      handles.set(key, { value, importance, indifferent, valueState, importanceState, help });
+      field.setAttribute('aria-describedby', draftNotice.id);
+      handles.set(key, { value, importance, indifferent, label: definition.label });
     }
     form.append(preferences);
     const practical = el('section', 'gcsp-brief-section');
-    practical.append(el('h2', null, 'What your car needs to do'), el('p', 'gcsp-note', 'Not sure yet is a valid answer. It may leave some cars needing confirmation. Your scheme requirements still apply.'));
+    practical.append(el('h2', null, 'What your car needs to do'), el('p', 'gcsp-note', 'Not sure yet leaves that need unconfirmed.'));
     const questions = new Map();
     for (const [key, question] of Object.entries(context.practicalQuestions)) {
       const field = el('fieldset', 'gcsp-brief-question'); field.append(el('legend', null, question.label));
@@ -109,7 +120,10 @@ export function mountBriefBody(main, adapters = {}) {
         const representable = value === null || value === undefined || isYes || isNo;
         choices.update({ value: isYes || chargingOpen ? 'yes' : isNo ? 'no' : value === null || value === undefined ? 'unknown' : null });
         if (subwrap) { subwrap.hidden = !(chargingOpen || isYes); subchoices.update({ value: isYes ? value : null }); }
-        note.textContent = !representable ? `Current answer ${JSON.stringify(value)} needs review with an updated question.` : value === null ? 'Not confirmed. This requirement remains unknown.' : `${stateText(essential?.state, context)} · Source: ${essential?.source || 'Not supplied'}`;
+        const unknown = value === null || value === undefined;
+        note.hidden = representable && !unknown;
+        note.textContent = !representable ? `Current answer ${JSON.stringify(value)} needs review.` : unknown ? 'Needs confirmation.' : '';
+        recordProvenance(key, question.label, `${unknown ? 'Unknown' : stateText(essential?.state)} · ${sourceText(essential?.source)}`);
       } });
       practical.append(field);
     }
@@ -117,18 +131,18 @@ export function mountBriefBody(main, adapters = {}) {
     const permission = el('fieldset', 'gcsp-brief-section'); permission.append(el('legend', null, 'What your buddy may do'));
     const consent = renderOptionList({ id: 'brief-consent', multi: true, options: [{ value: 'search', label: 'Search for cars for me' }, { value: 'hold', label: 'Hold a suitable car for me' }] }, null,
       { value: [], ariaLabel: 'Buddy permissions', onValueChange: (v) => controller.setConsent({ search: v.includes('search'), hold: v.includes('hold') }) });
-    permission.append(consent.list, el('p', 'gcsp-note', 'Holding needs search permission too. Saving without search permission leaves your buddy off.')); form.append(permission);
+    permission.append(consent.list, el('p', 'gcsp-note', 'Holding also needs search permission. With search off, your buddy stays off.')); form.append(permission);
     const savePanel = el('section', 'gcsp-brief-section');
-    savePanel.append(el('h2', null, 'Ready to save?'), el('p', 'gcsp-note', 'Save confirms the displayed preferences, including any starting positions you have left in place. Unknown requirements stay unknown.'));
+    savePanel.setAttribute('aria-label', 'Save brief');
     const saveButton = button({ label: 'Save this brief', onClick: () => controller.save() }); saveButton.dataset.saveBrief = '';
     const saveNote = el('p', 'gcsp-note');
     if (adapters.saveUnavailableReason) savePanel.append(el('p', 'gcsp-note', adapters.saveUnavailableReason));
     const refresh = button({ label: 'Refresh and review', variant: 'ghost', onClick: () => { replacement.hidden = false; } }); refresh.hidden = true;
     const replacement = el('div', 'gcsp-brief-refresh'); replacement.hidden = true;
-    replacement.append(el('p', 'gcsp-note', 'Loading the current server brief will replace your displayed edits and permissions.'), button({ label: 'Replace draft with current server brief', onClick: () => load() }));
+    replacement.append(el('p', 'gcsp-note', 'Replace your edits and permissions with the saved brief?'), button({ label: 'Replace draft with saved brief', onClick: () => load() }));
     savePanel.append(saveButton, saveNote, refresh, replacement); form.append(savePanel);
     const preview = el('section', 'gcsp-brief-preview'); preview.id = `${prefix}-preview`; preview.tabIndex = -1;
-    preview.append(el('h2', null, 'Preview of your current draft'), el('p', 'gcsp-note', 'Unsaved preview. Starting positions may still be unconfirmed. This does not give your buddy permission.'));
+    preview.append(el('h2', null, 'Cars for your brief'));
     const status = el('p', 'gcsp-brief-preview-status');
     const cards = el('div', 'gcsp-brief-cards');
     const retry = button({ label: 'Retry preview', variant: 'ghost', onClick: () => controller.requestPreview() }); retry.hidden = true;
@@ -138,19 +152,20 @@ export function mountBriefBody(main, adapters = {}) {
     const patch = (state) => {
       for (const [key, h] of handles) {
         const p = state.brief.preferences[key]; if (!p) continue;
-        h.value.update({ value: p.value, valueState: p.valueState === 'confirmed' ? 'confirmed' : 'unconfirmed' });
-        h.importance.update({ value: p.importance, valueState: p.importanceState === 'confirmed' ? 'confirmed' : 'unconfirmed' });
+        h.value.update({ value: p.value, valueState: Number.isFinite(p.value) || typeof p.value === 'string' ? 'confirmed' : 'unknown' });
+        h.importance.update({ value: p.importance, valueState: Number.isFinite(p.importance) ? 'confirmed' : 'unknown' });
         h.indifferent.setAttribute('aria-pressed', String(p.importance === context.slider.minimum));
-        h.valueState.textContent = stateText(p.valueState, context); h.importanceState.textContent = p.importance === context.slider.minimum ? "I don't mind" : stateText(p.importanceState, context);
-        h.help.textContent = `Source for both axes: ${p.source}`;
+        recordProvenance(key, h.label, `${stateText(p.valueState)} preference ${p.value}; ${stateText(p.importanceState).toLowerCase()} importance ${p.importance} · ${sourceText(p.source)}`);
       }
       for (const [key, q] of questions) q.update(state.brief.essentials[key]);
       consent.update({ value: ['search', 'hold'].filter((k) => state.consent[k]) });
+      draftNotice.textContent = `${adapters.notice ? `${adapters.notice} · ` : ''}${state.dirty || (adapters.initialEdited && state.save.state !== 'saved') || state.briefVersion === 0 ? 'Unsaved draft' : `Brief version ${state.briefVersion}`}`;
       saveButton.disabled = state.save.state === 'saving' || Boolean(adapters.saveUnavailableReason);
       saveButton.textContent = state.save.state === 'saving' ? 'Saving your brief...' : 'Save this brief';
       saveNote.textContent = state.save.state === 'saved' ? `Brief version ${state.briefVersion} saved. ${state.dirty ? 'Newer edits are still unsaved.' : state.consent.search ? 'Your selected buddy permissions apply.' : 'Your buddy is off.'}`
         : state.save.state === 'refresh-required' ? 'A newer saved version needs review. Your edits and permissions are still here.'
-          : state.save.state === 'failed' ? 'Your brief could not be saved. Your edits and permissions are still here. Try Save again.' : state.dirty || adapters.initialEdited ? 'You have unsaved changes.' : 'Nothing has been saved from this screen.';
+          : state.save.state === 'failed' ? 'Save failed. Your edits and permissions are kept. Try again.' : '';
+      saveNote.hidden = !saveNote.textContent;
       refresh.hidden = state.save.state !== 'refresh-required';
       preview.setAttribute('aria-busy', String(state.preview.state === 'loading'));
       const summary = previewSummary(state.preview); status.textContent = `${summary}${state.preview.state === 'unavailable' && adapters.previewUnavailableReason ? ` ${adapters.previewUnavailableReason}` : ''}`;
@@ -158,10 +173,15 @@ export function mountBriefBody(main, adapters = {}) {
       const identity = JSON.stringify(state.preview);
       if (identity !== lastPreview) {
         lastPreview = identity;
-        cards.replaceChildren();
+        cards.replaceChildren(); checks.replaceChildren();
         if (state.preview.outcome?.status === 'ok') {
           for (const decision of state.preview.outcome.value.decisions) {
             const view = decisionView(decision);
+            const member = view.members[0];
+            if (member.checks.length) {
+              const list = el('ul', 'gcsp-note'); member.checks.forEach((entry) => list.append(el('li', null, entry.text)));
+              checks.append(el('h3', null, member.display.name), list);
+            }
             const card = decision.gateStatus === 'eligible' ? matchCard(null, { view }) : previewTile(null, { view });
             card.querySelectorAll('[aria-live]').forEach((node) => node.removeAttribute('aria-live'));
             cards.append(card);

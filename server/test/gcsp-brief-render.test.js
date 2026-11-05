@@ -7,6 +7,25 @@ globalThis.document = dom.window.document; globalThis.HTMLElement = dom.window.H
 const { mountBriefBody } = await import('../../blocks/gcsp/brief/brief-view.js');
 const fixture = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq94/representative-snapshot.json', import.meta.url)));
 const settle = () => new Promise((resolve) => setTimeout(resolve, 340));
+test('distilled body keeps draft provenance and complete checks in its disclosure, with human facts and scale ends', async (t) => {
+  const main = document.createElement('main'); document.body.append(main); const requests = [];
+  const teardown = mountBriefBody(main, { editor: fixture.edited.value, transport: {
+    preview: async (request) => { requests.push(request); return fixture.preview; }, saveDraft: async () => ({ status: 'unavailable' }), confirm: async () => ({ status: 'unavailable' }),
+  } }); t.after(() => { teardown(); main.remove(); });
+  await settle();
+  assert.equal(main.querySelector('.gcsp-brief-draft').textContent, 'Unsaved draft');
+  const disclosure = main.querySelector('.gcsp-brief-known');
+  assert.equal(disclosure.open, false); assert.match(disclosure.textContent, /Scheme account/); assert.match(disclosure.textContent, /Your answers/);
+  assert.match(disclosure.textContent, /Driver eligible/); assert.match(disclosure.textContent, /Included in your scheme/);
+  assert.doesNotMatch(main.querySelector('form').textContent, /Source for both axes|Unconfirmed draft starting position|Not confirmed \(/);
+  assert.match(main.querySelector('form').textContent, /Less comfortMore comfort/);
+  assert.match(main.querySelector('form').textContent, /Not importantVery important/);
+  const cards = main.querySelector('.gcsp-brief-cards');
+  assert.match(cards.textContent, /Plug-in hybrid/); assert.match(cards.textContent, /45 mpg/);
+  assert.doesNotMatch(cards.textContent, /\bphev\b|mpg-imperial|ordinal-1-5|5 count|Driver eligible|Included in your scheme/);
+  assert.match(cards.textContent, /Sportiness: 23% fit/); assert.match(cards.textContent, /Charging access is unknown/);
+  assert.deepEqual(requests[0].brief, fixture.edited.value.initial.brief);
+});
 test('representative keeps independent axes, typed practical answers, unknown charging and independent consent', async (t) => {
   const main = document.createElement('main'); document.body.append(main);
   const previews = []; const saves = [];
@@ -42,7 +61,7 @@ test('typed No answers and consent save independently; failed preview preserves 
   const hold = main.querySelector('[aria-label="Buddy permissions"]').querySelectorAll('button')[1]; hold.click();
   const input = main.querySelector('[aria-label="Comfort: what you prefer"]'); input.focus(); input.value = '89'; input.dispatchEvent(new dom.window.Event('input'));
   await settle(); assert.equal(document.activeElement, input); assert.equal(main.querySelector('[aria-label="Comfort: what you prefer"]'), input);
-  assert.match(main.textContent, /preview could not be updated/);
+  assert.match(main.textContent, /Preview unavailable/);
   main.querySelector('[data-save-brief]').click(); await settle();
   assert.deepEqual(confirmations[0].consent, { search: false, hold: true });
   assert.deepEqual(['seats', 'boot', 'equipment'].map((key) => drafts[0].brief.essentials[key].value), [0, 0, []]);
@@ -80,7 +99,9 @@ test('exact card projection preserves service evidence, identity and sourced ima
   const { decisionView } = await import('../../blocks/gcsp/brief/brief-view-model.js');
   const decision = fixture.preview.value.decisions[0]; const view = decisionView(decision); const member = view.members[0];
   assert.equal(view.schemaVersion, 1); assert.equal(member.identity.orderUuid, decision.orderUuid);
-  assert.equal(member.identity.configurationId, decision.configurationId); assert.deepEqual(member.decision.reasons[0].fact, decision.reasons[0].fact);
+  assert.equal(member.identity.configurationId, decision.configurationId); assert.deepEqual(member.evidence, decision);
+  assert.deepEqual(member.checks.find((entry) => entry.code === 'driver-eligible').fact, decision.reasons[0].fact);
+  assert.ok(member.decision.reasons.every((entry) => !member.checks.some((check) => check.code === entry.code)));
   assert.equal(member.media.caption, decision.snapshot.display.images[0].caption); assert.equal(member.actions.length, 0);
   assert.equal(member.terms[0].value, decision.terms.points.value); assert.equal(member.terms[0].allowance, decision.terms.allowanceInputs.allowance.value);
   assert.equal(member.decision.tradeOffs[0].score, decision.tradeOffs[0].score); assert.match(member.decision.tradeOffs[0].text, /Sportiness: 23%/);

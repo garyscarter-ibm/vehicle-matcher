@@ -1,5 +1,7 @@
 # FUCQ-94 representative brief body
 
+Historical c793bc1 checkpoint. Current owned-view refinement: [distilled-result.md](distilled-result.md).
+
 5 November 2026. One representative editor body and its consumed shared-control extension are ready for human review. Stop before wider state fan-out. This checkpoint neither completes the story nor establishes a connected live demo runtime.
 
 The page composes the existing employee shell with injected account/editor loaders, navigation and transport. Six registry-supplied preferences retain independent preference and importance, including simultaneous high comfort/sportiness and explicit zero importance. Practical answers preserve server-supplied typed values and unknown charging. Search and hold remain independent deliberate choices. The existing controller owns the draft and Save/confirm protocol. Native controls stay mounted through preview responses; teardown owns in-flight work, retries and custom-element disconnects. The exact-card projection retains identity, original service evidence and supplied points, with no client scoring or reordered decisions.

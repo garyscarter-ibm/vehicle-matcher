@@ -1,0 +1,193 @@
+{
+  "story": "FUCQ-94",
+  "scope": "distilled representative body; broader states pending human review",
+  "head": "c793bc159c4f1513ca6953848c0d32f86ef681c6",
+  "capturedAt": "2026-11-05T13:54:02.646Z",
+  "browser": "headless isolated system Chrome",
+  "activeProfileCompatibilityException": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq94-20261105-distill/brief-chrome-profile",
+  "sources": {
+    "gcsp-brief.html": "9fbc308e0e47f1bda6c7644ef133cc919efff8b27d4c2ef6c1f9375d4357561d",
+    "blocks/gcsp/brief/gcsp-brief.js": "943c4cbc99f1063328b68dcdb0c3ebf024e1cff75699e4a5b04cdc6eb5091c88",
+    "blocks/gcsp/brief/brief-view.js": "ff27df853d46d825d859a9a6a9d988fe91221de28530648c529df28d84875f61",
+    "blocks/gcsp/brief/brief-view-model.js": "7eea953d26aaeded1f6fe5ac219ebcc0f0c739f8f003b7ca61414dc4da1aa366",
+    "blocks/gcsp/brief/brief-transport.js": "47be97d58fb59aa6bf668aa7e66e9e257bb362ee1a83d6ef1f76d7f011f17aa7",
+    "blocks/gcsp/brief/gcsp-brief.css": "dcabf9fcfbe0f47d586e03a89f9cc1019f6bbb301635a502ca79d0100bc9cac0",
+    "blocks/gcsp/brief/harness.js": "fa5f92fb53d217a9f1b200e2e1efb32231166d175c03411d2e1710cdaa9405ff",
+    "blocks/vehicle-matcher/modes/question-ui.js": "0824c4fb7de898ec67dc1e193716a742546f8bcd382b424fc2dbcadbc55b5ef3",
+    "blocks/vehicle-matcher/component-gallery.js": "2643ee99088db89bceec52b0d762a8d5737ae97f9a098ed5b28cd0fd5d40ee6a",
+    "docs/gcsp/evidence/fucq94/representative-snapshot.json": "a8efd203a8318698eedee285247c8b5682c517c0d8071662ee040d57716976ee",
+    "docs/gcsp/evidence/fucq94/capture-distilled.mjs": "b0880ae1e977c4eac4ccb17b1a6d164154343ffa74e143b5261b513c65595c39"
+  },
+  "results": [
+    {
+      "name": "distilled-desktop",
+      "file": "distilled-desktop.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "initial": {
+        "ranges": 10,
+        "photos": 1,
+        "bodyText": "Your car briefChoose what you enjoy and what your next car needs to do.Synthetic preview · Unsaved draftGo to your previewYour scheme and starting answersCurrent carFictional BMW 320i TouringContract ends2026-12-01DriversPaula (fictional), Casey (fictional)Annual mileage12,000 mi/yearScheme account. These facts are read-only. Starting answers are confirmed when saved; unanswered needs stay unknown.Body style: Draft preference estate; draft importance 50 · Your answersFuel: Draft preference petrol; draft importance 50 · Your answersSportiness: Draft preference 90; draft importance 75 · Your answersComfort: Draft preference 90; draft importance 85 · Your answersEconomy: Draft preference 50; draft importance 0 · Your answersSize: Draft preference 50; draft importance 50 · Your answersDo you need to carry five people?: Draft · Your answersDo you need at least 430 litres of carrying space?: Draft · Your answersDo you need a towbar?: Draft · Your answersCan you charge at home or work?: Unknown · policy:brief.editor.v1BMW 320i M Sport TouringDriver eligible.Included in your scheme.Within your points allowance.Meets your seats requirement.Meets your boot requirement.Meets your equipment requirement.BMW 330e M Sport Pro Edition Touring with Technology Plus and Comfort PackDriver eligible.Included in your scheme.Within your points allowance.Meets your seats requirement.Meets your boot requirement.Meets your equipment requirement.What matters to youSet each preference and its importance. Comfort and sportiness can both be high.Body stylePreferenceHatchbackSaloonEstateSUVCoupéConvertibleFamily carrierImportance500100Not importantVery importantI don't mindFuelPreferencePetrolDieselPlug-in hybridElectricImportance500100Not importantVery importantI don't mindSportinessPreference900100Less sportyMore sportyImportance750100Not importantVery importantI don't mindComfortPreference900100Less comfortMore comfortImportance850100Not importantVery importantI don't mindEconomyPreference500100Less economicalMore economicalImportance00100Not importantVery importantI don't mindSizePreference500100SmallerLargerImportance500100Not importantVery importantI don't mindWhat your car needs to doNot sure yet leaves that need unconfirmed.Do you need to carry five people?YesNoNot sure yetDo you need at least 430 litres of carrying space?YesNoNot sure yetDo you need a towbar?YesNoNot sure yetCan you charge at home or work?YesNoNot sure yetWhere can you charge? Choose a place to complete Yes.HomeWorkHome or workNeeds confirmation.What your buddy may doSearch for cars for meHold a suitable car for meHolding also needs search permission. With search off, your buddy stays off.Saving is unavailable in this preview.Save this briefRefresh and reviewReplace your edits and permissions with the saved brief?Replace draft with saved briefCars for your brief1 eligible car; 1 car needs confirmation.Retry previewNo image for this car yetScheme stockBMW brand image, not this exact carBMW 320i M Sport Touring77%1,100 points a month · 1,300 points a month allowanceBody styleEstateFuelPetrolSeats5Boot500 litres0 to 62 mph7 sFuel economy45 mpgEligibleWhy it suits youAvailable by 1 December 2026.Body style: 100% fit.Fuel: 100% fit.Trade-offsSportiness: 23% fit.Comfort: 90% fit.Size: 90% fit.No image for this car yetScheme stockBMW 330e M Sport Pro Edition Touring with Technology Plus and Comfort Pack1,100 points a month · 1,300 points a month allowanceBody styleEstateFuelPlug-in hybridSeats5Boot500 litres0 to 62 mph7 sFuel economy45 mpgNeeds confirmationChecks passedAvailable by 1 December 2026.Needs confirmationCharging access is unknown. Confirm home or work charging.1 eligible car; 1 car needs confirmation.",
+        "documentHeight": 3793,
+        "visibleWords": 407,
+        "disclosureClosed": true,
+        "saveDisabled": true
+      }
+    },
+    {
+      "name": "distilled-keyboard-skip-desktop",
+      "file": "distilled-keyboard-skip-desktop.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "focused": {
+        "name": "Skip to content",
+        "role": null,
+        "outline": "solid 2px"
+      }
+    },
+    {
+      "name": "distilled-keyboard-disclosure-desktop",
+      "file": "distilled-keyboard-disclosure-desktop.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "focused": {
+        "name": "Your scheme and starting answers",
+        "role": null,
+        "outline": "solid 2px"
+      },
+      "detailText": "Your scheme and starting answers\nCurrent car\nFictional BMW 320i Touring\nContract ends\n2026-12-01\nDrivers\nPaula (fictional), Casey (fictional)\nAnnual mileage\n12,000 mi/year\n\nScheme account. These facts are read-only. Starting answers are confirmed when saved; unanswered needs stay unknown.\n\nBody style: Draft preference estate; draft importance 50 · Your answers\nFuel: Draft preference petrol; draft importance 50 · Your answers\nSportiness: Draft preference 90; draft importance 75 · Your answers\nComfort: Draft preference 90; draft importance 85 · Your answers\nEconomy: Draft preference 50; draft importance 0 · Your answers\nSize: Draft preference 50; draft importance 50 · Your answers\nDo you need to carry five people?: Draft · Your answers\nDo you need at least 430 litres of carrying space?: Draft · Your answers\nDo you need a towbar?: Draft · Your answers\nCan you charge at home or work?: Unknown · policy:brief.editor.v1\nBMW 320i M Sport Touring\nDriver eligible.\nIncluded in your scheme.\nWithin your points allowance.\nMeets your seats requirement.\nMeets your boot requirement.\nMeets your equipment requirement.\nBMW 330e M Sport Pro Edition Touring with Technology Plus and Comfort Pack\nDriver eligible.\nIncluded in your scheme.\nWithin your points allowance.\nMeets your seats requirement.\nMeets your boot requirement.\nMeets your equipment requirement."
+    },
+    {
+      "name": "distilled-keyboard-retained-edit-desktop",
+      "file": "distilled-keyboard-retained-edit-desktop.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "focused": {
+        "name": "Comfort: what you prefer",
+        "role": null,
+        "outline": "none 3px"
+      },
+      "before": "90",
+      "after": "91",
+      "stableNodeAfterResponse": true
+    },
+    {
+      "name": "distilled-keyboard-independent-consent-desktop",
+      "file": "distilled-keyboard-independent-consent-desktop.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "focused": {
+        "name": "Hold a suitable car for me",
+        "role": "checkbox",
+        "outline": "solid 2px"
+      },
+      "hold": true,
+      "search": false
+    },
+    {
+      "name": "distilled-mobile-375",
+      "file": "distilled-mobile-375.png",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "initial": {
+        "ranges": 10,
+        "photos": 1,
+        "bodyText": "Your car briefChoose what you enjoy and what your next car needs to do.Synthetic preview · Unsaved draftGo to your previewYour scheme and starting answersCurrent carFictional BMW 320i TouringContract ends2026-12-01DriversPaula (fictional), Casey (fictional)Annual mileage12,000 mi/yearScheme account. These facts are read-only. Starting answers are confirmed when saved; unanswered needs stay unknown.Body style: Draft preference estate; draft importance 50 · Your answersFuel: Draft preference petrol; draft importance 50 · Your answersSportiness: Draft preference 90; draft importance 75 · Your answersComfort: Draft preference 90; draft importance 85 · Your answersEconomy: Draft preference 50; draft importance 0 · Your answersSize: Draft preference 50; draft importance 50 · Your answersDo you need to carry five people?: Draft · Your answersDo you need at least 430 litres of carrying space?: Draft · Your answersDo you need a towbar?: Draft · Your answersCan you charge at home or work?: Unknown · policy:brief.editor.v1BMW 320i M Sport TouringDriver eligible.Included in your scheme.Within your points allowance.Meets your seats requirement.Meets your boot requirement.Meets your equipment requirement.BMW 330e M Sport Pro Edition Touring with Technology Plus and Comfort PackDriver eligible.Included in your scheme.Within your points allowance.Meets your seats requirement.Meets your boot requirement.Meets your equipment requirement.What matters to youSet each preference and its importance. Comfort and sportiness can both be high.Body stylePreferenceHatchbackSaloonEstateSUVCoupéConvertibleFamily carrierImportance500100Not importantVery importantI don't mindFuelPreferencePetrolDieselPlug-in hybridElectricImportance500100Not importantVery importantI don't mindSportinessPreference900100Less sportyMore sportyImportance750100Not importantVery importantI don't mindComfortPreference900100Less comfortMore comfortImportance850100Not importantVery importantI don't mindEconomyPreference500100Less economicalMore economicalImportance00100Not importantVery importantI don't mindSizePreference500100SmallerLargerImportance500100Not importantVery importantI don't mindWhat your car needs to doNot sure yet leaves that need unconfirmed.Do you need to carry five people?YesNoNot sure yetDo you need at least 430 litres of carrying space?YesNoNot sure yetDo you need a towbar?YesNoNot sure yetCan you charge at home or work?YesNoNot sure yetWhere can you charge? Choose a place to complete Yes.HomeWorkHome or workNeeds confirmation.What your buddy may doSearch for cars for meHold a suitable car for meHolding also needs search permission. With search off, your buddy stays off.Saving is unavailable in this preview.Save this briefRefresh and reviewReplace your edits and permissions with the saved brief?Replace draft with saved briefCars for your brief1 eligible car; 1 car needs confirmation.Retry previewNo image for this car yetScheme stockBMW brand image, not this exact carBMW 320i M Sport Touring77%1,100 points a month · 1,300 points a month allowanceBody styleEstateFuelPetrolSeats5Boot500 litres0 to 62 mph7 sFuel economy45 mpgEligibleWhy it suits youAvailable by 1 December 2026.Body style: 100% fit.Fuel: 100% fit.Trade-offsSportiness: 23% fit.Comfort: 90% fit.Size: 90% fit.No image for this car yetScheme stockBMW 330e M Sport Pro Edition Touring with Technology Plus and Comfort Pack1,100 points a month · 1,300 points a month allowanceBody styleEstateFuelPlug-in hybridSeats5Boot500 litres0 to 62 mph7 sFuel economy45 mpgNeeds confirmationChecks passedAvailable by 1 December 2026.Needs confirmationCharging access is unknown. Confirm home or work charging.1 eligible car; 1 car needs confirmation.",
+        "documentHeight": 6458,
+        "visibleWords": 407,
+        "disclosureClosed": true,
+        "saveDisabled": true
+      }
+    },
+    {
+      "name": "distilled-keyboard-menu-mobile-375",
+      "file": "distilled-keyboard-menu-mobile-375.png",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "focused": {
+        "name": "Menu",
+        "role": null,
+        "outline": "solid 2px"
+      },
+      "menuExpanded": true
+    },
+    {
+      "name": "distilled-reduced-motion-desktop",
+      "file": "distilled-reduced-motion-desktop.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "reducedMotion": "reduce",
+      "durations": [
+        [
+          ".gcsp-nav",
+          {
+            "animation": "0s",
+            "transition": "0s"
+          }
+        ],
+        [
+          ".gcsp-brief",
+          {
+            "animation": "0s",
+            "transition": "0s"
+          }
+        ],
+        [
+          ".vm-card",
+          {
+            "animation": "0s",
+            "transition": "0s"
+          }
+        ]
+      ]
+    }
+  ]
+}

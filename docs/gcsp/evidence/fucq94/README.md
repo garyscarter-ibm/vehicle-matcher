@@ -2,7 +2,7 @@
 
 DEV-2026-11-04-052, 5 November 2026. The controller and supporting backend checkpoints are followed by one representative editor body for human review. The full story remains incomplete. The dispatcher owns integration, merge and closure. All collaborators retain equal authority under AGENTS.md.
 
-Current representative result: [representative-result.md](representative-result.md). Actual inspected captures: [1280 px desktop](representative-desktop.png), [375 px mobile](representative-mobile-375.png). [Browser matrix](representative-browser-matrix.json) records the rendered source identity, keyboard checks and generated-preview limitation. These are review evidence for one body, not the final seven-state acceptance matrix. The historical checkpoint plans below preserve their original allocation context.
+Current refinement: [distilled-result.md](distilled-result.md), with inspected [1280 px desktop](distilled-desktop.png), [375 px mobile](distilled-mobile-375.png), [browser matrix](distilled-browser-matrix.json) and [source identity](distilled-source-identity.json). The earlier [representative result](representative-result.md) and captures remain historical. Latest human direction removes layout-review holds until the end-to-end demo works; functional state coverage and trusted runtime composition follow this scoped publication. Full story acceptance remains incomplete. The historical plans below preserve their original allocation context.
 
 ## Authorised initial slice
 
