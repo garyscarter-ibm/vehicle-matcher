@@ -1,0 +1,53 @@
+/* GCSP semantic tokens, on .gcsp only (never :root, never bare .vm) so retail themes are untouched.
+   Inside .gcsp .vm the kit's --vm-* tokens map to these. */
+
+.gcsp {
+  --gcsp-font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', arial, sans-serif;
+
+  /* surfaces */
+  --gcsp-surface: #ffffff;
+  --gcsp-surface-page: #f2f4f5;
+  --gcsp-surface-muted: #e9edef;
+  --gcsp-surface-raised: #ffffff;
+
+  /* text and lines */
+  --gcsp-text: #1d2a30;
+  --gcsp-text-muted: #52606a;
+  --gcsp-divider: #d3dade;
+
+  /* teal accent (4.5:1 or better against white and the page grey) */
+  --gcsp-accent: #0b6c7e;
+  --gcsp-accent-strong: #0a6070;
+  --gcsp-accent-soft: #e3f1f4;
+  --gcsp-on-accent: #ffffff;
+  --gcsp-focus: #0a6070;
+
+  /* status */
+  --gcsp-danger: #b3261e;
+  --gcsp-warning: #8a5300;
+  --gcsp-success: #1b6b3a;
+  --gcsp-unavailable: #5b6770;
+
+  /* geometry and motion */
+  --gcsp-header-height: 56px;
+  --gcsp-sidebar-collapsed: 48px;
+  --gcsp-sidebar-expanded: 208px;
+  --gcsp-radius: 4px;
+  --gcsp-motion: 160ms;
+}
+
+.gcsp .vm {
+  --vm-accent: var(--gcsp-accent);
+  --vm-accent-ink: var(--gcsp-on-accent);
+  --vm-accent-spot: var(--gcsp-accent);
+  --vm-accent-secondary: var(--gcsp-accent-strong);
+  --vm-accent-soft: var(--gcsp-accent-soft);
+  --vm-ink: var(--gcsp-text);
+  --vm-ink-strong: var(--gcsp-text);
+  --vm-ink-muted: var(--gcsp-text-muted);
+  --vm-line: var(--gcsp-divider);
+  --vm-surface: var(--gcsp-surface);
+  --vm-surface-alt: var(--gcsp-surface-muted);
+  --vm-radius: var(--gcsp-radius);
+  --vm-radius-control: var(--gcsp-radius);
+}

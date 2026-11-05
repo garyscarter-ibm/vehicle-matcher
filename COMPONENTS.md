@@ -83,6 +83,19 @@ The contract distinguishes a known value from unavailable data. Rejecting a name
 | `UNMET_PHRASES`, `TRADE_COPY`, `tradeLines(brandKey, trades)` | Phrases for unmet wishes and trade-offs. |
 | `orList(items)` / `andList(items)` | "a, b or c" / "a, b and c" joins. |
 
+## GCSP shell (`blocks/gcsp/shell/portal-shell.js`)
+
+Shared by the employee entry now and Greg's views later; scoped tokens and styles are in `blocks/gcsp/shell/` (`.gcsp`, `--gcsp-*`). Looked at: `el`, `statusScreen` (not yet built), `screenIntro`, the retail header in `vehicle-matcher.js` and the demo launcher chrome. None supplies portal landmarks, account context and narrow icon navigation, and the retail pieces are brand themed and retail only.
+
+| Call | Use for |
+|---|---|
+| `portalShell({ title, account, navigation, active, breadcrumbs, onNavigate, onRetryAccount })` | The slim branded header (account loading, ready and unavailable-with-Retry states), `<nav aria-label="Portal">`, optional breadcrumbs, skip link and `<main>`. Returns `{ root, main, setAccount, setActive, setBreadcrumbs, destroy }`. |
+| `accountNavigation({ items, active, expanded, onNavigate, onToggle })` | Narrow icon sidebar with a label toggle. Unavailable items are disabled buttons with a visible reason, never dead links. Used inside `portalShell`. |
+| `svgIcon(paths)` | Decorative inline SVG icon built with `createElementNS`. |
+| `mountEmployee(root, ctx)` / `<gcsp-employee>` (`blocks/gcsp/employee/gcsp-employee.js`) | The employee entry. Contract in [docs/gcsp/employee-entry-contract.md](docs/gcsp/employee-entry-contract.md). |
+
+Gallery: the single component gallery is not yet extended for these; slice 2 adds them alongside the body. Harness page: [`gcsp-employee.html`](gcsp-employee.html).
+
 ## Not yet in the kit
 
 Hand-built in several modes (file counts at the time of writing):
@@ -97,4 +110,4 @@ Hand-built in several modes (file counts at the time of writing):
 
 ## The ratchet
 
-Test: `server/test/ui-ratchet.test.js`, config and baseline in `server/test/ui-ratchet.json`; it runs in `npm test`. After moving a view onto the kit, run `node server/test/ui-ratchet.test.js --write` to lower the baseline (only ever commit it lower). `node server/test/ui-ratchet.test.js --debt` lists what is outstanding. `vehicle-matcher.css` is capped at its current length.
+Test: `server/test/ui-ratchet.test.js`, config and baseline in `server/test/ui-ratchet.json`; it runs in `npm test`. After moving a view onto the kit, run `node server/test/ui-ratchet.test.js --write` to lower the baseline (only ever commit it lower). `node server/test/ui-ratchet.test.js --debt` lists what is outstanding. `vehicle-matcher.css` and the two `blocks/gcsp/shell/` stylesheets are capped at their current length (`stylesheets` in the config); `blocks/gcsp/` is a scanned root.
