@@ -297,15 +297,27 @@
       "requested": "gpt-6.1-sol/high",
       "selected": "gpt-6.1-sol/high",
       "fallback": null,
-      "runtimeConfirmed": false
+      "runtimeConfirmed": true,
+      "runtimeConfirmedBy": "dispatcher independent rollout audit",
+      "runtimeEvidence": {
+        "path": "/Users/usget/.codex/sessions/2026/11/05/rollout-2026-11-05T15-27-12-01a1ac52-3a7b-72e0-b8f1-bc50b3cb437c.jsonl",
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      }
     },
     "implementer": {
       "name": "/root/brevo_transport_fucq98/brevo_implementer",
       "requested": "gpt-6.1-sol/medium",
       "selected": "gpt-6.1-sol/medium",
       "fallback": null,
-      "runtimeConfirmed": false,
-      "status": "completed"
+      "runtimeConfirmed": true,
+      "status": "completed",
+      "runtimeConfirmedBy": "dispatcher independent rollout audit",
+      "runtimeEvidence": {
+        "path": "/Users/usget/.codex/sessions/2026/11/05/rollout-2026-11-05T15-29-36-01a1ac54-6af8-7ce3-968a-119bc5bd2977.jsonl",
+        "model": "gpt-6.1-sol",
+        "effort": "medium"
+      }
     },
     "descendants": []
   },
