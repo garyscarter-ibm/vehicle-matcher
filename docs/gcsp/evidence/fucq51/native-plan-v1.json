@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "story": "FUCQ-51",
+  "date": "2026-11-05",
+  "state": "prepared-not-executed",
+  "sourceDecision": "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md",
+  "sourceSupport": "unsupported-public-website-demo",
+  "settingsReference": "FUCQ-49 native-provider-v6-2026-11-05.json: currentSettingsReference",
+  "settingsUrl": "https://configure.bmw.co.uk/en_GB/settings.f8e66668.json",
+  "discovery": "none; a changed/missing reference stops this attempt and requires reviewed versioned correction",
+  "command": "node scripts/gcsp/verify-live-imagery.mjs --live --output docs/gcsp/evidence/fucq51/native-v1-assets",
+  "ledger": "docs/gcsp/evidence/fucq51/native-attempt-v1.json",
+  "ledgerRules": "exclusive create before first request, progress checkpoints, permanently refuse another v1 attempt; preserve failed/interrupted ledger for review; never delete/reset it to rerun",
+  "limits": {
+    "allUpstreamGETsIncludingSettingsDiscoveryManifestsAssets": 8,
+    "expectedGETs": 5,
+    "returnedImages": 2,
+    "aggregateResponseBytes": 6291456,
+    "settingsManifestResponseBytes": 1048576,
+    "imageResponseBytes": 2097152,
+    "automaticRetries": 0,
+    "concurrency": 1,
+    "totalMs": 120000,
+    "perRequestMs": 15000,
+    "cookies": false,
+    "redirects": false,
+    "diskCache": false
+  },
+  "stop": ["authentication or HTTP failure", "unknown source/profile", "malformed settings/manifest", "identity mismatch", "unsupported named view/dimensions", "invalid static WebP", "redirect", "request/byte/image/time budget", "output or delivery failure"],
+  "inputs": {
+    "source": "registered complete C14 image snapshot selections independently loaded through createBmwImageAdapter",
+    "model": "BMW i5 / T5MJ / G61E / 72HH",
+    "paint": ["P0300", "P0475"],
+    "view": "desktop Gallery HEROFRONT 2560x1646 BKGND=sand X=1700 Y=500",
+    "differences": "paint only; all other identity/date/options/accessory inputs match",
+    "liveCatalogueRequests": 0,
+    "catalogueFacts": "independently resolved white dated catalogue snapshot, kept separate from image outcomes"
+  },
+  "retained": ["redacted summary.json", "i5-p0300-herofront.webp", "i5-p0475-herofront.webp", "index.html with local relative filenames", "safe attempt budget ledger"],
+  "neverRetained": ["settings", "credentials", "opaque BMW asset URLs or parameters", "raw manifests/errors/HTML/headers"],
+  "delivery": {
+    "basis": "docs/design/gcsp-high-level-design.md:130 normal browser image loading may use published assets; FUCQ-50 readAsset validated one-shot custody",
+    "implementation": "harness-only loopback server publishes original validated bytes, no production route or hosting change",
+    "conditions": "BMW-approved project retention/display; same-origin relative images; CSP default-src none, img-src self, no scripts; no-store; nosniff; no BMW key or opaque source URL in browser",
+    "defaultProof": "native loopback HTTP fetch verifies exact served bytes and response headers; browser and visual acceptance remain pending",
+    "browserRunnerHook": "runCli({ inspect }) or provePublishedDelivery(assets,{ inspect }); callback receives only origin/page/safe paths while this same server is alive; fresh bounded Chromium verifies two images decode, no external requests, no CSP violations and cleans its owned profile/processes",
+    "productionIntegration": false
+  },
+  "acceptanceAfterTechnicalRun": "lead personally inspects both actual retained images for same-model white/black variation; records dated observations and hashes; unknown wheels/interior/equipment/exact-car fidelity and no 360 claim remain; mock or HTTP-only success cannot close live/visual/browser acceptance",
+  "resources": "Run only after parent review through scoped supervisor/HostBudget: 120 seconds, 768MiB RSS, 128MiB scratch, 2MiB logs, one worker; owned scratch with DB aliases unset, no dependency installation; retain permitted artifacts outside scratch, finalizer/recursive group and scratch/reservation absence receipts; separate bounded browser allocation if required",
+  "agents": { "implementerRequested": "gpt-6.1-sol medium", "implementerSelected": "gpt-6.1-sol medium", "fallback": null }
+}
