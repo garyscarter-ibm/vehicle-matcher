@@ -56,5 +56,5 @@
     "successLogSha256": "ce3fa208f81d43d8f7c6d18ea3d464a017afd289c43ae09ebeddec8a39a20271",
     "leadCleanup": "final-lead-cleanup-v2.json"
   },
-  "nativeAcceptance": "blocked; independent full configuration/date/options and native named-asset bytes still unproved"
+  "nativeAcceptance": "Historical full run predates native provider completion; v6 later proves actual fixed-provider named asset delivery. This older full does not cover the subsequent WIDTH/HEIGHT and exact-distinction source fix."
 }
