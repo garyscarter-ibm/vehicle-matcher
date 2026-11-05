@@ -265,8 +265,10 @@ export function matchCard(match, {
       priceText,
       car.seats ? `${car.seats} seats` : null,
       car.boot ? `${car.boot}-litre boot, seats up` : null,
-      `0–62 ${car.zeroTo62}s`,
-      car.fuel === 'ev' ? `${car.evRange} mi range` : `${car.mpg} mpg`,
+      Number.isFinite(car.zeroTo62) ? `0–62 ${car.zeroTo62}s` : null,
+      car.fuel === 'ev'
+        ? (Number.isFinite(car.evRange) ? `${car.evRange} mi range` : null)
+        : (Number.isFinite(car.mpg) ? `${car.mpg} mpg` : null),
     ]).filter(Boolean);
     // No paint to print, or a compact tile whose caller hasn't asked for it.
     if (!paint || (compact && !showPaint)) {

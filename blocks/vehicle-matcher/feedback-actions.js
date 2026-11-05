@@ -95,7 +95,8 @@ export function regroupFeedbackCar(car, kept) {
   const prices = kept.map((l) => l.priceMin).filter(Number.isFinite);
   return { ...car, photo: head.photo || car.photo,
     colour: head.colour ? { manufacturerColour: head.colour, colour: head.shade } : car.colour,
-    priceMin: head.priceMin ?? car.priceMin, mileage: head.mileage ?? car.mileage,
+    priceMin: head.priceMin ?? car.priceMin, priceMax: head.priceMax ?? head.priceMin ?? car.priceMax,
+    mileage: head.mileage ?? null,
     transmission: head.transmission ?? car.transmission, link: head.link || car.link,
     listingCount: kept.length, priceFrom: prices.length ? Math.min(...prices) : car.priceFrom,
     priceTo: prices.length ? Math.max(...prices) : car.priceTo,

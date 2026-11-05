@@ -60,9 +60,21 @@ test('reconstruction derives count, ranges, features, paint and representative f
   const reduced = reduceFeedback(state, action(state, 'filter', { field: 'shade', operator: 'equals', value: 'Blue' }));
   const [result] = applyBrowseFeedback(freeze(retail()), reduced.state);
   assert.equal(result.car.id, 'group-a'); assert.equal(result.car.listingCount, 1);
-  assert.equal(result.car.priceMin, 25000); assert.equal(result.car.priceFrom, 25000); assert.equal(result.car.priceTo, 25000);
+  assert.equal(result.car.priceMin, 25000); assert.equal(result.car.priceMax, 25000); assert.equal(result.car.priceFrom, 25000); assert.equal(result.car.priceTo, 25000);
   assert.equal(result.car.mileage, 8000); assert.equal(result.car.link, '/blue'); assert.equal(result.car.photo, '/blue.jpg');
   assert.deepEqual(result.car.colours, ['Ocean Blue']); assert.deepEqual(result.car.features, ['towbar']);
+});
+
+test('a surviving listing with unknown odometer cannot inherit the excluded listing mileage or price range', () => {
+  const pool = retail();
+  pool[0].car = { ...pool[0].car, priceMax: 30000, mileage: 12000 };
+  const state = createFeedbackState(browseScope);
+  const filtered = reduceFeedback(state, action(state, 'filter', { field: 'purchase-price', operator: 'less-than', value: 23000 }));
+  const [result] = applyBrowseFeedback(freeze(pool), filtered.state);
+  assert.equal(result.car.listingCount, 1);
+  assert.equal(result.car.priceMin, 22000);
+  assert.equal(result.car.priceMax, 22000);
+  assert.equal(result.car.mileage, null);
 });
 
 test('local undo and reset are versioned, immutable and reversible even after an empty result', () => {

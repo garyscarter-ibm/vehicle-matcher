@@ -280,6 +280,7 @@ test('component gallery keeps browse and employee examples local and reversible'
   const root = document.createElement('div');
   document.body.append(root);
   mountComponentGallery(root);
+  assert.doesNotMatch(root.textContent, /undefined|0–62 nulls|null mpg/);
 
   root.querySelector('.vm-reject-open').click();
   const menu = root.querySelector('.vm-reject-menu');
