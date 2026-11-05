@@ -234,7 +234,8 @@ test('actual old offer IDs, decision commands and outbox jobs cannot act on a re
   });
   assert.equal((await dispatch(f.presenter)).status, 'stale-run');
   assert.equal((await dispatch(fresh)).status, 'stale-run');
-  assert.equal((await f.repository.read(f.presenter, oldJob)).value.state, 'pending');
+  assert.equal((await f.repository.read(f.presenter, oldJob)).value.state, 'stale');
+  assert.equal((await f.repository.read(f.presenter, oldJob)).value.outcome.error, 'stale-run');
   assert.equal(inputDigest(Object.fromEntries(Object.entries(f.store.state.tables).map(([table, rows]) => [table, rows.filter((row) => row.runId === fresh.runId)]))), snapshot);
 });
 
