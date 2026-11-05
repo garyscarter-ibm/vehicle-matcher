@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "date": "2026-11-05",
+  "authority": "dispatcher authorised restoring existing pinned dependencies in this own worktree",
+  "sourceManifestsOrLockVersionsChanged": false,
+  "commands": [
+    "npm ci --ignore-scripts --no-audit --no-fund",
+    "npm --prefix server ci --ignore-scripts --no-audit --no-fund"
+  ],
+  "lockVersionsVerified": true,
+  "pgAndPostgresModuleResolveWithoutConnection": true,
+  "scopedBaseline": {
+    "command": "node --test server/test/bmw-live-imagery.test.js server/test/bmw-image-adapter.test.js server/test/bmw-catalogue-adapter.test.js",
+    "tests": 59,
+    "pass": 59,
+    "fail": 0
+  },
+  "resources": {
+    "setup": {
+      "rc": 0,
+      "wall": 2.052794,
+      "peak_rss": 161939456,
+      "peak_scratch": 35217908,
+      "package_hashes_unchanged": true,
+      "groups_absent": true,
+      "scratch_removed": true,
+      "reservation_absent": true
+    },
+    "scoped": {
+      "rc": 0,
+      "wall": 0.9284272080000001,
+      "peak_rss": 55197696,
+      "peak_scratch": 27997108,
+      "package_hashes_unchanged": true,
+      "groups_absent": true,
+      "scratch_removed": true,
+      "reservation_absent": true
+    }
+  },
+  "ownedDependenciesRetainedForAuthorisedRetry": {
+    "rootAllocatedBytes": 27138292,
+    "serverAllocatedBytes": 858816,
+    "cleanup": "exact recorded device/inode cleanup after final run; not source-controlled"
+  },
+  "fullRetry": "dispatcher authorises one next sole exact npm test after fresh HostBudget and clean current-base checks",
+  "nativeCalls": 0
+}
