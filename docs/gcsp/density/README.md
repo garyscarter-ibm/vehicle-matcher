@@ -72,6 +72,10 @@ The extractor checks the pinned hash, parses the core block, excludes artwork an
 
 ## Verification
 
+### Comparison with supplied GCSP screenshots
+
+The [5 November screenshot review](gcsp-screenshot-review.md) finds a **partial visual match**. The palette is consistent, but header branding/account composition and the selected navigation treatment differ from the supplied shell. The screenshots show a more compact, lighter-looking body text hierarchy and do not establish the exact font family or confirm our condensed large H1. The source typography audit below verifies RIS/Aftersales Density; it must not be presented as proof of an exact GCSP screenshot match. The review includes [detail comparisons](evidence/gcsp-screenshot-comparison.jpg), a fresh current-app capture and computed styles. Application styling was not changed by this review.
+
 ### Full typography audit
 
 The [source role record](evidence/typography-source.json) preserves the relevant rules and resolved values from the pinned BMW stylesheet. The [browser audit](evidence/typography-browser.json) groups computed styles by element/class, family, weight, style, size, line height and disabled state, across the full rendered DOM of each fixture, including disclosure descendants. It covers employee, brief, account, Greg, selected outbox messages, launcher and all GCSP gallery sections at desktop size; all six app screens were also inspected in real 320px iframe viewports. Each narrow document has a 320px scroll width. This is fixture/browser evidence, not certification of unrendered live-service data or other operating systems.
