@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "date": "2026-11-05",
+  "story": "FUCQ-51",
+  "scope": "offline implementation only",
+  "tests": {
+    "total": 83,
+    "pass": 83,
+    "fail": 0,
+    "skip": 0,
+    "command": "node --test --test-concurrency=1 server/test/bmw-live-imagery.test.js server/test/bmw-image-adapter.test.js server/test/bmw-catalogue-adapter.test.js"
+  },
+  "receipt": {
+    "groups_absent": true,
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/offline-final-v3-1793915802504478000.log",
+    "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/ownership/d475f83131bb4a168ed34e7c6b805a1e.json",
+    "package_hashes_unchanged": true,
+    "peak_rss": 133562368,
+    "peak_scratch": 2142368,
+    "rc": 0,
+    "reservation_absent": true,
+    "retained_dependencies": {},
+    "scratch_removed": true,
+    "wall": 1.161176708
+  },
+  "receiptPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/offline-final-v3-1793915802504478000-receipt.json",
+  "impactPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/impact/fucq51-v1.json",
+  "impactSha256": "741fb982291fa177946793b884570102507adeca382bb1bbd8c576da1ce6058f",
+  "ownCleanup": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/implementer-cleanup-v1.json",
+  "liveUpstreamRequests": 0,
+  "browserExecuted": false,
+  "fullSuiteExecuted": false,
+  "databaseExecuted": false,
+  "nativePlan": "native-plan-v1.json",
+  "pending": [
+    "finite native run after reviewed plan",
+    "fresh Chromium decode/CSP on same local published route",
+    "lead personal inspection of actual returned white/black assets"
+  ],
+  "agents": {
+    "requested": "gpt-6.1-sol medium",
+    "selected": "gpt-6.1-sol medium",
+    "fallback": null
+  },
+  "parentVerification": {
+    "tests": "83/83 pass, zero skips/failures",
+    "targetedEvidence": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/strict/targeted-157337603cd93196274377f09f5e5e06a79f41967e88f211f2fba4bec83f9713-default-1793917228008114000.json",
+    "cleanup": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/parent-offline-verification-v1.json",
+    "ownedAllocationsAbsent": 4
+  }
+}

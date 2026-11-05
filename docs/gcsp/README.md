@@ -6,7 +6,9 @@ Start here for every new GCSP discovery, foundation, design, implementation or r
 
 ## Latest build handover — 5 November 2026
 
-**Travel pause, Russell, 5 November:** this Codex dispatcher's heartbeat is paused and its agents have stopped at resumable checkpoints. Read [the travel handover](../HANDOVER-2026-11-05-TRAVEL.md) before resuming; old scheduled messages do not restart it. Gary's pollers and claims keep their own lifecycle.
+**Scaffolding and component map, Russell, 5 November:** the [connected product map](https://garyscarter-ibm.github.io/vehicle-matcher/product-map/) links capabilities, Stories, development evidence and acceptance. GC pollers read [the tooling handoff](product-map-2026-11-05.md) after pulling; retain all current claims and pause boundaries.
+
+**Dispatcher restarted, 5 November:** explicit human direction resumed the local usget dev poller while AFK, using measured machine limits. Read [the restart record](dev-poller-2026-11-05-restart.md) for active lanes and current evidence. The earlier [travel handover](../HANDOVER-2026-11-05-TRAVEL.md) preserves the checkpoints; Gary’s pollers and claims keep their own lifecycle.
 
 **PostgreSQL routing, Russell, 5 November:** Gary's sessions take credential-dependent work on his machine. [The handoff](postgresql-handoff-2026-11-05.md) records Gary's confirmed FUCQ-83 and FUCQ-66 claims, with published implementation/evidence and later database-gate routing. Keep the key on Gary's machine. Read this current instruction before the historical overnight handover below.
 

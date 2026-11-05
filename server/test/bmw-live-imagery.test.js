@@ -1,12 +1,16 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, mkdtemp, rm } from 'node:fs/promises';
+import { join } from 'node:path';
+import { tmpdir } from 'node:os';
 import http from 'node:http';
 import https from 'node:https';
 import { bmwLiveImageLookupIdentity, createBmwLiveImageryProvider, presentBmwLiveImage,
   selectBmwImageSnapshot } from '../vehicle-evidence/bmw-live-imagery.js';
 import { createBmwImageAdapter } from '../vehicle-evidence/bmw-image-adapter.js';
 import { createBmwCatalogueAdapter, mergeBmwCatalogueFacts } from '../vehicle-evidence/bmw-catalogue-adapter.js';
+import { createBoundedTransport, verifyLiveImagery, loadVerificationContext, publishedAssetPage,
+  provePublishedDelivery, reserveAttempt, runCli, parseCliArguments, SETTINGS, LIMITS } from '../../scripts/gcsp/verify-live-imagery.mjs';
 
 const COLLECTION = 'stage-fullscreen-views-legacy-newnames';
 const ORIGIN = 'https://prod.cosy.bmw.cloud';
@@ -437,4 +441,178 @@ test('freshness and snapshot presentation fields cannot publish private data fro
   const { provider } = fixture(); const live = await provider.resolve(request());
   const shown = presentBmwLiveImage({ ...live, freshness: { ...live.freshness, upstreamExpiresAt: secret } });
   assert.equal(shown.assetId, null); assert.ok(!JSON.stringify(shown).includes(secret)); provider.dispose();
+});
+
+function harnessFetch({ change = () => {}, onCall = () => {} } = {}) {
+  return async (url, options) => {
+    onCall(url, options);
+    if (url === SETTINGS) return new Response(JSON.stringify({ APP: { backend: { settingsCosy: {
+      url: ORIGIN, headers: { 'x-api-key': 'OFFLINE-SETTINGS-KEY' } } } } }), { headers: { 'content-type': 'application/json' } });
+    if (url === URL_ASSET) return new Response(bytes, { headers: { 'content-type': 'image/webp' } });
+    const data = manifest(); change(data);
+    return new Response(JSON.stringify(data), { headers: { 'content-type': 'application/json' } });
+  };
+}
+const boundedInput = (url = SETTINGS) => ({ url, method: 'GET', headers: { Accept: 'application/json' },
+  credentials: 'omit', cache: 'no-store', redirect: 'error', retries: 0, maxResponseBytes: 1048576 });
+
+test('opt-in harness composes the real provider with trusted C14 contexts and safe published bytes', async () => {
+  const calls = []; let retained = [];
+  const report = await verifyLiveImagery({ fetchImpl: harnessFetch({ onCall: (url, options) => calls.push({ url, options }) }),
+    clock: () => new Date('2026-11-05T12:00:00Z'), onAsset: async (asset) => retained.push(asset),
+    deliver: async (assets) => { assert.deepEqual(assets, retained); return { status: 'passed', synthetic: true }; } });
+  assert.equal(report.status, 'technical-pass-visual-inspection-pending'); assert.equal(calls.length, 5);
+  assert.deepEqual(report.budget.requests.map(({ kind }) => kind), ['settings', 'manifest', 'asset', 'manifest', 'asset']);
+  assert.equal(report.budget.imageCount, 2); assert.equal(report.liveCatalogueRequests, 0);
+  assert.deepEqual(report.images.map(({ file }) => file), ['i5-p0300-herofront.webp', 'i5-p0475-herofront.webp']);
+  const [white, black] = report.images.map(({ configuration }) => structuredClone(configuration));
+  white.selectedOptions = white.selectedOptions.filter((code) => code !== 'P0300');
+  black.selectedOptions = black.selectedOptions.filter((code) => code !== 'P0475'); assert.deepEqual(white, black);
+  for (const image of report.images) {
+    assert.equal(image.image.sha256, source.assets[0].sha256); assert.equal(image.manifestIdentityEchoed, false);
+    assert.equal(image.image.size.width, 2560); assert.equal(image.image.size.height, 1646);
+    assert.ok(Object.values(image.image.fidelity).every((value) => value === 'unknown'));
+    assert.match(image.presentation.caption, /Current source freshness unknown/);
+  }
+  assert.equal(report.visualInspection, 'pending'); assert.equal(report.paintVariation, 'pending-actual-visual-inspection');
+  assert.equal(report.catalogue.facts.seats.value, 5);
+  const retainedText = JSON.stringify(report) + publishedAssetPage();
+  for (const privateText of ['OFFLINE-SETTINGS-KEY', URL_ASSET, 'opaque=', 'settingsCosy', 'x-api-key']) assert.ok(!retainedText.includes(privateText));
+  for (const { url, options } of calls) {
+    assert.equal(options.method, 'GET'); assert.equal(options.credentials, 'omit'); assert.equal(options.cache, 'no-store');
+    assert.equal(options.redirect, 'error'); assert.ok(options.signal instanceof AbortSignal);
+    if (url === URL_ASSET) assert.equal(options.headers['x-api-key'], undefined);
+  }
+});
+
+test('harness-local ordinary image route serves original bytes with restrictive CSP and no BMW browser dependency', async () => {
+  const delivery = await provePublishedDelivery([{ file: 'i5-p0300-herofront.webp', bytes }, { file: 'i5-p0475-herofront.webp', bytes }]);
+  assert.equal(delivery.status, 'passed'); assert.equal(delivery.browserBmwCredentials, false);
+  assert.equal(delivery.browserOpaqueSourceUrls, false); assert.equal(delivery.productionIntegration, false);
+  assert.equal(delivery.browserInspection.status, 'pending'); assert.ok(!Object.hasOwn(delivery, 'browserRequests'));
+  assert.match(delivery.csp, /img-src 'self'/); assert.match(delivery.csp, /default-src 'none'/);
+  const page = publishedAssetPage(); assert.ok(!/<script|onload=|https:|cosySec|x-api-key/.test(page));
+  assert.equal((page.match(/<img /g) || []).length, 2);
+});
+
+test('optional inspector receives the live harness route and only approved inspection fields are retained', async () => {
+  let invoked = false;
+  const delivery = await provePublishedDelivery([{ file: 'i5-p0300-herofront.webp', bytes }, { file: 'i5-p0475-herofront.webp', bytes }], {
+    inspect: async ({ origin, page, images }) => {
+      invoked = true; assert.match(origin, /^http:\/\/127\.0\.0\.1:\d+$/); assert.equal(page, '/index.html');
+      assert.deepEqual(images, ['/i5-p0300-herofront.webp', '/i5-p0475-herofront.webp']);
+      assert.equal((await fetch(origin + page)).status, 200);
+      return { status: 'passed', decodedImages: 2, externalRequests: 0, cspViolations: 0, privateDebug: 'SECRET' };
+    },
+  });
+  assert.equal(invoked, true); assert.equal(delivery.browserInspection.status, 'passed');
+  assert.ok(!JSON.stringify(delivery).includes('SECRET'));
+});
+
+test('known snapshot inputs are complete and vary only paint without implicit live catalogue lookup', async () => {
+  const { requests, contexts, catalogue } = await loadVerificationContext();
+  assert.equal(requests.length, 2); assert.equal(catalogue.sourceKind, 'dated-snapshot');
+  for (const [index, context] of contexts.entries()) {
+    assert.equal(context.status, 'ok'); assert.equal(context.sourceKind, 'dated-snapshot');
+    assert.deepEqual(context.resolvedIdentity.selectedOptions, [...requests[index].selectedOptions].sort());
+  }
+});
+
+test('harness source, schema, authentication and image failures stop without retries and preserve specs', async () => {
+  const cases = [
+    { fetch: async () => new Response('private HTML and URL', { status: 403 }), count: 1, failure: 'access-denied' },
+    { fetch: async () => new Response('private malformed settings', { headers: { 'content-type': 'application/json' } }), count: 1, failure: 'settings-invalid' },
+    { fetch: harnessFetch({ change: (data) => { record(data).viewImage = 'https://private.example/SECRET'; } }), count: 2, failure: 'image-unavailable' },
+    { fetch: harnessFetch({ change: (data) => { data[COLLECTION].desktop.metaData.width = 100; } }), count: 2, failure: 'image-unavailable' },
+  ];
+  for (const scenario of cases) {
+    let calls = 0; const report = await verifyLiveImagery({ fetchImpl: (...args) => { calls += 1; return scenario.fetch(...args); },
+      deliver: async () => assert.fail('failed image must not publish') });
+    assert.equal(report.status, 'failed'); assert.equal(report.failure, scenario.failure); assert.equal(calls, scenario.count);
+    assert.equal(report.catalogue.facts.seats.value, 5); assert.equal(report.images.length, 0);
+    assert.ok(!/private|SECRET|HTML/.test(JSON.stringify(report)));
+  }
+});
+
+test('shared native transport fixes safety policy, refuses redirects and raw errors, and latches failures', async () => {
+  for (const [response, code] of [[new Response('', { status: 302 }), 'redirect-refused'],
+    [new Response('', { status: 401 }), 'access-denied'], [new Response('', { status: 429 }), 'http-failure'],
+    [new Response('private HTML', { headers: { 'content-type': 'text/html' } }), 'content-type']]) {
+    let calls = 0; const transport = createBoundedTransport({ fetchImpl: async () => { calls += 1; return response; } });
+    await assert.rejects(transport.get(boundedInput()), { message: code });
+    await assert.rejects(transport.get(boundedInput()), { message: code }); assert.equal(calls, 1);
+    assert.ok(!JSON.stringify(transport.state()).includes('private'));
+  }
+  for (const changed of [{ url: 'https://evil.example' }, { method: 'POST' }, { retries: 1 }, { credentials: 'include' },
+    { cache: 'default' }, { redirect: 'follow' }, { maxResponseBytes: 1048577 }, { headers: { Cookie: 'PRIVATE' } }]) {
+    const transport = createBoundedTransport({ fetchImpl: async () => assert.fail('invalid policy cannot fetch') });
+    await assert.rejects(transport.get({ ...boundedInput(), ...changed }), { message: 'source-invalid' });
+  }
+});
+
+test('transport enforces aggregate GET, image and streamed byte limits without retry', async () => {
+  const json = () => new Response('{}', { headers: { 'content-type': 'application/json' } });
+  const transport = createBoundedTransport({ fetchImpl: async () => json() });
+  for (let index = 0; index < LIMITS.requests; index += 1) await transport.get(boundedInput());
+  await assert.rejects(transport.get(boundedInput()), { message: 'budget-exhausted' }); assert.equal(transport.state().requestCount, 8);
+  const image = createBoundedTransport({ fetchImpl: async () => new Response(bytes, { headers: { 'content-type': 'image/webp' } }) });
+  for (let index = 0; index < 2; index += 1) await image.get({ ...boundedInput(URL_ASSET), maxResponseBytes: 2097152 });
+  await assert.rejects(image.get({ ...boundedInput(URL_ASSET), maxResponseBytes: 2097152 }), { message: 'budget-exhausted' });
+  const cap = createBoundedTransport({ fetchImpl: async () => new Response(Buffer.alloc(12), { headers: { 'content-type': 'application/json' } }) });
+  await assert.rejects(cap.get({ ...boundedInput(), maxResponseBytes: 10 }), { message: 'response-byte-cap' }); assert.equal(cap.state().bytes, 12);
+  const aggregate = createBoundedTransport({ fetchImpl: async () => new Response(Buffer.alloc(1048576), { headers: { 'content-type': 'application/json' } }) });
+  for (let index = 0; index < 6; index += 1) await aggregate.get(boundedInput());
+  await assert.rejects(aggregate.get(boundedInput()), { message: 'budget-exhausted' }); assert.equal(aggregate.state().bytes, LIMITS.bytes);
+});
+
+test('transport total deadline and cancellation stop further work; concurrency cannot widen the grant', async () => {
+  let time = 0; let calls = 0;
+  const expired = createBoundedTransport({ now: () => time, fetchImpl: async () => { calls += 1; assert.fail('expired'); } });
+  time = LIMITS.totalMs; await assert.rejects(expired.get(boundedInput()), { message: 'budget-exhausted' }); assert.equal(calls, 0);
+  let release; const pending = createBoundedTransport({ fetchImpl: async () => new Promise((done) => { release = done; }) });
+  const first = pending.get(boundedInput()); await assert.rejects(pending.get(boundedInput()), { message: 'source-busy' });
+  release(new Response('{}', { headers: { 'content-type': 'application/json' } })); await first;
+  await assert.rejects(pending.get(boundedInput()), { message: 'source-busy' }); assert.equal(pending.state().requestCount, 1);
+  const controller = new AbortController(); controller.abort();
+  const cancelled = createBoundedTransport({ fetchImpl: async (_, options) => { assert.equal(options.signal.aborted, true); throw Error('raw SECRET'); } });
+  await assert.rejects(cancelled.get({ ...boundedInput(), signal: controller.signal }), { message: 'request-timeout' });
+  assert.ok(!JSON.stringify(cancelled.state()).includes('SECRET'));
+});
+
+test('per-request deadline aborts even an uncooperative fetch and latches a safe timeout', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  let signal; const transport = createBoundedTransport({ fetchImpl: async (_, options) => {
+    signal = options.signal; return new Promise(() => {});
+  } });
+  const pending = transport.get(boundedInput());
+  const rejected = assert.rejects(pending, { message: 'request-timeout' });
+  t.mock.timers.tick(LIMITS.requestMs); await rejected;
+  assert.equal(signal.aborted, true); assert.equal(transport.state().requestCount, 1);
+  await assert.rejects(transport.get(boundedInput()), { message: 'request-timeout' });
+});
+
+test('a second-paint failure keeps the first permitted artifact and valid facts without claiming variation', async () => {
+  let count = 0; const fixtureFetch = harnessFetch();
+  const report = await verifyLiveImagery({ fetchImpl: async (...args) => {
+    count += 1; return count === 4 ? new Response('PRIVATE', { status: 403 }) : fixtureFetch(...args);
+  }, deliver: async () => assert.fail('no route success after failure') });
+  assert.equal(report.status, 'failed'); assert.equal(report.images.length, 1); assert.equal(count, 4);
+  assert.equal(report.failure, 'access-denied'); assert.equal(report.catalogue.facts.seats.value, 5);
+  assert.equal(report.paintVariation, 'pending-actual-visual-inspection'); assert.equal(report.delivery, null);
+  assert.ok(!JSON.stringify(report).includes('PRIVATE'));
+});
+
+test('CLI needs explicit live/output and exclusive attempt ledger refuses reruns', async () => {
+  let printed = ''; assert.equal(await runCli({ argv: [], fetchImpl: () => assert.fail('no implicit live'), write: (line) => { printed += line; } }), 2);
+  assert.match(printed, /--live \[--output/);
+  assert.equal(parseCliArguments(['--live']), new URL('../../docs/gcsp/evidence/fucq51/native-v1-assets', import.meta.url).pathname);
+  assert.equal(parseCliArguments(['--live', '--output', '/tmp/new-imagery-proof']), '/tmp/new-imagery-proof');
+  for (const argv of [[], ['--output', '/tmp/proof'], ['--live', '--retries', '1'], ['--live', '--output', '']]) assert.equal(parseCliArguments(argv), null);
+  const directory = await mkdtemp(join(tmpdir(), 'fucq51-ledger-'));
+  try {
+    const path = join(directory, 'attempt.json'); await reserveAttempt(path, directory);
+    await assert.rejects(reserveAttempt(path, directory), { code: 'EEXIST' });
+    const ledger = JSON.parse(await readFile(path, 'utf8')); assert.deepEqual(ledger.limits, LIMITS);
+    assert.equal(ledger.reviewRequiredBeforeAnotherAttempt, true);
+  } finally { await rm(directory, { recursive: true }); }
 });
