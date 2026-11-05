@@ -95,8 +95,15 @@ separate integration acceptance; synthetic handlers do not prove those producers
 `register.js` registers `<gcsp-presenter-controls>`. The shell mounts it by default and reveals
 it only after a successful server CONTROL read, independently of the acting role. Embedders
 and isolated fixtures use `presenterControls: false`, or inject `{ adapter, commandId, navigate }`.
-The employee mount forwards `ctx.presenterControls` to the shell. Native labelled controls and
-Escape preserve stable field/summary focus across readback updates; styles use shared Density tokens.
+The employee mount forwards `ctx.presenterControls` to the shell. The reusable `presenterBar`
+kit helper owns the native disclosure, panel and supplied run/clock/principal facts; the controller
+owns authorization and commands. Scenario and Acting principal both use controlled `renderOptionList`
+with explicit radiogroup labels, `value`, `onValueChange` and in-place `update({ value, disabled })`.
+Options rebuild only when their rows change; ordinary readback preserves mounted radio identity,
+selected draft and focus. Single-choice arrows wrap, Home/End select, and one radio per group is
+in the tab order. Unavailable scenarios remain selectable/inspectable with missing capabilities;
+Reset is disabled for that choice. The target stays a labelled native text input. Escape preserves
+stable field/summary focus; shared kit styles use Density tokens and visible focus at narrow widths.
 
 The controller captures one immutable command body and ID per deliberate action, blocks all
 concurrent commands, and retains that same object for an uncertain-response retry. Version and

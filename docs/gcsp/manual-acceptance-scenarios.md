@@ -165,11 +165,16 @@ A shared-key gate, where configured, must already be satisfied by the host. A mi
 cookie hides the strip entirely even when the acting person is an employee or Greg.
 
 1. Open **Presenter controls**. Check scenario, run, DemoClock UTC time, actual acting person and
-   last tick. Collapse/reopen with the keyboard; Escape closes the strip and focuses its summary.
+   last tick in the shared presenter bar. Collapse/reopen with the keyboard; Escape closes the
+   strip and focuses its summary. Scenario and Acting principal are named radio groups: Tab enters
+   each group once, arrows wrap, and Home/End choose its first/last option. Refresh readback while
+   a radio has focus; its mounted node, selected choice and focus must remain stable. During busy
+   or uncertain commands both groups are disabled.
 2. Choose **Tick**, a server-projected named cue or a future UTC ISO target, or **Next release**.
    Check actual new time and handler results in server order. Missing release handlers say release
    unavailable; they do not report zero cars. A future cue does not establish release capability.
-3. Choose an unavailable scenario. Its missing capabilities appear and Reset is disabled. Choose
+3. Select an unavailable scenario radio; the choice remains enabled and inspectable. Its missing
+   capabilities appear and Reset is disabled. Ordinary readbacks preserve a deliberate choice. Choose
    the available clock-mechanics scenario, press **Reset scenario**, then cancel once. Confirm a
    second reset and check the returned new run plus fresh server/context readback. The mechanics
    scenario is not evidence of any full business journey.
@@ -183,7 +188,9 @@ cookie hides the strip entirely even when the acting person is an employee or Gr
    is a deliberate fresh issuance with a new ID.
 
 Current authored scope, 5 November 2026: UI/DOM and HTTP-boundary checks cover these behaviors.
-Browser inspection is still required at desktop and 375px, including Tab, Enter, Escape and focus.
+Browser inspection is still required at desktop and 375px, including Tab, Enter, Escape, radio
+arrows/Home/End, visible focus and readback focus preservation. This component-alignment follow-up
+has automated DOM evidence only; its corrected browser matrix remains unexecuted pending a fresh lane grant.
 The isolated gallery example demonstrates pending/missing-release presentation only. No actual
 business release producer or complete business-scenario reset has been demonstrated by this UI work.
 The browser runner matrix is `evidence/fucq-126/ui-browser-plan.md`; dated observations and captures

@@ -103,6 +103,9 @@ try {
   });
   const controls = page.locator('.gcsp-presenter-controls');
   const summary = controls.locator('summary');
+  const picker = (label) => controls.getByRole('radiogroup', { name: label, exact: true });
+  const option = (label, value) => picker(label).locator(`[role="radio"][data-value=${JSON.stringify(value)}]`);
+  const selectedValue = (label) => picker(label).locator('[role="radio"][aria-checked="true"]').getAttribute('data-value');
   const tick = () => controls.getByRole('button', { name: /^Tick \(/ });
   const idle = async () => { await controls.waitFor({ state: 'visible' }); await page.waitForFunction(() => document.querySelector('.gcsp-presenter-controls')?.getAttribute('aria-busy') === 'false'); };
   const open = async () => { await idle(); if (!(await controls.getAttribute('open') !== null)) { await summary.focus(); await page.keyboard.press('Enter'); } };
@@ -112,7 +115,7 @@ try {
     // drawer is taller than one screen. Raw top-of-drawer captures are separate.
     if (/^(03-|05-|17-)/.test(name)) await controls.locator('.gcsp-presenter-results').scrollIntoViewIfNeeded();
     if (/^(05b-|13-|16-)/.test(name)) await controls.locator('[role="status"]').first().scrollIntoViewIfNeeded();
-    if (name.startsWith('11-')) await controls.getByLabel('Scenario', { exact: true }).scrollIntoViewIfNeeded();
+    if (name.startsWith('11-')) await picker('Scenario').scrollIntoViewIfNeeded();
     if (name.startsWith('12-')) await controls.getByRole('button', { name: 'Confirm reset', exact: true }).scrollIntoViewIfNeeded();
     if (name.startsWith('14-')) await controls.getByRole('button', { name: 'Retry original action', exact: true }).scrollIntoViewIfNeeded();
     if (name.startsWith('13b-')) await controls.getByRole('button', { name: 'Retry original action', exact: true }).scrollIntoViewIfNeeded();
@@ -132,8 +135,28 @@ try {
   assert.ok(await summary.evaluate((node) => node === document.activeElement)); await open();
   check('Native disclosure opens with Enter; Tab reaches tick; Escape closes and returns focus');
   const first = assertOk(await read('presenter/controls'));
-  assert.equal(await controls.getByLabel('Scenario', { exact: true }).inputValue(), first.currentScenario.scenarioId);
+  assert.equal(await selectedValue('Scenario'), first.currentScenario.scenarioId);
   check('Initial selected scenario matches actual current scenario after catalogue load');
+  for (const label of ['Scenario', 'Acting principal']) {
+    const radios = picker(label).getByRole('radio'); const before = await selectedValue(label);
+    const total = await radios.count(); assert.ok(total > 1);
+    await radios.first().focus(); await page.keyboard.press('End');
+    assert.ok(await radios.last().evaluate((node) => node === document.activeElement));
+    assert.equal(await radios.last().getAttribute('aria-checked'), 'true');
+    await page.keyboard.press('ArrowRight'); assert.ok(await radios.first().evaluate((node) => node === document.activeElement));
+    await page.keyboard.press('ArrowLeft'); assert.ok(await radios.last().evaluate((node) => node === document.activeElement));
+    await page.keyboard.press('Home'); assert.ok(await radios.first().evaluate((node) => node === document.activeElement));
+    assert.equal(await picker(label).locator('[role="radio"][tabindex="0"]').count(), 1);
+    if (before) await option(label, before).click();
+    const focused = before ? option(label, before) : radios.first(); await focused.focus();
+    const identity = await focused.elementHandle(); const value = await selectedValue(label);
+    await controls.getByRole('button', { name: 'Refresh readback', exact: true }).evaluate((node) => node.click());
+    await idle();
+    assert.ok(await identity.evaluate((node) => node.isConnected && node === document.activeElement));
+    assert.equal(await selectedValue(label), value); await identity.dispose();
+  }
+  await capture('02b-shared-options-keyboard-focus');
+  check('Both shared radio pickers wrap arrows, support Home/End and preserve focused node/value through ordinary readback');
   await tick().click(); await idle();
   const advanced = assertOk(await read('presenter/controls'));
   assert.equal(Date.parse(advanced.now) - Date.parse(first.now), first.controls.step.value * 1000);
@@ -150,6 +173,7 @@ try {
     await page.route('**/api/gcsp/presenter/controls/tick', busyRoute);
     await tick().click(); await page.waitForFunction(() => document.querySelector('.gcsp-presenter-controls')?.getAttribute('aria-busy') === 'true');
     await tick().evaluate((node) => { node.click(); node.click(); });
+    assert.equal(await controls.getByRole('radio').count(), await controls.locator('[role="radio"]:disabled').count());
     await capture('04-busy-real-response-delayed'); assert.equal(busyCount, 1);
     releaseBusy(); await idle(); await page.unroute('**/api/gcsp/presenter/controls/tick', busyRoute);
     check('Busy prevents duplicate command', { requests: busyCount });
@@ -172,7 +196,7 @@ try {
     const employee = principals.find((p) => p.roles.includes('employee'));
     const gregPrincipal = principals.find((p) => p.roles.includes('greg'));
     const switchTo = async (principal) => {
-      await controls.getByLabel('Acting principal', { exact: true }).selectOption(principal.principalId);
+      await option('Acting principal', principal.principalId).click();
       await Promise.all([page.waitForEvent('framenavigated', { predicate: (frame) => frame === page.mainFrame() && frame.url() === origin + '/gcsp-presenter.html' }), controls.getByRole('button', { name: 'Switch principal', exact: true }).click()]);
       await page.waitForLoadState('load'); await idle();
       assert.equal(assertOk(await read('context')).principalId, principal.principalId); await open();
@@ -198,11 +222,11 @@ try {
     await nonpresenter.close(); check('Actual acting cookie alone hides presenter controls');
     const catalogue = assertOk(await read('presenter/scenarios'));
     const unavailable = catalogue.scenarios.find((s) => !s.availability.available);
-    await controls.getByLabel('Scenario', { exact: true }).selectOption(unavailable.scenarioId);
+    await option('Scenario', unavailable.scenarioId).click();
     assert.ok(await controls.getByRole('button', { name: 'Reset scenario', exact: true }).isDisabled());
     await capture('11-scenario-unavailable');
     const available = catalogue.scenarios.find((s) => s.availability.available);
-    await controls.getByLabel('Scenario', { exact: true }).selectOption(available.scenarioId);
+    await option('Scenario', available.scenarioId).click();
     await controls.getByRole('button', { name: 'Reset scenario', exact: true }).click();
     await capture('12-reset-confirmation');
     await controls.getByRole('button', { name: 'Cancel reset', exact: true }).click();
@@ -220,7 +244,7 @@ try {
     assert.equal(await page.locator('.gcsp-account-body').count(), 0);
     assert.match(await page.locator('.gcsp-main').innerText(), /Presenter workspace/);
     assert.match(await controls.innerText(), new RegExp(afterReset.runId));
-    assert.equal(await controls.getByLabel('Scenario', { exact: true }).inputValue(), afterReset.currentScenario.scenarioId);
+    assert.equal(await selectedValue('Scenario'), afterReset.currentScenario.scenarioId);
     await capture('13-clock-mechanics-reset'); check('Actual reset discards employee shell; new context, header, workspace and run agree', { before: beforeReset.runId, after: afterReset.runId, roles: resetContext.roles });
     let lostBody; let retriedBody; let dropped = false;
     const lostRoute = async (route) => {

@@ -61,3 +61,18 @@ After smoke, inspect screenshots and its cleanup receipt before desktop/narrow.
 The parent independently reviews new captures and final receipts. Earlier matrices
 remain narrower evidence and do not satisfy these new regression gates. Actual
 business release/count and complete business-scenario reset acceptance remain open.
+
+## Shared-component alignment follow-up
+
+This plan now targets the shared `presenterBar` disclosure/readback and controlled
+`renderOptionList` Scenario and Acting principal pickers. Locate them by explicit
+`radiogroup` names and `radio` children, with caller-supplied `data-value` for canonical
+IDs. There are no native select controls for these choices. Verify initial actual
+scenario only after options arrive, arrow wrapping and Home/End in each group, one
+tab stop per group, selected value and mounted focused radio identity through an
+ordinary readback, and disabled radio states during busy/uncertain commands. An
+unavailable scenario remains selectable and exposes its missing capabilities while
+Reset is disabled. Review compact Density styling, visible focus and overflow at
+1280x900 and 375x812. The gallery includes the standalone helper and both pickers.
+No browser was run for this alignment; the parent must grant the lane against the
+new reviewed exact commit after the FUCQ-122 work has completed.

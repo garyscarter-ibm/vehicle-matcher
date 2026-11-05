@@ -1,10 +1,11 @@
 import { test, before, beforeEach, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
-let mount; let workspace; let http; let dom;
+let mount; let presenterBar; let workspace; let http; let dom;
 before(async () => {
   dom = new JSDOM('<!doctype html><body></body>', { url: 'https://example.test/', pretendToBeVisual: true });
   for (const name of ['window', 'document', 'HTMLElement', 'customElements']) globalThis[name] = name === 'window' ? dom.window : dom.window[name];
+  ({ presenterBar } = await import('../../blocks/gcsp/kit/presenter-bar.js'));
   ({ mountPresenterControls: mount } = await import('../../blocks/gcsp/presenter-controls/controls.js'));
   ({ mountPresenterWorkspace: workspace } = await import('../../blocks/gcsp/presenter-controls/workspace.js'));
   ({ createPresenterHttpAdapter: http } = await import('../../blocks/gcsp/presenter-controls/http-adapter.js'));
@@ -30,6 +31,53 @@ function setup(overrides = {}) {
   const click = (label) => { const node = [...host.querySelectorAll('button')].find((row) => row.textContent === label || row.textContent.startsWith(label + ' (')); assert.ok(node, label); node.click(); return node; };
   return { host, adapter, control, click, calls, navigation };
 }
+const group = (f, label) => f.host.querySelector(`[role="radiogroup"][aria-label="${label}"]`);
+const choice = (f, label, value) => group(f, label).querySelector(`[data-value="${value}"]`);
+const selected = (f, label) => group(f, label).querySelector('[aria-checked="true"]')?.dataset.value;
+test('presenterBar projects safe supplied facts without replacing disclosure or consumer actions', () => {
+  const bar = presenterBar({ label: 'Demo controls', readback: [{ label: 'Run', value: 'run-a' }] });
+  document.body.append(bar.root); const action = document.createElement('button'); bar.panel.append(action);
+  bar.root.open = true; action.focus();
+  bar.setReadback([{ label: 'Run', value: '<run-b>' }, { label: 'Clock', value: null }]);
+  assert.equal(bar.summary.textContent, 'Demo controls'); assert.equal(bar.root.open, true);
+  assert.equal(document.activeElement, action); assert.equal(bar.panel.lastChild, action);
+  assert.match(bar.readback.textContent, /<run-b>.*Not supplied/); assert.equal(bar.readback.querySelector('run-b'), null);
+});
+test('both controlled pickers retain mounted radio identity, deliberate value and focus across readbacks', async () => {
+  const f = setup(); await settle(); f.control.root.open = true;
+  assert.equal(f.host.querySelector('select'), null);
+  const scenario = choice(f, 'Scenario', 'business'); const principal = choice(f, 'Acting principal', 'greg-test');
+  scenario.click(); principal.click(); scenario.focus();
+  await f.control.refresh();
+  assert.equal(choice(f, 'Scenario', 'business'), scenario); assert.equal(choice(f, 'Acting principal', 'greg-test'), principal);
+  assert.equal(document.activeElement, scenario); assert.equal(selected(f, 'Scenario'), 'business');
+  assert.equal(selected(f, 'Acting principal'), 'greg-test'); assert.equal(scenario.disabled, false);
+  assert.ok(group(f, 'Scenario').getAttribute('aria-describedby')); f.control.destroy();
+});
+test('shared radio keyboard arrows wrap and Home/End select with one tab stop in each picker', async () => {
+  const f = setup(); await settle(); f.control.root.open = true;
+  for (const label of ['Scenario', 'Acting principal']) {
+    const radios = [...group(f, label).querySelectorAll('[role="radio"]')];
+    const key = (name) => document.activeElement.dispatchEvent(new window.KeyboardEvent('keydown', { key: name, bubbles: true }));
+    radios[0].focus(); key('End'); assert.equal(document.activeElement, radios.at(-1));
+    assert.equal(radios.at(-1).getAttribute('aria-checked'), 'true');
+    key('ArrowRight'); assert.equal(document.activeElement, radios[0]);
+    key('ArrowLeft'); assert.equal(document.activeElement, radios.at(-1));
+    key('Home'); assert.equal(document.activeElement, radios[0]);
+    assert.deepEqual(radios.map((radio) => radio.tabIndex), [0, -1]);
+  }
+  f.control.destroy();
+});
+test('busy and uncertain updates disable mounted radio buttons without rewriting their selection', async () => {
+  let finish;
+  const f = setup({ tick: () => new Promise((resolve) => { finish = resolve; }) }); await settle();
+  const scenario = choice(f, 'Scenario', 'business'); scenario.click(); f.click('Tick');
+  assert.equal(scenario.disabled, true); assert.equal(selected(f, 'Scenario'), 'business');
+  finish({ status: 'unavailable', lostResponse: true, retryable: true }); await settle();
+  assert.equal(choice(f, 'Scenario', 'business'), scenario); assert.equal(scenario.disabled, true);
+  choice(f, 'Scenario', 'mechanics').click(); assert.equal(selected(f, 'Scenario'), 'business');
+  f.control.destroy();
+});
 test('separate CONTROL authorization hides employee/Greg controls and errors entirely', async () => {
   for (const status of ['forbidden', 'missing-session', 'unavailable']) {
     const f = setup({ readControls: async () => ({ status, reason: 'private failure' }) }); await settle();
@@ -71,10 +119,9 @@ test('only an actual successful release handler supplied count is shown', async 
   await settle(); assert.match(f.host.textContent, /3 cars released/); f.control.destroy();
 });
 test('reset current/chosen availability is explained and explicit confirmation captures canonical versions', async () => {
-  const f = setup(); await settle(); const select = f.host.querySelector('select');
-  select.value = 'business'; select.dispatchEvent(new window.Event('change')); assert.match(f.host.textContent, /actual-release-service/);
+  const f = setup(); await settle(); const unavailable = choice(f, 'Scenario', 'business'); assert.equal(unavailable.disabled, false); unavailable.click(); assert.match(f.host.textContent, /actual-release-service/);
   assert.equal(f.click('Reset scenario').disabled, true); assert.equal(f.calls.length, 0);
-  select.value = 'mechanics'; select.dispatchEvent(new window.Event('change')); f.click('Reset scenario'); assert.equal(f.calls.length, 0);
+  choice(f, 'Scenario', 'mechanics').click(); f.click('Reset scenario'); assert.equal(f.calls.length, 0);
   f.click('Cancel reset'); assert.equal(f.calls.length, 0); f.click('Reset scenario'); f.click('Confirm reset'); await settle();
   assert.deepEqual(f.calls[0], { commandId: 'command-1', expectedRunId: 'run-a', expectedRunVersion: 1,
     scenarioId: 'mechanics', scenarioVersion: 'v1', fixtureVersion: 'f1', policyVersion: 'policy-test' });
@@ -84,15 +131,13 @@ test('delayed catalogue selects the actual current scenario after unavailable fi
   let completeCatalogue;
   const f = setup({ readScenarios: () => new Promise((resolve) => { completeCatalogue = resolve; }) });
   await settle();
-  const select = f.host.querySelector('select');
-  assert.equal(select.options.length, 0); assert.equal(select.dataset.initial, undefined);
+  assert.equal(group(f, 'Scenario').children.length, 0); assert.equal(selected(f, 'Scenario'), undefined);
   completeCatalogue(ok({ ...catalogue, scenarios: [catalogue.scenarios[1], catalogue.scenarios[0]] }));
-  await settle(); assert.equal(select.value, state().currentScenario.scenarioId);
-  assert.equal(select.dataset.initial, 'true');
-  select.value = 'business'; select.dispatchEvent(new window.Event('change'));
+  await settle(); assert.equal(selected(f, 'Scenario'), state().currentScenario.scenarioId);
+  choice(f, 'Scenario', 'business').click();
   f.adapter.readScenarios = async () => ok(catalogue);
   await f.control.refresh();
-  assert.equal(select.value, 'business'); assert.match(f.host.textContent, /actual-release-service/);
+  assert.equal(selected(f, 'Scenario'), 'business'); assert.match(f.host.textContent, /actual-release-service/);
   f.control.destroy();
 });
 test('acknowledged reset navigates to fresh actual-context workspace without another stale-page read', async () => {
@@ -150,7 +195,7 @@ test('stale-run reset retry cannot navigate from matching old reads, mismatched 
 });
 test('cookie issuance conflict confirms actual principal before navigation; unknown context offers fresh deliberate issuance', async () => {
   const calls = []; const f = setup({ switchPrincipal: async (payload) => { calls.push(payload); return { status: 'conflict', reason: 'Cookie cannot replay' }; } });
-  await settle(); const principal = f.host.querySelectorAll('select')[1]; principal.value = 'greg-test';
+  await settle(); choice(f, 'Acting principal', 'greg-test').click();
   f.click('Switch principal'); await settle(); assert.equal(f.navigation.length, 0); assert.match(f.host.textContent, /Switch uncertain or refused/);
   f.click('Retry original action'); await settle(); assert.strictEqual(calls[0], calls[1]);
   f.adapter.readContext = async () => ok({ principalId: 'greg-test', name: 'Greg test', roles: ['greg'] });

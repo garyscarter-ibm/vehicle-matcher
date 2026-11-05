@@ -58,7 +58,7 @@ Shared explicit-card styles live in `decision-card.css`, imported by the existin
 
 | Call | Use for |
 |---|---|
-| `renderOptionList(q, answers, { onChange, onPick, value, onValueChange, disabled, ariaLabel })` | Single- or multi-select option list for a question. `onPick` fires after a single-select tap (after `onChange`). Returns `{ list, selected }`. |
+| `renderOptionList(q, answers, { onChange, onPick, value, onValueChange, disabled, ariaLabel })` | Single- or multi-select option list for a question. `onPick` fires after a single-select tap (after `onChange`). Returns `{ list, selected, update }`. |
 | `renderRangeSlider(list, q, answers, { onChange, single, value, onValueChange, unit, valueState, disabled, ariaLabel })` | Dual-handle range by default, `single: true` for one position or importance axis. Legacy path persists the starting value immediately without invoking `onChange`; subsequent input invokes it. |
 | `visibleQuestions(questions, answers, { predicate })` / `isVisible(q, answers, { predicate })` | Apply conditional-question predicates (`SHOW_IF`) so hidden questions are skipped. |
 | `formatSliderValue(value, q, { unit, valueState })` / `formatRange([lo, hi], q, options)` | Slider readouts in the question's unit. |
@@ -205,12 +205,13 @@ Looked at `renderOptionList` and `renderRangeSlider`: they supply question butto
 
 ## GCSP presenter controls (`blocks/gcsp/presenter-controls/`)
 
-Component plan: reuse `button`, `factList`, `statusScreen` and `labelledField`; extend `portalShell` with the optional presenter region. Native `details` supplies the disclosure. No reusable disclosure abstraction or duplicate host styles are needed.
+Component plan: reuse `button`, `factList`, `statusScreen`, `labelledField` and controlled `renderOptionList` for both Scenario and Acting principal; use the shared shell presenter region. Add `presenterBar` because neither the account disclosure nor a status screen combines a compact presenter disclosure with supplied run/clock/principal facts. Authorization, draft selection and command behavior stay with the consumer.
 
 | Component | Use instead |
 |---|---|
-| `mountPresenterControls(host, { adapter, commandId, navigate })` | Shared presenter strip with stable native fields, server-projected policy step/cues/principals, confirmed reset, ordered tick receipts, exact original-command retry and actual-context switch reconciliation. Returns `{ root, refresh, destroy }`. Use instead of per-page presenter actions. |
+| `presenterBar({ label = 'Presenter controls', readback = [] })` (`blocks/gcsp/kit/presenter-bar.js`) | Native disclosure plus supplied `factList` rows. Returns `{ root, summary, panel, readback, setReadback(rows) }`. Append consumer actions to `panel`; readback updates preserve disclosure and action identity. Use instead of hand-building a presenter disclosure/readback. |
+| `mountPresenterControls(host, { adapter, commandId, navigate })` | Shared presenter strip with a native target field and controlled Scenario/Acting principal radio lists, server-projected policy step/cues/principals, confirmed reset, ordered tick receipts, exact original-command retry and actual-context switch reconciliation. Returns `{ root, refresh, destroy }`. Use instead of per-page presenter actions. |
 | `<gcsp-presenter-controls>` / `defineGcspPresenterControls(registry)` | Standard custom element, adapter property, disconnect teardown. Load `presenter-controls/register.js` and the shared shell styles. The parent `.gcsp` supplies Density tokens. |
 | `mountPresenterWorkspace(host, options)` | Reads actual server context and mounts the account or Greg HTTP surface. Harness `gcsp-presenter.html`; never selects a principal from URL/fixtures. |
 
-Styles live in `presenter-controls/presenter-controls.css`, imported by the shared shell, with a ratchet cap. The GCSP gallery includes an explicitly isolated pending/missing-release example; it makes no release or scenario capability claim. Functional tests: `server/test/gcsp-presenter-controls-render.test.js`, shell/CSP checks and UI ratchet. Browser evidence remains a separate gate.
+Shared disclosure/readback/compact option styling lives in `kit/presenter-bar.css`, imported by the capped `presenter-controls/presenter-controls.css` through the shell. The kit stylesheet is separately capped, and the presenter-bar pattern rejects new hand-built copies outside its factory. Picker rows rebuild only when the supplied options change; ordinary readbacks use the existing `update({ value, disabled })` handle. Unavailable scenarios stay selectable with missing-capability copy while Reset stays disabled. Groups have explicit accessible labels and retain the shared arrow/Home/End semantics. The GCSP gallery includes a standalone presenterBar and an explicitly isolated pending/missing-release example with both option lists; it makes no release or scenario capability claim. Functional tests: `server/test/gcsp-presenter-controls-render.test.js`, shell/CSP checks and UI ratchet. Browser evidence remains a separate gate.
