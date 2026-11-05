@@ -903,16 +903,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-91"
     },
     {
-      "id": "FUCQ-92",
-      "title": "Release synthetic stock on a presenter tick from the next pull",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "Russell Gowers",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-92"
-    },
-    {
       "id": "FUCQ-93",
       "title": "Dispatch outbox jobs through a transport port into a captured outbox",
       "status": "In Review",
@@ -1371,6 +1361,59 @@
       "type": "Story",
       "observed_at": "2026-11-05T22:40:24Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-138"
+    },
+    {
+      "id": "FUCQ-92",
+      "title": "Release synthetic stock on a presenter tick from the next pull",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T23:15:08Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-92",
+      "slices": [
+        {
+          "id": "release-core",
+          "status": "complete",
+          "title": "Pull provider, policy-driven release and atomic receipt",
+          "observed_at": "2026-11-05T23:14:17Z",
+          "evidence": "Lead reviewed API, occupied-stock preservation, receipt idempotency and callers; 645e779, shared-base531a95c; release16/16, combined boundary76 pass/2 native skips; docs/gcsp/evidence/fucq92/README.md."
+        },
+        {
+          "id": "provider-integration",
+          "status": "blocked",
+          "title": "Real FUCQ-77/78 source-backed stock and confirmed supply producer",
+          "observed_at": "2026-11-05T23:14:17Z",
+          "evidence": "Real FUCQ-77/78 configuration corpus and generated stock provider, actual confirmed-supply acknowledgement producer not available in shared tree; TEST fixtures prove port only."
+        },
+        {
+          "id": "runtime-consumers",
+          "status": "blocked",
+          "title": "Startup, presenter cue and manual/buddy shared-pool integration",
+          "observed_at": "2026-11-05T23:14:17Z",
+          "evidence": "Exact persisted stock-release event contract published; shared buildServer/runtime/startup registration and manual/buddy consume path require coordinated producer composition."
+        },
+        {
+          "id": "final-validation",
+          "status": "not-started",
+          "title": "Required full suite and complete acceptance evidence",
+          "observed_at": "2026-11-05T23:14:18Z",
+          "evidence": "Explicit npm test requirement awaits serial dispatcher grant; complete source-backed/runtime acceptance remains outstanding."
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-04-058",
+      "workers": [
+        {
+          "name": "The Brain",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-05T23:15:08.147542Z",
+          "expires_at": "2026-11-05T23:30:08.147542Z",
+          "status": "validating current shared-base checkpoint",
+          "source": "thread 01a1adf9-7f4a-7913-9cdb-532060b69a55; requested/selected and verified gpt-6.1-sol/high"
+        }
+      ]
     }
   ]
 }
