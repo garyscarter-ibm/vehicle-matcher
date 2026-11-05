@@ -36,6 +36,8 @@ Initial Jira reconciliation imported and pushed 107 Stories; two already rejecte
 
 ## Morning questions
 
+FUCQ-40 / DEV-2026-11-04-011 is claimed but blocked before build: record permitted demo display/retention for the retained white/black COSY research assets, including applicable conditions. The Story and evidence README explicitly require this decision before runtime registration; no superseding decision or Jira comment was found. Research references remain unchanged. Draw.io standing approval does not supply this separate imagery input. Other ready stories continue.
+
 FUCQ-80 selected reversible synthetic defaults for trial review: `hold.cart.orderReview.durationSeconds = 600` and transition `once-from-preview`; `allocation.tieBreak.rule = renewalDueThenFitThenSeededLottery` and seed `gcsp-v1`. These are labelled assumptions, not verified BMW rules, and do not block consumers. Binding deferrals still exclude FUCQ-27/28/61 until after 12 November, even where their Jira descriptions omit that timing; the local run directive preserves the exclusions.
 
 The FUCQ-82 monthly prices, company/grade allowances and `eligibility.context.mapping` are explicitly synthetic demonstration assumptions; review them during trials against later BMW evidence. Source schemes remain FS&UK and RR&Production; no RR&Production/UKNSC equivalence is asserted.
