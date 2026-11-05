@@ -1,0 +1,182 @@
+{
+  "story": "FUCQ-96",
+  "slice": "allocation core + guarded cohort identity",
+  "status": "paused at human travel checkpoint; scoped tests passed; story incomplete",
+  "branch": "dev/DEV-2026-11-04-059",
+  "base": "f16c4111bac15fe23c7f7e04c6757cf5ef5e338a",
+  "validationScope": "direct supervised scoped proof; no stamp; cached base identity",
+  "sourceHashes": {
+    "server/gcsp/allocation/index.js": "41a2408c17574102891344fcc57f3df56a046199c896037b58b28d00fbab2dc5",
+    "server/gcsp/identity/index.js": "6997dcdb24f4bb4bc7388394229d6a4e219e4aa46f4662b64aca4c6ecb447732",
+    "server/test/gcsp-allocation.test.js": "2c9a498c5c132565a4733629717281861570fdd592839e38d287e755ccd371c5",
+    "server/test/gcsp-identity-allocation.test.js": "838a5f13252927b81a0af80cc20bce718a429a674280933747aa92692b4cabdc",
+    "server/test/helpers/gcsp-allocation.js": "3bba47f7d55308bc2c3a440f2a7b47d2a6a8105813e65d9b75632a16c2d51dc7",
+    "server/gcsp/recommendation/index.js": "f0595fa37434b139d953db0ca89754ada08c9f6902abf3ea924addd2b72b6036",
+    "server/gcsp/repository/core.js": "c55c93c543886108f67aa12bc5c7519d50063e90ba4ec78df37aa0df56d6f311",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+    "server/gcsp/policy/seed-v1.json": "c585213b98631d6e82acc1b3720d47efae49fdb502f5fc86fb440703ef6e41a6"
+  },
+  "syntax": {
+    "commands": [
+      [
+        "node",
+        "--check",
+        "server/gcsp/allocation/index.js"
+      ],
+      [
+        "node",
+        "--check",
+        "server/gcsp/identity/index.js"
+      ],
+      [
+        "node",
+        "--check",
+        "server/test/gcsp-allocation.test.js"
+      ],
+      [
+        "node",
+        "--check",
+        "server/test/gcsp-identity-allocation.test.js"
+      ],
+      [
+        "node",
+        "--check",
+        "server/test/helpers/gcsp-allocation.js"
+      ]
+    ],
+    "passed": 5,
+    "budgetRamMiB": 64,
+    "scratchMiB": 1,
+    "maxSampledRssBytes": 2359296,
+    "scratchPeakBytes": 0,
+    "currentMatchingFileCount": 2,
+    "changedSinceRun": [
+      "server/gcsp/allocation/index.js",
+      "server/test/gcsp-allocation.test.js",
+      "server/test/gcsp-identity-allocation.test.js"
+    ]
+  },
+  "behavioral": {
+    "newTestCasesAuthored": 16,
+    "completed": 16,
+    "firstLoadFailure": "pg unavailable before any test body executed",
+    "admissionDenied": [
+      {
+        "ramMiB": 512,
+        "availableBytes": 497745920
+      },
+      {
+        "ramMiB": 384,
+        "availableBytes": 0
+      },
+      {
+        "ramMiB": 256,
+        "availableBytes": 68059136
+      }
+    ],
+    "nextCommands": [],
+    "nextBudget": {
+      "workers": 1,
+      "ramMiB": 256,
+      "scratchMiB": 32,
+      "seconds": 300
+    },
+    "supervisor": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq96-20261105-allocation-core/supervise.py",
+    "retainedDependencyTarget": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules",
+    "dependencyOverlay": "Dispatcher-authorized read-only retained installation; after admission only; verify every file hash and target device/inode before/after; unlink exact owned overlay in finalizer; no target writes, installs, lifecycle or credential access.",
+    "lastResourceCondition": "Genuine headroom change allowed four256MiB scoped modules, all completed; paused on human travel direction.",
+    "supervisorStatus": "Executed five admitted behavioral runs including one corrected test-assertion rerun; four final modules passed60/60. All owned allocations cleaned; no further run during pause.",
+    "selectedChecksPassed": 60,
+    "selectedChecksFailed": 0,
+    "selectedChecksSkipped": 0,
+    "actualProof": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-059/docs/gcsp/evidence/fucq96/scoped-proof.json",
+    "postReviewFix": "identity allocation test captures and compares complete session rows before/after resolution instead of erroneous expected count2",
+    "noStamp": true
+  },
+  "resources": {
+    "run": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq96-20261105-allocation-core",
+    "impactMap": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/fucq96-allocation.json",
+    "ownedRoots": [
+      "/private/tmp/test-stamp-shard-6a0e5f4c7ab14b4f97b0f729a8569729",
+      "/private/tmp/test-stamp-shard-faa06970c9ce4fb29a020ec3702fc8b0",
+      "/private/tmp/test-stamp-shard-ff0d126694014326bd13abcd24912fb7",
+      "/private/tmp/test-stamp-shard-e8b9e414dfb6449f9c45ee7383decae3",
+      "/private/tmp/test-stamp-shard-76232bb47932484a93dd9393a20160e4",
+      "/private/tmp/test-stamp-shard-ffb142c08a25437ead3f98630f6e487d",
+      "/private/tmp/test-stamp-shard-93a79583c7294069a37f8f807534b368",
+      "/private/tmp/test-stamp-shard-4f8c1684d02249ff9d1ce99c33fed73e",
+      "/private/tmp/test-stamp-shard-2520a9ccafc74f6685b5cc426754f70d",
+      "/private/tmp/test-stamp-shard-6ffa9f309e9543b9a9d89d202f010f57"
+    ],
+    "allOwnedScratchRemoved": true,
+    "ownedAllocationBytesRemoved": 0,
+    "activeReservations": 0,
+    "leftovers": [],
+    "compatibilityException": "none",
+    "largeOutputDestination": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/fucq96-20261105-allocation-core/",
+    "largeFilesCreated": 0,
+    "lastSourceReviewAbsenceCheck": "2026-11-05T17:36:51.682041+00:00",
+    "sourceReviewScratchCreated": 0,
+    "sourceReviewProcessesStarted": 0,
+    "sourceReviewReservationsAcquired": 0,
+    "ownedProcessGroupsAbsent": true,
+    "maxBehavioralSampledRssBytes": 258179072,
+    "scratchPeakBytes": 0
+  },
+  "remainingGates": [
+    "F92/F91 trigger registration and trusted backend startup identity composition",
+    "F100 actual transactional claim/hold/offer/outbox authority",
+    "source-backed availabilityUntil",
+    "updated-base/contracts integration after helper refresh",
+    "final serial npm test and required stamp after actual integration"
+  ],
+  "agents": {
+    "lead": {
+      "requested": "gpt-6.1-sol/high",
+      "selected": "gpt-6.1-sol/high",
+      "runtimeVerified": false,
+      "fallback": "none"
+    },
+    "descendants": [
+      {
+        "agent": "bertie",
+        "role": "source-only reviewer",
+        "requested": "gpt-6.1-sol/high",
+        "selected": "gpt-6.1-sol/high",
+        "runtimeVerified": false,
+        "fallback": "none",
+        "descendants": 0
+      }
+    ]
+  },
+  "frozenCodeIdentity": "a63b0dcbb78ada5aa7ec1fb4c4affba0a51b526dfb6179b46ea3e1fbd1e5e464",
+  "frozenAt": "2026-11-05T17:36:51.682041+00:00",
+  "uncommitted": true,
+  "review": {
+    "reviewer": "/root/allocation_fucq96/bertie",
+    "scope": "source-only; five named source/test files and direct boundaries",
+    "codeVerdict": "passed",
+    "securityVerdict": "passed",
+    "findings": [
+      {
+        "severity": "major",
+        "status": "closed by source reread",
+        "path": "server/gcsp/allocation/index.js",
+        "mechanism": "Stable pre-plan snapshot command replay prevented identical-event retry after source repair.",
+        "fix": "Unique pre-plan read attempt; accepted prepare receipt retains event replay; unrun repair regression authored."
+      },
+      {
+        "severity": "major",
+        "status": "closed by source reread",
+        "path": "server/test/gcsp-allocation.test.js",
+        "mechanism": "declined is not a valid repository hold state, so fixture failed before allocation.",
+        "fix": "Released hold with declined offer and decision."
+      }
+    ],
+    "testsRun": 0,
+    "reviewedCodeIdentity": "6b5fa8b305aa69169ac8f5f462e7eb253e16f6f2cc30ce425d646d5db229a366",
+    "postReviewChange": "Identity test assertion corrected after actual failure; product source unchanged; corrected identity test3/3 passes."
+  },
+  "pauseReason": "Explicit human travel pause; all running chunks finished.",
+  "publication": "Parent preparing scoped validated checkpoint after helper1.5.0 delivery; frozenAt/uncommitted are the historical freeze record, not final story completion."
+}
