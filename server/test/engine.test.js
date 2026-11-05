@@ -226,15 +226,27 @@ test('a tie wider than MAX_SHOWN is capped for display but counted in full', () 
 });
 
 test('an empty pool is decisive by vacuum, not by claim', () => {
-  // `searched` reports the funnel the page shows its working with. On an empty
-  // pool it must still be present and still be honest: nothing searched,
-  // nothing eligible, and no margin to claim over a car that isn't there.
+  // An empty funnel still reports nothing searched or eligible, without
+  // claiming a margin over a car that is not there.
   assert.deepEqual(matchCars(base, []), {
     matches: [],
+    alternatives: [],
     decisive: true,
     clusterSize: 0,
     tasteLead: false,
     searched: { total: 0, eligible: 0, margin: null },
+  });
+});
+
+test('all stock excluded by hard filters returns the complete empty envelope', () => {
+  const cars = [{ ...CARS[0], priceMin: 1000000, priceMax: 1000000 }];
+  assert.deepEqual(matchCars(base, cars), {
+    matches: [],
+    alternatives: [],
+    decisive: true,
+    clusterSize: 0,
+    tasteLead: false,
+    searched: { total: 1, eligible: 0, margin: null },
   });
 });
 

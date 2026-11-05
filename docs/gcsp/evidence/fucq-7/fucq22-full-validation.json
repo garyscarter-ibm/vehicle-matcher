@@ -1,0 +1,129 @@
+{
+  "story": "FUCQ-22",
+  "command": "node --test --test-concurrency=1 server/test/**/*.test.js",
+  "testedHead": "97fca08b85e3482ed7655416c56ddbda0aec8c63",
+  "testedTree": "53985c02458dc42878aa966a2080a2505e35b7e4",
+  "base": "4d776ca",
+  "fullStamp": {
+    "execution_identity": {
+      "code": "5c50693814d575e3143aa7a71d2db0247ac8c7945b00de9c2cee38b88be4e9d9",
+      "environment": "f18da93cde2a1d9a18ca39e466db83e02397d86a9e76668056cce07dd8cc13a0",
+      "inputs": {},
+      "interpreter": [
+        "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+      ],
+      "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+      "scope": "full",
+      "selected": [
+        "node --test --test-concurrency=1 server/test/**/*.test.js"
+      ],
+      "settings": "9c57dc7bca6b72962261fe519193afd2a783bbadf9f25001665e63320e9ce5ec",
+      "variant": "default",
+      "version": 1
+    },
+    "head": "97fca08b85e3482ed7655416c56ddbda0aec8c63",
+    "key": "df1824c2d4935e116ef025958479e6f167326db8877fa29ad4f77d3b0c6ccce2",
+    "python": "3.14.7",
+    "ran": null,
+    "skipped": 0,
+    "time": "2026-11-05T06:18:49+0000",
+    "tree": "53985c02458dc42878aa966a2080a2505e35b7e4",
+    "variant": "default",
+    "wall": 33.7
+  },
+  "counts": {
+    "total": 825,
+    "passed": 823,
+    "failed": 0,
+    "skipped": 2,
+    "skipReason": "Live PostgreSQL checks: GCSP_DATABASE_URL unset"
+  },
+  "run": {
+    "wallSeconds": 33.59052137500112,
+    "peakRssBytes": 340099072,
+    "peakScratchBytes": 245600,
+    "actualMaxTestWorkers": 1,
+    "workerSamples": 116,
+    "fanoutErrors": []
+  },
+  "environment": {
+    "HOME": "/Users/usget",
+    "USER": "usget",
+    "LOGNAME": "usget",
+    "SHELL": "/bin/zsh",
+    "PATH": "/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "LANG": "en_GB.UTF-8",
+    "TZ": "Europe/London",
+    "SCAFFOLDING_HARNESS": "codex",
+    "npm_config_offline": "true",
+    "npm_config_audit": "false",
+    "npm_config_fund": "false"
+  },
+  "supervisor": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq22-20261105-empty-full-stamp.py",
+  "supervisorSha256": "9fd7e2606a8b7fa69ba426a54942647b6cf7a16d01861bea739eb59f3dade2dd",
+  "dependencies": {
+    "root_lock_sha256": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+    "server_lock_sha256": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e"
+  },
+  "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq22-20261105-empty-full-receipt.json",
+  "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/3a7e526573c48ba4b5eb25e0fa5e6c5e430f76395e9824303ad4c4961b0ca5cb.json",
+  "cleanup": {
+    "scratchRoots": [
+      {
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/ae9960654bb247c68015a39ed51fc118.json",
+        "root": "/private/tmp/test-stamp-shard-ae9960654bb247c68015a39ed51fc118",
+        "absent": true,
+        "groups_absent": true
+      },
+      {
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/7afdf8c0faec499aab001e1548c36f73.json",
+        "root": "/private/tmp/test-stamp-shard-7afdf8c0faec499aab001e1548c36f73",
+        "absent": true,
+        "groups_absent": true
+      },
+      {
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq22-20261105-empty-full-3cc7d26ddb1b4986a76e565e70f09c12.json",
+        "root": "/private/tmp/test-stamp-shard-3cc7d26ddb1b4986a76e565e70f09c12",
+        "absent": true,
+        "groups_absent": true
+      },
+      {
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/29dc1fa3182b4629bef6fa39bdf56ee1.json",
+        "root": "/private/tmp/test-stamp-shard-29dc1fa3182b4629bef6fa39bdf56ee1",
+        "absent": true,
+        "groups_absent": true
+      },
+      {
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/cf3a7ade81f34798b878e7fdbc781529.json",
+        "root": "/private/tmp/test-stamp-shard-cf3a7ade81f34798b878e7fdbc781529",
+        "absent": true,
+        "groups_absent": true
+      },
+      {
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/f0c479fef60f430da38170f27fb90cfc.json",
+        "root": "/private/tmp/test-stamp-shard-f0c479fef60f430da38170f27fb90cfc",
+        "absent": true,
+        "groups_absent": true
+      },
+      {
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/3fcc3672c73846468820da84019b4102.json",
+        "root": "/private/tmp/test-stamp-shard-3fcc3672c73846468820da84019b4102",
+        "absent": true,
+        "groups_absent": true
+      },
+      {
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/4a96927fc642473a807ea7a78f50dab9.json",
+        "root": "/private/tmp/test-stamp-shard-4a96927fc642473a807ea7a78f50dab9",
+        "absent": true,
+        "groups_absent": true
+      }
+    ],
+    "ownReservations": [],
+    "fullLockReleased": true,
+    "successfulVerboseLogBytesRemoved": 17070,
+    "logDirectoryAbsent": true,
+    "leftovers": []
+  },
+  "browserReused": "Production engine/API/tests/questionnaire and browser fixture byte-identical across FUCQ-55 integration; separate vehicle-evidence route/startup changes reviewed, combined base tested by full suite."
+}

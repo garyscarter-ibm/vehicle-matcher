@@ -1,0 +1,137 @@
+{
+  "story": "FUCQ-55",
+  "state": "all required scoped and integrated validation passed; strict metadata matches after claim-only base",
+  "chunks": [
+    {
+      "id": "lookup",
+      "command": "node --test --test-concurrency=1 server/test/gcsp-vehicle-evidence-lookup.test.js",
+      "reason": "Canonical formats, three identity equivalence, current-run/digest association, outcomes and backend presentation on the existing real registry plus memory repository.",
+      "timeout_seconds": 90,
+      "scratch_mib": 16,
+      "ram_mib": 256,
+      "dependencies": "Node builtins and checked-in sources only; test imports memory/core directly",
+      "boundaries": [
+        "registry candidate validation/read",
+        "memory repository currentRun/read",
+        "PolicyService signature reads"
+      ],
+      "status": "passed6/6,0skip; lookup-count-regression.json repairs numeric summary",
+      "timing_seconds": 0.5490475409969804
+    },
+    {
+      "id": "http",
+      "command": "node --test --test-concurrency=1 server/test/gcsp-synthetic-vin-api.test.js",
+      "reason": "Actual buildServer gated/raw-path boundary, three-port parity, strict-origin/routing/outcome/provenance checks with zero live spies.",
+      "timeout_seconds": 120,
+      "scratch_mib": 16,
+      "ram_mib": 384,
+      "dependencies": "Own pinned server pg environment restored and hash/version verified",
+      "boundaries": [
+        "shared X-Access-Key gate",
+        "existing Greg/manual/brief route composition",
+        "trusted stock session/context",
+        "ephemeral loopback server lifecycle"
+      ],
+      "status": "passed5/5,0skip; api-regression.json",
+      "timing_seconds": 0.8455102919979254
+    },
+    {
+      "id": "offline-retail",
+      "command": "node --test --test-concurrency=1 server/test/gcsp-offline-start.test.js server/test/api.test.js",
+      "reason": "Same-entry cold start/restart, selected-store immutability, credential-free environment, zero egress with COLOUR_WARM=1, and normal retail API compatibility.",
+      "timeout_seconds": 180,
+      "scratch_mib": 32,
+      "ram_mib": 512,
+      "dependencies": "Selected tiny packaged store plus own pinned server pg environment",
+      "boundaries": [
+        "real entry startup warmers",
+        "fetch/http/https/net/TLS guards",
+        "same supervisor process group for server child",
+        "existing API/retail/gate surface"
+      ],
+      "status": "passed54/54,0skip; offline-retail-regression.json",
+      "timing_seconds": 2.4885987079978804
+    },
+    {
+      "id": "final-integrated",
+      "command": "node --test --test-concurrency=1 server/test/**/*.test.js",
+      "reason": "Explicit final required whole-suite integration checkpoint on unchanged23/99/125/133+55base; dispatcher solefull reservation required.",
+      "timeout_seconds": 600,
+      "scratch_mib": 128,
+      "ram_mib": 768,
+      "dependencies": "Own pinned root jsdom and server pg environments restored; final admission held",
+      "boundaries": [
+        "all authored suite modules sequentially",
+        "integrated route/policy/engine callers"
+      ],
+      "status": "passed822total/820pass/2configuredSQLskip/0fail; full-validation.json; strictstampc06d774bea5a",
+      "timing_seconds": 34.042
+    }
+  ],
+  "selector": "Inspected test_stamp.py cmd_targeted and JavaScript plugin availability: explicit scoped --command is required; no legacy affected full fallback. Actual selector dry-run remains held with execution.",
+  "observed_coverage": "All planned checks completed on final executable identity. Full822total/820pass/2configuredSQLskip/0fail, plus prior scoped6/5/54. No instrumented per-test coverage contexts collected; observed test-file workers, reviewed ownership/boundary map and timings retained.",
+  "dependency_plan": {
+    "server": "completed existing locked pg npm ci; no package/lock mutation or symlink; server-install.json",
+    "root": "completed existing38 locked packages via npm ci --ignore-scripts --no-audit --no-fund; root-install.json; no package/lock mutation or symlink",
+    "constraints": "Own worktree environments; no cross-worktree symlink, package/lock mutation or credential discovery. Owned small cache/TMP; large expected cache goes direct OneDrive; retain installed environments.",
+    "server_plan": "docs/gcsp/evidence/fucq55/server-install-plan.json"
+  },
+  "code_test_identity": {
+    "server/gcsp/vehicle-evidence/vehicle-lookup.js": "8ce1256486422dd048d7f5cec0e1e67d01505ae810257811f4037b1b006f5e70",
+    "server/gcsp/vehicle-evidence/vehicle-details-contract.js": "3886ac9377f3688d2bfe2c2af5a6fe330bb4b49d2f18bb049c8cc7f71d485cc8",
+    "server/gcsp/vehicle-evidence/vehicle-evidence-handler.js": "9e118acfe39f550f06e6c319f536ca8768ca4b41820fd9ca9593e79b18f8c8f0",
+    "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "b2de4a7a6dd181c15615be702d6031b7a0cc10d34d8c92c87b5c371d16928e8a",
+    "server/test/gcsp-vehicle-evidence-lookup.test.js": "021db46e480fab71c38fb62adad07e531c4fdf0a153d1f03a2ea652401c79c61",
+    "server/test/gcsp-synthetic-vin-api.test.js": "ac86aa927c5cb1ee9094ab2eaf343e115104d428b67a445ecb11f6a706de5265",
+    "server/index.js": "8569b91ea762c872213357f01a7b8dc586097a6d873439e48157c2ff5633767b",
+    "server/test/gcsp-offline-start.test.js": "5f3dd0f700fbc9ceb948189766af2061db0f11707b9c4c2d17fb2a248a96435b"
+  },
+  "config_identity": {
+    "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+    "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+    "server/gcsp/policy/seed-v1.json": "ecbe8638d24f2d210040d9acf8a3887f7073e3541114265c297d5301f2b082d5",
+    "package.json": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
+    "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+  },
+  "packaged_inputs": {
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/active.json": "8c797f87d050687c6d4efd4392061c65c753e5ee0177e77f9b5cab86dc3383bb",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/identity-inventory.json": "dd702f37aa81480d61b7a8a74d761abe026d25b39f056cf1d50698bbdf0edd4f",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/configurations.jsonl": "9c1fb6a34e324e6e4937baa1e80eabafa44fae394dd138f2f77be9f6867e9855",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/images.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/manifest.json": "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/vins.jsonl": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd"
+  },
+  "cleanup": "Eight execution scratch roots and groups/reservations/success logs removed and verified; sum measured peak footprints10,346,400B. Full270,432B scratch/339,755,008B sampled group RAM/117samples/max1testworker. Retain27,138,292B root and858,816B server dependency environments. No leftovers/archives/large outputs/compatibility exception. Strict reproduction scripts/plans intentionally retained.",
+  "integration_reassessment": {
+    "merged_base": "8c9989c3e29c17a6ecf0ca0fa9d5d9fdf8b6ac0d",
+    "prior_tested_head": "d718491e13407d496017c6ec1b90f19850d35393",
+    "previous_index_sha256": "52c02b20d3a0e1c3a75de7697af38b1032dfb453e39c96f35f2f440435da8b4c",
+    "current_index_sha256": "8569b91ea762c872213357f01a7b8dc586097a6d873439e48157c2ff5633767b",
+    "changed_boundary": "Additive createScenarioRoutes import and generic GCSP route composition; lookup handler/raw dispatch/offline changes preserved",
+    "selection": "Required final whole suite completed on unchanged executable identity after integrated133base; later8bebc3bonlyclaimMarkdown reuses matching full and strictstatus",
+    "scope_note": "Whole-suite checkpoint will cover all four integrated stories and own port/HTTP/offline/retail modules",
+    "comparison_keys_preserved": [
+      "comparison.cohortSize",
+      "comparison.seeds",
+      "comparison.startsAt",
+      "comparison.horizonDays",
+      "comparison.gradeDistribution",
+      "comparison.pointsAllowanceMultiplier",
+      "comparison.renewalDays",
+      "comparison.needs.v1",
+      "comparison.importanceDistribution",
+      "comparison.briefNoise.v1",
+      "comparison.accessGroups",
+      "comparison.buddyUptake",
+      "comparison.carsPerEmployee",
+      "comparison.modelLineMix",
+      "comparison.releaseCadence",
+      "comparison.configurationSet.v1",
+      "comparison.maximumGeneratedRows"
+    ],
+    "comparison_source_and_fixtures_byte_identical_to_base": true
+  },
+  "final_plan": "docs/gcsp/evidence/fucq55/final-validation-plan.json",
+  "product_review": "docs/gcsp/evidence/fucq55/product-review.md",
+  "full_receipt": "docs/gcsp/evidence/fucq55/full-validation.json"
+}
