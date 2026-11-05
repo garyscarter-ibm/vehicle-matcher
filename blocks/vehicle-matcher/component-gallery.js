@@ -1,3 +1,4 @@
+import { experienceChoice, brandSelector } from '../demo-launcher/components.js';
 import { renderOptionList, renderRangeSlider } from './modes/question-ui.js';
 import { createPreviewFeed } from './modes/preview-feed.js';
 import { employeeCardFixture } from './employee-card-fixture.js';
@@ -238,6 +239,31 @@ export function employeeControlsExample() {
   return section;
 }
 
+function launcherExamples() {
+  const section = el('section', 'vm-gallery-section');
+  section.setAttribute('aria-label', 'Car experience launcher');
+  section.append(el('h2', 'vm-gallery-title', 'Car experience launcher'));
+  const scope = el('div', 'gcsp');
+  const body = el('div', 'vm');
+  const state = el('p', 'vm-gallery-copy', 'A local brand selection, without navigation.');
+  body.append(brandSelector({ value: 'motorrad', onChange: (brand) => {
+    state.textContent = `Local selection: ${brand || 'all brands'}. Nothing is saved.`;
+  } }), state);
+  const choices = el('div', 'demo-experience-grid');
+  choices.append(
+    experienceChoice({ title: 'Employee cars', description: 'A BMW employee scheme experience.',
+      reason: 'Employee cars is not available right now. Used cars remains available.',
+      status: 'Currently unavailable', action: { label: 'Employee cars unavailable', disabled: true } }),
+    experienceChoice({ title: 'Used cars with a long destination name for the component gallery',
+      description: 'A loading example with designed absent-image treatment.', status: 'Loading your car experience',
+      action: { label: 'Loading Used cars', disabled: true }, reason: 'Please wait while the experience loads.' }),
+  );
+  body.append(choices);
+  scope.append(body);
+  section.append(scope);
+  return section;
+}
+
 export function mountComponentGallery(root) {
   const browseScope = { kind: 'browse', id: browseSession };
   let browseFeedback = createFeedbackState(browseScope);
@@ -306,7 +332,7 @@ export function mountComponentGallery(root) {
   exactControls.append(legacyButton, refineButton, exactReset);
   exact.append(exactControls, exactCards);
   sections.append(exact);
-  root.append(heading, sections, employeeDecisionExample(), employeeControlsExample(), gcspExamples(), gregKitExamples());
+  root.append(heading, sections, employeeDecisionExample(), employeeControlsExample(), gcspExamples(), gregKitExamples(), launcherExamples());
 
   function dispatchBrowse(type, target, reason) {
     const result = reduceFeedback(browseFeedback, {
