@@ -1281,7 +1281,7 @@ function paintPreview(section, ctx) {
  * and is only removed if we genuinely can't preview yet (no valid budget).
  */
 function showPreview(ctx) {
-  const screen = document.querySelector('.vm-screen');
+  const screen = ctx.previewRoot.querySelector('.vm-screen');
   if (!screen) return;
   let section = screen.querySelector('.vm-preview');
   const { matches, loaded } = ctx.preview;
@@ -2001,6 +2001,8 @@ async function renderResults(root, ctx, answers) {
  * immediately and swap in the real thing when the questions land.
  */
 function mount(root, ctx) {
+  let active = true;
+  ctx.previewRoot = root;
   // Per-run UI state this mode owns, hung on the shared ctx.
   ctx.answers = {};
   ctx.questions = [];
@@ -2016,6 +2018,7 @@ function mount(root, ctx) {
   ctx.previewFeed = createPreviewFeed({
     api: ctx.api, retailer: ctx.retailer, brand: ctx.brand, scope: ctx.scope,
   });
+  const feed = ctx.previewFeed;
   // Set when a summary pill is tapped to edit an earlier answer: the index to
   // return to once that answer is re-submitted (see renderAnswerPills /
   // advance). Null the rest of the time.
@@ -2025,9 +2028,13 @@ function mount(root, ctx) {
   // the Back/Next nav.
   ctx.mountPreview = (screen, section) => screen.append(section);
 
-  ctx.showIntro = () => renderIntro(root, ctx);
+  ctx.showIntro = () => {
+    feed.cancel();
+    renderIntro(root, ctx);
+  };
   ctx.showQuestion = (i) => renderQuestion(root, ctx, i);
   ctx.showResults = (answers, { updateHash = false } = {}) => {
+    feed.cancel();
     if (updateHash) {
       window.history.replaceState(null, '', `#${HASH_KEY}=${encodeAnswers(answers)}`);
     }
@@ -2042,8 +2049,10 @@ function mount(root, ctx) {
     renderIntroSkeleton(root);
     try {
       const meta = await apiGetQuestions(ctx.api, ctx.retailer, ctx.brand);
+      if (!active) return;
       ctx.questions = meta.questions;
     } catch {
+      if (!active) return;
       renderStatus(root, {
         kicker: 'Sorry',
         title: 'We couldn’t load the matcher',
@@ -2064,6 +2073,10 @@ function mount(root, ctx) {
   };
 
   boot();
+  return () => {
+    active = false;
+    feed.cancel();
+  };
 }
 
 export default { key: 'questionnaire', label: 'Questionnaire', mount };
