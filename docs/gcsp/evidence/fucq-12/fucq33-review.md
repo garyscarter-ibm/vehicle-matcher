@@ -1,5 +1,8 @@
 # FUCQ-33 shared launcher review
 
+> Current integrated proof: `fucq33-integration-validation.json` and `fucq33-integration/README.md` supersede the pre-integration machine stamp below. FUCQ-101 is integrated at 6954859; current exact npm test 1001/1003 passed, 2 optional skips, 0 failed, stamp `fd0ccace380530ae8e5a45abe969fc7da4120e2b2654855b8ecebac26d98049d`; focused affected-surface browser 55/55 with 8 inspected captures. Earlier browser observations and dispositions remain historical evidence for unchanged source.
+
+
 Story DEV-2026-11-04-007, 5 November 2026. This record retains the early representative design, final rendered review, validation and repeatable trial for the shared launcher. Employee integration remains FUCQ-35; default absence of registration is a tested unavailable state.
 
 ## Design reference and component plan
@@ -99,8 +102,19 @@ The five red follow-up checks are also explicit: native option-picking remains u
 
 The lead judges the story built: the implementation, changed launcher/gallery experience and required machine checks have evidence, with no confirmed new product defect. The retained MINI retail overflow and unverified native popup automation are distinct limitations. Employee application integration remains FUCQ-35. The dispatcher retains the final integration decision.
 
-## Final resources and handoff
+## Pre-integration resources and handoff
 
 `fucq33-validation.json` consolidates exact machine identities/counts, all browser resources and every red-assertion disposition, reference/capture hashes and the independent final ownership audit. Seventeen owned manifests were checked: disposable roots absent, process groups dead, all eight browser ports closed and no own shared-host reservation. Only compact run metadata/logs/checkpoints and the intentional final evidence remain. The early historical temporary lead root outside the final owned path is also absent with group 654 dead. The browser runner's one read-only direct Git content check before rereading the adapter instruction changed no state; saved baseline and later reads used the adapter. Its short-lived manual server pair was stopped and its ports independently checked closed.
 
-The final observed shared base is `fc515983d15b2807a307d0894c343d4433c328aa`; changes since tested `1ad1664` are only inbox/claim/review documentation, including the other collaborator's DEV-083 claim. No product delta affects this proof, and that claim is untouched. Product source remains `e16cf52`; final evidence/result documentation preserves the strict stamp identity. No Jira synchronisation, borrowed credentials, merge, close, release or follow-on mail/job was performed by this story lead.
+The pre-integration observed shared base was `fc515983d15b2807a307d0894c343d4433c328aa`; changes since tested `1ad1664` are only inbox/claim/review documentation, including the other collaborator's DEV-083 claim. No product delta affects this proof, and that claim is untouched. Product source remains `e16cf52`; final evidence/result documentation preserves the strict stamp identity. No Jira synchronisation, borrowed credentials, merge, close, release or follow-on mail/job was performed by this story lead.
+
+
+## Integrated source and renewed evidence — 5 November 2026
+
+FUCQ-101 was merged into the story branch at `695485910ddc6785c3ab1d568ecff4f0844cb337`, integrating base `18b3c1349d1b731a73e1f028e37df7b86372fb9d`. Manual conflicts retained both Greg and launcher examples and every lowered stylesheet cap. The two kit stylesheets serve different scoped primitives and both remain. No launcher behavior/source changed in this merge. The original full stamp above is historical; it is not reused for integrated product code.
+
+Fresh exact checks pass on code `0a1f27ff850005e235644d8c338d19e1eca6d3a8719c103fc9f0959bc47d3a9e`: launcher 22/22, UI/retail 69/69, additional Greg overlap 30/30, and exact `npm test`1003 total, 1001 passed, 2 optional PostgreSQL skips, 0 failed. Full test duration 12.917s, supervisor 13.736s; peak RSS 1,701,314,560B and scratch 547,968B. New stamp `fd0ccace380530ae8e5a45abe969fc7da4120e2b2654855b8ecebac26d98049d`, tree `1ea00d8649a0856801db5e892952c36bc5b065c5`, default variant, same settings/environment/runtime as the strict status recipe above. Strict same-policy status matches; no config/guards changed. A fresh read-only audit returns merge_refusal None and pre_merge_refusals ok.
+
+The focused six-page review passes 55/55 at desktop 1280×900 and narrow 320×740; all 8 captures were directly inspected. `fucq33-integration/README.md` records the visual judgment, repeatable fixture setup and initial 47/55 and second 53/55 harness corrections. Their ten red assertions are retained and individually classified in `fucq33-integration-validation.json`; final 55/55 is only the affected integration surfaces. Historical main 226/236, follow-up 28/33 and native 0/1 are unchanged and remain qualified. Every historical browser source except the intentionally merged components.html/gallery/catalogue is SHA256-identical; behavior proof reuse is explicit and no native popup retry was run. The unchanged native option-picking limitation and MINI baseline overflow remain.
+
+Independent final audit: 24 owned manifests, all disposable roots absent/groups dead, all 10 browser ports closed and no own reservations. New browser runs used at most 10,920,832B scratch and 508,936,192B RSS under the existing owned budget; their finalizers preserved source/package manifests and removed profiles. Latest observed base `5874b75d5186ad81a75ded87d1bd44e02d562c65` differs from integrated 18b3c13 only in DEV-052 claim metadata and poller documentation. No product delta affects this proof. Final evidence and Result are documentation only; dispatcher retains merge, close and release.
