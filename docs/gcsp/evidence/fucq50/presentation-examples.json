@@ -1,0 +1,122 @@
+{
+  "basis": "Offline synthetic transport, clock and identity proof; no BMW call or new live qualification",
+  "representativeUnknownFidelity": {
+    "status": "ok",
+    "assetId": "bmw-live-8e08f4e6ee946527fe29846233abbf57cf02df8e",
+    "role": "representative-catalogue-render",
+    "label": "Representative image",
+    "sourceKind": "authorised-live",
+    "source": "BMW COSY public UK configurator",
+    "observedDate": "2026-11-01",
+    "retrievedDate": "2026-11-05",
+    "freshness": {
+      "status": "unknown",
+      "policy": "revalidate-every-resolution",
+      "upstreamExpiresAt": null,
+      "retrievedAt": null,
+      "handoffExpiresAt": null,
+      "delivery": "single-read"
+    },
+    "caption": "Representative catalogue render; source observed 2026-11-01, retrieved 2026-11-05. Current source freshness unknown; resolve again for another delivery. Wheels, interior, equipment and exact vehicle appearance unknown.",
+    "fidelity": {
+      "model": "unknown",
+      "paint": "unknown",
+      "wheels": "unknown",
+      "interior": "unknown",
+      "equipment": "unknown",
+      "exactVehicle": "unknown"
+    },
+    "message": null
+  },
+  "expired": {
+    "status": "source-unavailable",
+    "assetId": null,
+    "label": "Image unavailable",
+    "role": "representative-catalogue-render",
+    "caption": null,
+    "fidelity": {
+      "model": "unknown",
+      "paint": "unknown",
+      "wheels": "unknown",
+      "interior": "unknown",
+      "equipment": "unknown",
+      "exactVehicle": "unknown"
+    },
+    "sourceKind": null,
+    "source": null,
+    "observedDate": null,
+    "retrievedDate": null,
+    "freshness": {
+      "status": "unknown",
+      "policy": "revalidate-every-resolution",
+      "upstreamExpiresAt": null,
+      "retrievedAt": null,
+      "handoffExpiresAt": null,
+      "delivery": "single-read"
+    },
+    "message": "This image delivery has expired. Resolve the image again or explicitly choose a dated snapshot."
+  },
+  "selectedSnapshot": {
+    "status": "ok",
+    "assetId": "bmw-i5-white-20261101-v1",
+    "role": "representative-catalogue-render",
+    "observedDate": "2026-11-01",
+    "label": "Snapshot image",
+    "alt": "Representative catalogue render",
+    "isFallback": false,
+    "fidelity": {
+      "model": "verified",
+      "paint": "verified",
+      "wheels": "unknown",
+      "interior": "unknown",
+      "equipment": "unknown",
+      "exactVehicle": "unknown"
+    },
+    "fidelityLabels": {
+      "model": "Model matches catalogue selection",
+      "paint": "Paint matches catalogue selection",
+      "wheels": "Wheels unknown",
+      "interior": "Interior unknown",
+      "equipment": "Equipment unknown",
+      "exactVehicle": "Exact vehicle appearance unknown"
+    },
+    "caption": "Dated snapshot selected; source observed 2026-11-01, retrieved 2026-11-01. Representative catalogue render, observed 1 November 2026. Observed model and paint verified; wheels, interior and equipment fidelity unknown.",
+    "message": null,
+    "sourceKind": "dated-snapshot",
+    "source": "BMW COSY catalogue render",
+    "retrievedDate": "2026-11-01",
+    "freshness": {
+      "status": "dated-snapshot",
+      "policy": "registered-c14-snapshot",
+      "upstreamExpiresAt": null
+    }
+  },
+  "wrongSnapshotPaint": {
+    "status": "source-unavailable",
+    "assetId": null,
+    "label": "Image unavailable",
+    "role": "representative-catalogue-render",
+    "caption": null,
+    "fidelity": {
+      "model": "unknown",
+      "paint": "unknown",
+      "wheels": "unknown",
+      "interior": "unknown",
+      "equipment": "unknown",
+      "exactVehicle": "unknown"
+    },
+    "sourceKind": null,
+    "source": null,
+    "observedDate": null,
+    "retrievedDate": null,
+    "freshness": {
+      "status": "unknown",
+      "policy": "revalidate-every-resolution",
+      "upstreamExpiresAt": null,
+      "retrievedAt": null,
+      "handoffExpiresAt": null,
+      "delivery": "single-read"
+    },
+    "message": "The requested named image, view, viewport or dimensions are unsupported."
+  }
+}

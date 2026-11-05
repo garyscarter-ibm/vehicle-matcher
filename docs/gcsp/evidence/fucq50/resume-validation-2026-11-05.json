@@ -1,0 +1,44 @@
+{
+  "version": 2,
+  "date": "2026-11-05",
+  "status": "scope-ready; combined full pending",
+  "source": {
+    "productRef": "c8c34513eb482619dd6be47ed7a98ed07554a797",
+    "integratedRef": "6c2b8bdf6f92b2e634dad34b94419e9b1c6c0ea9",
+    "integratedBase": "7e0f0c50768a8562cd1e6944b88395fad0cfc724",
+    "hashes": {
+      "server/vehicle-evidence/bmw-live-imagery.js": "876e7e21b98d33ae3a124e696102ad56e4e5d2e771fee0d370764a0b684ffc3d",
+      "server/test/bmw-live-imagery.test.js": "8fb48c70971c411e451d41dc256a88ae7c4d340c1f34009f532ad2148e86bd51"
+    },
+    "assessment": "incoming guidance/lifecycle tooling/prose only; no imagery or test change; reuse matching 72/72 scoped proof"
+  },
+  "scoped": "72/72 pass, zero skips; see scoped-validation-2026-11-05.json",
+  "examples": {
+    "command": "node docs/gcsp/evidence/fucq50/record-examples.mjs",
+    "asserted": 4,
+    "network": "fetch/http/https blocked; externalRequests 0",
+    "inspected": [
+      "representative all attributes unknown and upstream freshness unknown",
+      "expired unavailable with explicit re-resolution or snapshot choice",
+      "explicit C14 snapshot owns 1 November source/retrieval dates and model/paint-only fidelity",
+      "wrong snapshot paint remains unavailable"
+    ],
+    "sha256": "18beee20b8539d95201a5eb204519997e664aeafe800aaf61b00654467bf2580",
+    "externalReceipt": "offline-examples-v2-1793914696521584000-receipt.json"
+  },
+  "full": {
+    "command": "npm test",
+    "status": "root grants FUCQ-83 one combined 83+50 credential-unset serial full; no own full",
+    "conditions": "actual full pass and immediate same-process/environment strict MATCH required; pending receipt"
+  },
+  "cleanup": {
+    "ownAllocations": 6,
+    "rootsGroupsReservationsAbsent": true,
+    "dependencyTreesRemoved": 2,
+    "fourPackageHashesUnchanged": true,
+    "receipt": "final-own-cleanup-v2.json",
+    "independentParentVerification": "pending"
+  },
+  "usability": "one-read handoff is an explicit bounded backend capability, no current UI/route; repeated read must deliberately re-resolve under source budget; no currentness or permanent img URL claim",
+  "agents": "existing lead gpt-6.1-sol/high effectively verified by evening handover; no descendants/no fallback"
+}
