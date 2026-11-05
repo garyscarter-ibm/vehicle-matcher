@@ -1,6 +1,6 @@
 {
   "story": "FUCQ-55",
-  "state": "tiny selected packaging completed; all tests/installs/additional proofs held",
+  "state": "lookup scoped passed; server install then HTTP/offline scoped checks admitted sequentially; full/root install held",
   "chunks": [
     {
       "id": "lookup",
@@ -14,7 +14,9 @@
         "registry candidate validation/read",
         "memory repository currentRun/read",
         "PolicyService signature reads"
-      ]
+      ],
+      "status": "passed scoped; receipt lookup-regression.json",
+      "timing_seconds": 0.8423117080019438
     },
     {
       "id": "http",
@@ -23,7 +25,7 @@
       "timeout_seconds": 120,
       "scratch_mib": 16,
       "ram_mib": 384,
-      "dependencies": "Own pinned server npm ci needed for existing pg dependency; not installed/admitted",
+      "dependencies": "Own pinned server npm ci admitted before this scoped command",
       "boundaries": [
         "shared X-Access-Key gate",
         "existing Greg/manual/brief route composition",
@@ -62,11 +64,12 @@
     }
   ],
   "selector": "Inspected test_stamp.py cmd_targeted and JavaScript plugin availability: explicit scoped --command is required; no legacy affected full fallback. Actual selector dry-run remains held with execution.",
-  "observed_coverage": "unknown; product tests unexecuted; no timing observations",
+  "observed_coverage": "Lookup regression executed with zero exit; scope and hashes in lookup-regression.json. Per-test coverage contexts were not collected by this command; HTTP/offline boundaries remain unverified.",
   "dependency_plan": {
-    "server": "npm ci --prefix server --ignore-scripts --no-audit --no-fund (existing locked pg only; admission held)",
+    "server": "npm ci --prefix server --ignore-scripts --no-audit --no-fund (existing locked pg only; admitted sequentially after lookup checkpoint)",
     "root": "npm ci --ignore-scripts --no-audit --no-fund (existing locked jsdom only; admission held)",
-    "constraints": "Own worktree environments; no cross-worktree symlink, package/lock mutation or credential discovery. Owned small cache/TMP; large expected cache goes direct OneDrive; retain installed environments."
+    "constraints": "Own worktree environments; no cross-worktree symlink, package/lock mutation or credential discovery. Owned small cache/TMP; large expected cache goes direct OneDrive; retain installed environments.",
+    "server_plan": "docs/gcsp/evidence/fucq55/server-install-plan.json"
   },
   "code_test_identity": {
     "server/gcsp/vehicle-evidence/vehicle-lookup.js": "8ce1256486422dd048d7f5cec0e1e67d01505ae810257811f4037b1b006f5e70",
@@ -93,5 +96,5 @@
     "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/manifest.json": "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709",
     "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/vins.jsonl": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd"
   },
-  "cleanup": "Only admitted packaging allocation completed and exactly removed; receipt docs/gcsp/evidence/fucq55/packaged-reference.json. Before each future admitted chunk create Scratch manifest outside absolute root, HostBudget reservation, inherited TMPDIR/TMP/TEMP and supervisor finalizer. Entire server/test subprocess tree remains in supervisor group, bounded output/time/RAM/disk; stop/join, retain concise evidence, remove scratch and verify absence. No active allocations."
+  "cleanup": "Packaging and scoped lookup roots/groups/reservations/logs removed and verified. Lookup peak33,120B scratch and143,245,312B sampled group RAM; receipt lookup-regression.json. Server-install manifest is planned only, root not created. All further executions require admission."
 }

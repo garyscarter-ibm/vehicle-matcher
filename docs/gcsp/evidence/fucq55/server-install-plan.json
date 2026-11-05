@@ -1,0 +1,62 @@
+{
+  "budget": {
+    "combined_disk_stop_bytes": 83886080,
+    "expected_installed_environment_bytes": 16777216,
+    "ram_bytes": 268435456,
+    "scratch_bytes": 67108864,
+    "seconds": 120,
+    "workers": 1
+  },
+  "command_argv": [
+    "npm",
+    "ci",
+    "--prefix",
+    "server",
+    "--ignore-scripts",
+    "--no-audit",
+    "--no-fund"
+  ],
+  "cwd": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-028",
+  "env": {
+    "TEMP": "/private/tmp/test-stamp-shard-da5052cdc8e549859b58f4fecfb3a476/tmp",
+    "TMP": "/private/tmp/test-stamp-shard-da5052cdc8e549859b58f4fecfb3a476/tmp",
+    "TMPDIR": "/private/tmp/test-stamp-shard-da5052cdc8e549859b58f4fecfb3a476/tmp",
+    "npm_config_cache": "/private/tmp/test-stamp-shard-da5052cdc8e549859b58f4fecfb3a476/npm-cache"
+  },
+  "exclusions": "Root jsdom install, tests, provider access and credentials remain held",
+  "large_output": "No allocation expected to reach256MiB; stop below80MiB combined instead of producing unplanned large local output",
+  "lock_sha256": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+  "locked_packages": {
+    "node_modules/pg": "8.23.1",
+    "node_modules/pg-cloudflare": "1.4.1",
+    "node_modules/pg-connection-string": "2.14.1",
+    "node_modules/pg-int8": "1.0.1",
+    "node_modules/pg-pool": "3.14.0",
+    "node_modules/pg-protocol": "1.16.1",
+    "node_modules/pg-types": "2.2.0",
+    "node_modules/pgpass": "1.0.5",
+    "node_modules/postgres-array": "2.0.0",
+    "node_modules/postgres-bytea": "1.0.1",
+    "node_modules/postgres-date": "1.0.7",
+    "node_modules/postgres-interval": "1.2.0",
+    "node_modules/split2": "4.2.0",
+    "node_modules/xtend": "4.0.2"
+  },
+  "manifest_sha256": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139",
+  "node_modules_initially_absent": true,
+  "ownership_manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/da5052cdc8e549859b58f4fecfb3a476.json",
+  "purpose": "Install only existing locked server pg environment for HTTP/offline buildServer imports",
+  "retained_environment": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-028/server/node_modules",
+  "root": "/private/tmp/test-stamp-shard-da5052cdc8e549859b58f4fecfb3a476",
+  "run_token": "da5052cdc8e549859b58f4fecfb3a476",
+  "state": "admitted by dispatcher sequentially after lookup checkpoint",
+  "story": "FUCQ-55",
+  "supervision": [
+    "Manifest outside root saved before creation; HostBudget reservation before allocation",
+    "Bounded process group; TMPDIR/TMP/TEMP/cache confined to owned root",
+    "Watch combined scratch and retained environment allocation; abort if caps exceed",
+    "No package or lock mutation; verify exact hashes before/after; no cross-worktree links",
+    "No lifecycle scripts/audit/fund, no product tests bundled into install",
+    "Stop/join group, release reservation, remove only disposable root/log and verify absence; retain installed environment and concise receipt"
+  ]
+}
