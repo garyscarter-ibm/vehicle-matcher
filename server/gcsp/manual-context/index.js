@@ -7,6 +7,8 @@ const object = (v) => v && typeof v === 'object' && !Array.isArray(v);
 const only = (v, keys) => object(v) && Object.keys(v).every((key) => keys.includes(key));
 const text = (v) => typeof v === 'string' && v.trim().length > 0;
 const revision = (v) => Number.isSafeInteger(v) && v >= 0;
+const calendarDate = (v) => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)
+  && validInstant(`${v}T00:00:00.000Z`) && new Date(`${v}T00:00:00.000Z`).toISOString().slice(0, 10) === v;
 const invalid = (field, reason, code = 'invalid-manual-draft') => result('invalid', { code, reasons: [{ field, reason }],
   view: { state: 'validation', editable: true, supportOwner: 'employee', action: 'correct-fields' } });
 const unavailable = (source) => result('unavailable', { code: 'manual-source-unavailable', source, retryable: true,
@@ -78,8 +80,7 @@ export class ManualContextService {
           : p.slot.contractId && !p.contract ? 'no-contract' : 'ready';
       const window = p.contract ?? p.slot;
       if (['earliestCollectionDate', 'latestCollectionDate'].some((key) => window?.[key] != null
-        && (typeof window[key] !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(window[key])
-          || !validInstant(`${window[key]}T00:00:00.000Z`)))) return { error: unavailable('renewal-window-invalid') };
+        && !calendarDate(window[key]))) return { error: unavailable('renewal-window-invalid') };
       if (p.state === 'ready' && (window?.earliestCollectionDate || window?.latestCollectionDate)
         && !this.#collectionDates(p).length) p.state = 'not-yet-eligible';
       p.contextVersion = inputDigest({ runId: context.runId, employeeId: context.employeeId, schemeId: context.schemeId,
@@ -176,10 +177,23 @@ export class ManualContextService {
     const location = p.rules.locations.find((l) => l.locationId === choices.collectionLocationId
       && l.contractOptionIds.includes(contract.contractOptionId) && l.driverKinds.includes(driver.kind));
     if (!location) return invalid('collectionLocationId', 'This location is not permitted for the selected driver and contract.');
-    if (typeof choices.requestedCollectionDate !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(choices.requestedCollectionDate)
-      || !validInstant(`${choices.requestedCollectionDate}T00:00:00.000Z`)) return invalid('requestedCollectionDate', 'Supply a valid requested collection date.');
+    if (!calendarDate(choices.requestedCollectionDate)) return invalid('requestedCollectionDate', 'Supply a valid requested collection date.');
     if (!this.#collectionDates(p).includes(choices.requestedCollectionDate)
       || location.closedDates?.includes(choices.requestedCollectionDate)) return invalid('requestedCollectionDate', 'Choose a date inside the supplied collection and renewal window.');
+    const licence = driver.licence;
+    if (!sourceValid(licence?.source) || Date.parse(licence.source.effectiveFrom) > Date.parse(p.now)
+      || !calendarDate(licence?.validFrom) || !calendarDate(licence?.validUntil) || !Array.isArray(licence?.categories)) {
+      return invalid('driverId', 'Licence facts need confirmation. Contact driver support.', 'licence-unconfirmed');
+    }
+    if (!licence.categories.includes('car') || licence.validFrom > licence.validUntil
+      || licence.validFrom > choices.requestedCollectionDate || licence.validUntil < choices.requestedCollectionDate) {
+      return invalid('driverId', 'This licence is not valid for a car at the requested collection date. Contact driver support.', 'licence-not-valid-at-collection');
+    }
+    if (!Number.isFinite(p.allowance?.monthlyPoints) || p.allowance.monthlyPoints < 0 || p.allowance.unit !== 'points/month'
+      || !['assumed', 'verified'].includes(p.allowance.status) || p.allowance.schemeId !== context.schemeId
+      || p.allowance.companyId !== context.companyId || p.allowance.gradeId !== context.gradeId) {
+      return invalid('allowance', 'Monthly points allowance needs confirmation. Contact scheme support.', 'allowance-unconfirmed');
+    }
     if (!only(choices.contact, ['phone', 'email']) || !/^\+?[0-9 ()-]{7,30}$/.test(choices.contact.phone ?? '')
       || typeof choices.contact.email !== 'string' || choices.contact.email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(choices.contact.email)) return invalid('contact', 'Supply a contact telephone and email address.');
     if (choices.mode === 'replacement' && (!Number.isSafeInteger(choices.expectedReturnMileage) || choices.expectedReturnMileage < 0
