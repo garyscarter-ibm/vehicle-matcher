@@ -1119,7 +1119,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T23:10:09Z",
+      "observed_at": "2026-11-05T23:11:20Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-113",
       "branch": "dev/DEV-2026-11-04-088",
       "tracker_observed_at": "2026-11-05T23:00:25Z",
@@ -1150,8 +1150,8 @@
           "id": "policy-adoption",
           "status": "blocked",
           "title": "Reviewed learning assumptions adopted in successor PolicyService version",
-          "observed_at": "2026-11-05T23:00:25Z",
-          "evidence": "FUCQ103 owns reviewed adoption seam; exact113 definition bundle awaiting parent review/registration. No active policy changes authorised here."
+          "observed_at": "2026-11-05T23:11:20Z",
+          "evidence": "Frozen candidate2fd445d verified and relayed; dispatcher granted FUCQ103 exact registration in its existing lane. This branch has no reviewed active successor adoption proof; immutable seed-v1 lacks learning keys. Await its reviewed checkpoint and adoption."
         },
         {
           "id": "real-corpus",
@@ -1169,10 +1169,10 @@
         },
         {
           "id": "full-validation",
-          "status": "not-started",
+          "status": "blocked",
           "title": "Integrated authored validation and root full-suite lane",
-          "observed_at": "2026-11-05T23:00:27Z",
-          "evidence": "Authored npm test retained; root owns serial full-suite readiness/grant. No full/native grant."
+          "observed_at": "2026-11-05T23:11:20Z",
+          "evidence": "Three independent slices reviewed/pushed; authored npm test and defaultCLI success still unmet. Dispatcher retains serial full/native lane with no grant; actual policy/corpus/outcome-producer proof is outstanding. Scoped58tests are not full-story acceptance."
         }
       ],
       "unsliced": false
