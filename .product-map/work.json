@@ -9,7 +9,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T23:21:29Z",
+      "observed_at": "2026-11-05T23:27:15Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-100",
       "source_observed_at": "2026-11-05T23:00:25Z",
       "branch": "dev/DEV-2026-11-04-060",
@@ -55,10 +55,10 @@
         },
         {
           "id": "remote-lifecycle",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Remote claim/release intent and reconciliation",
-          "observed_at": "2026-11-05T23:11:17Z",
-          "evidence": "Root granted separate internal stored-subject seam. Parent reviewed13/13 focused +44/44 unchanged evaluator/Brief boundaries;26allocations audited, shared test-runs/fucq100/parent-stored-subject-audit.json. In-process factory has no session/roles/write API; original public guards preserved. Remote intent/reconciliation integration still outstanding; docs/gcsp/buddy-remote-plan.md."
+          "observed_at": "2026-11-05T23:27:15Z",
+          "evidence": "Parent reviewed49/49 synthetic remote protocol +142/142 unchanged affected boundaries; strict scoped c42ee0b89a59f647a10e529a69d57d327920a51b24cf6c64a4ffac63d0257fdb;32manifest/dependency audit shared test-runs/fucq100/parent-remote-audit.json. Durable authentic intent, safe read, fresh shared-kernel validation, reconciliation/release/expiry and rollback/race guards. docs/gcsp/buddy-remote-plan.md. Local checkpoint only while GitHub commit_refs_rules blocks publication; actual live remote/merged"
         },
         {
           "id": "manual-exclusivity",

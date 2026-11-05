@@ -2,6 +2,7 @@ import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.j
 import { BriefService } from '../brief/index.js';
 import { createRepositoryManualPorts } from '../manual-context/ports.js';
 import { mintOfferToken } from './offer-token.js';
+import { BuddyRemoteLifecycle } from './buddy-remote.js';
 
 const fields = ['commandId', 'orderUuid', 'expectedBriefVersion', 'expectedStockVersion', 'expectedSlotVersion', 'expectedEmployeeVersion'];
 const claimFields = ['runId', 'eventId', 'operationId', 'employeeId', 'entitlementSlotId', 'renewalId', 'orderUuid',
@@ -18,22 +19,30 @@ const stale = (table, expectedVersion, currentVersion) => result('stale-version'
 const invalid = () => result('invalid', { code: 'invalid-allocation-candidate', reasons: [{ field: 'command',
   reason: 'Supply the registered exact candidate and expected authority revisions.' }] });
 const same = (left, right) => inputDigest(left) === inputDigest(right);
+const pending = (operation) => result('pending', { operationId: operation.operationId,
+  operationType: operation.operationType, lastKnownState: operation.lastKnownState, proposedCapability: true });
 
 // Allocation supplies only exact-car identity and observed repository revisions.
 // Facts, permission, time, quote, command digest and access token are server owned.
 export class BuddyHoldService {
   #repository; #policy; #clock; #identity; #adapter;
-  #startup;
+  #startup; #remote;
   constructor({ repository, policy, clock, identity, adapter } = {}) {
     this.#repository = repository; this.#policy = policy; this.#clock = clock;
     this.#identity = identity; this.#adapter = adapter;
+    this.#remote = new BuddyRemoteLifecycle({ repository, policy, clock, adapter });
   }
 
   start() {
     this.#startup ??= (async () => {
-      if (this.#adapter?.mode !== 'local-synthetic' || typeof this.#clock?.registerHandler !== 'function') return unavailable();
-      return this.#clock.registerHandler({ handlerId: 'buddy-expiry', stage: 'buddy-expiry',
-        handle: (event) => this.#expire(event).catch(() => unavailable()) });
+      if (!['local-synthetic', 'remote'].includes(this.#adapter?.mode) || typeof this.#clock?.registerHandler !== 'function') return unavailable();
+      if (this.#adapter.mode === 'remote' && (typeof this.#adapter.execute !== 'function'
+        || typeof this.#adapter.reconcile !== 'function')) return unavailable();
+      const expiry = await this.#clock.registerHandler({ handlerId: 'buddy-expiry', stage: 'buddy-expiry',
+        handle: (event) => (this.#adapter.mode === 'remote' ? this.#remote.expire(event) : this.#expire(event)).catch(() => unavailable()) });
+      if (expiry.status !== 'ok' || this.#adapter.mode !== 'remote') return expiry;
+      return this.#clock.registerHandler({ handlerId: 'buddy-pending-operations', stage: 'pending-reconciliation',
+        handle: (event) => this.#remote.reconcile(event).catch(() => unavailable()) });
     })();
     return this.#startup;
   }
@@ -107,6 +116,48 @@ export class BuddyHoldService {
     try { return await this.#allocate(context, input); } catch { return unavailable(); }
   }
 
+  async readOperation(context, input) {
+    try {
+      const allowed = await this.#identity?.requireRole(context, 'employee');
+      if (!allowed) return unavailable();
+      if (allowed.status !== 'ok') return allowed;
+      if (!only(input, ['operationId']) || !text(input.operationId)) return invalid();
+      const operationRef = ref(context, 'pending_operations', { operationId: input.operationId });
+      const operation = await this.#repository.read(context, operationRef);
+      if (operation.status !== 'ok') return operation;
+      const row = operation.value;
+      if (!['buddy-claim', 'buddy-release'].includes(row.operationType)) return result('not-found', { resourceType: 'buddy-operation' });
+      if (row.payload?.employeeId !== context.employeeId || row.payload?.entitlementSlotId !== context.entitlementSlotId
+        || row.payload?.runId !== context.runId) return result('forbidden', { reason: 'The operation belongs to another employee entitlement.' });
+      const holdRef = ref(context, 'holds', { holdId: row.holdId });
+      const hold = await this.#repository.read(context, holdRef);
+      if (hold.status !== 'ok') return hold;
+      if (hold.value.employeeId !== context.employeeId || hold.value.entitlementSlotId !== context.entitlementSlotId
+        || hold.value.orderUuid !== row.payload.orderUuid) return unavailable();
+      const offers = await this.#repository.query(context, 'offers', { holdId: row.holdId });
+      if (offers.status !== 'ok') return offers;
+      if (offers.value.some((offer) => offer.employeeId !== context.employeeId || offer.orderUuid !== row.payload.orderUuid
+        || offer.quoteId !== row.payload.quoteId || offer.environmentId !== context.environmentId
+        || offer.expiresAt !== row.payload.expiresAt || offer.offerId !== row.payload.offerId)) return unavailable();
+      const time = await this.#clock.now(context); if (time.status !== 'ok') return time;
+      const current = await this.#repository.read(context, operationRef);
+      if (current.status !== 'ok') return current;
+      const currentHold = await this.#repository.read(context, holdRef);
+      if (currentHold.status !== 'ok') return currentHold;
+      const currentOffers = await this.#repository.query(context, 'offers', { holdId: row.holdId });
+      if (currentOffers.status !== 'ok') return currentOffers;
+      const currentTime = await this.#clock.now(context); if (currentTime.status !== 'ok') return currentTime;
+      if (offers.value.length > 1 || !same(currentOffers.value, offers.value)
+        || !same(currentTime.value, time.value) || !same(current.value, row) || !same(currentHold.value, hold.value)) return stale('buddy-operation', row.version, current.value.version);
+      return ok({ operationId: row.operationId, operationType: row.operationType, state: row.state,
+        lastKnownState: row.lastKnownState,
+        hold: { holdId: hold.value.holdId, state: hold.value.state, orderUuid: hold.value.orderUuid, expiresAt: hold.value.expiresAt },
+        offer: offers.value[0] ? { offerId: offers.value[0].offerId, state: offers.value[0].state,
+          quoteId: offers.value[0].quoteId, expiresAt: offers.value[0].expiresAt } : null,
+        now: time.value.now, clockVersion: time.value.clockVersion, proposedCapability: true });
+    } catch { return unavailable(); }
+  }
+
   async tryClaim(context, candidate) {
     try {
       if (!only(candidate, claimFields) || !['runId', 'eventId', 'operationId', 'employeeId', 'entitlementSlotId', 'orderUuid'].every((key) => text(candidate[key]))
@@ -132,7 +183,9 @@ export class BuddyHoldService {
     if (!this.#repository || !this.#policy || !this.#clock || !this.#identity) return unavailable();
     const allowed = await this.#identity.requireRole(context, 'employee');
     if (allowed.status !== 'ok') return allowed;
-    if (this.#adapter?.mode !== 'local-synthetic') return result('unavailable', {
+    const remote = this.#adapter?.mode === 'remote' && typeof this.#adapter.execute === 'function'
+      && typeof this.#adapter.reconcile === 'function';
+    if (this.#adapter?.mode !== 'local-synthetic' && !remote) return result('unavailable', {
       code: 'buddy-stock-mode-not-supported', retryable: false, supportedMode: 'local-synthetic' });
     if (!only(input, fields)
       || !text(input.commandId) || !text(input.orderUuid) || fields.slice(2).some((key) => !positive(input[key]))) {
@@ -144,7 +197,7 @@ export class BuddyHoldService {
     const time = await this.#clock.now(context);
     if (time.status !== 'ok') return time;
     if (time.value.runId !== context.runId || !Number.isFinite(Date.parse(time.value.now))) return unavailable();
-    return this.#repository.transaction(context, command, async (tx) => {
+    const outcome = await this.#repository.transaction(context, command, async (tx) => {
       const run = await tx.get(ref(context, 'runs')); if (run.status !== 'ok') return run;
       for (const [key, current] of [['policy', run.value.policyVersion], ['clock', run.value.clockVersion]]) {
         if (proposal && proposal.expectedVersions[key] !== current) return stale(key, proposal.expectedVersions[key], current);
@@ -229,6 +282,7 @@ export class BuddyHoldService {
       const expiresAt = new Date(Date.parse(time.value.now) + duration.value.value * 1000).toISOString();
       const id = inputDigest([context.runId, command.commandId]);
       const quoteId = `buddy-quote:${id}`; const holdId = `buddy-hold:${id}`; const offerId = `buddy-offer:${id}`;
+      const operationId = remote ? `buddy-op:${inputDigest([command.commandId, 'buddy-claim'])}` : null;
       const quote = await tx.insert('quotes', { runId: context.runId, quoteId, orderUuid: input.orderUuid,
         employeeId: context.employeeId, entitlementSlotId: context.entitlementSlotId, configurationId: stock.value.configurationId,
         facts: decision.snapshot, eligibility: { ...decision.evidence.eligibility, decision,
@@ -242,17 +296,34 @@ export class BuddyHoldService {
       if (available.status !== 'ok') return available;
       const held = await tx.conditionalClaim({ orderUuid: input.orderUuid, holdId, claimId: `buddy-claim:${id}`,
         employeeId: context.employeeId, entitlementSlotId: context.entitlementSlotId, ...(renewalId ? { renewalId } : {}),
-        type: 'buddy-offer', state: 'active', expiresAt, policyVersion: context.policyVersion, quoteId,
+        type: 'buddy-offer', state: remote ? 'claim-pending' : 'active', expiresAt, policyVersion: context.policyVersion, quoteId,
         expectedStockVersion: available.value.version, expectedSlotVersion: slot.value.version });
       if (held.status !== 'ok') return held;
-      if (renewalId) {
+      if (renewalId || remote) {
         const boundClaim = await tx.compareAndSwap(ref(context, 'claims', { claimId: held.value.claim.claimId }),
-          held.value.claim.version, { renewalId });
+          held.value.claim.version, { ...(renewalId ? { renewalId } : {}), ...(remote ? { operationId } : {}) });
         if (boundClaim.status !== 'ok') return boundClaim;
       }
       const flags = await tx.compareAndSwap(ref(context, 'stock', { orderUuid: input.orderUuid }), held.value.stockVersion,
         { available: false, held: true, allocated: false });
       if (flags.status !== 'ok') return flags;
+      if (remote) {
+        const attached = await tx.compareAndSwap(ref(context, 'holds', { holdId }), held.value.hold.version, { operationId });
+        if (attached.status !== 'ok') return attached;
+        const operation = await tx.insert('pending_operations', { runId: context.runId, operationId,
+          operationType: 'buddy-claim', idempotencyKey: command.commandId, inputDigest: command.inputDigest,
+          holdId, state: 'pending', attempts: 0, lastKnownState: 'claim-pending', payload: {
+            runId: context.runId, environmentId: context.environmentId, orderUuid: input.orderUuid,
+            employeeId: context.employeeId, entitlementSlotId: context.entitlementSlotId, quoteId, expiresAt,
+            holdId, offerId, jobId: `buddy-notification:${id}`, renewalId, target: 'active', reason: null, quote: quote.value,
+            authority: Object.fromEntries(['principalId', 'employeeId', 'entitlementSlotId', 'companyId', 'schemeId', 'gradeId', 'policyVersion']
+              .map((key) => [key, context[key]])),
+            expectedStockVersion: flags.value.version, expectedSlotVersion: held.value.slotVersion,
+            expectedHoldVersion: attached.value.version, expectedClaimVersion: held.value.claim.version + 1, expectedEmployeeVersion: employee.value.version,
+            expectedBriefVersion: input.expectedBriefVersion, expectedPermissionVersion: current.value.brief.buddy.permissionVersion,
+          } });
+        return operation.status === 'ok' ? pending(operation.value) : operation;
+      }
       const token = mintOfferToken({ environmentId: context.environmentId, runId: context.runId, offerId });
       const offer = await tx.insert('offers', { runId: context.runId, environmentId: context.environmentId, offerId,
         holdId, quoteId, employeeId: context.employeeId, orderUuid: input.orderUuid, state: 'active',
@@ -269,6 +340,9 @@ export class BuddyHoldService {
         notification: { jobId: job.value.jobId, state: job.value.state }, now: time.value.now,
         clockVersion: time.value.clockVersion, proposedCapability: true });
     });
+    // The durable original command response stays historical after reconciliation.
+    if (remote && outcome.status === 'pending') await this.#remote.drive(context, outcome.operationId).catch(() => null);
+    return outcome;
   }
 }
 

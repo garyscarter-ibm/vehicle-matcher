@@ -1,9 +1,10 @@
 # Buddy remote lifecycle · review plan
 
 FUCQ-100 / DEV-2026-11-04-060, 5 November 2026. **Dispatcher reviewed and granted the bounded owned
-remote service/module slice at `41f995f`.** This document changes no executable remote behaviour.
-Shared eligibility, identity, allocator, repository/schema and central composition edits remain outside
-that grant. The internal revalidation port below is under review before dependent implementation.
+remote service/module slice at `41f995f`.** The bounded module is now implemented and scoped-tested;
+merged runtime composition and producer adoption remain separate gates. Shared identity, allocator,
+repository/schema and central composition edits remain outside that grant. The separately granted
+read-only recommendation seam is implemented without changing the public employee guards.
 
 ## Frozen sources and edit boundary
 
@@ -56,7 +57,7 @@ is reused with that graph equality checked. Shared receipt `parent-stored-subjec
 26 allocation manifests cleaned up and retained dependencies unchanged. No HTTP listener, native DB,
 network or full suite was allocated.
 
-## Proposed transitions
+## Implemented transitions
 
 1. The initial employee call still requires the exact real DemoIdentity context. Revalidate all
    current pins, consent/pause, confirmed brief, authority, visibility, eligibility, essentials and
@@ -90,8 +91,42 @@ network or full suite was allocated.
    No decline or priority is introduced. Local expiry continues its existing behaviour.
 
 Register private handlers before clock sealing: `buddy-expiry` at `buddy-expiry`, and an owned stable
-handler at `pending-operation-reconciliation`. The latter handles only `buddy-claim`/`buddy-release`
+`buddy-pending-operations` handler at the canonical `pending-reconciliation` stage. The latter handles only `buddy-claim`/`buddy-release`
 operations; FUCQ-66 keeps its own operation types. Central composition remains a separate grant.
+
+The initial command always returns its persisted historical `pending` response, even if its subsequent
+adapter drive confirms synchronously. `readOperation(context, { operationId })` requires a genuine
+current employee context and the same employee/entitlement/run. It returns only operation state,
+hold identity/state/deadline, safe offer identity/state/quote/deadline and server time. It rechecks
+operation, hold, offer and time snapshots; no token, hash, authority payload or new write is exposed.
+
+Private lifecycle transactions first verify the original `command:transaction` pending receipt and
+its digest/operation binding. Each external attempt increments the durable attempt before leaving
+the transaction. After the adapter await, the exact operation snapshot and current aligned authority
+must still match. Startup uses the real clock's roles-empty backend context; fresh calculation uses
+only the exact stored subject. Provider exception text is discarded. Repeated uncertain/rejected
+releases remain excluded. A matching reconcile `not-found` permits another execute only after a new
+guarded preparation and current validation. No retry or acknowledgement changes the original deadline.
+
+## Scoped module evidence
+
+Parent reviewed49/49 remote protocol tests and142/142 selected existing boundaries, no skips. Tests use
+the real identity/runtime/BriefService, repository transactions and clock startup/ticks with synthetic
+adapter acknowledgements. They cover initial-intent rollback at5points, confirmation rollback at5points,
+release rollback at6points,10source/permission/deadline/terms invalidations, genuine same-subject reads,
+missing original authority, stale post-await operation versions, run reset, reconcile-before-retry,
+uncertain expiry, atomic offer/outbox and cryptographic token custody. A first run caught an editing
+syntax error; it was corrected before the49test result. No existing production defect was inferred.
+
+Shared receipts: `fucq100-remote-C-19257935dbcc49308c010f5af4952abf-receipt.json`,
+`fucq100-remote-D-61089f7bd8994d6381b68a4170366fc5-receipt.json`, and strict targeted record
+`strict-remote/targeted-c42ee0b89a59f647a10e529a69d57d327920a51b24cf6c64a4ffac63d0257fdb-default-1793921090649994000.json`
+under `.claude/test-runs/fucq100/` in the shared checkout. After the142boundary run, only the dedicated
+remote fixture/interruption test file changed; every product and selected boundary source hash matches
+that receipt, so the142result is reused. `parent-remote-audit.json` verifies all32allocation manifests:
+owned roots, owner/PIDs/groups and reservations absent; retained dependencies unchanged. Final remote
+chunk peak was297,172,992bytes RSS and12,288bytes scratch, about3.75seconds. No successful verbose logs,
+native DB, listener, full suite, provider network or large artifact was allocated.
 
 ## Replay edge requiring an explicit integration decision
 

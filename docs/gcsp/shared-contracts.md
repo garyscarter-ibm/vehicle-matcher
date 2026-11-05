@@ -455,6 +455,21 @@ FUCQ-97 adds the presenter-only route `GET /api/gcsp/presenter/outbox` (`createO
 
 ## Atomic buddy hold producer · FUCQ-100 checkpoint
 
+Remote mode requires `execute(operation)` and `reconcile(operation)`. A genuinely authenticated
+allocation first persists the quote, shared claim-pending hold/claim and a `buddy-claim` operation;
+its original command result stays `pending`. Only a matching confirmed claim with freshly valid
+authority, consent, brief, visibility, facts, policy, terms and original deadline creates the active
+offer and one outbox job. Unknown outcomes retain exclusion. Later drives reconcile before retry;
+only a matching authoritative not-found permits another execute. Invalid/expired confirmation and
+active remote expiry create a bound `buddy-release`; exclusion stays until matching confirmed release.
+`BuddyHoldService.start()` registers private expiry and `buddy-pending-operations` at the canonical
+`pending-reconciliation` stage. Startup reads original durable intent without creating an employee
+session. `readOperation(context, { operationId })` is a same-employee/entitlement/run authenticated
+read with safe operation/hold/offer/server-time projections and snapshot checks. The paused allocator
+still needs to adopt that read; original command replay never changes from pending to offered.
+Owned module proof:49remote protocol +142affected boundaries, no skips; central composition remains
+separate. [Implementation and evidence](buddy-remote-plan.md) retain the source boundaries and gates.
+
 Offer links add the public `runId` query coordinate beside `offerId`, so FUCQ-102 can look up one
 run-scoped hash and distinguish authentic historical links after verifying the full environment/run/offer
 binding. The opaque token remains only in the URL fragment. Query coordinates grant no authority;
