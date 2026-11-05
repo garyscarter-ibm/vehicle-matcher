@@ -1,0 +1,90 @@
+{
+  "chunk": {
+    "ram_mib": 384,
+    "scratch_mib": 128,
+    "seconds": 300,
+    "workers": 1
+  },
+  "cleanup": {
+    "absent": true,
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/804d457b938f4a86b86ae0fb032f9268.json",
+    "peak_scratch": 0,
+    "reservation_released": true,
+    "root": "/private/tmp/test-stamp-shard-804d457b938f4a86b86ae0fb032f9268"
+  },
+  "command": [
+    "node",
+    "--max-old-space-size=96",
+    "--test",
+    "--test-isolation=none",
+    "--test-concurrency=1",
+    "server/test/gcsp-manual-order.test.js"
+  ],
+  "environment": {
+    "node": "v26.7.0"
+  },
+  "excluded": "HTTP/startup, native PostgreSQL and full npm test pending coordinated integration",
+  "headroom": {
+    "active": 0,
+    "disk": 60326961152,
+    "free": 65695670272,
+    "low": false,
+    "parent": null,
+    "ram": 3754672128
+  },
+  "identity": {
+    "docs/gcsp/evidence/fucq71/response-fixtures.json": "13a9df42020c7b802011c03cd081f04e141b4667da4506bc5a6fb673d220a30d",
+    "server/gcsp/adapters/synthetic-ordering.js": "c2b83391dc0b32e811a407a546d600631254e73810fa90eecc4ad6f70c1392be",
+    "server/gcsp/manual-order/index.js": "0ef66892b4d2cb2e17ca09e04c44d01b3abe1ec6d9aa90bc85dce8d0bff7e018",
+    "server/gcsp/manual-order/manual-conversion.js": "214b7e56879ec925fcaa20ed0619901e64fcd1d81b16cfc68fd33f3da9545994",
+    "server/gcsp/manual-order/terms.js": "239f72b3abfb45944298ac3f0d504a36f501ef88fb3853c6e099a80337969eb6",
+    "server/test/gcsp-manual-order.test.js": "3936df9f7eb2d57a98caaf885d0c59f4ab52aa0c9e47b720a96036314b176509"
+  },
+  "producer_identity": {
+    "server/gcsp/adapters/manual-stock.js": "66e8d7de1662ac778ebc789aa9f93085abb9d2fafed528baf0fd90a9cb6bc771",
+    "server/gcsp/manual-claims/index.js": "32c80ef72d8329fcdbc4a208d9ab911f68156e6234d3917975754415d04ef059",
+    "server/gcsp/manual-context/index.js": "6b45fa40e980c9ff4955d3ccb52f6219e018645e6a567b3cd1e80c3d3dc99942",
+    "server/gcsp/manual-context/ports.js": "c1e7db5012f6d3212b79ad989e6cde5a0e390e2f4bfe50f91ee4c79c8a7a1267"
+  },
+  "producer_root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069",
+  "result": {
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead71/scoped.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/804d457b938f4a86b86ae0fb032f9268.json",
+    "peak_rss": 170213376,
+    "peak_scratch": 0,
+    "rc": 0,
+    "wall": 7.465056791996176
+  },
+  "run": "fucq-71-restart-20261105-2310",
+  "scope": "scoped; held producer boundary; no native PostgreSQL",
+  "selected": [
+    "server/gcsp/manual-order/index.js",
+    "server/gcsp/manual-order/manual-conversion.js",
+    "server/gcsp/manual-order/terms.js",
+    "server/gcsp/adapters/synthetic-ordering.js",
+    "server/test/gcsp-manual-order.test.js",
+    "docs/gcsp/evidence/fucq71/response-fixtures.json"
+  ],
+  "tests": {
+    "ran": 9,
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0
+  },
+  "base": "16433da7eb16",
+  "agents": {
+    "requested": "gpt-6.1-sol/high",
+    "selected": "gpt-6.1-sol/high",
+    "effective_turn_context": "gpt-6.1-sol/high",
+    "fallback": null,
+    "descendants": 0
+  },
+  "full_suite": "not run; explicit npm test remains for coordinated final integration",
+  "native_postgres": "not run; no credentials accessed",
+  "compatibility_exception": "none",
+  "large_output_created": false,
+  "thread_id": "01a1adf9-5447-7220-8e41-86ea53f403e7",
+  "runtime_evidence": "/Users/usget/.codex/sessions/2026/11/05/rollout-2026-11-05T23-09-21-01a1adf9-5447-7220-8e41-86ea53f403e7.jsonl (turn_context model=gpt-6.1-sol, effort=high)"
+}
