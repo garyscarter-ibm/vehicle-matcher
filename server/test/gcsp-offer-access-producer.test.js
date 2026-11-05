@@ -145,12 +145,13 @@ test('actual buddy expiry and real reset make old links current or stale without
   assertCustody(f,stale);
 });
 
-test('actual pinned quote expiry preserves pending hold and existing no-action presentation', async (t) => {
+test('actual pinned quote expiry preserves decline before the unchanged active hold deadline', async (t) => {
   const f = await setup(t); const initial = passed(await f.exchange()).offer;
   assert.equal(Date.parse(initial.quote.validUntil) < Date.parse(initial.expiresAt),true);
   passed(await f.producer.start()); passed(await f.advanceTo(initial.quote.validUntil,'producer-quote-expiry'));
   passed(await f.tick('producer-quote-expiry-tick'));
   const current = passed(await f.exchange()).offer;
   assert.equal(current.state,'pending'); assert.equal(current.holdState,'active');
-  assert.equal(current.expiresAt,initial.expiresAt); assert.deepEqual(current.availableActions,[]);
+  assert.equal(current.expiresAt,initial.expiresAt); assert.deepEqual(current.availableActions,['decline']);
+  if (process.env.GCSP_OFFER_PRODUCER_DECLINE_SAMPLE) await writeFile(process.env.GCSP_OFFER_PRODUCER_DECLINE_SAMPLE, JSON.stringify(current,null,2)+'\n');
 });

@@ -4,15 +4,17 @@ Backend-only scoped evidence. Full story acceptance remains open for normal runt
 bootstrap/deployment, deployed cookie/origin/browser, actual remote uncertainty,
 complete current-car facts and authored full-suite validation.
 
-The latest frozen checkpoint runs:
+The latest checkpoint runs:
 
 ```sh
 python3 -B docs/gcsp/evidence/fucq102/scoped-supervisor.py --producer --strict
 ```
 
-**31 tests, 31 pass, 0 fail, 0 skip**, including all 28 previous checks under the
-exact actual-producer composition. See [producer-proof-result.md](producer-proof-result.md)
-for source identity, selected boundaries, first-run diagnosis and final parent audit.
+**32 tests, 32 pass, 0 fail, 0 skip**, including all prior checks and exact quote/hold
+action deadlines under the actual-producer composition. See
+[decline-timing-result.md](decline-timing-result.md) for the current receipt and
+[producer-proof-result.md](producer-proof-result.md) for the published frozen 31/31
+checkpoint, selected boundaries and first-run diagnosis.
 The strict targeted receipt is not a full-suite stamp.
 
 The supervisor verifies the approved source plan before allocation/import. Six
@@ -28,6 +30,8 @@ DTO following BuddyHoldService allocation over explicitly synthetic inputs. Only
 current-car model and safe dated provenance are available; specifications/points
 remain unknown and comparisonAvailable remains false. No sample contains a raw
 link token, session credential, token hash, employee identity, brief or history.
+`producer-decline-representative.json` is the actual same producer's safe DTO at
+quote expiry: pending/active, unchanged hold deadline and `availableActions:['decline']`.
 
 Historical scoped run `scoped-1793922270567388000` passed 28/28 and proved an owned
 loopback buildServer boundary. The current same registration assertions call the

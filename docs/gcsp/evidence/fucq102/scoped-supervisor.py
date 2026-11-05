@@ -173,6 +173,7 @@ try:
             env['GCSP_BUDDY_HOLD_MODULE'] = by_path['server/gcsp/offers/buddy-hold.js']
             env['GCSP_PRODUCER_MODULE_MAP'] = str(mapping)
             env['GCSP_OFFER_PRODUCER_SAMPLE'] = str(scratch.root / 'producer-representative.json')
+            env['GCSP_OFFER_PRODUCER_DECLINE_SAMPLE'] = str(scratch.root / 'producer-decline-representative.json')
             extra_inputs += [str(mapping), str(loader)]
             plan['composition'] = composition
             plan['loader_sha256'] = hashlib.sha256(loader.read_bytes()).hexdigest()
@@ -224,7 +225,7 @@ try:
             os.environ.clear(); os.environ.update(env)
             os.environ['TEST_STAMP_DIR'] = str(record_dir / 'strict')
             strict_rc = stamp.main(['--root',str(ROOT),'--jobs','1','--targeted',plan['base'],
-                '--command',shlex.join(command),'--reason',('Exact published actual100 allocation/current-car/custody/expiry/reset to access plus all 28 existing checks using the declared six-overlay composition; no listener/native/runtime bootstrap/browser/full.' if producer else 'Explicit one-offer exchange/read/account authority/hash-session, streamed HTTP and in-process buildServer checks; actual producer/native/runtime bootstrap/browser/full excluded.')])
+                '--command',shlex.join(command),'--reason',('Exact published actual100 allocation/current-car/custody/expiry/reset to access plus all access regressions and quote/hold action deadlines using the declared six-overlay composition; no listener/native/runtime bootstrap/browser/full.' if producer else 'Explicit one-offer exchange/read/account authority/hash-session, action deadlines, streamed HTTP and in-process buildServer checks; actual producer/native/runtime bootstrap/browser/full excluded.')])
             result['strict_rc'] = strict_rc
             if strict_rc: failure = 'SelectedChecksFailed'
         else:
@@ -253,6 +254,7 @@ try:
                     raise RuntimeError('Producer file input changed during proof')
             if result.get('rc') == 0 and not result.get('issue'):
                 r.atomic_json(record_dir / 'producer-representative.json', json.loads((scratch.root / 'producer-representative.json').read_text()))
+                r.atomic_json(record_dir / 'producer-decline-representative.json', json.loads((scratch.root / 'producer-decline-representative.json').read_text()))
         sync_port()
         if port_note: raise RuntimeError('This proof did not authorise a listener')
         if not port_absent(): raise RuntimeError('Owned listener remains or absence is uncertain')

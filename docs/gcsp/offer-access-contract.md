@@ -81,7 +81,7 @@ An `ok` response has `value`:
   expiresAt,             // authoritative persisted hold deadline, never a new TTL
   offerVersion, holdVersion,
   holdState, offerState,
-  availableActions,      // [] or ['accept', 'decline']; no optimistic actions
+  availableActions,      // [], ['decline'] or ['accept', 'decline']; no optimistic actions
   quote: {
     quoteId, configurationId, orderUuid, orderNumber, briefVersion, policyVersion,
     revisions,
@@ -104,6 +104,14 @@ payloads. `terms` and `allowance` retain the pinned monthly-points units and pol
 provenance. The DTO never includes employee identity, other offers, fleet, usage
 history, raw brief/employee facts, token hashes, token metadata or credentials.
 No live repricing replaces the immutable quote. Unknown facts stay unknown.
+
+For an eligible offer awaiting decision with matching active offer/hold authority,
+the quote deadline gates acceptance. Before `quote.validUntil`, both `accept` and
+`decline` are available; at or after it, only `decline` remains available until
+the persisted hold deadline. At or after `expiresAt`, no actions are available.
+Pending selection/release and final states still expose no optimistic actions.
+This presentation never extends a deadline, refreshes a price or mutates authority;
+FUCQ-106 owns the corresponding transactional command validation.
 
 The exact nested allowlist implemented by `access.js` is:
 
@@ -141,6 +149,13 @@ Absent/malformed/future/unreviewed metadata returns the unavailable/null fallbac
 `evidence/fucq102/comparison-representative.json` shows this additive DTO, generated
 by the reader over explicit synthetic pinned metadata matching that reviewed shape.
 It is not actual producer-to-access evidence or completed FUCQ-105 comparison.
+
+The later approved immutable composition proof exercises actual FUCQ-100 allocation,
+expiry and reset against this reader over synthetic inputs. Its safe samples are
+`evidence/fucq102/producer-representative.json` (before quote expiry) and
+`evidence/fucq102/producer-decline-representative.json` (at quote expiry, with the
+same active hold and only decline available). See `decline-timing-result.md` in that
+directory for exact source, strict targeted evidence and remaining integration gates.
 
 | Stored state or boundary | DTO state / reason | Actions |
 |---|---|---|

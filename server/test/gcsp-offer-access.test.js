@@ -122,6 +122,26 @@ test('exact persisted deadline is expired while reads and repeated exchange neve
   for (const table of ['offers', 'holds', 'quotes', 'stock', 'claims', 'notification_outbox', 'decisions']) assert.deepEqual(f.store.state.tables[table], before[table]);
 });
 
+test('quote deadline removes acceptance but preserves decline until the exact active hold deadline', async () => {
+  const f = await fixture(); const first = await f.exchange(); assert.equal(first.status, 'ok');
+  const before = structuredClone(f.store.state.tables);
+  const quoteDeadline = first.value.offer.quote.validUntil;
+  assert.ok(Date.parse(quoteDeadline) < Date.parse(f.expiresAt));
+  await f.advanceDomain((Date.parse(quoteDeadline) - Date.parse(first.value.offer.serverNow)) / 1000 - 1);
+  assert.deepEqual((await f.service.read(first.value.context)).value.availableActions, ['accept', 'decline']);
+  await f.advanceDomain(1);
+  const expiredQuote = await f.service.read(first.value.context); assert.equal(expiredQuote.status, 'ok');
+  assert.equal(expiredQuote.value.state, 'pending'); assert.equal(expiredQuote.value.holdState, 'active');
+  assert.deepEqual(expiredQuote.value.availableActions, ['decline']);
+  assert.equal(expiredQuote.value.expiresAt, f.expiresAt);
+  await f.advanceDomain((Date.parse(f.expiresAt) - Date.parse(quoteDeadline)) / 1000 - 1);
+  assert.deepEqual((await f.exchange()).value.offer.availableActions, ['decline']);
+  await f.advanceDomain(1);
+  const expiredHold = await f.service.read(first.value.context); assert.equal(expiredHold.status, 'ok');
+  assert.equal(expiredHold.value.state, 'expired'); assert.deepEqual(expiredHold.value.availableActions, []);
+  for (const table of ['offers', 'holds', 'quotes', 'stock', 'claims', 'notification_outbox', 'decisions']) assert.deepEqual(f.store.state.tables[table], before[table]);
+});
+
 test('in-flight selection remains uncertain after the deadline and never appears accepted or released', async () => {
   const f = await fixture(); await f.patch('offers', { offerId: 'offer-one' }, { state: 'decision-pending' });
   await f.patch('holds', { holdId: 'hold-one' }, { state: 'selection-pending' });

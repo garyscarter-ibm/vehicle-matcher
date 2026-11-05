@@ -98,11 +98,13 @@ function presentation(offer, hold, quote, stock, clock) {
   else if (offer.state === 'active' && hold.state === 'active') [state, reason] = Date.parse(clock.now) >= Date.parse(hold.expiresAt)
     ? ['expired', 'deadline-passed'] : ['pending', 'awaiting-decision'];
   else throw Error('Inconsistent authority');
-  const actionable = reason === 'awaiting-decision' && decision.gateStatus === 'eligible' && Date.parse(clock.now) < Date.parse(quote.validUntil);
+  const actionable = reason === 'awaiting-decision' && decision.gateStatus === 'eligible';
+  const availableActions = actionable
+    ? (Date.parse(clock.now) < Date.parse(quote.validUntil) ? ['accept', 'decline'] : ['decline']) : [];
   return freezeVehicleData({ schemaVersion: 1, offerId: offer.offerId, runId: offer.runId, state, reason,
     serverNow: clock.now, clockVersion: clock.clockVersion, expiresAt: hold.expiresAt,
     offerVersion: offer.version, holdVersion: hold.version, offerState: offer.state, holdState: hold.state,
-    availableActions: actionable ? ['accept', 'decline'] : [],
+    availableActions,
     quote: { ...select(quote, ['quoteId', 'configurationId', 'orderUuid', 'briefVersion', 'policyVersion', 'quotedAt', 'validUntil']),
       orderNumber: /^\d{7}$/.test(stock.orderNumber ?? '') ? stock.orderNumber : null,
       revisions: { quote: quote.version, ...safeFields(decision.versions, ['brief', 'facts', 'policy', 'stock', 'snapshot', 'terms', 'clock', 'availability']) },
