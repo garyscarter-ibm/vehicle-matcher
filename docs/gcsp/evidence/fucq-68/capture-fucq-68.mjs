@@ -158,7 +158,7 @@ try {
       await capture(`invalid-${width}`, { summaryFocused: true });
       await page.locator('.gcsp-error-summary a').first().click();
       assert.equal(await field('driverId').evaluate((node) => document.activeElement === node), true);
-      await page.keyboard.press('ArrowDown'); await page.keyboard.press('Enter');
+      await page.keyboard.press('y'); await page.keyboard.press('Tab');
       assert.equal(await field('driverId').inputValue(), `driver:${session.value.context.employeeId}`);
       await fill({ nominated: true }); assert.match(await page.locator('.gcsp-setup-source').innerText(), /spouse/);
       await fill(); await field('requestedCollectionDate').focus();
@@ -198,7 +198,7 @@ try {
       const stock = await service.browseStock(session.value.context); assert.equal(stock.status, 'ok');
       assert.equal(stock.value.versions.draft, draft.draftVersion); assert.equal(stock.value.versions.context, draft.contextVersion);
       results.cases.push({ name: 'flow', width, persisted: true, currentCarUnchanged: true, keyboardSummaryLink: true,
-        keyboardDriverSelection: true, nativeDateType: 'date', dateTabFocus: 'collectionLocationId', dateTabSteps, invalidatedFields,
+        keyboardDriverSelection: 'Native select typeahead y, then Tab commits You', nativeDateType: 'date', dateTabFocus: 'collectionLocationId', dateTabSteps, invalidatedFields,
         savedAvailabilityVersions: { draft: stock.value.versions.draft, context: stock.value.versions.context } });
     } else {
       await prepare('new', width); assert.equal(await field('expectedReturnMileage').isVisible(), false); await fill({ isNew: true });
