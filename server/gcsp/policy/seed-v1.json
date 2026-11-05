@@ -11331,6 +11331,192 @@
       "sourceDate": "2026-11-05",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "employee.recommendation.v1",
+      "value": {
+        "displayLimit": 3,
+        "retailBudgetEnabled": false,
+        "confirmedAssurances": [
+          "confirmed-build",
+          "confirmed-listing",
+          "synthetic-scenario"
+        ],
+        "plugInFuels": [
+          "ev",
+          "phev"
+        ],
+        "chargingAccess": [
+          "home",
+          "work",
+          "either"
+        ],
+        "availabilityStates": [
+          "available",
+          "held",
+          "allocated",
+          "unavailable",
+          "unknown"
+        ],
+        "preferences": {
+          "body": {
+            "dimension": "body",
+            "type": "enum",
+            "values": [
+              "hatchback",
+              "saloon",
+              "estate",
+              "suv",
+              "coupe",
+              "convertible",
+              "mpv"
+            ],
+            "facts": [
+              "body"
+            ],
+            "answer": "bodyStyles",
+            "component": "fit"
+          },
+          "fuel": {
+            "dimension": "fuel",
+            "type": "enum",
+            "values": [
+              "petrol",
+              "diesel",
+              "phev",
+              "ev"
+            ],
+            "facts": [
+              "fuel"
+            ],
+            "answer": "fuel",
+            "component": "fit"
+          },
+          "sportiness": {
+            "dimension": "performance",
+            "type": "slider",
+            "facts": [
+              "zeroTo62"
+            ],
+            "component": "taste",
+            "answers": {
+              "style": 5
+            }
+          },
+          "comfort": {
+            "dimension": "character",
+            "type": "slider",
+            "facts": [
+              "tags"
+            ],
+            "component": "taste",
+            "scaleMultiplier": 2,
+            "answers": {
+              "style": 3,
+              "priorities": [
+                "comfort"
+              ]
+            }
+          },
+          "economy": {
+            "dimension": "economy",
+            "type": "slider",
+            "facts": [
+              "fuel",
+              "mpg"
+            ],
+            "component": "fit"
+          },
+          "size": {
+            "dimension": "size",
+            "type": "slider",
+            "facts": [
+              "sizeClass"
+            ],
+            "component": "fit",
+            "answers": {
+              "primaryUse": "city"
+            }
+          }
+        },
+        "essentials": {
+          "seats": {
+            "operator": "gte",
+            "type": "number",
+            "unit": "count"
+          },
+          "boot": {
+            "operator": "gte",
+            "type": "number",
+            "unit": "L"
+          },
+          "equipment": {
+            "operator": "includes",
+            "type": "list",
+            "unit": "equipment-key"
+          },
+          "body": {
+            "operator": "equals",
+            "type": "string",
+            "unit": null
+          },
+          "fuel": {
+            "operator": "equals",
+            "type": "string",
+            "unit": null
+          },
+          "frontIsofix": {
+            "operator": "equals",
+            "type": "boolean",
+            "unit": null
+          },
+          "rearIsofix": {
+            "operator": "equals",
+            "type": "boolean",
+            "unit": null
+          }
+        },
+        "tuning": {
+          "weights": {
+            "body": 1,
+            "economy": 0,
+            "performance": 0
+          },
+          "priorityBoosts": {},
+          "fuelStrictBoost": 0,
+          "body": {
+            "match": 1,
+            "neutral": 0.7,
+            "miss": 0
+          },
+          "performance": {
+            "zeroBase": 10.5,
+            "span": 6
+          },
+          "size": {
+            "roadtripMinClass": 3,
+            "cityDivisor": 5
+          },
+          "hardFilter": {
+            "crewBoot": 430,
+            "crewSeats": 5,
+            "familySeats": 4
+          },
+          "mileage": {
+            "lowMiles": 4000,
+            "highMiles": 20000
+          }
+        },
+        "termValiditySeconds": 3600,
+        "driverEligibilityRequired": true
+      },
+      "unit": "employee recommendation calibration and registry",
+      "status": "assumed",
+      "basis": "Read-only employee composition of existing rankCars curves; explicit dimensions, separate importance/indifference, confirmed exact evidence and no retail cash budget. Demo calibration is revisable, not BMW policy.",
+      "source": "docs/gcsp/shared-recommendation-design.md",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
     }
   ]
 }
