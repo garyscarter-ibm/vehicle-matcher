@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "stories": [
+    {
+      "id": "FUCQ-113",
+      "title": "Record learning records for Greg's demand model, observed and synthetic",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T23:00:27Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-113",
+      "branch": "dev/DEV-2026-11-04-088",
+      "tracker_observed_at": "2026-11-05T22:40:24Z",
+      "workers": [
+        {
+          "name": "Foxy",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-05T23:00:23Z",
+          "expires_at": "2026-11-05T23:30:23Z",
+          "source": "collaboration message: generator supervised tests active; child 01a1add2-1b30-7442-ba08-030dc1da1946",
+          "status": "generator and manifest slice active"
+        }
+      ],
+      "slices": [
+        {
+          "id": "projection",
+          "status": "complete",
+          "title": "LearningRecord contract and observed projection",
+          "observed_at": "2026-11-05T23:00:24Z",
+          "evidence": "Lead reviewed and pushed758efc8; parent offline node --test server/test/gcsp-learning-records.test.js20/20; receipt .claude/test-runs/fucq113-parent-projection/final-receipt.json. Historical unknowns preserved; actual producers excluded."
+        },
+        {
+          "id": "generator-manifest",
+          "status": "in-progress",
+          "title": "Seeded multi-cycle records and manifest validation",
+          "observed_at": "2026-11-05T23:00:24Z",
+          "evidence": "Foxy implementing bounded pure generator, pinned policy reader, manifest validation and exact reviewed definitions. Parent acceptance/review pending."
+        },
+        {
+          "id": "cli-fixtures",
+          "status": "not-started",
+          "title": "Bounded generation CLI and training sample fixtures",
+          "observed_at": "2026-11-05T23:00:25Z",
+          "evidence": "After generator checkpoint; explicit dataset+manifest write and sample fixture required."
+        },
+        {
+          "id": "policy-adoption",
+          "status": "blocked",
+          "title": "Reviewed learning assumptions adopted in successor PolicyService version",
+          "observed_at": "2026-11-05T23:00:25Z",
+          "evidence": "FUCQ103 owns reviewed adoption seam; exact113 definition bundle awaiting parent review/registration. No active policy changes authorised here."
+        },
+        {
+          "id": "real-corpus",
+          "status": "blocked",
+          "title": "Actual FUCQ-77 configuration corpus proof",
+          "observed_at": "2026-11-05T23:00:26Z",
+          "evidence": "Actual FUCQ77 real configuration corpus unavailable to this branch; fixtures do not meet this acceptance."
+        },
+        {
+          "id": "observed-producer",
+          "status": "blocked",
+          "title": "Actual saved offer outcome producer proof",
+          "observed_at": "2026-11-05T23:00:27Z",
+          "evidence": "Saved outcome fixtures and public-port event overlays are not actual offer/decision producer proof; integration remains required."
+        },
+        {
+          "id": "full-validation",
+          "status": "not-started",
+          "title": "Integrated authored validation and root full-suite lane",
+          "observed_at": "2026-11-05T23:00:27Z",
+          "evidence": "Authored npm test retained; root owns serial full-suite readiness/grant. No full/native grant."
+        }
+      ],
+      "unsliced": false
+    }
+  ]
+}
