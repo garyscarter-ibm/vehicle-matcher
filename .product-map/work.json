@@ -1243,16 +1243,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-125"
     },
     {
-      "id": "FUCQ-126",
-      "title": "Give the presenter controls for ticks, releases, reset, scenarios and role",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "Gary Carter",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-126"
-    },
-    {
       "id": "FUCQ-127",
       "title": "Replay the no-suitable-match scenario",
       "status": "To Do",
@@ -1371,6 +1361,91 @@
       "type": "Story",
       "observed_at": "2026-11-05T22:40:24Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-138"
+    },
+    {
+      "id": "FUCQ-126",
+      "title": "Give the presenter controls for ticks, releases, reset, scenarios and role",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T23:02:34Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-126",
+      "branch": "dev/DEV-2026-11-04-096",
+      "workers": [
+        {
+          "name": "FUCQ-126 presenter controls",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-05T23:02:32Z",
+          "expires_at": "2026-11-05T23:22:32Z",
+          "status": "active",
+          "source": "chat01a1adbb-83e5-7390-af36-983fd6a6dc01; direct running observation"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-05T23:02:32Z",
+          "expires_at": "2026-11-05T23:22:32Z",
+          "status": "active; component alignment",
+          "source": "collaboration.list_agents presenter_ui running; chat01a1adc4-ed37-7192-89ff-1ec92fff00f6"
+        }
+      ],
+      "jira_observed_at": "2026-11-05T23:00:00Z",
+      "jira_observation_basis": "Authenticated getJiraIssue FUCQ-126: In Progress/Gary Carter; no Jira write",
+      "slices": [
+        {
+          "id": "backend-controls",
+          "status": "complete",
+          "title": "Server controls and durable clock composition",
+          "observed_at": "2026-11-05T23:02:33Z",
+          "evidence": "Lead reviewed/pushed26a1213+3443301;55backend checks,including parent compatibility rerun;docs/gcsp/evidence/fucq-126/backend-results.json"
+        },
+        {
+          "id": "presenter-ui",
+          "status": "in-progress",
+          "title": "Drawer, workspace and safe action states",
+          "observed_at": "2026-11-05T23:02:33Z",
+          "evidence": "Source8877e2d fixes browser-found selection/reset/retry faults;parent23/23controls,child41shell/1copy;fresh visual proof still held"
+        },
+        {
+          "id": "kit-alignment",
+          "status": "in-progress",
+          "title": "Shared option pickers and presenter bar",
+          "observed_at": "2026-11-05T23:02:33Z",
+          "evidence": "Authenticated Jira UI confirms renderOptionList+presenterBar;Mike Wazowski actively implementing same bounded scope"
+        },
+        {
+          "id": "browser-proof",
+          "status": "in-progress",
+          "title": "Desktop and375px keyboard and actual HTTP proof",
+          "observed_at": "2026-11-05T23:02:34Z",
+          "evidence": "Earlier scoped matrix at3443301 retained with two identified faults;corrected proof not executed;browser-before-results.json and browser-corrected-plan.md"
+        },
+        {
+          "id": "integrated-validation",
+          "status": "in-progress",
+          "title": "Current-base integration and authored full validation",
+          "observed_at": "2026-11-05T23:02:34Z",
+          "evidence": "Sharedb11a7e61 integrated/pushed1002101;noGCSP runtime delta;authored npm test awaits root serial lane;no full stamp"
+        },
+        {
+          "id": "stored-policy-adoption",
+          "status": "blocked",
+          "title": "Existing stored policy successor-key adoption",
+          "observed_at": "2026-11-05T23:02:34Z",
+          "evidence": "Existing immutablegcsp-policy-v1 lacks new step;publisher patches existing keys only;reviewed successor-key mechanism/activation needed viaFUCQ103/83"
+        },
+        {
+          "id": "business-integration",
+          "status": "blocked",
+          "title": "Actual release counts and business scenario reset",
+          "observed_at": "2026-11-05T23:02:34Z",
+          "evidence": "Actual FUCQ92release and FUCQ125business preparers absent under paused claims;synthetic fixtures cannot prove release counts/business resets"
+        }
+      ],
+      "unsliced": false
     }
   ]
 }

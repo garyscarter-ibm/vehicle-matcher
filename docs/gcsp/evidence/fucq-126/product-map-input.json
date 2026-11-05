@@ -1,0 +1,33 @@
+{
+  "id": "FUCQ-126",
+  "title": "Give the presenter controls for ticks, releases, reset, scenarios and role",
+  "status": "In Progress",
+  "original_status": "In Progress",
+  "assignee": "Gary Carter",
+  "type": "Story",
+  "observed_at": "2026-11-05T22:40:24Z",
+  "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-126",
+  "branch": "dev/DEV-2026-11-04-096",
+  "workers": [
+    {
+      "name": "FUCQ-126 presenter controls",
+      "harness": "codex",
+      "role": "story-lead",
+      "observed_at": "2026-11-05T23:02:32Z",
+      "expires_at": "2026-11-05T23:22:32Z",
+      "status": "active",
+      "source": "chat01a1adbb-83e5-7390-af36-983fd6a6dc01; direct running observation"
+    },
+    {
+      "name": "Mike Wazowski",
+      "harness": "codex",
+      "role": "implementer",
+      "observed_at": "2026-11-05T23:02:32Z",
+      "expires_at": "2026-11-05T23:22:32Z",
+      "status": "active; component alignment",
+      "source": "collaboration.list_agents presenter_ui running; chat01a1adc4-ed37-7192-89ff-1ec92fff00f6"
+    }
+  ],
+  "jira_observed_at": "2026-11-05T23:00:00Z",
+  "jira_observation_basis": "Authenticated getJiraIssue FUCQ-126: In Progress/Gary Carter; no Jira write"
+}
