@@ -1003,56 +1003,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-105"
     },
     {
-      "id": "FUCQ-106",
-      "title": "Accept, decline or expire an offer with idempotent outcomes",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T23:42:38Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-106",
-      "slices": [
-        {
-          "id": "decision-protocol",
-          "status": "in-progress",
-          "title": "Decision-command-result-event-and-exclusion-contract",
-          "observed_at": "2026-11-05T23:42:38Z",
-          "evidence": "Contract-first source boundary checkpoint: docs/gcsp/offer-decisions-contract.md; no integration claimed."
-        },
-        {
-          "id": "policy-reasons",
-          "status": "not-started",
-          "title": "Canonical-decline-reasons-and-activation"
-        },
-        {
-          "id": "decision-service",
-          "status": "not-started",
-          "title": "Transactional-decision-service-and-HTTP-protocol"
-        },
-        {
-          "id": "producer-access-expiry",
-          "status": "not-started",
-          "title": "Actual-producer-access-and-expiry-integration"
-        },
-        {
-          "id": "remote-events",
-          "status": "not-started",
-          "title": "Remote-uncertainty-and-downstream-events"
-        },
-        {
-          "id": "runtime",
-          "status": "not-started",
-          "title": "Coordinated-runtime-registration"
-        },
-        {
-          "id": "final-validation",
-          "status": "not-started",
-          "title": "Authored-acceptance-and-final-validation"
-        }
-      ],
-      "unsliced": false
-    },
-    {
       "id": "FUCQ-107",
       "title": "Confirm one preference change after declining and receive a second offer",
       "status": "To Do",
@@ -1599,6 +1549,69 @@
           "observed_at": "2026-11-05T23:33:04.204649Z",
           "expires_at": "2026-11-06T00:03:04.204649Z",
           "source": "thread 01a1adf9-7f4a-7913-9cdb-532060b69a55; requested/selected/effective gpt-6.1-sol/high; no fallback"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-106",
+      "title": "Accept, decline or expire an offer with idempotent outcomes",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T23:52:26Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-106",
+      "slices": [
+        {
+          "id": "decision-protocol",
+          "status": "in-progress",
+          "title": "Decision-command-result-event-and-exclusion-contract",
+          "observed_at": "2026-11-05T23:42:38Z",
+          "evidence": "Contract-first source boundary checkpoint: docs/gcsp/offer-decisions-contract.md; no integration claimed."
+        },
+        {
+          "id": "policy-reasons",
+          "status": "not-started",
+          "title": "Canonical-decline-reasons-and-activation"
+        },
+        {
+          "id": "decision-service",
+          "status": "in-progress",
+          "title": "Transactional-decision-service-and-HTTP-protocol",
+          "observed_at": "2026-11-05T23:52:26Z",
+          "evidence": "Independent local service/HTTP contract tests; actual producer/access/runtime/remote and native/full acceptance open."
+        },
+        {
+          "id": "producer-access-expiry",
+          "status": "not-started",
+          "title": "Actual-producer-access-and-expiry-integration"
+        },
+        {
+          "id": "remote-events",
+          "status": "not-started",
+          "title": "Remote-uncertainty-and-downstream-events"
+        },
+        {
+          "id": "runtime",
+          "status": "not-started",
+          "title": "Coordinated-runtime-registration"
+        },
+        {
+          "id": "final-validation",
+          "status": "not-started",
+          "title": "Authored-acceptance-and-final-validation"
+        }
+      ],
+      "unsliced": false,
+      "workers": [
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-05T23:52:26Z",
+          "expires_at": "2026-11-06T00:52:26Z",
+          "source": "codex:01a1ae15-a603-7d92-b832-f7ebcc446a84",
+          "status": "working"
         }
       ]
     }

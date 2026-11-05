@@ -211,3 +211,34 @@ PolicyService/DemoClock/identity; fake capability success never closes actual
 access or integration slices. No full suite, native PostgreSQL, browser, listener,
 network/mail or installation is granted in this allocation. Root owns serial
 integration/full-test admission; the authored `npm test` remains an open gate.
+
+## Independent implementation checkpoint
+
+`decision.js` exports `OfferDecisionService` / `createOfferDecisionService`. Trusted
+composition injects `{ repository, policy, clock, access,
+createStoredSubjectEvaluator, mode: 'local-synthetic' }`; the evaluator factory
+is the actual shared stored-subject export when coordinated. Missing evaluator
+refuses acceptance. Remote mode is explicitly unavailable until its separate
+protocol is integrated. `readReasons` projects the current-run canonical registry;
+`readOperation` returns only exact-offer live progress, without editing receipts.
+
+`decision-http.js` exports `createOfferDecisionHandler({ service, resolveAccess,
+allowedOrigins })`. The trusted resolver receives `{ selector, cookie, action }`
+and must resolve the real FUCQ-102 token/account capability, failing closed for an
+invalid presented offer cookie. It returns `ok({ context })`; nothing serializes
+that authority. The handler requires explicit `gateAuthorized: true`, exact Origin
+on commands, bounded JSON and no browser identity claims. GET
+`/api/gcsp/offers/:offerId/decision-reasons?runId=...` projects the same registry.
+Actual central dispatch/resolver composition is still open.
+
+The final independent checkpoint has 23/23 scoped passes and exact code hashes in
+`evidence/fucq106/scoped-service-checkpoint.json`. Fixtures use the actual merged
+shared calculation with a genuine account bridge; they do not establish the
+unimported stored-subject factory or FUCQ-102 capability parity. No source import
+expansion has occurred. The real-account guard is verified corrected at
+`b876536`; the access owner reports its focused regression published at
+`a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed`.
+
+Canonical policy activation is coordinated through FUCQ-103's existing reviewed
+assumption bundle and same-provider adoption/CAS path. There is no seed/provider/
+schema shortcut or active fallback. All seven slice gates remain unfinished.

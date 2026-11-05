@@ -1,0 +1,54 @@
+{
+  "story": "FUCQ-106",
+  "status": "scoped checkpoint; integration incomplete",
+  "base": "2b796010f54d1b720e8b13f044496c8e175c07a7",
+  "command": [
+    "node",
+    "--test",
+    "--test-reporter=tap",
+    "--test-concurrency=1",
+    "server/test/gcsp-offer-decisions.test.js"
+  ],
+  "tests": 23,
+  "passed": 23,
+  "failed": 0,
+  "skipped": 0,
+  "identity": {
+    "server/gcsp/offers/decision.js": "20185a1493a82662ba01f60043543934959cb91be67013783bbe5596d6ec8d91",
+    "server/gcsp/offers/decision-http.js": "816ad8edb9ab0b502ef7cd6fbaff96f5bb43ee95a342319f2f39d08f95692957",
+    "server/test/gcsp-offer-decisions.test.js": "dce862a6f1df5191afe9ba5206ab206978cb0624e1acab60611ff02ca6cc0cc3"
+  },
+  "source_identity_digest": "03506e326d71ff2b888762a2473a0e68a82090fcda9c8ba5f44a5c61905e3f5e",
+  "resource_receipt": ".claude/test-runs/fucq106/service-v6-result.json",
+  "impact": ".claude/test-runs/impact/fucq106-service-v6.json",
+  "limits": {
+    "seconds": 120,
+    "ramMiB": 768,
+    "scratchAndOutputMiB": 128,
+    "logMiB": 2,
+    "workers": 1
+  },
+  "measured": {
+    "wallSeconds": 1.290658375,
+    "peakRSSBytes": 228835328,
+    "peakScratchBytes": 8192
+  },
+  "cleanup": {
+    "scratchAbsent": true,
+    "groupsAbsent": true,
+    "openFiles": [],
+    "liveOwnedProcesses": [],
+    "reservationReleased": true,
+    "temporaryDependencyLink": "exact unchanged link/target device/inode checked and removed; installed target preserved"
+  },
+  "boundaries": [
+    "Actual memory repository, PolicyService, DemoClock, DemoIdentity, BriefService and shared recommendation kernel",
+    "Explicit alternative reason-registry policy input; no active production key",
+    "Scoped genuine account adapter; not actual FUCQ-102 private capability or token parity",
+    "Synthetic hold/quote/offer writer; not actual FUCQ-100 producer/expiry",
+    "Stored-subject factory remains injected; no unmerged source imports",
+    "Domain source-event receipt is not downstream delivery proof",
+    "Remote decisions fail closed; no selection/release adapter accepted",
+    "No central runtime, native PostgreSQL, full suite, browser, listener, network/mail or installs"
+  ]
+}
