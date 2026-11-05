@@ -1,8 +1,8 @@
 # FUCQ-126 corrected browser checkpoint plan
 
-Prepared 5 November 2026. **Not executed.** The browser lane remains released until
-the parent reviews and pushes this correction, integrates the requested base
-checkpoint, and grants the lane against an exact full commit.
+Prepared 5 November 2026. **Desktop and narrow execution recorded below.** Browser
+allocations require the parent's exact-revision grant. The lane is released after
+the two authorised matrices; no further allocation is implied by this plan.
 
 Earlier results under `browser/`, `browser-results.json` and
 `.claude/test-runs/fucq126-browser-20261105/` are preserved as before-repair evidence.
@@ -82,5 +82,26 @@ capture followed a pointer click and had no visible outline. The next harness
 revision restores each original selection with real arrow keys, captures each
 picker before any pointer click, and requires `:focus-visible` plus a non-none
 outline before and after ordinary readback. Existing captures remain unchanged.
-This harness-only correction requires an updated exact-revision grant before
-the desktop and narrow allocations; neither matrix has run yet.
+The parent granted the updated exact revision before desktop and narrow allocation.
+
+## Executed scope and remaining acceptance
+
+Both matrices ran once, serially, at
+`393dedc8903507b7eeb764791814cedab3f541fc`: 17 checks and 25 original captures each,
+at 1280x900 and 375x812. The lead personally inspected all 50 captures and
+independently verified process identities, groups, ports, profile, open files,
+scratch, reservations, source and adopted dependency identities. Picker keyboard
+outlines are visible before pointer input and survive ordinary readback.
+
+See `browser-after-results.json`, `browser-desktop-lead-review.json` and
+`browser-narrow-lead-review.json`; original result and supervisor receipts accompany
+each capture directory. Before-repair and earlier smoke evidence is preserved.
+
+Actual clock/scenario mechanics, principal issuance Paula→Greg→Paula, access hiding,
+acknowledged reset, lost tick retry, cookie-delivered/lost-body reset reconciliation,
+outage and delayed-read teardown passed. Manual account inputs are explicitly
+synthetic; pending/refused handler visuals are separately labelled. No actual
+business release/count or full business-scenario reset was exercised. The broader
+plan's issuance-replay browser variant and gallery visit were not executed by this
+runner; cookie-conflict controller regressions are separate unit evidence. Neither
+this result nor the passing scoped checks establish an authored full-suite stamp.

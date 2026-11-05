@@ -188,9 +188,10 @@ cookie hides the strip entirely even when the acting person is an employee or Gr
    is a deliberate fresh issuance with a new ID.
 
 Current authored scope, 5 November 2026: UI/DOM and HTTP-boundary checks cover these behaviors.
-Browser inspection is still required at desktop and 375px, including Tab, Enter, Escape, radio
-arrows/Home/End, visible focus and readback focus preservation. This component-alignment follow-up
-has automated DOM evidence only; its corrected browser matrix remains unexecuted pending a fresh lane grant.
+The corrected browser matrix at `393dedc` passed 17 checks at both desktop and 375px, including
+Tab, Enter, Escape, radio arrows/Home/End, visible focus and readback focus preservation. The lead
+personally inspected all 50 original captures and independently verified cleanup. This is the actual
+HTTP memory composition with explicitly synthetic account inputs, not a delivered business journey.
 The isolated gallery example demonstrates pending/missing-release presentation only. No actual
 business release producer or complete business-scenario reset has been demonstrated by this UI work.
 The browser runner matrix is `evidence/fucq-126/ui-browser-plan.md`; dated observations and captures

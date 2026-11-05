@@ -1,6 +1,7 @@
 # FUCQ-126 UI browser runner handoff
 
-Authored 5 November 2026. This is a reproduction plan, not executed browser evidence.
+Authored 5 November 2026. This is a reproduction plan; executed scope is recorded in
+`browser-after-results.json` and the lead reviews, rather than inferred from this table.
 Use shell references `screens/00-employee-account.webp`, `screens/01-replace-vehicle.webp`,
 body reference `evidence/fucq-6/README.md` at a7fc178, current shared Density tokens,
 and Greg's denser operations treatment. No human layout pause is required.

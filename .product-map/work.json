@@ -1368,7 +1368,7 @@
       "id": "FUCQ-126",
       "jira_observation_basis": "Authenticated getJiraIssue FUCQ-126: In Progress/Gary Carter; no Jira write",
       "jira_observed_at": "2026-11-05T23:00:00Z",
-      "observed_at": "2026-11-05T23:30:55Z",
+      "observed_at": "2026-11-05T23:49:37Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -1379,23 +1379,23 @@
           "title": "Server controls and durable clock composition"
         },
         {
-          "evidence": "Source8877e2d fixes browser-found selection/reset/retry faults;parent23/23controls,child41shell/1copy;fresh visual proof still held",
+          "evidence": "Independent UI boundary delivered:lead27controls plus17desktop+17narrow checks/all50captures personally inspected; safe context/reset/retry/teardown. Business release/reset remains separate blocked integration slice;browser-after-results.json.",
           "id": "presenter-ui",
-          "observed_at": "2026-11-05T23:02:33Z",
-          "status": "in-progress",
+          "observed_at": "2026-11-05T23:49:37.876858Z",
+          "status": "complete",
           "title": "Drawer, workspace and safe action states"
         },
         {
-          "evidence": "Lead full diff review and independent27/27controls passed;child41shell/46ratchet/1copy hashes verified;component-lead-review.json. Fresh visual proof pending; uncommitted during dispatcher Git hold.",
+          "evidence": "Shared presenterBar+controlled renderOptionList reviewed;lead27controls,child41shell/46ratchet/1copy,actual1280/375 keyboard outlines and mounted focus preservation passed. Catalogue/gallery authored together;browser-after-results.json.",
           "id": "kit-alignment",
-          "observed_at": "2026-11-05T23:17:10.412706Z",
-          "status": "in-progress",
+          "observed_at": "2026-11-05T23:49:37.876858Z",
+          "status": "complete",
           "title": "Shared option pickers and presenter bar"
         },
         {
-          "evidence": "Authorised locald4ce91ff corrected desktop smoke:4checks/4captures,0errors/overflow,parentreview+independentcleanup passed. Picker keyboard outline capture still unproved after pointerclick. No desktop/narrow grant;browser-smoke-lead-review.json.",
+          "evidence": "Exact393dedc desktop+narrow17checks/25captures each passed,parent inspectedall50+cleanup. Actual business release/full scenario unavailable; broader plan issuance-replay/gallery browser variants unexecuted. No fullbrowser acceptance claim;browser-after-results.json.",
           "id": "browser-proof",
-          "observed_at": "2026-11-05T23:30:55Z",
+          "observed_at": "2026-11-05T23:49:37.876858Z",
           "status": "in-progress",
           "title": "Desktop and375px keyboard and actual HTTP proof"
         },
@@ -1428,13 +1428,13 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-126",
       "workers": [
         {
-          "expires_at": "2026-11-05T23:37:12.405897Z",
+          "expires_at": "2026-11-06T00:09:37.880573Z",
           "harness": "codex",
           "name": "FUCQ-126 presenter controls",
-          "observed_at": "2026-11-05T23:17:10.412706Z",
+          "observed_at": "2026-11-05T23:49:37.876858Z",
           "role": "story-lead",
-          "source": "Direct lead review and27controls rerun, chat01a1adbb-83e5-7390-af36-983fd6a6dc01",
-          "status": "review complete; waiting for publication/browser lanes"
+          "source": "Direct lead:34checks/50captures reviewed, cleanup independently verified; no active child/browser",
+          "status": "reviewed desktop+narrow; publishing evidence; waiting full/integration lanes"
         },
         {
           "expires_at": "2026-11-05T23:17:10.412706Z",
