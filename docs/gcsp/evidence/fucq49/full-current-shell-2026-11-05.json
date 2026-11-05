@@ -47,7 +47,8 @@
     "scratchGroupsReservationsAbsent": true,
     "temporaryDependenciesRemovedByRecordedDeviceInode": true,
     "packageAndLockHashesUnchanged": true,
-    "dispatcherIndependentVerification": "pending final combined allocation and dependency-removal verification"
+    "dispatcherIndependentVerification": true,
+    "dispatcherReceipt": ".claude/test-runs/ownership/fucq49-native-final-dispatcher-verification.json"
   },
   "externalEvidence": {
     "supervisor": "supervisor-v3.py",
@@ -58,7 +59,8 @@
     "receipt": "final-current-shell-full-v4-1793898838240128000-receipt.json",
     "successLogSha256": "54e71c9a3376809e5f3bd8a49d22f25c887f663317eea92122173cb59385e068",
     "leadCleanup": "final-lead-cleanup-v4.json",
-    "secretScan": "managed-secret-scan-v1.json"
+    "secretScan": "managed-secret-scan-v1.json",
+    "dispatcherCleanup": ".claude/test-runs/ownership/fucq49-native-final-dispatcher-verification.json"
   },
   "managedDatabase": {
     "enabled": true,
@@ -81,7 +83,8 @@
     "postRunOwnedResidualDrops": 0,
     "foreignSchemasTouched": 0,
     "poolClosed": true,
-    "secretScan": "managed-secret-scan-v1.json; no complete URL, host, password or decoded password in 179 own JSON/log files; username-only substring matches also predate database setup"
+    "secretScan": "managed-secret-scan-v1.json; no complete URL, host, password or decoded password in 179 own JSON/log files; username-only substring matches also predate database setup",
+    "independentPostRunReceiptReview": "Dispatcher reviewed the supervised after-schema receipt: no owned/new/foreign schemas, no drops needed, application writes zero, pool closed; no extra database query"
   },
   "currentShellReadiness": {
     "shellRatchetPass": 82,

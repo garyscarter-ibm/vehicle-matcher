@@ -74,7 +74,9 @@
     "browserProfilePortsDependencies": "none",
     "temporaryPinnedDependencyTreesRemoved": true,
     "historicalOwnedAllocations": 22,
-    "currentOwnedAllocations": 28
+    "currentOwnedAllocations": 28,
+    "currentDispatcherIndependentVerification": true,
+    "currentDispatcherReceipt": ".claude/test-runs/ownership/fucq49-native-final-dispatcher-verification.json"
   },
   "integration": {
     "firstFull": "failed due absent existing pg dependency; see full-validation-2026-11-05.json",
