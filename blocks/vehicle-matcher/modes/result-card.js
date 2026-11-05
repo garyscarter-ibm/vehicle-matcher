@@ -23,6 +23,26 @@ export const SPEC_LABELS = {
   coupe: 'Coupé', convertible: 'Convertible', mpv: 'Family carrier',
 };
 export const FUEL_SPEC = { petrol: 'Petrol', diesel: 'Diesel', phev: 'Plug-in hybrid', ev: 'Electric' };
+
+export function feedbackScope({ text }) {
+  return el('p', 'vm-brief-count vm-feedback-scope', text);
+}
+
+export function feedbackUndo({ text, onUndo }) {
+  const button = el('button', 'vm-brief-undo', 'Undo');
+  button.type = 'button';
+  button.setAttribute('aria-label', `Undo ${text}`);
+  if (onUndo) button.addEventListener('click', onUndo);
+  return button;
+}
+
+export function feedbackButton({ text, variant = 'ghost', onClick }) {
+  const button = el('button', `vm-btn vm-btn-${variant}`, text);
+  button.type = 'button';
+  if (onClick) button.addEventListener('click', onClick);
+  return button;
+}
+
 /*
  * Gearbox, stated rather than implied. It was already on the wire and already
  * a reject reason and a refine chip, and it was never printed anywhere — so a
@@ -440,6 +460,7 @@ export function matchCard(match, {
         b.type = 'button';
         b.addEventListener('click', o.apply);
         menu.append(b);
+        if (o.scope) menu.append(feedbackScope({ text: o.scope }));
       });
     }
     renderRejectMenu(listingsOf(match)[0]);
