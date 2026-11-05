@@ -1,0 +1,162 @@
+{
+  "version": 1,
+  "story": "FUCQ-51",
+  "date": "2026-11-05",
+  "status": "built-all-six-acceptance-items-and-required-full-validation-passed",
+  "thread": "01a1adb0-d65f-7e50-b41d-b9219460f033",
+  "branch": "dev/DEV-2026-11-04-023",
+  "testedHead": "8c9760e595db6939bf31fe66de2e903168cb00bf",
+  "testedTree": "2a2cb0e22e4f7142e50b42d51aa9684e39d87aae",
+  "integratedBase": "1231922beb2837dcf1bc350a13fb03239377d9f4",
+  "checkpoints": {
+    "offline": "23c79fb792cc05e090319fa1b67442e30d46e4aa",
+    "nativeBrowserCli": "632da7c",
+    "integrated": "8c9760e595db6939bf31fe66de2e903168cb00bf"
+  },
+  "full": {
+    "reason": "Explicit inbox integration requirement and dispatcher checkpoint after disjoint FUCQ83 policy-provider/publisher/repository-contract integration. Single full validates combined tree.",
+    "command": "npm test",
+    "effectiveArgv": [
+      "/opt/homebrew/bin/node",
+      "--test-concurrency=1",
+      "--test",
+      "server/test/**/*.test.js"
+    ],
+    "tests": 1246,
+    "pass": 1241,
+    "fail": 0,
+    "cancelled": 0,
+    "skip": 5,
+    "todo": 0,
+    "nodeDurationMs": 76109.448458,
+    "skipReason": "Native PostgreSQL checks: all database environment aliases unset by name; no database call or secret read.",
+    "supervisorWallSeconds": 77.882,
+    "chunkWallSeconds": 77.690634166,
+    "peakRssBytes": 454803456,
+    "peakScratchIncludingDependenciesBytes": 30025524,
+    "limits": {
+      "fullSeconds": 180,
+      "fullRamMiB": 1024,
+      "scratchMiB": 128,
+      "logsMiB": 2,
+      "workers": 1,
+      "setupChunkSeconds": 120,
+      "setupRamMiB": 768
+    },
+    "console": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/full-integrated-v1-console.log",
+    "checkpoint": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/strict/checkpoints/9acd3511bfa3818507156d060d1054b9a383d6f7232b5f9c5af2265906948ef8.json",
+    "boundedTail": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/strict/logs/20261105-223436-ezi2gmkw/chunk-0001.log",
+    "receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/full-integrated-v1-1793918076207541000-receipt.json"
+  },
+  "strictStamp": {
+    "key": "a59137530a9db2d66cdd1217296e97718dfa6084ab92f5c1f22c401c2dd82497",
+    "variant": "default",
+    "record": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/strict/stamp-a59137530a9db2d66cdd1217296e97718dfa6084ab92f5c1f22c401c2dd82497-default.json",
+    "executionIdentity": {
+      "code": "2ba3ddbfdb76f02f64ff272bac76a28c72f4e7f859342ab28209f913868f3e7c",
+      "environment": "793d770e83cad4ff9f8545917f38da3a366b804745e5eaf83e1ceecf267d14f2",
+      "inputs": {},
+      "interpreter": [
+        "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+        "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]"
+      ],
+      "platform": "macOS-26.5.1-arm64-arm-64bit",
+      "scope": "full",
+      "selected": [
+        "npm test"
+      ],
+      "settings": "971e489d71f32c1f5b2392ac17b9b07267e21852ff7973b9b5a24019b58d640a",
+      "variant": "default",
+      "version": 1
+    },
+    "line": "stamp: key a59137530a9d (tree 2a2cb0e22e4f, HEAD 8c9760e5), tests passed, wall 78s, 2026-11-05T22:35:55+0000, variant default, Python 3.9.6",
+    "immediateStatus": "MATCH in the exact same process and environment after successful npm test; identical stamp line retained in console.",
+    "countLimitation": "The generic npm command driver records ran:null and skipped:0 without parsing Node counts. The unchanged stamp proves successful command completion; actual 1246/1241/5 counts above come from the retained Node summary."
+  },
+  "reusedProof": {
+    "scoped": {
+      "tests": 83,
+      "pass": 83,
+      "fail": 0,
+      "skip": 0,
+      "record": "live-validation-2026-11-05.json"
+    },
+    "native": "live-validation-2026-11-05.json",
+    "visual": "visual-inspection-2026-11-05.json",
+    "browser": "browser-delivery-v1.json",
+    "basis": "all FUCQ51 script/provider/context/snapshot/test/package pins match pre-integration freeze; prior83/83/native/browser valid; no repeat of identical scoped/native checks. Full includes newly integrated policy modules/tests.",
+    "cliNativePrefixSha256": "ee2dd1699ac8fccf6d2409767bc1fc7d93d600757ece0f7639a9f70b461826ec",
+    "additionalUpstreamRequests": 0,
+    "additionalNativeOrBrowserRun": false,
+    "attemptLedger": "native-attempt-v1.json",
+    "ledgerRule": "Completed exclusive v1 ledger must never be deleted or reset."
+  },
+  "sourceAndPackagePins": {
+    "scripts/gcsp/verify-live-imagery.mjs": "b28c9b5baef58713c18994883f6628686edef0b2423194997e72c95a28335fd1",
+    "server/test/bmw-live-imagery.test.js": "122e5c129ae94212098323d501d3e49ddac6230affe27f0c088cfbb227585f4d",
+    "server/vehicle-evidence/bmw-live-imagery.js": "876e7e21b98d33ae3a124e696102ad56e4e5d2e771fee0d370764a0b684ffc3d",
+    "server/vehicle-evidence/bmw-image-adapter.js": "56753ac7e47e4790159e7d50fb4deafe1658730e803912f064e6ed09326774ef",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "06c0910c131fdb0e2e4ef254dc5591f13c90ecb3f36f655aef3cb651aa0052a1",
+    "server/vehicle-evidence/snapshots/bmw-gb-i5-images-2026-11-01.v1.json": "b6bbe8e39b018b1a38551d818e1dfe9b6504283c95dedd033d59d4df8395d393",
+    "server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json": "ee1ae6c5cb6ab742f9a2959825ca722007409fa019d15acd44bb4b79984556a3",
+    "package.json": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
+    "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+    "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139",
+    "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e"
+  },
+  "pinsMatchAtFinalDocumentation": true,
+  "resources": {
+    "plan": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/full-plan-v1.json",
+    "parentFinalReceipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/parent-final-verification-v1.json",
+    "dependencyOwnership": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/dependency-ownership-v1.json",
+    "allocationsAbsent": 10,
+    "rootsGroupsOwnersRootArgumentsReservationsAbsent": true,
+    "dependencyRoots": {
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-023/node_modules": {
+        "absent": true,
+        "beforeAbsent": true,
+        "device": 16777232,
+        "inode": 172958282,
+        "removedBytes": 27138292,
+        "state": "removed"
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-023/server/node_modules": {
+        "absent": true,
+        "beforeAbsent": true,
+        "device": 16777232,
+        "inode": 172961163,
+        "removedBytes": 858816,
+        "state": "removed"
+      }
+    },
+    "dependencyBytesRemoved": 27997108,
+    "browserPorts": {
+      "debugging": {
+        "listenerAbsent": true,
+        "port": 53213
+      },
+      "harness": {
+        "listenerAbsent": true,
+        "port": 53209
+      }
+    },
+    "browserProfileAbsent": true,
+    "fullLaneReleased": true,
+    "fullLockAvailable": true,
+    "packagePinsUnchanged": true,
+    "retainedSmallRuntimeHelper": {
+      "bytes": 293,
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/serial-runtime/node",
+      "sha256": "e7f4234c31b7603f997193aab4538e1916dbb8c48a722c8b627260da21f1dce0"
+    },
+    "leftovers": [],
+    "retention": "Compact plans, ownership receipts, bounded logs, stamps and impact maps retained externally under shared .claude/test-runs; approved two native images and safe metadata retained in this evidence directory. No large generated output or OneDrive allocation."
+  },
+  "acceptance": {
+    "allSixPassed": true,
+    "featureEvidence": "live-validation-2026-11-05.json",
+    "fullIntegrationEvidence": "this record supersedes the historical full-pending labels in live-validation-2026-11-05.json"
+  },
+  "limitsOfClaim": "Authorised unsupported public-website demo source and temporary loopback published-asset proof. Model/paint association visually verified; wheels/interior/equipment/exact-car appearance remain unknown. No 360, production API entitlement, application screen or deployment activation claim.",
+  "handoff": "Dispatcher owns independent audit, merge and closure; lead has no further native/full work scheduled."
+}
