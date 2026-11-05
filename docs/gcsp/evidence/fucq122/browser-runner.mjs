@@ -489,6 +489,9 @@ try {
   await Promise.allSettled([...pendingNetwork]);
   if (repository.close) await repository.close();
   report.listenerClosed = !server?.listening; report.chromeJoined = !liveChrome();
+  if (!report.listenerClosed || !report.chromeJoined) report.errors.push({ type: 'runner-cleanup-incomplete' });
+  // Pending response observers and teardown may add errors after the journey assertion.
+  if (report.errors.length) { report.state = 'incomplete'; process.exitCode = 1; }
   await save();
   console.log(JSON.stringify({ state: report.state, chunk, checks: report.checks.length, captures: report.captures.length, errors: report.errors }));
 }
