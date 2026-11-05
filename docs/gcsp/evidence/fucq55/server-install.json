@@ -1,0 +1,141 @@
+{
+  "argv": [
+    "npm",
+    "ci",
+    "--prefix",
+    "server",
+    "--ignore-scripts",
+    "--no-audit",
+    "--no-fund"
+  ],
+  "budget": {
+    "file_workers": 0,
+    "ram_bytes": 268435456,
+    "scratch_bytes": 67108864,
+    "seconds": 120
+  },
+  "cleanup": {
+    "compatibility_exception": null,
+    "groups_live": {
+      "37961": false
+    },
+    "large_outputs": false,
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/da5052cdc8e549859b58f4fecfb3a476.json",
+    "manifest_state": "removed",
+    "removed_peak_bytes": 2920352,
+    "reservation_absent": true,
+    "root": "/private/tmp/test-stamp-shard-da5052cdc8e549859b58f4fecfb3a476",
+    "root_absent": true,
+    "successful_verbose_log_removed": true
+  },
+  "code_test_identity": {
+    "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "b2de4a7a6dd181c15615be702d6031b7a0cc10d34d8c92c87b5c371d16928e8a",
+    "server/gcsp/vehicle-evidence/vehicle-details-contract.js": "3886ac9377f3688d2bfe2c2af5a6fe330bb4b49d2f18bb049c8cc7f71d485cc8",
+    "server/gcsp/vehicle-evidence/vehicle-evidence-handler.js": "9e118acfe39f550f06e6c319f536ca8768ca4b41820fd9ca9593e79b18f8c8f0",
+    "server/gcsp/vehicle-evidence/vehicle-lookup.js": "8ce1256486422dd048d7f5cec0e1e67d01505ae810257811f4037b1b006f5e70",
+    "server/index.js": "52c02b20d3a0e1c3a75de7697af38b1032dfb453e39c96f35f2f440435da8b4c",
+    "server/test/gcsp-offline-start.test.js": "5f3dd0f700fbc9ceb948189766af2061db0f11707b9c4c2d17fb2a248a96435b",
+    "server/test/gcsp-synthetic-vin-api.test.js": "ac86aa927c5cb1ee9094ab2eaf343e115104d428b67a445ecb11f6a706de5265",
+    "server/test/gcsp-vehicle-evidence-lookup.test.js": "021db46e480fab71c38fb62adad07e531c4fdf0a153d1f03a2ea652401c79c61"
+  },
+  "config_identity": {
+    "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+    "package.json": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
+    "server/gcsp/policy/seed-v1.json": "fa73b7fd140132536e337fd9e431824d769f7963336e982dd4d24f063ba683ef",
+    "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+    "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+  },
+  "error": null,
+  "head": "d718491e13407d496017c6ec1b90f19850d35393",
+  "health": {
+    "disk_free_bytes": 67575611392,
+    "memory_pressure": "The system has 17179869184 (1048576 pages with a page size of 16384).\nSystem-wide memory free percentage: 48%",
+    "swap": "vm.swapusage: total = 2048.00M  used = 1136.00M  free = 912.00M  (encrypted)",
+    "time_utc": "2026-11-05T05:58:25.089020+00:00"
+  },
+  "installed_versions": {
+    "node_modules/pg": "8.23.1",
+    "node_modules/pg-cloudflare": "1.4.1",
+    "node_modules/pg-connection-string": "2.14.1",
+    "node_modules/pg-int8": "1.0.1",
+    "node_modules/pg-pool": "3.14.0",
+    "node_modules/pg-protocol": "1.16.1",
+    "node_modules/pg-types": "2.2.0",
+    "node_modules/pgpass": "1.0.5",
+    "node_modules/postgres-array": "2.0.0",
+    "node_modules/postgres-bytea": "1.0.1",
+    "node_modules/postgres-date": "1.0.7",
+    "node_modules/postgres-interval": "1.2.0",
+    "node_modules/split2": "4.2.0",
+    "node_modules/xtend": "4.0.2"
+  },
+  "locked_versions_match": true,
+  "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq55-install-da5052cdc8e549859b58f4fecfb3a476.log",
+  "log_retained": false,
+  "node": "v26.7.0",
+  "observed_counts": {},
+  "observed_max_test_file_workers": 0,
+  "ownership_manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/da5052cdc8e549859b58f4fecfb3a476.json",
+  "package_hashes_unchanged": {
+    "server/package-lock.json": true,
+    "server/package.json": true
+  },
+  "packaged_inputs": {
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/active.json": "8c797f87d050687c6d4efd4392061c65c753e5ee0177e77f9b5cab86dc3383bb",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/identity-inventory.json": "dd702f37aa81480d61b7a8a74d761abe026d25b39f056cf1d50698bbdf0edd4f",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/configurations.jsonl": "9c1fb6a34e324e6e4937baa1e80eabafa44fae394dd138f2f77be9f6867e9855",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/images.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/manifest.json": "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/vins.jsonl": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd"
+  },
+  "reporter_summary": [],
+  "result": {
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq55-install-da5052cdc8e549859b58f4fecfb3a476.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/da5052cdc8e549859b58f4fecfb3a476.json",
+    "peak_rss": 105037824,
+    "peak_scratch": 2920352,
+    "rc": 0,
+    "wall": 0.5639020829985384
+  },
+  "retained_environment": {
+    "allocated_bytes": 858816,
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-028/server/node_modules",
+    "peak_sampled_bytes": 858816,
+    "symlink": false
+  },
+  "root": "/private/tmp/test-stamp-shard-da5052cdc8e549859b58f4fecfb3a476",
+  "scope": "install",
+  "state": "passed",
+  "story": "FUCQ-55",
+  "success_excerpt": "npm warn Unknown env config \"tmp\". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.\n\nadded 14 packages in 247ms\n",
+  "test_cases": [],
+  "worker_check_before_launch": {
+    "selected_test_files": [],
+    "single_worker_flag_before_files": null
+  },
+  "observed_processes": [
+    {
+      "argv": "npm",
+      "kind": "leader",
+      "pgid": 37961,
+      "pid": 37961,
+      "ppid": 37942
+    }
+  ],
+  "process_samples": [
+    {
+      "pids": [
+        37961
+      ],
+      "test_file_workers": 0
+    },
+    {
+      "pids": [
+        37961
+      ],
+      "test_file_workers": 0
+    }
+  ]
+}
