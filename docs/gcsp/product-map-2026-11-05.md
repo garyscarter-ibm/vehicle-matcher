@@ -5,6 +5,8 @@ capabilities and all 107 authorised implementation Stories in the observed FUCQ 
 [PR #32](https://github.com/garyscarter-ibm/vehicle-matcher/pull/32) merged on 5 November at
 22:57 UTC. Pages succeeded and the canonical page, snapshot and stylesheet returned HTTP 200;
 the served snapshot generated at 23:03:27 UTC contains all 20 capabilities. The original map is live.
+After checkpoint `5af2555` was pushed, its branch notification succeeded and the served snapshot
+generated at 23:05:49 UTC advertised that exact GCSP revision, verifying pushed-commit refresh.
 
 ## Scaffolding 0.7.2 presentation refresh
 
@@ -52,8 +54,14 @@ current through the authenticated connector. Follow the
 Preserve leases, claims, retained branches and human pause boundaries. This tooling request does
 not restart a dispatcher, take a Story or change acceptance. FUCQ-100 comments **132588** and
 **132590** delivered the original immediate and concrete tooling alerts. The Carbon follow-up
-provides the new checkpoint and publication PR through the same channel.
+was delivered in comment **132592**, with checkpoint `5af2555`, PR #33 and the source-conflict
+reconciliation note.
 
 The [installation note](scaffolding-install-2026-11-05.md) corrects the obsolete administrator
 steps. Native Codex hook review and Claude's already-queued 0.7.2 pin verification belong to the
 separate scaffolding rollout; no application restart or hook-trust change was performed here.
+
+Disposable scratch was removed and absence verified; the owned HTTP server stopped and joined,
+and the isolated headless Chrome context closed. The cleanup receipt records 62,930,734 bytes
+maximum observed scratch, including the bounded local browser profile and isolated Git/build
+fixture. Retained evidence is in the checkpoint directory above; no disposable leftovers remain.
