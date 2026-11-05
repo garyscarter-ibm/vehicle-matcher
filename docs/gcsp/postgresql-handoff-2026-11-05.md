@@ -11,6 +11,8 @@ Russell asked Gary's sessions to take work requiring the PostgreSQL credential, 
 
 These existing stories are requeued for **`garyscarter-ibm` only**, retaining their IDs, acceptance, dependencies, 13-point estimates and unmerged implementation. Russell's pollers must not reclaim them. The normal remote lease decides which of Gary's Claude/Codex pollers owns each one. A Jira assignment is routing, not evidence Gary has claimed or started work.
 
+**Published handoff:** `22ccf93`; both source leases released. Jira read-back confirms Gary assigned and **To Do** pending pickup, with stale source-host/agent labels removed. Comments `132551` (FUCQ-83) and `132552` (FUCQ-66) deliver the branch, proof gaps and pickup instructions. Gary's acceptance/start is not yet observed.
+
 This is an explicitly authorised transfer of existing stories, not new story intake. Scaffolding has no transfer/requeue command: the source dispatcher moves only its own two lifecycle files back to the inbox, commits/pushes the named paths and releases only its own leases using `claim-release`. It preserves both published branches and local worktrees. Claim and queue state remain authoritative; this document is a handoff record.
 
 ## Pickup without losing the implementation
