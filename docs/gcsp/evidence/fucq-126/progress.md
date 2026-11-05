@@ -116,3 +116,29 @@ Parent owns capture review, independent filesystem receipts and exact dependency
 Full stamp status currently none: exact owned temporary dependency symlinks appear as untracked
 paths. No full suite has run; scoped source-bound receipts remain valid. Do not stage these links.
 WAITING on `presenter_ui`: browser harness/proof, then source and evidence review.
+
+## Browser findings and correction plan (22:51 GMT)
+
+Lead inspected actual smoke-desktop/02-idle-open-keyboard.png and narrow13-reset/narrow14-loss:
+correct current-scenario/context data reaches the drawer, isolating two new UI consumer faults
+(origin FUCQ-126, still in progress). Catalogue loading runs after the first controls update, but
+`dataset.initial` is set against an empty select. Reset correctly changes server run/context, but
+only updates the drawer and never invalidates the previous account mount/header. No existing DB
+or core business data fault is indicated. Source basis3443301; screenshots/evidence authored at
+e45732e. Correct selection only when the current scenario exists in loaded options. After an
+acknowledged committed reset, navigate to actual context-selected presenter workspace, including
+session-renewal failure (whose new workspace must give trusted session recovery). Lost/unknown
+reset delivery retains original command retry and must not navigate prematurely. New-run readback
+on the new page is the reset outcome evidence; do not persist credentials/client authority.
+Add delayed/unavailable-first-option catalogue and acknowledged/lost/reset-renewal regressions;
+then fresh desktop/narrow proof with no stale account body after reset. The existing browser
+harness must put all git reads inside checkout_mutex; read-only wrapper calls alone are insufficient.
+
+Shared-base review: a083e28→f690a36 adds FUCQ51 evidence, its CLI verification script and
+bmw-live-imagery tests, plus story/claim metadata. No GCSP runtime or presenter caller changed.
+Integrate after repair checkpoint; no redundant backend suite is justified by that metadata/test
+integration alone. Authored full remains pending serial admission. Prior browser manifests8/8
+independently absent/groupsgone; retained captures3920465bytes. Existing UI child resumed fresh
+22:50:45 tierSol/medium (no fallback),capacitycan_start1/free7.5GB; new tier naming Mike Wazowski,
+child instructed to set that title (verification pending). WAITING on same presenter_ui child for
+bounded source corrections, selected regressions and harness repairs; no browser/server active.
