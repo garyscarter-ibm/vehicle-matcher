@@ -44,6 +44,7 @@ import {
 import { normalizeBrand, brandTuning } from './brands.js';
 import { fetchDealerDirectory } from './dealers.js';
 import { geocodePostcode } from './geocode.js';
+import { createGcspHandler } from './gcsp/identity/http.js';
 
 const PORT = Number(process.env.PORT) || 8787;
 const MAX_BODY_BYTES = 16 * 1024; // quiz answers are tiny; reject anything bigger
@@ -109,12 +110,13 @@ const CORS_HEADERS = {
   'Access-Control-Max-Age': '86400',
 };
 
-function sendJson(res, status, payload) {
+function sendJson(res, status, payload, headers = {}) {
   const body = JSON.stringify(payload);
   res.writeHead(status, {
     ...CORS_HEADERS,
     'Content-Type': 'application/json; charset=utf-8',
     'Content-Length': Buffer.byteLength(body),
+    ...headers,
   });
   res.end(body);
 }
@@ -837,11 +839,17 @@ export function buildServer(deps = {}) {
     geocodePostcode,
     ...deps,
   };
+  const handleGcsp = createGcspHandler({
+    identity: deps.gcspIdentity, routes: deps.gcspRoutes,
+    allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
+  });
 
   return createServer(async (req, res) => {
     const { pathname, searchParams } = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+    const isGcsp = pathname === '/api/gcsp' || pathname.startsWith('/api/gcsp/');
 
     if (req.method === 'OPTIONS') {
+      if (isGcsp) return handleGcsp({ req, res, pathname, searchParams, sendJson, corsHeaders: CORS_HEADERS });
       res.writeHead(204, CORS_HEADERS);
       return res.end();
     }
@@ -850,11 +858,14 @@ export function buildServer(deps = {}) {
       return sendJson(res, 200, { ok: true });
     }
 
-    // Shared-password gate for everything below. /health above stays open (the
-    // platform health check has no key), OPTIONS is already handled. When
-    // DEMO_ACCESS_KEY is unset this is a no-op (see isAuthorized).
+    // Health and preflight stay open; every API consumer below passes the shared gate.
     if (!isAuthorized(req)) {
+      if (isGcsp) return handleGcsp({ req, res, pathname, searchParams, sendJson, gateAuthorized: false });
       return sendJson(res, 401, { error: 'Unauthorized' });
+    }
+
+    if (isGcsp) {
+      return handleGcsp({ req, res, pathname, searchParams, sendJson });
     }
 
     if (req.method === 'GET' && pathname === '/api/questions') {

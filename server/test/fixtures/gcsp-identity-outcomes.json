@@ -1,0 +1,64 @@
+{
+  "purpose": "Backend presentation contract for future GCSP blocks; fictional fixture, no screen or credentials.",
+  "context": {
+    "status": "ok",
+    "value": {
+      "environmentId": "identity-test",
+      "runId": "identity-run-1",
+      "principalId": "demo-paula",
+      "employeeId": "employee-paula",
+      "name": "Paula (fictional)",
+      "roles": [
+        "employee"
+      ],
+      "companyId": "demo-bmw-fs-uk",
+      "schemeId": "choices-fs-uk",
+      "gradeId": "G7",
+      "entitlementSlotId": "slot-paula",
+      "policyVersion": "gcsp-policy-v1",
+      "principal": {
+        "principalId": "demo-paula",
+        "name": "Paula (fictional)"
+      },
+      "schemeContext": {
+        "companyId": "demo-bmw-fs-uk",
+        "schemeId": "choices-fs-uk",
+        "gradeId": "G7",
+        "entitlementSlotId": "slot-paula"
+      }
+    },
+    "contractVersion": "1.0.0"
+  },
+  "refusals": {
+    "missing": {
+      "status": "missing-session",
+      "reason": "Choose an acting person using a presenter session.",
+      "contractVersion": "1.0.0"
+    },
+    "unknown": {
+      "status": "unknown-session",
+      "reason": "This session is not recognised.",
+      "contractVersion": "1.0.0"
+    },
+    "expired": {
+      "status": "expired-session",
+      "reason": "This session has expired. Start a new presenter session.",
+      "contractVersion": "1.0.0"
+    },
+    "principal": {
+      "status": "unknown-principal",
+      "reason": "This fictional person is not configured.",
+      "contractVersion": "1.0.0"
+    },
+    "forbidden": {
+      "status": "forbidden",
+      "reason": "This person cannot perform that action.",
+      "contractVersion": "1.0.0"
+    },
+    "stale": {
+      "status": "stale-run",
+      "reason": "This request belongs to an earlier demonstration run.",
+      "contractVersion": "1.0.0"
+    }
+  }
+}
