@@ -1,6 +1,6 @@
 @import "./gcsp-tokens.css";
-
-/* GCSP portal shell: header, icon navigation, content area. Every selector is .gcsp scoped. */
+@import "../presenter-controls/presenter-controls.css";
+@import "../kit/form-controls.css";
 .gcsp {
   position: relative;
   display: flex;

@@ -137,7 +137,7 @@ test('pending and refused handler outcomes stay ordered and truthful after time 
   }
 });
 
-test('canonical assumption changes affect projection/composition and invalid step configuration refuses bootstrap', async () => {
+test('canonical assumptions drive controls; missing or invalid presenter step preserves existing clock operations', async () => {
   const policy = await modifiedPolicy((seed) => {
     assumption(seed, 'clock.presenter.stepSeconds').value = 120;
     assumption(seed, 'clock.scenario.v1').value.namedTimes.release = '2026-11-05T10:00:00.000Z';
@@ -148,12 +148,17 @@ test('canonical assumption changes affect projection/composition and invalid ste
   assert.equal(projected.controls.nextRelease.at, '2026-11-05T10:00:00.000Z');
   assert.ok(projected.principals.some((p) => p.name === 'Updated fictional employee'));
   assert.equal((await f.controls.tick(f.presenter, step())).value.advance.now, '2026-11-05T09:02:00.000Z');
-  for (const value of [0, -1, 1.5, '60']) {
-    const invalidPolicy = await modifiedPolicy((seed) => { assumption(seed, 'clock.presenter.stepSeconds').value = value; });
-    const repository = createMemoryRepository({ store: createMemoryStore() }); await repository.open();
-    const runtime = await createDemoRuntime({ repository, policy: invalidPolicy, environmentId: 'invalid', environmentKind: 'synthetic',
-      policyAsOf: time, commandId: 'bootstrap', sessionNow: () => time });
-    assert.equal(runtime.status, 'unavailable'); assert.equal((await repository.currentRun('invalid')).status, 'not-found');
+  for (const value of [undefined, 0, -1, 1.5, '60']) {
+    const invalidPolicy = await modifiedPolicy((seed) => {
+      if (value === undefined) seed.assumptions = seed.assumptions.filter((row) => row.key !== 'clock.presenter.stepSeconds');
+      else assumption(seed, 'clock.presenter.stepSeconds').value = value;
+    });
+    const legacy = await setup({ policy: invalidPolicy });
+    const unavailable = await legacy.controls.readState(legacy.presenter);
+    assert.equal(unavailable.status, 'unavailable'); assert.equal(unavailable.code, 'presenter-step-unavailable');
+    assert.equal((await legacy.controls.tick(legacy.presenter, step())).status, 'unavailable');
+    assert.equal((await legacy.clock.now(legacy.presenter)).value.clockVersion, '1');
+    assert.equal((await legacy.clock.advance(legacy.presenter, { commandId: 'existing-core-clock', expectedClockVersion: '1', bySeconds: 1 })).status, 'ok');
   }
 });
 

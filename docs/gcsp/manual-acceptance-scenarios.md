@@ -155,3 +155,36 @@ Feedback is recorded in this repository document and committed through the norma
 ### Integrated automated evidence · 5 November 2026
 
 FUCQ-125's integrated source `87c0b4ec86312887c7f807746b143e7eb2074b98` passed the 63-case scenario/Greg/clock/outbox regression and the required full suite (794 total, 792 passed, two configured-PostgreSQL skips). The checked catalogue/refusal/reset/current projection remains `server/gcsp/fixtures/scenarios/presentation-v1.json`. All six business preparations still return `not available yet` before mutation; these runs establish backend guards and fictional mechanics reset behaviour. No durable manual business run, screen trial or later journey replay is recorded by this automated checkpoint. Retained execution and cleanup evidence is described in the FUCQ-125 story Result.
+
+## Presenter strip and live workspace · FUCQ-126
+
+Start from a trusted backend bootstrap with the separate presenter-control and acting cookies.
+Open `gcsp-presenter.html` through the packaged same-origin static/API host. The runtime selects
+its employee, Greg or presenter surface from actual `/api/gcsp/context`; no person belongs in the URL.
+A shared-key gate, where configured, must already be satisfied by the host. A missing control
+cookie hides the strip entirely even when the acting person is an employee or Greg.
+
+1. Open **Presenter controls**. Check scenario, run, DemoClock UTC time, actual acting person and
+   last tick. Collapse/reopen with the keyboard; Escape closes the strip and focuses its summary.
+2. Choose **Tick**, a server-projected named cue or a future UTC ISO target, or **Next release**.
+   Check actual new time and handler results in server order. Missing release handlers say release
+   unavailable; they do not report zero cars. A future cue does not establish release capability.
+3. Choose an unavailable scenario. Its missing capabilities appear and Reset is disabled. Choose
+   the available clock-mechanics scenario, press **Reset scenario**, then cancel once. Confirm a
+   second reset and check the returned new run plus fresh server/context readback. The mechanics
+   scenario is not evidence of any full business journey.
+4. Select an employee or Greg from the server-projected choices and press **Switch principal**.
+   A confirmed actual context navigates to `gcsp-presenter.html` and loads that person's HTTP surface.
+   Switch back through the same controls. `gcsp-greg.html` is not live-principal proof.
+5. For a deliberately dropped command response, choose **Retry original action**. Verify the request
+   body and command ID match exactly; rapid duplicate clicks must produce only one request.
+   If session issuance cannot replay its raw cookie, actual context decides whether installation
+   succeeded. Unknown/different context stays uncertain/refused. **Issue selected principal again**
+   is a deliberate fresh issuance with a new ID.
+
+Current authored scope, 5 November 2026: UI/DOM and HTTP-boundary checks cover these behaviors.
+Browser inspection is still required at desktop and 375px, including Tab, Enter, Escape and focus.
+The isolated gallery example demonstrates pending/missing-release presentation only. No actual
+business release producer or complete business-scenario reset has been demonstrated by this UI work.
+The browser runner matrix is `evidence/fucq-126/ui-browser-plan.md`; dated observations and captures
+must be added after execution, without relabelling mock failure states as real integration proof.
