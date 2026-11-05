@@ -1,8 +1,8 @@
 # FUCQ-94 brief editor: refinement and checkpoint plan
 
-DEV-2026-11-04-052, 5 November 2026. The controller and supporting backend checkpoints are followed by one representative editor body for human review. The full story remains incomplete. The dispatcher owns integration, merge and closure. All collaborators retain equal authority under AGENTS.md.
+DEV-2026-11-04-052, 5 November 2026. Current delivery evidence is [final-result.md](final-result.md): trusted local brief runtime, full authored validation, seven-state desktop/375 px browser coverage and explicit integration limits. The dispatcher owns independent review, integration and closure. All collaborators retain equal authority under AGENTS.md. The historical checkpoints below retain their original allocation context.
 
-Current refinement: [distilled-result.md](distilled-result.md), with inspected [1280 px desktop](distilled-desktop.png), [375 px mobile](distilled-mobile-375.png), [browser matrix](distilled-browser-matrix.json) and [source identity](distilled-source-identity.json). The earlier [representative result](representative-result.md) and captures remain historical. Latest human direction removes layout-review holds until the end-to-end demo works; functional state coverage and trusted runtime composition follow this scoped publication. Full story acceptance remains incomplete. The historical plans below preserve their original allocation context.
+Body reference: [distilled-result.md](distilled-result.md), with inspected [1280 px desktop](distilled-desktop.png), [375 px mobile](distilled-mobile-375.png), [browser matrix](distilled-browser-matrix.json) and [source identity](distilled-source-identity.json). Its listed production/input hashes still match. The earlier [representative result](representative-result.md) and captures remain historical. Latest human direction removes layout-review holds until the end-to-end demo works; concise copy, shared components/ratchet and functional/browser checks continue throughout.
 
 ## Authorised initial slice
 
