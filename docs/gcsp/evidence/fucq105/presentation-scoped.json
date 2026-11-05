@@ -55,5 +55,15 @@
     "body": "docs/gcsp/evidence/fucq-6/README.md @ a7fc178",
     "accessProposal": "9c124e7f51e8d207cb1847b3cdd64e5e82eddfe7",
     "accessProposalSha256": "7a5b98ba217d5c5e502964a04fddc571eb93b013eeaf39dfcfd25407719aaf0d"
-  }
+  },
+  "nested_resources": {
+    "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/793c93eac5014a05b0da20be2926aa8b.json",
+    "peak_rss": 256688128,
+    "peak_scratch": 0,
+    "root_absent": true,
+    "groups_absent": true,
+    "state": "complete"
+  },
+  "code_commit": "5333d6bb69615c05a230c36ae89904371a31ffe2",
+  "published": false
 }

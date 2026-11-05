@@ -1369,7 +1369,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T23:33:14Z",
+      "observed_at": "2026-11-05T23:35:17Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-105",
       "slices": [
         {
@@ -1388,10 +1388,10 @@
         },
         {
           "id": "access-producer",
-          "status": "in-progress",
+          "status": "blocked",
           "title": "Published FUCQ102 access bound to actual FUCQ100 producer",
-          "observed_at": "2026-11-05T23:33:13Z",
-          "evidence": "Same-origin secure transport has scoped mock-fetch proof; reviewed exact102 nested DTO, actual100 producer/current-car projection and real access parity remain."
+          "observed_at": "2026-11-05T23:35:17Z",
+          "evidence": "Independent transport checkpoint5333d6b passes scoped80/80. Worker parked awaiting exact reviewed102 nested DTO/source and actual100 producer/current-car integration; not built."
         },
         {
           "id": "decision-host",
@@ -1416,17 +1416,7 @@
         }
       ],
       "unsliced": false,
-      "workers": [
-        {
-          "name": "Hippety Hopper",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-05T23:26:58.600085Z",
-          "expires_at": "2026-11-06T00:11:58.600085Z",
-          "source": "chat 01a1ae02-de53-72b2-b9b2-174ab689fb22",
-          "status": "active; parent only"
-        }
-      ]
+      "workers": []
     }
   ]
 }
