@@ -1,5 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { once } from 'node:events';
+import { readFile } from 'node:fs/promises';
+import { buildServer } from '../index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok, result } from '../gcsp/repository/index.js';
 import { createPolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
@@ -12,7 +15,7 @@ import { stock, fact } from './helpers/employee-recommendation.js';
 const instant = '2026-11-05T09:00:00.000Z';
 const cmd = (commandId, value = {}) => ({ commandId, inputDigest: inputDigest(value) });
 const ref = (f, table, key) => ({ table, key: { runId: f.context.runId, ...key } });
-async function setup({ adapter = createSyntheticManualStockAdapter(), repository } = {}) {
+async function setup({ adapter = createSyntheticManualStockAdapter(), repository, modelKey = 'G21 Touring|320i' } = {}) {
   const store = createMemoryStore();
   repository ??= createMemoryRepository({ store, now: () => instant });
   assert.equal((await repository.open()).status, 'ok');
@@ -34,7 +37,8 @@ async function setup({ adapter = createSyntheticManualStockAdapter(), repository
   const account = await f.service.readAccount(f.context);
   assert.equal((await f.service.saveDraft(f.context, { commandId: 'draft', expectedDraftVersion: 0,
     expectedContextVersion: account.value.contextVersion, choices })).status, 'ok');
-  const cars = [stock(11, { insuranceGroup: fact(25, 'insurance-group') }), stock(12, { insuranceGroup: fact(25, 'insurance-group') })];
+  const cars = [stock(11, { insuranceGroup: fact(25, 'insurance-group'), eligibilityModelKey: fact(modelKey) }),
+    stock(12, { insuranceGroup: fact(25, 'insurance-group'), eligibilityModelKey: fact(modelKey) })];
   await repository.transaction(f.context, cmd('cars'), async (tx) => {
     for (const [i, car] of cars.entries()) {
       const stored = await tx.insert('stock', { runId: f.context.runId, orderUuid: car.orderUuid,
@@ -186,4 +190,258 @@ test('a committed claim and pinned quote survive repository/service reopening; l
   assert.equal((await service.readClaim(f.context)).value.state, 'expired');
 });
 
-export { setup, selection, action, advance, cmd, ref };
+function remoteAdapter() {
+  const calls = [];
+  let acknowledgement = 'pending';
+  const adapter = { mode: 'remote', calls,
+    set(value) { acknowledgement = value; },
+    async execute(operation) { calls.push({ method: 'execute', operation: structuredClone(operation) }); return this.response(operation); },
+    async reconcile(operation) { calls.push({ method: 'reconcile', operation: structuredClone(operation) }); return this.response(operation); },
+    response(operation) {
+      if (acknowledgement === 'throw') throw new Error('private upstream details');
+      return { status: acknowledgement, operationId: operation.operationId, runId: operation.runId, orderUuid: operation.payload.orderUuid };
+    } };
+  return adapter;
+}
+
+test('different employees contend for the same exact stock; private claim and quote reads stay isolated', async () => {
+  const f = await setup({ modelKey: 'F70 Sports Hatch|120' });
+  const context = (await f.identity.switchPrincipal(f.presenter.context, 'demo-alex', 'alex')).value.context;
+  await seedManualDemoContext({ ...f, context });
+  const account = (await f.service.readAccount(context)).value;
+  const draft = (await f.service.readDraft(f.context)).value;
+  const choices = { ...draft.choices, oldContractId: `current:${context.employeeId}`, slotId: context.entitlementSlotId,
+    driverId: `driver:${context.employeeId}` };
+  assert.equal((await f.service.saveDraft(context, { commandId: 'alex-draft', expectedDraftVersion: 0,
+    expectedContextVersion: account.contextVersion, choices })).status, 'ok');
+  const paula = await selection(f);
+  const browsed = await f.service.browseStock(context); assert.equal(browsed.value.cars.length > 0, true);
+  const alex = { commandId: 'alex-claim', ...browsed.value.cars[0].claimInput };
+  const [a, b] = await Promise.all([f.service.claim(f.context, paula), f.service.claim(context, alex)]);
+  assert.equal([a, b].filter((o) => o.status === 'ok').length, 1);
+  const winner = a.status === 'ok' ? a : b; const loser = a.status === 'ok' ? context : f.context;
+  assert.equal((await f.service.readClaim(loser)).status, 'not-found');
+  assert.equal((await f.service.release(loser, { commandId: 'steal', holdId: winner.value.hold.holdId,
+    expectedHoldVersion: winner.value.hold.version, expectedDraftVersion: 1, reason: 'cancel' })).status, 'forbidden');
+});
+
+test('remote claim timeout persists intent before the effect, survives reopen, and retries reconcile before reallocation', async () => {
+  const adapter = remoteAdapter(); adapter.set('throw');
+  const f = await setup({ adapter }); const input = await selection(f);
+  const response = await f.service.claim(f.context, input);
+  assert.equal(response.status, 'pending');
+  assert.equal(adapter.calls.length, 1); assert.equal(adapter.calls[0].method, 'execute');
+  const operation = (await f.repository.query(f.context, 'pending_operations')).value[0];
+  assert.equal(operation.operationId, response.operationId);
+  assert.equal(operation.payload.quote.draftVersion, 1);
+  assert.equal(positiveVersion(operation.payload.expectedStockVersion), true);
+  assert.deepEqual(await f.service.claim(f.context, input), response);
+  assert.equal(adapter.calls.length, 1);
+  assert.equal((await f.service.readClaim(f.context)).value.hold.state, 'claim-pending');
+  assert.equal(adapter.calls.at(-1).method, 'reconcile');
+  assert.equal((await f.service.browseStock(f.context)).value.cars.length, 1);
+  const reopened = createMemoryRepository({ store: f.store }); await reopened.open();
+  const manual = new ManualContextService({ ...f, repository: reopened, ports: createRepositoryManualPorts({ ...f, repository: reopened }) });
+  const service = createManualClaimsService({ ...f, repository: reopened, manual });
+  adapter.set('confirmed');
+  assert.equal((await service.readClaim(f.context)).value.hold.state, 'active');
+  assert.equal(adapter.calls.filter((c) => c.method === 'execute').length, 1);
+  assert.equal((await reopened.query(f.context, 'pending_operations')).value[0].state, 'completed');
+});
+
+test('concurrent identical remote commands execute one new intent; committed replay reconciles before any resend', async () => {
+  const adapter = remoteAdapter(); const f = await setup({ adapter }); const input = await selection(f);
+  const [a, b] = await Promise.all([f.service.claim(f.context, input), f.service.claim(f.context, input)]);
+  assert.deepEqual(a, b); assert.equal(a.status, 'pending');
+  assert.equal(adapter.calls.filter((c) => c.method === 'execute').length, 1);
+  assert.equal((await f.repository.query(f.context, 'holds')).value.length, 1);
+  assert.equal((await f.repository.query(f.context, 'pending_operations')).value.length, 1);
+});
+const positiveVersion = (v) => Number.isSafeInteger(v) && v > 0;
+
+test('uncertain release stays excluded through expiry, then authoritative confirmation frees it; refusal preserves deadline', async () => {
+  const adapter = remoteAdapter(); adapter.set('confirmed');
+  const f = await setup({ adapter }); await claim(f);
+  const held = await f.service.readClaim(f.context); const input = { ...await action(f, 'cancel'), reason: 'cancel' };
+  adapter.set('pending');
+  const response = await f.service.release(f.context, input); assert.equal(response.status, 'pending');
+  assert.deepEqual(await f.service.release(f.context, input), response);
+  await advance(f, 120);
+  const uncertain = await f.service.readClaim(f.context);
+  assert.equal(uncertain.status, 'pending'); assert.equal(uncertain.value.hold.state, 'release-pending');
+  assert.equal((await f.service.browseStock(f.context)).value.cars.length, 1);
+  assert.equal((await f.service.claim(f.context, await selection(f, 0, 'no-second'))).status, 'conflict');
+  adapter.set('confirmed');
+  assert.equal((await f.service.readClaim(f.context)).value.state, 'released');
+  assert.equal((await f.service.browseStock(f.context)).value.cars.length, 2);
+  assert.equal(held.value.hold.expiresAt, uncertain.value.hold.expiresAt);
+  const second = await f.service.claim(f.context, await selection(f, 1, 'second')); assert.equal(second.status, 'pending');
+  const before = (await f.service.readClaim(f.context)).value;
+  adapter.set('rejected');
+  assert.equal((await f.service.release(f.context, { ...await action(f, 'refused'), reason: 'back' })).status, 'pending');
+  const refused = await f.service.readClaim(f.context);
+  assert.equal(refused.value.state, 'quoted'); assert.equal(refused.value.hold.expiresAt, before.hold.expiresAt);
+});
+
+test('pending selection is never freed at the deadline, and confirmation atomically allocates its original order', async () => {
+  const adapter = remoteAdapter(); adapter.set('confirmed'); const f = await setup({ adapter });
+  await claim(f); await f.service.beginReview(f.context, await action(f, 'review'));
+  adapter.set('pending');
+  const input = await action(f, 'save'); const response = await f.service.allocate(f.context, input);
+  assert.equal(response.status, 'pending'); await advance(f, 601);
+  const waiting = await f.service.readClaim(f.context);
+  assert.equal(waiting.status, 'pending'); assert.equal(waiting.value.hold.state, 'selection-pending');
+  assert.equal((await f.service.browseStock(f.context)).value.cars.length, 1);
+  adapter.set('confirmed'); const saved = await f.service.readClaim(f.context);
+  assert.equal(saved.value.state, 'allocated');
+  assert.equal((await f.repository.read(f.context, ref(f, 'stock', { orderUuid: saved.value.hold.orderUuid }))).value.allocated, true);
+});
+
+test('an uncertain remote claim is not freed by time; failed/malformed acknowledgements cannot fabricate success', async () => {
+  const adapter = remoteAdapter(); const f = await setup({ adapter }); await claim(f); await advance(f, 121);
+  assert.equal((await f.service.readClaim(f.context)).value.hold.state, 'claim-pending');
+  adapter.response = (operation) => ({ status: 'confirmed', operationId: 'wrong', runId: operation.runId, orderUuid: operation.payload.orderUuid });
+  assert.equal((await f.service.readClaim(f.context)).status, 'pending');
+  adapter.response = (operation) => ({ status: 'rejected', operationId: operation.operationId, runId: operation.runId, orderUuid: operation.payload.orderUuid });
+  assert.equal((await f.service.readClaim(f.context)).value.state, 'claim-failed');
+  assert.equal((await f.service.browseStock(f.context)).value.cars.length, 2);
+});
+
+test('clock ticks reconcile manual expiry with no employee browser and reset refuses historical commands', async () => {
+  const f = await setup(); await f.service.registerClockHandler(); const held = await claim(f); await advance(f, 120);
+  const state = (await f.clock.readState(f.presenter.context)).value;
+  const tick = await f.clock.tick(f.presenter.context, { eventId: 'expiry-tick', expectedClockVersion: state.clockVersion, inputDigest: inputDigest('expiry') });
+  assert.equal(tick.status, 'ok', JSON.stringify(tick));
+  assert.equal(tick.value.handlerOrder.some((h) => h.handlerId === 'manual-claim-expiry'), true);
+  assert.equal((await f.repository.query(f.context, 'holds', { state: 'expired' })).value.length, 1);
+  const current = (await f.clock.readState(f.presenter.context)).value;
+  await f.clock.reset(f.presenter.context, { commandId: 'reset', expectedRunId: current.runId, expectedRunVersion: current.runVersion,
+    scenarioVersion: current.versions.scenario, fixtureVersion: current.versions.fixture });
+  assert.equal((await f.service.readClaim(f.context)).status, 'stale-run');
+  assert.equal((await f.service.release(f.context, { commandId: 'old', holdId: held.value.hold.holdId,
+    expectedHoldVersion: 1, expectedDraftVersion: 1, reason: 'cancel' })).status, 'stale-run');
+});
+
+test('HTTP composes expiry before startup and exposes truthful scoped claim/quote/pending outcomes', async () => {
+  const adapter = remoteAdapter(); const f = await setup({ adapter });
+  const server = buildServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspManual: f.manual,
+    gcspManualClaims: f.service, gcspAllowedOrigins: ['https://manual.test'] });
+  server.listen(0, '127.0.0.1'); await once(server, 'listening');
+  const request = async (path, body, session = f.acting, origin = 'https://manual.test') => {
+    const r = await fetch(`http://127.0.0.1:${server.address().port}/api/gcsp/manual${path}`, {
+      method: body ? 'POST' : 'GET', headers: { Origin: origin, cookie: [session.setCookie].flat().map((v) => v.split(';')[0]).join('; '),
+        ...(body ? { 'Content-Type': 'application/json' } : {}) }, ...(body ? { body: JSON.stringify(body) } : {}) });
+    return { status: r.status, value: await r.json(), cache: r.headers.get('Cache-Control') };
+  };
+  try {
+    assert.equal((await server.gcspStartup).status, 'ok');
+    const input = await selection(f);
+    const pending = await request('/claim', input); assert.equal(pending.status, 202); assert.equal(pending.cache, 'no-store');
+    assert.equal((await request('/claim')).value.value.hold.state, 'claim-pending');
+    assert.equal((await request('/quote')).status, 202);
+    assert.equal((await request('/claim?employeeId=other')).status, 400);
+    assert.equal((await request('/claim', { ...input, employeeId: 'other' })).status, 400);
+    assert.equal((await request('/claim', input, f.acting, 'https://hostile.test')).status, 403);
+    adapter.set('confirmed'); assert.equal((await request('/claim')).status, 200);
+    const other = (await f.identity.switchPrincipal(f.presenter.context, 'demo-alex', 'alex')).value;
+    assert.equal((await request('/quote', null, other)).status, 404);
+    assert.equal((await request('/claim/allocate', await action(f))).status, 404);
+  } finally { server.closeAllConnections(); await new Promise((done) => server.close(done)); }
+});
+
+test('transaction failure rolls back quote/claim/hold/stock and intent before any remote effect', async () => {
+  const adapter = remoteAdapter(); const f = await setup({ adapter }); const input = await selection(f);
+  const repository = { ...f.repository, transaction(context, command, work) {
+    return f.repository.transaction(context, command, async (tx) => {
+      const response = await work(tx);
+      return command.commandId.startsWith('manual-claims:') ? result('unavailable', { retryable: true }) : response;
+    });
+  } };
+  const failed = createManualClaimsService({ ...f, repository });
+  assert.equal((await failed.claim(f.context, input)).status, 'unavailable');
+  for (const table of ['holds', 'claims', 'quotes', 'pending_operations']) assert.equal((await f.repository.query(f.context, table)).value.length, 0);
+  assert.equal((await f.repository.read(f.context, ref(f, 'stock', { orderUuid: input.orderUuid }))).value.state, 'released');
+  assert.equal(adapter.calls.length, 0);
+  assert.equal((await f.service.claim(f.context, input)).status, 'pending');
+});
+
+test('concurrent draft edits and changed authoritative employee records cannot bypass transactional revalidation', async () => {
+  const f = await setup(); const input = await selection(f);
+  const repository = { ...f.repository, async transaction(context, command, work) {
+    if (command.commandId === `manual:${context.employeeId}:edit-race`) await f.service.claim(context, input);
+    return f.repository.transaction(context, command, work);
+  } };
+  const manual = new ManualContextService({ ...f, repository, ports: createRepositoryManualPorts({ ...f, repository }) });
+  const draft = (await f.service.readDraft(f.context)).value;
+  const response = await manual.saveDraft(f.context, { commandId: 'edit-race', expectedDraftVersion: 1,
+    expectedContextVersion: draft.contextVersion, choices: { ...draft.choices, driverId: `nominated:${f.context.employeeId}` } });
+  assert.equal(response.reason, 'release-required');
+  assert.equal((await f.service.readDraft(f.context)).value.draftVersion, 1);
+
+  const g = await setup(); const selected = await selection(g); let changed = false;
+  const changing = { ...g.repository, async transaction(context, command, work) {
+    if (!changed && command.commandId.startsWith('manual-claims:')) {
+      changed = true;
+      await g.repository.transaction(context, cmd('authority-change'), (tx) => tx.compareAndSwap(
+        ref(g, 'employees', { employeeId: context.employeeId }), 2, { gradeId: 'G1-6' }));
+    }
+    return g.repository.transaction(context, command, work);
+  } };
+  const service = createManualClaimsService({ ...g, repository: changing });
+  assert.equal((await service.claim(g.context, selected)).reason, 'employee-authority-changed');
+  assert.equal((await g.repository.query(g.context, 'holds')).value.length, 0);
+});
+
+test('a changed driver or stale stock during order review refuses allocation but still permits explicit release', async () => {
+  const f = await setup(); await claim(f); await f.service.beginReview(f.context, await action(f, 'review'));
+  const input = await action(f, 'save');
+  await f.repository.transaction(f.context, cmd('driver-no-longer-eligible'), async (tx) => {
+    const employee = await tx.get(ref(f, 'employees', { employeeId: f.context.employeeId }));
+    const contract = structuredClone(employee.value.contract); contract.manualContext.drivers[0].eligible = fact(false);
+    return tx.compareAndSwap(ref(f, 'employees', { employeeId: f.context.employeeId }), employee.value.version, { contract });
+  });
+  assert.notEqual((await f.service.allocate(f.context, input)).status, 'ok');
+  const current = await f.service.readClaim(f.context); assert.equal(current.value.state, 'quoted');
+  assert.equal((await f.service.release(f.context, { ...await action(f, 'cancel-after-change'), reason: 'cancel' })).value.state, 'released');
+  const g = await setup(); const original = await claim(g); await g.service.beginReview(g.context, await action(g, 'review'));
+  await g.repository.transaction(g.context, cmd('stock-changed'), async (tx) => {
+    const stock = await tx.get(ref(g, 'stock', { orderUuid: original.value.hold.orderUuid }));
+    return tx.compareAndSwap(ref(g, 'stock', { orderUuid: original.value.hold.orderUuid }), stock.value.version, { revision: 'new-source-revision' });
+  });
+  const stale = await g.service.allocate(g.context, await action(g, 'save'));
+  assert.equal(stale.status, 'stale-version'); assert.equal(stale.resource, 'stock');
+  assert.equal((await g.service.readClaim(g.context)).value.state, 'quoted');
+});
+
+test('only authoritative absence permits resending the same pending operation; late claim confirmation first releases overdue stock', async () => {
+  const adapter = remoteAdapter(); const f = await setup({ adapter }); const original = await claim(f);
+  adapter.reconcile = async (operation) => { adapter.calls.push({ method: 'reconcile', operation }); return { status: 'not-found' }; };
+  adapter.set('confirmed');
+  assert.equal((await f.service.readClaim(f.context)).value.state, 'quoted');
+  const executions = adapter.calls.filter((c) => c.method === 'execute');
+  assert.equal(executions.length, 2); assert.equal(executions[0].operation.operationId, executions[1].operation.operationId);
+  assert.equal(executions[0].operation.operationId, original.operationId);
+
+  const slow = remoteAdapter(); const g = await setup({ adapter: slow }); await claim(g); await advance(g, 121);
+  slow.set('confirmed');
+  const overdue = await g.service.readClaim(g.context);
+  assert.equal(overdue.value.state, 'expired');
+  assert.equal(slow.calls.filter((c) => c.method === 'execute' && c.operation.operationType === 'manual-release').length, 1);
+  assert.equal((await g.service.browseStock(g.context)).value.cars.length, 2);
+});
+
+test('presentation fixtures assert actual quoted, released, expired, conflict, unavailable and pending responses', async () => {
+  const expected = JSON.parse(await readFile(new URL('./fixtures/gcsp/manual-claims-presentation.json', import.meta.url), 'utf8'));
+  const projection = (outcome) => ({ status: outcome.status, state: outcome.value?.state ?? null,
+    view: (outcome.value?.view ?? outcome.view)?.state ?? null, action: (outcome.value?.view ?? outcome.view)?.action ?? null });
+  const f = await setup(); const held = await claim(f);
+  assert.deepEqual(projection(held), expected.quoted);
+  assert.deepEqual(projection(await f.service.claim(f.context, await selection(f, 0, 'conflict'))), expected.conflict);
+  assert.deepEqual(projection(await f.service.release(f.context, { ...await action(f, 'cancel'), reason: 'cancel' })), expected.released);
+  await f.service.claim(f.context, await selection(f, 0, 'again')); await advance(f, 120);
+  assert.deepEqual(projection(await f.service.readClaim(f.context)), expected.expired);
+  const unavailable = createManualClaimsService({ ...f, adapter: null });
+  assert.deepEqual(projection(await unavailable.readClaim(f.context)), expected.unavailable);
+  const g = await setup({ adapter: remoteAdapter() }); await claim(g);
+  assert.deepEqual(projection(await g.service.readClaim(g.context)), expected.pending);
+});

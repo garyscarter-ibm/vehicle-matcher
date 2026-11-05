@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import pg from 'pg';
 import { createMemoryRepository, createMemoryStore } from '../gcsp/repository/memory.js';
 import { createPostgresRepository } from '../gcsp/repository/postgres.js';
@@ -52,7 +54,7 @@ export function repositoryContract(provider, factory) {
           await repository.close(); repository = await fixture.reopen();
           assert.equal((await repository.open()).status, 'ok');
           return repository;
-        });
+        }, fixture.processRead);
       } finally { await repository.close(); await fixture.cleanup?.(); }
     };
     await t.test('scoped CRUD, filtering, clones and persistence on reopen', () => withRepository(async (repository, reopen) => {
@@ -119,6 +121,42 @@ export function repositoryContract(provider, factory) {
       assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput()))).status, 'ok');
       const second = await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput({ orderUuid: 'car-b', holdId: 'hold-b', claimId: 'claim-b', employeeId: 'employee-b', entitlementSlotId: 'slot-b', quoteId: 'quote-b', type: 'buddy-offer' })));
       assert.equal(second.status, 'ok'); assert.equal(second.value.slotVersion, 2);
+    }));
+    await t.test('manual pinned quote, pending intent and exclusion commit together, roll back and survive reopen', () => withRepository(async (repository, reopen, processRead) => {
+      const quote = { runId: 'run-a', quoteId: 'manual-quote', orderUuid: 'car-a', employeeId: 'employee-a',
+        entitlementSlotId: 'slot-a', configurationId: 'same-config', draftVersion: 7, policyVersion: 'policy-1',
+        quotedAt: '2026-11-04T14:58:00.000Z', validUntil: expiresAt, expiresAt,
+        facts: { source: 'synthetic-contract', exact: 'car-a' }, terms: { points: { value: 800, unit: 'points' } },
+        provenance: { sourceRef: 'fixture:manual-contract' } };
+      const runClaim = async (tx, abort) => {
+        const pinned = await tx.insert('quotes', quote); if (pinned.status !== 'ok') return pinned;
+        const claim = await tx.conditionalClaim(claimInput({ quoteId: quote.quoteId, state: 'claim-pending', phase: 'preview', operationId: 'manual-operation' }));
+        if (claim.status !== 'ok') return claim;
+        const operation = await tx.insert('pending_operations', { runId: 'run-a', operationId: 'manual-operation',
+          operationType: 'manual-claim', idempotencyKey: 'manual-key', inputDigest: 'same-input', holdId: 'hold-a',
+          state: 'pending', lastKnownState: 'claim-pending', attempts: 0,
+          payload: { orderUuid: 'car-a', target: 'active', quote: pinned.value } });
+        if (operation.status !== 'ok') return operation;
+        return abort ? result('unavailable', { retryable: true }) : result('pending', {
+          operationId: 'manual-operation', operationType: 'manual-claim', lastKnownState: 'claim-pending' });
+      };
+      assert.equal((await repository.transaction(ctx(), command(), (tx) => runClaim(tx, true))).status, 'unavailable');
+      for (const table of ['holds', 'claims', 'pending_operations']) assert.equal((await repository.query(ctx(), table)).value.length, 0);
+      assert.equal((await repository.read(ctx(), ref('quotes', { quoteId: quote.quoteId }))).status, 'not-found');
+      assert.equal((await repository.read(ctx(), ref('stock', { orderUuid: 'car-a' }))).value.version, 1);
+      const stable = command('manual-durable');
+      const original = await repository.transaction(ctx(), stable, (tx) => runClaim(tx, false)); assert.equal(original.status, 'pending');
+      repository = await reopen();
+      assert.deepEqual(await repository.transaction(ctx(), stable, () => { throw new Error('must not replay effect'); }), original);
+      const hold = (await repository.read(ctx(), ref('holds', { holdId: 'hold-a' }))).value;
+      assert.equal(hold.state, 'claim-pending'); assert.equal(hold.expiresAt, expiresAt); assert.equal(hold.phase, 'preview');
+      const pinned = (await repository.read(ctx(), ref('quotes', { quoteId: quote.quoteId }))).value;
+      assert.equal(pinned.draftVersion, 7); assert.deepEqual(pinned.facts, quote.facts); assert.deepEqual(pinned.terms, quote.terms);
+      assert.equal((await repository.query(ctx(), 'pending_operations')).value[0].payload.quote.quoteId, quote.quoteId);
+      if (processRead) assert.deepEqual(processRead('hold-a'), { hold, quote: pinned });
+      assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput({
+        holdId: 'competitor', claimId: 'competitor', employeeId: 'employee-b', entitlementSlotId: 'slot-b', quoteId: 'quote-ba', expectedStockVersion: 2,
+      })))).reason, 'car-occupied');
     }));
     await t.test('pending phases occupy direct holds and claims; slot capacity is enforced', () => withRepository(async (repository) => {
       await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput()));
@@ -308,6 +346,13 @@ if (process.env.GCSP_DATABASE_URL === undefined) {
     return {
       repository: createPostgresRepository({ schema }),
       reopen: () => createPostgresRepository({ schema }),
+      processRead(holdId) {
+        try {
+          return JSON.parse(execFileSync(process.execPath, [fileURLToPath(new URL('./helpers/manual-claim-reopen.js', import.meta.url)),
+            schema, 'run-a', ctx().environmentId, holdId], { encoding: 'utf8', timeout: 20000, maxBuffer: 65536,
+            stdio: ['ignore', 'pipe', 'pipe'] }));
+        } catch { throw new Error('Configured PostgreSQL process reopen proof unavailable'); }
+      },
       async cleanup() {
         try { await pool.query(`DROP SCHEMA "${schema}" CASCADE`); }
         catch { throw new Error('PostgreSQL contract schema cleanup incomplete'); }

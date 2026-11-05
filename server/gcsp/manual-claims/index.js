@@ -34,6 +34,7 @@ export class ManualClaimsService {
     if (!this.#repository || !this.#policy || !this.#clock || !this.#identity || !this.#manual
       || !['local-synthetic', 'remote'].includes(this.#adapter?.mode)
       || this.#adapter.mode === 'remote' && (typeof this.#adapter.execute !== 'function' || typeof this.#adapter.reconcile !== 'function')) return unavailable();
+    if (this.#registration && (await this.#registration).status !== 'ok') return unavailable();
     return this.#identity.requireRole(context, 'employee');
   }
   async #time(context) {
@@ -76,11 +77,18 @@ export class ManualClaimsService {
     const now = await this.#time(context); if (now.status !== 'ok') return now;
     const operations = await this.#repository.query(context, 'pending_operations', { holdId: h.holdId, state: 'pending' });
     if (operations.status !== 'ok') return operations;
+    // Reads use the existing repository port. Refuse a torn cross-query projection
+    // if a concurrent command changed the hold while its quote/operation was read.
+    const latest = await this.#repository.read(context, ref(context, 'holds', { holdId: h.holdId }));
+    if (latest.status !== 'ok') return latest;
+    if (latest.value.version !== h.version) return stale('hold', h.version, latest.value.version);
+    if (h.state.endsWith('-pending') && !operations.value[0]) return unavailable();
     const state = h.state === 'active' ? 'quoted' : h.state;
     const value = { state, hold: h, quote: quote.value, pendingOperation: operations.value[0] ? {
       operationId: operations.value[0].operationId, operationType: operations.value[0].operationType,
       lastKnownState: operations.value[0].lastKnownState } : null, now: now.value.now, clockVersion: now.value.clockVersion,
-      view: view(state.endsWith('-pending') ? 'pending' : state, state === 'quoted' ? 'review-or-cancel' : state === 'allocated' ? 'continue-order-handoff' : 'browse-stock') };
+      view: view(state.endsWith('-pending') ? 'pending' : state, state.endsWith('-pending') ? 'check-status' : state === 'quoted'
+        ? h.phase === 'order-review' ? 'submit-or-cancel' : 'review-or-cancel' : state === 'allocated' ? 'continue-order-handoff' : 'browse-stock') };
     return value.pendingOperation ? { ...pending(operations.value[0]), value } : ok(value);
   }
   async #localFinish(tx, context, hold, target, reason) {
@@ -106,8 +114,10 @@ export class ManualClaimsService {
     }
     return changed;
   }
-  async #assertCurrent(tx, context, account, draft, time) {
+  async #assertCurrent(tx, context, account, draft, time, quote = null) {
     const employee = await tx.get(ref(context, 'employees', { employeeId: context.employeeId })); if (employee.status !== 'ok') return employee;
+    if (['principalId', 'employeeId', 'companyId', 'gradeId', 'schemeId', 'entitlementSlotId']
+      .some((key) => employee.value[key] !== context[key])) return conflict('employee-authority-changed');
     if (account.versions.employee !== null && employee.value.version !== account.versions.employee) return stale('employee', account.versions.employee, employee.value.version);
     const slot = await tx.get(ref(context, 'entitlement_slots', { entitlementSlotId: context.entitlementSlotId })); if (slot.status !== 'ok') return slot;
     if (slot.value.version !== account.versions.slot) return stale('entitlement-slot', account.versions.slot, slot.value.version);
@@ -118,6 +128,12 @@ export class ManualClaimsService {
     const run = await tx.get(ref(context, 'runs', {})); if (run.status !== 'ok') return run;
     if (run.value.clockVersion !== time.clockVersion) return stale('clock', time.clockVersion, run.value.clockVersion);
     if (run.value.policyVersion !== context.policyVersion) return conflict('policy-changed');
+    if (quote) {
+      const stock = await tx.get(ref(context, 'stock', { orderUuid: quote.orderUuid })); if (stock.status !== 'ok') return stock;
+      if (stock.value.version !== quote.eligibility.stockVersion) return stale('stock', quote.eligibility.stockVersion, stock.value.version);
+      if (stock.value.state !== 'held' || stock.value.allocated === true || stock.value.configurationId !== quote.configurationId
+        || inputDigest(stock.value.facts) !== inputDigest(quote.facts)) return conflict('claimed-stock-changed');
+    }
     return ok({ slot: slot.value });
   }
   async #operation(tx, context, hold, command, operationType, target, reason) {
@@ -167,6 +183,7 @@ export class ManualClaimsService {
   async #expire(context, hold, time) {
     const command = { commandId: `manual:expiry:${inputDigest([hold.holdId, hold.expiresAt, hold.version])}`,
       inputDigest: inputDigest({ holdId: hold.holdId, expiresAt: hold.expiresAt, version: hold.version }) };
+    let intentCreated = false;
     const outcome = await this.#repository.transaction(context, command, async (tx) => {
       const current = await tx.get(ref(context, 'holds', { holdId: hold.holdId })); if (current.status !== 'ok') return current;
       if (current.value.state !== 'active' || Date.parse(current.value.expiresAt) > Date.parse(time.now)) return ok({ noChange: true });
@@ -175,9 +192,10 @@ export class ManualClaimsService {
       if (started.status !== 'pending') return started;
       const changed = await this.#localFinish(tx, context, current.value, 'release-pending', 'expiry'); if (changed.status !== 'ok') return changed;
       const attached = await tx.compareAndSwap(ref(context, 'holds', { holdId: hold.holdId }), changed.value.version, { operationId: started.operationId });
+      intentCreated = attached.status === 'ok';
       return attached.status === 'ok' ? started : attached;
     });
-    if (outcome.status === 'pending') await this.#drive(context, outcome.operationId, true);
+    if (outcome.status === 'pending') await this.#drive(context, outcome.operationId, intentCreated);
     return outcome;
   }
   async #reconcile(context) {
@@ -189,7 +207,7 @@ export class ManualClaimsService {
     const holds = await this.#repository.query(context, 'holds', { type: 'cart', state: 'active' }); if (holds.status !== 'ok') return holds;
     for (const hold of holds.value.filter((r) => Date.parse(r.expiresAt) <= Date.parse(now.value.now))) {
       const expired = await this.#expire(context, hold, now.value);
-      if (!['ok', 'pending', 'stale-version', 'conflict'].includes(expired.status)) return expired;
+      if (!['ok', 'pending'].includes(expired.status)) return expired;
     }
     const remaining = await this.#repository.query(context, 'pending_operations', { state: 'pending' }); if (remaining.status !== 'ok') return remaining;
     const unresolved = remaining.value.find((r) => ['manual-claim', 'manual-release', 'manual-allocate'].includes(r.operationType));
@@ -238,6 +256,7 @@ export class ManualClaimsService {
     const timing = await this.#timing(context, time.value.now); if (timing.status !== 'ok') return timing;
     const id = inputDigest([context.runId, replay.command.commandId]); const holdId = `manual-hold:${id}`; const quoteId = `manual-quote:${id}`;
     const expiresAt = new Date(Date.parse(time.value.now) + timing.value.preview * 1000).toISOString();
+    let intentCreated = false;
     const claimed = await this.#repository.transaction(context, replay.command, async (tx) => {
       const checked = await this.#assertCurrent(tx, context, account.value, draft.value, time.value); if (checked.status !== 'ok') return checked;
       const occupied = await tx.list('holds', { employeeId: context.employeeId, entitlementSlotId: context.entitlementSlotId }); if (occupied.status !== 'ok') return occupied;
@@ -245,14 +264,15 @@ export class ManualClaimsService {
       const car = await tx.get(ref(context, 'stock', { orderUuid: input.orderUuid })); if (car.status !== 'ok') return car;
       if (car.value.version !== input.expectedStockVersion) return stale('stock', input.expectedStockVersion, car.value.version);
       if (car.value.state !== 'released' || car.value.available !== true || car.value.held === true || car.value.allocated === true) return conflict('stock-unavailable');
-      if (inputDigest(car.value.facts) !== inputDigest(decision.snapshot)) return conflict('stock-facts-changed');
+      if (car.value.configurationId !== decision.configurationId || inputDigest(car.value.facts) !== inputDigest(decision.snapshot)) return conflict('stock-facts-changed');
       const quote = await tx.insert('quotes', { runId: context.runId, quoteId, orderUuid: input.orderUuid,
         employeeId: context.employeeId, entitlementSlotId: context.entitlementSlotId, configurationId: car.value.configurationId,
         facts: decision.snapshot, eligibility: { ...decision.evidence.eligibility, contextVersion: account.value.contextVersion,
           termsDigest: termsDigest(decision), driverId: draft.value.choices.driverId, sources: account.value.versions,
+          stockVersion: car.value.version + 2,
           timing: timing.value }, terms: decision.terms,
         draftVersion: draft.value.draftVersion, policyVersion: context.policyVersion, quotedAt: time.value.now,
-        validUntil: decision.terms.validUntil, expiresAt, provenance: decision.terms.provenance,
+        validUntil: decision.terms.validUntil, expiresAt: decision.terms.validUntil, provenance: decision.terms.provenance,
         monthlyPoints: decision.terms.points, allowance: decision.terms.allowanceInputs });
       if (quote.status !== 'ok') return quote;
       // The foundation's conditionalClaim accepts available; the released -> available
@@ -271,12 +291,13 @@ export class ManualClaimsService {
       if (remote) {
         const operation = await this.#operation(tx, context, held.value.hold, replay.command, 'manual-claim', 'active'); if (operation.status !== 'pending') return operation;
         const attached = await tx.compareAndSwap(ref(context, 'holds', { holdId }), held.value.hold.version, { operationId: operation.operationId });
+        intentCreated = attached.status === 'ok';
         return attached.status === 'ok' ? operation : attached;
       }
       return ok({ state: 'quoted', hold: held.value.hold, quote: quote.value, pendingOperation: null,
         now: time.value.now, clockVersion: time.value.clockVersion, view: view('quoted', 'review-or-cancel') });
     });
-    if (claimed.status === 'pending') await this.#drive(context, claimed.operationId, true);
+    if (claimed.status === 'pending') await this.#drive(context, claimed.operationId, intentCreated);
     return claimed;
   }); }
   async #active(context, input) {
@@ -306,7 +327,7 @@ export class ManualClaimsService {
     const checked = await this.#revalidate(context, input, held.value); if (checked.status !== 'ok') return checked;
     const timing = held.value.quote.eligibility.timing;
     return this.#repository.transaction(context, replay.command, async (tx) => {
-      const current = await this.#assertCurrent(tx, context, checked.value.account, checked.value.draft, { clockVersion: held.value.clockVersion }); if (current.status !== 'ok') return current;
+      const current = await this.#assertCurrent(tx, context, checked.value.account, checked.value.draft, { clockVersion: held.value.clockVersion }, held.value.quote); if (current.status !== 'ok') return current;
       const hold = await tx.get(ref(context, 'holds', { holdId: input.holdId })); if (hold.status !== 'ok') return hold;
       if (hold.value.version !== input.expectedHoldVersion) return stale('hold', input.expectedHoldVersion, hold.value.version);
       if (hold.value.state !== 'active') return conflict('claim-not-active');
@@ -338,8 +359,9 @@ export class ManualClaimsService {
       if (held.value.hold.phase !== 'order-review') return conflict('order-review-required');
       checked = await this.#revalidate(context, input, held.value); if (checked.status !== 'ok') return checked;
     }
+    let intentCreated = false;
     const finished = await this.#repository.transaction(context, command, async (tx) => {
-      if (checked) { const current = await this.#assertCurrent(tx, context, checked.value.account, checked.value.draft, { clockVersion: held.value.clockVersion }); if (current.status !== 'ok') return current; }
+      if (checked) { const current = await this.#assertCurrent(tx, context, checked.value.account, checked.value.draft, { clockVersion: held.value.clockVersion }, held.value.quote); if (current.status !== 'ok') return current; }
       const hold = await tx.get(ref(context, 'holds', { holdId: input.holdId })); if (hold.status !== 'ok') return hold;
       if (hold.value.version !== input.expectedHoldVersion) return stale('hold', input.expectedHoldVersion, hold.value.version);
       if (hold.value.state !== 'active') return conflict('claim-not-active');
@@ -348,13 +370,14 @@ export class ManualClaimsService {
         if (operation.status !== 'pending') return operation;
         const changed = await this.#localFinish(tx, context, hold.value, target === 'allocated' ? 'selection-pending' : 'release-pending', reason); if (changed.status !== 'ok') return changed;
         const attached = await tx.compareAndSwap(ref(context, 'holds', { holdId: input.holdId }), changed.value.version, { operationId: operation.operationId });
+        intentCreated = attached.status === 'ok';
         return attached.status === 'ok' ? operation : attached;
       }
       const changed = await this.#localFinish(tx, context, hold.value, target, reason);
       return changed.status === 'ok' ? ok({ ...held.value, state: target, hold: changed.value,
         view: view(target, target === 'allocated' ? 'continue-order-handoff' : 'browse-stock') }) : changed;
     });
-    if (finished.status === 'pending') await this.#drive(context, finished.operationId, true);
+    if (finished.status === 'pending') await this.#drive(context, finished.operationId, intentCreated);
     return finished;
   }
 }

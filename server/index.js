@@ -49,6 +49,7 @@ import { createEmployeeRecommendationRoutes } from './gcsp/recommendation/http.j
 import { createClockRoutes } from './gcsp/clock/http.js';
 import { createBriefRoutes } from './gcsp/brief/http.js';
 import { createManualContextRoutes } from './gcsp/manual-context/http.js';
+import { createManualClaimsRoutes } from './gcsp/manual-claims/http.js';
 
 const PORT = Number(process.env.PORT) || 8787;
 const MAX_BODY_BYTES = 16 * 1024; // quiz answers are tiny; reject anything bigger
@@ -847,11 +848,18 @@ export function buildServer(deps = {}) {
     identity: deps.gcspIdentity,
     routes: [...createEmployeeRecommendationRoutes(deps.gcspClock && deps.gcspRecommendations
       ? { ...deps.gcspRecommendations, time: deps.gcspClock } : deps.gcspRecommendations),
-    ...createClockRoutes(deps.gcspClock), ...createBriefRoutes(deps.gcspBrief), ...createManualContextRoutes(deps.gcspManual), ...(deps.gcspRoutes || [])],
+    ...createClockRoutes(deps.gcspClock), ...createBriefRoutes(deps.gcspBrief),
+    ...createManualContextRoutes(deps.gcspManualClaims || deps.gcspManual), ...createManualClaimsRoutes(deps.gcspManualClaims), ...(deps.gcspRoutes || [])],
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
 
-  const gcspStartup = deps.gcspClock ? Promise.resolve().then(() => deps.gcspClock.reconcileStartup()).catch(() => ({
+  const gcspStartup = deps.gcspClock ? Promise.resolve().then(async () => {
+    if (deps.gcspManualClaims) {
+      const registered = await deps.gcspManualClaims.registerClockHandler();
+      if (registered.status !== 'ok') return registered;
+    }
+    return deps.gcspClock.reconcileStartup();
+  }).catch(() => ({
     status: 'unavailable', reason: 'GCSP startup reconciliation is unavailable.', retryable: true, contractVersion: '1.0.0',
   })) : Promise.resolve(null);
   const server = createServer(async (req, res) => {
