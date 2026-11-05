@@ -18,7 +18,8 @@ const sorted = (rows) => rows.filter((b) => b.status === 'confirmed').sort((a, b
 const draftRows = (rows) => rows.map((r) => r.outcome.value).sort((a, b) => a.draftVersion - b.draftVersion);
 const projection = (b) => ({ schemaVersion: 1, briefVersion: b.briefVersion, preferences: b.preferences,
   essentials: Object.fromEntries(Object.entries(b.essentials).filter(([key]) => key !== 'charging')) });
-const essentialMeaning = ({ operator, value, unit, state }) => ({ operator, value, unit, state });
+const essentialMeaning = ({ operator, value, unit, state }) => ({ operator,
+  value: operator === 'includes' && Array.isArray(value) ? [...new Set(value)].sort() : value, unit, state });
 
 // Business data lives only behind the repository. Draft receipts are a separate append-only
 // stream; confirmed versions never acquire draft/inferred fields through an update.

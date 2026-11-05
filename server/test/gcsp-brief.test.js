@@ -322,6 +322,23 @@ lifecycle('unchanged essential business fields preserve the decline change despi
   assert.equal(changed.value.brief.essentials.seats.source, 'employee');
 });
 
+lifecycle('equipment ordering and duplicate keys preserve the one real post-decline change', async () => {
+  const f = await setup(); const initial = data();
+  initial.essentials.equipment = essential(['towbar', 'heatedSeats'], 'includes', 'equipment-key');
+  await save(f, 'equipment-draft', initial); await confirm(f);
+  await f.repository.transaction(f.context, cmd('equipment-decline'), (tx) => tx.insert('decisions', { runId: f.context.runId,
+    decisionId: 'equipment-decline', offerId: 'equipment-offer', employeeId: f.context.employeeId, decision: 'decline', versions: { brief: 1 } }));
+  const input = { commandId: 'reordered-equipment', decisionId: 'equipment-decline', expectedBriefVersion: 1,
+    change: { path: 'essentials.equipment', value: essential(['heatedSeats', 'towbar', 'towbar'], 'includes', 'equipment-key') } };
+  assert.equal((await f.service.changeAfterDecline(f.context, input)).status, 'invalid');
+  assert.equal((await f.service.readHistory(f.context)).value.versions.length, 1);
+  const changed = await f.service.changeAfterDecline(f.context, { ...input, commandId: 'different-equipment',
+    change: { ...input.change, value: essential(['towbar'], 'includes', 'equipment-key') } });
+  assert.equal(changed.status, 'ok', JSON.stringify(changed));
+  assert.deepEqual(changed.value.brief.postDeclineChange.before.value, ['towbar', 'heatedSeats']);
+  assert.deepEqual(changed.value.brief.postDeclineChange.after.value, ['towbar']);
+});
+
 lifecycle('drafts based on a previous confirmation cannot overwrite a pause; changed receipts commit atomically', async () => {
   const f = await setup(); await save(f); await confirm(f);
   await save(f, 'second-draft', data(), { expectedDraftVersion: 1, expectedBriefVersion: 1 });
