@@ -1,7 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { randomUUID } from 'node:crypto';
 import pg from 'pg';
 import { PolicyService, FilePolicyProvider, MemoryPolicyProvider, PostgresPolicyProvider, createMemoryPolicyStore, createPolicyService } from '../gcsp/policy/index.js';
 import { createMemoryRepository, createMemoryStore } from '../gcsp/repository/index.js';
@@ -38,19 +37,29 @@ async function memoryFixture() {
   return { provider: new MemoryPolicyProvider({ store }), reopen: () => new MemoryPolicyProvider({ store }), cleanup: async () => {} };
 }
 
+let nativeSerial = 0;
 async function nativeFixture() {
   try {
     assert.ok(['postgres:', 'postgresql:'].includes(new URL(process.env.GCSP_DATABASE_URL).protocol));
   } catch { assert.fail('Configured PostgreSQL policy target is invalid; no alternate connection is attempted.'); }
-  const schema = `policy_${randomUUID().replaceAll('-', '')}`;
+  const schema = `gcsp_policy_${process.pid}_${++nativeSerial}`;
   const pool = new pg.Pool({ connectionString: process.env.GCSP_DATABASE_URL, max: 2, connectionTimeoutMillis: 5000,
     statement_timeout: 10000, query_timeout: 15000 });
   pool.on('error', () => {});
   try { await pool.query(`CREATE SCHEMA "${schema}"`); }
   catch { await pool.end(); assert.fail('Configured PostgreSQL policy target is unavailable.'); }
   const options = { pool, schema };
-  return { provider: new PostgresPolicyProvider(options), pool, schema, reopen: () => new PostgresPolicyProvider(options),
-    cleanup: async () => { try { await pool.query(`DROP SCHEMA "${schema}" CASCADE`); } finally { await pool.end(); } } };
+  let cleaned = false;
+  return { provider: new PostgresPolicyProvider(options), pool, schema,
+    reopen: () => new PostgresPolicyProvider({ connectionString: process.env.GCSP_DATABASE_URL, schema }),
+    cleanup: async () => {
+      if (cleaned) return;
+      try {
+        await pool.query(`DROP SCHEMA IF EXISTS "${schema}" CASCADE`);
+        const absent = await pool.query('SELECT count(*)::integer AS count FROM pg_namespace WHERE nspname = $1', [schema]);
+        assert.equal(absent.rows[0].count, 0, 'The exact owned synthetic policy schema must be absent.');
+      } finally { cleaned = true; await pool.end(); }
+    } };
 }
 
 function providerContract(name, factory) {
@@ -133,11 +142,15 @@ function providerContract(name, factory) {
         assert.equal((await reopened.loadVersions(await f.read())).length, 2);
       } finally { await reopened.close(); }
     }));
-    await t.test('simultaneous same-date publishers have one accepted immutable successor', () => withFixture(async (f) => {
-      const outcomes = await Promise.all([f.policy.publishPolicyVersion(f.greg, change()),
-        f.policy.publishPolicyVersion(f.greg, change({ commandId: 'competing', policyVersion: 'competing-v2' }))]);
-      assert.equal(outcomes.filter(({ status }) => status === 'ok').length, 1);
-      assert.equal((await f.provider.loadVersions(await f.read())).length, 2);
+    await t.test('independent-session same-date publishers have one accepted immutable successor', () => withFixture(async (f, fixture) => {
+      const reopened = fixture.reopen();
+      try {
+        const competing = new PolicyService({ provider: reopened, identity: f.identity, clock: f.clock });
+        const outcomes = await Promise.all([f.policy.publishPolicyVersion(f.greg, change()),
+          competing.publishPolicyVersion(f.greg, change({ commandId: 'competing', policyVersion: 'competing-v2' }))]);
+        assert.equal(outcomes.filter(({ status }) => status === 'ok').length, 1);
+        assert.equal((await f.provider.loadVersions(await f.read())).length, 2);
+      } finally { await reopened.close(); }
     }));
     await t.test('later scheduled versions retain distinct changes already scheduled before them', () => withFixture(async (f) => {
       assert.equal((await f.policy.publishPolicyVersion(f.greg, change())).status, 'ok');
@@ -228,6 +241,13 @@ test('native PostgreSQL rows/dates, seed replay, immutable SQL and reopen agree 
     assert.deepEqual(a, b); assert.deepEqual(a, await memory.provider.loadVersions(await m.read()));
     assert.deepEqual(await f.policy.publishPolicyVersion(f.greg, change()), await m.policy.publishPolicyVersion(m.greg, change()));
     assert.deepEqual(await fixture.provider.loadVersions(read), await memory.provider.loadVersions(await m.read()));
+    const audit = await fixture.pool.query(`SELECT data, effective_from FROM "${fixture.schema}".policy_versions WHERE run_id = $1 AND policy_version = $2`, [read.runId, 'policy-test-v2']);
+    assert.equal(audit.rows[0].data.publisher, f.greg.principalId);
+    assert.equal(audit.rows[0].data.publishedAt, '2026-11-05T09:00:00.000Z');
+    assert.equal(audit.rows[0].effective_from.toISOString(), nextDate);
+    const reopened = fixture.reopen();
+    try { assert.deepEqual(await reopened.loadVersions(read), await fixture.provider.loadVersions(read)); }
+    finally { await reopened.close(); }
     for (const table of ['policy_versions', ...Object.values(POLICY_TABLES)]) {
       const count = await fixture.pool.query(`SELECT count(*)::integer AS count FROM "${fixture.schema}"."${table}" WHERE run_id = $1`, [read.runId]);
       assert.equal(count.rows[0].count, table === 'policy_versions' ? 2 : a[0][Object.keys(POLICY_TABLES).find((key) => POLICY_TABLES[key] === table)].length * 2);
@@ -237,4 +257,48 @@ test('native PostgreSQL rows/dates, seed replay, immutable SQL and reopen agree 
       assert.equal(dates.rows[0].count, 0);
     }
   } finally { await fixture.provider.close(); await memory.provider.close(); await f?.repository.close(); await m?.repository.close(); await fixture.cleanup(); }
+});
+
+test('native PostgreSQL mid-publication SQL failure rolls back every typed row and permits a valid retry', { skip: !configured }, async () => {
+  const fixture = await nativeFixture();
+  let f;
+  try {
+    f = await setup(fixture.provider);
+    const read = await f.read();
+    const before = await fixture.provider.loadVersions(read);
+    const tables = ['policy_versions', ...Object.values(POLICY_TABLES)];
+    const counts = async () => Promise.all(tables.map(async (table) => {
+      const result = await fixture.pool.query(`SELECT count(*)::integer AS count FROM "${fixture.schema}"."${table}" WHERE run_id = $1`, [read.runId]);
+      return result.rows[0].count;
+    }));
+    const previousCounts = await counts();
+    await fixture.pool.query(`CREATE FUNCTION "${fixture.schema}".fail_policy_publication() RETURNS trigger LANGUAGE plpgsql AS $$
+      BEGIN
+        IF NEW.data->>'policyVersion' = 'policy-test-v2' THEN
+          RAISE EXCEPTION 'Synthetic policy rollback checkpoint';
+        END IF;
+        RETURN NEW;
+      END;
+      $$;
+      CREATE TRIGGER synthetic_publication_failure BEFORE INSERT ON "${fixture.schema}".policy_assumptions
+        FOR EACH ROW EXECUTE FUNCTION "${fixture.schema}".fail_policy_publication()`);
+    try {
+      const rejected = await f.policy.publishPolicyVersion(f.greg, change());
+      assert.equal(rejected.status, 'unavailable');
+      assert.doesNotMatch(JSON.stringify(rejected), /Synthetic policy rollback checkpoint|postgres:/);
+      assert.deepEqual(await counts(), previousCounts);
+      assert.deepEqual(await fixture.provider.loadVersions(read), before);
+    } finally {
+      await fixture.pool.query(`DROP TRIGGER synthetic_publication_failure ON "${fixture.schema}".policy_assumptions;
+        DROP FUNCTION "${fixture.schema}".fail_policy_publication()`);
+    }
+    assert.deepEqual(await f.policy.publishPolicyVersion(f.greg, change()), fixtures.accepted);
+    assert.deepEqual((await fixture.provider.loadVersions(read))[0], before[0]);
+    const invalid = await fixture.provider.publish({ ...read, runId: 'owned-empty-invalid-run' }, async () => ({ outcome: fixtures.invalid }));
+    assert.deepEqual(invalid, fixtures.invalid);
+    for (const table of tables) {
+      const rows = await fixture.pool.query(`SELECT count(*)::integer AS count FROM "${fixture.schema}"."${table}" WHERE run_id = $1`, ['owned-empty-invalid-run']);
+      assert.equal(rows.rows[0].count, 0, 'First-use rejection must roll back its seed as well.');
+    }
+  } finally { await fixture.provider.close(); await f?.repository.close(); await fixture.cleanup(); }
 });
