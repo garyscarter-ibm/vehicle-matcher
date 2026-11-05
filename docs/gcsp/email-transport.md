@@ -2,7 +2,9 @@
 
 Recorded 5 November 2026 at Russell's request, using the existing StanleyPi setup notes and Deckhead implementation. This is implementation background for [FUCQ-98](https://ibm-consulting.atlassian.net/browse/FUCQ-98), with the boundaries for FUCQ-93 and FUCQ-97 below. It does not start a poller, provision a sender or send email.
 
-FUCQ-98 remains paused by Gary's 5 November decision (Jira comment `132470` and `paused:` in `_dev/code-inbox/DEV-2026-11-04-054.md`). This request records the method for later pickup; it does not clear that pause or prove the sender precondition. Any collaborator can explicitly resume it under the project's equal-authority rule. The captured outbox continues to cover the demonstration.
+**Resumed by Russell, 5 November 2026:** "Yes resume it, I just gave the Brevo details in another session" (Codex chat `01a1ac41-5c78-7ff1-a49a-b7abdfc17ac3`). This explicitly supersedes Gary's earlier pause in Jira comment `132470`; the story's `paused:` line is removed. Implementation can proceed using this handoff. Verify the configured sender/API key, approved demo-recipient mapping and public offer URL before the story's deliberate real-send check. The captured outbox remains available throughout.
+
+**Jira reconciliation pending:** the Atlassian connector returned `unauthorized_client` / invalid refresh token when recording this resumption, and OpenTabs was disconnected. The next authenticated Jira pass must record this decision on FUCQ-98 and replace its obsolete pause/precondition wording with the resumed text in the [story mirror](fucq-86-90-stories.md). Preserve the committed resumption if an import still carries the older pause. No new collaborator approval is needed.
 
 ## Existing evidence
 
@@ -17,7 +19,7 @@ Deckhead source revision: `29346ec9ba001949fc6630a71c1e0ffc85443f37`; these thre
 
 ## Required transport method
 
-Use Brevo's transactional HTTP API for the one real adapter when FUCQ-98 resumes. Use built-in `fetch`, as Deckhead does; no SMTP relay, mail SDK or additional runtime dependency is needed. Keep it behind the existing `MailTransport.send({ context, job, message, now })` port in `server/gcsp/notify/port.js`.
+Use Brevo's transactional HTTP API for FUCQ-98's one real adapter. Use built-in `fetch`, as Deckhead does; no SMTP relay, mail SDK or additional runtime dependency is needed. Keep it behind the existing `MailTransport.send({ context, job, message, now })` port in `server/gcsp/notify/port.js`.
 
 Send `POST https://api.brevo.com/v3/smtp/email` with backend-only `api-key`, `Content-Type: application/json` and `Accept: application/json` headers. Map the existing rendered GCSP message rather than copying Deckhead's invitation/password-reset content:
 
@@ -62,9 +64,9 @@ These are **proposed FUCQ-98 names**, not settings already implemented in GCSP. 
 
 No new PAT is needed to document or implement this HTTP method. The send credential is a **Brevo API key**, not a GitHub PAT, IBM inference key or Microsoft token. The existing local keychain helper establishes a retrieval pattern, not the presence or validity of a key for the GCSP Render process. Do not extract Deckhead's settings database or copy credentials into source, stories, chat, ordinary config files or shell arguments. A collaborator can privately configure an existing suitable key in Render; generate a new Brevo key only if the existing one is unavailable, revoked or unsuitable.
 
-Before enabling real sends after explicit resumption, verify the configured key with backend-only `GET https://api.brevo.com/v3/account` using the same `api-key` header. This request sends no mail, but its response can contain account details: retain only a safe result. An authentication refusal and a network timeout are different outcomes. Then verify the chosen sender in that account, the explicit demo recipient mapping and the public offer URL. No current Brevo account, sender status, credit balance, keychain item or Render secret was checked for this handoff.
+Before enabling real sends, verify the configured key with backend-only `GET https://api.brevo.com/v3/account` using the same `api-key` header. This request sends no mail, but its response can contain account details: retain only a safe result. An authentication refusal and a network timeout are different outcomes. Then verify the chosen sender in that account, the explicit demo recipient mapping and the public offer URL. No current Brevo account, sender status, credit balance, keychain item or Render secret was checked for this handoff.
 
-FUCQ-98's existing sender-setup boundary remains: provisioning a sender/domain/tenant is outside the implementation story. Once resumed and configured, its existing acceptance requires one deliberate real send to an approved demo inbox, the provider ID in the result and actual inbox/link verification. Ask for the specific missing setup at that point; do not request a PAT speculatively or claim that the sender precondition has cleared from these notes alone.
+FUCQ-98's existing sender-setup boundary remains: provisioning a sender/domain/tenant is outside the implementation story. Once configured, its existing acceptance requires one deliberate real send to an approved demo inbox, the provider ID in the result and actual inbox/link verification. Ask for the specific missing setup at that point; do not request a PAT speculatively or claim that the sender precondition has cleared from these notes alone.
 
 ## Selected validation
 

@@ -163,3 +163,11 @@ Native Jira OAuth then failed during FUCQ-42 adoption (`unauthorized_client`, in
 
 Measured dispatch headroom was 10.7 GB free RAM, 67% free memory, 1,641.88 MiB swap used and about 65 GiB free disk. The configured count remains advisory under the human override; HostBudget, actual slots, serial full suites and merges remain binding. This lifecycle/evidence record changes no application behavior; no extra application suite is selected for prose.
 
+## 15:16 dispatcher pass
+
+The wrapper pull was current at `188e8ef`; posting was clean, the pen unused and mail empty. Native Jira remains unreachable with the previously reported invalid refresh token, so the whole Jira pass was skipped without allocating importer scratch or acknowledging pending operations. Five owned claims and both GC leases are unchanged. No new claim is eligible within the actual prerequisites and date gates; the private database handoff file remains absent.
+
+FUCQ-42's 17-test baseline and expanded 19-test adapter checks passed. A regression first demonstrated missing/wrong content-type and dimension metadata reaching presentation; the adapter now shares its registered-metadata guard with that projection. The combined boundary chunk completed 22 catalogue checks before exceeding its 256 MiB RAM budget; it is explicitly incomplete. The isolated retail retry passed at 384 MiB, with measured peak RSS 305,561,600 bytes. The dispatcher verified all five scoped child roots, groups and reservations absent, all 139 retained dependency hashes unchanged, target device/inode preserved and the scoped overlay absent. Final successful-log cleanup remains the lead's duty. Receipt: `.claude/test-runs/ownership/fucq42-20261105-scoped-dispatcher-verify.json`.
+
+The serial authored full-suite slot is assigned to FUCQ-42 after its stable checkpoint is committed/pushed and the current base integrated, with fresh HostBudget admission, one worker, 768 MiB RAM, 32 MiB scratch and a ten-minute bound. No full result is yet claimed. The other held stories retain their genuine source, producer and native PostgreSQL gates. No application tests are selected for this dispatcher prose; evidence is the completed scoped receipts and independent filesystem/dependency audit.
+
