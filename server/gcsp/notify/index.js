@@ -1,7 +1,11 @@
 import { inputDigest, ok, result } from '../repository/index.js';
 import { CapturedTransport } from './captured.js';
+import { createMailTransport } from './config.js';
+import { MAIL_FAILURE_CODES, confirmedBrevoAcknowledgement } from './brevo.js';
 import { renderOfferMessage } from './templates.js';
 import { renderCaseMessage } from '../cases/notification.js';
+export { BrevoMailTransport } from './brevo.js';
+export { createMailTransport } from './config.js';
 export { MailTransport } from './port.js';
 export { CapturedTransport } from './captured.js';
 export { renderOfferMessage } from './templates.js';
@@ -14,7 +18,7 @@ const due = (job, now) => job.state === 'pending' || job.state === 'sending'
 export class NotificationDispatcher {
   #repository; #policy; #clock; #environmentId; #transport; #logger;
   #active; #again = false; #startup; #unsubscribe;
-  constructor({ repository, policy, clock, environmentId, transport = new CapturedTransport({ repository }), logger } = {}) {
+  constructor({ repository, policy, clock, environmentId, mail, transport = createMailTransport({ repository, ...mail }), logger } = {}) {
     if (!repository || !policy || !clock || !environmentId || typeof transport?.send !== 'function') throw new TypeError('Inject notification ports and a trusted environment.');
     this.#repository = repository; this.#policy = policy; this.#clock = clock;
     this.#environmentId = environmentId; this.#transport = transport; this.#logger = logger;
@@ -34,7 +38,7 @@ export class NotificationDispatcher {
     })();
     return this.#startup;
   }
-  close() { this.#unsubscribe?.(); this.#unsubscribe = undefined; }
+  close() { this.#unsubscribe?.(); this.#unsubscribe = undefined; return this.#active ?? Promise.resolve(); }
 
   async dispatchPending(expectedContext) {
     if (expectedContext) {
@@ -82,7 +86,7 @@ export class NotificationDispatcher {
         if (!due(job, now)) return ok(null);
         if (job.state === 'sending') return ok(job); // recover an interrupted durable attempt
         return tx.compareAndSwap(ref(context, job.jobId), job.version, { state: 'sending', attempts: (job.attempts ?? 0) + 1,
-          outcome: { attemptedAt: now, error: null, nextAttemptAt: null, policyVersion: configured.policyVersion } });
+          outcome: { ...job.outcome, attemptedAt: now, error: null, nextAttemptAt: null, policyVersion: configured.policyVersion } });
       });
       if (claimed.status === 'stale-run') return claimed;
       if (claimed.status !== 'ok' || !claimed.value) continue;
@@ -92,7 +96,8 @@ export class NotificationDispatcher {
       let retryable = true;
       try {
         const caseUpdate = job.messageKind === 'renewal-case-update' && job.messageVersion === '1';
-        if (caseUpdate) {
+        if (confirmedBrevoAcknowledgement(job.outcome?.provider)) delivery = ok({ accepted: true });
+        else if (caseUpdate) {
           const employee = await this.#repository.read(context, { table: 'employees', key: { runId: context.runId, employeeId: job.recipientId } });
           const update = job.payload?.caseUpdate;
           if (employee.status === 'unavailable') throw new Error();
@@ -151,6 +156,8 @@ export class NotificationDispatcher {
         if (acknowledged.value) counts.sent += 1;
         continue;
       }
+      if (MAIL_FAILURE_CODES.has(delivery?.code)) { error = delivery.code; retryable = delivery.retryable === true; }
+      else if (delivery && typeof delivery.retryable === 'boolean') retryable = delivery.retryable;
       const state = retryable && job.attempts < rules.maxAttempts ? 'retrying' : 'failed';
       const delay = Math.min(rules.retryMaximumSeconds, rules.retryBaseSeconds * 2 ** Math.min(job.attempts - 1, 52));
       const nextAttemptAt = state === 'retrying' ? new Date(Date.parse(now) + delay * 1000).toISOString() : null;

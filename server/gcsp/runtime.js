@@ -7,17 +7,18 @@ import { seedManualDemoContext } from './manual-context/fixtures.js';
 import { createBriefService } from './brief/index.js';
 import { createBriefEditorService } from './brief/editor.js';
 import { createActivityService } from './brief/activity.js';
+import { NotificationDispatcher } from './notify/index.js';
 
 const unavailable = () => result('unavailable', { reason: 'The trusted demo runtime is unavailable.', retryable: true });
 const scoped = (value, context) => ['runId', 'environmentId', 'employeeId'].every((key) => value?.[key] === context[key]);
 
 // Explicit composition only. A failed PostgreSQL open never changes providers.
 export async function createGcspRuntime({ mode = 'postgres', repository, repositoryOptions, policy = createPolicyService(),
-  environmentId, policyAsOf, commandId, sessionNow = () => new Date().toISOString() } = {}) {
+  environmentId, policyAsOf, commandId, mail, sessionNow = () => new Date().toISOString() } = {}) {
   if (!['postgres', 'memory'].includes(mode)) return result('invalid', { code: 'unsupported-repository-mode' });
   repository ??= mode === 'memory' ? createMemoryRepository({ store: createMemoryStore() }) : createPostgresRepository(repositoryOptions);
-  let closed = false;
-  const close = async () => { if (!closed) { closed = true; await repository.close(); } };
+  let closing; let notifications;
+  const close = () => closing ??= (async () => { await notifications?.close(); await repository.close(); })();
   try {
     const opened = await repository.open();
     if (opened.status !== 'ok') { await close(); return opened; }
@@ -45,7 +46,8 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     } };
     const editor = createBriefEditorService({ brief, account, provider, policy, clock, identity });
     const activity = createActivityService({ repository, identity, clock });
-    const dependencies = { gcspIdentity: identity, gcspClock: clock, gcspManual: account, gcspBrief: brief,
+    notifications = new NotificationDispatcher({ repository, policy, clock, environmentId, mail });
+    const dependencies = { gcspIdentity: identity, gcspClock: clock, gcspNotify: notifications, gcspOutbox: { repository }, gcspManual: account, gcspBrief: brief,
       gcspBriefEditor: editor, gcspActivity: activity, gcspRecommendations: { provider, policy, time: clock } };
     // Backend-only local bootstrap. The browser cannot choose identities or receive raw credentials in JSON.
     async function createLocalSession() {
