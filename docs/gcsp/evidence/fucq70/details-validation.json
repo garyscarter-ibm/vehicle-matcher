@@ -1,0 +1,65 @@
+{
+  "story": "FUCQ-70",
+  "slice": "details",
+  "observedAt": "2026-11-05T23:23:04.499282+00:00",
+  "scope": "Independent metadata service boundary; explicit claim-read double",
+  "base": "727082730edd56ed2d6c9a28eaf905db05cd1866",
+  "source": {
+    "server/gcsp/manual-review/http.js": "e37dbc4dd6764f533be77341d07d1c4a4e4fe18fadcf0bc15ead4bb34186b22e",
+    "server/gcsp/manual-review/index.js": "86b850450957e27bbc12dceffe49aa27b27efe8a458abe4ba533ebf65fa6f323",
+    "server/gcsp/manual-review/validation.js": "d70a4c1d51afd8acb180f6cc748de80a0bea37f157912db92a8e8ad1a4626d05",
+    "server/test/gcsp-manual-review.test.js": "35f0fc0958158fd7cc2e748aaa411de3b9fd4cff382e4a4c75e2d02436c0c8a3"
+  },
+  "contractSha256": "1dfcb1bd0206842e90769a12cb92e765ab991d11be1c10fecfa74ab18b48a4d7",
+  "command": [
+    "node",
+    "--test",
+    "--test-concurrency=1",
+    "server/test/gcsp-manual-review.test.js"
+  ],
+  "tests": {
+    "total": 15,
+    "pass": 15,
+    "fail": 0,
+    "skip": 0
+  },
+  "resources": [
+    {
+      "rc": 0,
+      "wallSeconds": 1.093179042,
+      "peakRssBytes": 215023616,
+      "peakScratchBytes": 0
+    }
+  ],
+  "parentAudit": {
+    "allocations": 5,
+    "allClean": true,
+    "dependencyLinkAbsent": true,
+    "dependenciesPreserved": true,
+    "packageHashesUnchanged": true
+  },
+  "unproved": [
+    "Actual FUCQ-66/69 producer journey",
+    "FUCQ-71 same-transaction freeze/submission/order readback",
+    "HTTP composition including pending202 producer change",
+    "native PostgreSQL",
+    "browser/keyboard/320px",
+    "authored full suite and strict stamp"
+  ],
+  "agents": [
+    {
+      "name": "Henery Hawk",
+      "requested": "gpt-6.1-sol/high",
+      "selected": "gpt-6.1-sol/high",
+      "effective": "gpt-6.1-sol/high",
+      "fallback": null
+    },
+    {
+      "name": "Sniffles",
+      "requested": "gpt-6.1-sol/medium",
+      "selected": "gpt-6.1-sol/medium",
+      "effective": "gpt-6.1-sol/medium",
+      "fallback": null
+    }
+  ]
+}

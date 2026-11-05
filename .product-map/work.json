@@ -689,8 +689,75 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-70"
+      "observed_at": "2026-11-05T23:22:19Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-70",
+      "tracker_observed_at": "2026-11-05T22:40:24Z",
+      "branch": "dev/DEV-2026-11-04-070",
+      "workers": [
+        {
+          "name": "Henery Hawk",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-05T23:12:54+00:00",
+          "expires_at": "2026-11-05T23:57:54+00:00",
+          "source": "chat 01a1adfa-9a52-7d92-b518-130f5bb4ad8c verified active turn; gpt-6.1-sol/high",
+          "status": "contract and metadata slice in progress"
+        },
+        {
+          "name": "Sniffles",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-05T23:23:56+00:00",
+          "expires_at": "2026-11-05T23:23:56+00:00",
+          "source": "child final report plus parent source/test/resource review, gpt-6.1-sol/medium",
+          "status": "details slice complete; worker stopped"
+        }
+      ],
+      "slices": [
+        {
+          "id": "details",
+          "status": "complete",
+          "title": "Revisioned-review-details-policy-validation-save-read-freeze",
+          "observed_at": "2026-11-05T23:22:19Z",
+          "evidence": "Lead reviewed173-line service,validation,routes,callers and exactcontract;15/15 affected checks pass; child+lead fiveallocations independently absent. docs/gcsp/evidence/fucq70/README.md; actual66/71 integrations remain separate planned gates."
+        },
+        {
+          "id": "controller",
+          "status": "not-started",
+          "title": "Authoritative-claim-handoff-review-release-controller"
+        },
+        {
+          "id": "view",
+          "status": "not-started",
+          "title": "Shared-component-accessible-responsive-review-custom-element"
+        },
+        {
+          "id": "service-integration",
+          "status": "not-started",
+          "title": "Actual-frozen66-memory-producer-and-HTTP-integration"
+        },
+        {
+          "id": "submission-integration",
+          "status": "not-started",
+          "title": "Actual71-atomic-freeze-submit-order-readback"
+        },
+        {
+          "id": "visual",
+          "status": "not-started",
+          "title": "Desktop-320px-keyboard-and-presenter-tick-browser-evidence"
+        },
+        {
+          "id": "full",
+          "status": "not-started",
+          "title": "Authored-ratchet-and-full-suite-with-strict-stamp"
+        },
+        {
+          "id": "delivery",
+          "status": "not-started",
+          "title": "Lead-acceptance-review-trials-resource-audit-and-delivery"
+        }
+      ],
+      "unsliced": false
     },
     {
       "id": "FUCQ-71",
