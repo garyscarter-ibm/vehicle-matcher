@@ -12,6 +12,17 @@ const date = (v) => v === null || typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/
 const keys = (v, names) => object(v) && Object.keys(v).every((k) => names.includes(k))
   && names.every((k) => Object.hasOwn(v, k));
 const stringList = (v) => Array.isArray(v) && v.every(text);
+const only = (v, names) => object(v) && Object.keys(v).every((k) => names.includes(k));
+const safeReference = (v) => {
+  if (!text(v)) return false;
+  if (!v.includes('://')) return !/^[a-z][a-z0-9+.-]*:/i.test(v) && !v.includes('?')
+    && !v.startsWith('//') && !v.includes('\\') && !v.split('/').includes('..');
+  try {
+    const u = new URL(v);
+    return u.protocol === 'https:' && !u.username && !u.password && !u.search
+      && !/^(localhost|.*\.local|127\..*|0\..*|10\..*|192\.168\..*|172\.(1[6-9]|2\d|3[01])\..*|\[.*\])$/.test(u.hostname);
+  } catch { return false; }
+};
 const states = ['complete', 'partial', 'unknown'];
 const failureStatuses = ['invalid-input', 'not-found', 'unsupported', 'source-unavailable', 'identity-mismatch'];
 const expectedFields = ['configurationId', 'vehicleId', 'datasetId', 'originatingDatasetId', 'corpusVersion',
@@ -26,16 +37,18 @@ const measurements = { seats: ['SEATS', 'COUNT'], luggageNormal: ['NORMAL', 'LIT
 function provenance(p) {
   return keys(p, ['kind', 'source', 'observedDate']) && ['observed', 'reference', 'unknown'].includes(p.kind)
     && date(p.observedDate) && (p.kind === 'unknown' ? p.source === null && p.observedDate === null
-      : (text(p.source) || stringList(p.source)) && p.observedDate !== null);
+      : (text(p.source) && safeReference(p.source) || stringList(p.source) && p.source.length > 0 && p.source.every(safeReference))
+        && p.observedDate !== null);
 }
 function fact(f, numeric = false) {
-  if (!object(f) || !['known', 'unknown'].includes(f.state) || !states.includes(f.completeness) || !provenance(f.provenance)) return false;
-  return f.state === 'known' ? f.provenance.kind !== 'unknown' && (numeric
+  if (!only(f, ['state', 'value', 'reason', 'completeness', 'provenance', ...(numeric ? ['definition', 'unit'] : [])])
+    || !['known', 'unknown'].includes(f.state) || !states.includes(f.completeness) || !provenance(f.provenance)) return false;
+  return f.state === 'known' ? f.completeness !== 'unknown' && f.provenance.kind !== 'unknown' && (numeric
     ? typeof f.value === 'number' && Number.isFinite(f.value) && f.value >= 0 : text(f.value))
     : f.value === null && text(f.reason) && f.completeness === 'unknown' && f.provenance.kind === 'unknown';
 }
 function appearance(a) {
-  return object(a) && ['known', 'unknown'].includes(a.state) && Array.isArray(a.selections)
+  return only(a, ['state', 'selections', 'reason']) && ['known', 'unknown'].includes(a.state) && Array.isArray(a.selections)
     && (a.state === 'unknown' ? a.selections.length === 0 && text(a.reason) : a.selections.length > 0)
     && a.selections.every((s) => keys(s, ['code', 'label', 'claim']) && text(s.code)
       && fact(s.label) && s.claim === 'selected-catalogue-equipment');
@@ -43,7 +56,9 @@ function appearance(a) {
 function equipment(e) {
   if (!keys(e, ['definitions', 'available', 'selected', 'verifiedFitted']) || !Array.isArray(e.definitions)
     || !e.definitions.every((d) => keys(d, ['code', 'category', 'label']) && text(d.code) && text(d.category) && fact(d.label))
-    || !object(e.available) || !object(e.selected) || !object(e.verifiedFitted)) return false;
+    || !only(e.available, ['state', 'codes', 'complete', 'completeness', 'provenance'])
+    || !only(e.selected, ['state', 'options', 'accessories', 'complete', 'completeness', 'provenance'])
+    || !keys(e.verifiedFitted, ['state', 'codes', 'reason'])) return false;
   return ['known', 'unknown'].includes(e.available.state) && states.includes(e.available.completeness)
     && (e.available.state === 'known' ? stringList(e.available.codes) : e.available.codes === null)
     && ['known', 'unknown'].includes(e.selected.state) && states.includes(e.selected.completeness)
@@ -62,7 +77,7 @@ function imageEvidence(i) {
     && (i.items.length ? i.state === 'representative' && i.label === 'Representative imagery'
       : i.state === 'unknown' && i.label === 'Images unavailable')
     && i.items.every((x) => keys(x, ['imageId', 'asset', 'role', 'fidelity', 'sourceKind', 'observedDate', 'label'])
-      && text(x.imageId) && text(x.asset) && ['representative-model', 'representative-configuration'].includes(x.role)
+      && text(x.imageId) && safeReference(x.asset) && ['representative-model', 'representative-configuration'].includes(x.role)
       && x.role === x.fidelity && x.sourceKind === 'dated-snapshot' && date(x.observedDate) && x.observedDate !== null
       && x.label === (x.fidelity === 'representative-configuration' ? 'Representative configuration image' : 'Representative model image'));
 }
@@ -72,16 +87,35 @@ function sourceEvidence(s) {
     'vgModelCode', 'modelYear', 'productionEra', 'productionDate', 'registrationDate', 'profile', 'profileSources',
     'profileConfidence', 'completeVinDecoded', 'unresolvedFacts', 'identityProvenance'];
   return keys(s, names) && ['dated-snapshot', 'north-american-reference'].includes(s.kind)
-    && stringList(s.references) && s.references.length > 0 && text(s.confidence)
+    && stringList(s.references) && s.references.every(safeReference) && s.references.length > 0 && text(s.confidence)
     && ['observedDate', 'retrievedDate', 'catalogueDate', 'productionDate', 'registrationDate'].every((k) => date(s[k]))
     && s.observedDate !== null && text(s.market) && s.completeVinDecoded === false
     && ['region', 'steering', 'agModelCode', 'vgModelCode', 'productionEra', 'profileConfidence'].every((k) => nullableText(s[k]))
     && (s.modelYear === null || Number.isInteger(s.modelYear)) && stringList(s.unresolvedFacts)
-    && object(s.configurationIdentity) && stringList(s.configurationIdentity.factoryOptionCodes)
-    && object(s.identityProvenance) && ['synthetic', 'observed'].includes(s.identityProvenance.kind)
-    && (s.requestedIdentity === null || object(s.requestedIdentity)) && (s.resolvedIdentity === null || object(s.resolvedIdentity))
+    && keys(s.configurationIdentity, ['vgModelCode', 'agModelCode', 'factoryOptionCodes', 'provenance'])
+    && text(s.configurationIdentity.vgModelCode) && nullableText(s.configurationIdentity.agModelCode)
+    && stringList(s.configurationIdentity.factoryOptionCodes)
+    && keys(s.identityProvenance, ['kind', 'source', 'observedDate']) && ['synthetic', 'observed'].includes(s.identityProvenance.kind)
+    && text(s.identityProvenance.source) && date(s.identityProvenance.observedDate)
+    && isDeepStrictEqual(s.identityProvenance, s.configurationIdentity.provenance)
+    && (s.requestedIdentity === null || catalogueIdentity(s.requestedIdentity))
+    && (s.resolvedIdentity === null || catalogueIdentity(s.resolvedIdentity))
+    && (s.profile === null || keys(s.profile, ['profileId', 'profileVersion', 'registryVersion', 'referenceOnly'])
+      && ['profileId', 'profileVersion', 'registryVersion'].every((k) => text(s.profile[k])) && typeof s.profile.referenceOnly === 'boolean')
+    && (s.profileSources === null || Array.isArray(s.profileSources) && s.profileSources.every((p) =>
+      keys(p, ['id', 'kind', 'scope', 'source', 'observedDate', 'sourceDate']) && ['id', 'kind', 'scope'].every((k) => text(p[k]))
+      && safeReference(p.source) && date(p.observedDate) && date(p.sourceDate)))
     && (s.catalogueValidity === null || keys(s.catalogueValidity, ['effectDate', 'orderDate', 'productionDate', 'taxDate'])
       && Object.values(s.catalogueValidity).every((v) => date(v) && v !== null));
+}
+function catalogueIdentity(i) {
+  const dates = ['catalogueDate', 'effectDate', 'orderDate', 'productionDate', 'taxDate'];
+  const names = ['agModelCode', 'locale', 'market', 'modelCode', 'modelRange', 'rawModelRange', 'trim'];
+  return keys(i, [...dates, ...names, 'selectedOptions', 'selectedAccessories'])
+    && dates.every((k) => date(i[k]) && i[k] !== null) && names.every((k) => text(i[k]))
+    && stringList(i.selectedOptions) && Array.isArray(i.selectedAccessories)
+    && i.selectedAccessories.every((a) => keys(a, ['code', 'type', 'quantity']) && text(a.code)
+      && a.type === 'accessory' && Number.isSafeInteger(a.quantity) && a.quantity > 0);
 }
 function validSuccess(w) {
   if (!object(w) || !['complete', 'partial'].includes(w.status) || w.failure !== null
@@ -165,6 +199,9 @@ export function createVehicleDetailsConsumer({ adapter } = {}) {
       || t.attempts < 1 || t.attempts > 2 || !['answered', 'unavailable'].includes(t.outcome)
       || t.status !== null && (!Number.isInteger(t.status) || t.status < 100 || t.status > 599)) return failure('source-unavailable', request.kind);
     const transport = { protocol: t.protocol, status: t.status, attempts: t.attempts, outcome: t.outcome };
+    if (transport.outcome !== 'answered' || transport.status !== null && transport.status !== 200) {
+      return failure('source-unavailable', request.kind, transport);
+    }
     const w = response.result;
     if (!object(w) || w.contractVersion !== VEHICLE_DETAILS_VERSION || w.schemaVersion !== '1') return failure('source-unavailable', request.kind, transport);
     if (failureStatuses.includes(w.status)) {

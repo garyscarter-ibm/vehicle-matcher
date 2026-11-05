@@ -101,6 +101,16 @@ test('trusted expected identity and model/market/date context pins refuse substi
   }
 });
 
+test('alternate stock documents must bind the trusted current run and environment before mapping', async () => {
+  for (const scope of [undefined, { run: 'old-run', environment: context.environmentId },
+    { run: context.runId, environment: 'other-environment' }]) {
+    const document = structuredClone(stockEntry.document); document.card.scope = scope;
+    const consumer = createConfiguredVehicleDetails({ provider: 'alternate-offline', alternateRead: () => ({ document }) });
+    const r = await consumer.resolve({ kind: 'stock', id: orderUuid }, { context });
+    assert.equal(r.status, scope ? 'identity-mismatch' : 'source-unavailable'); assert.equal(r.vehicle, null);
+  }
+});
+
 test('wrong returned VIN/configuration/vehicle identity, source model and requested/resolved context never reach the consumer', async () => {
   const original = await lookup.resolve({ kind: 'vin', id: vehicle.vin17 });
   const completeOriginal = await lookup.resolve(complete);
@@ -138,7 +148,9 @@ test('malformed/versioned/truncated payloads, wrong units and impossible evidenc
   for (const mutate of [(w) => { w.technical.seats.unit = 'LITRES'; },
     (w) => { w.technical.seats.value = Number.NaN; }, (w) => { w.description.paint = {}; },
     (w) => { w.equipment.verifiedFitted.state = 'known'; }, (w) => { w.images.state = 'exact-build'; },
-    (w) => { w.source.observedDate = '2026-02-30'; }, (w) => { delete w.versions; }]) {
+    (w) => { w.source.observedDate = '2026-02-30'; }, (w) => { delete w.versions; },
+    (w) => { w.description.model.sourceKey = 'private'; },
+    (w) => { w.source.requestedIdentity.privateStorageName = 'private'; }]) {
     const w = await lookup.resolve(complete); mutate(w);
     const r = await createConfiguredVehicleDetails({ lookup: { resolve: () => w } }).resolve(complete);
     assert.equal(r.status, 'source-unavailable'); assert.equal(r.vehicle, null);
@@ -160,6 +172,16 @@ test('finite provider timeouts/retries abort each attempt and transport status s
     alternateRead: () => { attempts++; return { transportStatus: 503, document: fixture.entries[0].document }; } });
   const r = await broken.resolve(configuration);
   assert.equal(r.status, 'source-unavailable'); assert.equal(r.transport.status, 503); assert.equal(attempts, 2);
+  const malformed = await createConfiguredVehicleDetails({ provider: 'alternate-offline', alternateRead: () =>
+    ({ transportStatus: 200, document: '{"edition":' }) }).resolve(configuration);
+  assert.equal(malformed.status, 'source-unavailable'); assert.equal(malformed.transport.status, 200);
+  assert.equal(malformed.transport.outcome, 'answered');
+  const wire = await lookup.resolve(complete);
+  for (const transport of [{ protocol: 'offline', status: 503, attempts: 1, outcome: 'answered' },
+    { protocol: 'in-process', status: null, attempts: 1, outcome: 'unavailable' }]) {
+    const consumer = createVehicleDetailsConsumer({ adapter: { resolve: () => ({ result: wire, transport }) } });
+    assert.equal((await consumer.resolve(complete)).status, 'source-unavailable');
+  }
   for (const invalid of [{ timeoutMs: 0 }, { timeoutMs: 5001 }, { maxAttempts: 0 }, { maxAttempts: 3 }]) {
     assert.throws(() => createConfiguredVehicleDetails({ lookup, ...invalid }), TypeError);
   }
@@ -203,6 +225,9 @@ test('representative image roles/fidelity survive either mapping without a claim
   const b = createVehicleDetailsConsumer({ adapter: createAlternateOfflineVehicleAdapter({ read: () => ({ document: doc }) }) });
   assert.deepEqual((await a.resolve(complete)).vehicle, (await b.resolve(complete)).vehicle);
   doc.card.portraits.pictures[0].accuracy = 'exact-build';
+  assert.equal((await b.resolve(complete)).status, 'source-unavailable');
+  doc.card.portraits.pictures[0].accuracy = 'representative-model';
+  doc.card.portraits.pictures[0].resource = 'https://private.local/handbook?key=opaque';
   assert.equal((await b.resolve(complete)).status, 'source-unavailable');
 });
 

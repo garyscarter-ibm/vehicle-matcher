@@ -2005,6 +2005,10 @@
             "verifiedFittedLabel": "VIN-fitted equipment unknown",
             "unknownLabel": "Unknown",
             "imageLabel": "Images unavailable"
+          },
+          "scope": {
+            "run": "consumer-run",
+            "environment": "consumer-test"
           }
         }
       }
