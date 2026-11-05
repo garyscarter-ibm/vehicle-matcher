@@ -1,0 +1,570 @@
+{
+  "command": "npm test",
+  "effectiveArgv": [
+    "/opt/homebrew/bin/node",
+    "--test-concurrency=1",
+    "--test",
+    "server/test/**/*.test.js"
+  ],
+  "freeze": {
+    "accepted50Hashes": {
+      "server/test/bmw-live-imagery.test.js": "8fb48c70971c411e451d41dc256a88ae7c4d340c1f34009f532ad2148e86bd51",
+      "server/vehicle-evidence/bmw-live-imagery.js": "876e7e21b98d33ae3a124e696102ad56e4e5d2e771fee0d370764a0b684ffc3d"
+    },
+    "accepted50Ref": "6c2b8bdf6f92b2e634dad34b94419e9b1c6c0ea9",
+    "base": "7e0f0c50768a8562cd1e6944b88395fad0cfc724",
+    "combinedStory": "FUCQ-83 + FUCQ-50",
+    "dependencies": {
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/node_modules": {
+        "allocatedBytes": 27138292,
+        "device": 16777232,
+        "inode": 172875735
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/server/node_modules": {
+        "allocatedBytes": 858816,
+        "device": 16777232,
+        "inode": 172879521
+      }
+    },
+    "excluded": "No native rerun, BMW qualification, provisioning, deployment or UI/screenshots; separate native proof retained",
+    "fullLockObservedFree": true,
+    "grant": "Dispatcher conditional sole next offline full, human resume5Nov21:35",
+    "headroom": {
+      "active": 1,
+      "disk": 212759704500,
+      "free": 218234634240,
+      "low": false,
+      "parent": null,
+      "ram": 4559667200
+    },
+    "integrationAssessment50": "Only image provider/test plus its evidence/Result paths; independent of policy/repository/identity/clock. Accepted72 scoped passes and4 blocked-egress presentation examples reused; combined authored offline full covers integration.",
+    "packageHashes": {
+      "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+      "package.json": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
+      "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+      "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+    },
+    "resourceLimits": {
+      "logsMiB": 2,
+      "rssMiB": 1024,
+      "scratchMiB": 128,
+      "seconds": 600,
+      "workers": 1
+    },
+    "runtime": {
+      "jsdom": "30.0.1",
+      "node": "v26.5.0",
+      "npm": "11.17.0",
+      "pg": "8.23.1",
+      "python": "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]"
+    },
+    "selected": "Exact authored npm test required by story validate and dispatcher grant; default file/memory providers, database aliases unset",
+    "sourceAssessment": "Shared delta is instructions/docs/scaffold cleanup helper only; no product/test/package delta; native policy production/seed/migration hashes and unchanged read contract preserved",
+    "sourceHashes": {
+      "server/gcsp/migrations/0001_transaction_foundation.sql": "3bde8db01f103141ca9bbe7398a6e1172df9b9789df745244a0071a00b9629d1",
+      "server/gcsp/migrations/0002_policy_tables.sql": "65346093f811df63b225436a0ca35cd4061990a78caacb44ffde7b1effd1edd0",
+      "server/gcsp/migrations/0003_renewal_cases.sql": "e76750fddd75b9d363fd209c243169ce1f9b06c78f96b7dbb74fe3c296f08c98",
+      "server/gcsp/policy/index.js": "087267e81d4a780ef300dba144d9de5c4978ca530fe8ea5b2f53e2ec41395a2c",
+      "server/gcsp/policy/postgres-provider.js": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+      "server/gcsp/policy/publish.js": "5731771b1b7607028cd923c33038a0a0da113d463b8042fdd0b60d9f0a63d023",
+      "server/gcsp/policy/seed-v1.json": "c585213b98631d6e82acc1b3720d47efae49fdb502f5fc86fb440703ef6e41a6",
+      "server/test/gcsp-policy-service.test.js": "85d64227db2ba685bb634b5175f8fe397fd82e792e6567a17cec33c3b32101a2",
+      "server/test/gcsp-policy-versions.test.js": "52457039b4b508a11d6ccd341852260b25a508fece089c218b37262ce2f4c333"
+    },
+    "sourceHead": "f58b2183be0cdf869f31925a43d3daf7c2c3e6fe",
+    "sourceTree": "bf0d270126d04693c736c05c20b693b206b6ad11",
+    "supervisor": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/supervisor-v4.py",
+    "supervisorSha256": "495f6325f0122211b983976213cf496ca12b749164afbf7851edb2f5035b206d",
+    "time": "2026-11-05T21:38:48Z",
+    "version": 4
+  },
+  "fullLockReleased": true,
+  "logIdentity": {
+    "bytes": 16881,
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/strict/logs/20261105-214021-gwngf37x/chunk-0001.log",
+    "sha256": "95bea18d04390b28914a2004531de12935392695d6196b46abc426507fb9a190"
+  },
+  "nativeEvidence": "Separate matching-source policy21/factory1/repository61 live checks; offline skips do not count as native passes.",
+  "packageSourceHashesUnchanged": true,
+  "resourceManifest": {
+    "checkpoint": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/strict/checkpoints/5fde0b849320c26ee7d08ad2ccd2b1c7861659a824b594cd0d420afa56044430.json",
+    "created": 1793914821.6156852,
+    "device": 16777232,
+    "groups": [
+      32190
+    ],
+    "inode": 172885540,
+    "local_scratch_reason": "",
+    "location": "local",
+    "owner": {
+      "pid": 32149,
+      "start": "Thu Nov  5 21:40:20 2026"
+    },
+    "peak": 28545076,
+    "removed": 1793914896.528825,
+    "retained_dependencies": {
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/node_modules": {
+        "allocated_bytes": 27138292,
+        "device": 16777232,
+        "inode": 172875735
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/server/node_modules": {
+        "allocated_bytes": 858816,
+        "device": 16777232,
+        "inode": 172879521
+      }
+    },
+    "retained_dependency_paths": [
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/node_modules",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/server/node_modules"
+    ],
+    "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/.claude/test-scratch/fucq83/lead/test-stamp-shard-0a7c76e58dd04073b7cf2f18656cc682",
+    "state": "removed",
+    "supervisor_finalizer": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/supervisor-v4.py",
+    "token": "0a7c76e58dd04073b7cf2f18656cc682",
+    "version": 1
+  },
+  "runMetadata": {
+    "ended": 1793914896.5325718,
+    "finished": true,
+    "owner": 32149,
+    "started": 1793914821.553992
+  },
+  "scope": "exact combined offline FUCQ-83/FUCQ-50 authored full",
+  "scratchGroupsTokenIndependentlyAbsent": true,
+  "skipLines": [],
+  "sourceHead": "f58b2183be0cdf869f31925a43d3daf7c2c3e6fe",
+  "sourceTree": "bf0d270126d04693c736c05c20b693b206b6ad11",
+  "stamp": {
+    "execution_identity": {
+      "code": "e3f95c67997e675ab6487470668dd48b8691fe04bb56ca557b280860d1ca8af7",
+      "environment": "207117a5bb739332e4d28f128ca171b77a0fb59780d75c4cf6d179c2160c07f6",
+      "inputs": {
+        "../../test-runs/fucq83/supervisor-v4.py": "495f6325f0122211b983976213cf496ca12b749164afbf7851edb2f5035b206d",
+        "_tools/scaffold_git.py": "ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a",
+        "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+        "_tools/test_stamp.py": "88a16018b5b8fa225463b590f2283b4baa6be4951f258bba4846eacc3795a49e",
+        "node_modules/.package-lock.json": "92164c25104959a02c3ea16fa1643630b54cf5e8f5bce58608f076e4fcce9118",
+        "node_modules/jsdom/package.json": "e87940b12f720a5b735a5df82108b634a238b8c6ebced71050a346a1675575b9",
+        "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+        "package.json": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
+        "server/node_modules/.package-lock.json": "04a4016750d016025a0e662b3cc556212627eed4681ed7969296f20437a79517",
+        "server/node_modules/pg/package.json": "b1e53333a3d0c2c47c49a5cb919d221135dc03145df740925b899bc2baacc435",
+        "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+        "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+      },
+      "interpreter": [
+        "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+        "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]"
+      ],
+      "platform": "macOS-26.5.1-arm64-arm-64bit",
+      "scope": "full",
+      "selected": [
+        "npm test"
+      ],
+      "settings": "e4ae1d0eb5ad872be325d3349ae3a6c19f673759ef06b899533fefde8455c78d",
+      "variant": "default",
+      "version": 1
+    },
+    "head": "f58b2183be0cdf869f31925a43d3daf7c2c3e6fe",
+    "key": "07aea3ec1a62539daee9678c0adfbb65b078acd08a3e9ecb068654cbd4d99bfc",
+    "python": "3.9.6",
+    "ran": null,
+    "skipped": 0,
+    "time": "2026-11-05T21:41:36+0000",
+    "tree": "bf0d270126d04693c736c05c20b693b206b6ad11",
+    "variant": "default",
+    "wall": 75.0
+  },
+  "stampPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/strict/stamp-07aea3ec1a62539daee9678c0adfbb65b078acd08a3e9ecb068654cbd4d99bfc-default.json",
+  "supervisorIndependentlyAbsent": true,
+  "supervisorReceipt": {
+    "credential_aliases_absent": true,
+    "owned_manifests": [
+      {
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/ownership/cfd73f13e011407d97cdadbc9256dacf.json",
+        "root_absent": true,
+        "state": "removed"
+      },
+      {
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/ownership/5b4d33760f7547689c2baac309226e8a.json",
+        "root_absent": true,
+        "state": "removed"
+      },
+      {
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/ownership/e41e1a9e34a743d4965fdebec609379c.json",
+        "root_absent": true,
+        "state": "removed"
+      },
+      {
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/ownership/d4fe3fde8d434176a7e1631f1eb684c8.json",
+        "root_absent": true,
+        "state": "removed"
+      },
+      {
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/ownership/f5b71bf7aeab4d37ae9a4d58137dda1f.json",
+        "root_absent": true,
+        "state": "removed"
+      },
+      {
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/ownership/6dcf46731d234f99a94460fa617af8ed.json",
+        "root_absent": true,
+        "state": "removed"
+      },
+      {
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/ownership/f04ccc6f530c47b087939d8a63379273.json",
+        "root_absent": true,
+        "state": "removed"
+      },
+      {
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/ownership/f11fe022c9e24248bdc77ecb47b3e9f1.json",
+        "root_absent": true,
+        "state": "removed"
+      },
+      {
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/ownership/6f37c8198c904468aaebe4ae8574eb2f.json",
+        "root_absent": true,
+        "state": "removed"
+      },
+      {
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/strict/ownership/0a7c76e58dd04073b7cf2f18656cc682.json",
+        "root_absent": true,
+        "state": "removed"
+      }
+    ],
+    "rc": 0,
+    "strict_status_after": 0,
+    "strict_status_before": 1,
+    "supervisor_owner": {
+      "pgid": 32149,
+      "pid": 32149,
+      "start": "Thu Nov  5 21:40:20 2026"
+    }
+  },
+  "testSummary": {
+    "cancelled": 0,
+    "failed": 0,
+    "nodeDurationMs": 73194.330417,
+    "passed": 1230,
+    "skipped": 5,
+    "tests": 1235
+  },
+  "version": 4,
+  "skipLinesUnavailableReason": "Successful command log was compacted by the resource runner to its final16KiB; numeric Node summary retains5 skips. Reviewed current source maps these to3 policy native checks and2 repository native checks; none is claimed as native proof.",
+  "nativeEvidenceRecord": "docs/gcsp/evidence/fucq83/paused-native-checkpoint-2026-11-05.json",
+  "nativeScopes": [
+    {
+      "name": "native-policy-v1-1793899590062369000",
+      "command": "node --test --test-concurrency=1 server/test/gcsp-policy-versions.test.js",
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0,
+      "receipt": {
+        "groups_absent": true,
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/native-policy-v1-1793899590062369000.log",
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/ownership/5b4d33760f7547689c2baac309226e8a.json",
+        "package_hashes_unchanged": true,
+        "peak_rss": 248971264,
+        "peak_scratch": 27997108,
+        "rc": 0,
+        "reservation_absent": true,
+        "retained_dependencies": {
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/node_modules": 27138292,
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/server/node_modules": 858816
+        },
+        "scratch_removed": true,
+        "supervisor_owner": {
+          "pgid": 13978,
+          "pid": 13978,
+          "start": "Thu Nov  5 17:26:29 2026"
+        },
+        "wall": 199.990256834
+      },
+      "plan": {
+        "cleanup": "manifest before allocation; stop/join groups; remove exact scratch; independently verify receipts",
+        "command": "node --test --test-concurrency=1 server/test/gcsp-policy-versions.test.js",
+        "force": false,
+        "headroom": {
+          "active": 0,
+          "disk": 212905623552,
+          "free": 218274332672,
+          "low": false,
+          "parent": null,
+          "ram": 3959324672
+        },
+        "limits": {
+          "chunk_ram_mib": 768,
+          "chunk_scratch_mib": 128,
+          "chunk_seconds": 600,
+          "log_mib": 2,
+          "preferred_free_gib": 30,
+          "ram_reserve_mib": 512,
+          "reserve_free_gib": 5,
+          "unit_ram_mib": 256,
+          "unit_scratch_mib": 32
+        },
+        "mode": "command",
+        "onedrive_available": false,
+        "owned_root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/.claude/test-scratch/fucq83/lead",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065",
+        "supervisor_owner": {
+          "pgid": 13978,
+          "pid": 13978,
+          "start": "Thu Nov  5 17:26:29 2026"
+        },
+        "supervisor_sha256": "f2bf1fb3f4c1795f56ce9ec1125d91b82b59416957d02b6c6fc3250eb0b3d593",
+        "version": 1
+      }
+    },
+    {
+      "name": "native-factory-rows-v2-1793899830063876000",
+      "command": "node --test --test-concurrency=1 --test-name-pattern 'native PostgreSQL rows/dates' server/test/gcsp-policy-versions.test.js",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "receipt": {
+        "groups_absent": true,
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/native-factory-rows-v2-1793899830063876000.log",
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/ownership/6f37c8198c904468aaebe4ae8574eb2f.json",
+        "package_hashes_unchanged": true,
+        "peak_rss": 215990272,
+        "peak_scratch": 27997108,
+        "rc": 0,
+        "reservation_absent": true,
+        "retained_dependencies": {
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/node_modules": 27138292,
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/server/node_modules": 858816
+        },
+        "scratch_removed": true,
+        "supervisor_owner": {
+          "pgid": 17323,
+          "pid": 17323,
+          "start": "Thu Nov  5 17:30:29 2026"
+        },
+        "wall": 30.222613958
+      },
+      "plan": {
+        "cleanup": "manifest before allocation; stop/join groups; remove exact scratch; independently verify receipts",
+        "command": "node --test --test-concurrency=1 --test-name-pattern 'native PostgreSQL rows/dates' server/test/gcsp-policy-versions.test.js",
+        "environment_digest": "b4b8c94678c3e79d0c6b54c2136724d768cd942d1f55f445bb05deb0cd830728",
+        "force": false,
+        "headroom": {
+          "active": 0,
+          "disk": 213011558400,
+          "free": 218380267520,
+          "low": false,
+          "parent": null,
+          "ram": 3869310976
+        },
+        "input_hashes": {
+          "server/gcsp/policy/seed-v1.json": "c585213b98631d6e82acc1b3720d47efae49fdb502f5fc86fb440703ef6e41a6",
+          "server/test/gcsp-policy-service.test.js": "85d64227db2ba685bb634b5175f8fe397fd82e792e6567a17cec33c3b32101a2",
+          "server/test/gcsp-policy-versions.test.js": "52457039b4b508a11d6ccd341852260b25a508fece089c218b37262ce2f4c333"
+        },
+        "limits": {
+          "chunk_ram_mib": 768,
+          "chunk_scratch_mib": 128,
+          "chunk_seconds": 600,
+          "log_mib": 2,
+          "preferred_free_gib": 30,
+          "ram_reserve_mib": 512,
+          "reserve_free_gib": 5,
+          "unit_ram_mib": 256,
+          "unit_scratch_mib": 32
+        },
+        "mode": "command",
+        "native_configured": true,
+        "onedrive_available": false,
+        "owned_root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/.claude/test-scratch/fucq83/lead",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065",
+        "source_head": "fbcc2ae2f6d6721d36c49112c516ba52180d8aa9",
+        "supervisor_owner": {
+          "pgid": 17323,
+          "pid": 17323,
+          "start": "Thu Nov  5 17:30:29 2026"
+        },
+        "supervisor_sha256": "f23e027103188dda62d29ffbac333d3f9edc56501ca0d1196a0b6d5faaeaaa7b",
+        "version": 1
+      }
+    },
+    {
+      "name": "native-repository-v2-1793899889217739000",
+      "command": "node --test --test-concurrency=1 server/test/gcsp-repository-contract.test.js",
+      "passed": 61,
+      "failed": 0,
+      "skipped": 0,
+      "receipt": {
+        "groups_absent": true,
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/native-repository-v2-1793899889217739000.log",
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/ownership/6dcf46731d234f99a94460fa617af8ed.json",
+        "package_hashes_unchanged": true,
+        "peak_rss": 124387328,
+        "peak_scratch": 27997108,
+        "rc": 0,
+        "reservation_absent": true,
+        "retained_dependencies": {
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/node_modules": 27138292,
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/server/node_modules": 858816
+        },
+        "scratch_removed": true,
+        "supervisor_owner": {
+          "pgid": 17922,
+          "pid": 17922,
+          "start": "Thu Nov  5 17:31:25 2026"
+        },
+        "wall": 213.020912208
+      },
+      "plan": {
+        "cleanup": "manifest before allocation; stop/join groups; remove exact scratch; independently verify receipts",
+        "command": "node --test --test-concurrency=1 server/test/gcsp-repository-contract.test.js",
+        "environment_digest": "be98778a5fc4ce83dd1494a51258115fd642dee0c4e244629772278d1bd2fd85",
+        "force": false,
+        "headroom": {
+          "active": 0,
+          "disk": 212923293696,
+          "free": 218292002816,
+          "low": false,
+          "parent": null,
+          "ram": 3817881600
+        },
+        "input_hashes": {
+          "server/gcsp/policy/seed-v1.json": "c585213b98631d6e82acc1b3720d47efae49fdb502f5fc86fb440703ef6e41a6",
+          "server/test/gcsp-policy-service.test.js": "85d64227db2ba685bb634b5175f8fe397fd82e792e6567a17cec33c3b32101a2",
+          "server/test/gcsp-policy-versions.test.js": "52457039b4b508a11d6ccd341852260b25a508fece089c218b37262ce2f4c333"
+        },
+        "limits": {
+          "chunk_ram_mib": 768,
+          "chunk_scratch_mib": 128,
+          "chunk_seconds": 600,
+          "log_mib": 2,
+          "preferred_free_gib": 30,
+          "ram_reserve_mib": 512,
+          "reserve_free_gib": 5,
+          "unit_ram_mib": 256,
+          "unit_scratch_mib": 32
+        },
+        "mode": "command",
+        "native_configured": true,
+        "onedrive_available": false,
+        "owned_root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/.claude/test-scratch/fucq83/lead",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065",
+        "source_head": "3df3004b6efe27f541ba693a004220968fd7b8de",
+        "supervisor_owner": {
+          "pgid": 17922,
+          "pid": 17922,
+          "start": "Thu Nov  5 17:31:25 2026"
+        },
+        "supervisor_sha256": "f23e027103188dda62d29ffbac333d3f9edc56501ca0d1196a0b6d5faaeaaa7b",
+        "version": 1
+      }
+    },
+    {
+      "name": "file-consumer-boundaries-v1-1793899671862416000",
+      "command": "node --test --test-concurrency=1 server/test/gcsp-policy-service.test.js server/test/gcsp-identity.test.js server/test/gcsp-clock-reset.test.js server/test/employee-recommendation.test.js server/test/gcsp-comparison-generator.test.js",
+      "passed": 93,
+      "failed": 0,
+      "skipped": 0,
+      "receipt": {
+        "groups_absent": true,
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/file-consumer-boundaries-v1-1793899671862416000.log",
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq83/ownership/e41e1a9e34a743d4965fdebec609379c.json",
+        "package_hashes_unchanged": true,
+        "peak_rss": 252919808,
+        "peak_scratch": 27997108,
+        "rc": 0,
+        "reservation_absent": true,
+        "retained_dependencies": {
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/node_modules": 27138292,
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/server/node_modules": 858816
+        },
+        "scratch_removed": true,
+        "supervisor_owner": {
+          "pgid": 15095,
+          "pid": 15095,
+          "start": "Thu Nov  5 17:27:51 2026"
+        },
+        "wall": 6.841225583
+      },
+      "plan": {
+        "cleanup": "manifest before allocation; stop/join groups; remove exact scratch; independently verify receipts",
+        "command": "node --test --test-concurrency=1 server/test/gcsp-policy-service.test.js server/test/gcsp-identity.test.js server/test/gcsp-clock-reset.test.js server/test/employee-recommendation.test.js server/test/gcsp-comparison-generator.test.js",
+        "force": false,
+        "headroom": {
+          "active": 1,
+          "disk": 212803097524,
+          "free": 218278027264,
+          "low": false,
+          "parent": null,
+          "ram": 3031252992
+        },
+        "limits": {
+          "chunk_ram_mib": 768,
+          "chunk_scratch_mib": 128,
+          "chunk_seconds": 600,
+          "log_mib": 2,
+          "preferred_free_gib": 30,
+          "ram_reserve_mib": 512,
+          "reserve_free_gib": 5,
+          "unit_ram_mib": 256,
+          "unit_scratch_mib": 32
+        },
+        "mode": "command",
+        "onedrive_available": false,
+        "owned_root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/.claude/test-scratch/fucq83/lead",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065",
+        "supervisor_owner": {
+          "pgid": 15095,
+          "pid": 15095,
+          "start": "Thu Nov  5 17:27:51 2026"
+        },
+        "supervisor_sha256": "f2bf1fb3f4c1795f56ce9ec1125d91b82b59416957d02b6c6fc3250eb0b3d593",
+        "version": 1
+      }
+    }
+  ],
+  "nativeSchemaCleanup": {
+    "applicationWrites": 0,
+    "baselineDigest": "fccfbabf2632676407486b21256345e4d3bcd8f94b48faffdf2663db32a4b1db",
+    "cleanupDrops": [],
+    "credentialValuesRetained": false,
+    "missingBaselineSchemas": [],
+    "mode": "after",
+    "newSchemas": [],
+    "ownedPolicySchemas": [],
+    "poolClosed": true,
+    "schemaCount": 4,
+    "schemaDigest": "fccfbabf2632676407486b21256345e4d3bcd8f94b48faffdf2663db32a4b1db",
+    "status": "exact-schema-inventory-restored",
+    "targetDigest": "d32001181fa1ad32ea72b2c1ac4c980d44506f8a677a0d6a6e495b744a89bed2",
+    "version": 1
+  },
+  "currentReview": "docs/gcsp/evidence/fucq83/product-review.md",
+  "dependencyTeardown": "Restored owned dependency identities are frozen in freeze.dependencies. Retain through final post-documentation strict status; exact removal and independent filesystem/package checks are recorded in the live final-cleanup-v4.json receipt before dispatcher handoff.",
+  "experience": {
+    "contract": "docs/gcsp/experience-quality.md",
+    "shellReferences": [
+      "docs/gcsp/screens/00-employee-account.webp",
+      "docs/gcsp/screens/01-replace-vehicle.webp"
+    ],
+    "bodyReference": "docs/gcsp/evidence/fucq-6/README.md revision a7fc178; Used Cars body direction",
+    "impact": "Backend-only publish outcome shapes; existing accepted/invalid/forbidden/refresh fixtures asserted. No screen/component/CSS/browser behaviour changed, so no new screenshots."
+  }
+}
