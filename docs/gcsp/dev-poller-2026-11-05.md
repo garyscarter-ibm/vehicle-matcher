@@ -41,7 +41,19 @@ With **64% free memory, zero swap and approximately 67 GiB free disk**, the disp
 
 FUCQ-94's Jira adoption was written, read back and all five operations acknowledged: In Progress, configured usget assignee, 13 points, agent/host labels and Start date **5 November 2026**. Its lead must propose any minimum editor-context or unsaved-preview support from the actual FUCQ-29/FUCQ-91 contracts; that is separate from FUCQ-95's activity route. Shared kit/catalogue/gallery changes remain coordinated rather than duplicated.
 
-## Validation and resources
+## Controller checkpoint and next integration lanes
+
+FUCQ-94's independent brief-controller checkpoint is reviewed and pushed as `af2bdf7` on `dev/DEV-2026-11-04-052`. Its scoped controller validation passed **18/18**, covering request/state handling and the reviewed feed/service boundaries. This adds no rendered view or HTTP endpoint and does not complete the story. The dispatcher verified its scratch, process groups, reservation and incidental bytecode absent; receipt `.claude/test-runs/ownership/fucq94-20261105-controller-dispatcher-verify.json`. The run used one worker, zero measured scratch and approximately 34 MiB peak RSS. The retained summary is `.claude/test-runs/receipts/fucq94-20261105-brief/summary.json`.
+
+GC's launcher FUCQ-33 has now merged and closed at base `95f7648`; its lifecycle remains GC-owned. FUCQ-95 has the next shared-kit/gallery/catalogue lane and is preparing its activity-view/component plan against that merged kit and the approved FUCQ-64 body reference. Its reviewed HTTP slice is undergoing the selected activity/BriefService/identity/API boundary checks, with no full suite. After that checkpoint is committed, pushed and frozen, FUCQ-94 may take the serial server registration/shared-contract lane for its separately reviewed editor-context and unsaved-preview support. No supporting-contract implementation has yet been released.
+
+Both leads' effective settings were independently verified as `gpt-6.1-sol` / `high`. FUCQ-94's controller implementer ran `gpt-6.1-sol` / `medium`, and FUCQ-95's HTTP boundary runner runs `gpt-6-luna` / `high`; each matches its requested/selected pair, with no fallback. Effective settings come from the corresponding session metadata and turn context, recorded in the local runtime roster.
+
+The completed Jira pass fetched 13 delta records and two open-Bug records, all pages and attachments verified. Import reported no changes, comments, notifications, failures or evidence downloads; the two Rejected Bugs were skipped. Mail was `NOTHING`, and only the six existing usget story leases were live. All teammate outbound lifecycle operations remain unexecuted and unacknowledged. The refreshed queue reports 65 waiting, seven nominally ready and 58 held; new launcher follow-ons FUCQ-34/35 and FUCQ-67 still fail intake because their imported headers lack the required `ui:` field, despite component text in `decided`. No manual inbox repair or claim bypass was made. FUCQ-35 also retains its concrete FUCQ-7 entry-delivery precondition.
+
+Measured headroom remained approximately 60% free memory, zero swap and 66.6 GiB free disk. The two leads share one implementation/runner slot under the tool's actual four-agent limit; the configured capacity count remains advisory under the explicit human override. No new story was claimed. The Jira staging deadline elapsed during compaction, so the dispatcher registered a fresh bounded retry and independently verified both scratch roots, supervisor/importer groups and reservations absent. The late-staged payload and retry removed 301,006 logical bytes in total, with no leftovers or large output. Retained receipt: `.claude/test-runs/ownership/dev-poller-jira-20261105T125430-dispatcher-verify.json`.
+
+## Documentation checkpoint validation
 
 This checkpoint changes run documentation, not application code. Validation is limited to the live gateway/tool/heartbeat/ownership checks, successful complete Jira import, story intake checks and local documentation links. Application and full test suites are excluded because this checkpoint changes no application behavior.
 
