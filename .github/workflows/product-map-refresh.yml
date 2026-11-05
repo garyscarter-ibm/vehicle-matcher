@@ -1,0 +1,18 @@
+name: Refresh product map inputs
+
+# A branch push requests publication by the trusted workflow on main. No code
+# from the pushed branch executes, and Pages retains its main-only deployment policy.
+on:
+  push:
+    branches-ignore: [main, product-map-pages]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Request the main Pages snapshot
+        run: echo 'Product map inputs are ready for the main Pages workflow.'
