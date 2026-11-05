@@ -6,6 +6,10 @@ Recorded 5 November 2026 at Russell's request, using the existing StanleyPi setu
 
 **Jira reconciliation pending:** the Atlassian connector returned `unauthorized_client` / invalid refresh token when recording this resumption, and OpenTabs was disconnected. The next authenticated Jira pass must record this decision on FUCQ-98 and replace its obsolete pause/precondition wording with the resumed text in the [story mirror](fucq-86-90-stories.md). Preserve the committed resumption if an import still carries the older pause. No new collaborator approval is needed.
 
+## Real email test authorised — 5 November 2026
+
+Russell explicitly authorised one deliberate real email test to his IBM address in the active dispatcher chat. The exact approved recipient is retained in the private local recipient-approval record, outside source control. Verify the existing key/account and sender first; send only to that approved address, with no automatic retries or additional recipients. A clearly labelled transport test without an offer link is permitted while the actual offer producer is unavailable. Such a test proves only provider acceptance; FUCQ-98 still requires the actual public offer, inbox receipt and link/access validation before completion. Never invent an offer or token to clear that gate.
+
 ## Existing evidence
 
 | Source inspected | Reusable evidence |
