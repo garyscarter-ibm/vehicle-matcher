@@ -1,47 +1,40 @@
-// Representative body only. It displays a supplied server outcome; it owns no commands or saved state.
-import { el, screenIntro, button, statusScreen, factList } from '../../vehicle-matcher/ui.js';
+// Representative supplied projection only; saved commands and offer access remain host responsibilities.
+import { el, screenIntro, button, statusScreen } from '../../vehicle-matcher/ui.js';
+import { svgIcon } from '../shell/portal-shell.js';
 import { activityTimeline } from '../kit/activity-timeline.js';
+import { actionMenu } from '../kit/action-menu.js';
+import { activityOffer } from './activity-offer.js';
 import { activityCopy as copy, activityEvents } from './activity-copy.js';
 
-let sequence = 0;
-export function activityBody({ result, onRetry, level = 1 } = {}) {
-  const root = el('div', 'vm gcsp-activity');
-  root.append(screenIntro({ title: copy.title, lede: copy.lede, level, className: 'gcsp-activity-intro' }));
+export function activityBody({ result, onRetry, offerDisplay, level = 1 } = {}) {
+  const root = el('div', 'vm gcsp-activity'); root.destroy = () => {};
+  const header = el('div', 'gcsp-activity-header');
+  header.append(screenIntro({ title: copy.title, level, className: 'gcsp-activity-intro' })); root.append(header);
   if (result?.status !== 'ok' || !result.value) {
-    root.append(statusScreen({ title: 'Activity is unavailable', message: copy.unavailable, role: 'alert',
+    root.append(statusScreen({ title: 'Activity unavailable', message: copy.unavailable, role: 'alert',
       actions: [button({ label: 'Retry', onClick: onRetry, disabled: typeof onRetry !== 'function' })] }));
     return root;
   }
   const value = result.value;
-  if (!value.permission) {
-    root.append(statusScreen({ title: 'No confirmed search brief', message: 'Confirm your brief and search permission before the buddy can look for a car.' }));
-    return root;
-  }
+  if (!value.permission) { root.append(statusScreen({ title: 'No confirmed search', message: 'Confirm a search brief to begin.' })); return root; }
   const paused = value.permission.paused === true;
-  const state = el('section', 'gcsp-activity-state');
-  const stateTitle = el(`h${Math.min(level + 1, 6)}`, 'gcsp-activity-state-title', paused ? copy.paused : copy.active);
-  stateTitle.id = `gcsp-activity-state-${++sequence}`;
-  state.setAttribute('aria-labelledby', stateTitle.id);
-  const description = el('div', 'gcsp-activity-state-description');
-  description.append(stateTitle, el('p', 'gcsp-activity-state-copy', paused ? copy.pausedDetail : copy.activeDetail));
-  const action = el('div', 'gcsp-activity-action');
-  const reason = el('p', 'gcsp-activity-preview-note', copy.preview); reason.id = `gcsp-activity-preview-${sequence}`;
-  action.append(button({ label: paused ? 'Resume search' : 'Pause search', disabled: true, describedBy: reason.id }), reason);
-  state.append(description, action); root.append(state);
-
-  const summaries = el('div', 'gcsp-activity-summaries');
-  const checks = el('section', 'gcsp-activity-checks');
-  checks.append(el(`h${Math.min(level + 1, 6)}`, 'gcsp-activity-section-title', 'Search checks'),
-    el('p', 'gcsp-activity-copy', copy.checkMissing),
-    factList([{ label: 'Last successful check', value: null, missingLabel: 'Not available' },
-      { label: 'Search brief', value: `Version ${value.briefVersion}` }], { className: 'gcsp-activity-facts' }));
-  const offer = el('section', 'gcsp-activity-offer');
-  offer.append(el(`h${Math.min(level + 1, 6)}`, 'gcsp-activity-section-title', 'Your offer'),
-    el('p', 'gcsp-activity-copy', value.offers?.length ? copy.offerMissing : copy.offerEmpty));
-  if (!paused) offer.append(el('p', 'gcsp-activity-secondary', value.permission.holdConsent
-    ? 'Your permission includes holding a car when one is offered.' : 'You have not given permission to hold a car.'));
-  summaries.append(offer, checks); root.append(summaries,
-    activityTimeline({ events: activityEvents(value.stateChanges), level: Math.min(level + 1, 6) }));
-  if (value.stateChangesEvidence?.status === 'incomplete') root.append(el('p', 'gcsp-activity-secondary', 'Some activity could not be verified and is not shown.'));
+  const inactive = paused || value.permission.canSearch !== true;
+  const status = el('p', `gcsp-activity-status${inactive ? ' is-inactive' : ''}`); status.setAttribute('role', 'status');
+  status.append(svgIcon(inactive ? ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18', 'M9 8v8', 'M15 8v8']
+    : ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18', 'M8 12l3 3 5-6']), document.createTextNode(inactive ? 'Inactive' : 'Active'));
+  const actions = actionMenu({ label: 'Search actions', items: [{ label: paused ? 'Resume Search' : 'Pause Search', disabled: true, reason: 'Preview only' }] });
+  const state = el('div', 'gcsp-activity-state'); state.append(status, actions.root); header.append(state);
+  root.destroy = actions.destroy;
+  if (paused) root.append(el('p', 'gcsp-activity-consequence', copy.pausedDetail));
+  // Explicit selected reference only. Identifier order never establishes the current offer.
+  const selected = offerDisplay?.offerRef?.offerId;
+  const offer = selected ? value.offers?.find((entry) => entry.offerRef?.offerId === selected) : null;
+  root.append(activityOffer({ offer, display: offer ? offerDisplay : undefined, level: Math.min(level + 1, 6),
+    emptyText: value.offers?.length ? 'Current offer unavailable' : 'No current offer' }));
+  const feed = activityTimeline({ events: activityEvents(value.stateChanges), heading: 'Activity', level: Math.min(level + 1, 6) });
+  const checks = el('div', 'gcsp-activity-check-status');
+  checks.append(el('p', '', copy.lastCheckMissing), el('p', '', copy.checkMissing));
+  feed.querySelector('.gcsp-timeline-note').after(checks); root.append(feed);
+  if (value.stateChangesEvidence?.status === 'incomplete') feed.append(el('p', 'gcsp-activity-secondary', 'Some activity could not be verified.'));
   return root;
 }

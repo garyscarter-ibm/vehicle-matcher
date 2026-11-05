@@ -90,6 +90,84 @@ export const activityFixtures = {
       "reason": "Activity could not be loaded.",
       "retryable": true,
       "contractVersion": "1.0.0"
+    },
+    "offer": {
+      "status": "ok",
+      "value": {
+        "asOf": "2026-11-05T09:00:00.000Z",
+        "briefVersion": 3,
+        "permission": {
+          "searchConsent": true,
+          "holdConsent": false,
+          "paused": false,
+          "permissionVersion": 3,
+          "canSearch": true,
+          "canHold": false
+        },
+        "state": "offer",
+        "lastSuccessfulCheck": null,
+        "searchEvidence": {
+          "status": "not-recorded",
+          "reason": "search-check-producer-unavailable"
+        },
+        "sourceStatus": "evidence-unavailable",
+        "offers": [
+          {
+            "offerRef": {
+              "offerId": "layout-offer"
+            },
+            "state": "active",
+            "version": 1,
+            "briefVersion": 3,
+            "holdId": "layout-hold",
+            "policyVersion": "gcsp-policy-v1",
+            "quoteId": "layout-quote"
+          }
+        ],
+        "stateChanges": [
+          {
+            "eventId": "brief:employee-paula:1",
+            "eventType": "brief-changed",
+            "operation": "confirmed",
+            "briefVersion": 1,
+            "previousBriefVersion": null,
+            "occurredAt": "2026-11-05T09:00:00.000Z"
+          },
+          {
+            "eventId": "brief:employee-paula:2",
+            "eventType": "brief-changed",
+            "operation": "paused",
+            "briefVersion": 2,
+            "previousBriefVersion": 1,
+            "occurredAt": "2026-11-05T09:00:00.000Z"
+          },
+          {
+            "eventId": "brief:employee-paula:3",
+            "eventType": "brief-changed",
+            "operation": "resumed",
+            "briefVersion": 3,
+            "previousBriefVersion": 2,
+            "occurredAt": "2026-11-05T09:00:00.000Z"
+          }
+        ],
+        "stateChangesEvidence": {
+          "status": "recorded",
+          "rejectedReceipts": 0
+        }
+      }
     }
+  },
+  "offerExample": {
+    "offerRef": {
+      "offerId": "layout-offer"
+    },
+    "title": "Your BMW offer",
+    "images": [
+      {
+        "src": "/assets/brand-hero/bmw.jpg",
+        "alt": "BMW brand photograph, representative of the brand rather than this offer",
+        "kind": "representative"
+      }
+    ]
   }
 };

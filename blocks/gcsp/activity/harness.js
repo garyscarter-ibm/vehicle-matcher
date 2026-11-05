@@ -4,9 +4,9 @@ import { mountEmployee, EMPLOYEE_NAVIGATION } from '../employee/gcsp-employee.js
 import { activityBody } from './activity-body.js';
 import { activityFixtures } from './activity-fixtures.js';
 
-const names = { 'never-checked': 'Active, no check information', paused: 'Paused', unavailable: 'Unavailable' };
+const names = { offer: 'Offer', 'never-checked': 'No offer', paused: 'Inactive', unavailable: 'Unavailable' };
 const requested = new URLSearchParams(globalThis.location?.search || '').get('fixture');
-const initial = Object.hasOwn(names, requested) ? requested : 'never-checked';
+const initial = Object.hasOwn(names, requested) ? requested : 'offer';
 const root = document.getElementById('gcsp-activity-preview');
 if (root) mountEmployee(root, {
   view: 'activity',
@@ -16,7 +16,7 @@ if (root) mountEmployee(root, {
   renderBody(main) {
     const body = el('div', 'gcsp-activity-preview-body');
     const controls = el('div', 'vm gcsp-activity-preview-controls'); controls.setAttribute('aria-label', 'Design preview states');
-    controls.append(el('p', '', 'Design preview: these controls switch synthetic snapshots. They do not change a saved search.'));
+    controls.setAttribute('role', 'group');
     const status = el('p', 'gcsp-activity-preview-status'); status.setAttribute('role', 'status');
     let selected = initial;
     const buttons = Object.entries(names).map(([name, label]) => {
@@ -25,12 +25,14 @@ if (root) mountEmployee(root, {
     });
     function show(name, retry = false) {
       selected = name;
-      body.replaceChildren(activityBody({ result: structuredClone(activityFixtures.snapshots[name]), onRetry: () => show(selected, true) }));
+      body.firstElementChild?.destroy?.();
+      body.replaceChildren(activityBody({ result: structuredClone(activityFixtures.snapshots[name]),
+        offerDisplay: name === 'offer' ? activityFixtures.offerExample : undefined, onRetry: () => show(selected, true) }));
       if (retry) body.querySelector('button')?.focus();
       buttons.forEach((control) => control.setAttribute('aria-pressed', String(control.dataset.fixture === selected)));
-      status.textContent = retry ? 'Preview reloaded. The simulated outage is still present.' : `${names[name]} preview selected.`;
+      status.textContent = retry ? 'Still unavailable.' : '';
     }
     main.replaceChildren(body, controls, status); show(initial);
-    return () => { body.remove(); controls.remove(); status.remove(); };
+    return () => { body.firstElementChild?.destroy?.(); body.remove(); controls.remove(); status.remove(); };
   },
 });
