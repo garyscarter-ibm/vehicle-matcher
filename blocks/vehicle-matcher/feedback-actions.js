@@ -93,11 +93,11 @@ export function candidateSurvivesFeedback(state, { candidateId, groupId, listing
 export function regroupFeedbackCar(car, kept) {
   const head = kept[0];
   const prices = kept.map((l) => l.priceMin).filter(Number.isFinite);
-  return { ...car, photo: head.photo || car.photo,
-    colour: head.colour ? { manufacturerColour: head.colour, colour: head.shade } : car.colour,
+  return { ...car, photo: head.photo,
+    colour: head.colour ? { manufacturerColour: head.colour, colour: head.shade } : undefined,
     priceMin: head.priceMin ?? car.priceMin, priceMax: head.priceMax ?? head.priceMin ?? car.priceMax,
     mileage: head.mileage ?? null,
-    transmission: head.transmission ?? car.transmission, link: head.link || car.link,
+    transmission: head.transmission, link: head.link,
     listingCount: kept.length, priceFrom: prices.length ? Math.min(...prices) : car.priceFrom,
     priceTo: prices.length ? Math.max(...prices) : car.priceTo,
     colours: [...new Set(kept.map((l) => l.colour).filter(Boolean))],
@@ -110,7 +110,18 @@ export function applyBrowseFeedback(matches, state) {
     const kept = all.filter((listing) => candidateSurvivesFeedback(state, { groupId: match.car.id,
       candidateId: listing.id ?? listing.link, listing }));
     if (!kept.length) return [];
-    return [kept.length === all.length ? match : { ...match, car: regroupFeedbackCar(match.car, kept), listings: kept }];
+    if (kept.length === all.length) return [match];
+    // Decisions belong to listings, just like price and equipment. A mixed
+    // deployment may omit them; only the original first listing can then use
+    // the representative fields. Never infer a missing score in the client.
+    const exact = kept[0].decision;
+    const selected = exact || (kept[0] === all[0] ? match : {
+      score: undefined, fit: undefined, taste: undefined, stretch: undefined,
+      reasons: [], tradeOffs: [], decisionUnavailable: true,
+    });
+    const { score, fit, taste, stretch, reasons, tradeOffs, decisionUnavailable } = selected;
+    return [{ ...match, score, fit, taste, stretch, reasons, tradeOffs, decisionUnavailable,
+      car: regroupFeedbackCar(match.car, kept), listings: kept }];
   });
 }
 

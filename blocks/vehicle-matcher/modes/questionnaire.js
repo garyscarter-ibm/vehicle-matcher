@@ -21,7 +21,7 @@ import { BUDGET_BANDS, pillFor } from '../quiz-meta.js';
 import { apiGetQuestions, apiMatch, apiNearby } from '../engine.js';
 import { el, cardinal, gbp } from '../ui.js';
 import {
-  BRAND_COPY, UNMET_PHRASES, TRADE_COPY, orList, andList, tradeLines,
+  BRAND_COPY, UNMET_PHRASES, TRADE_COPY, orList, andList, tradeLines, EXACT_LISTING_COPY,
 } from './brand-copy.js';
 import {
   CONCEPT_LABELS, listingsOf, distanceLabel, matchCard, previewTile,
@@ -271,7 +271,7 @@ function renderRefine(
    * car that genuinely scores HIGHER still leads — that is the whole point of
    * merging the list — it just has to earn it rather than win a coin toss.
    */
-  const rank = (a, b) => b.score - a.score
+  const rank = (a, b) => (Number.isFinite(a.score) && Number.isFinite(b.score) ? b.score - a.score : 0)
     || (a.car.distance == null ? 0 : 1) - (b.car.distance == null ? 0 : 1)
     || (a.car.distance ?? 0) - (b.car.distance ?? 0);
   let pool = [...initialPool].sort(rank);
@@ -283,7 +283,9 @@ function renderRefine(
    * car that is no longer being recommended.
    */
   const tasteLeader = tasteLead ? pool[0]?.car.id : null;
-  const tasteLed = (alive) => Boolean(tasteLeader) && alive[0]?.car.id === tasteLeader;
+  const tasteListing = pool[0]?.listings?.[0]?.id;
+  const tasteLed = (alive) => Boolean(tasteLeader) && alive[0]?.car.id === tasteLeader
+    && alive[0]?.listings?.[0]?.id === tasteListing;
   const scope = {
     kind: 'browse', id: `browse-${Date.now().toString(36)}-${++feedbackSessionSequence}`,
   };
@@ -437,7 +439,7 @@ function renderRefine(
    * and rebuild what the card claims (count, price range, colours) from what
    * actually survived.
    */
-  const surviving = () => applyBrowseFeedback(pool, feedback);
+  const surviving = () => applyBrowseFeedback(pool, feedback).sort(rank);
 
   /**
    * The lead of a sorted list: its top car plus anything tied with it. Nothing
@@ -476,9 +478,10 @@ function renderRefine(
    */
   /** Score below which a car is a change of subject rather than an option. */
   function relevanceFloor() {
-    const alive = surviving();
-    return alive.length ? Math.max(...alive.map((m) => m.score)) - RELEVANT_PTS : 0;
+    const scored = surviving().filter((m) => Number.isFinite(m.score));
+    return scored.length ? Math.max(...scored.map((m) => m.score)) - RELEVANT_PTS : 0;
   }
+  const relevant = (m) => !Number.isFinite(m.score) || m.score >= relevanceFloor();
 
   function situation() {
     const alive = surviving();
@@ -491,6 +494,9 @@ function renderRefine(
     // to, so the cars within reach become the answer and the page says so
     // without a qualification it can no longer support.
     const from = here.length ? here : away;
+    if (alive.some((m) => !Number.isFinite(m.score))) {
+      return { alive, here, away, lead: from.slice(0, MAX_SHOWN), state: 'unscored', scoped: false };
+    }
     const cluster = leadOf(from);
     const scoped = here.length > 0 && away.length > 0 && away[0].score > here[0].score;
     const common = { alive, here, away, scoped };
@@ -498,7 +504,7 @@ function renderRefine(
     // in any state, so this outranks the rest. Below WEAK_SCORE it stops being
     // "the closest here" and becomes "nothing here is close", which is a
     // different sentence rather than a softer one.
-    if ((from[0].tradeOffs || []).length) {
+    if (from[0].stretch || (from[0].tradeOffs || []).length) {
       const state = cluster[0].score < WEAK_SCORE ? 'weak' : 'closest';
       return { ...common, lead: cluster, state };
     }
@@ -601,7 +607,11 @@ function renderRefine(
     const {
       alive, here, away, lead: shown, state, scoped,
     } = situation();
-    const frame = frames[state] || frames.tie;
+    const frame = state === 'unscored' ? {
+      settled: () => EXACT_LISTING_COPY.shortlist,
+      tied: () => EXACT_LISTING_COPY.shortlist,
+      lede: EXACT_LISTING_COPY.unavailable, ledeSurvivesNarrowing: true,
+    } : frames[state] || frames.tie;
     const strip = (m) => m.car.name.replace(new RegExp(`^${copy.name} `), '');
 
     // Chips: every axis that still splits what's on screen, plus the ones
@@ -797,7 +807,7 @@ function renderRefine(
          * both, is checkable against the cards, and cannot be mis-scoped
          * because it claims nothing about a total.
          */
-        const args = { shown: alive.filter((m) => m.score >= relevanceFloor()).length };
+        const args = { shown: alive.filter(relevant).length };
         const line = el('p', 'vm-brief-count', picked.length
           ? copy.refineStatus({ ...args, wants: andList(picked) })
           : copy.refineStatusPlain(args));
@@ -892,7 +902,7 @@ function renderRefine(
      */
     const drop = (list, taken) => list
       .slice(taken.length, taken.length + TAIL_SHOWN)
-      .filter((m) => m.score >= relevanceFloor());
+      .filter(relevant);
 
     // One car left is a recommendation again, so it gets the hero treatment
     // (photo, reasons, its trade-off) rather than staying a tile in a grid.
@@ -963,7 +973,8 @@ function renderRefine(
       const closing = state === 'weak'
         ? copy.workingWeak({ top: shown[0].score })
         : (margin != null && margin >= CLUSTER_PTS ? copy.workingMargin({ margin }) : '');
-      working.append(el('p', 'vm-working-text', copy.working(searched) + closing + copy.workingScore));
+      working.append(el('p', 'vm-working-text', copy.working(searched) + closing
+        + (state === 'unscored' ? '' : copy.workingScore)));
     }
   }
 

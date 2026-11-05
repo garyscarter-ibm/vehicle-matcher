@@ -16,7 +16,7 @@
  */
 
 import { el, gbp } from '../ui.js';
-import { BRAND_COPY, TRADE_COPY, tradeLines, orList } from './brand-copy.js';
+import { BRAND_COPY, TRADE_COPY, tradeLines, orList, EXACT_LISTING_COPY } from './brand-copy.js';
 
 export const SPEC_LABELS = {
   hatchback: 'Hatchback', saloon: 'Saloon', estate: 'Estate', suv: 'SUV',
@@ -160,13 +160,14 @@ export function mediaWell(car, extraClass = '') {
     el('span', 'vm-card-line', car.line),
   );
 
-  function showPhoto(src) {
+  function showPhoto(src, selected = car) {
+    media.querySelector('.vm-card-line').textContent = selected.line || car.line || '';
     media.querySelector('.vm-card-photo')?.remove();
     media.classList.toggle('has-photo', Boolean(src));
     if (!src) return;
     const img = el('img', 'vm-card-photo');
     img.src = src;
-    img.alt = car.name;
+    img.alt = selected.name || car.name;
     img.loading = 'lazy';
     // A broken image URL shouldn't leave a half-rendered card — drop back to
     // the placeholder, exactly as a photo-less car shows.
@@ -201,7 +202,8 @@ export function matchCard(match, {
   showScore = true, showPaint = false,
   rejectOptions, rejectLabel, rejectPrompt,
 } = {}) {
-  const { car, score, reasons } = match;
+  const { car } = match;
+  const listings = listingsOf(match);
   const copy = BRAND_COPY[brandKey] || BRAND_COPY.bmw;
   const card = el('article', `vm-card${big ? ' vm-card-big' : ''}${compact ? ' vm-card-compact' : ''}`);
 
@@ -210,17 +212,8 @@ export function matchCard(match, {
 
   const body = el('div', 'vm-card-body');
   const head = el('div', 'vm-card-head');
-  head.append(el('h3', 'vm-card-name', car.name));
-  if (showScore) {
-    const badge = el('span', 'vm-score', `${score}%`);
-    // The number has been unexplained since fit and taste were split, and two
-    // cards sharing one reads as a bug unless you know it is a claim that they
-    // suit you equally. Said properly in the working note under the cards; this
-    // is the affordance for the reader who points at the badge itself.
-    badge.title = 'Match score: how well this car fits the answers you gave. Cars that '
-      + 'suit you equally get the same score.';
-    head.append(badge);
-  }
+  const name = el('h3', 'vm-card-name', car.name);
+  head.append(name);
   body.append(head);
 
   // Single used price when min === max (live stock), else the range.
@@ -336,8 +329,9 @@ export function matchCard(match, {
   const detailBits = [];
   if (car.plate) detailBits.push(`’${car.plate} reg`);
   if (car.mileage != null) detailBits.push(`${car.mileage.toLocaleString('en-GB')} miles`);
-  const usedMeta = detailBits.length ? el('p', 'vm-usedmeta', detailBits.join('  ·  ')) : null;
-  if (usedMeta) body.append(usedMeta);
+  const usedMeta = el('p', 'vm-usedmeta', detailBits.join('  ·  '));
+  usedMeta.hidden = !detailBits.length;
+  body.append(usedMeta);
 
   if (!compact) body.append(el('p', 'vm-blurb', car.blurb));
 
@@ -362,7 +356,7 @@ export function matchCard(match, {
   const kit = el('p', 'vm-kit');
   const kitLabel = el('p', 'vm-why-label vm-kit-label', copy.kitLabel);
   function renderKit(chosen) {
-    const have = new Set(chosen?.features || car.features || []);
+    const have = new Set((chosen ? chosen.features : car.features) || []);
     const named = Object.entries(CONCEPT_LABELS)
       .filter(([key]) => have.has(key))
       .map(([, label]) => label);
@@ -393,11 +387,8 @@ export function matchCard(match, {
    * wall, and the reasons are sorted by how much they contributed, so the top
    * two are the case and the rest are corroboration.
    */
-  if (!compact && reasons.length) {
-    const why = el('ul', 'vm-reasons');
-    reasons.slice(0, big ? reasons.length : 2).forEach((r) => why.append(el('li', null, r)));
-    body.append(el('p', 'vm-why-label', 'Why it suits you'), why);
-  }
+  const decisionBody = el('div', 'vm-card-decision');
+  if (!compact) body.append(decisionBody);
 
   // Owning the trade-off: when a recommendation misses a stated want (it's
   // petrol and they asked for electric), the card says so itself, right under
@@ -409,12 +400,64 @@ export function matchCard(match, {
   // offered to someone who asked for a convertible should say so on each of
   // them, not go quiet because none of them is a "hero". Only the compact
   // carousel tiles skip it, and they already state the shape in their specs.
-  if (!compact && match.tradeOffs?.length) {
-    const { label } = TRADE_COPY[brandKey] || TRADE_COPY.bmw;
-    body.append(
-      el('p', 'vm-why-label vm-trade-label', label),
-      el('p', 'vm-trade-text', tradeLines(brandKey, match.tradeOffs).join(' ')),
-    );
+  function renderDecision(chosen) {
+    const exact = chosen?.decision;
+    const decision = exact || (!match.decisionUnavailable && (!chosen || chosen === listings[0]) ? match : null);
+    head.querySelector('.vm-score')?.remove();
+    decisionBody.replaceChildren();
+    card.dataset.stretch = String(Boolean(decision?.stretch));
+    if (showScore && Number.isFinite(decision?.score)) {
+      const badge = el('span', 'vm-score', `${decision.score}%`);
+      badge.title = 'Match score: how well this car fits the answers you gave. Cars that '
+        + 'suit you equally get the same score.';
+      head.append(badge);
+    }
+    if (compact) return;
+    if (showScore && !Number.isFinite(decision?.score)) {
+      decisionBody.append(el('p', 'vm-feedback-scope', EXACT_LISTING_COPY.unavailable));
+    }
+    const reasons = decision?.reasons || [];
+    if (reasons.length) {
+      const why = el('ul', 'vm-reasons');
+      // A stretch is a material warning, even when a medium card trims its
+      // positive reasons. Keep it visible alongside the strongest reasons.
+      const shown = big ? reasons : [...new Set([...reasons.slice(0, 2),
+        ...(decision.stretch ? reasons.filter((r) => /stretch/i.test(r)) : [])])];
+      shown.forEach((r) => why.append(el('li', null, r)));
+      decisionBody.append(el('p', 'vm-why-label', 'Why it suits you'), why);
+    }
+    if (decision?.tradeOffs?.length) {
+      const { label } = TRADE_COPY[brandKey] || TRADE_COPY.bmw;
+      decisionBody.append(el('p', 'vm-why-label vm-trade-label', label),
+        el('p', 'vm-trade-text', tradeLines(brandKey, decision.tradeOffs).join(' ')));
+    }
+  }
+
+  // A single projection paints all listing-owned facts and decision claims.
+  // Native picker buttons stay mounted, preserving keyboard focus on a swap.
+  const cta = el('a', 'vm-card-link', `View at ${car.retailerName || 'the retailer'} ›`);
+  cta.target = '_blank';
+  cta.rel = 'noopener noreferrer';
+  function renderChosen(chosen) {
+    const selected = chosen || car;
+    name.textContent = selected.name || car.name;
+    showPhoto(selected.photo, selected);
+    const paint = typeof selected.colour === 'object'
+      ? selected.colour?.manufacturerColour || selected.colour?.colour : selected.colour;
+    renderSpecs(paint, selected.shade || selected.colour?.colour,
+      chosen ? gbp(selected.priceMin) : price, selected.transmission);
+    renderKit(chosen);
+    renderDecision(chosen);
+    const bits = [];
+    if (selected.plate ?? (!chosen ? car.plate : null)) bits.push(`’${selected.plate ?? car.plate} reg`);
+    if (selected.mileage != null) bits.push(`${selected.mileage.toLocaleString('en-GB')} miles`);
+    usedMeta.textContent = bits.join('  ·  ');
+    usedMeta.hidden = !bits.length;
+    cta.remove();
+    if (selected.link) {
+      cta.href = selected.link;
+      body.append(cta);
+    }
   }
 
   // Set by the reject block below, called by the listing picker further down:
@@ -530,22 +573,7 @@ export function matchCard(match, {
         // Re-describe the card as the chosen car: paint, swatch, price,
         // gearbox, mileage and where the link goes. Anything left showing the
         // previous listing's values is a card describing two cars at once.
-        showPhoto(listing.photo);
-        renderSpecs(
-          listing.colour, listing.shade, gbp(listing.priceMin),
-          listing.transmission ?? car.transmission,
-        );
-        renderKit(listing);
-        if (usedMeta) {
-          const bits = [];
-          if (car.plate) bits.push(`’${car.plate} reg`);
-          if (listing.mileage != null) {
-            bits.push(`${listing.mileage.toLocaleString('en-GB')} miles`);
-          }
-          usedMeta.textContent = bits.join('  ·  ');
-        }
-        const cta = card.querySelector('.vm-card-link');
-        if (cta && listing.link) cta.href = listing.link;
+        renderChosen(listing);
         // Re-offer reasons about the car now being shown.
         onPick?.(listing);
       });
@@ -555,13 +583,7 @@ export function matchCard(match, {
   }
 
   // Link out to the retailer's live stock, when the feed gave us one.
-  if (car.link) {
-    const cta = el('a', 'vm-card-link', `View at ${car.retailerName || 'the retailer'} ›`);
-    cta.href = car.link;
-    cta.target = '_blank';
-    cta.rel = 'noopener noreferrer';
-    body.append(cta);
-  }
+  renderChosen(listings[0]);
 
   card.append(body);
   return card;

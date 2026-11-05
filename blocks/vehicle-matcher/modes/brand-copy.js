@@ -15,6 +15,12 @@
 
 import { cardinal } from '../ui.js';
 
+// Factual contract states shared across brand voices.
+export const EXACT_LISTING_COPY = {
+  unavailable: 'Match score and reasons unavailable for this listing.',
+  shortlist: 'Your selected listings.',
+};
+
 /** Brand-specific display copy, keyed by brand. `name` is the marque, `title`
  * the intro headline, `cta` the intro button. `lede({ questions, retailer })`
  * builds the intro paragraph — a function because the two brands phrase it
