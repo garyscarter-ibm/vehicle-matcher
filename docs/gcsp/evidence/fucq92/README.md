@@ -1,6 +1,6 @@
 # FUCQ-92 isolated release checkpoint
 
-Current stock-state repair: `stock-state-repair.json` records scoped19/19, zero skips. Released operational state now matches manual/Greg/F100 consumers; status and nested eligibility remain available. Historical full-suite evidence below predates this source change and is not a current stamp. Exact repaired pinned producer integration follows publication; source/runtime/native completion remains outstanding.
+Current stock-state repair: `stock-state-repair.json` records scoped19/19, zero skips. Released operational state now matches manual/Greg/F100 consumers; status and nested eligibility remain available. Historical full-suite evidence below predates this source change and is not a current stamp. `actual-consumer-proof.json` records unchanged pinned F92/F96/F100 proof 3/3, zero skips: actual same-tick/pause/replay, unknown-expiry refusal and atomic hold/offer/outbox pass. `release-history-proof.json` adds 13/13 authenticated visible-history checks, zero skips; the direct read port and minimal composition are in `gallery-release-history-handoff.md`. Source/runtime/native completion remains outstanding.
 
 Prepared on 5 November 2026 in `dev/DEV-2026-11-04-058`, starting from claim/base `7f0131abff9c94485c2718c9f60f8ae65ccd01bd`. This is backend implementation work; the story is not built. The [contract](../../stock-release-contract.md) records the agreed FUCQ-96 receipt/availability seam and the remaining provider/composition gates.
 

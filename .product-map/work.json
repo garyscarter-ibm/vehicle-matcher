@@ -1366,13 +1366,13 @@
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-04-058",
       "id": "FUCQ-92",
-      "observed_at": "2026-11-05T23:45:27Z",
+      "observed_at": "2026-11-05T23:57:51Z",
       "original_status": "In Progress",
       "slices": [
         {
-          "evidence": "Operational stock.state repaired to released; scoped19/19 including real manual reader and legacy replay preservation; docs/gcsp/evidence/fucq92/stock-state-repair.json",
+          "evidence": "Operational released state and atomic producer preserved; scoped 19/19 plus authenticated visible-history 13/13. See fucq92/stock-state-repair.json and release-history-proof.json.",
           "id": "release-core",
-          "observed_at": "2026-11-05T23:45:27.676769+00:00",
+          "observed_at": "2026-11-05T23:57:50.906138+00:00",
           "status": "complete",
           "title": "Pull provider, policy-driven release and atomic receipt"
         },
@@ -1384,16 +1384,16 @@
           "title": "Real FUCQ-77/78 source-backed stock and confirmed supply producer"
         },
         {
-          "evidence": "Actual manual reader passes with explicit visibility; pending exact repaired-source F96/F100 trial and shared startup composition.",
+          "evidence": "Actual fixed-pin F92→F96→F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
           "id": "runtime-consumers",
-          "observed_at": "2026-11-05T23:45:27.676769+00:00",
+          "observed_at": "2026-11-05T23:57:50.906138+00:00",
           "status": "blocked",
           "title": "Startup, presenter cue and manual/buddy shared-pool integration"
         },
         {
-          "evidence": "Historical npm test1262/1257/5 native skips predates stock-state source repair and is not a current stamp. Source/runtime/native acceptance and final serial validation remain.",
+          "evidence": "Historical full suite predates state repair; scoped release19/19, fixed-pin consumer3/3, history13/13 retained. Real source/runtime/native acceptance and fresh admitted full suite remain.",
           "id": "final-validation",
-          "observed_at": "2026-11-05T23:45:27.676769+00:00",
+          "observed_at": "2026-11-05T23:57:50.906138+00:00",
           "status": "blocked",
           "title": "Required full suite and complete acceptance evidence"
         }
@@ -1405,13 +1405,13 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-92",
       "workers": [
         {
-          "expires_at": "2026-11-06T00:15:27.676769+00:00",
+          "expires_at": "2026-11-05T23:57:50.906138+00:00",
           "harness": "codex",
           "name": "The Brain",
-          "observed_at": "2026-11-05T23:45:27.676769+00:00",
+          "observed_at": "2026-11-05T23:57:50.906138+00:00",
           "role": "story-lead",
-          "source": "thread01a1adf9-7f4a-7913-9cdb-532060b69a55; producer repair/source pin and actual integration; requested/selected/effective gpt-6.1-sol/high",
-          "status": "active"
+          "source": "Implementation/selected validation complete; publication handoff only. Requested/selected/runtime gpt-6.1-sol/high; no descendants or fallback.",
+          "status": "stopped"
         }
       ]
     }

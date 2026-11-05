@@ -80,6 +80,42 @@ In the same transaction, `event_receipts` receives:
 
 `orderUuids` contains only newly inserted/promoted cars; `visibleOrderUuids` preserves the exact source tranche. Already known cars can yield an empty `orderUuids`. The digest binds the tranche, exact source cars and source identity. The same tranche/digest returns the original outcome; a changed tranche is conflict. Allocation consumes completed receipts with `consumerId: 'stock-release'` and `eventType: 'stock-released'`, keyed by exact tranche/event ID. Its own consumer receipt controls allocation replay. This shape was coordinated directly with the FUCQ-96 lane.
 
+## Authenticated visible release-history read
+
+`createStockReleaseHistoryPort({ repository, identity, clock })` is exported directly from `server/gcsp/stock/history-port.js`. Its only operation is `read(context)`. It authenticates the actual identity adapter's employee context and validates the current active run and DemoClock before and after repository reads. A reset is stale-run; a changed clock observation is conflict. It creates no command, receipt, stock change or HTTP route.
+
+On the existing status/value envelope, a successful value is:
+
+```js
+{
+  runId, observedAt,
+  history: {
+    state: 'none-visible' | 'released',
+    releasedCarCount, releaseCount, latestReleasedAt: null | releasedAt,
+    sourceVersions: [confirmedHistoricalVersion]
+  },
+  source: { state: 'current-version-unknown' }
+}
+```
+
+The reader first obtains retained exact stock, including held/allocated and legacy operational available rows, then reads completed successful F92 stock-release receipts. Each newly released exact UUID must match its retained tranche/window/supply/releasedAt/policy/source-version provenance. Every retained release must have a matching confirmed receipt. Malformed or missing provenance/visibility yields typed unavailable, never a zero count. Pending, failed and unrelated receipts do not establish a release.
+
+Company, scheme and employee visibility use the existing stock visibility dimensions. Counts include only visibility-qualified confirmed cars and distinct nonempty visible tranches. Multiple cars in one tranche count as one release; repeated/empty tranches add no history. Latest instant and sorted source versions come only from those visible confirmed releases. The value contains no exact car IDs, employees or raw receipts. `none-visible` means no confirmed release visible to this context; it says nothing about other employees' releases.
+
+This history is independent of current suitable/matching availability: occupied, allocated, unsuitable or filtered cars can leave confirmed visible history after the current matching list is empty. The existing browse/decision projection owns current availability and filter results. `source.current-version-unknown` remains explicit even when historical versions exist: the pull-only provider supplies no current metadata/health read, including before the first release.
+
+Minimal trusted composition, behind the existing authenticated manual read boundary:
+
+```js
+import { createStockReleaseHistoryPort } from './gcsp/stock/history-port.js';
+const releaseHistory = createStockReleaseHistoryPort({ repository, identity, clock });
+const history = await releaseHistory.read(authenticatedEmployeeContext);
+// Preserve typed non-ok outcomes. Combine successful history with the separately
+// authoritative browse result; never infer current availability from history.
+```
+
+Shared manual/HTTP/startup wiring remains with its integration owner. `docs/gcsp/evidence/fucq92/gallery-release-history-handoff.md` records the immutable producer pin, source hash, actual executability and remaining external gates.
+
 ## Confirmed supply and policy
 
 `service.queueConfirmedSupply(gregContext, { commandId }, confirmation)` is an internal backend seam for FUCQ-104, not a public endpoint. The existing identity adapter must authorise Greg. The confirmation reference is exactly `{ runId, supplyId, state: 'confirmed', confirmedAt, sourceVersion }`, contains no stock rows, cannot be future, and must belong to the current run. Final producer integration must pass an actual acknowledged supply record, never client JSON or a request treated as an acknowledgement.
