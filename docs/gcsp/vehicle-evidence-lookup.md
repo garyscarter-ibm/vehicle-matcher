@@ -2,7 +2,7 @@
 
 FUCQ-55 implements one read-only in-process lookup and an HTTP wrapper in the existing Node backend. Gary's Q7/Q13 rescope of 4 November 2026 governs this contract; the old `/synthetic-vins/:vin` route is superseded. The immutable FUCQ-54 registry supplies configuration and current/delivered VIN associations. Exact stock comes from the existing run-scoped TransactionRepository; `orderNumber` is a display field.
 
-Source checkpoint, 5 November: the isolated lookup, response contract, handler and named test sources are present. Shared `buildServer`/entry wiring, selected packaged-store preparation, test execution and integrated validation remain pending the dispatcher's release. This checkpoint is not a working-route or passing-test claim.
+Source checkpoints, 5 November: the lookup, response contract, handler, `buildServer`/entry wiring and named test sources are present. Selected packaged-store preparation, test execution and integrated validation remain pending the dispatcher's release. These checkpoints are not working-route or passing-test claims.
 
 ## Read port and identities
 
@@ -41,11 +41,13 @@ Images retain source date, asset reference, role and fidelity and carry a visibl
 
 ## Local startup and recovery
 
-The planned same-entry command is `npm run server:gcsp-offline` (`GCSP_OFFLINE=1 node server/index.js`). It keeps `/health`, the existing shared `DEMO_ACCESS_KEY` gate and the same listening backend. The explicit offline profile skips stock/dealer/geocode/colour startup warmers. Ordinary startup retains its current retail behavior. No runtime dependency, infrastructure or credential discovery is added.
+The same-entry command is `npm run server:gcsp-offline` (`GCSP_OFFLINE=1 node server/index.js`). It keeps `/health`, the existing shared `DEMO_ACCESS_KEY` gate (`X-Access-Key`) and the same listening backend. The explicit offline profile skips stock/dealer/geocode/colour startup warmers. Ordinary startup retains its current retail behavior. No runtime dependency, infrastructure or credential discovery is added.
 
 `createLocalVehicleEvidenceLookup` reads a **previously selected** FUCQ-54 store from `server/data/gcsp/vehicle-evidence/lookup-reference.v1`, or an explicitly configured backend path. This store is to be packaged from the existing immutable `publication-reference.v1` inputs by FUCQ-54's offline publisher. Startup only loads and validates it. The packaged inputs are a bounded two-configuration/one-current-car reference, with no 200/10,000-corpus claim. They contain one North American structural reference and one exact dated GB catalogue snapshot, without representative assets. A broken/missing selected store returns 503; it does not publish, regenerate, fetch BMW data or return a successful empty fleet.
 
 Exact stock needs an actually configured repository and trusted context resolver. The default local immutable corpus does not fabricate a run or live stock. Without that input, stock lookup truthfully returns 503. Injected repository/context integration must prove a successful stock lookup before story completion.
+
+`buildServer({ gcspVehicleEvidence: { lookup, resolveContext } })` accepts the same-process port and a trusted current-run context resolver. Alternatively supply `{ root, repository, resolveContext }` to use the existing local registry with that TransactionRepository. `gcspIdentity` supplies its ordinary server-owned session context when a separate resolver is absent. `GCSP_VEHICLE_EVIDENCE_ROOT` selects an operator-configured local store at startup; request/query fields cannot choose it. Configuration and delivered/current VIN reads use the shared demo gate; stock also needs trusted run context.
 
 Recovery uses the existing offline publication CLI to validate/publish into an explicit local store, followed by normal restart. The server exposes no load/publish/generate endpoint. Provider routing is closed for known, invalid, unsupported, mismatch, miss and outage outcomes: there is no BMW, Driver's Guide or third-party decoder fallback.
 

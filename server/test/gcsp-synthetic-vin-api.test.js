@@ -105,7 +105,7 @@ test('configured gate, wrong methods, legacy and writable routes, origins and br
   t.after(() => { if (previous === undefined) delete process.env.DEMO_ACCESS_KEY; else process.env.DEMO_ACCESS_KEY = previous; });
   const f = await fixture(t);
   const path = `/api/gcsp/vehicle-evidence/vins/${f.vehicle.vin17}`;
-  const headers = { Authorization: 'Bearer fictional-gate-for-lookup-tests' };
+  const headers = { 'X-Access-Key': 'fictional-gate-for-lookup-tests' };
   assert.equal((await request(f.base, path)).code, 401);
   assert.equal((await request(f.base, path, { headers })).code, 200);
   assert.equal((await request(f.base, '/health')).code, 200);
