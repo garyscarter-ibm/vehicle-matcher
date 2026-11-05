@@ -7,6 +7,12 @@ transport supply all content. No real VIN, credential or BMW request was used. L
 demo use and retention remain unapproved; the optional live exercise is **UNEXERCISED**.
 Offline success proves the implemented boundary, not supported production access or a full live schema.
 
+Latest reviewed integration `fc65581636a8b97f0168e043f062cfda8ec6ed86` (tree
+`b05bf8bf092dc2a289f894f0b1a74405307311e4`) includes newer shared base
+`5d3acd3b87641f20f86e41d062f63babcfc2a286`. All seven incoming paths are documentation/queue only.
+The executable fingerprint and strict full identity match the retained full proof below; strict status
+confirmed reuse after this integration. No executable change required another full run.
+
 ## Acceptance evidence
 
 | Criterion | Implementation and offline proof |
@@ -69,7 +75,9 @@ No screen, shared component/gallery/ratchet, route, policy, retail contract or p
 Presentation/content assertions check source labels, disclaimer, unknown image fidelity/equipment and
 preserved current-car facts. No new screenshot is appropriate. Approved body reference `a7fc178` in
 `../fucq-6/README.md`, supplied shell/palette screenshots, Used Cars body direction and `COMPONENTS.md`
-continue to govern later consuming screens and their desktop/narrow/keyboard gates. No policy assumption
+continue to govern later consuming screens and their desktop/narrow/keyboard gates. The 5 November delivery
+sequence defers human layout reviews until a working end-to-end demo; concise copy,
+component/ratchet enforcement and applicable agent/browser/accessibility checks continue. No policy assumption
 was introduced; existing central PolicyService authority remains unchanged. No required offline work remains.
 
 ## Retained reconstruction and cleanup
@@ -86,6 +94,7 @@ All relative paths below are under the shared, ignored records root
 - Integrated guide receipt/checkpoint: `integrated-guide-1793887419851927000-receipt.json`; `strict/checkpoints/cde2e4795ce462f2b9d1efb16dcb16784e287763ca047478ab5bc16ac7e77435.json`.
 - Integrated harness/caller receipt/checkpoint: `integrated-harness-boundaries-1793887434239022000-receipt.json`; `strict/checkpoints/33004954262cb344d7d64ca0d97c1f89c10a9b924d3a1f0c92c25dea4fcd8951.json`.
 - Targeted records: `strict/targeted-9a3d2c526c4ccd65925cfedc2f098fff24c49831ff46794dd9e129205eccdf54-default-1793887423074544000.json` and `strict/targeted-9a3d2c526c4ccd65925cfedc2f098fff24c49831ff46794dd9e129205eccdf54-default-1793887440346593000.json`.
+- Latest-base stamp reuse: `latest-base-status-1793887788822343000-plan.json` and `latest-base-status-1793887788822343000-receipt.json` (strict status passed; all 17 manifests removed/absent).
 - Final cleanup plan: `final-cleanup-plan.json`; independently verified receipt: `final-cleanup-1793887543321621000-receipt.json`.
 - Dispatcher’s independent check: shared `.claude/test-runs/ownership/fucq45-dispatcher-final-verification.json`.
 - Pinned package/lock hashes: `dependencies-summary.json`; effective model/session records: `agent-models.json`.
