@@ -1,0 +1,28 @@
+{
+  "version": "historical-f44-preflight.v1",
+  "status": "passed",
+  "networkAttempts": 0,
+  "tests": {
+    "passed": 16,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 10231.879334
+  },
+  "planSha256": "59792f1296ea0dfd1f6813b847ab37e856fc143f3f0d82662ee503d395fd5677",
+  "fileSha256": {
+    "discover.mjs": "bb0bc5c516ea15022998957bdb3c21387aef74e35553432ae21c6e73b0a55dc6",
+    "catalogue.mjs": "17c4e71c7a57bc58917e28c107dedcc9406dd0fb389336eddb3ed0ea47c2866f",
+    "catalogue.test.mjs": "6258ece658d7812e87686f22180bd117d11bf795b96ad732b906769e6a647cec"
+  },
+  "nodeVersion": "v26.7.0",
+  "testReceipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead58/historical-f44-resources/scoped-tests.json",
+  "syntaxReceipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead58/historical-f44-resources/client-syntax.json",
+  "targetedEvidence": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/targeted-6b8ff68a563be2666e5b37349b06ae1fb6f09b013a7566f53bfaa0ea416e68e5-default-1793922289870106000.json",
+  "coverage": {
+    "lines": 100,
+    "branches": 80.51,
+    "functions": 96,
+    "perTestContexts": "Node native provider does not expose them"
+  },
+  "base": "70fc4c7d02a575697a113fb7867a7dad8cc3d794"
+}
