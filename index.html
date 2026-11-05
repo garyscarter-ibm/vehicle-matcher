@@ -58,15 +58,17 @@ main {
   </style>
 </head>
 <body>
-  <!-- The whole page is built by the module below: either the neutral brand
-       picker (no ?brand=) or the themed shell wrapping the real block. Nothing
-       is authored statically here so one page serves all five brands and the
-       picker off the same content map. -->
+  <!-- The module resolves experience independently of brand. The shared entry
+       host is composed by the launcher/employee stories; retail keeps its
+       existing picker and six branded shells. -->
   <div id="demo-root"></div>
 
   <script type="module">
     import decorate from './blocks/vehicle-matcher/vehicle-matcher.js';
     import { ACCESS_KEY_STORAGE } from './blocks/vehicle-matcher/engine.js';
+    import {
+      ENTRY_REGISTRY, resolveEntryContext, buildEntryUrl,
+    } from './blocks/demo-launcher/entry-context.js';
 
     const root = document.getElementById('demo-root');
     const params = new URLSearchParams(window.location.search);
@@ -178,7 +180,7 @@ main {
     };
 
     // Picker tile order (BMW, MINI, Ford, Honda, Motorrad, Ferrari).
-    const PICKER_ORDER = ['bmw', 'mini', 'ford', 'honda', 'motorrad', 'ferrari'];
+    const PICKER_ORDER = ENTRY_REGISTRY.retailBrands;
 
     // ---- carried over from block.html ---------------------------------------
     // The Retailer Name row names the pool the block SEARCHED, and ?scope=
@@ -316,9 +318,7 @@ main {
         // default. ?retailer=, ?retailerName= and ?mode= were lost the same way.
         // ?key= is already stripped from params below (it moves into
         // sessionStorage), so the password cannot leak back into a URL here.
-        const query = new URLSearchParams(params);
-        query.set('brand', key);
-        tile.href = `?${query}`;
+        tile.href = buildEntryUrl(window.location.href, { experience: 'used-cars', brand: key });
         // The mark sits on a white plate so it reads on the dark tile (see
         // .demo-picker-logo). Its error-fallback wordmark lands on that same
         // plate, so it carries the label class that the plate darkens.
@@ -434,6 +434,44 @@ main {
       // itself, so it needs no row here.
     }
 
+    // A small semantic host for the route contract, rather than a second
+    // launcher/employee page implementation. FUCQ-33/35 compose those screens
+    // using root.entryContext and the bubbling demo-entry-ready event below.
+    // Fixed state copy never echoes raw query values or passwords.
+    function renderEntryHost(context) {
+      const messages = {
+        launcher: ['Car experiences', 'Choose how you want to find your next car.'],
+        'unknown-experience': ['Choose a car experience', 'That car experience is not recognised. Choose an available experience to continue.'],
+        'employee-brand-required': ['Choose an employee-car brand', 'The employee-car demo supports BMW. Choose BMW to continue, or explore used cars.'],
+        'unsupported-employee-brand': ['Employee cars for this brand are unavailable', 'The employee-car demo supports BMW. You can choose BMW or explore used cars for your selected brand.'],
+        'employee-unavailable': ['Employee cars are unavailable', 'Employee cars are not available right now. You can return to car experiences or explore used cars.'],
+        employee: ['Employee cars', 'Your employee-car entry is ready.'],
+      };
+      const [title, message] = messages[context.state];
+      root.innerHTML = `
+        <main class="vm" data-entry-host="${context.state}">
+          <section class="vm-screen vm-status" aria-labelledby="entry-title">
+            <h1 class="vm-title" id="entry-title">${title}</h1>
+            <p class="vm-lede">${message}</p>
+            <nav aria-label="Car experiences"></nav>
+          </section>
+        </main>`;
+      const actions = [
+        ['Used cars', context.links.usedCars],
+        ...(context.state === 'launcher' ? [['Employee cars', context.links.employeeCars]]
+          : [['Car experiences', context.links.launcher]]),
+        ...(['employee-brand-required', 'unsupported-employee-brand'].includes(context.state)
+          ? [['BMW employee cars', context.links.employeeBmw]] : []),
+      ];
+      actions.forEach(([label, href]) => {
+        const link = document.createElement('a');
+        link.className = 'vm-btn vm-btn-ghost';
+        link.textContent = label;
+        link.href = href;
+        root.querySelector('nav').append(link);
+      });
+    }
+
     // ------------------------------------------------------------------
     // Password gate — carried over from block.html, but here it runs before
     // ANY view renders, picker included: the whole demo sits behind the shared
@@ -467,6 +505,8 @@ main {
     const keyFromUrl = params.get('key');
     if (keyFromUrl) {
       sessionStorage.setItem(ACCESS_KEY_STORAGE, keyFromUrl);
+    }
+    if (params.has('key')) {
       params.delete('key');
       const clean = params.toString();
       window.history.replaceState(
@@ -510,16 +550,32 @@ main {
     // Render the chosen view. Called only once the gate has cleared, so neither
     // the picker tiles nor a branded shell is ever painted behind the overlay.
     function render() {
-      const brandParam = (params.get('brand') || '').toLowerCase();
+      // Capability availability is configured separately from retail brands.
+      // The default stays disabled until FUCQ-35 registers the real entry.
+      const context = resolveEntryContext(window.location.href, {
+        employeeAvailable: ENTRY_REGISTRY.employeeAvailable,
+      });
+      root.entryContext = context;
+      root.dataset.experience = context.experience;
+      root.dataset.entryState = context.state;
+      root.dataset.brand = context.brand || '';
+      const ready = () => root.dispatchEvent(new CustomEvent('demo-entry-ready', {
+        detail: context, bubbles: true,
+      }));
 
-      if (!brandParam) {
-        // No brand chosen — show the neutral picker and stop.
+      if (context.state === 'retail-picker') {
         renderPicker();
+        ready();
+        return;
+      }
+      if (context.state !== 'retail') {
+        renderEntryHost(context);
+        ready();
         return;
       }
 
       // Unknown brand falls back to bmw, matching the block's own DEFAULT_BRAND.
-      const brandKey = BRANDS[brandParam] ? brandParam : 'bmw';
+      const brandKey = context.brand;
       const block = renderShell(brandKey);
       applyOverrides(block, brandKey);
 
@@ -534,6 +590,7 @@ main {
       });
 
       decorate(block);
+      ready();
     }
 
     // Whether to prompt for the password up front. A local dev backend runs
