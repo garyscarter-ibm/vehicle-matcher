@@ -95,17 +95,19 @@ async function select(page, label, value) {
   const control = page.getByLabel(label, { exact: true }); await tabTo(page, control);
   const choices = await control.evaluate((node) => [...node.options].map((option) => ({ value: option.value, disabled: option.disabled })));
   const target = choices.findIndex((option) => option.value === value && !option.disabled); assert.ok(target >= 0, label + ': projected option exists');
-  const keys = ['Home']; await page.keyboard.press('Home');
-  // Some selectors redraw on every change. Resolve the labelled control anew after each real key.
-  for (let attempt = 0; attempt <= choices.length * 2 + 2; attempt++) {
-    const selected = await control.evaluate((node) => ({ index: node.selectedIndex, value: node.value }));
-    if (selected.value === value) break;
-    if (attempt === choices.length * 2 + 2) throw Error(label + ': keyboard selection did not reach the projected value');
-    await tabTo(page, control);
-    const key = selected.index < target ? 'ArrowDown' : 'ArrowUp'; keys.push(key); await page.keyboard.press(key);
-  }
-  assert.equal(await control.inputValue(), value); await page.keyboard.press('Tab'); keys.push('Tab');
-  report.keyboard.push({ action: label, method: 'native keyboard selection', selectedValue: value, observedOptionIndex: target, keys, after: await focusState(page) });
+  const previous = await control.evaluate((node) => ({ index: node.selectedIndex, value: node.value }));
+  // macOS Chrome can keep arrow navigation inside its native popup until Enter commits it.
+  const keys = ['Space', 'Home']; await page.keyboard.press('Space'); await page.keyboard.press('Home');
+  const enabledBeforeTarget = choices.slice(0, target).filter((option) => !option.disabled).length;
+  for (let index = 0; index < enabledBeforeTarget; index++) { keys.push('ArrowDown'); await page.keyboard.press('ArrowDown'); }
+  keys.push('Enter'); await page.keyboard.press('Enter');
+  // Resolve the labelled control after commit because its change handler may replace the editor.
+  const observedAfterCommit = await control.evaluate((node) => ({ index: node.selectedIndex, value: node.value }));
+  const trace = { action: label, method: 'native keyboard popup selection and explicit commit', selectedValue: value,
+    observedOptionIndex: target, previous, observedAfterCommit, keys, after: await focusState(page) };
+  report.keyboard.push(trace);
+  assert.equal(observedAfterCommit.value, value, label + ': keyboard popup commit reached the projected value');
+  await page.keyboard.press('Tab'); keys.push('Tab'); trace.after = await focusState(page);
 }
 async function enterText(page, label, value) {
   const control = page.getByLabel(label, { exact: true }); await tabTo(page, control); await control.fill(value);
