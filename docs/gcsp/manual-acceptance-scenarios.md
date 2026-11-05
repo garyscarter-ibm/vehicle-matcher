@@ -143,3 +143,7 @@ Feedback is recorded in this repository document and committed through the norma
 | Date UTC | Variant/fixture | Run ID | Build | Result | Feedback / next revision |
 |---|---|---|---|---|---|
 | 2026-11-05 | acknowledged / rejected; v1 | No new run (refused) | `96bc997` | Missing offer/ordering/reconciliation/fault capabilities; no pending or acknowledged state fabricated. | FUCQ-131 supplies real pending operation and both-resolution replay evidence. |
+
+### Integrated automated evidence · 5 November 2026
+
+FUCQ-125's integrated source `87c0b4ec86312887c7f807746b143e7eb2074b98` passed the 63-case scenario/Greg/clock/outbox regression and the required full suite (794 total, 792 passed, two configured-PostgreSQL skips). The checked catalogue/refusal/reset/current projection remains `server/gcsp/fixtures/scenarios/presentation-v1.json`. All six business preparations still return `not available yet` before mutation; these runs establish backend guards and fictional mechanics reset behaviour. No durable manual business run, screen trial or later journey replay is recorded by this automated checkpoint. Retained execution and cleanup evidence is described in the FUCQ-125 story Result.
