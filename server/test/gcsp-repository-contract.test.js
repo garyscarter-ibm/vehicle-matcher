@@ -129,6 +129,9 @@ export function repositoryContract(provider, factory) {
         facts: { source: 'synthetic-contract', exact: 'car-a' }, terms: { points: { value: 800, unit: 'points' } },
         provenance: { sourceRef: 'fixture:manual-contract' } };
       const runClaim = async (tx, abort) => {
+        const draft = await tx.recordReceipt({ consumerId: 'manual:draft:employee-a', eventId: '7', inputDigest: 'manual-draft-v7',
+          outcome: ok({ draftVersion: 7, employeeId: 'employee-a', entitlementSlotId: 'slot-a', choices: { driverId: 'driver-a' } }) });
+        if (draft.status !== 'ok') return draft;
         const pinned = await tx.insert('quotes', quote); if (pinned.status !== 'ok') return pinned;
         const claim = await tx.conditionalClaim(claimInput({ quoteId: quote.quoteId, state: 'claim-pending', phase: 'preview', operationId: 'manual-operation' }));
         if (claim.status !== 'ok') return claim;
@@ -152,8 +155,11 @@ export function repositoryContract(provider, factory) {
       assert.equal(hold.state, 'claim-pending'); assert.equal(hold.expiresAt, expiresAt); assert.equal(hold.phase, 'preview');
       const pinned = (await repository.read(ctx(), ref('quotes', { quoteId: quote.quoteId }))).value;
       assert.equal(pinned.draftVersion, 7); assert.deepEqual(pinned.facts, quote.facts); assert.deepEqual(pinned.terms, quote.terms);
-      assert.equal((await repository.query(ctx(), 'pending_operations')).value[0].payload.quote.quoteId, quote.quoteId);
-      if (processRead) assert.deepEqual(processRead('hold-a'), { hold, quote: pinned });
+      const operations = (await repository.query(ctx(), 'pending_operations')).value;
+      assert.equal(operations[0].payload.quote.quoteId, quote.quoteId);
+      const draft = (await repository.read(ctx(), ref('event_receipts', { consumerId: 'manual:draft:employee-a', eventId: '7' }))).value.outcome.value;
+      assert.equal(draft.draftVersion, 7);
+      if (processRead) assert.deepEqual(processRead('hold-a'), { hold, quote: pinned, draft, operations });
       assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput({
         holdId: 'competitor', claimId: 'competitor', employeeId: 'employee-b', entitlementSlotId: 'slot-b', quoteId: 'quote-ba', expectedStockVersion: 2,
       })))).reason, 'car-occupied');

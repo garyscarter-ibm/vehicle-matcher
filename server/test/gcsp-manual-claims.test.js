@@ -236,7 +236,8 @@ test('remote claim timeout persists intent before the effect, survives reopen, a
   assert.equal(operation.payload.quote.draftVersion, 1);
   assert.equal(positiveVersion(operation.payload.expectedStockVersion), true);
   assert.deepEqual(await f.service.claim(f.context, input), response);
-  assert.equal(adapter.calls.length, 1);
+  assert.equal(adapter.calls.filter((c) => c.method === 'execute').length, 1);
+  assert.equal(adapter.calls.at(-1).method, 'reconcile');
   assert.equal((await f.service.readClaim(f.context)).value.hold.state, 'claim-pending');
   assert.equal(adapter.calls.at(-1).method, 'reconcile');
   assert.equal((await f.service.browseStock(f.context)).value.cars.length, 1);
@@ -256,6 +257,14 @@ test('concurrent identical remote commands execute one new intent; committed rep
   assert.equal(adapter.calls.filter((c) => c.method === 'execute').length, 1);
   assert.equal((await f.repository.query(f.context, 'holds')).value.length, 1);
   assert.equal((await f.repository.query(f.context, 'pending_operations')).value.length, 1);
+});
+
+test('identical command replay also reconciles expiry, while retaining its original response and timestamp', async () => {
+  const f = await setup(); const input = await selection(f); const original = await f.service.claim(f.context, input);
+  await advance(f, 120);
+  assert.deepEqual(await f.service.claim(f.context, input), original);
+  assert.equal((await f.repository.query(f.context, 'holds', { state: 'expired' })).value.length, 1);
+  assert.equal((await f.service.readClaim(f.context)).value.state, 'expired');
 });
 const positiveVersion = (v) => Number.isSafeInteger(v) && v > 0;
 
@@ -415,7 +424,8 @@ test('a changed driver or stale stock during order review refuses allocation but
 
 test('only authoritative absence permits resending the same pending operation; late claim confirmation first releases overdue stock', async () => {
   const adapter = remoteAdapter(); const f = await setup({ adapter }); const original = await claim(f);
-  adapter.reconcile = async (operation) => { adapter.calls.push({ method: 'reconcile', operation }); return { status: 'not-found' }; };
+  adapter.reconcile = async (operation) => { adapter.calls.push({ method: 'reconcile', operation }); return {
+    status: 'not-found', operationId: operation.operationId, runId: operation.runId, orderUuid: operation.payload.orderUuid }; };
   adapter.set('confirmed');
   assert.equal((await f.service.readClaim(f.context)).value.state, 'quoted');
   const executions = adapter.calls.filter((c) => c.method === 'execute');
@@ -444,4 +454,20 @@ test('presentation fixtures assert actual quoted, released, expired, conflict, u
   assert.deepEqual(projection(await unavailable.readClaim(f.context)), expected.unavailable);
   const g = await setup({ adapter: remoteAdapter() }); await claim(g);
   assert.deepEqual(projection(await g.service.readClaim(g.context)), expected.pending);
+});
+
+test('a concurrent hold revision during reload refuses a torn success projection', async () => {
+  const f = await setup(); await claim(f); let changed = false;
+  const repository = { ...f.repository, async read(context, reference) {
+    const found = await f.repository.read(context, reference);
+    if (!changed && reference.table === 'holds' && found.status === 'ok') {
+      changed = true;
+      await f.repository.transaction(context, cmd('concurrent-revision'), (tx) => tx.compareAndSwap(reference, found.value.version, {}));
+    }
+    return found;
+  } };
+  const service = createManualClaimsService({ ...f, repository });
+  const outcome = await service.readClaim(f.context);
+  assert.equal(outcome.status, 'stale-version'); assert.equal(outcome.resource, 'hold');
+  assert.equal((await service.readClaim(f.context)).value.state, 'quoted');
 });

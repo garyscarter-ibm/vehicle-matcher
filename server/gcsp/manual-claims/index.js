@@ -57,7 +57,14 @@ export class ManualClaimsService {
     try { digest = inputDigest({ kind, input }); } catch { return { error: invalid('command') }; }
     const command = { commandId: commandKey(context, input.commandId), inputDigest: digest };
     const prior = await this.#repository.read(context, ref(context, 'event_receipts', { consumerId: 'command:transaction', eventId: command.commandId }));
-    if (prior.status === 'ok') return { error: prior.value.inputDigest === digest ? structuredClone(prior.value.outcome) : conflict('idempotency-input-changed') };
+    if (prior.status === 'ok') {
+      if (prior.value.inputDigest !== digest) return { error: conflict('idempotency-input-changed') };
+      const reconciled = await this.#reconcile(context);
+      if (!['ok', 'pending'].includes(reconciled.status)) return { error: reconciled };
+      // The receipt is the original response at its original instant. Current
+      // authority is reconciled above and exposed by readClaim/readQuote.
+      return { error: structuredClone(prior.value.outcome) };
+    }
     return prior.status === 'not-found' ? { command } : { error: prior };
   }
   async #current(context) {
@@ -159,7 +166,10 @@ export class ManualClaimsService {
     // is reconciled before any retry; only an authoritative absent result may resend.
     try {
       response = await this.#adapter[execute ? 'execute' : 'reconcile'](structuredClone(operation));
-      if (!execute && response?.status === 'not-found') response = await this.#adapter.execute(structuredClone(operation));
+      if (!execute && response?.status === 'not-found' && response.operationId === operation.operationId
+        && response.runId === context.runId && response.orderUuid === operation.payload.orderUuid) {
+        response = await this.#adapter.execute(structuredClone(operation));
+      }
     } catch { return pending(operation); }
     if (!['confirmed', 'rejected'].includes(response?.status)
       || response.operationId !== operation.operationId || response.runId !== context.runId
