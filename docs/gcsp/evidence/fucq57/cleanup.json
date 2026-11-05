@@ -27,5 +27,107 @@
   ],
   "compatibilityException": null,
   "largeOutputs": null,
-  "leftovers": []
+  "leftovers": [],
+  "validationAndInstallRoots": [
+    {
+      "receipt": "egress-validation.json",
+      "root": "/private/tmp/test-stamp-shard-d14b4b6ebeeb4566860a3eb7c62acf90",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq57-20261105-offline-guard-scoped-d14b4b6ebeeb4566860a3eb7c62acf90.json",
+      "absent": true,
+      "groupsAbsent": true,
+      "peakAllocatedBytes": 974944,
+      "peakRssBytes": 180895744
+    },
+    {
+      "receipt": "e2e-validation.json",
+      "root": "/private/tmp/test-stamp-shard-5959fe7c513944359e330f0f5d06fa3d",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq57-20261105-offline-guard-scoped-5959fe7c513944359e330f0f5d06fa3d.json",
+      "absent": true,
+      "groupsAbsent": true,
+      "peakAllocatedBytes": 1855616,
+      "peakRssBytes": 222625792
+    },
+    {
+      "receipt": "consumer-validation.json",
+      "root": "/private/tmp/test-stamp-shard-c09b3a040cc04a5288a39b7c9115f557",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq57-20261105-offline-guard-scoped-c09b3a040cc04a5288a39b7c9115f557.json",
+      "absent": true,
+      "groupsAbsent": true,
+      "peakAllocatedBytes": 1364096,
+      "peakRssBytes": 180355072
+    },
+    {
+      "receipt": "boundary-validation.json",
+      "root": "/private/tmp/test-stamp-shard-dbb5506dea004fd4aa8b3144b4342981",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq57-20261105-offline-guard-scoped-dbb5506dea004fd4aa8b3144b4342981.json",
+      "absent": true,
+      "groupsAbsent": true,
+      "peakAllocatedBytes": 4964896,
+      "peakRssBytes": 173162496
+    },
+    {
+      "receipt": "full-validation.json",
+      "root": "/private/tmp/test-stamp-shard-e1d6e317ed214cf49d02660e7924b0f1",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq57-20261105-offline-guard-full-e1d6e317ed214cf49d02660e7924b0f1.json",
+      "absent": true,
+      "groupsAbsent": true,
+      "peakAllocatedBytes": 49518272,
+      "peakRssBytes": 349552640
+    },
+    {
+      "receipt": "root-install.json",
+      "root": "/private/tmp/test-stamp-shard-aa388922c1a246c19e254002b2ccea51",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq57-root-install-aa388922c1a246c19e254002b2ccea51.json",
+      "absent": true,
+      "groupsAbsent": true,
+      "peakAllocatedBytes": 7002080,
+      "peakRssBytes": 159285248
+    },
+    {
+      "receipt": "server-install.json",
+      "root": "/private/tmp/test-stamp-shard-06fa3b257794417789b9132010e6acff",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq57-server-install-06fa3b257794417789b9132010e6acff.json",
+      "absent": true,
+      "groupsAbsent": true,
+      "peakAllocatedBytes": 2924384,
+      "peakRssBytes": 89849856
+    },
+    {
+      "receipt": "full-validation.json",
+      "root": "/private/tmp/test-stamp-shard-ae959fc6a7304473a37792249357a47d",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq57-full-outer-ae959fc6a7304473a37792249357a47d.json",
+      "absent": true,
+      "groupsAbsent": true,
+      "peakAllocatedBytes": 20480
+    }
+  ],
+  "full": {
+    "counts": {
+      "cancelled": 0,
+      "fail": 0,
+      "pass": 866,
+      "skipped": 2,
+      "tests": 868
+    },
+    "innerRemovedBytes": 49518272,
+    "outerRemovedBytes": 20480,
+    "ownedDescendantsAbsent": true,
+    "tokensAbsent": true,
+    "successfulLogRoots": [
+      {
+        "absent": true,
+        "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq57-full-6a54f507440f4141832d578a9e71a876"
+      }
+    ],
+    "retainedSummary": "full-validation.json"
+  },
+  "verifiedAt": "2026-11-05T07:10:57.358217+00:00",
+  "independentDispatcherAudit": {
+    "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq57-dispatcher-pre-result-verify.json",
+    "verifiedCompletedScratchManifests": 14,
+    "includesSupersededAndFailureChunks": true,
+    "sequentialSampledScratchBytes": 75662336,
+    "allocationCaveat": "Sum of sampled sequential peaks, not a deletion total",
+    "groupsTokensOuterPhasesDescendantsRawLogsAbsent": true
+  }
 }
