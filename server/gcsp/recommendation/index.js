@@ -1,10 +1,12 @@
 import { createVehicleSnapshot, createEmployeeTerms, freezeVehicleData } from '../../vehicles/index.js';
 import { validInstant } from '../policy/file-provider.js';
-import { validateBrief, evaluateEssentials, scorePreferences, confirmedFact, chargingGates } from '../../scenarios/employee/index.js';
+import { validateBrief, validateBriefContent, evaluateEssentials, scorePreferences, confirmedFact, chargingGates } from '../../scenarios/employee/index.js';
 
 const result = (status, fields) => ({ status, ...fields, contractVersion: '1.0.0' });
 const unavailable = (code) => result('unavailable', { code, reason: 'The employee recommendation source is unavailable.', retryable: true });
 const invalid = (code, reasons) => result('invalid', { code, reasons });
+const only = (value, keys) => value !== null && typeof value === 'object' && !Array.isArray(value)
+  && [Object.prototype, null].includes(Object.getPrototypeOf(value)) && Reflect.ownKeys(value).every((key) => keys.includes(key));
 const text = (value) => typeof value === 'string' && value.trim().length > 0;
 const uuid = (value) => typeof value === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
 const refused = () => result('stale-run', { reason: 'The supplied employee data does not belong to this current context.' });
@@ -54,8 +56,7 @@ function timingGates(candidate, employeeFacts, brief, now, config) {
 }
 
 export function createEmployeeRecommendationService({ provider, policy, time } = {}) {
-  return {
-    async recommend(context, request) {
+  async function evaluate(context, request, preview = null) {
       if (!provider || typeof provider.resolve !== 'function' || !policy || typeof time?.now !== 'function') return unavailable('provider-not-configured');
       if (!context?.roles?.includes('employee')) return result('forbidden', { reason: 'An employee context is required.' });
       if (!['runId', 'environmentId', 'employeeId', 'companyId', 'schemeId', 'gradeId', 'policyVersion'].every((key) => text(context[key]))) return invalid('invalid-context', [{ field: 'context', reason: 'The server must resolve a complete employee context.' }]);
@@ -75,17 +76,40 @@ export function createEmployeeRecommendationService({ provider, policy, time } =
         const [calibration, minimum, maximum, charging] = assumptionResults.map((row) => row.value);
         const config = calibration.value; const slider = { minimum: minimum.value, maximum: maximum.value };
         if (!configurationValid(config, slider) || typeof charging.value !== 'boolean') return unavailable('policy-configuration-invalid');
-        const errors = validateBrief(request, config, slider);
+        let errors = preview ? validateBriefContent(request, config, slider) : validateBrief(request, config, slider);
+        if (preview) {
+          const lifecycle = await policy.getAssumption('brief.lifecycle.v1', read);
+          if (lifecycle.status !== 'ok' || lifecycle.policyVersion !== allowance.policyVersion
+            || !Array.isArray(lifecycle.value?.value?.charging?.values)) return unavailable('policy-configuration-unavailable');
+          assumptionResults.push(lifecycle);
+          const { currentCarFeedback, ...content } = preview.original;
+          errors = validateBriefContent(content, { ...config, essentials: { ...config.essentials, charging: lifecycle.value.value.charging } }, slider);
+        }
         if (errors.length) return invalid('invalid-brief', errors);
         const brief = structuredClone(request);
+        if (preview) {
+          for (const p of Object.values(brief.preferences)) {
+            if (p.source === 'employee' && p.valueState === 'draft') p.valueState = 'confirmed';
+            if (p.source === 'employee' && p.importanceState === 'draft') p.importanceState = 'confirmed';
+          }
+          for (const e of Object.values(brief.essentials)) if (e.source === 'employee' && e.state === 'draft') e.state = 'confirmed';
+        }
+        const briefVersion = preview ? preview.baseBriefVersion || null : brief.briefVersion;
         const provided = await provider.resolve(context);
         if (provided?.status === 'stale-run' || provided?.status === 'forbidden') return provided;
         if (provided?.status !== 'ok') return unavailable('employee-source-unavailable');
         const source = structuredClone(provided.value);
         if (['runId', 'environmentId', 'employeeId'].some((key) => source?.[key] !== context[key])) return refused();
         const candidates = validateSource(source);
+        if (preview) {
+          const answer = preview.charging;
+          const known = answer && answer.value !== null && (answer.state === 'confirmed' || answer.state === 'draft' && answer.source === 'employee');
+          source.employeeFacts.charging = { status: known ? 'known' : 'unknown', value: known ? answer.value : null,
+            provenance: { sourceRef: 'employee-preview:charging', version: `draft:${preview.baseDraftVersion}`,
+              observedAt: now, assurance: 'synthetic-scenario' }, preview: { kind: 'unsaved-draft', approved: false } };
+        }
         const providerEssentials = source.employeeFacts.essentials;
-        if (providerEssentials !== undefined && validateBrief({ schemaVersion: 1, briefVersion: 1, preferences: {}, essentials: providerEssentials }, config, slider).length) return unavailable('employee-facts-invalid');
+        if (providerEssentials !== undefined && validateBriefContent({ schemaVersion: 1, preferences: {}, essentials: providerEssentials }, config, slider).length) return unavailable('employee-facts-invalid');
         const decisions = [];
         for (const candidate of candidates) {
           const matchFacts = Object.fromEntries(Object.entries(candidate.snapshot.facts).filter(([, fact]) => fact.status === 'known').map(([key, fact]) => [key, fact.value]));
@@ -128,18 +152,33 @@ export function createEmployeeRecommendationService({ provider, policy, time } =
           decisions.push({ candidateKey: candidate.snapshot.candidateKey, orderUuid: candidate.orderUuid, configurationId: candidate.configurationId,
             gateStatus, suitable: gateStatus === 'eligible', evaluatedAt: now, score: scores.score, components: scores.components,
             reasons: [...reasons, ...scores.reasons], tradeOffs: scores.tradeOffs, blockers, unknowns: [...unknowns, ...scores.unknowns],
-            snapshot: candidate.snapshot, terms, brief, employeeFacts: source.employeeFacts,
-            versions: { brief: brief.briefVersion, facts: source.factsVersion, policy: allowance.policyVersion, stock: source.stockVersion,
+            snapshot: candidate.snapshot, terms, brief: preview ? preview.original : brief, ...(preview ? { preview: preview.metadata } : {}), employeeFacts: source.employeeFacts,
+            versions: { brief: briefVersion, facts: source.factsVersion, policy: allowance.policyVersion, stock: source.stockVersion,
               snapshot: candidate.snapshot.snapshotVersion, terms: terms?.termsVersion ?? null, clock: clock.value.clockVersion, availability: candidate.availability.version },
             evidence: { eligibility: eligibility.value, allowance: allowance.value, points: points.status === 'ok' ? points.value : null,
               assumptions: assumptionResults.map((row) => row.value), availability: candidate.availability } });
         }
         const ranked = decisions.filter((entry) => entry.gateStatus === 'eligible').sort((a, b) => (b.score ?? -1) - (a.score ?? -1) || a.orderUuid.localeCompare(b.orderUuid));
         return freezeVehicleData(result('ok', { value: { scenarioId: 'employee-scheme-demo-v1', runId: context.runId,
+          ...(preview ? { preview: preview.metadata, brief: preview.original } : {}),
           state: !decisions.length ? 'no-stock' : ranked.length ? 'recommendations' : 'no-viable-stock', evaluatedAt: now,
-          versions: { brief: brief.briefVersion, facts: source.factsVersion, policy: allowance.policyVersion, stock: source.stockVersion, clock: clock.value.clockVersion },
+          versions: { brief: briefVersion, facts: source.factsVersion, policy: allowance.policyVersion, stock: source.stockVersion, clock: clock.value.clockVersion },
           decisions, recommendations: ranked.slice(0, config.displayLimit), eligibleCount: ranked.length } }));
       } catch { return unavailable('employee-source-invalid'); }
+  }
+  return {
+    recommend: (context, request) => evaluate(context, request),
+    // This in-process entry is deliberately absent from the public recommendations route.
+    previewUnsaved(context, input = {}) {
+      if (!only(input, ['brief', 'baseBriefVersion', 'baseDraftVersion'])) return invalid('invalid-preview', [{ field: 'preview', reason: 'Supply only the editable brief and current saved base versions.' }]);
+      const { brief, baseBriefVersion, baseDraftVersion } = input;
+      if (!Number.isSafeInteger(baseBriefVersion) || baseBriefVersion < 0 || !Number.isSafeInteger(baseDraftVersion)
+        || baseDraftVersion < 0 || !only(brief, ['schemaVersion', 'preferences', 'essentials', 'currentCarFeedback'])
+        || brief.schemaVersion !== 1) return invalid('invalid-preview', [{ field: 'preview', reason: 'Supply current saved base versions.' }]);
+      const { charging, ...essentials } = brief.essentials ?? {};
+      const { currentCarFeedback, ...content } = brief;
+      const metadata = { kind: 'unsaved-draft', approved: false, baseBriefVersion, baseDraftVersion };
+      return evaluate(context, { ...content, essentials }, { charging, baseBriefVersion, baseDraftVersion, metadata, original: structuredClone(brief) });
     },
   };
 }

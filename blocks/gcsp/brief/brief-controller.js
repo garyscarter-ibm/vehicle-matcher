@@ -31,7 +31,7 @@ function typed(value, definition, slider) {
   if (definition.type === 'number') return Number.isFinite(value) && value >= (definition.minimum ?? 0)
     && (definition.maximum === undefined || value <= definition.maximum) && (!definition.integer || Number.isInteger(value));
   if (definition.type === 'string') return text(value);
-  if (definition.type === 'list') return Array.isArray(value) && value.length > 0 && value.every(text);
+  if (definition.type === 'list') return Array.isArray(value) && value.every(text);
   return false;
 }
 
