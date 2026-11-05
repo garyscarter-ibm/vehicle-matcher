@@ -305,6 +305,23 @@ lifecycle('post-decline essential changes are server-stamped; other employees an
   assert.deepEqual(changed.value.brief.postDeclineChange.after, changed.value.brief.essentials.seats);
 });
 
+lifecycle('unchanged essential business fields preserve the decline change despite different provenance metadata', async () => {
+  const f = await setup(); await save(f); await confirm(f);
+  await f.repository.transaction(f.context, cmd('no-op-decline'), (tx) => tx.insert('decisions', { runId: f.context.runId,
+    decisionId: 'no-op-decline', offerId: 'no-op-offer', employeeId: f.context.employeeId, decision: 'decline', versions: { brief: 1 } }));
+  const input = { commandId: 'same-essential', decisionId: 'no-op-decline', expectedBriefVersion: 1,
+    change: { path: 'essentials.seats', value: { ...essential(5), source: 'reviewed-form' } } };
+  const unchanged = await f.service.changeAfterDecline(f.context, input);
+  assert.equal(unchanged.status, 'invalid', JSON.stringify(unchanged));
+  assert.equal(unchanged.reasons[0].field, 'change.value');
+  assert.equal((await f.service.readHistory(f.context)).value.versions.length, 1);
+  const changed = await f.service.changeAfterDecline(f.context, { ...input, commandId: 'different-essential',
+    change: { ...input.change, value: essential(4) } });
+  assert.equal(changed.status, 'ok', JSON.stringify(changed));
+  assert.equal(changed.value.brief.briefVersion, 2);
+  assert.equal(changed.value.brief.essentials.seats.source, 'employee');
+});
+
 lifecycle('drafts based on a previous confirmation cannot overwrite a pause; changed receipts commit atomically', async () => {
   const f = await setup(); await save(f); await confirm(f);
   await save(f, 'second-draft', data(), { expectedDraftVersion: 1, expectedBriefVersion: 1 });

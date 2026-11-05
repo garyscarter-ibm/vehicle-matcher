@@ -18,6 +18,7 @@ const sorted = (rows) => rows.filter((b) => b.status === 'confirmed').sort((a, b
 const draftRows = (rows) => rows.map((r) => r.outcome.value).sort((a, b) => a.draftVersion - b.draftVersion);
 const projection = (b) => ({ schemaVersion: 1, briefVersion: b.briefVersion, preferences: b.preferences,
   essentials: Object.fromEntries(Object.entries(b.essentials).filter(([key]) => key !== 'charging')) });
+const essentialMeaning = ({ operator, value, unit, state }) => ({ operator, value, unit, state });
 
 // Business data lives only behind the repository. Draft receipts are a separate append-only
 // stream; confirmed versions never acquire draft/inferred fields through an update.
@@ -179,15 +180,17 @@ export class BriefService {
         const [section, key] = input.change.path.split('.');
         if (!Object.hasOwn(brief[section], key)) return invalid('change.path', 'Change an existing registered field.');
         const before = structuredClone(section === 'preferences' ? brief.preferences[key].value : brief.essentials[key]);
-        if (inputDigest(before) === inputDigest(input.change.value)) return invalid('change.value', 'Confirm a different value.');
         if (section === 'preferences') brief.preferences[key] = { ...brief.preferences[key], value: input.change.value, source: 'employee', valueState: 'confirmed', confirmedAt: prepared.now };
         else brief.essentials[key] = { ...input.change.value, source: 'employee', confirmedAt: prepared.now };
         const error = this.#validate({ schemaVersion: brief.schemaVersion, preferences: brief.preferences, essentials: brief.essentials,
           ...(brief.currentCarFeedback ? { currentCarFeedback: brief.currentCarFeedback } : {}) }, prepared, true);
         if (error) return error;
         if (section === 'essentials' && brief.essentials[key].state !== 'confirmed') return invalid('change.value', 'The changed essential must be explicitly confirmed.');
+        const after = section === 'preferences' ? input.change.value : brief.essentials[key];
+        if (inputDigest(section === 'preferences' ? before : essentialMeaning(before))
+          === inputDigest(section === 'preferences' ? after : essentialMeaning(after))) return invalid('change.value', 'Confirm a different value.');
         brief.postDeclineChange = { decisionId: input.decisionId, offerId: decision.value.offerId, fromBriefVersion: version,
-          path: input.change.path, before, after: section === 'preferences' ? input.change.value : brief.essentials[key], confirmedBy: context.principalId, confirmedAt: prepared.now };
+          path: input.change.path, before, after, confirmedBy: context.principalId, confirmedAt: prepared.now };
       }
       brief = { ...brief, runId: context.runId, employeeId: context.employeeId, entitlementSlotId: context.entitlementSlotId,
         renewalId: context.renewalId ?? null, schemaVersion: 1, briefVersion: version + 1, previousBriefVersion: version || null,
