@@ -1,7 +1,8 @@
 # Buddy hold and offer producer · FUCQ-100
 
 This record describes the independent backend implementation on `dev/DEV-2026-11-04-060`.
-It is not evidence of actual FUCQ-96 allocation invocation or completed FUCQ-66 service integration.
+The isolated published-source FUCQ-96 invocation is proved below; merged startup composition and
+completed FUCQ-66 service integration remain outstanding.
 The authored expiry, remote reconciliation and full-suite checks remain outstanding at this checkpoint.
 
 `server/gcsp/offers/buddy-hold.js` exports `BuddyHoldService` and
@@ -48,8 +49,8 @@ Renewal authority is `brief.renewalId ?? slot.renewalId ?? employee.renewalId ??
 A supplied candidate/context renewal must agree with that stored value. Holds and claims preserve it,
 and an allocated record for the same renewal blocks another slot. The tests construct the published
 candidate with the real evaluator and DemoIdentity context; they do not load or invoke the paused
-producer. Actual pinned-source invocation remains unproved. DemoClock startup's backend identity
-remains a separate FUCQ-96 composition edge.
+producer. The separate pinned-source proof below now exercises actual invocation. DemoClock startup's
+backend identity remains a separate FUCQ-96 composition edge.
 
 ## Atomic authority and presentation shape
 
@@ -132,7 +133,7 @@ repository, DemoClock, DemoIdentity, BriefService and PolicyService
 exercise atomic success/replay, pinned terms, policy duration, hash bindings, stale revisions, permission,
 essential/eligibility failure, rollback after earlier writes and concurrent contention. Raw cart/buddy
 `conditionalClaim` tests prove only the common exclusive constraint. Actual completed FUCQ-66 both-way
-service proof, actual FUCQ-96 producer invocation, expiry/reconciliation and the authored `npm test`
+service proof, merged FUCQ-96 startup composition, expiry/reconciliation and the authored `npm test`
 remain outstanding. No native database or external sending proof is claimed.
 
 The corrected notification scope passes 28/28 tests: actual cryptographic producer through captured
@@ -141,3 +142,16 @@ races and obsolete descriptor replay. Captured outbox, renewal-case and brief bo
 with strict targeted evidence against `4700bb0` retained in
 `.claude/test-runs/fucq100/strict-notify/targeted-0c4b4200c5f8ecb147b72a873b6d5a0e9ec9fb821023b51410226f89baefb7f0-default-1793918866123269000.json`.
 This remains the explicit scoped retained-dependency loader variant; no full/native proof is implied.
+
+The dispatcher-granted isolated proof uses the exact published FUCQ-96 allocator and identity blobs
+from `6f15d4d524e7a207ce705befe1d52d8c54ce1cfa` with current real repository/policy/clock/brief/evaluator
+and BuddyHoldService at pushed checkpoint `6d6ecf0`. Two tests pass: actual allocation plus same-event
+replay, and actual next-candidate fallback after a real stock CAS makes the first claim stale. The
+claim wrapper delegates every outcome to the real buddy service. One confirmed claim creates exactly
+one hold/claim/quote/offer/outbox, and token-containment checks cover producer output and non-outbox
+tables. Exact blobs are hash-verified in owned scratch; the narrow loader remaps only those modules'
+relative imports, current identity to the pinned identity, and the named retained `pg` entry. No paused
+source, worktree or current product file is changed. Shared evidence:
+`.claude/test-runs/fucq100/pinned96-plan-v1.json` and `parent-pinned96-audit.json`.
+This proves isolated published-source invocation, not merged runtime/startup, native durability or
+actual completed FUCQ-66 integration.

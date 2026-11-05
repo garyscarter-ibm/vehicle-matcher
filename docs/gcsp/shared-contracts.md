@@ -465,8 +465,10 @@ same-digest replay reconstructs the exact original result from original insert i
 Generic receipts retain their contract. Downstream notification attempt/failure receipts now retain only
 safe descriptors/state. Dispatch re-reads the durable job and checks its exact attempt and snapshot
 before transport and acknowledgement/failure bookkeeping; obsolete work preserves newer state.
-Captured token-bearing rendering remains in the outbox row. Backend worker composition, expiry/remote reconciliation, actual FUCQ-96
-invocation and completed FUCQ-66 service integration remain outstanding. No migration, central server
+Captured token-bearing rendering remains in the outbox row. Exact published FUCQ-96 source invocation
+now passes isolated real-service allocation/replay and genuine stale-stock fallback checks. Backend
+worker/startup composition, expiry/remote reconciliation and completed FUCQ-66 service integration
+remain outstanding. No migration, central server
 registration or screen is added.
 
 ## Owned renewal-risk cases · FUCQ-112
