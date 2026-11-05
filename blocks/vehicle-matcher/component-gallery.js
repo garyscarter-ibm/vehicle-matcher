@@ -8,6 +8,8 @@ import { portalShell, accountNavigation } from '../gcsp/shell/portal-shell.js';
 import { EMPLOYEE_NAVIGATION } from '../gcsp/employee/gcsp-employee.js';
 import { messageList } from '../gcsp/presenter/message-list.js';
 import { fixtureMessages } from '../gcsp/presenter/fixtures.js';
+import { metricTile } from '../gcsp/kit/metric-tile.js';
+import { dataTable } from '../gcsp/kit/data-table.js';
 
 const browseSession = `gallery-${Date.now().toString(36)}`;
 let sessionSequence = 0;
@@ -122,6 +124,42 @@ function gcspExamples() {
     group(`accountNavigation: ${expanded ? 'expanded' : 'collapsed'}, with unavailable items`).append(frame);
   }
   group('messageList: sent, retrying and failed, first message open').append(messageList({ messages: fixtureMessages(), selectedId: 'job-004' }).root);
+  section.append(scope);
+  return section;
+}
+
+function gregKitExamples() {
+  const section = el('section', 'vm-gallery-section vm-gallery-greg-section');
+  section.setAttribute('aria-label', 'GCSP Greg kit');
+  section.append(
+    el('h2', 'vm-gallery-title', 'GCSP Greg kit'),
+    el('p', 'vm-gallery-copy', 'Dense operational figures for the Greg dashboard: metricTile and dataTable. A privacy band shows its own text and is never turned into a number. Synthetic examples only.'),
+  );
+  const scope = el('div', 'gcsp vm-gallery-gcsp');
+  const group = (title) => {
+    const box = el('div', 'vm-gallery-gcsp-group');
+    box.append(el('h3', 'vm-gallery-gcsp-title', title));
+    const body = el('div', 'vm vm-gallery-gcsp-body');
+    box.append(body);
+    scope.append(box);
+    return body;
+  };
+  const tiles = group('metricTile: exact, privacy band and with a note');
+  const tileRow = el('div', 'gcsp-tile-row');
+  tileRow.append(
+    metricTile({ label: 'Active briefs', count: { label: '28', isBand: false }, level: 'headline' }),
+    metricTile({ label: 'Declined', count: { label: 'fewer than 5', isBand: true }, note: 'Small counts are banded.' }),
+    metricTile({ label: 'Offers made', count: { label: '30', isBand: false }, note: 'Counted once each.', level: 'compact' }),
+  );
+  tiles.append(tileRow);
+  const rows = [
+    { name: 'U06 Active Tourer Plug-in Hybrid xDrive25e M Sport Pro with extended range', released: { label: '7', isBand: false }, held: { label: 'fewer than 5', isBand: true }, allocated: { label: '3', isBand: false } },
+    { name: 'G21 Touring', released: { label: '12', isBand: false }, held: { label: '3', isBand: false }, allocated: { label: '4', isBand: false } },
+  ];
+  const columns = [{ key: 'name', label: 'Model line' }, { key: 'released', label: 'Released', numeric: true },
+    { key: 'held', label: 'Held', numeric: true }, { key: 'allocated', label: 'Allocated', numeric: true }];
+  group('dataTable: long model name and a band cell').append(dataTable({ caption: 'Stock by model line', columns, rows, id: 'gallery-greg-table' }));
+  group('dataTable: empty state').append(dataTable({ caption: 'Stock by model line (empty)', columns, rows: [], emptyText: 'No stock has been released yet', id: 'gallery-greg-empty' }));
   section.append(scope);
   return section;
 }
@@ -268,7 +306,7 @@ export function mountComponentGallery(root) {
   exactControls.append(legacyButton, refineButton, exactReset);
   exact.append(exactControls, exactCards);
   sections.append(exact);
-  root.append(heading, sections, employeeDecisionExample(), employeeControlsExample(), gcspExamples());
+  root.append(heading, sections, employeeDecisionExample(), employeeControlsExample(), gcspExamples(), gregKitExamples());
 
   function dispatchBrowse(type, target, reason) {
     const result = reduceFeedback(browseFeedback, {
