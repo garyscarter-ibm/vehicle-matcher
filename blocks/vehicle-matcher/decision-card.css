@@ -6,7 +6,7 @@
 .vm .vm-card-explicit .vm-card-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--vm-space-3); }
 .vm .vm-card-explicit .vm-card-actions .vm-feedback-scope { flex-basis: 100%; margin: 0; }
 .vm .vm-card-explicit .vm-pick { display: flex; flex-wrap: wrap; gap: var(--vm-space-2); }
-.vm .vm-card-explicit .vm-pick-opt { white-space: normal; overflow-wrap: anywhere; }
+.vm .vm-card-explicit .vm-pick-opt { white-space: normal; overflow-wrap: anywhere; } .vm .vm-card-explicit .vm-pick-opt.is-on { background: var(--vm-accent-soft); }
 .vm .vm-card-explicit .vm-score[hidden] { display: none; }
 .vm .vm-media-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: var(--vm-space-2); color: var(--vm-ink); background: var(--vm-surface); font-size: var(--vm-text-label); }
 .gcsp .vm .vm-card-explicit[data-gate="ineligible"] .vm-card-gate { color: var(--gcsp-danger); }

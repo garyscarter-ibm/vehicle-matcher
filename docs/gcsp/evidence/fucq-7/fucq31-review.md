@@ -39,3 +39,22 @@ Early run used actual `PORT=31431 npm run serve`, isolated headless system Chrom
 Shared controls now support explicit values and callbacks without mutating caller state or emitting mount defaults; retail answer/default semantics remain. Typed values distinguish points, GBP, percent, zero, unknown and unconfirmed values. An injected preview loader snapshots the request and suppresses stale success/failure/cancel responses while retaining the retail adapter. Gallery preference position, importance and explicit indifference are separate; its local preview explicitly states the displayed decision has not been recalculated. Known slider endpoints stay labelled even when the current value is unknown.
 
 Implementer contracts/preview/CSP/ratchet command passed 87/87. Lead ran the story commands separately: `node --test server/test/shared-kit-contracts.test.js`, **15/15**, 1.1s; `node --test server/test/render.test.js server/test/ui-ratchet.test.js`, **57/57**, 5.6s. The latter mounts all six retail brands across five modes. Bounded supervised logs remain under `.claude/test-scratch/fucq31/lead/validation/`.
+
+## Repeatable shared-kit trial
+
+Run `npm run serve` from the repository root and open `http://localhost:3000/components.html` (or the printed local port). The employee gallery needs no API or credentials. Refresh resets every local example.
+
+1. Find **Exact employee decisions**. Read the synthetic FUCQ-29/policy boundary, monthly points cost and allowance, exact facts, representative-image caption and disabled Reserve explanation.
+2. Tab between **Eligible exact car**, **Ineligible exact car** and **Needs confirmation** exact-car choices and press Enter. The same card must update its name, facts, terms, reasons, imagery and gate together while focus stays on the chosen button. Missing images/data stay explicit. Reserve remains disabled.
+3. Activate **Not this one**, then **Undo local feedback**. The nearby status describes a local effect; nothing is saved or reserved. Inspect the loading, no-match and unknown examples below.
+4. Find **Preference, importance and indifference**. Change the native position slider, then set importance to zero with Home. Its status still says the preference is considered. Select **I am indifferent**; both sliders disable. Select **Consider this preference**; zero is preserved.
+5. Activate **Load unchanged display snapshot**. Observe the loading state and then the explicitly unchanged decision. These controls do not recalculate this result.
+6. Repeat at 320px and desktop width with keyboard focus visible and reduced motion enabled. The long vehicle name must remain readable, without horizontal overflow. Adjacent retail cards continue to use purchase price, mileage and dealer labels.
+
+This is a reusable-component trial. It does not demonstrate employee page composition, a saved brief, a reservation, or a live BMW integration.
+
+## Final visual iteration
+
+The lead inspected the final desktop and 320px employee-card captures. The long heading is now readable. The captures exposed another concrete issue: the later GCSP ghost-button rule overrode the exact-member selected background, making its pressed state visually indistinguishable. A scoped `.vm-card-explicit .vm-pick-opt.is-on` background restores the shared accent-soft selection without changing retail. The browser runner will compare computed selected/unselected backgrounds and recapture the gallery before acceptance.
+
+After that scoped fix, lead ran `node --test server/test/shared-kit-contracts.test.js server/test/gcsp-shell.test.js server/test/ui-ratchet.test.js`: **67/67 pass**, 5.3s, against updated queue base `0cb78ad`. Base integration commit `35a9d8c` brought in only DEV-062 queue metadata through the serialised scaffold Git adapter with clean branch/claim/identity/lock checks; the external story remains untouched.
