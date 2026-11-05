@@ -11742,6 +11742,524 @@
       "sourceDate": "2026-11-05",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.cohortSize",
+      "value": 1000,
+      "unit": "employees",
+      "status": "assumed",
+      "basis": "Requested 1,000-person fictional comparison cohort, not a BMW workforce count.",
+      "source": "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.seeds",
+      "value": [
+        "comparison-a",
+        "comparison-b",
+        "comparison-c"
+      ],
+      "unit": "seed list",
+      "status": "assumed",
+      "basis": "Three declared repeatable seeds expose variation without selecting a winning run; expand in the same source when needed.",
+      "source": "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.startsAt",
+      "value": "2026-11-05T09:00:00.000Z",
+      "unit": "UTC instant",
+      "status": "assumed",
+      "basis": "Fixed synthetic origin for renewal/release offsets; no wall clock is read by generation.",
+      "source": "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.horizonDays",
+      "value": 90,
+      "unit": "days",
+      "status": "assumed",
+      "basis": "Revisable 90-day comparison window; neither a BMW release commitment nor an employee renewal forecast.",
+      "source": "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.gradeDistribution",
+      "value": [
+        {
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G1-6",
+          "weight": 40
+        },
+        {
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G7",
+          "weight": 30
+        },
+        {
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G8-10",
+          "weight": 20
+        },
+        {
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G11-14",
+          "weight": 10
+        }
+      ],
+      "unit": "weighted scheme-grade contexts",
+      "status": "assumed",
+      "basis": "Illustrative FS&UK grade mix using the canonical eligibility mapping. Monthly points resolve through getAllowance for each context, never copied here.",
+      "source": "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.pointsAllowanceMultiplier",
+      "value": 1,
+      "unit": "allowance multiplier",
+      "status": "assumed",
+      "basis": "Baseline uses the canonical grade allowance unchanged; explicit what-if scaling is local to a generated comparison and never publishes policy.",
+      "source": "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.renewalDays",
+      "value": {
+        "min": 7,
+        "max": 90
+      },
+      "unit": "inclusive day offsets",
+      "status": "assumed",
+      "basis": "Uniform fictional renewal window inside the keyed horizon; no individual employee records are used.",
+      "source": "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.needs.v1",
+      "value": {
+        "essentials": [
+          {
+            "weight": 60,
+            "value": {
+              "seats": {
+                "operator": "gte",
+                "value": 4,
+                "unit": "count"
+              }
+            }
+          },
+          {
+            "weight": 30,
+            "value": {
+              "seats": {
+                "operator": "gte",
+                "value": 5,
+                "unit": "count"
+              },
+              "boot": {
+                "operator": "gte",
+                "value": 430,
+                "unit": "L"
+              }
+            }
+          },
+          {
+            "weight": 10,
+            "value": {}
+          }
+        ],
+        "preferences": {
+          "body": [
+            {
+              "value": "saloon",
+              "weight": 35
+            },
+            {
+              "value": "estate",
+              "weight": 40
+            },
+            {
+              "value": "suv",
+              "weight": 25
+            }
+          ],
+          "fuel": [
+            {
+              "value": "petrol",
+              "weight": 45
+            },
+            {
+              "value": "phev",
+              "weight": 25
+            },
+            {
+              "value": "ev",
+              "weight": 30
+            }
+          ],
+          "comfort": [
+            {
+              "value": 25,
+              "weight": 20
+            },
+            {
+              "value": 50,
+              "weight": 30
+            },
+            {
+              "value": 75,
+              "weight": 50
+            }
+          ],
+          "sportiness": [
+            {
+              "value": 25,
+              "weight": 40
+            },
+            {
+              "value": 50,
+              "weight": 35
+            },
+            {
+              "value": 75,
+              "weight": 25
+            }
+          ]
+        }
+      },
+      "unit": "weighted underlying-need distributions",
+      "status": "assumed",
+      "basis": "Illustrative registered essentials and preference values, with unmet needs allowed. These are synthetic latent needs, not recommendations or predetermined allocations.",
+      "source": "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.importanceDistribution",
+      "value": [
+        {
+          "value": 0,
+          "weight": 10
+        },
+        {
+          "value": 25,
+          "weight": 20
+        },
+        {
+          "value": 50,
+          "weight": 30
+        },
+        {
+          "value": 75,
+          "weight": 25
+        },
+        {
+          "value": 100,
+          "weight": 15
+        }
+      ],
+      "unit": "weighted importance 0-100",
+      "status": "assumed",
+      "basis": "Independent illustrative importance weights, including indifference; preference value and importance remain separate.",
+      "source": "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.briefNoise.v1",
+      "value": {
+        "accuratePreferenceProbability": 0.8,
+        "preserveEssentials": true
+      },
+      "unit": "probability and rule selection",
+      "status": "assumed",
+      "basis": "Each stated preference and importance pair has an 80% chance of matching latent needs; otherwise choose another supported value where available. Essentials are preserved so noise cannot manufacture an unsafe relaxation.",
+      "source": "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.accessGroups",
+      "value": [
+        {
+          "id": "immediate-access",
+          "weight": 40,
+          "accessSeconds": {
+            "min": 0,
+            "max": 300
+          },
+          "responseSeconds": {
+            "min": 60,
+            "max": 1800
+          }
+        },
+        {
+          "id": "intermittent-access",
+          "weight": 40,
+          "accessSeconds": {
+            "min": 900,
+            "max": 7200
+          },
+          "responseSeconds": {
+            "min": 1800,
+            "max": 10800
+          }
+        },
+        {
+          "id": "delayed-access",
+          "weight": 20,
+          "accessSeconds": {
+            "min": 10800,
+            "max": 28800
+          },
+          "responseSeconds": {
+            "min": 7200,
+            "max": 43200
+          }
+        }
+      ],
+      "unit": "weighted groups and inclusive seconds",
+      "status": "assumed",
+      "basis": "Illustrative access and response inequality models the dated release-rush question; group labels do not infer real jobs, devices or demographics.",
+      "source": "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.buddyUptake",
+      "value": 0.75,
+      "unit": "probability",
+      "status": "assumed",
+      "basis": "Illustrative 75% consent uptake; remaining fictional employees can use the manual route in later stories.",
+      "source": "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.carsPerEmployee",
+      "value": 0.85,
+      "unit": "cars/employee",
+      "status": "assumed",
+      "basis": "Illustrative scarce supply deliberately permits unmet demand; rounded once for the whole cohort, never per person.",
+      "source": "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.modelLineMix",
+      "value": [
+        {
+          "modelLine": "G20 Saloon|320i",
+          "weight": 45
+        },
+        {
+          "modelLine": "G21 Touring|320i",
+          "weight": 35
+        },
+        {
+          "modelLine": "G61 i5|i5 40",
+          "weight": 20
+        }
+      ],
+      "unit": "weighted model-line mix",
+      "status": "assumed",
+      "basis": "Limited illustrative order mix over three reviewed structural fixtures. Not coverage of every scheme model line and not real stock-locator proportions.",
+      "source": "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.releaseCadence",
+      "value": {
+        "firstReleaseDay": 0,
+        "intervalDays": 7,
+        "batchSize": 100
+      },
+      "unit": "day offsets and cars/release",
+      "status": "assumed",
+      "basis": "Illustrative weekly 100-car releases from the synthetic origin. Monday and a real BMW operating schedule are not assumed.",
+      "source": "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.configurationSet.v1",
+      "value": {
+        "kind": "reviewed-fixtures",
+        "version": "comparison-structural-fixtures.v1",
+        "reviewedOn": "2026-11-05",
+        "basis": "FUCQ-133 source review checks target Q13 identity structure and explicit fictional provenance. Three limited model labels are scenario references, not a published BMW corpus or verified constructible builds. Replace this key with corpus references when published.",
+        "configurations": [
+          {
+            "modelLine": "G20 Saloon|320i",
+            "configurationId": "Q01QRzIwOlJFRlBBSU5ULFJFRlRSSU0=",
+            "snapshotVersion": "comparison-structural-fixtures.v1",
+            "canonicalIdentity": {
+              "vgModelCode": "CMPG20",
+              "agModelCode": null,
+              "factoryOptionCodes": [
+                "REFPAINT",
+                "REFTRIM"
+              ],
+              "provenance": {
+                "kind": "synthetic",
+                "source": "FUCQ-133 reviewed structural fixture; CMP/REF codes are fictional, not observed BMW option/model codes",
+                "observedDate": null
+              }
+            },
+            "configuration": {
+              "model": "320i",
+              "generation": "G20",
+              "body": "saloon",
+              "powertrain": "petrol",
+              "vgModelCode": "CMPG20",
+              "market": "GB"
+            },
+            "sourceContext": {
+              "sourceRefs": [
+                "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133"
+              ],
+              "observedDate": "2026-11-05",
+              "sourceKind": "synthetic-structural-fixture",
+              "confidence": "Synthetic structural comparison fixture; descriptive labels only, no observed factory configuration, complete specifications or constructibility claim",
+              "unresolvedFacts": [
+                "exactFactoryOptions",
+                "exactEquipment",
+                "constructibility",
+                "fullSchemeModelCoverage"
+              ]
+            }
+          },
+          {
+            "modelLine": "G21 Touring|320i",
+            "configurationId": "Q01QRzIxOlJFRlBBSU5ULFJFRlRSSU0=",
+            "snapshotVersion": "comparison-structural-fixtures.v1",
+            "canonicalIdentity": {
+              "vgModelCode": "CMPG21",
+              "agModelCode": null,
+              "factoryOptionCodes": [
+                "REFPAINT",
+                "REFTRIM"
+              ],
+              "provenance": {
+                "kind": "synthetic",
+                "source": "FUCQ-133 reviewed structural fixture; CMP/REF codes are fictional, not observed BMW option/model codes",
+                "observedDate": null
+              }
+            },
+            "configuration": {
+              "model": "320i Touring",
+              "generation": "G21",
+              "body": "estate",
+              "powertrain": "petrol",
+              "vgModelCode": "CMPG21",
+              "market": "GB"
+            },
+            "sourceContext": {
+              "sourceRefs": [
+                "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133"
+              ],
+              "observedDate": "2026-11-05",
+              "sourceKind": "synthetic-structural-fixture",
+              "confidence": "Synthetic structural comparison fixture; descriptive labels only, no observed factory configuration, complete specifications or constructibility claim",
+              "unresolvedFacts": [
+                "exactFactoryOptions",
+                "exactEquipment",
+                "constructibility",
+                "fullSchemeModelCoverage"
+              ]
+            }
+          },
+          {
+            "modelLine": "G61 i5|i5 40",
+            "configurationId": "Q01QRzYxOlJFRlBBSU5ULFJFRlRSSU0=",
+            "snapshotVersion": "comparison-structural-fixtures.v1",
+            "canonicalIdentity": {
+              "vgModelCode": "CMPG61",
+              "agModelCode": null,
+              "factoryOptionCodes": [
+                "REFPAINT",
+                "REFTRIM"
+              ],
+              "provenance": {
+                "kind": "synthetic",
+                "source": "FUCQ-133 reviewed structural fixture; CMP/REF codes are fictional, not observed BMW option/model codes",
+                "observedDate": null
+              }
+            },
+            "configuration": {
+              "model": "i5 eDrive40 Touring",
+              "generation": "G61",
+              "body": "estate",
+              "powertrain": "ev",
+              "vgModelCode": "CMPG61",
+              "market": "GB"
+            },
+            "sourceContext": {
+              "sourceRefs": [
+                "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133"
+              ],
+              "observedDate": "2026-11-05",
+              "sourceKind": "synthetic-structural-fixture",
+              "confidence": "Synthetic structural comparison fixture; descriptive labels only, no observed factory configuration, complete specifications or constructibility claim",
+              "unresolvedFacts": [
+                "exactFactoryOptions",
+                "exactEquipment",
+                "constructibility",
+                "fullSchemeModelCoverage"
+              ]
+            }
+          }
+        ],
+        "datasetId": "comparison-structural-fixtures"
+      },
+      "unit": "versioned configuration references",
+      "status": "assumed",
+      "basis": "Explicit temporary reviewed fixture set permitted by FUCQ-133; identity format follows existing Q13 policy, with fictional CMP/REF codes. No full scheme coverage or FUCQ-77 publication claim.",
+      "source": "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.maximumGeneratedRows",
+      "value": 100000,
+      "unit": "employees plus stock rows",
+      "status": "assumed",
+      "basis": "Bounded synthetic materialisation limit rejects accidental excessive cohort/density requests before allocation; revisable application resource guard, not BMW policy.",
+      "source": "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
     }
   ]
 }
