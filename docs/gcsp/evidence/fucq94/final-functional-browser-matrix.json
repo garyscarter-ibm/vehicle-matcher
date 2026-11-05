@@ -1,0 +1,280 @@
+{
+  "story": "FUCQ-94",
+  "capturedAt": "2026-11-05T14:38:29.837Z",
+  "browser": "isolated headless system Chrome",
+  "repository": "explicit process-lifetime memory proof",
+  "limits": [
+    "No configured PostgreSQL capability",
+    "Real configuration/release producer absent; actual preview remains empty",
+    "Activity UI continuity is owned by FUCQ-95; this proof reads its actual HTTP projection"
+  ],
+  "activeProfileCompatibilityException": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq94-20261105-matrix/functional-chrome-profile",
+  "sources": {
+    "server/gcsp/runtime.js": "f4654b8053d3927a3564a3701784367e976b04549ee66fb1a9a754032f88cb16",
+    "server/gcsp/brief/activity.js": "dbf317b5aba98b1f6a723692e108a1b1a83637fb61e76ca33729dd90fe8b8f6f",
+    "server/gcsp/brief/activity-http.js": "b4384eb61ea60afb31570a3d2819ea686dff6aad0724cfda3f0b96788c01f2c4",
+    "server/index.js": "1560e4a99077e4ea648f66b87566b908404312787e5fdfcc59a5ba10debf1741",
+    "scripts/gcsp-demo.mjs": "b8ce1a7760ada2c7742f7869d1b1d6045af1777a2c3cc67be1ff1bc165345216",
+    "gcsp-brief-live.html": "d7e6ff2f0bcb5e0b3d040bb6d96c5c60aca9f10066824bba330cac8147bf8cd2",
+    "blocks/gcsp/shell/account-runtime.js": "bb6258837173db7965900b147f533e1e2d1a1a5c5152677ebfb826c0efea6ff4",
+    "blocks/gcsp/brief/runtime.js": "a4686c9b8006eb637e45245a0e8b848671dc37b230258d1f5d7bfb480b68679d",
+    "blocks/gcsp/brief/brief-view.js": "ff27df853d46d825d859a9a6a9d988fe91221de28530648c529df28d84875f61",
+    "blocks/gcsp/brief/brief-controller.js": "724120f45ad1fb8c14ee6de1a82c3579fe97c075254b6ce8032d712abe6c82aa",
+    "docs/gcsp/evidence/fucq94/capture-final-functional.mjs": "d699bdb4e432b6fe13da22db3bc609ba77d23fe0653641e9d38f760067cef926"
+  },
+  "errors": [],
+  "httpErrors": [
+    {
+      "path": "/api/gcsp/brief/preview",
+      "status": 503
+    },
+    {
+      "path": "/api/gcsp/brief/draft",
+      "status": 409
+    }
+  ],
+  "previewInputs": [
+    {
+      "path": "/api/gcsp/brief/preview",
+      "baseBriefVersion": 0,
+      "draftVersion": 0,
+      "comfort": 50,
+      "charging": null
+    },
+    {
+      "path": "/api/gcsp/brief/preview",
+      "baseBriefVersion": 0,
+      "draftVersion": 0,
+      "comfort": 50,
+      "charging": null
+    },
+    {
+      "path": "/api/gcsp/brief/preview",
+      "baseBriefVersion": 0,
+      "draftVersion": 0,
+      "comfort": 1,
+      "charging": null
+    },
+    {
+      "path": "/api/gcsp/brief/preview",
+      "baseBriefVersion": 0,
+      "draftVersion": 0,
+      "comfort": 1,
+      "charging": null
+    },
+    {
+      "path": "/api/gcsp/brief/preview",
+      "baseBriefVersion": 0,
+      "draftVersion": 0,
+      "comfort": 2,
+      "charging": null
+    },
+    {
+      "path": "/api/gcsp/brief/preview",
+      "baseBriefVersion": 0,
+      "draftVersion": 0,
+      "comfort": 2,
+      "charging": null
+    },
+    {
+      "path": "/api/gcsp/brief/preview",
+      "baseBriefVersion": 1,
+      "draftVersion": 1,
+      "comfort": 2,
+      "charging": null
+    },
+    {
+      "path": "/api/gcsp/brief/preview",
+      "baseBriefVersion": 1,
+      "draftVersion": 1,
+      "comfort": 2,
+      "charging": null
+    },
+    {
+      "path": "/api/gcsp/brief/preview",
+      "baseBriefVersion": 1,
+      "draftVersion": 1,
+      "comfort": 2,
+      "charging": null
+    }
+  ],
+  "results": [
+    {
+      "name": "final-functional-new-empty-desktop",
+      "file": "final-functional-new-empty-desktop.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "overflowPx": 0,
+      "briefVersion": 0,
+      "eligibleCount": 0,
+      "stockSource": "actual unreleased repository input; no vehicle facts",
+      "charging": null
+    },
+    {
+      "name": "final-functional-new-empty-mobile-375",
+      "file": "final-functional-new-empty-mobile-375.png",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "overflowPx": 0,
+      "briefVersion": 0,
+      "eligibleCount": 0,
+      "stockSource": "actual unreleased repository input; no vehicle facts",
+      "charging": null
+    },
+    {
+      "name": "final-functional-edited-zero-desktop",
+      "file": "final-functional-edited-zero-desktop.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "overflowPx": 0,
+      "comfort": 1,
+      "eligibleCount": 0,
+      "source": "actual released-stock input remains empty"
+    },
+    {
+      "name": "final-functional-edited-zero-mobile-375",
+      "file": "final-functional-edited-zero-mobile-375.png",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "overflowPx": 0,
+      "comfort": 1,
+      "eligibleCount": 0,
+      "source": "actual released-stock input remains empty"
+    },
+    {
+      "name": "final-functional-unavailable-retained-desktop",
+      "file": "final-functional-unavailable-retained-desktop.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "overflowPx": 0,
+      "controlledInput": "one HTTP 503; no product-source substitution",
+      "comfort": 2,
+      "focusedControlRetained": true
+    },
+    {
+      "name": "final-functional-unavailable-retained-mobile-375",
+      "file": "final-functional-unavailable-retained-mobile-375.png",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "overflowPx": 0,
+      "controlledInput": "one HTTP 503; no product-source substitution",
+      "comfort": 2,
+      "focusedControlRetained": true
+    },
+    {
+      "name": "final-functional-independent-consent-desktop",
+      "file": "final-functional-independent-consent-desktop.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "overflowPx": 0,
+      "search": false,
+      "hold": true
+    },
+    {
+      "name": "final-functional-independent-consent-mobile-375",
+      "file": "final-functional-independent-consent-mobile-375.png",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "overflowPx": 0,
+      "search": false,
+      "hold": true
+    },
+    {
+      "name": "final-functional-reloaded-saved-desktop",
+      "file": "final-functional-reloaded-saved-desktop.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "overflowPx": 0,
+      "comfort": 2,
+      "briefVersion": 1,
+      "search": true,
+      "hold": true,
+      "activity": {
+        "briefVersion": 1,
+        "state": "never-searched",
+        "lastSuccessfulCheck": null,
+        "offers": 0,
+        "canSearch": true,
+        "canHold": true,
+        "evidence": "search-check-producer-unavailable"
+      }
+    },
+    {
+      "name": "final-functional-reloaded-saved-mobile-375",
+      "file": "final-functional-reloaded-saved-mobile-375.png",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "overflowPx": 0,
+      "comfort": 2,
+      "briefVersion": 1,
+      "search": true,
+      "hold": true,
+      "activity": {
+        "briefVersion": 1,
+        "state": "never-searched",
+        "lastSuccessfulCheck": null,
+        "offers": 0,
+        "canSearch": true,
+        "canHold": true,
+        "evidence": "search-check-producer-unavailable"
+      }
+    },
+    {
+      "name": "final-functional-conflict-retained-desktop",
+      "file": "final-functional-conflict-retained-desktop.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "overflowPx": 0,
+      "comfort": 1,
+      "search": true,
+      "hold": false,
+      "savedVersionUnchanged": 1
+    },
+    {
+      "name": "final-functional-conflict-retained-mobile-375",
+      "file": "final-functional-conflict-retained-mobile-375.png",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "overflowPx": 0,
+      "comfort": 1,
+      "search": true,
+      "hold": false,
+      "savedVersionUnchanged": 1
+    },
+    {
+      "name": "final-functional-reloaded-mobile-375",
+      "file": "final-functional-reloaded-mobile-375.png",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "overflowPx": 0,
+      "briefVersion": 1,
+      "menuExpanded": true
+    }
+  ]
+}

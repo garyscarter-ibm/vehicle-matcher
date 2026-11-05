@@ -10,6 +10,7 @@ import { JSDOM } from 'jsdom';
 
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const GCSP_DIR = join(ROOT, 'blocks/gcsp');
+const livePages = () => readdirSync(ROOT).filter((file) => /^gcsp-[a-z-]+-live\.html$/.test(file));
 let shellMod;
 let emp;
 
@@ -364,7 +365,7 @@ test('every selector in the shell stylesheets starts with .gcsp, and retail toke
 });
 
 test('CSP: no inline scripts, handler attributes, eval, new Function, string timers or innerHTML in GCSP files', () => {
-  const files = [...walk(GCSP_DIR), join(ROOT, 'gcsp-employee.html'), join(ROOT, 'gcsp-account.html'), join(ROOT, 'components.html'), join(ROOT, 'blocks/vehicle-matcher/component-gallery.js'), join(ROOT, 'blocks/vehicle-matcher/ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/question-ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/preview-feed.js'), join(ROOT, 'blocks/vehicle-matcher/modes/result-card.js'), join(ROOT, 'blocks/vehicle-matcher/decision-card.css'), join(ROOT, 'blocks/vehicle-matcher/employee-card-fixture.js')].filter((f) => /\.(js|html|css)$/.test(f));
+  const files = [...walk(GCSP_DIR), join(ROOT, 'gcsp-employee.html'), join(ROOT, 'gcsp-account.html'), join(ROOT, 'gcsp-brief.html'), ...livePages().map((file) => join(ROOT, file)), join(ROOT, 'components.html'), join(ROOT, 'blocks/vehicle-matcher/component-gallery.js'), join(ROOT, 'blocks/vehicle-matcher/ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/question-ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/preview-feed.js'), join(ROOT, 'blocks/vehicle-matcher/modes/result-card.js'), join(ROOT, 'blocks/vehicle-matcher/decision-card.css'), join(ROOT, 'blocks/vehicle-matcher/employee-card-fixture.js')].filter((f) => /\.(js|html|css)$/.test(f));
   assert.ok(files.length >= 10);
   const offenders = [];
   for (const f of files) {
@@ -401,6 +402,8 @@ test('no em dash in any string literal under blocks/gcsp/, and none in the harne
     });
   }
   assert.ok(!read('gcsp-employee.html').includes('—'));
+  assert.ok(!read('gcsp-brief.html').includes('—'));
+  for (const file of livePages()) assert.ok(!read(file).includes('—'));
   assert.deepEqual(offenders, []);
 });
 

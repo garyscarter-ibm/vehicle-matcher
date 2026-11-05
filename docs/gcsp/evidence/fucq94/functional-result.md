@@ -1,0 +1,31 @@
+# FUCQ-94 connected local runtime
+
+5 November 2026. This checkpoint wires the existing account, brief editor, draft/confirm and activity services into one trusted local process. It does not change matching policy or introduce a search, release or offer producer.
+
+## Start
+
+From the repository root, the default command is `node scripts/gcsp-demo.mjs`. It requires PostgreSQL configuration from `GCSP_DATABASE_URL`, or the private local `.claude/gcsp-database-url` file. It refuses missing or failed database configuration; it never switches to memory automatically. The launcher prints its localhost URL without printing connection details. `GCSP_ENVIRONMENT_ID` selects the synthetic demo environment; `PORT` defaults to 3001.
+
+For an explicitly temporary local functional proof, run `GCSP_REPOSITORY_MODE=memory node scripts/gcsp-demo.mjs` and open the printed `/gcsp-brief-live.html` URL. All saved state in that mode disappears when the process stops. The browser page identifies the synthetic demo. No PostgreSQL connection capability was configured in the launching environment, so durable restart persistence has not been proved here.
+
+The separate localhost host serves the approved static assets and delegates API requests to the existing `buildServer` guards. It establishes a canonical fictional employee session on the server, using the PolicyService's demo principal and existing manual account seed. The browser cannot select an employee or receive raw credentials in JSON. Cookies retain the identity service's HttpOnly, Secure and SameSite policy. Host, public-file containment, session, origin and browser-context guards remain active. The presenter-control cookie is for the existing trusted identity boundary; no remote login route is introduced.
+
+## Actual data boundary
+
+`server/gcsp/runtime.js` composes one repository, PolicyService, demo clock, identity, existing manual repository ports, account service, BriefService, editor and activity reader. The recommendation provider reads the same employee/driver and released-stock ports, validates their scope/revision, and forwards their actual facts. The current canonical scenario contains unreleased identities without vehicle facts. Its actual preview is therefore `no-stock`, with zero decisions and eligible cars. Representative screenshot fixtures never enter this runtime.
+
+The live client reuses the existing brief transport/controller/body and adapts only the existing `GET /api/gcsp/manual/account` response into the shared shell account shape. The activity HTTP projection comes from the completed FUCQ-95 backend checkpoint `1bcea40338c8d1f1464f963fae831c4b0fb38784`; its two imported leaves retain the exact source hashes recorded in `functional-plan.md`. Shared activity UI composition remains with FUCQ-95. Activity correctly has no successful search evidence and no offers until those producers exist.
+
+## Validation scope
+
+The affected selector's dry run reports no JavaScript plugin and proposes the full `npm test` fallback. That fallback was reviewed and excluded because the matching, retailer and wider source code are unchanged, while the dispatcher holds the full-suite host slot. Explicit narrow commands exercise the new composition plus existing identity/editor/controller/transport/render/shell/ratchet boundaries. Results are scoped, and missing observations never exclude tests.
+
+The runtime test crosses actual same-origin HTTP for account/editor loads, empty edited preview without writes, draft/confirm version 1, reload, shared activity permissions/evidence and stale second save. It also verifies the private-source traversal regression, forbidden context injection, foreign-origin refusal, session reuse, public runtime script and explicit repository-mode refusal. Node file coverage is gathered during this required run; browser-only and exceptional cleanup branches remain separate evidence.
+
+The headless browser script runs the actual local host and services in explicit memory mode, exercises edits, native keyboard focus, a clearly controlled one-shot HTTP failure/retry, independent consent, save/reload and a competing client's conflict without losing edits. It reads the real activity endpoint and checks a 375 px menu/reload. It does not fabricate stock to claim a nonempty connected preview or an essential-unknown candidate result. Those representative states remain covered by the frozen controller/render evidence until real configuration and release ports are composed.
+
+Final scoped runtime 4/4 and existing boundaries 130/130 passed without skips. Six actual headless captures passed and were inspected: new empty brief, unavailable with retained native focus/edit, independent consent, reloaded saved version, retained conflict and narrow reloaded menu. Every capture has zero horizontal overflow. The only HTTP failures are the controlled 503 and real stale 409. Full source/test/input/capture hashes and command environment identities are in `functional-source-identity.json`; source key `621b992b98f25216dbd7f833dd5e6a9f23dcd1cdbeb9ad733f430b9976666ac2`. `functional-browser-matrix.json` retains actual preview inputs and honest missing-data limits. The six `functional-*.png` files are the corresponding evidence.
+
+The compact resource receipt is shared `.claude/test-runs/receipts/fucq94-20261105-functional/checkpoint-summary.json`; the keyed map is under shared `.claude/test-runs/impact/`. Runtime scoped file coverage: composition 100% lines, local host 80.26%, client adapter 84%; aggregated Node observations do not identify per-test contexts or exclude unobserved branches. Nine exact scratch roots, owned groups and reservations were verified absent. Removed 253,952 measured allocated bytes of verbose logs; retained only compact receipts/checkpoints and a bounded useful failure excerpt. The bounded local Chrome profile exception peaked at 9,272,507 bytes and was removed after each capture. No leftover or archive/large output remains. Existing installed dependencies and worktrees were preserved.
+
+Authored full-suite validation is still pending at this publication checkpoint. The dispatcher has now released its serial slot, so it follows as a separate registered one-worker run; this scoped result does not claim a full-suite pass or durable/real-stock end-to-end completion. No new agents were spawned.
