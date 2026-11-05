@@ -58,16 +58,22 @@ Shared explicit-card styles live in `decision-card.css`, imported by the existin
 
 | Call | Use for |
 |---|---|
-| `renderOptionList(q, answers, { onChange, onPick })` | Single- or multi-select option list for a question. `onPick` fires after a single-select tap (after `onChange`). Returns `{ list, selected }`. |
-| `renderRangeSlider(list, q, answers, { onChange })` | Dual-handle range slider for a range question; persists the starting value immediately. |
-| `visibleQuestions(questions, answers)` / `isVisible(q, answers)` | Apply conditional-question predicates (`SHOW_IF`) so hidden questions are skipped. |
-| `formatSliderValue(value, q)` / `formatRange([lo, hi], q)` | Slider readouts in the question's unit. |
+| `renderOptionList(q, answers, { onChange, onPick, value, onValueChange, disabled, ariaLabel })` | Single- or multi-select option list for a question. `onPick` fires after a single-select tap (after `onChange`). Returns `{ list, selected }`. |
+| `renderRangeSlider(list, q, answers, { onChange, single, value, onValueChange, unit, valueState, disabled, ariaLabel })` | Dual-handle range by default, `single: true` for one position or importance axis. Legacy path persists the starting value immediately without invoking `onChange`; subsequent input invokes it. |
+| `visibleQuestions(questions, answers, { predicate })` / `isVisible(q, answers, { predicate })` | Apply conditional-question predicates (`SHOW_IF`) so hidden questions are skipped. |
+| `formatSliderValue(value, q, { unit, valueState })` / `formatRange([lo, hi], q, options)` | Slider readouts in the question's unit. |
+
+The presence of `value` or `onValueChange` selects callback ownership: `answers` may be `null`, no defaults or changes are written to it, and mounting emits no callback. On input, `onValueChange(nextValue)` receives a scalar or a fresh selected-value array; the caller owns its draft and any rerender. Native controls update their displayed value locally. `onPick()` follows a single selection's value callback. Without either explicit option, the existing answer keys, multi-select `any`/max behavior, range defaults and `onChange` then `onPick` order remain intact. `predicate(q, answers)` optionally owns visibility; otherwise existing `SHOW_IF` predicates apply.
+
+Single sliders use `ariaLabel` (or the question label/id); dual sliders label minimum and maximum separately. `unit` accepts the existing suffix string or an explicit `{ kind: 'points-monthly' }`, `{ kind: 'percent' }` or `{ kind: 'purchase-money', currency: 'GBP' }` descriptor. Typed points always print points a month. A GBP question cannot be relabelled with points. Unknown/nonfinite values read `Not supplied`; `valueState: 'unconfirmed'` qualifies a supplied value, while a confirmed zero remains zero. `disabled` controls native disabled state. Indifference is an explicit option control owned by the caller, separate from importance zero or missing preference. The gallery demonstrates all three controls without implying that they recalculate its saved display snapshot. Shared native-control styles live in `question-controls.css`.
 
 ## Live preview (`modes/preview-feed.js`)
 
 | Call | Use for |
 |---|---|
-| `createPreviewFeed({ api, retailer, brand, scope, group })` | Debounced, stale-safe preview fetch: `schedule(answers, onResult)` and `cancel()`. Use instead of hand-rolled timers around `apiPreview`. `PREVIEW_DEBOUNCE_MS` is exported. |
+| `createPreviewFeed({ api, retailer, brand, scope, group, load, onError })` | Debounced, stale-safe preview fetch: `schedule(answers, onResult, onError?)` and `cancel()`. Use instead of hand-rolled timers around `apiPreview`. `PREVIEW_DEBOUNCE_MS` is exported. |
+
+An injected `load(snapshot)` owns transport and returns any display value synchronously or asynchronously. It bypasses `apiPreview` entirely; the retail adapter remains the default when `load` is absent. At dispatch the scheduler deep-copies nested draft data so later edits cannot change the request. Current loader rejection or synchronous failure goes to the optional schedule/config `onError(error)`; without a handler it delivers `[]`, matching the legacy fallback. Stale success/failure and cancellation deliver neither callback. Callers own loading/error presentation and all persistence. The single gallery demonstrates a local loader plus explicit `previewTile`, labelled as an unchanged FUCQ-29 snapshot.
 
 Each feed owns its debounce and request generation. `schedule()` invalidates all earlier callbacks immediately, before the new 250 ms debounce completes. `cancel()` clears the timer and invalidates dispatched callbacks, including failures that `apiPreview` maps to an empty list. Cancellation is repeatable and the feed can be scheduled again. Correctness does not depend on transport abort support. Scope, grouping, payloads and server-owned preview limits retain their existing meaning; presentation of loading, empty and failure states stays with the consumer.
 
@@ -124,7 +130,7 @@ Hand-built in several modes (file counts at the time of writing):
 - **Status screen shell** (`vm-screen vm-status`, used for error, empty-pool and no-match): 5 files, 7 occurrences. `statusScreen` now exists in `ui.js`; retail modes have not migrated yet.
 - **Spec pills** (`vm-mingle-pill`, fuel, body, shade): 2 files, 10 occurrences. Should become `specPills(car)`.
 - **Mingle card media and body** (`vm-mingle-card-*`, duplicated between swipe and head-to-head): 2 files, 12 occurrences. Should become `miniCarCard(car)`.
-- **Single-value slider** (`vm-slider-input`, duplicated in questionnaire and podium instead of a kit option on `renderRangeSlider`): 2 files, 2 occurrences. Should become a `single` option on `renderRangeSlider`.
+- **Single-value slider** (`vm-slider-input`, duplicated in questionnaire and podium instead of a kit option on `renderRangeSlider`): 2 files, 2 occurrences. Use the implemented `single: true` option on `renderRangeSlider`; existing mode copies remain ratcheted migration debt.
 
 ## The ratchet
 

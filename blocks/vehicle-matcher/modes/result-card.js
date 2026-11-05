@@ -659,7 +659,7 @@ function explicitViewCard(view, { compact, showScore, onListingSelect, onAction 
       if (!exact?.[key]?.length) continue;
       const list = el('ul', 'vm-reasons');
       exact[key].forEach((entry) => list.append(el('li', null, decisionText(entry))));
-      decision.append(el('p', 'vm-why-label', label), list);
+      decision.append(el('p', 'vm-why-label', key === 'reasons' && !eligible ? 'Checks passed' : label), list);
     }
     picker.querySelectorAll('button').forEach((node, i) => {
       const active = members[i] === selected;

@@ -1,7 +1,9 @@
+import { renderOptionList, renderRangeSlider } from './modes/question-ui.js';
+import { createPreviewFeed } from './modes/preview-feed.js';
 import { employeeCardFixture } from './employee-card-fixture.js';
 import { applyBrowseFeedback, applyConfirmedFeedbackChange, createFeedbackState, matchesFeedbackPredicate, reduceFeedback } from './feedback-actions.js';
 import { el, screenIntro, button, statusScreen, factList } from './ui.js';
-import { feedbackButton, feedbackScope, feedbackUndo, matchCard, mediaWell } from './modes/result-card.js';
+import { feedbackButton, feedbackScope, feedbackUndo, matchCard, mediaWell, previewTile } from './modes/result-card.js';
 import { portalShell, accountNavigation } from '../gcsp/shell/portal-shell.js';
 import { EMPLOYEE_NAVIGATION } from '../gcsp/employee/gcsp-employee.js';
 
@@ -148,6 +150,53 @@ export function employeeDecisionExample() {
   return section;
 }
 
+export function employeeControlsExample() {
+  const section = el('section', 'vm-gallery-section vm-gallery-employee-controls gcsp');
+  section.setAttribute('aria-label', 'Employee question controls and preview');
+  const scope = el('div', 'vm vm-gallery-decision-body');
+  scope.append(screenIntro({ kicker: 'Shared controls', title: 'Preference, importance and indifference', level: 2,
+    lede: 'Display-only controls. These local callbacks do not save a brief or recalculate the unchanged decision snapshot.' }));
+  let draft = { position: 70, importance: 50, preferenceMode: 'consider' };
+  const controls = el('div', 'vm-gallery-control-grid');
+  const status = feedbackScope({ text: 'Local control values only. No saved state.' });
+  status.setAttribute('role', 'status');
+  const change = (key, value) => {
+    draft = { ...draft, [key]: value };
+    status.textContent = `Local position ${draft.position}%; importance ${draft.importance}%; ${draft.preferenceMode === 'indifferent' ? 'explicitly indifferent' : 'preference considered'}. Decision snapshot unchanged. No saved state.`;
+    if (key === 'preferenceMode') controls.querySelectorAll('input[type=range]').forEach((input) => { input.disabled = value === 'indifferent'; });
+  };
+  function renderControls() {
+    controls.replaceChildren();
+    for (const [key, title] of [['position', 'Sportiness preference position'], ['importance', 'Sportiness importance']]) {
+      const field = el('fieldset', 'vm-control-field');
+      field.append(el('legend', null, title));
+      renderRangeSlider(field, { id: key, min: 0, max: 100, step: 1 }, null, { single: true,
+        value: draft[key], unit: { kind: 'percent' }, ariaLabel: title,
+        disabled: draft.preferenceMode === 'indifferent', onValueChange: (value) => change(key, value) });
+      controls.append(field);
+    }
+    const field = el('fieldset', 'vm-control-field');
+    field.append(el('legend', null, 'Sportiness indifference'));
+    const { list } = renderOptionList({ id: 'preferenceMode', options: [
+      { value: 'consider', label: 'Consider this preference' }, { value: 'indifferent', label: 'I am indifferent' },
+    ] }, null, { value: draft.preferenceMode, ariaLabel: 'Sportiness indifference', onValueChange: (value) => change('preferenceMode', value) });
+    field.append(list, feedbackScope({ text: 'Zero importance is a stated weight. Indifference is a separate choice; an unknown preference still needs confirmation.' }));
+    controls.append(field);
+  }
+  const preview = el('div', 'vm-gallery-injected-preview');
+  const feed = createPreviewFeed({ load: () => ({ ...structuredClone(employeeCardFixture), members: [structuredClone(employeeCardFixture.members[0])] }) });
+  const load = button({ label: 'Load unchanged display snapshot', variant: 'ghost', onClick: () => {
+    preview.replaceChildren(statusScreen({ title: 'Loading display snapshot', message: 'This uses an injected local loader. No matching or saving is performed.' }));
+    feed.schedule(draft, (view) => {
+      preview.replaceChildren(previewTile(null, { view }), feedbackScope({ text: 'Unchanged FUCQ-29 decision snapshot. These controls have not recalculated this result.' }));
+    }, () => preview.replaceChildren(statusScreen({ title: 'Snapshot unavailable', message: 'Try loading the local display snapshot again.' })));
+  } });
+  renderControls();
+  scope.append(controls, status, load, preview);
+  section.append(scope);
+  return section;
+}
+
 export function mountComponentGallery(root) {
   const browseScope = { kind: 'browse', id: browseSession };
   let browseFeedback = createFeedbackState(browseScope);
@@ -216,7 +265,7 @@ export function mountComponentGallery(root) {
   exactControls.append(legacyButton, refineButton, exactReset);
   exact.append(exactControls, exactCards);
   sections.append(exact);
-  root.append(heading, sections, employeeDecisionExample(), gcspExamples());
+  root.append(heading, sections, employeeDecisionExample(), employeeControlsExample(), gcspExamples());
 
   function dispatchBrowse(type, target, reason) {
     const result = reduceFeedback(browseFeedback, {

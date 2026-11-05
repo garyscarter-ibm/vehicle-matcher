@@ -1,6 +1,6 @@
-.vm .vm-card-explicit { min-width: 0; background: var(--vm-surface); border: 1px solid var(--vm-line); } .vm .vm-card-explicit .vm-card-name { overflow-wrap: anywhere; }
-.vm .vm-card-explicit .vm-card-body { display: flex; flex-direction: column; gap: var(--vm-space-4); }
-.vm .vm-card-explicit .vm-card-head { align-items: start; }
+.vm .vm-card-explicit { min-width: 0; background: var(--vm-surface); border: 1px solid var(--vm-line); } .vm .vm-card-explicit .vm-card-name { overflow-wrap: anywhere; flex: 1 1 16rem; min-width: 0; }
+.vm .vm-card-explicit .vm-card-body { padding: clamp(var(--vm-space-3), 3vw, var(--vm-space-6)); display: flex; flex-direction: column; gap: var(--vm-space-4); }
+.vm .vm-card-explicit .vm-card-head { align-items: start; flex-wrap: wrap; }
 .vm .vm-card-explicit .vm-card-terms .vm-specs { color: var(--vm-ink-strong); font-size: var(--vm-text-body); margin: 0; }
 .vm .vm-card-explicit .vm-card-gate { font-weight: 700; margin: 0; }
 .vm .vm-card-explicit .vm-card-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--vm-space-3); }

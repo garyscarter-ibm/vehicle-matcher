@@ -11,14 +11,12 @@ main {
   margin: 0 auto;
   background: var(--vm-surface);
 }
-
 .vm-component-gallery {
   box-sizing: border-box;
   width: 100%;
   max-width: 1280px;
   padding: clamp(24px, 4vw, 56px);
 }
-
 .vm-gallery-header {
   max-width: 70ch;
   margin: 0 0 var(--vm-space-8);
@@ -91,3 +89,4 @@ main {
 .vm-gallery-decision-body { max-width: 760px; margin: 0 auto; }
 .vm-gallery-decision-states { display: grid; gap: var(--vm-space-4); margin-top: var(--vm-space-6); }
 @media (max-width: 560px) { .vm-gallery-employee-decision { padding: var(--vm-space-3); } }
+.vm-gallery-employee-controls { margin-top: var(--vm-space-8); padding: var(--vm-space-4); } .vm-gallery-control-grid { display: grid; gap: var(--vm-space-4); } .vm-gallery-injected-preview { margin-top: var(--vm-space-4); }

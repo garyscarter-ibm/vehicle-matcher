@@ -1,3 +1,4 @@
+import { FUEL_SPEC } from '../../../blocks/vehicle-matcher/modes/result-card.js';
 import { createEmployeeRecommendationService } from '../../gcsp/recommendation/index.js';
 import { context, fact, brief, stock, providerValue, provider, time, policy } from './employee-recommendation.js';
 
@@ -11,7 +12,8 @@ const labels = {
   'essential-unmet': 'The exact car does not meet your confirmed seating requirement.',
   'essential-unconfirmed': 'The exact number of seats needs confirmation.',
 };
-const reason = (entry) => ({ ...entry, text: labels[entry.code] || entry.reason || entry.code.replaceAll('-', ' ') });
+const reason = (entry) => ({ ...entry, text: entry.code === 'preference-fit' && entry.field === 'body'
+  ? `Matches your stated body preference: ${entry.desired}.` : labels[entry.code] || entry.reason || entry.code.replaceAll('-', ' ') });
 
 // Generate the browser display snapshot from the real FUCQ-29 service and canonical policy.
 export async function createSharedKitEmployeeFixture() {
@@ -27,10 +29,13 @@ export async function createSharedKitEmployeeFixture() {
       id: decision.orderUuid, identity: { candidateKey: decision.candidateKey, orderUuid: decision.orderUuid, configurationId: decision.configurationId },
       display: { name: decision.snapshot.display.name, line: 'Synthetic scheme stock', pickerLabel: ['Eligible exact car', 'Ineligible exact car', 'Needs confirmation'][i] },
       media: i === 0 ? { src: '/assets/brand-hero/bmw.jpg', alt: 'Representative BMW brand image', caption: 'Representative BMW brand image, not this exact car' } : {},
-      facts: [['Seats', 'seats'], ['Boot, seats up', 'boot'], ['Fuel', 'fuel']].map(([label, key]) => ({ label,
-        value: decision.snapshot.facts[key]?.value ?? null, unit: decision.snapshot.facts[key]?.unit,
-        missingLabel: `Not supplied${decision.snapshot.facts[key]?.unit ? ` (${decision.snapshot.facts[key].unit})` : ''}`,
-        provenance: decision.snapshot.facts[key]?.provenance })),
+      facts: [['Seats', 'seats'], ['Boot, seats up', 'boot'], ['Fuel', 'fuel']].map(([label, key]) => {
+        const fact = decision.snapshot.facts[key];
+        const unit = key === 'seats' ? 'seats' : fact?.unit;
+        return { label, value: key === 'fuel' ? FUEL_SPEC[fact?.value] ?? null : fact?.value ?? null,
+          unit, sourceUnit: fact?.unit,
+          missingLabel: `Not supplied${unit ? ` (${unit})` : ''}`, provenance: fact?.provenance };
+      }),
       terms: [{ kind: 'points-monthly', value: decision.terms?.points.value ?? null,
         allowance: decision.terms?.allowanceInputs.allowance.value ?? null, provenance: decision.terms?.provenance }],
       decision: { gateStatus: decision.gateStatus, score: decision.score, reasons: decision.reasons.map(reason),

@@ -32,8 +32,9 @@ export const employeeCardFixture = {
         {
           "label": "Seats",
           "value": 5,
-          "unit": "count",
-          "missingLabel": "Not supplied (count)",
+          "unit": "seats",
+          "sourceUnit": "count",
+          "missingLabel": "Not supplied (seats)",
           "provenance": {
             "sourceRef": "fixture:employee",
             "observedAt": "2026-11-05T12:00:00.000Z",
@@ -45,6 +46,7 @@ export const employeeCardFixture = {
           "label": "Boot, seats up",
           "value": 500,
           "unit": "L",
+          "sourceUnit": "L",
           "missingLabel": "Not supplied (L)",
           "provenance": {
             "sourceRef": "fixture:employee",
@@ -55,8 +57,9 @@ export const employeeCardFixture = {
         },
         {
           "label": "Fuel",
-          "value": "petrol",
+          "value": "Petrol",
           "unit": null,
+          "sourceUnit": null,
           "missingLabel": "Not supplied",
           "provenance": {
             "sourceRef": "fixture:employee",
@@ -160,7 +163,7 @@ export const employeeCardFixture = {
                 }
               }
             },
-            "text": "preference fit"
+            "text": "Matches your stated body preference: estate."
           }
         ],
         "blockers": [],
@@ -217,8 +220,9 @@ export const employeeCardFixture = {
         {
           "label": "Seats",
           "value": 4,
-          "unit": "count",
-          "missingLabel": "Not supplied (count)",
+          "unit": "seats",
+          "sourceUnit": "count",
+          "missingLabel": "Not supplied (seats)",
           "provenance": {
             "sourceRef": "fixture:employee",
             "observedAt": "2026-11-05T12:00:00.000Z",
@@ -230,6 +234,7 @@ export const employeeCardFixture = {
           "label": "Boot, seats up",
           "value": 500,
           "unit": "L",
+          "sourceUnit": "L",
           "missingLabel": "Not supplied (L)",
           "provenance": {
             "sourceRef": "fixture:employee",
@@ -240,8 +245,9 @@ export const employeeCardFixture = {
         },
         {
           "label": "Fuel",
-          "value": "petrol",
+          "value": "Petrol",
           "unit": null,
+          "sourceUnit": null,
           "missingLabel": "Not supplied",
           "provenance": {
             "sourceRef": "fixture:employee",
@@ -381,8 +387,9 @@ export const employeeCardFixture = {
         {
           "label": "Seats",
           "value": null,
-          "unit": "count",
-          "missingLabel": "Not supplied (count)",
+          "unit": "seats",
+          "sourceUnit": "count",
+          "missingLabel": "Not supplied (seats)",
           "provenance": {
             "sourceRef": "fixture:employee",
             "observedAt": "2026-11-05T12:00:00.000Z",
@@ -394,6 +401,7 @@ export const employeeCardFixture = {
           "label": "Boot, seats up",
           "value": null,
           "unit": "L",
+          "sourceUnit": "L",
           "missingLabel": "Not supplied (L)",
           "provenance": {
             "sourceRef": "fixture:employee",
@@ -404,8 +412,9 @@ export const employeeCardFixture = {
         },
         {
           "label": "Fuel",
-          "value": "petrol",
+          "value": "Petrol",
           "unit": null,
+          "sourceUnit": null,
           "missingLabel": "Not supplied",
           "provenance": {
             "sourceRef": "fixture:employee",
