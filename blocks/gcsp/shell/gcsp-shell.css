@@ -1,7 +1,6 @@
 @import "./gcsp-tokens.css";
 
 /* GCSP portal shell: header, icon navigation, content area. Every selector is .gcsp scoped. */
-
 .gcsp {
   position: relative;
   display: flex;
@@ -265,6 +264,7 @@
   .gcsp-menu-toggle { display: inline-flex; }
   .gcsp-mark-mini { display: none; }
   .gcsp-title { padding-left: 8px; font-size: 13px; }
+  @media (max-width: 400px) { .gcsp-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); padding: 0; border: 0; } }
   .gcsp-account { max-width: 52%; gap: 6px; }
   .gcsp-account-context { display: none; }
   .gcsp-body { flex-direction: column; }
