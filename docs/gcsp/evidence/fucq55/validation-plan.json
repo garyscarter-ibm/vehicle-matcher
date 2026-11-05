@@ -1,6 +1,6 @@
 {
   "story": "FUCQ-55",
-  "state": "lookup scoped passed; server install then HTTP/offline scoped checks admitted sequentially; full/root install held",
+  "state": "all named scoped checks passed on d718491 product identity; final125/133 integrated full/root install held",
   "chunks": [
     {
       "id": "lookup",
@@ -15,8 +15,8 @@
         "memory repository currentRun/read",
         "PolicyService signature reads"
       ],
-      "status": "passed scoped; receipt lookup-regression.json",
-      "timing_seconds": 0.8423117080019438
+      "status": "passed6/6,0skip; lookup-count-regression.json repairs numeric summary",
+      "timing_seconds": 0.5490475409969804
     },
     {
       "id": "http",
@@ -25,13 +25,15 @@
       "timeout_seconds": 120,
       "scratch_mib": 16,
       "ram_mib": 384,
-      "dependencies": "Own pinned server npm ci admitted before this scoped command",
+      "dependencies": "Own pinned server pg environment restored and hash/version verified",
       "boundaries": [
         "shared X-Access-Key gate",
         "existing Greg/manual/brief route composition",
         "trusted stock session/context",
         "ephemeral loopback server lifecycle"
-      ]
+      ],
+      "status": "passed5/5,0skip; api-regression.json",
+      "timing_seconds": 0.8455102919979254
     },
     {
       "id": "offline-retail",
@@ -46,7 +48,9 @@
         "fetch/http/https/net/TLS guards",
         "same supervisor process group for server child",
         "existing API/retail/gate surface"
-      ]
+      ],
+      "status": "passed54/54,0skip; offline-retail-regression.json",
+      "timing_seconds": 2.4885987079978804
     },
     {
       "id": "final-integrated",
@@ -64,9 +68,9 @@
     }
   ],
   "selector": "Inspected test_stamp.py cmd_targeted and JavaScript plugin availability: explicit scoped --command is required; no legacy affected full fallback. Actual selector dry-run remains held with execution.",
-  "observed_coverage": "Lookup regression executed with zero exit; scope and hashes in lookup-regression.json. Per-test coverage contexts were not collected by this command; HTTP/offline boundaries remain unverified.",
+  "observed_coverage": "Scoped6lookup+5HTTP+54offline/retail passed. Per-test measured coverage contexts were not collected; reviewed ownership/boundary map and timings retained. Whole-suite integrated checkpoint still held.",
   "dependency_plan": {
-    "server": "npm ci --prefix server --ignore-scripts --no-audit --no-fund (existing locked pg only; admitted sequentially after lookup checkpoint)",
+    "server": "completed existing locked pg npm ci; no package/lock mutation or symlink; server-install.json",
     "root": "npm ci --ignore-scripts --no-audit --no-fund (existing locked jsdom only; admission held)",
     "constraints": "Own worktree environments; no cross-worktree symlink, package/lock mutation or credential discovery. Owned small cache/TMP; large expected cache goes direct OneDrive; retain installed environments.",
     "server_plan": "docs/gcsp/evidence/fucq55/server-install-plan.json"
@@ -96,5 +100,5 @@
     "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/manifest.json": "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709",
     "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/vins.jsonl": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd"
   },
-  "cleanup": "Packaging and scoped lookup roots/groups/reservations/logs removed and verified. Lookup peak33,120B scratch and143,245,312B sampled group RAM; receipt lookup-regression.json. Server-install manifest is planned only, root not created. All further executions require admission."
+  "cleanup": "All6 execution scratch roots (packaging, initial lookup, count repair, server install, API, offline/retail) and owned groups/reservations/logs removed and verified. Largest scratch2,920,352B; largest sampled group RAM313,016,320B. Retain858,816B own server/node_modules environment. No large outputs/archive/compatibility exception. See receipts."
 }

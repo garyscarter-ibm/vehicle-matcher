@@ -118,5 +118,6 @@
     "observed_max_test_file_workers": 1,
     "selected_file_count": 1,
     "source_has_no_child_process_or_worker_threads_import": true
-  }
+  },
+  "count_evidence_repair": "lookup-count-regression.json: same product/config/fixture hashes, observed6/6pass,0skip"
 }
