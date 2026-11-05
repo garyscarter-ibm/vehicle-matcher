@@ -494,6 +494,7 @@ function focusablesIn(host) {
 /* ------------------------------ mount ------------------------------ */
 
 function mount(root, ctx) {
+  let active = true;
   const copy = copyFor(ctx.brand);
   const brandCopy = BRAND_COPY[ctx.brand] || BRAND_COPY.bmw;
 
@@ -803,6 +804,7 @@ function mount(root, ctx) {
       // The identical call the questionnaire mode makes. THROWS on failure.
       result = await apiMatch(ctx.api, state.answers, ctx.retailer, ctx.brand, ctx.scope);
     } catch {
+      if (!active) return;
       // Not a dead end and not a whole error screen: the podium on screen is
       // still true, so say what happened and re-arm the button.
       commitBtn.disabled = false;
@@ -811,6 +813,7 @@ function mount(root, ctx) {
       noteEl.textContent = copy.commitError;
       return;
     }
+    if (!active) return;
     state.committed = result;
     state.dismissedSinceCommit = false;
     stage.classList.add('is-committed');
@@ -1281,8 +1284,10 @@ function mount(root, ctx) {
   const boot = async () => {
     try {
       const { questions } = await apiGetQuestions(ctx.api, ctx.retailer, ctx.brand);
+      if (!active) return;
       state.questions = Array.isArray(questions) ? questions : [];
     } catch {
+      if (!active) return;
       showError(boot);
       return;
     }
@@ -1291,6 +1296,12 @@ function mount(root, ctx) {
 
   renderSkeleton();
   boot();
+  return () => {
+    active = false;
+    feed.cancel();
+    document.removeEventListener('keydown', onPopKey);
+    document.removeEventListener('pointerdown', onPopOutside, true);
+  };
 }
 
 // The switcher tab is brand-agnostic shell UI, so its label is neutral. The
