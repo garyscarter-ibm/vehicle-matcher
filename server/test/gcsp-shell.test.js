@@ -343,7 +343,7 @@ const stripCss = (s) => s.replace(/\/\*[\s\S]*?\*\//g, '');
 test('default Density tokens stay on .gcsp, with --vm-* only under .gcsp .vm', () => {
   const local = read('blocks/gcsp/shell/gcsp-tokens.css');
   assert.match(local, /^@import "\.\/density-theme\.css";/, 'all GCSP consumers load Density by default');
-  const css = stripCss(read('blocks/gcsp/shell/density-theme.css') + '\n' + local).replace(/@import[^;]+;/g, '');
+  const css = stripCss(read('blocks/gcsp/shell/density-theme.css') + '\n' + read('blocks/gcsp/shell/density-typography.css') + '\n' + local).replace(/@import[^;]+;/g, '');
   assert.ok(!/:root/.test(css), 'no :root');
   assert.ok(!/density-reference/.test(css), 'no opt-in class required');
   const blocks = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].map((m) => [m[1].trim(), m[2]]);
@@ -371,11 +371,30 @@ test('Density heading font assets match the verified BMW downloads and declare t
   }
 });
 
+test('Density typography tokens and aliases retain the pinned source values without missing dependencies', () => {
+  const snapshot = JSON.parse(read('docs/gcsp/density/tokens.json'));
+  const css = read('blocks/gcsp/shell/density-typography.css');
+  assert.match(read('blocks/gcsp/shell/density-theme.css'), /^@import "\.\/density-typography\.css";/);
+  assert.match(css, /^@import "\.\/fonts\/density-fonts\.css";/);
+  const declarations = Object.fromEntries([...css.matchAll(/(--[\w-]+):\s*([^;]+);/g)].map((m) => [m[1], m[2]]));
+  const resolve = (value) => value.replace(/var\((--[\w-]+)\)/g, (_, key) => {
+    assert.ok(declarations[key], `typography dependency ${key}`);
+    return resolve(declarations[key]);
+  });
+  for (const [key, value] of Object.entries(declarations)) {
+    if (key.startsWith('--ds-')) assert.equal(value, snapshot.tokens[key], key);
+    else assert.equal(resolve(value), snapshot.resolvedGcspAliases[key], key);
+  }
+  for (const suffix of ['font', 'font-heading', 'font-code', 'font-weight', 'font-strong-weight', 'font-button-weight', 'font-input-weight', 'font-table-header-weight']) {
+    assert.ok(declarations[`--gcsp-${suffix}`], suffix);
+  }
+});
+
 test('every selector in the shell stylesheets starts with .gcsp, and retail tokens are not redefined', () => {
-  for (const file of ['blocks/gcsp/shell/gcsp-shell.css', 'blocks/gcsp/shell/gcsp-tokens.css', 'blocks/gcsp/shell/density-theme.css', 'blocks/gcsp/employee/gcsp-employee.css']) {
+  for (const file of ['blocks/gcsp/shell/gcsp-shell.css', 'blocks/gcsp/shell/gcsp-tokens.css', 'blocks/gcsp/shell/density-theme.css', 'blocks/gcsp/shell/density-typography.css', 'blocks/gcsp/employee/gcsp-employee.css']) {
     const css = stripCss(read(file)).replace(/@import[^;]+;/g, '').replace(/@media[^{]*\{/g, '');
     const selectors = [...css.matchAll(/(?:^|[}\s])([^{}@]+)\{/g)].flatMap((m) => m[1].split(',')).map((s) => s.trim()).filter(Boolean);
-    assert.ok(selectors.length >= 2, file);
+    assert.ok(selectors.length >= 1, file);
     const bad = selectors.filter((s) => !s.startsWith('.gcsp'));
     assert.deepEqual(bad, [], `${file}: selectors outside .gcsp`);
   }

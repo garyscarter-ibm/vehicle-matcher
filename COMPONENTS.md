@@ -119,6 +119,7 @@ Shared by the employee entry now and Greg's views later; scoped tokens and style
 
 | Call | Use for |
 |---|---|
+| `density-typography.css` (imported by the default theme) | Shared source-derived families and weights: large titles BMW Medium 500; body/inputs/options system 400; smaller headings/buttons/emphasis system 600; table headers system 500; plain text/code the Density mono stack. Reuse semantic `--gcsp-font-*` aliases instead of introducing view-specific fonts or retail weights. The gallery's Density typography, question-controls, cards, tables and message-list examples exercise these roles. Local responsive sizes and italic missing-data cues remain intentional adaptations. |
 | `portalShell({ title, account, navigation, active, breadcrumbs, onNavigate, onRetryAccount })` | The slim branded header (account loading, ready and unavailable-with-Retry states), `<nav aria-label="Portal">`, optional breadcrumbs, skip link and `<main>`. Returns `{ root, main, setAccount, setActive, setBreadcrumbs, destroy }`. |
 | `accountNavigation({ items, active, expanded, onNavigate, onToggle })` | Narrow icon sidebar with a label toggle. Unavailable items are disabled buttons with a visible reason, never dead links. Used inside `portalShell`. |
 | `svgIcon(paths)` | Decorative inline SVG icon built with `createElementNS`. |

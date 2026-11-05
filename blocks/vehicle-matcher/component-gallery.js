@@ -93,6 +93,13 @@ function gcspExamples() {
     return body;
   };
   group('screenIntro').append(screenIntro({ kicker: 'Choices', title: 'Your cars', lede: 'A kicker, a title and a short lede.', level: 3 }));
+  const typography = group('Density typography');
+  typography.append(
+    screenIntro({ title: 'Large page title', lede: 'Regular body text uses the system font.', level: 1 }),
+    el('h2', '', 'Smaller heading uses system semibold'),
+    el('p', '', 'Labels, navigation and form values use the system font.'),
+    el('code', '', 'Plain text uses the Density monospace stack.'),
+  );
   const buttons = group('button');
   buttons.append(
     button({ label: 'Primary', variant: 'primary' }),

@@ -133,11 +133,15 @@
     },
     {
       "path": "blocks/gcsp/shell/density-theme.css",
-      "max_lines": 84
+      "max_lines": 67
     },
     {
       "path": "blocks/gcsp/shell/fonts/density-fonts.css",
       "max_lines": 11
+    },
+    {
+      "path": "blocks/gcsp/shell/density-typography.css",
+      "max_lines": 50
     }
   ],
   "baseline": {
