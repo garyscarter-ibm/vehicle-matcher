@@ -2,6 +2,41 @@
 
 FUCQ-5 refinement, **1 November 2026**, with UK observations updated **2 November 2026**. Russell authorised [FUCQ-19](https://ibm-consulting.atlassian.net/browse/FUCQ-19), a synthetic VIN registry/service/adapter with a plausible VIN generator, and [FUCQ-20](https://ibm-consulting.atlassian.net/browse/FUCQ-20), a separate capability to populate it with **10,000 genuinely distinct configurations**. This note supplies the generator's evidence and remaining coverage gaps. It is research, not an implemented generator or an issued vehicle identity.
 
+## Binding identity re-scope and executable selection
+
+**4 November 2026, FUCQ-6 review Q7/Q13:** `configurationId` identifies an immutable corpus configuration. A synthetic order reference identifies an exact stock car in per-run PostgreSQL. VIN attaches only at delivery or to an employee's current car. Browsing, matching, holds and allocation need no VIN. Backend consumers use an in-process lookup port; the later HTTP route wraps that same module and contract. These decisions supersede earlier passages assigning a VIN to every corpus/stock car. They do not activate UK profiles or change the separate corpus target/timing.
+
+FUCQ-52 adds [the offline profile-selection port](../../server/gcsp/vehicle-evidence/vin-profiles.js), [versioned registry](../../server/data/gcsp/vehicle-evidence/vin-profiles.v1.json) and [five matched references](../../server/test/fixtures/gcsp/vehicle-evidence/five-wmi-reference-configurations.json). It allocates no serial or VIN, stores no stock, exposes no HTTP route and performs no lookup against a real provider. Registry evidence remains authoritative for profile selection; this capability introduces no shared scheme-policy assumptions.
+
+```js
+const registry = createVinProfileRegistry();
+const result = await registry.resolve(reference.configuration, {
+  profileId: reference.profileId,
+  registryVersion: 'vin-profiles.v1',
+  usage: 'current-car', // alternatively 'delivered-car'
+  referenceOnly: true,
+});
+const label = presentVinProfile(result);
+```
+
+Selection requires every identity field, including explicit `null` for an unknown engine code, transmission, AG/VG code or production date. Exact derivative, generation, body, powertrain, drive, US/North American/LHD reference context, model year, production era and matched plant must agree. An optional supplied WMI or descriptor must agree as a whole value. Missing required identity facts are `invalid-input`; contradictory facts are `identity-mismatch`. Stock/corpus usage, an unlabelled reference, candidate profiles and unknown profile/version IDs are `unsupported`. Invalid/unreadable registry artifacts are `source-unavailable`. None of these outcomes invokes generation or a network fallback.
+
+The five enabled profiles are **structural references**, rather than complete catalogue configurations. Their `configurationId`, snapshot version, exact engine/transmission, AG/VG codes, production date, trim and equipment remain unknown. The generation/powertrain/drive labels bind the narrow reference context from this research; they are not independently decoded engine/build facts. `LHD` is the fixture's explicit US reference context, not an inference from WMI country or a claim about an observed individual vehicle. A known transmission or engine code cannot be silently joined to an unknown reference value. These small fixtures cannot pad a distinct-configuration corpus or certify a GB/RHD factory build.
+
+Each profile carries source references, observation dates, publication dates where retained (otherwise `null`), confidence, unresolved facts and limitations. Filed whole descriptors, matched production/partial-pattern plant corroboration and fictional sequence allocation have separate provenance. Six numeric serial positions are a conservative regulation-permitted structural allocation shape, including leading zeros; they do not claim an observed or reserved BMW serial range. Position nine is calculated under the US rule; position ten is `T` for the bound MY2026 context. No catalogue date supplies model year.
+
+The original `UK-OBS-001` and `UK-OBS-002` remain candidate-only. Their shared positions 4–8 and literal position-ten zero are retained, with unresolved format/year/plant/market/steering semantics and no observed check character or individual serial. The other sanitised research observations remain in the research evidence, without speculative activation. Separately evidenced `3MF`, `3MW`, `WB5` and `WBX` descriptor references are preserved without becoming enabled profiles. No badge/category heuristic or exhaustive five-WMI whitelist selects a WMI.
+
+The backend presentation contract adds no screen, control or shared component. Under [experience quality](experience-quality.md), [the supplied shell reference](screens/README.md) and [COMPONENTS.md](../../COMPONENTS.md), consumers receive explicit reference-only status, market/steering, confidence, source dates, unknown fields and unknown verified-fitted equipment. For example:
+
+- Context: `US / North America / LHD / MY2026`.
+- Notice: `North American structural reference only. Unknown build facts remain unknown.`
+- Confidence: manufacturer-filed descriptor with matched production/partial-pattern corroboration, structural reference only.
+- Decoder outcome: `6 - Incomplete VIN`, with `completeVinDecoded: false` despite HTTP 200.
+- Unknowns include exact engine code, transmission, AG/VG codes, production/registration dates, trim and equipment. Catalogue selections never become verified fitting.
+
+These presentation examples and failure outcomes are executable in `server/test/gcsp-vin-profiles.test.js`. No rendered surface changes, so no new screenshot is required. The existing HLD component/connection boundaries remain unchanged; profile selection implements part of the already agreed module.
+
 ## Findings and source quality
 
 The supplied [DreamBMW article](https://dreambmw.com/blog/bmwvin-decoded-how-to-read-your-bmw-vin-2026) is useful orientation. Its five WMI categories are a sensible required coverage set. Its universal position-ten model-year/checksum statements are too broad for BMWs across markets and eras, and it does not provide a complete descriptor or factory dictionary. Do not implement a generic blog decoder as the generation specification.
