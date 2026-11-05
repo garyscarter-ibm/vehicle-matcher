@@ -66,7 +66,9 @@ function request(base, path) {
 async function start({ scratch, guard, corpusRoot, stops }) {
   let output = ''; let spawnError;
   const child = spawn(process.execPath, ['--import', guard, join(project, 'server/index.js')], {
-    cwd: project, detached: true, stdio: ['ignore', 'pipe', 'pipe'],
+    // Inherit the launcher's process group so its finalizer can stop the server
+    // even if this test process is terminated before its after-hook runs.
+    cwd: project, stdio: ['ignore', 'pipe', 'pipe'],
     // Deliberately omit provider keys, DATABASE_URL and inherited NODE_OPTIONS.
     env: { PATH: process.env.PATH, TMPDIR: scratch, TMP: scratch, TEMP: scratch,
       PORT: '0', GCSP_OFFLINE: '1', COLOUR_WARM: '1', GCSP_EGRESS_LOG: join(scratch, 'egress.jsonl'),
@@ -85,13 +87,13 @@ async function start({ scratch, guard, corpusRoot, stops }) {
   async function stop() {
     if (!child.pid) { await close; return; }
     if (!closed) {
-      try { process.kill(-child.pid, 'SIGTERM'); } catch (error) { if (error.code !== 'ESRCH') throw error; }
+      try { process.kill(child.pid, 'SIGTERM'); } catch (error) { if (error.code !== 'ESRCH') throw error; }
       await waitForClose();
-      if (!closed) { try { process.kill(-child.pid, 'SIGKILL'); } catch (error) { if (error.code !== 'ESRCH') throw error; } }
+      if (!closed) { try { process.kill(child.pid, 'SIGKILL'); } catch (error) { if (error.code !== 'ESRCH') throw error; } }
       await waitForClose();
     }
     assert.equal(closed, true, 'owned offline child must close');
-    if (child.pid) assert.throws(() => process.kill(-child.pid, 0), { code: 'ESRCH' });
+    if (child.pid) assert.throws(() => process.kill(child.pid, 0), { code: 'ESRCH' });
   }
   stops.push(stop);
   const deadline = Date.now() + 10000;

@@ -1,0 +1,32 @@
+{
+  "boundaries": [
+    "Existing offline publisher only; no prepare/generator or new identity allocation",
+    "Transport-denying preload; no provider/network/credentials",
+    "Export active.json, identity-inventory.json and four byte-identical selected-version artifacts; omit transient publication-owner metadata",
+    "Input hashes checked before/after; retained output+selection/provenance hashes and concise cleanup receipt",
+    "Supervisor Scratch manifest outside root, HostBudget reservation, stop/join group and exact root absence; no current allocations"
+  ],
+  "command": "node server/scripts/publish-synthetic-vin-dataset.mjs publish --artifacts <absolute-existing-candidate> --store <owned-scratch-selected-store> --run-id fucq55-package-20261105 --as-of 2026-11-05T00:00:00.000Z --policy-version gcsp-policy-v1",
+  "input_root": "server/data/gcsp/vehicle-evidence/publication-reference.v1",
+  "input_sha256": {
+    "configurations.jsonl": "9c1fb6a34e324e6e4937baa1e80eabafa44fae394dd138f2f77be9f6867e9855",
+    "images.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "manifest.json": "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709",
+    "vins.jsonl": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd"
+  },
+  "limits": {
+    "ram_mib": 256,
+    "scratch_mib": 1,
+    "seconds": 60,
+    "workers": 1
+  },
+  "output_root": "server/data/gcsp/vehicle-evidence/lookup-reference.v1",
+  "scope": {
+    "configurations": 2,
+    "current_car_vins": 1,
+    "images": 0,
+    "qualification": "bounded-fixture-or-partial-corpus; no 200/10000 coverage claim"
+  },
+  "status": "completed admitted tiny packaging only; see packaged-reference.json; tests/installs/additional proofs remain held",
+  "story": "FUCQ-55"
+}

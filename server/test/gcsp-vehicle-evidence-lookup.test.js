@@ -7,7 +7,8 @@ import { fileURLToPath } from 'node:url';
 import { createSyntheticRegistry } from '../gcsp/vehicle-evidence/synthetic-registry.js';
 import { createVehicleEvidenceLookup, canonicalVehicleIdentifier } from '../gcsp/vehicle-evidence/vehicle-lookup.js';
 import { vehicleEvidenceHttpStatus } from '../gcsp/vehicle-evidence/vehicle-details-contract.js';
-import { createMemoryRepository, createMemoryStore, inputDigest, ok } from '../gcsp/repository/index.js';
+import { createMemoryRepository, createMemoryStore } from '../gcsp/repository/memory.js';
+import { inputDigest, ok } from '../gcsp/repository/core.js';
 import { options } from './helpers/vin-corpus-fixture.js';
 
 const candidate = fileURLToPath(new URL('../data/gcsp/vehicle-evidence/publication-reference.v1', import.meta.url));
