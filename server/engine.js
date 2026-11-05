@@ -584,8 +584,10 @@ function effectiveWeights(answers, tuning) {
 
 function passesHardFilters(car, answers, tuning) {
   const { crewBoot, crewSeats, familySeats } = tuning.hardFilter;
-  const [, max] = budgetRange(answers);
-  if (car.priceMin > max * tuning.stretchFactor) return false;
+  if (tuning.retailBudgetEnabled !== false) {
+    const [, max] = budgetRange(answers);
+    if (car.priceMin > max * tuning.stretchFactor) return false;
+  }
   if (answers.people === 'crew' && (car.seats < crewSeats || car.boot < crewBoot)) return false;
   if (answers.people === 'family' && car.seats < familySeats) return false;
   return true;

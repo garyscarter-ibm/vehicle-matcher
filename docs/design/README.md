@@ -33,6 +33,8 @@ Blue means current implementation; purple/dashed means proposed. Current applica
 
 **FUCQ-26 implementation evidence, 5 November 2026:** the [immutable vehicle facts and scenario terms contract](vehicle-snapshot-contract.md) is implemented as additive backend modules and opt-in retail/synthetic adapters. The integrated check passed 20 contract cases, 157 frozen retail compatibility cases, and the full suite (513 passed, two PostgreSQL checks skipped with `GCSP_DATABASE_URL` unset). Existing mapper/cache interfaces and retail payloads remain unchanged. This verifies the internal facts/terms boundary; it does not establish employee workflow or live-provider completion. Page 02's diagram status/render remains unverified because no background draw.io tab is available; its status is unchanged, and no new rendered review is claimed.
 
+**FUCQ-29 core checkpoint, 5 November 2026:** the stateless employee service now evaluates canonical policy/allowance, exact essentials, driver/charging and timing before reusing the existing ranker curves. A trusted opt-out of the retail cash filter preserves default retail behavior without inventing pounds for points. Scoped validation passed 40 employee/policy and 211 engine/frozen-retail/snapshot checks. HTTP integration and final integration validation remain pending. [Consumer contract](../gcsp/employee-recommendation.md). The unavailable background draw.io tab leaves diagram status and rendered exports unchanged; no fresh diagram/render proof is claimed.
+
 Boundaries that must survive implementation:
 
 - Brand and scenario are separate. Server wiring selects the policy; a client cannot switch an employee request to permissive retail rules.
