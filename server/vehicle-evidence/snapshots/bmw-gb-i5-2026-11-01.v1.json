@@ -316,56 +316,114 @@
     "FKSFU": {
       "label": "Perforated and Quilted Veganza in Smoke White",
       "optionType": "fabric",
-      "origin": "observed"
+      "origin": "observed",
+      "source": "BMW UK catalogue",
+      "observedDate": "2026-11-01",
+      "completeness": "complete"
     },
     "P0300": {
       "label": "Alpine White",
       "optionType": "paint",
-      "origin": "observed"
+      "origin": "observed",
+      "source": "BMW UK catalogue",
+      "observedDate": "2026-11-01",
+      "completeness": "complete"
     },
     "P0475": {
       "label": "Black Sapphire",
       "optionType": "paint",
-      "origin": "observed"
+      "origin": "observed",
+      "source": "BMW UK catalogue",
+      "observedDate": "2026-11-01",
+      "completeness": "complete"
     },
     "S03AC": {
       "label": "Towbar",
       "optionType": "other",
-      "origin": "observed"
+      "origin": "observed",
+      "source": "BMW UK catalogue",
+      "observedDate": "2026-11-01",
+      "completeness": "complete"
     },
     "S0488": {
       "label": "Lumbar Support",
       "optionType": "other",
-      "origin": "observed"
+      "origin": "observed",
+      "source": "BMW UK catalogue",
+      "observedDate": "2026-11-01",
+      "completeness": "complete"
     },
     "S07BL": {
       "label": "BMW UK Service Inclusive",
       "optionType": "other",
-      "origin": "observed"
+      "origin": "observed",
+      "source": "BMW UK catalogue",
+      "observedDate": "2026-11-01",
+      "completeness": "complete"
     }
   },
   "measurements": {
     "N_SITZE": {
       "value": 5,
-      "origin": "observed"
+      "origin": "observed",
+      "source": "BMW UK catalogue",
+      "observedDate": "2026-11-01",
+      "completeness": "complete",
+      "definition": "SEATS",
+      "unit": "COUNT"
     },
     "A_GEPR_V211": {
       "value": 570,
-      "origin": "observed"
+      "origin": "observed",
+      "source": "BMW UK catalogue",
+      "observedDate": "2026-11-01",
+      "completeness": "complete",
+      "definition": "NORMAL",
+      "unit": "LITRES"
     },
     "A_GEPR_V214": {
       "value": 1700,
-      "origin": "observed"
+      "origin": "observed",
+      "source": "BMW UK catalogue",
+      "observedDate": "2026-11-01",
+      "completeness": "complete",
+      "definition": "EXPANDED",
+      "unit": "LITRES"
     },
     "E_0_100KMH": {
       "value": 6.1,
-      "origin": "observed"
+      "origin": "observed",
+      "source": "BMW UK catalogue",
+      "observedDate": "2026-11-01",
+      "completeness": "complete",
+      "definition": "0–100 KM/H",
+      "unit": "SECONDS"
     }
   },
   "modelTree": {
     "length": {
       "value": "0000",
       "origin": "observed"
+    }
+  },
+  "equipmentEvidence": {
+    "definitions": {
+      "origin": "observed",
+      "source": "BMW UK catalogue",
+      "observedDate": "2026-11-01",
+      "completeness": "partial"
+    },
+    "available": {
+      "origin": "observed",
+      "source": "BMW UK catalogue",
+      "observedDate": "2026-11-01",
+      "completeness": "partial"
+    },
+    "selected": {
+      "origin": "observed",
+      "source": "BMW UK catalogue",
+      "observedDate": "2026-11-01",
+      "completeness": "complete"
     }
   }
 }

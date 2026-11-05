@@ -12,6 +12,15 @@ const MEASUREMENTS = {
   acceleration: ['E_0_100KMH', '0–100 KM/H', 'SECONDS'],
 };
 const CODE = /^[A-Z0-9]{4,12}$/;
+const SOURCES = new Set(['BMW UK catalogue', 'BMW UK OTD']);
+const COMPLETENESS = new Set(['complete', 'partial']);
+const REASONS = {
+  'missing-value': 'missing value', 'placeholder-value': 'placeholder value',
+  'malformed-value': 'malformed value', 'unmapped-unit': 'unit not mapped',
+  'unmapped-meaning': 'meaning not mapped', 'unmapped-source': 'source not mapped',
+  'invalid-provenance': 'source or date unavailable', 'no-resolved-evidence': 'no resolved evidence',
+  'incomplete-selection': 'incomplete selection', 'unavailable-selection': 'selection evidence unavailable',
+};
 
 export function rejectOutbound() {
   throw new Error('Outbound transport disabled for catalogue snapshots');
@@ -72,9 +81,7 @@ function validSnapshot(data, version) {
   return data && data.schemaVersion === '1' && data.snapshotVersion === version
     && validDate(data.observedDate) && validDate(data.retrievedDate)
     && validRequest(sourceIdentity(data)) && /^\d{8}$/.test(data.model.prodDate)
-    && data.selectedOptions.length === 47 && data.selectedOptions.includes(data.trim)
-    && validCodes(data.availableOptions) && data.definitions && typeof data.definitions === 'object'
-    && data.measurements && typeof data.measurements === 'object';
+    && data.selectedOptions.length === 47 && data.selectedOptions.includes(data.trim);
 }
 
 function provenance(kind, observedDate) {
@@ -83,16 +90,39 @@ function provenance(kind, observedDate) {
   return { kind: 'unknown', source: null, observedDate: null };
 }
 
-function unknown(definition, unit) {
-  return { state: 'unknown', value: null, definition, unit, provenance: provenance('unknown') };
+function unknown(definition, unit, reason = 'no-resolved-evidence') {
+  return { state: 'unknown', value: null, definition, unit, reason,
+    completeness: 'unknown', provenance: provenance('unknown') };
 }
 
-function fact(entry, definition, unit, date) {
-  if (!entry || !['observed', 'synthetic'].includes(entry.origin)
-    || typeof entry.value !== 'number' || !Number.isFinite(entry.value) || entry.value <= 0) {
-    return unknown(definition, unit);
-  }
-  return { state: 'known', value: entry.value, definition, unit, provenance: provenance(entry.origin, date) };
+function valueProblem(value) {
+  if (value === undefined || value === null || (typeof value === 'string' && !value.trim())) return 'missing-value';
+  if (typeof value === 'string' && /^(?:-+|0{4}|N\/?A|null|unknown)$/i.test(value.trim())) return 'placeholder-value';
+  if (typeof value !== 'number' || !Number.isFinite(value) || value < 0) return 'malformed-value';
+  return null;
+}
+
+function attributed(entry) {
+  return entry && COMPLETENESS.has(entry.completeness)
+    && (entry.origin === 'synthetic' || (entry.origin === 'observed'
+      && SOURCES.has(entry.source) && validDate(entry.observedDate)));
+}
+
+function entryProvenance(entry) {
+  return entry.origin === 'observed'
+    ? { kind: 'observed', source: entry.source, observedDate: entry.observedDate }
+    : provenance('synthetic');
+}
+
+function fact(entry, definition, unit) {
+  const problem = valueProblem(entry?.value)
+    || (entry.definition !== definition ? 'unmapped-meaning' : null)
+    || (entry.unit !== unit ? 'unmapped-unit' : null)
+    || (!attributed(entry) ? 'invalid-provenance' : null)
+    || (unit === 'COUNT' && !Number.isSafeInteger(entry.value) ? 'malformed-value' : null);
+  if (problem) return unknown(definition, unit, problem);
+  return { state: 'known', value: entry.value, definition, unit,
+    completeness: entry.completeness, provenance: entryProvenance(entry) };
 }
 
 function emptyFacts() {
@@ -107,7 +137,7 @@ function envelope(status, version, requestedIdentity = null) {
     provider: 'bmw-catalogue-snapshot', providerVersion: '1', schemaVersion: '1', snapshotVersion: version,
     sourceKind: 'dated-snapshot', status, observedDate: null, retrievedDate: null,
     catalogueValidity: null, requestedIdentity, resolvedIdentity: null, identityProvenance: null,
-    facts: emptyFacts(),
+    facts: emptyFacts(), unmappedMeasurements: [],
     equipment: { definitions: [], available: { state: 'unknown', codes: null },
       selected: { state: 'unknown', options: null, accessories: null, complete: false },
       verifiedFitted: { state: 'unknown', codes: null } },
@@ -117,14 +147,56 @@ function envelope(status, version, requestedIdentity = null) {
 }
 
 function definitions(data) {
-  return Object.entries(data.definitions).filter(([code]) => CODE.test(code))
+  const entries = data.definitions && typeof data.definitions === 'object' && !Array.isArray(data.definitions)
+    ? Object.entries(data.definitions) : [];
+  return entries.filter(([code]) => CODE.test(code))
     .sort(([a], [b]) => a.localeCompare(b)).map(([code, entry]) => {
-      const known = entry && ['observed', 'synthetic'].includes(entry.origin)
-        && typeof entry.label === 'string' && entry.label.trim() && !/[<>]/.test(entry.label);
+      const known = attributed(entry) && safeLabel(entry.label);
       return { code, category: ['fabric', 'paint', 'other'].includes(entry?.optionType) ? entry.optionType : 'unknown',
-        label: { state: known ? 'known' : 'unknown', value: known ? entry.label : null,
-          provenance: provenance(known ? entry.origin : 'unknown', data.observedDate) } };
+        label: { state: known ? 'known' : 'unknown', value: known ? entry.label.trim() : null,
+          completeness: known ? entry.completeness : 'unknown',
+          provenance: known ? entryProvenance(entry) : provenance('unknown') } };
     });
+}
+
+function safeLabel(value) {
+  return typeof value === 'string' && value.trim().length > 0 && value.length <= 256
+    && !/[<>\u0000-\u001f\u007f]/.test(value);
+}
+
+function equipmentSection(data, name) {
+  const entry = data.equipmentEvidence?.[name];
+  return attributed(entry) ? { completeness: entry.completeness, provenance: entryProvenance(entry) } : null;
+}
+
+/** Four independent claims for one option; no catalogue claim establishes physical fitting. */
+export function describeBmwEquipment(result, code) {
+  if (typeof code !== 'string' || !CODE.test(code)) return null;
+  const equipment = result?.equipment || {};
+  const entry = equipment.definitions?.find((item) => item.code === code);
+  const available = equipment.available || {};
+  const selected = equipment.selected || {};
+  const availabilityKnown = available.state === 'known' && Array.isArray(available.codes);
+  const selectionKnown = selected.state === 'known' && Array.isArray(selected.options);
+  const selection = selectionKnown && selected.options.includes(code) ? 'selected'
+    : selectionKnown && selected.complete ? 'not-selected' : 'unknown';
+  const defined = entry?.label.state === 'known' && safeLabel(entry.label.value);
+  return {
+    code,
+    definition: { kind: 'option-definition', state: defined ? 'defined' : 'unknown',
+      label: defined ? entry.label.value : null, completeness: defined ? entry.label.completeness : 'unknown',
+      provenance: defined ? entry.label.provenance : provenance('unknown') },
+    configurableAvailability: { kind: 'configurable-availability',
+      state: availabilityKnown && available.codes.includes(code) ? 'available' : 'unknown',
+      completeness: availabilityKnown ? available.completeness : 'unknown',
+      provenance: available.provenance || provenance('unknown') },
+    catalogueSelection: { kind: 'selected-catalogue-equipment', state: selection,
+      reason: selection === 'unknown' ? (selectionKnown ? 'incomplete-selection' : 'unavailable-selection') : null,
+      completeness: selectionKnown ? selected.completeness : 'unknown',
+      provenance: selected.provenance || provenance('unknown') },
+    verifiedVinFitted: { kind: 'verified-vin-fitted-equipment', state: 'unknown',
+      reason: 'provider-does-not-verify-fitting', provenance: provenance('unknown') },
+  };
 }
 
 /** Resolve a curated dated catalogue configuration through an injectable in-process port. */
@@ -156,19 +228,36 @@ export function createBmwCatalogueAdapter({ loadSnapshot = loadLocalSnapshot, tr
         return result;
       }
       for (const [name, [reference, definition, unit]] of Object.entries(MEASUREMENTS)) {
-        result.facts[name] = fact(data.measurements[reference], definition, unit, data.observedDate);
+        result.facts[name] = fact(data.measurements?.[reference], definition, unit);
       }
-      result.facts.bodyLength = fact(data.modelTree?.length, 'BODY LENGTH', 'MILLIMETRES', data.observedDate);
+      result.facts.bodyLength = unknown('BODY LENGTH', 'MILLIMETRES',
+        valueProblem(data.modelTree?.length?.value) || 'unmapped-source');
+      const mapped = new Set(Object.values(MEASUREMENTS).map(([reference]) => reference));
+      result.unmappedMeasurements = Object.keys(data.measurements || {}).filter((reference) => !mapped.has(reference))
+        .map(() => ({ state: 'unknown', value: null, reason: 'unmapped-meaning' }));
       result.equipment.definitions = definitions(data);
-      result.equipment.available = { state: 'known', codes: [...data.availableOptions].sort(),
-        complete: false, provenance: provenance('observed', data.observedDate) };
-      result.equipment.selected = { state: 'known', options: [...resolved.selectedOptions],
-        accessories: resolved.selectedAccessories.map((item) => ({ ...item })), complete: true,
-        provenance: provenance('observed', data.observedDate) };
-      const complete = Object.keys(MEASUREMENTS).every((key) => result.facts[key].state === 'known');
-      result.completeness = { measurements: complete ? 'complete' : 'partial', optionDefinitions: 'partial',
-        availableOptions: 'partial', selectedConfiguration: 'complete', verifiedFitted: 'unknown' };
-      result.status = complete ? 'ok' : 'partial';
+      const available = equipmentSection(data, 'available');
+      if (available && validCodes(data.availableOptions)) {
+        result.equipment.available = { state: 'known', codes: [...data.availableOptions].sort(),
+          complete: available.completeness === 'complete', ...available };
+      }
+      const selected = equipmentSection(data, 'selected');
+      if (selected) {
+        result.equipment.selected = { state: 'known', options: [...resolved.selectedOptions],
+          accessories: resolved.selectedAccessories.map((item) => ({ ...item })),
+          complete: selected.completeness === 'complete', ...selected };
+      }
+      const complete = Object.keys(MEASUREMENTS).every((key) => result.facts[key].state === 'known'
+        && result.facts[key].completeness === 'complete') && !result.unmappedMeasurements.length;
+      const definitionEvidence = equipmentSection(data, 'definitions');
+      result.completeness = { measurements: complete ? 'complete' : 'partial',
+        optionDefinitions: result.equipment.definitions.length ? definitionEvidence?.completeness || 'unknown' : 'unknown',
+        availableOptions: result.equipment.available.completeness || 'unknown',
+        selectedConfiguration: selected?.completeness || 'unknown', verifiedFitted: 'unknown' };
+      const equipmentUsable = definitionEvidence && result.equipment.definitions.length > 0
+        && result.equipment.definitions.every((entry) => entry.label.state === 'known')
+        && result.equipment.available.state === 'known' && selected?.completeness === 'complete';
+      result.status = complete && equipmentUsable ? 'ok' : 'partial';
       return result;
     },
   };
@@ -177,7 +266,8 @@ export function createBmwCatalogueAdapter({ loadSnapshot = loadLocalSnapshot, tr
 /** Plain text presentation of the public envelope; this does not mount or change a screen. */
 export function presentBmwCatalogue(result) {
   if (!['ok', 'partial'].includes(result?.status)) {
-    return { status: result?.status || 'source-unavailable', source: null, context: null, measurements: [] };
+    return { status: result?.status || 'source-unavailable', source: null, context: null,
+      measurements: [], measurementEvidence: [], equipment: [], completeness: null };
   }
   const date = (value) => validDate(value)
     ? new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
@@ -196,14 +286,34 @@ export function presentBmwCatalogue(result) {
     const [label, text] = labels[key];
     if (entry?.state !== 'known' || entry.definition !== definition || entry.unit !== unit
       || !['observed', 'synthetic'].includes(entry.provenance?.kind)
-      || typeof entry.value !== 'number' || !Number.isFinite(entry.value) || entry.value <= 0) return `${label}: unknown`;
+      || typeof entry.value !== 'number' || !Number.isFinite(entry.value) || entry.value < 0) {
+      return `${label}: unknown${REASONS[entry?.reason] ? ` (${REASONS[entry.reason]})` : ''}`;
+    }
     const value = text(entry.value);
     return value.endsWith(',') ? `${value} ${entry.provenance.kind})` : `${value} (${entry.provenance.kind})`;
   });
+  const measurementEvidence = Object.keys(MEASUREMENTS).map((key) => {
+    const entry = result.facts?.[key];
+    const origin = entry?.provenance;
+    const source = SOURCES.has(origin?.source) || origin?.source === 'Illustrative fixture' ? origin.source : 'Source unknown';
+    const completeness = COMPLETENESS.has(entry?.completeness) ? entry.completeness : 'unknown';
+    return `${labels[key][0]}: ${source}, observed ${date(origin?.observedDate)}, ${completeness}.`;
+  });
+  const equipment = (result.equipment?.definitions || []).map(({ code }) => {
+    const claim = describeBmwEquipment(result, code);
+    if (!claim) return null;
+    const selection = claim.catalogueSelection.state === 'selected' ? 'selected in this catalogue configuration'
+      : claim.catalogueSelection.state === 'not-selected' ? 'not selected in this catalogue configuration'
+        : `selection unknown (${REASONS[claim.catalogueSelection.reason]})`;
+    return `${code} ${claim.definition.label || 'label unknown'}: configurable: ${claim.configurableAvailability.state}; ${selection}; VIN-fitted: unknown.`;
+  }).filter(Boolean);
+  const completeness = (key) => ['complete', 'partial', 'unknown'].includes(result.completeness?.[key])
+    ? result.completeness[key] : 'unknown';
   return {
     status: result.status,
     source: `BMW UK catalogue, observed ${date(result.observedDate)}`,
     context: `Order: ${date(validity.orderDate)}. Effect: ${date(validity.effectDate)}. Production: ${date(validity.productionDate)}. Tax: ${date(validity.taxDate)}.${future ? ' Future catalogue context relative to observation.' : ''}`,
-    measurements,
+    measurements, measurementEvidence, equipment,
+    completeness: `Selection: ${completeness('selectedConfiguration')}; definitions: ${completeness('optionDefinitions')}; availability: ${completeness('availableOptions')}; measurements: ${completeness('measurements')}. VIN-fitted equipment: unknown.`,
   };
 }
