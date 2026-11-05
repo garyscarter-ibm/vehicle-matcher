@@ -11,6 +11,7 @@ import signal
 import subprocess
 import sys
 import time
+import threading
 import uuid
 
 ROOT = Path(__file__).resolve().parents[4]
@@ -53,7 +54,8 @@ command = ['node', str(ROOT/'docs/gcsp/evidence/fucq69/browser-runner.mjs'), '--
 source_paths = sorted({*(ROOT/'blocks/gcsp').rglob('*.js'), *(ROOT/'blocks/gcsp').rglob('*.css'),
                        *(ROOT/'blocks/vehicle-matcher').rglob('*.js'), *(ROOT/'blocks/vehicle-matcher').rglob('*.css'),
                        ROOT/'gcsp-manual-gallery.html', ROOT/'gcsp-employee.css',
-                       *(ROOT/'blocks/vehicle-matcher/fonts').glob('*.woff*'), ROOT/'assets/brand-hero/bmw.jpg',
+                       *(ROOT/'blocks/vehicle-matcher/fonts').glob('*.woff*'),
+                       *(ROOT/'blocks/gcsp/shell/fonts').glob('*.woff*'), ROOT/'assets/brand-hero/bmw.jpg',
                        ROOT/'docs/gcsp/evidence/fucq69/browser-runner.mjs', Path(__file__).resolve(),
                        ROOT/'_tools/test_resources.py', ROOT/'_tools/scaffold_git.py'})
 source = {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in source_paths}
@@ -164,13 +166,22 @@ scratch.sample = combined_disk
 env = {k: v for k, v in os.environ.items() if 'DATABASE_URL' not in k.upper() and 'DB_URL' not in k.upper()
        and not k.upper().startswith(('PG', 'POSTGRES'))}
 env.update(FUCQ69_BROWSER_RUN=run_id, FUCQ69_SOURCE=head.strip())
+cancel = threading.Event()
+
+def cancellation_requested(_signum, _frame):
+    cancel.set()
+
+for termination_signal in (signal.SIGINT, signal.SIGTERM):
+    signal.signal(termination_signal, cancellation_requested)
 result = None
 try:
     granted = host.acquire(scratch.token, 128*r.MIB, 2560*r.MIB, '/private/tmp', root=scratch.root,
                            minimum_disk=32*r.MIB, minimum_ram=2048*r.MIB)
+    if cancel.is_set():
+        raise r.ResourceError('Browser chunk cancelled before allocation')
     with scratch:
         result = r.run_process(command, str(ROOT), env, records/'run.log', scratch, policy,
-                               granted['disk'], granted['ram'], 120, host)
+                               granted['disk'], granted['ram'], 120, host, cancel)
 except BaseException as error:
     result = {'rc': 1, 'issue': '%s: %s' % (type(error).__name__, error)}
 finally:
@@ -194,7 +205,8 @@ finally:
     else:
         result['cleanupIssue'] = 'Retained named browser reservation/scratch pending verified cleanup'
     result.update(sourceUnchanged=all(p.is_file() and hashlib.sha256(p.read_bytes()).hexdigest() == source[str(p.relative_to(ROOT))] for p in source_paths),
-                  scratchRemoved=not scratch.root.exists(),
+                  scratchRemoved=not os.path.lexists(scratch.root),
+                  cancellationRequested=cancel.is_set(),
                   matchingProcessesAbsent=matches_absent,
                   groupsAbsent=groups_absent,
                   reservationAbsent=scratch.token not in r.read_json(host.path, {}),
@@ -213,5 +225,5 @@ finally:
         result['cleanupIssue'] = 'Browser artifact/port verification failed: %s' % error
     r.atomic_json(records/'receipt.json', result)
     print(json.dumps({k: v for k, v in result.items() if k not in ('sourceHashes',)}, sort_keys=True))
-sys.exit(0 if result['rc'] == 0 and not result.get('issue') and not result.get('cleanupIssue') and result.get('browserState') == 'passed'
+sys.exit(0 if result['rc'] == 0 and not result.get('cancellationRequested') and not result.get('issue') and not result.get('cleanupIssue') and result.get('browserState') == 'passed'
          and all(result.get(key) for key in ['sourceUnchanged', 'scratchRemoved', 'matchingProcessesAbsent', 'groupsAbsent', 'reservationAbsent', 'portAbsent', 'servedSourcesUnchanged']) else 1)

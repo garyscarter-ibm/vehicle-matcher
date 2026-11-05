@@ -19,14 +19,14 @@ const out = path.join(root, 'docs/gcsp/evidence/fucq69/browser', process.env.FUC
 await Promise.all([profile, cache, crashpad, out].map((dir) => mkdir(dir, { recursive: true })));
 const result = { story: 'FUCQ-69', source: process.env.FUCQ69_SOURCE, width,
   input: 'Dated synthetic read-only gallery fixtures; no stock producer or claim service integration',
-  cases: [], screenshots: [], errors: [], externalRequests: [], pageErrors: [],
+  cases: [], screenshots: [], errors: [], externalRequests: [], pageErrors: [], responseErrors: [],
   resources: { nodePid: process.pid, profile, cache, crashpad, httpPort: null, chromeTransport: 'owned pipe; no CDP listener', processes: [] }, cleanup: {} };
 const mime = (file) => ({ '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css',
   '.jpg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.woff': 'font/woff', '.woff2': 'font/woff2' })[path.extname(file)] ?? 'application/octet-stream';
 const served = new Map(); let origin; let context; let page; let bytes = 0;
 const permitted = (file) => file === 'gcsp-manual-gallery.html' || file === 'gcsp-employee.css'
   || /^(blocks\/(gcsp|vehicle-matcher)\/).+\.(js|css)$/.test(file)
-  || /^blocks\/vehicle-matcher\/fonts\/[^/]+\.(woff|woff2)$/.test(file)
+  || /^blocks\/(vehicle-matcher|gcsp\/shell)\/fonts\/[^/]+\.(woff|woff2)$/.test(file)
   || file === 'assets/brand-hero/bmw.jpg';
 const server = createServer(async (req, res) => {
   try {
@@ -71,6 +71,12 @@ async function load(name = 'available') {
   await page.goto(`${origin}/gcsp-manual-gallery.html?fixture=${name}`, { waitUntil: 'networkidle' });
   await page.getByRole('heading', { name: 'Released cars', exact: true }).waitFor();
   await page.getByText('Read-only synthetic gallery · 5 November 2026', { exact: true }).waitFor();
+  const brandFonts = await page.evaluate(async () => {
+    const faces = await document.fonts.load('500 34px BMWGroupTNCondensedPro-Medium');
+    await document.fonts.ready;
+    return faces.map((face) => ({ family: face.family, status: face.status }));
+  });
+  assert.ok(brandFonts.length > 0 && brandFonts.every((face) => face.status === 'loaded'), 'Density heading font must be loaded');
 }
 async function keyboardSelect(name, value) {
   const field = page.locator(`[name="${name}"]`); await field.focus();
@@ -93,6 +99,9 @@ try {
   });
   page = context.pages()[0] ?? await context.newPage();
   page.on('pageerror', (error) => result.pageErrors.push(error.message));
+  page.on('response', (response) => {
+    if (response.status() >= 400) result.responseErrors.push({ path: new URL(response.url()).pathname, status: response.status() });
+  });
   page.setDefaultTimeout(8000);
   await load(); await page.locator('.vm-card').nth(2).waitFor(); await capture('overview');
   assert.equal(await page.locator('[data-action-id="review-car"]:enabled').count(), 0);
@@ -119,7 +128,7 @@ try {
     ['context-refresh', 'Your choices need refreshing'], ['car-taken', 'This car is no longer available']]) {
     await load(name); await page.getByRole('heading', { name: heading, exact: true }).waitFor(); await capture(name);
   }
-  assert.deepEqual(result.externalRequests, []); assert.deepEqual(result.pageErrors, []);
+  assert.deepEqual(result.externalRequests, []); assert.deepEqual(result.pageErrors, []); assert.deepEqual(result.responseErrors, []);
   result.state = 'passed';
 } catch (error) { result.state = 'incomplete'; result.errors.push({ name: error.name, message: error.message }); process.exitCode = 1; }
 finally {
