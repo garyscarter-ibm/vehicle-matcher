@@ -203,6 +203,8 @@ The repository's additive `currentRun`/`resetRun` operations keep DemoIdentity o
 
 Diagram evidence gap, 5 November 2026: the existing canonical draw.io diagram could not be status-updated/rendered because no background diagram tab was available and the authorised workflow excluded opening/focusing one or editing raw XML. This prose reflects the implementation; diagram status/render review remains for the next authorised background design session. No new screen or screenshot is claimed.
 
+FUCQ-93 implements the [captured notification consumer](../gcsp/captured-outbox.md) over this repository/clock authority. The default captured transport atomically persists a fictional message and its sent acknowledgement in the existing outbox row. Actual repository post-commit observation, backend startup and the registered outbox tick stage drain committed jobs; delivery failure retains a visible offer and a policy-driven retry/failed record. Reset marks old unsent jobs stale in its retirement transaction. This adds no store, real sender, token producer, viewer or stock/allocation effect. Configured managed PostgreSQL and external delivery remain separate unverified boundaries.
+
 An always-running or scheduled runner is required for unattended background promises. Explicit presenter ticks can demonstrate the same services on the current host; sleeping Render processes do not establish reliable expiry or watch work. Roughly two hours is a configurable proposal, not a BMW rule.
 
 ## Technical deployment and recovery
