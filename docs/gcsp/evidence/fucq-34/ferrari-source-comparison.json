@@ -1,0 +1,38 @@
+{
+  "baseline": "dfb2c06",
+  "source_head": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+  "method": "scaffold_git.py adapter show of claim baseline compared byte for byte with current source",
+  "files": [
+    {
+      "path": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "baseline_sha256": "11d7af7f3f05766c9c32c107f75f31d269d5531de4040938b34cea8b3854ea94",
+      "current_sha256": "11d7af7f3f05766c9c32c107f75f31d269d5531de4040938b34cea8b3854ea94",
+      "unchanged": true
+    },
+    {
+      "path": "blocks/vehicle-matcher/tokens.css",
+      "baseline_sha256": "30d971de3fd89d456b7bc819621ff9f11888da1ca73e8bd80dc70c58a411b1fa",
+      "current_sha256": "30d971de3fd89d456b7bc819621ff9f11888da1ca73e8bd80dc70c58a411b1fa",
+      "unchanged": true
+    },
+    {
+      "path": "blocks/vehicle-matcher/modes/mingle.js",
+      "baseline_sha256": "2892be73c820f6c6664bf41b434e39b1d2b7e4e116d7de4fd12d76272643a2a5",
+      "current_sha256": "2892be73c820f6c6664bf41b434e39b1d2b7e4e116d7de4fd12d76272643a2a5",
+      "unchanged": true
+    },
+    {
+      "path": "blocks/vehicle-matcher/modes/knockout.js",
+      "baseline_sha256": "a4fecc448c0d902da859935123f86510b23e5855eb3860bdd0ea4db6986af13e",
+      "current_sha256": "a4fecc448c0d902da859935123f86510b23e5855eb3860bdd0ea4db6986af13e",
+      "unchanged": true
+    },
+    {
+      "path": "blocks/vehicle-matcher/modes/brand-copy.js",
+      "baseline_sha256": "485098aea61944c5fd62047164b4aabfdd1c95c2ff2be9aacf5dae211d195ec9",
+      "current_sha256": "485098aea61944c5fd62047164b4aabfdd1c95c2ff2be9aacf5dae211d195ec9",
+      "unchanged": true
+    }
+  ],
+  "scope": "Ferrari seed-screen markup/copy and CSS/tokens; question-ui.js changed externally under FUCQ-94 and is not part of these seed layouts. Browser diagnosis separately measures body overflow with FUCQ-34 links removed."
+}

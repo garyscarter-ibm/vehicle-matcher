@@ -1,0 +1,2968 @@
+{
+  "story": "FUCQ-34",
+  "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+  "harnessSha": "ccf0653d9482d5e7e11d2aa94a5bc1205944a7db5b4bf61e724486ae9f340d76",
+  "capturedAt": "2026-11-05T15:12:13.249Z",
+  "fixtureBacked": true,
+  "externalEgress": "blocked; remote default API fulfilled by injected local buildServer fixtures",
+  "checks": [
+    {
+      "id": "30-brand-mode-mounts",
+      "pass": true,
+      "expected": "30 direct 320px retail mounts for all six brands and five locked modes; fixture API, no page errors or local HTTP failures",
+      "observed": {
+        "cases": 30,
+        "pass": 30,
+        "failures": [],
+        "overflows": [
+          {
+            "id": "ferrari-swipe-320",
+            "overflowPx": 36,
+            "disposition": "observed-overflow"
+          },
+          {
+            "id": "ferrari-head-to-head-320",
+            "overflowPx": 36,
+            "disposition": "observed-overflow"
+          }
+        ]
+      }
+    }
+  ],
+  "cases": [
+    {
+      "id": "bmw-questionnaire-320",
+      "brand": "bmw",
+      "mode": "questionnaire",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "bmw-questionnaire-320",
+          "method": "GET",
+          "path": "/api/questions?retailer=96&brand=bmw",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=bmw&mode=questionnaire&retailer=96&retailerName=BMW+Approved+Used&scope=national#m=e30",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 159.9375,
+              "height": 46,
+              "right": 183.9375,
+              "bottom": 112
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=questionnaire&scope=national",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 120,
+              "width": 129.234375,
+              "height": 46,
+              "right": 153.234375,
+              "bottom": 166
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real usedcars.bmw.co.uk",
+            "href": "https://usedcars.bmw.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 182,
+              "width": 250.53125,
+              "height": 37.5,
+              "right": 274.53125,
+              "bottom": 219.5
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "bmw",
+        "shellBrand": "bmw",
+        "modeClass": "vm-bmw",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-intro",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "bmw-swipe-320",
+      "brand": "bmw",
+      "mode": "swipe",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "bmw-swipe-320",
+          "method": "GET",
+          "path": "/api/questions?retailer=96&brand=bmw",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=bmw&mode=swipe&retailer=96&retailerName=BMW+Approved+Used&scope=national",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 159.9375,
+              "height": 46,
+              "right": 183.9375,
+              "bottom": 112
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=swipe&scope=national",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 120,
+              "width": 129.234375,
+              "height": 46,
+              "right": 153.234375,
+              "bottom": 166
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real usedcars.bmw.co.uk",
+            "href": "https://usedcars.bmw.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 182,
+              "width": 250.53125,
+              "height": 37.5,
+              "right": 274.53125,
+              "bottom": 219.5
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "bmw",
+        "shellBrand": "bmw",
+        "modeClass": "vm-bmw",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-screen vm-mingle-seed",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "bmw-head-to-head-320",
+      "brand": "bmw",
+      "mode": "head-to-head",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "bmw-head-to-head-320",
+          "method": "GET",
+          "path": "/api/questions?retailer=96&brand=bmw",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=bmw&mode=head-to-head&retailer=96&retailerName=BMW+Approved+Used&scope=national",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 159.9375,
+              "height": 46,
+              "right": 183.9375,
+              "bottom": 112
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=head-to-head&scope=national",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 120,
+              "width": 129.234375,
+              "height": 46,
+              "right": 153.234375,
+              "bottom": 166
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real usedcars.bmw.co.uk",
+            "href": "https://usedcars.bmw.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 182,
+              "width": 250.53125,
+              "height": 37.5,
+              "right": 274.53125,
+              "bottom": 219.5
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "bmw",
+        "shellBrand": "bmw",
+        "modeClass": "vm-bmw",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-screen vm-mingle-seed vm-knockout-seed",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "bmw-podium-320",
+      "brand": "bmw",
+      "mode": "podium",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "bmw-podium-320",
+          "method": "GET",
+          "path": "/api/questions?retailer=96&brand=bmw",
+          "status": 200
+        },
+        {
+          "scope": "bmw-podium-320",
+          "method": "POST",
+          "path": "/api/preview",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=bmw&mode=podium&retailer=96&retailerName=BMW+Approved+Used&scope=national",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 159.9375,
+              "height": 46,
+              "right": 183.9375,
+              "bottom": 112
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=podium&scope=national",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 120,
+              "width": 129.234375,
+              "height": 46,
+              "right": 153.234375,
+              "bottom": 166
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real usedcars.bmw.co.uk",
+            "href": "https://usedcars.bmw.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 182,
+              "width": 250.53125,
+              "height": 37.5,
+              "right": 274.53125,
+              "bottom": 219.5
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "bmw",
+        "shellBrand": "bmw",
+        "modeClass": "vm-bmw",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-podium",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "bmw-guess-who-320",
+      "brand": "bmw",
+      "mode": "guess-who",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "bmw-guess-who-320",
+          "method": "GET",
+          "path": "/api/pool?brand=bmw&retailer=96&scope=national",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=bmw&mode=guess-who&retailer=96&retailerName=BMW+Approved+Used&scope=national",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 159.9375,
+              "height": 46,
+              "right": 183.9375,
+              "bottom": 112
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=guess-who&scope=national",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 120,
+              "width": 129.234375,
+              "height": 46,
+              "right": 153.234375,
+              "bottom": 166
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real usedcars.bmw.co.uk",
+            "href": "https://usedcars.bmw.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 182,
+              "width": 250.53125,
+              "height": 37.5,
+              "right": 274.53125,
+              "bottom": 219.5
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "bmw",
+        "shellBrand": "bmw",
+        "modeClass": "vm-bmw",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-gw",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "mini-questionnaire-320",
+      "brand": "mini",
+      "mode": "questionnaire",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "mini-questionnaire-320",
+          "method": "GET",
+          "path": "/api/questions?retailer=92&brand=mini",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=mini&mode=questionnaire&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 162.109375,
+              "height": 48,
+              "right": 186.109375,
+              "bottom": 114
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=questionnaire&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 122,
+              "width": 133.59375,
+              "height": 48,
+              "right": 157.59375,
+              "bottom": 170
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real approvedusedminis.co.uk",
+            "href": "https://approvedusedminis.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 186,
+              "width": 255.515625,
+              "height": 37.5,
+              "right": 279.515625,
+              "bottom": 223.5
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "mini",
+        "shellBrand": "mini",
+        "modeClass": "vm-mini",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-intro",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "mini-swipe-320",
+      "brand": "mini",
+      "mode": "swipe",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "mini-swipe-320",
+          "method": "GET",
+          "path": "/api/questions?retailer=92&brand=mini",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=mini&mode=swipe&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 162.109375,
+              "height": 48,
+              "right": 186.109375,
+              "bottom": 114
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=swipe&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 122,
+              "width": 133.59375,
+              "height": 48,
+              "right": 157.59375,
+              "bottom": 170
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real approvedusedminis.co.uk",
+            "href": "https://approvedusedminis.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 186,
+              "width": 255.515625,
+              "height": 37.5,
+              "right": 279.515625,
+              "bottom": 223.5
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "mini",
+        "shellBrand": "mini",
+        "modeClass": "vm-mini",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-screen vm-mingle-seed",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "mini-head-to-head-320",
+      "brand": "mini",
+      "mode": "head-to-head",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "mini-head-to-head-320",
+          "method": "GET",
+          "path": "/api/questions?retailer=92&brand=mini",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=mini&mode=head-to-head&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 162.109375,
+              "height": 48,
+              "right": 186.109375,
+              "bottom": 114
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=head-to-head&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 122,
+              "width": 133.59375,
+              "height": 48,
+              "right": 157.59375,
+              "bottom": 170
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real approvedusedminis.co.uk",
+            "href": "https://approvedusedminis.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 186,
+              "width": 255.515625,
+              "height": 37.5,
+              "right": 279.515625,
+              "bottom": 223.5
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "mini",
+        "shellBrand": "mini",
+        "modeClass": "vm-mini",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-screen vm-mingle-seed vm-knockout-seed",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "mini-podium-320",
+      "brand": "mini",
+      "mode": "podium",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "mini-podium-320",
+          "method": "GET",
+          "path": "/api/questions?retailer=92&brand=mini",
+          "status": 200
+        },
+        {
+          "scope": "mini-podium-320",
+          "method": "POST",
+          "path": "/api/preview",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=mini&mode=podium&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 162.109375,
+              "height": 48,
+              "right": 186.109375,
+              "bottom": 114
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=podium&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 122,
+              "width": 133.59375,
+              "height": 48,
+              "right": 157.59375,
+              "bottom": 170
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real approvedusedminis.co.uk",
+            "href": "https://approvedusedminis.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 186,
+              "width": 255.515625,
+              "height": 37.5,
+              "right": 279.515625,
+              "bottom": 223.5
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "mini",
+        "shellBrand": "mini",
+        "modeClass": "vm-mini",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-podium",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "mini-guess-who-320",
+      "brand": "mini",
+      "mode": "guess-who",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "mini-guess-who-320",
+          "method": "GET",
+          "path": "/api/pool?brand=mini&retailer=92&scope=dealer",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=mini&mode=guess-who&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 162.109375,
+              "height": 48,
+              "right": 186.109375,
+              "bottom": 114
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=guess-who&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 122,
+              "width": 133.59375,
+              "height": 48,
+              "right": 157.59375,
+              "bottom": 170
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real approvedusedminis.co.uk",
+            "href": "https://approvedusedminis.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 186,
+              "width": 255.515625,
+              "height": 37.5,
+              "right": 279.515625,
+              "bottom": 223.5
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "mini",
+        "shellBrand": "mini",
+        "modeClass": "vm-mini",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-gw",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "ford-questionnaire-320",
+      "brand": "ford",
+      "mode": "questionnaire",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "ford-questionnaire-320",
+          "method": "GET",
+          "path": "/api/questions?brand=ford",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=ford&mode=questionnaire&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 167.046875,
+              "height": 44,
+              "right": 191.046875,
+              "bottom": 110
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=questionnaire&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 118,
+              "width": 134.859375,
+              "height": 44,
+              "right": 158.859375,
+              "bottom": 162
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real www.ford.co.uk",
+            "href": "https://www.ford.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 178,
+              "width": 230.34375,
+              "height": 37.5,
+              "right": 254.34375,
+              "bottom": 215.5
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "ford",
+        "shellBrand": "ford",
+        "modeClass": "vm-ford",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-intro",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "ford-swipe-320",
+      "brand": "ford",
+      "mode": "swipe",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "ford-swipe-320",
+          "method": "GET",
+          "path": "/api/questions?brand=ford",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=ford&mode=swipe&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 167.046875,
+              "height": 44,
+              "right": 191.046875,
+              "bottom": 110
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=swipe&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 118,
+              "width": 134.859375,
+              "height": 44,
+              "right": 158.859375,
+              "bottom": 162
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real www.ford.co.uk",
+            "href": "https://www.ford.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 178,
+              "width": 230.34375,
+              "height": 37.5,
+              "right": 254.34375,
+              "bottom": 215.5
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "ford",
+        "shellBrand": "ford",
+        "modeClass": "vm-ford",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-screen vm-mingle-seed",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "ford-head-to-head-320",
+      "brand": "ford",
+      "mode": "head-to-head",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "ford-head-to-head-320",
+          "method": "GET",
+          "path": "/api/questions?brand=ford",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=ford&mode=head-to-head&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 167.046875,
+              "height": 44,
+              "right": 191.046875,
+              "bottom": 110
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=head-to-head&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 118,
+              "width": 134.859375,
+              "height": 44,
+              "right": 158.859375,
+              "bottom": 162
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real www.ford.co.uk",
+            "href": "https://www.ford.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 178,
+              "width": 230.34375,
+              "height": 37.5,
+              "right": 254.34375,
+              "bottom": 215.5
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "ford",
+        "shellBrand": "ford",
+        "modeClass": "vm-ford",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-screen vm-mingle-seed vm-knockout-seed",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "ford-podium-320",
+      "brand": "ford",
+      "mode": "podium",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "ford-podium-320",
+          "method": "GET",
+          "path": "/api/questions?brand=ford",
+          "status": 200
+        },
+        {
+          "scope": "ford-podium-320",
+          "method": "POST",
+          "path": "/api/preview",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=ford&mode=podium&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 167.046875,
+              "height": 44,
+              "right": 191.046875,
+              "bottom": 110
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=podium&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 118,
+              "width": 134.859375,
+              "height": 44,
+              "right": 158.859375,
+              "bottom": 162
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real www.ford.co.uk",
+            "href": "https://www.ford.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 178,
+              "width": 230.34375,
+              "height": 37.5,
+              "right": 254.34375,
+              "bottom": 215.5
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "ford",
+        "shellBrand": "ford",
+        "modeClass": "vm-ford",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-podium",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "ford-guess-who-320",
+      "brand": "ford",
+      "mode": "guess-who",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "ford-guess-who-320",
+          "method": "GET",
+          "path": "/api/pool?brand=ford&scope=dealer",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=ford&mode=guess-who&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 167.046875,
+              "height": 44,
+              "right": 191.046875,
+              "bottom": 110
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=guess-who&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 118,
+              "width": 134.859375,
+              "height": 44,
+              "right": 158.859375,
+              "bottom": 162
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real www.ford.co.uk",
+            "href": "https://www.ford.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 178,
+              "width": 230.34375,
+              "height": 37.5,
+              "right": 254.34375,
+              "bottom": 215.5
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "ford",
+        "shellBrand": "ford",
+        "modeClass": "vm-ford",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-gw",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "honda-questionnaire-320",
+      "brand": "honda",
+      "mode": "questionnaire",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "honda-questionnaire-320",
+          "method": "GET",
+          "path": "/api/questions?brand=honda",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=honda&mode=questionnaire&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 146.578125,
+              "height": 44,
+              "right": 170.578125,
+              "bottom": 110
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=questionnaire&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 118,
+              "width": 119.375,
+              "height": 44,
+              "right": 143.375,
+              "bottom": 162
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real usedcars.honda.co.uk",
+            "href": "https://usedcars.honda.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 178,
+              "width": 246.75,
+              "height": 37.5,
+              "right": 270.75,
+              "bottom": 215.5
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "honda",
+        "shellBrand": "honda",
+        "modeClass": "vm-honda",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-intro",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "honda-swipe-320",
+      "brand": "honda",
+      "mode": "swipe",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "honda-swipe-320",
+          "method": "GET",
+          "path": "/api/questions?brand=honda",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=honda&mode=swipe&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 146.578125,
+              "height": 44,
+              "right": 170.578125,
+              "bottom": 110
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=swipe&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 118,
+              "width": 119.375,
+              "height": 44,
+              "right": 143.375,
+              "bottom": 162
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real usedcars.honda.co.uk",
+            "href": "https://usedcars.honda.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 178,
+              "width": 246.75,
+              "height": 37.5,
+              "right": 270.75,
+              "bottom": 215.5
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "honda",
+        "shellBrand": "honda",
+        "modeClass": "vm-honda",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-screen vm-mingle-seed",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "honda-head-to-head-320",
+      "brand": "honda",
+      "mode": "head-to-head",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "honda-head-to-head-320",
+          "method": "GET",
+          "path": "/api/questions?brand=honda",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=honda&mode=head-to-head&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 146.578125,
+              "height": 44,
+              "right": 170.578125,
+              "bottom": 110
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=head-to-head&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 118,
+              "width": 119.375,
+              "height": 44,
+              "right": 143.375,
+              "bottom": 162
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real usedcars.honda.co.uk",
+            "href": "https://usedcars.honda.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 178,
+              "width": 246.75,
+              "height": 37.5,
+              "right": 270.75,
+              "bottom": 215.5
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "honda",
+        "shellBrand": "honda",
+        "modeClass": "vm-honda",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-screen vm-mingle-seed vm-knockout-seed",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "honda-podium-320",
+      "brand": "honda",
+      "mode": "podium",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "honda-podium-320",
+          "method": "GET",
+          "path": "/api/questions?brand=honda",
+          "status": 200
+        },
+        {
+          "scope": "honda-podium-320",
+          "method": "POST",
+          "path": "/api/preview",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=honda&mode=podium&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 146.578125,
+              "height": 44,
+              "right": 170.578125,
+              "bottom": 110
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=podium&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 118,
+              "width": 119.375,
+              "height": 44,
+              "right": 143.375,
+              "bottom": 162
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real usedcars.honda.co.uk",
+            "href": "https://usedcars.honda.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 178,
+              "width": 246.75,
+              "height": 37.5,
+              "right": 270.75,
+              "bottom": 215.5
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "honda",
+        "shellBrand": "honda",
+        "modeClass": "vm-honda",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-podium",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "honda-guess-who-320",
+      "brand": "honda",
+      "mode": "guess-who",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "honda-guess-who-320",
+          "method": "GET",
+          "path": "/api/pool?brand=honda&scope=dealer",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=honda&mode=guess-who&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 146.578125,
+              "height": 44,
+              "right": 170.578125,
+              "bottom": 110
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=guess-who&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 118,
+              "width": 119.375,
+              "height": 44,
+              "right": 143.375,
+              "bottom": 162
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real usedcars.honda.co.uk",
+            "href": "https://usedcars.honda.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 178,
+              "width": 246.75,
+              "height": 37.5,
+              "right": 270.75,
+              "bottom": 215.5
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "honda",
+        "shellBrand": "honda",
+        "modeClass": "vm-honda",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-gw",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "motorrad-questionnaire-320",
+      "brand": "motorrad",
+      "mode": "questionnaire",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "motorrad-questionnaire-320",
+          "method": "GET",
+          "path": "/api/questions?brand=motorrad",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=motorrad&mode=questionnaire&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 208.84375,
+              "height": 44,
+              "right": 232.84375,
+              "bottom": 110
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=questionnaire&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 118,
+              "width": 158.3125,
+              "height": 44,
+              "right": 182.3125,
+              "bottom": 162
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real approvedused.bmw-motorrad.co.uk",
+            "href": "https://approvedused.bmw-motorrad.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 178,
+              "width": 272,
+              "height": 57,
+              "right": 296,
+              "bottom": 235
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "motorrad",
+        "shellBrand": "motorrad",
+        "modeClass": "vm-motorrad",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-intro",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "motorrad-swipe-320",
+      "brand": "motorrad",
+      "mode": "swipe",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "motorrad-swipe-320",
+          "method": "GET",
+          "path": "/api/questions?brand=motorrad",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=motorrad&mode=swipe&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 208.84375,
+              "height": 44,
+              "right": 232.84375,
+              "bottom": 110
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=swipe&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 118,
+              "width": 158.3125,
+              "height": 44,
+              "right": 182.3125,
+              "bottom": 162
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real approvedused.bmw-motorrad.co.uk",
+            "href": "https://approvedused.bmw-motorrad.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 178,
+              "width": 272,
+              "height": 57,
+              "right": 296,
+              "bottom": 235
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "motorrad",
+        "shellBrand": "motorrad",
+        "modeClass": "vm-motorrad",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-screen vm-mingle-seed",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "motorrad-head-to-head-320",
+      "brand": "motorrad",
+      "mode": "head-to-head",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "motorrad-head-to-head-320",
+          "method": "GET",
+          "path": "/api/questions?brand=motorrad",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=motorrad&mode=head-to-head&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 208.84375,
+              "height": 44,
+              "right": 232.84375,
+              "bottom": 110
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=head-to-head&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 118,
+              "width": 158.3125,
+              "height": 44,
+              "right": 182.3125,
+              "bottom": 162
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real approvedused.bmw-motorrad.co.uk",
+            "href": "https://approvedused.bmw-motorrad.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 178,
+              "width": 272,
+              "height": 57,
+              "right": 296,
+              "bottom": 235
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "motorrad",
+        "shellBrand": "motorrad",
+        "modeClass": "vm-motorrad",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-screen vm-mingle-seed vm-knockout-seed",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "motorrad-podium-320",
+      "brand": "motorrad",
+      "mode": "podium",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "motorrad-podium-320",
+          "method": "GET",
+          "path": "/api/questions?brand=motorrad",
+          "status": 200
+        },
+        {
+          "scope": "motorrad-podium-320",
+          "method": "POST",
+          "path": "/api/preview",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=motorrad&mode=podium&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 208.84375,
+              "height": 44,
+              "right": 232.84375,
+              "bottom": 110
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=podium&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 118,
+              "width": 158.3125,
+              "height": 44,
+              "right": 182.3125,
+              "bottom": 162
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real approvedused.bmw-motorrad.co.uk",
+            "href": "https://approvedused.bmw-motorrad.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 178,
+              "width": 272,
+              "height": 57,
+              "right": 296,
+              "bottom": 235
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "motorrad",
+        "shellBrand": "motorrad",
+        "modeClass": "vm-motorrad",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-podium",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "motorrad-guess-who-320",
+      "brand": "motorrad",
+      "mode": "guess-who",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "motorrad-guess-who-320",
+          "method": "GET",
+          "path": "/api/pool?brand=motorrad&scope=dealer",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=motorrad&mode=guess-who&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 208.84375,
+              "height": 44,
+              "right": 232.84375,
+              "bottom": 110
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=guess-who&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 118,
+              "width": 158.3125,
+              "height": 44,
+              "right": 182.3125,
+              "bottom": 162
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real approvedused.bmw-motorrad.co.uk",
+            "href": "https://approvedused.bmw-motorrad.co.uk",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 178,
+              "width": 272,
+              "height": 57,
+              "right": 296,
+              "bottom": 235
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "motorrad",
+        "shellBrand": "motorrad",
+        "modeClass": "vm-motorrad",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-gw",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "ferrari-questionnaire-320",
+      "brand": "ferrari",
+      "mode": "questionnaire",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "ferrari-questionnaire-320",
+          "method": "GET",
+          "path": "/api/questions?brand=ferrari",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=ferrari&mode=questionnaire&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 269.453125,
+              "height": 52,
+              "right": 293.453125,
+              "bottom": 118
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=questionnaire&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 126,
+              "width": 209.171875,
+              "height": 52,
+              "right": 233.171875,
+              "bottom": 178
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real preowned.ferrari.com",
+            "href": "https://preowned.ferrari.com",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 194,
+              "width": 272,
+              "height": 57,
+              "right": 296,
+              "bottom": 251
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "ferrari",
+        "shellBrand": "ferrari",
+        "modeClass": "vm-ferrari",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-intro",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "ferrari-swipe-320",
+      "brand": "ferrari",
+      "mode": "swipe",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "ferrari-swipe-320",
+          "method": "GET",
+          "path": "/api/questions?brand=ferrari",
+          "status": 200
+        }
+      ],
+      "pageWidth": 356,
+      "overflowPx": 36,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=ferrari&mode=swipe&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 269.453125,
+              "height": 52,
+              "right": 293.453125,
+              "bottom": 118
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=swipe&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 126,
+              "width": 209.171875,
+              "height": 52,
+              "right": 233.171875,
+              "bottom": 178
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real preowned.ferrari.com",
+            "href": "https://preowned.ferrari.com",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 194,
+              "width": 272,
+              "height": 57,
+              "right": 296,
+              "bottom": 251
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "ferrari",
+        "shellBrand": "ferrari",
+        "modeClass": "vm-ferrari",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 356,
+        "bodyWidth": 356,
+        "shellWidth": 356,
+        "shellClientWidth": 320,
+        "screen": "vm-screen vm-mingle-seed",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "observed-overflow"
+    },
+    {
+      "id": "ferrari-head-to-head-320",
+      "brand": "ferrari",
+      "mode": "head-to-head",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "ferrari-head-to-head-320",
+          "method": "GET",
+          "path": "/api/questions?brand=ferrari",
+          "status": 200
+        }
+      ],
+      "pageWidth": 356,
+      "overflowPx": 36,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=ferrari&mode=head-to-head&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 269.453125,
+              "height": 52,
+              "right": 293.453125,
+              "bottom": 118
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=head-to-head&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 126,
+              "width": 209.171875,
+              "height": 52,
+              "right": 233.171875,
+              "bottom": 178
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real preowned.ferrari.com",
+            "href": "https://preowned.ferrari.com",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 194,
+              "width": 272,
+              "height": 57,
+              "right": 296,
+              "bottom": 251
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "ferrari",
+        "shellBrand": "ferrari",
+        "modeClass": "vm-ferrari",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 356,
+        "bodyWidth": 356,
+        "shellWidth": 356,
+        "shellClientWidth": 320,
+        "screen": "vm-screen vm-mingle-seed vm-knockout-seed",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "observed-overflow"
+    },
+    {
+      "id": "ferrari-podium-320",
+      "brand": "ferrari",
+      "mode": "podium",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "ferrari-podium-320",
+          "method": "GET",
+          "path": "/api/questions?brand=ferrari",
+          "status": 200
+        },
+        {
+          "scope": "ferrari-podium-320",
+          "method": "POST",
+          "path": "/api/preview",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=ferrari&mode=podium&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 269.453125,
+              "height": 52,
+              "right": 293.453125,
+              "bottom": 118
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=podium&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 126,
+              "width": 209.171875,
+              "height": 52,
+              "right": 233.171875,
+              "bottom": 178
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real preowned.ferrari.com",
+            "href": "https://preowned.ferrari.com",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 194,
+              "width": 272,
+              "height": 57,
+              "right": 296,
+              "bottom": 251
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "ferrari",
+        "shellBrand": "ferrari",
+        "modeClass": "vm-ferrari",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-podium",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    },
+    {
+      "id": "ferrari-guess-who-320",
+      "brand": "ferrari",
+      "mode": "guess-who",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "ferrari-guess-who-320",
+          "method": "GET",
+          "path": "/api/pool?brand=ferrari&scope=dealer",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "headerLinks": [
+          {
+            "route": "launcher",
+            "label": "All car experiences",
+            "href": "/index.html?experience=launcher&brand=ferrari&mode=guess-who&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 66,
+              "width": 269.453125,
+              "height": 52,
+              "right": 293.453125,
+              "bottom": 118
+            },
+            "inViewport": true
+          },
+          {
+            "route": "brand",
+            "label": "Change brand",
+            "href": "/index.html?experience=used-cars&mode=guess-who&scope=dealer",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 126,
+              "width": 209.171875,
+              "height": 52,
+              "right": 233.171875,
+              "bottom": 178
+            },
+            "inViewport": true
+          },
+          {
+            "route": "real-site",
+            "label": "Back to the real preowned.ferrari.com",
+            "href": "https://preowned.ferrari.com",
+            "keyAbsent": true,
+            "rect": {
+              "x": 24,
+              "y": 194,
+              "width": 272,
+              "height": 57,
+              "right": 296,
+              "bottom": 251
+            },
+            "inViewport": true
+          }
+        ],
+        "newNavigationFits": true,
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "ferrari",
+        "shellBrand": "ferrari",
+        "modeClass": "vm-ferrari",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-gw",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    }
+  ],
+  "firstMount": {
+    "id": "bmw-questionnaire-320",
+    "capturedAt": "2026-11-05T15:11:51.691Z",
+    "metrics": {
+      "headerLinks": [
+        {
+          "route": "launcher",
+          "label": "All car experiences",
+          "href": "/index.html?experience=launcher&brand=bmw&mode=questionnaire&retailer=96&retailerName=BMW+Approved+Used&scope=national#m=e30",
+          "keyAbsent": true,
+          "rect": {
+            "x": 24,
+            "y": 66,
+            "width": 159.9375,
+            "height": 46,
+            "right": 183.9375,
+            "bottom": 112
+          },
+          "inViewport": true
+        },
+        {
+          "route": "brand",
+          "label": "Change brand",
+          "href": "/index.html?experience=used-cars&mode=questionnaire&scope=national",
+          "keyAbsent": true,
+          "rect": {
+            "x": 24,
+            "y": 120,
+            "width": 129.234375,
+            "height": 46,
+            "right": 153.234375,
+            "bottom": 166
+          },
+          "inViewport": true
+        },
+        {
+          "route": "real-site",
+          "label": "Back to the real usedcars.bmw.co.uk",
+          "href": "https://usedcars.bmw.co.uk",
+          "keyAbsent": true,
+          "rect": {
+            "x": 24,
+            "y": 182,
+            "width": 250.53125,
+            "height": 37.5,
+            "right": 274.53125,
+            "bottom": 219.5
+          },
+          "inViewport": true
+        }
+      ],
+      "newNavigationFits": true,
+      "path": "/index.html",
+      "queryHasKey": false,
+      "experience": "used-cars",
+      "entryState": "retail",
+      "brand": "bmw",
+      "shellBrand": "bmw",
+      "modeClass": "vm-bmw",
+      "modeLocked": true,
+      "viewportWidth": 320,
+      "documentWidth": 320,
+      "bodyWidth": 320,
+      "shellWidth": 320,
+      "shellClientWidth": 320,
+      "screen": "vm-intro",
+      "questionHeading": null
+    },
+    "apiCalls": [
+      {
+        "scope": "bmw-questionnaire-320",
+        "method": "GET",
+        "path": "/api/questions?retailer=96&brand=bmw",
+        "status": 200
+      }
+    ],
+    "screenshot": "bmw-narrow-header.png"
+  }
+}
