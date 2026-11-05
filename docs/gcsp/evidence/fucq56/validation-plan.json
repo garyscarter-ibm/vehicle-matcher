@@ -1,8 +1,19 @@
 {
-  "story": "FUCQ-56",
-  "run": "fucq56-consumer-20261105",
-  "status": "source + scoped validation complete; integrated full HELD",
+  "agents": "Lead requested/selected gpt-6.1-sol/high; no fallback or descendants; runtime effective model unverified.",
   "authority": "Leading 4 November Q7/Q13 live Jira section overrides old self-HTTP criteria. Application reads public lookup port in process; real HTTP test proves parity.",
+  "boundaries": [
+    "provider-read deadline/attempt/abort",
+    "FUCQ55 public resolve port",
+    "alternate fictional offline shape",
+    "trusted request and current-run stock context",
+    "actual buildServer HTTP/gate"
+  ],
+  "budgets_per_chunk": {
+    "actual_file_workers": 1,
+    "ram_mib": 256,
+    "scratch_mib": 16,
+    "seconds": 90
+  },
   "changed_paths": [
     "server/gcsp/vehicle-evidence/application-vehicle-details.js",
     "server/gcsp/vehicle-evidence/provider-read.js",
@@ -12,71 +23,60 @@
     "server/test/gcsp-synthetic-http-adapter.test.js",
     "server/test/fixtures/gcsp/vehicle-evidence/alternate-provider.json"
   ],
+  "excluded": "Screens, live providers, publication/generation/full-corpus proofs, retail modifications, deployment, credentials and shared index/policy/HLD/contracts.",
+  "full": "Full ran once on e4f7df7 after merged a6cdd11. status-before none; status-after matches; strict final status follows Result push with saved identical env/plan.",
   "regression": "Provider replacement must preserve facts, three identities, provenance, typed failures, unknowns and context; never self-HTTP or live fallback.",
-  "boundaries": [
-    "provider-read deadline/attempt/abort",
-    "FUCQ55 public resolve port",
-    "alternate fictional offline shape",
-    "trusted request and current-run stock context",
-    "actual buildServer HTTP/gate"
-  ],
+  "resources": {
+    "dependencies": "Own pinned server14/root38 locked packages restored via admitted npm ci, no lock/package changes or symlinks; scratch caches removed.",
+    "expected": "<90s/<16MiB scratch/<256MiB RAM; one file worker; no archives/large output/compatibility exception",
+    "finalizer": "handled_termination + Scratch context + run_process stop_group + HostBudget release in finally; descendant/fanout sampling; verify exact roots/groups/reservations/success logs absent",
+    "large_output_root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude",
+    "outside_manifest": "ownership/fucq56-<chunk>.json",
+    "scratch": "Unique absolute Scratch token root, registered before creation",
+    "shared_root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs"
+  },
+  "run": "fucq56-consumer-20261105",
+  "scoped_receipt": "docs/gcsp/evidence/fucq56/scoped-validation.json",
   "selected_checks": [
     {
-      "id": "contract",
       "argv": [
         "node",
         "--test",
         "--test-concurrency=1",
         "server/test/gcsp-vehicle-details-contract.test.js"
-      ]
+      ],
+      "id": "contract"
     },
     {
-      "id": "http",
       "argv": [
         "node",
         "--test",
         "--test-concurrency=1",
         "server/test/gcsp-synthetic-http-adapter.test.js"
-      ]
+      ],
+      "id": "http"
     },
     {
-      "id": "boundary",
       "argv": [
         "node",
         "--test",
         "--test-concurrency=1",
         "server/test/gcsp-vehicle-evidence-lookup.test.js",
         "server/test/gcsp-synthetic-vin-api.test.js"
-      ]
+      ],
+      "id": "boundary"
     }
   ],
-  "budgets_per_chunk": {
-    "seconds": 90,
-    "scratch_mib": 16,
-    "ram_mib": 256,
-    "actual_file_workers": 1
-  },
-  "unknown_map": "Required-run V8 aggregate function observations stored under shared impact/fucq56-*.json; no per-test JS contexts available. Static and reviewed fixture/config/subprocess boundaries supplement observations.",
-  "excluded": "Screens, live providers, publication/generation/full-corpus proofs, retail modifications, deployment, credentials and shared index/policy/HLD/contracts.",
-  "full": "Explicit npm test equivalent node --test --test-concurrency=1 server/test/**/*.test.js; HELD until dispatcher admits latest merged22+112 base/sole-full slot. No automatic affected fallback.",
   "source_identity": {
-    "server/gcsp/vehicle-evidence/application-vehicle-details.js": "e32e3981647eab756387b84ce84315a0acfc1531149185dbc8e5768d304c9c48",
-    "server/gcsp/vehicle-evidence/provider-read.js": "e194fdeb9ff55faafaadd916b2e0ce34c9d8dce252dc37c3ce04aa8de77bb87b",
-    "server/gcsp/vehicle-evidence/lookup-adapter.js": "11776855d6e6a1da25d0be0f9613e1de031a138325a84e9e3b56ae6b87e2af43",
     "server/gcsp/vehicle-evidence/alternate-offline-adapter.js": "a584ae9e6507313b766903dcb915e6721a3028310433228672bfa5a846671119",
-    "server/test/gcsp-vehicle-details-contract.test.js": "86e80d97b53a5715245e7f9ca804aceb997147006501922c82d6b9e140623896",
+    "server/gcsp/vehicle-evidence/application-vehicle-details.js": "e32e3981647eab756387b84ce84315a0acfc1531149185dbc8e5768d304c9c48",
+    "server/gcsp/vehicle-evidence/lookup-adapter.js": "11776855d6e6a1da25d0be0f9613e1de031a138325a84e9e3b56ae6b87e2af43",
+    "server/gcsp/vehicle-evidence/provider-read.js": "e194fdeb9ff55faafaadd916b2e0ce34c9d8dce252dc37c3ce04aa8de77bb87b",
+    "server/test/fixtures/gcsp/vehicle-evidence/alternate-provider.json": "5ff33eca90f748c2dab18ed02fd9d2e3571a43adfed9a9146c8e1970f284a8c2",
     "server/test/gcsp-synthetic-http-adapter.test.js": "aeab4805b5010e1077b7a3194003ebb572ed8994b85e81045fd6cb9c3b6c3129",
-    "server/test/fixtures/gcsp/vehicle-evidence/alternate-provider.json": "5ff33eca90f748c2dab18ed02fd9d2e3571a43adfed9a9146c8e1970f284a8c2"
+    "server/test/gcsp-vehicle-details-contract.test.js": "86e80d97b53a5715245e7f9ca804aceb997147006501922c82d6b9e140623896"
   },
-  "resources": {
-    "shared_root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs",
-    "outside_manifest": "ownership/fucq56-<chunk>.json",
-    "scratch": "Unique absolute Scratch token root, registered before creation",
-    "finalizer": "handled_termination + Scratch context + run_process stop_group + HostBudget release in finally; descendant/fanout sampling; verify exact roots/groups/reservations/success logs absent",
-    "expected": "<90s/<16MiB scratch/<256MiB RAM; one file worker; no archives/large output/compatibility exception",
-    "large_output_root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude",
-    "dependencies": "Own pinned server14/root38 locked packages restored via admitted npm ci, no lock/package changes or symlinks; scratch caches removed."
-  },
-  "agents": "Lead requested/selected gpt-6.1-sol/high; no fallback or descendants; runtime effective model unverified.",
-  "scoped_receipt": "docs/gcsp/evidence/fucq56/scoped-validation.json"
+  "status": "complete: scoped followed by sole admitted integrated full861/859pass/2SQLskip",
+  "story": "FUCQ-56",
+  "unknown_map": "Required-run V8 aggregate function observations stored under shared impact/fucq56-*.json; no per-test JS contexts available. Static and reviewed fixture/config/subprocess boundaries supplement observations."
 }

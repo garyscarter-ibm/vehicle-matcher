@@ -1,0 +1,180 @@
+{
+  "compatibility_exception": null,
+  "full_allocated_at_removal_bytes": 0,
+  "full_peak_scratch_bytes": 316448,
+  "interpretation": "Peak allocation is a measured high-water mark, not the exact sum of bytes deleted by finalizers; tests also delete their own temporary files. Full scratch was empty at final removal.",
+  "large_outputs_or_archives": [],
+  "leftovers": [],
+  "log_roots": [
+    {
+      "absent": true,
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq56-full-1c3da26887624d0f9a199fef18dbdf9d"
+    }
+  ],
+  "peak_allocation_sum_bytes": 13798752,
+  "phase_groups": [
+    {
+      "group_absent": true,
+      "joined": true,
+      "pgid": 65707,
+      "phase": "status-before",
+      "pid": 65707
+    },
+    {
+      "group_absent": true,
+      "joined": true,
+      "pgid": 65768,
+      "phase": "full",
+      "pid": 65768
+    },
+    {
+      "group_absent": true,
+      "joined": true,
+      "pgid": 67058,
+      "phase": "status-after",
+      "pid": 67058
+    }
+  ],
+  "retained_dependencies": {
+    "node_modules": 27058176,
+    "server/node_modules": 851968
+  },
+  "retained_summaries": [
+    "docs/gcsp/evidence/fucq56/full-validation.json",
+    "docs/gcsp/evidence/fucq56/cleanup-validation.json",
+    "shared ownership/fucq56-*.json and impact/fucq56-*.json",
+    "shared full receipt/argv/resource/checkpoint/stamp"
+  ],
+  "runs": [
+    {
+      "descendants_absent": true,
+      "groups": [
+        61309
+      ],
+      "groups_absent": true,
+      "label": "boundary-01",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/c55df535163e40a98853f80a45dfc5a3.json",
+      "peak_allocation_bytes": 1327232,
+      "root": "/private/tmp/test-stamp-shard-c55df535163e40a98853f80a45dfc5a3",
+      "root_absent": true,
+      "success_log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq56-boundary-01.log",
+      "success_log_absent": true,
+      "token": "c55df535163e40a98853f80a45dfc5a3",
+      "token_absent": true
+    },
+    {
+      "descendants_absent": true,
+      "groups": [
+        59951
+      ],
+      "groups_absent": true,
+      "label": "contract-01",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/ecf3cc4de9c14026ad23eb992620821b.json",
+      "peak_allocation_bytes": 442464,
+      "root": "/private/tmp/test-stamp-shard-ecf3cc4de9c14026ad23eb992620821b",
+      "root_absent": true,
+      "success_log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq56-contract-01.log",
+      "success_log_absent": true,
+      "token": "ecf3cc4de9c14026ad23eb992620821b",
+      "token_absent": true
+    },
+    {
+      "descendants_absent": true,
+      "groups": [
+        60773
+      ],
+      "groups_absent": true,
+      "label": "contract-02",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/cb84aeefdf58471da828b036b7db4cb5.json",
+      "peak_allocation_bytes": 446560,
+      "root": "/private/tmp/test-stamp-shard-cb84aeefdf58471da828b036b7db4cb5",
+      "root_absent": true,
+      "success_log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq56-contract-02.log",
+      "success_log_absent": true,
+      "token": "cb84aeefdf58471da828b036b7db4cb5",
+      "token_absent": true
+    },
+    {
+      "descendants_absent": true,
+      "groups": [
+        61902
+      ],
+      "groups_absent": true,
+      "label": "contract-03",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/42dd9d3726b64497b4e89e299b7379e1.json",
+      "peak_allocation_bytes": 446560,
+      "root": "/private/tmp/test-stamp-shard-42dd9d3726b64497b4e89e299b7379e1",
+      "root_absent": true,
+      "success_log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq56-contract-03.log",
+      "success_log_absent": true,
+      "token": "42dd9d3726b64497b4e89e299b7379e1",
+      "token_absent": true
+    },
+    {
+      "descendants_absent": true,
+      "groups": [
+        60855
+      ],
+      "groups_absent": true,
+      "label": "http-01",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/8ffa5a645ede42f5ba59aa77f530a262.json",
+      "peak_allocation_bytes": 901216,
+      "root": "/private/tmp/test-stamp-shard-8ffa5a645ede42f5ba59aa77f530a262",
+      "root_absent": true,
+      "success_log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq56-http-01.log",
+      "success_log_absent": true,
+      "token": "8ffa5a645ede42f5ba59aa77f530a262",
+      "token_absent": true
+    },
+    {
+      "descendants_absent": true,
+      "groups": [
+        62066
+      ],
+      "groups_absent": true,
+      "label": "install-root-01",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/bcafba19239c4ec5970a3e3228770cac.json",
+      "peak_allocation_bytes": 6997984,
+      "root": "/private/tmp/test-stamp-shard-bcafba19239c4ec5970a3e3228770cac",
+      "root_absent": true,
+      "success_log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq56-install-root-01.log",
+      "success_log_absent": true,
+      "token": "bcafba19239c4ec5970a3e3228770cac",
+      "token_absent": true
+    },
+    {
+      "descendants_absent": true,
+      "groups": [
+        60196
+      ],
+      "groups_absent": true,
+      "label": "install-server-01",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/7539ff740dc6447fad68673919518d31.json",
+      "peak_allocation_bytes": 2920288,
+      "root": "/private/tmp/test-stamp-shard-7539ff740dc6447fad68673919518d31",
+      "root_absent": true,
+      "success_log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq56-install-server-01.log",
+      "success_log_absent": true,
+      "token": "7539ff740dc6447fad68673919518d31",
+      "token_absent": true
+    },
+    {
+      "allocation_at_final_removal_bytes": 0,
+      "descendants_absent": true,
+      "groups": [
+        65789
+      ],
+      "groups_absent": true,
+      "label": "full",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq56-20261105-consumer-full-1014cc8f51374186b347790d50115e0b.json",
+      "peak_allocation_bytes": 316448,
+      "root": "/private/tmp/test-stamp-shard-1014cc8f51374186b347790d50115e0b",
+      "root_absent": true,
+      "success_log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq56-full-1c3da26887624d0f9a199fef18dbdf9d/chunk-0001.log",
+      "success_log_absent": true,
+      "token": "1014cc8f51374186b347790d50115e0b",
+      "token_absent": true
+    }
+  ],
+  "verifiedAt": 1793860598.4199061
+}
