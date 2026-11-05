@@ -35,8 +35,8 @@ All 16 captures reported no horizontal overflow, no console or page errors, no f
 
 ## Review record
 
-Awaiting the internal design review by Russell or Gary (acceptance 4 of FUCQ-64). Record the reviewer, date, revision reviewed and observations here; consuming stories then cite this file and revision as the body reference.
+Reviewed by Gary Carter on 5 November 2026 (acceptance 4 of FUCQ-64). Consuming stories cite this file and revision `a7fc178` as the body reference.
 
 | Date | Reviewer | Revision | Observations | Follow-up |
 |---|---|---|---|---|
-| | | | | |
+| 2026-11-05 | Gary Carter | `a7fc178` | Approved as the employee body reference: "Approve, we can tweak when built and I can see something." Body direction, points-only presentation, disabled Reserve with its reason, and the brand-image caption accepted. | Visual tweaks once the real journey is built and visible. Noted at review, not required: the breadcrumb and kicker stack two labels above the title, and the one permitted brand photo repeats on two cards. |
