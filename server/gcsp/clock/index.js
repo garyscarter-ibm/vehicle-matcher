@@ -222,17 +222,30 @@ export class DemoClock {
       if (!descriptor || descriptor.stage !== entry.stage) return this.#interrupted(context, tickRef, entry, unavailable());
       const handlerCommand = { commandId: `clock:tick:handler:${inputDigest([tickId, entry.handlerId])}`,
         inputDigest: inputDigest([digest, entry]) };
-      const handled = await this.#repository.transaction(context, handlerCommand, async (tx) => {
+      const prior = await this.#repository.read(context, ref('event_receipts', context, { consumerId: `clock:handler:${entry.handlerId}`, eventId: tickId }));
+      let outcome;
+      if (prior.status === 'ok') {
+        if (prior.value.inputDigest !== handlerCommand.inputDigest) return result('conflict', { reason: 'idempotency-input-changed', current: {} });
+        outcome = prior.value.outcome;
+      } else if (prior.status !== 'not-found') return prior;
+      else {
+        const stillCurrent = await this.#current(context);
+        if (stillCurrent.status !== 'ok') return stillCurrent;
+        try {
+          // Services own their transactions and external-operation protocol. This helper gives local
+          // work one durable command key, so a crash before the handler receipt reuses its outcome.
+          outcome = await descriptor.handle({ context, eventId: tickId, tickId, now: tick.value.targetClock.now,
+            clockVersion: tick.value.targetClock.clockVersion, operationId: handlerCommand.commandId,
+            transaction: (work) => this.#repository.transaction(context, handlerCommand, work) });
+        } catch { outcome = unavailable(); }
+      }
+      if (!outcome || !['ok', 'pending'].includes(outcome.status)) return this.#interrupted(context, tickRef, entry, outcome?.status ? outcome : unavailable());
+      if (outcome.status === 'ok' && !Object.hasOwn(outcome, 'value') || outcome.status === 'pending'
+        && !['operationId', 'operationType', 'lastKnownState'].every((key) => text(outcome[key]))) return this.#interrupted(context, tickRef, entry, unavailable());
+      const handled = await this.#repository.transaction(context,
+        { ...handlerCommand, commandId: `clock:tick:receipt:${inputDigest([tickId, entry.handlerId])}` }, async (tx) => {
         const state = await tx.get(tickRef);
         if (state.status !== 'ok') return state;
-        let outcome;
-        try {
-          outcome = await descriptor.handle({ tx, context, eventId: tickId, tickId, now: state.value.targetClock.now,
-            clockVersion: state.value.targetClock.clockVersion, operationId: handlerCommand.commandId });
-        } catch { return unavailable(); }
-        if (!outcome || !['ok', 'pending'].includes(outcome.status)) return outcome?.status ? outcome : unavailable();
-        if (outcome.status === 'ok' && !Object.hasOwn(outcome, 'value') || outcome.status === 'pending'
-          && !['operationId', 'operationType', 'lastKnownState'].every((key) => text(outcome[key]))) return unavailable();
         const receipt = await tx.recordReceipt({ consumerId: `clock:handler:${entry.handlerId}`, eventId: tickId,
           eventType: kind, handlerId: entry.handlerId, inputDigest: handlerCommand.inputDigest,
           inputVersions: { clock: state.value.targetClock.clockVersion, policy: current.value.policyVersion },

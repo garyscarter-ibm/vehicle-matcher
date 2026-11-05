@@ -137,16 +137,25 @@ export class DemoIdentityAdapter {
 
   async resolveSession({ authorized, cookie, purpose = 'acting' } = {}) {
     if (authorized !== true) return refused('forbidden');
-    if (!['acting', 'presenter-control'].includes(purpose)) return refused('forbidden');
-    const cookieName = purpose === 'presenter-control' ? PRESENTER_COOKIE : SESSION_COOKIE;
+    if (!['acting', 'presenter-control', 'reset-replay'].includes(purpose)) return refused('forbidden');
+    const cookieName = purpose === 'acting' ? SESSION_COOKIE : PRESENTER_COOKIE;
     const matches = typeof cookie === 'string' ? cookie.split(';').map((part) => part.trim()).filter((part) => part.startsWith(`${cookieName}=`)) : [];
     if (matches.length === 0) return refused('missing-session');
     if (matches.length !== 1) return refused('unknown-session');
     const token = matches[0].slice(cookieName.length + 1);
     if (!/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]{43}$/.test(token) || token.length > 1024) return refused('unknown-session');
-    const state = await this.#run();
+    let state = await this.#run();
     if (state.error) return state.error;
-    if (Buffer.from(token.split('.')[0], 'base64url').toString() !== state.scope.runId) return refused('stale-run');
+    const tokenRunId = Buffer.from(token.split('.')[0], 'base64url').toString();
+    if (tokenRunId !== state.scope.runId) {
+      if (purpose !== 'reset-replay') return refused('stale-run');
+      // The reset route alone may authenticate an old presenter to retrieve its recorded outcome.
+      // It cannot issue a new command or read resources through this historical context.
+      const scope = { ...state.scope, runId: tokenRunId };
+      const old = await this.#repository.read(scope, { table: 'runs', key: { runId: tokenRunId } });
+      if (old.status !== 'ok' || old.value.environmentId !== scope.environmentId || old.value.status !== 'historical') return refused('stale-run');
+      state = { ...state, scope, run: old.value, read: { runId: tokenRunId, asOf: state.instant, policyVersion: old.value.policyVersion } };
+    }
     const found = await this.#repository.read(state.scope, { table: 'identity_sessions', key: { runId: state.scope.runId, sessionIdHash: hash(token) } });
     if (found.status === 'not-found') return refused('unknown-session');
     if (found.status !== 'ok') return unavailable();
@@ -158,7 +167,7 @@ export class DemoIdentityAdapter {
     if (config.error) return config.error;
     const principal = config.principals.find((p) => p.principalId === session.actingPrincipalId);
     if (!principal || principal.principalId !== session.principalId) return refused('unknown-principal');
-    if (purpose === 'presenter-control' && !principal.roles.includes('presenter')) return refused('forbidden');
+    if (purpose !== 'acting' && !principal.roles.includes('presenter')) return refused('forbidden');
     const seeded = await this.#repository.read(state.scope, { table: 'employees', key: { runId: state.scope.runId, employeeId: principal.employeeId } });
     if (seeded.status === 'not-found') return refused('unknown-principal');
     if (seeded.status !== 'ok') return unavailable();

@@ -46,6 +46,7 @@ import { fetchDealerDirectory } from './dealers.js';
 import { geocodePostcode } from './geocode.js';
 import { createGcspHandler } from './gcsp/identity/http.js';
 import { createEmployeeRecommendationRoutes } from './gcsp/recommendation/http.js';
+import { createClockRoutes } from './gcsp/clock/http.js';
 
 const PORT = Number(process.env.PORT) || 8787;
 const MAX_BODY_BYTES = 16 * 1024; // quiz answers are tiny; reject anything bigger
@@ -842,11 +843,16 @@ export function buildServer(deps = {}) {
   };
   const handleGcsp = createGcspHandler({
     identity: deps.gcspIdentity,
-    routes: [...createEmployeeRecommendationRoutes(deps.gcspRecommendations), ...(deps.gcspRoutes || [])],
+    routes: [...createEmployeeRecommendationRoutes(deps.gcspClock && deps.gcspRecommendations
+      ? { ...deps.gcspRecommendations, time: deps.gcspClock } : deps.gcspRecommendations),
+    ...createClockRoutes(deps.gcspClock), ...(deps.gcspRoutes || [])],
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
 
-  return createServer(async (req, res) => {
+  const gcspStartup = deps.gcspClock ? Promise.resolve().then(() => deps.gcspClock.reconcileStartup()).catch(() => ({
+    status: 'unavailable', reason: 'GCSP startup reconciliation is unavailable.', retryable: true, contractVersion: '1.0.0',
+  })) : Promise.resolve(null);
+  const server = createServer(async (req, res) => {
     const { pathname, searchParams } = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
     const isGcsp = pathname === '/api/gcsp' || pathname.startsWith('/api/gcsp/');
 
@@ -867,6 +873,7 @@ export function buildServer(deps = {}) {
     }
 
     if (isGcsp) {
+      await gcspStartup;
       return handleGcsp({ req, res, pathname, searchParams, sendJson });
     }
 
@@ -963,6 +970,8 @@ export function buildServer(deps = {}) {
 
     return sendJson(res, 404, { error: 'Not found' });
   });
+  Object.defineProperty(server, 'gcspStartup', { value: gcspStartup });
+  return server;
 }
 
 // Constants worth asserting against in tests without hardcoding the numbers.

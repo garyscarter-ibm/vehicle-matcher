@@ -12,7 +12,9 @@ export async function loadClockConfiguration(policy, read) {
     || !['scenarioVersion', 'fixtureVersion', 'seed', 'corpusVersion', 'datasetId'].every((key) => typeof scenario[key] === 'string' && scenario[key])
     || !Array.isArray(scenario.vehicles) || !scenario.vehicles.length || scenario.vehicles.some((row) => row.usage !== 'stock')
     || commands?.advanceAndTickSeparate !== true || commands.forwardOnly !== true || commands.resetProvider !== 'synthetic-only'
-    || !/^[1-9][0-9]*$/.test(commands.initialClockVersion) || !Array.isArray(commands.startupStages)
+    || !/^[1-9][0-9]*$/.test(commands.initialClockVersion) || !Number.isSafeInteger(Number(commands.initialClockVersion)) || !Array.isArray(commands.startupStages)
+    || !scenario.allocationLimits || !['maxAttempts', 'serialSpace', 'orderNumberSpace', 'wholesalerSpace']
+      .every((key) => Number.isSafeInteger(scenario.allocationLimits[key]) && scenario.allocationLimits[key] > 0)
     || !Array.isArray(stages) || new Set(stages).size !== stages.length || !stages.length || stages.some((stage) => typeof stage !== 'string' || !stage)
     || commands.startupStages.some((stage) => !stages.includes(stage))) return unavailable();
   return ok({ scenario, commands, stages });
@@ -22,10 +24,23 @@ export async function buildScenarioSeed({ policy, read, configuration, runId, in
   const people = await loadDemoPrincipalSeed(policy, read);
   if (people.status !== 'ok') return people;
   const { scenario } = configuration;
-  const prior = inventory ?? emptyAllocationInventory(scenario.allocationLimits);
-  const allocated = await allocateSyntheticIdentities(prior, { runId, seed: scenario.seed, corpusVersion: scenario.corpusVersion,
-    datasetId: scenario.datasetId, vehicles: scenario.vehicles }, { expectedRevision: prior.revision });
-  if (allocated.status !== 'ok') return unavailable();
+  let prior;
+  try { prior = inventory ?? emptyAllocationInventory(scenario.allocationLimits); } catch { return unavailable(); }
+  if (!Array.isArray(prior.records)) return unavailable();
+  // FUCQ-53 intentionally scopes display-number uniqueness to each run. A reset additionally
+  // promises a new number for each fixture car. Reuse its allocator and bounded attempt policy.
+  if (scenario.vehicles.some((vehicle) => new Set(prior.records.filter((row) => row.vehicleId === vehicle.vehicleId)
+    .map((row) => row.orderNumber)).size >= prior.limits.orderNumberSpace)) return unavailable();
+  let allocated;
+  for (let attempt = 0; attempt < prior.limits.maxAttempts; attempt += 1) {
+    allocated = await allocateSyntheticIdentities(prior, { runId, seed: attempt ? `${scenario.seed}:reset:${attempt}` : scenario.seed,
+      corpusVersion: scenario.corpusVersion, datasetId: scenario.datasetId, vehicles: scenario.vehicles }, { expectedRevision: prior.revision });
+    if (allocated.status !== 'ok') return unavailable();
+    if (!allocated.inventory.records.filter((row) => row.runId === runId).some((row) => prior.records
+      .some((old) => old.vehicleId === row.vehicleId && old.orderNumber === row.orderNumber))) break;
+    allocated = undefined;
+  }
+  if (!allocated) return unavailable();
   const rows = [];
   for (const principal of people.value.principals) {
     rows.push(['employees', principal]);

@@ -1,0 +1,80 @@
+{
+  "fixtureVersion": "fucq85-backend-v1",
+  "readState": {
+    "status": "ok",
+    "value": {
+      "runId": "demo-e106f7583755f3278d6fcfbeb6461fc5",
+      "now": "2026-11-05T09:00:00.000Z",
+      "clockVersion": "1",
+      "runVersion": 1,
+      "versions": {
+        "scenario": "gcsp-clock-scenario-v1",
+        "fixture": "gcsp-clock-fixtures-v1",
+        "corpus": "synthetic-clock-corpus-v1",
+        "policy": "gcsp-policy-v1",
+        "syntheticIdentityInventory": {
+          "revision": 1,
+          "contentDigest": "3f26f803d20795aefe6241eb8dd810113c3b9d42e8e0b0c2dfdc623cb31ea80b"
+        }
+      },
+      "lastTick": null
+    },
+    "contractVersion": "1.0.0"
+  },
+  "advance": {
+    "status": "ok",
+    "value": {
+      "runId": "demo-e106f7583755f3278d6fcfbeb6461fc5",
+      "now": "2026-11-05T09:01:00.000Z",
+      "clockVersion": "2"
+    },
+    "contractVersion": "1.0.0"
+  },
+  "tick": {
+    "status": "ok",
+    "value": {
+      "runId": "demo-e106f7583755f3278d6fcfbeb6461fc5",
+      "tickId": "fixture-event",
+      "eventId": "fixture-event",
+      "now": "2026-11-05T09:01:00.000Z",
+      "clockVersion": "2",
+      "kind": "presenter",
+      "handlerOrder": [],
+      "missingStages": [
+        "release-pull",
+        "manual-expiry",
+        "buddy-expiry",
+        "pending-reconciliation",
+        "buddy-allocation",
+        "outbox-dispatch"
+      ],
+      "outcomes": [],
+      "state": "completed"
+    },
+    "contractVersion": "1.0.0"
+  },
+  "reset": {
+    "status": "ok",
+    "value": {
+      "previousRunId": "demo-e106f7583755f3278d6fcfbeb6461fc5",
+      "runId": "demo-12f1b8cbe67496dc0bbcb1383f1b0e92",
+      "now": "2026-11-05T09:00:00.000Z",
+      "versions": {
+        "scenario": "gcsp-clock-scenario-v1",
+        "fixture": "gcsp-clock-fixtures-v1",
+        "corpus": "synthetic-clock-corpus-v1",
+        "policy": "gcsp-policy-v1",
+        "syntheticIdentityInventory": {
+          "revision": 2,
+          "contentDigest": "c86b546384425b8133cffdd42ad5b4d522b8cadd925a183a3669b27afc830667"
+        }
+      }
+    },
+    "contractVersion": "1.0.0"
+  },
+  "stale": {
+    "status": "stale-run",
+    "reason": "This request belongs to an earlier demonstration run.",
+    "contractVersion": "1.0.0"
+  }
+}

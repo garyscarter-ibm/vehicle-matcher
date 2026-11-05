@@ -71,6 +71,9 @@ export function repositoryContract(provider, factory) {
       await repository.transaction(c, command(), (tx) => tx.compareAndSwap(ref('runs', {}, c), 1, { current: true }));
       const next = { runId: 'reset-run', environmentId: c.environmentId, current: true, status: 'active' };
       const rows = [['employees', { employeeId: 'reset-person' }]];
+      const staleReset = await repository.resetRun(c, command(), { expectedCurrentRunId: c.runId, expectedRunVersion: 1, nextRun: next, rows });
+      assert.equal(staleReset.status, 'stale-version');
+      assert.equal((await repository.currentRun(c.environmentId)).value.runId, c.runId);
       const bad = await repository.resetRun(c, command(), { expectedCurrentRunId: c.runId, expectedRunVersion: 2, nextRun: next,
         rows: [['entitlement_slots', { entitlementSlotId: 'bad', employeeId: 'missing', capacity: 1 }]] });
       assert.equal(bad.status, 'conflict');
@@ -367,6 +370,7 @@ function driverDouble({ state = { tables: Object.fromEntries(Object.keys(TABLES)
       await previous;
       return { ...client, release };
     } },
+    setFailureTable: (table) => { failTable = table; },
     read: () => structuredClone(data), ledger: () => applied, queries,
     ddlExecutions: () => ddlExecutions,
   };
@@ -438,5 +442,23 @@ test('postgresql driver: uncertain commit is reconciled with the original comman
   const replay = await repository.transaction(ctx(), stable, () => { throw new Error('must not repeat'); });
   assert.equal(replay.status, 'ok'); assert.equal(replay.value.hold.holdId, 'hold-a');
   assert.equal(driver.read().tables.holds.length, 1);
+  await repository.close();
+});
+
+
+test('postgresql driver: a reset flush failure restores current run and leaves no replacement fixture rows', async () => {
+  const driver = driverDouble();
+  const repository = createPostgresRepository({ pool: driver.pool });
+  await repository.open(); await setup(repository);
+  const c = ctx();
+  await repository.transaction(c, command(), (tx) => tx.compareAndSwap(ref('runs', {}, c), 1, { current: true }));
+  const before = driver.read();
+  driver.setFailureTable('entitlement_slots');
+  const reset = await repository.resetRun(c, command(), { expectedCurrentRunId: c.runId, expectedRunVersion: 2,
+    nextRun: { runId: 'flush-failed-reset', environmentId: c.environmentId, current: true, status: 'active' },
+    rows: [['employees', { employeeId: 'new-person' }], ['entitlement_slots', { employeeId: 'new-person', entitlementSlotId: 'new-slot', capacity: 1 }]] });
+  assert.equal(reset.status, 'unavailable');
+  assert.deepEqual(driver.read(), before);
+  assert.equal((await repository.currentRun(c.environmentId)).value.runId, c.runId);
   await repository.close();
 });
