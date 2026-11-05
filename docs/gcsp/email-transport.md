@@ -10,6 +10,8 @@ Recorded 5 November 2026 at Russell's request, using the existing StanleyPi setu
 
 Russell explicitly authorised one deliberate real email test to his IBM address in the active dispatcher chat. The exact approved recipient is retained in the private local recipient-approval record, outside source control. Verify the existing key/account and sender first; send only to that approved address, with no automatic retries or additional recipients. A clearly labelled transport test without an offer link is permitted while the actual offer producer is unavailable. Such a test proves only provider acceptance; FUCQ-98 still requires the actual public offer, inbox receipt and link/access validation before completion. Never invent an offer or token to clear that gate.
 
+**Observed test outcome, 5 November at 16:06 UTC:** Russell authorised one macOS Keychain prompt after background lookup failed. That one lookup succeeded, but the existing local key was rejected by Brevo account verification (HTTP 401). The run stopped after one GET: zero POSTs, zero emails, no sender or inbox/link validation. The prompt allowance is consumed. A valid key must be configured privately before another attempt; the already approved recipient/test authority remains recorded. This observation does not establish the state of Render secrets. Sanitised evidence is retained on the FUCQ-98 branch; no credential is recorded here.
+
 ## Existing evidence
 
 | Source inspected | Reusable evidence |
