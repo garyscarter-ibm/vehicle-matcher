@@ -556,6 +556,7 @@ test('native PostgreSQL manual claims retain once-only keyed review and expire a
   try {
     let f = await fixture.create();
     const second = await f.service.claim(f.context, await selection(f, 0, 'native-review-claim'));
+    assert.equal(second.status, 'ok', JSON.stringify(second));
     const reviewInput = await action(f, 'native-review');
     const reviewed = await f.service.beginReview(f.context, reviewInput);
     assert.equal(reviewed.status, 'ok', JSON.stringify(reviewed));
