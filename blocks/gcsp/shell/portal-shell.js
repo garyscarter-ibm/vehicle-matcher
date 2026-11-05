@@ -121,23 +121,33 @@ function initialsOf(name) {
 function accountContent(state, retryButton) {
   const status = state?.status;
   if (status === 'ready' && state.name) {
-    const text = el('span', 'gcsp-account-text');
+    const details = el('details', 'gcsp-account-details');
+    const summary = el('summary', 'gcsp-account-summary');
+    summary.setAttribute('aria-label', `Account details for ${state.name}`);
     const name = el('span', 'gcsp-account-name', state.name);
     name.title = state.name;
-    text.append(name);
-    if (state.context) text.append(el('span', 'gcsp-account-context', state.context));
+    summary.append(el('span', 'gcsp-avatar', state.initials || initialsOf(state.name)), name, svgIcon(CHEVRON, 'gcsp-icon gcsp-account-chevron'));
+    const panel = el('div', 'gcsp-account-panel');
+    panel.append(el('span', 'gcsp-account-detail-name', state.name));
+    if (state.context) panel.append(el('span', 'gcsp-account-context', state.context));
+    details.append(summary, panel);
     return {
       label: `Account: ${state.name}`,
       busy: false,
-      nodes: [el('span', 'gcsp-avatar', state.initials || initialsOf(state.name)), text],
+      nodes: [details],
     };
   }
   if (status === 'unavailable' || status === 'ready') {
     const message = (status === 'unavailable' && state.message) || 'Your account could not be loaded.';
+    const unavailable = el('span', 'gcsp-account-unavailable');
+    const label = el('span', '', 'Account unavailable');
+    label.setAttribute('aria-hidden', 'true');
+    unavailable.title = message;
+    unavailable.append(label, el('span', 'gcsp-vh', message));
     return {
       label: 'Account unavailable',
       busy: false,
-      nodes: [el('span', 'gcsp-account-unavailable', message), retryButton],
+      nodes: [unavailable, retryButton],
     };
   }
   const nodes = [el('span', 'gcsp-skel gcsp-skel-avatar'), el('span', 'gcsp-skel gcsp-skel-name')];
@@ -167,12 +177,12 @@ export function portalShell({
   menuToggle.setAttribute('aria-label', 'Menu');
   menuToggle.append(svgIcon(MENU));
   const marks = el('div', 'gcsp-marks');
-  for (const [name, alt] of [['bmw', 'BMW'], ['mini', 'MINI']]) {
-    const img = el('img', `gcsp-mark gcsp-mark-${name}`);
-    img.src = LOGO(name);
-    img.alt = alt;
-    marks.append(img);
-  }
+  const logo = el('img', 'gcsp-mark');
+  logo.src = LOGO('bmwgroup-bmw-mini');
+  logo.alt = 'BMW GROUP, BMW and MINI';
+  logo.width = 139;
+  logo.height = 22;
+  marks.append(logo);
   const accountBox = el('div', 'gcsp-account');
   accountBox.setAttribute('role', 'group');
   accountBox.setAttribute('aria-live', 'polite');
@@ -207,7 +217,12 @@ export function portalShell({
     menuToggle.setAttribute('aria-expanded', String(open));
   };
   const onKeydown = (event) => {
-    if (event.key === 'Escape' && root.classList.contains('gcsp-menu-open')) {
+    if (event.key !== 'Escape') return;
+    const accountDetails = accountBox.querySelector('details[open]');
+    if (accountDetails) {
+      accountDetails.open = false;
+      accountDetails.querySelector('summary').focus();
+    } else if (root.classList.contains('gcsp-menu-open')) {
       closeMenu();
       menuToggle.focus();
     }

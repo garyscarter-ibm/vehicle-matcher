@@ -7,6 +7,8 @@ const object = (v) => v && typeof v === 'object' && !Array.isArray(v);
 const only = (v, keys) => object(v) && Object.keys(v).every((key) => keys.includes(key));
 const text = (v) => typeof v === 'string' && v.trim().length > 0;
 const revision = (v) => Number.isSafeInteger(v) && v >= 0;
+const calendarDate = (v) => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)
+  && validInstant(`${v}T00:00:00.000Z`) && new Date(`${v}T00:00:00.000Z`).toISOString().slice(0, 10) === v;
 const invalid = (field, reason, code = 'invalid-manual-draft') => result('invalid', { code, reasons: [{ field, reason }],
   view: { state: 'validation', editable: true, supportOwner: 'employee', action: 'correct-fields' } });
 const unavailable = (source) => result('unavailable', { code: 'manual-source-unavailable', source, retryable: true,
@@ -22,6 +24,8 @@ const consumer = (context) => `manual:draft:${context.employeeId}`;
 const latest = (rows) => rows.map((r) => r.outcome.value).sort((a, b) => a.draftVersion - b.draftVersion).at(-1) ?? null;
 const fields = ['mode', 'oldContractId', 'slotId', 'schemeId', 'driverId', 'contractOptionId', 'requestedCollectionDate',
   'collectionLocationId', 'brand', 'contact', 'expectedReturnMileage', 'specialRequirements'];
+const intentFields = ['mode', 'oldContractId', 'slotId', 'schemeId'];
+const isIntent = (choices) => only(choices, intentFields) && intentFields.every((key) => Object.hasOwn(choices, key));
 const dependencyFields = ['mode', 'oldContractId', 'slotId', 'schemeId', 'driverId', 'contractOptionId',
   'requestedCollectionDate', 'collectionLocationId', 'brand'];
 
@@ -74,10 +78,15 @@ export class ManualContextService {
       p.state = !p.rules.enabledSchemes.includes(context.schemeId) ? 'unsupported-scheme'
         : !p.slot || !Number.isSafeInteger(p.slot.capacity) || p.slot.capacity < 1 || p.slot.state === 'disabled' ? 'no-entitlement'
           : p.slot.contractId && !p.contract ? 'no-contract' : 'ready';
+      const window = p.contract ?? p.slot;
+      if (['earliestCollectionDate', 'latestCollectionDate'].some((key) => window?.[key] != null
+        && !calendarDate(window[key]))) return { error: unavailable('renewal-window-invalid') };
+      if (p.state === 'ready' && (window?.earliestCollectionDate || window?.latestCollectionDate)
+        && !this.#collectionDates(p).length) p.state = 'not-yet-eligible';
       p.contextVersion = inputDigest({ runId: context.runId, employeeId: context.employeeId, schemeId: context.schemeId,
         companyId: context.companyId, gradeId: context.gradeId, slot: p.slot ?? null, accountSource: a.source,
         driverSource: p.drivers.source, repositoryVersion: a.repositoryVersion ?? null, recordSetId: a.recordSetId,
-        policyVersion: context.policyVersion, configuration: p.configuration });
+        policyVersion: context.policyVersion, configuration: p.configuration, orderingState: p.state });
       return p;
     } catch { return { error: unavailable('invalid-source') }; }
   }
@@ -92,6 +101,21 @@ export class ManualContextService {
       && Number.isSafeInteger(r.maximumSpecialRequirements) && r.maximumSpecialRequirements > 0
       && Number.isSafeInteger(r.maximumReturnMileage) && r.maximumReturnMileage > 0 && object(r.insuranceMaximumByGrade);
   }
+  #collectionDates(p) {
+    const today = Date.parse(`${p.now.slice(0, 10)}T00:00:00.000Z`); const day = 86400000;
+    const window = p.contract ?? p.slot;
+    const earliest = window?.earliestCollectionDate; const latest = window?.latestCollectionDate;
+    const dates = [];
+    for (let lead = p.rules.minimumLeadDays; lead <= p.rules.maximumLeadDays; lead += 1) {
+      const date = new Date(today + lead * day).toISOString().slice(0, 10);
+      if ((!earliest || date >= earliest) && (!latest || date <= latest)
+        && p.rules.locations.some((location) => !location.closedDates?.includes(date)
+          && p.rules.contractOptions.some((option) => option.schemeIds.includes(p.account.account.schemeId)
+            && location.contractOptionIds.includes(option.contractOptionId)
+            && p.drivers.drivers.some((driver) => option.driverKinds.includes(driver.kind) && location.driverKinds.includes(driver.kind))))) dates.push(date);
+    }
+    return dates;
+  }
   #presentation(p) {
     const orderable = p.state === 'ready';
     return { state: p.state, editable: orderable, supportOwner: orderable ? 'employee' : 'scheme-support',
@@ -103,10 +127,14 @@ export class ManualContextService {
   }
   #projection(context, p) {
     const view = this.#presentation(p);
-    if (!p.account) return { state: p.state, account: null, drivers: [], histories: [], actions: [], view };
+    if (!p.account) return { state: p.state, asOf: p.now, account: null, drivers: [], contracts: [], slots: [], histories: [], actions: [], view };
     const actions = p.state === 'ready' ? [{ action: p.contract ? 'replace' : 'order', slotId: p.slot.entitlementSlotId,
       schemeId: context.schemeId, oldContractId: p.contract?.contractId ?? null, enabled: true }] : [];
-    return { state: p.state, account: p.account.account, drivers: p.drivers.drivers,
+    return { state: p.state, asOf: p.now, account: p.account.account, drivers: p.drivers.drivers,
+      contracts: p.account.contracts, slots: p.account.slots.map((slot) => ({ ...slot, ordering: {
+        enabled: slot.entitlementSlotId === context.entitlementSlotId && p.state === 'ready',
+        reason: slot.entitlementSlotId !== context.entitlementSlotId ? 'outside-trusted-context'
+          : p.state === 'ready' ? null : p.state } })),
       currentContract: p.contract ?? null, contractState: p.contract ? 'current-contract' : 'no-contract', histories: p.account.histories.map((h) => ({ ...h,
         state: h.entries.length ? 'history' : 'empty-history', count: h.entries.length,
         orderingSupported: p.rules?.enabledSchemes.includes(h.schemeId) ?? false })), actions,
@@ -140,6 +168,7 @@ export class ManualContextService {
     if (choices.schemeId !== context.schemeId || choices.slotId !== context.entitlementSlotId || choices.slotId !== p.slot.entitlementSlotId) return invalid('choices', 'Choose the server-owned scheme and entitled vehicle slot.', 'authority-override');
     if (choices.mode === 'replacement' && (!p.contract || choices.oldContractId !== p.contract.contractId)
       || choices.mode === 'new' && (p.contract || choices.oldContractId != null)) return invalid('oldContractId', 'Keep the current contract separate; use the permitted Order or Replace action.');
+    if (isIntent(choices)) return { intent: true, contract: null };
     const driver = p.drivers.drivers.find((d) => d.driverId === choices.driverId);
     if (!driver) return invalid('driverId', 'Choose a supplied permitted driver.');
     const contract = p.rules.contractOptions.find((c) => c.contractOptionId === choices.contractOptionId && c.schemeIds.includes(context.schemeId) && c.driverKinds.includes(driver.kind));
@@ -148,14 +177,23 @@ export class ManualContextService {
     const location = p.rules.locations.find((l) => l.locationId === choices.collectionLocationId
       && l.contractOptionIds.includes(contract.contractOptionId) && l.driverKinds.includes(driver.kind));
     if (!location) return invalid('collectionLocationId', 'This location is not permitted for the selected driver and contract.');
-    if (typeof choices.requestedCollectionDate !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(choices.requestedCollectionDate)
-      || !validInstant(`${choices.requestedCollectionDate}T00:00:00.000Z`)) return invalid('requestedCollectionDate', 'Supply a valid requested collection date.');
-    const date = Date.parse(`${choices.requestedCollectionDate}T00:00:00.000Z`);
-    const today = Date.parse(`${p.now.slice(0, 10)}T00:00:00.000Z`); const day = 86400000;
-    if (date < today + p.rules.minimumLeadDays * day || date > today + p.rules.maximumLeadDays * day
-      || p.contract?.earliestCollectionDate && date < Date.parse(`${p.contract.earliestCollectionDate}T00:00:00.000Z`)
-      || p.contract?.latestCollectionDate && date > Date.parse(`${p.contract.latestCollectionDate}T00:00:00.000Z`)
+    if (!calendarDate(choices.requestedCollectionDate)) return invalid('requestedCollectionDate', 'Supply a valid requested collection date.');
+    if (!this.#collectionDates(p).includes(choices.requestedCollectionDate)
       || location.closedDates?.includes(choices.requestedCollectionDate)) return invalid('requestedCollectionDate', 'Choose a date inside the supplied collection and renewal window.');
+    const licence = driver.licence;
+    if (!sourceValid(licence?.source) || Date.parse(licence.source.effectiveFrom) > Date.parse(p.now)
+      || !calendarDate(licence?.validFrom) || !calendarDate(licence?.validUntil) || !Array.isArray(licence?.categories)) {
+      return invalid('driverId', 'Licence facts need confirmation. Contact driver support.', 'licence-unconfirmed');
+    }
+    if (!licence.categories.includes('car') || licence.validFrom > licence.validUntil
+      || licence.validFrom > choices.requestedCollectionDate || licence.validUntil < choices.requestedCollectionDate) {
+      return invalid('driverId', 'This licence is not valid for a car at the requested collection date. Contact driver support.', 'licence-not-valid-at-collection');
+    }
+    if (!Number.isFinite(p.allowance?.monthlyPoints) || p.allowance.monthlyPoints < 0 || p.allowance.unit !== 'points/month'
+      || !['assumed', 'verified'].includes(p.allowance.status) || p.allowance.schemeId !== context.schemeId
+      || p.allowance.companyId !== context.companyId || p.allowance.gradeId !== context.gradeId) {
+      return invalid('allowance', 'Monthly points allowance needs confirmation. Contact scheme support.', 'allowance-unconfirmed');
+    }
     if (!only(choices.contact, ['phone', 'email']) || !/^\+?[0-9 ()-]{7,30}$/.test(choices.contact.phone ?? '')
       || typeof choices.contact.email !== 'string' || choices.contact.email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(choices.contact.email)) return invalid('contact', 'Supply a contact telephone and email address.');
     if (choices.mode === 'replacement' && (!Number.isSafeInteger(choices.expectedReturnMileage) || choices.expectedReturnMileage < 0
@@ -208,11 +246,12 @@ export class ManualContextService {
       const invalidations = changes.length ? [...changes, 'selection', 'quote', 'eligible-stock'] : [];
       const value = { schemaVersion: 1, runId: context.runId, employeeId: context.employeeId, draftVersion: version + 1,
         previousDraftVersion: version || null, contextVersion: p.contextVersion, choices: structuredClone(input.choices),
-        currentContract: p.contract, renewalId: p.slot.renewalId ?? null, entitlementSlotId: p.slot.entitlementSlotId,
+        draftStage: validated.intent ? 'intent' : 'complete', currentContract: p.contract, renewalId: p.slot.renewalId ?? null, entitlementSlotId: p.slot.entitlementSlotId,
         contract: validated.contract, sources: this.#projection(context, p).versions, policyVersion: context.policyVersion,
         invalidations, dependentGeneration: (previous?.dependentGeneration ?? 0) + (changes.length ? 1 : 0),
         selection: changes.length ? null : previous?.selection ?? null, quote: changes.length ? null : previous?.quote ?? null,
-        savedAt: p.now, savedBy: context.principalId, view: { state: 'draft', editable: true, supportOwner: 'employee', action: 'browse-stock' } };
+        savedAt: p.now, savedBy: context.principalId, view: { state: 'draft', editable: true, supportOwner: 'employee',
+          action: validated.intent ? 'choose-order-options' : 'browse-stock' } };
       const stored = await tx.recordReceipt({ consumerId: consumer(context), eventId: String(value.draftVersion), inputDigest: digest,
         eventType: 'manual-draft-saved', state: 'completed', outcome: ok(value) });
       return stored.status === 'ok' ? ok(value) : stored;
@@ -224,7 +263,10 @@ export class ManualContextService {
     if (p.state !== 'ready') return result('conflict', { reason: p.state, view: this.#presentation(p) });
     const saved = await this.readDraft(context); if (saved.status !== 'ok') return saved;
     if (saved.value.requiresRefresh || saved.value.contextVersion !== p.contextVersion) return stale('manual-context', saved.value.contextVersion, p.contextVersion);
-    const draft = saved.value; const selected = this.#validate(context, draft.choices, p); if (selected.status) return selected;
+    const draft = saved.value;
+    if (isIntent(draft.choices)) return result('conflict', { reason: 'order-options-required',
+      view: { state: 'order-options-required', editable: true, supportOwner: 'employee', action: 'choose-order-options' } });
+    const selected = this.#validate(context, draft.choices, p); if (selected.status) return selected;
     try {
       const source = await this.#ports.releasedStock.read(context, p.read);
       if (source.status !== 'ok' || !this.#scope(context, source.value) || !text(source.value.sourceVersion)

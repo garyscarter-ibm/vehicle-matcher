@@ -1,0 +1,1547 @@
+{
+  "story": "FUCQ-68",
+  "chunk": "flow",
+  "head": "0a4ff5ac1e261a42794d040753fb0e98cc23039e",
+  "base": "90743eed6a086aa8626a3c4ab089d10f6f65b75e",
+  "cases": [
+    {
+      "name": "flow",
+      "width": 1280,
+      "persisted": true,
+      "currentCarUnchanged": true,
+      "keyboardSummaryLink": true,
+      "keyboardDriverSelection": "Native select typeahead y, then Tab commits You",
+      "nativeDateType": "date",
+      "dateTabFocus": "collectionLocationId",
+      "dateTabSteps": [
+        {
+          "tag": "INPUT",
+          "name": "requestedCollectionDate",
+          "type": "date"
+        },
+        {
+          "tag": "INPUT",
+          "name": "requestedCollectionDate",
+          "type": "date"
+        },
+        {
+          "tag": "INPUT",
+          "name": "requestedCollectionDate",
+          "type": "date"
+        },
+        {
+          "tag": "SELECT",
+          "name": "collectionLocationId",
+          "type": null
+        }
+      ],
+      "invalidatedFields": [
+        "driverId",
+        "driverId",
+        "contractOptionId",
+        "requestedCollectionDate",
+        "collectionLocationId"
+      ],
+      "savedAvailabilityVersions": {
+        "draft": 4,
+        "context": "e8c395ff77f44081928cacd8a1280b19676a8d2ec602d72cd8fcc42389c98fde"
+      }
+    },
+    {
+      "name": "flow",
+      "width": 320,
+      "persisted": true,
+      "currentCarUnchanged": true,
+      "keyboardSummaryLink": true,
+      "keyboardDriverSelection": "Native select typeahead y, then Tab commits You",
+      "nativeDateType": "date",
+      "dateTabFocus": "collectionLocationId",
+      "dateTabSteps": [
+        {
+          "tag": "INPUT",
+          "name": "requestedCollectionDate",
+          "type": "date"
+        },
+        {
+          "tag": "INPUT",
+          "name": "requestedCollectionDate",
+          "type": "date"
+        },
+        {
+          "tag": "INPUT",
+          "name": "requestedCollectionDate",
+          "type": "date"
+        },
+        {
+          "tag": "SELECT",
+          "name": "collectionLocationId",
+          "type": null
+        }
+      ],
+      "invalidatedFields": [
+        "driverId",
+        "driverId",
+        "contractOptionId",
+        "requestedCollectionDate",
+        "collectionLocationId"
+      ],
+      "savedAvailabilityVersions": {
+        "draft": 4,
+        "context": "f8cb4d84a8be26c1c7f29fa0e265e65ae241428d96e3a23810a0d7ab0903b817"
+      }
+    }
+  ],
+  "api": [
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "status": "ok",
+      "contextVersion": "e8c395ff77f44081928cacd8a1280b19676a8d2ec602d72cd8fcc42389c98fde",
+      "versions": {
+        "policy": "gcsp-policy-v1",
+        "employeeContract": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "driver": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "recordSetId": "manual:employee-paula:v1",
+        "employee": 2,
+        "slot": 2,
+        "clock": "1"
+      },
+      "state": "ready",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 404,
+      "status": "not-found"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 404,
+      "status": "not-found"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      },
+      "method": "POST",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "draftVersion": 1,
+      "contextVersion": "e8c395ff77f44081928cacd8a1280b19676a8d2ec602d72cd8fcc42389c98fde",
+      "draftStage": "intent",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "status": "ok",
+      "contextVersion": "e8c395ff77f44081928cacd8a1280b19676a8d2ec602d72cd8fcc42389c98fde",
+      "versions": {
+        "policy": "gcsp-policy-v1",
+        "employeeContract": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "driver": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "recordSetId": "manual:employee-paula:v1",
+        "employee": 2,
+        "slot": 2,
+        "clock": "1"
+      },
+      "state": "ready",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "draftVersion": 1,
+      "contextVersion": "e8c395ff77f44081928cacd8a1280b19676a8d2ec602d72cd8fcc42389c98fde",
+      "requiresRefresh": false,
+      "draftStage": "intent",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      },
+      "method": "POST",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "draftVersion": 2,
+      "contextVersion": "e8c395ff77f44081928cacd8a1280b19676a8d2ec602d72cd8fcc42389c98fde",
+      "draftStage": "complete",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/stock",
+      "httpStatus": 200,
+      "status": "ok",
+      "versions": {
+        "brief": 2,
+        "facts": "7d12088e8ee7e9f7963c0e78ecc03397cb9b33a59eee91b0bd4a4cd42e4245eb",
+        "policy": "gcsp-policy-v1",
+        "stock": "stock:8decfced-82cf-47e0-a228-b958e35fa82d:1|ebec5b80-826a-4abb-bd6e-74f6bb334e97:1",
+        "clock": "1",
+        "draft": 2,
+        "context": "e8c395ff77f44081928cacd8a1280b19676a8d2ec602d72cd8fcc42389c98fde"
+      },
+      "state": "empty-stock"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      },
+      "method": "POST",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "draftVersion": 3,
+      "contextVersion": "e8c395ff77f44081928cacd8a1280b19676a8d2ec602d72cd8fcc42389c98fde",
+      "draftStage": "complete",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/stock",
+      "httpStatus": 200,
+      "status": "ok",
+      "versions": {
+        "brief": 3,
+        "facts": "7d12088e8ee7e9f7963c0e78ecc03397cb9b33a59eee91b0bd4a4cd42e4245eb",
+        "policy": "gcsp-policy-v1",
+        "stock": "stock:8decfced-82cf-47e0-a228-b958e35fa82d:1|ebec5b80-826a-4abb-bd6e-74f6bb334e97:1",
+        "clock": "1",
+        "draft": 3,
+        "context": "e8c395ff77f44081928cacd8a1280b19676a8d2ec602d72cd8fcc42389c98fde"
+      },
+      "state": "empty-stock"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "status": "ok",
+      "contextVersion": "e8c395ff77f44081928cacd8a1280b19676a8d2ec602d72cd8fcc42389c98fde",
+      "versions": {
+        "policy": "gcsp-policy-v1",
+        "employeeContract": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "driver": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "recordSetId": "manual:employee-paula:v1",
+        "employee": 2,
+        "slot": 2,
+        "clock": "1"
+      },
+      "state": "ready",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "draftVersion": 3,
+      "contextVersion": "e8c395ff77f44081928cacd8a1280b19676a8d2ec602d72cd8fcc42389c98fde",
+      "requiresRefresh": false,
+      "draftStage": "complete",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "status": "ok",
+      "contextVersion": "e8c395ff77f44081928cacd8a1280b19676a8d2ec602d72cd8fcc42389c98fde",
+      "versions": {
+        "policy": "gcsp-policy-v1",
+        "employeeContract": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "driver": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "recordSetId": "manual:employee-paula:v1",
+        "employee": 2,
+        "slot": 2,
+        "clock": "1"
+      },
+      "state": "ready",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "draftVersion": 3,
+      "contextVersion": "e8c395ff77f44081928cacd8a1280b19676a8d2ec602d72cd8fcc42389c98fde",
+      "requiresRefresh": false,
+      "draftStage": "complete",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "draftVersion": 3,
+      "contextVersion": "e8c395ff77f44081928cacd8a1280b19676a8d2ec602d72cd8fcc42389c98fde",
+      "requiresRefresh": false,
+      "draftStage": "complete",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "status": "ok",
+      "contextVersion": "e8c395ff77f44081928cacd8a1280b19676a8d2ec602d72cd8fcc42389c98fde",
+      "versions": {
+        "policy": "gcsp-policy-v1",
+        "employeeContract": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "driver": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "recordSetId": "manual:employee-paula:v1",
+        "employee": 2,
+        "slot": 2,
+        "clock": "1"
+      },
+      "state": "ready",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "draftVersion": 3,
+      "contextVersion": "e8c395ff77f44081928cacd8a1280b19676a8d2ec602d72cd8fcc42389c98fde",
+      "requiresRefresh": false,
+      "draftStage": "complete",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/stock",
+      "httpStatus": 200,
+      "status": "ok",
+      "versions": {
+        "brief": 3,
+        "facts": "7d12088e8ee7e9f7963c0e78ecc03397cb9b33a59eee91b0bd4a4cd42e4245eb",
+        "policy": "gcsp-policy-v1",
+        "stock": "stock:8decfced-82cf-47e0-a228-b958e35fa82d:1|ebec5b80-826a-4abb-bd6e-74f6bb334e97:1",
+        "clock": "1",
+        "draft": 3,
+        "context": "e8c395ff77f44081928cacd8a1280b19676a8d2ec602d72cd8fcc42389c98fde"
+      },
+      "state": "empty-stock"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      },
+      "method": "POST",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "draftVersion": 4,
+      "contextVersion": "e8c395ff77f44081928cacd8a1280b19676a8d2ec602d72cd8fcc42389c98fde",
+      "draftStage": "complete",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/stock",
+      "httpStatus": 200,
+      "status": "ok",
+      "versions": {
+        "brief": 4,
+        "facts": "7d12088e8ee7e9f7963c0e78ecc03397cb9b33a59eee91b0bd4a4cd42e4245eb",
+        "policy": "gcsp-policy-v1",
+        "stock": "stock:8decfced-82cf-47e0-a228-b958e35fa82d:1|ebec5b80-826a-4abb-bd6e-74f6bb334e97:1",
+        "clock": "1",
+        "draft": 4,
+        "context": "e8c395ff77f44081928cacd8a1280b19676a8d2ec602d72cd8fcc42389c98fde"
+      },
+      "state": "empty-stock"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "status": "ok",
+      "contextVersion": "f8cb4d84a8be26c1c7f29fa0e265e65ae241428d96e3a23810a0d7ab0903b817",
+      "versions": {
+        "policy": "gcsp-policy-v1",
+        "employeeContract": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "driver": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "recordSetId": "manual:employee-paula:v1",
+        "employee": 2,
+        "slot": 2,
+        "clock": "1"
+      },
+      "state": "ready",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 404,
+      "status": "not-found"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 404,
+      "status": "not-found"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      },
+      "method": "POST",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "draftVersion": 1,
+      "contextVersion": "f8cb4d84a8be26c1c7f29fa0e265e65ae241428d96e3a23810a0d7ab0903b817",
+      "draftStage": "intent",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "status": "ok",
+      "contextVersion": "f8cb4d84a8be26c1c7f29fa0e265e65ae241428d96e3a23810a0d7ab0903b817",
+      "versions": {
+        "policy": "gcsp-policy-v1",
+        "employeeContract": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "driver": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "recordSetId": "manual:employee-paula:v1",
+        "employee": 2,
+        "slot": 2,
+        "clock": "1"
+      },
+      "state": "ready",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "draftVersion": 1,
+      "contextVersion": "f8cb4d84a8be26c1c7f29fa0e265e65ae241428d96e3a23810a0d7ab0903b817",
+      "requiresRefresh": false,
+      "draftStage": "intent",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      },
+      "method": "POST",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "draftVersion": 2,
+      "contextVersion": "f8cb4d84a8be26c1c7f29fa0e265e65ae241428d96e3a23810a0d7ab0903b817",
+      "draftStage": "complete",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/stock",
+      "httpStatus": 200,
+      "status": "ok",
+      "versions": {
+        "brief": 2,
+        "facts": "7d12088e8ee7e9f7963c0e78ecc03397cb9b33a59eee91b0bd4a4cd42e4245eb",
+        "policy": "gcsp-policy-v1",
+        "stock": "stock:0894b7e1-88a8-4148-a623-0b94c7fe657c:1|f4935be9-acbd-4202-a7a5-b28f5dd324d7:1",
+        "clock": "1",
+        "draft": 2,
+        "context": "f8cb4d84a8be26c1c7f29fa0e265e65ae241428d96e3a23810a0d7ab0903b817"
+      },
+      "state": "empty-stock"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      },
+      "method": "POST",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "draftVersion": 3,
+      "contextVersion": "f8cb4d84a8be26c1c7f29fa0e265e65ae241428d96e3a23810a0d7ab0903b817",
+      "draftStage": "complete",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/stock",
+      "httpStatus": 200,
+      "status": "ok",
+      "versions": {
+        "brief": 3,
+        "facts": "7d12088e8ee7e9f7963c0e78ecc03397cb9b33a59eee91b0bd4a4cd42e4245eb",
+        "policy": "gcsp-policy-v1",
+        "stock": "stock:0894b7e1-88a8-4148-a623-0b94c7fe657c:1|f4935be9-acbd-4202-a7a5-b28f5dd324d7:1",
+        "clock": "1",
+        "draft": 3,
+        "context": "f8cb4d84a8be26c1c7f29fa0e265e65ae241428d96e3a23810a0d7ab0903b817"
+      },
+      "state": "empty-stock"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "status": "ok",
+      "contextVersion": "f8cb4d84a8be26c1c7f29fa0e265e65ae241428d96e3a23810a0d7ab0903b817",
+      "versions": {
+        "policy": "gcsp-policy-v1",
+        "employeeContract": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "driver": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "recordSetId": "manual:employee-paula:v1",
+        "employee": 2,
+        "slot": 2,
+        "clock": "1"
+      },
+      "state": "ready",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "draftVersion": 3,
+      "contextVersion": "f8cb4d84a8be26c1c7f29fa0e265e65ae241428d96e3a23810a0d7ab0903b817",
+      "requiresRefresh": false,
+      "draftStage": "complete",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "status": "ok",
+      "contextVersion": "f8cb4d84a8be26c1c7f29fa0e265e65ae241428d96e3a23810a0d7ab0903b817",
+      "versions": {
+        "policy": "gcsp-policy-v1",
+        "employeeContract": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "driver": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "recordSetId": "manual:employee-paula:v1",
+        "employee": 2,
+        "slot": 2,
+        "clock": "1"
+      },
+      "state": "ready",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "draftVersion": 3,
+      "contextVersion": "f8cb4d84a8be26c1c7f29fa0e265e65ae241428d96e3a23810a0d7ab0903b817",
+      "requiresRefresh": false,
+      "draftStage": "complete",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "draftVersion": 3,
+      "contextVersion": "f8cb4d84a8be26c1c7f29fa0e265e65ae241428d96e3a23810a0d7ab0903b817",
+      "requiresRefresh": false,
+      "draftStage": "complete",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "status": "ok",
+      "contextVersion": "f8cb4d84a8be26c1c7f29fa0e265e65ae241428d96e3a23810a0d7ab0903b817",
+      "versions": {
+        "policy": "gcsp-policy-v1",
+        "employeeContract": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "driver": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "recordSetId": "manual:employee-paula:v1",
+        "employee": 2,
+        "slot": 2,
+        "clock": "1"
+      },
+      "state": "ready",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "draftVersion": 3,
+      "contextVersion": "f8cb4d84a8be26c1c7f29fa0e265e65ae241428d96e3a23810a0d7ab0903b817",
+      "requiresRefresh": false,
+      "draftStage": "complete",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/stock",
+      "httpStatus": 200,
+      "status": "ok",
+      "versions": {
+        "brief": 3,
+        "facts": "7d12088e8ee7e9f7963c0e78ecc03397cb9b33a59eee91b0bd4a4cd42e4245eb",
+        "policy": "gcsp-policy-v1",
+        "stock": "stock:0894b7e1-88a8-4148-a623-0b94c7fe657c:1|f4935be9-acbd-4202-a7a5-b28f5dd324d7:1",
+        "clock": "1",
+        "draft": 3,
+        "context": "f8cb4d84a8be26c1c7f29fa0e265e65ae241428d96e3a23810a0d7ab0903b817"
+      },
+      "state": "empty-stock"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      },
+      "method": "POST",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "draftVersion": 4,
+      "contextVersion": "f8cb4d84a8be26c1c7f29fa0e265e65ae241428d96e3a23810a0d7ab0903b817",
+      "draftStage": "complete",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/stock",
+      "httpStatus": 200,
+      "status": "ok",
+      "versions": {
+        "brief": 4,
+        "facts": "7d12088e8ee7e9f7963c0e78ecc03397cb9b33a59eee91b0bd4a4cd42e4245eb",
+        "policy": "gcsp-policy-v1",
+        "stock": "stock:0894b7e1-88a8-4148-a623-0b94c7fe657c:1|f4935be9-acbd-4202-a7a5-b28f5dd324d7:1",
+        "clock": "1",
+        "draft": 4,
+        "context": "f8cb4d84a8be26c1c7f29fa0e265e65ae241428d96e3a23810a0d7ab0903b817"
+      },
+      "state": "empty-stock"
+    }
+  ],
+  "events": [
+    {
+      "name": "gcsp:journey-start",
+      "detail": {
+        "mode": "replacement",
+        "oldContractId": "current:employee-paula",
+        "slotId": "slot-paula",
+        "schemeId": "choices-fs-uk",
+        "draftVersion": 1,
+        "contextVersion": "e8c395ff77f44081928cacd8a1280b19676a8d2ec602d72cd8fcc42389c98fde"
+      },
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      }
+    },
+    {
+      "name": "gcsp:setup-ready",
+      "detail": {
+        "mode": "replacement",
+        "oldContractId": "current:employee-paula",
+        "slotId": "slot-paula",
+        "schemeId": "choices-fs-uk",
+        "draftVersion": 2,
+        "contextVersion": "e8c395ff77f44081928cacd8a1280b19676a8d2ec602d72cd8fcc42389c98fde"
+      },
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      }
+    },
+    {
+      "name": "gcsp:setup-back",
+      "detail": {},
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      }
+    },
+    {
+      "name": "gcsp:journey-start",
+      "detail": {
+        "mode": "replacement",
+        "oldContractId": "current:employee-paula",
+        "slotId": "slot-paula",
+        "schemeId": "choices-fs-uk",
+        "draftVersion": 3,
+        "contextVersion": "e8c395ff77f44081928cacd8a1280b19676a8d2ec602d72cd8fcc42389c98fde"
+      },
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      }
+    },
+    {
+      "name": "gcsp:journey-start",
+      "detail": {
+        "mode": "replacement",
+        "oldContractId": "current:employee-paula",
+        "slotId": "slot-paula",
+        "schemeId": "choices-fs-uk",
+        "draftVersion": 1,
+        "contextVersion": "f8cb4d84a8be26c1c7f29fa0e265e65ae241428d96e3a23810a0d7ab0903b817"
+      },
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      }
+    },
+    {
+      "name": "gcsp:setup-ready",
+      "detail": {
+        "mode": "replacement",
+        "oldContractId": "current:employee-paula",
+        "slotId": "slot-paula",
+        "schemeId": "choices-fs-uk",
+        "draftVersion": 2,
+        "contextVersion": "f8cb4d84a8be26c1c7f29fa0e265e65ae241428d96e3a23810a0d7ab0903b817"
+      },
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      }
+    },
+    {
+      "name": "gcsp:setup-back",
+      "detail": {},
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      }
+    },
+    {
+      "name": "gcsp:journey-start",
+      "detail": {
+        "mode": "replacement",
+        "oldContractId": "current:employee-paula",
+        "slotId": "slot-paula",
+        "schemeId": "choices-fs-uk",
+        "draftVersion": 3,
+        "contextVersion": "f8cb4d84a8be26c1c7f29fa0e265e65ae241428d96e3a23810a0d7ab0903b817"
+      },
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      }
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "01-invalid-1280.png",
+      "bytes": 240332,
+      "sha256": "ffd681ca6ff76c7eab717e9b930c176872ca2e9d3e35f8bbd1180493a9ec5ff4",
+      "width": 1280,
+      "overflow": false,
+      "labelledControls": true,
+      "summaryFocused": true
+    },
+    {
+      "file": "02-saved-1280.png",
+      "bytes": 201598,
+      "sha256": "43e559e75f6a00950d52b65eaf7ca768768104dd552b65312e0fc2f40428b5a5",
+      "width": 1280,
+      "overflow": false,
+      "labelledControls": true,
+      "duplicateSuppressed": true
+    },
+    {
+      "file": "03-changed-1280.png",
+      "bytes": 184443,
+      "sha256": "27f473943c5b699c709c97fb25dcc372245b0924468ba9441040a3c5c5eb145b",
+      "width": 1280,
+      "overflow": false,
+      "labelledControls": true
+    },
+    {
+      "file": "04-invalid-320.png",
+      "bytes": 234535,
+      "sha256": "40c28f6aad17357373ab2f94da19099f8b5f4b8c1d753f96ad39cf2f6dca4d65",
+      "width": 320,
+      "overflow": false,
+      "labelledControls": true,
+      "summaryFocused": true
+    },
+    {
+      "file": "05-saved-320.png",
+      "bytes": 191127,
+      "sha256": "c14b495dccdd2940811633e13be98d7b89c9691bc78e68d9e06af228a2cfc45d",
+      "width": 320,
+      "overflow": false,
+      "labelledControls": true,
+      "duplicateSuppressed": true
+    },
+    {
+      "file": "06-changed-320.png",
+      "bytes": 174972,
+      "sha256": "ae221267e6d178bfaeccc2b2bdf96a1b61df4c1511efdc750a76f44a4b91e182",
+      "width": 320,
+      "overflow": false,
+      "labelledControls": true
+    }
+  ],
+  "pageErrors": [],
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "path": "/api/gcsp/manual/draft"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "path": "/api/gcsp/manual/draft"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "path": "/api/gcsp/manual/draft"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "path": "/api/gcsp/manual/draft"
+    }
+  ],
+  "externalRequests": [],
+  "errors": [],
+  "resources": {
+    "nodePid": 73726,
+    "nodePgid": 73726,
+    "scratch": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-045/.claude/test-scratch/fucq68/runner/test-stamp-shard-9de06eb32f584108b67ced40707fd274",
+    "profile": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-045/.claude/test-scratch/fucq68/runner/test-stamp-shard-9de06eb32f584108b67ced40707fd274/chrome-profile",
+    "cache": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-045/.claude/test-scratch/fucq68/runner/test-stamp-shard-9de06eb32f584108b67ced40707fd274/chrome-cache",
+    "crashpad": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-045/.claude/test-scratch/fucq68/runner/test-stamp-shard-9de06eb32f584108b67ced40707fd274/chrome-crashpad",
+    "browserEndpoint": null,
+    "sampledBrowserProcesses": [
+      {
+        "pid": 73730,
+        "ppid": 73726,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73745,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73746,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73750,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73753,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73754,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73755,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73758,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73730,
+        "ppid": 73726,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73745,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73746,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73750,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73753,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73754,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73755,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73758,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73730,
+        "ppid": 73726,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73745,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73746,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73750,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73753,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73754,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73755,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73758,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73730,
+        "ppid": 73726,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73745,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73746,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73750,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73753,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73754,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73755,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73758,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73730,
+        "ppid": 73726,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73745,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73746,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73750,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73753,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73754,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73755,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73758,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73730,
+        "ppid": 73726,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73745,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73746,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73750,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73753,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73754,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73755,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73758,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73730,
+        "ppid": 73726,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73745,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73746,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73750,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73753,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73754,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73755,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 73758,
+        "ppid": 73730,
+        "pgid": 73730,
+        "executable": "owned-chrome"
+      }
+    ],
+    "listenerPort": 58815,
+    "listenerHost": "127.0.0.1"
+  },
+  "cleanup": {
+    "browserContextClosed": true,
+    "listenerClosed": true,
+    "listenerPort": 58815,
+    "listenerHost": "127.0.0.1",
+    "runtimeClosed": true,
+    "profile": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-045/.claude/test-scratch/fucq68/runner/test-stamp-shard-9de06eb32f584108b67ced40707fd274/chrome-profile",
+    "cache": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-045/.claude/test-scratch/fucq68/runner/test-stamp-shard-9de06eb32f584108b67ced40707fd274/chrome-cache",
+    "crashpad": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-045/.claude/test-scratch/fucq68/runner/test-stamp-shard-9de06eb32f584108b67ced40707fd274/chrome-crashpad",
+    "scratch": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-045/.claude/test-scratch/fucq68/runner/test-stamp-shard-9de06eb32f584108b67ced40707fd274",
+    "apiServerNeverBound": true
+  },
+  "expectedHttpFailures": [
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 404,
+      "status": "not-found"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 404,
+      "status": "not-found"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 404,
+      "status": "not-found"
+    },
+    {
+      "scenario": {
+        "name": "flow",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 404,
+      "status": "not-found"
+    }
+  ],
+  "unexpectedHttpFailures": [],
+  "unexpectedConsoleErrors": [],
+  "sourceHashes": {
+    "assets/brand-logos/bmw.svg": "b2226efc7bfb81d6b4f6d3002205ff2d2da2e5eb75455694dcd9645ba6e460a7",
+    "assets/brand-logos/mini.svg": "84e781326fba9c98bdaada156869cfb193da1e1a4fdba7f4fd05c27bb87709a0",
+    "blocks/gcsp/account/account-view.js": "c2e71ea6e5b15a1d905e33ab72d78eb0f45039fe2508cad89b11654801749dee",
+    "blocks/gcsp/account/fixtures.js": "bf735ff779fea67afe99bb4da467e7ccbced0c60218182314eeb9d98d874f5cc",
+    "blocks/gcsp/account/gcsp-account.css": "e445f913f913a94048388fc4a3d0fb5b937055ac4a6219fd8abb167e0d15eae3",
+    "blocks/gcsp/account/gcsp-account.js": "6e55cfc13a86b715584ce85a76315248d61ae33bd5526399b64f87ad2b53c80c",
+    "blocks/gcsp/account/harness.js": "606ec0b4b0f489d4e65340be292a4f2f5350c7ca81883393b7672f5fcd5c3991",
+    "blocks/gcsp/account/http-adapter.js": "eb89226f9ab8ff04b5c43dfc3c91b6e57c233ef88e273eaf8985895e79106453",
+    "blocks/gcsp/employee/fixtures.js": "e63cf63076f7bfa718b23b3e2a0d39ef6e57c58c4003f238b0059ce560ba0881",
+    "blocks/gcsp/employee/gcsp-employee.css": "3cab6080aa52605d92b5f616151087fe289e72c43045a7f396a8bffca7112b6f",
+    "blocks/gcsp/employee/gcsp-employee.js": "2f35c7983aafef2c8f1eb72f6c78341cbf1c76269110f6a25dca1b775f11df2b",
+    "blocks/gcsp/employee/representative-body.js": "a9146fc18cac0346a20b12c603df65a84dffc7bd46d267f2706f4e2c63b76af4",
+    "blocks/gcsp/kit/form-controls.css": "555cb07bd07201d80ab69f079c27ef09cadd8b3389375ed6614ad74c4752f8f1",
+    "blocks/gcsp/kit/form-controls.js": "4df9e86f3d51f33397bd524b95f35a40240c931b441f91a7b8b05ef89fe508b4",
+    "blocks/gcsp/manual-setup/gcsp-manual-setup.css": "544a3d8ca9f38d5e934ca1172aca864a9c18063f88b947bf69fe1a5c01846b26",
+    "blocks/gcsp/manual-setup/gcsp-manual-setup.js": "6b03e4ba4b271e230b4259fcc92fb5d60651f899d55f3c0faf235782a7dae0a1",
+    "blocks/gcsp/manual-setup/journey.js": "c1adbe8c11e0a6e3dbe4ea3a0a4d67f591eef288051d6768aeb2068f5a033eb7",
+    "blocks/gcsp/manual-setup/setup-controller.js": "7c3b809d710906ac6c2963ef2519be5c8325ee980bc9cedcfb50caf1d09eb110",
+    "blocks/gcsp/manual-setup/setup-model.js": "a69de6fc54f458a4fa73a7527f45c405c9da0fb12e37dd078bec04c0b7f62afe",
+    "blocks/gcsp/shell/gcsp-shell.css": "d6f35911624c03ee82c22eb349d51228ba849eaf354976f19df905887e9f92a3",
+    "blocks/gcsp/shell/gcsp-tokens.css": "d939a355b945ecfd0ad185029dbe2b79c70bab8862052a7ec54cf7abfa7f8642",
+    "blocks/gcsp/shell/portal-shell.js": "4e6c3b52bb320f6254ce0a5ae62f481d022e2a24350264149352eb92caa50d8b",
+    "blocks/vehicle-matcher/decision-card.css": "43b32daf61a4ee219e13278378bd92b520cb73823e6fd7d84a90581cb7029c7c",
+    "blocks/vehicle-matcher/gcsp-kit.css": "ac08fa1725a878af7a6c4c3f1659b934274b4a6ad181aaa66452db4da845c210",
+    "blocks/vehicle-matcher/modes/brand-copy.js": "485098aea61944c5fd62047164b4aabfdd1c95c2ff2be9aacf5dae211d195ec9",
+    "blocks/vehicle-matcher/modes/result-card.js": "cc5d50468f45f1c751c597ece89ca5d7dfe88f70d98dd606104ad3504007f948",
+    "blocks/vehicle-matcher/question-controls.css": "cf6c9f81ad4bdb8f2543c93dc4dbd7eca60ea851af8d4a287c2930fbef8a17ec",
+    "blocks/vehicle-matcher/tokens.css": "30d971de3fd89d456b7bc819621ff9f11888da1ca73e8bd80dc70c58a411b1fa",
+    "blocks/vehicle-matcher/ui.js": "49107097a7927e388ff78949045827f3a8903fea0bd758dbe1aa597bec82d8b2",
+    "blocks/vehicle-matcher/vehicle-matcher.css": "11d7af7f3f05766c9c32c107f75f31d269d5531de4040938b34cea8b3854ea94",
+    "docs/gcsp/evidence/fucq-68/capture-fucq-68.mjs": "543535aae4f94327635113605ce8db9c4670beb2c5160ba6f5634a2e89f0ade8",
+    "gcsp-account.html": "bb6899ee9a13fb442ddf9afcaac0a9386373e1a39acc34f110d1da5cfc75d5dc",
+    "gcsp-employee.css": "d4e9c4f51aa326777a623a3072efb5a6c8dd30a9f6266786bbc19f6dc3f96b57",
+    "server/gcsp/manual-context/index.js": "13601990b08dc420ffe51948a874de7299fce88991924b8447192c29c0acedf7",
+    "server/gcsp/policy/seed-v1.json": "c585213b98631d6e82acc1b3720d47efae49fdb502f5fc86fb440703ef6e41a6",
+    "server/gcsp/runtime.js": "f4654b8053d3927a3564a3701784367e976b04549ee66fb1a9a754032f88cb16",
+    "server/index.js": "1560e4a99077e4ea648f66b87566b908404312787e5fdfcc59a5ba10debf1741"
+  },
+  "captureBytes": 1227007,
+  "aggregateCaptureBytes": 1227007
+}

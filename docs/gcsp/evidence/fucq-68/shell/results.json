@@ -1,0 +1,1337 @@
+{
+  "story": "FUCQ-68",
+  "chunk": "shell",
+  "head": "59cc7693f1dc625e4028826bf0d74a6b6ec1bd68",
+  "base": "9472dffdcae1128a15dcd1790d31c6b41ddfd03e",
+  "cases": [
+    {
+      "name": "current-shared-shell",
+      "width": 1280,
+      "cssViewport": 1280,
+      "scrollWidth": 1280,
+      "shell": {
+        "backgroundColor": "rgb(245, 246, 246)",
+        "color": "rgb(31, 35, 40)",
+        "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""
+      },
+      "primary": {
+        "backgroundColor": "rgb(3, 116, 147)",
+        "color": "rgb(255, 255, 255)",
+        "borderRadius": "2px",
+        "minHeight": "48px"
+      },
+      "muted": {
+        "color": "rgb(78, 84, 93)"
+      },
+      "focus": {
+        "tag": "SELECT",
+        "name": "driverId",
+        "outlineColor": "rgb(2, 145, 183)",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineOffset": "3px"
+      },
+      "title": {
+        "fontFamily": "BMWGroupTNCondensedPro-Medium, -apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+        "fontWeight": "500",
+        "fontSize": "40px"
+      },
+      "roles": {
+        "heading": {
+          "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "fontWeight": "600"
+        },
+        "label": {
+          "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "fontWeight": "400"
+        },
+        "input": {
+          "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "fontWeight": "400"
+        },
+        "select": {
+          "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "fontWeight": "400"
+        },
+        "textarea": {
+          "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "fontWeight": "400"
+        },
+        "button": {
+          "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "fontWeight": "600"
+        },
+        "error": {
+          "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "fontWeight": "600"
+        }
+      },
+      "fontLoaded": true,
+      "loadedFaces": [
+        {
+          "family": "BMWGroupTNCondensedPro-Medium",
+          "status": "loaded",
+          "weight": "500"
+        },
+        {
+          "family": "BMWGroupTNCondensedPro-Medium",
+          "status": "loaded",
+          "weight": "500"
+        }
+      ],
+      "fontResources": [
+        "/blocks/gcsp/shell/fonts/BMWGroupTNCondensedPro-Medium.woff2"
+      ],
+      "geometry": {
+        "headerMinHeight": "56px",
+        "headerHeight": 56,
+        "navWidth": 48,
+        "actionHeights": [
+          48,
+          48,
+          48
+        ]
+      },
+      "contrast": {
+        "primaryText": 5.353,
+        "bodyText": 14.591,
+        "mutedText": 7.053,
+        "focusOnWhite": 3.661,
+        "focusOnPage": 3.381
+      },
+      "shellRefinement": {
+        "logoPath": "/assets/brand-logos/bmwgroup-bmw-mini.svg",
+        "logoLoaded": true,
+        "logoHeight": 22,
+        "accountHeight": 44,
+        "accountWeight": "400",
+        "selectedBackground": "rgb(224, 242, 255)",
+        "selectedColor": "rgb(3, 116, 147)",
+        "selectedBorderWidth": "3px",
+        "selectedBorderColor": "rgb(3, 116, 147)",
+        "accountEnterEscape": true,
+        "narrowMenuEnterEscape": false
+      },
+      "functionalTraceReused": "flow/results.json and states/results.json at0a4ff5ac"
+    },
+    {
+      "name": "current-shared-shell",
+      "width": 320,
+      "cssViewport": 320,
+      "scrollWidth": 320,
+      "shell": {
+        "backgroundColor": "rgb(245, 246, 246)",
+        "color": "rgb(31, 35, 40)",
+        "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""
+      },
+      "primary": {
+        "backgroundColor": "rgb(3, 116, 147)",
+        "color": "rgb(255, 255, 255)",
+        "borderRadius": "2px",
+        "minHeight": "48px"
+      },
+      "muted": {
+        "color": "rgb(78, 84, 93)"
+      },
+      "focus": {
+        "tag": "SELECT",
+        "name": "driverId",
+        "outlineColor": "rgb(2, 145, 183)",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineOffset": "3px"
+      },
+      "title": {
+        "fontFamily": "BMWGroupTNCondensedPro-Medium, -apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+        "fontWeight": "500",
+        "fontSize": "32px"
+      },
+      "roles": {
+        "heading": {
+          "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "fontWeight": "600"
+        },
+        "label": {
+          "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "fontWeight": "400"
+        },
+        "input": {
+          "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "fontWeight": "400"
+        },
+        "select": {
+          "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "fontWeight": "400"
+        },
+        "textarea": {
+          "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "fontWeight": "400"
+        },
+        "button": {
+          "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "fontWeight": "600"
+        },
+        "error": {
+          "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "fontWeight": "600"
+        }
+      },
+      "fontLoaded": true,
+      "loadedFaces": [
+        {
+          "family": "BMWGroupTNCondensedPro-Medium",
+          "status": "loaded",
+          "weight": "500"
+        },
+        {
+          "family": "BMWGroupTNCondensedPro-Medium",
+          "status": "loaded",
+          "weight": "500"
+        }
+      ],
+      "fontResources": [
+        "/blocks/gcsp/shell/fonts/BMWGroupTNCondensedPro-Medium.woff2"
+      ],
+      "geometry": {
+        "headerMinHeight": "56px",
+        "headerHeight": 56,
+        "navWidth": 0,
+        "actionHeights": [
+          48,
+          48,
+          48
+        ]
+      },
+      "contrast": {
+        "primaryText": 5.353,
+        "bodyText": 14.591,
+        "mutedText": 7.053,
+        "focusOnWhite": 3.661,
+        "focusOnPage": 3.381
+      },
+      "shellRefinement": {
+        "logoPath": "/assets/brand-logos/bmwgroup-bmw-mini.svg",
+        "logoLoaded": true,
+        "logoHeight": 18,
+        "accountHeight": 44,
+        "accountWeight": "400",
+        "selectedBackground": "rgb(224, 242, 255)",
+        "selectedColor": "rgb(3, 116, 147)",
+        "selectedBorderWidth": "3px",
+        "selectedBorderColor": "rgb(3, 116, 147)",
+        "accountEnterEscape": true,
+        "narrowMenuEnterEscape": true
+      },
+      "functionalTraceReused": "flow/results.json and states/results.json at0a4ff5ac"
+    }
+  ],
+  "api": [
+    {
+      "scenario": {
+        "name": "shell",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "status": "ok",
+      "contextVersion": "7a535acda547203ff4bfe186ab5befc0776ac69357607cda6337d4db7b0a9750",
+      "versions": {
+        "policy": "gcsp-policy-v1",
+        "employeeContract": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "driver": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "recordSetId": "manual:employee-paula:v1",
+        "employee": 2,
+        "slot": 2,
+        "clock": "1"
+      },
+      "state": "ready",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "shell",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 404,
+      "status": "not-found"
+    },
+    {
+      "scenario": {
+        "name": "shell",
+        "width": 1280
+      },
+      "method": "POST",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "draftVersion": 1,
+      "contextVersion": "7a535acda547203ff4bfe186ab5befc0776ac69357607cda6337d4db7b0a9750",
+      "draftStage": "complete",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "shell",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/stock",
+      "httpStatus": 200,
+      "status": "ok",
+      "versions": {
+        "brief": 1,
+        "facts": "7d12088e8ee7e9f7963c0e78ecc03397cb9b33a59eee91b0bd4a4cd42e4245eb",
+        "policy": "gcsp-policy-v1",
+        "stock": "stock:2ef93d1f-43de-4779-b060-0c1a2f7e257c:1|e00557e8-2ab2-4252-bbb1-2a2920e44cc0:1",
+        "clock": "1",
+        "draft": 1,
+        "context": "7a535acda547203ff4bfe186ab5befc0776ac69357607cda6337d4db7b0a9750"
+      },
+      "state": "empty-stock"
+    },
+    {
+      "scenario": {
+        "name": "long-unknown",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "status": "ok",
+      "contextVersion": "5ed7be26e7b4f8ad619c3deed26e6c5c60916c0e23edb63fe8371ad853f0792a",
+      "versions": {
+        "policy": "gcsp-policy-v1",
+        "employeeContract": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "driver": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "recordSetId": "manual:employee-paula:v1",
+        "employee": 3,
+        "slot": 2,
+        "clock": "1"
+      },
+      "state": "ready",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "long-unknown",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 404,
+      "status": "not-found"
+    },
+    {
+      "scenario": {
+        "name": "shell",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "status": "ok",
+      "contextVersion": "4b0805ff96436b8af4855ec86480e1aad116edc2b2c9130deac49f10b905559c",
+      "versions": {
+        "policy": "gcsp-policy-v1",
+        "employeeContract": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "driver": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "recordSetId": "manual:employee-paula:v1",
+        "employee": 2,
+        "slot": 2,
+        "clock": "1"
+      },
+      "state": "ready",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "shell",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 404,
+      "status": "not-found"
+    },
+    {
+      "scenario": {
+        "name": "shell",
+        "width": 320
+      },
+      "method": "POST",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "draftVersion": 1,
+      "contextVersion": "4b0805ff96436b8af4855ec86480e1aad116edc2b2c9130deac49f10b905559c",
+      "draftStage": "complete",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "shell",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/stock",
+      "httpStatus": 200,
+      "status": "ok",
+      "versions": {
+        "brief": 1,
+        "facts": "7d12088e8ee7e9f7963c0e78ecc03397cb9b33a59eee91b0bd4a4cd42e4245eb",
+        "policy": "gcsp-policy-v1",
+        "stock": "stock:34856a40-ab4c-4de4-be59-f856cf336599:1|a3f9b899-606b-4a31-af37-5c19d46ffcc6:1",
+        "clock": "1",
+        "draft": 1,
+        "context": "4b0805ff96436b8af4855ec86480e1aad116edc2b2c9130deac49f10b905559c"
+      },
+      "state": "empty-stock"
+    },
+    {
+      "scenario": {
+        "name": "long-unknown",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "status": "ok",
+      "contextVersion": "6f4591911af0caccc7206297bdf36ec98653bc656db96eb0665754feeb4eeed2",
+      "versions": {
+        "policy": "gcsp-policy-v1",
+        "employeeContract": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "driver": {
+          "mode": "synthetic",
+          "sourceRef": "fixture:manual-records-v1",
+          "schemaVersion": "1",
+          "sourceVersion": "manual-records-v1",
+          "effectiveFrom": "2026-11-05T09:00:00.000Z",
+          "observedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "recordSetId": "manual:employee-paula:v1",
+        "employee": 3,
+        "slot": 2,
+        "clock": "1"
+      },
+      "state": "ready",
+      "currentContractId": "current:employee-paula"
+    },
+    {
+      "scenario": {
+        "name": "long-unknown",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 404,
+      "status": "not-found"
+    }
+  ],
+  "events": [],
+  "screenshots": [
+    {
+      "file": "01-account-open-1280.png",
+      "bytes": 187840,
+      "sha256": "9bbbbfb213456131a3879a078528fd166c773cd31b292c674f18ea09bf2b4280",
+      "width": 1280,
+      "overflow": false,
+      "labelledControls": true
+    },
+    {
+      "file": "02-invalid-1280.png",
+      "bytes": 233746,
+      "sha256": "3628a011c0a561230f73946265ca8767f0a6ad1959c529586b3f93a96dde1a20",
+      "width": 1280,
+      "overflow": false,
+      "labelledControls": true,
+      "summaryFocused": true
+    },
+    {
+      "file": "03-keyboard-focus-1280.png",
+      "bytes": 234026,
+      "sha256": "c11a308c155cd2dfb983abb7627c0f1f4051f90cbb9d38e88fd181c1b48899a7",
+      "width": 1280,
+      "overflow": false,
+      "labelledControls": true
+    },
+    {
+      "file": "04-saved-1280.png",
+      "bytes": 187404,
+      "sha256": "d399e64b95f7ae707178caba85d81c7f0b296efe5a01e91189cc43eb6ada50d7",
+      "width": 1280,
+      "overflow": false,
+      "labelledControls": true
+    },
+    {
+      "file": "05-long-unknown-1280.png",
+      "bytes": 218503,
+      "sha256": "00661fa27ba9d234fa02ad7b7eca1df4d1da65de489ef0752d259301cd37d04d",
+      "width": 1280,
+      "overflow": false,
+      "labelledControls": true
+    },
+    {
+      "file": "06-account-open-320.png",
+      "bytes": 182852,
+      "sha256": "ba70b7006d377ba5fb768b3bbddcb3ff9124ad0430e060441aa39e5a7573a889",
+      "width": 320,
+      "overflow": false,
+      "labelledControls": true
+    },
+    {
+      "file": "07-menu-open-320.png",
+      "bytes": 199206,
+      "sha256": "66413d90953b514dd01522578736eb89aed3f6c5d6b45b1fe102abadde23dd0f",
+      "width": 320,
+      "overflow": false,
+      "labelledControls": true
+    },
+    {
+      "file": "08-invalid-320.png",
+      "bytes": 229323,
+      "sha256": "fca1741d3417340ff6b9be40a36221a4bead9fe46725833a24fbf455187d8fba",
+      "width": 320,
+      "overflow": false,
+      "labelledControls": true,
+      "summaryFocused": true
+    },
+    {
+      "file": "09-keyboard-focus-320.png",
+      "bytes": 229585,
+      "sha256": "7f0839c21badf72fc759a0956e8de6887be72389431e897835591a7e25dc75a9",
+      "width": 320,
+      "overflow": false,
+      "labelledControls": true
+    },
+    {
+      "file": "10-saved-320.png",
+      "bytes": 178483,
+      "sha256": "3f88e1220ba7025c41405223e8e17448a81ac7ef5ef3081d1bfcbc2c132ad3a0",
+      "width": 320,
+      "overflow": false,
+      "labelledControls": true
+    },
+    {
+      "file": "11-long-unknown-320.png",
+      "bytes": 205039,
+      "sha256": "cfb55b5c48bb662fad6a2aa6f315e21f5dbf8fda67f7c05187bdcf8337767546",
+      "width": 320,
+      "overflow": false,
+      "labelledControls": true
+    },
+    {
+      "file": "12-long-account-open-320.png",
+      "bytes": 208430,
+      "sha256": "1202eb9f9ac43233002034998aa9c4fed1f1ab735e2896339ad6f0cbecb42750",
+      "width": 320,
+      "overflow": false,
+      "labelledControls": true
+    }
+  ],
+  "pageErrors": [],
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "path": "/api/gcsp/manual/draft"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "path": "/api/gcsp/manual/draft"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "path": "/api/gcsp/manual/draft"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "path": "/api/gcsp/manual/draft"
+    }
+  ],
+  "externalRequests": [],
+  "errors": [],
+  "resources": {
+    "nodePid": 236,
+    "nodePgid": 236,
+    "scratch": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-045/.claude/test-scratch/fucq68/runner/test-stamp-shard-0acf1c1ec56945e591204ab148a10550",
+    "profile": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-045/.claude/test-scratch/fucq68/runner/test-stamp-shard-0acf1c1ec56945e591204ab148a10550/chrome-profile",
+    "cache": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-045/.claude/test-scratch/fucq68/runner/test-stamp-shard-0acf1c1ec56945e591204ab148a10550/chrome-cache",
+    "crashpad": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-045/.claude/test-scratch/fucq68/runner/test-stamp-shard-0acf1c1ec56945e591204ab148a10550/chrome-crashpad",
+    "browserEndpoint": null,
+    "sampledBrowserProcesses": [
+      {
+        "pid": 243,
+        "ppid": 236,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 253,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 256,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 260,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 264,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 268,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 269,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 271,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 243,
+        "ppid": 236,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 253,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 256,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 260,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 264,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 268,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 269,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 271,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 243,
+        "ppid": 236,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 253,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 256,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 260,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 264,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 268,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 269,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 271,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 243,
+        "ppid": 236,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 253,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 256,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 260,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 264,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 268,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 269,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 271,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 243,
+        "ppid": 236,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 253,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 256,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 260,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 264,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 268,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 269,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 271,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 243,
+        "ppid": 236,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 253,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 256,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 260,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 264,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 268,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 269,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 271,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 243,
+        "ppid": 236,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 253,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 256,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 260,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 264,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 268,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 269,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 271,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 243,
+        "ppid": 236,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 253,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 256,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 260,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 264,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 268,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 269,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 271,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 243,
+        "ppid": 236,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 253,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 256,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 260,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 264,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 268,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 269,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 271,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 243,
+        "ppid": 236,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 253,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 256,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 260,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 264,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 268,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 269,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 271,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 243,
+        "ppid": 236,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 253,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 256,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 260,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 264,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 268,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 269,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 271,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 243,
+        "ppid": 236,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 253,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 256,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 260,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 264,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 268,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 269,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 271,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 243,
+        "ppid": 236,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 253,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 256,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 260,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 264,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 268,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 269,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      },
+      {
+        "pid": 271,
+        "ppid": 243,
+        "pgid": 243,
+        "executable": "owned-chrome"
+      }
+    ],
+    "listenerPort": 62508,
+    "listenerHost": "127.0.0.1"
+  },
+  "cleanup": {
+    "browserContextClosed": true,
+    "listenerClosed": true,
+    "listenerPort": 62508,
+    "listenerHost": "127.0.0.1",
+    "runtimeClosed": true,
+    "profile": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-045/.claude/test-scratch/fucq68/runner/test-stamp-shard-0acf1c1ec56945e591204ab148a10550/chrome-profile",
+    "cache": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-045/.claude/test-scratch/fucq68/runner/test-stamp-shard-0acf1c1ec56945e591204ab148a10550/chrome-cache",
+    "crashpad": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-045/.claude/test-scratch/fucq68/runner/test-stamp-shard-0acf1c1ec56945e591204ab148a10550/chrome-crashpad",
+    "scratch": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-045/.claude/test-scratch/fucq68/runner/test-stamp-shard-0acf1c1ec56945e591204ab148a10550",
+    "apiServerNeverBound": true
+  },
+  "expectedHttpFailures": [
+    {
+      "scenario": {
+        "name": "shell",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 404,
+      "status": "not-found"
+    },
+    {
+      "scenario": {
+        "name": "long-unknown",
+        "width": 1280
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 404,
+      "status": "not-found"
+    },
+    {
+      "scenario": {
+        "name": "shell",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 404,
+      "status": "not-found"
+    },
+    {
+      "scenario": {
+        "name": "long-unknown",
+        "width": 320
+      },
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 404,
+      "status": "not-found"
+    }
+  ],
+  "unexpectedHttpFailures": [],
+  "unexpectedConsoleErrors": [],
+  "sourceHashes": {
+    "assets/brand-logos/bmwgroup-bmw-mini.svg": "703c69d19aa0d2eda773a1b4022af2bf474c1058a4bafb84468abf7df63557ac",
+    "blocks/gcsp/account/account-view.js": "c2e71ea6e5b15a1d905e33ab72d78eb0f45039fe2508cad89b11654801749dee",
+    "blocks/gcsp/account/http-adapter.js": "eb89226f9ab8ff04b5c43dfc3c91b6e57c233ef88e273eaf8985895e79106453",
+    "blocks/gcsp/employee/fixtures.js": "e63cf63076f7bfa718b23b3e2a0d39ef6e57c58c4003f238b0059ce560ba0881",
+    "blocks/gcsp/employee/gcsp-employee.css": "3cab6080aa52605d92b5f616151087fe289e72c43045a7f396a8bffca7112b6f",
+    "blocks/gcsp/employee/gcsp-employee.js": "2f35c7983aafef2c8f1eb72f6c78341cbf1c76269110f6a25dca1b775f11df2b",
+    "blocks/gcsp/employee/representative-body.js": "a9146fc18cac0346a20b12c603df65a84dffc7bd46d267f2706f4e2c63b76af4",
+    "blocks/gcsp/kit/form-controls.css": "0dec8818344defbe8b5718cdeef131d71faae782515f8ea3dce56b9e43002057",
+    "blocks/gcsp/kit/form-controls.js": "4df9e86f3d51f33397bd524b95f35a40240c931b441f91a7b8b05ef89fe508b4",
+    "blocks/gcsp/manual-setup/gcsp-manual-setup.css": "544a3d8ca9f38d5e934ca1172aca864a9c18063f88b947bf69fe1a5c01846b26",
+    "blocks/gcsp/manual-setup/gcsp-manual-setup.js": "6b03e4ba4b271e230b4259fcc92fb5d60651f899d55f3c0faf235782a7dae0a1",
+    "blocks/gcsp/manual-setup/harness.js": "403b82f895f73378b51fca57975db467bb2a9709015b43002d318f71c22a1ded",
+    "blocks/gcsp/manual-setup/setup-controller.js": "7c3b809d710906ac6c2963ef2519be5c8325ee980bc9cedcfb50caf1d09eb110",
+    "blocks/gcsp/manual-setup/setup-model.js": "a69de6fc54f458a4fa73a7527f45c405c9da0fb12e37dd078bec04c0b7f62afe",
+    "blocks/gcsp/shell/density-theme.css": "c2a680854e05bf88edc335308797b636038ff5bdd980f101e8f32edd451f3593",
+    "blocks/gcsp/shell/density-typography.css": "6d238b5c4dee9058e9fd32e0e5704e95a94eb7e5cdc82c9fb051534d6ea44641",
+    "blocks/gcsp/shell/fonts/BMWGroupTNCondensedPro-Medium.woff2": "66ecd7139a12627c60c78755cbf664cdca10df33f22a6426ec2693a38d8a5286",
+    "blocks/gcsp/shell/fonts/density-fonts.css": "bf13d49ea7fc1d75888a06881e2ce1a0151875a69177c937045ea86ce4ac1e7c",
+    "blocks/gcsp/shell/gcsp-shell.css": "347fd90e22ea14fcdceda92c9da095da86fc1164ebb0926577d6e5cb9068014e",
+    "blocks/gcsp/shell/gcsp-tokens.css": "3a4b773eb4e67734cead53956e39323d3050af6e35465b6c275084096ed93cde",
+    "blocks/gcsp/shell/portal-shell.js": "7e62088d69bfa43ff0ccff2678931fe1e48c7a0b3814184f449f308cf4ebaa01",
+    "blocks/vehicle-matcher/decision-card.css": "340bded6c89fb3f7635835167cfb8192e6e2fb1ec75c89a37cc48b053a669def",
+    "blocks/vehicle-matcher/gcsp-kit.css": "ac08fa1725a878af7a6c4c3f1659b934274b4a6ad181aaa66452db4da845c210",
+    "blocks/vehicle-matcher/modes/brand-copy.js": "485098aea61944c5fd62047164b4aabfdd1c95c2ff2be9aacf5dae211d195ec9",
+    "blocks/vehicle-matcher/modes/result-card.js": "cc5d50468f45f1c751c597ece89ca5d7dfe88f70d98dd606104ad3504007f948",
+    "blocks/vehicle-matcher/question-controls.css": "cf6c9f81ad4bdb8f2543c93dc4dbd7eca60ea851af8d4a287c2930fbef8a17ec",
+    "blocks/vehicle-matcher/tokens.css": "30d971de3fd89d456b7bc819621ff9f11888da1ca73e8bd80dc70c58a411b1fa",
+    "blocks/vehicle-matcher/ui.js": "49107097a7927e388ff78949045827f3a8903fea0bd758dbe1aa597bec82d8b2",
+    "blocks/vehicle-matcher/vehicle-matcher.css": "11d7af7f3f05766c9c32c107f75f31d269d5531de4040938b34cea8b3854ea94",
+    "docs/gcsp/evidence/fucq-68/capture-fucq-68.mjs": "798f5f3c43d22989a312937ba666620f8f4d9d39d18617ecc03fef9684509915",
+    "gcsp-employee.css": "d4e9c4f51aa326777a623a3072efb5a6c8dd30a9f6266786bbc19f6dc3f96b57",
+    "gcsp-manual-setup.html": "2fe5dbbf62106217c8aa41ab25f54f81b20af978d1b22c72db7fc13e2700da17",
+    "server/gcsp/manual-context/index.js": "13601990b08dc420ffe51948a874de7299fce88991924b8447192c29c0acedf7",
+    "server/gcsp/policy/seed-v1.json": "c585213b98631d6e82acc1b3720d47efae49fdb502f5fc86fb440703ef6e41a6",
+    "server/gcsp/runtime.js": "f4654b8053d3927a3564a3701784367e976b04549ee66fb1a9a754032f88cb16",
+    "server/index.js": "1560e4a99077e4ea648f66b87566b908404312787e5fdfcc59a5ba10debf1741"
+  },
+  "captureBytes": 2494437,
+  "aggregateCaptureBytes": 9185054
+}

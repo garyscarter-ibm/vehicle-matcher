@@ -1,0 +1,377 @@
+{
+  "story": "FUCQ-34",
+  "sourceCommit": "312eaa005bc2390b8c449b6c4deaf7b511e7e22a",
+  "harnessSha": "f62f15a3facaf5636f9d4771680e01e49a5281b38d25a6cd3ffdf258fbba1f93",
+  "capturedAt": "2026-11-05T15:24:01.713Z",
+  "fixtureBacked": true,
+  "runtimeResources": {
+    "staticPort": 31461,
+    "fixtureApiPort": 54763,
+    "chromeCdpPort": 54768,
+    "chromePid": 38303,
+    "profile": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-a51d8eb00357426886441e7359083064/fucq34-chrome-profile"
+  },
+  "externalEgress": "blocked; remote default API fulfilled by injected local buildServer fixtures",
+  "checks": [
+    {
+      "id": "picker-return-link-geometry-1280",
+      "pass": true,
+      "expected": "picker return link has shared button geometry, fits the viewport and receives visible keyboard focus after the picker token fix",
+      "observed": {
+        "label": "All car experiences",
+        "href": "/index.html?experience=launcher",
+        "focused": true,
+        "focusVisible": true,
+        "outlineWidth": "3px",
+        "fontFamily": "\"Helvetica Neue\", helvetica, arial, sans-serif",
+        "fontSize": "13px",
+        "padding": "12px 24px",
+        "paddingLeft": 24,
+        "paddingTop": 12,
+        "rect": {
+          "x": 555.90625,
+          "right": 724.078125,
+          "y": 223.5,
+          "height": 48,
+          "width": 168.171875
+        },
+        "viewport": 1280,
+        "documentWidth": 1280
+      }
+    },
+    {
+      "id": "picker-return-link-enter-1280",
+      "pass": true,
+      "expected": "Enter activates the labelled picker return link",
+      "observed": "http://vehicle-matcher.demo.test:31461/index.html?experience=launcher"
+    },
+    {
+      "id": "picker-return-link-geometry-320",
+      "pass": true,
+      "expected": "picker return link has shared button geometry, fits the viewport and receives visible keyboard focus after the picker token fix",
+      "observed": {
+        "label": "All car experiences",
+        "href": "/index.html?experience=launcher",
+        "focused": true,
+        "focusVisible": true,
+        "outlineWidth": "3px",
+        "fontFamily": "\"Helvetica Neue\", helvetica, arial, sans-serif",
+        "fontSize": "13px",
+        "padding": "12px 24px",
+        "paddingLeft": 24,
+        "paddingTop": 12,
+        "rect": {
+          "x": 75.90625,
+          "right": 244.078125,
+          "y": 48,
+          "height": 48,
+          "width": 168.171875
+        },
+        "viewport": 320,
+        "documentWidth": 320
+      }
+    },
+    {
+      "id": "picker-return-link-enter-320",
+      "pass": true,
+      "expected": "Enter activates the labelled picker return link",
+      "observed": "http://vehicle-matcher.demo.test:31461/index.html?experience=launcher"
+    },
+    {
+      "id": "back-forward-context",
+      "pass": true,
+      "expected": "Back/Forward traverses launcher and the selected BMW journey without losing its context",
+      "observed": {
+        "back": "/index.html?brand=bmw&mode=questionnaire&scope=national&retailer=96&retailerName=BMW+Approved+Used&api=http%3A%2F%2F127.0.0.1%3A54763#m=eyJidWRnZXQiOls0MDAwMCw3NTAwMF0sImJvZHlTdHlsZXMiOlsiYW55Il0sImZ1ZWwiOlsib3BlbiJdLCJjaGFyZ2luZyI6Im5vbmUiLCJwcmltYXJ5VXNlIjoiZnVuIiwicGVvcGxlIjoiY3JldyIsIm1pbGVhZ2UiOjEwMDAwLCJzdHlsZSI6IjUiLCJwcmlvcml0aWVzIjpbImltYWdlIl19",
+        "forward": "/index.html?experience=used-cars&brand=bmw&mode=questionnaire&retailer=96&retailerName=BMW+Approved+Used&scope=national&api=http%3A%2F%2F127.0.0.1%3A54763#m=eyJidWRnZXQiOls0MDAwMCw3NTAwMF0sImJvZHlTdHlsZXMiOlsiYW55Il0sImZ1ZWwiOlsib3BlbiJdLCJjaGFyZ2luZyI6Im5vbmUiLCJwcmltYXJ5VXNlIjoiZnVuIiwicGVvcGxlIjoiY3JldyIsIm1pbGVhZ2UiOjEwMDAwLCJzdHlsZSI6IjUiLCJwcmlvcml0aWVzIjpbImltYWdlIl19"
+      }
+    },
+    {
+      "id": "desktop-launcher-retail-repeat",
+      "pass": true,
+      "expected": "1280x900 launcher to retail to launcher to the same retail journey",
+      "observed": "http://vehicle-matcher.demo.test:31461/index.html?experience=used-cars&brand=bmw&mode=questionnaire&retailer=96&retailerName=BMW+Approved+Used&scope=national&api=http%3A%2F%2F127.0.0.1%3A54763#m=eyJidWRnZXQiOls0MDAwMCw3NTAwMF0sImJvZHlTdHlsZXMiOlsiYW55Il0sImZ1ZWwiOlsib3BlbiJdLCJjaGFyZ2luZyI6Im5vbmUiLCJwcmltYXJ5VXNlIjoiZnVuIiwicGVvcGxlIjoiY3JldyIsIm1pbGVhZ2UiOjEwMDAwLCJzdHlsZSI6IjUiLCJwcmlvcml0aWVzIjpbImltYWdlIl19"
+    },
+    {
+      "id": "narrow-same-brand-round-trip",
+      "pass": true,
+      "expected": "320x740 launcher to same BMW journey retains mode/scope/API/retailer/answers",
+      "observed": "http://vehicle-matcher.demo.test:31461/index.html?experience=used-cars&brand=bmw&mode=questionnaire&retailer=96&retailerName=BMW+Approved+Used&scope=national&api=http%3A%2F%2F127.0.0.1%3A54763#m=eyJidWRnZXQiOls0MDAwMCw3NTAwMF0sImJvZHlTdHlsZXMiOlsiYW55Il0sImZ1ZWwiOlsib3BlbiJdLCJjaGFyZ2luZyI6Im5vbmUiLCJwcmltYXJ5VXNlIjoiZnVuIiwicGVvcGxlIjoiY3JldyIsIm1pbGVhZ2UiOjEwMDAwLCJzdHlsZSI6IjUiLCJwcmlvcml0aWVzIjpbImltYWdlIl19"
+    },
+    {
+      "id": "narrow-launcher-retail-repeat",
+      "pass": true,
+      "expected": "320x740 launcher to retail to launcher to the same retail journey",
+      "observed": "http://vehicle-matcher.demo.test:31461/index.html?experience=used-cars&brand=bmw&mode=questionnaire&retailer=96&retailerName=BMW+Approved+Used&scope=national&api=http%3A%2F%2F127.0.0.1%3A54763#m=eyJidWRnZXQiOls0MDAwMCw3NTAwMF0sImJvZHlTdHlsZXMiOlsiYW55Il0sImZ1ZWwiOlsib3BlbiJdLCJjaGFyZ2luZyI6Im5vbmUiLCJwcmltYXJ5VXNlIjoiZnVuIiwicGVvcGxlIjoiY3JldyIsIm1pbGVhZ2UiOjEwMDAwLCJzdHlsZSI6IjUiLCJwcmlvcml0aWVzIjpbImltYWdlIl19"
+    },
+    {
+      "id": "deliberate-brand-change-starts-fresh",
+      "pass": true,
+      "expected": "picker explains reset; MINI retains valid mode/scope but no BMW dealer or answers",
+      "observed": {
+        "freshCopy": "All car experiences\nChoose your brand\n\nChoosing a brand starts a new search and resets your answers and retailer.",
+        "miniRetailerLabelVisible": true,
+        "api": "http://127.0.0.1:54763",
+        "picker": {
+          "hasBrand": false,
+          "mode": "questionnaire",
+          "scope": "national",
+          "retailer": null,
+          "hash": ""
+        },
+        "chosenBrand": "mini",
+        "mode": "questionnaire",
+        "scope": "national",
+        "retailer": null,
+        "retailerName": null,
+        "hash": ""
+      }
+    },
+    {
+      "id": "second-deliberate-brand-switch",
+      "pass": true,
+      "expected": "MINI to Ford retains valid mode/scope/API and clears answer/dealer context",
+      "observed": "/index.html?experience=used-cars&brand=ford&mode=questionnaire&scope=national&api=http%3A%2F%2F127.0.0.1%3A54763"
+    },
+    {
+      "id": "employee-boundary-recovery",
+      "pass": true,
+      "expected": "unavailable employee entry exposes no private retail fields; recovery reopens the separately retained BMW retail session",
+      "observed": {
+        "safeEmployeeContext": {
+          "experience": "employee-cars",
+          "brand": "bmw",
+          "state": "employee-unavailable",
+          "location": "/index.html?experience=employee-cars&brand=bmw&api=http%3A%2F%2F127.0.0.1%3A54763",
+          "employeeAvailable": false,
+          "links": {
+            "launcher": "/index.html?experience=launcher&brand=bmw&api=http%3A%2F%2F127.0.0.1%3A54763",
+            "usedCars": "/index.html?experience=used-cars&brand=bmw&api=http%3A%2F%2F127.0.0.1%3A54763",
+            "employeeCars": "/index.html?experience=employee-cars&brand=bmw&api=http%3A%2F%2F127.0.0.1%3A54763",
+            "employeeBmw": "/index.html?experience=employee-cars&brand=bmw&api=http%3A%2F%2F127.0.0.1%3A54763"
+          }
+        },
+        "storageKeys": [
+          "vm-retail-return",
+          "vmAccessKey"
+        ],
+        "state": "employee-unavailable",
+        "visibleRecovery": true,
+        "recoveryLabel": "Explore BMW Used cars",
+        "target": {
+          "experience": "used-cars",
+          "brand": "bmw",
+          "mode": "questionnaire",
+          "scope": "national",
+          "retailer": "96",
+          "retailerName": "BMW Approved Used",
+          "hash": "#m=eyJidWRnZXQiOls0MDAwMCw3NTAwMF0sImJvZHlTdHlsZXMiOlsiYW55Il0sImZ1ZWwiOlsib3BlbiJdLCJjaGFyZ2luZyI6Im5vbmUiLCJwcmltYXJ5VXNlIjoiZnVuIiwicGVvcGxlIjoiY3JldyIsIm1pbGVhZ2UiOjEwMDAwLCJzdHlsZSI6IjUiLCJwcmlvcml0aWVzIjpbImltYWdlIl19",
+          "key": false
+        },
+        "visiblePrivateRetailer": false,
+        "entryHasKey": false
+      }
+    },
+    {
+      "id": "employee-return-retained-retail",
+      "pass": true,
+      "expected": "return from unavailable employee entry reopens the session-only retained public answer URL",
+      "observed": "http://vehicle-matcher.demo.test:31461/index.html?experience=used-cars&brand=bmw&mode=questionnaire&retailer=96&retailerName=BMW+Approved+Used&scope=national&api=http%3A%2F%2F127.0.0.1%3A54763#m=eyJidWRnZXQiOls0MDAwMCw3NTAwMF0sImJvZHlTdHlsZXMiOlsiYW55Il0sImZ1ZWwiOlsib3BlbiJdLCJjaGFyZ2luZyI6Im5vbmUiLCJwcmltYXJ5VXNlIjoiZnVuIiwicGVvcGxlIjoiY3JldyIsIm1pbGVhZ2UiOjEwMDAwLCJzdHlsZSI6IjUiLCJwcmlvcml0aWVzIjpbImltYWdlIl19"
+    },
+    {
+      "id": "legacy-direct-block-entry",
+      "pass": true,
+      "expected": "direct block.html enters the intended Ford locked retail mode without compulsory launcher selection",
+      "observed": {
+        "path": "/block.html",
+        "api": "http://127.0.0.1:54763",
+        "keyAbsent": true,
+        "state": "retail",
+        "brand": "ford",
+        "modeSwitchVisible": false
+      }
+    },
+    {
+      "id": "block-consumed-key-local-api",
+      "pass": true,
+      "expected": "block direct entry consumes fake key and uses explicit local fixture override",
+      "observed": "/block.html?brand=ford&mode=questionnaire&api=http%3A%2F%2F127.0.0.1%3A54763"
+    },
+    {
+      "id": "session-demo-gate",
+      "pass": true,
+      "expected": "nonlocal deployed-default entry prompts without session key; entering synthetic key mounts and refresh reuses session",
+      "observed": {
+        "gateSeen": true,
+        "gateAfterRefresh": 0,
+        "effectiveApi": "https://bmw-matcher-api.onrender.com",
+        "fixtureInterceptCalls": 2
+      }
+    }
+  ],
+  "cases": [],
+  "browserLogs": {
+    "errors": [],
+    "failed": [],
+    "badLocalResponses": [],
+    "externalBlocked": [],
+    "apiCalls": [
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "GET",
+        "path": "/api/questions?retailer=96&brand=bmw",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "POST",
+        "path": "/api/nearby",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "POST",
+        "path": "/api/match",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "GET",
+        "path": "/api/questions?retailer=96&brand=bmw",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "POST",
+        "path": "/api/nearby",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "POST",
+        "path": "/api/match",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "GET",
+        "path": "/api/questions?retailer=96&brand=bmw",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "POST",
+        "path": "/api/nearby",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "POST",
+        "path": "/api/match",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "GET",
+        "path": "/api/questions?retailer=96&brand=bmw",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "POST",
+        "path": "/api/nearby",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "POST",
+        "path": "/api/match",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "GET",
+        "path": "/api/questions?retailer=96&brand=bmw",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "POST",
+        "path": "/api/nearby",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "POST",
+        "path": "/api/match",
+        "status": 200
+      },
+      {
+        "scope": "deliberate-brand-change",
+        "method": "GET",
+        "path": "/api/questions?retailer=92&brand=mini",
+        "status": 200
+      },
+      {
+        "scope": "deliberate-brand-change",
+        "method": "GET",
+        "path": "/api/questions?brand=ford",
+        "status": 200
+      },
+      {
+        "scope": "deliberate-brand-change",
+        "method": "GET",
+        "path": "/api/questions?retailer=96&brand=bmw",
+        "status": 200
+      },
+      {
+        "scope": "deliberate-brand-change",
+        "method": "POST",
+        "path": "/api/nearby",
+        "status": 200
+      },
+      {
+        "scope": "deliberate-brand-change",
+        "method": "POST",
+        "path": "/api/match",
+        "status": 200
+      },
+      {
+        "scope": "employee-boundary-isolation",
+        "method": "GET",
+        "path": "/api/questions?retailer=96&brand=bmw",
+        "status": 200
+      },
+      {
+        "scope": "employee-boundary-isolation",
+        "method": "POST",
+        "path": "/api/nearby",
+        "status": 200
+      },
+      {
+        "scope": "employee-boundary-isolation",
+        "method": "POST",
+        "path": "/api/match",
+        "status": 200
+      },
+      {
+        "scope": "legacy-block-entry",
+        "method": "GET",
+        "path": "/api/questions?retailer=96&brand=ford",
+        "status": 200
+      },
+      {
+        "scope": "real-session-gate",
+        "method": "GET",
+        "path": "/api/questions?retailer=96&brand=bmw",
+        "status": 200
+      },
+      {
+        "scope": "real-session-gate",
+        "method": "GET",
+        "path": "/api/questions?retailer=96&brand=bmw",
+        "status": 200
+      }
+    ]
+  }
+}

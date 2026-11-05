@@ -13,7 +13,7 @@
 .gcsp .gcsp-table-wrap:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 2px; }
 .gcsp .gcsp-table { width: 100%; border-collapse: collapse; font-size: 14px; }
 .gcsp .gcsp-table-caption { caption-side: top; padding: 10px 12px; text-align: left; font-size: 15px; font-weight: 600; }
-.gcsp .gcsp-table-th { padding: 8px 12px; text-align: left; vertical-align: bottom; color: var(--gcsp-text-muted); font-size: 13px; font-weight: 600; background: var(--gcsp-surface-page); border-top: 1px solid var(--gcsp-divider); border-bottom: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-table-th { padding: 8px 12px; text-align: left; vertical-align: bottom; color: var(--gcsp-text-muted); font-size: 13px; font-weight: var(--gcsp-font-table-header-weight); background: var(--gcsp-surface-page); border-top: 1px solid var(--gcsp-divider); border-bottom: 1px solid var(--gcsp-divider); }
 .gcsp .gcsp-table-rowhead, .gcsp .gcsp-table-td { padding: 8px 12px; text-align: left; vertical-align: top; overflow-wrap: break-word; border-bottom: 1px solid var(--gcsp-divider); }
 .gcsp .gcsp-table-rowhead { font-weight: 600; }
 .gcsp .gcsp-table-td { font-weight: 400; }

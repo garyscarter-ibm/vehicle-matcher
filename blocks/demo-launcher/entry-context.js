@@ -1,5 +1,7 @@
+import { retailContextUrl } from '../vehicle-matcher/share-context.js';
+
 /* Static entry navigation only. These values confer no identity, entitlement
- * or recommendation-policy authority. Employee mounting belongs to FUCQ-35. */
+ * or recommendation-policy authority. Consumers register the employee mount. */
 export const ENTRY_REGISTRY = Object.freeze({
   experiences: Object.freeze(['launcher', 'used-cars', 'employee-cars']),
   retailBrands: Object.freeze(['bmw', 'mini', 'ford', 'honda', 'motorrad', 'ferrari']),
@@ -15,10 +17,8 @@ const RETAIL_HASH = /(?:^#|[&])(?:m|mingle|knockout)=/;
 const readUrl = (input) => new URL(String(input));
 const relativeUrl = (url) => `${url.pathname}${url.search}${url.hash}`;
 
-/** Build a same-entry link, retaining a repository prefix and never a legacy
- * access key. Launcher hops retain retail return context; employee hops use an
- * allowlist so buyer answers/retailer overrides cannot become employee input.
- * This is navigation, not the retail answer/share serializer. */
+/** Same-entry navigation, retaining retail context except across the employee
+ * boundary. Retail answer/share serialization belongs to retailContextUrl. */
 export function buildEntryUrl(input, { experience, brand } = {}) {
   const url = readUrl(input);
   url.searchParams.delete('key');
@@ -28,18 +28,106 @@ export function buildEntryUrl(input, { experience, brand } = {}) {
 
   if (url.searchParams.get('experience') === 'employee-cars') {
     const query = new URLSearchParams();
-    for (const key of ['experience', 'brand', 'api']) {
+    for (const key of ['experience', 'brand']) {
       if (url.searchParams.has(key)) query.set(key, url.searchParams.get(key));
     }
+    const api = new URL(retailContextUrl(url, { api: url.searchParams.get('api') })).searchParams.get('api');
+    if (api) query.set('api', api);
     url.search = query.toString();
     url.hash = '';
   }
   return relativeUrl(url);
 }
 
-/** Resolve presentation state without modifying the caller's URL. Unknown
- * employee brands remain explicit; only retail preserves its BMW fallback.
- * Raw input URLs and consumed keys are deliberately absent from diagnostics. */
+export const RETAIL_RETURN_STORAGE = 'vm-retail-return';
+const supportedBrand = (value) => ENTRY_REGISTRY.retailBrands.includes(value);
+const publicHash = (hash) => /^#(?:m|mingle|knockout)=[^&]*$/.test(hash) ? hash : '';
+
+function publicRetailUrl(input, brand, { fresh = false } = {}) {
+  const source = readUrl(input);
+  const params = source.searchParams;
+  const employee = params.get('experience') === 'employee-cars';
+  const mode = !employee && params.get('mode')?.toLowerCase();
+  const url = new URL(retailContextUrl(source, {
+    brand,
+    mode,
+    scope: !employee && params.get('scope')?.trim().toLowerCase(),
+    retailer: !employee && !fresh ? params.get('retailer') : null,
+    retailerLabel: !employee && !fresh ? params.get('retailerName') : null,
+    api: params.get('api'),
+  }, !employee && !fresh ? publicHash(source.hash) : ''));
+  // The share contract writes an effective mode; navigation preserves its lock.
+  if (!ENTRY_REGISTRY.retailModes.includes(mode)) url.searchParams.delete('mode');
+  if (brand === null) url.searchParams.delete('brand');
+  return url;
+}
+
+/** A deliberate new brand starts fresh answers/dealer identity, retaining valid
+ * mode/scope/API. Selecting the existing supported brand preserves its journey. */
+export function brandChangeUrl(input, brand) {
+  if (brand !== null && !supportedBrand(brand)) throw new TypeError('Unsupported retail brand');
+  const source = readUrl(input);
+  const previous = source.searchParams.get('brand')?.toLowerCase();
+  const url = publicRetailUrl(source, brand, { fresh: !supportedBrand(previous) || previous !== brand });
+  const experience = source.searchParams.get('experience');
+  return buildEntryUrl(url, ENTRY_REGISTRY.experiences.includes(experience) ? { experience } : {});
+}
+
+function sessionStore(storage) {
+  return storage === undefined ? globalThis.sessionStorage : storage;
+}
+
+function retailPage(url, base) {
+  const directory = new URL('.', base).pathname;
+  return url.origin === base.origin && !url.username && !url.password
+    && ['', 'index.html', 'block.html'].some((page) => url.pathname === `${directory}${page}`);
+}
+
+/** Remember only a mounted retail page's public location in this browser session.
+ * Blocked storage is optional; employee and unsupported locations never overwrite it. */
+export function rememberRetailLocation(input, { storage } = {}) {
+  try {
+    const url = readUrl(input);
+    const context = resolveEntryContext(url);
+    if (!retailPage(url, url) || context.state !== 'retail'
+      || url.searchParams.get('experience') === 'employee-cars') return null;
+    const location = relativeUrl(publicRetailUrl(url, context.brand));
+    try { sessionStore(storage)?.setItem(RETAIL_RETURN_STORAGE, location); } catch { /* Storage is optional. */ }
+    return location;
+  } catch {
+    return null;
+  }
+}
+
+/** Resume only the selected brand's validated retail location. Current retail
+ * navigation wins over stale storage; employee input contributes only brand/API. */
+export function retailReturnUrl(input, { brand = resolveEntryContext(input).brand, storage } = {}) {
+  brand = supportedBrand(brand) ? brand : null;
+  const source = readUrl(input);
+  const fresh = () => buildEntryUrl(new URL(brandChangeUrl(source, brand), source), { experience: 'used-cars' });
+  const employee = source.searchParams.get('experience') === 'employee-cars';
+  const currentBrand = source.searchParams.get('brand')?.toLowerCase();
+  const hasContext = RETAIL_PARAMS.slice(1).some((key) => source.searchParams.has(key)) || publicHash(source.hash);
+  if (!employee && ((currentBrand === brand
+    && (resolveEntryContext(source).state === 'retail' || hasContext))
+    || (supportedBrand(currentBrand) && currentBrand !== brand)
+    || (!supportedBrand(currentBrand) && hasContext))) return fresh();
+  try {
+    const saved = sessionStore(storage)?.getItem(RETAIL_RETURN_STORAGE);
+    if (!saved || !supportedBrand(brand)) return fresh();
+    const url = new URL(saved, source);
+    if (!retailPage(url, source) || resolveEntryContext(url).state !== 'retail'
+      || url.searchParams.get('experience') === 'employee-cars'
+      || url.searchParams.get('brand') !== brand) return fresh();
+    if (source.searchParams.has('api')) url.searchParams.set('api', source.searchParams.get('api'));
+    return relativeUrl(publicRetailUrl(url, brand));
+  } catch {
+    return fresh();
+  }
+}
+
+/** Resolve presentation without modifying the input. Unsupported employee brands
+ * stay explicit; raw URLs and consumed keys are absent from diagnostics. */
 export function resolveEntryContext(input, {
   employeeAvailable = ENTRY_REGISTRY.employeeAvailable,
 } = {}) {

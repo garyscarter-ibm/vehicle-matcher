@@ -16,6 +16,7 @@ import { activityBody } from '../gcsp/activity/activity-body.js';
 import { activityOffer } from '../gcsp/activity/activity-offer.js';
 import { activityFixtures } from '../gcsp/activity/activity-fixtures.js';
 import { activityEvents } from '../gcsp/activity/activity-copy.js';
+import { formControlsExample } from '../gcsp/kit/form-controls-gallery.js';
 
 const browseSession = `gallery-${Date.now().toString(36)}`;
 let sessionSequence = 0;
@@ -85,6 +86,7 @@ function gcspExamples() {
   section.append(
     el('h2', 'vm-gallery-title', 'GCSP'),
     el('p', 'vm-gallery-copy', 'Shared primitives and the portal shell under the scoped GCSP tokens. Synthetic examples only; retail examples above are unchanged.'),
+    button({ label: 'Density reference preview', variant: 'ghost', href: './docs/gcsp/density/preview.html' }),
   );
   const scope = el('div', 'gcsp vm-gallery-gcsp');
   const group = (title) => {
@@ -96,6 +98,13 @@ function gcspExamples() {
     return body;
   };
   group('screenIntro').append(screenIntro({ kicker: 'Choices', title: 'Your cars', lede: 'A kicker, a title and a short lede.', level: 3 }));
+  const typography = group('Density typography');
+  typography.append(
+    screenIntro({ title: 'Large page title', lede: 'Regular body text uses the system font.', level: 1 }),
+    el('h2', '', 'Smaller heading uses system semibold'),
+    el('p', '', 'Labels, navigation and form values use the system font.'),
+    el('code', '', 'Plain text uses the Density monospace stack.'),
+  );
   const buttons = group('button');
   buttons.append(
     button({ label: 'Primary', variant: 'primary' }),
@@ -114,12 +123,14 @@ function gcspExamples() {
   well.append(mediaWell({ name: 'Synthetic car', line: '', photo: '' }, 'vm-gallery-gcsp-media', { placeholder: 'No image for this car yet' }).media);
   const accounts = [
     ['portalShell: account loading', { status: 'loading' }],
-    ['portalShell: ready, long name', { status: 'ready', name: 'Bartholomew Featherstonehaugh-Cholmondeley-Wolverstone III (synthetic)', context: 'Choices, grade G7' }],
+    ['portalShell: compact account, long name', { status: 'ready', name: 'Bartholomew Featherstonehaugh-Cholmondeley-Wolverstone III (synthetic)', context: 'Choices, grade G7' }],
+    ['portalShell: account details open', { status: 'ready', name: 'Alex Morgan-Whitfield (synthetic)', context: 'Choices, grade G7' }, true],
     ['portalShell: account unavailable', { status: 'unavailable', message: 'Your account could not be loaded.' }],
   ];
-  for (const [title, account] of accounts) {
+  for (const [title, account, detailsOpen] of accounts) {
     const frame = el('div', 'vm-gallery-gcsp-frame');
     const shell = portalShell({ navigation: EMPLOYEE_NAVIGATION, active: 'cars', breadcrumbs: ['Your cars'], account });
+    if (detailsOpen) shell.root.querySelector('.gcsp-account-details').open = true;
     shell.main.append(el('p', 'gcsp-note', 'Page content goes here.'));
     frame.append(shell.root);
     group(title).append(frame);
@@ -127,7 +138,7 @@ function gcspExamples() {
   for (const expanded of [false, true]) {
     const frame = el('div', 'vm-gallery-gcsp-frame vm-gallery-gcsp-nav');
     frame.append(accountNavigation({ items: EMPLOYEE_NAVIGATION, active: 'cars', expanded }).root);
-    group(`accountNavigation: ${expanded ? 'expanded' : 'collapsed'}, with unavailable items`).append(frame);
+    group(`accountNavigation: ${expanded ? 'expanded' : 'collapsed'}, pale selected state and unavailable items`).append(frame);
   }
   group('messageList: sent, retrying and failed, first message open').append(messageList({ messages: fixtureMessages(), selectedId: 'job-004' }).root);
   section.append(scope);
@@ -380,7 +391,7 @@ export function mountComponentGallery(root) {
   exactControls.append(legacyButton, refineButton, exactReset);
   exact.append(exactControls, exactCards);
   sections.append(exact);
-  root.append(heading, sections, employeeDecisionExample(), employeeControlsExample(), gcspExamples(), gregKitExamples(), launcherExamples(), activityExamples());
+  root.append(heading, sections, employeeDecisionExample(), employeeControlsExample(), gcspExamples(), gregKitExamples(), launcherExamples(), activityExamples(), formControlsExample());
 
   function dispatchBrowse(type, target, reason) {
     const result = reduceFeedback(browseFeedback, {

@@ -1,6 +1,10 @@
 import { FilePolicyProvider, PolicySourceError, snapshotVersions, validInstant } from './file-provider.js';
+import { PostgresPolicyProvider } from './postgres-provider.js';
+import { publishPolicyVersion } from './publish.js';
 
 export { FilePolicyProvider } from './file-provider.js';
+export { PostgresPolicyProvider } from './postgres-provider.js';
+export { MemoryPolicyProvider, createMemoryPolicyStore } from './memory-provider.js';
 const CONTRACT_VERSION = '1.0.0';
 const text = (value) => typeof value === 'string' && value.trim().length > 0;
 const activeAt = (row, instant) => Date.parse(row.effectiveFrom) <= instant
@@ -11,10 +15,12 @@ const ok = (version, value) => outcome('ok', version, { value });
 
 export class PolicyService {
   #provider;
+  #identity; #clock;
   #snapshots = new WeakMap();
 
-  constructor({ provider = new FilePolicyProvider() } = {}) {
+  constructor({ provider = new FilePolicyProvider(), identity, clock } = {}) {
     this.#provider = provider;
+    this.#identity = identity; this.#clock = clock;
   }
 
   async #resolve(read) {
@@ -132,11 +138,16 @@ export class PolicyService {
     });
   }
 
-  async publishPolicyVersion() {
-    return outcome('invalid', null, { code: 'unsupported-operation', accepted: false, reasons: [{ field: 'publishPolicyVersion', reason: 'The file policy provider is read-only.' }] });
+  async publishPolicyVersion(context, changeSet) {
+    return publishPolicyVersion({ provider: this.#provider, identity: this.#identity, clock: this.#clock }, context, changeSet);
   }
+
+  async close() { return this.#provider?.close?.() ?? ok(null, { closed: true }); }
 }
 
-export function createPolicyService({ provider, ...fileOptions } = {}) {
-  return new PolicyService({ provider: provider === undefined ? new FilePolicyProvider(fileOptions) : provider });
+export function createPolicyService({ provider, identity, clock, ...options } = {}) {
+  const explicitFile = Object.hasOwn(options, 'filePath') || Object.hasOwn(options, 'retainedFilePaths');
+  const configured = Object.hasOwn(options, 'connectionString') || Object.hasOwn(options, 'pool') || Object.hasOwn(process.env, 'GCSP_DATABASE_URL');
+  const selected = provider === undefined ? configured && !explicitFile ? new PostgresPolicyProvider(options) : new FilePolicyProvider(options) : provider;
+  return new PolicyService({ provider: selected, identity, clock });
 }

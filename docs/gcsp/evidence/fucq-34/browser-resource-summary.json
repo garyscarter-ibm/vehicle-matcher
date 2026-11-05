@@ -1,0 +1,325 @@
+{
+  "story": "FUCQ-34",
+  "externalRecords": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34",
+  "browserFrozenSource": "312eaa005bc2390b8c449b6c4deaf7b511e7e22a",
+  "limits": {
+    "recursiveRssBytes": 2684354560,
+    "minimumGrantBytes": 2147483648,
+    "scratchBytes": 134217728,
+    "seconds": 120,
+    "logBytes": 2097152
+  },
+  "historicalMatrixLimitation": "Original harness recorded group PIDs and profile, not full descendant/profile/crashpad ownership or exact dynamic API/CDP ports. Do not infer retrospective completeness from later cleanup.",
+  "runs": [
+    {
+      "kind": "matrix",
+      "receiptFile": "browser-matrix-integrated-1793891508839764000-receipt.json",
+      "receiptSha256": "590cff4b8548b5f687f11d61b56322bfd6cb4c0db170781b06ea00db6dac9f68",
+      "receipt": {
+        "groups_absent": true,
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/browser-matrix-integrated-1793891508839764000.log",
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/1696871ccd694303aea19c9be4c085d7.json",
+        "package_hashes_unchanged": true,
+        "peak_rss": 1736474624,
+        "peak_scratch": 13525080,
+        "rc": 0,
+        "reservation_absent": true,
+        "retained_dependencies": {
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/node_modules": 27138292,
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/server/node_modules": 858816
+        },
+        "scratch_removed": true,
+        "wall": 27.098923833
+      },
+      "independentCleanupFile": "browser-matrix-independent-cleanup.json",
+      "independentCleanupSha256": "781b239f33e6cfee8c46434f20a73c18f3ab09bc33476ab3f6a578457fa1a2a5",
+      "independentCleanup": {
+        "groups": [
+          28451
+        ],
+        "groups_absent": true,
+        "reservation_absent": true,
+        "scratch_absent": true,
+        "static_ports": [
+          {
+            "closed": true,
+            "port": 31461
+          },
+          {
+            "closed": true,
+            "port": 31462
+          },
+          {
+            "closed": true,
+            "port": 31463
+          }
+        ],
+        "token": "1696871ccd694303aea19c9be4c085d7"
+      }
+    },
+    {
+      "kind": "flows-first",
+      "receiptFile": "browser-flows-integrated-1793891952450894000-receipt.json",
+      "receiptSha256": "21939ffdde9e5710000cbb949ca1e9e3919524ee493f49d45b6543a96fe6315f",
+      "receipt": {
+        "groups_absent": true,
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/browser-flows-integrated-1793891952450894000.log",
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/b2bd1d92cdc44cf38d0b25b687e849f3.json",
+        "package_hashes_unchanged": true,
+        "peak_rss": 1726087168,
+        "peak_scratch": 11561816,
+        "rc": 1,
+        "reservation_absent": true,
+        "retained_dependencies": {
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/node_modules": 27138292,
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/server/node_modules": 858816
+        },
+        "scratch_removed": true,
+        "wall": 23.365824125
+      },
+      "independentCleanupFile": "browser-flows-independent-cleanup.json",
+      "independentCleanupSha256": "e048484fd4758f908ed04c2b89186656550b5d600b21404f0ef35cc7bccc5ea0",
+      "independentCleanup": {
+        "group": [
+          34945
+        ],
+        "token": "b2bd1d92cdc44cf38d0b25b687e849f3",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-b2bd1d92cdc44cf38d0b25b687e849f3",
+        "scratch_absent": true,
+        "group_absent": true,
+        "reservation_absent": true,
+        "recorded_chrome_pids": [
+          34965,
+          34987,
+          34988,
+          34990,
+          34991,
+          34996,
+          34999,
+          35003,
+          35004,
+          35008,
+          35026
+        ],
+        "recorded_chrome_pids_absent": true,
+        "profile_processes_absent": true,
+        "escaped_observed": [],
+        "ports": [
+          {
+            "port": 31461,
+            "closed": true
+          },
+          {
+            "port": 54344,
+            "closed": true
+          },
+          {
+            "port": 54355,
+            "closed": true
+          }
+        ]
+      }
+    },
+    {
+      "kind": "flows-continuation",
+      "receiptFile": "browser-flows-continuation-1793892221583126000-receipt.json",
+      "receiptSha256": "529d22cdb9c9a20393e2699e8dc1c7711f6fa04ac70b2b828474a831b98e9f67",
+      "receipt": {
+        "groups_absent": true,
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/browser-flows-continuation-1793892221583126000.log",
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/a51d8eb00357426886441e7359083064.json",
+        "package_hashes_unchanged": true,
+        "peak_rss": 1708277760,
+        "peak_scratch": 12274872,
+        "rc": 0,
+        "reservation_absent": true,
+        "retained_dependencies": {
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/node_modules": 27138292,
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/server/node_modules": 858816
+        },
+        "scratch_removed": true,
+        "wall": 22.722391917000003
+      },
+      "independentCleanupFile": "browser-flows-continuation-independent-cleanup.json",
+      "independentCleanupSha256": "13d39498b1f5535e0dadc74001a58eb4df66cc3d2efe925cb0775c2a8136fdce",
+      "independentCleanup": {
+        "group": [
+          38293
+        ],
+        "token": "a51d8eb00357426886441e7359083064",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-a51d8eb00357426886441e7359083064",
+        "scratch_absent": true,
+        "group_absent": true,
+        "reservation_absent": true,
+        "recorded_chrome_pids": [
+          38303,
+          38314,
+          38315,
+          38317,
+          38318,
+          38321,
+          38323,
+          38326,
+          38327,
+          38330,
+          38340,
+          38392
+        ],
+        "recorded_chrome_pids_absent": true,
+        "profile_processes_absent": true,
+        "escaped_observed": [],
+        "ports": [
+          {
+            "port": 31461,
+            "closed": true
+          },
+          {
+            "port": 54763,
+            "closed": true
+          },
+          {
+            "port": 54768,
+            "closed": true
+          }
+        ]
+      }
+    },
+    {
+      "kind": "keyboard",
+      "receiptFile": "browser-keyboard-integrated-1793892334503689000-receipt.json",
+      "receiptSha256": "02d12cfcb7c2effae337b629960891ac171eed6ccdbe5a4aa0e8677728d3100d",
+      "receipt": {
+        "groups_absent": true,
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/browser-keyboard-integrated-1793892334503689000.log",
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/4b89bd64fb4d4d52bc24678dd470130f.json",
+        "package_hashes_unchanged": true,
+        "peak_rss": 1711587328,
+        "peak_scratch": 10561049,
+        "rc": 0,
+        "reservation_absent": true,
+        "retained_dependencies": {
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/node_modules": 27138292,
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/server/node_modules": 858816
+        },
+        "scratch_removed": true,
+        "wall": 7.681509042
+      },
+      "independentCleanupFile": "browser-keyboard-independent-cleanup.json",
+      "independentCleanupSha256": "694429ef6e338f89666eff6e97a8210fd9180f43dafba7c0824d0330d761be24",
+      "independentCleanup": {
+        "group": [
+          40010
+        ],
+        "token": "4b89bd64fb4d4d52bc24678dd470130f",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-4b89bd64fb4d4d52bc24678dd470130f",
+        "scratch_absent": true,
+        "group_absent": true,
+        "reservation_absent": true,
+        "recorded_chrome_pids": [
+          40026,
+          40047,
+          40048,
+          40049,
+          40050,
+          40057,
+          40060,
+          40062,
+          40063,
+          40067,
+          40091
+        ],
+        "recorded_chrome_pids_absent": true,
+        "profile_processes_absent": true,
+        "escaped_observed": [],
+        "ports": [
+          {
+            "port": 31461,
+            "closed": true
+          },
+          {
+            "port": 55136,
+            "closed": true
+          },
+          {
+            "port": 55142,
+            "closed": true
+          }
+        ]
+      }
+    },
+    {
+      "kind": "question-settled",
+      "receiptFile": "browser-question-settled-1793892459827917000-receipt.json",
+      "receiptSha256": "e91bb20995e16cef1e60a1eb8fa257937936813cab3ab276e2dacf4417654457",
+      "receipt": {
+        "groups_absent": true,
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/browser-question-settled-1793892459827917000.log",
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/b82f26ca739e47ed89af29f6cd3f1e5e.json",
+        "package_hashes_unchanged": true,
+        "peak_rss": 1706999808,
+        "peak_scratch": 10467001,
+        "rc": 0,
+        "reservation_absent": true,
+        "retained_dependencies": {
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/node_modules": 27138292,
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/server/node_modules": 858816
+        },
+        "scratch_removed": true,
+        "wall": 7.993715583
+      },
+      "independentCleanupFile": "browser-question-settled-independent-cleanup.json",
+      "independentCleanupSha256": "89934e4bc31bebdb945128fe53df093dc534ef3fce8138c2ce07710b3f387cd5",
+      "independentCleanup": {
+        "group": [
+          41641
+        ],
+        "token": "b82f26ca739e47ed89af29f6cd3f1e5e",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-b82f26ca739e47ed89af29f6cd3f1e5e",
+        "scratch_absent": true,
+        "group_absent": true,
+        "reservation_absent": true,
+        "recorded_chrome_pids": [
+          41658,
+          41681,
+          41682,
+          41683,
+          41684,
+          41691,
+          41693,
+          41694,
+          41696,
+          41697,
+          41700,
+          41736
+        ],
+        "recorded_chrome_pids_absent": true,
+        "profile_processes_absent": true,
+        "escaped_observed": [],
+        "ports": [
+          {
+            "port": 31461,
+            "closed": true
+          },
+          {
+            "port": 55328,
+            "closed": true
+          },
+          {
+            "port": 55333,
+            "closed": true
+          }
+        ]
+      }
+    }
+  ]
+}

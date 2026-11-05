@@ -38,3 +38,26 @@ This maintenance was performed in a separate worktree alongside the active
 Claude FUCQ-64 build. No child agents were spawned. Live Jira synchronisation is
 unverified in this Codex session until its Atlassian connection is available;
 the checks use offline issue fixtures and isolated temporary Git repositories.
+
+## Explicit Codex commit attribution
+
+On 5 November, the dispatcher verified that `scaffold_git.commit_paths` stores
+the supplied message verbatim. Setting `scaffold_git.ATTRIBUTION` alone does not
+append the required trailer to ordinary commits. Each Codex commit message must
+explicitly end with a blank line and:
+
+```text
+Co-Authored-By: Codex <noreply@openai.com>
+```
+
+Verify the resulting commit body through the Git adapter before pushing. This
+also applies to generated claim and sync checkpoints: use a calling wrapper
+that appends the trailer to messages passed to `commit_paths` and the claim
+helper `_commit_two` when needed.
+Pass this requirement to every worker and descendant.
+
+Known published Codex checkpoints missing the trailer include the dispatcher
+claim/readiness/mail commits `1c527ae`, `2b79601`, `2ca4818` and the FUCQ-102
+checkpoints `a3fdcdf` and `17074a3`. Their code and evidence identities remain
+unchanged. Preserve published history; include explicit Codex attribution in
+subsequent implementation and integration commits.

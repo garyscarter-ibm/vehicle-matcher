@@ -5,6 +5,7 @@ import { createHash } from 'node:crypto';
 import http from 'node:http';
 import https from 'node:https';
 import { createBmwImageAdapter, bmwImageLookupIdentity, presentBmwImage } from '../vehicle-evidence/bmw-image-adapter.js';
+import { bmwCatalogueLookupIdentity, createBmwCatalogueAdapter, mergeBmwCatalogueFacts } from '../vehicle-evidence/bmw-catalogue-adapter.js';
 
 const evidence = new URL('../../docs/gcsp/evidence/fucq-4/', import.meta.url);
 const requests = JSON.parse(await readFile(new URL('requests-2026-11-01.json', evidence)));
@@ -65,12 +66,18 @@ test('snapshot resolution and byte delivery never enter fetch, HTTP or HTTPS tra
   const reject = () => { outbound += 1; throw Error('network forbidden'); };
   t.mock.method(globalThis, 'fetch', reject);
   for (const transport of [http, https]) for (const method of ['get', 'request']) t.mock.method(transport, method, reject);
-  const adapter = enabled();
+  // Evaluate module startup as well as calls, with the same network guards installed.
+  const { createBmwImageAdapter: startOffline } = await import('../vehicle-evidence/bmw-image-adapter.js?offline-startup');
+  const adapter = startOffline({ environment: 'gcsp-demo' });
   for (const paint of ['white', 'black']) {
     const result = await adapter.resolve(request(paint));
     assert.equal(result.status, 'ok');
+    assert.deepEqual(await startOffline({ environment: 'gcsp-demo' }).resolve(request(paint)), result);
+    assert.deepEqual(await adapter.resolve(request(paint)), result);
     assert.equal((await adapter.readAsset(result.image.assetId)).status, 'ok');
   }
+  assert.equal((await startOffline().resolve(request())).failure.code, 'demo-only');
+  assert.equal((await adapter.resolve(request(), { provider: 'live-image' })).status, 'unsupported');
   assert.equal(outbound, 0);
 });
 
@@ -83,9 +90,75 @@ test('catalogue identity plus view/size forms the provider-versioned lookup iden
   assert.deepEqual(lookup.size, input.size);
   input.selectedOptions.reverse();
   assert.deepEqual(bmwImageLookupIdentity(input), lookup);
-  assert.notDeepEqual(bmwImageLookupIdentity(request('black')), lookup);
-  assert.notDeepEqual(bmwImageLookupIdentity({ ...request(), viewpoint: 'SIDELEFT' }), lookup);
-  assert.notDeepEqual(bmwImageLookupIdentity({ ...request(), size: { width: 1280, height: 1152 } }), lookup);
+  const { viewpoint, size, ...catalogue } = lookup;
+  assert.deepEqual(catalogue, bmwCatalogueLookupIdentity(request(), {
+    provider: lookup.provider, snapshotVersion: lookup.snapshotVersion,
+  }));
+  const key = JSON.stringify(lookup);
+  const alternatives = [
+    { market: 'US' }, { locale: 'de-DE' }, { modelCode: 'T3MQ' }, { agModelCode: '22FY' },
+    { modelRange: 'G21' }, { rawModelRange: 'G61E' }, { trim: 'S07BL' },
+    { catalogueDate: '2026-11-02' }, { orderDate: '2026-11-02' }, { effectDate: '2027-01-06' },
+    { productionDate: '2027-01-06' }, { taxDate: '2027-01-06' },
+    { selectedOptions: request('black').selectedOptions },
+    { selectedOptions: [...request().selectedOptions, 'S03AC'] }, { selectedAccessories: [] },
+    { selectedAccessories: [{ code: 'SE000001', type: 'accessory', quantity: 2 }] },
+    { viewpoint: 'SIDELEFT' }, { size: { width: 1280, height: 1646 } },
+    { size: { width: 2560, height: 1152 } },
+  ].map((change) => bmwImageLookupIdentity({ ...request(), ...change }));
+  for (const options of [{ provider: 'other-image' }, { providerVersion: '2' }, { schemaVersion: '2' },
+    { snapshotVersion: 'bmw-gb-i5-images-2026-11-01.v2' }]) alternatives.push(bmwImageLookupIdentity(request(), options));
+  assert.ok(alternatives.every(Boolean));
+  assert.equal(new Set([key, ...alternatives.map((identity) => JSON.stringify(identity))]).size, alternatives.length + 1);
+  const reordered = { ...request(), selectedOptions: [...request().selectedOptions].reverse(),
+    selectedAccessories: [{ quantity: 1, type: 'accessory', code: 'SE000001' }],
+    size: { height: 1646, width: 2560 }, userId: 'private-user', privateUrl: 'https://private.invalid' };
+  assert.equal(JSON.stringify(bmwImageLookupIdentity(reordered)), key);
+  const accessories = [{ code: 'SE000002', type: 'accessory', quantity: 2 }, ...request().selectedAccessories];
+  assert.deepEqual(bmwImageLookupIdentity({ ...request(), selectedAccessories: accessories }),
+    bmwImageLookupIdentity({ ...request(), selectedAccessories: [...accessories].reverse() }));
+  assert.doesNotMatch(key, /private|https?:|userId|vin|credential/i);
+});
+
+test('unregistered references and inconsistent image metadata fail before loading any asset', async () => {
+  for (const mutate of [
+    (data) => { data.assets[0].assetId = 'unregistered-image'; },
+    (data) => { data.assets[1].assetId = data.assets[0].assetId; },
+    (data) => { data.assets.pop(); },
+    (data) => { data.assets[0].contentType = 'image/jpeg'; },
+    (data) => { delete data.assets[0].contentType; },
+    (data) => { data.assets[0].size = null; },
+    (data) => { data.assets[0].size.width = 1280; },
+    (data) => { data.assets[0].size.height = '1646'; },
+    (data) => { data.assets[0].viewpoint = 'SIDELEFT'; },
+    (data) => { data.assets[0].bytes += 1; },
+    (data) => { delete data.assets[0].sha256; },
+  ]) {
+    const data = await manifest(); mutate(data);
+    let loads = 0;
+    const adapter = enabled({ loadManifest: async () => data, loadAsset: async () => { loads += 1; } });
+    for (const result of [await adapter.resolve(request()), await adapter.readAsset('bmw-i5-white-20261101-v1')]) {
+      assert.equal(result.status, 'source-unavailable');
+      assert.equal(result.image, null);
+      assert.equal(presentBmwImage(result).assetId, null);
+    }
+    assert.equal(loads, 0);
+  }
+});
+
+test('presentation refuses missing or inconsistent registered type, dimensions and reference metadata', async () => {
+  const resolved = await enabled().resolve(request());
+  for (const patch of [
+    { contentType: undefined }, { contentType: 'image/jpeg' }, { size: null },
+    { size: { width: 1280, height: 1646 } }, { size: { width: 2560, height: 1152 } },
+    { viewpoint: 'SIDELEFT' }, { bytes: 0 }, { sha256: 'unregistered' }, { assetId: 'unregistered-image' },
+  ]) {
+    const view = presentBmwImage({ ...resolved, image: { ...resolved.image, ...patch } });
+    assert.equal(view.status, 'source-unavailable', JSON.stringify(patch));
+    assert.equal(view.assetId, null);
+    assert.equal(view.label, 'Image unavailable');
+    for (const state of Object.values(view.fidelity)) assert.equal(state, 'unknown');
+  }
 });
 
 test('delivery requires explicit demo construction and never reads artifacts for other environments', async () => {
@@ -226,4 +299,124 @@ test('presentation carries representative role, source date, observed model/pain
     assert.doesNotMatch(JSON.stringify(failure), /private/);
     assert.ok(failure.message);
   }
+});
+
+const fallbackChoice = 'bmw-i5-generic-20261101-v1';
+
+test('generic fallback requires a registered explicit choice and never inherits configuration claims', async () => {
+  const adapter = enabled();
+  const input = { ...request(), modelCode: 'T3MQ' };
+  assert.equal((await adapter.resolve(input)).status, 'unsupported');
+  for (const fallback of [true, {}, 'unregistered', 'https://private.invalid/key']) {
+    const result = await adapter.resolve(input, { fallback });
+    assert.equal(result.status, 'invalid-input');
+    assert.equal(result.image, null);
+    assert.doesNotMatch(JSON.stringify(result), /private|https?:/);
+  }
+  const result = await adapter.resolve(input, { fallback: fallbackChoice });
+  assert.equal(result.status, 'ok');
+  assert.deepEqual(result.fallback, { choice: fallbackChoice, originalStatus: 'unsupported',
+    reason: { code: 'unsupported-request', message: 'No registered render supports this model, paint, viewpoint, size or version.', retryable: false } });
+  assert.equal(result.requestedIdentity.modelCode, 'T3MQ');
+  assert.equal(result.resolvedIdentity, null);
+  assert.equal(result.resolvedLookupIdentity, null);
+  assert.equal(result.image.role, 'representative-catalogue-render');
+  assert.equal(result.image.representation, 'generic');
+  assert.equal(result.image.paint, null);
+  assert.equal(result.image.matchesRequestedConfiguration, false);
+  for (const state of Object.values(result.image.fidelity)) assert.equal(state, 'unknown');
+  const view = presentBmwImage(result);
+  assert.equal(view.isFallback, true);
+  assert.equal(view.label, 'Representative image');
+  assert.match(view.caption, /configuration match unknown/i);
+  assert.doesNotMatch(view.caption, /verified|exact|matches/i);
+  assert.equal(view.alt, 'Representative image; configuration match unknown');
+  for (const state of Object.values(view.fidelity)) assert.equal(state, 'unknown');
+  for (const text of Object.values(view.fidelityLabels)) assert.match(text, /unknown/i);
+});
+
+test('fallback is deliberate for date, paint and unavailable asset gaps and never bypasses identity or permission guards', async () => {
+  const adapter = enabled();
+  for (const patch of [
+    { catalogueDate: '2026-11-02' },
+    { selectedOptions: request().selectedOptions.map((code) => code === 'P0300' ? 'P0A96' : code) },
+  ]) {
+    const result = await adapter.resolve({ ...request(), ...patch }, { fallback: fallbackChoice });
+    assert.equal(result.status, 'ok');
+    assert.equal(result.image.representation, 'generic');
+    assert.equal(result.image.fidelity.paint, 'unknown');
+    assert.equal(result.resolvedIdentity, null);
+  }
+  const assetGap = enabled({ loadAsset: async (assetId) => {
+    if (assetId.includes('black')) throw Error('<html>private source failure</html>');
+    return readFile(new URL('i5-alpine-white-reference.webp', evidence));
+  } });
+  assert.equal((await assetGap.resolve(request('black'))).status, 'source-unavailable');
+  const fallback = await assetGap.resolve(request('black'), { fallback: fallbackChoice });
+  assert.equal(fallback.status, 'ok');
+  assert.equal(fallback.fallback.originalStatus, 'source-unavailable');
+  assert.equal(fallback.image.paint, null);
+  assert.doesNotMatch(JSON.stringify(fallback), /private|html/);
+  const exact = await adapter.resolve(request(), { fallback: fallbackChoice });
+  assert.equal(exact.fallback, null);
+  assert.equal(exact.image.representation, 'configuration');
+  assert.equal(exact.image.fidelity.model, 'verified');
+  for (const options of [{ fallback: fallbackChoice, snapshotVersion: 'unregistered' },
+    { fallback: fallbackChoice, provider: 'live-image' }]) {
+    assert.equal((await adapter.resolve(request(), options)).status, 'unsupported');
+  }
+  assert.equal((await adapter.resolve({ ...request(), selectionComplete: false }, { fallback: fallbackChoice })).status, 'invalid-input');
+  assert.equal((await createBmwImageAdapter().resolve(request(), { fallback: fallbackChoice })).failure.code, 'demo-only');
+  const broken = enabled({ loadAsset: async () => Buffer.from('corrupt') });
+  assert.equal((await broken.resolve({ ...request(), modelCode: 'T3MQ' }, { fallback: fallbackChoice })).status, 'source-unavailable');
+});
+
+test('catalogue renders cannot impersonate VIN illustrations or exact-car photos and full selections preserve unknowns', async () => {
+  const adapter = enabled();
+  const exact = await adapter.resolve(request());
+  for (const role of ['vin-linked-illustration', 'exact-car-stock-photo']) {
+    const result = await adapter.resolve({ ...request(), role }, { fallback: fallbackChoice });
+    assert.equal(result.status, 'unsupported');
+    assert.equal(result.image, null);
+    const data = await manifest(); data.assets[0].role = role;
+    assert.equal((await enabled({ loadManifest: async () => data }).resolve(request())).status, 'source-unavailable');
+    const view = presentBmwImage({ ...exact, image: { ...exact.image, role } });
+    assert.equal(view.assetId, null);
+    assert.equal(view.label, 'Image unavailable');
+  }
+  assert.equal(exact.image.matchesRequestedConfiguration, true);
+  for (const key of ['wheels', 'interior', 'equipment', 'exactVehicle']) {
+    assert.equal(exact.image.fidelity[key], 'unknown');
+    assert.equal(presentBmwImage(exact).fidelity[key], 'unknown');
+    assert.match(presentBmwImage(exact).fidelityLabels[key], /unknown/i);
+  }
+  const forged = structuredClone(exact); forged.image.fidelity.equipment = 'verified';
+  assert.equal(presentBmwImage(forged).assetId, null);
+});
+
+test('malformed manifest records and missing imagery preserve independent valid specifications with safe display text', async () => {
+  const specifications = await createBmwCatalogueAdapter().resolve(request());
+  assert.ok(['ok', 'partial'].includes(specifications.status));
+  const facts = mergeBmwCatalogueFacts({}, specifications);
+  const before = structuredClone(specifications);
+  const malformed = [null, {}, [], { assetId: 'bmw-i5-white-20261101-v1' }];
+  for (const entry of malformed) {
+    const data = await manifest(); data.assets[0] = entry;
+    const images = await enabled({ loadManifest: async () => data }).resolve(request());
+    assert.equal(images.status, 'source-unavailable');
+    const description = { specifications, images: presentBmwImage(images) };
+    assert.deepEqual(mergeBmwCatalogueFacts({}, description.specifications), facts);
+    assert.equal(description.images.label, 'Image unavailable');
+    assert.equal(description.images.alt, null);
+    assert.equal(description.images.assetId, null);
+    assert.ok(description.images.message);
+    assert.equal(description.images.fidelity.equipment, 'unknown');
+  }
+  for (const image of [await enabled({ loadAsset: async () => { throw Error('<html>https://private.invalid?key=secret</html>'); } }).resolve(request()),
+    { status: 'ok', image: { assetId: 'unregistered' }, failure: { code: '<html>secret</html>' } }]) {
+    const view = presentBmwImage(image);
+    assert.equal(view.assetId, null);
+    assert.doesNotMatch(JSON.stringify(view), /<|https?:|private|secret/);
+  }
+  assert.deepEqual(specifications, before);
 });

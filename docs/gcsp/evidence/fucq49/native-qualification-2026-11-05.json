@@ -1,0 +1,511 @@
+{
+  "date": "2026-11-05",
+  "identityVerification": {
+    "exactProviderIdentityVerified": false,
+    "requested": {
+      "agModelCode": "72HH",
+      "effectDate": "20270105",
+      "selectedOptionCount": 47,
+      "selectedPaintCode": "P0300"
+    },
+    "resolved": {
+      "effectDate": {
+        "evidence": [],
+        "status": "not_echoed"
+      },
+      "model": {
+        "evidence": [],
+        "status": "not_echoed"
+      },
+      "options": {
+        "exactMatch": false,
+        "expectedCount": 47,
+        "field": null,
+        "observedCount": null,
+        "status": "not_echoed"
+      },
+      "paint": {
+        "echoedOptionsIncludeSelectedPaint": false,
+        "evidence": [],
+        "status": "not_echoed",
+        "verified": false
+      }
+    }
+  },
+  "image": null,
+  "limitations": [
+    "Native manifest schema has viewport-specific metaData width/height and namedImages[].name with nested images[].viewImage and distinctionParameters.",
+    "The first-pass selector did not safely associate a parent namedImages[].name with its child images[].viewImage, so desktop/HEROFRONT eligibility is unresolved and no image request was made.",
+    "Native manifest response has no model, paint, effect-date or options identity fields; request inputs alone do not prove the resolved vehicle configuration."
+  ],
+  "manifest": {
+    "contentType": "application/json",
+    "distinctionParameterNamesByViewport": {
+      "desktop": [
+        "BKGND",
+        "POV",
+        "X",
+        "Y"
+      ],
+      "mobile": [
+        "BKGND",
+        "H",
+        "POV",
+        "W",
+        "X",
+        "Y"
+      ],
+      "tablet": [
+        "BKGND",
+        "H",
+        "POV",
+        "W",
+        "X",
+        "Y"
+      ],
+      "thumbnails": [
+        "BKGND",
+        "H",
+        "POV",
+        "W",
+        "X",
+        "Y"
+      ]
+    },
+    "httpStatus": 200,
+    "metaData": {
+      "fields": [
+        {
+          "key": "width",
+          "type": "number",
+          "value": 170
+        },
+        {
+          "key": "height",
+          "type": "number",
+          "value": 100
+        },
+        {
+          "key": "width",
+          "type": "number",
+          "value": 1280
+        },
+        {
+          "key": "height",
+          "type": "number",
+          "value": 1152
+        },
+        {
+          "key": "width",
+          "type": "number",
+          "value": 1280
+        },
+        {
+          "key": "height",
+          "type": "number",
+          "value": 1152
+        },
+        {
+          "key": "width",
+          "type": "number",
+          "value": 2560
+        },
+        {
+          "key": "height",
+          "type": "number",
+          "value": 1646
+        }
+      ],
+      "present": true,
+      "schema": [
+        "height:number",
+        "width:number"
+      ]
+    },
+    "namedImageGroups": {
+      "groupNameValues": "not retained; parent name was not joined to child image record",
+      "namedImagesEntrySchema": [
+        "name:string",
+        "images:array"
+      ],
+      "nestedImageRecordCount": 83,
+      "nestedImageRecordSchema": [
+        "viewImage:string",
+        "distinctionParameters:object"
+      ],
+      "viewportGroupNames": [
+        "desktop",
+        "mobile",
+        "tablet",
+        "thumbnails"
+      ]
+    },
+    "namedImageRecordCount": 83,
+    "schemaKeysAndTypes": [
+      "$:object",
+      "stage-fullscreen-views-legacy-newnames.desktop.metaData.height:number",
+      "stage-fullscreen-views-legacy-newnames.desktop.metaData.width:number",
+      "stage-fullscreen-views-legacy-newnames.desktop.metaData:object",
+      "stage-fullscreen-views-legacy-newnames.desktop.namedImages:array",
+      "stage-fullscreen-views-legacy-newnames.desktop.namedImages[].images:array",
+      "stage-fullscreen-views-legacy-newnames.desktop.namedImages[].images[].distinctionParameters.BKGND:string",
+      "stage-fullscreen-views-legacy-newnames.desktop.namedImages[].images[].distinctionParameters.POV:string",
+      "stage-fullscreen-views-legacy-newnames.desktop.namedImages[].images[].distinctionParameters.X:string",
+      "stage-fullscreen-views-legacy-newnames.desktop.namedImages[].images[].distinctionParameters.Y:string",
+      "stage-fullscreen-views-legacy-newnames.desktop.namedImages[].images[].distinctionParameters:object",
+      "stage-fullscreen-views-legacy-newnames.desktop.namedImages[].images[].viewImage:string",
+      "stage-fullscreen-views-legacy-newnames.desktop.namedImages[].images[]:object",
+      "stage-fullscreen-views-legacy-newnames.desktop.namedImages[].name:string",
+      "stage-fullscreen-views-legacy-newnames.desktop.namedImages[]:object",
+      "stage-fullscreen-views-legacy-newnames.desktop:object",
+      "stage-fullscreen-views-legacy-newnames.mobile.metaData.height:number",
+      "stage-fullscreen-views-legacy-newnames.mobile.metaData.width:number",
+      "stage-fullscreen-views-legacy-newnames.mobile.metaData:object",
+      "stage-fullscreen-views-legacy-newnames.mobile.namedImages:array",
+      "stage-fullscreen-views-legacy-newnames.mobile.namedImages[].images:array",
+      "stage-fullscreen-views-legacy-newnames.mobile.namedImages[].images[].distinctionParameters.BKGND:string",
+      "stage-fullscreen-views-legacy-newnames.mobile.namedImages[].images[].distinctionParameters.H:string",
+      "stage-fullscreen-views-legacy-newnames.mobile.namedImages[].images[].distinctionParameters.POV:string",
+      "stage-fullscreen-views-legacy-newnames.mobile.namedImages[].images[].distinctionParameters.W:string",
+      "stage-fullscreen-views-legacy-newnames.mobile.namedImages[].images[].distinctionParameters.X:string",
+      "stage-fullscreen-views-legacy-newnames.mobile.namedImages[].images[].distinctionParameters.Y:string",
+      "stage-fullscreen-views-legacy-newnames.mobile.namedImages[].images[].distinctionParameters:object",
+      "stage-fullscreen-views-legacy-newnames.mobile.namedImages[].images[].viewImage:string",
+      "stage-fullscreen-views-legacy-newnames.mobile.namedImages[].images[]:object",
+      "stage-fullscreen-views-legacy-newnames.mobile.namedImages[].name:string",
+      "stage-fullscreen-views-legacy-newnames.mobile.namedImages[]:object",
+      "stage-fullscreen-views-legacy-newnames.mobile:object",
+      "stage-fullscreen-views-legacy-newnames.tablet.metaData.height:number",
+      "stage-fullscreen-views-legacy-newnames.tablet.metaData.width:number",
+      "stage-fullscreen-views-legacy-newnames.tablet.metaData:object",
+      "stage-fullscreen-views-legacy-newnames.tablet.namedImages:array",
+      "stage-fullscreen-views-legacy-newnames.tablet.namedImages[].images:array",
+      "stage-fullscreen-views-legacy-newnames.tablet.namedImages[].images[].distinctionParameters.BKGND:string",
+      "stage-fullscreen-views-legacy-newnames.tablet.namedImages[].images[].distinctionParameters.H:string",
+      "stage-fullscreen-views-legacy-newnames.tablet.namedImages[].images[].distinctionParameters.POV:string",
+      "stage-fullscreen-views-legacy-newnames.tablet.namedImages[].images[].distinctionParameters.W:string",
+      "stage-fullscreen-views-legacy-newnames.tablet.namedImages[].images[].distinctionParameters.X:string",
+      "stage-fullscreen-views-legacy-newnames.tablet.namedImages[].images[].distinctionParameters.Y:string",
+      "stage-fullscreen-views-legacy-newnames.tablet.namedImages[].images[].distinctionParameters:object",
+      "stage-fullscreen-views-legacy-newnames.tablet.namedImages[].images[].viewImage:string",
+      "stage-fullscreen-views-legacy-newnames.tablet.namedImages[].images[]:object",
+      "stage-fullscreen-views-legacy-newnames.tablet.namedImages[].name:string",
+      "stage-fullscreen-views-legacy-newnames.tablet.namedImages[]:object",
+      "stage-fullscreen-views-legacy-newnames.tablet:object",
+      "stage-fullscreen-views-legacy-newnames.thumbnails.metaData.height:number",
+      "stage-fullscreen-views-legacy-newnames.thumbnails.metaData.width:number",
+      "stage-fullscreen-views-legacy-newnames.thumbnails.metaData:object",
+      "stage-fullscreen-views-legacy-newnames.thumbnails.namedImages:array",
+      "stage-fullscreen-views-legacy-newnames.thumbnails.namedImages[].images:array",
+      "stage-fullscreen-views-legacy-newnames.thumbnails.namedImages[].images[].distinctionParameters.BKGND:string",
+      "stage-fullscreen-views-legacy-newnames.thumbnails.namedImages[].images[].distinctionParameters.H:string",
+      "stage-fullscreen-views-legacy-newnames.thumbnails.namedImages[].images[].distinctionParameters.POV:string",
+      "stage-fullscreen-views-legacy-newnames.thumbnails.namedImages[].images[].distinctionParameters.W:string",
+      "stage-fullscreen-views-legacy-newnames.thumbnails.namedImages[].images[].distinctionParameters.X:string",
+      "stage-fullscreen-views-legacy-newnames.thumbnails.namedImages[].images[].distinctionParameters.Y:string",
+      "stage-fullscreen-views-legacy-newnames.thumbnails.namedImages[].images[].distinctionParameters:object",
+      "stage-fullscreen-views-legacy-newnames.thumbnails.namedImages[].images[].viewImage:string",
+      "stage-fullscreen-views-legacy-newnames.thumbnails.namedImages[].images[]:object",
+      "stage-fullscreen-views-legacy-newnames.thumbnails.namedImages[].name:string",
+      "stage-fullscreen-views-legacy-newnames.thumbnails.namedImages[]:object",
+      "stage-fullscreen-views-legacy-newnames.thumbnails:object",
+      "stage-fullscreen-views-legacy-newnames:object"
+    ],
+    "selectionStatus": "unresolved_due_parent_child_name_association",
+    "status": "parsed",
+    "viewportMetadata": {
+      "fieldTypesByGroup": {
+        "desktop": {
+          "height": "number",
+          "width": "number"
+        },
+        "mobile": {
+          "height": "number",
+          "width": "number"
+        },
+        "tablet": {
+          "height": "number",
+          "width": "number"
+        },
+        "thumbnails": {
+          "height": "number",
+          "width": "number"
+        }
+      },
+      "safeScalarValuesObserved": [
+        {
+          "key": "width",
+          "type": "number",
+          "value": 170
+        },
+        {
+          "key": "height",
+          "type": "number",
+          "value": 100
+        },
+        {
+          "key": "width",
+          "type": "number",
+          "value": 1280
+        },
+        {
+          "key": "height",
+          "type": "number",
+          "value": 1152
+        },
+        {
+          "key": "width",
+          "type": "number",
+          "value": 1280
+        },
+        {
+          "key": "height",
+          "type": "number",
+          "value": 1152
+        },
+        {
+          "key": "width",
+          "type": "number",
+          "value": 2560
+        },
+        {
+          "key": "height",
+          "type": "number",
+          "value": 1646
+        }
+      ],
+      "valueToViewportAssociation": "unresolved by the first-pass sanitizer; values retained as unassigned metadata scalars",
+      "viewportGroups": [
+        "desktop",
+        "mobile",
+        "tablet",
+        "thumbnails"
+      ]
+    }
+  },
+  "nativeVsMocked": "Native anonymous public-source GETs only; no mocked response is treated as live evidence.",
+  "representativeNamedImage": {
+    "assetUrl": "OMITTED_OPAQUE_ASSET_URL",
+    "distinctionParameters": [
+      "BKGND",
+      "POV",
+      "X",
+      "Y"
+    ],
+    "label": "unresolved_parent_name",
+    "limitation": "The first-pass selector did not safely associate namedImages[].name with images[].viewImage.",
+    "recordFields": [
+      "viewImage",
+      "distinctionParameters"
+    ],
+    "requestedView": "HEROFRONT",
+    "requestedViewport": "desktop",
+    "retrieval": "not_attempted",
+    "source": "native COSY named manifest",
+    "status": "selection_unresolved"
+  },
+  "requestPolicy": {
+    "actualElapsedMs": 542,
+    "actualRequests": 3,
+    "aggregateResponseBytes": 705554,
+    "cache": "no-store",
+    "concurrency": 1,
+    "credentials": "omit",
+    "imageRequests": 0,
+    "maximumAggregateResponseBytes": 6291456,
+    "maximumElapsedMs": 90000,
+    "maximumImages": 1,
+    "maximumPerRequestMs": 15000,
+    "maximumRequests": 5,
+    "redirects": "error",
+    "retries": 0
+  },
+  "requested": {
+    "market": "GB",
+    "requestedEffectDate": "20270105",
+    "requestedModel": {
+      "canonicalAG": "72HH",
+      "catalogModelCode": "T5MJ"
+    },
+    "requestedNamedView": "HEROFRONT",
+    "requestedSize": "not separately requested; manifest named-image dimensions govern",
+    "requestedViewport": "desktop",
+    "selectedInterior": {
+      "code": "FKSFU",
+      "label": "Perforated and Quilted Veganza in Smoke White"
+    },
+    "selectedOptionCount": 47,
+    "selectedOptions": [
+      "FKSFU",
+      "P0300",
+      "S0230",
+      "S02PA",
+      "S02VB",
+      "S02VD",
+      "S0302",
+      "S0337",
+      "S03DK",
+      "S03G9",
+      "S03M1",
+      "S0428",
+      "S043L",
+      "S0488",
+      "S0494",
+      "S04T2",
+      "S04U9",
+      "S04UR",
+      "S04V1",
+      "S0552",
+      "S05AS",
+      "S05AV",
+      "S05DM",
+      "S0654",
+      "S0674",
+      "S06AE",
+      "S06AF",
+      "S06AK",
+      "S06C4",
+      "S06NX",
+      "S06PA",
+      "S0704",
+      "S0710",
+      "S0760",
+      "S0775",
+      "S0812",
+      "S0853",
+      "S0880",
+      "S08R3",
+      "S08R9",
+      "S08SM",
+      "S08TF",
+      "S08TG",
+      "S08WM",
+      "S09QV",
+      "S09T1",
+      "S09T2"
+    ],
+    "selectedPaint": {
+      "code": "P0300",
+      "label": "Alpine White"
+    },
+    "snapshotVersion": "bmw-gb-i5-2026-11-01.v1"
+  },
+  "requests": [
+    {
+      "bytes": 17763,
+      "label": "configurator-page",
+      "mime": "text/html",
+      "outcome": "ok",
+      "status": 200
+    },
+    {
+      "bytes": 620646,
+      "label": "public-settings-json",
+      "mime": "application/json",
+      "outcome": "ok",
+      "status": 200
+    },
+    {
+      "bytes": 67145,
+      "label": "cosy-named-manifest",
+      "mime": "application/json",
+      "outcome": "ok",
+      "status": 200
+    }
+  ],
+  "schemaVersion": 1,
+  "snapshot": {
+    "agModelCode": "72HH",
+    "effectDate": "20270105",
+    "fabricCode": "FKSFU",
+    "fabricLabel": "Perforated and Quilted Veganza in Smoke White",
+    "market": "GB",
+    "modelCode": "T5MJ",
+    "paintCode": "P0300",
+    "paintLabel": "Alpine White",
+    "selectedOptionCount": 47,
+    "selectedOptions": [
+      "FKSFU",
+      "P0300",
+      "S0230",
+      "S02PA",
+      "S02VB",
+      "S02VD",
+      "S0302",
+      "S0337",
+      "S03DK",
+      "S03G9",
+      "S03M1",
+      "S0428",
+      "S043L",
+      "S0488",
+      "S0494",
+      "S04T2",
+      "S04U9",
+      "S04UR",
+      "S04V1",
+      "S0552",
+      "S05AS",
+      "S05AV",
+      "S05DM",
+      "S0654",
+      "S0674",
+      "S06AE",
+      "S06AF",
+      "S06AK",
+      "S06C4",
+      "S06NX",
+      "S06PA",
+      "S0704",
+      "S0710",
+      "S0760",
+      "S0775",
+      "S0812",
+      "S0853",
+      "S0880",
+      "S08R3",
+      "S08R9",
+      "S08SM",
+      "S08TF",
+      "S08TG",
+      "S08WM",
+      "S09QV",
+      "S09T1",
+      "S09T2"
+    ],
+    "snapshotVersion": "bmw-gb-i5-2026-11-01.v1"
+  },
+  "source": {
+    "assetPathTemplate": "/connext-bmw/cosySec",
+    "manifestOrigin": "https://prod.cosy.bmw.cloud",
+    "manifestPathTemplate": "/image-urls/dynamic-named-images/mandators/connext-bmw/collections/stage-fullscreen-views-legacy-newnames/brands/bmwCar/models/{AG}",
+    "publicPage": {
+      "origin": "https://configure.bmw.co.uk",
+      "path": "/en_GB/configure/G61E/T5MJ"
+    }
+  },
+  "sourceProfile": {
+    "credentialHeaderNames": [
+      "x-api-key"
+    ],
+    "credentialValuesRetained": false,
+    "profilePropertyName": "settingsCosy",
+    "registeredBaseOrigin": "https://prod.cosy.bmw.cloud",
+    "registeredBasePath": "/"
+  },
+  "sourceStatus": "native_source_qualification_limited",
+  "statuses": {
+    "image": "not_attempted_selection_unresolved",
+    "manifest": "http_200",
+    "page": "http_200",
+    "settings": "http_200"
+  },
+  "stopReason": null,
+  "story": "FUCQ-49",
+  "unknownFidelity": {
+    "equipment": "unknown",
+    "exactCar": "unknown",
+    "interior": "unknown",
+    "wheel": "unknown"
+  }
+}

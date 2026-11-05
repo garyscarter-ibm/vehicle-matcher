@@ -1,0 +1,15 @@
+.gcsp .gcsp-field { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.gcsp .gcsp-field-label { color: var(--gcsp-text); font-weight: var(--gcsp-font-weight); }
+.gcsp .gcsp-field input, .gcsp .gcsp-field select, .gcsp .gcsp-field textarea { box-sizing: border-box; width: 100%; min-width: 0; max-width: 100%; min-height: 44px; padding: 10px 12px; font: inherit; color: var(--gcsp-text); background: var(--gcsp-surface); border: 1px solid var(--gcsp-text-muted); border-radius: var(--gcsp-radius); }
+.gcsp .gcsp-field textarea { min-height: 100px; resize: vertical; }
+.gcsp .gcsp-field [aria-invalid="true"] { border-color: var(--gcsp-danger); border-width: 2px; }
+.gcsp .gcsp-field input:focus-visible, .gcsp .gcsp-field select:focus-visible, .gcsp .gcsp-field textarea:focus-visible, .gcsp .gcsp-error-summary :focus { outline: 2px solid var(--gcsp-focus); outline-offset: 3px; }
+.gcsp .gcsp-field :disabled { background: var(--gcsp-surface-muted); color: var(--gcsp-text-muted); }
+.gcsp .gcsp-field-hint, .gcsp .gcsp-field-error { margin: 0; overflow-wrap: anywhere; font-size: 14px; }
+.gcsp .gcsp-field-hint { color: var(--gcsp-text-muted); }
+.gcsp .gcsp-field-error { color: var(--gcsp-danger); font-weight: var(--gcsp-font-strong-weight); }
+.gcsp .gcsp-error-summary { padding: 20px; border: 2px solid var(--gcsp-danger); background: var(--gcsp-surface); overflow-wrap: anywhere; }
+.gcsp .gcsp-error-summary .gcsp-h2 { margin: 0 0 12px; }
+.gcsp .gcsp-error-links { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+.gcsp .gcsp-error-links a { color: var(--gcsp-accent-strong); text-decoration: underline; }
+.gcsp [hidden] { display: none !important; }

@@ -80,6 +80,18 @@
   },
   "stylesheets": [
     {
+      "path": "blocks/gcsp/kit/form-controls.css",
+      "max_lines": 16
+    },
+    {
+      "path": "blocks/gcsp/manual-setup/gcsp-manual-setup.css",
+      "max_lines": 23
+    },
+    {
+      "path": "blocks/gcsp/account/gcsp-account.css",
+      "max_lines": 22
+    },
+    {
       "path": "blocks/vehicle-matcher/question-controls.css",
       "max_lines": 7
     },
@@ -93,11 +105,11 @@
     },
     {
       "path": "blocks/gcsp/shell/gcsp-shell.css",
-      "max_lines": 307
+      "max_lines": 298
     },
     {
       "path": "blocks/gcsp/shell/gcsp-tokens.css",
-      "max_lines": 57
+      "max_lines": 30
     },
     {
       "path": "blocks/gcsp/employee/gcsp-employee.css",
@@ -146,6 +158,18 @@
     {
       "path": "blocks/gcsp/brief/gcsp-brief.css",
       "max_lines": 37
+    },
+    {
+      "path": "blocks/gcsp/shell/density-theme.css",
+      "max_lines": 67
+    },
+    {
+      "path": "blocks/gcsp/shell/fonts/density-fonts.css",
+      "max_lines": 11
+    },
+    {
+      "path": "blocks/gcsp/shell/density-typography.css",
+      "max_lines": 50
     }
   ],
   "baseline": {
