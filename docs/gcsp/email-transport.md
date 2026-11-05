@@ -6,9 +6,13 @@ Recorded 5 November 2026 at Russell's request, using the existing StanleyPi setu
 
 **Jira reconciled, 5 November 2026:** Atlassian reauthentication restored access. FUCQ-98 comment `132509` records Russell's resumption, and its description now permits implementation using this handoff while retaining configuration checks before real-send validation. Read-back confirmed the decision and unchanged acceptance/validation sections. Preserve the committed resumption if a stale import still carries the older pause. No new collaborator approval is needed.
 
-## Real email test authorised — 5 November 2026
+## Standing live email test authority — 5 November 2026
 
-Russell explicitly authorised one deliberate real email test to his IBM address in the active dispatcher chat. The exact approved recipient is retained in the private local recipient-approval record, outside source control. Verify the existing key/account and sender first; send only to that approved address, with no automatic retries or additional recipients. A clearly labelled transport test without an offer link is permitted while the actual offer producer is unavailable. Such a test proves only provider acceptance; FUCQ-98 still requires the actual public offer, inbox receipt and link/access validation before completion. Never invent an offer or token to clear that gate.
+Russell expanded the original one-email permission: functional live tests may send to his already approved IBM email whenever FUCQ-98 is ready, including repeated tests as needed, without asking again. He is comfortable receiving multiple test messages. The exact address remains in the private local `.claude/gcsp-mail-recipient-approval.json` record, outside source control; its `maximumSends: null` now records this standing authority. Preserve the explicit recipient mapping and normal retry/idempotency behaviour. The previous one-send limit is superseded.
+
+Russell also confirmed that he manually added **Render's outbound IP ranges to Brevo**. Record this as collaborator-confirmed setup; deployed authentication and delivery still need runtime evidence. Keep the existing key. Verify the configured account/sender before sending. A clearly labelled transport test without an offer link is permitted while the actual offer producer is unavailable. Such a test proves only provider acceptance; FUCQ-98 still requires the actual public offer, inbox receipt and link/access validation before completion. Never invent an offer or token to clear that gate.
+
+**Current-session stop:** after recording this authority, Russell explicitly instructed this chat to stop without testing so he could close Codex. No live check or email was performed for this update. The dispatcher remains paused; this permission does not restart it.
 
 **Observed test outcome, 5 November at 16:06 UTC:** Russell authorised one macOS Keychain prompt after background lookup failed. That one lookup succeeded, but Brevo account verification returned HTTP 401. The provider body was discarded, so the cause was unknown; this did not establish that the key was invalid. The run stopped after one GET: zero POSTs, zero emails, no sender or inbox/link validation. The prompt allowance is consumed; the already approved recipient/test authority remains recorded. This observation does not establish the state of Render secrets. Sanitised evidence is retained on the FUCQ-98 branch; no credential is recorded here.
 
@@ -22,7 +26,7 @@ The sanitised local receipt for that earlier refusal is `.claude/test-runs/recei
 
 The sanitised success receipt is `.claude/test-runs/receipts/fucq98-ip-approved-account-20261105T174100Z/result.json`. The supervisor removed `/private/tmp/test-stamp-shard-7dc85e5df60c4c248294b66c6554b34e` (0 allocated bytes), joined the credential process, verified its group absent and released the host reservation. No compatibility exception or owned leftovers. This configuration-only check changes no application or screen; application tests were not rerun. Independent wording review: Michigan J. Frog, requested/selected `gpt-6.1-sol` / `high` (Opus), no fallback or descendants.
 
-The implementing dispatcher retains the story. Sender permissions/identity, Render configuration, real sending, inbox receipt and actual offer-link validation remain outstanding. This check does not start or resume a poller.
+The implementing dispatcher retains the story. Render IP ranges are now authorised according to Russell's later confirmation above. Sender permissions/identity, deployed Render configuration/authentication, real sending, inbox receipt and actual offer-link validation remain outstanding. This check does not start or resume a poller.
 
 | Source inspected | Reusable evidence |
 |---|---|
@@ -39,7 +43,7 @@ Brevo's [IP security documentation](https://developers.brevo.com/docs/ip-securit
 
 Do not treat HTTP 401 alone as terminal evidence of an invalid credential or require key replacement. Retain the existing key and captured job, stop the current attempt, and distinguish IP authorisation, key status/permissions and network errors using fixed safe classifications. Keep raw provider bodies and account details out of logs. After a collaborator confirms the relevant IP is authorised, make one bounded authentication-only check before proceeding with the separately approved send validation; do not blindly loop on authentication failures.
 
-Approval for this Mac does not verify the production caller. For Render's **`bmw-matcher-api` backend**, inspect **Connect > Outbound** and reconcile its actual outbound addresses/ranges with Brevo's authorised list before production validation. [Render's outbound IP documentation](https://render.com/docs/outbound-ip-addresses) describes this service-specific view. The frontend site is not the sending environment. The Render secret and its IP authorisation have not been checked in this session.
+Approval for this Mac does not verify the production caller. Russell reports adding Render's ranges manually; deployed connectivity remains untested. For Render's **`bmw-matcher-api` backend**, **Connect > Outbound** identifies the actual outbound addresses/ranges used for that setup. [Render's outbound IP documentation](https://render.com/docs/outbound-ip-addresses) describes this service-specific view. The frontend site is not the sending environment. The Render secret and its IP configuration have not been independently checked in this session.
 
 ## Required transport method
 
