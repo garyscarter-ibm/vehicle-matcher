@@ -1,6 +1,6 @@
 # FUCQ-122 browser and integration plan
 
-Prepared 5 November 2026. This is a plan, not executed browser evidence. The employee source checkpoint is `49a6fbc`, and actual authenticated loopback HTTP/renderer proof is `104ed9c`. Freeze the queue checkpoint before browser allocation. The dispatcher currently grants the browser lane to FUCQ-126; this story has no browser or full-suite grant yet.
+Prepared 5 November 2026. This is a prepared executable plan, not executed browser evidence. Product source is frozen at `0a3a3a1` (employee `49a6fbc`, queue `41bc7d5`, actual authenticated Greg/Paula renderer journey). The dispatcher has released FUCQ-126's browser lane and named FUCQ-122 next; execution still awaits explicit grant after pushed-source, harness, ownership and budget review.
 
 Use the supplied shell screenshots `docs/gcsp/screens/00-employee-account.webp` and `01-replace-vehicle.webp`, body reference `docs/gcsp/evidence/fucq-6/README.md` at a7fc178, current Density tokens and Greg's denser operational treatment. Inspect each capture personally. No human layout-review pause applies.
 
@@ -37,3 +37,27 @@ The published Greg harness attaches `gcsp-case-queue` into the reserved region, 
 This base's `createGcspRuntime` does not compose RenewalCaseService or expose `gcspCases` in dependencies. Its existing `buildServer` routes/startup already support that port. FUCQ-103 owns `server/gcsp/runtime.js`; integrate the case service using the same repository/policy/clock/identity, then verify the delivered runtime through actual HTTP. `scripts/gcsp-demo.mjs` currently allowlists brief/activity pages only. Leave the external activity/order-progress host and lifecycle producer ownership intact; their authored placement/integration evidence remains incomplete until exercised.
 
 After scoped/browser/current-base readiness, request the dispatcher's sole full-suite lane for authored exact `npm test`, same-source strict test stamp and final resource audit. A green scoped run or visual preview does not complete these gates.
+
+## Prepared executable chunks
+
+The runner and supervisor are `browser-runner.mjs` and `browser-supervisor.py` in this directory. They are syntax checked only. No browser, API listener, static server, Chrome profile or browser reservation was created during preparation. After the dispatcher explicitly grants the lane on the pushed source, invoke one chunk at a time from this worktree:
+
+```sh
+python3 -B docs/gcsp/evidence/fucq122/browser-supervisor.py smoke-desktop
+```
+
+Inspect the smoke screenshots and receipt before continuing. Then run separate `journey-desktop`, `journey-narrow`, `options-deadline-desktop`, `options-deadline-narrow`, `resilience-desktop`, `resilience-narrow`, `previews-desktop` and `previews-narrow` chunks through the same supervisor. Do not parallelize them. Every invocation gets a unique `<chunk>-<id>`; reruns retain earlier failures. Each creates external receipts under `/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122-options/browser/<chunk>-<id>/` and compact screenshots/results under `docs/gcsp/evidence/fucq122/browser/<chunk>-<id>/`.
+
+| Chunk | Concrete coverage |
+|---|---|
+| smoke | Actual Paula account/help and Greg empty queue; read-only state digest, keyboard disclosure, Tab and visible focus, assets/errors/overflow. |
+| journey, each width | Actual request review/cancel/confirm; Greg sort/open, in-progress, manual remedy, single-preference proposal; Paula review/confirm/reload with unchanged essentials/weights/other preferences; actual resolved/closed state and dated history. |
+| options-deadline, each width | Actual registered deadline clock handler and replay; synthetic contract date/decline/stock/facts supplied explicitly; exact evaluated car, single preference, persisted reviewed release source/date, manual option and alternate canonical extension policy. Missing brief/stock/release is captured before setup. |
+| resilience, each width | Actual empty queue and held real list response; held committed help reply/busy control; committed reply loss plus byte-identical retry/one mutation; actual stale-version and employee-to-Greg forbidden response; real read transport abort/recovery; delayed actual read/save unmount without hidden reload. |
+| previews, each width | Every authored employee/queue fixture state, including isolated stale-run; clearly labelled synthetic evidence, expected state copy, preview writes refused and repository unchanged. |
+
+`results.json` records each screenshot's source, observed text/status, document overflow, focus outline/position, keyboard trace checkpoint and actual-versus-preview boundary. Native actions use Tab/Shift+Tab/Enter/Space. Select values use actual Home/ArrowUp/ArrowDown/Tab keys against observed option indices, resolving focus again after redraw. Text/date entry uses the native fill API after keyboard focus and is explicitly recorded as automated entry, not keyboard-only proof. Network evidence retains only safe method/path/status and command/case/brief/option projections, never headers or cookies. External requests are blocked. Console/page/static-asset/unexpected transport failures prevent a pass; deliberately controlled failures are recorded separately.
+
+The supervisor validates all product-source hashes against `0a3a3a1` and permits only this evidence directory plus the exact pre-existing `server/node_modules` symlink (target and inode). It also hashes the runner, supervisor and plan before/after. If the parent integrates the later shared tooling/instruction checkpoint, review and update this frozen revision before browser execution; the source guard deliberately refuses that unreviewed delta. The supervisor reserves 2560 MiB with a 2048 MiB minimum, measures recursive owned RSS, and applies a conservative 128 MiB combined scratch/retained-evidence ceiling in addition to the individual limits. Ownership includes PID/start identities, PGIDs, ports and output directory identity. Cleanup checks detached processes, open files, ports, monitor join, scratch and reservation absence; uncertain scratch remains named and preserved.
+
+Unchecked runtime assumptions remain: installed Chrome/CDP and Playwright behavior, browser cookie acceptance with the explicit localhost override, platform `ps`/`lsof` identity sampling, keyboard/native-select behavior, available host budget and elapsed time per chunk. Syntax checks do not verify selectors or service execution. An actual run may expose a harness or product defect; retain that failed receipt, diagnose it, and re-review source identity before a fresh chunk. The isolated service composition is executable against current interfaces; delivered runtime composition, released Greg host wiring, activity/order-progress placement and lifecycle/offer producers remain outside its evidence boundary.
