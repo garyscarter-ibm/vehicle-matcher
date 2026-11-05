@@ -45,8 +45,6 @@ Preference keys are extensible registered dimensions such as comfort and sportin
 
 FUCQ-91's single-change operation takes `{ decisionId, expectedBriefVersion, change: { path, value }, commandId }`. It permits one registered preference value or one essential, validates the choice, preserves all other essentials and importance weights, creates a new confirmed brief version and records the change above. `path` cannot target identity, permission or multiple fields. An inferred follow-up stays draft until confirmed. Repeating the command returns the same version; a changed payload under the same ID is `conflict`. A decline reason, a preference change and satisfaction are separate records. Do not reoffer the unchanged declined car; a relevant confirmed change makes it eligible for re-evaluation, not automatically suitable or allocated.
 
-## Exact stock, holds and offers
-
 ### Implemented BriefService binding · FUCQ-91, 5 November 2026
 
 `server/gcsp/brief/index.js` exports `BriefService` and `createBriefService({ repository, policy, clock, identity })`.
@@ -63,7 +61,7 @@ appends an immutable approved version. Both consent choices are booleans when su
 `buddy.enabled` projects search consent, and `buddy.paused` prevents both. Resume preserves the saved consent choices.
 Inferred values must first be reviewed in a separate draft. Employee confirmation stamps draft values with the
 server principal and DemoClock time; unresolved essentials keep `value: null, state: needs-confirmation`.
-`knownFacts` is an additive brief field populated exclusively from the scoped repository employee record,
+`knownFacts` is prefilled in the saved draft and is an additive approved brief field populated exclusively from the scoped repository employee record,
 with source, sourceVersion, observedAt and `supplied-demo-fact` label. Browser input cannot supply it.
 
 `pause`/`resume` take `{ commandId, expectedBriefVersion }` and append a version. Responses include
@@ -92,6 +90,19 @@ accepts a null essential only in `needs-confirmation`, preserving its fail-close
 Backend presentation fixtures are `server/test/fixtures/gcsp-brief-outcomes.json`. Future brief/activity screens
 must show unknown requirements, explicit independent consent, refresh conflicts, provenance and assumption labels;
 they follow the supplied GCSP shell/palette and Used Cars body direction in the experience contract and COMPONENTS.md.
+Draft/current/confirmation/state-change responses include `validation = { policyVersion, unknownEssentials, assumptions }`,
+with the actual PolicyService provenance and assumed/verified labels for charging, lifecycle and slider keys.
+
+`buildServer({ gcspIdentity, gcspClock, gcspBrief })` registers `createBriefRoutes(gcspBrief)` behind the existing
+identity/origin/shared-access gate. `gcspBrief` is the injected service instance; missing configuration returns 503.
+`GET /api/gcsp/brief`, `/brief/draft` and `/brief/history` read employee-scoped state. `POST /brief/draft`,
+`/brief/confirm`, `/brief/pause`, `/brief/resume` and `/brief/change-after-decline` use the commands above.
+Only these routes opt into discarding top-level browser identity/run claims before handling the command;
+all context still comes from the authenticated server session. Protected claims nested in brief content are invalid.
+Other GCSP routes retain their existing strict rejection. A different employee sees only their own brief/history;
+forged service contexts are refused and sessions from a reset run return `stale-run`. Stale version conflicts map to HTTP 409.
+
+## Exact stock, holds and offers
 
 `orderUuid` is the exact-stock UUID v4 and the foreign key for claims, holds, offers and allocations. `orderNumber` is a unique **7-digit string per run**, retaining leading zeros; `wholesalerOrderId` is an 8-digit integer. `configurationId` identifies immutable configuration facts and is never an exclusive-car key. Two cars can share it. VIN is attached only to delivered/current cars, never required for stock browsing, matching or holding (Q13).
 

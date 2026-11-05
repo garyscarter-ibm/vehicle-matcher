@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { once } from 'node:events';
+import { buildServer } from '../index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok } from '../gcsp/repository/index.js';
 import { createPolicyService, PolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
@@ -39,6 +41,7 @@ lifecycle('drafts and suggestions remain separate; confirm/revise append immutab
   const draft = await save(f);
   assert.equal(draft.status, 'ok', JSON.stringify(draft));
   assert.equal(draft.value.draftVersion, 1);
+  assert.equal(draft.value.knownFacts.gradeId.source, 'repository:employees');
   assert.equal((await f.repository.query(f.context, 'briefs')).value.length, 0);
   assert.equal((await f.service.readCurrent(f.context)).status, 'not-found');
   const confirmed = await confirm(f);
@@ -57,6 +60,8 @@ lifecycle('drafts and suggestions remain separate; confirm/revise append immutab
   assert.equal(brief.knownFacts.gradeId.source, 'repository:employees');
   assert.equal(brief.essentials.charging.value, null);
   assert.equal(brief.essentials.charging.state, 'needs-confirmation');
+  assert.equal(confirmed.value.validation.assumptions.find((a) => a.key === 'eligibility.homeCharging.requiredForPlugIn').status, 'assumed');
+  assert.deepEqual(confirmed.value.validation.unknownEssentials, ['charging']);
   const revised = data(); revised.preferences.body.value = 'suv';
   await save(f, 'draft-2', revised, { expectedDraftVersion: 1, expectedBriefVersion: 1 });
   assert.deepEqual((await f.service.readCurrent(f.context)).value.brief, brief);
@@ -192,4 +197,124 @@ lifecycle('service refuses forged employee contexts and stale run sessions', asy
     scenarioVersion: state.versions.scenario, fixtureVersion: state.versions.fixture });
   assert.equal((await f.service.readCurrent(f.context)).status, 'stale-run');
   assert.equal((await changeState(f, 'pause', 1)).status, 'stale-run');
+});
+
+const cookie = (session) => [session.value.setCookie].flat().map((v) => v.split(';')[0]).join('; ');
+async function withHttp(f, work) {
+  const server = buildServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspBrief: f.service, gcspAllowedOrigins: ['https://brief.test'] });
+  server.listen(0, '127.0.0.1'); await once(server, 'listening');
+  const request = async (path, { body, session = f.acting, origin = 'https://brief.test' } = {}) => {
+    const response = await fetch(`http://127.0.0.1:${server.address().port}/api/gcsp/brief${path}`, {
+      method: body ? 'POST' : 'GET', headers: { Origin: origin, cookie: cookie(session), ...(body ? { 'Content-Type': 'application/json' } : {}) },
+      ...(body ? { body: JSON.stringify(body) } : {}),
+    });
+    return { status: response.status, json: await response.json(), cache: response.headers.get('Cache-Control') };
+  };
+  try { await work(request); } finally { server.closeAllConnections(); await new Promise((done) => server.close(done)); }
+}
+
+lifecycle('HTTP routes expose lifecycle and ignore top-level browser identity/run claims using trusted context', async () => {
+  const f = await setup();
+  await withHttp(f, async (request) => {
+    assert.equal((await request('')).status, 404);
+    const drafted = await request('/draft', { body: { commandId: 'http-draft', expectedDraftVersion: 0, expectedBriefVersion: 0, brief: data(),
+      employeeId: 'other', runId: 'stale-browser-run', principalId: 'demo-greg', roles: ['greg'] } });
+    assert.equal(drafted.status, 200, JSON.stringify(drafted));
+    assert.equal(drafted.json.value.employeeId, f.context.employeeId);
+    assert.equal(drafted.json.value.runId, f.context.runId);
+    assert.equal((await request('/draft')).json.value.draftVersion, 1);
+    const input = { commandId: 'http-confirm', expectedDraftVersion: 1, expectedBriefVersion: 0 };
+    const confirmed = await request('/confirm', { body: input });
+    assert.equal(confirmed.status, 200, JSON.stringify(confirmed));
+    assert.equal(confirmed.json.value.brief.buddy.enabled, false);
+    assert.equal(confirmed.cache, 'no-store');
+    assert.equal((await request('?employeeId=other&runId=other')).json.value.brief.employeeId, f.context.employeeId);
+    const stale = await request('/pause', { body: { commandId: 'stale-http', expectedBriefVersion: 0 } });
+    assert.equal(stale.status, 409); assert.equal(stale.json.action, 'refresh');
+    assert.equal((await request('/pause', { body: { commandId: 'pause-http', expectedBriefVersion: 1 } })).json.value.brief.buddy.paused, true);
+    const resumed = await request('/resume', { body: { commandId: 'resume-http', expectedBriefVersion: 2 } });
+    assert.equal(resumed.json.value.activity.canSearch, false);
+    assert.equal((await request('/history')).json.value.versions.length, 3);
+    assert.equal((await request('/draft', { body: { commandId: 'bad', expectedBriefVersion: 3, expectedDraftVersion: 1, brief: { ...data(), employeeId: 'other' } } })).status, 400);
+    assert.equal((await request('', { session: f.presenter })).status, 403);
+    assert.equal((await request('', { origin: 'https://hostile.test' })).status, 403);
+  });
+});
+
+lifecycle('HTTP current/draft/history never disclose another employee and old sessions refuse after reset', async () => {
+  const f = await setup(); await save(f); await confirm(f);
+  const otherPrincipal = (await f.policy.getAssumption('identity.demo.principals', { runId: f.context.runId,
+    asOf: (await f.clock.now(f.context)).value.now })).value.value.find((p) => p.roles.includes('employee') && p.employeeId !== f.context.employeeId);
+  const other = await f.identity.switchPrincipal(f.presenter.value.context, otherPrincipal.principalId, 'other');
+  await withHttp(f, async (request) => {
+    assert.equal((await request('', { session: other })).status, 404);
+    assert.equal((await request('/history', { session: other })).json.value.versions.length, 0);
+    const state = (await f.clock.readState(f.presenter.value.context)).value;
+    await f.clock.reset(f.presenter.value.context, { commandId: 'http-reset', expectedRunId: state.runId,
+      expectedRunVersion: state.runVersion, scenarioVersion: state.versions.scenario, fixtureVersion: state.versions.fixture });
+    assert.equal((await request('')).status, 409);
+    assert.equal((await request('/confirm', { body: { commandId: 'old-run', expectedDraftVersion: 1, expectedBriefVersion: 1 } })).json.status, 'stale-run');
+  });
+});
+
+lifecycle('retained brief, conflict and validation fixtures match the real presentation contract', async () => {
+  const fixtures = JSON.parse(await readFile(new URL('./fixtures/gcsp-brief-outcomes.json', import.meta.url), 'utf8'));
+  const f = await setup();
+  assert.deepEqual(await save(f, 'fixture-draft'), fixtures.draft);
+  assert.deepEqual(await f.service.confirm(f.context, { commandId: 'fixture-confirm', expectedDraftVersion: 1, expectedBriefVersion: 0 }), fixtures.confirmed);
+  assert.deepEqual(await changeState(f, 'pause', 0, 'fixture-stale'), fixtures.conflict);
+  assert.deepEqual(await save(f, 'fixture-invalid', { ...data(), contribution: 500 }, { expectedDraftVersion: 1, expectedBriefVersion: 1 }), fixtures.validation);
+  assert.deepEqual(await changeState(f, 'pause', 1, 'fixture-pause'), fixtures.paused);
+});
+
+lifecycle('work charging is ready; unknown equipment and driver/points gates remain independent of preferences', async () => {
+  const f = await setup(); const ready = data(); ready.essentials.charging = { ...ready.essentials.charging, value: 'work', state: 'confirmed' };
+  await save(f, 'ready', ready); await confirm(f);
+  await f.clock.advance(f.presenter.value.context, { commandId: 'noon', expectedClockVersion: '1', bySeconds: 10800 });
+  const { fact } = await import('./helpers/employee-recommendation.js');
+  const facts = providerValue().employeeFacts;
+  const evaluate = (candidate, employeeFacts = facts) => f.service.evaluateCandidate(f.context, { candidate, employeeFacts });
+  const readyCar = stock(1, { fuel: fact('phev') });
+  assert.equal((await evaluate(readyCar)).value.suitable, true);
+  assert.equal((await evaluate(readyCar, { ...facts, driverEligible: fact(false) })).value.suitable, false);
+  const needed = data(); needed.essentials.equipment = essential(['towbar'], 'includes', 'equipment-key');
+  await save(f, 'equipment', needed, { expectedDraftVersion: 1, expectedBriefVersion: 1 });
+  await confirm(f, 'equipment-confirm', { expectedDraftVersion: 2, expectedBriefVersion: 1 });
+  const unknown = await evaluate(stock());
+  assert.equal(unknown.value.suitable, false);
+  assert.ok(unknown.value.unknowns.some((u) => u.field === 'equipment'));
+  await changeState(f, 'pause', 2);
+  assert.equal((await evaluate(stock())).reason, 'buddy-not-searching');
+});
+
+lifecycle('post-decline essential changes are server-stamped; other employees and invalid/multiple changes are refused', async () => {
+  const f = await setup(); await save(f); const before = (await confirm(f)).value.brief;
+  await f.repository.transaction(f.context, cmd('decision-fixture'), async (tx) => {
+    await tx.insert('decisions', { runId: f.context.runId, decisionId: 'foreign-decline', offerId: 'foreign-offer', employeeId: 'other', decision: 'decline', versions: { brief: 1 } });
+    return tx.insert('decisions', { runId: f.context.runId, decisionId: 'own-decline', offerId: 'own-offer', employeeId: f.context.employeeId, decision: 'decline', versions: { brief: 1 } });
+  });
+  const input = { commandId: 'essential-change', decisionId: 'own-decline', expectedBriefVersion: 1,
+    change: { path: 'essentials.seats', value: essential(4) } };
+  assert.equal((await f.service.changeAfterDecline(f.context, { ...input, decisionId: 'foreign-decline' })).status, 'forbidden');
+  assert.equal((await f.service.changeAfterDecline(f.context, { ...input, change: { ...input.change, other: 'body' } })).status, 'invalid');
+  const changed = await f.service.changeAfterDecline(f.context, input);
+  assert.equal(changed.value.brief.essentials.seats.confirmedAt, before.confirmedAt);
+  assert.equal(changed.value.brief.essentials.seats.value, 4);
+  assert.deepEqual(changed.value.brief.preferences, before.preferences);
+  assert.deepEqual(changed.value.brief.buddy, before.buddy);
+  assert.deepEqual(changed.value.brief.postDeclineChange.after, changed.value.brief.essentials.seats);
+});
+
+lifecycle('drafts based on a previous confirmation cannot overwrite a pause; changed receipts commit atomically', async () => {
+  const f = await setup(); await save(f); await confirm(f);
+  await save(f, 'second-draft', data(), { expectedDraftVersion: 1, expectedBriefVersion: 1 });
+  await changeState(f, 'pause', 1);
+  assert.equal((await confirm(f, 'obsolete-draft', { expectedDraftVersion: 2, expectedBriefVersion: 2 })).status, 'stale-version');
+  const repository = { transaction: (context, command, work) => f.repository.transaction(context, command, (tx) => work({ ...tx,
+    recordReceipt: (receipt) => receipt.consumerId === 'brief:changes' ? { status: 'unavailable', reason: 'receipt-write-failed', retryable: true } : tx.recordReceipt(receipt),
+  })) };
+  const guarded = new implementation.BriefService({ repository, policy: f.policy, clock: f.clock, identity: f.identity });
+  assert.equal((await guarded.resume(f.context, { commandId: 'failed-receipt', expectedBriefVersion: 2 })).status, 'unavailable');
+  assert.equal((await f.service.readCurrent(f.context)).value.brief.briefVersion, 2);
+  assert.equal((await f.repository.query(f.context, 'event_receipts', { eventType: 'brief-changed' })).value.length, 2);
 });

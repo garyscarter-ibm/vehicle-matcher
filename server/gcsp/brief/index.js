@@ -89,6 +89,20 @@ export class BriefService {
       existingOffersUnaffected: true, existingOffers: offers.value.map(({ offerId, state, briefVersion }) => ({ offerId, state, briefVersion: briefVersion ?? null })) });
   }
 
+  async #knownFacts(tx, context, now) {
+    const employee = await tx.get({ table: 'employees', key: { runId: context.runId, employeeId: context.employeeId } });
+    if (employee.status !== 'ok') return employee;
+    return ok(Object.fromEntries(['name', 'companyId', 'schemeId', 'gradeId', 'contract', 'renewalId'].filter((key) => employee.value[key] !== undefined)
+      .map((key) => [key, { value: employee.value[key], source: 'repository:employees', sourceVersion: employee.value.version,
+        observedAt: now, status: 'supplied-demo-fact' }])));
+  }
+
+  #validation(brief, prepared) {
+    return { policyVersion: prepared.read.policyVersion,
+      unknownEssentials: Object.entries(brief.essentials).filter(([, e]) => e.state !== 'confirmed' || e.value === null).map(([key]) => key),
+      assumptions: prepared.assumptions.filter((a) => a.key !== 'employee.recommendation.v1') };
+  }
+
   async #read(context, kind) {
     const prepared = await this.#prepare(context); if (prepared.error) return prepared.error;
     const reader = (table, filter) => this.#repository.query(context, table, filter);
@@ -97,7 +111,7 @@ export class BriefService {
     if (kind === 'draft') return state.draft ? ok(state.draft) : result('not-found', { resourceType: 'brief-draft' });
     if (!state.current) return result('not-found', { resourceType: 'brief' });
     const activity = await this.#activity(reader, context, state.current);
-    return activity.status === 'ok' ? ok({ brief: state.current, activity: activity.value }) : activity;
+    return activity.status === 'ok' ? ok({ brief: state.current, activity: activity.value, validation: this.#validation(state.current, prepared) }) : activity;
   }
   readCurrent(context) { return this.#read(context, 'current'); }
   readHistory(context) { return this.#read(context, 'history'); }
@@ -130,8 +144,10 @@ export class BriefService {
       if (input.expectedBriefVersion !== version) return stale('brief', input.expectedBriefVersion, version);
       if ((drafting || confirming) && input.expectedDraftVersion !== (state.draft?.draftVersion ?? 0)) return stale('draft', input.expectedDraftVersion, state.draft?.draftVersion ?? 0);
       if (drafting) {
+        const facts = await this.#knownFacts(tx, context, prepared.now); if (facts.status !== 'ok') return facts;
         const value = { runId: context.runId, employeeId: context.employeeId, draftVersion: (state.draft?.draftVersion ?? 0) + 1,
-          baseBriefVersion: version, brief: input.brief, savedBy: context.principalId, savedAt: prepared.now };
+          baseBriefVersion: version, brief: input.brief, knownFacts: facts.value, validation: this.#validation(input.brief, prepared),
+          savedBy: context.principalId, savedAt: prepared.now };
         const stored = await tx.recordReceipt({ consumerId: draftConsumer(context), eventId: String(value.draftVersion), inputDigest: digest,
           eventType: 'brief-draft-saved', state: 'completed', outcome: ok(value), createdAt: prepared.now, updatedAt: prepared.now });
         return stored.status === 'ok' ? ok(value) : stored;
@@ -147,10 +163,8 @@ export class BriefService {
         brief.buddy = { enabled: input.consent?.search === true, searchConsent: input.consent?.search === true,
           holdConsent: input.consent?.hold === true, paused: false, permissionVersion: version + 1,
           confirmedBy: context.principalId, confirmedAt: prepared.now };
-        const employee = await tx.get({ table: 'employees', key: { runId: context.runId, employeeId: context.employeeId } });
-        if (employee.status !== 'ok') return employee;
-        brief.knownFacts = Object.fromEntries(['name', 'companyId', 'schemeId', 'gradeId', 'contract', 'renewalId'].filter((key) => employee.value[key] !== undefined)
-          .map((key) => [key, { value: employee.value[key], source: 'repository:employees', sourceVersion: employee.value.version, observedAt: prepared.now, status: 'supplied-demo-fact' }]));
+        const facts = await this.#knownFacts(tx, context, prepared.now); if (facts.status !== 'ok') return facts;
+        brief.knownFacts = facts.value;
       } else if (operation === 'paused' || operation === 'resumed') {
         if (brief.buddy.paused === (operation === 'paused')) return result('conflict', { reason: operation === 'paused' ? 'already-paused' : 'already-resumed', current: { briefVersion: version } });
         brief.buddy = { ...brief.buddy, paused: operation === 'paused', permissionVersion: version + 1,
@@ -186,7 +200,7 @@ export class BriefService {
       const receipt = await tx.recordReceipt({ consumerId: 'brief:changes', eventId: event.eventId, inputDigest: digest,
         eventType: event.eventType, inputVersions: { brief: version + 1, policy: context.policyVersion }, state: 'completed', outcome: ok(event),
         createdAt: prepared.now, updatedAt: prepared.now });
-      return receipt.status === 'ok' ? ok({ brief: stored.value, activity: activity.value, event }) : receipt;
+      return receipt.status === 'ok' ? ok({ brief: stored.value, activity: activity.value, validation: this.#validation(stored.value, prepared), event }) : receipt;
     });
   }
 

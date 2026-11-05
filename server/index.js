@@ -47,6 +47,7 @@ import { geocodePostcode } from './geocode.js';
 import { createGcspHandler } from './gcsp/identity/http.js';
 import { createEmployeeRecommendationRoutes } from './gcsp/recommendation/http.js';
 import { createClockRoutes } from './gcsp/clock/http.js';
+import { createBriefRoutes } from './gcsp/brief/http.js';
 
 const PORT = Number(process.env.PORT) || 8787;
 const MAX_BODY_BYTES = 16 * 1024; // quiz answers are tiny; reject anything bigger
@@ -845,7 +846,7 @@ export function buildServer(deps = {}) {
     identity: deps.gcspIdentity,
     routes: [...createEmployeeRecommendationRoutes(deps.gcspClock && deps.gcspRecommendations
       ? { ...deps.gcspRecommendations, time: deps.gcspClock } : deps.gcspRecommendations),
-    ...createClockRoutes(deps.gcspClock), ...(deps.gcspRoutes || [])],
+    ...createClockRoutes(deps.gcspClock), ...createBriefRoutes(deps.gcspBrief), ...(deps.gcspRoutes || [])],
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
 
