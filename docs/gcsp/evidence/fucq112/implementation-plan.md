@@ -1,0 +1,30 @@
+# FUCQ-112 owned renewal-risk cases implementation plan
+
+Goal: one owned case for an unresolved renewal, opened by deliberate employee request or a configured presenter tick; every employee-facing change atomically enqueues a captured notification.
+
+Spec: `_dev/in-progress/DEV-2026-11-04-081.md`; GCSP demo brief, build rules, experience-quality contract; C7/blueprint 08. Parent FUCQ-110. No help/case screen, deployment, infrastructure, live producer or recovery priority.
+
+## Planned slices and seams
+
+1. Request/read, ownership and storage (5 points): new `server/gcsp/cases/{index,http,policy}.js`, named renewal-case test and response fixtures. Add `renewal_cases` schema plus additive migration 0002; one active case per employee/renewal/run, validated immutable dated history in the service, persisted CAS and transactional command replay. Routes ignore browser employee/run overrides and use only resolved principals. Read help/read model never writes.
+2. Configured risk triggers (3 points): register `renewal-risk-cases` in existing `pending-reconciliation` stage before clock startup. Read central deadline rule/threshold, lifecycle exception types and selection acknowledgement types; consume existing event_receipts only, recording receipts per source event; no approval/appointment producer. Derive renewal ID and contract end from repository employee data, unknown remains unknown.
+3. Owner updates/remedies and captured notifications (5 points): Greg/presenter act as scheme-team role. Validate state transitions and expected version; store practical next action/due demo-clock time. Alternative candidate uses BriefService.evaluateCandidate constraints with consent-neutral read evaluation if needed; no allocation/hold writes. Preference remedy references only an existing preference path and an actual employee-confirmed FUCQ-91 postDeclineChange, preserving essentials/allowance. Later release dates must be future; manual decision records owner reason. Extension offered only with canonical permission. Extend notification consumer narrowly to render case update snapshots, continuing existing transport/retry/rollback/reset semantics.
+
+## Shared writes held pending dispatcher release
+
+- repository/schema.js: additive renewal_cases definition; repository/core.js: active-case uniqueness parity. PostgreSQL generic snapshot/flush needs no implementation edit. migration 0002_renewal_cases.sql follows JSONB/generated-column format and active-case partial unique index.
+- policy/seed-v1.json: renewalCase.deadline.enabled=true; renewalCase.deadline.withinDays=14 calendar days; renewalCase.lifecycle.enabled=true; renewalCase.lifecycle.eventTypes=[approval-declined,appointment-no-show]; renewalCase.selection.eventTypes=[selection-acknowledged]; renewalCase.owner.role=scheme-team; renewalCase.response.dueHours=24 hours; renewalCase.extension.permitted=false. All dated 2026-11-05, assumed with basis. Clock stage uses existing pending-reconciliation; no clock implementation write.
+- server/index.js: import/compose createCaseRoutes(deps.gcspCases) and await deps.gcspCases.start() before notification start/reconcileStartup.
+- notify/index.js: discriminate messageKind renewal-case-update before offer lookup and use committed payload snapshot; preserve shared retry/ack paths. New case renderer in cases/notification.js.
+- shared-contracts.md/HLD prose: append concise case/storage/key/event-envelope/composition/fixture contract after release. Canonical draw.io status is held because background diagram bridge is disconnected; no raw XML or foreground interaction.
+- BriefService: initial proposal uses existing explicit employee single-change operation and verifies persisted confirmation rather than changing it; any required shared brief seam will be reported before writing.
+
+## Validation selection and resources
+
+No test/install execution until dispatcher admits exact first chunk. First red/green command: `node --test --test-concurrency=1 server/test/gcsp-renewal-case.test.js` with name-pattern narrowing as individual slices develop. First red tests import cases optionally and assert actual missing interface, avoiding loader-only failures. One test-file worker. Scoped boundary checks: gcsp-repository-contract, gcsp-clock-reset, gcsp-identity, gcsp-brief, gcsp-outbox, gcsp-policy-service, then server/api route boundary as warranted. These cover transactional rollback/idempotency, cross-scope refusal, presenter trigger registration, canonical policy, consent and captured notification retry. Exclude retail/UI/browser initially because no screen/styles/shared engine changes. Inspect strict selector dry-run first; unsupported JS selection needs explicit command and reviewed map under shared `.claude/test-runs/impact`.
+
+Required final full command: `node --test --test-concurrency=1 server/test/**/*.test.js` only after FUCQ-133 then FUCQ-55 integrated base and dispatcher sole-full admission. Explicit story requirement justifies this full. No `npm test -- --test-concurrency=1`.
+
+Use repository `_tools/test_resources.py` Scratch/HostBudget/run_process supervisor per chunk, absolute owned scratch root with outside manifest, TMPDIR/TMP/TEMP, npm cache within own scratch and process group/timeouts. Expected scoped peak <64MiB scratch, <512MiB RAM, <120sec; one worker, zero network. Dependency install separately admitted, own pinned npm ci only, no package/lock edits or shared symlinks. Full estimate/replanning from measured current timings. Large outputs/archives directly OneDrive under `_agent-output/vehicle-matcher/fucq112-20261105/`; none expected. Persist bounded receipts and identity/hash map outside scratch; finalizer stops/joins groups, removes scratch/success logs and verifies absence/reservation release. Backend response fixtures prove explicit unknown dates/units/fictional assumptions/actionable refusals; screenshots unnecessary because no rendered surface changes.
+
+Agents: lead requested and selected gpt-6.1-sol/high; no fallback, runtime not independently verified; none spawned, direct capacity fallback (four slots occupied).
