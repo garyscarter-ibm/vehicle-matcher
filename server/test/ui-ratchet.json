@@ -89,7 +89,7 @@
     },
     {
       "path": "blocks/gcsp/employee/gcsp-employee.css",
-      "max_lines": 114
+      "max_lines": 92
     },
     {
       "path": "blocks/gcsp/presenter/gcsp-presenter.css",
@@ -102,6 +102,10 @@
     {
       "path": "blocks/demo-launcher/entry-host.css",
       "max_lines": 44
+    },
+    {
+      "path": "blocks/vehicle-matcher/gcsp-kit.css",
+      "max_lines": 26
     }
   ],
   "baseline": {

@@ -150,7 +150,7 @@ Test: `server/test/ui-ratchet.test.js`, config and baseline in `server/test/ui-r
 
 ## Shared demo launcher (`blocks/demo-launcher/`)
 
-Reuse `el`, `screenIntro`, `button` and `mediaWell`. Decision cards represent exact cars and question controls represent answers; neither represents destination navigation or a change of brand context, so these two consumed primitives are new. Their shared styles live in `launcher.css`, with the existing semantic VM tokens and an explicit ratchet cap. `entry-host.css` contains only the extracted page surface/password gate styles; `retail-chrome.js` preserves the existing brand picker and shell.
+Reuse `el`, `screenIntro`, `button` and `mediaWell`. Decision cards represent exact cars and question controls represent answers; neither represents destination navigation or a change of brand context, so these two consumed primitives are new. Their shared styles live in `launcher.css`, with the existing semantic VM tokens and an explicit ratchet cap. Launcher and gallery compositions place `.vm` within `.gcsp`, consuming the shared `gcsp-kit.css` layer and scoped tokens for the approved system font, normal-case headings and teal actions. `entry-host.css` contains only the extracted page surface/password gate styles; `retail-chrome.js` preserves the existing brand picker and shell.
 
 | Call | Use for |
 |---|---|
@@ -160,3 +160,8 @@ Reuse `el`, `screenIntro`, `button` and `mediaWell`. Decision cards represent ex
 | `bootDemo({ root?, employeeCapability?, decorateRetail? })` (`boot.js`) | Gate and route integration. A capability is available only with `enabled === true` and a real `mount(root, context)` function. The default remains unavailable pending FUCQ-35 registration; a boolean alone cannot enable an entry. |
 
 The existing single `components.html` gallery includes a local brand callback, long destination title, missing images, loading and unavailable choices. No employee shell is duplicated. Launcher JavaScript is an explicit ratchet root; the shared primitive module is excluded as kit code. New surface checks reject inline scripts/handlers and unsafe execution.
+
+
+### GCSP primitive styling (`blocks/vehicle-matcher/gcsp-kit.css`)
+
+The shared GCSP adaptation of `screenIntro`, `button`, `factList`, `statusScreen` and `mediaWell` lives in this explicitly capped kit stylesheet. It imports `blocks/gcsp/shell/gcsp-tokens.css` and scopes every rule under `.gcsp`, with no employee-shell dependency. Both `gcsp-employee.css` and `demo-launcher/launcher.css` import it; the employee's existing primitive rules were moved unchanged. Keep new common primitive treatment here rather than duplicating it in page CSS. Retail surfaces stay outside `.gcsp` and retain their brand themes.

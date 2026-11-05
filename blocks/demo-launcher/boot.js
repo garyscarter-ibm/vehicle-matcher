@@ -81,7 +81,9 @@ export function bootDemo({ root = document.getElementById('demo-root'), employee
     } else if (context.state === 'employee' && available) {
       root.replaceChildren();
       employeeCapability.mount(root, context);
-    } else renderLauncher(root, context, { input: window.location.href });
+    } else renderLauncher(root, context, {
+      input: new URL(context.location, window.location.href).href,
+    });
     root.dispatchEvent(new CustomEvent('demo-entry-ready', { detail: context, bubbles: true }));
   }
   const apiHost = (() => {

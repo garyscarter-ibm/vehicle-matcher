@@ -1,11 +1,11 @@
-.demo-launcher.vm { max-width: 1280px; padding: 0; min-height: 100vh; background: var(--vm-surface); color: var(--vm-ink); }
+@import "../vehicle-matcher/gcsp-kit.css";
+.demo-launcher.vm { max-width: 1280px; padding: 0; min-height: 100vh; background: var(--gcsp-surface-page); color: var(--vm-ink); }
 .demo-launcher-header, .demo-launcher-footer { padding: var(--vm-space-5) var(--vm-space-6); border-bottom: 1px solid var(--vm-line); display: flex; gap: var(--vm-space-4); justify-content: space-between; align-items: center; }
 .demo-launcher-wordmark { color: var(--vm-ink); font-size: 18px; font-weight: 700; text-decoration: none; }
 .demo-launcher-demo, .demo-launcher-footer { color: var(--vm-ink-muted); font-size: 13px; }
 .demo-launcher-content { padding: clamp(24px, 5vw, 64px); }
 .demo-launcher-content > div:first-child { max-width: 760px; }
 .demo-launcher-content > div:first-child .vm-title { font-size: clamp(32px, 4vw, 52px); line-height: 1.12; }
-.demo-launcher-content .vm-lede { max-width: 680px; }
 .demo-brand-selector { display: grid; grid-template-columns: minmax(0, 320px) 96px; gap: var(--vm-space-3); align-items: center; margin-top: var(--vm-space-6); max-width: 440px; }
 .demo-brand-label { grid-column: 1 / -1; font-size: 15px; font-weight: 600; }
 .demo-brand-control { min-width: 0; width: 100%; min-height: 48px; padding: 10px 36px 10px 12px; border: 1px solid var(--vm-line); border-radius: var(--vm-radius-control); background: var(--vm-surface); color: var(--vm-ink); font: inherit; }

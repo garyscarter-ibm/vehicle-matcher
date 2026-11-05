@@ -3,6 +3,7 @@ import { buildEntryUrl, resolveEntryContext } from './entry-context.js';
 import { experienceChoice, brandSelector, BRAND_LABELS } from './components.js';
 
 export function renderLauncher(root, initialContext, { input = window.location.href } = {}) {
+  const scope = el('div', 'gcsp');
   const main = el('main', 'vm demo-launcher');
   main.dataset.entryHost = initialContext.state;
   const header = el('header', 'demo-launcher-header');
@@ -24,11 +25,13 @@ export function renderLauncher(root, initialContext, { input = window.location.h
   const selector = brandSelector({ value: initialContext.brand, onChange: update });
   content.append(selector, selection, cards);
   main.append(content, el('footer', 'demo-launcher-footer', 'A prototype for exploring car experiences. Not an official brand site.'));
-  root.replaceChildren(main);
+  scope.append(main);
+  root.replaceChildren(scope);
 
   function update(brand) {
     const base = new URL(buildEntryUrl(input, { experience: 'launcher', brand }), input);
     const context = resolveEntryContext(base, { employeeAvailable: initialContext.employeeAvailable });
+    header.firstChild.href = context.links.launcher;
     selection.textContent = brand ? `Selected brand: ${BRAND_LABELS[brand] || brand}` : 'All six brands available for Used cars. Employee cars supports BMW.';
     const supported = brand === 'bmw';
     let reason;

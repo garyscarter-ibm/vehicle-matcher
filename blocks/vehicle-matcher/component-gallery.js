@@ -205,8 +205,10 @@ function launcherExamples() {
   const section = el('section', 'vm-gallery-section');
   section.setAttribute('aria-label', 'Car experience launcher');
   section.append(el('h2', 'vm-gallery-title', 'Car experience launcher'));
+  const scope = el('div', 'gcsp');
+  const body = el('div', 'vm');
   const state = el('p', 'vm-gallery-copy', 'A local brand selection, without navigation.');
-  section.append(brandSelector({ value: 'motorrad', onChange: (brand) => {
+  body.append(brandSelector({ value: 'motorrad', onChange: (brand) => {
     state.textContent = `Local selection: ${brand || 'all brands'}. Nothing is saved.`;
   } }), state);
   const choices = el('div', 'demo-experience-grid');
@@ -218,7 +220,9 @@ function launcherExamples() {
       description: 'A loading example with designed absent-image treatment.', status: 'Loading your car experience',
       action: { label: 'Loading Used cars', disabled: true }, reason: 'Please wait while the experience loads.' }),
   );
-  section.append(choices);
+  body.append(choices);
+  scope.append(body);
+  section.append(scope);
   return section;
 }
 

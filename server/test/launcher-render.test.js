@@ -64,6 +64,52 @@ test('direct unsupported employee brand stays selected with an explicit Choose B
   } finally { dom.window.close(); }
 });
 
+test('direct unavailable and unsupported employee recovery never restores buyer context', () => {
+  for (const brand of ['bmw', 'mini']) {
+    const { dom, win } = bootAt(`?experience=employee-cars&brand=${brand}&mode=swipe&scope=national&retailer=96&retailerName=Buyer&answers=private&api=http%3A%2F%2Flocalhost%3A8788#m=buyer-answers`);
+    try {
+      const verify = (selected) => {
+        const links = [...win.document.querySelectorAll('main a[href]')];
+        assert.ok(links.length >= 2);
+        for (const link of links) {
+          const url = new URL(link.href);
+          assert.deepEqual([...url.searchParams.keys()].sort(), ['api', 'brand', 'experience']);
+          assert.equal(url.searchParams.get('brand'), selected);
+          assert.equal(url.searchParams.get('api'), 'http://localhost:8788');
+          assert.equal(url.hash, '');
+          assert.equal(url.pathname, '/vehicle-matcher/index.html');
+        }
+      };
+      verify(brand);
+      if (brand === 'mini') {
+        [...win.document.querySelectorAll('button')].find((node) => node.textContent === 'Choose BMW').click();
+        verify('bmw');
+        assert.equal(win.document.querySelector('a[href*="employee-cars"]'), null);
+      }
+    } finally { dom.window.close(); }
+  }
+});
+
+test('launcher consumes the shared GCSP primitive layer while retained retail stays outside it', () => {
+  const launcher = bootAt();
+  try {
+    assert.ok(launcher.win.document.querySelector('main.vm').closest('.gcsp'));
+    const css = readFileSync(new URL('../../blocks/demo-launcher/launcher.css', import.meta.url), 'utf8');
+    const employee = readFileSync(new URL('../../blocks/gcsp/employee/gcsp-employee.css', import.meta.url), 'utf8');
+    const kit = readFileSync(new URL('../../blocks/vehicle-matcher/gcsp-kit.css', import.meta.url), 'utf8');
+    assert.match(css, /@import "\.\.\/vehicle-matcher\/gcsp-kit\.css"/);
+    assert.match(employee, /@import "\.\.\/\.\.\/vehicle-matcher\/gcsp-kit\.css"/);
+    assert.match(kit, /@import "\.\.\/gcsp\/shell\/gcsp-tokens\.css"/);
+    assert.match(kit, /\.gcsp \.vm-title \{ font-weight: 600; text-transform: none;/);
+    assert.doesNotMatch(employee, /\.gcsp \.vm-title \{/);
+    const cfg = JSON.parse(readFileSync(new URL('./ui-ratchet.json', import.meta.url), 'utf8'));
+    assert.ok(cfg.stylesheets.some((sheet) => sheet.path === 'blocks/vehicle-matcher/gcsp-kit.css'));
+  } finally { launcher.dom.window.close(); }
+  const retail = bootAt('?brand=mini');
+  try { assert.equal(retail.win.document.querySelector('.demo-shell').closest('.gcsp'), null); }
+  finally { retail.dom.window.close(); }
+});
+
 test('employee dispatch fails closed for absent, flag-only and disabled capability registrations', () => {
   for (const employeeCapability of [null, true, { enabled: true }, { enabled: 'true', mount() { assert.fail('must not mount'); } }, { enabled: false, mount() { assert.fail('must not mount'); } }]) {
     const { dom, win, mounts } = bootAt('?experience=employee-cars&brand=bmw', { employeeCapability });
