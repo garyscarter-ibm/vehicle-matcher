@@ -111,11 +111,13 @@ original state, version, timestamps and other payload. It never reconstructs fro
 Changed input conflicts. Generic insert receipts, link-free outbox jobs, rollback and isolation keep
 their existing semantics. Arbitrary callbacks explicitly returning secrets are not sanitised.
 
-**Remaining strict-token consumer issue:** existing `notify:attempt` and `notify:failure` callbacks
-return full outbox jobs into their enclosing command receipts. The dispatcher granted a separate
-consumer repair and dedicated regressions after the insert/compatibility checkpoint. Until those
-paths are repaired and tested, token custody after dispatch remains incomplete. No existing-state
-purge or live token inspection is authorised or claimed.
+The separately granted notification repair makes `notify:attempt` receipts retain only job ID,
+version, attempt number and state; `notify:failure` retains only state. The dispatcher re-reads the
+durable job after the attempt commits or replays, then checks its state/version/attempt and complete
+snapshot again immediately before transport and before success/failure bookkeeping. Obsolete work
+does not substitute a newer payload or overwrite newer bookkeeping. Captured rendering retains the
+link only in the outbox row; provider exception text is discarded. No existing-state purge or live
+token inspection is authorised or claimed.
 
 ## Validation boundaries
 
@@ -132,3 +134,10 @@ essential/eligibility failure, rollback after earlier writes and concurrent cont
 `conditionalClaim` tests prove only the common exclusive constraint. Actual completed FUCQ-66 both-way
 service proof, actual FUCQ-96 producer invocation, expiry/reconciliation and the authored `npm test`
 remain outstanding. No native database or external sending proof is claimed.
+
+The corrected notification scope passes 28/28 tests: actual cryptographic producer through captured
+delivery, interrupted recovery/replay, retries and final failure, 16 pre-send races, eight during-send
+races and obsolete descriptor replay. Captured outbox, renewal-case and brief boundaries pass 57/57,
+with strict targeted evidence against `4700bb0` retained in
+`.claude/test-runs/fucq100/strict-notify/targeted-0c4b4200c5f8ecb147b72a873b6d5a0e9ec9fb821023b51410226f89baefb7f0-default-1793918866123269000.json`.
+This remains the explicit scoped retained-dependency loader variant; no full/native proof is implied.

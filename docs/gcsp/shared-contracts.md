@@ -462,8 +462,10 @@ context and explicit local-synthetic authority. `tryClaim` accepts FUCQ-96's pub
 revision pins, then re-evaluates its quote against stored authority. Renewal derives from brief, slot,
 then employee and remains on both hold and claim. Automatic outbox insert receipts omit only the link;
 same-digest replay reconstructs the exact original result from original insert input, including after CAS.
-Generic receipts retain their contract. Downstream notification callback receipts still need the separately
-granted token-custody repair. Backend worker composition, expiry/remote reconciliation, actual FUCQ-96
+Generic receipts retain their contract. Downstream notification attempt/failure receipts now retain only
+safe descriptors/state. Dispatch re-reads the durable job and checks its exact attempt and snapshot
+before transport and acknowledgement/failure bookkeeping; obsolete work preserves newer state.
+Captured token-bearing rendering remains in the outbox row. Backend worker composition, expiry/remote reconciliation, actual FUCQ-96
 invocation and completed FUCQ-66 service integration remain outstanding. No migration, central server
 registration or screen is added.
 
