@@ -1119,7 +1119,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T23:11:20Z",
+      "observed_at": "2026-11-05T23:23:49Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-113",
       "branch": "dev/DEV-2026-11-04-088",
       "tracker_observed_at": "2026-11-05T23:00:25Z",
@@ -1148,10 +1148,10 @@
         },
         {
           "id": "policy-adoption",
-          "status": "blocked",
+          "status": "complete",
           "title": "Reviewed learning assumptions adopted in successor PolicyService version",
-          "observed_at": "2026-11-05T23:11:20Z",
-          "evidence": "Frozen candidate2fd445d verified and relayed; dispatcher granted FUCQ103 exact registration in its existing lane. This branch has no reviewed active successor adoption proof; immutable seed-v1 lacks learning keys. Await its reviewed checkpoint and adoption."
+          "observed_at": "2026-11-05T23:23:49Z",
+          "evidence": "Lead verified exact103ref8284915 +113ad2e3bf composition: real writable memory runtime/identity/clock adopts frozen bundle; pinned learning caller deterministic and old pin immutable/refused,2/2 zero skips. Proof/source map/cleanup docs/gcsp/evidence/fucq113/adoption-proof.md. No native/deployed adoption claim."
         },
         {
           "id": "real-corpus",

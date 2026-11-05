@@ -321,7 +321,9 @@ It proves reproduction and the manifest reader, not actual FUCQ-77 adapter execu
 The corpus binding supports the exact existing `getConfiguration(id)` read contract, refuses mismatched
 active dataset/version/digest or configuration version and never substitutes reviewed fixtures. Mapping real
 catalogue measurements/provenance to confirmed essential facts still needs real-corpus integration evidence;
-unconfirmed derived corpus features cannot satisfy confirmed essential gates. Actual policy adoption, real corpus execution and actual observed outcome-producer acceptance remain
+unconfirmed derived corpus features cannot satisfy confirmed essential gates. FUCQ-103 registered the exact bundle at `8284915`; isolated same-provider memory adoption and this
+learning caller passed2/2 (evidence `docs/gcsp/evidence/fucq113/adoption-proof.md`). Actual shared/runtime
+integration, PostgreSQL adoption, real corpus execution and observed outcome-producer acceptance remain
 separate outstanding work.
 
 ### Learning dataset CLI

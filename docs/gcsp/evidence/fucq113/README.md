@@ -63,7 +63,7 @@ Final scoped proof: 36/36 passed (the complete learning-records module), 10.92 s
 zero measured scratch bytes. All owned scratch and process groups were removed/stopped, reservations released
 and the owned dependency symlink removed; final cleanup and source identity are in `final-receipt.json`.
 
-Still outstanding: reviewed `learning.*` adoption; actual FUCQ-77 corpus execution and
+Still outstanding: shared-source/runtime integration and PostgreSQL adoption evidence; actual FUCQ-77 corpus execution and
 confirmed feature/provenance mapping; actual observed outcome-producer integration; full-story acceptance
 and the root dispatcher's coordinated full-suite lane. Structural fixtures establish none of those gates.
 
@@ -105,3 +105,14 @@ store and a new output directory. No policy is adopted or registry published by 
 complete file-backed successor reads, identical reruns, explicit fixture permission, untouched existing
 output, malformed snapshots/options and unavailable corpus. Parent resource receipts are retained at
 `.claude/test-runs/fucq113-parent-cli/`; the source remains offline and no native database grant is claimed.
+
+## Registered learning adoption caller
+
+FUCQ-103 published exact reviewed registration at `82849155565edbfc792961553d7292b8b5965a35`.
+The lead's new isolated caller check over that source plus `ad2e3bf` learning modules passed2/2, proving
+actual same-provider memory adoption, ordinary context refresh, pinned learning reads, deterministic
+manifest-valid generation and unchanged historical-pin refusal. See `adoption-proof.md`, the exact
+`adoption-caller-probe.mjs`, `adoption-source-map.json` and `adoption-receipt.json` for reproducible source
+identity, resource cleanup and limits. No unchanged FUCQ-103 proof or existing learning tests were repeated.
+This establishes the reviewed registration/memory adoption boundary only; it does not merge that runtime
+into this branch, demonstrate PostgreSQL persistence or satisfy actual corpus/producer/full acceptance.

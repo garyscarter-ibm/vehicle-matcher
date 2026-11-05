@@ -47,3 +47,13 @@ is integration context; this slice has not altered its registry, adopted these k
 changed active policy, or merged that seam into its current base. Tests inject this
 candidate only into a complete explicitly fictional successor fixture through the
 public PolicyService provider; they do not prove database adoption.
+
+## Reviewed registration and caller verification · 5 November 2026
+
+FUCQ-103 has now published registration of these exact bytes at
+`82849155565edbfc792961553d7292b8b5965a35`. The lead verified its actual writable memory runtime
+and ordinary context composition with the FUCQ-113 caller in an owned exact-source composition:2/2
+passed, no skips. `adoption-proof.md` records the source refs, registered-row pinning, deterministic
+manifest generation and immutable historical-pin refusal. The registry/adoption lane remains FUCQ-103's;
+this branch's seed and policy implementation are unchanged. Actual shared/deployed PostgreSQL adoption
+and real corpus/observed-producer/full integration remain unproved.
