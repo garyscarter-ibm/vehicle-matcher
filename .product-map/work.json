@@ -1009,7 +1009,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T23:22:44Z",
+      "observed_at": "2026-11-05T23:33:58Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-102",
       "workers": [
         {
@@ -1023,19 +1023,24 @@
       "slices": [
         {
           "id": "contract",
-          "status": "in-progress",
+          "status": "complete",
           "title": "One-offer HTTP and durable capability contract",
-          "observed_at": "2026-11-05T23:22:44Z"
+          "observed_at": "2026-11-05T23:33:58Z",
+          "evidence": "Lead reviewed exact DTO/privacy/callers; root-approved contract; scoped 22/22 passed with real memory/policy/identity/clock/evaluator and token5d8b01f. docs/gcsp/evidence/fucq102/README.md; producer/runtime/full gates remain separate."
         },
         {
           "id": "access",
-          "status": "not-started",
-          "title": "Hash exchange and current-state access service"
+          "status": "complete",
+          "title": "Hash exchange and current-state access service",
+          "observed_at": "2026-11-05T23:33:58Z",
+          "evidence": "Lead reviewed exact DTO/privacy/callers; root-approved contract; scoped 22/22 passed with real memory/policy/identity/clock/evaluator and token5d8b01f. docs/gcsp/evidence/fucq102/README.md; producer/runtime/full gates remain separate."
         },
         {
           "id": "http",
-          "status": "not-started",
-          "title": "Origin-gated cookie and account adapter"
+          "status": "complete",
+          "title": "Origin-gated cookie and account adapter",
+          "observed_at": "2026-11-05T23:33:58Z",
+          "evidence": "Lead reviewed exact DTO/privacy/callers; root-approved contract; scoped 22/22 passed with real memory/policy/identity/clock/evaluator and token5d8b01f. docs/gcsp/evidence/fucq102/README.md; producer/runtime/full gates remain separate."
         },
         {
           "id": "producer",
