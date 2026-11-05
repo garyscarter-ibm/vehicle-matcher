@@ -56,7 +56,8 @@ export function createOfferController({ read, decide, createCommandId = () => gl
           : outcome?.status === 'stale-run' ? 'earlier-run' : outcome?.status === 'forbidden' ? 'refused' : 'error';
         // A failed read cannot turn an uncertain command into confirmed absence/failure.
         state = blocked({ state: afterDecision ? 'uncertain' : failureState,
-          message: afterDecision ? 'Your decision could not be confirmed. Check the offer again.' : 'The current offer could not be loaded.' });
+          message: afterDecision ? 'Your decision could not be confirmed. Check the offer again.'
+            : outcome?.accessExchange === 'failed' ? 'Open the original email link or open this offer from your account.' : 'The current offer could not be loaded.' });
       } else {
         state = project(outcome.value, typeof decide === 'function');
         if (state.checkingExpiry && !expiryReread) {

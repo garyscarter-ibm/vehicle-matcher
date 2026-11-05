@@ -58,6 +58,12 @@ test('verified earlier-run outcome clears all current offer data and actions', a
   assert.equal(state.state, 'earlier-run'); assert.equal(state.reference, undefined); assert.equal(state.canAccept, false); c.destroy();
 });
 
+test('failed email exchange offers reopening the original email without pretending a refresh retains its credential', async () => {
+  const c = createOfferController({ read: async () => ({ status: 'unavailable', accessExchange: 'failed' }) });
+  const state = await c.refresh(); assert.match(state.message, /Open the original email link/);
+  assert.equal(state.canAccept, false); c.destroy();
+});
+
 test('a stale or destroyed read never replaces newer current state', async () => {
   const first = deferred(); let reads = 0;
   const c = createOfferController({ read: () => ++reads === 1 ? first.promise : Promise.resolve(pending({ state: 'declined' })) });

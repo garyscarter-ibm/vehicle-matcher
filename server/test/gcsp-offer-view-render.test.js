@@ -5,6 +5,7 @@ import { readFile } from 'node:fs/promises';
 import { createOfferView } from '../../blocks/gcsp/offer/offer-view.js';
 import { offerFixture } from '../../blocks/gcsp/offer/fixtures.js';
 import { createOfferController } from '../../blocks/gcsp/offer/offer-controller.js';
+import { createOfferHttpAdapter } from '../../blocks/gcsp/offer/http-adapter.js';
 
 let dom;
 before(() => { dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'https://example.test/' });
@@ -86,8 +87,22 @@ test('custom element mounts, reads presenter events, and unsubscribes on disconn
   host.remove(); assert.equal(unsubscribed, true); event(); assert.equal(reads, 2);
 });
 
+test('approved DTO flows through the default HTTP adapter/controller into the shared card with unavailable comparison', async () => {
+  const dto = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/representative-access.json', import.meta.url), 'utf8'));
+  const adapter = createOfferHttpAdapter({ location: { href: `https://example.test/gcsp/offer?offerId=${dto.offerId}` },
+    fetch: async () => ({ ok: true, headers: { get: () => 'application/json' }, json: async () => ({ status: 'ok', value: dto }) }) });
+  const root = document.createElement('div'); document.body.append(root);
+  const c = createOfferController(adapter); const view = createOfferView(root); const unsubscribe = c.subscribe(view.update);
+  const model = await c.refresh();
+  assert.match(root.textContent, /Order no\. 0999987/); assert.match(root.textContent, /1,100 points a month.*1,300 points a month allowance/);
+  assert.match(root.textContent, /Current-car details not supplied/); assert.match(root.textContent, /Fitted equipment unknown/);
+  assert.match(root.textContent, /2 hours remaining/); assert.equal(model.seconds, 7200);
+  assert.equal(root.querySelector('[data-offer-action="accept"]').disabled, true);
+  unsubscribe(); c.destroy(); view.destroy();
+});
+
 test('scoped offer sources and harness obey embed CSP and composition styling boundaries', async () => {
-  for (const file of ['offer-view.js', 'offer-controller.js', 'gcsp-offer.js', 'harness.js', 'preview.html']) {
+  for (const file of ['offer-view.js', 'offer-controller.js', 'offer-projection.js', 'http-adapter.js', 'gcsp-offer.js', 'harness.js', 'fixtures.js', 'preview.html']) {
     const text = await readFile(new URL(`../../blocks/gcsp/offer/${file}`, import.meta.url), 'utf8');
     assert.doesNotMatch(text, /\bon[a-z]+\s*=|\beval\s*\(|new\s+Function\s*\(|set(?:Timeout|Interval)\s*\(\s*['"`]/i);
     if (file.endsWith('.html')) assert.doesNotMatch(text, /<script(?![^>]*\bsrc=)[^>]*>\s*\S/i);

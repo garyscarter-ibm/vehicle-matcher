@@ -1369,7 +1369,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T23:35:17Z",
+      "observed_at": "2026-11-05T23:38:51Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-105",
       "slices": [
         {
@@ -1388,10 +1388,10 @@
         },
         {
           "id": "access-producer",
-          "status": "blocked",
+          "status": "in-progress",
           "title": "Published FUCQ102 access bound to actual FUCQ100 producer",
-          "observed_at": "2026-11-05T23:35:17Z",
-          "evidence": "Independent transport checkpoint5333d6b passes scoped80/80. Worker parked awaiting exact reviewed102 nested DTO/source and actual100 producer/current-car integration; not built."
+          "observed_at": "2026-11-05T23:38:51Z",
+          "evidence": "Resumed same Hippety Hopper chat for approved102 DTO binding at immutable ec70522; source/sample hashes verified. Actual100/106/host/browser/full gates remain."
         },
         {
           "id": "decision-host",
@@ -1416,7 +1416,17 @@
         }
       ],
       "unsliced": false,
-      "workers": []
+      "workers": [
+        {
+          "name": "Hippety Hopper",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-05T23:38:51.203286Z",
+          "expires_at": "2026-11-06T00:18:51.203286Z",
+          "source": "chat 01a1ae02-de53-72b2-b9b2-174ab689fb22",
+          "status": "active; approved102 adapter slice; parent only"
+        }
+      ]
     }
   ]
 }

@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import { createOfferHttpTransport, createOfferHttpAdapter } from '../../blocks/gcsp/offer/http-adapter.js';
 
 const response = (value = { status: 'ok', value: { state: 'pending' } }, ok = true) => ({ ok,
@@ -29,7 +30,7 @@ test('fragment is cleared synchronously; token travels only in one same-origin e
 
 test('failed exchange discards credential; refresh never resends its token', async () => {
   const { transport, calls } = setup('https://example.test/gcsp/offer?offerId=one&runId=run#token=synthetic-credential', async () => { throw new Error('network'); });
-  assert.equal((await transport.read()).status, 'unavailable');
+  const result = await transport.read(); assert.equal(result.status, 'unavailable'); assert.equal(result.accessExchange, 'failed');
   await transport.read(); assert.equal(calls.length, 2); assert.equal(calls[1][1].method, 'GET');
   assert.equal(calls[1][1].body, undefined);
 });
@@ -70,7 +71,31 @@ test('typed refusals survive while malformed, non-JSON and HTTP success contradi
   }
 });
 
-test('no nested DTO projection can silently bind an unreviewed successful read to the view', async () => {
+test('malformed successful DTO remains unavailable with the approved projection', async () => {
   const adapter = createOfferHttpAdapter({ location: { href: 'https://example.test/gcsp/offer?offerId=one' }, fetch: async () => response() });
   assert.equal((await adapter.read()).status, 'unavailable');
+});
+
+test('default HTTP display adapter binds the reviewed102 sample and retains exact locator/points', async () => {
+  const value = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/representative-access.json', import.meta.url), 'utf8'));
+  let method;
+  const adapter = createOfferHttpAdapter({ location: { href: `https://example.test/gcsp/offer?offerId=${value.offerId}` },
+    fetch: async (url, options) => { method = options.method; return response({ status: 'ok', value }); } });
+  const result = await adapter.read(); assert.equal(result.status, 'ok'); assert.equal(method, 'GET');
+  assert.equal(result.value.card.members[0].display.line, 'Order no. 0999987');
+  assert.equal(result.value.card.members[0].terms[0].value, 1100);
+  assert.equal(result.value.currentCar, null);
+});
+
+test('refresh scheduling requests server reads, skips busy requests and cancels without advancing time', async () => {
+  const scheduled = new Map(); let nextId = 0; let events = 0; let resolveRead;
+  const adapter = createOfferHttpAdapter({ location: { href: 'https://example.test/gcsp/offer?offerId=one' },
+    schedule: (callback, milliseconds) => { assert.equal(milliseconds, 5000); scheduled.set(++nextId, callback); return nextId; },
+    cancel: (id) => scheduled.delete(id), fetch: () => new Promise((resolve) => { resolveRead = resolve; }) });
+  const unsubscribe = adapter.subscribeClock(() => { events++; });
+  const tick = () => { const [id, callback] = scheduled.entries().next().value; scheduled.delete(id); callback(); };
+  const reading = adapter.read(); tick(); assert.equal(events, 0); assert.equal(scheduled.size, 1);
+  resolveRead(response({ status: 'not-found' }, false)); await reading;
+  tick(); assert.equal(events, 1); assert.equal(scheduled.size, 1);
+  unsubscribe(); assert.equal(scheduled.size, 0);
 });

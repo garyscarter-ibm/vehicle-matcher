@@ -1,4 +1,5 @@
-// FUCQ-102 transport proposal 9c124e7. Nested DTO projection is deliberately injected until reviewed.
+// FUCQ-102 HTTP and safe display contract reviewed at ec70522.
+import { toOfferPresentation } from './offer-projection.js';
 const unavailable = () => ({ status: 'unavailable', retryable: true });
 const statuses = new Set(['ok', 'not-found', 'stale-run', 'forbidden', 'unavailable', 'invalid', 'conflict', 'pending', 'stale-version']);
 const locator = (value) => typeof value === 'string' && value.length > 0 && value.length <= 512 && !/[\s\u0000-\u001f\u007f]/u.test(value);
@@ -46,7 +47,8 @@ export function createOfferHttpTransport({ fetch: request = globalThis.fetch, lo
         try {
           body = JSON.stringify({ ...reference, token });
           token = null;
-          return await call('/api/gcsp/offers/access', { method: 'POST', headers: { Accept: 'application/json', 'Content-Type': 'application/json' }, body, signal });
+          const result = await call('/api/gcsp/offers/access', { method: 'POST', headers: { Accept: 'application/json', 'Content-Type': 'application/json' }, body, signal });
+          return result.status === 'ok' ? result : { ...result, accessExchange: 'failed' };
         } finally { token = null; body = null; }
       }
       const query = reference.runId ? `?runId=${encodeURIComponent(reference.runId)}` : '';
@@ -54,13 +56,32 @@ export function createOfferHttpTransport({ fetch: request = globalThis.fetch, lo
     } };
 }
 
-/** Binding a safe display DTO needs the separately reviewed nested projection. No inferred success. */
-export function createOfferHttpAdapter({ project, ...options } = {}) {
+/** Bind the approved public DTO to the shared card without calculating policy or fabricating decisions. */
+export function createOfferHttpAdapter({ project = toOfferPresentation, schedule = globalThis.setTimeout,
+  cancel = globalThis.clearTimeout, refreshMs = 5000, ...options } = {}) {
   const transport = createOfferHttpTransport(options);
+  if (typeof schedule !== 'function' || typeof cancel !== 'function' || !Number.isInteger(refreshMs)
+    || refreshMs <= 0 || refreshMs > 2147483647) throw new TypeError('Supply a bounded refresh scheduler.');
+  let busy = 0;
   return { async read(input) {
-    const outcome = await transport.read(input);
-    if (outcome.status !== 'ok') return outcome;
-    if (typeof project !== 'function') return unavailable();
-    try { return project(outcome); } catch { return unavailable(); }
+    ++busy;
+    try {
+      const outcome = await transport.read(input);
+      if (outcome.status !== 'ok') return outcome;
+      if (typeof project !== 'function') return unavailable();
+      return await project(outcome, { reference: transport.reference });
+    } catch { return unavailable(); }
+    finally { --busy; }
+  },
+  subscribeClock(listener) {
+    let alive = true; let timer;
+    const next = () => {
+      if (!alive) return;
+      // This schedules a fresh server read; it never moves domain time or declares expiry.
+      if (!busy) listener();
+      if (alive) timer = schedule(next, refreshMs);
+    };
+    timer = schedule(next, refreshMs);
+    return () => { alive = false; cancel(timer); };
   } };
 }
