@@ -2,6 +2,8 @@
 
 Reviewed 5 November 2026 against the [eight supplied captures](../screens/README.md). **Partial visual match: the palette is consistent, but the current shell is not an exact match and the screenshots do not verify our font-family choices.** The previous [typography audit](README.md#full-typography-audit) verifies deployed RIS/Aftersales Density rules; that is different evidence from matching GCSP itself.
 
+**Follow-up implemented:** Gary subsequently authorised the changes. The [shared-shell refinement](gcsp-shell-refinement.md) addresses the branding, account composition and selected-navigation differences below. This review and its images preserve the pre-change findings; the font-identification limits still apply.
+
 ![Supplied GCSP and current app detail comparison](evidence/gcsp-screenshot-comparison.jpg)
 
 ## Findings
