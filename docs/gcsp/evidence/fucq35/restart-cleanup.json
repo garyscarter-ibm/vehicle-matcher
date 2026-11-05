@@ -1,6 +1,6 @@
 {
-  "observed_at": "2026-11-05T23:31:17Z",
-  "owned_manifests": 33,
+  "observed_at": "2026-11-05T23:38:10Z",
+  "owned_manifests": 35,
   "all_roots_absent": true,
   "owned_groups": [
     573,
@@ -31,6 +31,7 @@
     17096,
     17291,
     17320,
+    30017,
     50302,
     51391,
     57890,
@@ -60,8 +61,13 @@
     99078
   ],
   "live_members": 0,
-  "recorded_peak_allocations_removed": 201402710,
-  "compatibility_exception": "Bounded isolated active Chrome profile/cache only; removed after each chunk. Final browser peak scratch retained in receipts.",
-  "retained_environment": "server/node_modules832KiB, installed from approved existing lock; shared root node_modules read only",
+  "own_reservations_absent": true,
+  "recorded_peak_allocations_removed": 201958966,
+  "full_peak_rss": 415793152,
+  "full_peak_scratch": 552064,
+  "full_runtime_shim_removed": true,
+  "full_global_lock_released": true,
+  "compatibility_exception": "Scoped isolated active Chrome profile/cache only; each removed. Full suite has no compatibility exception.",
+  "retained_environment": "server/node_modules832KiB, installed from existing lock; shared root node_modules read only and hashes unchanged",
   "leftovers": []
 }

@@ -1,0 +1,48 @@
+{
+  "observed_at": "2026-11-05T23:39:34Z",
+  "baseline_tested_head": "b0a7bf109b524a48a903c8e0bf3c15799e560bb7",
+  "historical_full_stamp_key": "57e725410c3bd8e31f52cb96bf6cb07467db7f8a00e365bd795725f1e155edbb",
+  "immediate_strict_status": 0,
+  "current_strict_match_claimed": false,
+  "metadata_deltas": [
+    ".impeccable/config.json",
+    ".product-map/work.json",
+    "_dev/in-progress/DEV-2026-11-04-046.md",
+    "docs/gcsp/evidence/fucq35/restart-cleanup.json",
+    "docs/gcsp/evidence/fucq35/restart-validation.md"
+  ],
+  "only_allowed_task_metadata_dirty": true,
+  "application_and_tests_unchanged_from_tested_head": true,
+  "source_projection_digest": "2cd708ecac4cbf7e8aa2e90c472218f51750d53afbc975b388ba50f5489c58f8",
+  "source_projection_file_count": 280,
+  "source_projection_mismatches": [],
+  "configured_inputs_count": 1994,
+  "configured_input_mismatches": [],
+  "dependencies_digest": "90de3308215f5b135f8a756ac29598b68be7cd34bee8c97cbcb8cb86e293aef5",
+  "map_components_sha256": "649b840dfc1c131c6ba4477a4a6d3e130926ecaab704998d8677bbbdcef92bb8",
+  "map_work_sha256_before": "c1acd03f2c35c8e85bc18f14791143c065ca7451c45a13a8c75c13c1b0e382e3",
+  "map_work_sha256_after": "812af8398eb2bb4a01e0b187bcad72d8c36981989b5bdf42786f93e6b1626d77",
+  "map_functional_slices_unchanged": true,
+  "map_changed_fields": [
+    "FUCQ-35 observed_at",
+    "Ralph worker observed_at/expires_at/status"
+  ],
+  "worker_active": false,
+  "integration_status": "in-progress",
+  "map_progress": 90.0,
+  "detector_exception": {
+    "rule": "overused-font",
+    "value": "helvetica",
+    "files": [
+      "blocks/demo-launcher/entry-host.css"
+    ],
+    "createdAt": "2026-11-05T23:37:07.769Z",
+    "reason": "Agent: intentional inherited demo-host system fallback, identical to existing block.html line 19; preserve launcher continuity and the agreed shared GCSP Density theme."
+  },
+  "historical_environment_digest": "575899020a1f3ea2921ad38f81dd19112f44a76e1ac1410dda2847b27cf6e687",
+  "planned_launch_environment_digest_now": "575899020a1f3ea2921ad38f81dd19112f44a76e1ac1410dda2847b27cf6e687",
+  "planned_launch_environment_matches": true,
+  "environment_comparison": "Credential aliases removed and historical owned serial-runtime PATH prefix normalised for hash comparison only. No shim recreated, no suite/stamp executed. All values remain unpersisted.",
+  "platform_interpreter_matches": true,
+  "decision": "Metadata-only post-snapshot detector exception and worker stop preserve app/test/input execution equivalence; keep historical stamp, no fabricated current stamp or redundant full. Dispatcher reassesses actual merge/base changes."
+}

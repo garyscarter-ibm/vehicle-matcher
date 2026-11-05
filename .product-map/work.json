@@ -1369,7 +1369,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-05T23:31:17Z",
+      "observed_at": "2026-11-05T23:38:10Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-35",
       "slices": [
         {
@@ -1414,10 +1414,10 @@
           "name": "Ralph Wolf",
           "harness": "codex",
           "role": "story-lead/direct-capacity-fallback",
-          "observed_at": "2026-11-05T23:31:17Z",
-          "expires_at": "2026-11-06T00:01:17Z",
+          "observed_at": "2026-11-05T23:38:10Z",
+          "expires_at": "2026-11-05T23:38:10Z",
           "source": "thread 01a1adf9-3127-7fa3-b025-a0d6b6456c6a",
-          "status": "final-validation"
+          "status": "stopped; final validation passed"
         }
       ],
       "branch": "dev/DEV-2026-11-04-046"
