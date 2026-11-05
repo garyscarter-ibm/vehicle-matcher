@@ -21,3 +21,15 @@ No full/native/browser check is claimed at this checkpoint. Each supervised run 
 Shell: `docs/gcsp/screens/00-employee-account.webp` and `01-replace-vehicle.webp`. Historical field evidence: `03-vehicle-series.png`, `04-vehicle-models.png`, `05-vehicle-details.webp`. Body: `docs/gcsp/evidence/fucq-6/README.md` revision `a7fc178`, with the current shared Density theme. Lead inspected these images and `representative-desktop.png`; no personal screenshot values entered fixtures.
 
 Remaining: rendered custom element and exact detail composition; shared gallery/catalogue/ratchet additions; desktop/320px/keyboard/image-failure evidence; FUCQ-92 release-history projection and actual released-run browse-to-claim integration; authored shared-kit/ratchet/render checks and serial full suite. `empty-stock` does not establish that no release tick has run. The projection recognises an explicitly supplied `nothing-released-yet` state for presentation only; the current producer does not supply it, and its fixture test is not producer proof.
+
+
+## Complete delivery plan
+
+Stable slice IDs include every remaining integration gate:
+
+- `projection`: delivered at pushed checkpoint `34862e7`; lead source review, independent 13/0/0 proof, metadata check and cleanup are recorded above. A subsequent refreshed-filter correction is awaiting scoped recheck, so the current map state is temporarily in progress.
+- `rendered-browser`: in progress; shared-card composition, stable keyboard controls, exact details, explicit claim transport/reconciliation and standard custom element. Delivery requires scoped render/action checks, shared-kit/ratchet/render checks and granted desktop/320px/keyboard inspection against the recorded reference.
+- `released-integration`: not started; consume the published FUCQ-92 release-history contract and prove the actual release producer feeds the same shared pool as buddy search. Verify pre-first-tick versus genuinely empty/suitable-stock states, then one exact released order through browse, explicit claim, authoritative readback and the FUCQ-70 handoff without reclaiming. An injected released-stock port or gallery fixture cannot complete this slice. Producer/contract access and a coordinated integration run remain outstanding; the gallery owns no release command.
+- `final-validation`: not started; recheck affected callers after shared integration, meet each story acceptance item, then run the authored full suite at the dispatcher's serial lane on unchanged source. Preserve exact command/source/environment identities and the final resource receipt; no full-suite or native result is inferred from scoped checks.
+
+All test allocations use the supervisor/HostBudget contract, one bounded worker and an external ownership manifest. Browser allocation requires the dispatcher's separate readiness grant, with recursive owned browser/profile/port cleanup. Claims and release services, runtime registration and repository-contract files remain with their designated story lanes.

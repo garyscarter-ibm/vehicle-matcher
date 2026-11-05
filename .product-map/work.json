@@ -673,16 +673,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-68"
     },
     {
-      "id": "FUCQ-69",
-      "title": "Browse released cars with visual cards and complete vehicle details",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "Gary Carter",
-      "type": "Story",
-      "observed_at": "2026-11-05T23:00:25Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-69"
-    },
-    {
       "id": "FUCQ-70",
       "title": "Review a claimed car with contact details and return mileage",
       "status": "To Do",
@@ -1371,6 +1361,64 @@
       "type": "Story",
       "observed_at": "2026-11-05T22:40:24Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-138"
+    },
+    {
+      "id": "FUCQ-69",
+      "title": "Browse released cars with visual cards and complete vehicle details",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T23:24:36Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-69",
+      "slices": [
+        {
+          "id": "projection",
+          "status": "in-progress",
+          "title": "Complete exact-stock projection and read-only controller",
+          "observed_at": "2026-11-05T23:23:50Z",
+          "evidence": "Delivered projection checkpoint34862e7: lead source review and independent13/0/0/check-story/cleanup. A refreshed-filter correction is now authored; scoped recheck remains before current-source completion."
+        },
+        {
+          "id": "rendered-browser",
+          "status": "in-progress",
+          "title": "Rendered exact-car browser, claim reconciliation and visual acceptance",
+          "observed_at": "2026-11-05T23:23:51Z",
+          "evidence": "Sniffles is implementing rendered gallery/claim recovery and dedicated tests. Lead source review is ongoing; scoped tests and browser readiness grant remain outstanding."
+        },
+        {
+          "id": "released-integration",
+          "status": "not-started",
+          "title": "Actual release-history and released-run browse-to-claim integration"
+        },
+        {
+          "id": "final-validation",
+          "status": "not-started",
+          "title": "Final acceptance and authored serial full-suite verification"
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-04-068",
+      "workers": [
+        {
+          "name": "FUCQ-69 released car browser",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-05T23:24:36Z",
+          "expires_at": "2026-11-05T23:39:36Z",
+          "source": "Current chat01a1adde-8f98-7302-9b8a-e3d5d7f34dc5; effective gpt-6.1-sol/high verified",
+          "status": "working"
+        },
+        {
+          "name": "Sniffles",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-05T23:24:36Z",
+          "expires_at": "2026-11-05T23:39:36Z",
+          "source": "Live child/root/manual_projection just resumed for bounded scoped validation; effective gpt-6.1-sol/medium verified",
+          "status": "working"
+        }
+      ]
     }
   ]
 }
