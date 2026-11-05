@@ -1,0 +1,21 @@
+{
+  "unavailable": {
+    "status": "unavailable",
+    "reason": "Repository is unavailable",
+    "retryable": true,
+    "contractVersion": "1.0.0"
+  },
+  "conflict": {
+    "status": "conflict",
+    "reason": "car-occupied",
+    "current": { "state": "held", "version": 2, "orderUuid": "car-a" },
+    "contractVersion": "1.0.0"
+  },
+  "staleVersion": {
+    "status": "stale-version",
+    "expectedVersion": 1,
+    "currentVersion": 2,
+    "resource": { "table": "stock", "key": { "runId": "run-a", "orderUuid": "car-a" } },
+    "contractVersion": "1.0.0"
+  }
+}
