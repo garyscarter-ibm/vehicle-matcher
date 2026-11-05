@@ -11474,6 +11474,11 @@
             "operator": "equals",
             "type": "boolean",
             "unit": null
+          },
+          "modelLine": {
+            "operator": "equals",
+            "type": "string",
+            "unit": null
           }
         },
         "tuning": {
@@ -11723,6 +11728,17 @@
       "status": "assumed",
       "basis": "Three bounded attempts with exponential 30-second backoff capped at five minutes make fictional capture failure and recovery repeatable; revisable demonstration behaviour, not BMW mail policy.",
       "source": "docs/gcsp/captured-outbox.md",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "greg.demand.smallCountThreshold",
+      "value": 5,
+      "unit": "count",
+      "status": "assumed",
+      "basis": "Plausible small-cohort privacy band for the synthetic Greg demand dashboard; suppress exact counts below five. Revisable demo assumption, not verified BMW policy or formal disclosure protection.",
+      "source": "docs/gcsp/greg-demand.md",
       "sourceDate": "2026-11-05",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"

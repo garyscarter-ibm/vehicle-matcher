@@ -8,6 +8,12 @@ const unavailable = (code) => result('unavailable', { code, reason: 'The saved-d
 const factValue = (fact) => fact?.status === 'known' ? fact.value : null;
 const modelLine = (row) => factValue(row.facts?.facts?.modelLine)
   ?? factValue(row.facts?.facts?.eligibilityModelKey)?.split('|')[0] ?? 'unconfirmed';
+const intent = (brief) => ({
+  preferences: Object.fromEntries(Object.entries(brief.preferences ?? {}).map(([key, p]) => [key,
+    { value: p.value, importance: p.importance, valueState: p.valueState, importanceState: p.importanceState }])),
+  essentials: Object.fromEntries(Object.entries(brief.essentials ?? {}).map(([key, e]) => [key,
+    { value: e.value, operator: e.operator, unit: e.unit, state: e.state }])),
+});
 const activeBriefs = (rows) => [...rows.reduce((byEmployee, row) => {
   if (row.status === 'confirmed' && (!byEmployee.has(row.employeeId) || byEmployee.get(row.employeeId).briefVersion < row.briefVersion)) byEmployee.set(row.employeeId, row);
   return byEmployee;
@@ -40,7 +46,9 @@ export function createGregDemandService({ repository, policy, clock, identity } 
         const read = { runId: context.runId, policyVersion: context.policyVersion, asOf: time.value.now };
         const threshold = await policy.getAssumption(THRESHOLD_KEY, read);
         const calibration = await policy.getAssumption('employee.recommendation.v1', read);
-        if (threshold.status !== 'ok' || calibration.status !== 'ok' || threshold.policyVersion !== context.policyVersion
+        const declinedPolicy = await policy.getAssumption('offer.declinedCar.exclusion', read);
+        if (declinedPolicy.status !== 'ok' || declinedPolicy.policyVersion !== context.policyVersion
+          || declinedPolicy.value.value !== 'untilRelevantConfirmedBriefChange' || threshold.status !== 'ok' || calibration.status !== 'ok' || threshold.policyVersion !== context.policyVersion
           || calibration.policyVersion !== context.policyVersion || !Number.isSafeInteger(threshold.value.value) || threshold.value.value < 1) return unavailable('privacy-policy-unavailable');
         const minimum = threshold.value.value;
         const load = async () => {
@@ -80,8 +88,18 @@ export function createGregDemandService({ repository, policy, clock, identity } 
           const evaluated = await evaluator.recommend(employeeContext, { schemaVersion: brief.schemaVersion, briefVersion: brief.briefVersion,
             preferences: brief.preferences, essentials: Object.fromEntries(Object.entries(brief.essentials).filter(([key]) => key !== 'charging')) });
           if (evaluated.status !== 'ok') return unavailable('evaluation-unavailable');
-          if (!evaluated.value.decisions.some((decision) => decision.gateStatus === 'eligible')) {
-            const gates = [...new Set(evaluated.value.decisions.flatMap((decision) => [...decision.blockers, ...decision.unknowns]
+          const evaluatedDecisions = structuredClone(evaluated.value.decisions);
+          for (const decision of evaluatedDecisions) {
+            const declined = rows.decisions.filter((d) => d.employeeId === brief.employeeId && d.decision === 'decline'
+              && rows.offers.some((o) => o.offerId === d.offerId && o.orderUuid === decision.orderUuid));
+            const blocked = declined.some((d) => {
+              const previous = rows.briefs.find((b) => b.employeeId === brief.employeeId && b.briefVersion === d.versions?.brief);
+              return !previous || inputDigest(intent(previous)) === inputDigest(intent(brief));
+            });
+            if (blocked) { decision.gateStatus = 'ineligible'; decision.blockers = [...decision.blockers, { code: 'declined-unchanged' }]; }
+          }
+          if (!evaluatedDecisions.some((decision) => decision.gateStatus === 'eligible')) {
+            const gates = [...new Set(evaluatedDecisions.flatMap((decision) => [...decision.blockers, ...decision.unknowns]
               .map((gate) => `${gate.code}${gate.field ? `:${gate.field}` : ''}`)))].sort();
             unmet.push({ brief, gates });
           }
@@ -120,7 +138,7 @@ export function createGregDemandService({ repository, policy, clock, identity } 
         if (inputDigest(rows) !== inputDigest(after) || time.value.clockVersion !== end.value.clockVersion) return result('conflict', {
           reason: 'Demand inputs changed during the read. Refresh the projection.' });
         const authorized = await identity.requireRole(context, 'greg'); if (authorized.status !== 'ok') return authorized;
-        return ok({ runId: context.runId, asOf: time.value.now, projectionVersion: inputDigest({ rows, policy: context.policyVersion, clock: time.value.clockVersion }),
+        return ok({ runId: context.runId, asOf: time.value.now, projectionVersion: inputDigest({ rows, policy: context.policyVersion, configuration: [threshold.value, calibration.value, declinedPolicy.value], clock: time.value.clockVersion }),
           basis: 'expressed-saved-demand', versions: { ...provenance(briefs), clock: time.value.clockVersion },
           privacy: { thresholdKey: THRESHOLD_KEY, threshold: minimum, policyVersion: threshold.policyVersion, status: threshold.value.status },
           demand: { activeBriefs: aggregate(briefs), byModelLine: group(briefs, (b) => String(desired(b, 'modelLine'))),

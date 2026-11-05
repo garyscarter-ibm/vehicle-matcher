@@ -11,12 +11,11 @@ import { createGregRoutes } from '../gcsp/greg/http.js';
 import { preference, essential, stock, fact, providerValue } from './helpers/employee-recommendation.js';
 
 const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url)));
-async function setup({ threshold = 1, missingThreshold = false } = {}) {
+async function setup({ threshold = 1, missingThreshold = false, canonical = false } = {}) {
   const source = structuredClone(seed);
-  source.assumptions = source.assumptions.filter((a) => a.key !== 'greg.demand.smallCountThreshold');
-  if (!missingThreshold) source.assumptions.push({ ...source.assumptions[0], key: 'greg.demand.smallCountThreshold', value: threshold,
+  if (!canonical) source.assumptions = source.assumptions.filter((a) => a.key !== 'greg.demand.smallCountThreshold');
+  if (!canonical && !missingThreshold) source.assumptions.push({ ...source.assumptions[0], key: 'greg.demand.smallCountThreshold', value: threshold,
     unit: 'count', status: 'assumed', basis: 'Explicit alternative fixture privacy threshold.' });
-  source.assumptions.find((a) => a.key === 'employee.recommendation.v1').value.essentials.modelLine = { operator: 'equals', type: 'string', unit: null };
   const policy = new PolicyService({ provider: { async loadVersions() { return [source]; } } });
   const repository = createMemoryRepository({ store: createMemoryStore() });
   assert.equal((await repository.open()).status, 'ok');
@@ -213,4 +212,64 @@ test('successive brief/release/decline/selection inputs change actual projection
   assert.equal(new Set([empty, brief, released, declined, selected].map((v) => v.projectionVersion)).size, 5);
   assert.equal(exact(brief.demand.activeBriefs), 1); assert.equal(exact(bucket(released.stock.byModelLine, 'G21 Touring').released), 1);
   assert.equal(exact(declined.offers.declined), 1); assert.equal(exact(selected.offers.selected), 1);
+});
+
+
+test('canonical optional model-line essential persists through BriefService and gates an actual wrong model', async () => {
+  const f = await setup({ canonical: true });
+  const threshold = await f.policy.getAssumption('greg.demand.smallCountThreshold', { runId: f.context.runId,
+    policyVersion: f.context.policyVersion, asOf: (await f.clock.now(f.context)).value.now });
+  assert.equal(threshold.status, 'ok'); assert.equal(threshold.value.value, 5); assert.equal(threshold.value.status, 'assumed');
+  const invalid = saved(); invalid.essentials.modelLine.value = 3;
+  assert.equal((await f.brief.saveDraft(f.employee, { commandId: 'invalid-model', expectedBriefVersion: 0,
+    expectedDraftVersion: 0, brief: invalid })).status, 'invalid');
+  await confirm(f); await release(f, 1, { modelLine: fact('G20 Saloon') });
+  let out = await read(f);
+  assert.equal(bucket(out.demand.byModelLine, 'G21 Touring').count.label, 'fewer than 5');
+  assert.equal(bucket(out.demand.unmet.byGate, 'essential-unmet:modelLine').count.label, 'fewer than 5');
+  await release(f, 2); out = await read(f); assert.deepEqual(out.demand.unmet.byGate, []);
+});
+
+test('same declined exact car remains blocked until a relevant confirmed brief change, including pause/resume', async () => {
+  const f = await setup(); await confirm(f); await offer(f, 1, 'declined', 'decline', { type: 'body' });
+  let out = await read(f); assert.equal(exact(bucket(out.demand.unmet.byGate, 'declined-unchanged')), 1);
+  assert.equal((await f.brief.pause(f.employee, { commandId: 'pause', expectedBriefVersion: 1 })).status, 'ok');
+  out = await read(f); assert.equal(exact(bucket(out.demand.unmet.byGate, 'declined-unchanged')), 1);
+  assert.equal((await f.brief.resume(f.employee, { commandId: 'resume', expectedBriefVersion: 2 })).status, 'ok');
+  out = await read(f); assert.equal(exact(bucket(out.demand.unmet.byGate, 'declined-unchanged')), 1);
+  // A separate confirmed draft changes expressed intent, rather than inferring a preference from the reason.
+  const revised = saved(); revised.preferences.body.value = 'suv';
+  const draft = await f.brief.saveDraft(f.employee, { commandId: 'revised', expectedBriefVersion: 3, expectedDraftVersion: 1, brief: revised });
+  assert.equal(draft.status, 'ok');
+  assert.equal((await f.brief.confirm(f.employee, { commandId: 'reconfirm', expectedBriefVersion: 3,
+    expectedDraftVersion: 2, consent: { search: true, hold: true } })).status, 'ok');
+  out = await read(f); assert.deepEqual(out.demand.unmet.byGate, []);
+});
+
+test('a concurrent repository revision causes refresh conflict instead of a mixed projection', async () => {
+  const f = await setup(); await confirm(f);
+  let reads = 0;
+  const repository = { ...f.repository, async query(context, table, filter) {
+    const result = await f.repository.query(context, table, filter);
+    if (table === 'briefs' && ++reads === 2) result.value = [];
+    return result;
+  } };
+  const service = createGregDemandService({ repository, policy: f.policy, clock: f.clock, identity: f.identity });
+  assert.equal((await service.readDemand(f.context)).status, 'conflict');
+});
+
+
+test('unmet evaluation reads all repository candidates beyond a retail-sized display limit', async () => {
+  const f = await setup(); await confirm(f);
+  for (let id = 1; id <= 4; id += 1) await release(f, id, { seats: fact(id === 4 ? 5 : 2, 'count') });
+  const out = await read(f); assert.deepEqual(out.demand.unmet.byGate, []);
+  assert.equal(exact(bucket(out.stock.byModelLine, 'G21 Touring').released), 4);
+});
+
+test('unregistered decline types and free text are replaced with a counted unclassified reason', async () => {
+  const f = await setup(); await confirm(f);
+  await offer(f, 1, 'declined', 'decline', { type: 'PRIVATE-NAME', text: 'PRIVATE-HISTORY' });
+  const out = await read(f);
+  assert.equal(exact(bucket(out.offers.declinedByReason, 'unclassified')), 1);
+  assert.equal(JSON.stringify(out).includes('PRIVATE-'), false);
 });
