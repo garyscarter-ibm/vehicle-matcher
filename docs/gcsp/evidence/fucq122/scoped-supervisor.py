@@ -35,6 +35,7 @@ dependency_stat = dependency.stat()
 lock = ROOT / 'package-lock.json'
 receipt = {'runId': run_id, 'command': command, 'cwd': str(ROOT), 'limits': {'seconds': 120, 'rssMiB': 768, 'scratchMiB': 128, 'logMiB': 2, 'workers': 1},
            'dependencyAdoption': {'path': str(dependency), 'allocatedBytes': allocated_bytes(dependency), 'device': dependency_stat.st_dev, 'inode': dependency_stat.st_ino, 'packageLockSha256': hashlib.sha256(lock.read_bytes()).hexdigest()},
+           'serverDependencyAdoption': {'path': str((ROOT / 'server/node_modules').resolve()), 'allocatedBytes': allocated_bytes((ROOT / 'server/node_modules').resolve()), 'device': (ROOT / 'server/node_modules').stat().st_dev, 'inode': (ROOT / 'server/node_modules').stat().st_ino},
            'databaseEnvironmentRemoved': True, 'scope': 'Explicit named checks only; no full suite or live integration.'}
 try:
     with handled_termination():

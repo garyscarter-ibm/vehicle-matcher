@@ -5,6 +5,7 @@ import { loadCasePolicy, unavailable } from './policy.js';
 const object = (v) => v && typeof v === 'object' && !Array.isArray(v);
 const only = (v, keys) => object(v) && Object.keys(v).every((key) => keys.includes(key));
 const text = (v, max = 2000) => typeof v === 'string' && v.trim().length > 0 && v.length <= max;
+const currentBrief = (rows) => rows.filter((b) => b.status === 'confirmed').sort((a, b) => b.briefVersion - a.briefVersion)[0];
 const active = (c) => ['open', 'in-progress', 'remedy-proposed'].includes(c.status);
 const invalid = (field, reason, code = 'invalid-case-command') => result('invalid', { code, reasons: [{ field, reason }], action: 'review-and-retry' });
 const forbidden = () => result('forbidden', { reason: 'Only the scheme team can record renewal-case updates and remedies.' });
@@ -71,16 +72,96 @@ export class RenewalCaseService {
     if (input.caseId) {
       const found = await this.#repository.read(context, ref(context, input.caseId));
       if (found.status !== 'ok') return found;
-      return found.value.employeeId === context.employeeId ? ok({ case: found.value }) : result('forbidden', { reason: 'This renewal case belongs to another employee.' });
+      if (found.value.employeeId !== context.employeeId) return result('forbidden', { reason: 'This renewal case belongs to another employee.' });
+      const projection = await this.#ownProjection(context, [found.value]);
+      return projection.status === 'ok' ? ok({ case: projection.value[0], asOf: p.now, policyVersion: p.read.policyVersion }) : projection;
     }
     const rows = await this.#repository.query(context, 'renewal_cases', { employeeId: context.employeeId });
-    return rows.status === 'ok' ? ok({ cases: rows.value, asOf: p.now, policyVersion: p.read.policyVersion }) : rows;
+    if (rows.status !== 'ok') return rows;
+    const projection = await this.#ownProjection(context, rows.value);
+    return projection.status === 'ok' ? ok({ cases: projection.value, asOf: p.now, policyVersion: p.read.policyVersion }) : projection;
+  }
+  async #ownProjection(context, cases) {
+    if (!cases.some((c) => c.remedy?.type === 'preference-relaxation')) return ok(cases);
+    const rows = await this.#repository.query(context, 'briefs', { employeeId: context.employeeId });
+    if (rows.status !== 'ok') return rows;
+    const brief = currentBrief(rows.value);
+    return ok(cases.map((c) => c.remedy?.type !== 'preference-relaxation' ? c : { ...c, relaxation: {
+      currentBriefVersion: brief?.briefVersion ?? null,
+      before: brief?.preferences?.[c.remedy.path.split('.')[1]]?.value ?? null,
+      applicable: brief?.briefVersion === c.remedy.expectedBriefVersion,
+    } }));
   }
   async list(context) {
     const allowed = await this.#authorized(context, true); if (allowed.status !== 'ok') return allowed;
     const p = await this.#prepare(context); if (p.error) return p.error;
-    const rows = await this.#repository.query(context, 'renewal_cases');
-    return rows.status === 'ok' ? ok({ cases: rows.value, asOf: p.now, policyVersion: p.read.policyVersion }) : rows;
+    const rows = await this.#repository.query(context, 'renewal_cases'); if (rows.status !== 'ok') return rows;
+    const employees = await this.#repository.query(context, 'employees'); if (employees.status !== 'ok') return employees;
+    const names = new Map(employees.value.map((employee) => [employee.employeeId, employee.name]));
+    return ok({ cases: rows.value.map((c) => ({ ...c, employeeName: text(names.get(c.employeeId)) ? names.get(c.employeeId) : c.employeeId })),
+      asOf: p.now, policyVersion: p.read.policyVersion });
+  }
+  async readOptions(context, input = {}) {
+    const allowed = await this.#authorized(context, true); if (allowed.status !== 'ok') return allowed;
+    if (!only(input, ['caseId']) || !text(input.caseId, 128)) return invalid('caseId', 'Choose a current renewal case.');
+    const p = await this.#prepare(context); if (p.error) return p.error;
+    const reader = { get: (reference) => this.#repository.read(context, reference),
+      list: (table, filter) => this.#repository.query(context, table, filter) };
+    const found = await reader.get(ref(context, input.caseId)); if (found.status !== 'ok') return found;
+    const c = found.value;
+    const renewal = await this.#renewal(reader, context, c.employeeId); if (renewal.status !== 'ok') return renewal;
+    if (renewal.value.renewalId !== c.renewalId) return result('conflict', { reason: 'The current renewal differs from this case. Review the employee contract.' });
+    const briefs = await reader.list('briefs', { employeeId: c.employeeId }); if (briefs.status !== 'ok') return briefs;
+    const brief = currentBrief(briefs.value);
+    const stock = await reader.list('stock'); if (stock.status !== 'ok') return stock;
+    const cars = [];
+    for (const car of brief ? stock.value : []) {
+      const checked = await this.#remedy(reader, context, renewal.value, p, { type: 'alternative-car', orderUuid: car.orderUuid }, false, true);
+      if (checked.status === 'ok') cars.push(checked.value);
+      else if (checked.status !== 'invalid') return checked;
+    }
+    const decisions = await reader.list('decisions', { employeeId: c.employeeId }); if (decisions.status !== 'ok') return decisions;
+    const decline = decisions.value.filter((d) => d.decision === 'decline' && text(d.offerId, 128)
+      && briefs.value.some((b) => b.status === 'confirmed' && b.briefVersion === d.versions?.brief)
+      && !briefs.value.some((b) => b.postDeclineChange?.decisionId === d.decisionId))
+      .sort((a, b) => String(b.createdAt ?? '').localeCompare(String(a.createdAt ?? '')) || a.decisionId.localeCompare(b.decisionId))[0];
+    const relaxation = [];
+    if (brief && decline) {
+      const values = await Promise.all(['employee.recommendation.v1', 'brief.slider.minimum', 'brief.slider.maximum']
+        .map((key) => this.#policy.getAssumption(key, p.read)));
+      if (values.some((v) => v.status !== 'ok' || v.policyVersion !== p.read.policyVersion)) return unavailable();
+      const [registry, minimum, maximum] = values.map((v) => v.value.value);
+      if (!object(registry?.preferences) || minimum !== 0 || maximum !== 100) return unavailable();
+      for (const [key, preference] of Object.entries(brief.preferences)) {
+        const definition = registry.preferences[key];
+        if (!definition || !['enum', 'slider'].includes(definition.type)
+          || definition.type === 'enum' && !Array.isArray(definition.values)) return unavailable();
+        const alternatives = definition.type === 'enum' ? definition.values.filter((v) => !same(v, preference.value)) : null;
+        if (alternatives?.length === 0) continue;
+        relaxation.push({ type: 'preference-relaxation', decisionId: decline.decisionId, expectedBriefVersion: brief.briefVersion,
+          path: `preferences.${key}.value`, before: preference.value, valueType: definition.type,
+          ...(definition.type === 'enum' ? { values: alternatives } : { minimum, maximum }), unit: definition.unit ?? null });
+      }
+    }
+    const releases = [c.remedy, ...c.history.map((h) => h.remedy)].filter((r) => r?.type === 'later-release');
+    const later = [];
+    for (const release of releases) {
+      const checked = await this.#remedy(reader, context, renewal.value, p, release, false);
+      if (checked.status === 'ok' && !later.some((r) => same(r, checked.value))) later.push(checked.value);
+    }
+    const actual = deadline(renewal.value.employee);
+    const available = (items, reason) => ({ available: items.length > 0, items, ...(items.length ? {} : { reason }) });
+    const fresh = await this.#fresh(reader, context, p); if (fresh.status !== 'ok') return fresh;
+    return ok({ case: { ...c, employeeName: text(renewal.value.employee.name) ? renewal.value.employee.name : c.employeeId },
+      nextStatuses: [...(transitions[c.status] ?? [])], asOf: p.now, policyVersion: p.read.policyVersion, automaticRecoveryPriority: false,
+      options: { alternativeCars: available(cars, brief ? 'No suitable available car is currently recorded.' : 'A confirmed brief is required to evaluate suitable available cars.'),
+        preferenceRelaxations: available(relaxation, 'A current confirmed brief and an unused recorded decline are required.'),
+        laterRelease: available(later, 'No reviewed future release date and source are recorded for this case.'),
+        manualDecision: { available: true, type: 'manual-decision', requiresDecision: true },
+        contractExtension: { available: p.config.extensionPermitted && !!actual, type: 'contract-extension',
+          contractEndDate: actual?.value ?? null, requiresUntil: true,
+          ...(!p.config.extensionPermitted ? { reason: 'The current policy does not permit a contract extension.' }
+            : !actual ? { reason: 'The actual contract end date needs confirmation.' } : {}) } } });
   }
   async #notify(tx, c) {
     const payload = { caseUpdate: caseUpdate(c) };
@@ -118,7 +199,7 @@ export class RenewalCaseService {
       return this.#open(tx, context, renewal.value, p, { type: 'employee-request', requestId: input.commandId }, input.reason, context.principalId);
     });
   }
-  async #remedy(tx, context, renewal, p, remedy, resolving) {
+  async #remedy(tx, context, renewal, p, remedy, resolving, projection = false) {
     if (!object(remedy) || !text(remedy.type, 128)) return invalid('remedy', 'The scheme team must record a remedy before resolving this case.');
     if (remedy.type === 'manual-decision') return only(remedy, ['type', 'decision']) && text(remedy.decision) ? ok(remedy) : invalid('remedy.decision', 'Record the authorised scheme-team decision.');
     if (remedy.type === 'contract-extension') {
@@ -154,10 +235,11 @@ export class RenewalCaseService {
       const claims = await tx.list('claims', { orderUuid: remedy.orderUuid }); if (claims.status !== 'ok') return claims;
       if (car.value.state !== 'available' || car.value.available === false || car.value.allocated === true || [...holds.value, ...claims.value].some((h) => ['active', 'claim-pending', 'release-pending', 'selection-pending'].includes(h.state))) return invalid('remedy.orderUuid', 'This car is unavailable. Review current stock.');
       const briefs = await tx.list('briefs', { employeeId: renewal.employee.employeeId }); if (briefs.status !== 'ok') return briefs;
-      const brief = briefs.value.filter((b) => b.status === 'confirmed').sort((a,b) => b.briefVersion-a.briefVersion)[0];
+      const brief = currentBrief(briefs.value);
       const candidate = car.value.facts?.recommendationCandidate;
+      if (projection && (!brief || !candidate || candidate.orderUuid !== car.value.orderUuid || candidate.configurationId !== car.value.configurationId)) return unavailable();
       if (!brief || !candidate || candidate.orderUuid !== car.value.orderUuid || candidate.configurationId !== car.value.configurationId) return invalid('remedy.orderUuid', 'The confirmed brief or exact vehicle facts are missing. Ask the scheme team to check them.');
-      const employeeContext = { ...context, ...renewal.employee, runId: context.runId, policyVersion: p.read.policyVersion };
+      const employeeContext = { ...context, ...renewal.employee, roles: ['employee'], runId: context.runId, policyVersion: p.read.policyVersion };
       const employeeFacts = structuredClone(renewal.employee.contract?.manualContext?.employeeFacts ?? {});
       const charging = brief.essentials.charging;
       employeeFacts.charging = { status: charging?.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown', value: charging?.value ?? null,
@@ -171,7 +253,8 @@ export class RenewalCaseService {
       const evaluated = await service.recommend(employeeContext, { schemaVersion: 1, briefVersion: brief.briefVersion, preferences: brief.preferences,
         essentials: Object.fromEntries(Object.entries(brief.essentials).filter(([key]) => key !== 'charging')) });
       const decision = evaluated.value?.decisions?.[0];
-      return evaluated.status === 'ok' && decision?.suitable ? ok(remedy) : invalid('remedy.orderUuid', 'This car does not satisfy the current eligibility, essential, points and timing constraints.');
+      if (evaluated.status !== 'ok') return projection && evaluated.status === 'invalid' ? unavailable() : evaluated;
+      return decision?.suitable ? ok(projection ? { ...remedy, configurationId: car.value.configurationId, snapshot: decision.snapshot } : remedy) : invalid('remedy.orderUuid', 'This car does not satisfy the current eligibility, essential, points and timing constraints.');
     }
     return invalid('remedy.type', 'Choose a supported scheme-team remedy.');
   }
