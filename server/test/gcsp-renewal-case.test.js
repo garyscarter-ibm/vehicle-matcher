@@ -16,7 +16,7 @@ test('RenewalCaseService provides the owned repository-backed service and routes
   assert.equal(typeof implementation.RenewalCaseService, 'function');
   assert.equal(typeof routes.createCaseRoutes, 'function');
 });
-const caseTest = (name, work) => test(name, { skip: !implementation.RenewalCaseService }, work);
+const caseTest = (name, work) => test(name, { skip: !implementation.RenewalCaseService, timeout: 5000 }, work);
 const cmd = (commandId) => ({ commandId, inputDigest: inputDigest(commandId) });
 async function setup(t, { policy = createPolicyService(), failQueue = false } = {}) {
   const store = createMemoryStore();
@@ -187,4 +187,124 @@ caseTest('actual captured dispatcher consumes case updates after commit, retries
   assert.match(jobs[0].outcome.message.textBody, /Scheme team|scheme team/i); assert.match(jobs[0].outcome.message.textBody, /No email has been sent/);
   await request(f); jobs = (await f.repository.query(f.context, 'notification_outbox')).value; assert.equal(jobs.length, 1); assert.equal(jobs[0].attempts, 1);
   assert.equal((await f.service.readOwn(f.context)).value.cases[0].status, 'open');
+});
+
+caseTest('alternative car uses current eligibility, points, essentials and availability; unresolved charging stays unknown', async (t) => {
+  const f = await setup(t); await confirmedBrief(f);
+  await f.clock.advance(f.presenter.value.context, { commandId: 'noon', expectedClockVersion: '1', bySeconds: 10800 });
+  const employeeRow = (await f.repository.query(f.context, 'employees', { employeeId: f.context.employeeId })).value[0];
+  await employee(f, { contract: { ...employeeRow.contract, manualContext: { ...employeeRow.contract.manualContext, employeeFacts: providerValue().employeeFacts } } });
+  const candidate = stock(771);
+  const seedCar = (candidate) => f.repository.transaction(f.context, cmd('candidate:'+candidate.orderUuid), (tx) => tx.insert('stock', {
+    runId: f.context.runId, orderUuid: candidate.orderUuid, orderNumber: '9876'+candidate.orderUuid.slice(-3), configurationId: candidate.configurationId,
+    state: 'available', available: true, facts: { recommendationCandidate: candidate } }));
+  await seedCar(candidate);
+  let c = (await request(f)).value.case; c = (await update(f, c, 'in-progress')).value.case;
+  const petrol = await update(f, c, 'remedy-proposed', { commandId: 'petrol', remedy: { type: 'alternative-car', orderUuid: candidate.orderUuid } });
+  assert.equal(petrol.status, 'ok', JSON.stringify(petrol));
+  c = (await update(f, petrol.value.case, 'in-progress', { commandId: 'review-plugin' })).value.case;
+  const plugIn = stock(772, { fuel: fact('phev') }); await seedCar(plugIn);
+  assert.equal((await update(f, c, 'remedy-proposed', { commandId: 'unresolved-charging', remedy: { type: 'alternative-car', orderUuid: plugIn.orderUuid } })).status, 'invalid');
+});
+
+caseTest('actual HTTP composition ignores identity overrides and refuses cross-employee, scheme-role and stale-run access', async (t) => {
+  const f = await setup(t); const { buildServer } = await import('../index.js');
+  const server = buildServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspCases: f.service, gcspAllowedOrigins: ['https://case.test'] });
+  assert.equal((await server.gcspStartup).status, 'ok'); server.listen(0, '127.0.0.1'); await once(server, 'listening');
+  t.after(async () => { server.closeAllConnections(); await new Promise((resolve) => server.close(resolve)); });
+  const cookie = (session) => [session.value.setCookie].flat().map((c) => c.split(';')[0]).join('; ');
+  const call = async (path, { body, session = f.paula } = {}) => {
+    const response = await fetch(`http://127.0.0.1:${server.address().port}/api/gcsp${path}`, { method: body ? 'POST' : 'GET',
+      headers: { Origin: 'https://case.test', Cookie: cookie(session), ...(body ? { 'Content-Type': 'application/json' } : {}) },
+      ...(body ? { body: JSON.stringify(body) } : {}) });
+    return { status: response.status, value: await response.json(), cache: response.headers.get('cache-control') };
+  };
+  const state = structuredClone(f.store.state); assert.equal((await call('/help')).status, 200); assert.deepEqual(f.store.state,state);
+  const opened = await call('/cases', { body: { commandId: 'http-help', reason: 'Please review my renewal.', employeeId: f.alex.value.context.employeeId,
+    runId: 'another-run', roles: ['presenter'], principalId: 'demo-greg' } });
+  assert.equal(opened.status,200,JSON.stringify(opened)); assert.equal(opened.cache,'no-store');
+  assert.equal(opened.value.value.case.employeeId,f.context.employeeId); assert.equal(opened.value.value.case.runId,f.context.runId);
+  const id=opened.value.value.case.caseId;
+  assert.equal((await call('/cases?caseId='+id+'&employeeId=other&runId=other')).status,200);
+  assert.equal((await call('/cases?caseId='+id,{session:f.alex})).status,403);
+  assert.equal((await call('/scheme-team/cases')).status,403);
+  assert.equal((await call('/scheme-team/cases',{session:f.greg})).value.value.cases.length,1);
+  assert.equal((await call('/scheme-team/cases/update',{body:{commandId:'forged',caseId:id,status:'resolved',roles:['greg']}})).status,403);
+  const prior=(await f.clock.readState(f.presenter.value.context)).value;
+  assert.equal((await f.clock.reset(f.presenter.value.context,{commandId:'reset-http',expectedRunId:prior.runId,expectedRunVersion:prior.runVersion,
+    scenarioVersion:prior.versions.scenario,fixtureVersion:prior.versions.fixture})).status,'ok');
+  assert.equal((await call('/cases?caseId='+id)).status,409);
+  assert.equal((await request(f,'old-command')).status,'stale-run');
+});
+
+caseTest('case notification retries reuse the committed job and historical jobs are stale on reset', async (t) => {
+  const f=await setup(t); let calls=0;
+  const dispatcher=new NotificationDispatcher({repository:f.repository,policy:f.policy,clock:f.clock,environmentId:'case-test',
+    transport:{async send(){calls+=1;return calls===1?result('unavailable',{retryable:true}):ok({accepted:true});}}});
+  t.after(()=>dispatcher.close()); await f.service.start(); await dispatcher.start(); await request(f);
+  let jobs=(await f.repository.query(f.context,'notification_outbox')).value;
+  assert.equal(jobs[0].state,'retrying'); assert.equal(jobs[0].attempts,1);
+  const id=jobs[0].jobId; assert.equal((await f.service.readOwn(f.context)).value.cases[0].status,'open');
+  const now=(await f.clock.readState(f.presenter.value.context)).value;
+  await f.clock.advance(f.presenter.value.context,{commandId:'retry-time',expectedClockVersion:now.clockVersion,to:jobs[0].outcome.nextAttemptAt});
+  await dispatcher.dispatchPending(f.context); jobs=(await f.repository.query(f.context,'notification_outbox')).value;
+  assert.equal(jobs[0].state,'sent');assert.equal(jobs[0].jobId,id);assert.equal(jobs[0].attempts,2);assert.equal(calls,2);
+  dispatcher.close();await request(f,'not-yet-dispatched');
+  const state=(await f.clock.readState(f.presenter.value.context)).value;
+  await f.clock.reset(f.presenter.value.context,{commandId:'reset-notification',expectedRunId:state.runId,expectedRunVersion:state.runVersion,
+    scenarioVersion:state.versions.scenario,fixtureVersion:state.versions.fixture});
+  const historical=(await f.repository.query(f.context,'notification_outbox')).value;
+  assert.equal(historical.find((j)=>j.jobId!==id).state,'stale');
+  assert.equal((await dispatcher.dispatchPending(f.context)).status,'stale-run');assert.equal(calls,2);
+});
+
+caseTest('repository enforces one active renewal case and migration carries matching scoped SQL constraint', async (t) => {
+  const f=await setup(t);const c=(await request(f)).value.case;
+  const duplicate=await f.repository.transaction(f.context,cmd('duplicate'),(tx)=>tx.insert('renewal_cases',{...c,caseId:'duplicate',version:1}));
+  assert.equal(duplicate.status,'conflict');assert.equal(duplicate.reason,'active-renewal-case-exists');
+  const sql=await readFile(new URL('../gcsp/migrations/0003_renewal_cases.sql',import.meta.url),'utf8');
+  assert.match(sql,/UNIQUE INDEX renewal_cases_active_renewal/);assert.match(sql,/\(run_id,employee_id,renewal_id\)/);
+  assert.match(sql,/WHERE data->>'status' IN \('open','in-progress','remedy-proposed'\)/);
+  await f.repository.close();await f.repository.open();
+  const reopened=new implementation.RenewalCaseService({repository:f.repository,policy:f.policy,clock:f.clock,identity:f.identity});
+  assert.deepEqual((await reopened.readOwn(f.context)).value.cases,[c]);
+});
+
+caseTest('response fixtures retain ownership, units, actual/unknown dates, fictional assumptions and actionable refusal states', async (t) => {
+  const fixture=JSON.parse(await readFile(new URL('./fixtures/gcsp-renewal-case-outcomes.json',import.meta.url),'utf8'));
+  const project=(value,shape)=>Object.fromEntries(Object.keys(shape).map((key)=>[key,value[key]]));
+  const f=await setup(t);const opened=(await request(f)).value.case;
+  assert.deepEqual(project(opened,fixture.openCase),fixture.openCase);
+  const changed=await update(f,opened,'in-progress');assert.deepEqual(project(changed.value.case,fixture.updateCase),fixture.updateCase);
+  assert.deepEqual(await f.service.update(f.context,{}),fixture.employeeUpdateRefusal);
+  const help=await f.service.readHelp(f.context);
+  assert.deepEqual(help.value.assumptions.map((a)=>project(a,fixture.assumptions.find((s)=>s.key===a.key))),fixture.assumptions);
+  const g=await setup(t);await employee(g,{contract:{}});const noDate=(await request(g)).value.case;
+  assert.deepEqual(project(noDate,fixture.unknownDeadline),fixture.unknownDeadline);
+  const slot=(await g.repository.query(g.context,'entitlement_slots',{employeeId:g.context.employeeId})).value[0];
+  await g.repository.transaction(g.context,cmd('missing-renewal'),(tx)=>tx.compareAndSwap({table:'entitlement_slots',key:{runId:g.context.runId,entitlementSlotId:slot.entitlementSlotId}},slot.version,{renewalId:null}));
+  assert.deepEqual(await request(g,'missing-renewal'),fixture.missingRenewalRefusal);
+  assert.ok(fixture.units.dueAt.includes('demonstration clock'));assert.equal(fixture.fictional,true);
+});
+
+caseTest('forged scheme-team confirmation fields and essential changes cannot approve a preference remedy', async (t) => {
+  const f=await setup(t);await confirmedBrief(f);
+  await f.repository.transaction(f.context,cmd('decline'),(tx)=>tx.insert('decisions',{runId:f.context.runId,decisionId:'decline',offerId:'old-offer',employeeId:f.context.employeeId,decision:'decline',versions:{brief:1}}));
+  let c=(await request(f)).value.case;c=(await update(f,c,'in-progress')).value.case;
+  const remedy={type:'preference-relaxation',decisionId:'decline',expectedBriefVersion:1,path:'preferences.body.value',value:'suv',confirmationState:'employee-confirmed',confirmedBy:f.context.principalId,confirmedAt:'2026-11-05T09:00:00.000Z',briefVersion:2};
+  const proposed=await update(f,c,'remedy-proposed',{remedy});assert.equal(proposed.status,'ok');
+  assert.equal(proposed.value.case.remedy.confirmationState,'employee-confirmation-required');
+  assert.equal((await update(f,proposed.value.case,'resolved')).code,'employee-confirmation-required');
+  c=(await update(f,proposed.value.case,'in-progress')).value.case;
+  const essentialChange=await update(f,c,'remedy-proposed',{commandId:'essential',remedy:{...remedy,path:'essentials.seats',value:4}});
+  assert.equal(essentialChange.status,'invalid');assert.equal(essentialChange.reasons[0].field,'remedy');
+});
+
+caseTest('a case update and its history roll back when the required same-transaction outbox port fails', async (t) => {
+  const f=await setup(t);const c=(await request(f)).value.case;const before=structuredClone(f.store.state);
+  const repository={...f.repository,transaction(context,command,work){return f.repository.transaction(context,command,(tx)=>work({...tx,enqueueNotification:async()=>result('unavailable',{reason:'synthetic-queue-failure'})}));}};
+  const service=new implementation.RenewalCaseService({repository,policy:f.policy,clock:f.clock,identity:f.identity});
+  const outcome=await service.update(f.greg.value.context,{commandId:'rollback-update',caseId:c.caseId,expectedVersion:c.version,status:'in-progress',
+    reason:'Team review started.',nextAction:'Check suitable replacements.',dueAt:'2026-11-06T12:00:00.000Z'});
+  assert.equal(outcome.status,'unavailable');assert.deepEqual(f.store.state,before);
 });

@@ -41,7 +41,7 @@ export class RenewalCaseService {
     if (run.status !== 'ok') return { error: run };
     const read = { runId: context.runId, asOf: time.value.now, policyVersion: run.value.policyVersion };
     const config = await loadCasePolicy(this.#policy, read); if (config.status !== 'ok') return { error: config };
-    return { now: time.value.now, read, config: config.value };
+    return { now: time.value.now, clockVersion: time.value.clockVersion, read, config: config.value };
   }
   async #fresh(tx, context, prepared) {
     const run = await tx.get({ table: 'runs', key: { runId: context.runId } });
@@ -92,7 +92,9 @@ export class RenewalCaseService {
     const found = await tx.list('renewal_cases', { employeeId: renewal.employee.employeeId, renewalId: renewal.renewalId }); if (found.status !== 'ok') return found;
     const current = found.value.find(active);
     const at = prepared.now;
-    const history = { at, actorId, actorRole: actorId === 'renewal-risk-clock' ? 'system' : 'employee', status: current?.status ?? 'open', reason, trigger };
+    const history = { at, actorId, actorRole: actorId === 'renewal-risk-clock' ? 'system' : 'employee', status: current?.status ?? 'open', reason, trigger,
+      nextAction: current?.nextAction ?? 'Scheme team to review your renewal and contact you.',
+      dueAt: current?.dueAt ?? new Date(Date.parse(at) + prepared.config.dueHours * 3600000).toISOString() };
     const actual = deadline(renewal.employee);
     const stored = current ? await tx.compareAndSwap(ref(context, current.caseId), current.version, {
       history: [...current.history, history], lastUpdatedAt: at,
@@ -122,7 +124,7 @@ export class RenewalCaseService {
     if (remedy.type === 'contract-extension') {
       if (!p.config.extensionPermitted) return result('forbidden', { reason: 'The scheme does not permit a contract extension under this policy.' });
       return only(remedy, ['type', 'until']) && date(remedy.until) && Date.parse(remedy.until+'T23:59:59.999Z') > Date.parse(p.now)
-        && (!deadline(renewal.employee) || remedy.until > deadline(renewal.employee).value) ? ok(remedy) : invalid('remedy.until', 'Supply a permitted extension date after the actual contract end.');
+        && deadline(renewal.employee) && remedy.until > deadline(renewal.employee).value ? ok(remedy) : invalid('remedy.until', 'Supply a permitted extension date after the actual contract end.');
     }
     if (remedy.type === 'later-release') return only(remedy, ['type', 'releaseAt', 'source']) && validInstant(remedy.releaseAt)
       && Date.parse(remedy.releaseAt) > Date.parse(p.now) && text(remedy.source) ? ok(remedy) : invalid('remedy.releaseAt', 'Supply a realistic future release date and the reviewed plan it came from.');
@@ -150,15 +152,21 @@ export class RenewalCaseService {
       const car = await tx.get({ table: 'stock', key: { runId: context.runId, orderUuid: remedy.orderUuid } }); if (car.status !== 'ok') return car;
       const holds = await tx.list('holds', { orderUuid: remedy.orderUuid }); if (holds.status !== 'ok') return holds;
       const claims = await tx.list('claims', { orderUuid: remedy.orderUuid }); if (claims.status !== 'ok') return claims;
-      if (car.value.state !== 'available' || car.value.allocated === true || [...holds.value, ...claims.value].some((h) => ['active', 'claim-pending', 'release-pending', 'selection-pending'].includes(h.state))) return invalid('remedy.orderUuid', 'This car is unavailable. Review current stock.');
+      if (car.value.state !== 'available' || car.value.available === false || car.value.allocated === true || [...holds.value, ...claims.value].some((h) => ['active', 'claim-pending', 'release-pending', 'selection-pending'].includes(h.state))) return invalid('remedy.orderUuid', 'This car is unavailable. Review current stock.');
       const briefs = await tx.list('briefs', { employeeId: renewal.employee.employeeId }); if (briefs.status !== 'ok') return briefs;
       const brief = briefs.value.filter((b) => b.status === 'confirmed').sort((a,b) => b.briefVersion-a.briefVersion)[0];
       const candidate = car.value.facts?.recommendationCandidate;
       if (!brief || !candidate || candidate.orderUuid !== car.value.orderUuid || candidate.configurationId !== car.value.configurationId) return invalid('remedy.orderUuid', 'The confirmed brief or exact vehicle facts are missing. Ask the scheme team to check them.');
       const employeeContext = { ...context, ...renewal.employee, runId: context.runId, policyVersion: p.read.policyVersion };
-      const service = createEmployeeRecommendationService({ policy: this.#policy, time: this.#clock, provider: { async resolve() {
+      const employeeFacts = structuredClone(renewal.employee.contract?.manualContext?.employeeFacts ?? {});
+      const charging = brief.essentials.charging;
+      employeeFacts.charging = { status: charging?.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown', value: charging?.value ?? null,
+        unit: null, provenance: { sourceRef: charging?.source ?? 'brief:unresolved', version: String(brief.briefVersion), observedAt: brief.confirmedAt, assurance: 'synthetic-scenario' } };
+      const service = createEmployeeRecommendationService({ policy: this.#policy, time: { async now() {
+        return ok({ now: p.now, runId: context.runId, clockVersion: p.clockVersion });
+      } }, provider: { async resolve() {
         return ok({ runId: context.runId, environmentId: context.environmentId, employeeId: renewal.employee.employeeId, factsVersion: String(renewal.employee.version),
-          stockVersion: String(car.value.version), employeeFacts: renewal.employee.contract?.manualContext?.employeeFacts ?? {}, stock: [candidate] });
+          stockVersion: String(car.value.version), employeeFacts, stock: [candidate] });
       } } });
       const evaluated = await service.recommend(employeeContext, { schemaVersion: 1, briefVersion: brief.briefVersion, preferences: brief.preferences,
         essentials: Object.fromEntries(Object.entries(brief.essentials).filter(([key]) => key !== 'charging')) });
