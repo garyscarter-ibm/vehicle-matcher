@@ -20,16 +20,39 @@ No full/native/browser check is claimed at this checkpoint. Each supervised run 
 
 Shell: `docs/gcsp/screens/00-employee-account.webp` and `01-replace-vehicle.webp`. Historical field evidence: `03-vehicle-series.png`, `04-vehicle-models.png`, `05-vehicle-details.webp`. Body: `docs/gcsp/evidence/fucq-6/README.md` revision `a7fc178`, with the current shared Density theme. Lead inspected these images and `representative-desktop.png`; no personal screenshot values entered fixtures.
 
-Remaining: rendered custom element and exact detail composition; shared gallery/catalogue/ratchet additions; desktop/320px/keyboard/image-failure evidence; FUCQ-92 release-history projection and actual released-run browse-to-claim integration; authored shared-kit/ratchet/render checks and serial full suite. `empty-stock` does not establish that no release tick has run. The projection recognises an explicitly supplied `nothing-released-yet` state for presentation only; the current producer does not supply it, and its fixture test is not producer proof.
+Rendered custom element, exact details and additive shared gallery/catalogue/ratchet changes are now implemented and have the scoped evidence below. Remaining: desktop/320px/keyboard/image-failure evidence; FUCQ-92 release-history projection and actual released-run browse-to-claim integration; authored shared-kit/ratchet/render checks and serial full suite. `empty-stock` does not establish that no release tick has run. The projection recognises an explicitly supplied `nothing-released-yet` state for presentation only; the current producer does not supply it, and its fixture test is not producer proof.
 
 
 ## Complete delivery plan
 
 Stable slice IDs include every remaining integration gate:
 
-- `projection`: delivered at pushed checkpoint `34862e7`; lead source review, independent 13/0/0 proof, metadata check and cleanup are recorded above. A subsequent refreshed-filter correction is awaiting scoped recheck, so the current map state is temporarily in progress.
-- `rendered-browser`: in progress; shared-card composition, stable keyboard controls, exact details, explicit claim transport/reconciliation and standard custom element. Delivery requires scoped render/action checks, shared-kit/ratchet/render checks and granted desktop/320px/keyboard inspection against the recorded reference.
+- `projection`: complete at its independent interface boundary. Published checkpoint `34862e7` evidence is retained above; the later controller reset and refreshed-filter recovery are covered by the current independent 131/0/0 UI checkpoint below. The separate released integration slice remains required.
+- `rendered-browser`: in progress. Shared-card composition, stable labelled native controls, exact details, explicit claim transport/reconciliation, standard custom element, single-gallery examples and additive ratchet pass the scoped UI checkpoint. Granted desktop/320px/keyboard and agent visual inspection against the recorded reference remain required.
 - `released-integration`: not started; consume the published FUCQ-92 release-history contract and prove the actual release producer feeds the same shared pool as buddy search. Verify pre-first-tick versus genuinely empty/suitable-stock states, then one exact released order through browse, explicit claim, authoritative readback and the FUCQ-70 handoff without reclaiming. An injected released-stock port or gallery fixture cannot complete this slice. Producer/contract access and a coordinated integration run remain outstanding; the gallery owns no release command.
 - `final-validation`: not started; recheck affected callers after shared integration, meet each story acceptance item, then run the authored full suite at the dispatcher's serial lane on unchanged source. Preserve exact command/source/environment identities and the final resource receipt; no full-suite or native result is inferred from scoped checks.
 
 All test allocations use the supervisor/HostBudget contract, one bounded worker and an external ownership manifest. Browser allocation requires the dispatcher's separate readiness grant, with recursive owned browser/profile/port cleanup. Claims and release services, runtime registration and repository-contract files remain with their designated story lanes.
+
+
+## Rendered implementation checkpoint
+
+`mountManualGallery`/`<gcsp-manual-gallery>` compose existing shared cards, media, forms, facts, status controls and employee shell. Each card is one exact order; details retain allowance, monthly points/contribution/terms, equipment/specification/history and image/fact provenance. Native controls stay mounted through updates, retain temporarily unavailable selections and support focus return from details. The single component gallery and explicit read-only harness use a bounded dated three-car fixture; the default HTTP adapter has no fixture fallback and uses current authenticated reads.
+
+The separate claim controller initially checks current authority. Only explicit Review POSTs the unchanged issued `claimInput` plus the stable command ID, coalescing repeated clicks. A complete current authenticated read must match the exact car, pinned quote, revisions, context/digest and unexpired server time before callback/event delivery. Pending, unavailable, existing or allocated claims block new choices. Explicit retry preserves the same command; verified terminal recovery requires receipt identity or a definitive failed attempt, so an older terminal hold cannot clear a newer uncertain operation. Reload exposes the current envelope for host routing without inventing an original descriptor/command/event. The FUCQ-70 composition boundary is documented in `docs/gcsp/manual-gallery-contract.md`; end-to-end consumer integration remains outstanding.
+
+Lead reviewed the implementer source and affected shared callers. The implementer's initial serial projection/render result was 28/0/0; after the final terminal-hold correction, the affected rendered test file passed 17/0/0 and unchanged projection evidence was retained. The lead independently audited the current source, all implementer allocations and dependency identities in `.claude/test-runs/fucq69-rendered/parent-resource-audit.json`.
+
+Independent parent selected command:
+
+```sh
+node --max-old-space-size=512 --test --test-concurrency=1 \
+  server/test/gcsp-manual-gallery.test.js \
+  server/test/gcsp-manual-gallery-render.test.js \
+  server/test/shared-kit-contracts.test.js \
+  server/test/ui-ratchet.test.js server/test/render.test.js
+```
+
+Result: **131 passed, 0 failed, 0 skipped**, 7.036 seconds supervised wall time, peak RSS 314,802,176 bytes. Tested at base `3db3de0` with the exact uncommitted rendered source hashes frozen. Checkpoint identity `203d98350d1a4f90347bcb545aad89a7de268cce38634b9012212ff6f1c1f1a1`; external summary/ownership/log and compact independent final audit are under `.claude/test-runs/fucq69-rendered-parent/`, including `parent-review-receipt.json`. The existing Taz runner reported a transient held mutex without launching tests; after a successful one-shot parent probe, the lead ran this unchanged selected plan directly, with no duplicate worker. No test ran under the Git mutex. `check-story DEV-2026-11-04-068` is OK. The lead independently verified all 174 consumed source identities, scratch/process-group/reservation absence, exact dependency-link removal and unchanged shared dependency/lock identities in the final receipt.
+
+Browser preparation is in `browser-plan.md`, `browser-runner.mjs` and `browser-supervisor.py`. Supervised Python AST/Node syntax checks pass; their scratch/groups/reservations are verified absent in `.claude/test-runs/fucq69-browser-helper-syntax/receipt.json`. **No browser launch or grant is claimed.** Browser process cleanup is statically reviewed but remains unproven until a granted chunk executes. The required real released-run, FUCQ-70 and authored serial full-suite gates remain open; scoped fixtures do not prove them.

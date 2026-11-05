@@ -1374,17 +1374,17 @@
       "slices": [
         {
           "id": "projection",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Complete exact-stock projection and read-only controller",
-          "observed_at": "2026-11-05T23:23:50Z",
-          "evidence": "Delivered projection checkpoint34862e7: lead source review and independent13/0/0/check-story/cleanup. A refreshed-filter correction is now authored; scoped recheck remains before current-source completion."
+          "observed_at": "2026-11-05T23:38:00Z",
+          "evidence": "Lead reviewed exact projection/controller; independent parent gallery/render/shared-kit/ratchet/render131/0/0 on frozen current source, metadata and verified resource receipt in docs/gcsp/evidence/fucq69/README.md. Released-run integration is separately planned and remains open."
         },
         {
           "id": "rendered-browser",
           "status": "in-progress",
           "title": "Rendered exact-car browser, claim reconciliation and visual acceptance",
-          "observed_at": "2026-11-05T23:23:51Z",
-          "evidence": "Sniffles is implementing rendered gallery/claim recovery and dedicated tests. Lead source review is ongoing; scoped tests and browser readiness grant remain outstanding."
+          "observed_at": "2026-11-05T23:38:00Z",
+          "evidence": "Rendered claim/gallery/details, single-gallery and stylesheet gate pass independent131/0/0. Source/cleanup receipt fucq69-rendered-parent/parent-review-receipt.json. Browser helpers syntax pass; no browser grant/launch or visual acceptance yet."
         },
         {
           "id": "released-integration",
@@ -1404,19 +1404,28 @@
           "name": "FUCQ-69 released car browser",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-05T23:24:36Z",
-          "expires_at": "2026-11-05T23:39:36Z",
-          "source": "Current chat01a1adde-8f98-7302-9b8a-e3d5d7f34dc5; effective gpt-6.1-sol/high verified",
-          "status": "working"
+          "observed_at": "2026-11-05T23:38:00.512077Z",
+          "expires_at": "2026-11-05T23:53:00.512077Z",
+          "source": "Current chat01a1adde-8f98-7302-9b8a-e3d5d7f34dc5; effective gpt-6.1-sol/high verified; independent parent131/0/0 passed",
+          "status": "recording validated checkpoint"
         },
         {
           "name": "Sniffles",
           "harness": "codex",
           "role": "implementer",
-          "observed_at": "2026-11-05T23:24:36Z",
-          "expires_at": "2026-11-05T23:39:36Z",
-          "source": "Live child/root/manual_projection just resumed for bounded scoped validation; effective gpt-6.1-sol/medium verified",
-          "status": "working"
+          "observed_at": "2026-11-05T23:38:00.512077Z",
+          "expires_at": "2026-11-05T23:38:00.512077Z",
+          "source": "Child/root/manual_projection completed; gpt-6.1-sol/medium verified; parent source/resource audit passed",
+          "status": "completed"
+        },
+        {
+          "name": "Taz",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-05T23:38:00.512077Z",
+          "expires_at": "2026-11-05T23:38:00.512077Z",
+          "source": "Child/root/taz ended after transient mutex probe; gpt-6-luna/high verified; no tests launched, parent continued same plan",
+          "status": "completed"
         }
       ]
     }

@@ -54,7 +54,7 @@ export function createManualGalleryController({ adapter = createAccountHttpAdapt
     envelope = { ...outcome, view: { ...outcome?.view, state: next } };
     return publish({ ...toManualGallery(null, controls), state: next, outcome: structuredClone(outcome) }, null);
   }
-  return { load: refresh, refresh, getState: snapshot, setControls, openDetail,
+  return { load: refresh, refresh, getState: snapshot, setControls, openDetail, resetReviewAttempts: () => attempts.clear(),
     closeDetail: () => publish(state, null), review, reportOutcome,
     destroy() { destroyed = true; generation += 1; request?.abort(); attempts.clear(); } };
 }

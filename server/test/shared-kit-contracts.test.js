@@ -11,9 +11,10 @@ import { createSharedKitEmployeeFixture } from './helpers/shared-kit-fixture.js'
 let dom;
 let exactListingExample;
 let employeeDecisionExample;
+let manualGalleryExample;
 before(async () => {
   dom = installDom();
-  ({ exactListingExample, employeeDecisionExample } = await import('../../blocks/vehicle-matcher/component-gallery.js'));
+  ({ exactListingExample, employeeDecisionExample, manualGalleryExample } = await import('../../blocks/vehicle-matcher/component-gallery.js'));
 });
 after(() => dom.window.close());
 beforeEach(() => resetDom());
@@ -295,4 +296,17 @@ test('gallery separates position, importance and explicit indifference; injected
   t.mock.timers.tick(PREVIEW_DEBOUNCE_MS); await flushPreview();
   assert.ok(section.querySelector('.vm-gallery-injected-preview .vm-card-explicit'));
   assert.match(section.textContent, /These controls have not recalculated this result/);
+});
+
+
+test('manual gallery examples retain separate exact cards and cannot claim synthetic display stock', () => {
+  const section = manualGalleryExample(); document.body.append(section);
+  const cards = [...section.querySelectorAll('.vm-card')];
+  assert.ok(cards.length >= 3, 'eligible, ineligible and long-name examples remain discoverable');
+  assert.equal(new Set(cards.map((card) => card.dataset.memberId)).size, cards.length);
+  const actions = [...section.querySelectorAll('[data-action-id="review-car"]')];
+  assert.equal(actions.length, cards.length);
+  assert.ok(actions.every((action) => action.disabled));
+  assert.ok([...section.querySelectorAll('.vm-score')].every((score) => score.hidden));
+  assert.ok(section.querySelector('a[href="./gcsp-manual-gallery.html?fixture=available"]'));
 });
