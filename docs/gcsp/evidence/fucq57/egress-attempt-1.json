@@ -1,0 +1,95 @@
+{
+  "resource": {
+    "logRoots": [
+      {
+        "absent": false,
+        "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq57-scoped-1625807df88644fc8f465bbe7847fd79"
+      }
+    ],
+    "ownedDescendants": {
+      "79910": "Thu Nov  5 06:54:14 2026",
+      "79916": "Thu Nov  5 06:54:15 2026"
+    },
+    "ownedDescendantsAbsent": true,
+    "proofSummaries": [],
+    "rc": 1,
+    "results": [
+      {
+        "cleanup": {
+          "local_scratch_reason": "",
+          "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq57-20261105-offline-guard-scoped-34bd9b2a8e6f4265957702d849204220.json",
+          "peak": 917600,
+          "removed": true,
+          "root": "/private/tmp/test-stamp-shard-34bd9b2a8e6f4265957702d849204220"
+        },
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq57-scoped-1625807df88644fc8f465bbe7847fd79/chunk-0001.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq57-20261105-offline-guard-scoped-34bd9b2a8e6f4265957702d849204220.json",
+        "peak_rss": 194281472,
+        "peak_scratch": 917600,
+        "rc": 1,
+        "wall": 0.8462078750017099
+      }
+    ],
+    "supervisor": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-030/docs/gcsp/evidence/fucq57/scoped-supervisor.py",
+    "tokensAbsent": true
+  },
+  "argv": {
+    "errors": [],
+    "maxObservedTestWorkers": 1,
+    "processes": [
+      {
+        "argvObserved": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "server/test/gcsp-synthetic-vin-egress.test.js"
+        ],
+        "pgid": 79910,
+        "pid": 79910,
+        "ppid": 79867,
+        "state": "Ss",
+        "testWorker": false
+      },
+      {
+        "argvObserved": [
+          "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+          "--test-concurrency=1",
+          "--heap-prof-interval=524288",
+          "--stack-trace-limit=10",
+          "--report-signal=SIGUSR2",
+          "--max-http-header-size=16384",
+          "--watch-kill-signal=SIGTERM",
+          "--heapsnapshot-near-heap-limit=0",
+          "--inspect-publish-uid=stderr,http",
+          "--test-isolation=process",
+          "--test-coverage-lines=0",
+          "--cpu-prof-interval=1000",
+          "--test-coverage-functions=0",
+          "--test-timeout=0",
+          "--inspect-port=127.0.0.1:9229",
+          "--test-coverage-branches=0",
+          "--use-largepages=off",
+          "--experimental-addon-modules",
+          "--network-family-autoselection-attempt-timeout=500",
+          "--secure-heap-min=2",
+          "--v8-pool-size=4",
+          "--secure-heap=0",
+          "--tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA",
+          "--node-snapshot",
+          "--trace-event-file-pattern=node_trace.${rotation}.log",
+          "server/test/gcsp-synthetic-vin-egress.test.js"
+        ],
+        "pgid": 79910,
+        "pid": 79916,
+        "ppid": 79910,
+        "state": "U",
+        "testWorker": true
+      }
+    ],
+    "samples": 3,
+    "samplingSeconds": 0.2
+  },
+  "failureSummary": "Fixture assertions corrected: configuration ID was supplied to guide VIN validator; substitution accidentally selected original configuration."
+}

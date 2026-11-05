@@ -78,7 +78,7 @@
   ],
   "full_command": "node --test --test-concurrency=1 server/test/**/*.test.js",
   "full_reason": "Explicit required story validation, only after dispatcher-approved integrated source freeze and sole full slot; no automatic fallback.",
-  "excluded": "No live/credential/SQL/browser/deployment/screen/retail/policy/telemetry/new infrastructure or full-corpus run. Shared index/HLD/contracts held with83.",
+  "excluded": "No live/credential/SQL/browser/deployment/screen/retail/policy/telemetry/new infrastructure/full-corpus proof. Additive vehicle-only shared-contract/HLD prose released by dispatcher; no unmerged83 source.",
   "impact_map": {
     "known": "Reviewed ownership edges: routing -> lookup/local/56 adapters -> current-run53 inventory and registry; HTTP/raw-path/shared gate; node child entry offline-start; tests reuse five-WMI fixtures/profile registry/canonical policy. No JavaScript affected-selector plugin.",
     "unknown": "New routing paths have no measured observations yet. Aggregate V8 functions during required checks will supplement reviewed fixture/config/subprocess edges; missing contexts never imply irrelevance.",
@@ -112,7 +112,21 @@
     "finalizer": "handled_termination + owned Scratch context + run_process finite timeout/stop_group TERM-KILL/join + HostBudget release in finally; sampled argv/fanout<=1; verify exact roots/groups/tokens absent; keep concise receipts and useful bounded failure logs",
     "owned_environment": "TMPDIR/TMP/TEMP/npm_config_cache/NODE_V8_COVERAGE inside scratch; saved allowlist environment, no keys/NODE_OPTIONS/database URLs",
     "expected": "Each narrow chunk <120s/<32MiB scratch/<512MiB RAM; four chunks sequential; install <180s/<128MiB cache. No archive/output>=256MiB expected; no local compatibility exception. Root jsdom install/full separately held.",
-    "large_output_root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude"
+    "large_output_root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude",
+    "root_install": {
+      "argv": [
+        "npm",
+        "ci",
+        "--ignore-scripts",
+        "--no-audit",
+        "--no-fund"
+      ],
+      "cwd": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-030",
+      "seconds": 180,
+      "scratch_mib": 128,
+      "ram_mib": 512,
+      "state": "proposal: own pinned root jsdom install after scoped source checkpoint; full separately held"
+    }
   },
   "experience": "No screen/control/component changes. Contract assertions preserve source/synthetic/reference-market/date/unit/unknown/image role/fidelity states. Screens/README.md and COMPONENTS.md/Used Cars body apply to future consumers. No new screenshot required; disconnected drawio bridge, no invented render proof.",
   "agents": "Lead requested/selected gpt-6.1-sol/high, effective runtime unverified, no fallback; no descendants authorised/spawned."

@@ -48,8 +48,8 @@ log_roots=[]
 original_log_dir=stamp.new_log_dir
 def owned_log_dir(base):
  import uuid
- path=Path(base)/'logs'/('fucq57-full-'+uuid.uuid4().hex)
- record=rdir/'ownership'/('fucq57-full-log-'+path.name+'.json')
+ path=Path(base)/'logs'/('fucq57-scoped-'+uuid.uuid4().hex)
+ record=rdir/'ownership'/('fucq57-scoped-log-'+path.name+'.json')
  resources.atomic_json(record,{'state':'planned','root':str(path),'owner':resources.owner(),'supervisor':__file__})
  path.mkdir(parents=True)
  resources.atomic_json(path/'run.json',{'owner':os.getpid(),'finished':False})
@@ -115,6 +115,14 @@ try:
   except BlockingIOError:raise SystemExit('Full-suite lock busy; no tests launched')
  result_code=stamp.main(['--root',str(project),*sys.argv[1:]])
 finally:
+ proofs=[]
+ for path,_ in log_roots:
+  for output in path.rglob('*'):
+   if output.is_file() and output.stat().st_size<2*1024*1024:
+    for line in output.read_text(errors='replace').splitlines():
+     if 'FUCQ57_PROOF ' in line:
+      try:proofs.append(json.loads(line.split('FUCQ57_PROOF ',1)[1]))
+      except ValueError:pass
  if '--targeted' in sys.argv[1:]:
   argv_evidence['processes']=list(argv_evidence['processes'].values())
   resources.atomic_json(rdir/'fucq57-20261105-offline-guard-scoped-argv.json',argv_evidence)
@@ -128,7 +136,7 @@ finally:
   summary={'results':run_results,'logRoots':[{'root':str(p),'absent':not p.exists()} for p,_ in log_roots],
    'ownedDescendants':owned_descendants,'ownedDescendantsAbsent':all(not start or resources.process_identity(int(pid))!=start for pid,start in owned_descendants.items()),
    'tokensAbsent':all(resources.read_json(item['manifest'],{}).get('token') not in reservations for item in run_results),
-   'supervisor':__file__,'rc':result_code}
+   'supervisor':__file__,'rc':result_code,'proofSummaries':proofs}
   resources.atomic_json(rdir/'fucq57-20261105-offline-guard-scoped-resource.json',summary)
  if lock is not None:fcntl.flock(lock,fcntl.LOCK_UN);lock.close()
 raise SystemExit(result_code)

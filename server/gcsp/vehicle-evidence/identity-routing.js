@@ -10,8 +10,14 @@ const known = (row) => ({ status: 'ok', identityKind: 'synthetic', liveEligible:
 /** Server-owned classification only. Format checks never grant routing permission. */
 export async function classifyVehicleEvidenceRequest({ registry, repository }, request, { context } = {}) {
   try {
-    if (request.kind === 'vin') return await registry?.classifyIdentity?.(request.id) || unavailable();
-    if (request.kind === 'configuration') return await registry?.classifyConfiguration?.(request.id) || unavailable();
+    if (['vin', 'configuration'].includes(request.kind)) {
+      const classified = await (request.kind === 'vin' ? registry?.classifyIdentity?.(request.id)
+        : registry?.classifyConfiguration?.(request.id));
+      // An empty/unselected store is unavailable, never proof of a valid empty corpus.
+      // Retained synthetic classification stays authoritative even when facts are inactive.
+      if (classified?.status === 'not-found' && registry?.status?.().status === 'source-unavailable') return unavailable();
+      return classified || unavailable();
+    }
     if (request.kind !== 'stock' || !object(context) || typeof context.environmentId !== 'string'
       || typeof context.runId !== 'string') return unavailable();
     const current = await repository?.currentRun?.(context.environmentId);
@@ -23,7 +29,7 @@ export async function classifyVehicleEvidenceRequest({ registry, repository }, r
       || retained.contentDigest !== inventory.contentDigest) return unavailable();
     const row = inventory.records.find((r) => r.orderUuid === request.id);
     if (!row) return { status: 'not-found', identityKind: 'unknown', liveEligible: false };
-    if (row.runId !== context.runId || row.usage === 'current-car') return mismatch();
+    if (row.runId !== context.runId || row.usage !== 'stock') return mismatch();
     const configuration = await registry?.classifyConfiguration?.(row.configurationId);
     if (configuration?.status !== 'ok' || configuration.identityKind !== 'synthetic') return unavailable();
     return known(row);

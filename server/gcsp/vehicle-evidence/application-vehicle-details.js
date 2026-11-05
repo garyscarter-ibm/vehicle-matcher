@@ -24,6 +24,16 @@ const safeReference = (v) => {
       && !/^(localhost|.*\.local|127\..*|0\..*|10\..*|192\.168\..*|172\.(1[6-9]|2\d|3[01])\..*|\[.*\])$/.test(u.hostname);
   } catch { return false; }
 };
+// Public source citations may select their documented language. This does not
+// relax executable/image asset references or allow opaque credential parameters.
+const safeSourceReference = (v) => {
+  if (safeReference(v)) return true;
+  try {
+    const url = new URL(v); const entries = [...url.searchParams];
+    if (entries.length !== 1 || entries[0][0] !== 'language' || !/^[a-z]{2}(?:-[A-Z]{2})?$/.test(entries[0][1])) return false;
+    url.search = ''; return safeReference(url.href);
+  } catch { return false; }
+};
 const states = ['complete', 'partial', 'unknown'];
 const failureStatuses = ['invalid-input', 'not-found', 'unsupported', 'source-unavailable', 'identity-mismatch'];
 const expectedFields = ['configurationId', 'vehicleId', 'datasetId', 'originatingDatasetId', 'corpusVersion',
@@ -38,7 +48,7 @@ const measurements = { seats: ['SEATS', 'COUNT'], luggageNormal: ['NORMAL', 'LIT
 function provenance(p) {
   return keys(p, ['kind', 'source', 'observedDate']) && ['observed', 'reference', 'unknown'].includes(p.kind)
     && date(p.observedDate) && (p.kind === 'unknown' ? p.source === null && p.observedDate === null
-      : (text(p.source) && safeReference(p.source) || stringList(p.source) && p.source.length > 0 && p.source.every(safeReference))
+      : (text(p.source) && safeSourceReference(p.source) || stringList(p.source) && p.source.length > 0 && p.source.every(safeSourceReference))
         && p.observedDate !== null);
 }
 function fact(f, numeric = false) {
@@ -88,7 +98,7 @@ function sourceEvidence(s) {
     'vgModelCode', 'modelYear', 'productionEra', 'productionDate', 'registrationDate', 'profile', 'profileSources',
     'profileConfidence', 'completeVinDecoded', 'unresolvedFacts', 'identityProvenance'];
   return keys(s, names) && ['dated-snapshot', 'north-american-reference'].includes(s.kind)
-    && stringList(s.references) && s.references.every(safeReference) && s.references.length > 0 && text(s.confidence)
+    && stringList(s.references) && s.references.every(safeSourceReference) && s.references.length > 0 && text(s.confidence)
     && ['observedDate', 'retrievedDate', 'catalogueDate', 'productionDate', 'registrationDate'].every((k) => date(s[k]))
     && s.observedDate !== null && text(s.market) && s.completeVinDecoded === false
     && ['region', 'steering', 'agModelCode', 'vgModelCode', 'productionEra', 'profileConfidence'].every((k) => nullableText(s[k]))
@@ -105,7 +115,7 @@ function sourceEvidence(s) {
       && ['profileId', 'profileVersion', 'registryVersion'].every((k) => text(s.profile[k])) && typeof s.profile.referenceOnly === 'boolean')
     && (s.profileSources === null || Array.isArray(s.profileSources) && s.profileSources.every((p) =>
       keys(p, ['id', 'kind', 'scope', 'source', 'observedDate', 'sourceDate']) && ['id', 'kind', 'scope'].every((k) => text(p[k]))
-      && safeReference(p.source) && date(p.observedDate) && date(p.sourceDate)))
+      && safeSourceReference(p.source) && date(p.observedDate) && date(p.sourceDate)))
     && (s.catalogueValidity === null || keys(s.catalogueValidity, ['effectDate', 'orderDate', 'productionDate', 'taxDate'])
       && Object.values(s.catalogueValidity).every((v) => date(v) && v !== null));
 }

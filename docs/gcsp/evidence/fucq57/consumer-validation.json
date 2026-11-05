@@ -1,0 +1,172 @@
+{
+  "targeted": {
+    "base": "5aba043",
+    "base_commit": "5aba04375df816352ad897440ec6f4a0e4164910",
+    "changed_paths": [
+      "_dev/in-progress/DEV-2026-11-04-030.md",
+      "docs/design/gcsp-high-level-design.md",
+      "docs/gcsp/evidence/fucq57/consumer-validation.json",
+      "docs/gcsp/evidence/fucq57/e2e-attempt-1.json",
+      "docs/gcsp/evidence/fucq57/e2e-diagnosis.json",
+      "docs/gcsp/evidence/fucq57/e2e-validation.json",
+      "docs/gcsp/evidence/fucq57/egress-attempt-1.json",
+      "docs/gcsp/evidence/fucq57/egress-validation.json",
+      "docs/gcsp/evidence/fucq57/install-supervisor.py",
+      "docs/gcsp/evidence/fucq57/scoped-supervisor.py",
+      "docs/gcsp/evidence/fucq57/server-install.json",
+      "docs/gcsp/evidence/fucq57/validation-plan.json",
+      "docs/gcsp/shared-contracts.md",
+      "docs/gcsp/vehicle-details-consumer.md",
+      "server/gcsp/vehicle-evidence/alternate-offline-adapter.js",
+      "server/gcsp/vehicle-evidence/application-vehicle-details.js",
+      "server/gcsp/vehicle-evidence/identity-routing.js",
+      "server/gcsp/vehicle-evidence/local-vehicle-lookup.js",
+      "server/gcsp/vehicle-evidence/lookup-adapter.js",
+      "server/gcsp/vehicle-evidence/synthetic-registry.js",
+      "server/gcsp/vehicle-evidence/vehicle-lookup.js",
+      "server/gcsp/vehicle-evidence/vin-allocation.js",
+      "server/test/gcsp-offline-start.test.js",
+      "server/test/gcsp-synthetic-http-adapter.test.js",
+      "server/test/gcsp-synthetic-vin-e2e.test.js",
+      "server/test/gcsp-synthetic-vin-egress.test.js",
+      "server/test/gcsp-vehicle-details-contract.test.js",
+      "server/test/helpers/offline-egress-guard.js",
+      "server/test/helpers/offline-vehicle-fixture.js"
+    ],
+    "code_key": "e182f7d87453f87a54ab77228feae7d6c24f00022a0ef3ace4dbdf51f66f8a05",
+    "commands": [
+      "node --test --test-concurrency=1 server/test/gcsp-vehicle-details-contract.test.js server/test/gcsp-synthetic-http-adapter.test.js"
+    ],
+    "cwd": ".",
+    "dirty": true,
+    "execution_identity": {
+      "code": "e182f7d87453f87a54ab77228feae7d6c24f00022a0ef3ace4dbdf51f66f8a05",
+      "environment": "8bfcde4c0632df77e2f8046bed4ed430e35993a521574e6518ae305fede81370",
+      "inputs": {},
+      "interpreter": [
+        "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+      ],
+      "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+      "scope": "targeted",
+      "selected": [
+        "node --test --test-concurrency=1 server/test/gcsp-vehicle-details-contract.test.js server/test/gcsp-synthetic-http-adapter.test.js"
+      ],
+      "settings": "6dbbce51e2385ce5bb3048932b1d00af18a92687d63dac4636bc01ec82ad9778",
+      "variant": "default",
+      "version": 1
+    },
+    "head": "78472d3a5bf5de9ff471063749fbb4e3fb8b2baf",
+    "modules": [],
+    "python": "3.14.7",
+    "ran": null,
+    "reason": "FUCQ57 final consumer adapter/public source citation correction; public language survives exactly while credential/private/queried asset URLs fail; existing56 HTTP/in-process contracts and typed failures.",
+    "result": "passed",
+    "scope": "targeted",
+    "selection_notes": [],
+    "skipped": 0,
+    "time": "2026-11-05T06:58:29+0000",
+    "tree": "28aaa824cdec7ba3f6d0b82bfd6c9bd121d64ea9",
+    "variant": "default",
+    "wall": 1.1
+  },
+  "resource": {
+    "logRoots": [
+      {
+        "absent": true,
+        "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq57-scoped-bfe83bb652f94664ba0312a674f9160a"
+      }
+    ],
+    "ownedDescendants": {
+      "83783": "Thu Nov  5 06:58:28 2026",
+      "83787": "Thu Nov  5 06:58:28 2026"
+    },
+    "ownedDescendantsAbsent": true,
+    "proofSummaries": [],
+    "rc": 0,
+    "results": [
+      {
+        "cleanup": {
+          "local_scratch_reason": "",
+          "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq57-20261105-offline-guard-scoped-c09b3a040cc04a5288a39b7c9115f557.json",
+          "peak": 1364096,
+          "removed": true,
+          "root": "/private/tmp/test-stamp-shard-c09b3a040cc04a5288a39b7c9115f557"
+        },
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq57-scoped-bfe83bb652f94664ba0312a674f9160a/chunk-0001.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq57-20261105-offline-guard-scoped-c09b3a040cc04a5288a39b7c9115f557.json",
+        "peak_rss": 180355072,
+        "peak_scratch": 1364096,
+        "rc": 0,
+        "wall": 0.8128958749948652
+      }
+    ],
+    "supervisor": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-030/docs/gcsp/evidence/fucq57/scoped-supervisor.py",
+    "tokensAbsent": true
+  },
+  "argv": {
+    "errors": [],
+    "maxObservedTestWorkers": 1,
+    "processes": [
+      {
+        "argvObserved": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "server/test/gcsp-vehicle-details-contract.test.js",
+          "server/test/gcsp-synthetic-http-adapter.test.js"
+        ],
+        "pgid": 83783,
+        "pid": 83783,
+        "ppid": 83754,
+        "state": "Ss",
+        "testWorker": false
+      },
+      {
+        "argvObserved": [
+          "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+          "--test-concurrency=1",
+          "--heap-prof-interval=524288",
+          "--stack-trace-limit=10",
+          "--report-signal=SIGUSR2",
+          "--max-http-header-size=16384",
+          "--watch-kill-signal=SIGTERM",
+          "--heapsnapshot-near-heap-limit=0",
+          "--inspect-publish-uid=stderr,http",
+          "--test-isolation=process",
+          "--test-coverage-lines=0",
+          "--cpu-prof-interval=1000",
+          "--test-coverage-functions=0",
+          "--test-timeout=0",
+          "--inspect-port=127.0.0.1:9229",
+          "--test-coverage-branches=0",
+          "--use-largepages=off",
+          "--experimental-addon-modules",
+          "--network-family-autoselection-attempt-timeout=500",
+          "--secure-heap-min=2",
+          "--v8-pool-size=4",
+          "--secure-heap=0",
+          "--tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA",
+          "--node-snapshot",
+          "--trace-event-file-pattern=node_trace.${rotation}.log",
+          "server/test/gcsp-synthetic-http-adapter.test.js"
+        ],
+        "pgid": 83783,
+        "pid": 83787,
+        "ppid": 83783,
+        "state": "R",
+        "testWorker": true
+      }
+    ],
+    "samples": 3,
+    "samplingSeconds": 0.2
+  },
+  "counts": {
+    "tests": 15,
+    "pass": 15,
+    "fail": 0,
+    "skipped": 0
+  }
+}

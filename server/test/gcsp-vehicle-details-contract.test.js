@@ -258,3 +258,23 @@ test('provider construction is server-only and no outcome or switch calls an out
   }
   assert.equal(calls, 0);
 });
+
+test('public language citations remain exact while credential parameters and queried image assets remain unavailable', async () => {
+  const original = await lookup.resolve(configuration);
+  const citation = 'https://www.press.bmwgroup.com/global/article/reference?language=en';
+  const wire = structuredClone(original); wire.source.references = [citation];
+  const mapped = createVehicleDetailsConsumer({ adapter: createLookupVehicleAdapter({ lookup: { resolve: () => wire } }) });
+  assert.equal((await mapped.resolve(configuration)).status, 'partial');
+  assert.deepEqual((await mapped.resolve(configuration)).vehicle.source.references, [citation]);
+  for (const url of ['https://public.example/source?token=opaque', 'https://public.example/source?language=en&key=opaque',
+    'https://private.local/source?language=en', 'https://name:opaque@public.example/source?language=en']) {
+    wire.source.references = [url]; assert.equal((await mapped.resolve(configuration)).status, 'source-unavailable');
+  }
+  // Even the allowed source language query remains forbidden on executable asset metadata.
+  wire.source.references = [citation];
+  wire.images = { state: 'representative', label: 'Representative imagery', items: [{ imageId: 'citation-is-not-an-asset',
+    asset: citation, role: 'representative-model', fidelity: 'representative-model', sourceKind: 'dated-snapshot',
+    observedDate: '2026-11-01', label: 'Representative model image' }] };
+  wire.presentation.imageLabel = 'Representative imagery'; wire.completeness.images = 'representative';
+  assert.equal((await mapped.resolve(configuration)).status, 'source-unavailable');
+});
