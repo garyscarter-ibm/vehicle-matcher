@@ -131,13 +131,29 @@ test('editable one-preference choices use actual unused decline and policy regis
     remedy: { type: body.type, decisionId: body.decisionId, expectedBriefVersion: body.expectedBriefVersion, path: body.path, value: 'suv' } });
   assert.equal(proposed.status, 'ok');
   assert.deepEqual((await f.service.readOwn(f.context, { caseId: f.c.caseId })).value.case.relaxation,
-    { currentBriefVersion: 1, before: 'estate', applicable: true });
+    { currentBriefVersion: 1, before: 'estate', applicable: true, confirmed: false });
   const changed = await f.brief.changeAfterDecline(f.context, { commandId: 'one-change', decisionId: body.decisionId,
     expectedBriefVersion: body.expectedBriefVersion, change: { path: body.path, value: 'suv' } });
   assert.equal(changed.status, 'ok', JSON.stringify(changed));
   assert.equal((await read(f)).value.options.preferenceRelaxations.available, false);
   assert.deepEqual((await f.service.readOwn(f.context, { caseId: f.c.caseId })).value.case.relaxation,
-    { currentBriefVersion: 2, before: 'suv', applicable: false });
+    { currentBriefVersion: 2, before: 'suv', applicable: false, confirmed: true });
+  const snapshot = structuredClone(f.store.state);
+  const projected = (await f.service.readOwn(f.context, { caseId: f.c.caseId })).value.case;
+  assert.equal(projected.status, 'remedy-proposed');
+  assert.equal(projected.remedy.confirmationState, 'employee-confirmation-required');
+  assert.deepEqual(f.store.state, snapshot);
+  const { JSDOM } = await import('jsdom');
+  const { renderCaseContent } = await import('../../blocks/gcsp/cases/case-content.js');
+  const dom = new JSDOM('<!doctype html><html><body></body></html>'); const previous = globalThis.document;
+  globalThis.document = dom.window.document;
+  try {
+    const rendered = renderCaseContent(projected, { onReviewRelaxation() { assert.fail('Confirmed change cannot be repeated.'); } });
+    assert.match(rendered.textContent, /You confirmed this preference change/);
+    assert.doesNotMatch(rendered.textContent, /no longer matches/);
+    assert.equal(rendered.querySelector('button'), null);
+  } finally { globalThis.document = previous; dom.window.close(); }
+
 });
 test('repository and recommendation source failures stay unavailable instead of an empty feasible list', async (t) => {
   const f = await setup(t);

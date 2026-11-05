@@ -142,6 +142,10 @@
     {
       "path": "blocks/gcsp/shell/density-typography.css",
       "max_lines": 50
+    },
+    {
+      "path": "blocks/gcsp/cases/gcsp-cases.css",
+      "max_lines": 29
     }
   ],
   "baseline": {

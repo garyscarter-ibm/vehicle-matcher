@@ -11,6 +11,14 @@ const invalid = (field, reason, code = 'invalid-case-command') => result('invali
 const forbidden = () => result('forbidden', { reason: 'Only the scheme team can record renewal-case updates and remedies.' });
 const ref = (context, caseId) => ({ table: 'renewal_cases', key: { runId: context.runId, caseId } });
 const same = (a, b) => inputDigest(a) === inputDigest(b);
+const confirmedRelaxation = (briefs, remedy, principalId) => {
+  const before = briefs.find((b) => b.status === 'confirmed' && b.briefVersion === remedy.expectedBriefVersion);
+  const current = currentBrief(briefs); const change = current?.postDeclineChange;
+  return !!(before && change && change.decisionId === remedy.decisionId && change.fromBriefVersion === remedy.expectedBriefVersion
+    && change.path === remedy.path && same(change.after, remedy.value) && change.confirmedBy === principalId && validInstant(change.confirmedAt)
+    && current.confirmedBy === principalId && current.confirmedAt === change.confirmedAt
+    && same(current.essentials, before.essentials) && current.briefVersion === before.briefVersion + 1);
+};
 const transitions = { open: ['in-progress', 'closed'], 'in-progress': ['remedy-proposed', 'resolved', 'closed'],
   'remedy-proposed': ['in-progress', 'resolved', 'closed'], resolved: ['closed'], closed: [] };
 const date = (value) => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)
@@ -90,6 +98,7 @@ export class RenewalCaseService {
       currentBriefVersion: brief?.briefVersion ?? null,
       before: brief?.preferences?.[c.remedy.path.split('.')[1]]?.value ?? null,
       applicable: brief?.briefVersion === c.remedy.expectedBriefVersion,
+      confirmed: confirmedRelaxation(rows.value, c.remedy, context.principalId),
     } }));
   }
   async list(context) {
@@ -218,11 +227,8 @@ export class RenewalCaseService {
       if (!before || !Object.hasOwn(before.preferences, remedy.path.split('.')[1])) return invalid('remedy.path', 'Choose a preference in the confirmed employee brief.');
       const decision = await tx.get({ table: 'decisions', key: { runId: context.runId, decisionId: remedy.decisionId } }); if (decision.status !== 'ok') return decision;
       if (decision.value.employeeId !== renewal.employee.employeeId || decision.value.decision !== 'decline') return result('forbidden', { reason: 'A recorded decline for this employee is required.' });
-      const current = briefs.value.filter((b) => b.status === 'confirmed').sort((a, b) => b.briefVersion-a.briefVersion)[0];
-      const change = current?.postDeclineChange;
-      const confirmed = change && change.decisionId === remedy.decisionId && change.fromBriefVersion === remedy.expectedBriefVersion
-        && change.path === remedy.path && same(change.after, remedy.value) && change.confirmedBy === renewal.employee.principalId && validInstant(change.confirmedAt)
-        && same(current.essentials, before.essentials) && current.briefVersion === before.briefVersion+1;
+      const current = currentBrief(briefs.value); const change = current?.postDeclineChange;
+      const confirmed = confirmedRelaxation(briefs.value, remedy, renewal.employee.principalId);
       if (resolving && !confirmed) return invalid('remedy', 'Paula must confirm the single preference change through her brief before this case can be resolved.', 'employee-confirmation-required');
       return ok({ type: remedy.type, decisionId: remedy.decisionId, expectedBriefVersion: remedy.expectedBriefVersion, path: remedy.path, value: remedy.value,
         confirmationState: confirmed ? 'employee-confirmed' : 'employee-confirmation-required',
