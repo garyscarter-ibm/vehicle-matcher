@@ -1,0 +1,242 @@
+{
+  "schemaVersion": "1",
+  "snapshotVersion": "bmw-gb-i5-images-2026-11-01.v1",
+  "observedDate": "2026-11-01",
+  "retrievedDate": "2026-11-01",
+  "demoUse": {
+    "scope": "gcsp-demo",
+    "retention": "remove-after-demo",
+    "decision": {
+      "source": "Jira",
+      "issue": "FUCQ-40",
+      "commentId": "132468",
+      "by": "Gary Carter",
+      "date": "2026-11-05"
+    },
+    "delivery": "explicit-demo-in-process-port",
+    "retailPublication": false,
+    "postDemoRemoval": "Disable the adapter and remove registered runtime assets/manifest from demo deployments and retained runtime distributions after the demo. Preserve immutable research evidence separately."
+  },
+  "assets": [
+    {
+      "assetId": "bmw-i5-white-20261101-v1",
+      "contentType": "image/webp",
+      "bytes": 82798,
+      "sha256": "fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe",
+      "size": {
+        "width": 2560,
+        "height": 1646
+      },
+      "viewpoint": "HEROFRONT",
+      "sourceDistinction": {
+        "POV": "HEROFRONT",
+        "X": "1700",
+        "Y": "500",
+        "BKGND": "sand"
+      },
+      "paint": {
+        "code": "P0300",
+        "label": "Alpine White"
+      },
+      "role": "representative-catalogue-render",
+      "identity": {
+        "modelCode": "T5MJ",
+        "modelRange": "G61E",
+        "rawModelRange": "G61",
+        "agModelCode": "72HH",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05",
+        "taxDate": "2027-01-05",
+        "market": "GB",
+        "locale": "en-GB",
+        "catalogueDate": "2026-11-01",
+        "productionDate": "2027-01-05",
+        "trim": "S0337",
+        "selectionComplete": true,
+        "selectedOptions": [
+          "FKSFU",
+          "P0300",
+          "S0230",
+          "S02PA",
+          "S02VB",
+          "S02VD",
+          "S0302",
+          "S0337",
+          "S03DK",
+          "S03G9",
+          "S03M1",
+          "S0428",
+          "S043L",
+          "S0488",
+          "S0494",
+          "S04T2",
+          "S04U9",
+          "S04UR",
+          "S04V1",
+          "S0552",
+          "S05AS",
+          "S05AV",
+          "S05DM",
+          "S0654",
+          "S0674",
+          "S06AE",
+          "S06AF",
+          "S06AK",
+          "S06C4",
+          "S06NX",
+          "S06PA",
+          "S0704",
+          "S0710",
+          "S0760",
+          "S0775",
+          "S0812",
+          "S0853",
+          "S0880",
+          "S08R3",
+          "S08R9",
+          "S08SM",
+          "S08TF",
+          "S08TG",
+          "S08WM",
+          "S09QV",
+          "S09T1",
+          "S09T2"
+        ],
+        "selectedAccessories": [
+          {
+            "code": "SE000001",
+            "type": "accessory",
+            "quantity": 1
+          }
+        ]
+      },
+      "source": {
+        "origin": "BMW COSY catalogue render",
+        "sourceDate": "2026-11-01",
+        "observedDate": "2026-11-01",
+        "retrievedDate": "2026-11-01",
+        "selectionEvidence": "requests-2026-11-01.json: retail-pricing.configuration.selectedOptions",
+        "accessoryEvidence": "response-excerpts-2026-11-01.json: ruleResult.body.configuration.elements.SE000001; blackConfiguration.url accessory segment",
+        "imageEvidence": "response-excerpts-2026-11-01.json: images.white"
+      },
+      "fidelity": {
+        "model": "verified",
+        "paint": "verified",
+        "wheels": "unknown",
+        "interior": "unknown",
+        "equipment": "unknown",
+        "exactVehicle": "unknown"
+      }
+    },
+    {
+      "assetId": "bmw-i5-black-20261101-v1",
+      "contentType": "image/webp",
+      "bytes": 86286,
+      "sha256": "4c38cdb43b6438b7ae54fd1c882280bf744e88a17f2ce43597c5dd2c4890b5de",
+      "size": {
+        "width": 2560,
+        "height": 1646
+      },
+      "viewpoint": "HEROFRONT",
+      "sourceDistinction": {
+        "POV": "HEROFRONT",
+        "X": "1700",
+        "Y": "500",
+        "BKGND": "sand"
+      },
+      "paint": {
+        "code": "P0475",
+        "label": "Black Sapphire"
+      },
+      "role": "representative-catalogue-render",
+      "identity": {
+        "modelCode": "T5MJ",
+        "modelRange": "G61E",
+        "rawModelRange": "G61",
+        "agModelCode": "72HH",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05",
+        "taxDate": "2027-01-05",
+        "market": "GB",
+        "locale": "en-GB",
+        "catalogueDate": "2026-11-01",
+        "productionDate": "2027-01-05",
+        "trim": "S0337",
+        "selectionComplete": true,
+        "selectedOptions": [
+          "FKSFU",
+          "P0475",
+          "S0230",
+          "S02PA",
+          "S02VB",
+          "S02VD",
+          "S0302",
+          "S0337",
+          "S03DK",
+          "S03G9",
+          "S03M1",
+          "S0428",
+          "S043L",
+          "S0488",
+          "S0494",
+          "S04T2",
+          "S04U9",
+          "S04UR",
+          "S04V1",
+          "S0552",
+          "S05AS",
+          "S05AV",
+          "S05DM",
+          "S0654",
+          "S0674",
+          "S06AE",
+          "S06AF",
+          "S06AK",
+          "S06C4",
+          "S06NX",
+          "S06PA",
+          "S0704",
+          "S0710",
+          "S0760",
+          "S0775",
+          "S0812",
+          "S0853",
+          "S0880",
+          "S08R3",
+          "S08R9",
+          "S08SM",
+          "S08TF",
+          "S08TG",
+          "S08WM",
+          "S09QV",
+          "S09T1",
+          "S09T2"
+        ],
+        "selectedAccessories": [
+          {
+            "code": "SE000001",
+            "type": "accessory",
+            "quantity": 1
+          }
+        ]
+      },
+      "source": {
+        "origin": "BMW COSY catalogue render",
+        "sourceDate": "2026-11-01",
+        "observedDate": "2026-11-01",
+        "retrievedDate": "2026-11-01",
+        "selectionEvidence": "observations-2026-11-01.json: blackConfiguration.selected",
+        "accessoryEvidence": "response-excerpts-2026-11-01.json: ruleResult.body.configuration.elements.SE000001; blackConfiguration.url accessory segment",
+        "imageEvidence": "response-excerpts-2026-11-01.json: images.black"
+      },
+      "fidelity": {
+        "model": "verified",
+        "paint": "verified",
+        "wheels": "unknown",
+        "interior": "unknown",
+        "equipment": "unknown",
+        "exactVehicle": "unknown"
+      }
+    }
+  ]
+}

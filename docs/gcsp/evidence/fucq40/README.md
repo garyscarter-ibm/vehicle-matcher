@@ -1,0 +1,53 @@
+# FUCQ-40 registered demo image provider
+
+Implementation and validation record, 5 November 2026. This story stays in the existing vehicle-evidence image port and dated artifact boundary in the canonical HLD. It adds no service, database, route, registry wiring or consuming screen. The agreed FUCQ-64 body reference `a7fc178`, shell references and shared kit remain the reference for future consumers. Backend presentation assertions cover this story, so new UI screenshots are unnecessary.
+
+## Authority and lifecycle
+
+Gary Carter's FUCQ-40 Jira comment **132468**, dated **5 November 2026**, permits the selected white and black research renders to be displayed and registered/kept as versioned runtime assets for the **GCSP demo environment only**. The story decision records the same authority. This is no permanent entitlement, retail/public-site publication permission or live COSY authorisation.
+
+The deployment operator must include these assets only in the GCSP demo backend artifact and explicitly select `environment: 'gcsp-demo'` when constructing the image adapter. There is no new HTTP delivery route. A later approved demo consumer may call the in-process byte reader; it must preserve provenance/fidelity labels and the existing access boundary. At the end of the demo, disable the composition, remove the two runtime image files and manifest from the versioned runtime tree, deployed artifacts and retained runtime distribution copies, and verify removal. No expiry date has been invented. Immutable research evidence remains separate; do not delete it as test scratch.
+
+## Plan and test selection
+
+1. Add `server/vehicle-evidence/bmw-image-adapter.js`, reusing FUCQ-37's complete catalogue identity validation/canonicalisation. Match full requested source selection, dates, viewpoint and size. Expose explicit safe missing, unsupported, unavailable and identity-mismatch states; never approximate by paint alone.
+2. Register a versioned JSON manifest under `server/vehicle-evidence/snapshots/` and byte-identical local images under `server/vehicle-evidence/assets/bmw-gb-i5-images-2026-11-01.v1/`. Preserve both complete observed source selections and the source-typed accessory. The paint change does not prove other equipment fidelity.
+3. Assert presentation provenance, representative role, verified model/paint and unknown wheels/interior/equipment. Test offline resolution, actual bytes/hash/type/dimensions, exact identity/view/size failures, missing/corrupt artifacts, safe error projection and mutation isolation.
+
+Changed paths are this evidence directory, the story, the adapter, its manifest/two images and `server/test/bmw-image-adapter.test.js`. The only production caller boundary is the imported `bmwCatalogueLookupIdentity`; no existing caller is rewired. Fixtures are the immutable FUCQ-4 research records and local registered images. There is no configuration, subprocess or network dependency in the adapter.
+
+Narrow iteration: `node --test server/test/bmw-image-adapter.test.js`. Adjacent checks: `node --test server/test/bmw-catalogue-adapter.test.js server/test/exact-listing-decision.test.js`, covering shared identity and retail photo/member isolation. The strict affected plan was inspected before targeted execution. The authored `npm test` complete file selection was then run serially under the dispatcher's reservation using `node --test --test-concurrency=1 server/test/**/*.test.js`. Live providers, keys, generic asset proxies and consuming UI are excluded by scope. Scoped and full evidence remain distinct.
+
+Run `fucq40-20261105-image` uses the registered supervisor, one worker, expected 32 MiB scratch/512 MiB RAM/120 seconds per initial chunk. The supervisor owns temporary directories, process groups, host reservations and cleanup receipts; summaries stay outside scratch under the shared `.claude/test-runs/` directory. No large output is expected; any output reaching 256 MiB goes directly to the registered OneDrive destination.
+
+## Source inspection
+
+Both immutable input images were opened locally on 5 November 2026. They show the same front viewpoint and composition of the i5 reference with a visibly white versus black body. This inspection confirms the observed model/paint variation; it does not verify wheels, interior or equipment.
+
+`file` and `sips` independently report WebP VP8, **2560 × 1646** for both. White: 82,798 bytes, SHA-256 `fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe`. Black: 86,286 bytes, SHA-256 `4c38cdb43b6438b7ae54fd1c882280bf744e88a17f2ce43597c5dd2c4890b5de`. These agree with FUCQ-4's evidence README. The source images are immutable inputs and are not disposable allocation.
+
+## Implemented port and consuming seam
+
+Import `createBmwImageAdapter`, `bmwImageLookupIdentity` and `presentBmwImage` from `server/vehicle-evidence/bmw-image-adapter.js`. Trusted composition uses `createBmwImageAdapter({ environment: 'gcsp-demo' })`; omission or any other environment refuses before artifact reads. `resolve({ ...resolvedCatalogueIdentity, selectionComplete: true, viewpoint: 'HEROFRONT', size: { width: 2560, height: 1646 } })` returns the FUCQ-37-style provider/version/source/requested/resolved envelope with `image` metadata only on `ok`. `readAsset(assetId)` returns the same validated evidence plus a server-side `Buffer` as `bytes`. Neither method constructs or returns a browser URL.
+
+The manifest is `server/vehicle-evidence/snapshots/bmw-gb-i5-images-2026-11-01.v1.json`. Local IDs `bmw-i5-white-20261101-v1` / `bmw-i5-black-20261101-v1` bind to their respective complete source identities. The backend files are `server/vehicle-evidence/assets/bmw-gb-i5-images-2026-11-01.v1/alpine-white.webp` and `black-sapphire.webp`. They are not offer, VIN or exact-stock associations. A future gallery/offer caller must resolve its actual configuration, retain the representative caption and use an explicitly approved demo delivery seam. No active offer is fabricated here. Review of `.github/workflows/pages.yml` confirms its static copy set excludes `server/`; no retail publication path was added.
+
+## Validation
+
+[Validation receipt](validation.json): the integrated scoped run passed **53/53**, including 13 image, 22 catalogue and 18 retail exact-listing checks. Image adapter coverage is **100% lines/functions and 95.87% branches**. The strict automatic selector reports no JavaScript selector; reviewed explicit commands were used. The initial adjacent run could not load the existing `pg` dependency; restoring the unchanged server lockfile's dependencies resolved that environment issue. No package file changed.
+
+The authored source-image `shasum -a 256` command passed with both expected digests. Runtime bytes equal their immutable research inputs and pass WebP signature, dimensions, byte length and SHA-256 checks. Tests reject missing/corrupt assets and incomplete/mismatched configuration identity, and block fetch/HTTP/HTTPS transports with zero attempts. Each complete canonical source-identity digest is pinned, so corrupt option/accessory/trim metadata cannot establish an unobserved selection. Safe presentation/error projections preserve provenance and unknown equipment.
+
+The full **51-module** package file selection passed on integrated base `1db84201afd748fce176858296bd680cddc16f25`, HEAD `c7c38c6a8807e50d123ec3190171412bff210ca4`: **1,028 pass, 0 fail, 2 skipped**, 54 seconds. Both skips are the configured native PostgreSQL checks because `GCSP_DATABASE_URL` is unset; this supplies no native/live SQL proof. Full stamp `13af28fbb9f20985844c81ed7f903de603f62ff063e99f927b0f88acae4b06f4` was recorded and verified with `--status`. Tested code key is `922bc3a42e7b61c6cba2935e0850188600758a4005ef25cb3c1c21f024e7adc5`; final evidence/story edits do not alter tested code.
+
+The first full attempt used a suffix concurrency option, which Node ignored after its file arguments. It exceeded the 1 GiB budget, was stopped/joined by the supervisor and received no full stamp. A bounded diagnostic proved the placement issue; the successful equivalent command puts the option before the unchanged authored file glob. The final run used one worker, a 2 GiB RAM cap, 256 MiB scratch cap and 600-second cap; measured peaks were **331,513,856 bytes recursive RSS** and **786,560 bytes scratch**. The generic stamp driver does not parse Node counts; the receipt preserves the actual Node totals separately.
+
+The final cleanup audit recovered all 12 run-owned scratch manifests, verified every root/process group absent and every owned reservation released, and recorded no leftovers or compatibility exception. Summed measured scratch peaks were 6,701,760 bytes; the owned npm cache removed another 221,184 bytes. No large output was created. The cleanup receipt and full summary are retained under the shared `.claude/test-runs/fucq40-20261105-image/`; source/runtime assets, immutable research and installed dependencies are preserved. The impact map is keyed by the tested code identity under `.claude/test-runs/impact/`.
+
+## Latest-base reconciliation
+
+Merged shared `gcsp-poc` commit `11246fd2665c281d085257bdbc188a15ca3bdc57` as `13d68b3cf247cbdd27ab588fbbd0ab80ada2e868`. Its eight incoming paths since the tested base contain documentation and story metadata only. Runtime code, tests, dependencies, configuration and source fixtures are unchanged. The new delivery-sequence guidance was read; it introduces no image-provider scope or permission change. The current Jira description and all three comments were also rechecked.
+
+The recorded full stamp still matches the integrated code, inputs, environment and complete test plan: `--status` returned exit 0, all recorded FUCQ-40 source/test/asset hashes match, and wrapper ancestry/diff checks passed. Both scoped and full results are reused without another test allocation. The two native PostgreSQL skips remain explicit. Cleanup absence was reverified; the reconciliation used no scratch. [Validation receipt](validation.json) records the exact incoming paths and identities; the shared run directory retains `integration-reconciliation.json`.
+
+The final shared-base check advanced to `5d3acd3b87641f20f86e41d062f63babcfc2a286`, merged as `d3d728f60aa097e75bfbb8c4516b8b04f7ea9102`. Its five additional paths only document the separate Brevo email handoff. All twelve accumulated incoming paths remain documentation/story metadata. The complete stamp execution identity and five source/test/asset hashes match again; the eight owned story diff paths are unchanged. No tests or scratch were added, and cleanup absence was reverified. The receipt retains both reconciliation steps.
