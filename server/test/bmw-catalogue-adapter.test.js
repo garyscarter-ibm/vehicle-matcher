@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import * as catalogue from '../vehicle-evidence/bmw-catalogue-adapter.js';
 import { createBmwCatalogueAdapter, presentBmwCatalogue, rejectOutbound } from '../vehicle-evidence/bmw-catalogue-adapter.js';
 
 const evidence = new URL('../../docs/gcsp/evidence/fucq-4/', import.meta.url);
@@ -46,7 +47,7 @@ test('resolves only the complete dated observed configuration without outbound t
     ['acceleration', 'E_0_100KMH', '0–100 KM/H', 'SECONDS'],
   ]) {
     assert.deepEqual(result.facts[name], {
-      state: 'known', value: observations.technicalData.values[code].targetValue, definition, unit,
+      state: 'known', value: observations.technicalData.values[code].targetValue, definition, unit, completeness: 'complete',
       provenance: { kind: 'observed', source: 'BMW UK catalogue', observedDate: '2026-11-01' },
     });
   }
@@ -199,4 +200,160 @@ test('presentation text uses projected dates, units and per-field provenance', a
   assert.match(changed.context, /Effect: 6 January 2027/);
   assert.equal(JSON.stringify(changed).includes('—'), false);
   assert.equal(presentBmwCatalogue(await adapter.resolve({ ...sample(), modelCode: 'T3MQ' })).measurements.length, 0);
+});
+
+
+test('option claims distinguish definitions, availability, catalogue selection and VIN fitting', async () => {
+  assert.equal(typeof catalogue.describeBmwEquipment, 'function');
+  const result = await createBmwCatalogueAdapter().resolve(sample());
+  const paint = catalogue.describeBmwEquipment(result, 'P0300');
+  assert.equal(paint.definition.label, 'Alpine White');
+  assert.equal(paint.catalogueSelection.state, 'selected');
+  assert.equal(catalogue.describeBmwEquipment(result, 'FKSFU').catalogueSelection.state, 'selected');
+  const alternative = catalogue.describeBmwEquipment(result, 'P0475');
+  assert.equal(alternative.configurableAvailability.state, 'available');
+  assert.equal(alternative.catalogueSelection.state, 'not-selected');
+  const towbar = catalogue.describeBmwEquipment(result, 'S03AC');
+  assert.equal(towbar.definition.state, 'defined');
+  assert.equal(towbar.catalogueSelection.state, 'not-selected');
+  assert.equal(towbar.verifiedVinFitted.state, 'unknown');
+  assert.equal(towbar.verifiedVinFitted.reason, 'provider-does-not-verify-fitting');
+  assert.equal(catalogue.describeBmwEquipment(result, 'S0XYZ').configurableAvailability.state, 'unknown');
+  assert.equal(catalogue.describeBmwEquipment(result, 'invalid<script>'), null);
+  result.equipment.definitions.find(({ code }) => code === 'P0475').label.value = 'Alpine White';
+  assert.equal(catalogue.describeBmwEquipment(result, 'P0475').catalogueSelection.state, 'not-selected');
+  for (const claim of [paint.definition, paint.configurableAvailability, paint.catalogueSelection]) {
+    assert.equal(claim.provenance.source, 'BMW UK catalogue');
+    assert.equal(claim.provenance.observedDate, '2026-11-01');
+  }
+  assert.equal(paint.definition.kind, 'option-definition');
+  assert.equal(paint.configurableAvailability.kind, 'configurable-availability');
+  assert.equal(paint.catalogueSelection.kind, 'selected-catalogue-equipment');
+  assert.equal(paint.verifiedVinFitted.kind, 'verified-vin-fitted-equipment');
+});
+
+test('partial selection does not turn absent equipment into a negative claim', async () => {
+  const data = await fixture();
+  data.equipmentEvidence = { ...data.equipmentEvidence, selected: {
+    ...data.equipmentEvidence?.selected, completeness: 'partial',
+  } };
+  const result = await createBmwCatalogueAdapter({ loadSnapshot: async () => data }).resolve(sample());
+  assert.equal(result.status, 'partial');
+  assert.equal(result.equipment.selected.complete, false);
+  assert.equal(result.completeness.selectedConfiguration, 'partial');
+  assert.equal(result.facts.seats.value, 5);
+  assert.equal(catalogue.describeBmwEquipment(result, 'P0300').catalogueSelection.state, 'selected');
+  assert.equal(catalogue.describeBmwEquipment(result, 'S03AC').catalogueSelection.state, 'unknown');
+  assert.equal(catalogue.describeBmwEquipment(result, 'S03AC').catalogueSelection.reason, 'incomplete-selection');
+});
+
+test('missing or malformed equipment sections preserve attributed technical facts', async () => {
+  for (const change of [
+    (data) => { delete data.availableOptions; },
+    (data) => { data.availableOptions = ['S03AC', 'S03AC']; },
+    (data) => { delete data.definitions; },
+    (data) => { data.definitions = []; },
+    (data) => { delete data.equipmentEvidence?.selected; },
+    (data) => { delete data.availableOptions; delete data.equipmentEvidence?.selected; },
+  ]) {
+    const data = await fixture(); change(data);
+    const result = await createBmwCatalogueAdapter({ loadSnapshot: async () => data }).resolve(sample());
+    assert.equal(result.status, 'partial');
+    assert.equal(result.facts.luggageNormal.value, 570);
+    assert.equal(result.facts.luggageNormal.provenance.observedDate, '2026-11-01');
+    assert.equal(catalogue.describeBmwEquipment(result, 'S03AC').verifiedVinFitted.state, 'unknown');
+    if (!data.equipmentEvidence?.selected) {
+      assert.equal(result.equipment.selected.state, 'unknown');
+      assert.equal(result.equipment.selected.options, null);
+      assert.equal(result.equipment.selected.complete, false);
+      const towbar = catalogue.describeBmwEquipment(result, 'S03AC');
+      assert.equal(towbar.definition.state, 'defined');
+      assert.equal(towbar.catalogueSelection.state, 'unknown');
+    }
+  }
+});
+
+test('unknown measurements carry useful reasons while evidenced numeric zero survives', async () => {
+  for (const [value, reason] of [
+    [undefined, 'missing-value'], [null, 'missing-value'], ['', 'missing-value'],
+    ['-', 'placeholder-value'], ['0000', 'placeholder-value'], ['N/A', 'placeholder-value'],
+    ['12x', 'malformed-value'], ['0', 'malformed-value'], [-1, 'malformed-value'],
+    [NaN, 'malformed-value'], [Infinity, 'malformed-value'], [false, 'malformed-value'],
+  ]) {
+    const data = await fixture(); data.measurements.A_GEPR_V211.value = value;
+    const result = await createBmwCatalogueAdapter({ loadSnapshot: async () => data }).resolve(sample());
+    assert.equal(result.status, 'partial');
+    assert.equal(result.facts.luggageNormal.state, 'unknown', String(value));
+    assert.equal(result.facts.luggageNormal.reason, reason, String(value));
+    assert.equal(result.facts.seats.value, 5);
+  }
+  const data = await fixture();
+  data.measurements.A_GEPR_V211.value = 0;
+  data.measurements.A_GEPR_V211.observedDate = '2026-10-31';
+  data.measurements.A_GEPR_V211.source = 'BMW UK OTD';
+  data.measurements.A_GEPR_V211.completeness = 'partial';
+  const result = await createBmwCatalogueAdapter({ loadSnapshot: async () => data }).resolve(sample());
+  assert.equal(result.facts.luggageNormal.state, 'known');
+  assert.equal(result.facts.luggageNormal.value, 0);
+  assert.equal(result.facts.luggageNormal.provenance.source, 'BMW UK OTD');
+  assert.equal(result.facts.luggageNormal.provenance.observedDate, '2026-10-31');
+  assert.equal(result.facts.luggageNormal.completeness, 'partial');
+  assert.equal(result.facts.bodyLength.state, 'unknown');
+  assert.equal(result.facts.bodyLength.reason, 'placeholder-value');
+  assert.equal(result.status, 'partial');
+  assert.equal(presentBmwCatalogue(result).measurements[1], '0 litres (normal, observed)');
+});
+
+test('unsupported meanings and units cannot become supported technical facts', async () => {
+  for (const [field, value, reason] of [
+    ['unit', 'GALLONS', 'unmapped-unit'], ['definition', '0–62 MPH', 'unmapped-meaning'],
+    ['unit', undefined, 'unmapped-unit'], ['observedDate', 'bad', 'invalid-provenance'],
+    ['source', 'https://private.invalid/vin/secret', 'invalid-provenance'],
+  ]) {
+    const data = await fixture(); data.measurements.A_GEPR_V211[field] = value;
+    const result = await createBmwCatalogueAdapter({ loadSnapshot: async () => data }).resolve(sample());
+    assert.equal(result.facts.luggageNormal.state, 'unknown');
+    assert.equal(result.facts.luggageNormal.reason, reason);
+    assert.equal(JSON.stringify(result).includes('private.invalid'), false);
+  }
+  const data = await fixture();
+  data.measurements.UNKNOWN_CODE = { value: 99, unit: 'UNKNOWN' };
+  data.modelTree.length.value = 5060;
+  const result = await createBmwCatalogueAdapter({ loadSnapshot: async () => data }).resolve(sample());
+  assert.equal(result.status, 'partial');
+  assert.equal(result.facts.bodyLength.state, 'unknown');
+  assert.equal(result.facts.bodyLength.reason, 'unmapped-source');
+  assert.deepEqual(result.unmappedMeasurements, [{ state: 'unknown', value: null, reason: 'unmapped-meaning' }]);
+  assert.equal(JSON.stringify(result).includes('UNKNOWN_CODE'), false);
+  data.measurements.N_SITZE.value = 1.5;
+  assert.equal((await createBmwCatalogueAdapter({ loadSnapshot: async () => data }).resolve(sample())).facts.seats.reason, 'malformed-value');
+  delete data.measurements;
+  const absent = await createBmwCatalogueAdapter({ loadSnapshot: async () => data }).resolve(sample());
+  assert.equal(absent.status, 'partial');
+  assert.equal(absent.facts.seats.reason, 'missing-value');
+  assert.equal(absent.equipment.selected.complete, true);
+});
+
+test('complete and partial plain text examples visibly explain equipment certainty', async () => {
+  const data = await fixture();
+  const complete = await createBmwCatalogueAdapter({ loadSnapshot: async () => data }).resolve(sample());
+  const shown = presentBmwCatalogue(complete);
+  assert.equal(Array.isArray(shown.equipment), true);
+  assert.match(shown.equipment.find((line) => line.includes('P0300')), /Alpine White.*selected in this catalogue configuration/);
+  assert.match(shown.equipment.find((line) => line.includes('P0475')), /Black Sapphire.*available.*not selected/);
+  assert.match(shown.equipment.find((line) => line.includes('S03AC')), /Towbar.*not selected.*VIN-fitted: unknown/);
+  assert.match(shown.completeness, /Selection: complete.*definitions: partial/);
+  data.equipmentEvidence = { ...data.equipmentEvidence, selected: {
+    ...data.equipmentEvidence?.selected, completeness: 'partial',
+  } };
+  data.measurements.A_GEPR_V211.value = '-';
+  data.definitions.S03AC.label = '<script>private</script>';
+  const partial = presentBmwCatalogue(await createBmwCatalogueAdapter({ loadSnapshot: async () => data }).resolve(sample()));
+  assert.match(partial.equipment.find((line) => line.includes('S03AC')), /label unknown.*selection unknown.*incomplete selection/);
+  assert.equal(partial.measurements[1], 'Luggage (normal): unknown (placeholder value)');
+  assert.match(partial.measurementEvidence[0], /BMW UK catalogue.*1 November 2026.*complete/);
+  assert.match(partial.completeness, /Selection: partial/);
+  assert.equal(JSON.stringify(partial).includes('<'), false);
+  assert.equal(JSON.stringify(partial).includes('private'), false);
+  for (const forbidden of ['telemetry', 'eligible', 'fitted: yes']) assert.equal(JSON.stringify(partial).includes(forbidden), false);
 });
