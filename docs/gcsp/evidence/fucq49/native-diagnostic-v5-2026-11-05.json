@@ -1,0 +1,2459 @@
+{
+  "version": 5,
+  "date": "2026-11-05",
+  "native": true,
+  "source": "BMW public UK configurator unsupported demo source",
+  "purpose": "Approved v5: current verified settings, exact manifest sanitized predicate diagnosis, one safe target asset; direct diagnostic qualification separate from runtime acceptance",
+  "limits": {
+    "additionalRequests": 3,
+    "aggregateRequestsIncludingPrior": 11,
+    "aggregateBytesIncludingPrior": 6291456,
+    "additionalBytes": 4862585,
+    "images": 1,
+    "retries": 0,
+    "concurrency": 1,
+    "totalMs": 90000,
+    "perRequestMs": 15000
+  },
+  "prior": {
+    "requests": 8,
+    "bytes": 1428871,
+    "imageRequests": 0
+  },
+  "requests": [
+    {
+      "label": "current-public-settings",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 620646
+    },
+    {
+      "label": "exact-named-manifest",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 67145
+    },
+    {
+      "label": "exact-returned-asset",
+      "status": 200,
+      "contentType": "image/webp",
+      "bytes": 82798
+    }
+  ],
+  "localSelectorSmoke": "passed",
+  "manifestIdentity": {
+    "model": "not-echoed",
+    "paint": "not-echoed",
+    "dates": "not-echoed",
+    "options": "not-echoed"
+  },
+  "contextIsServedAssetProof": false,
+  "image": {
+    "bytes": 82798,
+    "sha256": "fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe",
+    "contentType": "image/webp",
+    "registeredReferenceDigestMatches": true,
+    "registeredReferenceAssetId": "bmw-i5-white-20261101-v1",
+    "persisted": false,
+    "assetProof": "exact bytes equal existing visually reviewed registered research render; model/paint anchored only",
+    "optionsVisiblyDepicted": "unknown",
+    "exactVehicleAppearance": "unknown"
+  },
+  "snapshotContext": {
+    "sourceKind": "dated-snapshot",
+    "snapshotVersion": "bmw-gb-i5-2026-11-01.v1",
+    "observedDate": "2026-11-01",
+    "requestedIdentity": {
+      "catalogueDate": "2026-11-01",
+      "market": "GB",
+      "locale": "en-GB",
+      "modelCode": "T5MJ",
+      "modelRange": "G61E",
+      "rawModelRange": "G61",
+      "agModelCode": "72HH",
+      "trim": "S0337",
+      "orderDate": "2026-11-01",
+      "effectDate": "2027-01-05",
+      "productionDate": "2027-01-05",
+      "taxDate": "2027-01-05",
+      "selectedOptions": [
+        "FKSFU",
+        "P0300",
+        "S0230",
+        "S02PA",
+        "S02VB",
+        "S02VD",
+        "S0302",
+        "S0337",
+        "S03DK",
+        "S03G9",
+        "S03M1",
+        "S0428",
+        "S043L",
+        "S0488",
+        "S0494",
+        "S04T2",
+        "S04U9",
+        "S04UR",
+        "S04V1",
+        "S0552",
+        "S05AS",
+        "S05AV",
+        "S05DM",
+        "S0654",
+        "S0674",
+        "S06AE",
+        "S06AF",
+        "S06AK",
+        "S06C4",
+        "S06NX",
+        "S06PA",
+        "S0704",
+        "S0710",
+        "S0760",
+        "S0775",
+        "S0812",
+        "S0853",
+        "S0880",
+        "S08R3",
+        "S08R9",
+        "S08SM",
+        "S08TF",
+        "S08TG",
+        "S08WM",
+        "S09QV",
+        "S09T1",
+        "S09T2"
+      ],
+      "selectedAccessories": [
+        {
+          "code": "SE000001",
+          "type": "accessory",
+          "quantity": 1
+        }
+      ]
+    },
+    "resolvedIdentity": {
+      "catalogueDate": "2026-11-01",
+      "market": "GB",
+      "locale": "en-GB",
+      "modelCode": "T5MJ",
+      "modelRange": "G61E",
+      "rawModelRange": "G61",
+      "agModelCode": "72HH",
+      "trim": "S0337",
+      "orderDate": "2026-11-01",
+      "effectDate": "2027-01-05",
+      "productionDate": "2027-01-05",
+      "taxDate": "2027-01-05",
+      "selectedOptions": [
+        "FKSFU",
+        "P0300",
+        "S0230",
+        "S02PA",
+        "S02VB",
+        "S02VD",
+        "S0302",
+        "S0337",
+        "S03DK",
+        "S03G9",
+        "S03M1",
+        "S0428",
+        "S043L",
+        "S0488",
+        "S0494",
+        "S04T2",
+        "S04U9",
+        "S04UR",
+        "S04V1",
+        "S0552",
+        "S05AS",
+        "S05AV",
+        "S05DM",
+        "S0654",
+        "S0674",
+        "S06AE",
+        "S06AF",
+        "S06AK",
+        "S06C4",
+        "S06NX",
+        "S06PA",
+        "S0704",
+        "S0710",
+        "S0760",
+        "S0775",
+        "S0812",
+        "S0853",
+        "S0880",
+        "S08R3",
+        "S08R9",
+        "S08SM",
+        "S08TF",
+        "S08TG",
+        "S08WM",
+        "S09QV",
+        "S09T1",
+        "S09T2"
+      ],
+      "selectedAccessories": [
+        {
+          "code": "SE000001",
+          "type": "accessory",
+          "quantity": 1
+        }
+      ]
+    },
+    "identityProvenance": {
+      "kind": "observed",
+      "source": "BMW UK catalogue",
+      "observedDate": "2026-11-01"
+    },
+    "selectionComplete": true,
+    "liveCatalogueRequests": 0,
+    "role": "independently loaded trusted resolved context; not an upstream manifest echo or served-image identity claim"
+  },
+  "currentSettingsReference": {
+    "origin": "https://configure.bmw.co.uk",
+    "path": "/en_GB/settings.f8e66668.json",
+    "verifiedBy": "v4 current page reference"
+  },
+  "sourceProfile": {
+    "property": "settingsCosy",
+    "registeredOrigin": "https://prod.cosy.bmw.cloud",
+    "credentialHeader": "x-api-key",
+    "credentialValuesRetained": false
+  },
+  "diagnostics": {
+    "viewportObject": true,
+    "metadataObject": true,
+    "width": 2560,
+    "height": 1646,
+    "namedImagesArray": true,
+    "groupCount": 1,
+    "groups": [
+      {
+        "groupIndex": 0,
+        "groupObject": true,
+        "nameToken": true,
+        "name": "Gallery",
+        "nameType": "string",
+        "nameLength": 7,
+        "imagesArray": true,
+        "imagesLength": 39,
+        "images": [
+          {
+            "imageIndex": 0,
+            "target": true,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "HEROFRONT"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "1700"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "500"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 1,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "HEROFRONT"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "1700"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "500"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sandnight"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 2,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "HEROFRONT"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "11000"
+              },
+              {
+                "key": "H",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "13600"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "1200"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "-1200"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 3,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "HEROFRONT"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "11000"
+              },
+              {
+                "key": "H",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "13600"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "1200"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "-1200"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sandnight"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 4,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "HEROFRONT"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "1700"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "100"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 5,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "HEROFRONT"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "1700"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "100"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sandnight"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 6,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "HEROFRONT"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "11000"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "1200"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "500"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 7,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "HEROFRONT"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "11000"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "1200"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "500"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sandnight"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 8,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "FRONTRIGHT"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "1980"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "500"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 9,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "FRONTRIGHT"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "1980"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "500"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sandnight"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 10,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "FRONTRIGHT"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "1500"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "100"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 11,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "FRONTRIGHT"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "1500"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "100"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sandnight"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 12,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "FRONTRIGHT"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "1500"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "150"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 13,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "FRONTRIGHT"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "1500"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "150"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sandnight"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 14,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "FRONTRIGHT"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "13000"
+              },
+              {
+                "key": "H",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "14600"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "700"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "-2100"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 15,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "FRONTRIGHT"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "13000"
+              },
+              {
+                "key": "H",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "14600"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "700"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "-2100"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sandnight"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 16,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "FRONTRIGHT"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "13000"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "700"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "500"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 17,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "FRONTRIGHT"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "13000"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "700"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "500"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sandnight"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 18,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "WHEEL"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "-2500"
+              },
+              {
+                "key": "H",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "15000"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "8000"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "3000"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 19,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "WHEEL"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "6200"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "3500"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "6000"
+              },
+              {
+                "key": "H",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "5000"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 20,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "WHEEL"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "8000"
+              },
+              {
+                "key": "H",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "15000"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "4200"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "-2500"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 21,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "WHEEL"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "8000"
+              },
+              {
+                "key": "H",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "15000"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "4100"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "-2500"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 22,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "HEROREAR"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "1700"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "500"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 23,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "HEROREAR"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "13000"
+              },
+              {
+                "key": "H",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "14600"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "500"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "-2000"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 24,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "HEROREAR"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "1700"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "100"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 25,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "HEROREAR"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "150"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 26,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "REARLEFT"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "3500"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "-1500"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "8000"
+              },
+              {
+                "key": "H",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "13000"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 27,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "REARLEFT"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "8000"
+              },
+              {
+                "key": "H",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "14000"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "3100"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "-2100"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 28,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "SIDELEFT"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "3000"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "-2500"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "8000"
+              },
+              {
+                "key": "H",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "15000"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 29,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "SIDELEFT"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "8000"
+              },
+              {
+                "key": "H",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "15000"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "3000"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "-1300"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 30,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "SIDERIGHT"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "8000"
+              },
+              {
+                "key": "H",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "15000"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "3000"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "-2500"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 31,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "FRONTLEFT"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "2500"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "-1500"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "8000"
+              },
+              {
+                "key": "H",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "13000"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 32,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "FRONTLEFT"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "13000"
+              },
+              {
+                "key": "H",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "13000"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "400"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "500"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 33,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "FRONTLEFT"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "8000"
+              },
+              {
+                "key": "H",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "13000"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "3000"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "-1500"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 34,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "FRONTLEFT"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "8000"
+              },
+              {
+                "key": "H",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "14500"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "3000"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "-1500"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 35,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "FRONTLEFT"
+              },
+              {
+                "key": "W",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "8000"
+              },
+              {
+                "key": "H",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "14500"
+              },
+              {
+                "key": "X",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "3000"
+              },
+              {
+                "key": "Y",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "-2400"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 36,
+            "target": false,
+            "reasons": [
+              "parameter-allowlist-or-scalar"
+            ],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "DASH"
+              },
+              {
+                "key": "WIDTH",
+                "allowedKey": false,
+                "type": "string",
+                "scalarValid": true,
+                "value": null
+              },
+              {
+                "key": "HEIGHT",
+                "allowedKey": false,
+                "type": "string",
+                "scalarValid": true,
+                "value": null
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 37,
+            "target": false,
+            "reasons": [
+              "parameter-allowlist-or-scalar"
+            ],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "INTERIORSIDE"
+              },
+              {
+                "key": "WIDTH",
+                "allowedKey": false,
+                "type": "string",
+                "scalarValid": true,
+                "value": null
+              },
+              {
+                "key": "HEIGHT",
+                "allowedKey": false,
+                "type": "string",
+                "scalarValid": true,
+                "value": null
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          },
+          {
+            "imageIndex": 38,
+            "target": false,
+            "reasons": [],
+            "parameters": [
+              {
+                "key": "POV",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "FRONTSEATS"
+              },
+              {
+                "key": "BKGND",
+                "allowedKey": true,
+                "type": "string",
+                "scalarValid": true,
+                "value": "sand"
+              }
+            ],
+            "asset": {
+              "string": true,
+              "within8192": true,
+              "noUnsafeCharacters": true,
+              "parses": true,
+              "https": true,
+              "registeredOrigin": true,
+              "exactRegisteredPath": true,
+              "noUsername": true,
+              "noPassword": true,
+              "noHash": true,
+              "noPort": true,
+              "valid": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "manifestSelection": {
+    "selected": true,
+    "name": "Gallery",
+    "size": {
+      "width": 2560,
+      "height": 1646
+    },
+    "distinctions": {
+      "POV": "HEROFRONT",
+      "X": "1700",
+      "Y": "500",
+      "BKGND": "sand"
+    }
+  },
+  "status": "direct-diagnostic-native-asset-retrieved-runtime-acceptance-incomplete",
+  "actual": {
+    "additionalRequests": 3,
+    "aggregateRequestsIncludingPrior": 11,
+    "additionalBytes": 770589,
+    "aggregateBytesIncludingPrior": 2199460,
+    "imageRequests": 1,
+    "elapsedMs": 1586
+  }
+}

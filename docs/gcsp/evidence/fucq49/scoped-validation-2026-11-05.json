@@ -74,11 +74,33 @@
     "browserProfilePortsDependencies": "none"
   },
   "integration": {
-    "fullNpmTest": "pending dispatcher-granted current-base integration and exact strict run"
+    "firstFull": "failed due absent existing pg dependency; see full-validation-2026-11-05.json",
+    "pinnedSetupAndScope": "passed59/59; see pinned-setup-2026-11-05.json",
+    "exactFullRetry": "passed1175,skipped2,fail0; same-process strict MATCH; see full-retry-2026-11-05.json"
   },
   "nativeAcceptance": {
-    "completeIndependentConfigurationIdentity": false,
-    "nativeNamedAssetBytes": false,
-    "storyCompletion": "blocked; injected contract success does not satisfy native acceptance"
+    "completeIndependentConfigurationIdentity": true,
+    "source": "existing dated source-derived catalogue snapshot; no live catalogue calls",
+    "nativeNamedAssetBytes": true,
+    "nativeProviderPath": false,
+    "storyCompletion": "pending fixed-provider native proof and final full; v5 direct diagnostic asset is not runtime acceptance",
+    "visibleOptionsAndExactVehicleAppearance": "unknown"
+  },
+  "observedKeyCorrection": {
+    "tests": 62,
+    "pass": 62,
+    "fail": 0,
+    "command": "node --test-concurrency=1 --test server/test/bmw-live-imagery.test.js server/test/bmw-image-adapter.test.js server/test/bmw-catalogue-adapter.test.js",
+    "liveProviderTests": 21,
+    "snapshotTests": 19,
+    "catalogueTests": 22,
+    "strictTargeted": "targeted-abcff6d9ce71b01d9f8c0b45d34ea26c6a95d322d3a6cbb463d0465b7fc85adc-default-1793897069055182000.json",
+    "checkpoint": "007f8afcdc3432628f70e88f27110fa71f53de528a07ad6d6d96f90cdc807326.json",
+    "changes": "observed WIDTH/HEIGHT scalar keys, exact distinction key/value equality; registered URL protections retained",
+    "review": "lead inspected scoped diff and diff --check; regression covers observed sibling shape, unspecified crop and security invariants",
+    "sourceSha256": {
+      "server/vehicle-evidence/bmw-live-imagery.js": "6da08e512783d9f278deb26e31ed0f59c166acd32159ebf2c7dafa7c42592ded",
+      "server/test/bmw-live-imagery.test.js": "691100325de7cb641364544629510e840c630943413b44e770ce6df2276b1f6f"
+    }
   }
 }

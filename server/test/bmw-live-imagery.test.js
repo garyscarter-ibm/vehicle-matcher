@@ -76,6 +76,45 @@ test('injected independent proof resolves exact named bytes, safe metadata and o
   provider.dispose(); assert.equal((await provider.readAsset(result.image.assetId)).status, 'source-unavailable');
 });
 
+test('observed interior WIDTH/HEIGHT siblings do not reject the safe exterior target', async () => {
+  // V5 native diagnostics observed these keys and safe string shapes; values and URLs below are synthetic.
+  const data = manifest(); const images = data[COLLECTION].desktop.namedImages[0].images;
+  for (const POV of ['DASH', 'INTERIORSIDE']) images.push({ viewImage: URL_ASSET,
+    distinctionParameters: { POV, WIDTH: 'fixture-width', HEIGHT: 'fixture-height', BKGND: 'sand' } });
+  let assets = 0;
+  const { provider } = fixture({ transport: async ({ url }) => {
+    if (url === URL_ASSET) { assets += 1; return { status: 200, contentType: 'image/webp', body: bytes }; }
+    return { status: 200, contentType: 'application/json', body: JSON.stringify(data) };
+  } });
+  assert.equal((await provider.resolve(request())).status, 'ok'); assert.equal(assets, 1);
+  provider.dispose();
+});
+
+test('all distinction keys must match exactly; unspecified crops are not substituted', async () => {
+  const data = manifest(); record(data).distinctionParameters.W = '11000';
+  const { provider, calls } = fixture({ transport: async (input) => {
+    calls.push(input); return { status: 200, contentType: 'application/json', body: JSON.stringify(data) };
+  } });
+  const result = await provider.resolve(request());
+  assert.equal(result.failure.code, 'unsupported-request'); assert.equal(calls.length, 1);
+  provider.dispose();
+});
+
+test('observed sibling keys do not relax asset safety, value bounds or unknown parameter rejection', async () => {
+  for (const change of [{ viewImage: 'https://evil.example/connext-bmw/cosySec' },
+    { distinctionParameters: { POV: 'DASH', WIDTH: 'x'.repeat(33), HEIGHT: '100' } },
+    { distinctionParameters: { POV: 'DASH', WIDTH: '100', HEIGHT: '100', URL: 'unregistered' } }]) {
+    const data = manifest(); data[COLLECTION].desktop.namedImages[0].images.push({ viewImage: URL_ASSET,
+      distinctionParameters: { POV: 'DASH', WIDTH: '100', HEIGHT: '100', BKGND: 'sand' }, ...change });
+    let calls = 0;
+    const { provider } = fixture({ transport: async () => {
+      calls += 1; return { status: 200, contentType: 'application/json', body: JSON.stringify(data) };
+    } });
+    assert.equal((await provider.resolve(request())).failure.code, 'manifest-unavailable'); assert.equal(calls, 1);
+    provider.dispose();
+  }
+});
+
 test('actual observed COSY shape without independent identity fails honestly before any asset request', async () => {
   const { provider, calls } = fixture({ resolveConfiguration: undefined });
   const result = await provider.resolve(request());

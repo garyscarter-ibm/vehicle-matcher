@@ -40,8 +40,8 @@
   "ownedDependenciesRetainedForAuthorisedRetry": {
     "rootAllocatedBytes": 27138292,
     "serverAllocatedBytes": 858816,
-    "cleanup": "exact recorded device/inode cleanup after final run; not source-controlled"
+    "cleanup": "Both temporary owned trees removed by setup-recorded device/inode after successful full retry; packages/locks unchanged"
   },
-  "fullRetry": "dispatcher authorises one next sole exact npm test after fresh HostBudget and clean current-base checks",
+  "fullRetry": "passed; see full-retry-2026-11-05.json",
   "nativeCalls": 0
 }

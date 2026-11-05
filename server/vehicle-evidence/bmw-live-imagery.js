@@ -9,6 +9,8 @@ const PROFILE = 'bmw-uk-public-configurator';
 const ROLE = 'representative-catalogue-render';
 const MANIFEST_BYTES = 1048576;
 const IMAGE_BYTES = 2097152;
+// COSY exterior crops use W/H; the observed DASH and INTERIORSIDE siblings use WIDTH/HEIGHT.
+const DISTINCTIONS = ['BKGND', 'X', 'Y', 'W', 'H', 'WIDTH', 'HEIGHT'];
 const UNKNOWN = { model: 'unknown', paint: 'unknown', wheels: 'unknown', interior: 'unknown', equipment: 'unknown', exactVehicle: 'unknown' };
 const object = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
 const token = (value) => typeof value === 'string' && /^[A-Za-z0-9_-]{1,64}$/.test(value);
@@ -32,7 +34,7 @@ const failure = (code) => ({ code, message: MESSAGES[code], retryable: ['manifes
 export function bmwLiveImageLookupIdentity(request) {
   if (!object(request) || !['desktop', 'tablet', 'mobile', 'thumbnails'].includes(request.viewport)
     || !token(request.namedImage) || !object(request.distinctions)
-    || Object.keys(request.distinctions).some((key) => !['BKGND', 'X', 'Y', 'W', 'H'].includes(key))
+    || Object.keys(request.distinctions).some((key) => !DISTINCTIONS.includes(key))
     || Object.values(request.distinctions).some((value) => typeof value !== 'string' || !/^[A-Za-z0-9_-]{1,32}$/.test(value))) return null;
   const lookup = bmwImageLookupIdentity(request, { provider: PROVIDER, providerVersion: '1', schemaVersion: '1', snapshotVersion: VERSION });
   if (!lookup || !lookup.selectedOptions.includes(lookup.trim)
@@ -79,9 +81,10 @@ function selectNamed(manifest, lookup) {
     for (const image of group.images) {
       const parameters = image?.distinctionParameters;
       if (!object(parameters) || !token(parameters.POV) || !assetReference(image?.viewImage)
-        || Object.entries(parameters).some(([key, value]) => !['POV', 'BKGND', 'X', 'Y', 'W', 'H'].includes(key)
+        || Object.entries(parameters).some(([key, value]) => (key !== 'POV' && !DISTINCTIONS.includes(key))
           || typeof value !== 'string' || !/^[A-Za-z0-9_-]{1,32}$/.test(value))) return { code: 'manifest-unavailable' };
       if (group.name === lookup.namedImage && parameters.POV === lookup.viewpoint
+        && Object.keys(parameters).length === Object.keys(lookup.distinctions).length + 1
         && Object.entries(lookup.distinctions).every(([key, value]) => parameters[key] === value)) candidates.push(image);
     }
   }
