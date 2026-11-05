@@ -40,3 +40,7 @@ Two independent reviewer agents inspected the code: both requested/selected Opus
 The [shared recommendation design](../../shared-recommendation-design.md) and [canonical HLD guide](../../../design/README.md) extend these findings into a proposed implementation for both scenarios. They specify separate policy profiles, shared exact-car computation/evidence, scoped feedback, retail compatibility contracts, migration gates and employee transaction invariants.
 
 Independent architecture review found and resolved notification atomicity, durable-brief migration order and configured `TASTE_SHARE` preservation. A further document/diagram-outline review found no remaining material architecture corrections. Reviewers retained requested/selected `gpt-6.1-sol` / `high`, with no fallback or descendants. The parent reviewed the final diagram exports. These are design checks; no extraction or employee implementation was performed, and the 234-test result above was not rerun or represented as proof of future parity.
+
+## Versioned retail compatibility contract
+
+FUCQ-21 adds the [offline retail baseline](retail-compat-baseline.md), [independent expected-outcome review](retail-compat-independent-review.md), [separate correction cases](retail-compat-corrections.md) and [integrated validation receipt](retail-compat-validation.md). Its versioned fixtures cover all six brands, full-pool manual filtering and legacy answer restoration. The receipt records its own current counts and environment; the historical 234-test reuse assessment above remains unchanged.

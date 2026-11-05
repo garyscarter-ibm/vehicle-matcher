@@ -1,0 +1,2862 @@
+{
+  "version": "retail-compat-input-v1",
+  "capturedAt": "2026-11-05",
+  "sourceRevision": "ae98615dd9aae83146cc842ee15ee9d8f88b1162",
+  "nodeVersion": "v26.7.0",
+  "tasteShare": 0.2,
+  "raw": {
+    "bmw": [
+      {
+        "advert_id": "compat-bmw-1",
+        "title": "BMW X1",
+        "derivative": "X1 sDrive18i M Sport",
+        "fuel": "Petrol",
+        "cash_price": {
+          "value": 28000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 0
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-bmw-1.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 96,
+          "name": "Fixture BMW",
+          "dealer_number": "11107"
+        },
+        "distance": 15
+      },
+      {
+        "advert_id": "compat-bmw-2",
+        "title": "BMW X2",
+        "derivative": "X2 sDrive20i M Sport",
+        "fuel": "Petrol",
+        "cash_price": {
+          "value": 30000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 0
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-bmw-2.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 96,
+          "name": "Fixture BMW",
+          "dealer_number": "11107"
+        },
+        "distance": 16
+      },
+      {
+        "advert_id": "compat-bmw-3",
+        "title": "BMW X3",
+        "derivative": "X3 xDrive20d M Sport",
+        "fuel": "Diesel",
+        "cash_price": {
+          "value": 34000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 0
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-bmw-3.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 96,
+          "name": "Fixture BMW",
+          "dealer_number": "11107"
+        },
+        "distance": 17
+      },
+      {
+        "advert_id": "compat-bmw-4",
+        "title": "BMW X3",
+        "derivative": "X3 xDrive20d M Sport",
+        "fuel": "Diesel",
+        "cash_price": {
+          "value": 39000
+        },
+        "mileage": 8000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 0
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Panoramic glass sunroof"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-bmw-4.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 96,
+          "name": "Fixture BMW",
+          "dealer_number": "11107"
+        },
+        "distance": 18
+      },
+      {
+        "advert_id": "compat-bmw-5",
+        "title": "BMW X5",
+        "derivative": "X5 xDrive30d M Sport",
+        "fuel": "Diesel",
+        "cash_price": {
+          "value": 44000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 0
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-bmw-5.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 96,
+          "name": "Fixture BMW",
+          "dealer_number": "11107"
+        },
+        "distance": 19
+      },
+      {
+        "advert_id": "compat-bmw-6",
+        "title": "BMW 1 Series",
+        "derivative": "118i M Sport",
+        "fuel": "Petrol",
+        "cash_price": {
+          "value": 22000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 0
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-bmw-6.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 96,
+          "name": "Fixture BMW",
+          "dealer_number": "11107"
+        },
+        "distance": 20
+      },
+      {
+        "advert_id": "compat-bmw-7",
+        "title": "BMW 2 Series",
+        "derivative": "220i M Sport",
+        "fuel": "Petrol",
+        "cash_price": {
+          "value": 29000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 0
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-bmw-7.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 96,
+          "name": "Fixture BMW",
+          "dealer_number": "11107"
+        },
+        "distance": 21
+      },
+      {
+        "advert_id": "compat-bmw-8",
+        "title": "BMW 3 Series",
+        "derivative": "320i M Sport Touring",
+        "fuel": "Petrol",
+        "cash_price": {
+          "value": 31000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 0
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-bmw-8.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 96,
+          "name": "Fixture BMW",
+          "dealer_number": "11107"
+        },
+        "distance": 22
+      },
+      {
+        "advert_id": "compat-bmw-9",
+        "title": "BMW 4 Series",
+        "derivative": "420i M Sport Coupe",
+        "fuel": "Petrol",
+        "cash_price": {
+          "value": 35000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 0
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-bmw-9.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 96,
+          "name": "Fixture BMW",
+          "dealer_number": "11107"
+        },
+        "distance": 23
+      },
+      {
+        "advert_id": "compat-bmw-10",
+        "title": "BMW 5 Series",
+        "derivative": "520i M Sport",
+        "fuel": "Petrol",
+        "cash_price": {
+          "value": 37000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 0
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-bmw-10.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 96,
+          "name": "Fixture BMW",
+          "dealer_number": "11107"
+        },
+        "distance": 24
+      },
+      {
+        "advert_id": "compat-bmw-11",
+        "title": "BMW i4",
+        "derivative": "i4 eDrive40 M Sport",
+        "fuel": "Electric",
+        "cash_price": {
+          "value": 39000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 250
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-bmw-11.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 96,
+          "name": "Fixture BMW",
+          "dealer_number": "11107"
+        },
+        "distance": 25
+      },
+      {
+        "advert_id": "compat-bmw-12",
+        "title": "BMW iX3",
+        "derivative": "iX3 M Sport",
+        "fuel": "Electric",
+        "cash_price": {
+          "value": 41000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 250
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-bmw-12.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 96,
+          "name": "Fixture BMW",
+          "dealer_number": "11107"
+        },
+        "distance": 26
+      },
+      {
+        "advert_id": "compat-bmw-13",
+        "title": "BMW iX",
+        "derivative": "iX xDrive40 Sport",
+        "fuel": "Electric",
+        "cash_price": {
+          "value": 58000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 250
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-bmw-13.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 96,
+          "name": "Fixture BMW",
+          "dealer_number": "11107"
+        },
+        "distance": 27
+      },
+      {
+        "advert_id": "compat-bmw-14",
+        "title": "BMW 7 Series",
+        "derivative": "740i M Sport",
+        "fuel": "Petrol",
+        "cash_price": {
+          "value": 65000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 0
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-bmw-14.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 96,
+          "name": "Fixture BMW",
+          "dealer_number": "11107"
+        },
+        "distance": 28
+      },
+      {
+        "advert_id": "compat-bmw-15",
+        "title": "BMW X7",
+        "derivative": "X7 xDrive40d M Sport",
+        "fuel": "Diesel",
+        "cash_price": {
+          "value": 69000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 0
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-bmw-15.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 96,
+          "name": "Fixture BMW",
+          "dealer_number": "11107"
+        },
+        "distance": 29
+      },
+      {
+        "advert_id": "compat-bmw-16",
+        "title": "BMW X1",
+        "derivative": "X1 xDrive25e M Sport",
+        "fuel": "Plug-in Hybrid",
+        "cash_price": {
+          "value": 32000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 0
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-bmw-16.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 96,
+          "name": "Fixture BMW",
+          "dealer_number": "11107"
+        },
+        "distance": 30
+      }
+    ],
+    "mini": [
+      {
+        "advert_id": "compat-mini-1",
+        "title": "MINI Hatch",
+        "derivative": "Cooper Classic 3 Door",
+        "fuel": "Petrol",
+        "cash_price": {
+          "value": 15000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 0
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-mini-1.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 92,
+          "name": "Fixture MINI",
+          "dealer_number": "11107"
+        },
+        "distance": 8
+      },
+      {
+        "advert_id": "compat-mini-2",
+        "title": "MINI Hatch",
+        "derivative": "Cooper Exclusive 5 Door",
+        "fuel": "Petrol",
+        "cash_price": {
+          "value": 19000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 0
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-mini-2.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 92,
+          "name": "Fixture MINI",
+          "dealer_number": "11107"
+        },
+        "distance": 9
+      },
+      {
+        "advert_id": "compat-mini-3",
+        "title": "MINI Hatch",
+        "derivative": "Cooper S Sport 3 Door",
+        "fuel": "Petrol",
+        "cash_price": {
+          "value": 23000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 0
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-mini-3.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 92,
+          "name": "Fixture MINI",
+          "dealer_number": "11107"
+        },
+        "distance": 10
+      },
+      {
+        "advert_id": "compat-mini-4",
+        "title": "MINI Electric",
+        "derivative": "Cooper SE Level 2",
+        "fuel": "Electric",
+        "cash_price": {
+          "value": 20000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 250
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-mini-4.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 92,
+          "name": "Fixture MINI",
+          "dealer_number": "11107"
+        },
+        "distance": 11
+      },
+      {
+        "advert_id": "compat-mini-5",
+        "title": "MINI Aceman",
+        "derivative": "Aceman E Classic",
+        "fuel": "Electric",
+        "cash_price": {
+          "value": 29000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 250
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-mini-5.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 92,
+          "name": "Fixture MINI",
+          "dealer_number": "11107"
+        },
+        "distance": 12
+      },
+      {
+        "advert_id": "compat-mini-6",
+        "title": "MINI Countryman",
+        "derivative": "Countryman C Classic",
+        "fuel": "Petrol",
+        "cash_price": {
+          "value": 27000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 0
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-mini-6.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 92,
+          "name": "Fixture MINI",
+          "dealer_number": "11107"
+        },
+        "distance": 13
+      },
+      {
+        "advert_id": "compat-mini-7",
+        "title": "MINI Countryman",
+        "derivative": "Countryman S E ALL4 Exclusive",
+        "fuel": "Plug-in Hybrid",
+        "cash_price": {
+          "value": 28000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 0
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-mini-7.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 92,
+          "name": "Fixture MINI",
+          "dealer_number": "11107"
+        },
+        "distance": 14
+      },
+      {
+        "advert_id": "compat-mini-8",
+        "title": "MINI Clubman",
+        "derivative": "Cooper S Exclusive",
+        "fuel": "Petrol",
+        "cash_price": {
+          "value": 24000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 0
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-mini-8.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 92,
+          "name": "Fixture MINI",
+          "dealer_number": "11107"
+        },
+        "distance": 15
+      },
+      {
+        "advert_id": "compat-mini-9",
+        "title": "MINI Convertible",
+        "derivative": "Cooper Sport Convertible",
+        "fuel": "Petrol",
+        "cash_price": {
+          "value": 26000
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 0
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-mini-9.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 92,
+          "name": "Fixture MINI",
+          "dealer_number": "11107"
+        },
+        "distance": 16
+      },
+      {
+        "advert_id": "compat-mini-10",
+        "title": "MINI Hatch",
+        "derivative": "Cooper Classic 3 Door",
+        "fuel": "Petrol",
+        "cash_price": {
+          "value": 16500
+        },
+        "mileage": 12000,
+        "identification": {
+          "plate": "73"
+        },
+        "engine": {
+          "cc": 1998
+        },
+        "registration": {
+          "date": "2023-03-01T00:00:00Z"
+        },
+        "consumption": {
+          "fuel": {
+            "values": {
+              "combined": 44
+            }
+          },
+          "range": {
+            "values": {
+              "total": 0
+            }
+          }
+        },
+        "transmission": "Automatic",
+        "features": {
+          "additional": [
+            "Heated front seats"
+          ]
+        },
+        "media": {
+          "items": [
+            {
+              "type": "image",
+              "url": "https://images.example.test/compat-mini-10.jpg"
+            }
+          ]
+        },
+        "retailer_site": {
+          "id": 92,
+          "name": "Fixture MINI",
+          "dealer_number": "11107"
+        },
+        "distance": 17
+      }
+    ]
+  },
+  "mapped": {
+    "ford": [
+      {
+        "id": "ford-4407318",
+        "name": "Ford Puma Gen-E Select",
+        "line": "Puma Gen-E",
+        "body": "suv",
+        "fuel": "ev",
+        "priceMin": 18995,
+        "priceMax": 18995,
+        "sizeClass": 3,
+        "seats": 5,
+        "boot": 523,
+        "zeroTo62": 8,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "transmission": "auto",
+        "evRange": 233,
+        "tags": [
+          "family",
+          "practical",
+          "efficient",
+          "tech"
+        ],
+        "blurb": "Approved-used Ford Puma Gen-E SUV, fully electric, ready to drive away from Lawtons of Tadcaster.",
+        "mileage": 6119,
+        "plate": "EJ25HJG",
+        "firstReg": "01/04/2025",
+        "year": 2025,
+        "photo": "https://storage.googleapis.com/eused-ext-prod/VehicleImage/4407318/1.jpeg",
+        "colour": "White",
+        "fullServiceHistory": "Yes",
+        "retailerName": "Lawtons of Tadcaster",
+        "retailerId": "ford-approved",
+        "link": "https://www.ford.co.uk/"
+      },
+      {
+        "id": "ford-4418397",
+        "name": "Ford Focus ST-Line",
+        "line": "Focus",
+        "body": "hatchback",
+        "fuel": "petrol",
+        "priceMin": 19995,
+        "priceMax": 19995,
+        "sizeClass": 3,
+        "seats": 5,
+        "boot": 375,
+        "zeroTo62": 9.7,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "transmission": "manual",
+        "mpg": 55,
+        "tags": [
+          "practical"
+        ],
+        "blurb": "Approved-used Ford Focus hatchback, petrol, ready to drive away from Lawtons of Tadcaster.",
+        "mileage": 11355,
+        "plate": "EK75NNX",
+        "firstReg": "01/09/2025",
+        "year": 2025,
+        "photo": "https://storage.googleapis.com/eused-ext-prod/VehicleImage/4418397/1.jpeg",
+        "colour": "Black",
+        "fullServiceHistory": "Yes",
+        "retailerName": "Lawtons of Tadcaster",
+        "retailerId": "ford-approved",
+        "link": "https://www.ford.co.uk/"
+      },
+      {
+        "id": "ford-4418280",
+        "name": "Ford Puma Titanium",
+        "line": "Puma",
+        "body": "suv",
+        "fuel": "petrol",
+        "priceMin": 20995,
+        "priceMax": 20995,
+        "sizeClass": 3,
+        "seats": 5,
+        "boot": 456,
+        "zeroTo62": 9.8,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "transmission": "manual",
+        "mpg": 52,
+        "tags": [
+          "family",
+          "practical"
+        ],
+        "blurb": "Approved-used Ford Puma SUV, petrol, ready to drive away from Lawtons of Tadcaster.",
+        "mileage": 2424,
+        "plate": "EK75HGG",
+        "firstReg": "01/09/2025",
+        "year": 2025,
+        "photo": "https://storage.googleapis.com/eused-ext-prod/VehicleImage/4418280/1.jpeg",
+        "colour": "Silver",
+        "fullServiceHistory": "Yes",
+        "retailerName": "Lawtons of Tadcaster",
+        "retailerId": "ford-approved",
+        "link": "https://www.ford.co.uk/"
+      },
+      {
+        "id": "ford-4407298",
+        "name": "Ford Kuga ST-Line Edition",
+        "line": "Kuga",
+        "body": "suv",
+        "fuel": "petrol",
+        "priceMin": 25290,
+        "priceMax": 25290,
+        "sizeClass": 4,
+        "seats": 5,
+        "boot": 412,
+        "zeroTo62": 9.5,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "transmission": "auto",
+        "mpg": 45,
+        "tags": [
+          "family",
+          "practical"
+        ],
+        "blurb": "Approved-used Ford Kuga SUV, petrol, ready to drive away from Johnsons Ford.",
+        "mileage": 11255,
+        "plate": "EK75DZT",
+        "firstReg": "01/09/2025",
+        "year": 2025,
+        "photo": "https://s3-eu-west-1.amazonaws.com/nd-stock-ireland-production/ndstock/images/stock/d33f61ad3412c01c157449592801a18eb5cb93ec/169685_EK75DZT_1.jpg?date_last_modified=1781895950",
+        "colour": "Silver",
+        "fullServiceHistory": "Yes",
+        "retailerName": "Johnsons Ford",
+        "retailerId": "ford-approved",
+        "link": "https://www.ford.co.uk/"
+      },
+      {
+        "id": "ford-4418264",
+        "name": "Ford Kuga ST-Line Edition",
+        "line": "Kuga",
+        "body": "suv",
+        "fuel": "phev",
+        "priceMin": 25532,
+        "priceMax": 25532,
+        "sizeClass": 4,
+        "seats": 5,
+        "boot": 412,
+        "zeroTo62": 9.5,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "transmission": "auto",
+        "mpg": 45,
+        "evRange": 42,
+        "tags": [
+          "family",
+          "practical",
+          "efficient",
+          "tech"
+        ],
+        "blurb": "Approved-used Ford Kuga SUV, plug-in hybrid, ready to drive away from Hartwell Ford - Dunstable.",
+        "mileage": 10914,
+        "plate": "EA75ZTP",
+        "firstReg": "01/10/2025",
+        "year": 2025,
+        "photo": "https://media.coxautoinc.eu/images/FordCar/EA75ZTP/6a26a88c-a5c2-4fc2-9c86-58bb23f819c1/EA75ZTP_1.jpg",
+        "colour": "Agate Black (metallic)",
+        "fullServiceHistory": "Yes",
+        "retailerName": "Hartwell Ford - Dunstable",
+        "retailerId": "ford-approved",
+        "link": "https://www.ford.co.uk/"
+      },
+      {
+        "id": "ford-4412112",
+        "name": "Ford Explorer Premium",
+        "line": "Explorer",
+        "body": "suv",
+        "fuel": "ev",
+        "priceMin": 29499,
+        "priceMax": 29499,
+        "sizeClass": 5,
+        "seats": 5,
+        "boot": 470,
+        "zeroTo62": 6.4,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "transmission": "auto",
+        "evRange": 374,
+        "tags": [
+          "family",
+          "practical",
+          "efficient",
+          "tech"
+        ],
+        "blurb": "Approved-used Ford Explorer SUV, fully electric, ready to drive away from Lookers Ford - Sheffield.",
+        "mileage": 13197,
+        "plate": "EF74XKW",
+        "firstReg": "01/01/2025",
+        "year": 2025,
+        "photo": "https://api.lookers.co.uk/imageserviceapi2/api/image/stock/4da56c03-bf0b-4a31-bd8a-248a05bd3b24?size=1024x768",
+        "colour": "Blue",
+        "fullServiceHistory": "Yes",
+        "previousOwners": 1,
+        "retailerName": "Lookers Ford - Sheffield",
+        "retailerId": "ford-approved",
+        "link": "https://www.ford.co.uk/"
+      },
+      {
+        "id": "ford-4414070",
+        "name": "Ford Capri Premium",
+        "line": "Capri",
+        "body": "suv",
+        "fuel": "ev",
+        "priceMin": 30250,
+        "priceMax": 30250,
+        "sizeClass": 4,
+        "seats": 5,
+        "boot": 572,
+        "zeroTo62": 6.4,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "transmission": "auto",
+        "evRange": 390,
+        "tags": [
+          "family",
+          "practical",
+          "efficient",
+          "tech"
+        ],
+        "blurb": "Approved-used Ford Capri SUV, fully electric, ready to drive away from Lookers Ford - Sheffield.",
+        "mileage": 15790,
+        "plate": "EJ74UXN",
+        "firstReg": "01/11/2024",
+        "year": 2024,
+        "photo": "https://api.lookers.co.uk/imageserviceapi2/api/image/stock/12b3ef89-ef7e-4341-9ad9-5f028e17957a?size=1024x768",
+        "colour": "Blue",
+        "fullServiceHistory": "Yes",
+        "previousOwners": 1,
+        "retailerName": "Lookers Ford - Sheffield",
+        "retailerId": "ford-approved",
+        "link": "https://www.ford.co.uk/"
+      }
+    ],
+    "honda": [
+      {
+        "id": "qxdph5z",
+        "name": "Honda Civic 1.0 VTEC Turbo 126 SE 5dr",
+        "line": "Civic",
+        "body": "hatchback",
+        "fuel": "petrol",
+        "priceMin": 8799,
+        "priceMax": 8799,
+        "sizeClass": 2,
+        "seats": 5,
+        "boot": 410,
+        "zeroTo62": 7.8,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "transmission": "manual",
+        "mpg": 47.9,
+        "tags": [
+          "family"
+        ],
+        "blurb": "Approved-used Honda Civic hatchback, petrol, ready to drive away.",
+        "mileage": 72500,
+        "plate": "LE68EMX",
+        "colour": "Polished Metal",
+        "power": 126,
+        "cc": 988,
+        "year": 2019,
+        "firstReg": "26/02/2019",
+        "photo": "https://usedcars.honda.co.uk/picserver1/userdata/46/500243/YheSylbqJr/kfz2579767_185977_le68emx_01_dib.jpg",
+        "retailerName": "Honda Approved Used",
+        "retailerId": "honda-approved",
+        "link": "https://usedcars.honda.co.uk/en/used-cars/approved-cars/honda/civic/10-vtec-turbo-126-se-5dr-qxdph5z"
+      },
+      {
+        "id": "r1dplnz",
+        "name": "Honda Jazz 1.5 i-VTEC Sport Euro 6 (s/s) 5dr",
+        "line": "Jazz",
+        "body": "hatchback",
+        "fuel": "petrol",
+        "priceMin": 9790,
+        "priceMax": 9790,
+        "sizeClass": 1,
+        "seats": 5,
+        "boot": 304,
+        "zeroTo62": 9.4,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "transmission": "manual",
+        "mpg": 47.9,
+        "tags": [
+          "urban",
+          "practical"
+        ],
+        "blurb": "Approved-used Honda Jazz hatchback, petrol, ready to drive away.",
+        "mileage": 67993,
+        "plate": "VU68HLV",
+        "colour": "Sunset Orange",
+        "power": 128,
+        "cc": 1498,
+        "year": 2018,
+        "firstReg": "01/09/2018",
+        "photo": "https://usedcars.honda.co.uk/picserver1/userdata/46/500128/YheRwqbqJr/kfz2582359_186119_vu68hlv_01_dib.jpg",
+        "retailerName": "Honda Approved Used",
+        "retailerId": "honda-approved",
+        "link": "https://usedcars.honda.co.uk/en/used-cars/approved-cars/honda/jazz/15-i-vtec-sport-euro-6-ss-5dr-r1dplnz"
+      },
+      {
+        "id": "kmdnz35",
+        "name": "Honda HR-V 1.6 i-DTEC EX 5dr",
+        "line": "HR-V",
+        "body": "suv",
+        "fuel": "diesel",
+        "priceMin": 10999,
+        "priceMax": 10999,
+        "sizeClass": 2,
+        "seats": 5,
+        "boot": 319,
+        "zeroTo62": 10.6,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "transmission": "manual",
+        "mpg": 54.3,
+        "tags": [
+          "family",
+          "practical"
+        ],
+        "blurb": "Approved-used Honda HR-V SUV, diesel, ready to drive away.",
+        "mileage": 63689,
+        "plate": "ND19LZG",
+        "colour": "Brilliant Sporty Blue",
+        "power": 120,
+        "cc": 1597,
+        "year": 2019,
+        "firstReg": "14/03/2019",
+        "photo": "https://usedcars.honda.co.uk/picserver1/userdata/46/500198/YheRDqbqJr/kfz2563323_184472_nd19lzg_01_dib.jpg",
+        "retailerName": "Honda Approved Used",
+        "retailerId": "honda-approved",
+        "link": "https://usedcars.honda.co.uk/en/used-cars/approved-cars/honda/hr-v/16-i-dtec-ex-5dr-kmdnz35"
+      },
+      {
+        "id": "hkdphzc",
+        "name": "Honda HR-V 1.5 i-VTEC SE Manual",
+        "line": "HR-V",
+        "body": "suv",
+        "fuel": "petrol",
+        "priceMin": 11500,
+        "priceMax": 11500,
+        "sizeClass": 2,
+        "seats": 5,
+        "boot": 319,
+        "zeroTo62": 10.6,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "transmission": "manual",
+        "mpg": 48.7,
+        "tags": [
+          "family",
+          "practical"
+        ],
+        "blurb": "Approved-used Honda HR-V SUV, petrol, ready to drive away.",
+        "mileage": 64911,
+        "plate": "SN68VMC",
+        "colour": "Modern Steel",
+        "power": 130,
+        "cc": 1498,
+        "year": 2018,
+        "firstReg": "25/09/2018",
+        "photo": "https://usedcars.honda.co.uk/userdata/501956/layout/honda-awaiting-imagery.jpg",
+        "retailerName": "Honda Approved Used",
+        "retailerId": "honda-approved",
+        "link": "https://usedcars.honda.co.uk/en/used-cars/approved-cars/honda/hr-v/15-i-vtec-se-manual-hkdphzc"
+      },
+      {
+        "id": "r1dpb6e",
+        "name": "Honda e 35.5kWh Advance Hatchback 5dr Electric Auto (17in Alloy) (154 ps)",
+        "line": "e",
+        "body": "hatchback",
+        "fuel": "ev",
+        "priceMin": 13195,
+        "priceMax": 13195,
+        "sizeClass": 1,
+        "seats": 4,
+        "boot": 171,
+        "zeroTo62": 8.3,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "transmission": "auto",
+        "evRange": 137,
+        "tags": [
+          "urban",
+          "tech",
+          "efficient"
+        ],
+        "blurb": "Approved-used Honda e hatchback, fully electric, ready to drive away.",
+        "mileage": 31813,
+        "plate": "VX70VEL",
+        "colour": "Modern steel",
+        "power": 152,
+        "cc": 1,
+        "year": 2020,
+        "firstReg": "16/10/2020",
+        "photo": "https://usedcars.honda.co.uk/picserver1/userdata/46/500248/YheSyqbqJr/kfz2573636_185778_vx70vel_01_dib.jpg",
+        "retailerName": "Honda Approved Used",
+        "retailerId": "honda-approved",
+        "link": "https://usedcars.honda.co.uk/en/used-cars/approved-cars/honda/honda-e/355kwh-advance-hatchback-5dr-electric-auto-17in-alloy-154-ps-r1dpb6e"
+      },
+      {
+        "id": "t7dnsrv",
+        "name": "Honda CR-V 1.5 VTEC Turbo EX 5dr",
+        "line": "CR-V",
+        "body": "suv",
+        "fuel": "petrol",
+        "priceMin": 16198,
+        "priceMax": 16198,
+        "sizeClass": 3,
+        "seats": 5,
+        "boot": 587,
+        "zeroTo62": 9.5,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "transmission": "manual",
+        "mpg": 35.3,
+        "tags": [
+          "family",
+          "practical"
+        ],
+        "blurb": "Approved-used Honda CR-V SUV, petrol, ready to drive away.",
+        "mileage": 67253,
+        "plate": "OE69OHY",
+        "colour": "Blue",
+        "power": 173,
+        "cc": 1498,
+        "year": 2019,
+        "firstReg": "06/12/2019",
+        "photo": "https://usedcars.honda.co.uk/picserver1/userdata/46/501125/YhfRwnbqJr/kfz2555827_182301_oe69ohy_01_dib.jpg",
+        "retailerName": "Honda Approved Used",
+        "retailerId": "honda-approved",
+        "link": "https://usedcars.honda.co.uk/en/used-cars/approved-cars/honda/cr-v/15-vtec-turbo-ex-5dr-t7dnsrv"
+      },
+      {
+        "id": "t7dpmus",
+        "name": "Honda ZR-V 2.0 eHEV Sport eCVT",
+        "line": "ZR-V",
+        "body": "suv",
+        "fuel": "petrol",
+        "priceMin": 19950,
+        "priceMax": 19950,
+        "sizeClass": 3,
+        "seats": 5,
+        "boot": 380,
+        "zeroTo62": 8,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "transmission": "auto",
+        "mpg": 48.7,
+        "tags": [
+          "family",
+          "practical",
+          "efficient"
+        ],
+        "blurb": "Approved-used Honda ZR-V SUV, self-charging hybrid, ready to drive away.",
+        "mileage": 42145,
+        "plate": "RA23YXN",
+        "colour": "Radiant Red",
+        "power": 184,
+        "cc": 1993,
+        "year": 2023,
+        "firstReg": "26/08/2023",
+        "photo": "https://usedcars.honda.co.uk/userdata/501956/layout/honda-awaiting-imagery.jpg",
+        "retailerName": "Honda Approved Used",
+        "retailerId": "honda-approved",
+        "link": "https://usedcars.honda.co.uk/en/used-cars/approved-cars/honda/zr-v/20-ehev-sport-ecvt-t7dpmus"
+      },
+      {
+        "id": "n5dpmue",
+        "name": "Honda e:Ny1 150kW Advance 69kWh Auto",
+        "line": "e:Ny1",
+        "body": "suv",
+        "fuel": "ev",
+        "priceMin": 21250,
+        "priceMax": 21250,
+        "sizeClass": 2,
+        "seats": 5,
+        "boot": 361,
+        "zeroTo62": 7.7,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "transmission": "auto",
+        "evRange": 256,
+        "tags": [
+          "family",
+          "practical",
+          "tech",
+          "efficient"
+        ],
+        "blurb": "Approved-used Honda e:Ny1 SUV, fully electric, ready to drive away.",
+        "mileage": 10654,
+        "plate": "LS74YOO",
+        "colour": "Aqua Topaz",
+        "power": 204,
+        "year": 2024,
+        "firstReg": "25/10/2024",
+        "photo": "https://usedcars.honda.co.uk/userdata/501956/layout/honda-awaiting-imagery.jpg",
+        "retailerName": "Honda Approved Used",
+        "retailerId": "honda-approved",
+        "link": "https://usedcars.honda.co.uk/en/used-cars/approved-cars/honda/eny1/150kw-advance-69kwh-auto-n5dpmue"
+      }
+    ],
+    "motorrad": [
+      {
+        "id": "577259",
+        "name": "BMW F 800 GS",
+        "line": "F 800 GS",
+        "body": "adventure",
+        "fuel": "petrol",
+        "priceMin": 8495,
+        "priceMax": 8495,
+        "sizeClass": 3,
+        "seats": 2,
+        "boot": 45,
+        "zeroTo62": 4.5,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "mpg": 60,
+        "cc": 895,
+        "power": 64,
+        "tags": [
+          "adventure",
+          "touring"
+        ],
+        "blurb": "Approved-used BMW F 800 GS, an adventure bike, ready to ride away.",
+        "mileage": 5051,
+        "year": 2025,
+        "firstReg": "01/03/2025",
+        "photo": "https://approvedused.bmw-motorrad.co.uk/api/Image/GetImg?imgId=9840c064-d41b-444c-91da-2fe7a89f4755",
+        "retailerName": "BMW Motorrad Approved Used",
+        "retailerId": "motorrad-approved",
+        "link": "https://approvedused.bmw-motorrad.co.uk/uk/detail.cshtml?on=577259&rc=en-gb&sid=OAAyAC4ANQAuADEAMAA4AC4AMQA1ADYAOwBlADEANQBhAGUANABiADEALQAzAGIAZgAyAC0ANAAxADUAMAAtAGIANQA0ADgALQA4ADEAZAAwAGYANwA3ADMAMQAyADQANwA="
+      },
+      {
+        "id": "577045",
+        "name": "BMW R 1250 RT LE",
+        "line": "R 1250 RT",
+        "body": "tourer",
+        "fuel": "petrol",
+        "priceMin": 11795,
+        "priceMax": 11795,
+        "sizeClass": 5,
+        "seats": 2,
+        "boot": 94,
+        "zeroTo62": 3.6,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "mpg": 54,
+        "cc": 1254,
+        "power": 100,
+        "tags": [
+          "tourer",
+          "touring"
+        ],
+        "blurb": "Approved-used BMW R 1250 RT, a tourer, ready to ride away.",
+        "mileage": 13998,
+        "year": 2021,
+        "firstReg": "15/09/2021",
+        "photo": "https://approvedused.bmw-motorrad.co.uk/api/Image/GetImg?imgId=d042271f-6136-406d-a124-b0cc4b9fa3a4",
+        "retailerName": "BMW Motorrad Approved Used",
+        "retailerId": "motorrad-approved",
+        "link": "https://approvedused.bmw-motorrad.co.uk/uk/detail.cshtml?on=577045&rc=en-gb&sid=OAAyAC4ANQAuADEAMAA4AC4AMQA1ADYAOwBlADEANQBhAGUANABiADEALQAzAGIAZgAyAC0ANAAxADUAMAAtAGIANQA0ADgALQA4ADEAZAAwAGYANwA3ADMAMQAyADQANwA="
+      },
+      {
+        "id": "577260",
+        "name": "BMW R nineT Urban G/S Option 719 Gold",
+        "line": "R nineT",
+        "body": "heritage",
+        "fuel": "petrol",
+        "priceMin": 8995,
+        "priceMax": 8995,
+        "sizeClass": 4,
+        "seats": 2,
+        "boot": 0,
+        "zeroTo62": 3.5,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "mpg": 52,
+        "cc": 1170,
+        "power": 81,
+        "tags": [
+          "heritage"
+        ],
+        "blurb": "Approved-used BMW R nineT, a heritage roadster, ready to ride away.",
+        "mileage": 6158,
+        "year": 2019,
+        "firstReg": "29/08/2019",
+        "photo": "https://approvedused.bmw-motorrad.co.uk/api/Image/GetImg?imgId=9ae661aa-64af-4312-a6f0-7ff763443f0a",
+        "retailerName": "BMW Motorrad Approved Used",
+        "retailerId": "motorrad-approved",
+        "link": "https://approvedused.bmw-motorrad.co.uk/uk/detail.cshtml?on=577260&rc=en-gb&sid=OAAyAC4ANQAuADEAMAA4AC4AMQA1ADYAOwBlADEANQBhAGUANABiADEALQAzAGIAZgAyAC0ANAAxADUAMAAtAGIANQA0ADgALQA4ADEAZAAwAGYANwA3ADMAMQAyADQANwA="
+      },
+      {
+        "id": "577250",
+        "name": "BMW R 1300 R SE",
+        "line": "R 1300 R",
+        "body": "roadster",
+        "fuel": "petrol",
+        "priceMin": 13495,
+        "priceMax": 13495,
+        "sizeClass": 4,
+        "seats": 2,
+        "boot": 0,
+        "zeroTo62": 3,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "mpg": 55,
+        "cc": 1300,
+        "power": 107,
+        "tags": [
+          "roadster",
+          "commuter"
+        ],
+        "blurb": "Approved-used BMW R 1300 R, a roadster, ready to ride away.",
+        "mileage": 380,
+        "year": 2025,
+        "firstReg": "02/09/2025",
+        "photo": "https://approvedused.bmw-motorrad.co.uk/api/Image/GetImg?imgId=823b6617-c8cf-404e-8d8e-c557b74ed837",
+        "retailerName": "BMW Motorrad Approved Used",
+        "retailerId": "motorrad-approved",
+        "link": "https://approvedused.bmw-motorrad.co.uk/uk/detail.cshtml?on=577250&rc=en-gb&sid=OAAyAC4ANQAuADEAMAA4AC4AMQA1ADYAOwBlADEANQBhAGUANABiADEALQAzAGIAZgAyAC0ANAAxADUAMAAtAGIANQA0ADgALQA4ADEAZAAwAGYANwA3ADMAMQAyADQANwA="
+      },
+      {
+        "id": "577207",
+        "name": "BMW S 1000 RR M Sport",
+        "line": "S 1000 RR",
+        "body": "sport",
+        "fuel": "petrol",
+        "priceMin": 14995,
+        "priceMax": 14995,
+        "sizeClass": 4,
+        "seats": 1,
+        "boot": 0,
+        "zeroTo62": 2.9,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "mpg": 42,
+        "cc": 999,
+        "power": 152,
+        "tags": [
+          "sport",
+          "sporty"
+        ],
+        "blurb": "Approved-used BMW S 1000 RR, a sports bike, ready to ride away.",
+        "mileage": 7119,
+        "year": 2021,
+        "firstReg": "15/09/2021",
+        "photo": "https://approvedused.bmw-motorrad.co.uk/api/Image/GetImg?imgId=ede3ab2b-51b1-4df3-9c5d-0d232b86a504",
+        "retailerName": "BMW Motorrad Approved Used",
+        "retailerId": "motorrad-approved",
+        "link": "https://approvedused.bmw-motorrad.co.uk/uk/detail.cshtml?on=577207&rc=en-gb&sid=OAAyAC4ANQAuADEAMAA4AC4AMQA1ADYAOwBlADEANQBhAGUANABiADEALQAzAGIAZgAyAC0ANAAxADUAMAAtAGIANQA0ADgALQA4ADEAZAAwAGYANwA3ADMAMQAyADQANwA="
+      },
+      {
+        "id": "577236",
+        "name": "BMW K 1600 GTL",
+        "line": "K 1600 GTL",
+        "body": "tourer",
+        "fuel": "petrol",
+        "priceMin": 20990,
+        "priceMax": 20990,
+        "sizeClass": 5,
+        "seats": 2,
+        "boot": 130,
+        "zeroTo62": 3.5,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "mpg": 44,
+        "cc": 1649,
+        "power": 118,
+        "tags": [
+          "tourer",
+          "touring"
+        ],
+        "blurb": "Approved-used BMW K 1600 GTL, a tourer, ready to ride away.",
+        "mileage": 5,
+        "year": 2026,
+        "firstReg": "03/06/2026",
+        "photo": "https://approvedused.bmw-motorrad.co.uk/api/Image/GetImg?imgId=de9de013-989a-4966-ba8b-fa94ede285d0",
+        "retailerName": "BMW Motorrad Approved Used",
+        "retailerId": "motorrad-approved",
+        "link": "https://approvedused.bmw-motorrad.co.uk/uk/detail.cshtml?on=577236&rc=en-gb&sid=OAAyAC4ANQAuADEAMAA4AC4AMQA1ADYAOwBlADEANQBhAGUANABiADEALQAzAGIAZgAyAC0ANAAxADUAMAAtAGIANQA0ADgALQA4ADEAZAAwAGYANwA3ADMAMQAyADQANwA="
+      },
+      {
+        "id": "576863",
+        "name": "BMW CE 04",
+        "line": "CE 04",
+        "body": "scooter",
+        "fuel": "ev",
+        "priceMin": 7495,
+        "priceMax": 7495,
+        "sizeClass": 2,
+        "seats": 2,
+        "boot": 30,
+        "zeroTo62": 3.5,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "evRange": 80,
+        "cc": 0,
+        "power": 31,
+        "tags": [
+          "scooter",
+          "electric",
+          "commuter",
+          "a2-friendly"
+        ],
+        "blurb": "Approved-used BMW CE 04, an electric scooter, ready to ride away.",
+        "mileage": 7,
+        "year": 2025,
+        "firstReg": "04/12/2025",
+        "photo": "https://approvedused.bmw-motorrad.co.uk/api/Image/GetImg?imgId=39c60dc0-ac10-42bb-a5fd-b2f39105aa5b",
+        "retailerName": "BMW Motorrad Approved Used",
+        "retailerId": "motorrad-approved",
+        "link": "https://approvedused.bmw-motorrad.co.uk/uk/detail.cshtml?on=576863&rc=en-gb&sid=OAAyAC4ANQAuADEAMAA4AC4AMQA1ADYAOwBlADEANQBhAGUANABiADEALQAzAGIAZgAyAC0ANAAxADUAMAAtAGIANQA0ADgALQA4ADEAZAAwAGYANwA3ADMAMQAyADQANwA="
+      },
+      {
+        "id": "576862",
+        "name": "BMW CE 02 AM Pre Registered Special",
+        "line": "CE 02",
+        "body": "scooter",
+        "fuel": "ev",
+        "priceMin": 3995,
+        "priceMax": 3995,
+        "sizeClass": 1,
+        "seats": 2,
+        "boot": 15,
+        "zeroTo62": 8,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "evRange": 55,
+        "cc": 0,
+        "power": 4,
+        "tags": [
+          "scooter",
+          "electric",
+          "commuter",
+          "a2-friendly"
+        ],
+        "blurb": "Approved-used BMW CE 02, an electric scooter, ready to ride away.",
+        "mileage": 7,
+        "year": 2025,
+        "firstReg": "04/12/2025",
+        "photo": "https://approvedused.bmw-motorrad.co.uk/api/Image/GetImg?imgId=bd9f0988-e883-45b8-9fb9-083f525227ec",
+        "retailerName": "BMW Motorrad Approved Used",
+        "retailerId": "motorrad-approved",
+        "link": "https://approvedused.bmw-motorrad.co.uk/uk/detail.cshtml?on=576862&rc=en-gb&sid=OAAyAC4ANQAuADEAMAA4AC4AMQA1ADYAOwBlADEANQBhAGUANABiADEALQAzAGIAZgAyAC0ANAAxADUAMAAtAGIANQA0ADgALQA4ADEAZAAwAGYANwA3ADMAMQAyADQANwA="
+      }
+    ],
+    "ferrari": [
+      {
+        "id": "IljixbcgVnJGsKsQfDGsrlSqj1%2BDh2uP8fUSKgH9q%2BVQC8bncihc%2BtqgdnVhZ82SuIYTFC%2FD4hdEuEH%2BsvL5Dhm37ulnKnseYT6AFb5HEg%3D%3D",
+        "name": "Ferrari Portofino",
+        "line": "Portofino",
+        "body": "convertible",
+        "fuel": "petrol",
+        "priceMin": 139995,
+        "priceMax": 139995,
+        "sizeClass": 3,
+        "seats": 4,
+        "boot": 292,
+        "zeroTo62": 3.5,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "mpg": 26,
+        "tags": [
+          "drivers-car",
+          "image",
+          "lifestyle",
+          "practical"
+        ],
+        "blurb": "Ferrari Approved Portofino, V8 open top, sold with the official warranty from Meridien Modena.",
+        "mileage": 12640,
+        "year": 2020,
+        "photo": "https://ferrari-cdn.thron.com/delivery/public/thumbnail/ferrari/698eadaf-79d4-465e-94d5-d8a2a6dd65ae/3zayf6/std/600x400/ferrari-portofino",
+        "cc": 3855,
+        "power": 600,
+        "colour": "Argento Nurburgring",
+        "retailerName": "Meridien Modena",
+        "retailerId": "ferrari-approved",
+        "link": "https://preowned.ferrari.com/en-GB/a/europe/used-ferrari/great-britain/meridien-modena/ferrari-portofino/IljixbcgVnJGsKsQfDGsrlSqj1%2BDh2uP8fUSKgH9q%2BVQC8bncihc%2BtqgdnVhZ82SuIYTFC%2FD4hdEuEH%2BsvL5Dhm37ulnKnseYT6AFb5HEg%3D%3D"
+      },
+      {
+        "id": "IljixbcgVnJGsKsQfDGsriuad%2F8xAP5nTmO80WPhbGm3Qdw3zH3IOWrEQNF%2FOVfxuIYTGy%2FE%2FxdEuEH%2Btf3wCR237ulnKnsebTaFELlPFw%3D%3D",
+        "name": "Ferrari 488 GTB",
+        "line": "488",
+        "body": "coupe",
+        "fuel": "petrol",
+        "priceMin": 179995,
+        "priceMax": 179995,
+        "sizeClass": 2,
+        "seats": 2,
+        "boot": 230,
+        "zeroTo62": 3,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "mpg": 24,
+        "tags": [
+          "drivers-car",
+          "image"
+        ],
+        "blurb": "Ferrari Approved 488 GTB, V8 coupe, sold with the official warranty from Meridien Modena.",
+        "mileage": 17390,
+        "year": 2017,
+        "photo": "https://ferrari-cdn.thron.com/delivery/public/thumbnail/ferrari/a643790c-131e-4e24-b053-d2ab73783d8a/3zayf6/std/600x400/488-gtb",
+        "cc": 3902,
+        "power": 670,
+        "colour": "Blu Tour De France",
+        "retailerName": "Meridien Modena",
+        "retailerId": "ferrari-approved",
+        "link": "https://preowned.ferrari.com/en-GB/a/europe/used-ferrari/great-britain/meridien-modena/488-gtb/IljixbcgVnJGsKsQfDGsriuad%2F8xAP5nTmO80WPhbGm3Qdw3zH3IOWrEQNF%2FOVfxuIYTGy%2FE%2FxdEuEH%2Btf3wCR237ulnKnsebTaFELlPFw%3D%3D"
+      },
+      {
+        "id": "IljixbcgVnJGsKsQfDGsruYhKeEuU2mudu5yesy%2B3yEf24CkpvDi3K7UmFkV53vxuIYTFCbE%2FxdEuEH%2BtPL1Ah%2B37ulnKngcaDCDHbZLFw%3D%3D",
+        "name": "Ferrari 488 Spider",
+        "line": "488",
+        "body": "convertible",
+        "fuel": "petrol",
+        "priceMin": 235000,
+        "priceMax": 235000,
+        "sizeClass": 2,
+        "seats": 2,
+        "boot": 230,
+        "zeroTo62": 3,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "mpg": 24,
+        "tags": [
+          "drivers-car",
+          "image",
+          "lifestyle"
+        ],
+        "blurb": "Ferrari Approved 488 Spider, V8 open top, sold with the official warranty from Graypaul Nottingham.",
+        "mileage": 5500,
+        "year": 2018,
+        "photo": "https://ferrari-cdn.thron.com/delivery/public/thumbnail/ferrari/d1256fb1-c5b7-4267-844c-e545bac16856/3zayf6/std/600x400/488-spider",
+        "cc": 3902,
+        "power": 670,
+        "colour": "Rosso Corsa",
+        "retailerName": "Graypaul Nottingham",
+        "retailerId": "ferrari-approved",
+        "link": "https://preowned.ferrari.com/en-GB/a/europe/used-ferrari/great-britain/graypaul-nottingham/488-spider/IljixbcgVnJGsKsQfDGsruYhKeEuU2mudu5yesy%2B3yEf24CkpvDi3K7UmFkV53vxuIYTFCbE%2FxdEuEH%2BtPL1Ah%2B37ulnKngcaDCDHbZLFw%3D%3D"
+      },
+      {
+        "id": "IljixbcgVnJGsKsQfDGsrsgu1kKRu3hHqbcOo4vZbNyakNIrOg%2F%2FnHC68Gbg5lNxuIYTHCfW%2FxdEuEH%2FtvD2Dh637ulnKngcbzCFEb9JFQ%3D%3D",
+        "name": "Ferrari 296 GTS",
+        "line": "296",
+        "body": "convertible",
+        "fuel": "phev",
+        "priceMin": 289900,
+        "priceMax": 289900,
+        "sizeClass": 2,
+        "seats": 2,
+        "boot": 169,
+        "zeroTo62": 2.9,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "mpg": 39,
+        "evRange": 15,
+        "tags": [
+          "drivers-car",
+          "image",
+          "lifestyle",
+          "efficient",
+          "tech"
+        ],
+        "blurb": "Ferrari Approved 296 GTS, plug-in hybrid open top, sold with the official warranty from Charles Hurst.",
+        "mileage": 261,
+        "year": 2024,
+        "photo": "https://ferrari-cdn.thron.com/delivery/public/thumbnail/ferrari/4e475c4d-e48a-4636-8dbd-9d22f8c66c38/3zayf6/std/600x400/296-gts",
+        "cc": 2992,
+        "power": 830,
+        "colour": "Nero Daytona",
+        "retailerName": "Charles Hurst",
+        "retailerId": "ferrari-approved",
+        "link": "https://preowned.ferrari.com/en-GB/a/europe/used-ferrari/great-britain/charles-hurst/296-gts/IljixbcgVnJGsKsQfDGsrsgu1kKRu3hHqbcOo4vZbNyakNIrOg%2F%2FnHC68Gbg5lNxuIYTHCfW%2FxdEuEH%2FtvD2Dh637ulnKngcbzCFEb9JFQ%3D%3D"
+      },
+      {
+        "id": "IljixbcgVnJGsKsQfDGsrglXMemLOXuPenguCvNj8Q8qf6ROR1UJCTdCKup9yzuOuIYTHC%2FX4hdEuEH%2Ft%2FbzDBy37ulnKngdYDSNEbpNFg%3D%3D",
+        "name": "Ferrari Roma Spider",
+        "line": "Roma",
+        "body": "convertible",
+        "fuel": "petrol",
+        "priceMin": 199995,
+        "priceMax": 199995,
+        "sizeClass": 3,
+        "seats": 4,
+        "boot": 272,
+        "zeroTo62": 3.4,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "mpg": 26,
+        "tags": [
+          "drivers-car",
+          "image",
+          "lifestyle",
+          "practical"
+        ],
+        "blurb": "Ferrari Approved Roma Spider, V8 open top, sold with the official warranty from Meridien Modena.",
+        "mileage": 2940,
+        "year": 2024,
+        "photo": "https://ferrari-cdn.thron.com/delivery/public/thumbnail/ferrari/06a0bacf-d3fb-4cb3-95e6-e47734dd406f/3zayf6/std/600x400/ferrari-roma-spider",
+        "cc": 3855,
+        "power": 620,
+        "colour": "Extra Sample",
+        "retailerName": "Meridien Modena",
+        "retailerId": "ferrari-approved",
+        "link": "https://preowned.ferrari.com/en-GB/a/europe/used-ferrari/great-britain/meridien-modena/ferrari-roma-spider/IljixbcgVnJGsKsQfDGsrglXMemLOXuPenguCvNj8Q8qf6ROR1UJCTdCKup9yzuOuIYTHC%2FX4hdEuEH%2Ft%2FbzDBy37ulnKngdYDSNEbpNFg%3D%3D"
+      },
+      {
+        "id": "IljixbcgVnJGsKsQfDGsrlbwC1DwNegzwDBBxYPId0ZdiOCdWHGAgd7v7aSikjZWuIYTHCDT5hdEuEH%2Bvvz5Dxe37ulnKngcaTGGFLpHEw%3D%3D",
+        "name": "Ferrari Purosangue",
+        "line": "Purosangue",
+        "body": "suv",
+        "fuel": "petrol",
+        "priceMin": 388900,
+        "priceMax": 388900,
+        "sizeClass": 4,
+        "seats": 4,
+        "boot": 473,
+        "zeroTo62": 3.3,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "transmission": "auto",
+        "mpg": 17,
+        "tags": [
+          "drivers-car",
+          "image",
+          "family",
+          "practical"
+        ],
+        "blurb": "Ferrari Approved Purosangue, V12 four-seat SUV, sold with the official warranty from Charles Hurst.",
+        "mileage": 1598,
+        "year": 2023,
+        "photo": "https://ferrari-cdn.thron.com/delivery/public/thumbnail/ferrari/19a3fedf-3015-4081-927e-1690b7845501/3zayf6/std/600x400/purosangue",
+        "cc": 6496,
+        "power": 725,
+        "colour": "Extra Sample",
+        "retailerName": "Charles Hurst",
+        "retailerId": "ferrari-approved",
+        "link": "https://preowned.ferrari.com/en-GB/a/europe/used-ferrari/great-britain/charles-hurst/purosangue/IljixbcgVnJGsKsQfDGsrlbwC1DwNegzwDBBxYPId0ZdiOCdWHGAgd7v7aSikjZWuIYTHCDT5hdEuEH%2Bvvz5Dxe37ulnKngcaTGGFLpHEw%3D%3D"
+      },
+      {
+        "id": "IljixbcgVnJGsKsQfDGsrinMXcQhp4VsxAT1pTxKgQ6aTv8jqpbHZ3M1fZaTNX%2FDuIYTFSPL%2FxdEuEH%2BsfbxAhq37ulnLHsYbTaCHb5KEA%3D%3D",
+        "name": "Ferrari SF90 Stradale",
+        "line": "SF90",
+        "body": "coupe",
+        "fuel": "phev",
+        "priceMin": 285000,
+        "priceMax": 285000,
+        "sizeClass": 2,
+        "seats": 2,
+        "boot": 74,
+        "zeroTo62": 2.5,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "mpg": 39,
+        "evRange": 15,
+        "tags": [
+          "drivers-car",
+          "image",
+          "efficient",
+          "tech"
+        ],
+        "blurb": "Ferrari Approved SF90 Stradale, plug-in hybrid coupe, sold with the official warranty from Maranello Sales.",
+        "mileage": 1474,
+        "year": 2021,
+        "photo": "https://ferrari-cdn.thron.com/delivery/public/thumbnail/ferrari/240fe864-8c3c-4258-9087-5eb04ce921c1/3zayf6/std/600x400/sf90-stradale",
+        "cc": 3990,
+        "power": 1000,
+        "colour": "Argento Nurburgring",
+        "retailerName": "Maranello Sales",
+        "retailerId": "ferrari-approved",
+        "link": "https://preowned.ferrari.com/en-GB/a/europe/used-ferrari/great-britain/maranello-sales/sf90-stradale/IljixbcgVnJGsKsQfDGsrinMXcQhp4VsxAT1pTxKgQ6aTv8jqpbHZ3M1fZaTNX%2FDuIYTFSPL%2FxdEuEH%2BsfbxAhq37ulnLHsYbTaCHb5KEA%3D%3D"
+      },
+      {
+        "id": "IljixbcgVnJGsKsQfDGsruMnbBSFg4eUlTy8kJK6ihT%2FxthcpoFOT7KH9Zo41wgFuIYTFS7X%2FBdEuEH%2Ft%2Fb3CBa37uloJXwYYDKMFbtMFA%3D%3D",
+        "name": "Ferrari Roma",
+        "line": "Roma",
+        "body": "coupe",
+        "fuel": "petrol",
+        "priceMin": 139830,
+        "priceMax": 139830,
+        "sizeClass": 3,
+        "seats": 4,
+        "boot": 272,
+        "zeroTo62": 3.4,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "mpg": 26,
+        "tags": [
+          "drivers-car",
+          "image",
+          "practical"
+        ],
+        "blurb": "Ferrari Approved Roma, V8 coupe, sold with the official warranty from Stratstone Colchester.",
+        "mileage": 19160,
+        "year": 2024,
+        "photo": "https://ferrari-cdn.thron.com/delivery/public/thumbnail/ferrari/4edd530e-1025-4ea8-bb12-2fb80fc36fec/3zayf6/std/600x400/ferrari-roma",
+        "cc": 3855,
+        "power": 620,
+        "colour": "Grigio Silverstone",
+        "retailerName": "Stratstone Colchester",
+        "retailerId": "ferrari-approved",
+        "link": "https://preowned.ferrari.com/en-GB/a/europe/used-ferrari/great-britain/stratstone-colchester/ferrari-roma/IljixbcgVnJGsKsQfDGsruMnbBSFg4eUlTy8kJK6ihT%2FxthcpoFOT7KH9Zo41wgFuIYTFS7X%2FBdEuEH%2Ft%2Fb3CBa37uloJXwYYDKMFbtMFA%3D%3D"
+      },
+      {
+        "id": "IljixbcgVnJGsKsQfDGsrqaYcR6U9ffLNvT9psKT1s%2Bz%2FaKPrHHGW%2F21JAZshZQEuIYTFS%2FW%2FxdEuEH%2BvvzwDRy37uloJHUdYDSMEblMGQ%3D%3D",
+        "name": "Ferrari 296 GTB",
+        "line": "296",
+        "body": "coupe",
+        "fuel": "phev",
+        "priceMin": 204000,
+        "priceMax": 204000,
+        "sizeClass": 2,
+        "seats": 2,
+        "boot": 169,
+        "zeroTo62": 2.9,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "transmission": "auto",
+        "mpg": 39,
+        "evRange": 15,
+        "tags": [
+          "drivers-car",
+          "image",
+          "efficient",
+          "tech"
+        ],
+        "blurb": "Ferrari Approved 296 GTB, plug-in hybrid coupe, sold with the official warranty from Stratstone Manchester.",
+        "mileage": 2569,
+        "year": 2023,
+        "photo": "https://ferrari-cdn.thron.com/delivery/public/thumbnail/ferrari/a207141e-6e5c-4123-a5c7-e5b4da5df17d/3zayf6/std/600x400/296-gtb",
+        "cc": 2992,
+        "power": 830,
+        "colour": "Rosso Corsa",
+        "retailerName": "Stratstone Manchester",
+        "retailerId": "ferrari-approved",
+        "link": "https://preowned.ferrari.com/en-GB/a/europe/used-ferrari/great-britain/stratstone-manchester/296-gtb/IljixbcgVnJGsKsQfDGsrqaYcR6U9ffLNvT9psKT1s%2Bz%2FaKPrHHGW%2F21JAZshZQEuIYTFS%2FW%2FxdEuEH%2BvvzwDRy37uloJHUdYDSMEblMGQ%3D%3D"
+      },
+      {
+        "id": "IljixbcgVnJGsKsQfDGsrsQ0Vc%2BNdKjNi5N38nxAezfp4gdPR0w1ZpjOOP4VMCMruIYTFCTS%2FBdEuEH%2BtP31Chy37uloL3UcaTeCEr1JEQ%3D%3D",
+        "name": "Ferrari GTC4Lusso",
+        "line": "GTC4Lusso",
+        "body": "coupe",
+        "fuel": "petrol",
+        "priceMin": 169000,
+        "priceMax": 169000,
+        "sizeClass": 4,
+        "seats": 4,
+        "boot": 450,
+        "zeroTo62": 3.4,
+        "styleLine": null,
+        "doors": null,
+        "features": [],
+        "mpg": 18,
+        "tags": [
+          "drivers-car",
+          "image",
+          "practical"
+        ],
+        "blurb": "Ferrari Approved GTC4Lusso, V12 coupe, sold with the official warranty from Graypaul Glasgow.",
+        "mileage": 29779,
+        "year": 2018,
+        "photo": "https://ferrari-cdn.thron.com/delivery/public/thumbnail/ferrari/b4b98118-ea65-4336-8c3f-f0a40a556dd9/3zayf6/std/600x400/gtc4lusso",
+        "cc": 6262,
+        "power": 690,
+        "colour": "Grigio Silverstone",
+        "retailerName": "Graypaul Glasgow",
+        "retailerId": "ferrari-approved",
+        "link": "https://preowned.ferrari.com/en-GB/a/europe/used-ferrari/great-britain/graypaul-glasgow/gtc4lusso/IljixbcgVnJGsKsQfDGsrsQ0Vc%2BNdKjNi5N38nxAezfp4gdPR0w1ZpjOOP4VMCMruIYTFCTS%2FBdEuEH%2BtP31Chy37uloL3UcaTeCEr1JEQ%3D%3D"
+      }
+    ]
+  },
+  "sources": {
+    "ford": {
+      "path": "fixtures/ford-cars.json",
+      "sha256": "7afd360985fd0e3754a474890e23ad889f88f991d2ea42be14621a7f615ff5e9",
+      "selectedIds": [
+        "ford-4407318",
+        "ford-4418397",
+        "ford-4418280",
+        "ford-4407298",
+        "ford-4418264",
+        "ford-4412112",
+        "ford-4414070"
+      ],
+      "provenance": "Copied mapped snapshot rows; no claim to replay upstream parser for these four brands."
+    },
+    "honda": {
+      "path": "fixtures/honda-cars.json",
+      "sha256": "3808f6409ddd4ba4d9ef40ae72d04a0a16abf29fb9690eb99a439c3e036d099b",
+      "selectedIds": [
+        "qxdph5z",
+        "r1dplnz",
+        "kmdnz35",
+        "hkdphzc",
+        "r1dpb6e",
+        "t7dnsrv",
+        "t7dpmus",
+        "n5dpmue"
+      ],
+      "provenance": "Copied mapped snapshot rows; no claim to replay upstream parser for these four brands."
+    },
+    "motorrad": {
+      "path": "fixtures/motorrad-bikes.json",
+      "sha256": "6e2124eecb58f8cd7de262cea9a49ab4fcf00b92936ce7c760101951150c2917",
+      "selectedIds": [
+        "577259",
+        "577045",
+        "577260",
+        "577250",
+        "577207",
+        "577236",
+        "576863",
+        "576862"
+      ],
+      "provenance": "Copied mapped snapshot rows; no claim to replay upstream parser for these four brands."
+    },
+    "ferrari": {
+      "path": "fixtures/ferrari-cars.json",
+      "sha256": "8239b0735ced338732ec7caa8f1985aeddc3ccb69a523c620476ba7d10fa1dde",
+      "selectedIds": [
+        "IljixbcgVnJGsKsQfDGsrlSqj1%2BDh2uP8fUSKgH9q%2BVQC8bncihc%2BtqgdnVhZ82SuIYTFC%2FD4hdEuEH%2BsvL5Dhm37ulnKnseYT6AFb5HEg%3D%3D",
+        "IljixbcgVnJGsKsQfDGsriuad%2F8xAP5nTmO80WPhbGm3Qdw3zH3IOWrEQNF%2FOVfxuIYTGy%2FE%2FxdEuEH%2Btf3wCR237ulnKnsebTaFELlPFw%3D%3D",
+        "IljixbcgVnJGsKsQfDGsruYhKeEuU2mudu5yesy%2B3yEf24CkpvDi3K7UmFkV53vxuIYTFCbE%2FxdEuEH%2BtPL1Ah%2B37ulnKngcaDCDHbZLFw%3D%3D",
+        "IljixbcgVnJGsKsQfDGsrsgu1kKRu3hHqbcOo4vZbNyakNIrOg%2F%2FnHC68Gbg5lNxuIYTHCfW%2FxdEuEH%2FtvD2Dh637ulnKngcbzCFEb9JFQ%3D%3D",
+        "IljixbcgVnJGsKsQfDGsrglXMemLOXuPenguCvNj8Q8qf6ROR1UJCTdCKup9yzuOuIYTHC%2FX4hdEuEH%2Ft%2FbzDBy37ulnKngdYDSNEbpNFg%3D%3D",
+        "IljixbcgVnJGsKsQfDGsrlbwC1DwNegzwDBBxYPId0ZdiOCdWHGAgd7v7aSikjZWuIYTHCDT5hdEuEH%2Bvvz5Dxe37ulnKngcaTGGFLpHEw%3D%3D",
+        "IljixbcgVnJGsKsQfDGsrinMXcQhp4VsxAT1pTxKgQ6aTv8jqpbHZ3M1fZaTNX%2FDuIYTFSPL%2FxdEuEH%2BsfbxAhq37ulnLHsYbTaCHb5KEA%3D%3D",
+        "IljixbcgVnJGsKsQfDGsruMnbBSFg4eUlTy8kJK6ihT%2FxthcpoFOT7KH9Zo41wgFuIYTFS7X%2FBdEuEH%2Ft%2Fb3CBa37uloJXwYYDKMFbtMFA%3D%3D",
+        "IljixbcgVnJGsKsQfDGsrqaYcR6U9ffLNvT9psKT1s%2Bz%2FaKPrHHGW%2F21JAZshZQEuIYTFS%2FW%2FxdEuEH%2BvvzwDRy37uloJHUdYDSMEblMGQ%3D%3D",
+        "IljixbcgVnJGsKsQfDGsrsQ0Vc%2BNdKjNi5N38nxAezfp4gdPR0w1ZpjOOP4VMCMruIYTFCTS%2FBdEuEH%2BtP31Chy37uloL3UcaTeCEr1JEQ%3D%3D"
+      ],
+      "provenance": "Copied mapped snapshot rows; no claim to replay upstream parser for these four brands."
+    }
+  },
+  "location": {
+    "directory": [
+      [
+        "11107",
+        {
+          "latitude": 52.111119,
+          "longitude": -2.333339
+        }
+      ]
+    ],
+    "postcode": "WR14 4AA",
+    "place": {
+      "postcode": "WR14 4AA",
+      "latitude": 52.1111,
+      "longitude": -2.3333
+    }
+  },
+  "cases": [
+    {
+      "id": "bmw-full-family",
+      "brand": "bmw",
+      "answers": {
+        "budget": [
+          10000,
+          42000
+        ],
+        "bodyStyles": [
+          "suv"
+        ],
+        "fuel": [
+          "open"
+        ],
+        "charging": "none",
+        "primaryUse": "family",
+        "people": "family",
+        "mileage": 15000,
+        "style": "3",
+        "priorities": [
+          "comfort",
+          "economy"
+        ]
+      },
+      "intent": "Full family brief: SUV practicality, budget stretch and grouped X3 siblings."
+    },
+    {
+      "id": "bmw-partial",
+      "brand": "bmw",
+      "answers": {
+        "budget": [
+          0,
+          100000
+        ]
+      },
+      "intent": "Budget-only partial; whole-pool ranking and presentation limits."
+    },
+    {
+      "id": "bmw-contradictory",
+      "brand": "bmw",
+      "answers": {
+        "budget": [
+          10000,
+          35000
+        ],
+        "bodyStyles": [
+          "convertible"
+        ],
+        "fuel": [
+          "ev"
+        ],
+        "charging": "none",
+        "primaryUse": "family",
+        "people": "crew",
+        "mileage": 15000,
+        "style": "3",
+        "priorities": [
+          "comfort",
+          "economy"
+        ]
+      },
+      "intent": "Contradictory EV/convertible/crew with public charging; soft wishes trade off, no impossible match HTTP defect."
+    },
+    {
+      "id": "mini-sport",
+      "brand": "mini",
+      "answers": {
+        "budget": [
+          10000,
+          30000
+        ],
+        "bodyStyles": [
+          "hatchback"
+        ],
+        "fuel": [
+          "petrol"
+        ],
+        "charging": "none",
+        "primaryUse": "fun",
+        "people": "solo",
+        "miniVibe": "sport",
+        "doors": "3",
+        "priorities": [
+          "performance",
+          "image"
+        ]
+      },
+      "intent": "MINI bespoke sport vibe/3-door preference folding."
+    },
+    {
+      "id": "mini-partial",
+      "brand": "mini",
+      "answers": {
+        "budget": [
+          0,
+          40000
+        ]
+      },
+      "intent": "MINI partial with duplicate Classic hatch listings."
+    },
+    {
+      "id": "mini-contradictory-rescue",
+      "brand": "mini",
+      "answers": {
+        "budget": [
+          10000,
+          30000
+        ],
+        "bodyStyles": [
+          "hatchback"
+        ],
+        "fuel": [
+          "phev"
+        ],
+        "charging": "none",
+        "primaryUse": "fun",
+        "people": "solo",
+        "miniVibe": "sport",
+        "doors": "3",
+        "priorities": [
+          "performance",
+          "image"
+        ]
+      },
+      "intent": "PHEV hatchback contradiction; nearby rescue must show a Countryman PHEV outside initial top three."
+    },
+    {
+      "id": "ford-ev-family",
+      "brand": "ford",
+      "answers": {
+        "budget": [
+          0,
+          50000
+        ],
+        "bodyStyles": [
+          "suv"
+        ],
+        "fuel": [
+          "ev"
+        ],
+        "charging": "home",
+        "primaryUse": "family",
+        "people": "family",
+        "mileage": 15000,
+        "style": "3",
+        "priorities": [
+          "comfort",
+          "economy"
+        ]
+      },
+      "intent": "Ford EV family among EV, petrol and PHEV snapshot rows."
+    },
+    {
+      "id": "honda-city",
+      "brand": "honda",
+      "answers": {
+        "budget": [
+          0,
+          40000
+        ],
+        "bodyStyles": [
+          "hatchback"
+        ],
+        "fuel": [
+          "ev"
+        ],
+        "charging": "home",
+        "primaryUse": "city",
+        "people": "solo",
+        "mileage": 15000,
+        "style": "3",
+        "priorities": [
+          "comfort",
+          "economy"
+        ]
+      },
+      "intent": "Honda urban EV alongside petrol/diesel/hybrid mapped stock."
+    },
+    {
+      "id": "motorrad-tour",
+      "brand": "motorrad",
+      "answers": {
+        "budget": [
+          0,
+          30000
+        ],
+        "bodyStyles": [
+          "tourer"
+        ],
+        "fuel": [
+          "petrol"
+        ],
+        "charging": "none",
+        "ridingStyle": "touring",
+        "licence": "a",
+        "priorities": [
+          "comfort"
+        ]
+      },
+      "intent": "Motorrad bike-native touring/licence answers, tourer vs sport/heritage/electric scooters."
+    },
+    {
+      "id": "ferrari-phev",
+      "brand": "ferrari",
+      "answers": {
+        "budget": [
+          100000,
+          350000
+        ],
+        "bodyStyles": [
+          "coupe"
+        ],
+        "fuel": [
+          "phev"
+        ],
+        "charging": "home",
+        "primaryUse": "fun",
+        "people": "solo",
+        "mileage": 15000,
+        "style": "5",
+        "priorities": [
+          "performance"
+        ]
+      },
+      "intent": "Ferrari coupé PHEV performance against convertible/petrol/SUV stock."
+    },
+    {
+      "id": "bmw-limit-tie",
+      "brand": "bmw",
+      "pool": "limits",
+      "answers": {
+        "budget": [
+          0,
+          100000
+        ]
+      },
+      "intent": "13 deliberately equal synthetic groups; six shown, six alternatives, 24 listing sample with aggregates beyond it."
+    }
+  ],
+  "hashes": [
+    {
+      "id": "legacy-band-scalar",
+      "brand": "bmw",
+      "hash": "#m=eyJidWRnZXQiOiJiMSIsImJvZHlTdHlsZXMiOlsic3V2Il0sImZ1ZWwiOiJwZXRyb2wiLCJjaGFyZ2luZyI6Im5vbmUiLCJwcmltYXJ5VXNlIjoiZmFtaWx5IiwicGVvcGxlIjoiZmFtaWx5IiwibWlsZWFnZSI6Im1pZCIsInN0eWxlIjoiMyIsInByaW9yaXRpZXMiOlsiY29tZm9ydCIsImVjb25vbXkiXX0",
+      "answers": {
+        "budget": "b1",
+        "bodyStyles": [
+          "suv"
+        ],
+        "fuel": "petrol",
+        "charging": "none",
+        "primaryUse": "family",
+        "people": "family",
+        "mileage": "mid",
+        "style": "3",
+        "priorities": [
+          "comfort",
+          "economy"
+        ]
+      }
+    },
+    {
+      "id": "legacy-number-scalar",
+      "brand": "bmw",
+      "hash": "#m=eyJidWRnZXQiOjQyMDAwLCJib2R5U3R5bGVzIjpbInN1diJdLCJmdWVsIjoicGV0cm9sIiwiY2hhcmdpbmciOiJub25lIiwicHJpbWFyeVVzZSI6ImZhbWlseSIsInBlb3BsZSI6ImZhbWlseSIsIm1pbGVhZ2UiOjE1MDAwLCJzdHlsZSI6IjMiLCJwcmlvcml0aWVzIjpbImNvbWZvcnQiLCJlY29ub215Il19",
+      "answers": {
+        "budget": 42000,
+        "bodyStyles": [
+          "suv"
+        ],
+        "fuel": "petrol",
+        "charging": "none",
+        "primaryUse": "family",
+        "people": "family",
+        "mileage": 15000,
+        "style": "3",
+        "priorities": [
+          "comfort",
+          "economy"
+        ]
+      }
+    },
+    {
+      "id": "current-range-array",
+      "brand": "bmw",
+      "hash": "#m=eyJidWRnZXQiOlsxMDAwMCw0MjAwMF0sImJvZHlTdHlsZXMiOlsic3V2Il0sImZ1ZWwiOlsib3BlbiJdLCJjaGFyZ2luZyI6Im5vbmUiLCJwcmltYXJ5VXNlIjoiZmFtaWx5IiwicGVvcGxlIjoiZmFtaWx5IiwibWlsZWFnZSI6MTUwMDAsInN0eWxlIjoiMyIsInByaW9yaXRpZXMiOlsiY29tZm9ydCIsImVjb25vbXkiXX0",
+      "answers": {
+        "budget": [
+          10000,
+          42000
+        ],
+        "bodyStyles": [
+          "suv"
+        ],
+        "fuel": [
+          "open"
+        ],
+        "charging": "none",
+        "primaryUse": "family",
+        "people": "family",
+        "mileage": 15000,
+        "style": "3",
+        "priorities": [
+          "comfort",
+          "economy"
+        ]
+      }
+    },
+    {
+      "id": "legacy-mini-bespoke",
+      "brand": "mini",
+      "hash": "#m=eyJidWRnZXQiOlsxMDAwMCwzMDAwMF0sImJvZHlTdHlsZXMiOlsiaGF0Y2hiYWNrIl0sImZ1ZWwiOlsicGV0cm9sIl0sImNoYXJnaW5nIjoibm9uZSIsInByaW1hcnlVc2UiOiJmdW4iLCJwZW9wbGUiOiJzb2xvIiwibWluaVZpYmUiOiJzcG9ydCIsImRvb3JzIjoiMyIsInByaW9yaXRpZXMiOlsicGVyZm9ybWFuY2UiLCJpbWFnZSJdfQ",
+      "answers": {
+        "budget": [
+          10000,
+          30000
+        ],
+        "bodyStyles": [
+          "hatchback"
+        ],
+        "fuel": [
+          "petrol"
+        ],
+        "charging": "none",
+        "primaryUse": "fun",
+        "people": "solo",
+        "miniVibe": "sport",
+        "doors": "3",
+        "priorities": [
+          "performance",
+          "image"
+        ]
+      }
+    }
+  ]
+}
