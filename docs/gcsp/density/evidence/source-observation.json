@@ -1,0 +1,43 @@
+{
+  "button": {
+    "color": "rgb(3, 116, 147)",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+    "fontSize": "12px",
+    "height": 32,
+    "label": "Login",
+    "radius": "2px"
+  },
+  "date": "2026-11-05",
+  "densityComponents": {
+    "header": 1,
+    "navigationBar": 1
+  },
+  "rootBlocks": [
+    {
+      "declarations": 1640,
+      "selector": ":root, :host"
+    },
+    {
+      "declarations": 57,
+      "selector": ":root, :host"
+    },
+    {
+      "declarations": 1,
+      "selector": ":root, :host"
+    },
+    {
+      "declarations": 3,
+      "selector": ":root, :host"
+    }
+  ],
+  "title": "RIS Portal",
+  "tokens": {
+    "--ds-color-surface-button-primary": "#037493",
+    "--ds-color-surface-page": "#f5f6f6",
+    "--ds-motion-duration-quick": "133ms",
+    "--ds-shape-radius-button": "2px",
+    "--ds-space-1x": "4px",
+    "--ds-typography-family-base": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""
+  },
+  "url": "https://www.ris.bmw.com/"
+}
