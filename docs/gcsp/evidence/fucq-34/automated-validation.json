@@ -1,8 +1,8 @@
 {
   "story": "FUCQ-34",
   "date": "2026-11-05",
-  "source_head": "91a473b3995d2d3573a80bfb0d1e3ec71f087c3a",
-  "shared_executable_base": "f635ea2467bbd8b27dd23ec1302e6cb43ece8efd",
+  "source_head": "3db3f88fdb8267a7f76a4cd3d6bfd4ae516e3833",
+  "shared_executable_base": "26d6279b9a19a8f9c45f5c58bf034398c191c23f",
   "scoped": [
     {
       "command": "node --test server/test/launcher-navigation.test.js server/test/launcher-context.test.js",
@@ -104,6 +104,23 @@
       "reservation_absent": true,
       "package_lock_hashes_unchanged": true,
       "local_receipt": ".claude/test-runs/fucq34/f635ea-blueprint-1793892557302174000-receipt.json"
+    },
+    {
+      "command": "node --test server/test/bmw-image-adapter.test.js server/test/bmw-catalogue-adapter.test.js",
+      "source_head": "3db3f88fdb8267a7f76a4cd3d6bfd4ae516e3833",
+      "tests": 41,
+      "passed": 41,
+      "failed": 0,
+      "skipped": 0,
+      "rc": 0,
+      "wall_seconds": 0.5502632909999999,
+      "peak_rss_bytes": 181010432,
+      "peak_scratch_bytes": 0,
+      "scratch_removed": true,
+      "process_groups_absent": true,
+      "reservation_absent": true,
+      "package_lock_hashes_unchanged": true,
+      "local_receipt": ".claude/test-runs/fucq34/fucq42-incoming-adapters-1793893028436583000-receipt.json"
     }
   ],
   "full": {
@@ -114,22 +131,22 @@
       "--test",
       "server/test/**/*.test.js"
     ],
-    "tests": 1125,
-    "passed": 1123,
+    "tests": 1127,
+    "passed": 1125,
     "failed": 0,
     "skipped": 2,
     "skip_reason": "Two optional PostgreSQL checks require GCSP_DATABASE_URL; offline/default configuration used.",
     "rc": 0,
-    "wall_seconds": 70.909,
-    "peak_rss_bytes": 410501120,
-    "peak_scratch_bytes": 547968,
+    "wall_seconds": 70.557,
+    "peak_rss_bytes": 419577856,
+    "peak_scratch_bytes": 794912,
     "scratch_removed": true,
-    "owned_manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/strict/ownership/812c921f121e4bb980a7953443e8a826.json",
+    "owned_manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/strict/ownership/9ebb35664310419cafd5e65f77769b7c.json",
     "matching_strict_status_passed": true,
     "matching_status_recipe": "/usr/bin/python3 -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/integrated-supervisor.py status",
     "stamp": {
       "execution_identity": {
-        "code": "41c6569a319889e7994b3cb80eb138ad5574f6ccd4d5e8f0c4b0a8ef9d0b3bf7",
+        "code": "b1063a208e76911d519b29a5c75b6b566f4f8045406de82fcb31a34024a31cf4",
         "environment": "756b51526b35a3e86a48c6b914e95d1c150da207b3ae6e7500211abefeca47b9",
         "inputs": {},
         "interpreter": [
@@ -145,17 +162,17 @@
         "variant": "default",
         "version": 1
       },
-      "head": "91a473b3995d2d3573a80bfb0d1e3ec71f087c3a",
-      "key": "a59e5317e6932c5b4fcde7ea5ffb6eb5524a9675712128532559b3a7f5e0bb8c",
+      "head": "3db3f88fdb8267a7f76a4cd3d6bfd4ae516e3833",
+      "key": "9d5aa0228ce4ec658d730ccdaedbec2b7934082ca7b2d2aefb00bf3228d6e348",
       "python": "3.9.6",
       "ran": null,
       "skipped": 0,
-      "time": "2026-11-05T15:30:36+0000",
-      "tree": "522fbbcebc2b90baabfa4cf904ecf531458bd13b",
+      "time": "2026-11-05T15:38:28+0000",
+      "tree": "d97f43aab9883557d3255d45f2bbe8883a2c4b4a",
       "variant": "default",
-      "wall": 70.9
+      "wall": 70.6
     },
-    "local_log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/strict/logs/20261105-152924-wguabcc5/chunk-0001.log",
+    "local_log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/strict/logs/20261105-153717-cc56u9s9/chunk-0001.log",
     "resource_policy": {
       "chunk_ram_mib": 1024,
       "unit_ram_mib": 512,
@@ -166,7 +183,7 @@
     "policy_note": "Process-local bounded policy and serial Node runtime; no persistent project configuration changed. Use the same supervisor for strict status; previous 4096MiB supervisor identity differs."
   },
   "validation_scope": "Integrated launcher navigation and all configured tests. Browser captures and agent visual inspection are recorded separately.",
-  "historical_run": "1543894 passed1060total/1058pass/2skip;4e79237 passed1120/1118/2;c49d842 passed1124/1122/2. Current1125/1123/2 full supersedes those executable identities.",
+  "historical_run": "1543894 passed1060total/1058pass/2skip;4e79237 passed1120/1118/2;c49d842 passed1124/1122/2;91a473b passed1125/1123/2. Current1127/1125/2 full supersedes prior executable identities.",
   "historical_full_runs": [
     {
       "configured_command": "npm test",
@@ -277,10 +294,88 @@
         "log_mib": 2
       },
       "policy_note": "Process-local bounded policy and serial Node runtime; no persistent project configuration changed. Use the same supervisor for strict status; previous 4096MiB supervisor identity differs."
+    },
+    {
+      "configured_command": "npm test",
+      "effective_argv": [
+        "/opt/homebrew/bin/node",
+        "--test-concurrency=1",
+        "--test",
+        "server/test/**/*.test.js"
+      ],
+      "tests": 1125,
+      "passed": 1123,
+      "failed": 0,
+      "skipped": 2,
+      "skip_reason": "Two optional PostgreSQL checks require GCSP_DATABASE_URL; offline/default configuration used.",
+      "rc": 0,
+      "wall_seconds": 70.909,
+      "peak_rss_bytes": 410501120,
+      "peak_scratch_bytes": 547968,
+      "scratch_removed": true,
+      "owned_manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/strict/ownership/812c921f121e4bb980a7953443e8a826.json",
+      "matching_strict_status_passed": true,
+      "matching_status_recipe": "/usr/bin/python3 -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/integrated-supervisor.py status",
+      "stamp": {
+        "execution_identity": {
+          "code": "41c6569a319889e7994b3cb80eb138ad5574f6ccd4d5e8f0c4b0a8ef9d0b3bf7",
+          "environment": "756b51526b35a3e86a48c6b914e95d1c150da207b3ae6e7500211abefeca47b9",
+          "inputs": {},
+          "interpreter": [
+            "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+            "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]"
+          ],
+          "platform": "macOS-26.5.1-arm64-arm-64bit",
+          "scope": "full",
+          "selected": [
+            "npm test"
+          ],
+          "settings": "4caec072fca6d31467619026abfcde596c15b1215fcf8c401dea100e110503ae",
+          "variant": "default",
+          "version": 1
+        },
+        "head": "91a473b3995d2d3573a80bfb0d1e3ec71f087c3a",
+        "key": "a59e5317e6932c5b4fcde7ea5ffb6eb5524a9675712128532559b3a7f5e0bb8c",
+        "python": "3.9.6",
+        "ran": null,
+        "skipped": 0,
+        "time": "2026-11-05T15:30:36+0000",
+        "tree": "522fbbcebc2b90baabfa4cf904ecf531458bd13b",
+        "variant": "default",
+        "wall": 70.9
+      },
+      "local_log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/strict/logs/20261105-152924-wguabcc5/chunk-0001.log",
+      "resource_policy": {
+        "chunk_ram_mib": 1024,
+        "unit_ram_mib": 512,
+        "chunk_seconds": 300,
+        "chunk_scratch_mib": 128,
+        "log_mib": 2
+      },
+      "policy_note": "Process-local bounded policy and serial Node runtime; no persistent project configuration changed. Use the same supervisor for strict status; previous 4096MiB supervisor identity differs."
     }
   ],
-  "integrated_shared_base": "f635ea2467bbd8b27dd23ec1302e6cb43ece8efd",
-  "current_product_head": "91a473b3995d2d3573a80bfb0d1e3ec71f087c3a",
+  "integrated_shared_base": "f4c69c32854d10b73573a2c1529343e8fd0c25bb",
+  "current_product_head": "3db3f88fdb8267a7f76a4cd3d6bfd4ae516e3833",
   "current_validation_state": "Built: exact current full and matching strict status pass; browser evidence and explicit limits are separate.",
-  "browser_reuse_basis": "c49d842 matrix and first flows cover unchanged retail headers/modes;312eaa0 fixes only neutral picker button tokens and has fresh desktop/narrow geometry/focus/Enter,remainingflows and keyboard proof.91a473b adds reviewed shared deployment filters/new blueprint test and prose, without changing those browser assets."
+  "browser_reuse_basis": "c49d842 matrix and first flows cover unchanged retail headers/modes;312eaa0 fixes only neutral picker button tokens and has fresh desktop/narrow geometry/focus/Enter,remainingflows and keyboard proof.91a473b adds reviewed shared deployment filters/new blueprint test and prose, without changing those browser assets. FUCQ-42 adds only the unconsumed image adapter/test and evidence lifecycle; explicit frozen-to-current browser input diff is empty. Later FUCQ-49 claim is metadata only.",
+  "metadata_integration_head": "58e22788a244f64ce63c596c8701e31110973c93",
+  "integration_review": {
+    "incoming_story": "FUCQ-42",
+    "change": "Registered image metadata checks now apply before manifest asset loading and presentation; adapter tests add offline startup/identity/corrupt-metadata coverage.",
+    "runtime_consumers": "No launcher/retail runtime caller; adapter is imported by its tests and evidence tooling only.",
+    "browser_frozen_source": "312eaa005bc2390b8c449b6c4deaf7b511e7e22a",
+    "comparison_source": "3db3f88fdb8267a7f76a4cd3d6bfd4ae516e3833",
+    "unchanged_browser_inputs": [
+      "blocks/demo-launcher/",
+      "blocks/vehicle-matcher/",
+      "assets/",
+      "index.html",
+      "block.html",
+      "server/index.js",
+      "server/test/helpers.js"
+    ],
+    "comparison": "scaffold_git adapter diff --name-only returns no paths for every listed browser input. Existing fixture-backed browser evidence reused; no redundant browser allocation.",
+    "later_metadata": "26d6279 to f4c69c3 changes only DEV-2026-11-04-021 claim metadata; merged at58e2278 after full, no executable/test input change."
+  }
 }
