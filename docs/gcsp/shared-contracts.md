@@ -95,7 +95,7 @@ Ticks use `(runId, eventId, handlerId)` receipts, retaining event type, payload 
 
 ## Policy catalogue and provenance
 
-FUCQ-82 implements the single reviewed seed at **`server/gcsp/policy/seed-v1.json`** and read-only file provider; FUCQ-83 seeds dated PostgreSQL tables idempotently and makes them runtime authority through the same `PolicyService`. This location is the agreed implementation contract, not an assertion that the file already exists. FUCQ-82 records the implemented location in build-rules.md. There is one active source per deployment, no separately maintained browser/test defaults. Historical versions and pinned quotes are retained.
+FUCQ-82 implements the single reviewed seed at **`server/gcsp/policy/seed-v1.json`** and read-only file provider; FUCQ-83 seeds dated PostgreSQL tables idempotently and makes them runtime authority through the same `PolicyService`. FUCQ-82 records this implemented location and the shared read interface in build-rules.md. There is one active source per deployment, no separately maintained browser/test defaults. Historical versions and pinned quotes are retained.
 
 Every seed entry has `{ key, value, unit, status: 'assumed'|'verified', basis, source, sourceDate }`; dated rows also carry `policyVersion`, `effectiveFrom` and optional `effectiveTo` (exclusive). Sources name a repo record or a documented synthetic fixture, never a private credential. `verified` below means documented supplied evidence, not independent validation of a BMW API. All source dates below are 2026-11-04 unless the October 2024 matrix is named.
 
@@ -284,4 +284,4 @@ An implementing story adds its schema/key/method and provenance here in the same
 
 Morning review should focus on the assumed manual order-review phase and the explicit tie-break/seed choices. They are revisable synthetic defaults, not additional approved BMW behaviour. Numeric monthly prices/allowances require labelled source rows from FUCQ-82; this document does not invent BMW prices from eligibility matrices.
 
-This docs-only story changes no screen, user-visible behaviour or component. The [experience contract](experience-quality.md) and [shell/palette and Used Cars body reference](screens/README.md) remain binding for implementing stories; screenshots are not applicable to this document change.
+The FUCQ-80 contract baseline was documentation only. The FUCQ-81/82 backend implementations add no screen or UI component; their presentation fixtures and checks are recorded above. The [experience contract](experience-quality.md) and [shell/palette and Used Cars body reference](screens/README.md) remain binding for implementing stories; screenshots are not applicable to this document change.
