@@ -403,7 +403,7 @@ function publicPool(brand, cars, directory = null) {
 }
 
 function publicMatch({
-  car, score, stretch, reasons, tradeOffs, listings,
+  car, score, fit, taste, stretch, reasons, tradeOffs, listings,
 }) {
   return {
     car: publicCar(car),
@@ -424,6 +424,15 @@ function publicMatch({
     // ("Portimao Blue") the buyer reads.
     listings: (listings?.length ? listings : [car]).map((c) => ({
       id: c.id,
+      name: c.name,
+      line: c.line,
+      plate: c.plate,
+      retailerName: c.retailerName,
+      distance: c.distance,
+      // Keep the evaluator's decision attached to the exact member. Ungrouped
+      // game/preview matches have no member list, so their sole member uses
+      // the match decision. No client re-evaluation is needed.
+      decision: c.decision || { score, fit, taste, stretch, reasons, tradeOffs },
       // Each listing is a real car with its own photographs, so the card can
       // show the one the buyer picked rather than the one that ranked first.
       // Colour is the reason this choice exists; a picture of a different
@@ -561,9 +570,9 @@ async function handleMatch(req, res, deps) {
   // Shown cards get their listings enriched too (the picker needs every
   // colour); the held-back alternatives only need their own paint, since they
   // aren't on screen yet.
-  // Grouping copies the representative into a fresh `car` object and keeps the
-  // originals in `listings`, so enriching one does NOT enrich the other. Both
-  // have to be enriched, or a grouped card gets paint on its headline and none
+  // Grouping copies the representative into a fresh `car` object and retains
+  // decision-bearing copies in `listings`; enriching one does NOT enrich the
+  // other. Both have to be enriched, or a grouped card gets paint on its headline and none
   // on the listings behind it.
   //
   // Only the headline cars are waited on. Against a national pool the full
