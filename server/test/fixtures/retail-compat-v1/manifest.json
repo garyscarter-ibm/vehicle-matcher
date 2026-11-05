@@ -1,0 +1,65 @@
+{
+  "version": "retail-compat-expected-v1",
+  "sourceRevision": "ae98615dd9aae83146cc842ee15ee9d8f88b1162",
+  "capturedAt": "2026-11-05",
+  "nodeVersion": "v26.7.0",
+  "tasteShare": 0.2,
+  "reviewStatus": "independently reviewed and approved 2026-11-05",
+  "fixtureHashes": {
+    "inputs.json": "05ec09609fc1c5707c92a0e7e8ad80335dc4ffac6859985f3fb18953c824c0d5",
+    "expected.json": "140db30fe605e364d4b88f2143e770a8ad9195f014f2f08d6bf64a732c9447ea"
+  },
+  "caseIntents": [
+    {
+      "id": "bmw-full-family",
+      "intent": "Full family brief: SUV practicality, budget stretch and grouped X3 siblings."
+    },
+    {
+      "id": "bmw-partial",
+      "intent": "Budget-only partial; whole-pool ranking and presentation limits."
+    },
+    {
+      "id": "bmw-contradictory",
+      "intent": "Contradictory EV/convertible/crew with public charging; soft wishes trade off, no impossible match HTTP defect."
+    },
+    {
+      "id": "mini-sport",
+      "intent": "MINI bespoke sport vibe/3-door preference folding."
+    },
+    {
+      "id": "mini-partial",
+      "intent": "MINI partial with duplicate Classic hatch listings."
+    },
+    {
+      "id": "mini-contradictory-rescue",
+      "intent": "PHEV hatchback contradiction; nearby rescue must show a Countryman PHEV outside initial top three."
+    },
+    {
+      "id": "ford-ev-family",
+      "intent": "Ford EV family among EV, petrol and PHEV snapshot rows."
+    },
+    {
+      "id": "honda-city",
+      "intent": "Honda urban EV alongside petrol/diesel/hybrid mapped stock."
+    },
+    {
+      "id": "motorrad-tour",
+      "intent": "Motorrad bike-native touring/licence answers, tourer vs sport/heritage/electric scooters."
+    },
+    {
+      "id": "ferrari-phev",
+      "intent": "Ferrari coup\u00e9 PHEV performance against convertible/petrol/SUV stock."
+    },
+    {
+      "id": "bmw-limit-tie",
+      "intent": "13 deliberately equal synthetic groups; six shown, six alternatives, 24 listing sample with aggregates beyond it."
+    }
+  ],
+  "review": {
+    "reviewer": "story lead; gpt-6.1-sol / high requested and selected",
+    "evidence": "docs/gcsp/evidence/fucq-7/retail-compat-independent-review.md",
+    "inputSha256": "05ec09609fc1c5707c92a0e7e8ad80335dc4ffac6859985f3fb18953c824c0d5",
+    "expectedSha256": "140db30fe605e364d4b88f2143e770a8ad9195f014f2f08d6bf64a732c9447ea",
+    "method": "Source-derived anchors before capture; independent arithmetic for all six brand leaders; all server/client record contracts and correction boundaries reviewed."
+  }
+}
