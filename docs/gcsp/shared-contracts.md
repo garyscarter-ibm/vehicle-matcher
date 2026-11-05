@@ -352,6 +352,37 @@ Inject existing `{ identity, clock }` into the writable PolicyService. `publishP
 
 Response fixtures for later C6 are `server/test/fixtures/gcsp-policy-version-outcomes.json`. This is backend-only, with no component/screenshot requirement. Configured managed PostgreSQL proof now passes policy 21/21, explicit-schema factory 1/1 and repository 61/61 with no skips; isolated schema inventory was restored exactly. The combined authored offline full passes1,235/1,230/5 native skips with matching strict stamp `07aea3ec1a62`. [Current evidence](evidence/fucq83/README.md) separates actual native proof from credential-unset consumer/full validation. The existing diagram topology already includes this source; status recolouring/rendering remains unverified while the background bridge is unavailable.
 
+#### Greg's bounded editable projection · FUCQ-103
+
+The preview/publish panel owns this additive catalogue. Its implementation and acceptance evidence are recorded in
+`greg-publish.md` and DEV-2026-11-04-066; this contract entry alone does not establish completion.
+
+| Editable field ID | Canonical entry and field | Unit and validation |
+|---|---|---|
+| `price:<key>` | An existing `pricePlans` row's `monthlyPoints`, with its matching `value` updated together | Nonnegative safe integer points/month; preserve scheme, match and identity fields. |
+| `weight:<preferenceKey>` | `employee.recommendation.v1.value.preferenceWeights.<preferenceKey>`, for the registered body, fuel, sportiness, comfort, economy and size preferences | Nonnegative safe integer relative weight; canonical neutral value is 1 for every registered preference. |
+
+The price keys come from the resolved PolicyService snapshot, rather than a browser-maintained list. No control or
+command can edit eligibility, essentials, allowances, employee importance, hard filters or another calibration path.
+Independent preference scores still use their dimension-specific calculation. The aggregate uses employee importance
+multiplied by the configured preference weight. Retained calibration without `preferenceWeights` keeps its original
+employee-importance calculation and exposes no editable weight controls. A supplied map must cover exactly the
+registered preference keys; missing/extra keys fail explicitly. Legacy `tuning.weights` remain dimension machinery,
+not a second editable policy map. Zero weight contributes no aggregate importance. No contributing importance produces an
+unknown fit score, never an invented perfect fit. Gate decisions precede weighting and cannot be overridden by it.
+
+The server-only snapshot read supports a disposable what-if PolicyService over the same validated source. A preview
+returns active and draft aggregates, their differences and explicit preview status without writing a policy, run,
+brief, offer or quote. Publication sends the permitted patches and provenance through `publishPolicyVersion` and
+retains the publisher, effective time and original command identity. This panel publishes at the current DemoClock
+instant; stable `effectiveFrom` input permits an identical command replay, while an unseen past/future command is
+rejected. General scheduled publication remains the existing PolicyService boundary.
+
+New work must resolve the effective policy at the run's demo instant and refresh both `runs.policyVersion` and
+`runs.versions.policy` coherently. Publication alone is insufficient evidence of activation. Held quote/offer pins and
+historical explanation versions remain unchanged. Ordinary employee reload/preview and Greg reload after a publish
+are required integration evidence, separately from isolated service tests.
+
 ### EmployeeRecommendationService · FUCQ-29
 
 `createEmployeeRecommendationService({ provider, policy, time }).recommend(context, brief)` is a stateless read. `context` is the server-resolved employee/run/environment/company/scheme/grade and retained `policyVersion`; browser data cannot replace it. The injected `provider.resolve(context)` returns an `ok` source with matching `runId`, `environmentId`, `employeeId`, `factsVersion`, `stockVersion`, `employeeFacts` and `stock`. It declares known essentials explicitly, including an empty essentials map where none are known, and provenance-bearing driver qualification, charging and required-by facts. Exact stock records contain `orderUuid`, `configurationId`, an immutable FUCQ-26 snapshot whose stock key equals the order UUID, and versioned availability. No stock VIN is permitted. Provider failure remains unavailable; a successful empty array is no stock.
