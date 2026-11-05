@@ -1,0 +1,3096 @@
+{
+  "aggregation": {
+    "confirmedCorrectedHarnessAssertions": 8,
+    "correctedHistoricalHarnessAssertions": 8,
+    "historicalAssertions": 236,
+    "historicalFailed": 10,
+    "historicalNativeOptionPickingUnverified": 1,
+    "historicalPassed": 226,
+    "historicalReceipt": "fucq33-final-browser.json",
+    "interpretation": "Original assertions and screenshots remain preserved. Eight original harness assertions have replacement proof; native option picking remains unverified by automation; the MINI overflow is measured at the claim baseline. No all-pass browser matrix is claimed.",
+    "measuredPreExistingRetailLimitations": 1,
+    "mini320": {
+      "claimCommitOverflowPx": 76,
+      "claimIndexCommit": "7b6e57b",
+      "classification": "pre-existing-baseline-limitation",
+      "currentOverflowPx": 76,
+      "sourceCommit": "e16cf52f06274dfe9164af6d72765b5de8ad220d"
+    },
+    "pendingRetailBaselineAssertions": 0,
+    "targetedFallbackEvidenceReused": [
+      {
+        "injectedRequestPaths": [
+          "/assets/brand-logos/mini.svg",
+          "/assets/brand-hero/mini.jpg"
+        ],
+        "name": "launcher-image-and-selector-logo-fallback",
+        "screenshotExists": true,
+        "unexpectedFailureCount": 0
+      },
+      {
+        "injectedRequestPaths": [
+          "/assets/brand-logos/mini.svg",
+          "/assets/brand-hero/mini.jpg"
+        ],
+        "name": "mini-retail-logo-and-hero-fallback",
+        "screenshotExists": false,
+        "unexpectedFailureCount": 0
+      }
+    ]
+  },
+  "aggregationBeforeLeadReview": {
+    "confirmedCorrectedHarnessAssertions": 9,
+    "correctedHistoricalHarnessAssertions": 9,
+    "historicalAssertions": 236,
+    "historicalFailed": 10,
+    "historicalPassed": 226,
+    "historicalReceipt": "fucq33-final-browser.json",
+    "interpretation": "Historical assertions and screenshots are preserved; this follow-up records targeted corrections and does not rewrite the original matrix.",
+    "mini320": {
+      "claimCommitOverflowPx": 76,
+      "claimIndexCommit": "7b6e57b",
+      "classification": "pre-existing-baseline-limitation",
+      "currentOverflowPx": 76,
+      "sourceCommit": "e16cf52f06274dfe9164af6d72765b5de8ad220d"
+    },
+    "pendingRetailBaselineAssertions": 1,
+    "targetedFallbackEvidenceReused": [
+      {
+        "injectedRequestPaths": [
+          "/assets/brand-logos/mini.svg",
+          "/assets/brand-hero/mini.jpg"
+        ],
+        "name": "launcher-image-and-selector-logo-fallback",
+        "screenshotExists": true,
+        "unexpectedFailureCount": 0
+      },
+      {
+        "injectedRequestPaths": [
+          "/assets/brand-logos/mini.svg",
+          "/assets/brand-hero/mini.jpg"
+        ],
+        "name": "mini-retail-logo-and-hero-fallback",
+        "screenshotExists": false,
+        "unexpectedFailureCount": 0
+      }
+    ]
+  },
+  "apiBase": "http://127.0.0.1:32878",
+  "assertionFailures": [
+    {
+      "expected": "keyboard opens the native select and commits BMW from MINI",
+      "id": "keyboard-opens-and-commits-brand-selection",
+      "observed": {
+        "attempts": [
+          {
+            "selected": "mini",
+            "sequence": [
+              "Space",
+              "ArrowUp",
+              "Enter"
+            ],
+            "values": [
+              "mini",
+              "mini",
+              "mini"
+            ]
+          },
+          {
+            "selected": "mini",
+            "sequence": [
+              "Alt+ArrowDown",
+              "ArrowUp",
+              "Enter"
+            ],
+            "values": [
+              "mini",
+              "mini",
+              "mini"
+            ]
+          },
+          {
+            "selected": "mini",
+            "sequence": [
+              "Space",
+              "Home",
+              "Enter"
+            ],
+            "values": [
+              "mini",
+              "mini",
+              "mini"
+            ]
+          }
+        ],
+        "selectedBrand": "mini",
+        "selectedCard": "Selected brand: MINI"
+      },
+      "scope": "launcher-keyboard-open-and-commit"
+    },
+    {
+      "expected": "Tab reaches Choose BMW; Enter shows its disabled unavailable state",
+      "id": "keyboard-enter-opens-unavailable-employee-state",
+      "observed": {
+        "afterEnter": null,
+        "selectedBrand": "mini"
+      },
+      "scope": "launcher-keyboard-open-and-commit"
+    },
+    {
+      "expected": {
+        "console": 0,
+        "pageErrors": 0
+      },
+      "id": "no-console-or-page-errors",
+      "observed": {
+        "console": [
+          "Access to fetch at 'http://127.0.0.1:32878/api/questions?retailer=92&brand=mini' from origin 'http://127.0.0.1:32139' has been blocked by CORS policy: Permission was denied for this request to access the `loopback` address space.",
+          "Failed to load resource: net::ERR_FAILED"
+        ],
+        "pageErrors": []
+      },
+      "scope": "mini-retail-claim-narrow-320"
+    },
+    {
+      "expected": {
+        "external": 0,
+        "failed": 0
+      },
+      "id": "no-unexpected-failed-or-external-requests",
+      "observed": {
+        "external": [],
+        "failed": [
+          "http://127.0.0.1:32878/api/questions?[redacted-query] net::ERR_FAILED"
+        ]
+      },
+      "scope": "mini-retail-claim-narrow-320"
+    },
+    {
+      "expected": "prior fallback screenshots, DOM states and injected local paths remain available",
+      "id": "retained-fallback-dom-and-injected-path-evidence",
+      "observed": [
+        {
+          "assertions": [
+            {
+              "expected": "MINI remains labelled while image and logo fail",
+              "id": "failed-image-and-logo-retain-identifying-copy",
+              "observed": {
+                "actionText": "Explore MINI Used cars",
+                "destinationText": "Used cars images coming soon\nUsed cars\n\nFind a used car matched to how you drive. Explore the full choice of brands and ways to search.\n\nContinue with MINI.\n\nExplore MINI Used cars",
+                "fallbackVisible": true,
+                "imagePresent": false,
+                "selectedBrand": "mini",
+                "selectedBrandText": "MINI"
+              },
+              "pass": true,
+              "scope": "launcher-image-and-selector-logo-fallback"
+            },
+            {
+              "expected": "two expected 404 image failures",
+              "id": "expected-image-failures-were-injected",
+              "observed": [
+                "/assets/brand-logos/mini.svg",
+                "/assets/brand-logos/mini.svg",
+                "/assets/brand-hero/mini.jpg",
+                "/assets/brand-hero/mini.jpg"
+              ],
+              "pass": true,
+              "scope": "launcher-image-and-selector-logo-fallback"
+            },
+            {
+              "expected": 0,
+              "id": "no-browser-console-errors",
+              "observed": [],
+              "pass": true,
+              "scope": "launcher-image-and-selector-logo-fallback"
+            },
+            {
+              "expected": 0,
+              "id": "no-page-errors",
+              "observed": [],
+              "pass": true,
+              "scope": "launcher-image-and-selector-logo-fallback"
+            },
+            {
+              "expected": 0,
+              "id": "no-unexpected-failed-requests",
+              "observed": [],
+              "pass": true,
+              "scope": "launcher-image-and-selector-logo-fallback"
+            },
+            {
+              "expected": 0,
+              "id": "no-external-network-attempts",
+              "observed": [],
+              "pass": true,
+              "scope": "launcher-image-and-selector-logo-fallback"
+            }
+          ],
+          "details": {
+            "actionText": "Explore MINI Used cars",
+            "destinationText": "Used cars images coming soon\nUsed cars\n\nFind a used car matched to how you drive. Explore the full choice of brands and ways to search.\n\nContinue with MINI.\n\nExplore MINI Used cars",
+            "fallbackVisible": true,
+            "imagePresent": false,
+            "selectedBrand": "mini",
+            "selectedBrandText": "MINI"
+          },
+          "injectedRequestPaths": [
+            "/assets/brand-logos/mini.svg",
+            "/assets/brand-hero/mini.jpg"
+          ],
+          "name": "launcher-image-and-selector-logo-fallback",
+          "screenshot": "fucq33-final-launcher-media-fallback.png",
+          "screenshotExists": true,
+          "unexpectedFailures": []
+        },
+        {
+          "assertions": [
+            {
+              "expected": "MINI logo text and plain-hero fallback",
+              "id": "retail-chrome-fallback-retains-brand",
+              "observed": {
+                "brand": "mini",
+                "fallbackLogoText": "MINI",
+                "heroHeading": "Find Your MINI.",
+                "heroPlain": true
+              },
+              "pass": true,
+              "scope": "mini-retail-logo-and-hero-fallback"
+            },
+            {
+              "expected": 0,
+              "id": "no-browser-console-errors",
+              "observed": [],
+              "pass": true,
+              "scope": "mini-retail-logo-and-hero-fallback"
+            },
+            {
+              "expected": 0,
+              "id": "no-page-errors",
+              "observed": [],
+              "pass": true,
+              "scope": "mini-retail-logo-and-hero-fallback"
+            },
+            {
+              "expected": 0,
+              "id": "no-unexpected-failed-requests",
+              "observed": [],
+              "pass": true,
+              "scope": "mini-retail-logo-and-hero-fallback"
+            },
+            {
+              "expected": 0,
+              "id": "no-external-network-attempts",
+              "observed": [],
+              "pass": true,
+              "scope": "mini-retail-logo-and-hero-fallback"
+            }
+          ],
+          "details": {
+            "brand": "mini",
+            "fallbackLogoText": "MINI",
+            "heroHeading": "Find Your MINI.",
+            "heroPlain": true
+          },
+          "injectedRequestPaths": [
+            "/assets/brand-logos/mini.svg",
+            "/assets/brand-hero/mini.jpg"
+          ],
+          "name": "mini-retail-logo-and-hero-fallback",
+          "screenshot": null,
+          "screenshotExists": false,
+          "unexpectedFailures": []
+        }
+      ],
+      "scope": "historical-fallback"
+    }
+  ],
+  "assertions": [
+    {
+      "expected": "Used cars card .vm-btn-primary uses teal fill, white text and >=4.5:1 contrast",
+      "id": "used-cars-primary-action-is-teal-and-readable",
+      "observed": {
+        "accent": "#0b6c7e",
+        "background": "rgb(11, 108, 126)",
+        "contrastRatio": 6.07,
+        "foreground": "rgb(255, 255, 255)",
+        "tag": "A",
+        "text": "Explore Used cars",
+        "title": "Used cars"
+      },
+      "pass": true,
+      "scope": "launcher-action-default-desktop"
+    },
+    {
+      "expected": {
+        "console": 0,
+        "pageErrors": 0
+      },
+      "id": "no-console-or-page-errors",
+      "observed": {
+        "console": [],
+        "pageErrors": []
+      },
+      "pass": true,
+      "scope": "launcher-action-default-desktop"
+    },
+    {
+      "expected": {
+        "external": 0,
+        "failed": 0
+      },
+      "id": "no-unexpected-failed-or-external-requests",
+      "observed": {
+        "external": [],
+        "failed": []
+      },
+      "pass": true,
+      "scope": "launcher-action-default-desktop"
+    },
+    {
+      "expected": "Used cars card .vm-btn-primary uses teal fill, white text and >=4.5:1 contrast",
+      "id": "used-cars-primary-action-is-teal-and-readable",
+      "observed": {
+        "accent": "#0b6c7e",
+        "background": "rgb(11, 108, 126)",
+        "contrastRatio": 6.07,
+        "foreground": "rgb(255, 255, 255)",
+        "tag": "A",
+        "text": "Explore Used cars",
+        "title": "Used cars"
+      },
+      "pass": true,
+      "scope": "launcher-action-default-narrow-320"
+    },
+    {
+      "expected": {
+        "console": 0,
+        "pageErrors": 0
+      },
+      "id": "no-console-or-page-errors",
+      "observed": {
+        "console": [],
+        "pageErrors": []
+      },
+      "pass": true,
+      "scope": "launcher-action-default-narrow-320"
+    },
+    {
+      "expected": {
+        "external": 0,
+        "failed": 0
+      },
+      "id": "no-unexpected-failed-or-external-requests",
+      "observed": {
+        "external": [],
+        "failed": []
+      },
+      "pass": true,
+      "scope": "launcher-action-default-narrow-320"
+    },
+    {
+      "expected": "Used cars card .vm-btn-primary uses teal fill, white text and >=4.5:1 contrast",
+      "id": "used-cars-primary-action-is-teal-and-readable",
+      "observed": {
+        "accent": "#0b6c7e",
+        "background": "rgb(11, 108, 126)",
+        "contrastRatio": 6.07,
+        "foreground": "rgb(255, 255, 255)",
+        "tag": "A",
+        "text": "Explore MINI Used cars",
+        "title": "Used cars"
+      },
+      "pass": true,
+      "scope": "launcher-action-mini-desktop"
+    },
+    {
+      "expected": {
+        "console": 0,
+        "pageErrors": 0
+      },
+      "id": "no-console-or-page-errors",
+      "observed": {
+        "console": [],
+        "pageErrors": []
+      },
+      "pass": true,
+      "scope": "launcher-action-mini-desktop"
+    },
+    {
+      "expected": {
+        "external": 0,
+        "failed": 0
+      },
+      "id": "no-unexpected-failed-or-external-requests",
+      "observed": {
+        "external": [],
+        "failed": []
+      },
+      "pass": true,
+      "scope": "launcher-action-mini-desktop"
+    },
+    {
+      "expected": "Used cars card .vm-btn-primary uses teal fill, white text and >=4.5:1 contrast",
+      "id": "used-cars-primary-action-is-teal-and-readable",
+      "observed": {
+        "accent": "#0b6c7e",
+        "background": "rgb(11, 108, 126)",
+        "contrastRatio": 6.07,
+        "foreground": "rgb(255, 255, 255)",
+        "tag": "A",
+        "text": "Explore MINI Used cars",
+        "title": "Used cars"
+      },
+      "pass": true,
+      "scope": "launcher-action-mini-narrow-320"
+    },
+    {
+      "expected": {
+        "console": 0,
+        "pageErrors": 0
+      },
+      "id": "no-console-or-page-errors",
+      "observed": {
+        "console": [],
+        "pageErrors": []
+      },
+      "pass": true,
+      "scope": "launcher-action-mini-narrow-320"
+    },
+    {
+      "expected": {
+        "external": 0,
+        "failed": 0
+      },
+      "id": "no-unexpected-failed-or-external-requests",
+      "observed": {
+        "external": [],
+        "failed": []
+      },
+      "pass": true,
+      "scope": "launcher-action-mini-narrow-320"
+    },
+    {
+      "expected": "every removed rule block appears unchanged in the shared kit",
+      "id": "shared-kit-rule-blocks-match-approved-source",
+      "observed": {
+        "approvedRuleBlocks": 75,
+        "countDiscrepancy": 1,
+        "currentEmployeeExtras": [],
+        "currentEmployeeMissing": [],
+        "currentEmployeeRuleBlocks": 56,
+        "declaredHistoricalCount": 18,
+        "employeeRemainderMatchesApproved": true,
+        "exactMovedRuleMatch": true,
+        "kitRulesOutsideApprovedEmployee": [],
+        "missingMovedRules": [],
+        "movedRuleBlocks": 19,
+        "sharedKitRuleBlocks": 19
+      },
+      "pass": true,
+      "scope": "employee-css-composition"
+    },
+    {
+      "expected": "employee CSS retains every approved rule except the exact shared-kit extraction",
+      "id": "remaining-employee-css-matches-approved-source",
+      "observed": {
+        "approvedRuleBlocks": 75,
+        "countDiscrepancy": 1,
+        "currentEmployeeExtras": [],
+        "currentEmployeeMissing": [],
+        "currentEmployeeRuleBlocks": 56,
+        "declaredHistoricalCount": 18,
+        "employeeRemainderMatchesApproved": true,
+        "exactMovedRuleMatch": true,
+        "kitRulesOutsideApprovedEmployee": [],
+        "missingMovedRules": [],
+        "movedRuleBlocks": 19,
+        "sharedKitRuleBlocks": 19
+      },
+      "pass": true,
+      "scope": "employee-css-composition"
+    },
+    {
+      "expected": "keyboard opens the native select and commits BMW from MINI",
+      "id": "keyboard-opens-and-commits-brand-selection",
+      "observed": {
+        "attempts": [
+          {
+            "selected": "mini",
+            "sequence": [
+              "Space",
+              "ArrowUp",
+              "Enter"
+            ],
+            "values": [
+              "mini",
+              "mini",
+              "mini"
+            ]
+          },
+          {
+            "selected": "mini",
+            "sequence": [
+              "Alt+ArrowDown",
+              "ArrowUp",
+              "Enter"
+            ],
+            "values": [
+              "mini",
+              "mini",
+              "mini"
+            ]
+          },
+          {
+            "selected": "mini",
+            "sequence": [
+              "Space",
+              "Home",
+              "Enter"
+            ],
+            "values": [
+              "mini",
+              "mini",
+              "mini"
+            ]
+          }
+        ],
+        "selectedBrand": "mini",
+        "selectedCard": "Selected brand: MINI"
+      },
+      "pass": false,
+      "scope": "launcher-keyboard-open-and-commit"
+    },
+    {
+      "expected": "Tab reaches Choose BMW; Enter shows its disabled unavailable state",
+      "id": "keyboard-enter-opens-unavailable-employee-state",
+      "observed": {
+        "afterEnter": null,
+        "selectedBrand": "mini"
+      },
+      "pass": false,
+      "scope": "launcher-keyboard-open-and-commit"
+    },
+    {
+      "expected": {
+        "console": 0,
+        "pageErrors": 0
+      },
+      "id": "no-console-or-page-errors",
+      "observed": {
+        "console": [],
+        "pageErrors": []
+      },
+      "pass": true,
+      "scope": "launcher-keyboard-open-and-commit"
+    },
+    {
+      "expected": {
+        "external": 0,
+        "failed": 0
+      },
+      "id": "no-unexpected-failed-or-external-requests",
+      "observed": {
+        "external": [],
+        "failed": []
+      },
+      "pass": true,
+      "scope": "launcher-keyboard-open-and-commit"
+    },
+    {
+      "expected": {
+        "employeeDecisionCard": true,
+        "employeeFixture": true,
+        "employeeQuestionControls": true,
+        "exactListingDecisions": true,
+        "gcspExamples": true,
+        "retailResults": true
+      },
+      "id": "stable-employee-fixture-control-and-gallery-examples",
+      "observed": {
+        "employeeBriefItemCount": 3,
+        "employeeConfirmControl": "Confirm no charging access",
+        "employeeDecisionCard": true,
+        "employeeFixture": true,
+        "employeeFixtureLabel": "Local employee brief fixture",
+        "employeeQuestionControls": true,
+        "exactListingDecisions": true,
+        "galleryClientWidth": 1280,
+        "galleryWidth": 1280,
+        "gcspExamples": true,
+        "retailResults": true
+      },
+      "pass": true,
+      "scope": "launcher-gallery-fixture-desktop"
+    },
+    {
+      "expected": 1280,
+      "id": "gallery-no-horizontal-overflow",
+      "observed": 1280,
+      "pass": true,
+      "scope": "launcher-gallery-fixture-desktop"
+    },
+    {
+      "expected": {
+        "console": 0,
+        "pageErrors": 0
+      },
+      "id": "no-console-or-page-errors",
+      "observed": {
+        "console": [],
+        "pageErrors": []
+      },
+      "pass": true,
+      "scope": "launcher-gallery-fixture-desktop"
+    },
+    {
+      "expected": {
+        "external": 0,
+        "failed": 0
+      },
+      "id": "no-unexpected-failed-or-external-requests",
+      "observed": {
+        "external": [],
+        "failed": []
+      },
+      "pass": true,
+      "scope": "launcher-gallery-fixture-desktop"
+    },
+    {
+      "expected": {
+        "employeeDecisionCard": true,
+        "employeeFixture": true,
+        "employeeQuestionControls": true,
+        "exactListingDecisions": true,
+        "gcspExamples": true,
+        "retailResults": true
+      },
+      "id": "stable-employee-fixture-control-and-gallery-examples",
+      "observed": {
+        "employeeBriefItemCount": 3,
+        "employeeConfirmControl": "Confirm no charging access",
+        "employeeDecisionCard": true,
+        "employeeFixture": true,
+        "employeeFixtureLabel": "Local employee brief fixture",
+        "employeeQuestionControls": true,
+        "exactListingDecisions": true,
+        "galleryClientWidth": 320,
+        "galleryWidth": 320,
+        "gcspExamples": true,
+        "retailResults": true
+      },
+      "pass": true,
+      "scope": "launcher-gallery-fixture-narrow-320"
+    },
+    {
+      "expected": 320,
+      "id": "gallery-no-horizontal-overflow",
+      "observed": 320,
+      "pass": true,
+      "scope": "launcher-gallery-fixture-narrow-320"
+    },
+    {
+      "expected": {
+        "console": 0,
+        "pageErrors": 0
+      },
+      "id": "no-console-or-page-errors",
+      "observed": {
+        "console": [],
+        "pageErrors": []
+      },
+      "pass": true,
+      "scope": "launcher-gallery-fixture-narrow-320"
+    },
+    {
+      "expected": {
+        "external": 0,
+        "failed": 0
+      },
+      "id": "no-unexpected-failed-or-external-requests",
+      "observed": {
+        "external": [],
+        "failed": []
+      },
+      "pass": true,
+      "scope": "launcher-gallery-fixture-narrow-320"
+    },
+    {
+      "expected": "MINI retail shell and matcher render",
+      "id": "mini-retail-shell-and-matcher-render",
+      "observed": {
+        "bodyScrollWidth": 396,
+        "brand": "mini",
+        "clientWidth": 320,
+        "documentScrollWidth": 396,
+        "entryState": "retail",
+        "heroHeading": "Find Your MINI.",
+        "matcherMounted": true,
+        "overflowPx": 76,
+        "shellClientWidth": 320,
+        "shellScrollWidth": 396
+      },
+      "pass": true,
+      "scope": "mini-retail-current-narrow-320"
+    },
+    {
+      "expected": {
+        "console": 0,
+        "pageErrors": 0
+      },
+      "id": "no-console-or-page-errors",
+      "observed": {
+        "console": [],
+        "pageErrors": []
+      },
+      "pass": true,
+      "scope": "mini-retail-current-narrow-320"
+    },
+    {
+      "expected": {
+        "external": 0,
+        "failed": 0
+      },
+      "id": "no-unexpected-failed-or-external-requests",
+      "observed": {
+        "external": [],
+        "failed": []
+      },
+      "pass": true,
+      "scope": "mini-retail-current-narrow-320"
+    },
+    {
+      "expected": "MINI retail shell and matcher render",
+      "id": "mini-retail-shell-and-matcher-render",
+      "observed": {
+        "bodyScrollWidth": 396,
+        "brand": "mini",
+        "clientWidth": 320,
+        "documentScrollWidth": 396,
+        "entryState": "retail",
+        "heroHeading": "Find Your MINI.",
+        "matcherMounted": true,
+        "overflowPx": 76,
+        "shellClientWidth": 320,
+        "shellScrollWidth": 396
+      },
+      "pass": true,
+      "scope": "mini-retail-claim-narrow-320"
+    },
+    {
+      "expected": {
+        "console": 0,
+        "pageErrors": 0
+      },
+      "id": "no-console-or-page-errors",
+      "observed": {
+        "console": [
+          "Access to fetch at 'http://127.0.0.1:32878/api/questions?retailer=92&brand=mini' from origin 'http://127.0.0.1:32139' has been blocked by CORS policy: Permission was denied for this request to access the `loopback` address space.",
+          "Failed to load resource: net::ERR_FAILED"
+        ],
+        "pageErrors": []
+      },
+      "pass": false,
+      "scope": "mini-retail-claim-narrow-320"
+    },
+    {
+      "expected": {
+        "external": 0,
+        "failed": 0
+      },
+      "id": "no-unexpected-failed-or-external-requests",
+      "observed": {
+        "external": [],
+        "failed": [
+          "http://127.0.0.1:32878/api/questions?[redacted-query] net::ERR_FAILED"
+        ]
+      },
+      "pass": false,
+      "scope": "mini-retail-claim-narrow-320"
+    },
+    {
+      "expected": "prior fallback screenshots, DOM states and injected local paths remain available",
+      "id": "retained-fallback-dom-and-injected-path-evidence",
+      "observed": [
+        {
+          "assertions": [
+            {
+              "expected": "MINI remains labelled while image and logo fail",
+              "id": "failed-image-and-logo-retain-identifying-copy",
+              "observed": {
+                "actionText": "Explore MINI Used cars",
+                "destinationText": "Used cars images coming soon\nUsed cars\n\nFind a used car matched to how you drive. Explore the full choice of brands and ways to search.\n\nContinue with MINI.\n\nExplore MINI Used cars",
+                "fallbackVisible": true,
+                "imagePresent": false,
+                "selectedBrand": "mini",
+                "selectedBrandText": "MINI"
+              },
+              "pass": true,
+              "scope": "launcher-image-and-selector-logo-fallback"
+            },
+            {
+              "expected": "two expected 404 image failures",
+              "id": "expected-image-failures-were-injected",
+              "observed": [
+                "/assets/brand-logos/mini.svg",
+                "/assets/brand-logos/mini.svg",
+                "/assets/brand-hero/mini.jpg",
+                "/assets/brand-hero/mini.jpg"
+              ],
+              "pass": true,
+              "scope": "launcher-image-and-selector-logo-fallback"
+            },
+            {
+              "expected": 0,
+              "id": "no-browser-console-errors",
+              "observed": [],
+              "pass": true,
+              "scope": "launcher-image-and-selector-logo-fallback"
+            },
+            {
+              "expected": 0,
+              "id": "no-page-errors",
+              "observed": [],
+              "pass": true,
+              "scope": "launcher-image-and-selector-logo-fallback"
+            },
+            {
+              "expected": 0,
+              "id": "no-unexpected-failed-requests",
+              "observed": [],
+              "pass": true,
+              "scope": "launcher-image-and-selector-logo-fallback"
+            },
+            {
+              "expected": 0,
+              "id": "no-external-network-attempts",
+              "observed": [],
+              "pass": true,
+              "scope": "launcher-image-and-selector-logo-fallback"
+            }
+          ],
+          "details": {
+            "actionText": "Explore MINI Used cars",
+            "destinationText": "Used cars images coming soon\nUsed cars\n\nFind a used car matched to how you drive. Explore the full choice of brands and ways to search.\n\nContinue with MINI.\n\nExplore MINI Used cars",
+            "fallbackVisible": true,
+            "imagePresent": false,
+            "selectedBrand": "mini",
+            "selectedBrandText": "MINI"
+          },
+          "injectedRequestPaths": [
+            "/assets/brand-logos/mini.svg",
+            "/assets/brand-hero/mini.jpg"
+          ],
+          "name": "launcher-image-and-selector-logo-fallback",
+          "screenshot": "fucq33-final-launcher-media-fallback.png",
+          "screenshotExists": true,
+          "unexpectedFailures": []
+        },
+        {
+          "assertions": [
+            {
+              "expected": "MINI logo text and plain-hero fallback",
+              "id": "retail-chrome-fallback-retains-brand",
+              "observed": {
+                "brand": "mini",
+                "fallbackLogoText": "MINI",
+                "heroHeading": "Find Your MINI.",
+                "heroPlain": true
+              },
+              "pass": true,
+              "scope": "mini-retail-logo-and-hero-fallback"
+            },
+            {
+              "expected": 0,
+              "id": "no-browser-console-errors",
+              "observed": [],
+              "pass": true,
+              "scope": "mini-retail-logo-and-hero-fallback"
+            },
+            {
+              "expected": 0,
+              "id": "no-page-errors",
+              "observed": [],
+              "pass": true,
+              "scope": "mini-retail-logo-and-hero-fallback"
+            },
+            {
+              "expected": 0,
+              "id": "no-unexpected-failed-requests",
+              "observed": [],
+              "pass": true,
+              "scope": "mini-retail-logo-and-hero-fallback"
+            },
+            {
+              "expected": 0,
+              "id": "no-external-network-attempts",
+              "observed": [],
+              "pass": true,
+              "scope": "mini-retail-logo-and-hero-fallback"
+            }
+          ],
+          "details": {
+            "brand": "mini",
+            "fallbackLogoText": "MINI",
+            "heroHeading": "Find Your MINI.",
+            "heroPlain": true
+          },
+          "injectedRequestPaths": [
+            "/assets/brand-logos/mini.svg",
+            "/assets/brand-hero/mini.jpg"
+          ],
+          "name": "mini-retail-logo-and-hero-fallback",
+          "screenshot": null,
+          "screenshotExists": false,
+          "unexpectedFailures": []
+        }
+      ],
+      "pass": false,
+      "scope": "historical-fallback"
+    }
+  ],
+  "base": "http://127.0.0.1:32139",
+  "browser": "system Chrome headless",
+  "capturedAt": "2026-11-05T12:24:59.790Z",
+  "concurrentExistingChanges": [
+    " M docs/gcsp/evidence/fucq-12/fucq33-review.md",
+    "?? docs/gcsp/evidence/fucq-12/fucq33-final-browser.json",
+    "?? docs/gcsp/evidence/fucq-12/fucq33-final/"
+  ],
+  "fallbackEvidence": [
+    {
+      "assertions": [
+        {
+          "expected": "MINI remains labelled while image and logo fail",
+          "id": "failed-image-and-logo-retain-identifying-copy",
+          "observed": {
+            "actionText": "Explore MINI Used cars",
+            "destinationText": "Used cars images coming soon\nUsed cars\n\nFind a used car matched to how you drive. Explore the full choice of brands and ways to search.\n\nContinue with MINI.\n\nExplore MINI Used cars",
+            "fallbackVisible": true,
+            "imagePresent": false,
+            "selectedBrand": "mini",
+            "selectedBrandText": "MINI"
+          },
+          "pass": true,
+          "scope": "launcher-image-and-selector-logo-fallback"
+        },
+        {
+          "expected": "two expected 404 image failures",
+          "id": "expected-image-failures-were-injected",
+          "observed": [
+            "/assets/brand-logos/mini.svg",
+            "/assets/brand-logos/mini.svg",
+            "/assets/brand-hero/mini.jpg",
+            "/assets/brand-hero/mini.jpg"
+          ],
+          "pass": true,
+          "scope": "launcher-image-and-selector-logo-fallback"
+        },
+        {
+          "expected": 0,
+          "id": "no-browser-console-errors",
+          "observed": [],
+          "pass": true,
+          "scope": "launcher-image-and-selector-logo-fallback"
+        },
+        {
+          "expected": 0,
+          "id": "no-page-errors",
+          "observed": [],
+          "pass": true,
+          "scope": "launcher-image-and-selector-logo-fallback"
+        },
+        {
+          "expected": 0,
+          "id": "no-unexpected-failed-requests",
+          "observed": [],
+          "pass": true,
+          "scope": "launcher-image-and-selector-logo-fallback"
+        },
+        {
+          "expected": 0,
+          "id": "no-external-network-attempts",
+          "observed": [],
+          "pass": true,
+          "scope": "launcher-image-and-selector-logo-fallback"
+        }
+      ],
+      "details": {
+        "actionText": "Explore MINI Used cars",
+        "destinationText": "Used cars images coming soon\nUsed cars\n\nFind a used car matched to how you drive. Explore the full choice of brands and ways to search.\n\nContinue with MINI.\n\nExplore MINI Used cars",
+        "fallbackVisible": true,
+        "imagePresent": false,
+        "selectedBrand": "mini",
+        "selectedBrandText": "MINI"
+      },
+      "injectedRequestPaths": [
+        "/assets/brand-logos/mini.svg",
+        "/assets/brand-hero/mini.jpg"
+      ],
+      "name": "launcher-image-and-selector-logo-fallback",
+      "screenshot": "fucq33-final-launcher-media-fallback.png",
+      "screenshotExists": true,
+      "unexpectedFailures": []
+    },
+    {
+      "assertions": [
+        {
+          "expected": "MINI logo text and plain-hero fallback",
+          "id": "retail-chrome-fallback-retains-brand",
+          "observed": {
+            "brand": "mini",
+            "fallbackLogoText": "MINI",
+            "heroHeading": "Find Your MINI.",
+            "heroPlain": true
+          },
+          "pass": true,
+          "scope": "mini-retail-logo-and-hero-fallback"
+        },
+        {
+          "expected": 0,
+          "id": "no-browser-console-errors",
+          "observed": [],
+          "pass": true,
+          "scope": "mini-retail-logo-and-hero-fallback"
+        },
+        {
+          "expected": 0,
+          "id": "no-page-errors",
+          "observed": [],
+          "pass": true,
+          "scope": "mini-retail-logo-and-hero-fallback"
+        },
+        {
+          "expected": 0,
+          "id": "no-unexpected-failed-requests",
+          "observed": [],
+          "pass": true,
+          "scope": "mini-retail-logo-and-hero-fallback"
+        },
+        {
+          "expected": 0,
+          "id": "no-external-network-attempts",
+          "observed": [],
+          "pass": true,
+          "scope": "mini-retail-logo-and-hero-fallback"
+        }
+      ],
+      "details": {
+        "brand": "mini",
+        "fallbackLogoText": "MINI",
+        "heroHeading": "Find Your MINI.",
+        "heroPlain": true
+      },
+      "injectedRequestPaths": [
+        "/assets/brand-logos/mini.svg",
+        "/assets/brand-hero/mini.jpg"
+      ],
+      "name": "mini-retail-logo-and-hero-fallback",
+      "screenshot": null,
+      "screenshotExists": false,
+      "unexpectedFailures": []
+    }
+  ],
+  "resource": {
+    "browserProfile": "persistent isolated Chromium profile inside owned scratch; removed by finalizer",
+    "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-followup-20261105/logs/fucq33-followup-browser.log",
+    "logBytes": 9037,
+    "oneDriveAvailable": false,
+    "ownedProcessGroups": [
+      30463
+    ],
+    "ownedProcessGroupsDead": true,
+    "peakRssBytes": 486031360,
+    "peakScratchBytes": 11699616,
+    "portsAfter": {
+      "32139": {
+        "state": "none"
+      },
+      "32878": {
+        "state": "none"
+      }
+    },
+    "reservation": {
+      "disk": 268435456,
+      "ram": 1610612736
+    },
+    "reservationReleased": true,
+    "scratchAbsent": true,
+    "scratchRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/followup-20261105",
+    "serverDependencyBytes": 858816,
+    "serverDependencyBytesWithinCap": true,
+    "serverManifestHashesAfter": {
+      "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+      "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+    },
+    "serverManifestHashesBefore": {
+      "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+      "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+    },
+    "serverManifestHashesUnchanged": true,
+    "serverPgInstalled": true,
+    "sourceHashesUnchanged": true,
+    "wallSeconds": 9.575
+  },
+  "results": [
+    {
+      "action": {
+        "accent": "#0b6c7e",
+        "background": "rgb(11, 108, 126)",
+        "contrastRatio": 6.07,
+        "foreground": "rgb(255, 255, 255)",
+        "tag": "A",
+        "text": "Explore Used cars",
+        "title": "Used cars"
+      },
+      "console": [],
+      "expectedInjectedFailures": [],
+      "external": [],
+      "failed": [],
+      "name": "launcher-action-default-desktop",
+      "pageErrors": [],
+      "responses": [
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/vehicle-matcher.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/demo-chrome.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/launcher.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/demo-launcher.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/entry-host.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/tokens.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/decision-card.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/question-controls.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/gcsp-kit.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/boot.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/shell/gcsp-tokens.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/ui.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/entry-context.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/vehicle-matcher.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/retail-chrome.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/launcher.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/engine.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/index.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/components.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/share-context.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/result-card.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/knockout.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/mingle.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/questionnaire.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/podium.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/guess-who.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/quiz-meta.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/match-signal.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/preview-feed.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/question-ui.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/brand-copy.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/feedback-actions.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-hero/bmw.jpg",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-hero/mini.jpg",
+          "status": 200
+        }
+      ],
+      "screenshot": "fucq33-followup-launcher-default-desktop.png",
+      "viewport": {
+        "height": 900,
+        "width": 1280
+      }
+    },
+    {
+      "action": {
+        "accent": "#0b6c7e",
+        "background": "rgb(11, 108, 126)",
+        "contrastRatio": 6.07,
+        "foreground": "rgb(255, 255, 255)",
+        "tag": "A",
+        "text": "Explore Used cars",
+        "title": "Used cars"
+      },
+      "console": [],
+      "expectedInjectedFailures": [],
+      "external": [],
+      "failed": [],
+      "name": "launcher-action-default-narrow-320",
+      "pageErrors": [],
+      "responses": [
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/vehicle-matcher.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/demo-chrome.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/entry-host.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/launcher.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/demo-launcher.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/tokens.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/decision-card.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/question-controls.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/gcsp-kit.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/boot.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/shell/gcsp-tokens.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/ui.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/entry-context.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/vehicle-matcher.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/engine.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/retail-chrome.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/launcher.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/share-context.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/index.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/components.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/questionnaire.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/mingle.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/knockout.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/podium.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/result-card.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/guess-who.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/quiz-meta.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/brand-copy.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/question-ui.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/preview-feed.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/match-signal.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/feedback-actions.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-hero/bmw.jpg",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-hero/mini.jpg",
+          "status": 200
+        }
+      ],
+      "screenshot": "fucq33-followup-launcher-default-narrow-320.png",
+      "viewport": {
+        "height": 740,
+        "width": 320
+      }
+    },
+    {
+      "action": {
+        "accent": "#0b6c7e",
+        "background": "rgb(11, 108, 126)",
+        "contrastRatio": 6.07,
+        "foreground": "rgb(255, 255, 255)",
+        "tag": "A",
+        "text": "Explore MINI Used cars",
+        "title": "Used cars"
+      },
+      "console": [],
+      "expectedInjectedFailures": [],
+      "external": [],
+      "failed": [],
+      "name": "launcher-action-mini-desktop",
+      "pageErrors": [],
+      "responses": [
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/vehicle-matcher.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/launcher.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/demo-chrome.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/entry-host.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/demo-launcher.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/question-controls.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/decision-card.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/tokens.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/gcsp-kit.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/boot.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/shell/gcsp-tokens.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/ui.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/engine.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/vehicle-matcher.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/entry-context.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/retail-chrome.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/launcher.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/index.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/share-context.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/components.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/questionnaire.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/podium.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/knockout.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/mingle.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/guess-who.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/result-card.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/quiz-meta.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/preview-feed.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/feedback-actions.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/brand-copy.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/question-ui.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/match-signal.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-logos/mini.svg",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-hero/bmw.jpg",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-hero/mini.jpg",
+          "status": 200
+        }
+      ],
+      "screenshot": "fucq33-followup-launcher-mini-desktop.png",
+      "viewport": {
+        "height": 900,
+        "width": 1280
+      }
+    },
+    {
+      "action": {
+        "accent": "#0b6c7e",
+        "background": "rgb(11, 108, 126)",
+        "contrastRatio": 6.07,
+        "foreground": "rgb(255, 255, 255)",
+        "tag": "A",
+        "text": "Explore MINI Used cars",
+        "title": "Used cars"
+      },
+      "console": [],
+      "expectedInjectedFailures": [],
+      "external": [],
+      "failed": [],
+      "name": "launcher-action-mini-narrow-320",
+      "pageErrors": [],
+      "responses": [
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/vehicle-matcher.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/demo-chrome.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/launcher.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/entry-host.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/demo-launcher.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/tokens.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/decision-card.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/question-controls.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/gcsp-kit.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/boot.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/shell/gcsp-tokens.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/vehicle-matcher.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/engine.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/entry-context.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/launcher.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/retail-chrome.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/ui.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/index.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/share-context.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/components.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/questionnaire.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/podium.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/knockout.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/guess-who.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/result-card.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/mingle.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/quiz-meta.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/question-ui.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/feedback-actions.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/preview-feed.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/brand-copy.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/match-signal.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-logos/mini.svg",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-hero/bmw.jpg",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-hero/mini.jpg",
+          "status": 200
+        }
+      ],
+      "screenshot": "fucq33-followup-launcher-mini-narrow-320.png",
+      "viewport": {
+        "height": 740,
+        "width": 320
+      }
+    },
+    {
+      "details": {
+        "approvedRuleBlocks": 75,
+        "countDiscrepancy": 1,
+        "currentEmployeeExtras": [],
+        "currentEmployeeMissing": [],
+        "currentEmployeeRuleBlocks": 56,
+        "declaredHistoricalCount": 18,
+        "employeeRemainderMatchesApproved": true,
+        "exactMovedRuleMatch": true,
+        "kitRulesOutsideApprovedEmployee": [],
+        "missingMovedRules": [],
+        "movedRuleBlocks": 19,
+        "sharedKitRuleBlocks": 19
+      },
+      "name": "employee-css-composition"
+    },
+    {
+      "afterEnter": null,
+      "attempts": [
+        {
+          "selected": "mini",
+          "sequence": [
+            "Space",
+            "ArrowUp",
+            "Enter"
+          ],
+          "values": [
+            "mini",
+            "mini",
+            "mini"
+          ]
+        },
+        {
+          "selected": "mini",
+          "sequence": [
+            "Alt+ArrowDown",
+            "ArrowUp",
+            "Enter"
+          ],
+          "values": [
+            "mini",
+            "mini",
+            "mini"
+          ]
+        },
+        {
+          "selected": "mini",
+          "sequence": [
+            "Space",
+            "Home",
+            "Enter"
+          ],
+          "values": [
+            "mini",
+            "mini",
+            "mini"
+          ]
+        }
+      ],
+      "console": [],
+      "expectedInjectedFailures": [],
+      "external": [],
+      "failed": [],
+      "name": "launcher-keyboard-open-and-commit",
+      "pageErrors": [],
+      "responses": [
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/entry-host.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/demo-chrome.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/vehicle-matcher.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/launcher.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/demo-launcher.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/gcsp-kit.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/tokens.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/decision-card.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/question-controls.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/boot.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/shell/gcsp-tokens.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/vehicle-matcher.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/retail-chrome.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/entry-context.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/ui.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/engine.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/launcher.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/index.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/share-context.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/components.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/questionnaire.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/mingle.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/knockout.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/podium.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/guess-who.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/result-card.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/question-ui.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/quiz-meta.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/preview-feed.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/brand-copy.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/feedback-actions.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/match-signal.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-logos/mini.svg",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-hero/bmw.jpg",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-hero/mini.jpg",
+          "status": 200
+        }
+      ],
+      "screenshot": "fucq33-followup-keyboard-mini.png",
+      "selectedBrand": "mini",
+      "viewport": {
+        "height": 740,
+        "width": 320
+      }
+    },
+    {
+      "console": [],
+      "details": {
+        "employeeBriefItemCount": 3,
+        "employeeConfirmControl": "Confirm no charging access",
+        "employeeDecisionCard": true,
+        "employeeFixture": true,
+        "employeeFixtureLabel": "Local employee brief fixture",
+        "employeeQuestionControls": true,
+        "exactListingDecisions": true,
+        "galleryClientWidth": 1280,
+        "galleryWidth": 1280,
+        "gcspExamples": true,
+        "retailResults": true
+      },
+      "expectedInjectedFailures": [],
+      "external": [],
+      "failed": [],
+      "name": "launcher-gallery-fixture-desktop",
+      "pageErrors": [],
+      "responses": [
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/components.html",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/shell/gcsp-shell.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/employee/gcsp-employee.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/vehicle-matcher.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/component-gallery.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/component-gallery.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/presenter/gcsp-presenter.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/launcher.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/gcsp-kit.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/shell/gcsp-tokens.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/components.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/preview-feed.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/question-ui.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/tokens.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/question-controls.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/employee-card-fixture.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/ui.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/decision-card.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/feedback-actions.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/result-card.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/employee/gcsp-employee.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/presenter/message-list.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/shell/portal-shell.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/presenter/fixtures.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/entry-context.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/engine.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/quiz-meta.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/employee/fixtures.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/brand-copy.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/presenter/outbox-copy.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/employee/representative-body.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-logos/bmw.svg",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-logos/mini.svg",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-logos/motorrad.svg",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/fonts/BMWTypeNextLatin-Regular.woff2",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/fonts/BMWTypeNextLatin-Bold.woff2",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/fonts/BMWTypeNextLatin-Light.woff2",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-hero/bmw.jpg",
+          "status": 200
+        }
+      ],
+      "screenshot": "fucq33-followup-gallery-desktop.png",
+      "viewport": {
+        "height": 900,
+        "width": 1280
+      }
+    },
+    {
+      "console": [],
+      "details": {
+        "employeeBriefItemCount": 3,
+        "employeeConfirmControl": "Confirm no charging access",
+        "employeeDecisionCard": true,
+        "employeeFixture": true,
+        "employeeFixtureLabel": "Local employee brief fixture",
+        "employeeQuestionControls": true,
+        "exactListingDecisions": true,
+        "galleryClientWidth": 320,
+        "galleryWidth": 320,
+        "gcspExamples": true,
+        "retailResults": true
+      },
+      "expectedInjectedFailures": [],
+      "external": [],
+      "failed": [],
+      "name": "launcher-gallery-fixture-narrow-320",
+      "pageErrors": [],
+      "responses": [
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/components.html",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/vehicle-matcher.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/shell/gcsp-shell.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/presenter/gcsp-presenter.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/employee/gcsp-employee.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/component-gallery.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/launcher.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/component-gallery.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/decision-card.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/gcsp-kit.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/shell/gcsp-tokens.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/question-controls.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/tokens.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/components.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/question-ui.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/preview-feed.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/feedback-actions.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/ui.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/employee-card-fixture.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/shell/portal-shell.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/result-card.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/employee/gcsp-employee.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/presenter/fixtures.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/presenter/message-list.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/quiz-meta.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/entry-context.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/engine.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/brand-copy.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/employee/fixtures.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/presenter/outbox-copy.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/employee/representative-body.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-logos/mini.svg",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-logos/motorrad.svg",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-logos/bmw.svg",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/fonts/BMWTypeNextLatin-Regular.woff2",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/fonts/BMWTypeNextLatin-Light.woff2",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/fonts/BMWTypeNextLatin-Bold.woff2",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-hero/bmw.jpg",
+          "status": 200
+        }
+      ],
+      "screenshot": "fucq33-followup-gallery-narrow-320.png",
+      "viewport": {
+        "height": 740,
+        "width": 320
+      }
+    },
+    {
+      "console": [],
+      "details": {
+        "bodyScrollWidth": 396,
+        "brand": "mini",
+        "clientWidth": 320,
+        "documentScrollWidth": 396,
+        "entryState": "retail",
+        "heroHeading": "Find Your MINI.",
+        "matcherMounted": true,
+        "overflowPx": 76,
+        "shellClientWidth": 320,
+        "shellScrollWidth": 396
+      },
+      "expectedInjectedFailures": [],
+      "external": [],
+      "failed": [],
+      "name": "mini-retail-current-narrow-320",
+      "pageErrors": [],
+      "responses": [
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/vehicle-matcher.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/entry-host.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/demo-chrome.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/launcher.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/demo-launcher.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/gcsp-kit.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/tokens.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/question-controls.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/decision-card.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/boot.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/gcsp/shell/gcsp-tokens.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/vehicle-matcher.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/engine.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/ui.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/entry-context.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/retail-chrome.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/launcher.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/index.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/share-context.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/components.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/questionnaire.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/mingle.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/podium.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/knockout.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/result-card.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/guess-who.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/quiz-meta.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/preview-feed.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/brand-copy.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/question-ui.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/feedback-actions.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/match-signal.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-logos/mini.svg",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-hero/mini.jpg",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32878",
+          "path": "/api/questions",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/fonts/mini_serif-bold-web.woff",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/fonts/mini_sans_serif-regular-web.woff",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/fonts/mini_sans_serif-bold-web.woff",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/fonts/mini_serif-regular-web.woff",
+          "status": 200
+        }
+      ],
+      "screenshot": "fucq33-followup-mini-current-narrow-320.png",
+      "viewport": {
+        "height": 740,
+        "width": 320
+      }
+    },
+    {
+      "console": [
+        "Access to fetch at 'http://127.0.0.1:32878/api/questions?retailer=92&brand=mini' from origin 'http://127.0.0.1:32139' has been blocked by CORS policy: Permission was denied for this request to access the `loopback` address space.",
+        "Failed to load resource: net::ERR_FAILED"
+      ],
+      "details": {
+        "bodyScrollWidth": 396,
+        "brand": "mini",
+        "clientWidth": 320,
+        "documentScrollWidth": 396,
+        "entryState": "retail",
+        "heroHeading": "Find Your MINI.",
+        "matcherMounted": true,
+        "overflowPx": 76,
+        "shellClientWidth": 320,
+        "shellScrollWidth": 396
+      },
+      "expectedInjectedFailures": [],
+      "external": [],
+      "failed": [
+        "http://127.0.0.1:32878/api/questions?[redacted-query] net::ERR_FAILED"
+      ],
+      "name": "mini-retail-claim-narrow-320",
+      "pageErrors": [],
+      "responses": [
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/vehicle-matcher.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/demo-chrome.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/vehicle-matcher.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/demo-launcher/entry-context.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/engine.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/tokens.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/decision-card.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/question-controls.css",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/share-context.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/index.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/mingle.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/questionnaire.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/podium.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/guess-who.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/knockout.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/ui.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/match-signal.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/quiz-meta.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/question-ui.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/brand-copy.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/preview-feed.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/modes/result-card.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/feedback-actions.js",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-logos/mini.svg",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/assets/brand-hero/mini.jpg",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/fonts/mini_serif-bold-web.woff",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/fonts/mini_sans_serif-bold-web.woff",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/fonts/mini_sans_serif-regular-web.woff",
+          "status": 200
+        },
+        {
+          "origin": "http://127.0.0.1:32139",
+          "path": "/blocks/vehicle-matcher/fonts/mini_serif-regular-web.woff",
+          "status": 200
+        }
+      ],
+      "screenshot": "fucq33-followup-mini-claim-baseline-narrow-320.png",
+      "viewport": {
+        "height": 740,
+        "width": 320
+      }
+    }
+  ],
+  "runner": {
+    "exitCode": 0,
+    "issue": null
+  },
+  "scope": "four corrected assertion groups plus a claim-index MINI 320px baseline; no completed matrix cases replayed",
+  "sourceCommit": "e16cf52f06274dfe9164af6d72765b5de8ad220d",
+  "sourceHashes": {
+    "approvedEmployeeCssSha256": "b3bd84821dc3cce1cca5d8d6db3c31a9df4f0bb96b7c51e2247b9dde1f880686",
+    "claimIndexSha256": "09bdc0412200c2b006894b1b625a77b5635c4a5096f14141f5c66598bdfc516a",
+    "employeeCssSha256": "3cab6080aa52605d92b5f616151087fe289e72c43045a7f396a8bffca7112b6f",
+    "sharedKitCssSha256": "64abde7dfc99e40c68270a9ea5850c9a713623014f3beca1f4d5c96263763b86"
+  },
+  "sourceSha256": {
+    "COMPONENTS.md": "5d960b3e5de0d4abdf24a6051f4669b630d58b423f550700cb00161c61032874",
+    "assets/brand-hero/bmw.jpg": "674a6adc350ce39dde798acda7279f8c1e1c0a5a91daa7a1d1c843616a2b442d",
+    "assets/brand-hero/ferrari.jpg": "ce117434f27d6526edc7e3930ed3a7feb9b263aaf118dedc5e41405bfc5f7b60",
+    "assets/brand-hero/ford.jpg": "493447a7f733b2e3aa05a595b3194cd637e3097f2d9452ac4f3ab3ab960970d3",
+    "assets/brand-hero/honda.jpg": "e6e6f9a8543e831e9c460d83ee7ab0d4b37f1e07f843b23c9ac2a26cd9196622",
+    "assets/brand-hero/mini.jpg": "3589cbc23a64762ad0130613c5cf9e759fc1a39c5f5b80df915cbd8377e0f0d0",
+    "assets/brand-hero/motorrad.jpg": "fd52f741b4371ec85942ee6b5f950fbe32553bd70c6c91a02838e13784b91192",
+    "assets/brand-logos/bmw.svg": "b2226efc7bfb81d6b4f6d3002205ff2d2da2e5eb75455694dcd9645ba6e460a7",
+    "assets/brand-logos/ferrari.svg": "af5aaf761313d11ce5ec2c3746786449a361cec8638924ebf0a6c22f87cbdd90",
+    "assets/brand-logos/ford.svg": "b7447830af9bf4ea2de945cb172f92f0e77aaf508304b4f1339c9572f352ae79",
+    "assets/brand-logos/honda.svg": "302b953c7cd386c159e47cf7e4a9b73439336afd57485786b347dbb610f0c708",
+    "assets/brand-logos/mini.svg": "84e781326fba9c98bdaada156869cfb193da1e1a4fdba7f4fd05c27bb87709a0",
+    "assets/brand-logos/motorrad.svg": "5581aca876aa82f51d4ccf18099e2924e3981179f21a242743d47a1bc8f1a53c",
+    "blocks/demo-launcher/boot.js": "4504dc0eaa8445a059872512396512ee88934e0fff2914720cdf84f09823a75f",
+    "blocks/demo-launcher/components.js": "d0dbd308deaec87ea08e013fbe7922400b35286ca35887c2bda2cc1b5321105e",
+    "blocks/demo-launcher/demo-launcher.js": "b5f169949c234ce6ca0cf34ad2f918d3df7bdc7ac1af0aa589a6c46b805f230c",
+    "blocks/demo-launcher/entry-context.js": "bbdcc23db25d082ff5c18bdd7caf98f078a39cf4c0e79322af78cf555f6a9b52",
+    "blocks/demo-launcher/entry-host.css": "6a41715c4bcd036ba2b592b97fb25c0e9511879f771903e4c025cb5a8a42f747",
+    "blocks/demo-launcher/launcher.css": "e837dfdaad34439efdc19eede3bbe12c9500ed576d21523cc81f169d6c9f069f",
+    "blocks/demo-launcher/launcher.js": "6b36679c316b467776535afa015a507085b34672fbe38311e191395b43a6a7e0",
+    "blocks/demo-launcher/retail-chrome.js": "a0cd9de0125faa66eef0d8f0730be393b268cdb301e38a96ee136aaec0493072",
+    "blocks/gcsp/employee/gcsp-employee.css": "3cab6080aa52605d92b5f616151087fe289e72c43045a7f396a8bffca7112b6f",
+    "blocks/gcsp/employee/representative-body.js": "a9146fc18cac0346a20b12c603df65a84dffc7bd46d267f2706f4e2c63b76af4",
+    "blocks/gcsp/shell/gcsp-shell.css": "d6f35911624c03ee82c22eb349d51228ba849eaf354976f19df905887e9f92a3",
+    "blocks/gcsp/shell/gcsp-tokens.css": "d939a355b945ecfd0ad185029dbe2b79c70bab8862052a7ec54cf7abfa7f8642",
+    "blocks/vehicle-matcher/component-gallery.css": "21b053f47d968c4a619340ee305816b70dba4905ad39783d8cdfb3db6db8b2c9",
+    "blocks/vehicle-matcher/component-gallery.js": "068c861334749d417d26e8c5bddb3523b0f2eee7f2ddfab919ab6c13d674a195",
+    "blocks/vehicle-matcher/gcsp-kit.css": "64abde7dfc99e40c68270a9ea5850c9a713623014f3beca1f4d5c96263763b86",
+    "blocks/vehicle-matcher/modes/result-card.js": "cc5d50468f45f1c751c597ece89ca5d7dfe88f70d98dd606104ad3504007f948",
+    "blocks/vehicle-matcher/tokens.css": "30d971de3fd89d456b7bc819621ff9f11888da1ca73e8bd80dc70c58a411b1fa",
+    "blocks/vehicle-matcher/ui.js": "49107097a7927e388ff78949045827f3a8903fea0bd758dbe1aa597bec82d8b2",
+    "blocks/vehicle-matcher/vehicle-matcher.css": "11d7af7f3f05766c9c32c107f75f31d269d5531de4040938b34cea8b3854ea94",
+    "components.html": "99413690d048b349e752b5323e1d6468423ea7a1037b474d3716d9661f97d91f",
+    "gcsp-employee.html": "81d96b2903d3245ff9d1138246dad308127adc71a0fdd4956edd3b4d2dda581f",
+    "index.html": "36eaabc55fcffb32f8fc83c306b00fe0bbb4fdd470b3d6c4dac70abc10f6c517",
+    "server/index.js": "849f4ee835d473db855e87be3cb74d7163ea1b98a7eb2eced3f467d9fbe5d67a",
+    "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+    "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+  },
+  "story": "FUCQ-33"
+}

@@ -1,0 +1,27 @@
+/* GCSP kit: metricTile and dataTable. Every selector is .gcsp scoped; colours come from tokens only. */
+.gcsp .gcsp-tile { display: flex; flex-direction: column; gap: 4px; min-width: 0; padding: 14px 16px; background: var(--gcsp-surface-raised); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
+.gcsp .gcsp-tile-label { margin: 0; color: var(--gcsp-text-muted); font-size: 13px; font-weight: 600; overflow-wrap: anywhere; }
+.gcsp .gcsp-tile-figure { margin: 0; font-size: 28px; font-weight: 600; line-height: 1.15; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.gcsp .gcsp-tile-headline .gcsp-tile-figure { font-size: 40px; }
+.gcsp .gcsp-tile-compact { padding: 10px 12px; }
+.gcsp .gcsp-tile-compact .gcsp-tile-figure { font-size: 22px; }
+.gcsp .gcsp-tile-note { margin: 0; color: var(--gcsp-text-muted); font-size: 13px; line-height: 1.4; overflow-wrap: anywhere; }
+.gcsp .gcsp-tile-figure.is-band { align-self: flex-start; max-width: 100%; padding: 2px 8px; font-size: 18px; font-weight: 500; font-variant-numeric: normal; background: var(--gcsp-surface-muted); border: 1px dashed var(--gcsp-unavailable); border-radius: var(--gcsp-radius); }
+.gcsp .gcsp-tile-figure.is-missing { color: var(--gcsp-text-muted); font-size: 16px; font-style: italic; font-weight: 400; }
+
+.gcsp .gcsp-table-wrap { position: relative; max-width: 100%; min-width: 0; overflow-x: auto; background: var(--gcsp-surface-raised); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
+.gcsp .gcsp-table-wrap:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 2px; }
+.gcsp .gcsp-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.gcsp .gcsp-table-caption { caption-side: top; padding: 10px 12px; text-align: left; font-size: 15px; font-weight: 600; }
+.gcsp .gcsp-table-th { padding: 8px 12px; text-align: left; vertical-align: bottom; color: var(--gcsp-text-muted); font-size: 13px; font-weight: 600; background: var(--gcsp-surface-page); border-top: 1px solid var(--gcsp-divider); border-bottom: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-table-rowhead, .gcsp .gcsp-table-td { padding: 8px 12px; text-align: left; vertical-align: top; overflow-wrap: break-word; border-bottom: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-table-rowhead { font-weight: 600; }
+.gcsp .gcsp-table-td { font-weight: 400; }
+.gcsp .gcsp-table tbody tr:last-child > * { border-bottom: 0; }
+.gcsp .gcsp-table .is-numeric { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.gcsp .gcsp-table .is-band { color: var(--gcsp-text-muted); font-style: italic; }
+.gcsp .gcsp-table .is-missing { color: var(--gcsp-text-muted); font-style: italic; }
+.gcsp .gcsp-table-empty { padding: 14px 12px; color: var(--gcsp-text-muted); }
+.gcsp .gcsp-table .is-numeric.is-band { white-space: normal; }
+@media (max-width: 640px) { .gcsp .gcsp-table-th, .gcsp .gcsp-table-rowhead, .gcsp .gcsp-table-td { padding: 8px; } .gcsp .gcsp-table-rowhead { min-width: 104px; } }
+.gcsp .gcsp-tile-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 12px; }

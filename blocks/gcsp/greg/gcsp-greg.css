@@ -1,0 +1,37 @@
+/* Greg dashboard composition: denser than the employee body, same shell and tokens. Every selector is .gcsp scoped. */
+.gcsp .gcsp-greg { max-width: 1280px; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 20px; }
+.gcsp .gcsp-greg .gcsp-intro .vm-title { margin: 0 0 8px; font-size: 34px; }
+.gcsp .gcsp-greg .gcsp-intro .vm-lede { margin: 0; max-width: 64ch; font-size: 18px; }
+.gcsp .gcsp-greg-bar { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 12px 24px; padding: 14px 16px; background: var(--gcsp-surface-raised); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
+.gcsp .gcsp-greg-bar .vm-btn { min-height: 44px; }
+.gcsp .gcsp-greg-meta { display: flex; flex: 1 1 480px; flex-direction: column; gap: 8px; min-width: 0; }
+.gcsp .gcsp-greg-meta .gcsp-note { font-size: 14px; max-width: 80ch; }
+.gcsp .gcsp-greg-facts { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+.gcsp .gcsp-greg-status { font-size: 14px; }
+.gcsp .gcsp-greg-body { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+.gcsp .gcsp-greg-body[aria-busy="true"] { opacity: 0.7; }
+.gcsp .gcsp-greg-section { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.gcsp .gcsp-greg-h2 { margin: 0; font-size: 20px; font-weight: 600; line-height: 1.25; overflow-wrap: anywhere; }
+.gcsp .gcsp-greg-section > .gcsp-note { font-size: 14px; max-width: 80ch; }
+.gcsp .gcsp-greg-headline { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr)); gap: 12px; }
+.gcsp .gcsp-greg-tables { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 16px; align-items: start; }
+.gcsp .gcsp-greg-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 130px), 1fr)); gap: 12px; }
+.gcsp .gcsp-greg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 24px; align-items: start; }
+.gcsp .gcsp-greg-grid > *, .gcsp .gcsp-greg-tables > * { min-width: 0; }
+.gcsp .gcsp-greg-regions { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 12px; padding-top: 16px; border-top: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-greg-regions[hidden] { display: none; }
+.gcsp .gcsp-greg-region { gap: 4px; padding: 12px 14px; background: var(--gcsp-surface-page); border: 1px dashed var(--gcsp-divider); border-radius: var(--gcsp-radius); }
+.gcsp .gcsp-greg-region .gcsp-greg-h2 { font-size: 15px; color: var(--gcsp-text-muted); }
+.gcsp .gcsp-greg-region .gcsp-note { font-size: 14px; }
+
+@media (max-width: 640px) {
+  .gcsp .gcsp-greg { gap: 16px; }
+  .gcsp .gcsp-greg .gcsp-intro .vm-title { font-size: 28px; }
+  .gcsp .gcsp-greg .gcsp-intro .vm-lede { font-size: 16px; }
+  .gcsp .gcsp-greg-bar { padding: 12px; }
+  .gcsp .gcsp-greg-bar .vm-btn { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gcsp .gcsp-greg-body { transition: none; animation: none; }
+}

@@ -1,0 +1,351 @@
+{
+  "afterCommit": {
+    "employeeAction": "Choose BMW",
+    "employeeDisabled": false,
+    "employeeStatus": "Currently unavailable",
+    "selected": "mini",
+    "summary": "Selected brand: MINI"
+  },
+  "assertionFailures": [
+    {
+      "expected": "Open MINI native select once, commit BMW with ArrowUp + Enter, and show BMW selection plus matching launcher actions",
+      "id": "native-select-keyboard-commits-bmw-and-updates-launcher",
+      "observed": {
+        "afterCommit": {
+          "employeeAction": "Choose BMW",
+          "employeeDisabled": false,
+          "employeeStatus": "Currently unavailable",
+          "selected": "mini",
+          "summary": "Selected brand: MINI"
+        },
+        "focusedAfterOpen": true,
+        "initial": {
+          "employeeAction": "Choose BMW",
+          "selected": "mini",
+          "summary": "Selected brand: MINI"
+        },
+        "keys": [
+          "ArrowUp",
+          "Enter"
+        ]
+      },
+      "pass": false
+    }
+  ],
+  "assertions": [
+    {
+      "expected": "Open MINI native select once, commit BMW with ArrowUp + Enter, and show BMW selection plus matching launcher actions",
+      "id": "native-select-keyboard-commits-bmw-and-updates-launcher",
+      "observed": {
+        "afterCommit": {
+          "employeeAction": "Choose BMW",
+          "employeeDisabled": false,
+          "employeeStatus": "Currently unavailable",
+          "selected": "mini",
+          "summary": "Selected brand: MINI"
+        },
+        "focusedAfterOpen": true,
+        "initial": {
+          "employeeAction": "Choose BMW",
+          "selected": "mini",
+          "summary": "Selected brand: MINI"
+        },
+        "keys": [
+          "ArrowUp",
+          "Enter"
+        ]
+      },
+      "pass": false
+    }
+  ],
+  "browser": "system Chrome headed",
+  "capturedAt": "2026-11-05T12:29:37.862Z",
+  "concurrentExistingChanges": [
+    " M docs/gcsp/evidence/fucq-12/fucq33-review.md",
+    "?? docs/gcsp/evidence/fucq-12/fucq33-final-browser.json",
+    "?? docs/gcsp/evidence/fucq-12/fucq33-final/",
+    "?? docs/gcsp/evidence/fucq-12/fucq33-followup-20261105/",
+    "?? docs/gcsp/evidence/fucq-12/fucq33-followup-browser.json",
+    "?? docs/gcsp/evidence/fucq-12/fucq33-keyboard-retry-browser.json",
+    "?? docs/gcsp/evidence/fucq-12/fucq33-validation.json"
+  ],
+  "focusedAfterOpen": true,
+  "initial": {
+    "employeeAction": "Choose BMW",
+    "selected": "mini",
+    "summary": "Selected brand: MINI"
+  },
+  "keys": [
+    "ArrowUp",
+    "Enter"
+  ],
+  "log": {
+    "console": [],
+    "external": [],
+    "failed": [],
+    "pageErrors": [],
+    "responses": [
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/vehicle-matcher.css"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/demo-launcher/entry-host.css"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/demo-chrome.css"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/demo-launcher/launcher.css"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/demo-launcher/demo-launcher.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/tokens.css"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/gcsp-kit.css"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/demo-launcher/boot.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/question-controls.css"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/decision-card.css"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/gcsp/shell/gcsp-tokens.css"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/ui.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/demo-launcher/entry-context.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/engine.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/vehicle-matcher.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/demo-launcher/launcher.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/demo-launcher/retail-chrome.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/share-context.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/demo-launcher/components.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/modes/index.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/modes/result-card.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/modes/guess-who.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/modes/podium.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/modes/knockout.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/modes/questionnaire.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/modes/mingle.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/modes/preview-feed.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/modes/question-ui.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/feedback-actions.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/modes/brand-copy.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/modes/match-signal.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/blocks/vehicle-matcher/quiz-meta.js"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/assets/brand-logos/mini.svg"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/assets/brand-hero/bmw.jpg"
+      },
+      {
+        "status": 200,
+        "url": "http://127.0.0.1:32149/assets/brand-hero/mini.jpg"
+      }
+    ]
+  },
+  "relatedKeyboardRecoveryReceipt": "fucq33-final-browser.json (existing Tab/Enter Choose BMW recovery check)",
+  "resource": {
+    "browserProfile": "persistent isolated Chromium profile inside owned scratch; removed by finalizer",
+    "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-keyboard-retry-20261105/logs/fucq33-keyboard-retry-browser.log",
+    "logBytes": 1109,
+    "oneDriveAvailable": false,
+    "ownedProcessGroups": [
+      33598
+    ],
+    "ownedProcessGroupsDead": true,
+    "peakRssBytes": 494125056,
+    "peakScratchBytes": 18958848,
+    "portsAfter": {
+      "32149": {
+        "state": "none"
+      },
+      "32888": {
+        "state": "none"
+      }
+    },
+    "reservation": {
+      "disk": 268435456,
+      "ram": 1610612736
+    },
+    "reservationReleased": true,
+    "scratchAbsent": true,
+    "scratchRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/keyboard-retry-20261105",
+    "serverDependencyBytes": 858816,
+    "serverDependencyBytesWithinCap": true,
+    "serverManifestHashesAfter": {
+      "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+      "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+    },
+    "serverManifestHashesBefore": {
+      "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+      "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+    },
+    "serverManifestHashesUnchanged": true,
+    "serverPgInstalled": true,
+    "sourceHashesUnchanged": true,
+    "wallSeconds": 3.396
+  },
+  "run": "headful-native-select-keyboard-retry",
+  "runner": {
+    "exitCode": 0,
+    "issue": null
+  },
+  "screenshot": "fucq33-keyboard-retry-native-select.png",
+  "selected": "mini",
+  "sourceCommit": "e16cf52f06274dfe9164af6d72765b5de8ad220d",
+  "sourceSha256": {
+    "COMPONENTS.md": "5d960b3e5de0d4abdf24a6051f4669b630d58b423f550700cb00161c61032874",
+    "assets/brand-hero/bmw.jpg": "674a6adc350ce39dde798acda7279f8c1e1c0a5a91daa7a1d1c843616a2b442d",
+    "assets/brand-hero/ferrari.jpg": "ce117434f27d6526edc7e3930ed3a7feb9b263aaf118dedc5e41405bfc5f7b60",
+    "assets/brand-hero/ford.jpg": "493447a7f733b2e3aa05a595b3194cd637e3097f2d9452ac4f3ab3ab960970d3",
+    "assets/brand-hero/honda.jpg": "e6e6f9a8543e831e9c460d83ee7ab0d4b37f1e07f843b23c9ac2a26cd9196622",
+    "assets/brand-hero/mini.jpg": "3589cbc23a64762ad0130613c5cf9e759fc1a39c5f5b80df915cbd8377e0f0d0",
+    "assets/brand-hero/motorrad.jpg": "fd52f741b4371ec85942ee6b5f950fbe32553bd70c6c91a02838e13784b91192",
+    "assets/brand-logos/bmw.svg": "b2226efc7bfb81d6b4f6d3002205ff2d2da2e5eb75455694dcd9645ba6e460a7",
+    "assets/brand-logos/ferrari.svg": "af5aaf761313d11ce5ec2c3746786449a361cec8638924ebf0a6c22f87cbdd90",
+    "assets/brand-logos/ford.svg": "b7447830af9bf4ea2de945cb172f92f0e77aaf508304b4f1339c9572f352ae79",
+    "assets/brand-logos/honda.svg": "302b953c7cd386c159e47cf7e4a9b73439336afd57485786b347dbb610f0c708",
+    "assets/brand-logos/mini.svg": "84e781326fba9c98bdaada156869cfb193da1e1a4fdba7f4fd05c27bb87709a0",
+    "assets/brand-logos/motorrad.svg": "5581aca876aa82f51d4ccf18099e2924e3981179f21a242743d47a1bc8f1a53c",
+    "blocks/demo-launcher/boot.js": "4504dc0eaa8445a059872512396512ee88934e0fff2914720cdf84f09823a75f",
+    "blocks/demo-launcher/components.js": "d0dbd308deaec87ea08e013fbe7922400b35286ca35887c2bda2cc1b5321105e",
+    "blocks/demo-launcher/demo-launcher.js": "b5f169949c234ce6ca0cf34ad2f918d3df7bdc7ac1af0aa589a6c46b805f230c",
+    "blocks/demo-launcher/entry-context.js": "bbdcc23db25d082ff5c18bdd7caf98f078a39cf4c0e79322af78cf555f6a9b52",
+    "blocks/demo-launcher/entry-host.css": "6a41715c4bcd036ba2b592b97fb25c0e9511879f771903e4c025cb5a8a42f747",
+    "blocks/demo-launcher/launcher.css": "e837dfdaad34439efdc19eede3bbe12c9500ed576d21523cc81f169d6c9f069f",
+    "blocks/demo-launcher/launcher.js": "6b36679c316b467776535afa015a507085b34672fbe38311e191395b43a6a7e0",
+    "blocks/demo-launcher/retail-chrome.js": "a0cd9de0125faa66eef0d8f0730be393b268cdb301e38a96ee136aaec0493072",
+    "blocks/gcsp/employee/gcsp-employee.css": "3cab6080aa52605d92b5f616151087fe289e72c43045a7f396a8bffca7112b6f",
+    "blocks/gcsp/employee/representative-body.js": "a9146fc18cac0346a20b12c603df65a84dffc7bd46d267f2706f4e2c63b76af4",
+    "blocks/gcsp/shell/gcsp-shell.css": "d6f35911624c03ee82c22eb349d51228ba849eaf354976f19df905887e9f92a3",
+    "blocks/gcsp/shell/gcsp-tokens.css": "d939a355b945ecfd0ad185029dbe2b79c70bab8862052a7ec54cf7abfa7f8642",
+    "blocks/vehicle-matcher/component-gallery.css": "21b053f47d968c4a619340ee305816b70dba4905ad39783d8cdfb3db6db8b2c9",
+    "blocks/vehicle-matcher/component-gallery.js": "068c861334749d417d26e8c5bddb3523b0f2eee7f2ddfab919ab6c13d674a195",
+    "blocks/vehicle-matcher/gcsp-kit.css": "64abde7dfc99e40c68270a9ea5850c9a713623014f3beca1f4d5c96263763b86",
+    "blocks/vehicle-matcher/modes/result-card.js": "cc5d50468f45f1c751c597ece89ca5d7dfe88f70d98dd606104ad3504007f948",
+    "blocks/vehicle-matcher/tokens.css": "30d971de3fd89d456b7bc819621ff9f11888da1ca73e8bd80dc70c58a411b1fa",
+    "blocks/vehicle-matcher/ui.js": "49107097a7927e388ff78949045827f3a8903fea0bd758dbe1aa597bec82d8b2",
+    "blocks/vehicle-matcher/vehicle-matcher.css": "11d7af7f3f05766c9c32c107f75f31d269d5531de4040938b34cea8b3854ea94",
+    "components.html": "99413690d048b349e752b5323e1d6468423ea7a1037b474d3716d9661f97d91f",
+    "gcsp-employee.html": "81d96b2903d3245ff9d1138246dad308127adc71a0fdd4956edd3b4d2dda581f",
+    "index.html": "36eaabc55fcffb32f8fc83c306b00fe0bbb4fdd470b3d6c4dac70abc10f6c517",
+    "server/index.js": "849f4ee835d473db855e87be3cb74d7163ea1b98a7eb2eced3f467d9fbe5d67a",
+    "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+    "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+  },
+  "story": "FUCQ-33",
+  "viewport": {
+    "height": 740,
+    "width": 320
+  },
+  "disposition": {
+    "status": "unverified-by-browser-automation",
+    "failureClassification": "native-select-popup-automation-limitation",
+    "summary": "In headed system Chrome, the native select retained focus but Playwright ArrowUp + Enter left MINI selected. The selected-brand summary and launcher actions therefore remained unchanged. This result does not establish a product defect; native popup option picking remains unverified by this automation.",
+    "relatedPassingEvidence": "fucq33-final-browser.json: enter-activates-choose-bmw-recovery passed with BMW selected, disabled Employee cars unavailable action, and Currently unavailable status."
+  },
+  "harnessHistory": {
+    "firstCapture": {
+      "browserInteractionCompleted": true,
+      "observedSelectedBrand": "mini",
+      "runnerExitCode": 1,
+      "reportingException": "The capture wrote its result and completed cleanup, then the final console summary referenced the removed attempts variable and raised ReferenceError.",
+      "cleanupVerified": true
+    },
+    "reportingCorrectionCapture": {
+      "browserInteractionRepeatedOnce": true,
+      "reason": "The reporting-only ReferenceError was corrected before this agent received the lead instruction to avoid an identical rerun.",
+      "runnerExitCode": 0,
+      "sameAssertionOutcome": true,
+      "cleanupVerified": true
+    }
+  }
+}

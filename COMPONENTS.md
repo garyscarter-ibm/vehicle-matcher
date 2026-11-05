@@ -131,6 +131,18 @@ Looked at: `el`, `button`, `screenIntro`, `statusScreen`, `factList` (all reused
 
 Gallery: the GCSP section of [`components.html`](components.html) shows `messageList` with sent, retrying and failed messages.
 
+## GCSP Greg dashboard (`blocks/gcsp/greg/`, kit in `blocks/gcsp/kit/`)
+
+Looked at: `el`, `screenIntro`, `button`, `statusScreen` and `factList` (all reused: heading, Refresh/Retry, states and the meta strip), `portalShell` (the shell), the employee `gcsp-card` and the retail `matchCard`. None draws a dense figure tile or a data table, and the employee cards are image-led, so `metricTile` and `dataTable` are new. They live in GCSP-scoped kit files (`blocks/gcsp/kit/gcsp-kit.css`, every selector `.gcsp`, tokens only), not in `ui.js` or `tokens.css`. Counts are `{ label, isBand }` from `toDashboardView`; a band shows its own text ("fewer than 5") with a dashed outline and screen-reader text, and nothing is derived from it.
+
+| Call | Use for |
+|---|---|
+| `metricTile({ label, count: { label, isBand }, note, level })` (`metric-tile.js`) | One labelled figure. `level` is `headline`, `standard` or `compact`. A band reads "fewer than N" and is described as a privacy band; a missing count reads "Not supplied". |
+| `dataTable({ caption, columns: [{ key, label, numeric }], rows, emptyText, id })` (`data-table.js`) | A real `<table>` with `<caption>`, `th scope="col"`, first cell `th scope="row"`, right-aligned tabular numeric columns and band cells marked like tiles, inside a `role="region"` `tabindex="0"` scroll area labelled by the caption. No rows shows one `emptyText` row. Cells are strings, numbers or `{ label, isBand }`. |
+| `mountGregDashboard(root, ctx)` / `<gcsp-greg-dashboard>` (`gcsp-greg.js`) | Greg's view in `portalShell`: meta strip, headline tiles, demand, unmet needs, offers and stock, and five reserved empty regions (publish, order tracking, prediction, route comparison, case queue). Returns a teardown with `refresh()` and `regions`. Contract in [docs/gcsp/greg-dashboard-contract.md](docs/gcsp/greg-dashboard-contract.md). Harness: [`gcsp-greg.html`](gcsp-greg.html). |
+
+Gallery: the **GCSP Greg kit** section of [`components.html`](components.html) shows `metricTile` exact, band and with a note, and `dataTable` with a long model name, a band cell and the empty state. The ratchet now also caps `blocks/gcsp/kit/gcsp-kit.css` and `blocks/gcsp/greg/gcsp-greg.css`.
+
 ## Not yet in the kit
 
 Hand-built in several modes (file counts at the time of writing):
@@ -146,3 +158,22 @@ Hand-built in several modes (file counts at the time of writing):
 ## The ratchet
 
 Test: `server/test/ui-ratchet.test.js`, config and baseline in `server/test/ui-ratchet.json`; it runs in `npm test`. After moving a view onto the kit, run `node server/test/ui-ratchet.test.js --write` to lower the baseline (only ever commit it lower). `node server/test/ui-ratchet.test.js --debt` lists what is outstanding. `vehicle-matcher.css`, `decision-card.css`, `question-controls.css`, `component-gallery.css` and the four GCSP stylesheets (`blocks/gcsp/shell/` and `blocks/gcsp/employee/gcsp-employee.css` and `blocks/gcsp/presenter/gcsp-presenter.css`) are capped at their current length (`stylesheets` in the config); `blocks/gcsp/` is a scanned root.
+
+
+## Shared demo launcher (`blocks/demo-launcher/`)
+
+Reuse `el`, `screenIntro`, `button` and `mediaWell`. Decision cards represent exact cars and question controls represent answers; neither represents destination navigation or a change of brand context, so these two consumed primitives are new. Their shared styles live in `launcher.css`, with the existing semantic VM tokens and an explicit ratchet cap. Launcher and gallery compositions place `.vm` within `.gcsp`, consuming the shared `gcsp-kit.css` layer and scoped tokens for the approved system font, normal-case headings and teal actions. `entry-host.css` contains only the extracted page surface/password gate styles; `retail-chrome.js` preserves the existing brand picker and shell.
+
+| Call | Use for |
+|---|---|
+| `experienceChoice({ title, description, image?, imageLabel?, action, reason?, status?, secondaryAction? })` (`components.js`) | A semantic destination article with an h2, shared media fallback, visible state/reason, and native action. Disabled actions reference the visible reason. Labels survive failed imagery. |
+| `brandSelector({ value?, onChange, label? })` (`components.js`) | A labelled native select with all six retail brands and All brands. Decorative logo failures keep text labels. Emits the selected brand or null without navigating or writing policy. |
+| `renderLauncher(root, context, { input? })` (`launcher.js`) | Composes the two destination choices and keeps the selected brand visible. Used cars retains the resolver's URL context; employee BMW selection is explicit. |
+| `bootDemo({ root?, employeeCapability?, decorateRetail? })` (`boot.js`) | Gate and route integration. A capability is available only with `enabled === true` and a real `mount(root, context)` function. The default remains unavailable pending FUCQ-35 registration; a boolean alone cannot enable an entry. |
+
+The existing single `components.html` gallery includes a local brand callback, long destination title, missing images, loading and unavailable choices. No employee shell is duplicated. Launcher JavaScript is an explicit ratchet root; the shared primitive module is excluded as kit code. New surface checks reject inline scripts/handlers and unsafe execution.
+
+
+### GCSP primitive styling (`blocks/vehicle-matcher/gcsp-kit.css`)
+
+The shared GCSP adaptation of `screenIntro`, `button`, `factList`, `statusScreen` and `mediaWell` lives in this explicitly capped kit stylesheet. It imports `blocks/gcsp/shell/gcsp-tokens.css` and scopes every rule under `.gcsp`, with no employee-shell dependency. Both `gcsp-employee.css` and `demo-launcher/launcher.css` import it; the employee's existing primitive rules were moved unchanged. Keep new common primitive treatment here rather than duplicating it in page CSS. Retail surfaces stay outside `.gcsp` and retain their brand themes.
