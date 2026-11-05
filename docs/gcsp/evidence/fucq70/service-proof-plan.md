@@ -4,7 +4,7 @@
 
 ## Immutable inputs
 
-Use the committed FUCQ-70 story checkpoint supplying this file, not an unreviewed shared merge. Verify every review source hash from those receipts before allocation. The metadata contract SHA-256 is `1dfcb1bd0206842e90769a12cb92e765ab991d11be1c10fecfa74ab18b48a4d7`; the UI contract SHA-256 is `efcce4466102d152b69d5159be833ec0f421a23ddb04604fa73dc7766325c416`.
+Use the committed FUCQ-70 story checkpoint supplying this file, not an unreviewed shared merge. Verify every review source hash from those receipts before allocation. The metadata contract SHA-256 is `1dfcb1bd0206842e90769a12cb92e765ab991d11be1c10fecfa74ab18b48a4d7`; the UI contract SHA-256 is `3b7f97eb39a72ba74d60bd97a252113823a8fb67975a04305150643232c131f5`.
 
 Admit exactly these three existing frozen files from `abed0960618fd67a160d857b65029c0f64c9a2a7`, read through the shared scaffolding Git API, into a disposable overlay:
 
@@ -36,3 +36,6 @@ This proves only actual in-process FUCQ-66/review memory integration. It does no
 ## Current Jira reconciliation
 
 On 5 November at this checkpoint, the lead re-read FUCQ-70 (issue124524, updated `2026-11-05T17:31:02.593-0600`) and both current comments. Comment167305 requests current-context reconciliation and preserves active file ownership. Gary's comment132593 explicitly confirms this independent review metadata/controller scope and FUCQ-69's sole claim POST. The original authored acceptance remains unchanged; the worker-owned technical-readiness note remains preserved. No Jira description, dependency, lifecycle or claim is amended here.
+
+
+The gallery producer contract was subsequently re-read only at published `8a3e3bf1c7df44f13f8d432ffc4e9b8598161bbf`, SHA-256 `436e7531249a9118af5f37bf7728b8d299432121bf817b92acd2aee2e3be6295`. Its rendered claim owner now exists. Its `onClaimState` / `claimState` reload projection does not fabricate a selection descriptor, command or confirmed event. This is compatible with the review's independent current GET on reload and unchanged callback handoff; no executable source changed. The proposed real-service probe still excludes the rendered gallery producer and actual FUCQ-92 release history, which need their own admitted integration evidence.

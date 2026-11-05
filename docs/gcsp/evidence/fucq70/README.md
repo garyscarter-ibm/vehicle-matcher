@@ -200,3 +200,10 @@ Use the metadata contract SHA-256 in `details-validation.json`
 (`1dfcb1bd0206842e90769a12cb92e765ab991d11be1c10fecfa74ab18b48a4d7`)
 and the committed UI contract SHA-256 in `controller-view-validation.json` when
 admitting that proof. No such overlay has yet been allocated or run.
+
+
+## Published gallery contract refresh
+
+Read and hash-verified only `8a3e3bf1c7df44f13f8d432ffc4e9b8598161bbf:docs/gcsp/manual-gallery-contract.md`, SHA-256 `436e7531249a9118af5f37bf7728b8d299432121bf817b92acd2aee2e3be6295`, on 5 November. This supersedes the earlier proposed producer boundary for future integration. Its rendered explicit-claim owner now exists; the earlier record above describes what was available at that earlier checkpoint. The confirmed callback/event and FUCQ-69's sole claim POST ownership are unchanged. Gallery reload exposes `onClaimState` / `claimState` only; the host does not invent a descriptor, command or confirmed event. FUCQ-70 already supports mounting without a handoff and independently GETs current claim/details authority, so no executable change or new test allocation was needed. Matching scoped validation is reused. Actual rendered gallery/released-run integration remains open.
+
+The ordinary story push succeeded and remote readback matched `9ae287eaa1813fa08dd1b3c5e0d06d1010afa028`, including metadata checkpoint `194d765`. The worktree was clean; no repeat push of that unchanged checkpoint was made.

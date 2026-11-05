@@ -17,7 +17,7 @@
     "server/test/gcsp-manual-review-render.test.js": "ad164b11dcb8d2dc513bc61fd20bedb645bf8c1f81be677eaaf04982805ad653",
     "server/test/ui-ratchet.json": "8860ae6297ee3f94d85918ba803e8c2581106fecb32f9ed22e2d20cab24e3b56"
   },
-  "contractSha256": "efcce4466102d152b69d5159be833ec0f421a23ddb04604fa73dc7766325c416",
+  "contractSha256": "3b7f97eb39a72ba74d60bd97a252113823a8fb67975a04305150643232c131f5",
   "checks": [
     {
       "command": [
@@ -100,5 +100,12 @@
       "effective": "gpt-6.1-sol/medium",
       "fallback": null
     }
-  ]
+  ],
+  "contractRefresh": {
+    "observedAt": "2026-11-05T23:43:59.276315+00:00",
+    "producerRef": "8a3e3bf1c7df44f13f8d432ffc4e9b8598161bbf",
+    "producerContractSha256": "436e7531249a9118af5f37bf7728b8d299432121bf817b92acd2aee2e3be6295",
+    "executableChanges": false,
+    "validation": "Reuse unchanged code/test/config identities; sole claim owner, handoff shape and authoritative reload are compatible. No test allocation or live producer proof."
+  }
 }
