@@ -93,7 +93,7 @@ export function createStockReleaseService({ repository, policy, clock, identity,
         if (car.availability && Date.parse(car.availability.availableUntil) <= Date.parse(tick.now)) return invalid('availability', 'The source availability interval has ended.');
         const availability = { state: 'available', availableFrom: tick.now, version: tranche.trancheId,
           ...(car.availability ?? {}) };
-        const state = { state: 'available', status: 'available', available: true, held: false, allocated: false,
+        const state = { state: 'released', status: 'available', available: true, held: false, allocated: false,
           release: { ...release, availability } };
         const { availability: sourceAvailability, ...stockCar } = car;
         const written = known ? await tx.compareAndSwap(ref(context, car.orderUuid), known.version, state)

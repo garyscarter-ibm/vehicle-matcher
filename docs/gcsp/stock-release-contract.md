@@ -42,7 +42,7 @@ Root/source/tranche fields are allowlisted. Validation rejects duplicate exact U
 
 The transaction compares each exact car with the current run's `stock` rows. Previously absent cars are inserted. A matching `state: 'unreleased'` row from the existing identity/reset importer is promoted with conditional version matching. UUID, order number, configuration, wholesaler order, corpus version and source revision must match existing identity. Existing facts/account/visibility remain unchanged; imported rows retain the supplied values. Previously released, held, allocated or otherwise operational rows are never overwritten or freed. An identity conflict or failed conditional write rolls back every car and the receipt.
 
-Available rows have `state` and `status: 'available'`, `available: true`, `held: false`, `allocated: false`, with:
+Released rows have operational `state: 'released'`, `status: 'available'`, `available: true`, `held: false`, `allocated: false`, with:
 
 ```js
 release: {
@@ -55,6 +55,14 @@ release: {
 `availableFrom` is the successful actual pull/tick instant. No expiry is invented. FUCQ-29 currently needs both interval ends for a suitable timing decision; an absent end remains unknown, so final FUCQ-78 supply must provide a genuine versioned synthetic interval or a coordinated canonical policy assumption. Minimal release fixtures deliberately do not claim decision-complete vehicle facts.
 
 Manual browsing and buddy allocation read this one existing run-scoped `stock` table. The release service supplies no duplicate stock store or reservation authority.
+
+Operational `released` matches the existing manual/Greg readers and F100 hold port. The nested `release.availability.state: 'available'` remains the eligibility fact. F100 alone may transition released stock through its repository claim protocol; this producer does not rewrite existing operational rows. Missing source visibility still makes the manual projection unavailable; missing source expiry still makes decision-critical timing unknown.
+
+The earlier checkpoint wrote operational `available`. Replaying its completed receipt does not repair those already-known rows. Local validation here used transient memory repositories; native/deployed exposure has not been inspected. Before reusing an affected persistent synthetic run, audit F92 provenance/receipt identities and current occupancy, then use an authorised controlled scenario reset or a separately reviewed conditional data migration. Preserve exact identities, immutable facts, receipts, occupied/allocated state and history. Do not mass-change all `available` rows or silently repair them during a pull; unrelated repository workflows also use that value inside their own claim transactions.
+
+The persistent-run audit is read-only before any reset/migration decision: for each exact run/order, retain operational state/version, the F92 tranche/source/version and completed receipt, then cross-check all holds and claims (including pending states), allocations and offers before declaring an unoccupied candidate. The PostgreSQL foundation stores these values in each table's JSON `data`; it has no stock-state enum that would identify or migrate affected rows automatically. This audit has not been run against a native or deployed database.
+
+A separate consumer boundary remains: the current `cases/index.js` alternative-car remedy tests operational `available`. It is not an F92 producer or F100 claim transition. This repair preserves that consumer and reports its released-pool compatibility to the integration owner; the narrow release regression does not prove the case-remedy journey.
 
 In the same transaction, `event_receipts` receives:
 

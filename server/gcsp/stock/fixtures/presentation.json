@@ -16,7 +16,7 @@
     ]
   },
   "releasedCar": {
-    "state": "available", "status": "available", "available": true,
+    "state": "released", "status": "available", "available": true,
     "held": false, "allocated": false, "availableFrom": "2026-11-05T09:00:00.000Z",
     "availableUntil": null,
     "availabilityUnknown": "No end supplied by this minimal source; FUCQ-29 timing remains needs-confirmation."

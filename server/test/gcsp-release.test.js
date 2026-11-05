@@ -7,6 +7,7 @@ import { createMemoryRepository, createMemoryStore, inputDigest, ok } from '../g
 import { createStockReleaseService, createSyntheticStockProvider, createStockPullFixtureProvider,
   STOCK_RELEASE_CONSUMER } from '../gcsp/stock/index.js';
 import { STOCK_FIELDS, validatePull } from '../gcsp/stock/port.js';
+import { createRepositoryManualPorts } from '../gcsp/manual-context/ports.js';
 
 const readFixture = async (name) => JSON.parse(await readFile(new URL(`../gcsp/stock/fixtures/${name}`, import.meta.url), 'utf8'));
 const plan = await readFixture('tranche-plan.json');
@@ -35,7 +36,7 @@ async function setup({ policy = createPolicyService(), providerFactory, windows 
   assert.equal((await service.register()).status, 'ok');
   return { repository, policy, clock, identity, presenter, employee, greg, service, provider };
 }
-const available = async (f) => (await f.repository.query(f.presenter, 'stock', { state: 'available' })).value;
+const available = async (f) => (await f.repository.query(f.presenter, 'stock', { state: 'released' })).value;
 const receipts = async (f) => (await f.repository.query(f.presenter, 'event_receipts', { consumerId: STOCK_RELEASE_CONSUMER })).value;
 const releaseOutcome = (tick) => tick.value?.outcomes.find((row) => row.handlerId === 'stock-release')?.outcome;
 const tick = (f, id = 'release-1', version = '1') => f.clock.tick(f.presenter, tickCommand(id, version));
@@ -74,6 +75,36 @@ test('tranche release on a tick imports exact available cars and the atomic tran
   assert.deepEqual(car.release.availability, { state: 'available', availableFrom: result.value.now, version: receipt.eventId });
   assert.equal(car.vin, undefined);
   await f.repository.close();
+});
+
+test('actual released-stock reader sees the same exact pull without changing eligibility availability', async () => {
+  const f = await setup({ providerFactory: () => fixtureProvider((response) => {
+    response.value.stock[0].visibility = { companyIds: ['demo-bmw-fs-uk'], schemeIds: ['choices-fs-uk'], employeeIds: null };
+    return response;
+  }) });
+  assert.equal((await tick(f)).status, 'ok');
+  const stock = await createRepositoryManualPorts({ repository: f.repository, policy: f.policy }).releasedStock.read(f.employee);
+  assert.equal(stock.status, 'ok', JSON.stringify(stock)); assert.equal(stock.value.stock.length, 1);
+  assert.equal(stock.value.stock[0].orderUuid, target.value.stock[0].orderUuid);
+  assert.equal(stock.value.stock[0].availability.state, 'available');
+  assert.equal(stock.value.stock[0].availability.availableUntil, undefined, 'missing source expiry stays unknown');
+});
+
+test('released stock without source visibility remains unavailable to the actual manual reader', async () => {
+  const f = await setup({ providerFactory: () => fixtureProvider() });
+  assert.equal((await tick(f)).status, 'ok');
+  assert.equal((await createRepositoryManualPorts({ repository: f.repository, policy: f.policy }).releasedStock.read(f.employee)).status, 'unavailable');
+});
+
+test('replay preserves legacy operational available rows and receipts for an audited reset or migration', async () => {
+  const f = await setup({ providerFactory: () => fixtureProvider() }); assert.equal((await tick(f)).status, 'ok');
+  const row = (await available(f))[0];
+  const changed = await f.repository.transaction(f.presenter, command('legacy-state-fixture'), (tx) => tx.compareAndSwap(
+    { table: 'stock', key: { runId: f.presenter.runId, orderUuid: row.orderUuid } }, row.version, { state: 'available' }));
+  assert.equal(changed.status, 'ok'); const before = await receipts(f);
+  assert.equal((await tick(f, 'legacy-row-replay')).status, 'ok');
+  assert.deepEqual((await f.repository.read(f.presenter, { table: 'stock', key: { runId: f.presenter.runId, orderUuid: row.orderUuid } })).value, changed.value);
+  assert.deepEqual(await receipts(f), before);
 });
 
 test('replaying a tick or tranche is idempotent; already released cars are never released twice', async () => {
@@ -274,7 +305,7 @@ test('concurrent release ticks and repository/runtime restart retain one tranche
   const service = createStockReleaseService({ repository: f.repository, policy: f.policy, clock, identity, provider: f.provider });
   assert.equal((await service.register()).status, 'ok');
   assert.equal((await clock.tick(presenter, tickCommand('after-restart'))).status, 'ok');
-  assert.equal((await f.repository.query(presenter, 'stock', { state: 'available' })).value.length, 1);
+  assert.equal((await f.repository.query(presenter, 'stock', { state: 'released' })).value.length, 1);
   assert.equal((await f.repository.query(presenter, 'event_receipts', { consumerId: STOCK_RELEASE_CONSUMER })).value.length, 1);
 });
 

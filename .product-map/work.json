@@ -1363,55 +1363,55 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-138"
     },
     {
-      "id": "FUCQ-92",
-      "title": "Release synthetic stock on a presenter tick from the next pull",
-      "status": "In Progress",
-      "original_status": "In Progress",
       "assignee": "Russell Gowers",
-      "type": "Story",
-      "observed_at": "2026-11-05T23:21:25Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-92",
+      "branch": "dev/DEV-2026-11-04-058",
+      "id": "FUCQ-92",
+      "observed_at": "2026-11-05T23:45:27Z",
+      "original_status": "In Progress",
       "slices": [
         {
+          "evidence": "Operational stock.state repaired to released; scoped19/19 including real manual reader and legacy replay preservation; docs/gcsp/evidence/fucq92/stock-state-repair.json",
           "id": "release-core",
+          "observed_at": "2026-11-05T23:45:27.676769+00:00",
           "status": "complete",
-          "title": "Pull provider, policy-driven release and atomic receipt",
-          "observed_at": "2026-11-05T23:14:17Z",
-          "evidence": "Lead reviewed API, occupied-stock preservation, receipt idempotency and callers; 645e779, shared-base531a95c; release16/16, combined boundary76 pass/2 native skips; docs/gcsp/evidence/fucq92/README.md."
+          "title": "Pull provider, policy-driven release and atomic receipt"
         },
         {
+          "evidence": "Real FUCQ-77/78 configuration corpus and generated stock provider, actual confirmed-supply acknowledgement producer not available in shared tree; TEST fixtures prove port only.",
           "id": "provider-integration",
-          "status": "blocked",
-          "title": "Real FUCQ-77/78 source-backed stock and confirmed supply producer",
           "observed_at": "2026-11-05T23:14:17Z",
-          "evidence": "Real FUCQ-77/78 configuration corpus and generated stock provider, actual confirmed-supply acknowledgement producer not available in shared tree; TEST fixtures prove port only."
+          "status": "blocked",
+          "title": "Real FUCQ-77/78 source-backed stock and confirmed supply producer"
         },
         {
+          "evidence": "Actual manual reader passes with explicit visibility; pending exact repaired-source F96/F100 trial and shared startup composition.",
           "id": "runtime-consumers",
+          "observed_at": "2026-11-05T23:45:27.676769+00:00",
           "status": "blocked",
-          "title": "Startup, presenter cue and manual/buddy shared-pool integration",
-          "observed_at": "2026-11-05T23:14:17Z",
-          "evidence": "Exact persisted stock-release event contract published; shared buildServer/runtime/startup registration and manual/buddy consume path require coordinated producer composition."
+          "title": "Startup, presenter cue and manual/buddy shared-pool integration"
         },
         {
+          "evidence": "Historical npm test1262/1257/5 native skips predates stock-state source repair and is not a current stamp. Source/runtime/native acceptance and final serial validation remain.",
           "id": "final-validation",
+          "observed_at": "2026-11-05T23:45:27.676769+00:00",
           "status": "blocked",
-          "title": "Required full suite and complete acceptance evidence",
-          "observed_at": "2026-11-05T23:21:25Z",
-          "evidence": "Authored npm test passed1262/1257/5 native skips/0fail on1fc492c; immediate strict stamp5307f70f762d. Complete actual source/provider/runtime acceptance still missing; docs/gcsp/evidence/fucq92/full-checkpoint.json."
+          "title": "Required full suite and complete acceptance evidence"
         }
       ],
+      "status": "In Progress",
+      "title": "Release synthetic stock on a presenter tick from the next pull",
+      "type": "Story",
       "unsliced": false,
-      "branch": "dev/DEV-2026-11-04-058",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-92",
       "workers": [
         {
-          "name": "The Brain",
+          "expires_at": "2026-11-06T00:15:27.676769+00:00",
           "harness": "codex",
+          "name": "The Brain",
+          "observed_at": "2026-11-05T23:45:27.676769+00:00",
           "role": "story-lead",
-          "observed_at": "2026-11-05T23:21:24.926567Z",
-          "expires_at": "2026-11-05T23:21:24.926567Z",
-          "status": "stopped at published integration checkpoint",
-          "source": "thread 01a1adf9-7f4a-7913-9cdb-532060b69a55; requested/selected and verified gpt-6.1-sol/high"
+          "source": "thread01a1adf9-7f4a-7913-9cdb-532060b69a55; producer repair/source pin and actual integration; requested/selected/effective gpt-6.1-sol/high",
+          "status": "active"
         }
       ]
     }

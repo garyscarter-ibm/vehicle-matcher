@@ -210,6 +210,8 @@ Ticks use `(runId, eventId, handlerId)` receipts, retaining event type, payload 
 
 One existing repository transaction inserts/promotes only previously unreleased exact cars and records `event_receipts` with `consumerId: 'stock-release'`, `eventType: 'stock-released'`, `eventId: trancheId`, `state: 'completed'`. The successful `outcome.value` contains `{ kind: 'stock-released', runId, trancheId, windowId, supplyId, tickId, releasedAt, orderUuids, visibleOrderUuids, policyVersion, source }`. `orderUuids` contains only newly inserted/promoted cars; `visibleOrderUuids` is the exact source tranche. Allocation consumes this persisted receipt with its own replay identity. Manual/buddy paths share the existing run-scoped `stock` pool. Known held/allocated/released cars are not freed or overwritten.
 
+F92 writes operational `stock.state: 'released'`, with `status: 'available'` and nested `release.availability.state: 'available'`. This aligns existing manual/Greg readers and the F100 hold guard; it does not change the repository's internal conditional-claim protocol. Previously persisted F92 operational `available` rows require an audited reset or separately reviewed data migration before reuse; pull replay never overwrites them. Actual native/deployed exposure remains unverified.
+
 The canonical keys remain `supply.release.size` and `supply.leadTimeDays`; source windows are dated provider inputs. A queued provider confirmation creates only a `stock-supply-queue` receipt, never released stock. Source-supplied `availability.availableUntil` is retained under `stock.release.availability`; absent expiry stays unknown. No table, migration, second policy source, live connection or existing method meaning changes.
 
 ## Policy catalogue and provenance
