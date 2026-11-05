@@ -1,56 +1,146 @@
 {
-  "story": "FUCQ-40",
-  "run": "fucq40-20261105-image",
-  "scope": "targeted",
-  "result": "passed",
-  "command": "node --test --experimental-test-coverage server/test/bmw-image-adapter.test.js server/test/bmw-catalogue-adapter.test.js server/test/exact-listing-decision.test.js",
-  "tests": {
-    "total": 52,
-    "pass": 52,
-    "fail": 0,
-    "skipped": 0,
-    "image": 12,
-    "catalogue": 22,
-    "retailExactListing": 18
+  "authoredEquivalent": "npm test; unchanged package.json file glob, with the Node concurrency option before files",
+  "base": "1db84201afd748fce176858296bd680cddc16f25",
+  "codeKey": "922bc3a42e7b61c6cba2935e0850188600758a4005ef25cb3c1c21f024e7adc5",
+  "command": "node --test --test-concurrency=1 server/test/**/*.test.js",
+  "fullCheckpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/283dd63e3b35ba42fce634d4b4996449e3bd106c927e807c70aef70613f18ff2.json",
+  "fullLog": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-135822-t8px2km3/chunk-0001.log",
+  "fullStamp": {
+    "executionIdentity": {
+      "code": "922bc3a42e7b61c6cba2935e0850188600758a4005ef25cb3c1c21f024e7adc5",
+      "environment": "a5ae6431dcc08f6071844c0598c47b95ede6deb22f53957db84192e7783d275e",
+      "inputs": {},
+      "interpreter": [
+        "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+      ],
+      "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+      "scope": "full",
+      "selected": [
+        "node --test --test-concurrency=1 server/test/**/*.test.js"
+      ],
+      "settings": "738c93e358b0a5a0481375ec1ef0127024b6183bcfb6cf3388ca56350f76033d",
+      "variant": "default",
+      "version": 1
+    },
+    "key": "13af28fbb9f20985844c81ed7f903de603f62ff063e99f927b0f88acae4b06f4",
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/stamp-13af28fbb9f20985844c81ed7f903de603f62ff063e99f927b0f88acae4b06f4-default.json",
+    "recorded": "2026-11-05T13:59:16+0000",
+    "verifiedByStatus": true,
+    "wallSeconds": 54.0
   },
-  "base": "b9dd531d3aa35ff1bb87065eb9da51e664065444",
-  "head": "b9dd531d3aa35ff1bb87065eb9da51e664065444",
-  "tree": "21e3cb304e05816acf3abc262634a9cb4ad6fbef",
-  "dirtyCodeKey": "385a77a9b0c016b77ca989bdf47e0074aa46d7d1cc873fac66a098d0e038e888",
-  "variant": "default",
-  "targetedEvidence": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/targeted-385a77a9b0c016b77ca989bdf47e0074aa46d7d1cc873fac66a098d0e038e888-default-1793886432911641000.json",
+  "head": "c7c38c6a8807e50d123ec3190171412bff210ca4",
   "identities": {
-    "server/vehicle-evidence/bmw-image-adapter.js": "2f84ea29d1c98b47b49eeb8659afdd04ca991815c914b1f5e266f384d94713b4",
-    "server/vehicle-evidence/snapshots/bmw-gb-i5-images-2026-11-01.v1.json": "b6bbe8e39b018b1a38551d818e1dfe9b6504283c95dedd033d59d4df8395d393",
-    "server/test/bmw-image-adapter.test.js": "6b7ced1c6340e0fcfda29eba88db4ff1394d4942bacdaf2dd548711ce8b4537a"
+    "server/test/bmw-image-adapter.test.js": "22620ad55281f5fa2cbd34c2e363259a6055725b53503b81cdb19651b2a981a2",
+    "server/vehicle-evidence/assets/bmw-gb-i5-images-2026-11-01.v1/alpine-white.webp": "fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe",
+    "server/vehicle-evidence/assets/bmw-gb-i5-images-2026-11-01.v1/black-sapphire.webp": "4c38cdb43b6438b7ae54fd1c882280bf744e88a17f2ce43597c5dd2c4890b5de",
+    "server/vehicle-evidence/bmw-image-adapter.js": "15bcedb7a582c3a436c69ef474f467949cfd3f9e1d58b11ac14ffaf65961d0e2",
+    "server/vehicle-evidence/snapshots/bmw-gb-i5-images-2026-11-01.v1.json": "b6bbe8e39b018b1a38551d818e1dfe9b6504283c95dedd033d59d4df8395d393"
   },
-  "coverage": {
-    "bmw-image-adapter.js": {
-      "linePercent": 100,
-      "branchPercent": 94.83,
-      "functionPercent": 100
-    },
-    "bmw-catalogue-adapter.js": {
-      "linePercent": 100,
-      "branchPercent": 95.59,
-      "functionPercent": 100
-    },
-    "context": "Node aggregated required scoped run; no per-test coverage contexts available"
+  "incompleteFullAttempt": {
+    "cause": "Node ignored the suffix option after the files, so the suite was not serialized. Supervisor stopped and joined it at the cap; resulting pending-file cancellations were not product assertion failures. A bounded flag-placement diagnostic established the corrected invocation.",
+    "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/36f0287514a5169cef4d8c0a2fe00b1f0d9534b7eb3d0d0fbff92db28c61150d.json",
+    "command": "npm test -- --test-concurrency=1",
+    "measuredRecursiveRssBytes": 1246380032,
+    "ramCapBytes": 1073741824,
+    "resolution": "Complete unchanged 51-module selection rerun once with the concurrency option before files; passed under the recorded 2GiB cap.",
+    "state": "resource-incomplete; no full stamp"
   },
-  "resources": {
-    "peakScratchBytes": 1335424,
-    "sampledPeakRecursiveRssBytes": 323584000,
-    "wallSeconds": 2.989625874999547,
-    "scratchRemoved": true,
-    "scratchManifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/8c94a6a365c6427fa2619009baafa3ee.json"
-  },
-  "initialFailure": {
+  "initialDependencyFailure": {
     "cause": "existing locked pg dependency absent in retained worktree",
-    "failedModule": "server/test/exact-listing-decision.test.js",
     "resolution": "npm ci --prefix server --ignore-scripts --no-audit --no-fund; no package edits; owned npm cache removed; installed dependencies preserved"
   },
-  "remaining": [
-    "Authored final serial npm test; dispatcher reservation required"
+  "limits": [
+    "No native or live PostgreSQL proof: two configured skips.",
+    "No live COSY calls, runtime HTTP image route, gallery, offer association, new screen or retail publication.",
+    "Backend presentation assertions replace UI screenshots; future consumers must meet their own visual and delivery gates."
   ],
-  "provenance": "Both image files opened locally; same front viewpoint/composition and visibly white versus black body; equipment fidelity unverified. file+sips independently confirmed WebP VP8 2560x1646; authored hashes match FUCQ4."
+  "modules": 51,
+  "node": "v26.7.0",
+  "provenance": "Both image files opened locally; same front viewpoint/composition and visibly white versus black body; equipment fidelity unverified. file+sips independently confirmed WebP VP8 2560x1646; authored hashes match FUCQ-4 and runtime bytes equal immutable inputs.",
+  "remaining": [],
+  "resources": {
+    "allOwnedProcessGroupsAbsent": true,
+    "cleanupReceipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq40-20261105-image/cleanup-receipt.json",
+    "compatibilityExceptions": [],
+    "fullRun": {
+      "capRecursiveRssBytes": 2147483648,
+      "capScratchBytes": 268435456,
+      "capSeconds": 600,
+      "peakScratchBytes": 786560,
+      "sampledPeakRecursiveRssBytes": 331513856,
+      "scratchManifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/95b7d7351b964444923130c1552fb00d.json",
+      "scratchRemoved": true,
+      "wallSeconds": 53.93773449999935,
+      "workerCount": 1
+    },
+    "largeOutputCreated": false,
+    "leftovers": [],
+    "npmCacheRemovedBytes": 221184,
+    "ownedReservations": [],
+    "ownedScratchRoots": 12,
+    "removedScratchPeakBytesSum": 6701760,
+    "scratchRoot": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq40-20261105-image",
+    "verifiedAbsent": true
+  },
+  "result": "passed",
+  "run": "fucq40-20261105-image",
+  "scope": "full",
+  "scopedValidation": {
+    "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/07a2216aa2e6ee01621809188c278cfdc6b11d7efac562fb612f32fedf62cf11.json",
+    "codeKey": "922bc3a42e7b61c6cba2935e0850188600758a4005ef25cb3c1c21f024e7adc5",
+    "command": "node --test --experimental-test-coverage server/test/bmw-image-adapter.test.js server/test/bmw-catalogue-adapter.test.js server/test/exact-listing-decision.test.js",
+    "coverage": {
+      "bmw-catalogue-adapter.js": {
+        "branchPercent": 95.59,
+        "functionPercent": 100,
+        "linePercent": 100
+      },
+      "bmw-image-adapter.js": {
+        "branchPercent": 95.87,
+        "functionPercent": 100,
+        "linePercent": 100
+      },
+      "context": "Node aggregated required scoped run; no per-test coverage contexts available"
+    },
+    "resources": {
+      "peakScratchBytes": 1335424,
+      "sampledPeakRecursiveRssBytes": 318406656,
+      "scratchRemoved": true,
+      "wallSeconds": 2.8769122499998048
+    },
+    "targetedEvidence": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/targeted-922bc3a42e7b61c6cba2935e0850188600758a4005ef25cb3c1c21f024e7adc5-default-1793886771209122000.json",
+    "tests": {
+      "catalogue": 22,
+      "fail": 0,
+      "image": 13,
+      "pass": 53,
+      "retailExactListing": 18,
+      "skipped": 0,
+      "total": 53
+    }
+  },
+  "selector": "Strict automatic selection refused: no JavaScript selector; reviewed explicit regression/boundary commands used; authored full requirement run by dispatcher reservation.",
+  "skips": [
+    {
+      "reason": "GCSP_DATABASE_URL is unset; native SQL constraints were not run",
+      "test": "postgresql native constraints reject a second occupying hold and claim"
+    },
+    {
+      "reason": "GCSP_DATABASE_URL is unset; PostgreSQL integration was not run",
+      "test": "postgresql: shared TransactionRepository contract"
+    }
+  ],
+  "story": "FUCQ-40",
+  "testCountSource": "Node final output; generic test-stamp shell driver leaves ran=null and skipped=0, so its fields are not the Node counts",
+  "tests": {
+    "cancelled": 0,
+    "fail": 0,
+    "pass": 1028,
+    "skipped": 2,
+    "todo": 0,
+    "total": 1030
+  },
+  "tree": "67e68dc3b220bea2dc49c12be5edffa3477dceb6",
+  "variant": "default"
 }
