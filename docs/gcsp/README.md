@@ -59,6 +59,8 @@ Russell confirmed at FUCQ-5 closeout on 1 November that backlog Epics are indepe
 
 **Demo data route, Gary, 4 November:** real configurations with synthetic stock on top. [FUCQ-77](https://ibm-consulting.atlassian.net/browse/FUCQ-77) collects at least 200 real, constructible configurations covering every scheme model line, each of which opens in BMW's configurator. [FUCQ-78](https://ibm-consulting.atlassian.net/browse/FUCQ-78) generates synthetic scheme stock on them, shaped by aggregate figures from BMW's public new-car stock locator. FUCQ-61's 10,000-configuration run follows after 12 November if still wanted; FUCQ-62 keeps corpus publication. Evidence: [interface research](bmw-interface-research.md), 4 November follow-ups.
 
+**FUCQ-58 source authorisation, Gary, 5 November:** read-only collection from BMW’s public UK configurator and the bounded pilot are authorised. Gary confirms BMW approval to retain and display all resulting configuration data and images for as long as needed. The [decision and execution handoff](fucq-58-source-authorisation-2026-11-05.md) supersede earlier source/retention decision holds; the existing claim owner resumes qualification with explicit finite engineering budgets and measured coverage.
+
 ## Supporting evidence and open decisions
 
 - [Discovery update, 3 November](discovery-update-2026-11-03.md): latest question dispositions and general design constraints after private technical feedback. Russell confirms Choices for Paula; the detailed source assessment and follow-up draft remain with the private planning material.
