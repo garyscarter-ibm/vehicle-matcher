@@ -1298,5 +1298,20 @@
         "allocatedBytes": 858816
       }
     }
+  },
+  "galleryConsumerContract": {
+    "consumer": "FUCQ-69",
+    "publishedRevision": "f81855fe1814657b8a2b0bbd949ac8e204dec44e",
+    "path": "docs/gcsp/manual-claims-contract.md",
+    "sha256": "9c31f6f368ed4ed616c755eed168ae6bd75869cf65c4efc811eb0a2cd0cff294",
+    "servicePath": "server/gcsp/manual-claims/index.js",
+    "serviceSha256": "32c80ef72d8329fcdbc4a208d9ab911f68156e6234d3917975754415d04ef059",
+    "protocol": "Pass each server-returned claimInput unchanged plus one stable commandId for that selection attempt. Retry same command/payload; read current claim/quote authority. Browse never reserves; preserve typed pending/conflict/stale/unavailable.",
+    "integrationStatus": "Published backend contract; configured native/manual completion remains blocked. Gallery can proceed within its independently owned block."
+  },
+  "nativeRunDirective": {
+    "source": "Dispatcher checkpoint instruction, 5 November 2026",
+    "action": "Stop further native attempts; retain frozen source and all successful/failed evidence; no production timeout changes.",
+    "cleanup": "Completed before this instruction: exact original schema baseline restored; all provider pools closed;15 owned allocation roots/groups/reservations independently absent."
   }
 }
