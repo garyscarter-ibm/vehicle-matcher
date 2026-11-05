@@ -93,21 +93,65 @@ async function activate(page, name, key = 'Enter', backwards = false) {
 }
 async function select(page, label, value) {
   const control = page.getByLabel(label, { exact: true }); await tabTo(page, control);
-  const choices = await control.evaluate((node) => [...node.options].map((option) => ({ value: option.value, disabled: option.disabled })));
+  const choices = await control.evaluate((node) => [...node.options].map((option) => ({ value: option.value, label: option.label.trim(), disabled: option.disabled })));
   const target = choices.findIndex((option) => option.value === value && !option.disabled); assert.ok(target >= 0, label + ': projected option exists');
+  const optionLabel = choices[target].label;
+  assert.ok(optionLabel, label + ': native option label is nonempty');
+  assert.equal(choices.filter((option) => !option.disabled && option.label.toLocaleLowerCase('en-GB') === optionLabel.toLocaleLowerCase('en-GB')).length, 1,
+    label + ': native option label must identify one enabled option');
   const previous = await control.evaluate((node) => ({ index: node.selectedIndex, value: node.value }));
-  // macOS Chrome can keep arrow navigation inside its native popup until Enter commits it.
-  const keys = ['Space', 'Home']; await page.keyboard.press('Space'); await page.keyboard.press('Home');
-  const enabledBeforeTarget = choices.slice(0, target).filter((option) => !option.disabled).length;
-  for (let index = 0; index < enabledBeforeTarget; index++) { keys.push('ArrowDown'); await page.keyboard.press('ArrowDown'); }
-  keys.push('Enter'); await page.keyboard.press('Enter');
-  // Resolve the labelled control after commit because its change handler may replace the editor.
-  const observedAfterCommit = await control.evaluate((node) => ({ index: node.selectedIndex, value: node.value }));
-  const trace = { action: label, method: 'native keyboard popup selection and explicit commit', selectedValue: value,
-    observedOptionIndex: target, previous, observedAfterCommit, keys, after: await focusState(page) };
+  const trace = { action: label, method: 'native observed-label typeahead', selectedValue: value, optionLabel,
+    observedOptionIndex: target, previous, keys: [], steps: [], events: [] };
   report.keyboard.push(trace);
-  assert.equal(observedAfterCommit.value, value, label + ': keyboard popup commit reached the projected value');
-  await page.keyboard.press('Tab'); keys.push('Tab'); trace.after = await focusState(page);
+  // Capture on the document before application change handlers; replacement controls keep their labelled id.
+  await control.evaluate((node) => {
+    const watch = { id: node.id, events: [] };
+    watch.record = (event) => {
+      if (event.target.tagName === 'SELECT' && event.target.id === watch.id && watch.events.length < 128) {
+        watch.events.push({ type: event.type, trusted: event.isTrusted, index: event.target.selectedIndex, value: event.target.value });
+      }
+    };
+    window.fucq122SelectionWatch = watch;
+    for (const type of ['input', 'change']) document.addEventListener(type, watch.record, true);
+  });
+  try {
+    let observed = previous;
+    if (observed.value !== value) {
+      trace.keys.push('Space'); await page.keyboard.press('Space');
+      const characters = [...optionLabel]; let character = 0;
+      // A changed option can redraw this control. Restart its label prefix only after an observed replacement.
+      for (let attempt = 0; attempt < characters.length + choices.length && observed.value !== value; attempt++) {
+        await tabTo(page, control); const original = await control.elementHandle();
+        try {
+          const key = characters[character]; trace.keys.push({ type: key }); await page.keyboard.type(key);
+          const redrawn = !(await original.evaluate((node) => node.isConnected));
+          observed = await control.evaluate((node) => ({ index: node.selectedIndex, value: node.value }));
+          trace.steps.push({ character, key, redrawn, observed });
+          character = redrawn ? 0 : character + 1;
+          if (character === characters.length && observed.value !== value) break;
+        } finally { await original.dispose(); }
+      }
+      assert.equal(observed.value, value, label + ': native typeahead reached the projected value');
+      await tabTo(page, control); trace.keys.push('Enter'); await page.keyboard.press('Enter');
+    } else trace.alreadySelected = true;
+    trace.observedAfterCommit = await control.evaluate((node) => ({ index: node.selectedIndex, value: node.value }));
+    await tabTo(page, control); trace.keys.push('Tab'); await page.keyboard.press('Tab');
+    trace.observedAfterTab = await control.evaluate((node) => ({ index: node.selectedIndex, value: node.value }));
+    trace.events = await page.evaluate(() => window.fucq122SelectionWatch.events.slice());
+    assert.equal(trace.observedAfterCommit.value, value, label + ': exact value after commit');
+    assert.equal(trace.observedAfterTab.value, value, label + ': exact value after Tab');
+    assert.ok(trace.events.every((event) => event.trusted), label + ': selection events are trusted');
+    if (previous.value !== value) for (const type of ['input', 'change']) {
+      assert.ok(trace.events.some((event) => event.type === type && event.value === value), label + ': trusted ' + type + ' observed for exact value');
+    }
+    trace.after = await focusState(page);
+  } finally {
+    trace.events = await page.evaluate(() => {
+      const watch = window.fucq122SelectionWatch;
+      for (const type of ['input', 'change']) document.removeEventListener(type, watch.record, true);
+      delete window.fucq122SelectionWatch; return watch.events.slice();
+    });
+  }
 }
 async function enterText(page, label, value) {
   const control = page.getByLabel(label, { exact: true }); await tabTo(page, control); await control.fill(value);
