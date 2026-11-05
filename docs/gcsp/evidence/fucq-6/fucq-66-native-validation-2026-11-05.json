@@ -1313,5 +1313,65 @@
     "source": "Dispatcher checkpoint instruction, 5 November 2026",
     "action": "Stop further native attempts; retain frozen source and all successful/failed evidence; no production timeout changes.",
     "cleanup": "Completed before this instruction: exact original schema baseline restored; all provider pools closed;15 owned allocation roots/groups/reservations independently absent."
+  },
+  "dependencyCleanup": {
+    "version": 1,
+    "story": "FUCQ-66",
+    "thread": "01a1adb4-606f-7391-a86c-ad52858ec19f",
+    "at": "2026-11-05T23:03:15.531127+00:00",
+    "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/dependency-cleanup-v10-manifest.json",
+    "state": "removed-and-verified-absent",
+    "targets": [
+      {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/node_modules",
+        "device": 16777232,
+        "inode": 172872717,
+        "symlink": false,
+        "allocatedBytes": 27058176,
+        "openFiles": 0,
+        "openUseCheck": "lsof -nP +D exact path; rc1, empty stdout/stderr",
+        "absent": true
+      },
+      {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules",
+        "device": 16777232,
+        "inode": 172877247,
+        "symlink": false,
+        "allocatedBytes": 851968,
+        "openFiles": 0,
+        "openUseCheck": "lsof -nP +D exact path; rc1, empty stdout/stderr",
+        "absent": true
+      }
+    ],
+    "removedAllocatedBytes": 27910144,
+    "ownershipRecordsChecked": 33,
+    "ownersAndGroupsAbsent": true,
+    "packageHashesAfter": {
+      "package.json": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
+      "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+      "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139",
+      "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e"
+    },
+    "packageHashesUnchanged": true,
+    "databaseCalls": 0,
+    "testsRun": 0,
+    "leftovers": "none among the exact adopted dependency targets; worktree/source and bounded diagnostic receipts retained",
+    "parentAudit": "dispatcher independent final audit outstanding"
+  },
+  "parkedReadinessCheckpoint": {
+    "observedAt": "2026-11-05T23:04:59.447630+00:00",
+    "readiness": "docs/gcsp/manual-review-readiness.md",
+    "protocolStatus": "FUCQ-70 proposed/unimplemented; unclaimed; dispatcher routing MSG-2026-11-05-GC-006",
+    "productMap": ".product-map/work.json",
+    "fullSlicePlan": 14,
+    "completeProofBoundaries": 3,
+    "blockedDevelopmentGates": 11,
+    "trackerObservationPreserved": "2026-11-05T23:00:25Z",
+    "workerClaimsAdded": false,
+    "metadataValidationOnly": true,
+    "testsRun": 0,
+    "databaseCalls": 0,
+    "unblock": "Dispatcher-coordinated connection-establishment diagnosis or changed environment evidence plus explicit next scoped native grant; full-suite grant separately withheld",
+    "parentIndependentFinalAudit": "outstanding"
   }
 }

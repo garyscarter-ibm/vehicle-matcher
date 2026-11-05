@@ -1,0 +1,1477 @@
+{
+  "version": 1,
+  "observed_at": "2026-11-05T23:00:25Z",
+  "stories": [
+    {
+      "id": "FUCQ-2",
+      "title": "BMW employee car scheme demo: discovery context",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-2"
+    },
+    {
+      "id": "FUCQ-3",
+      "title": "Create employee car scheme personas",
+      "status": "Done",
+      "original_status": "Done",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-3"
+    },
+    {
+      "id": "FUCQ-4",
+      "title": "Agree the end-to-end employee car scheme process in a visual HTML flow",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-4"
+    },
+    {
+      "id": "FUCQ-5",
+      "title": "Investigate and prove BMW UK website and configurator data interfaces",
+      "status": "Done",
+      "original_status": "Done",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-5"
+    },
+    {
+      "id": "FUCQ-6",
+      "title": "Agree the high-level design for the employee car scheme demo",
+      "status": "Done",
+      "original_status": "Done",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-6"
+    },
+    {
+      "id": "FUCQ-7",
+      "title": "Modernise the manual GCSP selection journey with shared components",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-7"
+    },
+    {
+      "id": "FUCQ-8",
+      "title": "Assess reuse of the existing vehicle recommendation intelligence",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-8"
+    },
+    {
+      "id": "FUCQ-9",
+      "title": "Explore nudges when employee demand concentrates",
+      "status": "Rejected",
+      "original_status": "Rejected",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-9"
+    },
+    {
+      "id": "FUCQ-10",
+      "title": "Use preferences to improve scheme vehicle ordering",
+      "status": "Rejected",
+      "original_status": "Rejected",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-10"
+    },
+    {
+      "id": "FUCQ-11",
+      "title": "Capture lifestyle and taste preferences",
+      "status": "Rejected",
+      "original_status": "Rejected",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-11"
+    },
+    {
+      "id": "FUCQ-12",
+      "title": "Tune recommendations towards EVs for UK sales targets",
+      "status": "Rejected",
+      "original_status": "Rejected",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-12"
+    },
+    {
+      "id": "FUCQ-13",
+      "title": "Choose employee-car or used-car demos from a shared launcher",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-13"
+    },
+    {
+      "id": "FUCQ-14",
+      "title": "Provide dated BMW catalogue specifications through a snapshot adapter",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-14"
+    },
+    {
+      "id": "FUCQ-15",
+      "title": "Serve representative BMW configuration images through an adapter",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-15"
+    },
+    {
+      "id": "FUCQ-16",
+      "title": "Retrieve VIN-linked BMW handbook content without inferring a build sheet",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-16"
+    },
+    {
+      "id": "FUCQ-17",
+      "title": "Add an authorised live BMW catalogue and specification provider",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-17"
+    },
+    {
+      "id": "FUCQ-18",
+      "title": "Resolve BMW configuration renders through an authorised live provider",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T23:00:25Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-18"
+    },
+    {
+      "id": "FUCQ-19",
+      "title": "Look up synthetic BMW vehicles using plausible generated VINs",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-19"
+    },
+    {
+      "id": "FUCQ-20",
+      "title": "Populate the demo VIN service with 10,000 distinct BMW configurations",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-20"
+    },
+    {
+      "id": "FUCQ-21",
+      "title": "Capture the retail recommendation compatibility contract",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-21"
+    },
+    {
+      "id": "FUCQ-22",
+      "title": "Return a complete response when no used cars qualify",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-22"
+    },
+    {
+      "id": "FUCQ-23",
+      "title": "Keep selected listing prices, scores and explanations consistent",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-23"
+    },
+    {
+      "id": "FUCQ-24",
+      "title": "Stop obsolete previews from replacing current answers",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-24"
+    },
+    {
+      "id": "FUCQ-25",
+      "title": "Preserve used-car context in generated share links",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-25"
+    },
+    {
+      "id": "FUCQ-26",
+      "title": "Represent exact vehicle facts and scenario-specific financial terms",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-26"
+    },
+    {
+      "id": "FUCQ-27",
+      "title": "Share pure recommendation evaluation behind the retail compatibility layer",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-27"
+    },
+    {
+      "id": "FUCQ-28",
+      "title": "Build grouped result views from complete exact-car decisions",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-28"
+    },
+    {
+      "id": "FUCQ-29",
+      "title": "Recommend employee cars through a separate policy using the shared core",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-29"
+    },
+    {
+      "id": "FUCQ-30",
+      "title": "Reuse scoped feedback actions in retail refinement and employee drafts",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-30"
+    },
+    {
+      "id": "FUCQ-31",
+      "title": "Render retail and employee decision data through the shared UI kit",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-31"
+    },
+    {
+      "id": "FUCQ-32",
+      "title": "Resolve experience and brand routes while preserving existing links",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-32"
+    },
+    {
+      "id": "FUCQ-33",
+      "title": "Choose a car experience and brand from the shared launcher",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-33"
+    },
+    {
+      "id": "FUCQ-34",
+      "title": "Return to the launcher without losing the used-car journey context",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-34"
+    },
+    {
+      "id": "FUCQ-35",
+      "title": "Open the supported employee experience through the shared entry point",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-35"
+    },
+    {
+      "id": "FUCQ-36",
+      "title": "Package and verify both launcher routes for the GCSP static site",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-36"
+    },
+    {
+      "id": "FUCQ-37",
+      "title": "Resolve the dated i5 catalogue sample through a snapshot adapter",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-37"
+    },
+    {
+      "id": "FUCQ-38",
+      "title": "Preserve equipment certainty and partial catalogue facts",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-38"
+    },
+    {
+      "id": "FUCQ-39",
+      "title": "Resolve snapshot variants and failures without silent substitution",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-39"
+    },
+    {
+      "id": "FUCQ-40",
+      "title": "Resolve registered white and black configuration renders",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-40"
+    },
+    {
+      "id": "FUCQ-41",
+      "title": "Return honest missing-image and fidelity results",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-41"
+    },
+    {
+      "id": "FUCQ-42",
+      "title": "Select offline image views and sizes with exact lookup identity",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-42"
+    },
+    {
+      "id": "FUCQ-43",
+      "title": "Expose offline handbook metadata with a synthetic-identity guard",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-43"
+    },
+    {
+      "id": "FUCQ-44",
+      "title": "Retrieve guide metadata through fresh-key BMW encryption",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-44"
+    },
+    {
+      "id": "FUCQ-45",
+      "title": "Expose controlled handbook links and VIN-linked image status",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-45"
+    },
+    {
+      "id": "FUCQ-46",
+      "title": "Resolve a live catalogue configuration behind the snapshot contract",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-46"
+    },
+    {
+      "id": "FUCQ-47",
+      "title": "Bound live catalogue failures and preserve truthful fallback",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-47"
+    },
+    {
+      "id": "FUCQ-48",
+      "title": "Verify the selected live catalogue provider with redacted evidence",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-48"
+    },
+    {
+      "id": "FUCQ-49",
+      "title": "Resolve named live renders for complete snapshot configurations",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-49"
+    },
+    {
+      "id": "FUCQ-50",
+      "title": "Apply permitted image freshness and honest failure choices",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-50"
+    },
+    {
+      "id": "FUCQ-51",
+      "title": "Verify live paint variation and the agreed asset delivery route",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T23:00:25Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-51"
+    },
+    {
+      "id": "FUCQ-52",
+      "title": "Select evidenced VIN profiles for delivered and current cars",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-52"
+    },
+    {
+      "id": "FUCQ-53",
+      "title": "Allocate repeatable synthetic order references and delivered-car VINs",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-53"
+    },
+    {
+      "id": "FUCQ-54",
+      "title": "Publish and load immutable configuration and identity datasets atomically",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-54"
+    },
+    {
+      "id": "FUCQ-55",
+      "title": "Look up synthetic vehicles by configuration, order reference or VIN",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-55"
+    },
+    {
+      "id": "FUCQ-56",
+      "title": "Consume vehicle details through an in-process port with interchangeable adapters",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-56"
+    },
+    {
+      "id": "FUCQ-57",
+      "title": "Keep synthetic identities offline across failures, resets and provider switches",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-57"
+    },
+    {
+      "id": "FUCQ-58",
+      "title": "Qualify fleet coverage and budgets before collecting configurations",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-58"
+    },
+    {
+      "id": "FUCQ-59",
+      "title": "Collect distinct constructible configurations with resumable batches",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59"
+    },
+    {
+      "id": "FUCQ-60",
+      "title": "Enrich resolved fleet configurations with matching facts and images",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60"
+    },
+    {
+      "id": "FUCQ-61",
+      "title": "Collect and validate 10,000 genuinely distinct BMW configurations",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-61"
+    },
+    {
+      "id": "FUCQ-62",
+      "title": "Publish the configuration corpus and generate stock by order reference",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62"
+    },
+    {
+      "id": "FUCQ-63",
+      "title": "Prove full-corpus lookup and offline recovery through the port",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-63"
+    },
+    {
+      "id": "FUCQ-64",
+      "title": "Build the shared GCSP shell and review an employee body reference",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-64"
+    },
+    {
+      "id": "FUCQ-65",
+      "title": "Resolve manual-selection context and validate employee journey drafts",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-65"
+    },
+    {
+      "id": "FUCQ-66",
+      "title": "Persist exact manual claims and expiry through a shared authority",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T23:00:25Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-66",
+      "slices": [
+        {
+          "id": "scoped-implementation",
+          "status": "complete",
+          "title": "Reviewed service and offline proof",
+          "observed_at": "2026-11-05T23:04:26Z",
+          "evidence": "Reviewed service/offline delivery boundary only: final code abed096, strict scoped claims/repository 67 pass/10 explicit native skips/0 fail; production inputs unchanged. docs/gcsp/evidence/fucq-6/fucq-66-native-validation-2026-11-05.json"
+        },
+        {
+          "id": "release-before-change",
+          "status": "complete",
+          "title": "Release before draft changes",
+          "observed_at": "2026-11-05T23:04:27Z",
+          "evidence": "Reviewed release-before-change regression 1/1 pass; existing saveDraft refuses occupying/allocated holds. Story Result and docs/gcsp/evidence/fucq-6/fucq-66-native-validation-2026-11-05.json"
+        },
+        {
+          "id": "native-01",
+          "status": "complete",
+          "title": "Native claim replay release and process persistence",
+          "observed_at": "2026-11-05T23:04:27Z",
+          "evidence": "Reviewed native case01 1/1 pass, 222.601s: claim/replay/confirmed release and repository/separate-process persistence; exact case01 inputs verified unchanged at abed096. docs/gcsp/evidence/fucq-6/fucq-66-native-validation-2026-11-05.json"
+        },
+        {
+          "id": "native-02",
+          "status": "blocked",
+          "title": "Native review timing and startup deadline",
+          "observed_at": "2026-11-05T23:04:27Z",
+          "evidence": "Incomplete startup/deadline case. v8 setup: new policy connection timeout at 5001ms/limit5000, queued/total/idle0; source-unavailable. Partial v5/v6 assertions do not pass case. Dispatcher stopped native retries. docs/gcsp/evidence/fucq-6/fucq-66-native-validation-2026-11-05.json"
+        },
+        {
+          "id": "native-03",
+          "status": "blocked",
+          "title": "Native explicit tick and expiry persistence",
+          "observed_at": "2026-11-05T23:04:27Z",
+          "evidence": "Independent explicit-tick/expiry case authored but unexecuted. Native environment connection diagnosis/changed evidence and explicit next native grant required. docs/gcsp/manual-review-readiness.md"
+        },
+        {
+          "id": "native-04",
+          "status": "blocked",
+          "title": "Native same-order allocation and replay",
+          "observed_at": "2026-11-05T23:04:28Z",
+          "evidence": "Independent same-order allocation/replay case authored but unexecuted; no next native grant. docs/gcsp/manual-review-readiness.md"
+        },
+        {
+          "id": "native-05",
+          "status": "blocked",
+          "title": "Native SQL rollback before external effects",
+          "observed_at": "2026-11-05T23:04:28Z",
+          "evidence": "Independent SQL rollback case authored but unexecuted; no next native grant. docs/gcsp/manual-review-readiness.md"
+        },
+        {
+          "id": "native-06",
+          "status": "blocked",
+          "title": "Native uncertain claim and reconciliation",
+          "observed_at": "2026-11-05T23:04:28Z",
+          "evidence": "Independent persisted uncertain-claim/reconciliation case authored but unexecuted; no next native grant. docs/gcsp/manual-review-readiness.md"
+        },
+        {
+          "id": "native-07",
+          "status": "blocked",
+          "title": "Native uncertain release and exclusion",
+          "observed_at": "2026-11-05T23:04:29Z",
+          "evidence": "Independent uncertain-release/exclusion case authored but unexecuted; no next native grant. docs/gcsp/manual-review-readiness.md"
+        },
+        {
+          "id": "native-08",
+          "status": "blocked",
+          "title": "Native uncertain selection and allocation",
+          "observed_at": "2026-11-05T23:04:29Z",
+          "evidence": "Independent uncertain-selection/allocation case authored but unexecuted; no next native grant. docs/gcsp/manual-review-readiness.md"
+        },
+        {
+          "id": "native-repository",
+          "status": "blocked",
+          "title": "Configured repository and native constraint contract",
+          "observed_at": "2026-11-05T23:04:29Z",
+          "evidence": "Configured repository/constraint contract remains outstanding. Offline contract/native skips do not prove this gate; no native grant. docs/gcsp/manual-review-readiness.md"
+        },
+        {
+          "id": "full-suite",
+          "status": "blocked",
+          "title": "Credential-unset full suite with matching strict status",
+          "observed_at": "2026-11-05T23:04:30Z",
+          "evidence": "Authored credential-unset npm test remains outstanding. Sole dispatcher full grant separately withheld; strict matching-environment status required immediately before/after. docs/gcsp/manual-review-readiness.md"
+        },
+        {
+          "id": "manual-integration",
+          "status": "blocked",
+          "title": "Manual consumer integration through review and selection",
+          "observed_at": "2026-11-05T23:04:30Z",
+          "evidence": "Published FUCQ-69 claim seam permits independent consumer work. Live FUCQ-69/70/71 review/selection integration remains; review-details producer and same-transaction freeze contract are proposed/unimplemented. docs/gcsp/manual-review-readiness.md"
+        },
+        {
+          "id": "buddy-integration",
+          "status": "blocked",
+          "title": "Completed manual and buddy service exclusivity both ways",
+          "observed_at": "2026-11-05T23:04:30Z",
+          "evidence": "Dispatcher later integrates completed manual/buddy services and proves exclusivity both ways with FUCQ-100. Raw repository contention is insufficient. docs/gcsp/manual-review-readiness.md"
+        }
+      ],
+      "unsliced": false
+    },
+    {
+      "id": "FUCQ-67",
+      "title": "Show current contracts and start the right new or replacement journey",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-67"
+    },
+    {
+      "id": "FUCQ-68",
+      "title": "Collect scheme driver and collection choices without losing context",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-68"
+    },
+    {
+      "id": "FUCQ-69",
+      "title": "Browse released cars with visual cards and complete vehicle details",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T23:00:25Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-69"
+    },
+    {
+      "id": "FUCQ-70",
+      "title": "Review a claimed car with contact details and return mileage",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-70"
+    },
+    {
+      "id": "FUCQ-71",
+      "title": "Submit manual selections through an idempotent ordering adapter",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-71"
+    },
+    {
+      "id": "FUCQ-72",
+      "title": "Review declarations and show the actual order handoff outcome",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-72"
+    },
+    {
+      "id": "FUCQ-73",
+      "title": "Verify the complete manual journey and its employee entry contract",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-73"
+    },
+    {
+      "id": "FUCQ-74",
+      "title": "Recommend Greg's next vehicle order using predicted employee demand",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-74"
+    },
+    {
+      "id": "FUCQ-75",
+      "title": "Replay manual acceptance scenarios for trial and improvement",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-75"
+    },
+    {
+      "id": "FUCQ-76",
+      "title": "Test Bug",
+      "status": "Rejected",
+      "original_status": "Rejected",
+      "assignee": "",
+      "type": "Bug",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-76"
+    },
+    {
+      "id": "FUCQ-77",
+      "title": "Collect a demo set of real BMW configurations for the scheme models",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-77"
+    },
+    {
+      "id": "FUCQ-78",
+      "title": "Shape synthetic scheme stock from real stock-locator aggregates",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-78"
+    },
+    {
+      "id": "FUCQ-79",
+      "title": "Run GCSP transactions, policy and demo control on a shared foundation",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-79"
+    },
+    {
+      "id": "FUCQ-80",
+      "title": "Record the shared GCSP contracts that parallel stories build on",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-80"
+    },
+    {
+      "id": "FUCQ-81",
+      "title": "Store GCSP transactions in managed PostgreSQL behind a repository port",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-81"
+    },
+    {
+      "id": "FUCQ-82",
+      "title": "Read every GCSP rule and assumption through one PolicyService",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-82"
+    },
+    {
+      "id": "FUCQ-83",
+      "title": "Publish dated policy versions to PostgreSQL tables",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-83"
+    },
+    {
+      "id": "FUCQ-84",
+      "title": "Resolve demo employees, Greg and the presenter with server-owned run scope",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-84"
+    },
+    {
+      "id": "FUCQ-85",
+      "title": "Drive demo time with presenter ticks and reset a run cleanly",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-85"
+    },
+    {
+      "id": "FUCQ-86",
+      "title": "Save Paula's brief and let the buddy search for her",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-86"
+    },
+    {
+      "id": "FUCQ-87",
+      "title": "Release stock, allocate it and hold a buddy offer",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-87"
+    },
+    {
+      "id": "FUCQ-88",
+      "title": "Notify employees through a captured outbox",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-88"
+    },
+    {
+      "id": "FUCQ-89",
+      "title": "Decide on an offer and get a second one",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-89"
+    },
+    {
+      "id": "FUCQ-90",
+      "title": "Give Greg a demand and supply dashboard",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-90"
+    },
+    {
+      "id": "FUCQ-91",
+      "title": "Save and revise a versioned brief with essentials and search permission",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-91"
+    },
+    {
+      "id": "FUCQ-92",
+      "title": "Release synthetic stock on a presenter tick from the next pull",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-92"
+    },
+    {
+      "id": "FUCQ-93",
+      "title": "Dispatch outbox jobs through a transport port into a captured outbox",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-93"
+    },
+    {
+      "id": "FUCQ-94",
+      "title": "Set preferences, importance and essentials with a live explained preview",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-94"
+    },
+    {
+      "id": "FUCQ-95",
+      "title": "Show buddy activity and pause or resume the search",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-95"
+    },
+    {
+      "id": "FUCQ-96",
+      "title": "Allocate released cars across competing briefs by the policy tie-break",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-96"
+    },
+    {
+      "id": "FUCQ-97",
+      "title": "Show the presenter each captured offer email in an outbox viewer",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-97"
+    },
+    {
+      "id": "FUCQ-98",
+      "title": "Send offer emails through one real transport once a sender is set up",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-98"
+    },
+    {
+      "id": "FUCQ-99",
+      "title": "Aggregate saved demand and offer outcomes for Greg",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-99"
+    },
+    {
+      "id": "FUCQ-100",
+      "title": "Hold the allocated car and create its offer and outbox job in one transaction",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T23:00:25Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-100"
+    },
+    {
+      "id": "FUCQ-101",
+      "title": "Show Greg demand, outcomes and stock on one dashboard",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-101"
+    },
+    {
+      "id": "FUCQ-102",
+      "title": "Open an offer from a run-bound link that shows its current state",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-102"
+    },
+    {
+      "id": "FUCQ-103",
+      "title": "Preview and publish points and recommendation weights",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T23:00:25Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103"
+    },
+    {
+      "id": "FUCQ-104",
+      "title": "Track order requests from requested to confirmed to released",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-104"
+    },
+    {
+      "id": "FUCQ-105",
+      "title": "Show the offer's exact quote, current-car comparison and countdown",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-105"
+    },
+    {
+      "id": "FUCQ-106",
+      "title": "Accept, decline or expire an offer with idempotent outcomes",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-106"
+    },
+    {
+      "id": "FUCQ-107",
+      "title": "Confirm one preference change after declining and receive a second offer",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-107"
+    },
+    {
+      "id": "FUCQ-108",
+      "title": "Hand off a selected buddy offer through the ordering adapter",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-108"
+    },
+    {
+      "id": "FUCQ-109",
+      "title": "Verify Paula's critical path end to end with browser evidence",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-109"
+    },
+    {
+      "id": "FUCQ-110",
+      "title": "Take a selected car through approval, handover planning and renewal help",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-110"
+    },
+    {
+      "id": "FUCQ-111",
+      "title": "Progress a selected order through the target approval states on presenter ticks",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-111"
+    },
+    {
+      "id": "FUCQ-112",
+      "title": "Open an owned renewal-risk case on request or a configured trigger",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-112"
+    },
+    {
+      "id": "FUCQ-113",
+      "title": "Record learning records for Greg's demand model, observed and synthetic",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T23:00:25Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-113"
+    },
+    {
+      "id": "FUCQ-114",
+      "title": "Request, confirm and complete a handover appointment, or record a no-show",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-114"
+    },
+    {
+      "id": "FUCQ-115",
+      "title": "Train the choice model offline and evaluate it on held-out cycles",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-115"
+    },
+    {
+      "id": "FUCQ-116",
+      "title": "Track documents and vehicle readiness with a named owner for each",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-116"
+    },
+    {
+      "id": "FUCQ-117",
+      "title": "Plan feasible order quantities from expressed demand, supply and policy",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-117"
+    },
+    {
+      "id": "FUCQ-118",
+      "title": "Plan the old car's return separately from the new car's handover",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-118"
+    },
+    {
+      "id": "FUCQ-119",
+      "title": "Preview a replan after constraint edits and submit the plan as a request",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-119"
+    },
+    {
+      "id": "FUCQ-120",
+      "title": "Show Paula her order progress, handover plan and who owns each next step",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-120"
+    },
+    {
+      "id": "FUCQ-121",
+      "title": "Show Greg's recommended order plan as a panel on his dashboard",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-121"
+    },
+    {
+      "id": "FUCQ-122",
+      "title": "Ask for help, and let the scheme team work the renewal-risk case",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T23:00:25Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-122"
+    },
+    {
+      "id": "FUCQ-123",
+      "title": "Forecast demand with the learned model, shown beside the baseline plan",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-123"
+    },
+    {
+      "id": "FUCQ-124",
+      "title": "Verify the lifecycle after selection end to end with browser evidence",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-124"
+    },
+    {
+      "id": "FUCQ-125",
+      "title": "Set up named acceptance scenarios from versioned fixtures on reset",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-125"
+    },
+    {
+      "id": "FUCQ-126",
+      "title": "Give the presenter controls for ticks, releases, reset, scenarios and role",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-05T23:00:25Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-126"
+    },
+    {
+      "id": "FUCQ-127",
+      "title": "Replay the no-suitable-match scenario",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-127"
+    },
+    {
+      "id": "FUCQ-128",
+      "title": "Replay the decline-then-change scenario",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-128"
+    },
+    {
+      "id": "FUCQ-129",
+      "title": "Replay the offer-expiry scenario",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-129"
+    },
+    {
+      "id": "FUCQ-130",
+      "title": "Replay the unavailable-data scenario",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-130"
+    },
+    {
+      "id": "FUCQ-131",
+      "title": "Replay the uncertain-handoff scenario",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-131"
+    },
+    {
+      "id": "FUCQ-132",
+      "title": "Compare today's release route with the buddy route over 1,000 fictional employees",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "",
+      "type": "Epic",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-132"
+    },
+    {
+      "id": "FUCQ-133",
+      "title": "Generate seeded employees, stock and releases from PolicyService keys",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-133"
+    },
+    {
+      "id": "FUCQ-134",
+      "title": "Replay today's first-come-first-served release for a seeded cohort in an isolated run",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-134"
+    },
+    {
+      "id": "FUCQ-135",
+      "title": "Replay the buddy route for the same cohort through allocation, holds and decisions",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-135"
+    },
+    {
+      "id": "FUCQ-136",
+      "title": "Measure both routes across seeds and store an unchangeable comparison result",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-136"
+    },
+    {
+      "id": "FUCQ-137",
+      "title": "Run comparison jobs in a worker, presenter-only, with a command-line twin",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-137"
+    },
+    {
+      "id": "FUCQ-138",
+      "title": "Show the route comparison panel on Greg's dashboard with assumptions and a hold rerun",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-138"
+    }
+  ]
+}
