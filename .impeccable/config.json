@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "arial",
+        "files": [
+          "server/gcsp/notify/templates.js"
+        ],
+        "createdAt": "2026-11-05T04:21:43.634Z",
+        "reason": "Agent triage: FUCQ-93 captured offer email intentionally uses Arial,sans-serif as a local system-font fallback for script-free offline HTML; no web-font request or application-font change."
+      }
+    ]
+  }
+}
