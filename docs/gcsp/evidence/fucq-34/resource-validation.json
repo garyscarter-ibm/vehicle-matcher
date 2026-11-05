@@ -1,10 +1,10 @@
 {
   "story": "FUCQ-34",
-  "source_head": "91a473b3995d2d3573a80bfb0d1e3ec71f087c3a",
+  "source_head": "3db3f88fdb8267a7f76a4cd3d6bfd4ae516e3833",
   "date": "2026-11-05",
-  "all_owned_manifest_count": 38,
-  "receipt_file": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/final-cleanup-1793892743656078000-receipt.json",
-  "receipt_sha256": "18b404cd3150847dec874fccc4f91b205a5766d12fa8c734796d0b13deed69c5",
+  "all_owned_manifest_count": 40,
+  "receipt_file": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/final-cleanup-1793893171116412000-receipt.json",
+  "receipt_sha256": "8197c8e2fefa2b38647365e74391b6558e5877cf0285b872d75a47f846967a5f",
   "receipt": {
     "GCSP_DATABASE_URL_unset": true,
     "all_owned_reservations_absent": true,
@@ -165,6 +165,18 @@
         "root_absent": true,
         "state": "removed",
         "token": "4ca904207a0d4fbd9ae1aa01ffa82850"
+      },
+      {
+        "groups": [
+          47413
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/ownership/6020fff5eb2440e0bd13bb8c94c4d1f8.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-6020fff5eb2440e0bd13bb8c94c4d1f8",
+        "root_absent": true,
+        "state": "removed",
+        "token": "6020fff5eb2440e0bd13bb8c94c4d1f8"
       },
       {
         "groups": [
@@ -456,6 +468,18 @@
       },
       {
         "groups": [
+          47514
+        ],
+        "groups_absent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/strict/ownership/9ebb35664310419cafd5e65f77769b7c.json",
+        "reservation_absent": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-9ebb35664310419cafd5e65f77769b7c",
+        "root_absent": true,
+        "state": "removed",
+        "token": "9ebb35664310419cafd5e65f77769b7c"
+      },
+      {
+        "groups": [
           29083
         ],
         "groups_absent": true,
@@ -481,8 +505,15 @@
     ],
     "scratch_parent_absent": true
   },
-  "verification_history": "An initial finalizer assertion failed while matching status was pending, before any cleanup operation. After status completed, a separate per-manifest audit returned no failed predicates and the finalizer passed all38. Exact transient cause was not established; no process kill or forced removal was used.",
+  "verification_history": "Historical 38-manifest finalizer assertion failed before cleanup while matching status was pending; subsequent per-manifest audit and finalizer passed, transient cause unproven. Current 40-manifest audit passed on the first check after matching status completed; no forced removal or process kill.",
   "browser_history": "browser-resource-summary.json retains per-run full descendant/profile/crashpad/port audits and the explicit historical matrix ownership/dynamic-port coverage gap.",
   "persistent_configuration_changed": false,
-  "onedrive_export": "Configured OneDrive destination absent; no export claimed. Small local reconstruction scripts/receipts retained."
+  "onedrive_export": "Configured OneDrive destination absent; no export claimed. Small local reconstruction scripts/receipts retained.",
+  "historical_receipts": [
+    {
+      "all_owned_manifest_count": 38,
+      "receipt_file": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq34/final-cleanup-1793892743656078000-receipt.json",
+      "receipt_sha256": "18b404cd3150847dec874fccc4f91b205a5766d12fa8c734796d0b13deed69c5"
+    }
+  ]
 }
