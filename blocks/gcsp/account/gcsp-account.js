@@ -90,6 +90,10 @@ function driverDetails(driver) {
 }
 
 function currentCar(contract, model, controls) {
+  const terms = { kind: 'points-monthly', ...contract.terms };
+  if (!Object.hasOwn(terms, 'allowance') && contract.schemeId === model.choices?.schemeId) {
+    terms.allowance = model.allowance?.monthlyPoints ?? model.allowance?.value;
+  }
   const feature = el('section', 'gcsp-feature');
   feature.dataset.contractId = contract.contractId;
   const heading = el('h2', 'gcsp-h2', contract.model ?? 'Current car: model not supplied');
@@ -107,8 +111,7 @@ function currentCar(contract, model, controls) {
       row('Contract end', date(contract.contractEndDate)), row('Term', contract.months, 'months'),
       row('Annual mileage', contract.annualMileage, contract.mileageUnit), row('Vehicle slot', contract.slotId),
       row('Registration', contract.registration)]),
-    el('p', 'gcsp-account-terms', formatTerm({ ...contract.terms,
-      kind: contract.terms?.kind ?? 'points-monthly', allowance: model.allowance?.monthlyPoints ?? model.allowance?.value })),
+    el('p', 'gcsp-account-terms', formatTerm(terms)),
     el('p', 'gcsp-note', 'Exact specification is not supplied unless confirmed by delivered-car evidence.'));
   if (source?.provenance) copy.append(el('p', 'gcsp-synthetic', `Image source: ${shown(source.provenance)}`));
   if (contract.action) copy.append(controls.startButton(contract.action));

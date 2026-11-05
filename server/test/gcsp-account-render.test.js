@@ -212,6 +212,9 @@ test('account composition preserves complete supplied facts, labelled details an
     const current = root.querySelector('.gcsp-feature');
     assert.match(current.textContent, /ends in 26 days, on 1 December 2026/);
     assert.match(current.textContent, /1,100 points a month · 1,300 points a month allowance/);
+    const otherScheme = root.querySelectorAll('.gcsp-feature')[1];
+    assert.doesNotMatch(otherScheme.querySelector('.gcsp-account-terms').textContent, /1,300/);
+    assert.match(otherScheme.querySelector('.gcsp-account-terms').textContent, /allowance not supplied/i);
     assert.match(current.textContent, /Current contractcurrent:employee-paula/);
     assert.match(current.textContent, /Vehicle slotslot-paula/);
     for (const text of ['7654321', '1 May 2026', '30 May 2026', '1 June 2026', '6,500', '6,420',
@@ -229,6 +232,24 @@ test('account composition preserves complete supplied facts, labelled details an
     assert.equal(root.querySelectorAll('.vm-decision, .vm-card-score').length, 0);
     assert.match(root.textContent, /Synthetic example data/);
   } finally { destroy(); root.remove(); }
+});
+
+test('current contracts retain their explicit scheme allowance including zero and unknown', async () => {
+  const input = accountFixture('multi-slot');
+  input.value.contracts[0].terms = { kind: 'points-monthly', value: 1100, allowance: 0 };
+  input.value.contracts[1].terms = { kind: 'points-monthly', value: 900, allowance: 950 };
+  const adapter = { ...readOnlyAdapter(), readAccount: async () => input };
+  const first = await domMount(adapter);
+  try {
+    const terms = [...first.root.querySelectorAll('.gcsp-account-terms')].map((node) => node.textContent);
+    assert.match(terms[0], /0 points a month allowance/);
+    assert.match(terms[1], /950 points a month allowance/);
+  } finally { first.destroy(); first.root.remove(); }
+  input.value.contracts[0].terms.allowance = null;
+  const second = await domMount(adapter);
+  try {
+    assert.match(second.root.querySelector('.gcsp-account-terms').textContent, /allowance not supplied/i);
+  } finally { second.destroy(); second.root.remove(); }
 });
 
 test('representative image provenance survives a broken image fallback without claiming exact equipment', async () => {
