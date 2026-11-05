@@ -11232,6 +11232,105 @@
       "sourceDate": "2026-11-04",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "identity.demo.principals",
+      "value": [
+        {
+          "principalId": "demo-paula",
+          "employeeId": "employee-paula",
+          "name": "Paula (fictional)",
+          "roles": [
+            "employee"
+          ],
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G7",
+          "entitlementSlotId": "slot-paula"
+        },
+        {
+          "principalId": "demo-alex",
+          "employeeId": "employee-alex",
+          "name": "Alex (fictional)",
+          "roles": [
+            "employee"
+          ],
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk",
+          "gradeId": "G1-6",
+          "entitlementSlotId": "slot-alex"
+        },
+        {
+          "principalId": "demo-sam",
+          "employeeId": "employee-sam",
+          "name": "Sam (fictional)",
+          "roles": [
+            "employee"
+          ],
+          "companyId": "demo-bmw-rr-production",
+          "schemeId": "choices-rr-production",
+          "gradeId": "PG1",
+          "entitlementSlotId": "slot-sam"
+        },
+        {
+          "principalId": "demo-greg",
+          "employeeId": "operator-greg",
+          "name": "Greg (fictional)",
+          "roles": [
+            "greg"
+          ],
+          "companyId": "demo-bmw-fs-uk",
+          "schemeId": "choices-fs-uk"
+        },
+        {
+          "principalId": "demo-presenter",
+          "employeeId": "operator-presenter",
+          "name": "Presenter (fictional)",
+          "roles": [
+            "presenter"
+          ]
+        }
+      ],
+      "unit": "fictional principal mapping",
+      "status": "assumed",
+      "basis": "Explicit synthetic demonstration people and competing employees; first names are scenario labels, no real identity/contact/licence data. Grade and scheme IDs use the canonical eligibility mapping.",
+      "source": "docs/gcsp/shared-contracts.md#demoidentityadapter--fucq-84",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "identity.session.durationSeconds",
+      "value": 14400,
+      "unit": "seconds",
+      "status": "assumed",
+      "basis": "Assumed four-hour presenter-controlled demonstration session, long enough for setup and a 30-minute demo; expiry is inclusive and no browser-controlled extension.",
+      "source": "docs/gcsp/shared-contracts.md#demoidentityadapter--fucq-84",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "identity.session.clock",
+      "value": "server-wall-clock",
+      "unit": "enum",
+      "status": "assumed",
+      "basis": "Session security lifetime uses the injected server wall clock, independently from the accelerated/resettable domain DemoClock.",
+      "source": "docs/gcsp/shared-contracts.md#demoidentityadapter--fucq-84",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "identity.session.sameSite",
+      "value": "None",
+      "unit": "cookie SameSite enum",
+      "status": "assumed",
+      "basis": "GCSP uses separate Render static-site and backend origins. HttpOnly session cookies require SameSite=None with Secure, explicit allowed-origin credentialed CORS and the existing shared-key gate; browser cookie restrictions still apply.",
+      "source": "docs/design/gcsp-high-level-design.md#technical-deployment-and-recovery",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
     }
   ]
 }
