@@ -1,39 +1,12 @@
-/* GCSP semantic tokens, on .gcsp only (never :root, never bare .vm) so retail themes are untouched.
-   Inside .gcsp .vm the kit's --vm-* tokens map to these. */
+@import "./density-theme.css";
+
+/* Default Density semantic values are supplied by the shared theme above.
+   Local portal geometry and retail-kit aliases stay scoped to GCSP. */
 
 .gcsp {
-  --gcsp-font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', arial, sans-serif;
-
-  /* surfaces */
-  --gcsp-surface: #ffffff;
-  --gcsp-surface-page: #f2f4f5;
-  --gcsp-surface-muted: #e9edef;
-  --gcsp-surface-raised: #ffffff;
-
-  /* text and lines */
-  --gcsp-text: #1d2a30;
-  --gcsp-text-muted: #52606a;
-  --gcsp-divider: #d3dade;
-
-  /* teal accent (4.5:1 or better against white and the page grey) */
-  --gcsp-accent: #0b6c7e;
-  --gcsp-accent-strong: #0a6070;
-  --gcsp-accent-soft: #e3f1f4;
-  --gcsp-on-accent: #ffffff;
-  --gcsp-focus: #0a6070;
-
-  /* status */
-  --gcsp-danger: #b3261e;
-  --gcsp-warning: #8a5300;
-  --gcsp-success: #1b6b3a;
-  --gcsp-unavailable: #5b6770;
-
-  /* geometry and motion */
   --gcsp-header-height: 56px;
   --gcsp-sidebar-collapsed: 48px;
   --gcsp-sidebar-expanded: 208px;
-  --gcsp-radius: 4px;
-  --gcsp-motion: 160ms;
 }
 
 .gcsp .vm {

@@ -1,6 +1,7 @@
 // GCSP shell (FUCQ-64 slice 1): landmarks, navigation, account states, entry contract,
 // token isolation and the CSP rules for embeddable blocks.
 import { test, before, beforeEach } from 'node:test';
+import { createHash } from 'node:crypto';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -339,21 +340,39 @@ function walk(dir, out = []) {
 const rel = (p) => p.slice(ROOT.length);
 const stripCss = (s) => s.replace(/\/\*[\s\S]*?\*\//g, '');
 
-test('token isolation: gcsp-tokens.css declares --gcsp-* on .gcsp and --vm-* only under .gcsp .vm', () => {
-  const css = stripCss(read('blocks/gcsp/shell/gcsp-tokens.css'));
+test('default Density tokens stay on .gcsp, with --vm-* only under .gcsp .vm', () => {
+  const local = read('blocks/gcsp/shell/gcsp-tokens.css');
+  assert.match(local, /^@import "\.\/density-theme\.css";/, 'all GCSP consumers load Density by default');
+  const css = stripCss(read('blocks/gcsp/shell/density-theme.css') + '\n' + local).replace(/@import[^;]+;/g, '');
   assert.ok(!/:root/.test(css), 'no :root');
+  assert.ok(!/density-reference/.test(css), 'no opt-in class required');
   const blocks = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].map((m) => [m[1].trim(), m[2]]);
-  assert.deepEqual(blocks.map((b) => b[0]), ['.gcsp', '.gcsp .vm']);
   const props = (body) => [...body.matchAll(/(--[\w-]+)\s*:/g)].map((m) => m[1]);
-  assert.ok(props(blocks[0][1]).length > 20);
-  assert.ok(props(blocks[0][1]).every((p) => p.startsWith('--gcsp-')), 'only --gcsp-* on .gcsp');
-  assert.ok(props(blocks[1][1]).every((p) => p.startsWith('--vm-')), 'only --vm-* under .gcsp .vm');
-  const required = ['surface', 'surface-page', 'surface-raised', 'text', 'text-muted', 'divider', 'accent', 'accent-strong', 'accent-soft', 'on-accent', 'focus', 'danger', 'warning', 'success', 'unavailable', 'header-height', 'sidebar-collapsed', 'sidebar-expanded', 'radius', 'motion'];
-  for (const r of required) assert.ok(props(blocks[0][1]).includes(`--gcsp-${r}`), `--gcsp-${r}`);
+  const semantic = blocks.filter(([selector]) => selector === '.gcsp').flatMap(([, body]) => props(body));
+  assert.ok(semantic.length > 20);
+  assert.ok(semantic.every((p) => p.startsWith('--gcsp-') || p.startsWith('--ds-')), 'GCSP/source tokens only');
+  const vm = blocks.find(([selector]) => selector === '.gcsp .vm');
+  assert.ok(props(vm[1]).every((p) => p.startsWith('--vm-')), 'only --vm-* under .gcsp .vm');
+  const required = ['font', 'font-heading', 'font-heading-weight', 'surface', 'surface-page', 'surface-raised', 'text', 'text-muted', 'divider', 'accent', 'accent-strong', 'accent-soft', 'on-accent', 'focus', 'danger', 'warning', 'success', 'unavailable', 'header-height', 'sidebar-collapsed', 'sidebar-expanded', 'radius', 'motion'];
+  for (const r of required) assert.ok(semantic.includes(`--gcsp-${r}`), `--gcsp-${r}`);
+});
+
+test('Density heading font assets match the verified BMW downloads and declare their actual weight', () => {
+  const manifest = JSON.parse(read('docs/gcsp/density/evidence/font-provenance.json'));
+  assert.equal(manifest.family, 'BMWGroupTNCondensedPro-Medium');
+  const css = read('blocks/gcsp/shell/fonts/density-fonts.css');
+  assert.match(css, /font-weight:\s*500;/);
+  assert.match(css, /font-display:\s*swap;/);
+  for (const asset of manifest.files) {
+    const bytes = readFileSync(join(ROOT, asset.file));
+    assert.equal(bytes.length, asset.bytes);
+    assert.equal(createHash('sha256').update(bytes).digest('hex'), asset.sha256);
+    assert.ok(css.includes(asset.file.split('/').at(-1)), asset.file);
+  }
 });
 
 test('every selector in the shell stylesheets starts with .gcsp, and retail tokens are not redefined', () => {
-  for (const file of ['blocks/gcsp/shell/gcsp-shell.css', 'blocks/gcsp/shell/gcsp-tokens.css', 'blocks/gcsp/employee/gcsp-employee.css']) {
+  for (const file of ['blocks/gcsp/shell/gcsp-shell.css', 'blocks/gcsp/shell/gcsp-tokens.css', 'blocks/gcsp/shell/density-theme.css', 'blocks/gcsp/employee/gcsp-employee.css']) {
     const css = stripCss(read(file)).replace(/@import[^;]+;/g, '').replace(/@media[^{]*\{/g, '');
     const selectors = [...css.matchAll(/(?:^|[}\s])([^{}@]+)\{/g)].flatMap((m) => m[1].split(',')).map((s) => s.trim()).filter(Boolean);
     assert.ok(selectors.length >= 2, file);

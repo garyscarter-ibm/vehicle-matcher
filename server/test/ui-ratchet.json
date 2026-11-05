@@ -89,7 +89,7 @@
     },
     {
       "path": "blocks/gcsp/shell/gcsp-tokens.css",
-      "max_lines": 57
+      "max_lines": 30
     },
     {
       "path": "blocks/gcsp/employee/gcsp-employee.css",
@@ -122,6 +122,14 @@
     {
       "path": "blocks/gcsp/brief/gcsp-brief.css",
       "max_lines": 37
+    },
+    {
+      "path": "blocks/gcsp/shell/density-theme.css",
+      "max_lines": 84
+    },
+    {
+      "path": "blocks/gcsp/shell/fonts/density-fonts.css",
+      "max_lines": 11
     }
   ],
   "baseline": {
