@@ -1,0 +1,39 @@
+{
+  "frozenBackendUnchanged": [
+    "blocks/gcsp/brief/brief-controller.js",
+    "docs/gcsp/shared-contracts.md",
+    "server/gcsp/brief/editor.js",
+    "server/gcsp/brief/http.js",
+    "server/gcsp/policy/seed-v1.json",
+    "server/gcsp/recommendation/index.js",
+    "server/index.js",
+    "server/scenarios/employee/index.js",
+    "server/test/gcsp-brief-editor.test.js",
+    "server/test/gcsp-brief-controller.test.js"
+  ],
+  "scope": "scoped representative checkpoint",
+  "sha256": {
+    "COMPONENTS.md": "861437fdfebf4048f3ec95a0e5a96e86188a75a767e63601138d9b0b72b87561",
+    "blocks/gcsp/brief/brief-controller.js": "724120f45ad1fb8c14ee6de1a82c3579fe97c075254b6ce8032d712abe6c82aa",
+    "blocks/gcsp/brief/brief-transport.js": "47be97d58fb59aa6bf668aa7e66e9e257bb362ee1a83d6ef1f76d7f011f17aa7",
+    "blocks/gcsp/brief/brief-view-model.js": "be76f3ff46c6bc82379a43695348c9ee65d476f680c4c07d08ffef16fbcd5de6",
+    "blocks/gcsp/brief/brief-view.js": "97de81736dfcdfb5bff1a7b41034bf1218e5844d8393a1b09a6e168b6b5621b6",
+    "blocks/gcsp/brief/gcsp-brief.css": "6dfbba305ce0d78c13f9af2977e381d206bca176f80cb66e5c092a9fa21befdd",
+    "blocks/gcsp/brief/gcsp-brief.js": "943c4cbc99f1063328b68dcdb0c3ebf024e1cff75699e4a5b04cdc6eb5091c88",
+    "blocks/gcsp/brief/harness.js": "f0029c6aecf97745bf3fa8090333cc221389f1460f29f99fbce0ace29ab40c22",
+    "blocks/vehicle-matcher/component-gallery.js": "2643ee99088db89bceec52b0d762a8d5737ae97f9a098ed5b28cd0fd5d40ee6a",
+    "blocks/vehicle-matcher/modes/question-ui.js": "0824c4fb7de898ec67dc1e193716a742546f8bcd382b424fc2dbcadbc55b5ef3",
+    "docs/gcsp/evidence/fucq94/capture-representative.mjs": "85e8aca14d04f68095909d3e516b6507d648d76e5deeb4d51afa2ae898ebfaae",
+    "docs/gcsp/evidence/fucq94/generate-representative.mjs": "93e8ea01d1b1d1cb8cbf0a4b3ac75f1e8a1a00133b6565dce55d8d6d7a509112",
+    "docs/gcsp/evidence/fucq94/representative-snapshot.json": "a8efd203a8318698eedee285247c8b5682c517c0d8071662ee040d57716976ee",
+    "gcsp-brief.html": "9fbc308e0e47f1bda6c7644ef133cc919efff8b27d4c2ef6c1f9375d4357561d",
+    "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+    "server/test/gcsp-brief-controller.test.js": "268d24ea9a9755240032650dc0f8de25de1aac7120e72b0db4ef7c83ab1fe6e4",
+    "server/test/gcsp-brief-controls.test.js": "2c374d0a98d609cd7cb3ae9b0980b22eb0b1a4a206ea6e93221dc09280389de6",
+    "server/test/gcsp-brief-render.test.js": "372dc77f3cc78999cc86ba759a20e39a2b618b1c6c0f1af6adb1da3d6f4b9f59",
+    "server/test/gcsp-brief-transport.test.js": "25e3b36acfb0291e8956294bb294561a5cdf8df879bcc0e0cc7def25b1efb9c7",
+    "server/test/gcsp-shell.test.js": "2a604637a994393afa849f367b3591937455b4d09d011ed2294c8527a69b12d8",
+    "server/test/ui-ratchet.json": "e4330feacfc2df51d8b2e210e7e5986328d47bc164c7e710a89d70fdf9c08499"
+  },
+  "sourceKey": "3bf040bc643e94ff9f16d8b73ad3c4ecb0996f1345eb505d09d2c6fa11813851"
+}

@@ -1,6 +1,8 @@
 # FUCQ-94 brief editor: refinement and checkpoint plan
 
-DEV-2026-11-04-052, 5 November 2026. This is an initial controller checkpoint plan for the 13-point UI story. No screen or complete story is built by this checkpoint. The dispatcher owns integration, merge and closure. All collaborators retain equal authority under AGENTS.md.
+DEV-2026-11-04-052, 5 November 2026. The controller and supporting backend checkpoints are followed by one representative editor body for human review. The full story remains incomplete. The dispatcher owns integration, merge and closure. All collaborators retain equal authority under AGENTS.md.
+
+Current representative result: [representative-result.md](representative-result.md). Actual inspected captures: [1280 px desktop](representative-desktop.png), [375 px mobile](representative-mobile-375.png). [Browser matrix](representative-browser-matrix.json) records the rendered source identity, keyboard checks and generated-preview limitation. These are review evidence for one body, not the final seven-state acceptance matrix. The historical checkpoint plans below preserve their original allocation context.
 
 ## Authorised initial slice
 

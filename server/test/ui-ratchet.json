@@ -114,6 +114,10 @@
     {
       "path": "blocks/gcsp/greg/gcsp-greg.css",
       "max_lines": 38
+    },
+    {
+      "path": "blocks/gcsp/brief/gcsp-brief.css",
+      "max_lines": 37
     }
   ],
   "baseline": {
