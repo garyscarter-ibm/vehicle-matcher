@@ -2,9 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { once } from 'node:events';
 import { readFile } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+import pg from 'pg';
 import { buildServer } from '../index.js';
-import { createMemoryRepository, createMemoryStore, inputDigest, ok, result } from '../gcsp/repository/index.js';
-import { createPolicyService } from '../gcsp/policy/index.js';
+import { createMemoryRepository, createMemoryStore, createPostgresRepository, inputDigest, ok, result } from '../gcsp/repository/index.js';
+import { createPolicyService, FilePolicyProvider } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { ManualContextService, createRepositoryManualPorts } from '../gcsp/manual-context/index.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
@@ -15,11 +18,10 @@ import { stock, fact } from './helpers/employee-recommendation.js';
 const instant = '2026-11-05T09:00:00.000Z';
 const cmd = (commandId, value = {}) => ({ commandId, inputDigest: inputDigest(value) });
 const ref = (f, table, key) => ({ table, key: { runId: f.context.runId, ...key } });
-async function setup({ adapter = createSyntheticManualStockAdapter(), repository, modelKey = 'G21 Touring|320i' } = {}) {
+async function setup({ adapter = createSyntheticManualStockAdapter(), repository, policy = createPolicyService({ provider: new FilePolicyProvider() }), modelKey = 'G21 Touring|320i' } = {}) {
   const store = createMemoryStore();
   repository ??= createMemoryRepository({ store, now: () => instant });
   assert.equal((await repository.open()).status, 'ok');
-  const policy = createPolicyService();
   const runtime = await createDemoRuntime({ repository, policy, environmentId: 'manual-claims', environmentKind: 'synthetic',
     policyAsOf: instant, commandId: 'bootstrap', sessionNow: () => instant });
   assert.equal(runtime.status, 'ok');
@@ -470,4 +472,183 @@ test('a concurrent hold revision during reload refuses a torn success projection
   const outcome = await service.readClaim(f.context);
   assert.equal(outcome.status, 'stale-version'); assert.equal(outcome.resource, 'hold');
   assert.equal((await service.readClaim(f.context)).value.state, 'quoted');
+});
+
+let nativeSerial = 0;
+async function nativeFixture() {
+  const schema = `gcsp_manual_${process.pid}_${++nativeSerial}`;
+  const pool = new pg.Pool({ connectionString: process.env.GCSP_DATABASE_URL, max: 2,
+    connectionTimeoutMillis: 5000, statement_timeout: 10000, query_timeout: 15000 });
+  pool.on('error', () => {});
+  try { await pool.query(`CREATE SCHEMA "${schema}"`); }
+  catch { await pool.end(); assert.fail('Configured PostgreSQL manual-claim fixture is unavailable.'); }
+  const repositories = []; const policies = []; let session = 0;
+  const resources = () => {
+    const repository = createPostgresRepository({ schema });
+    // Every policy read uses the same exact owned namespace as transaction storage.
+    const policy = createPolicyService({ schema });
+    repositories.push(repository); policies.push(policy);
+    return { repository, policy };
+  };
+  return { schema, pool,
+    async create(adapter) { return setup({ ...resources(), ...(adapter ? { adapter } : {}) }); },
+    async reopen(f) {
+      await f.repository.close(); await f.policy.close();
+      const { repository, policy } = resources();
+      assert.equal((await repository.open()).status, 'ok');
+      const runtime = await createDemoRuntime({ repository, policy, environmentId: 'manual-claims', environmentKind: 'synthetic',
+        policyAsOf: instant, commandId: 'bootstrap', sessionNow: () => instant });
+      assert.equal(runtime.status, 'ok', JSON.stringify(runtime));
+      const { clock, identity } = runtime.value;
+      const id = ++session;
+      const presenter = (await identity.createPresenterSession(`restart-presenter-${id}`)).value;
+      const acting = (await identity.switchPrincipal(presenter.context, 'demo-paula', `restart-paula-${id}`)).value;
+      const reopened = { repository, policy, clock, identity, presenter, acting, context: acting.context, adapter: f.adapter };
+      reopened.manual = new ManualContextService({ ...reopened, ports: createRepositoryManualPorts(reopened) });
+      reopened.service = createManualClaimsService(reopened);
+      assert.equal(reopened.context.runId, f.context.runId);
+      return reopened;
+    },
+    processRead(f, holdId) {
+      try {
+        return JSON.parse(execFileSync(process.execPath, [fileURLToPath(new URL('./helpers/manual-claim-reopen.js', import.meta.url)),
+          schema, f.context.runId, f.context.environmentId, holdId], { encoding: 'utf8', timeout: 20000, maxBuffer: 65536,
+          stdio: ['ignore', 'pipe', 'pipe'] }));
+      } catch { assert.fail('Configured PostgreSQL manual-claim process reopen is unavailable.'); }
+    },
+    async cleanup() {
+      try {
+        for (const repository of repositories) await repository.close();
+        for (const policy of policies) await policy.close();
+        await pool.query(`DROP SCHEMA "${schema}" CASCADE`);
+        const absent = await pool.query('SELECT count(*)::integer AS count FROM pg_namespace WHERE nspname = $1', [schema]);
+        assert.equal(absent.rows[0].count, 0, 'The exact owned synthetic manual-claim schema must be absent.');
+      } finally { await pool.end(); }
+    },
+  };
+}
+const nativeOptions = { skip: process.env.GCSP_DATABASE_URL === undefined ? 'GCSP_DATABASE_URL is unset; native manual lifecycle was not run' : false };
+
+test('native PostgreSQL manual claims persist release, once-only review, startup/tick expiry and exact-order allocation', nativeOptions, async () => {
+  const fixture = await nativeFixture();
+  try {
+    let f = await fixture.create();
+    const selected = await selection(f); const held = await f.service.claim(f.context, selected);
+    assert.equal(held.status, 'ok', JSON.stringify(held));
+    const persisted = fixture.processRead(f, held.value.hold.holdId);
+    assert.equal(persisted.draft.draftVersion, 1);
+    assert.deepEqual(persisted.quote, held.value.quote);
+    assert.equal(persisted.hold.expiresAt, held.value.hold.expiresAt);
+    assert.equal(persisted.claims.length, 1); assert.equal(persisted.claims[0].state, 'active');
+    assert.equal(persisted.stock.state, 'held'); assert.equal(persisted.operations.length, 0);
+    f = await fixture.reopen(f);
+    assert.equal((await f.service.readClaim(f.context)).value.hold.expiresAt, held.value.hold.expiresAt);
+    assert.deepEqual(await f.service.claim(f.context, selected), held);
+    assert.equal((await f.service.release(f.context, { ...await action(f, 'native-release'), reason: 'back' })).value.state, 'released');
+    const released = fixture.processRead(f, held.value.hold.holdId);
+    assert.equal(released.hold.state, 'released'); assert.equal(released.claims[0].state, 'released');
+    assert.equal(released.stock.state, 'released'); assert.equal(released.stock.available, true);
+
+    const second = await f.service.claim(f.context, await selection(f, 0, 'native-review-claim'));
+    const reviewInput = await action(f, 'native-review');
+    const reviewed = await f.service.beginReview(f.context, reviewInput);
+    assert.equal(reviewed.status, 'ok', JSON.stringify(reviewed));
+    const read = { runId: f.context.runId, asOf: instant, policyVersion: f.context.policyVersion };
+    const previewRule = await f.policy.getAssumption('hold.cart.durationSeconds', read);
+    const reviewRule = await f.policy.getAssumption('hold.cart.orderReview.durationSeconds', read);
+    assert.equal(Date.parse(second.value.hold.expiresAt) - Date.parse(instant), previewRule.value.value * 1000);
+    assert.equal(Date.parse(reviewed.value.hold.expiresAt) - Date.parse(reviewed.value.hold.reviewStartedAt), reviewRule.value.value * 1000);
+    f = await fixture.reopen(f);
+    assert.deepEqual(await f.service.beginReview(f.context, reviewInput), reviewed);
+    assert.equal((await f.service.beginReview(f.context, await action(f, 'native-review-new-command'))).value.hold.expiresAt, reviewed.value.hold.expiresAt);
+    assert.equal((await f.service.registerClockHandler()).status, 'ok');
+    assert.equal((await advance(f, reviewRule.value.value)).status, 'ok');
+    assert.equal((await f.clock.reconcileStartup()).status, 'ok');
+    const expired = fixture.processRead(f, reviewed.value.hold.holdId);
+    assert.equal(expired.hold.state, 'expired'); assert.equal(expired.claims[0].state, 'expired');
+    assert.equal(expired.stock.state, 'released'); assert.equal(expired.stock.available, true);
+
+    const tickHold = await f.service.claim(f.context, await selection(f, 0, 'native-tick-claim'));
+    assert.equal(tickHold.status, 'ok', JSON.stringify(tickHold));
+    assert.equal((await advance(f, previewRule.value.value)).status, 'ok');
+    const state = (await f.clock.readState(f.presenter.context)).value;
+    const tick = await f.clock.tick(f.presenter.context, { eventId: 'native-expiry-tick', expectedClockVersion: state.clockVersion,
+      inputDigest: inputDigest('native-expiry') });
+    assert.equal(tick.status, 'ok', JSON.stringify(tick));
+    assert.equal(fixture.processRead(f, tickHold.value.hold.holdId).hold.state, 'expired');
+    f = await fixture.reopen(f);
+    assert.equal((await f.service.readClaim(f.context)).value.state, 'expired');
+    const final = await f.service.claim(f.context, await selection(f, 0, 'native-allocate-claim'));
+    assert.equal((await f.service.beginReview(f.context, await action(f, 'native-allocate-review'))).status, 'ok');
+    const saveInput = await action(f, 'native-save'); const saved = await f.service.allocate(f.context, saveInput);
+    assert.equal(saved.status, 'ok', JSON.stringify(saved)); assert.equal(saved.value.state, 'allocated');
+    f = await fixture.reopen(f);
+    assert.deepEqual(await f.service.allocate(f.context, saveInput), saved);
+    const allocated = fixture.processRead(f, final.value.hold.holdId);
+    assert.equal(allocated.hold.orderUuid, final.value.hold.orderUuid);
+    assert.equal(allocated.claims[0].state, 'allocated'); assert.equal(allocated.stock.state, 'allocated');
+    assert.equal(allocated.stock.allocated, true); assert.equal(allocated.stock.available, false);
+    const slot = await f.repository.read(f.context, ref(f, 'entitlement_slots', { entitlementSlotId: f.context.entitlementSlotId }));
+    assert.equal(slot.value.state, 'allocated');
+  } finally { await fixture.cleanup(); }
+});
+
+test('native PostgreSQL SQL failure rolls back before effects; uncertain claim/release/selection persist and reconcile after restart', nativeOptions, async () => {
+  const fixture = await nativeFixture();
+  try {
+    const adapter = remoteAdapter(); let f = await fixture.create(adapter);
+    const input = await selection(f); const before = await f.repository.read(f.context, ref(f, 'stock', { orderUuid: input.orderUuid }));
+    await fixture.pool.query(`CREATE FUNCTION "${fixture.schema}".fail_manual_intent() RETURNS trigger LANGUAGE plpgsql AS $$
+      BEGIN RAISE EXCEPTION 'Synthetic manual rollback checkpoint'; END; $$;
+      CREATE TRIGGER synthetic_manual_failure BEFORE INSERT ON "${fixture.schema}".pending_operations
+        FOR EACH ROW EXECUTE FUNCTION "${fixture.schema}".fail_manual_intent()`);
+    try {
+      const failed = await f.service.claim(f.context, input);
+      assert.equal(failed.status, 'unavailable');
+      assert.doesNotMatch(JSON.stringify(failed), /Synthetic manual rollback checkpoint|postgres:/);
+      for (const table of ['holds', 'claims', 'quotes', 'pending_operations']) assert.equal((await f.repository.query(f.context, table)).value.length, 0);
+      assert.deepEqual(await f.repository.read(f.context, ref(f, 'stock', { orderUuid: input.orderUuid })), before);
+      assert.equal(adapter.calls.length, 0);
+    } finally {
+      await fixture.pool.query(`DROP TRIGGER synthetic_manual_failure ON "${fixture.schema}".pending_operations;
+        DROP FUNCTION "${fixture.schema}".fail_manual_intent()`);
+    }
+    const pending = await f.service.claim(f.context, input); assert.equal(pending.status, 'pending');
+    const first = await f.service.readClaim(f.context); const holdId = first.value.hold.holdId;
+    const persisted = fixture.processRead(f, holdId);
+    assert.equal(persisted.hold.state, 'claim-pending'); assert.equal(persisted.claims[0].state, 'claim-pending');
+    assert.equal(persisted.stock.state, 'held'); assert.equal(persisted.operations[0].operationId, pending.operationId);
+    assert.deepEqual(persisted.operations[0].payload.quote, persisted.quote);
+    f = await fixture.reopen(f);
+    assert.equal((await f.service.readClaim(f.context)).status, 'pending');
+    assert.equal(adapter.calls.filter((call) => call.method === 'execute').length, 1);
+    adapter.set('confirmed'); assert.equal((await f.service.readClaim(f.context)).value.state, 'quoted');
+    adapter.set('pending');
+    assert.equal((await f.service.release(f.context, { ...await action(f, 'native-remote-release'), reason: 'change' })).status, 'pending');
+    assert.equal((await advance(f, 120)).status, 'ok');
+    assert.equal((await f.service.readClaim(f.context)).value.state, 'release-pending');
+    const uncertainRelease = fixture.processRead(f, holdId);
+    assert.equal(uncertainRelease.stock.available, false); assert.equal(uncertainRelease.claims[0].state, 'release-pending');
+    f = await fixture.reopen(f);
+    assert.equal((await f.service.browseStock(f.context)).value.cars.length, 1);
+    adapter.set('confirmed'); assert.equal((await f.service.readClaim(f.context)).value.state, 'released');
+    assert.equal(fixture.processRead(f, holdId).stock.available, true);
+
+    const final = await f.service.claim(f.context, await selection(f, 0, 'native-remote-final'));
+    assert.equal(final.status, 'ok', JSON.stringify(final));
+    assert.equal((await f.service.beginReview(f.context, await action(f, 'native-remote-review'))).status, 'ok');
+    adapter.set('pending');
+    assert.equal((await f.service.allocate(f.context, await action(f, 'native-remote-save'))).status, 'pending');
+    assert.equal((await advance(f, 601)).status, 'ok');
+    assert.equal((await f.service.readClaim(f.context)).value.state, 'selection-pending');
+    f = await fixture.reopen(f);
+    const uncertainSelection = fixture.processRead(f, final.value.hold.holdId);
+    assert.equal(uncertainSelection.hold.state, 'selection-pending'); assert.equal(uncertainSelection.stock.available, false);
+    adapter.set('confirmed'); const saved = await f.service.readClaim(f.context);
+    assert.equal(saved.value.state, 'allocated');
+    const allocated = fixture.processRead(f, final.value.hold.holdId);
+    assert.equal(allocated.stock.orderUuid, final.value.hold.orderUuid); assert.equal(allocated.stock.state, 'allocated');
+    assert.equal(allocated.claims[0].state, 'allocated');
+    assert.equal(allocated.operations.filter((operation) => operation.state === 'pending').length, 0);
+  } finally { await fixture.cleanup(); }
 });

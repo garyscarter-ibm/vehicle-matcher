@@ -54,7 +54,7 @@ export function repositoryContract(provider, factory) {
           await repository.close(); repository = await fixture.reopen();
           assert.equal((await repository.open()).status, 'ok');
           return repository;
-        }, fixture.processRead);
+        }, fixture.processRead, fixture.independent);
       } finally { await repository.close(); await fixture.cleanup?.(); }
     };
     await t.test('scoped CRUD, filtering, clones and persistence on reopen', () => withRepository(async (repository, reopen) => {
@@ -103,10 +103,11 @@ export function repositoryContract(provider, factory) {
       assert.equal(ignored.status, 'conflict');
       for (const employeeId of ['throw', 'typed', 'ignored']) assert.equal((await repository.read(ctx(), ref('employees', { employeeId }))).status, 'not-found');
     }));
-    await t.test('simultaneous exact-car claims produce one owner and explicit stale resource', () => withRepository(async (repository) => {
+    await t.test('simultaneous exact-car claims produce one owner and explicit stale resource', () => withRepository(async (repository, _reopen, _processRead, independent) => {
+      const competitor = independent ? await independent() : repository;
       const outcomes = await Promise.all([
         repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput())),
-        repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput({ holdId: 'hold-b', claimId: 'claim-b', employeeId: 'employee-b', entitlementSlotId: 'slot-b', quoteId: 'quote-ba', type: 'buddy-offer' }))),
+        competitor.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput({ holdId: 'hold-b', claimId: 'claim-b', employeeId: 'employee-b', entitlementSlotId: 'slot-b', quoteId: 'quote-ba', type: 'buddy-offer' }))),
       ]);
       assert.equal(outcomes.filter((outcome) => outcome.status === 'ok').length, 1);
       const stale = outcomes.find((outcome) => outcome.status === 'stale-version');
@@ -159,7 +160,9 @@ export function repositoryContract(provider, factory) {
       assert.equal(operations[0].payload.quote.quoteId, quote.quoteId);
       const draft = (await repository.read(ctx(), ref('event_receipts', { consumerId: 'manual:draft:employee-a', eventId: '7' }))).value.outcome.value;
       assert.equal(draft.draftVersion, 7);
-      if (processRead) assert.deepEqual(processRead('hold-a'), { hold, quote: pinned, draft, operations });
+      const claims = (await repository.query(ctx(), 'claims', { holdId: 'hold-a' })).value;
+      const stock = (await repository.read(ctx(), ref('stock', { orderUuid: 'car-a' }))).value;
+      if (processRead) assert.deepEqual(processRead('hold-a'), { hold, quote: pinned, draft, operations, claims, stock });
       assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput({
         holdId: 'competitor', claimId: 'competitor', employeeId: 'employee-b', entitlementSlotId: 'slot-b', quoteId: 'quote-ba', expectedStockVersion: 2,
       })))).reason, 'car-occupied');
@@ -317,7 +320,7 @@ export function repositoryContract(provider, factory) {
 test('postgresql native constraints reject a second occupying hold and claim', {
   skip: process.env.GCSP_DATABASE_URL === undefined ? 'GCSP_DATABASE_URL is unset; native SQL constraints were not run' : false,
 }, async () => {
-  const schema = `gcsp_constraints_${process.pid}`;
+  const schema = `gcsp_constraints_${process.pid}_1`;
   const pool = new pg.Pool({ connectionString: process.env.GCSP_DATABASE_URL, connectionTimeoutMillis: 5000, statement_timeout: 10000 });
   pool.on('error', () => {});
   let created = false;
@@ -339,7 +342,13 @@ test('postgresql native constraints reject a second occupying hold and claim', {
     }
   } finally {
     await repository.close();
-    try { if (created) await pool.query(`DROP SCHEMA "${schema}" CASCADE`); }
+    try {
+      if (created) {
+        await pool.query(`DROP SCHEMA "${schema}" CASCADE`);
+        const absent = await pool.query('SELECT count(*)::integer AS count FROM pg_namespace WHERE nspname = $1', [schema]);
+        assert.equal(absent.rows[0].count, 0, 'The exact owned native-constraint schema must be absent.');
+      }
+    }
     catch { throw new Error('PostgreSQL native-constraint fixture cleanup incomplete'); }
     finally { await pool.end(); }
   }
@@ -367,9 +376,27 @@ if (process.env.GCSP_DATABASE_URL === undefined) {
     pool.on('error', () => {});
     try { await pool.query(`CREATE SCHEMA "${schema}"`); }
     catch { await pool.end(); throw new Error('PostgreSQL contract schema setup unavailable'); }
+    const pools = [];
+    const repositories = [];
+    const create = () => {
+      const ownedPool = new pg.Pool({ connectionString: process.env.GCSP_DATABASE_URL, max: 1,
+        connectionTimeoutMillis: 5000, statement_timeout: 10000, query_timeout: 15000 });
+      ownedPool.on('error', () => {}); pools.push(ownedPool);
+      const repository = createPostgresRepository({ schema, pool: ownedPool }); repositories.push(repository);
+      return repository;
+    };
+    const primary = create();
     return {
-      repository: createPostgresRepository({ schema }),
-      reopen: () => createPostgresRepository({ schema }),
+      repository: primary,
+      reopen: create,
+      async independent() {
+        const secondary = create();
+        assert.equal((await secondary.open()).status, 'ok');
+        const pids = await Promise.all(pools.slice(0, 2).map(async (ownedPool) =>
+          (await ownedPool.query('SELECT pg_backend_pid() AS pid')).rows[0].pid));
+        assert.equal(new Set(pids).size, 2, 'Exact-car contenders use independent PostgreSQL pools and backend sessions.');
+        return secondary;
+      },
       processRead(holdId) {
         try {
           return JSON.parse(execFileSync(process.execPath, [fileURLToPath(new URL('./helpers/manual-claim-reopen.js', import.meta.url)),
@@ -378,8 +405,13 @@ if (process.env.GCSP_DATABASE_URL === undefined) {
         } catch { throw new Error('Configured PostgreSQL process reopen proof unavailable'); }
       },
       async cleanup() {
-        try { await pool.query(`DROP SCHEMA "${schema}" CASCADE`); }
-        catch { throw new Error('PostgreSQL contract schema cleanup incomplete'); }
+        try {
+          for (const repository of repositories) await repository.close();
+          for (const ownedPool of pools) await ownedPool.end();
+          await pool.query(`DROP SCHEMA "${schema}" CASCADE`);
+          const absent = await pool.query('SELECT count(*)::integer AS count FROM pg_namespace WHERE nspname = $1', [schema]);
+          assert.equal(absent.rows[0].count, 0, 'The exact owned contract schema must be absent.');
+        } catch { throw new Error('PostgreSQL contract schema cleanup incomplete'); }
         finally { await pool.end(); }
       },
     };

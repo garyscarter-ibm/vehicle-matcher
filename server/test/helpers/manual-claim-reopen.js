@@ -14,8 +14,10 @@ try {
   const draft = await repository.read(context, { table: 'event_receipts', key: {
     runId, consumerId: `manual:draft:${hold.value.employeeId}`, eventId: String(quote.value.draftVersion) } });
   const operations = await repository.query(context, 'pending_operations', { holdId });
-  if (draft.status !== 'ok' || operations.status !== 'ok') throw new Error('unavailable');
-  process.stdout.write(JSON.stringify({ hold: hold.value, quote: quote.value, draft: draft.value.outcome.value, operations: operations.value }));
+  const claims = await repository.query(context, 'claims', { holdId });
+  const stock = await repository.read(context, { table: 'stock', key: { runId, orderUuid: hold.value.orderUuid } });
+  if ([draft, operations, claims, stock].some((outcome) => outcome.status !== 'ok')) throw new Error('unavailable');
+  process.stdout.write(JSON.stringify({ hold: hold.value, quote: quote.value, draft: draft.value.outcome.value, operations: operations.value, claims: claims.value, stock: stock.value }));
 } catch {
   process.stderr.write('Configured PostgreSQL process reopen proof unavailable.');
   process.exitCode = 1;
