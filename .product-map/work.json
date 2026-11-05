@@ -339,7 +339,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-05T23:38:10Z",
+      "observed_at": "2026-11-05T23:46:40Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-35",
       "slices": [
         {
@@ -372,10 +372,10 @@
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Final-validation",
-          "observed_at": "2026-11-05T23:31:17Z",
-          "evidence": "Source/browser gates passed; final authored npm test and dispatcher merge still pending"
+          "observed_at": "2026-11-05T23:46:40Z",
+          "evidence": "Dispatcher independently audited exact historical full1247pass/5native-skips, configured1994inputs, six actual runtime browser chunks and35clean roots; current shared metadata integrated without app/test changes. Auto-merged and pushed bf14ac3206b9c43179e68cd9b79bec6978a415ff. Historical stamp retained honestly; native PostgreSQL remains excluded."
         }
       ],
       "unsliced": false,
