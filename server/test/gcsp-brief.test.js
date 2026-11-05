@@ -318,3 +318,15 @@ lifecycle('drafts based on a previous confirmation cannot overwrite a pause; cha
   assert.equal((await f.service.readCurrent(f.context)).value.brief.briefVersion, 2);
   assert.equal((await f.repository.query(f.context, 'event_receipts', { eventType: 'brief-changed' })).value.length, 2);
 });
+
+lifecycle('pause and resume do not consume the one confirmed change answering a recorded decline', async () => {
+  const f = await setup(); await save(f); await confirm(f);
+  await f.repository.transaction(f.context, cmd('before-pause-decline'), (tx) => tx.insert('decisions', { runId: f.context.runId,
+    decisionId: 'declined-before-pause', offerId: 'offer-before-pause', employeeId: f.context.employeeId, decision: 'decline', versions: { brief: 1 } }));
+  await changeState(f, 'pause', 1); await changeState(f, 'resume', 2);
+  const changed = await f.service.changeAfterDecline(f.context, { commandId: 'after-resume-change', decisionId: 'declined-before-pause',
+    expectedBriefVersion: 3, change: { path: 'preferences.body.value', value: 'suv' } });
+  assert.equal(changed.status, 'ok', JSON.stringify(changed));
+  assert.equal(changed.value.brief.postDeclineChange.fromBriefVersion, 3);
+  assert.equal(changed.value.brief.briefVersion, 4);
+});

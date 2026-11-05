@@ -175,7 +175,7 @@ export class BriefService {
         if (decision.value.employeeId !== context.employeeId) return result('forbidden', { reason: 'The decline belongs to another employee.' });
         if (decision.value.decision !== 'decline' || !text(decision.value.offerId)) return invalid('decisionId', 'A recorded decline is required.');
         if (state.history.some((b) => b.postDeclineChange?.decisionId === input.decisionId)) return result('conflict', { reason: 'decline-change-already-recorded', current: { briefVersion: version } });
-        if (decision.value.versions?.brief !== version) return result('conflict', { reason: 'declined-brief-changed', current: { briefVersion: version } });
+        if (!state.history.some((b) => b.briefVersion === decision.value.versions?.brief)) return invalid('decisionId', 'The decline must reference an approved brief version.');
         const [section, key] = input.change.path.split('.');
         if (!Object.hasOwn(brief[section], key)) return invalid('change.path', 'Change an existing registered field.');
         const before = structuredClone(section === 'preferences' ? brief.preferences[key].value : brief.essentials[key]);

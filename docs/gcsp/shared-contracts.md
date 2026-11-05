@@ -69,8 +69,9 @@ with source, sourceVersion, observedAt and `supplied-demo-fact` label. Browser i
 Only the employee's scoped offers are read; no hold, offer or stock state is changed.
 `changeAfterDecline` implements the single-change command above, with a registered path
 `preferences.<key>.value` or `essentials.<key>`; an essential value is its complete confirmed requirement object.
-The stored decline must belong to this employee and reference the current brief in `versions.brief`.
-Each decline can be answered once; all other preferences, weights, essentials and permission remain unchanged.
+The stored decline must belong to this employee and reference an approved historical brief in `versions.brief`.
+Each decline can be answered once; a pause/resume does not consume that change. The expected version is the current
+brief being changed; all other preferences, weights, essentials and permission remain unchanged.
 
 Confirm/change/pause/resume atomically append a durable `event_receipts` row with `consumerId = brief:changes`,
 `eventId = brief:<employeeId>:<briefVersion>`, `eventType = brief-changed`, input brief/policy versions and
