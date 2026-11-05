@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "date": "2026-11-05",
+  "scope": "offline scoped implementation checkpoint; not native positive qualification",
+  "tests": [
+    {
+      "command": "node --test server/test/bmw-live-imagery.test.js server/test/bmw-image-adapter.test.js",
+      "pass": 37,
+      "fail": 0,
+      "liveProviderTests": 18,
+      "snapshotTests": 19,
+      "strictResult": "passed",
+      "codeKey": "19d3d5485c9abd0bf005e5a6aca6f1aee625e221352a6b3c6219e718d6ad18a8"
+    },
+    {
+      "command": "node --test server/test/bmw-catalogue-adapter.test.js",
+      "pass": 22,
+      "fail": 0
+    }
+  ],
+  "sourceSha256": {
+    "server/vehicle-evidence/bmw-live-imagery.js": "280680466588c4489949efd91295b702df7b1592105d7062c46c55916e79cb72",
+    "server/test/bmw-live-imagery.test.js": "89ab6308ede70866bd0f6ba216842f0f8521808a3fb3a1dc8f39a14819709a68",
+    "server/test/bmw-image-adapter.test.js": "fe5e5b01b3bee4206f8d82e5ab5140d484c9424c490f518f165343fdbf40cb58",
+    "server/test/bmw-catalogue-adapter.test.js": "69ed84e3157230e2a6773ffc4a8eecbdd3a1f35a0fe804566679033eb9bf7f8f"
+  },
+  "coverage": {
+    "kind": "V8 contexts collected during prescribed scoped pair; no overall coverage completeness claim",
+    "reports": [
+      {
+        "module": "server/vehicle-evidence/bmw-image-adapter.js",
+        "functions": 37,
+        "executedFunctions": 37
+      },
+      {
+        "module": "server/vehicle-evidence/bmw-live-imagery.js",
+        "functions": 30,
+        "executedFunctions": 29
+      },
+      {
+        "module": "server/vehicle-evidence/bmw-image-adapter.js",
+        "functions": 32,
+        "executedFunctions": 28
+      }
+    ]
+  },
+  "manualScenarios": {
+    "recipe": "node docs/gcsp/evidence/fucq49/record-examples.mjs",
+    "nativeCalls": 0,
+    "retainedOutput": "presentation-examples.json",
+    "scenarios": [
+      "synthetic independent proof: representative image, unknown wheels/interior/equipment/exact vehicle",
+      "observed shape without independent identity: identity-unverified; no asset request",
+      "missing credential: unavailable; no transport",
+      "wrong model proof: identity-mismatch; no asset request",
+      "unsupported view: unsupported; no asset request",
+      "explicit existing snapshot choice: representative offline image with its own provenance"
+    ],
+    "privacyReview": "No credential, raw upstream error, private identifier or opaque source asset URL in retained output."
+  },
+  "resourceLimits": {
+    "rssMiB": 768,
+    "seconds": 120,
+    "scratchMiB": 128,
+    "logMiB": 2,
+    "concurrency": 1
+  },
+  "cleanup": {
+    "scopedReceipts": "external shared .claude/test-runs/fucq49; TestResources/HostBudget finalizers",
+    "groupsAbsent": true,
+    "reservationsAbsent": true,
+    "ownedScratchRemoved": true,
+    "packageAndLockHashesUnchanged": true,
+    "browserProfilePortsDependencies": "none"
+  },
+  "integration": {
+    "fullNpmTest": "pending dispatcher-granted current-base integration and exact strict run"
+  },
+  "nativeAcceptance": {
+    "completeIndependentConfigurationIdentity": false,
+    "nativeNamedAssetBytes": false,
+    "storyCompletion": "blocked; injected contract success does not satisfy native acceptance"
+  }
+}
