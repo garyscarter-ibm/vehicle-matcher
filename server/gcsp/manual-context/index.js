@@ -148,7 +148,7 @@ export class ManualContextService {
     const location = p.rules.locations.find((l) => l.locationId === choices.collectionLocationId
       && l.contractOptionIds.includes(contract.contractOptionId) && l.driverKinds.includes(driver.kind));
     if (!location) return invalid('collectionLocationId', 'This location is not permitted for the selected driver and contract.');
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(choices.requestedCollectionDate ?? '')
+    if (typeof choices.requestedCollectionDate !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(choices.requestedCollectionDate)
       || !validInstant(`${choices.requestedCollectionDate}T00:00:00.000Z`)) return invalid('requestedCollectionDate', 'Supply a valid requested collection date.');
     const date = Date.parse(`${choices.requestedCollectionDate}T00:00:00.000Z`);
     const today = Date.parse(`${p.now.slice(0, 10)}T00:00:00.000Z`); const day = 86400000;
@@ -167,15 +167,29 @@ export class ManualContextService {
   }
 
   async saveDraft(context, input) {
-    const p = await this.#prepare(context); if (p.error) return p.error;
-    if (p.state !== 'ready') return result('conflict', { reason: p.state, view: this.#presentation(p) });
+    if (!this.#repository || !this.#identity) return unavailable('configuration');
+    const guard = await this.#identity.requireRole(context, 'employee'); if (guard.status !== 'ok') return guard;
     if (!only(input, ['commandId', 'expectedDraftVersion', 'expectedContextVersion', 'choices']) || !text(input.commandId)
       || input.commandId.length > 128 || !revision(input.expectedDraftVersion) || !text(input.expectedContextVersion)) return invalid('command', 'Supply a command ID, expected draft and context versions.');
-    if (input.expectedContextVersion !== p.contextVersion) return stale('manual-context', input.expectedContextVersion, p.contextVersion);
-    const validated = this.#validate(context, input.choices, p);
-    if (validated.status) return validated;
-    const digest = inputDigest(input);
-    return this.#repository.transaction(context, { commandId: `manual:${context.employeeId}:${input.commandId}`, inputDigest: digest }, async (tx) => {
+    let digest;
+    try { digest = inputDigest(input); } catch { return invalid('command', 'Supply JSON data for the registered manual fields.'); }
+    const commandId = `manual:${context.employeeId}:${input.commandId}`;
+    // Recover a committed outcome before mutable sources or collection dates can reject
+    // an identical retry. Trusted identity/current-run checks still precede receipt access.
+    const replay = await this.#repository.read(context, { table: 'event_receipts', key: {
+      runId: context.runId, consumerId: 'command:transaction', eventId: commandId } });
+    if (replay.status === 'ok') return replay.value.inputDigest === digest ? structuredClone(replay.value.outcome)
+      : result('conflict', { reason: 'idempotency-input-changed', current: {} });
+    if (replay.status !== 'not-found') return replay;
+    const p = await this.#prepare(context);
+    return this.#repository.transaction(context, { commandId, inputDigest: digest }, async (tx) => {
+      // The repository resolves a concurrent committed replay before this callback.
+      // All provider reads stay outside its transaction; mutable refusals occur here.
+      if (p.error) return p.error;
+      if (p.state !== 'ready') return result('conflict', { reason: p.state, view: this.#presentation(p) });
+      if (input.expectedContextVersion !== p.contextVersion) return stale('manual-context', input.expectedContextVersion, p.contextVersion);
+      const validated = this.#validate(context, input.choices, p);
+      if (validated.status) return validated;
       // Conditional local source checks close the read-to-write race for this adapter.
       // External providers retain their own versioned snapshot and are revalidated at claim.
       if (p.account.repositoryVersion !== undefined) {

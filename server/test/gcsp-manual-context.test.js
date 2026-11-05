@@ -152,6 +152,52 @@ test('new-order branch never borrows a current contract or return mileage', asyn
   assert.equal((await save(f, { mode: 'new', oldContractId: null }, { commandId: 'bad', expectedDraftVersion: 1 })).status, 'invalid');
 });
 
+test('identical command replay survives changed or unavailable sources and collection timing while keeping identity/run guards', async () => {
+  const f = await setup(); const account = await f.service.readAccount(f.context);
+  const input = { commandId: 'lost-response', expectedDraftVersion: 0,
+    expectedContextVersion: account.value.contextVersion, choices: choices(f) };
+  const original = await f.service.saveDraft(f.context, input); assert.equal(original.status, 'ok');
+  await changeRecords(f, (r) => { r.source.sourceVersion = 'new-source'; }, 'replay-source-change');
+  assert.deepEqual(await f.service.saveDraft(f.context, input), original);
+  const outage = variant(f, { employeeContract: { async read() { return result('unavailable', { retryable: true }); } } });
+  assert.deepEqual(await outage.saveDraft(f.context, input), original);
+  const state = (await f.clock.readState(f.presenter.value.context)).value;
+  assert.equal((await f.clock.advance(f.presenter.value.context, { commandId: 'replay-later', expectedClockVersion: state.clockVersion,
+    bySeconds: 30 * 86400 })).status, 'ok');
+  assert.deepEqual(await f.service.saveDraft(f.context, input), original);
+  assert.equal((await f.service.saveDraft(f.context, { ...input, choices: choices(f, { expectedReturnMileage: 6800 }) })).status, 'conflict');
+  assert.equal((await f.service.saveDraft({ ...f.context, employeeId: 'other' }, input)).status, 'forbidden');
+  const current = (await f.clock.readState(f.presenter.value.context)).value;
+  await f.clock.reset(f.presenter.value.context, { commandId: 'replay-reset', expectedRunId: current.runId,
+    expectedRunVersion: current.runVersion, scenarioVersion: current.versions.scenario, fixtureVersion: current.versions.fixture });
+  assert.equal((await f.service.saveDraft(f.context, input)).status, 'stale-run');
+});
+
+test('collection dates require strings and cannot bypass a configured closure through JSON coercion', async () => {
+  const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
+  seed.assumptions.find((a) => a.key === 'manual.context.v1').value.locations[0].closedDates = ['2026-11-20'];
+  const f = await setup({ policy: new PolicyService({ provider: { async loadVersions() { return [seed]; } } }) });
+  for (const [i, date] of ['2026-11-20', ['2026-11-20'], ['2026-11-21']].entries()) {
+    const response = await save(f, { requestedCollectionDate: date }, { commandId: `date-type-${i}` });
+    assert.equal(response.status, 'invalid'); assert.equal(response.reasons[0].field, 'requestedCollectionDate');
+  }
+  assert.equal((await save(f, { requestedCollectionDate: '2026-11-21' }, { commandId: 'open-string-date' })).status, 'ok');
+});
+
+test('a command committed during duplicate preparation wins over its later source failure', async () => {
+  const f = await setup(); const account = await f.service.readAccount(f.context);
+  const input = { commandId: 'in-flight-retry', expectedDraftVersion: 0,
+    expectedContextVersion: account.value.contextVersion, choices: choices(f) };
+  let original;
+  const retry = variant(f, { employeeContract: { async read() {
+    original = await f.service.saveDraft(f.context, input);
+    return result('unavailable', { retryable: true });
+  } } });
+  assert.deepEqual(await retry.saveDraft(f.context, input), original);
+  assert.equal(original.status, 'ok');
+  assert.equal((await f.service.readDraft(f.context)).value.draftVersion, 1);
+});
+
 test('driver, contract, location, dates, contact and bounded conditional requirements validate permitted combinations', async () => {
   const f = await setup();
   const cases = [{ driverId: 'someone-else' }, { schemeId: 'pcs-ukfs-bmw' }, { slotId: 'slot-alex' }, { oldContractId: 'wrong' },
