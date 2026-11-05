@@ -3,6 +3,7 @@ import { DemoIdentityAdapter } from '../identity/index.js';
 import { validInstant } from '../policy/file-provider.js';
 import { loadClockConfiguration, buildScenarioSeed } from '../fixtures/scenario-v1.js';
 import { randomUUID } from 'node:crypto';
+import { isPreparedScenarioFixture } from '../fixtures/scenarios/index.js';
 
 const text = (value) => typeof value === 'string' && value.length > 0 && value.length <= 128;
 const persistedClock = (run) => validInstant(run.clockInstant) && text(run.clockVersion)
@@ -127,7 +128,7 @@ export class DemoClock {
     });
   }
 
-  async reset(context, input = {}) {
+  async reset(context, input = {}, preparedFixture) {
     const allowed = await this.#identity.requireRole(context, 'presenter');
     // requireRole checks the adapter-owned context before returning stale-run. Such a previously
     // authenticated presenter may retrieve only its existing reset receipt, never execute new work.
@@ -136,7 +137,12 @@ export class DemoClock {
     if (!text(input.commandId) || input.expectedRunId !== context.runId || !Number.isSafeInteger(input.expectedRunVersion)
       || input.expectedRunVersion < 1 || !text(input.scenarioVersion) || !text(input.fixtureVersion)
       || Object.keys(input).some((key) => !['commandId', 'expectedRunId', 'expectedRunVersion', 'scenarioVersion', 'fixtureVersion'].includes(key))) return invalid('reset', 'Supply the current run/version and exact scenario/fixture versions.');
-    const cmd = command(`clock:reset:${input.commandId}`, input);
+    if (preparedFixture !== undefined && (!isPreparedScenarioFixture(preparedFixture, this.#policy)
+      || preparedFixture.preparedForRunId !== context.runId)) return invalid('fixture', 'Use a trusted run-bound scenario fixture selection.');
+    const selection = preparedFixture === undefined ? null : { scenarioId: preparedFixture.scenarioId,
+      sourceVersion: preparedFixture.sourceVersion, scenarioVersion: preparedFixture.scenarioVersion,
+      fixtureVersion: preparedFixture.fixtureVersion, policyVersion: preparedFixture.policyVersion, inputDigest: preparedFixture.inputDigest };
+    const cmd = command(`clock:reset:${input.commandId}`, selection ? { ...input, selection } : input);
     const prior = await this.#repository.read(context, ref('event_receipts', context, { consumerId: 'command:reset-run', eventId: cmd.commandId }));
     if (prior.status === 'ok') return prior.value.inputDigest === cmd.inputDigest ? publicReset(prior.value.outcome) : result('conflict', { reason: 'idempotency-input-changed', current: {} });
     if (prior.status !== 'not-found') return prior;
@@ -145,15 +151,22 @@ export class DemoClock {
     if (found.status !== 'ok') return found;
     const configured = await loadClockConfiguration(this.#policy, this.#read(found.value));
     if (configured.status !== 'ok') return configured;
-    const { scenario } = configured.value;
+    if (preparedFixture && (preparedFixture.policyVersion !== found.value.policyVersion
+      || preparedFixture.scenarioVersion !== input.scenarioVersion || preparedFixture.fixtureVersion !== input.fixtureVersion)) {
+      return result('stale-version', { expectedVersion: preparedFixture.policyVersion, currentVersion: found.value.policyVersion,
+        resource: { table: 'scenario-fixtures' }, action: 'refresh' });
+    }
+    const configuration = preparedFixture?.configuration ?? configured.value;
+    const { scenario } = configuration;
     if (input.scenarioVersion !== scenario.scenarioVersion || input.fixtureVersion !== scenario.fixtureVersion) return invalid('fixtureVersion', 'This scenario/fixture version is not available.');
     const previous = found.value.versions?.syntheticIdentityInventory;
     if (!previous?.snapshot || previous.snapshot.contentDigest !== previous.contentDigest || previous.snapshot.revision !== previous.revision) return unavailable();
     const runId = `demo-${inputDigest([this.#environmentId, context.runId, input.commandId]).slice(0, 32)}`;
-    const seed = await buildScenarioSeed({ policy: this.#policy, read: this.#read(found.value), configuration: configured.value, runId, inventory: previous.snapshot });
+    const seed = await buildScenarioSeed({ policy: this.#policy, read: this.#read(found.value), configuration, runId, inventory: previous.snapshot });
     if (seed.status !== 'ok') return seed;
     return publicReset(await this.#repository.resetRun(context, cmd, { expectedCurrentRunId: input.expectedRunId, expectedRunVersion: input.expectedRunVersion,
-      nextRun: this.#runRow(runId, found.value.policyVersion, configured.value, seed.value.versions), rows: seed.value.rows }));
+      nextRun: this.#runRow(runId, found.value.policyVersion, configuration, { ...seed.value.versions,
+        ...(selection ? { scenarioSelection: selection } : {}) }), rows: seed.value.rows }));
   }
 
   async registerHandler({ handlerId, stage, handle } = {}) {
