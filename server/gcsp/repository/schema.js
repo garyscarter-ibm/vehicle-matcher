@@ -28,6 +28,7 @@ export const TABLES = Object.freeze({
   grade_allowances: definition('runId policyVersion companyId schemeId gradeId', 'monthlyPoints unit effectiveFrom effectiveTo source status', [], [['policy_versions', 'policyVersion']], true),
   policy_assumptions: definition('runId policyVersion key', 'value unit status basis source sourceDate effectiveFrom effectiveTo', [], [['policy_versions', 'policyVersion']], true),
   identity_sessions: definition('runId sessionIdHash', 'principalId employeeId roles environmentId expiresAt actingPrincipalId'),
+  renewal_cases: definition('runId caseId', 'employeeId renewalId owner status reason trigger nextAction dueAt openedAt lastUpdatedAt renewalDeadline renewalDeadlineState policyVersion history remedy fictional', [], [['employees', 'employeeId']]),
   tick_runs: definition('runId tickId', 'commandId eventId targetClock handlerOrder outcomes state inputDigest'),
 });
 export const createState = () => ({ tables: Object.fromEntries(Object.keys(TABLES).map((table) => [table, []])) });

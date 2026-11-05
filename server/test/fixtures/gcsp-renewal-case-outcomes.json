@@ -1,0 +1,129 @@
+{
+  "fixtureVersion": "renewal-case-responses-v1",
+  "observedOn": "2026-11-05",
+  "fictional": true,
+  "mode": "backend-response-contract",
+  "policyVersion": "gcsp-policy-v1",
+  "units": {
+    "renewalDeadline": "UTC calendar date, YYYY-MM-DD",
+    "dueAt": "UTC ISO 8601 instant on the demonstration clock",
+    "history.at": "UTC ISO 8601 instant on the demonstration clock"
+  },
+  "openCase": {
+    "status": "open",
+    "owner": {
+      "role": "scheme-team",
+      "name": "Scheme team"
+    },
+    "reason": "My replacement may miss my contract end.",
+    "nextAction": "Scheme team to review your renewal and contact you.",
+    "dueAt": "2026-11-06T09:00:00.000Z",
+    "openedAt": "2026-11-05T09:00:00.000Z",
+    "renewalDeadline": "2026-12-01",
+    "renewalDeadlineState": "supplied-demo-fact",
+    "remedy": null,
+    "fictional": true
+  },
+  "updateCase": {
+    "status": "in-progress",
+    "owner": {
+      "role": "scheme-team",
+      "name": "Scheme team"
+    },
+    "nextAction": "Review options with Paula.",
+    "dueAt": "2026-11-06T12:00:00.000Z",
+    "lastUpdatedAt": "2026-11-05T09:00:00.000Z"
+  },
+  "unknownDeadline": {
+    "renewalDeadline": null,
+    "renewalDeadlineState": "needs-confirmation"
+  },
+  "employeeUpdateRefusal": {
+    "status": "forbidden",
+    "reason": "This person cannot perform that action.",
+    "contractVersion": "1.0.0"
+  },
+  "missingRenewalRefusal": {
+    "status": "invalid",
+    "code": "renewal-context-required",
+    "reasons": [
+      {
+        "field": "renewalId",
+        "reason": "The actual renewal has not been supplied. Ask the scheme team to check your contract."
+      }
+    ],
+    "action": "review-and-retry",
+    "contractVersion": "1.0.0"
+  },
+  "assumptions": [
+    {
+      "key": "renewalCase.deadline.enabled",
+      "value": true,
+      "unit": "boolean",
+      "status": "assumed",
+      "basis": "A presenter tick checks unresolved renewals; no unattended background promise.",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "renewalCase.deadline.withinDays",
+      "value": 14,
+      "unit": "calendar days",
+      "status": "assumed",
+      "basis": "Two weeks gives the scheme team a plausible review window before a fictional renewal; revise through trials.",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "renewalCase.lifecycle.enabled",
+      "value": true,
+      "unit": "boolean",
+      "status": "assumed",
+      "basis": "Configured persisted lifecycle exceptions need an owned review; no approval or appointment producer is implied.",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "renewalCase.lifecycle.eventTypes",
+      "value": [
+        "approval-declined",
+        "appointment-no-show"
+      ],
+      "unit": "event type keys",
+      "status": "assumed",
+      "basis": "Read only keyed completed lifecycle receipt types; producers remain separately owned capabilities.",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "renewalCase.selection.eventTypes",
+      "value": [
+        "selection-acknowledged"
+      ],
+      "unit": "event type keys",
+      "status": "assumed",
+      "basis": "Only a persisted acknowledged selection suppresses the deadline rule; a pending request does not.",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "renewalCase.owner.role",
+      "value": "scheme-team",
+      "unit": "role",
+      "status": "assumed",
+      "basis": "Greg and the presenter act for the scheme team in the isolated demonstration.",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "renewalCase.response.dueHours",
+      "value": 24,
+      "unit": "hours",
+      "status": "assumed",
+      "basis": "One demo-clock day is a plausible first review target, not a BMW service-level agreement.",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "renewalCase.extension.permitted",
+      "value": false,
+      "unit": "boolean",
+      "status": "assumed",
+      "basis": "Contract extension remains unavailable until the scheme explicitly permits it; no default entitlement.",
+      "sourceDate": "2026-11-05"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 import { inputDigest, ok, result } from '../repository/index.js';
 import { CapturedTransport } from './captured.js';
 import { renderOfferMessage } from './templates.js';
+import { renderCaseMessage } from '../cases/notification.js';
 export { MailTransport } from './port.js';
 export { CapturedTransport } from './captured.js';
 export { renderOfferMessage } from './templates.js';
@@ -90,27 +91,45 @@ export class NotificationDispatcher {
       let error = 'transport-unavailable';
       let retryable = true;
       try {
-        const offer = await this.#repository.read(context, { table: 'offers', key: { runId: context.runId, offerId: job.offerId } });
-        const employee = await this.#repository.read(context, { table: 'employees', key: { runId: context.runId, employeeId: job.recipientId } });
-        if (offer.status !== 'ok' || employee.status !== 'ok') {
-          if (offer.status === 'unavailable' || employee.status === 'unavailable') throw new Error();
-          error = 'message-facts-unavailable'; retryable = false;
-        } else if (!principals.value.value.some((principal) => principal.employeeId === employee.value.employeeId
-          && principal.principalId === employee.value.principalId && principal.roles.includes('employee'))) {
-          error = 'fictional-recipient-required'; retryable = false;
-        } else if (offer.value.employeeId !== employee.value.employeeId || offer.value.environmentId && offer.value.environmentId !== context.environmentId) {
-          error = 'recipient-mismatch'; retryable = false;
-        } else if (offer.value.state !== 'active' || Date.parse(offer.value.expiresAt) <= Date.parse(now)) {
-          error = offer.value.state === 'active' || offer.value.state === 'expired' ? 'offer-expired' : 'offer-inactive'; retryable = false;
-        } else if (job.messageKind !== 'offer' || job.messageVersion !== '1') {
-          error = 'message-version-unsupported'; retryable = false;
+        const caseUpdate = job.messageKind === 'renewal-case-update' && job.messageVersion === '1';
+        if (caseUpdate) {
+          const employee = await this.#repository.read(context, { table: 'employees', key: { runId: context.runId, employeeId: job.recipientId } });
+          const update = job.payload?.caseUpdate;
+          if (employee.status === 'unavailable') throw new Error();
+          if (employee.status !== 'ok' || !principals.value.value.some((p) => p.employeeId === employee.value.employeeId
+            && p.principalId === employee.value.principalId && p.roles.includes('employee'))) {
+            error = 'fictional-recipient-required'; retryable = false;
+          } else if (update?.runId !== context.runId || update?.employeeId !== employee.value.employeeId) {
+            error = 'recipient-mismatch'; retryable = false;
+          } else {
+            let message;
+            try { message = renderCaseMessage({ update, employee: employee.value }); }
+            catch { error = 'message-invalid'; retryable = false; }
+            if (message) delivery = await this.#transport.send({ context, job, message, now });
+          }
         } else {
-          const quote = await this.#repository.read(context, { table: 'quotes', key: { runId: context.runId, quoteId: offer.value.quoteId } });
-          if (quote.status === 'unavailable') throw new Error();
-          let message;
-          try { message = renderOfferMessage({ offer: offer.value, quote: quote.value, employee: employee.value, offerLink: job.payload?.offerLink, now }); }
-          catch { error = 'message-invalid'; retryable = false; }
-          if (message) delivery = await this.#transport.send({ context, job, message, now });
+          const offer = await this.#repository.read(context, { table: 'offers', key: { runId: context.runId, offerId: job.offerId } });
+          const employee = await this.#repository.read(context, { table: 'employees', key: { runId: context.runId, employeeId: job.recipientId } });
+          if (offer.status !== 'ok' || employee.status !== 'ok') {
+            if (offer.status === 'unavailable' || employee.status === 'unavailable') throw new Error();
+            error = 'message-facts-unavailable'; retryable = false;
+          } else if (!principals.value.value.some((principal) => principal.employeeId === employee.value.employeeId
+            && principal.principalId === employee.value.principalId && principal.roles.includes('employee'))) {
+            error = 'fictional-recipient-required'; retryable = false;
+          } else if (offer.value.employeeId !== employee.value.employeeId || offer.value.environmentId && offer.value.environmentId !== context.environmentId) {
+            error = 'recipient-mismatch'; retryable = false;
+          } else if (offer.value.state !== 'active' || Date.parse(offer.value.expiresAt) <= Date.parse(now)) {
+            error = offer.value.state === 'active' || offer.value.state === 'expired' ? 'offer-expired' : 'offer-inactive'; retryable = false;
+          } else if (job.messageKind !== 'offer' || job.messageVersion !== '1') {
+            error = 'message-version-unsupported'; retryable = false;
+          } else {
+            const quote = await this.#repository.read(context, { table: 'quotes', key: { runId: context.runId, quoteId: offer.value.quoteId } });
+            if (quote.status === 'unavailable') throw new Error();
+            let message;
+            try { message = renderOfferMessage({ offer: offer.value, quote: quote.value, employee: employee.value, offerLink: job.payload?.offerLink, now }); }
+            catch { error = 'message-invalid'; retryable = false; }
+            if (message) delivery = await this.#transport.send({ context, job, message, now });
+          }
         }
       } catch { /* Never retain or emit provider exception text or token-bearing inputs. */ }
       if (delivery?.status === 'stale-run') return delivery;

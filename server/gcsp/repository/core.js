@@ -47,6 +47,10 @@ function validateObject(table, value, kind) {
     }
   }
   if (value.version !== undefined && !positive(value.version)) return invalid('invalid-version', 'version', 'Expected a positive integer');
+  if (table === 'renewal_cases') {
+    if (kind === 'row' && ['employeeId', 'renewalId'].some((key) => !identifier(value[key]))) return invalid('invalid-case-owner', 'employeeId/renewalId', 'A scoped employee and renewal are required');
+    if (value.status !== undefined && !['open', 'in-progress', 'remedy-proposed', 'resolved', 'closed'].includes(value.status)) return invalid('invalid-state', 'status', 'Unknown renewal case state');
+  }
   if (['holds', 'claims'].includes(table)) {
     if (value.state !== undefined && ![...OCCUPYING_STATES, 'released', 'expired', 'allocated', 'claim-failed'].includes(value.state)) return invalid('invalid-state', 'state', 'Unknown hold or claim state');
     if (value.type !== undefined && !['cart', 'buddy-offer'].includes(value.type)) return invalid('invalid-hold-type', 'type', 'Unknown hold type');
@@ -108,6 +112,9 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
     for (const [target, field] of schema.refs) {
       if (row[field] !== undefined && !rows(target).some((other) => other[field] === row[field])) return conflict('missing-reference', { table: target });
     }
+    if (table === 'renewal_cases' && ['open', 'in-progress', 'remedy-proposed'].includes(row.status)
+      && rows(table).some((other) => other !== previous && other.employeeId === row.employeeId && other.renewalId === row.renewalId
+        && ['open', 'in-progress', 'remedy-proposed'].includes(other.status))) return conflict('active-renewal-case-exists');
     if (table === 'claims') {
       const hold = rows('holds').find((item) => item.holdId === row.holdId);
       if (!hold || ['orderUuid', 'employeeId', 'entitlementSlotId'].some((key) => hold[key] !== row[key])) return conflict('claim-hold-mismatch');
