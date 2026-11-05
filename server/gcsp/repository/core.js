@@ -108,6 +108,9 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
     for (const [target, field] of schema.refs) {
       if (row[field] !== undefined && !rows(target).some((other) => other[field] === row[field])) return conflict('missing-reference', { table: target });
     }
+    if (table === 'renewal_cases' && ['open', 'in-progress', 'remedy-proposed'].includes(row.status)
+      && rows(table).some((other) => other !== previous && other.employeeId === row.employeeId && other.renewalId === row.renewalId
+        && ['open', 'in-progress', 'remedy-proposed'].includes(other.status))) return conflict('active-renewal-case-exists');
     if (table === 'claims') {
       const hold = rows('holds').find((item) => item.holdId === row.holdId);
       if (!hold || ['orderUuid', 'employeeId', 'entitlementSlotId'].some((key) => hold[key] !== row[key])) return conflict('claim-hold-mismatch');
