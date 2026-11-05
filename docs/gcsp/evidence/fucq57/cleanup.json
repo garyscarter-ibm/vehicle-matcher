@@ -1,0 +1,31 @@
+{
+  "failureLogs": [
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq57-scoped-1625807df88644fc8f465bbe7847fd79",
+      "removedBytes": 8192,
+      "absent": true
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq57-scoped-8f30e14bab1c4faaab3d412bd43f1032",
+      "removedBytes": 8192,
+      "absent": true
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq57-scoped-640589b2fe0a4284af6be76f4b94c110",
+      "removedBytes": 8192,
+      "absent": true
+    }
+  ],
+  "retainedFailureSummaries": [
+    "egress-attempt-1.json",
+    "e2e-attempt-1.json",
+    "e2e-diagnosis.json"
+  ],
+  "retainedEnvironments": [
+    "node_modules",
+    "server/node_modules"
+  ],
+  "compatibilityException": null,
+  "largeOutputs": null,
+  "leftovers": []
+}

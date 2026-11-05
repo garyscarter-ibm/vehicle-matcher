@@ -2,7 +2,7 @@
   "resource": {
     "logRoots": [
       {
-        "absent": false,
+        "absent": true,
         "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq57-scoped-8f30e14bab1c4faaab3d412bd43f1032"
       }
     ],
@@ -210,5 +210,6 @@
     "samples": 7,
     "samplingSeconds": 0.2
   },
-  "failureSummary": "Actual same-entry startup/restart and reset continuity passed; consumer failed WBS source citation with ?language=en."
+  "failureSummary": "Actual same-entry startup/restart and reset continuity passed; consumer failed WBS source citation with ?language=en.",
+  "failureLogsRemoved": true
 }

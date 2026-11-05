@@ -2,7 +2,7 @@
   "resource": {
     "logRoots": [
       {
-        "absent": false,
+        "absent": true,
         "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq57-scoped-1625807df88644fc8f465bbe7847fd79"
       }
     ],
@@ -91,5 +91,6 @@
     "samples": 3,
     "samplingSeconds": 0.2
   },
-  "failureSummary": "Fixture assertions corrected: configuration ID was supplied to guide VIN validator; substitution accidentally selected original configuration."
+  "failureSummary": "Fixture assertions corrected: configuration ID was supplied to guide VIN validator; substitution accidentally selected original configuration.",
+  "failureLogsRemoved": true
 }
