@@ -29,7 +29,8 @@ export function createAccountHttpAdapter({ base = '', fetchImpl = globalThis.fet
   const readAccount = (options) => request('account', options);
   const readDraft = (options) => request('draft', options);
   const saveDraft = (input, options = {}) => request('draft', { ...options, body: input });
-  return { readAccount, readDraft, saveDraft,
+  const browseStock = (options) => request('stock', options);
+  return { readAccount, readDraft, saveDraft, browseStock,
     async loadAccount(options) {
       const envelope = await readAccount(options); const model = toAccountView(envelope);
       return { status: envelope.status === 'ok' ? 'ready' : 'unavailable', name: model.account?.name ?? 'Account unavailable',
