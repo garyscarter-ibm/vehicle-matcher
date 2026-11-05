@@ -1,6 +1,6 @@
 {
   "story": "FUCQ-83",
-  "state": "admitted",
+  "state": "frozen proposal; revised full held for explicit dispatcher admission",
   "cwd": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065",
   "command": "node --test --test-concurrency=1 server/test/**/*.test.js",
   "environment": {
@@ -33,7 +33,7 @@
   "requiredMergedBase": "ca96e7fdc26e79a890796bfd9d3493de939f4220",
   "integrationCommit": "9f7873e3c46779c78ee400db37f659b84aec07af",
   "sourceCheckpoint": "5359972752e5fc8ec9e3af9176a2ffec001853b5",
-  "gate": "Renewed final full requires dispatcher admission for revised source after the scheduled-successor correction. Original full passed873/869/4but is superseded. Native target remains intentionally UNSET; final remains BLOCKED. Same120s/128MiB/512MiB/one worker and exact replacement environment.",
+  "gate": "Revised final full proposal after scheduled-successor correction. Explicit dispatcher admission remains required. Prior full is preserved as superseded proof. Native Render target is intentionally UNSET and final remains BLOCKED/unmerged.",
   "budget": {
     "seconds": 120,
     "scratchBytes": 134217728,
@@ -74,5 +74,6 @@
   "impactMap": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/fucq83-8a6e5016b9f4785510126d5e9d4d05389c778196dd6280d6c7489b2b154446fc.json",
   "nativeRequired": "Gary must provision/configure authorised GCSP Render Postgres; run actual configured unique-schema provider parity, persistence/reopen, atomic publish/replay/race/invalid rollback and direct SQL immutability/row-date assertions. No in-memory or driver substitution.",
   "revision": 2,
-  "sourceReviewCorrection": "A third scheduled version now copies latest retained predecessor, preserving pending changes; real provider-contract regression reproduced before fix and26passed/2native skips after."
+  "sourceReviewCorrection": "A third scheduled version now copies latest retained predecessor, preserving pending changes; real provider-contract regression reproduced before fix and26passed/2native skips after.",
+  "sourceFixCheckpoint": "0fa21d5"
 }
