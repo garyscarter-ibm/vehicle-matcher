@@ -68,6 +68,10 @@
   },
   "stylesheets": [
     {
+      "path": "blocks/gcsp/account/gcsp-account.css",
+      "max_lines": 22
+    },
+    {
       "path": "blocks/vehicle-matcher/question-controls.css",
       "max_lines": 7
     },
