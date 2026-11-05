@@ -15,6 +15,12 @@
 
 import { cardinal } from '../ui.js';
 
+// Factual contract states shared across brand voices.
+export const EXACT_LISTING_COPY = {
+  unavailable: 'Match score and reasons unavailable for this listing.',
+  shortlist: 'Your selected listings.',
+};
+
 /** Brand-specific display copy, keyed by brand. `name` is the marque, `title`
  * the intro headline, `cta` the intro button. `lede({ questions, retailer })`
  * builds the intro paragraph — a function because the two brands phrase it
@@ -160,7 +166,7 @@ export const BRAND_COPY = {
     searchingNearby: 'Still checking other retailers within reach',
     workingLabel: 'HOW WE GOT HERE',
     working: ({ total, eligible }) => `We went through all ${total} BMWs in stock here. `
-      + `${eligible} were in budget and big enough for you.`,
+      + `${eligible} passed the initial checks.`,
     workingMargin: ({ margin }) => ` Nothing else here came within ${margin} points.`,
     // The evidence for the weak headline, and the one number on the page a
     // reader can check against the badges on the cards.
@@ -248,7 +254,7 @@ export const BRAND_COPY = {
     searchingNearby: 'Still having a look further afield',
     workingLabel: 'HOW WE GOT THERE',
     working: ({ total, eligible }) => `We looked at all ${total} MINIs in stock here. `
-      + `${eligible} were in budget and roomy enough.`,
+      + `${eligible} passed the initial checks.`,
     workingMargin: ({ margin }) => ` Nothing else here got within ${margin} points.`,
     workingWeak: ({ top }) => ` The best of the lot got to ${top}%.`,
     workingScore: ' A match score is how well a MINI fits your answers, nothing else, '
@@ -325,7 +331,7 @@ BRAND_COPY.honda = {
   searchingNearby: 'Still checking other retailers within reach',
   workingLabel: 'HOW WE GOT HERE',
   working: ({ total, eligible }) => `We went through all ${total} Hondas in stock here. `
-    + `${eligible} were in budget and big enough for you.`,
+    + `${eligible} passed the initial checks.`,
   workingMargin: ({ margin }) => ` Nothing else here came within ${margin} points.`,
   workingWeak: ({ top }) => ` The best of them reached ${top}%.`,
   workingScore: ' A match score is how well a car fits your answers, nothing else, '
@@ -398,7 +404,7 @@ BRAND_COPY.ford = {
   searchingNearby: 'Still checking other retailers within reach',
   workingLabel: 'HOW WE GOT HERE',
   working: ({ total, eligible }) => `We went through all ${total} Fords in stock here. `
-    + `${eligible} were in budget and big enough for you.`,
+    + `${eligible} passed the initial checks.`,
   workingMargin: ({ margin }) => ` Nothing else here came within ${margin} points.`,
   workingWeak: ({ top }) => ` The best of them reached ${top}%.`,
   workingScore: ' A match score is how well a car fits your answers, nothing else, '
@@ -413,9 +419,8 @@ BRAND_COPY.ford = {
  * or "drive" (a rider reads "bike" and "ride"). Motorrad's voice is rider-first
  * and technical, confident and a little adrenaline-forward. No em dashes.
  *
- * Note on "big enough for you" in `working`: for a bike that phrasing is wrong
- * (a bike isn't judged on space), so Motorrad re-voices it to "a match for your
- * licence and riding" - the real gate a rider cares about. No em dashes.
+ * The stock-wide working count describes initial screening, which can include
+ * stretch candidates; individual decisions explain each bike's budget fit.
  */
 BRAND_COPY.motorrad = {
   ...BRAND_COPY.bmw,
@@ -437,7 +442,7 @@ BRAND_COPY.motorrad = {
     ? 'One bike still matches.'
     : `${shown} bikes still match.`),
   working: ({ total, eligible }) => `We went through all ${total} BMW Motorrad bikes in stock here. `
-    + `${eligible} were in budget and a match for your licence and riding.`,
+    + `${eligible} passed the initial checks.`,
   workingScore: ' A match score is how well a bike fits your answers, nothing else, '
     + 'so bikes that suit you equally share one.',
 };
@@ -480,7 +485,7 @@ BRAND_COPY.ferrari = {
     + 'said mattered. If none of them stirs you, nothing here will.',
   workingLabel: 'HOW WE GOT HERE',
   working: ({ total, eligible }) => `We went through every one of the ${total} Ferraris in stock here. `
-    + `${eligible} were in budget and roomy enough for you.`,
+    + `${eligible} passed the initial checks.`,
   workingMargin: ({ margin }) => ` Nothing else here came within ${margin} points.`,
   workingWeak: ({ top }) => ` The best of them reached ${top}%.`,
   workingScore: ' A match score is how well a car fits your answers, nothing else, '

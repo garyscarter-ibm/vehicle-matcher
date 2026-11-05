@@ -40,6 +40,26 @@ const initialPool = [
   },
 ];
 
+// Display fixtures for R1, whose independent engine regression is in
+// exact-listing-decision.test.js. This gallery performs no scoring or writes.
+export function exactListingExample({ legacy = false } = {}) {
+  const car = { id: 'r1-gallery', name: 'BMW Probe Touring with Individual extended leather and comfort specification',
+    line: 'Probe Touring', body: 'estate', fuel: 'petrol', seats: 5, boot: 560,
+    transmission: 'auto', priceMin: 30000, priceMax: 30000, priceFrom: 30000, priceTo: 39000,
+    photo: '/assets/brand-hero/bmw.jpg', colour: { colour: 'Blue', manufacturerColour: 'Portimao Blue' },
+    listingCount: 2, features: ['heatedSeats', 'parkingCamera'], colours: ['Portimao Blue', 'Chili Red'],
+    mileage: 10000, link: '#r1-blue', retailerName: 'Fictional Gallery Retailer' };
+  const first = { score: 96, stretch: false, reasons: ['Within the budget you set'], tradeOffs: [] };
+  const second = { score: 87, stretch: true,
+    reasons: ['Practical estate space', 'A stretch at £39k+, over the budget you set'], tradeOffs: [] };
+  const listings = [{ ...listing('r1-blue', 'Blue', 30000, 10000, 'auto', ['heatedSeats']),
+    name: car.name, line: car.line, colour: 'Portimao Blue', photo: car.photo, link: '#r1-blue', decision: first },
+  { ...listing('r1-red', 'Red', 39000, 18000, 'manual', ['parkingCamera']),
+    name: car.name, line: car.line, colour: 'Chili Red', link: '#r1-red', decision: second }];
+  if (legacy) listings.forEach((item) => { delete item.decision; });
+  return { car, ...first, listings };
+}
+
 function displayName(match) {
   return match.car.name;
 }
@@ -87,6 +107,31 @@ export function mountComponentGallery(root) {
   const employeeStatus = el('div', 'vm-brief vm-gallery-employee');
   employee.append(employeeStatus);
   sections.append(retail, employee);
+  const exact = el('section', 'vm-gallery-section vm-gallery-exact');
+  exact.setAttribute('aria-label', 'Exact listing decisions');
+  exact.append(el('h2', 'vm-gallery-title', 'Exact listing decisions'),
+    el('p', 'vm-gallery-copy', 'Fictional R1 display trial: £30k / 96% and £39k / 87% stretch. The first photo is representative; the second has no image. Choose a listing, refine to its equipment or test an older backend. Reset restores the starting state.'));
+  const exactControls = el('div', 'vm-brief');
+  const exactCards = el('div', 'vm-gallery-exact-cards');
+  let legacy = false;
+  let refined = false;
+  function renderExact() {
+    const match = exactListingExample({ legacy });
+    const scope = { kind: 'browse', id: 'gallery-r1' };
+    let state = createFeedbackState(scope);
+    if (refined) state = reduceFeedback(state, { schemaVersion: 1, id: 'r1-camera', type: 'filter',
+      target: { field: 'feature', operator: 'includes', value: 'parkingCamera' },
+      reason: 'Parking camera', scope, expectedVersion: 0 }).state;
+    exactCards.replaceChildren(...applyBrowseFeedback([match], state).map((m) => matchCard(m, { big: true })));
+    legacyButton.setAttribute('aria-pressed', String(legacy));
+    refineButton.setAttribute('aria-pressed', String(refined));
+  }
+  const legacyButton = feedbackButton({ text: 'Older backend', onClick: () => { legacy = !legacy; renderExact(); } });
+  const refineButton = feedbackButton({ text: 'Parking camera only', onClick: () => { refined = !refined; renderExact(); } });
+  const exactReset = feedbackButton({ text: 'Reset listing trial', onClick: () => { legacy = false; refined = false; renderExact(); } });
+  exactControls.append(legacyButton, refineButton, exactReset);
+  exact.append(exactControls, exactCards);
+  sections.append(exact);
   root.append(heading, sections);
 
   function dispatchBrowse(type, target, reason) {
@@ -214,6 +259,7 @@ export function mountComponentGallery(root) {
 
   renderRetail();
   renderEmployee();
+  renderExact();
 }
 
 if (typeof document !== 'undefined') {
