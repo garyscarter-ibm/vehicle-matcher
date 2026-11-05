@@ -1,48 +1,59 @@
 # Product map and scaffolding refresh — 5 November 2026
 
-Russell requested scaffolding 0.7.1, the component map and an immediate alert to GC's poller.
 The [connected map](https://garyscarter-ibm.github.io/vehicle-matcher/product-map/) covers 20
 capabilities and all 107 authorised implementation Stories in the observed FUCQ backlog.
-The [maintenance and publication contract](../../.product-map/README.md) explains its basis.
+[PR #32](https://github.com/garyscarter-ibm/vehicle-matcher/pull/32) merged on 5 November at
+22:57 UTC. Pages succeeded and the canonical page, snapshot and stylesheet returned HTTP 200;
+the served snapshot generated at 23:03:27 UTC contains all 20 capabilities. The original map is live.
 
-GC pollers: pull the published checkpoint, read the updated generated `AGENTS.md` section and
-the scaffolding `product-map` skill, then maintain `.product-map/work.json` with your existing
-claimed work. Record full slice plans and passed delivery evidence; missing plans remain unknown.
-Keep Jira observations current through the authenticated connector. Preserve all leases, current
-claims, retained branches and human pause boundaries. This tooling request does not restart a
-dispatcher, take a Story, or change any Story's acceptance.
+## Scaffolding 0.7.2 presentation refresh
 
-Project inbox setup was refreshed from 0.7.1. Existing helpers were already current, and the
-project-owned `jira_sync.py` UI-intake repair remains intact. The new projector and static assets
-are upstream copies. Codex reports the 0.7.1 plugin installed and enabled; the selected installed
-skills, hook configuration and generated instruction template match source.
+Russell requested improvement against the new scaffolding rules. The shared renderer now uses
+Carbon Gray 100, full-card status fills, locally packaged IBM Plex Sans, per-Story human/agent
+identity labels and a full-width landscape with modal component details. Close, Escape and
+backdrop dismissal restore focus; Tab stays within the dialog. Shared component hashes open the
+dialog, while refreshing a dismissed selection keeps it closed. Mobile details remain scrollable.
 
-The live Codex gateway check passes on IBM Global. Doctor's Claude default-endpoint failure is a
-different harness observation. Claude's root-owned installation manifest and Desktop marketplace
-pin still need the administrator/restart steps prepared on Russell's machine; no application was
-restarted during this task. Each contributing clone installs its own plugin update.
+The updated preview is `.claude/product-map-preview/index.html`.
+[PR #33](https://github.com/garyscarter-ibm/vehicle-matcher/pull/33), requested for Gary's review,
+updates the trusted main renderer. **Public Carbon delivery remains pending** its protected-main
+review/merge, Pages deployment and served-asset readback. Existing retail assembly, API rewriting,
+Pages policy and empty main input stubs are preserved. GCSP owns the map facts; main owns the
+trusted renderer. Publication does not merge the GCSP application into the retail site.
 
-The tooling checkpoint is `23dea5f`, integrated with GC's concurrent changes in `cc563d9` and
-pushed to `gcsp-poc`. FUCQ-100 Jira comments **132588** and **132590** alert GC's active poller;
-the second includes the concrete checkpoint and publication request.
+Status arithmetic and acceptance remain unchanged. In Review is fully developed and green;
+Done is accepted and blue. Missing full slice plans remain unknown. Human assignment never
+establishes current agent activity, and rebuilding never refreshes source observation times.
+Stable capability IDs, Story associations and current work facts were preserved byte-for-byte.
+The project-owned Jira importer and publication workflows also remain intact.
 
-Public publication is **pending** [PR #32](https://github.com/garyscarter-ibm/vehicle-matcher/pull/32).
-GitHub's protected `main` requires a review; `garyscarter-ibm` is the requested reviewer.
-Automatic merge is disabled for this repository. After approval, merge through the normal PR
-route, wait for Pages and verify `/product-map/data.json` and the rendered map. A successful
-branch notification alone does not establish public delivery or per-commit refresh.
+Scoped checks passed seven renderer DOM scenarios and 25 real Chrome desktop/mobile checks at
+1440px and 390px. All 20 cards and 52 connections rendered without JavaScript errors or horizontal
+overflow. Dialog focus/dismissal, shared hashes, Story search, refresh, local fonts and identity
+labels passed. Screenshots and bounded results are retained under
+`.claude/test-runs/checkpoints/product-map-carbon-20261105/`; the impact map is under
+`.claude/test-runs/impact/product-map-carbon-20261105.json`. Application suites were excluded:
+no application code, component contract or HLD changed.
 
-Scoped validation: 20 cards and 52 connections rendered at 1440px and 390px in isolated headless
-Chrome. Story search, selection, keyboard navigation and snapshot refresh passed, with no page
-errors or mobile horizontal overflow. Projector validation found zero diagnostics and complete
-107-Story association coverage, with all recorded code/document paths present. Retail site assembly
-was preserved byte-for-byte. An isolated checkout of publication revision `0f3a9f2` built the map
-against GCSP's baseline without conflicts and passed the retail copy/API-rewrite checks; the local
-check translates GNU sed's in-place flag to the equivalent BSD sed flag. The actual Ubuntu Pages
-deployment and served-snapshot readback remain pending PR review/merge. No application
-suite was run because no application code or contract changed; the selector's generic full-suite
-fallback was reviewed and excluded. Local preview: `.claude/product-map-preview/index.html`.
+An isolated publication build using the GCSP baseline at `69081a8` produced all 20 capabilities
+and shipped fonts/licenses. It disclosed one existing FUCQ-113 fact conflict between `gcsp-poc`
+and `dev/DEV-2026-11-04-088`, leaving progress unknown. The earlier served snapshot has additional
+branch-fact conflicts. These are data reconciliation work, not fabricated delivery percentages;
+pollers should reconcile their own durable records while retaining claims and acceptance evidence.
 
-Claude's remaining private administrator and Desktop pin steps are in
-[the installation note](scaffolding-install-2026-11-05.md). They do not block the generated map
-or the refreshed project tools. No restarts or root-owned writes were attempted.
+## Poller handoff
+
+GC pollers: pull the tooling checkpoint, read the generated `AGENTS.md` section and the
+scaffolding `product-map` skill, then maintain `.product-map/work.json` with existing claimed work.
+Record full slice plans including integration and passed delivery evidence. Keep Jira observations
+current through the authenticated connector. Follow the
+[maintenance and publication contract](../../.product-map/README.md).
+
+Preserve leases, claims, retained branches and human pause boundaries. This tooling request does
+not restart a dispatcher, take a Story or change acceptance. FUCQ-100 comments **132588** and
+**132590** delivered the original immediate and concrete tooling alerts. The Carbon follow-up
+provides the new checkpoint and publication PR through the same channel.
+
+The [installation note](scaffolding-install-2026-11-05.md) corrects the obsolete administrator
+steps. Native Codex hook review and Claude's already-queued 0.7.2 pin verification belong to the
+separate scaffolding rollout; no application restart or hook-trust change was performed here.

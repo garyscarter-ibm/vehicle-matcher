@@ -10,6 +10,7 @@
   let selected = readHash();
   let visible = [];
   let refreshing = false;
+  let returnFocusId = '';
   const array = value => Array.isArray(value) ? value : [];
   const text = value => value == null ? '' : typeof value === 'object' ? JSON.stringify(value) : String(value);
   function node(tag, value, className) {
@@ -43,15 +44,49 @@
     try { return new URLSearchParams(window.location.hash.replace(/^#/, '')).get('component') || ''; }
     catch (_) { return ''; }
   }
-  function workerName(worker) { return typeof worker === 'string' ? worker : text(worker.name || worker.agent || worker.id || 'Unnamed worker'); }
+  function workerName(worker) { return typeof worker === 'string' ? worker : text(worker && (worker.name || worker.agent || worker.id) || 'Unnamed worker'); }
   function workerStatus(worker) {
-    if (typeof worker === 'string') return 'Activity unverified';
+    if (!worker || typeof worker !== 'object') return 'Activity unverified';
     const expires = Date.parse(worker.expires_at);
     if (Number.isFinite(expires) && expires <= Date.now()) return 'Expired claim';
     if (worker.active === false || worker.expired) return 'Expired or inactive claim';
     if (worker.historical) return 'Historical claim';
     if (worker.active === true && Number.isFinite(expires)) return 'Reported active';
     return 'Activity unverified';
+  }
+  // Carbon icons are fixed paths; source names never become SVG or HTML markup.
+  const icons = {
+    human: ['M16,8a5,5,0,1,0,5,5A5,5,0,0,0,16,8Zm0,8a3,3,0,1,1,3-3A3.0034,3.0034,0,0,1,16,16Z', 'M16,2A14,14,0,1,0,30,16,14.0158,14.0158,0,0,0,16,2ZM10,26.3765V25a3.0033,3.0033,0,0,1,3-3h6a3.0033,3.0033,0,0,1,3,3v1.3765a11.8989,11.8989,0,0,1-12,0Zm13.9925-1.4507A5.0016,5.0016,0,0,0,19,20H13a5.0016,5.0016,0,0,0-4.9925,4.9258,12,12,0,1,1,15.985,0Z'],
+    codex: ['M31 16 24 23 22.59 21.59 28.17 16 22.59 10.41 24 9 31 16z', 'M1 16 8 9 9.41 10.41 3.83 16 9.41 21.59 8 23 1 16z', 'M19 4 21 4 13 28 11 28z'],
+    agent: ['M18 10H20V12H18z', 'M12 10H14V12H12z', 'M26,20H21V18h1a2.0023,2.0023,0,0,0,2-2V12h2V10H24V8a2.0023,2.0023,0,0,0-2-2H20V2H18V6H14V2H12V6H10A2.0023,2.0023,0,0,0,8,8v2H6v2H8v4a2.0023,2.0023,0,0,0,2,2h1v2H6a2.0023,2.0023,0,0,0-2,2v8H6V22H26v8h2V22A2.0023,2.0023,0,0,0,26,20ZM10,8H22v8H10Zm3,10h6v2H13Z']
+  };
+  function identity(name, kind, activity, description) {
+    const badge = node('span', null, 'identity');
+    badge.setAttribute('role', 'img'); badge.setAttribute('aria-label', description); badge.setAttribute('title', description);
+    badge.setAttribute('data-harness', kind); badge.setAttribute('data-activity', activity);
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 32 32'); svg.setAttribute('aria-hidden', 'true'); svg.setAttribute('focusable', 'false');
+    for (const d of icons[kind === 'human' ? 'human' : kind === 'codex' ? 'codex' : 'agent']) {
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path'); path.setAttribute('d', d); svg.append(path);
+    }
+    badge.append(svg, node('span', name, 'identity-label'));
+    return badge;
+  }
+  function storyPeople(story) {
+    const row = node('span', null, 'identity-list');
+    const assignee = typeof story.assignee === 'object' && story.assignee ? story.assignee.name || story.assignee.displayName : story.assignee;
+    if (assignee) row.append(identity(assignee, 'human', 'assigned', `Assignee: ${text(assignee)}. Assignment does not establish current activity.`));
+    for (const worker of array(story.workers)) {
+      const reported = workerStatus(worker);
+      const rawHarness = worker && typeof worker === 'object' ? text(worker.harness).toLowerCase() : '';
+      const harness = rawHarness.includes('codex') ? 'codex' : rawHarness.includes('claude') ? 'claude' : 'agent';
+      const label = harness === 'codex' ? 'Codex' : harness === 'claude' ? 'Claude' : 'Agent';
+      const activity = reported === 'Reported active' ? 'active' : reported.startsWith('Expired') ? 'expired' : 'unverified';
+      const name = `${label} · ${workerName(worker)}`;
+      row.append(identity(`${name}${activity === 'active' ? '' : ` · ${reported}`}`, harness, activity, `${name} · ${reported}`));
+    }
+    if (!row.children.length) row.append(node('span', 'No assignee or worker reported', 'unassigned'));
+    return row;
   }
   function workers(parent, claims) {
     const list = array(claims);
@@ -89,7 +124,7 @@
   function makeCard(component) {
     const button = node('button', null, `card ${state(component)}`);
     button.setAttribute('type', 'button'); button.setAttribute('data-component', component.id);
-    button.setAttribute('aria-pressed', String(selected === component.id)); button.setAttribute('aria-controls', 'details');
+    button.setAttribute('aria-pressed', String(selected === component.id)); button.setAttribute('aria-controls', 'details'); button.setAttribute('aria-haspopup', 'dialog');
     button.append(node('span', component.name || component.id, 'card-title'), node('span', component.description || 'No description recorded.', 'card-description'), node('span', status(component), 'status'));
     const row = node('span', null, 'progress-row');
     row.append(node('span', progress(component), /^\d+(\.\d+)?%$/.test(progress(component)) ? 'progress-value' : 'progress-label'));
@@ -99,12 +134,15 @@
       fill.style.width = `${Math.min(100, Math.max(0, component.progress))}%`; fill.style.display = 'block'; track.setAttribute('aria-hidden', 'true'); track.append(fill); button.append(track);
     }
     if (state(component) !== 'empty') button.append(node('span', basis(component), 'basis'));
-    const assignees = [...new Set(array(component.stories).map(s => typeof s.assignee === 'object' && s.assignee ? s.assignee.name || s.assignee.displayName : s.assignee).filter(Boolean))];
-    const claims = array(component.workers).length ? component.workers : array(component.stories).flatMap(s => array(s.workers));
-    if (assignees.length) button.append(node('span', `Assigned: ${assignees.join(', ')}`, 'people-line'));
-    if (array(claims).length) button.append(node('span', `Reported workers: ${[...new Set(claims.map(workerName))].join(', ')}`, 'people-line'));
-    const storyIds = array(component.stories).map(s => s.id).filter(Boolean);
-    if (storyIds.length) button.append(node('span', storyIds.join(' · '), 'basis'));
+    if (array(component.stories).length) {
+      const stories = node('span', null, 'card-stories');
+      for (const story of component.stories) {
+        const row = node('span', null, 'card-story');
+        row.append(node('span', `${story.id || 'Story'} · ${story.title || 'Untitled story'}`, 'card-story-label'), storyPeople(story));
+        stories.append(row);
+      }
+      button.append(stories);
+    }
     button.addEventListener('click', () => select(component.id));
     button.addEventListener('keydown', event => {
       const buttons = $('map-cards').querySelectorAll('button[data-component]'); const index = Array.from(buttons).indexOf(button);
@@ -148,6 +186,12 @@
     if (updateHash) window.history.replaceState(null, '', `#component=${encodeURIComponent(selected)}`);
     if (!snapshot) return;
     markSelection(); renderDetail(); requestAnimationFrame(drawConnections);
+    if (!selected) { if ($('details').open) $('details').close(); return; }
+    if (!$('details').open) {
+      returnFocusId = document.activeElement && document.activeElement.dataset && document.activeElement.dataset.component || selected;
+      document.body.classList.add('modal-open'); $('details').showModal();
+    }
+    $('close-details').focus();
   }
   function renderStory(story) {
     const article = node('article', null, 'story'); const h = node('h3');
@@ -158,6 +202,7 @@
     if (story.original_status && story.original_status !== story.status) labelValue(article, 'Tracker status', story.original_status);
     const assignee = typeof story.assignee === 'object' && story.assignee ? story.assignee.name || story.assignee.displayName : story.assignee;
     labelValue(article, 'Assignee', assignee);
+    article.append(storyPeople(story));
     const counts = story.slice_counts;
     if (counts && counts.total > 0 && !removed) article.append(node('p', `${counts.total || 0} planned slices · ${counts.complete || 0} complete · ${counts.in_progress || 0} in progress · ${counts.blocked || 0} blocked · ${counts.not_started || 0} not started · ${counts.unknown || 0} unknown`, 'slice-counts'));
     else if (!removed && story.unsliced) article.append(node('p', 'Explicitly unsliced. Development is counted when the story reaches review.'));
@@ -181,7 +226,9 @@
     return article;
   }
   function renderDetail() {
+    const focusedDetail = $('details').open && $('detail-body').contains(document.activeElement);
     const component = array(snapshot.components).find(c => c.id === selected); const body = $('detail-body'); body.replaceChildren();
+    if (focusedDetail) $('close-details').focus();
     if (!component) {
       $('detail-title').textContent = selected ? 'Component unavailable' : 'Follow the work';
       body.append(node('p', selected ? 'The selected component is absent from this snapshot. Its URL is retained so a later refresh can restore it.' : 'Select a component to see its stories, slice progress and reported workers.'));
@@ -264,11 +311,13 @@
   }
   function render(data) {
     if (!data || data.version !== 1 || !Array.isArray(data.components)) throw new Error('Unsupported or missing product-map snapshot.');
+    const initial = !snapshot;
     snapshot = data;
     $('project-name').textContent = data.project && data.project.name || 'Product map';
     document.title = `${data.project && data.project.name || 'Product'} · Product map`;
     $('summary').textContent = `${data.components.length} product capabilities. Trace the work from development to acceptance.`;
     renderCards(); renderDetail(); renderEvidence();
+    if (initial && selected) select(selected, false);
   }
   async function refresh() {
     if (refreshing) return;
@@ -283,6 +332,23 @@
     } finally { refreshing = false; $('refresh').disabled = false; }
   }
   function start() {
+    $('close-details').addEventListener('click', () => $('details').close());
+    $('details').addEventListener('close', () => {
+      document.body.classList.remove('modal-open');
+      const opener = Array.from($('map-cards').querySelectorAll('button[data-component]')).find(card => card.dataset.component === returnFocusId);
+      (opener || $('search')).focus();
+    });
+    $('details').addEventListener('click', event => {
+      const rect = $('details').getBoundingClientRect();
+      if (event.target === $('details') && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) $('details').close();
+    });
+    $('details').addEventListener('keydown', event => {
+      if (event.key !== 'Tab') return;
+      const controls = Array.from($('details').querySelectorAll('button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])')).filter(control => !control.disabled && control.getClientRects().length);
+      const first = controls[0]; const last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    });
     $('search').addEventListener('input', () => { if (snapshot) renderCards(); });
     $('state-filter').addEventListener('change', () => { if (snapshot) renderCards(); });
     $('refresh').addEventListener('click', refresh);
