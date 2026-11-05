@@ -248,6 +248,12 @@ test('native PostgreSQL rows/dates, seed replay, immutable SQL and reopen agree 
     const reopened = fixture.reopen();
     try { assert.deepEqual(await reopened.loadVersions(read), await fixture.provider.loadVersions(read)); }
     finally { await reopened.close(); }
+    const configuredService = createPolicyService({ schema: fixture.schema });
+    try {
+      const activeRead = { ...read, asOf: nextDate };
+      assert.equal((await configuredService.getActiveVersion(activeRead)).policyVersion, 'policy-test-v2');
+      assert.equal((await configuredService.getAssumption(changedKey, activeRead)).value.value, 180);
+    } finally { await configuredService.close(); }
     for (const table of ['policy_versions', ...Object.values(POLICY_TABLES)]) {
       const count = await fixture.pool.query(`SELECT count(*)::integer AS count FROM "${fixture.schema}"."${table}" WHERE run_id = $1`, [read.runId]);
       assert.equal(count.rows[0].count, table === 'policy_versions' ? 2 : a[0][Object.keys(POLICY_TABLES).find((key) => POLICY_TABLES[key] === table)].length * 2);
