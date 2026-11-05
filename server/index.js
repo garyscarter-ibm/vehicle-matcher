@@ -50,9 +50,11 @@ import { createClockRoutes } from './gcsp/clock/http.js';
 import { createScenarioRoutes } from './gcsp/scenarios/http.js';
 import { createBriefRoutes } from './gcsp/brief/http.js';
 import { createManualContextRoutes } from './gcsp/manual-context/http.js';
+import { createVehicleEvidenceHandler, isVehicleEvidencePath } from './gcsp/vehicle-evidence/vehicle-evidence-handler.js';
+import { createLocalVehicleEvidenceLookup } from './gcsp/vehicle-evidence/local-vehicle-lookup.js';
 import { createGregRoutes } from './gcsp/greg/http.js';
 
-const PORT = Number(process.env.PORT) || 8787;
+const PORT = process.env.PORT === '0' ? 0 : Number(process.env.PORT) || 8787;
 const MAX_BODY_BYTES = 16 * 1024; // quiz answers are tiny; reject anything bigger
 
 // A shared secret that gates the /api/* surface, set only in the host's env
@@ -861,6 +863,15 @@ export function buildServer(deps = {}) {
     ...createClockRoutes(deps.gcspClock), ...createScenarioRoutes(deps.gcspScenarios, deps.gcspClock), ...createBriefRoutes(deps.gcspBrief), ...createManualContextRoutes(deps.gcspManual), ...createGregRoutes(deps.gcspGreg), ...(deps.gcspRoutes || [])],
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
+  const handleVehicleEvidence = createVehicleEvidenceHandler({
+    lookup: deps.gcspVehicleEvidence?.lookup || createLocalVehicleEvidenceLookup({
+      root: deps.gcspVehicleEvidence?.root || process.env.GCSP_VEHICLE_EVIDENCE_ROOT,
+      repository: deps.gcspVehicleEvidence?.repository,
+    }),
+    identity: deps.gcspIdentity,
+    resolveContext: deps.gcspVehicleEvidence?.resolveContext,
+    allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
+  });
 
   const gcspStartup = deps.gcspClock ? Promise.resolve().then(async () => {
     // Notification registration precedes the clock sealing its registry. Startup
@@ -876,8 +887,10 @@ export function buildServer(deps = {}) {
   const server = createServer(async (req, res) => {
     const { pathname, searchParams } = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
     const isGcsp = pathname === '/api/gcsp' || pathname.startsWith('/api/gcsp/');
+    const isVehicleEvidence = isVehicleEvidencePath(req.url);
 
     if (req.method === 'OPTIONS') {
+      if (isVehicleEvidence) return handleVehicleEvidence({ req, res, sendJson, corsHeaders: CORS_HEADERS });
       if (isGcsp) return handleGcsp({ req, res, pathname, searchParams, sendJson, corsHeaders: CORS_HEADERS });
       res.writeHead(204, CORS_HEADERS);
       return res.end();
@@ -889,9 +902,12 @@ export function buildServer(deps = {}) {
 
     // Health and preflight stay open; every API consumer below passes the shared gate.
     if (!isAuthorized(req)) {
+      if (isVehicleEvidence) return handleVehicleEvidence({ req, res, sendJson, gateAuthorized: false });
       if (isGcsp) return handleGcsp({ req, res, pathname, searchParams, sendJson, gateAuthorized: false });
       return sendJson(res, 401, { error: 'Unauthorized' });
     }
+
+    if (isVehicleEvidence) return handleVehicleEvidence({ req, res, sendJson });
 
     if (isGcsp) {
       await gcspStartup;
@@ -1004,7 +1020,11 @@ export { PREVIEW_COUNT, FIELD_MAX, clampFieldSize };
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const server = buildServer();
   server.listen(PORT, () => {
-    console.log(`Matcher API listening on http://localhost:${PORT}`);
+    console.log(`Matcher API listening on http://localhost:${server.address().port}`);
+    if (process.env.GCSP_OFFLINE === '1') {
+      console.log('[gcsp] offline vehicle evidence; live startup warmers disabled');
+      return;
+    }
 
     // Keep live stock hot off the request path so the slow cold fetch (chiefly
     // BMW/MINI's national pagination and the nearby distance search) isn't

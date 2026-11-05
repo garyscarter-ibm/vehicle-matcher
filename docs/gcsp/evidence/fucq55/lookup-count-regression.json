@@ -1,0 +1,147 @@
+{
+  "argv": [
+    "node",
+    "--test",
+    "--test-concurrency=1",
+    "server/test/gcsp-vehicle-evidence-lookup.test.js"
+  ],
+  "budget": {
+    "file_workers": 1,
+    "ram_bytes": 268435456,
+    "scratch_bytes": 16777216,
+    "seconds": 90
+  },
+  "cleanup": {
+    "compatibility_exception": null,
+    "groups_live": {
+      "37846": false
+    },
+    "large_outputs": false,
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/81a23e3eac30493aaa959a24d38086c3.json",
+    "manifest_state": "removed",
+    "removed_peak_bytes": 37344,
+    "reservation_absent": true,
+    "root": "/private/tmp/test-stamp-shard-81a23e3eac30493aaa959a24d38086c3",
+    "root_absent": true,
+    "successful_verbose_log_removed": true
+  },
+  "code_test_identity": {
+    "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "b2de4a7a6dd181c15615be702d6031b7a0cc10d34d8c92c87b5c371d16928e8a",
+    "server/gcsp/vehicle-evidence/vehicle-details-contract.js": "3886ac9377f3688d2bfe2c2af5a6fe330bb4b49d2f18bb049c8cc7f71d485cc8",
+    "server/gcsp/vehicle-evidence/vehicle-evidence-handler.js": "9e118acfe39f550f06e6c319f536ca8768ca4b41820fd9ca9593e79b18f8c8f0",
+    "server/gcsp/vehicle-evidence/vehicle-lookup.js": "8ce1256486422dd048d7f5cec0e1e67d01505ae810257811f4037b1b006f5e70",
+    "server/index.js": "52c02b20d3a0e1c3a75de7697af38b1032dfb453e39c96f35f2f440435da8b4c",
+    "server/test/gcsp-offline-start.test.js": "5f3dd0f700fbc9ceb948189766af2061db0f11707b9c4c2d17fb2a248a96435b",
+    "server/test/gcsp-synthetic-vin-api.test.js": "ac86aa927c5cb1ee9094ab2eaf343e115104d428b67a445ecb11f6a706de5265",
+    "server/test/gcsp-vehicle-evidence-lookup.test.js": "021db46e480fab71c38fb62adad07e531c4fdf0a153d1f03a2ea652401c79c61"
+  },
+  "config_identity": {
+    "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+    "package.json": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
+    "server/gcsp/policy/seed-v1.json": "fa73b7fd140132536e337fd9e431824d769f7963336e982dd4d24f063ba683ef",
+    "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+    "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+  },
+  "error": null,
+  "head": "d718491e13407d496017c6ec1b90f19850d35393",
+  "health": {
+    "disk_free_bytes": 67575799808,
+    "memory_pressure": "The system has 17179869184 (1048576 pages with a page size of 16384).\nSystem-wide memory free percentage: 48%",
+    "swap": "vm.swapusage: total = 2048.00M  used = 1136.00M  free = 912.00M  (encrypted)",
+    "time_utc": "2026-11-05T05:58:10.385270+00:00"
+  },
+  "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq55-lookup-count-81a23e3eac30493aaa959a24d38086c3.log",
+  "log_retained": false,
+  "node": "v26.7.0",
+  "observed_counts": {
+    "cancelled": "0",
+    "duration_ms": "403.721416",
+    "fail": "0",
+    "pass": "6",
+    "skipped": "0",
+    "suites": "0",
+    "tests": "6",
+    "todo": "0"
+  },
+  "observed_max_test_file_workers": 1,
+  "ownership_manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/81a23e3eac30493aaa959a24d38086c3.json",
+  "packaged_inputs": {
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/active.json": "8c797f87d050687c6d4efd4392061c65c753e5ee0177e77f9b5cab86dc3383bb",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/identity-inventory.json": "dd702f37aa81480d61b7a8a74d761abe026d25b39f056cf1d50698bbdf0edd4f",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/configurations.jsonl": "9c1fb6a34e324e6e4937baa1e80eabafa44fae394dd138f2f77be9f6867e9855",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/images.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/manifest.json": "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/vins.jsonl": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd"
+  },
+  "reason": "Repair missing observed numeric case count in prior successful same-code receipt; no product/source changes",
+  "reporter_summary": [
+    "\u2139 tests 6",
+    "\u2139 suites 0",
+    "\u2139 pass 6",
+    "\u2139 fail 0",
+    "\u2139 cancelled 0",
+    "\u2139 skipped 0",
+    "\u2139 todo 0",
+    "\u2139 duration_ms 403.721416"
+  ],
+  "result": {
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq55-lookup-count-81a23e3eac30493aaa959a24d38086c3.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/81a23e3eac30493aaa959a24d38086c3.json",
+    "peak_rss": 153305088,
+    "peak_scratch": 37344,
+    "rc": 0,
+    "wall": 0.5490475409969804
+  },
+  "root": "/private/tmp/test-stamp-shard-81a23e3eac30493aaa959a24d38086c3",
+  "scope": "lookup-count",
+  "state": "passed",
+  "story": "FUCQ-55",
+  "success_excerpt": null,
+  "test_cases": [
+    "\u2714 the three identifiers have separate canonical formats and VIN validation makes no year or checksum assumption (0.584708ms)",
+    "\u2714 configuration, stock order UUID and current-car VIN resolve the same immutable facts without manufacturing a stock VIN (108.863333ms)",
+    "\u2714 known catalogue facts keep source dates, meaning, units, unknown fields and separate requested/resolved source context (57.5475ms)",
+    "\u2714 invalid, unknown and unavailable outcomes remain distinct across all three identities and redact arbitrary input (58.233667ms)",
+    "\u2714 wrong VIN/configuration/market/body/profile and stock digest associations fail without leaking substituted facts (56.239542ms)",
+    "\u2714 a reset/historical stock context cannot return another demo run and record evidence cannot choose live routing (55.84475ms)"
+  ],
+  "worker_check_before_launch": {
+    "selected_test_files": [
+      "server/test/gcsp-vehicle-evidence-lookup.test.js"
+    ],
+    "single_worker_flag_before_files": true
+  },
+  "observed_processes": [
+    {
+      "argv": "node --test --test-concurrency=1 server/test/gcsp-vehicle-evidence-lookup.test.js",
+      "kind": "leader",
+      "pgid": 37846,
+      "pid": 37846,
+      "ppid": 37830
+    },
+    {
+      "argv": "/opt/homebrew/Cellar/node/26.7.0/bin/node --test-concurrency=1 --heap-prof-interval=524288 --stack-trace-limit=10 --report-signal=SIGUSR2 --max-http-header-size=16384 --watch-kill-signal=SIGTERM --heapsnapshot-near-heap-limit=0 --inspect-publish-uid=stderr,http --test-isolation=process --test-coverage-lines=0 --cpu-prof-interval=1000 --test-coverage-functions=0 --test-timeout=0 --inspect-port=127.0.0.1:9229 --test-coverage-branches=0 --use-largepages=off --experimental-addon-modules --network-family-autoselection-attempt-timeout=500 --secure-heap-min=2 --v8-pool-size=4 --secure-heap=0 --tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA --node-snapshot --trace-event-file-pattern=node_trace.${rotation}.log server/test/gcsp-vehicle-evidence-lookup.test.js",
+      "kind": "test-file-worker",
+      "pgid": 37846,
+      "pid": 37849,
+      "ppid": 37846
+    }
+  ],
+  "process_samples": [
+    {
+      "pids": [
+        37846
+      ],
+      "test_file_workers": 0
+    },
+    {
+      "pids": [
+        37846,
+        37849
+      ],
+      "test_file_workers": 1
+    }
+  ]
+}
