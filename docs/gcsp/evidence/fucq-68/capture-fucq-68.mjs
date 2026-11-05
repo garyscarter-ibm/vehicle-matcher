@@ -14,7 +14,7 @@ import { inputDigest, result } from '../../../../server/gcsp/repository/index.js
 
 const ROOT = process.cwd();
 const chunk = process.argv[process.argv.indexOf('--chunk') + 1];
-assert.ok(['flow', 'states', 'theme', 'typography'].includes(chunk), 'Use --chunk flow, states, theme or typography.');
+assert.ok(['flow', 'states', 'theme', 'typography', 'shell'].includes(chunk), 'Use --chunk flow, states, theme, typography or shell.');
 assert.ok(process.env.TMPDIR && existsSync(process.env.TMPDIR), 'Supervisor-owned TMPDIR is required.');
 assert.ok(process.env.FUCQ68_HEAD && process.env.FUCQ68_BASE, 'FUCQ68_HEAD and FUCQ68_BASE provenance is required.');
 const scratch = path.resolve(process.env.TMPDIR); const OUT = path.join(ROOT, 'docs/gcsp/evidence/fucq-68', chunk);
@@ -188,8 +188,23 @@ try {
     })());
   });
   for (const width of [1280, 320]) {
-    if (['theme', 'typography'].includes(chunk)) {
-      await prepare('theme', width); await page.evaluate(() => document.fonts.ready);
+    if (['theme', 'typography', 'shell'].includes(chunk)) {
+      await prepare(chunk, width); await page.evaluate(() => document.fonts.ready);
+      if (chunk === 'shell') {
+        const summary = page.locator('.gcsp-account-summary'); await summary.focus(); await page.keyboard.press('Enter');
+        await page.waitForFunction(() => document.querySelector('.gcsp-account-details').open);
+        assert.equal(await page.locator('.gcsp-account-detail-name').innerText(), 'Paula (fictional)');
+        assert.match(await page.locator('.gcsp-account-panel').innerText(), /demo-bmw-fs-uk/);
+        await capture(`account-open-${width}`);
+        await page.keyboard.press('Escape'); assert.equal(await page.locator('.gcsp-account-details').getAttribute('open'), null);
+        assert.equal(await summary.evaluate((node) => document.activeElement === node), true);
+        if (width === 320) {
+          const menu = page.getByRole('button', { name: 'Menu', exact: true }); await menu.focus(); await page.keyboard.press('Enter');
+          assert.equal(await menu.getAttribute('aria-expanded'), 'true'); await capture(`menu-open-${width}`);
+          await page.keyboard.press('Escape'); assert.equal(await menu.getAttribute('aria-expanded'), 'false');
+          assert.equal(await menu.evaluate((node) => document.activeElement === node), true);
+        }
+      }
       await page.getByRole('button', { name: 'Continue', exact: true }).click();
       await page.waitForFunction(() => document.activeElement?.textContent === 'Check your choices');
       await capture(`invalid-${width}`, { summaryFocused: true });
@@ -206,8 +221,8 @@ try {
       assert.equal(observation.fontLoaded, true); assert.ok(observation.fontResources.length > 0);
       assert.ok(observation.loadedFaces.some((face) => face.status === 'loaded' && face.weight === '500'));
       assert.equal(observation.geometry.headerMinHeight, '56px');
-      // Narrow menu: 44px control + 12px padding + 1px border makes the existing shell 57px tall.
-      assert.equal(observation.geometry.headerHeight, width === 320 ? 57 : 56);
+      // Original narrow shell was57px; the shared refinement reduces header padding and keeps56px.
+      assert.equal(observation.geometry.headerHeight, width === 320 && chunk !== 'shell' ? 57 : 56);
       if (width === 1280) assert.equal(observation.geometry.navWidth, 48);
       assert.ok(observation.geometry.actionHeights.every((height) => height >= 48));
       assert.equal(observation.cssViewport, width); assert.equal(observation.scrollWidth, width);
@@ -215,11 +230,35 @@ try {
       assert.equal(observation.focus.outlineColor, 'rgb(2, 145, 183)');
       for (const name of ['primaryText', 'bodyText', 'mutedText']) assert.ok(observation.contrast[name] >= 4.5);
       for (const name of ['focusOnWhite', 'focusOnPage']) assert.ok(observation.contrast[name] >= 3);
+      if (chunk === 'shell') {
+        observation.shellRefinement = await page.evaluate(() => {
+          const logo = document.querySelector('.gcsp-mark'); const active = document.querySelector('.gcsp-nav-btn[aria-current="page"]');
+          const summary = document.querySelector('.gcsp-account-summary'); const selected = getComputedStyle(active);
+          return { logoPath: new URL(logo.src).pathname, logoLoaded: logo.complete && logo.naturalWidth > 0,
+            logoHeight: logo.getBoundingClientRect().height, accountHeight: summary.getBoundingClientRect().height,
+            accountWeight: getComputedStyle(document.querySelector('.gcsp-account-name')).fontWeight,
+            selectedBackground: selected.backgroundColor, selectedColor: selected.color,
+            selectedBorderWidth: selected.borderLeftWidth, selectedBorderColor: selected.borderLeftColor,
+            accountEnterEscape: true, narrowMenuEnterEscape: window.innerWidth === 320 };
+        });
+        const shell = observation.shellRefinement;
+        assert.equal(shell.logoPath, '/assets/brand-logos/bmwgroup-bmw-mini.svg'); assert.equal(shell.logoLoaded, true);
+        assert.equal(shell.logoHeight, width === 320 ? 18 : 22); assert.ok(shell.accountHeight >= 44);
+        assert.equal(shell.accountWeight, '400'); assert.equal(shell.selectedBackground, 'rgb(224, 242, 255)');
+        assert.equal(shell.selectedColor, 'rgb(3, 116, 147)'); assert.equal(shell.selectedBorderWidth, '3px');
+        assert.equal(shell.selectedBorderColor, 'rgb(3, 116, 147)');
+      }
       await capture(`keyboard-focus-${width}`);
       await fill(); await page.getByRole('button', { name: 'Save choices', exact: true }).click(); await saved();
       await capture(`saved-${width}`);
       await prepare('long-unknown', width); await page.evaluate(() => document.fonts.ready); await capture(`long-unknown-${width}`);
-      results.cases.push({ name: chunk === 'typography' ? 'canonical-density-typography' : 'default-density',
+      if (chunk === 'shell' && width === 320) {
+        await page.locator('.gcsp-account-summary').focus(); await page.keyboard.press('Enter');
+        await page.waitForFunction(() => document.querySelector('.gcsp-account-details').open);
+        assert.match(await page.locator('.gcsp-account-panel').innerText(), /Alexandra Morgan-Withfield/);
+        await capture(`long-account-open-${width}`); await page.keyboard.press('Escape');
+      }
+      results.cases.push({ name: chunk === 'shell' ? 'current-shared-shell' : (chunk === 'typography' ? 'canonical-density-typography' : 'default-density'),
         ...observation, functionalTraceReused: 'flow/results.json and states/results.json at0a4ff5ac' });
     } else if (chunk === 'flow') {
       await prepare('flow', width); await page.locator('.gcsp-feature').first().getByRole('button', { name: 'Choose a replacement', exact: true }).click();
