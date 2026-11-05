@@ -58,16 +58,26 @@ export function renderRangeSlider(list, q, answers, options = {}) {
     input.value = String(start); input.disabled = disabled;
     input.setAttribute('aria-label', ariaLabel || q.label || q.id);
     input.setAttribute('aria-valuetext', readout.textContent);
+    let displayed = known || !controlled ? start : null;
+    let valueState = options.valueState || 'confirmed';
+    const update = (patch = {}) => {
+      if (Object.hasOwn(patch, 'value')) displayed = patch.value;
+      if (Object.hasOwn(patch, 'valueState')) valueState = patch.valueState;
+      if (Object.hasOwn(patch, 'disabled')) input.disabled = Boolean(patch.disabled);
+      const supplied = Number.isFinite(displayed) && valueState !== 'unknown';
+      if (supplied) input.value = String(displayed);
+      const text = formatSliderValue(supplied ? displayed : null, q, { ...options, valueState });
+      readout.textContent = text;
+      input.setAttribute('aria-valuetext', text);
+    };
     input.addEventListener('input', () => {
       if (input.disabled) return;
       const value = Number(input.value);
-      const text = formatSliderValue(value, q, { ...options, valueState: 'confirmed' });
-      readout.textContent = text;
-      input.setAttribute('aria-valuetext', text);
+      update({ value, valueState: 'confirmed' });
       notify(value);
     });
     list.append(readout, input, bounds);
-    return;
+    return { update };
   }
   const start = Array.isArray(stored) && stored.length === 2
     ? [Number(stored[0]), Number(stored[1])]
@@ -126,6 +136,27 @@ export function renderOptionList(q, answers, options = {}) {
   list.setAttribute('role', q.multi ? 'group' : 'radiogroup');
   if (ariaLabel || q.label) list.setAttribute('aria-label', ariaLabel || q.label);
   const optionButtons = [];
+  let disabledState = disabled;
+  const sync = () => {
+    optionButtons.forEach(({ button, value, optionDisabled }) => {
+      button.classList.toggle('is-selected', selected.has(value));
+      button.setAttribute('aria-checked', String(selected.has(value)));
+      button.disabled = disabledState || optionDisabled;
+    });
+    if (!q.multi) {
+      const active = optionButtons.find(({ button, value }) => !button.disabled && selected.has(value))
+        || optionButtons.find(({ button }) => !button.disabled);
+      optionButtons.forEach(({ button }) => { button.tabIndex = button === active?.button ? 0 : -1; });
+    }
+  };
+  const update = (patch = {}) => {
+    if (Object.hasOwn(patch, 'value')) {
+      const values = q.multi ? (Array.isArray(patch.value) ? patch.value : []) : patch.value == null ? [] : [patch.value];
+      selected.clear(); values.forEach((value) => selected.add(value));
+    }
+    if (Object.hasOwn(patch, 'disabled')) disabledState = Boolean(patch.disabled);
+    sync();
+  };
   const notify = (next) => {
     if (controlled) onValueChange?.(next);
     else { answers[q.id] = next; onChange?.(); }
@@ -153,15 +184,24 @@ export function renderOptionList(q, answers, options = {}) {
         }
       } else { selected.clear(); selected.add(opt.value); }
       const next = q.multi ? [...selected] : opt.value;
-      optionButtons.forEach(({ button, value }) => {
-        button.classList.toggle('is-selected', selected.has(value));
-        button.setAttribute('aria-checked', String(selected.has(value)));
-      });
+      sync();
       notify(next);
       if (!q.multi) onPick?.();
     });
-    optionButtons.push({ button: btn, value: opt.value });
+    if (!q.multi) btn.addEventListener('keydown', (event) => {
+      if (btn.disabled || !['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key)) return;
+      const enabled = optionButtons.filter(({ button }) => !button.disabled);
+      if (!enabled.length) return;
+      const index = enabled.findIndex(({ button }) => button === btn);
+      const next = event.key === 'Home' ? 0 : event.key === 'End' ? enabled.length - 1
+        : (index + (['ArrowLeft', 'ArrowUp'].includes(event.key) ? -1 : 1) + enabled.length) % enabled.length;
+      event.preventDefault();
+      enabled[next].button.focus();
+      enabled[next].button.click();
+    });
+    optionButtons.push({ button: btn, value: opt.value, optionDisabled: Boolean(opt.disabled) });
     list.append(btn);
   });
-  return { list, selected };
+  sync();
+  return { list, selected, update };
 }

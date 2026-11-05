@@ -200,29 +200,31 @@ export function employeeControlsExample() {
     lede: 'Display-only controls. These local callbacks do not save a brief or recalculate the unchanged decision snapshot.' }));
   let draft = { position: 70, importance: 50, preferenceMode: 'consider' };
   const controls = el('div', 'vm-gallery-control-grid');
+  const ranges = new Map();
+  let preferenceMode;
   const status = feedbackScope({ text: 'Local control values only. No saved state.' });
   status.setAttribute('role', 'status');
   const change = (key, value) => {
     draft = { ...draft, [key]: value };
     status.textContent = `Local position ${draft.position}%; importance ${draft.importance}%; ${draft.preferenceMode === 'indifferent' ? 'explicitly indifferent' : 'preference considered'}. Decision snapshot unchanged. No saved state.`;
-    if (key === 'preferenceMode') controls.querySelectorAll('input[type=range]').forEach((input) => { input.disabled = value === 'indifferent'; });
+    if (key === 'preferenceMode') ranges.forEach((control) => control.update({ disabled: value === 'indifferent' }));
   };
   function renderControls() {
     controls.replaceChildren();
     for (const [key, title] of [['position', 'Sportiness preference position'], ['importance', 'Sportiness importance']]) {
       const field = el('fieldset', 'vm-control-field');
       field.append(el('legend', null, title));
-      renderRangeSlider(field, { id: key, min: 0, max: 100, step: 1 }, null, { single: true,
+      ranges.set(key, renderRangeSlider(field, { id: key, min: 0, max: 100, step: 1 }, null, { single: true,
         value: draft[key], unit: { kind: 'percent' }, ariaLabel: title,
-        disabled: draft.preferenceMode === 'indifferent', onValueChange: (value) => change(key, value) });
+        disabled: draft.preferenceMode === 'indifferent', onValueChange: (value) => change(key, value) }));
       controls.append(field);
     }
     const field = el('fieldset', 'vm-control-field');
     field.append(el('legend', null, 'Sportiness indifference'));
-    const { list } = renderOptionList({ id: 'preferenceMode', options: [
+    preferenceMode = renderOptionList({ id: 'preferenceMode', options: [
       { value: 'consider', label: 'Consider this preference' }, { value: 'indifferent', label: 'I am indifferent' },
     ] }, null, { value: draft.preferenceMode, ariaLabel: 'Sportiness indifference', onValueChange: (value) => change('preferenceMode', value) });
-    field.append(list, feedbackScope({ text: 'Zero importance is a stated weight. Indifference is a separate choice; an unknown preference still needs confirmation.' }));
+    field.append(preferenceMode.list, feedbackScope({ text: 'Zero importance is a stated weight. Indifference is a separate choice; an unknown preference still needs confirmation.' }));
     controls.append(field);
   }
   const preview = el('div', 'vm-gallery-injected-preview');
@@ -234,7 +236,17 @@ export function employeeControlsExample() {
     }, () => preview.replaceChildren(statusScreen({ title: 'Snapshot unavailable', message: 'Try loading the local display snapshot again.' })));
   } });
   renderControls();
-  scope.append(controls, status, load, preview);
+  const project = button({ label: 'Project unknown display', variant: 'ghost', onClick: () => {
+    ranges.forEach((control) => control.update({ value: null, valueState: 'unknown' }));
+    preferenceMode.update({ value: null });
+    status.textContent = 'Unknown display projected without changing local answers or emitting input callbacks. Decision snapshot unchanged. No saved state.';
+  } });
+  const restore = button({ label: 'Restore local display', variant: 'ghost', onClick: () => {
+    ranges.forEach((control, key) => control.update({ value: draft[key], valueState: 'confirmed', disabled: draft.preferenceMode === 'indifferent' }));
+    preferenceMode.update({ value: draft.preferenceMode });
+    status.textContent = `Local position ${draft.position}%; importance ${draft.importance}%. Projection restored without emitting input callbacks. No saved state.`;
+  } });
+  scope.append(controls, status, project, restore, load, preview);
   section.append(scope);
   return section;
 }
