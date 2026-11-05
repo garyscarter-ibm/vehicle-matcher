@@ -283,7 +283,7 @@ test('callers cannot mutate the provider snapshot or subsequent service results'
   const original = await policy.getAssumption('eligibility.context.mapping', read);
   const expected = structuredClone(original);
   original.value.value[0].gradeIds.push('invented');
-  seed.assumptions.at(-1).value[0].gradeIds.push('mutated-provider');
+  seed.assumptions.find((row) => row.key === 'eligibility.context.mapping').value[0].gradeIds.push('mutated-provider');
   assert.deepEqual(await policy.getAssumption('eligibility.context.mapping', read), expected);
   const provider = new FilePolicyProvider();
   const versions = await provider.loadVersions();
