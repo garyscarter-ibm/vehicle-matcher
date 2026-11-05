@@ -1,6 +1,6 @@
 # FUCQ-67 Codex story-session handoff · 5 November 2026
 
-> Completed 5 November 2026. FUCQ-67 is built and pushed on dev/DEV-2026-11-04-044; the current Result and six acceptance traces are in `_dev/in-progress/DEV-2026-11-04-044.md`, with sixteen reviewed captures and repeat steps in `docs/gcsp/evidence/fucq-67/`. Final combined `npm test`: 1152 pass, zero failures, two native PostgreSQL skips; strict full MATCH. The old retained state and next-slice instructions below are historical provenance and are superseded by the final Result. The dispatcher retains shared merge/close/drop.
+> Completed 5 November 2026. FUCQ-67 is built and pushed on dev/DEV-2026-11-04-044; the current Result and six acceptance traces are in story `DEV-2026-11-04-044` under `_dev/`, with sixteen reviewed captures and repeat steps in `docs/gcsp/evidence/fucq-67/`. Final combined `npm test`: 1152 pass, zero failures, two native PostgreSQL skips; strict full MATCH. The old retained state and next-slice instructions below are historical provenance and are superseded by the final Result. The dispatcher retains shared merge/close/drop.
 
 Gary authorised a dedicated session to continue this story. The root dispatcher keeps queue, shared-base merge, close and drop authority. This handoff ends the old story lead; no helper remains active. All collaborators have equal authority under AGENTS.md.
 
