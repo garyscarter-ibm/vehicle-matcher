@@ -51,6 +51,14 @@ Rules for Codex working in this project. The scaffolding clone is the `repo` val
   in the plugin's dev-inbox skill, section Adapters, Codex.
 - **Bugs.** Before intake, triage, repair or review, read `<repo>/plugin/skills/defects/SKILL.md`; give children its
   absolute path and current diagnosis note.
+- **Product map.** When `pieces.product-map` is on, follow the product-map skill. Keep stable product
+  components and story associations in `.product-map/components.json`, and durable story/slice plans,
+  states and observed worker claims in `.product-map/work.json`. Use `_tools/product_map.py`; include
+  required integration slices. Complete slices count 1, in-progress .5, blocked/not-started 0; average
+  story fractions. In Review is 100% developed (green), Done is accepted (blue). Preserve observation
+  times, expire worker claims, and commit facts with the work. The map never infers acceptance or
+  active workers from commits. Follow the configured publishing mode; local hooks must be installed
+  in each contributing clone, and IBM Pages serves the committed static files from main.
 - **Commit trailer** for commits Codex makes: `Co-Authored-By: Codex <noreply@openai.com>`.
 <!-- END agent-scaffolding -->
 
