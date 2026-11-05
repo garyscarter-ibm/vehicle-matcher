@@ -1,0 +1,15 @@
+# Travel pause checkpoint — FUCQ-35
+
+Source remains reviewed and uncommitted in the existing DEV046 worktree. The source hash map exactly matches the previous frozen source; no source/test change was made on this resumption. Direct pre/post source digest: `dc045920292cc7f1aa1f701d472018b8ba910cb4630783a84793fd8b8d1d01f0`. Execution identity: `f283264857153ac31f5b6d216215bcecc5932d95f2a2c2b1010a9d92da4978c5` (includes variant/environment; no fresh Git identity read).
+
+The four selected tests and 22 recursively reviewed local JavaScript dependencies had no child-process, Git helper or test-stamp execution references. The installed jsdom package is resolved outside this worktree; no package install, Git/helper/test_stamp, network request, browser, descendant or native SQL operation was launched. Retail mounting and account HTTP responses remain mocked by the selected tests.
+
+Actual HostBudget acquisition admitted 256 MiB RAM / 32 MiB scratch for the four-file serial Node chunk, with 639451136 RAM bytes available immediately beforehand. The supervisor terminated and joined its process group at 304775168 measured RSS bytes (over 268435456 cap), after 2.04 seconds. Reporter: **13 passed, 0 assertion failures, 4 cancelled**, 17 reported total. The 13 completed assertions were in launcher-context; that module and the other three selected modules were cancelled at interruption, so none has a complete passing module result. Treat this as incomplete resource-limited direct scoped evidence, without any test stamp; interrupted pending-promise reports do not establish a product defect.
+
+Selected command: `node --test --test-concurrency=1 server/test/launcher-employee-entry.test.js server/test/launcher-context.test.js server/test/launcher-navigation.test.js server/test/launcher-render.test.js`. No new chunk started after the human travel pause. A later launcher must reassess a meaningful smaller chunk/variant and acquire actual admission before executing, preserving completed evidence without claiming completed module validation.
+
+Exact receipt: `scoped-result.json`. Bounded useful failure log: `.claude/test-runs/fucq35-20261105-launcher-entry/f283264857153ac31f5b6d216215bcecc5932d95f2a2c2b1010a9d92da4978c5.log`. Ownership manifest: `.claude/test-runs/fucq35-20261105-launcher-entry/ownership/5206ff35548c470fbc1bd8b914b61717.json`. All paths are relative to the assigned DEV046 worktree. Supervisor source is alongside that manifest directory in `supervise.py`.
+
+Cleanup verified: owned `/private/tmp/test-stamp-shard-5206ff35548c470fbc1bd8b914b61717` absent, owned process group absent, exact reservation absent/released; measured scratch peak zero bytes. No dependency mutation, compatibility exception, cloud output or leftover runtime. Logs/manifests/receipt are retained deliberately. No Git/helper commit or push attempted during the repair boundary; parent owns later checkpoint publication/Jira.
+
+Remaining: complete all four selected modules; render/API/ratchet; actual employee/backend session and FUCQ-7 integration; background desktop/narrow/keyboard evidence; coordinated final full suite. No merge/closure or completion claim.

@@ -10,8 +10,8 @@ main {
   background: #fff;
 }
 
-    .demo-entry-host { min-height: 100vh; background: var(--vm-surface); }
-    .demo-entry-actions { display: flex; flex-wrap: wrap; gap: var(--vm-space-3); }
+    .demo-entry-host { min-height: 100vh; background: var(--gcsp-surface-page); }
+    .demo-entry-host gcsp-employee-entry { display: block; }
     .demo-entry-host :focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 2px; }
 
     .vm-gate {
