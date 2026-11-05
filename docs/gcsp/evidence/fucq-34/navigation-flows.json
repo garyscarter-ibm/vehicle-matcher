@@ -1,0 +1,652 @@
+{
+  "story": "FUCQ-34",
+  "sourceCommit": "c49d8424729ca8ef5c9d22a8f65985c908888667",
+  "harnessSha": "c141df80237ce8e5bfdb30317d1ef907f22839e4ac395570b8c945ae1d16bc6d",
+  "capturedAt": "2026-11-05T15:19:35.356Z",
+  "fixtureBacked": true,
+  "runtimeResources": {
+    "staticPort": 31461,
+    "fixtureApiPort": 54344,
+    "chromeCdpPort": 54355,
+    "chromePid": 34965,
+    "profile": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-b2bd1d92cdc44cf38d0b25b687e849f3/fucq34-chrome-profile"
+  },
+  "externalEgress": "blocked; remote default API fulfilled by injected local buildServer fixtures",
+  "checks": [
+    {
+      "id": "ferrari-swipe-header-removal-diagnostic",
+      "pass": true,
+      "expected": "measure whether observed body overflow remains after removing only the two added header links; this does not assert the body fits",
+      "observed": {
+        "id": "ferrari-swipe-retained-body-overflow",
+        "viewport": {
+          "width": 320,
+          "height": 740
+        },
+        "before": {
+          "width": 320,
+          "documentWidth": 356,
+          "addedLinks": 2,
+          "overflowing": [
+            {
+              "selector": "button.vm-mingle-tile.vm-mingle-tile-use",
+              "rect": {
+                "x": 227.453125,
+                "right": 356.171875,
+                "width": 128.71875,
+                "y": 2160.53125,
+                "height": 96
+              }
+            },
+            {
+              "selector": "span.vm-mingle-tile-label",
+              "rect": {
+                "x": 244.453125,
+                "right": 339.171875,
+                "width": 94.71875,
+                "y": 2173.53125,
+                "height": 57
+              }
+            },
+            {
+              "selector": "button.vm-mingle-tile.vm-mingle-tile-use",
+              "rect": {
+                "x": 227.453125,
+                "right": 356.171875,
+                "width": 128.71875,
+                "y": 2264.53125,
+                "height": 126
+              }
+            },
+            {
+              "selector": "span.vm-mingle-tile-label",
+              "rect": {
+                "x": 244.453125,
+                "right": 339.171875,
+                "width": 94.71875,
+                "y": 2277.53125,
+                "height": 38
+              }
+            },
+            {
+              "selector": "span.vm-mingle-tile-hint",
+              "rect": {
+                "x": 244.453125,
+                "right": 339.171875,
+                "width": 94.71875,
+                "y": 2317.53125,
+                "height": 60
+              }
+            }
+          ]
+        },
+        "after": {
+          "width": 320,
+          "documentWidth": 356,
+          "addedLinks": 0,
+          "overflowing": [
+            {
+              "selector": "button.vm-mingle-tile.vm-mingle-tile-use",
+              "rect": {
+                "x": 227.453125,
+                "right": 356.171875,
+                "width": 128.71875,
+                "y": 2048.53125,
+                "height": 96
+              }
+            },
+            {
+              "selector": "span.vm-mingle-tile-label",
+              "rect": {
+                "x": 244.453125,
+                "right": 339.171875,
+                "width": 94.71875,
+                "y": 2061.53125,
+                "height": 57
+              }
+            },
+            {
+              "selector": "button.vm-mingle-tile.vm-mingle-tile-use",
+              "rect": {
+                "x": 227.453125,
+                "right": 356.171875,
+                "width": 128.71875,
+                "y": 2152.53125,
+                "height": 126
+              }
+            },
+            {
+              "selector": "span.vm-mingle-tile-label",
+              "rect": {
+                "x": 244.453125,
+                "right": 339.171875,
+                "width": 94.71875,
+                "y": 2165.53125,
+                "height": 38
+              }
+            },
+            {
+              "selector": "span.vm-mingle-tile-hint",
+              "rect": {
+                "x": 244.453125,
+                "right": 339.171875,
+                "width": 94.71875,
+                "y": 2205.53125,
+                "height": 60
+              }
+            }
+          ]
+        },
+        "bodyFits": false,
+        "pass": false,
+        "disposition": "Diagnostic removes only the added header links in the browser DOM; no product file changes. Retained mode-source comparison belongs to lead review."
+      }
+    },
+    {
+      "id": "ferrari-head-to-head-header-removal-diagnostic",
+      "pass": true,
+      "expected": "measure whether observed body overflow remains after removing only the two added header links; this does not assert the body fits",
+      "observed": {
+        "id": "ferrari-head-to-head-retained-body-overflow",
+        "viewport": {
+          "width": 320,
+          "height": 740
+        },
+        "before": {
+          "width": 320,
+          "documentWidth": 356,
+          "addedLinks": 2,
+          "overflowing": [
+            {
+              "selector": "button.vm-mingle-tile.vm-mingle-tile-use",
+              "rect": {
+                "x": 227.453125,
+                "right": 356.171875,
+                "width": 128.71875,
+                "y": 2179.71875,
+                "height": 96
+              }
+            },
+            {
+              "selector": "span.vm-mingle-tile-label",
+              "rect": {
+                "x": 244.453125,
+                "right": 339.171875,
+                "width": 94.71875,
+                "y": 2192.71875,
+                "height": 57
+              }
+            },
+            {
+              "selector": "button.vm-mingle-tile.vm-mingle-tile-use",
+              "rect": {
+                "x": 227.453125,
+                "right": 356.171875,
+                "width": 128.71875,
+                "y": 2283.71875,
+                "height": 126
+              }
+            },
+            {
+              "selector": "span.vm-mingle-tile-label",
+              "rect": {
+                "x": 244.453125,
+                "right": 339.171875,
+                "width": 94.71875,
+                "y": 2296.71875,
+                "height": 38
+              }
+            },
+            {
+              "selector": "span.vm-mingle-tile-hint",
+              "rect": {
+                "x": 244.453125,
+                "right": 339.171875,
+                "width": 94.71875,
+                "y": 2336.71875,
+                "height": 60
+              }
+            }
+          ]
+        },
+        "after": {
+          "width": 320,
+          "documentWidth": 356,
+          "addedLinks": 0,
+          "overflowing": [
+            {
+              "selector": "button.vm-mingle-tile.vm-mingle-tile-use",
+              "rect": {
+                "x": 227.453125,
+                "right": 356.171875,
+                "width": 128.71875,
+                "y": 2067.71875,
+                "height": 96
+              }
+            },
+            {
+              "selector": "span.vm-mingle-tile-label",
+              "rect": {
+                "x": 244.453125,
+                "right": 339.171875,
+                "width": 94.71875,
+                "y": 2080.71875,
+                "height": 57
+              }
+            },
+            {
+              "selector": "button.vm-mingle-tile.vm-mingle-tile-use",
+              "rect": {
+                "x": 227.453125,
+                "right": 356.171875,
+                "width": 128.71875,
+                "y": 2171.71875,
+                "height": 126
+              }
+            },
+            {
+              "selector": "span.vm-mingle-tile-label",
+              "rect": {
+                "x": 244.453125,
+                "right": 339.171875,
+                "width": 94.71875,
+                "y": 2184.71875,
+                "height": 38
+              }
+            },
+            {
+              "selector": "span.vm-mingle-tile-hint",
+              "rect": {
+                "x": 244.453125,
+                "right": 339.171875,
+                "width": 94.71875,
+                "y": 2224.71875,
+                "height": 60
+              }
+            }
+          ]
+        },
+        "bodyFits": false,
+        "pass": false,
+        "disposition": "Diagnostic removes only the added header links in the browser DOM; no product file changes. Retained mode-source comparison belongs to lead review."
+      }
+    },
+    {
+      "id": "launcher-selected-brand",
+      "pass": true,
+      "expected": "BMW visibly selected while employee route remains unavailable",
+      "observed": "Selected brand: BMW"
+    },
+    {
+      "id": "fresh-brand-picker",
+      "pass": true,
+      "expected": "six named brand choices including BMW Motorrad",
+      "observed": [
+        "BMW",
+        "MINI",
+        "Ford",
+        "Honda",
+        "BMW Motorrad",
+        "Ferrari"
+      ]
+    },
+    {
+      "id": "same-brand-launcher-round-trip",
+      "pass": true,
+      "expected": "same BMW national questionnaire journey, retailer context and answer hash; no key",
+      "observed": {
+        "original": "/index.html?brand=bmw&mode=questionnaire&scope=national&retailer=96&retailerName=BMW+Approved+Used&api=http%3A%2F%2F127.0.0.1%3A54344#m=eyJidWRnZXQiOls0MDAwMCw3NTAwMF0sImJvZHlTdHlsZXMiOlsiYW55Il0sImZ1ZWwiOlsib3BlbiJdLCJjaGFyZ2luZyI6Im5vbmUiLCJwcmltYXJ5VXNlIjoiZnVuIiwicGVvcGxlIjoiY3JldyIsIm1pbGVhZ2UiOjEwMDAwLCJzdHlsZSI6IjUiLCJwcmlvcml0aWVzIjpbImltYWdlIl19",
+        "launcher": "/index.html?experience=launcher&brand=bmw&mode=questionnaire&retailer=96&retailerName=BMW+Approved+Used&scope=national&api=http%3A%2F%2F127.0.0.1%3A54344#m=eyJidWRnZXQiOls0MDAwMCw3NTAwMF0sImJvZHlTdHlsZXMiOlsiYW55Il0sImZ1ZWwiOlsib3BlbiJdLCJjaGFyZ2luZyI6Im5vbmUiLCJwcmltYXJ5VXNlIjoiZnVuIiwicGVvcGxlIjoiY3JldyIsIm1pbGVhZ2UiOjEwMDAwLCJzdHlsZSI6IjUiLCJwcmlvcml0aWVzIjpbImltYWdlIl19",
+        "returned": "/index.html?experience=used-cars&brand=bmw&mode=questionnaire&retailer=96&retailerName=BMW+Approved+Used&scope=national&api=http%3A%2F%2F127.0.0.1%3A54344#m=eyJidWRnZXQiOls0MDAwMCw3NTAwMF0sImJvZHlTdHlsZXMiOlsiYW55Il0sImZ1ZWwiOlsib3BlbiJdLCJjaGFyZ2luZyI6Im5vbmUiLCJwcmltYXJ5VXNlIjoiZnVuIiwicGVvcGxlIjoiY3JldyIsIm1pbGVhZ2UiOjEwMDAwLCJzdHlsZSI6IjUiLCJwcmlvcml0aWVzIjpbImltYWdlIl19",
+        "sameBrandCta": "Explore BMW Used cars",
+        "samePath": true,
+        "brand": "bmw",
+        "mode": "questionnaire",
+        "scope": "national",
+        "retailer": "96",
+        "retailerName": "BMW Approved Used",
+        "answerHash": "#m=eyJidWRnZXQiOls0MDAwMCw3NTAwMF0sImJvZHlTdHlsZXMiOlsiYW55Il0sImZ1ZWwiOlsib3BlbiJdLCJjaGFyZ2luZyI6Im5vbmUiLCJwcmltYXJ5VXNlIjoiZnVuIiwicGVvcGxlIjoiY3JldyIsIm1pbGVhZ2UiOjEwMDAwLCJzdHlsZSI6IjUiLCJwcmlvcml0aWVzIjpbImltYWdlIl19"
+      }
+    },
+    {
+      "id": "actual-copy-share-control",
+      "pass": true,
+      "expected": "actual share button fallback produces a public context-preserving answer URL without consumed key",
+      "observed": "http://vehicle-matcher.demo.test:31461/index.html?experience=used-cars&brand=bmw&mode=questionnaire&retailer=96&retailerName=BMW+Approved+Used&scope=national&api=http%3A%2F%2F127.0.0.1%3A54344#m=eyJidWRnZXQiOls0MDAwMCw3NTAwMF0sImJvZHlTdHlsZXMiOlsiYW55Il0sImZ1ZWwiOlsib3BlbiJdLCJjaGFyZ2luZyI6Im5vbmUiLCJwcmltYXJ5VXNlIjoiZnVuIiwicGVvcGxlIjoiY3JldyIsIm1pbGVhZ2UiOjEwMDAwLCJzdHlsZSI6IjUiLCJwcmlvcml0aWVzIjpbImltYWdlIl19"
+    },
+    {
+      "id": "retail-refresh-context",
+      "pass": true,
+      "expected": "refresh retains full public retail URL",
+      "observed": "http://vehicle-matcher.demo.test:31461/index.html?experience=used-cars&brand=bmw&mode=questionnaire&retailer=96&retailerName=BMW+Approved+Used&scope=national&api=http%3A%2F%2F127.0.0.1%3A54344#m=eyJidWRnZXQiOls0MDAwMCw3NTAwMF0sImJvZHlTdHlsZXMiOlsiYW55Il0sImZ1ZWwiOlsib3BlbiJdLCJjaGFyZ2luZyI6Im5vbmUiLCJwcmltYXJ5VXNlIjoiZnVuIiwicGVvcGxlIjoiY3JldyIsIm1pbGVhZ2UiOjEwMDAwLCJzdHlsZSI6IjUiLCJwcmlvcml0aWVzIjpbImltYWdlIl19"
+    }
+  ],
+  "cases": [
+    {
+      "id": "ferrari-swipe-retained-body-overflow",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "before": {
+        "width": 320,
+        "documentWidth": 356,
+        "addedLinks": 2,
+        "overflowing": [
+          {
+            "selector": "button.vm-mingle-tile.vm-mingle-tile-use",
+            "rect": {
+              "x": 227.453125,
+              "right": 356.171875,
+              "width": 128.71875,
+              "y": 2160.53125,
+              "height": 96
+            }
+          },
+          {
+            "selector": "span.vm-mingle-tile-label",
+            "rect": {
+              "x": 244.453125,
+              "right": 339.171875,
+              "width": 94.71875,
+              "y": 2173.53125,
+              "height": 57
+            }
+          },
+          {
+            "selector": "button.vm-mingle-tile.vm-mingle-tile-use",
+            "rect": {
+              "x": 227.453125,
+              "right": 356.171875,
+              "width": 128.71875,
+              "y": 2264.53125,
+              "height": 126
+            }
+          },
+          {
+            "selector": "span.vm-mingle-tile-label",
+            "rect": {
+              "x": 244.453125,
+              "right": 339.171875,
+              "width": 94.71875,
+              "y": 2277.53125,
+              "height": 38
+            }
+          },
+          {
+            "selector": "span.vm-mingle-tile-hint",
+            "rect": {
+              "x": 244.453125,
+              "right": 339.171875,
+              "width": 94.71875,
+              "y": 2317.53125,
+              "height": 60
+            }
+          }
+        ]
+      },
+      "after": {
+        "width": 320,
+        "documentWidth": 356,
+        "addedLinks": 0,
+        "overflowing": [
+          {
+            "selector": "button.vm-mingle-tile.vm-mingle-tile-use",
+            "rect": {
+              "x": 227.453125,
+              "right": 356.171875,
+              "width": 128.71875,
+              "y": 2048.53125,
+              "height": 96
+            }
+          },
+          {
+            "selector": "span.vm-mingle-tile-label",
+            "rect": {
+              "x": 244.453125,
+              "right": 339.171875,
+              "width": 94.71875,
+              "y": 2061.53125,
+              "height": 57
+            }
+          },
+          {
+            "selector": "button.vm-mingle-tile.vm-mingle-tile-use",
+            "rect": {
+              "x": 227.453125,
+              "right": 356.171875,
+              "width": 128.71875,
+              "y": 2152.53125,
+              "height": 126
+            }
+          },
+          {
+            "selector": "span.vm-mingle-tile-label",
+            "rect": {
+              "x": 244.453125,
+              "right": 339.171875,
+              "width": 94.71875,
+              "y": 2165.53125,
+              "height": 38
+            }
+          },
+          {
+            "selector": "span.vm-mingle-tile-hint",
+            "rect": {
+              "x": 244.453125,
+              "right": 339.171875,
+              "width": 94.71875,
+              "y": 2205.53125,
+              "height": 60
+            }
+          }
+        ]
+      },
+      "bodyFits": false,
+      "pass": false,
+      "disposition": "Diagnostic removes only the added header links in the browser DOM; no product file changes. Retained mode-source comparison belongs to lead review."
+    },
+    {
+      "id": "ferrari-head-to-head-retained-body-overflow",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "before": {
+        "width": 320,
+        "documentWidth": 356,
+        "addedLinks": 2,
+        "overflowing": [
+          {
+            "selector": "button.vm-mingle-tile.vm-mingle-tile-use",
+            "rect": {
+              "x": 227.453125,
+              "right": 356.171875,
+              "width": 128.71875,
+              "y": 2179.71875,
+              "height": 96
+            }
+          },
+          {
+            "selector": "span.vm-mingle-tile-label",
+            "rect": {
+              "x": 244.453125,
+              "right": 339.171875,
+              "width": 94.71875,
+              "y": 2192.71875,
+              "height": 57
+            }
+          },
+          {
+            "selector": "button.vm-mingle-tile.vm-mingle-tile-use",
+            "rect": {
+              "x": 227.453125,
+              "right": 356.171875,
+              "width": 128.71875,
+              "y": 2283.71875,
+              "height": 126
+            }
+          },
+          {
+            "selector": "span.vm-mingle-tile-label",
+            "rect": {
+              "x": 244.453125,
+              "right": 339.171875,
+              "width": 94.71875,
+              "y": 2296.71875,
+              "height": 38
+            }
+          },
+          {
+            "selector": "span.vm-mingle-tile-hint",
+            "rect": {
+              "x": 244.453125,
+              "right": 339.171875,
+              "width": 94.71875,
+              "y": 2336.71875,
+              "height": 60
+            }
+          }
+        ]
+      },
+      "after": {
+        "width": 320,
+        "documentWidth": 356,
+        "addedLinks": 0,
+        "overflowing": [
+          {
+            "selector": "button.vm-mingle-tile.vm-mingle-tile-use",
+            "rect": {
+              "x": 227.453125,
+              "right": 356.171875,
+              "width": 128.71875,
+              "y": 2067.71875,
+              "height": 96
+            }
+          },
+          {
+            "selector": "span.vm-mingle-tile-label",
+            "rect": {
+              "x": 244.453125,
+              "right": 339.171875,
+              "width": 94.71875,
+              "y": 2080.71875,
+              "height": 57
+            }
+          },
+          {
+            "selector": "button.vm-mingle-tile.vm-mingle-tile-use",
+            "rect": {
+              "x": 227.453125,
+              "right": 356.171875,
+              "width": 128.71875,
+              "y": 2171.71875,
+              "height": 126
+            }
+          },
+          {
+            "selector": "span.vm-mingle-tile-label",
+            "rect": {
+              "x": 244.453125,
+              "right": 339.171875,
+              "width": 94.71875,
+              "y": 2184.71875,
+              "height": 38
+            }
+          },
+          {
+            "selector": "span.vm-mingle-tile-hint",
+            "rect": {
+              "x": 244.453125,
+              "right": 339.171875,
+              "width": 94.71875,
+              "y": 2224.71875,
+              "height": 60
+            }
+          }
+        ]
+      },
+      "bodyFits": false,
+      "pass": false,
+      "disposition": "Diagnostic removes only the added header links in the browser DOM; no product file changes. Retained mode-source comparison belongs to lead review."
+    }
+  ],
+  "failure": {
+    "message": "page.goBack: Timeout 12000ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"domcontentloaded\"\u001b[22m\n\u001b[2m    - navigated to \"http://vehicle-matcher.demo.test:31461/index.html?experience=launcher&brand=bmw&mode=questionnaire&retailer=96&retailerName=BMW+Approved+Used&scope=national&api=http%3A%2F%2F127.0.0.1%3A54344#m=eyJidWRnZXQiOls0MDAwMCw3NTAwMF0sImJvZHlTdHlsZXMiOlsiYW55Il0sImZ1ZWwiOlsib3BlbiJdLCJjaGFyZ2luZyI6Im5vbmUiLCJwcmltYXJ5VXNlIjoiZnVuIiwicGVvcGxlIjoiY3JldyIsIm1pbGVhZ2UiOjEwMDAwLCJzdHlsZSI6IjUiLCJwcmlvcml0aWVzIjpbImltYWdlIl19\"\u001b[22m\n",
+    "capturedAt": "2026-11-05T15:19:35.356Z"
+  },
+  "browserLogs": {
+    "errors": [],
+    "failed": [],
+    "badLocalResponses": [],
+    "externalBlocked": [],
+    "apiCalls": [
+      {
+        "scope": "ferrari-swipe-overflow-diagnostic",
+        "method": "GET",
+        "path": "/api/questions?brand=ferrari",
+        "status": 200
+      },
+      {
+        "scope": "ferrari-head-to-head-overflow-diagnostic",
+        "method": "GET",
+        "path": "/api/questions?brand=ferrari",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "GET",
+        "path": "/api/questions?retailer=96&brand=bmw",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "POST",
+        "path": "/api/nearby",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "POST",
+        "path": "/api/match",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "GET",
+        "path": "/api/questions?retailer=96&brand=bmw",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "POST",
+        "path": "/api/nearby",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "POST",
+        "path": "/api/match",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "GET",
+        "path": "/api/questions?retailer=96&brand=bmw",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "POST",
+        "path": "/api/nearby",
+        "status": 200
+      },
+      {
+        "scope": "same-brand-round-trip-and-history",
+        "method": "POST",
+        "path": "/api/match",
+        "status": 200
+      }
+    ]
+  }
+}

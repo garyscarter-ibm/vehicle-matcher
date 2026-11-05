@@ -1,8 +1,8 @@
 import decorate from '../vehicle-matcher/vehicle-matcher.js';
 import { el } from '../vehicle-matcher/ui.js';
 import { ACCESS_KEY_STORAGE } from '../vehicle-matcher/engine.js';
-import { resolveEntryContext } from './entry-context.js';
-import { createRetailChrome } from './retail-chrome.js';
+import { rememberRetailLocation, resolveEntryContext } from './entry-context.js';
+import { createRetailChrome, observeRetailNavigation } from './retail-chrome.js';
 import { renderLauncher } from './launcher.js';
 
 // A capability is usable only when a real entry callback is registered and enabled.
@@ -12,6 +12,15 @@ export function employeeCapabilityAvailable(capability) {
 
 export function bootDemo({ root = document.getElementById('demo-root'), employeeCapability = null,
   decorateRetail = decorate } = {}) {
+  root.demoEntryCleanup?.();
+  let disposed = false;
+  const cleanups = [];
+  const cleanup = () => {
+    disposed = true;
+    cleanups.splice(0).forEach((dispose) => dispose());
+    if (root.demoEntryCleanup === cleanup) delete root.demoEntryCleanup;
+  };
+  root.demoEntryCleanup = cleanup;
   const params = new URLSearchParams(window.location.search);
   const LOCAL_API = 'http://localhost:8787';
   const REMOTE_API = 'https://bmw-matcher-api.onrender.com';
@@ -63,6 +72,7 @@ export function bootDemo({ root = document.getElementById('demo-root'), employee
   const retail = createRetailChrome({ root, params, DEFAULT_API });
   const available = employeeCapabilityAvailable(employeeCapability);
   function render() {
+    if (disposed) return;
     const context = resolveEntryContext(window.location.href, { employeeAvailable: available });
     root.entryContext = context;
     root.dataset.experience = context.experience;
@@ -72,11 +82,19 @@ export function bootDemo({ root = document.getElementById('demo-root'), employee
     else if (context.state === 'retail') {
       const block = retail.renderShell(context.brand);
       retail.applyOverrides(block, context.brand);
-      window.addEventListener('vm-auth-failed', () => {
+      const syncNavigation = () => {
+        const location = rememberRetailLocation(window.location.href, { storage: window.sessionStorage });
+        if (location) retail.updateNavigation(new URL(location, window.location.href));
+      };
+      cleanups.push(observeRetailNavigation(window, syncNavigation));
+      syncNavigation();
+      const retryAuth = () => {
         if (document.querySelector('.vm-gate')) return;
         askForPassword('That password was not right. Please try again.')
-          .then(() => decorateRetail(block));
-      });
+          .then(() => { if (!disposed) decorateRetail(block); });
+      };
+      window.addEventListener('vm-auth-failed', retryAuth);
+      cleanups.push(() => window.removeEventListener('vm-auth-failed', retryAuth));
       decorateRetail(block);
     } else if (context.state === 'employee' && available) {
       root.replaceChildren();
@@ -97,5 +115,5 @@ export function bootDemo({ root = document.getElementById('demo-root'), employee
   } else {
     askForPassword().then(render);
   }
-    
+  return cleanup;
 }

@@ -1,0 +1,93 @@
+{
+  "story": "FUCQ-34",
+  "sourceCommit": "4e792374659d2080b85d67aacc1f4e905c01373d",
+  "harnessSha": "303fd541aebe9e0e2dd15e5a66c1f7193028db45882074650efd446b8609b801",
+  "capturedAt": "2026-11-05T15:07:10.084Z",
+  "fixtureBacked": true,
+  "externalEgress": "blocked; remote default API fulfilled by injected local buildServer fixtures",
+  "checks": [],
+  "cases": [
+    {
+      "id": "bmw-questionnaire-320",
+      "brand": "bmw",
+      "mode": "questionnaire",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "sourceCommit": "4e792374659d2080b85d67aacc1f4e905c01373d",
+      "mounted": true,
+      "modeLocked": true,
+      "keyRemoved": true,
+      "apiCalls": [
+        {
+          "scope": "bmw-questionnaire-320",
+          "method": "GET",
+          "path": "/api/questions?retailer=96&brand=bmw",
+          "status": 200
+        }
+      ],
+      "pageWidth": 320,
+      "overflowPx": 0,
+      "metrics": {
+        "path": "/index.html",
+        "queryHasKey": false,
+        "experience": "used-cars",
+        "entryState": "retail",
+        "brand": "bmw",
+        "shellBrand": "bmw",
+        "modeClass": "vm-bmw",
+        "modeLocked": true,
+        "viewportWidth": 320,
+        "documentWidth": 320,
+        "bodyWidth": 320,
+        "shellWidth": 320,
+        "shellClientWidth": 320,
+        "screen": "vm-intro",
+        "questionHeading": null
+      },
+      "errors": [],
+      "failedRequests": [],
+      "badLocalResponses": [],
+      "externalBlocked": [],
+      "pass": true,
+      "narrowOverflow": "fits"
+    }
+  ],
+  "firstMount": {
+    "id": "bmw-questionnaire-320",
+    "capturedAt": "2026-11-05T15:07:10.084Z",
+    "metrics": {
+      "path": "/index.html",
+      "queryHasKey": false,
+      "experience": "used-cars",
+      "entryState": "retail",
+      "brand": "bmw",
+      "shellBrand": "bmw",
+      "modeClass": "vm-bmw",
+      "modeLocked": true,
+      "viewportWidth": 320,
+      "documentWidth": 320,
+      "bodyWidth": 320,
+      "shellWidth": 320,
+      "shellClientWidth": 320,
+      "screen": "vm-intro",
+      "questionHeading": null
+    },
+    "apiCalls": [
+      {
+        "scope": "bmw-questionnaire-320",
+        "method": "GET",
+        "path": "/api/questions?retailer=96&brand=bmw",
+        "status": 200
+      }
+    ],
+    "screenshot": "bmw-narrow-header.png"
+  },
+  "processOutcome": {
+    "supervisorExitCode": -15,
+    "mountPassed": true,
+    "reason": "Successful smoke capture; Node was stopped after teardown waited for an already-exited SIGTERM child. signalCode liveness guard corrected before matrix.",
+    "resourceReceipt": "browser-smoke-2560-1793891226487734000-receipt.json"
+  }
+}

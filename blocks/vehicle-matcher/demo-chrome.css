@@ -36,7 +36,8 @@
 .demo-nav {
   display: flex;
   align-items: center;
-  gap: var(--vm-space-6);
+  flex-wrap: wrap;
+  gap: var(--vm-space-4);
   padding: var(--vm-space-4) var(--vm-space-6);
   background: var(--vm-surface);
   border-bottom: 1px solid var(--vm-line);
@@ -49,6 +50,7 @@
   align-items: center;
   /* room for a wide wordmark, but the img/text shrinks to fit */
   min-height: 34px;
+  flex-shrink: 0;
 }
 .demo-nav-logo img {
   height: 30px;
@@ -81,6 +83,25 @@
 .demo-nav-links a:hover { opacity: 1; }
 
 .demo-nav-spacer { flex: 1 1 auto; }
+.demo-nav-experiences {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--vm-space-2);
+  max-width: 100%;
+}
+.demo-nav-experiences > a, .demo-picker-intro > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  max-width: 100%;
+  text-align: center;
+  text-decoration: none;
+}
+.demo-nav a:focus-visible, .demo-picker a:focus-visible {
+  outline: 3px solid var(--vm-accent-spot, currentColor);
+  outline-offset: 4px;
+}
 
 /* "Back to the real <origin>" affordance — a quiet outline link on the right. */
 .demo-nav-back {
@@ -90,13 +111,16 @@
   border: 1px solid var(--vm-line);
   padding: 8px 14px;
   border-radius: var(--vm-radius-control);
-  white-space: nowrap;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
 }
 .demo-nav-back:hover { color: var(--vm-ink); border-color: var(--vm-ink-muted); }
 
-/* Hide the extra nav labels on small screens; keep logo + back link. */
+/* Keep destination routes and the real-site link available on narrow screens. */
 @media (max-width: 719px) {
-  .demo-nav-links { display: none; }
+  .demo-nav-links, .demo-nav-spacer { display: none; }
+  .demo-nav-experiences { flex-basis: 100%; }
 }
 
 /* ================= hero band ================= */
@@ -293,11 +317,20 @@
  * brand-SPECIFIC tokens don't cascade — its dark palette below stays hardcoded and literal.
  */
 
-/*
- * Brand-INVARIANT tokens (--vm-space-*, type scale) live on `:root` in tokens.css, so they resolve
- * here; the one brand signal is per-tile --tile-accent, set by renderPicker() for the hover below.
- */
+/* Neutral picker tokens keep shared ghost links readable on the retained dark surface.
+   Each tile's --tile-accent is set by renderPicker() from its brand. */
 .demo-picker {
+  --vm-surface: #0d0f12;
+  --vm-ink: #f2f4f7;
+  --vm-line: #2a2f37;
+  --vm-surface-alt: #1c2027;
+  --vm-accent-spot: #f2f4f7;
+  --vm-font-bold: 'Helvetica Neue', helvetica, arial, sans-serif;
+  --vm-btn-height: 48px;
+  --vm-btn-padding: var(--vm-space-3) var(--vm-space-6);
+  --vm-radius-control: var(--vm-radius-soft);
+  --vm-btn-transform: none;
+  --vm-btn-letter-spacing: normal;
   min-height: 100vh;
   box-sizing: border-box;
   display: flex;
@@ -308,8 +341,11 @@
   padding: var(--vm-space-12) var(--vm-space-6);
   background: #0d0f12;
   color: #f2f4f7;
-  font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
+  font-family: var(--vm-font-bold);
 }
+.demo-picker-intro { max-width: 54ch; text-align: center; }
+.demo-picker-intro h1 { margin: var(--vm-space-6) 0 var(--vm-space-3); }
+.demo-picker-intro p { margin: 0; line-height: 1.5; }
 .demo-picker-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
