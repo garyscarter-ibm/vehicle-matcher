@@ -1,0 +1,307 @@
+{
+  "schemaVersion": "1",
+  "registryVersion": "vin-profiles.v1",
+  "referenceOnly": true,
+  "fixtures": [
+    {
+      "fixtureId": "wba-430i-convertible-my2026",
+      "label": "430i Convertible | MY2026 US/North American LHD reference only",
+      "profileId": "wba-430i-convertible-my2026",
+      "usage": "current-car",
+      "configurationId": null,
+      "snapshotVersion": null,
+      "referenceOnly": true,
+      "sourceKind": "north-american-reference",
+      "configuration": {
+        "model": "430i",
+        "derivative": "430i Convertible",
+        "generation": "G23",
+        "body": "Convertible",
+        "powertrain": "petrol",
+        "drive": "rear-wheel",
+        "transmission": null,
+        "engineCode": null,
+        "agModelCode": null,
+        "vgModelCode": null,
+        "market": "US",
+        "region": "North America",
+        "steering": "LHD",
+        "modelYear": 2026,
+        "productionEra": "MY2026 North American reference",
+        "productionDate": null,
+        "plant": "C"
+      },
+      "equipment": {
+        "selected": {
+          "state": "unknown",
+          "codes": null
+        },
+        "verifiedFitted": {
+          "state": "unknown",
+          "codes": null
+        }
+      },
+      "sourceContext": {
+        "sourceRefs": [
+          "BMW-565-MY2026",
+          "VIN-RULES",
+          "VPIC-PARTIAL",
+          "PLANT-C",
+          "CFR-565"
+        ],
+        "observedDate": "2026-11-01",
+        "confidence": "Small matched structural reference, not a complete catalogue configuration or UK factory build",
+        "unresolvedFacts": [
+          "transmission",
+          "engineCode",
+          "agModelCode",
+          "vgModelCode",
+          "productionDate",
+          "registrationDate",
+          "exactEquipment",
+          "exactTrim"
+        ]
+      }
+    },
+    {
+      "fixtureId": "wbs-m3-competition-xdrive-my2026",
+      "label": "M3 Competition xDrive | MY2026 US/North American LHD reference only",
+      "profileId": "wbs-m3-competition-xdrive-my2026",
+      "usage": "current-car",
+      "configurationId": null,
+      "snapshotVersion": null,
+      "referenceOnly": true,
+      "sourceKind": "north-american-reference",
+      "configuration": {
+        "model": "M3",
+        "derivative": "M3 Competition xDrive",
+        "generation": "G80",
+        "body": "Sedan",
+        "powertrain": "petrol",
+        "drive": "all-wheel",
+        "transmission": null,
+        "engineCode": null,
+        "agModelCode": null,
+        "vgModelCode": null,
+        "market": "US",
+        "region": "North America",
+        "steering": "LHD",
+        "modelYear": 2026,
+        "productionEra": "MY2026 North American reference",
+        "productionDate": null,
+        "plant": "F"
+      },
+      "equipment": {
+        "selected": {
+          "state": "unknown",
+          "codes": null
+        },
+        "verifiedFitted": {
+          "state": "unknown",
+          "codes": null
+        }
+      },
+      "sourceContext": {
+        "sourceRefs": [
+          "BMW-565-MY2026",
+          "VIN-RULES",
+          "VPIC-PARTIAL",
+          "PLANT-F",
+          "CFR-565"
+        ],
+        "observedDate": "2026-11-01",
+        "confidence": "Small matched structural reference, not a complete catalogue configuration or UK factory build",
+        "unresolvedFacts": [
+          "transmission",
+          "engineCode",
+          "agModelCode",
+          "vgModelCode",
+          "productionDate",
+          "registrationDate",
+          "exactEquipment",
+          "exactTrim"
+        ]
+      }
+    },
+    {
+      "fixtureId": "wby-i5-edrive40-sedan-my2026",
+      "label": "i5 eDrive40 Sedan | MY2026 US/North American LHD reference only",
+      "profileId": "wby-i5-edrive40-sedan-my2026",
+      "usage": "current-car",
+      "configurationId": null,
+      "snapshotVersion": null,
+      "referenceOnly": true,
+      "sourceKind": "north-american-reference",
+      "configuration": {
+        "model": "i5",
+        "derivative": "i5 eDrive40 Sedan",
+        "generation": "G60",
+        "body": "Sedan",
+        "powertrain": "battery-electric",
+        "drive": "rear-wheel",
+        "transmission": null,
+        "engineCode": null,
+        "agModelCode": null,
+        "vgModelCode": null,
+        "market": "US",
+        "region": "North America",
+        "steering": "LHD",
+        "modelYear": 2026,
+        "productionEra": "MY2026 North American reference",
+        "productionDate": null,
+        "plant": "C"
+      },
+      "equipment": {
+        "selected": {
+          "state": "unknown",
+          "codes": null
+        },
+        "verifiedFitted": {
+          "state": "unknown",
+          "codes": null
+        }
+      },
+      "sourceContext": {
+        "sourceRefs": [
+          "BMW-565-MY2026",
+          "VIN-RULES",
+          "VPIC-PARTIAL",
+          "PLANT-C",
+          "CFR-565"
+        ],
+        "observedDate": "2026-11-01",
+        "confidence": "Small matched structural reference, not a complete catalogue configuration or UK factory build",
+        "unresolvedFacts": [
+          "transmission",
+          "engineCode",
+          "agModelCode",
+          "vgModelCode",
+          "productionDate",
+          "registrationDate",
+          "exactEquipment",
+          "exactTrim"
+        ]
+      }
+    },
+    {
+      "fixtureId": "5ux-x5-xdrive50e-my2026",
+      "label": "X5 xDrive50e | MY2026 US/North American LHD reference only",
+      "profileId": "5ux-x5-xdrive50e-my2026",
+      "usage": "current-car",
+      "configurationId": null,
+      "snapshotVersion": null,
+      "referenceOnly": true,
+      "sourceKind": "north-american-reference",
+      "configuration": {
+        "model": "X5",
+        "derivative": "X5 xDrive50e",
+        "generation": "G05",
+        "body": "SUV",
+        "powertrain": "plug-in-hybrid",
+        "drive": "all-wheel",
+        "transmission": null,
+        "engineCode": null,
+        "agModelCode": null,
+        "vgModelCode": null,
+        "market": "US",
+        "region": "North America",
+        "steering": "LHD",
+        "modelYear": 2026,
+        "productionEra": "MY2026 North American reference",
+        "productionDate": null,
+        "plant": "9"
+      },
+      "equipment": {
+        "selected": {
+          "state": "unknown",
+          "codes": null
+        },
+        "verifiedFitted": {
+          "state": "unknown",
+          "codes": null
+        }
+      },
+      "sourceContext": {
+        "sourceRefs": [
+          "BMW-565-MY2026",
+          "VIN-RULES",
+          "VPIC-PARTIAL",
+          "PLANT-9",
+          "CFR-565"
+        ],
+        "observedDate": "2026-11-01",
+        "confidence": "Small matched structural reference, not a complete catalogue configuration or UK factory build",
+        "unresolvedFacts": [
+          "transmission",
+          "engineCode",
+          "agModelCode",
+          "vgModelCode",
+          "productionDate",
+          "registrationDate",
+          "exactEquipment",
+          "exactTrim"
+        ]
+      }
+    },
+    {
+      "fixtureId": "5ym-x5-m-competition-my2026",
+      "label": "X5 M Competition | MY2026 US/North American LHD reference only",
+      "profileId": "5ym-x5-m-competition-my2026",
+      "usage": "current-car",
+      "configurationId": null,
+      "snapshotVersion": null,
+      "referenceOnly": true,
+      "sourceKind": "north-american-reference",
+      "configuration": {
+        "model": "X5 M",
+        "derivative": "X5 M Competition",
+        "generation": "F95",
+        "body": "SUV",
+        "powertrain": "petrol",
+        "drive": "all-wheel",
+        "transmission": null,
+        "engineCode": null,
+        "agModelCode": null,
+        "vgModelCode": null,
+        "market": "US",
+        "region": "North America",
+        "steering": "LHD",
+        "modelYear": 2026,
+        "productionEra": "MY2026 North American reference",
+        "productionDate": null,
+        "plant": "9"
+      },
+      "equipment": {
+        "selected": {
+          "state": "unknown",
+          "codes": null
+        },
+        "verifiedFitted": {
+          "state": "unknown",
+          "codes": null
+        }
+      },
+      "sourceContext": {
+        "sourceRefs": [
+          "BMW-565-MY2026",
+          "VIN-RULES",
+          "VPIC-PARTIAL",
+          "PLANT-9",
+          "CFR-565"
+        ],
+        "observedDate": "2026-11-01",
+        "confidence": "Small matched structural reference, not a complete catalogue configuration or UK factory build",
+        "unresolvedFacts": [
+          "transmission",
+          "engineCode",
+          "agModelCode",
+          "vgModelCode",
+          "productionDate",
+          "registrationDate",
+          "exactEquipment",
+          "exactTrim"
+        ]
+      }
+    }
+  ]
+}
