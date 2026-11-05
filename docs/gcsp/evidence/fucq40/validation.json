@@ -144,24 +144,28 @@
   "tree": "67e68dc3b220bea2dc49c12be5edffa3477dceb6",
   "variant": "default",
   "integrationReconciliation": {
-    "verifiedAt": "2026-11-05T14:07:50+0000",
+    "verifiedAt": "2026-11-05T14:09:27+0000",
     "previousBase": "1db84201afd748fce176858296bd680cddc16f25",
-    "integratedBase": "11246fd2665c281d085257bdbc188a15ca3bdc57",
-    "remoteFetchedBase": "da9658b3f8914cae26a1a17b58cccb45e4ebaf37",
-    "mergeCommit": "13d68b3cf247cbdd27ab588fbbd0ab80ada2e868",
-    "mergeTree": "65bec4d1a1ea35ba06584ce55a1159b4d628f806",
+    "integratedBase": "5d3acd3b87641f20f86e41d062f63babcfc2a286",
+    "remoteFetchedBase": "5d3acd3b87641f20f86e41d062f63babcfc2a286",
+    "mergeCommit": "d3d728f60aa097e75bfbb8c4516b8b04f7ea9102",
+    "mergeTree": "0b144afd3415a0f60d952c87ecd7161a01e8a05f",
     "incomingChangedPaths": [
+      "_dev/code-inbox/DEV-2026-11-04-054.md",
       "_dev/in-progress/DEV-2026-11-04-008.md",
       "_dev/in-progress/DEV-2026-11-04-044.md",
       "docs/HANDOVER-2026-11-05-gary-poller-2.md",
       "docs/gcsp/README.md",
       "docs/gcsp/codex-takeover-2026-11-05.md",
+      "docs/gcsp/demo-brief.md",
       "docs/gcsp/dev-poller-2026-11-05.md",
+      "docs/gcsp/email-transport.md",
       "docs/gcsp/experience-quality.md",
+      "docs/gcsp/fucq-86-90-stories.md",
       "docs/gcsp/render-postgres-setup.md"
     ],
     "behavioralChanges": [],
-    "classification": "documentation and story metadata only; runtime/test/dependency/config/source-fixture bytes unchanged",
+    "classification": "Twelve accumulated documentation/story paths only; final five-path step records Brevo email handoff. No runtime/test/dependency/config/source-fixture bytes changed.",
     "selection": {
       "checks": [
         "wrapper ancestry and exact incoming path review",
@@ -193,6 +197,78 @@
       "newScopeOrPermissionChanges": false
     },
     "cleanupReceipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq40-20261105-image/cleanup-receipt.json",
-    "newScratchAllocationBytes": 0
-  }
+    "newScratchAllocationBytes": 0,
+    "previousReconciledBase": "11246fd2665c281d085257bdbc188a15ca3bdc57",
+    "latestStepChangedPaths": [
+      "_dev/code-inbox/DEV-2026-11-04-054.md",
+      "docs/gcsp/README.md",
+      "docs/gcsp/demo-brief.md",
+      "docs/gcsp/email-transport.md",
+      "docs/gcsp/fucq-86-90-stories.md"
+    ],
+    "storyDiffPaths": [
+      "_dev/in-progress/DEV-2026-11-04-011.md",
+      "docs/gcsp/evidence/fucq40/README.md",
+      "docs/gcsp/evidence/fucq40/validation.json",
+      "server/test/bmw-image-adapter.test.js",
+      "server/vehicle-evidence/assets/bmw-gb-i5-images-2026-11-01.v1/alpine-white.webp",
+      "server/vehicle-evidence/assets/bmw-gb-i5-images-2026-11-01.v1/black-sapphire.webp",
+      "server/vehicle-evidence/bmw-image-adapter.js",
+      "server/vehicle-evidence/snapshots/bmw-gb-i5-images-2026-11-01.v1.json"
+    ]
+  },
+  "integrationReconciliationHistory": [
+    {
+      "verifiedAt": "2026-11-05T14:07:50+0000",
+      "previousBase": "1db84201afd748fce176858296bd680cddc16f25",
+      "integratedBase": "11246fd2665c281d085257bdbc188a15ca3bdc57",
+      "remoteFetchedBase": "da9658b3f8914cae26a1a17b58cccb45e4ebaf37",
+      "mergeCommit": "13d68b3cf247cbdd27ab588fbbd0ab80ada2e868",
+      "mergeTree": "65bec4d1a1ea35ba06584ce55a1159b4d628f806",
+      "incomingChangedPaths": [
+        "_dev/in-progress/DEV-2026-11-04-008.md",
+        "_dev/in-progress/DEV-2026-11-04-044.md",
+        "docs/HANDOVER-2026-11-05-gary-poller-2.md",
+        "docs/gcsp/README.md",
+        "docs/gcsp/codex-takeover-2026-11-05.md",
+        "docs/gcsp/dev-poller-2026-11-05.md",
+        "docs/gcsp/experience-quality.md",
+        "docs/gcsp/render-postgres-setup.md"
+      ],
+      "behavioralChanges": [],
+      "classification": "documentation and story metadata only; runtime/test/dependency/config/source-fixture bytes unchanged",
+      "selection": {
+        "checks": [
+          "wrapper ancestry and exact incoming path review",
+          "complete execution identity equality to recorded full stamp",
+          "all FUCQ-40 source/test/asset SHA-256 checks",
+          "wrapper diff --check",
+          "filesystem/process-group/reservation cleanup re-audit"
+        ],
+        "excluded": [
+          "rerunning image scoped tests",
+          "rerunning full51-module suite"
+        ],
+        "reason": "No changed code, test, dependency, runtime config or source fixtures. Existing authored full plan remains satisfied for identical code/input/environment/plan; no additional allocation justified."
+      },
+      "fullStampReused": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/stamp-13af28fbb9f20985844c81ed7f903de603f62ff063e99f927b0f88acae4b06f4-default.json",
+      "fullStampStatus": "matching; --status exit0",
+      "executionIdentityMatched": true,
+      "sourceIdentitiesMatched": true,
+      "fullRequirementSatisfied": true,
+      "limitations": [
+        "Two configured native PostgreSQL skips remain; no native/live SQL proof.",
+        "No consuming HTTP/UI or deployment changes."
+      ],
+      "jiraRecheck": {
+        "issue": "FUCQ-40",
+        "commentCount": 3,
+        "latestComment": "132473",
+        "demoPermissionComment": "132468",
+        "newScopeOrPermissionChanges": false
+      },
+      "cleanupReceipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq40-20261105-image/cleanup-receipt.json",
+      "newScratchAllocationBytes": 0
+    }
+  ]
 }
