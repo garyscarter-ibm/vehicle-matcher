@@ -106,6 +106,14 @@
     {
       "path": "blocks/vehicle-matcher/gcsp-kit.css",
       "max_lines": 26
+    },
+    {
+      "path": "blocks/gcsp/kit/gcsp-kit.css",
+      "max_lines": 28
+    },
+    {
+      "path": "blocks/gcsp/greg/gcsp-greg.css",
+      "max_lines": 38
     }
   ],
   "baseline": {
