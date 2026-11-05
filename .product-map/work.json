@@ -1011,15 +1011,7 @@
       "type": "Story",
       "observed_at": "2026-11-05T23:45:03Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-102",
-      "workers": [
-        {
-          "id": "01a1ae02-7932-7a30-a010-17dda8df7122",
-          "name": "Hugo",
-          "harness": "codex",
-          "observed_at": "2026-11-05T23:22:44Z",
-          "expires_at": "2026-11-06T01:22:44Z"
-        }
-      ],
+      "workers": [],
       "slices": [
         {
           "id": "contract",
