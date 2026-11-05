@@ -2,14 +2,14 @@
   "schemaVersion": "1",
   "planVersion": "fleet-plan.v1",
   "identityScope": "configuration-corpus",
-  "seed": "fucq58-pilot-2026-11-01",
+  "seed": "fucq58-authorised-pilot-20261105",
   "registryVersion": "vin-profiles.v1",
   "tool": {
     "version": "fleet-plan.v1",
     "kind": "observed",
     "source": "scripts/gcsp/fleet-plan.mjs",
     "observedDate": "2026-11-05",
-    "confidence": "offline validator; no collector"
+    "confidence": "offline qualification and bounded pilot plan; no bulk collector"
   },
   "coverage": {
     "requestedWmis": [
@@ -36,10 +36,42 @@
       },
       {
         "scope": "all scheme model lines",
-        "reason": "Current catalogue-to-2024 eligibility mapping remains unselected"
+        "reason": "All retained 2024 scheme model lines are enumerated; exact current catalogue joins remain unqualified, including discontinued generations"
       }
     ],
-    "schemeModelLines": null,
+    "schemeModelLines": [
+      "F70 Sports Hatch",
+      "F44 Gran Coupe",
+      "G42 Coupe",
+      "U06 Active Tourer",
+      "G20 Saloon",
+      "G21 Touring",
+      "G22 Coupe",
+      "G23 Convertible",
+      "G26 Gran Coupe",
+      "G60 Saloon",
+      "G61 Touring",
+      "G29 Z4",
+      "U11 X1",
+      "U10 X2",
+      "G01 X3",
+      "G02 X4",
+      "G05 X5",
+      "G06 X6",
+      "U11 iX1",
+      "U10 iX2",
+      "G26 i4",
+      "G60 i5",
+      "G61 i5",
+      "i20 iX",
+      "M Power: M2",
+      "M Power: M3",
+      "M Power: M4",
+      "M Power: X3M",
+      "M Power: X4M",
+      "M Power: X5M",
+      "M Power: X6M"
+    ],
     "schemeSource": {
       "kind": "eligibility-only",
       "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
@@ -76,7 +108,7 @@
         "effectDate": "2027-01-05",
         "catalogueDate": "2026-11-01"
       },
-      "schemeModelLine": "i5",
+      "schemeModelLine": "G61 i5",
       "catalogueVersion": "bmw-gb-i5-2026-11-01.v1",
       "wmi": null,
       "profileId": null,
@@ -161,7 +193,7 @@
             "kind": "observed",
             "source": "docs/gcsp/evidence/fucq-4/configuration-generation-native-2026-11-01.json",
             "observedDate": "2026-11-01",
-            "confidence": "Three HTTP 200 constructible complete selections; no collection or reuse permission established"
+            "confidence": "Three HTTP 200 constructible complete selections observed 1 November; reuse authorised 5 November in the separate decision record"
           }
         },
         {
@@ -231,7 +263,7 @@
             "kind": "observed",
             "source": "docs/gcsp/evidence/fucq-4/configuration-generation-native-2026-11-01.json",
             "observedDate": "2026-11-01",
-            "confidence": "Three HTTP 200 constructible complete selections; no collection or reuse permission established"
+            "confidence": "Three HTTP 200 constructible complete selections observed 1 November; reuse authorised 5 November in the separate decision record"
           }
         },
         {
@@ -303,7 +335,7 @@
             "kind": "observed",
             "source": "docs/gcsp/evidence/fucq-4/configuration-generation-native-2026-11-01.json",
             "observedDate": "2026-11-01",
-            "confidence": "Three HTTP 200 constructible complete selections; no collection or reuse permission established"
+            "confidence": "Three HTTP 200 constructible complete selections observed 1 November; reuse authorised 5 November in the separate decision record"
           }
         }
       ],
@@ -311,7 +343,7 @@
         "kind": "observed",
         "source": "docs/gcsp/evidence/fucq-4/configuration-generation-native-2026-11-01.json",
         "observedDate": "2026-11-01",
-        "confidence": "Three HTTP 200 constructible complete selections; no collection or reuse permission established"
+        "confidence": "Three HTTP 200 constructible complete selections observed 1 November; reuse authorised 5 November in the separate decision record"
       },
       "unknownFields": [
         "modelYear",
@@ -321,50 +353,70 @@
         "VIN descriptor",
         "compatible enabled GB RHD profile",
         "complete rim family classification",
-        "verified fitted equipment",
-        "source access and retention permissions"
+        "verified fitted equipment"
       ]
     }
   ],
   "permissions": {
-    "sourceAccess": null,
-    "dataRetention": null,
-    "imageDisplay": null
+    "sourceAccess": {
+      "kind": "observed",
+      "source": "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md",
+      "observedDate": "2026-11-05",
+      "confidence": "Recorded human authorisation; not an independently verified BMW API agreement",
+      "status": "approved",
+      "basis": "Gary Carter authorised read-only public BMW UK configurator collection on 5 November 2026"
+    },
+    "dataRetention": {
+      "kind": "observed",
+      "source": "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md",
+      "observedDate": "2026-11-05",
+      "confidence": "Recorded human authorisation; not an independently verified BMW API agreement",
+      "status": "approved",
+      "basis": "Gary reports BMW approval to retain project configuration data and images as long as needed"
+    },
+    "imageDisplay": {
+      "kind": "observed",
+      "source": "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md",
+      "observedDate": "2026-11-05",
+      "confidence": "Recorded human authorisation; not an independently verified BMW API agreement",
+      "status": "approved",
+      "basis": "Gary reports BMW approval to display project configuration data and images as long as needed"
+    }
   },
   "work": {
-    "candidateRequests": null,
-    "solverCandidates": null,
-    "otdConfigurations": null,
-    "imageConfigurations": null,
-    "viewsPerConfiguration": null,
-    "imageBytesPerView": null
+    "candidateRequests": 4,
+    "solverCandidates": 3,
+    "otdConfigurations": 3,
+    "imageConfigurations": 1,
+    "viewsPerConfiguration": 1,
+    "imageBytesPerView": 2097152
   },
   "budgets": {
-    "requests": null,
-    "imageRequests": null,
-    "cacheEntries": null,
-    "cacheBytes": null,
-    "concurrency": null,
-    "timeoutMs": null,
-    "durationMs": null
+    "requests": 12,
+    "imageRequests": 2,
+    "cacheEntries": 12,
+    "cacheBytes": 12582912,
+    "concurrency": 1,
+    "timeoutMs": 10000,
+    "durationMs": 120000
   },
   "cache": {
-    "policy": null,
+    "policy": "cold",
     "key": "full-context+complete-selection+provider-version",
-    "ttlMs": null,
-    "entryBytes": null,
+    "ttlMs": 86400000,
+    "entryBytes": 1048576,
     "hits": {
-      "candidate": null,
-      "solver": null,
-      "otd": null,
-      "image": null
+      "candidate": 0,
+      "solver": 0,
+      "otd": 0,
+      "image": 0
     }
   },
   "retry": {
-    "maxRetries": null,
-    "initialBackoffMs": null,
-    "maxBackoffMs": null,
-    "multiplier": null,
+    "maxRetries": 0,
+    "initialBackoffMs": 0,
+    "maxBackoffMs": 0,
+    "multiplier": 1,
     "retryStatuses": []
   },
   "retention": {
@@ -373,13 +425,24 @@
       "resolved-selections",
       "sanitised-evidence",
       "provenance",
-      "technical-facts"
+      "technical-facts",
+      "representative-images"
     ],
     "discardPrivateIdentifiers": true
   },
   "destinations": {
-    "evidence": null,
-    "images": null
+    "evidence": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-031/docs/gcsp/evidence/fucq-58/authorised-pilot-2026-11-05/evidence",
+      "expectedBytes": 12582912,
+      "public": false,
+      "retention": "reusable-non-personal"
+    },
+    "images": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-031/docs/gcsp/evidence/fucq-58/authorised-pilot-2026-11-05/images",
+      "expectedBytes": 2097152,
+      "public": false,
+      "retention": "reusable-non-personal"
+    }
   },
   "stopConditions": [
     "budget-exhausted",
@@ -389,5 +452,86 @@
     "source-failure",
     "retention-violation",
     "destination-full"
-  ]
+  ],
+  "pilot": {
+    "version": "fleet-pilot.v1",
+    "purpose": "source-qualification-only",
+    "authorisationSource": "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md",
+    "source": "public-bmw-uk-configurator",
+    "unsupportedProvider": true,
+    "readOnly": true,
+    "writeRequests": 0,
+    "familyId": "gb-i5-g61-t5mj-pilot",
+    "context": {
+      "market": "GB",
+      "steering": "RHD",
+      "locale": "en-GB",
+      "modelCode": "T5MJ",
+      "agModelCode": "72HH",
+      "modelRange": "G61E",
+      "generation": "G61",
+      "orderDate": "2026-11-01",
+      "effectDate": "2027-01-05",
+      "catalogueDate": "2026-11-01"
+    },
+    "bootstrap": {
+      "pageUrl": "https://configure.bmw.co.uk/en_GB/configure/G61E/T5MJ",
+      "settingsPattern": "^/en_GB/settings\\.[a-zA-Z0-9]+\\.json$"
+    },
+    "requests": {
+      "bootstrap": 2,
+      "catalogue": 2,
+      "solver": 3,
+      "otd": 3,
+      "manifest": 1,
+      "images": 1,
+      "total": 12
+    },
+    "bytes": {
+      "response": 1048576,
+      "image": 2097152,
+      "total": 16777216
+    },
+    "resources": {
+      "workers": 1,
+      "ramBytes": 268435456,
+      "scratchBytes": 33554432
+    },
+    "seeds": [
+      [
+        "FKSFU",
+        "P0300",
+        "S0337",
+        "S043L"
+      ],
+      [
+        "FKSFU",
+        "P0475",
+        "S0337",
+        "S043L"
+      ],
+      [
+        "FKSFU",
+        "P0475",
+        "S0337",
+        "S03AC",
+        "S043L"
+      ]
+    ],
+    "stopConditions": [
+      "budget-exhausted",
+      "permission-revoked",
+      "identity-substitution",
+      "profile-mismatch",
+      "source-failure",
+      "retention-violation",
+      "destination-full",
+      "response-too-large",
+      "download-limit",
+      "timeout",
+      "redirect",
+      "unexpected-payload",
+      "authentication-required"
+    ]
+  }
 }

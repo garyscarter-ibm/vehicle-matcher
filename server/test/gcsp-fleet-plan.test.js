@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { spawnSync } from 'node:child_process';
-import { qualifyFleetPlan, configurationKey } from '../../scripts/gcsp/fleet-plan.mjs';
+import { qualifyFleetPlan, qualifyPilotPlan, configurationKey } from '../../scripts/gcsp/fleet-plan.mjs';
 import { createVinProfileRegistry } from '../gcsp/vehicle-evidence/vin-profiles.js';
 
 const root = new URL('../../', import.meta.url);
@@ -97,11 +97,61 @@ test('shipped evidence proves three real complete selections, never GB profile q
   assert.equal(report.qualified, false); assert.equal(report.contractQualified, false);
   assert.equal(report.coverage.distinctProved, 3); assert.equal(report.coverage.profileQualified, 0);
   assert.equal(report.coverage.activeShortfall, 197); assert.equal(report.coverage.legacyShortfall, 9997);
-  assert.equal(report.projection.status, 'unavailable'); assert.match(report.coverage.deferredCollection, /after 2026-11-12/);
+  assert.equal(report.projection.status, 'available'); assert.match(report.coverage.deferredCollection, /after 2026-11-12/);
+  assert.equal(report.projection.totalRequests, 12); assert.equal(report.projection.imageRequests, 2);
+  assert.equal(report.projection.serialWorstCaseDurationMs, 120000);
+  assert.equal(report.errors.some((e) => e.startsWith('permission-unselected')), false);
   assert.deepEqual(shipped.families[0].configurations.map((b) => b.completeSelectedElements.length), [48, 48, 49]);
   assert.ok(shipped.families[0].configurations.every((b) => b.selectedAccessories[0] === 'SE000001'));
   assert.equal(report.presentation.families[0].profileStatus, 'unsupported');
   assert.equal(report.presentation.families[0].sourceKind, 'observed');
+});
+
+test('authorised finite pilot qualifies separately from full UK profile and scheme coverage', async () => {
+  const report = qualifyPilotPlan(shipped);
+  assert.equal(report.ready, true, report.errors.join(','));
+  assert.equal(report.collectionQualified, false); assert.equal(report.outboundRequests, 0);
+  assert.equal(report.profileStatus, 'unqualified'); assert.equal(report.activeShortfall, 197);
+  assert.equal(report.requests.total, 12); assert.equal(report.bytes.total, 16 * 1024 * 1024);
+  const source = await readFile(new URL('docs/gcsp/sources/choices-eligibility-matrices-2024-10.md', root), 'utf8');
+  const expected = new Set();
+  for (const row of source.split('\n').filter((line) => /^\| (?:\d Series|Z Series|X Models|BMW i|M) \|/.test(line))) {
+    const cells = row.split('|').map((cell) => cell.trim());
+    if (cells[1] === 'M') for (const model of cells[4].split(',').map((s) => s.trim())) expected.add(`M Power: ${model}`);
+    else expected.add(cells[2]);
+  }
+  assert.deepEqual(new Set(shipped.coverage.schemeModelLines), expected);
+  assert.equal((await qualifyFleetPlan(shipped)).qualified, false);
+});
+
+test('pilot refuses changed authority, source, context, seeds, limits and retention before outbound work', () => {
+  for (const mutate of [
+    (p) => { p.permissions.dataRetention = null; },
+    (p) => { p.permissions.imageDisplay.kind = 'synthetic'; },
+    (p) => { p.pilot.authorisationSource = 'unverified'; },
+    (p) => { p.pilot.source = 'other'; },
+    (p) => { p.pilot.bootstrap.pageUrl = 'https://other.invalid/'; },
+    (p) => { p.pilot.context.steering = 'LHD'; },
+    (p) => { p.pilot.requests.total = 13; },
+    (p) => { p.pilot.writeRequests = 1; },
+    (p) => { p.pilot.bytes.total++; },
+    (p) => { p.pilot.resources.ramBytes++; },
+    (p) => { p.retry.maxRetries = 1; },
+    (p) => { p.budgets.durationMs = 120001; },
+    (p) => { p.cache.hits.solver = 1; },
+    (p) => { p.pilot.seeds[0] = ['FOTHER']; },
+    (p) => { p.pilot.stopConditions = []; },
+    (p) => { p.destinations.images.public = true; },
+    (p) => { p.destinations.evidence.path = '/tmp/other'; },
+    (p) => { p.planVersion = 'other'; },
+    (p) => { p.retention.discardPrivateIdentifiers = false; },
+    (p) => { delete p.pilot; },
+  ]) {
+    const p = clone(shipped); mutate(p); const result = qualifyPilotPlan(p);
+    assert.equal(result.ready, false); assert.equal(result.outboundRequests, 0); assert.ok(result.errors.length);
+  }
+  const p = clone(shipped); p.pilot.context.modelCode = 'WBA33DB00TC123456';
+  assert.equal(JSON.stringify(qualifyPilotPlan(p)).includes('WBA33DB00TC123456'), false);
 });
 
 test('rejects US-to-GB, candidate profiles, unsupported year/plant/era and model substitutions', async () => {
@@ -219,8 +269,9 @@ test('CLI subprocess proves synthetic contract success, shipped refusal and zero
     const { plan, data, catalogues, builds, mode } = JSON.parse(raw);
     if (mode === 'private') plan.families[0].familyId = 'WBA33DB00TC123456';
     const opts = { syntheticContract: true, registry: createVinProfileRegistry({ loadRegistry: async () => data }), catalogues, builds };
-    const status = await runCli(mode === 'real' ? ['--config', 'never-read', '--real'] : ['--config', mode === 'shipped' ? 'server/data/gcsp/vehicle-evidence/fleet-plan.json' : 'in-memory', '--offline'],
-      mode === 'shipped' ? {} : { loadConfig: async () => plan, qualificationOptions: opts });
+    const fromDisk = mode === 'shipped' || mode === 'pilot';
+    const status = await runCli(mode === 'real' ? ['--config', 'never-read', '--real'] : ['--config', fromDisk ? 'server/data/gcsp/vehicle-evidence/fleet-plan.json' : 'in-memory', mode === 'pilot' ? '--pilot-plan' : '--offline'],
+      fromDisk ? {} : { loadConfig: async () => plan, qualificationOptions: opts });
     if (calls) throw Error('outbound calls'); process.exitCode = status;`;
   const run = (mode) => spawnSync(process.execPath, ['--input-type=module', '-e', code], { cwd: root,
     input: JSON.stringify({ plan: f.plan, data: f.data, catalogues: f.options.catalogues, builds: f.options.builds, mode }),
@@ -232,6 +283,8 @@ test('CLI subprocess proves synthetic contract success, shipped refusal and zero
   assert.equal(JSON.parse(privateCli.stdout).presentation.families.length, 0);
   const instrumentedShipped = run('shipped'); assert.equal(instrumentedShipped.status, 1, instrumentedShipped.stderr);
   assert.equal(JSON.parse(instrumentedShipped.stdout).coverage.distinctProved, 3);
+  const pilot = run('pilot'); assert.equal(pilot.status, 0, pilot.stderr + pilot.stdout);
+  assert.equal(JSON.parse(pilot.stdout).ready, true); assert.equal(JSON.parse(pilot.stdout).collectionQualified, false);
   const real = run('real'); assert.equal(real.status, 2); assert.match(real.stdout, /offline-only/);
   const cli = spawnSync(process.execPath, ['scripts/gcsp/fleet-plan.mjs', '--config', 'server/data/gcsp/vehicle-evidence/fleet-plan.json', '--offline'],
     { cwd: root, encoding: 'utf8', timeout: 15000 });

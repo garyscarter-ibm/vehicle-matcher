@@ -4,6 +4,8 @@ import path from 'node:path';
 import { createVinProfileRegistry } from '../../server/gcsp/vehicle-evidence/vin-profiles.js';
 
 export const FLEET_PLAN_VERSION = 'fleet-plan.v1';
+export const PILOT_PLAN_VERSION = 'fleet-pilot.v1';
+const AUTHORITY = 'docs/gcsp/fucq-58-source-authorisation-2026-11-05.md';
 const ROOT = new URL('../../', import.meta.url);
 const PILOT = 'docs/gcsp/evidence/fucq-4/configuration-generation-native-2026-11-01.json';
 const SNAPSHOT = 'server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json';
@@ -49,6 +51,15 @@ async function repositoryEvidence() {
 
 const fields = (names) => Object.fromEntries(names.split(' ').map((key) => [key, null]));
 const EVIDENCE_SCHEMA = fields('kind source observedDate confidence');
+const PILOT_SCHEMA = {
+  ...fields('version purpose authorisationSource source unsupportedProvider readOnly writeRequests familyId'),
+  context: fields('market steering locale modelCode agModelCode modelRange generation orderDate effectDate catalogueDate'),
+  bootstrap: fields('pageUrl settingsPattern'),
+  requests: fields('bootstrap catalogue solver otd manifest images total'),
+  bytes: fields('response image total'),
+  resources: fields('workers ramBytes scratchBytes'),
+  seeds: [[null]], stopConditions: [null],
+};
 const PLAN_SCHEMA = {
   ...fields('schemaVersion planVersion identityScope seed registryVersion'), tool: { ...EVIDENCE_SCHEMA, version: null },
   coverage: { requestedWmis: [null], additionalWmis: [null], exclusions: [fields('scope reason')], schemeModelLines: [null],
@@ -65,6 +76,7 @@ const PLAN_SCHEMA = {
   retry: { ...fields('maxRetries initialBackoffMs maxBackoffMs multiplier'), retryStatuses: [null] },
   retention: { fields: [null], discardPrivateIdentifiers: null },
   destinations: Object.fromEntries(['evidence', 'images'].map((key) => [key, fields('path expectedBytes public retention')])), stopConditions: [null],
+  pilot: PILOT_SCHEMA,
 };
 function retainedSchema(value, schema, add, depth = 0) {
   if (value === null || value === undefined) return;
@@ -94,6 +106,64 @@ function privateRetention(value, add, depth = 0) {
       || /\b[A-Z]{2}[0-9]{2}\s?[A-Z]{3}\b/.test(value)
       || /https?:\/\/\S*(?:[?&](?:vin|vrm|plate|serial|token|key|garage|id|customerId|userId|identifier)=|\/(?:vin|vehicle|garage|capture)\/)/i.test(value)) add('private-retention');
   }
+}
+
+/** A bounded source qualification pilot is separate from full-corpus/profile acceptance. No requests run here. */
+export function qualifyPilotPlan(plan) {
+  const errors = []; const add = (code) => { if (!errors.includes(code)) errors.push(code); };
+  const report = { version: PILOT_PLAN_VERSION, ready: false, collectionQualified: false, outboundRequests: 0, errors };
+  if (!object(plan)) { add('invalid-plan'); return report; }
+  privateRetention(plan, add); retainedSchema(plan, PLAN_SCHEMA, add);
+  if (errors.length) return report;
+  if (plan.schemaVersion !== '1' || plan.planVersion !== FLEET_PLAN_VERSION || plan.tool?.version !== FLEET_PLAN_VERSION
+    || plan.tool?.kind !== 'observed' || plan.tool?.source !== 'scripts/gcsp/fleet-plan.mjs') add('invalid-pilot-version');
+  const p = plan.pilot; const b = plan.budgets; const w = plan.work;
+  if (!object(p) || p.version !== PILOT_PLAN_VERSION || p.purpose !== 'source-qualification-only'
+    || p.authorisationSource !== AUTHORITY || p.source !== 'public-bmw-uk-configurator'
+    || p.unsupportedProvider !== true || p.readOnly !== true || p.writeRequests !== 0) add('invalid-pilot-source');
+  for (const name of ['sourceAccess', 'dataRetention', 'imageDisplay']) {
+    const e = plan.permissions?.[name];
+    if (!evidence(e) || e.kind !== 'observed' || e.status !== 'approved' || e.source !== AUTHORITY
+      || e.observedDate !== '2026-11-05' || !text(e.basis)) add('unproved-pilot-authority');
+  }
+  const family = Array.isArray(plan.families) ? plan.families.find((f) => f?.familyId === p?.familyId) : null;
+  if (!family || !object(p?.context) || p.context.market !== 'GB' || p.context.steering !== 'RHD'
+    || p.context.locale !== 'en-GB' || CONTEXT.some((key) => !text(p.context[key]) || p.context[key] !== family.context?.[key])
+    || p.context.generation !== family.context?.generation || p.context.generation !== 'G61'
+    || p.context.modelCode !== 'T5MJ' || p.context.agModelCode !== '72HH' || p.context.modelRange !== 'G61E'
+    || p.context.orderDate !== '2026-11-01' || p.context.effectDate !== '2027-01-05'
+    || p.context.catalogueDate !== '2026-11-01') add('invalid-pilot-context');
+  if (p?.bootstrap?.pageUrl !== 'https://configure.bmw.co.uk/en_GB/configure/G61E/T5MJ'
+    || p?.bootstrap?.settingsPattern !== '^/en_GB/settings\\.[a-zA-Z0-9]+\\.json$') add('invalid-pilot-bootstrap');
+  const expected = { bootstrap: 2, catalogue: 2, solver: 3, otd: 3, manifest: 1, images: 1, total: 12 };
+  if (!object(p?.requests) || Object.entries(expected).some(([key, n]) => p.requests[key] !== n)
+    || !object(b) || b.requests !== 12 || b.imageRequests !== 2 || b.concurrency !== 1 || b.timeoutMs !== 10000 || b.durationMs !== 120000
+    || plan.retry?.maxRetries !== 0 || plan.retry?.initialBackoffMs !== 0 || plan.retry?.maxBackoffMs !== 0
+    || plan.retry?.multiplier !== 1 || !Array.isArray(plan.retry?.retryStatuses) || plan.retry.retryStatuses.length !== 0) add('invalid-pilot-request-limits');
+  if (p?.bytes?.response !== 1048576 || p?.bytes?.image !== 2097152 || p?.bytes?.total !== 16777216
+    || p?.resources?.workers !== 1 || p?.resources?.ramBytes !== 268435456 || p?.resources?.scratchBytes !== 33554432) add('invalid-pilot-resource-limits');
+  if (!object(w) || w.candidateRequests !== 4 || w.solverCandidates !== 3 || w.otdConfigurations !== 3
+    || w.imageConfigurations !== 1 || w.viewsPerConfiguration !== 1 || w.imageBytesPerView !== 2097152
+    || plan.cache?.policy !== 'cold' || plan.cache?.entryBytes !== 1048576 || plan.cache?.ttlMs !== 86400000
+    || b?.cacheEntries !== 12 || b?.cacheBytes !== 12582912
+    || !object(plan.cache?.hits) || ['candidate', 'solver', 'otd', 'image'].some((key) => plan.cache.hits[key] !== 0)) add('invalid-pilot-work-cache');
+  if (!Array.isArray(p?.seeds) || p.seeds.length !== 3 || p.seeds.some((seed, i) => !selection(seed)
+    || !equal(seed, family?.configurations?.[i]?.seedOptions))) add('invalid-pilot-seeds');
+  const requiredStops = [...STOPS, 'response-too-large', 'download-limit', 'timeout', 'redirect', 'unexpected-payload', 'authentication-required'];
+  if (!strings(p?.stopConditions) || requiredStops.some((stop) => !p.stopConditions.includes(stop))) add('missing-pilot-stop-conditions');
+  for (const [name, expectedBytes] of [['evidence', 12582912], ['images', 2097152]]) {
+    const expectedPath = fileURLToPath(new URL(`docs/gcsp/evidence/fucq-58/authorised-pilot-2026-11-05/${name}`, ROOT));
+    if (plan.destinations?.[name]?.path !== expectedPath || plan.destinations[name].expectedBytes !== expectedBytes) add('invalid-pilot-destination');
+  }
+  const operation = { coverage: { distinctProved: 3, synthetic: 0 }, projection: {} };
+  validateRun(plan, operation, add);
+  report.projection = operation.projection;
+  report.ready = errors.length === 0;
+  if (report.ready) {
+    report.source = p.source; report.context = p.context; report.requests = p.requests; report.bytes = p.bytes;
+    report.profileStatus = 'unqualified'; report.activeShortfall = 197;
+  }
+  return report;
 }
 
 /** Pure offline qualification over trusted, locally loaded evidence. Injected evidence is for isolated tests. */
@@ -268,10 +338,14 @@ function validateRun(plan, report, add) {
 }
 
 export async function runCli(argv, { loadConfig = async (p) => JSON.parse(await readFile(p, 'utf8')), qualificationOptions, write = (s) => process.stdout.write(s) } = {}) {
-  if (argv.length !== 3 || argv[0] !== '--config' || !text(argv[1]) || argv[2] !== '--offline') {
+  if (argv.length !== 3 || argv[0] !== '--config' || !text(argv[1]) || !['--offline', '--pilot-plan'].includes(argv[2])) {
     write(`${JSON.stringify({ qualified: false, collectionImplemented: false, errors: ['offline-only: use --config PATH --offline; real collection is not implemented'] })}\n`); return 2;
   }
   try {
+    if (argv[2] === '--pilot-plan') {
+      const report = qualifyPilotPlan(await loadConfig(argv[1]));
+      write(`${JSON.stringify(report, null, 2)}\n`); return report.ready ? 0 : 1;
+    }
     const report = await qualifyFleetPlan(await loadConfig(argv[1]), qualificationOptions);
     write(`${JSON.stringify(report, null, 2)}\n`); return report.contractQualified ? 0 : 1;
   } catch { write(`${JSON.stringify({ qualified: false, errors: ['config-unavailable-or-invalid'] })}\n`); return 2; }
