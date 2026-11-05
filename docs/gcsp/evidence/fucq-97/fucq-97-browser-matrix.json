@@ -1,0 +1,410 @@
+{
+  "story": "FUCQ-97",
+  "head": "0cb78ad42de014ca48a11e657f21fbb9313c2934",
+  "base": "http://localhost:3097",
+  "browser": "system Chrome, headless",
+  "capturedAt": "2026-11-05T10:51:24.519Z",
+  "sources": {
+    "blocks/gcsp/presenter/gcsp-outbox.js": "df0ff1834a97a60f19f5c91e67ae0884b230dec90608abc1009e2f2857dfbffd",
+    "blocks/gcsp/presenter/message-list.js": "93c9574c00f270ca96bedace1a0014617089443df46ef08bc4e2816b26ef68e7",
+    "blocks/gcsp/presenter/outbox-copy.js": "a42807da17980b770408e6d1f83e470fec30ebe09aed3ffd40e230cc05ab779d",
+    "blocks/gcsp/presenter/http-adapter.js": "ff165c79814edfcbfbc39185a314618fb69fdc71f1705a1c307e38e48a289edd",
+    "blocks/gcsp/presenter/fixtures.js": "5e9544b338860b823619c86b3e10687f29f04f5be567a8c799cc2349e1aa7719",
+    "blocks/gcsp/presenter/harness.js": "ec7ddc6f79b94d23aa487052bef7d9c783c2198e65eb4abbb513d0df8ab87800",
+    "blocks/gcsp/presenter/register.js": "a057ab7ab4a4612e05177c608c55aaf1d2d46dede7535ea9912494a9d090d7e8",
+    "blocks/gcsp/presenter/gcsp-presenter.css": "60a067f3c4a43fd7bafe3511159d1f2f499618b1c1c37c88c81bcc7f04778ba7",
+    "blocks/gcsp/shell/portal-shell.js": "4e6c3b52bb320f6254ce0a5ae62f481d022e2a24350264149352eb92caa50d8b",
+    "blocks/gcsp/shell/gcsp-shell.css": "d6f35911624c03ee82c22eb349d51228ba849eaf354976f19df905887e9f92a3",
+    "blocks/gcsp/shell/gcsp-tokens.css": "d939a355b945ecfd0ad185029dbe2b79c70bab8862052a7ec54cf7abfa7f8642",
+    "blocks/vehicle-matcher/ui.js": "95aad7a858078b5f0edd2f066af1e51148e35604c5785936270618d1dc533770",
+    "blocks/vehicle-matcher/component-gallery.js": "56088aedcacb5b692dcd754499d7cc072de10da39ef0d94b65738c74e685d25c",
+    "server/gcsp/notify/http.js": "ae3fd2f84fa3ddf1cea1e3bc05fe01944c7fc2094843b34e8b9eb8a2f16231ed",
+    "gcsp-outbox.html": "ba1579e0507d6e124d9037481e502b66dadc9363a85de318c544f641a131e809",
+    "components.html": "cb824226aec5d3854858af3252de7a885aacaed88a7d4c7cf95e66c91b07b357"
+  },
+  "results": [
+    {
+      "name": "messages-desktop",
+      "file": "messages-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "messages",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "rows": 4
+    },
+    {
+      "name": "empty-desktop",
+      "file": "empty-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "empty",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "rows": 0
+    },
+    {
+      "name": "retrying-desktop",
+      "file": "retrying-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "retrying",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "rows": 1
+    },
+    {
+      "name": "failed-desktop",
+      "file": "failed-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "failed",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "rows": 1
+    },
+    {
+      "name": "unavailable-desktop",
+      "file": "unavailable-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "unavailable",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "rows": 0
+    },
+    {
+      "name": "refused-desktop",
+      "file": "refused-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "refused",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "rows": 0
+    },
+    {
+      "name": "loading-desktop",
+      "file": "loading-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "loading",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      }
+    },
+    {
+      "name": "message-open-desktop",
+      "file": "message-open-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "messages",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "keyboardOnly": true,
+      "tabsToFirstRow": 7,
+      "onRow": {
+        "tag": "BUTTON",
+        "name": "Paula (fictional)Your vehicle offer is ready to review5 Nov ",
+        "outline": "solid 2px"
+      },
+      "afterEnter": {
+        "tag": "H2",
+        "name": "Your vehicle offer is ready to review",
+        "outline": "solid 2px"
+      },
+      "detail": {
+        "sandbox": "",
+        "referrerpolicy": "no-referrer",
+        "hasSrcdoc": true,
+        "linkTarget": "_blank",
+        "linkRel": "noopener",
+        "linkHref": "/gcsp/offer",
+        "pre": true
+      }
+    },
+    {
+      "name": "message-retrying-open-desktop",
+      "file": "message-retrying-open-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "messages",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "focused": {
+        "tag": "H2",
+        "name": "Email not created yet",
+        "outline": "solid 2px"
+      },
+      "nextAfterTabs": {
+        "tag": "IFRAME",
+        "name": "",
+        "outline": "none 3px"
+      }
+    },
+    {
+      "name": "message-failed-open-desktop",
+      "file": "message-failed-open-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "messages",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "focused": {
+        "tag": "H2",
+        "name": "Email not created yet",
+        "outline": "solid 2px"
+      }
+    },
+    {
+      "name": "messages-narrow-320",
+      "file": "messages-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "messages",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "rows": 4
+    },
+    {
+      "name": "empty-narrow-320",
+      "file": "empty-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "empty",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "rows": 0
+    },
+    {
+      "name": "retrying-narrow-320",
+      "file": "retrying-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "retrying",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "rows": 1
+    },
+    {
+      "name": "failed-narrow-320",
+      "file": "failed-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "failed",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "rows": 1
+    },
+    {
+      "name": "unavailable-narrow-320",
+      "file": "unavailable-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "unavailable",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "rows": 0
+    },
+    {
+      "name": "refused-narrow-320",
+      "file": "refused-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "refused",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "rows": 0
+    },
+    {
+      "name": "loading-narrow-320",
+      "file": "loading-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "loading",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      }
+    },
+    {
+      "name": "message-open-narrow-320",
+      "file": "message-open-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "messages",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "keyboardOnly": true,
+      "tabsToFirstRow": 4,
+      "onRow": {
+        "tag": "BUTTON",
+        "name": "Paula (fictional)Your vehicle offer is ready to review5 Nov ",
+        "outline": "solid 2px"
+      },
+      "afterEnter": {
+        "tag": "H2",
+        "name": "Your vehicle offer is ready to review",
+        "outline": "solid 2px"
+      },
+      "detail": {
+        "sandbox": "",
+        "referrerpolicy": "no-referrer",
+        "hasSrcdoc": true,
+        "linkTarget": "_blank",
+        "linkRel": "noopener",
+        "linkHref": "/gcsp/offer",
+        "pre": true
+      }
+    },
+    {
+      "name": "message-retrying-open-narrow-320",
+      "file": "message-retrying-open-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "messages",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "focused": {
+        "tag": "H2",
+        "name": "Email not created yet",
+        "outline": "solid 2px"
+      },
+      "nextAfterTabs": {
+        "tag": "IFRAME",
+        "name": "",
+        "outline": "none 3px"
+      }
+    },
+    {
+      "name": "message-failed-open-narrow-320",
+      "file": "message-failed-open-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "messages",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "focused": {
+        "tag": "H2",
+        "name": "Email not created yet",
+        "outline": "solid 2px"
+      }
+    },
+    {
+      "name": "reduced-motion-desktop",
+      "file": "reduced-motion-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "reducedMotion": "reduce",
+      "transitionDurations": [
+        [
+          ".gcsp-mail-row",
+          "0s"
+        ],
+        [
+          ".gcsp-nav",
+          "0s"
+        ],
+        [
+          ".vm-btn",
+          "0s"
+        ]
+      ]
+    },
+    {
+      "name": "gallery-messagelist-desktop",
+      "file": "gallery-messagelist-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": []
+    },
+    {
+      "name": "gallery-messagelist-narrow-320",
+      "file": "gallery-messagelist-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": []
+    }
+  ]
+}

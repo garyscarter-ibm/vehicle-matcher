@@ -1,0 +1,55 @@
+/* Presenter outbox viewer: message list and detail pane. Every selector is .gcsp scoped. */
+.gcsp .gcsp-presenter { max-width: 1120px; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 20px; }
+.gcsp .gcsp-presenter .gcsp-intro .vm-title { margin: 0 0 8px; font-size: 34px; }
+.gcsp .gcsp-presenter .gcsp-intro .vm-lede { margin: 0; max-width: 60ch; font-size: 18px; }
+.gcsp .gcsp-presenter-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 16px; }
+.gcsp .gcsp-presenter-bar .vm-btn { min-height: 44px; }
+.gcsp .gcsp-presenter-body { min-width: 0; }
+
+/* list and detail */
+.gcsp .gcsp-mail { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 24px; align-items: start; }
+.gcsp .gcsp-mail-list { display: flex; flex-direction: column; gap: 8px; margin: 0; padding: 0; list-style: none; min-width: 0; }
+.gcsp .gcsp-mail-item { min-width: 0; }
+.gcsp .gcsp-mail-row { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; width: 100%; min-height: 44px; padding: 12px 14px; text-align: left; font: inherit; color: var(--gcsp-text); background: var(--gcsp-surface-raised); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); cursor: pointer; }
+.gcsp .gcsp-mail-row:hover { background: var(--gcsp-surface-muted); }
+.gcsp .gcsp-mail-row[aria-current="true"] { background: var(--gcsp-accent-soft); border-color: var(--gcsp-accent); box-shadow: 0 0 0 1px var(--gcsp-accent); }
+.gcsp .gcsp-mail-row[aria-current="true"] .gcsp-mail-to { font-weight: 700; }
+.gcsp .gcsp-mail-to { font-weight: 600; overflow-wrap: anywhere; }
+.gcsp .gcsp-mail-subject { overflow-wrap: anywhere; }
+.gcsp .gcsp-mail-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; color: var(--gcsp-text-muted); font-size: 14px; }
+.gcsp .gcsp-mail-hint { color: var(--gcsp-text-muted); font-size: 14px; overflow-wrap: anywhere; }
+.gcsp .gcsp-mail-status { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
+.gcsp .gcsp-mail-status .gcsp-icon { flex: none; width: 16px; height: 16px; }
+.gcsp .gcsp-mail-status.is-ok { color: var(--gcsp-success); }
+.gcsp .gcsp-mail-status.is-warn { color: var(--gcsp-warning); }
+.gcsp .gcsp-mail-status.is-bad { color: var(--gcsp-danger); }
+.gcsp .gcsp-mail-status.is-wait { color: var(--gcsp-unavailable); }
+
+.gcsp .gcsp-mail-detail { display: flex; flex-direction: column; gap: 16px; min-width: 0; padding: 24px; background: var(--gcsp-surface-raised); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
+.gcsp .gcsp-mail-heading { margin: 0; font-size: 24px; font-weight: 600; line-height: 1.25; overflow-wrap: anywhere; }
+.gcsp .gcsp-mail-heading:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 4px; }
+.gcsp .gcsp-mail-sub { margin: 4px 0 0; font-size: 16px; font-weight: 600; }
+.gcsp .gcsp-mail-facts { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+.gcsp .gcsp-mail-frame { display: block; width: 100%; height: 520px; border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); background: var(--gcsp-surface); }
+.gcsp .gcsp-mail-text { margin: 0; padding: 12px; font: 14px/1.5 ui-monospace, Menlo, Consolas, monospace; white-space: pre-wrap; overflow-wrap: anywhere; background: var(--gcsp-surface-page); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
+.gcsp .gcsp-mail-explain { margin: 0; padding: 12px 14px; font-weight: 600; background: var(--gcsp-surface-page); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); overflow-wrap: anywhere; }
+.gcsp .gcsp-mail-explain.is-warn { color: var(--gcsp-warning); }
+.gcsp .gcsp-mail-explain.is-bad { color: var(--gcsp-danger); }
+.gcsp .gcsp-mail-offer .vm-btn { max-width: 100%; }
+
+@media (max-width: 880px) {
+  .gcsp .gcsp-mail { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+}
+
+@media (max-width: 640px) {
+  .gcsp .gcsp-presenter { gap: 16px; }
+  .gcsp .gcsp-presenter .gcsp-intro .vm-title { font-size: 28px; }
+  .gcsp .gcsp-presenter .gcsp-intro .vm-lede { font-size: 16px; }
+  .gcsp .gcsp-mail-detail { padding: 16px; }
+  .gcsp .gcsp-mail-frame { height: 440px; }
+  .gcsp .gcsp-mail-offer .vm-btn { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gcsp .gcsp-mail-row { transition: none; animation: none; }
+}
