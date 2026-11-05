@@ -26,6 +26,21 @@ export const cardinal = (n) => CARDINALS[n] ?? String(n);
 /** Money, GBP, no pence. */
 export const gbp = (n) => `£${n.toLocaleString('en-GB')}`;
 
+/** Explicit display terms keep purchase money separate from monthly scheme points. */
+export function formatTerm(term = {}) {
+  const known = Number.isFinite(term.value);
+  if (term.kind === 'purchase-money' && term.currency === 'GBP') {
+    return known ? gbp(term.value) : 'Purchase price not supplied';
+  }
+  if (term.kind === 'points-monthly') {
+    const cost = known ? `${term.value.toLocaleString('en-GB')} points a month` : 'Monthly points cost not supplied';
+    const allowance = Number.isFinite(term.allowance)
+      ? `${term.allowance.toLocaleString('en-GB')} points a month allowance` : 'monthly points allowance not supplied';
+    return `${cost} · ${allowance}`;
+  }
+  return 'Terms not supplied';
+}
+
 /** Screen heading block: optional kicker, title (h<level>) and lede, in the retail vm-kicker/vm-title/vm-lede styles. */
 export function screenIntro({ kicker, title, lede, level = 2, className } = {}) {
   const wrap = el('div', className);

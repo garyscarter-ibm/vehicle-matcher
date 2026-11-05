@@ -1,0 +1,181 @@
+{
+  "story": "FUCQ-31",
+  "task": "DEV-2026-11-04-051",
+  "date": "2026-11-05",
+  "branch": "dev/DEV-2026-11-04-051",
+  "source": "29c5af45e417813457d26c5900fdf9b8c0bfd37e",
+  "testedBase": "36aea8b4850e11187eab2e24af3430ca970817e4",
+  "full": {
+    "command": "npm test",
+    "counts": {
+      "total": 954,
+      "passed": 952,
+      "skipped": 2,
+      "failed": 0
+    },
+    "skips": [
+      "postgresql native constraints reject a second occupying hold and claim",
+      "postgresql: shared TransactionRepository contract"
+    ],
+    "skipReason": "GCSP_DATABASE_URL unset; no live PostgreSQL integration claimed",
+    "wallSeconds": 12.9,
+    "peakRssBytes": 1710194688,
+    "peakScratchBytes": 898144,
+    "log": ".claude/test-scratch/fucq31/lead/validation/logs/20261105-110243-mzl3v7vj/chunk-0001.log",
+    "stampPath": ".claude/test-scratch/fucq31/lead/validation/stamp-3cfeff6ab1d986b61c5d2e9054be72ec0fa27f282c6ee223fe6a7e43d38ae571-default.json",
+    "stamp": {
+      "execution_identity": {
+        "code": "58cf2ee46c4f0d0cb5c9047afab7693af9c07970f025adc48dcf8776ee1005cf",
+        "environment": "d75cffa1e6ff2403ae5eb5b53e75469d73684885cd11aad41d8e12e262d234d9",
+        "inputs": {},
+        "interpreter": [
+          "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+          "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]"
+        ],
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "scope": "full",
+        "selected": [
+          "npm test"
+        ],
+        "settings": "b0ab79c51e55cb477d7d5644baaf49d7bd75e0d020c2d9995219b5c6938a0d1a",
+        "variant": "default",
+        "version": 1
+      },
+      "head": "29c5af45e417813457d26c5900fdf9b8c0bfd37e",
+      "key": "3cfeff6ab1d986b61c5d2e9054be72ec0fa27f282c6ee223fe6a7e43d38ae571",
+      "python": "3.9.6",
+      "ran": null,
+      "skipped": 0,
+      "time": "2026-11-05T11:02:56+0000",
+      "tree": "63bba1efd90069dcbdbe4b2f589cb3635b92eb45",
+      "variant": "default",
+      "wall": 12.9
+    },
+    "note": "The generic stamp parser does not parse Node test counts; actual Node counts above are retained from the successful command log."
+  },
+  "requiredTargeted": [
+    {
+      "command": "node --test server/test/shared-kit-contracts.test.js",
+      "passed": 15,
+      "failed": 0,
+      "wallSeconds": 1.4,
+      "testedWorkingCode": "58cf2ee46c4f0d0cb5c9047afab7693af9c07970f025adc48dcf8776ee1005cf",
+      "sourceCommittedAs": "29c5af45e417813457d26c5900fdf9b8c0bfd37e",
+      "testedBase": "36aea8b4850e11187eab2e24af3430ca970817e4",
+      "log": ".claude/test-scratch/fucq31/lead/validation/logs/20261105-110155-agy9vlk8/chunk-0001.log",
+      "note": "Run on integrated working code immediately before checkpoint29c5af4; code identity matches final full suite."
+    },
+    {
+      "command": "node --test server/test/render.test.js server/test/ui-ratchet.test.js",
+      "passed": 59,
+      "failed": 0,
+      "wallSeconds": 5.4,
+      "testedWorkingCode": "58cf2ee46c4f0d0cb5c9047afab7693af9c07970f025adc48dcf8776ee1005cf",
+      "sourceCommittedAs": "29c5af45e417813457d26c5900fdf9b8c0bfd37e",
+      "testedBase": "36aea8b4850e11187eab2e24af3430ca970817e4",
+      "log": ".claude/test-scratch/fucq31/lead/validation/logs/20261105-110212-jy3k8mb6/chunk-0001.log",
+      "note": "Run on integrated working code immediately before checkpoint29c5af4; code identity matches final full suite."
+    }
+  ],
+  "additionalTargeted": [
+    {
+      "command": "node --test server/test/shared-kit-contracts.test.js server/test/exact-listing-decision.test.js server/test/gcsp-shell.test.js server/test/ui-ratchet.test.js",
+      "passed": 77,
+      "failed": 0
+    },
+    {
+      "command": "node --test server/test/shared-kit-contracts.test.js server/test/preview-cancellation.test.js server/test/ui-ratchet.test.js server/test/gcsp-shell.test.js",
+      "passed": 87,
+      "failed": 0
+    },
+    {
+      "command": "node --test server/test/shared-kit-contracts.test.js server/test/gcsp-shell.test.js server/test/ui-ratchet.test.js",
+      "passed": 67,
+      "failed": 0
+    },
+    {
+      "command": "node --test server/test/ui-ratchet.test.js",
+      "passed": 16,
+      "failed": 0
+    }
+  ],
+  "resources": {
+    "scratchOwner": ".claude/test-scratch/fucq31",
+    "fullLimits": {
+      "seconds": 600,
+      "scratchMiB": 128,
+      "ramCeilingMiB": 4096,
+      "logMiB": 2
+    },
+    "fullRootRemoved": true,
+    "reservationReleased": true,
+    "largeOutputRootAvailable": false,
+    "largeOutputsCreated": false,
+    "retainedSummary": "docs/gcsp/evidence/fucq-7/fucq31-validation.json",
+    "fullOwnershipManifest": ".claude/test-scratch/fucq31/lead/validation/ownership/ad789a23bde14f4c85f34c0591e8fa2a.json",
+    "fullOwnedProcessGroups": [
+      {
+        "pgid": 85789,
+        "live": false
+      }
+    ],
+    "independentAudit": "docs/gcsp/evidence/fucq-7/fucq31-resources.json",
+    "ownedManifestsChecked": 32,
+    "uniqueProcessGroupsChecked": 29,
+    "allOwnDisposableRootsAndProfilesAbsent": true,
+    "allOwnProcessGroupsDead": true,
+    "ports31431_31432_31433NoListeners": true
+  },
+  "runtime": {
+    "node": "v26.5.0",
+    "npm": "11.17.0",
+    "python": "3.9.6"
+  },
+  "previousFullCheckpoints": [
+    {
+      "source": "c43daa4c5d72c884899e2adde241b0f6b8f606c2",
+      "testedBase": "0cb78ad42de014ca48a11e657f21fbb9313c2934",
+      "counts": {
+        "total": 931,
+        "passed": 929,
+        "skipped": 2,
+        "failed": 0
+      },
+      "stampKey": "278948fbf894d5bad7ef713db78d4864639f5f25651dcf306467aacf6ee56171",
+      "supersededBy": "29c5af45e417813457d26c5900fdf9b8c0bfd37e",
+      "reason": "Subsequent outbox source integration and exact picker contrast correction required a fresh full suite."
+    }
+  ],
+  "earlierRequiredTargeted": [
+    {
+      "command": "node --test server/test/shared-kit-contracts.test.js",
+      "passed": 15,
+      "failed": 0,
+      "wallSeconds": 1.1,
+      "testedWorkingCode": "098d24a5803c8484ed6ce9476cc782269a078c680e7f867221b6df47744eb458",
+      "headAtRun": "d7993e91dc8c808798fffea1cf35d0da4fe58d68",
+      "baseAtRun": "7e741b4ff473eed3d5a2d1fcff72244754f8fba5",
+      "note": "Slice 2 uncommitted at the time; final CSS-only selection refinements are additionally covered by the full suite on c43daa4."
+    },
+    {
+      "command": "node --test server/test/render.test.js server/test/ui-ratchet.test.js",
+      "passed": 57,
+      "failed": 0,
+      "wallSeconds": 5.6,
+      "testedWorkingCode": "098d24a5803c8484ed6ce9476cc782269a078c680e7f867221b6df47744eb458",
+      "headAtRun": "d7993e91dc8c808798fffea1cf35d0da4fe58d68",
+      "baseAtRun": "7e741b4ff473eed3d5a2d1fcff72244754f8fba5",
+      "note": "Slice 2 uncommitted at the time; final CSS-only selection refinements are additionally covered by the full suite on c43daa4."
+    }
+  ],
+  "browser": {
+    "receipt": "docs/gcsp/evidence/fucq-7/fucq31-browser-review.json",
+    "screenshots": 28,
+    "defects": 0,
+    "source": "29c5af45e417813457d26c5900fdf9b8c0bfd37e",
+    "galleryPeakRssBytes": 317095936,
+    "retailPeakRssBytes": 534659072,
+    "galleryPeakScratchAndEvidenceBytes": 33281388,
+    "retailPeakScratchAndEvidenceBytes": 29129324
+  }
+}
