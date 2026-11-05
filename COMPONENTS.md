@@ -146,3 +146,17 @@ Hand-built in several modes (file counts at the time of writing):
 ## The ratchet
 
 Test: `server/test/ui-ratchet.test.js`, config and baseline in `server/test/ui-ratchet.json`; it runs in `npm test`. After moving a view onto the kit, run `node server/test/ui-ratchet.test.js --write` to lower the baseline (only ever commit it lower). `node server/test/ui-ratchet.test.js --debt` lists what is outstanding. `vehicle-matcher.css`, `decision-card.css`, `question-controls.css`, `component-gallery.css` and the four GCSP stylesheets (`blocks/gcsp/shell/` and `blocks/gcsp/employee/gcsp-employee.css` and `blocks/gcsp/presenter/gcsp-presenter.css`) are capped at their current length (`stylesheets` in the config); `blocks/gcsp/` is a scanned root.
+
+
+## Shared demo launcher (`blocks/demo-launcher/`)
+
+Reuse `el`, `screenIntro`, `button` and `mediaWell`. Decision cards represent exact cars and question controls represent answers; neither represents destination navigation or a change of brand context, so these two consumed primitives are new. Their shared styles live in `launcher.css`, with the existing semantic VM tokens and an explicit ratchet cap. `entry-host.css` contains only the extracted page surface/password gate styles; `retail-chrome.js` preserves the existing brand picker and shell.
+
+| Call | Use for |
+|---|---|
+| `experienceChoice({ title, description, image?, imageLabel?, action, reason?, status?, secondaryAction? })` (`components.js`) | A semantic destination article with an h2, shared media fallback, visible state/reason, and native action. Disabled actions reference the visible reason. Labels survive failed imagery. |
+| `brandSelector({ value?, onChange, label? })` (`components.js`) | A labelled native select with all six retail brands and All brands. Decorative logo failures keep text labels. Emits the selected brand or null without navigating or writing policy. |
+| `renderLauncher(root, context, { input? })` (`launcher.js`) | Composes the two destination choices and keeps the selected brand visible. Used cars retains the resolver's URL context; employee BMW selection is explicit. |
+| `bootDemo({ root?, employeeCapability?, decorateRetail? })` (`boot.js`) | Gate and route integration. A capability is available only with `enabled === true` and a real `mount(root, context)` function. The default remains unavailable pending FUCQ-35 registration; a boolean alone cannot enable an entry. |
+
+The existing single `components.html` gallery includes a local brand callback, long destination title, missing images, loading and unavailable choices. No employee shell is duplicated. Launcher JavaScript is an explicit ratchet root; the shared primitive module is excluded as kit code. New surface checks reject inline scripts/handlers and unsafe execution.
