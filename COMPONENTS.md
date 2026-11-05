@@ -131,6 +131,18 @@ Looked at: `el`, `button`, `screenIntro`, `statusScreen`, `factList` (all reused
 
 Gallery: the GCSP section of [`components.html`](components.html) shows `messageList` with sent, retrying and failed messages.
 
+## GCSP Greg dashboard (`blocks/gcsp/greg/`, kit in `blocks/gcsp/kit/`)
+
+Looked at: `el`, `screenIntro`, `button`, `statusScreen` and `factList` (all reused: heading, Refresh/Retry, states and the meta strip), `portalShell` (the shell), the employee `gcsp-card` and the retail `matchCard`. None draws a dense figure tile or a data table, and the employee cards are image-led, so `metricTile` and `dataTable` are new. They live in GCSP-scoped kit files (`blocks/gcsp/kit/gcsp-kit.css`, every selector `.gcsp`, tokens only), not in `ui.js` or `tokens.css`. Counts are `{ label, isBand }` from `toDashboardView`; a band shows its own text ("fewer than 5") with a dashed outline and screen-reader text, and nothing is derived from it.
+
+| Call | Use for |
+|---|---|
+| `metricTile({ label, count: { label, isBand }, note, level })` (`metric-tile.js`) | One labelled figure. `level` is `headline`, `standard` or `compact`. A band reads "fewer than N" and is described as a privacy band; a missing count reads "Not supplied". |
+| `dataTable({ caption, columns: [{ key, label, numeric }], rows, emptyText, id })` (`data-table.js`) | A real `<table>` with `<caption>`, `th scope="col"`, first cell `th scope="row"`, right-aligned tabular numeric columns and band cells marked like tiles, inside a `role="region"` `tabindex="0"` scroll area labelled by the caption. No rows shows one `emptyText` row. Cells are strings, numbers or `{ label, isBand }`. |
+| `mountGregDashboard(root, ctx)` / `<gcsp-greg-dashboard>` (`gcsp-greg.js`) | Greg's view in `portalShell`: meta strip, headline tiles, demand, unmet needs, offers and stock, and four reserved empty regions. Returns a teardown with `refresh()` and `regions`. Contract in [docs/gcsp/greg-dashboard-contract.md](docs/gcsp/greg-dashboard-contract.md). Harness: [`gcsp-greg.html`](gcsp-greg.html). |
+
+Gallery: the **GCSP Greg kit** section of [`components.html`](components.html) shows `metricTile` exact, band and with a note, and `dataTable` with a long model name, a band cell and the empty state. The ratchet now also caps `blocks/gcsp/kit/gcsp-kit.css` and `blocks/gcsp/greg/gcsp-greg.css`.
+
 ## Not yet in the kit
 
 Hand-built in several modes (file counts at the time of writing):
