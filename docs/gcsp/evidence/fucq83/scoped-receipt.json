@@ -1,6 +1,6 @@
 {
   "story": "FUCQ-83",
-  "status": "source/scoped checkpoint; BLOCKED native Render SQL; full pending integrated frozen checkpoint",
+  "status": "Scoped evidence checkpoint; revised integrated offline full separately passed874/870/4; native Render SQL remains BLOCKED.",
   "sourceTestIdentity": "e5d66222ec4d4e85874e3bcd9225a74ac8b044054e8c25873c0b874f52538e78",
   "sha256": {
     "server/gcsp/policy/index.js": "087267e81d4a780ef300dba144d9de5c4978ca530fe8ea5b2f53e2ec41395a2c",
@@ -760,5 +760,6 @@
       "timeoutSeconds": 120,
       "tokensAbsent": true
     }
-  }
+  },
+  "finalFull": "full-validation.json"
 }
