@@ -1,0 +1,321 @@
+{
+  "run": "fucq98-20261105-brevo-transport",
+  "date": "2026-11-05",
+  "status": "blocked",
+  "reason": "Reversible implementation validated; configured sender/key, explicitly approved demo mapping, public actual offer route and deliberate live inbox/link check remain unverified. No live send.",
+  "testedHead": "fdd058a879659574a677fb5bd21f43b710c45743",
+  "testedTree": "da63073ecc9f149275bf8815f30e7113e27cb933",
+  "integratedBase": "eab081e19ac26ff5afc7556149a8b461509b864e",
+  "latestRootNotIntegrated": {
+    "head": "ebaafaa908a9385aebc4eef7beda9a1b1a22069c",
+    "deltaSinceIntegratedBase": [
+      "A\t_dev/done/2026-11/DEV-2026-11-04-008.md",
+      "D\t_dev/in-progress/DEV-2026-11-04-008.md",
+      "M\tblocks/demo-launcher/boot.js",
+      "M\tblocks/demo-launcher/entry-context.js",
+      "M\tblocks/demo-launcher/launcher.js",
+      "M\tblocks/demo-launcher/retail-chrome.js",
+      "M\tblocks/vehicle-matcher/demo-chrome.css",
+      "A\tdocs/gcsp/evidence/fucq-34/README.md",
+      "A\tdocs/gcsp/evidence/fucq-34/agent-provenance.json",
+      "A\tdocs/gcsp/evidence/fucq-34/automated-validation.json",
+      "A\tdocs/gcsp/evidence/fucq-34/bmw-desktop-header.png",
+      "A\tdocs/gcsp/evidence/fucq-34/bmw-narrow-header.png",
+      "A\tdocs/gcsp/evidence/fucq-34/brand-picker-before-token-fix.png",
+      "A\tdocs/gcsp/evidence/fucq-34/brand-picker-fresh-start.png",
+      "A\tdocs/gcsp/evidence/fucq-34/brand-picker-narrow-focus.png",
+      "A\tdocs/gcsp/evidence/fucq-34/browser-resource-summary.json",
+      "A\tdocs/gcsp/evidence/fucq-34/capture-navigation.mjs",
+      "A\tdocs/gcsp/evidence/fucq-34/ferrari-head-to-head-narrow-before.png",
+      "A\tdocs/gcsp/evidence/fucq-34/ferrari-head-to-head-narrow-without-added-links.png",
+      "A\tdocs/gcsp/evidence/fucq-34/ferrari-source-comparison.json",
+      "A\tdocs/gcsp/evidence/fucq-34/ferrari-swipe-narrow-before.png",
+      "A\tdocs/gcsp/evidence/fucq-34/ferrari-swipe-narrow-without-added-links.png",
+      "A\tdocs/gcsp/evidence/fucq-34/ford-retail-theme.png",
+      "A\tdocs/gcsp/evidence/fucq-34/keyboard-header-focus.png",
+      "A\tdocs/gcsp/evidence/fucq-34/keyboard-native-select-focus.png",
+      "A\tdocs/gcsp/evidence/fucq-34/keyboard-question-option-unsettled.png",
+      "A\tdocs/gcsp/evidence/fucq-34/keyboard-question-option.png",
+      "A\tdocs/gcsp/evidence/fucq-34/launcher-narrow-selected-bmw.png",
+      "A\tdocs/gcsp/evidence/fucq-34/launcher-selected-bmw.png",
+      "A\tdocs/gcsp/evidence/fucq-34/mini-narrow-header.png",
+      "A\tdocs/gcsp/evidence/fucq-34/navigation-flows-continuation.json",
+      "A\tdocs/gcsp/evidence/fucq-34/navigation-flows-history-first.json",
+      "A\tdocs/gcsp/evidence/fucq-34/navigation-flows.json",
+      "A\tdocs/gcsp/evidence/fucq-34/navigation-keyboard-question-settled.json",
+      "A\tdocs/gcsp/evidence/fucq-34/navigation-keyboard.json",
+      "A\tdocs/gcsp/evidence/fucq-34/navigation-matrix.json",
+      "A\tdocs/gcsp/evidence/fucq-34/navigation-smoke.json",
+      "A\tdocs/gcsp/evidence/fucq-34/resource-validation.json",
+      "A\tdocs/gcsp/evidence/fucq-34/serve-fixture.mjs",
+      "M\tserver/test/helpers/launcher-dom.js",
+      "M\tserver/test/launcher-context.test.js",
+      "A\tserver/test/launcher-navigation.test.js",
+      "M\tserver/test/launcher-render.test.js"
+    ],
+    "reason": "Dispatcher instructed no repeat full solely for later FUCQ-34 integration while real-send acceptance held; reassess at future merge/resumption."
+  },
+  "sourceHashes": {
+    "server/gcsp/notify/brevo.js": "22f9b813a81e93f57c9e31f539ec1a6194ed7ce338b1303cc45e175a1cbb9382",
+    "server/gcsp/notify/config.js": "a815c66c230445384b4ad3e8d9806d31dc4b4b3ac852a92e9277de0f7907b055",
+    "server/gcsp/notify/index.js": "2edc056423207a9ffd77b281f68d243e22123228da7e3424864fb170255ff6a2",
+    "server/gcsp/runtime.js": "6002f36386f1f05a16f4847173a9c2d9fa1317c4783c0576dc74a93574cdf727",
+    "server/test/gcsp-mail-transport.test.js": "f4ab0c60f1281f9a9efce38bef06f3470a6d4161583555b3c9e9a4c81b0cc194",
+    "server/test/gcsp-outbox-viewer.test.js": "d5ab218ed2308ba846446d0d41d04278346b4b12de853cf746dc1198ea9b65bd",
+    "blocks/gcsp/presenter/gcsp-outbox.js": "91480c766b9672e248b53a25d86df35c1c489ee4dfadeea246bf319bdde934d7",
+    "blocks/gcsp/presenter/outbox-copy.js": "26984f81733b598596f6850933f8165c21f67f71b410a7a4914e476d5fc46d59"
+  },
+  "full": {
+    "command": "node --test --test-concurrency=1 'server/test/**/*.test.js'",
+    "reason": "Explicit authored npm test requirement; serial dispatcher admission",
+    "counts": {
+      "tests": 1151,
+      "passed": 1149,
+      "failed": 0,
+      "skipped": 2
+    },
+    "wallSeconds": 56.001902832998894,
+    "stampPath": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/stamp-6d1cb63fc54c99ae6fd6124ccb83d9c338f40da04f0035d0c1554b2138738295-default.json",
+    "stamp": {
+      "execution_identity": {
+        "code": "b260da6c4a09c761257e493dec3092b99fe2a07120e25bbb6f6befe189fb07dc",
+        "environment": "c5e9e62585e4f1f151e279a9bc1755a2ad4b5a64fb89334a261b95bde3bf511e",
+        "inputs": {
+          ".claude/scaffolding.json": "c55d2bf32288b5e19f6ac6e7c7b35d22013c80b757d5328c8257a4eac4ac560a",
+          "docs/gcsp/evidence/fucq98/validate-full.py": "cb0f254b416fe3752cc9b6c8eee5a9e407392a2ce98a61202c93efd5eb7b6279",
+          "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+          "package.json": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
+          "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+          "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+        },
+        "interpreter": [
+          "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+          "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+        ],
+        "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+        "scope": "full",
+        "selected": [
+          "node --test --test-concurrency=1 'server/test/**/*.test.js'"
+        ],
+        "settings": "7db4f348768243680100c1c6934bbefa82d5ce7bd077e397fcd4995ea0d6f61f",
+        "variant": "default",
+        "version": 1
+      },
+      "head": "fdd058a879659574a677fb5bd21f43b710c45743",
+      "key": "6d1cb63fc54c99ae6fd6124ccb83d9c338f40da04f0035d0c1554b2138738295",
+      "python": "3.14.7",
+      "ran": null,
+      "skipped": 0,
+      "time": "2026-11-05T15:45:23+0000",
+      "tree": "da63073ecc9f149275bf8815f30e7113e27cb933",
+      "variant": "default",
+      "wall": 56.1
+    },
+    "stampLine": "stamp: key 6d1cb63fc54c (tree da63073ecc9f, HEAD fdd058a8), tests passed, wall 56s, 2026-11-05T15:45:23+0000, variant default, Python 3.14.7",
+    "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/receipts/fucq98-20261105-brevo-transport/full-1793893466608660000.json",
+    "strictStatusReadback": "matched after run",
+    "freshStatusAfterCleanup": "stamp: key 6d1cb63fc54c (tree da63073ecc9f, HEAD fdd058a8), tests passed, wall 56s, 2026-11-05T15:45:23+0000, variant default, Python 3.14.7"
+  },
+  "scoped": [
+    {
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/receipts/fucq98-20261105-brevo-transport/ack-shutdown-green-1793893152651955000.json",
+      "command": [
+        "node",
+        "--test",
+        "server/test/gcsp-mail-transport.test.js"
+      ],
+      "counts": {
+        "tests": 41,
+        "pass": 41,
+        "fail": 0,
+        "skipped": 0
+      },
+      "wallSeconds": 0.7192715830005909,
+      "scope": "scoped",
+      "cleanupRecheck": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/receipts/fucq98-20261105-brevo-transport/ack-shutdown-green-cleanup-recheck.json"
+    },
+    {
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/receipts/fucq98-20261105-brevo-transport/ack-shutdown-boundary-1793893187237140000.json",
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-outbox.test.js",
+        "server/test/gcsp-brief-runtime.test.js"
+      ],
+      "counts": {
+        "tests": 23,
+        "pass": 23,
+        "fail": 0,
+        "skipped": 0
+      },
+      "wallSeconds": 1.6962855410001794,
+      "scope": "scoped",
+      "cleanupRecheck": null
+    },
+    {
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/receipts/fucq98-20261105-brevo-transport/scoped-stable-1793892990479078000.json",
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-outbox.test.js",
+        "server/test/gcsp-outbox-route.test.js",
+        "server/test/gcsp-outbox-viewer.test.js",
+        "server/test/gcsp-repository-contract.test.js",
+        "server/test/gcsp-brief-runtime.test.js"
+      ],
+      "counts": {
+        "tests": 90,
+        "pass": 88,
+        "fail": 0,
+        "skipped": 2
+      },
+      "wallSeconds": 2.68948279200049,
+      "scope": "scoped",
+      "cleanupRecheck": null
+    }
+  ],
+  "nativePostgreSQL": {
+    "configured": false,
+    "skips": [
+      "postgresql native constraints reject a second occupying hold and claim",
+      "postgresql: shared TransactionRepository contract"
+    ],
+    "limitation": "Memory repository and SQL-driver-double checks do not establish native PostgreSQL durability."
+  },
+  "reproduction": {
+    "cwd": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054",
+    "PATH": "/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/homebrew/bin:/Applications/ChatGPT.app/Contents/Resources/codex-cli/codex-path:/Users/usget/.codex/tmp/arg0-macos/codex-arg0LdvQzk:/Users/usget/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override:/Users/usget/.local/bin:/opt/homebrew/sbin:/Users/usget/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/fallback:/Applications/ChatGPT.app/Contents/Resources:/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS",
+    "nodeBinary": "/opt/homebrew/bin/node",
+    "nodeVersion": "v26.7.0",
+    "python": [
+      "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+      "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+    ],
+    "environmentHash": "c5e9e62585e4f1f151e279a9bc1755a2ad4b5a64fb89334a261b95bde3bf511e",
+    "harness": "codex",
+    "variant": "default",
+    "supervisedFullCommand": "SCAFFOLDING_HARNESS=codex python3 -B /Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq98-20261105-brevo-transport-supervisor.py full python3 -B docs/gcsp/evidence/fucq98/validate-full.py --full",
+    "statusCommand": "SCAFFOLDING_HARNESS=codex python3 -B docs/gcsp/evidence/fucq98/validate-full.py --status",
+    "dependencyNote": "Exact temporary pg overlay removed after validation. Reproduction needs approved dependencies matching retained hashes; do not treat an ignored overlay absence as a fresh execution proof.",
+    "pythonExecutable": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+    "nodeRealpath": "/opt/homebrew/Cellar/node/26.7.0/bin/node"
+  },
+  "resources": {
+    "fullLimits": {
+      "outerRamMiB": 768,
+      "outerScratchMiB": 32,
+      "outerSeconds": 600,
+      "innerRamMiB": 640,
+      "innerScratchMiB": 24,
+      "innerSeconds": 570,
+      "workers": 1
+    },
+    "fullMeasured": {
+      "innerPeakRssBytes": 334725120,
+      "outerPeakRssBytes": 38944768,
+      "innerPeakScratchBytes": 794752
+    },
+    "maximumRemovedBrowserScratchBytes": 9214204,
+    "cleanupReceipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/receipts/fucq98-20261105-brevo-transport/final-cleanup.json",
+    "scratchRemoved": true,
+    "ownedKnownGroupsAbsent": {
+      "47434": false,
+      "52761": false,
+      "56131": false,
+      "56158": false
+    },
+    "reservationsAbsent": true,
+    "successfulLogBytesRemoved": 17011,
+    "historicalOwnershipLimitation": "Before the final painted browser/full chunks, the launcher reused one ownership manifest. Contemporaneous receipts verify scratch/reservation absence and no live groups, but most original owner/group IDs were not retained and cannot be reconstructed. No tests rerun for metadata.",
+    "compatibilityException": {
+      "kind": "isolated active headless Chrome profile in owned local TMPDIR",
+      "noArchivesOrLargeOutput": true,
+      "peakScratchBytes": 9214204,
+      "removed": true,
+      "retainedArtifacts": "four PNGs + browser-receipt.json under docs/gcsp/evidence/fucq98"
+    },
+    "largeOutputCreated": false,
+    "oneDriveOutputCreated": false,
+    "leftovers": []
+  },
+  "dependency": {
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq98-20261105-brevo-transport-dependency.json",
+    "target": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules/pg",
+    "hashRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules",
+    "files": 139,
+    "sha256MapDigest": "10195441734c41efe671ffff4d2d3baa169809431fe6f49139c3da2c29f37dbf",
+    "beforeAfterHashesMatch": true,
+    "targetDeviceInodePreserved": true,
+    "overlayRemoved": true
+  },
+  "browser": {
+    "receipt": "browser-receipt.json",
+    "authoritativeResourceReceipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/receipts/fucq98-20261105-brevo-transport/viewer-browser-painted-1793893351218006000.json",
+    "viewports": [
+      [
+        1280,
+        900
+      ],
+      [
+        375,
+        812
+      ]
+    ],
+    "assertions": [
+      "keyboard Enter opens message and focuses heading",
+      "sandbox empty and no-referrer",
+      "zero horizontal overflow",
+      "fixed unconfirmed safe-copy and capture footer distinction",
+      "no browser errors or external network"
+    ],
+    "visualInspection": {
+      "capture-desktop.png": {
+        "sha256": "3d2fe45e749ea386709a71a9389e95e6bccadd24abf89865b10447dca96b0119",
+        "inspected": true
+      },
+      "capture-narrow.png": {
+        "sha256": "2629544cb21d6639ffe9a0d3207b439adbdbf362f0942cf463c0ba8523281877",
+        "inspected": true
+      },
+      "unconfirmed-desktop.png": {
+        "sha256": "fe0d21bc6037ca11a381053fba152b3420fe6eb551b150856eed8b75d16156ca",
+        "inspected": true
+      },
+      "unconfirmed-narrow.png": {
+        "sha256": "334696607a1793468e9b5bf301e4777202981cefa77c7b56b1d5361d195f2e5e",
+        "inspected": true
+      }
+    },
+    "observation": "Existing shell/sidebar/palette and single-column narrow layout retained; status/error text wraps and message body/plain alternative remain visible. Final proof scrolls iframe into view before full-page capture. Synthetic inputs only; no inbox delivery or full accessibility audit claim."
+  },
+  "supplementalInputs": "supplemental-input-audit.json",
+  "liveSetupGate": "live-setup-gate.json",
+  "agents": {
+    "lead": {
+      "requested": "gpt-6.1-sol/high",
+      "selected": "gpt-6.1-sol/high",
+      "fallback": null,
+      "runtimeConfirmed": false
+    },
+    "implementer": {
+      "name": "/root/brevo_transport_fucq98/brevo_implementer",
+      "requested": "gpt-6.1-sol/medium",
+      "selected": "gpt-6.1-sol/medium",
+      "fallback": null,
+      "runtimeConfirmed": false,
+      "status": "completed"
+    },
+    "descendants": []
+  },
+  "excluded": [
+    "No real mail or account/sender provisioning",
+    "No stock, hold, offer producer/token or allocation/priority changes",
+    "No native PostgreSQL claim",
+    "No new screen, component or dependency",
+    "No repeat full for later unrelated FUCQ-34 root delta"
+  ],
+  "impactMap": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/fucq98-70a55a4d8bd66144c189feaec3a7870d2e8bb3fa423245854fbf1e3e2002170c.json",
+  "reproductionStatusReceipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/receipts/fucq98-20261105-brevo-transport/reproduction-status.json"
+}

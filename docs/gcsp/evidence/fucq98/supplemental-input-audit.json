@@ -1,0 +1,110 @@
+{
+  "testedHead": "fdd058a879659574a677fb5bd21f43b710c45743",
+  "method": "Compare current SHA-256 with FUCQ-42 receipt; compare current hash-object blob with ls-tree at exact tested HEAD. No test rerun.",
+  "inputs": {
+    "docs/gcsp/bmw-catalogue-adapter.md": {
+      "f42Sha256": "e4ae2d3aaf8bf1a5b687c0bbdbae89e252c0542ba5daf18a359668d63d8e57e1",
+      "actualSha256": "e4ae2d3aaf8bf1a5b687c0bbdbae89e252c0542ba5daf18a359668d63d8e57e1",
+      "testedHeadBlob": "f6502b5ce79afe77e627fa48e692b796c32ac8ea",
+      "currentBlob": "f6502b5ce79afe77e627fa48e692b796c32ac8ea"
+    },
+    "docs/gcsp/evidence/fucq-4/i5-alpine-white-reference.webp": {
+      "f42Sha256": "fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe",
+      "actualSha256": "fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe",
+      "testedHeadBlob": "8ea96cd855d3dde2121052efef3ad8e592adcde4",
+      "currentBlob": "8ea96cd855d3dde2121052efef3ad8e592adcde4"
+    },
+    "docs/gcsp/evidence/fucq-4/i5-black-sapphire-reference.webp": {
+      "f42Sha256": "4c38cdb43b6438b7ae54fd1c882280bf744e88a17f2ce43597c5dd2c4890b5de",
+      "actualSha256": "4c38cdb43b6438b7ae54fd1c882280bf744e88a17f2ce43597c5dd2c4890b5de",
+      "testedHeadBlob": "05a54baa84100359e2bd1e6efd57b659773d4782",
+      "currentBlob": "05a54baa84100359e2bd1e6efd57b659773d4782"
+    },
+    "docs/gcsp/evidence/fucq-4/observations-2026-11-01.json": {
+      "f42Sha256": "bac972549f3b5cc1c09408535349d6f6e32330f3060056a16f0012e5fad3a3dc",
+      "actualSha256": "bac972549f3b5cc1c09408535349d6f6e32330f3060056a16f0012e5fad3a3dc",
+      "testedHeadBlob": "9a100cb42f22c53f7422612178a54d7a8f5524f6",
+      "currentBlob": "9a100cb42f22c53f7422612178a54d7a8f5524f6"
+    },
+    "docs/gcsp/evidence/fucq-4/requests-2026-11-01.json": {
+      "f42Sha256": "95f34ab64e1fea98827170a3b1ead8fef9cd72d62fba28b32f9548bb30fd9c1e",
+      "actualSha256": "95f34ab64e1fea98827170a3b1ead8fef9cd72d62fba28b32f9548bb30fd9c1e",
+      "testedHeadBlob": "859359afc866e7f7c3fcc6562e9d8dfef91706ac",
+      "currentBlob": "859359afc866e7f7c3fcc6562e9d8dfef91706ac"
+    },
+    "docs/gcsp/evidence/fucq-4/response-excerpts-2026-11-01.json": {
+      "f42Sha256": "c07cacdf6bb40b45cbceb3885aff5a8cf85b308c41331e6fb964c44599c0c06b",
+      "actualSha256": "c07cacdf6bb40b45cbceb3885aff5a8cf85b308c41331e6fb964c44599c0c06b",
+      "testedHeadBlob": "91439cc4d6dab9c94f6e211b1b5bb51c5bc5555b",
+      "currentBlob": "91439cc4d6dab9c94f6e211b1b5bb51c5bc5555b"
+    },
+    "server/vehicle-evidence/assets/bmw-gb-i5-images-2026-11-01.v1/alpine-white.webp": {
+      "f42Sha256": "fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe",
+      "actualSha256": "fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe",
+      "testedHeadBlob": "8ea96cd855d3dde2121052efef3ad8e592adcde4",
+      "currentBlob": "8ea96cd855d3dde2121052efef3ad8e592adcde4"
+    },
+    "server/vehicle-evidence/assets/bmw-gb-i5-images-2026-11-01.v1/black-sapphire.webp": {
+      "f42Sha256": "4c38cdb43b6438b7ae54fd1c882280bf744e88a17f2ce43597c5dd2c4890b5de",
+      "actualSha256": "4c38cdb43b6438b7ae54fd1c882280bf744e88a17f2ce43597c5dd2c4890b5de",
+      "testedHeadBlob": "05a54baa84100359e2bd1e6efd57b659773d4782",
+      "currentBlob": "05a54baa84100359e2bd1e6efd57b659773d4782"
+    },
+    "server/vehicle-evidence/snapshots/bmw-gb-i5-images-2026-11-01.v1.json": {
+      "f42Sha256": "b6bbe8e39b018b1a38551d818e1dfe9b6504283c95dedd033d59d4df8395d393",
+      "actualSha256": "b6bbe8e39b018b1a38551d818e1dfe9b6504283c95dedd033d59d4df8395d393",
+      "testedHeadBlob": "2e42f23244509fcae4d411895c795bd8dac58c81",
+      "currentBlob": "2e42f23244509fcae4d411895c795bd8dac58c81"
+    }
+  },
+  "allNineMatch": true,
+  "latestRootNotIntegrated": {
+    "head": "ebaafaa908a9385aebc4eef7beda9a1b1a22069c",
+    "deltaSinceIntegratedBase": [
+      "A\t_dev/done/2026-11/DEV-2026-11-04-008.md",
+      "D\t_dev/in-progress/DEV-2026-11-04-008.md",
+      "M\tblocks/demo-launcher/boot.js",
+      "M\tblocks/demo-launcher/entry-context.js",
+      "M\tblocks/demo-launcher/launcher.js",
+      "M\tblocks/demo-launcher/retail-chrome.js",
+      "M\tblocks/vehicle-matcher/demo-chrome.css",
+      "A\tdocs/gcsp/evidence/fucq-34/README.md",
+      "A\tdocs/gcsp/evidence/fucq-34/agent-provenance.json",
+      "A\tdocs/gcsp/evidence/fucq-34/automated-validation.json",
+      "A\tdocs/gcsp/evidence/fucq-34/bmw-desktop-header.png",
+      "A\tdocs/gcsp/evidence/fucq-34/bmw-narrow-header.png",
+      "A\tdocs/gcsp/evidence/fucq-34/brand-picker-before-token-fix.png",
+      "A\tdocs/gcsp/evidence/fucq-34/brand-picker-fresh-start.png",
+      "A\tdocs/gcsp/evidence/fucq-34/brand-picker-narrow-focus.png",
+      "A\tdocs/gcsp/evidence/fucq-34/browser-resource-summary.json",
+      "A\tdocs/gcsp/evidence/fucq-34/capture-navigation.mjs",
+      "A\tdocs/gcsp/evidence/fucq-34/ferrari-head-to-head-narrow-before.png",
+      "A\tdocs/gcsp/evidence/fucq-34/ferrari-head-to-head-narrow-without-added-links.png",
+      "A\tdocs/gcsp/evidence/fucq-34/ferrari-source-comparison.json",
+      "A\tdocs/gcsp/evidence/fucq-34/ferrari-swipe-narrow-before.png",
+      "A\tdocs/gcsp/evidence/fucq-34/ferrari-swipe-narrow-without-added-links.png",
+      "A\tdocs/gcsp/evidence/fucq-34/ford-retail-theme.png",
+      "A\tdocs/gcsp/evidence/fucq-34/keyboard-header-focus.png",
+      "A\tdocs/gcsp/evidence/fucq-34/keyboard-native-select-focus.png",
+      "A\tdocs/gcsp/evidence/fucq-34/keyboard-question-option-unsettled.png",
+      "A\tdocs/gcsp/evidence/fucq-34/keyboard-question-option.png",
+      "A\tdocs/gcsp/evidence/fucq-34/launcher-narrow-selected-bmw.png",
+      "A\tdocs/gcsp/evidence/fucq-34/launcher-selected-bmw.png",
+      "A\tdocs/gcsp/evidence/fucq-34/mini-narrow-header.png",
+      "A\tdocs/gcsp/evidence/fucq-34/navigation-flows-continuation.json",
+      "A\tdocs/gcsp/evidence/fucq-34/navigation-flows-history-first.json",
+      "A\tdocs/gcsp/evidence/fucq-34/navigation-flows.json",
+      "A\tdocs/gcsp/evidence/fucq-34/navigation-keyboard-question-settled.json",
+      "A\tdocs/gcsp/evidence/fucq-34/navigation-keyboard.json",
+      "A\tdocs/gcsp/evidence/fucq-34/navigation-matrix.json",
+      "A\tdocs/gcsp/evidence/fucq-34/navigation-smoke.json",
+      "A\tdocs/gcsp/evidence/fucq-34/resource-validation.json",
+      "A\tdocs/gcsp/evidence/fucq-34/serve-fixture.mjs",
+      "M\tserver/test/helpers/launcher-dom.js",
+      "M\tserver/test/launcher-context.test.js",
+      "A\tserver/test/launcher-navigation.test.js",
+      "M\tserver/test/launcher-render.test.js"
+    ],
+    "reason": "Dispatcher instructed no repeat full solely for later FUCQ-34 integration while real-send acceptance held; reassess at future merge/resumption."
+  }
+}
