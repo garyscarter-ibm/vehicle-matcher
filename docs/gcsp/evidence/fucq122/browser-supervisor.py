@@ -21,7 +21,7 @@ import test_resources as R
 
 RUNS = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122-options/browser')
 FROZEN = 'd4b501f110d33b4a10288c358c0e76a61aee2505'
-CHUNKS = ('smoke-desktop',) + tuple(f'{group}-{width}' for group in ('journey', 'options-deadline', 'resilience', 'previews') for width in ('desktop', 'narrow'))
+CHUNKS = ('smoke-desktop', 'keyboard-diagnostic-desktop') + tuple(f'{group}-{width}' for group in ('journey', 'options-deadline', 'resilience', 'previews') for width in ('desktop', 'narrow'))
 POLICY = R.Policy({'chunk_scratch_mib': 128, 'chunk_ram_mib': 2560, 'chunk_seconds': 120, 'log_mib': 2,
                    'local_scratch_reason': 'Bounded owned Chromium profile/cache/IPC; retained evidence stays below 128 MiB.'})
 LINK = ROOT / 'server/node_modules'

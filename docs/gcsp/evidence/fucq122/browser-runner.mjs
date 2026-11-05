@@ -216,6 +216,50 @@ async function journey() {
   assert.equal(ok(await api(paula, '/cases')).cases[0].history.at(-1).actorRole, 'scheme-team');
   check('Actual help, queue manual/preference updates, employee one-change, resolved and closed survive reload', { caseId: c.caseId, briefBefore: oldBrief.briefVersion, briefAfter: afterBrief.briefVersion });
 }
+async function keyboardDiagnostic() {
+  const c = ok(await api(paula, '/cases', { commandId: 'diagnostic-help-setup', reason: 'Synthetic help case for native keyboard diagnosis.' })).case;
+  report.setup.push('Actual case request API creates one diagnostic case. No employee request UI or completed Greg journey is claimed.');
+  const before = state(); report.nativeSelectionDiagnostics = [];
+  for (const mode of ['existing-page-order', 'greg-brought-to-front', 'foreground-typeahead']) {
+    await navigate(greg, 'queue');
+    if (mode !== 'existing-page-order') await greg.page.bringToFront();
+    const control = greg.page.getByLabel('Case to work', { exact: true });
+    const choices = await control.evaluate((node) => [...node.options].map((option) => ({ value: option.value, text: option.textContent, disabled: option.disabled })));
+    const target = choices.findIndex((option) => option.value === c.caseId); assert.ok(target >= 0);
+    await control.evaluate((node) => {
+      window.fucq122NativeEvents = [];
+      for (const type of ['keydown', 'keyup', 'input', 'change', 'focus', 'blur']) node.addEventListener(type, (event) => {
+        window.fucq122NativeEvents.push({ type, key: event.key, code: event.code, trusted: event.isTrusted,
+          index: node.selectedIndex, value: node.value, documentFocus: document.hasFocus(), visibility: document.visibilityState });
+      });
+    });
+    await tabTo(greg.page, control);
+    const observe = () => control.evaluate((node) => ({ documentFocus: document.hasFocus(), visibility: document.visibilityState,
+      active: document.activeElement === node, index: node.selectedIndex, value: node.value, events: window.fucq122NativeEvents.slice() }));
+    const item = { mode, expectedIndex: target, expectedValue: c.caseId, before: await observe(), steps: [] };
+    report.nativeSelectionDiagnostics.push(item);
+    const keys = mode === 'foreground-typeahead' ? ['Space', { type: choices[target].text }, 'Enter']
+      : ['Space', 'Home', ...choices.slice(0, target).filter((option) => !option.disabled).map(() => 'ArrowDown'), 'Enter'];
+    for (const key of keys) {
+      if (typeof key === 'string') await greg.page.keyboard.press(key); else await greg.page.keyboard.type(key.type);
+      item.steps.push({ key, observed: await observe() });
+    }
+    await greg.page.keyboard.press('Tab'); item.after = await observe();
+    item.targetSelected = item.after.value === c.caseId;
+    item.openEnabled = await button(greg.page, 'Open selected case').isEnabled();
+    await capture(greg.page, 'diagnostic-' + mode, { target: control, boundary: 'native keyboard diagnostic; no completed journey acceptance' });
+    await greg.page.keyboard.press('Escape');
+    if (item.targetSelected && item.openEnabled) {
+      await activate(greg.page, 'Open selected case'); await settled(greg.page);
+      item.actualOptionsLoaded = await greg.page.locator('.gcsp-case-work [data-case-id]').count() === 1;
+      await capture(greg.page, 'diagnostic-' + mode + '-opened', { target: greg.page.locator('.gcsp-case-work'), boundary: 'diagnostic actual options read only' });
+    }
+    assertState(before, 'Native selection/open diagnostic must remain read-only after case setup');
+    await save();
+  }
+  check('Bounded native-keyboard diagnosis recorded; passing diagnostic execution does not establish working case selection', {
+    outcomes: report.nativeSelectionDiagnostics.map(({ mode, targetSelected, openEnabled, actualOptionsLoaded }) => ({ mode, targetSelected, openEnabled, actualOptionsLoaded })) });
+}
 async function optionsDeadline() {
   // Actual registered handler consumes a supplied test contract date; no lifecycle receipt is fabricated.
   ok(await repository.transaction(paula.session.context, command('synthetic-deadline-date'), async (tx) => {
@@ -470,7 +514,8 @@ try {
     await discloseHelp(paula.page); await tabTo(paula.page, button(paula.page, 'Ask for help'));
     await capture(paula.page, 'smoke-paula-account-help-keyboard', { visibleFocus: true });
     await capture(greg.page, 'smoke-greg-empty-queue'); check('Smoke: actual account/help/empty queue are read-only, assets loaded and keyboard focus visible');
-  } else if (chunk.startsWith('journey-')) await journey();
+  } else if (chunk === 'keyboard-diagnostic-desktop') await keyboardDiagnostic();
+  else if (chunk.startsWith('journey-')) await journey();
   else if (chunk.startsWith('options-deadline-')) await optionsDeadline();
   else if (chunk.startsWith('resilience-')) await resilience();
   else if (chunk.startsWith('previews-')) await previews();
