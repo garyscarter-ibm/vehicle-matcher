@@ -1,0 +1,56 @@
+{
+  "story": "FUCQ-40",
+  "run": "fucq40-20261105-image",
+  "scope": "targeted",
+  "result": "passed",
+  "command": "node --test --experimental-test-coverage server/test/bmw-image-adapter.test.js server/test/bmw-catalogue-adapter.test.js server/test/exact-listing-decision.test.js",
+  "tests": {
+    "total": 52,
+    "pass": 52,
+    "fail": 0,
+    "skipped": 0,
+    "image": 12,
+    "catalogue": 22,
+    "retailExactListing": 18
+  },
+  "base": "b9dd531d3aa35ff1bb87065eb9da51e664065444",
+  "head": "b9dd531d3aa35ff1bb87065eb9da51e664065444",
+  "tree": "21e3cb304e05816acf3abc262634a9cb4ad6fbef",
+  "dirtyCodeKey": "385a77a9b0c016b77ca989bdf47e0074aa46d7d1cc873fac66a098d0e038e888",
+  "variant": "default",
+  "targetedEvidence": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/targeted-385a77a9b0c016b77ca989bdf47e0074aa46d7d1cc873fac66a098d0e038e888-default-1793886432911641000.json",
+  "identities": {
+    "server/vehicle-evidence/bmw-image-adapter.js": "2f84ea29d1c98b47b49eeb8659afdd04ca991815c914b1f5e266f384d94713b4",
+    "server/vehicle-evidence/snapshots/bmw-gb-i5-images-2026-11-01.v1.json": "b6bbe8e39b018b1a38551d818e1dfe9b6504283c95dedd033d59d4df8395d393",
+    "server/test/bmw-image-adapter.test.js": "6b7ced1c6340e0fcfda29eba88db4ff1394d4942bacdaf2dd548711ce8b4537a"
+  },
+  "coverage": {
+    "bmw-image-adapter.js": {
+      "linePercent": 100,
+      "branchPercent": 94.83,
+      "functionPercent": 100
+    },
+    "bmw-catalogue-adapter.js": {
+      "linePercent": 100,
+      "branchPercent": 95.59,
+      "functionPercent": 100
+    },
+    "context": "Node aggregated required scoped run; no per-test coverage contexts available"
+  },
+  "resources": {
+    "peakScratchBytes": 1335424,
+    "sampledPeakRecursiveRssBytes": 323584000,
+    "wallSeconds": 2.989625874999547,
+    "scratchRemoved": true,
+    "scratchManifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/8c94a6a365c6427fa2619009baafa3ee.json"
+  },
+  "initialFailure": {
+    "cause": "existing locked pg dependency absent in retained worktree",
+    "failedModule": "server/test/exact-listing-decision.test.js",
+    "resolution": "npm ci --prefix server --ignore-scripts --no-audit --no-fund; no package edits; owned npm cache removed; installed dependencies preserved"
+  },
+  "remaining": [
+    "Authored final serial npm test; dispatcher reservation required"
+  ],
+  "provenance": "Both image files opened locally; same front viewpoint/composition and visibly white versus black body; equipment fidelity unverified. file+sips independently confirmed WebP VP8 2560x1646; authored hashes match FUCQ4."
+}
