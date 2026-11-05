@@ -1,6 +1,6 @@
 # Offer display contract and delivery gates · FUCQ-105
 
-5 November 2026. Independent implementation plan; HTTP fields below are requirements for the FUCQ-102 review, not a claim of a published port or live integration.
+5 November 2026. Independent delivery contract. Approved FUCQ-102 DTO bindings are implemented below; actual producer/access/decision/host integration and full story acceptance remain open. Earlier requested fields remain historical requirements where the approved DTO does not yet supply them.
 
 ## Boundaries
 
@@ -54,3 +54,13 @@ The top-level server hold `expiresAt` governs the countdown. Quote `validUntil` 
 Pending reasons decision-pending/release-pending show uncertainty and disable controls without fabricating an intended decision or operation ID. No106 port is supplied by this HTTP read adapter; a host must inject the actual decision port. The reviewed102 comparison still explicitly reports unavailable/currentCar:null. Root reported published100 `a7fc8580efba36c329b2479711d6b66db53962bd`, but its narrow projection binding is not approved/exercised here.
 
 Selected strict targeted checks passed96/96 with zero skips; exact command, source/input hashes, key and resource receipts are `evidence/fucq105/adapter-scoped.json`. Old80-pass evidence remains the earlier checkpoint. No browser/native/full/live request was run.
+
+## Approved partial comparison extension · a3fdcdf
+
+Root resumed this same chat for display-only binding against immutable FUCQ-102 `a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed`. Independently verified contract SHA-256 `af5fa810a650edd14b99e563ec91d1e1a86c8e28087788c94a826e71e5810042`, representative sample `9a406c67d7785353c941b2ba294593e188e6ef6045bf099fe222a1131f37d884`, comparison sample `e3d8a9065ac85e4088768a27db0cb22b1f4f136b5c6b8f68a960dd5e525ddab6`. Both safe JSON samples are retained exactly in `evidence/fucq105/`. They exercise the access/evaluator over synthetic inputs and reviewed metadata, not an actual100 producer-to-access route.
+
+The comparison accepts only status partial, reason current-car-facts-unavailable, comparisonAvailable false, and exactly the eight reviewed unknown keys. A nonblank model of at most256 characters and source mode synthetic/dated-snapshot/authorised-live, nonblank sourceVersion and valid UTC observedAt no later than quotedAt become a curated partial presentation. UTC validation rejects calendar/hour rollover; fractional future instants also fail. No current configuration, specifications, points, image, internal binding, employee/contract/slot identifiers/revisions, sourceRef or raw records are copied or inferred.
+
+The view reuses heading/text, mediaWell fallback and factList. It clearly labels the comparison partial, shows dated provenance and renders all eight facts Unknown. Invalid/missing/future/unreviewed comparison metadata yields currentCar null while a valid exact offer stays visible. comparisonAvailable always remains false; no106 decision authority is added. Actual full factual comparison remains an acceptance gate.
+
+Scoped own projection/render/HTTP/controller checks pass68/68,0skips under strict targeted key `dce2865f60ebed5a4be446811a91739ab9d91977599a882a43f14e7d0ba6e59f`; full source/input/resource receipts are `evidence/fucq105/comparison-scoped.json`. Shared components, styles and ratchet source are unchanged; their prior proof is reused without unrelated reruns. Rendered1280/375 keyboard/reduced-motion, real100 producer/access, approved106, host/cookie/entry/presenter and authored full-suite gates remain outstanding.

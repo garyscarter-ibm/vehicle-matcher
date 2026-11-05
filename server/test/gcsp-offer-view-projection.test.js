@@ -6,12 +6,15 @@ import { toOfferPresentation } from '../../blocks/gcsp/offer/offer-projection.js
 import { createOfferController } from '../../blocks/gcsp/offer/offer-controller.js';
 
 const bytes = await readFile(new URL('../../docs/gcsp/evidence/fucq105/representative-access.json', import.meta.url), 'utf8');
+const comparisonBytes = await readFile(new URL('../../docs/gcsp/evidence/fucq105/comparison-access.json', import.meta.url), 'utf8');
 const sample = () => JSON.parse(bytes);
+const partial = () => JSON.parse(comparisonBytes);
 const envelope = (v = sample()) => ({ status: 'ok', value: v, contractVersion: '1.0.0' });
 const known = (value, unit = null) => ({ ...structuredClone(sample().quote.facts.facts.seats), value, unit });
 
 test('schema sample is exactly the reviewed102 evaluator/access evidence, not a100 producer fixture', () => {
-  assert.equal(createHash('sha256').update(bytes).digest('hex'), '04272860d8783820235cbc76b25ac1a96898350be2305e81bbbc56ca558f0f1f');
+  assert.equal(createHash('sha256').update(bytes).digest('hex'), '9a406c67d7785353c941b2ba294593e188e6ef6045bf099fe222a1131f37d884');
+  assert.equal(createHash('sha256').update(comparisonBytes).digest('hex'), 'e3d8a9065ac85e4088768a27db0cb22b1f4f136b5c6b8f68a960dd5e525ddab6');
   assert.equal(sample().quote.facts.sourceNamespace, 'fixture:employee');
 });
 
@@ -93,7 +96,7 @@ test('malformed identities, units, facts and unsupported schemas fail closed wit
     (v) => { v.quote.facts.display.photo = 'javascript:alert(1)'; },
     (v) => { v.quote.facts.facts.seats.provenance.assurance = 'invented'; },
     (v) => { v.availableActions = ['accept', 'accept']; }, (v) => { v.state = 'accepted'; },
-    (v) => { v.serverNow = null; }, (v) => { v.comparison = { status: 'ok', currentCar: { name: 'unapproved' } }; },
+    (v) => { v.serverNow = null; }, (v) => { v.quote.quotedAt = '2026-02-30T12:00:00Z'; },
   ];
   for (const mutate of changes) {
     const dto = sample(); mutate(dto); const outcome = toOfferPresentation(envelope(dto));
@@ -132,4 +135,77 @@ test('projection never mutates the immutable server response', () => {
   const result = toOfferPresentation(input); assert.equal(result.status, 'ok');
   result.value.card.members[0].facts[0].value = 'local edit';
   assert.deepEqual(input, before);
+});
+
+test('approved partial metadata displays only the model and dated source with all eight facts unknown', () => {
+  const dto = partial(); const before = structuredClone(dto);
+  const outcome = toOfferPresentation(envelope(dto)); assert.equal(outcome.status, 'ok');
+  const v = outcome.value; const car = v.currentCar;
+  assert.equal(v.comparisonAvailable, false); assert.equal(car.status, 'partial');
+  assert.deepEqual(car.display, { name: dto.comparison.currentCar.model }); assert.deepEqual(car.media, {});
+  assert.deepEqual(car.source, dto.comparison.currentCar.source);
+  assert.equal(car.provenance, 'Synthetic source: manual-records-v1. Observed 2026-11-05T11:00:00.000Z.');
+  assert.deepEqual(car.facts.map((f) => f.label), ['Configuration', 'Body', 'Fuel', 'Seats', 'Boot', 'MPG', '0–62 mph', 'Points a month']);
+  assert.ok(car.facts.every((f) => f.value === null && f.missingLabel === 'Unknown'));
+  assert.equal(v.card.members[0].terms[0].value, 1100); assert.equal(v.card.members[0].terms[0].allowance, 1300);
+  car.source.sourceVersion = 'local edit'; car.facts[0].value = 'local edit'; assert.deepEqual(dto, before);
+});
+
+test('all approved source modes and model length boundary retain dated provenance, including equal quote instants', () => {
+  for (const mode of ['synthetic', 'dated-snapshot', 'authorised-live']) {
+    const dto = partial(); const car = dto.comparison.currentCar;
+    car.model = 'x'.repeat(256); car.source.mode = mode; car.source.observedAt = dto.quote.quotedAt;
+    const result = toOfferPresentation(envelope(dto)).value;
+    assert.equal(result.currentCar.display.name.length, 256); assert.equal(result.currentCar.source.mode, mode);
+    assert.equal(result.comparisonAvailable, false);
+  }
+  const dto = partial(); dto.comparison.currentCar.source.observedAt = dto.quote.quotedAt.replace('.000Z', 'Z');
+  assert.ok(toOfferPresentation(envelope(dto)).value.currentCar);
+});
+
+test('private comparison bindings and unreviewed facts never cross or replace the eight unknowns', () => {
+  const dto = partial(); const marker = 'private-comparison-marker'; const car = dto.comparison.currentCar;
+  Object.assign(dto.comparison, { binding: { employeeId: marker }, sourceRef: marker, rawRecords: [marker] });
+  Object.assign(car, { binding: marker, employeeId: marker, contractId: marker, slotId: marker, contractRevision: marker,
+    configurationId: marker, points: 999, body: 'Estate', facts: { seats: 5 }, media: { src: marker } });
+  Object.assign(car.source, { sourceRef: marker, rawRecord: marker, revision: marker });
+  const result = toOfferPresentation(envelope(dto)); assert.equal(result.status, 'ok');
+  assert.equal(JSON.stringify(result).includes(marker), false);
+  assert.deepEqual(Object.keys(result.value.currentCar.source).sort(), ['mode', 'observedAt', 'sourceVersion']);
+  assert.ok(result.value.currentCar.facts.every((f) => f.value === null));
+});
+
+const invalidComparisons = [
+  ['missing comparison', (v) => { delete v.comparison; }],
+  ['unreviewed shape', (v) => { v.comparison = { status: 'ok', currentCar: { name: 'unapproved' } }; }],
+  ['unavailable state', (v) => { v.comparison.status = 'unavailable'; }],
+  ['unreviewed reason', (v) => { v.comparison.reason = 'complete'; }],
+  ['claimed complete comparison', (v) => { v.comparison.comparisonAvailable = true; }],
+  ['missing availability', (v) => { delete v.comparison.comparisonAvailable; }],
+  ['missing current car', (v) => { v.comparison.currentCar = null; }],
+  ['blank model', (v) => { v.comparison.currentCar.model = '   '; }],
+  ['overlong model', (v) => { v.comparison.currentCar.model = 'x'.repeat(257); }],
+  ['nontext model', (v) => { v.comparison.currentCar.model = { name: 'BMW' }; }],
+  ['missing source', (v) => { delete v.comparison.currentCar.source; }],
+  ['unreviewed source mode', (v) => { v.comparison.currentCar.source.mode = 'verified'; }],
+  ['nontext source mode', (v) => { v.comparison.currentCar.source.mode = ['synthetic']; }],
+  ['blank source version', (v) => { v.comparison.currentCar.source.sourceVersion = ' '; }],
+  ['malformed source date', (v) => { v.comparison.currentCar.source.observedAt = 'yesterday'; }],
+  ['non-UTC source date', (v) => { v.comparison.currentCar.source.observedAt = '2026-11-05T11:00:00+00:00'; }],
+  ['calendar rollover', (v) => { v.comparison.currentCar.source.observedAt = '2026-02-30T11:00:00Z'; }],
+  ['hour rollover', (v) => { v.comparison.currentCar.source.observedAt = '2026-11-04T24:00:00Z'; }],
+  ['future source date', (v) => { v.comparison.currentCar.source.observedAt = '2026-11-05T12:00:00.001Z'; }],
+  ['future fractional instant', (v) => { v.comparison.currentCar.source.observedAt = '2026-11-05T12:00:00.0001Z'; }],
+  ['missing unknowns', (v) => { delete v.comparison.unknowns; }],
+  ['incomplete unknowns', (v) => { v.comparison.unknowns.pop(); }],
+  ['duplicate unknown', (v) => { v.comparison.unknowns[7] = 'body'; }],
+  ['unsupported unknown', (v) => { v.comparison.unknowns[7] = 'vin'; }],
+  ['nontext unknown', (v) => { v.comparison.unknowns[7] = ['points']; }],
+];
+for (const [name, mutate] of invalidComparisons) test(`invalid comparison falls back while retaining the valid offer: ${name}`, () => {
+  const dto = partial(); mutate(dto); const outcome = toOfferPresentation(envelope(dto));
+  assert.equal(outcome.status, 'ok'); assert.equal(outcome.value.currentCar, null);
+  assert.equal(outcome.value.comparisonAvailable, false); assert.equal(outcome.value.state, 'pending');
+  assert.equal(outcome.value.card.members[0].display.line, 'Order no. 0999987');
+  assert.deepEqual(outcome.value.actions, { accept: true, decline: true });
 });

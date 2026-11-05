@@ -1,48 +1,43 @@
-# FUCQ-105 independent presentation checkpoint
+# FUCQ-105 independent presentation evidence
 
-5 November 2026. **Partial development; not built and not a live offer acceptance result.**
+5 November 2026. **Partial development; full story acceptance remains incomplete.**
 
-## Delivered boundary
+## Current partial comparison checkpoint
 
-Owned `blocks/gcsp/offer/` composes the existing Density shell, exact-member card, typed monthly points and allowance, media fallback, native buttons and fact lists. The current-car column prints only supplied facts and provenance; absence is explicit. The unique `blocks/gcsp/offer/preview.html?fixture=pending` preview and its other named fixtures are labelled synthetic, with disabled decisions. They demonstrate presentation only.
+The offer consumes the approved immutable FUCQ-102 contract at `a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed`. `representative-access.json` and `comparison-access.json` are exact copies of its two safe samples. The contract/sample hashes and source identity are in `comparison-scoped.json`. These are access/evaluator results over synthetic inputs and reviewed pinned metadata; they do not prove actual FUCQ-100 producer-to-access integration.
 
-The controller keeps one state, rejects stale responses, aborts on teardown, blocks missing/revisionless authority and missing decision ports, rereads once at zero without declaring expiry, and confirms decisions only through readback. It consumes server time without Date.now or deadline resets. Presenter subscriptions trigger authoritative reads. The same card and keyboard controls remain mounted across clock reads, with low-time and expiry announcements managed separately.
+The partial current-car column shows only the supplied model and dated source mode/version. It says “Partial comparison. Current-car specifications and points are unknown.” Configuration, body, fuel, seats, boot, MPG, 0–62 mph and points a month all remain Unknown. No image, specifications, points or internal binding is inferred. `comparisonAvailable` remains false. Missing, malformed, future or unreviewed comparison metadata falls back to unavailable/currentCar null while preserving a valid offer.
 
-The same-origin proposed transport immediately removes fragment credentials, exchanges them only in one POST body, discards them after that attempt, and uses the exact public locator for subsequent cookie/account GET reads. It follows no redirects and disables caching/referrers. Missing reviewed nested DTO projection stays unavailable. This transport has mock-fetch evidence only.
+Only nonblank models up to 256 characters and the approved synthetic/dated-snapshot/authorised-live source modes cross. Source dates must be valid UTC calendar instants no later than quote time, including fractional instants. Only model and source mode/version/date are copied from the comparison. Private identifiers/revisions, sourceRef, raw records and unsupported facts are omitted. Shared text primitives safely render display strings.
 
-## Validation
+The exact offer retains its leading-zero order string, pinned monthly points/allowance, shared reasons, known/unknown facts and qualified imagery. Server DemoClock/hold expiry controls countdown; quote validity remains separate. The secure fragment exchange, cookie/account reads, authoritative read scheduler, exclusive states and teardown remain as previously delivered. Decisions are disabled without an actual injected FUCQ-106 port.
 
-Selected narrow command:
+## Current scoped validation
 
-`node --test --test-concurrency=1 --test-reporter=tap server/test/gcsp-offer-view-controller.test.js server/test/gcsp-offer-view-render.test.js server/test/gcsp-offer-view-http.test.js server/test/shared-kit-contracts.test.js server/test/ui-ratchet.test.js`
+`node --test --test-concurrency=1 --test-reporter=tap server/test/gcsp-offer-view-controller.test.js server/test/gcsp-offer-view-projection.test.js server/test/gcsp-offer-view-render.test.js server/test/gcsp-offer-view-http.test.js`
 
-**80 tests, 80 passed, zero failures/skips.** Strict targeted evidence is recorded in the adjacent JSON, against base `b95b4c8ad8a4`; this is not a full stamp. The source SHA-256 map, exact targeted receipt path and scoped limitation are in `presentation-scoped.json`. New paths have unknown automatic observed coverage, so explicit controller/transport/render regression and existing card/ratchet boundaries were chosen. No full suite was run: root reserves the authored full gate for coordinated validation.
+**Ran 68, OK 68, zero failures/skips.** Strict targeted key `dce2865f60ebed5a4be446811a91739ab9d91977599a882a43f14e7d0ba6e59f`, default variant, base `b95b4c8ad8a4534cbf03f287eb62fc8a57bbda96`. Exact command, source/input SHA-256 map, proof path and cleanup are in `comparison-scoped.json`. This is targeted evidence, not a full stamp.
 
-Lead review checked composition against the supplied shell references and approved employee body a7fc178, state exclusivity, pending-disabled semantics, exact-card reuse, long text/unknown/missing-image handling, CSP-safe source and shared CSS boundaries. DOM checks are not rendered browser evidence. No UI acceptance or human layout-review claim is made.
+The automatic selector dry run refused the unspecified language/configured runner. Explicit projection, HTTP/controller/DOM and regression checks cover the changed boundary. They verify all unknowns, dated provenance, malformed/future fallback, private-field omission, safe text, stable comparison DOM/focus across clock reads and disabled decisions. Shared kit, styles and ratchet source are unchanged from their prior boundary proof; no unrelated presentation rerun was selected. DOM evidence does not replace rendered browser review.
 
 ## Resources and cleanup
 
-Fresh HostBudget and one worker; 120-second outer deadline, 768 MiB RAM, 128 MiB combined scratch/output and 2 MiB logs. External manifests precede scratch and dependency link creation. Ordinary checks strip DB aliases. A temporary link to the exact installed root server/node_modules was owned by link device/inode and target device/inode, then unlinked without touching that environment. No install, listener, browser, DB or live request occurred. Owned process groups were stopped/joined, scratch deletion and reservation release verified. Nested strict-stamp supervisor uses its own manifests/finalizer under the same host reservation. Final strict run measured 256,688,128 bytes peak RSS in the nested test group plus 27,328,512 bytes in the outer supervisor group; owned scratch peaked at 8,192 bytes. Their group absence and exact scratch deletion are verified in the adjacent JSON. Receipts and useful failure logs remain under the shared `.claude/test-runs/fucq105/` and `.claude/test-runs/logs/`; successful scratch is removed. No large output or OneDrive allocation was needed.
+Fresh shared HostBudget, one worker, 120 seconds, 768 MiB RAM, 128 MiB combined scratch/output and 2 MiB logs. External ownership manifests precede scratch and dependency-link creation. Ordinary checks strip DB aliases. The final strict run sampled 248,168,448 bytes peak RSS in the nested test group plus 27,623,424 bytes in the outer supervisor; outer scratch peaked at 8,192 bytes.
+
+Both owned scratch roots and process groups are verified absent, and reservations released. The temporary exact installed server/node_modules link was removed after checking link/target device and inode; the installed environment is preserved. No listener, profile, native DB, secret read, install, browser or live request occurred. Summaries, ownership receipts and the impact map remain under shared `.claude/test-runs/`; no large output or OneDrive allocation was needed.
 
 ## Remaining acceptance
 
-- FUCQ-102 exact allowlisted nested DTO and actual producer/access proof; current proposal ref/hash recorded adjacent. HTTP success is not yet bound to the display.
-- Actual FUCQ-100 pinned current-car snapshot and exact configuration detail fields, preserving unknown equipment/points and provenance. No fabricated Paula equipment.
-- Real FUCQ-106 decision adapter and authoritative uncertain-operation readback.
-- Delivered central host/runtime routing, actual email/account entry, secure-cookie reload/second-browser parity, real DemoClock presenter ticks and expiry.
-- Granted browser checks/captures for every state at 1280 and 375 px with keyboard, visible focus, reduced motion and no overflow.
-- Authored `npm test`/full stamp, final integration review and collaborator acceptance.
+- Actual FUCQ-100 producer → FUCQ-102 access → offer proof and full factual current-car comparison. Published producer `a7fc8580efba36c329b2479711d6b66db53962bd` is context; its internals are not bound here.
+- Integration-approved FUCQ-106 decision port, uncertain-operation readback and delivered central host/runtime.
+- Actual email/account entry, secure-cookie reload/second-browser parity and real DemoClock presenter/expiry proof.
+- Every-state 1280/375 px rendered review, keyboard/focus, reduced motion, long names, absent imagery and no overflow.
+- Authored npm test/full stamp, final integration review and collaborator acceptance.
 
-The initial push was rejected by GitHub `fatal error in commit_refs_rules`; no force or repeated unchanged push was attempted. Root subsequently reported ordinary publication recovery at shared metadata commit `1a55d3a` and authorised one normal push of these coherent checkpoints. Its exact head/readback receipt is retained at the shared `.claude/test-runs/fucq105/publication.json`. This metadata-only shared update does not change the tested executable source. All existing ratchet entries/caps and non-FUCQ-105 map rows/observation times were preserved.
+The stable six-slice plan and other story observations are preserved. No authored acceptance checkbox is marked complete. Supplied shell images and FUCQ-64 desktop/body reference `a7fc178` were inspected earlier; default Density tokens apply. The unique owned preview remains explicitly synthetic and non-actionable.
 
-Requested/selected/effective model and effort: gpt-6.1-sol/high, no fallback and no descendants. Own saved title is Hippety Hopper (they/them).
+## Historical checkpoints
 
-## Later approved102 adapter checkpoint
+`presentation-scoped.json` records the earlier 80/80 presentation checkpoint. `adapter-scoped.json` records 96/96 for the earlier approved102 `ec70522` adapter, including shared-kit/ratchet checks. Those code/input identities are historical after this extension; their old representative sample hash is intentionally different from the current approved sample. Initial publishing failure was resolved through ordinary push; published history is preserved.
 
-The next slice consumes the hash-verified contract/sample at `ec70522c81e8b9f671a3c92cd46eea4cd0a13000`. `adapter-scoped.json` contains the newer source/input map and strict targeted **96/96 passed**, zero skips, key `4e25e9c9e10520b477b51f315b19e6519d0cf2897cb052c60945eb5b4f3e2b56`. The exact immutable JSON sample is retained as `representative-access.json`, with provenance and hash in the result. It is evaluator/access over synthetic rows, not100 producer evidence. The earlier80-pass checkpoint remains historical.
-
-The default HTTP adapter now binds approved fields to the shared card. It preserves0999987 as a string,1100/1300 as pinned points a month, supplied facts/unknowns/provenance, and the original hold deadline. It refuses mismatched locators, stock identity, invalid units and unsupported public shapes and omits private extras. Quote validity is distinct from hold expiry. The absent current-car comparison remains unavailable. Known uncertain reasons cannot enable decisions or invent operation IDs.
-
-The adapter's5000ms scheduler only requests authoritative server reads, skips busy requests and cancels on teardown; it never advances business time. Fake-scheduler checks and the adapter→controller→shared-card DOM check pass. Actual presenter ticks, cookie/entry parity, producer/106/host routing, rendered375/1280 keyboard/reduced-motion checks and authored npm test/full stamp remain incomplete.
-
-Scope: `node --test --test-concurrency=1 --test-reporter=tap server/test/gcsp-offer-view-controller.test.js server/test/gcsp-offer-view-projection.test.js server/test/gcsp-offer-view-render.test.js server/test/gcsp-offer-view-http.test.js server/test/shared-kit-contracts.test.js server/test/ui-ratchet.test.js`. Fresh shared HostBudget, same one-worker120s/768MiB/128MiB/2MiB limits. Outer manifest39f4f42589094822b4dbb913228d100b and nested manifest in the adjacent JSON are removed; groups/scratch absent, reservation released, own exact dependency link absent and installed target preserved. No source/native/live/browser/full expansion.
+Requested/selected/effective gpt-6.1-sol/high, no fallback or descendants. Saved chat title: Hippety Hopper (they/them).

@@ -87,6 +87,19 @@ test('default HTTP display adapter binds the reviewed102 sample and retains exac
   assert.equal(result.value.currentCar, null);
 });
 
+test('default HTTP adapter reads approved partial comparison without adding identity or decision authority', async () => {
+  const value = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/comparison-access.json', import.meta.url), 'utf8'));
+  const calls = [];
+  const adapter = createOfferHttpAdapter({ location: { href: `https://example.test/gcsp/offer?offerId=${value.offerId}&runId=${value.runId}` },
+    fetch: async (...args) => { calls.push(args); return response({ status: 'ok', value }); } });
+  const result = await adapter.read(); assert.equal(result.status, 'ok');
+  assert.equal(result.value.currentCar.display.name, value.comparison.currentCar.model);
+  assert.deepEqual(result.value.currentCar.source, value.comparison.currentCar.source);
+  assert.equal(result.value.comparisonAvailable, false); assert.equal(adapter.decide, undefined);
+  assert.equal(calls[0][0], `https://example.test/api/gcsp/offers/${value.offerId}?runId=${value.runId}`);
+  assert.equal(calls[0][1].method, 'GET'); assert.equal(calls[0][1].body, undefined);
+});
+
 test('refresh scheduling requests server reads, skips busy requests and cancels without advancing time', async () => {
   const scheduled = new Map(); let nextId = 0; let events = 0; let resolveRead;
   const adapter = createOfferHttpAdapter({ location: { href: 'https://example.test/gcsp/offer?offerId=one' },

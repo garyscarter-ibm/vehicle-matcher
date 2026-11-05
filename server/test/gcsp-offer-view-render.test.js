@@ -101,6 +101,44 @@ test('approved DTO flows through the default HTTP adapter/controller into the sh
   unsubscribe(); c.destroy(); view.destroy();
 });
 
+test('approved partial DTO renders dated provenance and eight unknowns through HTTP/controller while retaining focus on reads', async () => {
+  const dto = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/comparison-access.json', import.meta.url), 'utf8'));
+  const adapter = createOfferHttpAdapter({ location: { href: `https://example.test/gcsp/offer?offerId=${dto.offerId}` },
+    fetch: async () => ({ ok: true, headers: { get: () => 'application/json' }, json: async () => ({ status: 'ok', value: dto }) }) });
+  const root = document.createElement('div'); document.body.append(root);
+  const c = createOfferController(adapter); const view = createOfferView(root); const unsubscribe = c.subscribe(view.update);
+  try {
+    const model = await c.refresh(); const comparison = root.querySelector('.gcsp-offer-current');
+    assert.equal(comparison.querySelector('h3').textContent, 'Fictional BMW 320i Touring');
+    assert.match(comparison.textContent, /Partial comparison\. Current-car specifications and points are unknown\./);
+    assert.match(comparison.textContent, /Synthetic source: manual-records-v1\. Observed 2026-11-05T11:00:00\.000Z\./);
+    assert.equal(comparison.querySelectorAll('dd').length, 8);
+    assert.ok([...comparison.querySelectorAll('dd')].every((node) => node.textContent === 'Unknown'));
+    assert.match(comparison.textContent, /No image for this car yet/); assert.equal(comparison.querySelector('img'), null);
+    assert.equal(model.comparisonAvailable, false); assert.equal(model.seconds, 7200);
+    assert.equal(root.querySelector('[data-offer-action="accept"]').disabled, true);
+    const refresh = root.querySelector('[data-offer-action="refresh"]'); refresh.focus();
+    dto.serverNow = '2026-11-05T12:00:05.000Z'; await c.refresh();
+    assert.equal(root.querySelector('.gcsp-offer-current'), comparison); assert.equal(document.activeElement, refresh);
+    dto.comparison.currentCar.source.observedAt = '2026-11-05T12:00:00.001Z'; await c.refresh();
+    assert.match(root.textContent, /Current-car details not supplied/); assert.match(root.textContent, /Order no\. 0999987/);
+    assert.doesNotMatch(root.textContent, /Fictional BMW 320i Touring/);
+  } finally { unsubscribe(); c.destroy(); view.destroy(); }
+});
+
+test('partial model and provenance use text nodes for untrusted display strings', async () => {
+  const dto = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/comparison-access.json', import.meta.url), 'utf8'));
+  dto.comparison.currentCar.model = '<img src=x onerror=alert(1)>';
+  dto.comparison.currentCar.source.sourceVersion = '<script>throw 1</script>';
+  const { toOfferPresentation } = await import('../../blocks/gcsp/offer/offer-projection.js');
+  const root = document.createElement('div'); const view = createOfferView(root);
+  view.update(toOfferPresentation({ status: 'ok', value: dto }).value);
+  const comparison = root.querySelector('.gcsp-offer-current');
+  assert.equal(comparison.querySelectorAll('script, img, [onerror]').length, 0);
+  assert.match(comparison.textContent, /<img src=x onerror=alert\(1\)>/);
+  assert.match(comparison.textContent, /<script>throw 1<\/script>/); view.destroy();
+});
+
 test('scoped offer sources and harness obey embed CSP and composition styling boundaries', async () => {
   for (const file of ['offer-view.js', 'offer-controller.js', 'offer-projection.js', 'http-adapter.js', 'gcsp-offer.js', 'harness.js', 'fixtures.js', 'preview.html']) {
     const text = await readFile(new URL(`../../blocks/gcsp/offer/${file}`, import.meta.url), 'utf8');

@@ -1,4 +1,4 @@
-// Safe display binding for FUCQ-102 schemaVersion 1, reviewed at ec70522.
+// Safe display binding for FUCQ-102 schemaVersion 1, reviewed at a3fdcdf.
 import { decisionView } from '../brief/brief-view-model.js';
 
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
@@ -6,7 +6,8 @@ const text = (v) => typeof v === 'string' && v.length > 0;
 const scalar = (v) => v === null || ['string', 'boolean'].includes(typeof v) || typeof v === 'number' && Number.isFinite(v);
 const simple = (v) => scalar(v) || Array.isArray(v) && v.every(scalar);
 const positive = (v) => Number.isInteger(v) && v > 0;
-const instant = (v) => text(v) && /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$/.test(v) && Number.isFinite(Date.parse(v));
+const instant = (v) => text(v) && /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$/.test(v) && Number.isFinite(Date.parse(v))
+  && new Date(v).toISOString().slice(0, 19) === v.slice(0, 19);
 const copy = (v) => structuredClone(v);
 const refuse = () => { throw new TypeError('Invalid offer display response.'); };
 const need = (condition) => { if (!condition) refuse(); };
@@ -97,6 +98,32 @@ const valueText = (v) => Array.isArray(v) ? v.length ? v.map((entry) => entry ==
 const detailFact = (label, source, missingLabel = 'Not supplied') => ({ label, value: source?.status === 'known' ? valueText(source.value) : null,
   unit: source?.unit, missingLabel, ...(source?.provenance ? { provenance: copy(source.provenance) } : {}) });
 
+const comparisonFields = { configuration: 'Configuration', body: 'Body', fuel: 'Fuel', seats: 'Seats', boot: 'Boot',
+  mpg: 'MPG', zeroTo62: '0–62 mph', points: 'Points a month' };
+const sourceModes = { synthetic: 'Synthetic', 'dated-snapshot': 'Dated snapshot', 'authorised-live': 'Authorised live' };
+
+function noLaterThan(value, limit) {
+  const [a, b] = [value, limit].map((v) => v.slice(0, 19) + (v[19] === '.' ? v.slice(19, -1) : '.'));
+  const length = Math.max(a.length, b.length);
+  return a.padEnd(length, '0') <= b.padEnd(length, '0');
+}
+
+function currentCarFor(v, quotedAt) {
+  const car = v?.currentCar; const source = car?.source;
+  if (!object(v) || v.status !== 'partial' || v.reason !== 'current-car-facts-unavailable' || v.comparisonAvailable !== false
+    || !Array.isArray(v.unknowns) || v.unknowns.length !== 8 || new Set(v.unknowns).size !== 8
+    || !v.unknowns.every((key) => typeof key === 'string' && Object.hasOwn(comparisonFields, key))
+    || !object(car) || !text(car.model) || !car.model.trim() || car.model.length > 256
+    || !object(source) || typeof source.mode !== 'string' || !Object.hasOwn(sourceModes, source.mode)
+    || !text(source.sourceVersion) || !source.sourceVersion.trim()
+    || !instant(source.observedAt) || !noLaterThan(source.observedAt, quotedAt)) return null;
+  // Only the reviewed model/source metadata crosses. Specifications and current points remain unknown.
+  return { status: 'partial', display: { name: car.model }, media: {},
+    facts: Object.values(comparisonFields).map((label) => ({ label, value: null, missingLabel: 'Unknown' })),
+    source: { mode: source.mode, sourceVersion: source.sourceVersion, observedAt: source.observedAt },
+    provenance: `${sourceModes[source.mode]} source: ${source.sourceVersion}. Observed ${source.observedAt}.` };
+}
+
 function cardFor(quote) {
   const card = decisionView({ ...quote.decision, snapshot: quote.facts, orderUuid: quote.orderUuid,
     configurationId: quote.configurationId, candidateKey: quote.facts.candidateKey, terms: quote.terms, versions: quote.revisions });
@@ -139,8 +166,7 @@ export function toOfferPresentation(envelope, { reference } = {}) {
       briefVersion: q.briefVersion, policyVersion: q.policyVersion, quotedAt: q.quotedAt, validUntil: q.validUntil, revisions,
       facts: snapshot(q.facts, q.orderUuid), decision: decision(q.decision), terms: terms(q.terms), allowance: allowance(q.allowance) };
     need(JSON.stringify(quote.allowance) === JSON.stringify(quote.terms.allowanceInputs));
-    // The reviewed102 contract intentionally has no current-car data. Its future extension is separately gated.
-    need(object(v.comparison) && v.comparison.status === 'unavailable' && v.comparison.currentCar === null);
+    const currentCar = currentCarFor(v.comparison, quote.quotedAt);
     const uncertain = v.state === 'pending' && ['decision-pending', 'release-pending'].includes(v.reason);
     const actions = { accept: !uncertain && v.availableActions.includes('accept'), decline: !uncertain && v.availableActions.includes('decline') };
     return { status: 'ok', value: { state: uncertain ? 'uncertain' : v.state, reason: v.reason,
@@ -148,6 +174,6 @@ export function toOfferPresentation(envelope, { reference } = {}) {
         : 'Your decision is being confirmed. Actions are unavailable.' } : {}),
       reference: { offerId: v.offerId, runId: v.runId, offerVersion: v.offerVersion, holdVersion: v.holdVersion },
       now: v.serverNow, clockVersion: v.clockVersion, expiresAt: v.expiresAt, actionable: v.state === 'pending' && !uncertain,
-      actions, card: cardFor(quote), currentCar: null } };
+      actions, card: cardFor(quote), comparisonAvailable: false, currentCar } };
   } catch { return { status: 'unavailable', retryable: true }; }
 }

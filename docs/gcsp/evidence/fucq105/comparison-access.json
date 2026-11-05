@@ -1,0 +1,279 @@
+{
+  "availableActions": [
+    "accept",
+    "decline"
+  ],
+  "clockVersion": "2",
+  "comparison": {
+    "comparisonAvailable": false,
+    "currentCar": {
+      "model": "Fictional BMW 320i Touring",
+      "source": {
+        "mode": "synthetic",
+        "observedAt": "2026-11-05T11:00:00.000Z",
+        "sourceVersion": "manual-records-v1"
+      }
+    },
+    "reason": "current-car-facts-unavailable",
+    "status": "partial",
+    "unknowns": [
+      "configuration",
+      "body",
+      "fuel",
+      "seats",
+      "boot",
+      "mpg",
+      "zeroTo62",
+      "points"
+    ]
+  },
+  "expiresAt": "2026-11-05T14:00:00.000Z",
+  "holdState": "active",
+  "holdVersion": 1,
+  "offerId": "offer-one",
+  "offerState": "active",
+  "offerVersion": 1,
+  "quote": {
+    "allowance": {
+      "allowance": {
+        "unit": "points",
+        "value": 1300
+      }
+    },
+    "briefVersion": 1,
+    "configurationId": "RzIxOlMx",
+    "decision": {
+      "blockers": [],
+      "gateStatus": "eligible",
+      "reasons": [
+        {
+          "code": "driver-eligible"
+        },
+        {
+          "code": "policy-include",
+          "ruleIds": [
+            "choices-fs-uk-015-include"
+          ]
+        },
+        {
+          "allowance": 1300,
+          "code": "allowance-sufficient",
+          "monthlyPoints": 1100,
+          "unit": "points/month"
+        },
+        {
+          "code": "essential-met",
+          "fact": {
+            "provenance": {
+              "assurance": "synthetic-scenario",
+              "observedAt": "2026-11-05T12:00:00.000Z",
+              "sourceRef": "fixture:employee",
+              "version": "facts-v1"
+            },
+            "status": "known",
+            "unit": "count",
+            "value": 5
+          },
+          "field": "seats",
+          "requirement": {
+            "operator": "gte",
+            "unit": "count",
+            "value": 5
+          }
+        },
+        {
+          "code": "required-by-met",
+          "requiredBy": "2026-12-01T00:00:00.000Z"
+        },
+        {
+          "code": "preference-fit",
+          "desired": "estate",
+          "facts": {
+            "body": {
+              "provenance": {
+                "assurance": "synthetic-scenario",
+                "observedAt": "2026-11-05T12:00:00.000Z",
+                "sourceRef": "fixture:employee",
+                "version": "facts-v1"
+              },
+              "status": "known",
+              "unit": null,
+              "value": "estate"
+            }
+          },
+          "field": "body",
+          "importance": 100,
+          "observed": 100,
+          "score": 100
+        }
+      ],
+      "score": 100,
+      "tradeOffs": [],
+      "unknowns": []
+    },
+    "facts": {
+      "candidateKey": "fixture%3Aemployee:exact-stock:00000000-0000-4000-8000-000000000987",
+      "contractVersion": "vehicle-snapshot-v1",
+      "display": {
+        "images": [],
+        "name": "Synthetic exact car 987",
+        "photo": null
+      },
+      "facts": {
+        "body": {
+          "provenance": {
+            "assurance": "synthetic-scenario",
+            "observedAt": "2026-11-05T12:00:00.000Z",
+            "sourceRef": "fixture:employee",
+            "version": "facts-v1"
+          },
+          "status": "known",
+          "unit": null,
+          "value": "estate"
+        },
+        "boot": {
+          "provenance": {
+            "assurance": "synthetic-scenario",
+            "observedAt": "2026-11-05T12:00:00.000Z",
+            "sourceRef": "fixture:employee",
+            "version": "facts-v1"
+          },
+          "status": "known",
+          "unit": "L",
+          "value": 500
+        },
+        "eligibilityModelKey": {
+          "provenance": {
+            "assurance": "synthetic-scenario",
+            "observedAt": "2026-11-05T12:00:00.000Z",
+            "sourceRef": "fixture:employee",
+            "version": "facts-v1"
+          },
+          "status": "known",
+          "unit": null,
+          "value": "G21 Touring|320i"
+        },
+        "fuel": {
+          "provenance": {
+            "assurance": "synthetic-scenario",
+            "observedAt": "2026-11-05T12:00:00.000Z",
+            "sourceRef": "fixture:employee",
+            "version": "facts-v1"
+          },
+          "status": "known",
+          "unit": null,
+          "value": "petrol"
+        },
+        "mpg": {
+          "provenance": {
+            "assurance": "synthetic-scenario",
+            "observedAt": "2026-11-05T12:00:00.000Z",
+            "sourceRef": "fixture:employee",
+            "version": "facts-v1"
+          },
+          "status": "known",
+          "unit": "mpg-imperial",
+          "value": 45
+        },
+        "seats": {
+          "provenance": {
+            "assurance": "synthetic-scenario",
+            "observedAt": "2026-11-05T12:00:00.000Z",
+            "sourceRef": "fixture:employee",
+            "version": "facts-v1"
+          },
+          "status": "known",
+          "unit": "count",
+          "value": 5
+        },
+        "sizeClass": {
+          "provenance": {
+            "assurance": "synthetic-scenario",
+            "observedAt": "2026-11-05T12:00:00.000Z",
+            "sourceRef": "fixture:employee",
+            "version": "facts-v1"
+          },
+          "status": "known",
+          "unit": "ordinal-1-5",
+          "value": 3
+        },
+        "tags": {
+          "provenance": {
+            "assurance": "synthetic-scenario",
+            "observedAt": "2026-11-05T12:00:00.000Z",
+            "sourceRef": "fixture:employee",
+            "version": "facts-v1"
+          },
+          "status": "known",
+          "unit": null,
+          "value": [
+            "cruiser"
+          ]
+        },
+        "zeroTo62": {
+          "provenance": {
+            "assurance": "synthetic-scenario",
+            "observedAt": "2026-11-05T12:00:00.000Z",
+            "sourceRef": "fixture:employee",
+            "version": "facts-v1"
+          },
+          "status": "known",
+          "unit": "s",
+          "value": 7
+        }
+      },
+      "identityKind": "exact-stock",
+      "observedAt": "2026-11-05T12:00:00.000Z",
+      "snapshotVersion": "snapshot-v1",
+      "sourceKeys": {
+        "stockId": "00000000-0000-4000-8000-000000000987"
+      },
+      "sourceNamespace": "fixture:employee"
+    },
+    "orderNumber": "0999987",
+    "orderUuid": "00000000-0000-4000-8000-000000000987",
+    "policyVersion": "gcsp-policy-v1",
+    "quoteId": "quote-one",
+    "quotedAt": "2026-11-05T12:00:00.000Z",
+    "revisions": {
+      "availability": "availability-v1",
+      "brief": 1,
+      "clock": "2",
+      "facts": "employee-facts-v1",
+      "policy": "gcsp-policy-v1",
+      "quote": 1,
+      "snapshot": "snapshot-v1",
+      "stock": "stock-v1",
+      "terms": "gcsp-policy-v1:price.choices-fs-uk.015:allowance.choices-fs-uk.G7:2026-11-05T12:00:00.000Z"
+    },
+    "terms": {
+      "allowanceInputs": {
+        "allowance": {
+          "unit": "points",
+          "value": 1300
+        }
+      },
+      "contribution": null,
+      "kind": "employee-scheme",
+      "points": {
+        "unit": "points",
+        "value": 1100
+      },
+      "provenance": {
+        "assurance": "synthetic-scenario",
+        "observedAt": "2026-11-05T12:00:00.000Z",
+        "sourceRef": "docs/gcsp/shared-contracts.md",
+        "version": "gcsp-policy-v1"
+      },
+      "termsVersion": "gcsp-policy-v1:price.choices-fs-uk.015:allowance.choices-fs-uk.G7:2026-11-05T12:00:00.000Z",
+      "validFrom": "2026-11-05T12:00:00.000Z",
+      "validUntil": "2026-11-05T13:00:00.000Z"
+    },
+    "validUntil": "2026-11-05T13:00:00.000Z"
+  },
+  "reason": "awaiting-decision",
+  "runId": "demo-4c7d45fb1cefd387adf500299f0b119f",
+  "schemaVersion": 1,
+  "serverNow": "2026-11-05T12:00:00.000Z",
+  "state": "pending"
+}
