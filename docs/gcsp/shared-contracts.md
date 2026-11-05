@@ -453,6 +453,20 @@ FUCQ-93 adds the [captured outbox contract](captured-outbox.md): `NotificationDi
 
 FUCQ-97 adds the presenter-only route `GET /api/gcsp/presenter/outbox` (`createOutboxRoutes`, composed as `gcspOutbox: { repository }`) and the `<gcsp-outbox>` viewer; see [presenter-outbox-contract.md](presenter-outbox-contract.md).
 
+## Atomic buddy hold producer · FUCQ-100 checkpoint
+
+The additive [buddy producer contract](buddy-holds.md) records the exact allocation-candidate revisions,
+transaction-bound BriefService revalidation, shared conditional claim, pinned quote/offer/outbox shape and
+hashed environment/run/offer token binding. The current independent slice accepts a real trusted employee
+context and explicit local-synthetic authority. `tryClaim` accepts FUCQ-96's published candidate and seven
+revision pins, then re-evaluates its quote against stored authority. Renewal derives from brief, slot,
+then employee and remains on both hold and claim. Automatic outbox insert receipts omit only the link;
+same-digest replay reconstructs the exact original result from original insert input, including after CAS.
+Generic receipts retain their contract. Downstream notification callback receipts still need the separately
+granted token-custody repair. Backend worker composition, expiry/remote reconciliation, actual FUCQ-96
+invocation and completed FUCQ-66 service integration remain outstanding. No migration, central server
+registration or screen is added.
+
 ## Owned renewal-risk cases · FUCQ-112
 
 `createRenewalCaseService({ repository, policy, clock, identity })` supplies `readHelp(context)`, `readOwn(context, { caseId? })`, `requestHelp(context, { commandId, reason })`, `list(context)`, `update(context, command)` and `start()`. Help and case reads are side-effect free. Employee methods require the trusted employee context; Greg/presenter may list and update the current run as the scheme-team owner. A request opens one active case for the actual employee renewal; another request appends its reason/history to that case. Command replay returns its original outcome. Missing renewal identity returns actionable `renewal-context-required`; an unknown actual contract end remains `renewalDeadline: null, renewalDeadlineState: needs-confirmation` and cannot invent a deadline trigger or an extension date.
