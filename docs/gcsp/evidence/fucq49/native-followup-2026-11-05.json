@@ -1,0 +1,55 @@
+{
+  "version": 2,
+  "date": "2026-11-05",
+  "source": "BMW public UK configurator unsupported demo source",
+  "native": true,
+  "limits": {
+    "requests": 3,
+    "aggregateIncludingPrior": 6,
+    "aggregateBytesIncludingPrior": 6291456,
+    "additionalBytes": 5585902,
+    "images": 1,
+    "retries": 0,
+    "concurrency": 1,
+    "totalMs": 90000,
+    "perRequestMs": 15000
+  },
+  "prior": {
+    "requests": 3,
+    "bytes": 705554,
+    "imageRequests": 0
+  },
+  "requests": [
+    {
+      "label": "known-public-settings",
+      "status": 404,
+      "contentType": "unexpected"
+    }
+  ],
+  "image": null,
+  "identity": {
+    "manifestModel": "not-echoed",
+    "manifestPaint": "not-echoed",
+    "manifestDate": "not-echoed",
+    "manifestOptions": "not-echoed",
+    "requestInputsAreNotResolvedEvidence": true
+  },
+  "localSelectorSmoke": {
+    "passed": true,
+    "cases": [
+      "parent Gallery with child HEROFRONT selected",
+      "wrong viewport refused",
+      "duplicate candidate refused"
+    ]
+  },
+  "status": "qualification-incomplete",
+  "stopReason": "http-error",
+  "actual": {
+    "additionalRequests": 1,
+    "aggregateRequestsIncludingPrior": 4,
+    "additionalBytes": 0,
+    "aggregateBytesIncludingPrior": 705554,
+    "imageRequests": 0,
+    "elapsedMs": 209
+  }
+}

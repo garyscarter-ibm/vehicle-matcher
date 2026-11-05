@@ -438,13 +438,18 @@ test('licence qualification is checked at requested collection; unknown and expi
   const f = await setup(); await save(f); await insertCars(f);
   assert.equal((await f.service.browseStock(f.context)).value.total, 1);
   await changeRecords(f, (r) => { r.drivers[0].licence.validUntil = '2026-11-19'; }, 'expiry');
-  await save(f, {}, { commandId: 'expiry-refresh', expectedDraftVersion: 1 });
+  const expiredSave = await save(f, {}, { commandId: 'expiry-refresh', expectedDraftVersion: 1 });
+  assert.equal(expiredSave.status, 'invalid'); assert.equal(expiredSave.code, 'licence-not-valid-at-collection');
   const expired = await f.service.browseStock(f.context);
-  assert.equal(expired.value.total, 0); assert.ok(expired.value.decisions[0].blockers.some((b) => b.code === 'licence-not-valid-at-collection'));
+  assert.equal(expired.status, 'stale-version');
+  assert.equal((await f.service.readDraft(f.context)).value.draftVersion, 1);
   await changeRecords(f, (r) => { r.drivers[0].licence.validUntil = null; }, 'unknown-licence');
-  await save(f, {}, { commandId: 'unknown-refresh', expectedDraftVersion: 2 });
+  const unknownSave = await save(f, {}, { commandId: 'unknown-refresh', expectedDraftVersion: 1 });
+  assert.equal(unknownSave.status, 'invalid'); assert.equal(unknownSave.code, 'licence-unconfirmed');
   const unknown = await f.service.browseStock(f.context);
-  assert.equal(unknown.value.total, 0); assert.ok(unknown.value.decisions[0].unknowns.some((b) => b.code === 'licence-unconfirmed'));
+  assert.equal(unknown.status, 'stale-version');
+  const history = (await f.repository.query(f.context, 'event_receipts', { consumerId: 'manual:draft:employee-paula' })).value;
+  assert.equal(history.length, 1);
 });
 
 test('local source changes between preparation and transaction return a safe stale refusal', async () => {
