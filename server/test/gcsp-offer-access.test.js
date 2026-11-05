@@ -2,12 +2,14 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { Readable } from 'node:stream';
 import { writeFile } from 'node:fs/promises';
+import { once } from 'node:events';
 import { createMemoryRepository, createMemoryStore, inputDigest } from '../gcsp/repository/index.js';
 import { createPolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { createEmployeeRecommendationService } from '../gcsp/recommendation/index.js';
 import { createOfferAccessService, OFFER_ACCESS_COOKIE, OFFER_ACCESS_CONSUMER } from '../gcsp/offers/access.js';
 import { createOfferAccessHandler } from '../gcsp/offers/access-http.js';
+import { buildServer } from '../index.js';
 import { stock as candidateStock, brief, fact } from './helpers/employee-recommendation.js';
 
 if (!process.env.GCSP_OFFER_TOKEN_MODULE) throw Error('Run the scoped supervisor with the verified published FUCQ-100 token module.');
@@ -16,7 +18,7 @@ const cmd = (commandId, data = commandId) => ({ commandId, inputDigest: inputDig
 const cookieOf = (value) => [value].flat().map((cookie) => cookie.split(';')[0]).join('; ');
 const reference = (table, scope, key) => ({ table, key: { runId: scope.runId, ...key } });
 
-async function fixture({ mutateDecision } = {}) {
+async function fixture({ mutateDecision, currentCarComparison } = {}) {
   const store = createMemoryStore(); const repository = createMemoryRepository({ store });
   assert.equal((await repository.open()).status, 'ok');
   const policy = createPolicyService(); let wall = '2026-11-05T12:00:00.000Z';
@@ -48,7 +50,7 @@ async function fixture({ mutateDecision } = {}) {
       ['stock', { orderUuid: candidate.orderUuid, orderNumber: '0999987', configurationId: candidate.configurationId, state: 'held', available: false, held: true }],
       ['quotes', { quoteId: 'quote-one', orderUuid: candidate.orderUuid, employeeId: employeeContext.employeeId,
         entitlementSlotId: employeeContext.entitlementSlotId, configurationId: candidate.configurationId, facts: decision.snapshot,
-        eligibility: { decision }, terms: decision.terms, allowance: decision.terms.allowanceInputs,
+        eligibility: { decision, ...(currentCarComparison ? { currentCarComparison } : {}) }, terms: decision.terms, allowance: decision.terms.allowanceInputs,
         briefVersion: 1, policyVersion: employeeContext.policyVersion, quotedAt: now.now, validUntil: decision.terms.validUntil }],
       ['holds', { holdId: 'hold-one', orderUuid: candidate.orderUuid, employeeId: employeeContext.employeeId,
         entitlementSlotId: employeeContext.entitlementSlotId, type: 'buddy-offer', state: 'active', quoteId: 'quote-one', policyVersion: employeeContext.policyVersion, expiresAt }],
@@ -187,6 +189,31 @@ test('nested projection preserves public image/fact provenance while excluding u
   assert.deepEqual(dto.quote.decision.reasons.at(-1), { code: 'safe-reason' });
 });
 
+test('pinned partial current-car model and safe provenance remain distinct from unavailable specification/points', async () => {
+  const currentCarComparison = { schemaVersion: '1', comparisonAvailable: false,
+    binding: { contractId: 'private-contract', employeeVersion: 99, slotVersion: 77, source: { sourceRef: 'private-source' } },
+    display: { state: 'partial', model: 'Fictional BMW 320i Touring', employeeId: 'private-owner',
+      source: { mode: 'synthetic', sourceVersion: 'manual-records-v1', observedAt: '2026-11-05T11:00:00.000Z', sourceRef: 'private-ref' },
+      unknowns: ['configuration','body','fuel','seats','boot','mpg','zeroTo62','points'] } };
+  const f = await fixture({ currentCarComparison }); const read = await f.exchange(); assert.equal(read.status, 'ok');
+  const dto = read.value.offer.comparison; assert.equal(dto.status, 'partial'); assert.equal(dto.comparisonAvailable, false);
+  assert.equal(dto.currentCar.model, currentCarComparison.display.model); assert.equal(dto.currentCar.source.mode, 'synthetic');
+  assert.deepEqual(dto.unknowns, currentCarComparison.display.unknowns);
+  assert.ok(!JSON.stringify(dto).match(/private-|contractId|employeeVersion|slotVersion|sourceRef|employeeId/));
+  if (process.env.GCSP_OFFER_COMPARISON_SAMPLE) await writeFile(process.env.GCSP_OFFER_COMPARISON_SAMPLE, JSON.stringify(read.value.offer, null, 2)+'\n');
+});
+
+test('unreviewed, malformed, future or falsely complete current-car metadata stays unavailable', async () => {
+  for (const currentCarComparison of [
+    { schemaVersion:'1', comparisonAvailable:true, display:{state:'partial',model:'Unsupported complete comparison'} },
+    { schemaVersion:'1', comparisonAvailable:false, display:{state:'partial',model:'Future',source:{mode:'synthetic',sourceVersion:'v1',observedAt:'2028-01-01T00:00:00.000Z'}} },
+    { schemaVersion:'1', comparisonAvailable:false, display:{state:'unavailable',model:'Do not expose',source:null} },
+  ]) {
+    const f = await fixture({ currentCarComparison }); const read = await f.exchange(); assert.equal(read.status, 'ok');
+    assert.equal(read.value.offer.comparison.status, 'unavailable'); assert.equal(read.value.offer.comparison.currentCar, null);
+  }
+});
+
 test('account route uses real resource authority and converges on the same privately branded capability', async () => {
   const f = await fixture(); const link = await f.exchange(); const account = await f.service.fromAccount(f.employeeContext, { offerId: f.binding.offerId });
   assert.equal(link.status, 'ok'); assert.equal(account.status, 'ok'); assert.deepEqual(account.value.offer, link.value.offer);
@@ -199,6 +226,29 @@ test('account route uses real resource authority and converges on the same priva
   const other = await f.identity.switchPrincipal(f.presenter.value.context, 'demo-alex', 'alex'); assert.equal(other.status, 'ok');
   assert.equal((await f.service.fromAccount(other.value.context, f.selector)).status, 'not-found');
   assert.equal((await f.identity.requireRole(link.value.context, 'employee')).status, 'forbidden');
+});
+
+test('account decisions recheck real write authority while views use read and token access has no employee identity', async () => {
+  const f = await fixture(); const calls = [];
+  const authorize = f.identity.authorizeResource.bind(f.identity);
+  f.identity.authorizeResource = async (context, resource, action) => {
+    calls.push({ context, resource, action });
+    return authorize(context, resource, action);
+  };
+  const account = await f.service.fromAccount(f.employeeContext, f.selector);
+  assert.equal(account.status, 'ok'); assert.ok(calls.length > 0);
+  assert.ok(calls.every(({ action }) => action === 'read'));
+  calls.length = 0;
+  assert.equal((await f.service.authorizeOffer(account.value.context, f.selector, 'decide')).status, 'ok');
+  assert.deepEqual(calls, [{ context: f.employeeContext, resource: reference('offers', f.binding, { offerId: f.binding.offerId }), action: 'write' }]);
+  calls.length = 0;
+  const link = await f.exchange(); assert.equal(link.status, 'ok');
+  assert.equal((await f.service.authorizeOffer(link.value.context, f.selector, 'decide')).status, 'ok');
+  assert.deepEqual(calls, []); assert.equal(link.value.context.employeeId, undefined);
+  assert.equal((await f.service.authorizeOffer(link.value.context, { ...f.selector, offerId: 'another' }, 'decide')).status, 'not-found');
+  await f.patch('offers', { offerId: f.binding.offerId }, { employeeId: 'another-employee' });
+  assert.equal((await f.service.authorizeOffer(account.value.context, f.selector, 'decide')).status, 'not-found');
+  assert.equal(calls.at(-1).action, 'write');
 });
 
 test('cookie binding cannot be changed to another offer, duplicated or forged', async () => {
@@ -306,4 +356,44 @@ test('HTTP refuses token URLs, duplicate run selectors, identity claims and over
   }
   assert.equal((await request(f, '/api/gcsp/offers/access', { method: 'POST', body: { ...body, roles: ['employee'] } })).status, 400);
   for (const rawBody of ['{', '[]', 'A'.repeat(16385)]) assert.equal((await request(f, '/api/gcsp/offers/access', { method: 'POST', rawBody })).status, 400);
+});
+
+test('actual buildServer registers link exchange, cookie reload, account parity and old-run reads behind the shared gate', async () => {
+  const f = await fixture(); const previous = process.env.DEMO_ACCESS_KEY;
+  process.env.DEMO_ACCESS_KEY = 'offer-access-test-gate';
+  const server = buildServer({ gcspIdentity:f.identity, gcspClock:f.clock, gcspOfferAccess:f.service, gcspAllowedOrigins:['https://offer.test'] });
+  let port; let listening = false;
+  const portRecord = async (closed) => {
+    if (process.env.GCSP_OFFER_ACCESS_PORT_RECORD) await writeFile(process.env.GCSP_OFFER_ACCESS_PORT_RECORD,
+      JSON.stringify({pid:process.pid,host:'127.0.0.1',port,closed})+'\n');
+  };
+  try {
+    server.listen(0, '127.0.0.1'); await once(server,'listening'); listening = true;
+    port = server.address().port; await portRecord(false);
+    const call = async (path, {method='GET',body,cookie,gate=true,origin='https://offer.test'}={}) => {
+      const response = await fetch(`http://127.0.0.1:${port}${path}`, {method,
+        headers:{Origin:origin,...(gate ? {'X-Access-Key':'offer-access-test-gate'} : {}),...(cookie ? {cookie} : {}),...(body ? {'Content-Type':'application/json'} : {})},
+        ...(body ? {body:JSON.stringify(body)} : {})});
+      return {status:response.status,headers:response.headers,json:response.status===204?null:await response.json()};
+    };
+    const body = {...f.selector,token:f.rawToken};
+    assert.equal((await call('/api/gcsp/offers/access',{method:'OPTIONS',gate:false})).status,204);
+    assert.equal((await call('/api/gcsp/offers/access',{method:'POST',body,gate:false})).status,401);
+    assert.equal((await call('/api/gcsp/offers/access',{method:'POST',body,origin:'https://other.test'})).status,403);
+    const exchange = await call('/api/gcsp/offers/access',{method:'POST',body}); assert.equal(exchange.status,200);
+    const cookie = cookieOf(exchange.headers.getSetCookie());
+    const path = `/api/gcsp/offers/offer-one?runId=${encodeURIComponent(f.binding.runId)}`;
+    const reload = await call(path,{cookie}); assert.equal(reload.status,200); assert.deepEqual(reload.json,exchange.json);
+    const account = await call('/api/gcsp/offers/offer-one',{cookie:cookieOf(f.employee.value.setCookie)});
+    assert.equal(account.status,200); assert.deepEqual(account.json,exchange.json);
+    assert.equal(reload.headers.get('cache-control'),'no-store');
+    const context = await call('/api/gcsp/context',{cookie:cookieOf(f.employee.value.setCookie)});
+    assert.equal(context.status,200); assert.equal(context.json.value.employeeId,f.employeeContext.employeeId);
+    await f.reset();
+    const old = await call(path,{cookie}); assert.equal(old.status,409); assert.equal(old.json.status,'stale-run');
+    assert.deepEqual(Object.keys(old.json).sort(),['contractVersion','reason','status']);
+  } finally {
+    if (listening) { server.closeAllConnections(); await new Promise((resolve,reject)=>server.close((error)=>error?reject(error):resolve())); await portRecord(true); }
+    if (previous===undefined) delete process.env.DEMO_ACCESS_KEY; else process.env.DEMO_ACCESS_KEY=previous;
+  }
 });

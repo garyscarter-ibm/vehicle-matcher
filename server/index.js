@@ -45,6 +45,7 @@ import { normalizeBrand, brandTuning } from './brands.js';
 import { fetchDealerDirectory } from './dealers.js';
 import { geocodePostcode } from './geocode.js';
 import { createGcspHandler } from './gcsp/identity/http.js';
+import { createOfferAccessHandler } from './gcsp/offers/access-http.js';
 import { createEmployeeRecommendationRoutes } from './gcsp/recommendation/http.js';
 import { createClockRoutes } from './gcsp/clock/http.js';
 import { createOutboxRoutes } from './gcsp/notify/http.js';
@@ -866,6 +867,11 @@ export function buildServer(deps = {}) {
     ...createClockRoutes(deps.gcspClock), ...createOutboxRoutes(deps.gcspOutbox), ...createScenarioRoutes(deps.gcspScenarios, deps.gcspClock), ...createBriefRoutes(deps.gcspBrief, deps.gcspBriefEditor), ...createActivityRoutes(deps.gcspActivity), ...createCaseRoutes(deps.gcspCases), ...createManualContextRoutes(deps.gcspManual), ...createGregRoutes(deps.gcspGreg), ...(deps.gcspRoutes || [])],
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
+  const handleOfferAccess = createOfferAccessHandler({
+    service: deps.gcspOfferAccess,
+    identity: deps.gcspIdentity,
+    allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
+  });
   const handleVehicleEvidence = createVehicleEvidenceHandler({
     lookup: deps.gcspVehicleEvidence?.lookup || createLocalVehicleEvidenceLookup({
       root: deps.gcspVehicleEvidence?.root || process.env.GCSP_VEHICLE_EVIDENCE_ROOT,
@@ -894,9 +900,11 @@ export function buildServer(deps = {}) {
   const server = createServer(async (req, res) => {
     const { pathname, searchParams } = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
     const isGcsp = pathname === '/api/gcsp' || pathname.startsWith('/api/gcsp/');
+    const isOfferAccess = /^\/api\/gcsp\/offers\/[^/]+$/.test(pathname);
     const isVehicleEvidence = isVehicleEvidencePath(req.url);
 
     if (req.method === 'OPTIONS') {
+      if (isOfferAccess) return handleOfferAccess({ req, res, pathname, searchParams, sendJson });
       if (isVehicleEvidence) return handleVehicleEvidence({ req, res, sendJson, corsHeaders: CORS_HEADERS });
       if (isGcsp) return handleGcsp({ req, res, pathname, searchParams, sendJson, corsHeaders: CORS_HEADERS });
       res.writeHead(204, CORS_HEADERS);
@@ -909,6 +917,7 @@ export function buildServer(deps = {}) {
 
     // Health and preflight stay open; every API consumer below passes the shared gate.
     if (!isAuthorized(req)) {
+      if (isOfferAccess) return handleOfferAccess({ req, res, pathname, searchParams, sendJson, gateAuthorized: false });
       if (isVehicleEvidence) return handleVehicleEvidence({ req, res, sendJson, gateAuthorized: false });
       if (isGcsp) return handleGcsp({ req, res, pathname, searchParams, sendJson, gateAuthorized: false });
       return sendJson(res, 401, { error: 'Unauthorized' });
@@ -918,6 +927,7 @@ export function buildServer(deps = {}) {
 
     if (isGcsp) {
       await gcspStartup;
+      if (isOfferAccess) return handleOfferAccess({ req, res, pathname, searchParams, sendJson });
       return handleGcsp({ req, res, pathname, searchParams, sendJson });
     }
 

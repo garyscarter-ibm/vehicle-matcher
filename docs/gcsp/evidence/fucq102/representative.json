@@ -5,9 +5,20 @@
   ],
   "clockVersion": "2",
   "comparison": {
+    "comparisonAvailable": false,
     "currentCar": null,
     "reason": "pinned-current-car-comparison-unavailable",
-    "status": "unavailable"
+    "status": "unavailable",
+    "unknowns": [
+      "configuration",
+      "body",
+      "fuel",
+      "seats",
+      "boot",
+      "mpg",
+      "zeroTo62",
+      "points"
+    ]
   },
   "expiresAt": "2026-11-05T14:00:00.000Z",
   "holdState": "active",

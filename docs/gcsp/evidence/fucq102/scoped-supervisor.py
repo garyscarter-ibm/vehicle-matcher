@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bounded, credential-unset, listener-free FUCQ-102 proof. No dependency installation."""
+"""Bounded, credential-unset FUCQ-102 proof with one owned loopback listener. No installs."""
 import hashlib
 import importlib.util
 import json
@@ -36,12 +36,14 @@ env = dict(os.environ)
 for key in list(env):
     if key.startswith(('PG', 'DB_')) or 'DATABASE' in key or 'POSTGRES' in key:
         env.pop(key)
+for key in ['NODE_DEBUG', 'NODE_DEBUG_NATIVE', 'DEBUG']:
+    env.pop(key, None)
 paths = ['server/gcsp/offers/access.js', 'server/gcsp/offers/access-http.js',
-         'server/test/gcsp-offer-access.test.js', str(Path(__file__).relative_to(ROOT))]
+         'server/index.js', 'server/test/gcsp-offer-access.test.js', str(Path(__file__).relative_to(ROOT))]
 source_hashes = {path: hashlib.sha256((ROOT / path).read_bytes()).hexdigest() for path in paths}
-plan = {'scope': 'independent memory/service/streamed HTTP; retained-pg loader variant',
+plan = {'scope': 'memory/service/streamed HTTP and one loopback host registration; retained-pg loader variant',
         'tests': ['node --test --test-concurrency=1 server/test/gcsp-offer-access.test.js'],
-        'excluded': ['native database', 'listener/browser', 'actual producer', 'central runtime', 'full suite'],
+        'excluded': ['native database', 'browser', 'actual producer', 'runtime bootstrap/deployment', 'full suite'],
         'source_hashes': source_hashes, 'token_ref': TOKEN_REF, 'token_sha256': TOKEN_HASH,
         'base': 'b95b4c8ad8a4534cbf03f287eb62fc8a57bbda96',
         'head': g.git(ROOT, ['rev-parse', 'HEAD'])[1].strip(),
@@ -59,6 +61,25 @@ scratch.record.update(root=str(scratch.root), supervisor_finalizer=str(Path(__fi
                       ports=[], profiles=[], dependency_links=[], retained_summary=str(record_dir / 'summary.json'))
 r.atomic_json(scratch.manifest, scratch.record)  # External manifest before any scratch allocation.
 samples = []; identities = {}; observed_groups = set(); peak_rss = [0]
+port_note = {}
+
+def sync_port():
+    journal = scratch.root / 'ports.json'
+    if journal.exists():
+        note = json.loads(journal.read_text())
+        if note.get('host') != '127.0.0.1' or not isinstance(note.get('port'), int) or not 0 < note['port'] < 65536:
+            raise RuntimeError('Invalid owned listener record')
+        port_note.update(note)
+        scratch.record['ports'] = [dict(port_note)]
+        r.atomic_json(scratch.manifest, scratch.record)
+        r.atomic_json(record_dir / 'ports.json', port_note)
+
+def port_absent():
+    if not port_note:
+        return True
+    probe = subprocess.run(['/usr/sbin/lsof', '-nP', '-iTCP:'+str(port_note['port']), '-sTCP:LISTEN', '-Fpn'],
+                           capture_output=True, text=True, timeout=3)
+    return probe.returncode == 1 and not probe.stdout.strip()
 original_rss = r.group_rss
 
 def recursive_rss(pgid):
@@ -90,11 +111,12 @@ r.group_rss = recursive_rss
 log = record_dir / 'checks.log'
 base_sample = scratch.sample
 def combined_sample():
+    sync_port()
     size = base_sample() + (log.stat().st_size if log.exists() else 0)
     scratch.record['peak'] = max(scratch.record['peak'], size)
     return size
 scratch.sample = combined_sample
-reserved = False; result = {}; failure = None
+reserved = False; result = {}; failure = None; dependencies_validated = False
 try:
     allocation = host.acquire(scratch.token, 128*r.MIB, 768*r.MIB, str(ROOT), root=scratch.root)
     reserved = True
@@ -107,6 +129,8 @@ try:
         loader.write_text('export async function resolve(s,c,n){if(s==="pg")return {url:' + json.dumps(PG.as_uri()) + ',shortCircuit:true};return n(s,c);}\n')
         env['GCSP_OFFER_TOKEN_MODULE'] = token_path.as_uri()
         env['GCSP_OFFER_ACCESS_SAMPLE'] = str(scratch.root / 'representative.json')
+        env['GCSP_OFFER_COMPARISON_SAMPLE'] = str(scratch.root / 'comparison-representative.json')
+        env['GCSP_OFFER_ACCESS_PORT_RECORD'] = str(scratch.root / 'ports.json')
         command = ['node', '--no-warnings', '--loader', str(loader), '--test', '--test-reporter=tap', '--test-concurrency=1', 'server/test/gcsp-offer-access.test.js']
         if '--strict' in sys.argv:
             stamp = module('fucq102_stamp', ROOT / '_tools/test_stamp.py')
@@ -139,7 +163,7 @@ try:
             os.environ.clear(); os.environ.update(env)
             os.environ['TEST_STAMP_DIR'] = str(record_dir / 'strict')
             strict_rc = stamp.main(['--root',str(ROOT),'--jobs','1','--targeted',plan['base'],
-                '--command',shlex.join(command),'--reason','Explicit new one-offer exchange/read/account/hash-session and streamed HTTP boundary checks; Node affected selector unsupported. Actual producer/native/host/browser/full remain excluded.'])
+                '--command',shlex.join(command),'--reason','Explicit one-offer exchange/read/account write-authority/hash-session, streamed HTTP and one loopback buildServer registration checks; Node affected selector unsupported. Actual producer/native/runtime bootstrap/browser/full remain excluded.'])
             result['strict_rc'] = strict_rc
             if strict_rc: raise RuntimeError('Strict targeted evidence failed')
         else:
@@ -148,12 +172,17 @@ try:
         if result['rc'] == 0 and not result['issue']:
             sample = json.loads((scratch.root / 'representative.json').read_text())
             r.atomic_json(record_dir / 'representative.json', sample)
+            comparison_sample = json.loads((scratch.root / 'comparison-representative.json').read_text())
+            r.atomic_json(record_dir / 'comparison-representative.json', comparison_sample)
+        sync_port()
+        if not port_absent(): raise RuntimeError('Owned listener remains or absence is uncertain')
         for group in scratch.record['groups']:
             if r.group_has_live_members(group) is not False: raise RuntimeError('Owned process group still live or uncertain')
         for dep in plan['dependencies']:
             path = Path(dep['path']); st = path.stat()
             if (st.st_dev, st.st_ino, hashlib.sha256(path.read_bytes()).hexdigest()) != (dep['device'], dep['inode'], dep['sha256']):
                 raise RuntimeError('Read-only dependency identity changed')
+        dependencies_validated = True
 except BaseException as error:
     failure = type(error).__name__  # Never retain exception payloads containing provider/request secrets.
 finally:
@@ -166,8 +195,8 @@ finally:
     summary = {'scope': plan['scope'], 'source_hashes': source_hashes, 'result': result, 'counts': counts,
                'failure': failure, 'cleanup': {'scratch_absent': absent, 'manifest': str(scratch.manifest),
                'groups_absent': all(r.group_has_live_members(group) is False for group in scratch.record['groups']),
-               'reservation_released': reserved, 'ports': [], 'profiles': [], 'dependency_links': [],
-               'dependencies_unchanged': failure != 'Read-only dependency identity changed'}, 'peak_rss': peak_rss[0]}
+               'reservation_released': scratch.token not in r.read_json(host.path, {}), 'ports': [port_note] if port_note else [], 'ports_absent': port_absent(), 'profiles': [], 'dependency_links': [],
+               'dependencies_unchanged': dependencies_validated}, 'peak_rss': peak_rss[0]}
     r.atomic_json(record_dir / 'summary.json', summary)
     if result.get('rc') == 0 and not result.get('issue') and not failure:
         log.unlink(missing_ok=True)

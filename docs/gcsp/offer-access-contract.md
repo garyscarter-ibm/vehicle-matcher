@@ -33,8 +33,11 @@ Every response is `Cache-Control: no-store`; the HTTP adapter also sets
 `Referrer-Policy: no-referrer`. Exact configured origins, credentialed CORS, the
 existing shared access gate and a present allowed Origin on POST precede parsing or
 service calls. Neither GET nor the original landing request accepts the raw token.
-Central registration must route these paths to this adapter before the normal
-employee-only identity handler. No central route edits are in this checkpoint.
+Central registration routes these paths to this adapter before the normal
+employee-only identity handler. Trusted `buildServer({ gcspOfferAccess,
+gcspIdentity, gcspAllowedOrigins, gcspClock })` composition is supported; absent
+dependencies return unavailable. The normal application bootstrap is a separate
+unverified integration boundary.
 
 ## Reload and server context
 
@@ -60,6 +63,9 @@ authority. `authorizeOffer(accessContext, { runId, offerId }, 'read' | 'decide')
 is the future FUCQ-106 port: it rechecks the exact binding, live credential/account
 authorisation, current run and current stored offer. FUCQ-106 still owns its
 transactional decision validation, eligibility and hold deadline check.
+Account capabilities recheck `identity.authorizeResource(..., 'write')` for
+`decide`, and `read` for views. The token capability checks its private one-offer
+session binding and expiry without creating or consulting an employee identity.
 
 ## Safe current-state DTO · schemaVersion 1
 
@@ -82,9 +88,11 @@ An `ok` response has `value`:
     quotedAt, validUntil, facts, decision, terms, allowance
   },
   comparison: {
-    status: 'unavailable',
+    status: 'unavailable', // or 'partial' for the reviewed model metadata below
     reason: 'pinned-current-car-comparison-unavailable',
-    currentCar: null
+    comparisonAvailable: false,
+    currentCar: null,     // or { model, source: { mode, sourceVersion, observedAt } }
+    unknowns: ['configuration','body','fuel','seats','boot','mpg','zeroTo62','points']
   }
 }
 ```
@@ -118,11 +126,21 @@ the real recommendation evaluator, PolicyService, DemoClock and access service
 over explicitly synthetic inputs. It is presentation-schema evidence, not a
 claim that the real FUCQ-100 producer or deployed route has been exercised.
 
-FUCQ-100's published quote currently pins `facts`, `eligibility.decision`, `terms`
-and `allowance`; it does not publish a pinned current-car comparison. The explicit
-unavailable comparison above is the truthful initial contract. A real producer
-extension and exact safe comparison fields must be coordinated before claiming
-that acceptance edge; a page fixture is not its proof.
+FUCQ-100 at published `a7fc8580efba36c329b2479711d6b66db53962bd` pins
+`eligibility.currentCarComparison` alongside facts/decision/terms/allowance. Its
+reviewed `display` supplies only a partial model label and dated source metadata;
+it does not supply authenticated VIN/configuration/specification/current points.
+The reader accepts `schemaVersion:'1'`, `comparisonAvailable:false` and
+`display.state:'partial'` with a nonempty model of at most 256 characters and
+`source:{mode:'synthetic'|'dated-snapshot'|'authorised-live',sourceVersion:string,
+observedAt:UTC string}` no later than quote time. It returns only those model/source
+fields, `status:'partial'`, `reason:'current-car-facts-unavailable'` and the eight
+unknowns listed above. It never copies internal `binding`, contract/employee/slot
+identifiers or revisions, `sourceRef`, raw manual records or inferred facts.
+Absent/malformed/future/unreviewed metadata returns the unavailable/null fallback.
+`evidence/fucq102/comparison-representative.json` shows this additive DTO, generated
+by the reader over explicit synthetic pinned metadata matching that reviewed shape.
+It is not actual producer-to-access evidence or completed FUCQ-105 comparison.
 
 | Stored state or boundary | DTO state / reason | Actions |
 |---|---|---|
@@ -155,8 +173,9 @@ is adding public `runId` beside `offerId`; the token remains in its fragment.
 Independent checks cover real memory repository/PolicyService/DemoIdentity/DemoClock,
 the exact published token verifier, every presentation state, no business mutation,
 account parity, hash/session persistence, reset/expiry/race refusal and mocked HTTP
-streams without a listener. Actual producer-to-read, local expiry lifecycle,
-remote uncertainty, central host registration, deployed cookies/origins and the
+streams, plus actual `buildServer` registration over one owned loopback listener.
+Actual producer-to-read, local expiry lifecycle, remote uncertainty, application
+bootstrap, deployed cookies/origins and the
 authored `npm test` remain integration gates until their observed evidence exists.
 
 Backend only: no screen or new component is changed. The inspected shell references

@@ -46,6 +46,23 @@ const explanation = (rows) => Array.isArray(rows) ? rows.map((row) => {
   }
   return projected;
 }) : [];
+const comparisonFields = ['configuration', 'body', 'fuel', 'seats', 'boot', 'mpg', 'zeroTo62', 'points'];
+function currentCarComparison(quote) {
+  const pinned = quote.eligibility?.currentCarComparison;
+  const display = pinned?.display;
+  const fallback = { status: 'unavailable', reason: 'pinned-current-car-comparison-unavailable', comparisonAvailable: false,
+    currentCar: null, unknowns: [...comparisonFields] };
+  if (pinned?.schemaVersion !== '1' || pinned.comparisonAvailable !== false || !display
+    || !['partial', 'unavailable'].includes(display.state)) return fallback;
+  if (display.state !== 'partial' || typeof display.model !== 'string' || !display.model.trim() || display.model.length > 256
+    || !['synthetic', 'dated-snapshot', 'authorised-live'].includes(display.source?.mode)
+    || !text(display.source.sourceVersion) || !instant(display.source.observedAt)
+    || Date.parse(display.source.observedAt) > Date.parse(quote.quotedAt)) return fallback;
+  // The producer owns current-contract authentication. Never copy its internal binding.
+  return { status: 'partial', reason: 'current-car-facts-unavailable', comparisonAvailable: false,
+    currentCar: { model: display.model, source: textFields(display.source, ['mode', 'sourceVersion', 'observedAt']) },
+    unknowns: [...comparisonFields] };
+}
 
 function presentation(offer, hold, quote, stock, clock) {
   const snapshot = createVehicleSnapshot(quote.facts);
@@ -92,7 +109,7 @@ function presentation(offer, hold, quote, stock, clock) {
       facts, decision: { gateStatus: decision.gateStatus, score: Number.isFinite(decision.score) ? decision.score : null,
         ...Object.fromEntries(['reasons', 'tradeOffs', 'blockers', 'unknowns'].map((key) => [key, explanation(decision[key])])) },
       terms: pinnedTerms, allowance: structuredClone(pinnedTerms.allowanceInputs) },
-    comparison: { status: 'unavailable', reason: 'pinned-current-car-comparison-unavailable', currentCar: null } });
+    comparison: currentCarComparison(quote) });
 }
 
 export class OfferAccessService {
