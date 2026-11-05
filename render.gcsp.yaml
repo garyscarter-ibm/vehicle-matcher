@@ -1,0 +1,59 @@
+# Render Blueprint for the GCSP demo environment, built from the gcsp-poc branch (HLD review Q1, Q2).
+# Apply it as its own Blueprint with Blueprint Path render.gcsp.yaml; render.yaml stays the retail service's.
+# Step-by-step: docs/gcsp/render-postgres-setup.md. Secrets are never committed here (sync: false).
+
+databases:
+  - name: gcsp-db
+    plan: free             # expires 30 days after creation; one active free database per workspace (else 0.1c-256mb)
+    region: frankfurt
+    databaseName: gcsp
+    user: gcsp
+    ipAllowList:           # the pollers on Gary's and Russell's Macs connect from outside Render
+      - source: 0.0.0.0/0
+        description: everywhere
+
+services:
+  - type: web
+    name: gcsp-api
+    runtime: node
+    plan: free             # sleeps after 15 min idle, about a minute to wake; starter avoids it
+    region: frankfurt
+    branch: gcsp-poc
+    rootDir: server
+    buildCommand: npm install   # installs pg, the one permitted runtime dependency
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: GCSP_DATABASE_URL     # internal address; the backend applies its own migrations
+        fromDatabase:
+          name: gcsp-db
+          property: connectionString
+      - key: GCSP_OFFLINE          # no live retailer warmers at boot; retail fetches on first request
+        value: "1"
+      - key: GCSP_ALLOWED_ORIGINS  # must equal gcsp-site's address exactly; change here if Render adds a suffix
+        value: https://gcsp-site.onrender.com
+      - key: DEMO_ACCESS_KEY       # demo password for /api/*; Render asks for it when the Blueprint is created
+        sync: false
+
+  - type: web
+    name: gcsp-site
+    runtime: static
+    branch: gcsp-poc
+    autoDeployTrigger: commit
+    # Copies only what a browser needs (about 3 MB, not the fixtures) and points both pages at gcsp-api.
+    buildCommand: >-
+      test -n "$GCSP_API_URL" &&
+      mkdir -p _site &&
+      cp -R index.html block.html components.html gcsp-employee.html gcsp-greg.html gcsp-outbox.html
+      gcsp-employee.css blocks assets _site/ &&
+      sed -i "s|https://bmw-matcher-api.onrender.com|$GCSP_API_URL|" _site/blocks/demo-launcher/boot.js &&
+      sed -i "s|data-api=\"http://localhost:8787\"|data-api=\"$GCSP_API_URL\"|" _site/block.html &&
+      grep -q "$GCSP_API_URL" _site/blocks/demo-launcher/boot.js &&
+      grep -q "$GCSP_API_URL" _site/block.html
+    staticPublishPath: _site
+    envVars:
+      - key: GCSP_API_URL          # gcsp-api's public address; change here if Render adds a suffix
+        value: https://gcsp-api.onrender.com
