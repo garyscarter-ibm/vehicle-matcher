@@ -24,3 +24,5 @@ Russell clarified the visual direction on 1 November 2026: use these supplied GC
 This direction is agreed; the earlier missing-reference blocker is cleared. A representative redesigned employee body should still be reviewed early and recorded as the implementation reference for later surfaces. That is normal design/experience QA, not a requirement for Russell to provide another existing design or upload. Greg can use a denser body while retaining the same shell and component language.
 
 The captures were supplied from INT with junk data. They establish visible shell treatment and historical journey evidence, not authoritative prices, employee facts, scheme policy or offer timing. The [experience quality contract](../experience-quality.md) governs implementation and acceptance. The IBM Carbon service blueprint is a separate explanatory artifact and does not override this application direction.
+
+The [5 November Density comparison](../density/gcsp-screenshot-review.md) records the current shell differences and typography limits, with visual evidence. Matching public RIS/Aftersales Density rules does not establish an exact match to these GCSP screenshots.

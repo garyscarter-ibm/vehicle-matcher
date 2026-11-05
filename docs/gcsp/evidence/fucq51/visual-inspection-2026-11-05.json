@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "date": "2026-11-05",
+  "inspector": "FUCQ-51 lead, actual local image viewer",
+  "status": "passed",
+  "actualNativeAssetsInspected": [
+    {
+      "path": "native-v1-assets/i5-p0300-herofront.webp",
+      "sha256": "fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe",
+      "bytes": 82798,
+      "size": {
+        "width": 2560,
+        "height": 1646
+      }
+    },
+    {
+      "path": "native-v1-assets/i5-p0475-herofront.webp",
+      "sha256": "4c38cdb43b6438b7ae54fd1c882280bf744e88a17f2ce43597c5dd2c4890b5de",
+      "bytes": 86286,
+      "size": {
+        "width": 2560,
+        "height": 1646
+      }
+    }
+  ],
+  "observation": "Both actual returned assets show the same BMW i5 frontal render and matching framing, grille, lamps and roof outline. The body and mirror paint visibly changes from white to black. Model context is independently sourced from the complete registered T5MJ/G61E/72HH snapshot and both exact hashes match the previously reviewed C14 references.",
+  "fidelity": {
+    "model": "visually corroborated with independent configuration/anchor evidence",
+    "paint": "white/black variation visually verified",
+    "wheels": "unknown",
+    "interior": "unknown",
+    "equipment": "unknown",
+    "exactVehicle": "unknown"
+  },
+  "scope": "representative catalogue render, one HEROFRONT view; no 360 or physical/exact-car claim",
+  "sourceObservedDate": "2026-11-01",
+  "liveRetrievedDate": "2026-11-05",
+  "effectProductionTaxDate": "2027-01-05"
+}

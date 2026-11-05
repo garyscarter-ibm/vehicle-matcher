@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.4.0"      # first, so the update check finds it within its first lines, ahead of the long docstring
+VERSION = "1.5.0"      # first, so the update check finds it within its first lines, ahead of the long docstring
 __doc__ = """scaffold_git.py -- the one place a scaffolded project runs git for its dev inbox and its team. Vendored into a
 project's `_tools/` by project-scaffolding; a generic port of the Account Corpus's corpus_git.py.
 
@@ -34,8 +34,8 @@ Subcommands
                            merge is already in progress there (MERGE_HEAD exists): it is never aborted for you
   worktree --id ID         new worktree .claude/worktrees/ID on a new branch dev/ID from the base branch
   merge --branch dev/ID    merge a dev/ branch into the base branch in the shared checkout; aborts cleanly on conflict
-  drop-branch --id ID      remove the worktree and delete the branch dev/ID, once it is merged into the base branch;
-                           in team mode it also deletes the story's lease (see "Story claims")
+  drop-branch --id ID      remove merged dev/ID from the configured remote and local checkout, then release our lease;
+                           repeat by ID after any refusal/partial failure, even when the local branch is absent
   claim --id ID --points N claim a waiting story (see "Story claims" below)
   claim-release --id ID    delete a story's lease by hand: ours, or the story is in neither code-inbox nor in-progress
   leases [--prefix P]      list the remote's refs/leases/* with holder login, host and taken time, one tab-separated
@@ -198,8 +198,8 @@ push an arbitrary ref.
                failure before the commit puts the story back and deletes the lease. Without a team block there is no
                lease and no claimed_by line. A lease that is already ours (an earlier claim that stopped part-way) is
                reused.
-  drop-branch  also deletes the story's lease once it is merged; a lease that cannot be deleted is said in the
-               message, never fails the drop
+  drop-branch  refuses another clone's story lease; releases our lease last. A failed release is partial cleanup,
+               exit 3, and retry by ID works after the local branch is gone.
   claim-release  deletes a lease by hand: ours, or the story is in neither code-inbox nor in-progress. Open or not is
                decided from <remote>/<base> after a fetch (list-tree), never from the local working tree, which may be
                stale; if the fetch fails it refuses (3) rather than guess
@@ -232,9 +232,10 @@ Exit codes
      command holding the checkout's mutex for 30 seconds, an argument starting with `-`, a refusal from pre_merge_checks
   3  git itself failed (including a lease push lost for a reason other than another member's lease; claim-release when
      the remote cannot be fetched)
-On any non-zero exit the working tree is left exactly as it was -- dirty -- so a human sees it.
+Cleanup may return non-zero after removing a remote ref or local resource; its message identifies partial cleanup.
+Retry drop-branch by ID. Other refused writes leave uncommitted work visible for a human.
 
-Stdlib only. No network except fetch, push, pull and the lease commands (claim, claim-release, drop-branch in team mode, leases,
+Stdlib only. No network except fetch, push, pull, drop-branch and the lease commands (claim, claim-release, leases,
 pen); guard never touches the network.
 Session-agnostic: the project root is derived from this file's
 location (<root>/_tools/scaffold_git.py) unless --root is given.
@@ -248,9 +249,11 @@ import importlib.util
 import json
 import os
 import re
+import shlex
 import socket
 import subprocess
 import sys
+import tempfile
 import threading
 import time
 import unicodedata
@@ -1287,29 +1290,164 @@ def merge_branch(root, branch):
     return 0, "MERGED %s into %s at %s" % (branch, base, sha.strip())
 
 
+_DROP_PUSH_HOOK = r'''import os, shlex, subprocess, sys
+data = sys.stdin.buffer.read()
+rows = [line.split() for line in data.decode().splitlines()]
+if (len(rows) != 1 or len(rows[0]) != 4 or rows[0][0] != "(delete)"
+        or set(rows[0][1]) != {"0"} or rows[0][2:] != [REF, TIP]):
+    sys.stderr.write("story cleanup refused: advertised ref/tip changed; retry after review\n")
+    sys.exit(1)
+if HOOK and os.access(HOOK, os.X_OK):
+    env = dict(os.environ)
+    parameters = shlex.split(env.get("GIT_CONFIG_PARAMETERS", ""))
+    overrides = [MIRROR, "core.hooksPath=" + os.path.dirname(os.path.abspath(__file__))]
+    if parameters[-2:] != overrides:
+        sys.stderr.write("story cleanup cannot restore the existing hook configuration\n")
+        sys.exit(1)
+    parameters = parameters[:-2]
+    if parameters:
+        # Git requires every parameter to be quoted, including shell-safe strings.
+        env["GIT_CONFIG_PARAMETERS"] = " ".join("'" + p.replace("'", "'\\''") + "'" for p in parameters)
+    else:
+        env.pop("GIT_CONFIG_PARAMETERS", None)
+    sys.exit(subprocess.run([HOOK] + sys.argv[1:], input=data, env=env).returncode)
+'''
+
+
+def _drop_remote_branch(root, branch, base, remote):
+    """Verify the push destination's exact live tips, then compare its advertised dev tip without force flags.
+    The receive-side old-id check rejects movement after advertisement. No unrelated refs are fetched or pushed."""
+    rc, urls, e = git(root, ["remote", "get-url", "--push", "--all", remote])
+    destinations = urls.splitlines()
+    if rc != 0:
+        return 3, "cannot resolve cleanup remote: %s" % _git_error(e or urls)
+    if len(destinations) != 1:
+        return 2, "story cleanup needs exactly one push destination for %s" % remote
+    destination = destinations[0]
+    if team_block(root):
+        rc, fetch_url, e = git(root, ["remote", "get-url", remote])
+        if rc != 0 or fetch_url.strip() != destination:
+            return 2, "team cleanup requires matching fetch and push destinations for its story lease"
+    ref, base_ref = "refs/heads/" + branch, "refs/heads/" + base
+    rc, listing, e = git(root, ["ls-remote", "--refs", destination, ref, base_ref])
+    if rc != 0:
+        return 3, "reading live cleanup refs failed: %s" % _git_error(e or listing)
+    tips = dict((row[1], row[0]) for row in (line.split() for line in listing.splitlines())
+                if len(row) == 2 and row[1] in (ref, base_ref))
+    if ref not in tips:
+        return 0, ""
+    if base_ref not in tips:
+        return 2, "%s has no published %s; %s is preserved" % (remote, base, branch)
+    tip, published_base = tips[ref], tips[base_ref]
+    rc, o, e = git(root, ["fetch", "--quiet", "--no-tags", "--no-write-fetch-head", destination,
+                         tip, published_base])
+    if rc != 0:
+        return 3, "fetching exact cleanup tips failed: %s" % _git_error(e or o)
+    rc, o, e = git(root, ["merge-base", "--is-ancestor", tip, published_base])
+    if rc == 1:
+        return 2, "live %s is not merged into published %s/%s; it is preserved" % (branch, remote, base)
+    if rc != 0:
+        return 3, "checking published ancestry failed: %s" % _git_error(e or o)
+    rc, hook, e = git(root, ["rev-parse", "--git-path", "hooks/pre-push"])
+    if rc != 0:
+        return 3, "finding the existing pre-push hook failed: %s" % _git_error(e or hook)
+    hook = os.path.abspath(os.path.join(root, hook.strip()))
+    # Invocation-only hooksPath; the original hook receives the identical stdin/arguments and restored config.
+    # The temporary directory is removed even when Git or a hook rejects the push.
+    with tempfile.TemporaryDirectory(prefix="scaffold-drop-") as hooks:
+        check = os.path.join(hooks, "check.py")
+        with open(check, "w", encoding="utf-8") as f:
+            f.write("REF, TIP, HOOK, MIRROR = %r, %r, %r, %r\n" %
+                    (ref, tip, hook, "remote.%s.mirror=false" % remote) + _DROP_PUSH_HOOK)
+        pre_push = os.path.join(hooks, "pre-push")
+        with open(pre_push, "w", encoding="utf-8") as f:
+            f.write("#!/bin/sh\nexec %s %s \"$@\"\n" % (shlex.quote(sys.executable), shlex.quote(check)))
+        os.chmod(pre_push, 0o700)
+        rc, o, e = git(root, ["-c", "remote.%s.mirror=false" % remote, "-c", "core.hooksPath=" + hooks,
+                             "push", "--quiet", "--atomic", "--no-follow-tags", "--recurse-submodules=no",
+                             remote, ":" + ref])
+    if rc != 0:
+        # A disconnected response (or another cleanup) may have removed the ref. Only absence is success.
+        rc2, live, _ = git(root, ["ls-remote", "--refs", destination, ref])
+        if rc2 == 0 and not live.strip():
+            return 0, ""
+        return 3, "remote story deletion failed; retry drop-branch: %s" % _git_error(e or o)
+    rc, live, e = git(root, ["ls-remote", "--refs", destination, ref])
+    if rc != 0 or live.strip():
+        return 3, "remote story deletion not confirmed; retry drop-branch: %s" % _git_error(e or live)
+    return 0, ""
+
+
+def _cleanup_lease(root, story_id):
+    """Read our story lease, refusing other clones even when their member login matches."""
+    rc, msg, holder = lease_read(root, story_lease_ref(story_id))
+    if rc != 0:
+        return 3, msg, None
+    if holder and not lease_ours(root, holder, member_login(root)):
+        return 2, "story %s is claimed by another clone; its cleanup is refused" % story_id, None
+    return 0, "", holder
+
+
+def _story_worktree_refusal(root, branch, path):
+    if os.path.exists(path):
+        rc, actual, _ = git(path, ["symbolic-ref", "--quiet", "HEAD"])
+        if rc != 0 or actual.strip() != "refs/heads/" + branch or shared_checkout(path) != os.path.realpath(root):
+            return "%s is not the expected story worktree; it is preserved" % path
+        if status_lines(path):
+            return "%s has uncommitted changes; it is not removed" % path
+    return None
+
+
 @_serialised
 def drop_branch(root, story_id):
-    """Remove the worktree and delete branch dev/<id>, only once the branch is merged into the base branch and the
-    worktree holds nothing uncommitted. Returns (rc, message): 0 dropped, 2 refused, 3 git failed."""
-    if not DEV_ID.match(story_id or ""):
+    """Idempotent story cleanup: validate local safety and ownership, delete the verified remote ref, remove local
+    resources, release our lease last. Returns 0 complete, 2 refused, 3 failed (possibly partial; retry by ID)."""
+    if not DEV_ID.fullmatch(story_id or ""):
         return 2, "story id %r is not usable as a branch name" % story_id
+    if is_linked_worktree(root):
+        return 2, "drop-branch needs the shared checkout, not a linked worktree"
     base = base_branch(root)
     branch, path = _dev_branch(story_id), worktree_path(root, story_id)
-    if not _branch_exists(root, branch):
-        return 2, "branch %s does not exist" % branch
-    if not _merged_into(root, branch, base):
+    local = _branch_exists(root, branch)
+    if local and not _merged_into(root, branch, base):
         return 2, "branch %s is not merged into %s; it is not dropped" % (branch, base)
+    refusal = _story_worktree_refusal(root, branch, path)
+    if refusal:
+        return 2, refusal
+    rc, remotes, e = git(root, ["remote"])
+    if rc != 0:
+        return 3, "listing remotes failed: %s" % _git_error(e or remotes)
+    remote = remote_name(root)
+    team = team_block(root)
+    if remotes.strip():
+        if remote not in remotes.splitlines():
+            return 2, "configured cleanup remote %s does not exist" % remote
+        if team:
+            rc, msg, _ = _cleanup_lease(root, story_id)
+            if rc != 0:
+                return rc, msg
+        rc, msg = _drop_remote_branch(root, branch, base, remote)
+        if rc != 0:
+            return rc, msg
+    partial = "PARTIAL cleanup of %s (remote absent or not configured); retry drop-branch --id %s: " % (branch, story_id)
+    if local and not _merged_into(root, branch, base):
+        return 2, partial + "local branch advanced beyond %s; it is preserved" % base
+    refusal = _story_worktree_refusal(root, branch, path)
+    if refusal:
+        return 2, partial + refusal
     if os.path.exists(path):
-        if status_lines(path):
-            return 2, "%s has uncommitted changes; it is not removed" % path
         rc, o, e = git(root, ["worktree", "remove", path])
         if rc != 0:
-            return 3, "git worktree remove failed: %s" % _git_error(e or o)
-    git(root, ["worktree", "prune"])
-    rc, o, e = git(root, ["branch", "-d", branch])
-    if rc != 0:
-        return 3, "git branch -d failed: %s" % _git_error(e or o)
-    return 0, "DROPPED %s and its worktree%s" % (branch, _release_story_lease(root, story_id))
+            return 3, partial + "git worktree remove failed: %s" % _git_error(e or o)
+    if local:
+        rc, o, e = git(root, ["branch", "-d", branch])
+        if rc != 0:
+            return 3, partial + "git branch -d failed: %s" % _git_error(e or o)
+    if team and remotes.strip():
+        rc, msg = _release_story_lease(root, story_id)
+        if rc != 0:
+            return rc, partial + "lease not released: " + msg
+    return 0, "DROPPED %s and its worktree" % branch
 
 
 # ---------------------------------------------------------------- leases
@@ -1440,20 +1578,17 @@ def story_lease_ref(story_id):
 
 
 def _release_story_lease(root, story_id):
-    """In team mode, delete the merged story's claim lease. '' when done or there was none, else a note; never fails
-    the drop."""
-    try:
-        if not team_block(root):
-            return ""
-        ref = story_lease_ref(story_id)
-        rc, msg, h = lease_read(root, ref)
-        if rc == 0 and not h:
-            return ""
-        if rc == 0:
-            rc, msg = lease_push(root, ref, None, h["sha"])
-    except SettingsError as e:
-        return " (lease not released: %s)" % e
-    return "" if rc == 0 else " (lease not released: %s)" % msg
+    """Release only our claim, last. Failure leaves cleanup pending and retries may have no local branch."""
+    rc, msg, h = _cleanup_lease(root, story_id)
+    if rc != 0 or not h:
+        return rc, msg
+    rc, msg = lease_push(root, story_lease_ref(story_id), None, h["sha"])
+    if rc != 0:
+        rc2, _, holder = lease_read(root, story_lease_ref(story_id))
+        if rc2 == 0 and holder is None:
+            return 0, ""
+        return 3, msg
+    return 0, ""
 
 
 # ---------------------------------------------------------------- story claims
@@ -2376,7 +2511,7 @@ def _core_commands(sub):
     mg = sub.add_parser("merge", help="merge a dev/ID branch into the base branch (shared checkout); aborts on conflict")
     mg.add_argument("--branch", required=True)
     mg.set_defaults(func=cmd_merge)
-    db = sub.add_parser("drop-branch", help="remove the worktree and delete branch dev/ID, once merged")
+    db = sub.add_parser("drop-branch", help="remove merged remote/local dev/ID and its worktree; retry by ID on partial cleanup")
     db.add_argument("--id", required=True)
     db.set_defaults(func=cmd_drop_branch)
 
