@@ -18,7 +18,10 @@ export function parseVehicleEvidencePath(url) {
 
 /** The caller supplies the existing shared gate result; stock also resolves trusted run context. */
 export function createVehicleEvidenceHandler({ lookup, identity, resolveContext, allowedOrigins = [] } = {}) {
-  const origins = new Set(allowedOrigins);
+  const origins = new Set(allowedOrigins.filter((origin) => {
+    try { return /^https?:$/.test(new URL(origin).protocol) && new URL(origin).origin === origin; }
+    catch { return false; }
+  }));
   return async ({ req, res, sendJson, corsHeaders = {}, gateAuthorized = true }) => {
     if (!isVehicleEvidencePath(req.url)) return false;
     const origin = req.headers.origin;

@@ -103,7 +103,7 @@ test('unknown VINs without an inferred US checksum/year, config IDs and stock UU
 test('configured gate, wrong methods, legacy and writable routes, origins and browser routing overrides are enforced', async (t) => {
   const previous = process.env.DEMO_ACCESS_KEY; process.env.DEMO_ACCESS_KEY = 'fictional-gate-for-lookup-tests';
   t.after(() => { if (previous === undefined) delete process.env.DEMO_ACCESS_KEY; else process.env.DEMO_ACCESS_KEY = previous; });
-  const f = await fixture(t);
+  const f = await fixture(t, { gcspAllowedOrigins: ['https://trusted.example', 'null', '*', 'https://trusted.example/path'] });
   const path = `/api/gcsp/vehicle-evidence/vins/${f.vehicle.vin17}`;
   const headers = { 'X-Access-Key': 'fictional-gate-for-lookup-tests' };
   assert.equal((await request(f.base, path)).code, 401);
@@ -120,6 +120,10 @@ test('configured gate, wrong methods, legacy and writable routes, origins and br
     assert.equal((await request(f.base, `/api/gcsp/vehicle-evidence/${segment}/${f.vehicle.vin17}`, { headers })).code, 404);
   }
   assert.equal((await request(f.base, path, { headers: { ...headers, Origin: 'https://untrusted.example' } })).code, 403);
+  assert.equal((await request(f.base, path, { headers: { ...headers, Origin: 'https://trusted.example' } })).code, 200);
+  for (const Origin of ['null', '*', 'https://trusted.example/path']) {
+    assert.equal((await request(f.base, path, { headers: { ...headers, Origin } })).code, 403);
+  }
   assert.equal(f.externalCalls(), 0);
 });
 
