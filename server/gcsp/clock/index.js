@@ -2,6 +2,7 @@ import { inputDigest, ok, result } from '../repository/index.js';
 import { DemoIdentityAdapter } from '../identity/index.js';
 import { validInstant } from '../policy/file-provider.js';
 import { loadClockConfiguration, buildScenarioSeed } from '../fixtures/scenario-v1.js';
+import { randomUUID } from 'node:crypto';
 
 const text = (value) => typeof value === 'string' && value.length > 0 && value.length <= 128;
 const invalid = (field, reason) => result('invalid', { code: 'invalid-clock-command', reasons: [{ field, reason }] });
@@ -15,6 +16,7 @@ const publicReset = (outcome) => outcome.status === 'ok' ? ok({ ...outcome.value
 
 export class DemoClock {
   #repository; #policy; #identity; #environmentId; #environmentKind;
+  #handlers = new Map(); #sealed = false; #startup;
 
   constructor({ repository, policy, identity, environmentId, environmentKind }) {
     if (!repository || !policy || !identity || !text(environmentId)) throw new TypeError('Inject repository, policy, identity and environment.');
@@ -74,7 +76,7 @@ export class DemoClock {
     if (run.versions?.lastTickId) {
       const tick = await this.#repository.read(context, ref('tick_runs', context, { tickId: run.versions.lastTickId }));
       if (tick.status !== 'ok') return tick;
-      lastTick = tick.value;
+      lastTick = this.#tickValue(tick.value);
     }
     return ok({ runId: run.runId, now: run.clockInstant, clockVersion: run.clockVersion, runVersion: run.version,
       versions: publicVersions(run.versions), lastTick });
@@ -139,6 +141,133 @@ export class DemoClock {
     if (seed.status !== 'ok') return seed;
     return publicReset(await this.#repository.resetRun(context, cmd, { expectedCurrentRunId: input.expectedRunId, expectedRunVersion: input.expectedRunVersion,
       nextRun: this.#runRow(runId, found.value.policyVersion, configured.value, seed.value.versions), rows: seed.value.rows }));
+  }
+
+  async registerHandler({ handlerId, stage, handle } = {}) {
+    if (this.#sealed || !text(handlerId) || !/^[a-z0-9][a-z0-9-]*$/.test(handlerId)
+      || typeof handle !== 'function' || this.#handlers.has(handlerId)) return invalid('handler', 'Register each stable handler ID once, before startup/ticks.');
+    const run = await this.#current();
+    if (run.status !== 'ok') return run;
+    const configured = await loadClockConfiguration(this.#policy, this.#read(run.value));
+    if (configured.status !== 'ok') return configured;
+    if (!configured.value.stages.includes(stage)) return invalid('stage', 'Unknown handler stage.');
+    // Recheck after asynchronous policy reads, so concurrent registration cannot overwrite a handler.
+    if (this.#sealed || this.#handlers.has(handlerId)) return invalid('handler', 'Registry is sealed or this ID is registered.');
+    this.#handlers.set(handlerId, { handlerId, stage, handle });
+    return ok({ handlerId, stage });
+  }
+
+  #tickValue(row) {
+    return { runId: row.runId, tickId: row.tickId, eventId: row.eventId, now: row.targetClock.now,
+      clockVersion: row.targetClock.clockVersion, kind: row.targetClock.kind, handlerOrder: row.handlerOrder,
+      missingStages: row.targetClock.missingStages, outcomes: row.outcomes, state: row.state };
+  }
+
+  async tick(context, input = {}) {
+    const allowed = await this.#identity.requireRole(context, 'presenter');
+    if (allowed.status !== 'ok') return allowed;
+    if (!text(input.eventId) || !text(input.expectedClockVersion) || !/^[a-f0-9]{64}$/.test(input.inputDigest)
+      || Object.keys(input).some((key) => !['eventId', 'expectedClockVersion', 'inputDigest'].includes(key))) return invalid('tick', 'Supply eventId, inputDigest and expectedClockVersion.');
+    return this.#executeTick(context, input, 'presenter');
+  }
+
+  // One promise per backend instance, called by startup composition without requiring an HTTP request.
+  // A later process startup gets a new event; handlers reuse persisted pending-operation IDs.
+  reconcileStartup(environmentId = this.#environmentId) {
+    if (environmentId !== this.#environmentId) return Promise.resolve(stale());
+    this.#startup ??= (async () => {
+      const run = await this.#current();
+      if (run.status !== 'ok') return run;
+      const context = { environmentId, runId: run.value.runId, principalId: 'clock-startup', roles: [] };
+      const eventId = `startup-${randomUUID()}`;
+      return this.#executeTick(context, { eventId, inputDigest: inputDigest({ startup: true }), expectedClockVersion: run.value.clockVersion }, 'startup');
+    })();
+    return this.#startup;
+  }
+
+  async #executeTick(context, input, kind) {
+    const current = await this.#current(context);
+    if (current.status !== 'ok') return current;
+    const configured = await loadClockConfiguration(this.#policy, this.#read(current.value));
+    if (configured.status !== 'ok') return configured;
+    this.#sealed = true;
+    const stages = kind === 'startup' ? configured.value.commands.startupStages : configured.value.stages;
+    const order = [...this.#handlers.values()].filter((row) => stages.includes(row.stage))
+      .sort((a, b) => configured.value.stages.indexOf(a.stage) - configured.value.stages.indexOf(b.stage)
+        || (a.handlerId < b.handlerId ? -1 : a.handlerId > b.handlerId ? 1 : 0))
+      .map(({ handlerId, stage }) => ({ handlerId, stage }));
+    const tickId = input.eventId;
+    const tickRef = ref('tick_runs', context, { tickId });
+    const digest = inputDigest({ ...input, kind });
+    const initialized = await this.#repository.transaction(context, { commandId: `clock:tick:start:${tickId}`, inputDigest: digest }, async (tx) => {
+      const run = await tx.get(ref('runs', context));
+      if (run.status !== 'ok') return run;
+      if (run.value.clockVersion !== input.expectedClockVersion) return result('stale-version', {
+        expectedVersion: input.expectedClockVersion, currentVersion: run.value.clockVersion, resource: ref('runs', context),
+      });
+      const inserted = await tx.insert('tick_runs', { runId: context.runId, tickId, eventId: input.eventId, commandId: input.eventId,
+        inputDigest: digest, targetClock: { now: run.value.clockInstant, clockVersion: run.value.clockVersion, kind,
+          missingStages: stages.filter((stage) => !order.some((row) => row.stage === stage)) },
+        handlerOrder: order, outcomes: [], state: 'running' });
+      if (inserted.status !== 'ok') return inserted;
+      const updated = await tx.compareAndSwap(ref('runs', context), run.value.version, { versions: { ...run.value.versions, lastTickId: tickId } });
+      return updated.status === 'ok' ? inserted : updated;
+    });
+    if (initialized.status !== 'ok') return initialized;
+    let tick = await this.#repository.read(context, tickRef);
+    if (tick.status !== 'ok') return tick;
+    if (['completed', 'pending'].includes(tick.value.state)) return ok(this.#tickValue(tick.value));
+    for (const entry of tick.value.handlerOrder) {
+      const descriptor = this.#handlers.get(entry.handlerId);
+      if (!descriptor || descriptor.stage !== entry.stage) return this.#interrupted(context, tickRef, entry, unavailable());
+      const handlerCommand = { commandId: `clock:tick:handler:${inputDigest([tickId, entry.handlerId])}`,
+        inputDigest: inputDigest([digest, entry]) };
+      const handled = await this.#repository.transaction(context, handlerCommand, async (tx) => {
+        const state = await tx.get(tickRef);
+        if (state.status !== 'ok') return state;
+        let outcome;
+        try {
+          outcome = await descriptor.handle({ tx, context, eventId: tickId, tickId, now: state.value.targetClock.now,
+            clockVersion: state.value.targetClock.clockVersion, operationId: handlerCommand.commandId });
+        } catch { return unavailable(); }
+        if (!outcome || !['ok', 'pending'].includes(outcome.status)) return outcome?.status ? outcome : unavailable();
+        if (outcome.status === 'ok' && !Object.hasOwn(outcome, 'value') || outcome.status === 'pending'
+          && !['operationId', 'operationType', 'lastKnownState'].every((key) => text(outcome[key]))) return unavailable();
+        const receipt = await tx.recordReceipt({ consumerId: `clock:handler:${entry.handlerId}`, eventId: tickId,
+          eventType: kind, handlerId: entry.handlerId, inputDigest: handlerCommand.inputDigest,
+          inputVersions: { clock: state.value.targetClock.clockVersion, policy: current.value.policyVersion },
+          state: outcome.status === 'pending' ? 'pending' : 'completed', outcome });
+        if (receipt.status !== 'ok') return receipt;
+        const outcomes = state.value.outcomes.filter((row) => row.handlerId !== entry.handlerId);
+        outcomes.push({ ...entry, outcome });
+        const changed = await tx.compareAndSwap(tickRef, state.value.version, { outcomes, state: 'running' });
+        return changed.status === 'ok' ? ok({ outcome }) : changed;
+      });
+      if (handled.status !== 'ok') return this.#interrupted(context, tickRef, entry, handled);
+    }
+    return this.#repository.transaction(context, { commandId: `clock:tick:finish:${tickId}`, inputDigest: digest }, async (tx) => {
+      const state = await tx.get(tickRef);
+      if (state.status !== 'ok') return state;
+      const changed = await tx.compareAndSwap(tickRef, state.value.version, {
+        state: state.value.outcomes.some((row) => row.outcome.status === 'pending') ? 'pending' : 'completed',
+      });
+      return changed.status === 'ok' ? ok(this.#tickValue(changed.value)) : changed;
+    });
+  }
+
+  async #interrupted(context, tickRef, entry, outcome) {
+    // A reset may have retired the run between handlers. Its stale refusal takes precedence.
+    if (outcome.status === 'stale-run') return outcome;
+    const marked = await this.#repository.transaction(context,
+      command(`clock:tick:interrupt:${inputDigest([tickRef.key.tickId, entry.handlerId])}`, entry), async (tx) => {
+        const tick = await tx.get(tickRef);
+        if (tick.status !== 'ok') return tick;
+        const outcomes = tick.value.outcomes.filter((row) => row.handlerId !== entry.handlerId);
+        outcomes.push({ ...entry, outcome: unavailable() });
+        return tx.compareAndSwap(tickRef, tick.value.version, { state: 'interrupted', outcomes });
+      });
+    return marked.status === 'ok' ? result('unavailable', { tickId: tickRef.key.tickId, handlerId: entry.handlerId,
+      reason: 'A registered clock handler did not complete. Retry this event ID.', retryable: true }) : marked;
   }
 }
 
