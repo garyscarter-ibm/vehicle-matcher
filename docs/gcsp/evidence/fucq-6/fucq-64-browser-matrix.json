@@ -1,0 +1,272 @@
+{
+  "story": "FUCQ-64",
+  "head": "a7fc17810ec6887d680c2fbf4aabcc4992e7c199",
+  "base": "http://localhost:3464",
+  "browser": "system Chrome, headless",
+  "capturedAt": "2026-11-05T09:52:59.796Z",
+  "sources": {
+    "blocks/gcsp/shell/portal-shell.js": "4e6c3b52bb320f6254ce0a5ae62f481d022e2a24350264149352eb92caa50d8b",
+    "blocks/gcsp/shell/gcsp-shell.css": "d6f35911624c03ee82c22eb349d51228ba849eaf354976f19df905887e9f92a3",
+    "blocks/gcsp/shell/gcsp-tokens.css": "d939a355b945ecfd0ad185029dbe2b79c70bab8862052a7ec54cf7abfa7f8642",
+    "blocks/gcsp/employee/gcsp-employee.js": "2f35c7983aafef2c8f1eb72f6c78341cbf1c76269110f6a25dca1b775f11df2b",
+    "blocks/gcsp/employee/representative-body.js": "a9146fc18cac0346a20b12c603df65a84dffc7bd46d267f2706f4e2c63b76af4",
+    "blocks/gcsp/employee/fixtures.js": "e63cf63076f7bfa718b23b3e2a0d39ef6e57c58c4003f238b0059ce560ba0881",
+    "blocks/gcsp/employee/gcsp-employee.css": "b3bd84821dc3cce1cca5d8d6db3c31a9df4f0bb96b7c51e2247b9dde1f880686",
+    "blocks/gcsp/employee/harness.js": "f16e17c55d356605d453835a76bb3fc9dc04d94c06d753e6e94e1bb92f4af310",
+    "blocks/vehicle-matcher/ui.js": "95aad7a858078b5f0edd2f066af1e51148e35604c5785936270618d1dc533770",
+    "blocks/vehicle-matcher/component-gallery.js": "da312b41b6fe14dbe8513dd5974c9f2ffd21848c5ca982ba54109f3f8f68d51e",
+    "gcsp-employee.html": "81d96b2903d3245ff9d1138246dad308127adc71a0fdd4956edd3b4d2dda581f",
+    "components.html": "1c749620472e57acbac7826f61852b068c6e39166dcf1fb572c6c4215beddffb"
+  },
+  "results": [
+    {
+      "name": "representative-desktop",
+      "file": "representative-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "representative",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "carPhotos": 3
+    },
+    {
+      "name": "representative-no-images-desktop",
+      "file": "representative-no-images-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "representative-no-images",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "carPhotos": 0
+    },
+    {
+      "name": "representative-unavailable-desktop",
+      "file": "representative-unavailable-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "representative-unavailable",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "carPhotos": 0
+    },
+    {
+      "name": "representative-loading-desktop",
+      "file": "representative-loading-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "representative-loading",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      }
+    },
+    {
+      "name": "representative-narrow-320",
+      "file": "representative-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "representative",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "carPhotos": 3
+    },
+    {
+      "name": "representative-no-images-narrow-320",
+      "file": "representative-no-images-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "representative-no-images",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "carPhotos": 0
+    },
+    {
+      "name": "representative-unavailable-narrow-320",
+      "file": "representative-unavailable-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "representative-unavailable",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "carPhotos": 0
+    },
+    {
+      "name": "representative-loading-narrow-320",
+      "file": "representative-loading-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "fixture": "representative-loading",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      }
+    },
+    {
+      "name": "keyboard-skip-link-desktop",
+      "file": "keyboard-skip-link-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "focused": {
+        "name": "Skip to content",
+        "outline": "solid 2px"
+      }
+    },
+    {
+      "name": "keyboard-unavailable-nav-desktop",
+      "file": "keyboard-unavailable-nav-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "focused": {
+        "name": "New order",
+        "outline": "solid 2px"
+      }
+    },
+    {
+      "name": "keyboard-selected-desktop",
+      "file": "keyboard-selected-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "tabOrder": [
+        {
+          "name": "Skip to content",
+          "outline": "solid 2px"
+        },
+        {
+          "name": "Your cars",
+          "outline": "solid 2px"
+        },
+        {
+          "name": "New order",
+          "outline": "solid 2px"
+        },
+        {
+          "name": "Order history",
+          "outline": "solid 2px"
+        },
+        {
+          "name": "Drivers and licences",
+          "outline": "solid 2px"
+        },
+        {
+          "name": "Scheme guidelines",
+          "outline": "solid 2px"
+        },
+        {
+          "name": "Show labels",
+          "outline": "solid 2px"
+        },
+        {
+          "name": "Choose a replacement",
+          "outline": "solid 2px"
+        },
+        {
+          "name": "Contract and licence details",
+          "outline": "solid 2px"
+        },
+        {
+          "name": "Select this car",
+          "outline": "solid 2px"
+        }
+      ],
+      "focusAfterChoose": {
+        "name": "Choose a replacement",
+        "outline": "solid 2px"
+      },
+      "focusedPick": {
+        "name": "Select this car",
+        "outline": "solid 2px"
+      },
+      "firstCardPressed": "true"
+    },
+    {
+      "name": "selected-summary-desktop",
+      "file": "selected-summary-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": []
+    },
+    {
+      "name": "narrow-menu-open-320",
+      "file": "narrow-menu-open-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "menuExpanded": "true"
+    },
+    {
+      "name": "reduced-motion-labels-desktop",
+      "file": "reduced-motion-labels-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": [],
+      "reducedMotion": "reduce",
+      "transitionDurations": [
+        [
+          ".gcsp-nav",
+          "0s"
+        ],
+        [
+          ".gcsp-card",
+          "0s"
+        ],
+        [
+          ".gcsp-nav-toggle .gcsp-icon",
+          "0s"
+        ]
+      ]
+    },
+    {
+      "name": "gallery-gcsp-desktop",
+      "file": "gallery-gcsp-desktop.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": []
+    },
+    {
+      "name": "gallery-gcsp-narrow-320",
+      "file": "gallery-gcsp-narrow-320.png",
+      "overflowPx": 0,
+      "console": [],
+      "failed": [],
+      "external": []
+    }
+  ]
+}

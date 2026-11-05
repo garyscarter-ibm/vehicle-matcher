@@ -76,3 +76,54 @@ Large production/generated artifacts and archives must follow the project's OneD
 The two authored suites cover whole-candidate checksum/schema/profile/reference/provenance/count rejection, semantic source-context consistency, source-backed facts, approved image contract/fidelity, deterministic packaging, idempotent reload, additions/original datasets, restart/reset independence, historical conflicts, paused old-or-new readers, competing writer, abrupt subprocess exit, every injected publication phase, corruption recovery, durable deactivation routing and the actual CLI. An instrumented presentation test observes zero live `fetch` calls. Existing allocator/profile/generator and FUCQ-39 catalogue suites cover the reused integration boundaries. Initial integrated scoped verification passed 72/72 tests. After integrating FUCQ-85 clock/reset, final expanded scope passes 132 total / 130 passed / 2 managed-PostgreSQL skips. The authored final `npm test` checkpoint passes 635 total / 633 passed / 0 failed / 2 managed-PostgreSQL skips at integrated 3614fb6 (base b8c8a4f), full stamp key 6396fb3291fb, 5 November 2026 02:30 UTC. The earlier e5c5dd1 checkpoint (614/612/2, stamp 918ce2d4ec3a) remains prior evidence. The story Result retains exact tree, environment, resource cleanup and strict targeted evidence. No configured managed database was available for the two external checks.
 
 No screen/control changes, new component or screenshot is required. Loader reports and detached records preserve dates, units, explicit unknowns, source/synthetic labels and representative/missing image states across success, replay and rejected activation under [experience-quality.md](experience-quality.md), [screens/README.md](screens/README.md) and [COMPONENTS.md](../../COMPONENTS.md). Future views retain the supplied shell/header/sidebar/palette and Used Cars body direction. The canonical draw.io topology is unchanged; no existing background diagram tab is available and no new diagram render proof is claimed.
+
+## FUCQ-57 offline routing and five-WMI proof
+
+The application consumes the lookup **in process**, under the binding 4 November Q7/Q13 decision. The actual existing HTTP wrapper is separately exercised on an ephemeral loopback server. Immutable configuration IDs, exact per-run stock UUIDs and delivered/current-car VINs remain three distinct identities. Stock has no VIN. The default configured provider is `lookup`; the only alternative is the explicitly selected `alternate-offline`, supplied with the same trusted `identityLookup` port. Request fields cannot select a provider, URL, identity class or live fallback.
+
+`lookup.classifyRequest` reads VIN and configuration identity from the independent retained publication inventory. Stock classification uses the complete FUCQ-53 allocation snapshot in `runs.versions.syntheticIdentityInventory`, validates its revision/digest and whole inventory, requires actual current-run stock usage and resolves the exact configuration from publication history. Missing/corrupt authority fails unavailable before the configured provider. Successful offline reads are reclassified and their configuration/vehicle bindings checked again, including across reset. Empty or unselected source data is unavailable, never a valid empty registry; a true miss in an available closed corpus stays an offline miss. No spelling, WMI or calculated check digit grants permission.
+
+The existing FUCQ-43 `createBmwVinGuideIdentityGuard` remains the common real-lookup boundary. It reads durable identity history and requires separate trusted server-owned externally authorised real-VIN context. Synthetic/inactive/historical/unavailable identities are denied before even calling real authorisation; a synthetic guide cannot fall back to a live provider. A negative inventory lookup alone never grants real access. This work adds no real authoriser, credential lookup or operational provider.
+
+The actual generated fixture has **six distinct immutable configurations, five distinct current-car VINs and five separate stock UUIDs**. Each of WBA, WBS, WBY, 5UX and 5YM occurs once; reference body coverage is one Convertible, two Sedans and two SUVs. Five configurations are MY2026 US/North American LHD structural references with fictional REF canonical codes and partial facts; the sixth is the unchanged dated GB catalogue configuration with unknown physical steering/build/year and complete catalogue selection. That GB row has no VIN. Across the 16 successful three-identity lookups there are 15 partial results and one complete catalogue result. Completeness never claims a factory-fitted build. The main fixture has no images. A separate approved, explicitly fictional image-contract test preserves representative-model and representative-configuration roles through both adapters; it supplies **zero real assets**.
+
+The [evidence record](evidence/fucq57/README.md) retains exact commands, sanitised checksums, coverage, resource/argv receipts, initial failure diagnoses and acceptance review. The main generated manifest SHA-256 is `c64aab41b2090654118dc0bf4628bf23862818a577446a5eb6bf10fd50906c3f`; its configurations/VIN/image checksums are in `e2e-validation.json`. These are small contract fixtures, not 200 or 10,000 real UK configurations. No serial range is globally reserved, and no real-fleet non-collision guarantee is made. Private keys never belong in artifacts, source, request flags or logs.
+
+### Generate, publish, start and recover
+
+To reproduce the exact five-WMI candidate from this checkout, choose fresh absolute output paths with an existing parent. This uses the same actual FUCQ-53 allocator as the proof; it writes only fictional fixture input and does not contact BMW:
+
+```sh
+node --input-type=module - /ABS/fucq57-input.json <<'JS'
+import { writeFile } from 'node:fs/promises';
+import { corpusInput, sourceBackedInput } from './server/test/helpers/vin-corpus-fixture.js';
+const input = await corpusInput({ count: 5, datasetId: 'fucq57-five-wmi' });
+const gb = await sourceBackedInput();
+input.configurations.push(...gb.configurations);
+input.metadata.sourceContexts.push(...gb.metadata.sourceContexts);
+await writeFile(process.argv[2], JSON.stringify(input));
+JS
+
+node server/scripts/publish-synthetic-vin-dataset.mjs prepare \
+  --input /ABS/fucq57-input.json --artifacts /ABS/fucq57-candidate \
+  --run-id offline-proof --as-of 2026-11-05T00:00:00.000Z
+node server/scripts/publish-synthetic-vin-dataset.mjs validate \
+  --artifacts /ABS/fucq57-candidate --run-id offline-proof --as-of 2026-11-05T00:00:00.000Z
+node server/scripts/publish-synthetic-vin-dataset.mjs publish \
+  --artifacts /ABS/fucq57-candidate --store /ABS/fucq57-store \
+  --run-id offline-proof --as-of 2026-11-05T00:00:00.000Z
+node server/scripts/publish-synthetic-vin-dataset.mjs load \
+  --store /ABS/fucq57-store --run-id offline-proof --as-of 2026-11-05T00:00:00.000Z
+
+GCSP_OFFLINE=1 GCSP_VEHICLE_EVIDENCE_ROOT=/ABS/fucq57-store PORT=3001 node server/index.js
+```
+
+The last command is the existing backend entry point. With the packaged selected store, `npm run server:gcsp-offline` is equivalent. Omit BMW keys, `DATABASE_URL` and inherited provider `NODE_OPTIONS`. The profile disables unrelated live startup warmers; the acceptance test additionally guards fetch, HTTP/HTTPS and socket/TLS transport and observes zero non-loopback calls over two starts. The existing demo `X-Access-Key` gate still applies when configured. No new public writer/generator or stock bootstrap is exposed by this profile.
+
+Read `vins.jsonl` from the generated candidate for its fictional VIN17, then call `GET http://127.0.0.1:3001/api/gcsp/vehicle-evidence/vins/VIN17`. URL-encode a complete configuration ID in the corresponding `/configurations/ID` route. A stock read uses `/stock/ORDER_UUID` and requires the separately composed actual repository and trusted current-run session; the credential-free default entry correctly returns unavailable for stock without that adapter. Never supply principal/run/provider/URL query parameters. Typed outcomes remain complete/partial (200), invalid (400), missing (404), mismatch (409), unsupported (422) and unavailable (503).
+
+For recovery, retain the immutable `versions/<manifest-sha256>` artifacts, independent `identity-inventory.json`, selection and last-good pointer together. Repeat an unchanged publication idempotently; additions use a new dataset version while preserving original physical-car/configuration/VIN association. A damaged active pointer can recover a validated last-good version and reports the recovery explicitly. Missing/corrupt identity history requires restoration; it is never regenerated from empty state. `deactivate` disables source availability while retaining history and the real-provider guard. Reopening after deactivation remains unavailable for source facts and synthetic for identity classification.
+
+Reset uses the existing authorised presenter `DemoClock.reset` with exact run/version and scenario/fixture versions from read-back. The proof injects five stock fixture configurations into the test-only canonical scenario source, performs the real reset, and verifies new stock UUIDs/display numbers and restored employee state, stale old contexts and byte-identical immutable selection/history. A delayed alternate read spanning reset is rejected as mismatch. Policy, eligibility, points, release/hold/allocation, telemetry and retail behaviour retain their own contracts. No screen/control change is delivered; future views still require the agreed GCSP shell/palette, Used Cars body and browser review.
+
+FUCQ-57 final proof: [identity/offline evidence](evidence/fucq57/README.md) records six distinct immutable configurations, five distinct current-car VINs (one per WMI), five VIN-free runtime stock UUIDs, 78/78 scoped checks and the required full run at `526cb990`: 868 total, 866 passed, zero failed, two configured PostgreSQL skips. [Full validation](evidence/fucq57/full-validation.json) retains the exact source/environment/plan/stamp identity and status/full/status sequence. The five US/LHD MY2026 references are partial; the complete GB catalogue selection has no generated VIN and unknown physical steering/build/year. No UK/RHD VIN or full-corpus claim follows from this proof.

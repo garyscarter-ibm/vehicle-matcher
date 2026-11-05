@@ -2,13 +2,25 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { createLocalVehicleEvidenceLookup } from '../gcsp/vehicle-evidence/local-vehicle-lookup.js';
-import { createVehicleDetailsConsumer, createConfiguredVehicleDetails } from '../gcsp/vehicle-evidence/application-vehicle-details.js';
+import { createVehicleDetailsConsumer, createConfiguredVehicleDetails as configureVehicleDetails } from '../gcsp/vehicle-evidence/application-vehicle-details.js';
 import { createLookupVehicleAdapter } from '../gcsp/vehicle-evidence/lookup-adapter.js';
 import { createAlternateOfflineVehicleAdapter } from '../gcsp/vehicle-evidence/alternate-offline-adapter.js';
 import { vehicleEvidenceFailure } from '../gcsp/vehicle-evidence/vehicle-details-contract.js';
 
 const fixture = JSON.parse(await readFile(new URL('./fixtures/gcsp/vehicle-evidence/alternate-provider.json', import.meta.url)));
 const context = fixture.context;
+// Isolated adapter tests inject a trusted classification double. FUCQ-57's
+// integration suites use the actual retained registry and allocator inventory.
+const fixtureIdentityLookup = { async classifyRequest(request) {
+  const card = fixture.entries.find((e) => e.document.card.query.kind === request.kind
+    && e.document.card.query.id === request.id)?.document.card;
+  return card ? { status: 'ok', identityKind: 'synthetic', liveEligible: false,
+    configurationId: card.identifiers.composition,
+    ...(card.identifiers.subject ? { vehicleId: card.identifiers.subject } : {}) }
+    : { status: 'not-found', identityKind: 'unknown', liveEligible: false };
+} };
+const createConfiguredVehicleDetails = (options) => configureVehicleDetails({ identityLookup: fixtureIdentityLookup, ...options });
+
 const [vehicle] = (await readFile(new URL('../data/gcsp/vehicle-evidence/publication-reference.v1/vins.jsonl', import.meta.url), 'utf8')).trim().split('\n').map(JSON.parse);
 const stockEntry = fixture.entries.find((e) => e.key.category === 'order');
 const orderUuid = stockEntry.key.token;
@@ -245,4 +257,24 @@ test('provider construction is server-only and no outcome or switch calls an out
     }
   }
   assert.equal(calls, 0);
+});
+
+test('public language citations remain exact while credential parameters and queried image assets remain unavailable', async () => {
+  const original = await lookup.resolve(configuration);
+  const citation = 'https://www.press.bmwgroup.com/global/article/reference?language=en';
+  const wire = structuredClone(original); wire.source.references = [citation];
+  const mapped = createVehicleDetailsConsumer({ adapter: createLookupVehicleAdapter({ lookup: { resolve: () => wire } }) });
+  assert.equal((await mapped.resolve(configuration)).status, 'partial');
+  assert.deepEqual((await mapped.resolve(configuration)).vehicle.source.references, [citation]);
+  for (const url of ['https://public.example/source?token=opaque', 'https://public.example/source?language=en&key=opaque',
+    'https://private.local/source?language=en', 'https://name:opaque@public.example/source?language=en']) {
+    wire.source.references = [url]; assert.equal((await mapped.resolve(configuration)).status, 'source-unavailable');
+  }
+  // Even the allowed source language query remains forbidden on executable asset metadata.
+  wire.source.references = [citation];
+  wire.images = { state: 'representative', label: 'Representative imagery', items: [{ imageId: 'citation-is-not-an-asset',
+    asset: citation, role: 'representative-model', fidelity: 'representative-model', sourceKind: 'dated-snapshot',
+    observedDate: '2026-11-01', label: 'Representative model image' }] };
+  wire.presentation.imageLabel = 'Representative imagery'; wire.completeness.images = 'representative';
+  assert.equal((await mapped.resolve(configuration)).status, 'source-unavailable');
 });

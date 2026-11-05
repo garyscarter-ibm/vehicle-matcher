@@ -1,0 +1,10 @@
+/* BMW's public RIS/Aftersales @font-face, packaged for local use.
+   See docs/gcsp/density/evidence/font-provenance.json for exact sources and hashes. */
+@font-face {
+  font-family: BMWGroupTNCondensedPro-Medium;
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("./BMWGroupTNCondensedPro-Medium.woff2") format("woff2"),
+       url("./BMWGroupTNCondensedPro-Medium.woff") format("woff");
+}

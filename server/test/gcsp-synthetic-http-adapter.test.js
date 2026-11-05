@@ -48,7 +48,11 @@ async function setup(t, replacement) {
     gcspVehicleEvidence: { lookup, resolveContext: async () => ok(context) } });
   server.listen(0, '127.0.0.1'); await once(server, 'listening');
   t.after(() => new Promise((resolve) => { server.closeAllConnections(); server.close(resolve); }));
-  return { lookup, consumer: createConfiguredVehicleDetails({ lookup }), base: `http://127.0.0.1:${server.address().port}`,
+  return { lookup, consumer: createConfiguredVehicleDetails({ lookup, identityLookup: { classifyRequest: async (request) => {
+      const card = data.entries.find((e) => e.document.card.query.kind === request.kind && e.document.card.query.id === request.id)?.document.card;
+      return card ? { status: 'ok', identityKind: 'synthetic', liveEligible: false, configurationId: card.identifiers.composition,
+        ...(card.identifiers.subject ? { vehicleId: card.identifiers.subject } : {}) } : { status: 'not-found', identityKind: 'unknown', liveEligible: false };
+    } } }), base: `http://127.0.0.1:${server.address().port}`,
     external: () => external };
 }
 

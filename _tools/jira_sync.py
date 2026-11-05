@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.3.1"      # first, so the update check finds it within its first lines, ahead of the long docstring
+VERSION = "1.3.1+vehicle-matcher.1"  # Project-owned UI-plan fix; see docs/gcsp/poller-tooling-2026-11-05.md.
 __doc__ = """jira_sync.py -- the story sync between a Jira-backed project's Jira issues and its dev inbox. Vendored into a
 project's `_tools/` by project-scaffolding, beside scaffold_git.py and dev_mail.py, which it loads by path (sys.path is
 never touched): `inbox.git_tool` in .claude/scaffolding.json names the first (default _tools/scaffold_git.py).
@@ -107,13 +107,14 @@ State: <shared checkout>/.claude/jira-sync.json, per machine, kept out of git (s
   acknowledged by the poller. `start_dates`: first planned dates still awaiting acknowledgement, retried independently
   of the current workflow status and removed only after the date operation is acknowledged.
 
-Fields: Jira owns a story's title, kind, design_impact, requested, epic, priority, priority_reason, size, depends_on,
+Fields: Jira owns a story's title, kind, design_impact, ui, requested, epic, priority, priority_reason, size, depends_on,
 preconditions, goal, acceptance, files_or_areas, decided, out_of_scope and validate; git owns the
 claim (story_points, claimed_by, status). Bugs also carry work_item_type, related_story, story_link_basis,
 reproduction_steps, expected_behaviour, actual_behaviour, optional environment and evidence metadata. Native configured
 Story links are independent from the Epic parent and blocking links. Missing or conflicting origin is unresolved.
 The description is read by markdown headings: Goal, Acceptance criteria (or
-Acceptance), Files or areas, Decided, Out of scope, Validate. Any other line of a story (suggested_approach, say) is
+Acceptance), Files or areas, Decided, Out of scope, Validate. An explicit `ui:` line anywhere in the description
+also supplies the top-level component plan. Any other line of a story (suggested_approach, say) is
 left as it is. Text before the first heading is the
 goal when there is no Goal heading. A field with no heading is left out, so dev_mail.py check-story names it.
 Labels: kind:<code|data|ui|docs> (default code), design-impact, size:<XS|S|M|L|XL> (default M).
@@ -145,7 +146,7 @@ RASTER_MIMES = frozenset(("image/png", "image/jpeg", "image/gif", "image/webp", 
 # Fields in the order a story file carries them; the ones after `jira` that Jira owns are OWNED.
 ORDER = ["id", "jira", "title", "work_item_type", "related_story", "story_link_basis",
          "reproduction_steps", "expected_behaviour", "actual_behaviour", "environment", "evidence", "kind",
-         "design_impact", "requested", "epic", "priority", "priority_reason", "size",
+         "design_impact", "ui", "requested", "epic", "priority", "priority_reason", "size",
          "depends_on", "preconditions", "goal", "acceptance", "files_or_areas", "decided", "out_of_scope", "validate"]
 OWNED = set(ORDER[2:])
 SECTION_FIELDS = ["goal", "acceptance", "files_or_areas", "decided", "out_of_scope", "validate"]
@@ -565,6 +566,9 @@ def issue_blocks(issue, rec, key_to_story):
     if waits:
         blocks["preconditions"] = ["preconditions: " + "; ".join(waits)]
     secs = sections(issue["description"])
+    ui = re.search(r"(?m)^[ \t]*ui:[ \t]*([^\n]*)$", issue["description"])
+    if ui and ui.group(1).strip():
+        blocks["ui"] = ["ui: " + ui.group(1).strip()]
     if is_bug:
         blocks["related_story"] = ["related_story: " + bug_origin(issue, rec, key_to_story, secs)]
         blocks["evidence"] = ["evidence: " + json.dumps(issue.get("attachments", []), sort_keys=True)]

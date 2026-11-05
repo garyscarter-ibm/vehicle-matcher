@@ -112,6 +112,50 @@ all context still comes from the authenticated server session. Protected claims 
 Other GCSP routes retain their existing strict rejection. A different employee sees only their own brief/history;
 forged service contexts are refused and sessions from a reset run return `stale-run`. Stale version conflicts map to HTTP 409.
 
+### Brief editor context and unsaved preview · FUCQ-94
+
+`createBriefEditorService({ brief, account, provider, policy, clock, identity })` composes the existing BriefService,
+`ManualContextService.readAccount`, recommendation provider, PolicyService, DemoClock and identity guard. It exposes
+`readEditor(context)` and `previewDraft(context, input)` without a repository write, allocation, hold or mail port.
+`buildServer({ gcspBrief, gcspBriefEditor, gcspIdentity, gcspClock, gcspAllowedOrigins })` passes the editor instance
+as the optional second `createBriefRoutes` argument. Missing editor composition is unavailable; no provider fallback exists.
+
+`GET /api/gcsp/brief/editor` returns `ok.value = { context, initial, versions, provenance }`.
+`context` supplies the canonical control `preferences`, typed `essentials`, `slider`, sourced `knownFacts`, explicit
+read-only fact `permissions`, `practicalQuestions`, unconfirmed label and assumption provenance. It contains no scoring
+tuning. `initial = { brief, briefVersion, draftVersion, consent: { search, hold } }` is directly consumable by the
+DOM-free controller. Matching persisted drafts take precedence; otherwise a current approved brief is projected to
+editable fields, or a new employee receives the labelled unconfirmed policy defaults. A retained draft consumed by
+confirmation can project the semantically equal approved content while retaining its actual draft version. A different
+stale draft requires refresh/review. Missing approved/draft versions are zero, while provenance uses null for an absent
+approved base. Known account/current-contract/driver/provider facts retain their source/version and cannot be written
+through the brief. Consent is read independently from the approved brief and never inferred from opening or previewing.
+
+The single canonical `brief.editor.v1` assumption owns preference labels, initial positions/importance, the unconfirmed
+label and practical question mappings. Existing recommendation definitions, slider bounds and lifecycle charging enum
+remain authoritative. Its initial control values are draft inputs, not approved instructions. Explicit no uses the
+registered zero numeric minimum, empty equipment `includes` list, or charging `not-ready`; unknown remains null with
+`needs-confirmation`. Empty `includes` means no requested equipment and adds no employee equipment gate, while separate
+provider requirements remain in force. Charging yes exposes the canonical supported home/work/either choice.
+
+`POST /api/gcsp/brief/preview` accepts only `{ kind: 'unsaved-draft', baseBriefVersion, draftVersion, brief }`, with the
+FUCQ-91 editable brief fields and current saved versions. It rejects browser facts, identity/context, money and other
+authority. These new routes use strict authority rejection, unlike the explicitly ignoring FUCQ-91 routes above.
+Both use the existing employee/current-run/Origin/shared-access/no-store boundary. Stale saved versions return the
+typed refresh outcome and never overwrite edits. The service checks role and saved versions again after evaluation.
+
+The trusted in-process `EmployeeRecommendationService.previewUnsaved(context, { brief, baseBriefVersion, baseDraftVersion })`
+shares the real complete-candidate evaluator. It does not enter the public approved recommendation route or invent a
+positive approved brief version. Successful top-level and candidate `preview = { kind: 'unsaved-draft', approved: false,
+baseBriefVersion, baseDraftVersion }` labels accompany actual base/null brief provenance. Employee draft intent is
+evaluated transiently; untouched policy-source preference entries remain unconfirmed and original input states are retained as evidence.
+The existing shared preference source can provisionally carry a displayed default axis after the other axis is edited;
+this calculation does not assert independent-axis review or durable confirmation.
+Only the employee charging answer overlays its corresponding source fact with explicit preview provenance. Provider
+essential, driver, eligibility, allowance, required-by, availability and complete-stock gates retain their authority.
+Outcome states, exact candidate decisions, reasons/trade-offs and all source/policy/clock versions follow FUCQ-29.
+The approved public recommendation route still requires a positive version and excludes browser charging essentials.
+
 ## Exact stock, holds and offers
 
 `orderUuid` is the exact-stock UUID v4 and the foreign key for claims, holds, offers and allocations. `orderNumber` is a unique **7-digit string per run**, retaining leading zeros; `wholesalerOrderId` is an 8-digit integer. `configurationId` identifies immutable configuration facts and is never an exclusive-car key. Two cars can share it. VIN is attached only to delivered/current cars, never required for stock browsing, matching or holding (Q13).
@@ -200,6 +244,7 @@ Key names use lower camel-case dotted namespaces; a suffix states a dimensional 
 | `supply.leadTimeDays` | `56` calendar days | Assumed eight-week production-to-release planning input; not a BMW delivery promise (round-2). |
 | `brief.slider.minimum` | `0` integer slider units | Assumed `brief.slider.scale`; shared position and importance scale. |
 | `brief.slider.maximum` | `100` integer slider units | Assumed `brief.slider.scale`; dimensions declare categorical alternatives where required. |
+| `brief.editor.v1` | Editor presentation/input configuration | Assumed labelled draft control defaults and practical yes/no/unknown mappings; consumed through PolicyService, with no scoring tuning or permission grant. |
 | `stock.configuration.modelCodeField` | `vgModelCode` field name | Assumed use of target knowledge-base format; AG/VG discrepancy remains open (Q13 round-3 and HLD). |
 | `stock.configuration.codeSeparator` | `,` character | Assumed target detail, supported by public configurator shape (HLD follow-up). |
 | `stock.configuration.includePaintAndUpholstery` | `true` boolean | Assumed target detail, supported by configurator; every factory option included, dealer accessories excluded. |
@@ -400,9 +445,13 @@ Envelope `contractVersion: 1.0.0`, `schemaVersion: 1`, provider `local-vehicle-e
 
 `buildServer({ gcspVehicleEvidence: { lookup, resolveContext }, gcspIdentity })` wraps the same port behind the existing `X-Access-Key` shared gate. Configuration/VIN evidence reads require no invented acting principal; stock additionally resolves the existing server-owned session or injected trusted current-run context. Explicit configured-origin/no-store boundaries apply. The default local read wrapper accepts an operator-configured root and repository; requests expose no source selector, writer, generator or live-provider fallback. `npm run server:gcsp-offline` uses the same backend entry, suppressing unrelated live stock/dealer/geocode/colour startup warmers. Ordinary entry behavior remains compatible. No new policy key, inventory, database, dependency or service is introduced.
 
+FUCQ-57 adds `lookup.classifyRequest(request, { context })` and independent registry `classifyConfiguration(configurationId)` without changing the lookup envelope. Configured FUCQ-56 consumers require this server-owned classification before every allowed offline-provider attempt and recheck successful immutable configuration/vehicle bindings afterward. VIN/configuration history is read from the persisted publication inventory; stock uses the whole validated FUCQ-53 inventory snapshot, revision/digest and exact current-run stock UUID. Missing/corrupt authority fails unavailable, stale/non-stock identity fails mismatch, and a closed available-corpus miss never becomes real-VIN permission. Only server-selected `lookup`/`alternate-offline` providers exist; alternate construction supplies `identityLookup` explicitly. FUCQ-43's existing independent real-lookup guard remains required before any future key/content/decoder boundary. The [offline proof and run instructions](synthetic-vin-service.md#fucq-57-offline-routing-and-five-wmi-proof) document the bounded five-WMI evidence, separate actual HTTP parity and reset/history protections; this adds no screen, live integration or policy key.
+
 ## Captured notifications · FUCQ-93
 
 FUCQ-93 adds the [captured outbox contract](captured-outbox.md): `NotificationDispatcher` consumes committed jobs through the default `CapturedTransport`, storing the fictional rendered message under the existing `notification_outbox.outcome.message`. Trusted `buildServer` composition starts `gcspNotify` before clock startup; its `captured-outbox` handler uses the existing `outbox-dispatch` tick stage. Repository `afterCommit(observer)` runs outside the committed provider transaction, isolates observer failures and excludes notification bookkeeping from recursive drains. Reset atomically marks prior-run unsent jobs `stale`; sent captured history remains readable. The single policy key `notify.delivery.v1` controls attempt budget and exponential demo-clock backoff. No stock, hold, offer or allocation/priority state is changed by delivery, and no real mail, token producer or presenter viewer is supplied here.
+
+FUCQ-97 adds the presenter-only route `GET /api/gcsp/presenter/outbox` (`createOutboxRoutes`, composed as `gcspOutbox: { repository }`) and the `<gcsp-outbox>` viewer; see [presenter-outbox-contract.md](presenter-outbox-contract.md).
 
 ## Owned renewal-risk cases · FUCQ-112
 
@@ -585,6 +634,8 @@ Retail `publicMatch.listings[]` additively retains the evaluator's exact `decisi
 | Version / date / owner | Change and keyed assumptions |
 |---|---|
 | 1.0.0 / 2026-11-05 / FUCQ-83 | Source checkpoint: additive dated policy tables/migration 0002, idempotent seed, PostgreSQL and explicit memory providers, trusted Greg immutable publishing/replay and unchanged pinned reads. Existing assumptions/0003/consumers remain unchanged. Managed Render target is unset, so native SQL/parity and integration completion remain blocked; no screen or diagram-render proof claimed. |
+| 1.0.0 / 2026-11-05 / FUCQ-94 | Adds canonical editor context and server-only real unsaved preview through strict employee HTTP routes, explicit draft/base provenance, independent consent and truthful empty-equipment no. No approved recommendation downgrade, writes, holds or new screen. |
+| 1.0.0 / 2026-11-05 / FUCQ-57 | Adds mandatory configured-provider identity classification and successful-result binding checks through the existing retained registry/current-run inventory, preserving the FUCQ-55 envelope and FUCQ-43 real guard. Actual five-WMI generated-store HTTP/in-process/start/reset proofs retain honest US/LHD, unknown and representative-image-contract states. No live authorisation, mutable stock/policy/retail change or new screen. |
 | 1.0.0 / 2026-11-05 / FUCQ-112 | Adds RenewalCaseService/routes, `renewal_cases` and migration `0003`, eight dated `renewalCase.*` assumptions, keyed completed-receipt trigger consumer and same-transaction captured case-update jobs. Employee-confirmed preference remedies verify FUCQ-91 history; no allocation/priority mutation, existing port meaning change or screen. |
 | 1.0.0 / 2026-11-05 / FUCQ-55 | Additive three-identity lookup/HTTP envelope and same-entry offline profile, with exact tiny selected-store packaging only. Preserves exact run/configuration/source identity, typed outcomes and presentation provenance; reuses existing registry, repository and shared gate. No new policy or storage meaning; scoped lookup/HTTP/offline checks and final23/99/125/133integrated whole suite passed (820pass,2configuredSQLskips; stampc06d774bea5a). |
 | 1.0.0 / 2026-11-05 / FUCQ-133 | Adds immutable pinned comparison-policy preparation, pure seeded fictional cohort/stock/releases, the comparison.* assumptions above, explicit what-if overlays and reproducible input manifests. Limited structural fixtures are labelled synthetic; corpus reads require exact retained identity. No runtime route, live-state write, policy publication, migration or existing contract meaning change. |

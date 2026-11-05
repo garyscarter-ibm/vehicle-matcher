@@ -7,7 +7,7 @@
 //   - the shared stylesheet may not grow past its line cap, and a shorter one is banked the same way.
 //
 // Run from the project root: node tests/ui-ratchet.test.mjs        (or --root DIR from elsewhere)
-//   --write          rewrite "baseline" (and the stylesheet cap) at the current counts. It refuses to raise any number
+//   --write          rewrite "baseline" (and the stylesheet caps) at the current counts. It refuses to raise any number
 //                    unless --allow-raise is given. A config with no "baseline" key is unseeded, and the first --write
 //                    seeds it.
 //   --debt           print the total outstanding per pattern as JSON ({} when clear), then exit
@@ -21,7 +21,8 @@
 //     "patterns": { "table": { "re": "\\bh\\(\\s*\"table\"", "flags": "g", "use": "dataTable() (js/ui/table.js)" } },
 //     "baseline": { "js/views/a.js": { "table": 2 } },
 //     "exempt": { "js/views/a.js": ["table"] },        optional: counted, but left out of --debt
-//     "stylesheet": { "path": "css/app.css", "max_lines": 900 } }   optional
+//     "stylesheet": { "path": "css/app.css", "max_lines": 900 },      optional
+//     "stylesheets": [{ "path": "css/x.css", "max_lines": 80 }] }     optional: more capped sheets, same rules
 // Comments (/* ... */ and // ...) are stripped before counting.
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -96,6 +97,14 @@ function loadConfig() {
     if (s.max_lines !== undefined && (!Number.isInteger(s.max_lines) || s.max_lines < 0)) fail('"stylesheet.max_lines" must be a whole number');
     if (!existsSync(join(root, s.path))) fail(`stylesheet "${s.path}" not found under ${root}`);
   }
+  if (cfg.stylesheets !== undefined) {
+    if (!Array.isArray(cfg.stylesheets)) fail('"stylesheets" must be a list of {path, max_lines}');
+    for (const s of cfg.stylesheets) {
+      if (!isObj(s) || typeof s.path !== "string" || !s.path) fail('each "stylesheets" entry needs a "path"');
+      if (!Number.isInteger(s.max_lines) || s.max_lines < 0) fail(`"stylesheets" entry "${s.path}" needs a whole-number "max_lines"`);
+      if (!existsSync(join(root, s.path))) fail(`stylesheet "${s.path}" not found under ${root}`);
+    }
+  }
   for (const r of cfg.roots) if (!existsSync(join(root, r))) fail(`root "${r}" not found under ${root} (run from the project root, or pass --root DIR)`);
   cfg.extensions ||= [".js", ".mjs"];
   cfg.exclude ||= [];
@@ -143,7 +152,8 @@ function counts() {
   return out;
 }
 
-const sheetLines = () => readFileSync(join(root, cfg.stylesheet.path), "utf8").split("\n").length;
+const linesOf = (path) => readFileSync(join(root, path), "utf8").split("\n").length;
+const allSheets = () => [...(cfg.stylesheet ? [cfg.stylesheet] : []), ...(cfg.stylesheets || [])];
 
 // The debt left to migrate: every current count outside "exempt", summed per pattern.
 function debt(c) {
@@ -184,10 +194,10 @@ if (args.includes("--write")) {
       }
   }
   let sheet;
-  if (cfg.stylesheet) {
-    sheet = sheetLines();
-    const cap = cfg.stylesheet.max_lines;
-    if (seeded && cap !== undefined && sheet > cap) raised.push(`${cfg.stylesheet.path}: ${cap} -> ${sheet} lines`);
+  for (const s of allSheets()) {
+    const n = linesOf(s.path);
+    if (s === cfg.stylesheet) sheet = n;
+    if (seeded && s.max_lines !== undefined && n > s.max_lines) raised.push(`${s.path}: ${s.max_lines} -> ${n} lines`);
   }
   if (raised.length && !args.includes("--allow-raise")) {
     console.error("ui-ratchet: --write would raise these, and a baseline only falls. Use the kit instead, or pass --allow-raise:\n" + raised.join("\n"));
@@ -198,6 +208,7 @@ if (args.includes("--write")) {
     if (k === "baseline") continue;
     next[k] = k === "patterns" ? Object.fromEntries(Object.entries(v).map(([n, p]) => [n, { re: p.re, ...(p.flags ? { flags: p.flags } : {}), use: p.use }])) : v;
     if (k === "stylesheet") next[k] = { path: v.path, max_lines: sheet };
+    if (k === "stylesheets") next[k] = v.map((s) => ({ path: s.path, max_lines: linesOf(s.path) }));
   }
   next.baseline = now;
   // keep a stable key order: baseline just before stylesheet
@@ -206,6 +217,7 @@ if (args.includes("--write")) {
   ordered.baseline = next.baseline;
   if (next.exempt) ordered.exempt = next.exempt;
   if (next.stylesheet) ordered.stylesheet = next.stylesheet;
+  if (next.stylesheets) ordered.stylesheets = next.stylesheets;
   writeFileSync(configPath, serialise(ordered));
   const pieces = Object.values(now).reduce((a, k) => a + Object.values(k).reduce((x, y) => x + y, 0), 0);
   console.log(`ui-ratchet.json written: ${Object.keys(now).length} file(s), ${pieces} hand-built piece(s)` + (sheet !== undefined ? `, ${cfg.stylesheet.path} capped at ${sheet} lines` : ""));
@@ -232,14 +244,14 @@ test("the baseline holds what has been won: a count that fell is lowered in ui-r
   assert.deepEqual(under, [], "\nLower these in ui-ratchet.json (or run `node " + process.argv[1] + " --write`):\n" + under.join("\n"));
 });
 
-if (cfg.stylesheet && cfg.stylesheet.max_lines !== undefined) {
-  const { path, max_lines: cap } = cfg.stylesheet;
+for (const { path, max_lines: cap } of allSheets()) {
+  if (cap === undefined) continue;
   test(`${path} doesn't grow: shared looks go in the kit's stylesheet`, () => {
-    const n = sheetLines();
+    const n = linesOf(path);
     assert.ok(n <= cap, `${path} is ${n} lines, cap ${cap}. Put a shared piece's style in the kit's stylesheet, or make room by removing rules a migration left unused.`);
   });
   test(`${path} shrinks are banked: the cap is lowered when it gets shorter`, () => {
-    const n = sheetLines();
+    const n = linesOf(path);
     assert.ok(n >= cap, `${path} is ${n} lines, below its cap ${cap}: lower "max_lines" in ui-ratchet.json to ${n}.`);
   });
 }

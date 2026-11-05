@@ -10926,6 +10926,83 @@
   ],
   "assumptions": [
     {
+      "key": "brief.editor.v1",
+      "value": {
+        "unconfirmedLabel": "Unconfirmed draft starting position",
+        "preferences": {
+          "body": {
+            "label": "Body style",
+            "value": "estate",
+            "importance": 50
+          },
+          "fuel": {
+            "label": "Fuel",
+            "value": "petrol",
+            "importance": 50
+          },
+          "sportiness": {
+            "label": "Sportiness",
+            "value": 50,
+            "importance": 50
+          },
+          "comfort": {
+            "label": "Comfort",
+            "value": 50,
+            "importance": 50
+          },
+          "economy": {
+            "label": "Economy",
+            "value": 50,
+            "importance": 50
+          },
+          "size": {
+            "label": "Size",
+            "value": 50,
+            "importance": 50
+          }
+        },
+        "practicalQuestions": {
+          "seats": {
+            "label": "Do you need to carry five people?",
+            "yes": 5,
+            "no": 0,
+            "unknown": null
+          },
+          "boot": {
+            "label": "Do you need at least 430 litres of carrying space?",
+            "yes": 430,
+            "no": 0,
+            "unknown": null
+          },
+          "equipment": {
+            "label": "Do you need a towbar?",
+            "yes": [
+              "towbar"
+            ],
+            "no": [],
+            "unknown": null
+          },
+          "charging": {
+            "label": "Can you charge at home or work?",
+            "yes": [
+              "home",
+              "work",
+              "either"
+            ],
+            "no": "not-ready",
+            "unknown": null
+          }
+        }
+      },
+      "unit": "brief editor presentation and input defaults",
+      "status": "assumed",
+      "basis": "Revisable draft starting positions and explicit practical question mappings. Positions and importance remain unconfirmed until employee review; no answer or buddy consent is inferred.",
+      "source": "docs/gcsp/evidence/fucq94/supporting-contract-proposal.md",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "hold.cart.durationSeconds",
       "value": 120,
       "unit": "seconds",

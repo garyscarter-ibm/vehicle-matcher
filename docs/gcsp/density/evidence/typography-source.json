@@ -1,0 +1,188 @@
+{
+  "source": {
+    "url": "https://www.ris.bmw.com/styles-PIBQ3WXW.css",
+    "sha256": "49f8e1938e1cca36b7dd76d37c016fd91ef1774b6a24802def9ef049569a4777",
+    "bytes": 1932716
+  },
+  "observedDate": "2026-11-05",
+  "sourceHashVerified": true,
+  "roles": [
+    {
+      "selector": ".text-label",
+      "typography": {
+        "font-family": "var(--ds-typography-family-base)",
+        "font-size": "var(--ds-typography-size-label)",
+        "font-weight": "var(--ds-typography-weight-regular)",
+        "line-height": "var(--ds-typography-line-height-label)"
+      },
+      "resolved": {
+        "font-family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+        "font-size": "12px",
+        "font-weight": "400",
+        "line-height": "16px"
+      }
+    },
+    {
+      "selector": ".text-regular",
+      "typography": {
+        "font-family": "var(--ds-typography-family-base)",
+        "font-size": "var(--ds-typography-size-regular)",
+        "font-weight": "var(--ds-typography-weight-regular)",
+        "line-height": "var(--ds-typography-line-height-regular)"
+      },
+      "resolved": {
+        "font-family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+        "font-size": "14px",
+        "font-weight": "400",
+        "line-height": "20px"
+      }
+    },
+    {
+      "selector": ".text-paragraph",
+      "typography": {
+        "font-family": "var(--ds-typography-family-base)",
+        "font-size": "var(--ds-typography-size-paragraph)",
+        "font-weight": "var(--ds-typography-weight-regular)",
+        "line-height": "var(--ds-typography-line-height-paragraph)"
+      },
+      "resolved": {
+        "font-family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+        "font-size": "16px",
+        "font-weight": "400",
+        "line-height": "24px"
+      }
+    },
+    {
+      "selector": ".ds-button",
+      "typography": {
+        "font-family": "var(--ds-typography-family-button)",
+        "font-size": "var(--ds-typography-size-button)",
+        "font-weight": "var(--ds-typography-weight-button)",
+        "line-height": "var(--ds-typography-line-height-button)"
+      },
+      "resolved": {
+        "font-family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+        "font-size": "12px",
+        "font-weight": "600",
+        "line-height": "16px"
+      }
+    },
+    {
+      "selector": ".ds-checkbox-group",
+      "typography": {
+        "font-family": "var(--ds-font-family-input)",
+        "font-size": "var(--ds-font-size-input-label)",
+        "font-weight": "var(--ds-font-weight-input)",
+        "line-height": "var(--ds-font-line-height-input)"
+      },
+      "resolved": {
+        "font-family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+        "font-size": "12px",
+        "font-weight": "400",
+        "line-height": "16px"
+      }
+    },
+    {
+      "selector": "input:not([type]).ds-input,input[type=file].ds-input,input[type=text].ds-input,select.ds-select,input[type=date].ds-input,input[type=datetime-local].ds-input,input[type=month].ds-input,input[type=week].ds-input,input[type=time].ds-input,input[type=search].ds-input,input[type=url].ds-input,input[type=tel].ds-input,input[type=number].ds-input,input[type=password].ds-input,input[type=email].ds-input,textarea.ds-input,.ds-input.ds-input-wrapper.ds-input,.ds-multi-value-input-wrapper.ds-input,.ds-inputnumber.ds-input-wrapper.ds-input",
+      "typography": {
+        "font-family": "var(--ds-font-family-input)",
+        "font-size": "var(--ds-font-size-input-label)",
+        "font-weight": "var(--ds-font-weight-input)",
+        "line-height": "var(--ds-font-line-height-input)"
+      },
+      "resolved": {
+        "font-family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+        "font-size": "12px",
+        "font-weight": "400",
+        "line-height": "16px"
+      }
+    },
+    {
+      "selector": ".ds-radio-group",
+      "typography": {
+        "font-family": "var(--ds-font-family-input)",
+        "font-size": "var(--ds-font-size-input-label)",
+        "font-weight": "var(--ds-font-weight-input)",
+        "line-height": "var(--ds-font-line-height-input)"
+      },
+      "resolved": {
+        "font-family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+        "font-size": "12px",
+        "font-weight": "400",
+        "line-height": "16px"
+      }
+    },
+    {
+      "selector": ":host(ds-table-head) th,:host(.ds-table-head) th,.ds-table-head th",
+      "typography": {
+        "font-family": "var(--ds-typography-family-base)",
+        "font-size": "var(--ds-typography-size-regular)",
+        "font-weight": "var(--ds-font-weight-table-header)",
+        "line-height": "var(--ds-typography-line-height-regular)"
+      },
+      "resolved": {
+        "font-family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+        "font-size": "14px",
+        "font-weight": "500",
+        "line-height": "20px"
+      }
+    },
+    {
+      "selector": "h1,.h1",
+      "typography": {
+        "font-family": "var(--ds-typography-family-brand)",
+        "font-size": "var(--ds-typography-size-title-lg)",
+        "font-weight": "var(--ds-typography-weight-title-lg)",
+        "line-height": "var(--ds-typography-line-height-title-lg)",
+        "text-transform": "var(--ds-typography-transform-uppercase)"
+      },
+      "resolved": {
+        "font-family": "BMWGroupTNCondensedPro-Medium",
+        "font-size": "23px",
+        "font-weight": "500",
+        "line-height": "28px",
+        "text-transform": "uppercase"
+      }
+    },
+    {
+      "selector": "h2,.h2",
+      "typography": {
+        "font-family": "var(--ds-typography-family-base)",
+        "font-size": "var(--ds-typography-size-title-md)",
+        "font-weight": "var(--ds-typography-weight-title-md)",
+        "line-height": "var(--ds-typography-line-height-title-md)"
+      },
+      "resolved": {
+        "font-family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+        "font-size": "16px",
+        "font-weight": "600",
+        "line-height": "24px"
+      }
+    },
+    {
+      "selector": "h3,.h3",
+      "typography": {
+        "font-family": "var(--ds-typography-family-base)",
+        "font-size": "var(--ds-typography-size-title-sm)",
+        "font-weight": "var(--ds-typography-weight-title-sm)",
+        "line-height": "var(--ds-typography-line-height-title-sm)",
+        "text-transform": "var(--ds-typography-transform-uppercase)"
+      },
+      "resolved": {
+        "font-family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+        "font-size": "12px",
+        "font-weight": "600",
+        "line-height": "16px",
+        "text-transform": "uppercase"
+      }
+    }
+  ],
+  "localAdaptations": [
+    "Existing responsive text sizes and line heights",
+    "Sentence-case page and section titles",
+    "Strong emphasis for numerical KPIs, row headings and status summaries",
+    "Italic missing-data and privacy-band cues",
+    "48px touch controls"
+  ],
+  "fontBoundary": "Email as received is an isolated captured document, using Arial in the observed fixture and notification template. Application chrome and the plain-text viewer use shared Density typography. AG Grid Density is an icon font; our UI uses SVG icons."
+}

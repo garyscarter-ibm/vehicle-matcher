@@ -1,23 +1,181 @@
 {
   "version": 1,
-  "roots": ["blocks/vehicle-matcher/"],
-  "exclude": ["blocks/vehicle-matcher/ui.js", "blocks/vehicle-matcher/modes/question-ui.js", "blocks/vehicle-matcher/modes/result-card.js", "blocks/vehicle-matcher/modes/match-signal.js", "blocks/vehicle-matcher/modes/preview-feed.js", "blocks/vehicle-matcher/modes/brand-copy.js", "blocks/vehicle-matcher/fonts/"],
-  "extensions": [".js", ".mjs"],
+  "roots": [
+    "blocks/vehicle-matcher/",
+    "blocks/gcsp/",
+    "blocks/demo-launcher/"
+  ],
+  "exclude": [
+    "blocks/vehicle-matcher/ui.js",
+    "blocks/vehicle-matcher/modes/question-ui.js",
+    "blocks/vehicle-matcher/modes/result-card.js",
+    "blocks/vehicle-matcher/modes/match-signal.js",
+    "blocks/vehicle-matcher/modes/preview-feed.js",
+    "blocks/vehicle-matcher/modes/brand-copy.js",
+    "blocks/vehicle-matcher/fonts/",
+    "blocks/demo-launcher/components.js"
+  ],
+  "extensions": [
+    ".js",
+    ".mjs"
+  ],
   "patterns": {
-    "heading": {"re": "el\\('(p|h2)', 'vm-(kicker|title|lede)", "flags": "g", "use": "screenIntro({ kicker, title, lede }) (proposed, see COMPONENTS.md)"},
-    "button": {"re": "el\\('(a|button)', 'vm-btn vm-btn-(primary|ghost)", "flags": "g", "use": "button({ label, variant, onClick, href }) (proposed, see COMPONENTS.md)"},
-    "skeleton": {"re": "el\\('div', 'vm-skel[ ']", "flags": "g", "use": "skeleton(kind) / loadingScreen() (proposed, see COMPONENTS.md)"},
-    "status-screen": {"re": "el\\('div', 'vm-screen vm-status'", "flags": "g", "use": "statusScreen({ kicker, title, message, actions }) (proposed, see COMPONENTS.md)"},
-    "spec-pill": {"re": "el\\('span', 'vm-mingle-pill'", "flags": "g", "use": "specPills(car) (proposed, see COMPONENTS.md)"},
-    "mini-card": {"re": "el\\('div', 'vm-mingle-card-(media|body|colour)'", "flags": "g", "use": "miniCarCard(car) (proposed, see COMPONENTS.md)"},
-    "single-slider": {"re": "el\\('input', 'vm-slider-input'\\)", "flags": "g", "use": "a single option on renderRangeSlider (modes/question-ui.js)"}
+    "heading": {
+      "re": "el\\('(p|h2)', 'vm-(kicker|title|lede)",
+      "flags": "g",
+      "use": "screenIntro({ kicker, title, lede }) (ui.js)"
+    },
+    "button": {
+      "re": "el\\('(a|button)', 'vm-btn vm-btn-(primary|ghost)",
+      "flags": "g",
+      "use": "button({ label, variant, onClick, href }) (ui.js)"
+    },
+    "skeleton": {
+      "re": "el\\('div', 'vm-skel[ ']",
+      "flags": "g",
+      "use": "skeleton(kind) / loadingScreen() (proposed, see COMPONENTS.md)"
+    },
+    "status-screen": {
+      "re": "el\\('div', 'vm-screen vm-status'",
+      "flags": "g",
+      "use": "statusScreen({ kicker, title, message, actions }) (ui.js)"
+    },
+    "spec-pill": {
+      "re": "el\\('span', 'vm-mingle-pill'",
+      "flags": "g",
+      "use": "specPills(car) (proposed, see COMPONENTS.md)"
+    },
+    "mini-card": {
+      "re": "el\\('div', 'vm-mingle-card-(media|body|colour)'",
+      "flags": "g",
+      "use": "miniCarCard(car) (proposed, see COMPONENTS.md)"
+    },
+    "single-slider": {
+      "re": "el\\('input', 'vm-slider-input'\\)",
+      "flags": "g",
+      "use": "a single option on renderRangeSlider (modes/question-ui.js)"
+    },
+    "experience-choice": {
+      "re": "el\\('article', 'demo-experience-choice'",
+      "flags": "g",
+      "use": "experienceChoice() (blocks/demo-launcher/components.js)"
+    },
+    "brand-selector": {
+      "re": "el\\('select', 'demo-brand-control'",
+      "flags": "g",
+      "use": "brandSelector() (blocks/demo-launcher/components.js)"
+    }
   },
+  "stylesheets": [
+    {
+      "path": "blocks/gcsp/account/gcsp-account.css",
+      "max_lines": 22
+    },
+    {
+      "path": "blocks/vehicle-matcher/question-controls.css",
+      "max_lines": 7
+    },
+    {
+      "path": "blocks/vehicle-matcher/decision-card.css",
+      "max_lines": 14
+    },
+    {
+      "path": "blocks/vehicle-matcher/component-gallery.css",
+      "max_lines": 93
+    },
+    {
+      "path": "blocks/gcsp/shell/gcsp-shell.css",
+      "max_lines": 298
+    },
+    {
+      "path": "blocks/gcsp/shell/gcsp-tokens.css",
+      "max_lines": 30
+    },
+    {
+      "path": "blocks/gcsp/employee/gcsp-employee.css",
+      "max_lines": 92
+    },
+    {
+      "path": "blocks/gcsp/presenter/gcsp-presenter.css",
+      "max_lines": 56
+    },
+    {
+      "path": "blocks/demo-launcher/launcher.css",
+      "max_lines": 38
+    },
+    {
+      "path": "blocks/demo-launcher/entry-host.css",
+      "max_lines": 44
+    },
+    {
+      "path": "blocks/vehicle-matcher/gcsp-kit.css",
+      "max_lines": 26
+    },
+    {
+      "path": "blocks/gcsp/kit/gcsp-kit.css",
+      "max_lines": 28
+    },
+    {
+      "path": "blocks/gcsp/greg/gcsp-greg.css",
+      "max_lines": 38
+    },
+    {
+      "path": "blocks/gcsp/brief/gcsp-brief.css",
+      "max_lines": 37
+    },
+    {
+      "path": "blocks/gcsp/shell/density-theme.css",
+      "max_lines": 67
+    },
+    {
+      "path": "blocks/gcsp/shell/fonts/density-fonts.css",
+      "max_lines": 11
+    },
+    {
+      "path": "blocks/gcsp/shell/density-typography.css",
+      "max_lines": 50
+    }
+  ],
   "baseline": {
-    "blocks/vehicle-matcher/modes/guess-who.js": {"heading": 3, "button": 3, "skeleton": 1, "status-screen": 1},
-    "blocks/vehicle-matcher/modes/knockout.js": {"heading": 15, "button": 7, "skeleton": 9, "status-screen": 2, "spec-pill": 5, "mini-card": 6},
-    "blocks/vehicle-matcher/modes/mingle.js": {"heading": 11, "button": 6, "skeleton": 8, "status-screen": 2, "spec-pill": 5, "mini-card": 6},
-    "blocks/vehicle-matcher/modes/podium.js": {"heading": 3, "button": 3, "skeleton": 2, "status-screen": 1, "single-slider": 1},
-    "blocks/vehicle-matcher/modes/questionnaire.js": {"heading": 11, "button": 8, "skeleton": 8, "status-screen": 1, "single-slider": 1}
+    "blocks/vehicle-matcher/modes/guess-who.js": {
+      "heading": 3,
+      "button": 3,
+      "skeleton": 1,
+      "status-screen": 1
+    },
+    "blocks/vehicle-matcher/modes/knockout.js": {
+      "heading": 15,
+      "button": 7,
+      "skeleton": 9,
+      "status-screen": 2,
+      "spec-pill": 5,
+      "mini-card": 6
+    },
+    "blocks/vehicle-matcher/modes/mingle.js": {
+      "heading": 11,
+      "button": 6,
+      "skeleton": 8,
+      "status-screen": 2,
+      "spec-pill": 5,
+      "mini-card": 6
+    },
+    "blocks/vehicle-matcher/modes/podium.js": {
+      "heading": 3,
+      "button": 3,
+      "skeleton": 2,
+      "status-screen": 1,
+      "single-slider": 1
+    },
+    "blocks/vehicle-matcher/modes/questionnaire.js": {
+      "heading": 11,
+      "button": 8,
+      "skeleton": 8,
+      "status-screen": 1,
+      "single-slider": 1
+    }
   },
-  "stylesheet": {"path": "blocks/vehicle-matcher/vehicle-matcher.css", "max_lines": 4535}
+  "stylesheet": {
+    "path": "blocks/vehicle-matcher/vehicle-matcher.css",
+    "max_lines": 4534
+  }
 }

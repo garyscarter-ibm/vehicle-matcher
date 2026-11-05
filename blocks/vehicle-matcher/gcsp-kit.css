@@ -1,0 +1,25 @@
+@import "../gcsp/shell/gcsp-tokens.css";
+
+/* kit primitives under the GCSP theme */
+.gcsp .vm-title { font-weight: 600; text-transform: none; letter-spacing: -0.01em; }
+.gcsp .vm-lede { font-weight: 400; line-height: 1.5; }
+.gcsp .vm-kicker { font-size: 12px; color: var(--gcsp-accent-strong); }
+.gcsp .vm-btn { min-height: 48px; padding: 0 24px; line-height: 1.2; font-weight: 600; font-size: 16px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+.gcsp .vm-btn-primary { background: var(--gcsp-accent); border-color: var(--gcsp-accent); color: var(--gcsp-on-accent); }
+.gcsp .vm-btn-ghost { background: var(--gcsp-surface); border-color: var(--gcsp-accent); color: var(--gcsp-accent-strong); }
+.gcsp .vm-btn-ghost:not(:disabled):not([aria-pressed="true"]):hover { background: var(--gcsp-accent-soft); }
+.gcsp .vm-btn:disabled { opacity: 1; background: var(--gcsp-surface-muted); border-color: var(--gcsp-divider); color: var(--gcsp-text-muted); cursor: not-allowed; }
+.gcsp .vm button:focus-visible,
+.gcsp .vm a:focus-visible,
+.gcsp .vm summary:focus-visible,
+.gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 2px; }
+.gcsp .vm-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px 24px; margin: 0; }
+.gcsp .vm-fact { min-width: 0; margin: 0; }
+.gcsp .vm-fact-label { color: var(--gcsp-text-muted); font-size: 13px; }
+.gcsp .vm-fact-value { margin: 2px 0 0; overflow-wrap: anywhere; font-size: 16px; font-weight: 600; }
+.gcsp .vm-fact-value.is-missing { color: var(--gcsp-text-muted); font-style: italic; font-weight: 400; }
+.gcsp .vm-status { min-height: 0; padding: 24px; background: var(--gcsp-surface-raised); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
+.gcsp .vm-status .vm-btn-primary { min-width: 0; max-width: 100%; }
+.gcsp .vm-status .vm-title { font-size: 22px; }
+.gcsp .vm-card-media { background: var(--gcsp-text); }
+.gcsp .vm-card-soon { color: var(--gcsp-on-accent); font-weight: 600; font-size: 14px; }
