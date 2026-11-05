@@ -11711,6 +11711,21 @@
       "sourceDate": "2026-11-05",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "notify.delivery.v1",
+      "value": {
+        "maxAttempts": 3,
+        "retryBaseSeconds": 30,
+        "retryMaximumSeconds": 300
+      },
+      "unit": "attempt count and demo-clock seconds",
+      "status": "assumed",
+      "basis": "Three bounded attempts with exponential 30-second backoff capped at five minutes make fictional capture failure and recovery repeatable; revisable demonstration behaviour, not BMW mail policy.",
+      "source": "docs/gcsp/captured-outbox.md",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
     }
   ]
 }

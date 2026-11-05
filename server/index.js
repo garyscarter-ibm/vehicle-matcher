@@ -851,7 +851,15 @@ export function buildServer(deps = {}) {
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
 
-  const gcspStartup = deps.gcspClock ? Promise.resolve().then(() => deps.gcspClock.reconcileStartup()).catch(() => ({
+  const gcspStartup = deps.gcspClock ? Promise.resolve().then(async () => {
+    // Notification registration precedes the clock sealing its registry. Startup
+    // drains already committed jobs even though clock startup omits allocation.
+    if (deps.gcspNotify) {
+      const notifications = await deps.gcspNotify.start();
+      if (notifications.status !== 'ok') return notifications;
+    }
+    return deps.gcspClock.reconcileStartup();
+  }).catch(() => ({
     status: 'unavailable', reason: 'GCSP startup reconciliation is unavailable.', retryable: true, contractVersion: '1.0.0',
   })) : Promise.resolve(null);
   const server = createServer(async (req, res) => {

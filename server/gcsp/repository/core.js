@@ -224,9 +224,17 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
 
 export function createRepository(backend) {
   let opened = false;
+  const commitObservers = new Set();
   const unavailable = () => result('unavailable', { reason: 'Repository is unavailable', retryable: true });
   const safe = async (work) => { try { return await work(); } catch { return unavailable(); } };
   return Object.freeze({
+    // Backend composition only. Observers run after the provider releases its
+    // transaction/lock; their failures cannot undo or replace committed results.
+    afterCommit(observer) {
+      if (typeof observer !== 'function') throw new TypeError('Supply a commit observer.');
+      commitObservers.add(observer);
+      return () => commitObservers.delete(observer);
+    },
     async open(options = {}) {
       return safe(async () => { const outcome = await backend.open(options); opened = outcome.status === 'ok'; return outcome; });
     },
@@ -266,8 +274,15 @@ export function createRepository(backend) {
         if (current) {
           const previous = createTransaction(context, state, backend.now, backend.supportedTables);
           const retired = await previous.tx.compareAndSwap({ table: 'runs', key: { runId: current.runId } }, expectedRunVersion, { current: false, status: 'historical' });
-          previous.finish();
           if (retired.status !== 'ok') return { commit: false, outcome: retired };
+          // Only reset crosses historical scopes. Retire outstanding jobs in
+          // this same atomic transition so they cannot revive in a later run.
+          for (const job of state.tables.notification_outbox.filter((row) => row.runId === current.runId && !['sent', 'stale'].includes(row.state))) {
+            const changed = await previous.tx.compareAndSwap({ table: 'notification_outbox', key: { runId: current.runId, jobId: job.jobId } }, job.version,
+              { state: 'stale', outcome: { ...job.outcome, error: 'stale-run', nextAttemptAt: null } });
+            if (changed.status !== 'ok') { previous.finish(); return { commit: false, outcome: changed }; }
+          }
+          previous.finish();
         }
         const nextContext = { ...context, runId: nextRun.runId };
         const seed = createTransaction(nextContext, state, backend.now, backend.supportedTables);
@@ -289,7 +304,8 @@ export function createRepository(backend) {
     async transaction(context, command, work) {
       if (!opened) return unavailable();
       if (!plain(command) || !identifier(command.commandId) || !identifier(command.inputDigest) || typeof work !== 'function') return invalid('invalid-command', 'command', 'Command ID, digest and callback are required');
-      return safe(() => backend.transaction(context, async (state) => {
+      let committed = false;
+      const outcome = await safe(() => backend.transaction(context, async (state) => {
         const refused = contextError(context, state);
         if (refused) return { commit: false, outcome: refused };
         const consumerId = 'command:transaction';
@@ -309,8 +325,15 @@ export function createRepository(backend) {
         const recorder = createTransaction(context, state, backend.now, backend.supportedTables);
         const recorded = await recorder.tx.recordReceipt({ consumerId, eventId: command.commandId, inputDigest: command.inputDigest, state: 'completed', outcome: storedOutcome });
         recorder.finish();
-        return recorded.status === 'ok' ? { commit: true, outcome: storedOutcome } : { commit: false, outcome: recorded };
+        committed = recorded.status === 'ok';
+        return committed ? { commit: true, outcome: storedOutcome } : { commit: false, outcome: recorded };
       }));
+      if (committed && ['ok', 'pending'].includes(outcome.status)) {
+        await Promise.allSettled([...commitObservers].map((observer) => Promise.resolve().then(() => observer({
+          context: structuredClone(context), commandId: command.commandId,
+        }))));
+      }
+      return outcome;
     },
     async read(context, ref) {
       if (!opened) return unavailable();
@@ -330,6 +353,6 @@ export function createRepository(backend) {
         const outcome = await session.tx.list(table, filter); session.finish(); return outcome;
       }));
     },
-    async close() { return safe(async () => { opened = false; return backend.close(); }); },
+    async close() { return safe(async () => { opened = false; commitObservers.clear(); return backend.close(); }); },
   });
 }
