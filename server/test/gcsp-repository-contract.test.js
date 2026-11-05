@@ -66,6 +66,28 @@ export function repositoryContract(provider, factory) {
       assert.equal(write.value.version, 2);
       assert.equal((await repository.migrationStatus()).value.current, true);
     }));
+    await t.test('atomic reset switches current run, preserves history and rolls back failed seeds', () => withRepository(async (repository, reopen) => {
+      const c = ctx();
+      await repository.transaction(c, command(), (tx) => tx.compareAndSwap(ref('runs', {}, c), 1, { current: true }));
+      const next = { runId: 'reset-run', environmentId: c.environmentId, current: true, status: 'active' };
+      const rows = [['employees', { employeeId: 'reset-person' }]];
+      const bad = await repository.resetRun(c, command(), { expectedCurrentRunId: c.runId, expectedRunVersion: 2, nextRun: next,
+        rows: [['entitlement_slots', { entitlementSlotId: 'bad', employeeId: 'missing', capacity: 1 }]] });
+      assert.equal(bad.status, 'conflict');
+      assert.equal((await repository.currentRun(c.environmentId)).value.runId, c.runId);
+      const cmd = command();
+      const input = { expectedCurrentRunId: c.runId, expectedRunVersion: 2, nextRun: next, rows };
+      const changed = await repository.resetRun(c, cmd, input);
+      assert.equal(changed.status, 'ok');
+      repository = await reopen();
+      assert.deepEqual(await repository.resetRun(c, cmd, input), changed);
+      assert.equal((await repository.currentRun(c.environmentId)).value.runId, 'reset-run');
+      assert.equal((await repository.read(c, ref('runs', {}, c))).value.status, 'historical');
+      assert.equal((await repository.query(c, 'stock')).value.length, 2);
+      const newContext = { ...c, runId: 'reset-run' };
+      assert.equal((await repository.query(newContext, 'employees')).value[0].employeeId, 'reset-person');
+      assert.equal((await repository.transaction(c, command(), (tx) => tx.insert('decisions', { runId: c.runId, decisionId: 'stale' }))).status, 'stale-run');
+    }));
     await t.test('thrown and typed failures roll back even if callback ignores failed operation', () => withRepository(async (repository) => {
       const thrown = await repository.transaction(ctx(), command(), async (tx) => { await tx.insert('employees', { runId: 'run-a', employeeId: 'throw' }); throw new Error('private detail'); });
       assert.equal(thrown.status, 'unavailable');

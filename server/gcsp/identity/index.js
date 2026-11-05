@@ -1,6 +1,6 @@
 import { createHash, randomBytes } from 'node:crypto';
 import { inputDigest, ok, result } from '../repository/index.js';
-import { loadDemoPrincipals } from '../fixtures/principals.js';
+import { loadDemoPrincipalSeed } from '../fixtures/principals.js';
 
 export const SESSION_COOKIE = 'gcsp_session';
 export const PRESENTER_COOKIE = 'gcsp_presenter';
@@ -55,11 +55,8 @@ export class DemoIdentityAdapter {
 
   async #configuration(state) {
     try {
-      const principals = await loadDemoPrincipals(this.#policy, state.read);
-      const capacity = await this.#policy.getAssumption('hold.employee.maxActive', state.read);
-      if (principals.status !== 'ok' || capacity.status !== 'ok'
-        || !Number.isSafeInteger(capacity.value.value) || capacity.value.value <= 0) return { error: unavailable() };
-      return { principals: principals.value, capacity: capacity.value.value };
+      const seed = await loadDemoPrincipalSeed(this.#policy, state.read);
+      return seed.status === 'ok' ? seed.value : { error: unavailable() };
     } catch { return { error: unavailable() }; }
   }
 

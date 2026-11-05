@@ -231,6 +231,61 @@ export function createRepository(backend) {
       return safe(async () => { const outcome = await backend.open(options); opened = outcome.status === 'ok'; return outcome; });
     },
     async migrationStatus() { return opened ? safe(() => backend.migrationStatus()) : unavailable(); },
+    async currentRun(environmentId) {
+      if (!opened) return unavailable();
+      if (!identifier(environmentId)) return invalid('invalid-environment', 'environmentId', 'Supply an environment');
+      return safe(() => backend.read({ environmentId, runId: 'repository:current-run' }, async (state) => {
+        const current = state.tables.runs.filter((row) => row.environmentId === environmentId && row.current === true && row.status === 'active');
+        return current.length === 1 ? ok(current[0]) : current.length ? conflict('multiple-current-runs') : notFound('runs');
+      }));
+    },
+    // One backend transaction retires the old run, seeds the replacement and records the reset receipt.
+    // Only this operation crosses run scopes; normal CRUD remains scoped to its trusted context.
+    async resetRun(context, command, { expectedCurrentRunId, expectedRunVersion, nextRun, rows } = {}) {
+      if (!opened) return unavailable();
+      if (!plain(command) || !identifier(command.commandId) || !identifier(command.inputDigest)
+        || !plain(nextRun) || !identifier(nextRun.runId) || nextRun.environmentId !== context?.environmentId
+        || nextRun.current !== true || nextRun.status !== 'active'
+        || !(expectedCurrentRunId === null || identifier(expectedCurrentRunId) && positive(expectedRunVersion))
+        || !Array.isArray(rows) || rows.some((entry) => !Array.isArray(entry) || entry.length !== 2
+          || !['employees', 'entitlement_slots', 'stock'].includes(entry[0]) || !plain(entry[1]))) {
+        return invalid('invalid-reset', 'reset', 'Supply a complete run transition and fixture rows');
+      }
+      return safe(() => backend.transaction(context, async (state) => {
+        const refused = contextError(context, state);
+        if (refused) return { commit: false, outcome: refused };
+        const receipt = state.tables.event_receipts.find((row) => row.runId === context.runId
+          && row.consumerId === 'command:reset-run' && row.eventId === command.commandId);
+        if (receipt) return { commit: false, outcome: receipt.inputDigest === command.inputDigest
+          ? structuredClone(receipt.outcome) : conflict('idempotency-input-changed') };
+        const current = state.tables.runs.find((row) => row.environmentId === context.environmentId && (row.current === true || row.status === 'active'));
+        if ((current?.runId ?? null) !== expectedCurrentRunId || current && current.runId !== context.runId) {
+          return { commit: false, outcome: result('stale-run', { reason: 'The current run has changed' }) };
+        }
+        if (state.tables.runs.some((row) => row.runId === nextRun.runId)) return { commit: false, outcome: conflict('run-id-exists') };
+        if (current) {
+          const previous = createTransaction(context, state, backend.now, backend.supportedTables);
+          const retired = await previous.tx.compareAndSwap({ table: 'runs', key: { runId: current.runId } }, expectedRunVersion, { current: false, status: 'historical' });
+          previous.finish();
+          if (retired.status !== 'ok') return { commit: false, outcome: retired };
+        }
+        const nextContext = { ...context, runId: nextRun.runId };
+        const seed = createTransaction(nextContext, state, backend.now, backend.supportedTables);
+        let outcome = await seed.tx.insert('runs', nextRun);
+        for (const [table, row] of rows) {
+          if (outcome.status !== 'ok') break;
+          if (row.runId !== undefined && row.runId !== nextRun.runId) { outcome = result('stale-run', { reason: 'Fixture belongs to another run' }); break; }
+          outcome = await seed.tx.insert(table, { ...row, runId: nextRun.runId });
+        }
+        const failure = seed.finish();
+        if (failure || outcome.status !== 'ok') return { commit: false, outcome: failure || outcome };
+        const stored = ok({ previousRunId: expectedCurrentRunId, runId: nextRun.runId, now: nextRun.clockInstant ?? null, versions: nextRun.versions ?? {} });
+        const recorder = createTransaction(context, state, backend.now, backend.supportedTables);
+        const recorded = await recorder.tx.recordReceipt({ consumerId: 'command:reset-run', eventId: command.commandId, inputDigest: command.inputDigest, state: 'completed', outcome: stored });
+        recorder.finish();
+        return { commit: recorded.status === 'ok', outcome: recorded.status === 'ok' ? stored : recorded };
+      }));
+    },
     async transaction(context, command, work) {
       if (!opened) return unavailable();
       if (!plain(command) || !identifier(command.commandId) || !identifier(command.inputDigest) || typeof work !== 'function') return invalid('invalid-command', 'command', 'Command ID, digest and callback are required');
