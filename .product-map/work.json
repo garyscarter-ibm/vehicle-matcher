@@ -1033,51 +1033,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-104"
     },
     {
-      "id": "FUCQ-105",
-      "title": "Show the offer's exact quote, current-car comparison and countdown",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T23:21:27Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-105",
-      "slices": [
-        {
-          "id": "surface",
-          "status": "in-progress",
-          "title": "Exact pinned offer, shared card and current-car comparison",
-          "observed_at": "2026-11-05T23:21:27Z",
-          "evidence": "Hippety Hopper: existing shared exact-member card, typed terms, mediaWell and shell permit independent composition; other gates remain explicit."
-        },
-        {
-          "id": "controller",
-          "status": "not-started",
-          "title": "Exclusive states, authoritative countdown and uncertain decisions"
-        },
-        {
-          "id": "access-producer",
-          "status": "not-started",
-          "title": "Published FUCQ102 access bound to actual FUCQ100 producer"
-        },
-        {
-          "id": "decision-host",
-          "status": "not-started",
-          "title": "Actual FUCQ106 decision and delivered host integration"
-        },
-        {
-          "id": "browser",
-          "status": "not-started",
-          "title": "Desktop and 375px rendered keyboard, reload and second-browser proof"
-        },
-        {
-          "id": "validation",
-          "status": "not-started",
-          "title": "Authored full-suite and final lead acceptance review"
-        }
-      ],
-      "unsliced": false
-    },
-    {
       "id": "FUCQ-106",
       "title": "Accept, decline or expire an offer with idempotent outcomes",
       "status": "To Do",
@@ -1406,6 +1361,72 @@
       "type": "Story",
       "observed_at": "2026-11-05T22:40:24Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-138"
+    },
+    {
+      "id": "FUCQ-105",
+      "title": "Show the offer's exact quote, current-car comparison and countdown",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-05T23:33:14Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-105",
+      "slices": [
+        {
+          "id": "surface",
+          "status": "in-progress",
+          "title": "Exact pinned offer, shared card and current-car comparison",
+          "observed_at": "2026-11-05T23:21:27Z",
+          "evidence": "Hippety Hopper: existing shared exact-member card, typed terms, mediaWell and shell permit independent composition; other gates remain explicit."
+        },
+        {
+          "id": "controller",
+          "status": "in-progress",
+          "title": "Exclusive states, authoritative countdown and uncertain decisions",
+          "observed_at": "2026-11-05T23:26:59Z",
+          "evidence": "Independent injected-port controller implemented; scoped tests and lead review in progress. Actual DemoClock/access/decision-host gates remain."
+        },
+        {
+          "id": "access-producer",
+          "status": "in-progress",
+          "title": "Published FUCQ102 access bound to actual FUCQ100 producer",
+          "observed_at": "2026-11-05T23:33:13Z",
+          "evidence": "Same-origin secure transport has scoped mock-fetch proof; reviewed exact102 nested DTO, actual100 producer/current-car projection and real access parity remain."
+        },
+        {
+          "id": "decision-host",
+          "status": "blocked",
+          "title": "Actual FUCQ106 decision and delivered host integration",
+          "observed_at": "2026-11-05T23:33:14Z",
+          "evidence": "Real FUCQ106 decision port and delivered host registration are not supplied in owned scope; no simulated success."
+        },
+        {
+          "id": "browser",
+          "status": "blocked",
+          "title": "Desktop and 375px rendered keyboard, reload and second-browser proof",
+          "observed_at": "2026-11-05T23:33:14Z",
+          "evidence": "Root owns sole browser lane; no browser/listener grant. Required1280/375 keyboard, responsive and real repeated-access/presenter proof outstanding."
+        },
+        {
+          "id": "validation",
+          "status": "blocked",
+          "title": "Authored full-suite and final lead acceptance review",
+          "observed_at": "2026-11-05T23:33:14Z",
+          "evidence": "Authored npm test/full-stamp reserved for root coordinated lane;80/80 narrow checks pass with strict targeted evidence only."
+        }
+      ],
+      "unsliced": false,
+      "workers": [
+        {
+          "name": "Hippety Hopper",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-05T23:26:58.600085Z",
+          "expires_at": "2026-11-06T00:11:58.600085Z",
+          "source": "chat 01a1ae02-de53-72b2-b9b2-174ab689fb22",
+          "status": "active; parent only"
+        }
+      ]
     }
   ]
 }

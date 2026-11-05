@@ -25,7 +25,7 @@ Own `blocks/gcsp/offer/`, dedicated `server/test/gcsp-offer-view*.test.js` and o
 5. `browser`: actual 1280px/375px captures for every authored state, keyboard/focus/reduced motion, long names/missing images, expiry/presenter ticks and repeated access.
 6. `validation`: authored `npm test`, ratchet/CSP/em-dash checks and final acceptance review on the delivered tree.
 
-Product association is the existing `offer-journey`; no component boundary changes. Model/effort requested and selected: gpt-6.1-sol/high, no fallback; parent-only initially. Chat title verified Hippety Hopper (they/them). Actual effective context still to verify.
+Product association is the existing `offer-journey`; no component boundary changes. Model/effort requested and selected: gpt-6.1-sol/high, no fallback; parent-only initially. Chat title verified Hippety Hopper (they/them). Effective gpt-6.1-sol/high verified from own turn_context; root independently verified title/context.
 
 ## Reference and validation plan
 
@@ -34,3 +34,7 @@ Read the binding AGENTS, GCSP README/demo brief/build rules/experience contract/
 Select narrow controller/projection/render tests plus affected shared-kit boundaries, CSP and UI ratchet. New code has unknown automatic impact coverage; record explicit source-to-check map. Full suite, browser/listener/native DB and live network proof are reserved for root coordination. Fixtures, if added, are conspicuously presentation-only and prove no producer/decision/runtime acceptance.
 
 Before any proof/build allocation use fresh shared HostBudget, external ownership manifest and supervisor finalizer; one worker, default 120s/768MiB RAM/128MiB combined scratch and output/2MiB logs, smaller on pressure. Shared `.claude/test-runs` summaries, bounded owned `/tmp` scratch, checkpoint and verified teardown. Strip every DB URL alias from ordinary tests. No secret-file access or new runtime dependency. Installed environments are preserved. No descendants currently.
+
+## Reviewed access proposal checkpoint
+
+Root supplied LOCAL immutable102 contract9c124e7f51e8d207cb1847b3cdd64e5e82eddfe7, independently read through scaffold helper with SHA2567a5b98ba217d5c5e502964a04fddc571eb93b013eeaf39dfcfd25407719aaf0d. It defines fragment-body POST `/api/gcsp/offers/access`, fresh HttpOnly hash-only cookie, exact GET `/api/gcsp/offers/:offerId?runId=locator`, account fallback only without an access cookie, and authenticated stale-run with no quote. Exact nested allowlisted fields/sample remain under102 review. Current producer has no pinned current-car comparison; root coordinates a minimal real snapshot. No fabricated G21 equipment, current points or provenance. Published100 token ancestor was inspected;41f995f itself is documentation-only, while executable producer is in its ancestry. Current local token extension ref5d8b01fe16d4cd16b4ff124619f0efe3e099a260 adds runId beside offerId without changing fragment token/hash semantics.
