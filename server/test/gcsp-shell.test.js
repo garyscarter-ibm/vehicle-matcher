@@ -352,7 +352,7 @@ test('token isolation: gcsp-tokens.css declares --gcsp-* on .gcsp and --vm-* onl
 });
 
 test('every selector in the shell stylesheets starts with .gcsp, and retail tokens are not redefined', () => {
-  for (const file of ['blocks/gcsp/shell/gcsp-shell.css', 'blocks/gcsp/shell/gcsp-tokens.css']) {
+  for (const file of ['blocks/gcsp/shell/gcsp-shell.css', 'blocks/gcsp/shell/gcsp-tokens.css', 'blocks/gcsp/employee/gcsp-employee.css']) {
     const css = stripCss(read(file)).replace(/@import[^;]+;/g, '').replace(/@media[^{]*\{/g, '');
     const selectors = [...css.matchAll(/(?:^|[}\s])([^{}@]+)\{/g)].flatMap((m) => m[1].split(',')).map((s) => s.trim()).filter(Boolean);
     assert.ok(selectors.length >= 2, file);
@@ -364,8 +364,8 @@ test('every selector in the shell stylesheets starts with .gcsp, and retail toke
 });
 
 test('CSP: no inline scripts, handler attributes, eval, new Function, string timers or innerHTML in GCSP files', () => {
-  const files = [...walk(GCSP_DIR), join(ROOT, 'gcsp-employee.html')].filter((f) => /\.(js|html|css)$/.test(f));
-  assert.ok(files.length >= 6);
+  const files = [...walk(GCSP_DIR), join(ROOT, 'gcsp-employee.html'), join(ROOT, 'components.html'), join(ROOT, 'blocks/vehicle-matcher/component-gallery.js')].filter((f) => /\.(js|html|css)$/.test(f));
+  assert.ok(files.length >= 10);
   const offenders = [];
   for (const f of files) {
     const src = readFileSync(f, 'utf8');
@@ -391,7 +391,7 @@ test('CSP: no inline scripts, handler attributes, eval, new Function, string tim
 
 test('no em dash in any string literal under blocks/gcsp/, and none in the harness page', () => {
   const offenders = [];
-  for (const f of walk(GCSP_DIR).filter((p) => p.endsWith('.js'))) {
+  for (const f of [...walk(GCSP_DIR), join(ROOT, 'blocks/vehicle-matcher/ui.js'), join(ROOT, 'blocks/vehicle-matcher/component-gallery.js')].filter((p) => p.endsWith('.js'))) {
     readFileSync(f, 'utf8').split(/\r?\n/).forEach((line, i) => {
       const t = line.trim();
       if (t.startsWith('//') || t.startsWith('*') || t.startsWith('/*')) return;
@@ -404,7 +404,276 @@ test('no em dash in any string literal under blocks/gcsp/, and none in the harne
   assert.deepEqual(offenders, []);
 });
 
+test('no GCSP stylesheet draws a side stripe (border-left or border-right wider than 1px)', () => {
+  const offenders = [];
+  for (const f of walk(GCSP_DIR).filter((p) => p.endsWith('.css'))) {
+    for (const m of stripCss(readFileSync(f, 'utf8')).matchAll(/border-(left|right)(?:-width)?\s*:\s*([^;}]+)/g)) {
+      const width = m[2].match(/(\d+(?:\.\d+)?)px/);
+      if (width && Number(width[1]) > 1) offenders.push(`${rel(f)}: ${m[0]}`);
+    }
+  }
+  assert.deepEqual(offenders, []);
+});
+
 test('the public launcher stays unavailable for employees', async () => {
   const { ENTRY_REGISTRY } = await import('../../blocks/demo-launcher/entry-context.js');
   assert.equal(ENTRY_REGISTRY.employeeAvailable, false);
+});
+
+// ---------- slice 2: kit primitives, representative body, fixtures, gallery ----------
+test('kit primitives: screenIntro, button, statusScreen, factList', async () => {
+  const ui = await import('../../blocks/vehicle-matcher/ui.js');
+  const intro = ui.screenIntro({ kicker: 'K', title: 'T', lede: 'L', level: 1, className: 'x' });
+  assert.equal(intro.className, 'x');
+  assert.equal(intro.querySelector('h1.vm-title').textContent, 'T');
+  assert.equal(intro.querySelector('.vm-kicker').textContent, 'K');
+  assert.equal(intro.querySelector('.vm-lede').textContent, 'L');
+  assert.equal(ui.screenIntro({ title: 'Only' }).children.length, 1);
+
+  let clicks = 0;
+  const primary = ui.button({ label: 'Go', onClick: () => { clicks += 1; } });
+  assert.equal(primary.tagName, 'BUTTON');
+  assert.equal(primary.type, 'button');
+  assert.ok(primary.classList.contains('vm-btn-primary'));
+  primary.click();
+  assert.equal(clicks, 1);
+  const ghost = ui.button({ label: 'Alt', variant: 'ghost', href: '#x' });
+  assert.equal(ghost.tagName, 'A');
+  assert.ok(ghost.classList.contains('vm-btn-ghost'));
+  const off = ui.button({ label: 'No', disabled: true, describedBy: 'why', href: '#x', onClick: () => { clicks += 1; } });
+  assert.equal(off.tagName, 'BUTTON');
+  assert.equal(off.disabled, true);
+  assert.equal(off.getAttribute('aria-describedby'), 'why');
+
+  const status = ui.statusScreen({ kicker: 'K', title: 'Oops', message: 'M', actions: [primary] });
+  assert.equal(status.getAttribute('role'), 'status');
+  assert.ok(status.classList.contains('vm-status'));
+  assert.equal(status.querySelector('h2').textContent, 'Oops');
+  assert.equal(ui.statusScreen({ title: 'E', role: 'alert' }).getAttribute('role'), 'alert');
+
+  const facts = ui.factList([
+    { label: 'A', value: 'one' },
+    { label: 'B', value: 1100, unit: 'points a month' },
+    { label: 'C', value: null },
+    { label: 'D', value: undefined, missingLabel: 'Unknown' },
+  ], { className: 'extra' });
+  assert.equal(facts.tagName, 'DL');
+  assert.ok(facts.classList.contains('extra'));
+  const values = [...facts.querySelectorAll('dd')].map((d) => d.textContent);
+  assert.deepEqual(values, ['one', '1,100 points a month', 'Not supplied', 'Unknown']);
+  assert.equal(facts.querySelectorAll('dd.is-missing').length, 2);
+  assert.doesNotMatch(facts.textContent, /undefined|null/);
+});
+
+test('mediaWell placeholder: retail default unchanged, custom text for GCSP', async () => {
+  const { mediaWell } = await import('../../blocks/vehicle-matcher/modes/result-card.js');
+  const car = { name: 'N', line: 'L', photo: '' };
+  assert.equal(mediaWell(car).media.querySelector('.vm-card-soon').textContent, 'Images coming soon');
+  assert.equal(mediaWell(car, 'x', { placeholder: 'No image for this car yet' }).media.querySelector('.vm-card-soon').textContent, 'No image for this car yet');
+  assert.ok(mediaWell({ ...car, photo: 'a.jpg' }).media.classList.contains('has-photo'));
+});
+
+async function mountFixture(name, wait = 450) {
+  emp.defineGcspEmployee(window.customElements);
+  const node = document.createElement('gcsp-employee');
+  node.setAttribute('fixture', name);
+  document.body.append(node);
+  await tick(wait);
+  return node;
+}
+const cardsOf = (node) => [...node.querySelectorAll('.gcsp-card')];
+
+test('fixture names are explicit and every named fixture is known', async () => {
+  const { FIXTURE_NAMES, fixtureAdapter } = await import('../../blocks/gcsp/employee/fixtures.js');
+  assert.deepEqual([...FIXTURE_NAMES], ['representative', 'representative-loading', 'representative-unavailable', 'representative-no-images']);
+  for (const n of FIXTURE_NAMES) assert.ok(fixtureAdapter(n), n);
+  assert.equal(fixtureAdapter('nope'), null);
+});
+
+test('representative body: landmarks, one h1, VIN only on the current car, order numbers on stock', async () => {
+  const node = await mountFixture('representative');
+  assert.equal(node.querySelectorAll('h1').length, 1);
+  assert.equal(node.querySelectorAll('main').length, 1);
+  assert.ok(node.querySelector('main section.gcsp-feature h2'));
+  assert.match(node.querySelector('.gcsp-feature').textContent, /VIN \(synthetic\)/);
+  assert.match(node.querySelector('.gcsp-feature').textContent, /ZZSYNTHETIC/);
+  assert.match(node.querySelector('.gcsp-feature').textContent, /ends in 27 days/);
+  assert.match(node.querySelector('.gcsp-feature').textContent, /6 months, 8,500 miles/);
+  const cards = cardsOf(node);
+  assert.equal(cards.length, 3);
+  for (const c of cards) {
+    assert.match(c.textContent, /Order no\. \d{7}/);
+    assert.doesNotMatch(c.textContent, /\bVIN\b|ZZSYNTHETIC/);
+  }
+  const heads = [...node.querySelectorAll('main h1, main h2, main h3')].map((h) => h.tagName);
+  assert.equal(heads[0], 'H1');
+  assert.ok(heads.every((t, i) => i === 0 || Number(t[1]) <= Number(heads[i - 1][1]) + 1), heads.join());
+  assert.match(node.querySelector('.gcsp-synthetic').textContent, /Synthetic example data/);
+  node.remove();
+});
+
+test('points carry units and are never shown as pounds', async () => {
+  const node = await mountFixture('representative');
+  const text = node.querySelector('main').textContent;
+  assert.doesNotMatch(text, /£/);
+  assert.match(text, /1,300 points a month/);
+  assert.match(text, /no cash top-up/);
+  for (const c of cardsOf(node)) assert.match(c.querySelector('.gcsp-points').textContent, /[\d,]+ points a month/);
+  node.remove();
+});
+
+test('over-allowance card cannot be selected and says why; selecting updates summary and aria-pressed', async () => {
+  const node = await mountFixture('representative');
+  const cards = cardsOf(node);
+  const over = cards[2].querySelector('.gcsp-pick');
+  assert.equal(over.disabled, true);
+  assert.match(cards[2].textContent, /100 points over your allowance/);
+  assert.match(document.getElementById(over.getAttribute('aria-describedby')).textContent, /Over your allowance by 100 points/);
+  assert.ok(cards[2].querySelector('.gcsp-status.is-over svg'), 'icon as well as text and colour');
+
+  const first = cards[0].querySelector('.gcsp-pick');
+  assert.equal(first.getAttribute('aria-pressed'), 'false');
+  first.click();
+  assert.equal(first.getAttribute('aria-pressed'), 'true');
+  const live = node.querySelector('.gcsp-summary-live');
+  assert.equal(live.getAttribute('aria-live'), 'polite');
+  assert.match(live.textContent, /BMW 320i M Sport Touring/);
+  assert.match(live.textContent, /1,100 points a month/);
+  assert.match(live.textContent, /1,300 points a month/);
+  assert.match(live.textContent, /Points left\s*200 points a month/);
+  assert.match(node.querySelector('.gcsp-allowance').textContent, /200 points left each month/);
+  cards[1].querySelector('.gcsp-pick').click();
+  assert.equal(first.getAttribute('aria-pressed'), 'false');
+  over.click();
+  assert.equal(over.getAttribute('aria-pressed'), 'false');
+  cards[1].querySelector('.gcsp-pick').click();
+  assert.equal(cards[1].querySelector('.gcsp-pick').getAttribute('aria-pressed'), 'false');
+  assert.match(live.textContent, /No car selected/);
+  node.remove();
+});
+
+test('Reserve is disabled with a visible reason, and Choose a replacement moves focus to the selection heading', async () => {
+  const node = await mountFixture('representative');
+  cardsOf(node)[0].querySelector('.gcsp-pick').click();
+  const reserve = [...node.querySelectorAll('.gcsp-summary .vm-btn')].find((b) => b.textContent === 'Reserve this car');
+  assert.equal(reserve.disabled, true);
+  assert.match(document.getElementById(reserve.getAttribute('aria-describedby')).textContent, /Reserving is not part of this preview/);
+  const choose = node.querySelector('.gcsp-feature .vm-btn-primary');
+  assert.equal(choose.textContent, 'Choose a replacement');
+  choose.click();
+  const heading = node.querySelector('.gcsp-selection-heading');
+  assert.equal(heading.getAttribute('tabindex'), '-1');
+  assert.equal(document.activeElement, heading);
+  assert.equal(node.querySelector('.gcsp-selection').getAttribute('aria-labelledby'), heading.id);
+  node.remove();
+});
+
+test('missing image shows the placeholder and a missing fact says Not supplied', async () => {
+  const node = await mountFixture('representative');
+  const cards = cardsOf(node);
+  assert.equal(cards[1].querySelector('img.vm-card-photo'), null);
+  assert.equal(cards[1].querySelector('.vm-card-soon').textContent, 'No image for this car yet');
+  assert.ok(cards[0].querySelector('img.vm-card-photo'));
+  assert.equal(cards[1].querySelector('.vm-card-line'), null, 'no image caption without an image');
+  assert.equal(cards[0].querySelector('.vm-card-line').textContent, 'BMW brand image, not this model');
+  assert.match(cards[1].querySelector('.vm-fact-value.is-missing').textContent, /^Not supplied$/);
+  assert.match(node.querySelector('.gcsp-details').textContent, /Licence numberNot supplied/);
+  assert.match(cards[1].querySelector('.gcsp-card-name').textContent, /Technology Plus and Comfort Pack/);
+  assert.doesNotMatch(node.textContent, /undefined|null/);
+  node.remove();
+});
+
+test('named fixtures render their states', async () => {
+  const noImages = await mountFixture('representative-no-images');
+  assert.equal(noImages.querySelectorAll('img.vm-card-photo').length, 0);
+  assert.equal(noImages.querySelectorAll('.vm-card-soon').length, 4);
+  assert.equal(cardsOf(noImages).length, 3);
+  noImages.remove();
+
+  const loading = await mountFixture('representative-loading', 450);
+  assert.equal(loading.querySelector('.gcsp-account').getAttribute('aria-busy'), 'true');
+  assert.equal(loading.querySelector('.gcsp-rep'), null);
+  loading.remove();
+  assert.equal(loading.childNodes.length, 0);
+
+  const bad = await mountFixture('representative-unavailable', 400);
+  assert.equal(bad.querySelector('.gcsp-account').getAttribute('aria-label'), 'Account unavailable');
+  assert.equal(bad.querySelector('.gcsp-card'), null);
+  const status = bad.querySelector('main .vm-status');
+  assert.equal(status.getAttribute('role'), 'status');
+  assert.match(status.textContent, /not available right now/);
+  assert.match(status.textContent, /Retry/);
+  assert.equal(bad.querySelectorAll('h1').length, 1);
+  bad.remove();
+});
+
+test('loading fixture still respects abort', async () => {
+  const { fixtureAdapter } = await import('../../blocks/gcsp/employee/fixtures.js');
+  const controller = new AbortController();
+  const pending = fixtureAdapter('representative-loading').loadAccount({ signal: controller.signal });
+  controller.abort();
+  await assert.rejects(pending, { name: 'AbortError' });
+});
+
+test('countdown wording comes from the injected date', async () => {
+  const { countdown } = await import('../../blocks/gcsp/employee/representative-body.js');
+  assert.equal(countdown('2026-11-05', '2026-12-02'), 'ends in 27 days');
+  assert.equal(countdown('2026-12-01', '2026-12-02'), 'ends in 1 day');
+  assert.equal(countdown('2026-12-02', '2026-12-02'), 'ends today');
+  assert.equal(countdown('2026-12-05', '2026-12-02'), 'ended 3 days ago');
+});
+
+test('fixture points equal the keyed seed-v1.json entries, with key and version recorded', async () => {
+  const seed = JSON.parse(read('server/gcsp/policy/seed-v1.json'));
+  const byKey = new Map([...seed.allowances, ...seed.pricePlans].map((e) => [e.key, e]));
+  const { representativeData } = await import('../../blocks/gcsp/employee/fixtures.js');
+  const data = representativeData();
+  const entries = [data.allowance, data.currentCar.points, ...data.stock.map((c) => c.points)];
+  assert.equal(entries.length, 5);
+  for (const e of entries) {
+    const entry = byKey.get(e.policyKey);
+    assert.ok(entry, e.policyKey);
+    assert.equal(e.value, entry.value, e.policyKey);
+    assert.equal(e.value, entry.monthlyPoints, e.policyKey);
+    assert.equal(e.policyVersion, seed.policyVersion);
+    assert.match(e.status, /synthetic/);
+  }
+  assert.ok(data.stock.every((c) => !('vin' in c) && c.orderUuid && c.configurationId && /^\d{7}$/.test(c.orderNumber)));
+});
+
+test('harness page loads the harness module and the body stylesheet; the element never reads location', () => {
+  const html = read('gcsp-employee.html');
+  assert.match(html, /blocks\/gcsp\/employee\/harness\.js/);
+  assert.match(html, /blocks\/gcsp\/employee\/gcsp-employee\.css/);
+  const harness = read('blocks/gcsp/employee/harness.js');
+  assert.match(harness, /FIXTURE_NAMES\.includes/);
+  for (const f of walk(GCSP_DIR).filter((p) => p.endsWith('.js') && !p.endsWith('harness.js'))) {
+    assert.doesNotMatch(readFileSync(f, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:\\])\/\/.*$/gm, '$1'), /\blocation\b|\bhistory\./, rel(f));
+  }
+});
+
+test('the single gallery shows the GCSP section with primitives and shell states', async () => {
+  const { mountComponentGallery } = await import('../../blocks/vehicle-matcher/component-gallery.js');
+  const root = document.createElement('div');
+  document.body.append(root);
+  mountComponentGallery(root);
+  const section = root.querySelector('.vm-gallery-gcsp-section');
+  assert.ok(section);
+  assert.ok(section.querySelector('.gcsp'), 'GCSP examples sit in a .gcsp container');
+  assert.equal(root.querySelectorAll('.gcsp').length >= 1, true);
+  assert.equal(section.querySelectorAll('.gcsp-header').length, 3);
+  const states = [...section.querySelectorAll('.gcsp-account')].map((a) => a.dataset.status);
+  assert.deepEqual(states, ['loading', 'ready', 'unavailable']);
+  assert.ok(section.querySelector('.vm-btn-primary:disabled'));
+  assert.ok(section.querySelector('.vm-btn-ghost'));
+  assert.ok(section.querySelector('.vm-status[role="status"]'));
+  assert.ok(section.querySelector('.vm-fact-value.is-missing'));
+  assert.equal(section.querySelector('.vm-card-soon').textContent, 'No image for this car yet');
+  assert.equal(section.querySelectorAll('nav.gcsp-nav').length >= 5, true);
+  assert.equal(section.querySelectorAll('.gcsp-nav[data-expanded="true"]').length >= 1, true);
+  assert.ok(section.querySelector('.gcsp-nav-btn[aria-disabled="true"]'));
+  assert.doesNotMatch(section.textContent, /undefined|null/);
+  assert.ok(read('components.html').includes('blocks/gcsp/shell/gcsp-shell.css'));
+  assert.ok(read('components.html').includes('blocks/gcsp/employee/gcsp-employee.css'));
+  assert.equal(statSync(join(ROOT, 'components.html')).isFile(), true);
 });

@@ -153,10 +153,10 @@ export function distanceLabel(distance) {
  * — this was two near-identical copies, and the copy the picker didn't use was
  * the copy that quietly stopped matching.
  */
-export function mediaWell(car, extraClass = '') {
+export function mediaWell(car, extraClass = '', { placeholder = 'Images coming soon' } = {}) {
   const media = el('div', `vm-card-media${extraClass ? ` ${extraClass}` : ''}`);
   media.append(
-    el('span', 'vm-card-soon', 'Images coming soon'),
+    el('span', 'vm-card-soon', placeholder),
     el('span', 'vm-card-line', car.line),
   );
 

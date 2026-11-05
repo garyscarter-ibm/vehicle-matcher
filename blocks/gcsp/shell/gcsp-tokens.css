@@ -50,4 +50,7 @@
   --vm-surface-alt: var(--gcsp-surface-muted);
   --vm-radius: var(--gcsp-radius);
   --vm-radius-control: var(--gcsp-radius);
+  --vm-font-heading: var(--gcsp-font);
+  --vm-font-body: var(--gcsp-font);
+  --vm-font-bold: var(--gcsp-font);
 }

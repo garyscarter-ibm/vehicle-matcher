@@ -4,13 +4,13 @@ Slice 1 of FUCQ-64 (DEV-2026-11-04-037). This is the surface FUCQ-35 consumes. F
 
 ## Element
 
-Tag `gcsp-employee`, light DOM, defined by `defineGcspEmployee(registry = customElements)` in `blocks/gcsp/employee/gcsp-employee.js` (idempotent; `blocks/gcsp/employee/register.js` calls it). Styles: `blocks/vehicle-matcher/vehicle-matcher.css` plus `blocks/gcsp/shell/gcsp-shell.css`.
+Tag `gcsp-employee`, light DOM, defined by `defineGcspEmployee(registry = customElements)` in `blocks/gcsp/employee/gcsp-employee.js` (idempotent; `blocks/gcsp/employee/register.js` calls it). Styles: `blocks/vehicle-matcher/vehicle-matcher.css`, `blocks/gcsp/shell/gcsp-shell.css` and, for the representative body, `blocks/gcsp/employee/gcsp-employee.css`.
 
 | Attribute | Default | Meaning |
 |---|---|---|
 | `brand` | `bmw` | Anything other than `bmw` renders an honest unavailable state (employee cars are BMW only at first). |
 | `view` | `cars` | Active destination key from the navigation. Changing it switches view without remounting. |
-| `fixture` | none | Explicit fixture name. Only `representative` (synthetic account, `fixtures.js`) is known; an unknown name renders the account as unavailable. |
+| `fixture` | none | Explicit fixture name from `FIXTURE_NAMES` in `fixtures.js`; an unknown name renders the account as unavailable. `representative` (synthetic account, current car and three stock cars), `representative-loading` (account never resolves, still aborts), `representative-unavailable` (account unavailable, body shows a status screen) and `representative-no-images` (same data, every photo absent). |
 
 Property `adapter`: `{ loadAccount({ signal }) -> Promise<account>, renderBody?(main, { view, account, label }) -> cleanup?, navigation? }`. It takes precedence over `fixture`. Account data comes only from an adapter or a named fixture; a URL employee id or shared password is never identity. With neither, the account shows as unavailable.
 
@@ -36,4 +36,8 @@ All dispatched on the element with `bubbles: true, composed: true`.
 
 ## Embedding rules
 
-No inline script bodies, `on*=` attributes, `eval`, `new Function`, string timers or HTML string injection under `blocks/gcsp/` or in `gcsp-employee.html` (checked by `server/test/gcsp-shell.test.js`). Harness: `npm run serve`, then `/gcsp-employee.html`.
+No inline script bodies, `on*=` attributes, `eval`, `new Function`, string timers or HTML string injection under `blocks/gcsp/` or in `gcsp-employee.html` (checked by `server/test/gcsp-shell.test.js`). Harness: `npm run serve`, then `/gcsp-employee.html?fixture=representative-no-images`. `blocks/gcsp/employee/harness.js` reads `?fixture=` from the page URL, accepts it only if it is in `FIXTURE_NAMES`, sets the element's `fixture` attribute and registers the element. The element itself still never reads location.
+
+## Representative body
+
+`renderRepresentativeBody(main, { account, data })` in `blocks/gcsp/employee/representative-body.js` is the fixture `renderBody`. Fixture points values carry their policy key and version (`gcsp-policy-v1`), marked assumed and synthetic, and a test checks them against `server/gcsp/policy/seed-v1.json`. Stock cars show a 7-digit order number and have no VIN; only the current car has a (synthetic) VIN. Nothing reserves, orders or saves.

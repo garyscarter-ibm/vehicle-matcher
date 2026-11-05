@@ -1,0 +1,113 @@
+/* Employee body composition: cards, facts and states. Every selector is .gcsp scoped. */
+
+/* kit primitives under the GCSP theme */
+.gcsp .vm-title { font-weight: 600; text-transform: none; letter-spacing: -0.01em; }
+.gcsp .vm-lede { font-weight: 400; line-height: 1.5; }
+.gcsp .vm-kicker { font-size: 12px; color: var(--gcsp-accent-strong); }
+.gcsp .vm-btn { min-height: 48px; padding: 0 24px; line-height: 1.2; font-weight: 600; font-size: 16px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+.gcsp .vm-btn-primary { background: var(--gcsp-accent); border-color: var(--gcsp-accent); color: var(--gcsp-on-accent); }
+.gcsp .vm-btn-ghost { background: var(--gcsp-surface); border-color: var(--gcsp-accent); color: var(--gcsp-accent-strong); }
+.gcsp .vm-btn-ghost:not(:disabled):hover { background: var(--gcsp-accent-soft); }
+.gcsp .vm-btn:disabled { opacity: 1; background: var(--gcsp-surface-muted); border-color: var(--gcsp-divider); color: var(--gcsp-text-muted); cursor: not-allowed; }
+.gcsp .vm button:focus-visible,
+.gcsp .vm a:focus-visible,
+.gcsp .vm summary:focus-visible,
+.gcsp .vm [tabindex]:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 2px; }
+.gcsp .vm-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px 24px; margin: 0; }
+.gcsp .vm-fact { min-width: 0; margin: 0; }
+.gcsp .vm-fact-label { color: var(--gcsp-text-muted); font-size: 13px; }
+.gcsp .vm-fact-value { margin: 2px 0 0; overflow-wrap: anywhere; font-size: 16px; font-weight: 600; }
+.gcsp .vm-fact-value.is-missing { color: var(--gcsp-text-muted); font-style: italic; font-weight: 400; }
+.gcsp .vm-status { min-height: 0; padding: 24px; background: var(--gcsp-surface-raised); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
+.gcsp .vm-status .vm-btn-primary { min-width: 0; max-width: 100%; }
+.gcsp .vm-status .vm-title { font-size: 22px; }
+.gcsp .vm-card-media { background: var(--gcsp-text); }
+.gcsp .vm-card-soon { color: var(--gcsp-on-accent); font-weight: 600; font-size: 14px; }
+
+/* page */
+.gcsp .gcsp-rep { max-width: 1120px; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 32px; }
+.gcsp .gcsp-intro .vm-title { margin: 0 0 8px; font-size: 34px; }
+.gcsp .gcsp-intro .vm-lede { margin: 0; max-width: 60ch; font-size: 18px; }
+.gcsp .gcsp-h2 { margin: 0; font-size: 24px; font-weight: 600; line-height: 1.25; overflow-wrap: anywhere; }
+.gcsp .gcsp-note { margin: 0; color: var(--gcsp-text-muted); }
+.gcsp .gcsp-eyebrow { margin: 0 0 6px; color: var(--gcsp-accent-strong); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.gcsp .gcsp-synthetic { margin: 0; color: var(--gcsp-text-muted); font-size: 13px; }
+
+/* current car */
+.gcsp .gcsp-feature { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); background: var(--gcsp-surface-raised); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); overflow: hidden; }
+.gcsp .gcsp-feature .vm-card-media { aspect-ratio: auto; min-height: 320px; max-height: none; }
+.gcsp .gcsp-feature-copy { display: flex; flex-direction: column; gap: 16px; min-width: 0; padding: 28px; }
+.gcsp .gcsp-countdown { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--gcsp-warning); font-weight: 600; }
+.gcsp .gcsp-countdown .gcsp-icon { width: 20px; height: 20px; }
+.gcsp .gcsp-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.gcsp .gcsp-details { border-top: 1px solid var(--gcsp-divider); padding-top: 12px; }
+.gcsp .gcsp-details-summary { min-height: 44px; display: flex; align-items: center; justify-content: space-between; list-style: none; color: var(--gcsp-accent-strong); font-weight: 600; cursor: pointer; }
+.gcsp .gcsp-details-summary::-webkit-details-marker { display: none; }
+.gcsp .gcsp-details-summary::after { content: "\25BE"; font-size: 18px; }
+.gcsp .gcsp-details[open] .gcsp-details-summary::after { transform: rotate(180deg); }
+.gcsp .gcsp-details[open] .gcsp-details-summary { margin-bottom: 8px; }
+
+/* allowance */
+.gcsp .gcsp-allowance { display: flex; flex-direction: column; gap: 8px; padding: 24px 28px; background: var(--gcsp-accent-soft); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
+.gcsp .gcsp-allowance-figure { margin: 0; font-size: 28px; font-weight: 600; color: var(--gcsp-accent-strong); }
+.gcsp .gcsp-allowance-left { margin: 0; font-weight: 600; }
+
+/* selection cards */
+.gcsp .gcsp-selection { display: flex; flex-direction: column; gap: 12px; scroll-margin-top: 16px; }
+.gcsp .gcsp-selection-heading:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 4px; }
+.gcsp .gcsp-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin: 12px 0 0; padding: 0; list-style: none; }
+.gcsp .gcsp-card-item { display: flex; min-width: 0; }
+.gcsp .gcsp-card { display: flex; flex-direction: column; width: 100%; min-width: 0; background: var(--gcsp-surface-raised); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); box-shadow: 0 1px 3px rgba(29, 42, 48, 0.08); overflow: hidden; transition: box-shadow var(--gcsp-motion) ease, border-color var(--gcsp-motion) ease; }
+.gcsp .gcsp-card.is-selected { border-color: var(--gcsp-accent); box-shadow: 0 0 0 2px var(--gcsp-accent), 0 4px 12px rgba(29, 42, 48, 0.12); }
+.gcsp .gcsp-card .vm-card-media { aspect-ratio: 16 / 9; flex: none; }
+.gcsp .vm-card-media[data-crop="right"] .vm-card-photo { object-position: 72% 50%; }
+.gcsp .vm-card-media[data-crop="car"] .vm-card-photo { object-position: 62% 50%; }
+.gcsp .gcsp-card-body { display: flex; flex: 1 1 auto; flex-direction: column; gap: 10px; min-width: 0; padding: 20px; }
+.gcsp .gcsp-card-name { margin: 0; font-size: 19px; font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
+.gcsp .gcsp-order { margin: 0; color: var(--gcsp-text-muted); font-size: 14px; }
+.gcsp .gcsp-points { margin: 0; }
+.gcsp .gcsp-points-n { font-size: 28px; font-weight: 600; }
+.gcsp .gcsp-points-unit { color: var(--gcsp-text-muted); }
+.gcsp .gcsp-status { display: flex; align-items: flex-start; gap: 8px; margin: 0; font-size: 14px; font-weight: 600; }
+.gcsp .gcsp-status .gcsp-icon { flex: none; width: 18px; height: 18px; margin-top: 1px; }
+.gcsp .gcsp-status.is-ok { color: var(--gcsp-success); }
+.gcsp .gcsp-status.is-over { color: var(--gcsp-danger); }
+.gcsp .gcsp-card .vm-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; margin-top: 6px; padding-top: 14px; border-top: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-card .vm-fact-value { font-size: 14px; }
+.gcsp .gcsp-card-foot { display: flex; flex-direction: column; justify-content: flex-end; gap: 8px; padding: 0 20px 20px; }
+.gcsp .gcsp-pick { width: 100%; }
+.gcsp .gcsp-pick .gcsp-icon { display: none; width: 18px; height: 18px; }
+.gcsp .gcsp-pick[aria-pressed="true"] { background: var(--gcsp-accent); border-color: var(--gcsp-accent); color: var(--gcsp-on-accent); }
+.gcsp .gcsp-pick[aria-pressed="true"] .gcsp-icon { display: block; }
+.gcsp .gcsp-reason { margin: 0; color: var(--gcsp-text-muted); font-size: 14px; }
+
+/* summary */
+.gcsp .gcsp-summary { display: flex; flex-direction: column; gap: 12px; padding: 24px 28px; background: var(--gcsp-surface-raised); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
+.gcsp .gcsp-summary-live { display: flex; flex-direction: column; gap: 10px; }
+.gcsp .gcsp-summary-name { margin: 0; font-size: 20px; font-weight: 600; overflow-wrap: anywhere; }
+.gcsp .gcsp-summary-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
+
+@media (max-width: 1000px) {
+  .gcsp .gcsp-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gcsp .gcsp-feature { grid-template-columns: minmax(0, 1fr); }
+  .gcsp .gcsp-feature .vm-card-media { aspect-ratio: 16 / 9; min-height: 0; }
+}
+
+@media (max-width: 640px) {
+  .gcsp .gcsp-rep { gap: 24px; }
+  .gcsp .gcsp-cards { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .gcsp .gcsp-intro .vm-title { font-size: 28px; }
+  .gcsp .gcsp-intro .vm-lede { font-size: 16px; }
+  .gcsp .gcsp-feature-copy { padding: 20px 16px; }
+  .gcsp .gcsp-allowance,
+  .gcsp .gcsp-summary { padding: 20px 16px; }
+  .gcsp .gcsp-actions .vm-btn,
+  .gcsp .gcsp-summary-foot .vm-btn { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gcsp .gcsp-card,
+  .gcsp .gcsp-details-summary::after,
+  .gcsp .vm-btn,
+  .gcsp .vm-screen { transition: none; animation: none; }
+}
