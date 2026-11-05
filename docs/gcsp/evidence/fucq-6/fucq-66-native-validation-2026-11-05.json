@@ -1,0 +1,270 @@
+{
+  "version": 3,
+  "story": "FUCQ-66",
+  "status": "native diagnostic checkpoint; not built",
+  "tested": {
+    "version": 3,
+    "head": "eb5a677b37c486e3da7c4547803f739e22df8ac3",
+    "tree": "4c5607893b2215b2acbc8b38c10f8ff8777272fd",
+    "files": {
+      "server/gcsp/policy/seed-v1.json": "c585213b98631d6e82acc1b3720d47efae49fdb502f5fc86fb440703ef6e41a6",
+      "server/gcsp/migrations/0001_transaction_foundation.sql": "3bde8db01f103141ca9bbe7398a6e1172df9b9789df745244a0071a00b9629d1",
+      "server/gcsp/migrations/0002_policy_tables.sql": "65346093f811df63b225436a0ca35cd4061990a78caacb44ffde7b1effd1edd0",
+      "server/gcsp/migrations/0003_renewal_cases.sql": "e76750fddd75b9d363fd209c243169ce1f9b06c78f96b7dbb74fe3c296f08c98",
+      "server/test/gcsp-manual-claims.test.js": "3a391142b1c4bbed7f1aa02a8db08d1f6aa589301c68580e487605045e54dfc5",
+      "server/test/gcsp-repository-contract.test.js": "b16af74ace3bca4ef169e7f225c939a94406db06af12be6425ca58edde882926",
+      "server/test/helpers/manual-claim-reopen.js": "d9d8733aca880a853fdccdb714d6a4e2c82d39fda20a329fe3e3f395311f2f7b",
+      "server/gcsp/manual-claims/index.js": "32c80ef72d8329fcdbc4a208d9ab911f68156e6234d3917975754415d04ef059",
+      "server/gcsp/manual-context/index.js": "3e694f3a68b9d3c9f40b44ddb785bec2edce3b3ada43d491995be77a2930fd43",
+      "server/gcsp/repository/postgres.js": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
+      "server/gcsp/policy/index.js": "087267e81d4a780ef300dba144d9de5c4978ca530fe8ea5b2f53e2ec41395a2c",
+      "server/gcsp/policy/postgres-provider.js": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+      "server/index.js": "6758ce90a5ddbba8ef9fc279cecf25b15af7923fd83dc8a278fb860620bb7243"
+    },
+    "packages": {
+      "package.json": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
+      "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+      "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139",
+      "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e"
+    },
+    "node": "v26.5.0",
+    "python": "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]",
+    "credential": "private backend child environment only; value not retained",
+    "policyProvider": "PostgresPolicyProvider, explicitly owned schema in native fixtures; FilePolicyProvider for memory tests",
+    "runEnvironment": "synthetic manual-claims",
+    "clock": "2026-11-05T09:00:00.000Z plus explicit test advances",
+    "remoteProvider": "explicit deterministic remote-shaped double, no operational calls",
+    "nativeSchemas": "gcsp_manual_<PID>_<serial>; gcsp_contract_<PID>_<serial>; gcsp_constraints_<PID>_1",
+    "identity": "all fictional, exact current-run port",
+    "portListeners": "none in selected native tests",
+    "inputDigest": "7b1f177e386d2a78eed1e96bdbcf273eb32ebe4bcdf07cc18ac05430cd825b30",
+    "created": 1793915997.1551301,
+    "parentCheckpoint": "9531557",
+    "testPartitioning": "8 independent top-level native cases; production/seed/migrations/pins unchanged",
+    "thread": "01a1adb4-606f-7391-a86c-ad52858ec19f"
+  },
+  "nativeCases": [
+    {
+      "cleanup": {
+        "after": {
+          "groupsAbsent": true,
+          "issueNull": true,
+          "packageHashesUnchanged": true,
+          "rc0": true,
+          "reservationAbsent": true,
+          "scratchRemoved": true
+        },
+        "before": {
+          "groupsAbsent": true,
+          "issueNull": true,
+          "packageHashesUnchanged": true,
+          "rc0": true,
+          "reservationAbsent": true,
+          "scratchRemoved": true
+        },
+        "missingBaselineAfter": [],
+        "newSchemasAfter": [],
+        "schemaAfterPoolClosed": true,
+        "schemaBeforePoolClosed": true,
+        "test": {
+          "groupsAbsent": true,
+          "issueNull": true,
+          "packageHashesUnchanged": true,
+          "rc0": true,
+          "reservationAbsent": true,
+          "scratchRemoved": true
+        }
+      },
+      "command": "node --test --test-concurrency=1 --test-name-pattern \"^native PostgreSQL manual claims persist claim replay\" server/test/gcsp-manual-claims.test.js",
+      "id": "manual-01",
+      "logBytes": 868,
+      "peakAccountedScratchBytes": 27997108,
+      "peakRssBytes": 292585472,
+      "receipts": {
+        "after": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/native-v3-manual-01-after-1793916452785891000-receipt.json",
+        "before": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/native-v3-manual-01-before-1793916166744094000-receipt.json",
+        "test": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/native-v3-manual-01-1793916198625725000-receipt.json"
+      },
+      "result": {
+        "cancelled": 0.0,
+        "duration_ms": 222285.097625,
+        "fail": 0.0,
+        "nativePasses": 1,
+        "pass": 1.0,
+        "skipped": 0.0,
+        "testName": "\u2714 native PostgreSQL manual claims persist claim replay and confirmed release across reopen",
+        "tests": 1.0
+      },
+      "schemaAfter": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/schema-v3-manual-01-after.json",
+      "schemaBefore": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/schema-v3-manual-01-before.json",
+      "schemaDigest": "fccfbabf2632676407486b21256345e4d3bcd8f94b48faffdf2663db32a4b1db",
+      "sourceIdentity": {
+        "allFrozenSourceHashesMatch": true,
+        "head": "eb5a677b37c486e3da7c4547803f739e22df8ac3",
+        "inputDigest": "7b1f177e386d2a78eed1e96bdbcf273eb32ebe4bcdf07cc18ac05430cd825b30",
+        "packageHashes": {
+          "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+          "package.json": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
+          "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+          "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+        },
+        "testSourceSha256": "3a391142b1c4bbed7f1aa02a8db08d1f6aa589301c68580e487605045e54dfc5",
+        "tree": "4c5607893b2215b2acbc8b38c10f8ff8777272fd"
+      },
+      "version": 1,
+      "wallSeconds": 222.600843
+    },
+    {
+      "cleanup": {
+        "after": {
+          "groupsAbsent": true,
+          "packageHashesUnchanged": true,
+          "reservationAbsent": true,
+          "scratchRemoved": true
+        },
+        "afterInventoryPoolClosed": true,
+        "before": {
+          "groupsAbsent": true,
+          "packageHashesUnchanged": true,
+          "reservationAbsent": true,
+          "scratchRemoved": true
+        },
+        "test": {
+          "groupsAbsent": true,
+          "packageHashesUnchanged": true,
+          "reservationAbsent": true,
+          "scratchRemoved": true
+        },
+        "testGroupsAbsent": true,
+        "testOwnedProcessGroups": [
+          55272
+        ],
+        "testOwner": {
+          "pid": 55251,
+          "start": "Thu Nov  5 22:08:31 2026"
+        },
+        "testReservationAbsent": true,
+        "testScratchRootAbsent": true
+      },
+      "command": "node --test --test-concurrency=1 --test-name-pattern \"^native PostgreSQL manual claims retain once-only keyed review\" server/test/gcsp-manual-claims.test.js",
+      "dependencies": {
+        "node_modules": {
+          "adopted": true,
+          "device": 16777232,
+          "inode": 172872717,
+          "symlink": false
+        },
+        "server/node_modules": {
+          "adopted": true,
+          "device": 16777232,
+          "inode": 172877247,
+          "symlink": false
+        }
+      },
+      "id": "manual-02",
+      "logBytes": 1544,
+      "missingBaselineAfter": [],
+      "newSchemasAfter": [],
+      "peakAccountedScratchBytes": 27997108,
+      "peakRssBytes": 212271104,
+      "receipts": {
+        "after": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/native-v3-manual-02-after-1793916866652428000-receipt.json",
+        "before": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/native-v3-manual-02-before-1793916496026422000-receipt.json",
+        "test": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/native-v3-manual-02-1793916511900860000-receipt.json"
+      },
+      "result": {
+        "cancelled": 0.0,
+        "duration_ms": 328634.980666,
+        "error": "TypeError: Cannot read properties of undefined (reading 'hold')",
+        "fail": 1.0,
+        "failedTest": "native PostgreSQL manual claims retain once-only keyed review and expire at exact startup deadline (328371.647875ms)",
+        "pass": 0.0,
+        "skipped": 0.0,
+        "tests": 1.0
+      },
+      "schemaAfter": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/schema-v3-manual-02-after.json",
+      "schemaAfterStatus": "exact-schema-inventory-restored",
+      "schemaBefore": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/schema-v3-manual-02-before.json",
+      "schemaDigest": "fccfbabf2632676407486b21256345e4d3bcd8f94b48faffdf2663db32a4b1db",
+      "sourceIdentity": {
+        "allFrozenSourceHashesMatch": true,
+        "head": "eb5a677b37c486e3da7c4547803f739e22df8ac3",
+        "inputDigest": "7b1f177e386d2a78eed1e96bdbcf273eb32ebe4bcdf07cc18ac05430cd825b30",
+        "packageHashes": {
+          "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+          "package.json": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
+          "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+          "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+        },
+        "testSourceSha256": "3a391142b1c4bbed7f1aa02a8db08d1f6aa589301c68580e487605045e54dfc5",
+        "tree": "4c5607893b2215b2acbc8b38c10f8ff8777272fd"
+      },
+      "status": "native-test-failed; batch stopped after required read-only inventory",
+      "version": 1,
+      "wallSeconds": 328.94678412499997
+    }
+  ],
+  "offlineParent": {
+    "command": "node --test --test-concurrency=1 server/test/gcsp-manual-claims.test.js server/test/gcsp-repository-contract.test.js",
+    "passed": 67,
+    "nativeSkipped": 10,
+    "failed": 0,
+    "wallSeconds": 3.5752671659999997,
+    "receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/offline-parent-partition-review-1793915937011694000-receipt.json"
+  },
+  "strictScopedEvidence": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/strict/targeted-668010686af15f414aca4b1a3792d53b4c9b493cd714572e06b76811867772ef-default-1793916628961761000.json",
+  "diagnosis": {
+    "observed": "Second review command after reopen has no value; test unguarded .value.hold throws at line569. Earlier claim, initial review and identical review replay assertions passed.",
+    "cause": "Unresolved: typed response was not captured. No product defect established.",
+    "next": "Assert and record the second beginReview status/outcome, preserve failed source; then run only necessary diagnostic under a new freeze. Do not repeat unchanged failed case."
+  },
+  "compatibility": {
+    "at": 1793916229.228796,
+    "story": "FUCQ-66",
+    "source": "Dispatcher read-only compatibility observation, 5 November 2026; no reproduced defect and no authorisation to expand frozen proof",
+    "sourceCheckpoint": "eb5a677b37c486e3da7c4547803f739e22df8ac3",
+    "observedCode": [
+      "ManualContextService.saveDraft checks occupying/allocated cart holds before new draft writes and returns release-required even for contact-only edits.",
+      "Each successful fresh saveDraft increments draftVersion; semantic dependency invalidation excludes contact-only changes but does not waive quote draft-version checks.",
+      "ManualClaimsService.#active/#revalidate require input.expectedDraftVersion to match both pinned quote and current draft; a quote cannot be silently relabelled or repriced."
+    ],
+    "currentlySupportedProtocol": [
+      "After claim/reload read current /claim or /quote and /draft; retain holdId, hold.version, quote.draftVersion, pinned quote and server expiry.",
+      "Review/allocate commands use quote.draftVersion and current hold.version; no fresh saveDraft while the hold occupies the slot.",
+      "To change draft fields with existing ports: explicitly confirm release, read current draft/account context, save using fresh versions, browse again, conditionally claim again and read authoritative result. Reacquisition can lose the car; no silent restoration or second hold."
+    ],
+    "consumerIntegrationGap": "FUCQ-70 requires editable post-claim phone/email/return mileage/special requirements; the existing saveDraft port cannot preserve a held quote while applying those edits. A distinct review-detail metadata protocol must be agreed by the owning FUCQ-70/71 work before they claim end-to-end completion.",
+    "compatibleExtensionProposalNotImplemented": "Store validated review details separately from the immutable quote/draft under current holdId/quoteId with original pinned draftVersion, explicit review-detail revision and current hold/run/principal preconditions. Do not call saveDraft, replace quote, bump hold deadline or claim again. Readback combines current claim + pinned quote + persisted review-detail revision; order-handoff owns consuming the details while calling allocate with pinned draft/current hold versions. Exact API/ownership/validation remains to be agreed by its story lead.",
+    "limits": [
+      "No production/schema/migration/source changes made for this observation.",
+      "No extra native proof or unrelated active-file edits.",
+      "Preserve observation/protocol/gap in committed final story result and handoff."
+    ]
+  },
+  "buddyIntegration": {
+    "at": 1793916536.887337,
+    "observerChat": "01a1adbf-732b-7830-a17a-cf2b2f95a092",
+    "story": "FUCQ-100 / DEV-2026-11-04-060",
+    "scope": "Sibling implements buddy offer/hold/token modules/tests only; no manual/repository/native source changes requested",
+    "manualBranch": "dev/DEV-2026-11-04-069",
+    "frozenCommit": "eb5a677b37c486e3da7c4547803f739e22df8ac3",
+    "manualServiceSha256": "32c80ef72d8329fcdbc4a208d9ab911f68156e6234d3917975754415d04ef059",
+    "manualContextSha256": "3e694f3a68b9d3c9f40b44ddb785bec2edce3b3ada43d491995be77a2930fd43",
+    "repositorySha256": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
+    "invariant": "Manual released-to-available normalization occurs only inside same transaction as shared conditionalClaim; same holds/claims/stock and employee entitlement exclusion authority",
+    "remaining": "After manual scoped native gates and authored full gate pass, dispatcher integrates completed manual and buddy services then proves both-way real-service exclusivity. Raw conditionalClaim contention proves the repository contract only; do not substitute it for completed-service integration.",
+    "routing": "Dispatcher retains serial integration/merge; no cross-chat message sent without direct human authorization."
+  },
+  "resources": {
+    "schemaDigest": "fccfbabf2632676407486b21256345e4d3bcd8f94b48faffdf2663db32a4b1db",
+    "schemaCount": 4,
+    "afterBoth": "exact baseline restored; all owned pools closed; groups/scratch/reservations absent",
+    "dependencies": "retained adopted nonsymlink task-owned root inode172872717/server inode172877247; exact cleanup after acceptance",
+    "fullGrant": false
+  },
+  "agents": {
+    "lead": "requested/selected/effective gpt-6.1-sol/high; no fallback",
+    "implementer": "requested/selected/effective gpt-6.1-sol/medium; no fallback",
+    "runner": "requested/selected gpt-6-luna/high; effective to be verified independently; no fallback"
+  }
+}
