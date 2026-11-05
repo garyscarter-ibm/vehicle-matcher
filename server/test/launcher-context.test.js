@@ -1,7 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import { JSDOM } from 'jsdom';
+import { bootAt } from './helpers/launcher-dom.js';
 import {
   ENTRY_REGISTRY, resolveEntryContext, buildEntryUrl,
 } from '../../blocks/demo-launcher/entry-context.js';
@@ -102,23 +101,6 @@ test('all generated contexts/links strip duplicate or empty legacy keys without 
   assert.equal(new URL(buildEntryUrl(`${origin}index.html?key=`, { experience: 'launcher' }), origin).searchParams.has('key'), false);
 });
 
-// Execute the actual inline entry boot in an isolated DOM. Only the retail
-// network mount is replaced; resolver, gate, links and authored rows are real.
-function bootAt(suffix, { remote = false, stored = null, standalone = false } = {}) {
-  const page = standalone ? 'block.html' : 'index.html';
-  const html = readFileSync(new URL(`../../${page}`, import.meta.url), 'utf8');
-  const dom = new JSDOM(html, { url: `${remote ? origin : 'http://localhost:3000/vehicle-matcher/'}${page}${suffix}`, runScripts: 'outside-only' });
-  const win = dom.window; const mounts = []; const ready = [];
-  win.decorate = (block) => { mounts.push(block); };
-  win.ACCESS_KEY_STORAGE = 'vm-access-key';
-  Object.assign(win, { ENTRY_REGISTRY, resolveEntryContext, buildEntryUrl });
-  if (stored) win.sessionStorage.setItem(win.ACCESS_KEY_STORAGE, stored);
-  win.document.addEventListener('demo-entry-ready', (event) => ready.push(event.detail));
-  const script = html.match(/<script type="module">([\s\S]*?)<\/script>/)[1].replace(/import[\s\S]*?from ['"][^'"]+['"];\s*/g, '');
-  win.eval(script);
-  return { dom, win, mounts, ready };
-}
-
 test('index boot dispatches launcher host, explicit retail picker, legacy shell and recovery contract', () => {
   for (const [suffix, state, count] of [['', 'launcher', 0], ['?experience=used-cars', 'retail-picker', 0], ['?mode=podium#m=answers', 'retail-picker', 0], ['?brand=mini', 'retail', 1], ['?brand=unknown', 'retail', 1], ['?experience=launcher&brand=mini', 'launcher', 0], ['?experience=employee-cars&brand=mini', 'unsupported-employee-brand', 0], ['?experience=employee-cars&brand=bmw', 'employee-unavailable', 0], ['?experience=unknown', 'unknown-experience', 0]]) {
     const { dom, win, mounts, ready } = bootAt(suffix);
@@ -136,7 +118,7 @@ test('index boot dispatches launcher host, explicit retail picker, legacy shell 
   }
 });
 
-test('index picker preserves repository prefix, legacy mode/scope/hash and API override', () => {
+test('index picker retains mode/scope/API and starts each brand without old answers or retailer', () => {
   const { dom, win } = bootAt('?mode=podium&scope=national&retailer=92&retailerName=Dealer&api=http%3A%2F%2Flocalhost%3A8788#m=answers');
   try {
     const tiles = [...win.document.querySelectorAll('.demo-picker-tile')];
@@ -147,8 +129,10 @@ test('index picker preserves repository prefix, legacy mode/scope/hash and API o
       assert.equal(url.searchParams.get('experience'), 'used-cars');
       assert.equal(url.searchParams.get('mode'), 'podium');
       assert.equal(url.searchParams.get('api'), 'http://localhost:8788');
-      assert.equal(url.searchParams.get('retailer'), '92');
-      assert.equal(url.hash, '#m=answers');
+      assert.equal(url.searchParams.get('scope'), 'national');
+      assert.equal(url.searchParams.has('retailer'), false);
+      assert.equal(url.searchParams.has('retailerName'), false);
+      assert.equal(url.hash, '');
     }
   } finally { dom.window.close(); }
 });

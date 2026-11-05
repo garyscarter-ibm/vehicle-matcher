@@ -1,0 +1,94 @@
+{
+  "story": "FUCQ-34",
+  "sourceCommit": "312eaa005bc2390b8c449b6c4deaf7b511e7e22a",
+  "harnessSha": "70f52bdcf373820011141d7982b2acb48ce37869c36a9de3d55f0ad8c996ec49",
+  "capturedAt": "2026-11-05T15:27:45.073Z",
+  "fixtureBacked": true,
+  "runtimeResources": {
+    "staticPort": 31461,
+    "fixtureApiPort": 55328,
+    "chromeCdpPort": 55333,
+    "chromePid": 41658,
+    "profile": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-b82f26ca739e47ed89af29f6cd3f1e5e/fucq34-chrome-profile"
+  },
+  "externalEgress": "blocked; remote default API fulfilled by injected local buildServer fixtures",
+  "checks": [
+    {
+      "id": "shared-radio-arrow-selection",
+      "pass": true,
+      "expected": "ArrowDown selects the next actual questionnaire radio option and advances to the next question through its onPick callback",
+      "observed": {
+        "questionBefore": "Could you charge a car at home or work?",
+        "before": [
+          {
+            "text": "Yes, at home or at work",
+            "checked": "false",
+            "tabIndex": 0
+          },
+          {
+            "text": "Yes, at home",
+            "checked": "false",
+            "tabIndex": -1
+          },
+          {
+            "text": "Yes, at work",
+            "checked": "false",
+            "tabIndex": -1
+          },
+          {
+            "text": "No, I’d rely on public chargers",
+            "checked": "false",
+            "tabIndex": -1
+          }
+        ],
+        "expectedChosenOption": "Yes, at home",
+        "questionAfter": "What will this car mostly do?",
+        "focusedText": "What will this car mostly do?"
+      }
+    }
+  ],
+  "cases": [],
+  "captureSettlement": {
+    "text": "What will this car mostly do?",
+    "opacity": "1",
+    "runningAnimations": 0
+  },
+  "browserLogs": {
+    "errors": [],
+    "failed": [],
+    "badLocalResponses": [],
+    "externalBlocked": [],
+    "apiCalls": [
+      {
+        "scope": "shared-question-option-arrow",
+        "method": "GET",
+        "path": "/api/questions?retailer=96&brand=bmw",
+        "status": 200
+      },
+      {
+        "scope": "shared-question-option-arrow",
+        "method": "POST",
+        "path": "/api/preview",
+        "status": 200
+      },
+      {
+        "scope": "shared-question-option-arrow",
+        "method": "POST",
+        "path": "/api/preview",
+        "status": 200
+      },
+      {
+        "scope": "shared-question-option-arrow",
+        "method": "POST",
+        "path": "/api/preview",
+        "status": 200
+      },
+      {
+        "scope": "shared-question-option-arrow",
+        "method": "POST",
+        "path": "/api/preview",
+        "status": 200
+      }
+    ]
+  }
+}

@@ -1,0 +1,752 @@
+{
+  "browser": {
+    "engine": "system Chrome",
+    "headless": true,
+    "profile": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/browser-final/chrome-profile-gallery"
+  },
+  "capturedAt": "2026-11-05T10:41:23.033Z",
+  "capturedHead": "35a9d8cc29e6669a95c18a34b2ac42e9b69d6287",
+  "changedPathsExpected": [
+    "fucq31-gallery-review.json",
+    "fucq31-interim-gallery-desktop.png",
+    "fucq31-interim-gallery-narrow-320.png",
+    "fucq31-interim-employee-decision-desktop.png",
+    "fucq31-interim-employee-decision-narrow-320.png"
+  ],
+  "defects": [
+    "Interim capture: selected exact-car picker is visually indistinguishable from unselected because the employee ghost-button rule overrides the selected background; lead is preparing a scoped correction. Final gallery recapture is pending."
+  ],
+  "errors": {
+    "console": [],
+    "external": [],
+    "failed": [],
+    "page": []
+  },
+  "fixtureApiLog": "",
+  "gallery": {
+    "controlState": {
+      "focus": {
+        "disabled": false,
+        "focusVisible": true,
+        "outline": "rgb(16, 16, 16) none 3px",
+        "value": "71"
+      },
+      "indifference": "Local position 71%; importance 50%; explicitly indifferent. Decision snapshot unchanged. No saved state.",
+      "initialPosition": null,
+      "keyboardPosition": "71",
+      "previewText": "Loading display snapshot\n\nThis uses an injected local loader. No matching or saving is performed.",
+      "slidersDisabledWhenIndifferent": true,
+      "slidersReenabled": true,
+      "status": "Local position 71%; importance 50%; preference considered. Decision snapshot unchanged. No saved state."
+    },
+    "employeeContrasts": [
+      {
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(29, 42, 48)",
+        "contrast": 14.73,
+        "fontSize": "24px",
+        "fontWeight": "300",
+        "selector": ".vm-card-name",
+        "text": "BMW 320i M Sport Touring with Individual extended leather and comfort specification"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(29, 42, 48)",
+        "contrast": 14.73,
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "selector": ".vm-card-terms .vm-specs",
+        "text": "1,100 points a month \u00b7 1,300 points a month allowance"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(29, 42, 48)",
+        "contrast": 14.73,
+        "fontSize": "16px",
+        "fontWeight": "700",
+        "selector": ".vm-card-gate",
+        "text": "Eligible"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(10, 96, 112)",
+        "contrast": 7.19,
+        "fontSize": "16px",
+        "fontWeight": "600",
+        "selector": ".vm-pick-opt",
+        "text": "Eligible exact car"
+      },
+      {
+        "background": "rgb(233, 237, 239)",
+        "color": "rgb(82, 96, 106)",
+        "contrast": 5.5,
+        "fontSize": "16px",
+        "fontWeight": "600",
+        "selector": "[data-action-id=\"reserve\"]",
+        "text": "Reserve"
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(82, 96, 106)",
+        "contrast": 6.48,
+        "fontSize": "13px",
+        "fontWeight": "400",
+        "selector": ".vm-card-actions .vm-feedback-scope",
+        "text": "This exact car in the local gallery only."
+      }
+    ],
+    "employeeStates": [
+      {
+        "actions": [
+          {
+            "disabled": false,
+            "id": "inspect",
+            "label": "Select for this preview",
+            "reason": null
+          },
+          {
+            "disabled": false,
+            "id": "feedback",
+            "label": "Not this one",
+            "reason": null
+          },
+          {
+            "disabled": true,
+            "id": "reserve",
+            "label": "Reserve",
+            "reason": "Reserving is not part of this preview"
+          }
+        ],
+        "caption": "Representative BMW brand image, not this exact car",
+        "decision": "Eligible\n\nWHY IT SUITS YOU\n\nDriver eligibility confirmed for this synthetic example.\nThis exact model is included in the scheme policy.\nThe monthly points cost is within your allowance.\nThe exact car meets this confirmed essential.\nAvailable by your required date.\nMatches your stated body preference: estate.",
+        "facts": [
+          {
+            "label": "Seats",
+            "value": "5 seats"
+          },
+          {
+            "label": "Boot, seats up",
+            "value": "500 L"
+          },
+          {
+            "label": "Fuel",
+            "value": "Petrol"
+          }
+        ],
+        "gate": "eligible",
+        "image": {
+          "alt": "Representative BMW brand image",
+          "complete": true,
+          "naturalWidth": 1606,
+          "src": "http://localhost:31431/assets/brand-hero/bmw.jpg"
+        },
+        "memberId": "00000000-0000-4000-8000-000000000001",
+        "name": "BMW 320i M Sport Touring with Individual extended leather and comfort specification",
+        "pickers": [
+          {
+            "label": "Eligible exact car",
+            "pressed": "true"
+          },
+          {
+            "label": "Ineligible exact car",
+            "pressed": "false"
+          },
+          {
+            "label": "Needs confirmation",
+            "pressed": "false"
+          }
+        ],
+        "placeholder": "No image for this car yet",
+        "reasons": [
+          "Driver eligibility confirmed for this synthetic example.",
+          "This exact model is included in the scheme policy.",
+          "The monthly points cost is within your allowance.",
+          "The exact car meets this confirmed essential.",
+          "Available by your required date.",
+          "Matches your stated body preference: estate."
+        ],
+        "step": "initial eligible",
+        "terms": "1,100 points a month \u00b7 1,300 points a month allowance"
+      },
+      {
+        "actions": [
+          {
+            "disabled": false,
+            "id": "inspect",
+            "label": "Select for this preview",
+            "reason": null
+          },
+          {
+            "disabled": false,
+            "id": "feedback",
+            "label": "Not this one",
+            "reason": null
+          },
+          {
+            "disabled": true,
+            "id": "reserve",
+            "label": "Reserve",
+            "reason": "Reserving is not part of this preview"
+          }
+        ],
+        "caption": "",
+        "decision": "Not eligible\n\nCHECKS PASSED\n\nDriver eligibility confirmed for this synthetic example.\nThis exact model is included in the scheme policy.\nThe monthly points cost is within your allowance.\nAvailable by your required date.\n\nWHY IT IS NOT ELIGIBLE\n\nThe exact car does not meet your confirmed seating requirement.",
+        "facts": [
+          {
+            "label": "Seats",
+            "value": "4 seats"
+          },
+          {
+            "label": "Boot, seats up",
+            "value": "500 L"
+          },
+          {
+            "label": "Fuel",
+            "value": "Petrol"
+          }
+        ],
+        "focusAfter": {
+          "focusVisible": true,
+          "label": "Ineligible exact car",
+          "outline": "rgb(10, 96, 112) solid 2px",
+          "pressed": "true"
+        },
+        "focusBefore": {
+          "focusVisible": true,
+          "label": "Ineligible exact car",
+          "outline": "rgb(10, 96, 112) solid 2px"
+        },
+        "gate": "ineligible",
+        "image": null,
+        "memberId": "00000000-0000-4000-8000-000000000002",
+        "name": "BMW 320i Touring with four confirmed seats (synthetic)",
+        "pickers": [
+          {
+            "label": "Eligible exact car",
+            "pressed": "false"
+          },
+          {
+            "label": "Ineligible exact car",
+            "pressed": "true"
+          },
+          {
+            "label": "Needs confirmation",
+            "pressed": "false"
+          }
+        ],
+        "placeholder": "No image for this car yet",
+        "reasons": [
+          "Driver eligibility confirmed for this synthetic example.",
+          "This exact model is included in the scheme policy.",
+          "The monthly points cost is within your allowance.",
+          "Available by your required date.",
+          "The exact car does not meet your confirmed seating requirement."
+        ],
+        "step": "keyboard selected ineligible",
+        "terms": "1,100 points a month \u00b7 1,300 points a month allowance"
+      },
+      {
+        "actions": [
+          {
+            "disabled": false,
+            "id": "inspect",
+            "label": "Select for this preview",
+            "reason": null
+          },
+          {
+            "disabled": false,
+            "id": "feedback",
+            "label": "Not this one",
+            "reason": null
+          },
+          {
+            "disabled": true,
+            "id": "reserve",
+            "label": "Reserve",
+            "reason": "Reserving is not part of this preview"
+          }
+        ],
+        "caption": "",
+        "decision": "Needs confirmation\n\nCHECKS PASSED\n\nDriver eligibility confirmed for this synthetic example.\nThis exact model is included in the scheme policy.\nThe monthly points cost is within your allowance.\nAvailable by your required date.\n\nNEEDS CONFIRMATION\n\nThe exact number of seats needs confirmation.",
+        "facts": [
+          {
+            "label": "Seats",
+            "value": "Not supplied (seats)"
+          },
+          {
+            "label": "Boot, seats up",
+            "value": "Not supplied (L)"
+          },
+          {
+            "label": "Fuel",
+            "value": "Petrol"
+          }
+        ],
+        "gate": "needs-confirmation",
+        "image": null,
+        "memberId": "00000000-0000-4000-8000-000000000003",
+        "name": "BMW 320i Touring with unconfirmed seating and luggage capacity",
+        "pickers": [
+          {
+            "label": "Eligible exact car",
+            "pressed": "false"
+          },
+          {
+            "label": "Ineligible exact car",
+            "pressed": "false"
+          },
+          {
+            "label": "Needs confirmation",
+            "pressed": "true"
+          }
+        ],
+        "placeholder": "No image for this car yet",
+        "reasons": [
+          "Driver eligibility confirmed for this synthetic example.",
+          "This exact model is included in the scheme policy.",
+          "The monthly points cost is within your allowance.",
+          "Available by your required date.",
+          "The exact number of seats needs confirmation."
+        ],
+        "step": "keyboard selected needs-confirmation",
+        "terms": "1,100 points a month \u00b7 1,300 points a month allowance"
+      },
+      {
+        "actions": [
+          {
+            "disabled": false,
+            "id": "inspect",
+            "label": "Select for this preview",
+            "reason": null
+          },
+          {
+            "disabled": false,
+            "id": "feedback",
+            "label": "Not this one",
+            "reason": null
+          },
+          {
+            "disabled": true,
+            "id": "reserve",
+            "label": "Reserve",
+            "reason": "Reserving is not part of this preview"
+          }
+        ],
+        "caption": "Representative BMW brand image, not this exact car",
+        "decision": "Eligible\n\nWHY IT SUITS YOU\n\nDriver eligibility confirmed for this synthetic example.\nThis exact model is included in the scheme policy.\nThe monthly points cost is within your allowance.\nThe exact car meets this confirmed essential.\nAvailable by your required date.\nMatches your stated body preference: estate.",
+        "facts": [
+          {
+            "label": "Seats",
+            "value": "5 seats"
+          },
+          {
+            "label": "Boot, seats up",
+            "value": "500 L"
+          },
+          {
+            "label": "Fuel",
+            "value": "Petrol"
+          }
+        ],
+        "gate": "eligible",
+        "image": {
+          "alt": "Representative BMW brand image",
+          "complete": true,
+          "naturalWidth": 1606,
+          "src": "http://localhost:31431/assets/brand-hero/bmw.jpg"
+        },
+        "memberId": "00000000-0000-4000-8000-000000000001",
+        "name": "BMW 320i M Sport Touring with Individual extended leather and comfort specification",
+        "pickers": [
+          {
+            "label": "Eligible exact car",
+            "pressed": "true"
+          },
+          {
+            "label": "Ineligible exact car",
+            "pressed": "false"
+          },
+          {
+            "label": "Needs confirmation",
+            "pressed": "false"
+          }
+        ],
+        "placeholder": "No image for this car yet",
+        "reasons": [
+          "Driver eligibility confirmed for this synthetic example.",
+          "This exact model is included in the scheme policy.",
+          "The monthly points cost is within your allowance.",
+          "The exact car meets this confirmed essential.",
+          "Available by your required date.",
+          "Matches your stated body preference: estate."
+        ],
+        "step": "reselected eligible",
+        "terms": "1,100 points a month \u00b7 1,300 points a month allowance"
+      }
+    ],
+    "exactListing": {
+      "cardsFound": 0,
+      "initialText": "Exact listing decisions\n\nFictional R1 display trial: \u00a330k / 96% and \u00a339k / 87% stretch. The first photo is representative; the second has no image. Choose a listing, refine to its equipment or test an older backend. Reset restores the starting state.\n\nOlder backendParking camera onlyReset listing trial\nPROBE TOURING\nBMW Probe Touring with Individual extended leather and comfort specification\n96%\n\nEstate \u00b7 Petrol \u00b7 Automatic \u00b7 Portimao Blue \u00b7 \u00a330,000 \u00b7 5 seats \u00b7 560-litre boot, seats up\n\nAt Gallery Retailer\n\n2 available \u00b7 \u00a330,000\u2013\u00a339,000 \u00b7 Portimao Blue or Chili Red\n\n10,000 miles\n\nWHAT\u2019S FITTED\n\nHeated seats\n\nWHY IT SUITS YOU\n\nWithin the budget you set\n\nCHOOSE YOURS\n\nPortimao Blue\n\u00a330,000 \u00b7 10,000 mi\nChili Red\n\u00a339,000 \u00b7 18,000 mi\nView at Gallery Retailer \u203a",
+      "oldBackendText": "Exact listing decisions\n\nFictional R1 display trial: \u00a330k / 96% and \u00a339k / 87% stretch. The first photo is representative; the second has no image. Choose a listing, refine to its equipment or test an older backend. Reset restores the starting state.\n\nOlder backendParking camera onlyReset listing trial\nPROBE TOURING\nBMW Probe Touring with Individual extended leather and comfort specification\n96%\n\nEstate \u00b7 Petrol \u00b7 Automatic \u00b7 Portimao Blue \u00b7 \u00a330,000 \u00b7 5 seats \u00b7 560-litre boot, seats up\n\nAt Gallery Retailer\n\n2 available \u00b7 \u00a330,000\u2013\u00a339,000 \u00b7 Portimao Blue or Chili Red\n\n10,000 miles\n\nWHAT\u2019S FITTED\n\nHeated seats\n\nWHY IT SUITS YOU\n\nWithin the budget you set\n\nCHOOSE YOURS\n\nPortimao Blue\n\u00a330,000 \u00b7 10,000 mi\nChili Red\n\u00a339,000 \u00b7 18,000 mi\nView at Gallery Retailer \u203a",
+      "refinedText": "Exact listing decisions\n\nFictional R1 display trial: \u00a330k / 96% and \u00a339k / 87% stretch. The first photo is representative; the second has no image. Choose a listing, refine to its equipment or test an older backend. Reset restores the starting state.\n\nOlder backendParking camera onlyReset listing trial\nImages coming soon\nPROBE TOURING\nBMW Probe Touring with Individual extended leather and comfort specification\n\nEstate \u00b7 Petrol \u00b7 Manual \u00b7 Chili Red \u00b7 \u00a339,000 \u00b7 5 seats \u00b7 560-litre boot, seats up\n\nAt Gallery Retailer\n\n18,000 miles\n\nWHAT\u2019S FITTED\n\nParking camera\n\nMatch score and reasons unavailable for this listing.\n\nView at Gallery Retailer \u203a"
+    },
+    "layouts": [
+      {
+        "layout": {
+          "body": {
+            "clientWidth": 1280,
+            "overflowPx": 0,
+            "scrollWidth": 1280
+          },
+          "document": {
+            "clientWidth": 1280,
+            "overflowPx": 0,
+            "scrollWidth": 1280
+          },
+          "label": "gallery-desktop",
+          "main": {
+            "clientWidth": 1280,
+            "overflowPx": 0,
+            "scrollWidth": 1280
+          },
+          "stage": null,
+          "viewport": {
+            "height": 900,
+            "width": 1280
+          }
+        },
+        "viewport": {
+          "height": 900,
+          "label": "desktop",
+          "width": 1280
+        }
+      },
+      {
+        "layout": {
+          "body": {
+            "clientWidth": 320,
+            "overflowPx": 0,
+            "scrollWidth": 320
+          },
+          "document": {
+            "clientWidth": 320,
+            "overflowPx": 0,
+            "scrollWidth": 320
+          },
+          "label": "gallery-narrow-320",
+          "main": {
+            "clientWidth": 320,
+            "overflowPx": 0,
+            "scrollWidth": 320
+          },
+          "stage": null,
+          "viewport": {
+            "height": 740,
+            "width": 320
+          }
+        },
+        "viewport": {
+          "height": 740,
+          "label": "narrow-320",
+          "width": 320
+        }
+      }
+    ],
+    "retailGalleryCards": [
+      {
+        "failedImages": 0,
+        "imageAlts": [],
+        "imageCount": 0,
+        "text": "Images coming soon\nBMW 320i Touring\n88%\n\nEstate \u00b7 Petrol \u00b7 Automatic \u00b7 Blue \u00b7 \u00a332,000\n\nAt Gallery Retailer\n\n3 available \u00b7 \u00a329,000\u2013\u00a332,000\n\n10,000 miles\n\nWHAT\u2019S FITTED\n\nHeated seats\n\nNot this one\nTurned down? We\u2019ll bring the next one up.\n\nCHOOSE YOURS\n\nBlue\n\u00a332,000 \u00b7 10,000 mi\nWhite\n\u00a329,000 \u00b7 7,000 mi\nBlack\n\u00a331,000\nView at Gallery Retailer \u203a"
+      },
+      {
+        "failedImages": 0,
+        "imageAlts": [],
+        "imageCount": 0,
+        "text": "Images coming soon\nBMW 118i Hatchback\n84%\n\nHatchback \u00b7 Petrol \u00b7 Automatic \u00b7 Grey \u00b7 \u00a323,000\n\nAt Gallery Retailer\n\n9,000 miles\n\nWHAT\u2019S FITTED\n\nParking camera\n\nNot this one\nTurned down? We\u2019ll bring the next one up.\nView at Gallery Retailer \u203a"
+      }
+    ],
+    "screenshots": [
+      {
+        "bytes": 1228545,
+        "file": "fucq31-interim-gallery-desktop.png"
+      },
+      {
+        "bytes": 433432,
+        "file": "fucq31-interim-employee-decision-desktop.png"
+      },
+      {
+        "bytes": 605939,
+        "file": "fucq31-interim-gallery-narrow-320.png"
+      },
+      {
+        "bytes": 178547,
+        "file": "fucq31-interim-employee-decision-narrow-320.png"
+      }
+    ]
+  },
+  "phase": "gallery",
+  "productCheckpoint": "9e28d33e21e412d2e2081205e6aa22168fb08f58",
+  "responses": [
+    {
+      "contentType": "text/html; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/components.html",
+      "status": 200
+    },
+    {
+      "contentType": "text/css; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/vehicle-matcher/vehicle-matcher.css",
+      "status": 200
+    },
+    {
+      "contentType": "text/css; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/gcsp/shell/gcsp-shell.css",
+      "status": 200
+    },
+    {
+      "contentType": "text/css; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/gcsp/employee/gcsp-employee.css",
+      "status": 200
+    },
+    {
+      "contentType": "text/css; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/vehicle-matcher/component-gallery.css",
+      "status": 200
+    },
+    {
+      "contentType": "text/javascript; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/vehicle-matcher/component-gallery.js",
+      "status": 200
+    },
+    {
+      "contentType": "text/css; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/gcsp/shell/gcsp-tokens.css",
+      "status": 200
+    },
+    {
+      "contentType": "text/css; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/vehicle-matcher/tokens.css",
+      "status": 200
+    },
+    {
+      "contentType": "text/css; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/vehicle-matcher/decision-card.css",
+      "status": 200
+    },
+    {
+      "contentType": "text/css; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/vehicle-matcher/question-controls.css",
+      "status": 200
+    },
+    {
+      "contentType": "text/javascript; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/vehicle-matcher/modes/preview-feed.js",
+      "status": 200
+    },
+    {
+      "contentType": "text/javascript; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/vehicle-matcher/ui.js",
+      "status": 200
+    },
+    {
+      "contentType": "text/javascript; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/vehicle-matcher/modes/question-ui.js",
+      "status": 200
+    },
+    {
+      "contentType": "text/javascript; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/vehicle-matcher/employee-card-fixture.js",
+      "status": 200
+    },
+    {
+      "contentType": "text/javascript; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/vehicle-matcher/feedback-actions.js",
+      "status": 200
+    },
+    {
+      "contentType": "text/javascript; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/vehicle-matcher/modes/result-card.js",
+      "status": 200
+    },
+    {
+      "contentType": "text/javascript; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/gcsp/employee/gcsp-employee.js",
+      "status": 200
+    },
+    {
+      "contentType": "text/javascript; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/gcsp/shell/portal-shell.js",
+      "status": 200
+    },
+    {
+      "contentType": "text/javascript; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/vehicle-matcher/quiz-meta.js",
+      "status": 200
+    },
+    {
+      "contentType": "text/javascript; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/vehicle-matcher/engine.js",
+      "status": 200
+    },
+    {
+      "contentType": "text/javascript; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/gcsp/employee/fixtures.js",
+      "status": 200
+    },
+    {
+      "contentType": "text/javascript; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/vehicle-matcher/modes/brand-copy.js",
+      "status": 200
+    },
+    {
+      "contentType": "text/javascript; charset=utf-8",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/gcsp/employee/representative-body.js",
+      "status": 200
+    },
+    {
+      "contentType": "image/svg+xml",
+      "origin": "http://localhost:31431",
+      "path": "/assets/brand-logos/mini.svg",
+      "status": 200
+    },
+    {
+      "contentType": "image/svg+xml",
+      "origin": "http://localhost:31431",
+      "path": "/assets/brand-logos/bmw.svg",
+      "status": 200
+    },
+    {
+      "contentType": "font/woff2",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/vehicle-matcher/fonts/BMWTypeNextLatin-Bold.woff2",
+      "status": 200
+    },
+    {
+      "contentType": "font/woff2",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/vehicle-matcher/fonts/BMWTypeNextLatin-Regular.woff2",
+      "status": 200
+    },
+    {
+      "contentType": "font/woff2",
+      "origin": "http://localhost:31431",
+      "path": "/blocks/vehicle-matcher/fonts/BMWTypeNextLatin-Light.woff2",
+      "status": 200
+    },
+    {
+      "contentType": "image/jpeg",
+      "origin": "http://localhost:31431",
+      "path": "/assets/brand-hero/bmw.jpg",
+      "status": 200
+    }
+  ],
+  "review": "final rendered review of component gallery, employee card and controls",
+  "runnerReceipt": {
+    "allDisposablePathsUnderBrowserFinal": true,
+    "headroomBefore": {
+      "active": 0,
+      "disk": 210493718528,
+      "free": 215862427648,
+      "low": false,
+      "parent": null,
+      "ram": 3795484672
+    },
+    "logLimitBytes": 2097152,
+    "ownedProcessGroups": [
+      {
+        "live": false,
+        "pgid": 72053
+      }
+    ],
+    "ownershipManifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/browser-final/supervisor/ownership/gallery-runner.json",
+    "peak": {
+      "logs": 754,
+      "rss": 299614208,
+      "scratch_and_evidence": 12726399,
+      "started": 0.128007958
+    },
+    "phase": "gallery",
+    "portsFreeAfterRun": {
+      "31431": true
+    },
+    "profile": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/browser-final/chrome-profile-gallery",
+    "profileRemoved": true,
+    "reservationReleased": true,
+    "reservedBytes": {
+      "disk": 268435456,
+      "ram": 1610612736
+    },
+    "runnerResult": {
+      "issue": null,
+      "issue_kind": null,
+      "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/browser-final/logs/process-gallery.log",
+      "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/browser-final/supervisor/ownership/bf007fd8c080429693c1b0b912e456c6.json",
+      "peak_rss": 299614208,
+      "peak_scratch": 539712,
+      "rc": 0,
+      "wall": 5.756575916
+    },
+    "scratchRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/browser-final/supervisor/shards/test-stamp-shard-bf007fd8c080429693c1b0b912e456c6",
+    "scratchRootRemoved": true,
+    "supervisorTempBase": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/browser-final/supervisor/shards",
+    "wallSeconds": 5.872
+  },
+  "screenshots": [
+    {
+      "bytes": 1228545,
+      "file": "fucq31-interim-gallery-desktop.png"
+    },
+    {
+      "bytes": 433432,
+      "file": "fucq31-interim-employee-decision-desktop.png"
+    },
+    {
+      "bytes": 605939,
+      "file": "fucq31-interim-gallery-narrow-320.png"
+    },
+    {
+      "bytes": 178547,
+      "file": "fucq31-interim-employee-decision-narrow-320.png"
+    }
+  ],
+  "serverLog": "\n> vehicle-matcher@0.1.0 serve\n> node scripts/serve.js\n\nServing /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051 on http://localhost:31431\n",
+  "servers": {
+    "static": {
+      "base": "http://localhost:31431",
+      "command": "PORT=31431 npm run serve",
+      "port": 31431
+    }
+  },
+  "story": "FUCQ-31",
+  "task": "DEV-2026-11-04-051",
+  "reviewStatus": "historical-interim-evidence-superseded",
+  "visualReviewPending": [
+    "Recheck computed backgrounds for selected vs unselected exact-car pickers and assert aria-pressed on the selected picker.",
+    "Rerun callback-owned preview after its debounce settles."
+  ],
+  "supersededBy": "29c5af45e417813457d26c5900fdf9b8c0bfd37e",
+  "historicalNote": "The captured selected-state defect is resolved. Current source/acceptance is in fucq31-gallery-review.json and fucq31-review.md."
+}

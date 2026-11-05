@@ -112,6 +112,50 @@ all context still comes from the authenticated server session. Protected claims 
 Other GCSP routes retain their existing strict rejection. A different employee sees only their own brief/history;
 forged service contexts are refused and sessions from a reset run return `stale-run`. Stale version conflicts map to HTTP 409.
 
+### Brief editor context and unsaved preview · FUCQ-94
+
+`createBriefEditorService({ brief, account, provider, policy, clock, identity })` composes the existing BriefService,
+`ManualContextService.readAccount`, recommendation provider, PolicyService, DemoClock and identity guard. It exposes
+`readEditor(context)` and `previewDraft(context, input)` without a repository write, allocation, hold or mail port.
+`buildServer({ gcspBrief, gcspBriefEditor, gcspIdentity, gcspClock, gcspAllowedOrigins })` passes the editor instance
+as the optional second `createBriefRoutes` argument. Missing editor composition is unavailable; no provider fallback exists.
+
+`GET /api/gcsp/brief/editor` returns `ok.value = { context, initial, versions, provenance }`.
+`context` supplies the canonical control `preferences`, typed `essentials`, `slider`, sourced `knownFacts`, explicit
+read-only fact `permissions`, `practicalQuestions`, unconfirmed label and assumption provenance. It contains no scoring
+tuning. `initial = { brief, briefVersion, draftVersion, consent: { search, hold } }` is directly consumable by the
+DOM-free controller. Matching persisted drafts take precedence; otherwise a current approved brief is projected to
+editable fields, or a new employee receives the labelled unconfirmed policy defaults. A retained draft consumed by
+confirmation can project the semantically equal approved content while retaining its actual draft version. A different
+stale draft requires refresh/review. Missing approved/draft versions are zero, while provenance uses null for an absent
+approved base. Known account/current-contract/driver/provider facts retain their source/version and cannot be written
+through the brief. Consent is read independently from the approved brief and never inferred from opening or previewing.
+
+The single canonical `brief.editor.v1` assumption owns preference labels, initial positions/importance, the unconfirmed
+label and practical question mappings. Existing recommendation definitions, slider bounds and lifecycle charging enum
+remain authoritative. Its initial control values are draft inputs, not approved instructions. Explicit no uses the
+registered zero numeric minimum, empty equipment `includes` list, or charging `not-ready`; unknown remains null with
+`needs-confirmation`. Empty `includes` means no requested equipment and adds no employee equipment gate, while separate
+provider requirements remain in force. Charging yes exposes the canonical supported home/work/either choice.
+
+`POST /api/gcsp/brief/preview` accepts only `{ kind: 'unsaved-draft', baseBriefVersion, draftVersion, brief }`, with the
+FUCQ-91 editable brief fields and current saved versions. It rejects browser facts, identity/context, money and other
+authority. These new routes use strict authority rejection, unlike the explicitly ignoring FUCQ-91 routes above.
+Both use the existing employee/current-run/Origin/shared-access/no-store boundary. Stale saved versions return the
+typed refresh outcome and never overwrite edits. The service checks role and saved versions again after evaluation.
+
+The trusted in-process `EmployeeRecommendationService.previewUnsaved(context, { brief, baseBriefVersion, baseDraftVersion })`
+shares the real complete-candidate evaluator. It does not enter the public approved recommendation route or invent a
+positive approved brief version. Successful top-level and candidate `preview = { kind: 'unsaved-draft', approved: false,
+baseBriefVersion, baseDraftVersion }` labels accompany actual base/null brief provenance. Employee draft intent is
+evaluated transiently; untouched policy-source preference entries remain unconfirmed and original input states are retained as evidence.
+The existing shared preference source can provisionally carry a displayed default axis after the other axis is edited;
+this calculation does not assert independent-axis review or durable confirmation.
+Only the employee charging answer overlays its corresponding source fact with explicit preview provenance. Provider
+essential, driver, eligibility, allowance, required-by, availability and complete-stock gates retain their authority.
+Outcome states, exact candidate decisions, reasons/trade-offs and all source/policy/clock versions follow FUCQ-29.
+The approved public recommendation route still requires a positive version and excludes browser charging essentials.
+
 ## Exact stock, holds and offers
 
 `orderUuid` is the exact-stock UUID v4 and the foreign key for claims, holds, offers and allocations. `orderNumber` is a unique **7-digit string per run**, retaining leading zeros; `wholesalerOrderId` is an 8-digit integer. `configurationId` identifies immutable configuration facts and is never an exclusive-car key. Two cars can share it. VIN is attached only to delivered/current cars, never required for stock browsing, matching or holding (Q13).
@@ -200,6 +244,7 @@ Key names use lower camel-case dotted namespaces; a suffix states a dimensional 
 | `supply.leadTimeDays` | `56` calendar days | Assumed eight-week production-to-release planning input; not a BMW delivery promise (round-2). |
 | `brief.slider.minimum` | `0` integer slider units | Assumed `brief.slider.scale`; shared position and importance scale. |
 | `brief.slider.maximum` | `100` integer slider units | Assumed `brief.slider.scale`; dimensions declare categorical alternatives where required. |
+| `brief.editor.v1` | Editor presentation/input configuration | Assumed labelled draft control defaults and practical yes/no/unknown mappings; consumed through PolicyService, with no scoring tuning or permission grant. |
 | `stock.configuration.modelCodeField` | `vgModelCode` field name | Assumed use of target knowledge-base format; AG/VG discrepancy remains open (Q13 round-3 and HLD). |
 | `stock.configuration.codeSeparator` | `,` character | Assumed target detail, supported by public configurator shape (HLD follow-up). |
 | `stock.configuration.includePaintAndUpholstery` | `true` boolean | Assumed target detail, supported by configurator; every factory option included, dealer accessories excluded. |
@@ -241,8 +286,9 @@ All mutable rows also carry `version`, `createdAt` and `updatedAt`; immutable sn
 | `policy_assumptions` | PK `(runId, policyVersion, key)` | Typed values/units/status/basis/source/date; FUCQ-83. |
 | `identity_sessions` | PK `(runId, sessionIdHash)` | Server-issued acting principal/session expiry; FUCQ-84, no raw session credential. |
 | `tick_runs` | PK `(runId, tickId)` | Event/command ID, target clock, ordered handler IDs, outcomes; FUCQ-85. |
+| `renewal_cases` | PK `(runId, caseId)`; FK employee; one active `(runId, employeeId, renewalId)` | Owned renewal-risk case, reason/trigger, next action, due time, remedy and dated actor history; FUCQ-112, additive `0003_renewal_cases.sql`. |
 
-`priceEntryId` is a stable seed-row ID under `contract.storageVocabulary.v1`; parent price-plan headers and entries may be normalised further without changing `PolicyService`. Greg/presenter principals are configured roles in the per-run identity data, not privileges obtained by editing an employee ID. Cases, supply requests/acknowledgements, lifecycle and learning tables are later additive extensions owned by their stories; the initial snapshot tables do not implement those behaviours.
+`priceEntryId` is a stable seed-row ID under `contract.storageVocabulary.v1`; parent price-plan headers and entries may be normalised further without changing `PolicyService`. Greg/presenter principals are configured roles in the per-run identity data, not privileges obtained by editing an employee ID. Supply requests/acknowledgements, lifecycle and learning tables are later additive extensions owned by their stories; the initial snapshot tables do not implement those behaviours.
 
 At database level enforce the active car constraint across `active`, `claim-pending`, `release-pending` and `selection-pending`, not just UI-active holds. Terminal claims release that uniqueness only after confirmed release/failure, or become an allocated stock exclusion. Hold + offer + outbox commits as one SQL transaction. A conversion to allocation and confirmed selection/decision likewise commits once; failure rolls back all local rows. An external request is not inside that SQL guarantee: persist pending intent/idempotency first and reconcile its result before finalisation. The memory double must reproduce rollback, uniqueness, stale version, idempotency and run isolation rather than serial test-only happy paths.
 
@@ -332,7 +378,7 @@ Trusted backend setup calls `createPresenterSession(commandId)` and delivers its
 
 The acting cookie has only the selected person's identity. `Context.roles` always contains only that person's roles: acting as Paula cannot publish policy, request Greg's order or invoke presenter reset/ticks. Switching additionally resolves the separate `gcsp_presenter` cookie with `purpose: 'presenter-control'`; an employee acting cookie alone cannot switch or acquire Greg's powers by changing a principal ID. Presenter control remains available while an employee is selected, without adding presenter permissions to their acting context. Frozen contexts are adapter-owned, and copying browser JSON cannot forge an accepted context. All guards recheck the current run and server expiry.
 
-`buildServer({ gcspIdentity, gcspRoutes })` mounts the shared context boundary for `/api/gcsp` and every `/api/gcsp/*` route after the existing `DEMO_ACCESS_KEY` / `isAuthorized` gate. Missing adapter configuration returns `unavailable`; there is no implicit principal even when local shared-key gating is disabled. `GET /api/gcsp/context` reads the safe context; `POST /api/gcsp/session/switch` accepts only `{ principalId, commandId }`, requires a presenter-controlled session and returns the new context with its credential only in `Set-Cookie`. These responses are `Cache-Control: no-store`. Browser context fields in query/body are rejected, identity headers are ignored, and URL session/token inputs are rejected. GCSP credentialed CORS accepts only exact frontend origins in trusted `gcspAllowedOrigins` or comma-separated backend `GCSP_ALLOWED_ORIGINS`; no wildcard or URL path is accepted. Unsafe GCSP methods additionally require a present, exactly allowed Origin before any command runs, including when the local shared-key gate is disabled; disallowed, `null` and missing command origins fail closed. Originless reads remain available to trusted server/native clients. This is server-side CSRF protection, not just a browser response-read restriction. Configure the actual frontend origin and send browser requests with `credentials: 'include'` plus the existing access-key header when enabled. GCSP OPTIONS performs only the origin/preflight check; other GCSP requests still pass the shared gate before session resolution. Existing retail routes, health and retail OPTIONS retain their contracts.
+`buildServer({ gcspIdentity, gcspRoutes })` mounts the shared context boundary for context-bound GCSP routes after the existing `DEMO_ACCESS_KEY` / `isAuthorized` gate. Missing adapter configuration returns `unavailable`; there is no implicit principal even when local shared-key gating is disabled. `GET /api/gcsp/context` reads the safe context; `POST /api/gcsp/session/switch` accepts only `{ principalId, commandId }`, requires a presenter-controlled session and returns the new context with its credential only in `Set-Cookie`. These responses are `Cache-Control: no-store`. Browser context fields in query/body are rejected, identity headers are ignored, and URL session/token inputs are rejected. GCSP credentialed CORS accepts only exact frontend origins in trusted `gcspAllowedOrigins` or comma-separated backend `GCSP_ALLOWED_ORIGINS`; no wildcard or URL path is accepted. Unsafe GCSP methods additionally require a present, exactly allowed Origin before any command runs, including when the local shared-key gate is disabled; disallowed, `null` and missing command origins fail closed. Originless reads remain available to trusted server/native clients. This is server-side CSRF protection, not just a browser response-read restriction. Configure the actual frontend origin and send browser requests with `credentials: 'include'` plus the existing access-key header when enabled. GCSP OPTIONS performs only the origin/preflight check; other GCSP requests still pass the shared gate before session resolution. Existing retail routes, health and retail OPTIONS retain their contracts.
 
 Registered consumers use `{ method, path, role?, resource?, action?, handle }`; `handle({ context, body, searchParams, identity })` receives the same server-resolved context after any declared role/resource guard. `resource` returns a run-bound repository reference; the adapter reads persisted ownership, permits only that employee's brief/hold/offer and refuses another employee or run without returning its details. Resource command references retain explicit run identity so an old object cannot silently target a new run. Operation stories register Greg (`role: 'greg'`) or reset/tick (`role: 'presenter'`) guards when implementing those operations; FUCQ-84 tests these boundaries with inert probe handlers and implements none of their operations.
 
@@ -377,6 +423,55 @@ Every endpoint uses the shared access gate, exact-Origin/CSRF checks, no-store r
 
 Domain time is only `clockInstant`/`clockVersion` from this port. Identity session expiry uses its existing injected wall-clock security authority (`identity.session.clock`), which a presenter cannot extend by slowing/resetting domain time. Repository `createdAt`/`updatedAt` and deployment migration timestamps remain storage/transport metadata, not expiry, policy-effective or employee-evaluation time. Timestamp construction from supplied instants is not a second time source. The backend fixture `server/test/fixtures/gcsp-clock-outcomes.json` and `gcsp-clock-reset.test.js` record actual read/advance/tick/reset/stale shapes, durable retry, concurrent/reset rollback and old offer/decision/job refusals. No screen or component changes; the supplied shell/Used Cars visual references remain binding for FUCQ-75's later controls.
 
+### VehicleEvidenceLookup · FUCQ-55
+
+Source checkpoint, 5 November 2026: this additive contract and server composition are authored. The exact tiny FUCQ-54 candidate is packaged as a selected local store under a separately admitted offline-publisher chunk; its [receipt](evidence/fucq55/packaged-reference.json) pins the two configurations/one current-car VIN, selection and provenance. Route tests, installs and integrated validation remain held. See [the lookup contract](vehicle-evidence-lookup.md) for detailed fields, recovery and planned checks. No passing-route or complete-story claim is made at this checkpoint.
+
+`createVehicleEvidenceLookup({ registry, repository }).resolve({ kind, id, expected? }, { context? })` is a read-only same-process port. The existing FUCQ-54 immutable registry resolves `configuration` and delivered/current-car `vin`; the existing TransactionRepository resolves exact `stock` by UUIDv4 `orderUuid` in trusted current-run context, then the registry supplies its immutable configuration facts. `orderNumber` is display-only. The row's current run, UUID, configuration, snapshot and digest must agree; stock returns no invented VIN. Reset never regenerates the immutable corpus or delivered/current VIN associations.
+
+The HTTP wrapper is `GET /api/gcsp/vehicle-evidence/{configurations|stock|vins}/:id`. Configuration IDs are canonical standard padded Base64 of `vgModelCode:UPPERCASE,SORTED,CODES`; the raw route is split before one segment is URL-decoded. Lower-case, unsorted, duplicate or unpadded forms are invalid, not aliases. Stock UUIDs are canonical lower-case v4 strings. Only VIN inputs receive outer trim and ASCII uppercase; exactly 17 permitted characters are required. Unknown VINs acquire no inferred US profile/checksum/year rule. Trusted in-process `expected` constraints can pin configuration, market, body, profile or snapshot; the browser cannot set them.
+
+Envelope `contractVersion: 1.0.0`, `schemaVersion: 1`, provider `local-vehicle-evidence`: `complete`/`partial` map to HTTP 200; `invalid-input`, `not-found`, `source-unavailable`, `unsupported` and `identity-mismatch` map to 400, 404, 503, 422 and 409. Requested/resolved identity and dataset/origin/version provenance remain separate from source requested/resolved catalogue context. Description and technical evidence retain per-field unknowns, definition/units, observed/catalogue versus physical dates, selected/available/verified-fitted distinctions and synthetic/representative-image labels. A catalogue cannot establish physical fitting; absent images stay unknown. Errors carry safe actionable messages without reflecting arbitrary identifiers or provider exceptions.
+
+`buildServer({ gcspVehicleEvidence: { lookup, resolveContext }, gcspIdentity })` wraps the same port behind the existing `X-Access-Key` shared gate. Configuration/VIN evidence reads require no invented acting principal; stock additionally resolves the existing server-owned session or injected trusted current-run context. Explicit configured-origin/no-store boundaries apply. The default local read wrapper accepts an operator-configured root and repository; requests expose no source selector, writer, generator or live-provider fallback. `npm run server:gcsp-offline` uses the same backend entry, suppressing unrelated live stock/dealer/geocode/colour startup warmers. Ordinary entry behavior remains compatible. No new policy key, inventory, database, dependency or service is introduced.
+
+FUCQ-57 adds `lookup.classifyRequest(request, { context })` and independent registry `classifyConfiguration(configurationId)` without changing the lookup envelope. Configured FUCQ-56 consumers require this server-owned classification before every allowed offline-provider attempt and recheck successful immutable configuration/vehicle bindings afterward. VIN/configuration history is read from the persisted publication inventory; stock uses the whole validated FUCQ-53 inventory snapshot, revision/digest and exact current-run stock UUID. Missing/corrupt authority fails unavailable, stale/non-stock identity fails mismatch, and a closed available-corpus miss never becomes real-VIN permission. Only server-selected `lookup`/`alternate-offline` providers exist; alternate construction supplies `identityLookup` explicitly. FUCQ-43's existing independent real-lookup guard remains required before any future key/content/decoder boundary. The [offline proof and run instructions](synthetic-vin-service.md#fucq-57-offline-routing-and-five-wmi-proof) document the bounded five-WMI evidence, separate actual HTTP parity and reset/history protections; this adds no screen, live integration or policy key.
+
+## Captured notifications · FUCQ-93
+
+FUCQ-93 adds the [captured outbox contract](captured-outbox.md): `NotificationDispatcher` consumes committed jobs through the default `CapturedTransport`, storing the fictional rendered message under the existing `notification_outbox.outcome.message`. Trusted `buildServer` composition starts `gcspNotify` before clock startup; its `captured-outbox` handler uses the existing `outbox-dispatch` tick stage. Repository `afterCommit(observer)` runs outside the committed provider transaction, isolates observer failures and excludes notification bookkeeping from recursive drains. Reset atomically marks prior-run unsent jobs `stale`; sent captured history remains readable. The single policy key `notify.delivery.v1` controls attempt budget and exponential demo-clock backoff. No stock, hold, offer or allocation/priority state is changed by delivery, and no real mail, token producer or presenter viewer is supplied here.
+
+FUCQ-97 adds the presenter-only route `GET /api/gcsp/presenter/outbox` (`createOutboxRoutes`, composed as `gcspOutbox: { repository }`) and the `<gcsp-outbox>` viewer; see [presenter-outbox-contract.md](presenter-outbox-contract.md).
+
+## Owned renewal-risk cases · FUCQ-112
+
+`createRenewalCaseService({ repository, policy, clock, identity })` supplies `readHelp(context)`, `readOwn(context, { caseId? })`, `requestHelp(context, { commandId, reason })`, `list(context)`, `update(context, command)` and `start()`. Help and case reads are side-effect free. Employee methods require the trusted employee context; Greg/presenter may list and update the current run as the scheme-team owner. A request opens one active case for the actual employee renewal; another request appends its reason/history to that case. Command replay returns its original outcome. Missing renewal identity returns actionable `renewal-context-required`; an unknown actual contract end remains `renewalDeadline: null, renewalDeadlineState: needs-confirmation` and cannot invent a deadline trigger or an extension date.
+
+The additive `renewal_cases` row contains `{ caseId, runId, employeeId, renewalId, owner: { role, name }, status, reason, trigger, nextAction, dueAt, openedAt, lastUpdatedAt, renewalDeadline, renewalDeadlineState, policyVersion, history, remedy, fictional }` plus repository metadata. History records the DemoClock instant, actor ID/role, status, reason, trigger where applicable, next action, due time and remedy. SQL migration `0003_renewal_cases.sql` and the memory contract enforce scoped uniqueness for active `open`, `in-progress` and `remedy-proposed` cases. `0002` remains reserved for policy tables. Owner updates require `{ commandId, caseId, expectedVersion, status, reason, nextAction, dueAt, remedy? }`; dueAt is a future UTC DemoClock instant. Valid moves are open → in-progress/closed; in-progress → remedy-proposed/resolved/closed; remedy-proposed → in-progress/resolved/closed; resolved → closed. Closed cases cannot be revived.
+
+All eight canonical keys below are dated **5 November 2026**, retain `status: assumed`, unit, basis and source through PolicyService, and are revisable demo assumptions rather than verified BMW policy. Missing or malformed policy returns unavailable without local defaults.
+
+| Key | Initial value and unit |
+|---|---|
+| `renewalCase.deadline.enabled` | true; boolean |
+| `renewalCase.deadline.withinDays` | 14; calendar days |
+| `renewalCase.lifecycle.enabled` | true; boolean |
+| `renewalCase.lifecycle.eventTypes` | approval-declined, appointment-no-show; event type keys |
+| `renewalCase.selection.eventTypes` | selection-acknowledged; event type keys |
+| `renewalCase.owner.role` | scheme-team; role |
+| `renewalCase.response.dueHours` | 24; hours, a review target rather than a service-level agreement |
+| `renewalCase.extension.permitted` | false; boolean |
+
+`start()` registers `renewal-risk-cases` in the existing `pending-reconciliation` clock stage. A presenter tick evaluates the keyed deadline/no-acknowledged-selection rule and keyed lifecycle exceptions. Existing `event_receipts` are eligible only when completed with `outcome.status = ok` and `outcome.value = { employeeId, renewalId, orderUuid, occurredAt }` matching the renewal, with a nonfuture UTC instant. Selection acknowledgement suppresses only the deadline rule. Durable `renewal-case-trigger` receipts deduplicate each source; no approval/appointment producer or unattended scheduler is introduced.
+
+Remedy types are `alternative-car` with exact `orderUuid`, `preference-relaxation` with decline ID/prior brief version/one preference path/value, `later-release` with future `releaseAt` and source, `manual-decision` with decision text, and policy-permitted `contract-extension` with `until` after the known actual contract end. Alternative cars must be currently available and unoccupied, with persisted exact candidate facts, a confirmed brief and the existing FUCQ-29 eligibility, points, essential and timing gates. Unknown charging remains unknown. A preference proposal changes no brief. Resolution verifies the actual persisted FUCQ-91 `postDeclineChange`, matching decline, prior version, path/value and employee confirmation, while preserving all essentials; browser or scheme-team confirmation fields cannot approve it. A case never changes allocation inputs, tie-breaks, holds, eligibility or allowance, and gives no recovery priority.
+
+Every opening, repeat request and owner update writes its `renewal-case-update` version-1 outbox job in the same repository transaction; outbox failure rolls back the case/history. The stable key `case:<caseId>:update:<caseVersion>` and committed `payload.caseUpdate` snapshot feed an isolated escaped captured renderer. Existing transport retry, acknowledgement and reset-stale semantics remain authoritative. Notification delivery grants no case or allocation authority.
+
+`buildServer({ gcspIdentity, gcspClock, gcspCases, gcspNotify, gcspAllowedOrigins })` composes `GET /api/gcsp/help`, `GET/POST /api/gcsp/cases`, `GET /api/gcsp/scheme-team/cases` and `POST /api/gcsp/scheme-team/cases/update`. Only the own-case GET accepts `caseId`; other query selectors are invalid. These routes discard top-level browser identity/run overrides and retain shared gate, Origin/CSRF, no-store, trusted context and current-run guards. Startup registers the case handler before notification/clock reconciliation. Missing composition is unavailable.
+
+The asserted response projection is `server/test/fixtures/gcsp-renewal-case-outcomes.json`: ownership, next action, UTC calendar deadline versus DemoClock instants, explicit unknown dates, fictional facts, all dated assumptions and actionable refusal states. This backend-only story adds no screen or component; screenshots are inapplicable. Future help/case screens remain bound by [experience quality](experience-quality.md), [the agreed visual reference](screens/README.md) and `COMPONENTS.md`. Memory contracts and SQL-driver doubles provide local evidence; native PostgreSQL, live lifecycle producers, real mail and canonical draw.io rendering remain unverified.
+
 ## ManualContextService · FUCQ-65
 
 `server/gcsp/manual-context/index.js` exposes `readAccount(context)`, `readDraft(context)`, `saveDraft(context, { commandId, expectedDraftVersion, expectedContextVersion, choices })` and `browseStock(context)`. Dependencies are the existing repository, PolicyService, DemoClock, DemoIdentityAdapter and five replaceable `read(context, { runId, asOf, policyVersion })` ports: employee/contract, driver, scheme/terms, collection rules and released stock. Results retain the shared `status` discriminant. Trusted identity supplies employee/company/grade/scheme/slot/run; client inputs grant no authority.
@@ -394,6 +489,109 @@ The additive assumed key `manual.context.v1` owns synthetic driver/contract/loca
 `ManualClaimsService` consumes that ManualContextService, the same repository, PolicyService, identity and DemoClock, plus an explicitly injected local-synthetic or remote-shaped stock-action adapter. `buildServer({ gcspManualClaims, ... })` wraps account/draft/stock access with reconciliation and exposes GET claim/quote and POST claim/review/release. Browsing supplies exact stock/draft/context/terms preconditions without reserving. Explicit claims revalidate current employee/driver/entitlement and policy gates, then atomically pin the immutable quote, paired hold/claim, stock exclusion and current-claim receipt. Existing JSON and `event_receipts` carry the draft/current/command conventions; no schema, migration, repository or active policy source is added. Draft writes reject an occupying/allocated claim transactionally; a storage-only entitlement revision does not change the semantic draft context.
 
 The service pins the existing preview/order-review keys, progresses review once, releases before replacement and reconciles expiry on reads/commands (including retries), startup and handler `manual-claim-expiry` at `manual-expiry`. Remote intent is committed before effects; unknown acknowledgements remain pending and occupying. Only matching run/order/operation authoritative absence permits resending that operation ID. Shared HTTP maps persisted domain `pending` to 202. Current claim/quote reads retain employee/slot/run ownership and reject a concurrent torn projection. Backend-only `allocate` atomically allocates the same order/entitlement; FUCQ-71/72 still own declarations and public submission/handoff. The [complete payload, adapter and trial contract](manual-claims-contract.md) records compatibility and response fixtures. Memory/driver-double evidence does not satisfy the mandatory configured PostgreSQL persistence/process/rollback/concurrency gate; FUCQ-66 remains blocked until that proof runs. Screens and canonical diagram rendering/status remain unverified.
+## Comparison inputs · FUCQ-133
+
+`server/gcsp/comparison/generator.js` separates an explicit asynchronous read from pure generation.
+`loadComparisonPolicy({ policyService, policyRead, corpus? })` resolves the active or requested retained version once,
+then pins every assumption and exact grade-allowance read to it. The returned snapshot is deeply immutable.
+`generateComparisonInputs(seed, snapshot, { overlay? })` performs no provider, repository, network, clock or global
+random read. SHA-256 draws are addressed by seed, employee/car index and field; the generator version identifies
+that algorithm. An explicit seed may be a nonempty string or safe integer; `comparison.seeds` supplies the default list.
+There is no automatic job or route and no write to the live run, policy or corpus.
+
+All entries below are in the canonical `seed-v1.json` assumptions table and read through PolicyService. Each is
+`assumed`, with value, unit, basis, source/date (5 November 2026), effective date and policy version. They describe
+fictional scenario inputs, not BMW cohort measurements or a verified operating policy.
+
+| Key | Unit / purpose |
+|---|---|
+| `comparison.cohortSize` | Employees; requested default 1,000. |
+| `comparison.seeds` | Declared seed list; default comparison-a/b/c, without selecting a winning run. |
+| `comparison.startsAt` | Fixed UTC scenario origin, supplied rather than read from a clock. |
+| `comparison.horizonDays` | Days in the synthetic release/renewal window. |
+| `comparison.gradeDistribution` | Weighted exact company/scheme/grade contexts. Numeric monthly allowances come from canonical `getAllowance`, without a second copied allowance table. |
+| `comparison.pointsAllowanceMultiplier` | Baseline 1; explicit alternative-points multiplier over those canonical allowances. |
+| `comparison.renewalDays` | Inclusive uniform minimum/maximum day offsets within the horizon. |
+| `comparison.needs.v1` | Weighted underlying essential templates and separate registered preference-value distributions. |
+| `comparison.importanceDistribution` | Independent weighted importance distribution on the shared brief scale. |
+| `comparison.briefNoise.v1` | Probability of an accurate stated preference/value-importance pair; unsupported alternatives are never invented. Essentials are preserved. |
+| `comparison.accessGroups` | Weighted fictional group IDs, each with inclusive uniform access/response bounds in seconds. |
+| `comparison.buddyUptake` | Participation probability, applied independently of access group and needs. |
+| `comparison.carsPerEmployee` | Whole-cohort stock density, rounded once. Zero stock is permitted. |
+| `comparison.modelLineMix` | Weighted mix over explicitly available configuration model lines. |
+| `comparison.releaseCadence` | First release day, interval days and batch size; the final release must fit the horizon. |
+| `comparison.configurationSet.v1` | Reviewed limited fixtures or pinned corpus references, with dataset/version, basis and review date. |
+| `comparison.maximumGeneratedRows` | Bounded employees-plus-stock materialisation limit, checked before generation. |
+
+The reader also retains canonical allowance provenance, `employee.recommendation.v1`, `brief.slider.minimum` /
+`maximum`, the four `stock.configuration.*` signature rules and `hold.buddy.durationSeconds`. These are existing
+shared contracts, not duplicate comparison defaults. A missing key/allowance, unsupported value, mixed version or
+unavailable provider throws a safe `ComparisonInputError` with `code` and `key`; there is no fallback to local values.
+
+A fixture configuration has a target Base64 `configurationId` matching its explicit VG model code, colon and sorted
+factory-code list under Q13. The initial three **structural synthetic fixtures** use clearly fictional CMP/REF codes
+and limited source model labels (`G20 Saloon|320i`, `G21 Touring|320i`, `G61 i5|i5 40`). They have no observed factory
+options, complete specification or constructibility/full-scheme-coverage claim. This is the permitted temporary
+reviewed fixture route, not FUCQ-77 corpus publication or FUCQ-78 live stock. Their source review checks the retained
+Q13 rules and the existing allocator's UUID-v4 shape; executable signature/reader evidence remains a required check.
+
+For `kind: corpus`, the key supplies `datasetId`, `version`, `manifestDigest` and exact model-line/configuration /
+snapshot references. The reader calls the existing `getConfiguration(id)` port and requires each record and active
+manifest identity to match. Missing/changed/unavailable corpus records fail explicitly; they never silently switch
+to fixtures. It snapshots immutable configuration/source fields, without publishing or selecting a corpus.
+
+Output is `{ employees, stock, releaseSchedule, manifest }`, deeply immutable. Each employee has an opaque fictional
+ID, exact scheme/grade context, monthly points/unit, renewal instant, `underlyingNeeds` (essential values and
+preferences with independent importance), `statedBrief`, access group/delays and buddy participation. The stated
+brief uses the existing read-only brief schema v1 and labels confirmed values `synthetic-stated-brief`; it does not
+claim real employee confirmation or create an identity/session. Access and response delays are seconds relative to
+later route events. Each car has a deterministic synthetic UUID-v4 `orderUuid`, `configurationId`, snapshot and
+model-line reference (`eligibilityModelKey`), immutable descriptive configuration and explicit synthetic provenance.
+It has no VIN. A release has `{ releaseId, at, orderUuids }`; each generated car occurs in exactly one release.
+
+An overlay is an explicit map of supported comparison keys to replacement **values**, plus the existing buddy-hold
+duration for a later sweep. Grade-context and configuration-source replacement require preparing a new canonical
+snapshot; overlays cannot replace provenance or introduce configuration identities. Values are validated against
+the same units/types/ranges before any rows are generated. No publish method is called. The manifest retains the
+actual overlay and its canonical SHA-256 `overlayHash`, so object-key ordering does not change its identity. A hold
+sweep changes recorded assumptions without changing the shared cohort/stock/releases.
+
+The manifest carries `seed`, default `seeds`, `policyVersion`, `generatorVersion`, baseline `policyHash`,
+`configurationHash`/source identity, overlay/hash, origin/horizon, counts and `inputHash`. It retains every consumed
+assumption with provenance and the grade allowance rows; overlaid rows carry `baselineValue` and `overlay: true`.
+This is enough to inspect/repeat the input choice without inferring winners. It always states that the cohort and
+behaviour are fictional and calculated fit is not observed satisfaction. The backend shape fixture is
+`server/test/fixtures/gcsp-comparison-input-shapes.json`. The complete representative output and manifest are
+`server/test/fixtures/gcsp-comparison-representative.json`: three fictional employees/cars and one release, with
+the small cohort/density overlay explicitly retained. Its regression reproduces the complete fixture from the
+pinned policy and recorded seed/overlay. Later harness/panel consumers preserve these labels and follow the
+experience contract, shell/palette reference and COMPONENTS.md. No screen is introduced by this module.
+
+## Named scenario catalogue and preparation · FUCQ-125
+
+`createScenarioService({ repository, policy, clock, identity })` uses the opened application repository and the actual `PolicyService`, `DemoClock` and `DemoIdentityAdapter` instances. `readCatalogue(context)`, `readState(context)` and `reset(context, command)` are presenter-only. No schema, policy seed or runtime dependency is added. The catalogue is `gcsp-scenario-catalogue-v1`; its first six stable IDs are `main-successful-journey`, `no-suitable-match`, `decline-then-change`, `offer-expires`, `data-unavailable`, and `uncertain-handoff`. FUCQ-109 and FUCQ-127–131 own their business replays. A seventh `gcsp-clock-scenario-v1` entry is explicitly fictional clock/reset mechanics support, never evidence of those six journeys or the real corpus.
+
+Catalogue result: `{ catalogueVersion, policyVersion, scenarios: [{ scenarioId, name, ownerStory, kind, scenarioVersion, fixtureVersion, epics, stories, requiredCapabilities, principalIds, principals, clockStart, namedTimes, steps, variants, inputs, inputProvenance, availability: { available, outcome, missingCapabilities } }] }`. `principals` resolve IDs, roles and display names from FUCQ-84's `identity.demo.principals` through PolicyService; there is no duplicate people table. The current run's pinned policy and `clock.scenario.v1` supply start/cue instants and the canonical mechanics fixture. Every entry includes finite versioned briefs/stock-tranche/pending-operation input requests under `server/gcsp/fixtures/scenarios/catalogue-v1.js`. Those values are fictional input choices (including the no-match seating requirement), not runtime policy defaults or winners. Durations, allocation limits, policy rules and all runtime assumptions stay in the canonical PolicyService seed.
+
+`prepareScenarioFixture({ scenarioId, policy, read })` is the trusted finite source preparation port. It resolves the versioned definition and canonical policy/principals, validates their coherence, and returns an immutable, run-bound, policy-instance-bound prepared selection only for an implemented loader. The concrete current loader delegates its actual principal/stock seeding to FUCQ-85's existing `buildScenarioSeed`, whole-inventory allocator and repository. The six business inputs deliberately refuse while required release, allocation, offer, activity, decision or ordering services are unavailable to the source; this is not a successfully loaded business start state. No caller-supplied function, label, arbitrary rows, availability flag or capability list can enable a loader. Owning stories integrate the actual service preparation and its replay evidence before enabling their entry. In particular, existing `resetRun` allows only employee/slot/stock seed rows: a later prepared brief/offer/pending start state needs a reviewed additive atomic seed boundary, never commands after a half-completed reset or rows pretending an offer was calculated. Decline, expiry and uncertain-handoff preconditions must come from the real services, not a prescribed recipient or outcome.
+
+Named reset command: `{ commandId, expectedRunId, expectedRunVersion, scenarioId, scenarioVersion, fixtureVersion, policyVersion }`, using read-back values. Shape, principal, run and exact version failures remain distinct (`invalid`, `forbidden`, `stale-run`, `stale-version`); they are checked before missing-capability refusal. A missing journey returns HTTP 503 `{ status: unavailable, code: scenario-not-available-yet, reason: not available yet, retryable: false, scenarioId, missingCapabilities, contractVersion }` without changing the clock, rows, current run or cookies. Unknown ID returns `not-found`. Policy/source failures retain their own outcome and are never misreported as a valid empty journey.
+
+A prepared selection is an optional trusted third argument to existing `DemoClock.reset`; old two-argument callers and their receipts retain their meaning. The clock verifies the selection's private source brand, same PolicyService instance, run and versions, includes its complete source/policy/scenario/fixture/input identity in the existing command digest, builds inputs through the existing seed path, then calls the one existing `repository.resetRun`. No second reset transaction or allocator exists. Success is the existing `{ previousRunId, runId, now, versions }`; `versions.scenarioSelection` retains the safe selected identity. Previous commands, decisions and outbox jobs stay stale. Old presenter sessions can only retrieve their exact original reset receipt; changed selection or command cannot reset history. Full current-run/CAS/concurrency/idempotency and synthetic-only restrictions remain FUCQ-85's authority.
+
+`readState` returns existing clock state plus `catalogueVersion` and `currentScenario: { scenarioId, name, scenarioVersion, fixtureVersion, policyVersion } | null`; it derives selection from persisted run metadata (or recognises the existing canonical mechanics run). It never guesses a missing/unrecognised selection. The presenter controls consume this state after reset and keep version, unavailable, pending and stale messages visible.
+
+`buildServer({ gcspIdentity, gcspClock, gcspScenarios, gcspAllowedOrigins })` adds `GET /api/gcsp/presenter/scenarios`, `GET /api/gcsp/presenter/scenarios/current` and `POST /api/gcsp/presenter/scenarios/reset`. Query selectors are unsupported. Existing shared access, exact Origin/CSRF, no-store, server context and separate presenter-cookie guards apply. Named reset uses the extracted FUCQ-85 cookie renewal helper, including its historical receipt and post-commit session-issuance-failure behaviour. JSON never contains credentials or the private identity-inventory snapshot. Missing service composition is unavailable. Startup notification/clock reconciliation and other routes retain their existing responsibilities.
+
+The checked response projection is `server/gcsp/fixtures/scenarios/presentation-v1.json`, asserted against actual computed responses by `server/test/gcsp-scenarios.test.js`. This backend-only story adds no screen or UI component, so new screenshots are unnecessary. Later presenter controls follow [the experience contract](experience-quality.md), [GCSP shell/Used Cars reference](screens/README.md) and `COMPONENTS.md`. [Per-scenario planned click-throughs and dated observations](manual-acceptance-scenarios.md#named-scenario-preparation--fucq-125) clearly separate automated preparation/refusal from unimplemented manual replay. PostgreSQL/provider/live-mail execution remains separately gated.
+
+## Greg saved-demand projection · FUCQ-99
+
+`createGregDemandService({ repository, policy, clock, identity }).readDemand(context)` and `buildServer({ gcspIdentity, gcspClock, gcspGreg, gcspAllowedOrigins })` expose the trusted Greg-only `GET /api/gcsp/greg/demand`. No query selectors are supported; shared gate/origin/session/no-store and current-run guards remain authoritative. Reads derive the latest confirmed saved briefs, full-candidate FUCQ-29 unmet gates (including unknowns), actual holds/offers/typed decisions and released/held/allocated stock, with brief/policy/clock versions and an opaque projection version. A second complete repository read and clock/identity recheck refuse a mixed concurrent view without adding a snapshot API, tables or migrations. No write, forecast, retail display sample, individual identity/history or score-as-satisfaction enters this projection.
+
+Each aggregate returns `{ count, versions: { brief: [], policy: [] } }`. The assumed canonical `greg.demand.smallCountThreshold = 5` (unit count, 5 November 2026, basis in `greg-demand.md`) is read through PolicyService; smaller counts, including zero, return only `{ kind: band, fewerThan: N, label: fewer than N }`, while counts at/above it return `{ kind: exact, value, label }`. Missing/invalid policy is unavailable. Dashboard consumers render bands without deriving a hidden number and distinguish expressed demand, overlapping gates/outcomes, actual supply and future predictions. This demo suppression rule is not verified BMW policy or formal disclosure protection.
+
+The existing `employee.recommendation.v1` registry additively permits optional `essentials.modelLine = { operator: equals, type: string, unit: null }`. Existing generic BriefService persistence/validation and FUCQ-29 essential gates apply unchanged; no older brief requires this field. Unspecified model choices are explicit, never inferred from current cars or rankings. The existing declined-car exclusion key remains authority; pause/resume and provenance-only or equipment-order changes do not reopen an unchanged declined exact car. Typed decline grouping excludes reason free text. The [full dashboard response contract and repeatable scenarios](greg-demand.md) record input shapes, privacy/version/empty/unavailable/refresh states and upstream producer boundaries. Backend-only: no new screen/component or rendered screenshot claim; experience-quality and agreed shell/Used Cars body references continue to govern its future consumer.
 
 ## Ownership and extensions
 
@@ -407,6 +605,7 @@ FUCQ-53's [synthetic identity allocation contract](synthetic-identity-allocation
 | FUCQ-83 (FUCQ-79) | Additive dated policy tables, idempotent seed, PostgreSQL provider, immutable publishing/pinned reads. |
 | FUCQ-84 (FUCQ-79) | DemoIdentityAdapter, fictional principals, middleware, acting sessions, role/resource/run boundary. |
 | FUCQ-85 (FUCQ-79) | DemoClock, registry/order/replay, startup recovery entry point and synthetic reset. Handler rules belong to the registering stories. |
+| FUCQ-54/55 | Existing immutable configuration/VIN/image publication/registry and one read-only in-process/HTTP lookup; current-run stock reads reuse the TransactionRepository. No duplicate identity inventory or runtime publisher. |
 | FUCQ-66 | Manual claim/release/expiry rules, timing phases, quotes and expiry handler over FUCQ-81/82/84/85; no second repository. |
 | FUCQ-29 | Employee eligibility/affordability/essential gates and ranking, reading FUCQ-82/83; no local rule/default table. |
 | FUCQ-30 | Canonical serialisable local feedback actions and confirmed changes; questionnaire and read-only full-candidate employee draft consumers. FUCQ-91 persists through the same confirmed-change helper; FUCQ-107 adds its later offer flow. |
@@ -414,17 +613,30 @@ FUCQ-53's [synthetic identity allocation contract](synthetic-identity-allocation
 | FUCQ-91/94/95 | BriefService/versioned permission and single-change operation, employee controls and activity projection. |
 | FUCQ-92/96/100 | Release pull/replay, shared allocation/tie-break, buddy hold/offer and expiry handlers. |
 | FUCQ-93/97/98 | Outbox dispatch/capture, presenter viewer and configured real transport; mail cannot decide allocation. |
+| FUCQ-112 (FUCQ-110) | Owned renewal cases, keyed risk-trigger consumer, scheme-team updates/remedies and atomic case notifications over existing foundation ports. Help/case screens and lifecycle producers remain separately owned. |
 | FUCQ-102/105/106/107/108 | Run-bound offer access, truthful offer read/display, decisions, one confirmed change and shared ordering handoff. |
 | FUCQ-71/72; FUCQ-110 stories | Shared manual/buddy ordering adapter and post-selection target lifecycle/appointment/document states. |
 | FUCQ-99/101/103/104; FUCQ-74/75 | Greg aggregates/publish/supply consumers, forecast/plan extensions, scenarios/presenter controls over the same run/policy/time. |
 
 An implementing story adds its schema/key/method and provenance here in the same commit as the additive implementation, plus a change-log entry identifying the owner, contract version and consumer compatibility. Add fields without changing existing meaning, retain old enum readers during rollout, supply provider parity/affected-consumer evidence and update the seed once. If a reversible assumption needs refinement, record its changed key and basis; do not spread a second active default. Human questions about unverified BMW facts can be queued while a labelled synthetic assumption permits progress under the build rules.
 
+## Retail exact-listing decisions · FUCQ-23
+
+Retail `publicMatch.listings[]` additively retains the evaluator's exact `decision = { score, fit, taste, stretch, reasons, tradeOffs }`, plus the member's `name`, `line`, `plate`, `retailerName` and `distance` when known. Existing representative fields, aggregate counts/ranges/feature availability, endpoint caps, `/health` and the columnar pool contract retain their meanings. Ungrouped preview/game results attach their existing match decision to their sole member. The shared card and local refinement consume that exact decision; an older backend's unsupported sibling score/reasons are unavailable rather than reconstructed. The [focused contract, corrected R1 and repeatable trial](exact-listing-decisions.md) distinguish this correction from later evaluator extraction/parity. No GCSP lifecycle or policy keys change.
+
 ## Change log and reviewable assumptions
 
 | Version / date / owner | Change and keyed assumptions |
 |---|---|
 | 1.0.0 / 2026-11-05 / FUCQ-66 | Adds the manual claim binding, exact versioned claim/review/release/current reads, immutable quote/receipt conventions, pending 202 mapping and expiry handler on existing foundation ports. Existing keyed manual timings are pinned without another default source. No schema/migration or existing contract meaning changes. Deterministic backend fixtures/trials are recorded; required configured PostgreSQL proof remains blocked and no built/deployed or diagram-render claim is made. |
+| 1.0.0 / 2026-11-05 / FUCQ-94 | Adds canonical editor context and server-only real unsaved preview through strict employee HTTP routes, explicit draft/base provenance, independent consent and truthful empty-equipment no. No approved recommendation downgrade, writes, holds or new screen. |
+| 1.0.0 / 2026-11-05 / FUCQ-57 | Adds mandatory configured-provider identity classification and successful-result binding checks through the existing retained registry/current-run inventory, preserving the FUCQ-55 envelope and FUCQ-43 real guard. Actual five-WMI generated-store HTTP/in-process/start/reset proofs retain honest US/LHD, unknown and representative-image-contract states. No live authorisation, mutable stock/policy/retail change or new screen. |
+| 1.0.0 / 2026-11-05 / FUCQ-112 | Adds RenewalCaseService/routes, `renewal_cases` and migration `0003`, eight dated `renewalCase.*` assumptions, keyed completed-receipt trigger consumer and same-transaction captured case-update jobs. Employee-confirmed preference remedies verify FUCQ-91 history; no allocation/priority mutation, existing port meaning change or screen. |
+| 1.0.0 / 2026-11-05 / FUCQ-55 | Additive three-identity lookup/HTTP envelope and same-entry offline profile, with exact tiny selected-store packaging only. Preserves exact run/configuration/source identity, typed outcomes and presentation provenance; reuses existing registry, repository and shared gate. No new policy or storage meaning; scoped lookup/HTTP/offline checks and final23/99/125/133integrated whole suite passed (820pass,2configuredSQLskips; stampc06d774bea5a). |
+| 1.0.0 / 2026-11-05 / FUCQ-133 | Adds immutable pinned comparison-policy preparation, pure seeded fictional cohort/stock/releases, the comparison.* assumptions above, explicit what-if overlays and reproducible input manifests. Limited structural fixtures are labelled synthetic; corpus reads require exact retained identity. No runtime route, live-state write, policy publication, migration or existing contract meaning change. |
+| 1.0.0 / 2026-11-05 / FUCQ-125 | Adds finite named input catalogue/preparation, explicit unavailable business capabilities, presenter read/reset routes, trusted optional85 fixture selection and existing cookie helper reuse. No new reset/repository schema/policy defaults/dependencies. |
+| 1.0.0 / 2026-11-05 / FUCQ-99 | Adds Greg-only current-run saved-demand/actual-outcome/stock projection with per-aggregate brief/policy versions, canonical small-count banding (`greg.demand.smallCountThreshold`), optional registered model-line essential and truthful backend presentation/scenario contract. Reuses repository/identity/clock/shared gates without migrations or existing method/retail changes. |
+| 1.0.0 / 2026-11-05 / FUCQ-23 | Additive retail member decision and exact display facts; representative v1 fields and caps remain compatible. The card/refinement consume exact decisions, with truthful mixed-version fallback. No scoring retune, policy key or GCSP transaction change. |
 | 1.0.0 / 2026-11-05 / FUCQ-30 | Adds local exact/group exclusion, retail predicate, confirmed preference/essential change and reversible undo/reset actions. The shared canonical helper replaces duplicate FUCQ-91 field-change/no-op logic while retaining its public command, transaction, versioning, audit and consent semantics. Complete read-only employee decisions recompute through existing policy/ranker gates. No new policy key, durable lifecycle operation or existing contract meaning change. |
 | 1.0.0 / 2026-11-05 / FUCQ-65 | Adds ManualContextService, five read ports, guarded account/draft/stock routes and assumed `manual.context.v1`. Existing identity/time/policy/repository and typed FUCQ-29 gates remain authority. Additive JSON/receipt conventions preserve consumers. Backend presentation fixtures cover synthetic/mapped employee reads; claims/quotes/expiry, screens, live integration and diagram rendering remain separate. |
 | 1.0.0 / 2026-11-05 / FUCQ-85 | Adds repository currentRun/resetRun, persisted DemoClock/registry/startup/reset and presenter HTTP binding. Adds canonical `clock.commands.v1`, `clock.handler.order.v1`, `clock.scenario.v1`; additive inventory snapshot retains allocator provenance. Same identity authority and employee time port; no existing consumer meaning changes. Backend response fixtures and memory/SQL-driver parity; managed PostgreSQL and draw.io rendering remain unverified. |

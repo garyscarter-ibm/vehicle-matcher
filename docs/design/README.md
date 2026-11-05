@@ -6,7 +6,7 @@ FUCQ-6 extends this file with a parent overview; the existing shared recommendat
 
 The target is a **shared pure recommendation core with separate retail and employee policies and workflows**, implemented incrementally inside the existing Node backend and ES-module frontend. The [shared recommendation design](../gcsp/shared-recommendation-design.md) specifies contracts, code seams, migration and regression evidence. Its business baseline is [Paula's service blueprint](../gcsp/service-blueprint.html); the [FUCQ-8 assessment](../gcsp/engine-reuse-assessment.md) supplies source-backed findings and executable evidence.
 
-**Review update, 4 November 2026.** Gary's architecture review ([hld-review-gc.md](hld-review-gc.md)) is applied to the draw.io file on pages 00, 02, 04 to 08 and both employee pages. The PNG exports below predate that update. Re-export them from draw.io before using them.
+**Review update, 4 November 2026.** Gary's architecture review ([hld-review-gc.md](hld-review-gc.md)) is applied to the draw.io file on pages 00, 02, 04 to 08 and both employee pages. The PNG exports below predate that update. Re-export them from draw.io before using them. The pre-build pass on 5 November added the backlog's named components (DemoIdentityAdapter, DemoClock and ticks, scenario catalogue, presenter controls, offer link access, outbox viewer, lifecycle adapters) to 00, Employee transactions and 07. Those pages and the 03 overview were re-exported on 5 November; the other PNGs still predate the review update.
 
 ## Views
 

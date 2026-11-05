@@ -1,0 +1,29 @@
+{
+  "capturedDate": "2026-11-05",
+  "family": "BMWGroupTNCondensedPro-Medium",
+  "style": "normal",
+  "weight": 500,
+  "sourceDeclaration": "RIS styles-PIBQ3WXW.css @font-face; same declaration in Aftersales styles-I5NKBANU.css",
+  "files": [
+    {
+      "file": "blocks/gcsp/shell/fonts/BMWGroupTNCondensedPro-Medium.woff2",
+      "sourceUrls": [
+        "https://www.ris.bmw.com/media/bmw-group-tn-condensed-pro-medium-TKG5LGWR.woff2",
+        "https://aos.bmwgroup.com/media/bmw-group-tn-condensed-pro-medium-TKG5LGWR.woff2"
+      ],
+      "bytes": 59964,
+      "sha256": "66ecd7139a12627c60c78755cbf664cdca10df33f22a6426ec2693a38d8a5286",
+      "identicalAcrossSources": true
+    },
+    {
+      "file": "blocks/gcsp/shell/fonts/BMWGroupTNCondensedPro-Medium.woff",
+      "sourceUrls": [
+        "https://www.ris.bmw.com/media/bmw-group-tn-condensed-pro-medium-QFG3Y5CY.woff",
+        "https://aos.bmwgroup.com/media/bmw-group-tn-condensed-pro-medium-QFG3Y5CY.woff"
+      ],
+      "bytes": 86076,
+      "sha256": "1db2f9dca559860c9519307cbae5cd0bcf557f0b80b6666e580c1492e49f3aee",
+      "identicalAcrossSources": true
+    }
+  ]
+}

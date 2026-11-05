@@ -828,7 +828,11 @@ export function groupListings(ranked) {
   for (const match of ranked) {
     const k = key(match.car);
     if (!groups.has(k)) groups.set(k, { match, listings: [] });
-    groups.get(k).listings.push(match.car);
+    // Keep the evaluator's decision with its exact car. Group summaries may
+    // describe all members, but selecting one must never reuse another score.
+    const { score, fit, taste, stretch, reasons, tradeOffs } = match;
+    groups.get(k).listings.push({ ...match.car,
+      decision: { score, fit, taste, stretch, reasons, tradeOffs } });
   }
   return [...groups.values()].map(({ match, listings }) => {
     const prices = listings.map((c) => c.priceMin).filter(Number.isFinite);
@@ -891,7 +895,7 @@ export function matchCars(answers, cars, tuning = DEFAULT_TUNING) {
   };
   if (!ranked.length) {
     return {
-      matches: [], decisive: true, clusterSize: 0, tasteLead: false, searched,
+      matches: [], alternatives: [], decisive: true, clusterSize: 0, tasteLead: false, searched,
     };
   }
 

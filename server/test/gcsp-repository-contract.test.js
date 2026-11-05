@@ -279,6 +279,24 @@ export function repositoryContract(provider, factory) {
       await repository.transaction(ctx(), command(), (tx) => tx.compareAndSwap(ref('runs', {}), 1, { status: 'historical' }));
       assert.deepEqual(await repository.transaction(ctx(), stable, () => ok({ original: 2 })), before);
     }));
+    await t.test('renewal case uniqueness and notification rollback share the provider transaction', () => withRepository(async (repository) => {
+      const row = { runId: 'run-a', caseId: 'case-one', employeeId: 'employee-a', renewalId: 'renewal-a', status: 'open', history: [] };
+      const saved = await repository.transaction(ctx(), command(), (tx) => tx.insert('renewal_cases', row));
+      assert.equal(saved.status, 'ok');
+      const duplicate = await repository.transaction(ctx(), command(), (tx) => tx.insert('renewal_cases', { ...row, caseId: 'case-two' }));
+      assert.equal(duplicate.reason, 'active-renewal-case-exists');
+      const rollback = await repository.transaction(ctx(), command(), async (tx) => {
+        await tx.compareAndSwap(ref('renewal_cases', { caseId: 'case-one' }), saved.value.version, { status: 'in-progress' });
+        await tx.enqueueNotification({ jobId: 'case-update', idempotencyKey: 'case:one:update:2', inputDigest: inputDigest('case'),
+          recipientId: 'employee-a', messageKind: 'renewal-case-update', state: 'pending' });
+        return result('conflict', { reason: 'fixture-rollback' });
+      });
+      assert.equal(rollback.reason, 'fixture-rollback');
+      assert.deepEqual((await repository.read(ctx(), ref('renewal_cases', { caseId: 'case-one' }))).value, saved.value);
+      assert.equal((await repository.query(ctx(), 'notification_outbox')).value.length, 0);
+      const invalid = await repository.transaction(ctx(), command(), (tx) => tx.insert('renewal_cases', { ...row, caseId: 'invalid', status: 'invented' }));
+      assert.equal(invalid.status, 'invalid');
+    }));
     await t.test('closed provider returns UI-safe unavailable shape', () => withRepository(async (repository) => {
       await repository.close();
       assert.deepEqual(await repository.query(ctx(), 'stock'), responseFixtures.unavailable);
@@ -334,8 +352,8 @@ repositoryContract('memory', async () => {
 
 test('memory: explicit store and complete foundation vocabulary', async () => {
   assert.equal((await createMemoryRepository().open()).code, 'missing-store');
-  assert.equal(FOUNDATION_TABLES.length, 17);
-  assert.equal(Object.keys(TABLES).length, 23);
+  assert.equal(FOUNDATION_TABLES.length, 18);
+  assert.equal(Object.keys(TABLES).length, 24);
   assert.equal(inputDigest({ b: 2, a: 1 }), inputDigest({ a: 1, b: 2 }));
 });
 
@@ -392,7 +410,7 @@ function driverDouble({ state = { tables: Object.fromEntries(Object.keys(TABLES)
       if (sql.startsWith('INSERT INTO') && sql.includes('.schema_migrations')) {
         applied.push({ version: values[0], filename: values[1], checksum: values[2] }); return { rows: [] };
       }
-      if (sql.includes('CREATE TABLE "runs"')) {
+      if ((sql.includes('CREATE TABLE "runs"') || sql.includes('CREATE TABLE renewal_cases'))) {
         ddlExecutions += 1;
         if (failMigration) throw new Error('PRIVATE_DATABASE_DETAIL');
         return { rows: [] };
@@ -434,17 +452,18 @@ repositoryContract('postgresql driver double (not live SQL)', async () => {
 
 test('postgresql driver: migrations record checksums, rerun once and reject changed history', async () => {
   const driver = driverDouble();
-  assert.deepEqual((await migrationStatus(driver.pool)).value, { current: false, appliedVersions: [], pendingVersions: ['0001'] });
+  assert.deepEqual((await migrationStatus(driver.pool)).value, { current: false, appliedVersions: [], pendingVersions: ['0001', '0003'] });
   assert.equal((await migrate(driver.pool)).status, 'ok');
   assert.equal((await migrate(driver.pool)).status, 'ok');
-  assert.equal(driver.ddlExecutions(), 1);
+  assert.equal(driver.ddlExecutions(), 2);
   const migrations = await loadMigrations();
-  assert.equal(driver.ledger()[0].checksum, migrations[0].checksum);
+  assert.deepEqual(driver.ledger().map(({version, checksum}) => ({version, checksum})),
+    migrations.map(({version, checksum}) => ({version, checksum})));
   driver.ledger()[0].checksum = 'changed';
   const changed = await migrate(driver.pool);
   assert.equal(changed.reason, 'migration-history-mismatch');
   assert.equal(changed.retryable, false);
-  assert.equal(driver.ddlExecutions(), 1);
+  assert.equal(driver.ddlExecutions(), 2);
   const failed = driverDouble({ failMigration: true });
   assert.equal((await migrate(failed.pool)).status, 'unavailable');
   assert.deepEqual(failed.ledger(), []);

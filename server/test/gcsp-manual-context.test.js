@@ -63,6 +63,98 @@ async function insertCars(f, cars = [stock(11, { insuranceGroup: fact(25, 'insur
   });
 }
 const variant = (f, ports) => new ManualContextService({ ...f, ports: { ...f.ports, ...ports } });
+const intent = (f, changes = {}) => ({ mode: 'replacement', oldContractId: `current:${f.context.employeeId}`,
+  slotId: f.context.entitlementSlotId, schemeId: f.context.schemeId, ...changes });
+
+test('account inventory includes other supplied slots without granting them ordering authority', async () => {
+  const f = await setup(); const actual = (await f.ports.employeeContract.read(f.context)).value;
+  const extra = { ...actual.contracts[0], contractId: 'other-current', slotId: 'other-slot', schemeId: 'pcs-ukfs-bmw' };
+  const service = variant(f, { employeeContract: { async read() { return ok({ ...actual,
+    contracts: [...actual.contracts, extra], slots: [...actual.slots, { ...actual.slots[0], entitlementSlotId: 'other-slot', contractId: extra.contractId }] }); } } });
+  const response = await service.readAccount(f.context);
+  assert.equal(response.value.asOf, instant); assert.equal(response.value.contracts.length, 2);
+  assert.equal(response.value.slots[1].ordering.enabled, false);
+  assert.equal(response.value.slots[1].ordering.reason, 'outside-trusted-context');
+  assert.equal(response.value.actions.length, 1); assert.equal(response.value.actions[0].slotId, f.context.entitlementSlotId);
+  assert.equal((await service.saveDraft(f.context, { commandId: 'other-slot-intent', expectedDraftVersion: 0,
+    expectedContextVersion: response.value.contextVersion, choices: intent(f, { slotId: 'other-slot', oldContractId: extra.contractId }) })).status, 'invalid');
+});
+
+test('intent drafts reuse exact action authority, replay, versions and reload without inventing order options', async () => {
+  const f = await setup(); const account = await f.service.readAccount(f.context);
+  const input = { commandId: 'intent', expectedDraftVersion: 0, expectedContextVersion: account.value.contextVersion, choices: intent(f) };
+  const before = (await f.repository.query(f.context, 'stock')).value;
+  for (const [i, change] of [{ mode: 'new', oldContractId: null }, { oldContractId: 'wrong' }, { schemeId: 'pcs-ukfs-bmw' },
+    { slotId: 'slot-alex' }, { driverId: 'driver:employee-paula' }].entries()) {
+    assert.equal((await f.service.saveDraft(f.context, { ...input, commandId: `bad-intent-${i}`, choices: intent(f, change) })).status, 'invalid');
+  }
+  const saved = await f.service.saveDraft(f.context, input);
+  assert.equal(saved.status, 'ok', JSON.stringify(saved)); assert.equal(saved.value.draftStage, 'intent');
+  assert.equal(saved.value.view.action, 'choose-order-options'); assert.equal(saved.value.contract, null);
+  assert.deepEqual(saved.value.choices, intent(f)); assert.equal(saved.value.currentContract.contractEndDate, '2026-12-01');
+  assert.deepEqual(await f.service.saveDraft(f.context, input), saved);
+  assert.deepEqual((await f.service.readDraft(f.context)).value.choices, intent(f));
+  const browse = await f.service.browseStock(f.context);
+  assert.equal(browse.status, 'conflict'); assert.equal(browse.reason, 'order-options-required');
+  assert.deepEqual((await f.repository.query(f.context, 'stock')).value, before);
+  assert.equal((await f.service.saveDraft(f.context, { ...input, commandId: 'stale-intent' })).status, 'stale-version');
+  const complete = await save(f, {}, { commandId: 'complete-intent', expectedDraftVersion: 1 });
+  assert.equal(complete.status, 'ok'); assert.equal(complete.value.draftStage, 'complete');
+  assert.equal(complete.value.view.action, 'browse-stock'); assert.equal((await f.service.browseStock(f.context)).status, 'ok');
+  await changeRecords(f, (r) => { r.source.sourceVersion = 'intent-source-v2'; }, 'intent-source');
+  assert.equal((await f.service.readDraft(f.context)).value.requiresRefresh, true);
+  assert.deepEqual(await f.service.saveDraft(f.context, input), saved);
+});
+
+test('new order intent uses an empty trusted slot and remains an intent after source refresh', async () => {
+  const f = await setup(); await changeSlot(f, { contractId: null });
+  await changeRecords(f, (r) => { r.contracts = []; });
+  const account = await f.service.readAccount(f.context);
+  const input = { commandId: 'new-intent', expectedDraftVersion: 0, expectedContextVersion: account.value.contextVersion,
+    choices: intent(f, { mode: 'new', oldContractId: null }) };
+  assert.equal((await f.service.saveDraft(f.context, input)).status, 'ok');
+  await changeSlot(f, { renewalId: 'changed' }, 'intent-renewal');
+  const reload = await f.service.readDraft(f.context);
+  assert.equal(reload.value.draftStage, 'intent'); assert.equal(reload.value.requiresRefresh, true);
+  assert.equal(reload.value.view.action, 'refresh-review'); assert.deepEqual(reload.value.choices, input.choices);
+  assert.equal((await f.service.saveDraft(f.context, { ...input, commandId: 'stale-context', expectedDraftVersion: 1 })).status, 'stale-version');
+});
+
+test('server clock intersects renewal dates with canonical lead policy and open collection dates', async () => {
+  const f = await setup();
+  assert.equal((await f.service.readAccount(f.context)).value.state, 'ready');
+  await changeRecords(f, (r) => { r.contracts[0].earliestCollectionDate = '2027-06-01'; r.contracts[0].latestCollectionDate = '2027-06-15'; });
+  const later = await f.service.readAccount(f.context);
+  assert.equal(later.value.state, 'not-yet-eligible'); assert.deepEqual(later.value.actions, []);
+  assert.equal((await f.service.saveDraft(f.context, { commandId: 'too-early', expectedDraftVersion: 0,
+    expectedContextVersion: later.value.contextVersion, choices: intent(f) })).reason, 'not-yet-eligible');
+  const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
+  const rules = seed.assumptions.find((a) => a.key === 'manual.context.v1').value;
+  rules.maximumLeadDays = 7;
+  const bounded = await setup({ policy: new PolicyService({ provider: { async loadVersions() { return [seed]; } } }) });
+  assert.equal((await bounded.service.readAccount(bounded.context)).value.state, 'ready');
+  assert.equal((await save(bounded, { requestedCollectionDate: '2026-11-12' })).status, 'ok');
+  for (const location of rules.locations) location.closedDates = ['2026-11-12'];
+  const closed = await setup({ policy: new PolicyService({ provider: { async loadVersions() { return [seed]; } } }) });
+  assert.equal((await closed.service.readAccount(closed.context)).value.state, 'not-yet-eligible');
+  const state = (await f.clock.readState(f.presenter.value.context)).value;
+  assert.equal((await f.clock.advance(f.presenter.value.context, { commandId: 'window-opens', expectedClockVersion: state.clockVersion,
+    to: '2027-05-25T09:00:00.000Z' })).status, 'ok');
+  assert.equal((await f.service.readAccount(f.context)).value.state, 'ready');
+});
+
+test('future earliest collection alone permits replacement when canonical policy still offers dates', async () => {
+  const f = await setup();
+  await changeRecords(f, (r) => { r.contracts[0].earliestCollectionDate = '2026-11-20'; delete r.contracts[0].latestCollectionDate; });
+  const account = await f.service.readAccount(f.context);
+  assert.equal(account.value.state, 'ready');
+  assert.deepEqual(account.value.actions, [{ action: 'replace', slotId: f.context.entitlementSlotId,
+    schemeId: f.context.schemeId, oldContractId: `current:${f.context.employeeId}`, enabled: true }]);
+  const saved = await f.service.saveDraft(f.context, { commandId: 'future-earliest-intent', expectedDraftVersion: 0,
+    expectedContextVersion: account.value.contextVersion, choices: intent(f) });
+  assert.equal(saved.status, 'ok'); assert.equal(saved.value.draftStage, 'intent');
+  assert.equal((await save(f, {}, { commandId: 'future-earliest-complete', expectedDraftVersion: 1 })).status, 'ok');
+});
 
 test('account uses identity-seeded principal and entitlement; history, licence and support ownership are explicit', async () => {
   const f = await setup(); const account = await f.service.readAccount(f.context);
@@ -346,13 +438,18 @@ test('licence qualification is checked at requested collection; unknown and expi
   const f = await setup(); await save(f); await insertCars(f);
   assert.equal((await f.service.browseStock(f.context)).value.total, 1);
   await changeRecords(f, (r) => { r.drivers[0].licence.validUntil = '2026-11-19'; }, 'expiry');
-  await save(f, {}, { commandId: 'expiry-refresh', expectedDraftVersion: 1 });
+  const expiredSave = await save(f, {}, { commandId: 'expiry-refresh', expectedDraftVersion: 1 });
+  assert.equal(expiredSave.status, 'invalid'); assert.equal(expiredSave.code, 'licence-not-valid-at-collection');
   const expired = await f.service.browseStock(f.context);
-  assert.equal(expired.value.total, 0); assert.ok(expired.value.decisions[0].blockers.some((b) => b.code === 'licence-not-valid-at-collection'));
+  assert.equal(expired.status, 'stale-version');
+  assert.equal((await f.service.readDraft(f.context)).value.draftVersion, 1);
   await changeRecords(f, (r) => { r.drivers[0].licence.validUntil = null; }, 'unknown-licence');
-  await save(f, {}, { commandId: 'unknown-refresh', expectedDraftVersion: 2 });
+  const unknownSave = await save(f, {}, { commandId: 'unknown-refresh', expectedDraftVersion: 1 });
+  assert.equal(unknownSave.status, 'invalid'); assert.equal(unknownSave.code, 'licence-unconfirmed');
   const unknown = await f.service.browseStock(f.context);
-  assert.equal(unknown.value.total, 0); assert.ok(unknown.value.decisions[0].unknowns.some((b) => b.code === 'licence-unconfirmed'));
+  assert.equal(unknown.status, 'stale-version');
+  const history = (await f.repository.query(f.context, 'event_receipts', { consumerId: 'manual:draft:employee-paula' })).value;
+  assert.equal(history.length, 1);
 });
 
 test('local source changes between preparation and transaction return a safe stale refusal', async () => {

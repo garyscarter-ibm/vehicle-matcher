@@ -1,0 +1,248 @@
+{
+  "date": "2026-11-04 to 2026-11-05",
+  "scope": "Pre-build consistency pass over the GCSP backlog in Jira FUCQ (handover docs/design/handover-pre-build-2026-11-04.md, job A)",
+  "authorisation": "Gary, 5 November 2026: build may proceed without most fixes; apply only the four fixes on To Do Stories (FUCQ-96 blocks FUCQ-104, and edits to FUCQ-71, 72, 101, 104); skip the rest and record them.",
+  "source": {
+    "fetch": "getJiraIssue view evidence for FUCQ-1 to FUCQ-138 (138 issues), plus searchJiraIssuesUsingJql pages as a byte-exact cross-check of summary, description, labels, priority, parent and status",
+    "fetchedAt": "2026-11-04 21:34 to 22:20 GMT",
+    "checks": "script loading _tools/jira_sync.py as a module (parse_issue, issue_blocks, missing_fields), run offline; no pull or push; nothing written to _dev/ or .claude/jira-sync.json"
+  },
+  "scope_counts": {
+    "storiesInScope": 52,
+    "linkedStoriesChecked": 14,
+    "blocksLinks": 231,
+    "epics": [
+      "FUCQ-79",
+      "FUCQ-86",
+      "FUCQ-87",
+      "FUCQ-88",
+      "FUCQ-89",
+      "FUCQ-90",
+      "FUCQ-110",
+      "FUCQ-132",
+      "FUCQ-74",
+      "FUCQ-75"
+    ]
+  },
+  "checks": {
+    "1_dependsOnMatchesLinks": {
+      "mismatches": [
+        {
+          "key": "FUCQ-107",
+          "linkOnly": [
+            "FUCQ-30"
+          ],
+          "headerOnly": [],
+          "disposition": "skipped (Gary): jira_sync builds depends_on from links, so harmless"
+        }
+      ],
+      "note": "FUCQ-32 to FUCQ-63 use the older template with no depends_on header; links are the truth, left as is (recommended answer accepted)"
+    },
+    "2_cycles": {
+      "cycles": [],
+      "storyBlockedByEpic": [
+        {
+          "epic": "FUCQ-7",
+          "story": "FUCQ-35",
+          "proposedFix": "FUCQ-73 blocks FUCQ-35, then delete FUCQ-7 blocks FUCQ-35",
+          "disposition": "skipped (Gary)"
+        }
+      ]
+    },
+    "3_importable": {
+      "storiesChecked": 66,
+      "problems": 0,
+      "detail": "every Story has the six sections, a valid kind: and size: label and the backlog label; header kind and size match the labels"
+    },
+    "4_overlaps": {
+      "FUCQ-85/125/126": "clean: clock, ticks and reset (85), scenario catalogue calling 85's reset (125), presenter UI over both (126)",
+      "C9 buddy and handoff vs FUCQ-71/72/108": "clean: one ordering adapter (FUCQ-71) used by FUCQ-108, 111 and 131",
+      "C7 vs FUCQ-92/104": "clean",
+      "C8 vs FUCQ-99/101": "FUCQ-101 reserved no region for FUCQ-138's panel or FUCQ-122's case queue: fixed",
+      "contradictions": [
+        "FUCQ-71 acceptance said HR/IS/manager approval flags, against Q19: fixed",
+        "FUCQ-72 acceptance said cash contribution with currency/period, against its own Decided and Q16: fixed"
+      ],
+      "gap": {
+        "item": "FUCQ-117 and FUCQ-121 use 'acceptable coverage' without a definition",
+        "recommendation": "reuse comparison.acceptableFitThreshold (FUCQ-135) as one key",
+        "disposition": "not edited (Gary: skip); for FUCQ-117's implementer and reviewer"
+      }
+    },
+    "5_priority": {
+      "mediumStoriesBlockingHigh": [
+        "FUCQ-21",
+        "FUCQ-23",
+        "FUCQ-24",
+        "FUCQ-26",
+        "FUCQ-29",
+        "FUCQ-30",
+        "FUCQ-31",
+        "FUCQ-37",
+        "FUCQ-38",
+        "FUCQ-39",
+        "FUCQ-40",
+        "FUCQ-41",
+        "FUCQ-42",
+        "FUCQ-52",
+        "FUCQ-53",
+        "FUCQ-54",
+        "FUCQ-58",
+        "FUCQ-59",
+        "FUCQ-60",
+        "FUCQ-64",
+        "FUCQ-65",
+        "FUCQ-66",
+        "FUCQ-67",
+        "FUCQ-68",
+        "FUCQ-69",
+        "FUCQ-70",
+        "FUCQ-71",
+        "FUCQ-72"
+      ],
+      "proposedFix": "raise to High with priority_reason: due 2026-11-12: GCSP demo",
+      "disposition": "skipped (Gary): priority only orders work, links gate it, and most are already in progress or review",
+      "deferredLeftMedium": [
+        "FUCQ-27",
+        "FUCQ-28",
+        "FUCQ-61"
+      ]
+    },
+    "6_decisionsCarried": {
+      "allCite": "build-rules.md and experience-quality.md",
+      "missingQ": [
+        {
+          "key": "FUCQ-99",
+          "proposed": "Q2, Q10",
+          "disposition": "skipped (Gary)"
+        }
+      ]
+    },
+    "7_textOnlyDependencies": {
+      "proposedLinks": [
+        [
+          "FUCQ-29",
+          "FUCQ-91"
+        ],
+        [
+          "FUCQ-66",
+          "FUCQ-100"
+        ],
+        [
+          "FUCQ-96",
+          "FUCQ-104"
+        ],
+        [
+          "FUCQ-83",
+          "FUCQ-119"
+        ],
+        [
+          "FUCQ-99",
+          "FUCQ-127"
+        ],
+        [
+          "FUCQ-54",
+          "FUCQ-77"
+        ]
+      ],
+      "cycleCheck": "none with all six",
+      "made": [
+        "FUCQ-29 blocks FUCQ-91 (direction check)",
+        "FUCQ-96 blocks FUCQ-104"
+      ],
+      "skipped": [
+        [
+          "FUCQ-66",
+          "FUCQ-100"
+        ],
+        [
+          "FUCQ-83",
+          "FUCQ-119"
+        ],
+        [
+          "FUCQ-99",
+          "FUCQ-127"
+        ],
+        [
+          "FUCQ-54",
+          "FUCQ-77"
+        ]
+      ],
+      "leftSoftOnPurpose": [
+        "FUCQ-78/85 (cycle note in FUCQ-78)",
+        "FUCQ-93 to FUCQ-85",
+        "FUCQ-83 to FUCQ-84/85",
+        "FUCQ-112 and FUCQ-134 on FUCQ-93 'if merged'",
+        "FUCQ-73 and FUCQ-35"
+      ]
+    }
+  },
+  "risk": {
+    "longestChainToFUCQ109": "FUCQ-37 > 40 > 41 > 42 > 60 > 77 > 78 > 92 > 96 > 100 > 102 > 106 > 107 > 109 (14 Stories), starting in vehicle evidence"
+  },
+  "changesMade": [
+    {
+      "op": "createJiraIssueLink",
+      "link": "FUCQ-29 blocks FUCQ-91",
+      "purpose": "first link; direction check",
+      "readback": "FUCQ-91 shows inward 'is blocked by FUCQ-29' (link 62692)",
+      "note": "both Stories already In Review when made; no effect on the build"
+    },
+    {
+      "op": "createJiraIssueLink",
+      "link": "FUCQ-96 blocks FUCQ-104",
+      "readback": "FUCQ-104 shows inward 'is blocked by FUCQ-96' (link 62693)"
+    },
+    {
+      "op": "editJiraIssue",
+      "key": "FUCQ-71",
+      "change": "acceptance item: approval stages in the target names (Q19): HR approval only where the policy key includes it, sales-manager approval, sent to ordering; replaces 'HR/IS/manager approval flags'",
+      "readback": "description read back; new item present, old text gone"
+    },
+    {
+      "op": "editJiraIssue",
+      "key": "FUCQ-72",
+      "change": "acceptance item: points cost against the allowance; cash contribution only if the policy source enables it, which it does not for Choices (Q16)",
+      "readback": "description read back; new text present"
+    },
+    {
+      "op": "editJiraIssue",
+      "key": "FUCQ-101",
+      "change": "Space for later work adds regions for FUCQ-138's comparison panel and FUCQ-122's case queue; Out of scope names both",
+      "readback": "description read back; both present"
+    },
+    {
+      "op": "editJiraIssue",
+      "key": "FUCQ-104",
+      "change": "header depends_on adds FUCQ-96 to match the new link",
+      "readback": "description read back; depends_on: FUCQ-101, FUCQ-92, FUCQ-96"
+    }
+  ],
+  "linksForGaryToDelete": [],
+  "linksForGaryToDeleteNote": "None needed: the FUCQ-7 blocks FUCQ-35 fix was skipped, so that link stays.",
+  "buildAlreadyStarted": "At the time of the edits a Codex poller on Russell's machine had about 30 Stories In Progress or In Review (FUCQ-21 to 30, 37 to 40, 52 to 58, 65, 66, 80 to 85, 91, 93, 99, 112, 125, 133). All four edited Stories were To Do.",
+  "agents": {
+    "fetch": [
+      {
+        "name": "Mary-Sue Walton",
+        "type": "runner",
+        "model": "haiku"
+      },
+      {
+        "name": "Maximus the Horse",
+        "type": "runner",
+        "model": "haiku",
+        "note": "wrote FUCQ-70 to 138 by hand; checked by script against the byte-exact search pages: no difference in compared fields except one punctuation character in FUCQ-58's description"
+      }
+    ],
+    "edits": {
+      "name": "Lego Batman",
+      "type": "runner",
+      "model": "haiku"
+    },
+    "verification": "main session read each edited description back directly"
+  },
+  "pollerStarted": false,
+  "jiraSyncPullOrPushRun": false,
+  "applicationCodeWritten": false
+}

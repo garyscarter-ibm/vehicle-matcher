@@ -1,0 +1,184 @@
+{
+  "story": "FUCQ-94",
+  "capturedAt": "2026-11-05T14:16:50.596Z",
+  "browser": "isolated headless system Chrome",
+  "repository": "explicit process-lifetime memory proof",
+  "limits": [
+    "No configured PostgreSQL capability",
+    "Real configuration/release producer absent; actual preview remains empty",
+    "Activity UI continuity is owned by FUCQ-95; this proof reads its actual HTTP projection"
+  ],
+  "activeProfileCompatibilityException": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq94-20261105-functional/functional-chrome-profile",
+  "sources": {
+    "server/gcsp/runtime.js": "f4654b8053d3927a3564a3701784367e976b04549ee66fb1a9a754032f88cb16",
+    "server/gcsp/brief/activity.js": "dbf317b5aba98b1f6a723692e108a1b1a83637fb61e76ca33729dd90fe8b8f6f",
+    "server/gcsp/brief/activity-http.js": "b4384eb61ea60afb31570a3d2819ea686dff6aad0724cfda3f0b96788c01f2c4",
+    "server/index.js": "1560e4a99077e4ea648f66b87566b908404312787e5fdfcc59a5ba10debf1741",
+    "scripts/gcsp-demo.mjs": "ec6834e5a7259d48a99ee17ff45df5902be789748992422d4ef8b45f78f8b63a",
+    "gcsp-brief-live.html": "d7e6ff2f0bcb5e0b3d040bb6d96c5c60aca9f10066824bba330cac8147bf8cd2",
+    "blocks/gcsp/brief/runtime.js": "f2106b4ed99211d5c06632cbb28c1a6d84e05d3c715e988521271c53761d7b8d",
+    "blocks/gcsp/brief/brief-view.js": "ff27df853d46d825d859a9a6a9d988fe91221de28530648c529df28d84875f61",
+    "blocks/gcsp/brief/brief-controller.js": "724120f45ad1fb8c14ee6de1a82c3579fe97c075254b6ce8032d712abe6c82aa",
+    "docs/gcsp/evidence/fucq94/capture-functional.mjs": "be7c727479a50db62db9cd094d37dafb2208a5a3e28a4b67caee70fa53ba1b77"
+  },
+  "errors": [],
+  "httpErrors": [
+    {
+      "path": "/api/gcsp/brief/preview",
+      "status": 503
+    },
+    {
+      "path": "/api/gcsp/brief/draft",
+      "status": 409
+    }
+  ],
+  "previewInputs": [
+    {
+      "path": "/api/gcsp/brief/preview",
+      "baseBriefVersion": 0,
+      "draftVersion": 0,
+      "comfort": 50,
+      "charging": null
+    },
+    {
+      "path": "/api/gcsp/brief/preview",
+      "baseBriefVersion": 0,
+      "draftVersion": 0,
+      "comfort": 50,
+      "charging": null
+    },
+    {
+      "path": "/api/gcsp/brief/preview",
+      "baseBriefVersion": 0,
+      "draftVersion": 0,
+      "comfort": 1,
+      "charging": null
+    },
+    {
+      "path": "/api/gcsp/brief/preview",
+      "baseBriefVersion": 0,
+      "draftVersion": 0,
+      "comfort": 1,
+      "charging": null
+    },
+    {
+      "path": "/api/gcsp/brief/preview",
+      "baseBriefVersion": 0,
+      "draftVersion": 0,
+      "comfort": 2,
+      "charging": null
+    },
+    {
+      "path": "/api/gcsp/brief/preview",
+      "baseBriefVersion": 0,
+      "draftVersion": 0,
+      "comfort": 2,
+      "charging": null
+    },
+    {
+      "path": "/api/gcsp/brief/preview",
+      "baseBriefVersion": 1,
+      "draftVersion": 1,
+      "comfort": 2,
+      "charging": null
+    },
+    {
+      "path": "/api/gcsp/brief/preview",
+      "baseBriefVersion": 1,
+      "draftVersion": 1,
+      "comfort": 2,
+      "charging": null
+    },
+    {
+      "path": "/api/gcsp/brief/preview",
+      "baseBriefVersion": 1,
+      "draftVersion": 1,
+      "comfort": 2,
+      "charging": null
+    }
+  ],
+  "results": [
+    {
+      "name": "functional-new-empty-desktop",
+      "file": "functional-new-empty-desktop.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "overflowPx": 0,
+      "briefVersion": 0,
+      "eligibleCount": 0,
+      "stockSource": "actual unreleased repository input; no vehicle facts",
+      "charging": null
+    },
+    {
+      "name": "functional-unavailable-retained-desktop",
+      "file": "functional-unavailable-retained-desktop.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "overflowPx": 0,
+      "controlledInput": "one HTTP 503; no product-source substitution",
+      "comfort": 2,
+      "focusedControlRetained": true
+    },
+    {
+      "name": "functional-independent-consent-desktop",
+      "file": "functional-independent-consent-desktop.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "overflowPx": 0,
+      "search": false,
+      "hold": true
+    },
+    {
+      "name": "functional-reloaded-saved-desktop",
+      "file": "functional-reloaded-saved-desktop.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "overflowPx": 0,
+      "comfort": 2,
+      "briefVersion": 1,
+      "search": true,
+      "hold": true,
+      "activity": {
+        "briefVersion": 1,
+        "state": "never-searched",
+        "lastSuccessfulCheck": null,
+        "offers": 0,
+        "canSearch": true,
+        "canHold": true,
+        "evidence": "search-check-producer-unavailable"
+      }
+    },
+    {
+      "name": "functional-conflict-retained-desktop",
+      "file": "functional-conflict-retained-desktop.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "overflowPx": 0,
+      "comfort": 1,
+      "search": true,
+      "hold": false,
+      "savedVersionUnchanged": 1
+    },
+    {
+      "name": "functional-reloaded-mobile-375",
+      "file": "functional-reloaded-mobile-375.png",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "overflowPx": 0,
+      "briefVersion": 1,
+      "menuExpanded": true
+    }
+  ]
+}

@@ -1,0 +1,344 @@
+{
+  "observed": "2026-11-05",
+  "snapshotVersion": "bmw-gb-i5-images-2026-11-01.v1",
+  "sourceObserved": "2026-11-01",
+  "examples": {
+    "P0300": {
+      "keySha256": "78b84f39c0cc9df6c31889edf6caecdec15005627f112dff3d1294ecaa10af5a",
+      "status": "ok",
+      "failure": null,
+      "image": {
+        "assetId": "bmw-i5-white-20261101-v1",
+        "contentType": "image/webp",
+        "bytes": 82798,
+        "sha256": "fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe",
+        "size": {
+          "width": 2560,
+          "height": 1646
+        },
+        "viewpoint": "HEROFRONT",
+        "role": "representative-catalogue-render",
+        "representation": "configuration",
+        "matchesRequestedConfiguration": true,
+        "paint": {
+          "code": "P0300",
+          "label": "Alpine White"
+        },
+        "fidelity": {
+          "model": "verified",
+          "paint": "verified",
+          "wheels": "unknown",
+          "interior": "unknown",
+          "equipment": "unknown",
+          "exactVehicle": "unknown"
+        },
+        "origin": "BMW COSY catalogue render",
+        "sourceDate": "2026-11-01",
+        "observedDate": "2026-11-01",
+        "demoUse": {
+          "scope": "gcsp-demo",
+          "retention": "remove-after-demo",
+          "decision": {
+            "issue": "FUCQ-40",
+            "commentId": "132468",
+            "by": "Gary Carter",
+            "date": "2026-11-05"
+          }
+        }
+      },
+      "resolvedConfiguration": true,
+      "fallback": null,
+      "presentation": {
+        "status": "ok",
+        "assetId": "bmw-i5-white-20261101-v1",
+        "role": "representative-catalogue-render",
+        "observedDate": "2026-11-01",
+        "label": "Representative image",
+        "alt": "Representative catalogue render",
+        "isFallback": false,
+        "fidelity": {
+          "model": "verified",
+          "paint": "verified",
+          "wheels": "unknown",
+          "interior": "unknown",
+          "equipment": "unknown",
+          "exactVehicle": "unknown"
+        },
+        "fidelityLabels": {
+          "model": "Model matches catalogue selection",
+          "paint": "Paint matches catalogue selection",
+          "wheels": "Wheels unknown",
+          "interior": "Interior unknown",
+          "equipment": "Equipment unknown",
+          "exactVehicle": "Exact vehicle appearance unknown"
+        },
+        "caption": "Representative catalogue render, observed 1 November 2026. Observed model and paint verified; wheels, interior and equipment fidelity unknown.",
+        "message": null
+      }
+    },
+    "P0475": {
+      "keySha256": "c1b20718888271b6a2db5315edd6b71199aebadbb81e58dc6ffbe4dffd0b93ba",
+      "status": "ok",
+      "failure": null,
+      "image": {
+        "assetId": "bmw-i5-black-20261101-v1",
+        "contentType": "image/webp",
+        "bytes": 86286,
+        "sha256": "4c38cdb43b6438b7ae54fd1c882280bf744e88a17f2ce43597c5dd2c4890b5de",
+        "size": {
+          "width": 2560,
+          "height": 1646
+        },
+        "viewpoint": "HEROFRONT",
+        "role": "representative-catalogue-render",
+        "representation": "configuration",
+        "matchesRequestedConfiguration": true,
+        "paint": {
+          "code": "P0475",
+          "label": "Black Sapphire"
+        },
+        "fidelity": {
+          "model": "verified",
+          "paint": "verified",
+          "wheels": "unknown",
+          "interior": "unknown",
+          "equipment": "unknown",
+          "exactVehicle": "unknown"
+        },
+        "origin": "BMW COSY catalogue render",
+        "sourceDate": "2026-11-01",
+        "observedDate": "2026-11-01",
+        "demoUse": {
+          "scope": "gcsp-demo",
+          "retention": "remove-after-demo",
+          "decision": {
+            "issue": "FUCQ-40",
+            "commentId": "132468",
+            "by": "Gary Carter",
+            "date": "2026-11-05"
+          }
+        }
+      },
+      "resolvedConfiguration": true,
+      "fallback": null,
+      "presentation": {
+        "status": "ok",
+        "assetId": "bmw-i5-black-20261101-v1",
+        "role": "representative-catalogue-render",
+        "observedDate": "2026-11-01",
+        "label": "Representative image",
+        "alt": "Representative catalogue render",
+        "isFallback": false,
+        "fidelity": {
+          "model": "verified",
+          "paint": "verified",
+          "wheels": "unknown",
+          "interior": "unknown",
+          "equipment": "unknown",
+          "exactVehicle": "unknown"
+        },
+        "fidelityLabels": {
+          "model": "Model matches catalogue selection",
+          "paint": "Paint matches catalogue selection",
+          "wheels": "Wheels unknown",
+          "interior": "Interior unknown",
+          "equipment": "Equipment unknown",
+          "exactVehicle": "Exact vehicle appearance unknown"
+        },
+        "caption": "Representative catalogue render, observed 1 November 2026. Observed model and paint verified; wheels, interior and equipment fidelity unknown.",
+        "message": null
+      }
+    },
+    "missing": {
+      "status": "source-unavailable",
+      "failure": {
+        "code": "asset-unavailable",
+        "message": "The registered local image is missing or failed its integrity check.",
+        "retryable": true
+      },
+      "image": null,
+      "resolvedConfiguration": true,
+      "fallback": null,
+      "presentation": {
+        "status": "source-unavailable",
+        "assetId": null,
+        "role": "representative-catalogue-render",
+        "observedDate": null,
+        "label": "Image unavailable",
+        "alt": null,
+        "isFallback": false,
+        "fidelity": {
+          "model": "unknown",
+          "paint": "unknown",
+          "wheels": "unknown",
+          "interior": "unknown",
+          "equipment": "unknown",
+          "exactVehicle": "unknown"
+        },
+        "fidelityLabels": {
+          "model": "Model unknown",
+          "paint": "Paint unknown",
+          "wheels": "Wheels unknown",
+          "interior": "Interior unknown",
+          "equipment": "Equipment unknown",
+          "exactVehicle": "Exact vehicle appearance unknown"
+        },
+        "caption": null,
+        "message": "The registered local image is missing or failed its integrity check."
+      }
+    },
+    "unsupportedView": {
+      "status": "unsupported",
+      "failure": {
+        "code": "unsupported-request",
+        "message": "No registered render supports this model, paint, viewpoint, size or version.",
+        "retryable": false
+      },
+      "image": null,
+      "resolvedConfiguration": false,
+      "fallback": null,
+      "presentation": {
+        "status": "unsupported",
+        "assetId": null,
+        "role": "representative-catalogue-render",
+        "observedDate": null,
+        "label": "Image unavailable",
+        "alt": null,
+        "isFallback": false,
+        "fidelity": {
+          "model": "unknown",
+          "paint": "unknown",
+          "wheels": "unknown",
+          "interior": "unknown",
+          "equipment": "unknown",
+          "exactVehicle": "unknown"
+        },
+        "fidelityLabels": {
+          "model": "Model unknown",
+          "paint": "Paint unknown",
+          "wheels": "Wheels unknown",
+          "interior": "Interior unknown",
+          "equipment": "Equipment unknown",
+          "exactVehicle": "Exact vehicle appearance unknown"
+        },
+        "caption": null,
+        "message": "No registered render supports this model, paint, viewpoint, size or version."
+      }
+    },
+    "unsupportedSize": {
+      "status": "unsupported",
+      "failure": {
+        "code": "unsupported-request",
+        "message": "No registered render supports this model, paint, viewpoint, size or version.",
+        "retryable": false
+      },
+      "image": null,
+      "resolvedConfiguration": false,
+      "fallback": null,
+      "presentation": {
+        "status": "unsupported",
+        "assetId": null,
+        "role": "representative-catalogue-render",
+        "observedDate": null,
+        "label": "Image unavailable",
+        "alt": null,
+        "isFallback": false,
+        "fidelity": {
+          "model": "unknown",
+          "paint": "unknown",
+          "wheels": "unknown",
+          "interior": "unknown",
+          "equipment": "unknown",
+          "exactVehicle": "unknown"
+        },
+        "fidelityLabels": {
+          "model": "Model unknown",
+          "paint": "Paint unknown",
+          "wheels": "Wheels unknown",
+          "interior": "Interior unknown",
+          "equipment": "Equipment unknown",
+          "exactVehicle": "Exact vehicle appearance unknown"
+        },
+        "caption": null,
+        "message": "No registered render supports this model, paint, viewpoint, size or version."
+      }
+    },
+    "unknownFidelity": {
+      "status": "ok",
+      "failure": null,
+      "image": {
+        "assetId": "bmw-i5-white-20261101-v1",
+        "contentType": "image/webp",
+        "bytes": 82798,
+        "sha256": "fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe",
+        "size": {
+          "width": 2560,
+          "height": 1646
+        },
+        "viewpoint": "HEROFRONT",
+        "role": "representative-catalogue-render",
+        "representation": "generic",
+        "matchesRequestedConfiguration": false,
+        "paint": null,
+        "fidelity": {
+          "model": "unknown",
+          "paint": "unknown",
+          "wheels": "unknown",
+          "interior": "unknown",
+          "equipment": "unknown",
+          "exactVehicle": "unknown"
+        },
+        "origin": "BMW COSY catalogue render",
+        "sourceDate": "2026-11-01",
+        "observedDate": "2026-11-01",
+        "demoUse": {
+          "scope": "gcsp-demo",
+          "retention": "remove-after-demo",
+          "decision": {
+            "issue": "FUCQ-40",
+            "commentId": "132468",
+            "by": "Gary Carter",
+            "date": "2026-11-05"
+          }
+        }
+      },
+      "resolvedConfiguration": false,
+      "fallback": {
+        "choice": "bmw-i5-generic-20261101-v1",
+        "originalStatus": "unsupported",
+        "reason": {
+          "code": "unsupported-request",
+          "message": "No registered render supports this model, paint, viewpoint, size or version.",
+          "retryable": false
+        }
+      },
+      "presentation": {
+        "status": "ok",
+        "assetId": "bmw-i5-white-20261101-v1",
+        "role": "representative-catalogue-render",
+        "observedDate": "2026-11-01",
+        "label": "Representative image",
+        "alt": "Representative image; configuration match unknown",
+        "isFallback": true,
+        "fidelity": {
+          "model": "unknown",
+          "paint": "unknown",
+          "wheels": "unknown",
+          "interior": "unknown",
+          "equipment": "unknown",
+          "exactVehicle": "unknown"
+        },
+        "fidelityLabels": {
+          "model": "Model unknown",
+          "paint": "Paint unknown",
+          "wheels": "Wheels unknown",
+          "interior": "Interior unknown",
+          "equipment": "Equipment unknown",
+          "exactVehicle": "Exact vehicle appearance unknown"
+        },
+        "caption": "Representative catalogue render, observed 1 November 2026. Model, paint and configuration match unknown.",
+        "message": null
+      }
+    }
+  }
+}

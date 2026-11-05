@@ -1,0 +1,133 @@
+{
+  "story": "FUCQ-55",
+  "state": "passed",
+  "source_checkpoint": "d32ffa16253ed74484748fc858c23c10a4ef1f57",
+  "integrated_base": "8c9989c3e29c17a6ecf0ca0fa9d5d9fdf8b6ac0d",
+  "metadata_only_followup_base": "8bebc3b",
+  "command": "node --test --test-concurrency=1 server/test/**/*.test.js",
+  "counts": {
+    "tests": "822",
+    "suites": "0",
+    "pass": "820",
+    "fail": "0",
+    "cancelled": "0",
+    "skipped": "2",
+    "todo": "0",
+    "duration_ms": "33621.611167"
+  },
+  "skip_scope": [
+    "GCSP_DATABASE_URL unset: native SQL constraints not run",
+    "GCSP_DATABASE_URL unset: PostgreSQL repository integration not run"
+  ],
+  "result": {
+    "cleanup": {
+      "local_scratch_reason": "",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq55-20261105-lookup-full-a1585322eff74640aeed3ac956bf22ca.json",
+      "peak": 270432,
+      "removed": true,
+      "root": "/private/tmp/test-stamp-shard-a1585322eff74640aeed3ac956bf22ca"
+    },
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-060833-_1oo_env/chunk-0001.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq55-20261105-lookup-full-a1585322eff74640aeed3ac956bf22ca.json",
+    "peak_rss": 339755008,
+    "peak_scratch": 270432,
+    "rc": 0,
+    "wall": 33.907108999999764
+  },
+  "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/ae09a7f0ebd2944196929a17412b903890f78c3fb0071c4d4ded299dcea5d54a.json",
+  "execution_identity": {
+    "code": "5545a5eaf2be4f5181df98fe0ee67e69a24188da7aeec90916d3558e4c8c2ca8",
+    "environment": "f18da93cde2a1d9a18ca39e466db83e02397d86a9e76668056cce07dd8cc13a0",
+    "inputs": {},
+    "interpreter": [
+      "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+      "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+    ],
+    "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+    "scope": "full",
+    "selected": [
+      "node --test --test-concurrency=1 server/test/**/*.test.js"
+    ],
+    "settings": "9c57dc7bca6b72962261fe519193afd2a783bbadf9f25001665e63320e9ce5ec",
+    "variant": "default",
+    "version": 1
+  },
+  "stamp_path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/stamp-c06d774bea5a8014bef16fcbdeeb5c9a1b0a3fb4c61c53024796f2af604f7962-default.json",
+  "stamp": {
+    "execution_identity": {
+      "code": "5545a5eaf2be4f5181df98fe0ee67e69a24188da7aeec90916d3558e4c8c2ca8",
+      "environment": "f18da93cde2a1d9a18ca39e466db83e02397d86a9e76668056cce07dd8cc13a0",
+      "inputs": {},
+      "interpreter": [
+        "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+      ],
+      "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+      "scope": "full",
+      "selected": [
+        "node --test --test-concurrency=1 server/test/**/*.test.js"
+      ],
+      "settings": "9c57dc7bca6b72962261fe519193afd2a783bbadf9f25001665e63320e9ce5ec",
+      "variant": "default",
+      "version": 1
+    },
+    "head": "d32ffa16253ed74484748fc858c23c10a4ef1f57",
+    "key": "c06d774bea5a8014bef16fcbdeeb5c9a1b0a3fb4c61c53024796f2af604f7962",
+    "python": "3.14.7",
+    "ran": null,
+    "skipped": 0,
+    "time": "2026-11-05T06:09:07+0000",
+    "tree": "3bc7ab9a7ddee9146ce8930d8300588667b1d3dd",
+    "variant": "default",
+    "wall": 34.0
+  },
+  "strict_status_before": "none expected for new code identity",
+  "strict_status_after": "matched c06d774bea5a",
+  "worker_evidence": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq55-20261105-lookup-full-argv.json",
+    "samples": 117,
+    "max_observed_test_workers": 1,
+    "sampling_errors": [],
+    "all_three_authored_modules_observed": true
+  },
+  "cleanup": {
+    "root": "/private/tmp/test-stamp-shard-a1585322eff74640aeed3ac956bf22ca",
+    "root_absent": true,
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq55-20261105-lookup-full-a1585322eff74640aeed3ac956bf22ca.json",
+    "manifest_state": "removed",
+    "groups_live": {
+      "45473": false
+    },
+    "full_phase_group": 45459,
+    "full_phase_group_live": false,
+    "reservation_absent": true,
+    "peak_scratch_bytes": 270432,
+    "root_removed_bytes_at_finalizer": 0,
+    "large_outputs_or_archives": false,
+    "compatibility_exception": null,
+    "leftovers": [],
+    "successful_log_directory_absent": true
+  },
+  "retained_dependency_environment_bytes": {
+    "root": 27138292,
+    "server": 858816
+  },
+  "full_phase_receipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq55-20261105-lookup-full-receipt.json",
+  "review": "product-review.md",
+  "reproduction_plan": "final-validation-plan.json",
+  "strict_status_after_metadata": "matched c06d774bea5a with only admitted claim Markdown merged/staged",
+  "post_result_reproduction": "/opt/homebrew/bin/python3 -B /Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq55-20261105-lookup-full-phase.py status-final",
+  "health_after": {
+    "time_utc": "2026-11-05T06:12:16.508123+00:00",
+    "memory_pressure": "The system has 17179869184 (1048576 pages with a page size of 16384).\nSystem-wide memory free percentage: 49%",
+    "swap": "vm.swapusage: total = 2048.00M  used = 1120.00M  free = 928.00M  (encrypted)"
+  },
+  "dependency_pins_unchanged": {
+    "package.json": true,
+    "package-lock.json": true,
+    "server/package.json": true,
+    "server/package-lock.json": true
+  }
+}

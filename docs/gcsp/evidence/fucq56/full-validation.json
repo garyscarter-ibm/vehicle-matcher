@@ -1,0 +1,184 @@
+{
+  "argv_path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq56-20261105-consumer-full-argv.json",
+  "argv_summary": {
+    "errors": [],
+    "maxObservedTestWorkers": 1,
+    "samples": 121,
+    "samplingSeconds": 0.2
+  },
+  "checkpoint_path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/95bc8fad76b1c4071172329d13b95b27953f29d182b5b016bebbd404f0829579.json",
+  "command": "node --test --test-concurrency=1 server/test/**/*.test.js",
+  "counts": {
+    "cancelled": 0,
+    "fail": 0,
+    "pass": 859,
+    "skipped": 2,
+    "tests": 861
+  },
+  "freeze": {
+    "codeKey": "cf6181c359fb518f3fcf8bb71ca8bf5dfb8431b95972d2fbc9b0f32b62d71464",
+    "command": "node --test --test-concurrency=1 server/test/**/*.test.js",
+    "dependencyAllocatedBytes": {
+      "node_modules": 27058176,
+      "server/node_modules": 851968
+    },
+    "environment": {
+      "HOME": "/Users/usget",
+      "LANG": "en_GB.UTF-8",
+      "LOGNAME": "usget",
+      "PATH": "/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      "SCAFFOLDING_HARNESS": "codex",
+      "SHELL": "/bin/zsh",
+      "TZ": "Europe/London",
+      "USER": "usget",
+      "npm_config_audit": "false",
+      "npm_config_fund": "false",
+      "npm_config_offline": "true"
+    },
+    "executionIdentity": {
+      "code": "cf6181c359fb518f3fcf8bb71ca8bf5dfb8431b95972d2fbc9b0f32b62d71464",
+      "environment": "f18da93cde2a1d9a18ca39e466db83e02397d86a9e76668056cce07dd8cc13a0",
+      "inputs": {},
+      "interpreter": [
+        "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+      ],
+      "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+      "scope": "full",
+      "selected": [
+        "node --test --test-concurrency=1 server/test/**/*.test.js"
+      ],
+      "settings": "9c57dc7bca6b72962261fe519193afd2a783bbadf9f25001665e63320e9ce5ec",
+      "variant": "default",
+      "version": 1
+    },
+    "frozenAt": 1793860462.61626,
+    "head": "e4f7df7ce749b5f0d71c6e6a43f4b0ad144652ce",
+    "integratedBase": "a6cdd11",
+    "packages": {
+      "node_modules/jsdom": "30.0.1",
+      "server/node_modules/pg": "8.23.1"
+    },
+    "phaseLauncherSha256": "dac035ede50e785c95f80c1949d41bec191e81a8c33b63db9e41b2d39b3d165b",
+    "planSha256": "ea439f1e0a6ca89e910458bd3678c9755fb8f550bb1922fce761298f0f326662",
+    "runtime": {
+      "node": "v26.7.0",
+      "npm": "11.19.0",
+      "python": "Python 3.14.7"
+    },
+    "stampKey": "1e726c20ebde6aa9a1d74522808018e6934ad751cb9e9451fc60c7d6abf6ad8f",
+    "supervisorSha256": "8aa0d7d9b63bf10e6d6abb9a157896400206fbfa74ce14e002c93579a55986c5",
+    "tree": "66a67fc83479c096e41b230e1addc69b28aa7c77"
+  },
+  "phases": [
+    {
+      "ended": 1793860473.7130098,
+      "group_absent": true,
+      "joined": true,
+      "phase": "status-before",
+      "rc": 1,
+      "started": 1793860473.501647,
+      "stderr": "",
+      "stdout": "none (no passing --full run matches this tree, inputs, environment and plan; variant default)\n"
+    },
+    {
+      "ended": 1793860514.541922,
+      "group_absent": true,
+      "joined": true,
+      "phase": "full",
+      "rc": 0,
+      "started": 1793860476.950222,
+      "stderr": "",
+      "stdout": "\u2714 VIN-only raw rows retain VIN identity and unkeyed rows cannot invent advert identities (0.395333ms)\n\u2714 known numeric and position-specific equipment facts reject incompatible value types (0.120834ms)\n\u2714 all frozen legacy brand pools can project without payload additions or lost values (1.940209ms)\n\u2714 new fact evidence produces an independent snapshot version and retains earlier unknowns (0.058291ms)\n\u2714 a null optional VIN preserves a valid advert and its unchanged retail projection (0.25575ms)\n\u2139 tests 861\n\u2139 suites 0\n\u2139 pass 859\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 2\n\u2139 todo 0\n\u2139 duration_ms 35389.453625\n  completed 1 unit(s), exit 0; scratch removed\nOK (exit 0), wall 36.6s\nlogs: /Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq56-full-1c3da26887624d0f9a199fef18dbdf9d\nrecorded stamp: key 1e726c20ebde (tree 66a67fc83479, HEAD e4f7df7c), tests passed, wall 37s, 2026-11-05T06:35:14+0000, variant default, Python 3.14.7"
+    },
+    {
+      "ended": 1793860538.645791,
+      "group_absent": true,
+      "joined": true,
+      "phase": "status-after",
+      "rc": 0,
+      "started": 1793860538.3819609,
+      "stderr": "",
+      "stdout": "stamp: key 1e726c20ebde (tree 66a67fc83479, HEAD e4f7df7c), tests passed, wall 37s, 2026-11-05T06:35:14+0000, variant default, Python 3.14.7\n"
+    }
+  ],
+  "resource": {
+    "logRoots": [
+      {
+        "absent": true,
+        "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq56-full-1c3da26887624d0f9a199fef18dbdf9d"
+      }
+    ],
+    "ownedDescendants": {
+      "65789": "Thu  5 Nov 06:34:37 2026",
+      "65806": "Thu  5 Nov 06:34:37 2026",
+      "65868": "Thu  5 Nov 06:34:39 2026",
+      "65874": "Thu  5 Nov 06:34:39 2026",
+      "65877": "Thu  5 Nov 06:34:39 2026",
+      "65899": "Thu  5 Nov 06:34:40 2026",
+      "65920": "Thu  5 Nov 06:34:41 2026",
+      "65994": "Thu  5 Nov 06:34:43 2026",
+      "66004": "Thu  5 Nov 06:34:44 2026",
+      "66034": "Thu  5 Nov 06:34:45 2026",
+      "66047": "Thu  5 Nov 06:34:45 2026",
+      "66067": "Thu  5 Nov 06:34:46 2026",
+      "66144": "Thu  5 Nov 06:34:50 2026",
+      "66183": "Thu  5 Nov 06:34:51 2026",
+      "66202": "Thu  5 Nov 06:34:52 2026",
+      "66203": null,
+      "66212": "Thu  5 Nov 06:34:52 2026",
+      "66255": "Thu  5 Nov 06:34:53 2026",
+      "66262": "Thu  5 Nov 06:34:53 2026",
+      "66289": "Thu  5 Nov 06:34:54 2026",
+      "66294": "Thu  5 Nov 06:34:54 2026",
+      "66305": "Thu  5 Nov 06:34:55 2026",
+      "66310": "Thu  5 Nov 06:34:55 2026",
+      "66331": "Thu  5 Nov 06:34:56 2026",
+      "66342": "Thu  5 Nov 06:34:57 2026",
+      "66344": null,
+      "66357": "Thu  5 Nov 06:34:57 2026",
+      "66368": "Thu  5 Nov 06:34:58 2026",
+      "66401": "Thu  5 Nov 06:34:59 2026",
+      "66409": "Thu  5 Nov 06:34:59 2026",
+      "66462": "Thu  5 Nov 06:35:01 2026",
+      "66485": "Thu  5 Nov 06:35:01 2026",
+      "66499": "Thu  5 Nov 06:35:02 2026",
+      "66505": "Thu  5 Nov 06:35:02 2026",
+      "66565": "Thu  5 Nov 06:35:04 2026",
+      "66704": "Thu  5 Nov 06:35:10 2026"
+    },
+    "ownedDescendantsAbsent": true,
+    "rc": 0,
+    "results": [
+      {
+        "cleanup": {
+          "local_scratch_reason": "",
+          "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq56-20261105-consumer-full-1014cc8f51374186b347790d50115e0b.json",
+          "peak": 316448,
+          "removed": true,
+          "root": "/private/tmp/test-stamp-shard-1014cc8f51374186b347790d50115e0b"
+        },
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq56-full-1c3da26887624d0f9a199fef18dbdf9d/chunk-0001.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq56-20261105-consumer-full-1014cc8f51374186b347790d50115e0b.json",
+        "peak_rss": 332464128,
+        "peak_scratch": 316448,
+        "rc": 0,
+        "wall": 35.59417075000238
+      }
+    ],
+    "supervisor": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-029/docs/gcsp/evidence/fucq56/full-supervisor.py",
+    "tokensAbsent": true
+  },
+  "result": "passed",
+  "scope": "full",
+  "skip_reason": "GCSP_DATABASE_URL is unset; native SQL integration/constraints were not run.",
+  "skipped_tests": [
+    "postgresql native constraints reject a second occupying hold and claim",
+    "postgresql: shared TransactionRepository contract"
+  ],
+  "stamp_path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/stamp-1e726c20ebde6aa9a1d74522808018e6934ad751cb9e9451fc60c7d6abf6ad8f-default.json",
+  "story": "FUCQ-56",
+  "strict_final_status": "Execute saved full-phase.py status-final after Result/evidence commit+feature push; retained live phase receipt is authoritative."
+}

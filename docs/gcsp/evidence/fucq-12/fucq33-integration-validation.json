@@ -1,0 +1,1175 @@
+{
+  "acceptanceJudgment": {
+    "basis": "Integrated exact machine tests pass, focused affected-surface browser 55/55 and 8 inspected captures pass. Unchanged launcher behavior reuses historical hash-matched proof with every red assertion retained/classified. No confirmed new product defect; native popup option-picking remains unverified and MINI overflow is pre-existing.",
+    "collaboratorCheck": "At 320px, use the keyboard to choose another option in the native brand selector and open Used cars; observe the selected brand and route. Existing Tab/focus/Enter recovery is already verified.",
+    "nativeOptionPicking": "unverified by automation; not a confirmed product defect",
+    "newProductDefectConfirmed": false,
+    "preExistingProductLimitation": "Retained MINI retail header causes 76px overflow at viewport320, unchanged from claim-index baseline; retail rebuild excluded.",
+    "story": "built"
+  },
+  "agents": [
+    {
+      "effective": {
+        "effort": "high",
+        "model": "gpt-6.1-sol"
+      },
+      "fallback": null,
+      "requested": {
+        "effort": "high",
+        "model": "gpt-6.1-sol"
+      },
+      "role": "story lead",
+      "selected": {
+        "effort": "high",
+        "model": "gpt-6.1-sol"
+      }
+    },
+    {
+      "effective": {
+        "effort": "medium",
+        "model": "gpt-6.1-sol"
+      },
+      "fallback": null,
+      "requested": {
+        "effort": "medium",
+        "model": "gpt-6.1-sol"
+      },
+      "role": "launcher implementation",
+      "selected": {
+        "effort": "medium",
+        "model": "gpt-6.1-sol"
+      }
+    },
+    {
+      "effective": {
+        "effort": "high",
+        "model": "gpt-6-luna"
+      },
+      "fallback": null,
+      "requested": {
+        "effort": "high",
+        "model": "gpt-6-luna"
+      },
+      "role": "browser runner",
+      "selected": {
+        "effort": "high",
+        "model": "gpt-6-luna"
+      }
+    }
+  ],
+  "artifactReceipts": [
+    {
+      "path": "docs/gcsp/evidence/fucq-12/fucq33-validation.json",
+      "sha256": "4dbc70721dadec10b99d24372124939d65d3796212f756714aacc81dce5322bf"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq-12/fucq33-integration-initial-browser.json",
+      "sha256": "121f81419a8d457717476e2b9130b7ec7ed1044515b24ad0bcf4f3d008eab565"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq-12/fucq33-integration-second-browser.json",
+      "sha256": "92bb27adc480db9849d9c257402a45095b49d09e2ab73abbedff80935fd3a454"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq-12/fucq33-integration-browser.json",
+      "sha256": "4e4e10a95271707ec546484afd6038ab64fa1f605fc3a63f54755e42c95b9c4b"
+    }
+  ],
+  "baseDeltaSinceIntegrated": [
+    "_dev/in-progress/DEV-2026-11-04-052.md",
+    "docs/gcsp/dev-poller-2026-11-05.md"
+  ],
+  "branch": "dev/DEV-2026-11-04-007",
+  "browser": {
+    "changedHistoricalSources": [
+      "COMPONENTS.md",
+      "blocks/vehicle-matcher/component-gallery.js",
+      "components.html"
+    ],
+    "currentAffectedSurfaces": [
+      {
+        "assertions": 55,
+        "cases": 6,
+        "failed": 8,
+        "passed": 47,
+        "receipt": "docs/gcsp/evidence/fucq-12/fucq33-integration-initial-browser.json",
+        "redAssertionDisposition": [
+          {
+            "classification": "corrected-harness-expectation",
+            "evidenceAndDisposition": "Stable existing examples were present. First expectation invented a GCSP shared kit heading; subsequent expectation used innerText on an intentionally collapsed fixture. Final checks use the GCSP aria label and textContent, matching the prior stable fixture review.",
+            "id": "preserved-existing-examples",
+            "scope": "merged-gallery-desktop"
+          },
+          {
+            "classification": "corrected-harness-expectation",
+            "evidenceAndDisposition": "The privacy label contains fewer than 5 plus an accessible explanation. Exact equality incorrectly rejected the useful additional text; final checks preserve the textual band with its explanation.",
+            "id": "privacy-band-remains-text",
+            "scope": "merged-gallery-desktop"
+          },
+          {
+            "classification": "corrected-harness-expectation",
+            "evidenceAndDisposition": "Ghost actions use --gcsp-accent-ink (#0a6070), not the primary fill --gcsp-accent (#0b6c7e). White background and correct accent-ink match shared CSS.",
+            "id": "refresh-ghost-button-style",
+            "scope": "greg-reference-desktop"
+          },
+          {
+            "classification": "corrected-harness-expectation",
+            "evidenceAndDisposition": "Stable existing examples were present. First expectation invented a GCSP shared kit heading; subsequent expectation used innerText on an intentionally collapsed fixture. Final checks use the GCSP aria label and textContent, matching the prior stable fixture review.",
+            "id": "preserved-existing-examples",
+            "scope": "merged-gallery-narrow-320"
+          },
+          {
+            "classification": "corrected-harness-expectation",
+            "evidenceAndDisposition": "The privacy label contains fewer than 5 plus an accessible explanation. Exact equality incorrectly rejected the useful additional text; final checks preserve the textual band with its explanation.",
+            "id": "privacy-band-remains-text",
+            "scope": "merged-gallery-narrow-320"
+          },
+          {
+            "classification": "corrected-harness-expectation",
+            "evidenceAndDisposition": "The source intentionally changes titles from 34px at desktop to 28px at narrow 320. Both employee and Greg match each other and the existing responsive rule.",
+            "id": "shared-reference-typography-and-accent",
+            "scope": "employee-reference-narrow-320"
+          },
+          {
+            "classification": "corrected-harness-expectation",
+            "evidenceAndDisposition": "The source intentionally changes titles from 34px at desktop to 28px at narrow 320. Both employee and Greg match each other and the existing responsive rule.",
+            "id": "shared-reference-typography-and-accent",
+            "scope": "greg-reference-narrow-320"
+          },
+          {
+            "classification": "corrected-harness-expectation",
+            "evidenceAndDisposition": "Ghost actions use --gcsp-accent-ink (#0a6070), not the primary fill --gcsp-accent (#0b6c7e). White background and correct accent-ink match shared CSS.",
+            "id": "refresh-ghost-button-style",
+            "scope": "greg-reference-narrow-320"
+          }
+        ],
+        "resource": {
+          "browserProfile": "persistent isolated Chromium profile inside owned scratch; removed by finalizer",
+          "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-integration-20261105/logs/fucq33-integration-browser.log",
+          "logBytes": 3480,
+          "oneDriveAvailable": false,
+          "ownedProcessGroups": [
+            40948
+          ],
+          "ownedProcessGroupsDead": true,
+          "peakRssBytes": 508313600,
+          "peakScratchBytes": 10814304,
+          "portsAfter": {
+            "31449": {
+              "state": "none"
+            },
+            "31450": {
+              "state": "none"
+            }
+          },
+          "reservation": {
+            "disk": 268435456,
+            "ram": 1610612736
+          },
+          "reservationReleased": true,
+          "scratchAbsent": true,
+          "scratchRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/browser-integration",
+          "serverDependencyBytes": 858816,
+          "serverDependencyBytesWithinCap": true,
+          "serverManifestHashesAfter": {
+            "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+            "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+          },
+          "serverManifestHashesBefore": {
+            "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+            "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+          },
+          "serverManifestHashesUnchanged": true,
+          "serverPgInstalled": true,
+          "sourceHashesUnchanged": true,
+          "wallSeconds": 8.035
+        }
+      },
+      {
+        "assertions": 55,
+        "cases": 6,
+        "failed": 2,
+        "passed": 53,
+        "receipt": "docs/gcsp/evidence/fucq-12/fucq33-integration-second-browser.json",
+        "redAssertionDisposition": [
+          {
+            "classification": "corrected-harness-expectation",
+            "evidenceAndDisposition": "Stable existing examples were present. First expectation invented a GCSP shared kit heading; subsequent expectation used innerText on an intentionally collapsed fixture. Final checks use the GCSP aria label and textContent, matching the prior stable fixture review.",
+            "id": "preserved-existing-examples",
+            "scope": "merged-gallery-desktop"
+          },
+          {
+            "classification": "corrected-harness-expectation",
+            "evidenceAndDisposition": "Stable existing examples were present. First expectation invented a GCSP shared kit heading; subsequent expectation used innerText on an intentionally collapsed fixture. Final checks use the GCSP aria label and textContent, matching the prior stable fixture review.",
+            "id": "preserved-existing-examples",
+            "scope": "merged-gallery-narrow-320"
+          }
+        ],
+        "resource": {
+          "browserProfile": "persistent isolated Chromium profile inside owned scratch; removed by finalizer",
+          "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-integration-20261105/logs/fucq33-integration-browser.log",
+          "logBytes": 718,
+          "oneDriveAvailable": false,
+          "ownedProcessGroups": [
+            41203
+          ],
+          "ownedProcessGroupsDead": true,
+          "peakRssBytes": 508936192,
+          "peakScratchBytes": 10920832,
+          "portsAfter": {
+            "31449": {
+              "state": "none"
+            },
+            "31450": {
+              "state": "none"
+            }
+          },
+          "reservation": {
+            "disk": 268435456,
+            "ram": 1610612736
+          },
+          "reservationReleased": true,
+          "scratchAbsent": true,
+          "scratchRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/browser-integration",
+          "serverDependencyBytes": 858816,
+          "serverDependencyBytesWithinCap": true,
+          "serverManifestHashesAfter": {
+            "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+            "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+          },
+          "serverManifestHashesBefore": {
+            "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+            "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+          },
+          "serverManifestHashesUnchanged": true,
+          "serverPgInstalled": true,
+          "sourceHashesUnchanged": true,
+          "wallSeconds": 7.9
+        }
+      },
+      {
+        "assertions": 55,
+        "cases": 6,
+        "failed": 0,
+        "passed": 55,
+        "receipt": "docs/gcsp/evidence/fucq-12/fucq33-integration-browser.json",
+        "redAssertionDisposition": [],
+        "resource": {
+          "browserProfile": "persistent isolated Chromium profile inside owned scratch; removed by finalizer",
+          "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-integration-20261105/logs/fucq33-integration-browser.log",
+          "logBytes": 54,
+          "oneDriveAvailable": false,
+          "ownedProcessGroups": [
+            41617
+          ],
+          "ownedProcessGroupsDead": true,
+          "peakRssBytes": 488554496,
+          "peakScratchBytes": 10814304,
+          "portsAfter": {
+            "31449": {
+              "state": "none"
+            },
+            "31450": {
+              "state": "none"
+            }
+          },
+          "reservation": {
+            "disk": 268435456,
+            "ram": 1610612736
+          },
+          "reservationReleased": true,
+          "scratchAbsent": true,
+          "scratchRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/browser-integration",
+          "serverDependencyBytes": 858816,
+          "serverDependencyBytesWithinCap": true,
+          "serverManifestHashesAfter": {
+            "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+            "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+          },
+          "serverManifestHashesBefore": {
+            "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+            "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+          },
+          "serverManifestHashesUnchanged": true,
+          "serverPgInstalled": true,
+          "sourceHashesUnchanged": true,
+          "wallSeconds": 7.829
+        }
+      }
+    ],
+    "currentAssertionsPassed": true,
+    "historicalAllAssertionsPassed": false,
+    "historicalReuse": {
+      "COMPONENTS.md": {
+        "current": "700f52c2db239d0046b5fcfa268e198303c94811c44d5a518dfcd221fbb1e8cf",
+        "historical": "5d960b3e5de0d4abdf24a6051f4669b630d58b423f550700cb00161c61032874",
+        "unchanged": false
+      },
+      "assets/brand-hero/bmw.jpg": {
+        "current": "674a6adc350ce39dde798acda7279f8c1e1c0a5a91daa7a1d1c843616a2b442d",
+        "historical": "674a6adc350ce39dde798acda7279f8c1e1c0a5a91daa7a1d1c843616a2b442d",
+        "unchanged": true
+      },
+      "assets/brand-hero/ferrari.jpg": {
+        "current": "ce117434f27d6526edc7e3930ed3a7feb9b263aaf118dedc5e41405bfc5f7b60",
+        "historical": "ce117434f27d6526edc7e3930ed3a7feb9b263aaf118dedc5e41405bfc5f7b60",
+        "unchanged": true
+      },
+      "assets/brand-hero/ford.jpg": {
+        "current": "493447a7f733b2e3aa05a595b3194cd637e3097f2d9452ac4f3ab3ab960970d3",
+        "historical": "493447a7f733b2e3aa05a595b3194cd637e3097f2d9452ac4f3ab3ab960970d3",
+        "unchanged": true
+      },
+      "assets/brand-hero/honda.jpg": {
+        "current": "e6e6f9a8543e831e9c460d83ee7ab0d4b37f1e07f843b23c9ac2a26cd9196622",
+        "historical": "e6e6f9a8543e831e9c460d83ee7ab0d4b37f1e07f843b23c9ac2a26cd9196622",
+        "unchanged": true
+      },
+      "assets/brand-hero/mini.jpg": {
+        "current": "3589cbc23a64762ad0130613c5cf9e759fc1a39c5f5b80df915cbd8377e0f0d0",
+        "historical": "3589cbc23a64762ad0130613c5cf9e759fc1a39c5f5b80df915cbd8377e0f0d0",
+        "unchanged": true
+      },
+      "assets/brand-hero/motorrad.jpg": {
+        "current": "fd52f741b4371ec85942ee6b5f950fbe32553bd70c6c91a02838e13784b91192",
+        "historical": "fd52f741b4371ec85942ee6b5f950fbe32553bd70c6c91a02838e13784b91192",
+        "unchanged": true
+      },
+      "assets/brand-logos/bmw.svg": {
+        "current": "b2226efc7bfb81d6b4f6d3002205ff2d2da2e5eb75455694dcd9645ba6e460a7",
+        "historical": "b2226efc7bfb81d6b4f6d3002205ff2d2da2e5eb75455694dcd9645ba6e460a7",
+        "unchanged": true
+      },
+      "assets/brand-logos/ferrari.svg": {
+        "current": "af5aaf761313d11ce5ec2c3746786449a361cec8638924ebf0a6c22f87cbdd90",
+        "historical": "af5aaf761313d11ce5ec2c3746786449a361cec8638924ebf0a6c22f87cbdd90",
+        "unchanged": true
+      },
+      "assets/brand-logos/ford.svg": {
+        "current": "b7447830af9bf4ea2de945cb172f92f0e77aaf508304b4f1339c9572f352ae79",
+        "historical": "b7447830af9bf4ea2de945cb172f92f0e77aaf508304b4f1339c9572f352ae79",
+        "unchanged": true
+      },
+      "assets/brand-logos/honda.svg": {
+        "current": "302b953c7cd386c159e47cf7e4a9b73439336afd57485786b347dbb610f0c708",
+        "historical": "302b953c7cd386c159e47cf7e4a9b73439336afd57485786b347dbb610f0c708",
+        "unchanged": true
+      },
+      "assets/brand-logos/mini.svg": {
+        "current": "84e781326fba9c98bdaada156869cfb193da1e1a4fdba7f4fd05c27bb87709a0",
+        "historical": "84e781326fba9c98bdaada156869cfb193da1e1a4fdba7f4fd05c27bb87709a0",
+        "unchanged": true
+      },
+      "assets/brand-logos/motorrad.svg": {
+        "current": "5581aca876aa82f51d4ccf18099e2924e3981179f21a242743d47a1bc8f1a53c",
+        "historical": "5581aca876aa82f51d4ccf18099e2924e3981179f21a242743d47a1bc8f1a53c",
+        "unchanged": true
+      },
+      "blocks/demo-launcher/boot.js": {
+        "current": "4504dc0eaa8445a059872512396512ee88934e0fff2914720cdf84f09823a75f",
+        "historical": "4504dc0eaa8445a059872512396512ee88934e0fff2914720cdf84f09823a75f",
+        "unchanged": true
+      },
+      "blocks/demo-launcher/components.js": {
+        "current": "d0dbd308deaec87ea08e013fbe7922400b35286ca35887c2bda2cc1b5321105e",
+        "historical": "d0dbd308deaec87ea08e013fbe7922400b35286ca35887c2bda2cc1b5321105e",
+        "unchanged": true
+      },
+      "blocks/demo-launcher/demo-launcher.js": {
+        "current": "b5f169949c234ce6ca0cf34ad2f918d3df7bdc7ac1af0aa589a6c46b805f230c",
+        "historical": "b5f169949c234ce6ca0cf34ad2f918d3df7bdc7ac1af0aa589a6c46b805f230c",
+        "unchanged": true
+      },
+      "blocks/demo-launcher/entry-context.js": {
+        "current": "bbdcc23db25d082ff5c18bdd7caf98f078a39cf4c0e79322af78cf555f6a9b52",
+        "historical": "bbdcc23db25d082ff5c18bdd7caf98f078a39cf4c0e79322af78cf555f6a9b52",
+        "unchanged": true
+      },
+      "blocks/demo-launcher/entry-host.css": {
+        "current": "6a41715c4bcd036ba2b592b97fb25c0e9511879f771903e4c025cb5a8a42f747",
+        "historical": "6a41715c4bcd036ba2b592b97fb25c0e9511879f771903e4c025cb5a8a42f747",
+        "unchanged": true
+      },
+      "blocks/demo-launcher/launcher.css": {
+        "current": "e837dfdaad34439efdc19eede3bbe12c9500ed576d21523cc81f169d6c9f069f",
+        "historical": "e837dfdaad34439efdc19eede3bbe12c9500ed576d21523cc81f169d6c9f069f",
+        "unchanged": true
+      },
+      "blocks/demo-launcher/launcher.js": {
+        "current": "6b36679c316b467776535afa015a507085b34672fbe38311e191395b43a6a7e0",
+        "historical": "6b36679c316b467776535afa015a507085b34672fbe38311e191395b43a6a7e0",
+        "unchanged": true
+      },
+      "blocks/demo-launcher/retail-chrome.js": {
+        "current": "a0cd9de0125faa66eef0d8f0730be393b268cdb301e38a96ee136aaec0493072",
+        "historical": "a0cd9de0125faa66eef0d8f0730be393b268cdb301e38a96ee136aaec0493072",
+        "unchanged": true
+      },
+      "blocks/gcsp/employee/gcsp-employee.css": {
+        "current": "3cab6080aa52605d92b5f616151087fe289e72c43045a7f396a8bffca7112b6f",
+        "historical": "3cab6080aa52605d92b5f616151087fe289e72c43045a7f396a8bffca7112b6f",
+        "unchanged": true
+      },
+      "blocks/gcsp/employee/representative-body.js": {
+        "current": "a9146fc18cac0346a20b12c603df65a84dffc7bd46d267f2706f4e2c63b76af4",
+        "historical": "a9146fc18cac0346a20b12c603df65a84dffc7bd46d267f2706f4e2c63b76af4",
+        "unchanged": true
+      },
+      "blocks/gcsp/shell/gcsp-shell.css": {
+        "current": "d6f35911624c03ee82c22eb349d51228ba849eaf354976f19df905887e9f92a3",
+        "historical": "d6f35911624c03ee82c22eb349d51228ba849eaf354976f19df905887e9f92a3",
+        "unchanged": true
+      },
+      "blocks/gcsp/shell/gcsp-tokens.css": {
+        "current": "d939a355b945ecfd0ad185029dbe2b79c70bab8862052a7ec54cf7abfa7f8642",
+        "historical": "d939a355b945ecfd0ad185029dbe2b79c70bab8862052a7ec54cf7abfa7f8642",
+        "unchanged": true
+      },
+      "blocks/vehicle-matcher/component-gallery.css": {
+        "current": "21b053f47d968c4a619340ee305816b70dba4905ad39783d8cdfb3db6db8b2c9",
+        "historical": "21b053f47d968c4a619340ee305816b70dba4905ad39783d8cdfb3db6db8b2c9",
+        "unchanged": true
+      },
+      "blocks/vehicle-matcher/component-gallery.js": {
+        "current": "aa6fb49f318f4671f60905d65317509d5813d64a11e6b7c47c431ebc44346147",
+        "historical": "068c861334749d417d26e8c5bddb3523b0f2eee7f2ddfab919ab6c13d674a195",
+        "unchanged": false
+      },
+      "blocks/vehicle-matcher/gcsp-kit.css": {
+        "current": "64abde7dfc99e40c68270a9ea5850c9a713623014f3beca1f4d5c96263763b86",
+        "historical": "64abde7dfc99e40c68270a9ea5850c9a713623014f3beca1f4d5c96263763b86",
+        "unchanged": true
+      },
+      "blocks/vehicle-matcher/modes/result-card.js": {
+        "current": "cc5d50468f45f1c751c597ece89ca5d7dfe88f70d98dd606104ad3504007f948",
+        "historical": "cc5d50468f45f1c751c597ece89ca5d7dfe88f70d98dd606104ad3504007f948",
+        "unchanged": true
+      },
+      "blocks/vehicle-matcher/tokens.css": {
+        "current": "30d971de3fd89d456b7bc819621ff9f11888da1ca73e8bd80dc70c58a411b1fa",
+        "historical": "30d971de3fd89d456b7bc819621ff9f11888da1ca73e8bd80dc70c58a411b1fa",
+        "unchanged": true
+      },
+      "blocks/vehicle-matcher/ui.js": {
+        "current": "49107097a7927e388ff78949045827f3a8903fea0bd758dbe1aa597bec82d8b2",
+        "historical": "49107097a7927e388ff78949045827f3a8903fea0bd758dbe1aa597bec82d8b2",
+        "unchanged": true
+      },
+      "blocks/vehicle-matcher/vehicle-matcher.css": {
+        "current": "11d7af7f3f05766c9c32c107f75f31d269d5531de4040938b34cea8b3854ea94",
+        "historical": "11d7af7f3f05766c9c32c107f75f31d269d5531de4040938b34cea8b3854ea94",
+        "unchanged": true
+      },
+      "components.html": {
+        "current": "6dbfbdd486dff1911d23268c749aaa5b0168d4fe132288315b9100aa2017ffa4",
+        "historical": "99413690d048b349e752b5323e1d6468423ea7a1037b474d3716d9661f97d91f",
+        "unchanged": false
+      },
+      "gcsp-employee.html": {
+        "current": "81d96b2903d3245ff9d1138246dad308127adc71a0fdd4956edd3b4d2dda581f",
+        "historical": "81d96b2903d3245ff9d1138246dad308127adc71a0fdd4956edd3b4d2dda581f",
+        "unchanged": true
+      },
+      "index.html": {
+        "current": "36eaabc55fcffb32f8fc83c306b00fe0bbb4fdd470b3d6c4dac70abc10f6c517",
+        "historical": "36eaabc55fcffb32f8fc83c306b00fe0bbb4fdd470b3d6c4dac70abc10f6c517",
+        "unchanged": true
+      },
+      "server/index.js": {
+        "current": "849f4ee835d473db855e87be3cb74d7163ea1b98a7eb2eced3f467d9fbe5d67a",
+        "historical": "849f4ee835d473db855e87be3cb74d7163ea1b98a7eb2eced3f467d9fbe5d67a",
+        "unchanged": true
+      },
+      "server/package-lock.json": {
+        "current": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+        "historical": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+        "unchanged": true
+      },
+      "server/package.json": {
+        "current": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139",
+        "historical": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139",
+        "unchanged": true
+      }
+    },
+    "historicalValidation": "docs/gcsp/evidence/fucq-12/fucq33-validation.json",
+    "initialHarnessSha256": {
+      "capture-initial.mjs": "f4c0d4ea46455c13103f11125ffb039e4e14ba6b9602d4425b62fae324e71c73",
+      "capture-second.mjs": "7c4ecadeed1481c65dcb4c6e7dc0f8928414e29895e74781b4a236e8d7ef9da2"
+    },
+    "reference": "a7fc17810ec6887d680c2fbf4aabcc4992e7c199 employee representative; supplied shell/palette references indexed by docs/gcsp/screens/README.md; newly integrated Greg reference under docs/gcsp/evidence/fucq-101/.",
+    "scope": "Current integrated gallery/employee/Greg only. Historical unchanged launcher behavior reused by hashes; native option picking not rerun.",
+    "screenshots": [
+      {
+        "bytes": 785260,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-integration/fucq33-integration-employee-desktop.png",
+        "sha256": "fba73915672ae8d5bf4b4d46608370cb274e177a9c8348d41cb9b1a3bbd3778f"
+      },
+      {
+        "bytes": 483796,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-integration/fucq33-integration-employee-narrow-320.png",
+        "sha256": "076c61668b7c71faea371ed2b99cede7e9d7603314cb49d38e600b383a62f7d6"
+      },
+      {
+        "bytes": 72400,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-integration/fucq33-integration-gallery-greg-kit-desktop.png",
+        "sha256": "966764511b734c3846b99a51db7c25b0b131e07ba06f3d5d11e8c280cbc142d5"
+      },
+      {
+        "bytes": 66237,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-integration/fucq33-integration-gallery-greg-kit-narrow-320.png",
+        "sha256": "cc1433ccdcf288b25d76059d7b35dbe3514f951d377f473f5be167acfb1260fd"
+      },
+      {
+        "bytes": 78403,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-integration/fucq33-integration-gallery-launcher-desktop.png",
+        "sha256": "8017c4214eb8fee0acae066ad470d1535e865963c45dd71f336707a1a1a9c661"
+      },
+      {
+        "bytes": 74510,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-integration/fucq33-integration-gallery-launcher-narrow-320.png",
+        "sha256": "8a07fd51b6a7f01a553596e8574722de7ae1442b4ee7b146e0daee091897391b"
+      },
+      {
+        "bytes": 324968,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-integration/fucq33-integration-greg-desktop.png",
+        "sha256": "081487022378b0f5b20927c31315fe59bc759115d903dd3a0c6535d2cb1de088"
+      },
+      {
+        "bytes": 336581,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-integration/fucq33-integration-greg-narrow-320.png",
+        "sha256": "8f16004f9849ba9d299f4b17ca58bcbd38337fd104cbaca4330e4e8ec0bdfaf0"
+      }
+    ],
+    "supervisedCheckpoint": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-integration-20261105/checkpoint.json",
+    "supervisedHarnessSha256": {
+      "capture-integration.mjs": "c7ed661346e19c3b3be79fdb42ecc10dd93c7905b1ec748977152224f40950f0",
+      "run-browser-integration.sh": "437c32ebc6adfb161c4e4abe96cee19768dc66ca6f4b22c01db8567ba09f4b9a",
+      "run.py": "b67d9bf80ee6b5b0730729f4b0bac6a8cbf26d96b9de97dbb9d7f18665dc39b0"
+    },
+    "supervisedPlan": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-integration-20261105/run-plan.json",
+    "visualReview": "All 8 directly inspected; preserved both gallery sections and employee/Greg visual language, responsive wrapping, local table scrolling and no page overflow."
+  },
+  "checkedAt": "2026-11-05T12:46:09.679426+00:00",
+  "checks": [
+    {
+      "checkpoint": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/checkpoints/6a843886d2f20ae34987c9ec55c7af87e867f4d9627aef2bd48a4275091fd80d.json",
+      "cleanupReported": {
+        "local_scratch_reason": "",
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fb52c6e7362c464dac6543054b5678da.json",
+        "peak": 0,
+        "removed": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/lead/disposable/test-stamp-shard-fb52c6e7362c464dac6543054b5678da"
+      },
+      "command": "node --test server/test/launcher-context.test.js server/test/launcher-render.test.js",
+      "counts": {
+        "fail": 0,
+        "pass": 22,
+        "skipped": 0,
+        "tests": 22
+      },
+      "executionIdentity": {
+        "code": "0a1f27ff850005e235644d8c338d19e1eca6d3a8719c103fc9f0959bc47d3a9e",
+        "environment": "d75cffa1e6ff2403ae5eb5b53e75469d73684885cd11aad41d8e12e262d234d9",
+        "inputs": {},
+        "interpreter": [
+          "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+          "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]"
+        ],
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "scope": "targeted",
+        "selected": [
+          "node --test server/test/launcher-context.test.js server/test/launcher-render.test.js"
+        ],
+        "settings": "e2f5f9dedfdb52d5032bab3ab84754235c4c77834842ce36e5c0545baf46030a",
+        "variant": "default",
+        "version": 1
+      },
+      "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/logs/20261105-123836-g2jma0ua/chunk-0001.log",
+      "name": "launcher",
+      "ownershipManifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fb52c6e7362c464dac6543054b5678da.json",
+      "peakRssBytes": 464683008,
+      "peakScratchBytes": 0,
+      "wallSeconds": 2.147
+    },
+    {
+      "checkpoint": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/checkpoints/82c70c156c1aa106575e2af9fa3de0571a5737e9d16a00df66a4e3c32394c76e.json",
+      "cleanupReported": {
+        "local_scratch_reason": "",
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/d4eaa00e7c4e4b25aedcd9d2e98cfe1d.json",
+        "peak": 0,
+        "removed": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/lead/disposable/test-stamp-shard-d4eaa00e7c4e4b25aedcd9d2e98cfe1d"
+      },
+      "command": "node --test server/test/ui-ratchet.test.js server/test/render.test.js",
+      "counts": {
+        "fail": 0,
+        "pass": 69,
+        "skipped": 0,
+        "tests": 69
+      },
+      "executionIdentity": {
+        "code": "0a1f27ff850005e235644d8c338d19e1eca6d3a8719c103fc9f0959bc47d3a9e",
+        "environment": "d75cffa1e6ff2403ae5eb5b53e75469d73684885cd11aad41d8e12e262d234d9",
+        "inputs": {},
+        "interpreter": [
+          "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+          "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]"
+        ],
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "scope": "targeted",
+        "selected": [
+          "node --test server/test/ui-ratchet.test.js server/test/render.test.js"
+        ],
+        "settings": "7e73db5ab62e0a8005075082f4fd7557b79f71c11713c2d54a0ef075d0ac9e4f",
+        "variant": "default",
+        "version": 1
+      },
+      "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/logs/20261105-123836-xer4cyw0/chunk-0001.log",
+      "name": "retail-and-ratchet",
+      "ownershipManifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/d4eaa00e7c4e4b25aedcd9d2e98cfe1d.json",
+      "peakRssBytes": 348192768,
+      "peakScratchBytes": 0,
+      "wallSeconds": 6.004
+    },
+    {
+      "checkpoint": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/checkpoints/960b5ae6dc62a20460987e504d73aac8dfdf05a87942802b6b334510907e8e12.json",
+      "cleanupReported": {
+        "local_scratch_reason": "",
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/f31eeab41ee84196aad5bde1f8629447.json",
+        "peak": 0,
+        "removed": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/lead/disposable/test-stamp-shard-f31eeab41ee84196aad5bde1f8629447"
+      },
+      "command": "node --test server/test/gcsp-greg-dashboard.test.js server/test/gcsp-greg-dashboard-data.test.js",
+      "counts": {
+        "fail": 0,
+        "pass": 30,
+        "skipped": 0,
+        "tests": 30
+      },
+      "executionIdentity": {
+        "code": "0a1f27ff850005e235644d8c338d19e1eca6d3a8719c103fc9f0959bc47d3a9e",
+        "environment": "d75cffa1e6ff2403ae5eb5b53e75469d73684885cd11aad41d8e12e262d234d9",
+        "inputs": {},
+        "interpreter": [
+          "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+          "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]"
+        ],
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "scope": "targeted",
+        "selected": [
+          "node --test server/test/gcsp-greg-dashboard.test.js server/test/gcsp-greg-dashboard-data.test.js"
+        ],
+        "settings": "7ba2cfb6c10eeac777932bcd63b2c2321b7cb9a004e3334edc93153c938c7e82",
+        "variant": "default",
+        "version": 1
+      },
+      "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/logs/20261105-123836-2bi2lnfv/chunk-0001.log",
+      "name": "Greg-overlap",
+      "ownershipManifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/f31eeab41ee84196aad5bde1f8629447.json",
+      "peakRssBytes": 419397632,
+      "peakScratchBytes": 0,
+      "wallSeconds": 2.275
+    },
+    {
+      "checkpoint": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/checkpoints/991e4ef5a3b75b4e7f7937795eae955ca797e8b2ab11c5e2b447ba4a25fd06f9.json",
+      "cleanupReported": {
+        "local_scratch_reason": "",
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fdadfc2a7d624b24a8bad68d456f9280.json",
+        "peak": 547968,
+        "removed": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/lead/disposable/test-stamp-shard-fdadfc2a7d624b24a8bad68d456f9280"
+      },
+      "command": "npm test",
+      "counts": {
+        "fail": 0,
+        "pass": 1001,
+        "skipped": 2,
+        "tests": 1003
+      },
+      "executionIdentity": {
+        "code": "0a1f27ff850005e235644d8c338d19e1eca6d3a8719c103fc9f0959bc47d3a9e",
+        "environment": "d75cffa1e6ff2403ae5eb5b53e75469d73684885cd11aad41d8e12e262d234d9",
+        "inputs": {},
+        "interpreter": [
+          "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+          "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]"
+        ],
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "scope": "full",
+        "selected": [
+          "npm test"
+        ],
+        "settings": "8648cc060ad6647253dd5cf552ffe8279076e8269ac5012f1bac3051ead67aa8",
+        "variant": "default",
+        "version": 1
+      },
+      "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/logs/20261105-124139-t7ys9si0/chunk-0001.log",
+      "name": "full",
+      "ownershipManifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fdadfc2a7d624b24a8bad68d456f9280.json",
+      "peakRssBytes": 1701314560,
+      "peakScratchBytes": 547968,
+      "wallSeconds": 13.736
+    }
+  ],
+  "cleanupIndependent": {
+    "allOwnedGroupsDead": true,
+    "allOwnedRootsAbsent": true,
+    "baseDeltaSinceTested": [
+      "_dev/in-progress/DEV-2026-11-04-052.md",
+      "docs/gcsp/dev-poller-2026-11-05.md"
+    ],
+    "branch": "dev/DEV-2026-11-04-007",
+    "checkedAt": "2026-11-05T12:44:30.322838+00:00",
+    "head": "695485910ddc6785c3ab1d568ecff4f0844cb337",
+    "latestBase": "5874b75d5186ad81a75ded87d1bd44e02d562c65",
+    "noOwnReservations": true,
+    "ownReservations": {},
+    "ownedManifests": [
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 11982
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/1782264ce8f94c08a15c4977b20a917e.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/lead/disposable/test-stamp-shard-1782264ce8f94c08a15c4977b20a917e",
+        "rootAbsent": true,
+        "token": "1782264ce8f94c08a15c4977b20a917e"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 654
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/6ae3d43e254e42159f532c200c53340a.json",
+        "manifestState": "removed",
+        "root": "/private/tmp/test-stamp-shard-6ae3d43e254e42159f532c200c53340a",
+        "rootAbsent": true,
+        "token": "6ae3d43e254e42159f532c200c53340a"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 12580
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/93389f0d7a68422fa8583854aa0335c9.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/lead/disposable/test-stamp-shard-93389f0d7a68422fa8583854aa0335c9",
+        "rootAbsent": true,
+        "token": "93389f0d7a68422fa8583854aa0335c9"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 38489
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/d4eaa00e7c4e4b25aedcd9d2e98cfe1d.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/lead/disposable/test-stamp-shard-d4eaa00e7c4e4b25aedcd9d2e98cfe1d",
+        "rootAbsent": true,
+        "token": "d4eaa00e7c4e4b25aedcd9d2e98cfe1d"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 11862
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/ea46cff9a89b4209bd838783554b7d02.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/lead/disposable/test-stamp-shard-ea46cff9a89b4209bd838783554b7d02",
+        "rootAbsent": true,
+        "token": "ea46cff9a89b4209bd838783554b7d02"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 38486
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/f31eeab41ee84196aad5bde1f8629447.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/lead/disposable/test-stamp-shard-f31eeab41ee84196aad5bde1f8629447",
+        "rootAbsent": true,
+        "token": "f31eeab41ee84196aad5bde1f8629447"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 38481
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fb52c6e7362c464dac6543054b5678da.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/lead/disposable/test-stamp-shard-fb52c6e7362c464dac6543054b5678da",
+        "rootAbsent": true,
+        "token": "fb52c6e7362c464dac6543054b5678da"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 40098
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fdadfc2a7d624b24a8bad68d456f9280.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/lead/disposable/test-stamp-shard-fdadfc2a7d624b24a8bad68d456f9280",
+        "rootAbsent": true,
+        "token": "fdadfc2a7d624b24a8bad68d456f9280"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 8342
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-browser-early/ownership/aed3625c1312488a9f54d30e8d37c5b0.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/browser-early",
+        "rootAbsent": true,
+        "token": "aed3625c1312488a9f54d30e8d37c5b0"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 9078
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-browser-early/ownership/ce68ffc89ade4e38a7827d4268400bff.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/browser-early",
+        "rootAbsent": true,
+        "token": "ce68ffc89ade4e38a7827d4268400bff"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 17497
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-browser-final/ownership/9afa47ebcee74704996b340d070767e0.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/browser-final",
+        "rootAbsent": true,
+        "token": "9afa47ebcee74704996b340d070767e0"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 23643
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-browser-final/ownership/c18ca8063d924b68975fcbcf69af11b6.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/browser-final",
+        "rootAbsent": true,
+        "token": "c18ca8063d924b68975fcbcf69af11b6"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 22695
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-browser-final/ownership/f6cccdf8fb204dd08f3bab34ffe9d899.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/browser-final",
+        "rootAbsent": true,
+        "token": "f6cccdf8fb204dd08f3bab34ffe9d899"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 30463
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-followup-20261105/ownership/56c51673fc8c4db3b1725460ec6a62f3.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/followup-20261105",
+        "rootAbsent": true,
+        "token": "56c51673fc8c4db3b1725460ec6a62f3"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 40948
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-integration-20261105/ownership/9db98d97f2374e448158d4c72b454ce2.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/browser-integration",
+        "rootAbsent": true,
+        "token": "9db98d97f2374e448158d4c72b454ce2"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 41617
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-integration-20261105/ownership/e4046de1dd0e4d3ea6cc5b520f9de0cd.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/browser-integration",
+        "rootAbsent": true,
+        "token": "e4046de1dd0e4d3ea6cc5b520f9de0cd"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 41203
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-integration-20261105/ownership/fc877f2ce30845908c1755936b70a7c1.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/browser-integration",
+        "rootAbsent": true,
+        "token": "fc877f2ce30845908c1755936b70a7c1"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 33598
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-keyboard-retry-20261105/ownership/58f2b44fe5374e96a39d7f1e25f1cacf.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/keyboard-retry-20261105",
+        "rootAbsent": true,
+        "token": "58f2b44fe5374e96a39d7f1e25f1cacf"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 33151
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-keyboard-retry-20261105/ownership/592722311cfc480e94a0a56b4765bb40.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/keyboard-retry-20261105",
+        "rootAbsent": true,
+        "token": "592722311cfc480e94a0a56b4765bb40"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 99155
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/implementation/ownership/1264c4c57e64468c83a9e667ae3d496e.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/implementation/scratch-1264c4c57e64468c83a9e667ae3d496e",
+        "rootAbsent": true,
+        "token": "1264c4c57e64468c83a9e667ae3d496e"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 99346
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/implementation/ownership/6a66f68804e14f49ba19ca48a7ab0ef9.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/implementation/scratch-6a66f68804e14f49ba19ca48a7ab0ef9",
+        "rootAbsent": true,
+        "token": "6a66f68804e14f49ba19ca48a7ab0ef9"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 98632
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/implementation/ownership/c33d8a47fc1d47b3b5165a2383c3cc5f.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/implementation/scratch-c33d8a47fc1d47b3b5165a2383c3cc5f",
+        "rootAbsent": true,
+        "token": "c33d8a47fc1d47b3b5165a2383c3cc5f"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 11325
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/implementation/slice2/ownership/bfabd215ced542a48e47c9f0e0f861a8.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/implementation/slice2/scratch-bfabd215ced542a48e47c9f0e0f861a8",
+        "rootAbsent": true,
+        "token": "bfabd215ced542a48e47c9f0e0f861a8"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 11172
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/implementation/slice2/ownership/d4520442c55b4f9a922f7e6fc7457f06.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/implementation/slice2/scratch-d4520442c55b4f9a922f7e6fc7457f06",
+        "rootAbsent": true,
+        "token": "d4520442c55b4f9a922f7e6fc7457f06"
+      }
+    ],
+    "ports": {
+      "31433": {
+        "listenerAbsent": true
+      },
+      "31434": {
+        "listenerAbsent": true
+      },
+      "31439": {
+        "listenerAbsent": true
+      },
+      "31440": {
+        "listenerAbsent": true
+      },
+      "31449": {
+        "listenerAbsent": true
+      },
+      "31450": {
+        "listenerAbsent": true
+      },
+      "32139": {
+        "listenerAbsent": true
+      },
+      "32149": {
+        "listenerAbsent": true
+      },
+      "32878": {
+        "listenerAbsent": true
+      },
+      "32888": {
+        "listenerAbsent": true
+      }
+    },
+    "productCodeIdentity": "0a1f27ff850005e235644d8c338d19e1eca6d3a8719c103fc9f0959bc47d3a9e",
+    "registry": "/Users/garycarter/.cache/agent-scaffolding/test-resources/reservations.json"
+  },
+  "codeKey": "0a1f27ff850005e235644d8c338d19e1eca6d3a8719c103fc9f0959bc47d3a9e",
+  "executionIdentity": {
+    "code": "0a1f27ff850005e235644d8c338d19e1eca6d3a8719c103fc9f0959bc47d3a9e",
+    "environment": "d75cffa1e6ff2403ae5eb5b53e75469d73684885cd11aad41d8e12e262d234d9",
+    "inputs": {},
+    "interpreter": [
+      "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+      "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]"
+    ],
+    "platform": "macOS-26.5.1-arm64-arm-64bit",
+    "scope": "full",
+    "selected": [
+      "npm test"
+    ],
+    "settings": "8648cc060ad6647253dd5cf552ffe8279076e8269ac5012f1bac3051ead67aa8",
+    "variant": "default",
+    "version": 1
+  },
+  "fullPolicy": {
+    "chunk_ram_mib": 4096,
+    "chunk_scratch_mib": 128,
+    "chunk_seconds": 300,
+    "log_mib": 2,
+    "unit_ram_mib": 256,
+    "unit_scratch_mib": 32
+  },
+  "fullStamp": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/stamp-fd0ccace380530ae8e5a45abe969fc7da4120e2b2654855b8ecebac26d98049d-default.json",
+  "impactMap": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/impact/fucq33-0a1f27ff850005e235644d8c338d19e1eca6d3a8719c103fc9f0959bc47d3a9e.json",
+  "integratedBase": "18b3c1349d1b731a73e1f028e37df7b86372fb9d",
+  "integrationResolution": {
+    "gallery": "Retain gregKitExamples and launcherExamples; upstream and launcher catalogue/styles remain.",
+    "manualConflicts": [
+      "blocks/vehicle-matcher/component-gallery.js",
+      "server/test/ui-ratchet.json"
+    ],
+    "styleCaps": {
+      "employee": 92,
+      "entryHost": 44,
+      "extractedPrimitives": 26,
+      "gregDashboard": 38,
+      "gregKit": 28,
+      "launcher": 38
+    }
+  },
+  "jira": "FUCQ-33",
+  "latestObservedBase": "5874b75d5186ad81a75ded87d1bd44e02d562c65",
+  "mergeGuardAudit": {
+    "extensionPresent": false,
+    "merge_refusal": null,
+    "mutationPerformed": false,
+    "persistentConfigurationChanges": false,
+    "pre_merge_refusals": [
+      "ok",
+      []
+    ],
+    "testStampGuardInAdapter": false
+  },
+  "noNewAgents": true,
+  "optionalSkips": [
+    "postgresql native constraints reject a second occupying hold and claim",
+    "postgresql: shared TransactionRepository contract"
+  ],
+  "productDeltaSinceIntegrated": false,
+  "runtime": {
+    "node": "26.5.0",
+    "npm": "11.17.0",
+    "python": "3.9.6"
+  },
+  "scopeLimits": [
+    "No Jira synchronization or borrowed credentials",
+    "No real employee capability integration",
+    "No native option-picking rerun",
+    "No live Greg API browser claim",
+    "No story merge into shared base, close or release"
+  ],
+  "sourceCommit": "695485910ddc6785c3ab1d568ecff4f0844cb337",
+  "stampKey": "fd0ccace380530ae8e5a45abe969fc7da4120e2b2654855b8ecebac26d98049d",
+  "status": "built; current integrated machine proof and affected-surface review complete",
+  "story": "DEV-2026-11-04-007",
+  "strictStatus": "Same-policy exact npm test status matched after integrated run; recipe in fucq33-review.md retained unchanged.",
+  "targetedPolicy": {
+    "chunk_ram_mib": 768,
+    "chunk_scratch_mib": 128,
+    "chunk_seconds": 60,
+    "log_mib": 2,
+    "unit_ram_mib": 256,
+    "unit_scratch_mib": 32
+  },
+  "testedHeadTree": "1ea00d8649a0856801db5e892952c36bc5b065c5",
+  "variant": "default"
+}

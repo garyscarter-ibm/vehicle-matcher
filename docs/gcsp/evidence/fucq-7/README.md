@@ -44,3 +44,7 @@ Independent architecture review found and resolved notification atomicity, durab
 ## Versioned retail compatibility contract
 
 FUCQ-21 adds the [offline retail baseline](retail-compat-baseline.md), [independent expected-outcome review](retail-compat-independent-review.md), [separate correction cases](retail-compat-corrections.md) and [integrated validation receipt](retail-compat-validation.md). Its versioned fixtures cover all six brands, full-pool manual filtering and legacy answer restoration. The receipt records its own current counts and environment; the historical 234-test reuse assessment above remains unchanged.
+
+## Shared kit for retail and employee decisions
+
+FUCQ-31 extends the shared components with explicit exact-member display data, typed terms and callback-owned controls/preview. The [review and resettable gallery trial](fucq31-review.md), [automated validation](fucq31-validation.json), [browser matrix](fucq31-browser-review.json) and [independent resource cleanup audit](fucq31-resources.json) record its final source, references, rendered states and limitations. Historical FUCQ-7/FUCQ-21 evidence above retains its own scope and counts.
