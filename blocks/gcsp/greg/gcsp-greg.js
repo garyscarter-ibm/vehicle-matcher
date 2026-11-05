@@ -202,7 +202,7 @@ export function mountGregDashboard(root, ctx = {}) {
     } else if (state.status === 'conflict') {
       status.textContent = 'The figures changed while loading.';
       body.replaceChildren(statusScreen({ kicker: 'Demand and supply', title: 'The figures changed while loading',
-        message: `${state.message || 'The figures changed while they were loading.'} Use Refresh to load the latest.` }));
+        message: state.message || 'The figures changed while they were loading. Use Refresh to load the latest.' }));
     } else {
       status.textContent = 'Figures unavailable.';
       body.replaceChildren(statusScreen({ kicker: 'Demand and supply', title: 'The demand figures are unavailable',

@@ -22,3 +22,6 @@
 .gcsp .gcsp-table .is-band { color: var(--gcsp-text-muted); font-style: italic; }
 .gcsp .gcsp-table .is-missing { color: var(--gcsp-text-muted); font-style: italic; }
 .gcsp .gcsp-table-empty { padding: 14px 12px; color: var(--gcsp-text-muted); }
+.gcsp .gcsp-table .is-numeric.is-band { white-space: normal; }
+@media (max-width: 640px) { .gcsp .gcsp-table-th, .gcsp .gcsp-table-rowhead, .gcsp .gcsp-table-td { padding: 8px; } .gcsp .gcsp-table-rowhead { min-width: 104px; } }
+.gcsp .gcsp-tile-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 12px; }

@@ -145,11 +145,13 @@ function gregKitExamples() {
     return body;
   };
   const tiles = group('metricTile: exact, privacy band and with a note');
-  tiles.append(
+  const tileRow = el('div', 'gcsp-tile-row');
+  tileRow.append(
     metricTile({ label: 'Active briefs', count: { label: '28', isBand: false }, level: 'headline' }),
     metricTile({ label: 'Declined', count: { label: 'fewer than 5', isBand: true }, note: 'Small counts are banded.' }),
     metricTile({ label: 'Offers made', count: { label: '30', isBand: false }, note: 'Counted once each.', level: 'compact' }),
   );
+  tiles.append(tileRow);
   const rows = [
     { name: 'U06 Active Tourer Plug-in Hybrid xDrive25e M Sport Pro with extended range', released: { label: '7', isBand: false }, held: { label: 'fewer than 5', isBand: true }, allocated: { label: '3', isBand: false } },
     { name: 'G21 Touring', released: { label: '12', isBand: false }, held: { label: '3', isBand: false }, allocated: { label: '4', isBand: false } },

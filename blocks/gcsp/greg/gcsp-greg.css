@@ -18,7 +18,7 @@
 .gcsp .gcsp-greg-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 130px), 1fr)); gap: 12px; }
 .gcsp .gcsp-greg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 24px; align-items: start; }
 .gcsp .gcsp-greg-grid > *, .gcsp .gcsp-greg-tables > * { min-width: 0; }
-.gcsp .gcsp-greg-regions { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 12px; padding-top: 16px; border-top: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-greg-regions { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 12px; padding-top: 16px; border-top: 1px solid var(--gcsp-divider); }
 .gcsp .gcsp-greg-regions[hidden] { display: none; }
 .gcsp .gcsp-greg-region { gap: 4px; padding: 12px 14px; background: var(--gcsp-surface-page); border: 1px dashed var(--gcsp-divider); border-radius: var(--gcsp-radius); }
 .gcsp .gcsp-greg-region .gcsp-greg-h2 { font-size: 15px; color: var(--gcsp-text-muted); }
