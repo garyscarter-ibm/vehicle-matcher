@@ -28,7 +28,7 @@ function adapt(car, context, mapping, raw) {
   const display = Object.fromEntries(['name', 'photo', 'link', 'colour'].filter((key) => car[key] !== undefined).map((key) => [key, car[key]]));
   const snapshot = createVehicleSnapshot({ sourceNamespace: context.sourceNamespace, identityKind, sourceKeys,
     snapshotVersion: context.snapshotVersion, observedAt: context.observedAt, display, facts,
-    ...(raw?.vin === undefined ? {} : { vin: raw.vin }) });
+    ...(raw?.vin == null ? {} : { vin: raw.vin }) });
   const price = Number.isFinite(car.priceMin) && car.priceMin === car.priceMax ? car.priceMin : null;
   const retailTerms = createRetailTerms({ purchasePrice: price === null ? null : { amount: price, currency: 'GBP' },
     provenance: origin(price === null ? 'unknown' : raw ? 'confirmed-listing' : 'derived') });

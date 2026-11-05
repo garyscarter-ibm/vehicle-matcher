@@ -127,7 +127,7 @@ export function createEmployeeTerms(input) {
   if (input.contribution !== null) {
     keys(input.contribution, ['amount', 'currency', 'period'], 'contribution');
     amount(input.contribution.amount, 'contribution.amount');
-    if (!/^[A-Z]{3}$/.test(input.contribution.currency)) fail('contribution.currency');
+    if (typeof input.contribution.currency !== 'string' || !/^[A-Z]{3}$/.test(input.contribution.currency)) fail('contribution.currency');
     if (!['month', 'year', 'one-off'].includes(input.contribution.period)) fail('contribution.period');
   }
   date(input.validFrom, 'validFrom');

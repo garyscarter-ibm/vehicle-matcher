@@ -112,6 +112,7 @@ test('employee quotes reject ambiguous points, periods, dates and non-finite fin
     { points: { value: 125, unit: 'GBP' } },
     { contribution: { amount: NaN, currency: 'GBP', period: 'month' } },
     { contribution: { amount: 15, currency: 'GBP' } },
+    { contribution: { amount: 15, currency: ['GBP'], period: 'month' } },
     { validUntil: '2026-10-01T00:00:00.000Z' }, { termsVersion: '' },
     { purchasePrice: { amount: 125, currency: 'GBP' } },
   ]) assert.throws(() => createEmployeeTerms({ ...quote(), ...patch }), TypeError);
@@ -245,4 +246,13 @@ test('new fact evidence produces an independent snapshot version and retains ear
   assert.equal(refreshed.facts.frontIsofix.provenance.assurance, 'confirmed-build');
   assert.equal(refreshed.snapshotVersion, 'stock-v2');
   assert.equal(refreshed.candidateKey, old.candidateKey);
+});
+
+test('a null optional VIN preserves a valid advert and its unchanged retail projection', () => {
+  const input = JSON.parse(readFileSync(new URL('./fixtures/retail-compat-v1/inputs.json', import.meta.url)));
+  const raw = { ...input.raw.bmw[0], vin: null };
+  const adapted = adaptRawRetailVehicle(raw, 'bmw', context);
+  assert.equal(adapted.snapshot.vin, undefined);
+  assert.equal(adapted.snapshot.sourceKeys.advertId, raw.advert_id);
+  assert.deepEqual(projectRetailVehicle(adapted), mapVehicle(raw, 'bmw'));
 });
