@@ -1,0 +1,97 @@
+{
+  "version": 4,
+  "date": "2026-11-05",
+  "command": "npm test",
+  "effectiveArgs": [
+    "/opt/homebrew/bin/node",
+    "--test-concurrency=1",
+    "--test",
+    "server/test/**/*.test.js"
+  ],
+  "sourceHead": "f63835f9d62321c4555d15017ac674f55fb452ac",
+  "sourceTree": "f1e8d293a7a575cf4ec514df6a39f82f51c01dcd",
+  "integratedBase": "05c7c9451dd1f76102ef9e8d9e5dd711bb898d4b",
+  "integratedValidated68": "16b2f66629e0b769840ab138347ffe6b504fcbda",
+  "result": "passed",
+  "tests": 1228,
+  "pass": 1228,
+  "fail": 0,
+  "skipped": 0,
+  "limits": {
+    "rssMiB": 1024,
+    "seconds": 300,
+    "combinedScratchAndOwnedDependenciesMiB": 128,
+    "logsMiB": 2,
+    "testConcurrency": 1
+  },
+  "actual": {
+    "wall": 289.196700583,
+    "peak_rss": 500482048,
+    "peak_scratch": 28545076,
+    "issue": null
+  },
+  "strict": {
+    "stampKey": "e3c505d1f15ff2fb99a0dcfecabff366f9955e6d9fa9b0bda2de9fd235cde42b",
+    "executionCodeKey": "13f2c3a058198993ecb2d269c139f9cef418fe397e8bb09f5be055a1496bdf35",
+    "environmentKey": "ac45b5e12314add7c4636867fd2de3dc5b33a45e8d878234939ccb560c206bc9",
+    "sameProcessEnvironmentImmediateStatus": "MATCH",
+    "time": "2026-11-05T17:18:48+0000",
+    "commandUnchanged": true,
+    "scope": "full"
+  },
+  "providerSourceSha256": "6da08e512783d9f278deb26e31ed0f59c166acd32159ebf2c7dafa7c42592ded",
+  "nativeAcceptance": "passed actual fixed production provider path v6; independent context separate from served asset proof; all visible-option/exact-vehicle fidelity unknown",
+  "pinnedSetup": "Existing lock versions only; 38 root and 13 server required versions verified; no lifecycle scripts or manifest/lock changes",
+  "cleanup": {
+    "ownedAllocations": 28,
+    "scratchGroupsReservationsAbsent": true,
+    "temporaryDependenciesRemovedByRecordedDeviceInode": true,
+    "packageAndLockHashesUnchanged": true,
+    "dispatcherIndependentVerification": "pending final combined allocation and dependency-removal verification"
+  },
+  "externalEvidence": {
+    "supervisor": "supervisor-v3.py",
+    "plan": "full-plan-v4.json",
+    "stamp": "strict/stamp-e3c505d1f15ff2fb99a0dcfecabff366f9955e6d9fa9b0bda2de9fd235cde42b-default.json",
+    "checkpoint": "strict/checkpoints/1f126a6ef708306b0161fc4c6a38f90cb3193ce901b11958507416f8eba1bfba.json",
+    "ownership": "strict/ownership/ef8aa49298b349618475f5af23273bd2.json",
+    "receipt": "final-current-shell-full-v4-1793898838240128000-receipt.json",
+    "successLogSha256": "54e71c9a3376809e5f3bd8a49d22f25c887f663317eea92122173cb59385e068",
+    "leadCleanup": "final-lead-cleanup-v4.json",
+    "secretScan": "managed-secret-scan-v1.json"
+  },
+  "managedDatabase": {
+    "enabled": true,
+    "qualification": {
+      "receipt": "managed-database-readonly-v2.json",
+      "configured": true,
+      "tlsRequested": true,
+      "tlsEncrypted": true,
+      "selectOne": true,
+      "applicationWrites": 0,
+      "poolClosed": true
+    },
+    "secretValuesRetained": false,
+    "configurationFingerprintSha256": "8cc60960b44f0f757011ec22b29ee2b0b78c7682acf70ae084ac4a78fd03dec3",
+    "actualEnvironmentIdentity": "Digest only; includes the actual injected GCSP_DATABASE_URL; immediate same-process MATCH",
+    "nativeIsolation": "gcsp_constraints_PID and gcsp_contract_PID_SERIAL created/dropped by the existing harness; no operational schema changes",
+    "beforeSchemaInventory": "managed-test-schema-before-v1.json",
+    "afterSchemaInventory": "managed-test-schema-after-v1.json",
+    "remainingOwnedSchemas": [],
+    "postRunOwnedResidualDrops": 0,
+    "foreignSchemasTouched": 0,
+    "poolClosed": true,
+    "secretScan": "managed-secret-scan-v1.json; no complete URL, host, password or decoded password in 179 own JSON/log files; username-only substring matches also predate database setup"
+  },
+  "currentShellReadiness": {
+    "shellRatchetPass": 82,
+    "setupAccountPass": 28,
+    "browserCaptures": 12,
+    "widths": [
+      1280,
+      320
+    ],
+    "personalInspection": "Accepted by FUCQ-68 lead; no defects",
+    "browserIndependentCleanup": "All 42 FUCQ-68 allocations passed independent verification"
+  }
+}

@@ -72,21 +72,23 @@
     "ownedScratchRemoved": true,
     "packageAndLockHashesUnchanged": true,
     "browserProfilePortsDependencies": "none",
-    "finalOwnedAllocations": 22,
-    "temporaryPinnedDependencyTreesRemoved": true
+    "temporaryPinnedDependencyTreesRemoved": true,
+    "historicalOwnedAllocations": 22,
+    "currentOwnedAllocations": 28
   },
   "integration": {
     "firstFull": "failed due absent existing pg dependency; see full-validation-2026-11-05.json",
     "pinnedSetupAndScope": "passed59/59; see pinned-setup-2026-11-05.json",
     "exactFullRetry": "passed1175,skipped2,fail0; same-process strict MATCH; see full-retry-2026-11-05.json",
-    "finalCombinedFull": "full-final-2026-11-05.json;1209tests1207pass2skip0fail;same-processMATCH"
+    "historicalCombinedFull": "full-final-2026-11-05.json;1209tests1207pass2skip0fail;same-processMATCH",
+    "currentCombinedFull": "full-current-shell-2026-11-05.json; 1228 tests, 1228 pass, 0 skip, 0 fail; native PostgreSQL enabled; immediate same-process MATCH"
   },
   "nativeAcceptance": {
     "completeIndependentConfigurationIdentity": true,
     "source": "existing dated source-derived catalogue snapshot; no live catalogue calls",
     "nativeNamedAssetBytes": true,
     "nativeProviderPath": true,
-    "storyCompletion": "passed native provider,62/62 scoped and final full1207pass/2skip/0fail",
+    "storyCompletion": "Passed actual native provider v6, 62/62 scoped and current combined full 1228/1228 with zero skips",
     "visibleOptionsAndExactVehicleAppearance": "unknown",
     "evidence": "native-provider-v6-2026-11-05.json"
   },
