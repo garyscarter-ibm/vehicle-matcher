@@ -1119,7 +1119,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T23:06:01Z",
+      "observed_at": "2026-11-05T23:10:09Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-113",
       "branch": "dev/DEV-2026-11-04-088",
       "tracker_observed_at": "2026-11-05T23:00:25Z",
@@ -1141,10 +1141,10 @@
         },
         {
           "id": "cli-fixtures",
-          "status": "not-started",
+          "status": "complete",
           "title": "Bounded generation CLI and training sample fixtures",
-          "observed_at": "2026-11-05T23:00:25Z",
-          "evidence": "After generator checkpoint; explicit dataset+manifest write and sample fixture required."
+          "observed_at": "2026-11-05T23:10:09Z",
+          "evidence": "Lead reviewed CLI and sample; scoped6/6 zero skips incl actual executable success/refusal, full file-backed successor, repeatability and no-overwrite;0.86s cleanup/source receipt .claude/test-runs/fucq113-parent-cli/final-receipt.json. Real corpus gate separate."
         },
         {
           "id": "policy-adoption",

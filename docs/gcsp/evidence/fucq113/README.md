@@ -63,10 +63,45 @@ Final scoped proof: 36/36 passed (the complete learning-records module), 10.92 s
 zero measured scratch bytes. All owned scratch and process groups were removed/stopped, reservations released
 and the owned dependency symlink removed; final cleanup and source identity are in `final-receipt.json`.
 
-Still outstanding: CLI/output integration; reviewed `learning.*` adoption; actual FUCQ-77 corpus execution and
+Still outstanding: reviewed `learning.*` adoption; actual FUCQ-77 corpus execution and
 confirmed feature/provenance mapping; actual observed outcome-producer integration; full-story acceptance
 and the root dispatcher's coordinated full-suite lane. Structural fixtures establish none of those gates.
 
 No screen changes: supplied 00/01 GCSP shell references, the approved FUCQ-6 body reference at revision `a7fc178`,
 COMPONENTS.md and the shared Density theme govern future consuming views. Sample JSON, privacy and typed error
 behaviour are this slice's backend experience evidence. No browser capture or human layout gate is claimed.
+
+## Bounded generation CLI
+
+`node scripts/gcsp/generate-learning-records.mjs --help` describes the file-backed generation path. It
+uses FilePolicyProvider and PolicyService, reading the selected immutable source header for its policy pin
+and default as-of instant. It never chooses a database provider from environment variables. An explicit
+`--corpus-store` opens an already published local registry read-only and refuses unavailable/recovered
+selection. `--snapshot` instead replays a complete prepared snapshot; it cannot be combined with policy or
+corpus selection flags. Snapshot/manifest hashes prove consistency, not authenticity.
+
+The explicit structural-sample trial is:
+
+```sh
+node scripts/gcsp/generate-learning-records.mjs --seed fictional-learning-sample-v1 \
+  --snapshot /absolute/path/to/prepared-snapshot.json --allow-fixtures \
+  --output /absolute/path/to/new-output-directory
+```
+
+The sample snapshot is `server/test/fixtures/gcsp-learning-dataset.json`'s `manifest.snapshot` value,
+extracted explicitly by the caller. This sample is not a real-corpus run. By default the CLI requires a
+corpus configuration source; `--allow-fixtures` explicitly permits the manifest's labelled fixture source.
+It prints bounded counts and paths, writes `records.json` first and `manifest.json` last, and preserves
+existing output paths. Training joins those two JSON values as `{ manifest, records }` and calls
+`readLearningDataset`; records without the manifest remain invalid. Generated output is separate from
+committed sources and is never a substitute for retained immutable inputs.
+
+`node scripts/gcsp/generate-learning-records.mjs --seed 1` currently exits 2 with typed
+`policy-unavailable` at `learning.cohortSize`, and writes no dataset: immutable seed-v1 has not adopted
+learning keys. Use a complete reviewed successor with `--policy-file` after adoption, an explicit corpus
+store and a new output directory. No policy is adopted or registry published by this script.
+
+`server/test/gcsp-learning-records-cli.test.js` exercises the actual executable success/refusal paths,
+complete file-backed successor reads, identical reruns, explicit fixture permission, untouched existing
+output, malformed snapshots/options and unavailable corpus. Parent resource receipts are retained at
+`.claude/test-runs/fucq113-parent-cli/`; the source remains offline and no native database grant is claimed.

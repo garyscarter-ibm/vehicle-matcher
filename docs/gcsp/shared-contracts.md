@@ -321,8 +321,26 @@ It proves reproduction and the manifest reader, not actual FUCQ-77 adapter execu
 The corpus binding supports the exact existing `getConfiguration(id)` read contract, refuses mismatched
 active dataset/version/digest or configuration version and never substitutes reviewed fixtures. Mapping real
 catalogue measurements/provenance to confirmed essential facts still needs real-corpus integration evidence;
-unconfirmed derived corpus features cannot satisfy confirmed essential gates. The CLI, actual policy adoption,
-real corpus execution and actual observed outcome-producer acceptance remain separate outstanding work.
+unconfirmed derived corpus features cannot satisfy confirmed essential gates. Actual policy adoption, real corpus execution and actual observed outcome-producer acceptance remain
+separate outstanding work.
+
+### Learning dataset CLI
+
+`scripts/gcsp/generate-learning-records.mjs --seed SEED` prepares through file-backed PolicyService,
+requires the complete adopted learning keys and corpus input, then writes a new directory containing
+`records.json` and required `manifest.json` (written last). It reports counts/provenance and paths as JSON;
+existing paths are refused. `--policy-file`, `--policy-version`, `--as-of`, `--run-id` and `--corpus-store`
+select explicit immutable inputs. Without an as-of override, the validated selected source header's
+`effectiveFrom` is used; no wall clock is sampled. Registry use is read-only and recovered/unavailable
+selection is refused. No environment-driven database connection or policy adoption occurs.
+
+`--snapshot FILE` is a replay path for a complete prepared snapshot, mutually exclusive with policy/corpus
+selection. `--allow-fixtures` explicitly permits labelled structural configurations; otherwise a corpus
+source is required. Readers combine the two output files into `{ manifest, records }` and must call
+`readLearningDataset`. Default seed-v1 currently lacks learning keys, so the authored `--seed 1` command
+refuses safely until canonical reviewed inputs are available; it has not met real-corpus generation acceptance.
+CLI failures emit bounded typed JSON and exit 2 without source details. The evidence README documents the
+explicit structural-sample trial and its limits.
 
 ## Exact stock, holds and offers
 
