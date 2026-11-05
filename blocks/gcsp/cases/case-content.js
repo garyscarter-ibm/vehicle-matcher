@@ -13,7 +13,7 @@ export function clockTime(value) {
 const facts = (rows) => factList(rows.map(([label, value]) => ({ label, value: shown(value) })), { className: 'gcsp-case-facts' });
 export const caseNotice = 'Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.';
 
-export function renderCaseContent(c, { onReviewRelaxation, pending = false, headingLevel = 2 } = {}) {
+export function renderCaseContent(c, { onReviewRelaxation, pending = false, headingLevel = 2, audience = 'employee' } = {}) {
   const root = el('article', 'gcsp-case-detail');
   root.dataset.caseId = c.caseId;
   root.append(screenIntro({ kicker: 'Renewal case', title: caseStatus(c.status), level: headingLevel }), facts([
@@ -29,9 +29,14 @@ export function renderCaseContent(c, { onReviewRelaxation, pending = false, head
     section.append(screenIntro({ title: ['resolved', 'closed'].includes(c.status) ? 'Recorded remedy' : 'Proposed remedy', level: Math.min(6, headingLevel + 1) }));
     if (remedy.type === 'preference-relaxation') {
       const applicable = c.relaxation?.applicable === true && c.relaxation.currentBriefVersion === remedy.expectedBriefVersion;
-      section.append(facts([['Preference', preferenceLabel(remedy.path)], ['Current value', c.relaxation?.before],
-        ['Proposed value', remedy.value], ['Current brief version', c.relaxation?.currentBriefVersion]]));
-      if (c.relaxation?.confirmed === true || remedy.confirmationState === 'employee-confirmed') section.append(el('p', 'gcsp-note', 'You confirmed this preference change. The scheme team will review the case.'));
+      section.append(facts(audience === 'scheme-team'
+        ? [['Preference', preferenceLabel(remedy.path)], ['Proposed value', remedy.value], ['Expected brief version', remedy.expectedBriefVersion]]
+        : [['Preference', preferenceLabel(remedy.path)], ['Current value', c.relaxation?.before],
+          ['Proposed value', remedy.value], ['Current brief version', c.relaxation?.currentBriefVersion]]));
+      if (audience === 'scheme-team') section.append(el('p', 'gcsp-note', remedy.confirmationState === 'employee-confirmed'
+        ? 'Employee confirmation is recorded. Review the case before resolving it.'
+        : 'The employee confirms this preference through their brief. Confirmation is checked before this case can be resolved.'));
+      else if (c.relaxation?.confirmed === true || remedy.confirmationState === 'employee-confirmed') section.append(el('p', 'gcsp-note', 'You confirmed this preference change. The scheme team will review the case.'));
       else {
         section.append(el('p', 'gcsp-note', applicable ? 'Waiting for your confirmation. Only this preference value will change.'
           : 'This proposal no longer matches your current brief. Ask the scheme team to review it.'));

@@ -32,7 +32,7 @@ At both widths, retain a screenshot path, current source identity, observed stat
 
 ## Integration work still required
 
-The published Greg harness attaches `gcsp-case-queue` into the reserved region, but this base's `gcsp-greg.html` does not load `blocks/gcsp/cases/register.js` or `gcsp-cases.css`. FUCQ-103 owns the released Greg composition lane; coordinate those two additive host references without editing its in-flight source.
+The published Greg harness attaches `gcsp-case-queue` into the reserved region, but this base's `gcsp-greg.html` does not load `blocks/gcsp/cases/register.js` or `gcsp-case-queue.css` (which imports the shared case styles). FUCQ-103 owns the released Greg composition lane; coordinate those two additive host references without editing its in-flight source.
 
 This base's `createGcspRuntime` does not compose RenewalCaseService or expose `gcspCases` in dependencies. Its existing `buildServer` routes/startup already support that port. FUCQ-103 owns `server/gcsp/runtime.js`; integrate the case service using the same repository/policy/clock/identity, then verify the delivered runtime through actual HTTP. `scripts/gcsp-demo.mjs` currently allowlists brief/activity pages only. Leave the external activity/order-progress host and lifecycle producer ownership intact; their authored placement/integration evidence remains incomplete until exercised.
 

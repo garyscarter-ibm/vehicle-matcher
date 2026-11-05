@@ -47,7 +47,8 @@ async function setup(t) {
     return outcome;
   };
   return { store, repository, clock, context, presenter, paula, greg, cases, call,
-    adapter: createCaseHttpAdapter({ base, fetchImpl: fetchFor(paula) }) };
+    adapter: createCaseHttpAdapter({ base, fetchImpl: fetchFor(paula) }),
+    gregAdapter: createCaseHttpAdapter({ base, fetchImpl: fetchFor(greg) }) };
 }
 const button = (root, label) => {
   const found = [...root.querySelectorAll('button')].find((element) => element.textContent === label);
@@ -56,6 +57,15 @@ const button = (root, label) => {
 const readyAfter = async (root, action) => {
   const ready = once(root, 'gcsp:ready', { signal: AbortSignal.timeout(3000) }); action(); await ready;
 };
+async function waitFor(check) {
+  const until = Date.now() + 3000;
+  while (!check()) { assert.ok(Date.now() < until, 'Timed out waiting for current server options'); await new Promise((resolve) => setTimeout(resolve, 5)); }
+}
+function field(root, name, value, event = 'input') {
+  const element = root.querySelector(`[id$="-${name}"]`);
+  assert.ok(element, `Missing field: ${name}`); element.value = value;
+  element.dispatchEvent(new window.Event(event, { bubbles: true })); return element;
+}
 
 test('authenticated HTTP help, scheme-team remedy, employee reload and single-change confirmation persist actual state', { timeout: 10000 }, async (t) => {
   const f = await setup(t);
@@ -72,6 +82,7 @@ test('authenticated HTTP help, scheme-team remedy, employee reload and single-ch
     }
   });
   const { mountHelpBody } = await import('../../blocks/gcsp/cases/gcsp-help.js');
+  const { mountCaseQueue } = await import('../../blocks/gcsp/cases/gcsp-case-queue.js');
   const root = document.createElement('div'); document.body.append(root);
   let destroy;
   const beforeRead = structuredClone(f.store.state);
@@ -102,11 +113,31 @@ test('authenticated HTTP help, scheme-team remedy, employee reload and single-ch
   assert.equal((await f.repository.transaction(f.context, command('decline-setup'), (tx) => tx.insert('decisions', {
     runId: f.context.runId, decisionId: 'recorded-decline', employeeId: f.context.employeeId, offerId: 'prior-offer',
     decision: 'decline', versions: { brief: 1 } }))).status, 'ok');
-  const update = async (status, remedy) => {
-    const outcome = await f.call('/scheme-team/cases/update', { commandId: `greg-${status}`, caseId: c.caseId, expectedVersion: c.version,
-      status, reason: 'Scheme team reviewed the renewal.', nextAction: 'Paula to review one body preference change.',
-      dueAt: '2026-11-06T12:00:00.000Z', ...(remedy ? { remedy } : {}) }, f.greg);
-    assert.equal(outcome.status, 'ok', JSON.stringify(outcome)); c = outcome.value.case;
+  const queueRoot = document.createElement('div'); document.body.append(queueRoot);
+  let closeQueue;
+  await readyAfter(queueRoot, () => { closeQueue = mountCaseQueue(queueRoot, { adapter: f.gregAdapter }); });
+  t.after(() => closeQueue());
+  assert.match(queueRoot.textContent, /Paula/);
+  field(queueRoot, 'selection', c.caseId, 'change'); button(queueRoot, 'Open selected case').click();
+  await waitFor(() => queueRoot.querySelector('[id$="-status"]'));
+  const update = async (status, preference = false) => {
+    field(queueRoot, 'status', status, 'change'); field(queueRoot, 'reason', 'Scheme team reviewed the renewal.');
+    field(queueRoot, 'nextAction', 'Paula to review one body preference change.'); field(queueRoot, 'dueAt', '2026-11-06T12:00:00');
+    if (preference) {
+      const choices = queueRoot.querySelector('[id$="-remedyKey"]');
+      const body = [...choices.options].find((option) => option.textContent === 'Change body'); assert.ok(body);
+      field(queueRoot, 'remedyKey', body.value, 'change');
+      const values = queueRoot.querySelector('[id$="-preferenceValue"]');
+      const suv = [...values.options].find((option) => option.textContent === 'suv'); assert.ok(suv);
+      field(queueRoot, 'preferenceValue', suv.value, 'change');
+    }
+    const beforeReview = structuredClone(f.store.state);
+    button(queueRoot, 'Review case update').click();
+    assert.deepEqual(f.store.state, beforeReview, 'Greg reviews the update without writing');
+    await readyAfter(queueRoot, () => button(queueRoot, 'Confirm case update').click());
+    assert.match(queueRoot.textContent, /The case update was recorded/);
+    c = (await f.call('/scheme-team/cases', null, f.greg)).value.cases[0];
+    assert.equal(c.status, status);
   };
   let options = await f.call(`/scheme-team/cases/options?caseId=${c.caseId}`, null, f.greg);
   assert.equal(options.status, 'ok'); assert.ok(options.value.nextStatuses.includes('in-progress'));
@@ -114,7 +145,9 @@ test('authenticated HTTP help, scheme-team remedy, employee reload and single-ch
   options = await f.call(`/scheme-team/cases/options?caseId=${c.caseId}`, null, f.greg);
   const choice = options.value.options.preferenceRelaxations.items.find((item) => item.path === 'preferences.body.value');
   assert.ok(choice.values.includes('suv'));
-  await update('remedy-proposed', { type: choice.type, decisionId: choice.decisionId,
+  await update('remedy-proposed', true);
+  assert.deepEqual({ type: c.remedy.type, decisionId: c.remedy.decisionId, expectedBriefVersion: c.remedy.expectedBriefVersion,
+    path: c.remedy.path, value: c.remedy.value }, { type: choice.type, decisionId: choice.decisionId,
     expectedBriefVersion: choice.expectedBriefVersion, path: choice.path, value: 'suv' });
   destroy();
   await readyAfter(root, () => { destroy = mountHelpBody(root, { adapter: f.adapter, commandId: () => 'ui-one-change' }); });

@@ -4,12 +4,14 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { JSDOM } from 'jsdom';
 import { createCaseHttpAdapter } from '../../blocks/gcsp/cases/http-adapter.js';
 import { fixtureAdapter, caseFixture, fixtureAccountAdapter } from '../../blocks/gcsp/cases/fixtures.js';
-let help; let dom;
+import { queueFixtureAdapter, queueOptionsFixture, queueCaseFixtures } from '../../blocks/gcsp/cases/queue-fixtures.js';
+let help; let queue; let dom;
 before(async () => {
   dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'https://case.test/', pretendToBeVisual: true });
   for (const key of ['window', 'document', 'HTMLElement', 'Node', 'CustomEvent', 'customElements'])
     Object.defineProperty(globalThis, key, { value: key === 'window' ? dom.window : dom.window[key], configurable: true, writable: true });
   help = await import('../../blocks/gcsp/cases/gcsp-help.js');
+  queue = await import('../../blocks/gcsp/cases/gcsp-case-queue.js');
 });
 beforeEach(() => document.body.replaceChildren());
 after(() => dom.window.close());
@@ -164,4 +166,165 @@ test('authoritative access failures disable new requests, and direct host headin
   const root = host(); const destroy = help.mountHelpBody(root, { adapter: fixtureAdapter('waiting'), headingLevel: 3 }); await tick();
   assert.equal(root.querySelector('h1,h2'), null); assert.equal(root.querySelector('h3').textContent, 'Renewal help');
   assert.equal(root.querySelector('article h4').textContent, 'Remedy proposed'); destroy();
+});
+
+
+async function mountQueue(adapter = queueFixtureAdapter(), options = {}) {
+  const root = host(); const destroy = queue.mountCaseQueue(root, { adapter, commandId: () => 'stable-update', ...options });
+  await tick(); return { root, destroy };
+}
+function queueField(root, name, value, event = 'input') {
+  const input = root.querySelector(`[id$="-${name}"]`);
+  assert.ok(input, `queue field ${name}`); input.value = value; input.dispatchEvent(new window.Event(event, { bubbles: true })); return input;
+}
+async function openQueue(root, caseId = 'synthetic-case-0') {
+  queueField(root, 'selection', caseId, 'change'); findButton(root, 'Open selected case').click(); await tick();
+}
+function reviewQueue(root, remedyKey = '') {
+  queueField(root, 'status', 'remedy-proposed', 'change');
+  queueField(root, 'reason', 'Discussed the available remedy.');
+  queueField(root, 'nextAction', 'Contact the employee.'); queueField(root, 'dueAt', '2026-11-07T09:30:05');
+  if (remedyKey) queueField(root, 'remedyKey', remedyKey, 'change');
+}
+test('queue renders all statuses and canonical facts with deadline/status sorting and an unchanged shared table', async () => {
+  const { root, destroy } = await mountQueue();
+  const table = root.querySelector('table'); assert.ok(table); assert.equal(table.querySelectorAll('tbody tr').length, 5);
+  assert.match(root.textContent, /Renewal deadline \(calendar date\)/); assert.match(root.textContent, /Next action due, demo clock \(UTC\)/);
+  assert.match(root.textContent, /Synthetic employee 1/); assert.match(root.textContent, /Help request/);
+  assert.match(root.textContent, /My replacement may miss my contract end/); assert.match(root.textContent, /Scheme team/);
+  assert.match(root.textContent, /2026-11-06 12:00:00 UTC/);
+  assert.equal(table.querySelector('tbody th').textContent, 'Synthetic employee 5');
+  queueField(root, 'sort', 'status', 'change');
+  assert.deepEqual([...root.querySelectorAll('tbody tr')].map((r) => r.children[4].textContent), ['Closed', 'In progress', 'Open', 'Remedy proposed', 'Resolved']);
+  const tie = queueCaseFixtures().slice(0, 2).map((c) => ({ ...c, renewalDeadline: null }));
+  assert.equal(queue.sortCases([tie[0], { ...tie[1], renewalDeadline: '2026-11-06' }])[0].caseId, tie[1].caseId);
+  assert.equal(root.querySelectorAll('h1').length, 1); destroy();
+});
+test('queue opens read-only options, uses exactly server statuses and availability, and never promises priority', async () => {
+  let writes = 0; const value = queueOptionsFixture(); value.nextStatuses = ['resolved'];
+  value.options.contractExtension = { available: false, reason: 'The current contract is not eligible.' };
+  const f = await mountQueue({ ...queueFixtureAdapter(), async readOptions() { return { status: 'ok', value }; }, async updateCase() { writes += 1; } });
+  await openQueue(f.root);
+  assert.deepEqual([...f.root.querySelector('[id$="-status"]').options].map((o) => o.value), ['', 'resolved']);
+  assert.equal(f.root.querySelector('[id$="-remedyKey"] option[value="contractExtension"]'), null);
+  assert.match(f.root.textContent, /The current contract is not eligible/); assert.match(f.root.textContent, /No specific next car or greater priority is guaranteed/);
+  queueField(f.root, 'remedyKey', 'laterRelease:0', 'change');
+  assert.match(f.root.textContent, /2026-11-10 09:15:00 UTC/); assert.match(f.root.textContent, /Synthetic reviewed release/);
+  assert.equal(writes, 0); f.destroy();
+  const waiting = await mountQueue(); await openQueue(waiting.root, 'synthetic-case-2');
+  assert.match(waiting.root.textContent, /The employee confirms this preference through their brief/);
+  assert.doesNotMatch(waiting.root.textContent, /no longer matches your current brief/); waiting.destroy();
+});
+test('queue handles empty/loading/source/access/stale-run distinctly and terminal cases have no editor', async () => {
+  for (const [name, title] of [['empty', 'No renewal cases'], ['loading', 'Loading renewal cases'], ['unavailable', 'Renewal cases are unavailable'],
+    ['forbidden', 'You cannot open these cases'], ['stale-run', 'Your demo run has changed']]) {
+    const f = await mountQueue(queueFixtureAdapter(name)); assert.match(f.root.textContent, new RegExp(title)); f.destroy();
+  }
+  const f = await mountQueue(); await openQueue(f.root, 'synthetic-case-4');
+  assert.equal(findButton(f.root, 'Review case update'), undefined); assert.match(f.root.textContent, /no further permitted status changes/); f.destroy();
+});
+test('queue update is explicitly reviewed/confirmed with version and reloaded from authoritative state', async () => {
+  const calls = []; let c = queueCaseFixtures()[0]; let lists = 0; let reads = 0;
+  const adapter = { async listCases() { lists += 1; return { status: 'ok', value: { cases: [structuredClone(c)] } }; },
+    async readOptions() { reads += 1; return { status: 'ok', value: queueOptionsFixture(c) }; },
+    async updateCase(input) { calls.push(input); c = { ...c, version: 3, reason: 'Authoritative saved reason', status: 'remedy-proposed' };
+      return { status: 'ok', value: { case: { ...c, reason: 'Untrusted response-only reason' } } }; } };
+  const f = await mountQueue(adapter); await openQueue(f.root); reviewQueue(f.root, 'alternativeCars:0');
+  assert.match(f.root.textContent, /synthetic-exact-car/); findButton(f.root, 'Review case update').click(); assert.equal(calls.length, 0);
+  assert.match(f.root.textContent, /Confirm case update/); assert.doesNotMatch(f.root.textContent, /"type":/);
+  findButton(f.root, 'Confirm case update').click(); await tick(); await tick();
+  assert.deepEqual(calls, [{ caseId: 'synthetic-case-0', expectedVersion: 2, status: 'remedy-proposed', reason: 'Discussed the available remedy.',
+    nextAction: 'Contact the employee.', dueAt: '2026-11-07T09:30:05.000Z', remedy: { type: 'alternative-car', orderUuid: 'synthetic-exact-car' }, commandId: 'stable-update' }]);
+  assert.equal(lists, 2); assert.equal(reads, 2); assert.match(f.root.textContent, /Authoritative saved reason/);
+  assert.doesNotMatch(f.root.textContent, /Untrusted response-only reason/); assert.match(f.root.textContent, /case update was recorded/);
+  assert.equal(document.activeElement, f.root.querySelector('.gcsp-case-status')); f.destroy();
+});
+test('queue records only exact projected remedy commands, with editable single preferences and persisted release source', async () => {
+  const variants = [
+    ['preferenceRelaxations:0', 'preferenceValue', '1', 'change', { type: 'preference-relaxation', decisionId: 'synthetic-decline', expectedBriefVersion: 3, path: 'preferences.body.value', value: 'suv' }],
+    ['preferenceRelaxations:1', 'preferenceValue', '200', 'input', { type: 'preference-relaxation', decisionId: 'synthetic-decline', expectedBriefVersion: 3, path: 'preferences.range.value', value: 200 }],
+    ['laterRelease:0', null, null, null, { type: 'later-release', releaseAt: '2026-11-10T09:15:00.000Z', source: 'Synthetic reviewed release' }],
+    ['manualDecision', 'decision', 'Discussed with the ordering team.', 'input', { type: 'manual-decision', decision: 'Discussed with the ordering team.' }],
+    ['contractExtension', 'until', '2026-12-01', 'input', { type: 'contract-extension', until: '2026-12-01' }],
+  ];
+  for (const [key, field, value, event, remedy] of variants) {
+    const calls = []; const f = await mountQueue({ ...queueFixtureAdapter(), async updateCase(input) { calls.push(input); return { status: 'unavailable' }; } });
+    await openQueue(f.root); reviewQueue(f.root, key); if (field) queueField(f.root, field, value, event);
+    findButton(f.root, 'Review case update').click(); assert.equal(calls.length, 0); findButton(f.root, 'Confirm case update').click(); await tick();
+    assert.deepEqual(calls[0].remedy, remedy); assert.equal(calls[0].expectedVersion, 2); f.destroy();
+  }
+});
+test('queue validation focuses errors and cancel sends no write', async () => {
+  let writes = 0; const f = await mountQueue({ ...queueFixtureAdapter(), async updateCase() { writes += 1; } }); await openQueue(f.root);
+  findButton(f.root, 'Review case update').click(); assert.match(f.root.textContent, /Describe why this case is changing/);
+  assert.equal(document.activeElement, f.root.querySelector('.gcsp-error-summary h2'));
+  reviewQueue(f.root, 'preferenceRelaxations:1'); queueField(f.root, 'preferenceValue', '500');
+  findButton(f.root, 'Review case update').click(); assert.match(f.root.textContent, /Choose a different preference value/);
+  queueField(f.root, 'preferenceValue', '200'); findButton(f.root, 'Review case update').click(); findButton(f.root, 'Cancel update').click();
+  assert.equal(writes, 0); assert.ok(findButton(f.root, 'Review case update')); f.destroy();
+});
+test('queue uncertain retry retains command id; conflict/access/stale outcomes require fresh server options', async () => {
+  const calls = []; const f = await mountQueue({ ...queueFixtureAdapter(), async updateCase(input) { calls.push(input); throw Error('uncertain'); } });
+  await openQueue(f.root); reviewQueue(f.root); findButton(f.root, 'Review case update').click(); findButton(f.root, 'Confirm case update').click(); await tick();
+  assert.doesNotMatch(f.root.textContent, /update was recorded/); assert.ok(findButton(f.root, 'Confirm case update'));
+  findButton(f.root, 'Confirm case update').click(); await tick(); assert.equal(calls.length, 2); assert.deepEqual(calls[0], calls[1]); f.destroy();
+  for (const status of ['conflict', 'stale-version', 'forbidden', 'stale-run']) {
+    let reads = 0; const adapter = queueFixtureAdapter();
+    const other = await mountQueue({ ...adapter, async readOptions(input) { reads += 1; return adapter.readOptions(input); },
+      async updateCase() { return { status, reason: 'Refresh the current scheme-team session.' }; } });
+    await openQueue(other.root); reviewQueue(other.root); findButton(other.root, 'Review case update').click(); findButton(other.root, 'Confirm case update').click(); await tick();
+    assert.equal(findButton(other.root, 'Confirm case update'), undefined); assert.equal(findButton(other.root, 'Review case update'), undefined);
+    assert.equal(document.activeElement, other.root.querySelector('.gcsp-case-status'));
+    findButton(other.root, 'Refresh case options').click(); await tick(); assert.equal(reads, 2); assert.ok(findButton(other.root, 'Review case update')); other.destroy();
+  }
+});
+test('queue cleanup and newer selections suppress late reads/saves and hidden reloads', async () => {
+  const late = deferred(); let signal; const f = await mountQueue({ ...queueFixtureAdapter(), async readOptions(input, options) { signal = options.signal; return late.promise; } });
+  queueField(f.root, 'selection', 'synthetic-case-0', 'change'); findButton(f.root, 'Open selected case').click(); f.destroy(); assert.equal(signal.aborted, true);
+  late.resolve({ status: 'ok', value: queueOptionsFixture() }); await tick(); assert.equal(f.root.children.length, 0);
+  const save = deferred(); let lists = 0; let writes = 0; const adapter = queueFixtureAdapter();
+  const other = await mountQueue({ ...adapter, async listCases(options) { lists += 1; return adapter.listCases(options); }, async updateCase() { writes += 1; return save.promise; } });
+  await openQueue(other.root); reviewQueue(other.root); findButton(other.root, 'Review case update').click(); const confirm = findButton(other.root, 'Confirm case update'); confirm.click();
+  other.destroy(); save.resolve({ status: 'ok', value: { case: queueCaseFixtures()[0] } }); await tick(); confirm.click();
+  assert.equal(lists, 1); assert.equal(writes, 1); assert.equal(other.root.children.length, 0);
+  const first = deferred(); const third = await mountQueue({ ...adapter, async readOptions(input) { return input.caseId === 'synthetic-case-0' ? first.promise : adapter.readOptions(input); } });
+  queueField(third.root, 'selection', 'synthetic-case-0', 'change'); findButton(third.root, 'Open selected case').click(); await openQueue(third.root, 'synthetic-case-1');
+  first.resolve({ status: 'ok', value: queueOptionsFixture() }); await tick();
+  assert.equal(third.root.querySelector('[data-case-id]').dataset.caseId, 'synthetic-case-1'); third.destroy();
+});
+test('queue HTTP routes include credentials, strip identity and reject malformed successful projections', async () => {
+  const calls = []; const values = [{ cases: [] }, queueOptionsFixture(), { case: queueCaseFixtures()[0] }];
+  const adapter = createCaseHttpAdapter({ fetchImpl: async (url, options) => { calls.push([url, options]); return { ok: true, json: async () => ({ status: 'ok', value: values[calls.length - 1] }) }; } });
+  await adapter.listCases(); await adapter.readOptions({ caseId: 'case with/&' });
+  await adapter.updateCase({ commandId: 'id', caseId: 'one', expectedVersion: 2, status: 'in-progress', reason: 'Review', nextAction: 'Call', dueAt: '2026-11-07T12:00:00.000Z',
+    remedy: { type: 'manual-decision', decision: 'Reviewed' }, employeeId: 'forged', runId: 'forged', owner: 'forged' });
+  assert.equal(calls[0][0], '/api/gcsp/scheme-team/cases'); assert.equal(calls[1][0], '/api/gcsp/scheme-team/cases/options?caseId=case+with%2F%26');
+  assert.equal(calls[2][0], '/api/gcsp/scheme-team/cases/update'); assert.ok(calls.every(([, options]) => options.credentials === 'include'));
+  assert.deepEqual(Object.keys(JSON.parse(calls[2][1].body)), ['commandId', 'caseId', 'expectedVersion', 'status', 'reason', 'nextAction', 'dueAt', 'remedy']);
+  const bad = createCaseHttpAdapter({ fetchImpl: async () => ({ ok: true, json: async () => ({ status: 'ok', value: { case: {}, nextStatuses: [null], options: {} } }) }) });
+  assert.equal((await bad.listCases()).status, 'unavailable'); assert.equal((await bad.readOptions({ caseId: 'x' })).status, 'unavailable');
+  assert.equal((await bad.updateCase({})).status, 'unavailable');
+});
+test('queue element pre-upgrade injection, embedding, heading override, refresh, register and actual default HTTP work', async () => {
+  const element = document.createElement('gcsp-case-queue'); element.adapter = queueFixtureAdapter('empty'); element.setAttribute('embedded', ''); document.body.append(element);
+  queue.defineGcspCaseQueue(); await tick(); assert.match(element.textContent, /No renewal cases/); assert.equal(element.querySelector('h1'), null);
+  assert.equal(element.querySelector('h2').textContent, 'Renewal cases'); element.setAttribute('heading-level', '3'); await tick();
+  assert.equal(element.querySelector('.vm-title').tagName, 'H3'); await element.refresh(); element.remove(); assert.equal(element.children.length, 0);
+  const original = globalThis.fetch; const calls = [];
+  globalThis.fetch = async (url) => { calls.push(url); return { ok: true, json: async () => ({ status: 'ok', value: { cases: [] } }) }; };
+  try { const actual = document.createElement('gcsp-case-queue'); document.body.append(actual); await tick(); assert.deepEqual(calls, ['/api/gcsp/scheme-team/cases']); actual.remove(); }
+  finally { globalThis.fetch = original; }
+  await import('../../blocks/gcsp/cases/register.js'); assert.equal(customElements.get('gcsp-case-queue'), queue.GcspCaseQueueElement);
+  const html = readFileSync(new URL('../../gcsp-case-queue.html', import.meta.url), 'utf8');
+  assert.doesNotMatch(html, /\son\w+\s*=|<script(?![^>]*\bsrc=)[^>]*>\s*\S/i); assert.match(html, /queue-harness.js/); assert.match(html, /gcsp-case-queue.css/);
+  assert.equal((await queueFixtureAdapter().updateCase({})).status, 'unavailable');
+});
+
+
+test('malformed successful queue projections show source failure instead of exposing broken controls', async () => {
+  const value = queueOptionsFixture(); value.options.preferenceRelaxations.items[0].values = null;
+  const adapter = createCaseHttpAdapter({ fetchImpl: async () => ({ ok: true, json: async () => ({ status: 'ok', value }) }) });
+  assert.equal((await adapter.readOptions({ caseId: value.case.caseId })).status, 'unavailable');
+  const f = await mountQueue({ ...queueFixtureAdapter(), async readOptions() { return { status: 'ok', value }; } });
+  await openQueue(f.root); assert.match(f.root.textContent, /Case options are unavailable/); assert.equal(findButton(f.root, 'Review case update'), undefined); f.destroy();
 });
