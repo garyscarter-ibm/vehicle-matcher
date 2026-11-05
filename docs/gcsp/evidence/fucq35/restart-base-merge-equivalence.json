@@ -1,0 +1,78 @@
+{
+  "observed_at": "2026-11-05T23:44:17Z",
+  "merge_parents": [
+    "ac88bf22a7a9609bfc3c6e6586acd6e23fb76295",
+    "2b796010f54d1b720e8b13f044496c8e175c07a7"
+  ],
+  "tested_baseline": "b0a7bf109b524a48a903c8e0bf3c15799e560bb7",
+  "stage_sha256": {
+    "base": "f79ddd58174f077c677f1a1e7ae19c4a79307ee30a1aef127f54006b50ca5342",
+    "ours": "812af8398eb2bb4a01e0b187bcad72d8c36981989b5bdf42786f93e6b1626d77",
+    "incoming": "efa3c8ed73baa297b8d275442347d6f3d1a89677881ce829e47ebef3af235054"
+  },
+  "resolved_map_sha256": "74d47a113b78395465f3317964ea0463f666b9c0f7ba60c44b98f3239e878a14",
+  "method": "Three-way semantic merge by story id, preserving unchanged and singly changed records exactly; trusted shared product_map decode/write/read schema. No side-wide replacement or timestamp freshening.",
+  "ours_changed_ids": [
+    "FUCQ-35"
+  ],
+  "incoming_changed_ids": [
+    "FUCQ-58",
+    "FUCQ-70",
+    "FUCQ-71",
+    "FUCQ-89",
+    "FUCQ-92",
+    "FUCQ-96",
+    "FUCQ-102",
+    "FUCQ-105"
+  ],
+  "all_incoming_non_f35_records_preserved_exactly": true,
+  "f35_record_preserved_exactly": true,
+  "f35_slice_states": [
+    "complete",
+    "complete",
+    "complete",
+    "complete",
+    "in-progress"
+  ],
+  "f35_worker_active": false,
+  "schema_round_trip": true,
+  "no_conflict_markers": true,
+  "changed_paths_from_tested_baseline": [
+    ".impeccable/config.json",
+    ".product-map/work.json",
+    "_dev/in-progress/DEV-2026-11-04-046.md",
+    "_dev/in-progress/DEV-2026-11-04-061.md",
+    "_dev/in-progress/DEV-2026-11-04-070.md",
+    "_dev/in-progress/DEV-2026-11-04-074.md",
+    "_dev/in-progress/DEV-2026-11-04-080.md",
+    "docs/gcsp/README.md",
+    "docs/gcsp/dev-poller-2026-11-05-restart.md",
+    "docs/gcsp/evidence/fucq35/restart-cleanup.json",
+    "docs/gcsp/evidence/fucq35/restart-final-equivalence.json",
+    "docs/gcsp/evidence/fucq35/restart-full.json",
+    "docs/gcsp/evidence/fucq35/restart-validation.md"
+  ],
+  "metadata_only_changed_paths": true,
+  "source_test_projection_file_count": 280,
+  "source_test_projection_digest": "2cd708ecac4cbf7e8aa2e90c472218f51750d53afbc975b388ba50f5489c58f8",
+  "source_test_projection_unchanged": true,
+  "configured_input_count": 1994,
+  "configured_inputs_unchanged": true,
+  "historical_environment_digest": "575899020a1f3ea2921ad38f81dd19112f44a76e1ac1410dda2847b27cf6e687",
+  "normalised_planned_launch_environment_matches": true,
+  "platform_interpreter_match": true,
+  "historical_full_stamp_key": "57e725410c3bd8e31f52cb96bf6cb07467db7f8a00e365bd795725f1e155edbb",
+  "historical_immediate_strict_status": 0,
+  "current_strict_match_claimed": false,
+  "tests_repeated": false,
+  "validation_scope": "Metadata/schema and exact content/input/environment equivalence checks; no application or test changes. No new test/proof scratch or process groups created. Dispatcher owns actual integration and completion of integration slice.",
+  "parent_independent_audit_report": {
+    "owned_manifests_verified_absent": 35,
+    "cumulative_recorded_allocation_removed_bytes": 201958966,
+    "configured_inputs_match": 1994,
+    "original_historical_export_hash_exact": true,
+    "narrow_account_and_gate_captures_viewed": true,
+    "gate_recovery_unobscured": true,
+    "source": "Dispatcher/root message during authorised base-merge reconciliation"
+  }
+}
