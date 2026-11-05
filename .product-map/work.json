@@ -1009,8 +1009,51 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-102"
+      "observed_at": "2026-11-05T23:22:44Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-102",
+      "workers": [
+        {
+          "id": "01a1ae02-7932-7a30-a010-17dda8df7122",
+          "name": "Hugo",
+          "harness": "codex",
+          "observed_at": "2026-11-05T23:22:44Z",
+          "expires_at": "2026-11-06T01:22:44Z"
+        }
+      ],
+      "slices": [
+        {
+          "id": "contract",
+          "status": "in-progress",
+          "title": "One-offer HTTP and durable capability contract",
+          "observed_at": "2026-11-05T23:22:44Z"
+        },
+        {
+          "id": "access",
+          "status": "not-started",
+          "title": "Hash exchange and current-state access service"
+        },
+        {
+          "id": "http",
+          "status": "not-started",
+          "title": "Origin-gated cookie and account adapter"
+        },
+        {
+          "id": "producer",
+          "status": "not-started",
+          "title": "Actual FUCQ100 token producer and local expiry integration"
+        },
+        {
+          "id": "runtime",
+          "status": "not-started",
+          "title": "Central host and cross-browser reload integration"
+        },
+        {
+          "id": "validation",
+          "status": "not-started",
+          "title": "Authored full validation and final acceptance gates"
+        }
+      ],
+      "unsliced": false
     },
     {
       "id": "FUCQ-103",
