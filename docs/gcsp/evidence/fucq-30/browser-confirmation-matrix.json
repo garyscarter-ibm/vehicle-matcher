@@ -1,0 +1,515 @@
+{
+  "run": "fucq30-20261105-feedback-actions-browser-confirmation-retry1",
+  "status": "passed",
+  "source": {
+    "head": "85e174e9aff71367472c54f489bea802008a869c",
+    "branch": "dev/DEV-2026-11-04-050",
+    "files": {
+      "blocks/vehicle-matcher/modes/questionnaire.js": "3b8c7e5643b4ae269a6b28fe533286e892bf80161b3dd9ebd05e2caf9ddd088f",
+      "blocks/vehicle-matcher/modes/result-card.js": "2e449c6321d9a753196c9084e53ae3466710c91737586891aee62e32dbe0851f",
+      "blocks/vehicle-matcher/feedback-actions.js": "ead9d49ec959cbf57619074246ae372106da240bff76f9a239ba10dae1feb3bb",
+      "blocks/vehicle-matcher/engine.js": "f69fa8db8730e928f5cac3ea84ae2fc7988b79864c182febe58338d8ea6db9cd",
+      "blocks/vehicle-matcher/modes/question-ui.js": "6eba9ed0af4c12d520173638dac4c30476dc41b686e453afbf8ae3a48b152706",
+      "blocks/vehicle-matcher/modes/brand-copy.js": "c44ded12de144dece7b7eff5ba885bb927437a06e728aef9df83770ef94e9a8d",
+      "blocks/vehicle-matcher/modes/preview-feed.js": "bbf4e82189c04902283854c46153fc9bca1927a6a2574dba406c9a17e3ed52ad",
+      "blocks/vehicle-matcher/quiz-meta.js": "7250a6ddb686f0f2cd0ef1af1895959006956228aef656da633676b89e203c0d",
+      "blocks/vehicle-matcher/ui.js": "5aa5785dd52fc328cb390002b153c99a7067cdb2aa9de609bf53f4e94e0b09a8",
+      "blocks/vehicle-matcher/share-context.js": "8d1cc8043d5c0d41e84d9b626b0d3cd3ec76e94f7eee2ec706de1047b9b606d0",
+      "blocks/vehicle-matcher/component-gallery.js": "d11e830813acffee89151ab4d46483902acbd90bc1784223cfc0cfa0c28e7a35",
+      "blocks/vehicle-matcher/vehicle-matcher.css": "471f36da9dc5989bb949ae0aba276e589562f0874a0832d90191c66c604855a9",
+      "blocks/vehicle-matcher/component-gallery.css": "f12f32aa2569bd84e9bc7fc3fb771a1228312aca2997566936b375d32943ad7b",
+      "blocks/vehicle-matcher/tokens.css": "30d971de3fd89d456b7bc819621ff9f11888da1ca73e8bd80dc70c58a411b1fa",
+      "components.html": "44adaad05dbdd9dc61fbcd4df12963743d710e13d995df0f66568f7e6dd5a512",
+      "server/questions.js": "898716dfaf8a184fef39a9ae12b9d59b01cce94c48356dab5e3b4e81de62c26d"
+    }
+  },
+  "reusedRound1": {
+    "matrix": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-050/docs/gcsp/evidence/fucq-30/browser-matrix.json",
+    "interactionChecks": 51,
+    "layoutSnapshots": 18,
+    "reason": "Only the reconstruction helper, shared result-card technical-data rendering, and related fixtures changed; parent authorized one affected confirmation round."
+  },
+  "fixture": {
+    "kind": "synthetic",
+    "note": "Only local API stubs are used. The browser is not connected to live vehicle inventory.",
+    "searched": {
+      "total": 4,
+      "eligible": 4,
+      "margin": 4
+    },
+    "listings": [
+      {
+        "group": "BMW 320i Touring",
+        "paint": "Blue",
+        "transmission": "automatic",
+        "purchasePriceGBP": 32000,
+        "odometerMiles": 10000
+      },
+      {
+        "group": "BMW 320i Touring",
+        "paint": "White",
+        "transmission": "automatic",
+        "purchasePriceGBP": 29000,
+        "odometerMiles": 7000
+      },
+      {
+        "group": "BMW 320i Touring",
+        "paint": "Black",
+        "transmission": "manual",
+        "purchasePriceGBP": 31000,
+        "odometerMiles": null
+      },
+      {
+        "group": "BMW 118i Hatchback",
+        "paint": "Grey",
+        "transmission": "automatic",
+        "purchasePriceGBP": 23000,
+        "odometerMiles": 9000
+      }
+    ],
+    "optionalTechnicalNumbers": null
+  },
+  "checks": [
+    {
+      "name": "round 1 evidence currently has exactly twelve PNG files",
+      "status": "passed",
+      "observed": 12
+    },
+    {
+      "name": "desktop gallery renders two cards without undefined/null technical copy",
+      "status": "passed",
+      "observed": "Images coming soon\nBMW 320i Touring\n88%\n\nEstate · Petrol · Automatic · Portimao Blue · from £29,000\n\nAt Gallery Retailer\n\n3 available · £29,000–£32,000\n\n10,000 miles\n\nWHAT’S FITTED\n\nHeated seats\n\nNot this one\nTurned down? We’ll bring the next one up.\n\nCHOOSE YOURS\n\nBlue\n£32,000 · 10,000 mi\nWhite\n£29,000 · 7,000 mi\nBlack\n£31,000\nImages coming soon\nBMW 118i Hatchback\n84%\n\nHatchback · Petrol · Automatic · Brooklyn Grey · £23,000\n\nAt Gallery Retailer\n\n9,000 miles\n\nWHAT’S FITTED\n\nParking camera\n\nNot this one\nTurned down? We’ll bring the next one up."
+    },
+    {
+      "name": "desktop gallery keeps five-seat essential and unknown charging distinct",
+      "status": "passed",
+      "observed": "LOCAL EMPLOYEE BRIEF FIXTURE\n\nBody preference: estate (confirmed)\n\nEssential seats: at least 5 (confirmed)\n\nCharging access: unknown (needs confirmation)\n\nNo saved brief, account learning or durable hold is involved.\n\nConfirm no charging access"
+    },
+    {
+      "name": "desktop gallery initial has no horizontal overflow or clipped text",
+      "status": "passed",
+      "observed": {
+        "viewport": [
+          1440,
+          1000
+        ],
+        "documentWidth": 1440,
+        "horizontalOverflow": false,
+        "clippedText": []
+      }
+    },
+    {
+      "name": "desktop gallery shade reason names whole current search",
+      "status": "passed",
+      "observed": "Whole current search, across all retailers and listings."
+    },
+    {
+      "name": "desktop gallery has named Undo and no undefined claims after regroup",
+      "status": "passed",
+      "observed": {
+        "undo": "Undo Not the blue",
+        "cards": "Images coming soon\nBMW 320i Touring\n88%\n\nEstate · Petrol · Automatic · White · from £29,000\n\nAt Gallery Retailer\n\n2 available · £29,000–£31,000 · White or Black\n\n7,000 miles\n\nWHAT’S FITTED\n\nHeated seats\n\nNot this one\nTurned down? We’ll bring the next one up.\n\nCHOOSE YOURS\n\nWhite\n£29,000 · 7,000 mi\nBlack\n£31,000\nView at Gallery Retailer ›\nImages coming soon\nBMW 118i Hatchback\n84%\n\nHatchback · Petrol · Automatic · Brooklyn Grey · £23,000\n\nAt Gallery Retailer\n\n9,000 miles\n\nWHAT’S FITTED\n\nParking camera\n\nNot this one\nTurned down? We’ll bring the next one up."
+      }
+    },
+    {
+      "name": "desktop gallery keyboard Undo restores three listings",
+      "status": "passed",
+      "observed": {
+        "focus": {
+          "focusVisible": true,
+          "outline": "solid 2px"
+        },
+        "availability": "3 available · £29,000–£32,000"
+      }
+    },
+    {
+      "name": "narrow gallery renders two cards without undefined/null technical copy",
+      "status": "passed",
+      "observed": "Images coming soon\nBMW 320i Touring\n88%\n\nEstate · Petrol · Automatic · Portimao Blue · from £29,000\n\nAt Gallery Retailer\n\n3 available · £29,000–£32,000\n\n10,000 miles\n\nWHAT’S FITTED\n\nHeated seats\n\nNot this one\nTurned down? We’ll bring the next one up.\n\nCHOOSE YOURS\n\nBlue\n£32,000 · 10,000 mi\nWhite\n£29,000 · 7,000 mi\nBlack\n£31,000\nImages coming soon\nBMW 118i Hatchback\n84%\n\nHatchback · Petrol · Automatic · Brooklyn Grey · £23,000\n\nAt Gallery Retailer\n\n9,000 miles\n\nWHAT’S FITTED\n\nParking camera\n\nNot this one\nTurned down? We’ll bring the next one up."
+    },
+    {
+      "name": "narrow gallery keeps five-seat essential and unknown charging distinct",
+      "status": "passed",
+      "observed": "LOCAL EMPLOYEE BRIEF FIXTURE\n\nBody preference: estate (confirmed)\n\nEssential seats: at least 5 (confirmed)\n\nCharging access: unknown (needs confirmation)\n\nNo saved brief, account learning or durable hold is involved.\n\nConfirm no charging access"
+    },
+    {
+      "name": "narrow gallery initial has no horizontal overflow or clipped text",
+      "status": "passed",
+      "observed": {
+        "viewport": [
+          390,
+          844
+        ],
+        "documentWidth": 390,
+        "horizontalOverflow": false,
+        "clippedText": []
+      }
+    },
+    {
+      "name": "narrow gallery shade reason names whole current search",
+      "status": "passed",
+      "observed": "Whole current search, across all retailers and listings."
+    },
+    {
+      "name": "narrow gallery has named Undo and no undefined claims after regroup",
+      "status": "passed",
+      "observed": {
+        "undo": "Undo Not the blue",
+        "cards": "Images coming soon\nBMW 320i Touring\n88%\n\nEstate · Petrol · Automatic · White · from £29,000\n\nAt Gallery Retailer\n\n2 available · £29,000–£31,000 · White or Black\n\n7,000 miles\n\nWHAT’S FITTED\n\nHeated seats\n\nNot this one\nTurned down? We’ll bring the next one up.\n\nCHOOSE YOURS\n\nWhite\n£29,000 · 7,000 mi\nBlack\n£31,000\nView at Gallery Retailer ›\nImages coming soon\nBMW 118i Hatchback\n84%\n\nHatchback · Petrol · Automatic · Brooklyn Grey · £23,000\n\nAt Gallery Retailer\n\n9,000 miles\n\nWHAT’S FITTED\n\nParking camera\n\nNot this one\nTurned down? We’ll bring the next one up."
+      }
+    },
+    {
+      "name": "narrow gallery keyboard Undo restores three listings",
+      "status": "passed",
+      "observed": {
+        "focus": {
+          "focusVisible": true,
+          "outline": "solid 2px"
+        },
+        "availability": "3 available · £29,000–£32,000"
+      }
+    },
+    {
+      "name": "questionnaire desktop initial has no horizontal overflow or clipped text",
+      "status": "passed",
+      "observed": {
+        "viewport": [
+          1440,
+          1000
+        ],
+        "documentWidth": 1440,
+        "horizontalOverflow": false,
+        "clippedText": []
+      }
+    },
+    {
+      "name": "Only manual reason is whole-search scoped",
+      "status": "passed",
+      "observed": {
+        "option": {
+          "_apiName": "Locator",
+          "_frame": {
+            "_type": "Frame",
+            "_guid": "frame@e75bfc1122679d1c996fb7855804651c"
+          },
+          "_selector": ".vm-reject >> nth=0 >> .vm-reject-option >> internal:has-text=\"Only manual\"i >> nth=0"
+        },
+        "actual": "Only manual",
+        "scope": "Whole current search, across all retailers and listings."
+      }
+    },
+    {
+      "name": "Only manual retains exact £31,000 Black listing without stale claims or undefined text",
+      "status": "passed",
+      "observed": {
+        "name": "BMW 320i Touring",
+        "specs": "Estate  ·  Petrol  ·  Manual  ·  Black  ·  £31,000",
+        "availability": "",
+        "used": "",
+        "text": "Images coming soon\n3 SERIES\nBMW 320i Touring\n88%\n\nEstate · Petrol · Manual · Black · £31,000\n\nAt Synthetic Test Retailer\n\nNot this one\nTurned down? We’ll bring the next one up.\nView at Synthetic Test Retailer ›"
+      }
+    },
+    {
+      "name": "Only manual undo is named",
+      "status": "passed",
+      "observed": "Undo Only manual"
+    },
+    {
+      "name": "keyboard focus is visible on named Undo",
+      "status": "passed",
+      "observed": {
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "label": "Undo Only manual"
+      }
+    },
+    {
+      "name": "questionnaire desktop Only manual has no horizontal overflow or clipped text",
+      "status": "passed",
+      "observed": {
+        "viewport": [
+          1440,
+          1000
+        ],
+        "documentWidth": 1440,
+        "horizontalOverflow": false,
+        "clippedText": []
+      }
+    },
+    {
+      "name": "Enter on named Undo restores original price/paint/count claims",
+      "status": "passed",
+      "observed": {
+        "name": "BMW 320i Touring",
+        "specs": "Estate  ·  Petrol  ·  Automatic  ·  Portimao Blue  ·  from £29,000",
+        "availability": "3 available · £29,000–£32,000 · Blue, White or Black",
+        "used": "10,000 miles",
+        "text": "Images coming soon\n3 SERIES\nBMW 320i Touring\n88%\n\nEstate · Petrol · Automatic · Portimao Blue · from £29,000\n\nAt Synthetic Test Retailer\n\n3 available · £29,000–£32,000 · Blue, White or Black\n\n10,000 miles\n\nWHAT’S FITTED\n\nHeated seats\n\nNot this one\nTurned down? We’ll bring the next one up.\n\nCHOOSE YOURS\n\nBlue\n£32,000 · 10,000 mi\nWhite\n£29,000 · 7,000 mi\nBlack\n£31,000\nView at Synthetic Test Retailer ›"
+      }
+    },
+    {
+      "name": "Only manual named Undo focus and Enter restoration",
+      "status": "passed",
+      "observed": {
+        "focus": {
+          "focusVisible": true,
+          "outline": "solid 2px",
+          "label": "Undo Only manual"
+        },
+        "restored": {
+          "name": "BMW 320i Touring",
+          "specs": "Estate  ·  Petrol  ·  Automatic  ·  Portimao Blue  ·  from £29,000",
+          "availability": "3 available · £29,000–£32,000 · Blue, White or Black",
+          "used": "10,000 miles",
+          "text": "Images coming soon\n3 SERIES\nBMW 320i Touring\n88%\n\nEstate · Petrol · Automatic · Portimao Blue · from £29,000\n\nAt Synthetic Test Retailer\n\n3 available · £29,000–£32,000 · Blue, White or Black\n\n10,000 miles\n\nWHAT’S FITTED\n\nHeated seats\n\nNot this one\nTurned down? We’ll bring the next one up.\n\nCHOOSE YOURS\n\nBlue\n£32,000 · 10,000 mi\nWhite\n£29,000 · 7,000 mi\nBlack\n£31,000\nView at Synthetic Test Retailer ›"
+        }
+      }
+    },
+    {
+      "name": "mileage reason is whole-search scoped",
+      "status": "passed",
+      "observed": {
+        "option": {
+          "_apiName": "Locator",
+          "_frame": {
+            "_type": "Frame",
+            "_guid": "frame@e75bfc1122679d1c996fb7855804651c"
+          },
+          "_selector": ".vm-reject >> nth=0 >> .vm-reject-option >> internal:has-text=\"Fewer than 10,000 miles\"i >> nth=0"
+        },
+        "actual": "Fewer than 10,000 miles",
+        "scope": "Whole current search, across all retailers and listings."
+      }
+    },
+    {
+      "name": "narrow mileage filter keeps White £29,000 / 7,000-mile listing with no stale or undefined claims",
+      "status": "passed",
+      "observed": {
+        "name": "BMW 320i Touring",
+        "specs": "Estate  ·  Petrol  ·  Automatic  ·  White  ·  £29,000",
+        "availability": "",
+        "used": "7,000 miles",
+        "text": "Images coming soon\n3 SERIES\nBMW 320i Touring\n88%\n\nEstate · Petrol · Automatic · White · £29,000\n\nAt Synthetic Test Retailer\n\n7,000 miles\n\nWHAT’S FITTED\n\nHeated seats\n\nNot this one\nTurned down? We’ll bring the next one up.\nView at Synthetic Test Retailer ›"
+      }
+    },
+    {
+      "name": "narrow mileage feedback has named undo",
+      "status": "passed",
+      "observed": "Undo Fewer than 10,000 miles"
+    },
+    {
+      "name": "questionnaire narrow fewer than 10000 has no horizontal overflow or clipped text",
+      "status": "passed",
+      "observed": {
+        "viewport": [
+          390,
+          844
+        ],
+        "documentWidth": 390,
+        "horizontalOverflow": false,
+        "clippedText": []
+      }
+    },
+    {
+      "name": "narrow mileage Undo restores original three listings and claims",
+      "status": "passed",
+      "observed": {
+        "name": "BMW 320i Touring",
+        "specs": "Estate  ·  Petrol  ·  Automatic  ·  Portimao Blue  ·  from £29,000",
+        "availability": "3 available · £29,000–£32,000 · Blue, White or Black",
+        "used": "10,000 miles",
+        "text": "Images coming soon\n3 SERIES\nBMW 320i Touring\n88%\n\nEstate · Petrol · Automatic · Portimao Blue · from £29,000\n\nAt Synthetic Test Retailer\n\n3 available · £29,000–£32,000 · Blue, White or Black\n\n10,000 miles\n\nWHAT’S FITTED\n\nHeated seats\n\nNot this one\nTurned down? We’ll bring the next one up.\n\nCHOOSE YOURS\n\nBlue\n£32,000 · 10,000 mi\nWhite\n£29,000 · 7,000 mi\nBlack\n£31,000\nView at Synthetic Test Retailer ›"
+      }
+    },
+    {
+      "name": "confirmation refreshed only four existing PNG paths and stayed within twelve total",
+      "status": "passed",
+      "observed": {
+        "pngCount": 12,
+        "refreshed": [
+          "gallery-desktop-initial.png",
+          "gallery-mobile-initial.png",
+          "questionnaire-desktop-keyboard-undo.png",
+          "questionnaire-mobile-filtered.png"
+        ]
+      }
+    },
+    {
+      "name": "confirmation API calls stayed synthetic and local",
+      "status": "passed",
+      "observed": {
+        "calls": [
+          {
+            "path": "/api/questions",
+            "method": "GET"
+          },
+          {
+            "path": "/api/nearby",
+            "method": "POST"
+          },
+          {
+            "path": "/api/match",
+            "method": "POST"
+          },
+          {
+            "path": "/api/questions",
+            "method": "GET"
+          },
+          {
+            "path": "/api/nearby",
+            "method": "POST"
+          },
+          {
+            "path": "/api/match",
+            "method": "POST"
+          }
+        ],
+        "blockedExternal": [],
+        "unexpected": []
+      }
+    },
+    {
+      "name": "confirmation browser reported no console/page errors",
+      "status": "passed",
+      "observed": {
+        "errors": [],
+        "pageErrors": []
+      }
+    }
+  ],
+  "layout": [
+    {
+      "state": "desktop gallery initial",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "documentWidth": 1440,
+      "horizontalOverflow": false,
+      "clippedText": []
+    },
+    {
+      "state": "narrow gallery initial",
+      "viewport": [
+        390,
+        844
+      ],
+      "documentWidth": 390,
+      "horizontalOverflow": false,
+      "clippedText": []
+    },
+    {
+      "state": "questionnaire desktop initial",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "documentWidth": 1440,
+      "horizontalOverflow": false,
+      "clippedText": []
+    },
+    {
+      "state": "questionnaire desktop Only manual",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "documentWidth": 1440,
+      "horizontalOverflow": false,
+      "clippedText": []
+    },
+    {
+      "state": "questionnaire narrow fewer than 10000",
+      "viewport": [
+        390,
+        844
+      ],
+      "documentWidth": 390,
+      "horizontalOverflow": false,
+      "clippedText": []
+    }
+  ],
+  "captures": [
+    {
+      "name": "gallery-desktop-initial.png",
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-050/docs/gcsp/evidence/fucq-30/gallery-desktop-initial.png",
+      "bytes": 113234,
+      "sha256": "723a1fb113ecd4bbaa77f43ce0b5d3a0e9b7104aa64f547991681c9e83fb554e",
+      "viewport": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "name": "gallery-mobile-initial.png",
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-050/docs/gcsp/evidence/fucq-30/gallery-mobile-initial.png",
+      "bytes": 102688,
+      "sha256": "e9cade151784c61c49a075474503cb742123580ca776d7884568150947f8e839",
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "name": "questionnaire-desktop-keyboard-undo.png",
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-050/docs/gcsp/evidence/fucq-30/questionnaire-desktop-keyboard-undo.png",
+      "bytes": 84214,
+      "sha256": "02901328906d4f05a1d1fee219d107a2475536909debcec9e1ab6f301d8d79b2",
+      "viewport": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "name": "questionnaire-mobile-filtered.png",
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-050/docs/gcsp/evidence/fucq-30/questionnaire-mobile-filtered.png",
+      "bytes": 95370,
+      "sha256": "72de4437ae98ddae11a2f0dd1b3893ec495bf54f8a3a25ed1347ff5fa974fbc7",
+      "viewport": [
+        390,
+        844
+      ]
+    }
+  ],
+  "replacedRound1Captures": {
+    "gallery-desktop-initial.png": "829914927f1a1c1bcb242b37f39214873a3f19f5fe7b5f7fad4ea83c85c015c1",
+    "gallery-mobile-initial.png": "630dff46c5663d8153748515b0d5ef1ce3e8b0e6f1c1859ca27f57e40d6a1f9b",
+    "questionnaire-desktop-keyboard-undo.png": "f5bab4e33de0a6f559e37da0ee44ff1a67ea9d875f37423af70047f9eed4efd2",
+    "questionnaire-mobile-filtered.png": "43d48491325ed78eb5489e3107943f2dc7658bf7084757e7b21d78733273d242"
+  },
+  "api": {
+    "calls": [
+      {
+        "path": "/api/questions",
+        "method": "GET"
+      },
+      {
+        "path": "/api/nearby",
+        "method": "POST"
+      },
+      {
+        "path": "/api/match",
+        "method": "POST"
+      },
+      {
+        "path": "/api/questions",
+        "method": "GET"
+      },
+      {
+        "path": "/api/nearby",
+        "method": "POST"
+      },
+      {
+        "path": "/api/match",
+        "method": "POST"
+      }
+    ],
+    "blockedExternal": [],
+    "unexpected": []
+  },
+  "console": {
+    "errors": [],
+    "pageErrors": []
+  },
+  "findings": []
+}
