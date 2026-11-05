@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "asked": "2026-11-05",
+  "pieces": {
+    "product-map": "on"
+  },
+  "product_map": {
+    "managed_files": {
+      "_tools/product_map.py": "7e5551d47211667034be1d5c0a7abf647730561454b39a132d98a49d18ef6009",
+      "_tools/product_map_publish.py": "b0942033e2657351d84bb6abc962d92e22a1c196833d2069030f37d393fcc55f",
+      "_tools/product_map_assets/index.html": "edd66da04e4e9197c57f35b8ba1a3ac6f93a65e39aabeaf955903902e8195836",
+      "_tools/product_map_assets/map.css": "b66324ca5e47f3a382ec2f4d0c7faa65dfb36cb4f7d78e6fd1da68864ea993c5",
+      "_tools/product_map_assets/map.js": "b764c40e7e45713824c89a7d45800ed9e57944ae954ace6df3f61b7d3d3210ce"
+    },
+    "publish": {
+      "mode": "actions",
+      "site_dir": ".",
+      "branch": "product-map-pages",
+      "remote": "origin",
+      "base_branch": "main",
+      "workflow": ".github/workflows/pages.yml",
+      "refresh_workflow": ".github/workflows/product-map-refresh.yml",
+      "site_assembly": "Existing explicit retail assets, overlaid with product-map"
+    }
+  }
+}

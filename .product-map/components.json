@@ -1,0 +1,657 @@
+{
+  "version": 1,
+  "project": {
+    "name": "Vehicle matcher · GCSP"
+  },
+  "components": [
+    {
+      "id": "entry",
+      "name": "Experience entry",
+      "description": "Choose retail or employee journeys and preserve brand and return context.",
+      "paths": [
+        "blocks/demo-launcher",
+        "scripts/experience-route.js"
+      ],
+      "stories": [
+        "FUCQ-32",
+        "FUCQ-33",
+        "FUCQ-34",
+        "FUCQ-35",
+        "FUCQ-36"
+      ],
+      "references": [
+        "FUCQ-13"
+      ],
+      "connections": [
+        {
+          "to": "shared-experience",
+          "label": "uses shared controls"
+        },
+        {
+          "to": "manual-journey",
+          "label": "opens employee journey"
+        }
+      ]
+    },
+    {
+      "id": "shared-experience",
+      "name": "Shared experience kit",
+      "description": "Portal shell, shared controls and exact vehicle decisions across employee and retail views.",
+      "paths": [
+        "blocks/gcsp/kit",
+        "blocks/gcsp/shell",
+        "blocks/vehicle-matcher"
+      ],
+      "stories": [
+        "FUCQ-31",
+        "FUCQ-64"
+      ],
+      "references": [
+        "FUCQ-7",
+        "FUCQ-8"
+      ],
+      "connections": [
+        {
+          "to": "recommendation",
+          "label": "renders decisions"
+        },
+        {
+          "to": "manual-journey",
+          "label": "provides shell and controls"
+        }
+      ]
+    },
+    {
+      "id": "recommendation",
+      "name": "Recommendation and preference fit",
+      "description": "Evaluate exact vehicle facts under employee policy while preserving the retail contract and feedback.",
+      "paths": [
+        "server/engine.js",
+        "server/scenarios/employee",
+        "server/vehicles",
+        "server/adapters"
+      ],
+      "stories": [
+        "FUCQ-21",
+        "FUCQ-22",
+        "FUCQ-23",
+        "FUCQ-24",
+        "FUCQ-25",
+        "FUCQ-26",
+        "FUCQ-27",
+        "FUCQ-28",
+        "FUCQ-29",
+        "FUCQ-30"
+      ],
+      "references": [
+        "FUCQ-8"
+      ],
+      "connections": [
+        {
+          "to": "catalogue",
+          "label": "reads vehicle facts"
+        },
+        {
+          "to": "policy",
+          "label": "applies scheme gates"
+        },
+        {
+          "to": "brief",
+          "label": "evaluates confirmed preferences"
+        }
+      ]
+    },
+    {
+      "id": "catalogue",
+      "name": "Catalogue and equipment facts",
+      "description": "Dated specifications and equipment certainty, with a separate authorised live-provider route.",
+      "paths": [
+        "server/vehicle-evidence/bmw-catalogue-adapter.js",
+        "docs/gcsp/bmw-interface-stories.md"
+      ],
+      "stories": [
+        "FUCQ-37",
+        "FUCQ-38",
+        "FUCQ-39",
+        "FUCQ-46",
+        "FUCQ-47",
+        "FUCQ-48"
+      ],
+      "references": [
+        "FUCQ-14",
+        "FUCQ-17"
+      ],
+      "connections": [
+        {
+          "to": "imagery",
+          "label": "shares exact configuration identity"
+        },
+        {
+          "to": "configuration-corpus",
+          "label": "enriches configurations"
+        }
+      ]
+    },
+    {
+      "id": "imagery",
+      "name": "Vehicle imagery",
+      "description": "Resolve representative and live configuration images with explicit fidelity, freshness and failure states.",
+      "paths": [
+        "server/vehicle-evidence/bmw-image-adapter.js",
+        "server/vehicle-evidence/bmw-live-imagery.js"
+      ],
+      "stories": [
+        "FUCQ-40",
+        "FUCQ-41",
+        "FUCQ-42",
+        "FUCQ-49",
+        "FUCQ-50",
+        "FUCQ-51"
+      ],
+      "references": [
+        "FUCQ-15",
+        "FUCQ-18"
+      ],
+      "connections": [
+        {
+          "to": "manual-journey",
+          "label": "illustrates exact cars"
+        },
+        {
+          "to": "offer-journey",
+          "label": "illustrates offers"
+        }
+      ]
+    },
+    {
+      "id": "vehicle-identity",
+      "name": "Vehicle identity and handbook",
+      "description": "Synthetic configuration, order-reference and VIN lookup; VIN-linked handbook content stays a distinct evidence source.",
+      "paths": [
+        "server/data/gcsp/vehicle-evidence",
+        "server/scripts/generate-synthetic-vins.mjs",
+        "server/vehicle-evidence/bmw-vin-guide-adapter.js"
+      ],
+      "stories": [
+        "FUCQ-43",
+        "FUCQ-44",
+        "FUCQ-45",
+        "FUCQ-52",
+        "FUCQ-53",
+        "FUCQ-54",
+        "FUCQ-55",
+        "FUCQ-56",
+        "FUCQ-57"
+      ],
+      "references": [
+        "FUCQ-16",
+        "FUCQ-19"
+      ],
+      "connections": [
+        {
+          "to": "configuration-corpus",
+          "label": "loads immutable vehicle evidence"
+        },
+        {
+          "to": "manual-journey",
+          "label": "resolves current and selected cars"
+        }
+      ]
+    },
+    {
+      "id": "configuration-corpus",
+      "name": "Configuration corpus and scheme stock",
+      "description": "Collect real constructible BMW configurations and build synthetic scheme stock on a versioned, resumable corpus.",
+      "paths": [
+        "server/data/gcsp/vehicle-evidence",
+        "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md"
+      ],
+      "stories": [
+        "FUCQ-58",
+        "FUCQ-59",
+        "FUCQ-60",
+        "FUCQ-61",
+        "FUCQ-62",
+        "FUCQ-63",
+        "FUCQ-77",
+        "FUCQ-78"
+      ],
+      "references": [
+        "FUCQ-20"
+      ],
+      "connections": [
+        {
+          "to": "catalogue",
+          "label": "uses sourced specifications"
+        },
+        {
+          "to": "imagery",
+          "label": "uses sourced renders"
+        },
+        {
+          "to": "allocation",
+          "label": "supplies released candidates"
+        }
+      ]
+    },
+    {
+      "id": "transaction-store",
+      "name": "Shared transaction store",
+      "description": "One repository authority for run-scoped briefs, stock, holds, offers, outbox and history.",
+      "paths": [
+        "server/gcsp/repository"
+      ],
+      "stories": [
+        "FUCQ-80",
+        "FUCQ-81"
+      ],
+      "references": [
+        "FUCQ-79"
+      ],
+      "connections": [
+        {
+          "to": "policy",
+          "label": "stores dated policy"
+        },
+        {
+          "to": "allocation",
+          "label": "commits exclusive holds"
+        },
+        {
+          "to": "post-selection",
+          "label": "stores lifecycle records"
+        }
+      ]
+    },
+    {
+      "id": "policy",
+      "name": "Scheme policy and assumptions",
+      "description": "One versioned PolicyService supplies eligibility, allowance, points, weights and revisable demo assumptions.",
+      "paths": [
+        "server/gcsp/policy"
+      ],
+      "stories": [
+        "FUCQ-82",
+        "FUCQ-83",
+        "FUCQ-103"
+      ],
+      "references": [
+        "FUCQ-79",
+        "FUCQ-90"
+      ],
+      "connections": [
+        {
+          "to": "recommendation",
+          "label": "supplies hard gates and weights"
+        },
+        {
+          "to": "allocation",
+          "label": "supplies hold and tie-break rules"
+        },
+        {
+          "to": "demand-planning",
+          "label": "supplies objectives and constraints"
+        }
+      ]
+    },
+    {
+      "id": "demo-control",
+      "name": "Identity, time and presenter controls",
+      "description": "Resolve fictional principals and run scope; advance time, release stock and reset named scenarios.",
+      "paths": [
+        "server/gcsp/clock",
+        "server/gcsp/fixtures",
+        "blocks/gcsp/presenter"
+      ],
+      "stories": [
+        "FUCQ-84",
+        "FUCQ-85",
+        "FUCQ-125",
+        "FUCQ-126",
+        "FUCQ-127",
+        "FUCQ-128",
+        "FUCQ-129",
+        "FUCQ-130",
+        "FUCQ-131"
+      ],
+      "references": [
+        "FUCQ-75",
+        "FUCQ-79"
+      ],
+      "connections": [
+        {
+          "to": "allocation",
+          "label": "triggers release evaluation"
+        },
+        {
+          "to": "post-selection",
+          "label": "ticks lifecycle transitions"
+        },
+        {
+          "to": "route-comparison",
+          "label": "prepares replayable runs"
+        }
+      ]
+    },
+    {
+      "id": "manual-journey",
+      "name": "Manual employee selection",
+      "description": "Current contracts, scheme and driver choices, released-car browsing, exact claim, review and truthful ordering handoff.",
+      "paths": [
+        "blocks/gcsp/account",
+        "blocks/gcsp/manual-setup",
+        "docs/gcsp/manual-journey-refinement.md"
+      ],
+      "stories": [
+        "FUCQ-65",
+        "FUCQ-66",
+        "FUCQ-67",
+        "FUCQ-68",
+        "FUCQ-69",
+        "FUCQ-70",
+        "FUCQ-71",
+        "FUCQ-72",
+        "FUCQ-73"
+      ],
+      "references": [
+        "FUCQ-7"
+      ],
+      "connections": [
+        {
+          "to": "allocation",
+          "label": "claims through shared authority"
+        },
+        {
+          "to": "post-selection",
+          "label": "hands off selected cars"
+        },
+        {
+          "to": "vehicle-identity",
+          "label": "reads vehicle details"
+        }
+      ]
+    },
+    {
+      "id": "brief",
+      "name": "Employee brief and buddy activity",
+      "description": "Save preferences, importance and essentials; confirm consent and revisions, then observe and control the buddy search.",
+      "paths": [
+        "server/gcsp/brief",
+        "blocks/gcsp/brief"
+      ],
+      "stories": [
+        "FUCQ-91",
+        "FUCQ-94",
+        "FUCQ-95"
+      ],
+      "references": [
+        "FUCQ-86"
+      ],
+      "connections": [
+        {
+          "to": "recommendation",
+          "label": "requests explained matches"
+        },
+        {
+          "to": "allocation",
+          "label": "provides confirmed demand"
+        },
+        {
+          "to": "offer-journey",
+          "label": "supports confirmed post-decline change"
+        }
+      ]
+    },
+    {
+      "id": "allocation",
+      "name": "Stock release, allocation and holds",
+      "description": "Release stock, evaluate competing briefs and commit an exclusive manual or buddy hold with offer and outbox records.",
+      "paths": [
+        "server/gcsp",
+        "docs/gcsp/shared-contracts.md"
+      ],
+      "stories": [
+        "FUCQ-66",
+        "FUCQ-92",
+        "FUCQ-96",
+        "FUCQ-100"
+      ],
+      "references": [
+        "FUCQ-87"
+      ],
+      "connections": [
+        {
+          "to": "transaction-store",
+          "label": "commits atomic decisions"
+        },
+        {
+          "to": "notifications",
+          "label": "queues captured notification"
+        },
+        {
+          "to": "offer-journey",
+          "label": "creates exact offer"
+        }
+      ]
+    },
+    {
+      "id": "notifications",
+      "name": "Offer notifications",
+      "description": "Dispatch captured outbox jobs and use one real transport when its sender is configured.",
+      "paths": [
+        "blocks/gcsp/presenter",
+        "docs/gcsp/shared-contracts.md"
+      ],
+      "stories": [
+        "FUCQ-93",
+        "FUCQ-97",
+        "FUCQ-98"
+      ],
+      "references": [
+        "FUCQ-88"
+      ],
+      "connections": [
+        {
+          "to": "offer-journey",
+          "label": "delivers run-bound offer link"
+        }
+      ]
+    },
+    {
+      "id": "offer-journey",
+      "name": "Offer decisions and second offer",
+      "description": "Open a current offer, compare its exact quote, accept, decline or expire it, and continue through a revised brief and handoff.",
+      "paths": [
+        "docs/gcsp/fucq-86-90-stories.md",
+        "docs/gcsp/shared-contracts.md"
+      ],
+      "stories": [
+        "FUCQ-102",
+        "FUCQ-105",
+        "FUCQ-106",
+        "FUCQ-107",
+        "FUCQ-108",
+        "FUCQ-109"
+      ],
+      "references": [
+        "FUCQ-89"
+      ],
+      "connections": [
+        {
+          "to": "brief",
+          "label": "confirms one preference change"
+        },
+        {
+          "to": "allocation",
+          "label": "releases or selects held stock"
+        },
+        {
+          "to": "post-selection",
+          "label": "hands off accepted selection"
+        }
+      ]
+    },
+    {
+      "id": "greg-operations",
+      "name": "Greg's demand and supply view",
+      "description": "Show saved demand and actual outcomes, govern points and weights, and track requested, confirmed and released supply.",
+      "paths": [
+        "server/gcsp/greg",
+        "blocks/gcsp/greg"
+      ],
+      "stories": [
+        "FUCQ-99",
+        "FUCQ-101",
+        "FUCQ-103",
+        "FUCQ-104"
+      ],
+      "references": [
+        "FUCQ-90"
+      ],
+      "connections": [
+        {
+          "to": "policy",
+          "label": "publishes intentional rule changes"
+        },
+        {
+          "to": "demand-planning",
+          "label": "shows recommended order plan"
+        },
+        {
+          "to": "route-comparison",
+          "label": "shows route evidence"
+        }
+      ]
+    },
+    {
+      "id": "demand-planning",
+      "name": "Demand prediction and order planning",
+      "description": "Capture learning records, evaluate a synthetic-trained choice model and plan feasible order quantities with explicit uncertainty.",
+      "paths": [
+        "docs/gcsp/greg-predictive-research.md",
+        "docs/gcsp/fucq-74-75-stories.md"
+      ],
+      "stories": [
+        "FUCQ-113",
+        "FUCQ-115",
+        "FUCQ-117",
+        "FUCQ-119",
+        "FUCQ-121",
+        "FUCQ-123"
+      ],
+      "references": [
+        "FUCQ-74"
+      ],
+      "connections": [
+        {
+          "to": "greg-operations",
+          "label": "supports intentional order requests"
+        },
+        {
+          "to": "policy",
+          "label": "reads versioned constraints"
+        },
+        {
+          "to": "brief",
+          "label": "uses saved demand"
+        }
+      ]
+    },
+    {
+      "id": "post-selection",
+      "name": "Approval, handover and return",
+      "description": "Progress selected orders through target approvals, appointments, documents, readiness and a separate old-car return plan.",
+      "paths": [
+        "docs/gcsp/fucq-110-stories.md",
+        "docs/gcsp/shared-contracts.md"
+      ],
+      "stories": [
+        "FUCQ-71",
+        "FUCQ-108",
+        "FUCQ-111",
+        "FUCQ-114",
+        "FUCQ-116",
+        "FUCQ-118",
+        "FUCQ-120",
+        "FUCQ-124"
+      ],
+      "references": [
+        "FUCQ-110"
+      ],
+      "connections": [
+        {
+          "to": "renewal-help",
+          "label": "raises owned help cases"
+        },
+        {
+          "to": "demo-control",
+          "label": "uses presenter time"
+        },
+        {
+          "to": "vehicle-identity",
+          "label": "preserves exact selected-car identity"
+        }
+      ]
+    },
+    {
+      "id": "renewal-help",
+      "name": "Renewal risk and help cases",
+      "description": "Open an owned renewal-risk case and make the next responsible action visible without inventing recovery priority.",
+      "paths": [
+        "docs/gcsp/fucq-110-stories.md",
+        "docs/gcsp/shared-contracts.md"
+      ],
+      "stories": [
+        "FUCQ-112",
+        "FUCQ-122"
+      ],
+      "references": [
+        "FUCQ-110"
+      ],
+      "connections": [
+        {
+          "to": "post-selection",
+          "label": "coordinates next actions"
+        },
+        {
+          "to": "notifications",
+          "label": "captures case notifications"
+        }
+      ]
+    },
+    {
+      "id": "route-comparison",
+      "name": "1,000-employee route comparison",
+      "description": "Replay today's release route and the buddy route on identical seeded inputs, measure variability and show assumptions.",
+      "paths": [
+        "server/gcsp/comparison",
+        "docs/gcsp/fucq-132-stories.md"
+      ],
+      "stories": [
+        "FUCQ-133",
+        "FUCQ-134",
+        "FUCQ-135",
+        "FUCQ-136",
+        "FUCQ-137",
+        "FUCQ-138"
+      ],
+      "references": [
+        "FUCQ-132"
+      ],
+      "connections": [
+        {
+          "to": "allocation",
+          "label": "uses the same buddy authority"
+        },
+        {
+          "to": "demo-control",
+          "label": "isolates seeded replay runs"
+        },
+        {
+          "to": "greg-operations",
+          "label": "presents measured outcomes"
+        }
+      ]
+    }
+  ]
+}

@@ -13,6 +13,9 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  workflow_run:
+    workflows: [Refresh product map inputs]
+    types: [completed]
 
 permissions:
   contents: read
@@ -33,12 +36,19 @@ env:
 
 jobs:
   deploy:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Collect pushed product map inputs
+        run: git fetch origin '+refs/heads/*:refs/remotes/origin/*'
 
       # Only the files a browser actually asks for. The repo root also holds
       # server/, scripts/ and ~16MB of stock fixtures, none of which a static
@@ -94,6 +104,10 @@ jobs:
             echo "::error::${missing} brand logo(s) missing from _site/assets/brand-logos/"
             exit 1
           fi
+
+      # Only the trusted main projector executes. Branches supply JSON facts.
+      - name: Build the connected product map
+        run: python3 -I -B _tools/product_map.py build --output _site/product-map
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
