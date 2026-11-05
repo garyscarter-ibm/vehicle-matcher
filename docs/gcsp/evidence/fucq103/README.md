@@ -277,3 +277,15 @@ metadata, so those passed results are reused. No extra broad suite is selected.
 The publish-panel and learning-registration product-map slices are lead-reviewed complete
 at this scoped boundary. Rendered integration, authored full validation and final delivery
 remain open; the overall story stays In Progress.
+
+Shared metadata integration, 5 November: merged published `b95b4c8ad8a4534cbf03f287eb62fc8a57bbda96`.
+Incoming changes are scaffolding/product-map tooling, publication configuration/assets,
+claim/readiness records and documentation; no GCSP runtime code changes. The add/add map
+resolution preserves every incoming non-FUCQ-103 story object and this branch's reviewed
+FUCQ-103 row exactly. No redundant suite is selected for this metadata-only integration.
+Configured map publication uses existing Actions; no publication mode or workflow is changed
+by this story. The incoming Plex license retains its exact upstream CRLF bytes; all other
+staged paths pass the whitespace check. The validated UI/definition checkpoint `8284915`
+is already published. This integration is local pending publication: the dispatcher reported
+GitHub `fatal: commit_refs_rules` on shared and another story branch. No force push, rules
+workaround or unchanged retry loop is used. Browser/full/native lanes remain ungranted.
