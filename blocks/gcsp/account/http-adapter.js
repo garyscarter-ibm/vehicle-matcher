@@ -36,14 +36,16 @@ export function createAccountHttpAdapter({ base = '', fetchImpl = globalThis.fet
         context: [model.account?.company ?? model.account?.companyId, model.account?.gradeId].filter(Boolean).join(', '),
         model, envelope };
     },
-    async startJourney({ account, action, draft = null, commandId }, options = {}) {
+    async startJourney({ account, action, draft = null, commandId, reviewedContextVersion = null }, options = {}) {
       const supplied = account?.status === 'ok' && account.value.state === 'ready'
         && account.value.actions?.find((row) => row.enabled === true && row.action === action?.action
           && row.slotId === action.slotId && row.schemeId === action.schemeId && row.oldContractId === action.oldContractId);
       if (!supplied) return { status: 'invalid', code: 'account-action-unavailable',
         view: { state: 'validation', editable: false, supportOwner: 'scheme-support', action: 'refresh-review' } };
       if (draft && !['ok', 'not-found'].includes(draft.status)) return draft;
-      if (draft?.value?.requiresRefresh) return { status: 'stale-version', resource: 'manual-context', action: 'refresh',
+      const reviewed = reviewedContextVersion === account.value.contextVersion
+        && draft?.value?.contextVersion !== account.value.contextVersion;
+      if (draft?.value?.requiresRefresh && !reviewed) return { status: 'stale-version', resource: 'manual-context', action: 'refresh',
         view: { state: 'context-changed', editable: false, supportOwner: 'employee', action: 'refresh-review' } };
       return saveDraft({ commandId, expectedDraftVersion: draft?.value?.draftVersion ?? 0,
         expectedContextVersion: account.value.contextVersion, choices: journeyIntent(supplied) }, options);
