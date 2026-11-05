@@ -90,7 +90,7 @@ export function rememberRetailLocation(input, { storage } = {}) {
     if (!retailPage(url, url) || context.state !== 'retail'
       || url.searchParams.get('experience') === 'employee-cars') return null;
     const location = relativeUrl(publicRetailUrl(url, context.brand));
-    sessionStore(storage)?.setItem(RETAIL_RETURN_STORAGE, location);
+    try { sessionStore(storage)?.setItem(RETAIL_RETURN_STORAGE, location); } catch { /* Storage is optional. */ }
     return location;
   } catch {
     return null;
@@ -106,8 +106,10 @@ export function retailReturnUrl(input, { brand = resolveEntryContext(input).bran
   const employee = source.searchParams.get('experience') === 'employee-cars';
   const currentBrand = source.searchParams.get('brand')?.toLowerCase();
   const hasContext = RETAIL_PARAMS.slice(1).some((key) => source.searchParams.has(key)) || publicHash(source.hash);
-  if (!employee && currentBrand === brand
-    && (resolveEntryContext(source).state === 'retail' || hasContext)) return fresh();
+  if (!employee && ((currentBrand === brand
+    && (resolveEntryContext(source).state === 'retail' || hasContext))
+    || (supportedBrand(currentBrand) && currentBrand !== brand)
+    || (!supportedBrand(currentBrand) && hasContext))) return fresh();
   try {
     const saved = sessionStore(storage)?.getItem(RETAIL_RETURN_STORAGE);
     if (!saved || !supportedBrand(brand)) return fresh();

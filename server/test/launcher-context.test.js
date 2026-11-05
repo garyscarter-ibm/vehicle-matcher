@@ -118,7 +118,7 @@ test('index boot dispatches launcher host, explicit retail picker, legacy shell 
   }
 });
 
-test('index picker preserves repository prefix, legacy mode/scope/hash and API override', () => {
+test('index picker retains mode/scope/API and starts each brand without old answers or retailer', () => {
   const { dom, win } = bootAt('?mode=podium&scope=national&retailer=92&retailerName=Dealer&api=http%3A%2F%2Flocalhost%3A8788#m=answers');
   try {
     const tiles = [...win.document.querySelectorAll('.demo-picker-tile')];
@@ -129,8 +129,10 @@ test('index picker preserves repository prefix, legacy mode/scope/hash and API o
       assert.equal(url.searchParams.get('experience'), 'used-cars');
       assert.equal(url.searchParams.get('mode'), 'podium');
       assert.equal(url.searchParams.get('api'), 'http://localhost:8788');
-      assert.equal(url.searchParams.get('retailer'), '92');
-      assert.equal(url.hash, '#m=answers');
+      assert.equal(url.searchParams.get('scope'), 'national');
+      assert.equal(url.searchParams.has('retailer'), false);
+      assert.equal(url.searchParams.has('retailerName'), false);
+      assert.equal(url.hash, '');
     }
   } finally { dom.window.close(); }
 });

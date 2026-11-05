@@ -1,5 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { bootAt } from './helpers/launcher-dom.js';
+import { observeRetailNavigation } from '../../blocks/demo-launcher/retail-chrome.js';
 import {
   ENTRY_REGISTRY, RETAIL_RETURN_STORAGE, brandChangeUrl, buildEntryUrl,
   rememberRetailLocation, retailReturnUrl,
@@ -109,6 +111,16 @@ test('only matching selected brands resume saved locations; another brand uses c
   assert.equal(target(resume(page('?experience=launcher'), storage, null)).searchParams.has('brand'), false);
 });
 
+test('selecting another current brand cannot resume that brand from an older saved visit', () => {
+  const storage = store();
+  remember(page('?brand=mini&mode=swipe&retailer=92#m=older-mini'), storage);
+  const changed = target(resume(page('?experience=launcher&brand=bmw&mode=podium&scope=national#m=bmw'), storage, 'mini'));
+  assert.equal(changed.searchParams.get('mode'), 'podium');
+  assert.equal(changed.searchParams.get('scope'), 'national');
+  assert.equal(changed.searchParams.has('retailer'), false);
+  assert.equal(changed.hash, '');
+});
+
 test('remembered locations use only public context and strip API authentication and legacy keys', () => {
   const storage = store();
   const input = page('?brand=bmw&key=secret&key=other&employeeId=paula&offer=private&answers=private&scope=typo&api=https%3A%2F%2Fuser%3Apassword%40api.example.test%2Fbase%3Fkey%3Dsecret%23private#m=answers');
@@ -181,7 +193,9 @@ test('blocked, missing and corrupt storage degrade to current public retail navi
   try {
     Object.defineProperty(globalThis, 'sessionStorage', { configurable: true, get() { throw new Error('unavailable'); } });
     for (const storage of [undefined, null, throwing, {}]) {
-      assert.doesNotThrow(() => remember(page('?brand=bmw&key=secret'), storage));
+      const remembered = remember(page('?brand=bmw&key=secret'), storage);
+      assert.equal(target(remembered).searchParams.get('brand'), 'bmw');
+      assert.equal(target(remembered).searchParams.has('key'), false);
       const returned = target(resume(page('?experience=launcher&brand=bmw&key=secret'), storage, 'bmw'));
       assert.equal(returned.searchParams.get('brand'), 'bmw');
       assert.equal(returned.searchParams.has('key'), false);
@@ -204,4 +218,142 @@ test('legacy direct index, directory and block entry paths remain direct retail 
   assert.equal(remember(page('?experience=launcher&brand=bmw'), store()), null);
   assert.equal(remember(page('?brand=bmw', 'gcsp-employee.html'), store()), null);
   assert.equal(remember(page('?experience=used-cars'), store()), null);
+});
+
+
+test('explicit no-brand mode or scope beats an older selected-brand return without replaying its hash', () => {
+  const storage = store();
+  remember(page('?brand=bmw&mode=swipe&scope=national&retailer=96#m=old'), storage);
+  for (const [query, mode, scope] of [['?mode=podium', 'podium', 'dealer'],
+    ['?scope=dealer', null, 'dealer'], ['?scope=national', null, 'national'], ['?', null, 'dealer']]) {
+    const returned = target(resume(page(`${query}&retailer=92#m=unowned`), storage, 'bmw'));
+    assert.equal(returned.searchParams.get('mode'), mode);
+    assert.equal(returned.searchParams.get('scope'), scope);
+    assert.equal(returned.searchParams.has('retailer'), false);
+    assert.equal(returned.hash, '');
+  }
+  const unowned = target(resume(page('#m=unowned'), storage, 'bmw'));
+  assert.equal(unowned.hash, '');
+  assert.equal(unowned.searchParams.has('mode'), false);
+});
+
+test('mounted retail synchronizes public return and header routes on history changes and reset', () => {
+  const { dom, win } = bootAt('?brand=bmw&mode=podium&scope=national&retailer=96&retailerName=Dealer&api=http%3A%2F%2Flocalhost%3A8788&key=secret#m=initial');
+  try {
+    const launcher = win.document.querySelector('[data-retail-route="launcher"]');
+    const picker = win.document.querySelector('[data-retail-route="brand"]');
+    assert.equal(launcher.textContent, 'All car experiences');
+    assert.equal(picker.textContent, 'Change brand');
+    assert.ok(win.document.querySelector('.demo-nav-back[href^="https://"]'));
+    for (const hash of ['#m=latest', '']) {
+      const url = new URL(win.location.href);
+      url.hash = hash;
+      win.history.replaceState({ step: 2 }, '', url);
+      const saved = new URL(win.sessionStorage.getItem(RETAIL_RETURN_STORAGE), win.location.href);
+      assert.equal(saved.hash, hash);
+      assert.equal(new URL(launcher.href).hash, hash);
+      for (const key of ['brand', 'mode', 'scope', 'retailer', 'retailerName', 'api']) {
+        assert.equal(saved.searchParams.get(key), url.searchParams.get(key), key);
+      }
+      assert.equal(new URL(launcher.href).searchParams.get('experience'), 'launcher');
+      assert.equal(new URL(picker.href).searchParams.get('experience'), 'used-cars');
+      assert.equal(new URL(picker.href).searchParams.has('brand'), false);
+      assert.equal(new URL(picker.href).searchParams.has('retailer'), false);
+      assert.equal(new URL(picker.href).hash, '');
+      assert.equal(saved.searchParams.has('key'), false);
+    }
+    assert.deepEqual(win.history.state, { step: 2 });
+    launcher.focus();
+    assert.equal(win.document.activeElement, launcher);
+  } finally { dom.window.close(); }
+});
+
+test('navigation observer preserves native receiver, arguments, result, errors and descriptor on cleanup', () => {
+  const { dom, win } = bootAt();
+  const history = win.history;
+  const native = history.replaceState;
+  const descriptor = Object.getOwnPropertyDescriptor(history, 'replaceState');
+  const calls = [];
+  let notifications = 0;
+  history.replaceState = function (...args) {
+    calls.push({ receiver: this, args });
+    Reflect.apply(native, this, args);
+    return 'native result';
+  };
+  const original = history.replaceState;
+  const unsubscribe = observeRetailNavigation(win, () => { notifications += 1; });
+  const wrapper = history.replaceState;
+  const unsubscribeOther = observeRetailNavigation(win, () => { throw new Error('optional chrome failed'); });
+  try {
+    assert.equal(history.replaceState, wrapper, 'one wrapper for multiple subscribers');
+    const state = { step: 3 };
+    const args = [state, 'title', '?brand=mini#m=updated'];
+    assert.equal(Reflect.apply(wrapper, history, args), 'native result');
+    assert.equal(calls[0].receiver, history);
+    assert.deepEqual(calls[0].args, args);
+    assert.equal(notifications, 1);
+    assert.throws(() => history.replaceState({}, '', 'https://outside.test/'), { name: 'SecurityError' });
+    assert.equal(notifications, 1, 'failed native writes do not notify');
+    assert.throws(() => Reflect.apply(wrapper, {}, args), { name: 'TypeError' });
+    unsubscribe();
+    assert.equal(history.replaceState, wrapper);
+    unsubscribeOther();
+    assert.equal(history.replaceState, original);
+    unsubscribe();
+    if (descriptor) Object.defineProperty(history, 'replaceState', descriptor);
+    else delete history.replaceState;
+    assert.equal(history.replaceState, native);
+  } finally { unsubscribe(); unsubscribeOther(); dom.window.close(); }
+});
+
+test('Back/Forward, hashchange and pageshow synchronize the actual URL over stale session data', async () => {
+  const { dom, win } = bootAt('?brand=mini#m=first', {
+    retailReturn: '/vehicle-matcher/index.html?brand=mini&mode=swipe#m=stale',
+  });
+  const savedHash = () => new URL(win.sessionStorage.getItem(RETAIL_RETURN_STORAGE), win.location.href).hash;
+  try {
+    assert.equal(savedHash(), '#m=first');
+    win.history.pushState({}, '', '?brand=mini&mode=podium#m=second');
+    assert.equal(savedHash(), '#m=second');
+    const back = new Promise((resolve) => win.addEventListener('popstate', resolve, { once: true }));
+    win.history.back();
+    await back;
+    assert.equal(savedHash(), '#m=first');
+    const forward = new Promise((resolve) => win.addEventListener('popstate', resolve, { once: true }));
+    win.history.forward();
+    await forward;
+    assert.equal(savedHash(), '#m=second');
+    win.location.hash = '#m=hash-edit';
+    await new Promise((resolve) => win.addEventListener('hashchange', resolve, { once: true }));
+    assert.equal(savedHash(), '#m=hash-edit');
+    win.sessionStorage.setItem(RETAIL_RETURN_STORAGE, '/vehicle-matcher/index.html?brand=mini#m=stale');
+    win.dispatchEvent(new win.Event('pageshow'));
+    assert.equal(savedHash(), '#m=hash-edit');
+    const original = Object.getPrototypeOf(win.history).replaceState;
+    win.document.getElementById('demo-root').demoEntryCleanup();
+    assert.equal(win.history.replaceState, original);
+    win.history.replaceState({}, '', '?brand=mini#m=after-cleanup');
+    assert.equal(savedHash(), '#m=hash-edit');
+  } finally { dom.window.close(); }
+});
+
+test('launcher reopens saved same-brand retail but a deliberate different brand starts fresh', () => {
+  const saved = '/vehicle-matcher/index.html?brand=bmw&experience=used-cars&mode=podium&scope=national&retailer=96&retailerName=Dealer#m=saved';
+  for (const input of ['?experience=launcher&brand=bmw', '?experience=employee-cars&brand=bmw&scope=dealer#m=employee']) {
+    const { dom, win } = bootAt(input, { retailReturn: saved });
+    const used = () => [...win.document.querySelectorAll('.demo-experience-choice a')].find((link) => link.textContent.includes('Used cars'));
+    try {
+      assert.equal(new URL(used().href).hash, '#m=saved');
+      assert.equal(new URL(used().href).searchParams.get('retailer'), '96');
+      assert.equal(win.sessionStorage.getItem(RETAIL_RETURN_STORAGE), saved);
+      const select = win.document.querySelector('select');
+      select.value = 'mini';
+      select.dispatchEvent(new win.Event('change', { bubbles: true }));
+      const changed = new URL(used().href);
+      assert.equal(changed.hash, '');
+      assert.equal(changed.searchParams.has('retailer'), false);
+      assert.equal(changed.searchParams.get('brand'), 'mini');
+      assert.match(used().closest('article').textContent, /resets your answers and retailer/);
+    } finally { dom.window.close(); }
+  }
 });
