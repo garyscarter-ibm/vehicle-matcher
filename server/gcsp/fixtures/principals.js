@@ -22,3 +22,12 @@ export async function loadDemoPrincipals(policy, read) {
   return valid ? { status: 'ok', value: structuredClone(principals), policyVersion: configured.policyVersion }
     : { status: 'unavailable', reason: 'Fictional principal configuration is invalid.', retryable: false };
 }
+
+// Shared by initial identity setup and the atomic scenario reset fixture builder.
+export async function loadDemoPrincipalSeed(policy, read) {
+  const [principals, capacity] = await Promise.all([loadDemoPrincipals(policy, read), policy.getAssumption('hold.employee.maxActive', read)]);
+  if (principals.status !== 'ok' || capacity.status !== 'ok' || !Number.isSafeInteger(capacity.value.value) || capacity.value.value <= 0) {
+    return { status: 'unavailable', reason: 'Identity fixture policy is unavailable.', retryable: true };
+  }
+  return { status: 'ok', value: { principals: principals.value, capacity: capacity.value.value }, policyVersion: principals.policyVersion };
+}

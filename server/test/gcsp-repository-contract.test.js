@@ -66,6 +66,31 @@ export function repositoryContract(provider, factory) {
       assert.equal(write.value.version, 2);
       assert.equal((await repository.migrationStatus()).value.current, true);
     }));
+    await t.test('atomic reset switches current run, preserves history and rolls back failed seeds', () => withRepository(async (repository, reopen) => {
+      const c = ctx();
+      await repository.transaction(c, command(), (tx) => tx.compareAndSwap(ref('runs', {}, c), 1, { current: true }));
+      const next = { runId: 'reset-run', environmentId: c.environmentId, current: true, status: 'active' };
+      const rows = [['employees', { employeeId: 'reset-person' }]];
+      const staleReset = await repository.resetRun(c, command(), { expectedCurrentRunId: c.runId, expectedRunVersion: 1, nextRun: next, rows });
+      assert.equal(staleReset.status, 'stale-version');
+      assert.equal((await repository.currentRun(c.environmentId)).value.runId, c.runId);
+      const bad = await repository.resetRun(c, command(), { expectedCurrentRunId: c.runId, expectedRunVersion: 2, nextRun: next,
+        rows: [['entitlement_slots', { entitlementSlotId: 'bad', employeeId: 'missing', capacity: 1 }]] });
+      assert.equal(bad.status, 'conflict');
+      assert.equal((await repository.currentRun(c.environmentId)).value.runId, c.runId);
+      const cmd = command();
+      const input = { expectedCurrentRunId: c.runId, expectedRunVersion: 2, nextRun: next, rows };
+      const changed = await repository.resetRun(c, cmd, input);
+      assert.equal(changed.status, 'ok');
+      repository = await reopen();
+      assert.deepEqual(await repository.resetRun(c, cmd, input), changed);
+      assert.equal((await repository.currentRun(c.environmentId)).value.runId, 'reset-run');
+      assert.equal((await repository.read(c, ref('runs', {}, c))).value.status, 'historical');
+      assert.equal((await repository.query(c, 'stock')).value.length, 2);
+      const newContext = { ...c, runId: 'reset-run' };
+      assert.equal((await repository.query(newContext, 'employees')).value[0].employeeId, 'reset-person');
+      assert.equal((await repository.transaction(c, command(), (tx) => tx.insert('decisions', { runId: c.runId, decisionId: 'stale' }))).status, 'stale-run');
+    }));
     await t.test('thrown and typed failures roll back even if callback ignores failed operation', () => withRepository(async (repository) => {
       const thrown = await repository.transaction(ctx(), command(), async (tx) => { await tx.insert('employees', { runId: 'run-a', employeeId: 'throw' }); throw new Error('private detail'); });
       assert.equal(thrown.status, 'unavailable');
@@ -345,6 +370,7 @@ function driverDouble({ state = { tables: Object.fromEntries(Object.keys(TABLES)
       await previous;
       return { ...client, release };
     } },
+    setFailureTable: (table) => { failTable = table; },
     read: () => structuredClone(data), ledger: () => applied, queries,
     ddlExecutions: () => ddlExecutions,
   };
@@ -416,5 +442,23 @@ test('postgresql driver: uncertain commit is reconciled with the original comman
   const replay = await repository.transaction(ctx(), stable, () => { throw new Error('must not repeat'); });
   assert.equal(replay.status, 'ok'); assert.equal(replay.value.hold.holdId, 'hold-a');
   assert.equal(driver.read().tables.holds.length, 1);
+  await repository.close();
+});
+
+
+test('postgresql driver: a reset flush failure restores current run and leaves no replacement fixture rows', async () => {
+  const driver = driverDouble();
+  const repository = createPostgresRepository({ pool: driver.pool });
+  await repository.open(); await setup(repository);
+  const c = ctx();
+  await repository.transaction(c, command(), (tx) => tx.compareAndSwap(ref('runs', {}, c), 1, { current: true }));
+  const before = driver.read();
+  driver.setFailureTable('entitlement_slots');
+  const reset = await repository.resetRun(c, command(), { expectedCurrentRunId: c.runId, expectedRunVersion: 2,
+    nextRun: { runId: 'flush-failed-reset', environmentId: c.environmentId, current: true, status: 'active' },
+    rows: [['employees', { employeeId: 'new-person' }], ['entitlement_slots', { employeeId: 'new-person', entitlementSlotId: 'new-slot', capacity: 1 }]] });
+  assert.equal(reset.status, 'unavailable');
+  assert.deepEqual(driver.read(), before);
+  assert.equal((await repository.currentRun(c.environmentId)).value.runId, c.runId);
   await repository.close();
 });

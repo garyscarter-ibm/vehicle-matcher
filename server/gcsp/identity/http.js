@@ -46,7 +46,12 @@ export function createGcspHandler({ identity, routes = [], allowedOrigins = [] }
     }
     if (!identity) return send({ status: 'unavailable', reason: 'GCSP identity has not been configured.', retryable: true, contractVersion: '1.0.0' });
     try {
-      const resolved = await identity.resolveSession({ authorized: true, cookie: req.headers.cookie });
+      const route = routes.find((entry) => entry.method === req.method && entry.path === pathname);
+      let resolved = await identity.resolveSession({ authorized: true, cookie: req.headers.cookie, purpose: route?.purpose || 'acting' });
+      if (resolved.status === 'stale-run' && route?.resetReplay) {
+        resolved = await identity.resolveSession({ authorized: true, cookie: req.headers.cookie, purpose: 'reset-replay' });
+      }
+      if (resolved.status === 'missing-session' && route?.purpose === 'presenter-control') return send({ status: 'forbidden', reason: 'A presenter control session is required.', contractVersion: '1.0.0' });
       if (resolved.status !== 'ok') return send(resolved);
       if (!resolved.value?.principalId || !resolved.value?.runId || !resolved.value?.environmentId
         || !Array.isArray(resolved.value?.roles) || !resolved.value.roles.every((role) => typeof role === 'string')) {
@@ -73,9 +78,8 @@ export function createGcspHandler({ identity, routes = [], allowedOrigins = [] }
         res.setHeader('Set-Cookie', switched.value.setCookie);
         return send({ status: 'ok', value: switched.value.context, contractVersion: switched.contractVersion });
       }
-      const route = routes.find((entry) => entry.method === req.method && entry.path === pathname);
       if (!route) return send({ status: 'not-found', resourceType: 'route', contractVersion: '1.0.0' });
-      if (route.role) {
+      if (route.role && !(route.resetReplay && resolved.value.roles.includes('presenter'))) {
         const allowed = await identity.requireRole(context, route.role);
         if (allowed.status !== 'ok') return send(allowed);
       }
@@ -83,7 +87,8 @@ export function createGcspHandler({ identity, routes = [], allowedOrigins = [] }
         const allowed = await identity.authorizeResource(context, await route.resource({ context, body, searchParams }), route.action || 'read');
         if (allowed.status !== 'ok') return send(allowed);
       }
-      return send(await route.handle({ context, body, searchParams, identity }));
+      return send(await route.handle({ context, body, searchParams, identity,
+        setCookie: (cookies) => res.setHeader('Set-Cookie', cookies) }));
     } catch {
       // Never include request URLs, cookies or parser exception text in responses or logs.
       return send({ status: 'unavailable', reason: 'GCSP service is unavailable.', retryable: true, contractVersion: '1.0.0' });
