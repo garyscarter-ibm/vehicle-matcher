@@ -23,7 +23,7 @@ await mkdirp(path.join(scratch, 'chrome-profile'));
 await mkdirp(path.join(scratch, 'chrome-cache'));
 
 const runtimeResult = await createGcspRuntime({ mode: 'memory', environmentId: 'fucq67-browser',
-  policyAsOf: '2026-11-05T09:00:00.000Z', commandId: 'bootstrap-fucq67-browser', secureCookies: false,
+  policyAsOf: '2026-11-05T09:00:00.000Z', commandId: 'bootstrap-fucq67-browser',
   sessionNow: () => '2026-11-05T09:00:00.000Z' });
 if (runtimeResult.status !== 'ok') throw new Error(`Memory runtime unavailable: ${runtimeResult.status}`);
 const runtime = runtimeResult.value;
@@ -37,8 +37,8 @@ let contextClosed = false;
 let listenerClosed = false;
 let runtimeClosed = false;
 const results = {
-  story: 'FUCQ-67', phase: serviceOnly ? 'actual-service-smoke' : 'full-matrix', captureHead: '717df5c0eff189e7db5d12eaa16bd1919ec7b2bb', productHead: 'db4a53bbe7865f06d3434f8a6ec095bfa74c384f',
-  approvedBase: 'ade262aa81c7ccbf0043e0f5658a7052f501734e', viewport: {}, actualService: {}, fixtures: {}, probes: {},
+  story: 'FUCQ-67', phase: serviceOnly ? 'actual-service-smoke' : 'full-matrix', captureHead: process.env.FUCQ67_CAPTURE_HEAD ?? '3e2cf2346099cfe25eb6c6917e5e3210b864d05e', productHead: 'db4a53bbe7865f06d3434f8a6ec095bfa74c384f',
+  approvedBase: 'ade262aa81c7ccbf0043e0f5658a7052f501734e', integratedBase: process.env.FUCQ67_BASE ?? '873539d8990032c1a1d6db303c477d58d8b84141', viewport: {}, actualService: {}, fixtures: {}, probes: {},
   keyboard: {}, externalRequests: [], errors: [], screenshots: [], cleanup: {},
 };
 const session = await runtime.createLocalSession();
@@ -127,6 +127,7 @@ try {
           if (value.state) record.state = value.state;
           if (value.draftStage) record.draftStage = value.draftStage;
           if (value.draftVersion) record.draftVersion = value.draftVersion;
+          if (value.contextVersion) record.contextVersion = value.contextVersion;
           if (value.choices) record.choices = { mode: value.choices.mode, oldContractId: value.choices.oldContractId,
             slotId: value.choices.slotId, schemeId: value.choices.schemeId };
           if (value.requiresRefresh != null) record.requiresRefresh = value.requiresRefresh;
@@ -139,7 +140,7 @@ try {
     if (url.origin === origin && url.pathname.startsWith('/api/gcsp/')) appRequests.push({ method: request.method(), path: url.pathname });
   });
   page.on('pageerror', (error) => results.browserErrors.push({ type: 'pageerror', message: String(error.message).slice(0, 180) }));
-  page.on('console', (message) => { if (message.type() === 'error') results.browserErrors.push({ type: 'console', message: message.text().slice(0, 180) }); });
+  page.on('console', (message) => { if (message.type() === 'error') results.browserErrors.push({ type: 'console', message: message.text().slice(0, 180), url: message.location().url }); });
   const save = async (file, metadata = {}) => {
     const destination = path.join(OUT, file);
     await page.screenshot({ path: destination, type: 'png', animations: 'disabled', fullPage: true });
@@ -254,7 +255,11 @@ try {
   const persistedDraftReads = apiRecords.filter((item) => item.path === '/api/gcsp/manual/draft' && item.method === 'GET' && item.status === 'ok');
   results.actualService.persistedDraftVersion = persistedDraftReads.at(-1)?.draftVersion ?? null;
   results.actualService.persistedDraftVisibleAfterReload = results.actualService.persistedDraftVersion === results.actualService.savedDraftVersion;
-  results.actualService.journeyEventsPresent = results.journeyEvents.length >= 2 && results.journeyEvents.every((event) => event.mode === 'replacement');
+  const expectedEvent = { mode: 'replacement', oldContractId: results.actualService.initialContractIds[0],
+    slotId: session.value.context.entitlementSlotId, schemeId: session.value.context.schemeId,
+    draftVersion: results.actualService.savedDraftVersion, contextVersion: savedDraftResponses.at(-1)?.contextVersion };
+  results.actualService.journeyEventsPresent = results.journeyEvents.length >= 2
+    && results.journeyEvents.every((event) => JSON.stringify(event) === JSON.stringify(expectedEvent));
   results.apiRequests = apiRecords;
   results.externalRequests = [...new Map(results.externalRequests.map((item) => [`${item.method} ${item.host}${item.path}`, item])).values()];
   const expectedNotFoundDraftReads = apiRecords.filter((item) => item.method === 'GET' && item.path === '/api/gcsp/manual/draft'
@@ -264,15 +269,18 @@ try {
       || item.httpStatus === 404 && item.status === 'not-found'), gcspRequestCount: apiRecords.length,
     expectedNotFoundDraftReads: expectedNotFoundDraftReads.length, expectedHttpResponses: expectedNotFoundDraftReads.map(({ method, path, httpStatus, status }) => ({ method, path, httpStatus, status })),
     unexpectedHttpErrors };
-  results.browserErrorClassification = { pageErrors: results.browserErrors.filter((item) => item.type === 'pageerror'),
-    consoleErrors: results.browserErrors.filter((item) => item.type === 'console') };
+  const expectedConsole = results.browserErrors.filter((item) => item.type === 'console'
+    && item.url === `${origin}/api/gcsp/manual/draft` && /Failed to load resource:.*404/.test(item.message)
+    && expectedNotFoundDraftReads.length > 0);
+  results.browserErrorClassification = { expectedEmptyDraftConsoleMessages: expectedConsole, pageErrors: results.browserErrors.filter((item) => item.type === 'pageerror'),
+    consoleErrors: results.browserErrors.filter((item) => item.type === 'console' && !expectedConsole.includes(item)) };
   results.viewport = { desktop: { width: 1280, height: 900 }, narrow: { width: 320, height: 740 } };
   results.listener = { host: listenerHost, port: listenerPort, origin: listenerOrigin, listenerCount: 1 };
   results.sourceHashes = {};
   const sourceFiles = ['gcsp-account.html', 'blocks/gcsp/account/harness.js', 'blocks/gcsp/account/gcsp-account.js',
     'blocks/gcsp/account/account-view.js', 'blocks/gcsp/account/http-adapter.js', 'blocks/gcsp/account/gcsp-account.css',
     'blocks/gcsp/account/fixtures.js', 'server/gcsp/runtime.js', 'server/gcsp/manual-context/http.js',
-    'server/gcsp/manual-context/index.js', 'server/index.js'];
+    'server/gcsp/manual-context/index.js', 'server/index.js', 'server/vehicle-evidence/bmw-image-adapter.js'];
   for (const file of sourceFiles) results.sourceHashes[file] = createHash('sha256').update(await readFile(path.join(ROOT, file))).digest('hex');
   if (!results.actualService.initialVisible || !results.actualService.desktopReloadRetainedDraft || !results.actualService.desktopResumeChangedView
     || !results.actualService.desktopSavedShowsReplacement || !results.actualService.backReturnedToAccount
@@ -282,8 +290,9 @@ try {
     || !results.keyboard.contractDetailsOpened.open || !results.keyboard.historyOpened.open || !results.keyboard.focusVisible
     || !results.network.allGcspResponsesExpected || results.network.unexpectedHttpErrors.length > 0
     || results.browserErrorClassification.pageErrors.length > 0 || results.browserErrorClassification.consoleErrors.length > 0
+    || results.actualService.initialOverflow || results.actualService.narrowInitialOverflow || results.actualService.narrowSavedOverflow
     || results.externalRequests.length > 0
-    || Object.values(results.fixtures).some((widths) => Object.values(widths).some((item) => !item.expectedVisible))) {
+    || Object.values(results.fixtures).some((widths) => Object.values(widths).some((item) => !item.expectedVisible || item.overflow))) {
     throw new Error('One or more required browser assertions failed; inspect the sanitized matrix.');
   }
 } catch (error) {
