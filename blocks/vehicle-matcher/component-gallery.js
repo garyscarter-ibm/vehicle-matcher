@@ -98,7 +98,7 @@ function gcspExamples() {
     { label: 'WLTP CO2', value: null },
   ]));
   const well = group('mediaWell placeholder');
-  well.append(mediaWell({ name: 'Synthetic car', line: 'Representative image', photo: '' }, 'vm-gallery-gcsp-media', { placeholder: 'No image for this car yet' }).media);
+  well.append(mediaWell({ name: 'Synthetic car', line: '', photo: '' }, 'vm-gallery-gcsp-media', { placeholder: 'No image for this car yet' }).media);
   const accounts = [
     ['portalShell: account loading', { status: 'loading' }],
     ['portalShell: ready, long name', { status: 'ready', name: 'Bartholomew Featherstonehaugh-Cholmondeley-Wolverstone III (synthetic)', context: 'Choices, grade G7' }],

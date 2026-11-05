@@ -75,8 +75,16 @@ export function mountEmployee(root, ctx = {}) {
       const out = draw(shell.main, { view, account, label: labelOf(view) });
       if (typeof out === 'function') cleanupBody = out;
     };
+    const showLoading = () => {
+      const note = el('p', 'gcsp-note', 'Loading your account and cars.');
+      note.setAttribute('role', 'status');
+      shell.main.replaceChildren(note);
+    };
     const load = async () => {
       shell.setAccount({ status: 'loading' });
+      cleanupBody?.();
+      cleanupBody = null;
+      showLoading();
       if (typeof ctx.loadAccount !== 'function') {
         account = { status: 'unavailable', message: 'Your account could not be loaded.' };
         ctx.onUnavailable?.('no-adapter');

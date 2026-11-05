@@ -593,6 +593,7 @@ test('named fixtures render their states', async () => {
   const loading = await mountFixture('representative-loading', 450);
   assert.equal(loading.querySelector('.gcsp-account').getAttribute('aria-busy'), 'true');
   assert.equal(loading.querySelector('.gcsp-rep'), null);
+  assert.match(loading.querySelector('main [role="status"]').textContent, /Loading your account/);
   loading.remove();
   assert.equal(loading.childNodes.length, 0);
 
