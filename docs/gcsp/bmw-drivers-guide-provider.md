@@ -1,10 +1,10 @@
-# Offline Driver’s Guide provider contract — FUCQ-44
+# Offline Driver’s Guide provider contract — FUCQ-44 / FUCQ-45
 
 Implemented inside the existing Node vehicle-evidence component. `createBmwDriversGuideAdapter` in
 `server/vehicle-evidence/bmw-drivers-guide-provider.js` is the only exported entry. It returns the existing
 FUCQ-43 adapter contract. Its raw provider is private and cannot be selected separately to bypass the guard.
 No transport means disabled. No built-in fetch, environment activation, credential, public lookup route,
-persistence, document/image retrieval, UI, stock, mapping or catalogue change is supplied.
+persistence, public content delivery, UI, stock, mapping or catalogue change is supplied.
 
 Live activation, demo use and retention remain **unapproved and disabled**. Offline tests use generated
 fictional identities and generated RSA keys with injected transport. A privately supplied authorised real VIN
@@ -13,7 +13,7 @@ is only a prerequisite for an optional later live check, not for this offline ca
 ## Dependencies and guarded requests
 
 The minimum explicit backend dependencies are `{ transport, guard }`. Optional dependencies are
-`clock`, `keyHandling: { encrypt }`, `decodeManual` and `timeoutMs`.
+`clock`, `keyHandling: { encrypt }`, `decodeManual`, `decodePdfManual`, `content` and `timeoutMs`.
 The existing FUCQ-43 identity guard checks entry, then checks the exact VIN and locale again before each key,
 requested manual and alternative manual request. The trusted context is passed through the wrapper to the
 private provider. UK-English fallback requires its own current authority for `en-GB`; approval of the requested
@@ -21,16 +21,18 @@ locale alone grants no additional locale permission. Registry misses still requi
 and purpose authorization. Synthetic primary providers retain their zero-external-call and no-live-fallback rules.
 
 Transport receives `{ method: 'GET', url, signal, redirect: 'error', maxResponseBytes }` and returns
-`{ status: number, body: string | Uint8Array, redirected?: boolean, url?: string }`. It must enforce the supplied
+`{ status: number, body: string | Uint8Array, contentType?: string, redirected?: boolean, url?: string }`. It must enforce the supplied
 byte limit while reading, honour abort and refuse redirects; provider validation independently rejects excess
 body bytes, non-200 responses, redirected responses and changed returned URLs. Injected transport implementations
 own their own logging and resource lifecycle; this module cannot sanitize logging performed inside a caller’s
 transport. Activation needs a separately reviewed transport satisfying these obligations.
 
-The only constructed sources are the fixed `https://baonline.bmw.com/digital/v4.0/key` and
+The required constructed sources are the fixed `https://baonline.bmw.com/digital/v4.0/key` and
 `https://baonline.bmw.com/digital/v4.0/manual` paths. The manual request contains only base64url `encryptedVin`
-and an explicit lowercase language-region locale. No source-returned URL, alternate endpoint, redirect,
-PDF/cosy route or arbitrary retry is followed. A fresh key is obtained on every resolve, with no cache.
+and an explicit lowercase language-region locale. No source-returned URL, alternate endpoint, redirect or
+arbitrary retry is followed. Optional `content: { pdf: true, illustration: true }` adds only fixed
+`/digital/v4.0/pdfManual` and `/digital/v4.0/cosy` requests after usable manual metadata, with the same ciphertext
+and exact successful attempted locale. Both are off by default; neither adds a locale retry. A fresh key is obtained on every resolve, with no cache.
 
 The default whole-operation and per-request ceiling is 1,500 ms, configurable from 1 to 30,000 ms. The outer
 adapter bounds the total operation as well as aborting pending requests. Key/manual response limits are 16 KiB /
@@ -138,3 +140,62 @@ This story adds no screen or user interaction. The approved body reference remai
 authority, with Used Cars body direction and shared `COMPONENTS.md` reuse for a future consumer. Metadata,
 disclaimer, independent facts and unknown-equipment assertions replace new screenshots for this backend-only
 slice. A consuming screen still needs the separately refined desktop, narrow and keyboard acceptance gates.
+
+
+## Optional controlled PDF and illustration content — FUCQ-45
+
+The identity guard runs again before each optional transport, including between PDF and cosy. Optional work has
+smaller bounded transport, authority and decoder waits within the whole-operation ceiling. Missing, broken,
+invalid or unavailable content preserves usable manual metadata/disclaimer and independent current-car facts.
+No source-returned URL is retrieved. PDF private links are validated in memory for HTTPS, the exact
+`baonline.bmw.com` origin, no credentials/non-default port/fragment, bounded length and no controls/backslashes, including decoded controls and malformed percent escapes.
+The safe result contains only local opaque `pdf-N` references, `application/pdf` metadata, `delivery: metadata-only`
+and `href: null`; the common envelope supplies the provider/version/date source label. There is no asset route.
+
+The dated 1 November report proves `/pdfManual`, HTTP 200 / application `OK`, and a document list, **not its full
+wire schema**. The explicit provisional default mapping is root `{ status, locale?, links }`, where `links` is an
+array (at most 16) of `{ label, url, contentType: 'application/pdf' }`. `OK` with an empty supported list means
+unavailable; bare `MANUAL_NOT_AVAILABLE` is an explicitly supported negative mapping. No invented container or
+interface version is mandatory. An optional `decodePdfManual(raw)` maps a different private source container to
+`{ locale?, links }`. Raw status and response identities are checked before decoding; decoded identities,
+size/depth, exact attempted locale, labels, URLs and types are checked afterwards. Unknown/malformed shapes fail
+closed. Offline fictional containers prove the seam, never live-schema compatibility. HTTP errors and unknown
+application statuses (including numeric 422 on HTTP 200) remain independent failures.
+
+Cosy accepts bounded binary JPEG (`image/jpeg` or observed `image/jpg;charset=UTF-8`) with matching
+signatures and basic container checks. JPEG requires bounded marker segments, positive frame dimensions and a
+scan/end marker. Other formats, HTML, SVG, mismatched MIME/signatures, truncated/oversized bytes, redirects and
+changed response URLs fail closed. These checks are content identification, not a full pixel decoder or production image security
+certification. Bytes are discarded; no image is retained or delivered. Maximum cosy body is 2 MiB. The illustration
+remains `vin-linked-illustration` with fidelity `unverified`, never exact paint, wheels or equipment evidence.
+
+Additive `guide.pdf` and illustration metadata use only `unknown`, `available`, `unavailable`, `invalid` or
+`source-unavailable` status, fixed `failureDetail`, `httpOutcome` (`not-attempted`, `ok`, `error`) and
+`applicationOutcome` (`not-applicable`, `unknown`, `ok`, `unavailable`, `error`). Valid illustration metadata also
+includes allowlisted content type and bounded byte length. Existing manual links remain independent metadata if
+optional PDF resolution fails; consumers must inspect `guide.pdf` for the separately requested PDF-list outcome.
+
+`scripts/gcsp/verify-vin-guide.mjs` exports `verifyVinGuide({ request, context, dependencies })` for injected offline
+verification using the actual guarded provider, enabling both optional operations. Its return/report allowlist is
+provider/version/verification date, independent handbook/PDF/illustration HTTP/application outcomes, requested/resolved locale, link/image statuses and
+fixed limits only. The report date is the UTC verification date from the injected clock (or current Date), including
+negative outcomes; invalid/throwing clocks yield null. It is not a claim of upstream observation on failure. Caller-owned dependencies remain responsible for their own private logging and lifecycle.
+The executable performs no default network operation and has no environment activation or built-in fetch.
+`node scripts/gcsp/verify-vin-guide.mjs --live` emits only a fixed redacted refusal and exits 2: activation, use,
+retention and privately supplied authorised real input remain unapproved. Live verification is **UNEXERCISED** and
+optional; no generated VIN may egress. Importing this module has no side effects. Focused harness tests are
+`scripts/gcsp/verify-vin-guide.test.mjs`, deliberately outside the configured `npm test` server test glob.
+
+This backend-only extension changes no screen. Source/disclaimer, unknown-equipment, content-failure and independent
+fact preservation assertions provide experience evidence under the existing approved `a7fc178` body reference,
+GCSP shell/palette screenshots, Used Cars direction and `COMPONENTS.md`. Future consuming screens retain their own
+separate desktop/narrow/keyboard gates. No policy value, default activation, production or live proof is introduced.
+
+Offline positive fixtures select real RSA PKCS#1 v1.5 ciphertext in a bounded loop (maximum 100 encryptions),
+rejecting candidates whose four-character privacy fragments collide with the fixture's known public prose.
+This avoids random false-positive fixture redaction without weakening production privacy rules. Default encryption
+still has a direct focused check; fresh-key decryption/padding checks continue using actual generated RSA ciphertext.
+
+Final manual metadata, sections and retained links are projected again against the combined identifiers discovered
+in raw and decoded PDF responses, including invalid responses. All raw and decoded private URL/href values also join that filter, including rejected foreign, malformed,
+query and fragment URLs. Colliding metadata remains unknown rather than publishing known private fragments.

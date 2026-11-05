@@ -1,0 +1,60 @@
+{
+  "story": "FUCQ-94",
+  "head": "910a55b2b3be7a354bb836e03e5dd6363fa5a0d7",
+  "capturedAt": "2026-11-05T14:34:40.343Z",
+  "browser": "isolated headless system Chrome",
+  "scope": "Test-only supplied needs-confirmation decision, original mounted body/controller; not live stock/service evidence",
+  "projection": {
+    "source": "docs/gcsp/evidence/fucq94/representative-snapshot.json",
+    "originalDecisionCount": 2,
+    "selectedGate": "needs-confirmation",
+    "retainedDecisionSha256": "3f14af7a312f5d895ec031e79c23d97e6b7fa8a2a3b5fd1db0955e80a3b4aac1",
+    "changedDecisionFields": [],
+    "recommendations": [],
+    "eligibleCount": 0,
+    "state": "no-viable-stock"
+  },
+  "activeProfileCompatibilityException": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq94-20261105-unknown/essential-unknown-chrome-profile",
+  "sources": {
+    "gcsp-brief.html": "9fbc308e0e47f1bda6c7644ef133cc919efff8b27d4c2ef6c1f9375d4357561d",
+    "blocks/gcsp/brief/gcsp-brief.js": "943c4cbc99f1063328b68dcdb0c3ebf024e1cff75699e4a5b04cdc6eb5091c88",
+    "blocks/gcsp/brief/brief-controller.js": "724120f45ad1fb8c14ee6de1a82c3579fe97c075254b6ce8032d712abe6c82aa",
+    "blocks/gcsp/brief/brief-view.js": "ff27df853d46d825d859a9a6a9d988fe91221de28530648c529df28d84875f61",
+    "blocks/gcsp/brief/brief-view-model.js": "7eea953d26aaeded1f6fe5ac219ebcc0f0c739f8f003b7ca61414dc4da1aa366",
+    "blocks/gcsp/brief/gcsp-brief.css": "dcabf9fcfbe0f47d586e03a89f9cc1019f6bbb301635a502ca79d0100bc9cac0",
+    "blocks/gcsp/brief/harness.js": "fa5f92fb53d217a9f1b200e2e1efb32231166d175c03411d2e1710cdaa9405ff",
+    "docs/gcsp/evidence/fucq94/representative-snapshot.json": "a8efd203a8318698eedee285247c8b5682c517c0d8071662ee040d57716976ee",
+    "docs/gcsp/evidence/fucq94/essential-unknown-harness.js": "930c8d6f17e9994e13e3d211bf8e495af35d2d61327ea27145b25f49936d790a",
+    "docs/gcsp/evidence/fucq94/capture-essential-unknown.mjs": "63d1fee8e928f7b2a756ecff62ac295d5e735160882d411b4db2a90d31e2bc6a"
+  },
+  "results": [
+    {
+      "name": "desktop",
+      "file": "essential-unknown-desktop.png",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "overflowPx": 0,
+      "errors": [],
+      "apiRequests": 0,
+      "summary": "0 eligible cars; 1 car needs confirmation.",
+      "saveDisabled": true,
+      "cardText": "No image for this car yet\nSCHEME STOCK\nBMW 330e M Sport Pro Edition Touring with Technology Plus and Comfort Pack\n\n1,100 points a month · 1,300 points a month allowance\n\nBody style\nEstate\nFuel\nPlug-in hybrid\nSeats\n5\nBoot\n500 litres\n0 to 62 mph\n7 s\nFuel economy\n45 mpg\n\nNeeds confirmation\n\nCHECKS PASSED\n\nAvailable by 1 December 2026.\n\nNEEDS CONFIRMATION\n\nCharging access is unknown. Confirm home or work charging."
+    },
+    {
+      "name": "mobile-375",
+      "file": "essential-unknown-mobile-375.png",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "overflowPx": 0,
+      "errors": [],
+      "apiRequests": 0,
+      "summary": "0 eligible cars; 1 car needs confirmation.",
+      "saveDisabled": true,
+      "cardText": "No image for this car yet\nSCHEME STOCK\nBMW 330e M Sport Pro Edition Touring with Technology Plus and Comfort Pack\n\n1,100 points a month · 1,300 points a month allowance\n\nBody style\nEstate\nFuel\nPlug-in hybrid\nSeats\n5\nBoot\n500 litres\n0 to 62 mph\n7 s\nFuel economy\n45 mpg\n\nNeeds confirmation\n\nCHECKS PASSED\n\nAvailable by 1 December 2026.\n\nNEEDS CONFIRMATION\n\nCharging access is unknown. Confirm home or work charging."
+    }
+  ]
+}

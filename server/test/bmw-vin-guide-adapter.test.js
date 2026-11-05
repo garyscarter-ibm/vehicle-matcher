@@ -215,8 +215,19 @@ function providerAuthority({ allow = () => true } = {}) {
     } });
   return { context, guard, get checks() { return checks; } };
 }
+function fixtureEncrypt(key, bytes) {
+  const prose = JSON.stringify(manualBody().manualData).toUpperCase();
+  for (let attempt = 0; attempt < 100; attempt += 1) {
+    const encrypted = publicEncrypt({ key, padding: cryptoConstants.RSA_PKCS1_PADDING }, bytes);
+    const text = encrypted.toString('base64url').toUpperCase();
+    if (![...text].some((_value, index) => index <= text.length - 4 && prose.includes(text.slice(index, index + 4)))) return encrypted;
+  }
+  throw new Error('Unable to allocate privacy-safe offline ciphertext fixture.');
+}
 function providerHarness({ manual = (_call, locale) => response(manualBody(locale)), key = () => response(keyBody()),
-  authority: permitted = providerAuthority(), timeoutMs = 1500, keyHandling, decodeManual = (data) => data.manualData, useDefaultDecoder = false, clock = () => new Date('2026-11-05T12:00:00Z') } = {}) {
+  authority: permitted = providerAuthority(), content, pdf = () => response({ status: 'OK', links: [] }),
+  cosy = () => ({ status: 200, contentType: 'image/jpg;charset=UTF-8', body: Buffer.from([255, 216, 255, 192, 0, 11, 8, 0, 1, 0, 1, 1, 1, 17, 0, 255, 218, 0, 8, 1, 1, 0, 0, 63, 0, 0, 255, 217]) }),
+  decodePdfManual, timeoutMs = 1500, keyHandling = { encrypt: fixtureEncrypt }, decodeManual = (data) => data.manualData, useDefaultDecoder = false, clock = () => new Date('2026-11-05T12:00:00Z') } = {}) {
   const calls = [];
   const transport = async (call) => {
     calls.push(call);
@@ -227,11 +238,12 @@ function providerHarness({ manual = (_call, locale) => response(manualBody(local
     if (url.pathname === '/digital/v4.0/key') {
       assert.ok(!url.search); return key(call, calls.filter((row) => new URL(row.url).pathname.endsWith('/key')).length);
     }
-    assert.ok(url.pathname === '/digital/v4.0/manual');
+    assert.ok(['/digital/v4.0/manual', '/digital/v4.0/pdfManual', '/digital/v4.0/cosy'].includes(url.pathname));
     assert.deepEqual([...url.searchParams.keys()], ['encryptedVin', 'locale']);
-    return manual(call, url.searchParams.get('locale'));
+    const operation = url.pathname.endsWith('/pdfManual') ? pdf : url.pathname.endsWith('/cosy') ? cosy : manual;
+    return operation(call, url.searchParams.get('locale'));
   };
-  return { calls, permitted, adapter: createBmwDriversGuideAdapter({ transport, guard: permitted.guard, timeoutMs, keyHandling, clock, decodeManual: useDefaultDecoder ? undefined : decodeManual }) };
+  return { calls, permitted, adapter: createBmwDriversGuideAdapter({ transport, guard: permitted.guard, timeoutMs, keyHandling, clock, content, decodePdfManual, decodeManual: useDefaultDecoder ? undefined : decodeManual }) };
 }
 function assertPrivate(result, secrets = []) {
   const output = JSON.stringify(result).toUpperCase();
@@ -558,4 +570,189 @@ test('nested returned identifier containers cannot leak their values through han
   } });
   const result = await harness.adapter.resolve(request, harness.permitted.context);
   assert.equal(result.status, 'partial'); assert.equal(result.guide.title, null); assertPrivate(result, [opaque]);
+});
+
+const privatePdf = () => `https://baonline.bmw.com/private/${randomBytes(8).toString('hex')}?token=${randomBytes(8).toString('hex')}`;
+const pdfBody = (url = privatePdf()) => ({ status: 'OK', links: [{ label: 'Handbook', url, contentType: 'application/pdf' }] });
+
+test('optional PDF and illustration requests use fixed guarded routes, same identity and final attempted locale', async () => {
+  const privateUrl = privatePdf();
+  const harness = providerHarness({ content: { pdf: true, illustration: true }, pdf: () => response(pdfBody(privateUrl)),
+    manual: (_call, locale) => { const body = manualBody(locale, locale === 'en-us' ? 'MANUAL_NOT_AVAILABLE' : 'OK');
+      body.manualData.availableLocales = ['en-gb']; return response(body); } });
+  const result = await harness.adapter.resolve({ ...request, locale: 'en-US' }, harness.permitted.context);
+  assert.equal(result.status, 'partial'); assert.equal(result.resolvedLocale, 'en-GB');
+  assert.deepEqual(harness.calls.map((call) => new URL(call.url).pathname),
+    ['/digital/v4.0/key', '/digital/v4.0/manual', '/digital/v4.0/manual', '/digital/v4.0/pdfManual', '/digital/v4.0/cosy']);
+  assert.equal(harness.permitted.checks, 6);
+  const urls = harness.calls.slice(1).map((call) => new URL(call.url));
+  assert.ok(urls.every((url) => url.searchParams.get('encryptedVin') === urls[0].searchParams.get('encryptedVin')), 'same private ciphertext');
+  assert.ok(urls.slice(1).every((url) => url.searchParams.get('locale') === 'en-gb'), 'content follows successful attempted locale');
+  assert.equal(result.guide.pdf.status, 'available'); assert.equal(result.guide.pdf.httpOutcome, 'ok');
+  assert.equal(result.guide.pdf.applicationOutcome, 'ok'); assert.equal(result.guide.links[0].assetRef, 'pdf-1');
+  assert.equal(result.guide.links[0].delivery, 'metadata-only'); assert.equal(result.guide.links[0].href, null);
+  assert.equal(result.illustration.status, 'available'); assert.equal(result.illustration.contentType, 'image/jpeg');
+  assert.equal(result.illustration.fidelity, 'unverified'); assert.equal(result.illustration.role, 'vin-linked-illustration');
+  assert.equal(result.source.provider, 'bmw-drivers-guide'); assert.match(result.guide.disclaimer, /Non-binding/);
+  assertPrivate(result, [privateUrl]);
+});
+
+test('content requests are opt-in, cannot bypass entry guards, and recheck authority between PDF and cosy', async () => {
+  const normal = providerHarness(); const defaultResult = await normal.adapter.resolve(request, normal.permitted.context);
+  assert.equal(normal.calls.length, 2); assert.equal(defaultResult.guide.pdf.status, 'unknown');
+  for (const lastAllowed of [1, 2, 3, 4]) {
+    const harness = providerHarness({ content: { pdf: true, illustration: true },
+      authority: providerAuthority({ allow: ({ checks }) => checks <= lastAllowed }), pdf: () => response(pdfBody()) });
+    const result = await harness.adapter.resolve(request, harness.permitted.context);
+    assert.equal(harness.calls.length, lastAllowed - 1);
+    if (lastAllowed >= 3) { assert.equal(result.status, 'partial'); assert.match(result.guide.disclaimer, /Non-binding/); }
+    if (lastAllowed === 3) { assert.equal(result.guide.pdf.failureDetail, 'identity-denied'); assert.equal(result.guide.pdf.httpOutcome, 'not-attempted'); }
+    if (lastAllowed === 4) { assert.equal(result.guide.pdf.status, 'available'); assert.equal(result.illustration.failureDetail, 'identity-denied'); assert.equal(result.illustration.httpOutcome, 'not-attempted'); }
+    assertPrivate(result);
+  }
+});
+
+test('PDF validation rejects unsafe URLs and metadata while retaining valid handbook and independent facts', async () => {
+  const opaque = randomBytes(12).toString('hex');
+  const badUrls = [`http://baonline.bmw.com/${opaque}`, `https://foreign.invalid/${opaque}`,
+    `https://user:pass@baonline.bmw.com/${opaque}`, `https://baonline.bmw.com:8443/${opaque}`,
+    `https://baonline.bmw.com/%ZZ`, `https://baonline.bmw.com/%0a${opaque}`, `data:${opaque}`, `//baonline.bmw.com/${opaque}`, `https://baonline.bmw.com/${opaque}#private`, 'not-a-url'];
+  const cases = [...badUrls.map((url) => () => response(pdfBody(url))),
+    () => response({ status: 'OK', links: [{ ...pdfBody().links[0], contentType: 'text/html' }] }),
+    () => response({ status: 'OK', links: [{ ...pdfBody().links[0], label: `<script>${opaque}</script>` }] }),
+    () => response({ status: 'OK', unsupportedContainer: [] }), () => ({ status: 200, body: '<html>unsafe</html>' })];
+  for (const pdf of cases) {
+    const harness = providerHarness({ content: { pdf: true, illustration: true }, pdf });
+    const result = await harness.adapter.resolve(request, harness.permitted.context);
+    assert.equal(result.status, 'partial'); assert.equal(result.guide.pdf.status, 'invalid');
+    assert.equal(result.illustration.status, 'available'); assert.equal(result.guide.title, 'Fictional handbook');
+    assert.match(result.guide.disclaimer, /Non-binding/);
+    const facts = { paint: { state: 'known', value: 'Independent fact' } };
+    assert.deepEqual(presentBmwVinGuide(result, facts).currentCarFacts, facts); assertPrivate(result, [opaque]);
+  }
+});
+
+test('PDF HTTP and application outcomes stay independent and optional failures preserve handbook metadata', async () => {
+  const cases = [
+    [() => response({ status: 'MANUAL_NOT_AVAILABLE' }), 'unavailable', null, 'ok', 'unavailable'],
+    [() => response({ status: 'OK', links: [] }), 'unavailable', null, 'ok', 'ok'],
+    [() => response({ status: 422 }), 'source-unavailable', 'application-error', 'ok', 'error'],
+    [() => response(pdfBody(), 503), 'source-unavailable', 'http-error', 'error', 'unknown'],
+    [() => { throw new Error(vin); }, 'source-unavailable', 'transport-error', 'error', 'unknown'],
+    [() => ({ status: 200, body: ' '.repeat(262145) }), 'source-unavailable', 'response-too-large', 'ok', 'unknown'],
+  ];
+  for (const [pdf, status, detail, http, application] of cases) {
+    const harness = providerHarness({ content: { pdf: true }, pdf }); const result = await harness.adapter.resolve(request, harness.permitted.context);
+    assert.equal(result.guide.pdf.status, status); assert.equal(result.guide.pdf.failureDetail, detail);
+    assert.equal(result.guide.pdf.httpOutcome, http); assert.equal(result.guide.pdf.applicationOutcome, application);
+    assert.equal(result.status, 'partial'); assert.equal(result.guide.title, 'Fictional handbook'); assertPrivate(result);
+  }
+});
+
+test('PDF raw identities precede decoder and decoded identities and locales are checked afterwards', async () => {
+  const other = (await corpusInput({ count: 2 })).allocationInventory.records[1].vin17;
+  let decoded = 0;
+  const raw = providerHarness({ content: { pdf: true }, pdf: () => response({ ...pdfBody(), vin: other }),
+    decodePdfManual: () => { decoded += 1; return pdfBody(); } });
+  const denied = await raw.adapter.resolve(request, raw.permitted.context);
+  assert.equal(decoded, 0); assert.equal(denied.guide.pdf.failureDetail, 'identity-mismatch'); assertPrivate(denied, [other]);
+  for (const decodePdfManual of [() => ({ ...pdfBody(), vin: other }), () => ({ ...pdfBody(), locale: 'en-us' }),
+    () => { throw new Error(other); }, () => [], () => ({ links: 'unsupported' })]) {
+    const harness = providerHarness({ content: { pdf: true }, pdf: () => response(pdfBody()), decodePdfManual });
+    const result = await harness.adapter.resolve(request, harness.permitted.context);
+    assert.equal(result.guide.pdf.status, 'invalid'); assert.equal(result.status, 'partial'); assertPrivate(result, [other]);
+  }
+  const explicit = providerHarness({ content: { pdf: true }, pdf: () => response({ status: 'OK', fictionalContainer: pdfBody() }),
+    decodePdfManual: (data) => data.fictionalContainer });
+  assert.equal((await explicit.adapter.resolve(request, explicit.permitted.context)).guide.pdf.status, 'available');
+});
+
+test('raster MIME, bytes, redirect and transport validation never follows returned private image URLs', async () => {
+  const cases = [
+    () => ({ status: 200, contentType: 'text/html', body: Buffer.from('<html>unsafe content</html>') }),
+    () => ({ status: 200, contentType: 'image/svg+xml', body: Buffer.from('<svg><script/></svg>') }),
+    () => ({ status: 200, contentType: 'image/jpeg', body: Buffer.alloc(32) }),
+    () => ({ status: 200, contentType: 'image/jpeg', body: Buffer.from([255, 216, 255]) }),
+    () => ({ status: 200, contentType: 'image/jpeg', body: 'not binary' }),
+    () => ({ status: 200, contentType: 'image/jpeg', body: Buffer.alloc(2097153) }),
+    () => ({ status: 200, contentType: 'image/jpeg', body: Buffer.alloc(32), redirected: true }),
+    () => ({ status: 200, contentType: 'image/jpeg', body: Buffer.alloc(32), url: privatePdf() }),
+  ];
+  for (const cosy of cases) {
+    const harness = providerHarness({ content: { pdf: true, illustration: true }, pdf: () => response(pdfBody()), cosy });
+    const result = await harness.adapter.resolve(request, harness.permitted.context);
+    assert.ok(['invalid', 'source-unavailable'].includes(result.illustration.status));
+    assert.equal(result.guide.pdf.status, 'available'); assert.equal(result.guide.title, 'Fictional handbook');
+    assert.equal(harness.calls.length, 4); assertPrivate(result);
+  }
+});
+
+test('optional transport and decoder timeouts retain valid handbook and prevent late private content publication', async () => {
+  for (const options of [{ pdf: () => new Promise(() => {}) }, { decodePdfManual: () => new Promise(() => {}) },
+    { cosy: () => new Promise(() => {}) }]) {
+    const harness = providerHarness({ content: { pdf: true, illustration: true }, timeoutMs: 300, pdf: () => response(pdfBody()), ...options });
+    const result = await harness.adapter.resolve(request, harness.permitted.context);
+    assert.equal(result.status, 'partial'); assert.equal(result.guide.title, 'Fictional handbook');
+    assert.equal(options.cosy ? result.illustration.failureDetail : result.guide.pdf.failureDetail, 'timeout'); assertPrivate(result);
+    assert.ok(harness.calls.every((call) => call.signal.aborted));
+  }
+});
+
+
+test('optional guard stalls preserve manual metadata and late authority cannot start a transport', async () => {
+  let release; let checks = 0;
+  const harness = providerHarness({ content: { pdf: true }, timeoutMs: 300 });
+  const adapter = createBmwDriversGuideAdapter({ content: { pdf: true }, timeoutMs: 300,
+    decodeManual: (data) => data.manualData,
+    guard: { async check() { checks += 1; if (checks < 4) return true; return new Promise((done) => { release = done; }); } },
+    transport: async (call) => { harness.calls.push(call); return new URL(call.url).pathname.endsWith('/key') ? response(keyBody()) : response(manualBody()); } });
+  const result = await adapter.resolve(request, {}); assert.equal(result.status, 'partial');
+  assert.equal(result.guide.pdf.failureDetail, 'timeout'); assert.equal(result.guide.pdf.httpOutcome, 'not-attempted'); assert.equal(harness.calls.length, 2);
+  release(true); await new Promise((done) => setImmediate(done)); assert.equal(harness.calls.length, 2); assertPrivate(result);
+});
+
+
+test('later raw or decoded PDF identifiers cannot escape through earlier handbook text or links', async () => {
+  const secret = [...randomBytes(10)].map((value) => `i${value.toString(16)}`).join('');
+  for (const decoded of [false, true]) {
+    const body = { status: 'OK', links: [], assetRef: secret };
+    const harness = providerHarness({ content: { pdf: true },
+      manual: () => { const data = manualBody(); data.manualData.links[0].label = `Private ${secret}`; return response(data); },
+      pdf: () => response(decoded ? { status: 'OK', fixture: body } : body),
+      decodePdfManual: decoded ? (data) => data.fixture : undefined });
+    const result = await harness.adapter.resolve(request, harness.permitted.context);
+    assert.equal(result.guide.links.length, 0); assertPrivate(result, [secret]);
+  }
+  for (const status of [undefined, 422, 'OK']) {
+    const invalid = providerHarness({ content: { pdf: true },
+      manual: () => { const data = manualBody(); data.manualData.links[0].label = `Private ${secret}`; return response(data); },
+      pdf: () => response({ ...(status === undefined ? {} : { status }), assetRef: secret, links: false }) });
+    const result = await invalid.adapter.resolve(request, invalid.permitted.context);
+    assert.ok(['invalid', 'source-unavailable'].includes(result.guide.pdf.status)); assert.equal(result.guide.links.length, 0); assertPrivate(result, [secret]);
+  }
+});
+
+test('default encryption works without an injected encryptor and unsupported raster formats fail closed', async () => {
+  const harness = providerHarness({ keyHandling: {} });
+  const result = await harness.adapter.resolve(request, harness.permitted.context);
+  assert.equal(result.status, 'partial'); assert.match(presentBmwVinGuide(result).message, /equipment remain unknown/); assertPrivate(result);
+  for (const cosy of [() => ({ status: 200, contentType: 'image/png', body: Buffer.alloc(64) }),
+    () => ({ status: 200, contentType: 'image/webp', body: Buffer.alloc(64) }),
+    () => ({ status: 200, contentType: 'image/jpeg', body: Buffer.from([255, 216, 255, 192, 0, 200, 0, 0, 0, 0, 255, 217]) })]) {
+    const rejected = providerHarness({ content: { illustration: true }, cosy });
+    assert.equal((await rejected.adapter.resolve(request, rejected.permitted.context)).illustration.status, 'invalid');
+  }
+});
+
+
+test('rejected foreign URLs retain privacy filtering across earlier manual labels', async () => {
+  const opaque = [...randomBytes(8)].map((value) => `i${value.toString(16)}`).join('');
+  for (const url of [`https://foreign.invalid/private/${opaque}?secret=${opaque}#${opaque}`, `javascript:${opaque}`]) {
+    const harness = providerHarness({ content: { pdf: true }, pdf: () => response(pdfBody(url)),
+      manual: () => { const data = manualBody(); data.manualData.links[0].label = `Private ${opaque}`; return response(data); } });
+    const result = await harness.adapter.resolve(request, harness.permitted.context);
+    assert.equal(result.guide.pdf.status, 'invalid'); assert.equal(result.guide.links.length, 0);
+    assert.equal(result.status, 'partial'); assertPrivate(result, [opaque, url]);
+    assert.match(presentBmwVinGuide(result).message, /vehicle equipment remain unknown/);
+  }
 });
