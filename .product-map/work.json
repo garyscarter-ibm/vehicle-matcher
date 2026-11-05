@@ -1510,44 +1510,44 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-05T23:33:05Z",
+      "observed_at": "2026-11-05T23:38:49Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-96",
       "unsliced": false,
       "slices": [
         {
           "id": "core-allocation",
           "title": "Deterministic cohort allocation and policy tie break",
-          "status": "in-progress",
-          "evidence": "Historical6f15d4d scoped60/60; current lead re-review/integration pending.",
-          "observed_at": "2026-11-05T23:33:04.204649Z"
+          "status": "complete",
+          "evidence": "Updated-base scoped67/67 zero skips; deterministic core13 and identity/recommendation boundaries pass. docs/gcsp/evidence/fucq96/restart-20261105.json",
+          "observed_at": "2026-11-05T23:38:48.913911+00:00"
         },
         {
           "id": "persisted-triggers",
           "title": "Persisted release and brief triggers at the clock allocation stage",
-          "status": "in-progress",
-          "evidence": "Actual DemoClock buddy-allocation stage runs outside a transaction after committed release. New consumer proof in progress.",
-          "observed_at": "2026-11-05T23:33:04.204649Z"
+          "status": "complete",
+          "evidence": "Actual F92/F91 receipts at real DemoClock stage proven; namespaced deterministic replay/auth/pending source tests pass. producer-integration.md",
+          "observed_at": "2026-11-05T23:38:48.913911+00:00"
         },
         {
           "id": "claim-port",
           "title": "Actual F100 hold claim port integration",
-          "status": "not-started",
-          "evidence": "Live remote b4154ce3 BuddyHoldService.tryClaim is available for pinned independent integration proof; no hold reimplementation.",
-          "observed_at": "2026-11-05T23:33:04.204649Z"
+          "status": "blocked",
+          "evidence": "Actual pinned F100 b4154ce3 rejects F92 available stock as stock-unavailable; zero hold/offer/outbox. Concrete technical blocker, not Jira dependency admission.",
+          "observed_at": "2026-11-05T23:38:48.913911+00:00"
         },
         {
           "id": "runtime-integration",
           "title": "Trusted startup and source-backed producer integration",
-          "status": "not-started",
-          "evidence": "Central startup ownership, actual source-backed release and native gates retained.",
-          "observed_at": "2026-11-05T23:33:04.204649Z"
+          "status": "blocked",
+          "evidence": "Parent owns central registration; trusted startup identity and actual F77/F78-backed source intervals remain unproved.",
+          "observed_at": "2026-11-05T23:38:48.913911+00:00"
         },
         {
           "id": "acceptance-validation",
           "title": "Complete acceptance and final serial validation",
-          "status": "not-started",
-          "evidence": "Full npm test required after integrated source stabilises; Ralph currently owns sole full grant.",
-          "observed_at": "2026-11-05T23:33:04.204649Z"
+          "status": "blocked",
+          "evidence": "Scoped checkpoint only; no full grant for knowingly incomplete integration. Required serial npm test/stamp follow repair.",
+          "observed_at": "2026-11-05T23:38:48.913911+00:00"
         }
       ],
       "workers": [
@@ -1555,10 +1555,10 @@
           "name": "The Brain",
           "role": "story-lead",
           "harness": "codex",
-          "status": "active",
-          "observed_at": "2026-11-05T23:33:04.204649Z",
-          "expires_at": "2026-11-06T00:03:04.204649Z",
-          "source": "thread 01a1adf9-7f4a-7913-9cdb-532060b69a55; requested/selected/effective gpt-6.1-sol/high; no fallback"
+          "status": "stopped",
+          "observed_at": "2026-11-05T23:38:48.913911+00:00",
+          "expires_at": "2026-11-05T23:38:48.913911+00:00",
+          "source": "Thread01a1adf9-7f4a-7913-9cdb-532060b69a55 delivered scoped blocked checkpoint; requested/selected/effective gpt-6.1-sol/high; no fallback/descendants"
         }
       ]
     }

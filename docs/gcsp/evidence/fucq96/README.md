@@ -1,5 +1,7 @@
 # FUCQ-96 allocation checkpoint
 
+Current restart checkpoint: [producer-integration.md](producer-integration.md) and [restart-20261105.json](restart-20261105.json). Updated-base scoped checks pass 67/67 with zero skips. Actual pinned F92/F91 consumption passes; the real F100 handoff fails at the recorded `available`/`released` stock-state boundary. The story remains incomplete. The travel-pause material below is historical.
+
 Paused at the human travel checkpoint on 5 November 2026. **All 60 selected cases passed; the story remains incomplete.** The new allocation/identity cases passed 16/16, recommendation boundaries 25/25 and existing identity boundaries 19/19. No skipped cases. Proof is direct supervised scoped validation with no test stamp or full-suite claim.
 
 `scoped-proof.json` retains exact source/test identities, commands, per-case timings, resource and dependency audits, the initial failed session-count assertion and its correction, and verified cleanup. Current combined identity: `a63b0dcbb78ada5aa7ec1fb4c4affba0a51b526dfb6179b46ea3e1fbd1e5e464`. Product source is unchanged from independent source review; the identity test now compares complete session records before/after resolution instead of expecting an incorrect fixed count.

@@ -36,6 +36,7 @@ function compare(rule) {
 
 // Allocation proposes claims; the injected FUCQ-100 port alone owns stock/hold transactions.
 export function createAllocationService({ repository, policy, clock, identity, claim } = {}) {
+  let registration;
   const ref = (context, eventId) => ({ table: 'event_receipts', key: { runId: context.runId, consumerId: ALLOCATION_CONSUMER, eventId } });
   const command = (id, payload) => ({ commandId: id, inputDigest: inputDigest(payload) });
   async function prepare(context, event, instant, assumptions) {
@@ -127,7 +128,48 @@ export function createAllocationService({ repository, policy, clock, identity, c
     return ok(plan);
   }
 
-  return {
+  const service = {
+    register() {
+      if (typeof clock?.registerHandler !== 'function') return Promise.resolve(unavailable('not-configured'));
+      registration ??= clock.registerHandler({ handlerId: ALLOCATION_CONSUMER, stage: 'buddy-allocation',
+        handle: ({ context }) => service.consumeTriggers(context) });
+      return registration;
+    },
+    async consumeTriggers(context) {
+      if (!repository || typeof identity?.requireRole !== 'function') return unavailable('not-configured');
+      const allowed = await identity.requireRole(context, 'presenter'); if (allowed.status !== 'ok') return allowed;
+      try {
+        // DemoClock awaits each handler outside a repository transaction. Release/brief
+        // producers have committed before this read; never nest under its transaction helper.
+        const loaded = await repository.query(context, 'event_receipts'); if (loaded.status !== 'ok') return loaded;
+        const sources = loaded.value.filter((row) => ['stock-release', 'brief:changes'].includes(row.consumerId)
+          && row.state === 'completed' && row.outcome?.status === 'ok');
+        const events = [];
+        for (const source of sources) {
+          const value = source.outcome.value;
+          const stock = source.consumerId === 'stock-release';
+          const eventType = stock ? 'stock-released' : 'brief-changed';
+          const occurredAt = stock ? value?.releasedAt : value?.occurredAt;
+          if (source.eventType !== eventType || !text(source.eventId) || !text(source.inputDigest)
+            || !source.inputVersions || typeof source.inputVersions !== 'object'
+            || value?.runId !== context.runId || !validInstant(occurredAt)
+            || (stock ? value.kind !== eventType || value.trancheId !== source.eventId
+              : value.eventType !== eventType || value.eventId !== source.eventId)) return unavailable('allocation-trigger-invalid');
+          events.push({ ...structuredClone(value),
+            eventId: `allocation:${inputDigest([source.consumerId, source.eventId])}`, eventType,
+            sourceEventId: source.eventId, sourceReceipt: { consumerId: source.consumerId, eventId: source.eventId,
+              inputDigest: source.inputDigest, inputVersions: structuredClone(source.inputVersions) }, occurredAt });
+        }
+        events.sort((a, b) => ordinal(a.occurredAt, b.occurredAt)
+          || ordinal(a.sourceReceipt.consumerId, b.sourceReceipt.consumerId) || ordinal(a.sourceEventId, b.sourceEventId));
+        const allocations = [];
+        for (const event of events) {
+          const outcome = await service.allocate(context, event); if (outcome.status !== 'ok') return outcome;
+          allocations.push(outcome.value);
+        }
+        return ok({ runId: context.runId, allocations });
+      } catch { return unavailable('allocation-source-invalid'); }
+    },
     async allocate(context, event) {
       if (!repository || !policy || !clock || typeof identity?.resolveEmployeeContext !== 'function' || typeof claim?.tryClaim !== 'function') return unavailable('not-configured');
       const allowed = await identity.requireRole(context, 'presenter'); if (allowed.status !== 'ok') return allowed;
@@ -183,4 +225,5 @@ export function createAllocationService({ repository, policy, clock, identity, c
       } catch { return unavailable('allocation-source-invalid'); }
     },
   };
+  return service;
 }
