@@ -67,6 +67,25 @@ FUCQ-32 keeps experience and brand independent and employee capability explicitl
 
 FUCQ-65 implements the agreed manual service/adapter/repository topology without changing it. Its account/draft/stock presentation contract and fictional backend trial are in [manual refinement](../gcsp/manual-journey-refinement.md). FUCQ-125 adds a presenter-only named scenario catalogue and a trusted finite fixture-source preparation port over those same services. Six versioned journey input manifests identify FUCQ-109 and FUCQ-127–131, their canonical principals, policy/clock reads and required business services. Their unavailable service preparations refuse before reset; a fixture label, function or capability boolean cannot activate them. The separately labelled fictional clock-mechanics entry proves the existing reset path without implying a real corpus or completed journey. Prepared source/policy/scenario/fixture/input identity is bound into FUCQ-85's existing command receipt and run metadata; FUCQ-85 retains its sole identifier, run-transition and cookie authority. [The scenario contract](../gcsp/shared-contracts.md#named-scenario-catalogue-and-preparation--fucq-125) and [trial records](../gcsp/manual-acceptance-scenarios.md#named-scenario-preparation--fucq-125) distinguish delivered setup/refusal from later business replays. No presenter screen or new diagram rendering is claimed.
 
+**Named components and their Stories (pre-build pass, 5 November 2026).** The diagram now names each component the backlog introduces, all proposed, on Employee transactions, page 00 and page 07.
+
+| Component | Stories | Role |
+|---|---|---|
+| Repository port | FUCQ-81 | Managed PostgreSQL plus an in-memory double; every mutable row carries `runId`. |
+| PolicyService | FUCQ-82, 83 | Reads every key from a reviewed seed, then dated tables; Greg publishes new versions. |
+| DemoIdentityAdapter | FUCQ-84 | Fictional principals, roles and the current run, behind the demo gate. |
+| DemoClock and tick registry | FUCQ-85 | Presenter ticks run registered handlers (release, expiry, reconcile); reset makes a new run. |
+| Scenario catalogue and presenter controls | FUCQ-125, 126 | Reset into a named scenario through FUCQ-85; tick, release, reset and switch principal. |
+| BriefService | FUCQ-91 | Versioned brief, consent, pause, and the single post-decline change. |
+| Release and allocation | FUCQ-92, 96 | Stock appears on the next pull; one tie-break authority for manual and buddy routes. |
+| Holds and offers | FUCQ-66, 100, 106 | One exclusive-hold constraint; hold, offer and outbox job in one transaction. |
+| Offer link access | FUCQ-102 | Hashed, run-bound token resolving to the offer's current state. |
+| Outbox dispatcher, transport port and viewer | FUCQ-93, 97, 98 | Captured transport always; one real transport once a sender is set up. |
+| Greg demand and publish | FUCQ-99, 103 | Run-scoped aggregates with privacy bands; preview, then publish a policy version. |
+| Ordering adapter and LifecycleService | FUCQ-71, 108, 111 | One adapter for manual and buddy handoff; target approval stages on ticks. |
+| Appointment port, documents and return plan | FUCQ-114, 116, 118 | Synthetic adapters with live-shaped stubs that report writes as unsupported. |
+| Renewal-risk case | FUCQ-112 | Owned case on request or a keyed trigger; never changes allocation priority. |
+
 Diagram evidence gap, 5 November 2026: read-only `plugin_list_tabs(drawio)` returned `state: closed, tabs: []`; canonical manual-context recolouring and rendered verification remain unverified. No new active tab, foreground or raw-XML workaround was used. Consuming manual screens remain proposed.
 
 ## Paula's version-4 blueprint through the architecture
