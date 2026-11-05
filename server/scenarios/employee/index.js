@@ -29,9 +29,10 @@ export function validateBrief(request, config, slider) {
     if (!d || !only(e, ['value', 'operator', 'unit', 'state', 'source', 'confirmedAt'])
       || e.operator !== d.operator || e.unit !== d.unit || ![...states, 'needs-confirmation'].includes(e.state) || !text(e.source)
       || (e.confirmedAt !== undefined && !validInstant(e.confirmedAt))
-      || (d.type === 'number' && (!Number.isFinite(e.value) || e.value < 0 || key === 'seats' && !Number.isInteger(e.value)))
-      || (d.type === 'boolean' && typeof e.value !== 'boolean') || (d.type === 'string' && !text(e.value))
-      || (d.type === 'list' && (!Array.isArray(e.value) || !e.value.length || !e.value.every(text)))) add(`essentials.${key}`);
+      || (e.value === null ? e.state !== 'needs-confirmation'
+        : (d.type === 'number' && (!Number.isFinite(e.value) || e.value < 0 || key === 'seats' && !Number.isInteger(e.value)))
+        || (d.type === 'boolean' && typeof e.value !== 'boolean') || (d.type === 'string' && !text(e.value))
+        || (d.type === 'list' && (!Array.isArray(e.value) || !e.value.length || !e.value.every(text))))) add(`essentials.${key}`);
   }
   if (request.requiredBy !== undefined && !validInstant(request.requiredBy)) add('requiredBy');
   return errors;
