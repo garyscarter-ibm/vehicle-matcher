@@ -37,7 +37,7 @@ let contextClosed = false;
 let listenerClosed = false;
 let runtimeClosed = false;
 const results = {
-  story: 'FUCQ-67', phase: serviceOnly ? 'actual-service-smoke' : 'full-matrix', captureHead: process.env.FUCQ67_CAPTURE_HEAD ?? '3e2cf2346099cfe25eb6c6917e5e3210b864d05e', productHead: 'db4a53bbe7865f06d3434f8a6ec095bfa74c384f',
+  story: 'FUCQ-67', phase: serviceOnly ? 'actual-service-smoke' : 'full-matrix', captureHead: process.env.FUCQ67_CAPTURE_HEAD ?? 'fcc8e13', productHead: process.env.FUCQ67_PRODUCT_HEAD ?? 'fcc8e13',
   approvedBase: 'ade262aa81c7ccbf0043e0f5658a7052f501734e', integratedBase: process.env.FUCQ67_BASE ?? '873539d8990032c1a1d6db303c477d58d8b84141', viewport: {}, actualService: {}, fixtures: {}, probes: {},
   keyboard: {}, externalRequests: [], errors: [], screenshots: [], cleanup: {},
 };
@@ -230,7 +230,7 @@ try {
       await page.setViewportSize({ width, height: width === 320 ? 740 : 900 });
       await ready(`${base}?fixture=${encodeURIComponent(fixture)}`);
       const bodyText = await page.locator('gcsp-account').innerText();
-      const visible = bodyText.includes(expected);
+      const visible = fixture === 'multi-slot' ? await page.locator('.gcsp-feature').count() === 2 : bodyText.includes(expected);
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
       results.fixtures[fixture][String(width)] = { expectedVisible: visible, overflow,
         currentCarCount: await page.locator('.gcsp-feature').count(),
@@ -238,6 +238,13 @@ try {
         detailsSummaryCount: await page.locator('gcsp-account details > summary').count(),
         visibleImageCount: await page.locator('gcsp-account img').count(),
         brokenImageCount: await page.locator('gcsp-account img').evaluateAll((images) => images.filter((image) => image.complete && image.naturalWidth === 0).length) };
+      if (fixture === 'multi-slot') {
+        const terms = await page.locator('.gcsp-account-terms').allTextContents();
+        const isolated = terms[0].includes('1,300 points a month allowance')
+          && terms[1].includes('allowance not supplied') && !terms[1].includes('1,300');
+        results.fixtures[fixture][String(width)].schemeAllowanceIsolated = isolated;
+        if (!isolated) throw new Error('Multi-scheme allowance was attributed to the wrong contract.');
+      }
       const tag = width === 320 ? 'narrow' : 'desktop';
       const filename = `${String(number).padStart(2, '0')}-${fixture}-${tag}.png`;
       await save(filename, { case: fixture, width });

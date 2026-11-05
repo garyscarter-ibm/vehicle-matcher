@@ -1,9 +1,10 @@
 {
   "story": "FUCQ-67",
-  "phase": "actual-service-smoke",
-  "captureHead": "717df5c0eff189e7db5d12eaa16bd1919ec7b2bb",
-  "productHead": "db4a53bbe7865f06d3434f8a6ec095bfa74c384f",
+  "phase": "full-matrix",
+  "captureHead": "fcc8e13",
+  "productHead": "fcc8e13",
   "approvedBase": "ade262aa81c7ccbf0043e0f5658a7052f501734e",
+  "integratedBase": "058ed90daa1b53617d9f7125b8ab338d8f7d7601",
   "viewport": {
     "desktop": {
       "width": 1280,
@@ -50,8 +51,120 @@
     "persistedDraftVisibleAfterReload": true,
     "journeyEventsPresent": true
   },
-  "fixtures": {},
-  "probes": {},
+  "fixtures": {
+    "multi-slot": {
+      "320": {
+        "expectedVisible": true,
+        "overflow": false,
+        "currentCarCount": 2,
+        "historyGroupCount": 9,
+        "detailsSummaryCount": 17,
+        "visibleImageCount": 2,
+        "brokenImageCount": 0,
+        "schemeAllowanceIsolated": true
+      },
+      "1280": {
+        "expectedVisible": true,
+        "overflow": false,
+        "currentCarCount": 2,
+        "historyGroupCount": 9,
+        "detailsSummaryCount": 17,
+        "visibleImageCount": 2,
+        "brokenImageCount": 0,
+        "schemeAllowanceIsolated": true
+      }
+    },
+    "missing-image": {
+      "320": {
+        "expectedVisible": true,
+        "overflow": false,
+        "currentCarCount": 1,
+        "historyGroupCount": 7,
+        "detailsSummaryCount": 13,
+        "visibleImageCount": 2,
+        "brokenImageCount": 0
+      },
+      "1280": {
+        "expectedVisible": true,
+        "overflow": false,
+        "currentCarCount": 1,
+        "historyGroupCount": 7,
+        "detailsSummaryCount": 13,
+        "visibleImageCount": 2,
+        "brokenImageCount": 0
+      }
+    },
+    "absent-hr-account": {
+      "320": {
+        "expectedVisible": true,
+        "overflow": false,
+        "currentCarCount": 0,
+        "historyGroupCount": 0,
+        "detailsSummaryCount": 0,
+        "visibleImageCount": 2,
+        "brokenImageCount": 0
+      },
+      "1280": {
+        "expectedVisible": true,
+        "overflow": false,
+        "currentCarCount": 0,
+        "historyGroupCount": 0,
+        "detailsSummaryCount": 0,
+        "visibleImageCount": 2,
+        "brokenImageCount": 0
+      }
+    },
+    "not-yet-eligible": {
+      "320": {
+        "expectedVisible": true,
+        "overflow": false,
+        "currentCarCount": 1,
+        "historyGroupCount": 7,
+        "detailsSummaryCount": 13,
+        "visibleImageCount": 2,
+        "brokenImageCount": 0
+      },
+      "1280": {
+        "expectedVisible": true,
+        "overflow": false,
+        "currentCarCount": 1,
+        "historyGroupCount": 7,
+        "detailsSummaryCount": 13,
+        "visibleImageCount": 2,
+        "brokenImageCount": 0
+      }
+    },
+    "source-failure": {
+      "320": {
+        "expectedVisible": true,
+        "overflow": false,
+        "currentCarCount": 0,
+        "historyGroupCount": 0,
+        "detailsSummaryCount": 0,
+        "visibleImageCount": 2,
+        "brokenImageCount": 0
+      },
+      "1280": {
+        "expectedVisible": true,
+        "overflow": false,
+        "currentCarCount": 0,
+        "historyGroupCount": 0,
+        "detailsSummaryCount": 0,
+        "visibleImageCount": 2,
+        "brokenImageCount": 0
+      }
+    }
+  },
+  "probes": {
+    "no-current-car": {
+      "expectedVisible": true,
+      "detail": "No current car"
+    },
+    "no-history": {
+      "expectedVisible": true,
+      "detail": "No order history."
+    }
+  },
   "keyboard": {
     "contractSummaryReachedByTab": true,
     "contractDetailsOpened": {
@@ -106,6 +219,66 @@
       "width": 320,
       "height": 740,
       "case": "actual-service-resumed"
+    },
+    {
+      "file": "07-multi-slot-desktop.png",
+      "width": 1280,
+      "height": 900,
+      "case": "multi-slot"
+    },
+    {
+      "file": "08-multi-slot-narrow.png",
+      "width": 320,
+      "height": 740,
+      "case": "multi-slot"
+    },
+    {
+      "file": "09-missing-image-desktop.png",
+      "width": 1280,
+      "height": 900,
+      "case": "missing-image"
+    },
+    {
+      "file": "10-missing-image-narrow.png",
+      "width": 320,
+      "height": 740,
+      "case": "missing-image"
+    },
+    {
+      "file": "11-absent-hr-account-desktop.png",
+      "width": 1280,
+      "height": 900,
+      "case": "absent-hr-account"
+    },
+    {
+      "file": "12-absent-hr-account-narrow.png",
+      "width": 320,
+      "height": 740,
+      "case": "absent-hr-account"
+    },
+    {
+      "file": "13-not-yet-eligible-desktop.png",
+      "width": 1280,
+      "height": 900,
+      "case": "not-yet-eligible"
+    },
+    {
+      "file": "14-not-yet-eligible-narrow.png",
+      "width": 320,
+      "height": 740,
+      "case": "not-yet-eligible"
+    },
+    {
+      "file": "15-source-failure-desktop.png",
+      "width": 1280,
+      "height": 900,
+      "case": "source-failure"
+    },
+    {
+      "file": "16-source-failure-narrow.png",
+      "width": 320,
+      "height": 740,
+      "case": "source-failure"
     }
   ],
   "cleanup": {
@@ -114,16 +287,18 @@
     "composedListenerClosed": true,
     "runtimeClosed": true,
     "independentlyVerifyHost": "127.0.0.1",
-    "port": 53276
+    "port": 54674
   },
   "browserErrors": [
     {
       "type": "console",
-      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:54674/api/gcsp/manual/draft"
     },
     {
       "type": "console",
-      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:54674/api/gcsp/manual/draft"
     }
   ],
   "journeyEvents": [
@@ -133,7 +308,7 @@
       "slotId": "slot-paula",
       "schemeId": "choices-fs-uk",
       "draftVersion": 1,
-      "contextVersion": "533c65e160ecf6d1b7187975d85245bed17075042144c4336a0df7fbc5ba2639"
+      "contextVersion": "89f744d5c9b96751f78294ff691e1af9d6530e6c19f2cfda4a3abc3168be43b2"
     },
     {
       "mode": "replacement",
@@ -141,7 +316,7 @@
       "slotId": "slot-paula",
       "schemeId": "choices-fs-uk",
       "draftVersion": 1,
-      "contextVersion": "533c65e160ecf6d1b7187975d85245bed17075042144c4336a0df7fbc5ba2639"
+      "contextVersion": "89f744d5c9b96751f78294ff691e1af9d6530e6c19f2cfda4a3abc3168be43b2"
     },
     {
       "mode": "replacement",
@@ -149,7 +324,7 @@
       "slotId": "slot-paula",
       "schemeId": "choices-fs-uk",
       "draftVersion": 1,
-      "contextVersion": "533c65e160ecf6d1b7187975d85245bed17075042144c4336a0df7fbc5ba2639"
+      "contextVersion": "89f744d5c9b96751f78294ff691e1af9d6530e6c19f2cfda4a3abc3168be43b2"
     }
   ],
   "apiRequests": [
@@ -183,6 +358,7 @@
         }
       ],
       "state": "ready",
+      "contextVersion": "89f744d5c9b96751f78294ff691e1af9d6530e6c19f2cfda4a3abc3168be43b2",
       "choices": {
         "slotId": "slot-paula",
         "schemeId": "choices-fs-uk"
@@ -210,6 +386,7 @@
       "contractVersion": "1.0.0",
       "draftStage": "intent",
       "draftVersion": 1,
+      "contextVersion": "89f744d5c9b96751f78294ff691e1af9d6530e6c19f2cfda4a3abc3168be43b2",
       "choices": {
         "mode": "replacement",
         "oldContractId": "current:employee-paula",
@@ -247,6 +424,7 @@
         }
       ],
       "state": "ready",
+      "contextVersion": "89f744d5c9b96751f78294ff691e1af9d6530e6c19f2cfda4a3abc3168be43b2",
       "choices": {
         "slotId": "slot-paula",
         "schemeId": "choices-fs-uk"
@@ -260,6 +438,7 @@
       "contractVersion": "1.0.0",
       "draftStage": "intent",
       "draftVersion": 1,
+      "contextVersion": "89f744d5c9b96751f78294ff691e1af9d6530e6c19f2cfda4a3abc3168be43b2",
       "choices": {
         "mode": "replacement",
         "oldContractId": "current:employee-paula",
@@ -276,6 +455,7 @@
       "contractVersion": "1.0.0",
       "draftStage": "intent",
       "draftVersion": 1,
+      "contextVersion": "89f744d5c9b96751f78294ff691e1af9d6530e6c19f2cfda4a3abc3168be43b2",
       "choices": {
         "mode": "replacement",
         "oldContractId": "current:employee-paula",
@@ -314,6 +494,7 @@
         }
       ],
       "state": "ready",
+      "contextVersion": "89f744d5c9b96751f78294ff691e1af9d6530e6c19f2cfda4a3abc3168be43b2",
       "choices": {
         "slotId": "slot-paula",
         "schemeId": "choices-fs-uk"
@@ -327,6 +508,7 @@
       "contractVersion": "1.0.0",
       "draftStage": "intent",
       "draftVersion": 1,
+      "contextVersion": "89f744d5c9b96751f78294ff691e1af9d6530e6c19f2cfda4a3abc3168be43b2",
       "choices": {
         "mode": "replacement",
         "oldContractId": "current:employee-paula",
@@ -343,6 +525,7 @@
       "contractVersion": "1.0.0",
       "draftStage": "intent",
       "draftVersion": 1,
+      "contextVersion": "89f744d5c9b96751f78294ff691e1af9d6530e6c19f2cfda4a3abc3168be43b2",
       "choices": {
         "mode": "replacement",
         "oldContractId": "current:employee-paula",
@@ -354,18 +537,50 @@
   ],
   "network": {
     "allGcspResponsesExpected": true,
-    "gcspRequestCount": 10
+    "gcspRequestCount": 10,
+    "expectedNotFoundDraftReads": 2,
+    "expectedHttpResponses": [
+      {
+        "method": "GET",
+        "path": "/api/gcsp/manual/draft",
+        "httpStatus": 404,
+        "status": "not-found"
+      },
+      {
+        "method": "GET",
+        "path": "/api/gcsp/manual/draft",
+        "httpStatus": 404,
+        "status": "not-found"
+      }
+    ],
+    "unexpectedHttpErrors": []
+  },
+  "browserErrorClassification": {
+    "expectedEmptyDraftConsoleMessages": [
+      {
+        "type": "console",
+        "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "url": "http://127.0.0.1:54674/api/gcsp/manual/draft"
+      },
+      {
+        "type": "console",
+        "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "url": "http://127.0.0.1:54674/api/gcsp/manual/draft"
+      }
+    ],
+    "pageErrors": [],
+    "consoleErrors": []
   },
   "listener": {
     "host": "127.0.0.1",
-    "port": 53276,
-    "origin": "http://127.0.0.1:53276",
+    "port": 54674,
+    "origin": "http://127.0.0.1:54674",
     "listenerCount": 1
   },
   "sourceHashes": {
     "gcsp-account.html": "64d2c47e5ce7d6c4007c0f5176e8f0b5377a98b1cabcff5d3c385d7f2d4e26e3",
     "blocks/gcsp/account/harness.js": "c6e0fa35d66119f9b3ff6a3aa91dd524fe4c3bdbf9dc083dd7235adec9b829c0",
-    "blocks/gcsp/account/gcsp-account.js": "1fe3db11a3c89736a68af60c276f60136cfd6789d3089584e4d7036140e2960a",
+    "blocks/gcsp/account/gcsp-account.js": "6e55cfc13a86b715584ce85a76315248d61ae33bd5526399b64f87ad2b53c80c",
     "blocks/gcsp/account/account-view.js": "c2e71ea6e5b15a1d905e33ab72d78eb0f45039fe2508cad89b11654801749dee",
     "blocks/gcsp/account/http-adapter.js": "df40a2487336e5698d3b0d61d3d953005c6373dd43558f7c1db5251ef6b739cd",
     "blocks/gcsp/account/gcsp-account.css": "e445f913f913a94048388fc4a3d0fb5b937055ac4a6219fd8abb167e0d15eae3",
@@ -373,13 +588,14 @@
     "server/gcsp/runtime.js": "f4654b8053d3927a3564a3701784367e976b04549ee66fb1a9a754032f88cb16",
     "server/gcsp/manual-context/http.js": "d49bbb756447e8b91ee90dd54e2240914b45e554d79428e54345a59585d4dc37",
     "server/gcsp/manual-context/index.js": "269a94fed04247698b0d6623b6d32fdd9d45f8f6d405ecd1213f00150d5b8913",
-    "server/index.js": "1560e4a99077e4ea648f66b87566b908404312787e5fdfcc59a5ba10debf1741"
+    "server/index.js": "1560e4a99077e4ea648f66b87566b908404312787e5fdfcc59a5ba10debf1741",
+    "server/vehicle-evidence/bmw-image-adapter.js": "ba89ef250d2421f1e17efeefa0f8b62464bebf3fa15ec6d1b03f3ab1118cd04e"
   },
   "captureFiles": [
     {
       "file": "01-service-desktop-account.png",
-      "bytes": 287533,
-      "sha256": "c310b50463c0600f38fe620f30bd2826a664cdf6bbedc9572800e92aecbcdfd0"
+      "bytes": 287552,
+      "sha256": "f8a8b5fcfc3a482fb18eafefef249dcc44a5cc0cd48e83286ff96a964df53a67"
     },
     {
       "file": "02-service-desktop-saved.png",
@@ -405,10 +621,60 @@
       "file": "06-service-narrow-saved.png",
       "bytes": 169115,
       "sha256": "919b2e73767683777d9fa1a2f07ec49cdabe73b22fc95c1699dddffbd4fa0f0d"
+    },
+    {
+      "file": "07-multi-slot-desktop.png",
+      "bytes": 240151,
+      "sha256": "d5802b8ece63ba0f8cb8fc401a447ff804a8b71af72b97a8766aebfb38a9eda7"
+    },
+    {
+      "file": "08-multi-slot-narrow.png",
+      "bytes": 214297,
+      "sha256": "9fdc25bcb79098dcc95255fb98f09c0910cf350b3d70ce01dd9c2bbaca5397cb"
+    },
+    {
+      "file": "09-missing-image-desktop.png",
+      "bytes": 154414,
+      "sha256": "cea072832fc2313835825aa3931bb1174cb82a7747fd21862dfd086b1968c340"
+    },
+    {
+      "file": "10-missing-image-narrow.png",
+      "bytes": 134787,
+      "sha256": "2a34b48d1e7b871890de175925fd48d4f58167888dbd3dd0f8390756877bcfda"
+    },
+    {
+      "file": "11-absent-hr-account-desktop.png",
+      "bytes": 38463,
+      "sha256": "8735c7af902d9c4fef65792ec2047863061b91380fa95e8e7a48d4503a79ecd6"
+    },
+    {
+      "file": "12-absent-hr-account-narrow.png",
+      "bytes": 26412,
+      "sha256": "dccdebe4bec698c0e0877f7b651e3577fa7d6dadde58cef089df4c2022fafaed"
+    },
+    {
+      "file": "13-not-yet-eligible-desktop.png",
+      "bytes": 174706,
+      "sha256": "561a55e75a63449e67fa5bbe526f55f2ff3a9e5e21467e6b33710f5f8847eb3a"
+    },
+    {
+      "file": "14-not-yet-eligible-narrow.png",
+      "bytes": 152806,
+      "sha256": "c4f05ee0a269a9891f0f2d64af4023ede60be00cc53c12f15bde1fff529c0a99"
+    },
+    {
+      "file": "15-source-failure-desktop.png",
+      "bytes": 38485,
+      "sha256": "2a5d9e634078d7e19a8bf1016d02b7fd480faef04b6903df631dfb4be42c2825"
+    },
+    {
+      "file": "16-source-failure-narrow.png",
+      "bytes": 27125,
+      "sha256": "9fae3fb2467ee1aa6081ab2f2481a00f4ab6050b0f0c41ff77e283f74e35126d"
     }
   ],
-  "captureBytes": 1179554,
-  "captureCount": 6,
+  "captureBytes": 2381219,
+  "captureCount": 16,
   "captureLimitBytes": 12582912,
   "evidenceFiles": [
     "capture-fucq-67.mjs",
@@ -419,7 +685,17 @@
     "03-service-desktop-reloaded.png",
     "04-service-desktop-resumed.png",
     "05-service-narrow-account.png",
-    "06-service-narrow-saved.png"
+    "06-service-narrow-saved.png",
+    "07-multi-slot-desktop.png",
+    "08-multi-slot-narrow.png",
+    "09-missing-image-desktop.png",
+    "10-missing-image-narrow.png",
+    "11-absent-hr-account-desktop.png",
+    "12-absent-hr-account-narrow.png",
+    "13-not-yet-eligible-desktop.png",
+    "14-not-yet-eligible-narrow.png",
+    "15-source-failure-desktop.png",
+    "16-source-failure-narrow.png"
   ],
-  "evidenceFileCount": 9
+  "evidenceFileCount": 19
 }
