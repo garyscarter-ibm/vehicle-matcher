@@ -39,10 +39,16 @@ export const rankProjection = (m) => ({
   stretch: m.stretch, reasons: m.reasons, tradeOffs: m.tradeOffs,
 });
 
-export function correctBehaviourProjection(value) {
-  if (Array.isArray(value)) return value.map(correctBehaviourProjection);
+// Compare the immutable v1 contract while independent HTTP regressions cover
+// FUCQ-23's additive member data. Only objects reached through `listings` lose
+// these new fields; representative cars and existing member facts stay strict.
+const ADDITIVE_LISTING_FIELDS = new Set(['decision', 'name', 'line', 'plate', 'retailerName', 'distance']);
+export function correctBehaviourProjection(value, listing = false) {
+  if (Array.isArray(value)) return value.map((item) => correctBehaviourProjection(item, listing));
   if (!value || typeof value !== 'object') return value;
-  const out = Object.fromEntries(Object.entries(value).map(([k, v]) => [k, correctBehaviourProjection(v)]));
+  const out = Object.fromEntries(Object.entries(value)
+    .filter(([k]) => !listing || !ADDITIVE_LISTING_FIELDS.has(k))
+    .map(([k, v]) => [k, correctBehaviourProjection(v, k === 'listings')]));
   const tourer = value.car?.body === 'tourer' || (typeof value.group === 'string' && value.group.includes('|tourer|'));
   if (tourer && Array.isArray(value.reasons)) {
     out.reasons = value.reasons.map((reason) => ['The undefined shape you asked for', 'The tourer shape you asked for'].includes(reason)

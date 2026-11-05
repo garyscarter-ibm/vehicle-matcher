@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { CARS } from '../data.js';
 import { groupListings, rankCars, LISTING_SAMPLE } from '../engine.js';
 import { installDom, resetDom, loadMode, mountMode, settle } from './dom-harness.js';
+import { startTestServer, post } from './helpers.js';
 import { questionsForBrand } from '../questions.js';
 import { matchCard, mediaWell } from '../../blocks/vehicle-matcher/modes/result-card.js';
 import { applyBrowseFeedback, createFeedbackState, reduceFeedback } from '../../blocks/vehicle-matcher/feedback-actions.js';
@@ -204,4 +205,58 @@ for (const legacy of [false, true]) test(`questionnaire equipment refinement use
   assert.ok(undo); undo.click();
   assert.equal(stage.querySelector('.vm-score').textContent, '96%');
   assert.equal(stage.querySelectorAll('.vm-pick-opt').length, 2);
+});
+
+// Exercise the real HTTP projection as well as the pure grouping/card seam.
+for (const path of ['/api/match', '/api/preview']) test(`${path} adds exact R1 decisions while preserving representative claims`, async () => {
+  const cars = siblings();
+  Object.assign(cars[0], { plate: '24', retailerName: 'Blue Retailer', distance: 2 });
+  Object.assign(cars[1], { plate: '25', retailerName: 'Red Retailer', distance: 18 });
+  const srv = await startTestServer({
+    fetchRetailerStock: async () => structuredClone(cars),
+    fetchNearbyStock: async () => structuredClone(cars),
+    enrichColours: async (_brand, stock) => stock,
+  });
+  try {
+    const { status, json } = await post(srv.base, path, { answers, group: true });
+    assert.equal(status, 200);
+    const match = (json.matches || json.nearby)[0];
+    assert.equal(match.score, 96); assert.equal(match.stretch, false);
+    assert.deepEqual(match.reasons, rankCars(answers, cars)[0].reasons);
+    assert.equal(match.car.listingCount, 2);
+    assert.deepEqual(match.car.features, ['heatedSeats', 'parkingCamera']);
+    assert.deepEqual(match.listings.map((l) => [l.decision.score, l.decision.stretch]), [[96, false], [87, true]]);
+    const exact = match.listings[1];
+    assert.match(exact.decision.reasons.join(' '), /stretch/);
+    assert.deepEqual(exact.decision.tradeOffs, rankCars(answers, cars)[1].tradeOffs);
+    assert.equal(exact.priceMin, 39000); assert.equal(exact.transmission, 'manual');
+    assert.deepEqual(exact.features, ['parkingCamera']);
+    assert.equal(exact.link, '/red'); assert.equal(exact.photo, '');
+    assert.equal(exact.name, base.name); assert.equal(exact.line, base.line);
+    assert.equal(exact.plate, '25'); assert.equal(exact.retailerName, 'Red Retailer');
+    assert.equal(exact.distance, 18);
+    const card = matchCard(match, { big: true });
+    card.querySelectorAll('.vm-pick-opt')[1].click();
+    assert.equal(card.querySelector('.vm-score').textContent, '87%');
+    assert.match(card.querySelector('.vm-reasons').textContent, /stretch/);
+  } finally { await srv.close(); }
+});
+
+for (const path of ['/api/preview', '/api/field', '/api/nearby']) test(`${path} preserves ungrouped roster and gives its single member the same decision`, async () => {
+  const srv = await startTestServer({
+    fetchRetailerStock: async () => siblings(),
+    fetchNearbyStock: async () => siblings(),
+    enrichColours: async (_brand, stock) => stock,
+  });
+  try {
+    const { status, json } = await post(srv.base, path, { answers, size: 2 });
+    const matches = json.matches || json.nearby;
+    assert.equal(status, 200); assert.equal(matches.length, 2);
+    assert.deepEqual(matches.map((m) => m.score), [96, 87]);
+    for (const m of matches) {
+      assert.equal(m.listings.length, 1);
+      for (const key of ['score', 'stretch', 'reasons', 'tradeOffs']) assert.deepEqual(m.listings[0].decision[key], m[key]);
+      assert.equal(m.listings[0].id, m.car.id);
+    }
+  } finally { await srv.close(); }
 });
