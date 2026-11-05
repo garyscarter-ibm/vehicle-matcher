@@ -1,29 +1,38 @@
 import { randomUUID } from 'node:crypto';
 import { createMemoryRepository, createMemoryStore, createPostgresRepository, inputDigest, ok, result } from './repository/index.js';
-import { createPolicyService } from './policy/index.js';
+import { PolicyService, MemoryPolicyProvider, PostgresPolicyProvider } from './policy/index.js';
 import { createDemoRuntime } from './clock/index.js';
 import { createManualContextService, createRepositoryManualPorts } from './manual-context/index.js';
 import { seedManualDemoContext } from './manual-context/fixtures.js';
 import { createBriefService } from './brief/index.js';
 import { createBriefEditorService } from './brief/editor.js';
 import { createActivityService } from './brief/activity.js';
+import { createGregDemandService } from './greg/index.js';
+import { createGregPublishService } from './greg/publish/index.js';
 
 const unavailable = () => result('unavailable', { reason: 'The trusted demo runtime is unavailable.', retryable: true });
 const scoped = (value, context) => ['runId', 'environmentId', 'employeeId'].every((key) => value?.[key] === context[key]);
 
 // Explicit composition only. A failed PostgreSQL open never changes providers.
-export async function createGcspRuntime({ mode = 'postgres', repository, repositoryOptions, policy = createPolicyService(),
+export async function createGcspRuntime({ mode = 'postgres', repository, repositoryOptions, policy,
   environmentId, policyAsOf, commandId, sessionNow = () => new Date().toISOString() } = {}) {
   if (!['postgres', 'memory'].includes(mode)) return result('invalid', { code: 'unsupported-repository-mode' });
   repository ??= mode === 'memory' ? createMemoryRepository({ store: createMemoryStore() }) : createPostgresRepository(repositoryOptions);
+  const ownsPolicy = policy === undefined;
+  const readPolicy = policy ?? new PolicyService({ provider: mode === 'memory'
+    ? new MemoryPolicyProvider() : new PostgresPolicyProvider(repositoryOptions) });
   let closed = false;
-  const close = async () => { if (!closed) { closed = true; await repository.close(); } };
+  const close = async () => {
+    if (closed) return; closed = true;
+    try { await repository.close(); } finally { if (ownsPolicy) await readPolicy.close(); }
+  };
   try {
     const opened = await repository.open();
     if (opened.status !== 'ok') { await close(); return opened; }
-    const initialized = await createDemoRuntime({ repository, policy, environmentId, environmentKind: 'synthetic', policyAsOf, commandId, sessionNow });
+    const initialized = await createDemoRuntime({ repository, policy: readPolicy, environmentId, environmentKind: 'synthetic', policyAsOf, commandId, sessionNow });
     if (initialized.status !== 'ok') { await close(); return initialized; }
     const { clock, identity } = initialized.value;
+    policy = readPolicy.withPublicationPorts({ identity, clock, repository });
     const ports = createRepositoryManualPorts({ repository, policy });
     const account = createManualContextService({ repository, policy, clock, identity, ports });
     const brief = createBriefService({ repository, policy, clock, identity });
@@ -45,7 +54,10 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     } };
     const editor = createBriefEditorService({ brief, account, provider, policy, clock, identity });
     const activity = createActivityService({ repository, identity, clock });
-    const dependencies = { gcspIdentity: identity, gcspClock: clock, gcspManual: account, gcspBrief: brief,
+    const greg = createGregDemandService({ repository, policy, clock, identity });
+    const gregPublish = createGregPublishService({ repository, policy, clock, identity });
+    const dependencies = { gcspRepository: repository, gcspPolicy: policy, gcspGreg: greg, gcspGregPublish: gregPublish,
+      gcspIdentity: identity, gcspClock: clock, gcspManual: account, gcspBrief: brief,
       gcspBriefEditor: editor, gcspActivity: activity, gcspRecommendations: { provider, policy, time: clock } };
     // Backend-only local bootstrap. The browser cannot choose identities or receive raw credentials in JSON.
     async function createLocalSession() {
@@ -63,6 +75,6 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       if (seeded.status !== 'ok') return seeded;
       return ok({ context: acting.value.context, setCookie: [presenter.value.setCookie[1], acting.value.setCookie] });
     }
-    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, dependencies, createLocalSession, close });
+    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, dependencies, createLocalSession, close });
   } catch { await close(); return unavailable(); }
 }

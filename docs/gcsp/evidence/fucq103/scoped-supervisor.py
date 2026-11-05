@@ -19,6 +19,9 @@ shared = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs')
 run = 'fucq103-backend-' + uuid.uuid4().hex
 mode = sys.argv[1] if len(sys.argv) > 1 else 'publish'
 checks = {
+    'adoption': ['server/test/gcsp-policy-adoption.test.js'],
+    'runtime-publication': ['server/test/gcsp-runtime-publication.test.js'],
+    'runtime-callers': ['server/test/gcsp-brief-runtime.test.js', 'server/test/gcsp-manual-setup-render.test.js'],
     'activation': ['server/test/gcsp-policy-activation.test.js'],
     'activation-http': ['server/test/gcsp-greg-publish-http.test.js'],
     'identity-clock': ['server/test/gcsp-identity.test.js', 'server/test/gcsp-clock-reset.test.js', 'server/test/gcsp-presenter-controls.test.js'],
@@ -46,16 +49,23 @@ reserved = False
 finished = False
 adopted_links = []
 report = {'run': run, 'project': str(project), 'command': command, 'scope': 'scoped',
-          'impact': 'Greg projection/preview/publish and PolicyService snapshot; employee scoring and feedback callers. Run/context activation and ordinary HTTP employee consumption; no native/database/UI proof.',
+          'impact': 'PolicyService publication/activation and reviewed assumption adoption; same-provider runtime composition, Greg projection/preview/publish and ordinary employee HTTP callers. No native/database/UI proof.',
           'limits': {'seconds': 120, 'rssMiB': 768, 'scratchMiB': 128, 'logMiB': 2, 'workers': 1},
           'selection': 'Affected selector dry-run has no plug-in for unspecified JavaScript and proposes npm test. Reviewed and rejected broad fallback; explicit regression/caller commands selected.',
           'excluded': 'Full suite, PostgreSQL, browser and external integration; parent owns integration checkpoint.',
           'supervisor': str(Path(__file__).resolve()), 'manifest': str(scratch.manifest)}
-source_paths = ['server/index.js', 'server/gcsp/policy/activation.js', 'server/test/helpers/greg-publish-run.js', 'server/test/helpers/employee-recommendation-http.js', 'server/gcsp/policy/index.js', 'server/gcsp/policy/publish.js', 'server/scenarios/employee/index.js', *checks[mode],
+report['impactMap'] = {
+    'PolicyService.adoptReviewedAssumptions / reviewed definitions / successor validation': ['server/test/gcsp-policy-adoption.test.js'],
+    'PolicyService.withPublicationPorts / createGcspRuntime.dependencies / provider ownership': ['server/test/gcsp-runtime-publication.test.js', 'server/test/gcsp-brief-runtime.test.js', 'server/test/gcsp-manual-setup-render.test.js'],
+    'prepareSuccessor / completePublication / existing publisher and typed reads': ['server/test/gcsp-policy-versions.test.js', 'server/test/gcsp-policy-service.test.js', 'server/test/gcsp-greg-publish.test.js', 'server/test/gcsp-greg-demand.test.js'],
+    'activateRunPolicy / identity wall clock / retained presenter clock compatibility': ['server/test/gcsp-policy-activation.test.js', 'server/test/gcsp-identity.test.js', 'server/test/gcsp-clock-reset.test.js', 'server/test/gcsp-presenter-controls.test.js'],
+}
+source_paths = ['server/gcsp/runtime.js', 'server/test/helpers/gcsp-reviewed-runtime.js', 'server/index.js', 'server/gcsp/policy/activation.js', 'server/test/helpers/greg-publish-run.js', 'server/test/helpers/employee-recommendation-http.js', 'server/gcsp/policy/index.js', 'server/gcsp/policy/publish.js', 'server/scenarios/employee/index.js', *checks[mode],
                 *[str(p.relative_to(project)) for p in (project / 'server/gcsp/greg/publish').glob('*.js')]]
 source_paths.extend([str(Path(__file__).relative_to(project)), '_tools/test_resources.py', 'server/gcsp/greg/index.js', 'server/gcsp/policy/seed-v1.json',
                      'server/test/helpers/greg-demand-run.js', 'server/test/helpers/employee-recommendation.js'])
-for directory in ('server/gcsp/repository', 'server/gcsp/identity', 'server/gcsp/clock', 'server/gcsp/recommendation', 'server/scenarios/employee'):
+source_paths.extend(str(path.relative_to(project)) for path in (project / 'server/gcsp/policy/reviewed').glob('*.json'))
+for directory in ('server/gcsp/policy', 'server/gcsp/brief', 'server/gcsp/manual-context', 'server/gcsp/presenter-controls', 'server/gcsp/fixtures', 'server/gcsp/repository', 'server/gcsp/identity', 'server/gcsp/clock', 'server/gcsp/recommendation', 'server/scenarios/employee'):
     source_paths.extend(str(path.relative_to(project)) for path in (project / directory).glob('*.js'))
 source_paths = sorted(set(source_paths))
 report['pins'] = {name: hashlib.sha256((project / name).read_bytes()).hexdigest() for name in source_paths}
@@ -156,7 +166,7 @@ def observed_rss(pgid):
     return rss
 
 resources.group_rss = observed_rss
-env = {key: value for key, value in os.environ.items() if key not in ('GCSP_DATABASE_URL', 'DATABASE_URL', 'POSTGRES_URL', 'POSTGRESQL_URL', 'PGDATABASE', 'PGHOST', 'PGPORT', 'PGUSER', 'PGPASSWORD')}
+env = {key: value for key, value in os.environ.items() if not key.startswith('PG') and key not in ('GCSP_DATABASE_URL', 'DATABASE_URL', 'POSTGRES_URL', 'POSTGRESQL_URL')}
 env.update(PYTHONDONTWRITEBYTECODE='1', SCAFFOLDING_HARNESS='codex')
 with resources.handled_termination():
     try:
@@ -182,7 +192,7 @@ with resources.handled_termination():
             report['removedBytes'] = resources.allocated_bytes(scratch.root)
             impact_key = resources.digest(report['pins'])
             resources.atomic_json(shared / 'impact' / (impact_key + '.json'), {'pins': report['pins'], 'command': command,
-                'summary': str(summary_path), 'impact': report['impact'], 'scope': 'scoped', 'coverage': 'Reviewed import/caller boundaries; no measured per-test coverage.'})
+                'summary': str(summary_path), 'impact': report['impact'], 'functions': report['impactMap'], 'scope': 'scoped', 'coverage': 'Reviewed import/caller boundaries; no measured per-test coverage.'})
     finally:
         finalizer()
 

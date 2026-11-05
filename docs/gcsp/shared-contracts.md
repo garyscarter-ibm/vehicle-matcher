@@ -344,7 +344,7 @@ Unpinned reads choose the latest version effective at supplied `read.asOf`; they
 
 #### Dated policy provider and trusted publishing · FUCQ-83
 
-The additive [dated-policy implementation contract](policy-versions.md) preserves every existing typed read and activation-time pin. `createPolicyService()` selects `PostgresPolicyProvider` when `GCSP_DATABASE_URL` is configured; a source failure stays unavailable. Explicit `provider` or file/retained-file inputs remain deliberate test/what-if sources. `close()` releases only a provider-owned pool. `MemoryPolicyProvider` is an explicitly selected mutable test provider, not a database fallback.
+The additive [dated-policy implementation contract](policy-versions.md) preserves every existing typed read and activation-time pin. `createPolicyService()` selects `PostgresPolicyProvider` when `GCSP_DATABASE_URL` is configured; a source failure stays unavailable. Explicit `provider` or file/retained-file inputs remain deliberate test/what-if sources. `close()` releases only a provider-owned pool. `MemoryPolicyProvider` is explicitly selected for memory demo/test runs, not a database fallback.
 
 The existing migration runner discovers additive `0002_policy_tables.sql` alongside unchanged 0001/0003. Six run/version-scoped tables retain dated complete typed seed rows, stable row order, publisher/clock time, command/input digest and seed digest. Version 1 is seeded idempotently from the reviewed repo file. Native constraints and append-only triggers protect historical versions; policy rows can precede run bootstrap and do not mutate offers, quotes or the generic transaction repository.
 
@@ -390,8 +390,59 @@ both references, preserving all other versions and pinned rows. Ordinary authent
 resolution invokes it before minting new contexts; repeated role guards remain read-only. Session expiry
 uses wall time. Accepted publication reports `activation.status: active` or truthful `pending` with
 `activationRequired`; retry uses the unchanged original command to reconcile. Registered Greg policy
-routes and ordinary employee HTTP reload are verified with explicit runtime composition; delivered
-`createGcspRuntime` writable-service wiring and screen/browser evidence remain open.
+routes and ordinary employee HTTP reload are verified with explicit composition and the delivered
+`createGcspRuntime.dependencies` through buildServer. Screen/browser and full/native acceptance remain open.
+
+#### Reviewed missing-assumption adoption · FUCQ-103, 5 November 2026
+
+`PolicyService.adoptReviewedAssumptions(context, { commandId, expectedActiveVersion,
+policyVersion, effectiveFrom, definitionSetId })` is an intentional server-only operation.
+It uses the actual Greg identity guard and the same provider publication lock/transaction,
+dated successor validation and immutable command receipts as `publishPolicyVersion`.
+It has no HTTP route and accepts no arbitrary keys, rows, values, provenance or browser defaults.
+`definitionSetId` selects a checked-in immutable reviewed bundle: schema version, stable ID,
+revision, complete canonical definitions and a SHA-256 digest over the canonical bundle data.
+The digest excludes only its own field; bundles retain key/value/unit/basis/source/sourceDate/status.
+
+The first registered bundle, `presenter-controls-v1`, is
+`server/gcsp/policy/reviewed/presenter-controls-v1.json`. Its `clock.presenter.stepSeconds`
+definition exactly preserves FUCQ-126's canonical definition. A successor adds only absent
+keys, without replacing existing keyed values, provenance or tuning. It reuses full
+`snapshotVersions` validation and the current provider storage schema. Audit/accepted receipts
+include `adoption = { definitionSetId, revision, digest, addedKeys }`, Greg's publisher identity,
+and publication/effective instants. Provider audit also retains the source policy version.
+Old snapshots are never changed.
+A new no-op command is invalid; identical original-command replay returns the original
+acceptance even after time advances; changed input conflicts; stale active versions fail.
+The ordinary public publisher continues to reject arbitrary unknown-key patches. The separate
+recommendation preference-map migration remains bounded to its existing exact assumption.
+
+`withPublicationPorts({ identity, clock, repository? })` returns a fresh PolicyService view
+over the same private provider. It does not mutate authorization on the original read service
+or make another source/store. The optional repository supplies trusted postadoption activation.
+Successful adoption uses the existing `activateRunPolicy` helper, CAS-updating both run policy
+references at persisted DemoClock time and preserving historical quotes/holds/offers.
+Acceptance remains `ok` with `activationRequired: true` and a retryable `activation.status:
+'pending'` if activation cannot complete. Original-command retry reconciles activation without
+another append. Ordinary session/context resolution returns the successor through the same
+cookie; guards and what-if preview remain pure. No second context resolver is introduced.
+
+`createGcspRuntime` bootstraps identity/clock from its read policy, binds the writable view to
+those ports, and composes Greg demand/publish over that same provider. Its returned dependencies
+include `gcspRepository`, `gcspPolicy`, `gcspGreg` and `gcspGregPublish` for `buildServer`, while
+retaining account, brief/editor, activity, recommendation and presenter controls behavior.
+Explicit memory mode defaults to MemoryPolicyProvider; default PostgreSQL mode uses
+PostgresPolicyProvider without a file/memory fallback on failure. An explicitly supplied file
+policy remains read-only. Runtime closes its owned default policy once, including failure paths,
+and preserves caller-owned policy lifetime. Existing injected-repository close behavior is
+retained. No seed, launcher or storage schema changes are required.
+
+FUCQ-113 learning bundles are not registered by this presenter checkpoint; they require the
+exact reviewed canonical artifact through this registry. No proposed learning values become
+active defaults or policy definitions merely by appearing in discussion. Core clock/reopen
+works with retained policies missing the presenter step; controls remain unavailable until
+intentional adoption. Scoped memory/HTTP evidence is recorded in
+`docs/gcsp/evidence/fucq103/README.md`; full/native/browser acceptance remains separate.
 
 ### EmployeeRecommendationService · FUCQ-29
 

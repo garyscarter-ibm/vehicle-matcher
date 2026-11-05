@@ -165,8 +165,50 @@ defaults or add an alternative activation/context API.
 
 The HTTP proof's legacy calibration lacks preference weights but its canonical snapshot
 already includes `clock.presenter.stepSeconds`. It does not prove adoption for stored
-policies missing that key. FUCQ-126's separately owned correction is required to keep core clock/reopen usable
-without the presenter step assumption; presenter controls remain explicitly unavailable
-until a sanctioned successor adopts the missing key. General absent-key publication is
-still an integration gate and is outside this slice. FUCQ-113 can integrate future keyed
-assumptions compatibly at that reviewed seam; this slice does not broaden its scope.
+policies missing that key. FUCQ-126's integrated correction keeps core clock/reopen usable without the presenter step
+assumption; presenter controls remain explicitly unavailable until a sanctioned successor
+adopts the missing key. The reviewed server-only operation below closes that gate for the
+presenter bundle. FUCQ-113 can integrate future keyed assumptions at the same registry seam
+once the exact canonical artifact has been reviewed; this checkpoint registers no learning bundle.
+
+## Reviewed assumption adoption and delivered runtime
+
+`PolicyService.adoptReviewedAssumptions(context, { commandId, expectedActiveVersion,
+policyVersion, effectiveFrom, definitionSetId })` intentionally appends missing canonical
+assumption keys from an immutable checked-in bundle. It requires the real Greg guard and
+uses the existing provider publication lock and dates/replay/stale rules. There is no HTTP
+route or generic key/row/value editor. `presenter-controls-v1`, revision `1`, copies the exact
+canonical `clock.presenter.stepSeconds` definition and provenance into a reviewed versioned
+artifact. Its SHA-256 digest is checked before use; nested finite JSON, full schema, unique
+keys and provenance are validated. The seed is unchanged.
+
+Existing keys always keep their current values and provenance, including prior tuning.
+Only absent keys are added to the latest retained predecessor; full successor validation
+occurs before append. A fresh all-keys-present command is rejected as a no-op. Receipts
+include `adoption: { definitionSetId, revision, digest, addedKeys }`; identical concurrent
+commands/replays share one immutable acceptance, and changed input conflicts. The normal
+public publisher still rejects arbitrary unknown-key patches. Storage providers retain their
+existing record/header schema and transaction mechanism.
+
+After acceptance, adoption uses the same activation helper described above. Failure to
+activate returns accepted/pending metadata, and original-command retry reconciles. Optional
+`repository` in `withPublicationPorts({ identity, clock, repository? })` supplies that activation
+port. A view without repository can still accept publication but reports pending activation.
+The original service's authorization is unchanged; both views hold the exact same private
+provider, so ordinary identity/clock consumers observe the newly appended version.
+
+The delivered `createGcspRuntime.dependencies` now includes repository/policy and the real
+Greg demand/publish services. Identity/clock bootstrap with the read view, then publication
+ports bind a new view over the same source. Manual account, brief/editor, activity and
+recommendation seams are retained. Explicit memory mode defaults to MemoryPolicyProvider;
+default PostgreSQL mode uses PostgresPolicyProvider without a fallback. Caller-supplied file
+policy remains read-only. Default-owned policy is closed exactly once; caller policy is
+preserved, and the existing injected-repository teardown contract is retained.
+
+Focused proof uses a genuinely stored policy missing the presenter step, demonstrates core
+clock/reopen and explicit HTTP unavailability, adopts the reviewed key, and then uses the
+same cookie to read controls and step the clock. A separate proof uses the actual default
+memory runtime's returned dependencies through buildServer for Greg read/preview/publish
+and fresh employee points, preserving prior calculated quote/hold/offer history. No manually
+substituted publication service stands in for runtime composition. Native durability, UI,
+browser/full-suite and the future FUCQ-113 registry remain outside this scoped evidence.

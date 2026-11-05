@@ -1,6 +1,6 @@
 # FUCQ-103 backend scoped evidence
 
-Backend service slice only: trusted editable projection, real no-write demand/fit preview,
+Backend service, activation and runtime slices: trusted editable projection, real no-write demand/fit preview,
 immutable publication, narrow legacy weight adoption, unchanged pinned terms and strict
 route definitions. A second slice adds domain-time activation and ordinary HTTP consumption. No screen, live BMW or native database proof is claimed.
 `../../greg-publish.md` records the presentation contract and remaining integration work.
@@ -91,9 +91,9 @@ storage (`dc0c9a482b9b4f5dbd65da8b981e9eeb` and
 
 This is scoped offline service/HTTP evidence, not native durability, live BMW, deployment,
 mail, full-suite or browser evidence. The canonical snapshot here already has
-`clock.presenter.stepSeconds`; it proves legacy calibration adoption only. Stored policies
-missing that separate key still need FUCQ-126's core-clock compatibility correction and a
-reviewed additive keyed-assumption publication path before presenter controls can be used.
+`clock.presenter.stepSeconds`; it proves legacy calibration adoption only. At that activation checkpoint, stored policies
+missing the separate key still needed the core-clock correction and reviewed publication
+path. The following presenter adoption checkpoint closes both scoped boundaries.
 The policy publication/adoption contract in `../../greg-publish.md` records that boundary
 for future FUCQ-113 integration. Retained policy seeds are never rewritten.
 
@@ -104,3 +104,78 @@ Parent activation review reruns: `activation` 7/7 (`d4ad752893844221a808876af2a2
 summary/manifests. Filesystem cleanup, dependency target preservation and source freeze verified.
 Delivered `createGcspRuntime` composition still lacks the writable Greg service; explicit
 HTTP composition is proven here. Runtime integration is the next checkpoint, with no launcher changes.
+
+## Reviewed assumption adoption and same-source runtime checkpoint
+
+Base: `71af3361fadf606c899b73c6b9f2abf2ee386dfe`, including the activation checkpoint
+and FUCQ-126's core-clock compatibility correction. This checkpoint implements only the
+reviewed presenter bundle; no FUCQ-113 learning definitions are invented or registered.
+
+| Mode | Result | Retained summary basename |
+| --- | --- | --- |
+| `adoption` | 5 passed, 0 skipped | `fucq103-backend-47d669c3fece4d519a03b84bec56cffe-summary.json` |
+| `runtime-publication` | 4 passed, 0 skipped | `fucq103-backend-c75ef3e853994647a1041c312c858e54-summary.json` |
+| `policy-demand` | 43 passed, 3 native checks skipped | `fucq103-backend-4a4431d49f614522863a99306576610e-summary.json` |
+| `publish` | 15 passed, 0 skipped | `fucq103-backend-7e4dbcd1ee954bd5a8c7903777b88e46-summary.json` |
+| `runtime-callers` | 13 passed, 0 skipped | `fucq103-backend-6430acf638714fa9ad83a3810689cb9c-summary.json` |
+| `activation` | 7 passed, 0 skipped | `fucq103-backend-e09d4bb84ada42d3ba977028968962b3-summary.json` |
+| `identity-clock` | 45 passed, 0 skipped | `fucq103-backend-4642d9761bdd4b0aa2a0a2aad4ff4b86-summary.json` |
+
+All commands are `python3 docs/gcsp/evidence/fucq103/scoped-supervisor.py <mode>`,
+which launch the selected `node --test --test-concurrency=1` files recorded in each receipt.
+No broad test fallback is used. The explicit function/caller map is:
+
+| Changed function/boundary | Selected proof |
+| --- | --- |
+| Reviewed registry and `PolicyService.adoptReviewedAssumptions` | Registry immutability/digest/exact canonical provenance; stored missing step; before/after ordinary presenter HTTP; concurrent/replayed/conflicting commands; stale/invalid/no-op/roles; atomic full-schema failure; accepted/pending retry. |
+| `withPublicationPorts`, runtime provider selection/dependencies/close | Actual delivered default memory runtime -> buildServer -> Greg demand/read/preview/publish -> same-cookie employee context/terms; pinned quote/hold/offer equality; explicit file read-only; caller policy lifetime; default-owned close once and failure cleanup; invalid PostgreSQL configuration with no fallback or network attempt. |
+| `prepareSuccessor` / `completePublication` factoring | Existing policy service/version and Greg publish/demand regressions preserve old receipts, changes, dates, full snapshot validation and pinned history. |
+| Runtime manual/brief/editor/activity consumers | Existing brief-runtime and manual-setup render tests use the delivered composition and retain their behavior. |
+| Domain activation and presenter compatibility | Existing activation/identity/clock/presenter checks preserve pure guards, persisted domain time, wall-clock expiry, CAS fences and missing-step core-clock/reopen behavior. |
+
+Production files are `policy/adoption.js`, `policy/reviewed-definitions.js`, the immutable
+`policy/reviewed/presenter-controls-v1.json`, narrow `policy/index.js` / `publish.js`
+extensions and runtime composition. The bundle copies the existing canonical presenter
+step definition exactly and records its digest; seed-v1 is unchanged. Public publishing
+still cannot patch arbitrary unknown keys. The only adoption input is the approved five-field
+server command; there is no new HTTP route, browser fallback or mutable migration table.
+An existing key always keeps its value/provenance. The separate recommendation-weight
+migration is unchanged.
+
+The adoption HTTP proof uses a genuinely persisted initial memory policy that lacks the
+presenter step key. Core clock/reopen works, controls fail explicitly before adoption,
+intentional adoption appends the missing canonical definition, old provider records remain
+identical, and the same cookie resolves the successor, reads controls and steps 60 seconds.
+The default-runtime proof uses the exact returned dependencies without substituting Greg
+or recommendation services. It persists real calculated old terms, publishes new price,
+observes 1,100 -> 1,200 points on the next ordinary employee evaluation and confirms pinned
+quote/hold/offer and other domain rows are identical. It retains the account/brief/editor/
+activity ports and presenter principal projection. Injected repositories keep their previous
+runtime teardown behavior; caller-owned policies are preserved and owned defaults close once.
+
+The first adoption attempt had a fixture using an employee context for a presenter-only
+clock advance (4/5 passed). That fixture now resolves a genuine presenter context; its
+cleaned failure receipt is `fucq103-backend-d25cf2007ced489abd8dafbb5b72f22b-summary.json`.
+No production regression remains. Final supervisor metadata additionally records the function
+map, pins reviewed bundles/presenter/core-fixture modules and strips every PG-prefixed alias.
+The two new modes were rerun after that metadata/environment-filter tightening; previous
+caller runs exercised the identical production code and inputs with their recorded source pins.
+
+All listed receipts have matching ownership manifests and confirm frozen selected source,
+removed scratch/descendants/groups, closed owned ports, released reservation and removed
+owned dependency symlinks with existing targets preserved. RSS remained below 300 MiB and
+scratch below 16 KiB against the 768 MiB / 128 MiB / 120-second / 2-MiB-log / one-worker caps.
+No dependencies were installed. Native policy durability, real BMW, sends, deployment,
+full-suite and rendered/browser story acceptance remain outside this scoped proof. Future
+learning registration waits for the exact reviewed FUCQ-113 artifact; generators are untouched.
+Parent owns review, named-path commit/push and next-slice admission.
+
+Agents: requested, selected and effective `gpt-6.1-sol` / `medium`; no fallback or descendants.
+
+Parent review reruns on the adoption/runtime checkpoint: `adoption` 5/5
+(`b3766e10460143298de7a51cffcdbd5f`) and `runtime-publication` 4/4
+(`a7f301ac3f7c4c67882767a26e879a17`). All cleanup/source receipts and actual
+filesystem absence/dependency preservation verified. The incoming shared-base executable
+delta at `f690a36664a78f29aadce17eea14b68f65e72297` is the isolated live imagery
+verification script and its tests; it does not change this checkpoint source or callers.
+No extra broad suite is selected for story/claim/evidence metadata.
