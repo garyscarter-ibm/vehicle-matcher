@@ -9,8 +9,7 @@
       "name": "Experience entry",
       "description": "Choose retail or employee journeys and preserve brand and return context.",
       "paths": [
-        "blocks/demo-launcher",
-        "scripts/experience-route.js"
+        "blocks/demo-launcher"
       ],
       "stories": [
         "FUCQ-32",

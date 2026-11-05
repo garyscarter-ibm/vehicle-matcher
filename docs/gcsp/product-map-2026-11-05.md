@@ -35,7 +35,11 @@ branch notification alone does not establish public delivery or per-commit refre
 Scoped validation: 20 cards and 52 connections rendered at 1440px and 390px in isolated headless
 Chrome. Story search, selection, keyboard navigation and snapshot refresh passed, with no page
 errors or mobile horizontal overflow. Projector validation found zero diagnostics and complete
-107-Story association coverage. Retail site assembly was preserved byte-for-byte. No application
+107-Story association coverage, with all recorded code/document paths present. Retail site assembly
+was preserved byte-for-byte. An isolated checkout of publication revision `0f3a9f2` built the map
+against GCSP's baseline without conflicts and passed the retail copy/API-rewrite checks; the local
+check translates GNU sed's in-place flag to the equivalent BSD sed flag. The actual Ubuntu Pages
+deployment and served-snapshot readback remain pending PR review/merge. No application
 suite was run because no application code or contract changed; the selector's generic full-suite
 fallback was reviewed and excluded. Local preview: `.claude/product-map-preview/index.html`.
 
