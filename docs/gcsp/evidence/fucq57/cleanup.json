@@ -129,5 +129,61 @@
     "sequentialSampledScratchBytes": 75662336,
     "allocationCaveat": "Sum of sampled sequential peaks, not a deletion total",
     "groupsTokensOuterPhasesDescendantsRawLogsAbsent": true
+  },
+  "finalMetadataStatus": {
+    "receipt": "final-status.json",
+    "supervisor": "status-supervisor.py",
+    "head": "43a22284bf8ff96a157348fbd8c18a58daade451",
+    "root": "/private/tmp/test-stamp-shard-5019d60da6314587b084768d2d3d998e",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq57-final-status-5019d60da6314587b084768d2d3d998e.json",
+    "outer": {
+      "pgid": 92365,
+      "pid": 92365,
+      "start": "Thu Nov  5 07:12:51 2026"
+    },
+    "phases": [
+      {
+        "argv": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-030/docs/gcsp/evidence/fucq57/full-supervisor.py",
+          "--status",
+          "--command",
+          "node --test --test-concurrency=1 server/test/**/*.test.js"
+        ],
+        "ended": 1793862773.272512,
+        "groupAbsent": true,
+        "joined": true,
+        "name": "status-final",
+        "pgid": 92387,
+        "pid": 92387,
+        "processAbsent": true,
+        "rc": 0,
+        "start": "Thu Nov  5 07:12:52 2026",
+        "started": 1793862772.810258
+      },
+      {
+        "argv": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-030/docs/gcsp/evidence/fucq57/full-supervisor.py",
+          "--identity"
+        ],
+        "ended": 1793862773.7669492,
+        "groupAbsent": true,
+        "joined": true,
+        "name": "identity-final",
+        "pgid": 92400,
+        "pid": 92400,
+        "processAbsent": true,
+        "rc": 0,
+        "start": "Thu Nov  5 07:12:53 2026",
+        "started": 1793862773.327636
+      }
+    ],
+    "removedBytes": 8192,
+    "scratchAbsent": true,
+    "groupsAbsent": true,
+    "reservationAbsent": true
   }
 }
