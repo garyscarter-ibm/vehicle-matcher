@@ -1,7 +1,8 @@
 # FUCQ-44 offline Driver’s Guide evidence
 
 Validated on 5 November 2026 in `dev/DEV-2026-11-04-014`, implementation commit
-`371e30906ab67b3ad1af775415dadd033f441f90`. This is deterministic offline proof using generated
+`371e30906ab67b3ad1af775415dadd033f441f90`; integrated validation source
+`7f614549c2227b0a169a5abf82b78511b8100482`. This is deterministic offline proof using generated
 fictional identities, generated keys and injected transport. No real BMW request, real VIN, credential,
 live activation, demo use or retention decision was made. The provider is disabled without explicit backend
 transport and the existing trusted identity guard.
@@ -39,9 +40,9 @@ authorised live check may refine them. It is optional and is not outstanding wor
 
 | Command | Native result | Supervised wall / peak descendant RSS / peak scratch |
 | --- | --- | --- |
-| `node --test server/test/bmw-vin-guide-adapter.test.js` | 25 passed, 0 failed | 2.9 s / 154402816 B / 8448 B |
+| `node --test server/test/bmw-vin-guide-adapter.test.js` | 25 passed, 0 failed | 1.4 s / 154238976 B / 41792 B |
 | `node --test --test-concurrency=1 server/test/gcsp-synthetic-vin-egress.test.js server/test/gcsp-vin-registry.test.js` | 13 passed, 0 failed | 5.3 s / 264388608 B / 357792 B |
-| Configured `npm test`, strict full mode, one worker | 1017 total, 1015 passed, 0 failed, 2 skipped, 0 cancelled/todo | 59.8 s / 395804672 B / 547968 B |
+| Configured `npm test`, strict full mode, one worker | 1017 total, 1015 passed, 0 failed, 2 skipped, 0 cancelled/todo | 58.0 s / 392069120 B / 547968 B |
 
 The two skipped PostgreSQL checks are the native SQL-constraint test and shared TransactionRepository integration
 contract: `GCSP_DATABASE_URL` was unset. No PostgreSQL verification is claimed. Native counts come from the Node
@@ -50,14 +51,18 @@ summary; the generic command stamp does not parse them (`ran: null`, generic `sk
 Actual full Node argv was `/opt/homebrew/bin/node --test-concurrency=1 --test server/test/**/*.test.js`, supplied
 through a process-local fixed shim. Node v26.5.0; Python 3.9.6; macOS 26.5.1 arm64. No project settings changed.
 The full run used the configured command without a command override and held the dispatcher’s serial slot.
+After the current base advanced in documentation/queue records, guarded `--no-ff` integration created
+`7f614549c2227b0a169a5abf82b78511b8100482`. The prescribed guide check and full suite were repeated once on
+that integrated tree under code-poller D1–D2. Strict `--full --force` bypassed stamp reuse for this explicitly
+required refresh; the configured `npm test` command and executable fingerprint were unchanged.
 HostBudget had no active reservation at preflight; there was no other live full suite.
 
 - Executable code fingerprint, all final checks: `1e0e035be1ada83c917fc7fac1eea6956582c255bf07f015f5ede04dea5b35c9`.
-- Full source HEAD: `371e30906ab67b3ad1af775415dadd033f441f90`; tree: `1e51c482c3e8d53f010959218f8a35debd6ec2cf`.
-- Full strict key: `aba55ccda2d73fc2dd6b585620793a2384692c2024e1022fc99f996e09c26c07`, recorded `2026-11-05T13:40:08+0000`, default variant.
+- Full source HEAD: `7f614549c2227b0a169a5abf82b78511b8100482`; tree: `3c18e22e671f7777c34ba4226a3fce02b659fcc4`.
+- Full strict key: `aba55ccda2d73fc2dd6b585620793a2384692c2024e1022fc99f996e09c26c07`, recorded `2026-11-05T13:45:41+0000`, default variant.
 - Full environment identity: `f9eb6dd19f792aeb39a239c8e7448ecb84825e4b8cc6916adf93c5cfd6d2cc9d`.
 - Full settings identity: `0d673c6e06b7b0092235e4f11ba39fc6925760e457a91b1482b6d78fbe4a56fb`.
-- Scoped comparison base: `0d056e56291967381f57f25798244f0f73ed9ccb`; dispatcher’s later shared base `b9dd531` added only external Result documentation. No executable integration delta from the claimed source was reported.
+- Integrated shared base: `b9dd531d3aa35ff1bb87065eb9da51e664065444`; initial scoped comparison base was `0d056e56291967381f57f25798244f0f73ed9ccb`. The integration changed only queue/mail/setup/Result documentation, with no executable delta.
 
 No screen, interaction or shared component changed. Metadata/disclaimer/unknown-equipment assertions satisfy this
 backend slice’s experience gate. Approved visual reference `a7fc178`, supplied header/sidebar/palette references,
@@ -70,18 +75,18 @@ All local paths below are under
 `/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq44/` and are intentionally outside owned scratch:
 
 - Audited supervisor: `lead-supervisor.py`; fixed shim: `serial-runtime/node`; actual argv: `full-effective-argv.nul`.
-- Full plan: `final-full-1793885947417727000-plan.json`.
+- Full plan: `integrated-full-1793886282262954000-plan.json`.
 - Full stamp: `strict/stamp-aba55ccda2d73fc2dd6b585620793a2384692c2024e1022fc99f996e09c26c07-default.json`.
 - Full checkpoint: `strict/checkpoints/09b6ceb43534b124180fce01544817c0ca028cc856e5fb109612497d429fa185.json`.
-- Full bounded log: `strict/logs/20261105-133907-wndg4p34/chunk-0001.log`.
-- Full resource receipt: `final-full-1793885947417727000-receipt.json`; full manifest: `strict/ownership/547f628bad734bb9aac02e1630b4b4a9.json`.
-- Scoped receipts: `lead-final-guide-1793885802416472000-receipt.json`, `lead-final-boundaries-1793885806941519000-receipt.json`.
-- Scoped strict records: `strict/targeted-1e0e035be1ada83c917fc7fac1eea6956582c255bf07f015f5ede04dea5b35c9-default-1793885806217211000.json` and `strict/targeted-1e0e035be1ada83c917fc7fac1eea6956582c255bf07f015f5ede04dea5b35c9-default-1793885813097626000.json`.
+- Full bounded log: `strict/logs/20261105-134442-7q2qhtcw/chunk-0001.log`.
+- Full resource receipt: `integrated-full-1793886282262954000-receipt.json`; full manifest: `strict/ownership/0baeec9aed59441c96624f5417ca6569.json`.
+- Scoped receipts: `integrated-guide-1793886263226348000-receipt.json`, `lead-final-boundaries-1793885806941519000-receipt.json`.
+- Scoped strict records: `strict/targeted-1e0e035be1ada83c917fc7fac1eea6956582c255bf07f015f5ede04dea5b35c9-default-1793886265470570000.json` and `strict/targeted-1e0e035be1ada83c917fc7fac1eea6956582c255bf07f015f5ede04dea5b35c9-default-1793885813097626000.json`.
 - Scoped checkpoints: `strict/checkpoints/ec2eacab5ae275134b7062f2978d9c8871162fc81e25fa19f359fd7129acb89d.json` and `strict/checkpoints/f2f852b9c66fa6f091021c0a4401d54601b4650bd26e7a28eb084c1354c75c70.json`.
 - Pinned dependency receipts and unchanged package/lock hashes: `dependencies-summary.json`.
-- Independent finalizer: `finalize-cleanup.py`; pre-removal plan: `final-cleanup-plan.json`; final receipt: `final-cleanup-1793886061113195000-receipt.json`.
+- Independent finalizer: `finalize-cleanup.py`; pre-removal plan: `final-cleanup-plan.json`; final receipt: `final-cleanup-1793886346405170000-receipt.json`.
 
-The final receipt enumerates all 11 manifests, independently verifies their scratch roots, process groups and
+The final receipt enumerates all 13 manifests, independently verifies their scratch roots, process groups and
 reservations absent, and verifies unchanged package/lock hashes. Exact empty owned parents under worktree
 `.claude/test-scratch/fucq44` were removed. No disposable scratch remains. OneDrive-IBM/Claude was absent;
 no large output, archive or fabricated cloud destination was created. Only bounded local records are retained.
@@ -91,4 +96,8 @@ Explicitly retained until dispatcher worktree cleanup: worktree `node_modules` (
 No cleanup touched other stories. Dispatcher retains merge/close/drop and independent integration checks.
 
 Agents: lead requested/selected `gpt-6.1-sol/high`; implementer requested/selected `gpt-6.1-sol/medium`;
-no fallback; effective runtime unverified. One implementer, no descendants. No Cowork/Jira action or scheduled job.
+no fallback. Effective lead `gpt-6.1-sol/high` and implementer `gpt-6.1-sol/medium` were independently verified
+from each session’s first `turn_context` by the dispatcher and lead. Session evidence: lead
+`/Users/garycarter/.codex/sessions/2026/11/05/rollout-2026-11-05T13-20-09-01a1abdd-e6a2-7cc1-8021-1e141d316dac.jsonl`;
+implementer `/Users/garycarter/.codex/sessions/2026/11/05/rollout-2026-11-05T13-22-49-01a1abe0-577a-7bd1-9ab9-27ea9aad9b64.jsonl`.
+One implementer, no descendants. No Cowork/Jira action or scheduled job.
