@@ -1,31 +1,23 @@
-# Remaining Claude scaffolding installation — 5 November 2026
+# Scaffolding installation status — 5 November 2026
 
-Codex reports scaffolding 0.7.1 installed and enabled. The project has the new map helpers,
-assets and generated instructions; the project-owned Jira importer is preserved. The source
-clone is current at `5ad376a` when checked. Doctor and the installer were run.
+The previous administrator instructions in this note are superseded. All 110 managed files
+match their manifest; the required managed policy and Story Lead sources are unchanged across
+0.7.0, 0.7.1 and 0.7.2. No repeat administrator apply is needed. Doctor still reports the older
+managed manifest version; that does not establish a source mismatch.
 
-The system-managed Claude files already match the staged source; only its installation manifest
-needs an administrator update. `sudo -n` confirms that a private administrator password is required.
-The stage contains no managed-policy or agent changes. In Terminal, run:
+Codex scaffolding 0.7.2 is installed. This project refresh verified 13 installed hook, skill,
+projector and asset files against the current source. The live Codex gateway check passes on
+IBM Global. Doctor's separate Claude default-endpoint finding does not describe this session.
 
-```sh
-sudo sh "/Users/usget/Claude/agent-scaffolding/tools/apply.sh" --staging "/Users/usget/Claude/agent-scaffolding/.claude/install-runs/vehicle-matcher-20261105/staging" --machine "/Users/usget/.config/agent-scaffolding/machine.json" --plan-id "eb633def46e67ca3"
-```
+The scaffolding release's current verification record reports native Codex hook trust as
+`modified`; native Settings > Hooks / Review hooks approval remains pending. Claude's original
+0.7.1 rollout is verified. One existing pin command is queued for the next normal Claude Desktop
+quit to install 0.7.2. Do not start another waiter or repeat the old Terminal commands. The native
+app actions have been deferred until morning in the scaffolding rollout; this project does not
+restart either application or edit hook trust.
 
-Enter the administrator password only at Terminal's private prompt. If the pinned stage is
-reported stale, regenerate with `tools/install`; do not bypass the plan identity check.
-
-Then update Claude Desktop's plugin pin from Terminal:
-
-```sh
-/usr/bin/python3 -I -B "/Users/usget/Claude/agent-scaffolding/tools/pin-marketplace" --ref 5ad376a
-```
-
-When it prints the wait message, quit Claude Desktop normally with Cmd+Q. The tool updates its
-pin and reopens Desktop. The agent has not started a waiter or restarted either application.
-This step affects Claude's plugin cache; it does not require restarting the active Codex task.
-
-After these steps, run `tools/doctor --project /Users/usget/Claude/vehicle-matcher` and verify the
-managed manifest, Desktop pin/cache and active gateway. Codex's live IBM Global check already
-passes. Doctor's Claude default-endpoint failure is a separate harness observation and does not
-establish that the active Codex session is outside IBM.
+After the queued update, verify Claude's actual installed 0.7.2 sources, rather than its configured
+pin alone. The authoritative cross-harness rollout record is
+`/Users/usget/Claude/agent-scaffolding/docs/operations/2026-11-05-product-map-install.md` and its
+adjacent Carbon delivery note. The project's map renderer and generated instructions are already
+refreshed independently of those remaining native app actions.
