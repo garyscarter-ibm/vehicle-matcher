@@ -29,6 +29,18 @@ At dispatch, the machine reported **62% free memory, zero swap in use and approx
 - Jira adoption was written, read back and all five operations acknowledged: In Progress, configured usget assignee, 13 points, agent/host labels and Start date **5 November 2026**. Teammate-owned outbound operations remain untouched. Retained adoption acknowledgement: `.claude/test-runs/checkpoints/fucq95-20261105-adoption-ops.json`.
 - The same heartbeat is active in this chat at five-minute intervals while the lead is working. The explicit override and active handle are persisted locally for subsequent passes.
 
+## Activity checkpoint and independent brief-controller preparation
+
+FUCQ-95's isolated reader checkpoint is pushed on `dev/DEV-2026-11-04-083`: code `2ceba84`, validation/progress `a769053`. Scoped validation recorded **113 passed, zero failed and two live-PostgreSQL skips**. This is not a full-suite or native PostgreSQL result. The reader exposes unavailable check evidence honestly; real check/source-delay producers and offer-access links remain later integration dependencies. The whole activity screen is not built.
+
+The dispatcher independently verified seven disposed scratch roots, their process groups and reservations absent, with **2,592,928 bytes** removed including successful verbose logs. The concise receipt is `.claude/test-runs/ownership/fucq95-20261105-reader-dispatcher-verify.json`. The old dependency link was removed and the target installation preserved; a separately registered link is now active for the HTTP phase and still needs final cleanup. No large output or compatibility exception was used.
+
+GC's dashboard FUCQ-101 merged and closed; its lifecycle remains GC-owned. GC's launcher FUCQ-33 is still active. Its fetched changed-file list includes shared kit CSS, gallery, catalogue and ratchet, so those seams remain held. FUCQ-95 may now add its activity HTTP module, minimal `server/index.js` registration and a short additive shared-contract entry, with scoped service/HTTP/retail-boundary checks. Existing receipt writers and all frontend integration remain held.
+
+With **64% free memory, zero swap and approximately 67 GiB free disk**, the dispatcher admitted a second disjoint preparatory slice under the explicit capacity override. FUCQ-94 / `DEV-2026-11-04-052` passed intake, its current native body and complete zero-comment history were read, and claim `f684d3d` was pushed at **13 points**. Lead `/root/brief_editor_fucq94` requested/selected **`gpt-6.1-sol`, `high`**, no fallback. The lead starts with refinement and a new brief controller/request/state module plus its dedicated tests and evidence; it holds every existing shared/server/UI seam. FUCQ-95 has priority for the next actual implementation-child slot. This is a controller checkpoint, not a completed UI story.
+
+FUCQ-94's Jira adoption was written, read back and all five operations acknowledged: In Progress, configured usget assignee, 13 points, agent/host labels and Start date **5 November 2026**. Its lead must propose any minimum editor-context or unsaved-preview support from the actual FUCQ-29/FUCQ-91 contracts; that is separate from FUCQ-95's activity route. Shared kit/catalogue/gallery changes remain coordinated rather than duplicated.
+
 ## Validation and resources
 
 This checkpoint changes run documentation, not application code. Validation is limited to the live gateway/tool/heartbeat/ownership checks, successful complete Jira import, story intake checks and local documentation links. Application and full test suites are excluded because this checkpoint changes no application behavior.
