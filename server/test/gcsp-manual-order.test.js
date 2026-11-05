@@ -14,18 +14,14 @@ const instant = '2026-11-05T09:00:00.000Z';
 const fixtures = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq71/response-fixtures.json', import.meta.url), 'utf8'));
 const cmd = (commandId, value = {}) => ({ commandId, inputDigest: inputDigest(value) });
 const ref = (f, table, key) => ({ table, key: { runId: f.context.runId, ...key } });
-const termsValue = { schemaVersion: 1, termsVersion: 'fictional-order-terms-v1', fictional: true,
-  wording: 'Fictional demonstration terms: selection requests allocation of this exact scheme stock order. Approval and collection are separate.',
-  validUntil: '2026-12-01T00:00:00.000Z', declarations: [
-    { id: 'terms', label: 'I accept these fictional scheme terms.', appliesTo: 'all' },
-    { id: 'driver', label: 'The nominated driver and licence details are correct.', appliesTo: 'all' },
-    { id: 'return', label: 'The old contract and expected return mileage are correct.', appliesTo: 'replacement' },
-  ] };
-async function policyWith({ hr = true, terms = termsValue } = {}) {
+const termsValue = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'))
+  .assumptions.find((row) => row.key === 'ordering.terms.v1').value;
+async function policyWith({ hr = true, terms = termsValue, missing = false } = {}) {
   const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
   const metadata = { unit: 'versioned synthetic ordering contract', status: 'assumed', basis: 'Explicit test-only policy inputs, no deployed fallback.',
     source: 'server/test/gcsp-manual-order.test.js', sourceDate: '2026-11-05', policyVersion: seed.policyVersion, effectiveFrom: seed.effectiveFrom };
-  seed.assumptions.push({ ...metadata, key: 'ordering.terms.v1', value: terms }, { ...metadata, key: 'ordering.approvalStages.v1',
+  seed.assumptions = seed.assumptions.filter((row) => !['ordering.terms.v1', 'ordering.approvalStages.v1'].includes(row.key));
+  if (!missing) seed.assumptions.push({ ...metadata, key: 'ordering.terms.v1', value: terms }, { ...metadata, key: 'ordering.approvalStages.v1',
     value: [...(hr ? ['HR approval'] : []), 'sales-manager approval', 'sent to ordering'] });
   return new PolicyService({ provider: { async loadVersions() { return [seed]; } } });
 }
@@ -101,9 +97,88 @@ async function advance(f, bySeconds) {
 test('terms are versioned explicit fictional policy reads, missing central keys fail closed', async () => {
   const f = await setup(); const terms = await f.service.readTerms(f.context);
   assert.equal(terms.value.fictional, true); assert.equal(terms.value.termsVersion, termsValue.termsVersion);
-  assert.equal((await new SchemeOrderTerms({ policy: createPolicyService() }).read(f.context, { asOf: instant })).status, 'unavailable');
+  assert.equal((await new SchemeOrderTerms({ policy: await policyWith({ missing: true }) }).read(f.context, { asOf: instant })).status, 'unavailable');
   const changed = await new SchemeOrderTerms({ policy: await policyWith({ hr: false }) }).read(f.context, { asOf: instant });
   assert.equal(changed.value.approvalStages[0], 'sales-manager approval'); assert.notEqual(changed.value.termsDigest, terms.value.termsDigest);
+});
+
+test('canonical PolicyService supplies coherent fictional ordering terms without a consumer fallback', async () => {
+  const f = await runtime(createPolicyService());
+  const terms = await new SchemeOrderTerms({ policy: f.policy }).read(f.context, { asOf: instant });
+  assert.equal(terms.status, 'ok', JSON.stringify(terms));
+  assert.equal(terms.value.fictional, true);
+  assert.equal(terms.value.termsVersion, 'fictional-order-terms-v1');
+  assert.equal(terms.value.approvalStages[0], 'HR approval');
+  assert.ok(terms.value.declarations.some((row) => row.appliesTo === 'replacement'));
+});
+
+test('atomic source conversion commits selection and allocation in one transaction without a second allocate', async () => {
+  const f = await setup(); let conversions = 0;
+  f.converter.convertSelection = async (context, input, { commitSelection }) => {
+    conversions += 1;
+    return f.repository.transaction(context, cmd(`atomic:${input.commandId}`), async (tx) => {
+      const stored = await commitSelection(tx); if (stored.status !== 'ok') return stored;
+      for (const [table, key] of [['holds', { holdId: 'hold' }], ['claims', { claimId: 'claim' }],
+        ['stock', { orderUuid: stored.value.payload.orderUuid }], ['entitlement_slots', { entitlementSlotId: context.entitlementSlotId }]]) {
+        const current = await tx.get(ref(f, table, key));
+        const changed = await tx.compareAndSwap(ref(f, table, key), current.value.version, { state: 'allocated' });
+        if (changed.status !== 'ok') return changed;
+      }
+      return stored;
+    });
+  };
+  const response = await f.service.submit(f.context, f.input);
+  assert.equal(response.status, 'ok', JSON.stringify(response));
+  assert.equal(response.value.order.orderNumber, '0000001');
+  assert.equal(conversions, 1); assert.equal(f.allocateCalls, 0);
+  assert.equal((await f.service.submit(f.context, { ...f.input, commandId: 'retry' })).value.operationId, response.value.operationId);
+  assert.equal(conversions, 1);
+});
+
+test('atomic source refusal rolls selection, history and allocation back together before provider effects', async () => {
+  const f = await setup(); let conversions = 0;
+  f.converter.convertSelection = async (context, input, { commitSelection }) => {
+    conversions += 1;
+    return f.repository.transaction(context, cmd(`atomic:${input.commandId}`), async (tx) => {
+      const stored = await commitSelection(tx); if (stored.status !== 'ok') return stored;
+      const hold = await tx.get(ref(f, 'holds', { holdId: 'hold' }));
+      assert.equal((await tx.compareAndSwap(ref(f, 'holds', { holdId: 'hold' }), hold.value.version, { state: 'allocated' })).status, 'ok');
+      return result('conflict', { reason: 'source-authority-changed' });
+    });
+  };
+  const response = await f.service.submit(f.context, f.input);
+  assert.equal(response.status, 'conflict'); assert.equal(response.reason, 'source-authority-changed');
+  assert.equal(conversions, 1); assert.equal(f.allocateCalls, 0);
+  assert.equal((await f.repository.query(f.context, 'pending_operations')).value.length, 0);
+  assert.equal((await f.repository.query(f.context, 'event_receipts', { eventType: 'selection-received' })).value.length, 0);
+  assert.equal((await f.repository.query(f.context, 'event_receipts', { consumerId: 'synthetic-ordering:v1' })).value.length, 0);
+  assert.equal((await f.repository.read(f.context, ref(f, 'holds', { holdId: 'hold' }))).value.state, 'active');
+  const quote = (await f.repository.read(f.context, ref(f, 'quotes', { quoteId: 'quote' }))).value;
+  assert.equal((await f.repository.read(f.context, ref(f, 'stock', { orderUuid: quote.orderUuid }))).value.state, 'held');
+});
+
+test('atomic source pending is reconciled by its authority before ordering and never invokes a second allocation', async () => {
+  const f = await setup(); let conversions = 0;
+  f.converter.convertSelection = async (context, input, { commitSelection }) => {
+    conversions += 1;
+    return f.repository.transaction(context, cmd(`atomic:${input.commandId}`), async (tx) => {
+      const stored = await commitSelection(tx); if (stored.status !== 'ok') return stored;
+      const hold = await tx.get(ref(f, 'holds', { holdId: 'hold' }));
+      const changed = await tx.compareAndSwap(ref(f, 'holds', { holdId: 'hold' }), hold.value.version, { state: 'selection-pending' });
+      return changed.status === 'ok' ? result('pending', { operationId: input.commandId,
+        operationType: 'manual-allocate', lastKnownState: 'selection-pending' }) : changed;
+    });
+  };
+  assert.equal((await f.service.submit(f.context, f.input)).status, 'pending');
+  assert.equal((await f.service.submit(f.context, { ...f.input, commandId: 'retry' })).status, 'pending');
+  assert.equal((await advance(f, 1)).status, 'ok');
+  assert.equal(conversions, 1); assert.equal(f.allocateCalls, 0);
+  assert.equal((await f.repository.query(f.context, 'event_receipts', { consumerId: 'synthetic-ordering:v1' })).value.length, 0);
+  const operation = await readOperation(f);
+  assert.equal((await f.converter.allocate(f.context, operation.payload.allocationInput)).status, 'ok');
+  assert.equal((await advance(f, 1)).status, 'ok');
+  assert.equal((await f.service.readOrder(f.context)).value.order.orderNumber, '0000001');
+  assert.equal(f.allocateCalls, 1);
 });
 
 test('pending is persisted before allocation/provider write; duplicate and double click reuse exact existing stock order', async () => {

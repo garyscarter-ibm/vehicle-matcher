@@ -81,7 +81,7 @@ export class ManualOrderService {
     if (prior.status === 'ok') return prior.value.inputDigest === digest ? this.#drive(context, id, true) : conflict('active-selection-exists');
     if (prior.status !== 'not-found') return prior;
     const converter = this.#converters?.[input.source.type];
-    if (typeof converter?.prepare !== 'function' || typeof converter.allocate !== 'function') return unavailable('selection-source-unsupported');
+    if (typeof converter?.prepare !== 'function' || typeof converter.allocate !== 'function' && typeof converter.convertSelection !== 'function') return unavailable('selection-source-unsupported');
     const terms = await this.#terms.read(context, { asOf: time.value.now }); if (terms.status !== 'ok') return terms;
     if (input.termsDigest !== terms.value.termsDigest) return conflict('terms-changed');
     const prepared = await converter.prepare(context, input.source); if (prepared.status !== 'ok') return prepared;
@@ -90,7 +90,10 @@ export class ManualOrderService {
     const required = terms.value.declarations.filter((d) => d.appliesTo === 'all' || d.appliesTo === mode);
     if (required.some((d) => input.declarations[d.id] !== true)
       || Object.keys(input.declarations).some((key) => !required.some((d) => d.id === key))) return invalid('declarations');
-    const started = await this.#repository.transaction(context, command(`ordering:submit:${id}`, intent), async (tx) => {
+    // The source authority owns conversion. Its trusted callback lets intent/history and allocation
+    // commit together without copying source-specific validation or opening a nested transaction.
+    const atomicConversion = typeof converter.convertSelection === 'function';
+    const commitSelection = async (tx) => {
       const existing = await tx.get(ref(context, 'pending_operations', { operationId: id }));
       if (existing.status === 'ok') return existing.value.inputDigest === digest ? ok(existing.value) : conflict('active-selection-exists');
       if (existing.status !== 'not-found') return existing;
@@ -123,14 +126,19 @@ export class ManualOrderService {
           gradeId: employee.value.gradeId, schemeId: employee.value.schemeId, version: employee.value.version }, vehicleSlot: slot.value };
       const operation = { runId: context.runId, operationId: id, operationType: 'selection-order', idempotencyKey: id, inputDigest: digest,
         state: 'pending', lastKnownState: 'allocation-pending', attempts: 0,
-        payload: { context, orderUuid: h.orderUuid, selection, allocationInput: { commandId: id, holdId: h.holdId,
+        payload: { context, orderUuid: h.orderUuid, atomicConversion, selection, allocationInput: { commandId: id, holdId: h.holdId,
           expectedHoldVersion: h.version, expectedDraftVersion: input.source.expectedDraftVersion } } };
       const stored = await tx.insert('pending_operations', operation); if (stored.status !== 'ok') return stored;
       const received = await tx.recordReceipt({ consumerId: `ordering:history:${context.employeeId}`, eventId: `${id}:received`,
         eventType: 'selection-received', inputDigest: digest, state: 'completed', outcome: ok({ operationId: id, selection }) });
       return received.status === 'ok' ? stored : received;
-    });
-    return started.status === 'ok' ? this.#drive(context, id, true) : started;
+    };
+    const started = atomicConversion
+      ? await converter.convertSelection(context, { commandId: id, holdId: input.source.holdId,
+        expectedHoldVersion: input.source.expectedHoldVersion, expectedDraftVersion: input.source.expectedDraftVersion }, { commitSelection })
+      : await this.#repository.transaction(context, command(`ordering:submit:${id}`, intent), commitSelection);
+    if (!['ok', 'pending'].includes(started.status)) return started;
+    return this.#drive(context, id, true);
   }); }
   async #update(context, operation, patch) {
     const updated = await this.#repository.transaction(context, command(`ordering:update:${operation.operationId}:${operation.version}`, patch), async (tx) => {
@@ -170,7 +178,7 @@ export class ManualOrderService {
         }
         // Persisted context is a scope snapshot, never a fresh employee credential.
         // Tick reconciliation observes F66's own pending work; only authenticated submit can start conversion.
-        if (!allowAllocation) return projection(operation);
+        if (!allowAllocation || operation.payload.atomicConversion) return projection(operation);
         let outcome;
         try { outcome = await this.#converters[operation.payload.selection.source.type].allocate(context, operation.payload.allocationInput); }
         catch { return projection(operation); }

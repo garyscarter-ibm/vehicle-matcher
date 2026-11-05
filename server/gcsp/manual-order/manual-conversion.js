@@ -3,7 +3,7 @@ import { unavailable } from './terms.js';
 
 // F66 remains the only manual allocation authority. It repeats live eligibility/driver/licence checks on allocate.
 export function createManualOrderConversion({ claims, manual } = {}) {
-  return {
+  const conversion = {
     async prepare(context, input) {
       if (typeof manual?.revalidateHeldSelection !== 'function') return unavailable('held-selection-validation-unavailable');
       const [held, draft, account, eligibility] = await Promise.all([claims.readClaim(context), manual.readDraft(context),
@@ -27,4 +27,8 @@ export function createManualOrderConversion({ claims, manual } = {}) {
     },
     allocate(context, input) { return claims.allocate(context, input); },
   };
+  if (typeof claims?.convertSelection === 'function') {
+    conversion.convertSelection = (context, input, options) => claims.convertSelection(context, input, options);
+  }
+  return conversion;
 }

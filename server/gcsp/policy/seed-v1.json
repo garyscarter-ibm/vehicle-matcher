@@ -12430,6 +12430,55 @@
       "sourceDate": "2026-11-05",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "unit": "versioned synthetic ordering contract",
+      "status": "assumed",
+      "basis": "Coherent fictional terms and target approval-stage names for the demonstration; approved BMW wording and workflow configuration remain unverified.",
+      "source": "docs/gcsp/manual-order-contract.md",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z",
+      "key": "ordering.terms.v1",
+      "value": {
+        "schemaVersion": 1,
+        "termsVersion": "fictional-order-terms-v1",
+        "fictional": true,
+        "wording": "Fictional demonstration terms: selection requests allocation of this exact scheme stock order under the recorded quote. The nominated driver and licence details must be correct. For a replacement, the recorded old contract and expected return mileage must be correct. Approval, appointment and collection are separate decisions; submission does not end the current contract.",
+        "validUntil": "2026-12-01T00:00:00.000Z",
+        "declarations": [
+          {
+            "id": "terms",
+            "label": "I accept these fictional scheme terms.",
+            "appliesTo": "all"
+          },
+          {
+            "id": "driver",
+            "label": "The nominated driver and licence details are correct.",
+            "appliesTo": "all"
+          },
+          {
+            "id": "return",
+            "label": "The old contract and expected return mileage are correct.",
+            "appliesTo": "replacement"
+          }
+        ]
+      }
+    },
+    {
+      "unit": "versioned synthetic ordering contract",
+      "status": "assumed",
+      "basis": "Coherent fictional terms and target approval-stage names for the demonstration; approved BMW wording and workflow configuration remain unverified.",
+      "source": "docs/gcsp/manual-order-contract.md",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z",
+      "key": "ordering.approvalStages.v1",
+      "value": [
+        "HR approval",
+        "sales-manager approval",
+        "sent to ordering"
+      ]
     }
   ]
 }

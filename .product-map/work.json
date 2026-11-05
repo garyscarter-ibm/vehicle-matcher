@@ -693,16 +693,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-70"
     },
     {
-      "id": "FUCQ-71",
-      "title": "Submit manual selections through an idempotent ordering adapter",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "Russell Gowers",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-71"
-    },
-    {
       "id": "FUCQ-72",
       "title": "Review declarations and show the actual order handoff outcome",
       "status": "To Do",
@@ -1371,6 +1361,58 @@
       "type": "Story",
       "observed_at": "2026-11-05T22:40:24Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-138"
+    },
+    {
+      "assignee": "Russell Gowers",
+      "id": "FUCQ-71",
+      "observed_at": "2026-11-05T23:25:32Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "Lead reviewed scoped ordering core: 13 ordering tests pass within order/policy 39 passed, 3 native skips. Exact order, pins, duplicate and clock evidence retained in docs/gcsp/evidence/fucq71; actual producer/runtime/native delivery remains blocked.",
+          "id": "ordering-core",
+          "observed_at": "2026-11-05T23:19:15Z",
+          "status": "complete",
+          "title": "Versioned terms, pinned selection and idempotent ordering protocol"
+        },
+        {
+          "evidence": "F71 callback commit/rollback/pending passes repository fixtures; actual Gary-owned F66 producer lacks convertSelection. Held producer compatibility path uses two transactions.",
+          "id": "claim-conversion",
+          "observed_at": "2026-11-05T23:19:16Z",
+          "status": "blocked",
+          "title": "Atomic manual or buddy claim conversion"
+        },
+        {
+          "evidence": "Canonical ordering keys/shared contract implemented; runtime/account/actual source composition remains.",
+          "id": "runtime-contracts",
+          "observed_at": "2026-11-05T23:19:16Z",
+          "status": "in-progress",
+          "title": "Canonical policy, runtime and history contracts"
+        },
+        {
+          "evidence": "Native PostgreSQL URL unset; no credential transfer. Actual source callback and account/runtime proof plus coordinated final npm test remain.",
+          "id": "integration",
+          "observed_at": "2026-11-05T23:19:16Z",
+          "status": "blocked",
+          "title": "Native PostgreSQL reopen and final integration validation"
+        }
+      ],
+      "status": "In Progress",
+      "title": "Submit manual selections through an idempotent ordering adapter",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-71",
+      "workers": [
+        {
+          "expires_at": "2026-11-05T23:25:31.151600Z",
+          "harness": "codex",
+          "name": "Mater",
+          "observed_at": "2026-11-05T23:25:31.151600Z",
+          "role": "story-lead",
+          "source": "thread 01a1adf9-5447-7220-8e41-86ea53f403e7; effective gpt-6.1-sol/high verified turn_context",
+          "status": "stopped"
+        }
+      ]
     }
   ]
 }
