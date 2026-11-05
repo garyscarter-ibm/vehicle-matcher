@@ -4,7 +4,7 @@ import { CARS } from '../data.js';
 import { groupListings, rankCars, LISTING_SAMPLE } from '../engine.js';
 import { installDom, resetDom, loadMode, mountMode, settle } from './dom-harness.js';
 import { questionsForBrand } from '../questions.js';
-import { matchCard } from '../../blocks/vehicle-matcher/modes/result-card.js';
+import { matchCard, mediaWell } from '../../blocks/vehicle-matcher/modes/result-card.js';
 import { applyBrowseFeedback, createFeedbackState, reduceFeedback } from '../../blocks/vehicle-matcher/feedback-actions.js';
 
 // R1's saved synthetic input, independently evaluated by the existing engine.
@@ -129,6 +129,48 @@ test('hard-filter and compact modes remain usable without an invented decision',
   const card = matchCard(match, { compact: true, showScore: false });
   assert.equal(card.querySelector('.vm-score'), null);
   assert.equal(card.querySelector('.vm-pick'), null);
+});
+
+test('a late failed image from the previous listing cannot hide the selected photo', () => {
+  const { media, showPhoto } = mediaWell(base);
+  const previous = media.querySelector('img');
+  showPhoto('/red.jpg', { name: 'Selected red car', line: 'Selected line' });
+  previous.dispatchEvent(new window.Event('error'));
+  assert.ok(media.classList.contains('has-photo'));
+  assert.equal(media.querySelector('img').alt, 'Selected red car');
+  assert.equal(media.querySelector('.vm-card-line').textContent, 'Selected line');
+  media.querySelector('img').dispatchEvent(new window.Event('error'));
+  assert.equal(media.querySelector('img'), null);
+  assert.equal(media.classList.contains('has-photo'), false);
+});
+
+test('listing-owned trade-offs, retailer, plate and link text switch together', () => {
+  const match = publicFixture();
+  Object.assign(match.listings[0], { retailerName: 'Blue Retailer', distance: 2, plate: '24' });
+  Object.assign(match.listings[1], { retailerName: 'Red Retailer', distance: 18, plate: '25' });
+  match.listings[1].decision.tradeOffs = [{ dim: 'fuel', wants: ['ev'], got: 'petrol' }];
+  const card = matchCard(match, { big: true });
+  card.querySelectorAll('.vm-pick-opt')[1].click();
+  assert.match(card.querySelector('.vm-trade-text').textContent, /Petrol.*fully electric/);
+  assert.match(card.querySelector('.vm-distance').textContent, /18 miles away.*Red Retailer/);
+  assert.match(card.querySelector('.vm-usedmeta').textContent, /’25 reg/);
+  assert.match(card.querySelector('.vm-card-link').textContent, /Red Retailer/);
+  card.querySelectorAll('.vm-pick-opt')[0].click();
+  assert.equal(card.querySelector('.vm-trade-text'), null);
+  assert.match(card.querySelector('.vm-distance').textContent, /Blue Retailer/);
+});
+
+test('refining away a photographed car clears missing exact imagery, location and gearbox', () => {
+  const match = publicFixture();
+  Object.assign(match.car, { retailerName: 'Blue Retailer', distance: 2, plate: '24' });
+  Object.assign(match.listings[1], { photo: undefined, transmission: undefined, link: undefined });
+  const [selected] = filter([match], { field: 'shade', operator: 'equals', value: 'Red' });
+  const card = matchCard(selected, { big: true });
+  assert.equal(card.querySelector('.vm-card-photo'), null);
+  assert.equal(card.querySelector('.vm-card-link'), null);
+  assert.ok(card.querySelector('.vm-distance').hidden);
+  assert.doesNotMatch(card.querySelector('.vm-specs').textContent, /Automatic/);
+  assert.doesNotMatch(card.querySelector('.vm-usedmeta').textContent, /’24 reg/);
 });
 
 for (const legacy of [false, true]) test(`questionnaire equipment refinement uses ${legacy ? 'truthful legacy fallback' : 'exact server decisions'} and undo restores R1`, async (t) => {

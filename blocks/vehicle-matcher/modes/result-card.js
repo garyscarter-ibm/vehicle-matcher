@@ -172,7 +172,7 @@ export function mediaWell(car, extraClass = '') {
     // A broken image URL shouldn't leave a half-rendered card — drop back to
     // the placeholder, exactly as a photo-less car shows.
     img.addEventListener('error', () => {
-      media.classList.remove('has-photo');
+      if (img.parentElement === media) media.classList.remove('has-photo');
       img.remove();
     });
     // Ahead of the caption and the line label, both of which sit over it.
@@ -302,14 +302,17 @@ export function matchCard(match, {
    * where you'd go.
    */
   const where = el('p', 'vm-distance');
-  if (car.distance != null) {
-    where.append(el('span', 'vm-distance-miles', distanceLabel(car.distance)));
-    if (car.retailerName) where.append(el('span', null, ` · ${car.retailerName}`));
-    body.append(where);
-  } else if (car.retailerName) {
-    where.append(el('span', 'vm-distance-here', `At ${car.retailerName}`));
-    body.append(where);
+  function renderWhere(selected) {
+    where.replaceChildren();
+    if (selected.distance != null) {
+      where.append(el('span', 'vm-distance-miles', distanceLabel(selected.distance)));
+      if (selected.retailerName) where.append(el('span', null, ` · ${selected.retailerName}`));
+    } else if (selected.retailerName) {
+      where.append(el('span', 'vm-distance-here', `At ${selected.retailerName}`));
+    }
+    where.hidden = !where.childNodes.length;
   }
+  body.append(where);
 
   // When repeat listings of the same car were grouped into this card, say so:
   // how many, the price spread, and the colours they come in. Without this the
@@ -388,6 +391,7 @@ export function matchCard(match, {
    * two are the case and the rest are corroboration.
    */
   const decisionBody = el('div', 'vm-card-decision');
+  decisionBody.setAttribute('aria-live', 'polite');
   if (!compact) body.append(decisionBody);
 
   // Owning the trade-off: when a recommendation misses a stated want (it's
@@ -405,7 +409,7 @@ export function matchCard(match, {
     const decision = exact || (!match.decisionUnavailable && (!chosen || chosen === listings[0]) ? match : null);
     head.querySelector('.vm-score')?.remove();
     decisionBody.replaceChildren();
-    card.dataset.stretch = String(Boolean(decision?.stretch));
+    card.dataset.stretch = decision?.stretch == null ? 'unknown' : String(decision.stretch);
     if (showScore && Number.isFinite(decision?.score)) {
       const badge = el('span', 'vm-score', `${decision.score}%`);
       badge.title = 'Match score: how well this car fits the answers you gave. Cars that '
@@ -440,7 +444,10 @@ export function matchCard(match, {
   cta.rel = 'noopener noreferrer';
   function renderChosen(chosen) {
     const selected = chosen || car;
+    const first = !chosen || chosen === listings[0];
+    const location = first ? { ...car, ...selected } : selected;
     name.textContent = selected.name || car.name;
+    renderWhere(location);
     showPhoto(selected.photo, selected);
     const paint = typeof selected.colour === 'object'
       ? selected.colour?.manufacturerColour || selected.colour?.colour : selected.colour;
@@ -449,13 +456,14 @@ export function matchCard(match, {
     renderKit(chosen);
     renderDecision(chosen);
     const bits = [];
-    if (selected.plate ?? (!chosen ? car.plate : null)) bits.push(`’${selected.plate ?? car.plate} reg`);
+    if (selected.plate ?? (first ? car.plate : null)) bits.push(`’${selected.plate ?? car.plate} reg`);
     if (selected.mileage != null) bits.push(`${selected.mileage.toLocaleString('en-GB')} miles`);
     usedMeta.textContent = bits.join('  ·  ');
     usedMeta.hidden = !bits.length;
     cta.remove();
     if (selected.link) {
       cta.href = selected.link;
+      cta.textContent = `View at ${location.retailerName || 'the retailer'} ›`;
       body.append(cta);
     }
   }

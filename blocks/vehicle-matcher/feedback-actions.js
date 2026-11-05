@@ -93,7 +93,8 @@ export function candidateSurvivesFeedback(state, { candidateId, groupId, listing
 export function regroupFeedbackCar(car, kept) {
   const head = kept[0];
   const prices = kept.map((l) => l.priceMin).filter(Number.isFinite);
-  return { ...car, photo: head.photo,
+  return { ...car, name: head.name || car.name, photo: head.photo, plate: head.plate,
+    retailerName: head.retailerName, distance: head.distance ?? null,
     colour: head.colour ? { manufacturerColour: head.colour, colour: head.shade } : undefined,
     priceMin: head.priceMin ?? car.priceMin, priceMax: head.priceMax ?? head.priceMin ?? car.priceMax,
     mileage: head.mileage ?? null,
