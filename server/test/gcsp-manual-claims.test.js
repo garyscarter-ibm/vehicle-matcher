@@ -552,8 +552,38 @@ test('native PostgreSQL manual claims persist claim replay and confirmed release
 });
 
 test('native PostgreSQL manual claims retain once-only keyed review and expire at exact startup deadline', nativeOptions, async () => {
-  const fixture = await nativeFixture();
+  // Observe this diagnostic case only; retain production pools, SQL and timeouts.
+  // Never retain SQL text, parameters, driver messages or connection settings.
+  const queryDiagnostics = { count: 0, maximumMs: 0, recent: [], failures: [] };
+  const originalQuery = pg.Client.prototype.query;
+  pg.Client.prototype.query = function observedQuery(...args) {
+    const started = performance.now();
+    const observe = (error) => {
+      const elapsedMs = Math.round(performance.now() - started);
+      const entry = { elapsedMs, ...(error ? {
+        code: /^[0-9A-Z]{5}$/.test(error.code ?? '') || ['ECONNRESET', 'ETIMEDOUT', 'ENOTFOUND'].includes(error.code) ? error.code : 'driver-error',
+        kind: error.message === 'Query read timeout' ? 'query-read-timeout'
+          : error.message === 'Connection terminated unexpectedly' ? 'connection-terminated' : 'query-error',
+      } : {}) };
+      queryDiagnostics.count += 1;
+      queryDiagnostics.maximumMs = Math.max(queryDiagnostics.maximumMs, elapsedMs);
+      queryDiagnostics.recent.push(entry);
+      queryDiagnostics.recent.splice(0, Math.max(0, queryDiagnostics.recent.length - 12));
+      if (error && queryDiagnostics.failures.length < 12) queryDiagnostics.failures.push(entry);
+    };
+    const callbackIndex = args.findLastIndex((value) => typeof value === 'function');
+    if (callbackIndex >= 0) {
+      const callback = args[callbackIndex];
+      args[callbackIndex] = function observedCallback(error, ...values) { observe(error); return callback.call(this, error, ...values); };
+    }
+    try {
+      const pending = Reflect.apply(originalQuery, this, args);
+      return pending?.then ? pending.then((value) => { observe(); return value; }, (error) => { observe(error); throw error; }) : pending;
+    } catch (error) { observe(error); throw error; }
+  };
+  let fixture;
   try {
+    fixture = await nativeFixture();
     let f = await fixture.create();
     const second = await f.service.claim(f.context, await selection(f, 0, 'native-review-claim'));
     assert.equal(second.status, 'ok', JSON.stringify(second));
@@ -571,12 +601,20 @@ test('native PostgreSQL manual claims retain once-only keyed review and expire a
     assert.equal(nextReview.status, 'ok', JSON.stringify(nextReview));
     assert.equal(nextReview.value.hold.expiresAt, reviewed.value.hold.expiresAt);
     assert.equal((await f.service.registerClockHandler()).status, 'ok');
-    assert.equal((await advance(f, reviewRule.value.value)).status, 'ok');
-    assert.equal((await f.clock.reconcileStartup()).status, 'ok');
+    const advanced = await advance(f, reviewRule.value.value);
+    assert.equal(advanced.status, 'ok', JSON.stringify(advanced));
+    const startup = await f.clock.reconcileStartup();
+    assert.equal(startup.status, 'ok', JSON.stringify(startup));
     const expired = fixture.processRead(f, reviewed.value.hold.holdId);
     assert.equal(expired.hold.state, 'expired'); assert.equal(expired.claims[0].state, 'expired');
     assert.equal(expired.stock.state, 'released'); assert.equal(expired.stock.available, true);
-  } finally { await fixture.cleanup(); }
+  } finally {
+    try { await fixture?.cleanup(); }
+    finally {
+      pg.Client.prototype.query = originalQuery;
+      console.info(JSON.stringify({ nativeReviewQueryDiagnostics: queryDiagnostics }));
+    }
+  }
 });
 
 test('native PostgreSQL manual claims expire on explicit tick and remain expired after reopen', nativeOptions, async () => {
