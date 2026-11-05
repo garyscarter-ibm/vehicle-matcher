@@ -8,7 +8,7 @@ The current FUCQ-81 and FUCQ-82 acceptance descriptions were checked on 4 Novemb
 
 Identifiers are opaque strings; row versions are monotonically increasing positive integers. Times are UTC ISO-8601 instants from `DemoClock`, and durations have named units. Every command receives server-owned `Context = { environmentId, runId, principalId, roles, employeeId?, schemeId?, companyId?, gradeId?, entitlementSlotId? }`, a caller-stable `commandId` and the expected row versions it changes. Employee/role/run fields supplied by the browser cannot replace this context.
 
-All four ports return a discriminated result. Methods below are asynchronous unless stated otherwise; no adapter turns a failure into an empty result or a success.
+All four ports return a discriminated result using `status` as the outcome field (for example `{ status: 'ok', value, contractVersion: '1.0.0' }`). Methods below are asynchronous unless stated otherwise; no adapter turns a failure into an empty result or a success.
 
 | Outcome | Required content and meaning |
 |---|---|
@@ -95,7 +95,7 @@ Ticks use `(runId, eventId, handlerId)` receipts, retaining event type, payload 
 
 ## Policy catalogue and provenance
 
-FUCQ-82 implements the single reviewed seed at **`server/gcsp/policy/seed-v1.json`** and read-only file provider; FUCQ-83 seeds dated PostgreSQL tables idempotently and makes them runtime authority through the same `PolicyService`. This location is the agreed implementation contract, not an assertion that the file already exists. FUCQ-82 records the implemented location in build-rules.md. There is one active source per deployment, no separately maintained browser/test defaults. Historical versions and pinned quotes are retained.
+FUCQ-82 implements the single reviewed seed at **`server/gcsp/policy/seed-v1.json`** and read-only file provider; FUCQ-83 seeds dated PostgreSQL tables idempotently and makes them runtime authority through the same `PolicyService`. FUCQ-82 records this implemented location and the shared read interface in build-rules.md. There is one active source per deployment, no separately maintained browser/test defaults. Historical versions and pinned quotes are retained.
 
 Every seed entry has `{ key, value, unit, status: 'assumed'|'verified', basis, source, sourceDate }`; dated rows also carry `policyVersion`, `effectiveFrom` and optional `effectiveTo` (exclusive). Sources name a repo record or a documented synthetic fixture, never a private credential. `verified` below means documented supplied evidence, not independent validation of a BMW API. All source dates below are 2026-11-04 unless the October 2024 matrix is named.
 
@@ -103,7 +103,7 @@ The seed shape is `{ schemaVersion: 1, policyVersion, effectiveFrom, source, sch
 
 | Collection | Row contract and provenance |
 |---|---|
-| `schemeRuleLinks` | `linkId`, `schemeId`, `ruleId`, dates, policy version. BMW-only Choices, explicitly distinguish FS&UK from UKNSC rather than merging their grades/rules. |
+| `schemeRuleLinks` | `linkId`, `schemeId`, `ruleId`, dates, policy version. BMW-only Choices, explicitly distinguish the supplied FS&UK and RR&Production matrices rather than merging their grades/rules. RR&Production is not asserted to be UKNSC; company/scheme identifier mapping is a labelled demo assumption. |
 | `eligibilityRules` | `ruleId`, `effect: include|exclude`, `matchField`, typed `operator`/`value` or range bounds, dates/version, source/status. Use the [October 2024 matrices](sources/choices-eligibility-matrices-2024-10.md); match-field selection below bridges their range/model/engine labels to retained stock facts. Explicit exclude wins; no applicable allow or missing decision facts is `needs-confirmation`/ineligible, never implicit eligibility. |
 | `pricePlans` | `pricePlanId`, `schemeId`, `configurationId` or declared match field/value, `monthlyPoints`, dates/version, source/status. Matrices contain no points prices: any seeded cost is labelled synthetic/assumed, not transcribed BMW pricing. |
 | `allowances` | `allowanceId`, `companyId`, `schemeId`, `gradeId`, `monthlyPoints`, dates/version, source/status. Grade and company determine allowance; unknown context fails explicitly. Seeded numeric allowances require an assumed basis; the policy shape alone is verified. |
@@ -138,6 +138,8 @@ Key names use lower camel-case dotted namespaces; a suffix states a dimensional 
 | `stock.configuration.includePaintAndUpholstery` | `true` boolean | Assumed target detail, supported by configurator; every factory option included, dealer accessories excluded. |
 | `stock.configuration.encoding` | `base64-padded` enum | Assumed target detail (Q13); canonical upper-case sorted list, URL-encode on routes. |
 | `stock.identifiers.stableWithinRun` | `true` boolean | Assumed because target amendment stability is unsettled; reset regenerates order identifiers. |
+
+FUCQ-82 adds `eligibility.context.mapping` (assumed, source/date: the supplied matrix transcription, 4 November 2026). Its value maps `choices-fs-uk` / `demo-bmw-fs-uk` to `G1-6`, `G7`, `G8-10`, `G11-14`, and `choices-rr-production` / `demo-bmw-rr-production` to `PG1`, `G8-10`, `G11-12`. These are demo identifiers and source grade bands, not a verified BMW company-code crosswalk. `eligibilityModelKey` is the exact matrix Model cell, a `|`, and one Engine token; comma/slash alternatives expand without inventing engine prefixes. For example `G20 Saloon|320i` and `G21 Touring|320i` remain separate. Unknown/unmapped values never use a nearest match. This assumption is the source for generators and context fixtures; callers do not recreate a second crosswalk.
 
 Allowance, points, release sizes, lead times and tie-break choices remain inspectable assumptions; none establishes real allocation priority or real stock. A routine correction changes the authoritative entry/version and all consumers obtain it through `PolicyService`. Future lifecycle HR flags, scenario timing, Greg weights/bounds and model references are added by their owning stories, not silently defaulted in a consumer. Approved guide/matrix facts retain their distinct effective dates even when imported on 4 November.
 
@@ -215,7 +217,15 @@ Outside a transaction, `read(context, ref)` and `query(context, table, filter)` 
 | `getAssumption(key, read)` | Exact registered key | `ok { key, value, unit, status, basis, source, sourceDate }`, version; unknown key `invalid`. |
 | `publishPolicyVersion(context, changeSet)` | Greg role, `commandId`, expected active version, effective date, validated changes and provenance | FUCQ-83: `ok { accepted: true, policyVersion, effectiveFrom }`; invalid set `invalid { accepted: false, reasons }`, stale version/refusal/unavailable as above. No partial writes. |
 
-The file-backed FUCQ-82 provider is read-only: publish is explicitly unsupported until FUCQ-83 implements it. PostgreSQL selects dated rows through the same reads; future-effective versions wait for the demo clock. Old versions stay immutable and active quotes stay pinned. UI, manual/buddy flows, ranking, Greg, generators, simulations and tests use these reads and the server-owned client projection; tests can supply an explicit alternative seed/provider to prove a one-entry change.
+The file-backed FUCQ-82 provider is read-only: publish is explicitly unsupported until FUCQ-83 implements it. Unsupported publishing returns `invalid` with `code: 'unsupported-operation'` and `accepted: false`; it never reports an accepted write. All policy outcomes carry `contractVersion: '1.0.0'` and `policyVersion` (explicitly `null` when no version could be resolved). PostgreSQL selects dated rows through the same reads; future-effective versions wait for the demo clock. Old versions stay immutable and active quotes stay pinned. UI, manual/buddy flows, ranking, Greg, generators, simulations and tests use these reads and the server-owned client projection; tests can supply an explicit alternative seed/provider to prove a one-entry change.
+
+#### File provider binding and presentation evidence · FUCQ-82
+
+`server/gcsp/policy/index.js` exports `PolicyService`, `FilePolicyProvider` and `createPolicyService`. Default construction is `createPolicyService()`; explicit input replacement uses `createPolicyService({ filePath, retainedFilePaths })`, or inject `provider` with asynchronous `loadVersions(read)` returning complete seed snapshots. No consumer reads the JSON file or introduces a second fallback. The default source is `seed-v1.json`; optional retained files are immutable history/explicit what-if inputs, not another active default table. Normal source activation creates a service/provider over the selected reviewed files.
+
+Unpinned reads choose the latest version effective at supplied `read.asOf`; they evaluate row dates then. An exact retained pin bypasses the version's elapsed top-level effective window and evaluates its dated rows at the pinned version's `effectiveFrom`, preserving the terms from activation. Missing pins do not select active policy. Future-effective versions stay inactive until the supplied clock reaches their date. The file provider does not own mutable run/identity state; a supplied context run must match `read.runId`.
+
+`getEligibility` applies the matrix model/grade decision only. FUCQ-29 combines this read with allowance/points, home-charging and other employee practical/essential gates; this read does not rank, reserve or silently implement those downstream capabilities. The assumed monthly price and allowance rows are demonstration inputs, not BMW amounts. A recorded service-result projection in `server/test/fixtures/gcsp-policy-projection.json` demonstrates the client-facing shape without adding a screen or browser defaults. No UI/components change, so new screenshots are unnecessary under the experience contract.
 
 ### DemoIdentityAdapter · FUCQ-84
 
@@ -268,8 +278,10 @@ An implementing story adds its schema/key/method and provenance here in the same
 
 | Version / date / owner | Change and keyed assumptions |
 |---|---|
+| 1.0.0 / 2026-11-04 / FUCQ-81 | Implements the existing TransactionRepository through `createMemoryRepository({ store })` / `createPostgresRepository({ schema?, migrate? })`; `0001_transaction_foundation.sql` creates 17 foundation tables with additive JSONB payloads, generated scoped keys/foreign keys and partial occupying-car uniqueness. Six policy tables remain FUCQ-83 migration `0002`; no interface meaning changes. Backend outcomes: `server/test/fixtures/gcsp-repository-outcomes.json`. Reported evidence is 21 scoped passes plus an explicit unset-URL PostgreSQL skip, not live-database proof. |
+| 1.0.0 / 2026-11-04 / FUCQ-82 | Additive clarification: common discriminant is `status`; preserve actual FS&UK and RR&Production source names without asserting a UKNSC mapping. File provider/seed implementation, exact pin semantics, explicit provider injection, the `eligibility.context.mapping` key and presentation evidence are recorded above; no contract meaning or version change. |
 | 1.0.0 / 2026-11-04 / FUCQ-80 | Initial foundation contract; all table/method names are draft `contract.storageVocabulary.v1` / `contract.portVocabulary.v1`; brief numeric scale `brief.slider.scale`; transaction key encoding `transaction.idempotency.keys.v1`; deployment migration ledger `repository.migrationLedger.scope`; presenter commands/order `clock.commands.v1` / `clock.handler.order.v1`. Behavioural/identifier assumptions and source dates are catalogued above. |
 
 Morning review should focus on the assumed manual order-review phase and the explicit tie-break/seed choices. They are revisable synthetic defaults, not additional approved BMW behaviour. Numeric monthly prices/allowances require labelled source rows from FUCQ-82; this document does not invent BMW prices from eligibility matrices.
 
-This docs-only story changes no screen, user-visible behaviour or component. The [experience contract](experience-quality.md) and [shell/palette and Used Cars body reference](screens/README.md) remain binding for implementing stories; screenshots are not applicable to this document change.
+The FUCQ-80 contract baseline was documentation only. The FUCQ-81/82 backend implementations add no screen or UI component; their presentation fixtures and checks are recorded above. The [experience contract](experience-quality.md) and [shell/palette and Used Cars body reference](screens/README.md) remain binding for implementing stories; screenshots are not applicable to this document change.
