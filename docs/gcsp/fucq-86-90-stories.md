@@ -700,7 +700,7 @@ priority: P2
 priority_reason: due 2026-11-12: GCSP demo
 size: S
 depends_on: FUCQ-93
-preconditions: a sender is set up and its credentials are available as backend-only environment variables on the GCSP Render backend: Brevo, or Microsoft Graph/Exchange, or ACS Email (HLD review Q11). Until then the story waits; the captured outbox covers the demo.
+preconditions: the Brevo sender and API key, explicit demo-recipient mapping and public frontend base URL are configured on the GCSP Render backend and verified before real sending (HLD review Q11). Gary's 5 November pause (comment 132470) remains until a collaborator explicitly resumes this story; the captured outbox covers the demo. Existing setup notes alone do not clear this precondition.
 ```
 
 #### Goal
@@ -720,10 +720,15 @@ As the presenter, I want an offer email to arrive in a real inbox when sender se
 - `server/gcsp/notify/ (one real transport adapter)`
 - `server/test/gcsp-mail-transport.test.js (proposed, against a stubbed provider)`
 - `README.md (environment variables for the GCSP backend)`
+- `docs/gcsp/email-transport.md`
 
 #### Decided
 
 Gary approved this Epic, its Story titles and the dependency order on 4 November 2026, including this story with its sender-setup precondition (`docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md`, `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/shared-contracts.md` and `docs/design/gcsp-high-level-design.md`, "Transaction and event invariants". Carry these decisions and acceptance criteria into every child-agent brief.
+
+Brevo reuse handoff, 5 November 2026, requested by Russell: read `docs/gcsp/email-transport.md`. Reuse Deckhead's transactional HTTP method with built-in `fetch`: `POST https://api.brevo.com/v3/smtp/email`, backend-only `api-key`, both rendered GCSP bodies and a stable per-run/job provider idempotency key. The handoff reproduces the method, proposed backend configuration, StanleyPi sender-domain evidence, source revision and remaining setup checks, so another machine does not need those local checkouts. The credential is a Brevo API key; no new PAT is needed for this method.
+
+Preserve FUCQ-93's port, capture, canonical retry policy and run scope, FUCQ-97's viewer and the configured recipient allow-list. Persist the provider ID without leaking keys or token-bearing links. Read the handoff's capture/acknowledgement integration gap and finite provider idempotency window before implementing; copying Deckhead's whole mailer or logs is insufficient. This preparation does not clear Gary's existing pause, verify Render secrets, provision a sender or authorise a send in this session.
 
 HLD review, as it applies here:
 
@@ -747,6 +752,7 @@ Run commands from the worktree root. Named new test files are deliverables of th
     - capture while the real transport is active;
     - no secret in the logs.
 
+- Follow `docs/gcsp/email-transport.md`, "Selected validation", for stable-key retries/restart/concurrency, ambiguous acknowledgements, capture on real-send failure, payload/body mapping and canonical absolute offer links. Automated tests use a stubbed provider and send no real mail.
 - `npm test` passes.
 - After the precondition clears: one real send to a demo address, with the provider message ID recorded in the story result.
 - No new screen; the outbox viewer shows the status (`docs/gcsp/experience-quality.md`).
