@@ -14,7 +14,7 @@ export function mintOfferToken(binding) {
   const token = randomBytes(32).toString('base64url');
   return { tokenHash: hashOfferToken(token, binding),
     tokenMetadata: { scheme: 'gcsp:offer-access:v1', randomBytes: 32 },
-    offerLink: `/gcsp/offer?offerId=${encodeURIComponent(binding.offerId)}#token=${token}` };
+    offerLink: `/gcsp/offer?offerId=${encodeURIComponent(binding.offerId)}&runId=${encodeURIComponent(binding.runId)}#token=${token}` };
 }
 
 export function verifyOfferToken(token, binding, expectedHash) {

@@ -455,6 +455,12 @@ FUCQ-97 adds the presenter-only route `GET /api/gcsp/presenter/outbox` (`createO
 
 ## Atomic buddy hold producer · FUCQ-100 checkpoint
 
+Offer links add the public `runId` query coordinate beside `offerId`, so FUCQ-102 can look up one
+run-scoped hash and distinguish authentic historical links after verifying the full environment/run/offer
+binding. The opaque token remains only in the URL fragment. Query coordinates grant no authority;
+the server supplies the trusted environment. Links remain relative to the separately configured landing
+origin. No hash scheme or token lifetime changes. Dedicated coordinate/custody/binding checks:4/4.
+
 The additive [buddy producer contract](buddy-holds.md) records the exact allocation-candidate revisions,
 transaction-bound BriefService revalidation, shared conditional claim, pinned quote/offer/outbox shape and
 hashed environment/run/offer token binding. The current independent slice accepts a real trusted employee

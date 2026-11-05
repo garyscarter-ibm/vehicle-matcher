@@ -9,7 +9,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T23:11:17Z",
+      "observed_at": "2026-11-05T23:21:29Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-100",
       "source_observed_at": "2026-11-05T23:00:25Z",
       "branch": "dev/DEV-2026-11-04-060",
@@ -18,10 +18,10 @@
           "name": "FUCQ-100 story lead",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-05T23:00:59.317178+00:00",
-          "expires_at": "2026-11-05T23:15:59.317178+00:00",
+          "observed_at": "2026-11-05T23:21:29.664685+00:00",
+          "expires_at": "2026-11-05T23:36:29.664685+00:00",
           "source": "Codex chat 01a1adbf-732b-7830-a17a-cf2b2f95a092 observed this active turn",
-          "status": "active; remote edit plan awaits dispatcher review"
+          "status": "active; owned remote lifecycle implementation, seam and token publication pending shared Git window"
         }
       ],
       "slices": [
