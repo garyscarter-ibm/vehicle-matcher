@@ -175,7 +175,7 @@ Every `LearningRecord` has exactly these fields:
 | `renewal` | `{ cohort, period }`; cohort is a known identifier or unknown, period is known `{ from, until }` UTC instants or unknown. Current calendar time and an opaque renewal reference do not establish a cohort or period. |
 | `entitlement` | `{ schemeId, gradeId, allowanceBand }`, each known typed category or unknown. Historical scheme/grade require the dated saved quote's allowance context. Present employee context is never promoted into historical evidence; no recorded band means unknown. |
 | `brief` | `{ briefVersion, policyVersion, confirmedAt, preferences, essentials }`, from the immutable confirmed saved version associated with this offer/quote/decision, never a current substitute. Preferences retain only `{ value, importance, valueState, importanceState }`; essentials retain only `{ value, operator, unit, state }`. |
-| `choiceSet` | Known array of `{ configurationId, eligible, available, exposure, terms }`, or unknown. Eligibility/availability are boolean or null; exposure is known `{ from, until, seconds }` with matching elapsed duration, or unknown. Empty known set means explicitly captured no alternatives, never missing capture. The observed port currently emits unknown because no authoritative historical full-set/exposure capture is bound. |
+| `choiceSet` | Known array of `{ configurationId, eligible, available, exposure, terms }`, optionally with opaque `orderRef` for an exact car, or unknown. Multiple alternatives may share a configuration; their exact-car references distinguish supply/exposure. Both old and extended shapes remain closed. Eligibility/availability are boolean or null; exposure is known `{ from, until, seconds }` with matching elapsed duration, or unknown. Empty known set means explicitly captured no alternatives, never missing capture. The observed port currently emits unknown because no authoritative historical full-set/exposure capture is bound. |
 | `terms` | Known `{ quoteRef, configurationId, monthlyPoints, allowance, unit: points/month, quotedAt, validUntil, policyVersion }`, or unknown. Both numeric points quantities and actual dated quote evidence are required; no recalculation from current policy or current stock. Terms on each alternative use the same shape. |
 | `outcomes` | Independent `offered`, `selection`, `acceptance`, `decline`, `expiry`, `wait`, `satisfaction` fields described below. Fit scores and current-car feedback never supply an outcome or satisfaction. |
 | `timestamps` | `{ projectedAt, clockVersion }` from `DemoClock.now(context)`; confirmed brief time and quoted time retain their captured DemoClock instants. Missing event times stay null; repository storage `createdAt`/`updatedAt` are not assumed to be business clock events. |
@@ -243,10 +243,86 @@ Rows and results remain transient; no projection state or DTO store exists.
 
 Backend presentation evidence is the validator-checked `server/test/fixtures/gcsp-learning-record.json` and
 `docs/gcsp/evidence/fucq113/README.md`. These are labelled contract/repository fixtures, not outcome-producer
-integration, historical-extract or real-corpus acceptance. Synthetic generation, manifest-gated training input,
-canonical `learning.*` policy adoption and actual FUCQ-77 corpus execution remain later work. The module uses no
+integration, historical-extract or real-corpus acceptance. The additive synthetic module below supplies generation
+and manifest-gated input; canonical `learning.*` policy adoption and actual FUCQ-77 corpus execution remain outstanding. The module uses no
 new local business-policy defaults. No screen changes; the shared Density theme, supplied shell references and
 body reference revision `a7fc178` remain applicable to future consuming screens.
+
+## Synthetic learning datasets · FUCQ-113
+
+`loadLearningPolicy({ policyService, policyRead, corpus })` performs the I/O preparation. `policyRead` supplies
+an explicit run, `asOf` instant and pinned policy version. It reads the existing comparison snapshot and all
+seven `learning.*` rows through PolicyService, then snapshots `getEligibility` and `getPointsCost` for every
+configured grade/configuration pair. Mixed envelope or nested row versions, missing keys, unavailable ports,
+malformed features and unsupported inputs fail with `LearningInputError` (`code`, `field`); there is no consumer
+default or policy publication. The returned complete snapshot is deeply frozen and content addressed.
+
+The candidate `server/gcsp/predict/records/policy-definitions.json` has schema 1, definition-set ID
+`fucq113-learning-v1` and revision `learning-definitions.v1`. Its `definitions` array and canonical `digest`
+match FUCQ-103's reviewed additive bundle schema. Each assumption carries key, value, unit, assumed
+status, basis, source and source date. It deliberately has no active policy version/effective date: reviewed
+FUCQ-103 adoption into an additive successor supplies those. Seed-v1 and stored historical versions stay
+immutable. Candidate values are finite demonstration assumptions, not measured BMW behaviour:
+
+| Policy key | Candidate value |
+|---|---|
+| `learning.cohortSize` | 12 employees |
+| `learning.cycles` | 3 cycles |
+| `learning.cycleSpacingDays` | 180 days |
+| `learning.maximumGeneratedRecords` | 240 records |
+| `learning.maximumChoiceEntries` | 4096 alternative entries |
+| `learning.noChoiceRate` | 0.12 |
+| `learning.response.v1` | `{ declineRate: 0.12, expiryRate: 0.08, selectionAfterAcceptRate: 0.95, utilityNoise: 0.15 }` |
+
+`generateLearningRecords(seed, snapshot)` is pure, version `learning-records.sha256.v1`, and returns immutable
+`{ records, cycles }`. The bound `cohortSize * cycles` and worst-case alternative bound
+`cohortSize * cycles * round(cohortSize * carsPerEmployee)` are checked before comparison inputs/choice sets
+are materialised; invalid time horizons also refuse. Existing comparison distributions provide fictional
+employees, latent preferences, confirmed noisy stated briefs, allowances, renewal timing, access/response
+latency, exact synthetic stock and release cadence. Employee/slot identity and underlying preference draws
+remain stable over cycles; record, renewal, exact-car, offer and quote references include their cycle.
+Each cycle explicitly overlays `comparison.cohortSize` and `comparison.startsAt`; its metadata retains those
+actual values and hashes, input hash, counts and release schedule.
+
+The simulation visits employees by choice instant (renewal minus hold duration, no earlier than cycle start,
+then access latency), with stable tie-breaking. It records only already released, uncommitted cars permitted
+by the pinned eligibility, confirmed essential-fact and affordable-points gates. A current offer occupies an
+exact car until acceptance, decline or expiry. Acceptance commits the car for that cycle; decline/expiry makes
+it available from the explicit event instant, so exposure records the continuous available period before
+that employee's choice. This is supply-availability exposure and may include time before the employee's
+personal renewal/access window; it does not claim personal impressions, viewing or consideration duration.
+Cars sharing one configuration remain distinct by `orderRef`. Missing essential
+facts remain unknown and exclude the alternative. Supported configuration values are explicitly allowlisted
+and typed; no absent seats, space, equipment, charging readiness or driver eligibility facts are invented.
+This bounded synthetic simulation does not execute live allocation/offer lifecycle services.
+
+Preference utility uses the shared scorer against generated latent preferences plus an addressed seeded
+utility perturbation. Independent policy-keyed draws govern waiting and expiry/decline/acceptance; recorded
+selection can follow acceptance independently. Expiry also occurs when response latency reaches the earlier
+of hold expiry and saved quote validity. Offered, acceptance, selection, typed decline, expiry and wait remain
+separate fields; satisfaction is always unknown. Utility/fit is never stored as an outcome. The explicit start,
+cycle offsets and event offsets form a fictional simulation clock; no wall clock or global random source is read.
+Changing `learning.noChoiceRate` changes outcomes through the central source without a code edit.
+
+`createLearningDataset(seed, snapshot)` returns `{ manifest, records }`. The manifest has schema 1 and
+`datasetKind: synthetic`, seed, generator version, policy version, full snapshot and snapshot/policy/configuration/
+data hashes, counts by outcome and provenance, and complete cycle metadata. Configuration identity includes
+the exact source kind/dataset/version/manifest digest (for corpus), immutable configuration IDs/versions and
+allowlisted feature snapshots. Hashes establish consistency and reproducibility, not authenticity or real-data
+calibration. `validateLearningDataset(dataset)` and `readLearningDataset(jsonOrObject)` return the common
+`ok`/`invalid` envelope. Training must use this boundary: missing manifest, incomplete identities/counts,
+duplicate IDs, any observed/mixed/incorrect synthetic provenance, altered data or inconsistent snapshot/manifest
+are refused. Validation regenerates the bounded dataset and compares the complete manifest and records.
+This version accepts wholly synthetic datasets only; it does not silently merge observed records.
+
+`server/test/fixtures/gcsp-learning-dataset.json` is a six-record/two-cycle structural sample with an explicit
+fixture successor policy (cohort 3), labelled reviewed configurations and enriched synthetic feature inputs.
+It proves reproduction and the manifest reader, not actual FUCQ-77 adapter execution or employee behaviour.
+The corpus binding supports the exact existing `getConfiguration(id)` read contract, refuses mismatched
+active dataset/version/digest or configuration version and never substitutes reviewed fixtures. Mapping real
+catalogue measurements/provenance to confirmed essential facts still needs real-corpus integration evidence;
+unconfirmed derived corpus features cannot satisfy confirmed essential gates. The CLI, actual policy adoption,
+real corpus execution and actual observed outcome-producer acceptance remain separate outstanding work.
 
 ## Exact stock, holds and offers
 

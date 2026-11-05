@@ -8,21 +8,11 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T23:00:27Z",
+      "observed_at": "2026-11-05T23:06:01Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-113",
       "branch": "dev/DEV-2026-11-04-088",
       "tracker_observed_at": "2026-11-05T22:40:24Z",
-      "workers": [
-        {
-          "name": "Foxy",
-          "harness": "codex",
-          "role": "implementer",
-          "observed_at": "2026-11-05T23:00:23Z",
-          "expires_at": "2026-11-05T23:30:23Z",
-          "source": "collaboration message: generator supervised tests active; child 01a1add2-1b30-7442-ba08-030dc1da1946",
-          "status": "generator and manifest slice active"
-        }
-      ],
+      "workers": [],
       "slices": [
         {
           "id": "projection",
@@ -33,10 +23,10 @@
         },
         {
           "id": "generator-manifest",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Seeded multi-cycle records and manifest validation",
-          "observed_at": "2026-11-05T23:00:24Z",
-          "evidence": "Foxy implementing bounded pure generator, pinned policy reader, manifest validation and exact reviewed definitions. Parent acceptance/review pending."
+          "observed_at": "2026-11-05T23:06:01Z",
+          "evidence": "Lead reviewed generator/manifest; parent offline learning and comparison modules 52/52 zero skips,12.02s; frozen source and cleanup receipt .claude/test-runs/fucq113-parent-generator/final-receipt.json. Actual corpus/producers remain separate gates."
         },
         {
           "id": "cli-fixtures",

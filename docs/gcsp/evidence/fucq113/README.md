@@ -1,7 +1,8 @@
 # FUCQ-113: bounded LearningRecord projection evidence
 
-This first slice adds LearningRecord schema v1, its reusable closed validator and the observed current-run
-projection. It adds no screen, data store, generator, manifest or training loader. It does not complete FUCQ-113.
+The first slice adds LearningRecord schema v1, its reusable closed validator and the observed current-run
+projection. The second adds a pure seeded generator, immutable PolicyService snapshot preparation, complete
+manifest and training reader. Neither adds a screen or data store; full FUCQ-113 acceptance remains outstanding.
 
 `server/test/fixtures/gcsp-learning-record.json` is an explicitly fictional contract sample, checked by the same
 validator as service output. Its observed provenance describes a projection over saved demonstration rows, not
@@ -39,10 +40,32 @@ aliases removed. The launcher uses `_tools/test_resources.py` supervision, one w
 receipts live outside disposable scratch under the shared `.claude/test-runs/fucq113-projection/` root.
 No full suite, native database, browser, service listener, real employee extract or external transport is used.
 
-Still outstanding: seeded multi-cycle generation through canonical policy keys; real FUCQ-77 configuration-port
-execution; deterministic policy-sensitive output; dataset manifests and training-load validation; actual observed
-outcome-producer integration; full-story acceptance and the root dispatcher's coordinated full-suite lane.
-The separate `policy-handoff.md` is parent-owned planning for that later slice.
+The generator slice is checked through public PolicyService reads against a complete explicitly fictional
+successor fixture, never published or adopted by tests. It covers deterministic repeatability without wall time,
+global randomness or network; stable multi-cycle intent; one central no-choice change; scarce exact-car
+competition; decline/expiry release and exposure; release/eligibility/essential/points gates; separate noisy
+outcomes; pre-materialisation bounds; exact corpus-port identity refusal; and manifest tamper, duplicate and
+mixed-provenance refusal. The validator accepts an optional opaque `orderRef` on known alternatives, allowing
+two exact cars with one configuration; old alternative shapes remain valid and extra fields remain rejected.
+Synthetic exposure measures continuous supply availability up to a choice and can predate personal access;
+it is not a claim of personal viewing/impressions. Observed historical exposure remains unknown.
+
+The retained `server/test/fixtures/gcsp-learning-dataset.json` is a 70,045-byte six-record/two-cycle synthetic
+sample with a complete fixture policy snapshot, actual comparison overlays and counts (4 offered/accepted/
+selected, 2 waited). The fixture's extra seats/space/etc. are labelled synthetic test inputs, not real catalogue
+measurements. The reproduction test independently prepares its explicit source and compares all output.
+Manifest readers regenerate a bounded expected dataset, so consistency hashes do not claim authenticity.
+
+The generator launcher and resource/impact receipts live under the shared
+`.claude/test-runs/fucq113-generator/`; the same small offline supervision limits apply. `policy-handoff.md`
+records the exact candidate-definition schema, canonical bundle digest and file SHA256 for FUCQ-103 review.
+Final scoped proof: 36/36 passed (the complete learning-records module), 10.92 seconds, peak RSS 224.9 MiB,
+zero measured scratch bytes. All owned scratch and process groups were removed/stopped, reservations released
+and the owned dependency symlink removed; final cleanup and source identity are in `final-receipt.json`.
+
+Still outstanding: CLI/output integration; reviewed `learning.*` adoption; actual FUCQ-77 corpus execution and
+confirmed feature/provenance mapping; actual observed outcome-producer integration; full-story acceptance
+and the root dispatcher's coordinated full-suite lane. Structural fixtures establish none of those gates.
 
 No screen changes: supplied 00/01 GCSP shell references, the approved FUCQ-6 body reference at revision `a7fc178`,
 COMPONENTS.md and the shared Density theme govern future consuming views. Sample JSON, privacy and typed error

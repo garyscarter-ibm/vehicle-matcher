@@ -74,7 +74,8 @@ export function validateLearningRecord(record) {
   check('brief', exact(r.brief, ['briefVersion', 'policyVersion', 'confirmedAt', 'preferences', 'essentials'])
     && positive(r.brief.briefVersion) && text(r.brief.policyVersion) && validInstant(r.brief.confirmedAt)
     && preferences(r.brief.preferences) && essentials(r.brief.essentials));
-  check('choiceSet', evidence(r.choiceSet, (v) => Array.isArray(v) && v.every((a) => exact(a, ['configurationId', 'eligible', 'available', 'exposure', 'terms'])
+  check('choiceSet', evidence(r.choiceSet, (v) => Array.isArray(v) && v.every((a) => (exact(a, ['configurationId', 'eligible', 'available', 'exposure', 'terms'])
+    || exact(a, ['configurationId', 'orderRef', 'eligible', 'available', 'exposure', 'terms']) && text(a.orderRef))
     && text(a.configurationId) && [a.eligible, a.available].every((x) => x === null || typeof x === 'boolean') && exposure(a.exposure) && terms(a.terms))));
   check('terms', terms(r.terms));
   const o = r.outcomes;

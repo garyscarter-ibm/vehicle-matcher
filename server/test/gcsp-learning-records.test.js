@@ -352,3 +352,266 @@ test('validator rejects waited combinations and future event, brief and quote ti
   assert.equal(validateLearningRecord(independent).status, 'ok');
   assert.equal(validateLearningRecord(record).status, 'ok');
 });
+
+// Generator tests use an explicit complete successor fixture. They never publish policy or claim real-corpus proof.
+const learningDefinitions = JSON.parse(await readFile(new URL('../gcsp/predict/records/policy-definitions.json', import.meta.url), 'utf8'));
+const { loadLearningPolicy, generateLearningRecords, createLearningDataset, validateLearningDataset, readLearningDataset,
+  LearningInputError, LEARNING_KEYS, LEARNING_GENERATOR_VERSION } = await import('../gcsp/predict/records/index.js');
+const assumption = (source, key) => source.assumptions.find((row) => row.key === key);
+function learningSource(overrides = {}, { enrich = true, single = false } = {}) {
+  const source = structuredClone(seed);
+  source.policyVersion = 'fictional-learning-policy-v1';
+  for (const rows of Object.values(source).filter(Array.isArray)) for (const row of rows) if (row.policyVersion) row.policyVersion = source.policyVersion;
+  source.assumptions.push(...learningDefinitions.definitions.map((row) => ({ ...structuredClone(row), policyVersion: source.policyVersion, effectiveFrom: source.effectiveFrom })));
+  const configurationSet = assumption(source, 'comparison.configurationSet.v1').value;
+  if (enrich) for (const row of configurationSet.configurations) Object.assign(row.configuration,
+    { seats: 5, boot: 500, zeroTo62: 7, mpg: 45, sizeClass: 3, tags: ['comfortable'], equipment: { heatedSeats: true }, frontIsofix: false, rearIsofix: true });
+  if (single) configurationSet.configurations = configurationSet.configurations.slice(0, 1);
+  const fixtureValues = {
+    'comparison.gradeDistribution': [assumption(source, 'comparison.gradeDistribution').value.find((r) => r.gradeId === 'G7')],
+    'comparison.modelLineMix': configurationSet.configurations.slice(0, 2).map((r) => ({ modelLine: r.modelLine, weight: 1 })),
+    'learning.cohortSize': 8, 'learning.cycles': 3, 'comparison.carsPerEmployee': 0.5,
+    'comparison.renewalDays': { min: 7, max: 9 },
+    'comparison.accessGroups': [{ id: 'learning-fixture', weight: 1, accessSeconds: { min: 0, max: 100 }, responseSeconds: { min: 1, max: 20 } }],
+    'comparison.releaseCadence': { firstReleaseDay: 0, intervalDays: 1, batchSize: 100 },
+    ...overrides,
+  };
+  for (const [key, value] of Object.entries(fixtureValues)) assumption(source, key).value = structuredClone(value);
+  return source;
+}
+const learningRead = { runId: 'fictional-learning-policy-read', asOf: '2026-11-05T09:00:00.000Z', policyVersion: 'fictional-learning-policy-v1' };
+const learningService = (source) => new PolicyService({ provider: { async loadVersions() { return [source]; } } });
+const prepareLearning = (source = learningSource(), ports = {}) => loadLearningPolicy({ policyService: learningService(source), policyRead: learningRead, ...ports });
+const response = (overrides = {}) => ({ declineRate: 0, expiryRate: 0, selectionAfterAcceptRate: 1, utilityNoise: 0, ...overrides });
+const fixedAccess = (responseSeconds = 1, min = 0, max = 100) => [{ id: 'fixed-fixture', weight: 1, accessSeconds: { min, max }, responseSeconds: { min: responseSeconds, max: responseSeconds } }];
+const scarceSource = (overrides = {}) => learningSource({
+  'learning.cohortSize': 6, 'learning.cycles': 2, 'learning.noChoiceRate': 0,
+  'learning.response.v1': response(), 'comparison.carsPerEmployee': 1 / 6,
+  'comparison.renewalDays': { min: 7, max: 7 }, 'comparison.accessGroups': fixedAccess(),
+  'comparison.needs.v1': { essentials: [{ value: {}, weight: 1 }], preferences: { body: [{ value: 'saloon', weight: 1 }] } },
+  ...overrides,
+}, { single: true });
+const rehashSnapshot = (snapshot) => { const { snapshotHash, ...content } = snapshot; snapshot.snapshotHash = inputDigest(content); return snapshot; };
+
+test('learning policy preparation snapshots public keyed rows, terms and exact configuration identity immutably', async () => {
+  const source = learningSource(); const snapshot = await prepareLearning(source);
+  for (const key of LEARNING_KEYS) assert.deepEqual(snapshot.assumptions[key], assumption(source, key));
+  assert.equal(snapshot.policyRead.policyVersion, source.policyVersion);
+  assert.equal(snapshot.candidatePolicies.length, snapshot.features.length);
+  for (const row of snapshot.candidatePolicies) {
+    assert.equal(row.points.policyVersion, source.policyVersion);
+    assert.equal(row.points.unit, 'points/month'); assert.ok(row.eligibility.provenance.assumptions.length);
+  }
+  assert.throws(() => { snapshot.features[0].facts.seats.value = 1; }, TypeError);
+  source.assumptions[0].value = 'source mutation';
+  assert.notEqual(snapshot.comparison.assumptions[source.assumptions[0].key]?.value, 'source mutation');
+});
+
+test('learning generation and dataset are identical for one seed and snapshot without wall clock, random or network', async () => {
+  const snapshot = await prepareLearning();
+  const original = { Date: globalThis.Date, random: Math.random, fetch: globalThis.fetch };
+  try {
+    globalThis.Date = class extends original.Date { constructor(...args) { assert.ok(args.length > 0); super(...args); } static now() { assert.fail('wall clock'); } };
+    Math.random = () => assert.fail('global random'); globalThis.fetch = () => assert.fail('network');
+    const first = createLearningDataset('repeatable-learning', snapshot);
+    assert.deepEqual(first, createLearningDataset('repeatable-learning', snapshot));
+    assert.equal(first.manifest.generatorVersion, LEARNING_GENERATOR_VERSION);
+    assert.equal(first.records.length, 24); assert.equal(validateLearningDataset(first).status, 'ok');
+    assert.ok(first.records.every((r) => r.outcomes.satisfaction.state === 'unknown'));
+    assert.throws(() => { first.records[0].outcomes.wait.state = 'changed'; }, TypeError);
+  } finally { globalThis.Date = original.Date; Math.random = original.random; globalThis.fetch = original.fetch; }
+});
+
+test('learning cycles retain employee intent and addressed identities while recording actual comparison overlays', async () => {
+  const snapshot = await prepareLearning(); const { records, cycles } = generateLearningRecords('cycles', snapshot);
+  assert.equal(cycles.length, 3); assert.equal(new Set(records.map((r) => r.recordId)).size, records.length);
+  assert.equal(new Set(records.map((r) => r.subject.renewalRef)).size, records.length);
+  const first = records[0]; const repeated = records.filter((r) => r.subject.employeeRef === first.subject.employeeRef);
+  assert.equal(repeated.length, 3);
+  assert.ok(repeated.every((r) => inputDigest(r.brief.preferences) === inputDigest(first.brief.preferences)));
+  assert.ok(repeated.every((r) => r.subject.entitlementSlotRef === first.subject.entitlementSlotRef));
+  for (const [index, cycle] of cycles.entries()) {
+    assert.equal(cycle.overlay['comparison.cohortSize'], 8); assert.equal(cycle.overlay['comparison.startsAt'], cycle.startsAt);
+    assert.equal(Date.parse(cycle.startsAt) - Date.parse(cycles[0].startsAt), index * 180 * 86400000);
+    assert.match(cycle.overlayHash, /^[a-f0-9]{64}$/); assert.match(cycle.inputHash, /^[a-f0-9]{64}$/);
+  }
+  assert.notDeepEqual(records, generateLearningRecords('other-cohort', snapshot).records);
+});
+
+test('changing only canonical no-choice policy changes outcomes without changing reported preferences', async () => {
+  const source = scarceSource(); const first = createLearningDataset('keyed-wait', await prepareLearning(source));
+  assumption(source, 'learning.noChoiceRate').value = 1;
+  const second = createLearningDataset('keyed-wait', await prepareLearning(source));
+  assert.ok(first.records.some((r) => r.outcomes.acceptance.state === 'accepted'));
+  assert.ok(second.records.every((r) => r.outcomes.wait.state === 'waited'));
+  assert.notEqual(first.manifest.policyHash, second.manifest.policyHash);
+  assert.deepEqual(first.records.map((r) => [r.subject, r.brief]), second.records.map((r) => [r.subject, r.brief]));
+});
+
+test('scarce exact supply commits one employee per car per cycle and preserves duplicate configuration alternatives', async () => {
+  const snapshot = await prepareLearning(scarceSource()); const dataset = createLearningDataset('scarcity', snapshot);
+  assert.equal(dataset.manifest.counts.outcomes.accepted, 2); assert.equal(dataset.manifest.counts.outcomes.waited, 10);
+  for (const cycle of dataset.manifest.cycles) {
+    const rows = dataset.records.filter((r) => r.renewal.cohort.value === cycle.cycleId);
+    const accepted = rows.filter((r) => r.outcomes.acceptance.state === 'accepted');
+    assert.equal(accepted.length, 1); assert.ok(rows.filter((r) => r.outcomes.wait.state === 'waited').every((r) => r.choiceSet.value.length === 0));
+  }
+  const many = createLearningDataset('same-configuration', await prepareLearning(scarceSource({ 'comparison.carsPerEmployee': 1 })));
+  const alternatives = many.records[0].choiceSet.value;
+  assert.equal(alternatives.length, 6); assert.equal(new Set(alternatives.map((a) => a.configurationId)).size, 1);
+  assert.equal(new Set(alternatives.map((a) => a.orderRef)).size, 6);
+});
+
+test('decline and expiry release supply only at their explicit event time, with corresponding exposure', async () => {
+  for (const [field, state, parameters] of [['decline', 'declined', { declineRate: 1 }], ['expiry', 'expired', { expiryRate: 1 }]]) {
+    const snapshot = await prepareLearning(scarceSource({ 'learning.response.v1': response(parameters),
+      'hold.buddy.durationSeconds': 10, 'comparison.renewalDays': { min: 7, max: 12 }, 'comparison.accessGroups': fixedAccess(1, 0, 5) }));
+    const { records } = generateLearningRecords(`releases-${field}`, snapshot);
+    for (const cycle of new Set(records.map((r) => r.renewal.cohort.value))) {
+      const offered = records.filter((r) => r.renewal.cohort.value === cycle && r.outcomes.offered.state === 'offered');
+      assert.ok(offered.length > 1, 'later employees can see released supply');
+      for (const [index, row] of offered.entries()) {
+        assert.equal(row.outcomes[field].state, state); assert.equal(row.outcomes.acceptance.state, 'unknown');
+        const a = row.choiceSet.value[0]; assert.equal(row.target.orderRef, a.orderRef);
+        if (index) assert.equal(a.exposure.value.from, offered[index - 1].outcomes[field].at);
+        assert.equal(a.exposure.value.until, row.outcomes.offered.at);
+        assert.equal(a.exposure.value.seconds, (Date.parse(a.exposure.value.until) - Date.parse(a.exposure.value.from)) / 1000);
+      }
+    }
+  }
+});
+
+test('choice gates retain release, eligibility, essential facts, affordability and quote-expiry boundaries', async () => {
+  const variants = [
+    { 'comparison.releaseCadence': { firstReleaseDay: 8, intervalDays: 1, batchSize: 100 } },
+    { 'comparison.pointsAllowanceMultiplier': 0 },
+    { 'comparison.needs.v1': { essentials: [{ weight: 1, value: { seats: { operator: 'gte', value: 7, unit: 'count' } } }], preferences: { body: [{ value: 'saloon', weight: 1 }] } } },
+  ];
+  for (const overrides of variants) {
+    const { records } = generateLearningRecords('gates', await prepareLearning(scarceSource(overrides)));
+    assert.ok(records.every((r) => r.outcomes.wait.state === 'waited' && r.choiceSet.value.length === 0));
+  }
+  const unknownSeats = scarceSource(); assumption(unknownSeats, 'comparison.needs.v1').value.essentials = [{ weight: 1, value: { seats: { operator: 'gte', value: 4, unit: 'count' } } }];
+  delete assumption(unknownSeats, 'comparison.configurationSet.v1').value.configurations[0].configuration.seats;
+  assert.ok(generateLearningRecords('missing-feature', await prepareLearning(unknownSeats)).records.every((r) => r.choiceSet.value.length === 0));
+  const delayed = scarceSource({ 'comparison.accessGroups': fixedAccess(3600) });
+  const out = generateLearningRecords('quote-validity', await prepareLearning(delayed));
+  assert.ok(out.records.some((r) => r.outcomes.expiry.state === 'expired'));
+  assert.ok(out.records.every((r) => r.outcomes.acceptance.state !== 'accepted'));
+});
+
+test('synthetic decline, expiry, acceptance and selection are separate policy-sensitive noisy responses', async () => {
+  const many = { 'learning.cohortSize': 20, 'learning.cycles': 3, 'learning.noChoiceRate': 0.2, 'comparison.carsPerEmployee': 1 };
+  const dataset = createLearningDataset('noisy-outcomes', await prepareLearning(scarceSource({ ...many,
+    'learning.response.v1': response({ declineRate: 0.3, expiryRate: 0.3, selectionAfterAcceptRate: 0.5, utilityNoise: 0.5 }) })));
+  for (const state of ['accepted', 'selected', 'declined', 'expired', 'waited']) assert.ok(dataset.manifest.counts.outcomes[state] > 0, state);
+  assert.ok(dataset.records.some((r) => r.outcomes.acceptance.state === 'accepted' && r.outcomes.selection.state === 'unknown'));
+  for (const row of dataset.records) {
+    assert.equal(row.outcomes.satisfaction.state, 'unknown'); assert.equal(JSON.stringify(row.outcomes).includes('score'), false);
+    assert.equal(validateLearningRecord(row).status, 'ok');
+  }
+});
+
+test('learning loader refuses missing keys, unavailable ports, incoherent versions and invalid feature types', async () => {
+  const missing = learningSource(); missing.assumptions = missing.assumptions.filter((row) => row.key !== 'learning.noChoiceRate');
+  await assert.rejects(prepareLearning(missing), (e) => e instanceof LearningInputError && e.field === 'learning.noChoiceRate');
+  await assert.rejects(loadLearningPolicy(), LearningInputError);
+  const malformedSource = learningSource(); const malformedService = learningService(malformedSource); const malformed = {};
+  for (const name of ['getActiveVersion', 'getAllowance']) malformed[name] = (...a) => malformedService[name](...a);
+  malformed.getAssumption = async (key, ...a) => key.startsWith('learning.')
+    ? { status: 'ok', policyVersion: malformedSource.policyVersion } : malformedService.getAssumption(key, ...a);
+  await assert.rejects(prepareLearning(malformedSource, { policyService: malformed }), LearningInputError);
+  const source = learningSource(); const service = learningService(source);
+  const unavailable = { getActiveVersion: (...a) => service.getActiveVersion(...a), getAssumption: (...a) => service.getAssumption(...a),
+    getAllowance: (...a) => service.getAllowance(...a), getEligibility() { throw new Error('private provider details'); } };
+  await assert.rejects(prepareLearning(source, { policyService: unavailable }), (e) => e instanceof LearningInputError && !e.message.includes('private'));
+  const mixed = Object.create(service); mixed.getPointsCost = async (...a) => ({ ...await service.getPointsCost(...a), policyVersion: 'other' });
+  // Bind public methods to their actual service: the service's private state is never inspected.
+  for (const name of ['getActiveVersion', 'getAssumption', 'getAllowance', 'getEligibility']) mixed[name] = (...a) => service[name](...a);
+  await assert.rejects(prepareLearning(source, { policyService: mixed }), LearningInputError);
+  const badFeature = learningSource(); assumption(badFeature, 'comparison.configurationSet.v1').value.configurations[0].configuration.tags = { private: 'blob' };
+  await assert.rejects(prepareLearning(badFeature), (e) => e.code === 'configuration-invalid');
+});
+
+test('explicit corpus binding uses the exact public adapter identity and never substitutes fixtures', async () => {
+  const source = learningSource(); const set = assumption(source, 'comparison.configurationSet.v1').value;
+  const fixtures = structuredClone(set.configurations); set.kind = 'corpus'; set.datasetId = 'labelled-port-fixture'; set.version = 'port-v1'; set.manifestDigest = 'a'.repeat(64);
+  set.configurations = fixtures.map(({ modelLine, configurationId, snapshotVersion }) => ({ modelLine, configurationId, snapshotVersion }));
+  const calls = []; const corpus = { getConfiguration(id) { calls.push(id); return { status: 'partial', active: { datasetId: set.datasetId, version: set.version, manifestDigest: set.manifestDigest }, record: fixtures.find((r) => r.configurationId === id) }; } };
+  const snapshot = await prepareLearning(source, { corpus });
+  assert.deepEqual(calls, fixtures.map((r) => r.configurationId)); assert.equal(snapshot.comparison.configurationSource.kind, 'corpus');
+  await assert.rejects(prepareLearning(source), (e) => e.code === 'configuration-unavailable');
+  for (const bad of [{ status: 'not-found' }, { status: 'partial', active: { datasetId: 'wrong' }, record: fixtures[0] }]) {
+    await assert.rejects(prepareLearning(source, { corpus: { getConfiguration() { return bad; } } }), LearningInputError);
+  }
+});
+
+test('record and alternative bounds refuse before materialisation and snapshot tampering is detected', async () => {
+  for (const [overrides, code] of [
+    [{ 'learning.cohortSize': 100, 'learning.cycles': 3 }, 'record-bound'],
+    [{ 'learning.maximumChoiceEntries': 1 }, 'choice-bound'],
+    [{ 'learning.cycleSpacingDays': Number.MAX_SAFE_INTEGER }, 'time-bound'],
+    [{ 'comparison.accessGroups': fixedAccess(1, 0, Number.MAX_SAFE_INTEGER) }, 'time-bound'],
+  ]) await assert.rejects(prepareLearning(learningSource(overrides)), (e) => e.code === code);
+  const snapshot = structuredClone(await prepareLearning());
+  snapshot.assumptions['learning.cohortSize'].value = 100000;
+  assert.throws(() => generateLearningRecords('bounds', snapshot), (e) => e.code === 'record-bound');
+  snapshot.assumptions['learning.cohortSize'].value = 8;
+  snapshot.features[0].facts.seats.value = 1;
+  assert.throws(() => generateLearningRecords('tampered', snapshot), (e) => e.code === 'incoherent-policy');
+  rehashSnapshot(snapshot);
+  assert.throws(() => generateLearningRecords('rehashed-feature', snapshot), (e) => e.field === 'features');
+});
+
+test('training reader requires a complete manifest and rejects tampered, duplicate or mixed provenance records', async () => {
+  const dataset = createLearningDataset('reader', await prepareLearning());
+  assert.equal(readLearningDataset(JSON.stringify(dataset)).status, 'ok');
+  assert.equal(readLearningDataset('{malformed').status, 'invalid'); assert.equal(readLearningDataset(dataset.records).status, 'invalid');
+  const edits = [d => { delete d.manifest; }, d => { delete d.manifest.dataHash; }, d => { d.manifest.counts.records += 1; },
+    d => { d.records[1] = d.records[0]; }, d => { d.records[0].provenance = { kind: 'observed' }; },
+    d => { d.records[0].provenance.seed = 'different'; }, d => { d.manifest.seed = 'different'; },
+    d => { d.manifest.cycles[0].overlay['comparison.cohortSize'] += 1; }, d => { d.manifest.configurationHash = 'a'.repeat(64); },
+    d => { d.manifest.snapshot.candidatePolicies[0].points.monthlyPoints = 0; },
+  ];
+  for (const edit of edits) { const changed = structuredClone(dataset); edit(changed); assert.equal(validateLearningDataset(changed).status, 'invalid'); }
+});
+
+test('known alternatives accept the optional exact-car reference and reject unregistered nested fields', async () => {
+  const [record] = generateLearningRecords('alternative-schema', await prepareLearning(scarceSource())).records;
+  assert.equal(validateLearningRecord(record).status, 'ok');
+  const old = structuredClone(record); for (const a of old.choiceSet.value) delete a.orderRef;
+  assert.equal(validateLearningRecord(old).status, 'ok');
+  for (const value of [null, {}, '']) { const invalid = structuredClone(record); invalid.choiceSet.value[0].orderRef = value; assert.equal(validateLearningRecord(invalid).status, 'invalid'); }
+  const invalid = structuredClone(record); invalid.choiceSet.value[0].sourceBlob = {}; assert.equal(validateLearningRecord(invalid).status, 'invalid');
+});
+
+test('ineligible configuration facts and mixed nested eligibility provenance are refused explicitly', async () => {
+  const source = scarceSource(); const model = assumption(source, 'comparison.configurationSet.v1').value.configurations[0].modelLine;
+  for (const rule of source.eligibilityRules) if (rule.value === model && rule.gradeIds.includes('G7')) rule.effect = 'exclude';
+  assert.ok(generateLearningRecords('excluded-model', await prepareLearning(source)).records.every((r) => r.choiceSet.value.length === 0));
+  const valid = learningSource(); const service = learningService(valid); const ports = {};
+  for (const name of ['getActiveVersion', 'getAssumption', 'getAllowance', 'getPointsCost']) ports[name] = (...args) => service[name](...args);
+  ports.getEligibility = async (...args) => { const out = await service.getEligibility(...args); out.value.provenance.assumptions[0].policyVersion = 'mixed'; return out; };
+  await assert.rejects(prepareLearning(valid, { policyService: ports }), (e) => e.code === 'incoherent-policy');
+});
+
+test('retained small synthetic dataset reproduces its full policy input and passes the training boundary', async () => {
+  const fixture = JSON.parse(await readFile(new URL('./fixtures/gcsp-learning-dataset.json', import.meta.url), 'utf8'));
+  const snapshot = await prepareLearning(learningSource({ 'learning.cohortSize': 3, 'learning.cycles': 2 }));
+  assert.deepEqual(createLearningDataset('fictional-learning-sample-v1', snapshot), fixture);
+  assert.equal(readLearningDataset(fixture).status, 'ok'); assert.equal(fixture.records.length, 6);
+  assert.equal(fixture.manifest.snapshot.comparison.configurationSource.kind, 'reviewed-fixtures');
+  assert.deepEqual(fixture.manifest.counts.provenance, { observed: 0, synthetic: 6 });
+});
+
+test('learning definition candidate matches the reviewed additive bundle schema and canonical digest', () => {
+  const { digest, ...bundle } = learningDefinitions;
+  assert.deepEqual(Object.keys(learningDefinitions).sort(), ['schemaVersion', 'definitionSetId', 'revision', 'definitions', 'digest'].sort());
+  assert.equal(bundle.schemaVersion, 1); assert.equal(bundle.definitionSetId, 'fucq113-learning-v1');
+  assert.equal(inputDigest(bundle), digest);
+  assert.deepEqual(bundle.definitions.map((row) => row.key), LEARNING_KEYS);
+  for (const row of bundle.definitions) {
+    assert.deepEqual(Object.keys(row).sort(), ['key', 'value', 'unit', 'status', 'basis', 'source', 'sourceDate'].sort());
+    assert.equal(row.status, 'assumed'); assert.equal(row.sourceDate, '2026-11-05');
+  }
+});
