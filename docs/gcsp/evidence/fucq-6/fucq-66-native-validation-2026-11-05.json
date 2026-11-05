@@ -214,9 +214,9 @@
   },
   "strictScopedEvidence": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/strict/targeted-668010686af15f414aca4b1a3792d53b4c9b493cd714572e06b76811867772ef-default-1793916628961761000.json",
   "diagnosis": {
-    "observed": "Second review command after reopen has no value; test unguarded .value.hold throws at line569. Earlier claim, initial review and identical review replay assertions passed.",
-    "cause": "Unresolved: typed response was not captured. No product defect established.",
-    "next": "Assert and record the second beginReview status/outcome, preserve failed source; then run only necessary diagnostic under a new freeze. Do not repeat unchanged failed case."
+    "observed": "action() before first review returns not-found/manual-claim. Initial claim result was not asserted. New nextReview assertion not reached. No product cause established.",
+    "cause": "Unresolved. v3 reached second review; v4 failed before initial review, showing different upstream failure.",
+    "next": "assert initial claim status/outcome; preserve both earlier failures; no unchanged repeat"
   },
   "compatibility": {
     "at": 1793916229.228796,
@@ -265,6 +265,170 @@
   "agents": {
     "lead": "requested/selected/effective gpt-6.1-sol/high; no fallback",
     "implementer": "requested/selected/effective gpt-6.1-sol/medium; no fallback",
-    "runner": "requested/selected gpt-6-luna/high; effective to be verified independently; no fallback"
-  }
+    "runner": "requested/selected/effective gpt-6-luna/high; parent verified own session turn_context, no fallback"
+  },
+  "nativeDiagnostics": [
+    {
+      "version": 4,
+      "id": "manual-02",
+      "status": "failed upstream of new diagnostic",
+      "sourceIdentity": {
+        "version": 4,
+        "files": {
+          "server/gcsp/policy/seed-v1.json": "c585213b98631d6e82acc1b3720d47efae49fdb502f5fc86fb440703ef6e41a6",
+          "server/gcsp/migrations/0001_transaction_foundation.sql": "3bde8db01f103141ca9bbe7398a6e1172df9b9789df745244a0071a00b9629d1",
+          "server/gcsp/migrations/0002_policy_tables.sql": "65346093f811df63b225436a0ca35cd4061990a78caacb44ffde7b1effd1edd0",
+          "server/gcsp/migrations/0003_renewal_cases.sql": "e76750fddd75b9d363fd209c243169ce1f9b06c78f96b7dbb74fe3c296f08c98",
+          "server/test/gcsp-manual-claims.test.js": "ab4c0343d8b02e401dcf061ece6fafa9cfca70cb9075f5316e8b8d5e5da452db",
+          "server/test/gcsp-repository-contract.test.js": "b16af74ace3bca4ef169e7f225c939a94406db06af12be6425ca58edde882926",
+          "server/test/helpers/manual-claim-reopen.js": "d9d8733aca880a853fdccdb714d6a4e2c82d39fda20a329fe3e3f395311f2f7b",
+          "server/gcsp/manual-claims/index.js": "32c80ef72d8329fcdbc4a208d9ab911f68156e6234d3917975754415d04ef059",
+          "server/gcsp/manual-context/index.js": "3e694f3a68b9d3c9f40b44ddb785bec2edce3b3ada43d491995be77a2930fd43",
+          "server/gcsp/repository/postgres.js": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
+          "server/gcsp/policy/index.js": "087267e81d4a780ef300dba144d9de5c4978ca530fe8ea5b2f53e2ec41395a2c",
+          "server/gcsp/policy/postgres-provider.js": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+          "server/index.js": "6758ce90a5ddbba8ef9fc279cecf25b15af7923fd83dc8a278fb860620bb7243"
+        },
+        "packages": {
+          "package.json": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
+          "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+          "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139",
+          "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e"
+        },
+        "node": "v26.5.0",
+        "python": "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]",
+        "credential": "private backend child environment only; value not retained",
+        "policyProvider": "PostgresPolicyProvider, explicitly owned schema in native fixtures; FilePolicyProvider for memory tests",
+        "runEnvironment": "synthetic manual-claims",
+        "clock": "2026-11-05T09:00:00.000Z plus explicit test advances",
+        "remoteProvider": "explicit deterministic remote-shaped double, no operational calls",
+        "nativeSchemas": "gcsp_manual_<PID>_<serial>; gcsp_contract_<PID>_<serial>; gcsp_constraints_<PID>_1",
+        "identity": "all fictional, exact current-run port",
+        "portListeners": "none in selected native tests",
+        "inputDigest": "5b11f86b0cb42fd6e42c6b194c1cdce97f5641174f4ae336d9fd7e0413c8649b",
+        "created": 1793917133.406068,
+        "parentCheckpoint": "08d429d",
+        "testPartitioning": "v3 independent cases; v4 only captures/asserts second review typed outcome",
+        "thread": "01a1adb4-606f-7391-a86c-ad52858ec19f",
+        "reusedCase01": {
+          "basis": "all imports/helpers/case01 function unchanged; all provider/production/policy/migration/package inputs match v3",
+          "inputDigest": "7b1f177e386d2a78eed1e96bdbcf273eb32ebe4bcdf07cc18ac05430cd825b30",
+          "proof": "native-v3-manual-01-summary.json"
+        },
+        "head": "3a0208f3dce9ecfacedfd4b4a22f016cd6db934c",
+        "tree": "2894f839f34077af6b6ed661788edf46ef9987ad"
+      },
+      "command": "node --test --test-concurrency=1 --test-name-pattern '^native PostgreSQL manual claims retain once-only keyed review' server/test/gcsp-manual-claims.test.js",
+      "before": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/native-v4-manual-02-before-1793917152092297000-receipt.json",
+        "groups_absent": true,
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/native-v4-manual-02-before-1793917152092297000.log",
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/ownership/58207fa885a64c259573772a3638221d.json",
+        "package_hashes_unchanged": true,
+        "peak_rss": 62586880,
+        "peak_scratch": 27997108,
+        "rc": 0,
+        "reservation_absent": true,
+        "retained_dependencies": {
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/node_modules": 27138292,
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules": 858816
+        },
+        "scratch_removed": true,
+        "supervisor_owner": {
+          "pgid": 66604,
+          "pid": 66604,
+          "start": "Thu Nov  5 22:19:11 2026"
+        },
+        "wall": 3.9119770000000003
+      },
+      "test": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/native-v4-manual-02-1793917165857141000-receipt.json",
+        "groups_absent": true,
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/native-v4-manual-02-1793917165857141000.log",
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/ownership/c4613cd863c345b99ce81e96fe3f24c5.json",
+        "package_hashes_unchanged": true,
+        "peak_rss": 197230592,
+        "peak_scratch": 27997108,
+        "rc": 1,
+        "reservation_absent": true,
+        "retained_dependencies": {
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/node_modules": 27138292,
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules": 858816
+        },
+        "scratch_removed": true,
+        "supervisor_owner": {
+          "pgid": 66807,
+          "pid": 66807,
+          "start": "Thu Nov  5 22:19:25 2026"
+        },
+        "wall": 390.637903042
+      },
+      "after": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/native-v4-manual-02-after-1793917562173352000-receipt.json",
+        "groups_absent": true,
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/native-v4-manual-02-after-1793917562173352000.log",
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq66/ownership/ae853ac1a9064e77a23ab58b891d835a.json",
+        "package_hashes_unchanged": true,
+        "peak_rss": 62472192,
+        "peak_scratch": 27997108,
+        "rc": 0,
+        "reservation_absent": true,
+        "retained_dependencies": {
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/node_modules": 27138292,
+          "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules": 858816
+        },
+        "scratch_removed": true,
+        "supervisor_owner": {
+          "pgid": 73791,
+          "pid": 73791,
+          "start": "Thu Nov  5 22:26:01 2026"
+        },
+        "wall": 0.9253056669999999
+      },
+      "schemaBefore": {
+        "version": 3,
+        "label": "v4-manual-02-before",
+        "credentialValuesRetained": false,
+        "applicationWrites": 0,
+        "cleanupDrops": [],
+        "poolClosed": true,
+        "targetDigest": "d32001181fa1ad32ea72b2c1ac4c980d44506f8a677a0d6a6e495b744a89bed2",
+        "schemaCount": 4,
+        "schemaDigest": "fccfbabf2632676407486b21256345e4d3bcd8f94b48faffdf2663db32a4b1db",
+        "provider": "PostgreSQL",
+        "serverVersion": "18.6 (Debian 18.6-1.pgdg12+2)",
+        "baselineDigest": "fccfbabf2632676407486b21256345e4d3bcd8f94b48faffdf2663db32a4b1db",
+        "targetMatchesBaseline": true,
+        "newSchemas": [],
+        "missingBaselineSchemas": [],
+        "status": "exact-schema-inventory-restored"
+      },
+      "schemaAfter": {
+        "version": 3,
+        "label": "v4-manual-02-after",
+        "credentialValuesRetained": false,
+        "applicationWrites": 0,
+        "cleanupDrops": [],
+        "poolClosed": true,
+        "targetDigest": "d32001181fa1ad32ea72b2c1ac4c980d44506f8a677a0d6a6e495b744a89bed2",
+        "schemaCount": 4,
+        "schemaDigest": "fccfbabf2632676407486b21256345e4d3bcd8f94b48faffdf2663db32a4b1db",
+        "provider": "PostgreSQL",
+        "serverVersion": "18.6 (Debian 18.6-1.pgdg12+2)",
+        "baselineDigest": "fccfbabf2632676407486b21256345e4d3bcd8f94b48faffdf2663db32a4b1db",
+        "targetMatchesBaseline": true,
+        "newSchemas": [],
+        "missingBaselineSchemas": [],
+        "status": "exact-schema-inventory-restored"
+      },
+      "observed": "action() before first review returns not-found/manual-claim. Initial claim result was not asserted. New nextReview assertion not reached. No product cause established.",
+      "next": "assert initial claim status/outcome; preserve both earlier failures; no unchanged repeat"
+    }
+  ]
 }
