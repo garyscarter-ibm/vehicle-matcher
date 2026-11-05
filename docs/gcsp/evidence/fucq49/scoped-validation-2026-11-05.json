@@ -82,9 +82,10 @@
     "completeIndependentConfigurationIdentity": true,
     "source": "existing dated source-derived catalogue snapshot; no live catalogue calls",
     "nativeNamedAssetBytes": true,
-    "nativeProviderPath": false,
-    "storyCompletion": "pending fixed-provider native proof and final full; v5 direct diagnostic asset is not runtime acceptance",
-    "visibleOptionsAndExactVehicleAppearance": "unknown"
+    "nativeProviderPath": true,
+    "storyCompletion": "native/scoped acceptance passed; pending current-base integration and authorised final full",
+    "visibleOptionsAndExactVehicleAppearance": "unknown",
+    "evidence": "native-provider-v6-2026-11-05.json"
   },
   "observedKeyCorrection": {
     "tests": 62,
