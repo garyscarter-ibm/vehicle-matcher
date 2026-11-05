@@ -45,8 +45,19 @@ import { normalizeBrand, brandTuning } from './brands.js';
 import { fetchDealerDirectory } from './dealers.js';
 import { geocodePostcode } from './geocode.js';
 import { createGcspHandler } from './gcsp/identity/http.js';
+import { createEmployeeRecommendationRoutes } from './gcsp/recommendation/http.js';
+import { createClockRoutes } from './gcsp/clock/http.js';
+import { createOutboxRoutes } from './gcsp/notify/http.js';
+import { createScenarioRoutes } from './gcsp/scenarios/http.js';
+import { createCaseRoutes } from './gcsp/cases/http.js';
+import { createBriefRoutes } from './gcsp/brief/http.js';
+import { createActivityRoutes } from './gcsp/brief/activity-http.js';
+import { createManualContextRoutes } from './gcsp/manual-context/http.js';
+import { createVehicleEvidenceHandler, isVehicleEvidencePath } from './gcsp/vehicle-evidence/vehicle-evidence-handler.js';
+import { createLocalVehicleEvidenceLookup } from './gcsp/vehicle-evidence/local-vehicle-lookup.js';
+import { createGregRoutes } from './gcsp/greg/http.js';
 
-const PORT = Number(process.env.PORT) || 8787;
+const PORT = process.env.PORT === '0' ? 0 : Number(process.env.PORT) || 8787;
 const MAX_BODY_BYTES = 16 * 1024; // quiz answers are tiny; reject anything bigger
 
 // A shared secret that gates the /api/* surface, set only in the host's env
@@ -399,7 +410,7 @@ function publicPool(brand, cars, directory = null) {
 }
 
 function publicMatch({
-  car, score, stretch, reasons, tradeOffs, listings,
+  car, score, fit, taste, stretch, reasons, tradeOffs, listings,
 }) {
   return {
     car: publicCar(car),
@@ -420,6 +431,15 @@ function publicMatch({
     // ("Portimao Blue") the buyer reads.
     listings: (listings?.length ? listings : [car]).map((c) => ({
       id: c.id,
+      name: c.name,
+      line: c.line,
+      plate: c.plate,
+      retailerName: c.retailerName,
+      distance: c.distance,
+      // Keep the evaluator's decision attached to the exact member. Ungrouped
+      // game/preview matches have no member list, so their sole member uses
+      // the match decision. No client re-evaluation is needed.
+      decision: c.decision || { score, fit, taste, stretch, reasons, tradeOffs },
       // Each listing is a real car with its own photographs, so the card can
       // show the one the buyer picked rather than the one that ranked first.
       // Colour is the reason this choice exists; a picture of a different
@@ -557,9 +577,9 @@ async function handleMatch(req, res, deps) {
   // Shown cards get their listings enriched too (the picker needs every
   // colour); the held-back alternatives only need their own paint, since they
   // aren't on screen yet.
-  // Grouping copies the representative into a fresh `car` object and keeps the
-  // originals in `listings`, so enriching one does NOT enrich the other. Both
-  // have to be enriched, or a grouped card gets paint on its headline and none
+  // Grouping copies the representative into a fresh `car` object and retains
+  // decision-bearing copies in `listings`; enriching one does NOT enrich the
+  // other. Both have to be enriched, or a grouped card gets paint on its headline and none
   // on the listings behind it.
   //
   // Only the headline cars are waited on. Against a national pool the full
@@ -840,15 +860,44 @@ export function buildServer(deps = {}) {
     ...deps,
   };
   const handleGcsp = createGcspHandler({
-    identity: deps.gcspIdentity, routes: deps.gcspRoutes,
+    identity: deps.gcspIdentity,
+    routes: [...createEmployeeRecommendationRoutes(deps.gcspClock && deps.gcspRecommendations
+      ? { ...deps.gcspRecommendations, time: deps.gcspClock } : deps.gcspRecommendations),
+    ...createClockRoutes(deps.gcspClock), ...createOutboxRoutes(deps.gcspOutbox), ...createScenarioRoutes(deps.gcspScenarios, deps.gcspClock), ...createBriefRoutes(deps.gcspBrief, deps.gcspBriefEditor), ...createActivityRoutes(deps.gcspActivity), ...createCaseRoutes(deps.gcspCases), ...createManualContextRoutes(deps.gcspManual), ...createGregRoutes(deps.gcspGreg), ...(deps.gcspRoutes || [])],
+    allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
+  });
+  const handleVehicleEvidence = createVehicleEvidenceHandler({
+    lookup: deps.gcspVehicleEvidence?.lookup || createLocalVehicleEvidenceLookup({
+      root: deps.gcspVehicleEvidence?.root || process.env.GCSP_VEHICLE_EVIDENCE_ROOT,
+      repository: deps.gcspVehicleEvidence?.repository,
+    }),
+    identity: deps.gcspIdentity,
+    resolveContext: deps.gcspVehicleEvidence?.resolveContext,
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
 
-  return createServer(async (req, res) => {
+  const gcspStartup = deps.gcspClock ? Promise.resolve().then(async () => {
+    // Notification registration precedes the clock sealing its registry. Startup
+    // drains already committed jobs even though clock startup omits allocation.
+    if (deps.gcspCases) {
+      const cases = await deps.gcspCases.start();
+      if (cases.status !== 'ok') return cases;
+    }
+    if (deps.gcspNotify) {
+      const notifications = await deps.gcspNotify.start();
+      if (notifications.status !== 'ok') return notifications;
+    }
+    return deps.gcspClock.reconcileStartup();
+  }).catch(() => ({
+    status: 'unavailable', reason: 'GCSP startup reconciliation is unavailable.', retryable: true, contractVersion: '1.0.0',
+  })) : Promise.resolve(null);
+  const server = createServer(async (req, res) => {
     const { pathname, searchParams } = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
     const isGcsp = pathname === '/api/gcsp' || pathname.startsWith('/api/gcsp/');
+    const isVehicleEvidence = isVehicleEvidencePath(req.url);
 
     if (req.method === 'OPTIONS') {
+      if (isVehicleEvidence) return handleVehicleEvidence({ req, res, sendJson, corsHeaders: CORS_HEADERS });
       if (isGcsp) return handleGcsp({ req, res, pathname, searchParams, sendJson, corsHeaders: CORS_HEADERS });
       res.writeHead(204, CORS_HEADERS);
       return res.end();
@@ -860,11 +909,15 @@ export function buildServer(deps = {}) {
 
     // Health and preflight stay open; every API consumer below passes the shared gate.
     if (!isAuthorized(req)) {
+      if (isVehicleEvidence) return handleVehicleEvidence({ req, res, sendJson, gateAuthorized: false });
       if (isGcsp) return handleGcsp({ req, res, pathname, searchParams, sendJson, gateAuthorized: false });
       return sendJson(res, 401, { error: 'Unauthorized' });
     }
 
+    if (isVehicleEvidence) return handleVehicleEvidence({ req, res, sendJson });
+
     if (isGcsp) {
+      await gcspStartup;
       return handleGcsp({ req, res, pathname, searchParams, sendJson });
     }
 
@@ -961,6 +1014,8 @@ export function buildServer(deps = {}) {
 
     return sendJson(res, 404, { error: 'Not found' });
   });
+  Object.defineProperty(server, 'gcspStartup', { value: gcspStartup });
+  return server;
 }
 
 // Constants worth asserting against in tests without hardcoding the numbers.
@@ -972,7 +1027,11 @@ export { PREVIEW_COUNT, FIELD_MAX, clampFieldSize };
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const server = buildServer();
   server.listen(PORT, () => {
-    console.log(`Matcher API listening on http://localhost:${PORT}`);
+    console.log(`Matcher API listening on http://localhost:${server.address().port}`);
+    if (process.env.GCSP_OFFLINE === '1') {
+      console.log('[gcsp] offline vehicle evidence; live startup warmers disabled');
+      return;
+    }
 
     // Keep live stock hot off the request path so the slow cold fetch (chiefly
     // BMW/MINI's national pagination and the nearby distance search) isn't

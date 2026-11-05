@@ -1,0 +1,259 @@
+{
+  "argv": [
+    "node",
+    "--test",
+    "--test-concurrency=1",
+    "server/test/gcsp-offline-start.test.js",
+    "server/test/api.test.js"
+  ],
+  "budget": {
+    "file_workers": 1,
+    "ram_bytes": 536870912,
+    "scratch_bytes": 33554432,
+    "seconds": 180
+  },
+  "cleanup": {
+    "compatibility_exception": null,
+    "groups_live": {
+      "38044": false
+    },
+    "large_outputs": false,
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/34ec3a2b989b45dcac1523b5231f3e49.json",
+    "manifest_state": "removed",
+    "removed_peak_bytes": 4192,
+    "reservation_absent": true,
+    "root": "/private/tmp/test-stamp-shard-34ec3a2b989b45dcac1523b5231f3e49",
+    "root_absent": true,
+    "successful_verbose_log_removed": true
+  },
+  "code_test_identity": {
+    "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "b2de4a7a6dd181c15615be702d6031b7a0cc10d34d8c92c87b5c371d16928e8a",
+    "server/gcsp/vehicle-evidence/vehicle-details-contract.js": "3886ac9377f3688d2bfe2c2af5a6fe330bb4b49d2f18bb049c8cc7f71d485cc8",
+    "server/gcsp/vehicle-evidence/vehicle-evidence-handler.js": "9e118acfe39f550f06e6c319f536ca8768ca4b41820fd9ca9593e79b18f8c8f0",
+    "server/gcsp/vehicle-evidence/vehicle-lookup.js": "8ce1256486422dd048d7f5cec0e1e67d01505ae810257811f4037b1b006f5e70",
+    "server/index.js": "52c02b20d3a0e1c3a75de7697af38b1032dfb453e39c96f35f2f440435da8b4c",
+    "server/test/gcsp-offline-start.test.js": "5f3dd0f700fbc9ceb948189766af2061db0f11707b9c4c2d17fb2a248a96435b",
+    "server/test/gcsp-synthetic-vin-api.test.js": "ac86aa927c5cb1ee9094ab2eaf343e115104d428b67a445ecb11f6a706de5265",
+    "server/test/gcsp-vehicle-evidence-lookup.test.js": "021db46e480fab71c38fb62adad07e531c4fdf0a153d1f03a2ea652401c79c61"
+  },
+  "config_identity": {
+    "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+    "package.json": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
+    "server/gcsp/policy/seed-v1.json": "fa73b7fd140132536e337fd9e431824d769f7963336e982dd4d24f063ba683ef",
+    "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+    "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+  },
+  "error": null,
+  "head": "d718491e13407d496017c6ec1b90f19850d35393",
+  "health": {
+    "disk_free_bytes": 67574669312,
+    "memory_pressure": "The system has 17179869184 (1048576 pages with a page size of 16384).\nSystem-wide memory free percentage: 48%",
+    "swap": "vm.swapusage: total = 2048.00M  used = 1136.00M  free = 912.00M  (encrypted)",
+    "time_utc": "2026-11-05T05:58:36.512872+00:00"
+  },
+  "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq55-offline-retail-34ec3a2b989b45dcac1523b5231f3e49.log",
+  "log_retained": false,
+  "node": "v26.7.0",
+  "observed_counts": {
+    "cancelled": "0",
+    "duration_ms": "2177.225916",
+    "fail": "0",
+    "pass": "54",
+    "skipped": "0",
+    "suites": "0",
+    "tests": "54",
+    "todo": "0"
+  },
+  "observed_max_test_file_workers": 1,
+  "ownership_manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/34ec3a2b989b45dcac1523b5231f3e49.json",
+  "packaged_inputs": {
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/active.json": "8c797f87d050687c6d4efd4392061c65c753e5ee0177e77f9b5cab86dc3383bb",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/identity-inventory.json": "dd702f37aa81480d61b7a8a74d761abe026d25b39f056cf1d50698bbdf0edd4f",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/configurations.jsonl": "9c1fb6a34e324e6e4937baa1e80eabafa44fae394dd138f2f77be9f6867e9855",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/images.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/manifest.json": "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/vins.jsonl": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd"
+  },
+  "reporter_summary": [
+    "\u2139 tests 54",
+    "\u2139 suites 0",
+    "\u2139 pass 54",
+    "\u2139 fail 0",
+    "\u2139 cancelled 0",
+    "\u2139 skipped 0",
+    "\u2139 todo 0",
+    "\u2139 duration_ms 2177.225916"
+  ],
+  "result": {
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq55-offline-retail-34ec3a2b989b45dcac1523b5231f3e49.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/34ec3a2b989b45dcac1523b5231f3e49.json",
+    "peak_rss": 313016320,
+    "peak_scratch": 4192,
+    "rc": 0,
+    "wall": 2.4885987079978804
+  },
+  "root": "/private/tmp/test-stamp-shard-34ec3a2b989b45dcac1523b5231f3e49",
+  "scope": "offline-retail",
+  "state": "passed",
+  "story": "FUCQ-55",
+  "success_excerpt": null,
+  "test_cases": [
+    "\u2714 GET /health \u2192 200 { ok: true } (12.594209ms)",
+    "\u2714 unknown path \u2192 404 { error } (3.101791ms)",
+    "\u2714 right path but wrong method \u2192 404 (POST-only route via GET) (1.313583ms)",
+    "\u2714 OPTIONS preflight \u2192 204 with CORS headers (1.386416ms)",
+    "\u2714 auth off (no key set) \u2192 /api/questions open with no header (2.062208ms)",
+    "\u2714 gated: /api/questions with no key \u2192 401 (36.624958ms)",
+    "\u2714 gated: wrong key \u2192 401 (62.153416ms)",
+    "\u2714 gated: correct key \u2192 200 with the normal questions shape (10.062459ms)",
+    "\u2714 gated: POST /api/match without the key \u2192 401 (POST routes are gated too) (67.731209ms)",
+    "\u2714 gated: /health stays open with no key (platform health check must not break) (3.14925ms)",
+    "\u2714 every endpoint the client calls exists (contract guard for the /api/field-class bug) (170.588917ms)",
+    "\u2714 GET /api/questions ships questions + budgetBands + topMatches (32.22ms)",
+    "\u2714 GET /api/questions?brand=mini filters options MINI does not sell (2.766292ms)",
+    "\u2714 GET /api/questions with a garbage brand defaults to BMW (32.180541ms)",
+    "\u2714 missing answers \u2192 400 (1.598917ms)",
+    "\u2714 non-object answers (array / string) \u2192 400 (52.328542ms)",
+    "\u2714 missing / invalid budget \u2192 400 (40.887667ms)",
+    "\u2714 legacy b1\u2013b5 band budget is accepted \u2192 not a 400 (30.592959ms)",
+    "\u2714 malformed JSON body \u2192 400 (1.590042ms)",
+    "\u2714 oversized body \u2192 413 (29.937583ms)",
+    "\u2714 POST /api/match returns the full match envelope + publicMatch shape (1.779625ms)",
+    "\u2714 POST /api/match maps StockUnavailableError \u2192 502 (30.592375ms)",
+    "\u2714 POST /api/match maps a generic stock error \u2192 500 (8.017292ms)",
+    "\u2714 POST /api/preview returns \u2264 PREVIEW_COUNT matches, each painted (30.791042ms)",
+    "\u2714 POST /api/preview accepts a partial brief (budget only) \u2192 200 (52.159ms)",
+    "\u2714 POST /api/preview degrades a ranking failure to { matches: [] } 200, never 5xx (2.648416ms)",
+    "\u2714 POST /api/field returns \u2264 FIELD_MAX and respects a size under the cap (31.241958ms)",
+    "\u2714 POST /api/field clamps an oversized size down to FIELD_MAX (59.45125ms)",
+    "\u2714 POST /api/field treats an under-minimum size as the cap (clampFieldSize) (31.451584ms)",
+    "\u2714 POST /api/field with a thin feed returns fewer than asked (drives the adaptive snap) (9.468916ms)",
+    "\u2714 POST /api/field enrich:true paints the cards (53.749166ms)",
+    "\u2714 POST /api/field with enrich omitted does NOT enrich (the knockout cost-saving contract) (30.456625ms)",
+    "\u2714 POST /api/field degrades a ranking failure to { matches: [] } 200 (30.307834ms)",
+    "\u2714 brand routes to the right feed; retailer is threaded to the stock fetch (60.625791ms)",
+    "\u2714 an absent/garbage brand defaults to bmw at the stock layer (30.97275ms)",
+    "\u2714 normalizeScope takes the two scopes case-insensitively and defaults everything else to dealer (0.134042ms)",
+    "\u2714 scope is threaded to the stock fetch by every endpoint that reads the pool (76.215417ms)",
+    "\u2714 a request that names no scope reads the dealer pool, on all four endpoints (47.079125ms)",
+    "\u2714 GET /api/pool echoes the scope it actually used, so a typo is visible (30.600667ms)",
+    "\u2714 GET /api/pool threads the retailer too, so a dealer scope has a dealer to scope to (1.044ms)",
+    "\u2714 POST /api/nearby returns { nearby, unmet } on success (1.334708ms)",
+    "\u2714 POST /api/nearby degrades a failure to { nearby: [], unmet: null } 200 (29.576917ms)",
+    "\u2714 GET /api/pool ships every column index-aligned to n (1.312625ms)",
+    "\u2714 GET /api/pool ships a sites table aligned with retailers, not with the cars (30.0855ms)",
+    "\u2714 GET /api/pool still serves the stock when the dealer directory is down (30.899917ms)",
+    "\u2714 GET /api/pool leaves a dealer the directory does not know unlocated (30.664209ms)",
+    "\u2714 GET /api/pool 502s when the stock itself is unavailable (29.376875ms)",
+    "\u2714 GET /api/geocode returns the coordinates for a postcode (29.424084ms)",
+    "\u2714 GET /api/geocode 404s for a postcode that does not exist (29.735ms)",
+    "\u2714 GET /api/geocode 502s when the geocoder cannot be reached (30.154125ms)",
+    "\u2714 GET /api/geocode with no postcode at all is a 404, not a crash (30.127958ms)",
+    "\u2714 clampFieldSize: boundaries and junk resolve as documented (0.094375ms)",
+    "\u2714 buildServer defaults its deps and is not listening until asked (0.098708ms)",
+    "\u2714 the real same-entry offline profile cold-starts and restarts selected local evidence without credentials or external calls (373.875834ms)"
+  ],
+  "worker_check_before_launch": {
+    "selected_test_files": [
+      "server/test/gcsp-offline-start.test.js",
+      "server/test/api.test.js"
+    ],
+    "single_worker_flag_before_files": true
+  },
+  "observed_processes": [
+    {
+      "argv": "node --test --test-concurrency=1 server/test/gcsp-offline-start.test.js server/test/api.test.js",
+      "kind": "leader",
+      "pgid": 38044,
+      "pid": 38044,
+      "ppid": 38026
+    },
+    {
+      "argv": "/opt/homebrew/Cellar/node/26.7.0/bin/node --test-concurrency=1 --heap-prof-interval=524288 --stack-trace-limit=10 --report-signal=SIGUSR2 --max-http-header-size=16384 --watch-kill-signal=SIGTERM --heapsnapshot-near-heap-limit=0 --inspect-publish-uid=stderr,http --test-isolation=process --test-coverage-lines=0 --cpu-prof-interval=1000 --test-coverage-functions=0 --test-timeout=0 --inspect-port=127.0.0.1:9229 --test-coverage-branches=0 --use-largepages=off --experimental-addon-modules --network-family-autoselection-attempt-timeout=500 --secure-heap-min=2 --v8-pool-size=4 --secure-heap=0 --tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA --node-snapshot --trace-event-file-pattern=node_trace.${rotation}.log server/test/api.test.js",
+      "kind": "test-file-worker",
+      "pgid": 38044,
+      "pid": 38047,
+      "ppid": 38044
+    },
+    {
+      "argv": "/opt/homebrew/Cellar/node/26.7.0/bin/node --test-concurrency=1 --heap-prof-interval=524288 --stack-trace-limit=10 --report-signal=SIGUSR2 --max-http-header-size=16384 --watch-kill-signal=SIGTERM --heapsnapshot-near-heap-limit=0 --inspect-publish-uid=stderr,http --test-isolation=process --test-coverage-lines=0 --cpu-prof-interval=1000 --test-coverage-functions=0 --test-timeout=0 --inspect-port=127.0.0.1:9229 --test-coverage-branches=0 --use-largepages=off --experimental-addon-modules --network-family-autoselection-attempt-timeout=500 --secure-heap-min=2 --v8-pool-size=4 --secure-heap=0 --tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA --node-snapshot --trace-event-file-pattern=node_trace.${rotation}.log server/test/gcsp-offline-start.test.js",
+      "kind": "test-file-worker",
+      "pgid": 38044,
+      "pid": 38063,
+      "ppid": 38044
+    },
+    {
+      "argv": "(node)",
+      "kind": "child",
+      "pgid": 38044,
+      "pid": 38064,
+      "ppid": 38063
+    }
+  ],
+  "process_samples": [
+    {
+      "pids": [
+        38044
+      ],
+      "test_file_workers": 0
+    },
+    {
+      "pids": [
+        38044,
+        38047
+      ],
+      "test_file_workers": 1
+    },
+    {
+      "pids": [
+        38044,
+        38047
+      ],
+      "test_file_workers": 1
+    },
+    {
+      "pids": [
+        38044,
+        38047
+      ],
+      "test_file_workers": 1
+    },
+    {
+      "pids": [
+        38044,
+        38047
+      ],
+      "test_file_workers": 1
+    },
+    {
+      "pids": [
+        38044,
+        38047
+      ],
+      "test_file_workers": 1
+    },
+    {
+      "pids": [
+        38044,
+        38047
+      ],
+      "test_file_workers": 1
+    },
+    {
+      "pids": [
+        38044,
+        38063,
+        38064
+      ],
+      "test_file_workers": 1
+    },
+    {
+      "pids": [
+        38044
+      ],
+      "test_file_workers": 0
+    }
+  ]
+}

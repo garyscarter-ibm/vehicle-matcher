@@ -66,6 +66,31 @@ export function repositoryContract(provider, factory) {
       assert.equal(write.value.version, 2);
       assert.equal((await repository.migrationStatus()).value.current, true);
     }));
+    await t.test('atomic reset switches current run, preserves history and rolls back failed seeds', () => withRepository(async (repository, reopen) => {
+      const c = ctx();
+      await repository.transaction(c, command(), (tx) => tx.compareAndSwap(ref('runs', {}, c), 1, { current: true }));
+      const next = { runId: 'reset-run', environmentId: c.environmentId, current: true, status: 'active' };
+      const rows = [['employees', { employeeId: 'reset-person' }]];
+      const staleReset = await repository.resetRun(c, command(), { expectedCurrentRunId: c.runId, expectedRunVersion: 1, nextRun: next, rows });
+      assert.equal(staleReset.status, 'stale-version');
+      assert.equal((await repository.currentRun(c.environmentId)).value.runId, c.runId);
+      const bad = await repository.resetRun(c, command(), { expectedCurrentRunId: c.runId, expectedRunVersion: 2, nextRun: next,
+        rows: [['entitlement_slots', { entitlementSlotId: 'bad', employeeId: 'missing', capacity: 1 }]] });
+      assert.equal(bad.status, 'conflict');
+      assert.equal((await repository.currentRun(c.environmentId)).value.runId, c.runId);
+      const cmd = command();
+      const input = { expectedCurrentRunId: c.runId, expectedRunVersion: 2, nextRun: next, rows };
+      const changed = await repository.resetRun(c, cmd, input);
+      assert.equal(changed.status, 'ok');
+      repository = await reopen();
+      assert.deepEqual(await repository.resetRun(c, cmd, input), changed);
+      assert.equal((await repository.currentRun(c.environmentId)).value.runId, 'reset-run');
+      assert.equal((await repository.read(c, ref('runs', {}, c))).value.status, 'historical');
+      assert.equal((await repository.query(c, 'stock')).value.length, 2);
+      const newContext = { ...c, runId: 'reset-run' };
+      assert.equal((await repository.query(newContext, 'employees')).value[0].employeeId, 'reset-person');
+      assert.equal((await repository.transaction(c, command(), (tx) => tx.insert('decisions', { runId: c.runId, decisionId: 'stale' }))).status, 'stale-run');
+    }));
     await t.test('thrown and typed failures roll back even if callback ignores failed operation', () => withRepository(async (repository) => {
       const thrown = await repository.transaction(ctx(), command(), async (tx) => { await tx.insert('employees', { runId: 'run-a', employeeId: 'throw' }); throw new Error('private detail'); });
       assert.equal(thrown.status, 'unavailable');
@@ -210,6 +235,24 @@ export function repositoryContract(provider, factory) {
       await repository.transaction(ctx(), command(), (tx) => tx.compareAndSwap(ref('runs', {}), 1, { status: 'historical' }));
       assert.deepEqual(await repository.transaction(ctx(), stable, () => ok({ original: 2 })), before);
     }));
+    await t.test('renewal case uniqueness and notification rollback share the provider transaction', () => withRepository(async (repository) => {
+      const row = { runId: 'run-a', caseId: 'case-one', employeeId: 'employee-a', renewalId: 'renewal-a', status: 'open', history: [] };
+      const saved = await repository.transaction(ctx(), command(), (tx) => tx.insert('renewal_cases', row));
+      assert.equal(saved.status, 'ok');
+      const duplicate = await repository.transaction(ctx(), command(), (tx) => tx.insert('renewal_cases', { ...row, caseId: 'case-two' }));
+      assert.equal(duplicate.reason, 'active-renewal-case-exists');
+      const rollback = await repository.transaction(ctx(), command(), async (tx) => {
+        await tx.compareAndSwap(ref('renewal_cases', { caseId: 'case-one' }), saved.value.version, { status: 'in-progress' });
+        await tx.enqueueNotification({ jobId: 'case-update', idempotencyKey: 'case:one:update:2', inputDigest: inputDigest('case'),
+          recipientId: 'employee-a', messageKind: 'renewal-case-update', state: 'pending' });
+        return result('conflict', { reason: 'fixture-rollback' });
+      });
+      assert.equal(rollback.reason, 'fixture-rollback');
+      assert.deepEqual((await repository.read(ctx(), ref('renewal_cases', { caseId: 'case-one' }))).value, saved.value);
+      assert.equal((await repository.query(ctx(), 'notification_outbox')).value.length, 0);
+      const invalid = await repository.transaction(ctx(), command(), (tx) => tx.insert('renewal_cases', { ...row, caseId: 'invalid', status: 'invented' }));
+      assert.equal(invalid.status, 'invalid');
+    }));
     await t.test('closed provider returns UI-safe unavailable shape', () => withRepository(async (repository) => {
       await repository.close();
       assert.deepEqual(await repository.query(ctx(), 'stock'), responseFixtures.unavailable);
@@ -265,8 +308,8 @@ repositoryContract('memory', async () => {
 
 test('memory: explicit store and complete foundation vocabulary', async () => {
   assert.equal((await createMemoryRepository().open()).code, 'missing-store');
-  assert.equal(FOUNDATION_TABLES.length, 17);
-  assert.equal(Object.keys(TABLES).length, 23);
+  assert.equal(FOUNDATION_TABLES.length, 18);
+  assert.equal(Object.keys(TABLES).length, 24);
   assert.equal(inputDigest({ b: 2, a: 1 }), inputDigest({ a: 1, b: 2 }));
 });
 
@@ -316,7 +359,7 @@ function driverDouble({ state = { tables: Object.fromEntries(Object.keys(TABLES)
       if (sql.startsWith('INSERT INTO') && sql.includes('.schema_migrations')) {
         applied.push({ version: values[0], filename: values[1], checksum: values[2] }); return { rows: [] };
       }
-      if (sql.includes('CREATE TABLE "runs"')) {
+      if ((sql.includes('CREATE TABLE "runs"') || sql.includes('CREATE TABLE renewal_cases'))) {
         ddlExecutions += 1;
         if (failMigration) throw new Error('PRIVATE_DATABASE_DETAIL');
         return { rows: [] };
@@ -345,6 +388,7 @@ function driverDouble({ state = { tables: Object.fromEntries(Object.keys(TABLES)
       await previous;
       return { ...client, release };
     } },
+    setFailureTable: (table) => { failTable = table; },
     read: () => structuredClone(data), ledger: () => applied, queries,
     ddlExecutions: () => ddlExecutions,
   };
@@ -357,17 +401,18 @@ repositoryContract('postgresql driver double (not live SQL)', async () => {
 
 test('postgresql driver: migrations record checksums, rerun once and reject changed history', async () => {
   const driver = driverDouble();
-  assert.deepEqual((await migrationStatus(driver.pool)).value, { current: false, appliedVersions: [], pendingVersions: ['0001'] });
+  assert.deepEqual((await migrationStatus(driver.pool)).value, { current: false, appliedVersions: [], pendingVersions: ['0001', '0003'] });
   assert.equal((await migrate(driver.pool)).status, 'ok');
   assert.equal((await migrate(driver.pool)).status, 'ok');
-  assert.equal(driver.ddlExecutions(), 1);
+  assert.equal(driver.ddlExecutions(), 2);
   const migrations = await loadMigrations();
-  assert.equal(driver.ledger()[0].checksum, migrations[0].checksum);
+  assert.deepEqual(driver.ledger().map(({version, checksum}) => ({version, checksum})),
+    migrations.map(({version, checksum}) => ({version, checksum})));
   driver.ledger()[0].checksum = 'changed';
   const changed = await migrate(driver.pool);
   assert.equal(changed.reason, 'migration-history-mismatch');
   assert.equal(changed.retryable, false);
-  assert.equal(driver.ddlExecutions(), 1);
+  assert.equal(driver.ddlExecutions(), 2);
   const failed = driverDouble({ failMigration: true });
   assert.equal((await migrate(failed.pool)).status, 'unavailable');
   assert.deepEqual(failed.ledger(), []);
@@ -416,5 +461,23 @@ test('postgresql driver: uncertain commit is reconciled with the original comman
   const replay = await repository.transaction(ctx(), stable, () => { throw new Error('must not repeat'); });
   assert.equal(replay.status, 'ok'); assert.equal(replay.value.hold.holdId, 'hold-a');
   assert.equal(driver.read().tables.holds.length, 1);
+  await repository.close();
+});
+
+
+test('postgresql driver: a reset flush failure restores current run and leaves no replacement fixture rows', async () => {
+  const driver = driverDouble();
+  const repository = createPostgresRepository({ pool: driver.pool });
+  await repository.open(); await setup(repository);
+  const c = ctx();
+  await repository.transaction(c, command(), (tx) => tx.compareAndSwap(ref('runs', {}, c), 1, { current: true }));
+  const before = driver.read();
+  driver.setFailureTable('entitlement_slots');
+  const reset = await repository.resetRun(c, command(), { expectedCurrentRunId: c.runId, expectedRunVersion: 2,
+    nextRun: { runId: 'flush-failed-reset', environmentId: c.environmentId, current: true, status: 'active' },
+    rows: [['employees', { employeeId: 'new-person' }], ['entitlement_slots', { employeeId: 'new-person', entitlementSlotId: 'new-slot', capacity: 1 }]] });
+  assert.equal(reset.status, 'unavailable');
+  assert.deepEqual(driver.read(), before);
+  assert.equal((await repository.currentRun(c.environmentId)).value.runId, c.runId);
   await repository.close();
 });

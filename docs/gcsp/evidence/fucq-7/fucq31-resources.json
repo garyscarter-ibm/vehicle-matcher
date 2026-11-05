@@ -1,0 +1,428 @@
+{
+  "task": "DEV-2026-11-04-051",
+  "story": "FUCQ-31",
+  "source": "29c5af45e417813457d26c5900fdf9b8c0bfd37e",
+  "auditedAt": "2026-11-05T11:15:05.182190+00:00",
+  "method": "Independent filesystem, ps process-group and lsof LISTEN checks after runner teardown; no cleanup claims inferred only from receipts.",
+  "ownedScratch": ".claude/test-scratch/fucq31",
+  "manifestCount": 32,
+  "uniqueGroupsChecked": 29,
+  "allocations": [
+    {
+      "manifest": ".claude/test-scratch/fucq31/browser-early/ownership.json",
+      "state": "cleaned",
+      "groups": [
+        {
+          "pgid": 61076,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/browser-early/supervisor/ownership/bdbcf8aa24f34459b4e0686e7b367b80.json",
+      "state": "removed",
+      "root": "/private/tmp/test-stamp-shard-bdbcf8aa24f34459b4e0686e7b367b80",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 61076,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/browser-final/supervisor/ownership/3e2138fa1d1b4cf4ba0cfedcf2084f57.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/browser-final/supervisor/shards/test-stamp-shard-3e2138fa1d1b4cf4ba0cfedcf2084f57",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 90173,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/browser-final/supervisor/ownership/43b93d457dfe4169a29b86a857ae4f46.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/browser-final/supervisor/shards/test-stamp-shard-43b93d457dfe4169a29b86a857ae4f46",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 90484,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/browser-final/supervisor/ownership/541d496615cf4e5bb4efa65c761f5158.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/browser-final/supervisor/shards/test-stamp-shard-541d496615cf4e5bb4efa65c761f5158",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 83611,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/browser-final/supervisor/ownership/b6cf5377955c4ad2bb8314360e4aeb09.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/browser-final/supervisor/shards/test-stamp-shard-b6cf5377955c4ad2bb8314360e4aeb09",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 92010,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/browser-final/supervisor/ownership/b86c2bf8181947ac80656639cf9b0569.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/browser-final/supervisor/shards/test-stamp-shard-b86c2bf8181947ac80656639cf9b0569",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 92683,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/browser-final/supervisor/ownership/bf007fd8c080429693c1b0b912e456c6.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/browser-final/supervisor/shards/test-stamp-shard-bf007fd8c080429693c1b0b912e456c6",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 72053,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/browser-final/supervisor/ownership/c305a9d46f8e4771950b3d44d69ee10f.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/browser-final/supervisor/shards/test-stamp-shard-c305a9d46f8e4771950b3d44d69ee10f",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 89804,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/browser-final/supervisor/ownership/c8315dc62e9f4349bd571c9ee4a9ca19.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/browser-final/supervisor/shards/test-stamp-shard-c8315dc62e9f4349bd571c9ee4a9ca19",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 81468,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/browser-final/supervisor/ownership/ca845757aeff4a3da3ecf46db32a12ba.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/browser-final/supervisor/shards/test-stamp-shard-ca845757aeff4a3da3ecf46db32a12ba",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 74945,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/browser-final/supervisor/ownership/e9154c7a9e904f78b15360d9adecb956.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/browser-final/supervisor/shards/test-stamp-shard-e9154c7a9e904f78b15360d9adecb956",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 82928,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/browser-final/supervisor/ownership/gallery-runner.json",
+      "state": "cleaned",
+      "groups": [
+        {
+          "pgid": 92683,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/browser-final/supervisor/ownership/retail-runner.json",
+      "state": "cleaned",
+      "groups": [
+        {
+          "pgid": 90484,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/cards/validation/ownership/1df6b6c04afe4804a968c73afa24782c.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/cards/chunk-1df6b6c04afe4804a968c73afa24782c",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 55725,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/cards/validation/ownership/95c3c45ab7594ca9a8a6eff8eeec1cb4.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/cards/chunk-95c3c45ab7594ca9a8a6eff8eeec1cb4",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 55577,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/cards/validation/ownership/ecc2516b1cf5433dbda9a6869850fc4b.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/cards/chunk-ecc2516b1cf5433dbda9a6869850fc4b",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 54824,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/cards2/validation/ownership/3e3810ea5fda496087b42f58064de9cf.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/cards2/chunk-3e3810ea5fda496087b42f58064de9cf",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 63852,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/cards2/validation/ownership/6b809361d521462e8e67f4a275a383f3.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/cards2/chunk-6b809361d521462e8e67f4a275a383f3",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 64796,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/cards2/validation/ownership/a5fd6091d32e4e6cbda04d8094484c47.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/cards2/chunk-a5fd6091d32e4e6cbda04d8094484c47",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 64410,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/lead/validation/ownership/0a6fac828d464a9b93dc474b378f2787.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/lead/chunk-0a6fac828d464a9b93dc474b378f2787",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 85223,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/lead/validation/ownership/0be305795bea4985ba994cf1bd51d029.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/lead/chunk-0be305795bea4985ba994cf1bd51d029",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 56635,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/lead/validation/ownership/13c8ca2f9f8642a7b6ecbbeaaa5a05c1.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/lead/chunk-13c8ca2f9f8642a7b6ecbbeaaa5a05c1",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 56783,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/lead/validation/ownership/2f8e1d61cae94d19bcc7c8343d99ddf5.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/lead/chunk-2f8e1d61cae94d19bcc7c8343d99ddf5",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 73370,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/lead/validation/ownership/54955adf82054ab49dfe9e2626400a98.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/lead/chunk-54955adf82054ab49dfe9e2626400a98",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 57215,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/lead/validation/ownership/780aca936d6a4d35852107c49c657d58.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/lead/chunk-780aca936d6a4d35852107c49c657d58",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 85458,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/lead/validation/ownership/a2545f5639f24f8da8db868f9cb61402.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/lead/chunk-a2545f5639f24f8da8db868f9cb61402",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 75170,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/lead/validation/ownership/a93e652a700f44b79d68c1ebf3f49c98.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/lead/chunk-a93e652a700f44b79d68c1ebf3f49c98",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 77184,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/lead/validation/ownership/ad789a23bde14f4c85f34c0591e8fa2a.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/lead/chunk-ad789a23bde14f4c85f34c0591e8fa2a",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 85789,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/lead/validation/ownership/afaf6cb6906e4302870aa1fc19aec21f.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/lead/chunk-afaf6cb6906e4302870aa1fc19aec21f",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 66648,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/lead/validation/ownership/c229fd29dfcc4b7598edcb41bacbecb1.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/lead/chunk-c229fd29dfcc4b7598edcb41bacbecb1",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 56367,
+          "livePids": []
+        }
+      ]
+    },
+    {
+      "manifest": ".claude/test-scratch/fucq31/lead/validation/ownership/d954b63c57ed4db6b953f5ce25538c6e.json",
+      "state": "removed",
+      "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/lead/chunk-d954b63c57ed4db6b953f5ce25538c6e",
+      "rootAbsent": true,
+      "groups": [
+        {
+          "pgid": 66360,
+          "livePids": []
+        }
+      ]
+    }
+  ],
+  "profiles": [
+    {
+      "profile": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/browser-early/chrome-profile",
+      "absent": true
+    },
+    {
+      "profile": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/browser-final/chrome-profile-gallery",
+      "absent": true
+    },
+    {
+      "profile": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-051/.claude/test-scratch/fucq31/browser-final/chrome-profile-retail",
+      "absent": true
+    }
+  ],
+  "ports": {
+    "31431": {
+      "listening": false
+    },
+    "31432": {
+      "listening": false
+    },
+    "31433": {
+      "listening": false
+    }
+  },
+  "ownReservationsRemaining": 0,
+  "residualDisposableDirectories": [],
+  "failures": [],
+  "retained": [
+    "lead/run_validation.py",
+    "lead/audit_cleanup.py",
+    "lead/validation/{stamp,targeted,checkpoints,ownership,logs}",
+    "cards/validation/{ownership,logs}",
+    "cards2/{slice2-receipt.json,validation}",
+    "browser-early/{ownership.json,supervisor,logs}",
+    "browser-final/{capture-final.mjs,fixture-api.mjs,baseline-overlay.mjs,run-browser-final.py,test_resources.py,supervisor,logs,history,gallery-runner-receipt.json,retail-runner-receipt.json}"
+  ],
+  "retentionNote": "Paths above are relative to the owned ignored scratch parent and are small scripts, metadata or bounded logs; temporary roots and browser profiles are removed. Tracked summaries live in docs/gcsp/evidence/fucq-7/."
+}

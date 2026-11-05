@@ -1,0 +1,88 @@
+{
+  "codeKey": "e182f7d87453f87a54ab77228feae7d6c24f00022a0ef3ace4dbdf51f66f8a05",
+  "stampKey": "20385d8cbc1d0d2beb8b62603b489993e8cdf4c1051ef71894898cdbb5d10faf",
+  "executionIdentity": {
+    "version": 1,
+    "code": "e182f7d87453f87a54ab77228feae7d6c24f00022a0ef3ace4dbdf51f66f8a05",
+    "environment": "8bfcde4c0632df77e2f8046bed4ed430e35993a521574e6518ae305fede81370",
+    "inputs": {},
+    "interpreter": [
+      "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+      "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+    ],
+    "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+    "settings": "36f68ab436b93b2c54b2878b5c70e0a89cdafe8e8b5a2b04168773020293d4a4",
+    "variant": "default",
+    "selected": [
+      "node --test --test-concurrency=1 server/test/**/*.test.js"
+    ],
+    "scope": "full"
+  },
+  "admission": "Dispatcher approval required; recorded only in outside freeze receipt after clean pushed checkpoint",
+  "sourceCheckpoint": "e0c7b0ad39531ee04923bfcf78b35313ef046ece",
+  "integratedBase": "5aba043",
+  "command": "node --test --test-concurrency=1 server/test/**/*.test.js",
+  "reason": "Explicit required story npm test checkpoint across inherited retail and all GCSP boundaries, after final source/scoped78pass; one sole full run, no second run for coverage.",
+  "environment": {
+    "HOME": "/Users/usget",
+    "USER": "usget",
+    "LOGNAME": "usget",
+    "LANG": "C.UTF-8",
+    "SHELL": "/bin/zsh",
+    "TZ": "Europe/London",
+    "PATH": "/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "SCAFFOLDING_HARNESS": "codex",
+    "npm_config_audit": "false",
+    "npm_config_fund": "false",
+    "npm_config_offline": "true",
+    "__CF_USER_TEXT_ENCODING": "0x1F5:0:2"
+  },
+  "limits": {
+    "seconds": 120,
+    "scratchMiB": 128,
+    "ramMiB": 512,
+    "actualTestWorkers": 1,
+    "logMiB": 2
+  },
+  "supervisorSha256": "629e80d71049cf6123a0d47752c97f992b51ba015729612a59323dc6018f7330",
+  "runtime": {
+    "node": "v26.7.0",
+    "npm": "11.19.0",
+    "python": "Python 3.14.7"
+  },
+  "pins": {
+    "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+    "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+    "node_modules/jsdom/package.json": "e87940b12f720a5b735a5df82108b634a238b8c6ebced71050a346a1675575b9",
+    "server/node_modules/pg/package.json": "b1e53333a3d0c2c47c49a5cb919d221135dc03145df740925b899bc2baacc435",
+    ".claude/scaffolding.json": "c55d2bf32288b5e19f6ac6e7c7b35d22013c80b757d5328c8257a4eac4ac560a",
+    "_tools/test_stamp.py": "88a16018b5b8fa225463b590f2283b4baa6be4951f258bba4846eacc3795a49e",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "_tools/scaffold_git.py": "787cad57c37f90884d67f391e8419c8141293fe99d8c02dec8d1abb521d2c7fd",
+    "node_modules/.package-lock.json": "92164c25104959a02c3ea16fa1643630b54cf5e8f5bce58608f076e4fcce9118",
+    "server/node_modules/.package-lock.json": "04a4016750d016025a0e662b3cc556212627eed4681ed7969296f20437a79517"
+  },
+  "packages": {
+    "jsdom": "30.0.1",
+    "pg": "8.23.1"
+  },
+  "dependencyAllocatedBytes": {
+    "node_modules": 27138292,
+    "server/node_modules": 858816
+  },
+  "scratch": "unique absolute /private/tmp/test-stamp-shard-<token> after outside ownership manifest",
+  "ownershipDirectory": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership",
+  "lock": "/Users/usget/.cache/agent-scaffolding/test-resources/full-suite.lock nonblocking",
+  "finalizer": "HostBudget; owned TMP/cache/V8; finite bounded process group; sampled descendant argv/fanout; TERM/KILL/join; exact scratch/group/token deletion; successful verbose logs removed",
+  "frozenAt": 1793862195.428927,
+  "outsideFreeze": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq57-full-freeze-905df4667ba24e9e96f41397e78be17d.json",
+  "outsideAttempt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq57-full-attempt-905df4667ba24e9e96f41397e78be17d.json",
+  "outerLimits": {
+    "seconds": 180,
+    "scratchMiB": 8,
+    "ramMiB": 64,
+    "logMiB": 2
+  },
+  "outerLauncher": "docs/gcsp/evidence/fucq57/full-phase-launcher.py",
+  "launcherSha256": "4f2ab5e9c76b50d2c85f63ee50051290f8298638999609691ff699c2f11902c8"
+}

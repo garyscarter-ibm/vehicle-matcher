@@ -84,6 +84,8 @@ The demo should make that background work observable: capture the employee's bri
 
 ## Email adapter and Microsoft setup — checked 1 November
 
+**5 November handoff and resumption:** Russell supplied the existing StanleyPi Brevo setup notes and Deckhead's implemented mailer, then explicitly resumed FUCQ-98. Use the [Brevo HTTP transport method and implementation handoff](email-transport.md); it records backend configuration, capture/retry integration and the sender checks required before real sending. Implementation can proceed and the captured outbox remains available. The Microsoft investigation below remains historical context for later integration. The handoff records the pending Jira reconciliation; sender configuration and real delivery still require verification.
+
 Russell authorised a read-only review of Trailblazer's Microsoft access/setup. In its checkout at revision `7310299`, Entra/MSAL supports sign-in and Graph profile access; the configured Graph scopes do not include `Mail.Send`. A historical spike records binding an authorised Office 365 Outlook connection to a cloned Power Automate flow that remained Draft/Off. This does not verify a currently usable sending mailbox or completed mail delivery. No Azure Communication Services Email setup or sender domain was evidenced. A historical note says no Azure subscription was linked to that Power Apps environment; current wider subscription availability remains unknown.
 
 Two Microsoft transports could sit behind the same mail interface:

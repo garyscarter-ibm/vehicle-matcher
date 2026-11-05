@@ -1,0 +1,70 @@
+{
+  "task": "DEV-2026-11-04-051",
+  "story": "FUCQ-31",
+  "phase": "retail-interim",
+  "reviewStatus": "historical-blocked-image-evidence-superseded-by-final-integrated-review",
+  "capturedAt": "2026-11-05T10:45:43.026Z",
+  "capturedHead": "e59e30118623a63c34e99744f13ae51d036cf6ff",
+  "productCheckpoint": "e59e30118623a63c34e99744f13ae51d036cf6ff",
+  "supersededBy": "29c5af45e417813457d26c5900fdf9b8c0bfd37e",
+  "review": "Intro-only BMW five-mode and MINI questionnaire capture; no BMW questionnaire result card was reached.",
+  "errors": {
+    "console": 0,
+    "page": 0,
+    "failed": 0,
+    "blockedFixtureImageUrlsUnique": 20
+  },
+  "fixtureImageNote": "Fixture image URLs were deliberately blocked, so screenshots show grey image placeholders.",
+  "narrowGuessWho": {
+    "viewport": {
+      "height": 740,
+      "label": "narrow-320",
+      "width": 320
+    },
+    "document": {
+      "clientWidth": 320,
+      "overflowPx": 0,
+      "scrollWidth": 320
+    },
+    "body": {
+      "clientWidth": 320,
+      "overflowPx": 0,
+      "scrollWidth": 320
+    },
+    "main": {
+      "clientWidth": 288,
+      "overflowPx": 0,
+      "scrollWidth": 288
+    },
+    "stage": {
+      "clientWidth": 248,
+      "overflowPx": 4,
+      "scrollWidth": 252
+    },
+    "baselineComparison": "See final integrated fucq31-retail-review.json for direct7e741b4 overlay comparison; the 4px internal stage excess is pre-existing, without page overflow or clipping."
+  },
+  "retainedScreenshots": [
+    {
+      "file": "fucq31-interim-blocked-bmw-guess-who-desktop.png",
+      "bytes": 26908,
+      "sha256": "8cb12c7f3e8d5f7d0d227c978c26514d4e3b12f968f7a227bfdd52db277e0dc3"
+    },
+    {
+      "file": "fucq31-interim-blocked-bmw-guess-who-narrow-320.png",
+      "bytes": 12723,
+      "sha256": "54a96bcfd053edf1bbc3eda564bb755cd4487d125becfff24531b65f23885dca"
+    }
+  ],
+  "removedSupersededIntroScreenshots": [
+    "fucq31-final-bmw-questionnaire-desktop.png",
+    "fucq31-final-bmw-questionnaire-narrow-320.png",
+    "fucq31-final-bmw-swipe-desktop.png",
+    "fucq31-final-bmw-swipe-narrow-320.png",
+    "fucq31-final-bmw-head-to-head-desktop.png",
+    "fucq31-final-bmw-head-to-head-narrow-320.png",
+    "fucq31-final-bmw-podium-desktop.png",
+    "fucq31-final-bmw-podium-narrow-320.png",
+    "fucq31-final-mini-questionnaire-desktop.png",
+    "fucq31-final-mini-questionnaire-narrow-320.png"
+  ]
+}

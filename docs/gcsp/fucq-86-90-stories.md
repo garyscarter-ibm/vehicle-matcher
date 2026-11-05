@@ -5,7 +5,7 @@
 - The Stories are To Do and unassigned, at High (P2, `due 2026-11-12: GCSP demo`). No Story Points were authored.
 - 47 native Blocks links record the dependencies. [Publication verification](evidence/fucq-86-90/story-publication.json) records the read-back.
 
-Gary approved the Epics, the Story titles, their one-line outcomes and the dependency order on 4 November 2026, under the equal-authority rule (`AGENTS.md`). That approval includes FUCQ-98, which waits on its sender-setup precondition. Source of the scope: [HLD story readiness](../design/hld-story-readiness-2026-11-04.md), section C (items C2–C6). Template: [_dev/story-template.md](../../_dev/story-template.md). Each `ui`-kind story names its kit components from [COMPONENTS.md](../../COMPONENTS.md). Only stories were authored: no implementation, poller, provisioning or deployment was started.
+Gary approved the Epics, the Story titles, their one-line outcomes and the dependency order on 4 November 2026, under the equal-authority rule (`AGENTS.md`). Russell explicitly resumed FUCQ-98 on 5 November; implementation can proceed with the [Brevo handoff](email-transport.md), with sender/configuration verification before real sending. Source of the scope: [HLD story readiness](../design/hld-story-readiness-2026-11-04.md), section C (items C2–C6). Template: [_dev/story-template.md](../../_dev/story-template.md). Each `ui`-kind story names its kit components from [COMPONENTS.md](../../COMPONENTS.md). This document records story scope and subsequent decisions.
 
 | Readiness item | Epic | Stories |
 |---|---|---|
@@ -700,7 +700,7 @@ priority: P2
 priority_reason: due 2026-11-12: GCSP demo
 size: S
 depends_on: FUCQ-93
-preconditions: a sender is set up and its credentials are available as backend-only environment variables on the GCSP Render backend: Brevo, or Microsoft Graph/Exchange, or ACS Email (HLD review Q11). Until then the story waits; the captured outbox covers the demo.
+preconditions: implement now using the recorded Brevo handoff; verify the backend sender/API key, explicit demo-recipient mapping and public frontend base URL before the deliberate real-send validation (HLD review Q11).
 ```
 
 #### Goal
@@ -720,10 +720,17 @@ As the presenter, I want an offer email to arrive in a real inbox when sender se
 - `server/gcsp/notify/ (one real transport adapter)`
 - `server/test/gcsp-mail-transport.test.js (proposed, against a stubbed provider)`
 - `README.md (environment variables for the GCSP backend)`
+- `docs/gcsp/email-transport.md`
 
 #### Decided
 
 Gary approved this Epic, its Story titles and the dependency order on 4 November 2026, including this story with its sender-setup precondition (`docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md`, `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/shared-contracts.md` and `docs/design/gcsp-high-level-design.md`, "Transaction and event invariants". Carry these decisions and acceptance criteria into every child-agent brief.
+
+Brevo reuse handoff, 5 November 2026, requested by Russell: read `docs/gcsp/email-transport.md`. Reuse Deckhead's transactional HTTP method with built-in `fetch`: `POST https://api.brevo.com/v3/smtp/email`, backend-only `api-key`, both rendered GCSP bodies and a stable per-run/job provider idempotency key. The handoff reproduces the method, proposed backend configuration, StanleyPi sender-domain evidence, source revision and remaining setup checks, so another machine does not need those local checkouts. The credential is a Brevo API key; no new PAT is needed for this method.
+
+Preserve FUCQ-93's port, capture, canonical retry policy and run scope, FUCQ-97's viewer and the configured recipient allow-list. Persist the provider ID without leaking keys or token-bearing links. Read the handoff's capture/acknowledgement integration gap and finite provider idempotency window before implementing; copying Deckhead's whole mailer or logs is insufficient.
+
+Russell explicitly resumed FUCQ-98 on 5 November 2026: "Yes resume it, I just gave the Brevo details in another session" (Codex chat 01a1ac41-5c78-7ff1-a49a-b7abdfc17ac3). This supersedes the pause in Jira comment 132470. Implement using docs/gcsp/email-transport.md; verify the configured sender, secret, approved demo recipients and public offer URL before the story's deliberate real-send check. The handoff records the method, not a completed configuration check. Jira reconciliation is pending connector reauthentication; the committed resumption remains authoritative under AGENTS.md.
 
 HLD review, as it applies here:
 
@@ -747,6 +754,7 @@ Run commands from the worktree root. Named new test files are deliverables of th
     - capture while the real transport is active;
     - no secret in the logs.
 
+- Follow `docs/gcsp/email-transport.md`, "Selected validation", for stable-key retries/restart/concurrency, ambiguous acknowledgements, capture on real-send failure, payload/body mapping and canonical absolute offer links. Automated tests use a stubbed provider and send no real mail.
 - `npm test` passes.
 - After the precondition clears: one real send to a demo address, with the provider message ID recorded in the story result.
 - No new screen; the outbox viewer shows the status (`docs/gcsp/experience-quality.md`).

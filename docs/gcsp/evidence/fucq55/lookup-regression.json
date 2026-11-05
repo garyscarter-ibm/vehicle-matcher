@@ -1,0 +1,123 @@
+{
+  "argv": [
+    "node",
+    "--test",
+    "--test-concurrency=1",
+    "server/test/gcsp-vehicle-evidence-lookup.test.js"
+  ],
+  "budget": {
+    "installs": false,
+    "ram_bytes": 268435456,
+    "scratch_bytes": 16777216,
+    "seconds": 90
+  },
+  "cleanup": {
+    "compatibility_exception": null,
+    "groups_live": {
+      "36071": false
+    },
+    "large_outputs": false,
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/e526a92a3dec4adea219b36e2e03e0f9.json",
+    "manifest_state": "removed",
+    "removed_peak_bytes": 33120,
+    "reservation_absent": true,
+    "root": "/private/tmp/test-stamp-shard-e526a92a3dec4adea219b36e2e03e0f9",
+    "root_absent": true,
+    "successful_verbose_log_removed": true
+  },
+  "code_test_identity": {
+    "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "b2de4a7a6dd181c15615be702d6031b7a0cc10d34d8c92c87b5c371d16928e8a",
+    "server/gcsp/vehicle-evidence/vehicle-details-contract.js": "3886ac9377f3688d2bfe2c2af5a6fe330bb4b49d2f18bb049c8cc7f71d485cc8",
+    "server/gcsp/vehicle-evidence/vehicle-evidence-handler.js": "9e118acfe39f550f06e6c319f536ca8768ca4b41820fd9ca9593e79b18f8c8f0",
+    "server/gcsp/vehicle-evidence/vehicle-lookup.js": "8ce1256486422dd048d7f5cec0e1e67d01505ae810257811f4037b1b006f5e70",
+    "server/index.js": "52c02b20d3a0e1c3a75de7697af38b1032dfb453e39c96f35f2f440435da8b4c",
+    "server/test/gcsp-offline-start.test.js": "5f3dd0f700fbc9ceb948189766af2061db0f11707b9c4c2d17fb2a248a96435b",
+    "server/test/gcsp-synthetic-vin-api.test.js": "ac86aa927c5cb1ee9094ab2eaf343e115104d428b67a445ecb11f6a706de5265",
+    "server/test/gcsp-vehicle-evidence-lookup.test.js": "021db46e480fab71c38fb62adad07e531c4fdf0a153d1f03a2ea652401c79c61"
+  },
+  "config_identity": {
+    "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+    "package.json": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
+    "server/gcsp/policy/seed-v1.json": "fa73b7fd140132536e337fd9e431824d769f7963336e982dd4d24f063ba683ef",
+    "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+    "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+  },
+  "excluded": "HTTP/offline/full tests and dependency installs remain held",
+  "head": "0c517b2274c71ae9ddf179ce9f611e85411b5eb6",
+  "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq55-lookup-e526a92a3dec4adea219b36e2e03e0f9.log",
+  "log_retained": false,
+  "node": "v26.7.0",
+  "ownership_manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/e526a92a3dec4adea219b36e2e03e0f9.json",
+  "packaged_inputs": {
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/active.json": "8c797f87d050687c6d4efd4392061c65c753e5ee0177e77f9b5cab86dc3383bb",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/identity-inventory.json": "dd702f37aa81480d61b7a8a74d761abe026d25b39f056cf1d50698bbdf0edd4f",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/configurations.jsonl": "9c1fb6a34e324e6e4937baa1e80eabafa44fae394dd138f2f77be9f6867e9855",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/images.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/manifest.json": "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/vins.jsonl": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd"
+  },
+  "process_observations": [
+    [
+      {
+        "argv": "node --test --test-concurrency=1 server/test/gcsp-vehicle-evidence-lookup.test.js",
+        "pgid": 36071,
+        "pid": 36071,
+        "ppid": 36051
+      },
+      {
+        "argv": "/opt/homebrew/Cellar/node/26.7.0/bin/node --test-concurrency=1 --heap-prof-interval=524288 --stack-trace-limit=10 --report-signal=SIGUSR2 --max-http-header-size=16384 --watch-kill-signal=SIGTERM --heapsnapshot-near-heap-limit=0 --inspect-publish-uid=stderr,http --test-isolation=process --test-coverage-lines=0 --cpu-prof-interval=1000 --test-coverage-functions=0 --test-timeout=0 --inspect-port=127.0.0.1:9229 --test-coverage-branches=0 --use-largepages=off --experimental-addon-modules --network-family-autoselection-attempt-timeout=500 --secure-heap-min=2 --v8-pool-size=4 --secure-heap=0 --tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA --node-snapshot --trace-event-file-pattern=node_trace.${rotation}.log server/test/gcsp-vehicle-evidence-lookup.test.js",
+        "pgid": 36071,
+        "pid": 36076,
+        "ppid": 36071
+      }
+    ],
+    [
+      {
+        "argv": "node --test --test-concurrency=1 server/test/gcsp-vehicle-evidence-lookup.test.js",
+        "pgid": 36071,
+        "pid": 36071,
+        "ppid": 36051
+      },
+      {
+        "argv": "/opt/homebrew/Cellar/node/26.7.0/bin/node --test-concurrency=1 --heap-prof-interval=524288 --stack-trace-limit=10 --report-signal=SIGUSR2 --max-http-header-size=16384 --watch-kill-signal=SIGTERM --heapsnapshot-near-heap-limit=0 --inspect-publish-uid=stderr,http --test-isolation=process --test-coverage-lines=0 --cpu-prof-interval=1000 --test-coverage-functions=0 --test-timeout=0 --inspect-port=127.0.0.1:9229 --test-coverage-branches=0 --use-largepages=off --experimental-addon-modules --network-family-autoselection-attempt-timeout=500 --secure-heap-min=2 --v8-pool-size=4 --secure-heap=0 --tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA --node-snapshot --trace-event-file-pattern=node_trace.${rotation}.log server/test/gcsp-vehicle-evidence-lookup.test.js",
+        "pgid": 36071,
+        "pid": 36076,
+        "ppid": 36071
+      }
+    ],
+    [
+      {
+        "argv": "<defunct>",
+        "pgid": 36071,
+        "pid": 36071,
+        "ppid": 36051
+      }
+    ]
+  ],
+  "reporter_note": "Node26 default reporter output was discarded after the zero-exit success; TAP summary parsing did not capture that reporter. No numerical per-test count or test stamp is claimed. Source selects six top-level tests in this sole file.",
+  "result": {
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq55-lookup-e526a92a3dec4adea219b36e2e03e0f9.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/e526a92a3dec4adea219b36e2e03e0f9.json",
+    "peak_rss": 143245312,
+    "peak_scratch": 33120,
+    "rc": 0,
+    "wall": 0.8423117080019438
+  },
+  "scope": "lookup regression only",
+  "scratch": "/private/tmp/test-stamp-shard-e526a92a3dec4adea219b36e2e03e0f9",
+  "state": "passed",
+  "story": "FUCQ-55",
+  "tap_summary": [],
+  "test_cases": [],
+  "time_utc": "2026-11-05T05:55:37.433505+00:00",
+  "worker_check": {
+    "configured_file_workers": 1,
+    "flag_before_filename": true,
+    "observed_max_test_file_workers": 1,
+    "selected_file_count": 1,
+    "source_has_no_child_process_or_worker_threads_import": true
+  },
+  "count_evidence_repair": "lookup-count-regression.json: same product/config/fixture hashes, observed6/6pass,0skip"
+}

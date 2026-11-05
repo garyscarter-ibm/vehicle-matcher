@@ -22,6 +22,7 @@ import { test, before, after, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { questionsForBrand } from '../questions.js';
 
 import {
   installDom, resetDom, startModeServer, loadMode, mountMode, settle,
@@ -213,6 +214,107 @@ test('podium never labels a runner-up unless the engine ranked one', async () =>
       );
     }
   }
+});
+
+test('questionnaire offers and applies a known gearbox rejection with visible undo', async (t) => {
+  const listings = [
+    { id: 'auto-listing', shade: 'Blue', colour: 'Blue', priceMin: 30000, mileage: 10000, transmission: 'auto', features: [], link: '/auto' },
+    { id: 'manual-listing', shade: 'White', colour: 'White', priceMin: 31000, mileage: 12000, transmission: 'manual', features: [], link: '/manual' },
+  ];
+  const match = {
+    score: 88, reasons: [], tradeOffs: [],
+    car: {
+      id: 'mixed-gearbox', name: 'BMW 320i Touring', body: 'estate', fuel: 'petrol',
+      colour: { colour: 'Blue', manufacturerColour: 'Portimao Blue' }, priceMin: 30000,
+      priceMax: 30000, priceFrom: 30000, priceTo: 31000, mileage: 10000,
+      transmission: 'auto', listingCount: 2, colours: ['Blue', 'White'], features: [],
+      retailerName: 'Test Retailer', distance: null, link: '/auto',
+    },
+    listings,
+  };
+  t.mock.method(globalThis, 'fetch', async (url) => {
+    const path = String(url);
+    const data = path.includes('/api/questions')
+      ? { questions: questionsForBrand('bmw').filter((q) => ['budget', 'fuel'].includes(q.id)) }
+      : path.includes('/api/nearby')
+        ? { nearby: [], unmet: {} }
+        : { matches: [match], alternatives: [], decisive: false, clusterSize: 1, tasteLead: false, searched: 2, unmet: {} };
+    return { ok: true, status: 200, json: async () => data };
+  });
+  const root = document.createElement('div');
+  root.className = 'vm vm-bmw';
+  document.body.append(root);
+  const ctx = {
+    api: 'https://example.test', brand: 'bmw', retailer: '96',
+    retailerLabel: 'Test Retailer', scope: 'dealer', overrides: {},
+  };
+  const cleanup = modes.questionnaire.mount(root, ctx);
+  t.after(cleanup);
+  await settle(root, (stage) => stage.querySelector('.vm-intro'));
+  const answers = { budget: [10000, 40000], fuel: ['petrol'] };
+  ctx.answers = answers;
+  ctx.showResults(answers);
+  await settle(root, (stage) => stage.querySelector('.vm-reject-open'));
+
+  root.querySelector('.vm-reject-open').click();
+  const menu = root.querySelector('.vm-reject-menu');
+  const manualReason = [...menu.querySelectorAll('.vm-reject-option')]
+    .find((button) => button.textContent === 'Only manual');
+  assert.ok(manualReason, 'a mixed group with another known gearbox should offer Only manual');
+  assert.match(manualReason.nextElementSibling.textContent, /whole current search.*all retailers and listings/i);
+  manualReason.click();
+
+  assert.match(root.querySelector('.vm-feedback-scope').textContent, /not saved/i);
+  assert.equal(root.querySelector('.vm-card .vm-specs').textContent.includes('Manual'), true);
+  assert.equal(root.querySelector('.vm-card .vm-avail-count'), null, 'the filtered card should describe only its manual listing');
+  const undo = root.querySelector('.vm-brief-undo');
+  assert.equal(undo.textContent, 'Undo');
+  assert.equal(undo.getAttribute('aria-label'), 'Undo Only manual');
+  undo.click();
+  assert.equal(root.querySelector('.vm-card .vm-avail-count').textContent, '2 available');
+  assert.match(root.querySelector('.vm-reject-menu').textContent, /exact group and model/i);
+});
+
+test('component gallery keeps browse and employee examples local and reversible', async () => {
+  const { mountComponentGallery } = await import('../../blocks/vehicle-matcher/component-gallery.js');
+  const root = document.createElement('div');
+  document.body.append(root);
+  mountComponentGallery(root);
+  assert.doesNotMatch(root.textContent, /undefined|0–62 nulls|null mpg/);
+
+  root.querySelector('.vm-reject-open').click();
+  const menu = root.querySelector('.vm-reject-menu');
+  const options = [...menu.querySelectorAll('.vm-reject-option')];
+  assert.ok(options.some((button) => button.textContent === 'Only manual'), 'mixed synthetic gearboxes must show the alternative');
+  const shade = options.find((button) => button.textContent === 'Not the blue');
+  assert.match(shade.nextElementSibling.textContent, /whole current search.*all retailers and listings/i);
+  shade.click();
+  assert.match(root.querySelector('.vm-gallery-feedback .vm-feedback-scope').textContent, /nothing is saved/i);
+  const undo = root.querySelector('.vm-gallery-feedback .vm-brief-undo');
+  assert.equal(undo.getAttribute('aria-label'), 'Undo Not the blue');
+  undo.click();
+  assert.equal(root.querySelectorAll('.vm-gallery-cards .vm-card').length, 2);
+
+  for (let index = 0; index < 2; index += 1) {
+    root.querySelector('.vm-reject-open').click();
+    const group = [...root.querySelectorAll('.vm-reject-option')]
+      .find((button) => button.textContent === 'Just not this one');
+    assert.match(group.nextElementSibling.textContent, /exact group and model/i);
+    group.click();
+  }
+  assert.equal(root.querySelectorAll('.vm-gallery-cards .vm-card').length, 0);
+  assert.ok(root.querySelector('.vm-gallery-reset'));
+  root.querySelector('.vm-gallery-reset').click();
+  assert.equal(root.querySelectorAll('.vm-gallery-cards .vm-card').length, 2);
+
+  assert.match(root.querySelector('.vm-gallery-employee').textContent, /Charging access: unknown \(needs confirmation\)/);
+  root.querySelector('.vm-gallery-employee button.vm-btn-primary').click();
+  assert.match(root.querySelector('.vm-gallery-employee').textContent, /Charging access: none \(confirmed\)/);
+  const employeeUndo = root.querySelector('.vm-gallery-employee .vm-brief-undo');
+  assert.equal(employeeUndo.getAttribute('aria-label'), 'Undo Confirm no charging access');
+  employeeUndo.click();
+  assert.match(root.querySelector('.vm-gallery-employee').textContent, /Charging access: unknown \(needs confirmation\)/);
+  assert.match(root.querySelector('.vm-gallery-employee .vm-feedback-scope').textContent, /No saved brief.*account learning.*hold/i);
 });
 
 // A re-mount (switching tabs re-calls mount) must start clean, not stack a

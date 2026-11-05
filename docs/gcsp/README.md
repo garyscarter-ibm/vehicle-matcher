@@ -4,6 +4,10 @@ Jira moved on 3 November 2026. Use the new site and keys below; the [migration r
 
 Start here for every new GCSP discovery, foundation, design, implementation or review session. Repository documents hold the project decisions; this chat history is not required context.
 
+## Latest build handover — 5 November 2026
+
+Read the [overnight build handover](../HANDOVER-2026-11-05.md) before the next **“start the dev poller”**, including in GC's session. It records 31 merged stories, the remaining queue, retained blocked branches, morning actions and restart rules. The build was explicitly stopped on 5 November; the heartbeat remains paused until a collaborator explicitly restarts it.
+
 ## Purpose and binding context
 
 - Demonstration: **12 November 2026**, **30 minutes**, for Stuart and the named leadership group in the [brief](demo-brief.md).
@@ -15,7 +19,7 @@ Start here for every new GCSP discovery, foundation, design, implementation or r
 - Use the [shared GCSP contracts](shared-contracts.md) for versioned briefs, both hold types, canonical policy keys/provenance, run-scoped repository tables and the foundation ports. Parallel stories extend this record additively.
 - **HLD agreement, Russell, 4 November:** [all five recommendations referred by Gary are accepted](hld-agreement-2026-11-04.md): FUCQ-8 sequencing, in-process VIN lookup, stock identity and FUCQ-19/20 scope, the AWS integration target, and Paula's preference-change step. These decisions govern alignment of the earlier design and story records.
 - **Platform baseline, clarified 2 November:** GCSO is the mainframe ordering application; ISA was the separate handover system. GCSP unifies their UI over the mainframe today; Java modernisation follows. See the [definitions and supplied launch/portfolio slides](platform-context.md).
-- Use [COMPONENTS.md](../../COMPONENTS.md), the project's `scaffolding:component-kit` workflow and the [agreed visual direction](experience-quality.md#visual-reference): supplied [GCSP screenshots](screens/README.md) for the header, sidebar and palette; optional breadcrumbs; a redesigned body toward the consumer-facing Used Cars experience. Review a representative body early before parallel body implementation.
+- Use [COMPONENTS.md](../../COMPONENTS.md), the project's `scaffolding:component-kit` workflow and the [agreed visual direction](experience-quality.md#visual-reference): supplied [GCSP screenshots](screens/README.md) for the header, sidebar and palette; optional breadcrumbs; a redesigned body toward the consumer-facing Used Cars experience. **5 November delivery sequence:** build the working end-to-end demo before pausing for human layout reviews; the UI pass follows. Keep copy concise and enforce the shared component library and ratchet throughout. See the binding [experience contract](experience-quality.md#delivery-sequence-agreed-5-november-2026).
 - All scaffolding pieces are on. Jira FUCQ is the backlog; `gcsp-poc` is the shared integration branch. Follow the configured story/worktree/team workflow. Additional product proposals need refinement and agreement before becoming implementation scope.
 
 ## Authorised backlog items
@@ -47,11 +51,17 @@ Use Jira keys when opening a session; their numbers differ from the original num
 
 Read the current Jira description and subsequent comments before starting. FUCQ-2 is discovery context; FUCQ-3 records completed persona drafts. The superseded exploratory records retain history. The [original 22 capability proposals](capability-breakdown.md) are retained for refinement as foundation work informs the direction.
 
+**Combined release/time simulation, Russell, 5 November:** combine GC's **Release cars** button with advancing simulated time and demonstrating vehicle releases, employee claims and the agent's resulting behaviour. Keep this with FUCQ-75 / FUCQ-126's existing presenter controls. The [combined intent](manual-acceptance-scenarios.md#combined-time-simulation-and-release-control) records the clarification; Jira reconciliation is pending restored access.
+
+**Email handoff and resumption, 5 November:** Russell supplied StanleyPi and Deckhead as the Brevo setup/implementation references and explicitly resumed FUCQ-98. The [self-contained transport handoff](email-transport.md) records the HTTP method, source evidence, proposed backend settings, capture/retry integration and sender checks required before real sending. No new PAT is needed. The story's pause is removed; the captured outbox remains available. Jira reconciliation of the resumption is pending connector reauthentication; the handoff records the decision for all pollers.
+
 Russell confirmed at FUCQ-5 closeout on 1 November that backlog Epics are independent bounded capabilities: do not nest Epics beneath Epics. FUCQ-14–18 retain their research origin through `Relates` links and their delivery prerequisites through directed `Blocks` links; they are not children of FUCQ-5. Refine implementation stories under the relevant capability when it is picked up.
 
 **Vehicle-evidence implementation stories, 1 November:** [27 native Stories](fucq-13-19-stories.md), FUCQ-37–63, now refine FUCQ-14–20, with [structured records](fucq-13-19-stories.json) and [publication verification](evidence/fucq-13-19/story-publication.json). Russell confirmed the HLD is canonical; all seven epic descriptions now reflect it and the agreed visual direction. Their child Stories remain To Do; the independent Epics are In Progress under the authoring procedure. The 41 story dependencies cover catalogue, imagery, handbook, live-provider gates, plausible synthetic identities, the actual HTTP adapter and the 10,000-distinct corpus. This authoring did not start implementation, a dispatcher or a bulk run.
 
 **Demo data route, Gary, 4 November:** real configurations with synthetic stock on top. [FUCQ-77](https://ibm-consulting.atlassian.net/browse/FUCQ-77) collects at least 200 real, constructible configurations covering every scheme model line, each of which opens in BMW's configurator. [FUCQ-78](https://ibm-consulting.atlassian.net/browse/FUCQ-78) generates synthetic scheme stock on them, shaped by aggregate figures from BMW's public new-car stock locator. FUCQ-61's 10,000-configuration run follows after 12 November if still wanted; FUCQ-62 keeps corpus publication. Evidence: [interface research](bmw-interface-research.md), 4 November follow-ups.
+
+**FUCQ-58 source authorisation, Gary, 5 November:** read-only collection from BMW’s public UK configurator and the bounded pilot are authorised. Gary confirms BMW approval to retain and display all resulting configuration data and images for as long as needed. The [decision and execution handoff](fucq-58-source-authorisation-2026-11-05.md) supersede earlier source/retention decision holds; the existing claim owner resumes qualification with explicit finite engineering budgets and measured coverage.
 
 ## Supporting evidence and open decisions
 

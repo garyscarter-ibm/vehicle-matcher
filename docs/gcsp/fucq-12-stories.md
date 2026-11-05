@@ -1,12 +1,12 @@
 # FUCQ-13 · Shared launcher implementation stories
 
-**Published and verified:** five native Jira Stories, FUCQ-32–36, under [FUCQ-13](https://ibm-consulting.atlassian.net/browse/FUCQ-13). All stories are To Do and Medium/P3 with author size M; no Story Points were authored. FUCQ-13 is In Progress under the scaffolding authoring procedure.
+**Publication baseline:** five native Jira Stories, FUCQ-32–36, under [FUCQ-13](https://ibm-consulting.atlassian.net/browse/FUCQ-13). At publication all stories were To Do and Medium/P3 with author size M; no Story Points were authored. FUCQ-13 is In Progress under the scaffolding authoring procedure. FUCQ-32's implemented routing contract is recorded below; Jira and the dev inbox retain delivery status.
 
 Template: [_dev/story-template.md](../../_dev/story-template.md). Metadata uses native parent/priority, kind/size/design-impact labels and seven directed Blocks relationships. [Publication verification](evidence/fucq-12/story-publication.json) records the native read-back.
 
 A shared experience selector, brand continuity, compatible retail navigation, gated integration with the employee entry supplied by FUCQ-7, and a verifiable static deployment package. This does not implement the employee journey, matching, transactions or hosting changes.
 
-Design: [HLD](../design/README.md), [experience contract](experience-quality.md), [visual reference guide](screens/README.md). No implementation, poller, commit or deployment was started. FUCQ-7 supplies the working employee entry; FUCQ-25 supplies corrected retail share context.
+Design: [HLD](../design/README.md), [experience contract](experience-quality.md), [visual reference guide](screens/README.md). Story publication itself started no implementation, poller or deployment. FUCQ-7 supplies the working employee entry; FUCQ-25 supplies corrected retail share context.
 
 | Story | Outcome | Depends on |
 |---|---|---|
@@ -75,6 +75,71 @@ Matching or API policy changes, employee identity/authorisation, new employee br
 - node --test server/test/launcher-context.test.js — route table covers fresh root, explicit routes, legacy brand/mode/scope/hash links, unknown values, BMW-only employee support, key removal and a repository-prefixed base path.
 - node --test server/test/render.test.js server/test/api.test.js — current brand/mode mounts and HTTP contracts remain compatible.
 - npm test — passes; record actual checks and explain that rendered launcher/error evidence is supplied by L2-L4.
+
+### FUCQ-32 entry contract — implemented 5 November 2026
+
+`blocks/demo-launcher/entry-context.js` exports the frozen `ENTRY_REGISTRY`,
+`resolveEntryContext(absoluteUrl, { employeeAvailable })` and
+`buildEntryUrl(absoluteUrl, { experience, brand })`. The registry lists the three
+experiences, six existing retail brands, five public mode keys (`questionnaire`,
+`swipe`, `head-to-head`, `podium`, `guess-who`) and BMW-only employee coverage.
+It imports no backend policy, identity or employee data. Employee availability is
+an explicit boolean capability setting, **false** until FUCQ-35 registers the real
+FUCQ-7 entry; knowing a retail brand never enables employee capability.
+
+| URL/context | Resolved state and recovery contract |
+|---|---|
+| Fresh `index.html`, including API-only or key-only links | `launcher`; Used cars remains reachable. |
+| `experience=launcher&brand=mini` | `launcher` with `brand: mini`; selected brand remains independent of experience. |
+| `experience=used-cars`, with no brand | `retail-picker`; existing six-brand picker. |
+| Explicit Used cars or legacy retail context, with a brand | `retail`; existing branded shell/block. Unknown retail brands keep the BMW fallback. |
+| No experience, with `brand`, `mode`, `scope`, `retailer`, `retailerName`, or a retail `#m=`, `#mingle=` or `#knockout=` hash | Existing retail route; no-brand links reach the picker. Non-answer anchors such as `#demo-tool` alone do not imply retail. |
+| `block.html`, including an experience query | Standalone retail stays unchanged. The resolver also identifies this entry as retail. |
+| Unknown or empty explicit experience | `unknown-experience`; explicit launcher/Used cars recovery, without a silent retail redirect. |
+| Employee route with no brand | `employee-brand-required`; explicitly choose BMW or Used cars. |
+| Employee route with an unsupported brand | `unsupported-employee-brand`; preserve the requested brand and offer explicit BMW/Used cars choices. |
+| BMW employee route while capability is disabled | `employee-unavailable`; launcher/Used cars recovery. |
+| BMW employee route with capability explicitly enabled | `employee`; a dispatch contract for the real entry consumer, not proof of an implemented employee screen. |
+
+The resolver returns `{ experience, brand, state, location, employeeAvailable,
+links }`. `links` contains `launcher`, `usedCars`, `employeeCars` and `employeeBmw`.
+`index.html` exposes this immutable context on `#demo-root.entryContext`, mirrors
+the experience/brand/state in `data-experience`, `data-brand`, `data-entry-state`,
+and emits one bubbling `demo-entry-ready` event with the context as `detail`
+after the existing session gate has cleared and the route host has mounted.
+Consumers can read the property even if they subscribe after the initial event.
+
+Generated links retain the current pathname (including `/vehicle-matcher/` or
+another repository prefix). Retail/launcher hops preserve query and answer hash;
+employee hops allow only experience, brand and API configuration, discarding
+retail mode, scope, dealer overrides, buyer answers/hash and arbitrary identity or
+policy query values. An employee URL supplied directly receives the same cleaned
+context before any return/recovery links are generated. A `null` brand explicitly
+clears selection. This helper does not serialize answers or decide cross-brand
+answer compatibility: FUCQ-25/FUCQ-34 own those contracts and deliberate fresh starts.
+
+Every generated URL and exposed context removes all legacy `key` query entries.
+The existing gate consumes a non-empty key into session storage and removes key
+entries, including an empty key, from browser history before exposing navigation.
+Local/remote API defaults, API overrides, remote password prompting, stored-session
+bypass and rejected-password remount behaviour remain retail-compatible. The gate
+is demo access only; these navigation values confer no employee entitlement.
+
+The entry currently supplies a **minimal semantic host** with heading, fixed
+state explanation and working recovery links. It reuses the existing retail
+picker/shell and existing typography/status/button styles, adding no shared kit
+component, stylesheet or gallery claim. L2–L4/FUCQ-33–35 own the composed launcher,
+brand controls, rendered error/unavailable states, employee mounting and desktop/
+narrow/keyboard visual acceptance under the experience contract. This route
+contract does not claim those future screens or a deployed release.
+
+The prescribed automated checks cover the pure route table plus the actual
+`index.html`/`block.html` boot in an isolated DOM (only the retail network mount is
+stubbed), and the existing real retail mode/API checks. Canonical draw.io rendering
+and status recolouring remain unverified: no existing background diagram tab was
+available, and this work uses no new active tab, foreground operation or raw-XML
+workaround. The HLD's composed launcher/employee elements remain proposed until
+their consuming stories supply implementation and rendered evidence.
 
 ---
 

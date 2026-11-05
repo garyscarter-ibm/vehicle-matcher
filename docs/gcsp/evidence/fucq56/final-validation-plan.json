@@ -1,0 +1,76 @@
+{
+  "story": "FUCQ-56",
+  "run": "fucq56-20261105-consumer-full",
+  "state": "admitted",
+  "cwd": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-029",
+  "command": "node --test --test-concurrency=1 server/test/**/*.test.js",
+  "environment": {
+    "HOME": "/Users/usget",
+    "USER": "usget",
+    "LOGNAME": "usget",
+    "SHELL": "/bin/zsh",
+    "PATH": "/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "LANG": "en_GB.UTF-8",
+    "TZ": "Europe/London",
+    "SCAFFOLDING_HARNESS": "codex",
+    "npm_config_offline": "true",
+    "npm_config_audit": "false",
+    "npm_config_fund": "false"
+  },
+  "supervisor": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-029/docs/gcsp/evidence/fucq56/full-supervisor.py",
+  "supervisorSha256": "8aa0d7d9b63bf10e6d6abb9a157896400206fbfa74ce14e002c93579a55986c5",
+  "phaseLauncher": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-029/docs/gcsp/evidence/fucq56/full-phase.py",
+  "phaseLauncherSha256": "dac035ede50e785c95f80c1949d41bec191e81a8c33b63db9e41b2d39b3d165b",
+  "pins": {
+    "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+    "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+    "_tools/test_stamp.py": "88a16018b5b8fa225463b590f2283b4baa6be4951f258bba4846eacc3795a49e",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "_tools/scaffold_git.py": "787cad57c37f90884d67f391e8419c8141293fe99d8c02dec8d1abb521d2c7fd",
+    "node_modules/jsdom/package.json": "e87940b12f720a5b735a5df82108b634a238b8c6ebced71050a346a1675575b9",
+    "server/node_modules/pg/package.json": "b1e53333a3d0c2c47c49a5cb919d221135dc03145df740925b899bc2baacc435",
+    "node_modules/.package-lock.json": "92164c25104959a02c3ea16fa1643630b54cf5e8f5bce58608f076e4fcce9118",
+    "server/node_modules/.package-lock.json": "04a4016750d016025a0e662b3cc556212627eed4681ed7969296f20437a79517"
+  },
+  "requiredMergedBase": "a6cdd11",
+  "integrationCommit": "56fe6bc85bb289b437bd38601fc36c93115b7b09",
+  "gate": "Parent admitted sole final full after clean pushed freeze; no other full/browser or descendants. 600s/128MiB scratch/768MiB RAM/one actual worker.",
+  "budget": {
+    "seconds": 600,
+    "scratch_bytes": 134217728,
+    "ram_bytes": 805306368,
+    "workers": 1
+  },
+  "sequence": [
+    "status-before",
+    "full once",
+    "status-after",
+    "Result commit/push",
+    "status-final"
+  ],
+  "changedPaths": [
+    "server/gcsp/vehicle-evidence/application-vehicle-details.js",
+    "server/gcsp/vehicle-evidence/provider-read.js",
+    "server/gcsp/vehicle-evidence/lookup-adapter.js",
+    "server/gcsp/vehicle-evidence/alternate-offline-adapter.js",
+    "server/test/gcsp-vehicle-details-contract.test.js",
+    "server/test/gcsp-synthetic-http-adapter.test.js",
+    "server/test/fixtures/gcsp/vehicle-evidence/alternate-provider.json"
+  ],
+  "selected": "Explicit npm test requirement and agreed integrated55/22/112 checkpoint; provider consumer, actual HTTP/rawpath/context gate and additive case/repository/policy/index composition. JS affected selector unavailable; no automatic fallback.",
+  "reassessedEvidence": "Own consumer unchanged from contract-03 11/11. HTTP3/3 preceded last hardening; final full covers current. FUCQ55 lookup/rawpath/typedcontext/tests/inputs unchanged from boundary-01 11/11. Additive112 index routes/start, renewal_cases schema/core, eight policy keys and notify message branch do not alter the lookup port or consumer inputs.22 only adds empty alternatives. No duplicate scoped checks.",
+  "excluded": "No screen/browser/live provider/credentials/deployment/corpus generation/production certification. PostgreSQL configured tests expected to skip with no GCSP_DATABASE_URL.",
+  "supervision": [
+    "Outside ownership before scratch/log mkdir; handled termination with finite600s child and660s phase",
+    "One actual test-file worker verified from argv and recursive descendant RSS",
+    "Nonblocking full-suite lock before allocation; shared HostBudget short reservation",
+    "TMPDIR/TMP/TEMP and npm cache owned; child group TERM/KILL/join and escaped descendant identity teardown",
+    "Success verbose logs and scratch removed; outside receipts/checkpoints retained; no archive/large output/compatibility exception"
+  ],
+  "frozenIdentity": "Outside ownership/fucq56-final-freeze.json saved after plan checkpoint commit; checked before every phase.",
+  "expectedOutputs": {
+    "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq56-20261105-consumer-full-receipt.json",
+    "argv": "shared .claude/test-runs/fucq56-20261105-consumer-full-argv.json",
+    "resources": "shared .claude/test-runs/fucq56-20261105-consumer-full-resource.json"
+  }
+}

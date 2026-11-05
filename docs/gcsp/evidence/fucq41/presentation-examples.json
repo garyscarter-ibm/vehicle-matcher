@@ -1,0 +1,83 @@
+{
+  "representative": {
+    "status": "ok",
+    "assetId": "bmw-i5-white-20261101-v1",
+    "role": "representative-catalogue-render",
+    "observedDate": "2026-11-01",
+    "label": "Representative image",
+    "alt": "Representative catalogue render",
+    "isFallback": false,
+    "fidelity": {
+      "model": "verified",
+      "paint": "verified",
+      "wheels": "unknown",
+      "interior": "unknown",
+      "equipment": "unknown",
+      "exactVehicle": "unknown"
+    },
+    "fidelityLabels": {
+      "model": "Model matches catalogue selection",
+      "paint": "Paint matches catalogue selection",
+      "wheels": "Wheels unknown",
+      "interior": "Interior unknown",
+      "equipment": "Equipment unknown",
+      "exactVehicle": "Exact vehicle appearance unknown"
+    },
+    "caption": "Representative catalogue render, observed 1 November 2026. Observed model and paint verified; wheels, interior and equipment fidelity unknown.",
+    "message": null
+  },
+  "genericFallback": {
+    "status": "ok",
+    "assetId": "bmw-i5-white-20261101-v1",
+    "role": "representative-catalogue-render",
+    "observedDate": "2026-11-01",
+    "label": "Representative image",
+    "alt": "Representative image; configuration match unknown",
+    "isFallback": true,
+    "fidelity": {
+      "model": "unknown",
+      "paint": "unknown",
+      "wheels": "unknown",
+      "interior": "unknown",
+      "equipment": "unknown",
+      "exactVehicle": "unknown"
+    },
+    "fidelityLabels": {
+      "model": "Model unknown",
+      "paint": "Paint unknown",
+      "wheels": "Wheels unknown",
+      "interior": "Interior unknown",
+      "equipment": "Equipment unknown",
+      "exactVehicle": "Exact vehicle appearance unknown"
+    },
+    "caption": "Representative catalogue render, observed 1 November 2026. Model, paint and configuration match unknown.",
+    "message": null
+  },
+  "missing": {
+    "status": "unsupported",
+    "assetId": null,
+    "role": "representative-catalogue-render",
+    "observedDate": null,
+    "label": "Image unavailable",
+    "alt": null,
+    "isFallback": false,
+    "fidelity": {
+      "model": "unknown",
+      "paint": "unknown",
+      "wheels": "unknown",
+      "interior": "unknown",
+      "equipment": "unknown",
+      "exactVehicle": "unknown"
+    },
+    "fidelityLabels": {
+      "model": "Model unknown",
+      "paint": "Paint unknown",
+      "wheels": "Wheels unknown",
+      "interior": "Interior unknown",
+      "equipment": "Equipment unknown",
+      "exactVehicle": "Exact vehicle appearance unknown"
+    },
+    "caption": null,
+    "message": "No registered render supports this model, paint, viewpoint, size or version."
+  }
+}

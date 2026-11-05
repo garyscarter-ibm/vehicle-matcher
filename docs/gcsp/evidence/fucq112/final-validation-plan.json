@@ -1,0 +1,91 @@
+{
+  "story": "FUCQ-112",
+  "state": "admitted",
+  "command": "node --test --test-concurrency=1 server/test/**/*.test.js",
+  "cwd": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-081",
+  "environment": {
+    "HOME": "/Users/usget",
+    "USER": "usget",
+    "LOGNAME": "usget",
+    "SHELL": "/bin/zsh",
+    "PATH": "/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "LANG": "en_GB.UTF-8",
+    "TZ": "Europe/London",
+    "SCAFFOLDING_HARNESS": "codex",
+    "npm_config_offline": "true",
+    "npm_config_audit": "false",
+    "npm_config_fund": "false"
+  },
+  "supervisor": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-081/docs/gcsp/evidence/fucq112/full-supervisor.py",
+  "supervisorSha256": "dd9ea045c85f20197b6a817b5dbd28aaa6cd1b762ac4eb680801374e7b2eb5fa",
+  "phaseLauncher": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-081/docs/gcsp/evidence/fucq112/full-phase.py",
+  "phaseLauncherSha256": "c959cb0621bcf6b057f577f824ad214e4839f9206a601ee0be6f9627d8cbc115",
+  "gate": "Dispatcher admitted sole final full after merged FUCQ-55 and FUCQ-22 base 6ebd96e; no other full/browser, no descendants; source freeze pushed before launch",
+  "budget": {
+    "seconds": 600,
+    "scratch_bytes": 134217728,
+    "ram_bytes": 805306368,
+    "workers": 1
+  },
+  "sequence": [
+    "status-before",
+    "full exactly once",
+    "status-after",
+    "commit T0 Result/evidence only",
+    "status-final"
+  ],
+  "supervision": [
+    "manifest outside unique owned Scratch root before mkdir",
+    "short /private/tmp owned TMPDIR/TMP/TEMP propagated; shared HostBudget reservation",
+    "nonblocking machine full-suite.lock before allocation; no waiting holding reservation",
+    "sample actual leader and test-file-worker argv every 0.2s; refuse more than one actual worker",
+    "run_process finally stops and joins own groups; Scratch finalizer removes exact root and verifies group absence; HostBudget release finally",
+    "concise summary/failure logs retained, disposable successful verbose logs removed and exact filesystem absence checked"
+  ],
+  "pins": {
+    "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+    "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+    "_tools/test_stamp.py": "88a16018b5b8fa225463b590f2283b4baa6be4951f258bba4846eacc3795a49e",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "_tools/scaffold_git.py": "787cad57c37f90884d67f391e8419c8141293fe99d8c02dec8d1abb521d2c7fd"
+  },
+  "requiredMergedBase": "6ebd96e",
+  "selected": "Explicit story validate requires full npm test equivalent, at agreed final integration checkpoint for shared schema/notify/policy/routes plus merged55/22. One actual worker; no duplicate unchanged scoped or browser checks.",
+  "changedPaths": [
+    "server/gcsp/cases/",
+    "server/gcsp/migrations/0003_renewal_cases.sql",
+    "server/gcsp/repository/schema.js",
+    "server/gcsp/repository/core.js",
+    "server/gcsp/policy/seed-v1.json",
+    "server/gcsp/notify/index.js",
+    "server/index.js",
+    "server/test/gcsp-renewal-case.test.js",
+    "server/test/gcsp-repository-contract.test.js",
+    "server/test/fixtures/gcsp-renewal-case-outcomes.json"
+  ],
+  "regressionAndBoundaries": [
+    "side-effect-free help/read; one active case and exact command/tick replay",
+    "identity/run scope and shared HTTP gate/composition",
+    "canonical policy provenance and clock handler stage",
+    "actual FUCQ-91 confirmation and FUCQ-29 constraints",
+    "same-transaction outbox rollback, captured retries/reset stale semantics",
+    "migration registry/SQL driver and active case uniqueness",
+    "integrated55 raw-path lookup/gate/offline behavior and22 empty engine envelope"
+  ],
+  "excluded": "No new browser; backend-only case fixtures suffice. Native PostgreSQL (GCSP_DATABASE_URL unset), real mail, lifecycle integrations and draw.io render remain unverified. Existing browser evidence remains owned by55/22.",
+  "reassessedEvidence": "20 named and44 repository results remain scoped; code/fixtures of cases, repository, clock, identity, brief, policy and notify unchanged across merge. Index changed by55 and engine by22; final full covers these integrated boundaries rather than rerunning old scoped commands.",
+  "review": "Only changelog conflict; both55 and112 entries retained. 55 raw URL splitting, gate and offline startup preserved; cases composition is narrow additive route/start registration. Schema/core retain only112 additions. All17 comparison rows byte-equivalent to merged base; eight renewalCase keys retained;22 adds alternatives:[] to empty result.",
+  "expectedOutputs": {
+    "argv": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq112-20261105-cases-full-argv.json",
+    "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq112-20261105-cases-full-receipt.json",
+    "ownershipPattern": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq112-20261105-cases-full-<token>.json",
+    "checkpoints": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints",
+    "logs": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs"
+  },
+  "reproductionArgv": [
+    "/opt/homebrew/bin/python3",
+    "-B",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-081/docs/gcsp/evidence/fucq112/full-phase.py",
+    "status-final"
+  ]
+}

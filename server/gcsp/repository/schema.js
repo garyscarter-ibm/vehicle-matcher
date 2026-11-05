@@ -9,7 +9,7 @@ export const TABLES = Object.freeze({
   runs: definition('runId', 'environmentId status current scenarioVersion fixtureVersion corpusVersion policyVersion clockInstant clockVersion versions', [['environmentId', '$current']]),
   employees: definition('runId employeeId', 'principalId companyId gradeId schemeId entitlementSlotId roles contract renewalId name'),
   entitlement_slots: definition('runId entitlementSlotId', 'employeeId renewalId contractId capacity employeeCapacity state', [], [['employees', 'employeeId']]),
-  briefs: definition('runId employeeId briefVersion', 'entitlementSlotId renewalId schemaVersion previousBriefVersion status preferences essentials currentCarFeedback buddy policyVersion confirmedBy confirmedAt postDeclineChange', [], [['employees', 'employeeId']], true),
+  briefs: definition('runId employeeId briefVersion', 'entitlementSlotId renewalId schemaVersion previousBriefVersion status preferences essentials currentCarFeedback knownFacts buddy policyVersion confirmedBy confirmedAt postDeclineChange', [], [['employees', 'employeeId']], true),
   stock: definition('runId orderUuid', 'orderNumber configurationId wholesalerOrderId revision release account visibility state status available held allocated agModelCode vgModelCode facts corpusVersion', [['orderNumber']]),
   holds: definition('runId holdId', 'orderUuid employeeId entitlementSlotId renewalId type state phase expiresAt policyVersion quoteId operationId reviewStartedAt releaseReason', [], [['stock', 'orderUuid'], ['employees', 'employeeId'], ['entitlement_slots', 'entitlementSlotId'], ['quotes', 'quoteId']]),
   claims: definition('runId claimId', 'holdId orderUuid employeeId entitlementSlotId renewalId type state expiresAt policyVersion quoteId operationId', [['holdId']], [['holds', 'holdId'], ['stock', 'orderUuid'], ['entitlement_slots', 'entitlementSlotId'], ['employees', 'employeeId']]),
@@ -28,6 +28,7 @@ export const TABLES = Object.freeze({
   grade_allowances: definition('runId policyVersion companyId schemeId gradeId', 'monthlyPoints unit effectiveFrom effectiveTo source status', [], [['policy_versions', 'policyVersion']], true),
   policy_assumptions: definition('runId policyVersion key', 'value unit status basis source sourceDate effectiveFrom effectiveTo', [], [['policy_versions', 'policyVersion']], true),
   identity_sessions: definition('runId sessionIdHash', 'principalId employeeId roles environmentId expiresAt actingPrincipalId'),
+  renewal_cases: definition('runId caseId', 'employeeId renewalId owner status reason trigger nextAction dueAt openedAt lastUpdatedAt renewalDeadline renewalDeadlineState policyVersion history remedy fictional', [], [['employees', 'employeeId']]),
   tick_runs: definition('runId tickId', 'commandId eventId targetClock handlerOrder outcomes state inputDigest'),
 });
 export const createState = () => ({ tables: Object.fromEntries(Object.keys(TABLES).map((table) => [table, []])) });

@@ -23,6 +23,7 @@
  */
 
 import { MODES, DEFAULT_MODE, modeByKey } from './modes/index.js';
+import { RETAIL_BRANDS } from './share-context.js';
 
 const DEFAULT_API = 'http://localhost:8787';
 
@@ -121,7 +122,7 @@ function retailerName(block) {
  * client mirror the shell needs to pick a theme class and reject typos. Keep it
  * in step when a brand is onboarded — one line per brand, no other client edit.
  * DEFAULT_BRAND is the fallback when no (or an unknown) "Brand" row is set. */
-const KNOWN_BRANDS = ['bmw', 'mini', 'ford', 'honda', 'motorrad', 'ferrari'];
+const KNOWN_BRANDS = RETAIL_BRANDS;
 const DEFAULT_BRAND = 'bmw';
 
 /** Brand for this block instance: authored "Brand" config row, lower-cased,
@@ -183,7 +184,7 @@ function resolveMode(block) {
  * vehicle-matcher.css). Only rendered when the block is unlocked and there's
  * more than one mode to choose between — a single mode needs no switch.
  */
-function renderSwitcher(block, stage, ctx, current) {
+function renderSwitcher(current, mountMode) {
   if (MODES.length < 2) return null;
   const bar = document.createElement('div');
   bar.className = 'vm-switcher';
@@ -202,8 +203,7 @@ function renderSwitcher(block, stage, ctx, current) {
   select.addEventListener('change', () => {
     const next = modeByKey(select.value);
     if (!next) return;
-    stage.replaceChildren();
-    next.mount(stage, ctx);
+    mountMode(next);
   });
 
   bar.append(select);
@@ -247,12 +247,19 @@ export default async function decorate(block) {
   // stage, but never the block).
   const stage = document.createElement('div');
   stage.className = 'vm-stage';
+  let cleanup;
+  const mountMode = (next) => {
+    if (typeof cleanup === 'function') cleanup();
+    stage.replaceChildren();
+    ctx.mode = next.key;
+    cleanup = next.mount(stage, ctx);
+  };
 
   // Unlocked: offer the switcher above the stage. Locked (authored Mode row or
   // ?mode=): mount that one mode with no switcher, so a production page looks
   // exactly as it did before modes existed.
   if (!locked) {
-    const switcher = renderSwitcher(block, stage, ctx, mode);
+    const switcher = renderSwitcher(mode, mountMode);
     if (switcher) block.append(switcher);
   }
   block.append(stage);
@@ -264,5 +271,5 @@ export default async function decorate(block) {
   // dead. A mode paints its own skeleton immediately and swaps in the real
   // thing when its data lands, so decorate() returns now and lets the page
   // finish loading.
-  mode.mount(stage, ctx);
+  mountMode(mode);
 }

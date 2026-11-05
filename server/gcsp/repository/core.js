@@ -47,6 +47,10 @@ function validateObject(table, value, kind) {
     }
   }
   if (value.version !== undefined && !positive(value.version)) return invalid('invalid-version', 'version', 'Expected a positive integer');
+  if (table === 'renewal_cases') {
+    if (kind === 'row' && ['employeeId', 'renewalId'].some((key) => !identifier(value[key]))) return invalid('invalid-case-owner', 'employeeId/renewalId', 'A scoped employee and renewal are required');
+    if (value.status !== undefined && !['open', 'in-progress', 'remedy-proposed', 'resolved', 'closed'].includes(value.status)) return invalid('invalid-state', 'status', 'Unknown renewal case state');
+  }
   if (['holds', 'claims'].includes(table)) {
     if (value.state !== undefined && ![...OCCUPYING_STATES, 'released', 'expired', 'allocated', 'claim-failed'].includes(value.state)) return invalid('invalid-state', 'state', 'Unknown hold or claim state');
     if (value.type !== undefined && !['cart', 'buddy-offer'].includes(value.type)) return invalid('invalid-hold-type', 'type', 'Unknown hold type');
@@ -108,6 +112,9 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
     for (const [target, field] of schema.refs) {
       if (row[field] !== undefined && !rows(target).some((other) => other[field] === row[field])) return conflict('missing-reference', { table: target });
     }
+    if (table === 'renewal_cases' && ['open', 'in-progress', 'remedy-proposed'].includes(row.status)
+      && rows(table).some((other) => other !== previous && other.employeeId === row.employeeId && other.renewalId === row.renewalId
+        && ['open', 'in-progress', 'remedy-proposed'].includes(other.status))) return conflict('active-renewal-case-exists');
     if (table === 'claims') {
       const hold = rows('holds').find((item) => item.holdId === row.holdId);
       if (!hold || ['orderUuid', 'employeeId', 'entitlementSlotId'].some((key) => hold[key] !== row[key])) return conflict('claim-hold-mismatch');
@@ -224,17 +231,88 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
 
 export function createRepository(backend) {
   let opened = false;
+  const commitObservers = new Set();
   const unavailable = () => result('unavailable', { reason: 'Repository is unavailable', retryable: true });
   const safe = async (work) => { try { return await work(); } catch { return unavailable(); } };
   return Object.freeze({
+    // Backend composition only. Observers run after the provider releases its
+    // transaction/lock; their failures cannot undo or replace committed results.
+    afterCommit(observer) {
+      if (typeof observer !== 'function') throw new TypeError('Supply a commit observer.');
+      commitObservers.add(observer);
+      return () => commitObservers.delete(observer);
+    },
     async open(options = {}) {
       return safe(async () => { const outcome = await backend.open(options); opened = outcome.status === 'ok'; return outcome; });
     },
     async migrationStatus() { return opened ? safe(() => backend.migrationStatus()) : unavailable(); },
+    async currentRun(environmentId) {
+      if (!opened) return unavailable();
+      if (!identifier(environmentId)) return invalid('invalid-environment', 'environmentId', 'Supply an environment');
+      return safe(() => backend.read({ environmentId, runId: 'repository:current-run' }, async (state) => {
+        const current = state.tables.runs.filter((row) => row.environmentId === environmentId && row.current === true && row.status === 'active');
+        return current.length === 1 ? ok(current[0]) : current.length ? conflict('multiple-current-runs') : notFound('runs');
+      }));
+    },
+    // One backend transaction retires the old run, seeds the replacement and records the reset receipt.
+    // Only this operation crosses run scopes; normal CRUD remains scoped to its trusted context.
+    async resetRun(context, command, { expectedCurrentRunId, expectedRunVersion, nextRun, rows } = {}) {
+      if (!opened) return unavailable();
+      if (!plain(command) || !identifier(command.commandId) || !identifier(command.inputDigest)
+        || !plain(nextRun) || !identifier(nextRun.runId) || nextRun.environmentId !== context?.environmentId
+        || nextRun.current !== true || nextRun.status !== 'active'
+        || !(expectedCurrentRunId === null || identifier(expectedCurrentRunId) && positive(expectedRunVersion))
+        || !Array.isArray(rows) || rows.some((entry) => !Array.isArray(entry) || entry.length !== 2
+          || !['employees', 'entitlement_slots', 'stock'].includes(entry[0]) || !plain(entry[1]))) {
+        return invalid('invalid-reset', 'reset', 'Supply a complete run transition and fixture rows');
+      }
+      return safe(() => backend.transaction(context, async (state) => {
+        const refused = contextError(context, state);
+        if (refused) return { commit: false, outcome: refused };
+        const receipt = state.tables.event_receipts.find((row) => row.runId === context.runId
+          && row.consumerId === 'command:reset-run' && row.eventId === command.commandId);
+        if (receipt) return { commit: false, outcome: receipt.inputDigest === command.inputDigest
+          ? structuredClone(receipt.outcome) : conflict('idempotency-input-changed') };
+        const current = state.tables.runs.find((row) => row.environmentId === context.environmentId && (row.current === true || row.status === 'active'));
+        if ((current?.runId ?? null) !== expectedCurrentRunId || current && current.runId !== context.runId) {
+          return { commit: false, outcome: result('stale-run', { reason: 'The current run has changed' }) };
+        }
+        if (state.tables.runs.some((row) => row.runId === nextRun.runId)) return { commit: false, outcome: conflict('run-id-exists') };
+        if (current) {
+          const previous = createTransaction(context, state, backend.now, backend.supportedTables);
+          const retired = await previous.tx.compareAndSwap({ table: 'runs', key: { runId: current.runId } }, expectedRunVersion, { current: false, status: 'historical' });
+          if (retired.status !== 'ok') return { commit: false, outcome: retired };
+          // Only reset crosses historical scopes. Retire outstanding jobs in
+          // this same atomic transition so they cannot revive in a later run.
+          for (const job of state.tables.notification_outbox.filter((row) => row.runId === current.runId && !['sent', 'stale'].includes(row.state))) {
+            const changed = await previous.tx.compareAndSwap({ table: 'notification_outbox', key: { runId: current.runId, jobId: job.jobId } }, job.version,
+              { state: 'stale', outcome: { ...job.outcome, error: 'stale-run', nextAttemptAt: null } });
+            if (changed.status !== 'ok') { previous.finish(); return { commit: false, outcome: changed }; }
+          }
+          previous.finish();
+        }
+        const nextContext = { ...context, runId: nextRun.runId };
+        const seed = createTransaction(nextContext, state, backend.now, backend.supportedTables);
+        let outcome = await seed.tx.insert('runs', nextRun);
+        for (const [table, row] of rows) {
+          if (outcome.status !== 'ok') break;
+          if (row.runId !== undefined && row.runId !== nextRun.runId) { outcome = result('stale-run', { reason: 'Fixture belongs to another run' }); break; }
+          outcome = await seed.tx.insert(table, { ...row, runId: nextRun.runId });
+        }
+        const failure = seed.finish();
+        if (failure || outcome.status !== 'ok') return { commit: false, outcome: failure || outcome };
+        const stored = ok({ previousRunId: expectedCurrentRunId, runId: nextRun.runId, now: nextRun.clockInstant ?? null, versions: nextRun.versions ?? {} });
+        const recorder = createTransaction(context, state, backend.now, backend.supportedTables);
+        const recorded = await recorder.tx.recordReceipt({ consumerId: 'command:reset-run', eventId: command.commandId, inputDigest: command.inputDigest, state: 'completed', outcome: stored });
+        recorder.finish();
+        return { commit: recorded.status === 'ok', outcome: recorded.status === 'ok' ? stored : recorded };
+      }));
+    },
     async transaction(context, command, work) {
       if (!opened) return unavailable();
       if (!plain(command) || !identifier(command.commandId) || !identifier(command.inputDigest) || typeof work !== 'function') return invalid('invalid-command', 'command', 'Command ID, digest and callback are required');
-      return safe(() => backend.transaction(context, async (state) => {
+      let committed = false;
+      const outcome = await safe(() => backend.transaction(context, async (state) => {
         const refused = contextError(context, state);
         if (refused) return { commit: false, outcome: refused };
         const consumerId = 'command:transaction';
@@ -254,8 +332,15 @@ export function createRepository(backend) {
         const recorder = createTransaction(context, state, backend.now, backend.supportedTables);
         const recorded = await recorder.tx.recordReceipt({ consumerId, eventId: command.commandId, inputDigest: command.inputDigest, state: 'completed', outcome: storedOutcome });
         recorder.finish();
-        return recorded.status === 'ok' ? { commit: true, outcome: storedOutcome } : { commit: false, outcome: recorded };
+        committed = recorded.status === 'ok';
+        return committed ? { commit: true, outcome: storedOutcome } : { commit: false, outcome: recorded };
       }));
+      if (committed && ['ok', 'pending'].includes(outcome.status)) {
+        await Promise.allSettled([...commitObservers].map((observer) => Promise.resolve().then(() => observer({
+          context: structuredClone(context), commandId: command.commandId,
+        }))));
+      }
+      return outcome;
     },
     async read(context, ref) {
       if (!opened) return unavailable();
@@ -275,6 +360,6 @@ export function createRepository(backend) {
         const outcome = await session.tx.list(table, filter); session.finish(); return outcome;
       }));
     },
-    async close() { return safe(async () => { opened = false; return backend.close(); }); },
+    async close() { return safe(async () => { opened = false; commitObservers.clear(); return backend.close(); }); },
   });
 }
