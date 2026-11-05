@@ -45,6 +45,14 @@ Preference keys are extensible registered dimensions such as comfort and sportin
 
 FUCQ-91's single-change operation takes `{ decisionId, expectedBriefVersion, change: { path, value }, commandId }`. It permits one registered preference value or one essential, validates the choice, preserves all other essentials and importance weights, creates a new confirmed brief version and records the change above. `path` cannot target identity, permission or multiple fields. An inferred follow-up stays draft until confirmed. Repeating the command returns the same version; a changed payload under the same ID is `conflict`. A decline reason, a preference change and satisfaction are separate records. Do not reoffer the unchanged declined car; a relevant confirmed change makes it eligible for re-evaluation, not automatically suitable or allocated.
 
+### Shared local feedback action v1 · FUCQ-30
+
+`blocks/vehicle-matcher/feedback-actions.js` is the canonical JSON action/reducer contract. An action contains `schemaVersion: 1`, unique local `id`, `type`, typed `target`, human-readable `reason`, `{ kind, id }` scope and `expectedVersion`. The scope kind is `browse` or `employee-draft`. Types are exact `exclude-candidate`, current `exclude-group`, retail `filter`, employee `confirm-change`, local `undo` and `reset`. The [complete target/operator contract](feedback-actions.md) distinguishes purchase price, odometer and annual use. No action stores a JavaScript predicate.
+
+`reduceFeedback` returns a new state and explicit `nextVersion`, or rejects a stale version/scope without partial state. `applyConfirmedFeedbackChange` requires `{ actor: employee, confirmed: true, at }`, targets one existing preference value/importance or complete confirmed essential, preserves every other field, and rejects semantic no-ops. `BriefService.changeAfterDecline` consumes this helper inside its existing transaction and keeps its public command, audit, consent and idempotency contract. The server supplies the employee confirmation/time; this binding does not make an inferred proposal authoritative.
+
+`server/scenarios/employee/feedback.js` exports `createEmployeeFeedbackDraft` and pure `reduceEmployeeDraft`. It recomputes from FUCQ-29's complete authorised `decisions`, original brief version and PolicyService-owned configuration, retaining authoritative provider gates. A capped recommendation list cannot stand in for the complete input. Unknown requirements, no-match and unavailable data remain separate results. Local undo recomputes remaining intent against the immutable base; it never changes a durable offer, hold, decision or account record. FUCQ-107 adds its future persistence and second-offer flow through this action rather than copying its change semantics.
+
 ### Implemented BriefService binding · FUCQ-91, 5 November 2026
 
 `server/gcsp/brief/index.js` exports `BriefService` and `createBriefService({ repository, policy, clock, identity })`.
@@ -383,6 +391,7 @@ FUCQ-53's [synthetic identity allocation contract](synthetic-identity-allocation
 | FUCQ-85 (FUCQ-79) | DemoClock, registry/order/replay, startup recovery entry point and synthetic reset. Handler rules belong to the registering stories. |
 | FUCQ-66 | Manual claim/release/expiry rules, timing phases, quotes and expiry handler over FUCQ-81/82/84/85; no second repository. |
 | FUCQ-29 | Employee eligibility/affordability/essential gates and ranking, reading FUCQ-82/83; no local rule/default table. |
+| FUCQ-30 | Canonical serialisable local feedback actions and confirmed changes; questionnaire and read-only full-candidate employee draft consumers. FUCQ-91 persists through the same confirmed-change helper; FUCQ-107 adds its later offer flow. |
 | FUCQ-65 | Manual employee/driver/contract/entitlement context using FUCQ-84 and the shared repository/policy; no separate identity resolver. |
 | FUCQ-91/94/95 | BriefService/versioned permission and single-change operation, employee controls and activity projection. |
 | FUCQ-92/96/100 | Release pull/replay, shared allocation/tie-break, buddy hold/offer and expiry handlers. |
@@ -397,6 +406,7 @@ An implementing story adds its schema/key/method and provenance here in the same
 
 | Version / date / owner | Change and keyed assumptions |
 |---|---|
+| 1.0.0 / 2026-11-05 / FUCQ-30 | Adds local exact/group exclusion, retail predicate, confirmed preference/essential change and reversible undo/reset actions. The shared canonical helper replaces duplicate FUCQ-91 field-change/no-op logic while retaining its public command, transaction, versioning, audit and consent semantics. Complete read-only employee decisions recompute through existing policy/ranker gates. No new policy key, durable lifecycle operation or existing contract meaning change. |
 | 1.0.0 / 2026-11-05 / FUCQ-85 | Adds repository currentRun/resetRun, persisted DemoClock/registry/startup/reset and presenter HTTP binding. Adds canonical `clock.commands.v1`, `clock.handler.order.v1`, `clock.scenario.v1`; additive inventory snapshot retains allocator provenance. Same identity authority and employee time port; no existing consumer meaning changes. Backend response fixtures and memory/SQL-driver parity; managed PostgreSQL and draw.io rendering remain unverified. |
 | 1.0.0 / 2026-11-05 / FUCQ-29 | Adds the stateless employee recommendation consumer and `employee.recommendation.v1` calibration through the existing PolicyService. Reuses exact snapshots/typed terms, context and clock ports; no existing method meanings change. The authorised trusted cash-filter opt-out preserves retail defaults and avoids invented employee prices. |
 | 1.0.0 / 2026-11-05 / FUCQ-53 | Implements seeded target-format stock references and enabled-profile delivered/current VIN association, immutable source/version replay and whole-owned-inventory collision bounds. Adds `runs.versions.syntheticIdentityInventory` metadata through the existing repository port, plain visibility/provenance/failure projection and the independent offline checksum checker. Allocation algorithm/bounds are versioned artifact data; no active scheme assumption or existing consumer meaning changes. |

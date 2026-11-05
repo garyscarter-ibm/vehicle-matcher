@@ -19,6 +19,8 @@ Purchase price is GBP purchase price. Odometer is distance already driven; it is
 
 Inference may propose an action. It cannot apply a change without employee confirmation, remove an essential, or replace charging `none` with `either`. A confirmed employee correction can change that charging value; it remains distinct from unknown charging. Unknown essentials retain their `needs-confirmation` state through unrelated preference changes. Policy definitions and assumptions come from the existing PolicyService, never a new local seed.
 
+The read-only provider uses `employeeFacts.charging: none`; the saved-brief lifecycle registry uses `not-ready`. An unchanged, confirmed provider value is retained in its original vocabulary when the complete authorised decisions attest it. New confirmed draft corrections use the lifecycle registry. This compatibility rule adds no alternate policy values or saved-brief vocabulary.
+
 FUCQ-91's saved-brief single-change operation calls `applyConfirmedFeedbackChange`. FUCQ-91 still owns transaction boundaries, decline validation, version checks, audit, idempotency and consent. Canonical business no-op detection ignores essential provenance metadata and equipment ordering/duplicates, preserving the unused single-change opportunity. FUCQ-107 can consume the same action later.
 
 Undo is local to the browse session or ephemeral draft. It cannot release or restore a durable hold, decline/expire/accept an offer, or claim account learning. There is no new employee application screen. The developer gallery illustrates the shared controls with fictional input only.
