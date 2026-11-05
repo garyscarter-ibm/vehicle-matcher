@@ -340,6 +340,28 @@ test('POST /api/match returns the full match envelope + publicMatch shape', asyn
   );
 });
 
+for (const [label, cars] of [
+  ['empty stock', []],
+  ['all stock excluded by hard filters', bmwPool(2).map((car) => ({
+    ...car, priceMin: 1000000, priceMax: 1000000,
+  }))],
+]) {
+  test(`POST /api/match completes normally for ${label}`, { timeout: 3000 }, async () => {
+    await withServer({ fetchRetailerStock: fakeStock({ bmw: cars }), enrichColours: fakeEnrich() }, async (base) => {
+      // A client timeout rejects the test; it is never accepted as an empty search.
+      const response = await fetch(`${base}/api/match`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ answers: OPEN_BRIEF }), signal: AbortSignal.timeout(1000),
+      });
+      assert.equal(response.status, 200);
+      assert.deepEqual(await response.json(), {
+        matches: [], alternatives: [], decisive: true, clusterSize: 0, tasteLead: false,
+        searched: { total: cars.length, eligible: 0, margin: null }, unmet: {},
+      });
+    });
+  });
+}
+
 test('POST /api/match maps StockUnavailableError → 502', async () => {
   await withServer(
     { fetchRetailerStock: throwingStock(new StockUnavailableError('feed down')) },
@@ -347,6 +369,7 @@ test('POST /api/match maps StockUnavailableError → 502', async () => {
       const { status, json } = await post(base, '/api/match', { answers: FULL_BRIEF });
       assert.equal(status, 502);
       assert.match(json.error, /unavailable/i);
+      assert.equal(json.matches, undefined, 'an outage must not claim no cars exist');
     },
   );
 });
