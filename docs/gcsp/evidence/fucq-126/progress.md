@@ -99,3 +99,20 @@ new runtime dependency, live DB or released server/identity/seed lane edit occur
 Next gate: coordinated desktop/375px browser and keyboard evidence against the actual same-origin
 memory runtime, separately labelling injected visual-only states. Authored npm test remains held
 for dispatcher admission. Real release count and full business-scenario reset acceptance remain open.
+
+## Browser lane active
+
+Reviewed checkpoint `3443301` is pushed. Dispatcher granted the coordinated browser lane on
+5 November 2026 at about22:32 GMT: actual same-origin memory runtime/identity/clock/scenarios and
+available HTTP services; desktop1280x900/narrow375x812; keyboard/switch/nonpresenter/reset/
+transport retry/teardown/failure matrix; synthetic visuals explicitly separate. No nativeDB or
+full-suite grant. Source is frozen while the existing UI implementer prepares and runs the proof
+harness. Fresh implementer tier22:31:21 requested/selected Sol/medium; existing effective settings
+unchanged, no fallback. Count telemetry can_start0/free7.4GB; established measured-resource override
+admits this sole child; execution still requires fresh HostBudget2560MiB/min2048 and supervised120s
+chunks,128MiB scratch,2MiB logs,recursive Chrome/detached process/profile/server-port teardown.
+Parent owns capture review, independent filesystem receipts and exact dependency symlink cleanup.
+
+Full stamp status currently none: exact owned temporary dependency symlinks appear as untracked
+paths. No full suite has run; scoped source-bound receipts remain valid. Do not stage these links.
+WAITING on `presenter_ui`: browser harness/proof, then source and evidence review.
