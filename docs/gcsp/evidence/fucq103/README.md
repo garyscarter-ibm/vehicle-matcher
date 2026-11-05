@@ -289,3 +289,8 @@ staged paths pass the whitespace check. The validated UI/definition checkpoint `
 is already published. This integration is local pending publication: the dispatcher reported
 GitHub `fatal: commit_refs_rules` on shared and another story branch. No force push, rules
 workaround or unchanged retry loop is used. Browser/full/native lanes remain ungranted.
+
+The [central integration handoff](central-integration-handoff.md) records released source
+ownership and the FUCQ-66/70 pending-outcome requirement. Preserve `pending: 202` when
+FUCQ-66 and the central composition integrate, then prove it through the actual HTTP path;
+this metadata checkpoint supplies no HTTP 202 completion evidence.
