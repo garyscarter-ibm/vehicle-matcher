@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { once } from 'node:events';
+import { buildServer } from '../index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok } from '../gcsp/repository/index.js';
 import { PolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
@@ -272,4 +274,46 @@ test('unregistered decline types and free text are replaced with a counted uncla
   const out = await read(f);
   assert.equal(exact(bucket(out.offers.declinedByReason, 'unclassified')), 1);
   assert.equal(JSON.stringify(out).includes('PRIVATE-'), false);
+});
+
+
+test('buildServer exposes a no-store trusted Greg GET, origin/session/gate refusal and stale-run protection', async () => {
+  const f = await setup(); await confirm(f);
+  const oldKey = process.env.DEMO_ACCESS_KEY;
+  process.env.DEMO_ACCESS_KEY = 'greg-demand-fixture-key';
+  const server = buildServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspGreg: f.service,
+    gcspAllowedOrigins: ['https://greg.test'] });
+  server.listen(0, '127.0.0.1'); await once(server, 'listening');
+  const cookie = (session) => [session.value.setCookie].flat().map((c) => c.split(';')[0]).join('; ');
+  const request = async ({ session = f.acting, origin = 'https://greg.test', query = '', gate = true } = {}) => {
+    const response = await fetch(`http://127.0.0.1:${server.address().port}/api/gcsp/greg/demand${query}`, {
+      headers: { Origin: origin, ...(session ? { Cookie: cookie(session) } : {}), ...(gate ? { 'X-Access-Key': 'greg-demand-fixture-key' } : {}) } });
+    return { status: response.status, body: await response.json(), cache: response.headers.get('Cache-Control') };
+  };
+  try {
+    const response = await request(); assert.equal(response.status, 200, JSON.stringify(response));
+    assert.equal(response.cache, 'no-store'); assert.equal(response.body.value.runId, f.context.runId);
+    assert.equal((await request({ gate: false })).status, 401);
+    assert.equal((await request({ session: null })).status, 401);
+    assert.equal((await request({ origin: 'https://hostile.test' })).status, 403);
+    const paula = await f.identity.switchPrincipal(f.presenter.value.context, 'demo-paula', 'http-employee');
+    assert.equal((await request({ session: paula })).status, 403);
+    assert.equal((await request({ query: '?runId=another-run' })).status, 400);
+    const state = (await f.clock.readState(f.presenter.value.context)).value;
+    assert.equal((await f.clock.reset(f.presenter.value.context, { commandId: 'http-reset', expectedRunId: state.runId,
+      expectedRunVersion: state.runVersion, scenarioVersion: state.versions.scenario, fixtureVersion: state.versions.fixture })).status, 'ok');
+    assert.equal((await request()).body.status, 'stale-run');
+  } finally {
+    server.closeAllConnections(); await new Promise((done) => server.close(done));
+    if (oldKey === undefined) delete process.env.DEMO_ACCESS_KEY; else process.env.DEMO_ACCESS_KEY = oldKey;
+  }
+});
+
+test('equipment set order and duplicate keys cannot reopen an unchanged declined car', async () => {
+  const f = await setup(); const value = saved(); value.essentials.equipment = essential(['towbar', 'heatedSeats'], 'includes', 'equipment-key');
+  await confirm(f, value); await offer(f, 1, 'declined', 'decline', { type: 'equipment' });
+  const revised = saved(); revised.essentials.equipment = essential(['heatedSeats', 'towbar', 'towbar'], 'includes', 'equipment-key');
+  await confirm(f, revised, 1);
+  const out = await read(f); assert.equal(exact(bucket(out.demand.unmet.byGate, 'declined-unchanged')), 1);
+  assert.deepEqual(out.demand.essentials.find((e) => e.field === 'equipment').value, ['heatedSeats', 'towbar']);
 });

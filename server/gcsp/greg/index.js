@@ -8,11 +8,12 @@ const unavailable = (code) => result('unavailable', { code, reason: 'The saved-d
 const factValue = (fact) => fact?.status === 'known' ? fact.value : null;
 const modelLine = (row) => factValue(row.facts?.facts?.modelLine)
   ?? factValue(row.facts?.facts?.eligibilityModelKey)?.split('|')[0] ?? 'unconfirmed';
+const requirementValue = (e) => e.operator === 'includes' && Array.isArray(e.value) ? [...new Set(e.value)].sort() : e.value;
 const intent = (brief) => ({
   preferences: Object.fromEntries(Object.entries(brief.preferences ?? {}).map(([key, p]) => [key,
     { value: p.value, importance: p.importance, valueState: p.valueState, importanceState: p.importanceState }])),
   essentials: Object.fromEntries(Object.entries(brief.essentials ?? {}).map(([key, e]) => [key,
-    { value: e.value, operator: e.operator, unit: e.unit, state: e.state }])),
+    { value: requirementValue(e), operator: e.operator, unit: e.unit, state: e.state }])),
 });
 const activeBriefs = (rows) => [...rows.reduce((byEmployee, row) => {
   if (row.status === 'confirmed' && (!byEmployee.has(row.employeeId) || byEmployee.get(row.employeeId).briefVersion < row.briefVersion)) byEmployee.set(row.employeeId, row);
@@ -107,7 +108,7 @@ export function createGregDemandService({ repository, policy, clock, identity } 
         const essentialRows = briefs.flatMap((brief) => Object.entries(brief.essentials ?? {})
           .filter(([field]) => field === 'charging' || Object.hasOwn(calibration.value.value.essentials, field))
           .map(([field, requirement]) => ({ brief, field, operator: requirement.operator, unit: requirement.unit,
-            value: requirement.state === 'confirmed' ? requirement.value : null, state: requirement.state === 'confirmed' ? 'confirmed' : 'needs-confirmation' })));
+            value: requirement.state === 'confirmed' ? requirementValue(requirement) : null, state: requirement.state === 'confirmed' ? 'confirmed' : 'needs-confirmation' })));
         const essentials = group(essentialRows, (r) => JSON.stringify([r.field, r.operator, r.value, r.unit, r.state]), (r) => [r.brief])
           .map((g) => { const [field, operator, value, unit, state] = JSON.parse(g.key); const { key, ...rest } = g; return { field, operator, value, unit, state, ...rest }; });
         const offerVersions = (offer) => [offer, ...rows.decisions.filter((d) => d.offerId === offer.offerId)];
