@@ -1369,7 +1369,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-05T23:15:08Z",
+      "observed_at": "2026-11-05T23:21:25Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-92",
       "slices": [
         {
@@ -1395,10 +1395,10 @@
         },
         {
           "id": "final-validation",
-          "status": "not-started",
+          "status": "blocked",
           "title": "Required full suite and complete acceptance evidence",
-          "observed_at": "2026-11-05T23:14:18Z",
-          "evidence": "Explicit npm test requirement awaits serial dispatcher grant; complete source-backed/runtime acceptance remains outstanding."
+          "observed_at": "2026-11-05T23:21:25Z",
+          "evidence": "Authored npm test passed1262/1257/5 native skips/0fail on1fc492c; immediate strict stamp5307f70f762d. Complete actual source/provider/runtime acceptance still missing; docs/gcsp/evidence/fucq92/full-checkpoint.json."
         }
       ],
       "unsliced": false,
@@ -1408,9 +1408,9 @@
           "name": "The Brain",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-05T23:15:08.147542Z",
-          "expires_at": "2026-11-05T23:30:08.147542Z",
-          "status": "validating current shared-base checkpoint",
+          "observed_at": "2026-11-05T23:21:24.926567Z",
+          "expires_at": "2026-11-05T23:21:24.926567Z",
+          "status": "stopped at published integration checkpoint",
           "source": "thread 01a1adf9-7f4a-7913-9cdb-532060b69a55; requested/selected and verified gpt-6.1-sol/high"
         }
       ]
