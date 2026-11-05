@@ -895,7 +895,7 @@ export function matchCars(answers, cars, tuning = DEFAULT_TUNING) {
   };
   if (!ranked.length) {
     return {
-      matches: [], decisive: true, clusterSize: 0, tasteLead: false, searched,
+      matches: [], alternatives: [], decisive: true, clusterSize: 0, tasteLead: false, searched,
     };
   }
 

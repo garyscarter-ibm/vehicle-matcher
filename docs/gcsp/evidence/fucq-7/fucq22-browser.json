@@ -1,0 +1,144 @@
+{
+  "source": "9233760a2f1742ae4e43ebc682da6bb631ba2fdb",
+  "checks": [
+    "desktop: real empty stock response completes, loading clears, keyboard opens answer editing",
+    "desktop: outage remains an error; keyboard retry reaches normal successful empty response",
+    "narrow: real excluded stock response completes, loading clears, keyboard opens answer editing",
+    "narrow: outage remains an error; keyboard retry reaches normal successful empty response"
+  ],
+  "screenshots": [
+    {
+      "name": "fucq22-loading-desktop.png",
+      "state": "loading",
+      "widthName": "desktop",
+      "layout": {
+        "width": 1440,
+        "document": 1440,
+        "busy": true
+      }
+    },
+    {
+      "name": "fucq22-no-match-keyboard-desktop.png",
+      "state": "no-match-keyboard",
+      "widthName": "desktop",
+      "layout": {
+        "width": 1440,
+        "document": 1440,
+        "busy": false
+      }
+    },
+    {
+      "name": "fucq22-change-answers-desktop.png",
+      "state": "change-answers",
+      "widthName": "desktop",
+      "layout": {
+        "width": 1440,
+        "document": 1440,
+        "busy": false
+      }
+    },
+    {
+      "name": "fucq22-outage-retry-keyboard-desktop.png",
+      "state": "outage-retry-keyboard",
+      "widthName": "desktop",
+      "layout": {
+        "width": 1440,
+        "document": 1440,
+        "busy": false
+      }
+    },
+    {
+      "name": "fucq22-retry-recovered-desktop.png",
+      "state": "retry-recovered",
+      "widthName": "desktop",
+      "layout": {
+        "width": 1440,
+        "document": 1440,
+        "busy": false
+      }
+    },
+    {
+      "name": "fucq22-loading-narrow.png",
+      "state": "loading",
+      "widthName": "narrow",
+      "layout": {
+        "width": 390,
+        "document": 390,
+        "busy": true
+      }
+    },
+    {
+      "name": "fucq22-no-match-keyboard-narrow.png",
+      "state": "no-match-keyboard",
+      "widthName": "narrow",
+      "layout": {
+        "width": 390,
+        "document": 390,
+        "busy": false
+      }
+    },
+    {
+      "name": "fucq22-change-answers-narrow.png",
+      "state": "change-answers",
+      "widthName": "narrow",
+      "layout": {
+        "width": 390,
+        "document": 390,
+        "busy": false
+      }
+    },
+    {
+      "name": "fucq22-outage-retry-keyboard-narrow.png",
+      "state": "outage-retry-keyboard",
+      "widthName": "narrow",
+      "layout": {
+        "width": 390,
+        "document": 390,
+        "busy": false
+      }
+    },
+    {
+      "name": "fucq22-retry-recovered-narrow.png",
+      "state": "retry-recovered",
+      "widthName": "narrow",
+      "layout": {
+        "width": 390,
+        "document": 390,
+        "busy": false
+      }
+    }
+  ],
+  "externalBlocked": [],
+  "pageErrors": [],
+  "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 502 (Bad Gateway)",
+    "Failed to load resource: the server responded with a status of 502 (Bad Gateway)"
+  ],
+  "matchResponses": [
+    {
+      "widthName": "desktop",
+      "status": 200
+    },
+    {
+      "widthName": "desktop",
+      "status": 502
+    },
+    {
+      "widthName": "desktop",
+      "status": 200
+    },
+    {
+      "widthName": "narrow",
+      "status": 200
+    },
+    {
+      "widthName": "narrow",
+      "status": 502
+    },
+    {
+      "widthName": "narrow",
+      "status": 200
+    }
+  ],
+  "success": true
+}
