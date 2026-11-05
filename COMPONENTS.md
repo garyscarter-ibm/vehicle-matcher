@@ -115,6 +115,8 @@ The contract distinguishes a known value from unavailable data. Rejecting a name
 
 Shared by the employee entry now and Greg's views later; scoped tokens and styles are in `blocks/gcsp/shell/` (`.gcsp`, `--gcsp-*`). Looked at: `el`, `statusScreen`, `screenIntro`, the retail header in `vehicle-matcher.js` and the demo launcher chrome. None supplies portal landmarks, account context and narrow icon navigation, and the retail pieces are brand themed and retail only.
 
+**Density reference theme, 5 November 2026:** load [`density-reference.css`](blocks/gcsp/shell/density-reference.css) after shared styles and opt in with an ancestor `.density-reference` or `.gcsp.density-reference`. It maps verified BMW Density values into this kit's semantic tokens. Use this shared mapping instead of copying portal CSS or adding view-specific colours. [Source evidence and usage](docs/gcsp/density/README.md); [reference preview](docs/gcsp/density/preview.html), also linked from the GCSP gallery. The existing shell geometry and 48px touch controls remain local adaptations. Ghost-button hover excludes a pressed button, preserving its selected background and text contrast.
+
 | Call | Use for |
 |---|---|
 | `portalShell({ title, account, navigation, active, breadcrumbs, onNavigate, onRetryAccount })` | The slim branded header (account loading, ready and unavailable-with-Retry states), `<nav aria-label="Portal">`, optional breadcrumbs, skip link and `<main>`. Returns `{ root, main, setAccount, setActive, setBreadcrumbs, destroy }`. |

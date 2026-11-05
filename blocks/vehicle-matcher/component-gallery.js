@@ -80,6 +80,7 @@ function gcspExamples() {
   section.append(
     el('h2', 'vm-gallery-title', 'GCSP'),
     el('p', 'vm-gallery-copy', 'Shared primitives and the portal shell under the scoped GCSP tokens. Synthetic examples only; retail examples above are unchanged.'),
+    button({ label: 'Density reference preview', variant: 'ghost', href: './docs/gcsp/density/preview.html' }),
   );
   const scope = el('div', 'gcsp vm-gallery-gcsp');
   const group = (title) => {
