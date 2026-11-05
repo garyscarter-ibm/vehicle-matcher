@@ -467,9 +467,16 @@ safe descriptors/state. Dispatch re-reads the durable job and checks its exact a
 before transport and acknowledgement/failure bookkeeping; obsolete work preserves newer state.
 Captured token-bearing rendering remains in the outbox row. Exact published FUCQ-96 source invocation
 now passes isolated real-service allocation/replay and genuine stale-stock fallback checks. Backend
-worker/startup composition, expiry/remote reconciliation and completed FUCQ-66 service integration
+worker/startup composition, remote reconciliation and completed FUCQ-66 service integration
 remain outstanding. No migration, central server
 registration or screen is added.
+
+`BuddyHoldService.start()` independently registers private `buddy-expiry` work for real ticks and
+backend startup. At the policy's inclusive deadline, aligned active local buddy hold/claim/offer rows
+expire together with restored released-stock flags and a durable per-hold expiry receipt. Pending,
+selected, remote-shaped, manual and inconsistent authority stays excluded. Original allocation and
+expiry replay outcomes remain historical; expiry creates no decline or priority. Central registration
+and remote release/reconciliation are not supplied by this local checkpoint.
 
 ## Owned renewal-risk cases · FUCQ-112
 

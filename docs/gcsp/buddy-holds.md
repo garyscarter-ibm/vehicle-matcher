@@ -3,7 +3,8 @@
 This record describes the independent backend implementation on `dev/DEV-2026-11-04-060`.
 The isolated published-source FUCQ-96 invocation is proved below; merged startup composition and
 completed FUCQ-66 service integration remain outstanding.
-The authored expiry, remote reconciliation and full-suite checks remain outstanding at this checkpoint.
+Local expiry is proved through real clock ticks/startup below. Central composition, remote
+reconciliation and full-suite checks remain outstanding at this checkpoint.
 
 `server/gcsp/offers/buddy-hold.js` exports `BuddyHoldService` and
 `createBuddyHoldService({ repository, policy, clock, identity, adapter })`.
@@ -133,7 +134,7 @@ repository, DemoClock, DemoIdentity, BriefService and PolicyService
 exercise atomic success/replay, pinned terms, policy duration, hash bindings, stale revisions, permission,
 essential/eligibility failure, rollback after earlier writes and concurrent contention. Raw cart/buddy
 `conditionalClaim` tests prove only the common exclusive constraint. Actual completed FUCQ-66 both-way
-service proof, merged FUCQ-96 startup composition, expiry/reconciliation and the authored `npm test`
+service proof, merged FUCQ-96 startup composition, remote reconciliation and the authored `npm test`
 remain outstanding. No native database or external sending proof is claimed.
 
 The corrected notification scope passes 28/28 tests: actual cryptographic producer through captured
@@ -155,3 +156,31 @@ source, worktree or current product file is changed. Shared evidence:
 `.claude/test-runs/fucq100/pinned96-plan-v1.json` and `parent-pinned96-audit.json`.
 This proves isolated published-source invocation, not merged runtime/startup, native durability or
 actual completed FUCQ-66 integration.
+
+## Local expiry lifecycle
+
+`BuddyHoldService.start()` registers the stable `buddy-expiry` handler in DemoClock's `buddy-expiry`
+stage. Trusted backend composition calls it before sealing/ticking the clock; no central server
+registration is included in this checkpoint. The handler is private and also runs under real
+`DemoClock.reconcileStartup()` without issuing an employee context or session.
+
+At `now >= expiresAt`, one transaction expires the aligned active buddy hold, claim and offer,
+restores stock to `released / available: true / held: false / allocated: false`, and writes a durable
+`buddy-expiry` receipt keyed by hold ID with the clock instant and pinned policy version. It reads
+`hold.deadline.inclusive` through PolicyService and requires the shared inclusive-deadline contract.
+The expiry is neither a decline nor a priority change. Quotes, notification history and original
+allocation command outcomes are historical; replay returns the original offer outcome while current
+rows remain expired. A fresh validated claim can use the released car.
+
+Only aligned active local authority is released. Claim/release/selection pending, selected/allocated,
+remote operation markers, manual carts and mismatched stock/authority stay excluded. Inconsistent
+active records report a retained reason for their reconciliation owner; an unsupported policy or
+storage failure refuses without partial expiry. Remote release/reconciliation remains a separate slice.
+
+Dedicated expiry scope passes 28/28; buddy allocation, clock/reset and notification token boundaries
+pass 97/97, no skips. The private handler is tested at the exact deadline, before it, after a canonical
+duration change, across repeat ticks and new backend startups, and through five rollback/recovery
+points. Shared strict targeted evidence against `4700bb0`:
+`.claude/test-runs/fucq100/strict-expiry/targeted-57577c6f955e5e29bead9681862f3e0cd985a3a7bbfa05ae82ab54994ee434ab-default-1793919414454324000.json`;
+parent cleanup audit `parent-expiry-checkpoint-audit.json`. This is the scoped retained-dependency
+loader variant, with no native/full/external sending or central registration proof.

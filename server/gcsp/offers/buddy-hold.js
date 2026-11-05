@@ -23,9 +23,84 @@ const same = (left, right) => inputDigest(left) === inputDigest(right);
 // Facts, permission, time, quote, command digest and access token are server owned.
 export class BuddyHoldService {
   #repository; #policy; #clock; #identity; #adapter;
+  #startup;
   constructor({ repository, policy, clock, identity, adapter } = {}) {
     this.#repository = repository; this.#policy = policy; this.#clock = clock;
     this.#identity = identity; this.#adapter = adapter;
+  }
+
+  start() {
+    this.#startup ??= (async () => {
+      if (this.#adapter?.mode !== 'local-synthetic' || typeof this.#clock?.registerHandler !== 'function') return unavailable();
+      return this.#clock.registerHandler({ handlerId: 'buddy-expiry', stage: 'buddy-expiry',
+        handle: (event) => this.#expire(event).catch(() => unavailable()) });
+    })();
+    return this.#startup;
+  }
+
+  // Only DemoClock's registered handler reaches this path, including backend startup.
+  // It retires existing local authority; it never issues an employee context or a claim.
+  async #expire({ context, now, clockVersion, transaction }) {
+    if (this.#adapter?.mode !== 'local-synthetic' || typeof transaction !== 'function'
+      || !Number.isFinite(Date.parse(now))) return unavailable();
+    return transaction(async (tx) => {
+      const run = await tx.get(ref(context, 'runs')); if (run.status !== 'ok') return run;
+      if (run.value.environmentId !== context.environmentId || run.value.clockInstant !== now
+        || run.value.clockVersion !== clockVersion) return stale('clock', clockVersion, run.value.clockVersion);
+      const loaded = {};
+      for (const table of ['holds', 'claims', 'offers']) {
+        const rows = await tx.list(table); if (rows.status !== 'ok') return rows;
+        loaded[table] = rows.value;
+      }
+      const expired = []; const retained = [];
+      for (const hold of loaded.holds.filter((row) => row.type === 'buddy-offer' && row.state === 'active')
+        .sort((a, b) => a.holdId < b.holdId ? -1 : a.holdId > b.holdId ? 1 : 0)) {
+        if (!Number.isFinite(Date.parse(hold.expiresAt))) return unavailable();
+        const deadline = await this.#policy.getAssumption('hold.deadline.inclusive', {
+          runId: context.runId, asOf: now, policyVersion: hold.policyVersion });
+        if (deadline.status !== 'ok' || deadline.policyVersion !== hold.policyVersion
+          || deadline.value?.value !== true) return unavailable();
+        if (Date.parse(now) < Date.parse(hold.expiresAt)) continue;
+        const claims = loaded.claims.filter((row) => row.holdId === hold.holdId);
+        const offers = loaded.offers.filter((row) => row.holdId === hold.holdId);
+        const claim = claims[0]; const offer = offers[0];
+        // Pending/selected or remote-shaped records retain their exclusion until their owner reconciles.
+        if (hold.operationId || claims.length !== 1 || offers.length !== 1
+          || [claim, offer].some((row) => row.state !== 'active' || row.operationId)
+          || claim.type !== 'buddy-offer'
+          || ['orderUuid', 'employeeId', 'quoteId', 'policyVersion', 'expiresAt'].some((key) =>
+            claim[key] !== hold[key] || offer[key] !== hold[key])
+          || claim.entitlementSlotId !== hold.entitlementSlotId) {
+          retained.push({ holdId: hold.holdId, reason: 'authority-reconciliation-required' }); continue;
+        }
+        const stock = await tx.get(ref(context, 'stock', { orderUuid: hold.orderUuid }));
+        if (stock.status !== 'ok') return stock;
+        const otherAuthority = [...loaded.holds, ...loaded.claims].some((row) => row.holdId !== hold.holdId
+          && row.orderUuid === hold.orderUuid && (OCCUPYING_STATES.includes(row.state) || row.state === 'allocated'));
+        if (otherAuthority || stock.value.state !== 'held' || stock.value.held !== true
+          || stock.value.available !== false || stock.value.allocated !== false) {
+          retained.push({ holdId: hold.holdId, reason: 'stock-reconciliation-required' }); continue;
+        }
+        for (const [table, key, row, patch] of [
+          ['holds', { holdId: hold.holdId }, hold, { state: 'expired', releaseReason: 'buddy-expired' }],
+          ['claims', { claimId: claim.claimId }, claim, { state: 'expired' }],
+          ['offers', { offerId: offer.offerId }, offer, { state: 'expired' }],
+          ['stock', { orderUuid: hold.orderUuid }, stock.value, { state: 'released', available: true, held: false, allocated: false }],
+        ]) {
+          const changed = await tx.compareAndSwap(ref(context, table, key), row.version, patch);
+          if (changed.status !== 'ok') return changed;
+        }
+        const outcome = { holdId: hold.holdId, offerId: offer.offerId, orderUuid: hold.orderUuid,
+          state: 'expired', expiredAt: now, expiresAt: hold.expiresAt, proposedCapability: true };
+        const recorded = await tx.recordReceipt({ consumerId: 'buddy-expiry', eventId: hold.holdId,
+          eventType: 'buddy-expired', inputDigest: inputDigest([hold.holdId, hold.orderUuid, hold.expiresAt, hold.policyVersion]),
+          inputVersions: { clock: clockVersion, policy: hold.policyVersion, hold: hold.version },
+          state: 'completed', outcome: ok(outcome) });
+        if (recorded.status !== 'ok') return recorded;
+        expired.push(outcome);
+      }
+      return ok({ expired, retained });
+    });
   }
 
   async allocate(context, input) {
