@@ -1,0 +1,1215 @@
+{
+  "schemaVersion": "1",
+  "registryVersion": "vin-profiles.v1",
+  "identityScope": "delivered-and-current-cars-only",
+  "sources": [
+    {
+      "id": "BMW-565-MY2026",
+      "kind": "manufacturer-filing",
+      "source": "https://vpic.nhtsa.dot.gov/mid/home/displayfile/01012fef-2728-447d-a23b-0448772ad75c",
+      "sourceDate": "2025-06-13",
+      "observedDate": "2026-11-01",
+      "scope": "BMW manufacturer Part 565 filing; North American-market reference; not an approved UK/RHD generator profile"
+    },
+    {
+      "id": "BMW-565-MY2027",
+      "kind": "manufacturer-filing",
+      "source": "https://vpic.nhtsa.dot.gov/mid/home/displayfile/3c74b2f2-3650-480c-9466-ebff3cf81dbd",
+      "sourceDate": "2026-10-09",
+      "observedDate": "2026-11-01",
+      "scope": "BMW manufacturer Part 565 filing; North American-market reference; not an approved UK/RHD generator profile"
+    },
+    {
+      "id": "CFR-565",
+      "kind": "regulation",
+      "source": "https://www.ecfr.gov/current/title-49/subtitle-B/chapter-V/part-565/section-565.15",
+      "sourceDate": null,
+      "observedDate": "2026-11-01",
+      "scope": "US format, checksum and permitted serial structure; not a BMW sequence allocation"
+    },
+    {
+      "id": "VIN-RULES",
+      "kind": "sanitised-research",
+      "source": "docs/gcsp/synthetic-vin-rules.md",
+      "sourceDate": "2026-11-02",
+      "observedDate": "2026-11-02",
+      "scope": "Bounded model/generation context and reference-fixture definition; no exact build sheet"
+    },
+    {
+      "id": "VPIC-PARTIAL",
+      "kind": "partial-pattern",
+      "source": "docs/gcsp/evidence/fucq-4/bmw-vin-rules-2026-11-01.json#partialPatternChecks",
+      "sourceDate": "2026-11-01",
+      "observedDate": "2026-11-01",
+      "scope": "HTTP 200, business code 6 - Incomplete VIN; no successful complete-VIN decode"
+    },
+    {
+      "id": "UK-OBSERVATIONS",
+      "kind": "single-observation",
+      "source": "docs/gcsp/evidence/fucq-4/bmw-vin-rules-2026-11-01.json#ukDescriptorObservations",
+      "sourceDate": "2026-11-01",
+      "observedDate": "2026-11-01",
+      "scope": "Original two sanitised observations; no UK/RHD activation"
+    },
+    {
+      "id": "PLANT-C",
+      "kind": "production-source",
+      "source": "https://www.bmwgroup-werke.com/dingolfing/en.html",
+      "sourceDate": null,
+      "observedDate": "2026-11-01",
+      "scope": "Model/era production corroboration paired with filed plant dictionary and matched vPIC partial pattern; publication date not retained"
+    },
+    {
+      "id": "PLANT-F",
+      "kind": "production-source",
+      "source": "https://www.press.bmwgroup.com/global/article/detail/T0461211EN/one-million-times-the-thrill-of-m:-plant-munich-builds-milestone-bmw-m3-and-shapes-the-electric-future-of-bmw-m?language=en",
+      "sourceDate": null,
+      "observedDate": "2026-11-01",
+      "scope": "Model/era production corroboration paired with filed plant dictionary and matched vPIC partial pattern; publication date not retained"
+    },
+    {
+      "id": "PLANT-9",
+      "kind": "production-source",
+      "source": "https://www.bmwgroup-werke.com/spartanburg/en.html",
+      "sourceDate": null,
+      "observedDate": "2026-11-01",
+      "scope": "Model/era production corroboration paired with filed plant dictionary and matched vPIC partial pattern; publication date not retained"
+    }
+  ],
+  "profiles": [
+    {
+      "profileId": "wba-430i-convertible-my2026",
+      "profileVersion": "1",
+      "status": "enabled",
+      "referenceOnly": true,
+      "binding": {
+        "model": "430i",
+        "derivative": "430i Convertible",
+        "generation": "G23",
+        "body": "Convertible",
+        "powertrain": "petrol",
+        "drive": "rear-wheel",
+        "transmission": null,
+        "engineCode": null,
+        "agModelCode": null,
+        "vgModelCode": null,
+        "market": "US",
+        "region": "North America",
+        "steering": "LHD",
+        "modelYear": 2026,
+        "productionEra": "MY2026 North American reference",
+        "productionDate": null
+      },
+      "format": {
+        "wmi": "WBA",
+        "descriptor": {
+          "kind": "whole-value",
+          "value": "33DB0"
+        },
+        "position9": {
+          "convention": "calculated-modulo-11",
+          "sourceRefs": [
+            "CFR-565"
+          ]
+        },
+        "position10": {
+          "convention": "US-model-year",
+          "modelYear": 2026,
+          "value": "T",
+          "sourceRefs": [
+            "BMW-565-MY2026",
+            "CFR-565"
+          ]
+        },
+        "allowedPlants": [
+          {
+            "code": "C",
+            "city": "Dingolfing",
+            "sourceRefs": [
+              "BMW-565-MY2026",
+              "PLANT-C",
+              "VPIC-PARTIAL"
+            ]
+          }
+        ],
+        "serial": {
+          "shape": "NNNNNN",
+          "pattern": "^[0-9]{6}$",
+          "status": "fictional-allocation",
+          "confidence": "Regulation-permitted shape, not a verified BMW serial range",
+          "sourceRefs": [
+            "CFR-565"
+          ]
+        }
+      },
+      "evidence": {
+        "sourceRefs": [
+          "BMW-565-MY2026",
+          "VIN-RULES",
+          "VPIC-PARTIAL",
+          "PLANT-C",
+          "CFR-565"
+        ],
+        "observedDate": "2026-11-01",
+        "confidence": "Manufacturer-filed descriptor with matched production/partial-pattern corroboration; structural reference only",
+        "facts": [
+          {
+            "fields": [
+              "model",
+              "derivative",
+              "body",
+              "modelYear",
+              "wmi",
+              "descriptor",
+              "position10"
+            ],
+            "sourceRefs": [
+              "BMW-565-MY2026",
+              "VPIC-PARTIAL"
+            ],
+            "confidence": "manufacturer-filed and partial-pattern corroborated"
+          },
+          {
+            "fields": [
+              "generation",
+              "powertrain",
+              "drive"
+            ],
+            "sourceRefs": [
+              "VIN-RULES"
+            ],
+            "confidence": "Bounded reference labels from retained research context; no exact engine or transmission claim"
+          },
+          {
+            "fields": [
+              "market",
+              "region",
+              "steering"
+            ],
+            "sourceRefs": [
+              "BMW-565-MY2026",
+              "VIN-RULES"
+            ],
+            "confidence": "Explicit US/North American LHD reference context; not an individually decoded build"
+          },
+          {
+            "fields": [
+              "allowedPlants"
+            ],
+            "sourceRefs": [
+              "BMW-565-MY2026",
+              "PLANT-C",
+              "VPIC-PARTIAL"
+            ],
+            "confidence": "Matched model/era corroboration; independent plant dictionary alone is insufficient"
+          }
+        ],
+        "partialDecode": {
+          "httpStatus": 200,
+          "businessCode": "6",
+          "businessText": "6 - Incomplete VIN",
+          "completeVinDecoded": false
+        },
+        "unresolvedFacts": [
+          "transmission",
+          "engineCode",
+          "agModelCode",
+          "vgModelCode",
+          "productionDate",
+          "registrationDate",
+          "exactEquipment",
+          "exactTrim"
+        ],
+        "limitations": [
+          "No complete VIN decode or factory build evidence",
+          "Generation/powertrain/drive are bounded reference labels, not independently decoded technical facts",
+          "Exact production date and source publication dates remain unknown",
+          "Serial allocation is fictional; no globally reserved range or guaranteed real-world non-collision"
+        ]
+      }
+    },
+    {
+      "profileId": "wbs-m3-competition-xdrive-my2026",
+      "profileVersion": "1",
+      "status": "enabled",
+      "referenceOnly": true,
+      "binding": {
+        "model": "M3",
+        "derivative": "M3 Competition xDrive",
+        "generation": "G80",
+        "body": "Sedan",
+        "powertrain": "petrol",
+        "drive": "all-wheel",
+        "transmission": null,
+        "engineCode": null,
+        "agModelCode": null,
+        "vgModelCode": null,
+        "market": "US",
+        "region": "North America",
+        "steering": "LHD",
+        "modelYear": 2026,
+        "productionEra": "MY2026 North American reference",
+        "productionDate": null
+      },
+      "format": {
+        "wmi": "WBS",
+        "descriptor": {
+          "kind": "whole-value",
+          "value": "33HJ0"
+        },
+        "position9": {
+          "convention": "calculated-modulo-11",
+          "sourceRefs": [
+            "CFR-565"
+          ]
+        },
+        "position10": {
+          "convention": "US-model-year",
+          "modelYear": 2026,
+          "value": "T",
+          "sourceRefs": [
+            "BMW-565-MY2026",
+            "CFR-565"
+          ]
+        },
+        "allowedPlants": [
+          {
+            "code": "F",
+            "city": "Munich",
+            "sourceRefs": [
+              "BMW-565-MY2026",
+              "PLANT-F",
+              "VPIC-PARTIAL"
+            ]
+          }
+        ],
+        "serial": {
+          "shape": "NNNNNN",
+          "pattern": "^[0-9]{6}$",
+          "status": "fictional-allocation",
+          "confidence": "Regulation-permitted shape, not a verified BMW serial range",
+          "sourceRefs": [
+            "CFR-565"
+          ]
+        }
+      },
+      "evidence": {
+        "sourceRefs": [
+          "BMW-565-MY2026",
+          "VIN-RULES",
+          "VPIC-PARTIAL",
+          "PLANT-F",
+          "CFR-565"
+        ],
+        "observedDate": "2026-11-01",
+        "confidence": "Manufacturer-filed descriptor with matched production/partial-pattern corroboration; structural reference only",
+        "facts": [
+          {
+            "fields": [
+              "model",
+              "derivative",
+              "body",
+              "modelYear",
+              "wmi",
+              "descriptor",
+              "position10"
+            ],
+            "sourceRefs": [
+              "BMW-565-MY2026",
+              "VPIC-PARTIAL"
+            ],
+            "confidence": "manufacturer-filed and partial-pattern corroborated"
+          },
+          {
+            "fields": [
+              "generation",
+              "powertrain",
+              "drive"
+            ],
+            "sourceRefs": [
+              "VIN-RULES"
+            ],
+            "confidence": "Bounded reference labels from retained research context; no exact engine or transmission claim"
+          },
+          {
+            "fields": [
+              "market",
+              "region",
+              "steering"
+            ],
+            "sourceRefs": [
+              "BMW-565-MY2026",
+              "VIN-RULES"
+            ],
+            "confidence": "Explicit US/North American LHD reference context; not an individually decoded build"
+          },
+          {
+            "fields": [
+              "allowedPlants"
+            ],
+            "sourceRefs": [
+              "BMW-565-MY2026",
+              "PLANT-F",
+              "VPIC-PARTIAL"
+            ],
+            "confidence": "Matched model/era corroboration; independent plant dictionary alone is insufficient"
+          }
+        ],
+        "partialDecode": {
+          "httpStatus": 200,
+          "businessCode": "6",
+          "businessText": "6 - Incomplete VIN",
+          "completeVinDecoded": false
+        },
+        "unresolvedFacts": [
+          "transmission",
+          "engineCode",
+          "agModelCode",
+          "vgModelCode",
+          "productionDate",
+          "registrationDate",
+          "exactEquipment",
+          "exactTrim"
+        ],
+        "limitations": [
+          "No complete VIN decode or factory build evidence",
+          "Generation/powertrain/drive are bounded reference labels, not independently decoded technical facts",
+          "Exact production date and source publication dates remain unknown",
+          "Serial allocation is fictional; no globally reserved range or guaranteed real-world non-collision"
+        ]
+      }
+    },
+    {
+      "profileId": "wby-i5-edrive40-sedan-my2026",
+      "profileVersion": "1",
+      "status": "enabled",
+      "referenceOnly": true,
+      "binding": {
+        "model": "i5",
+        "derivative": "i5 eDrive40 Sedan",
+        "generation": "G60",
+        "body": "Sedan",
+        "powertrain": "battery-electric",
+        "drive": "rear-wheel",
+        "transmission": null,
+        "engineCode": null,
+        "agModelCode": null,
+        "vgModelCode": null,
+        "market": "US",
+        "region": "North America",
+        "steering": "LHD",
+        "modelYear": 2026,
+        "productionEra": "MY2026 North American reference",
+        "productionDate": null
+      },
+      "format": {
+        "wmi": "WBY",
+        "descriptor": {
+          "kind": "whole-value",
+          "value": "63HG0"
+        },
+        "position9": {
+          "convention": "calculated-modulo-11",
+          "sourceRefs": [
+            "CFR-565"
+          ]
+        },
+        "position10": {
+          "convention": "US-model-year",
+          "modelYear": 2026,
+          "value": "T",
+          "sourceRefs": [
+            "BMW-565-MY2026",
+            "CFR-565"
+          ]
+        },
+        "allowedPlants": [
+          {
+            "code": "C",
+            "city": "Dingolfing",
+            "sourceRefs": [
+              "BMW-565-MY2026",
+              "PLANT-C",
+              "VPIC-PARTIAL"
+            ]
+          }
+        ],
+        "serial": {
+          "shape": "NNNNNN",
+          "pattern": "^[0-9]{6}$",
+          "status": "fictional-allocation",
+          "confidence": "Regulation-permitted shape, not a verified BMW serial range",
+          "sourceRefs": [
+            "CFR-565"
+          ]
+        }
+      },
+      "evidence": {
+        "sourceRefs": [
+          "BMW-565-MY2026",
+          "VIN-RULES",
+          "VPIC-PARTIAL",
+          "PLANT-C",
+          "CFR-565"
+        ],
+        "observedDate": "2026-11-01",
+        "confidence": "Manufacturer-filed descriptor with matched production/partial-pattern corroboration; structural reference only",
+        "facts": [
+          {
+            "fields": [
+              "model",
+              "derivative",
+              "body",
+              "modelYear",
+              "wmi",
+              "descriptor",
+              "position10"
+            ],
+            "sourceRefs": [
+              "BMW-565-MY2026",
+              "VPIC-PARTIAL"
+            ],
+            "confidence": "manufacturer-filed and partial-pattern corroborated"
+          },
+          {
+            "fields": [
+              "generation",
+              "powertrain",
+              "drive"
+            ],
+            "sourceRefs": [
+              "VIN-RULES"
+            ],
+            "confidence": "Bounded reference labels from retained research context; no exact engine or transmission claim"
+          },
+          {
+            "fields": [
+              "market",
+              "region",
+              "steering"
+            ],
+            "sourceRefs": [
+              "BMW-565-MY2026",
+              "VIN-RULES"
+            ],
+            "confidence": "Explicit US/North American LHD reference context; not an individually decoded build"
+          },
+          {
+            "fields": [
+              "allowedPlants"
+            ],
+            "sourceRefs": [
+              "BMW-565-MY2026",
+              "PLANT-C",
+              "VPIC-PARTIAL"
+            ],
+            "confidence": "Matched model/era corroboration; independent plant dictionary alone is insufficient"
+          }
+        ],
+        "partialDecode": {
+          "httpStatus": 200,
+          "businessCode": "6",
+          "businessText": "6 - Incomplete VIN",
+          "completeVinDecoded": false
+        },
+        "unresolvedFacts": [
+          "transmission",
+          "engineCode",
+          "agModelCode",
+          "vgModelCode",
+          "productionDate",
+          "registrationDate",
+          "exactEquipment",
+          "exactTrim"
+        ],
+        "limitations": [
+          "No complete VIN decode or factory build evidence",
+          "Generation/powertrain/drive are bounded reference labels, not independently decoded technical facts",
+          "Exact production date and source publication dates remain unknown",
+          "Serial allocation is fictional; no globally reserved range or guaranteed real-world non-collision"
+        ]
+      }
+    },
+    {
+      "profileId": "5ux-x5-xdrive50e-my2026",
+      "profileVersion": "1",
+      "status": "enabled",
+      "referenceOnly": true,
+      "binding": {
+        "model": "X5",
+        "derivative": "X5 xDrive50e",
+        "generation": "G05",
+        "body": "SUV",
+        "powertrain": "plug-in-hybrid",
+        "drive": "all-wheel",
+        "transmission": null,
+        "engineCode": null,
+        "agModelCode": null,
+        "vgModelCode": null,
+        "market": "US",
+        "region": "North America",
+        "steering": "LHD",
+        "modelYear": 2026,
+        "productionEra": "MY2026 North American reference",
+        "productionDate": null
+      },
+      "format": {
+        "wmi": "5UX",
+        "descriptor": {
+          "kind": "whole-value",
+          "value": "43EU0"
+        },
+        "position9": {
+          "convention": "calculated-modulo-11",
+          "sourceRefs": [
+            "CFR-565"
+          ]
+        },
+        "position10": {
+          "convention": "US-model-year",
+          "modelYear": 2026,
+          "value": "T",
+          "sourceRefs": [
+            "BMW-565-MY2026",
+            "CFR-565"
+          ]
+        },
+        "allowedPlants": [
+          {
+            "code": "9",
+            "city": "Greer",
+            "sourceRefs": [
+              "BMW-565-MY2026",
+              "PLANT-9",
+              "VPIC-PARTIAL"
+            ]
+          }
+        ],
+        "serial": {
+          "shape": "NNNNNN",
+          "pattern": "^[0-9]{6}$",
+          "status": "fictional-allocation",
+          "confidence": "Regulation-permitted shape, not a verified BMW serial range",
+          "sourceRefs": [
+            "CFR-565"
+          ]
+        }
+      },
+      "evidence": {
+        "sourceRefs": [
+          "BMW-565-MY2026",
+          "VIN-RULES",
+          "VPIC-PARTIAL",
+          "PLANT-9",
+          "CFR-565"
+        ],
+        "observedDate": "2026-11-01",
+        "confidence": "Manufacturer-filed descriptor with matched production/partial-pattern corroboration; structural reference only",
+        "facts": [
+          {
+            "fields": [
+              "model",
+              "derivative",
+              "body",
+              "modelYear",
+              "wmi",
+              "descriptor",
+              "position10"
+            ],
+            "sourceRefs": [
+              "BMW-565-MY2026",
+              "VPIC-PARTIAL"
+            ],
+            "confidence": "manufacturer-filed and partial-pattern corroborated"
+          },
+          {
+            "fields": [
+              "generation",
+              "powertrain",
+              "drive"
+            ],
+            "sourceRefs": [
+              "VIN-RULES"
+            ],
+            "confidence": "Bounded reference labels from retained research context; no exact engine or transmission claim"
+          },
+          {
+            "fields": [
+              "market",
+              "region",
+              "steering"
+            ],
+            "sourceRefs": [
+              "BMW-565-MY2026",
+              "VIN-RULES"
+            ],
+            "confidence": "Explicit US/North American LHD reference context; not an individually decoded build"
+          },
+          {
+            "fields": [
+              "allowedPlants"
+            ],
+            "sourceRefs": [
+              "BMW-565-MY2026",
+              "PLANT-9",
+              "VPIC-PARTIAL"
+            ],
+            "confidence": "Matched model/era corroboration; independent plant dictionary alone is insufficient"
+          }
+        ],
+        "partialDecode": {
+          "httpStatus": 200,
+          "businessCode": "6",
+          "businessText": "6 - Incomplete VIN",
+          "completeVinDecoded": false
+        },
+        "unresolvedFacts": [
+          "transmission",
+          "engineCode",
+          "agModelCode",
+          "vgModelCode",
+          "productionDate",
+          "registrationDate",
+          "exactEquipment",
+          "exactTrim"
+        ],
+        "limitations": [
+          "No complete VIN decode or factory build evidence",
+          "Generation/powertrain/drive are bounded reference labels, not independently decoded technical facts",
+          "Exact production date and source publication dates remain unknown",
+          "Serial allocation is fictional; no globally reserved range or guaranteed real-world non-collision"
+        ]
+      }
+    },
+    {
+      "profileId": "5ym-x5-m-competition-my2026",
+      "profileVersion": "1",
+      "status": "enabled",
+      "referenceOnly": true,
+      "binding": {
+        "model": "X5 M",
+        "derivative": "X5 M Competition",
+        "generation": "F95",
+        "body": "SUV",
+        "powertrain": "petrol",
+        "drive": "all-wheel",
+        "transmission": null,
+        "engineCode": null,
+        "agModelCode": null,
+        "vgModelCode": null,
+        "market": "US",
+        "region": "North America",
+        "steering": "LHD",
+        "modelYear": 2026,
+        "productionEra": "MY2026 North American reference",
+        "productionDate": null
+      },
+      "format": {
+        "wmi": "5YM",
+        "descriptor": {
+          "kind": "whole-value",
+          "value": "13ET0"
+        },
+        "position9": {
+          "convention": "calculated-modulo-11",
+          "sourceRefs": [
+            "CFR-565"
+          ]
+        },
+        "position10": {
+          "convention": "US-model-year",
+          "modelYear": 2026,
+          "value": "T",
+          "sourceRefs": [
+            "BMW-565-MY2026",
+            "CFR-565"
+          ]
+        },
+        "allowedPlants": [
+          {
+            "code": "9",
+            "city": "Greer",
+            "sourceRefs": [
+              "BMW-565-MY2026",
+              "PLANT-9",
+              "VPIC-PARTIAL"
+            ]
+          }
+        ],
+        "serial": {
+          "shape": "NNNNNN",
+          "pattern": "^[0-9]{6}$",
+          "status": "fictional-allocation",
+          "confidence": "Regulation-permitted shape, not a verified BMW serial range",
+          "sourceRefs": [
+            "CFR-565"
+          ]
+        }
+      },
+      "evidence": {
+        "sourceRefs": [
+          "BMW-565-MY2026",
+          "VIN-RULES",
+          "VPIC-PARTIAL",
+          "PLANT-9",
+          "CFR-565"
+        ],
+        "observedDate": "2026-11-01",
+        "confidence": "Manufacturer-filed descriptor with matched production/partial-pattern corroboration; structural reference only",
+        "facts": [
+          {
+            "fields": [
+              "model",
+              "derivative",
+              "body",
+              "modelYear",
+              "wmi",
+              "descriptor",
+              "position10"
+            ],
+            "sourceRefs": [
+              "BMW-565-MY2026",
+              "VPIC-PARTIAL"
+            ],
+            "confidence": "manufacturer-filed and partial-pattern corroborated"
+          },
+          {
+            "fields": [
+              "generation",
+              "powertrain",
+              "drive"
+            ],
+            "sourceRefs": [
+              "VIN-RULES"
+            ],
+            "confidence": "Bounded reference labels from retained research context; no exact engine or transmission claim"
+          },
+          {
+            "fields": [
+              "market",
+              "region",
+              "steering"
+            ],
+            "sourceRefs": [
+              "BMW-565-MY2026",
+              "VIN-RULES"
+            ],
+            "confidence": "Explicit US/North American LHD reference context; not an individually decoded build"
+          },
+          {
+            "fields": [
+              "allowedPlants"
+            ],
+            "sourceRefs": [
+              "BMW-565-MY2026",
+              "PLANT-9",
+              "VPIC-PARTIAL"
+            ],
+            "confidence": "Matched model/era corroboration; independent plant dictionary alone is insufficient"
+          }
+        ],
+        "partialDecode": {
+          "httpStatus": 200,
+          "businessCode": "6",
+          "businessText": "6 - Incomplete VIN",
+          "completeVinDecoded": false
+        },
+        "unresolvedFacts": [
+          "transmission",
+          "engineCode",
+          "agModelCode",
+          "vgModelCode",
+          "productionDate",
+          "registrationDate",
+          "exactEquipment",
+          "exactTrim"
+        ],
+        "limitations": [
+          "No complete VIN decode or factory build evidence",
+          "Generation/powertrain/drive are bounded reference labels, not independently decoded technical facts",
+          "Exact production date and source publication dates remain unknown",
+          "Serial allocation is fictional; no globally reserved range or guaranteed real-world non-collision"
+        ]
+      }
+    },
+    {
+      "profileId": "UK-OBS-001",
+      "profileVersion": "1",
+      "status": "candidate",
+      "referenceOnly": true,
+      "binding": {
+        "model": "2026 BMW 120 M Sport MHEV Auto",
+        "generation": "F70",
+        "market": null,
+        "steering": null,
+        "modelYear": null
+      },
+      "format": {
+        "wmi": "WBA",
+        "descriptor": {
+          "kind": "observed-positions4To8",
+          "value": "82GE0"
+        },
+        "position9": {
+          "convention": "unresolved"
+        },
+        "position10": {
+          "convention": "unresolved",
+          "observedValue": "0"
+        },
+        "allowedPlants": [],
+        "serial": {
+          "shape": "ANNNNN",
+          "status": "observation-only"
+        }
+      },
+      "evidence": {
+        "sourceRefs": [
+          "UK-OBSERVATIONS"
+        ],
+        "observedDate": "2026-11-01",
+        "confidence": "single third-party candidate; no corroborating second example",
+        "sampleCount": 1,
+        "unresolvedFacts": [
+          "exact derivative/body/powertrain",
+          "generation corroboration",
+          "drive/transmission",
+          "market/steering/import status",
+          "model year/production era",
+          "position-nine and position-ten semantics",
+          "model/era plant allocation",
+          "second distinct corroborating vehicle"
+        ],
+        "limitations": [
+          "Cannot generate identities; no observed check character or individual serial retained"
+        ]
+      }
+    },
+    {
+      "profileId": "UK-OBS-002",
+      "profileVersion": "1",
+      "status": "candidate",
+      "referenceOnly": true,
+      "binding": {
+        "model": "2026 BMW 220I M Sport MHEV Auto",
+        "generation": "U06",
+        "market": null,
+        "steering": null,
+        "modelYear": null
+      },
+      "format": {
+        "wmi": "WBA",
+        "descriptor": {
+          "kind": "observed-positions4To8",
+          "value": "72BX0"
+        },
+        "position9": {
+          "convention": "unresolved"
+        },
+        "position10": {
+          "convention": "unresolved",
+          "observedValue": "0"
+        },
+        "allowedPlants": [],
+        "serial": {
+          "shape": "ANNNNN",
+          "status": "observation-only"
+        }
+      },
+      "evidence": {
+        "sourceRefs": [
+          "UK-OBSERVATIONS"
+        ],
+        "observedDate": "2026-11-01",
+        "confidence": "single matched third-party candidate; no corroborating second example",
+        "sampleCount": 1,
+        "unresolvedFacts": [
+          "exact derivative/body/powertrain",
+          "generation corroboration",
+          "drive/transmission",
+          "market/steering/import status",
+          "model year/production era",
+          "position-nine and position-ten semantics",
+          "model/era plant allocation",
+          "second distinct corroborating vehicle"
+        ],
+        "limitations": [
+          "Cannot generate identities; no observed check character or individual serial retained"
+        ]
+      }
+    }
+  ],
+  "additionalWmiReferences": [
+    {
+      "model": "230i Coupe",
+      "wmi": "3MW",
+      "vds": "23CM0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "230i xDrive Coupe",
+      "wmi": "3MW",
+      "vds": "33CM0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M240i Coupe",
+      "wmi": "3MW",
+      "vds": "43CM0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M240i xDrive Coupe",
+      "wmi": "3MW",
+      "vds": "53CM0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M2 Coupe",
+      "wmi": "3MF",
+      "vds": "23DM0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M2 CS",
+      "wmi": "3MF",
+      "vds": "33DM0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "330i Sedan",
+      "wmi": "3MW",
+      "vds": "69CW0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "330i xDrive Sedan",
+      "wmi": "3MW",
+      "vds": "89CW0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M340i Sedan",
+      "wmi": "3MW",
+      "vds": "59FT0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "M340i xDrive Sedan",
+      "wmi": "3MW",
+      "vds": "69FT0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "iX xDrive45",
+      "wmi": "WB5",
+      "vds": "43CF0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "iX xDrive60",
+      "wmi": "WB5",
+      "vds": "53CF0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "iX M70",
+      "wmi": "WB5",
+      "vds": "63CF0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "X1 xDrive28i",
+      "wmi": "WBX",
+      "vds": "73EF0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "X1 M35i",
+      "wmi": "WBX",
+      "vds": "13EF0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "X2 xDrive28i",
+      "wmi": "WBX",
+      "vds": "63GM0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "X2 M35i",
+      "wmi": "WBX",
+      "vds": "83GM0",
+      "modelYear": 2026,
+      "yearCode": "T",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2026",
+      "status": "reference-only"
+    },
+    {
+      "model": "iX3 50 xDrive",
+      "wmi": "WBX",
+      "vds": "33HR0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "iX4 50 xDrive",
+      "wmi": "WBX",
+      "vds": "23HU0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M2 Coupe",
+      "wmi": "3MF",
+      "vds": "23DM0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M2 M xDrive Coupe",
+      "wmi": "3MF",
+      "vds": "43DM0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M240i Coupe",
+      "wmi": "3MW",
+      "vds": "43FA0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "M240i xDrive Coupe",
+      "wmi": "3MW",
+      "vds": "53FA0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "X1 M35i",
+      "wmi": "WBX",
+      "vds": "13EF0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "X1 xDrive28i",
+      "wmi": "WBX",
+      "vds": "73EF0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "X2 M35i",
+      "wmi": "WBX",
+      "vds": "83GM0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    },
+    {
+      "model": "X2 xDrive28i",
+      "wmi": "WBX",
+      "vds": "63GM0",
+      "modelYear": 2027,
+      "yearCode": "V",
+      "market": "North America",
+      "sourceId": "BMW-565-MY2027",
+      "status": "reference-only"
+    }
+  ],
+  "additionalWmiPolicy": "Preserve evidenced whole descriptors without enabling incomplete profiles or forcing class/badge heuristics"
+}
