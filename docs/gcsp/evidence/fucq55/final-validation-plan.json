@@ -1,0 +1,60 @@
+{
+  "story": "FUCQ-55",
+  "state": "admitted",
+  "command": "node --test --test-concurrency=1 server/test/**/*.test.js",
+  "cwd": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-028",
+  "environment": {
+    "HOME": "/Users/usget",
+    "USER": "usget",
+    "LOGNAME": "usget",
+    "SHELL": "/bin/zsh",
+    "PATH": "/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "LANG": "en_GB.UTF-8",
+    "TZ": "Europe/London",
+    "SCAFFOLDING_HARNESS": "codex",
+    "npm_config_offline": "true",
+    "npm_config_audit": "false",
+    "npm_config_fund": "false"
+  },
+  "supervisor": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq55-20261105-lookup-full-stamp.py",
+  "supervisorSha256": "6fcd7c540aa44e92ceb94ed647ff65c07cbd467818476f3463e126693e84994d",
+  "phaseLauncher": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq55-20261105-lookup-full-phase.py",
+  "phaseLauncherSha256": "cac1e4af8e732f0e33502e80549f74cd6befb2dc60f0ecbfdc9c990cf5bc72b3",
+  "gate": "Dispatcher admitted final solefull after source checkpoint incorporating merged133base8c9989c; freshstablehealth/cleanidentity/outsideownership required before launch",
+  "budget": {
+    "seconds": 600,
+    "scratch_bytes": 134217728,
+    "ram_bytes": 805306368,
+    "workers": 1
+  },
+  "sequence": [
+    "status-before expectednone if code changed",
+    "full exactly once",
+    "status-after strictsameidentity",
+    "commit only T0Result/docs",
+    "status-final strictsameidentity"
+  ],
+  "supervision": [
+    "outside manifest written before unique Scratch root mkdir",
+    "default short /private/tmp ownedTMP inherited; HostBudget shared reservation",
+    "machine full-suite.lock nonblocking; no waiting while holding proof reservation",
+    "actual Node leader/one-file-worker argv sampling; fail ifworkers>1",
+    "owned child groups stop/join in supervisor finally; exact root/group/reservation cleanup before status",
+    "retain concise counts/failure logs and delete successful verbose output; no large output or archive"
+  ],
+  "expected_outputs": {
+    "argv": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq55-20261105-lookup-full-argv.json",
+    "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq55-20261105-lookup-full-receipt.json",
+    "ownership_pattern": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq55-20261105-lookup-full-<token>.json",
+    "logs": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs",
+    "checkpoints": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints"
+  },
+  "reproduction_argv": [
+    "/opt/homebrew/bin/python3",
+    "-B",
+    "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq55-20261105-lookup-full-phase.py",
+    "status-final"
+  ],
+  "scope": "Required integration checkpoint covers23/99/125/133+55; no duplicate old scoped suite for handoff",
+  "required_merged_base": "8c9989c"
+}

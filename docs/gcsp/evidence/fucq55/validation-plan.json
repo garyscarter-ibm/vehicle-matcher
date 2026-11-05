@@ -1,6 +1,6 @@
 {
   "story": "FUCQ-55",
-  "state": "FUCQ-125 merged base e88ea66 incorporated; prior scoped results historical for index identity; final133base/root install/full held",
+  "state": "both pinned environments restored; scoped tests historical; review complete on125base; final133base/full held",
   "chunks": [
     {
       "id": "lookup",
@@ -59,7 +59,7 @@
       "timeout_seconds": 600,
       "scratch_mib": 128,
       "ram_mib": 768,
-      "dependencies": "Own pinned root jsdom and server pg environments; installs not admitted",
+      "dependencies": "Own pinned root jsdom and server pg environments restored; final admission held",
       "boundaries": [
         "all authored suite modules sequentially",
         "integrated route/policy/engine callers"
@@ -71,7 +71,7 @@
   "observed_coverage": "Scoped6lookup+5HTTP+54offline/retail passed. Per-test measured coverage contexts were not collected; reviewed ownership/boundary map and timings retained. Whole-suite integrated checkpoint still held.",
   "dependency_plan": {
     "server": "completed existing locked pg npm ci; no package/lock mutation or symlink; server-install.json",
-    "root": "npm ci --ignore-scripts --no-audit --no-fund (existing locked jsdom only; admission held)",
+    "root": "completed existing38 locked packages via npm ci --ignore-scripts --no-audit --no-fund; root-install.json; no package/lock mutation or symlink",
     "constraints": "Own worktree environments; no cross-worktree symlink, package/lock mutation or credential discovery. Owned small cache/TMP; large expected cache goes direct OneDrive; retain installed environments.",
     "server_plan": "docs/gcsp/evidence/fucq55/server-install-plan.json"
   },
@@ -100,7 +100,7 @@
     "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/manifest.json": "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709",
     "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/vins.jsonl": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd"
   },
-  "cleanup": "All6 execution scratch roots (packaging, initial lookup, count repair, server install, API, offline/retail) and owned groups/reservations/logs removed and verified. Largest scratch2,920,352B; largest sampled group RAM313,016,320B. Retain858,816B own server/node_modules environment. No large outputs/archive/compatibility exception. See receipts.",
+  "cleanup": "Seven execution roots and owned groups/reservations/success logs removed and verified; sum measured peaks10,075,968B. Retain27,138,292B root/node_modules plus858,816B server/node_modules. Largest scratch6,997,984B; largest sampled groupRAM313,016,320B. No leftover, archive/large output or compatibility exception. Final full scripts/plans retained intentionally under shared ownership; no full scratch allocated.",
   "integration_reassessment": {
     "merged_base": "e88ea66256031321274b8092bd884fed9a586fe6",
     "prior_tested_head": "d718491e13407d496017c6ec1b90f19850d35393",
@@ -109,5 +109,7 @@
     "changed_boundary": "Additive createScenarioRoutes import and generic GCSP route composition; lookup handler/raw dispatch/offline changes preserved",
     "selection": "Required final explicit whole suite includes own lookup/API/offline/retail and scenario boundaries; await merged133base and dispatcher solefull admission; no immediate duplicate scoped execution",
     "scope_note": "Prior scoped evidence remains valid for identical lookup modules/fixtures; current integrated index not yet runtime validated"
-  }
+  },
+  "final_plan": "docs/gcsp/evidence/fucq55/final-validation-plan.json",
+  "product_review": "docs/gcsp/evidence/fucq55/product-review.md"
 }
