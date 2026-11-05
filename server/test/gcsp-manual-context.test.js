@@ -143,6 +143,19 @@ test('server clock intersects renewal dates with canonical lead policy and open 
   assert.equal((await f.service.readAccount(f.context)).value.state, 'ready');
 });
 
+test('future earliest collection alone permits replacement when canonical policy still offers dates', async () => {
+  const f = await setup();
+  await changeRecords(f, (r) => { r.contracts[0].earliestCollectionDate = '2026-11-20'; delete r.contracts[0].latestCollectionDate; });
+  const account = await f.service.readAccount(f.context);
+  assert.equal(account.value.state, 'ready');
+  assert.deepEqual(account.value.actions, [{ action: 'replace', slotId: f.context.entitlementSlotId,
+    schemeId: f.context.schemeId, oldContractId: `current:${f.context.employeeId}`, enabled: true }]);
+  const saved = await f.service.saveDraft(f.context, { commandId: 'future-earliest-intent', expectedDraftVersion: 0,
+    expectedContextVersion: account.value.contextVersion, choices: intent(f) });
+  assert.equal(saved.status, 'ok'); assert.equal(saved.value.draftStage, 'intent');
+  assert.equal((await save(f, {}, { commandId: 'future-earliest-complete', expectedDraftVersion: 1 })).status, 'ok');
+});
+
 test('account uses identity-seeded principal and entitlement; history, licence and support ownership are explicit', async () => {
   const f = await setup(); const account = await f.service.readAccount(f.context);
   assert.equal(account.status, 'ok', JSON.stringify(account));
