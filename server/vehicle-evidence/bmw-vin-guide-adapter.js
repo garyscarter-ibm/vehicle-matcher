@@ -1,6 +1,11 @@
 const SCHEMA_VERSION = '1';
 const STATES = new Set(['available', 'no-guide', 'unsupported-locale', 'partial', 'source-unavailable', 'no-match']);
 const FAILURE_DETAILS = new Set(['identity-denied', 'invalid-source', 'identity-mismatch', 'locale-mismatch', 'timeout', 'http-error', 'application-error', 'response-too-large', 'transport-error', 'source-unavailable']);
+const CONTENT_STATES = new Set(['unknown', 'available', 'unavailable', 'invalid', 'source-unavailable']);
+const contentMetadata = (data) => ({ status: CONTENT_STATES.has(data?.status) ? data.status : 'unknown',
+  failureDetail: FAILURE_DETAILS.has(data?.failureDetail) ? data.failureDetail : null,
+  httpOutcome: ['ok', 'error'].includes(data?.httpOutcome) ? data.httpOutcome : 'not-attempted',
+  applicationOutcome: ['ok', 'unavailable', 'error', 'unknown'].includes(data?.applicationOutcome) ? data.applicationOutcome : 'not-applicable' });
 const UNKNOWN_FACTS = ['paint', 'wheels', 'installedEquipment', 'buildDate', 'connectedUsage', 'schemeEligibility'];
 const MESSAGES = {
   disabled: 'Handbook lookup is disabled. Other current-car evidence is unchanged.',
@@ -52,8 +57,8 @@ function envelope(status, provider, locale, attempts = []) {
   return { schemaVersion: SCHEMA_VERSION, status, locale, requestedLocale: locale, resolvedLocale: null, failureDetail: null,
     source: { provider: provider?.id || null, providerVersion: provider?.version || null,
       kind: provider?.sourceKind || null, observedDate: null },
-    guide: { availability: 'unknown', title: null, derivative: null, brand: null, disclaimer: null, sections: [], links: [] },
-    illustration: { status: 'unknown', role: 'vin-linked-illustration', fidelity: 'unverified', assetRef: null },
+    guide: { availability: 'unknown', title: null, derivative: null, brand: null, disclaimer: null, sections: [], links: [], pdf: contentMetadata() },
+    illustration: { ...contentMetadata(), role: 'vin-linked-illustration', fidelity: 'unverified', assetRef: null },
     completeness: { handbook: 'unknown', title: 'unknown', disclaimer: 'unknown', sections: 'unknown', links: 'unknown', illustration: 'unknown' },
     facts: Object.fromEntries(UNKNOWN_FACTS.map((name) => [name, { state: 'unknown', value: null }])), equipment: equipment(), attempts };
 }
@@ -79,7 +84,14 @@ function normalise(data, provider, request, attempts) {
   result.guide.links = Array.isArray(source.links) ? source.links.slice(0, 16)
     .filter((link) => id(link?.assetRef) && anonymous(link.assetRef) && label(link?.label, 256) && anonymous(link.label) && ['pdf', 'html'].includes(link?.format)
       && ['available', 'unavailable'].includes(link?.availability))
-    .map(({ assetRef, label: linkLabel, format, availability }) => ({ assetRef, label: linkLabel.trim(), format, availability, delivery: 'metadata-only', href: null })) : [];
+    .map(({ assetRef, label: linkLabel, format, availability, contentType }) => ({ assetRef, label: linkLabel.trim(), format, availability,
+      ...(format === 'pdf' && contentType === 'application/pdf' ? { contentType } : {}), delivery: 'metadata-only', href: null })) : [];
+  result.guide.pdf = contentMetadata(source.pdf);
+  Object.assign(result.illustration, contentMetadata(data.illustration));
+  if (['image/jpeg'].includes(data.illustration?.contentType)
+    && Number.isSafeInteger(data.illustration?.byteLength) && data.illustration.byteLength > 0 && data.illustration.byteLength <= 2097152) {
+    result.illustration.contentType = data.illustration.contentType; result.illustration.byteLength = data.illustration.byteLength;
+  }
   if (['available', 'unavailable'].includes(data.illustration?.status)) {
     result.illustration.status = data.illustration.status;
     if (data.illustration.status === 'available' && id(data.illustration.assetRef) && anonymous(data.illustration.assetRef)) result.illustration.assetRef = data.illustration.assetRef;
@@ -88,7 +100,7 @@ function normalise(data, provider, request, attempts) {
   result.guide.availability = 'available';
   for (const name of ['title', 'disclaimer']) result.completeness[name] = result.guide[name] ? 'complete' : 'unknown';
   for (const name of ['sections', 'links']) result.completeness[name] = result.guide[name].length ? 'partial' : 'unknown';
-  result.completeness.illustration = result.illustration.status === 'unknown' ? 'unknown' : 'complete';
+  result.completeness.illustration = ['available', 'unavailable'].includes(result.illustration.status) ? 'complete' : 'unknown';
   for (const name of ['sections', 'links']) {
     if (data.completeness?.[name] === 'complete' && Array.isArray(source[name]) && result.guide[name].length === source[name].length) {
       result.completeness[name] = 'complete';
