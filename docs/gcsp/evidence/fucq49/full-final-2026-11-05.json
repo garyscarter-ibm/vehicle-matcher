@@ -1,0 +1,62 @@
+{
+  "version": 3,
+  "date": "2026-11-05",
+  "command": "npm test",
+  "effectiveArgs": [
+    "/opt/homebrew/bin/node",
+    "--test-concurrency=1",
+    "--test",
+    "server/test/**/*.test.js"
+  ],
+  "sourceHead": "d8db66d467e69e4f739744ed39670a4b333b8e82",
+  "sourceTree": "522f1bf51ebc5f6a03d41b45df90a7b20fe99762",
+  "integratedBase": "55377485452b1fdeb11322c753ac7f1dd8e65cb5",
+  "integratedValidated68": "6a67725337ebf8086991f1b0ac9f9f98f82409f9",
+  "result": "passed",
+  "tests": 1209,
+  "pass": 1207,
+  "fail": 0,
+  "skipped": 2,
+  "limits": {
+    "rssMiB": 1024,
+    "seconds": 300,
+    "combinedScratchAndOwnedDependenciesMiB": 128,
+    "logsMiB": 2,
+    "testConcurrency": 1
+  },
+  "actual": {
+    "wall": 80.07727991600001,
+    "peak_rss": 407928832,
+    "peak_scratch": 28792020,
+    "issue": null
+  },
+  "strict": {
+    "stampKey": "407aa9f86baea45cd0e4599ddce6e2fac09a3ceb120d22568c650045315da09b",
+    "executionCodeKey": "b690b312d9954d9bee995a56f8629c1e61f238ecd83230fa58611f1ec0b48c41",
+    "environmentKey": "99ee5797e68150b563ca93e2ad03ee8ca5f26ea129c846de4712ef31942a6d17",
+    "sameProcessEnvironmentImmediateStatus": "MATCH",
+    "time": "2026-11-05T16:56:54+0000",
+    "commandUnchanged": true,
+    "scope": "full"
+  },
+  "providerSourceSha256": "6da08e512783d9f278deb26e31ed0f59c166acd32159ebf2c7dafa7c42592ded",
+  "nativeAcceptance": "passed actual fixed production provider path v6; independent context separate from served asset proof; all visible-option/exact-vehicle fidelity unknown",
+  "pinnedSetup": "Existing lock versions only; root38/server13 required versions verified, no lifecycle scripts, no manifest/lock changes",
+  "cleanup": {
+    "ownedAllocations": 22,
+    "scratchGroupsReservationsAbsent": true,
+    "temporaryDependenciesRemovedByRecordedDeviceInode": true,
+    "packageAndLockHashesUnchanged": true,
+    "dispatcherIndependentVerification": "passed; shared .claude/test-runs/ownership/fucq49-final-combined-dispatcher-verification.json"
+  },
+  "externalEvidence": {
+    "supervisor": "supervisor-v3.py",
+    "plan": "full-plan-v3.json",
+    "stamp": "strict/stamp-407aa9f86baea45cd0e4599ddce6e2fac09a3ceb120d22568c650045315da09b-default.json",
+    "checkpoint": "strict/checkpoints/8f0b5424e74c56480015ae5fbb2a5e37961c8938b1262c6a40d5c2ce1eb7ad7f.json",
+    "ownership": "strict/ownership/7ba59e7b917540b6af295a00442f176f.json",
+    "receipt": "final-combined-full-v3-1793897733101772000-receipt.json",
+    "successLogSha256": "1d5587cff93d96b44243f1c304fb3ab8189fba8ad083aa5fba7319d0a5ca3872",
+    "leadCleanup": "final-lead-cleanup-v3.json"
+  }
+}

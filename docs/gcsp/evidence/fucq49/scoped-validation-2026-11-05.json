@@ -71,19 +71,22 @@
     "reservationsAbsent": true,
     "ownedScratchRemoved": true,
     "packageAndLockHashesUnchanged": true,
-    "browserProfilePortsDependencies": "none"
+    "browserProfilePortsDependencies": "none",
+    "finalOwnedAllocations": 22,
+    "temporaryPinnedDependencyTreesRemoved": true
   },
   "integration": {
     "firstFull": "failed due absent existing pg dependency; see full-validation-2026-11-05.json",
     "pinnedSetupAndScope": "passed59/59; see pinned-setup-2026-11-05.json",
-    "exactFullRetry": "passed1175,skipped2,fail0; same-process strict MATCH; see full-retry-2026-11-05.json"
+    "exactFullRetry": "passed1175,skipped2,fail0; same-process strict MATCH; see full-retry-2026-11-05.json",
+    "finalCombinedFull": "full-final-2026-11-05.json;1209tests1207pass2skip0fail;same-processMATCH"
   },
   "nativeAcceptance": {
     "completeIndependentConfigurationIdentity": true,
     "source": "existing dated source-derived catalogue snapshot; no live catalogue calls",
     "nativeNamedAssetBytes": true,
     "nativeProviderPath": true,
-    "storyCompletion": "native/scoped acceptance passed; pending current-base integration and authorised final full",
+    "storyCompletion": "passed native provider,62/62 scoped and final full1207pass/2skip/0fail",
     "visibleOptionsAndExactVehicleAppearance": "unknown",
     "evidence": "native-provider-v6-2026-11-05.json"
   },
