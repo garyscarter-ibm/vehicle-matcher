@@ -10,7 +10,7 @@ import { bmwLiveImageLookupIdentity, createBmwLiveImageryProvider, presentBmwLiv
 import { createBmwImageAdapter } from '../vehicle-evidence/bmw-image-adapter.js';
 import { createBmwCatalogueAdapter, mergeBmwCatalogueFacts } from '../vehicle-evidence/bmw-catalogue-adapter.js';
 import { createBoundedTransport, verifyLiveImagery, loadVerificationContext, publishedAssetPage,
-  provePublishedDelivery, reserveAttempt, runCli, SETTINGS, LIMITS } from '../../scripts/gcsp/verify-live-imagery.mjs';
+  provePublishedDelivery, reserveAttempt, runCli, parseCliArguments, SETTINGS, LIMITS } from '../../scripts/gcsp/verify-live-imagery.mjs';
 
 const COLLECTION = 'stage-fullscreen-views-legacy-newnames';
 const ORIGIN = 'https://prod.cosy.bmw.cloud';
@@ -604,7 +604,10 @@ test('a second-paint failure keeps the first permitted artifact and valid facts 
 
 test('CLI needs explicit live/output and exclusive attempt ledger refuses reruns', async () => {
   let printed = ''; assert.equal(await runCli({ argv: [], fetchImpl: () => assert.fail('no implicit live'), write: (line) => { printed += line; } }), 2);
-  assert.match(printed, /--live --output/);
+  assert.match(printed, /--live \[--output/);
+  assert.equal(parseCliArguments(['--live']), new URL('../../docs/gcsp/evidence/fucq51/native-v1-assets', import.meta.url).pathname);
+  assert.equal(parseCliArguments(['--live', '--output', '/tmp/new-imagery-proof']), '/tmp/new-imagery-proof');
+  for (const argv of [[], ['--output', '/tmp/proof'], ['--live', '--retries', '1'], ['--live', '--output', '']]) assert.equal(parseCliArguments(argv), null);
   const directory = await mkdtemp(join(tmpdir(), 'fucq51-ledger-'));
   try {
     const path = join(directory, 'attempt.json'); await reserveAttempt(path, directory);

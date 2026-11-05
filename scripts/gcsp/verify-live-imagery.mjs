@@ -212,12 +212,19 @@ export async function verifyLiveImagery({ fetchImpl, now, clock = () => new Date
   return report;
 }
 
+export function parseCliArguments(argv) {
+  if (argv.length === 1 && argv[0] === '--live') return fileURLToPath(new URL('../../docs/gcsp/evidence/fucq51/native-v1-assets', import.meta.url));
+  if (argv.length === 3 && argv[0] === '--live' && argv[1] === '--output' && argv[2]) return resolve(argv[2]);
+  return null;
+}
+
 export async function runCli({ argv = process.argv.slice(2), fetchImpl = globalThis.fetch, inspect,
   write = (line) => process.stdout.write(line) } = {}) {
-  if (argv.length !== 3 || argv[0] !== '--live' || argv[1] !== '--output' || !argv[2]) {
-    write('Usage: node scripts/gcsp/verify-live-imagery.mjs --live --output <new-artifact-directory>\n'); return 2;
+  const output = parseCliArguments(argv);
+  if (!output) {
+    write('Usage: node scripts/gcsp/verify-live-imagery.mjs --live [--output <new-artifact-directory>]\n'); return 2;
   }
-  const output = resolve(argv[2]); let ledger;
+  let ledger;
   try {
     await reserveAttempt(LEDGER, output);
     ledger = true; await mkdir(output, { recursive: false, mode: 0o700 });
