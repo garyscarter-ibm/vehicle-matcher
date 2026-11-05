@@ -1,0 +1,550 @@
+{
+  "draft": {
+    "status": "ok",
+    "value": {
+      "runId": "demo-f5e8b346c1a4d0a568d0664a89d133a0",
+      "employeeId": "employee-paula",
+      "draftVersion": 1,
+      "baseBriefVersion": 0,
+      "brief": {
+        "schemaVersion": 1,
+        "preferences": {
+          "body": {
+            "value": "estate",
+            "importance": 100,
+            "valueState": "confirmed",
+            "importanceState": "confirmed",
+            "source": "employee"
+          },
+          "comfort": {
+            "value": 75,
+            "importance": 0,
+            "valueState": "confirmed",
+            "importanceState": "confirmed",
+            "source": "employee"
+          }
+        },
+        "essentials": {
+          "seats": {
+            "value": 5,
+            "operator": "gte",
+            "unit": "count",
+            "state": "confirmed",
+            "source": "employee"
+          },
+          "charging": {
+            "value": null,
+            "operator": "equals",
+            "unit": null,
+            "state": "needs-confirmation",
+            "source": "employee"
+          }
+        },
+        "currentCarFeedback": {
+          "preserve": [
+            "comfort"
+          ],
+          "change": [
+            "body"
+          ],
+          "state": "draft",
+          "source": "employee"
+        }
+      },
+      "knownFacts": {
+        "name": {
+          "value": "Paula (fictional)",
+          "source": "repository:employees",
+          "sourceVersion": 1,
+          "observedAt": "2026-11-05T09:00:00.000Z",
+          "status": "supplied-demo-fact"
+        },
+        "companyId": {
+          "value": "demo-bmw-fs-uk",
+          "source": "repository:employees",
+          "sourceVersion": 1,
+          "observedAt": "2026-11-05T09:00:00.000Z",
+          "status": "supplied-demo-fact"
+        },
+        "schemeId": {
+          "value": "choices-fs-uk",
+          "source": "repository:employees",
+          "sourceVersion": 1,
+          "observedAt": "2026-11-05T09:00:00.000Z",
+          "status": "supplied-demo-fact"
+        },
+        "gradeId": {
+          "value": "G7",
+          "source": "repository:employees",
+          "sourceVersion": 1,
+          "observedAt": "2026-11-05T09:00:00.000Z",
+          "status": "supplied-demo-fact"
+        }
+      },
+      "savedBy": "demo-paula",
+      "savedAt": "2026-11-05T09:00:00.000Z",
+      "validation": {
+        "policyVersion": "gcsp-policy-v1",
+        "unknownEssentials": [
+          "charging"
+        ],
+        "assumptions": [
+          {
+            "key": "brief.slider.minimum",
+            "value": 0,
+            "unit": "integer slider units",
+            "status": "assumed",
+            "basis": "Assumed `brief.slider.scale`; shared position and importance scale.",
+            "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+            "sourceDate": "2026-11-04",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "brief.slider.maximum",
+            "value": 100,
+            "unit": "integer slider units",
+            "status": "assumed",
+            "basis": "Assumed `brief.slider.scale`; dimensions declare categorical alternatives where required.",
+            "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+            "sourceDate": "2026-11-04",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "eligibility.homeCharging.requiredForPlugIn",
+            "value": true,
+            "unit": "boolean",
+            "status": "assumed",
+            "basis": "Demo assumption only, not a BMW rule. Assumed demo practical gate from brief; target has no such BMW rule (round-2). Unknown/not-ready charging prevents a plug-in offer under this assumption.",
+            "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+            "sourceDate": "2026-11-04",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "brief.lifecycle.v1",
+            "value": {
+              "charging": {
+                "operator": "equals",
+                "type": "enum",
+                "unit": null,
+                "values": [
+                  "home",
+                  "work",
+                  "either",
+                  "not-ready"
+                ]
+              },
+              "postDeclineChangeLimit": 1
+            },
+            "unit": "brief lifecycle registry",
+            "status": "assumed",
+            "basis": "Charging readiness is an explicit practical demo input, not a BMW home-charging rule. Q16 permits one confirmed field change for a recorded decline. Unknown is represented by null and needs-confirmation.",
+            "source": "docs/gcsp/shared-contracts.md#brief-schema-v1",
+            "sourceDate": "2026-11-05",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          }
+        ]
+      }
+    },
+    "contractVersion": "1.0.0"
+  },
+  "confirmed": {
+    "status": "ok",
+    "value": {
+      "brief": {
+        "schemaVersion": 1,
+        "preferences": {
+          "body": {
+            "value": "estate",
+            "importance": 100,
+            "valueState": "confirmed",
+            "importanceState": "confirmed",
+            "source": "employee",
+            "confirmedAt": "2026-11-05T09:00:00.000Z"
+          },
+          "comfort": {
+            "value": 75,
+            "importance": 0,
+            "valueState": "confirmed",
+            "importanceState": "confirmed",
+            "source": "employee",
+            "confirmedAt": "2026-11-05T09:00:00.000Z"
+          }
+        },
+        "essentials": {
+          "seats": {
+            "value": 5,
+            "operator": "gte",
+            "unit": "count",
+            "state": "confirmed",
+            "source": "employee",
+            "confirmedAt": "2026-11-05T09:00:00.000Z"
+          },
+          "charging": {
+            "value": null,
+            "operator": "equals",
+            "unit": null,
+            "state": "needs-confirmation",
+            "source": "employee"
+          }
+        },
+        "currentCarFeedback": {
+          "preserve": [
+            "comfort"
+          ],
+          "change": [
+            "body"
+          ],
+          "state": "confirmed",
+          "source": "employee"
+        },
+        "buddy": {
+          "enabled": false,
+          "searchConsent": false,
+          "holdConsent": false,
+          "paused": false,
+          "permissionVersion": 1,
+          "confirmedBy": "demo-paula",
+          "confirmedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "knownFacts": {
+          "name": {
+            "value": "Paula (fictional)",
+            "source": "repository:employees",
+            "sourceVersion": 1,
+            "observedAt": "2026-11-05T09:00:00.000Z",
+            "status": "supplied-demo-fact"
+          },
+          "companyId": {
+            "value": "demo-bmw-fs-uk",
+            "source": "repository:employees",
+            "sourceVersion": 1,
+            "observedAt": "2026-11-05T09:00:00.000Z",
+            "status": "supplied-demo-fact"
+          },
+          "schemeId": {
+            "value": "choices-fs-uk",
+            "source": "repository:employees",
+            "sourceVersion": 1,
+            "observedAt": "2026-11-05T09:00:00.000Z",
+            "status": "supplied-demo-fact"
+          },
+          "gradeId": {
+            "value": "G7",
+            "source": "repository:employees",
+            "sourceVersion": 1,
+            "observedAt": "2026-11-05T09:00:00.000Z",
+            "status": "supplied-demo-fact"
+          }
+        },
+        "runId": "demo-f5e8b346c1a4d0a568d0664a89d133a0",
+        "employeeId": "employee-paula",
+        "entitlementSlotId": "slot-paula",
+        "renewalId": null,
+        "briefVersion": 1,
+        "previousBriefVersion": null,
+        "status": "confirmed",
+        "policyVersion": "gcsp-policy-v1",
+        "confirmedBy": "demo-paula",
+        "confirmedAt": "2026-11-05T09:00:00.000Z",
+        "version": 1,
+        "createdAt": "2026-11-05T09:00:00.000Z",
+        "updatedAt": "2026-11-05T09:00:00.000Z"
+      },
+      "activity": {
+        "canSearch": false,
+        "canHold": false,
+        "existingOffersUnaffected": true,
+        "existingOffers": []
+      },
+      "event": {
+        "eventId": "brief:employee-paula:1",
+        "eventType": "brief-changed",
+        "operation": "confirmed",
+        "runId": "demo-f5e8b346c1a4d0a568d0664a89d133a0",
+        "employeeId": "employee-paula",
+        "briefVersion": 1,
+        "previousBriefVersion": null,
+        "occurredAt": "2026-11-05T09:00:00.000Z"
+      },
+      "validation": {
+        "policyVersion": "gcsp-policy-v1",
+        "unknownEssentials": [
+          "charging"
+        ],
+        "assumptions": [
+          {
+            "key": "brief.slider.minimum",
+            "value": 0,
+            "unit": "integer slider units",
+            "status": "assumed",
+            "basis": "Assumed `brief.slider.scale`; shared position and importance scale.",
+            "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+            "sourceDate": "2026-11-04",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "brief.slider.maximum",
+            "value": 100,
+            "unit": "integer slider units",
+            "status": "assumed",
+            "basis": "Assumed `brief.slider.scale`; dimensions declare categorical alternatives where required.",
+            "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+            "sourceDate": "2026-11-04",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "eligibility.homeCharging.requiredForPlugIn",
+            "value": true,
+            "unit": "boolean",
+            "status": "assumed",
+            "basis": "Demo assumption only, not a BMW rule. Assumed demo practical gate from brief; target has no such BMW rule (round-2). Unknown/not-ready charging prevents a plug-in offer under this assumption.",
+            "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+            "sourceDate": "2026-11-04",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "brief.lifecycle.v1",
+            "value": {
+              "charging": {
+                "operator": "equals",
+                "type": "enum",
+                "unit": null,
+                "values": [
+                  "home",
+                  "work",
+                  "either",
+                  "not-ready"
+                ]
+              },
+              "postDeclineChangeLimit": 1
+            },
+            "unit": "brief lifecycle registry",
+            "status": "assumed",
+            "basis": "Charging readiness is an explicit practical demo input, not a BMW home-charging rule. Q16 permits one confirmed field change for a recorded decline. Unknown is represented by null and needs-confirmation.",
+            "source": "docs/gcsp/shared-contracts.md#brief-schema-v1",
+            "sourceDate": "2026-11-05",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          }
+        ]
+      }
+    },
+    "contractVersion": "1.0.0"
+  },
+  "conflict": {
+    "status": "stale-version",
+    "expectedVersion": 0,
+    "currentVersion": 1,
+    "resource": {
+      "table": "briefs"
+    },
+    "action": "refresh",
+    "contractVersion": "1.0.0"
+  },
+  "validation": {
+    "status": "invalid",
+    "code": "invalid-brief",
+    "reasons": [
+      {
+        "field": "brief",
+        "reason": "Supply schemaVersion, preferences and essentials."
+      }
+    ],
+    "contractVersion": "1.0.0"
+  },
+  "paused": {
+    "status": "ok",
+    "value": {
+      "brief": {
+        "schemaVersion": 1,
+        "preferences": {
+          "body": {
+            "value": "estate",
+            "importance": 100,
+            "valueState": "confirmed",
+            "importanceState": "confirmed",
+            "source": "employee",
+            "confirmedAt": "2026-11-05T09:00:00.000Z"
+          },
+          "comfort": {
+            "value": 75,
+            "importance": 0,
+            "valueState": "confirmed",
+            "importanceState": "confirmed",
+            "source": "employee",
+            "confirmedAt": "2026-11-05T09:00:00.000Z"
+          }
+        },
+        "essentials": {
+          "seats": {
+            "value": 5,
+            "operator": "gte",
+            "unit": "count",
+            "state": "confirmed",
+            "source": "employee",
+            "confirmedAt": "2026-11-05T09:00:00.000Z"
+          },
+          "charging": {
+            "value": null,
+            "operator": "equals",
+            "unit": null,
+            "state": "needs-confirmation",
+            "source": "employee"
+          }
+        },
+        "currentCarFeedback": {
+          "preserve": [
+            "comfort"
+          ],
+          "change": [
+            "body"
+          ],
+          "state": "confirmed",
+          "source": "employee"
+        },
+        "buddy": {
+          "enabled": false,
+          "searchConsent": false,
+          "holdConsent": false,
+          "paused": true,
+          "permissionVersion": 2,
+          "confirmedBy": "demo-paula",
+          "confirmedAt": "2026-11-05T09:00:00.000Z",
+          "pausedAt": "2026-11-05T09:00:00.000Z"
+        },
+        "knownFacts": {
+          "name": {
+            "value": "Paula (fictional)",
+            "source": "repository:employees",
+            "sourceVersion": 1,
+            "observedAt": "2026-11-05T09:00:00.000Z",
+            "status": "supplied-demo-fact"
+          },
+          "companyId": {
+            "value": "demo-bmw-fs-uk",
+            "source": "repository:employees",
+            "sourceVersion": 1,
+            "observedAt": "2026-11-05T09:00:00.000Z",
+            "status": "supplied-demo-fact"
+          },
+          "schemeId": {
+            "value": "choices-fs-uk",
+            "source": "repository:employees",
+            "sourceVersion": 1,
+            "observedAt": "2026-11-05T09:00:00.000Z",
+            "status": "supplied-demo-fact"
+          },
+          "gradeId": {
+            "value": "G7",
+            "source": "repository:employees",
+            "sourceVersion": 1,
+            "observedAt": "2026-11-05T09:00:00.000Z",
+            "status": "supplied-demo-fact"
+          }
+        },
+        "runId": "demo-f5e8b346c1a4d0a568d0664a89d133a0",
+        "employeeId": "employee-paula",
+        "entitlementSlotId": "slot-paula",
+        "renewalId": null,
+        "briefVersion": 2,
+        "previousBriefVersion": 1,
+        "status": "confirmed",
+        "policyVersion": "gcsp-policy-v1",
+        "confirmedBy": "demo-paula",
+        "confirmedAt": "2026-11-05T09:00:00.000Z",
+        "version": 1,
+        "createdAt": "2026-11-05T09:00:00.000Z",
+        "updatedAt": "2026-11-05T09:00:00.000Z"
+      },
+      "activity": {
+        "canSearch": false,
+        "canHold": false,
+        "existingOffersUnaffected": true,
+        "existingOffers": []
+      },
+      "event": {
+        "eventId": "brief:employee-paula:2",
+        "eventType": "brief-changed",
+        "operation": "paused",
+        "runId": "demo-f5e8b346c1a4d0a568d0664a89d133a0",
+        "employeeId": "employee-paula",
+        "briefVersion": 2,
+        "previousBriefVersion": 1,
+        "occurredAt": "2026-11-05T09:00:00.000Z"
+      },
+      "validation": {
+        "policyVersion": "gcsp-policy-v1",
+        "unknownEssentials": [
+          "charging"
+        ],
+        "assumptions": [
+          {
+            "key": "brief.slider.minimum",
+            "value": 0,
+            "unit": "integer slider units",
+            "status": "assumed",
+            "basis": "Assumed `brief.slider.scale`; shared position and importance scale.",
+            "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+            "sourceDate": "2026-11-04",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "brief.slider.maximum",
+            "value": 100,
+            "unit": "integer slider units",
+            "status": "assumed",
+            "basis": "Assumed `brief.slider.scale`; dimensions declare categorical alternatives where required.",
+            "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+            "sourceDate": "2026-11-04",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "eligibility.homeCharging.requiredForPlugIn",
+            "value": true,
+            "unit": "boolean",
+            "status": "assumed",
+            "basis": "Demo assumption only, not a BMW rule. Assumed demo practical gate from brief; target has no such BMW rule (round-2). Unknown/not-ready charging prevents a plug-in offer under this assumption.",
+            "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+            "sourceDate": "2026-11-04",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "brief.lifecycle.v1",
+            "value": {
+              "charging": {
+                "operator": "equals",
+                "type": "enum",
+                "unit": null,
+                "values": [
+                  "home",
+                  "work",
+                  "either",
+                  "not-ready"
+                ]
+              },
+              "postDeclineChangeLimit": 1
+            },
+            "unit": "brief lifecycle registry",
+            "status": "assumed",
+            "basis": "Charging readiness is an explicit practical demo input, not a BMW home-charging rule. Q16 permits one confirmed field change for a recorded decline. Unknown is represented by null and needs-confirmation.",
+            "source": "docs/gcsp/shared-contracts.md#brief-schema-v1",
+            "sourceDate": "2026-11-05",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          }
+        ]
+      }
+    },
+    "contractVersion": "1.0.0"
+  }
+}
