@@ -366,8 +366,10 @@ The price keys come from the resolved PolicyService snapshot, rather than a brow
 command can edit eligibility, essentials, allowances, employee importance, hard filters or another calibration path.
 Independent preference scores still use their dimension-specific calculation. The aggregate uses employee importance
 multiplied by the configured preference weight. Retained calibration without `preferenceWeights` keeps its original
-employee-importance calculation and exposes no editable weight controls. A supplied map must cover exactly the
-registered preference keys; missing/extra keys fail explicitly. Legacy `tuning.weights` remain dimension machinery,
+employee-importance calculation. The server projects an explicitly labelled neutral adoption proposal, one multiplier
+of 1 for every existing preference; the browser owns no fallback values. An intentional weight publication adds the
+complete map only in a new dated successor, leaving all other legacy calibration fields identical. A supplied map must
+cover exactly the registered preference keys; missing/extra keys fail explicitly. Legacy `tuning.weights` remain dimension machinery,
 not a second editable policy map. Zero weight contributes no aggregate importance. No contributing importance produces an
 unknown fit score, never an invented perfect fit. Gate decisions precede weighting and cannot be overridden by it.
 
@@ -664,6 +666,7 @@ Retail `publicMatch.listings[]` additively retains the evaluator's exact `decisi
 
 | Version / date / owner | Change and keyed assumptions |
 |---|---|
+| 1.0.0 / 2026-11-05 / FUCQ-103 | Adds trusted snapshot reads, the bounded monthly-points/preference-weight projection, no-write demand/fit preview and intentional dated publishing. A narrowly validated successor may adopt `employee.recommendation.v1.preferenceWeights` over an unchanged legacy calibration; historical rows/quotes and legacy employee-importance output remain intact. Activation and rendered integration evidence are tracked separately until verified. |
 | 1.0.0 / 2026-11-05 / FUCQ-83 | Source checkpoint: additive dated policy tables/migration 0002, idempotent seed, PostgreSQL and explicit memory providers, trusted Greg immutable publishing/replay and unchanged pinned reads. Existing assumptions/0003/consumers remain unchanged. Configured native policy/factory/repository proof passes with exact schema cleanup; combined offline full 1,235 total/1,230 passed/5 native skips has matching strict stamp 07aea3ec1a62. No screen or fresh diagram-render claim. |
 | 1.0.0 / 2026-11-05 / FUCQ-94 | Adds canonical editor context and server-only real unsaved preview through strict employee HTTP routes, explicit draft/base provenance, independent consent and truthful empty-equipment no. No approved recommendation downgrade, writes, holds or new screen. |
 | 1.0.0 / 2026-11-05 / FUCQ-57 | Adds mandatory configured-provider identity classification and successful-result binding checks through the existing retained registry/current-run inventory, preserving the FUCQ-55 envelope and FUCQ-43 real guard. Actual five-WMI generated-store HTTP/in-process/start/reset proofs retain honest US/LHD, unknown and representative-image-contract states. No live authorisation, mutable stock/policy/retail change or new screen. |

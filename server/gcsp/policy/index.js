@@ -68,6 +68,18 @@ export class PolicyService {
     return null;
   }
 
+  // Trusted server composition only; never serialize this seed through an HTTP route.
+  async getPolicySnapshot(read) {
+    const resolved = await this.#resolve(read);
+    if (resolved.error) return resolved.error;
+    const snapshot = ok(resolved.seed.policyVersion, resolved.seed);
+    const freeze = (value) => {
+      if (value && typeof value === 'object') { Object.values(value).forEach(freeze); Object.freeze(value); }
+      return value;
+    };
+    return freeze(snapshot);
+  }
+
   async getActiveVersion(read) {
     const resolved = await this.#resolve(read);
     if (resolved.error) return resolved.error;
