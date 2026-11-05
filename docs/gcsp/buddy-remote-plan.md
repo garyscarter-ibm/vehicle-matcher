@@ -1,8 +1,9 @@
 # Buddy remote lifecycle · review plan
 
-FUCQ-100 / DEV-2026-11-04-060, 5 November 2026. **Proposed, awaiting the dispatcher's remote edit
-grant.** This document changes no executable remote behaviour. Existing permission covers the pushed
-local producer, notification custody, isolated pinned allocator proof and local expiry only.
+FUCQ-100 / DEV-2026-11-04-060, 5 November 2026. **Dispatcher reviewed and granted the bounded owned
+remote service/module slice at `41f995f`.** This document changes no executable remote behaviour.
+Shared eligibility, identity, allocator, repository/schema and central composition edits remain outside
+that grant. The internal revalidation port below is under review before dependent implementation.
 
 ## Frozen sources and edit boundary
 
@@ -25,6 +26,35 @@ same offers directory, new `server/test/gcsp-buddy-remote.test.js`, owned lifecy
 documentation. No manual-service, repository schema/core, identity, policy seed, allocator or central
 `server/index.js` edits. Shared BriefService/evaluator remain the eligibility owners; any missing
 internal evaluation port is a scope question before editing those modules.
+
+Observed port gap after the grant: current `BriefService.evaluateCandidate` calls `#prepare` and
+`readCurrent`, both requiring the real identity adapter's employee guard. Clock startup has `roles: []`.
+`ManualContextService` has the same guard. RecommendationService exposes `recommend` and
+`previewUnsaved`; both share the employee-role/full-context gate. There is no named internal
+stored-subject entry. Current identity uses branded contexts; the paused producer's presenter-only
+resolver is neither a startup resolver nor present on this branch. A copied employee-shaped context,
+stubbed identity or duplicated eligibility implementation is not an accepted substitute. The dispatcher
+has been given the exact evidence and proposed a separately named internal read-only calculation port;
+no dependent confirmation implementation was presumed authorised during that preflight.
+
+The dispatcher subsequently granted exactly `server/gcsp/recommendation/index.js` and a dedicated
+stored-subject regression file for this seam, with first delivery required before remote integration.
+`createStoredSubjectRecommendationEvaluator({ provider, policy, time }).evaluate(subject, confirmedBrief)`
+now reuses the existing private calculation kernel. Its subject is exactly runId, environmentId,
+employeeId, companyId, schemeId, gradeId and policyVersion, with no roles, principal/session/token or
+write port. Provider/time receive the same frozen subject snapshot, confirmed input is copied before
+awaits, source/run bindings stay enforced and a resolved policy mismatch refuses. This factory is
+separate from the HTTP-facing service object; public recommend/preview employee guards are unchanged.
+The caller still owns authentic original intent, fresh transactional authority/consent/visibility/source
+checks and the write decision. The evaluator itself cannot grant that authority.
+
+Seam scope13/13 and existing pure evaluator/BriefService boundaries44/44 pass. Scope initially11/13
+found fixture expectations: changing an allowance requires both canonical value fields, and a provider
+missing all identity fields returns stale-run before malformed-stock validation. Corrected fixtures
+separate those cases. Product code and selected boundary inputs stayed identical, so the44/44 result
+is reused with that graph equality checked. Shared receipt `parent-stored-subject-audit.json` confirms
+26 allocation manifests cleaned up and retained dependencies unchanged. No HTTP listener, native DB,
+network or full suite was allocated.
 
 ## Proposed transitions
 

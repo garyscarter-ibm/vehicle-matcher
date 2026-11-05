@@ -9,7 +9,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T23:01:19Z",
+      "observed_at": "2026-11-05T23:11:17Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-100",
       "source_observed_at": "2026-11-05T23:00:25Z",
       "branch": "dev/DEV-2026-11-04-060",
@@ -55,10 +55,10 @@
         },
         {
           "id": "remote-lifecycle",
-          "status": "blocked",
+          "status": "in-progress",
           "title": "Remote claim/release intent and reconciliation",
-          "observed_at": "2026-11-05T23:01:19Z",
-          "evidence": "Explicit dispatcher hold on remote edits until exact frozen design/source plan reviewed. Current code supports local-only. Plan:docs/gcsp/buddy-remote-plan.md. No unavailable live adapter acceptance claimed."
+          "observed_at": "2026-11-05T23:11:17Z",
+          "evidence": "Root granted separate internal stored-subject seam. Parent reviewed13/13 focused +44/44 unchanged evaluator/Brief boundaries;26allocations audited, shared test-runs/fucq100/parent-stored-subject-audit.json. In-process factory has no session/roles/write API; original public guards preserved. Remote intent/reconciliation integration still outstanding; docs/gcsp/buddy-remote-plan.md."
         },
         {
           "id": "manual-exclusivity",

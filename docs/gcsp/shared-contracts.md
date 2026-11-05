@@ -478,6 +478,15 @@ selected, remote-shaped, manual and inconsistent authority stays excluded. Origi
 expiry replay outcomes remain historical; expiry creates no decline or priority. Central registration
 and remote release/reconciliation are not supplied by this local checkpoint.
 
+FUCQ-100's separately granted internal calculation seam exports
+`createStoredSubjectRecommendationEvaluator({ provider, policy, time })` from the recommendation module.
+Its `evaluate(subject, confirmedBrief)` accepts exactly the seven server-owned run/environment/employee/
+company/scheme/grade/policy fields, with no roles/session/write authority. It shares the public consumer's
+calculation kernel, freezes the subject passed to provider/time and preserves source/run/policy binding.
+The public recommendation/preview service object and employee guards are unchanged. Only a private
+previously authorised-intent worker may supply fresh repository-derived inputs; this read-only factory
+does not replace current authority, consent, pause, visibility, brief or source validation before writes.
+
 ## Owned renewal-risk cases · FUCQ-112
 
 `createRenewalCaseService({ repository, policy, clock, identity })` supplies `readHelp(context)`, `readOwn(context, { caseId? })`, `requestHelp(context, { commandId, reason })`, `list(context)`, `update(context, command)` and `start()`. Help and case reads are side-effect free. Employee methods require the trusted employee context; Greg/presenter may list and update the current run as the scheme-team owner. A request opens one active case for the actual employee renewal; another request appends its reason/history to that case. Command replay returns its original outcome. Missing renewal identity returns actionable `renewal-context-required`; an unknown actual contract end remains `renewalDeadline: null, renewalDeadlineState: needs-confirmation` and cannot invent a deadline trigger or an extension date.
