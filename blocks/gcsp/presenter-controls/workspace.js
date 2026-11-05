@@ -22,7 +22,7 @@ export function mountPresenterWorkspace(host, { adapter = createPresenterHttpAda
       const shell = portalShell({ account: context?.name ? { status: 'ready', name: context.name } : { status: 'unavailable' },
         presenterControls: { adapter } });
       shell.main.append(statusScreen({ title: context ? 'Presenter workspace' : 'Workspace unavailable',
-        message: context ? 'Choose an acting principal in Presenter controls.' : `Context ${reply.status}. Reopen your session or try again.` }));
+        message: context ? 'Choose an acting principal in Presenter controls.' : `Context ${reply.status}. Try again. If the session cannot be recovered, use trusted backend presenter-session bootstrap and reopen this workspace.` }));
       host.replaceChildren(shell.root); teardown = () => shell.destroy();
     }
   })();

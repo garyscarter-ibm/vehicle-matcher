@@ -142,3 +142,30 @@ independently absent/groupsgone; retained captures3920465bytes. Existing UI chil
 22:50:45 tierSol/medium (no fallback),capacitycan_start1/free7.5GB; new tier naming Mike Wazowski,
 child instructed to set that title (verification pending). WAITING on same presenter_ui child for
 bounded source corrections, selected regressions and harness repairs; no browser/server active.
+
+22:54 repair follow-up: title independently verified Mike Wazowski. Controls21/21 reported pass,
+shell ongoing; browser execution remains released/held pending dispatcher exact checkpoint regrant.
+Original browser-results.json preserved byte-for-byte as browser-before-results.json; corrected
+proof will use separate browser-after-repair outputs and fucq126-browser-corrected-20261105 receipts.
+Parent found another concrete existing reset contract edge: headers/cookies may arrive before lost
+body. Exact retry under renewed current-run cookie is refused by ScenarioService expectedRunId gate,
+whereas historical-cookie receipt replay is supported. No backend mechanics edit is authorised.
+Parent approved bounded UI reconciliation: after exact retry receives definitive stale-run, navigate
+without success claim only when fresh successful controls/context agree on a different current run.
+Unknown delivery retains original retry; failed/mismatched fresh reads cannot trigger navigation.
+Implementer adds regression/contract evidence and reruns controls; previous shell result reused if
+unchanged caller contract. Current source/harness uncommitted for active repair; no browser/server.
+WAITING on presenter_ui repair completion; then parent review/push, f690a36 integration and frozen
+updated browser plan to dispatcher. No nativeDB/full-suite grant or complete-business proof.
+
+23:00 lead review: final repair source/diff and guarded stale-run positive+negative cases inspected;
+lead independently reran controls23/23, no skips,241057792byte RSS,3154016byte scratch,owned scratch/
+groups/reservation absent. Child shell41/copy1 applicable; correction results bind exact hashes.
+Authenticated Jira FUCQ126 read confirms explicit `renderOptionList` scenario/principal pickers and
+new `presenterBar` in its UI field. Physical local story had simplified UI metadata; next independent
+slice will align actual kit consumption/catalogue/gallery before corrected browser. No acceptance
+or technical-readiness directive revoked, no Jira write by this story. Product-map skill read from
+scaffolding/plugin/skills/product-map/SKILL.md; full durable slice plan and integration gates will be
+recorded with CLI after integrating current b11a7e61 shared base (adds map tooling/registry, no new
+GCSP runtime delta). Existing pre-repair captures remain truthful earlier evidence with documented
+findings; corrected proof held pending component alignment and dispatcher exact grant.

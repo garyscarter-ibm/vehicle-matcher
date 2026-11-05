@@ -84,7 +84,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     ]));
     fill(principal.input, state.principals || [], 'principalId', (row) => `${row.name} (${row.roles.join(', ')})`);
     fill(scenario.input, catalogue?.scenarios || [], 'scenarioId', (row) => `${row.name}${row.availability?.available ? '' : ' (not available yet)'}`);
-    if (!scenario.input.dataset.initial && state.currentScenario?.scenarioId) {
+    if (!scenario.input.dataset.initial && catalogue?.scenarios?.some((row) => row.scenarioId === state.currentScenario?.scenarioId)) {
       scenario.input.value = state.currentScenario.scenarioId; scenario.input.dataset.initial = 'true';
     }
     if (!principal.input.dataset.initial && context?.principalId) { principal.input.value = context.principalId; principal.input.dataset.initial = 'true'; }
@@ -140,6 +140,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
       context = acting.status === 'ok' ? acting.value : null; catalogue = scenarios.status === 'ok' ? scenarios.value : scenarios;
       readMessage.textContent = acting.status === 'ok' ? '' : `Acting context ${reason(acting)}`;
       if (!original) message.textContent = 'Presenter controls ready';
+      if (acting.status === 'ok') return { controls: read.value, context: acting.value };
     } catch { if (!disposed && authorized) readMessage.textContent = 'Backend unavailable'; }
     finally { busy = false; update(); }
   }
@@ -152,14 +153,13 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     if (!original || busy || disposed) return;
     busy = true; message.textContent = 'Action in progress'; update();
     const command = original;
+    const retrying = uncertain;
     try {
       const reply = await adapter[command.kind](command.payload, options); if (disposed) return;
       const value = reply.status === 'ok' ? reply.value : reply;
       if (value.advance) state = { ...state, ...value.advance };
       if (command.kind === 'reset' && reply.status === 'ok') {
         state = { ...state, ...value };
-        const acting = await adapter.readContext(options); if (disposed) return;
-        context = acting.status === 'ok' ? acting.value : null;
       }
       if (value.tick) state = { ...state, lastTick: value.tick };
       uncertain = Boolean(reply.lostResponse || reply.status !== 'ok' && reply.retryable);
@@ -169,6 +169,11 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
         message.textContent += ` Presenter session unavailable. ${value.presenterSession.action || 'Use trusted backend bootstrap.'}`;
       }
       if (reply.handlerOutcome) message.textContent += ` Handler: ${reason(reply.handlerOutcome)}`;
+      if (command.kind === 'reset' && reply.status === 'ok') {
+        original = null;
+        navigate(workspace());
+        return;
+      }
       if (command.kind === 'switchPrincipal') {
         const acting = await adapter.readContext(options); if (disposed) return;
         context = acting.status === 'ok' ? acting.value : null;
@@ -179,7 +184,14 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
         }
       }
       busy = false;
-      await refreshState();
+      const fresh = await refreshState();
+      if (retrying && command.kind === 'reset' && reply.status === 'stale-run'
+        && typeof fresh?.controls?.runId === 'string' && fresh.controls.runId !== command.payload.expectedRunId
+        && fresh.context.runId === fresh.controls.runId) {
+        original = null;
+        navigate(workspace());
+        return;
+      }
       if (!uncertain) original = null;
     } catch { if (!disposed) { uncertain = true; message.textContent = 'Backend unavailable. Retry the original action.'; } }
     finally { busy = false; update(); }

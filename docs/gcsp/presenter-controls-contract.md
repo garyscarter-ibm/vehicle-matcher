@@ -103,9 +103,23 @@ concurrent commands, and retains that same object for an uncertain-response retr
 target edits cannot rewrite a retry. A switch is confirmed only by rereading actual `/context`;
 an unknown/different principal keeps the outcome uncertain/refused, with separate original retry
 and deliberate fresh-issuance actions. No credentials are stored or replayed by the browser.
-Reset requires confirmation, captures the selected catalogue/version identity, and rereads controls
-and actual context after the server's cookie renewal. A committed reset with failed session renewal
-shows the new run and the trusted-bootstrap instruction.
+The initial scenario selection waits until the loaded catalogue contains the actual current
+scenario; later readbacks preserve the presenter's deliberate choice. Reset requires confirmation
+and captures the selected catalogue/version identity. An acknowledged successful reset navigates
+to the actual context-selected workspace, discarding the previous employee/Greg body and header.
+The fresh page's run/context readback supplies the outcome evidence. Unknown/lost reset delivery
+keeps the original command for exact retry and does not navigate before acknowledgement. A
+successful replay navigates normally. Failed session renewal also discards the old page; the new
+unavailable workspace explains trusted backend presenter-session bootstrap/recovery. Injected
+navigation consumers can inspect the committed new-run receipt before navigation.
+
+The existing backend reset replay contract has a narrower delivery boundary: if renewal cookies
+arrive but the response body is lost, replay under the renewed acting session can return
+`stale-run` for the original expected run. The UI first retries the exact original command. Only
+after that definitive `stale-run` may it navigate to the actual current workspace when freshly
+successful controls/context reads agree on the same different run. This reconciles the current
+surface without labelling the original reset successful. Failed, partial, unchanged or mismatched
+fresh reads do not justify navigation. Unknown/lost outcomes retain the original retry.
 
 `gcsp-presenter.html` is the real context-selected workspace. Its runtime reads `/context` then
 mounts the existing employee account or Greg dashboard using HTTP adapters, or a presenter shell.

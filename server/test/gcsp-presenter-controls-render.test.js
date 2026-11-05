@@ -80,6 +80,74 @@ test('reset current/chosen availability is explained and explicit confirmation c
     scenarioId: 'mechanics', scenarioVersion: 'v1', fixtureVersion: 'f1', policyVersion: 'policy-test' });
   assert.match(f.host.textContent, /Reset done. New run: run-new/); f.control.destroy();
 });
+test('delayed catalogue selects the actual current scenario after unavailable first option, then preserves deliberate choice', async () => {
+  let completeCatalogue;
+  const f = setup({ readScenarios: () => new Promise((resolve) => { completeCatalogue = resolve; }) });
+  await settle();
+  const select = f.host.querySelector('select');
+  assert.equal(select.options.length, 0); assert.equal(select.dataset.initial, undefined);
+  completeCatalogue(ok({ ...catalogue, scenarios: [catalogue.scenarios[1], catalogue.scenarios[0]] }));
+  await settle(); assert.equal(select.value, state().currentScenario.scenarioId);
+  assert.equal(select.dataset.initial, 'true');
+  select.value = 'business'; select.dispatchEvent(new window.Event('change'));
+  f.adapter.readScenarios = async () => ok(catalogue);
+  await f.control.refresh();
+  assert.equal(select.value, 'business'); assert.match(f.host.textContent, /actual-release-service/);
+  f.control.destroy();
+});
+test('acknowledged reset navigates to fresh actual-context workspace without another stale-page read', async () => {
+  let reads = 0; let contexts = 0;
+  const f = setup({ readControls: async () => { reads++; return ok(state()); },
+    readContext: async () => { contexts++; return ok({ principalId: 'employee-test', roles: ['employee'] }); },
+    reset: async () => ok({ runId: 'fresh-run', presenterSession: { status: 'ok' } }) });
+  await settle(); f.click('Reset scenario'); f.click('Confirm reset'); await settle();
+  assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /gcsp-presenter.html$/);
+  assert.doesNotMatch(f.navigation[0], /\?/); assert.equal(reads, 1); assert.equal(contexts, 1);
+  assert.match(f.host.textContent, /Reset done. New run: fresh-run/); f.control.destroy();
+});
+test('unknown reset delivery preserves original retry and navigates only after acknowledged replay', async () => {
+  const calls = [];
+  const f = setup({ reset: async (payload) => { calls.push(payload); return calls.length === 1
+    ? { status: 'unavailable', lostResponse: true, retryable: true }
+    : ok({ runId: 'replayed-run' }); } });
+  await settle(); f.click('Reset scenario'); f.click('Confirm reset'); await settle();
+  assert.equal(f.navigation.length, 0); assert.match(f.host.textContent, /Retry the original action/);
+  f.click('Retry original action'); await settle();
+  assert.equal(calls.length, 2); assert.strictEqual(calls[0], calls[1]);
+  assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /gcsp-presenter.html$/);
+  assert.match(f.host.textContent, /Reset done. New run: replayed-run/); f.control.destroy();
+});
+test('definitive stale-run reset retry navigates only to a freshly agreed different current run without claiming reset success', async () => {
+  let currentRun = 'run-a'; const calls = [];
+  const f = setup({ readControls: async () => ok({ ...state(), runId: currentRun }),
+    readContext: async () => ok({ principalId: 'presenter-test', roles: ['presenter'], runId: currentRun }),
+    reset: async (payload) => { calls.push(payload); currentRun = 'run-current'; return calls.length === 1
+      ? { status: 'unavailable', lostResponse: true, retryable: true } : { status: 'stale-run' }; } });
+  await settle(); f.click('Reset scenario'); f.click('Confirm reset'); await settle();
+  assert.equal(f.navigation.length, 0); assert.match(f.host.textContent, /Retry the original action/);
+  f.click('Retry original action'); await settle();
+  assert.strictEqual(calls[0], calls[1]); assert.equal(calls[0].expectedRunId, 'run-a');
+  assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /gcsp-presenter.html$/);
+  assert.match(f.host.textContent, /Action stale-run/); assert.doesNotMatch(f.host.textContent, /Reset done/);
+  f.control.destroy();
+});
+test('stale-run reset retry cannot navigate from matching old reads, mismatched runs or failed fresh controls/context', async () => {
+  for (const failure of ['same-run', 'mismatch', 'controls-failed', 'context-failed']) {
+    let calls = 0;
+    const f = setup({
+      readControls: async () => calls === 2 && failure === 'controls-failed' ? { status: 'unavailable' }
+        : ok({ ...state(), runId: calls && failure !== 'same-run' ? 'run-current' : 'run-a' }),
+      readContext: async () => calls === 2 && failure === 'context-failed' ? { status: 'unavailable' }
+        : ok({ principalId: 'presenter-test', roles: ['presenter'], runId: calls
+          ? failure === 'same-run' ? 'run-a' : failure === 'mismatch' ? 'run-other' : 'run-current' : 'run-a' }),
+      reset: async () => ++calls === 1 ? { status: 'unavailable', lostResponse: true, retryable: true } : { status: 'stale-run' },
+    });
+    await settle(); f.click('Reset scenario'); f.click('Confirm reset'); await settle();
+    assert.equal(f.navigation.length, 0, failure); f.click('Retry original action'); await settle();
+    assert.equal(calls, 2); assert.equal(f.navigation.length, 0, failure);
+    assert.doesNotMatch(f.host.textContent, /Reset done/); f.control.destroy();
+  }
+});
 test('cookie issuance conflict confirms actual principal before navigation; unknown context offers fresh deliberate issuance', async () => {
   const calls = []; const f = setup({ switchPrincipal: async (payload) => { calls.push(payload); return { status: 'conflict', reason: 'Cookie cannot replay' }; } });
   await settle(); const principal = f.host.querySelectorAll('select')[1]; principal.value = 'greg-test';
@@ -112,14 +180,26 @@ test('HTTP transport sends credentialled exact JSON and keeps typed refusal dist
 });
 
 
-test('reset readback failure preserves new run and failed session-renewal instruction', async () => {
+test('acknowledged reset with session-renewal failure still navigates and preserves committed receipt before navigation', async () => {
   let reads = 0; let contexts = 0;
   const f = setup({ readControls: async () => ++reads === 1 ? ok(state()) : { status: 'unavailable', reason: 'Read failed' },
     readContext: async () => { contexts++; return contexts === 1 ? ok({ principalId: 'employee-test', roles: ['employee'] }) : { status: 'stale-run' }; },
     reset: async () => ok({ runId: 'run-new', now: '2026-11-05T09:00:00.000Z', presenterSession: { status: 'unavailable', action: 'Use trusted bootstrap.' } }) });
   await settle(); f.click('Reset scenario'); f.click('Confirm reset'); await settle();
   assert.match(f.host.textContent, /Reset done. New run: run-new/); assert.match(f.host.textContent, /Use trusted bootstrap/);
-  assert.match(f.host.textContent, /Read failed/); assert.match(f.host.textContent, /Context unavailable/); assert.equal(contexts, 2); f.control.destroy();
+  assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /gcsp-presenter.html$/);
+  assert.equal(reads, 1); assert.equal(contexts, 1); f.control.destroy();
+});
+test('fresh workspace with unrecovered reset session explains trusted backend bootstrap', async () => {
+  const host = document.createElement('div'); document.body.append(host);
+  host.textContent = 'Previous employee account';
+  const done = workspace(host, { adapter: { readContext: async () => ({ status: 'stale-run' }),
+    readControls: async () => ({ status: 'stale-run' }) } });
+  await done.ready; await settle();
+  assert.doesNotMatch(host.textContent, /Previous employee account/);
+  assert.match(host.textContent, /Workspace unavailable/);
+  assert.match(host.textContent, /trusted backend presenter-session bootstrap/);
+  done();
 });
 
 test('custom element registers once, mounts injected adapter, and aborts on disconnect', async () => {
