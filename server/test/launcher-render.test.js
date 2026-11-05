@@ -25,7 +25,7 @@ test('shared launcher exposes semantic choices, all six labelled brands and a wo
   } finally { dom.window.close(); }
 });
 
-test('native brand changes preserve retail query/hash/API and keep employee BMW switching explicit', () => {
+test('native brand changes retain mode/scope/API, reset answers/dealer and keep employee switching explicit', () => {
   const { dom, win } = bootAt('?experience=launcher&mode=podium&scope=national&retailer=92&api=http%3A%2F%2Flocalhost%3A8788#m=answers');
   try {
     const select = win.document.querySelector('select');
@@ -36,8 +36,10 @@ test('native brand changes preserve retail query/hash/API and keep employee BMW 
       assert.equal(win.document.activeElement, select);
       assert.match(win.document.querySelector('.demo-launcher-selection').textContent, new RegExp(BRAND_LABELS[brand]));
       const link = new URL(usedLink(win).href);
-      for (const [key, value] of [['brand', brand], ['mode', 'podium'], ['scope', 'national'], ['retailer', '92'], ['api', 'http://localhost:8788']]) assert.equal(link.searchParams.get(key), value);
-      assert.equal(link.hash, '#m=answers');
+      for (const [key, value] of [['brand', brand], ['mode', 'podium'], ['scope', 'national'], ['api', 'http://localhost:8788']]) assert.equal(link.searchParams.get(key), value);
+      assert.equal(link.hash, '');
+      assert.equal(link.searchParams.has('retailer'), false);
+      assert.match(win.document.querySelectorAll('article')[1].textContent, /resets your answers and retailer/);
       assert.equal(link.pathname, '/vehicle-matcher/index.html');
       assert.equal(win.document.querySelector('a[href*="employee-cars"]'), null);
       if (brand !== 'bmw') assert.match(win.document.querySelector('article').textContent, /supports BMW/);
@@ -62,6 +64,21 @@ test('direct unsupported employee brand stays selected with an explicit Choose B
     assert.match(win.document.querySelector('article').textContent, /Choose BMW/);
     assert.match(win.document.querySelector('article').textContent, /currently unavailable/);
   } finally { dom.window.close(); }
+});
+
+test('unrecognised direct brands recover to a usable all-brand picker route', () => {
+  for (const brand of ['unknown', 'constructor', '__proto__']) {
+    const { dom, win } = bootAt(`?experience=employee-cars&brand=${brand}&scope=national#m=private`);
+    try {
+      assert.equal(win.document.querySelector('select').value, '');
+      const link = new URL(usedLink(win).href);
+      assert.equal(link.searchParams.get('experience'), 'used-cars');
+      assert.equal(link.searchParams.has('brand'), false);
+      assert.equal(link.searchParams.has('scope'), false);
+      assert.equal(link.hash, '');
+      assert.ok([...win.document.querySelectorAll('button')].find((node) => node.textContent === 'Choose BMW'));
+    } finally { dom.window.close(); }
+  }
 });
 
 test('direct unavailable and unsupported employee recovery never restores buyer context', () => {

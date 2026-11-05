@@ -1,0 +1,103 @@
+{
+  "story": "FUCQ-34",
+  "date": "2026-11-05",
+  "historical_plan": {
+    "agent": "Claude story lead Scrappy Doo",
+    "reported_model": "opus",
+    "reported_effort": "high",
+    "effective_runtime_independently_verified": false,
+    "retained_in": "_dev/in-progress/DEV-2026-11-04-008.md"
+  },
+  "agents": [
+    {
+      "role": "continuation story lead",
+      "requested": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "selected": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "effective": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "session_id": "01a1ac04-6732-77b2-a9cd-d2f556b2cbf0",
+      "fallback": null,
+      "notes": "Dispatcher verified effective turn_context; implementation/review lead."
+    },
+    {
+      "role": "slice1 navigation implementer",
+      "requested": {
+        "model": "gpt-6.1-sol",
+        "effort": "medium"
+      },
+      "selected": {
+        "model": "gpt-6.1-sol",
+        "effort": "medium"
+      },
+      "effective": {
+        "model": "gpt-6.1-sol",
+        "effort": "medium"
+      },
+      "session_id": "01a1ac07-076a-7b61-848d-27c065c43e28",
+      "fallback": null,
+      "notes": "Dispatcher verified effective turn_context."
+    },
+    {
+      "role": "slice2 UI wiring implementer",
+      "requested": {
+        "model": "gpt-6.1-sol",
+        "effort": "medium"
+      },
+      "selected": {
+        "model": "gpt-6.1-sol",
+        "effort": "medium"
+      },
+      "effective": {
+        "model": "gpt-6.1-sol",
+        "effort": "medium"
+      },
+      "session_id": "01a1ac1f-2a5c-70e0-9ce4-0b876d4ba3d9",
+      "fallback": null,
+      "notes": "Dispatcher verified effective turn_context."
+    },
+    {
+      "role": "initial browser runner / draft handoff",
+      "requested": {
+        "model": "gpt-6-luna",
+        "effort": "high"
+      },
+      "selected": {
+        "model": "gpt-6-luna",
+        "effort": "high"
+      },
+      "effective": {
+        "model": "gpt-6-luna",
+        "effort": "high"
+      },
+      "session_id": "01a1ac2a-e47b-7922-955a-223eade85543",
+      "fallback": null,
+      "notes": "Dispatcher verified effective turn_context. Prepared substantive unexecuted harness, then cleanly handed off when authoring scope was classified as implementer work. No allocations by this agent."
+    },
+    {
+      "role": "browser evidence implementer",
+      "requested": {
+        "model": "gpt-6.1-sol",
+        "effort": "medium"
+      },
+      "selected": {
+        "model": "gpt-6.1-sol",
+        "effort": "medium"
+      },
+      "effective": {
+        "model": "gpt-6.1-sol",
+        "effort": "medium"
+      },
+      "session_id": "01a1ac39-45bf-71c1-8287-dff473064748",
+      "fallback": null,
+      "notes": "Fresh tiers implementer mapping and capacity can_start4; dispatcher independently verified effective turn_context."
+    }
+  ]
+}

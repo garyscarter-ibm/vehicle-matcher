@@ -1,0 +1,153 @@
+{
+  "story": "FUCQ-34",
+  "sourceCommit": "312eaa005bc2390b8c449b6c4deaf7b511e7e22a",
+  "harnessSha": "f62f15a3facaf5636f9d4771680e01e49a5281b38d25a6cd3ffdf258fbba1f93",
+  "capturedAt": "2026-11-05T15:25:39.523Z",
+  "fixtureBacked": true,
+  "runtimeResources": {
+    "staticPort": 31461,
+    "fixtureApiPort": 55136,
+    "chromeCdpPort": 55142,
+    "chromePid": 40026,
+    "profile": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-008/.claude/test-scratch/fucq34/lead/test-stamp-shard-4b89bd64fb4d4d52bc24678dd470130f/fucq34-chrome-profile"
+  },
+  "externalEgress": "blocked; remote default API fulfilled by injected local buildServer fixtures",
+  "checks": [
+    {
+      "id": "keyboard-retail-header-focus",
+      "pass": true,
+      "expected": "Tab reaches a labelled return link with visible focus at 320px",
+      "observed": {
+        "text": "All car experiences",
+        "href": "/index.html?experience=launcher&brand=bmw&mode=questionnaire&scope=dealer",
+        "focusVisible": true,
+        "outline": "solid",
+        "outlineWidth": "3px",
+        "outlineColor": "rgb(28, 105, 212)",
+        "viewport": 320,
+        "scrollWidth": 320
+      }
+    },
+    {
+      "id": "keyboard-return-link-enter",
+      "pass": true,
+      "expected": "Enter activates the focused All car experiences return link",
+      "observed": "http://vehicle-matcher.demo.test:31461/index.html?experience=launcher&brand=bmw&mode=questionnaire&scope=dealer"
+    },
+    {
+      "id": "native-select-focus-prerequisite",
+      "pass": true,
+      "expected": "Tab focuses the labelled semantic native brand select before the single popup attempt",
+      "observed": {
+        "focused": true,
+        "focusVisible": true,
+        "tag": "SELECT",
+        "label": "Choose a brand",
+        "outline": "rgb(11, 108, 126) solid 2px",
+        "value": "bmw"
+      }
+    },
+    {
+      "id": "native-select-keyboard-attempt",
+      "pass": false,
+      "expected": "bounded native select ArrowDown/Enter changes brand; unchanged value retains the known automation limitation",
+      "observed": {
+        "nativeFocus": {
+          "focused": true,
+          "focusVisible": true,
+          "tag": "SELECT",
+          "label": "Choose a brand",
+          "outline": "rgb(11, 108, 126) solid 2px",
+          "value": "bmw"
+        },
+        "before": "bmw",
+        "after": "bmw",
+        "limitation": "Native popup automation unchanged; selectOption routing is independently exercised"
+      }
+    },
+    {
+      "id": "keyboard-used-cars-enter",
+      "pass": true,
+      "expected": "Enter opens the labelled Used cars route",
+      "observed": "http://vehicle-matcher.demo.test:31461/index.html?experience=used-cars&brand=bmw&mode=questionnaire&scope=dealer"
+    },
+    {
+      "id": "shared-radio-arrow-selection",
+      "pass": true,
+      "expected": "ArrowDown selects the next actual questionnaire radio option and advances to the next question through its onPick callback",
+      "observed": {
+        "questionBefore": "Could you charge a car at home or work?",
+        "before": [
+          {
+            "text": "Yes, at home or at work",
+            "checked": "false",
+            "tabIndex": 0
+          },
+          {
+            "text": "Yes, at home",
+            "checked": "false",
+            "tabIndex": -1
+          },
+          {
+            "text": "Yes, at work",
+            "checked": "false",
+            "tabIndex": -1
+          },
+          {
+            "text": "No, I’d rely on public chargers",
+            "checked": "false",
+            "tabIndex": -1
+          }
+        ],
+        "expectedChosenOption": "Yes, at home",
+        "questionAfter": "What will this car mostly do?",
+        "focusedText": "What will this car mostly do?"
+      }
+    }
+  ],
+  "cases": [],
+  "browserLogs": {
+    "errors": [],
+    "failed": [],
+    "badLocalResponses": [],
+    "externalBlocked": [],
+    "apiCalls": [
+      {
+        "scope": "retail-header-focus",
+        "method": "GET",
+        "path": "/api/questions?retailer=96&brand=bmw",
+        "status": 200
+      },
+      {
+        "scope": "retail-header-focus",
+        "method": "GET",
+        "path": "/api/questions?retailer=96&brand=bmw",
+        "status": 200
+      },
+      {
+        "scope": "shared-question-option-arrow",
+        "method": "GET",
+        "path": "/api/questions?retailer=96&brand=bmw",
+        "status": 200
+      },
+      {
+        "scope": "shared-question-option-arrow",
+        "method": "POST",
+        "path": "/api/preview",
+        "status": 200
+      },
+      {
+        "scope": "shared-question-option-arrow",
+        "method": "POST",
+        "path": "/api/preview",
+        "status": 200
+      },
+      {
+        "scope": "shared-question-option-arrow",
+        "method": "POST",
+        "path": "/api/preview",
+        "status": 200
+      }
+    ]
+  }
+}
