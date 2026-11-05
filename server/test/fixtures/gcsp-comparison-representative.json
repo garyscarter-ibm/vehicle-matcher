@@ -332,7 +332,7 @@
       "comparison.carsPerEmployee": 1
     },
     "overlayHash": "11e7dfd4d7d8e574005ed2643c04cce219348cc6e190225ddb38c86aad79024a",
-    "policyHash": "ae91d7cd86b83c9bbfeaab47f9ac66a705ccd2648a6014a6063d39c80ada4852",
+    "policyHash": "d0a0da24d5fefba5813eab5fe5ee59875de35b0fd5a050ecdcdc5ee81587449e",
     "configurationHash": "fb09836beef41f08fa8f11b71f576f256e47daca304242022b075b81bdc93341",
     "configurationSource": {
       "kind": "reviewed-fixtures",
@@ -1035,6 +1035,11 @@
             "rearIsofix": {
               "operator": "equals",
               "type": "boolean",
+              "unit": null
+            },
+            "modelLine": {
+              "operator": "equals",
+              "type": "string",
               "unit": null
             }
           },
