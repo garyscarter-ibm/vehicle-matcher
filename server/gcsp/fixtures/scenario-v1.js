@@ -5,9 +5,10 @@ import { validInstant } from '../policy/file-provider.js';
 
 const unavailable = () => result('unavailable', { reason: 'The versioned scenario fixture is unavailable.', retryable: false });
 export async function loadClockConfiguration(policy, read) {
-  const entries = await Promise.all(['clock.scenario.v1', 'clock.commands.v1', 'clock.handler.order.v1'].map((key) => policy.getAssumption(key, read)));
+  const entries = await Promise.all(['clock.scenario.v1', 'clock.commands.v1', 'clock.handler.order.v1', 'clock.presenter.stepSeconds'].map((key) => policy.getAssumption(key, read)));
   if (entries.some((row) => row.status !== 'ok' || row.policyVersion !== read.policyVersion)) return unavailable();
   const [scenario, commands, stages] = entries.map((row) => row.value.value);
+  const presenterStep = entries[3].value;
   if (!scenario || !validInstant(scenario.startsAt) || !scenario.namedTimes || !Object.values(scenario.namedTimes).every(validInstant)
     || !['scenarioVersion', 'fixtureVersion', 'seed', 'corpusVersion', 'datasetId'].every((key) => typeof scenario[key] === 'string' && scenario[key])
     || !Array.isArray(scenario.vehicles) || !scenario.vehicles.length || scenario.vehicles.some((row) => row.usage !== 'stock')
@@ -16,8 +17,9 @@ export async function loadClockConfiguration(policy, read) {
     || !scenario.allocationLimits || !['maxAttempts', 'serialSpace', 'orderNumberSpace', 'wholesalerSpace']
       .every((key) => Number.isSafeInteger(scenario.allocationLimits[key]) && scenario.allocationLimits[key] > 0)
     || !Array.isArray(stages) || new Set(stages).size !== stages.length || !stages.length || stages.some((stage) => typeof stage !== 'string' || !stage)
-    || commands.startupStages.some((stage) => !stages.includes(stage))) return unavailable();
-  return ok({ scenario, commands, stages });
+    || commands.startupStages.some((stage) => !stages.includes(stage))
+    || presenterStep.unit !== 'seconds' || !Number.isSafeInteger(presenterStep.value) || presenterStep.value <= 0) return unavailable();
+  return ok({ scenario, commands, stages, presenterStep });
 }
 
 export async function buildScenarioSeed({ policy, read, configuration, runId, inventory }) {

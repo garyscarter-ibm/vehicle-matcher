@@ -4,6 +4,7 @@ import { validInstant } from '../policy/file-provider.js';
 import { loadClockConfiguration, buildScenarioSeed } from '../fixtures/scenario-v1.js';
 import { randomUUID } from 'node:crypto';
 import { isPreparedScenarioFixture } from '../fixtures/scenarios/index.js';
+import { composePresenterTick, readPresenterClockConfiguration } from '../presenter-controls/commands.js';
 
 const text = (value) => typeof value === 'string' && value.length > 0 && value.length <= 128;
 const persistedClock = (run) => validInstant(run.clockInstant) && text(run.clockVersion)
@@ -126,6 +127,21 @@ export class DemoClock {
       const changed = await tx.compareAndSwap(ref('runs', context), run.version, { clockInstant: now, clockVersion });
       return changed.status === 'ok' ? ok({ runId: run.runId, now, clockVersion }) : changed;
     });
+  }
+
+  async readControlsConfiguration(context) {
+    const allowed = await this.#identity.requireRole(context, 'presenter');
+    if (allowed.status !== 'ok') return allowed;
+    const current = await this.#current(context);
+    return current.status === 'ok' ? readPresenterClockConfiguration(this.#policy, current.value) : current;
+  }
+
+  async advanceAndTick(context, input) {
+    const allowed = await this.#identity.requireRole(context, 'presenter');
+    if (allowed.status !== 'ok') return allowed;
+    const current = await this.#current(context);
+    if (current.status !== 'ok') return current;
+    return composePresenterTick({ repository: this.#repository, policy: this.#policy, clock: this }, context, input);
   }
 
   async reset(context, input = {}, preparedFixture) {
@@ -302,11 +318,11 @@ export class DemoClock {
         const tick = await tx.get(tickRef);
         if (tick.status !== 'ok') return tick;
         const outcomes = tick.value.outcomes.filter((row) => row.handlerId !== entry.handlerId);
-        outcomes.push({ ...entry, outcome: unavailable() });
+        outcomes.push({ ...entry, outcome });
         return tx.compareAndSwap(tickRef, tick.value.version, { state: 'interrupted', outcomes });
       });
     return marked.status === 'ok' ? result('unavailable', { tickId: tickRef.key.tickId, handlerId: entry.handlerId,
-      reason: 'A registered clock handler did not complete. Retry this event ID.', retryable: true }) : marked;
+      reason: 'A registered clock handler did not complete. Retry this event ID.', retryable: true, handlerOutcome: outcome }) : marked;
   }
 }
 

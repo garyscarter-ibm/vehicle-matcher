@@ -1,0 +1,156 @@
+{
+  "scope": "Scoped backend presentation/clock/identity/scenario checks only; no full suite or live PostgreSQL",
+  "base": "a083e28609172a83bbe3d8de31feec48a183f909",
+  "tests": 55,
+  "pass": 55,
+  "fail": 0,
+  "skip": 0,
+  "chunks": [
+    {
+      "name": "presenter",
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-backend-20261105/presenter.json",
+      "summary": [
+        "\u2139 tests 8",
+        "\u2139 pass 8",
+        "\u2139 fail 0",
+        "\u2139 skipped 0",
+        "\u2139 duration_ms 997.952791"
+      ],
+      "wallSeconds": 1.4945299159999998,
+      "peakRssBytes": 219742208,
+      "peakScratchBytes": 979040,
+      "cleanup": {
+        "groupsAbsent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-backend-20261105/ownership/315063fb2a4349cfa5bc3fdb63fff5c3.json",
+        "removedBytes": 979040,
+        "reservationAbsent": true,
+        "scratch": "/private/tmp/test-stamp-shard-315063fb2a4349cfa5bc3fdb63fff5c3",
+        "scratchAbsent": true
+      }
+    },
+    {
+      "name": "clock",
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-backend-20261105/clock.json",
+      "summary": [
+        "\u2139 tests 18",
+        "\u2139 pass 18",
+        "\u2139 fail 0",
+        "\u2139 skipped 0",
+        "\u2139 duration_ms 1253.534292"
+      ],
+      "wallSeconds": 1.716977708,
+      "peakRssBytes": 236109824,
+      "peakScratchBytes": 999520,
+      "cleanup": {
+        "groupsAbsent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-backend-20261105/ownership/048a9b367862429c8a2b6569c0fc91b9.json",
+        "removedBytes": 999520,
+        "reservationAbsent": true,
+        "scratch": "/private/tmp/test-stamp-shard-048a9b367862429c8a2b6569c0fc91b9",
+        "scratchAbsent": true
+      }
+    },
+    {
+      "name": "identity",
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-backend-20261105/identity.json",
+      "summary": [
+        "\u2139 tests 19",
+        "\u2139 pass 19",
+        "\u2139 fail 0",
+        "\u2139 skipped 0",
+        "\u2139 duration_ms 1609.717334"
+      ],
+      "wallSeconds": 1.8822004579999998,
+      "peakRssBytes": 255639552,
+      "peakScratchBytes": 966752,
+      "cleanup": {
+        "groupsAbsent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-backend-20261105/ownership/905de7656e5c440dabf4a10e4c283d40.json",
+        "removedBytes": 966752,
+        "reservationAbsent": true,
+        "scratch": "/private/tmp/test-stamp-shard-905de7656e5c440dabf4a10e4c283d40",
+        "scratchAbsent": true
+      }
+    },
+    {
+      "name": "scenarios",
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-backend-20261105/scenarios.json",
+      "summary": [
+        "\u2139 tests 10",
+        "\u2139 pass 10",
+        "\u2139 fail 0",
+        "\u2139 skipped 0",
+        "\u2139 duration_ms 989.388916"
+      ],
+      "wallSeconds": 1.375525542,
+      "peakRssBytes": 258981888,
+      "peakScratchBytes": 987232,
+      "cleanup": {
+        "groupsAbsent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-backend-20261105/ownership/d2f28ebf032d44689f239dfeab68f29f.json",
+        "removedBytes": 987232,
+        "reservationAbsent": true,
+        "scratch": "/private/tmp/test-stamp-shard-d2f28ebf032d44689f239dfeab68f29f",
+        "scratchAbsent": true
+      }
+    }
+  ],
+  "allOwnedScratchAbsent": true,
+  "ownershipManifests": [
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-backend-20261105/ownership/94fa259268b343c6bd1f787658ab18a9.json",
+      "scratch": "/private/tmp/test-stamp-shard-94fa259268b343c6bd1f787658ab18a9",
+      "removedBytes": 0,
+      "state": "removed"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-backend-20261105/ownership/048a9b367862429c8a2b6569c0fc91b9.json",
+      "scratch": "/private/tmp/test-stamp-shard-048a9b367862429c8a2b6569c0fc91b9",
+      "removedBytes": 999520,
+      "state": "removed"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-backend-20261105/ownership/d2f28ebf032d44689f239dfeab68f29f.json",
+      "scratch": "/private/tmp/test-stamp-shard-d2f28ebf032d44689f239dfeab68f29f",
+      "removedBytes": 987232,
+      "state": "removed"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-backend-20261105/ownership/6ab9cd220ee449d2b1e6eefcf57d0cdb.json",
+      "scratch": "/private/tmp/test-stamp-shard-6ab9cd220ee449d2b1e6eefcf57d0cdb",
+      "removedBytes": 266336,
+      "state": "removed"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-backend-20261105/ownership/8d1eeba434854d4b83bde96627d64302.json",
+      "scratch": "/private/tmp/test-stamp-shard-8d1eeba434854d4b83bde96627d64302",
+      "removedBytes": 979040,
+      "state": "removed"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-backend-20261105/ownership/315063fb2a4349cfa5bc3fdb63fff5c3.json",
+      "scratch": "/private/tmp/test-stamp-shard-315063fb2a4349cfa5bc3fdb63fff5c3",
+      "removedBytes": 979040,
+      "state": "removed"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-backend-20261105/ownership/905de7656e5c440dabf4a10e4c283d40.json",
+      "scratch": "/private/tmp/test-stamp-shard-905de7656e5c440dabf4a10e4c283d40",
+      "removedBytes": 966752,
+      "state": "removed"
+    }
+  ],
+  "successfulVerboseLogsRemoved": true,
+  "initialFailureResolved": "First presenter launch lacked pg and stopped before tests; parent authorised adopting existing matching installed tree; no installation or database call.",
+  "dependencyAdoptionReceipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-backend-20261105/dependencies.json",
+  "retainedAllocation": "Exact server/node_modules symlink to shared installed tree. Parent owns removal after all final checks, using recorded target/inode/device; preserve shared tree.",
+  "oneDrive": "Unavailable; no output reached 256 MiB. All scratch was small helper-owned macOS IPC allocation.",
+  "agents": {
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "medium",
+    "selectedModel": "gpt-6.1-sol",
+    "selectedEffort": "medium",
+    "fallback": false,
+    "effectiveRuntime": "Own turn_context unavailable; not independently verified."
+  }
+}

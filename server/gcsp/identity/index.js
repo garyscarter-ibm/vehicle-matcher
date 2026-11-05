@@ -196,6 +196,15 @@ export class DemoIdentityAdapter {
     return this.#issue(state, presenter, principal, commandId);
   }
 
+  async readPresenterPrincipals(context) {
+    const state = await this.#guard(context);
+    if (state.error) return state.error;
+    if (!context.roles.includes('presenter')) return refused('forbidden');
+    const config = await this.#configuration(state);
+    if (config.error) return config.error;
+    return ok(config.principals.map(({ principalId, name, roles }) => ({ principalId, name, roles: [...roles] })));
+  }
+
   async requireRole(context, role) {
     const guarded = await this.#guard(context);
     if (guarded.error) return guarded.error;
