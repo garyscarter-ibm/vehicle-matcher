@@ -333,16 +333,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-34"
     },
     {
-      "id": "FUCQ-35",
-      "title": "Open the supported employee experience through the shared entry point",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "Russell Gowers",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-35"
-    },
-    {
       "id": "FUCQ-36",
       "title": "Package and verify both launcher routes for the GCSP static site",
       "status": "To Do",
@@ -1371,6 +1361,66 @@
       "type": "Story",
       "observed_at": "2026-11-05T22:40:24Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-138"
+    },
+    {
+      "id": "FUCQ-35",
+      "title": "Open the supported employee experience through the shared entry point",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-05T23:31:17Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-35",
+      "slices": [
+        {
+          "id": "entry",
+          "status": "complete",
+          "title": "Real-lazy-employee-entry",
+          "observed_at": "2026-11-05T23:31:17Z",
+          "evidence": "docs/gcsp/evidence/fucq35/restart-validation.md; actual HTTP browser matrix1280/320 and focused129 pass"
+        },
+        {
+          "id": "recovery",
+          "status": "complete",
+          "title": "Route-context-and-recovery",
+          "observed_at": "2026-11-05T23:31:17Z",
+          "evidence": "docs/gcsp/evidence/fucq35/restart-validation.md; actual HTTP browser matrix1280/320 and focused129 pass"
+        },
+        {
+          "id": "runtime",
+          "status": "complete",
+          "title": "Actual-employee-HTTP-integration",
+          "observed_at": "2026-11-05T23:31:17Z",
+          "evidence": "docs/gcsp/evidence/fucq35/restart-validation.md; actual HTTP browser matrix1280/320 and focused129 pass"
+        },
+        {
+          "id": "browser",
+          "status": "complete",
+          "title": "Desktop-narrow-keyboard",
+          "observed_at": "2026-11-05T23:31:17Z",
+          "evidence": "docs/gcsp/evidence/fucq35/restart-validation.md; actual HTTP browser matrix1280/320 and focused129 pass"
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Final-validation",
+          "observed_at": "2026-11-05T23:31:17Z",
+          "evidence": "Source/browser gates passed; final authored npm test and dispatcher merge still pending"
+        }
+      ],
+      "unsliced": false,
+      "workers": [
+        {
+          "name": "Ralph Wolf",
+          "harness": "codex",
+          "role": "story-lead/direct-capacity-fallback",
+          "observed_at": "2026-11-05T23:31:17Z",
+          "expires_at": "2026-11-06T00:01:17Z",
+          "source": "thread 01a1adf9-3127-7fa3-b025-a0d6b6456c6a",
+          "status": "final-validation"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-04-046"
     }
   ]
 }

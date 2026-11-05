@@ -61,6 +61,14 @@ export function bootDemo({ root = document.getElementById('demo-root'), employee
         </form>`;
       const form = overlay.querySelector('.vm-gate-card');
       const input = overlay.querySelector('.vm-gate-input');
+      if (root.entryContext?.state === 'employee') {
+        form.classList.add('vm');
+        const recovery = el('nav', 'demo-choice-actions');
+        recovery.setAttribute('aria-label', 'Leave employee cars');
+        recovery.append(button({ label: 'Car experiences', variant: 'ghost', href: root.entryContext.links.launcher }),
+          button({ label: 'Used cars', variant: 'ghost', href: retailReturnUrl(new URL(root.entryContext.location, window.location.href)) }));
+        form.append(recovery);
+      }
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         const value = input.value.trim();
@@ -112,9 +120,18 @@ export function bootDemo({ root = document.getElementById('demo-root'), employee
       Promise.resolve(result).then((dispose) => {
         if (abort.signal.aborted) { if (typeof dispose === 'function') dispose(); return; }
         mountedCleanup = typeof dispose === 'function' ? dispose : undefined;
-        state.replaceChildren();
+        state.remove();
         stage.setAttribute('aria-busy', 'false');
-        focus(stage.querySelector('h1') || stage);
+        const title = stage.querySelector('h1');
+        focus(title || stage);
+        if (!title) {
+          const observer = new MutationObserver(() => {
+            const heading = stage.querySelector('h1');
+            if (heading && !abort.signal.aborted) { observer.disconnect(); focus(heading); }
+          });
+          observer.observe(stage, { childList: true, subtree: true });
+          routeCleanups.push(() => observer.disconnect());
+        }
       }, failed);
     } catch { failed(); }
   }

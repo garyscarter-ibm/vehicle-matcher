@@ -22,7 +22,7 @@ test('public entry registers the real lazy capability while library routing stay
   assert.match(source, /bootDemo\(\{ employeeCapability: createEmployeeCapability\(\) \}\)/);
   assert.equal(ENTRY_REGISTRY.employeeAvailable, false);
   const loader = readFileSync(new URL('../../blocks/demo-launcher/employee-entry.js', import.meta.url), 'utf8');
-  assert.match(loader, /import\('\.\.\/gcsp\/account\/gcsp-account\.js'\)/);
+  assert.match(loader, /import\('\.\.\/gcsp\/manual-setup\/journey\.js'\)/);
   assert.doesNotMatch(loader, /harness|fixtures/);
 });
 
@@ -117,7 +117,7 @@ test('direct and refreshed BMW entry mounts the real custom element once and ret
   const capability = createEmployeeCapability({ load: async () => {
     lazyLoads += 1; await loaded.promise;
     const [entry, transport] = await Promise.all([
-      import('../../blocks/gcsp/account/gcsp-account.js'), import('../../blocks/gcsp/account/http-adapter.js'),
+      import('../../blocks/gcsp/manual-setup/journey.js'), import('../../blocks/gcsp/account/http-adapter.js'),
     ]);
     moduleReady.resolve();
     return { ...entry, ...transport };
@@ -134,9 +134,10 @@ test('direct and refreshed BMW entry mounts the real custom element once and ret
     assert.equal(lazyLoads, 1); assert.equal(calls.length, 0);
     loaded.resolve(); await moduleReady.promise; await flush();
     const root = win.document.getElementById('demo-root');
-    assert.equal(root.querySelectorAll('gcsp-account').length, 1);
+    assert.equal(root.querySelectorAll('gcsp-employee-entry').length, 1);
     assert.equal(root.querySelectorAll('.gcsp-header').length, 1);
     assert.match(root.textContent, /Contract Test Employee/);
+    assert.equal(win.document.activeElement.tagName, 'H1');
     assert.equal(calls.length, 2, 'adapter is assigned before attach, with no default duplicate mount');
     for (const { url, options } of calls) {
       assert.match(url, /^https:\/\/api\.test\/base\/api\/gcsp\/manual\/(account|draft)$/);
@@ -145,25 +146,28 @@ test('direct and refreshed BMW entry mounts the real custom element once and ret
       assert.equal(options.method, 'GET'); assert.equal(options.body, undefined);
       assert.equal(Object.keys(options.headers).some((key) => /employee|role|cookie|authorization/i.test(key)), false);
     }
-    assert.equal(root.querySelector('gcsp-account').getAttribute('brand'), 'bmw');
+    assert.equal(root.querySelector('gcsp-employee-entry').getAttribute('brand'), 'bmw');
     for (const link of root.querySelectorAll('nav[aria-label="Car experiences"] a')) {
       assert.doesNotMatch(link.href, /password|private|employeeId|role|key=/);
       assert.equal(new URL(link.href).searchParams.get('brand'), 'bmw');
     }
     // Re-execute the real boot against the same location, as a host remount/refresh does.
-    const old = root.querySelector('gcsp-account');
+    const old = root.querySelector('gcsp-employee-entry');
     win.eval('bootDemo({ employeeCapability });'); await flush();
-    assert.equal(old.isConnected, false); assert.equal(root.querySelectorAll('gcsp-account').length, 1);
+    assert.equal(old.isConnected, false); assert.equal(root.querySelectorAll('gcsp-employee-entry').length, 1);
     assert.equal(calls.length, 4);
     for (const failure of ['refused', 'expired']) {
-      mode = failure; await root.querySelector('gcsp-account').refresh(); await flush();
+      mode = failure; await root.querySelector('gcsp-employee-entry').refresh(); await flush();
       assert.equal(win.document.querySelector('.vm-gate'), null, 'employee rejection does not become demo identity');
       assert.doesNotMatch(root.textContent, /Contract Test Employee/);
       assert.match(root.textContent, /account|Account/);
       assert.ok(action(win, 'Used cars')); assert.ok(action(win, 'Car experiences'));
     }
-    mode = 'gate'; await root.querySelector('gcsp-account').refresh(); await flush();
+    mode = 'gate'; await root.querySelector('gcsp-employee-entry').refresh(); await flush();
     assert.ok(win.document.querySelector('.vm-gate'));
+    const gateRecovery = win.document.querySelector('.vm-gate nav[aria-label="Leave employee cars"]');
+    assert.equal(gateRecovery.querySelectorAll('a').length, 2);
+    for (const link of gateRecovery.querySelectorAll('a')) assert.doesNotMatch(link.href, /key=|employeeId|role=/);
     assert.equal(win.document.activeElement.type, 'password');
     assert.equal(win.sessionStorage.getItem(win.ACCESS_KEY_STORAGE), null);
     assert.ok(action(win, 'Used cars'));
@@ -172,16 +176,16 @@ test('direct and refreshed BMW entry mounts the real custom element once and ret
     form.querySelector('input').value = 'replacement-test-password';
     form.dispatchEvent(new win.Event('submit', { bubbles: true, cancelable: true })); await flush();
     assert.equal(win.document.querySelector('.vm-gate'), null);
-    assert.equal(root.querySelectorAll('gcsp-account').length, 1);
+    assert.equal(root.querySelectorAll('gcsp-employee-entry').length, 1);
     assert.match(root.textContent, /Contract Test Employee/);
     const latest = calls.slice(-2);
     latest.forEach(({ options }) => assert.equal(options.headers['X-Access-Key'], 'replacement-test-password'));
     const signals = latest.map(({ options }) => options.signal);
     win.history.replaceState({}, '', employee); await flush();
-    assert.equal(root.querySelectorAll('gcsp-account').length, 1);
+    assert.equal(root.querySelectorAll('gcsp-employee-entry').length, 1);
     calls.slice(-2).forEach(({ url }) => assert.match(url, /^https:\/\/bmw-matcher-api\.onrender\.com\/api\/gcsp\/manual\/(account|draft)$/));
     win.history.pushState({}, '', '?experience=launcher&brand=bmw'); await flush();
-    assert.equal(root.querySelector('gcsp-account'), null);
+    assert.equal(root.querySelector('gcsp-employee-entry'), null);
     signals.forEach((signal) => assert.equal(signal.aborted, true));
   } finally { dom.window.close(); }
 });
