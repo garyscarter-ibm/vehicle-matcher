@@ -33,7 +33,8 @@ export function createPostgresRepository(options = {}) {
     const inserts = [];
     for (const table of FOUNDATION_TABLES) {
       const previous = new Map(before.tables[table].map((row) => [keyOf(table, row), row]));
-      for (const row of after.tables[table].filter((item) => item.runId === context.runId)) {
+      // Snapshot contains scoped rows plus runs. resetRun may add one replacement run's rows.
+      for (const row of after.tables[table]) {
         const old = previous.get(keyOf(table, row));
         if (!old) { inserts.push([table, row]); continue; }
         if (inputDigest(old) === inputDigest(row)) continue;

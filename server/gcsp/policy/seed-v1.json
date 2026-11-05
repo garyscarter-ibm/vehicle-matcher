@@ -11051,7 +11051,7 @@
       "value": 1,
       "unit": "GBP per point",
       "status": "assumed",
-      "basis": "Assumed for target: 2024 Choices guide allows £1/point but target answer conflicts (Q16, round-1). Retain unused.",
+      "basis": "Assumed for target: 2024 Choices guide allows \u00a31/point but target answer conflicts (Q16, round-1). Retain unused.",
       "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
       "sourceDate": "2026-11-04",
       "policyVersion": "gcsp-policy-v1",
@@ -11514,6 +11514,95 @@
       "status": "assumed",
       "basis": "Read-only employee composition of existing rankCars curves; explicit dimensions, separate importance/indifference, confirmed exact evidence and no retail cash budget. Demo calibration is revisable, not BMW policy.",
       "source": "docs/gcsp/shared-recommendation-design.md",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "clock.commands.v1",
+      "value": {
+        "advanceAndTickSeparate": true,
+        "forwardOnly": true,
+        "resetProvider": "synthetic-only",
+        "initialClockVersion": "1",
+        "startupStages": [
+          "manual-expiry",
+          "buddy-expiry",
+          "pending-reconciliation"
+        ]
+      },
+      "unit": "command contract",
+      "status": "assumed",
+      "basis": "Presenter deliberately advances then ticks. Startup reconciles and expires existing work without pulling releases or dispatching new work.",
+      "source": "docs/gcsp/shared-contracts.md#democlock--fucq-85",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "clock.handler.order.v1",
+      "value": [
+        "release-pull",
+        "manual-expiry",
+        "buddy-expiry",
+        "pending-reconciliation",
+        "buddy-allocation",
+        "outbox-dispatch"
+      ],
+      "unit": "ordered stages",
+      "status": "assumed",
+      "basis": "Release is stock on the next pull; expired and reconciled ownership precede later allocation and outbox dispatch.",
+      "source": "docs/gcsp/shared-contracts.md#democlock--fucq-85",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "clock.scenario.v1",
+      "value": {
+        "scenarioVersion": "gcsp-clock-scenario-v1",
+        "fixtureVersion": "gcsp-clock-fixtures-v1",
+        "startsAt": "2026-11-05T09:00:00.000Z",
+        "namedTimes": {
+          "release": "2026-11-05T09:30:00.000Z",
+          "expiry": "2026-11-05T11:00:00.000Z"
+        },
+        "seed": "clock-fixtures-v1",
+        "corpusVersion": "synthetic-clock-corpus-v1",
+        "datasetId": "clock-reference-v1",
+        "allocationLimits": {
+          "maxAttempts": 1000,
+          "serialSpace": 1000000,
+          "orderNumberSpace": 10000000,
+          "wholesalerSpace": 90000000
+        },
+        "vehicles": [
+          {
+            "vehicleId": "clock-stock-a",
+            "configurationId": "Q0xPQ0stUkVGRVJFTkNFLUE=",
+            "snapshotVersion": "clock-reference-v1",
+            "usage": "stock",
+            "configuration": {
+              "reference": "clock-reference-a",
+              "synthetic": true
+            }
+          },
+          {
+            "vehicleId": "clock-stock-b",
+            "configurationId": "Q0xPQ0stUkVGRVJFTkNFLUI=",
+            "snapshotVersion": "clock-reference-v1",
+            "usage": "stock",
+            "configuration": {
+              "reference": "clock-reference-b",
+              "synthetic": true
+            }
+          }
+        ]
+      },
+      "unit": "versioned synthetic scenario fixture",
+      "status": "assumed",
+      "basis": "Small fictional clock/reset fixture, not the FUCQ-77 real constructible corpus. Starting instant/named cues are revisable demonstration assumptions. The immutable configuration references remain the same across runs; allocator FUCQ-53 regenerates exact stock identities.",
+      "source": "docs/gcsp/shared-contracts.md#democlock--fucq-85",
       "sourceDate": "2026-11-05",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
