@@ -14,7 +14,7 @@ import { inputDigest, result } from '../../../../server/gcsp/repository/index.js
 
 const ROOT = process.cwd();
 const chunk = process.argv[process.argv.indexOf('--chunk') + 1];
-assert.ok(['flow', 'states', 'theme'].includes(chunk), 'Use --chunk flow, states or theme.');
+assert.ok(['flow', 'states', 'theme', 'typography'].includes(chunk), 'Use --chunk flow, states, theme or typography.');
 assert.ok(process.env.TMPDIR && existsSync(process.env.TMPDIR), 'Supervisor-owned TMPDIR is required.');
 assert.ok(process.env.FUCQ68_HEAD && process.env.FUCQ68_BASE, 'FUCQ68_HEAD and FUCQ68_BASE provenance is required.');
 const scratch = path.resolve(process.env.TMPDIR); const OUT = path.join(ROOT, 'docs/gcsp/evidence/fucq-68', chunk);
@@ -136,6 +136,10 @@ async function themeObservation(width) {
     return { width: viewport, cssViewport: document.documentElement.clientWidth,
       scrollWidth: document.documentElement.scrollWidth, shell, primary, muted, focus,
       title: css('h1.vm-title', ['fontFamily', 'fontWeight', 'fontSize']),
+      roles: Object.fromEntries(Object.entries({ heading: '.gcsp-setup-group h2', label: '.gcsp-field-label',
+        input: '.gcsp-field input', select: '.gcsp-field select', textarea: '.gcsp-field textarea',
+        button: '.gcsp-setup-actions .vm-btn-primary', error: '.gcsp-field-error:not([hidden])' })
+        .map(([name, selector]) => [name, css(selector, ['fontFamily', 'fontWeight'])])),
       fontLoaded: document.fonts.check('500 32px BMWGroupTNCondensedPro-Medium'),
       loadedFaces: [...document.fonts].filter((face) => face.family.includes('BMWGroupTNCondensedPro')).map((face) => ({ family: face.family, status: face.status, weight: face.weight })),
       fontResources: performance.getEntriesByType('resource').filter((entry) => /BMWGroupTNCondensedPro-Medium\.woff2/.test(entry.name)).map((entry) => new URL(entry.name).pathname),
@@ -184,7 +188,7 @@ try {
     })());
   });
   for (const width of [1280, 320]) {
-    if (chunk === 'theme') {
+    if (['theme', 'typography'].includes(chunk)) {
       await prepare('theme', width); await page.evaluate(() => document.fonts.ready);
       await page.getByRole('button', { name: 'Continue', exact: true }).click();
       await page.waitForFunction(() => document.activeElement?.textContent === 'Check your choices');
@@ -196,6 +200,9 @@ try {
       assert.equal(observation.primary.backgroundColor, 'rgb(3, 116, 147)');
       assert.equal(observation.primary.borderRadius, '2px');
       assert.match(observation.title.fontFamily, /BMWGroupTNCondensedPro-Medium/); assert.equal(observation.title.fontWeight, '500');
+      for (const name of ['label', 'input', 'select', 'textarea']) assert.equal(observation.roles[name].fontWeight, '400', name);
+      for (const name of ['heading', 'button', 'error']) assert.equal(observation.roles[name].fontWeight, '600', name);
+      for (const role of Object.values(observation.roles)) assert.equal(role.fontFamily, observation.shell.fontFamily);
       assert.equal(observation.fontLoaded, true); assert.ok(observation.fontResources.length > 0);
       assert.ok(observation.loadedFaces.some((face) => face.status === 'loaded' && face.weight === '500'));
       assert.equal(observation.geometry.headerMinHeight, '56px');
@@ -212,7 +219,8 @@ try {
       await fill(); await page.getByRole('button', { name: 'Save choices', exact: true }).click(); await saved();
       await capture(`saved-${width}`);
       await prepare('long-unknown', width); await page.evaluate(() => document.fonts.ready); await capture(`long-unknown-${width}`);
-      results.cases.push({ name: 'default-density', ...observation, functionalTraceReused: 'flow/results.json and states/results.json at0a4ff5ac' });
+      results.cases.push({ name: chunk === 'typography' ? 'canonical-density-typography' : 'default-density',
+        ...observation, functionalTraceReused: 'flow/results.json and states/results.json at0a4ff5ac' });
     } else if (chunk === 'flow') {
       await prepare('flow', width); await page.locator('.gcsp-feature').first().getByRole('button', { name: 'Choose a replacement', exact: true }).click();
       await page.getByRole('heading', { name: 'Your order choices', exact: true }).waitFor();
