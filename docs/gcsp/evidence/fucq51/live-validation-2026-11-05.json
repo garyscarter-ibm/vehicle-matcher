@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "story": "FUCQ-51",
+  "date": "2026-11-05",
+  "status": "live-and-asset-route-acceptance-passed-full-integration-pending",
+  "native": {
+    "testedHead": "23c79fb792cc05e090319fa1b67442e30d46e4aa",
+    "command": "node scripts/gcsp/verify-live-imagery.mjs --live --output docs/gcsp/evidence/fucq51/native-v1-assets",
+    "summary": "native-v1-assets/summary.json",
+    "attemptLedger": "native-attempt-v1.json",
+    "budget": {
+      "requests": [
+        {
+          "kind": "settings",
+          "status": 200,
+          "bytes": 620646
+        },
+        {
+          "kind": "manifest",
+          "status": 200,
+          "bytes": 67145
+        },
+        {
+          "kind": "asset",
+          "status": 200,
+          "bytes": 82798
+        },
+        {
+          "kind": "manifest",
+          "status": 200,
+          "bytes": 67145
+        },
+        {
+          "kind": "asset",
+          "status": 200,
+          "bytes": 86286
+        }
+      ],
+      "requestCount": 5,
+      "imageCount": 2,
+      "bytes": 924020,
+      "elapsedMs": 3408,
+      "stopped": null
+    },
+    "receipt": {
+      "groups_absent": true,
+      "issue": null,
+      "issue_kind": null,
+      "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/native-attempt-v1-1793917334449709000.log",
+      "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/ownership/24367d02476e462b9d5678789fdbee1e.json",
+      "package_hashes_unchanged": true,
+      "peak_rss": 77742080,
+      "peak_scratch": 0,
+      "rc": 0,
+      "reservation_absent": true,
+      "retained_dependencies": {},
+      "scratch_removed": true,
+      "wall": 3.7388633749999998
+    }
+  },
+  "browser": {
+    "plan": "browser-plan-v1.json",
+    "proof": "browser-delivery-v1.json",
+    "receipt": {
+      "groups_absent": true,
+      "issue": null,
+      "issue_kind": null,
+      "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/browser-delivery-v1-1793917523962191000.log",
+      "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/ownership/66d00af880714417a549f3248383747d.json",
+      "package_hashes_unchanged": true,
+      "peak_rss": 927170560,
+      "peak_scratch": 8923320,
+      "rc": 0,
+      "reservation_absent": true,
+      "retained_dependencies": {},
+      "scratch_removed": true,
+      "wall": 4.721103833
+    },
+    "upstreamRequests": 0
+  },
+  "visual": "visual-inspection-2026-11-05.json",
+  "fidelity": "runtime remains conservative unknown; separate dated inspection verifies model/paint association only; wheels/interior/equipment/exact-car unknown",
+  "sourceSupport": "unsupported-public-website-demo; no production entitlement/activation claim",
+  "sourceAuthorisation": "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md",
+  "parentCleanup": {
+    "receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/parent-native-browser-verification-v1.json",
+    "allocationsAbsent": 7,
+    "portsProfilesOwnersGroupsReservationsAbsent": true,
+    "dependenciesAbsent": true,
+    "packageHashesUnchanged": true,
+    "leftovers": []
+  },
+  "cliCorrection": {
+    "change": "Authored --live uses the same planned output by default; explicit --output stays supported. Fixed attempt ledger unchanged.",
+    "nativeReuseBasis": "Every source/transport/context/provider/delivery function before runCli remains byte-for-byte identical to native-tested23c79fb. Only argument parsing/default-output selection changed; reviewed diff and83/83 scoped checks pass. No second native run.",
+    "unchangedNativeFunctionPrefixSha256": "ee2dd1699ac8fccf6d2409767bc1fc7d93d600757ece0f7639a9f70b461826ec"
+  },
+  "scoped": {
+    "tests": 83,
+    "pass": 83,
+    "skip": 0,
+    "fail": 0,
+    "command": "node --test --test-concurrency=1 server/test/bmw-live-imagery.test.js server/test/bmw-image-adapter.test.js server/test/bmw-catalogue-adapter.test.js",
+    "targetedEvidence": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/strict/targeted-1f6fef1c2c5272eca0e7d8b930a7e558f6c07acc9314bfae3272f1a49379054b-default-1793917594211401000.json"
+  },
+  "models": {
+    "leadRequestedSelectedEffective": "gpt-6.1-sol/high",
+    "implementerRequestedSelectedEffective": "gpt-6.1-sol/medium",
+    "fallback": null,
+    "runner": "none spawned; capacity can_start0; parent direct bounded execution under procedure exception"
+  },
+  "fullSuite": "not yet granted or run"
+}
