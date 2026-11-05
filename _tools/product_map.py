@@ -424,7 +424,8 @@ def build(root, output, include_branches=True, staged=False, revision=None):
     output = Path(output).resolve()
     output.mkdir(parents=True, exist_ok=True)
     assets = Path(__file__).resolve().with_name('product_map_assets')
-    for name in ('index.html', 'map.css', 'map.js'):
+    for name in ('index.html', 'map.css', 'map.js', 'plex-sans-regular.woff2',
+                 'plex-sans-semibold.woff2', 'LICENSE-plex.txt', 'LICENSE-carbon.txt'):
         if (output / name).is_symlink():
             raise Error('refusing symlink output: ' + name)
         shutil.copyfile(assets / name, output / name)
