@@ -22,5 +22,23 @@ different harness observation. Claude's root-owned installation manifest and Des
 pin still need the administrator/restart steps prepared on Russell's machine; no application was
 restarted during this task. Each contributing clone installs its own plugin update.
 
-First GC alert: FUCQ-100 Jira comment 132588. Publication and readback evidence will be added here
-after the Pages workflow has served the map.
+The tooling checkpoint is `23dea5f`, integrated with GC's concurrent changes in `cc563d9` and
+pushed to `gcsp-poc`. FUCQ-100 Jira comments **132588** and **132590** alert GC's active poller;
+the second includes the concrete checkpoint and publication request.
+
+Public publication is **pending** [PR #32](https://github.com/garyscarter-ibm/vehicle-matcher/pull/32).
+GitHub's protected `main` requires a review; `garyscarter-ibm` is the requested reviewer.
+Automatic merge is disabled for this repository. After approval, merge through the normal PR
+route, wait for Pages and verify `/product-map/data.json` and the rendered map. A successful
+branch notification alone does not establish public delivery or per-commit refresh.
+
+Scoped validation: 20 cards and 52 connections rendered at 1440px and 390px in isolated headless
+Chrome. Story search, selection, keyboard navigation and snapshot refresh passed, with no page
+errors or mobile horizontal overflow. Projector validation found zero diagnostics and complete
+107-Story association coverage. Retail site assembly was preserved byte-for-byte. No application
+suite was run because no application code or contract changed; the selector's generic full-suite
+fallback was reviewed and excluded. Local preview: `.claude/product-map-preview/index.html`.
+
+Claude's remaining private administrator and Desktop pin steps are in
+[the installation note](scaffolding-install-2026-11-05.md). They do not block the generated map
+or the refreshed project tools. No restarts or root-owned writes were attempted.

@@ -32,7 +32,9 @@ Actions mode is integrated into the existing `.github/workflows/pages.yml`, reta
 retail asset selection and API rewrite. The separate `product-map-refresh.yml` performs no checkout
 or branch-code execution; its completion requests the trusted main workflow through `workflow_run`.
 The publisher checks out main, fetches pushed refs, uses the main projector and reads only map JSON
-from the active branches. The GCSP application is not merged into the retail deployment.
+from the active branches. Within that isolated CI checkout, the map's data baseline is `gcsp-poc`.
+Main holds empty map-input stubs so it cannot reintroduce a stale copy of GCSP delivery facts.
+The GCSP application is not merged into the retail deployment.
 The existing main-only Pages environment policy is preserved.
 
 Main pushes, refresh-workflow completion on contributing branches and manual dispatch publish a
@@ -40,5 +42,7 @@ snapshot. Local-only work and Jira-only changes are not visible until collected,
 pushed. Branches need the refresh workflow after pulling the tooling checkpoint. No persistent
 runner is installed, and no credentials or raw Jira descriptions are published.
 
-For a local preview, run the vendored `build --output <absolute-output-directory>` command and open
-its `index.html`. The generated `data.js` also supports file previews.
+For a local preview of this checkout's recorded facts, run the vendored
+`build --no-branches --output <absolute-output-directory>` command and open its `index.html`.
+The generated `data.js` also supports file previews. The published map also collects active
+branch changes against the GCSP baseline, with conflicts and source revisions disclosed.
