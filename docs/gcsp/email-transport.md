@@ -14,6 +14,10 @@ Russell explicitly authorised one deliberate real email test to his IBM address 
 
 ## Existing evidence
 
+**Replacement key check, 5 November at 17:27 UTC:** Russell reported the app-specific key saved under macOS Keychain service `gcsp-brevo-api-key`, account `vehicle-matcher`. One private lookup succeeded, but one `GET /v3/account` returned HTTP 401 again. No POST, email, sender/webhook check, repeated lookup or network retry occurred. Authentication remains unverified; this status alone does not identify the cause. No credential or raw provider response was retained. Jira comment `132554` records the outcome and this new GCSP credential reference, which is separate from Deckhead's older item. The actual Render secret remains unverified; configure `GCSP_BREVO_API_KEY` on the **`bmw-matcher-api` backend service**, never the frontend site.
+
+The sanitised local receipt is `.claude/test-runs/receipts/fucq98-new-key-account-20261105T172720Z/result.json`. The supervisor removed its empty owned scratch root `/private/tmp/test-stamp-shard-6df7afdf4be141fa9a8cc7dc25e96f5c` (0 allocated bytes), joined the credential process, verified its group absent and released the host reservation. No compatibility exception or owned cleanup leftovers. The implementing dispatcher retains the story; successful authentication and the recorded live acceptance remain outstanding.
+
 | Source inspected | Reusable evidence |
 |---|---|
 | `/Users/usget/Claude/StanleyPi/CLAUDE.md`, section 6, "Email authentication" (notes dated 28 August 2026) | Records Brevo as the authorised sender for `russellgowers.com`, with SPF, DKIM and DMARC configured. This is dated setup evidence, not a live account/DNS/deliverability check. Preserve the existing DNS records; this story needs no DNS changes. |
