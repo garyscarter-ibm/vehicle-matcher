@@ -45,6 +45,7 @@ import { normalizeBrand, brandTuning } from './brands.js';
 import { fetchDealerDirectory } from './dealers.js';
 import { geocodePostcode } from './geocode.js';
 import { createGcspHandler } from './gcsp/identity/http.js';
+import { createEmployeeRecommendationRoutes } from './gcsp/recommendation/http.js';
 
 const PORT = Number(process.env.PORT) || 8787;
 const MAX_BODY_BYTES = 16 * 1024; // quiz answers are tiny; reject anything bigger
@@ -840,7 +841,8 @@ export function buildServer(deps = {}) {
     ...deps,
   };
   const handleGcsp = createGcspHandler({
-    identity: deps.gcspIdentity, routes: deps.gcspRoutes,
+    identity: deps.gcspIdentity,
+    routes: [...createEmployeeRecommendationRoutes(deps.gcspRecommendations), ...(deps.gcspRoutes || [])],
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
 
