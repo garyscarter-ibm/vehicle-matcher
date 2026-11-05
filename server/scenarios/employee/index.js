@@ -23,10 +23,17 @@ export function chargingGates(snapshot, employeeFacts, config, required) {
 }
 
 export function validateBrief(request, config, slider) {
+  if (!only(request, ['schemaVersion', 'briefVersion', 'preferences', 'essentials', 'requiredBy'])
+    || !Number.isSafeInteger(request.briefVersion) || request.briefVersion <= 0) return [{ field: 'brief', reason: 'Supply the supported read-only brief contract.' }];
+  const { briefVersion, ...content } = request;
+  return validateBriefContent(content, config, slider);
+}
+
+export function validateBriefContent(request, config, slider) {
   const errors = [];
   const add = (field) => errors.push({ field, reason: 'Unsupported or invalid brief field.' });
-  if (!only(request, ['schemaVersion', 'briefVersion', 'preferences', 'essentials', 'requiredBy'])
-    || request.schemaVersion !== 1 || !Number.isSafeInteger(request.briefVersion) || request.briefVersion <= 0) return [{ field: 'brief', reason: 'Supply the supported read-only brief contract.' }];
+  if (!only(request, ['schemaVersion', 'preferences', 'essentials', 'requiredBy']) || request.schemaVersion !== 1)
+    return [{ field: 'brief', reason: 'Supply the supported brief content contract.' }];
   if (!object(request.preferences) || !object(request.essentials)) return [{ field: 'brief', reason: 'Supply preferences and essentials maps.' }];
   const within = (v) => Number.isInteger(v) && v >= slider.minimum && v <= slider.maximum;
   for (const [key, p] of Object.entries(request.preferences)) {
@@ -43,8 +50,9 @@ export function validateBrief(request, config, slider) {
       || (e.confirmedAt !== undefined && !validInstant(e.confirmedAt))
       || (e.value === null ? e.state !== 'needs-confirmation'
         : (d.type === 'number' && (!Number.isFinite(e.value) || e.value < 0 || key === 'seats' && !Number.isInteger(e.value)))
+        || (d.type === 'enum' && !d.values.includes(e.value))
         || (d.type === 'boolean' && typeof e.value !== 'boolean') || (d.type === 'string' && !text(e.value))
-        || (d.type === 'list' && (!Array.isArray(e.value) || !e.value.length || !e.value.every(text))))) add(`essentials.${key}`);
+        || (d.type === 'list' && (!Array.isArray(e.value) || !e.value.every(text))))) add(`essentials.${key}`);
   }
   if (request.requiredBy !== undefined && !validInstant(request.requiredBy)) add('requiredBy');
   return errors;
@@ -54,6 +62,10 @@ export function evaluateEssentials(snapshot, brief, config) {
   const blockers = []; const unknowns = []; const reasons = [];
   for (const [field, requirement] of Object.entries(brief.essentials)) {
     const fact = snapshot.facts[field];
+    if (requirement.state === 'confirmed' && (requirement.operator === 'includes' && requirement.value.length === 0
+      || requirement.operator === 'gte' && requirement.value === 0)) {
+      reasons.push({ code: 'essential-met', field, requirement, fact: fact ?? null }); continue;
+    }
     if (requirement.state !== 'confirmed' || !confirmedFact(fact, config)) {
       unknowns.push({ code: 'essential-unconfirmed', field, requirement, fact: fact ?? null }); continue;
     }

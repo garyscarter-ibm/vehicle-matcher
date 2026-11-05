@@ -10,6 +10,7 @@ import { JSDOM } from 'jsdom';
 
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const GCSP_DIR = join(ROOT, 'blocks/gcsp');
+const livePages = () => readdirSync(ROOT).filter((file) => /^gcsp-[a-z-]+-live\.html$/.test(file));
 let shellMod;
 let emp;
 
@@ -364,7 +365,7 @@ test('every selector in the shell stylesheets starts with .gcsp, and retail toke
 });
 
 test('CSP: no inline scripts, handler attributes, eval, new Function, string timers or innerHTML in GCSP files', () => {
-  const files = [...walk(GCSP_DIR), join(ROOT, 'gcsp-employee.html'), join(ROOT, 'gcsp-activity.html'), join(ROOT, 'components.html'), join(ROOT, 'blocks/vehicle-matcher/component-gallery.js'), join(ROOT, 'blocks/vehicle-matcher/ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/question-ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/preview-feed.js'), join(ROOT, 'blocks/vehicle-matcher/modes/result-card.js'), join(ROOT, 'blocks/vehicle-matcher/decision-card.css'), join(ROOT, 'blocks/vehicle-matcher/employee-card-fixture.js')].filter((f) => /\.(js|html|css)$/.test(f));
+  const files = [...walk(GCSP_DIR), join(ROOT, 'gcsp-employee.html'), join(ROOT, 'gcsp-activity.html'), join(ROOT, 'gcsp-brief.html'), ...livePages().map((file) => join(ROOT, file)), join(ROOT, 'components.html'), join(ROOT, 'blocks/vehicle-matcher/component-gallery.js'), join(ROOT, 'blocks/vehicle-matcher/ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/question-ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/preview-feed.js'), join(ROOT, 'blocks/vehicle-matcher/modes/result-card.js'), join(ROOT, 'blocks/vehicle-matcher/decision-card.css'), join(ROOT, 'blocks/vehicle-matcher/employee-card-fixture.js')].filter((f) => /\.(js|html|css)$/.test(f));
   assert.ok(files.length >= 10);
   const offenders = [];
   for (const f of files) {
@@ -401,6 +402,8 @@ test('no em dash in any string literal under blocks/gcsp/, and none in the harne
     });
   }
   assert.ok(!read('gcsp-employee.html').includes('—'));
+  assert.ok(!read('gcsp-brief.html').includes('—'));
+  for (const file of livePages()) assert.ok(!read(file).includes('—'));
   assert.deepEqual(offenders, []);
 });
 
@@ -648,9 +651,20 @@ test('harness page loads the harness module and the body stylesheet; the element
   assert.match(html, /blocks\/gcsp\/employee\/gcsp-employee\.css/);
   const harness = read('blocks/gcsp/employee/harness.js');
   assert.match(harness, /FIXTURE_NAMES\.includes/);
-  for (const f of walk(GCSP_DIR).filter((p) => p.endsWith('.js') && !p.endsWith('harness.js'))) {
+  const activityHost = join(GCSP_DIR, 'activity/live.js');
+  for (const f of walk(GCSP_DIR).filter((p) => p.endsWith('.js') && !p.endsWith('harness.js') && p !== activityHost)) {
     assert.doesNotMatch(readFileSync(f, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:\\])\/\/.*$/gm, '$1'), /\blocation\b|\bhistory\./, rel(f));
   }
+});
+
+test('the activity live host navigates only to the fixed Brief page without URL-selected state', () => {
+  const host = read('blocks/gcsp/activity/live.js');
+  assert.deepEqual([...host.matchAll(/^import .*? from '([^']+)';$/gm)].map((match) => match[1]), [
+    '../shell/account-runtime.js', './activity-http.js', './gcsp-activity.js',
+  ]);
+  assert.match(host, /globalThis\.location\.assign\('\/gcsp-brief-live\.html'\)/);
+  assert.equal((host.match(/\blocation\b/g) || []).length, 1);
+  assert.doesNotMatch(host, /URLSearchParams|location\.(?:search|hash)|\bhistory\./);
 });
 
 test('the single gallery shows the GCSP section with primitives and shell states', async () => {

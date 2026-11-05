@@ -1,12 +1,19 @@
 const SCHEMA_VERSION = '1';
-const STATES = new Set(['available', 'no-guide', 'unsupported-locale', 'partial', 'source-unavailable']);
+const STATES = new Set(['available', 'no-guide', 'unsupported-locale', 'partial', 'source-unavailable', 'no-match']);
+const FAILURE_DETAILS = new Set(['identity-denied', 'invalid-source', 'identity-mismatch', 'locale-mismatch', 'timeout', 'http-error', 'application-error', 'response-too-large', 'transport-error', 'source-unavailable']);
+const CONTENT_STATES = new Set(['unknown', 'available', 'unavailable', 'invalid', 'source-unavailable']);
+const contentMetadata = (data) => ({ status: CONTENT_STATES.has(data?.status) ? data.status : 'unknown',
+  failureDetail: FAILURE_DETAILS.has(data?.failureDetail) ? data.failureDetail : null,
+  httpOutcome: ['ok', 'error'].includes(data?.httpOutcome) ? data.httpOutcome : 'not-attempted',
+  applicationOutcome: ['ok', 'unavailable', 'error', 'unknown'].includes(data?.applicationOutcome) ? data.applicationOutcome : 'not-applicable' });
 const UNKNOWN_FACTS = ['paint', 'wheels', 'installedEquipment', 'buildDate', 'connectedUsage', 'schemeEligibility'];
 const MESSAGES = {
   disabled: 'Handbook lookup is disabled. Other current-car evidence is unchanged.',
   'invalid-input': 'Supply a complete 17-character VIN and an explicit language and region.',
   available: 'Handbook content is available. Described equipment may not be fitted to this car.',
+  'no-match': 'No matching vehicle was returned. Vehicle equipment remains unknown.',
   'no-guide': 'No handbook was returned for this request. Vehicle equipment remains unknown.',
-  'unsupported-locale': 'The requested handbook language is unsupported. No alternative was selected.',
+  'unsupported-locale': 'Handbook content is unavailable in the requested language. Vehicle equipment remains unknown.',
   partial: 'Some handbook content is available. Missing content and vehicle equipment remain unknown.',
   'source-unavailable': 'Handbook lookup is unavailable. Other current-car evidence is unchanged.',
 };
@@ -47,11 +54,11 @@ export function createBmwVinGuideIdentityGuard({ registry, authorizeExternalLook
 }
 
 function envelope(status, provider, locale, attempts = []) {
-  return { schemaVersion: SCHEMA_VERSION, status, locale,
+  return { schemaVersion: SCHEMA_VERSION, status, locale, requestedLocale: locale, resolvedLocale: null, failureDetail: null,
     source: { provider: provider?.id || null, providerVersion: provider?.version || null,
       kind: provider?.sourceKind || null, observedDate: null },
-    guide: { availability: 'unknown', title: null, derivative: null, brand: null, disclaimer: null, sections: [], links: [] },
-    illustration: { status: 'unknown', role: 'vin-linked-illustration', fidelity: 'unverified', assetRef: null },
+    guide: { availability: 'unknown', title: null, derivative: null, brand: null, disclaimer: null, sections: [], links: [], pdf: contentMetadata() },
+    illustration: { ...contentMetadata(), role: 'vin-linked-illustration', fidelity: 'unverified', assetRef: null },
     completeness: { handbook: 'unknown', title: 'unknown', disclaimer: 'unknown', sections: 'unknown', links: 'unknown', illustration: 'unknown' },
     facts: Object.fromEntries(UNKNOWN_FACTS.map((name) => [name, { state: 'unknown', value: null }])), equipment: equipment(), attempts };
 }
@@ -61,6 +68,9 @@ function normalise(data, provider, request, attempts) {
   const anonymous = (value) => typeof value === 'string' && !value.toUpperCase().includes(vin.slice(-7));
   if (!object(data) || !STATES.has(data.status)) return envelope('source-unavailable', provider, locale, attempts);
   const result = envelope(data.status, provider, locale, attempts);
+  if (FAILURE_DETAILS.has(data.failureDetail)) result.failureDetail = data.failureDetail;
+  const resolved = canonicalBmwVinGuideRequest({ vin, locale: data.resolvedLocale });
+  if (resolved && (resolved.locale === locale || resolved.locale === 'en-GB')) result.resolvedLocale = resolved.locale;
   if (date(data.observedDate)) result.source.observedDate = data.observedDate;
   if (data.status === 'no-guide') { result.guide.availability = 'not-available'; return result; }
   if (!['available', 'partial'].includes(data.status)) return result;
@@ -74,7 +84,14 @@ function normalise(data, provider, request, attempts) {
   result.guide.links = Array.isArray(source.links) ? source.links.slice(0, 16)
     .filter((link) => id(link?.assetRef) && anonymous(link.assetRef) && label(link?.label, 256) && anonymous(link.label) && ['pdf', 'html'].includes(link?.format)
       && ['available', 'unavailable'].includes(link?.availability))
-    .map(({ assetRef, label: linkLabel, format, availability }) => ({ assetRef, label: linkLabel.trim(), format, availability, delivery: 'metadata-only', href: null })) : [];
+    .map(({ assetRef, label: linkLabel, format, availability, contentType }) => ({ assetRef, label: linkLabel.trim(), format, availability,
+      ...(format === 'pdf' && contentType === 'application/pdf' ? { contentType } : {}), delivery: 'metadata-only', href: null })) : [];
+  result.guide.pdf = contentMetadata(source.pdf);
+  Object.assign(result.illustration, contentMetadata(data.illustration));
+  if (['image/jpeg'].includes(data.illustration?.contentType)
+    && Number.isSafeInteger(data.illustration?.byteLength) && data.illustration.byteLength > 0 && data.illustration.byteLength <= 2097152) {
+    result.illustration.contentType = data.illustration.contentType; result.illustration.byteLength = data.illustration.byteLength;
+  }
   if (['available', 'unavailable'].includes(data.illustration?.status)) {
     result.illustration.status = data.illustration.status;
     if (data.illustration.status === 'available' && id(data.illustration.assetRef) && anonymous(data.illustration.assetRef)) result.illustration.assetRef = data.illustration.assetRef;
@@ -83,7 +100,7 @@ function normalise(data, provider, request, attempts) {
   result.guide.availability = 'available';
   for (const name of ['title', 'disclaimer']) result.completeness[name] = result.guide[name] ? 'complete' : 'unknown';
   for (const name of ['sections', 'links']) result.completeness[name] = result.guide[name].length ? 'partial' : 'unknown';
-  result.completeness.illustration = result.illustration.status === 'unknown' ? 'unknown' : 'complete';
+  result.completeness.illustration = ['available', 'unavailable'].includes(result.illustration.status) ? 'complete' : 'unknown';
   for (const name of ['sections', 'links']) {
     if (data.completeness?.[name] === 'complete' && Array.isArray(source[name]) && result.guide[name].length === source[name].length) {
       result.completeness[name] = 'complete';
@@ -125,12 +142,12 @@ export function createBmwVinGuideAdapter({ provider, fallbackProvider, guard, ti
               return { denied: true };
             }
             if (controller.signal.aborted) return { status: 'source-unavailable' };
-            return candidate.resolve(request, { signal: controller.signal });
+            return candidate.resolve(request, { signal: controller.signal, context });
           })(),
-          new Promise((done) => { timer = setTimeout(() => { controller.abort(); done({ status: 'source-unavailable' }); }, timeoutMs); }),
+          new Promise((done) => { timer = setTimeout(() => { controller.abort(); done({ status: 'source-unavailable', failureDetail: 'timeout' }); }, timeoutMs); }),
         ]);
         attempts.push({ provider: candidate.id, sourceKind: candidate.sourceKind, status: result?.denied ? 'identity-denied' : STATES.has(result?.status) ? result.status : 'source-unavailable' });
-        if (result?.denied) return envelope('source-unavailable', candidate, request.locale, attempts);
+        if (result?.denied) return { ...envelope('source-unavailable', candidate, request.locale, attempts), failureDetail: 'identity-denied' };
         const normalised = normalise(result, candidate, request, attempts);
         if (normalised.status !== 'source-unavailable' || candidate === fallback || !fallback) return normalised;
       } catch {
@@ -145,7 +162,7 @@ export function createBmwVinGuideAdapter({ provider, fallbackProvider, guard, ti
 /** Add a separate content section. Never overwrite independently known car facts with guide failures or guesses. */
 export function presentBmwVinGuide(result, existingFacts = {}) {
   const safe = result && Object.hasOwn(MESSAGES, result.status) ? result : envelope('source-unavailable', null, null);
-  return { status: safe.status, message: MESSAGES[safe.status], source: structuredClone(safe.source),
+  return { status: safe.status, message: MESSAGES[safe.status], requestedLocale: safe.requestedLocale, resolvedLocale: safe.resolvedLocale, failureDetail: safe.failureDetail, source: structuredClone(safe.source),
     guide: structuredClone(safe.guide), illustration: structuredClone(safe.illustration), completeness: structuredClone(safe.completeness),
     equipment: equipment(), currentCarFacts: object(existingFacts) ? structuredClone(existingFacts) : {} };
 }

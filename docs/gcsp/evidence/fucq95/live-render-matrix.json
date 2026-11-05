@@ -1,0 +1,186 @@
+{
+  "scope": "actual same-origin product runtime and activity/Brief consumer; explicit memory mode",
+  "headless": true,
+  "isolated": true,
+  "sourceIdentity": {
+    "gcsp-activity-live.html": "96552a4572d1ebf1dca4cce8b43318af70e85354e3b0196e4c78752e8277d52b",
+    "blocks/gcsp/activity/live.js": "44a9d46dc959ebc17cb9eca70337bd239b232bf14f18c96a84d1cdf461959c27",
+    "blocks/gcsp/activity/gcsp-activity.js": "b7540e5826e57dd1c6038dbce89fafb9f85eba8d05f954f243c988c24b2a2073",
+    "blocks/gcsp/activity/activity-controller.js": "03bb97e828bb5b276fbbb3fa0858283b1868f1953cb063f6774caae33e081dec",
+    "blocks/gcsp/activity/activity-http.js": "1a6170c023a735387963046c7e83bea71df252a2ece7ae77fbb8b9fc23a24af1",
+    "blocks/gcsp/activity/activity-body.js": "7f07ec0bfac29838d0d300d066303b9e259ddb92acfd67b05911afd84eadc307",
+    "blocks/gcsp/shell/account-runtime.js": "bb6258837173db7965900b147f533e1e2d1a1a5c5152677ebfb826c0efea6ff4",
+    "blocks/gcsp/brief/runtime.js": "a4686c9b8006eb637e45245a0e8b848671dc37b230258d1f5d7bfb480b68679d",
+    "scripts/gcsp-demo.mjs": "b8ce1a7760ada2c7742f7869d1b1d6045af1777a2c3cc67be1ff1bc165345216",
+    "server/gcsp/runtime.js": "f4654b8053d3927a3564a3701784367e976b04549ee66fb1a9a754032f88cb16",
+    "server/index.js": "1560e4a99077e4ea648f66b87566b908404312787e5fdfcc59a5ba10debf1741"
+  },
+  "results": [
+    {
+      "size": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "captures": [
+        {
+          "file": "live-no-brief-desktop.png",
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "overflowPx": 0,
+          "text": "Your buddy\nNo confirmed search\n\nConfirm a search brief to begin."
+        },
+        {
+          "file": "live-saved-active-desktop.png",
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "overflowPx": 0,
+          "text": "Your buddy\n\nActive\n\nYour offer\nNo current offer\nActivity\n\nAll dates are demo time (UTC).\n\nLast successful check: unavailable\n\nCheck and source information unavailable\n\n5 Nov 2026, 09:00\n\nSearch confirmed"
+        },
+        {
+          "file": "live-pending-desktop.png",
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "overflowPx": 0,
+          "text": "Your buddy\n\nActive\n\nPause Search\n\nUpdating search\n\nYour offer\nNo current offer\nActivity\n\nAll dates are demo time (UTC).\n\nLast successful check: unavailable\n\nCheck and source information unavailable\n\n5 Nov 2026, 09:00\n\nSearch confirmed"
+        },
+        {
+          "file": "live-paused-desktop.png",
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "overflowPx": 0,
+          "text": "Your buddy\n\nInactive\n\nSearches and holds paused. Existing offers remain.\n\nYour offer\nNo current offer\nActivity\n\nAll dates are demo time (UTC).\n\nLast successful check: unavailable\n\nCheck and source information unavailable\n\n5 Nov 2026, 09:00\n\nSearch confirmed\n\n5 Nov 2026, 09:00\n\nSearch paused"
+        },
+        {
+          "file": "live-unavailable-desktop.png",
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "overflowPx": 0,
+          "text": "Your buddy\nActivity unavailable\n\nSearch status and offers are unavailable. Try again.\n\nRetry"
+        }
+      ],
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "httpErrors": [
+        {
+          "path": "/api/gcsp/brief/pause",
+          "status": 409
+        },
+        {
+          "path": "/api/gcsp/activity",
+          "status": 503
+        }
+      ],
+      "briefVersion": 4,
+      "canonicalAccount": true,
+      "mode": "explicit memory",
+      "proof": [
+        "actual activity HTML bootstraps trusted canonical account",
+        "Brief navigation and actual saved consent",
+        "browser Back/reload currentness",
+        "pending duplicate suppression",
+        "real pause/resume and stale-version fresh read",
+        "failed read clears stale controls and keyboard Retry recovers"
+      ],
+      "remaining": [
+        "real search/check/no-match/source-delay receipts absent",
+        "current offer/access/lifecycle producers absent",
+        "memory state is process lifetime; PostgreSQL remains separate capability"
+      ]
+    },
+    {
+      "size": "narrow-375",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "captures": [
+        {
+          "file": "live-no-brief-narrow-375.png",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          },
+          "overflowPx": 0,
+          "text": "Your buddy\nNo confirmed search\n\nConfirm a search brief to begin."
+        },
+        {
+          "file": "live-saved-active-narrow-375.png",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          },
+          "overflowPx": 0,
+          "text": "Your buddy\n\nActive\n\nYour offer\nNo current offer\nActivity\n\nAll dates are demo time (UTC).\n\nLast successful check: unavailable\n\nCheck and source information unavailable\n\n5 Nov 2026, 09:00\n\nSearch confirmed"
+        },
+        {
+          "file": "live-pending-narrow-375.png",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          },
+          "overflowPx": 0,
+          "text": "Your buddy\n\nActive\n\nPause Search\n\nUpdating search\n\nYour offer\nNo current offer\nActivity\n\nAll dates are demo time (UTC).\n\nLast successful check: unavailable\n\nCheck and source information unavailable\n\n5 Nov 2026, 09:00\n\nSearch confirmed"
+        },
+        {
+          "file": "live-paused-narrow-375.png",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          },
+          "overflowPx": 0,
+          "text": "Your buddy\n\nInactive\n\nSearches and holds paused. Existing offers remain.\n\nYour offer\nNo current offer\nActivity\n\nAll dates are demo time (UTC).\n\nLast successful check: unavailable\n\nCheck and source information unavailable\n\n5 Nov 2026, 09:00\n\nSearch confirmed\n\n5 Nov 2026, 09:00\n\nSearch paused"
+        },
+        {
+          "file": "live-unavailable-narrow-375.png",
+          "viewport": {
+            "width": 375,
+            "height": 812
+          },
+          "overflowPx": 0,
+          "text": "Your buddy\nActivity unavailable\n\nSearch status and offers are unavailable. Try again.\n\nRetry"
+        }
+      ],
+      "errors": [],
+      "failed": [],
+      "external": [],
+      "httpErrors": [
+        {
+          "path": "/api/gcsp/brief/pause",
+          "status": 409
+        },
+        {
+          "path": "/api/gcsp/activity",
+          "status": 503
+        }
+      ],
+      "briefVersion": 4,
+      "canonicalAccount": true,
+      "mode": "explicit memory",
+      "proof": [
+        "actual activity HTML bootstraps trusted canonical account",
+        "Brief navigation and actual saved consent",
+        "browser Back/reload currentness",
+        "pending duplicate suppression",
+        "real pause/resume and stale-version fresh read",
+        "failed read clears stale controls and keyboard Retry recovers"
+      ],
+      "remaining": [
+        "real search/check/no-match/source-delay receipts absent",
+        "current offer/access/lifecycle producers absent",
+        "memory state is process lifetime; PostgreSQL remains separate capability"
+      ]
+    }
+  ]
+}

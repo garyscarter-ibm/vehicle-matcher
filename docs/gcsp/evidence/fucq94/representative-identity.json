@@ -1,0 +1,11 @@
+{
+  "snapshotSha256": "a8efd203a8318698eedee285247c8b5682c517c0d8071662ee040d57716976ee",
+  "sources": {
+    "server/gcsp/brief/editor.js": "df70b807923069db3b9d2b4a99ecd3ca887bc7683c5e536065c145c2664e8dc1",
+    "server/gcsp/brief/index.js": "22500a517f8232947b33ac274e32bf60746ba9d8199851e750784f57737ee418",
+    "server/gcsp/recommendation/index.js": "f0595fa37434b139d953db0ca89754ada08c9f6902abf3ea924addd2b72b6036",
+    "server/test/helpers/employee-recommendation.js": "39b7e47f9298d155759fa440bd412ebb86bfc009b7ec9d9d1167bdb88970ce9a",
+    "docs/gcsp/evidence/fucq94/generate-representative.mjs": "93e8ea01d1b1d1cb8cbf0a4b3ac75f1e8a1a00133b6565dce55d8d6d7a509112"
+  },
+  "scope": "Synthetic generated layout evidence, not a live runtime connection."
+}

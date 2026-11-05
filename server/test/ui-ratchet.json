@@ -142,6 +142,10 @@
     {
       "path": "blocks/gcsp/activity/activity-offer.css",
       "max_lines": 12
+    },
+    {
+      "path": "blocks/gcsp/brief/gcsp-brief.css",
+      "max_lines": 37
     }
   ],
   "baseline": {

@@ -1,0 +1,63 @@
+{
+  "browserMatrix": "distilled-browser-matrix.json",
+  "captureSha256": {
+    "distilled-desktop.png": "bd72d69c4da21484fc9cb636faced3fd7c746f1f29f53d95b850698e7fb2f549",
+    "distilled-keyboard-disclosure-desktop.png": "a0e310c313f1762665747915c3b6c40618b6a2973a0afaac9d44f68a8d8f8fcc",
+    "distilled-keyboard-independent-consent-desktop.png": "aeb5a3af31464c9db2b55f795fb59fe127471079847eccc7e7053eaacc9eb7a9",
+    "distilled-keyboard-menu-mobile-375.png": "b8f9c82c255a92201d32e7ed240d1beb66648f9fb1fd5a1991897720e71b225a",
+    "distilled-keyboard-retained-edit-desktop.png": "9099f325f47bf49b3184151674b034f4cf155608bc337e625a31c1b1d3a9f4af",
+    "distilled-keyboard-skip-desktop.png": "bb22483c2cf3cee0546c7ecf4e948151b3552ff896ea3e09f83de63ee446d6a5",
+    "distilled-mobile-375.png": "bf79de88b126e2e708b1257bcd5eb2ded421642a3baf09cad219babf3300a816",
+    "distilled-reduced-motion-desktop.png": "558e53bb18a33d9c18752f49ca1d76011dc3b4c7e72309a671886b1b6ac14860"
+  },
+  "cssSplitLineCount": 37,
+  "frozenBackendBase": "34154686cce29975e85d4d1cd93fc9ecdbb10970",
+  "frozenBackendUnchanged": [
+    "blocks/gcsp/brief/brief-controller.js",
+    "docs/gcsp/shared-contracts.md",
+    "server/gcsp/brief/editor.js",
+    "server/gcsp/brief/http.js",
+    "server/gcsp/policy/seed-v1.json",
+    "server/gcsp/recommendation/index.js",
+    "server/index.js",
+    "server/scenarios/employee/index.js",
+    "server/test/gcsp-brief-editor.test.js",
+    "server/test/gcsp-brief-controller.test.js"
+  ],
+  "scope": "scoped owned-view distillation; representative only",
+  "sha256": {
+    "COMPONENTS.md": "861437fdfebf4048f3ec95a0e5a96e86188a75a767e63601138d9b0b72b87561",
+    "blocks/gcsp/brief/brief-controller.js": "724120f45ad1fb8c14ee6de1a82c3579fe97c075254b6ce8032d712abe6c82aa",
+    "blocks/gcsp/brief/brief-transport.js": "47be97d58fb59aa6bf668aa7e66e9e257bb362ee1a83d6ef1f76d7f011f17aa7",
+    "blocks/gcsp/brief/brief-view-model.js": "7eea953d26aaeded1f6fe5ac219ebcc0f0c739f8f003b7ca61414dc4da1aa366",
+    "blocks/gcsp/brief/brief-view.js": "ff27df853d46d825d859a9a6a9d988fe91221de28530648c529df28d84875f61",
+    "blocks/gcsp/brief/gcsp-brief.css": "dcabf9fcfbe0f47d586e03a89f9cc1019f6bbb301635a502ca79d0100bc9cac0",
+    "blocks/gcsp/brief/gcsp-brief.js": "943c4cbc99f1063328b68dcdb0c3ebf024e1cff75699e4a5b04cdc6eb5091c88",
+    "blocks/gcsp/brief/harness.js": "fa5f92fb53d217a9f1b200e2e1efb32231166d175c03411d2e1710cdaa9405ff",
+    "blocks/vehicle-matcher/component-gallery.js": "2643ee99088db89bceec52b0d762a8d5737ae97f9a098ed5b28cd0fd5d40ee6a",
+    "blocks/vehicle-matcher/modes/question-ui.js": "0824c4fb7de898ec67dc1e193716a742546f8bcd382b424fc2dbcadbc55b5ef3",
+    "docs/gcsp/evidence/fucq94/capture-distilled.mjs": "b0880ae1e977c4eac4ccb17b1a6d164154343ffa74e143b5261b513c65595c39",
+    "docs/gcsp/evidence/fucq94/generate-representative.mjs": "93e8ea01d1b1d1cb8cbf0a4b3ac75f1e8a1a00133b6565dce55d8d6d7a509112",
+    "docs/gcsp/evidence/fucq94/representative-snapshot.json": "a8efd203a8318698eedee285247c8b5682c517c0d8071662ee040d57716976ee",
+    "gcsp-brief.html": "9fbc308e0e47f1bda6c7644ef133cc919efff8b27d4c2ef6c1f9375d4357561d",
+    "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+    "server/test/exact-listing-decision.test.js": "20e95270f180c010f693c309aee100681303298793d7c92a101b896a049856ac",
+    "server/test/gcsp-brief-controller.test.js": "268d24ea9a9755240032650dc0f8de25de1aac7120e72b0db4ef7c83ab1fe6e4",
+    "server/test/gcsp-brief-controls.test.js": "2c374d0a98d609cd7cb3ae9b0980b22eb0b1a4a206ea6e93221dc09280389de6",
+    "server/test/gcsp-brief-render.test.js": "4f1a4068e205f176e22ee324030de31262531d1b9568c6844808a7714516e93a",
+    "server/test/gcsp-brief-transport.test.js": "25e3b36acfb0291e8956294bb294561a5cdf8df879bcc0e0cc7def25b1efb9c7",
+    "server/test/gcsp-shell.test.js": "2a604637a994393afa849f367b3591937455b4d09d011ed2294c8527a69b12d8",
+    "server/test/ui-ratchet.json": "e4330feacfc2df51d8b2e210e7e5986328d47bc164c7e710a89d70fdf9c08499",
+    "server/test/ui-ratchet.test.js": "64b1103a846180442466834a766d9da4dab49547cd509f3421ae1a4d946915b7"
+  },
+  "sharedLaneBase": "c793bc159c4f1513ca6953848c0d32f86ef681c6",
+  "sharedLaneUnchanged": [
+    "COMPONENTS.md",
+    "blocks/vehicle-matcher/component-gallery.js",
+    "blocks/vehicle-matcher/modes/question-ui.js",
+    "blocks/gcsp/kit/gcsp-kit.css",
+    "blocks/vehicle-matcher/gcsp-kit.css",
+    "server/test/ui-ratchet.json"
+  ],
+  "sourceKey": "4aada4ee3a4428bacfcb86aee703ced72c9a85a3659a96e1eae4dfa29245fd4f"
+}
