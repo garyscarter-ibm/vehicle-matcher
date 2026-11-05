@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "observed_at": "2026-11-05T22:40:24Z",
+  "observed_at": "2026-11-05T23:00:25Z",
   "stories": [
     {
       "id": "FUCQ-2",
@@ -165,11 +165,11 @@
     {
       "id": "FUCQ-18",
       "title": "Resolve BMW configuration renders through an authorised live provider",
-      "status": "In Progress",
-      "original_status": "In Progress",
+      "status": "In Review",
+      "original_status": "In Review",
       "assignee": "",
       "type": "Epic",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-05T23:00:25Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-18"
     },
     {
@@ -495,11 +495,11 @@
     {
       "id": "FUCQ-51",
       "title": "Verify live paint variation and the agreed asset delivery route",
-      "status": "In Progress",
-      "original_status": "In Progress",
+      "status": "In Review",
+      "original_status": "In Review",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-05T23:00:25Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-51"
     },
     {
@@ -649,7 +649,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-05T23:00:25Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-66"
     },
     {
@@ -675,11 +675,11 @@
     {
       "id": "FUCQ-69",
       "title": "Browse released cars with visual cards and complete vehicle details",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-05T23:00:25Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-69"
     },
     {
@@ -989,7 +989,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-05T23:00:25Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-100"
     },
     {
@@ -1019,7 +1019,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-05T23:00:25Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103"
     },
     {
@@ -1119,7 +1119,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-05T23:00:25Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-113"
     },
     {
@@ -1209,7 +1209,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-05T23:00:25Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-122"
     },
     {
@@ -1249,7 +1249,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-05T23:00:25Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-126"
     },
     {
