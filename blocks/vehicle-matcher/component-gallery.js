@@ -178,11 +178,12 @@ export function activityExamples() {
   const timeline = el('div', 'vm');
   timeline.append(activityTimeline({ events: activityEvents(activityFixtures.snapshots.paused.value.stateChanges), level: 3 }));
   section.append(timeline);
-  for (const [name, label] of [['offer', 'Current offer with representative imagery'], ['never-checked', 'Active, no offer'], ['paused', 'Inactive'], ['unavailable', 'Activity unavailable']]) {
-    const example = el('div', 'vm-gallery-gcsp-group');
+  for (const [name, label] of [['offer', 'Current offer with representative imagery'], ['never-checked', 'Active, no offer'], ['paused', 'Inactive'], ['pending', 'Updating search'], ['unavailable', 'Activity unavailable']]) {
+    const example = el('div', 'vm-gallery-gcsp-group'); example.dataset.activityExample = name;
     const status = el('p', 'gcsp-activity-preview-status'); status.setAttribute('role', 'status');
     example.append(el('h3', 'vm-gallery-gcsp-title', label),
-      activityBody({ result: structuredClone(activityFixtures.snapshots[name]), level: 4,
+      activityBody({ result: structuredClone(activityFixtures.snapshots[name === 'pending' ? 'never-checked' : name]), level: 4,
+        pending: name === 'pending', onPause: name === 'pending' ? () => {} : undefined,
         offerDisplay: name === 'offer' ? activityFixtures.offerExample : undefined,
         onRetry: () => { status.textContent = 'Still unavailable.'; } }), status);
     section.append(example);

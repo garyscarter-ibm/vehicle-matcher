@@ -6,7 +6,7 @@ import { actionMenu } from '../kit/action-menu.js';
 import { activityOffer } from './activity-offer.js';
 import { activityCopy as copy, activityEvents } from './activity-copy.js';
 
-export function activityBody({ result, onRetry, offerDisplay, level = 1 } = {}) {
+export function activityBody({ result, onRetry, onPause, onResume, pending = false, offerDisplay, level = 1 } = {}) {
   const root = el('div', 'vm gcsp-activity'); root.destroy = () => {};
   const header = el('div', 'gcsp-activity-header');
   header.append(screenIntro({ title: copy.title, level, className: 'gcsp-activity-intro' })); root.append(header);
@@ -22,7 +22,11 @@ export function activityBody({ result, onRetry, offerDisplay, level = 1 } = {}) 
   const status = el('p', `gcsp-activity-status${inactive ? ' is-inactive' : ''}`); status.setAttribute('role', 'status');
   status.append(svgIcon(inactive ? ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18', 'M9 8v8', 'M15 8v8']
     : ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18', 'M8 12l3 3 5-6']), document.createTextNode(inactive ? 'Inactive' : 'Active'));
-  const actions = actionMenu({ label: 'Search actions', items: [{ label: paused ? 'Resume Search' : 'Pause Search', disabled: true, reason: 'Preview only' }] });
+  const command = paused ? onResume : onPause;
+  const allowed = paused || value.permission.canSearch === true;
+  const disabled = pending || !allowed || typeof command !== 'function';
+  const reason = pending ? 'Updating search' : !allowed ? 'Search unavailable' : typeof command !== 'function' ? 'Preview only' : undefined;
+  const actions = actionMenu({ label: 'Search actions', items: [{ label: paused ? 'Resume Search' : 'Pause Search', disabled, reason, onSelect: command }] });
   const state = el('div', 'gcsp-activity-state'); state.append(status, actions.root); header.append(state);
   root.destroy = actions.destroy;
   if (paused) root.append(el('p', 'gcsp-activity-consequence', copy.pausedDetail));

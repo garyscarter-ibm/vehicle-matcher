@@ -59,6 +59,17 @@ test('missing search permission never claims an active search or a saved pause',
   assert.equal(node.querySelector('.gcsp-activity-consequence'), null); node.destroy();
 });
 
+test('real command callbacks enable the shared menu; pending state blocks repeat effects with a concise reason', () => {
+  let calls = 0;
+  const node = activityBody({ result: fixtures['never-checked'], onPause: () => { calls += 1; } }); document.body.append(node);
+  node.querySelector('.gcsp-action-trigger').click(); const action = node.querySelector('[role="menuitem"]');
+  assert.equal(action.getAttribute('aria-disabled'), null); action.click(); assert.equal(calls, 1);
+  const pending = activityBody({ result: fixtures['never-checked'], pending: true, onPause: () => { calls += 1; } }); document.body.append(pending);
+  pending.querySelector('.gcsp-action-trigger').click(); const waiting = pending.querySelector('[role="menuitem"]');
+  assert.equal(waiting.getAttribute('aria-disabled'), 'true'); assert.match(document.getElementById(waiting.getAttribute('aria-describedby')).textContent, /Updating search/);
+  waiting.click(); assert.equal(calls, 1); node.destroy(); pending.destroy();
+});
+
 test('browser fixture snapshot remains derived from real commands and contains no successful check or offer link', async () => {
   const { activityFixtures } = await import('../../blocks/gcsp/activity/activity-fixtures.js');
   assert.deepEqual(activityFixtures, await createActivityFixtures());
