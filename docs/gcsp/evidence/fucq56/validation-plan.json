@@ -1,0 +1,81 @@
+{
+  "story": "FUCQ-56",
+  "run": "fucq56-consumer-20261105",
+  "status": "source checkpoint; scoped admitted, full HELD",
+  "authority": "Leading 4 November Q7/Q13 live Jira section overrides old self-HTTP criteria. Application reads public lookup port in process; real HTTP test proves parity.",
+  "changed_paths": [
+    "server/gcsp/vehicle-evidence/application-vehicle-details.js",
+    "server/gcsp/vehicle-evidence/provider-read.js",
+    "server/gcsp/vehicle-evidence/lookup-adapter.js",
+    "server/gcsp/vehicle-evidence/alternate-offline-adapter.js",
+    "server/test/gcsp-vehicle-details-contract.test.js",
+    "server/test/gcsp-synthetic-http-adapter.test.js",
+    "server/test/fixtures/gcsp/vehicle-evidence/alternate-provider.json"
+  ],
+  "regression": "Provider replacement must preserve facts, three identities, provenance, typed failures, unknowns and context; never self-HTTP or live fallback.",
+  "boundaries": [
+    "provider-read deadline/attempt/abort",
+    "FUCQ55 public resolve port",
+    "alternate fictional offline shape",
+    "trusted request and current-run stock context",
+    "actual buildServer HTTP/gate"
+  ],
+  "selected_checks": [
+    {
+      "id": "contract",
+      "argv": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-vehicle-details-contract.test.js"
+      ]
+    },
+    {
+      "id": "http",
+      "argv": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-synthetic-http-adapter.test.js"
+      ]
+    },
+    {
+      "id": "boundary",
+      "argv": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-vehicle-evidence-lookup.test.js",
+        "server/test/gcsp-synthetic-vin-api.test.js"
+      ]
+    }
+  ],
+  "budgets_per_chunk": {
+    "seconds": 90,
+    "scratch_mib": 16,
+    "ram_mib": 256,
+    "actual_file_workers": 1
+  },
+  "unknown_map": "New modules unobserved until validation; reviewed static fixture/config\u2192adapter\u2192consumer and lookup\u2192HTTP boundary. No JS per-test context collector exists; use required-run V8 coverage plus reviewed boundaries if supported.",
+  "excluded": "Screens, live providers, publication/generation/full-corpus proofs, retail modifications, deployment, credentials and shared index/policy/HLD/contracts.",
+  "full": "Explicit npm test equivalent node --test --test-concurrency=1 server/test/**/*.test.js; HELD until dispatcher admits latest merged22+112 base/sole-full slot. No automatic affected fallback.",
+  "source_identity": {
+    "server/gcsp/vehicle-evidence/application-vehicle-details.js": "5884d5a30493da00e72a7495662c937293ebb0fceb03fd4e03abc0005d248d02",
+    "server/gcsp/vehicle-evidence/provider-read.js": "e194fdeb9ff55faafaadd916b2e0ce34c9d8dce252dc37c3ce04aa8de77bb87b",
+    "server/gcsp/vehicle-evidence/lookup-adapter.js": "11776855d6e6a1da25d0be0f9613e1de031a138325a84e9e3b56ae6b87e2af43",
+    "server/gcsp/vehicle-evidence/alternate-offline-adapter.js": "3046ab0aa6e34281813f1ebefc266b68c898631fede298955b94c5f546fad81a",
+    "server/test/gcsp-vehicle-details-contract.test.js": "8a3afaacda54413daee2f766ae6430b221e06d769f6f6c7eb4d215e6ed97a54e",
+    "server/test/gcsp-synthetic-http-adapter.test.js": "aeab4805b5010e1077b7a3194003ebb572ed8994b85e81045fd6cb9c3b6c3129",
+    "server/test/fixtures/gcsp/vehicle-evidence/alternate-provider.json": "f78be9ab5a0e97cb809ebe17b206239f1aca1326b223b0ec91a8f9950cbf1a2f"
+  },
+  "resources": {
+    "shared_root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs",
+    "outside_manifest": "ownership/fucq56-<chunk>.json",
+    "scratch": "Unique absolute Scratch token root, registered before creation",
+    "finalizer": "handled_termination + Scratch context + run_process stop_group + HostBudget release in finally; descendant/fanout sampling; verify exact roots/groups/reservations/success logs absent",
+    "expected": "<90s/<16MiB scratch/<256MiB RAM; one file worker; no archives/large output/compatibility exception",
+    "large_output_root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude",
+    "dependencies": "Own server locked npm ci admitted90s/16MiB/256MiB; root absent and not installed."
+  },
+  "agents": "Lead requested/selected gpt-6.1-sol/high; no fallback or descendants; runtime effective model unverified."
+}
