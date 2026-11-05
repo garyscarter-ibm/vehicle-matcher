@@ -125,8 +125,7 @@ checks; private credentials are not read.
   2,942,812,160 bytes RAM available and no active test reservations.
 - The dispatcher retains shared merges, claims/Jira, heartbeat and serial browser,
   full-suite and native grants. Own validated chunks may be committed and pushed.
-  Short dispatcher-coordinated Git publication windows currently defer Git writes;
-  they do not block source work. No checkout mutex is held over tests or waits.
+  Git publication follows the dispatcher's current serial window. No checkout mutex is held over tests or waits.
 
 ## Reviewed metadata checkpoint
 
@@ -144,8 +143,60 @@ and root/worktree package hashes are unchanged. Retained compact evidence is
 `details-parent-audit.json` in the shared checkout. Committed
 `details-validation.json` records source identity and the bounded result.
 
-The `details` slice is complete at its independent service boundary. All remaining
-slices and story acceptance stay open. In particular, the starting shared HTTP
+The `details` slice is complete at its independent service boundary. At that checkpoint the remaining
+slices and story acceptance stayed open. In particular, the starting shared HTTP
 identity wrapper lacks `pending:202`; frozen FUCQ-66 supplies that entry. Central
 composition must retain it before HTTP pending behaviour can be proved. No identity
 source is changed by this checkpoint.
+
+
+## Reviewed controller and form checkpoint
+
+The independent controller and form are implemented. Lead reviewed the complete
+adapter/model/controller, caller tests and current server/quote contracts. Source
+and current checks are recorded in `controller-view-validation.json`; the child's
+14/14 pure controller result and exact API are in `controller-validation.json`.
+The parent also passed all 14 controller cases in its caller-boundary run. Final
+form checks passed **7/7**, and the shared UI ratchet passed **44/44**. All checks
+are scoped: the form uses explicit service-boundary doubles and JSDOM, with timing
+and input bounds read from the canonical policy seed. They prove no browser layout,
+actual producer, submission or native integration. The earlier metadata 15/15 result
+remains unchanged. The complete source identities are checked against the retained
+matching checkpoints.
+
+The form composes the existing shell, exact card, typed terms, native forms and
+error summary; its stylesheet is separately capped. Local values survive expiry
+and uncertainty. Continue saves and fences the exact metadata revision through
+review readback. Back/change/cancel release independently of invalid input. A
+pending operation past its original deadline offers no successful browse navigation
+and does not announce that the stock is free. The numeric countdown never uses
+elapsed browser time. The host must wire presenter ticks to authoritative refresh;
+that actual composition is still outstanding. The [UI contract](../../manual-review-ui-contract.md)
+records host APIs, callback/event deduplication, fixed deadlines and repeatable trials.
+
+Parent independently audited **six new allocations**: two child and four parent
+runs, including the corrected DOM fixture attempt. All owned scratch roots, process
+groups and reservations are absent. The temporary root dependency symlink is
+absent; shared jsdom identity and package hashes are preserved. No dependency was
+installed. Retained compact evidence is under shared
+`.claude/test-runs/fucq70/{sniffles-controller,lead-view}/` and
+`controller-view-parent-audit.json`. The largest sampled parent RSS across these
+runs was 264,110,080 bytes, scratch payload zero, within the 120-second/768-MiB/
+128-MiB/2-MiB-log limits. Sniffles reused their verified
+`gpt-6.1-sol/medium` session with no descendants or fallback; Henery Hawk remained
+`gpt-6.1-sol/high`. Browser, native and full-suite lanes were not allocated.
+
+`details`, `controller` and the independent DOM boundary of `view` are complete.
+The other five slices and all story acceptance remain open. This is a resumable
+development checkpoint, **not built**. The next meaningful service proof needs the
+dispatcher's exact frozen-66 source-overlay grant; broader native/browser/full grants
+and FUCQ-71/FUCQ-103 composition remain with their current owners. The proposed
+small proof uses the existing real memory repository, PolicyService, DemoIdentity,
+DemoClock and frozen claims/manual-context/manual-stock service sources. It must
+exercise one real claim, no second claim on review mount, independent metadata save,
+one explicit review transition, unchanged deadlines under ticks/reload, and invalid-
+form release. It creates no listener and proves no HTTP/native/submission edge.
+Use the metadata contract SHA-256 in `details-validation.json`
+(`1dfcb1bd0206842e90769a12cb92e765ab991d11be1c10fecfa74ab18b48a4d7`)
+and the committed UI contract SHA-256 in `controller-view-validation.json` when
+admitting that proof. No such overlay has yet been allocated or run.
