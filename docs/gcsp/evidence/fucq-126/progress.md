@@ -68,3 +68,34 @@ Parent owns that exact symlink's final removal. UI and browser work have not sta
 Release lane after publishing: `server/index.js`, `server/gcsp/identity/index.js` and
 `server/gcsp/policy/seed-v1.json`; FUCQ-103 may integrate this checkpoint before editing them.
 The clock/fixture support also stabilises here. Scoring remains outside this story's scope.
+
+Published backend checkpoint: `26a1213`, pushed to the tracked origin story branch. The
+dispatcher received the exact route/identity/policy lane handoff. All three lanes are released.
+The lead inspected both supplied shell references directly at their committed `.webp` paths.
+
+Active UI slice: `presenter_ui`, requested/selected `gpt-6.1-sol` / `medium`, no fallback;
+fresh tier at 22:10:25 GMT on 5 November. No naming fields returned. Capacity telemetry was
+`can_start=0`, with 10.7 GB free; Gary's explicit measured-resource override admitted this sole
+active child into the available tool slot. Actual test chunks still require HostBudget admission.
+The child owns only controls/UI/shell presentation and additive shared-kit documentation; the
+released backend lanes and FUCQ-103 scoring are excluded. No browser worker runs concurrently.
+
+## Reviewed UI and compatibility checkpoint
+
+The UI implementer completed the control/custom-element/workspace slice and two parent review
+corrections: show typed field reasons and permit deliberate next actions after an acknowledged
+pending tick while retaining exact-command retry for unknown outcomes. Lead inspected both fixes
+and their regressions and reran controls: 17/17 pass. Child final checks: shell/CSP 41/41, ratchet
+44/44, exact client-copy scan 1/1. Requested/selected/effective Sol/medium verified by lead from
+child rollout turn_context; no fallback. All owned test scratch/groups/reservations are absent.
+
+Lead narrowed policy-step validation to the presenter module, preserving existing core clock
+operations against older immutable policy snapshots. After correction: presenter 8/8, clock18/18,
+scenarios10/10 pass, no skips. Prior unchanged identity19/19 remains applicable. Exact source hashes
+and cleanup receipts are in refreshed backend/ui-results.json. Existing stored policy adoption and
+actual business producer gates are explicit in presenter-controls-contract.md. No reseeding,
+new runtime dependency, live DB or released server/identity/seed lane edit occurred.
+
+Next gate: coordinated desktop/375px browser and keyboard evidence against the actual same-origin
+memory runtime, separately labelling injected visual-only states. Authored npm test remains held
+for dispatcher admission. Real release count and full business-scenario reset acceptance remain open.

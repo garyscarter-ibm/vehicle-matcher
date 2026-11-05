@@ -7,9 +7,16 @@ const invalid = () => result('invalid', { code: 'invalid-presenter-tick', reason
 
 export async function readPresenterClockConfiguration(policy, run) {
   const read = { runId: run.runId, asOf: run.clockInstant, policyVersion: run.policyVersion };
-  const configured = await loadClockConfiguration(policy, read);
+  const [configured, assumption] = await Promise.all([
+    loadClockConfiguration(policy, read), policy.getAssumption('clock.presenter.stepSeconds', read),
+  ]);
   if (configured.status !== 'ok') return configured;
-  const step = configured.value.presenterStep;
+  if (assumption.status !== 'ok' || assumption.policyVersion !== read.policyVersion
+    || assumption.value?.unit !== 'seconds' || !Number.isSafeInteger(assumption.value.value) || assumption.value.value <= 0) {
+    return result('unavailable', { code: 'presenter-step-unavailable',
+      reason: 'The current policy needs a valid presenter step in seconds.', retryable: false });
+  }
+  const step = assumption.value;
   const namedTimes = structuredClone(configured.value.scenario.namedTimes);
   const nextRelease = Object.hasOwn(namedTimes, 'release') && Date.parse(namedTimes.release) > Date.parse(run.clockInstant)
     ? { status: 'available', to: 'release', at: namedTimes.release }

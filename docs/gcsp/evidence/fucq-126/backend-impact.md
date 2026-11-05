@@ -50,3 +50,15 @@ file is read. V8 function contexts are collected in the same test execution, com
 impact evidence, then removed with owned scratch. Successful verbose logs are removed; useful
 failure logs remain bounded. The unavailable OneDrive destination is unnecessary for these small
 allocations, all below 256 MiB. Exact per-chunk cleanup appears in the JSON receipts.
+
+## Presenter policy compatibility correction
+
+Diagnosis (5 November 2026): the first presenter checkpoint added its new step prerequisite to
+`loadClockConfiguration`, an existing core clock reader. An older immutable policy snapshot lacks
+that key, so this accidentally prevented core runtime bootstrap and existing clock operations.
+The shared clock still has all three of its original assumptions. Validation now belongs only to
+`readPresenterClockConfiguration`; missing/invalid step returns `presenter-step-unavailable`.
+Regression exercises runtime initialization, control refusal, clock read and actual advance with
+missing, zero, negative, fractional and string values. Presenter 8, clock 18 and scenario 10 checks
+pass after the correction. Stored policy adoption remains an integration gate documented in the
+contract; no existing snapshot is rewritten and no released integration lane is touched.
