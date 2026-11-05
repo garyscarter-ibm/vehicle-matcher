@@ -142,6 +142,8 @@ Publish `manifest.json` and `configurations.jsonl` (indexed by `configurationId`
 
 Provider substitutions pass contract tests with equivalent fixture inputs before enabling the provider. No fallback silently widens eligibility, replaces unknown equipment, turns a failed source into “no cars”, or changes synthetic identifiers into real-world queries.
 
+FUCQ-57 implements that routing boundary in the existing backend: the FUCQ-56 application consumer calls the FUCQ-55 port in process, classifies each attempt from independent retained publication history or the validated current-run FUCQ-53 stock snapshot, then rechecks successful immutable bindings after the read. Only the two server-selected offline adapters are supported; alternate providers receive the same identity authority explicitly. The actual HTTP wrapper is proved separately on an ephemeral loopback server. The shared FUCQ-43 guard denies synthetic/unavailable identities before any future real key/guide/image/decoder provider or fallback. A small generated five-WMI US/LHD reference proof and one dated GB catalogue configuration preserve partial/unknown source truth; they establish no UK/RHD VIN coverage, full-corpus count, live access or deployment. Actual DemoClock reset changes stock UUIDs/employee state while the immutable corpus and historical VIN associations remain byte-stable.
+
 ## Greg's supply loop and the commitment boundary
 
 Greg reads the full saved-demand/evaluation picture, including unmet needs, successful holds, declines, expiries and accepted selections. Do not calculate demand from the small retail display sample or count a score as observed satisfaction. Rejection reasons and affordability constraints inform aggregates without exposing Paula's optional trip history.

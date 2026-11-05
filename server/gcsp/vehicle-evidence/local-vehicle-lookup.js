@@ -15,5 +15,6 @@ export function createLocalVehicleEvidenceLookup({ root = DEFAULT_VEHICLE_CORPUS
   const lookup = createVehicleEvidenceLookup({ registry, repository });
   return Object.freeze({
     async resolve(request, options) { await loaded; return lookup.resolve(request, options); },
+    async classifyRequest(request, options) { await loaded; return lookup.classifyRequest(request, options); },
   });
 }

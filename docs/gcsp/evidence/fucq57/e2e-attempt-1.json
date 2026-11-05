@@ -1,0 +1,215 @@
+{
+  "resource": {
+    "logRoots": [
+      {
+        "absent": true,
+        "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq57-scoped-8f30e14bab1c4faaab3d412bd43f1032"
+      }
+    ],
+    "ownedDescendants": {
+      "80487": "Thu Nov  5 06:54:53 2026",
+      "80491": "Thu Nov  5 06:54:53 2026",
+      "80492": null,
+      "80508": "Thu Nov  5 06:54:54 2026",
+      "80517": "Thu Nov  5 06:54:54 2026"
+    },
+    "ownedDescendantsAbsent": true,
+    "proofSummaries": [
+      {
+        "checksums": {
+          "configurations.jsonl": "fc1654b8854acb4626b083304ef893c568d882e7a7f5c8f3c318df1bed71f1bf",
+          "images.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "vins.jsonl": "c9a3d8aae912a219584c1e733e4ce79cd07a731865dfbbef33cf99a670317440"
+        },
+        "completeness": {
+          "imagesMissing": 6,
+          "selectedOptions": {
+            "complete": 1,
+            "unknown": 5
+          },
+          "sourceKinds": {
+            "dated-snapshot": 1,
+            "north-american-reference": 5
+          }
+        },
+        "counts": {
+          "configurations": 6,
+          "distinctConfigurations": 6,
+          "images": 0,
+          "vinMappings": 5
+        },
+        "coverage": {
+          "markets": {
+            "GB": 1,
+            "US": 5
+          },
+          "models": {
+            "430i": 1,
+            "M3": 1,
+            "X5": 1,
+            "X5 M": 1,
+            "i5": 1,
+            "unknown": 1
+          },
+          "steering": {
+            "LHD": 5,
+            "unknown": 1
+          },
+          "wmis": {
+            "5UX": 1,
+            "5YM": 1,
+            "WBA": 1,
+            "WBS": 1,
+            "WBY": 1
+          }
+        },
+        "externalCalls": 0,
+        "manifestDigest": "c64aab41b2090654118dc0bf4628bf23862818a577446a5eb6bf10fd50906c3f",
+        "qualification": "bounded-fixture-or-partial-corpus",
+        "startup": "real server/index.js twice; generated store; no keys/database/NODE_OPTIONS; loopback only"
+      }
+    ],
+    "rc": 1,
+    "results": [
+      {
+        "cleanup": {
+          "local_scratch_reason": "",
+          "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq57-20261105-offline-guard-scoped-18965e97a2524ac8b35a37f72bb1c016.json",
+          "peak": 1855616,
+          "removed": true,
+          "root": "/private/tmp/test-stamp-shard-18965e97a2524ac8b35a37f72bb1c016"
+        },
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq57-scoped-8f30e14bab1c4faaab3d412bd43f1032/chunk-0001.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq57-20261105-offline-guard-scoped-18965e97a2524ac8b35a37f72bb1c016.json",
+        "peak_rss": 221495296,
+        "peak_scratch": 1855616,
+        "rc": 1,
+        "wall": 1.9679166249989066
+      }
+    ],
+    "supervisor": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-030/docs/gcsp/evidence/fucq57/scoped-supervisor.py",
+    "tokensAbsent": true
+  },
+  "argv": {
+    "errors": [],
+    "maxObservedTestWorkers": 1,
+    "processes": [
+      {
+        "argvObserved": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "server/test/gcsp-synthetic-vin-e2e.test.js",
+          "server/test/gcsp-offline-start.test.js"
+        ],
+        "pgid": 80487,
+        "pid": 80487,
+        "ppid": 80448,
+        "state": "Ss",
+        "testWorker": false
+      },
+      {
+        "argvObserved": [
+          "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+          "--test-concurrency=1",
+          "--heap-prof-interval=524288",
+          "--stack-trace-limit=10",
+          "--report-signal=SIGUSR2",
+          "--max-http-header-size=16384",
+          "--watch-kill-signal=SIGTERM",
+          "--heapsnapshot-near-heap-limit=0",
+          "--inspect-publish-uid=stderr,http",
+          "--test-isolation=process",
+          "--test-coverage-lines=0",
+          "--cpu-prof-interval=1000",
+          "--test-coverage-functions=0",
+          "--test-timeout=0",
+          "--inspect-port=127.0.0.1:9229",
+          "--test-coverage-branches=0",
+          "--use-largepages=off",
+          "--experimental-addon-modules",
+          "--network-family-autoselection-attempt-timeout=500",
+          "--secure-heap-min=2",
+          "--v8-pool-size=4",
+          "--secure-heap=0",
+          "--tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA",
+          "--node-snapshot",
+          "--trace-event-file-pattern=node_trace.${rotation}.log",
+          "server/test/gcsp-offline-start.test.js"
+        ],
+        "pgid": 80487,
+        "pid": 80491,
+        "ppid": 80487,
+        "state": "S",
+        "testWorker": true
+      },
+      {
+        "argvObserved": [
+          "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+          "--import",
+          "/private/tmp/test-stamp-shard-18965e97a2524ac8b35a37f72bb1c016/gcsp-offline-8RSM5a/offline-guard.mjs",
+          "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-030/server/index.js"
+        ],
+        "pgid": 80487,
+        "pid": 80492,
+        "ppid": 80491,
+        "state": "R",
+        "testWorker": false
+      },
+      {
+        "argvObserved": [
+          "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+          "--import",
+          "/private/tmp/test-stamp-shard-18965e97a2524ac8b35a37f72bb1c016/fucq57-fixture-wKuon7/entry-guard.mjs",
+          "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-030/server/index.js"
+        ],
+        "pgid": 80487,
+        "pid": 80508,
+        "ppid": 80491,
+        "state": "S",
+        "testWorker": false
+      },
+      {
+        "argvObserved": [
+          "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+          "--test-concurrency=1",
+          "--heap-prof-interval=524288",
+          "--stack-trace-limit=10",
+          "--report-signal=SIGUSR2",
+          "--max-http-header-size=16384",
+          "--watch-kill-signal=SIGTERM",
+          "--heapsnapshot-near-heap-limit=0",
+          "--inspect-publish-uid=stderr,http",
+          "--test-isolation=process",
+          "--test-coverage-lines=0",
+          "--cpu-prof-interval=1000",
+          "--test-coverage-functions=0",
+          "--test-timeout=0",
+          "--inspect-port=127.0.0.1:9229",
+          "--test-coverage-branches=0",
+          "--use-largepages=off",
+          "--experimental-addon-modules",
+          "--network-family-autoselection-attempt-timeout=500",
+          "--secure-heap-min=2",
+          "--v8-pool-size=4",
+          "--secure-heap=0",
+          "--tls-cipher-list=TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA",
+          "--node-snapshot",
+          "--trace-event-file-pattern=node_trace.${rotation}.log",
+          "server/test/gcsp-synthetic-vin-e2e.test.js"
+        ],
+        "pgid": 80487,
+        "pid": 80517,
+        "ppid": 80487,
+        "state": "R",
+        "testWorker": true
+      }
+    ],
+    "samples": 7,
+    "samplingSeconds": 0.2
+  },
+  "failureSummary": "Actual same-entry startup/restart and reset continuity passed; consumer failed WBS source citation with ?language=en.",
+  "failureLogsRemoved": true
+}

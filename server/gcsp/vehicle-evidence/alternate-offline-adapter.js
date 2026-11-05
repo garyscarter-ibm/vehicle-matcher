@@ -1,13 +1,17 @@
 import { boundedVehicleRead } from './provider-read.js';
 import { vehicleEvidenceFailure, VEHICLE_DETAILS_VERSION } from './vehicle-details-contract.js';
+import { routedVehicleResult } from './identity-routing.js';
 
 const kinds = { configuration: 'composition', stock: 'order', vin: 'delivered' };
 const outcomes = { missing: 'not-found', unsupported: 'unsupported', unavailable: 'source-unavailable',
   mismatch: 'identity-mismatch', invalid: 'invalid-input' };
 
 /** An intentionally fictional offline shape, not a BMW schema or a live-provider promise. */
-export function createAlternateOfflineVehicleAdapter({ read, timeoutMs, maxAttempts } = {}) {
+export function createAlternateOfflineVehicleAdapter({ read, route, timeoutMs, maxAttempts } = {}) {
   return Object.freeze({ resolve: boundedVehicleRead(async (request, { context, signal }) => {
+    const denied = route && await route(request, { context, signal });
+    if (typeof denied === 'string') return { result: vehicleEvidenceFailure(denied, request.kind) };
+    if (signal.aborted) return { result: vehicleEvidenceFailure('source-unavailable', request.kind) };
     const response = await read?.({ category: kinds[request.kind], token: request.id }, { context, signal });
     const status = response?.transportStatus;
     if (status !== undefined && status !== 200) return { transportStatus: status };
@@ -24,7 +28,7 @@ export function createAlternateOfflineVehicleAdapter({ read, timeoutMs, maxAttem
           return { transportStatus: status, result: vehicleEvidenceFailure('identity-mismatch', request.kind) };
         }
       }
-      return { transportStatus: status, result: {
+      const result = {
         contractVersion: VEHICLE_DETAILS_VERSION, schemaVersion: '1', provider: 'alternate-offline', providerVersion: '1',
         status: payload.result, requested: c.query, resolved: c.answer,
         identity: { kind: ids.category, identityKind: ids.flavour, configurationId: ids.composition,
@@ -41,7 +45,8 @@ export function createAlternateOfflineVehicleAdapter({ read, timeoutMs, maxAttem
           })) },
         source: c.evidence, completeness: c.coverage, presentation: c.labels,
         routing: { mode: 'offline', liveEligible: false }, failure: null,
-      } };
+      };
+      return { transportStatus: status, result: await routedVehicleResult(route, request, { context, signal }, result) };
     } catch {
       return { transportStatus: status, result: vehicleEvidenceFailure('source-unavailable', request.kind) };
     }

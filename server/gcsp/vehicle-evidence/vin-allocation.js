@@ -70,6 +70,10 @@ function inventoryValid(inventory) {
   } catch { return false; }
 }
 
+// Read-only reuse of the allocator's existing whole-inventory validation. Routing
+// must not invent a second authority from a stock row or a browser identity flag.
+export const isValidAllocationInventory = inventoryValid;
+
 const VEHICLE_FIELDS = ['vehicleId', 'configurationId', 'snapshotVersion', 'configuration', 'usage',
   'profileId', 'profileVersion', 'registryVersion', 'referenceOnly'];
 function planValid(plan) {

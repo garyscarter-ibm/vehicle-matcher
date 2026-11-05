@@ -1,5 +1,6 @@
 import { inputDigest } from '../repository/core.js';
 import { vehicleEvidenceDetails, vehicleEvidenceFailure, validVehicleEvidenceSource } from './vehicle-details-contract.js';
+import { classifyVehicleEvidenceRequest } from './identity-routing.js';
 
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const text = (v) => typeof v === 'string' && v.length > 0 && v.length <= 4096;
@@ -86,5 +87,10 @@ export function createVehicleEvidenceLookup({ registry, repository } = {}) {
       return vehicleEvidenceFailure('source-unavailable', kind);
     }
   }
-  return Object.freeze({ resolve });
+  async function classifyRequest(request, options) {
+    const id = canonicalVehicleIdentifier(request?.kind, request?.id);
+    if (!id) return { status: 'invalid-input', identityKind: 'unknown', liveEligible: false };
+    return classifyVehicleEvidenceRequest({ registry, repository }, { kind: request.kind, id }, options);
+  }
+  return Object.freeze({ resolve, classifyRequest });
 }

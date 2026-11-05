@@ -6,6 +6,7 @@ import { mkdtemp, readFile, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { offlineFixture } from './helpers/offline-vehicle-fixture.js';
 
 const project = fileURLToPath(new URL('../../', import.meta.url));
 const selected = new URL('../data/gcsp/vehicle-evidence/lookup-reference.v1/', import.meta.url);
@@ -137,4 +138,38 @@ test('the real same-entry offline profile cold-starts and restarts selected loca
   assert.equal(await readFile(join(scratch, 'egress.jsonl'), 'utf8').catch((error) => {
     if (error.code === 'ENOENT') return ''; throw error;
   }), '');
+});
+
+test('a freshly generated/published five-WMI store cold-starts and restarts the real credential-free backend', { timeout: 45000 }, async (t) => {
+  const f = await offlineFixture(t, { runtime: false }); const stops = [];
+  t.after(async () => { for (const stop of [...stops].reverse()) await stop(); });
+  const guard = join(f.scratch, 'entry-guard.mjs'); await writeFile(guard, guardSource);
+  const before = await Promise.all(['active.json', 'identity-inventory.json'].map((name) => readFile(join(f.root, name), 'utf8')));
+  const answers = new Map();
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const server = await start({ scratch: f.scratch, guard, stops, corpusRoot: f.root });
+    assert.deepEqual(await request(server.base, '/health'), { code: 200, body: { ok: true } });
+    for (const row of f.vins) {
+      const response = await request(server.base, `/api/gcsp/vehicle-evidence/vins/${row.vin17}`);
+      assert.equal(response.code, 200); assert.equal(response.body.status, 'partial');
+      assert.equal(response.body.identity.vin, row.vin17); assert.equal(response.body.identity.configurationId, row.configurationId);
+      assert.equal(response.body.source.market, 'US'); assert.equal(response.body.source.steering, 'LHD');
+      assert.equal(response.body.routing.liveEligible, false);
+      if (attempt) assert.deepEqual(response.body, answers.get(row.vin17)); else answers.set(row.vin17, response.body);
+    }
+    for (const row of f.configurations) {
+      const response = await request(server.base, `/api/gcsp/vehicle-evidence/configurations/${encodeURIComponent(row.configurationId)}`);
+      assert.equal(response.code, 200); assert.equal(response.body.status, row.catalogue ? 'complete' : 'partial');
+      assert.equal(response.body.identity.vin, null);
+    }
+    assert.equal((await request(server.base, '/api/gcsp/vehicle-evidence/vins/ZZZZZZZZ0ZZ000000')).code, 404);
+    // Same entry point intentionally has no trusted stock context/repository adapter.
+    assert.equal((await request(server.base, '/api/gcsp/vehicle-evidence/stock/1d736acd-674c-4bb1-8b6b-45dc56906442')).code, 503);
+    await server.stop();
+  }
+  assert.deepEqual(await Promise.all(['active.json', 'identity-inventory.json'].map((name) => readFile(join(f.root, name), 'utf8'))), before);
+  assert.equal(await readFile(join(f.scratch, 'egress.jsonl'), 'utf8').catch((error) => {
+    if (error.code === 'ENOENT') return ''; throw error;
+  }), '');
+  t.diagnostic(`FUCQ57_PROOF ${JSON.stringify({ startup: 'real server/index.js twice; generated store; no keys/database/NODE_OPTIONS; loopback only', ...f.receipt, externalCalls: 0 })}`);
 });
