@@ -1,0 +1,1034 @@
+{
+  "acceptanceJudgment": {
+    "basis": "Machine requirements pass. Launcher/gallery visual, semantic, all-brand routing, fail-closed capability, recovery, actual Tab/focus/Enter and changed-state behavior have proof. Eight original browser assertions are corrected with replacement proof. Adjacent MINI overflow is measured at the claim baseline. Native popup option picking remains unverified by browser automation and is the explicit collaborator check; the browser matrix is not labelled passed.",
+    "collaboratorCheck": "At 320px, use the keyboard to choose another option in the native brand selector and open Used cars; observe the selected brand and route. Existing Tab/focus/Enter recovery is already verified.",
+    "nativeOptionPicking": "unverified by automation; not a confirmed product defect",
+    "newProductDefectConfirmed": false,
+    "preExistingProductLimitation": "Retained MINI retail header causes 76px overflow at viewport320, unchanged from claim-index baseline; retail rebuild excluded.",
+    "story": "built"
+  },
+  "agents": [
+    {
+      "effective": {
+        "effort": "high",
+        "model": "gpt-6.1-sol"
+      },
+      "fallback": null,
+      "requested": {
+        "effort": "high",
+        "model": "gpt-6.1-sol"
+      },
+      "role": "story lead",
+      "selected": {
+        "effort": "high",
+        "model": "gpt-6.1-sol"
+      }
+    },
+    {
+      "effective": {
+        "effort": "medium",
+        "model": "gpt-6.1-sol"
+      },
+      "fallback": null,
+      "requested": {
+        "effort": "medium",
+        "model": "gpt-6.1-sol"
+      },
+      "role": "launcher implementation",
+      "selected": {
+        "effort": "medium",
+        "model": "gpt-6.1-sol"
+      }
+    },
+    {
+      "effective": {
+        "effort": "high",
+        "model": "gpt-6-luna"
+      },
+      "fallback": null,
+      "requested": {
+        "effort": "high",
+        "model": "gpt-6-luna"
+      },
+      "role": "browser runner",
+      "selected": {
+        "effort": "high",
+        "model": "gpt-6-luna"
+      }
+    }
+  ],
+  "artifactReceipts": [
+    {
+      "path": "docs/gcsp/evidence/fucq-12/fucq33-early-browser.json",
+      "sha256": "cb1ba287b5cf55d5ca8c85948a9a3532e62fc9279787dc19186d603cc3f7b9b7"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq-12/fucq33-final-browser.json",
+      "sha256": "9457fa65675b217ca085e841e80ef62edc8c1c8e6337ef6e7bbb2944b7158f82"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq-12/fucq33-followup-browser.json",
+      "sha256": "fee1441946a4737e1affd7592d4a73e4ce836e35d15fc9ae72ab8aeddb4103a7"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq-12/fucq33-keyboard-retry-browser.json",
+      "sha256": "1752ebfc152de9d973d7903de0bf366113f051ecdcb79c110cd95d92164054c7"
+    }
+  ],
+  "base": {
+    "claimCommit": "7b6e57b1b2ac074a5c975395f00cc72fcf35b624",
+    "commit": "1ad1664e30a8b5eaadc74510152eaf683b71a3b0",
+    "deltaSinceTested": [
+      "_dev/code-inbox/DEV-2026-11-04-071.md",
+      "_dev/code-inbox/DEV-2026-11-04-072.md",
+      "_dev/code-inbox/DEV-2026-11-04-089.md",
+      "_dev/in-progress/DEV-2026-11-04-064.md",
+      "_dev/in-progress/DEV-2026-11-04-083.md",
+      "docs/gcsp/dev-poller-2026-11-05.md"
+    ],
+    "latestObserved": "fc515983d15b2807a307d0894c343d4433c328aa",
+    "name": "gcsp-poc",
+    "productDeltaSinceClaim": false,
+    "productDeltaSinceTested": false
+  },
+  "branch": "dev/DEV-2026-11-04-007",
+  "browser": {
+    "allAssertionsPassed": false,
+    "correctedOriginalHarnessAssertions": 8,
+    "fallbackProof": "Original launcher/retail fallback DOM, injected paths and assertions remain passing; no new fallback screenshot requirement invented.",
+    "historicalMainReceiptUnchanged": true,
+    "originalMeasuredPreExistingRetailLimitations": 1,
+    "originalNativeOptionPickingUnverified": 1,
+    "reportingHistory": {
+      "firstCapture": {
+        "browserInteractionCompleted": true,
+        "cleanupVerified": true,
+        "observedSelectedBrand": "mini",
+        "reportingException": "The capture wrote its result and completed cleanup, then the final console summary referenced the removed attempts variable and raised ReferenceError.",
+        "runnerExitCode": 1
+      },
+      "reportingCorrectionCapture": {
+        "browserInteractionRepeatedOnce": true,
+        "cleanupVerified": true,
+        "reason": "The reporting-only ReferenceError was corrected before this agent received the lead instruction to avoid an identical rerun.",
+        "runnerExitCode": 0,
+        "sameAssertionOutcome": true
+      }
+    },
+    "reviewComplete": true,
+    "runs": [
+      {
+        "assertions": 236,
+        "cases": 26,
+        "failed": 10,
+        "passed": 226,
+        "receipt": "docs/gcsp/evidence/fucq-12/fucq33-final-browser.json",
+        "redAssertionDisposition": [
+          {
+            "classification": "corrected-harness-expectation",
+            "evidenceAndDisposition": "Wrong first/Employee ghost button was measured; matching default/MINI desktop/320px follow-up selects the Used cars primary action and passes with teal #0b6c7e, white text and 6.07:1 contrast.",
+            "id": "launcher-uses-teal-primary-action",
+            "scope": "launcher-default-desktop"
+          },
+          {
+            "classification": "corrected-harness-expectation",
+            "evidenceAndDisposition": "Wrong first/Employee ghost button was measured; matching default/MINI desktop/320px follow-up selects the Used cars primary action and passes with teal #0b6c7e, white text and 6.07:1 contrast.",
+            "id": "launcher-uses-teal-primary-action",
+            "scope": "launcher-mini-desktop"
+          },
+          {
+            "classification": "corrected-harness-expectation",
+            "evidenceAndDisposition": "The parser compared all employee rules with only moved rules and missed the first rule after @import. Follow-up strips imports and proves exact 75=56+19 rule-block composition, identical declarations and no extras/missing rules.",
+            "id": "approved-employee-css-primitives-extracted-exactly",
+            "scope": "employee-reference-desktop"
+          },
+          {
+            "classification": "corrected-harness-expectation",
+            "evidenceAndDisposition": "Wrong first/Employee ghost button was measured; matching default/MINI desktop/320px follow-up selects the Used cars primary action and passes with teal #0b6c7e, white text and 6.07:1 contrast.",
+            "id": "launcher-uses-teal-primary-action",
+            "scope": "launcher-default-narrow-320"
+          },
+          {
+            "classification": "corrected-harness-expectation",
+            "evidenceAndDisposition": "Wrong first/Employee ghost button was measured; matching default/MINI desktop/320px follow-up selects the Used cars primary action and passes with teal #0b6c7e, white text and 6.07:1 contrast.",
+            "id": "launcher-uses-teal-primary-action",
+            "scope": "launcher-mini-narrow-320"
+          },
+          {
+            "classification": "corrected-harness-expectation",
+            "evidenceAndDisposition": "The parser compared all employee rules with only moved rules and missed the first rule after @import. Follow-up strips imports and proves exact 75=56+19 rule-block composition, identical declarations and no extras/missing rules.",
+            "id": "approved-employee-css-primitives-extracted-exactly",
+            "scope": "employee-reference-narrow-320"
+          },
+          {
+            "classification": "measured-pre-existing-retail-limitation",
+            "evidenceAndDisposition": "Current and claim-index MINI both have scrollWidth396 at viewport320 (76px overflow), visible in inspected captures. Baseline comparison proves layout only because its API request was loopback-blocked; current real local API is separately passing.",
+            "id": "retail-layout-no-overflow",
+            "scope": "used-cars-mini-narrow-320"
+          },
+          {
+            "classification": "unverified-native-popup-automation",
+            "evidenceAndDisposition": "Headless and bounded headed attempts retained MINI; native option picking is not established by this automation. This does not confirm a product defect. Original actual Tab order, 2px focus and Enter-to-Choose-BMW recovery pass; all six selection/change and routing cases pass.",
+            "id": "keyboard-select-changes-brand",
+            "scope": "launcher-keyboard-focus-and-selection"
+          },
+          {
+            "classification": "corrected-harness-expectation",
+            "evidenceAndDisposition": "The Employee fixture heading changes dynamically. Follow-up uses stable Local employee brief fixture content, three brief items and Confirm no charging access control; all existing example checks pass at both widths.",
+            "id": "existing-gallery-examples-remain",
+            "scope": "launcher-gallery-desktop"
+          },
+          {
+            "classification": "corrected-harness-expectation",
+            "evidenceAndDisposition": "The Employee fixture heading changes dynamically. Follow-up uses stable Local employee brief fixture content, three brief items and Confirm no charging access control; all existing example checks pass at both widths.",
+            "id": "existing-gallery-examples-remain",
+            "scope": "launcher-gallery-narrow-320"
+          }
+        ],
+        "resource": {
+          "browserProfile": "persistent isolated Chromium profile inside owned scratch; removed by finalizer",
+          "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-browser-final/logs/fucq33-final-browser.log",
+          "logBytes": 9593,
+          "oneDriveAvailable": false,
+          "ownedProcessGroups": [
+            23643
+          ],
+          "ownedProcessGroupsDead": true,
+          "peakRssBytes": 561086464,
+          "peakScratchBytes": 13979833,
+          "portsAfter": {
+            "31439": {
+              "state": "none"
+            },
+            "31440": {
+              "state": "none"
+            }
+          },
+          "reservation": {
+            "disk": 268435456,
+            "ram": 1610612736
+          },
+          "reservationReleased": true,
+          "scratchAbsent": true,
+          "scratchRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/browser-final",
+          "serverDependencyBytes": 858816,
+          "serverDependencyBytesWithinCap": true,
+          "serverManifestHashesAfter": {
+            "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+            "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+          },
+          "serverManifestHashesBefore": {
+            "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+            "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+          },
+          "serverManifestHashesUnchanged": true,
+          "serverPgInstalled": true,
+          "sourceHashesUnchanged": true,
+          "wallSeconds": 20.042
+        },
+        "run": "main"
+      },
+      {
+        "assertions": 33,
+        "cases": 10,
+        "failed": 5,
+        "passed": 28,
+        "receipt": "docs/gcsp/evidence/fucq-12/fucq33-followup-browser.json",
+        "redAssertionDisposition": [
+          {
+            "classification": "unverified-native-popup-automation",
+            "evidenceAndDisposition": "Native option picking was not demonstrated; the bounded headed supplemental check has the same outcome. See the explicit limitation and collaborator check.",
+            "id": "keyboard-opens-and-commits-brand-selection",
+            "scope": "launcher-keyboard-open-and-commit"
+          },
+          {
+            "classification": "incorrect-followup-precondition-with-existing-proof",
+            "evidenceAndDisposition": "This follow-up gated Enter on a native-selection result and expected Choose BMW after BMW was already selected, when that action is correctly replaced by unavailable state. Reuse main enter-activates-choose-bmw-recovery, which actually passes from MINI through Tab/Enter to BMW/unavailable/status.",
+            "id": "keyboard-enter-opens-unavailable-employee-state",
+            "scope": "launcher-keyboard-open-and-commit"
+          },
+          {
+            "classification": "baseline-route-fulfil-network-limitation",
+            "evidenceAndDisposition": "The claim-index local API request was blocked by Chrome loopback access/CORS. It limits that baseline capture to layout; current local API passes in the main receipt and this follow-up. No baseline API parity is claimed.",
+            "id": "no-console-or-page-errors",
+            "scope": "mini-retail-claim-narrow-320"
+          },
+          {
+            "classification": "baseline-route-fulfil-network-limitation",
+            "evidenceAndDisposition": "The claim-index local API request was blocked by Chrome loopback access/CORS. It limits that baseline capture to layout; current local API passes in the main receipt and this follow-up. No baseline API parity is claimed.",
+            "id": "no-unexpected-failed-or-external-requests",
+            "scope": "mini-retail-claim-narrow-320"
+          },
+          {
+            "classification": "incorrect-extra-screenshot-expectation-with-existing-proof",
+            "evidenceAndDisposition": "This follow-up incorrectly demanded a screenshot for the historical MINI retail fallback case, which had no screenshot requirement. Its retained DOM details, two injected asset paths and all five original retail fallback assertions pass. The launcher fallback has its inspected screenshot, DOM state and all six original assertions passing.",
+            "id": "retained-fallback-dom-and-injected-path-evidence",
+            "scope": "historical-fallback"
+          }
+        ],
+        "resource": {
+          "browserProfile": "persistent isolated Chromium profile inside owned scratch; removed by finalizer",
+          "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-followup-20261105/logs/fucq33-followup-browser.log",
+          "logBytes": 9037,
+          "oneDriveAvailable": false,
+          "ownedProcessGroups": [
+            30463
+          ],
+          "ownedProcessGroupsDead": true,
+          "peakRssBytes": 486031360,
+          "peakScratchBytes": 11699616,
+          "portsAfter": {
+            "32139": {
+              "state": "none"
+            },
+            "32878": {
+              "state": "none"
+            }
+          },
+          "reservation": {
+            "disk": 268435456,
+            "ram": 1610612736
+          },
+          "reservationReleased": true,
+          "scratchAbsent": true,
+          "scratchRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/followup-20261105",
+          "serverDependencyBytes": 858816,
+          "serverDependencyBytesWithinCap": true,
+          "serverManifestHashesAfter": {
+            "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+            "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+          },
+          "serverManifestHashesBefore": {
+            "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+            "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+          },
+          "serverManifestHashesUnchanged": true,
+          "serverPgInstalled": true,
+          "sourceHashesUnchanged": true,
+          "wallSeconds": 9.575
+        },
+        "run": "followup"
+      },
+      {
+        "assertions": 1,
+        "cases": 1,
+        "failed": 1,
+        "passed": 0,
+        "receipt": "docs/gcsp/evidence/fucq-12/fucq33-keyboard-retry-browser.json",
+        "redAssertionDisposition": [
+          {
+            "classification": "unverified-native-popup-automation",
+            "evidenceAndDisposition": "The sole headed open/ArrowUp/Enter assertion left MINI selected and the summary/actions unchanged. Preserve 0/1 and the reporting-exception history; no successful option-picking claim is made.",
+            "id": "native-select-keyboard-commits-bmw-and-updates-launcher",
+            "scope": "native-retry"
+          }
+        ],
+        "resource": {
+          "browserProfile": "persistent isolated Chromium profile inside owned scratch; removed by finalizer",
+          "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-keyboard-retry-20261105/logs/fucq33-keyboard-retry-browser.log",
+          "logBytes": 1109,
+          "oneDriveAvailable": false,
+          "ownedProcessGroups": [
+            33598
+          ],
+          "ownedProcessGroupsDead": true,
+          "peakRssBytes": 494125056,
+          "peakScratchBytes": 18958848,
+          "portsAfter": {
+            "32149": {
+              "state": "none"
+            },
+            "32888": {
+              "state": "none"
+            }
+          },
+          "reservation": {
+            "disk": 268435456,
+            "ram": 1610612736
+          },
+          "reservationReleased": true,
+          "scratchAbsent": true,
+          "scratchRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/keyboard-retry-20261105",
+          "serverDependencyBytes": 858816,
+          "serverDependencyBytesWithinCap": true,
+          "serverManifestHashesAfter": {
+            "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+            "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+          },
+          "serverManifestHashesBefore": {
+            "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+            "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+          },
+          "serverManifestHashesUnchanged": true,
+          "serverPgInstalled": true,
+          "sourceHashesUnchanged": true,
+          "wallSeconds": 3.396
+        },
+        "run": "native-retry"
+      }
+    ]
+  },
+  "checks": [
+    {
+      "checkpoint": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/checkpoints/19db976118f68e98c7c61c443e47a28dcc25a671be02ee8b40e8b4bddcacb554.json",
+      "cleanup": {
+        "absent": true,
+        "groups": [
+          11862
+        ],
+        "groupsDead": true,
+        "reservationReleased": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/lead/disposable/test-stamp-shard-ea46cff9a89b4209bd838783554b7d02"
+      },
+      "command": "node --test server/test/launcher-context.test.js server/test/launcher-render.test.js",
+      "executionIdentity": {
+        "code": "cf5814fe90becaf56e263259ac2e1e655a0df87325f2e50835246a411d9fcc88",
+        "environment": "d75cffa1e6ff2403ae5eb5b53e75469d73684885cd11aad41d8e12e262d234d9",
+        "inputs": {},
+        "interpreter": [
+          "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+          "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]"
+        ],
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "scope": "targeted",
+        "selected": [
+          "node --test server/test/launcher-context.test.js server/test/launcher-render.test.js"
+        ],
+        "settings": "e2f5f9dedfdb52d5032bab3ab84754235c4c77834842ce36e5c0545baf46030a",
+        "variant": "default",
+        "version": 1
+      },
+      "failed": 0,
+      "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/logs/20261105-115051-1pz2ezef/chunk-0001.log",
+      "name": "launcher",
+      "passed": 22,
+      "peakRssBytes": 527106048,
+      "peakScratchBytes": 0,
+      "skipped": 0,
+      "wallSeconds": 1.414
+    },
+    {
+      "checkpoint": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/checkpoints/86722799166a50d0311009ccaa39b9acd896aeddc1a338c0e01766d629a48463.json",
+      "cleanup": {
+        "absent": true,
+        "groups": [
+          11982
+        ],
+        "groupsDead": true,
+        "reservationReleased": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/lead/disposable/test-stamp-shard-1782264ce8f94c08a15c4977b20a917e"
+      },
+      "command": "node --test server/test/ui-ratchet.test.js server/test/render.test.js",
+      "executionIdentity": {
+        "code": "cf5814fe90becaf56e263259ac2e1e655a0df87325f2e50835246a411d9fcc88",
+        "environment": "d75cffa1e6ff2403ae5eb5b53e75469d73684885cd11aad41d8e12e262d234d9",
+        "inputs": {},
+        "interpreter": [
+          "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+          "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]"
+        ],
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "scope": "targeted",
+        "selected": [
+          "node --test server/test/ui-ratchet.test.js server/test/render.test.js"
+        ],
+        "settings": "7e73db5ab62e0a8005075082f4fd7557b79f71c11713c2d54a0ef075d0ac9e4f",
+        "variant": "default",
+        "version": 1
+      },
+      "failed": 0,
+      "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/logs/20261105-115101-6xhi3n0y/chunk-0001.log",
+      "name": "retail-and-ratchet",
+      "passed": 65,
+      "peakRssBytes": 324026368,
+      "peakScratchBytes": 0,
+      "skipped": 0,
+      "wallSeconds": 5.375
+    },
+    {
+      "checkpoint": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/checkpoints/9cd591d7487fabb8fdf8c85d2069188c7f3e9237ef2dc305091a6f196c7d1dc0.json",
+      "cleanup": {
+        "absent": true,
+        "groups": [
+          12580
+        ],
+        "groupsDead": true,
+        "reservationReleased": true,
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/lead/disposable/test-stamp-shard-93389f0d7a68422fa8583854aa0335c9"
+      },
+      "command": "npm test",
+      "executionIdentity": {
+        "code": "cf5814fe90becaf56e263259ac2e1e655a0df87325f2e50835246a411d9fcc88",
+        "environment": "d75cffa1e6ff2403ae5eb5b53e75469d73684885cd11aad41d8e12e262d234d9",
+        "inputs": {},
+        "interpreter": [
+          "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+          "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]"
+        ],
+        "platform": "macOS-26.5.1-arm64-arm-64bit",
+        "scope": "full",
+        "selected": [
+          "npm test"
+        ],
+        "settings": "8648cc060ad6647253dd5cf552ffe8279076e8269ac5012f1bac3051ead67aa8",
+        "variant": "default",
+        "version": 1
+      },
+      "failed": 0,
+      "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/logs/20261105-115156-d5zc8yj6/chunk-0001.log",
+      "name": "full",
+      "passed": 967,
+      "peakRssBytes": 1740177408,
+      "peakScratchBytes": 547968,
+      "skipped": 2,
+      "wallSeconds": 13.736
+    }
+  ],
+  "cleanupIndependent": {
+    "allOwnedGroupsDead": true,
+    "allOwnedRootsAbsent": true,
+    "baseDeltaSinceTested": [
+      "_dev/code-inbox/DEV-2026-11-04-071.md",
+      "_dev/code-inbox/DEV-2026-11-04-072.md",
+      "_dev/code-inbox/DEV-2026-11-04-089.md",
+      "_dev/in-progress/DEV-2026-11-04-064.md",
+      "_dev/in-progress/DEV-2026-11-04-083.md",
+      "docs/gcsp/dev-poller-2026-11-05.md"
+    ],
+    "branch": "dev/DEV-2026-11-04-007",
+    "checkedAt": "2026-11-05T12:31:10.587760+00:00",
+    "head": "e16cf52f06274dfe9164af6d72765b5de8ad220d",
+    "latestBase": "fc515983d15b2807a307d0894c343d4433c328aa",
+    "noOwnReservations": true,
+    "ownReservations": {},
+    "ownedManifests": [
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 11982
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/1782264ce8f94c08a15c4977b20a917e.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/lead/disposable/test-stamp-shard-1782264ce8f94c08a15c4977b20a917e",
+        "rootAbsent": true,
+        "token": "1782264ce8f94c08a15c4977b20a917e"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 654
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/6ae3d43e254e42159f532c200c53340a.json",
+        "manifestState": "removed",
+        "root": "/private/tmp/test-stamp-shard-6ae3d43e254e42159f532c200c53340a",
+        "rootAbsent": true,
+        "token": "6ae3d43e254e42159f532c200c53340a"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 12580
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/93389f0d7a68422fa8583854aa0335c9.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/lead/disposable/test-stamp-shard-93389f0d7a68422fa8583854aa0335c9",
+        "rootAbsent": true,
+        "token": "93389f0d7a68422fa8583854aa0335c9"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 11862
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/ea46cff9a89b4209bd838783554b7d02.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/lead/disposable/test-stamp-shard-ea46cff9a89b4209bd838783554b7d02",
+        "rootAbsent": true,
+        "token": "ea46cff9a89b4209bd838783554b7d02"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 8342
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-browser-early/ownership/aed3625c1312488a9f54d30e8d37c5b0.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/browser-early",
+        "rootAbsent": true,
+        "token": "aed3625c1312488a9f54d30e8d37c5b0"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 9078
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-browser-early/ownership/ce68ffc89ade4e38a7827d4268400bff.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/browser-early",
+        "rootAbsent": true,
+        "token": "ce68ffc89ade4e38a7827d4268400bff"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 17497
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-browser-final/ownership/9afa47ebcee74704996b340d070767e0.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/browser-final",
+        "rootAbsent": true,
+        "token": "9afa47ebcee74704996b340d070767e0"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 23643
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-browser-final/ownership/c18ca8063d924b68975fcbcf69af11b6.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/browser-final",
+        "rootAbsent": true,
+        "token": "c18ca8063d924b68975fcbcf69af11b6"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 22695
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-browser-final/ownership/f6cccdf8fb204dd08f3bab34ffe9d899.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/browser-final",
+        "rootAbsent": true,
+        "token": "f6cccdf8fb204dd08f3bab34ffe9d899"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 30463
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-followup-20261105/ownership/56c51673fc8c4db3b1725460ec6a62f3.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/followup-20261105",
+        "rootAbsent": true,
+        "token": "56c51673fc8c4db3b1725460ec6a62f3"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 33598
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-keyboard-retry-20261105/ownership/58f2b44fe5374e96a39d7f1e25f1cacf.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/keyboard-retry-20261105",
+        "rootAbsent": true,
+        "token": "58f2b44fe5374e96a39d7f1e25f1cacf"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 33151
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-runs/fucq33-keyboard-retry-20261105/ownership/592722311cfc480e94a0a56b4765bb40.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/keyboard-retry-20261105",
+        "rootAbsent": true,
+        "token": "592722311cfc480e94a0a56b4765bb40"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 99155
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/implementation/ownership/1264c4c57e64468c83a9e667ae3d496e.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/implementation/scratch-1264c4c57e64468c83a9e667ae3d496e",
+        "rootAbsent": true,
+        "token": "1264c4c57e64468c83a9e667ae3d496e"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 99346
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/implementation/ownership/6a66f68804e14f49ba19ca48a7ab0ef9.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/implementation/scratch-6a66f68804e14f49ba19ca48a7ab0ef9",
+        "rootAbsent": true,
+        "token": "6a66f68804e14f49ba19ca48a7ab0ef9"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 98632
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/implementation/ownership/c33d8a47fc1d47b3b5165a2383c3cc5f.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/implementation/scratch-c33d8a47fc1d47b3b5165a2383c3cc5f",
+        "rootAbsent": true,
+        "token": "c33d8a47fc1d47b3b5165a2383c3cc5f"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 11325
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/implementation/slice2/ownership/bfabd215ced542a48e47c9f0e0f861a8.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/implementation/slice2/scratch-bfabd215ced542a48e47c9f0e0f861a8",
+        "rootAbsent": true,
+        "token": "bfabd215ced542a48e47c9f0e0f861a8"
+      },
+      {
+        "groups": [
+          {
+            "dead": true,
+            "group": 11172
+          }
+        ],
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/implementation/slice2/ownership/d4520442c55b4f9a922f7e6fc7457f06.json",
+        "manifestState": "removed",
+        "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-007/.claude/test-scratch/fucq33/implementation/slice2/scratch-d4520442c55b4f9a922f7e6fc7457f06",
+        "rootAbsent": true,
+        "token": "d4520442c55b4f9a922f7e6fc7457f06"
+      }
+    ],
+    "ports": {
+      "31433": {
+        "listenerAbsent": true
+      },
+      "31434": {
+        "listenerAbsent": true
+      },
+      "31439": {
+        "listenerAbsent": true
+      },
+      "31440": {
+        "listenerAbsent": true
+      },
+      "32139": {
+        "listenerAbsent": true
+      },
+      "32149": {
+        "listenerAbsent": true
+      },
+      "32878": {
+        "listenerAbsent": true
+      },
+      "32888": {
+        "listenerAbsent": true
+      }
+    },
+    "productCodeIdentity": "cf5814fe90becaf56e263259ac2e1e655a0df87325f2e50835246a411d9fcc88",
+    "registry": "/Users/garycarter/.cache/agent-scaffolding/test-resources/reservations.json"
+  },
+  "codeKey": "cf5814fe90becaf56e263259ac2e1e655a0df87325f2e50835246a411d9fcc88",
+  "fullPolicy": {
+    "chunk_ram_mib": 4096,
+    "chunk_scratch_mib": 128,
+    "chunk_seconds": 300,
+    "log_mib": 2,
+    "unit_ram_mib": 256,
+    "unit_scratch_mib": 32
+  },
+  "fullReason": "Explicit story validate requirement: npm test",
+  "fullStamp": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/stamp-f1e248806fb8d6c80ef98ea0cb1fd66649a3c22f69327c7bbbf22065849c2cfe-default.json",
+  "impactMap": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/impact/fucq33-cf5814fe90becaf56e263259ac2e1e655a0df87325f2e50835246a411d9fcc88.json",
+  "jira": "FUCQ-33",
+  "mergeGuardAudit": {
+    "extensionPresent": false,
+    "merge_refusal": null,
+    "mutationPerformed": false,
+    "persistentConfigurationChanges": false,
+    "pre_merge_refusals": [
+      "ok",
+      []
+    ],
+    "testStampGuardInAdapter": false
+  },
+  "optionalSkips": [
+    "postgresql native constraints reject a second occupying hold and claim",
+    "postgresql: shared TransactionRepository contract"
+  ],
+  "proceduralNotes": [
+    "Browser runner recovery briefly started a manual local static/API pair; both sessions exited 130 and final independent socket checks show their ports closed. All completed supervised browser chunks have owned manifests/cleanup.",
+    "Before rereading follow-up instructions, browser runner used one read-only direct git show 7b6e57b:index.html piped to head for a content check. No Git state changed. Saved baseline and subsequent Git reads used imported scaffold_git.py m.git.",
+    "Historical initial lead targeted helper used /private/tmp/test-stamp-shard-6ae3d43e254e42159f532c200c53340a before module-cache correction. Its owned manifest is retained, root independently absent and group 654 dead; subsequent lead scratch stayed under the story-owned area."
+  ],
+  "review": "docs/gcsp/evidence/fucq-12/fucq33-review.md",
+  "runtime": {
+    "node": "26.5.0",
+    "npm": "11.17.0",
+    "python": "3.9.6"
+  },
+  "sourceCommit": "e16cf52f06274dfe9164af6d72765b5de8ad220d",
+  "stampKey": "f1e248806fb8d6c80ef98ea0cb1fd66649a3c22f69327c7bbbf22065849c2cfe",
+  "status": "complete; built with documented browser limitations",
+  "story": "DEV-2026-11-04-007",
+  "strictStatus": {
+    "checksWeakened": false,
+    "command": "/usr/bin/python3 -B .claude/test-scratch/fucq33/lead/run_validation.py status",
+    "matching": true,
+    "perCommandScaffoldingHarness": "absent, as during full test",
+    "portableRecipe": "docs/gcsp/evidence/fucq-12/fucq33-review.md#strict-stamp-reuse-and-merge-guards"
+  },
+  "targetedPolicy": {
+    "chunk_ram_mib": 768,
+    "chunk_scratch_mib": 128,
+    "chunk_seconds": 60,
+    "log_mib": 2,
+    "unit_ram_mib": 256,
+    "unit_scratch_mib": 32
+  },
+  "testedHeadTree": "039c3d6e38e6296ea1915984684c38ff88fef286",
+  "variant": "default",
+  "visualReview": {
+    "approvedEmployeeCommit": "a7fc17810ec6887d680c2fbf4aabcc4992e7c199",
+    "finalCaptureInventory": [
+      {
+        "bytes": 434168,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-final/fucq33-final-default-desktop.png",
+        "sha256": "271a025aff47238392270cb06f4363b6659b0f8e07a359c444588ac3ec10a97d"
+      },
+      {
+        "bytes": 168043,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-final/fucq33-final-default-narrow-320.png",
+        "sha256": "932a7685c042efe344f34a77efbf83b9d6d5f719596a990d0b82d7adba217933"
+      },
+      {
+        "bytes": 429797,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-final/fucq33-final-employee-recovery.png",
+        "sha256": "ccfcbe08dc807338b70c7ff9799937d5b96246fdef8e3edfe60a5a601985f8d4"
+      },
+      {
+        "bytes": 785512,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-final/fucq33-final-employee-reference-desktop.png",
+        "sha256": "564dc16c988775f3d2e82df7f21e5fb7c73f06fcb925e5f61e4e964453d5d65e"
+      },
+      {
+        "bytes": 483796,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-final/fucq33-final-employee-reference-narrow-320.png",
+        "sha256": "076c61668b7c71faea371ed2b99cede7e9d7603314cb49d38e600b383a62f7d6"
+      },
+      {
+        "bytes": 78772,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-final/fucq33-final-launcher-gallery-desktop.png",
+        "sha256": "237e2972a34655cdff7af545ecba5074c7128c0d1447ca58d9d94f8443c3ab88"
+      },
+      {
+        "bytes": 74587,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-final/fucq33-final-launcher-gallery-narrow-320.png",
+        "sha256": "5fdb16b889b5d32ab6d96ed8f1fa57e3b9f5b4992f472d8930ae4314043f9dd0"
+      },
+      {
+        "bytes": 270583,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-final/fucq33-final-launcher-media-fallback.png",
+        "sha256": "309a35b1d31f14b43ebda85c3a1423546b1b3eb9709a5a990ac1e4b6357a4185"
+      },
+      {
+        "bytes": 429797,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-final/fucq33-final-mini-desktop.png",
+        "sha256": "ccfcbe08dc807338b70c7ff9799937d5b96246fdef8e3edfe60a5a601985f8d4"
+      },
+      {
+        "bytes": 164957,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-final/fucq33-final-mini-narrow-320.png",
+        "sha256": "804bf9dd99782587ee061916817affd95cf13ffb90410bc9f93b88b9bfa581e2"
+      },
+      {
+        "bytes": 546204,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-final/fucq33-final-unknown-experience-recovery.png",
+        "sha256": "fb2aabad6127c841fb9a775261763bf9898574565f4c43e59e6a05123495ac20"
+      },
+      {
+        "bytes": 21661,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-final/fucq33-final-used-cars-brand-picker.png",
+        "sha256": "ae2132202af2958297ec85590c06753934a3dc14512d8eb3a2f43908577ccb68"
+      },
+      {
+        "bytes": 681593,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-final/fucq33-final-used-cars-mini-desktop.png",
+        "sha256": "ca8a6419986df19c9453e19f9f93400aa8a50c82e346bb91e374e718e755870a"
+      },
+      {
+        "bytes": 146472,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-final/fucq33-final-used-cars-mini-narrow-320.png",
+        "sha256": "bfb7ae19a20d9a1f2422dc226c0d813c71d107976821a6e5da22d7e150d271ac"
+      }
+    ],
+    "referenceInventory": [
+      {
+        "inspected": true,
+        "path": "docs/gcsp/evidence/fucq-6/representative-desktop.png",
+        "readable": true,
+        "sha256": "564dc16c988775f3d2e82df7f21e5fb7c73f06fcb925e5f61e4e964453d5d65e"
+      },
+      {
+        "inspected": true,
+        "path": "docs/gcsp/screens/00-employee-account.webp",
+        "readable": true,
+        "sha256": "f51b76420c5bda532f725df20b7a5efaad7f8c7abd28120c68a0a55782d295e8"
+      },
+      {
+        "inspected": true,
+        "path": "docs/gcsp/screens/01-replace-vehicle.webp",
+        "readable": true,
+        "sha256": "6114de7c97845d99716235f0a347d6828930c703ca54978de42dd5caed36d9aa"
+      },
+      {
+        "inspected": true,
+        "path": "docs/gcsp/screens/02-new-order.png",
+        "readable": true,
+        "sha256": "ae8c40ca270f2ac2553eca1372396671d1bd6882dd307925e45456743d5cf5cf"
+      },
+      {
+        "inspected": true,
+        "path": "docs/gcsp/screens/03-vehicle-series.png",
+        "readable": true,
+        "sha256": "8be5caa8fd9a6f62e6b2f888c51476bc98595f49f7db875931c917b831621d7c"
+      },
+      {
+        "inspected": true,
+        "path": "docs/gcsp/screens/04-vehicle-models.png",
+        "readable": true,
+        "sha256": "d47b7f5a30fa02945ded14c03a5da9e32fd8db4eed5455f90e789a097d831af9"
+      },
+      {
+        "inspected": true,
+        "path": "docs/gcsp/screens/05-vehicle-details.webp",
+        "readable": true,
+        "sha256": "f07090803d1b5d15eac59901956f9fb323dcdb1ff60f9297e345e621204d89fd"
+      },
+      {
+        "inspected": true,
+        "path": "docs/gcsp/screens/06-summary.png",
+        "readable": true,
+        "sha256": "d85694d61fac30826b78f171c7ed6a498c3f0441fb53efa522c5068c97ffbf89"
+      },
+      {
+        "inspected": true,
+        "path": "docs/gcsp/screens/07-order-confirmation.webp",
+        "readable": true,
+        "sha256": "d393939102b7e259c1fbc5c3eb035e7a24865c8922bed0fbe68b06095892f02a"
+      }
+    ],
+    "scope": "Approved body and shell/palette references; launcher and gallery desktop/320px; adjacent retained retail and employee. No employee integration acceptance claimed.",
+    "supplementalCaptureInventory": [
+      {
+        "bytes": 1437576,
+        "leadInspected": false,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-followup-20261105/fucq33-followup-gallery-desktop.png",
+        "purpose": "Supplemental metrics/assertion or baseline evidence; final visual states are covered by the 14 directly inspected final captures.",
+        "sha256": "30e24ceba371651023c9ac0f666f8678a5c71ff34f2cd2295f59a760863cc230"
+      },
+      {
+        "bytes": 811540,
+        "leadInspected": false,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-followup-20261105/fucq33-followup-gallery-narrow-320.png",
+        "purpose": "Supplemental metrics/assertion or baseline evidence; final visual states are covered by the 14 directly inspected final captures.",
+        "sha256": "7d6a50952ca12d7434912525ab73231535d20b9a4e0c652015c6aede68d311c4"
+      },
+      {
+        "bytes": 165362,
+        "leadInspected": false,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-followup-20261105/fucq33-followup-keyboard-mini.png",
+        "purpose": "Supplemental metrics/assertion or baseline evidence; final visual states are covered by the 14 directly inspected final captures.",
+        "sha256": "b300dc5ef84300ca18936ef834f4662c271ead2e8a9bfd2eb67255e95acb30ad"
+      },
+      {
+        "bytes": 434158,
+        "leadInspected": false,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-followup-20261105/fucq33-followup-launcher-default-desktop.png",
+        "purpose": "Supplemental metrics/assertion or baseline evidence; final visual states are covered by the 14 directly inspected final captures.",
+        "sha256": "2d6101a596fd8e59313dc64386d5381154e60200b2fa36a2a28992bd5059895c"
+      },
+      {
+        "bytes": 170323,
+        "leadInspected": false,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-followup-20261105/fucq33-followup-launcher-default-narrow-320.png",
+        "purpose": "Supplemental metrics/assertion or baseline evidence; final visual states are covered by the 14 directly inspected final captures.",
+        "sha256": "ab6c2c52eaad63de1ec56ca77efba2a9b2d3718013de9549625e813c9a97b346"
+      },
+      {
+        "bytes": 429797,
+        "leadInspected": false,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-followup-20261105/fucq33-followup-launcher-mini-desktop.png",
+        "purpose": "Supplemental metrics/assertion or baseline evidence; final visual states are covered by the 14 directly inspected final captures.",
+        "sha256": "ccfcbe08dc807338b70c7ff9799937d5b96246fdef8e3edfe60a5a601985f8d4"
+      },
+      {
+        "bytes": 164944,
+        "leadInspected": false,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-followup-20261105/fucq33-followup-launcher-mini-narrow-320.png",
+        "purpose": "Supplemental metrics/assertion or baseline evidence; final visual states are covered by the 14 directly inspected final captures.",
+        "sha256": "92be5c45948b7a6ec14b7713ddff7d087a61802002735492147fc3b0d31249c4"
+      },
+      {
+        "bytes": 148165,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-followup-20261105/fucq33-followup-mini-claim-baseline-narrow-320.png",
+        "purpose": "Supplemental metrics/assertion or baseline evidence; final visual states are covered by the 14 directly inspected final captures.",
+        "sha256": "64888c3615a6e67bc24a2b2494cb7f027f456f808cf7443c3c3649ce87f52286"
+      },
+      {
+        "bytes": 146472,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-followup-20261105/fucq33-followup-mini-current-narrow-320.png",
+        "purpose": "Supplemental metrics/assertion or baseline evidence; final visual states are covered by the 14 directly inspected final captures.",
+        "sha256": "bfb7ae19a20d9a1f2422dc226c0d813c71d107976821a6e5da22d7e150d271ac"
+      },
+      {
+        "bytes": 163643,
+        "leadInspected": true,
+        "path": "docs/gcsp/evidence/fucq-12/fucq33-followup-20261105/fucq33-keyboard-retry-native-select.png",
+        "purpose": "Supplemental metrics/assertion or baseline evidence; final visual states are covered by the 14 directly inspected final captures.",
+        "sha256": "4bf20d17027fc3428d814779c4092ee42c9fbd906d2965ceb6990aae9f4b54d9"
+      }
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+html, body { margin: 0; }
+    body {
+      min-height: 100vh;
+      background: #0d0f12;
+      font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
+    }
+
+main {
+  width: 100%; max-width: 1280px; margin: 0 auto; box-sizing: border-box;
+  background: #fff;
+}
+
+    .demo-entry-host { min-height: 100vh; background: var(--vm-surface); }
+    .demo-entry-actions { display: flex; flex-wrap: wrap; gap: var(--vm-space-3); }
+    .demo-entry-host :focus-visible { outline: 2px solid var(--vm-accent); outline-offset: 2px; }
+
+    .vm-gate {
+      position: fixed; inset: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px; background: #0d0f12;
+    }
+    .vm-gate-card {
+      width: 100%; max-width: 360px; box-sizing: border-box;
+      display: flex; flex-direction: column; gap: 12px;
+      padding: 32px 28px; border-radius: 12px;
+      background: #16191e; color: #f2f4f7;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+    .vm-gate-title { margin: 0; font-size: 22px; font-weight: 600; }
+    .vm-gate-lede { margin: 0; font-size: 14px; line-height: 1.4; color: #aeb4bd; }
+    .vm-gate-error { margin: 0; font-size: 14px; color: #ff8a80; }
+    .vm-gate-input {
+      box-sizing: border-box; width: 100%; margin-top: 4px;
+      padding: 12px 14px; font-size: 16px;
+      border: 1px solid #3a3f47; border-radius: 8px;
+      background: #0d0f12; color: #f2f4f7;
+    }
+    .vm-gate-input:focus { outline: 2px solid #4c8bf5; outline-offset: 1px; }
+    .vm-gate-btn {
+      padding: 12px 14px; font-size: 15px; font-weight: 600; cursor: pointer;
+      border: 0; border-radius: 8px; background: #4c8bf5; color: #fff;
+    }
+    .vm-gate-btn:hover { background: #3f79db; }
