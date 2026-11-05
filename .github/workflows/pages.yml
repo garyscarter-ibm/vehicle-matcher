@@ -48,7 +48,10 @@ jobs:
           fetch-depth: 0
 
       - name: Collect pushed product map inputs
-        run: git fetch origin '+refs/heads/*:refs/remotes/origin/*'
+        run: |
+          git fetch origin '+refs/heads/*:refs/remotes/origin/*'
+          # GCSP owns delivery facts; main owns the trusted generator and retail site.
+          git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/gcsp-poc
 
       # Only the files a browser actually asks for. The repo root also holds
       # server/, scripts/ and ~16MB of stock fixtures, none of which a static
