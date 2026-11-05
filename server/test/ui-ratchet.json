@@ -13,7 +13,8 @@
     "blocks/vehicle-matcher/modes/preview-feed.js",
     "blocks/vehicle-matcher/modes/brand-copy.js",
     "blocks/vehicle-matcher/fonts/",
-    "blocks/demo-launcher/components.js"
+    "blocks/demo-launcher/components.js",
+    "blocks/gcsp/kit/activity-timeline.js"
   ],
   "extensions": [
     ".js",
@@ -64,6 +65,11 @@
       "re": "el\\('select', 'demo-brand-control'",
       "flags": "g",
       "use": "brandSelector() (blocks/demo-launcher/components.js)"
+    },
+    "activity-timeline": {
+      "re": "el\\('section', 'gcsp-activity-timeline'",
+      "flags": "g",
+      "use": "activityTimeline({ events }) (blocks/gcsp/kit/activity-timeline.js)"
     }
   },
   "stylesheets": [
@@ -114,6 +120,14 @@
     {
       "path": "blocks/gcsp/greg/gcsp-greg.css",
       "max_lines": 38
+    },
+    {
+      "path": "blocks/gcsp/kit/activity-timeline.css",
+      "max_lines": 11
+    },
+    {
+      "path": "blocks/gcsp/activity/gcsp-activity.css",
+      "max_lines": 29
     }
   ],
   "baseline": {

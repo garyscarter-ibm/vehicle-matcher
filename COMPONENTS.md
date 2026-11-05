@@ -143,6 +143,17 @@ Looked at: `el`, `screenIntro`, `button`, `statusScreen` and `factList` (all reu
 
 Gallery: the **GCSP Greg kit** section of [`components.html`](components.html) shows `metricTile` exact, band and with a note, and `dataTable` with a long model name, a band cell and the empty state. The ratchet now also caps `blocks/gcsp/kit/gcsp-kit.css` and `blocks/gcsp/greg/gcsp-greg.css`.
 
+## GCSP activity (`blocks/gcsp/activity/`, timeline in `blocks/gcsp/kit/`)
+
+The representative activity body follows approved employee reference `a7fc178` and reuses `screenIntro`, `button`, `statusScreen`, `factList`, the merged GCSP primitive stylesheet and `mountEmployee` for its harness. `messageList` owns message selection/detail and `dataTable` owns tabular comparison; neither expresses chronological activity, so the timeline is new shared kit.
+
+| Call | Use for |
+|---|---|
+| `activityTimeline({ events, heading = 'Activity history', emptyText, level = 2 })` (`activity-timeline.js`) | A named section with an ordered list of supplied `{ id, occurredAt, label, detail? }` events. Order is retained; valid dates use `<time datetime>` and fixed UTC demo-time text. Missing/invalid dates say “Time not available”; no events say “No activity is recorded”. Text remains text. Use instead of hand-building dated activity rows. Styles live in scoped `activity-timeline.css`. No requests, sorting, inferred events or outcomes. |
+| `activityBody({ result, onRetry?, level = 1 })` (`activity-body.js`) | Representative page composition from a supplied activity-service outcome. Displays active permission separately from unavailable check evidence, paused permission/history, or unavailable projection with no stale data. Pause/Resume are disabled with their visible design-preview reason. This checkpoint owns no saved commands, offer access or custom element. Harness: `gcsp-activity.html?fixture=never-checked`, `paused` or `unavailable`. |
+
+The existing single gallery includes the timeline and all three supported body snapshots. `activity-fixtures.js` is generated through `server/test/helpers/activity-fixtures.js --write-activity-fixtures`, executing real BriefService confirmation/pause and the real reader against a tiny synthetic run; provider-unavailable is a simulated repository failure through the reader. Equality is checked by `gcsp-activity-body.test.js`. Do not replace unavailable evidence with a fake successful check/source delay or invent offer links. Both new stylesheets are capped by the ratchet; existing baselines/caps stay unchanged. Full activity behavior, embedding and all six final states remain future acceptance work.
+
 ## Not yet in the kit
 
 Hand-built in several modes (file counts at the time of writing):

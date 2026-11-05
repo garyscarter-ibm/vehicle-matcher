@@ -11,6 +11,10 @@ import { messageList } from '../gcsp/presenter/message-list.js';
 import { fixtureMessages } from '../gcsp/presenter/fixtures.js';
 import { metricTile } from '../gcsp/kit/metric-tile.js';
 import { dataTable } from '../gcsp/kit/data-table.js';
+import { activityTimeline } from '../gcsp/kit/activity-timeline.js';
+import { activityBody } from '../gcsp/activity/activity-body.js';
+import { activityFixtures } from '../gcsp/activity/activity-fixtures.js';
+import { activityEvents } from '../gcsp/activity/activity-copy.js';
 
 const browseSession = `gallery-${Date.now().toString(36)}`;
 let sessionSequence = 0;
@@ -162,6 +166,25 @@ function gregKitExamples() {
   group('dataTable: long model name and a band cell').append(dataTable({ caption: 'Stock by model line', columns, rows, id: 'gallery-greg-table' }));
   group('dataTable: empty state').append(dataTable({ caption: 'Stock by model line (empty)', columns, rows: [], emptyText: 'No stock has been released yet', id: 'gallery-greg-empty' }));
   section.append(scope);
+  return section;
+}
+
+export function activityExamples() {
+  const section = el('section', 'vm-gallery-section gcsp');
+  section.setAttribute('aria-label', 'Buddy activity');
+  section.append(el('h2', 'vm-gallery-title', 'Buddy activity'),
+    el('p', 'vm-gallery-copy', 'Synthetic snapshots from the real brief and activity services. No successful check, saved command or offer access is implied.'));
+  const timeline = el('div', 'vm');
+  timeline.append(activityTimeline({ events: activityEvents(activityFixtures.snapshots.paused.value.stateChanges), level: 3 }));
+  section.append(timeline);
+  for (const [name, label] of [['never-checked', 'Active permission, check evidence unavailable'], ['paused', 'Paused'], ['unavailable', 'Activity unavailable']]) {
+    const example = el('div', 'vm-gallery-gcsp-group');
+    const status = el('p', 'gcsp-activity-preview-status'); status.setAttribute('role', 'status');
+    example.append(el('h3', 'vm-gallery-gcsp-title', label),
+      activityBody({ result: structuredClone(activityFixtures.snapshots[name]), level: 4,
+        onRetry: () => { status.textContent = 'Synthetic preview reloaded. The simulated outage is still present.'; } }), status);
+    section.append(example);
+  }
   return section;
 }
 
@@ -332,7 +355,7 @@ export function mountComponentGallery(root) {
   exactControls.append(legacyButton, refineButton, exactReset);
   exact.append(exactControls, exactCards);
   sections.append(exact);
-  root.append(heading, sections, employeeDecisionExample(), employeeControlsExample(), gcspExamples(), gregKitExamples(), launcherExamples());
+  root.append(heading, sections, employeeDecisionExample(), employeeControlsExample(), gcspExamples(), gregKitExamples(), launcherExamples(), activityExamples());
 
   function dispatchBrowse(type, target, reason) {
     const result = reduceFeedback(browseFeedback, {
