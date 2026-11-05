@@ -455,6 +455,14 @@ FUCQ-97 adds the presenter-only route `GET /api/gcsp/presenter/outbox` (`createO
 
 ## Atomic buddy hold producer · FUCQ-100 checkpoint
 
+The immutable quote additively pins `eligibility.currentCarComparison` from the unique current contract
+already linked to the authenticated employee/slot/scheme. It contains INTERNAL contract/source/revision
+binding and a separately allowlisted display model, dated provenance and explicit unknown comparisons.
+No current VIN/configuration/specification or points are inferred from the model. Public access projects
+the display only; `comparisonAvailable:false` preserves the actual source gap and FUCQ-105's unfinished
+comparison acceptance. Both local and remote producers reuse this quote. [Shape and proof](buddy-current-car-comparison.md):
+19projector/security +193fresh affected boundaries, no skips;35clean resource manifests.
+
 Remote mode requires `execute(operation)` and `reconcile(operation)`. A genuinely authenticated
 allocation first persists the quote, shared claim-pending hold/claim and a `buddy-claim` operation;
 its original command result stays `pending`. Only a matching confirmed claim with freshly valid

@@ -3,7 +3,17 @@
 FUCQ-100 / DEV-2026-11-04-060, 5 November 2026. Proposed bounded memory proof; no proof allocation
 or result is claimed. The dispatcher reviews the exact source and resource plan before execution.
 
-Freeze the owned buddy product at local `524294d5c82325fcb7da5041afccffae6656c344`. Publication remains
+Refreeze the final owned quote producer after the current-car metadata checkpoint; its owning local
+commit is reported to the dispatcher with these exact source identities:
+
+| Owned source | SHA-256 |
+|---|---|
+| `server/gcsp/offers/buddy-hold.js` | `b9f1a9be9cf42552a56313492bf0703b49ed715ffe2059f477ee11637c44b3d6` |
+| `server/gcsp/offers/current-car-comparison.js` | `c5aaf8b2e3123301d50f3dade21e89e4f88abf12ede4e2c7ed801adbc56099cd` |
+| `server/gcsp/offers/buddy-remote.js` | `0284045ab38c22c305019ad4a560724aa233e830c6c37186d5661da430c59e01` |
+
+This supersedes the initial524294dproduct pin. Current-car19/19 + freshly selected193/193 boundaries
+pass at these identities; `parent-current-car-audit.json` verifies35clean manifests. Publication remains
 blocked by the shared GitHub `commit_refs_rules` failure; last published100checkpoint is `41f995f`.
 Do not alter the manual story/worktree, paused allocator, repository/schema, identity, policy, BriefService
 or central composition. No native database, credentials, HTTP listener, network or full suite.
@@ -31,7 +41,8 @@ relative resolution, transform its source, copy a dependency tree or make a syml
 hashes before loading and after the run. Retain the exact existing named read-only pg/jsdom loader
 entries and their device/inode/hash checks. No install or alternate module fallback is allowed.
 
-Add a dedicated proof file under `server/test/`, admitted only with the proof variant. One fresh runtime
+Add `server/test/gcsp-buddy-manual-services.proof.mjs`, selected explicitly by the admitted proof variant
+(the ordinary old-branch test glob does not imply that its absent manual source is integrated). One fresh runtime
 per case seeds real authenticated employee/slot/brief/manual context and exact released stock. Prepare
 the actual manual draft through readAccount/saveDraft, then get browseStock.claimInput from the real
 manual service. Capture current buddy candidate revisions through repository reads. Cases:

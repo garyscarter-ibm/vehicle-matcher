@@ -9,7 +9,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T23:27:15Z",
+      "observed_at": "2026-11-05T23:33:16Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-100",
       "source_observed_at": "2026-11-05T23:00:25Z",
       "branch": "dev/DEV-2026-11-04-060",
@@ -18,10 +18,10 @@
           "name": "FUCQ-100 story lead",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-05T23:21:29.664685+00:00",
-          "expires_at": "2026-11-05T23:36:29.664685+00:00",
+          "observed_at": "2026-11-05T23:33:15.990484+00:00",
+          "expires_at": "2026-11-05T23:48:15.990484+00:00",
           "source": "Codex chat 01a1adbf-732b-7830-a17a-cf2b2f95a092 observed this active turn",
-          "status": "active; owned remote lifecycle implementation, seam and token publication pending shared Git window"
+          "status": "active; current-car quote metadata validated, actual66 proof plan awaits separate grant; publication blocked by reported GitHub rule failure"
         }
       ],
       "slices": [
@@ -29,8 +29,8 @@
           "id": "atomic-producer",
           "status": "complete",
           "title": "Atomic hold, quote, offer and outbox",
-          "observed_at": "2026-11-05T23:01:19Z",
-          "evidence": "Lead reviewed/pushed5451ec3:57/57 atomic/receipt;80/82 repository/outbox/case,2native skips. Delivery:_dev/in-progress/DEV-2026-11-04-060.md;shared test-runs/fucq100/parent-atomic-checkpoint-audit.json. Actual allocator/manual gates separately planned."
+          "observed_at": "2026-11-05T23:33:16Z",
+          "evidence": "Lead reviewed original5451ec3 atomic57/57 and80/82 repository/outbox/case(2native skips). Additive current-car metadata pin19/19 +193/193 fresh producer/custody/clock boundaries,35manifest/dependency audit test-runs/fucq100/parent-current-car-audit.json. Unknown current specs/points explicit; no full105comparison claim. docs/gcsp/buddy-current-car-comparison.md. Local-only while publishing blocked."
         },
         {
           "id": "notification-custody",
@@ -57,8 +57,8 @@
           "id": "remote-lifecycle",
           "status": "complete",
           "title": "Remote claim/release intent and reconciliation",
-          "observed_at": "2026-11-05T23:27:15Z",
-          "evidence": "Parent reviewed49/49 synthetic remote protocol +142/142 unchanged affected boundaries; strict scoped c42ee0b89a59f647a10e529a69d57d327920a51b24cf6c64a4ffac63d0257fdb;32manifest/dependency audit shared test-runs/fucq100/parent-remote-audit.json. Durable authentic intent, safe read, fresh shared-kernel validation, reconciliation/release/expiry and rollback/race guards. docs/gcsp/buddy-remote-plan.md. Local checkpoint only while GitHub commit_refs_rules blocks publication; actual live remote/merged"
+          "observed_at": "2026-11-05T23:33:16Z",
+          "evidence": "Lead reviewed524294d remote49/49 +142/142 boundaries. Final current-car quote pin adds1remote case and revalidates193/193 fresh affected boundaries,35clean manifests/deps test-runs/fucq100/parent-current-car-audit.json. Internal authentic stored intent/reconciliation/release/expiry module complete; actual producer consumer, manual, central/runtime and full gates separately planned. docs/gcsp/buddy-remote-plan.md. Local-only; publishing blocked."
         },
         {
           "id": "manual-exclusivity",

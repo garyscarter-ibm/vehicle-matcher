@@ -113,6 +113,11 @@ function offered(f) {
   const offer = f.store.state.tables.offers[0]; const job = f.store.state.tables.notification_outbox[0];
   assert.equal(offer.expiresAt, operation(f).payload.expiresAt);
   assert.equal(offer.quoteId, operation(f).payload.quoteId); assert.equal(offer.state, 'active');
+  const currentCar = operation(f).payload.quote.eligibility.currentCarComparison;
+  assert.equal(currentCar.display.state, 'partial'); assert.equal(currentCar.comparisonAvailable, false);
+  assert.equal(currentCar.display.model, 'Fictional BMW 320i Touring');
+  assert.equal(currentCar.binding.employeeVersion, f.input.expectedEmployeeVersion);
+  assert.equal(currentCar.binding.slotVersion, f.input.expectedSlotVersion);
   const url = new URL(job.payload.offerLink, 'https://demo.invalid');
   const token = new URLSearchParams(url.hash.slice(1)).get('token');
   assert.equal(url.searchParams.get('runId'), f.context.runId);
@@ -328,6 +333,20 @@ test('fresh confirmation after a small clock advance accepts the original still-
   await advance(f, new Date(Date.parse(time.now) + 1000).toISOString());
   f.control.onReconcile = (op) => acknowledgement(op); assert.equal((await f.service.start()).status, 'ok');
   assert.equal((await tick(f)).status, 'ok'); offered(f); assert.equal(f.store.state.tables.offers[0].expiresAt, deadline);
+});
+
+test('remote intent and confirmed offer retain the same immutable current-car comparison snapshot', async (t) => {
+  const f = await setup(t); await f.allocate();
+  const pinned = structuredClone(operation(f).payload.quote.eligibility.currentCarComparison);
+  assert.equal(pinned.display.state, 'partial'); assert.equal(pinned.comparisonAvailable, false);
+  f.control.onReconcile = (op) => acknowledgement(op); assert.equal((await f.service.start()).status, 'ok');
+  assert.equal((await tick(f)).status, 'ok'); offered(f);
+  const employee = f.store.state.tables.employees.find((row) => row.employeeId === f.context.employeeId);
+  const contract = structuredClone(employee.contract); contract.manualContext.contracts[0].model = 'New current source model';
+  await patch(f, 'employees', { contract });
+  const quote = (await f.repository.read(f.context, ref(f, 'quotes', { quoteId: operation(f).payload.quoteId }))).value;
+  assert.deepEqual(quote.eligibility.currentCarComparison, pinned);
+  assert.deepEqual(operation(f).payload.quote.eligibility.currentCarComparison, pinned);
 });
 
 test('release not-found reconciles before retry and retains one stable release identity', async (t) => {

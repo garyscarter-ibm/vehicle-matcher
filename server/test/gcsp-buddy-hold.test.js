@@ -71,6 +71,11 @@ test('atomic local allocation pins truthful quote, hold, offer and one notificat
   assert.equal(quote.briefVersion, 1); assert.equal(quote.policyVersion, f.context.policyVersion);
   assert.equal(quote.facts.sourceKeys.stockId, f.car.orderUuid); assert.equal(quote.eligibility.decision.gateStatus, 'eligible');
   assert.equal(quote.terms.points.value > 0, true); assert.equal(quote.eligibility.employeeVersion, f.input.expectedEmployeeVersion);
+  const currentCar = quote.eligibility.currentCarComparison;
+  assert.equal(currentCar.comparisonAvailable, false); assert.equal(currentCar.display.state, 'partial');
+  assert.equal(currentCar.display.model, 'Fictional BMW 320i Touring');
+  assert.equal(currentCar.binding.employeeVersion, f.input.expectedEmployeeVersion);
+  assert.equal(currentCar.binding.slotVersion, f.input.expectedSlotVersion);
   const timing = await f.policy.getAssumption('hold.buddy.durationSeconds', { runId: f.context.runId,
     asOf: allocated.value.now, policyVersion: f.context.policyVersion });
   assert.equal(Date.parse(hold.expiresAt) - Date.parse(allocated.value.now), timing.value.value * 1000);
@@ -103,6 +108,17 @@ test('token is cryptographic, offer/run/environment bound and absent from respon
   assert.equal(JSON.stringify(offer).includes(token), false);
   const another = mintOfferToken(binding);
   assert.equal(another.tokenHash === offer.tokenHash, false);
+});
+
+test('local quote preserves current-car metadata after the authenticated employee source changes', async (t) => {
+  const f = await setup(t); const original = await f.service.allocate(f.context, f.input); assert.equal(original.status, 'ok');
+  const employee = (await f.repository.read(f.context, rowRef(f, 'employees', { employeeId: f.context.employeeId }))).value;
+  const changed = structuredClone(employee.contract);
+  changed.manualContext.contracts[0].model = 'Revised current car';
+  assert.equal((await patch(f, 'employees', { employeeId: f.context.employeeId }, { contract: changed })).status, 'ok');
+  const quote = (await f.repository.read(f.context, rowRef(f, 'quotes', { quoteId: original.value.quote.quoteId }))).value;
+  assert.deepEqual(quote, original.value.quote);
+  assert.equal(quote.eligibility.currentCarComparison.display.model, 'Fictional BMW 320i Touring');
 });
 
 test('plaintext token remains only in the outbox link, including repository receipts', async (t) => {

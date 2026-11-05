@@ -3,6 +3,7 @@ import { BriefService } from '../brief/index.js';
 import { createRepositoryManualPorts } from '../manual-context/ports.js';
 import { mintOfferToken } from './offer-token.js';
 import { BuddyRemoteLifecycle } from './buddy-remote.js';
+import { createCurrentCarComparison } from './current-car-comparison.js';
 
 const fields = ['commandId', 'orderUuid', 'expectedBriefVersion', 'expectedStockVersion', 'expectedSlotVersion', 'expectedEmployeeVersion'];
 const claimFields = ['runId', 'eventId', 'operationId', 'employeeId', 'entitlementSlotId', 'renewalId', 'orderUuid',
@@ -286,6 +287,7 @@ export class BuddyHoldService {
       const quote = await tx.insert('quotes', { runId: context.runId, quoteId, orderUuid: input.orderUuid,
         employeeId: context.employeeId, entitlementSlotId: context.entitlementSlotId, configurationId: stock.value.configurationId,
         facts: decision.snapshot, eligibility: { ...decision.evidence.eligibility, decision,
+          currentCarComparison: createCurrentCarComparison({ context, employee: employee.value, slot: slot.value, now: time.value.now }),
           employeeVersion: employee.value.version, slotVersion: slot.value.version, stockVersion: stock.value.version,
           holdTiming: duration.value, holdRules: rules.map((rule) => rule.value) }, terms: decision.terms, briefVersion: input.expectedBriefVersion,
         policyVersion: context.policyVersion, quotedAt: time.value.now, validUntil: decision.terms.validUntil,
