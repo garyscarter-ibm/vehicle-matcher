@@ -19,6 +19,11 @@ shared = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs')
 run = 'fucq103-backend-' + uuid.uuid4().hex
 mode = sys.argv[1] if len(sys.argv) > 1 else 'publish'
 checks = {
+    'learning-registration': ['server/test/gcsp-policy-learning-adoption.test.js', 'server/test/gcsp-policy-adoption.test.js', 'server/test/gcsp-greg-publish-editor.test.js', 'server/test/gcsp-runtime-publication.test.js'],
+    'publish-editor': ['server/test/gcsp-greg-publish-editor.test.js', 'server/test/gcsp-policy-adoption.test.js', 'server/test/gcsp-greg-publish.test.js'],
+    'publish-ui': ['server/test/gcsp-greg-publish-render.test.js'],
+    'publish-ui-callers': ['server/test/gcsp-greg-dashboard.test.js', 'server/test/shared-kit-contracts.test.js', 'server/test/gcsp-presenter-controls-render.test.js', 'server/test/gcsp-manual-setup-render.test.js'],
+    'publish-ui-ratchet': ['server/test/ui-ratchet.test.js', 'server/test/render.test.js'],
     'adoption': ['server/test/gcsp-policy-adoption.test.js'],
     'runtime-publication': ['server/test/gcsp-runtime-publication.test.js'],
     'runtime-callers': ['server/test/gcsp-brief-runtime.test.js', 'server/test/gcsp-manual-setup-render.test.js'],
@@ -55,18 +60,31 @@ report = {'run': run, 'project': str(project), 'command': command, 'scope': 'sco
           'excluded': 'Full suite, PostgreSQL, browser and external integration; parent owns integration checkpoint.',
           'supervisor': str(Path(__file__).resolve()), 'manifest': str(scratch.manifest)}
 report['impactMap'] = {
+    'Exact approved FUCQ-113 definition registry / missing-key adoption / same-provider ordinary context and readback': ['server/test/gcsp-policy-learning-adoption.test.js', 'server/test/gcsp-policy-adoption.test.js', 'server/test/gcsp-greg-publish-editor.test.js', 'server/test/gcsp-runtime-publication.test.js'],
+    'Greg editor reviewed presentation bundle / optional field ranges / retained exact validation and pinned rows': ['server/test/gcsp-greg-publish-editor.test.js', 'server/test/gcsp-greg-publish-render.test.js', 'server/test/gcsp-greg-publish.test.js'],
     'PolicyService.adoptReviewedAssumptions / reviewed definitions / successor validation': ['server/test/gcsp-policy-adoption.test.js'],
     'PolicyService.withPublicationPorts / createGcspRuntime.dependencies / provider ownership': ['server/test/gcsp-runtime-publication.test.js', 'server/test/gcsp-brief-runtime.test.js', 'server/test/gcsp-manual-setup-render.test.js'],
     'prepareSuccessor / completePublication / existing publisher and typed reads': ['server/test/gcsp-policy-versions.test.js', 'server/test/gcsp-policy-service.test.js', 'server/test/gcsp-greg-publish.test.js', 'server/test/gcsp-greg-demand.test.js'],
     'activateRunPolicy / identity wall clock / retained presenter clock compatibility': ['server/test/gcsp-policy-activation.test.js', 'server/test/gcsp-identity.test.js', 'server/test/gcsp-clock-reset.test.js', 'server/test/gcsp-presenter-controls.test.js'],
 }
-source_paths = ['server/gcsp/runtime.js', 'server/test/helpers/gcsp-reviewed-runtime.js', 'server/index.js', 'server/gcsp/policy/activation.js', 'server/test/helpers/greg-publish-run.js', 'server/test/helpers/employee-recommendation-http.js', 'server/gcsp/policy/index.js', 'server/gcsp/policy/publish.js', 'server/scenarios/employee/index.js', *checks[mode],
+source_paths = ['server/gcsp/policy/reviewed-definitions.js', 'server/gcsp/runtime.js', 'server/test/helpers/gcsp-reviewed-runtime.js', 'server/index.js', 'server/gcsp/policy/activation.js', 'server/test/helpers/greg-publish-run.js', 'server/test/helpers/employee-recommendation-http.js', 'server/gcsp/policy/index.js', 'server/gcsp/policy/publish.js', 'server/scenarios/employee/index.js', *checks[mode],
                 *[str(p.relative_to(project)) for p in (project / 'server/gcsp/greg/publish').glob('*.js')]]
 source_paths.extend([str(Path(__file__).relative_to(project)), '_tools/test_resources.py', 'server/gcsp/greg/index.js', 'server/gcsp/policy/seed-v1.json',
                      'server/test/helpers/greg-demand-run.js', 'server/test/helpers/employee-recommendation.js'])
 source_paths.extend(str(path.relative_to(project)) for path in (project / 'server/gcsp/policy/reviewed').glob('*.json'))
+source_paths.append('server/gcsp/predict/records/policy-definitions.json')
 for directory in ('server/gcsp/policy', 'server/gcsp/brief', 'server/gcsp/manual-context', 'server/gcsp/presenter-controls', 'server/gcsp/fixtures', 'server/gcsp/repository', 'server/gcsp/identity', 'server/gcsp/clock', 'server/gcsp/recommendation', 'server/scenarios/employee'):
     source_paths.extend(str(path.relative_to(project)) for path in (project / directory).glob('*.js'))
+if mode.startswith('publish-ui'):
+    source_paths.extend(str(p.relative_to(project)) for folder in ('blocks/gcsp/greg', 'blocks/gcsp/kit', 'blocks/gcsp/shell', 'blocks/gcsp/presenter-controls', 'blocks/gcsp/presenter', 'blocks/gcsp/manual-setup', 'blocks/gcsp/account') for p in (project / folder).rglob('*') if p.is_file() and p.suffix in ('.js', '.css'))
+    source_paths.extend(['blocks/vehicle-matcher/ui.js', 'blocks/vehicle-matcher/modes/question-ui.js', 'blocks/vehicle-matcher/question-controls.css', 'blocks/vehicle-matcher/component-gallery.js', 'components.html', 'gcsp-greg.html', 'server/test/ui-ratchet.json', 'server/test/helpers/gcsp-reviewed-runtime.js'])
+    report['impact'] = 'Greg publish HTTP adapter/panel/custom element; actual HTTP dashboard composition and existing caseQueue/presenter caller boundaries; additive component gallery/CSS ratchet and user-copy rules. No browser or native proof.'
+    report['impactMap'] = {
+        'publish/http-adapter request/outcome validation / panel state, native identity, preview gate, stable retry / callback-owned single sliders and exact-value synchronization / standalone element lifecycle': ['server/test/gcsp-greg-publish-render.test.js'],
+        'Greg HTTP adapter publish port / mountGregDashboard reserved region / custom element ready-remount compatibility': ['server/test/gcsp-greg-publish-render.test.js', 'server/test/gcsp-greg-dashboard.test.js', 'server/test/gcsp-presenter-controls-render.test.js'],
+        'shared form/kit imports, gallery and additive publish CSS': ['server/test/shared-kit-contracts.test.js', 'server/test/ui-ratchet.test.js', 'server/test/render.test.js'],
+        'errorSummary optional selection identity / retained default focus routing / manual setup and presenter callers': ['server/test/gcsp-greg-publish-render.test.js', 'server/test/gcsp-manual-setup-render.test.js', 'server/test/gcsp-presenter-controls-render.test.js'],
+    }
 source_paths = sorted(set(source_paths))
 report['pins'] = {name: hashlib.sha256((project / name).read_bytes()).hexdigest() for name in source_paths}
 scratch.record.update(supervisorFinalizer=__file__, command=command, impact=report['impact'], retainedDependencies=[])

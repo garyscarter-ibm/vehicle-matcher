@@ -168,8 +168,8 @@ already includes `clock.presenter.stepSeconds`. It does not prove adoption for s
 policies missing that key. FUCQ-126's integrated correction keeps core clock/reopen usable without the presenter step
 assumption; presenter controls remain explicitly unavailable until a sanctioned successor
 adopts the missing key. The reviewed server-only operation below closes that gate for the
-presenter bundle. FUCQ-113 can integrate future keyed assumptions at the same registry seam
-once the exact canonical artifact has been reviewed; this checkpoint registers no learning bundle.
+presenter bundle. That earlier checkpoint registered no learning bundle. The exact FUCQ-113
+artifact is now registered at the same seam, as recorded below.
 
 ## Reviewed assumption adoption and delivered runtime
 
@@ -210,5 +210,60 @@ clock/reopen and explicit HTTP unavailability, adopts the reviewed key, and then
 same cookie to read controls and step the clock. A separate proof uses the actual default
 memory runtime's returned dependencies through buildServer for Greg read/preview/publish
 and fresh employee points, preserving prior calculated quote/hold/offer history. No manually
-substituted publication service stands in for runtime composition. Native durability, UI,
-browser/full-suite and the future FUCQ-113 registry remain outside this scoped evidence.
+substituted publication service stands in for runtime composition. Native durability and
+browser/full-suite proof remain outside that runtime checkpoint. The subsequent UI and
+FUCQ-113 registration checkpoints follow.
+
+## Publish panel and reviewed interaction ranges
+
+`blocks/gcsp/greg/publish/` adds the pure HTTP adapter, native shared-kit panel and
+`<gcsp-greg-publish>` registration. Actual routes are `/api/gcsp/greg/policy`,
+`/api/gcsp/greg/policy/preview` and `/api/gcsp/greg/policy/publish`.
+`createGregHttpAdapter().publish` composes the panel into the existing dashboard region,
+including the presenter's programmatic workspace. Named demand fixtures never select live
+policy. The gallery is an explicitly labelled synthetic interaction example only.
+
+Edit invalidates the preview; Publish requires the reviewed current input. Uncertain and
+accepted/pending publication retain the original command, version, effective instant and
+changes for an identical retry. A bubbling/composed `gcsp:policy-published` refreshes demand
+without remounting the panel. Native inputs retain identity through edits and requests;
+shared field errors and the keyboard-focusable summary protect invalid integer input.
+
+Root-authorized range reconciliation, 5 November: immutable reviewed bundle
+`greg-publish-editor-v1` adds only `greg.publish.editor.v1` through the existing server-only
+adoption operation. It assumes price slider range 0..4000 points/month (the current canonical
+rows are 800..1900, covering about twice the largest), weight range 0..10 around neutral 1,
+and integer step 1. The bundle includes source/date/basis/assumed provenance and its digest.
+These are revisable presentation ranges, distinct from legal nonnegative safe-integer bounds.
+There is no seed mutation, arbitrary-key editor or browser adoption action.
+
+`readPolicy` obtains the optional range entry through its PolicyService snapshot and projects
+`presentationRange: { minimum, maximum, step, assumptionKey, source, sourceDate, basis, status, unit }`
+on the corresponding editable fields. Missing/invalid ranges keep exact numeric editing
+available with an explicit numeric-only message. The panel uses callback-owned
+`renderRangeSlider(single: true)` from the shared kit and the shared `cardinal` helper.
+Sliders and exact inputs synchronize. An exact value outside the presentation range hides
+the slider with a retained-value explanation; it is never clamped, rewritten or rejected
+merely for being outside that range. Changing the one canonical range changes all projected
+controls; prior policy snapshots and pinned rows stay unchanged.
+
+Scoped panel/adapter/real-runtime HTTP and range-contract evidence, and the root-run browser
+walkthrough, are recorded under `evidence/fucq103/`. No browser or full-suite completion
+claim is made by the implementer.
+
+## Exact reviewed FUCQ-113 registration checkpoint
+
+The static registry also validates and deeply freezes `fucq113-learning-v1`, revision
+`learning-definitions.v1`, from `server/gcsp/predict/records/policy-definitions.json`.
+The bytes are copied unchanged from reviewed source commit
+`2fd445d717d05ae0d2172eba2a9021efe5285729`, with SHA-256
+`c083ed58abcde595ac0cbf077b319b9102795506efb736c980d5f0cdba840143` and canonical
+definition digest `a49f54884322f5993faf510aa8f5cea6e4a9c02e9fae2d2ddfefd350a69d7782`.
+Both existing presenter and editor registrations remain available; seed-v1 is unchanged.
+
+An intentional existing server-only adoption command can add the seven missing canonical
+learning keys. The same-provider runtime proof checks immutable retained records, preserved
+existing keys and their provenance, ordinary same-cookie context activation, and canonical
+PolicyService readback. The supervisor explicitly pins the JSON outside the policy/reviewed
+directory. No generator, producer or corpus source is imported, and this registration does
+not claim FUCQ-113 producer/corpus acceptance or story completion.

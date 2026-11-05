@@ -16,7 +16,18 @@ const unavailable = () => result('unavailable', { code: 'publish-source-unavaila
 const effective = (row, now) => Date.parse(row.effectiveFrom) <= Date.parse(now)
   && (row.effectiveTo === undefined || Date.parse(now) < Date.parse(row.effectiveTo));
 const provenance = (row) => Object.fromEntries(['source', 'sourceDate', 'basis', 'status', 'unit'].map((key) => [key, row[key]]));
+const editorRanges = (seed, now) => {
+  const row = seed.assumptions.find((entry) => entry.key === 'greg.publish.editor.v1' && effective(entry, now));
+  if (!row) return {};
+  return Object.fromEntries(['price', 'weight'].flatMap((kind) => {
+    const range = row.value?.[kind];
+    return range && ['minimum', 'maximum', 'step'].every((key) => Number.isSafeInteger(range[key]))
+      && range.minimum >= 0 && range.maximum > range.minimum && range.step === 1
+      ? [[kind, { ...range, assumptionKey: row.key, ...provenance(row) }]] : [];
+  }));
+};
 const fields = (seed, now) => {
+  const ranges = editorRanges(seed, now);
   const calibration = seed.assumptions.find((row) => row.key === RECOMMENDATION && effective(row, now));
   if (!calibration) throw Error('Missing recommendation policy');
   const keys = Object.keys(calibration.value.preferences);
@@ -25,9 +36,9 @@ const fields = (seed, now) => {
   if (!only(weights, keys) || Object.keys(weights).length !== keys.length
     || keys.some((key) => !Number.isSafeInteger(weights[key]) || weights[key] < 0)) throw Error('Invalid weights');
   return [...seed.pricePlans.filter((row) => effective(row, now)).map((row) => ({ id: `price:${row.key}`,
-    kind: 'price', key: row.key, value: row.monthlyPoints, ...provenance(row), schemeId: row.schemeId,
+    kind: 'price', ...(ranges.price ? { presentationRange: ranges.price } : {}), key: row.key, value: row.monthlyPoints, ...provenance(row), schemeId: row.schemeId,
     ...(row.configurationId ? { configurationId: row.configurationId } : { matchField: row.matchField, matchValue: row.matchValue }), step: 1, minimum: 0 })),
-  ...keys.map((key) => ({ id: `weight:${key}`, kind: 'weight', key, value: weights[key],
+  ...keys.map((key) => ({ id: `weight:${key}`, kind: 'weight', ...(ranges.weight ? { presentationRange: ranges.weight } : {}), key, value: weights[key],
     ...provenance(calibration), unit: 'relative-weight', step: 1, minimum: 0, adoptionRequired }))];
 };
 function changesFor(seed, now, input, publishing) {

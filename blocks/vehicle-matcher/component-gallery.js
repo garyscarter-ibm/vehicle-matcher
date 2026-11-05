@@ -1,3 +1,4 @@
+import { gregPublishExample } from '../gcsp/greg/publish/gallery.js';
 import { experienceChoice, brandSelector } from '../demo-launcher/components.js';
 import { renderOptionList, renderRangeSlider } from './modes/question-ui.js';
 import { createPreviewFeed } from './modes/preview-feed.js';
@@ -365,7 +366,7 @@ export function mountComponentGallery(root) {
   exactControls.append(legacyButton, refineButton, exactReset);
   exact.append(exactControls, exactCards);
   sections.append(exact);
-  root.append(heading, sections, employeeDecisionExample(), employeeControlsExample(), gcspExamples(), gregKitExamples(), launcherExamples(), formControlsExample());
+  root.append(heading, sections, employeeDecisionExample(), employeeControlsExample(), gcspExamples(), gregKitExamples(), gregPublishExample(), launcherExamples(), formControlsExample());
 
   function dispatchBrowse(type, target, reason) {
     const result = reduceFeedback(browseFeedback, {

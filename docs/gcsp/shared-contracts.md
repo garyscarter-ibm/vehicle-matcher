@@ -373,6 +373,12 @@ cover exactly the registered preference keys; missing/extra keys fail explicitly
 not a second editable policy map. Zero weight contributes no aggregate importance. No contributing importance produces an
 unknown fit score, never an invented perfect fit. Gate decisions precede weighting and cannot be overridden by it.
 
+Optional reviewed `greg.publish.editor.v1` supplies assumed per-kind slider presentation ranges, adopted through
+server-only `greg-publish-editor-v1`. `readPolicy` projects each range with its assumption key and provenance.
+These ranges never narrow the legal safe-integer validation above. Missing/invalid ranges keep exact numeric
+editing available; exact values outside a range remain unchanged and explicitly explained. The shared single
+slider is callback-owned, and the browser supplies no policy ranges/defaults. See `greg-publish.md`.
+
 The server-only snapshot read supports a disposable what-if PolicyService over the same validated source. A preview
 returns active and draft aggregates, their differences and explicit preview status without writing a policy, run,
 brief, offer or quote. Publication sends the permitted patches and provenance through `publishPolicyVersion` and

@@ -1,3 +1,4 @@
+import './publish/register.js';
 // Harness only: ?fixture= picks a named fixture. The element itself never reads location.
 import { el } from '../../vehicle-matcher/ui.js';
 import { defineGcspGregDashboard } from './gcsp-greg.js';

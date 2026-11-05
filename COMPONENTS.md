@@ -198,7 +198,7 @@ Looked at `renderOptionList` and `renderRangeSlider`: they supply question butto
 | Call | Use for |
 |---|---|
 | `labelledField({ id, label, control, hint, error })` | Associates a unique id with a native control, label, optional hint and inline error. Returns `{ root, setError }`; updates preserve the control and manage `aria-invalid` and `aria-describedby`. |
-| `errorSummary({ id, title, errors: [{ id, message }], onSelect })` | Links validation messages to controls. Returns `{ root, update, focus }`; focus targets its heading and links target the relevant control. |
+| `errorSummary({ id, title, errors: [{ id, message, selectionId? }], onSelect })` | Links validation messages to controls. Returns `{ root, update, focus }`; focus targets its heading and links target the real control ID. Optional `onSelect(id, selectionId)` distinguishes multiple rows edited through one native control while retaining that valid focus target. |
 
 `mountManualSetup(root, { adapter, brand, hint, onBack, onSupport, commandId })` and `<gcsp-manual-setup>` compose the employee shell, shared forms and existing heading/button/status/facts/typed terms. Native controls remain mounted through input and asynchronous state updates. The controller supplies permitted choices, source facts and errors. `gcsp-manual-setup.html` loads the authenticated draft directly; `mountManualJourney` connects account journey hints to a fresh trusted setup read and saves valid choices before Back. The bubbling/composed `gcsp:setup-ready` event carries exact mode/old-contract/slot/scheme/draft/context hints after a successful complete save and current availability; it creates no claim.
 
@@ -214,3 +214,19 @@ Component plan: reuse `button`, `factList`, `statusScreen` and `labelledField`; 
 | `mountPresenterWorkspace(host, options)` | Reads actual server context and mounts the account or Greg HTTP surface. Harness `gcsp-presenter.html`; never selects a principal from URL/fixtures. |
 
 Styles live in `presenter-controls/presenter-controls.css`, imported by the shared shell, with a ratchet cap. The GCSP gallery includes an explicitly isolated pending/missing-release example; it makes no release or scenario capability claim. Functional tests: `server/test/gcsp-presenter-controls-render.test.js`, shell/CSP checks and UI ratchet. Browser evidence remains a separate gate.
+
+## Greg policy preview and publish (`blocks/gcsp/greg/publish/`)
+
+`mountGregPublish(root, { adapter, commandId?, signal? })` composes `screenIntro`, `button`, `statusScreen`,
+`factList`, `labelledField`, `errorSummary`, `dataTable` and `metricTile`. Import `publish.css` with the
+shared GCSP kit. `defineGcspGregPublish()` registers `<gcsp-greg-publish>`; its `adapter` property accepts
+the same readPolicy/preview/publish port. Native points selector/input, optional shared `renderRangeSlider(single: true)` controls and projected weight inputs remain
+mounted through edits and requests. The server supplies values, units and provenance; no policy defaults
+are invented by the browser. Server-projected presentation ranges are explicitly assumed; exact legal values outside them are retained and explained without clamping. Missing ranges keep numeric-only editing. Edit invalidates preview. Publication requires an explicit current preview;
+uncertain or pending publication retains the identical original command for a safe retry.
+
+The actual Greg HTTP adapter exposes `publish`, composed into the dashboard's reserved publish region
+by both the custom element and programmatic `publishAdapter` option. A bubbling/composed
+`gcsp:policy-published` event refreshes dashboard figures without remounting the panel. Named demand
+fixtures never load live policy. The single gallery includes a clearly labelled synthetic interaction
+example; it provides no evidence of live integration. Browser evidence remains required.

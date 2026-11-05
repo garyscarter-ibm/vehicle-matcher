@@ -1,8 +1,10 @@
-# FUCQ-103 backend scoped evidence
+# FUCQ-103 scoped implementation evidence
 
 Backend service, activation and runtime slices: trusted editable projection, real no-write demand/fit preview,
 immutable publication, narrow legacy weight adoption, unchanged pinned terms and strict
-route definitions. A second slice adds domain-time activation and ordinary HTTP consumption. No screen, live BMW or native database proof is claimed.
+route definitions. Later slices add domain-time activation, ordinary HTTP consumption,
+the integrated publish panel and exact reviewed learning-definition registration. No rendered
+browser screen, live BMW or native database proof is claimed by this implementer.
 `../../greg-publish.md` records the presentation contract and remaining integration work.
 
 Run from the assigned worktree with `python3 docs/gcsp/evidence/fucq103/scoped-supervisor.py <mode>`.
@@ -179,3 +181,99 @@ filesystem absence/dependency preservation verified. The incoming shared-base ex
 delta at `f690a36664a78f29aadce17eea14b68f65e72297` is the isolated live imagery
 verification script and its tests; it does not change this checkpoint source or callers.
 No extra broad suite is selected for story/claim/evidence metadata.
+
+## Publish UI, reviewed ranges and exact learning registration
+
+Working base: `af2ceae11714c5c371e98aac9134dc29950396b0`; assigned branch
+`dev/DEV-2026-11-04-066`. This is a scoped implementation handoff; the story remains
+building and parent owns review, commit/push, map/queue and integration admission.
+
+The real Greg HTTP adapter exposes the publish adapter on its existing reserved dashboard
+region, including the programmatic presenter workspace. `blocks/gcsp/greg/publish/` adds
+strict HTTP validation, shared-kit controls, preview comparison, intentional publishing,
+unchanged-command uncertainty/pending retry, custom-element lifecycle and a labelled
+synthetic component-gallery example. Existing caseQueue composition is retained. A completed
+publication refreshes demand without replacing the panel's native controls. An invalid
+offselected price row is selected and focused from its summary link. Each summary entry
+has a distinct row selection identity while its href remains the real shared input ID;
+the optional second shared `errorSummary.onSelect` argument preserves existing callers.
+
+Root-authorized immutable `greg-publish-editor-v1` supplies assumed slider ranges through
+the existing server-only adoption operation: price 0..4000 points/month and weight 0..10,
+step 1. There is no seed change. Server projections retain range provenance. Shared
+`renderRangeSlider(single: true)` and `cardinal` provide the interaction; exact nonnegative
+safe integers remain legal outside presentation ranges and are never clamped. Price
+switching updates visible/accessibility labels, readout units, bounds and provenance while
+retaining native inputs. Missing range assumptions retain exact numeric editing.
+
+The exact approved FUCQ-113 JSON was copied unchanged from source commit
+`2fd445d717d05ae0d2172eba2a9021efe5285729` to
+`server/gcsp/predict/records/policy-definitions.json`. Its byte SHA-256 is
+`c083ed58abcde595ac0cbf077b319b9102795506efb736c980d5f0cdba840143`.
+Registry ID `fucq113-learning-v1`, revision `learning-definitions.v1`, has canonical
+digest `a49f54884322f5993faf510aa8f5cea6e4a9c02e9fae2d2ddfefd350a69d7782`.
+The static registry validates/deeply freezes it alongside presenter and editor bundles.
+Only the seven reviewed missing keys are adopted; previously tuned learning keys keep
+their value and provenance. The proof uses the delivered writable same-provider runtime,
+ordinary same-cookie context activation and canonical PolicyService readback, with old
+records and unrelated keyed rows preserved. The supervisor explicitly pins this JSON.
+No other FUCQ-113 source was imported; producer/generator/corpus acceptance is not claimed.
+
+| Mode | Result | Retained summary basename |
+| --- | --- | --- |
+| `publish-editor` | 23 passed, 0 skipped | `fucq103-backend-2380882fa6834a2abeb5586e2d158b89-summary.json` |
+| `learning-registration` | 15 passed, 0 skipped | `fucq103-backend-9aaeea14be224f0f9ba940c301c9bc01-summary.json` |
+| `publish-ui` | 30 passed, 0 skipped | `fucq103-backend-f5158024f1cc4c8090226100e4cd1487-summary.json` |
+| `publish-ui-callers` | 61 passed, 0 skipped | `fucq103-backend-7f4c715dbb794f618cb930d7e2d9f2b4-summary.json` |
+| `publish-ui-ratchet` | 87 passed, 0 skipped | `fucq103-backend-4d1be625075f48089f0012286be581ea-summary.json` |
+
+The editor run preceded the additive learning registry; the subsequent learning run
+rechecks presenter adoption, editor and delivered runtime imports against all three bundles.
+The UI run includes real delivered runtime/HTTP adapter publication, strict malformed
+response rejection, privacy suppression, preview invalidation, stable inputs/focus,
+multi-invalid-price routing, slider synchronization, safe retry and independent embeddings.
+The latest caller run adds manual setup's existing default summary-focus proof to dashboard,
+presenter and shared-kit checks after the optional selection-identity extension. Subsequent
+supervisor differences from these runs are test-map/source-pin metadata only; the final
+pin catalogue also names the account sources imported by the manual journey caller.
+
+The selected checks use one worker with 120-second / 768-MiB-RSS / 128-MiB-scratch /
+2-MiB-log caps and no dependency installs. Listed receipts have matching manifests and
+confirm frozen selected sources, absent scratch/process groups/descendants, closed owned
+ports, released reservations and removed dependency symlinks with shared targets preserved.
+Observed scratch was 4–8 KiB and process RSS stayed below 323 MiB. Actual filesystem absence
+and dependency target preservation are independently checked at handoff.
+
+Early resolved proof issues: host fixture assertions included unrelated presenter inputs;
+the selector parser treated CSS `@import` as a selector; the new CSS newline count required
+its own initial cap of 13; a fixture attempted two intentional publications at one domain
+instant and now advances DemoClock one second; the new slider switching assertion expected
+the wrong gallery-car label. Cleaned failure receipts remain respectively
+`6e41945984d943ada0038b8be7c532a1`, `5bfa38ddfe5348cda18bd00eb8f7ea05`,
+`2487f013e9b94c8c8f490bb9ecb5c595`, `070e30678642436db4415b0b7a793c86`, and
+`a6b489ea2ead487dbde10fdb9c5e44a1` in shared ownership storage. Parent review also
+identified duplicate price-summary routing and initial-field slider metadata; both are
+corrected with the focused two-invalid-price and row-switching regressions above.
+
+Rendered desktop/320px and keyboard/browser acceptance, full-suite/native durability and
+live integration remain outstanding under the parent dispatcher. The explicit walkthrough
+is [browser-plan.md](browser-plan.md); it uses the actual runtime and persisted brief,
+quote, hold and offer, and intentionally adopts the reviewed editor assumptions before
+advancing DemoClock for publication. DOM fixtures and offline HTTP do not replace that gate.
+
+Agents: Timone title verified; requested, selected and effective `gpt-6.1-sol` / `medium`;
+no fallback or descendants. Gateway PASS at start and resume (`api.servicesessentials.ibm.com`).
+
+Parent final scoped review: `publish-ui` **30/30**
+(`b10eea6107b949f591033241bd0203e9`) and `learning-registration` **15/15**
+(`52ef5d9dfc13494da515786055ee5ac5`) pass on the final frozen source/supervisor.
+Parent inspected the source and caller contracts, then independently checked actual
+scratch absence, process/group termination, closed owned ports, released reservations
+and dependency-link absence/target preservation for both parent and final child receipts.
+Parent runs stayed below 290 MiB RSS and used 4 KiB scratch. Earlier final caller/ratchet
+production sources match; their only subsequent pin difference is supervisor selection
+metadata, so those passed results are reused. No extra broad suite is selected.
+
+The publish-panel and learning-registration product-map slices are lead-reviewed complete
+at this scoped boundary. Rendered integration, authored full validation and final delivery
+remain open; the overall story stays In Progress.

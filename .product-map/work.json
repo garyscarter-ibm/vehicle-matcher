@@ -1369,7 +1369,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T23:02:43Z",
+      "observed_at": "2026-11-05T23:14:21Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103",
       "jira_observed_at": "2026-11-05T22:40:24Z",
       "branch": "dev/DEV-2026-11-04-066",
@@ -1378,19 +1378,19 @@
           "name": "FUCQ-103 lead",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-05T23:02:39Z",
-          "expires_at": "2026-11-05T23:17:39Z",
-          "source": "chat:01a1adbc-0652-7943-a5fd-26c807648025 current lead turn",
+          "observed_at": "2026-11-05T23:14:21Z",
+          "expires_at": "2026-11-05T23:29:21Z",
+          "source": "chat:01a1adbc-0652-7943-a5fd-26c807648025 current lead review and focused proof",
           "status": "working"
         },
         {
           "name": "Timone",
           "harness": "codex",
           "role": "implementer",
-          "observed_at": "2026-11-05T23:02:39Z",
-          "expires_at": "2026-11-05T23:17:39Z",
-          "source": "chat:01a1adea-9faa-7ff0-9063-18a64c221bc1 live progress message; title verified",
-          "status": "working"
+          "observed_at": "2026-11-05T23:14:21Z",
+          "expires_at": "2026-11-05T23:14:21Z",
+          "source": "chat:01a1adea-9faa-7ff0-9063-18a64c221bc1 final handoff and source freeze; completion observed",
+          "status": "completed"
         }
       ],
       "slices": [
@@ -1417,17 +1417,17 @@
         },
         {
           "id": "publish-panel",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Shared-kit publish panel and canonical interaction ranges",
-          "observed_at": "2026-11-05T23:02:42Z",
-          "evidence": "Timone active; numeric UI scoped23 cases and53 callers reported, parent review open; canonical reviewed interaction range extension underway. No browser/full evidence yet."
+          "observed_at": "2026-11-05T23:14:21Z",
+          "evidence": "Lead reviewed stable native controls, real presenter/dashboard composition, privacy, original-command retries and two-invalid-price routing. Parent UI 30/30 b10eea61; unchanged-source callers61 and ratchet87 receipts verified. Separate rendered integration remains open."
         },
         {
           "id": "learning-definitions",
-          "status": "blocked",
+          "status": "complete",
           "title": "Integrate reviewed FUCQ-113 canonical definitions",
-          "observed_at": "2026-11-05T23:02:43Z",
-          "evidence": "Only this integration slice awaits exact reviewed canonical FUCQ-113 artifact through dispatcher; proposed values are not registered."
+          "observed_at": "2026-11-05T23:14:21Z",
+          "evidence": "Exact reviewed artifact from2fd445d717d05ae0d2172eba2a9021efe5285729 registered with digest a49f54884322f5993faf510aa8f5cea6e4a9c02e9fae2d2ddfefd350a69d7782. Lead source review + parent15/15 52ef5d9d prove missing-only same-provider ordinary activation/readback and preserved tuned keys. No113producer/corpus claim."
         },
         {
           "id": "rendered-integration",

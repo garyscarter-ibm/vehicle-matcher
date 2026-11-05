@@ -33,5 +33,10 @@ export function validateReviewedDefinitionSet(bundle) {
 
 const presenter = JSON.parse(await readFile(new URL('./reviewed/presenter-controls-v1.json', import.meta.url), 'utf8'));
 if (!validateReviewedDefinitionSet(presenter)) throw new TypeError('The reviewed presenter assumption definition is invalid.');
-const registry = freeze({ [presenter.definitionSetId]: presenter });
+const gregEditor = JSON.parse(await readFile(new URL('./reviewed/greg-publish-editor-v1.json', import.meta.url), 'utf8'));
+if (!validateReviewedDefinitionSet(gregEditor)) throw new TypeError('The reviewed Greg editor assumption definition is invalid.');
+const learning = JSON.parse(await readFile(new URL('../predict/records/policy-definitions.json', import.meta.url), 'utf8'));
+if (!validateReviewedDefinitionSet(learning)) throw new TypeError('The reviewed learning assumption definition is invalid.');
+const registry = freeze({ [presenter.definitionSetId]: presenter, [gregEditor.definitionSetId]: gregEditor,
+  [learning.definitionSetId]: learning });
 export const getReviewedDefinitionSet = (definitionSetId) => Object.hasOwn(registry, definitionSetId) ? registry[definitionSetId] : null;
