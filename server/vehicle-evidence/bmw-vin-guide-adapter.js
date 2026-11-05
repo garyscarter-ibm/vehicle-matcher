@@ -1,12 +1,14 @@
 const SCHEMA_VERSION = '1';
-const STATES = new Set(['available', 'no-guide', 'unsupported-locale', 'partial', 'source-unavailable']);
+const STATES = new Set(['available', 'no-guide', 'unsupported-locale', 'partial', 'source-unavailable', 'no-match']);
+const FAILURE_DETAILS = new Set(['identity-denied', 'invalid-source', 'identity-mismatch', 'locale-mismatch', 'timeout', 'http-error', 'application-error', 'response-too-large', 'transport-error', 'source-unavailable']);
 const UNKNOWN_FACTS = ['paint', 'wheels', 'installedEquipment', 'buildDate', 'connectedUsage', 'schemeEligibility'];
 const MESSAGES = {
   disabled: 'Handbook lookup is disabled. Other current-car evidence is unchanged.',
   'invalid-input': 'Supply a complete 17-character VIN and an explicit language and region.',
   available: 'Handbook content is available. Described equipment may not be fitted to this car.',
+  'no-match': 'No matching vehicle was returned. Vehicle equipment remains unknown.',
   'no-guide': 'No handbook was returned for this request. Vehicle equipment remains unknown.',
-  'unsupported-locale': 'The requested handbook language is unsupported. No alternative was selected.',
+  'unsupported-locale': 'Handbook content is unavailable in the requested language. Vehicle equipment remains unknown.',
   partial: 'Some handbook content is available. Missing content and vehicle equipment remain unknown.',
   'source-unavailable': 'Handbook lookup is unavailable. Other current-car evidence is unchanged.',
 };
@@ -47,7 +49,7 @@ export function createBmwVinGuideIdentityGuard({ registry, authorizeExternalLook
 }
 
 function envelope(status, provider, locale, attempts = []) {
-  return { schemaVersion: SCHEMA_VERSION, status, locale,
+  return { schemaVersion: SCHEMA_VERSION, status, locale, requestedLocale: locale, resolvedLocale: null, failureDetail: null,
     source: { provider: provider?.id || null, providerVersion: provider?.version || null,
       kind: provider?.sourceKind || null, observedDate: null },
     guide: { availability: 'unknown', title: null, derivative: null, brand: null, disclaimer: null, sections: [], links: [] },
@@ -61,6 +63,9 @@ function normalise(data, provider, request, attempts) {
   const anonymous = (value) => typeof value === 'string' && !value.toUpperCase().includes(vin.slice(-7));
   if (!object(data) || !STATES.has(data.status)) return envelope('source-unavailable', provider, locale, attempts);
   const result = envelope(data.status, provider, locale, attempts);
+  if (FAILURE_DETAILS.has(data.failureDetail)) result.failureDetail = data.failureDetail;
+  const resolved = canonicalBmwVinGuideRequest({ vin, locale: data.resolvedLocale });
+  if (resolved && (resolved.locale === locale || resolved.locale === 'en-GB')) result.resolvedLocale = resolved.locale;
   if (date(data.observedDate)) result.source.observedDate = data.observedDate;
   if (data.status === 'no-guide') { result.guide.availability = 'not-available'; return result; }
   if (!['available', 'partial'].includes(data.status)) return result;
@@ -125,12 +130,12 @@ export function createBmwVinGuideAdapter({ provider, fallbackProvider, guard, ti
               return { denied: true };
             }
             if (controller.signal.aborted) return { status: 'source-unavailable' };
-            return candidate.resolve(request, { signal: controller.signal });
+            return candidate.resolve(request, { signal: controller.signal, context });
           })(),
-          new Promise((done) => { timer = setTimeout(() => { controller.abort(); done({ status: 'source-unavailable' }); }, timeoutMs); }),
+          new Promise((done) => { timer = setTimeout(() => { controller.abort(); done({ status: 'source-unavailable', failureDetail: 'timeout' }); }, timeoutMs); }),
         ]);
         attempts.push({ provider: candidate.id, sourceKind: candidate.sourceKind, status: result?.denied ? 'identity-denied' : STATES.has(result?.status) ? result.status : 'source-unavailable' });
-        if (result?.denied) return envelope('source-unavailable', candidate, request.locale, attempts);
+        if (result?.denied) return { ...envelope('source-unavailable', candidate, request.locale, attempts), failureDetail: 'identity-denied' };
         const normalised = normalise(result, candidate, request, attempts);
         if (normalised.status !== 'source-unavailable' || candidate === fallback || !fallback) return normalised;
       } catch {
@@ -145,7 +150,7 @@ export function createBmwVinGuideAdapter({ provider, fallbackProvider, guard, ti
 /** Add a separate content section. Never overwrite independently known car facts with guide failures or guesses. */
 export function presentBmwVinGuide(result, existingFacts = {}) {
   const safe = result && Object.hasOwn(MESSAGES, result.status) ? result : envelope('source-unavailable', null, null);
-  return { status: safe.status, message: MESSAGES[safe.status], source: structuredClone(safe.source),
+  return { status: safe.status, message: MESSAGES[safe.status], requestedLocale: safe.requestedLocale, resolvedLocale: safe.resolvedLocale, failureDetail: safe.failureDetail, source: structuredClone(safe.source),
     guide: structuredClone(safe.guide), illustration: structuredClone(safe.illustration), completeness: structuredClone(safe.completeness),
     equipment: equipment(), currentCarFacts: object(existingFacts) ? structuredClone(existingFacts) : {} };
 }
