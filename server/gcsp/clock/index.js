@@ -5,6 +5,18 @@ import { loadClockConfiguration, buildScenarioSeed } from '../fixtures/scenario-
 import { randomUUID } from 'node:crypto';
 
 const text = (value) => typeof value === 'string' && value.length > 0 && value.length <= 128;
+const persistedClock = (run) => validInstant(run.clockInstant) && text(run.clockVersion)
+  && /^[1-9][0-9]*$/.test(run.clockVersion) && Number.isSafeInteger(Number(run.clockVersion));
+const initializedRun = (run) => {
+  const versions = run.versions;
+  const inventory = versions?.syntheticIdentityInventory;
+  return persistedClock(run) && ['policy', 'scenario', 'fixture', 'corpus'].every((key) => text(versions?.[key]))
+    && versions.policy === run.policyVersion && versions.scenario === run.scenarioVersion
+    && versions.fixture === run.fixtureVersion && versions.corpus === run.corpusVersion
+    && Number.isSafeInteger(inventory?.revision) && inventory.revision > 0 && /^[a-f0-9]{64}$/.test(inventory.contentDigest)
+    && inventory.snapshot && inventory.snapshot.revision === inventory.revision
+    && inventory.snapshot.contentDigest === inventory.contentDigest && Array.isArray(inventory.snapshot.records);
+};
 const invalid = (field, reason) => result('invalid', { code: 'invalid-clock-command', reasons: [{ field, reason }] });
 const unavailable = () => result('unavailable', { reason: 'Demo clock is unavailable.', retryable: true });
 const stale = () => result('stale-run', { reason: 'This request belongs to an earlier demonstration run.' });
@@ -28,7 +40,7 @@ export class DemoClock {
     const found = await this.#repository.currentRun(this.#environmentId);
     if (found.status !== 'ok') return unavailable();
     if (context && (context.runId !== found.value.runId || context.environmentId !== this.#environmentId)) return stale();
-    if (!validInstant(found.value.clockInstant) || !text(found.value.clockVersion)) return unavailable();
+    if (!persistedClock(found.value)) return unavailable();
     return found;
   }
 
@@ -38,7 +50,8 @@ export class DemoClock {
     if (this.#environmentKind !== 'synthetic') return result('forbidden', { reason: 'Reset and seeding require an isolated synthetic environment.' });
     if (!validInstant(policyAsOf) || !text(commandId)) return invalid('bootstrap', 'Supply policyAsOf and commandId.');
     const existing = await this.#repository.currentRun(this.#environmentId);
-    if (existing.status === 'ok') return ok({ runId: existing.value.runId, initialized: false });
+    if (existing.status === 'ok') return initializedRun(existing.value)
+      ? ok({ runId: existing.value.runId, initialized: false }) : unavailable();
     if (existing.status !== 'not-found') return existing;
     const runId = `demo-${inputDigest([this.#environmentId, commandId]).slice(0, 32)}`;
     const active = await this.#policy.getActiveVersion({ runId, asOf: policyAsOf });

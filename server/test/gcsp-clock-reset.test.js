@@ -381,3 +381,29 @@ test('concurrent duplicate events run local effects once and return the same rec
   assert.equal(results[0].value.state, 'completed');
   assert.equal(changed, 1);
 });
+
+test('pre-existing uninitialised run is unavailable rather than silently claiming clock readiness', async () => {
+  const store = createMemoryStore(); const repository = createMemoryRepository({ store }); await repository.open();
+  await repository.transaction(scope('legacy'), command('legacy'), (tx) => tx.insert('runs', {
+    runId: 'legacy', environmentId: 'clock-test', current: true, status: 'active', policyVersion: 'gcsp-policy-v1',
+  }));
+  const before = inputDigest(store.state);
+  const runtime = await createDemoRuntime({ repository, policy: createPolicyService(), environmentId: 'clock-test', environmentKind: 'synthetic',
+    policyAsOf: '2026-11-05T00:00:00.000Z', commandId: 'bootstrap', sessionNow: () => '2026-11-05T00:00:00.000Z' });
+  assert.equal(runtime.status, 'unavailable');
+  assert.equal(inputDigest(store.state), before);
+});
+
+test('reopening refuses incomplete fixture metadata or a malformed persisted clock without mutation', async () => {
+  for (const patch of [{ clockVersion: 'NaN' }, { clockVersion: '0' }, { fixtureVersion: 'different-fixture' }, { versions: {} }]) {
+    const f = await setup();
+    const current = (await f.repository.currentRun('clock-test')).value;
+    await f.repository.transaction(f.presenter, command(`damage-${Object.keys(patch)[0]}`), (tx) => tx.compareAndSwap(
+      { table: 'runs', key: { runId: current.runId } }, current.version, patch));
+    const before = inputDigest(f.store.state);
+    const runtime = await createDemoRuntime({ repository: f.repository, policy: f.policy, environmentId: 'clock-test', environmentKind: 'synthetic',
+      policyAsOf: '2026-11-05T00:00:00.000Z', commandId: 'reopen', sessionNow: () => '2026-11-05T00:00:00.000Z' });
+    assert.equal(runtime.status, 'unavailable', JSON.stringify(patch));
+    assert.equal(inputDigest(f.store.state), before);
+  }
+});
