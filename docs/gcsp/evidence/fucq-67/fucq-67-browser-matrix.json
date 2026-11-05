@@ -1,0 +1,425 @@
+{
+  "story": "FUCQ-67",
+  "phase": "actual-service-smoke",
+  "captureHead": "717df5c0eff189e7db5d12eaa16bd1919ec7b2bb",
+  "productHead": "db4a53bbe7865f06d3434f8a6ec095bfa74c384f",
+  "approvedBase": "ade262aa81c7ccbf0043e0f5658a7052f501734e",
+  "viewport": {
+    "desktop": {
+      "width": 1280,
+      "height": 900
+    },
+    "narrow": {
+      "width": 320,
+      "height": 740
+    }
+  },
+  "actualService": {
+    "initialVisible": true,
+    "initialOverflow": false,
+    "initialContractIds": [
+      "current:employee-paula"
+    ],
+    "desktopSavedShowsReplacement": true,
+    "currentContractAfterSave": [
+      "current:employee-paula"
+    ],
+    "currentContractUnchangedAfterSave": true,
+    "desktopReloadRetainedDraft": true,
+    "desktopResumeChangedView": true,
+    "currentContractAfterResume": [
+      "current:employee-paula"
+    ],
+    "backReturnedToAccount": true,
+    "desktopContractAfterBack": [
+      "current:employee-paula"
+    ],
+    "desktopContractUnchangedAfterBack": true,
+    "narrowInitialOverflow": false,
+    "narrowSavedOverflow": false,
+    "narrowBackReturnedToAccount": true,
+    "narrowContractAfterBack": [
+      "current:employee-paula"
+    ],
+    "narrowContractUnchangedAfterBack": true,
+    "startPostCount": 1,
+    "contractUnchanged": true,
+    "singleStartPost": true,
+    "savedDraftVersion": 1,
+    "persistedDraftVersion": 1,
+    "persistedDraftVisibleAfterReload": true,
+    "journeyEventsPresent": true
+  },
+  "fixtures": {},
+  "probes": {},
+  "keyboard": {
+    "contractSummaryReachedByTab": true,
+    "contractDetailsOpened": {
+      "focused": true,
+      "open": true,
+      "label": "Order, collection and vehicle details"
+    },
+    "historyFocusedByTab": true,
+    "tabsToHistorySummary": 4,
+    "historyOpened": {
+      "focused": true,
+      "open": true,
+      "label": "choices-fs-uk (1 record)"
+    },
+    "focusVisible": true
+  },
+  "externalRequests": [],
+  "errors": [],
+  "screenshots": [
+    {
+      "file": "01-service-desktop-account.png",
+      "width": 1280,
+      "height": 900,
+      "case": "actual-service-ready-keyboard-details"
+    },
+    {
+      "file": "02-service-desktop-saved.png",
+      "width": 1280,
+      "height": 900,
+      "case": "actual-service-replacement-saved"
+    },
+    {
+      "file": "03-service-desktop-reloaded.png",
+      "width": 1280,
+      "height": 900,
+      "case": "persisted-draft-after-reload"
+    },
+    {
+      "file": "04-service-desktop-resumed.png",
+      "width": 1280,
+      "height": 900,
+      "case": "actual-service-resumed"
+    },
+    {
+      "file": "05-service-narrow-account.png",
+      "width": 320,
+      "height": 740,
+      "case": "actual-service-ready"
+    },
+    {
+      "file": "06-service-narrow-saved.png",
+      "width": 320,
+      "height": 740,
+      "case": "actual-service-resumed"
+    }
+  ],
+  "cleanup": {
+    "browserContextClosed": true,
+    "apiServerNeverBound": true,
+    "composedListenerClosed": true,
+    "runtimeClosed": true,
+    "independentlyVerifyHost": "127.0.0.1",
+    "port": 53276
+  },
+  "browserErrors": [
+    {
+      "type": "console",
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "type": "console",
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    }
+  ],
+  "journeyEvents": [
+    {
+      "mode": "replacement",
+      "oldContractId": "current:employee-paula",
+      "slotId": "slot-paula",
+      "schemeId": "choices-fs-uk",
+      "draftVersion": 1,
+      "contextVersion": "533c65e160ecf6d1b7187975d85245bed17075042144c4336a0df7fbc5ba2639"
+    },
+    {
+      "mode": "replacement",
+      "oldContractId": "current:employee-paula",
+      "slotId": "slot-paula",
+      "schemeId": "choices-fs-uk",
+      "draftVersion": 1,
+      "contextVersion": "533c65e160ecf6d1b7187975d85245bed17075042144c4336a0df7fbc5ba2639"
+    },
+    {
+      "mode": "replacement",
+      "oldContractId": "current:employee-paula",
+      "slotId": "slot-paula",
+      "schemeId": "choices-fs-uk",
+      "draftVersion": 1,
+      "contextVersion": "533c65e160ecf6d1b7187975d85245bed17075042144c4336a0df7fbc5ba2639"
+    }
+  ],
+  "apiRequests": [
+    {
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "status": "ok",
+      "contractVersion": "1.0.0",
+      "histories": [
+        {
+          "schemeId": "choices-fs-uk",
+          "count": 1,
+          "orderingSupported": true
+        },
+        {
+          "schemeId": "pcs-ukfs-bmw",
+          "count": 1,
+          "orderingSupported": false
+        },
+        {
+          "schemeId": "motorcycle-choices",
+          "count": 0,
+          "orderingSupported": false
+        }
+      ],
+      "actions": [
+        {
+          "action": "replace",
+          "enabled": true
+        }
+      ],
+      "state": "ready",
+      "choices": {
+        "slotId": "slot-paula",
+        "schemeId": "choices-fs-uk"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 404,
+      "status": "not-found",
+      "contractVersion": "1.0.0"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 404,
+      "status": "not-found",
+      "contractVersion": "1.0.0"
+    },
+    {
+      "method": "POST",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "contractVersion": "1.0.0",
+      "draftStage": "intent",
+      "draftVersion": 1,
+      "choices": {
+        "mode": "replacement",
+        "oldContractId": "current:employee-paula",
+        "slotId": "slot-paula",
+        "schemeId": "choices-fs-uk"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "status": "ok",
+      "contractVersion": "1.0.0",
+      "histories": [
+        {
+          "schemeId": "choices-fs-uk",
+          "count": 1,
+          "orderingSupported": true
+        },
+        {
+          "schemeId": "pcs-ukfs-bmw",
+          "count": 1,
+          "orderingSupported": false
+        },
+        {
+          "schemeId": "motorcycle-choices",
+          "count": 0,
+          "orderingSupported": false
+        }
+      ],
+      "actions": [
+        {
+          "action": "replace",
+          "enabled": true
+        }
+      ],
+      "state": "ready",
+      "choices": {
+        "slotId": "slot-paula",
+        "schemeId": "choices-fs-uk"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "contractVersion": "1.0.0",
+      "draftStage": "intent",
+      "draftVersion": 1,
+      "choices": {
+        "mode": "replacement",
+        "oldContractId": "current:employee-paula",
+        "slotId": "slot-paula",
+        "schemeId": "choices-fs-uk"
+      },
+      "requiresRefresh": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "contractVersion": "1.0.0",
+      "draftStage": "intent",
+      "draftVersion": 1,
+      "choices": {
+        "mode": "replacement",
+        "oldContractId": "current:employee-paula",
+        "slotId": "slot-paula",
+        "schemeId": "choices-fs-uk"
+      },
+      "requiresRefresh": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "status": "ok",
+      "contractVersion": "1.0.0",
+      "histories": [
+        {
+          "schemeId": "choices-fs-uk",
+          "count": 1,
+          "orderingSupported": true
+        },
+        {
+          "schemeId": "pcs-ukfs-bmw",
+          "count": 1,
+          "orderingSupported": false
+        },
+        {
+          "schemeId": "motorcycle-choices",
+          "count": 0,
+          "orderingSupported": false
+        }
+      ],
+      "actions": [
+        {
+          "action": "replace",
+          "enabled": true
+        }
+      ],
+      "state": "ready",
+      "choices": {
+        "slotId": "slot-paula",
+        "schemeId": "choices-fs-uk"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "contractVersion": "1.0.0",
+      "draftStage": "intent",
+      "draftVersion": 1,
+      "choices": {
+        "mode": "replacement",
+        "oldContractId": "current:employee-paula",
+        "slotId": "slot-paula",
+        "schemeId": "choices-fs-uk"
+      },
+      "requiresRefresh": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 200,
+      "status": "ok",
+      "contractVersion": "1.0.0",
+      "draftStage": "intent",
+      "draftVersion": 1,
+      "choices": {
+        "mode": "replacement",
+        "oldContractId": "current:employee-paula",
+        "slotId": "slot-paula",
+        "schemeId": "choices-fs-uk"
+      },
+      "requiresRefresh": false
+    }
+  ],
+  "network": {
+    "allGcspResponsesExpected": true,
+    "gcspRequestCount": 10
+  },
+  "listener": {
+    "host": "127.0.0.1",
+    "port": 53276,
+    "origin": "http://127.0.0.1:53276",
+    "listenerCount": 1
+  },
+  "sourceHashes": {
+    "gcsp-account.html": "64d2c47e5ce7d6c4007c0f5176e8f0b5377a98b1cabcff5d3c385d7f2d4e26e3",
+    "blocks/gcsp/account/harness.js": "c6e0fa35d66119f9b3ff6a3aa91dd524fe4c3bdbf9dc083dd7235adec9b829c0",
+    "blocks/gcsp/account/gcsp-account.js": "1fe3db11a3c89736a68af60c276f60136cfd6789d3089584e4d7036140e2960a",
+    "blocks/gcsp/account/account-view.js": "c2e71ea6e5b15a1d905e33ab72d78eb0f45039fe2508cad89b11654801749dee",
+    "blocks/gcsp/account/http-adapter.js": "df40a2487336e5698d3b0d61d3d953005c6373dd43558f7c1db5251ef6b739cd",
+    "blocks/gcsp/account/gcsp-account.css": "e445f913f913a94048388fc4a3d0fb5b937055ac4a6219fd8abb167e0d15eae3",
+    "blocks/gcsp/account/fixtures.js": "bf735ff779fea67afe99bb4da467e7ccbced0c60218182314eeb9d98d874f5cc",
+    "server/gcsp/runtime.js": "f4654b8053d3927a3564a3701784367e976b04549ee66fb1a9a754032f88cb16",
+    "server/gcsp/manual-context/http.js": "d49bbb756447e8b91ee90dd54e2240914b45e554d79428e54345a59585d4dc37",
+    "server/gcsp/manual-context/index.js": "269a94fed04247698b0d6623b6d32fdd9d45f8f6d405ecd1213f00150d5b8913",
+    "server/index.js": "1560e4a99077e4ea648f66b87566b908404312787e5fdfcc59a5ba10debf1741"
+  },
+  "captureFiles": [
+    {
+      "file": "01-service-desktop-account.png",
+      "bytes": 287533,
+      "sha256": "c310b50463c0600f38fe620f30bd2826a664cdf6bbedc9572800e92aecbcdfd0"
+    },
+    {
+      "file": "02-service-desktop-saved.png",
+      "bytes": 187582,
+      "sha256": "e49edda73eb058e969a45589f97092dbe43e5f71055ca989f63f0d09fc38fdb8"
+    },
+    {
+      "file": "03-service-desktop-reloaded.png",
+      "bytes": 182403,
+      "sha256": "d6301a667b75c1420be53e9fcf22a2af22aff2a072c50d76e83ad1b759f5632b"
+    },
+    {
+      "file": "04-service-desktop-resumed.png",
+      "bytes": 187582,
+      "sha256": "e49edda73eb058e969a45589f97092dbe43e5f71055ca989f63f0d09fc38fdb8"
+    },
+    {
+      "file": "05-service-narrow-account.png",
+      "bytes": 165339,
+      "sha256": "a97213fcd02e7683ae4d0db0cf7dc0e2032167a0c34f2c63bb93cfeee55bf45b"
+    },
+    {
+      "file": "06-service-narrow-saved.png",
+      "bytes": 169115,
+      "sha256": "919b2e73767683777d9fa1a2f07ec49cdabe73b22fc95c1699dddffbd4fa0f0d"
+    }
+  ],
+  "captureBytes": 1179554,
+  "captureCount": 6,
+  "captureLimitBytes": 12582912,
+  "evidenceFiles": [
+    "capture-fucq-67.mjs",
+    "fucq-67-browser-matrix.json",
+    "README.md",
+    "01-service-desktop-account.png",
+    "02-service-desktop-saved.png",
+    "03-service-desktop-reloaded.png",
+    "04-service-desktop-resumed.png",
+    "05-service-narrow-account.png",
+    "06-service-narrow-saved.png"
+  ],
+  "evidenceFileCount": 9
+}
