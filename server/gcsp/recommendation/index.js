@@ -1,6 +1,6 @@
 import { createVehicleSnapshot, createEmployeeTerms, freezeVehicleData } from '../../vehicles/index.js';
 import { validInstant } from '../policy/file-provider.js';
-import { validateBrief, evaluateEssentials, scorePreferences, confirmedFact } from '../../scenarios/employee/index.js';
+import { validateBrief, evaluateEssentials, scorePreferences, confirmedFact, chargingGates } from '../../scenarios/employee/index.js';
 
 const result = (status, fields) => ({ status, ...fields, contractVersion: '1.0.0' });
 const unavailable = (code) => result('unavailable', { code, reason: 'The employee recommendation source is unavailable.', retryable: true });
@@ -51,18 +51,6 @@ function timingGates(candidate, employeeFacts, brief, now, config) {
   if (Date.parse(now) >= until) blockers.push({ code: 'availability-expired', availableUntil: available.availableUntil });
   if (from > Date.parse(now)) blockers.push({ code: 'not-yet-available', availableFrom: available.availableFrom });
   return { blockers, unknowns, reasons };
-}
-
-function chargingGates(snapshot, employeeFacts, config, required) {
-  if (!required) return { blockers: [], unknowns: [], reasons: [] };
-  const fuel = snapshot.facts.fuel;
-  if (!confirmedFact(fuel, config) || !config.preferences.fuel.values.includes(fuel.value)) return { blockers: [], unknowns: [{ code: 'fuel-unconfirmed', fact: fuel ?? null }], reasons: [] };
-  if (!config.plugInFuels.includes(fuel.value)) return { blockers: [], unknowns: [], reasons: [] };
-  const charging = employeeFacts.charging;
-  if (!confirmedFact(charging, config)) return { blockers: [], unknowns: [{ code: 'charging-unconfirmed', fact: charging ?? null }], reasons: [] };
-  return config.chargingAccess.includes(charging.value)
-    ? { blockers: [], unknowns: [], reasons: [{ code: 'charging-ready', fact: charging }] }
-    : { blockers: [{ code: 'charging-unavailable', fact: charging }], unknowns: [], reasons: [] };
 }
 
 export function createEmployeeRecommendationService({ provider, policy, time } = {}) {

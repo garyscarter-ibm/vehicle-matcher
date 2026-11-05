@@ -10,6 +10,18 @@ export const confirmedFact = (fact, config) => fact?.status === 'known' && fact.
   && text(fact.provenance?.sourceRef) && text(fact.provenance?.version) && validInstant(fact.provenance?.observedAt)
   && config.confirmedAssurances.includes(fact.provenance?.assurance);
 
+export function chargingGates(snapshot, employeeFacts, config, required) {
+  if (!required) return { blockers: [], unknowns: [], reasons: [] };
+  const fuel = snapshot.facts.fuel;
+  if (!confirmedFact(fuel, config) || !config.preferences.fuel.values.includes(fuel.value)) return { blockers: [], unknowns: [{ code: 'fuel-unconfirmed', fact: fuel ?? null }], reasons: [] };
+  if (!config.plugInFuels.includes(fuel.value)) return { blockers: [], unknowns: [], reasons: [] };
+  const charging = employeeFacts.charging;
+  if (!confirmedFact(charging, config)) return { blockers: [], unknowns: [{ code: 'charging-unconfirmed', fact: charging ?? null }], reasons: [] };
+  return config.chargingAccess.includes(charging.value)
+    ? { blockers: [], unknowns: [], reasons: [{ code: 'charging-ready', fact: charging }] }
+    : { blockers: [{ code: 'charging-unavailable', fact: charging }], unknowns: [], reasons: [] };
+}
+
 export function validateBrief(request, config, slider) {
   const errors = [];
   const add = (field) => errors.push({ field, reason: 'Unsupported or invalid brief field.' });
