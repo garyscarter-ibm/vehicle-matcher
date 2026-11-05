@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "date": "2026-11-05",
+  "command": "npm test",
+  "sourceHead": "4e346e847842efe292dd4d2120041152c5e42119",
+  "integratedBase": "ace08c8ad1ac1142f07cd32fbb06773bdb2c81ca",
+  "effectiveNodeArgs": [
+    "/opt/homebrew/bin/node",
+    "--test-concurrency=1",
+    "--test",
+    "server/test/**/*.test.js"
+  ],
+  "result": "failed-existing-dependency-unavailable",
+  "exitCode": 1,
+  "tests": 600,
+  "pass": 570,
+  "fail": 30,
+  "failures": {
+    "code": "ERR_MODULE_NOT_FOUND",
+    "package": "pg",
+    "testModuleLoadFailures": 30
+  },
+  "installAttempted": false,
+  "rootAndServerNodeModulesExist": false,
+  "strict": {
+    "passingFullStamp": false,
+    "match": "not available after failed full run",
+    "codeKey": "d448e9465fb56d1f3433620bd83d1f22145b4500d0adb2cbefc5e68698f8701b",
+    "environmentKey": "6afb8755641e0acabe35486106823a10c75e2cde537a4f80e15064ebe80095b3",
+    "checkpointState": "complete",
+    "meaning": "complete checkpoint records finished failed command; it is not a passing test stamp"
+  },
+  "limits": {
+    "ramMiB": 1024,
+    "seconds": 300,
+    "scratchMiB": 128,
+    "logsMiB": 2
+  },
+  "actual": {
+    "wall": 31.466452124999996,
+    "peak_rss": 362627072,
+    "peak_scratch": 547968,
+    "issue": null
+  },
+  "cleanup": {
+    "finalizersPassed": true,
+    "leadChecksPassed": true,
+    "dispatcherIndependentVerification": "passed; shared .claude/test-runs/ownership/fucq49-first-full-dispatcher-verification.json"
+  },
+  "packagesAndLocksUnchanged": true,
+  "nativeAcceptance": "still blocked; full tests cannot establish source configuration identity or named-asset delivery",
+  "externalEvidence": {
+    "plan": "full-plan-v1.json",
+    "supervisor": "supervisor-v2.py",
+    "checkpoint": "strict/checkpoints/da65e0be3def66f950f9a4e6f83e92c33db84bcb98481a9721af710038ab29e9.json",
+    "boundedFailureLog": "strict/logs/20261105-161643-msrmdtj3/chunk-0001.log",
+    "leadCleanup": "final-lead-cleanup-v1.json"
+  },
+  "laterSetup": "Existing pinned dependencies restored after this first failed attempt; see pinned-setup-2026-11-05.json. This receipt remains historical missing-environment evidence."
+}

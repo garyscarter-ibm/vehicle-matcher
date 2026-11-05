@@ -1,0 +1,18 @@
+{
+  "verified": "2026-11-05",
+  "token": "--ds-asset-logo-bmwgroup-bmw-mini-default",
+  "file": "assets/brand-logos/bmwgroup-bmw-mini.svg",
+  "bytes": 6479,
+  "sha256": "703c69d19aa0d2eda773a1b4022af2bf474c1058a4bafb84468abf7df63557ac",
+  "processing": "SVG decoded verbatim from the pinned CSS data URL; identical in both first-party deployments.",
+  "sources": [
+    {
+      "url": "https://www.ris.bmw.com/styles-PIBQ3WXW.css",
+      "stylesheetSha256": "49f8e1938e1cca36b7dd76d37c016fd91ef1774b6a24802def9ef049569a4777"
+    },
+    {
+      "url": "https://aos.bmwgroup.com/styles-I5NKBANU.css",
+      "stylesheetSha256": "cb85f1c25d8e9c2788e2108f8c8546759be5bd33ab77e7b31bda402b80a4471e"
+    }
+  ]
+}

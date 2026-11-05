@@ -119,12 +119,13 @@ Shared by the employee entry now and Greg's views later; scoped tokens and style
 
 | Call | Use for |
 |---|---|
-| `portalShell({ title, account, navigation, active, breadcrumbs, onNavigate, onRetryAccount })` | The slim branded header (account loading, ready and unavailable-with-Retry states), `<nav aria-label="Portal">`, optional breadcrumbs, skip link and `<main>`. Returns `{ root, main, setAccount, setActive, setBreadcrumbs, destroy }`. |
-| `accountNavigation({ items, active, expanded, onNavigate, onToggle })` | Narrow icon sidebar with a label toggle. Unavailable items are disabled buttons with a visible reason, never dead links. Used inside `portalShell`. |
+| `density-typography.css` (imported by the default theme) | Shared source-derived families and weights: large titles BMW Medium 500; body/inputs/options system 400; smaller headings/buttons/emphasis system 600; table headers system 500; plain text/code the Density mono stack. Reuse semantic `--gcsp-font-*` aliases instead of introducing view-specific fonts or retail weights. The gallery's Density typography, question-controls, cards, tables and message-list examples exercise these roles. Local responsive sizes and italic missing-data cues remain intentional adaptations. |
+| `portalShell({ title, account, navigation, active, breadcrumbs, onNavigate, onRetryAccount })` | The slim branded header with locally packaged BMW GROUP/BMW/MINI Density artwork, account loading/ready/unavailable-with-Retry states, `<nav aria-label="Portal">`, optional breadcrumbs, skip link and `<main>`. Ready accounts use a compact single-row native disclosure with full name/context inside; Escape closes it and returns focus. Unavailable accounts show a short status with the full message available to assistive technology and in the tooltip. Returns `{ root, main, setAccount, setActive, setBreadcrumbs, destroy }`. |
+| `accountNavigation({ items, active, expanded, onNavigate, onToggle })` | Narrow icon sidebar with a label toggle. Selected items use pale cyan, teal text/icon and a teal left edge, following the supplied GCSP shell. Unavailable items are disabled buttons with a visible reason, never dead links. Used inside `portalShell`. |
 | `svgIcon(paths)` | Decorative inline SVG icon built with `createElementNS`. |
 | `mountEmployee(root, ctx)` / `<gcsp-employee>` (`blocks/gcsp/employee/gcsp-employee.js`) | The employee entry. Contract in [docs/gcsp/employee-entry-contract.md](docs/gcsp/employee-entry-contract.md). |
 
-Gallery: the single gallery ([`components.html`](components.html)) now has a **GCSP** section with the four primitives, the `mediaWell` GCSP placeholder, `portalShell` in loading, ready (long name) and unavailable states, and `accountNavigation` collapsed and expanded. Harness page: [`gcsp-employee.html`](gcsp-employee.html) (`?fixture=` names in the entry contract).
+Gallery: the single gallery ([`components.html`](components.html)) now has a **GCSP** section with the four primitives, the `mediaWell` GCSP placeholder, `portalShell` in loading, compact ready (long name), open account-details and unavailable states, and `accountNavigation` collapsed and expanded with the reference's pale selected treatment. Harness page: [`gcsp-employee.html`](gcsp-employee.html) (`?fixture=` names in the entry contract). [Shell refinement and evidence](docs/gcsp/density/gcsp-shell-refinement.md); [artwork provenance](docs/gcsp/density/evidence/shell-logo-provenance.json).
 
 The representative employee body (`blocks/gcsp/employee/representative-body.js`, styles in `gcsp-employee.css`) is page composition from kit primitives and `gcsp-*` classes, not a kit card. It builds no competing car card: FUCQ-31 owns the shared decision-card and control contract, and the body adopts it when that lands.
 
@@ -189,3 +190,14 @@ The shared GCSP adaptation of `screenIntro`, `button`, `factList`, `statusScreen
 ### GCSP account consumer (`blocks/gcsp/account/`)
 
 `mountAccount(root, { adapter, brand, onSupport, print })` and `<gcsp-account>` compose `mountEmployee`, `screenIntro`, `button`, `statusScreen`, `factList`, `formatTerm`, `mediaWell`, the existing countdown and native labelled details for delivered cars, read-only account/licence facts and grouped histories. A current car has no stock decision, so this is page composition rather than a new decision-card primitive. `gcsp-account.css` imports the employee composition and has its own ratchet cap; harness `gcsp-account.html` uses the HTTP adapter by default and explicit read-only snapshots with `?fixture=`.
+
+### GCSP native form presentation (`blocks/gcsp/kit/form-controls.js`)
+
+Looked at `renderOptionList` and `renderRangeSlider`: they supply question buttons and sliders, while setup needs native date, select, contact and textarea controls with linked field errors. These two shared presentation helpers own no policy, requests or draft state. Their scoped stylesheet is `form-controls.css`; the single gallery's **GCSP native forms** section demonstrates validation, focus and reset.
+
+| Call | Use for |
+|---|---|
+| `labelledField({ id, label, control, hint, error })` | Associates a unique id with a native control, label, optional hint and inline error. Returns `{ root, setError }`; updates preserve the control and manage `aria-invalid` and `aria-describedby`. |
+| `errorSummary({ id, title, errors: [{ id, message }], onSelect })` | Links validation messages to controls. Returns `{ root, update, focus }`; focus targets its heading and links target the relevant control. |
+
+`mountManualSetup(root, { adapter, brand, hint, onBack, onSupport, commandId })` and `<gcsp-manual-setup>` compose the employee shell, shared forms and existing heading/button/status/facts/typed terms. Native controls remain mounted through input and asynchronous state updates. The controller supplies permitted choices, source facts and errors. `gcsp-manual-setup.html` loads the authenticated draft directly; `mountManualJourney` connects account journey hints to a fresh trusted setup read and saves valid choices before Back. The bubbling/composed `gcsp:setup-ready` event carries exact mode/old-contract/slot/scheme/draft/context hints after a successful complete save and current availability; it creates no claim.

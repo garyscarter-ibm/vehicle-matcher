@@ -1,0 +1,595 @@
+{
+  "version": 1,
+  "status": "technical-pass-visual-inspection-pending",
+  "source": "BMW public UK configurator",
+  "sourceSupport": "unsupported-public-website-demo",
+  "limits": {
+    "requests": 8,
+    "images": 2,
+    "bytes": 6291456,
+    "requestMs": 15000,
+    "totalMs": 120000,
+    "retries": 0,
+    "concurrency": 1
+  },
+  "liveCatalogueRequests": 0,
+  "images": [
+    {
+      "file": "i5-p0300-herofront.webp",
+      "configuration": {
+        "catalogueDate": "2026-11-01",
+        "market": "GB",
+        "locale": "en-GB",
+        "modelCode": "T5MJ",
+        "modelRange": "G61E",
+        "rawModelRange": "G61",
+        "agModelCode": "72HH",
+        "trim": "S0337",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05",
+        "productionDate": "2027-01-05",
+        "taxDate": "2027-01-05",
+        "selectedOptions": [
+          "FKSFU",
+          "P0300",
+          "S0230",
+          "S02PA",
+          "S02VB",
+          "S02VD",
+          "S0302",
+          "S0337",
+          "S03DK",
+          "S03G9",
+          "S03M1",
+          "S0428",
+          "S043L",
+          "S0488",
+          "S0494",
+          "S04T2",
+          "S04U9",
+          "S04UR",
+          "S04V1",
+          "S0552",
+          "S05AS",
+          "S05AV",
+          "S05DM",
+          "S0654",
+          "S0674",
+          "S06AE",
+          "S06AF",
+          "S06AK",
+          "S06C4",
+          "S06NX",
+          "S06PA",
+          "S0704",
+          "S0710",
+          "S0760",
+          "S0775",
+          "S0812",
+          "S0853",
+          "S0880",
+          "S08R3",
+          "S08R9",
+          "S08SM",
+          "S08TF",
+          "S08TG",
+          "S08WM",
+          "S09QV",
+          "S09T1",
+          "S09T2"
+        ],
+        "selectedAccessories": [
+          {
+            "code": "SE000001",
+            "type": "accessory",
+            "quantity": 1
+          }
+        ]
+      },
+      "lookup": {
+        "provider": "bmw-cosy-named-images",
+        "providerVersion": "1",
+        "schemaVersion": "1",
+        "snapshotVersion": "bmw-uk-cosy-named-images.v1",
+        "catalogueDate": "2026-11-01",
+        "market": "GB",
+        "locale": "en-GB",
+        "modelCode": "T5MJ",
+        "modelRange": "G61E",
+        "rawModelRange": "G61",
+        "agModelCode": "72HH",
+        "trim": "S0337",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05",
+        "productionDate": "2027-01-05",
+        "taxDate": "2027-01-05",
+        "selectedOptions": [
+          "FKSFU",
+          "P0300",
+          "S0230",
+          "S02PA",
+          "S02VB",
+          "S02VD",
+          "S0302",
+          "S0337",
+          "S03DK",
+          "S03G9",
+          "S03M1",
+          "S0428",
+          "S043L",
+          "S0488",
+          "S0494",
+          "S04T2",
+          "S04U9",
+          "S04UR",
+          "S04V1",
+          "S0552",
+          "S05AS",
+          "S05AV",
+          "S05DM",
+          "S0654",
+          "S0674",
+          "S06AE",
+          "S06AF",
+          "S06AK",
+          "S06C4",
+          "S06NX",
+          "S06PA",
+          "S0704",
+          "S0710",
+          "S0760",
+          "S0775",
+          "S0812",
+          "S0853",
+          "S0880",
+          "S08R3",
+          "S08R9",
+          "S08SM",
+          "S08TF",
+          "S08TG",
+          "S08WM",
+          "S09QV",
+          "S09T1",
+          "S09T2"
+        ],
+        "selectedAccessories": [
+          {
+            "code": "SE000001",
+            "type": "accessory",
+            "quantity": 1
+          }
+        ],
+        "viewpoint": "HEROFRONT",
+        "size": {
+          "width": 2560,
+          "height": 1646
+        },
+        "viewport": "desktop",
+        "namedImage": "Gallery",
+        "distinctions": {
+          "BKGND": "sand",
+          "X": "1700",
+          "Y": "500"
+        }
+      },
+      "provider": "bmw-cosy-named-images",
+      "providerVersion": "1",
+      "schemaVersion": "1",
+      "snapshotVersion": "bmw-uk-cosy-named-images.v1",
+      "observedDate": "2026-11-01",
+      "retrievedDate": "2026-11-05",
+      "identityProvenance": {
+        "kind": "independent-source-proof",
+        "observedDate": "2026-11-01",
+        "manifestIdentityEchoed": false
+      },
+      "manifestIdentityEchoed": false,
+      "image": {
+        "assetId": "bmw-live-5beac09df277d63fc1f04145b939d2cc4f41cd41",
+        "contentType": "image/webp",
+        "bytes": 82798,
+        "sha256": "fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe",
+        "size": {
+          "width": 2560,
+          "height": 1646
+        },
+        "viewpoint": "HEROFRONT",
+        "viewport": "desktop",
+        "namedImage": "Gallery",
+        "role": "representative-catalogue-render",
+        "representation": "configuration",
+        "matchesRequestedConfiguration": true,
+        "fidelity": {
+          "model": "unknown",
+          "paint": "unknown",
+          "wheels": "unknown",
+          "interior": "unknown",
+          "equipment": "unknown",
+          "exactVehicle": "unknown"
+        },
+        "origin": "BMW COSY public UK configurator",
+        "sourceDate": "2026-11-01",
+        "retrievedDate": "2026-11-05"
+      },
+      "presentation": {
+        "status": "ok",
+        "assetId": "bmw-live-5beac09df277d63fc1f04145b939d2cc4f41cd41",
+        "role": "representative-catalogue-render",
+        "label": "Representative image",
+        "sourceKind": "authorised-live",
+        "source": "BMW COSY public UK configurator",
+        "observedDate": "2026-11-01",
+        "retrievedDate": "2026-11-05",
+        "freshness": {
+          "status": "unknown",
+          "policy": "revalidate-every-resolution",
+          "upstreamExpiresAt": null,
+          "retrievedAt": null,
+          "handoffExpiresAt": null,
+          "delivery": "single-read"
+        },
+        "caption": "Representative catalogue render; source observed 2026-11-01, retrieved 2026-11-05. Current source freshness unknown; resolve again for another delivery. Wheels, interior, equipment and exact vehicle appearance unknown.",
+        "fidelity": {
+          "model": "unknown",
+          "paint": "unknown",
+          "wheels": "unknown",
+          "interior": "unknown",
+          "equipment": "unknown",
+          "exactVehicle": "unknown"
+        },
+        "message": null
+      }
+    },
+    {
+      "file": "i5-p0475-herofront.webp",
+      "configuration": {
+        "catalogueDate": "2026-11-01",
+        "market": "GB",
+        "locale": "en-GB",
+        "modelCode": "T5MJ",
+        "modelRange": "G61E",
+        "rawModelRange": "G61",
+        "agModelCode": "72HH",
+        "trim": "S0337",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05",
+        "productionDate": "2027-01-05",
+        "taxDate": "2027-01-05",
+        "selectedOptions": [
+          "FKSFU",
+          "P0475",
+          "S0230",
+          "S02PA",
+          "S02VB",
+          "S02VD",
+          "S0302",
+          "S0337",
+          "S03DK",
+          "S03G9",
+          "S03M1",
+          "S0428",
+          "S043L",
+          "S0488",
+          "S0494",
+          "S04T2",
+          "S04U9",
+          "S04UR",
+          "S04V1",
+          "S0552",
+          "S05AS",
+          "S05AV",
+          "S05DM",
+          "S0654",
+          "S0674",
+          "S06AE",
+          "S06AF",
+          "S06AK",
+          "S06C4",
+          "S06NX",
+          "S06PA",
+          "S0704",
+          "S0710",
+          "S0760",
+          "S0775",
+          "S0812",
+          "S0853",
+          "S0880",
+          "S08R3",
+          "S08R9",
+          "S08SM",
+          "S08TF",
+          "S08TG",
+          "S08WM",
+          "S09QV",
+          "S09T1",
+          "S09T2"
+        ],
+        "selectedAccessories": [
+          {
+            "code": "SE000001",
+            "type": "accessory",
+            "quantity": 1
+          }
+        ]
+      },
+      "lookup": {
+        "provider": "bmw-cosy-named-images",
+        "providerVersion": "1",
+        "schemaVersion": "1",
+        "snapshotVersion": "bmw-uk-cosy-named-images.v1",
+        "catalogueDate": "2026-11-01",
+        "market": "GB",
+        "locale": "en-GB",
+        "modelCode": "T5MJ",
+        "modelRange": "G61E",
+        "rawModelRange": "G61",
+        "agModelCode": "72HH",
+        "trim": "S0337",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05",
+        "productionDate": "2027-01-05",
+        "taxDate": "2027-01-05",
+        "selectedOptions": [
+          "FKSFU",
+          "P0475",
+          "S0230",
+          "S02PA",
+          "S02VB",
+          "S02VD",
+          "S0302",
+          "S0337",
+          "S03DK",
+          "S03G9",
+          "S03M1",
+          "S0428",
+          "S043L",
+          "S0488",
+          "S0494",
+          "S04T2",
+          "S04U9",
+          "S04UR",
+          "S04V1",
+          "S0552",
+          "S05AS",
+          "S05AV",
+          "S05DM",
+          "S0654",
+          "S0674",
+          "S06AE",
+          "S06AF",
+          "S06AK",
+          "S06C4",
+          "S06NX",
+          "S06PA",
+          "S0704",
+          "S0710",
+          "S0760",
+          "S0775",
+          "S0812",
+          "S0853",
+          "S0880",
+          "S08R3",
+          "S08R9",
+          "S08SM",
+          "S08TF",
+          "S08TG",
+          "S08WM",
+          "S09QV",
+          "S09T1",
+          "S09T2"
+        ],
+        "selectedAccessories": [
+          {
+            "code": "SE000001",
+            "type": "accessory",
+            "quantity": 1
+          }
+        ],
+        "viewpoint": "HEROFRONT",
+        "size": {
+          "width": 2560,
+          "height": 1646
+        },
+        "viewport": "desktop",
+        "namedImage": "Gallery",
+        "distinctions": {
+          "BKGND": "sand",
+          "X": "1700",
+          "Y": "500"
+        }
+      },
+      "provider": "bmw-cosy-named-images",
+      "providerVersion": "1",
+      "schemaVersion": "1",
+      "snapshotVersion": "bmw-uk-cosy-named-images.v1",
+      "observedDate": "2026-11-01",
+      "retrievedDate": "2026-11-05",
+      "identityProvenance": {
+        "kind": "independent-source-proof",
+        "observedDate": "2026-11-01",
+        "manifestIdentityEchoed": false
+      },
+      "manifestIdentityEchoed": false,
+      "image": {
+        "assetId": "bmw-live-77525c10ab2b8f8789e819717f250ba28f027bb0",
+        "contentType": "image/webp",
+        "bytes": 86286,
+        "sha256": "4c38cdb43b6438b7ae54fd1c882280bf744e88a17f2ce43597c5dd2c4890b5de",
+        "size": {
+          "width": 2560,
+          "height": 1646
+        },
+        "viewpoint": "HEROFRONT",
+        "viewport": "desktop",
+        "namedImage": "Gallery",
+        "role": "representative-catalogue-render",
+        "representation": "configuration",
+        "matchesRequestedConfiguration": true,
+        "fidelity": {
+          "model": "unknown",
+          "paint": "unknown",
+          "wheels": "unknown",
+          "interior": "unknown",
+          "equipment": "unknown",
+          "exactVehicle": "unknown"
+        },
+        "origin": "BMW COSY public UK configurator",
+        "sourceDate": "2026-11-01",
+        "retrievedDate": "2026-11-05"
+      },
+      "presentation": {
+        "status": "ok",
+        "assetId": "bmw-live-77525c10ab2b8f8789e819717f250ba28f027bb0",
+        "role": "representative-catalogue-render",
+        "label": "Representative image",
+        "sourceKind": "authorised-live",
+        "source": "BMW COSY public UK configurator",
+        "observedDate": "2026-11-01",
+        "retrievedDate": "2026-11-05",
+        "freshness": {
+          "status": "unknown",
+          "policy": "revalidate-every-resolution",
+          "upstreamExpiresAt": null,
+          "retrievedAt": null,
+          "handoffExpiresAt": null,
+          "delivery": "single-read"
+        },
+        "caption": "Representative catalogue render; source observed 2026-11-01, retrieved 2026-11-05. Current source freshness unknown; resolve again for another delivery. Wheels, interior, equipment and exact vehicle appearance unknown.",
+        "fidelity": {
+          "model": "unknown",
+          "paint": "unknown",
+          "wheels": "unknown",
+          "interior": "unknown",
+          "equipment": "unknown",
+          "exactVehicle": "unknown"
+        },
+        "message": null
+      }
+    }
+  ],
+  "delivery": {
+    "status": "passed",
+    "route": "harness-local-published-assets",
+    "harnessRequests": [
+      "index.html",
+      "i5-p0300-herofront.webp"
+    ],
+    "csp": "default-src 'none'; img-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'",
+    "cacheControl": "no-store",
+    "browserBmwCredentials": false,
+    "browserOpaqueSourceUrls": false,
+    "authorisation": "BMW-approved-project-retention-and-display-2026-11-05",
+    "productionIntegration": false,
+    "browserInspection": {
+      "status": "pending"
+    },
+    "browserVisualInspection": "pending"
+  },
+  "visualInspection": "pending",
+  "paintVariation": "pending-actual-visual-inspection",
+  "fullOptionFidelity": "unknown",
+  "viewCoverage": "single-HEROFRONT-no-360",
+  "catalogue": {
+    "status": "ok",
+    "sourceKind": "dated-snapshot",
+    "snapshotVersion": "bmw-gb-i5-2026-11-01.v1",
+    "observedDate": "2026-11-01",
+    "facts": {
+      "seats": {
+        "state": "known",
+        "value": 5,
+        "definition": "SEATS",
+        "unit": "COUNT",
+        "completeness": "complete",
+        "provenance": {
+          "kind": "observed",
+          "source": "BMW UK catalogue",
+          "observedDate": "2026-11-01"
+        }
+      },
+      "luggageNormal": {
+        "state": "known",
+        "value": 570,
+        "definition": "NORMAL",
+        "unit": "LITRES",
+        "completeness": "complete",
+        "provenance": {
+          "kind": "observed",
+          "source": "BMW UK catalogue",
+          "observedDate": "2026-11-01"
+        }
+      },
+      "luggageExpanded": {
+        "state": "known",
+        "value": 1700,
+        "definition": "EXPANDED",
+        "unit": "LITRES",
+        "completeness": "complete",
+        "provenance": {
+          "kind": "observed",
+          "source": "BMW UK catalogue",
+          "observedDate": "2026-11-01"
+        }
+      },
+      "acceleration": {
+        "state": "known",
+        "value": 6.1,
+        "definition": "0–100 KM/H",
+        "unit": "SECONDS",
+        "completeness": "complete",
+        "provenance": {
+          "kind": "observed",
+          "source": "BMW UK catalogue",
+          "observedDate": "2026-11-01"
+        }
+      },
+      "bodyLength": {
+        "state": "unknown",
+        "value": null,
+        "definition": "BODY LENGTH",
+        "unit": "MILLIMETRES",
+        "reason": "placeholder-value",
+        "completeness": "unknown",
+        "provenance": {
+          "kind": "unknown",
+          "source": null,
+          "observedDate": null
+        }
+      }
+    }
+  },
+  "budget": {
+    "requests": [
+      {
+        "kind": "settings",
+        "status": 200,
+        "bytes": 620646
+      },
+      {
+        "kind": "manifest",
+        "status": 200,
+        "bytes": 67145
+      },
+      {
+        "kind": "asset",
+        "status": 200,
+        "bytes": 82798
+      },
+      {
+        "kind": "manifest",
+        "status": 200,
+        "bytes": 67145
+      },
+      {
+        "kind": "asset",
+        "status": 200,
+        "bytes": 86286
+      }
+    ],
+    "requestCount": 5,
+    "imageCount": 2,
+    "bytes": 924020,
+    "elapsedMs": 3408,
+    "stopped": null
+  }
+}

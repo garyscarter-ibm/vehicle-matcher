@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "story": "FUCQ-51",
+  "date": "2026-11-05",
+  "state": "parent-reviewed-before-allocation",
+  "purpose": "actual Chromium decode of the two retained native WebP bytes using the unchanged provePublishedDelivery loopback route",
+  "command": "python3 /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/supervisor-v2.py command --browser --owner lead --name browser-delivery-v1 --command 'node /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/browser-delivery-v1.mjs'",
+  "upstreamRequests": 0,
+  "assets": "native-v1-assets, sha256 pinned by native summary and C14 anchors",
+  "limits": {
+    "seconds": 120,
+    "ramMiB": 2560,
+    "minimumRamMiB": 2048,
+    "scratchMiB": 128,
+    "logsMiB": 2,
+    "workers": 1
+  },
+  "scratch": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-023/.claude/test-scratch/fucq51/browser",
+  "ownershipManifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq51/ownership",
+  "headroomBeforePreparation": {
+    "availableRamBytes": 2693677056,
+    "activeReservations": 1,
+    "otherBrowserReservations": 0
+  },
+  "admission": "fresh HostBudget acquire plus nonblocking machine-wide browser.lock; no wait/retry on conflict",
+  "browser": "fresh system headless Chrome profile under owned TMPDIR; raw CDP on ephemeral loopback port; no installed dependencies",
+  "network": "only exact harness origin is continued; external target requests aborted and counted; background networking disabled and external hostname resolution blocked",
+  "assertions": [
+    "two original WebPs decode to2560x1646",
+    "CSP matches default-src none and img-src self",
+    "no external requests/CSP violations/BMW credential headers/opaque source URLs",
+    "exact native hashes unchanged"
+  ],
+  "cleanup": "Browser.close, bounded child join/kill; supervisor recursive PID/group accounting/termination finalizer, exact profile root removed; verify listener ports/groups/root arguments/owners/reservations absent",
+  "retained": [
+    "compact redacted browser-delivery-v1.json",
+    "bounded external log/ownership/headroom/source receipts"
+  ],
+  "sourceBoundary": "BMW approved public UK source display/retention; unsupported demo; no production activation/new screen/deployment",
+  "visualReference": "experience-quality.md; shell00/01; evidence/fucq-6/README.md revision a7fc178; no application screen changed",
+  "models": "lead gpt-6.1-sol/high; runner tier gpt-6-luna/high prepared but not spawned because capacity can_start0; direct bounded execution permitted"
+}

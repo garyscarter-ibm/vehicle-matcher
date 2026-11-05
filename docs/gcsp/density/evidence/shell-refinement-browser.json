@@ -1,0 +1,244 @@
+{
+  "date": "2026-11-05",
+  "observations": [
+    {
+      "scrollWidth": 1280,
+      "styles": [
+        {
+          "background": "rgb(255, 255, 255)",
+          "borderLeft": "0px none rgb(31, 35, 40)",
+          "class": "gcsp-header",
+          "color": "rgb(31, 35, 40)",
+          "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "height": 56,
+          "text": "Group Car Schemes PortalAWAlex Morgan-Whitfield (synthetic)Alex Morgan-Whitfield (synthetic)Choices, grade G7",
+          "width": 1280
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "borderLeft": "0px none rgb(31, 35, 40)",
+          "class": "gcsp-mark",
+          "color": "rgb(31, 35, 40)",
+          "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "height": 22,
+          "text": "",
+          "width": 139.3125
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "borderLeft": "1px solid rgb(220, 222, 225)",
+          "class": "gcsp-title",
+          "color": "rgb(78, 84, 93)",
+          "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "height": 19.59375,
+          "text": "Group Car Schemes Portal",
+          "width": 834.890625
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "borderLeft": "0px none rgb(3, 116, 147)",
+          "class": "gcsp-account-summary",
+          "color": "rgb(3, 116, 147)",
+          "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "height": 44,
+          "text": "AWAlex Morgan-Whitfield (synthetic)",
+          "width": 249.796875
+        },
+        {
+          "background": "rgb(78, 84, 93)",
+          "borderLeft": "0px none rgb(255, 255, 255)",
+          "class": "gcsp-avatar",
+          "color": "rgb(255, 255, 255)",
+          "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "fontSize": "9px",
+          "fontWeight": "400",
+          "height": 20,
+          "text": "AW",
+          "width": 20
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "borderLeft": "0px none rgb(3, 116, 147)",
+          "class": "gcsp-account-name",
+          "color": "rgb(3, 116, 147)",
+          "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "fontSize": "13px",
+          "fontWeight": "400",
+          "height": 18.1953125,
+          "text": "Alex Morgan-Whitfield (synthetic)",
+          "width": 203.796875
+        },
+        {
+          "background": "rgba(0, 0, 0, 0)",
+          "borderLeft": "0px none rgb(78, 84, 93)",
+          "class": "gcsp-account-context",
+          "color": "rgb(78, 84, 93)",
+          "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "fontSize": "12px",
+          "fontWeight": "400",
+          "height": 16.796875,
+          "text": "Choices, grade G7",
+          "width": 286
+        },
+        {
+          "background": "rgb(224, 242, 255)",
+          "borderLeft": "3px solid rgb(3, 116, 147)",
+          "class": "gcsp-nav-btn",
+          "color": "rgb(3, 116, 147)",
+          "fontFamily": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "height": 44,
+          "text": "Your cars",
+          "width": 47
+        }
+      ],
+      "surface": "employee desktop",
+      "viewport": {
+        "height": 900,
+        "width": 1280
+      }
+    },
+    {
+      "accountOpen": true,
+      "accountPanel": {
+        "bottom": 130.4921875,
+        "height": 72.9921875,
+        "left": 8,
+        "right": 312,
+        "top": 57.5,
+        "width": 304,
+        "x": 8,
+        "y": 57.5
+      },
+      "context": "Choices, grade G7",
+      "fullName": "Alex Morgan-Whitfield (synthetic)",
+      "headerHeight": 56,
+      "scrollWidth": 320,
+      "surface": "employee at 320px, account open",
+      "viewport": {
+        "height": 740,
+        "width": 320
+      }
+    },
+    {
+      "menuOpen": "true",
+      "scrollWidth": 320,
+      "selected": {
+        "background": "rgb(224, 242, 255)",
+        "borderLeft": "3px solid rgb(3, 116, 147)",
+        "color": "rgb(3, 116, 147)",
+        "width": 304
+      },
+      "surface": "employee at 320px, menu open",
+      "viewport": {
+        "height": 740,
+        "width": 320
+      }
+    },
+    {
+      "accounts": [
+        {
+          "scrollWidth": 124,
+          "status": "loading",
+          "width": 124
+        },
+        {
+          "open": true,
+          "panel": {
+            "bottom": 481.21875,
+            "height": 91.1875,
+            "left": 850.8046875,
+            "right": 1170.8046875,
+            "top": 390.03125,
+            "width": 320,
+            "x": 850.8046875,
+            "y": 390.03125
+          },
+          "scrollWidth": 503,
+          "status": "ready",
+          "summaryHeight": 44,
+          "width": 502.671875
+        },
+        {
+          "open": true,
+          "panel": {
+            "bottom": 830.0234375,
+            "height": 72.9921875,
+            "left": 850.8046875,
+            "right": 1170.8046875,
+            "top": 757.03125,
+            "width": 320,
+            "x": 850.8046875,
+            "y": 757.03125
+          },
+          "scrollWidth": 250,
+          "status": "ready",
+          "summaryHeight": 44,
+          "width": 249.796875
+        },
+        {
+          "scrollWidth": 260,
+          "status": "unavailable",
+          "width": 259.859375
+        }
+      ],
+      "surface": "component gallery, account states",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "accountHeight": 44,
+      "headerHeight": 56,
+      "logo": "http://localhost:3087/assets/brand-logos/bmwgroup-bmw-mini.svg",
+      "scrollWidth": 1280,
+      "selectedBackground": "rgb(224, 242, 255)",
+      "surface": "Greg desktop",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "accountStatus": "unavailable",
+      "headerHeight": 56,
+      "retryWidth": 58.1484375,
+      "scrollWidth": 320,
+      "surface": "employee unavailable at 320px",
+      "viewport": {
+        "height": 740,
+        "width": 320
+      }
+    },
+    {
+      "accountStatus": "loading",
+      "headerHeight": 56,
+      "scrollWidth": 320,
+      "surface": "employee loading at 320px",
+      "viewport": {
+        "height": 740,
+        "width": 320
+      }
+    }
+  ],
+  "keyboardChecks": [
+    "Enter opens the native account disclosure; Escape closes it and returns focus to summary.",
+    "At 320px Escape closes mobile navigation and returns focus to Menu.",
+    "Account summary has a visible 2px #0291b7 keyboard focus outline.",
+    "Expanded account name/context appears in the rendered accessibility snapshot."
+  ],
+  "stateChecks": [
+    "Retry moves the unavailable fixture through loading and back to its actual unavailable state.",
+    "Gallery loading, compact long name, open account details, unavailable, collapsed/expanded navigation inspected."
+  ]
+}

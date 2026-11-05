@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "date": "2026-11-05",
+  "command": "npm test",
+  "effectiveArgs": [
+    "/opt/homebrew/bin/node",
+    "--test-concurrency=1",
+    "--test",
+    "server/test/**/*.test.js"
+  ],
+  "sourceHead": "7b1c2444c790d76ac6630a873588e8e779b52587",
+  "sourceTree": "4d1efe49c3e5b05de3fef78a5cc64a84c4804921",
+  "integratedBase": "179d7ed8f9339f16adc8f1d4da2eb6431abc3b8c",
+  "laterMetadataOnlyBase": "73bf1f169a71b735fe738ec5ebdc927c35bd0c7b",
+  "metadataMerge": "ccc79d77acf383292220b3cfbad3f063eae76d7a",
+  "metadataMergeTreeEqualsTestedTree": true,
+  "result": "passed",
+  "tests": 1177,
+  "pass": 1175,
+  "fail": 0,
+  "skipped": 2,
+  "limits": {
+    "rssMiB": 1024,
+    "seconds": 300,
+    "combinedScratchAndOwnedDependenciesMiB": 128,
+    "logsMiB": 2,
+    "testConcurrency": 1
+  },
+  "actual": {
+    "wall": 76.03226320799999,
+    "peak_rss": 428834816,
+    "peak_scratch": 28545076,
+    "issue": null
+  },
+  "strict": {
+    "stampKey": "4c8ba1d1222bb6275e5da62d2e2c019fffd463e426449d01e187c233a1a6652e",
+    "executionCodeKey": "925fa5fdb50ca9349982043a3404714f5df47be66c84a7d24adc6be3eb941d18",
+    "environmentKey": "6afb8755641e0acabe35486106823a10c75e2cde537a4f80e15064ebe80095b3",
+    "sameProcessEnvironmentImmediateStatus": "MATCH",
+    "time": "2026-11-05T16:22:19+0000",
+    "commandUnchanged": true,
+    "scope": "full"
+  },
+  "pinnedSetup": "Existing package-lock versions only; root38/server13 required package versions checked; no manifest/lock edits; no lifecycle scripts",
+  "cleanup": {
+    "ownedScratchGroupsReservationsAbsent": true,
+    "ownedTemporaryNodeModulesRemovedByRecordedDeviceInode": true,
+    "packagesAndLocksUnchanged": true,
+    "dispatcherIndependentVerification": "passed; shared .claude/test-runs/ownership/fucq49-pinned-full-dispatcher-verification.json"
+  },
+  "externalEvidence": {
+    "supervisor": "supervisor-v3.py",
+    "plan": "full-plan-v2.json",
+    "checkpoint": "strict/checkpoints/00bc2b9079d0af80cf52018c76c3de3f436bd85ee599ead6051321c5da4fc107.json",
+    "ownership": "strict/ownership/fc77e735fcf2402b80ae25686f143a44.json",
+    "successLogSha256": "ce3fa208f81d43d8f7c6d18ea3d464a017afd289c43ae09ebeddec8a39a20271",
+    "leadCleanup": "final-lead-cleanup-v2.json"
+  },
+  "nativeAcceptance": "Historical full run predates native provider completion; v6 later proves actual fixed-provider named asset delivery. This older full does not cover the subsequent WIDTH/HEIGHT and exact-distinction source fix."
+}

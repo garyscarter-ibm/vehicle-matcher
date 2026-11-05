@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Product map</title>
+  <link rel="stylesheet" href="./map.css">
+  <script defer src="./data.js"></script>
+  <script defer src="./map.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#map-cards">Skip to components</a>
+  <header class="masthead">
+    <div class="wordmark">Product map</div>
+    <div class="snapshot-label">A connected view of delivery</div>
+  </header>
+  <main>
+    <section class="intro" aria-labelledby="project-name">
+      <div><h1 id="project-name">Product map</h1><p id="summary">Loading the latest published snapshot…</p></div>
+      <div class="refresh-control"><button type="button" id="refresh">Refresh snapshot <span aria-hidden="true">↻</span></button><p id="update-status" role="status" aria-live="polite"></p></div>
+    </section>
+    <section class="toolbar" aria-label="Map controls">
+      <label class="search-label">Find a component<input id="search" type="search" placeholder="Name, description or story…" autocomplete="off"></label>
+      <label>Show status<select id="state-filter"><option value="">All statuses</option><option value="developing">In development</option><option value="review">Awaiting acceptance</option><option value="accepted">Accepted</option><option value="unknown">Incomplete data</option><option value="empty">No planned stories</option></select></label>
+      <p id="result-count" role="status" aria-live="polite"></p>
+    </section>
+    <div class="workspace">
+      <section class="map-panel" aria-label="Connected components">
+        <div class="map-heading"><h2>Product landscape</h2><span>Choose a card to trace its connections</span></div>
+        <div id="graph" class="graph"><svg id="connections" aria-hidden="true" focusable="false"></svg><div id="map-cards" class="cards" tabindex="-1"></div></div>
+        <ul class="legend" aria-label="Status legend"><li><i class="dot developing"></i>In development</li><li><i class="dot review"></i>Development complete</li><li><i class="dot accepted"></i>Accepted</li><li><i class="dot unknown"></i>Incomplete data</li></ul>
+      </section>
+    </div>
+    <dialog id="details" class="details" aria-labelledby="detail-title">
+      <div class="detail-header"><h2 id="detail-title">Component details</h2><button type="button" id="close-details" aria-label="Close component details" autofocus><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M24 9.4 22.6 8 16 14.6 9.4 8 8 9.4 14.6 16 8 22.6 9.4 24 16 17.4 22.6 24 24 22.6 17.4 16z"/></svg></button></div>
+      <div id="detail-body"></div>
+    </dialog>
+    <section class="evidence" aria-label="Snapshot evidence"><div><h2>Sources & freshness</h2><div id="provenance"></div></div><div><h2>Data quality</h2><div id="diagnostics"></div></div></section>
+  </main>
+  <footer>Development progress and acceptance are separate. Worker activity reflects reported observations.</footer>
+</body>
+</html>
