@@ -8,8 +8,8 @@ FUCQ-37 introduces an injectable in-process port in `server/vehicle-evidence/bmw
 import { createBmwCatalogueAdapter } from '../../server/vehicle-evidence/bmw-catalogue-adapter.js';
 
 const catalogue = createBmwCatalogueAdapter();
-const result = await catalogue.resolve({
-  market: 'GB', locale: 'en-GB',
+const request = {
+  market: 'GB', locale: 'en-GB', catalogueDate: '2026-11-01',
   orderDate: '2026-11-01', effectDate: '2027-01-05',
   productionDate: '2027-01-05', taxDate: '2027-01-05',
   modelCode: 'T5MJ', agModelCode: '72HH',
@@ -25,10 +25,13 @@ const result = await catalogue.resolve({
     'S08TG', 'S08WM', 'S09QV', 'S09T1', 'S09T2',
   ],
   selectedAccessories: [{ code: 'SE000001', type: 'accessory', quantity: 1 }],
-}, { snapshotVersion: 'bmw-gb-i5-2026-11-01.v1' });
+};
+const result = await catalogue.resolve(request, {
+  snapshotVersion: 'bmw-gb-i5-2026-11-01.v1', schemaVersion: '1', providerVersion: '1',
+});
 ```
 
-All date fields and the complete selection are required. Array order does not affect identity; duplicate codes are invalid. Accessory codes are separate from configuration options and retain source type and quantity. `selectionComplete: true` is a caller assertion, followed by comparison with the entire retained set. A seed selection, missing accessory, extra towbar or wrong date does not resolve to exact facts.
+All date fields, including the catalogue observation date, and the complete selection are required. Array order does not affect identity; duplicate codes are invalid. Accessory codes are separate from configuration options and retain source type and quantity. `selectionComplete: true` is a caller assertion, followed by comparison with the entire retained set. A seed selection, missing accessory, extra towbar or wrong date does not resolve to exact facts.
 
 `loadSnapshot(version, { transport })` may be injected for testing another copy of this curated artifact. The default loader maps an allowlisted version to a fixed local URL. Versions are never filesystem paths. The default exported `rejectOutbound` transport throws on any invocation. Tests inject a throwing transport and verify the production lookup never invokes it; an injected loader that attempts transport fails as `source-unavailable`. This is an offline dependency boundary, not a sandbox for arbitrary injected application code.
 
@@ -63,7 +66,7 @@ This is not a VIN build, not verified fitted equipment, not released scheme stoc
 | `ok` | Exact identity and complete selected-equipment evidence; all four scoped technical measurements complete and known, with usable partial definitions/availability |
 | `partial` | Exact identity; technical facts or equipment evidence missing, malformed, unmapped or incomplete; independent known facts survive |
 | `invalid-input` | Malformed identity/date/code, duplicates or no complete-selection assertion |
-| `unsupported` | Market, locale or snapshot version outside this provider's support |
+| `unsupported` | Well-formed market, locale, provider/schema version or snapshot identifier outside this provider's support |
 | `not-found` | Supported lookup, no retained model record |
 | `identity-mismatch` | Model found, but dates, range, AG code, trim or full selection differ |
 | `source-unavailable` | Local artifact missing, unreadable or invalid, or injected transport attempt fails |
@@ -123,3 +126,88 @@ Partial example is an illustrative test mutation of that exact identity, not a s
 > 1700 litres (expanded, observed); 6.1 seconds from 0–100 km/h (observed).
 
 An independently attributed zero test uses 0 normal litres, BMW UK OTD, 31 October 2026 and partial field completeness. It stays known with that individual source/date/completeness while the unrelated model-tree `0000` remains unknown. This is a regression example, not a revision to the observed 570-litre sample. The presentation helper returns safe plain text only; it has no HTML renderer. No catalogue, handbook or image supplies connected-use telemetry, scheme eligibility or exact-car fitting.
+
+
+## Deterministic snapshot identity and explicit failures (FUCQ-39)
+
+`bmwCatalogueLookupIdentity(request, options)` returns the canonical value identity. `JSON.stringify(identity)` is a deterministic cache key; this adapter adds no cache. Its fixed field order contains `provider`, `providerVersion`, `schemaVersion`, `snapshotVersion`, `catalogueDate`, market/locale, separate model code/configurator range/raw range/AG code, trim, order/effect/production/tax dates, sorted **complete** selected options and sorted accessories with type/quantity. Paint is a selected code, so P0300 and P0475 cannot collide. `catalogueDate` is the retained observation date, independent of the four validity dates. Observation/retrieval metadata belongs to the versioned artifact; it is never replaced with today's date. Unknown extra request fields (including garage/share/rule UUIDs and user identifiers) never enter the canonical identity.
+
+The helper returns `null` for malformed input. Well-formed alternate provider/version identities can be compared without becoming supported lookup sources. Runtime `resolve` accepts only the local manifest's provider/version/market. Malformed version values or path-like strings are `invalid-input`; well-formed unknown versions are `unsupported`, and neither loads a file. Options are bounded identifiers, never paths or environment variables. There are no API keys, network configuration, environment switches or network fallbacks. Only the allowlisted default snapshot is enabled. Selecting another supported snapshot would require an explicitly versioned manifest/artifact addition; the adapter never chooses one on a caller's behalf.
+
+A success projection from the exact request above is:
+
+```js
+{
+  provider: 'bmw-catalogue-snapshot', providerVersion: '1', schemaVersion: '1',
+  snapshotVersion: 'bmw-gb-i5-2026-11-01.v1', sourceKind: 'dated-snapshot',
+  status: 'ok', failure: null,
+  observedDate: '2026-11-01', retrievedDate: '2026-11-01',
+  catalogueValidity: {
+    orderDate: '2026-11-01', effectDate: '2027-01-05',
+    productionDate: '2027-01-05', taxDate: '2027-01-05',
+  },
+  // requestedIdentity and resolvedIdentity contain the complete request identity.
+  // lookupIdentity and resolvedLookupIdentity additionally pin provider/schema/snapshot versions.
+}
+```
+
+The full envelope retains the facts/equipment/unknown values described above; the example is a projection, not a substitute response schema. `lookupIdentity` describes the request even for a supported but unresolved lookup. `resolvedLookupIdentity` is populated only when the retained model was found, and reports the actual candidate identity rather than relabelling it as the request. Unsupported results preserve the requested version in the envelope and canonical identity; the envelope's provider/schema version fields continue to describe this adapter's response format.
+
+These executable requests show every resolution state:
+
+```js
+await catalogue.resolve(request); // ok: exact observed sample
+await catalogue.resolve({ ...request, selectionComplete: false }); // invalid-input
+await catalogue.resolve({ ...request, selectedOptions: [] }); // invalid-input
+await catalogue.resolve(request, { snapshotVersion: 'not-supported' }); // unsupported
+await catalogue.resolve({ ...request, market: 'US' }); // unsupported
+await catalogue.resolve({ ...request, modelCode: 'T3MQ' }); // not-found
+await catalogue.resolve({ ...request, agModelCode: '22FY' }); // identity-mismatch
+await catalogue.resolve({ ...request, catalogueDate: '2024-10-01' }); // identity-mismatch
+await catalogue.resolve({ ...request,
+  selectedOptions: request.selectedOptions.filter((code) => code !== 'P0300'),
+}); // identity-mismatch: asserting completeness cannot make an incomplete nearby selection exact
+
+const unavailable = createBmwCatalogueAdapter({
+  loadSnapshot: async () => { throw Object.assign(new Error(), { code: 'ENOENT' }); },
+});
+await unavailable.resolve(request); // source-unavailable, artifact-missing
+```
+
+For a partial example, load a copy of the same artifact through the test port, remove `measurements.A_GEPR_V211`, and retain the full identity. The result is `status: 'partial', failure: null`; `facts.luggageNormal` is `{ state: 'unknown', value: null, definition: 'NORMAL', unit: 'LITRES', reason: 'missing-value', completeness: 'unknown', provenance: { kind: 'unknown', source: null, observedDate: null } }`. Seats remain independently observed at 5. A partial source selection is likewise labelled partial, as in the equipment examples above. A partial request is rejected before lookup.
+
+Every failure includes a safe `failure` object with `code`, plain-language `message` and `retryable`. Retryable means the artifact can be repaired and the same explicit request retried; it never authorises a different source, model or date. Normal `ok` and `partial` results have `failure: null`.
+
+| Status | Failure code | Safe consumer meaning | Retryable |
+|---|---|---|---|
+| `invalid-input` | `invalid-request` | Check the complete vehicle identity, dates and selection. | false |
+| `unsupported` | `unsupported-snapshot` | This snapshot or version is not supported. | false |
+| `unsupported` | `unsupported-market` | This market or language is not supported by the snapshot. | false |
+| `not-found` | `snapshot-not-found` | No snapshot is available for this model. | false |
+| `identity-mismatch` | `snapshot-identity-mismatch` | The snapshot describes a different configuration or date. No facts were substituted. | false |
+| `source-unavailable` | `artifact-missing` | The local catalogue snapshot is missing. | true |
+| `source-unavailable` | `artifact-unreadable` | The local catalogue snapshot could not be read. | true |
+| `source-unavailable` | `artifact-malformed` | The local catalogue snapshot is not valid. | true |
+| `source-unavailable` | `artifact-incompatible` | The local catalogue snapshot has an incompatible version. | true |
+
+Absent files map to `artifact-missing`; permission/I/O/other loader errors map to `artifact-unreadable`; JSON parse errors or invalid core identity map to `artifact-malformed`; wrong artifact schema/snapshot versions map to `artifact-incompatible`. No file path, exception message, raw JSON/HTML or source payload enters this contract. Failure facts remain explicitly unknown. A mismatch keeps the actual observed source/date and resolved identity for explanation, while exposing no candidate specification facts. A wrong model has no resolved identity. The October 2024 eligibility matrix is never imported or used as a fallback.
+
+`presentBmwCatalogue(result)` exposes `sourceKind: 'dated-snapshot'` and the same bounded failure object on failures, with no measurements or equipment. For example a missing local artifact presents `{ status: 'source-unavailable', source: null, sourceKind: 'dated-snapshot', failure: { code: 'artifact-missing', message: 'The local catalogue snapshot is missing.', retryable: true }, context: null, measurements: [], measurementEvidence: [], equipment: [], completeness: null }`. It never renders raw supplied failure text. No screen is mounted by this story; source/unknown/failure assertions and the complete/partial examples provide the backend presentation review under `experience-quality.md`.
+
+## Reuse without discarding independent facts
+
+`mergeBmwCatalogueFacts(existingFacts, result)` is an optional pure consumer helper. It deep-copies the caller's facts, applies only known catalogue facts on `ok`/`partial`, and leaves existing facts intact on all failures or unknown catalogue fields. It does not send caller facts to a provider or append them to the source envelope. Callers retain responsibility for attributing their own valid facts to the requested vehicle; a failed lookup cannot establish that identity for them.
+
+```js
+import { mergeBmwCatalogueFacts } from '../../server/vehicle-evidence/bmw-catalogue-adapter.js';
+const prior = {
+  connectedMileage: { state: 'known', value: 12000, unit: 'KILOMETRES',
+    provenance: { kind: 'synthetic' } },
+};
+const evidence = await catalogue.resolve(request);
+const facts = mergeBmwCatalogueFacts(prior, evidence);
+// facts.connectedMileage remains independently synthetic; prior is unchanged.
+// An unavailable catalogue returns a copy of prior; it cannot erase unrelated valid facts.
+```
+
+FUCQ-15's representative-image adapter can use the same canonical request identity and return its own source/version/date, availability and failure fields alongside this envelope. It must keep its display/retention permission and representative-image caveats. FUCQ-16's handbook adapter can reuse the explicit source/unknown/failure convention while retaining its own VIN-linked identity and coverage; a handbook is not evidence of selected or fitted equipment. FUCQ-19's synthetic registry consumer can keep independently attributed registry facts and merge resolved configuration facts through the helper, preserving source/version/date boundaries and unknown VIN fitting. None of these reuse directions enables those providers, embeds a VIN/user identifier in the catalogue key, or grants live-source permission.

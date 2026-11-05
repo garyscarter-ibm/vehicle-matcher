@@ -10,7 +10,7 @@ const requests = JSON.parse(await readFile(new URL('requests-2026-11-01.json', e
 const retail = requests.requests.find(({ id }) => id === 'retail-pricing').body;
 const artifactUrl = new URL('../vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json', import.meta.url);
 const sample = () => ({
-  market: 'GB', locale: 'en-GB',
+  market: 'GB', locale: 'en-GB', catalogueDate: '2026-11-01',
   orderDate: '2026-11-01', effectDate: '2027-01-05', productionDate: '2027-01-05', taxDate: '2027-01-05',
   modelCode: 'T5MJ', modelRange: 'G61E', rawModelRange: 'G61', agModelCode: '72HH', trim: 'S0337',
   selectedOptions: [...retail.configuration.selectedOptions],
@@ -101,7 +101,7 @@ test('distinguishes unsupported, not found and mismatches without nearest fallba
 test('versions are allowlisted identifiers and unavailable snapshots never expose errors', async () => {
   let loads = 0;
   const adapter = createBmwCatalogueAdapter({ loadSnapshot: async () => { loads += 1; throw new Error('private/file raw payload'); } });
-  assert.equal((await adapter.resolve(sample(), { snapshotVersion: '../../secret' })).status, 'unsupported');
+  assert.equal((await adapter.resolve(sample(), { snapshotVersion: '../../secret' })).status, 'invalid-input');
   assert.equal(loads, 0);
   const result = await adapter.resolve(sample());
   assert.equal(result.status, 'source-unavailable');
@@ -356,4 +356,165 @@ test('complete and partial plain text examples visibly explain equipment certain
   assert.equal(JSON.stringify(partial).includes('<'), false);
   assert.equal(JSON.stringify(partial).includes('private'), false);
   for (const forbidden of ['telemetry', 'eligible', 'fitted: yes']) assert.equal(JSON.stringify(partial).includes(forbidden), false);
+});
+
+
+test('canonical lookup identity separates provider, version, market, dates and complete configuration', async () => {
+  assert.equal(typeof catalogue.bmwCatalogueLookupIdentity, 'function');
+  const base = catalogue.bmwCatalogueLookupIdentity(sample());
+  assert.equal(base.provider, 'bmw-catalogue-snapshot');
+  assert.equal(base.schemaVersion, '1');
+  assert.equal(base.snapshotVersion, 'bmw-gb-i5-2026-11-01.v1');
+  assert.equal(base.catalogueDate, '2026-11-01');
+  const keys = new Set([JSON.stringify(base)]);
+  for (const patch of [
+    { market: 'US' }, { locale: 'de-DE' }, { modelCode: 'T3MQ' }, { modelRange: 'G21' },
+    { rawModelRange: 'G61E' }, { agModelCode: '22FY' }, { trim: 'S07BL' },
+    { catalogueDate: '2026-11-02' }, { orderDate: '2026-11-02' }, { effectDate: '2027-01-06' },
+    { productionDate: '2027-01-06' }, { taxDate: '2027-01-06' },
+    { selectedOptions: sample().selectedOptions.map((code) => code === 'P0300' ? 'P0475' : code) },
+    { selectedOptions: sample().selectedOptions.slice(1) },
+    { selectedAccessories: [{ code: 'SE000001', type: 'accessory', quantity: 2 }] },
+  ]) {
+    const key = JSON.stringify(catalogue.bmwCatalogueLookupIdentity({ ...sample(), ...patch }));
+    assert.equal(keys.has(key), false); keys.add(key);
+  }
+  for (const options of [{ provider: 'other-snapshot' }, { providerVersion: '2' },
+    { schemaVersion: '2' }, { snapshotVersion: 'bmw-gb-i5-2026-11-01.v2' }]) {
+    const key = JSON.stringify(catalogue.bmwCatalogueLookupIdentity(sample(), options));
+    assert.equal(keys.has(key), false); keys.add(key);
+  }
+  for (let offset = 0; offset < 47; offset += 1) {
+    const options = sample().selectedOptions;
+    const rotated = [...options.slice(offset), ...options.slice(0, offset)];
+    assert.deepEqual(catalogue.bmwCatalogueLookupIdentity({ ...sample(), selectedOptions: rotated }), base);
+  }
+  const accessories = [{ code: 'SE000002', type: 'accessory', quantity: 3 }, ...sample().selectedAccessories];
+  assert.deepEqual(catalogue.bmwCatalogueLookupIdentity({ ...sample(), selectedAccessories: accessories }),
+    catalogue.bmwCatalogueLookupIdentity({ ...sample(), selectedAccessories: [...accessories].reverse() }));
+  const decorated = catalogue.bmwCatalogueLookupIdentity({ ...sample(), garageId: 'private', shareId: 'private', ruleId: 'private', userId: 'private' });
+  assert.deepEqual(decorated, base);
+  assert.equal(JSON.stringify(decorated).includes('private'), false);
+  const result = await createBmwCatalogueAdapter().resolve(sample());
+  assert.deepEqual(result.lookupIdentity, base);
+  assert.deepEqual(result.resolvedLookupIdentity, base);
+});
+
+test('catalogue dates and version configuration fail explicitly before any nearby lookup', async () => {
+  let loads = 0;
+  const data = await fixture();
+  const adapter = createBmwCatalogueAdapter({ loadSnapshot: async () => { loads += 1; return data; } });
+  for (const request of [{ ...sample(), catalogueDate: undefined }, { ...sample(), catalogueDate: '2026-02-30' },
+    { ...sample(), selectedOptions: [] }, { ...sample(), selectionComplete: false }]) {
+    const result = await adapter.resolve(request);
+    assert.equal(result.status, 'invalid-input');
+    assert.equal(result.failure.code, 'invalid-request');
+    assert.equal(result.lookupIdentity, null);
+  }
+  assert.equal(loads, 0);
+  for (const options of [{ snapshotVersion: 1 }, { schemaVersion: {} }, null]) {
+    assert.equal((await adapter.resolve(sample(), options)).status, 'invalid-input');
+  }
+  assert.equal(loads, 0);
+  for (const options of [{ schemaVersion: '2' }, { providerVersion: '2' }, { snapshotVersion: 'unknown' }]) {
+    assert.equal((await adapter.resolve(sample(), options)).status, 'unsupported');
+  }
+  assert.equal(loads, 0);
+  for (const patch of [{ catalogueDate: '2024-10-01' }, { agModelCode: '22FY' },
+    { selectedOptions: sample().selectedOptions.filter((code) => code !== 'P0300') }]) {
+    const result = await adapter.resolve({ ...sample(), ...patch });
+    assert.equal(result.status, 'identity-mismatch');
+    assert.equal(result.failure.code, 'snapshot-identity-mismatch');
+    assert.equal(result.resolvedIdentity.catalogueDate, '2026-11-01');
+    assert.equal(result.facts.seats.state, 'unknown');
+    assert.equal(result.lookupIdentity.catalogueDate, patch.catalogueDate || '2026-11-01');
+    assert.equal(result.resolvedLookupIdentity.catalogueDate, '2026-11-01');
+  }
+});
+
+test('local artifact failures have bounded safe reasons and usable presentation', async () => {
+  for (const [code, expected] of [['ENOENT', 'artifact-missing'], ['EACCES', 'artifact-unreadable'],
+    ['EIO', 'artifact-unreadable']]) {
+    const adapter = createBmwCatalogueAdapter({ loadSnapshot: async () => {
+      throw Object.assign(new Error('private path <html> upstream'), { code });
+    } });
+    const result = await adapter.resolve(sample());
+    assert.equal(result.status, 'source-unavailable');
+    assert.equal(result.failure.code, expected);
+    assert.equal(result.failure.retryable, true);
+    const shown = presentBmwCatalogue(result);
+    assert.equal(shown.sourceKind, 'dated-snapshot');
+    assert.equal(shown.failure.code, expected);
+    assert.ok(shown.failure.message.length > 10);
+    assert.equal(shown.measurements.length, 0);
+    assert.equal(JSON.stringify([result, shown]).includes('private'), false);
+    assert.equal(JSON.stringify([result, shown]).includes('<html>'), false);
+  }
+  const malformed = await createBmwCatalogueAdapter({ loadSnapshot: async () => JSON.parse('{') }).resolve(sample());
+  assert.equal(malformed.failure.code, 'artifact-malformed');
+  for (const patch of [{ schemaVersion: '2' }, { snapshotVersion: 'other' }]) {
+    const data = { ...await fixture(), ...patch };
+    const result = await createBmwCatalogueAdapter({ loadSnapshot: async () => data }).resolve(sample());
+    assert.equal(result.failure.code, 'artifact-incompatible');
+  }
+  const unknown = await createBmwCatalogueAdapter().resolve({ ...sample(), modelCode: 'T3MQ' });
+  assert.equal(unknown.failure.code, 'snapshot-not-found');
+  assert.equal(presentBmwCatalogue(unknown).failure.retryable, false);
+  assert.equal(presentBmwCatalogue({ status: '<private>', failure: { code: 'private', message: '<private>' } }).status, 'source-unavailable');
+});
+
+test('catalogue failures and partial unknowns preserve independent caller facts without mutation', async () => {
+  assert.equal(typeof catalogue.mergeBmwCatalogueFacts, 'function');
+  const caller = { connectedMileage: { state: 'known', value: 12000, unit: 'KILOMETRES', provenance: { kind: 'synthetic' } },
+    luggageNormal: { state: 'known', value: 450, definition: 'NORMAL', unit: 'LITRES', provenance: { kind: 'synthetic' } } };
+  const before = structuredClone(caller);
+  const adapter = createBmwCatalogueAdapter();
+  for (const result of [await adapter.resolve(null), await adapter.resolve(sample(), { snapshotVersion: 'unknown' }),
+    await adapter.resolve({ ...sample(), modelCode: 'T3MQ' }), await adapter.resolve({ ...sample(), catalogueDate: '2024-10-01' }),
+    await createBmwCatalogueAdapter({ loadSnapshot: async () => { throw new Error('private'); } }).resolve(sample())]) {
+    const merged = catalogue.mergeBmwCatalogueFacts(caller, result);
+    assert.deepEqual(merged, before);
+    merged.connectedMileage.value = 999;
+    assert.deepEqual(caller, before);
+  }
+  const data = await fixture(); delete data.measurements.A_GEPR_V211;
+  const partial = await createBmwCatalogueAdapter({ loadSnapshot: async () => data }).resolve(sample());
+  const merged = catalogue.mergeBmwCatalogueFacts(caller, partial);
+  assert.equal(merged.luggageNormal.value, 450);
+  assert.equal(merged.seats.value, 5);
+  assert.equal(merged.connectedMileage.value, 12000);
+  assert.deepEqual(caller, before);
+  assert.deepEqual(catalogue.mergeBmwCatalogueFacts(null, partial).seats, partial.facts.seats);
+});
+
+
+test('default resolution and safe failures make zero external requests', async (context) => {
+  let external = 0;
+  const stop = () => { external += 1; throw new Error('network forbidden in snapshot contract'); };
+  context.mock.method(globalThis, 'fetch', stop);
+  for (const name of ['node:http', 'node:https']) {
+    const { default: transport } = await import(name);
+    context.mock.method(transport, 'request', stop);
+    context.mock.method(transport, 'get', stop);
+  }
+  const adapter = createBmwCatalogueAdapter({ transport: stop });
+  const results = [await adapter.resolve(sample()), await adapter.resolve(null),
+    await adapter.resolve({ ...sample(), market: 'US' }),
+    await adapter.resolve(sample(), { snapshotVersion: 'unknown' }),
+    await adapter.resolve({ ...sample(), modelCode: 'T3MQ' }),
+    await adapter.resolve({ ...sample(), catalogueDate: '2024-10-01' }),
+    await createBmwCatalogueAdapter({ transport: stop, loadSnapshot: async () => { throw new Error('unavailable'); } }).resolve(sample())];
+  assert.deepEqual(results.map(({ status }) => status),
+    ['ok', 'invalid-input', 'unsupported', 'unsupported', 'not-found', 'identity-mismatch', 'source-unavailable']);
+  assert.equal(external, 0);
+  for (const result of results) {
+    assert.equal(result.sourceKind, 'dated-snapshot');
+    assert.equal(result.equipment.verifiedFitted.state, 'unknown');
+    const shown = presentBmwCatalogue(result);
+    assert.equal(shown.sourceKind, 'dated-snapshot');
+    if (result.status !== 'ok') {
+      assert.equal(result.facts.seats.state, 'unknown');
+      assert.equal(typeof shown.failure.message, 'string');
+    }
+  }
 });

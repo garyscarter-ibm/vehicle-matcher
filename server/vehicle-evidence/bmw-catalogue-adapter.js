@@ -1,8 +1,12 @@
 import { readFile } from 'node:fs/promises';
 
 const VERSION = 'bmw-gb-i5-2026-11-01.v1';
+const PROVIDER = 'bmw-catalogue-snapshot';
+const PROVIDER_VERSION = '1';
+const SCHEMA_VERSION = '1';
+const VERSION_ID = /^[a-zA-Z0-9][a-zA-Z0-9.-]{0,95}$/;
 const SNAPSHOTS = new Map([[VERSION, new URL('./snapshots/bmw-gb-i5-2026-11-01.v1.json', import.meta.url)]]);
-const IDENTITY_FIELDS = ['market', 'locale', 'modelCode', 'modelRange', 'rawModelRange', 'agModelCode',
+const IDENTITY_FIELDS = ['catalogueDate', 'market', 'locale', 'modelCode', 'modelRange', 'rawModelRange', 'agModelCode',
   'trim', 'orderDate', 'effectDate', 'productionDate', 'taxDate'];
 const DATE_FIELDS = ['orderDate', 'effectDate', 'productionDate', 'taxDate'];
 const MEASUREMENTS = {
@@ -41,12 +45,12 @@ function validCodes(codes) {
 }
 
 function validRequest(request) {
-  return request && typeof request === 'object'
+  return request && typeof request === 'object' && !Array.isArray(request)
     && IDENTITY_FIELDS.every((key) => typeof request[key] === 'string' && request[key].length <= 32)
     && /^[A-Z]{2}$/.test(request.market) && /^[a-z]{2}-[A-Z]{2}$/.test(request.locale)
     && ['modelCode', 'agModelCode', 'trim'].every((key) => CODE.test(request[key]))
     && ['modelRange', 'rawModelRange'].every((key) => /^[A-Z0-9]{3,12}$/.test(request[key]))
-    && DATE_FIELDS.every((key) => validDate(request[key]))
+    && validDate(request.catalogueDate) && DATE_FIELDS.every((key) => validDate(request[key]))
     && request.selectionComplete === true && validCodes(request.selectedOptions)
     && request.selectedOptions.length > 0 && request.selectedOptions.length <= 256
     && Array.isArray(request.selectedAccessories) && request.selectedAccessories.length <= 64
@@ -64,11 +68,53 @@ function identity(request) {
   return result;
 }
 
+/** Stable value identity only: JSON.stringify it for a cache key; no cache or live provider is enabled. */
+export function bmwCatalogueLookupIdentity(request, options = {}) {
+  if (!validRequest(request) || !options || typeof options !== 'object' || Array.isArray(options)) return null;
+  const { provider = PROVIDER, providerVersion = PROVIDER_VERSION, schemaVersion = SCHEMA_VERSION,
+    snapshotVersion = VERSION } = options;
+  if (![provider, providerVersion, schemaVersion, snapshotVersion]
+    .every((value) => typeof value === 'string' && VERSION_ID.test(value))) return null;
+  return { provider, providerVersion, schemaVersion, snapshotVersion, ...identity(request) };
+}
+
+const FAILURES = {
+  'invalid-request': ['Check the complete vehicle identity, dates and selection.', false],
+  'unsupported-snapshot': ['This snapshot or version is not supported.', false],
+  'unsupported-market': ['This market or language is not supported by the snapshot.', false],
+  'snapshot-not-found': ['No snapshot is available for this model.', false],
+  'snapshot-identity-mismatch': ['The snapshot describes a different configuration or date. No facts were substituted.', false],
+  'artifact-missing': ['The local catalogue snapshot is missing.', true],
+  'artifact-unreadable': ['The local catalogue snapshot could not be read.', true],
+  'artifact-malformed': ['The local catalogue snapshot is not valid.', true],
+  'artifact-incompatible': ['The local catalogue snapshot has an incompatible version.', true],
+};
+const FAILURE_STATUS = {
+  'invalid-input': 'invalid-request', unsupported: 'unsupported-snapshot', 'not-found': 'snapshot-not-found',
+  'identity-mismatch': 'snapshot-identity-mismatch', 'source-unavailable': 'artifact-unreadable',
+};
+function failure(code) {
+  const [message, retryable] = FAILURES[code];
+  return { code, message, retryable };
+}
+
+/** Apply only resolved known catalogue facts; unavailable/unknown evidence never erases caller facts. */
+export function mergeBmwCatalogueFacts(existingFacts, result) {
+  const merged = existingFacts && typeof existingFacts === 'object' && !Array.isArray(existingFacts)
+    ? structuredClone(existingFacts) : {};
+  if (['ok', 'partial'].includes(result?.status)) {
+    for (const name of Object.keys(emptyFacts())) {
+      if (result.facts?.[name]?.state === 'known') merged[name] = structuredClone(result.facts[name]);
+    }
+  }
+  return merged;
+}
+
 function sourceIdentity(data) {
   const model = data.model || {};
   const compactDate = model.prodDate;
   return {
-    market: data.market, locale: data.locale, modelCode: model.modelCode,
+    catalogueDate: data.observedDate, market: data.market, locale: data.locale, modelCode: model.modelCode,
     modelRange: model.modelRange, rawModelRange: model.rawModelRange, agModelCode: model.agModelCode,
     trim: data.trim, orderDate: model.orderDate, effectDate: model.effectDate, taxDate: model.taxDate,
     productionDate: typeof compactDate === 'string'
@@ -132,9 +178,10 @@ function emptyFacts() {
   };
 }
 
-function envelope(status, version, requestedIdentity = null) {
+function envelope(status, version, requestedIdentity = null, reason = FAILURE_STATUS[status], lookupIdentity = null) {
   return {
-    provider: 'bmw-catalogue-snapshot', providerVersion: '1', schemaVersion: '1', snapshotVersion: version,
+    provider: PROVIDER, providerVersion: PROVIDER_VERSION, schemaVersion: SCHEMA_VERSION, snapshotVersion: version,
+    failure: reason ? failure(reason) : null, lookupIdentity, resolvedLookupIdentity: null,
     sourceKind: 'dated-snapshot', status, observedDate: null, retrievedDate: null,
     catalogueValidity: null, requestedIdentity, resolvedIdentity: null, identityProvenance: null,
     facts: emptyFacts(), unmappedMeasurements: [],
@@ -202,31 +249,46 @@ export function describeBmwEquipment(result, code) {
 /** Resolve a curated dated catalogue configuration through an injectable in-process port. */
 export function createBmwCatalogueAdapter({ loadSnapshot = loadLocalSnapshot, transport = rejectOutbound } = {}) {
   return {
-    async resolve(request, { snapshotVersion = VERSION } = {}) {
-      // A caller-controlled version is an identifier only; never resolve it as a path.
-      if (!validRequest(request)) return envelope('invalid-input', null);
+    async resolve(request, options = {}) {
+      // Versions are bounded identifiers; a caller can never turn them into a file path.
+      const lookup = bmwCatalogueLookupIdentity(request, options);
+      if (!lookup) return envelope('invalid-input', null);
+      const { snapshotVersion, schemaVersion, providerVersion, provider } = lookup;
       const requested = identity(request);
-      if (!SNAPSHOTS.has(snapshotVersion)) return envelope('unsupported', null, requested);
-      if (request.market !== 'GB' || request.locale !== 'en-GB') return envelope('unsupported', snapshotVersion, requested);
+      const unavailable = (reason) => envelope('source-unavailable', snapshotVersion, requested, reason, lookup);
+      if (schemaVersion !== SCHEMA_VERSION || providerVersion !== PROVIDER_VERSION || provider !== PROVIDER
+        || !SNAPSHOTS.has(snapshotVersion)) {
+        return envelope('unsupported', snapshotVersion, requested, 'unsupported-snapshot', lookup);
+      }
+      if (request.market !== 'GB' || request.locale !== 'en-GB') {
+        return envelope('unsupported', snapshotVersion, requested, 'unsupported-market', lookup);
+      }
       let data;
       try {
         data = await loadSnapshot(snapshotVersion, { transport });
-        if (!validSnapshot(data, snapshotVersion)) return envelope('source-unavailable', snapshotVersion, requested);
-      } catch {
-        return envelope('source-unavailable', snapshotVersion, requested);
+      } catch (error) {
+        return unavailable(error instanceof SyntaxError ? 'artifact-malformed'
+          : error?.code === 'ENOENT' ? 'artifact-missing' : 'artifact-unreadable');
       }
-      const result = envelope('not-found', snapshotVersion, requested);
+      if (data && (data.schemaVersion !== SCHEMA_VERSION || data.snapshotVersion !== snapshotVersion)) {
+        return unavailable('artifact-incompatible');
+      }
+      if (!validSnapshot(data, snapshotVersion)) return unavailable('artifact-malformed');
+      const result = envelope('not-found', snapshotVersion, requested, 'snapshot-not-found', lookup);
       result.observedDate = data.observedDate;
       result.retrievedDate = data.retrievedDate;
       if (request.modelCode !== data.model.modelCode) return result;
       const resolved = identity(sourceIdentity(data));
       result.resolvedIdentity = resolved;
+      result.resolvedLookupIdentity = bmwCatalogueLookupIdentity(sourceIdentity(data), { snapshotVersion });
       result.identityProvenance = provenance('observed', data.observedDate);
       result.catalogueValidity = Object.fromEntries(DATE_FIELDS.map((key) => [key, resolved[key]]));
       if (JSON.stringify(requested) !== JSON.stringify(resolved)) {
         result.status = 'identity-mismatch';
+        result.failure = failure('snapshot-identity-mismatch');
         return result;
       }
+      result.failure = null;
       for (const [name, [reference, definition, unit]] of Object.entries(MEASUREMENTS)) {
         result.facts[name] = fact(data.measurements?.[reference], definition, unit);
       }
@@ -266,7 +328,9 @@ export function createBmwCatalogueAdapter({ loadSnapshot = loadLocalSnapshot, tr
 /** Plain text presentation of the public envelope; this does not mount or change a screen. */
 export function presentBmwCatalogue(result) {
   if (!['ok', 'partial'].includes(result?.status)) {
-    return { status: result?.status || 'source-unavailable', source: null, context: null,
+    const status = Object.hasOwn(FAILURE_STATUS, result?.status) ? result.status : 'source-unavailable';
+    const reason = Object.hasOwn(FAILURES, result?.failure?.code) ? result.failure.code : FAILURE_STATUS[status];
+    return { status, source: null, sourceKind: 'dated-snapshot', failure: failure(reason), context: null,
       measurements: [], measurementEvidence: [], equipment: [], completeness: null };
   }
   const date = (value) => validDate(value)
@@ -310,7 +374,7 @@ export function presentBmwCatalogue(result) {
   const completeness = (key) => ['complete', 'partial', 'unknown'].includes(result.completeness?.[key])
     ? result.completeness[key] : 'unknown';
   return {
-    status: result.status,
+    status: result.status, sourceKind: 'dated-snapshot', failure: null,
     source: `BMW UK catalogue, observed ${date(result.observedDate)}`,
     context: `Order: ${date(validity.orderDate)}. Effect: ${date(validity.effectDate)}. Production: ${date(validity.productionDate)}. Tax: ${date(validity.taxDate)}.${future ? ' Future catalogue context relative to observation.' : ''}`,
     measurements, measurementEvidence, equipment,
