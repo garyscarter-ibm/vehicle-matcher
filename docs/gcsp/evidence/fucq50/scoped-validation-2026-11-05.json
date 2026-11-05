@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "date": "2026-11-05",
+  "status": "paused-incomplete-by-human",
+  "scoped": {
+    "commands": [
+      "node --test server/test/bmw-live-imagery.test.js",
+      "node --test server/test/bmw-image-adapter.test.js server/test/bmw-catalogue-adapter.test.js",
+      "NODE_V8_COVERAGE=\"$TMPDIR/coverage\" node --test server/test/bmw-live-imagery.test.js server/test/bmw-image-adapter.test.js server/test/bmw-catalogue-adapter.test.js && node external coverage-summary-v1.mjs"
+    ],
+    "result": "72 pass, zero fail, zero skips",
+    "strictCodeKey": "4bd91a6a60bbb7b48122f9dd4bd34c319064d90fae3ae93c15d7bd82dc4c5873",
+    "environmentKey": "d75cffa1e6ff2403ae5eb5b53e75469d73684885cd11aad41d8e12e262d234d9",
+    "testedHead": "7ca13577272bb25a291ff16786fbc187e0218950",
+    "testedTree": "cd4628170b89cd5d23a352bfb846ceac777e1389",
+    "dirtySourceHashes": {
+      "server/vehicle-evidence/bmw-live-imagery.js": "876e7e21b98d33ae3a124e696102ad56e4e5d2e771fee0d370764a0b684ffc3d",
+      "server/test/bmw-live-imagery.test.js": "8fb48c70971c411e451d41dc256a88ae7c4d340c1f34009f532ad2148e86bd51"
+    },
+    "base": "078d45ea1198c841b63cb8c647652f472f221294",
+    "peakRssBytes": 204783616,
+    "peakScratchBytes": 2003104,
+    "wallSeconds": 1.485,
+    "stampScope": "targeted only; not a full stamp"
+  },
+  "full": {
+    "command": "npm test",
+    "status": "not started; no dispatcher full grant before human stop",
+    "database": "URL variables unset; no database secret read"
+  },
+  "cleanup": {
+    "ownedAllocations": 4,
+    "rootsGroupsReservationsAbsent": true,
+    "ownedDependencyTreesRemoved": [
+      {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-022/node_modules",
+        "device": 16777232,
+        "inode": 172856297,
+        "absent": true
+      },
+      {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-022/server/node_modules",
+        "device": 16777232,
+        "inode": 172859153,
+        "absent": true
+      }
+    ],
+    "fourPackageHashesUnchanged": true,
+    "leftovers": [],
+    "independentParentVerification": "pending"
+  },
+  "remaining": [
+    "review and run offline presentation example recorder",
+    "reconcile later integration metadata and executable base changes",
+    "restore pinned dependencies under fresh manifest if required",
+    "obtain dispatcher serial full grant, inspect strict status then exact offline npm test and immediate same-environment status",
+    "repeat exact owned cleanup and independent parent verification",
+    "complete acceptance/result and normal merge/close through dispatcher"
+  ],
+  "externalEvidence": ".claude/test-runs/fucq50/",
+  "agents": {
+    "storyLeadRequested": "gpt-6.1-sol/high",
+    "storyLeadSelected": "gpt-6.1-sol/high",
+    "fallback": "none",
+    "descendants": "none; four actual slots occupied, direct implementation explicitly authorised"
+  }
+}

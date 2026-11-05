@@ -20,10 +20,12 @@ These are deployed default-light-theme values, not a versioned Density package. 
 ## Usable result
 
 - [`tokens.json`](tokens.json): the 1,473 non-artwork core tokens, provenance and resolved GCSP aliases. The extractor excludes 167 declarations containing embedded artwork or depending on it.
-- [`density-theme.css`](../../../blocks/gcsp/shell/density-theme.css): 42 source tokens and 21 local semantic aliases, scoped to all GCSP shells and imported by the shared tokens. No vendor JavaScript, artwork, global reset or remote runtime dependency is added.
+- [`density-theme.css`](../../../blocks/gcsp/shell/density-theme.css) and [`density-typography.css`](../../../blocks/gcsp/shell/density-typography.css): 52 source tokens and 27 local semantic aliases, scoped to all GCSP shells and imported by the shared tokens. Typography has its own generated layer for families and role weights. No vendor JavaScript, artwork, global reset or remote runtime dependency is added.
 - [`density-fonts.css`](../../../blocks/gcsp/shell/fonts/density-fonts.css): locally served WOFF2 and WOFF for BMW Group TN Condensed Pro Medium, weight 500. [Font source URLs, sizes and SHA-256 hashes](evidence/font-provenance.json). Both formats match byte for byte across RIS and Aftersales, and their internal name tables confirm the family.
+- [`bmwgroup-bmw-mini.svg`](../../../assets/brand-logos/bmwgroup-bmw-mini.svg): the shared header's locally packaged combined branding, decoded verbatim from the pinned Density source and identical in Aftersales. [Artwork provenance](evidence/shell-logo-provenance.json). This is a separately packaged asset, outside the generated non-artwork token layer.
 - [`preview.html`](preview.html): the existing representative employee fixture, using that theme and the same shared components and harness.
 - [`responsive-check.html`](responsive-check.html): the main employee screen in a 320 CSS pixel iframe for repeatable narrow-layout inspection.
+- [`typography-check.html`](typography-check.html): employee, brief, account, Greg, outbox and launcher in independent 320px iframes for the full typography audit.
 
 | Observed Density value | Default light theme |
 |---|---|
@@ -40,6 +42,8 @@ These are deployed default-light-theme values, not a versioned Density package. 
 BMW Type Next in our retail assets is not evidence for Density's typography. The live RIS Login button resolves to Density's system stack, a 2px radius, 32px height and 12px text. Density's `title-lg`/`heading-lg` family instead resolves to BMW Group TN Condensed Pro Medium; medium and smaller titles use the system stack. The first reference preview omitted that large-title face. The main theme now applies the downloaded face to the kit's `h1.vm-title` and `h1.gcsp-page-title`, with system fallback and the source weight, avoiding a synthetic bold face.
 
 ## Component plan and boundaries
+
+**Full typography audit, 5 November:** reuse the existing shell, form controls, result cards, metric/table kit, message list and launcher. Extend the shared Density layer with role-specific regular/strong/button/input/table/code mappings; apply them to the existing primitives, including smaller headings and fieldset legends. No new UI component or product behaviour is required. Keep the agreed responsive sizes, line heights, sentence case and touch targets. Verify employee, brief, account, Greg, outbox, launcher and the component gallery in the browser, including selected/disabled states and a 320px viewport. Captured email documents retain their transport-safe fonts as a separate content boundary.
 
 **Reuse:** `portalShell`, account navigation, the employee representative body, `button`, `screenIntro`, `factList`, `mediaWell` and existing fixture loaders. **Extend:** make the shared Density mapping the default and add semantic large-title font/weight mappings with locally packaged font faces. **New components:** none. The main component gallery links to the reference preview. Employee, Greg, outbox, account and brief screens, and the shared launcher inherit the same default through the shared kit.
 
@@ -68,6 +72,30 @@ python3 scripts/extract-density-reference.py /path/to/styles-PIBQ3WXW.css
 The extractor checks the pinned hash, parses the core block, excludes artwork and its aliases, checks references/cycles and generates both outputs deterministically. A changed upstream asset requires review rather than silently replacing the source.
 
 ## Verification
+
+### Comparison with supplied GCSP screenshots
+
+The [5 November screenshot review](gcsp-screenshot-review.md) initially found a **partial visual match**. Its identified header branding/account composition and selected-navigation gaps are now addressed by the [authorised shared-shell refinement](gcsp-shell-refinement.md), with desktop/narrow evidence and 190 passing checks. The screenshots show a more compact, lighter-looking body text hierarchy and do not establish the exact font family or confirm our condensed large H1. The source typography audit below verifies RIS/Aftersales Density; it must not be presented as proof of an exact GCSP screenshot match. The original review preserves its [before-change comparisons](evidence/gcsp-screenshot-comparison.jpg).
+
+### Full typography audit
+
+The [source role record](evidence/typography-source.json) preserves the relevant rules and resolved values from the pinned BMW stylesheet. The [browser audit](evidence/typography-browser.json) groups computed styles by element/class, family, weight, style, size, line height and disabled state, across the full rendered DOM of each fixture, including disclosure descendants. It covers employee, brief, account, Greg, selected outbox messages, launcher and all GCSP gallery sections at desktop size; all six app screens were also inspected in real 320px iframe viewports. Each narrow document has a 320px scroll width. This is fixture/browser evidence, not certification of unrendered live-service data or other operating systems.
+
+| Role | Verified family and weight |
+|---|---|
+| Large page titles | Locally downloaded BMW Group TN Condensed Pro Medium, 500 |
+| Body, ledes, notes, fact labels, navigation labels, radio/checkbox options, input/select values | Exact Density system stack, 400 |
+| Smaller headings, legends, buttons, accordion summaries, emphasized values, card names/scores | Density system stack, 600 |
+| Table column headings | Density system stack, 500 |
+| Plain-text viewer and code | Exact Density mono stack, 400 |
+
+The audit corrected browser-default 700 section headings, retail 700 option labels/slider values/card annotations, retail 300 card titles, table headers at 600, the launcher's 700 wordmark and the outbox's different mono stack. Unselected message recipients now use regular 400, with selected recipients at strong 600. A more specific decision-card rule needed a semantic weight with a retail fallback. All audited GCSP gallery and app text now resolves without those inherited 300/700 weights. The browser normalizes `BlinkMacSystemFont` to `system-ui` in computed output; the generated token retains BMW's exact source stack.
+
+The isolated **Email as received** document retains its captured Arial styling, also used by the notification template. Applying app fonts would misrepresent the captured content. Its surrounding UI uses Density, and its plain-text view uses the correct mono stack. AG Grid's Density font is an icon font; this app uses SVG icons and does not require that font.
+
+Existing responsive sizes, line heights, sentence case, emphasized KPI/row/status text, italic missing-data cues and touch-target sizes remain local adaptations. This audit aligns families and role weights with the observed system without claiming a complete vendor component implementation. [Brief desktop](evidence/typography-brief-desktop.jpg), [brief at 320px with selected option and keyboard focus on the slider thumb](evidence/typography-brief-320px.jpg), [employee](evidence/typography-employee-desktop.jpg), [Greg](evidence/typography-greg-desktop.jpg). Native inputs, selected/disabled controls and expanded facts were included; the BMW WOFF2 resource request was observed. Retail still resolves to BMW Type Next and `#1c69d4` outside GCSP.
+
+Final checks: 188 tests passing across the shell/source provenance, ratchet, brief rendering/controls, account, outbox, Greg and launcher suites. The theme cap falls from 84 to 67 lines; the generated typography layer receives a new 50-line cap. No existing cap or component-debt baseline rises. The extractor reproduces the snapshot and both generated CSS files deterministically.
 
 - Live source CSSOM and computed styles confirmed the token block and Login button values; [source observation](evidence/source-observation.json).
 - Independent stylesheet comparison: all 1,473 retained RIS tokens occur unchanged in Aftersales.

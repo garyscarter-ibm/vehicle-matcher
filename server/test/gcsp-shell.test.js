@@ -51,7 +51,9 @@ test('shell exposes banner, Portal nav, main and a skip link to main', () => {
   const skip = shell.root.querySelector('a.gcsp-skip');
   assert.equal(skip.textContent, 'Skip to content');
   assert.equal(skip.getAttribute('href'), `#${shell.main.id}`);
-  assert.ok(shell.root.querySelector('header img[alt="BMW"]'));
+  const logo = shell.root.querySelector('header img[alt="BMW GROUP, BMW and MINI"]');
+  assert.ok(logo);
+  assert.ok(logo.src.endsWith('/assets/brand-logos/bmwgroup-bmw-mini.svg'));
   const crumbs = shell.root.querySelector('nav[aria-label="Breadcrumb"] ol');
   assert.equal(crumbs.children.length, 2);
   assert.equal(crumbs.lastElementChild.getAttribute('aria-current'), 'page');
@@ -139,6 +141,8 @@ test('account control: loading, ready, unavailable with Retry, long name keeps i
   assert.match(box.textContent, /Choices, grade G7/);
   shell.setAccount({ status: 'unavailable', message: 'Your account could not be loaded.' });
   assert.match(box.textContent, /could not be loaded/);
+  assert.equal(box.querySelector('.gcsp-account-unavailable [aria-hidden]').textContent, 'Account unavailable');
+  assert.equal(box.querySelector('.gcsp-account-unavailable').title, 'Your account could not be loaded.');
   box.querySelector('.gcsp-account-retry').click();
   assert.equal(retries, 1);
   shell.destroy();
@@ -153,6 +157,31 @@ test('shell destroy removes its DOM and listeners', () => {
   assert.equal(document.querySelector('.gcsp'), null);
   retry.click();
   assert.equal(retries, 0);
+});
+
+test('ready account disclosure preserves full context, closes with Escape and resets on account changes', () => {
+  const name = 'Bartholomew Featherstonehaugh-Cholmondeley-Wolverstone III';
+  const shell = shellMod.portalShell({ account: { status: 'ready', name, context: 'Choices, grade G7' } });
+  document.body.append(shell.root);
+  const details = shell.root.querySelector('.gcsp-account-details');
+  const summary = details.querySelector('summary');
+  assert.equal(summary.getAttribute('aria-label'), `Account details for ${name}`);
+  assert.equal(details.open, false);
+  assert.equal(summary.querySelector('.gcsp-account-context'), null, 'scheme context lives in the disclosure');
+  summary.click();
+  assert.equal(details.open, true);
+  assert.equal(details.querySelector('.gcsp-account-panel').textContent, `${name}Choices, grade G7`);
+  summary.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+  assert.equal(details.open, false);
+  assert.equal(document.activeElement, summary);
+  summary.click();
+  shell.setAccount({ status: 'loading' });
+  assert.equal(shell.root.querySelector('.gcsp-account-details'), null);
+  shell.setAccount({ status: 'ready', name: 'New Person' });
+  assert.equal(shell.root.querySelector('.gcsp-account-details').open, false);
+  assert.equal(shell.root.querySelector('.gcsp-account-context'), null);
+  assert.equal(shell.root.querySelector('.gcsp-account-detail-name').textContent, 'New Person');
+  shell.destroy();
 });
 
 test('EMPLOYEE_NAVIGATION is frozen, with cars the only available destination', () => {
@@ -343,7 +372,7 @@ const stripCss = (s) => s.replace(/\/\*[\s\S]*?\*\//g, '');
 test('default Density tokens stay on .gcsp, with --vm-* only under .gcsp .vm', () => {
   const local = read('blocks/gcsp/shell/gcsp-tokens.css');
   assert.match(local, /^@import "\.\/density-theme\.css";/, 'all GCSP consumers load Density by default');
-  const css = stripCss(read('blocks/gcsp/shell/density-theme.css') + '\n' + local).replace(/@import[^;]+;/g, '');
+  const css = stripCss(read('blocks/gcsp/shell/density-theme.css') + '\n' + read('blocks/gcsp/shell/density-typography.css') + '\n' + local).replace(/@import[^;]+;/g, '');
   assert.ok(!/:root/.test(css), 'no :root');
   assert.ok(!/density-reference/.test(css), 'no opt-in class required');
   const blocks = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].map((m) => [m[1].trim(), m[2]]);
@@ -371,11 +400,39 @@ test('Density heading font assets match the verified BMW downloads and declare t
   }
 });
 
+test('portal branding retains the verified local Density artwork without external dependencies', () => {
+  const asset = JSON.parse(read('docs/gcsp/density/evidence/shell-logo-provenance.json'));
+  const bytes = readFileSync(join(ROOT, asset.file));
+  assert.equal(bytes.length, asset.bytes);
+  assert.equal(createHash('sha256').update(bytes).digest('hex'), asset.sha256);
+  assert.equal(asset.sources.length, 2);
+  assert.ok(!/<script|<foreignObject|\son\w+=|(?:href|src)=["'](?:https?:|javascript:)/i.test(bytes.toString()), 'standalone image only');
+});
+
+test('Density typography tokens and aliases retain the pinned source values without missing dependencies', () => {
+  const snapshot = JSON.parse(read('docs/gcsp/density/tokens.json'));
+  const css = read('blocks/gcsp/shell/density-typography.css');
+  assert.match(read('blocks/gcsp/shell/density-theme.css'), /^@import "\.\/density-typography\.css";/);
+  assert.match(css, /^@import "\.\/fonts\/density-fonts\.css";/);
+  const declarations = Object.fromEntries([...css.matchAll(/(--[\w-]+):\s*([^;]+);/g)].map((m) => [m[1], m[2]]));
+  const resolve = (value) => value.replace(/var\((--[\w-]+)\)/g, (_, key) => {
+    assert.ok(declarations[key], `typography dependency ${key}`);
+    return resolve(declarations[key]);
+  });
+  for (const [key, value] of Object.entries(declarations)) {
+    if (key.startsWith('--ds-')) assert.equal(value, snapshot.tokens[key], key);
+    else assert.equal(resolve(value), snapshot.resolvedGcspAliases[key], key);
+  }
+  for (const suffix of ['font', 'font-heading', 'font-code', 'font-weight', 'font-strong-weight', 'font-button-weight', 'font-input-weight', 'font-table-header-weight']) {
+    assert.ok(declarations[`--gcsp-${suffix}`], suffix);
+  }
+});
+
 test('every selector in the shell stylesheets starts with .gcsp, and retail tokens are not redefined', () => {
-  for (const file of ['blocks/gcsp/shell/gcsp-shell.css', 'blocks/gcsp/shell/gcsp-tokens.css', 'blocks/gcsp/shell/density-theme.css', 'blocks/gcsp/employee/gcsp-employee.css']) {
+  for (const file of ['blocks/gcsp/shell/gcsp-shell.css', 'blocks/gcsp/shell/gcsp-tokens.css', 'blocks/gcsp/shell/density-theme.css', 'blocks/gcsp/shell/density-typography.css', 'blocks/gcsp/employee/gcsp-employee.css']) {
     const css = stripCss(read(file)).replace(/@import[^;]+;/g, '').replace(/@media[^{]*\{/g, '');
     const selectors = [...css.matchAll(/(?:^|[}\s])([^{}@]+)\{/g)].flatMap((m) => m[1].split(',')).map((s) => s.trim()).filter(Boolean);
-    assert.ok(selectors.length >= 2, file);
+    assert.ok(selectors.length >= 1, file);
     const bad = selectors.filter((s) => !s.startsWith('.gcsp'));
     assert.deepEqual(bad, [], `${file}: selectors outside .gcsp`);
   }
@@ -384,7 +441,7 @@ test('every selector in the shell stylesheets starts with .gcsp, and retail toke
 });
 
 test('CSP: no inline scripts, handler attributes, eval, new Function, string timers or innerHTML in GCSP files', () => {
-  const files = [...walk(GCSP_DIR), join(ROOT, 'gcsp-employee.html'), join(ROOT, 'gcsp-account.html'), join(ROOT, 'gcsp-brief.html'), ...livePages().map((file) => join(ROOT, file)), join(ROOT, 'components.html'), join(ROOT, 'blocks/vehicle-matcher/component-gallery.js'), join(ROOT, 'blocks/vehicle-matcher/ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/question-ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/preview-feed.js'), join(ROOT, 'blocks/vehicle-matcher/modes/result-card.js'), join(ROOT, 'blocks/vehicle-matcher/decision-card.css'), join(ROOT, 'blocks/vehicle-matcher/employee-card-fixture.js')].filter((f) => /\.(js|html|css)$/.test(f));
+  const files = [...walk(GCSP_DIR), join(ROOT, 'gcsp-employee.html'), join(ROOT, 'gcsp-account.html'), join(ROOT, 'gcsp-manual-setup.html'), join(ROOT, 'gcsp-brief.html'), ...livePages().map((file) => join(ROOT, file)), join(ROOT, 'components.html'), join(ROOT, 'blocks/vehicle-matcher/component-gallery.js'), join(ROOT, 'blocks/vehicle-matcher/ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/question-ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/preview-feed.js'), join(ROOT, 'blocks/vehicle-matcher/modes/result-card.js'), join(ROOT, 'blocks/vehicle-matcher/decision-card.css'), join(ROOT, 'blocks/vehicle-matcher/employee-card-fixture.js')].filter((f) => /\.(js|html|css)$/.test(f));
   assert.ok(files.length >= 10);
   const offenders = [];
   for (const f of files) {
@@ -426,12 +483,17 @@ test('no em dash in any string literal under blocks/gcsp/, and none in the harne
   assert.deepEqual(offenders, []);
 });
 
-test('no GCSP stylesheet draws a side stripe (border-left or border-right wider than 1px)', () => {
+test('GCSP side stripes stay absent except the supplied reference navigation marker', () => {
   const offenders = [];
   for (const f of walk(GCSP_DIR).filter((p) => p.endsWith('.css'))) {
-    for (const m of stripCss(readFileSync(f, 'utf8')).matchAll(/border-(left|right)(?:-width)?\s*:\s*([^;}]+)/g)) {
-      const width = m[2].match(/(\d+(?:\.\d+)?)px/);
-      if (width && Number(width[1]) > 1) offenders.push(`${rel(f)}: ${m[0]}`);
+    for (const rule of stripCss(readFileSync(f, 'utf8')).matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+      const navigation = rel(f) === 'blocks/gcsp/shell/gcsp-shell.css'
+        && rule[1].split(',').every((selector) => ['.gcsp-nav-btn', '.gcsp-nav-toggle'].includes(selector.trim()));
+      for (const m of rule[2].matchAll(/border-(left|right)(?:-width)?\s*:\s*([^;}]+)/g)) {
+        const width = m[2].match(/(\d+(?:\.\d+)?)px/);
+        const marker = navigation && m[1] === 'left' && Number(width?.[1]) <= 3;
+        if (width && Number(width[1]) > 1 && !marker) offenders.push(`${rel(f)}: ${m[0]}`);
+      }
     }
   }
   assert.deepEqual(offenders, []);
@@ -684,9 +746,10 @@ test('the single gallery shows the GCSP section with primitives and shell states
   assert.ok(section);
   assert.ok(section.querySelector('.gcsp'), 'GCSP examples sit in a .gcsp container');
   assert.equal(root.querySelectorAll('.gcsp').length >= 1, true);
-  assert.equal(section.querySelectorAll('.gcsp-header').length, 3);
+  assert.equal(section.querySelectorAll('.gcsp-header').length, 4);
   const states = [...section.querySelectorAll('.gcsp-account')].map((a) => a.dataset.status);
-  assert.deepEqual(states, ['loading', 'ready', 'unavailable']);
+  assert.deepEqual(states, ['loading', 'ready', 'ready', 'unavailable']);
+  assert.equal(section.querySelectorAll('.gcsp-account-details[open]').length, 1);
   assert.ok(section.querySelector('.vm-btn-primary:disabled'));
   assert.ok(section.querySelector('.vm-btn-ghost'));
   assert.ok(section.querySelector('.vm-status[role="status"]'));

@@ -1,0 +1,79 @@
+{
+  "story": "FUCQ-83",
+  "state": "frozen proposal; revised full held for explicit dispatcher admission",
+  "cwd": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065",
+  "command": "node --test --test-concurrency=1 server/test/**/*.test.js",
+  "environment": {
+    "HOME": "/Users/usget",
+    "USER": "usget",
+    "LOGNAME": "usget",
+    "SHELL": "/bin/zsh",
+    "PATH": "/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "LANG": "en_GB.UTF-8",
+    "TZ": "Europe/London",
+    "SCAFFOLDING_HARNESS": "codex",
+    "npm_config_offline": "true",
+    "npm_config_audit": "false",
+    "npm_config_fund": "false"
+  },
+  "supervisor": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/docs/gcsp/evidence/fucq83/scoped-supervisor.py",
+  "supervisorSha256": "d368fa8bd2eec11c16139d1745d620a9a92f95263fbdf3f2b2c519b3daa3da04",
+  "pins": {
+    "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+    "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+    ".claude/scaffolding.json": "c55d2bf32288b5e19f6ac6e7c7b35d22013c80b757d5328c8257a4eac4ac560a",
+    "_tools/test_stamp.py": "88a16018b5b8fa225463b590f2283b4baa6be4951f258bba4846eacc3795a49e",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "_tools/scaffold_git.py": "787cad57c37f90884d67f391e8419c8141293fe99d8c02dec8d1abb521d2c7fd",
+    "node_modules/jsdom/package.json": "e87940b12f720a5b735a5df82108b634a238b8c6ebced71050a346a1675575b9",
+    "server/node_modules/pg/package.json": "b1e53333a3d0c2c47c49a5cb919d221135dc03145df740925b899bc2baacc435",
+    "node_modules/.package-lock.json": "92164c25104959a02c3ea16fa1643630b54cf5e8f5bce58608f076e4fcce9118",
+    "server/node_modules/.package-lock.json": "04a4016750d016025a0e662b3cc556212627eed4681ed7969296f20437a79517"
+  },
+  "requiredMergedBase": "ca96e7fdc26e79a890796bfd9d3493de939f4220",
+  "integrationCommit": "9f7873e3c46779c78ee400db37f659b84aec07af",
+  "sourceCheckpoint": "5359972752e5fc8ec9e3af9176a2ffec001853b5",
+  "gate": "Revised final full proposal after scheduled-successor correction. Explicit dispatcher admission remains required. Prior full is preserved as superseded proof. Native Render target is intentionally UNSET and final remains BLOCKED/unmerged.",
+  "budget": {
+    "seconds": 120,
+    "scratchBytes": 134217728,
+    "ramBytes": 536870912,
+    "actualTestWorkers": 1,
+    "expectedSeconds": 35,
+    "expectedPeakRssBytes": 348127232
+  },
+  "sequence": [
+    "identity freeze after pushed plan checkpoint",
+    "status-before \u2192 full once \u2192 status-after under identical complete replacement environment",
+    "BLOCKED Result commit/push",
+    "status-final with identical environment/plan/pins"
+  ],
+  "changedPaths": [
+    "server/gcsp/policy/index.js",
+    "server/gcsp/policy/publish.js",
+    "server/gcsp/policy/memory-provider.js",
+    "server/gcsp/policy/postgres-provider.js",
+    "server/gcsp/migrations/0002_policy_tables.sql",
+    "server/test/gcsp-policy-versions.test.js",
+    "server/test/fixtures/gcsp-policy-version-outcomes.json",
+    "server/test/gcsp-repository-contract.test.js"
+  ],
+  "selected": "Explicit story final npm test requirement and approved FUCQ-56 composition checkpoint. All selected scoped policy, migration, identity/clock and consumer checks pass. No automatic full fallback.",
+  "reassessedComposition": "Approved FUCQ-56 adds isolated vehicle-details consumer/lookup/alternate adapters and synthetic HTTP tests. No policy publication, policy factory, clock/core/identity/startup seam changed. Same policy seed and existing typed reads remain source-compatible. Existing001/003 and17comparison/8renewalCase keys stay unchanged. No duplicate scoped run needed; full now covers integrated current source.",
+  "excluded": "No native SQL target, UI/browser, live provider, provision/deploy, corpus regeneration, new dependencies, generic repository/clock/consumer implementation or alternate DB. Native SQL skips remain incomplete acceptance.",
+  "supervision": [
+    "Nonblocking /Users/usget/.cache/agent-scaffolding/test-resources/full-suite.lock before allocation; shared HostBudget reservations",
+    "Unique absolute owned scratch and log roots registered in outside manifests before mkdir; finalizer installed",
+    "One actual Node worker verified from argv, recursive descendants summed for RSS; identity-aware TERM/KILL/join and group absence",
+    "Owned TMPDIR/TMP/TEMP/cache;120-second chunk;128MiB scratch;512MiB process RSS;5GiB emergency reserve",
+    "No full repeat without dispatcher admission. Exact source/input/environment/plan freeze checked before full and final status",
+    "Remove successful verbose logs and disposable scratch; retain concise counts/resources/checkpoints/failure excerpts; no large output/archive/compatibility exception"
+  ],
+  "frozenIdentity": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-final-freeze.json",
+  "attemptGuard": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-final-attempt.json",
+  "impactMap": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/fucq83-8a6e5016b9f4785510126d5e9d4d05389c778196dd6280d6c7489b2b154446fc.json",
+  "nativeRequired": "Gary must provision/configure authorised GCSP Render Postgres; run actual configured unique-schema provider parity, persistence/reopen, atomic publish/replay/race/invalid rollback and direct SQL immutability/row-date assertions. No in-memory or driver substitution.",
+  "revision": 2,
+  "sourceReviewCorrection": "A third scheduled version now copies latest retained predecessor, preserving pending changes; real provider-contract regression reproduced before fix and26passed/2native skips after.",
+  "sourceFixCheckpoint": "0fa21d5"
+}

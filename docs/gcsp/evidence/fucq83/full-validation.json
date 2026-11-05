@@ -1,0 +1,415 @@
+{
+  "story": "FUCQ-83",
+  "status": "BLOCKED: required native Render SQL target unavailable; implementation and offline validation checkpoint preserved unmerged",
+  "plan": {
+    "story": "FUCQ-83",
+    "state": "frozen proposal; revised full held for explicit dispatcher admission",
+    "cwd": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065",
+    "command": "node --test --test-concurrency=1 server/test/**/*.test.js",
+    "environment": {
+      "HOME": "/Users/usget",
+      "USER": "usget",
+      "LOGNAME": "usget",
+      "SHELL": "/bin/zsh",
+      "PATH": "/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      "LANG": "en_GB.UTF-8",
+      "TZ": "Europe/London",
+      "SCAFFOLDING_HARNESS": "codex",
+      "npm_config_offline": "true",
+      "npm_config_audit": "false",
+      "npm_config_fund": "false"
+    },
+    "supervisor": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/docs/gcsp/evidence/fucq83/scoped-supervisor.py",
+    "supervisorSha256": "d368fa8bd2eec11c16139d1745d620a9a92f95263fbdf3f2b2c519b3daa3da04",
+    "pins": {
+      "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+      "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+      ".claude/scaffolding.json": "c55d2bf32288b5e19f6ac6e7c7b35d22013c80b757d5328c8257a4eac4ac560a",
+      "_tools/test_stamp.py": "88a16018b5b8fa225463b590f2283b4baa6be4951f258bba4846eacc3795a49e",
+      "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+      "_tools/scaffold_git.py": "787cad57c37f90884d67f391e8419c8141293fe99d8c02dec8d1abb521d2c7fd",
+      "node_modules/jsdom/package.json": "e87940b12f720a5b735a5df82108b634a238b8c6ebced71050a346a1675575b9",
+      "server/node_modules/pg/package.json": "b1e53333a3d0c2c47c49a5cb919d221135dc03145df740925b899bc2baacc435",
+      "node_modules/.package-lock.json": "92164c25104959a02c3ea16fa1643630b54cf5e8f5bce58608f076e4fcce9118",
+      "server/node_modules/.package-lock.json": "04a4016750d016025a0e662b3cc556212627eed4681ed7969296f20437a79517"
+    },
+    "requiredMergedBase": "ca96e7fdc26e79a890796bfd9d3493de939f4220",
+    "integrationCommit": "9f7873e3c46779c78ee400db37f659b84aec07af",
+    "sourceCheckpoint": "5359972752e5fc8ec9e3af9176a2ffec001853b5",
+    "gate": "Revised final full proposal after scheduled-successor correction. Explicit dispatcher admission remains required. Prior full is preserved as superseded proof. Native Render target is intentionally UNSET and final remains BLOCKED/unmerged.",
+    "budget": {
+      "seconds": 120,
+      "scratchBytes": 134217728,
+      "ramBytes": 536870912,
+      "actualTestWorkers": 1,
+      "expectedSeconds": 35,
+      "expectedPeakRssBytes": 348127232
+    },
+    "sequence": [
+      "identity freeze after pushed plan checkpoint",
+      "status-before \u2192 full once \u2192 status-after under identical complete replacement environment",
+      "BLOCKED Result commit/push",
+      "status-final with identical environment/plan/pins"
+    ],
+    "changedPaths": [
+      "server/gcsp/policy/index.js",
+      "server/gcsp/policy/publish.js",
+      "server/gcsp/policy/memory-provider.js",
+      "server/gcsp/policy/postgres-provider.js",
+      "server/gcsp/migrations/0002_policy_tables.sql",
+      "server/test/gcsp-policy-versions.test.js",
+      "server/test/fixtures/gcsp-policy-version-outcomes.json",
+      "server/test/gcsp-repository-contract.test.js"
+    ],
+    "selected": "Explicit story final npm test requirement and approved FUCQ-56 composition checkpoint. All selected scoped policy, migration, identity/clock and consumer checks pass. No automatic full fallback.",
+    "reassessedComposition": "Approved FUCQ-56 adds isolated vehicle-details consumer/lookup/alternate adapters and synthetic HTTP tests. No policy publication, policy factory, clock/core/identity/startup seam changed. Same policy seed and existing typed reads remain source-compatible. Existing001/003 and17comparison/8renewalCase keys stay unchanged. No duplicate scoped run needed; full now covers integrated current source.",
+    "excluded": "No native SQL target, UI/browser, live provider, provision/deploy, corpus regeneration, new dependencies, generic repository/clock/consumer implementation or alternate DB. Native SQL skips remain incomplete acceptance.",
+    "supervision": [
+      "Nonblocking /Users/usget/.cache/agent-scaffolding/test-resources/full-suite.lock before allocation; shared HostBudget reservations",
+      "Unique absolute owned scratch and log roots registered in outside manifests before mkdir; finalizer installed",
+      "One actual Node worker verified from argv, recursive descendants summed for RSS; identity-aware TERM/KILL/join and group absence",
+      "Owned TMPDIR/TMP/TEMP/cache;120-second chunk;128MiB scratch;512MiB process RSS;5GiB emergency reserve",
+      "No full repeat without dispatcher admission. Exact source/input/environment/plan freeze checked before full and final status",
+      "Remove successful verbose logs and disposable scratch; retain concise counts/resources/checkpoints/failure excerpts; no large output/archive/compatibility exception"
+    ],
+    "frozenIdentity": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-final-freeze.json",
+    "attemptGuard": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-final-attempt.json",
+    "impactMap": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/fucq83-8a6e5016b9f4785510126d5e9d4d05389c778196dd6280d6c7489b2b154446fc.json",
+    "nativeRequired": "Gary must provision/configure authorised GCSP Render Postgres; run actual configured unique-schema provider parity, persistence/reopen, atomic publish/replay/race/invalid rollback and direct SQL immutability/row-date assertions. No in-memory or driver substitution.",
+    "revision": 2,
+    "sourceReviewCorrection": "A third scheduled version now copies latest retained predecessor, preserving pending changes; real provider-contract regression reproduced before fix and26passed/2native skips after.",
+    "sourceFixCheckpoint": "0fa21d5"
+  },
+  "actualDispatcherAdmission": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-dispatcher-revised-full-admission.json",
+  "freeze": {
+    "codeKey": "afdbdaa227ca635e5bd773815067f0814065118e0561a55a0415664864d131ae",
+    "executionIdentity": {
+      "code": "afdbdaa227ca635e5bd773815067f0814065118e0561a55a0415664864d131ae",
+      "environment": "326bc7802333df720b088f9582c7aa86b993675111fe502528f09d27f096f148",
+      "inputs": {},
+      "interpreter": [
+        "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+      ],
+      "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+      "scope": "full",
+      "selected": [
+        "node --test --test-concurrency=1 server/test/**/*.test.js"
+      ],
+      "settings": "a872fcf4d366c7e38bdfeda9b52eb0548274f184c755ae66e86c1d54ac9f814d",
+      "variant": "default",
+      "version": 1
+    },
+    "head": "d00cab589d310f7fce0ca76ea50acdebaca647e6",
+    "planSha256": "92ddd770bfdf527ff02d86562edf6f9cb91e375312638bd09230f7173d4fc215",
+    "stampKey": "79e5dd75b66059fea71b52964593f70dd24a0b0029183c0b46981690f9f6f58a",
+    "tree": "52147ebd24dc476b6acfa0c82247b414d1a68778"
+  },
+  "stamp": {
+    "execution_identity": {
+      "code": "afdbdaa227ca635e5bd773815067f0814065118e0561a55a0415664864d131ae",
+      "environment": "326bc7802333df720b088f9582c7aa86b993675111fe502528f09d27f096f148",
+      "inputs": {},
+      "interpreter": [
+        "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+      ],
+      "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+      "scope": "full",
+      "selected": [
+        "node --test --test-concurrency=1 server/test/**/*.test.js"
+      ],
+      "settings": "a872fcf4d366c7e38bdfeda9b52eb0548274f184c755ae66e86c1d54ac9f814d",
+      "variant": "default",
+      "version": 1
+    },
+    "head": "d00cab589d310f7fce0ca76ea50acdebaca647e6",
+    "key": "79e5dd75b66059fea71b52964593f70dd24a0b0029183c0b46981690f9f6f58a",
+    "python": "3.14.7",
+    "ran": null,
+    "skipped": 0,
+    "time": "2026-11-05T06:55:57+0000",
+    "tree": "52147ebd24dc476b6acfa0c82247b414d1a68778",
+    "variant": "default",
+    "wall": 41.3
+  },
+  "nodeCounts": {
+    "tests": 874,
+    "passed": 870,
+    "failed": 0,
+    "skipped": 4,
+    "nodeDurationMs": 39612.947792
+  },
+  "genericStampCounters": "Command-mode stamp ran:null/skipped:0 are not Node test totals; Node summary above is authoritative.",
+  "fullSummary": {
+    "argv": {
+      "liveSummary": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-full-4a8c175a6c444ba18d3cf1a9f3e086ee-summary.json",
+      "observedProcessCount": 41,
+      "maxActualTestWorkers": 1,
+      "samples": 137
+    },
+    "command": "node --test --test-concurrency=1 server/test/**/*.test.js",
+    "environment": {
+      "HOME": "/Users/usget",
+      "LANG": "en_GB.UTF-8",
+      "LOGNAME": "usget",
+      "PATH": "/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      "SCAFFOLDING_HARNESS": "codex",
+      "SHELL": "/bin/zsh",
+      "TZ": "Europe/London",
+      "USER": "usget",
+      "npm_config_audit": "false",
+      "npm_config_fund": "false",
+      "npm_config_offline": "true"
+    },
+    "environmentSha256": "326bc7802333df720b088f9582c7aa86b993675111fe502528f09d27f096f148",
+    "environmentUnchanged": true,
+    "finalizer": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065/docs/gcsp/evidence/fucq83/scoped-supervisor.py",
+    "finishedAt": 1793861757.858486,
+    "frozenIdentity": {
+      "codeKey": "afdbdaa227ca635e5bd773815067f0814065118e0561a55a0415664864d131ae",
+      "executionIdentity": {
+        "code": "afdbdaa227ca635e5bd773815067f0814065118e0561a55a0415664864d131ae",
+        "environment": "326bc7802333df720b088f9582c7aa86b993675111fe502528f09d27f096f148",
+        "inputs": {},
+        "interpreter": [
+          "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+          "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+        ],
+        "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+        "scope": "full",
+        "selected": [
+          "node --test --test-concurrency=1 server/test/**/*.test.js"
+        ],
+        "settings": "a872fcf4d366c7e38bdfeda9b52eb0548274f184c755ae66e86c1d54ac9f814d",
+        "variant": "default",
+        "version": 1
+      },
+      "head": "d00cab589d310f7fce0ca76ea50acdebaca647e6",
+      "stampKey": "79e5dd75b66059fea71b52964593f70dd24a0b0029183c0b46981690f9f6f58a",
+      "tree": "52147ebd24dc476b6acfa0c82247b414d1a68778"
+    },
+    "fullLock": "/Users/usget/.cache/agent-scaffolding/test-resources/full-suite.lock",
+    "logRoots": [
+      {
+        "absent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-full-4a8c175a6c444ba18d3cf1a9f3e086ee-e5668ffb8e8d477f9f5d2a5c83ba6841-log.json",
+        "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq83-full-4a8c175a6c444ba18d3cf1a9f3e086ee-e5668ffb8e8d477f9f5d2a5c83ba6841"
+      }
+    ],
+    "manifests": [
+      "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-full-4a8c175a6c444ba18d3cf1a9f3e086ee-5db09468046c4f51b6cc31d533c88d3c.json"
+    ],
+    "maxTestWorkers": 1,
+    "mode": "full",
+    "nativeConfigured": false,
+    "ownedDescendants": {
+      "80753": "Thu  5 Nov 06:55:15 2026",
+      "80773": "Thu  5 Nov 06:55:16 2026",
+      "80984": "Thu  5 Nov 06:55:18 2026",
+      "80996": "Thu  5 Nov 06:55:18 2026",
+      "81030": "Thu  5 Nov 06:55:19 2026",
+      "81106": "Thu  5 Nov 06:55:20 2026",
+      "81153": "Thu  5 Nov 06:55:21 2026",
+      "81271": "Thu  5 Nov 06:55:23 2026",
+      "81296": "Thu  5 Nov 06:55:24 2026",
+      "81335": "Thu  5 Nov 06:55:24 2026",
+      "81365": "Thu  5 Nov 06:55:25 2026",
+      "81420": "Thu  5 Nov 06:55:26 2026",
+      "81550": "Thu  5 Nov 06:55:30 2026",
+      "81565": "Thu  5 Nov 06:55:31 2026",
+      "81585": "Thu  5 Nov 06:55:32 2026",
+      "81591": null,
+      "81602": "Thu  5 Nov 06:55:32 2026",
+      "81613": "Thu  5 Nov 06:55:33 2026",
+      "81620": "Thu  5 Nov 06:55:33 2026",
+      "81702": "Thu  5 Nov 06:55:36 2026",
+      "81726": "Thu  5 Nov 06:55:37 2026",
+      "81731": "Thu  5 Nov 06:55:37 2026",
+      "81742": null,
+      "81747": "Thu  5 Nov 06:55:38 2026",
+      "81762": null,
+      "81765": "Thu  5 Nov 06:55:39 2026",
+      "81794": "Thu  5 Nov 06:55:39 2026",
+      "81838": null,
+      "81851": "Thu  5 Nov 06:55:40 2026",
+      "81888": "Thu  5 Nov 06:55:40 2026",
+      "81938": "Thu  5 Nov 06:55:42 2026",
+      "81948": "Thu  5 Nov 06:55:42 2026",
+      "81954": null,
+      "81979": null,
+      "81983": "Thu  5 Nov 06:55:44 2026",
+      "81989": "Thu  5 Nov 06:55:44 2026",
+      "82002": "Thu  5 Nov 06:55:45 2026",
+      "82007": "Thu  5 Nov 06:55:45 2026",
+      "82078": "Thu  5 Nov 06:55:47 2026",
+      "82189": "Thu  5 Nov 06:55:52 2026",
+      "82192": "Thu  5 Nov 06:55:53 2026"
+    },
+    "ownedDescendantsAbsent": true,
+    "pins": {
+      ".claude/scaffolding.json": "c55d2bf32288b5e19f6ac6e7c7b35d22013c80b757d5328c8257a4eac4ac560a",
+      "_tools/scaffold_git.py": "787cad57c37f90884d67f391e8419c8141293fe99d8c02dec8d1abb521d2c7fd",
+      "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+      "_tools/test_stamp.py": "88a16018b5b8fa225463b590f2283b4baa6be4951f258bba4846eacc3795a49e",
+      "node_modules/.package-lock.json": "92164c25104959a02c3ea16fa1643630b54cf5e8f5bce58608f076e4fcce9118",
+      "node_modules/jsdom/package.json": "e87940b12f720a5b735a5df82108b634a238b8c6ebced71050a346a1675575b9",
+      "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+      "server/node_modules/.package-lock.json": "04a4016750d016025a0e662b3cc556212627eed4681ed7969296f20437a79517",
+      "server/node_modules/pg/package.json": "b1e53333a3d0c2c47c49a5cb919d221135dc03145df740925b899bc2baacc435",
+      "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e"
+    },
+    "planSha256": "65e3e89d233ec7e52772cfadc0179105d2d8ff0a5ad947448c791741b5d50fba",
+    "plannedRssMiB": 512,
+    "plannedScratchMiB": 128,
+    "project": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-065",
+    "results": [
+      {
+        "cleanup": {
+          "local_scratch_reason": "",
+          "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-full-4a8c175a6c444ba18d3cf1a9f3e086ee-5db09468046c4f51b6cc31d533c88d3c.json",
+          "peak": 786560,
+          "removed": true,
+          "root": "/private/tmp/test-stamp-shard-5db09468046c4f51b6cc31d533c88d3c"
+        },
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq83-full-4a8c175a6c444ba18d3cf1a9f3e086ee-e5668ffb8e8d477f9f5d2a5c83ba6841/chunk-0001.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-full-4a8c175a6c444ba18d3cf1a9f3e086ee-5db09468046c4f51b6cc31d533c88d3c.json",
+        "peak_rss": 368574464,
+        "peak_scratch": 786560,
+        "rc": 0,
+        "wall": 39.82729462499992
+      }
+    ],
+    "run": "fucq83-full-4a8c175a6c444ba18d3cf1a9f3e086ee",
+    "samples": 137,
+    "savedPlanSha256": "92ddd770bfdf527ff02d86562edf6f9cb91e375312638bd09230f7173d4fc215",
+    "selectedReason": "Explicit FUCQ-83 final npm test requirement after approved FUCQ-56 integration.",
+    "statusAfter": 0,
+    "statusBefore": 1,
+    "successfulOutputCounts": [
+      [
+        "\u2139 tests 874",
+        "\u2139 pass 870",
+        "\u2139 fail 0",
+        "\u2139 skipped 4",
+        "\u2139 duration_ms 39612.947792"
+      ]
+    ],
+    "supervisorSha256": "d368fa8bd2eec11c16139d1745d620a9a92f95263fbdf3f2b2c519b3daa3da04",
+    "timeoutSeconds": 120,
+    "tokensAbsent": true
+  },
+  "fullSummaryLive": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq83-full-4a8c175a6c444ba18d3cf1a9f3e086ee-summary.json",
+  "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/812db7842789151fad353c124891593925b20a9a91bef0f7b247b17a47755f1b.json",
+  "nativeSkipped": [
+    "gcsp-policy-versions: configured PostgreSQL provider parity (NOT RUN)",
+    "gcsp-policy-versions: native rows/dates/seed replay/immutable SQL/reopen parity",
+    "gcsp-repository-contract: native constraints reject a second occupying hold/claim",
+    "gcsp-repository-contract: PostgreSQL shared TransactionRepository contract"
+  ],
+  "actualProviders": [
+    "explicit memory policy provider with real DemoIdentityAdapter/DemoClock and memory TransactionRepository",
+    "unchanged reviewed file PolicyService reads",
+    "explicit PostgreSQL driver double (not native SQL)"
+  ],
+  "remainingNativeAcceptance": "Gary provisions/configures authorised GCSP Render PostgreSQL. Run real unique-schema seed/reseed/reopen, publish/replay/race, invalid rollback, pinned/future/scheduled-successor reads and memory/PG equality; execute direct SQL immutable update/delete and rows/dates assertions. No alternate DB or doubles substitute.",
+  "supersededFull": "superseded-full-validation.json retains original873/869/4full before scheduled-successor correction. Current874/870/4covers revised source.",
+  "preservedBoundaries": {
+    "claimHead": "80198c97f573733eba57351b1d2fde09269bc994",
+    "unchangedAtRevisedSource": [
+      "server/gcsp/policy/seed-v1.json",
+      "server/test/gcsp-policy-service.test.js",
+      "server/gcsp/migrations/0001_transaction_foundation.sql",
+      "server/gcsp/migrations/0003_renewal_cases.sql"
+    ],
+    "sha256": {
+      "server/gcsp/policy/seed-v1.json": "82cc3271c8a0fc30f453e1163703a61a7c6b327a0f954a126db6f9bbf3574ff8",
+      "server/test/gcsp-policy-service.test.js": "85d64227db2ba685bb634b5175f8fe397fd82e792e6567a17cec33c3b32101a2",
+      "server/gcsp/migrations/0001_transaction_foundation.sql": "3bde8db01f103141ca9bbe7398a6e1172df9b9789df745244a0071a00b9629d1",
+      "server/gcsp/migrations/0003_renewal_cases.sql": "e76750fddd75b9d363fd209c243169ce1f9b06c78f96b7dbb74fe3c296f08c98"
+    },
+    "renewalCaseKeys": 8,
+    "comparisonKeys": 17
+  },
+  "runtime": {
+    "node": "v26.7.0",
+    "npm": "11.19.0",
+    "python": "3.14.7",
+    "jsdom": "30.0.1",
+    "pg": "8.23.1"
+  },
+  "strictSequence": "status-before none(rc1) \u2192 renewed full once(rc0) \u2192 status-after matching(rc0); BLOCKED Result/evidence commit+feature push follows, then exact saved-env status-final. Live status summary is authoritative after Result; no extra full.",
+  "outerPhaseEvidence": [
+    {
+      "phases": [
+        "status-before",
+        "full",
+        "status-after"
+      ],
+      "composition": "one combined outer supervisor process",
+      "source": "superseded",
+      "ownerPid": 76799,
+      "ownerStart": "Thu  5 Nov 06:50:06 2026",
+      "ownerIdentityAbsent": true,
+      "outerPgid": null,
+      "outerPgidReason": "Not sampled/recorded by this supervisor; cannot infer process group from PID. Exec tool returned/joined with exit0.",
+      "testGroups": [
+        76832
+      ],
+      "testGroupsAbsent": true,
+      "observedTestDescendantsAbsent": true
+    },
+    {
+      "phases": [
+        "status-before",
+        "full",
+        "status-after"
+      ],
+      "composition": "one combined outer supervisor process",
+      "source": "current",
+      "ownerPid": 80701,
+      "ownerStart": "Thu  5 Nov 06:55:14 2026",
+      "ownerIdentityAbsent": true,
+      "outerPgid": null,
+      "outerPgidReason": "Not sampled/recorded by this supervisor; cannot infer process group from PID. Exec tool returned/joined with exit0.",
+      "testGroups": [
+        80753
+      ],
+      "testGroupsAbsent": true,
+      "observedTestDescendantsAbsent": true
+    },
+    {
+      "phases": [
+        "initial identity freeze",
+        "revised identity freeze"
+      ],
+      "pid": null,
+      "pgid": null,
+      "reason": "Read-only identity exec wrappers returned0; outer PID/PGID were not recorded."
+    }
+  ],
+  "outerPhaseTelemetryLimit": "Historical read-only freeze/full-supervisor outer PGIDs were not recorded. Known supervisor identities and actual test groups/descendants are absent; original tool executions returned/joined. No outer group absence is asserted without its PGID. Upcoming status-final records exact PID/PGID/start outside source.",
+  "retainedBoundedFailureLogs": [
+    {
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/fucq83-policy-2f75d1f5fa3e4c1ba083430e55f6cdcc-84fc5722cf2e4354ac74fa86d3ad7476/chunk-0001.log",
+      "bytes": 4097,
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/5a48a002de7b67c213cfde05433a39865de5735910dc1b99656deee4e159a5a9.json",
+      "reason": "Useful bounded failing regression evidence; current revised source passes."
+    },
+    {
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-064133-ukqha_b_/chunk-0001.log",
+      "bytes": 4158,
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/3577b5f95097300df51ee7b1f250247c60b592fd274362028a0def4075d2e83c.json",
+      "reason": "Useful bounded failing regression evidence; current revised source passes."
+    },
+    {
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-064233-v929rikg/chunk-0001.log",
+      "bytes": 5324,
+      "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/c8bcd974455079275b0cc24c896eabbb76efc78bcb58a63a64e789d4fa63b9a1.json",
+      "reason": "Useful bounded failing regression evidence; current revised source passes."
+    }
+  ],
+  "cleanupReceipt": "cleanup-validation.json"
+}

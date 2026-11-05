@@ -1,0 +1,20 @@
+# FUCQ-83 product review · 5 November 2026
+
+The authored production diff and callers were reviewed at the source-host checkpoint and rechecked against current hashes on Gary’s configured environment. Policy production, reviewed seed, migrations 0001/0002/0003 and the existing PolicyService read test remain byte-identical to the accepted native proof. The [retained source-host review](historical-product-review-source-host.md) records that earlier review; its earlier blocked statements are historical. No current product defect or additional production change was found.
+
+The factory/delegation, complete successor validation and both mutable providers preserve existing typed reads and activation-time pins. Existing adapter-owned Greg authority is checked twice, injected DemoClock supplies run/time, and complete actor/time/command/input/seed audits persist. Values use parameterized SQL; schema names pass the existing identifier guard. Additive 0002 uses the existing runner, deferred same-version links and append-only triggers. Database errors stay unavailable without fallback or diagnostics. Only factory-owned pools close. The scheduled-successor correction preserves the latest retained predecessor while leaving the active-version guard intact; the distinct-change regression now passes against memory and configured PostgreSQL.
+
+| Acceptance | Current evidence |
+|---|---|
+| Dated typed tables/additive runner | Real native migration/re-run and exact row/date/reference/mutation checks pass;0001/0003 are unchanged. |
+| Reviewed origin/idempotent seed | Seed/reseed/reopen/persisted digest/count proof passes; reviewed seed is unchanged. |
+| Same PolicyService/configured factory | Unchanged consumer 93/93; native parity and explicit-owned-schema factory active-version/value assertion pass, with pool close. |
+| Trusted immutable publishing | Trusted Greg/stale run checks; publisher/time audits; invalid no-write; replay/conflict; independent-session race; deliberate owned-table trigger failure proves every typed row rolls back and valid retry succeeds. |
+| Pinned/future reads | Clock-boundary activation, retained pins, direct historical immutability and successive scheduled changes pass. |
+| Required validation/experience | Configured policy 21/21 plus factory 1/1 and repository 61/61 have zero skips. Exact combined offline npm test: 1,235 total/1,230 passed/0 failed/5 native skips has immediate same-process strict MATCH 07aea3ec1a62. Existing accepted/invalid/forbidden/refresh fixtures are asserted. |
+
+Current integration includes shared executable 7ca1357 (completed FUCQ-68/49), later instructions/docs/scaffold cleanup API through 7e0f0c5, and root-accepted FUCQ-50 provider/test hashes. The FUCQ-50 image port has no policy/repository/identity/clock writer edge. All current product/test/package pins were checked before and after the combined full. Only T0 documentation followed the frozen full.
+
+Experience contract: backend-only outcomes, no new screen/component/style/browser behaviour. Applicable future shell references are screenshots 00/01 and the Used Cars body reference `docs/gcsp/evidence/fucq-6/README.md` revision a7fc178. New screenshots and a UI ratchet change are unnecessary; the combined full includes existing UI/component safeguards. The canonical HLD already depicts this operation/store, so topology remains unchanged. Background draw.io status/rendering is unavailable; no fresh rendering or production deployment readiness is claimed.
+
+Resource/native boundaries: all configured proof explicitly selected owned synthetic schemas. Read-only after-inventory restored the four-schema baseline, pool closed, and no foreign schema was dropped. Offline consumers/full received no database aliases. Native scopes and the full used bounded manifests, one worker, HostBudget, log caps and finalizers. Completed allocation scratch/groups/tokens and full lock are absent; exact dependency teardown follows final strict status and is independently verified before handoff. No provisioning, deployment or BMW/network qualification was performed.
