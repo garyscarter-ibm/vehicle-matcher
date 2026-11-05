@@ -4,7 +4,7 @@ Recorded 5 November 2026 at Russell's request, using the existing StanleyPi setu
 
 **Resumed by Russell, 5 November 2026:** "Yes resume it, I just gave the Brevo details in another session" (Codex chat `01a1ac41-5c78-7ff1-a49a-b7abdfc17ac3`). This explicitly supersedes Gary's earlier pause in Jira comment `132470`; the story's `paused:` line is removed. Implementation can proceed using this handoff. Verify the configured sender/API key, approved demo-recipient mapping and public offer URL before the story's deliberate real-send check. The captured outbox remains available throughout.
 
-**Jira reconciliation pending:** the Atlassian connector returned `unauthorized_client` / invalid refresh token when recording this resumption, and OpenTabs was disconnected. The next authenticated Jira pass must record this decision on FUCQ-98 and replace its obsolete pause/precondition wording with the resumed text in the [story mirror](fucq-86-90-stories.md). Preserve the committed resumption if an import still carries the older pause. No new collaborator approval is needed.
+**Jira reconciled, 5 November 2026:** Atlassian reauthentication restored access. FUCQ-98 comment `132509` records Russell's resumption, and its description now permits implementation using this handoff while retaining configuration checks before real-send validation. Read-back confirmed the decision and unchanged acceptance/validation sections. Preserve the committed resumption if a stale import still carries the older pause. No new collaborator approval is needed.
 
 ## Real email test authorised — 5 November 2026
 

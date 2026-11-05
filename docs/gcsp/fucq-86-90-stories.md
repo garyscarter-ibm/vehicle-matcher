@@ -730,7 +730,7 @@ Brevo reuse handoff, 5 November 2026, requested by Russell: read `docs/gcsp/emai
 
 Preserve FUCQ-93's port, capture, canonical retry policy and run scope, FUCQ-97's viewer and the configured recipient allow-list. Persist the provider ID without leaking keys or token-bearing links. Read the handoff's capture/acknowledgement integration gap and finite provider idempotency window before implementing; copying Deckhead's whole mailer or logs is insufficient.
 
-Russell explicitly resumed FUCQ-98 on 5 November 2026: "Yes resume it, I just gave the Brevo details in another session" (Codex chat 01a1ac41-5c78-7ff1-a49a-b7abdfc17ac3). This supersedes the pause in Jira comment 132470. Implement using docs/gcsp/email-transport.md; verify the configured sender, secret, approved demo recipients and public offer URL before the story's deliberate real-send check. The handoff records the method, not a completed configuration check. Jira reconciliation is pending connector reauthentication; the committed resumption remains authoritative under AGENTS.md.
+Russell explicitly resumed FUCQ-98 on 5 November 2026: "Yes resume it, I just gave the Brevo details in another session" (Codex chat 01a1ac41-5c78-7ff1-a49a-b7abdfc17ac3). This supersedes the pause in Jira comment 132470. Implement using docs/gcsp/email-transport.md; verify the configured sender, secret, approved demo recipients and public offer URL before the story's deliberate real-send check. The handoff records the method, not a completed configuration check. Jira comment 132509 records the resumption after reauthentication on 5 November; the updated description and unchanged acceptance/validation sections were verified by read-back.
 
 HLD review, as it applies here:
 
