@@ -4,6 +4,12 @@ Binding project direction, 1 November 2026. Russell requires the 12 November dem
 
 Every GCSP story author, designer, implementer and reviewer reads this contract. It applies to screens and to any service or data change that affects what a user sees or can do. A story with no such impact records that reason and uses the relevant non-visual checks.
 
+## Delivery sequence, agreed 5 November 2026
+
+Russell discussed the sequence with Gary and instructed: **do not pause for layout reviews until there is a working end-to-end demo**. Build the working system first, then undertake the UI pass. This supersedes the earlier requirement to wait for human review of a representative body before continuing implementation. It applies to all current and subsequent stories and agents until that working-system checkpoint.
+
+Two standing requirements continue throughout: **no unnecessary prose**, and **enforce the component library and ratchet**. Reuse or extend an existing suitable component; add one only when a suitable component is genuinely absent. Keep required functional, accessibility, responsive/browser checks and agent inspection of the rendered result. These checks do not create a human layout-review pause. Source/access permissions, story dependencies and substantive behavioral decisions remain binding.
+
 ## Visual reference
 
 **Agreed direction, Russell, 1 November 2026:** the [eight supplied GCSP screenshots](screens/README.md) are the visual reference for the application **header, sidebar and palette**. Breadcrumbs may be retained where useful. Redesign the body toward the consumer-facing Used Cars experience, using shared components and a clearer, more visual presentation. The existing dense portal forms/tables and seven-step wizard are historical journey evidence, not body layouts to reproduce.
@@ -12,7 +18,7 @@ The screenshots are already available under `docs/gcsp/screens/` and were inspec
 
 Use the consumer-facing site's vehicle imagery, hierarchy, spacing, cards, controls and explained recommendations as body-design direction. Adapt them to scheme facts, points/contribution, employee decisions and relevant states rather than copying retail labels or the old portal's page composition. Breadcrumbs and the legacy stepper are separate: retaining one does not require the other.
 
-The missing-reference blocker is cleared by this direction. The first body-design/refinement work should produce and review a representative employee surface with Russell/Gary early, recording its repository path/version as the implementation reference before multiple new body designs fan out. This is a design deliverable under the agreed direction, not a request for another screenshot upload. Establish Greg's denser operational treatment when introduced, using the same shell and shared visual language. The component gallery is also not yet present.
+The missing-reference blocker is cleared by this direction. Use the existing representative employee reference and record the repository path/version followed by each implementation. The 5 November delivery sequence above defers further human layout reviews until the end-to-end demo works. Establish Greg's denser operational treatment using the same shell and shared visual language, without pausing implementation for layout review.
 
 Use the project's available product-design or Impeccable guidance to develop and critique the redesigned body. Later agents follow the supplied shell references, this direction and the resulting reviewed implementation reference. Raise deliberate departures through the same design review. The IBM Carbon service blueprint remains a separate explanatory artifact.
 
@@ -41,6 +47,7 @@ Walkthroughs with real employees and an ordering lead are expected after the 12 
 
 ## Build consistently
 
+- Keep product copy concise: useful labels, facts and consequences only. Remove repetitive explanation, internal implementation prose and redundant status summaries.
 - Follow [COMPONENTS.md](../../COMPONENTS.md): reuse, extend, then add a shared component when necessary. Put shared behaviour, styling and tokens into the kit; update its catalogue and gallery alongside the consuming view. Establish a gallery when the first component work creates a suitable place for it.
 - Share typography, spacing, colour, form controls, buttons, cards and status language across employee, Greg and launcher surfaces. A role's information density can differ while the component language remains consistent. Carry brand/theme context through the supported journeys.
 - Use real vehicle imagery and the supported specification data. Make representative images and missing data understandable where relevant to the employee's decision. Useful fallbacks are part of the designed experience.
