@@ -1,0 +1,32 @@
+{
+  "id": "FUCQ-103",
+  "title": "Preview and publish points and recommendation weights",
+  "status": "In Progress",
+  "original_status": "In Progress",
+  "assignee": "Gary Carter",
+  "type": "Story",
+  "observed_at": "2026-11-05T22:40:24Z",
+  "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103",
+  "jira_observed_at": "2026-11-05T22:40:24Z",
+  "branch": "dev/DEV-2026-11-04-066",
+  "workers": [
+    {
+      "name": "FUCQ-103 lead",
+      "harness": "codex",
+      "role": "story-lead",
+      "observed_at": "2026-11-05T23:02:39Z",
+      "expires_at": "2026-11-05T23:17:39Z",
+      "source": "chat:01a1adbc-0652-7943-a5fd-26c807648025 current lead turn",
+      "status": "working"
+    },
+    {
+      "name": "Timone",
+      "harness": "codex",
+      "role": "implementer",
+      "observed_at": "2026-11-05T23:02:39Z",
+      "expires_at": "2026-11-05T23:17:39Z",
+      "source": "chat:01a1adea-9faa-7ff0-9063-18a64c221bc1 live progress message; title verified",
+      "status": "working"
+    }
+  ]
+}
