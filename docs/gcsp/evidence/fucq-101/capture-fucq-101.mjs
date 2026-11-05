@@ -93,7 +93,7 @@ try {
       await context.close();
     }
     const { page, context, log } = await open('gcsp-greg.html?fixture=loading', vp);
-    await page.waitForSelector('.gcsp-greg-body .gcsp-note', { timeout: 5000 });
+    await page.waitForSelector('.gcsp-greg-body[aria-busy="true"]', { state: 'attached', timeout: 5000 });
     await record(`loading-${label}`, page, log, { fixture: 'loading', viewport: vp, status: await text(page, '.gcsp-greg-status') }, { full: false });
     await context.close();
   }

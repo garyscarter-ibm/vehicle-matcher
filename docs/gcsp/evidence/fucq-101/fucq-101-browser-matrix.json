@@ -1,12 +1,12 @@
 {
   "story": "FUCQ-101",
-  "head": "3b4660aadbe7da2f84ba6cdd21873fa6f381428e",
+  "head": "c5b0063718a330fc20ece07ea6c844891952e595",
   "sourceTreeClean": true,
   "base": "http://localhost:3141",
   "browser": "system Chrome, headless",
-  "capturedAt": "2026-11-05T12:24:55.462Z",
+  "capturedAt": "2026-11-05T12:28:32.946Z",
   "sources": {
-    "blocks/gcsp/greg/gcsp-greg.js": "8efd27d4ef73c138360a945a6e15dbd22abe8da4adc652312b17985ae9e11108",
+    "blocks/gcsp/greg/gcsp-greg.js": "4ee58cc5bdc8d6e3d44ba7fcb1e9934e9a024bf5803e5c720df0ec9ae11c2031",
     "blocks/gcsp/greg/gcsp-greg.css": "c5ae9b0df04d042f633a5ed78efc75554cd6d0e108aeea07366bbb7e8b41ed5e",
     "blocks/gcsp/greg/demand-view.js": "e1ec735bcf7c5435400c335835ace4fa1195552ce3682993eb7cedb6d3b22725",
     "blocks/gcsp/greg/demand-copy.js": "431b55ff3e20eb618410c8fa76b52ac0f9f6e2e4fb3761dd219ba969a20152ee",

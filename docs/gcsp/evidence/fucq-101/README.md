@@ -3,7 +3,7 @@
 Story DEV-2026-11-04-064 (Jira FUCQ-101, Epic FUCQ-90). Rendered evidence for Greg's dashboard inside the GCSP shell.
 
 - **Path:** `gcsp-greg.html` (harness), `blocks/gcsp/greg/` (element, view adapter, copy, fixtures, HTTP adapter, styles), `blocks/gcsp/kit/` (`metricTile`, `dataTable`, `gcsp-kit.css`). Gallery: `components.html`, "GCSP Greg kit". Contract: `docs/gcsp/greg-dashboard-contract.md`.
-- **Revision:** source commit `3b4660a` on `dev/DEV-2026-11-04-064` (base `gcsp-poc`). `fucq-101-browser-matrix.json` records `head` `3b4660aa...` with `sourceTreeClean: true` and the SHA-256 of each source file, so every capture was taken on exactly that source. The commit after it adds only this folder.
+- **Revision:** source commit `c5b0063` on `dev/DEV-2026-11-04-064` (base `gcsp-poc`). `fucq-101-browser-matrix.json` records `head` `c5b0063...` with the SHA-256 of each source file, so every capture was taken on that source. Captured first on `3b4660a`, then re-captured after `c5b0063` changed the loading and refused meta box; the commits after it touch only this folder and the story file.
 - **How to reproduce:** `PORT=3141 node scripts/serve.js`, then open `http://localhost:3141/gcsp-greg.html?fixture=<name>` with `<name>` one of `populated`, `after-release-decline`, `refresh`, `empty`, `no-stock`, `banded`, `unavailable`, `refused`, `conflict`, `loading`. `capture-fucq-101.mjs` re-runs every capture in headless system Chrome: set `PLAYWRIGHT_CORE` to a playwright-core `index.mjs` and `BASE` to the static server.
 - **Data:** synthetic fixtures (`blocks/gcsp/greg/fixtures.js`), shaped like `readDemand` output with the privacy threshold (5) applied once. The real service and HTTP adapter are covered by `server/test/gcsp-greg-dashboard-data.test.js`, not by this browser run.
 
@@ -20,7 +20,7 @@ Story DEV-2026-11-04-064 (Jira FUCQ-101, Epic FUCQ-90). Rendered evidence for Gr
 | `unavailable-*.png`, `retry-after-*.png` | Alert with Retry; after Retry by keyboard (see below). |
 | `refused-*.png` | Alert "You cannot open this dashboard", no figures, no Retry, reserved regions hidden. |
 | `conflict-*.png` | "The figures changed while loading", Refresh offered. |
-| `loading-*.png` | Viewport only: "Loading the demand figures" in the status line and body. |
+| `loading-*.png` | Viewport only: one "Loading the demand figures" status line, the body marked busy, the meta box saying "No figures loaded." |
 | `keyboard-table-region-desktop.png` | First table scroll region focused by Tab: 2px teal outline. |
 | `keyboard-scroll-narrow-320.png` | Narrow, the Stock table region focused (it overflows its box) after ArrowRight and End. |
 | `reduced-motion-desktop.png` | `prefers-reduced-motion: reduce`; computed transition durations are 0s. |
@@ -70,7 +70,6 @@ Compared at desktop against `gcsp-employee.html` (FUCQ-64, `docs/gcsp/evidence/f
 
 - Fixtures, not a live API browser run. The HTTP adapter, role check and conflict path are tested in `server/test/gcsp-greg-dashboard-data.test.js`.
 - Chrome only; no Safari or Firefox check, no screen reader run.
-- The loading, refused, conflict and unavailable views show a meta box holding only the Refresh button (no figures to describe). It is intentional so Refresh stays in the same place, but it reads as an empty card.
-- The loading view says "Loading the demand figures" twice (live status line and body); the body copy is the visible one.
+- The loading, refused, conflict and unavailable views keep the meta box so Refresh stays in place; it says "No figures loaded." (fixed in `c5b0063`, which also removed the duplicate loading line).
 - The Figures version is shown shortened (`fx-popul`); the full value is the projection's `projectionVersion` and is not shown in full on screen.
-- Offers, publish, order tracking, prediction, route comparison and case queue regions are placeholders by design; they hold one honest line each and no data.
+- Publish, order tracking, prediction, route comparison and case queue regions are placeholders by design; they hold one honest line each and no data.
