@@ -119,6 +119,9 @@ database's external address. Render filled in the internal one for `gcsp-api`.
 
 - Every push to `gcsp-poc`, which is every merge the pollers make, redeploys `gcsp-api` and `gcsp-site`. To control
   timing, change `autoDeployTrigger: commit` to `off` for each service in the file, and use **Manual Deploy**.
+- Build filters skip commits that can't change what runs. `gcsp-api` redeploys only for `server/` changes outside
+  its tests and markdown. `gcsp-site` redeploys only for the files its build copies, so `_dev/` and `docs/` commits
+  deploy nothing. If you add a file to the site's `cp` list, add it to `buildFilter.paths` too (a test checks).
 - Change GCSP's Render settings by editing `render.gcsp.yaml` and pushing. The exception is `DEMO_ACCESS_KEY`, which
   lives only in the dashboard.
 - `main`, GitHub Pages and `bmw-matcher-api` are unaffected.
