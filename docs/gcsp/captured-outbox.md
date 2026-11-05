@@ -31,6 +31,10 @@ Retry rules come only from `PolicyService.getAssumption('notify.delivery.v1', re
 
 Delivery exceptions and provider error text are discarded. Persisted/logged errors are fixed codes such as `transport-unavailable`, `message-invalid`, `message-facts-unavailable`, `fictional-recipient-required`, `recipient-mismatch`, `message-version-unsupported`, `offer-inactive` and `offer-expired`. Optional diagnostic output contains only event/state/attempt/error, without links, tokens, recipients or arbitrary IDs. Stock, hold, offer and employee priority state are never written by the dispatcher.
 
+## Presenter route (FUCQ-97)
+
+`createOutboxRoutes(outbox)` in `server/gcsp/notify/http.js` adds `GET /api/gcsp/presenter/outbox` (presenter role, `presenter-control` purpose). Compose it as `buildServer({ ..., gcspOutbox: { repository } })`; without it the route answers 503 `unavailable`. It reads the current run's `notification_outbox`, drops `stale` rows and returns a safe projection (`jobId, messageKind, state, attempts, error, nextAttemptAt, time, recipient, subject, textBody, htmlBody, offerLink`) newest first, never `payload`, `idempotencyKey` or `inputDigest`. Employees and Greg get 403 `forbidden`, a pre-reset cookie 409 `stale-run`, and any query parameter is `invalid`. See [presenter-outbox-contract.md](presenter-outbox-contract.md).
+
 ## Presentation and repeatable trials
 
 This is a backend presentation contract, with no application screen or component change. The later viewer follows the [experience contract](experience-quality.md), supplied shell/sidebar/palette references and [shared kit](../../COMPONENTS.md). The email uses semantic headings, a labelled text link, a visible copyable URL, an expired-state explanation and a plain-text alternative. Missing vehicle facts say to check the account instead of inventing details. It escapes dynamic HTML, rejects executable/network-path/credential-bearing URLs, removes em dashes from copy and contains no scripts, event handlers, remote assets or font requests. Arial with a generic sans-serif fallback is an intentional email-safe font choice, separate from application font styling.
