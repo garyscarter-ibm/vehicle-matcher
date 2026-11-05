@@ -52,7 +52,8 @@ Co-Authored-By: Codex <noreply@openai.com>
 
 Verify the resulting commit body through the Git adapter before pushing. This
 also applies to generated claim and sync checkpoints: use a calling wrapper
-that appends the trailer to messages passed to `commit_paths` when needed.
+that appends the trailer to messages passed to `commit_paths` and the claim
+helper `_commit_two` when needed.
 Pass this requirement to every worker and descendant.
 
 Known published Codex checkpoints missing the trailer include the dispatcher
