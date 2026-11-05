@@ -1368,7 +1368,7 @@
       "id": "FUCQ-126",
       "jira_observation_basis": "Authenticated getJiraIssue FUCQ-126: In Progress/Gary Carter; no Jira write",
       "jira_observed_at": "2026-11-05T23:00:00Z",
-      "observed_at": "2026-11-05T23:17:12Z",
+      "observed_at": "2026-11-05T23:30:55Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -1393,9 +1393,9 @@
           "title": "Shared option pickers and presenter bar"
         },
         {
-          "evidence": "Earlier scoped matrix at3443301 retained with two identified faults;corrected proof not executed;browser-before-results.json and browser-corrected-plan.md",
+          "evidence": "Authorised locald4ce91ff corrected desktop smoke:4checks/4captures,0errors/overflow,parentreview+independentcleanup passed. Picker keyboard outline capture still unproved after pointerclick. No desktop/narrow grant;browser-smoke-lead-review.json.",
           "id": "browser-proof",
-          "observed_at": "2026-11-05T23:02:34Z",
+          "observed_at": "2026-11-05T23:30:55Z",
           "status": "in-progress",
           "title": "Desktop and375px keyboard and actual HTTP proof"
         },
