@@ -26,7 +26,9 @@ Initial Jira reconciliation completed: 107 Stories imported and pushed; two alre
 
 The importer has its own recoverable session and cleanup obligation in `.claude/dev-poller-runtime.json`; reconcile that before another sync or git mutation.
 
-- Both live Jira cards, assignees, points, host/agent labels, branch comments and adoption dates reconciled; existing Epic dates retained and an empty FUCQ-14 date populated/verified. Full-suite runs are serialised by a shared lock.
+- FUCQ-81 / DEV-2026-11-04-041: claimed at 13 points; repository lead `/root/repository_fucq81`, requested/selected `gpt-6.1-sol` / `high`, no fallback.
+- FUCQ-82 / DEV-2026-11-04-039: claimed at 8 points; policy lead `/root/policy_fucq82`, requested/selected `gpt-6.1-sol` / `high`, no fallback.
+- Both foundation cards, assignees, points, host/agent labels, branch comments and newly set adoption dates verified. Their live descriptions had no subsequent comments. Code paths are disjoint; policy alone edits shared-contracts/build-rules, repository owns necessary canonical design edits. They share a single implementer slot; full suites and merges stay serial. Runtime model selections are requested, not independently confirmed.
 
 ## Morning questions
 
@@ -40,3 +42,9 @@ Startup reads and small configuration/document writes required no generated test
 FUCQ-80 validation receipt: `.claude/test-runs/fucq80-20261104-contracts/cleanup.json`; 630,472 known bytes removed, peak scratch 562,689 bytes and peak RSS 369,983,488 bytes; no leftovers or compatibility exception. Compact evidence remains in its run directory and shared impact map.
 
 FUCQ-37 validation evidence: `.claude/test-runs/impact/fucq-37-final.json`; nine owned scratch roots independently verified absent, 552,064 bytes removed, sampled peak RSS 526,696,448 bytes; no leftovers or compatibility exception. When the first consumer is designed, review its source/date and future January 2027 presentation copy.
+
+Foundation note for morning: FUCQ-81 can build without managed access; its current Jira description reserves GCSP Render Postgres provisioning and its connection string to Gary. The build must distinguish memory/local contract evidence from managed integration and report any unset-database skip. No provisioning or credential request is needed to begin.
+
+FUCQ-81 access preflight confirmed: `GCSP_DATABASE_URL` is unset and native PostgreSQL tools are absent. Morning action for Gary: provide the provisioned GCSP Render Postgres connection through backend secret configuration so managed integration can be verified. No secret belongs in chat or git. Local contract verification may use an existing background Docker runtime with owned bounded resources; it does not replace the managed check.
+
+FUCQ-81 checkpoint `138b5ff`: shared repository engine/schema, memory provider and contract tests committed and pushed to `dev/DEV-2026-11-04-041`; scoped lead rerun 16/16 passed. Story remains in progress; PostgreSQL/migrations final checks continue. The installed git wrapper has no feature-branch push command, so its Python git helper pushed the exact validated SHA without force; shared `gcsp-poc` was unchanged. Local Docker API is unavailable as well as native PostgreSQL; no image, container or GUI was allocated. PostgreSQL integration remains explicitly unverified. PolicyService now uses the shared implementer slot (`gpt-6.1-sol` / `medium`, no fallback) while the repository lead continues the next slice.
