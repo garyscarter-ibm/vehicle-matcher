@@ -1,0 +1,21 @@
+{
+  "account": {
+    "state": "ready",
+    "actions": [{ "action": "replace", "slotId": "slot-paula", "schemeId": "choices-fs-uk", "oldContractId": "current:employee-paula", "enabled": true }],
+    "view": {
+      "state": "ready", "editable": true, "supportOwner": "employee", "action": "choose-order-options",
+      "fields": {
+        "account": { "editable": false, "supportOwner": "hr-support" },
+        "licence": { "editable": false, "supportOwner": "driver-support" },
+        "driver": { "editable": true, "supportOwner": "driver-support" },
+        "contract": { "editable": true, "supportOwner": "scheme-support" },
+        "collection": { "editable": true, "supportOwner": "collection-support" },
+        "contact": { "editable": true, "supportOwner": "employee" },
+        "expectedReturnMileage": { "editable": true, "supportOwner": "employee" },
+        "specialRequirements": { "editable": true, "supportOwner": "employee" }
+      }
+    }
+  },
+  "draftView": { "state": "draft", "editable": true, "supportOwner": "employee", "action": "browse-stock" },
+  "validationView": { "state": "validation", "editable": true, "supportOwner": "employee", "action": "correct-fields" }
+}

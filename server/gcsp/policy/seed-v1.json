@@ -11630,6 +11630,87 @@
       "sourceDate": "2026-11-05",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "manual.context.v1",
+      "value": {
+        "enabledSchemes": [
+          "choices-fs-uk"
+        ],
+        "brands": [
+          "bmw"
+        ],
+        "contractOptions": [
+          {
+            "contractOptionId": "six-month-8000",
+            "months": 6,
+            "annualMileage": 8000,
+            "mileageUnit": "mi/year",
+            "schemeIds": [
+              "choices-fs-uk"
+            ],
+            "driverKinds": [
+              "employee",
+              "nominated"
+            ]
+          },
+          {
+            "contractOptionId": "twelve-month-12000",
+            "months": 12,
+            "annualMileage": 12000,
+            "mileageUnit": "mi/year",
+            "schemeIds": [
+              "choices-fs-uk"
+            ],
+            "driverKinds": [
+              "employee"
+            ]
+          }
+        ],
+        "locations": [
+          {
+            "locationId": "demo-collection-centre",
+            "label": "Fictional collection centre",
+            "contractOptionIds": [
+              "six-month-8000",
+              "twelve-month-12000"
+            ],
+            "driverKinds": [
+              "employee",
+              "nominated"
+            ],
+            "closedDates": []
+          },
+          {
+            "locationId": "demo-company-site",
+            "label": "Fictional company site",
+            "contractOptionIds": [
+              "twelve-month-12000"
+            ],
+            "driverKinds": [
+              "employee"
+            ],
+            "closedDates": []
+          }
+        ],
+        "minimumLeadDays": 7,
+        "maximumLeadDays": 180,
+        "maximumSpecialRequirements": 500,
+        "maximumReturnMileage": 500000,
+        "insuranceMaximumByGrade": {
+          "G1-6": 30,
+          "G7": 35,
+          "G8-10": 45,
+          "G11-14": 50
+        }
+      },
+      "unit": "manual contract months; annual mileage mi/year; lead days; insurance group; return miles; text characters",
+      "status": "assumed",
+      "basis": "Revisable synthetic manual rules, not transcribed dropdowns or BMW policy. One explicitly enabled October 2024 FS&UK matrix and BMW brand; permitted nominated-driver/contract/location combinations and insurance caps demonstrate real validation. Choices monthly points uses the shared allowance gate; cash top-up keys remain unused.",
+      "source": "docs/gcsp/manual-journey-refinement.md#implemented-manual-context-contract--fucq-65",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
     }
   ]
 }
