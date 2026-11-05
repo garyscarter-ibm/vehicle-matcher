@@ -1,20 +1,27 @@
 # FUCQ-45 controlled handbook and illustration evidence
 
 Validated offline on 5 November 2026 in `dev/DEV-2026-11-04-015`. Implementation commit
-`839bd12` is integrated with shared base `80b2d3bad87fe007647c10f5e705021f9e9de394`, producing tested
-source `2ae1730f55e12c1ba4610d04da30c6ed33d20727` and tree
-`b8e5fe7d90b3f3950554bf7fd248323090bfeec5`. Generated fictional identities/keys and injected
+`839bd12` is integrated with shared base `6e5870dae05f2c11e34bf7edbf22edf96cf04d2b`, producing full-tested
+source `72646aeed7a5ba374b2ff9f1d7629c214df80aec` and tree
+`4bc0d2001f7a5456a6a762ef5dd401639bdbadea`. Generated fictional identities/keys and injected
 transport supply all guide content. No real VIN, credential or BMW request was used. Live activation,
 demo use and retention of private guide content remain unapproved; optional live exercise is **UNEXERCISED**.
 Offline success proves the implemented boundary, not supported production access or a full live schema.
 
-The final pre-merge base added FUCQ-40's separately authorised local demo catalogue-image adapter,
+The first pre-merge reconciliation added FUCQ-40's separately authorised local demo catalogue-image adapter,
 dated manifest, two WebP runtime assets and tests. Review of all eight incoming paths confirmed no
 rewiring of this private guide provider, transport, current-car facts or shared presentation contract.
 The catalogue render's observed model/paint semantics remain separate from VIN-linked illustration's
 unverified fidelity. The executable delta invalidated the earlier full stamp, so all prescribed focused
 checks and exact configured `npm test` were rerun serially on the combined source. The new proof below
 supersedes the earlier `87336780123e` full stamp for current-base completion.
+
+Latest shared base `6e5870dae05f2c11e34bf7edbf22edf96cf04d2b` then added deployment YAML,
+setup documentation and FUCQ-40/41 lifecycle records. No application/test/fixture/dependency file changed;
+`render-base-focused-reconciliation.json` records unchanged focused-file blobs/hashes. The 36 + 17 focused
+checks below retain proof from source `2ae1730f55e12c1ba4610d04da30c6ed33d20727`. Root `render.gcsp.yaml`
+changed the strict code/config key, so status rejected full reuse and exact `npm test` ran again on the
+latest source. No deployment or live provider call was performed.
 
 ## Acceptance evidence
 
@@ -47,22 +54,23 @@ still removes the affected field; no source identity or URL is weakened to make 
 | --- | --- | --- |
 | `node --test server/test/bmw-vin-guide-adapter.test.js` | 36 passed, 0 failed/skipped | 2.1 s / 166281216 B / 12704 B |
 | `node --test --test-concurrency=1 scripts/gcsp/verify-vin-guide.test.mjs server/test/gcsp-synthetic-vin-egress.test.js server/test/gcsp-vin-registry.test.js` | 17 passed, 0 failed/skipped: 4 harness + 13 actual callers; zero external calls | 5.7 s / 271187968 B / 341280 B |
-| Configured `npm test`, strict full mode, one worker | 1041 total, 1039 passed, 0 failed, 2 skipped, 0 cancelled/todo | 63.1 s / 384335872 B / 547968 B |
+| Configured `npm test`, strict full mode, one worker | 1041 total, 1039 passed, 0 failed, 2 skipped, 0 cancelled/todo | 61.3 s / 413859840 B / 786720 B |
 
 The native PostgreSQL constraint and shared TransactionRepository integration checks skipped because
 `GCSP_DATABASE_URL` was unset. No PostgreSQL verification is claimed. Native counts come from Node’s
 summary; the generic full stamp records `ran: null` / generic `skipped: 0` and does not parse those counts.
 
-The story's explicit npm test requirement and incoming executable base justified a fresh serial full
-run after scoped validation. Dispatcher reassigned the lane. `fucq40-base-preflight.json` showed no
-active HostBudget reservation, 4193419264 B conservative memory headroom beyond reserve, 56% system
-free and 3580.06 MiB swap used. The immediate full plan measured 3490660352 B available headroom;
-the supervisor adapted its reservation to measured room. No project settings or dependencies changed.
+The story's explicit npm test requirement and changed strict configuration identity justified the
+final serial full run. Fresh `render-base-preflight.json` showed no active reservation, 4193255424 B
+conservative RAM headroom beyond reserve, 61% system free and 3516.06 MiB swap used. The immediate
+full plan measured 4267245568 B headroom; supervisor reservation adapted to measured room. No test
+settings or dependencies changed. The configured test command and environment identities remain exact.
 
-- Tested source HEAD: `2ae1730f55e12c1ba4610d04da30c6ed33d20727`; tree: `b8e5fe7d90b3f3950554bf7fd248323090bfeec5`.
-- Integrated shared base: `80b2d3bad87fe007647c10f5e705021f9e9de394`.
-- All final checks’ executable fingerprint: `e476bbc307dee9228dbd1b5206e682dece97e8178fef33a6f6fafaa208c24a09`.
-- Strict full key: `e5419e117f6aaa5f42b74598a30a3f3fbc63009b38a2b40ce7b6e79d8c34f6b8`, recorded `2026-11-05T14:15:09+0000`, default variant.
+- Full-tested source HEAD: `72646aeed7a5ba374b2ff9f1d7629c214df80aec`; tree: `4bc0d2001f7a5456a6a762ef5dd401639bdbadea`.
+- Integrated shared base: `6e5870dae05f2c11e34bf7edbf22edf96cf04d2b`.
+- Final full code/config fingerprint: `5d25216390ac9ab5a1f0ab3fe6fb544d4244c6472fac26e45e3485cc80f91e6d`.
+- Scoped checks’ code fingerprint: `e476bbc307dee9228dbd1b5206e682dece97e8178fef33a6f6fafaa208c24a09`; scoped source/input reuse is recorded separately.
+- Strict full key: `a2bbc0dca0e6ab1a6bb91f3a59aa48b9fb7a602932cf0724fff4a41739dc30f5`, recorded `2026-11-05T14:19:44+0000`, default variant.
 - Full environment identity: `307a4e291678d4e67d3da522f583e0d43b6112ebccef610bd1c05e91d3bef19d`.
 - Full settings identity: `0d673c6e06b7b0092235e4f11ba39fc6925760e457a91b1482b6d78fbe4a56fb`.
 - Actual argv: `/opt/homebrew/bin/node --test-concurrency=1 --test server/test/**/*.test.js`, recorded through the process-local fixed shim.
@@ -89,20 +97,21 @@ All relative paths below are under the shared, ignored records root
 `/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq45/`, outside owned scratch:
 
 - Preallocation plan: `ownership-plan.json`; audited supervisor: `lead-supervisor.py`; finalizer: `finalize-cleanup.py`.
-- Full preflight: `fucq40-base-preflight.json`; full plan: `fucq40-base-full-1793888045123690000-plan.json`.
-- Full receipt: `fucq40-base-full-1793888045123690000-receipt.json`.
-- Full stamp: `strict/stamp-e5419e117f6aaa5f42b74598a30a3f3fbc63009b38a2b40ce7b6e79d8c34f6b8-default.json`.
-- Full checkpoint: `strict/checkpoints/cf35577d06c8e2a0feae05973117cfe142e257d31374fb342c1476c568ef943a.json`.
-- Bounded full log: `strict/logs/20261105-141405-wuljynxb/chunk-0001.log`; shim: `serial-runtime/node`; actual argv: `full-effective-argv.nul`.
+- Full preflight: `render-base-preflight.json`; full plan: `render-base-full-1793888321854530000-plan.json`.
+- Full receipt: `render-base-full-1793888321854530000-receipt.json`.
+- Full stamp: `strict/stamp-a2bbc0dca0e6ab1a6bb91f3a59aa48b9fb7a602932cf0724fff4a41739dc30f5-default.json`.
+- Full checkpoint: `strict/checkpoints/e7315c02d6e3574059689ef1e5c0a487bd3e2184428f200f0c7616a042d55820.json`.
+- Bounded full log: `strict/logs/20261105-141842-vny1tuxp/chunk-0001.log`; shim: `serial-runtime/node`; actual argv: `full-effective-argv.nul`.
 - Integrated guide receipt/checkpoint: `fucq40-base-guide-1793888019094915000-receipt.json`; `strict/checkpoints/65b9e3c431741c3b050749604fee636c6f3c6443abf93e015231791ed9003122.json`.
 - Integrated harness/caller receipt/checkpoint: `fucq40-base-harness-boundaries-1793888028106647000-receipt.json`; `strict/checkpoints/bde149c8cd4d1be71b9708836648eff4738486e3f240aec87da2c6cb2c16b81e.json`.
 - Targeted records: `strict/targeted-e476bbc307dee9228dbd1b5206e682dece97e8178fef33a6f6fafaa208c24a09-default-1793888022133143000.json` and `strict/targeted-e476bbc307dee9228dbd1b5206e682dece97e8178fef33a6f6fafaa208c24a09-default-1793888034621959000.json`.
-- Current-base strict status: `fucq40-base-status-1793888136274028000-plan.json` and `fucq40-base-status-1793888136274028000-receipt.json` (passed; all 20 manifests removed/absent).
-- Final cleanup plan: `final-cleanup-plan.json`; independently verified receipt: `final-cleanup-1793888143889640000-receipt.json`.
-- Dispatcher’s independent all-20-manifest check: shared `.claude/test-runs/ownership/fucq45-dispatcher-final-verification.json` (updated after final-base validation).
+- Current-base strict status: `render-base-passing-status-1793888392051521000-plan.json` and `render-base-passing-status-1793888392051521000-receipt.json` (passed; all 21 manifests removed/absent).
+- Final cleanup plan: `final-cleanup-plan.json`; independently verified receipt: `final-cleanup-1793888398804988000-receipt.json`.
+- Dispatcher’s independent all-21-manifest check: shared `.claude/test-runs/ownership/fucq45-dispatcher-final-verification.json` (updated after final-base validation).
+- Focused reconciliation: `render-base-focused-reconciliation.json`.
 - Pinned package/lock hashes: `dependencies-summary.json`; effective model/session records: `agent-models.json`.
 
-All 20 exact ownership manifests below are `removed`; their roots, process groups and reservations were
+All 21 exact ownership manifests below are `removed`; their roots, process groups and reservations were
 independently verified absent by lead finalizer and dispatcher. The exact owned scratch parent
 `worktree/.claude/test-scratch/fucq45/` was removed. Scope: 120 seconds / 128 MiB scratch / 768 MiB RSS
 for direct checks; full run 300-second ceiling / 128 MiB scratch / at most 4 GiB RSS as measured room allows;
@@ -128,6 +137,7 @@ for direct checks; full run 300-second ceiling / 128 MiB scratch / at most 4 GiB
 - `strict/ownership/85d94c15d7f044c3ae4174750d2c891b.json`
 - `strict/ownership/8a946ac9c6944f6ab27828934162bc20.json`
 - `strict/ownership/bc45478c9cac459ea002715380aea845.json`
+- `strict/ownership/690c4589f9034792bdd6038eda5dc891.json`
 
 OneDrive-IBM/Claude was actually absent; no fabricated cloud destination or large output/archive was created.
 Explicitly retained until dispatcher worktree cleanup: worktree `node_modules` 27138292 B and
