@@ -9,7 +9,8 @@ import { createGcspRuntime } from '../server/gcsp/runtime.js';
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json',
   '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff': 'font/woff', '.woff2': 'font/woff2' };
-const publicPath = (path) => ['/gcsp-brief-live.html', '/gcsp-employee.css', '/favicon.ico'].includes(path)
+const sessionPage = (path) => ['/gcsp-brief-live.html', '/gcsp-activity-live.html'].includes(path);
+const publicPath = (path) => sessionPage(path) || ['/gcsp-employee.css', '/favicon.ico'].includes(path)
   || path.startsWith('/blocks/') || path.startsWith('/assets/');
 
 // Separate loopback entry; it neither changes the retail launcher nor adds a remote sign-in route.
@@ -31,7 +32,7 @@ export async function startGcspDemo({ runtime = {}, port = 0, root = ROOT, acces
       const canonicalPath = `/${relative(resolve(root), file).split(sep).join('/')}`;
       if (!file.startsWith(`${resolve(root)}${sep}`) || !publicPath(canonicalPath) || canonicalPath !== path
         || !(await stat(file)).isFile()) { res.writeHead(404).end('Not found'); return; }
-      if (path === '/gcsp-brief-live.html') {
+      if (sessionPage(path)) {
         const session = await services.identity.resolveSession({ authorized: true, cookie: req.headers.cookie });
         if (session.status !== 'ok') {
           const issued = await services.createLocalSession();

@@ -1,6 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { request as httpRequest } from 'node:http';
+import { mkdtemp, writeFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { createGcspRuntime } from '../gcsp/runtime.js';
 import { startGcspDemo } from '../../scripts/gcsp-demo.mjs';
 import { JSDOM } from 'jsdom';
@@ -106,4 +109,21 @@ test('browser runtime adapter uses supplied same-origin fetch and projects the e
   const denied = createBriefRuntimeAdapter({ fetch: async () => ({ ok: true, json: async () => ({ status: 'ok', value: { state: 'no-entitlement', account: { name: 'Paula' } } }) }) });
   assert.deepEqual(await denied.loadAccount(), { status: 'unavailable' });
   dom.window.close();
+});
+
+test('exact activity entry boundary establishes the same session without assuming an activity UI implementation', async (t) => {
+  // One small static fixture proves the authorized route/session boundary only. FUCQ-95 owns the actual page.
+  const root = await mkdtemp(join(tmpdir(), 'gcsp-activity-entry-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  await writeFile(join(root, 'gcsp-activity-live.html'), '<!doctype html><title>Activity entry boundary fixture</title>');
+  const opened = await startGcspDemo({ runtime: options, root }); assert.equal(opened.status, 'ok');
+  t.after(() => opened.value.close());
+  const { origin } = opened.value;
+  const page = await fetch(`${origin}/gcsp-activity-live.html`); assert.equal(page.status, 200);
+  const session = cookie(page.headers); assert.ok(session);
+  const response = await fetch(`${origin}/api/gcsp/manual/account`, { headers: { Cookie: session } });
+  assert.equal((await response.json()).value.state, 'ready');
+  for (const path of ['/gcsp-activity-live.html/other', '/gcsp-activity.html', '/blocks/%2f..%2fgcsp-activity-live.html']) {
+    assert.equal((await fetch(`${origin}${path}`)).status, 404);
+  }
 });
