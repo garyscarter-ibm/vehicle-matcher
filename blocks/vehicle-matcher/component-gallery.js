@@ -6,6 +6,8 @@ import { el, screenIntro, button, statusScreen, factList } from './ui.js';
 import { feedbackButton, feedbackScope, feedbackUndo, matchCard, mediaWell, previewTile } from './modes/result-card.js';
 import { portalShell, accountNavigation } from '../gcsp/shell/portal-shell.js';
 import { EMPLOYEE_NAVIGATION } from '../gcsp/employee/gcsp-employee.js';
+import { messageList } from '../gcsp/presenter/message-list.js';
+import { fixtureMessages } from '../gcsp/presenter/fixtures.js';
 
 const browseSession = `gallery-${Date.now().toString(36)}`;
 let sessionSequence = 0;
@@ -119,6 +121,7 @@ function gcspExamples() {
     frame.append(accountNavigation({ items: EMPLOYEE_NAVIGATION, active: 'cars', expanded }).root);
     group(`accountNavigation: ${expanded ? 'expanded' : 'collapsed'}, with unavailable items`).append(frame);
   }
+  group('messageList: sent, retrying and failed, first message open').append(messageList({ messages: fixtureMessages(), selectedId: 'job-004' }).root);
   section.append(scope);
   return section;
 }

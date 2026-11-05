@@ -120,6 +120,17 @@ Gallery: the single gallery ([`components.html`](components.html)) now has a **G
 
 The representative employee body (`blocks/gcsp/employee/representative-body.js`, styles in `gcsp-employee.css`) is page composition from kit primitives and `gcsp-*` classes, not a kit card. It builds no competing car card: FUCQ-31 owns the shared decision-card and control contract, and the body adopts it when that lands.
 
+## GCSP presenter outbox (`blocks/gcsp/presenter/`)
+
+Looked at: `el`, `button`, `screenIntro`, `statusScreen`, `factList` (all reused here), the retail result cards and `portalShell`. No kit component lists messages with a detail pane, so `messageList` is new.
+
+| Call | Use for |
+|---|---|
+| `messageList({ messages, selectedId, onSelect, label })` (`message-list.js`) | Rows (real buttons, `aria-current` on the open one) and a detail pane: heading that takes focus, facts, the HTML body in a sandboxed `srcdoc` iframe, the plain-text alternative and a safe `target=_blank rel=noopener` offer link. Unrendered messages show the status explanation. Returns `{ root, select, update, getSelected, destroy }`. |
+| `mountOutbox(root, ctx)` / `<gcsp-outbox>` (`gcsp-outbox.js`) | The presenter-only viewer in `portalShell`. Contract in [docs/gcsp/presenter-outbox-contract.md](docs/gcsp/presenter-outbox-contract.md). Harness: [`gcsp-outbox.html`](gcsp-outbox.html). |
+
+Gallery: the GCSP section of [`components.html`](components.html) shows `messageList` with sent, retrying and failed messages.
+
 ## Not yet in the kit
 
 Hand-built in several modes (file counts at the time of writing):
@@ -134,4 +145,4 @@ Hand-built in several modes (file counts at the time of writing):
 
 ## The ratchet
 
-Test: `server/test/ui-ratchet.test.js`, config and baseline in `server/test/ui-ratchet.json`; it runs in `npm test`. After moving a view onto the kit, run `node server/test/ui-ratchet.test.js --write` to lower the baseline (only ever commit it lower). `node server/test/ui-ratchet.test.js --debt` lists what is outstanding. `vehicle-matcher.css`, `decision-card.css`, `question-controls.css`, `component-gallery.css` and the three GCSP stylesheets (`blocks/gcsp/shell/` and `blocks/gcsp/employee/gcsp-employee.css`) are capped at their current length (`stylesheets` in the config); `blocks/gcsp/` is a scanned root.
+Test: `server/test/ui-ratchet.test.js`, config and baseline in `server/test/ui-ratchet.json`; it runs in `npm test`. After moving a view onto the kit, run `node server/test/ui-ratchet.test.js --write` to lower the baseline (only ever commit it lower). `node server/test/ui-ratchet.test.js --debt` lists what is outstanding. `vehicle-matcher.css`, `decision-card.css`, `question-controls.css`, `component-gallery.css` and the four GCSP stylesheets (`blocks/gcsp/shell/` and `blocks/gcsp/employee/gcsp-employee.css` and `blocks/gcsp/presenter/gcsp-presenter.css`) are capped at their current length (`stylesheets` in the config); `blocks/gcsp/` is a scanned root.

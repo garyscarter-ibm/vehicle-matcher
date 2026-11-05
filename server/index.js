@@ -47,6 +47,7 @@ import { geocodePostcode } from './geocode.js';
 import { createGcspHandler } from './gcsp/identity/http.js';
 import { createEmployeeRecommendationRoutes } from './gcsp/recommendation/http.js';
 import { createClockRoutes } from './gcsp/clock/http.js';
+import { createOutboxRoutes } from './gcsp/notify/http.js';
 import { createScenarioRoutes } from './gcsp/scenarios/http.js';
 import { createCaseRoutes } from './gcsp/cases/http.js';
 import { createBriefRoutes } from './gcsp/brief/http.js';
@@ -861,7 +862,7 @@ export function buildServer(deps = {}) {
     identity: deps.gcspIdentity,
     routes: [...createEmployeeRecommendationRoutes(deps.gcspClock && deps.gcspRecommendations
       ? { ...deps.gcspRecommendations, time: deps.gcspClock } : deps.gcspRecommendations),
-    ...createClockRoutes(deps.gcspClock), ...createScenarioRoutes(deps.gcspScenarios, deps.gcspClock), ...createBriefRoutes(deps.gcspBrief), ...createCaseRoutes(deps.gcspCases), ...createManualContextRoutes(deps.gcspManual), ...createGregRoutes(deps.gcspGreg), ...(deps.gcspRoutes || [])],
+    ...createClockRoutes(deps.gcspClock), ...createOutboxRoutes(deps.gcspOutbox), ...createScenarioRoutes(deps.gcspScenarios, deps.gcspClock), ...createBriefRoutes(deps.gcspBrief), ...createCaseRoutes(deps.gcspCases), ...createManualContextRoutes(deps.gcspManual), ...createGregRoutes(deps.gcspGreg), ...(deps.gcspRoutes || [])],
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
   const handleVehicleEvidence = createVehicleEvidenceHandler({
