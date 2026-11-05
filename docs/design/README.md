@@ -31,6 +31,8 @@ The employee overview was split into area pages to keep connectors readable. Ref
 
 Blue means current implementation; purple/dashed means proposed. Current application code was reviewed at `27cf841e1af6ea1c0598bcd63700145138fdb947`; this FUCQ-6 review uses checkout `eefc85c` and its existing working-copy context. The retail API and exports exist; their internal shared-core extraction does not. Russell agreed the shared recommendation direction on 1 November 2026 and requested implementation stories for FUCQ-8. Its shared recommendation work is being refined separately from the wider employee lifecycle. Proposed components remain purple until built and verified; design agreement does not establish implementation or operational acceptance. No application code or hosting was changed by this design update.
 
+**FUCQ-26 implementation evidence, 5 November 2026:** the [immutable vehicle facts and scenario terms contract](vehicle-snapshot-contract.md) is implemented as additive backend modules and opt-in retail/synthetic adapters. The integrated check passed 20 contract cases, 157 frozen retail compatibility cases, and the full suite (513 passed, two PostgreSQL checks skipped with `GCSP_DATABASE_URL` unset). Existing mapper/cache interfaces and retail payloads remain unchanged. This verifies the internal facts/terms boundary; it does not establish employee workflow or live-provider completion. Page 02's diagram status/render remains unverified because no background draw.io tab is available; its status is unchanged, and no new rendered review is claimed.
+
 Boundaries that must survive implementation:
 
 - Brand and scenario are separate. Server wiring selects the policy; a client cannot switch an employee request to permissive retail rules.
