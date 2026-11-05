@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Backend presentation contract for the comparison harness and future Greg panel. Synthetic inputs only; no route results or winners.",
+  "outputFields": ["employees", "manifest", "releaseSchedule", "stock"],
+  "employeeFields": ["accessGroup", "accessSeconds", "buddyParticipation", "companyId", "employeeId", "fictional", "gradeId", "pointsAllowance", "pointsUnit", "renewalAt", "responseSeconds", "schemeId", "statedBrief", "underlyingNeeds"],
+  "stockFields": ["configuration", "configurationId", "eligibilityModelKey", "identityKind", "modelLine", "orderUuid", "snapshotVersion", "sourceKind"],
+  "releaseFields": ["at", "orderUuids", "releaseId"],
+  "manifestFields": ["allowances", "assumptions", "configurationHash", "configurationSource", "counts", "generatorVersion", "horizonDays", "inputHash", "limitations", "overlay", "overlayHash", "policyHash", "policyVersion", "seed", "seeds", "startsAt"],
+  "limitations": ["Fictional cohort and assumed behaviour; not BMW employee data.", "Calculated fit is not observed satisfaction. No route or outcome is generated."]
+}

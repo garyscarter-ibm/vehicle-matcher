@@ -1,6 +1,6 @@
 {
   "story": "FUCQ-55",
-  "state": "both pinned environments restored; scoped tests historical; review complete on125base; final133base/full held",
+  "state": "merged23/99/125/133base8c9989c incorporated; final solefull admitted after this source checkpoint",
   "chunks": [
     {
       "id": "lookup",
@@ -64,7 +64,7 @@
         "all authored suite modules sequentially",
         "integrated route/policy/engine callers"
       ],
-      "status": "held; reassess current base and measured narrow timings before launch"
+      "status": "admitted; exact cleanenv/supervisor in final-validation-plan.json"
     }
   ],
   "selector": "Inspected test_stamp.py cmd_targeted and JavaScript plugin availability: explicit scoped --command is required; no legacy affected full fallback. Actual selector dry-run remains held with execution.",
@@ -88,7 +88,7 @@
   "config_identity": {
     "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
     "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
-    "server/gcsp/policy/seed-v1.json": "fa73b7fd140132536e337fd9e431824d769f7963336e982dd4d24f063ba683ef",
+    "server/gcsp/policy/seed-v1.json": "ecbe8638d24f2d210040d9acf8a3887f7073e3541114265c297d5301f2b082d5",
     "package.json": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
     "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
   },
@@ -102,13 +102,33 @@
   },
   "cleanup": "Seven execution roots and owned groups/reservations/success logs removed and verified; sum measured peaks10,075,968B. Retain27,138,292B root/node_modules plus858,816B server/node_modules. Largest scratch6,997,984B; largest sampled groupRAM313,016,320B. No leftover, archive/large output or compatibility exception. Final full scripts/plans retained intentionally under shared ownership; no full scratch allocated.",
   "integration_reassessment": {
-    "merged_base": "e88ea66256031321274b8092bd884fed9a586fe6",
+    "merged_base": "8c9989c3e29c17a6ecf0ca0fa9d5d9fdf8b6ac0d",
     "prior_tested_head": "d718491e13407d496017c6ec1b90f19850d35393",
     "previous_index_sha256": "52c02b20d3a0e1c3a75de7697af38b1032dfb453e39c96f35f2f440435da8b4c",
     "current_index_sha256": "8569b91ea762c872213357f01a7b8dc586097a6d873439e48157c2ff5633767b",
     "changed_boundary": "Additive createScenarioRoutes import and generic GCSP route composition; lookup handler/raw dispatch/offline changes preserved",
-    "selection": "Required final explicit whole suite includes own lookup/API/offline/retail and scenario boundaries; await merged133base and dispatcher solefull admission; no immediate duplicate scoped execution",
-    "scope_note": "Prior scoped evidence remains valid for identical lookup modules/fixtures; current integrated index not yet runtime validated"
+    "selection": "Final required whole suite admitted600s/128MiB/768MiB after pushed clean integrated source checkpoint; no duplicate old scoped checks",
+    "scope_note": "Whole-suite checkpoint will cover all four integrated stories and own port/HTTP/offline/retail modules",
+    "comparison_keys_preserved": [
+      "comparison.cohortSize",
+      "comparison.seeds",
+      "comparison.startsAt",
+      "comparison.horizonDays",
+      "comparison.gradeDistribution",
+      "comparison.pointsAllowanceMultiplier",
+      "comparison.renewalDays",
+      "comparison.needs.v1",
+      "comparison.importanceDistribution",
+      "comparison.briefNoise.v1",
+      "comparison.accessGroups",
+      "comparison.buddyUptake",
+      "comparison.carsPerEmployee",
+      "comparison.modelLineMix",
+      "comparison.releaseCadence",
+      "comparison.configurationSet.v1",
+      "comparison.maximumGeneratedRows"
+    ],
+    "comparison_source_and_fixtures_byte_identical_to_base": true
   },
   "final_plan": "docs/gcsp/evidence/fucq55/final-validation-plan.json",
   "product_review": "docs/gcsp/evidence/fucq55/product-review.md"
