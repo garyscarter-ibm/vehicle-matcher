@@ -65,5 +65,10 @@
     "state": "complete"
   },
   "code_commit": "5333d6bb69615c05a230c36ae89904371a31ffe2",
-  "published": false
+  "publication": {
+    "initial_push": "rejected commit_refs_rules; no force or unchanged loop",
+    "root_recovery_shared_commit": "1a55d3a",
+    "exact_receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/publication.json",
+    "executable_source_unchanged": true
+  }
 }

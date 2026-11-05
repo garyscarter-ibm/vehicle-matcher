@@ -33,6 +33,6 @@ Fresh HostBudget and one worker; 120-second outer deadline, 768 MiB RAM, 128 MiB
 - Granted browser checks/captures for every state at 1280 and 375 px with keyboard, visible focus, reduced motion and no overflow.
 - Authored `npm test`/full stamp, final integration review and collaborator acceptance.
 
-Local publishing is blocked by GitHub `fatal error in commit_refs_rules`; no force or repeated unchanged push was attempted. All existing ratchet entries/caps and non-FUCQ-105 map rows/observation times were preserved.
+The initial push was rejected by GitHub `fatal error in commit_refs_rules`; no force or repeated unchanged push was attempted. Root subsequently reported ordinary publication recovery at shared metadata commit `1a55d3a` and authorised one normal push of these coherent checkpoints. Its exact head/readback receipt is retained at the shared `.claude/test-runs/fucq105/publication.json`. This metadata-only shared update does not change the tested executable source. All existing ratchet entries/caps and non-FUCQ-105 map rows/observation times were preserved.
 
 Requested/selected/effective model and effort: gpt-6.1-sol/high, no fallback and no descendants. Own saved title is Hippety Hopper (they/them).
