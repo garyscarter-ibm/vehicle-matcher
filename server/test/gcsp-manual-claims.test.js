@@ -566,7 +566,9 @@ test('native PostgreSQL manual claims retain once-only keyed review and expire a
     assert.equal(Date.parse(reviewed.value.hold.expiresAt) - Date.parse(reviewed.value.hold.reviewStartedAt), reviewRule.value.value * 1000);
     f = await fixture.reopen(f);
     assert.deepEqual(await f.service.beginReview(f.context, reviewInput), reviewed);
-    assert.equal((await f.service.beginReview(f.context, await action(f, 'native-review-new-command'))).value.hold.expiresAt, reviewed.value.hold.expiresAt);
+    const nextReview = await f.service.beginReview(f.context, await action(f, 'native-review-new-command'));
+    assert.equal(nextReview.status, 'ok', JSON.stringify(nextReview));
+    assert.equal(nextReview.value.hold.expiresAt, reviewed.value.hold.expiresAt);
     assert.equal((await f.service.registerClockHandler()).status, 'ok');
     assert.equal((await advance(f, reviewRule.value.value)).status, 'ok');
     assert.equal((await f.clock.reconcileStartup()).status, 'ok');
