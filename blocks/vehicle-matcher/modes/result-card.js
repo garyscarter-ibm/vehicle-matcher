@@ -200,7 +200,7 @@ export function mediaWell(car, extraClass = '') {
 export function matchCard(match, {
   big = false, compact = false, brand: brandKey = 'bmw',
   showScore = true, showPaint = false,
-  rejectOptions, rejectLabel, rejectPrompt,
+  rejectOptions, rejectLabel, rejectPrompt, onListingSelect,
 } = {}) {
   const { car } = match;
   const listings = listingsOf(match);
@@ -584,6 +584,7 @@ export function matchCard(match, {
         renderChosen(listing);
         // Re-offer reasons about the car now being shown.
         onPick?.(listing);
+        onListingSelect?.(listing);
       });
       picker.append(opt);
     });

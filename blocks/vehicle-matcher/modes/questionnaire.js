@@ -909,12 +909,28 @@ function renderRefine(
     // It keeps its reject menu: the answer still has to survive being looked
     // at, and "actually, not that one either" is a real thing to want to say.
     const single = shown.length === 1;
+    const changedSelections = new Set();
+    // Ranking frames describe the first server-selected member. A buyer's
+    // sibling choice changes that premise without reranking or replacing the
+    // focused card. Keep a neutral shortlist until all original members return.
+    const claims = { title: title.textContent, ledeHidden: lede.hidden, noticeHidden: notice.hidden };
+    let workingHidden;
+    const selectListing = (match, listing) => {
+      if (listing === listingsOf(match)[0]) changedSelections.delete(match);
+      else changedSelections.add(match);
+      const changed = changedSelections.size > 0;
+      title.textContent = changed ? EXACT_LISTING_COPY.shortlist : claims.title;
+      lede.hidden = changed || claims.ledeHidden;
+      notice.hidden = changed || claims.noticeHidden;
+      working.hidden = changed || workingHidden;
+    };
     const full = (m, big = false) => matchCard(m, {
       big,
       brand: ctx.brand,
       rejectOptions,
       rejectLabel: copy.rejectOpen,
       rejectPrompt: copy.rejectPrompt,
+      onListingSelect: (listing) => selectListing(m, listing),
     });
     const tile = (m) => matchCard(m, { compact: true, brand: ctx.brand });
     // The grid holding the LEAD goes full width for a single car; the other
@@ -976,6 +992,7 @@ function renderRefine(
       working.append(el('p', 'vm-working-text', copy.working(searched) + closing
         + (state === 'unscored' ? '' : copy.workingScore)));
     }
+    workingHidden = working.hidden;
   }
 
   redraw();

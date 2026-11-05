@@ -6,6 +6,8 @@
 
 The shared `matchCard()` paints the selected listing's price, photo, equipment, gearbox, mileage, link and explanation together. A medium card keeps a stretch warning even when it trims positive reasons. Local equipment/colour/gearbox refinement promotes the first surviving listing's server decision and sorts the remaining results by those decisions. Feedback actions, whole-group rejection, undo and reset retain their existing meaning. A different surviving listing cannot retain a taste-leader claim derived from the original member.
 
+Selecting another member also changes the questionnaire heading to **Your selected listings.** and hides the representative-level lede, scoped notice and ranking working. Returning every card to its original member restores the original presentation. The picker updates the existing card in place, preserving keyboard focus.
+
 With an older compatible backend, an unchanged representative can still use the old top-level decision. Switching or refining to another member without its decision clears unsupported score, reasons, trade-offs and stretch claims. The card states that score and reasons are unavailable. Refinement shows an unscored shortlist without claiming equally good fit or discarding the surviving car. No browser scoring weights or reconstruction are introduced.
 
 ## Corrected R1 expectation
@@ -21,7 +23,7 @@ Start the existing static server from the repository root with `npm run serve`, 
 1. Reset the listing trial. The first car shows £30,000 / 96% and heated seats; the availability summary describes two cars and £30,000–£39,000.
 2. Tab to the Chili Red listing and press Enter or Space. Its button remains focused and pressed; the card shows £39,000 / 87% / stretch, parking camera, manual gearbox, its link and the missing-image placeholder.
 3. Choose **Parking camera only**. The selected exact decision and equipment remain consistent. Toggle the refinement off or reset to restore both cars.
-4. Choose **Older backend**, then select Chili Red or refine to parking camera. Score and reasons become unavailable, while £39,000 and exact facts remain visible. Selecting the original representative restores its supported old fields. Reset returns the new-contract starting state.
+4. Reset the listing trial, then choose **Older backend** and select Chili Red or refine to parking camera. Score and reasons become unavailable, while £39,000 and exact facts remain visible. Selecting the original representative restores its supported old fields. Reset returns the new-contract starting state.
 5. Repeat at desktop and narrow widths. The long vehicle name wraps; picker controls, focus rings and missing-image fallback remain usable. Existing feedback/rejection/undo and employee fixture examples remain independently available.
 
 The implementation Result records actual browser captures, source identity, inspected states and remaining evidence gaps. A local test or screenshot is not deployment or real-provider verification. The canonical draw.io topology remains unchanged; status recolouring/rendering remains unverified while no existing background diagram tab is available. No foreground or raw-XML workaround is used.

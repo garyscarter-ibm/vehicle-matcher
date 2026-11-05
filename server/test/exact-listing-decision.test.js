@@ -188,6 +188,15 @@ for (const legacy of [false, true]) test(`questionnaire equipment refinement use
   window.history.replaceState(null, '', `/#m=${Buffer.from(JSON.stringify(answers)).toString('base64url')}`);
   const stage = mountMode(await loadMode('questionnaire'), { base: 'http://r1.test', brand: 'bmw' });
   await settle(stage, (s) => s.querySelector('.vm-card'));
+  const red = stage.querySelectorAll('.vm-pick-opt')[1]; red.focus(); red.click();
+  assert.equal(document.activeElement, red, 'page claim update keeps native picker focus');
+  assert.match(stage.querySelector('.vm-title').textContent, /selected listings/i);
+  assert.doesNotMatch(stage.querySelector('.vm-title').textContent, /perfect|equally/i);
+  assert.ok(stage.querySelector('.vm-working').hidden, 'representative ranking claims do not follow a different member');
+  stage.querySelectorAll('.vm-pick-opt')[0].click();
+  assert.equal(stage.querySelector('.vm-score').textContent, '96%');
+  assert.match(stage.querySelector('.vm-title').textContent, /perfect/i);
+  assert.equal(stage.querySelector('.vm-working').hidden, false);
   const camera = [...stage.querySelectorAll('.vm-chip')].find((b) => b.textContent === 'Parking camera');
   assert.ok(camera, 'aggregate availability offers the exact equipment refinement');
   camera.click();
