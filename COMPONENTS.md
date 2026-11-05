@@ -187,3 +187,14 @@ The shared GCSP adaptation of `screenIntro`, `button`, `factList`, `statusScreen
 ### GCSP account consumer (`blocks/gcsp/account/`)
 
 `mountAccount(root, { adapter, brand, onSupport, print })` and `<gcsp-account>` compose `mountEmployee`, `screenIntro`, `button`, `statusScreen`, `factList`, `formatTerm`, `mediaWell`, the existing countdown and native labelled details for delivered cars, read-only account/licence facts and grouped histories. A current car has no stock decision, so this is page composition rather than a new decision-card primitive. `gcsp-account.css` imports the employee composition and has its own ratchet cap; harness `gcsp-account.html` uses the HTTP adapter by default and explicit read-only snapshots with `?fixture=`.
+
+### GCSP native form presentation (`blocks/gcsp/kit/form-controls.js`)
+
+Looked at `renderOptionList` and `renderRangeSlider`: they supply question buttons and sliders, while setup needs native date, select, contact and textarea controls with linked field errors. These two shared presentation helpers own no policy, requests or draft state. Their scoped stylesheet is `form-controls.css`; the single gallery's **GCSP native forms** section demonstrates validation, focus and reset.
+
+| Call | Use for |
+|---|---|
+| `labelledField({ id, label, control, hint, error })` | Associates a unique id with a native control, label, optional hint and inline error. Returns `{ root, setError }`; updates preserve the control and manage `aria-invalid` and `aria-describedby`. |
+| `errorSummary({ id, title, errors: [{ id, message }], onSelect })` | Links validation messages to controls. Returns `{ root, update, focus }`; focus targets its heading and links target the relevant control. |
+
+`mountManualSetup(root, { adapter, brand, hint, onBack, onSupport, commandId })` and `<gcsp-manual-setup>` compose the employee shell, shared forms and existing heading/button/status/facts/typed terms. Native controls remain mounted through input and asynchronous state updates. The controller supplies permitted choices, source facts and errors. `gcsp-manual-setup.html` loads the authenticated draft directly; `mountManualJourney` connects account journey hints to a fresh trusted setup read and saves valid choices before Back. The bubbling/composed `gcsp:setup-ready` event carries exact mode/old-contract/slot/scheme/draft/context hints after a successful complete save and current availability; it creates no claim.

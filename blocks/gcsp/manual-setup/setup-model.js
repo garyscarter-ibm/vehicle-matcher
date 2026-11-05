@@ -50,6 +50,12 @@ function licenceReason(driver, date, asOf) {
   return null;
 }
 
+function driverReason(driver, date, asOf) {
+  if (driver?.eligible?.status !== 'known' || typeof driver.eligible.value !== 'boolean') return 'Driver eligibility needs confirmation. Contact driver support.';
+  if (!driver.eligible.value) return 'This driver is not eligible. Contact driver support.';
+  return licenceReason(driver, date, asOf);
+}
+
 export function deriveSetupModel(account, choices) {
   const rules = list(account?.assumptions).find((a) => a.key === 'manual.context.v1')?.value;
   const intent = permittedIntent(account); const supplied = account?.choices;
@@ -65,8 +71,8 @@ export function deriveSetupModel(account, choices) {
     && allowance.gradeId === account?.account?.gradeId;
   const selectedDriver = list(account?.drivers).find((d) => d.driverId === choices?.driverId);
   const drivers = list(supplied?.drivers).map((d) => ({ ...d,
-    disabled: !!licenceReason(list(account?.drivers).find((source) => source.driverId === d.driverId), choices?.requestedCollectionDate, account?.asOf),
-    reason: licenceReason(list(account?.drivers).find((source) => source.driverId === d.driverId), choices?.requestedCollectionDate, account?.asOf) }));
+    disabled: !!driverReason(list(account?.drivers).find((source) => source.driverId === d.driverId), choices?.requestedCollectionDate, account?.asOf),
+    reason: driverReason(list(account?.drivers).find((source) => source.driverId === d.driverId), choices?.requestedCollectionDate, account?.asOf) }));
   const contractOptions = list(supplied?.contractOptions).map((option) => {
     const reason = !selectedDriver ? 'Choose a driver first.' : !option.schemeIds?.includes(intent?.schemeId)
       || !option.driverKinds?.includes(selectedDriver.kind) ? 'Not available for this driver and scheme.' : null;
@@ -89,7 +95,7 @@ export function deriveSetupModel(account, choices) {
   if (!configured || !supplied || !intent || !choices || !matchesIntent(choices, intent)) fail('context', 'Refresh and review the trusted ordering context.');
   if (!allowanceReady) fail('allowance', 'Monthly points allowance needs confirmation. Contact scheme support.');
   if (!drivers.some((d) => d.driverId === choices?.driverId)) fail('driverId', 'Choose a supplied driver.');
-  else if (licenceReason(selectedDriver, choices.requestedCollectionDate, account?.asOf)) fail('driverId', licenceReason(selectedDriver, choices.requestedCollectionDate, account?.asOf));
+  else if (driverReason(selectedDriver, choices.requestedCollectionDate, account?.asOf)) fail('driverId', driverReason(selectedDriver, choices.requestedCollectionDate, account?.asOf));
   if (!selectedContract) fail('contractOptionId', 'Choose a permitted term and annual mileage.');
   if (!list(supplied?.brands).includes(choices?.brand)) fail('brand', 'Choose a supported brand.');
   if (!collectionLocations.some((l) => l.locationId === choices?.collectionLocationId && !l.disabled)) fail('collectionLocationId', 'Choose an open, permitted collection location.');

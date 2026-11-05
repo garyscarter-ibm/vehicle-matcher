@@ -68,6 +68,14 @@
   },
   "stylesheets": [
     {
+      "path": "blocks/gcsp/kit/form-controls.css",
+      "max_lines": 16
+    },
+    {
+      "path": "blocks/gcsp/manual-setup/gcsp-manual-setup.css",
+      "max_lines": 23
+    },
+    {
       "path": "blocks/gcsp/account/gcsp-account.css",
       "max_lines": 22
     },
