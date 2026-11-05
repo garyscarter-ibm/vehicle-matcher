@@ -1,0 +1,117 @@
+{
+  "version": 3,
+  "date": "2026-11-05",
+  "status": "built; combined full and independent resumed cleanup accepted",
+  "source": {
+    "productRef": "c8c34513eb482619dd6be47ed7a98ed07554a797",
+    "integratedRef": "6c2b8bdf6f92b2e634dad34b94419e9b1c6c0ea9",
+    "integratedBase": "7e0f0c50768a8562cd1e6944b88395fad0cfc724",
+    "hashes": {
+      "server/vehicle-evidence/bmw-live-imagery.js": "876e7e21b98d33ae3a124e696102ad56e4e5d2e771fee0d370764a0b684ffc3d",
+      "server/test/bmw-live-imagery.test.js": "8fb48c70971c411e451d41dc256a88ae7c4d340c1f34009f532ad2148e86bd51"
+    },
+    "assessment": "current provider/test and four package hashes match the accepted combined full pins; after accepted50Ref only story/evidence/recorder documentation changed; final reconciliation is story/evidence documentation only",
+    "readinessCheckpoint": "11c25c7ff420e76f0a0b387cae3f20e269db03c4",
+    "readinessTree": "7110ca41bf36b5c7f6426b8eff1b2d6b9016ee77",
+    "packageHashes": {
+      "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+      "package.json": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
+      "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+      "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+    }
+  },
+  "scoped": "72/72 pass, zero skips; see scoped-validation-2026-11-05.json",
+  "examples": {
+    "command": "node docs/gcsp/evidence/fucq50/record-examples.mjs",
+    "asserted": 4,
+    "network": "fetch/http/https blocked; externalRequests 0",
+    "inspected": [
+      "representative all attributes unknown and upstream freshness unknown",
+      "expired unavailable with explicit re-resolution or snapshot choice",
+      "explicit C14 snapshot owns 1 November source/retrieval dates and model/paint-only fidelity",
+      "wrong snapshot paint remains unavailable"
+    ],
+    "sha256": "18beee20b8539d95201a5eb204519997e664aeafe800aaf61b00654467bf2580",
+    "externalReceipt": "offline-examples-v2-1793914696521584000-receipt.json"
+  },
+  "full": {
+    "command": "npm test",
+    "status": "Ran/OK; dispatcher-accepted combined offline FUCQ-83/FUCQ-50 proof; no separate FUCQ-50 full",
+    "effectiveArgv": [
+      "/opt/homebrew/bin/node",
+      "--test-concurrency=1",
+      "--test",
+      "server/test/**/*.test.js"
+    ],
+    "sourceHead": "f58b2183be0cdf869f31925a43d3daf7c2c3e6fe",
+    "sourceTree": "bf0d270126d04693c736c05c20b693b206b6ad11",
+    "base": "7e0f0c50768a8562cd1e6944b88395fad0cfc724",
+    "accepted50Ref": "6c2b8bdf6f92b2e634dad34b94419e9b1c6c0ea9",
+    "testSummary": {
+      "cancelled": 0,
+      "failed": 0,
+      "nodeDurationMs": 73194.330417,
+      "passed": 1230,
+      "skipped": 5,
+      "tests": 1235
+    },
+    "supervisedWallSeconds": 75.0,
+    "databaseCredentialAliasesAbsent": true,
+    "strict": {
+      "scope": "full",
+      "variant": "default",
+      "key": "07aea3ec1a62539daee9678c0adfbb65b078acd08a3e9ecb068654cbd4d99bfc",
+      "code": "e3f95c67997e675ab6487470668dd48b8691fe04bb56ca557b280860d1ca8af7",
+      "environment": "207117a5bb739332e4d28f128ca171b77a0fb59780d75c4cf6d179c2160c07f6",
+      "time": "2026-11-05T21:41:36+0000",
+      "sameProcessEnvironment": true,
+      "statusAfter": 0,
+      "result": "MATCH",
+      "localFucq50BranchStampClaimed": false
+    },
+    "receipt": ".claude/test-runs/fucq83/full-summary-v4.json",
+    "receiptSha256": "017ebe52672ab36825314e32e9ce7a27c8511936a13ee3f951f89bf405d98550",
+    "stampPath": ".claude/test-runs/fucq83/strict/stamp-07aea3ec1a62539daee9678c0adfbb65b078acd08a3e9ecb068654cbd4d99bfc-default.json",
+    "logIdentity": {
+      "bytes": 16881,
+      "path": ".claude/test-runs/fucq83/strict/logs/20261105-214021-gwngf37x/chunk-0001.log",
+      "sha256": "95bea18d04390b28914a2004531de12935392695d6196b46abc426507fb9a190"
+    },
+    "supervisorSha256": "495f6325f0122211b983976213cf496ca12b749164afbf7851edb2f5035b206d",
+    "packageSourceHashesUnchanged": true,
+    "resources": {
+      "peakObservedAggregateRssBytes": 412827648,
+      "peakScratchDependenciesBytes": 28545076,
+      "transientScratchGroupsTokenAbsent": true,
+      "supervisorAbsent": true,
+      "fullLockReleased": true,
+      "fucq83DependencyOwnership": "retained by FUCQ-83 for final status at receipt time; not touched by this session"
+    },
+    "limits": "five offline native skips are not native passes; FUCQ-83 has separate native evidence; FUCQ-50 has no database requirement"
+  },
+  "cleanup": {
+    "ownAllocations": 6,
+    "rootsGroupsReservationsAbsent": true,
+    "dependencyTreesRemoved": 2,
+    "fourPackageHashesUnchanged": true,
+    "receipt": "final-own-cleanup-v2.json",
+    "independentParentVerification": {
+      "status": "passed",
+      "receipt": ".claude/test-runs/ownership/fucq50-resume-dispatcher-verification.json",
+      "sha256": "6ae0f7bfb3e3571919a26b86e7fa518e2ab27c2fbe3b381b7d1131c2338463b9",
+      "at": "2026-11-05T21:43:24.308156+00:00",
+      "head": "11c25c7ff420e76f0a0b387cae3f20e269db03c4",
+      "allSixAllocationsPassed": true,
+      "packagesSourcesMatch": true,
+      "dependenciesAbsent": true,
+      "cleanAndPushed": true
+    }
+  },
+  "usability": "one-read handoff is an explicit bounded backend capability, no current UI/route; repeated read must deliberately re-resolve under source budget; no currentness or permanent img URL claim",
+  "agents": "original lead and dedicated successor both requested/selected gpt-6.1-sol/high; original effective runtime verified by evening handover; no descendants/no fallback; no cartoon name/task_name returned; successor title verified FUCQ-50 live imagery provider",
+  "finalization": {
+    "scope": "T0 story/acceptance/evidence reconciliation; zero test/build allocation, no new full/native/live-source/database call",
+    "remaining": "dispatcher merge FUCQ-50 before FUCQ-83, then close/drop; no remaining story implementation or validation",
+    "handoff": "original /root/fucq50_story_lead stopped clean/pushed at 11c25c7 before dedicated successor chat 01a1adab-14f5-7b32-8c17-79723276ac52"
+  }
+}

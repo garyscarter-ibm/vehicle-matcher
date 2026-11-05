@@ -16,6 +16,13 @@ The existing distinction between functioning demonstration behaviour through ada
 
 ## Plausible assumptions in one shared source
 
+**Story pickup, Gary, 5 November 2026:** use actual technical readiness rather than treating Jira dependency links
+as automatic gates. Existing agreed interfaces can permit independent implementation before the full functional
+journey is complete. Record the code/contract basis, scope and outstanding integration evidence, and meet the
+authored acceptance before declaring completion. Explicit pauses/date holds, source permissions, claim/file
+ownership and genuine technical blockers remain binding. The [readiness direction](technical-readiness-2026-11-05.md)
+records the distinction; this does not authorise editing Jira links.
+
 Rules may be developed through trial and improvement. Implementers may select plausible assumptions where the right rule, number or fact is not yet known, observe the results and improve them. Missing confirmation alone does not block demo implementation.
 
 1. **Keep assumptions plausible and explicit.** Give each assumed rule/value a stable key, a short basis for its plausibility and its assumed/verified status. Include units and source/date where applicable. Use confirmed facts when available and record their provenance in the same source.
