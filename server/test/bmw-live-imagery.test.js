@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import http from 'node:http';
 import https from 'node:https';
-import { bmwLiveImageLookupIdentity, createBmwLiveImageryProvider, presentBmwLiveImage } from '../vehicle-evidence/bmw-live-imagery.js';
+import { bmwLiveImageLookupIdentity, createBmwLiveImageryProvider, presentBmwLiveImage,
+  selectBmwImageSnapshot } from '../vehicle-evidence/bmw-live-imagery.js';
 import { createBmwImageAdapter } from '../vehicle-evidence/bmw-image-adapter.js';
 import { createBmwCatalogueAdapter, mergeBmwCatalogueFacts } from '../vehicle-evidence/bmw-catalogue-adapter.js';
 
@@ -40,7 +41,11 @@ test('complete snapshot canonical identity includes named group, viewport and di
   b.distinctions = { Y: '500', X: '1700', BKGND: 'sand' };
   assert.deepEqual(bmwLiveImageLookupIdentity(a), bmwLiveImageLookupIdentity(b));
   const key = JSON.stringify(bmwLiveImageLookupIdentity(a));
-  for (const changed of [{ agModelCode: '22FY' }, { modelCode: 'T3SK' }, { effectDate: '2027-02-05' },
+  assert.equal(bmwLiveImageLookupIdentity(a).provider, 'bmw-cosy-named-images');
+  assert.equal(bmwLiveImageLookupIdentity(a).snapshotVersion, 'bmw-uk-cosy-named-images.v1');
+  for (const changed of [{ agModelCode: '22FY' }, { modelCode: 'T3SK' },
+    ...['catalogueDate', 'orderDate', 'effectDate', 'productionDate', 'taxDate'].map((key) => ({ [key]: '2027-02-05' })),
+    { selectedAccessories: [...a.selectedAccessories, 'SE000002'] }, { locale: 'de-DE' }, { market: 'DE' },
     { selectedOptions: a.selectedOptions.map((code) => code === 'P0300' ? 'P0475' : code) },
     { selectedOptions: [...a.selectedOptions, 'S03AC'] }, { viewport: 'mobile' }, { namedImage: 'Other' },
     { viewpoint: 'HEROREAR' }, { size: { width: 1280, height: 1152 } }, { distinctions: { BKGND: 'sandnight' } }]) {
@@ -218,8 +223,9 @@ test('malformed display projections cannot publish arbitrary fidelity or image r
 });
 
 test('oversized, non-JSON, HTTP and malformed manifest failures remain explicit and sanitized', async () => {
-  for (const response of [{ status: 401, contentType: 'application/json', body: '{"message":"upstream secret"}' },
-    { status: 200, contentType: 'text/html', body: '<html>upstream secret</html>' },
+  for (const response of [{ status: 200, contentType: 'text/html', body: '<html>upstream secret</html>' },
+    { status: 200, contentType: 'application/json', body: JSON.stringify(manifest()), redirected: true },
+    { status: 200, contentType: 'application/json', body: JSON.stringify(manifest()), url: 'https://private.example/redirect' },
     { status: 200, contentType: 'application/json', body: '{broken' },
     { status: 200, contentType: 'application/json', body: ' '.repeat(1048577) }]) {
     let calls = 0; const { provider } = fixture({ transport: async () => { calls += 1; return response; } });
@@ -295,4 +301,140 @@ test('one live operation per provider is admitted and disposal aborts its owned 
   assert.equal((await provider.resolve(request())).failure.code, 'source-busy');
   provider.dispose(); assert.equal(signal.aborted, true);
   assert.equal((await first).failure.code, 'timeout');
+});
+
+test('every resolution revalidates; delivery handles cannot revive earlier bytes or refresh an old handle', async () => {
+  const { provider, calls } = fixture();
+  const first = await provider.resolve(request());
+  const second = await provider.resolve(request());
+  assert.equal(calls.length, 4); assert.notEqual(first.image.assetId, second.image.assetId);
+  assert.equal((await provider.readAsset(first.image.assetId)).status, 'source-unavailable');
+  assert.deepEqual((await provider.readAsset(second.image.assetId)).bytes, bytes);
+  assert.equal((await provider.readAsset(second.image.assetId)).failure.code, 'asset-unavailable');
+  assert.equal(calls.length, 4);
+  provider.dispose();
+});
+
+test('local single-read handoff expires using the fake clock without inventing upstream expiry', async () => {
+  let now = new Date('2026-11-05T12:00:00Z');
+  const { provider, calls } = fixture({ clock: () => now });
+  const result = await provider.resolve(request());
+  assert.deepEqual(result.freshness, { status: 'unknown', policy: 'revalidate-every-resolution', upstreamExpiresAt: null,
+    retrievedAt: '2026-11-05T12:00:00.000Z', handoffExpiresAt: '2026-11-05T12:00:15.000Z', delivery: 'single-read' });
+  const shown = presentBmwLiveImage(result); assert.match(shown.caption, /freshness unknown/);
+  assert.equal(shown.freshness.upstreamExpiresAt, null);
+  now = new Date('2026-11-05T12:00:15Z');
+  const expired = await provider.readAsset(result.image.assetId);
+  assert.equal(expired.failure.code, 'asset-expired'); assert.equal(expired.image, null);
+  assert.match(presentBmwLiveImage(expired).message, /Resolve the image again/);
+  assert.equal(calls.length, 2); provider.dispose();
+});
+
+test('invalid or backward clocks cannot extend custody; read bytes are isolated from retained metadata', async () => {
+  for (const invalid of [new Date('invalid'), new Date('2026-11-05T11:59:59Z')]) {
+    let now = new Date('2026-11-05T12:00:00Z');
+    const { provider } = fixture({ clock: () => now }); const result = await provider.resolve(request());
+    now = invalid; assert.equal((await provider.readAsset(result.image.assetId)).failure.code, 'asset-expired'); provider.dispose();
+  }
+  const { provider } = fixture(); const result = await provider.resolve(request());
+  result.freshness.policy = 'caller-invented-TTL'; result.image.fidelity.paint = 'unknown';
+  const delivery = await provider.readAsset(result.image.assetId);
+  assert.equal(delivery.freshness.policy, 'revalidate-every-resolution'); assert.equal(delivery.image.fidelity.paint, 'verified');
+  provider.dispose();
+});
+
+test('401 and 403 stop after one request, expose no upstream body and never suggest automatic auth retry', async () => {
+  for (const status of [401, 403]) for (const stage of ['manifest', 'asset']) {
+    let count = 0;
+    const { provider } = fixture({ transport: async ({ url, retries }) => {
+      count += 1; assert.equal(retries, 0);
+      if (stage === 'manifest' || url === URL_ASSET) return { status, contentType: 'application/json', body: 'PRIVATE https://private.example/vin' };
+      return { status: 200, contentType: 'application/json', body: JSON.stringify(manifest()) };
+    } });
+    const result = await provider.resolve(request());
+    assert.equal(result.failure.code, 'access-denied'); assert.equal(result.failure.retryable, false);
+    assert.equal(count, stage === 'manifest' ? 1 : 2); assert.equal(result.fallback, null);
+    assert.ok(!JSON.stringify(result).includes('PRIVATE')); provider.dispose();
+  }
+});
+
+test('429 retry hints are bounded safe data with zero retries; 5xx and thrown failures are finite', async () => {
+  for (const retryAfter of ['30', '0', '3601', '99999', 'https://private.example/secret', 'Wed, 05 Nov 2026 12:01:00 GMT',
+    'Thu, 05 Nov 2026 12:01:00 GMT', 'Thu, 05 Nov 2026 14:01:00 GMT']) {
+    let count = 0; const { provider } = fixture({ transport: async () => {
+      count += 1; return { status: 429, retryAfter, contentType: 'text/plain', body: 'private upstream failure' };
+    } });
+    const result = await provider.resolve(request());
+    assert.equal(result.failure.code, 'rate-limited'); assert.equal(count, 1);
+    assert.equal(result.failure.retryAfterSeconds, ['30', '0'].includes(retryAfter) ? Number(retryAfter)
+      : retryAfter === 'Thu, 05 Nov 2026 12:01:00 GMT' ? 60 : null);
+    assert.ok(!JSON.stringify(result).includes('private.example')); provider.dispose();
+  }
+  for (const status of [500, 502, 503, 504]) {
+    let count = 0; const { provider } = fixture({ transport: async () => {
+      count += 1; return { status, contentType: 'text/html', body: '<html>secret upstream</html>' };
+    } });
+    const result = await provider.resolve(request()); assert.equal(result.failure.code, 'manifest-unavailable');
+    assert.equal(count, 1); assert.equal(result.image, null); provider.dispose();
+  }
+});
+
+test('a failed new resolution invalidates its earlier delivery instead of silently using stale bytes', async () => {
+  let count = 0;
+  const { provider } = fixture({ transport: async ({ url }) => {
+    count += 1;
+    if (count > 2) return { status: 410, contentType: 'text/plain', body: 'expired private URL' };
+    return url === URL_ASSET ? { status: 200, contentType: 'image/webp', body: bytes }
+      : { status: 200, contentType: 'application/json', body: JSON.stringify(manifest()) };
+  } });
+  const first = await provider.resolve(request()); const failure = await provider.resolve(request());
+  assert.equal(failure.image, null); assert.equal(failure.fallback, null); assert.equal(count, 3);
+  assert.equal((await provider.readAsset(first.image.assetId)).status, 'source-unavailable'); provider.dispose();
+});
+
+test('expired or broken source assets never trigger retries or a snapshot switch', async () => {
+  for (const status of [403, 404, 410, 429, 500]) {
+    let count = 0; const { provider } = fixture({ transport: async ({ url }) => {
+      count += 1; return url === URL_ASSET ? { status, retryAfter: '10', contentType: 'text/plain', body: 'private URL expired' }
+        : { status: 200, contentType: 'application/json', body: JSON.stringify(manifest()) };
+    } });
+    const result = await provider.resolve(request()); assert.equal(result.status, 'source-unavailable');
+    assert.equal(result.image, null); assert.equal(result.fallback, null); assert.equal(count, 2); provider.dispose();
+  }
+});
+
+test('C14 snapshot selection is explicit and preserves its own source, dates, role and unknown fidelity', async () => {
+  const result = await selectBmwImageSnapshot(request(), { environment: 'gcsp-demo', assetId: source.assets[0].assetId });
+  assert.equal(result.status, 'ok'); assert.equal(result.provider, 'bmw-image-snapshot');
+  assert.equal(result.sourceKind, 'dated-snapshot'); assert.equal(result.observedDate, '2026-11-01');
+  assert.equal(result.retrievedDate, '2026-11-01'); assert.equal(result.selection.kind, 'explicit-snapshot');
+  const shown = presentBmwLiveImage(result); assert.equal(shown.label, 'Snapshot image');
+  assert.equal(shown.source, 'BMW COSY catalogue render'); assert.equal(shown.sourceKind, 'dated-snapshot');
+  assert.equal(shown.freshness.status, 'dated-snapshot'); assert.match(shown.caption, /Dated snapshot selected/);
+  for (const key of ['wheels', 'interior', 'equipment', 'exactVehicle']) assert.equal(shown.fidelity[key], 'unknown');
+  assert.equal(presentBmwLiveImage(await createBmwImageAdapter({ environment: 'gcsp-demo' }).resolve(request())).status, 'source-unavailable');
+});
+
+test('no snapshot is selected implicitly; wrong model, paint or explicitly mismatched C14 asset stays unavailable', async () => {
+  for (const [changed, assetId] of [[{}, undefined], [{ modelCode: 'T3SK' }, source.assets[0].assetId],
+    [{ selectedOptions: request().selectedOptions.map((code) => code === 'P0300' ? 'P0475' : code) }, source.assets[0].assetId],
+    [{}, 'bmw-i5-generic-20261101-v1'], [{}, source.assets[1].assetId]]) {
+    const result = await selectBmwImageSnapshot({ ...request(), ...changed }, { environment: 'gcsp-demo', assetId });
+    assert.equal(result.status, 'unsupported'); assert.equal(result.image, null);
+    assert.equal(presentBmwLiveImage(result).label, 'Image unavailable');
+    const facts = { seats: { state: 'known', value: 5, unit: 'count' } };
+    assert.deepEqual(mergeBmwCatalogueFacts(facts, result), facts);
+  }
+});
+
+test('freshness and snapshot presentation fields cannot publish private data from malformed envelopes', async () => {
+  const secret = 'https://private.example/token/SECRET';
+  const result = await selectBmwImageSnapshot(request(), { environment: 'gcsp-demo', assetId: source.assets[0].assetId });
+  for (const field of ['observedDate', 'retrievedDate']) {
+    const shown = presentBmwLiveImage({ ...result, [field]: secret });
+    assert.equal(shown.assetId, null); assert.ok(!JSON.stringify(shown).includes(secret));
+  }
+  const { provider } = fixture(); const live = await provider.resolve(request());
+  const shown = presentBmwLiveImage({ ...live, freshness: { ...live.freshness, upstreamExpiresAt: secret } });
+  assert.equal(shown.assetId, null); assert.ok(!JSON.stringify(shown).includes(secret)); provider.dispose();
 });

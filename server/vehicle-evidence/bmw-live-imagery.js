@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { bmwImageLookupIdentity } from './bmw-image-adapter.js';
+import { bmwImageLookupIdentity, createBmwImageAdapter, presentBmwImage } from './bmw-image-adapter.js';
 
 const PROVIDER = 'bmw-cosy-named-images';
 const VERSION = 'bmw-uk-cosy-named-images.v1';
@@ -9,6 +9,8 @@ const PROFILE = 'bmw-uk-public-configurator';
 const ROLE = 'representative-catalogue-render';
 const MANIFEST_BYTES = 1048576;
 const IMAGE_BYTES = 2097152;
+const HANDOFF_MS = 15000;
+const SNAPSHOTS = ['bmw-i5-white-20261101-v1', 'bmw-i5-black-20261101-v1'];
 // COSY exterior crops use W/H; the observed DASH and INTERIORSIDE siblings use WIDTH/HEIGHT.
 const DISTINCTIONS = ['BKGND', 'X', 'Y', 'W', 'H', 'WIDTH', 'HEIGHT'];
 const UNKNOWN = { model: 'unknown', paint: 'unknown', wheels: 'unknown', interior: 'unknown', equipment: 'unknown', exactVehicle: 'unknown' };
@@ -25,10 +27,32 @@ const MESSAGES = {
   'identity-unverified': 'The source does not independently establish the resolved configuration and dates.',
   'identity-mismatch': 'The source describes a different configuration or date. No image was substituted.',
   'asset-unavailable': 'The returned image is unavailable or failed its type and dimensions checks.',
+  'asset-expired': 'This image delivery has expired. Resolve the image again or explicitly choose a dated snapshot.',
+  'access-denied': 'The live image source refused access. Check the selected backend credentials before trying again.',
+  'rate-limited': 'The live image source is busy. Try again later or explicitly choose a dated snapshot.',
   'source-busy': 'A live image request is already in progress. Try again after it finishes.',
   timeout: 'The live image source did not respond in time.',
 };
-const failure = (code) => ({ code, message: MESSAGES[code], retryable: ['manifest-unavailable', 'asset-unavailable', 'timeout'].includes(code) });
+const failure = (code) => ({ code, message: MESSAGES[code], retryable: ['manifest-unavailable', 'asset-unavailable', 'asset-expired', 'rate-limited', 'timeout'].includes(code) });
+const freshness = () => ({ status: 'unknown', policy: 'revalidate-every-resolution', upstreamExpiresAt: null,
+  retrievedAt: null, handoffExpiresAt: null, delivery: 'single-read' });
+const instant = (value) => value instanceof Date && Number.isFinite(value.getTime()) ? value.getTime() : null;
+const sourceFailure = Symbol('safe-source-failure');
+
+function responseFailure(response, now) {
+  const code = [401, 403].includes(response?.status) ? 'access-denied' : response?.status === 429 ? 'rate-limited' : null;
+  const hint = response?.retryAfter ?? response?.headers?.['retry-after'];
+  let retryAfterSeconds = null;
+  if (code === 'rate-limited' && typeof hint === 'string') {
+    if (/^\d{1,4}$/.test(hint)) retryAfterSeconds = Number(hint);
+    else if (/^[A-Z][a-z]{2}, \d{2} [A-Z][a-z]{2} \d{4} \d{2}:\d{2}:\d{2} GMT$/.test(hint) && now !== null) {
+      const until = Date.parse(hint);
+      if (Number.isFinite(until) && new Date(until).toUTCString() === hint) retryAfterSeconds = Math.max(0, Math.ceil((until - now) / 1000));
+    }
+    if (retryAfterSeconds > 3600) retryAfterSeconds = null;
+  }
+  return { [sourceFailure]: true, code, retryAfterSeconds };
+}
 
 /** Canonical snapshot inputs plus an explicit named-image selection; no catalogue fetch is needed. */
 export function bmwLiveImageLookupIdentity(request) {
@@ -54,7 +78,8 @@ function envelope(status, lookup, code) {
     sourceKind: 'authorised-live', sourceSupport: 'unsupported-public-website-demo', sourceProfile: PROFILE,
     status, failure: failure(code), lookupIdentity: lookup, resolvedLookupIdentity: null,
     requestedIdentity: identity(lookup), resolvedIdentity: null, manifestResolvedIdentity: null,
-    observedDate: null, retrievedDate: null, identityProvenance: null, image: null, fallback: null };
+    observedDate: null, retrievedDate: null, identityProvenance: null, image: null, fallback: null,
+    freshness: freshness() };
 }
 
 function assetReference(value) {
@@ -121,7 +146,7 @@ export function createBmwLiveImageryProvider({ environment, sourceProfile, trans
   resolveConfiguration, clock = () => new Date(), timeoutMs = 15000 } = {}) {
   if (!Number.isSafeInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 15000 || typeof clock !== 'function') throw new TypeError('Supply bounded image settings.');
   const selected = environment === 'gcsp-demo' && sourceProfile === PROFILE;
-  const assets = new Map(); const active = new Set();
+  const assets = new Map(); const active = new Set(); let generation = 0;
   return Object.freeze({
     async resolve(request) {
       const lookup = bmwLiveImageLookupIdentity(request);
@@ -130,6 +155,8 @@ export function createBmwLiveImageryProvider({ environment, sourceProfile, trans
       if (lookup.market !== 'GB' || lookup.locale !== 'en-GB' || (request.role !== undefined && request.role !== ROLE)) return envelope('unsupported', lookup, 'unsupported-request');
       if (typeof transport !== 'function' || typeof getCredential !== 'function') return envelope('source-unavailable', lookup, 'credentials-unavailable');
       if (active.size) return envelope('source-unavailable', lookup, 'source-busy');
+      // An older delivery cannot become the fallback for a new resolution, including a failed one.
+      assets.clear(); generation += 1;
       const controller = new AbortController(); let timer;
       active.add(controller);
       const expired = Symbol('timeout');
@@ -137,14 +164,16 @@ export function createBmwLiveImageryProvider({ environment, sourceProfile, trans
         let key;
         try { key = await getCredential(PROFILE); } catch { return envelope('source-unavailable', lookup, 'credentials-unavailable'); }
         if (typeof key !== 'string' || !key || key.length > 4096 || /[\r\n]/.test(key)) return envelope('source-unavailable', lookup, 'credentials-unavailable');
-        const retrieval = clock(); const retrievedDate = retrieval instanceof Date && Number.isFinite(retrieval.getTime()) ? retrieval.toISOString().slice(0, 10) : null;
+        const retrieval = clock(); const retrievedAt = instant(retrieval);
+        const retrievedDate = retrievedAt === null ? null : retrieval.toISOString().slice(0, 10);
         if (!date(retrievedDate)) return envelope('source-unavailable', lookup, 'manifest-unavailable');
         const get = async (url, headers, cap) => {
           if (controller.signal.aborted) throw expired;
           const response = await transport({ method: 'GET', url, headers, maxResponseBytes: cap, signal: controller.signal,
             credentials: 'omit', cache: 'no-store', redirect: 'error', retries: 0 });
           if (controller.signal.aborted) throw expired;
-          if (response?.status !== 200 || response.redirected === true || (response.url !== undefined && response.url !== url)) throw Error('source');
+          if (response?.status !== 200) throw responseFailure(response, instant(clock()));
+          if (response.redirected === true || (response.url !== undefined && response.url !== url)) throw Error('source');
           const body = typeof response.body === 'string' ? Buffer.from(response.body) : response.body instanceof Uint8Array ? Buffer.from(response.body) : null;
           if (!body || body.length > cap || typeof response.contentType !== 'string') throw Error('source');
           return { body, type: response.contentType.split(';')[0].trim().toLowerCase() };
@@ -155,7 +184,12 @@ export function createBmwLiveImageryProvider({ environment, sourceProfile, trans
           const response = await get(`${ORIGIN}/image-urls/dynamic-named-images/mandators/connext-bmw/collections/${COLLECTION}/brands/bmwCar/models/${lookup.agModelCode}?${query}`, { 'x-api-key': key, Accept: 'application/json' }, MANIFEST_BYTES);
           if (response.type !== 'application/json') throw Error('source');
           manifest = JSON.parse(response.body.toString('utf8')); named = selectNamed(manifest, lookup);
-        } catch { return envelope('source-unavailable', lookup, controller.signal.aborted ? 'timeout' : 'manifest-unavailable'); }
+        } catch (error) {
+          const result = envelope('source-unavailable', lookup, controller.signal.aborted ? 'timeout'
+            : error?.[sourceFailure] && error.code || 'manifest-unavailable');
+          if (result.failure.code === 'rate-limited') result.failure.retryAfterSeconds = error.retryAfterSeconds;
+          return result;
+        }
         if (named.code) return envelope(named.code === 'unsupported-request' ? 'unsupported' : 'source-unavailable', lookup, named.code);
         // COSY currently echoes no configuration identity. Request inputs cannot manufacture that proof.
         let proof;
@@ -177,17 +211,29 @@ export function createBmwLiveImageryProvider({ environment, sourceProfile, trans
           const dimensions = webpDimensions(response.body);
           if (response.type !== 'image/webp' || !dimensions || dimensions.width !== lookup.size.width || dimensions.height !== lookup.size.height) return result;
           const sha256 = createHash('sha256').update(response.body).digest('hex');
-          const assetId = `bmw-live-${createHash('sha256').update(JSON.stringify(lookup)).update(sha256).digest('hex').slice(0, 40)}`;
+          const deliveredAt = instant(clock());
+          if (deliveredAt === null || deliveredAt < retrievedAt) return result;
+          const expiresAt = deliveredAt + HANDOFF_MS;
+          const assetId = `bmw-live-${createHash('sha256').update(JSON.stringify(lookup)).update(sha256)
+            .update(`${generation}:${deliveredAt}`).digest('hex').slice(0, 40)}`;
           result.status = 'ok'; result.failure = null;
+          result.freshness = { ...freshness(), retrievedAt: new Date(retrievedAt).toISOString(),
+            handoffExpiresAt: new Date(expiresAt).toISOString() };
           result.image = { assetId, contentType: 'image/webp', bytes: response.body.length, sha256, size: dimensions,
             viewpoint: lookup.viewpoint, viewport: lookup.viewport, namedImage: lookup.namedImage, role: ROLE,
             representation: 'configuration', matchesRequestedConfiguration: true,
             fidelity: { ...UNKNOWN, model: proof.fidelity?.model === 'verified' ? 'verified' : 'unknown', paint: proof.fidelity?.paint === 'verified' ? 'verified' : 'unknown' },
             origin: 'BMW COSY public UK configurator', sourceDate: proof.observedDate, retrievedDate };
-          if (assets.size >= 4 && !assets.has(assetId)) assets.delete(assets.keys().next().value);
-          assets.set(assetId, { result: structuredClone(result), bytes: Buffer.from(response.body) });
+          assets.set(assetId, { result: structuredClone(result), bytes: Buffer.from(response.body), deliveredAt, expiresAt });
           return result;
-        } catch { if (controller.signal.aborted) result.failure = failure('timeout'); return result; }
+        } catch (error) {
+          if (controller.signal.aborted) result.failure = failure('timeout');
+          else if (error?.[sourceFailure] && error.code) {
+            result.failure = failure(error.code);
+            if (error.code === 'rate-limited') result.failure.retryAfterSeconds = error.retryAfterSeconds;
+          }
+          return result;
+        }
       };
       try {
         return await Promise.race([run(), new Promise((resolve) => { timer = setTimeout(() => {
@@ -198,26 +244,58 @@ export function createBmwLiveImageryProvider({ environment, sourceProfile, trans
     },
     async readAsset(assetId) {
       const entry = typeof assetId === 'string' && assets.get(assetId);
-      return entry ? { ...structuredClone(entry.result), bytes: Buffer.from(entry.bytes) } : envelope('source-unavailable', null, 'asset-unavailable');
+      if (!entry) return envelope('source-unavailable', null, 'asset-unavailable');
+      assets.delete(assetId);
+      let now;
+      try { now = instant(clock()); } catch { now = null; }
+      if (now === null || now < entry.deliveredAt || now >= entry.expiresAt) return envelope('source-unavailable', null, 'asset-expired');
+      return { ...structuredClone(entry.result), bytes: Buffer.from(entry.bytes) };
     },
     dispose() { for (const controller of active) controller.abort(); assets.clear(); },
   });
 }
 
+/** A separate, deliberate C14 selection. A live failure never calls this or changes provider itself. */
+export async function selectBmwImageSnapshot(request, { environment, assetId,
+  adapter = createBmwImageAdapter({ environment }) } = {}) {
+  const unavailable = () => envelope('unsupported', bmwLiveImageLookupIdentity(request), 'unsupported-request');
+  if (!SNAPSHOTS.includes(assetId)) return unavailable();
+  try {
+    const result = await adapter.resolve(request);
+    if (result?.image?.assetId !== assetId || presentBmwImage(result).status !== 'ok' || result.fallback) return unavailable();
+    return { ...result, selection: { kind: 'explicit-snapshot', assetId },
+      freshness: { status: 'dated-snapshot', policy: 'registered-c14-snapshot', upstreamExpiresAt: null } };
+  } catch { return unavailable(); }
+}
+
 /** Safe text and a registered opaque server ID only; asset URLs and provider errors never enter display output. */
 export function presentBmwLiveImage(result) {
+  if (result?.provider === 'bmw-image-snapshot' && result.selection?.kind === 'explicit-snapshot'
+    && SNAPSHOTS.includes(result.selection.assetId) && result.image?.assetId === result.selection.assetId
+    && date(result.observedDate) && date(result.retrievedDate)) {
+    const shown = presentBmwImage(result);
+    if (shown.status === 'ok') return { ...shown, label: 'Snapshot image', sourceKind: 'dated-snapshot',
+      source: 'BMW COSY catalogue render', retrievedDate: date(result.retrievedDate) ? result.retrievedDate : null,
+      freshness: { status: 'dated-snapshot', policy: 'registered-c14-snapshot', upstreamExpiresAt: null },
+      caption: `Dated snapshot selected; source observed ${result.observedDate}, retrieved ${result.retrievedDate}. ${shown.caption}` };
+  }
   const image = result?.image;
   if (result?.provider !== PROVIDER || result.status !== 'ok' || image?.role !== ROLE
     || !/^bmw-live-[0-9a-f]{40}$/.test(image.assetId) || image.contentType !== 'image/webp'
     || image.representation !== 'configuration' || image.matchesRequestedConfiguration !== true
     || !['model', 'paint'].every((key) => ['verified', 'unknown'].includes(image.fidelity?.[key]))
     || !['wheels', 'interior', 'equipment', 'exactVehicle'].every((key) => image.fidelity?.[key] === 'unknown')
-    || !date(result.observedDate) || !date(result.retrievedDate)) {
+    || !date(result.observedDate) || !date(result.retrievedDate)
+    || result.freshness?.status !== 'unknown' || result.freshness.policy !== 'revalidate-every-resolution'
+    || result.freshness.upstreamExpiresAt !== null) {
     const code = Object.hasOwn(MESSAGES, result?.failure?.code) ? result.failure.code : 'asset-unavailable';
     return { status: 'source-unavailable', assetId: null, label: 'Image unavailable', role: ROLE,
-      caption: null, fidelity: { ...UNKNOWN }, message: failure(code).message };
+      caption: null, fidelity: { ...UNKNOWN }, sourceKind: null, source: null,
+      observedDate: null, retrievedDate: null, freshness: freshness(), message: failure(code).message };
   }
   return { status: 'ok', assetId: image.assetId, role: ROLE, label: 'Representative image',
-    caption: `Representative catalogue render; source observed ${result.observedDate}, retrieved ${result.retrievedDate}. Wheels, interior, equipment and exact vehicle appearance unknown.`,
+    sourceKind: 'authorised-live', source: 'BMW COSY public UK configurator',
+    observedDate: result.observedDate, retrievedDate: result.retrievedDate, freshness: freshness(),
+    caption: `Representative catalogue render; source observed ${result.observedDate}, retrieved ${result.retrievedDate}. Current source freshness unknown; resolve again for another delivery. Wheels, interior, equipment and exact vehicle appearance unknown.`,
     fidelity: { ...UNKNOWN, model: image.fidelity.model, paint: image.fidelity.paint }, message: null };
 }
