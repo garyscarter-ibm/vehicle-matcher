@@ -139,7 +139,8 @@ async function themeObservation(width) {
       fontLoaded: document.fonts.check('500 32px BMWGroupTNCondensedPro-Medium'),
       loadedFaces: [...document.fonts].filter((face) => face.family.includes('BMWGroupTNCondensedPro')).map((face) => ({ family: face.family, status: face.status, weight: face.weight })),
       fontResources: performance.getEntriesByType('resource').filter((entry) => /BMWGroupTNCondensedPro-Medium\.woff2/.test(entry.name)).map((entry) => new URL(entry.name).pathname),
-      geometry: { headerHeight: document.querySelector('.gcsp-header').getBoundingClientRect().height,
+      geometry: { headerMinHeight: getComputedStyle(document.querySelector('.gcsp-header')).minHeight,
+        headerHeight: document.querySelector('.gcsp-header').getBoundingClientRect().height,
         navWidth: document.querySelector('.gcsp-nav').getBoundingClientRect().width,
         actionHeights: [...document.querySelectorAll('.gcsp-setup-actions button')].map((node) => node.getBoundingClientRect().height) },
       contrast: { primaryText: contrast(primary.color, primary.backgroundColor), bodyText: contrast(shell.color, shell.backgroundColor),
@@ -197,7 +198,10 @@ try {
       assert.match(observation.title.fontFamily, /BMWGroupTNCondensedPro-Medium/); assert.equal(observation.title.fontWeight, '500');
       assert.equal(observation.fontLoaded, true); assert.ok(observation.fontResources.length > 0);
       assert.ok(observation.loadedFaces.some((face) => face.status === 'loaded' && face.weight === '500'));
-      assert.equal(observation.geometry.headerHeight, 56); if (width === 1280) assert.equal(observation.geometry.navWidth, 48);
+      assert.equal(observation.geometry.headerMinHeight, '56px');
+      // Narrow menu: 44px control + 12px padding + 1px border makes the existing shell 57px tall.
+      assert.equal(observation.geometry.headerHeight, width === 320 ? 57 : 56);
+      if (width === 1280) assert.equal(observation.geometry.navWidth, 48);
       assert.ok(observation.geometry.actionHeights.every((height) => height >= 48));
       assert.equal(observation.cssViewport, width); assert.equal(observation.scrollWidth, width);
       assert.equal(observation.focus.outlineStyle, 'solid'); assert.equal(observation.focus.outlineWidth, '2px');
