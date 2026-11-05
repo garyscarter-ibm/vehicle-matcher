@@ -171,6 +171,19 @@ test('missing and corrupt registered bytes never produce usable metadata or deli
   assert.equal((await enabled().readAsset('unregistered-asset')).status, 'unsupported');
 });
 
+test('a corrupt manifest cannot establish an unobserved complete option or accessory selection', async () => {
+  for (const mutate of [
+    (entry) => { entry.identity.selectedOptions[2] = 'S03AC'; },
+    (entry) => { entry.identity.selectedAccessories[0].quantity = 2; },
+    (entry) => { entry.identity.trim = 'S07BL'; },
+  ]) {
+    const data = await manifest(); mutate(data.assets[0]);
+    const adapter = enabled({ loadManifest: async () => data });
+    assert.equal((await adapter.resolve(request())).status, 'source-unavailable');
+    assert.equal((await adapter.readAsset(data.assets[0].assetId)).status, 'source-unavailable');
+  }
+});
+
 test('registered manifest preserves actual independent source selections and the demo decision', async () => {
   const data = await manifest();
   assert.deepEqual(data.assets[0].identity.selectedOptions, retail.configuration.selectedOptions);

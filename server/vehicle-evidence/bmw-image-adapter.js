@@ -6,8 +6,10 @@ const PROVIDER = 'bmw-image-snapshot';
 const VERSION = 'bmw-gb-i5-images-2026-11-01.v1';
 const REGISTRY = new Map([
   ['bmw-i5-white-20261101-v1', { paint: 'P0300', label: 'Alpine White', bytes: 82798,
+    identitySha256: '6130840d918e5fca69e444b230bf0cc0df645188a8892b0c8d893e35d84c107a',
     sha256: 'fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe', file: 'alpine-white.webp' }],
   ['bmw-i5-black-20261101-v1', { paint: 'P0475', label: 'Black Sapphire', bytes: 86286,
+    identitySha256: '2def7ce9921003cd0e1ba6d5e2ba25e2836722185a8b52a1bc0861a8f2534753',
     sha256: '4c38cdb43b6438b7ae54fd1c882280bf744e88a17f2ce43597c5dd2c4890b5de', file: 'black-sapphire.webp' }],
 ]);
 const FIDELITY = { model: 'verified', paint: 'verified', wheels: 'unknown', interior: 'unknown',
@@ -82,6 +84,7 @@ function validManifest(data) {
       && ['effectDate', 'productionDate', 'taxDate'].every((key) => lookup[key] === '2027-01-05')
       && lookup.selectedOptions.includes(registered.paint) && lookup.selectedOptions.length === 47
       && lookup.selectedOptions.filter((code) => code.startsWith('P')).length === 1
+      && createHash('sha256').update(JSON.stringify(sourceIdentity(lookup))).digest('hex') === registered.identitySha256
       && entry.source?.origin === 'BMW COSY catalogue render' && entry.source.sourceDate === data.observedDate
       && entry.source.observedDate === data.observedDate && entry.source.retrievedDate === data.retrievedDate
       && Object.entries(FIDELITY).every(([key, value]) => entry.fidelity?.[key] === value);
