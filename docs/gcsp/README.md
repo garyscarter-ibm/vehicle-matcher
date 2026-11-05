@@ -4,6 +4,10 @@ Jira moved on 3 November 2026. Use the new site and keys below; the [migration r
 
 Start here for every new GCSP discovery, foundation, design, implementation or review session. Repository documents hold the project decisions; this chat history is not required context.
 
+## Latest build handover — 5 November 2026
+
+Read the [overnight build handover](../HANDOVER-2026-11-05.md) before the next **“start the dev poller”**, including in GC's session. It records 31 merged stories, the remaining queue, retained blocked branches, morning actions and restart rules. The build was explicitly stopped on 5 November; the heartbeat remains paused until a collaborator explicitly restarts it.
+
 ## Purpose and binding context
 
 - Demonstration: **12 November 2026**, **30 minutes**, for Stuart and the named leadership group in the [brief](demo-brief.md).
