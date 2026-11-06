@@ -43,3 +43,7 @@ After review, implement one owned `server/test/gcsp-offer-view-producer.test.js`
 At execution: fresh shared HostBudget; one worker,120s,768MiB RAM,128MiB combined scratch/output and2MiB logs. Expected384MiB RAM,8MiB scratch and10seconds; split/replan on measured pressure. Establish an external ownership manifest/finalizer before allocations; strip all DB aliases,NODE_OPTIONS and debug tracing. Record recursive process identities; stop/join, verify all groups/scratch absent, release reservation, preserve installed environments/seed and delete successful verbose logs. Retain only safe summaries and bounded useful failure logs outside scratch.
 
 Root retains merge/claim/closure and integration review. No browser/native DB/listener/network/mail/full-suite/central edits or integration execution is granted by this document. Full factual comparison, actual106 and the authored rendered/full-suite gates remain open.
+
+## Execution follow-up · 6 November 2026
+
+Root approved this exact source plan after independent verification. The first authored harness attempt failed during loader registration before any product source loaded. The explicit stop-at-first-failure condition was applied; no correction/retry. See `producer-proof-result.md` and `producer-scoped.json`. The immutable JSON source plan remains byte-for-byte unchanged; further execution awaits dispatcher direction.

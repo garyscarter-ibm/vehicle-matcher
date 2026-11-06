@@ -1369,7 +1369,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T00:07:04Z",
+      "observed_at": "2026-11-06T00:22:14Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-105",
       "slices": [
         {
@@ -1390,8 +1390,8 @@
           "id": "access-producer",
           "status": "in-progress",
           "title": "Published FUCQ102 access bound to actual FUCQ100 producer",
-          "observed_at": "2026-11-06T00:04:12Z",
-          "evidence": "Verified102 4a56d38 actual-producer safe DTOs map to105; decline-only quote-expiry path scoped73/73 strict targeted9a11cd69 with partial/unknown comparison and disabled-port checks. No actual producer source execution here; finite integration plan pending review. docs/gcsp/evidence/fucq105/timing-scoped.json."
+          "observed_at": "2026-11-06T00:21:18Z",
+          "evidence": "Approved45-source integration attempted once: loader bootstrap guard rejects harness registration;1 attempted/0passed,0product modules observed. Stopped at first failure per root grant, no retry/strict stamp. Published b7061e9 consumer73/73 unchanged. Independent cleanup/source/dependency audit PASS; docs/gcsp/evidence/fucq105/producer-scoped.json."
         },
         {
           "id": "decision-host",

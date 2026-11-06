@@ -2,7 +2,13 @@
 
 5 November 2026. **Partial development; full story acceptance remains incomplete.**
 
-## Current decline-only checkpoint · 6 November 2026
+## Latest integration attempt · 6 November 2026
+
+The dispatcher approved the exact45-source/eight-overlay memory composition. The first selected integration run failed during loader registration before any product module or test phase loaded: attempted1/pass0/fail1/skip0. No strict receipt or product integration result exists. The loader's project guard omits its own registration entry; diagnosis and proposed narrow correction are in `producer-proof-result.md` and exact failure/resource identities in `producer-scoped.json`.
+
+Stopped at the first failure as explicitly instructed; no repair/retry. Independent process/filesystem/source/dependency cleanup audit passed. The validated73/73 consumer boundary below remains unchanged. Actual producer→102→105 integration and all broader acceptance gates remain open.
+
+## Last validated consumer checkpoint · 6 November 2026
 
 Verified published102 `4a56d386f031e7cf5a1fdeaefdcc612fb35cbd7b` and its contract/access/two safe producer sample hashes. Exact copies are `producer-access.json` and `producer-decline-access.json`. Unlike the earlier manually pinned schema samples, these DTOs came from actual100-to102 memory composition over synthetic inputs. The105 checks consume those immutable saved results; they have not run the producer/access source here.
 
