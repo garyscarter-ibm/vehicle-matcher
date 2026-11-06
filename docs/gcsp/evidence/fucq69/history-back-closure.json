@@ -1,8 +1,8 @@
 {
   "admissionRevision": {
-    "previousClosureSha256": "3f3db2f80b7937e195155cb06efd1f1892cf51f0db6d21559d96defe98ad1aa4",
-    "previousProposalCommit": "bc741b1ec85397e12037609143a89d6334bd01ad",
-    "reason": "Single remaining final-output edge: bounded pre-encoded receipt/checkpoint with explicit serialization and atomic-write headroom; prior accepted cleanup/source/cases/tools/limits retained; independent postwrite parent audit required; no execution"
+    "previousClosureSha256": "c786b36faff60cc984caa5afbf5e13cf2c19d9db983f2e109d57f19e7dc0f0c0",
+    "previousProposalCommit": "606726c234abbda4dac752b1d6fc59169cc64824",
+    "reason": "Proven macOS Python launcher/interpreter identity mismatch after consumed 0644 grant. Preserve original failure/audit; pin launcher and exact observed/canonical interpreter, retain all lifecycle/source/dependency/case/argv/resource gates. Author-only; fresh review/current admission/new grant required."
   },
   "counts": {
     "assetPaths": 2,
@@ -18398,8 +18398,8 @@
         "device": 16777232,
         "inode": 173171015,
         "mode": 420,
-        "sha256": "a1eed95114bd17df4589af65765dea4ce50841260cf640828db27902054b0dc6",
-        "size": 53683
+        "sha256": "742da7f150c0b78b426a980350de295a704e3d4051400366e9328afbb752acdf",
+        "size": 53868
       },
       "path": "docs/gcsp/evidence/fucq69/history-back-supervisor.py",
       "publishedCommit": null,
@@ -18410,8 +18410,8 @@
         "device": 16777232,
         "inode": 173171592,
         "mode": 420,
-        "sha256": "281eaf1c234e957edc016a493b0f7a0b6d2612618052ff9116ba5dc56b4839fe",
-        "size": 24929
+        "sha256": "599e4dc4ebf3a526bf84381e7d4dbb4f8cba33f1155cc4206bb98d51bd314c87",
+        "size": 29522
       },
       "path": "docs/gcsp/evidence/fucq69/history-back-plan.md",
       "publishedCommit": null,
@@ -24306,6 +24306,8 @@
       "--expected-closure-sha256",
       "REVIEWED_SHA256"
     ],
+    "executablePath": "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "interpreterPath": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
     "path": "/usr/bin/python3",
     "version": "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]"
   },
@@ -24670,6 +24672,28 @@
       },
       "path": "/usr/bin/vm_stat",
       "realpath": "/usr/bin/vm_stat"
+    },
+    {
+      "identity": {
+        "device": 16777232,
+        "inode": 90766555,
+        "mode": 493,
+        "sha256": "ec201019b3d883e095e753405a6fc5c1ae8f3b4905231dfd3dc6b4a1f348056f",
+        "size": 102352
+      },
+      "path": "/Library/Developer/CommandLineTools/usr/bin/python3",
+      "realpath": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9"
+    },
+    {
+      "identity": {
+        "device": 16777232,
+        "inode": 90766555,
+        "mode": 493,
+        "sha256": "ec201019b3d883e095e753405a6fc5c1ae8f3b4905231dfd3dc6b4a1f348056f",
+        "size": 102352
+      },
+      "path": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+      "realpath": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9"
     }
   ],
   "workspace": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-068"

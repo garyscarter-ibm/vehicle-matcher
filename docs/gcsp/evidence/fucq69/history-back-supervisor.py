@@ -282,8 +282,10 @@ def run():
         raise RuntimeError('Unexpected closure state.')
     # Verify this file, all product/package bytes, Python and resource tools BEFORE importing project helpers.
     verify_inputs(closure, started + 120)
-    if Path(sys.executable).resolve() != Path(closure['python']['path']).resolve():
-        raise RuntimeError('Use the frozen Python executable.')
+    # macOS's pinned /usr/bin/python3 launcher delegates to the separately pinned interpreter.
+    if (sys.executable != closure['python']['executablePath']
+            or str(Path(sys.executable).resolve()) != closure['python']['interpreterPath']):
+        raise RuntimeError('Use the frozen Python launcher/interpreter identity.')
     if sys.version != closure['python']['version'] or not sys.flags.isolated or not sys.flags.no_site or not sys.dont_write_bytecode:
         raise RuntimeError('Use the exact frozen isolated Python invocation.')
     if os.environ.get('TEST_RESOURCE_PARENT_RESERVATION'):
