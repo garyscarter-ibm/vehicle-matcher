@@ -115,7 +115,7 @@ def main():
         value.resources = dict(value.resources, **limits)
         return value
     stamp.load_settings = settings
-    env, removed = c.sanitized_environment()
+    env, removed = supervisor.sanitized_environment(c)
     os.environ.clear()
     os.environ.update(env)
     os.environ['TEST_STAMP_DIR'] = str(RECORDS / 'strict-greg-eligibility')

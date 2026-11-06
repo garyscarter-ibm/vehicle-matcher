@@ -83,6 +83,11 @@ includes the inner supervisor and all descendants. The inner RAM admission may s
 parent allocation, with a 128 MiB minimum. Both supervisors register external manifests/finalizers
 before owned scratch creation. Debug, database aliases and preloads are stripped. Test cookies and
 gate values originate inside tests; deployed gate/mail settings are removed from the child.
+The same local sanitizer runs before both launches and strips inherited coverage/profiling/debug,
+Node/Python injection, native loader/preload/sanitizer, malloc tracing and shell startup settings,
+including NODE_V8_COVERAGE and DYLD_INSERT_LIBRARIES. Removed variable names alone enter receipts;
+values are neither inspected for review nor logged. The generated loader hash is newly set by its
+supervisor after sanitization. No shared sanitizer was edited.
 
 Plans, receipts and bounded redacted logs remain under shared .claude/test-runs/fucq100. Scratch and
 module journals start under unique manifest-owned temporary roots; useful bounded journals are retained

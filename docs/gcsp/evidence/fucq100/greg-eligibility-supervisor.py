@@ -33,6 +33,20 @@ def module(name, path):
     return value
 
 
+def sanitized_environment(helpers):
+    env, removed = helpers.sanitized_environment()
+    injection = re.compile(r'COVERAGE|PROFILE|DEBUG|PRELOAD|INSPECT|NATIVE|MALLOC'
+        r'|(?:^|_)(?:COV|GCOV|LCOV|NYC|ISTANBUL)(?:_|$)'
+        r'|^(?:NODE_|V8_|DYLD_|LD_|_RLD_|LDR_|PYTHON|ASAN_|LSAN_|MSAN_|TSAN_|UBSAN_)'
+        r'|^(?:LIBPATH|SHLIB_PATH|BASH_ENV|ENV|ZDOTDIR|FUCQ100_GREG_LOADER_SHA256)$', re.I)
+    deployed = {'DEMO_ACCESS_KEY', 'BREVO_API_KEY', 'BREVO_SENDER_EMAIL', 'GCSP_NOTIFICATION_TRANSPORT'}
+    for key in list(env):
+        if injection.search(key) or key.upper() in deployed:
+            removed.append(key)
+            del env[key]
+    return env, sorted(set(removed))
+
+
 def install_strict_pid_probe(helpers):
     def absent(record):
         pid = record.get('pid')
@@ -173,12 +187,7 @@ def run(plan, grant):
     name = 'greg-eligibility-' + uuid.uuid4().hex
     receipt_path = RECORDS / (name + '-receipt.json')
     scratch = c.SafeScratch(RECORDS, ROOT, policy, expected=65536, checkpoint=receipt_path)
-    env, removed = c.sanitized_environment()
-    # Access gates are set only inside the selected existing HTTP test; never inherit a deployed credential.
-    for key in ['DEMO_ACCESS_KEY', 'BREVO_API_KEY', 'BREVO_SENDER_EMAIL', 'GCSP_NOTIFICATION_TRANSPORT']:
-        if key in env:
-            removed.append(key)
-            del env[key]
+    env, removed = sanitized_environment(c)
     samples = []
     original_stop = r.stop_group
     def sample(pgid):
