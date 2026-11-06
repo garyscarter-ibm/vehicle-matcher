@@ -1,0 +1,212 @@
+--- reviewed115-918ce045-resources.py
++++ controller-94e05ff-resources.py
+@@ -1,10 +1,12 @@
+-"""Owned strict resource adapter. Imported only after frozen admission succeeds.
++"""FUCQ-107 proposed owned strict resource adapter; adapted from reviewed FUCQ-115 918ce045. Imported only after frozen admission succeeds.
+ 
+ No shared helper is patched. All unknown ledger/OS states refuse destructive
+ cleanup and reservation release. A retained manifest includes every observed
+ PID/start pair, including observations whose start cannot be established.
+ """
+ import atexit
++import contextlib
++import fcntl
+ import json
+ import os
+ from pathlib import Path
+@@ -50,6 +52,8 @@
+     rows, observations = {}, []
+     for line in output.splitlines():
+         parts = line.split(None, 5)
++        if len(parts) == 6:
++            parts[5] = parts[5].strip()
+         partial = {key: int(parts[index]) if len(parts) > index and parts[index].isascii() and parts[index].isdigit() else None
+                    for index, key in enumerate(['pid', 'ppid', 'pgid'])}
+         partial['start'] = parts[5] if len(parts) == 6 and re.fullmatch(
+@@ -102,8 +106,59 @@
+     return total
+ 
+ 
++def available_memory_strict():
++    query = subprocess.run(['/usr/bin/vm_stat'], capture_output=True, text=True, timeout=3)
++    if query.returncode != 0 or query.stderr:
++        raise RuntimeError('Host memory probe failed')
++    lines = query.stdout.splitlines()
++    page = re.fullmatch(r'Mach Virtual Memory Statistics: \(page size of ([0-9]+) bytes\)', lines[0] if lines else '')
++    if not page or int(page[1]) <= 0:
++        raise RuntimeError('Host memory page size is unknown')
++    wanted, counts = {'Pages free', 'Pages inactive', 'Pages purgeable'}, {}
++    for line in lines[1:]:
++        key = line.split(':', 1)[0]
++        if key in wanted:
++            value = re.fullmatch(r'([^:]+):\s+([0-9]+)\.', line)
++            if not value or key in counts:
++                raise RuntimeError('Host memory accounting is malformed')
++            counts[key] = int(value[2])
++    if set(counts) != wanted:
++        raise RuntimeError('Host memory accounting is incomplete')
++    return int(page[1]) * sum(counts.values())
++
++
+ def make_budget(resources, policy, directory, lock_identity):
+     class StrictBudget(resources.HostBudget):
++        def prohibited(self, *args, **kwargs):
++            raise RuntimeError('Use strict owned budget methods only')
++        headroom = acquire = update = release = prohibited
++
++        @contextlib.contextmanager
++        def locked(self):
++            # Open the existing frozen lock read-only: never recreate it or
++            # follow a replacement symlink before validating its identity.
++            path = self.directory / 'reservations.lock'
++            fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
++            try:
++                value = os.fstat(fd)
++                if (value.st_dev, value.st_ino) != tuple(lock_identity):
++                    raise RuntimeError('Opened reservation lock identity differs')
++                deadline = time.monotonic() + 2
++                while True:
++                    try:
++                        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
++                        break
++                    except BlockingIOError:
++                        if time.monotonic() >= deadline:
++                            raise RuntimeError('Strict shared resource ledger is busy')
++                        time.sleep(0.02)
++                try:
++                    yield
++                finally:
++                    fcntl.flock(fd, fcntl.LOCK_UN)
++            finally:
++                os.close(fd)
++
+         def ledger(self):
+             # Every caller holds the same machine-wide lock. Missing, malformed,
+             # duplicate-key, unknown-owner and cyclic-parent data are errors.
+@@ -143,11 +198,11 @@
+         def acquire_owned(self, scratch, retained_bytes):
+             rows = process_snapshot()
+             identity = {key: rows[os.getpid()][key] for key in ['pid', 'start']}
+-            memory = resources.available_memory()
++            memory = available_memory_strict()
+             if type(memory) is not int or memory <= 0:
+                 raise RuntimeError('Available host RAM is unknown')
+             free = shutil.disk_usage(scratch.root.parent).free
+-            with resources.locked(self.directory / 'reservations.lock'):
++            with self.locked():
+                 data = self.ledger()
+                 if scratch.token in data:
+                     raise RuntimeError('Reservation token already exists')
+@@ -157,26 +212,29 @@
+                 ram_pending = sum(max(0, row['ram'] - row['rss']) for row in data.values())
+                 if free - self.policy.reserve - disk_pending < 128 * resources.MIB + retained_bytes:
+                     raise RuntimeError('Insufficient proven shared disk headroom')
+-                if memory - ram_pending - int(self.policy.ram_reserve_mib * resources.MIB) < 768 * resources.MIB:
++                if memory - ram_pending - int(self.policy.ram_reserve_mib * resources.MIB) < 384 * resources.MIB:
+                     raise RuntimeError('Insufficient proven shared RAM headroom')
+-                row = {'owner': identity, 'disk': 128 * resources.MIB, 'ram': 768 * resources.MIB,
++                row = {'owner': identity, 'disk': 128 * resources.MIB, 'ram': 384 * resources.MIB,
+                        'used': retained_bytes, 'rss': 0, 'parent': None, 'root': str(scratch.root)}
+                 data[scratch.token] = row
+                 resources.atomic_json(self.path, data)
+                 if self.ledger().get(scratch.token) != row:
+                     raise RuntimeError('Reservation write/readback differs')
+-                self.owned = (scratch.token, identity, str(scratch.root))
++                self.owned = (scratch.token, identity, str(scratch.root), row['disk'], row['ram'], row['parent'])
+ 
+         def owned_row(self, data, token):
+             expected = getattr(self, 'owned', None)
+             row = data.get(token)
+             if not expected or expected[0] != token or row is None \
+-                    or row['owner'] != expected[1] or row['root'] != expected[2]:
++                    or row['owner'] != expected[1] or row['root'] != expected[2] \
++                    or (row['disk'], row['ram'], row['parent']) != expected[3:]:
+                 raise RuntimeError('Reservation ownership is unknown')
+             return row
+ 
+         def update_owned(self, token, used, rss):
+-            with resources.locked(self.directory / 'reservations.lock'):
++            with self.locked():
++                if any(type(value) is not int or value < 0 for value in [used, rss]):
++                    raise RuntimeError('Invalid owned accounting update')
+                 data = self.ledger()
+                 self.owned_row(data, token).update(used=used, rss=rss)
+                 resources.atomic_json(self.path, data)
+@@ -187,17 +245,30 @@
+         def release_owned(self, token, proof):
+             if not proof or not all(proof[key] for key in ['joined', 'pidsAbsent', 'groupsAbsent', 'scratchAbsent']):
+                 raise RuntimeError('No proven cleanup authorises release')
+-            with resources.locked(self.directory / 'reservations.lock'):
++            with self.locked():
+                 data = self.ledger()
+                 self.owned_row(data, token)
++                if any(row['parent'] == token for row in data.values()):
++                    raise RuntimeError('Owned reservation still has descendants')
+                 del data[token]
+                 resources.atomic_json(self.path, data)
+                 if self.ledger() != data:
+                     raise RuntimeError('Reservation release readback failed')
+ 
++        def authorize_cleanup(self, token):
++            with self.locked():
++                data = self.ledger()
++                if any(row['parent'] == token for row in data.values()):
++                    raise RuntimeError('Descendant reservation prevents scratch cleanup')
++                if getattr(self, 'owned', None):
++                    self.owned_row(data, token)
++                elif token in data:
++                    raise RuntimeError('Acquisition was uncertain; retain scratch and reservation')
++
+         def absence(self, token):
+-            with resources.locked(self.directory / 'reservations.lock'):
+-                return token not in self.ledger()
++            with self.locked():
++                data = self.ledger()
++                return token not in data and not any(row['parent'] == token for row in data.values())
+ 
+     return StrictBudget(policy, directory=directory)
+ 
+@@ -289,7 +360,11 @@
+         self.record['ownedPids'].append(item)
+         self.record['groups'].append(process.pid)
+         self.save()
+-        rows = process_snapshot()
++        try:
++            rows = process_snapshot()
++        except SnapshotUncertain as error:
++            self.remember_uncertain(error)
++            raise
+         row = rows.get(process.pid)
+         if row is None or row['pgid'] != process.pid or row['ppid'] != os.getpid():
+             raise RuntimeError('Launched leader identity is unknown')
+@@ -394,7 +469,7 @@
+             # Only this owned finalizer calls deletion after an explicit proof.
+             raise RuntimeError('Use the strict finalizer; automatic scratch deletion is prohibited')
+ 
+-    scratch = StrictScratch(rdir, root, policy, expected=16 * resources.MIB,
++    scratch = StrictScratch(rdir, root, policy, expected=1 * resources.MIB,
+                             checkpoint=rdir / 'checkpoint.json')
+     rows = process_snapshot()
+     scratch.record['owner'] = {key: rows[os.getpid()][key] for key in ['pid', 'start']}
+@@ -432,6 +507,7 @@
+             self.scratch.record.update(state='stopped-and-joined', processAbsence=proof)
+             self.tree.save()
+             scratch = self.scratch
++            self.budget.authorize_cleanup(scratch.token)
+             if os.path.lexists(scratch.root):
+                 identity = scratch.root.lstat()
+                 if scratch.root.is_symlink() or (identity.st_dev, identity.st_ino) != (scratch.record.get('device'), scratch.record.get('inode')):
+@@ -440,9 +516,13 @@
+                 if check.returncode != 1 or check.stdout or check.stderr:
+                     raise RuntimeError('Scratch open-file absence is unknown')
+                 # Last complete OS proof immediately precedes deletion.
++                self.budget.authorize_cleanup(scratch.token)
+                 proof = self.tree.proof()
+                 if not all(proof[key] for key in ['joined', 'pidsAbsent', 'groupsAbsent']):
+                     raise RuntimeError('Process absence changed before deletion')
++                fresh = scratch.root.lstat()
++                if scratch.root.is_symlink() or (fresh.st_dev, fresh.st_ino) != (scratch.record['device'], scratch.record['inode']):
++                    raise RuntimeError('Scratch identity changed before deletion')
+                 scratch.sample()
+                 shutil.rmtree(scratch.root)
+             if os.path.lexists(scratch.root):
