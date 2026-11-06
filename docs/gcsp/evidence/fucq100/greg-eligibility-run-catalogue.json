@@ -2386,14 +2386,14 @@
     "sha256": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818"
   },
   "helpers": {
-    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/greg-eligibility-supervisor.py": "d404429a6fcf5a7d04b7c1263d4ae31b1a9949dec4f7a34005f24ca4cbc0ba48",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/greg-eligibility-supervisor.py": "e79cc97270c8be97b42d56fd3c3ca3928523c50750f50b01242ec61d81515ebf",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-supervisor.py": "43026a725b6305fb8537e032049f0c19cf345bcdb8ee851c408e7dba5255bcc6",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-installed-closure.json": "3cb38953d0bd475e6e13913e4b6c0f00ffb3a12e6547c3bf820bd64cbefaebee",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/_tools/scaffold_git.py": "ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/_tools/test_stamp.py": "88a16018b5b8fa225463b590f2283b4baa6be4951f258bba4846eacc3795a49e",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/.claude/scaffolding.json": "c55d2bf32288b5e19f6ac6e7c7b35d22013c80b757d5328c8257a4eac4ac560a",
-    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/greg-eligibility-stamp.py": "d6a87d7073124f10611a0de4178f6eabbd601c1e839f414c3cfaa6b8f010b4be"
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/greg-eligibility-stamp.py": "946f46c1467153acb3d772d283ce4b66dd7384a5400054511de9f424cf95d76e"
   },
   "node": {
     "path": "/opt/homebrew/bin/node",

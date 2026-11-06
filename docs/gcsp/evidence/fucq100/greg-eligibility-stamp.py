@@ -45,7 +45,9 @@ def main():
     if supervisor.catalogue() != reviewed:
         raise RuntimeError('Reviewed source catalogue drift')
     c = module('greg_outer_resource_helpers', RECORDS / 'runtime-supervisor.py')
+    supervisor.install_strict_pid_probe(c)
     r = c.resources
+    supervisor.install_strict_budget(r)
     instances, samples = [], []
     class Owned(c.SafeScratch):
         def __init__(self, *values, **kwargs):
@@ -122,10 +124,14 @@ def main():
                           '--catalogue-sha256', args.catalogue_sha256, '--dispatcher-grant', args.dispatcher_grant])
     cli = ['--root', str(ROOT), '--jobs', '1', '--targeted', 'f5f83cbaac71740d25e3de18498022c3f416998f',
            '--command', command, '--reason', 'Granted Greg eligibility repair: actual canonical default preparation, exact persisted driver/slot binding, false/unknown/refusal/privacy and both slot read fences.25 selected cases, one existing owned loopback HTTP case. No103 scorer adoption/browser/native/full/provider or unchanged100 rerun.']
+    cleanup_errors = []
     def finalize():
         for scratch in instances:
             if not scratch.root.exists() and c.await_owned_absence(scratch.record):
-                r.HostBudget(r.Policy(limits)).release(scratch.token)
+                try:
+                    r.HostBudget(r.Policy(limits)).release(scratch.token)
+                except (OSError, ValueError, r.ResourceError) as exc:
+                    cleanup_errors.append(type(exc).__name__ + ': ' + str(exc))
     atexit.register(finalize)
     run = 'greg-eligibility-targeted-' + str(time.time_ns())
     code = 2
@@ -138,10 +144,14 @@ def main():
         finalize()
         receipt = {'run': run, 'code': code, 'grant': args.dispatcher_grant, 'command': command,
                    'limits': limits, 'removed_environment_names': removed, 'samples': samples,
+                   'cleanup_errors': cleanup_errors,
                    'manifests': [{'path': str(scratch.manifest), 'scratch_absent': not os.path.lexists(scratch.root),
                                   'groups_absent': c.all_groups_absent(scratch.record), 'pids_absent': c.all_owned_pids_absent(scratch.record),
-                                  'reservation_absent': scratch.token not in r.read_json(r.HostBudget(r.Policy(limits)).path, {})}
+                                  'reservation': r.HostBudget(r.Policy(limits)).reservation_state(scratch.token)}
                                  for scratch in instances]}
+        if cleanup_errors or any(not (row['scratch_absent'] and row['groups_absent'] and row['pids_absent']
+                                      and row['reservation']['absent']) for row in receipt['manifests']):
+            code = receipt['code'] = code or 1
         r.atomic_json(RECORDS / (run + '-receipt.json'), receipt)
         print(json.dumps({key: value for key, value in receipt.items() if key != 'samples'}))
     return code

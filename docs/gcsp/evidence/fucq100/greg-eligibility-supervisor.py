@@ -33,6 +33,72 @@ def module(name, path):
     return value
 
 
+def install_strict_pid_probe(helpers):
+    def absent(record):
+        pid = record.get('pid')
+        if type(pid) is not int or pid <= 0:
+            return False
+        try:
+            os.kill(pid, 0)
+        except ProcessLookupError:
+            return True
+        except OSError:
+            return False
+        start = record.get('start')
+        current = helpers.resources.process_identity(pid)
+        return bool(isinstance(start, str) and start.strip() and isinstance(current, str)
+                    and current.strip() and current != start)
+    helpers.pid_probe = absent
+
+
+def install_strict_budget(resources):
+    def pairs(items):
+        value = {}
+        for key, item in items:
+            if key in value:
+                raise ValueError('Duplicate reservation JSON key')
+            value[key] = item
+        return value
+
+    def constant(value):
+        raise ValueError('Nonstandard reservation JSON constant: ' + value)
+
+    def ledger(path):
+        value = json.loads(path.read_text(), object_pairs_hook=pairs, parse_constant=constant)
+        if not isinstance(value, dict):
+            raise ValueError('Reservation ledger is not an object')
+        for token, entry in value.items():
+            if not isinstance(token, str) or not token or not isinstance(entry, dict) \
+                or not {'owner', 'disk', 'ram', 'used', 'rss', 'parent', 'root'} <= entry.keys():
+                raise ValueError('Invalid reservation entry')
+            owner = entry.get('owner')
+            if not isinstance(owner, dict) or type(owner.get('pid')) is not int or owner['pid'] <= 0 \
+                or not isinstance(owner.get('start'), str) or not owner['start'].strip():
+                raise ValueError('Invalid reservation owner')
+            if any(type(entry.get(key)) is not int or entry[key] < 0 for key in ('disk', 'ram', 'used', 'rss')):
+                raise ValueError('Invalid reservation accounting')
+            if any(entry.get(key) is not None and (not isinstance(entry[key], str) or not entry[key])
+                   for key in ('parent', 'root')):
+                raise ValueError('Invalid reservation binding')
+        return value
+
+    class StrictBudget(resources.HostBudget):
+        def release(self, token):
+            with resources.locked(self.directory / 'reservations.lock'):
+                entries = ledger(self.path)
+                entries.pop(token, None)
+                resources.atomic_json(self.path, entries)
+
+        def reservation_state(self, token):
+            try:
+                with resources.locked(self.directory / 'reservations.lock'):
+                    return {'absent': token not in ledger(self.path), 'error': None}
+            except (OSError, ValueError, resources.ResourceError) as exc:
+                return {'absent': False, 'error': type(exc).__name__ + ': ' + str(exc)}
+
+    resources.HostBudget = StrictBudget
+
+
 def catalogue():
     sources, edges, pending = {}, [], [ROOT / path for path in SELECTED]
     while pending:
@@ -99,7 +165,9 @@ def run(plan, grant):
     if before != plan:
         raise RuntimeError('Frozen catalogue mismatch before helper import or allocation')
     c = module('greg_resource_helpers', BASE_RUNNER)
+    install_strict_pid_probe(c)
     r = c.resources
+    install_strict_budget(r)
     policy = r.Policy({'chunk_scratch_mib': 128, 'chunk_ram_mib': 768, 'chunk_seconds': 120, 'log_mib': 0.25})
     host = r.HostBudget(policy)
     name = 'greg-eligibility-' + uuid.uuid4().hex
@@ -150,9 +218,13 @@ def run(plan, grant):
         if not c.await_owned_absence(scratch.record):
             raise RuntimeError('Owned process survived; scratch is preserved')
     r.group_rss, r.stop_group = sample, stop
+    cleanup_errors = []
     def finalize():
         if not scratch.root.exists() and c.await_owned_absence(scratch.record):
-            host.release(scratch.token)
+            try:
+                host.release(scratch.token)
+            except (OSError, ValueError, r.ResourceError) as exc:
+                cleanup_errors.append(type(exc).__name__ + ': ' + str(exc))
     atexit.register(finalize)
     result, error, counts = None, None, {}
     r.atomic_json(RECORDS / (name + '-plan.json'), {'catalogue': plan, 'grant': grant,
@@ -169,12 +241,15 @@ def run(plan, grant):
                 journal = scratch.root / 'modules.jsonl'
                 loader.write_text('import{readFileSync,appendFileSync,existsSync,statSync}from"node:fs";import{createHash}from"node:crypto";'
                     + 'const allowed=new Map(Object.entries(' + json.dumps(allowed) + '));const journal=' + json.dumps(str(journal)) + ';'
-                    + 'export async function resolve(s,c,next){const r=s==="pg"?{url:' + json.dumps(PG_ENTRY.as_uri())
-                    + ',shortCircuit:true}:await next(s,c);if(r.url.startsWith("file:")&&!allowed.has(r.url))throw Error("Undeclared module "+r.url);return r;}'
-                    + 'export async function load(u,c,next){if(u.startsWith("file:")){const expected=allowed.get(u);'
-                    + 'if(!expected||createHash("sha256").update(readFileSync(new URL(u))).digest("hex")!==expected)throw Error("Module drift "+u);'
+                    + 'const own=import.meta.url,ownParent=' + json.dumps(ROOT.as_uri() + '/') + ',ownHash=process.env.FUCQ100_GREG_LOADER_SHA256;'
+                    + 'function record(u,expected){if(!expected||createHash("sha256").update(readFileSync(new URL(u))).digest("hex")!==expected)throw Error("Module drift "+u);'
                     + 'if(existsSync(journal)&&statSync(journal).size>131072)throw Error("Module journal bound");'
-                    + 'appendFileSync(journal,JSON.stringify({url:u,sha256:expected})+"\\n");}return next(u,c);}\n')
+                    + 'appendFileSync(journal,JSON.stringify({url:u,sha256:expected})+"\\n");}'
+                    + 'export async function resolve(s,c,next){const r=s==="pg"?{url:' + json.dumps(PG_ENTRY.as_uri())
+                    + ',shortCircuit:true}:await next(s,c);if(r.url===own){if(s!==own||c.parentURL!==ownParent)throw Error("Invalid loader registration");record(own,ownHash);}'
+                    + 'else if(r.url.startsWith("file:")&&!allowed.has(r.url))throw Error("Undeclared module "+r.url);return r;}'
+                    + 'export async function load(u,c,next){if(u.startsWith("file:"))record(u,u===own?ownHash:allowed.get(u));return next(u,c);}\n')
+                env['FUCQ100_GREG_LOADER_SHA256'] = sha(loader)
                 argv = [str(NODE), '--no-warnings', '--experimental-loader', str(loader), '--test-concurrency=1',
                         '--test-reporter=tap', '--test', *SELECTED]
                 result = r.run_process(argv, ROOT, env, scratch.root / 'raw.log', scratch, policy,
@@ -192,9 +267,12 @@ def run(plan, grant):
         error = type(exc).__name__ + ': ' + str(exc)
     finally:
         finalize()
+        reservation = host.reservation_state(scratch.token)
         cleanup = {'scratch_absent': not os.path.lexists(scratch.root), 'groups_absent': c.all_groups_absent(scratch.record),
                    'pids_absent': c.all_owned_pids_absent(scratch.record),
-                   'reservation_absent': scratch.token not in r.read_json(host.path, {})}
+                   'reservation_absent': reservation['absent'] and not cleanup_errors}
+        if reservation['error'] or cleanup_errors:
+            error = error or 'Reservation cleanup: ' + str(reservation['error'] or cleanup_errors)
         try:
             unchanged = catalogue() == before
         except BaseException as exc:

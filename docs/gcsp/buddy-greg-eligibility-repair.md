@@ -42,7 +42,10 @@ code, before importing the supervisor or any custom helper. The inner supervisor
 catalogue before importing runtime-supervisor and its transitive test_resources module. This admission
 ordering was corrected during static review; no test command was used to exercise the earlier ordering.
 A strict loader checks each file-backed ES module against the catalogue and records a bounded module
-journal. pg resolves to the previously audited read-only package; no source module is redirected.
+journal. The generated loader admits its own exact URL only from the exact worktree-directory parent,
+checks its generated-byte hash pinned in the child environment, and journals that registration. It
+admits no scratch directory wildcard. pg resolves to the previously audited read-only package; no
+source module is redirected.
 
 Exactly 25 cases are selected: eight new focused cases and all 17 cases in the updated demand test.
 Data-driven assertions cover the approved driver/reference/fact outcomes, default manual preparation,
@@ -85,6 +88,14 @@ Plans, receipts and bounded redacted logs remain under shared .claude/test-runs/
 module journals start under unique manifest-owned temporary roots; useful bounded journals are retained
 with the receipt. Stop/join all owned descendants before scratch removal, then verify PID/group/root
 and reservation absence. Source/dependency identity uncertainty or cleanup uncertainty prevents pass.
+Both supervisors read the reservation ledger strictly under its existing lock, reject malformed JSON,
+duplicate keys, non-object ledgers and invalid accounting/owner entries, and record unreadable or
+unknown state as failed cleanup. Their local HostBudget release also uses that strict read so a
+permissive release cannot erase a corrupt ledger before the final check. No shared resource helper
+was edited. Outer cleanup uncertainty forces a nonzero stamp result.
+Both local PID probes require ESRCH or a different nonempty start identity to prove the recorded
+process is gone. Permission errors, failed ps/identity queries and missing start identities remain
+unproved; strict group checks and SafeScratch retention still apply.
 Preparation time is separate from the 120-second child bound. Independent final audit remains the
 launching session's responsibility. No resources have been allocated by catalogue generation.
 
