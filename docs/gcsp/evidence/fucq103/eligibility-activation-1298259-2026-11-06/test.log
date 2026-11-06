@@ -1,0 +1,17 @@
+✔ ordinary HTTP legacy preview/publish activates run and next employee evaluation, preserving an actual pinned quote (2244.357834ms)
+✔ registered policy routes retain gate, origin, roles and strict trusted-context boundary (838.212917ms)
+✔ scheduled policy uses persisted DemoClock and adopts both references only at ordinary resolution (504.060958ms)
+✔ CAS fencing retries a clock race and preserves unrelated version references (467.76375ms)
+✔ lost activation response reconciles without another run write (334.710417ms)
+✔ accepted publication survives failed activation and original command replay reconciles (357.880917ms)
+✔ session expiry remains wall-clock based while policy activation uses a different demo date (337.095708ms)
+✔ missing/invalid domain clock cannot activate; pure guards never invoke a write (365.545709ms)
+✔ repeated CAS conflicts stay pending and an earlier run cannot be activated (321.420209ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6067.104958

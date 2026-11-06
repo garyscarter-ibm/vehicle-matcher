@@ -645,3 +645,21 @@ Peak 932.4MiB/1024MiB, wall 9.38s; processes, scratch and reservation verified a
 Grant `fucq103-eligibility-publish-30e7663-1320` is consumed. Root final collection,
 activation9, six dashboard-data cases, rendered desktop/narrow keyboard, actual
 producers, native/full/live and final acceptance stay open. FUCQ-103 stays In Progress.
+
+
+## Lead-audited activation9 at 1298259, 6 November 2026
+
+The once-granted `eligibility-activation` selection passed **9/9** cases, the whole of
+`gcsp-policy-activation.test.js` (7) and `gcsp-greg-publish-http.test.js` (2), zero
+failures, cancellations, skipped or todo, child and supervisor exit 0. The tested HEAD
+is evidence-only; its delta from `30e7663` was checked to touch only publish15 evidence.
+A second independent managed reviewer passed the packet before execution. The
+[activation9 index](eligibility-activation-1298259-2026-11-06/index.json) binds the
+originals; only concise evidence and the exact 1,057-byte SPEC log are published.
+In-memory repository, policy provider and DemoClock; activation cases use threshold 1,
+HTTP cases the canonical policy; faults are stub-injected and the recommendation
+provider is a stub. Loopback listeners only; no DOM, PostgreSQL or producer journey.
+Peak 882.5MiB/1024MiB, wall 9.78s; processes, listeners, scratch and reservation
+verified absent. Grant `fucq103-eligibility-activation-1298259-1336` is consumed. Root
+final collection, six dashboard-data cases, rendered desktop/narrow keyboard, actual
+producers, native/full/live and final acceptance stay open. FUCQ-103 stays In Progress.

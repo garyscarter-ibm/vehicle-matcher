@@ -1019,7 +1019,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-06T13:22:31Z",
+      "observed_at": "2026-11-06T13:38:05Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103",
       "jira_observed_at": "2026-11-05T22:40:24Z",
       "branch": "dev/DEV-2026-11-04-066",
@@ -1048,8 +1048,8 @@
           "id": "backend-projection",
           "status": "in-progress",
           "title": "Editable policy projection and no-write preview",
-          "observed_at": "2026-11-06T13:22:31Z",
-          "evidence": "Current f80fc61 freeze: core25/registry16/default1/weighted1/runtime4/editor3 independently accepted; dashboard3 3/3 at 4c0cbcf and publish15 15/15 at 30e7663 passed (lead-audited, root collection pending); six dashboard-data cases unexercised. Synthetic in-memory service proof, threshold1 except canonical5 band cases; shape-only fixture comparison; direct route handlers; no rendered/native/producer/full acceptance. Activation9 and remaining gates stay open. docs/gcsp/evidence/fucq103/eligibilit"
+          "observed_at": "2026-11-06T13:38:05Z",
+          "evidence": "Current f80fc61 freeze: core25/registry16/default1/weighted1/runtime4/editor3 independently accepted; dashboard3 3/3 at 4c0cbcf, publish15 15/15 at 30e7663 and activation9 9/9 at 1298259 passed (lead-audited, root collection pending); six dashboard-data cases unexercised. Synthetic in-memory service proof, threshold1 except canonical band/HTTP cases; stub faults/provider; shape-only fixture comparison; loopback only; no rendered/native/producer/full acceptance. docs/gcsp/evidence/fucq103/eligibi"
         },
         {
           "id": "activation-http",
