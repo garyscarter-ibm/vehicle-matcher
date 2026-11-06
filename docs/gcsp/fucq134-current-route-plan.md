@@ -6,7 +6,19 @@ Dispatcher: `01a1ab10-6556-7211-92a0-0dd0345e3f0d`.
 Requested/selected/effective: `gpt-6.1-sol/high`, no fallback; rollout turn_context verified.
 Gateway PASS: `api.servicesessentials.ibm.com` is under `ibm.com`. No descendants.
 
-Latest completion-clock continuation, 6 November: the run at57d8f17 genuinely
+Latest scoped evidence publication, 6 November: the two actual-reader clock
+processes passed, followed by exactly `isolation`, `real-claim-review-allocate`
+and `untaken-expiry`, TAP3/3 with Node/controller/independent audit/outer join all0
+at tested `5a28ff3`. Root independently collected PASS472 at14:19:23Z. The
+[scoped result](evidence/fucq134/scoped-clock-mechanics-result-2026-11-06.md)
+preserves original receipts (`passed:false`, awaiting independent audit), separate
+successful audit stdout/exit0, exact hashes, cleanup observations and both review
+provenances. Both once-only grants are consumed. No rerun/probe/new grant, source
+or helper edit follows. All incomplete slice/story states and outstanding whole
+route, corpus, integration and full-suite acceptance remain. Root retains shared
+integration/merge/closure; this checkpoint changes only tracked evidence.
+
+Previous completion-clock authoring continuation, 6 November: the run at57d8f17 genuinely
 passed3/3, including expiry, but independent audit1 refused incompatible
 cross-process monotonic epochs. Root authorized a small story-owned helper/freeze
 repair. It labels a macOS system-wide uptime clock in seconds, refuses unsupported

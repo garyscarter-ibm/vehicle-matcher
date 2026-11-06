@@ -1828,7 +1828,7 @@
           "status": "in-progress",
           "title": "Isolated memory run and real66 authority",
           "observed_at": "2026-11-06T08:53:35Z",
-          "evidence": "Second once-only run controller2/audit1 failed on captured OS state; root cleanup PASS separate. Reviewed five-field identity/RSS parser repair authored only, preserves strict identities/absence/ledger gates. Fresh implementation review/admission needed; no new grant. docs/gcsp/evidence/fucq134/README.md"
+          "evidence": "Scoped PASS at5a28ff3: actual-reader clock check and isolation/claim-review-allocate/expiry3/3; Node/controller/audit/outer0, independent audit complete. Root collection PASS472 (2026-11-06T14:19:23Z). Original passed:false receipts and prior failures preserved. Incomplete states unchanged; whole-route/full/story acceptance open. docs/gcsp/evidence/fucq134/scoped-clock-mechanics-result-2026-11-06.md"
         },
         {
           "id": "shared-matrix",
@@ -1869,7 +1869,7 @@
         }
       ],
       "branch": "dev/DEV-2026-11-04-103",
-      "development_note": "Isolated-real66 in progress. Second once-only7293e52 attempt controller2/audit1 failed in execution on captured OS-state grammar; root cleanup PASS separate, historical uncertainGroups retained. Reviewed five-field PID/PPID/PGID/RSS/start repair authored only. All downstream safety/limits and45sources/72edges/three cases unchanged. No new runtime grant/probe/test/allocation/retry; fresh implementation review/admission outstanding. Earlier causal row UNKNOWN. Other five slices and all acceptance open."
+      "development_note": "Scoped clock/mechanics PASS at tested5a28ff3, root collection PASS472 on6Nov14:19Z; exact evidence in docs/gcsp/evidence/fucq134/scoped-clock-mechanics-result-2026-11-06.md. Original provisional receipts and historical failures unchanged. Mater driver review self-reported Opus5.5 LOW; Beaky source review separate. Isolated-real66 stays in progress; five slices not started; whole-route/integration/full/story acceptance open. No new grant or runtime."
     }
   ]
 }

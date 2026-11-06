@@ -1,6 +1,21 @@
 # FUCQ-134 first chunk review package
 
-**Shared completion clock repair authored. Latest genuine TAP3/3 and controller0; audit1. Completion remains incomplete; no retry grant.**
+**Latest scoped result, 6 November: clock semantic PASS and TAP3/3;
+Node/controller/independent audit/outer join all0. Root collection PASS472.**
+
+The [scoped clock and mechanics result](scoped-clock-mechanics-result-2026-11-06.md)
+records the tested `5a28ff3` identity, consumed once-only grants, actual audit
+completion, original evidence hashes, resource/cleanup collection and distinct
+source/driver reviews, including Mater's self-reported LOW effort and accepted
+caveats. Original provisional receipts remain `passed:false` and
+`awaiting-independent-parent-audit`; successful audit stdout plus actual exit0
+is separate completion evidence. No historical failure is relabelled. Whole-route,
+full-suite and story acceptance remain open; all map states stay unchanged.
+This publication performs no rerun, probe or new allocation.
+
+## Previous clock-repair authoring checkpoint
+
+**Historical genuine TAP3/3 and controller0; audit1. That run's completion remains incomplete.**
 
 The authorized run at57d8f17 reached and passed all three cases, including the
 complete expiry assertions. Its independent audit refused `Controller start time
