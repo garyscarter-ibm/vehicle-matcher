@@ -190,3 +190,9 @@ assessment remains historical evidence. Actual producer-to-controller integratio
 provider/reset data and the six business scenario preparation gates remain open. The repair
 imports no producer or foreign runtime source. Its selected validation is recorded separately in
 `evidence/fucq-126/release-result-2026-11-06.md`; earlier browser evidence retains its original identity.
+
+The [38be4f5 HTTP/release planning freeze](evidence/fucq-126/http-release-plan-38be4f5-2026-11-06.md)
+pins the subsequent canonical eligibility checkpoint, actual release modules and unchanged
+`a10ca74` controller. It proposes the smallest in-process cookie/HTTP-to-controller proof,
+with exact source/dependency/helper identities and explicit missing execution inputs. No
+source adoption, mixed execution or successful new-run source factory is implied.
