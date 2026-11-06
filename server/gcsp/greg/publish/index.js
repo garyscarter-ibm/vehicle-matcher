@@ -6,7 +6,7 @@ import { createGregDemandService } from '../index.js';
 import { evaluateFit } from './fit.js';
 
 const RECOMMENDATION = 'employee.recommendation.v1';
-const TABLES = ['briefs', 'employees', 'stock', 'holds', 'offers', 'decisions', 'quotes'];
+const TABLES = ['briefs', 'employees', 'entitlement_slots', 'stock', 'holds', 'offers', 'decisions', 'quotes'];
 const text = (value) => typeof value === 'string' && value.trim().length > 0 && value.length <= 256;
 const only = (value, keys) => value !== null && typeof value === 'object' && !Array.isArray(value)
   && Reflect.ownKeys(value).every((key) => keys.includes(key));

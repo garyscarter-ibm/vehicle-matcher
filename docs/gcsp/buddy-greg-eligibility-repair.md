@@ -1,10 +1,50 @@
-# Greg eligibility repair: first execution stopped at loader admission
+# Greg eligibility repair: 25 scoped checks passed
 
 FUCQ-100, 6 November 2026. Dispatcher 0033 approved the four production paths and two test paths
 from the [diagnosis](buddy-greg-eligibility-diagnosis.md). FUCQ-103 released its three Greg paths.
-The draft is based on `f5f83cbaac71740d25e3de18498022c3f416998f`. Its first granted run stopped
-before any business case; the product draft remains unaccepted and uncommitted.
+The repair is based on `f5f83cbaac71740d25e3de18498022c3f416998f`. The first granted run stopped
+before any business case. A separately reviewed loader correction and new grant then reached all
+25 selected business cases successfully. The dispatcher's independent focused audit also passed;
+broader acceptance remains open.
 No source from 103, 69, 122 or 126 was adopted.
+
+## Successful renewed execution, 6 November 2026
+
+Grant `fucq100-eligibility-ba33b71-0033` was used once after the dispatcher explicitly released its
+temporary draft-accounting hold. No process or allocation started before or during that hold. The
+corrected receipt checks both tracked and untracked paths; all six drafts were present throughout.
+The run used `/usr/bin/env -i PATH=/usr/bin:/bin:/usr/sbin:/sbin /usr/bin/python3 -I` with the exact
+reviewed stamp, grant and catalogue SHA-256
+`76259196e7cea4123a3312d32b28574d7dd859907ecc4af449449e82fab55207`.
+
+All 25 selected business cases passed: eight focused and 17 canonical-prepared demand checks, with
+zero failures, skips, cancellations or todo cases. The original first failure remains preserved.
+The [final evidence](evidence/fucq100/greg-eligibility-final-run.json) records every reached case,
+strict targeted stamp, receipts, log/module-journal identities, independent resource audit and source pins.
+The frozen catalogue remains unchanged as the run's input plan; the final evidence records its outcome.
+
+Both actual self-registration diagnostics show `specifierForm: absolute-path`, the exact expected
+worktree parent and matching resolved own URL. This confirms the observed registration would fail
+the former URL-only predicate. The generated-byte hash and two self entries match the module journal;
+all 266 journal entries across 92 unique URLs are allowed and pinned. The 7,765-byte log and 55,570-byte
+journal remain outside scratch with their receipts.
+
+Independent audit rechecks four manifests across both attempts, all 22 recorded PID observations
+(including 12 unknown starts), owner PIDs, strict groups, both attempts' scratch and reservations,
+locked ledger validity, no owned listeners and preserved worktree. Every recorded PID is absent by
+ESRCH. All 108 source/resource/metadata hashes, eight helper hashes, Node/Python hashes and 54 installed
+hash/physical identities remain exact. Inner execution took 15.248 seconds, sampled at 283,770,880 bytes
+RSS; outer aggregate peak was 304,693,248 bytes and inner scratch peak 102,400 bytes, within the granted
+120 seconds, 768 MiB aggregate RSS, 128 MiB scratch and 2 MiB logs with one worker.
+
+The dispatcher independently reparsed the original TAP names/totals and module journal, checked the
+registration observation, all source/helper/installed identities and complete resource teardown:
+201 checks passed in shared `.claude/test-runs/ownership/fucq100-focused-pass-audit-0033.json`.
+
+This proves the scoped canonical Greg projection, refusal/privacy outcomes and both read fences.
+It does not prove the separately retained 103 weighted scorer's default-runtime response, a browser
+journey, native database, external provider, full suite or final FUCQ-100 acceptance. Existing dashboard
+and 103 helper preparation still require their owners' canonical binding work before combined checks.
 
 ## First granted execution, 6 November 2026
 
@@ -18,12 +58,14 @@ Node 26.5.0 refused self-registration with `Invalid loader registration` before 
 loaded. TAP reports two failed file subtests, zero passes/skips; none of the 25 business cases ran.
 The module journal does not exist because the resolver rejected the request before its first record
 call. Its path in the receipt is a proposed output path, not evidence that a journal was produced.
-The original log, receipts, audit and missing-journal outcome are preserved unchanged. No retry has run.
+The original log, receipts, audit and missing-journal outcome are preserved unchanged. No unreviewed
+retry ran; the later renewed grant and reached evidence are recorded above.
 
 The observed failure is at the exact self URL/specifier/parent predicate. A static hypothesis is that
 the launcher supplies an absolute loader path while the predicate requires a URL specifier; the
-original error records neither specifier nor parent, so the failing disjunct is not established.
-A correction or diagnostic rerun requires a new dispatcher decision and reviewed pins.
+original error records neither specifier nor parent, so that log alone did not establish the failing
+disjunct. The newly observed coordinates above confirm the specifier mismatch. The correction and
+renewed execution received separate dispatcher decisions and reviewed pins.
 
 The independent parent audit verifies both manifests removed, owned scratch and reservations absent,
 all recorded and owner PIDs absent by ESRCH (including two with unknown recorded starts), complete
@@ -31,7 +73,7 @@ group absence, no owned TCP listener, strict locked ledger validity, preserved w
 108 source/8 helper/executable/54 installed hash and physical identities unchanged. The original log
 is retained at 2,460 bytes. Business acceptance remains unproved.
 
-## Authorised loader correction, awaiting a new execution grant
+## Authorised loader correction, reviewed before renewed execution
 
 After reviewing the failure, the dispatcher authorised only a narrow harness correction. The generated
 loader now accepts either its exact owned absolute path or its exact owned file URL, using
@@ -44,8 +86,9 @@ coordinates, including actual/expected parent and resolved URL. They emit at mos
 instance, cap each coordinate at 512 characters, strip URL credentials/query/fragment and omit non-file
 URL contents. They use the existing bounded redacted log. These are authored diagnostics, not newly
 observed registration evidence. The original path-versus-URL cause remains a static hypothesis until
-an authorised run observes it. Product/test drafts, original failed evidence and all other harness
-protections remain unchanged. The catalogue and helper pins are refreshed for review; no new run granted.
+an authorised run observes it; the successful renewed execution above now supplies that observation.
+Product/test drafts, original failed evidence and all other harness protections were unchanged during
+the correction. The catalogue and helper pins were reviewed before the renewed grant.
 
 ## Authored behavior
 
@@ -110,7 +153,7 @@ source gate; its published scorer is retained on that branch and is untouched he
 
 ## Proposed command and resource ownership
 
-The first grant above is consumed. Only after a new exact dispatcher execution grant, invoke:
+Both grants above are consumed. Any further run requires a new exact dispatcher execution grant:
 
 ```text
 /usr/bin/python3 -I docs/gcsp/evidence/fucq100/greg-eligibility-stamp.py --dispatcher-grant <grant> --catalogue-sha256 <reviewed hash>
@@ -157,6 +200,7 @@ be reused. No earlier 103 controlled result is claimed as proof for this changed
 from other producers and live adapters was not inspected or migrated; invalid retained envelopes keep
 their explicit unavailable outcome. There is no historical record rewrite or backfill.
 
-After scoped execution and cleanup pass, publish the coherent validated source chunk. Dispatcher
+Scoped execution, independent cleanup and the dispatcher's focused audit passed. Publish the coherent
+validated source chunk. Dispatcher
 retains merge/Jira/final acceptance and the separate 69/122/126 composition, allocator96, remote and
 full105 association gates.
