@@ -77,8 +77,8 @@
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/controller-94e05ff-audit.py",
       "targetDevice": 16777232,
       "targetInode": 173167614,
-      "bytes": 12963,
-      "sha256": "ec0332d0a323ade05e620a15f8b92673399976e372037fe8146b20dc1cc1a83a"
+      "bytes": 13140,
+      "sha256": "a3116175602b7a12f1acc51e323bedb932a329a081b509cf3320bed07662d76f"
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/controller-94e05ff-freeze.py": {
       "kind": "file",
@@ -132,8 +132,8 @@
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/controller-94e05ff-resources.py",
       "targetDevice": 16777232,
       "targetInode": 173167246,
-      "bytes": 26920,
-      "sha256": "eb37b6899fb67768767f7a64c8902ab091b7f3bb268232e20fb41c7d7495568f"
+      "bytes": 30601,
+      "sha256": "1c19f35495cd5a186dfcb75490a314814a9b37be594acaa51dcfbdcfae445790"
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/controller-94e05ff-source.json": {
       "kind": "file",
@@ -154,8 +154,8 @@
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/controller-94e05ff-supervisor.py",
       "targetDevice": 16777232,
       "targetInode": 173167411,
-      "bytes": 14138,
-      "sha256": "ff7434b2bb7290f8aece34cbc4fb7d5b20fda4be55833c5b7cc86ce40be10080"
+      "bytes": 14164,
+      "sha256": "a065e2f38318f3dcd1053a8e4439fcd88ac2b42199b9531c85723f58426ce147"
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085": {
       "kind": "directory",

@@ -1,32 +1,15 @@
 --- reviewed115-918ce045-resources.py
 +++ controller-94e05ff-resources.py
-@@ -1,10 +1,12 @@
+@@ -1 +1 @@
 -"""Owned strict resource adapter. Imported only after frozen admission succeeds.
 +"""FUCQ-107 proposed owned strict resource adapter; adapted from reviewed FUCQ-115 918ce045. Imported only after frozen admission succeeds.
- 
- No shared helper is patched. All unknown ledger/OS states refuse destructive
- cleanup and reservation release. A retained manifest includes every observed
- PID/start pair, including observations whose start cannot be established.
- """
- import atexit
+@@ -7,0 +8,2 @@
 +import contextlib
 +import fcntl
- import json
- import os
- from pathlib import Path
-@@ -50,6 +52,8 @@
-     rows, observations = {}, []
-     for line in output.splitlines():
-         parts = line.split(None, 5)
+@@ -52,0 +55,2 @@
 +        if len(parts) == 6:
 +            parts[5] = parts[5].strip()
-         partial = {key: int(parts[index]) if len(parts) > index and parts[index].isascii() and parts[index].isdigit() else None
-                    for index, key in enumerate(['pid', 'ppid', 'pgid'])}
-         partial['start'] = parts[5] if len(parts) == 6 and re.fullmatch(
-@@ -102,8 +106,59 @@
-     return total
- 
- 
+@@ -104,0 +109,21 @@
 +def available_memory_strict():
 +    query = subprocess.run(['/usr/bin/vm_stat'], capture_output=True, text=True, timeout=3)
 +    if query.returncode != 0 or query.stderr:
@@ -48,8 +31,7 @@
 +    return int(page[1]) * sum(counts.values())
 +
 +
- def make_budget(resources, policy, directory, lock_identity):
-     class StrictBudget(resources.HostBudget):
+@@ -106,0 +132,30 @@
 +        def prohibited(self, *args, **kwargs):
 +            raise RuntimeError('Use strict owned budget methods only')
 +        headroom = acquire = update = release = prohibited
@@ -80,73 +62,37 @@
 +            finally:
 +                os.close(fd)
 +
-         def ledger(self):
-             # Every caller holds the same machine-wide lock. Missing, malformed,
-             # duplicate-key, unknown-owner and cyclic-parent data are errors.
-@@ -143,11 +198,11 @@
-         def acquire_owned(self, scratch, retained_bytes):
-             rows = process_snapshot()
-             identity = {key: rows[os.getpid()][key] for key in ['pid', 'start']}
+@@ -146 +201 @@
 -            memory = resources.available_memory()
 +            memory = available_memory_strict()
-             if type(memory) is not int or memory <= 0:
-                 raise RuntimeError('Available host RAM is unknown')
-             free = shutil.disk_usage(scratch.root.parent).free
+@@ -150 +205 @@
 -            with resources.locked(self.directory / 'reservations.lock'):
 +            with self.locked():
-                 data = self.ledger()
-                 if scratch.token in data:
-                     raise RuntimeError('Reservation token already exists')
-@@ -157,26 +212,29 @@
-                 ram_pending = sum(max(0, row['ram'] - row['rss']) for row in data.values())
-                 if free - self.policy.reserve - disk_pending < 128 * resources.MIB + retained_bytes:
-                     raise RuntimeError('Insufficient proven shared disk headroom')
+@@ -160 +215 @@
 -                if memory - ram_pending - int(self.policy.ram_reserve_mib * resources.MIB) < 768 * resources.MIB:
 +                if memory - ram_pending - int(self.policy.ram_reserve_mib * resources.MIB) < 384 * resources.MIB:
-                     raise RuntimeError('Insufficient proven shared RAM headroom')
+@@ -162 +217 @@
 -                row = {'owner': identity, 'disk': 128 * resources.MIB, 'ram': 768 * resources.MIB,
 +                row = {'owner': identity, 'disk': 128 * resources.MIB, 'ram': 384 * resources.MIB,
-                        'used': retained_bytes, 'rss': 0, 'parent': None, 'root': str(scratch.root)}
-                 data[scratch.token] = row
-                 resources.atomic_json(self.path, data)
-                 if self.ledger().get(scratch.token) != row:
-                     raise RuntimeError('Reservation write/readback differs')
+@@ -168 +223 @@
 -                self.owned = (scratch.token, identity, str(scratch.root))
 +                self.owned = (scratch.token, identity, str(scratch.root), row['disk'], row['ram'], row['parent'])
- 
-         def owned_row(self, data, token):
-             expected = getattr(self, 'owned', None)
-             row = data.get(token)
-             if not expected or expected[0] != token or row is None \
+@@ -174 +229,2 @@
 -                    or row['owner'] != expected[1] or row['root'] != expected[2]:
 +                    or row['owner'] != expected[1] or row['root'] != expected[2] \
 +                    or (row['disk'], row['ram'], row['parent']) != expected[3:]:
-                 raise RuntimeError('Reservation ownership is unknown')
-             return row
- 
-         def update_owned(self, token, used, rss):
+@@ -179 +235,3 @@
 -            with resources.locked(self.directory / 'reservations.lock'):
 +            with self.locked():
 +                if any(type(value) is not int or value < 0 for value in [used, rss]):
 +                    raise RuntimeError('Invalid owned accounting update')
-                 data = self.ledger()
-                 self.owned_row(data, token).update(used=used, rss=rss)
-                 resources.atomic_json(self.path, data)
-@@ -187,17 +245,30 @@
-         def release_owned(self, token, proof):
-             if not proof or not all(proof[key] for key in ['joined', 'pidsAbsent', 'groupsAbsent', 'scratchAbsent']):
-                 raise RuntimeError('No proven cleanup authorises release')
+@@ -190 +248 @@
 -            with resources.locked(self.directory / 'reservations.lock'):
 +            with self.locked():
-                 data = self.ledger()
-                 self.owned_row(data, token)
+@@ -192,0 +251,2 @@
 +                if any(row['parent'] == token for row in data.values()):
 +                    raise RuntimeError('Owned reservation still has descendants')
-                 del data[token]
-                 resources.atomic_json(self.path, data)
-                 if self.ledger() != data:
-                     raise RuntimeError('Reservation release readback failed')
- 
+@@ -197,0 +258,10 @@
 +        def authorize_cleanup(self, token):
 +            with self.locked():
 +                data = self.ledger()
@@ -157,56 +103,144 @@
 +                elif token in data:
 +                    raise RuntimeError('Acquisition was uncertain; retain scratch and reservation')
 +
-         def absence(self, token):
+@@ -199,2 +269,3 @@
 -            with resources.locked(self.directory / 'reservations.lock'):
 -                return token not in self.ledger()
 +            with self.locked():
 +                data = self.ledger()
 +                return token not in data and not any(row['parent'] == token for row in data.values())
- 
-     return StrictBudget(policy, directory=directory)
- 
-@@ -289,7 +360,11 @@
-         self.record['ownedPids'].append(item)
-         self.record['groups'].append(process.pid)
-         self.save()
+@@ -213 +284,2 @@
+-        self.record.update(ownedPids=[], groups=[], uncertainGroups=[], processObservations=0)
++        self.record.update(ownedPids=[], groups=[], uncertainGroups=[], processObservations=0,
++                           launchAttempted=False, directHandleRetained=False, registrationComplete=False)
+@@ -284,0 +357,35 @@
++    @contextlib.contextmanager
++    def deferred_cancellation(self, key, propagate):
++        previous = {sig: signal.getsignal(sig) for sig in [signal.SIGTERM, signal.SIGINT]}
++        received = []
++        def defer(signum, frame):
++            received.append(signum)
++        try:
++            for sig in previous:
++                signal.signal(sig, defer)
++            yield
++        finally:
++            # The launch handle is retained before handlers can raise again.
++            # Cleanup calls this only around bounded direct-handle stop/wait.
++            self.record.setdefault(key, []).extend(received)
++            for sig, handler in previous.items():
++                signal.signal(sig, handler)
++            if received and propagate:
++                raise KeyboardInterrupt('Cancellation deferred until child ownership handoff')
++
++    def launch(self, command, **kwargs):
++        if self.record['launchAttempted'] or self.process is not None:
++            raise RuntimeError('Only one owned child launch is allowed')
++        self.record['launchAttempted'] = True
++        self.save()
++        # The only deferred launch region is one Popen call and in-memory
++        # retention. No probe, filesystem write, loop or registration occurs
++        # inside it. The child gate stays closed until later full registration.
++        with self.deferred_cancellation('cancellationDuringLaunch', propagate=True):
++            self.process = subprocess.Popen(command, **kwargs)
++            self.record['directHandleRetained'] = True
++            self.record['ownedPids'].append({'pid': self.process.pid, 'start': None,
++                'pgid': None, 'ppid': None, 'owned': True, 'direct': True})
++        self.save()
++        return self.process
++
+@@ -286,7 +393,11 @@
+-        self.process = process
+-        # Retain unknown before querying: a failed probe never drops its PID.
+-        item = {'pid': process.pid, 'start': None, 'pgid': process.pid, 'ppid': os.getpid(), 'owned': True}
+-        self.record['ownedPids'].append(item)
+-        self.record['groups'].append(process.pid)
+-        self.save()
 -        rows = process_snapshot()
++        if process is not self.process or not self.record['directHandleRetained']:
++            raise RuntimeError('Registration requires the retained direct child handle')
++        item = next((row for row in self.record['ownedPids'] if row.get('direct')
++                     and row['pid'] == process.pid), None)
++        if item is None:
++            raise RuntimeError('Retained child observation is incomplete')
 +        try:
 +            rows = process_snapshot()
 +        except SnapshotUncertain as error:
 +            self.remember_uncertain(error)
 +            raise
-         row = rows.get(process.pid)
-         if row is None or row['pgid'] != process.pid or row['ppid'] != os.getpid():
-             raise RuntimeError('Launched leader identity is unknown')
-@@ -394,7 +469,7 @@
-             # Only this owned finalizer calls deletion after an explicit proof.
-             raise RuntimeError('Use the strict finalizer; automatic scratch deletion is prohibited')
- 
+@@ -296 +407,3 @@
+-        item.update(start=row['start'])
++        item.update(**{key: row[key] for key in ['start', 'pgid', 'ppid']})
++        self.record['groups'].append(row['pgid'])
++        self.record['registrationComplete'] = True
+@@ -302 +415,5 @@
+-        pids_absent = all(definitely_absent(item, rows) for item in self.record['ownedPids'])
++        registered = not self.record['launchAttempted'] or (self.process is not None
++            and self.record['directHandleRetained'] and self.record['registrationComplete']
++            and any(item.get('direct') and item['pid'] == self.process.pid and item.get('start')
++                    for item in self.record['ownedPids']))
++        pids_absent = registered and all(definitely_absent(item, rows) for item in self.record['ownedPids'])
+@@ -305,2 +422,3 @@
+-        groups_absent = not any(row['pgid'] in groups for row in rows.values())
+-        result = {'joined': self.joined or self.process is None, 'pidsAbsent': pids_absent,
++        groups_absent = registered and not any(row['pgid'] in groups for row in rows.values())
++        result = {'joined': registered and (self.joined or not self.record['launchAttempted']), 'pidsAbsent': pids_absent,
++                  'registrationComplete': registered,
+@@ -312,0 +431,23 @@
++    def stop_direct_handle(self):
++        process = self.process
++        if process is None:
++            return
++        # An unreaped direct Popen handle remains ours even if registration
++        # never began/completed. Stop and join it before any evidence write or
++        # descendant probe can fail. This never signals an inferred PID/group.
++        with self.deferred_cancellation('cancellationDuringDirectCleanup', propagate=False):
++            for action in [process.terminate, process.kill]:
++                try:
++                    if process.poll() is None:
++                        action()
++                except OSError as error:
++                    self.record.setdefault('directCleanupErrors', []).append(type(error).__name__)
++                try:
++                    process.wait(timeout=3)
++                    self.joined = True
++                    self.record['directHandleJoined'] = True
++                    return
++                except subprocess.TimeoutExpired:
++                    continue
++        raise RuntimeError('Retained direct child was not joined within bounded cleanup')
++
+@@ -316,0 +458,3 @@
++            # Direct handle teardown is unconditional and precedes all
++            # potentially failing record writes and descendant observations.
++            self.stop_direct_handle()
+@@ -337,11 +480,0 @@
+-            process = self.process
+-            if process is not None:
+-                for action in [process.terminate, process.kill]:
+-                    if process.poll() is None:
+-                        action()
+-                    try:
+-                        process.wait(timeout=3)
+-                        self.joined = True
+-                        break
+-                    except subprocess.TimeoutExpired:
+-                        continue
+@@ -352,0 +486,2 @@
++            if self.record['launchAttempted']:
++                raise RuntimeError('Launch attempted without a retained handle; preserve resources')
+@@ -354,0 +490,3 @@
++        if not self.record['registrationComplete']:
++            self.stop_direct_handle()
++            raise RuntimeError('Direct child joined but registration incomplete; preserve resources')
+@@ -397 +535 @@
 -    scratch = StrictScratch(rdir, root, policy, expected=16 * resources.MIB,
 +    scratch = StrictScratch(rdir, root, policy, expected=1 * resources.MIB,
-                             checkpoint=rdir / 'checkpoint.json')
-     rows = process_snapshot()
-     scratch.record['owner'] = {key: rows[os.getpid()][key] for key in ['pid', 'start']}
-@@ -432,6 +507,7 @@
-             self.scratch.record.update(state='stopped-and-joined', processAbsence=proof)
-             self.tree.save()
-             scratch = self.scratch
+@@ -434,0 +573 @@
 +            self.budget.authorize_cleanup(scratch.token)
-             if os.path.lexists(scratch.root):
-                 identity = scratch.root.lstat()
-                 if scratch.root.is_symlink() or (identity.st_dev, identity.st_ino) != (scratch.record.get('device'), scratch.record.get('inode')):
-@@ -440,9 +516,13 @@
-                 if check.returncode != 1 or check.stdout or check.stderr:
-                     raise RuntimeError('Scratch open-file absence is unknown')
-                 # Last complete OS proof immediately precedes deletion.
+@@ -442,0 +582 @@
 +                self.budget.authorize_cleanup(scratch.token)
-                 proof = self.tree.proof()
-                 if not all(proof[key] for key in ['joined', 'pidsAbsent', 'groupsAbsent']):
-                     raise RuntimeError('Process absence changed before deletion')
+@@ -445,0 +586,3 @@
 +                fresh = scratch.root.lstat()
 +                if scratch.root.is_symlink() or (fresh.st_dev, fresh.st_ino) != (scratch.record['device'], scratch.record['inode']):
 +                    raise RuntimeError('Scratch identity changed before deletion')
-                 scratch.sample()
-                 shutil.rmtree(scratch.root)
-             if os.path.lexists(scratch.root):

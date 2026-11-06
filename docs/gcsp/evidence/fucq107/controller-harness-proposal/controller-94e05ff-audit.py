@@ -143,6 +143,8 @@ def main():
             return True
         return False
     require(absent(manifest['owner']), 'supervisor-exited')
+    require(manifest['launchAttempted'] is True and manifest['directHandleRetained'] is True
+        and manifest['registrationComplete'] is True, 'returned-handle-registered')
     require(bool(manifest['ownedPids']) and manifest['processObservations'] > 0, 'recursive-observations-present')
     for index, identity in enumerate(manifest['ownedPids']):
         require(absent(identity), 'observed-identity-absent:' + str(index))

@@ -149,7 +149,7 @@ def execute(frozen, args, tr, guard, sg, source, environment):
         env['FUCQ107_MODULE_JOURNAL'] = str(journal)
         written = 0
         with (dest / 'output.log').open('xb') as stream:
-            process = subprocess.Popen(frozen['commands']['child'], cwd=ROOT, env=env,
+            process = tree.launch(frozen['commands']['child'], cwd=ROOT, env=env,
                 stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, start_new_session=True)
             tree.register(process)
             os.set_blocking(process.stdout.fileno(), False)
@@ -214,6 +214,7 @@ def execute(frozen, args, tr, guard, sg, source, environment):
             result['processAbsence'] = tree.stop_join()
         except BaseException as error:
             failure = failure or {'type': type(error).__name__, 'message': str(error)[:1024]}
+        process = tree.process
         if process is not None:
             try:
                 if process.stdin and not process.stdin.closed:

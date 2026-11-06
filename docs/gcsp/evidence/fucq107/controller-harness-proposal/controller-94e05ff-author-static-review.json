@@ -1,6 +1,8 @@
 {
-  "status": "author-static-metadata-checks-only",
-  "checks": 45,
+  "status": "author-static-metadata-and-handoff-structure-only",
+  "checks": 55,
+  "metadataChecks": 45,
+  "handoffStructuralChecks": 10,
   "checkLabels": [
     "physical:/Library/Developer/CommandLineTools/usr/bin/python3",
     "physical:/Users/garycarter/.cache/agent-scaffolding/test-resources",
@@ -46,9 +48,19 @@
     "immutable/current:server/package-lock.json",
     "only-auth-regression-source-delta",
     "14case-freeze",
-    "seven-row-four-edge-closure"
+    "seven-row-four-edge-closure",
+    "handoff-structure:Popen-owned-only-by-tree",
+    "handoff-structure:retained-before-return",
+    "handoff-structure:launch-defers-handled-signals",
+    "handoff-structure:unknown-group-until-probe",
+    "handoff-structure:partial-registration-preserves-resources",
+    "handoff-structure:unreturned-launch-never-proves-absence",
+    "handoff-structure:direct-cleanup-precedes-uncertain-save",
+    "handoff-structure:direct-cleanup-waits-bounded",
+    "handoff-structure:audit-requires-completed-registration",
+    "handoff-structure:supervisor-finally-uses-retained-handle"
   ],
-  "admissionSHA256": "5ec65398ba26f07f966cb843c68553a91e3b2e7594769423d78e9a3e23b28261",
+  "admissionSHA256": "6dfe2623e3ac0ece6b352abdb336cab59a29a7d535c270a4c68973bf321d6a27",
   "sourceCommit": "94e05ff9070aa19f5deb3e9997dfed96cc268473",
   "sourceRows": 7,
   "cases": 14,
@@ -56,5 +68,6 @@
     "blocks/gcsp/offer-followup/followup-controller.js",
     "server/test/gcsp-second-offer-controller.test.js"
   ],
-  "execution": "Only stdlib AST/metadata/freezer plus existing scaffold Git readback; no proposed supervisor/launcher/resource/auditor imported or executed; no Node, test, ps/lsof/vm_stat, reservation, scratch, package import/install/link."
+  "supersedesAdmissionSHA256": "5ec65398ba26f07f966cb843c68553a91e3b2e7594769423d78e9a3e23b28261",
+  "execution": "Only stdlib AST/metadata/freezer and existing scaffold Git readback. No proposed resource/launcher/supervisor/auditor import or execution; no Node, runtime test/probe, reservation or scratch."
 }

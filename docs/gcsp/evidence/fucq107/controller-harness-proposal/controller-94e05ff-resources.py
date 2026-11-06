@@ -281,7 +281,8 @@ class ProcessTree:
         self.peak_rss = 0
         self.joined = False
         self.record = scratch.record
-        self.record.update(ownedPids=[], groups=[], uncertainGroups=[], processObservations=0)
+        self.record.update(ownedPids=[], groups=[], uncertainGroups=[], processObservations=0,
+                           launchAttempted=False, directHandleRetained=False, registrationComplete=False)
 
     def save(self):
         self.resources.atomic_json(self.scratch.manifest, self.record)
@@ -353,13 +354,48 @@ class ProcessTree:
         self.record.setdefault('uncertainSnapshots', []).append(time.time())
         self.save()
 
-    def register(self, process):
-        self.process = process
-        # Retain unknown before querying: a failed probe never drops its PID.
-        item = {'pid': process.pid, 'start': None, 'pgid': process.pid, 'ppid': os.getpid(), 'owned': True}
-        self.record['ownedPids'].append(item)
-        self.record['groups'].append(process.pid)
+    @contextlib.contextmanager
+    def deferred_cancellation(self, key, propagate):
+        previous = {sig: signal.getsignal(sig) for sig in [signal.SIGTERM, signal.SIGINT]}
+        received = []
+        def defer(signum, frame):
+            received.append(signum)
+        try:
+            for sig in previous:
+                signal.signal(sig, defer)
+            yield
+        finally:
+            # The launch handle is retained before handlers can raise again.
+            # Cleanup calls this only around bounded direct-handle stop/wait.
+            self.record.setdefault(key, []).extend(received)
+            for sig, handler in previous.items():
+                signal.signal(sig, handler)
+            if received and propagate:
+                raise KeyboardInterrupt('Cancellation deferred until child ownership handoff')
+
+    def launch(self, command, **kwargs):
+        if self.record['launchAttempted'] or self.process is not None:
+            raise RuntimeError('Only one owned child launch is allowed')
+        self.record['launchAttempted'] = True
         self.save()
+        # The only deferred launch region is one Popen call and in-memory
+        # retention. No probe, filesystem write, loop or registration occurs
+        # inside it. The child gate stays closed until later full registration.
+        with self.deferred_cancellation('cancellationDuringLaunch', propagate=True):
+            self.process = subprocess.Popen(command, **kwargs)
+            self.record['directHandleRetained'] = True
+            self.record['ownedPids'].append({'pid': self.process.pid, 'start': None,
+                'pgid': None, 'ppid': None, 'owned': True, 'direct': True})
+        self.save()
+        return self.process
+
+    def register(self, process):
+        if process is not self.process or not self.record['directHandleRetained']:
+            raise RuntimeError('Registration requires the retained direct child handle')
+        item = next((row for row in self.record['ownedPids'] if row.get('direct')
+                     and row['pid'] == process.pid), None)
+        if item is None:
+            raise RuntimeError('Retained child observation is incomplete')
         try:
             rows = process_snapshot()
         except SnapshotUncertain as error:
@@ -368,27 +404,60 @@ class ProcessTree:
         row = rows.get(process.pid)
         if row is None or row['pgid'] != process.pid or row['ppid'] != os.getpid():
             raise RuntimeError('Launched leader identity is unknown')
-        item.update(start=row['start'])
+        item.update(**{key: row[key] for key in ['start', 'pgid', 'ppid']})
+        self.record['groups'].append(row['pgid'])
+        self.record['registrationComplete'] = True
         self.save()
         self.observe()
 
     def proof(self):
         rows, members, _rss = self.observe()
-        pids_absent = all(definitely_absent(item, rows) for item in self.record['ownedPids'])
+        registered = not self.record['launchAttempted'] or (self.process is not None
+            and self.record['directHandleRetained'] and self.record['registrationComplete']
+            and any(item.get('direct') and item['pid'] == self.process.pid and item.get('start')
+                    for item in self.record['ownedPids']))
+        pids_absent = registered and all(definitely_absent(item, rows) for item in self.record['ownedPids'])
         # An extant zombie is not absence. Wait/join precedes this proof.
         groups = set(self.record['groups']) | set(self.record['uncertainGroups'])
-        groups_absent = not any(row['pgid'] in groups for row in rows.values())
-        result = {'joined': self.joined or self.process is None, 'pidsAbsent': pids_absent,
+        groups_absent = registered and not any(row['pgid'] in groups for row in rows.values())
+        result = {'joined': registered and (self.joined or not self.record['launchAttempted']), 'pidsAbsent': pids_absent,
+                  'registrationComplete': registered,
                   'groupsAbsent': groups_absent, 'observedPids': len(self.record['ownedPids']),
                   'groups': sorted(groups), 'sampledAt': time.time()}
         self.record['processAbsence'] = result
         self.save()
         return result
 
+    def stop_direct_handle(self):
+        process = self.process
+        if process is None:
+            return
+        # An unreaped direct Popen handle remains ours even if registration
+        # never began/completed. Stop and join it before any evidence write or
+        # descendant probe can fail. This never signals an inferred PID/group.
+        with self.deferred_cancellation('cancellationDuringDirectCleanup', propagate=False):
+            for action in [process.terminate, process.kill]:
+                try:
+                    if process.poll() is None:
+                        action()
+                except OSError as error:
+                    self.record.setdefault('directCleanupErrors', []).append(type(error).__name__)
+                try:
+                    process.wait(timeout=3)
+                    self.joined = True
+                    self.record['directHandleJoined'] = True
+                    return
+                except subprocess.TimeoutExpired:
+                    continue
+        raise RuntimeError('Retained direct child was not joined within bounded cleanup')
+
     def stop_join(self):
         try:
             return self._stop_join()
         except BaseException as error:
+            # Direct handle teardown is unconditional and precedes all
+            # potentially failing record writes and descendant observations.
+            self.stop_direct_handle()
             if isinstance(error, SnapshotUncertain):
                 self.remember_uncertain(error)
             # A still-unreaped direct child is ours even when ps fails. Stop and
@@ -409,24 +478,18 @@ class ProcessTree:
                         self.record.setdefault('cleanupSignalUncertainty', []).append({
                             'pid': item['pid'], 'start': item['start'], 'error': type(error).__name__})
                 self.save()
-            process = self.process
-            if process is not None:
-                for action in [process.terminate, process.kill]:
-                    if process.poll() is None:
-                        action()
-                    try:
-                        process.wait(timeout=3)
-                        self.joined = True
-                        break
-                    except subprocess.TimeoutExpired:
-                        continue
             raise
 
     def _stop_join(self):
         process = self.process
         if process is None:
+            if self.record['launchAttempted']:
+                raise RuntimeError('Launch attempted without a retained handle; preserve resources')
             self.joined = True
             return self.proof()
+        if not self.record['registrationComplete']:
+            self.stop_direct_handle()
+            raise RuntimeError('Direct child joined but registration incomplete; preserve resources')
         for sig in [signal.SIGTERM, signal.SIGKILL]:
             rows, members, _rss = self.observe()
             # Signal exact observed identities individually. Never signal a
