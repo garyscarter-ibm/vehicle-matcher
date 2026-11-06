@@ -294,3 +294,16 @@ The [central integration handoff](central-integration-handoff.md) records releas
 ownership and the FUCQ-66/70 pending-outcome requirement. Preserve `pending: 202` when
 FUCQ-66 and the central composition integrate, then prove it through the actual HTTP path;
 this metadata checkpoint supplies no HTTP 202 completion evidence.
+
+Publication update, 6 November: the earlier GitHub rules failure recovered through
+an ordinary push. `cec3ece` and the subsequent central handoff `3f1cc34` are
+published with exact remote readback; there is no current publication blocker.
+
+The [executable browser preparation checkpoint](browser-preparation.md) records the
+three planned actual-runtime chunks, finite source/dependency catalogue, secure
+HTTPS session setup, supervisor lifecycle and final passing static receipt
+`prep-9cedffdb5a9640fa95ce3fc876761641`. The parent independently verified source
+freeze and actual resource cleanup. This is preparation only; no rendered/browser,
+full-suite or native acceptance is inferred. Dispatcher review of the exact pushed
+revision and explicit per-chunk admission remain necessary. The active sole-browser
+lane is currently held by FUCQ-69; FUCQ-103 has not launched a browser.

@@ -1019,7 +1019,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T23:14:21Z",
+      "observed_at": "2026-11-06T00:08:49Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103",
       "jira_observed_at": "2026-11-05T22:40:24Z",
       "branch": "dev/DEV-2026-11-04-066",
@@ -1083,8 +1083,8 @@
           "id": "rendered-integration",
           "status": "not-started",
           "title": "Desktop and narrow keyboard browser evidence",
-          "observed_at": "2026-11-05T23:02:43Z",
-          "evidence": "Browser lane queued afterFUCQ122 and126corrected; no admission yet. Desktop/narrow keyboard + actual employee outcome required."
+          "observed_at": "2026-11-06T00:08:49Z",
+          "evidence": "Executable actual-runtime HTTPS harness frozen; final static prep passes, source/dependency equality and actual resource cleanup verified: prep-9cedffdb5a9640fa95ce3fc876761641. docs/gcsp/evidence/fucq103/browser-preparation.md. Three chunks proposed1280/320px; browser admission and rendered acceptance remain outstanding."
         },
         {
           "id": "full-validation",
