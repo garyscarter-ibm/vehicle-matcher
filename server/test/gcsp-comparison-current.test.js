@@ -127,7 +127,7 @@ test('untaken-expiry', async (t) => {
   requireOk(await run.advanceTo(result.hold.expiresAt));
   const tick = requireOk(await run.tick('mechanics-exact-expiry'));
   assert.equal(tick.state, 'completed');
-  assert.ok(tick.handlerOrder.includes('manual-claim-expiry'));
+  assert.ok(tick.handlerOrder.some((row) => row.handlerId === 'manual-claim-expiry' && row.stage === 'manual-expiry'));
   const expired = requireOk(await run.claims.readClaim(context));
   assert.equal(expired.state, fixture.expected.afterUntakenDeadline);
   const persisted = await run.snapshot();

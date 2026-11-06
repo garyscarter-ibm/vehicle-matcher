@@ -1310,7 +1310,7 @@
     "Launcher -> runtime hash manifest generated solely from frozen embedded sources and pinned installed packages; stdin gate precedes guard/test import."
   ],
   "unknowns": [
-    "Original23fc796 causal row remains UNKNOWN. Separately granted7293e52 controller2/audit1 failed on captured question-mark OS state; its historical uncertainty is preserved. Newest09aa1c85 five-field attempt reached all three cases and failed0/3, controller2/audit1/Node1, with failed-run grade UNKNOWN and a separate spec/TAP mismatch. Root cleanup PASS19 is independent. Reviewed causal repair is authoring only; no fresh runtime admission/grant.",
+    "Original23fc796 causal row remains UNKNOWN; separately granted7293e52 captured question-mark OS-state failure is preserved. The09aa1c85 attempt failed0/3, controller2/audit1/Node1, failed-run grade UNKNOWN, separate spec/TAP mismatch and root cleanup PASS19. The later5e660c93 authorized run failed2/3, controller2/audit1/Node1: handlerOrder object/string assertion mismatch; assertions after line130 remain UNKNOWN. Root independent collection PASS638 across100/134 is cleanup/evidence only. Grants consumed; new assertion correction is authoring only.",
     "Canonical additional policy bundle not yet coordinated.",
     "Explicit synthetic mechanics facts cannot establish live corpus realism or observed satisfaction.",
     "Remaining cache/access replay/acceptance/outcomes and composed/full validation remain unimplemented or unproved."
@@ -1325,8 +1325,8 @@
       "bytes": 17461
     },
     "server/test/gcsp-comparison-current.test.js": {
-      "sha256": "35065a80bd4e6a0863e7614251a081245a7f061a728630d03d8e9eef90e637d1",
-      "bytes": 8997
+      "sha256": "34cf8ec2498146c3fd4bca5631835278ac77ff06022107359d304a54c4f1fb71",
+      "bytes": 9053
     },
     "server/test/fixtures/gcsp-comparison-current-outcomes.json": {
       "sha256": "72d943e03a1f8a540873c0f15eeb83c4b8ee61b0fa5fa3938d10c3bea171cff1",
@@ -1366,7 +1366,7 @@
     "resourcePattern": "918ce04510fd327e860809e7de53bd636d1cf7da:docs/gcsp/models/fucq115-activation-resources.py adapted only in owned134 file",
     "supervisor": "docs/gcsp/evidence/fucq134/first-chunk-supervisor.py",
     "admission": "docs/gcsp/evidence/fucq134/first-chunk-admission.json",
-    "execution": "All three once-only grants consumed. Newest09aa1c85 reached3cases/pass0/fail3, controller2/audit1/Node1; snapshot policy-table query and two zero-versus-two browse assertions failed; spec output independently violated exact TAP. Failed-run grade UNKNOWN; root cleanup PASS19 separate. Current causal repair requires implementation review and fresh runtime admission. Earlier pre-Node and captured OS-state failures remain unchanged.",
+    "execution": "Latest authorized run at5e660c93443eff9e845cc7e1b12a6553a15f4bb3: tests3/pass2/fail1, controller2/audit1/Node1; isolation and real-claim-review-allocate passed, untaken-expiry failed at line130 on handlerOrder.includes(string). Post-line130 expiry assertions remain UNKNOWN. Original0/3 and earlier failures preserved. Root independent collection PASS638 across100/134 is separate evidence/cleanup only. Grant consumed; corrected assertion requires independent review, fresh admission and explicit grant.",
     "launchOwnershipRepair": "Static107finding: persist launch intent before Popen; defer SIGTERM/SIGINT through PID/start registration; unresolved launch cannot certify absence; cleanup adopts any supplied direct child handle. No reproduction/runtime granted.",
     "originalStaticReview": {
       "reviewer": "Dibble",
@@ -1501,6 +1501,19 @@
       "scope": "FOUNDATION_TABLES snapshot; selected synthetic F70 configuration plus necessary typed gate facts; bounded actual grade/decision-code assertion diagnostic; explicit TAP argument before unchanged gated launcher",
       "preserved": "Actual66/base generator/canonical policy; expected-two assertion and all real gates; exact TAP parser; strict telemetry, all-reservation accounting, lifecycles, cleanup and limits",
       "state": "authored; implementation review and fresh runtime admission required; no target execution",
+      "agents": "requested/selected gpt-6.1-sol/high; no fallback or descendants"
+    },
+    "handlerOrderAssertionRepairAuthoring": {
+      "baseRevision": "5e660c93443eff9e845cc7e1b12a6553a15f4bb3",
+      "handoff": ".claude/results/claude-assist-fucq134-2026-11-06-01.md",
+      "rootCollection": ".claude/test-runs/ownership/dispatcher-collections-1216.json",
+      "rootCollectionSHA256": "ab08114ebe2b92b5a7047c137a4e5bd77d5a57af67af724d06fcc5d45af33565",
+      "changedConsumer": "server/test/gcsp-comparison-current.test.js:130",
+      "priorTestSHA256": "35065a80bd4e6a0863e7614251a081245a7f061a728630d03d8e9eef90e637d1",
+      "testSHA256": "34cf8ec2498146c3fd4bca5631835278ac77ff06022107359d304a54c4f1fb71",
+      "scope": "Replace string includes with some requiring handlerId manual-claim-expiry and stage manual-expiry; all other test bytes unchanged",
+      "producerBasis": "Frozen DemoClock persists/returns handlerOrder objects; frozen manual-claims registers matching handlerId and stage",
+      "state": "authoring only; independent review and fresh runtime admission required; no plan, probe or runtime execution",
       "agents": "requested/selected gpt-6.1-sol/high; no fallback or descendants"
     }
   }

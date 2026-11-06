@@ -1,12 +1,25 @@
 # FUCQ-134 current-route delivery plan
 
-Author-only checkpoint, 6 November 2026. DEV-2026-11-04-103, 13 points.
+Initial author-only checkpoint, 6 November 2026. DEV-2026-11-04-103, 13 points.
 Chat: `01a1ae7e-03d5-76c0-a6c9-749592f0fe4c` (Foghorn Leghorn, they/them).
 Dispatcher: `01a1ab10-6556-7211-92a0-0dd0345e3f0d`.
 Requested/selected/effective: `gpt-6.1-sol/high`, no fallback; rollout turn_context verified.
 Gateway PASS: `api.servicesessentials.ibm.com` is under `ibm.com`. No descendants.
 
-This checkpoint contains source inspection and authoring only. No Node imports, tests, proofs,
+Latest continuation, 6 November: root authorized the exact line130 handler-order
+assertion correction returned unapplied by Claude. The owning session changed
+only that assertion, refreshed source/admission pins and published these notes;
+no test, plan-only command, runtime/probe or new allocation was permitted or run.
+The actual run at5e660c93 remains2/3, controller2/audit1/Node1. Frozen clock
+handler-order objects require matching both ID and stage; post-line130 expiry
+assertions remain UNKNOWN. Root's independent PASS638 collection across100/134
+is separate evidence/cleanup, not acceptance. Original0/3/gradeUNKNOWN and older
+failed receipts remain unchanged. See the [evidence checkpoint](evidence/fucq134/README.md)
+for exact test/admission/source identities, original evidence hashes and fresh
+review/admission boundary. Claim/lease unchanged; root retains merge/closure.
+No descendants. No product, clock, policy, helper, UI or map-status change.
+
+The initial checkpoint below contains source inspection and authoring only. No Node imports, tests, proofs,
 services, listeners, browser, native database, network proof, host reservation or test scratch
 have been allocated. Git checkpoint publication is separately authorised by AGENTS.md.
 

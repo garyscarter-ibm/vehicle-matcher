@@ -1,6 +1,40 @@
 # FUCQ-134 first chunk review package
 
-**Causal repair authored; implementation review and fresh runtime admission required. Latest actual result remains0/3, controller2/audit1/Node1.**
+**Handler-order assertion repair authored; independent review and fresh admission required. Latest actual result:2/3, controller2/audit1/Node1. No retry grant.**
+
+Latest authorized run, 6 November 2026, used published `5e660c93443eff9e845cc7e1b12a6553a15f4bb3`
+and admission `40b01c34dc43163f2c31cbb8668088489d6062875a0c5385bbfcd5cf449f75da`.
+Original TAP reports isolation and real-claim-review-allocate PASS, untaken-expiry
+FAIL: tests3/pass2/fail1/cancelled0/skipped0/todo0. The tick completed, but line130
+incorrectly searched an object array with `includes('manual-claim-expiry')`.
+Frozen DemoClock returns `{handlerId, stage}` objects; frozen manual-claims
+registers `manual-claim-expiry` / `manual-expiry`. Assertions after line130,
+including persisted expiry, returned stock and browse, remain **UNKNOWN**.
+
+Root authorized only the exact assertion correction to `.some` requiring both
+fields. Test SHA-256 is now `34cf8ec2498146c3fd4bca5631835278ac77ff06022107359d304a54c4f1fb71`;
+all other test bytes, producer/policy/clock code, helpers and resource contracts
+are unchanged. The existing static freezer refreshed the admission below.
+No test, plan-only command, runtime import or probe ran during this authoring.
+Same prospective three-case selection and exact completion gates apply only
+after independent review, fresh root admission and an explicit new grant.
+
+Original run `first-chunk-96410b1dc3144af4aca43865999616f0`, shared test-runs:
+
+- `test.log`: SHA-256 `419b6b992d9dadff8858cf67c3f9209f20eb0786e559f3a9a25f19538d1e17be`.
+- `receipt.json`: SHA-256 `914f06648876ec39321f56881c9a73ba63d6ab332cebff7b50182aead69a43d3`.
+- `ownership/fucq134-9e4d7381d551482db2557917cb949c1f.json`: SHA-256 `1f004054afea47f0fd862bffe70fce4957bc03940d737966d9a2f0d1471baeec`.
+- Root's `ownership/dispatcher-collections-1216.json`: SHA-256 `ab08114ebe2b92b5a7047c137a4e5bd77d5a57af67af724d06fcc5d45af33565`,
+  PASS638 across FUCQ-100/134 for original evidence and process/scratch/reservation
+  collection only. Root retained the failed2/3 result; cleanup proves no test success.
+
+Claude returned the exact unapplied patch in shared
+`.claude/results/claude-assist-fucq134-2026-11-06-01.md` after its session hook
+refused cross-worktree writes. The owning session applied it in this worktree;
+no hook bypass, claim change, descendant or coordination-file edit occurred.
+Agents: requested/selected gpt-6.1-sol/high; no fallback or descendants.
+
+## Preserved earlier failures
 
 Checkpoint, 6 November 2026. Root's once-only execution at09aa1c85 reached all
 three cases: isolation failed on `snapshot:policy_versions`; both mechanics cases
@@ -13,7 +47,7 @@ independent static review passed that bounded authoring scope, and root authoriz
 implementation. The [changed-consumer and validation proposal](../../fucq134-causal-repair-validation-proposal.md)
 records the authored FOUNDATION_TABLES sentinel, explicit synthetic F70 variant,
 bounded failure diagnostics, TAP argument and replacement freeze. No runtime
-rerun is authorized. All three once-only grants are consumed.
+rerun follows from that earlier authoring record. All prior once-only grants are consumed.
 
 The original23fc796 attempt remains controller1/audit1 before Node, with0/3
 tests reached and causal row UNKNOWN. The separately granted7293e52 attempt
@@ -25,12 +59,17 @@ cleanup reports. This package remains incomplete execution evidence.
 
 - Base: `034b56d08fb742d31478218b670552805d5840ab`.
 - Published real66: `eb5a677b37c486e3da7c4547803f739e22df8ac3`.
-- Admission SHA-256: `40b01c34dc43163f2c31cbb8668088489d6062875a0c5385bbfcd5cf449f75da`.
-- Composed source identity: `4305c000e321ceb67bd9d4cbecdf6440f1aca038f09815a71eade92339b0b311`.
-- 45 embedded source/data files, 975827 source bytes, 236 physical identities,
+- Admission SHA-256: `316af0b37317ee3a3250d695f741722a4e793ffd2cef6ee34191278f07041db8`.
+- Composed source identity: `92911cf980e13502fd897fb4a6b6f01be38b5477d691c865ced7b1437ecc81c9`.
+- 45 embedded source/data files, 975883 source bytes, 236 physical identities,
   14 installed packages. Embedded immutable blobs permit checking the complete
   source content before custom resource-helper imports. Installed dependencies
   remain in place; only the owned scratch mirror links to them, read only.
+
+Author static validation PASS: exact one-line delta and expected test hash,
+44 reused sources, unchanged producer/helper/clock/policy/limit/selection pins,
+four Python ASTs, strict JSON/content identities, eight original evidence hashes,
+documentation links and diff checks. This establishes no runtime result.
 
 `first-chunk-admission.json` contains the complete source texts, source hashes,
 physical executable/helper/dependency identities and installed metadata.
@@ -50,7 +89,8 @@ modify `_tools/test_resources.py`.
 The commands below document the reviewed execution contract. Root subsequently
 used the five-field publication for the failed attempt summarized above. These
 examples use the historical admission, confer no grant and must not be reused as
-a retry. The current replacement-identity proposal is linked above.
+a retry. The latest assertion correction and replacement identity are recorded
+above; neither historical command block grants execution of this new freeze.
 
 The dispatcher first reviews the exact freeze and helper bytes. This plan-only
 command checks identities without importing custom helpers, allocating resources,
