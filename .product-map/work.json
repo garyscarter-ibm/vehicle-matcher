@@ -1616,42 +1616,47 @@
     {
       "id": "FUCQ-36",
       "title": "Package and verify both launcher routes for the GCSP static site",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-06T00:10:49Z",
+      "observed_at": "2026-11-06T00:26:47Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-36",
       "slices": [
         {
           "id": "manifest",
           "status": "complete",
           "title": "Directory-discovered-package-and-dependency-validation",
-          "observed_at": "2026-11-06T00:10:49Z",
-          "evidence": "Lead reviewed directory-discovered assembler/import-asset graph and package tests. Scoped package+launcher59/59 and UI ratchet42/42 pass; strict records targeted96639896 and a5995890. Actual browser/final integration are separately planned."
+          "observed_at": "2026-11-06T00:26:47Z",
+          "evidence": "Lead reviewed final directory graph including gallery-linked public Density preview and nested future offer page;13/13 package cases pass. Frozen assembler SHAe568b983 and package-test SHA56ab5e00; named missing imports/assets/modules and API/CSP boundaries verified."
         },
         {
           "id": "entry",
-          "status": "in-progress",
+          "status": "complete",
           "title": "API-switch-and-root-prefix-entry-smokes",
-          "observed_at": "2026-11-06T00:10:49Z"
+          "observed_at": "2026-11-06T00:24:04Z",
+          "evidence": "Lead reviewed copied API/default/switch bindings, deterministic13 package cases and actual assembled browser116 local plus116 deployed-style HTTPS root/prefix checks with real memory identity/account200, no JS/local HTTP asset errors."
         },
         {
           "id": "release",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Revision-compatibility-and-release-checklist",
-          "observed_at": "2026-11-06T00:10:49Z"
+          "observed_at": "2026-11-06T00:26:47Z",
+          "evidence": "Lead reviewed README/HLD and release/validation notes: exact source/config/migration0001-0003/seed hashes, no later block dependency, employee switch, root/prefix routes, unknown GC provisioning/live state and later authorised release checks; retail workflows untouched."
         },
         {
           "id": "browser",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Assembled-desktop-narrow-keyboard-and-retail-matrix",
-          "observed_at": "2026-11-06T00:10:49Z"
+          "observed_at": "2026-11-06T00:24:04Z",
+          "evidence": "Inspected desktop/narrow launcher/retail/real employee/Greg/outbox/gallery captures and employee-disabled/service-error states. Each API configuration116rows/14captures; root/prefix/reloads,6brandsx5modes and disabled matrix. Immutable later offer proof is separately qualified in evidence."
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Final-story-integration-and-required-full-validation"
+          "status": "in-progress",
+          "title": "Final-story-integration-and-required-full-validation",
+          "observed_at": "2026-11-06T00:24:04Z",
+          "evidence": "Package/browser checkpoint frozen for authorised sole serial npm test full gate; no full acceptance claimed yet."
         }
       ],
       "unsliced": false,
@@ -1660,12 +1665,13 @@
           "name": "Mary-Sue Walton",
           "role": "story-lead",
           "harness": "codex",
-          "source": "desktop chat 01a1ae28-6e71-7cf1-855c-85c7c38d3392; observed active own-slices",
-          "observed_at": "2026-11-06T00:07:21.185360+00:00",
-          "expires_at": "2026-11-06T02:07:21.185360+00:00",
-          "status": "active; assembler/tests/release and browser proof"
+          "source": "Thread01a1ae28-6e71-7cf1-855c-85c7c38d3392;requested/selected/runtimeverifiedSol/high;0d8e56c scoped checkpoint and live lead progress",
+          "observed_at": "2026-11-06T00:24:04.114076+00:00",
+          "expires_at": "2026-11-06T01:24:04.114076+00:00",
+          "status": "active; publishing frozen package/browser checkpoint before authored full integration gate"
         }
-      ]
+      ],
+      "branch": "dev/DEV-2026-11-04-067"
     }
   ]
 }

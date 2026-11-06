@@ -108,8 +108,9 @@ node scripts/assemble-site.mjs --output _site-gcsp --environment deployed --api 
 The output directory must be empty. For local development, omit `--environment`
 and `--api` to use `http://localhost:8787`. Add `--employee-disabled` to keep the
 complete retail launcher available while the employee route is unavailable.
-`--require-demo-pages` additionally enforces the offer/Greg/outbox release gate;
-an absent offer page is an incomplete release, never a successful smoke check.
+`--require-demo-pages` additionally enforces the offer/Greg/outbox walkthrough
+release gate and names any absent page. Ordinary assembly packages existing
+blocks and discovers later blocks without adding a story dependency.
 `site-manifest.json` records discovered GCSP blocks, exact file digests, API,
 revision and employee availability. The assembler checks local dependencies and
 required images before publication, and extracts the standalone script into an

@@ -19,7 +19,10 @@ async function sourceCopy(root) {
   const source = path.join(root, 'source');
   await mkdir(source);
   const { pages } = await discoverManifest(ROOT);
-  for (const file of [...pages, 'gcsp-employee.css', 'blocks', 'assets']) await cp(path.join(ROOT, file), path.join(source, file), { recursive: true });
+  for (const file of [...pages, 'gcsp-employee.css', 'blocks', 'assets']) {
+    await mkdir(path.dirname(path.join(source, file)), { recursive: true });
+    await cp(path.join(ROOT, file), path.join(source, file), { recursive: true });
+  }
   return source;
 }
 const content = (output, file) => readFile(path.join(output, file), 'utf8');
@@ -36,9 +39,25 @@ test('assembly is deterministic and discovers every GCSP directory, including a 
   assert.deepEqual(first.blocks.map((b) => b.name).sort(), names);
   assert.ok(first.blocks.find((b) => b.name === 'new-capability').files.includes('blocks/gcsp/new-capability/register.js'));
   assert.ok(first.files.some((f) => f.path === 'components.html'));
+  assert.ok(first.files.some((f) => f.path === 'docs/gcsp/density/preview.html'), 'the gallery reference link is a public preview, not source documentation');
   assert.ok(first.files.some((f) => f.path.endsWith('BMWGroupTNCondensedPro-Medium.woff2')));
   assert.ok(first.files.every((f) => !/^(?:server|config|scripts|\.github)\//.test(f.path)));
   assert.ok(first.files.every((f) => !/(?:stock-fixtures|\.sdg$|\.env$|package-lock)/.test(f.path)));
+});
+
+test('a future offer block and its own nested direct page are discovered without assembler edits', async (t) => {
+  const root = await owned(t), sourceRoot = await sourceCopy(root);
+  const dir = path.join(sourceRoot, 'blocks/gcsp/offer'); await mkdir(dir, { recursive: true });
+  await writeFile(path.join(dir, 'preview.html'), '<!doctype html><html><head></head><body><script type="module" src="./harness.js"></script></body></html>');
+  await writeFile(path.join(dir, 'harness.js'), "import './gcsp-offer.js';\n");
+  await writeFile(path.join(dir, 'gcsp-offer.js'), 'export const fixture = true;\n');
+  const output = path.join(root, 'site');
+  const manifest = await assembleSite({ sourceRoot, output });
+  assert.ok(manifest.pages.includes('blocks/gcsp/offer/preview.html'));
+  assert.deepEqual(manifest.demoPages.find((page) => page.name === 'offer'), { name: 'offer', block: 'offer', file: 'blocks/gcsp/offer/preview.html', available: true });
+  await verifySite({ output, requireDemoPages: true });
+  await rm(path.join(output, 'blocks/gcsp/offer/gcsp-offer.js'));
+  await assert.rejects(verifySite({ output, requireDemoPages: true }), /GCSP block "offer": missing packaged file/);
 });
 
 test('every literal dynamic import, lazy employee stylesheet and CSS asset is in the dependency graph', async (t) => {

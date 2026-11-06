@@ -11,7 +11,7 @@ Node release compatible with the backend's ES modules (the package was checked
 with the recorded local Node version), and publish directory `_site-gcsp`:
 
 ```sh
-node scripts/assemble-site.mjs --output _site-gcsp --environment deployed --api https://GCSP-BACKEND --revision EXACT-FRONTEND-SHA --require-demo-pages
+node scripts/assemble-site.mjs --output _site-gcsp --environment deployed --api https://GCSP-BACKEND --revision EXACT-FRONTEND-SHA
 ```
 
 Use a clean checkout/output for each release. The command refuses a nonempty
@@ -38,7 +38,8 @@ public modules/styles/assets, and records digests and local dependency edges.
 New literal import targets are covered; computed dynamic imports fail with their
 block/file rather than silently escape validation. Finite template brand assets
 are checked from the existing retail brand registry. Server/configuration files,
-stock fixtures, dependencies and source documentation are excluded. Frontend
+stock fixtures, dependencies and source documentation are excluded, except for
+the public Density preview linked by the gallery. Frontend
 display fixtures required by existing harnesses remain labelled synthetic.
 
 Pages use external modules and a `script-src 'self'` CSP. The assembler extracts
@@ -63,8 +64,13 @@ GC-owned FUCQ-105 source is `blocks/gcsp/offer/preview.html` on
 `65f4a911285161b7fc9d3ec303ecfea2175df2d4`. The assembler will discover it when
 integrated, without a fixed block list; its preview/harness remains synthetic
 unless the page's actual transport is configured and verified. Until integration,
-`--require-demo-pages` must fail naming block `offer`. A source-pin trial cannot
-satisfy the integrated release gate. Greg/outbox pages at this revision are
+`--require-demo-pages` fails naming block `offer`. That optional, stricter
+walkthrough-release gate is for a release that requires all three surfaces;
+FUCQ-36's native Decided explicitly adds no dependency on later block stories.
+The ordinary assembly packages every existing block and discovers later blocks
+automatically. A source-pin trial proves the actual nested offer route can be
+packaged; its separately recorded visual issues remain with the offer source.
+It cannot prove integrated or live offer acceptance. Greg/outbox pages at this revision are
 existing fixture harnesses, not proof of live dashboard/outbox composition.
 
 ## Compatible backend and state

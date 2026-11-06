@@ -35,7 +35,9 @@ export async function discoverManifest(sourceRoot = ROOT) {
     }
   }
   const pages = (await readdir(sourceRoot)).filter((file) => /^gcsp-.*\.html$/.test(file)).sort();
-  return { blocks, pages: ['index.html', 'block.html', 'components.html', ...pages] };
+  const gallery = await readFile(path.join(sourceRoot, 'blocks/vehicle-matcher/component-gallery.js'), 'utf8');
+  const galleryPages = [...gallery.matchAll(/href:\s*['"]\.\/(docs\/[^'"\n]+\.html)['"]/g)].map((match) => match[1]);
+  return { blocks, pages: ['index.html', 'block.html', 'components.html', ...pages, ...galleryPages] };
 }
 
 function apiSetting(value, environment) {
@@ -73,7 +75,7 @@ function references(source, file) {
     }
   }
   if (file.endsWith('.html')) {
-    for (const match of source.matchAll(/\b(?:src|href)\s*=\s*(['"])([^'"<>]+)\1/gi)) {
+    for (const match of source.matchAll(/<(?:script|link|img|source|video|audio|iframe|a)\b[^>]*?\b(?:src|href)\s*=\s*(['"])([^'"<>]+)\1/gi)) {
       if (!/^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(match[2])) found.add(match[2].split(/[?#]/)[0]);
     }
   }
@@ -141,8 +143,10 @@ export async function assembleSite({ sourceRoot = ROOT, output, apiUrl = 'http:/
         }
         text = text.replace('</head>', `  <meta http-equiv="Content-Security-Policy" content="${csp(api)}">\n</head>`);
       }
+      const pageBase = file.endsWith('.html') ? text.match(/<base\b[^>]*href=['"]([^'"]+)['"]/i)?.[1] : null;
+      const referenceBase = pageBase ? path.posix.join(path.posix.dirname(file), pageBase) : path.posix.dirname(file);
       for (const target of references(text, file)) {
-        const to = path.posix.normalize(path.posix.join(path.posix.dirname(file), target));
+        const to = path.posix.normalize(path.posix.join(referenceBase, target));
         if (to.startsWith('../')) throw new Error(`${file}: public dependency escapes package: ${target}`);
         edges.push({ from: file, to });
       }
@@ -162,7 +166,7 @@ export async function assembleSite({ sourceRoot = ROOT, output, apiUrl = 'http:/
     { name: 'outbox', block: 'presenter', file: 'gcsp-outbox.html' },
   ].map((page) => ({ ...page, available: files.includes(page.file) }));
   const manifest = { version: 1, revision, environment, apiUrl: api, employeeEnabled: employeeEnabled === true,
-    blocks: discovered.blocks, pages: discovered.pages, demoPages, requiredAssets,
+    blocks: discovered.blocks, pages: files.filter((file) => file.endsWith('.html')), demoPages, requiredAssets,
     files: await Promise.all(files.map(async (file) => ({ path: file, sha256: hash(await readFile(path.join(output, file))) }))),
     dependencies: edges.sort((a, b) => `${a.from}:${a.to}`.localeCompare(`${b.from}:${b.to}`, 'en')) };
   await writeFile(path.join(output, 'site-manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
