@@ -59,6 +59,8 @@ import { createActivityRoutes } from './gcsp/brief/activity-http.js';
 import { createManualContextRoutes } from './gcsp/manual-context/http.js';
 import { createManualClaimsRoutes } from './gcsp/manual-claims/http.js';
 import { createManualReviewDetailsRoutes } from './gcsp/manual-review/http.js';
+import { createLifecycleApprovalRoutes } from './gcsp/lifecycle/approvals/http.js';
+import { createDocumentRoutes } from './gcsp/lifecycle/documents/http.js';
 import { createVehicleEvidenceHandler, isVehicleEvidencePath } from './gcsp/vehicle-evidence/vehicle-evidence-handler.js';
 import { createLocalVehicleEvidenceLookup } from './gcsp/vehicle-evidence/local-vehicle-lookup.js';
 import { createGregRoutes } from './gcsp/greg/http.js';
@@ -879,6 +881,7 @@ export function buildServer(deps = {}) {
     ...createBriefRoutes(deps.gcspBrief, deps.gcspBriefEditor), ...createActivityRoutes(deps.gcspActivity), ...createCaseRoutes(deps.gcspCases), ...createManualContextRoutes(deps.gcspManualRead || deps.gcspManualClaims || deps.gcspManual), ...createManualClaimsRoutes(deps.gcspManualClaims),
     ...createManualReviewDetailsRoutes(deps.gcspManualReview),
     ...createOfferFollowupRoutes(deps.gcspOfferFollowup),
+    ...createLifecycleApprovalRoutes(deps.gcspLifecycle), ...createDocumentRoutes(deps.gcspDocuments),
     ...createGregRoutes(deps.gcspGreg), ...createGregPublishRoutes(gregPublish), ...(deps.gcspRoutes || [])],
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
@@ -911,6 +914,18 @@ export function buildServer(deps = {}) {
     if (deps.gcspBuddy) {
       const registered = await deps.gcspBuddy.start();
       if (registered.status !== 'ok') return registered;
+    }
+    if (deps.gcspManualOrder) {
+      const ordering = await deps.gcspManualOrder.registerClockHandler();
+      if (ordering.status !== 'ok') return ordering;
+    }
+    if (deps.gcspLifecycle) {
+      const lifecycle = await deps.gcspLifecycle.start();
+      if (lifecycle.status !== 'ok') return lifecycle;
+    }
+    if (deps.gcspDocuments) {
+      const documents = await deps.gcspDocuments.start();
+      if (documents.status !== 'ok') return documents;
     }
     // Notification registration precedes the clock sealing its registry. Startup
     // drains already committed jobs even though clock startup omits allocation.

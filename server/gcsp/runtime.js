@@ -24,6 +24,12 @@ import { createStockReleaseHistoryPort } from './stock/history-port.js';
 import { createManualGalleryStockRead } from './manual-gallery/stock-read.js';
 import { createRenewalCaseService } from './cases/index.js';
 import { ManualReviewDetailsService } from './manual-review/index.js';
+import { createSyntheticOrderingAdapter } from './adapters/synthetic-ordering.js';
+import { createSyntheticOrderingStatus } from './adapters/synthetic-ordering-status.js';
+import { createSyntheticDocumentStatus } from './adapters/synthetic-ordering-documents.js';
+import { createLifecycleApprovalService } from './lifecycle/approvals/index.js';
+import { createLifecycleDocumentService } from './lifecycle/documents/index.js';
+import { createManualOrderService, createManualOrderConversion } from './manual-order/index.js';
 
 const unavailable = () => result('unavailable', { reason: 'The trusted demo runtime is unavailable.', retryable: true });
 const scoped = (value, context) => ['runId', 'environmentId', 'employeeId'].every((key) => value?.[key] === context[key]);
@@ -91,6 +97,14 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     });
     const manualReview = new ManualReviewDetailsService({ repository, policy, identity, manualClaims });
     const cases = createRenewalCaseService({ repository, policy, clock, identity });
+    const orderingAdapter = createSyntheticOrderingAdapter({ repository });
+    orderingAdapter.status = createSyntheticOrderingStatus({ repository });
+    orderingAdapter.documentStatus = createSyntheticDocumentStatus({ repository });
+    const manualOrder = createManualOrderService({ repository, policy, clock, identity, adapter: orderingAdapter,
+      converters: { cart: createManualOrderConversion({ claims: manualClaims, manual: account }) } });
+    const lifecycle = createLifecycleApprovalService({ repository, policy, clock, identity, status: orderingAdapter.status });
+    const documents = createLifecycleDocumentService({ repository, policy, clock, identity,
+      lifecycleStages: lifecycle.stagePort(), provider: orderingAdapter.documentStatus });
     const buddy = createBuddyHoldService({ repository, policy, clock, identity, adapter });
     const offerAccess = createOfferAccessService({ repository, policy, clock, identity, environmentId, sessionNow, verifyOfferToken });
     const offerDecisions = createOfferDecisionService({ repository, policy, clock, access: offerAccess,
@@ -106,7 +120,9 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     notify = createNotificationDispatcher({ repository, policy, clock, environmentId });
     const dependencies = { gcspRepository: repository, gcspPolicy: policy, gcspGreg: greg, gcspGregPublish: gregPublish,
       gcspScenarios: scenarios, gcspManualClaims: manualClaims, gcspManualRead: manualRead, gcspManualReview: manualReview,
-      gcspStockRelease: stockRelease, gcspCases: cases, gcspBuddy: buddy, gcspOfferAccess: offerAccess,
+      gcspStockRelease: stockRelease, gcspCases: cases, gcspManualOrder: manualOrder,
+      gcspLifecycle: lifecycle, gcspDocuments: documents,
+      gcspBuddy: buddy, gcspOfferAccess: offerAccess,
       gcspOfferDecisions: offerDecisions, gcspResolveOfferAccess: resolveOfferAccess, gcspOfferFollowup: offerFollowup,
       gcspNotify: notify, gcspOutbox: { repository },
       gcspIdentity: identity, gcspClock: clock, gcspManual: account, gcspBrief: brief,
@@ -127,6 +143,6 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       if (seeded.status !== 'ok') return seeded;
       return ok({ context: acting.value.context, setCookie: [presenter.value.setCookie[1], acting.value.setCookie] });
     }
-    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, manualRead, manualReview, stockRelease, releaseHistory, cases, buddy, offerAccess, offerDecisions, offerFollowup, resolveOfferAccess, notify, dependencies, createLocalSession, close });
+    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, manualRead, manualReview, manualOrder, stockRelease, releaseHistory, cases, orderingAdapter, lifecycle, documents, buddy, offerAccess, offerDecisions, offerFollowup, resolveOfferAccess, notify, dependencies, createLocalSession, close });
   } catch { await close(); return unavailable(); }
 }

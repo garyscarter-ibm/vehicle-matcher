@@ -718,3 +718,109 @@ Retail `publicMatch.listings[]` additively retains the evaluator's exact `decisi
 Morning review should focus on the assumed manual order-review phase and the explicit tie-break/seed choices. They are revisable synthetic defaults, not additional approved BMW behaviour. Numeric monthly prices/allowances require labelled source rows from FUCQ-82; this document does not invent BMW prices from eligibility matrices.
 
 The FUCQ-80 contract baseline was documentation only. The FUCQ-81/82 backend implementations add no screen or UI component; their presentation fixtures and checks are recorded above. The [experience contract](experience-quality.md) and [shell/palette and Used Cars body reference](screens/README.md) remain binding for implementing stories; screenshots are not applicable to this document change.
+
+## Selection ordering checkpoint · FUCQ-71
+
+`ManualOrderService` exposes trusted employee `readTerms(context)`, `submit(context,input)` and `readOrder(context)`
+ports; the exact input/projection and remaining integration gates are in [the ordering contract](manual-order-contract.md).
+The existing stock `orderUuid`, seven-digit `orderNumber` and `configurationId` are authoritative; no replacement
+order number or approval is generated. Internal handoff/reconciliation phases remain separate from the configured
+employee-facing target approval stage.
+
+The additive assumed canonical keys `ordering.terms.v1` and `ordering.approvalStages.v1` supply fictional versioned
+terms/declarations/expiry and optional HR → sales-manager → sent-to-ordering names. They use PolicyService and its
+retained versions; stored SQL versions require normal publication/activation. Missing or invalid terms fail closed.
+The immutable selection snapshot is carried by the existing `pending_operations` row and selection-history receipts;
+this checkpoint adds no table, migration, repository provider or independent mutable store.
+
+Source converters accept `convertSelection(context,allocationInput,{commitSelection})`. Their existing source
+authority repeats live checks, calls `commitSelection(tx)` before changing its active hold, and commits selection,
+claim/hold, stock and slot in that same transaction. A refusal rolls everything back. Pending atomic conversions are
+observed through source reconciliation before any ordering write; no retry or tick starts a second allocation.
+The callback is trusted startup composition, never a browser-supplied function. FUCQ-108 supplies the buddy source;
+it does not inherit manual-only assumptions. The retained FUCQ-66 producer has no transactional callback method yet,
+so its passing read-only producer test remains the labelled two-transaction compatibility boundary. Actual producer
+integration, account/runtime consumers, configured native PostgreSQL/reopen and final validation remain incomplete.
+
+The synthetic ordering provider persists scoped idempotent receipts in the repository. Every attempt reconciles
+before resend; only matching authoritative absence permits execute. Unknown or malformed responses retain occupied
+ownership, and unsupported/rejected outcomes never fabricate a confirmation. Reconciliation registers on DemoClock's
+existing `pending-reconciliation` stage. Backend presentation fixtures cover validation, pending, failure and actual
+approval status; rendered consumer evidence belongs to FUCQ-72.
+
+## Lifecycle approval stages · FUCQ-111
+
+`LifecycleApprovalService` (`server/gcsp/lifecycle/approvals/`) owns one approval lifecycle per acknowledged FUCQ-71
+`selection-order` operation, keyed by its allocated `orderUuid`, for manual (`cart`) and buddy (`buddy-offer`) sources.
+The stage list is `selection received` followed by the order's pinned `ordering.approvalStages.v1` snapshot; HR approval
+is present only when that key contains it. A later active policy never relabels an existing order.
+
+Public reads `read(context,{orderUuid})` and `listOrders(context)` require an employee, Greg or presenter session; an
+employee sees only their own orders. Routes `GET /api/gcsp/orders/progress?orderUuid=` and `/api/gcsp/orders/progress/all`
+discard browser identity and run claims. The frozen server-internal `stagePort()` exposes the same two methods for
+DemoClock handlers without a role check, still bound to the current run and environment; it has no route. FUCQ-116
+consumes it as `lifecycleStages`. The view is `lifecycle.stages.v1` revision 2: run, order, employee, slot, renewal
+identity (`renewalAuthority` `validated` only from the order's own slot renewal, or the employee renewal for that same slot; otherwise `missing` and `renewalId: null`),
+source selection operation and versions, top-level pinned `policyVersion` with per-key provenance, `lifecycleRevision`,
+DemoClock `asOf`, stages with state, instant and provider reference, owner, next step, outcome, blocked reason and provider
+mode. Missing, pending, failed, unsupported and foreign reads return `not-found`, `unavailable` (`state: not-ready`),
+`forbidden` or `stale-run`; none invents an order. `listOrders` also returns `failed` (at most 20 `{ orderUuid, status, code }`) and `failedCount`: an order with an undecodable source or a missing or malformed pinned policy row is listed there and skipped, so healthy orders are still enumerated. An unavailable or invalid shared policy source (or any other policy-wide error), an unavailable clock or repository, or a foreign run, refuses the whole list with its own status and cause.
+
+Transitions append completed `event_receipts` rows under `lifecycle:approval:<orderUuid>` (`revision:NNNNNN`, type
+`lifecycle-stage-changed`); each stage decision is one `pending_operations` row of type `lifecycle-approval-decision`
+reused for every retry. No table or migration is added. Handler `lifecycle-approvals` registers in
+`pending-reconciliation` and sorts before `lifecycle-documents`. Presenter ticks count keyed ticks once per tick ID, then
+ask the ordering status capability (`synthetic-ordering-status:v1`, beside FUCQ-71's single adapter); startup ticks only
+reconcile. Uncertain writes stay pending and are reconciled before retry; the live-shaped stub reports every write
+unsupported and leaves the stage. One failing order is recorded in the handler outcome and the rest still advance.
+
+A declined stage atomically records `lifecycle:exceptions` with the keyed event type and top-level `employeeId`,
+`renewalId`, `orderUuid`, `occurredAt`, plus stage, reason, revision, transition and provider identity; the FUCQ-112
+consumer opens a renewal case from it when renewal authority is validated.
+
+| Key | Assumed default |
+|---|---|
+| `lifecycle.approval.ticks.v1` | HR approval 2, sales-manager approval 2, sent to ordering 1; presenter ticks |
+| `lifecycle.approval.declineScenario.v1` | disabled; stage sales-manager approval; `approval-declined` |
+| `lifecycle.approval.ownership.v1` | owner and next step per stage and outcome |
+
+Response shapes for the later order progress screen are `server/test/fixtures/gcsp-lifecycle-approval-outcomes.json`.
+Remaining: FUCQ-71's selection-acknowledged receipt lacks top-level `renewalId`/`orderUuid`/`occurredAt`, and no
+validated renewal authority is seeded, so decline cases stay unopened in the default run; runtime composition is FUCQ-100's lane.
+
+## Lifecycle documents and readiness · FUCQ-116
+
+`LifecycleDocumentService` (`server/gcsp/lifecycle/documents/`) tracks the documents and vehicle-readiness steps for one
+lifecycle order. It reads FUCQ-111's internal `stagePort()` synchronously as `lifecycleStages` during its DemoClock handler
+`lifecycle-documents` (`pending-reconciliation`, after `lifecycle-approvals` and before `renewal-risk-cases`). When the keyed
+opening stage is `approved` with a valid instant and `lifecycleRevision > 0`, the scheme's policy items open once, bound to
+that revision; later revisions update only `lastObservedRevision` and existing progress is kept. Missing producer, revision 0,
+unsupported mode, foreign run, unknown contract, invalid renewal authority or an unavailable read stay explicit `not-open`
+reasons, never an approved stage. One order that cannot open or progress is listed in the handler outcome's `blocked[]`.
+
+Each item has `status` (`not-started`, `waiting-for-employee`, `in-progress`, `complete`, `failed` with `reason`), `owner`
+(`employee`, `scheme-team`, `retailer`), DemoClock `dueAt`, `providerReference` and its synthetic assumption and basis.
+Employee items form her task list; completing one records a labelled synthetic acknowledgement, never a signature.
+Scheme-team and retailer items progress through the `ordering.documentStatus.v1` capability beside FUCQ-71's single
+ordering adapter (receipts `synthetic-ordering:documents:v1`); the live-shaped stub reports every write `unsupported`.
+`readReadiness` is the only handover-ready authority: `ready` only when every document is complete and the car is ready.
+
+State is one versioned projection per order in `event_receipts` (consumer `lifecycle-documents:state:v1`, event = orderUuid,
+compare-and-swap in one transaction); no table or migration is added. Overdue employee items and failed items record one
+completed receipt each under `lifecycle-documents:exceptions:v1`, typed by policy, with top-level `employeeId`, `renewalId`,
+`orderUuid`, `occurredAt` plus the order's own `entitlementSlotId` and `renewalAuthority` from the stage view; missing
+authority stays `renewalId: null`, never the employee's default renewal. FUCQ-112 opens cases from them only when
+`renewalCase.lifecycle.eventTypes` selects the type; the default selection does not.
+
+| Key | Assumed default |
+|---|---|
+| `lifecycle.documents.v1` | opening stage `sent to ordering` approved; agreement acknowledgement (employee, 2 days), licence check (scheme team, 1 hour), vehicle preparation (retailer, 1 day), delivery to retailer (retailer, 2 days) |
+| `lifecycle.documents.scenario.v1` | no failing item; failure reason text |
+| `lifecycle.documents.exceptions.v1` | `document-overdue`, `document-failed` |
+
+Routes `GET /api/gcsp/documents`, `GET /api/gcsp/documents/readiness?orderUuid=` and `POST /api/gcsp/documents/tasks/complete`
+discard browser identity and run claims. Employees see and complete only their own items; Greg and presenter may read
+readiness. A producer `forbidden` read and another employee's order at any stage are refused with `forbidden`. Response
+shapes for the later order progress screen are `server/test/fixtures/gcsp-lifecycle-documents-outcomes.json`; this
+backend-only story adds no screen. Remaining: runtime and route composition (FUCQ-100's lane), FUCQ-114's readiness
+consumer, actual producer integration evidence, native PostgreSQL and the full suite.
