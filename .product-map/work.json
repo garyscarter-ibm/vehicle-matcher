@@ -9,7 +9,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T23:45:57Z",
+      "observed_at": "2026-11-06T00:10:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-100",
       "source_observed_at": "2026-11-05T23:00:25Z",
       "branch": "dev/DEV-2026-11-04-060",
@@ -18,10 +18,10 @@
           "name": "FUCQ-100 story lead",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-05T23:45:57.085670+00:00",
-          "expires_at": "2026-11-06T00:00:57.085670+00:00",
-          "source": "Codex chat 01a1adbf-732b-7830-a17a-cf2b2f95a092 observed this active turn",
-          "status": "active; actual published66 both-way memory proof4/4 and cleanup41/41; checkpoint publication next; runtime/full gates open"
+          "observed_at": "2026-11-06T00:10:07.389965+00:00",
+          "expires_at": "2026-11-06T00:25:07.389965+00:00",
+          "source": "Codex chat 01a1adbf-732b-7830-a17a-cf2b2f95a092 observed this active preparation turn",
+          "status": "active; preparing runtime/lifecycle source plan only; actual66 proof4/4 and root audit41PASS; central/test/native/full grants pending"
         }
       ],
       "slices": [
@@ -69,8 +69,10 @@
         },
         {
           "id": "runtime-integration",
-          "status": "not-started",
-          "title": "Merged producer, identity and central lifecycle composition"
+          "status": "in-progress",
+          "title": "Merged producer, identity and central lifecycle composition",
+          "observed_at": "2026-11-06T00:10:07Z",
+          "evidence": "Preparation only: docs/gcsp/buddy-runtime-integration-plan.md and31immutableblobcatalogue. Existing composition/startup/reset/close traced;102central release coordinated,103provider/presenter/manual additions preserved. Proposed runtime/index/new-test scope awaits root exact-base grant. No source edit or new test/browser/native/full allocation; actual96 resolver/events/status-read and final acceptance remain open."
         },
         {
           "id": "full-validation",
