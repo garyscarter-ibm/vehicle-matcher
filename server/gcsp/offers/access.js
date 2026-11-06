@@ -311,7 +311,7 @@ export class OfferAccessService {
     if (!['ok', 'not-found'].includes(slot.status)) return { error: unavailable() };
     observed.rows.push({ ref: slotRef, status: slot.status, digest: slot.status === 'ok' ? inputDigest(slot.value) : null });
     const renewal = slot.value?.renewalId ?? null;
-    if (slot.status !== 'ok' || slot.value.runId !== binding.runId || slot.value.employeeId !== offer.employeeId
+    if (slot.status !== 'ok' || slot.value?.runId !== binding.runId || slot.value.employeeId !== offer.employeeId
       || slot.value.entitlementSlotId !== hold.entitlementSlotId || slot.value.version !== versions.slot
       || renewal !== null && !text(renewal) || event.renewalId !== renewal
       || history.value.renewalId != null && (!text(history.value.renewalId) || history.value.renewalId !== renewal)) return observed;
