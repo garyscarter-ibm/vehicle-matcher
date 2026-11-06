@@ -1365,34 +1365,34 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-71",
-      "observed_at": "2026-11-05T23:25:32Z",
+      "observed_at": "2026-11-06T15:37:23Z",
       "original_status": "In Progress",
       "slices": [
         {
-          "evidence": "Lead reviewed scoped ordering core: 13 ordering tests pass within order/policy 39 passed, 3 native skips. Exact order, pins, duplicate and clock evidence retained in docs/gcsp/evidence/fucq71; actual producer/runtime/native delivery remains blocked.",
+          "evidence": "Published 698887b5; parent code/security review passed. Actual pinned F112 consumer regression reproduced, then 29 scoped checks passed with one optional F66 skip. Evidence: fucq71/acknowledgement-2026-11-06. No full/native claim.",
           "id": "ordering-core",
-          "observed_at": "2026-11-05T23:19:15Z",
+          "observed_at": "2026-11-06T15:37:12.574389+00:00",
           "status": "complete",
           "title": "Versioned terms, pinned selection and idempotent ordering protocol"
         },
         {
-          "evidence": "F71 callback commit/rollback/pending passes repository fixtures; actual Gary-owned F66 producer lacks convertSelection. Held producer compatibility path uses two transactions.",
+          "evidence": "F66 at 43360759 exposes allocate but no convertSelection. GC owns the actual atomic callback and F106 buddy ordering join (b84a34a5). F71 callback fixtures do not close this integration.",
           "id": "claim-conversion",
-          "observed_at": "2026-11-05T23:19:16Z",
+          "observed_at": "2026-11-06T15:37:12.574389+00:00",
           "status": "blocked",
           "title": "Atomic manual or buddy claim conversion"
         },
         {
-          "evidence": "Canonical ordering keys/shared contract implemented; runtime/account/actual source composition remains.",
+          "evidence": "F100 at fb335721 adopts ordering keys, service, cart, clock and runtime; F111 decodes the completed operation. Receipt correction 698887b5 handed off in F100 comment 3627677. Public submit/account-history composition remains open.",
           "id": "runtime-contracts",
-          "observed_at": "2026-11-05T23:19:16Z",
+          "observed_at": "2026-11-06T15:37:12.574389+00:00",
           "status": "in-progress",
           "title": "Canonical policy, runtime and history contracts"
         },
         {
-          "evidence": "Native PostgreSQL URL unset; no credential transfer. Actual source callback and account/runtime proof plus coordinated final npm test remain.",
+          "evidence": "Actual pinned memory consumer tick passed; 29 scoped checks and one optional F66 skip. Gary owns configured PostgreSQL, reopen and new-process proof. Atomic claims/buddy and public submit remain open. No combined-source/full/native claim.",
           "id": "integration",
-          "observed_at": "2026-11-05T23:19:16Z",
+          "observed_at": "2026-11-06T15:37:12.574389+00:00",
           "status": "blocked",
           "title": "Native PostgreSQL reopen and final integration validation"
         }
@@ -1411,8 +1411,18 @@
           "role": "story-lead",
           "source": "thread 01a1adf9-5447-7220-8e41-86ea53f403e7; effective gpt-6.1-sol/high verified turn_context",
           "status": "stopped"
+        },
+        {
+          "name": "Sam Sheepdog",
+          "role": "story-lead",
+          "harness": "codex",
+          "source": "Existing /root/sam_sheepdog; requested/selected/runtime-confirmed gpt-6.1-sol/high; no fallback; publication698887b5",
+          "observed_at": "2026-11-06T15:37:12.574389+00:00",
+          "expires_at": "2026-11-06T15:37:12.574389+00:00",
+          "status": "stopped; scoped repair and cleanup complete; frozen packet published"
         }
-      ]
+      ],
+      "branch": "dev/DEV-2026-11-04-071"
     }
   ]
 }
