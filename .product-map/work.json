@@ -1820,17 +1820,17 @@
       "original_status": "In Progress",
       "assignee": "usget",
       "type": "Story",
-      "observed_at": "2026-11-06T11:10:05Z",
+      "observed_at": "2026-11-06T11:28:29Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60",
       "workers": [
         {
           "name": "Scooby Doo",
           "role": "story-lead",
           "harness": "codex",
-          "observed_at": "2026-11-06T11:10:05.689780+00:00",
-          "expires_at": "2026-11-06T11:10:05.689780+00:00",
+          "observed_at": "2026-11-06T11:28:01.704127+00:00",
+          "expires_at": "2026-11-06T11:28:01.704127+00:00",
           "source": "thread 01a1b05f-dcbc-7e50-a2f9-0332b39f082a",
-          "status": "Frozen v2 consumer proof scoped handoff; requested/selected Sol/high, no fallback; no active worker claim"
+          "status": "Planning-only historical ingress handoff; requested/selected Sol/high, no fallback/descendants; no active worker claim"
         }
       ],
       "slices": [
@@ -1858,7 +1858,9 @@
         {
           "id": "real-source",
           "status": "not-started",
-          "title": "Real catalogue source coverage evidence"
+          "title": "Real catalogue source coverage evidence",
+          "observed_at": "2026-11-06T11:28:01.704127+00:00",
+          "evidence": "Retained 1 November registered F39/F54 sample identified for proposed historical reuse; no new qualification proof. Separate 6 November observation remains accepted 0; no additional configurations or 200-configuration coverage claimed."
         },
         {
           "id": "real-assets",
@@ -1875,7 +1877,9 @@
         {
           "id": "corpus-integration",
           "status": "not-started",
-          "title": "F54 corpus and presentation integration"
+          "title": "F54 corpus and presentation integration",
+          "observed_at": "2026-11-06T11:28:01.704127+00:00",
+          "evidence": "Planning only: historical-integration-plan-2026-11-06.md specifies retained 1 November ingress, common session, F54 original envelope and lookup composition, with missing qualifier/join ports explicit. No implementation or acceptance proof; slice remains not-started."
         },
         {
           "id": "final-suite",
