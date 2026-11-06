@@ -26,7 +26,7 @@ const data = () => ({ schemaVersion: 1,
   currentCarFeedback: { preserve: ['comfort'], change: ['body'], state: 'draft', source: 'employee' } });
 const command = (commandId, payload = {}) => ({ commandId, inputDigest: inputDigest(payload) });
 
-async function setup(t, { alter = () => {}, missingPolicy = false, inputData, briefOverride } = {}) {
+async function setup(t, { alter = () => {}, missingPolicy = false, inputData, briefOverride, slotRenewalId } = {}) {
   const canonical = createPolicyService();
   const policy = { getActiveVersion: (...args) => canonical.getActiveVersion(...args),
     async getAssumption(key, read) {
@@ -46,6 +46,13 @@ async function setup(t, { alter = () => {}, missingPolicy = false, inputData, br
   const presenter = await identity.createPresenterSession('presenter');
   const acting = await identity.switchPrincipal(presenter.value.context, 'demo-paula', 'paula');
   const context = acting.value.context; const brief = createBriefService({ repository, policy, clock, identity });
+  const slotRef = { table: 'entitlement_slots', key: { runId: context.runId, entitlementSlotId: context.entitlementSlotId } };
+  let slot = (await repository.read(context, slotRef)).value;
+  if (slotRenewalId !== undefined) {
+    const changed = await repository.transaction(context, command('slot-renewal-input'),
+      (tx) => tx.compareAndSwap(slotRef, slot.version, { renewalId: slotRenewalId }));
+    assert.equal(changed.status, 'ok', JSON.stringify(changed)); slot = changed.value;
+  }
   assert.equal((await brief.saveDraft(context, { commandId: 'draft', expectedDraftVersion: 0,
     expectedBriefVersion: 0, brief: inputData ?? data() })).status, 'ok');
   const approved = await brief.confirm(context, { commandId: 'approve', expectedDraftVersion: 1,
@@ -57,7 +64,7 @@ async function setup(t, { alter = () => {}, missingPolicy = false, inputData, br
   const quote = { runId: context.runId, quoteId: 'old-quote', employeeId: context.employeeId,
     entitlementSlotId: context.entitlementSlotId, orderUuid: order.orderUuid, briefVersion: 1, policyVersion: context.policyVersion };
   const hold = { runId: context.runId, holdId: 'old-hold', quoteId: quote.quoteId, employeeId: context.employeeId,
-    entitlementSlotId: context.entitlementSlotId, renewalId: context.renewalId ?? null, orderUuid: order.orderUuid,
+    entitlementSlotId: context.entitlementSlotId, renewalId: slot.renewalId ?? context.renewalId ?? null, orderUuid: order.orderUuid,
     type: 'buddy-offer', state: 'released', releaseReason: 'offer-declined', policyVersion: context.policyVersion };
   const offer = { runId: context.runId, offerId: 'old-offer', holdId: hold.holdId, quoteId: quote.quoteId,
     employeeId: context.employeeId, orderUuid: order.orderUuid, environmentId: context.environmentId,
@@ -68,7 +75,7 @@ async function setup(t, { alter = () => {}, missingPolicy = false, inputData, br
   const event = { schemaVersion: 1, eventId: 'decline-event', type: 'offer-declined', runId: context.runId,
     decisionId: decision.decisionId, commandId: 'decline-command', offerId: offer.offerId, holdId: hold.holdId,
     quoteId: quote.quoteId, employeeId: context.employeeId, entitlementSlotId: context.entitlementSlotId,
-    renewalId: context.renewalId ?? null, orderUuid: order.orderUuid, occurredAt: now,
+    renewalId: hold.renewalId, orderUuid: order.orderUuid, occurredAt: now,
     policyVersion: context.policyVersion, briefVersion: 1, reasonCode: decision.reason.code, exclusion: null };
   const rows = { decision, event, offer, hold, quote, receipt: { consumerId: 'offer-decisions:events:v1',
     eventId: event.eventId, eventType: 'offer-declined', state: 'completed', inputVersions: versions } };
@@ -82,7 +89,7 @@ async function setup(t, { alter = () => {}, missingPolicy = false, inputData, br
   });
   assert.equal(seeded.status, 'ok', JSON.stringify(seeded));
   const service = createOfferFollowupService({ repository, policy, clock, identity, brief: briefOverride ?? brief });
-  return { repository, policy, clock, identity, context, presenter, brief, service, initial: approved.value.brief, rows };
+  return { repository, policy, clock, identity, context, presenter, brief, service, slot, slotRef, initial: approved.value.brief, rows };
 }
 
 async function answer(f, additions = {}) {
@@ -231,9 +238,16 @@ test('BriefService failures remain safe and never become a saved response', asyn
   assert.deepEqual(await snapshot(f), before);
 });
 
-test('two persisted quotes and the safe account port produce a comparison with explicit current inputs', async (t) => {
-  const f = await setup(t); const saved = await f.service.confirm(f.context, await answer(f));
+async function comparisonCase(t, slotRenewalId) {
+  const f = await setup(t, { slotRenewalId }); const saved = await f.service.confirm(f.context, await answer(f));
   assert.equal(saved.status, 'ok');
+  if (slotRenewalId !== undefined) {
+    assert.equal(Object.hasOwn(f.context, 'renewalId'), false);
+    assert.equal(Object.isFrozen(f.context), true);
+    assert.equal(f.initial.renewalId, null);
+    const reload = await f.service.read(f.context, { decisionId: 'decline' });
+    assert.equal(reload.status, 'unavailable'); assert.deepEqual(reload.savedChange, saved.value);
+  }
   const now = (await f.clock.now(f.context)).value.now;
   const quote = { ...f.rows.quote, quoteId: 'new-quote', briefVersion: 2, quotedAt: now };
   const hold = { ...f.rows.hold, holdId: 'new-hold', quoteId: quote.quoteId, state: 'active' };
@@ -287,6 +301,85 @@ test('two persisted quotes and the safe account port produce a comparison with e
   const failure = await failing.read(f.context, { decisionId: 'decline' });
   assert.equal(failure.status, 'unavailable'); assert.deepEqual(failure.savedChange, saved.value);
   assert.equal(JSON.stringify(failure).includes('secret'), false);
+}
+
+test('two persisted quotes and the safe account port produce a comparison with explicit current inputs', async (t) => {
+  await comparisonCase(t);
+});
+
+test('ordinary identity uses persisted slot renewal through question, save, reload and next-hold comparison', async (t) => {
+  await comparisonCase(t, 'persisted-renewal');
+});
+
+test('unpopulated slot renewal uses the matched hold and event; explicit conflicts and malformed values refuse', async (t) => {
+  for (const slotRenewalId of [undefined, null]) {
+    const matched = await setup(t, { slotRenewalId, alter: (rows) => {
+      rows.hold.renewalId = 'hold-renewal'; rows.event.renewalId = 'hold-renewal';
+    } });
+    assert.equal(Object.hasOwn(matched.context, 'renewalId'), false);
+    assert.equal(matched.slot.renewalId, slotRenewalId);
+    const input = await answer(matched);
+    assert.equal((await matched.service.confirm(matched.context, input)).status, 'ok');
+  }
+  const alterations = [
+    { slotRenewalId: 'slot-renewal', alter(rows) { rows.hold.renewalId = 'other'; rows.event.renewalId = 'other'; } },
+    { slotRenewalId: 7 }, { slotRenewalId: '' }, { slotRenewalId: ' padded ' },
+    { alter(rows) { rows.hold.renewalId = 'hold-renewal'; } },
+    { alter(rows) { rows.hold.renewalId = {}; rows.event.renewalId = {}; } },
+  ];
+  for (const options of alterations) {
+    const f = await setup(t, options); const before = await snapshot(f);
+    assert.equal((await f.service.read(f.context, { decisionId: 'decline' })).status, 'unavailable');
+    assert.deepEqual(await snapshot(f), before);
+  }
+  for (const renewalId of ['conflicting-history', 7, '']) {
+    const f = await setup(t, { slotRenewalId: 'persisted-renewal' });
+    // A labelled corrupt-history reader input, never an enriched identity or a
+    // change to the real BriefService writer or its immutable stored history.
+    const brief = { ...f.brief, async readHistory(context) {
+      const history = await f.brief.readHistory(context);
+      return { ...history, value: { ...history.value, versions: history.value.versions.map((row) => ({ ...row, renewalId })) } };
+    } };
+    const service = createOfferFollowupService({ ...f, brief }); const before = await snapshot(f);
+    assert.equal((await service.read(f.context, { decisionId: 'decline' })).status, 'unavailable');
+    assert.deepEqual(await snapshot(f), before);
+  }
+});
+
+test('slot content and version changes before question response or brief write refuse without a brief change', async (t) => {
+  for (const phase of ['question', 'confirm']) {
+    const f = await setup(t, { slotRenewalId: 'persisted-renewal' });
+    const input = phase === 'confirm' ? await answer(f) : null;
+    let mutated = false; let writes = 0; let mutationSnapshot;
+    const policy = { ...f.policy, async getAssumption(key, read) {
+      const outcome = await f.policy.getAssumption(key, read);
+      if (key === 'offer.followupQuestions.v1' && !mutated) {
+        mutated = true;
+        const changed = await f.repository.transaction(f.context, command(`slot-race-${phase}`),
+          (tx) => tx.compareAndSwap(f.slotRef, f.slot.version, { capacity: f.slot.capacity + 1 }));
+        assert.equal(changed.status, 'ok', JSON.stringify(changed));
+        mutationSnapshot = await snapshot(f);
+      }
+      return outcome;
+    } };
+    const brief = { readHistory: (context) => f.brief.readHistory(context), async changeAfterDecline(...args) {
+      writes += 1; return f.brief.changeAfterDecline(...args);
+    } };
+    const service = createOfferFollowupService({ ...f, policy, brief }); const before = await snapshot(f);
+    const outcome = phase === 'confirm' ? await service.confirm(f.context, input)
+      : await service.read(f.context, { decisionId: 'decline' });
+    assert.equal(mutated, true); assert.equal(outcome.status, 'unavailable'); assert.equal(writes, 0);
+    // The injected CAS writes its own command receipt. All other resources
+    // must stay unchanged, and follow-up must add nothing after that mutation.
+    const raceReceipt = (row) => row.consumerId === 'command:transaction' && row.eventId === `slot-race-${phase}`;
+    const receipts = mutationSnapshot.find(([table]) => table === 'event_receipts')[1];
+    assert.equal(receipts.filter(raceReceipt).length, 1);
+    assert.deepEqual(mutationSnapshot.map(([table, rows]) => [table,
+      table === 'event_receipts' ? rows.filter((row) => !raceReceipt(row)) : rows]), before);
+    assert.deepEqual(await snapshot(f), mutationSnapshot);
+    assert.equal((await f.repository.read(f.context, f.slotRef)).value.version, f.slot.version + 1);
+    assert.equal((await f.brief.readHistory(f.context)).value.versions.length, 1);
+  }
 });
 
 test('HTTP descriptors require employee context, exact selector and delegated strict confirmation', async (t) => {

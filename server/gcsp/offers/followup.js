@@ -9,6 +9,7 @@ const plain = (v) => v !== null && typeof v === 'object' && !Array.isArray(v)
 const only = (v, keys) => plain(v) && Reflect.ownKeys(v).every((key) => keys.includes(key));
 const text = (v) => typeof v === 'string' && v.trim().length > 0 && v.length <= 128;
 const revision = (v) => Number.isSafeInteger(v) && v > 0;
+const renewal = (v) => v === null || v === undefined || text(v) && v === v.trim();
 const unavailable = (code = 'offer-followup-unavailable', savedChange) => result('unavailable', {
   code, reason: 'The offer follow-up is temporarily unavailable.', retryable: true,
   ...(savedChange ? { savedChange } : {}),
@@ -76,7 +77,9 @@ export class OfferFollowupService {
       || event.type !== 'offer-declined' || !text(event.eventId) || receipt.eventId !== event.eventId
       || receipt.inputDigest !== inputDigest(event) || !same(receipt.inputVersions, decision.versions)
       || event.runId !== context.runId || event.employeeId !== context.employeeId
-      || event.entitlementSlotId !== context.entitlementSlotId || event.renewalId !== (context.renewalId ?? null)
+      || event.entitlementSlotId !== context.entitlementSlotId || !renewal(context.renewalId)
+      || event.renewalId === undefined || !renewal(event.renewalId)
+      || context.renewalId != null && event.renewalId !== context.renewalId
       || event.offerId !== decision.offerId || event.holdId !== decision.holdId
       || event.reasonCode !== decision.reason.code || event.briefVersion !== decision.versions.brief
       || event.policyVersion !== context.policyVersion || !validInstant(event.occurredAt)
@@ -85,11 +88,12 @@ export class OfferFollowupService {
       this.#repository.read(context, ref(context, 'offers', { offerId: event.offerId })),
       this.#repository.read(context, ref(context, 'holds', { holdId: event.holdId })),
       this.#repository.read(context, ref(context, 'quotes', { quoteId: event.quoteId })),
+      this.#repository.read(context, ref(context, 'entitlement_slots', { entitlementSlotId: event.entitlementSlotId })),
       this.#brief.readHistory(context),
     ]);
     if (loaded.some((row) => row.status !== 'ok')) return { error: unavailable('decline-source-unavailable') };
-    const [offer, hold, quote] = loaded.slice(0, 3).map((row) => row.value);
-    const history = loaded[3].value.versions;
+    const [offer, hold, quote, slot] = loaded.slice(0, 4).map((row) => row.value);
+    const history = loaded[4].value.versions;
     if (!Array.isArray(history) || ['employeeId', 'orderUuid', 'quoteId', 'policyVersion'].some((key) => offer[key] !== hold[key])
       || offer.runId !== context.runId || offer.environmentId !== context.environmentId
       || offer.employeeId !== context.employeeId || offer.holdId !== event.holdId || offer.quoteId !== event.quoteId
@@ -102,8 +106,27 @@ export class OfferFollowupService {
       || !history.some((row) => row.status === 'confirmed' && row.briefVersion === event.briefVersion)) {
       return { error: unavailable('decline-source-unavailable') };
     }
-    return { decision, event, history: [...history].sort((a, b) => a.briefVersion - b.briefVersion),
+    // Ordinary identity can omit renewal. Only the persisted, scoped chain
+    // supplies it; every populated hint must agree with the terminal hold/event.
+    const renewalId = slot.renewalId ?? hold.renewalId ?? null;
+    const ordered = [...history].sort((a, b) => a.briefVersion - b.briefVersion);
+    const relevant = new Set([event.briefVersion, decision.versions.pinnedBrief, ordered.at(-1)?.briefVersion]);
+    if (slot.runId !== context.runId || slot.employeeId !== context.employeeId
+      || slot.entitlementSlotId !== context.entitlementSlotId || !revision(slot.version)
+      || ![slot.renewalId, hold.renewalId, context.renewalId].every(renewal)
+      || event.renewalId !== renewalId || (hold.renewalId ?? null) !== renewalId
+      || !history.some((row) => row.status === 'confirmed' && row.briefVersion === decision.versions.pinnedBrief)
+      || history.filter((row) => relevant.has(row.briefVersion)).some((row) => !renewal(row.renewalId)
+        || row.renewalId != null && row.renewalId !== renewalId)) return { error: unavailable('decline-source-unavailable') };
+    return { decision, event, slot, renewalId, history: ordered,
       read: { runId: context.runId, asOf: clock.value.now, policyVersion: context.policyVersion } };
+  }
+
+  async #sameSlot(context, state) {
+    const current = await this.#repository.read(context, ref(context, 'entitlement_slots', {
+      entitlementSlotId: state.slot.entitlementSlotId,
+    }));
+    return current.status === 'ok' && same(current.value, state.slot);
   }
 
   async #question(state, brief) {
@@ -128,7 +151,7 @@ export class OfferFollowupService {
     const quote = await this.#repository.read(context, ref(context, 'quotes', { quoteId: offer.quoteId }));
     if (hold.status !== 'ok' || quote.status !== 'ok' || hold.value.state !== 'active' || hold.value.type !== 'buddy-offer'
       || hold.value.employeeId !== context.employeeId || hold.value.entitlementSlotId !== context.entitlementSlotId
-      || (hold.value.renewalId ?? null) !== (context.renewalId ?? null) || hold.value.quoteId !== offer.quoteId
+      || (hold.value.renewalId ?? null) !== state.renewalId || hold.value.quoteId !== offer.quoteId
       || quote.value.briefVersion !== current.briefVersion || quote.value.employeeId !== context.employeeId
       || !validInstant(quote.value.quotedAt) || Date.parse(quote.value.quotedAt) < Date.parse(current.confirmedAt)
       || Date.parse(quote.value.quotedAt) > Date.parse(state.read.asOf)) return unavailable('followup-comparison-unavailable', savedChange);
@@ -148,7 +171,8 @@ export class OfferFollowupService {
     const comparison = buildFollowupComparison({ previousOffer, nextOffer, brief: current, config: configured.value?.value });
     if (comparison.status !== 'ok') return unavailable('followup-comparison-unavailable', savedChange);
     const final = await this.#brief.readCurrent(context);
-    if (final.status !== 'ok' || final.value.brief.briefVersion !== current.briefVersion) return unavailable('followup-comparison-unavailable', savedChange);
+    if (final.status !== 'ok' || final.value.brief.briefVersion !== current.briefVersion
+      || !await this.#sameSlot(context, state)) return unavailable('followup-comparison-unavailable', savedChange);
     return ok({ schemaVersion: 1, state: 'ready', decisionId: state.decision.decisionId, savedChange, comparison: comparison.value });
   }
 
@@ -177,6 +201,7 @@ export class OfferFollowupService {
       }
       const brief = state.history.at(-1);
       const question = await this.#question(state, brief); if (question.status !== 'ok') return question;
+      if (!await this.#sameSlot(context, state)) return unavailable('decline-source-unavailable');
       return ok({ schemaVersion: 1, state: 'question', decisionId: input.decisionId,
         briefVersion: brief.briefVersion, question: question.value.public });
     } catch { return unavailable(); }
@@ -198,6 +223,9 @@ export class OfferFollowupService {
       });
       const change = followupChange(question.value.helper, input.value, brief); if (change.status !== 'ok') return change;
       const commandId = `followup:${createHash('sha256').update(input.commandId).digest('hex')}`;
+      // Bounded reread only: BriefService owns its transaction and does not
+      // atomically condition the write on this slot snapshot.
+      if (!await this.#sameSlot(context, state)) return unavailable('decline-source-unavailable');
       const changed = await this.#brief.changeAfterDecline(context, { commandId, decisionId: input.decisionId,
         expectedBriefVersion: input.expectedBriefVersion, change: change.value });
       if (changed?.status !== 'ok') return failure(changed);

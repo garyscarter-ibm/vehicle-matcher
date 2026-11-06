@@ -1,0 +1,431 @@
+{
+  "schemaVersion": 1,
+  "status": "source-authored-unexecuted",
+  "story": "FUCQ-107",
+  "parentCheckpoint": "0f81ef4a9e1ec4bc90630acc0b3ad7522ede7c34",
+  "priorBackendSource": "16839323f070f7c0ab81eb1ebf728627d283c71d",
+  "changed": [
+    {
+      "path": "server/gcsp/offers/followup.js",
+      "baseBytes": 16389,
+      "baseSHA256": "bdd9dc0c57e62a08b866b9e204bbbb17b148a0534b65c37be92d3d8d7e49d875",
+      "bytes": 18416,
+      "sha256": "54399693253ae9640dde77b70b54f073b08e634d6babb69ea129b0414a6cebd2"
+    },
+    {
+      "path": "server/test/gcsp-second-offer.test.js",
+      "baseBytes": 22670,
+      "baseSHA256": "f29ac7a1acc4243b0772d25846375b1332a2e1f12bc12b9b1fe0d9c24a2cd13f",
+      "bytes": 28213,
+      "sha256": "aa19c1b16e56081adfa4fb43d8ccb5fd6e7c64ca999e49ef2f759b0dbacb5386"
+    }
+  ],
+  "comparedGraphs": [
+    {
+      "manifest": "source-closure-1683932.json",
+      "manifestSHA256": "ad33000d3c0092a7efc4b292368b484d31f3863d09d8114b28ab5ee5e52402dd",
+      "sourceCommit": "16839323f070f7c0ab81eb1ebf728627d283c71d",
+      "rowCount": 45,
+      "changed": [
+        {
+          "path": "server/gcsp/offers/followup.js",
+          "baseSHA256": "bdd9dc0c57e62a08b866b9e204bbbb17b148a0534b65c37be92d3d8d7e49d875",
+          "sha256": "54399693253ae9640dde77b70b54f073b08e634d6babb69ea129b0414a6cebd2"
+        },
+        {
+          "path": "server/test/gcsp-second-offer.test.js",
+          "baseSHA256": "f29ac7a1acc4243b0772d25846375b1332a2e1f12bc12b9b1fe0d9c24a2cd13f",
+          "sha256": "aa19c1b16e56081adfa4fb43d8ccb5fd6e7c64ca999e49ef2f759b0dbacb5386"
+        }
+      ],
+      "unchangedRows": [
+        {
+          "path": "blocks/vehicle-matcher/feedback-actions.js",
+          "sha256": "eb6dcfb82aed8045228797f870a5e337ef7f0a8f3e136eb46804995d71838744"
+        },
+        {
+          "path": "package-lock.json",
+          "sha256": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071"
+        },
+        {
+          "path": "package.json",
+          "sha256": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1"
+        },
+        {
+          "path": "server/brands.js",
+          "sha256": "ea63741b2fcb01dbe35dcdffdd66f7021a3c0219517a8de1487fae65f65299e2"
+        },
+        {
+          "path": "server/data/gcsp/vehicle-evidence/vin-profiles.v1.json",
+          "sha256": "9a107b2b90c21a116e2fb93ca88211b95250c4404f6468924e5e7f53d092a1fa"
+        },
+        {
+          "path": "server/engine.js",
+          "sha256": "bbe8a865d280fb75075e93a139a3badbaa20972a18406baeeafb8ca2fc56a550"
+        },
+        {
+          "path": "server/gcsp/brief/index.js",
+          "sha256": "22500a517f8232947b33ac274e32bf60746ba9d8199851e750784f57737ee418"
+        },
+        {
+          "path": "server/gcsp/clock/index.js",
+          "sha256": "a1726ddc4ad11deb0b7044480d745180d4c7dff42b34e77305a090b35d38e40a"
+        },
+        {
+          "path": "server/gcsp/fixtures/principals.js",
+          "sha256": "848797ec98dd253c8c8daa4e1078f2b6ecc30b2807c713bf13615f2ead18ec2f"
+        },
+        {
+          "path": "server/gcsp/fixtures/scenario-v1.js",
+          "sha256": "408f135c04ae909e717c30763073a3ea24a82c1e8643fabdea2888e22f1681f4"
+        },
+        {
+          "path": "server/gcsp/fixtures/scenarios/catalogue-v1.js",
+          "sha256": "eca724465148032750c74c57882c0ee0ae69f3b119330194b9601b9b4bc1b73c"
+        },
+        {
+          "path": "server/gcsp/fixtures/scenarios/index.js",
+          "sha256": "e1e794e347833ae952352d7bdf2cbc9afae28c65a01edd76c570a6bf38c4cad4"
+        },
+        {
+          "path": "server/gcsp/identity/index.js",
+          "sha256": "7b23c7a6f251edaa54ce8921eb29734976447239afd3cb58343d79f9e153c152"
+        },
+        {
+          "path": "server/gcsp/migrations/0001_transaction_foundation.sql",
+          "sha256": "3bde8db01f103141ca9bbe7398a6e1172df9b9789df745244a0071a00b9629d1"
+        },
+        {
+          "path": "server/gcsp/migrations/0002_policy_tables.sql",
+          "sha256": "65346093f811df63b225436a0ca35cd4061990a78caacb44ffde7b1effd1edd0"
+        },
+        {
+          "path": "server/gcsp/migrations/0003_renewal_cases.sql",
+          "sha256": "e76750fddd75b9d363fd209c243169ce1f9b06c78f96b7dbb74fe3c296f08c98"
+        },
+        {
+          "path": "server/gcsp/migrations/index.js",
+          "sha256": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f"
+        },
+        {
+          "path": "server/gcsp/offers/followup-comparison.js",
+          "sha256": "8a7120e2f217b4a6842081e70d90cf0d170939ffa5b9e75ba1aec0330877395f"
+        },
+        {
+          "path": "server/gcsp/offers/followup-http.js",
+          "sha256": "b9c1f59fa083a658d0c801fc59c335cb84ddf7b454d3fc60636fcc85306375d0"
+        },
+        {
+          "path": "server/gcsp/offers/followup-policy-definitions.json",
+          "sha256": "2b634e30a65f8fce6a3cfef67e10b04e9dff72ecb4fe296c51330e98efe86d5d"
+        },
+        {
+          "path": "server/gcsp/offers/followup-policy.js",
+          "sha256": "d65f690d498c0c9c668e4969c2663245da24b47010c7daff9da5c4920163dc39"
+        },
+        {
+          "path": "server/gcsp/policy/file-provider.js",
+          "sha256": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad"
+        },
+        {
+          "path": "server/gcsp/policy/index.js",
+          "sha256": "087267e81d4a780ef300dba144d9de5c4978ca530fe8ea5b2f53e2ec41395a2c"
+        },
+        {
+          "path": "server/gcsp/policy/memory-provider.js",
+          "sha256": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53"
+        },
+        {
+          "path": "server/gcsp/policy/postgres-provider.js",
+          "sha256": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12"
+        },
+        {
+          "path": "server/gcsp/policy/publish.js",
+          "sha256": "5731771b1b7607028cd923c33038a0a0da113d463b8042fdd0b60d9f0a63d023"
+        },
+        {
+          "path": "server/gcsp/policy/seed-v1.json",
+          "sha256": "c585213b98631d6e82acc1b3720d47efae49fdb502f5fc86fb440703ef6e41a6"
+        },
+        {
+          "path": "server/gcsp/recommendation/index.js",
+          "sha256": "f0595fa37434b139d953db0ca89754ada08c9f6902abf3ea924addd2b72b6036"
+        },
+        {
+          "path": "server/gcsp/repository/core.js",
+          "sha256": "c55c93c543886108f67aa12bc5c7519d50063e90ba4ec78df37aa0df56d6f311"
+        },
+        {
+          "path": "server/gcsp/repository/index.js",
+          "sha256": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16"
+        },
+        {
+          "path": "server/gcsp/repository/memory.js",
+          "sha256": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866"
+        },
+        {
+          "path": "server/gcsp/repository/postgres.js",
+          "sha256": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da"
+        },
+        {
+          "path": "server/gcsp/repository/schema.js",
+          "sha256": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a"
+        },
+        {
+          "path": "server/gcsp/vehicle-evidence/vin-allocation.js",
+          "sha256": "336d73b30e78ee4a6a1484598000497513a160a857d7b9533bd5ff3e55ff051e"
+        },
+        {
+          "path": "server/gcsp/vehicle-evidence/vin-generator.js",
+          "sha256": "56072df720ff4b32d26fcd099852f397f140ae44b4658532fa952d11c717260f"
+        },
+        {
+          "path": "server/gcsp/vehicle-evidence/vin-profiles.js",
+          "sha256": "d3f6ea071027d787b2eeb6ebb8d70992845711c63ad084e0819403d6e13a90bd"
+        },
+        {
+          "path": "server/package-lock.json",
+          "sha256": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e"
+        },
+        {
+          "path": "server/package.json",
+          "sha256": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+        },
+        {
+          "path": "server/questions.js",
+          "sha256": "898716dfaf8a184fef39a9ae12b9d59b01cce94c48356dab5e3b4e81de62c26d"
+        },
+        {
+          "path": "server/scenarios/employee/index.js",
+          "sha256": "43f50c04794902dd1d10a008f7882d335c1b5179f1c57a3f4ab9ea1293f7d844"
+        },
+        {
+          "path": "server/test/gcsp-second-offer-policy.test.js",
+          "sha256": "999fb8cdce02bb681f1301789f5a6dee9b594206d1f37db81a0011f672b969c6"
+        },
+        {
+          "path": "server/test/helpers/employee-recommendation.js",
+          "sha256": "39b7e47f9298d155759fa440bd412ebb86bfc009b7ec9d9d1167bdb88970ce9a"
+        },
+        {
+          "path": "server/vehicles/index.js",
+          "sha256": "cc02ff92ac13a25fdbe3a2325f60cafe2c16486e2f11d78a391f8664a217b5cc"
+        }
+      ]
+    },
+    {
+      "manifest": "controller-94e05ff-source.json",
+      "manifestSHA256": "bf9b0638f69c923efc16c8fa4a62ebc77698d4ed159523f26e971bc28ef42a68",
+      "sourceCommit": "94e05ff9070aa19f5deb3e9997dfed96cc268473",
+      "rowCount": 7,
+      "changed": [],
+      "unchangedRows": [
+        {
+          "path": "blocks/gcsp/offer-followup/followup-controller.js",
+          "sha256": "038336ab02fa578cc487313e25bf37831d476669527f2b6f4e2fd391d00ffbad"
+        },
+        {
+          "path": "blocks/gcsp/offer-followup/http-adapter.js",
+          "sha256": "5482dfa819d857a07add85b85e4117a0cb24ecaf010c83c47be34b6ed7cc45c6"
+        },
+        {
+          "path": "server/test/gcsp-second-offer-controller.test.js",
+          "sha256": "64ba51f1b4bb03f3ee81893f953ee05e87e0798154e3a51f71d96b7d99dd3b64"
+        },
+        {
+          "path": "package.json",
+          "sha256": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1"
+        },
+        {
+          "path": "package-lock.json",
+          "sha256": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071"
+        },
+        {
+          "path": "server/package.json",
+          "sha256": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+        },
+        {
+          "path": "server/package-lock.json",
+          "sha256": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e"
+        }
+      ]
+    },
+    {
+      "manifest": "renderer-94e05ff-source.json",
+      "manifestSHA256": "fb9cb018534ca934ebb74582a440f0fab3d2ab4b6ccfa05880d9f1f5f103cda8",
+      "sourceCommit": "94e05ff9070aa19f5deb3e9997dfed96cc268473",
+      "rowCount": 22,
+      "changed": [],
+      "unchangedRows": [
+        {
+          "path": "blocks/gcsp/employee/fixtures.js",
+          "sha256": "e63cf63076f7bfa718b23b3e2a0d39ef6e57c58c4003f238b0059ce560ba0881"
+        },
+        {
+          "path": "blocks/gcsp/employee/gcsp-employee.js",
+          "sha256": "2f35c7983aafef2c8f1eb72f6c78341cbf1c76269110f6a25dca1b775f11df2b"
+        },
+        {
+          "path": "blocks/gcsp/employee/representative-body.js",
+          "sha256": "a9146fc18cac0346a20b12c603df65a84dffc7bd46d267f2706f4e2c63b76af4"
+        },
+        {
+          "path": "blocks/gcsp/kit/data-table.js",
+          "sha256": "d2fb64ed87b088d3f6f72d078c3cdf6ae37a18ade4e22236428e141acda4dc4b"
+        },
+        {
+          "path": "blocks/gcsp/kit/form-controls.js",
+          "sha256": "4df9e86f3d51f33397bd524b95f35a40240c931b441f91a7b8b05ef89fe508b4"
+        },
+        {
+          "path": "blocks/gcsp/kit/metric-tile.js",
+          "sha256": "4679c5eb20710c4083540106efbcf2c1e6a64b11ebe331f89c02db2c4c2e9161"
+        },
+        {
+          "path": "blocks/gcsp/offer-followup/followup-controller.js",
+          "sha256": "038336ab02fa578cc487313e25bf37831d476669527f2b6f4e2fd391d00ffbad"
+        },
+        {
+          "path": "blocks/gcsp/offer-followup/followup-view.js",
+          "sha256": "c8d04d4c38e4011202295b23dff29836509fd02a8c5b5e77d74b8552b740ccd8"
+        },
+        {
+          "path": "blocks/gcsp/offer-followup/gcsp-offer-followup.js",
+          "sha256": "4c7f57574a9869f664b3e044955df95dab3b505e3a1eeefa6b2753a20539daa6"
+        },
+        {
+          "path": "blocks/gcsp/offer-followup/http-adapter.js",
+          "sha256": "5482dfa819d857a07add85b85e4117a0cb24ecaf010c83c47be34b6ed7cc45c6"
+        },
+        {
+          "path": "blocks/gcsp/shell/portal-shell.js",
+          "sha256": "7e62088d69bfa43ff0ccff2678931fe1e48c7a0b3814184f449f308cf4ebaa01"
+        },
+        {
+          "path": "blocks/vehicle-matcher/modes/brand-copy.js",
+          "sha256": "485098aea61944c5fd62047164b4aabfdd1c95c2ff2be9aacf5dae211d195ec9"
+        },
+        {
+          "path": "blocks/vehicle-matcher/modes/question-ui.js",
+          "sha256": "0824c4fb7de898ec67dc1e193716a742546f8bcd382b424fc2dbcadbc55b5ef3"
+        },
+        {
+          "path": "blocks/vehicle-matcher/modes/result-card.js",
+          "sha256": "cc5d50468f45f1c751c597ece89ca5d7dfe88f70d98dd606104ad3504007f948"
+        },
+        {
+          "path": "blocks/vehicle-matcher/quiz-meta.js",
+          "sha256": "7250a6ddb686f0f2cd0ef1af1895959006956228aef656da633676b89e203c0d"
+        },
+        {
+          "path": "blocks/vehicle-matcher/ui.js",
+          "sha256": "49107097a7927e388ff78949045827f3a8903fea0bd758dbe1aa597bec82d8b2"
+        },
+        {
+          "path": "server/test/gcsp-second-offer-render.test.js",
+          "sha256": "573371747034501249142a33f165e8a9ec357e7be8519581705e7beccaa3379c"
+        },
+        {
+          "path": "blocks/gcsp/offer-followup/gcsp-offer-followup.css",
+          "sha256": "be31a68a28e64735ffa93a5a3037d7705d8fea25d0fc0caaff2c8815cd4b8d0d"
+        },
+        {
+          "path": "package.json",
+          "sha256": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1"
+        },
+        {
+          "path": "package-lock.json",
+          "sha256": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071"
+        },
+        {
+          "path": "server/package.json",
+          "sha256": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+        },
+        {
+          "path": "server/package-lock.json",
+          "sha256": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e"
+        }
+      ]
+    }
+  ],
+  "originalTestNamesPreserved": [
+    "reading a policy question writes nothing and projects only the one existing target",
+    "confirmation uses real BriefService, preserves other inputs, replays and retains save on reload",
+    "a second command cannot consume the decline and stale concurrent confirmations cannot overwrite",
+    "unchanged, invalid, forged and stale question inputs never write",
+    "question versions cannot cross a different completed decline",
+    "missing, pending, mismatched, future and bad-digest completed decline inputs fail closed",
+    "missing canonical policy and absent target fields never create a question or change",
+    "fuel, size and equipment questions use the same canonical change reducer",
+    "forged, other employee and stale run sessions cannot follow or change the brief",
+    "BriefService failures remain safe and never become a saved response",
+    "two persisted quotes and the safe account port produce a comparison with explicit current inputs",
+    "HTTP descriptors require employee context, exact selector and delegated strict confirmation"
+  ],
+  "proposedTestNames": [
+    "reading a policy question writes nothing and projects only the one existing target",
+    "confirmation uses real BriefService, preserves other inputs, replays and retains save on reload",
+    "a second command cannot consume the decline and stale concurrent confirmations cannot overwrite",
+    "unchanged, invalid, forged and stale question inputs never write",
+    "question versions cannot cross a different completed decline",
+    "missing, pending, mismatched, future and bad-digest completed decline inputs fail closed",
+    "missing canonical policy and absent target fields never create a question or change",
+    "fuel, size and equipment questions use the same canonical change reducer",
+    "forged, other employee and stale run sessions cannot follow or change the brief",
+    "BriefService failures remain safe and never become a saved response",
+    "two persisted quotes and the safe account port produce a comparison with explicit current inputs",
+    "ordinary identity uses persisted slot renewal through question, save, reload and next-hold comparison",
+    "unpopulated slot renewal uses the matched hold and event; explicit conflicts and malformed values refuse",
+    "slot content and version changes before question response or brief write refuse without a brief change",
+    "HTTP descriptors require employee context, exact selector and delegated strict confirmation"
+  ],
+  "selection": [
+    "server/test/gcsp-second-offer.test.js"
+  ],
+  "changedFunctions": {
+    "server/gcsp/offers/followup.js": [
+      "renewal",
+      "#prepare",
+      "#sameSlot",
+      "#afterSave",
+      "read",
+      "confirm"
+    ]
+  },
+  "regressionMap": [
+    {
+      "test": "ordinary identity uses persisted slot renewal through question, save, reload and next-hold comparison",
+      "coverage": "Real unmodified frozen DemoIdentity context omits renewal; actual persisted slot CAS; real BriefService question/save/reload; fixture safe102 comparison port verifies next hold uses internally resolved renewal."
+    },
+    {
+      "test": "unpopulated slot renewal uses the matched hold and event; explicit conflicts and malformed values refuse",
+      "coverage": "Absent and null slot renewal fall back to matched hold/event; explicit slot conflicts and malformed slot/hold/event/relevant-history values refuse without writes."
+    },
+    {
+      "test": "slot content and version changes before question response or brief write refuse without a brief change",
+      "coverage": "Actual slot CAS content/version change during policy read refuses question and confirm; only injected CAS command receipt allowed, zero BriefService writes."
+    }
+  ],
+  "boundaries": {
+    "real": [
+      "DemoIdentity",
+      "BriefService",
+      "memory repository CAS",
+      "DemoClock"
+    ],
+    "fixtures": [
+      "decline/offer/hold/quote rows",
+      "followup question and decline-reason policy values",
+      "safe102-shaped account port",
+      "labelled corrupt-history read facade"
+    ],
+    "unproved": [
+      "actual100/102/106/105 producer composition",
+      "canonical103 runtime registration",
+      "browser/layout",
+      "atomic slot-to-brief write",
+      "full suite"
+    ]
+  },
+  "execution": "No Node command, import, test or runtime probe performed. New graph requires dispatcher review and a separate execution grant. Prior service12 result proves only old source; unchanged controller14 and policy7 remain independent."
+}
