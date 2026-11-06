@@ -4,3 +4,4 @@ export { PLANNING_POLICY_KEYS, readPlanningPolicy } from './policy.js';
 export { createOrderPlanService } from './service.js';
 export { resolveSupplyRecords, createOrderPlanSupplyProvider } from './supply.js';
 export { createExpressedOrderForecastProvider } from './forecast.js';
+export { createFutureChoiceEvaluator } from './future-choices.js';

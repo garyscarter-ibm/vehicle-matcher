@@ -4,12 +4,13 @@ import { CONTRACT_VERSION, SOLVER_LIMITS, resolveInput, compare, integer } from 
 const day = 86400000;
 const constraint = (id, detail) => ({ id, detail });
 const limit = (field, actual, maximum) => ({ field, actual, maximum });
+const deadlineFor = (entitlement) => entitlement.requiredBy ?? entitlement.renewalAt;
 
 function lotsFor(input, vector) {
   const horizon = Date.parse(input.forecast.horizonEnd);
   return [
     ...input.stock.map((s) => ({ id: `stock:${s.stockId}`, derivativeId: s.derivativeId, quantity: 1, availableAt: s.availableAt,
-      heldForEntitlementId: s.heldForEntitlementId, permittedEntitlementIds: s.permittedEntitlementIds ?? null, source: 'stock' })),
+      heldForEntitlementId: s.heldForEntitlementId, permittedEntitlementIds: s.permittedEntitlementIds ?? null, source: 'stock', stockId: s.stockId })),
     ...input.inbound.map((s) => ({ id: `supply:${s.supplyId}`, derivativeId: s.derivativeId, quantity: s.quantity - s.releasedQuantity,
       availableAt: s.expectedAt, heldForEntitlementId: null, source: 'confirmed-inbound' })),
     ...input.catalog.map((d, i) => ({ id: `order:${d.derivativeId}`, derivativeId: d.derivativeId, quantity: vector[i],
@@ -25,8 +26,9 @@ function allocate(input, lots, effort) {
   const owners = lots.map(() => []);
   const assignment = new Map();
   const choices = entitlements.map((e) => lots.flatMap((s, i) => e.acceptableDerivativeIds.includes(s.derivativeId)
-    && Date.parse(input.asOf) <= Date.parse(e.renewalAt)
-    && Date.parse(s.availableAt) <= Date.parse(e.renewalAt)
+    && Date.parse(input.asOf) <= Date.parse(deadlineFor(e))
+    && Date.parse(s.availableAt) <= Date.parse(deadlineFor(e))
+    && !(s.source === 'stock' && e.excludedStockIds?.includes(s.stockId))
     && (s.heldForEntitlementId === null || s.heldForEntitlementId === e.entitlementId)
     && (s.permittedEntitlementIds == null || s.permittedEntitlementIds.includes(e.entitlementId)) ? [i] : []));
   const augment = (employee, seen) => {
@@ -50,7 +52,8 @@ function allocate(input, lots, effort) {
   entitlements.forEach((e, i) => augment(i, new Set()));
   return entitlements.flatMap((e, i) => assignment.has(i) ? [{ entitlementId: e.entitlementId,
     derivativeId: lots[assignment.get(i)].derivativeId, sourceId: lots[assignment.get(i)].id,
-    source: lots[assignment.get(i)].source, availableAt: lots[assignment.get(i)].availableAt, renewalAt: e.renewalAt }] : []);
+    source: lots[assignment.get(i)].source, availableAt: lots[assignment.get(i)].availableAt, renewalAt: e.renewalAt,
+    ...(e.requiredBy === undefined ? {} : { requiredBy: e.requiredBy }) }] : []);
 }
 
 function hardConstraints(input, vector) {
@@ -122,20 +125,22 @@ function explain(input, plan) {
   const vector = plan.quantities.map((d) => d.quantity);
   const unmetNeeds = input.forecast.entitlements.filter((e) => !plan.allocations.some((a) => a.entitlementId === e.entitlementId)).map((e) => {
     const acceptable = lots.filter((s) => e.acceptableDerivativeIds.includes(s.derivativeId));
-    const timely = acceptable.filter((s) => Date.parse(s.availableAt) <= Date.parse(e.renewalAt));
+    const timely = acceptable.filter((s) => Date.parse(s.availableAt) <= Date.parse(deadlineFor(e)));
     const visible = timely.filter((s) => s.permittedEntitlementIds == null || s.permittedEntitlementIds.includes(e.entitlementId));
-    const accessible = visible.filter((s) => s.heldForEntitlementId === null || s.heldForEntitlementId === e.entitlementId);
+    const heldPermitted = visible.filter((s) => s.heldForEntitlementId === null || s.heldForEntitlementId === e.entitlementId);
+    const accessible = heldPermitted.filter((s) => !(s.source === 'stock' && e.excludedStockIds?.includes(s.stockId)));
     const gates = [...e.gates];
-    if (Date.parse(e.renewalAt) < Date.parse(input.asOf)) gates.push('renewal-already-passed');
+    if (Date.parse(deadlineFor(e)) < Date.parse(input.asOf)) gates.push(deadlineFor(e) === e.renewalAt ? 'renewal-already-passed' : 'required-by-already-passed');
     if (!e.acceptableDerivativeIds.length) gates.push('no-permitted-acceptable-choice');
     else if (timely.length && !visible.length) gates.push('stock-not-visible');
-    else if (visible.length && !accessible.length) gates.push('held-for-another-entitlement');
-    else if (acceptable.length && !timely.length) gates.push('arrival-after-renewal');
+    else if (visible.length && !heldPermitted.length) gates.push('held-for-another-entitlement');
+    else if (heldPermitted.length && !accessible.length) gates.push('declined-unchanged');
+    else if (acceptable.length && !timely.length) gates.push(deadlineFor(e) === e.renewalAt ? 'arrival-after-renewal' : 'arrival-after-required-by');
     const blockedOrders = []; let additionalOrderFeasible = false;
     for (const [i, d] of input.catalog.entries()) {
       if (!e.acceptableDerivativeIds.includes(d.derivativeId)) continue;
-      if (Date.parse(input.asOf) + d.leadTimeDays * day > Date.parse(e.renewalAt)) {
-        blockedOrders.push(`lead-time-before-renewal:${d.derivativeId}`); continue;
+      if (Date.parse(input.asOf) + d.leadTimeDays * day > Date.parse(deadlineFor(e))) {
+        blockedOrders.push(`${deadlineFor(e) === e.renewalAt ? 'lead-time-before-renewal' : 'lead-time-before-required-by'}:${d.derivativeId}`); continue;
       }
       const next = [...vector]; next[i] += 1;
       const obstacles = hardConstraints(input, next);

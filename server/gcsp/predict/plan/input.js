@@ -41,8 +41,10 @@ export function resolveInput(input) {
   const entitlements = forecast.entitlements;
   if (entitlements.some((e) => !object(e) || ['entitlementId', 'employeeId', 'renewalId', 'entitlementSlotId'].some((k) => !text(e[k]))
     || !instant(e.renewalAt) || Date.parse(e.renewalAt) > Date.parse(forecast.horizonEnd)
+    || e.requiredBy !== undefined && (!instant(e.requiredBy) || Date.parse(e.requiredBy) > Date.parse(e.renewalAt))
     || !Array.isArray(e.acceptableDerivativeIds) || !e.acceptableDerivativeIds.every((id) => derivatives.has(id)) || !unique(e.acceptableDerivativeIds)
-    || !Array.isArray(e.gates) || !e.gates.every(text))
+    || !Array.isArray(e.gates) || !e.gates.every(text)
+    || e.excludedStockIds !== undefined && (!Array.isArray(e.excludedStockIds) || !e.excludedStockIds.every(text) || !unique(e.excludedStockIds)))
     || !unique(entitlements.map((e) => e?.entitlementId)) || !unique(entitlements.map((e) => e?.employeeId))
     || !unique(entitlements.map((e) => e?.entitlementSlotId))) reject('forecast.entitlements', 'Each employee occurs once, with unique entitlement/slot, exact renewal date and joint permitted choices.');
   for (const [name, id] of [['stock', 'stockId'], ['inbound', 'supplyId']]) {
@@ -56,8 +58,8 @@ export function resolveInput(input) {
   if (reasons.length) return { reasons };
   const value = structuredClone(input);
   value.catalog.sort((a, b) => compare(a.derivativeId, b.derivativeId));
-  value.forecast.entitlements.sort((a, b) => compare(a.renewalAt, b.renewalAt) || compare(a.entitlementId, b.entitlementId));
-  for (const e of value.forecast.entitlements) e.acceptableDerivativeIds.sort(compare);
+  value.forecast.entitlements.sort((a, b) => compare(a.requiredBy ?? a.renewalAt, b.requiredBy ?? b.renewalAt) || compare(a.entitlementId, b.entitlementId));
+  for (const e of value.forecast.entitlements) { e.acceptableDerivativeIds.sort(compare); e.excludedStockIds?.sort(compare); }
   value.stock.sort((a, b) => compare(a.stockId, b.stockId));
   value.inbound.sort((a, b) => compare(a.supplyId, b.supplyId));
   value.constraints.modelBounds.sort((a, b) => compare(a.modelId, b.modelId));

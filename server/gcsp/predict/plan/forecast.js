@@ -1,24 +1,13 @@
 import { inputDigest } from '../../repository/core.js';
 import { CONTRACT_VERSION, text, instant, compare } from './input.js';
+import { renewalInstant } from './renewal.js';
 
-const tables = ['employees', 'briefs', 'entitlement_slots', 'holds', 'stock'];
+const tables = ['employees', 'briefs', 'entitlement_slots', 'holds', 'stock', 'decisions', 'offers'];
 const unavailable = (code) => ({ status: 'unavailable', code, contractVersion: CONTRACT_VERSION });
 const currentBriefs = (rows) => [...rows.reduce((byEmployee, b) => {
   if (b.status === 'confirmed' && (!byEmployee.has(b.employeeId) || byEmployee.get(b.employeeId).briefVersion < b.briefVersion)) byEmployee.set(b.employeeId, b);
   return byEmployee;
 }, new Map()).values()].sort((a, b) => compare(a.employeeId, b.employeeId));
-
-// Same supplied-contract date semantics as F112: a calendar contract end is the
-// end of that UTC day. Never substitute a random renewal or the present date.
-function renewalInstant(employee) {
-  const current = employee.contract?.manualContext?.contracts?.filter((c) => c.status === 'current') ?? [];
-  if (current.length > 1) return null;
-  const contract = current[0] ?? employee.contract;
-  const date = contract?.contractEndDate;
-  if (typeof date !== 'string' || !/^\d{4}-\d\d-\d\d$/.test(date)) return null;
-  const end = `${date}T23:59:59.999Z`;
-  return instant(end) ? end : null;
-}
 
 // This internal extension uses the same authoritative saved briefs as F99, while
 // preserving the joint choices its privacy-banded PUBLIC marginal DTO omits.
@@ -64,18 +53,24 @@ export function createExpressedOrderForecastProvider({ repository, identity, clo
             && rows.stock.some((s) => s.orderUuid === h.orderUuid && (s.state === 'allocated' || s.allocated === true)));
           if (selected) { excluded.push({ employeeId: employee.employeeId, reason: 'already-selected' }); continue; }
           const evaluated = await futureChoices.evaluateChoices(context, { read: structuredClone(read), employee: structuredClone(employee),
-            brief: structuredClone(brief), catalog: structuredClone(choices.value) });
+            brief: structuredClone(brief), catalog: structuredClone(choices.value),
+            history: { decisions: structuredClone(rows.decisions), offers: structuredClone(rows.offers), briefs: structuredClone(rows.briefs) } });
           if (evaluated?.status !== 'ok') return evaluated?.status ? evaluated : unavailable('planning-future-choice-evaluation-unavailable');
           const value = evaluated.value;
           if (value?.runId !== context.runId || value.policyVersion !== context.policyVersion || value.employeeId !== employee.employeeId
             || value.briefVersion !== brief.briefVersion || value.catalogVersion !== choices.value.version || !text(value.version)
             || !Array.isArray(value.acceptableDerivativeIds) || !value.acceptableDerivativeIds.every((id) => derivativeIds.has(id))
             || new Set(value.acceptableDerivativeIds).size !== value.acceptableDerivativeIds.length || !Array.isArray(value.gates)
+            || value.excludedStockIds !== undefined && (!Array.isArray(value.excludedStockIds) || !value.excludedStockIds.every(text)
+              || new Set(value.excludedStockIds).size !== value.excludedStockIds.length)
+            || value.requiredBy !== undefined && (!instant(value.requiredBy) || Date.parse(value.requiredBy) > Date.parse(renewalAt))
             || !value.gates.every(text) || !Array.isArray(value.limitations) || !value.limitations.every(text)) return unavailable('planning-future-choice-evaluation-invalid');
           evaluations.push(value);
           entitlements.push({ entitlementId: slot.entitlementSlotId, employeeId: employee.employeeId,
             renewalId: employee.renewalId, entitlementSlotId: slot.entitlementSlotId, companyId: employee.companyId, schemeId: employee.schemeId,
             renewalAt, acceptableDerivativeIds: [...value.acceptableDerivativeIds].sort(compare), gates: [...value.gates].sort(compare) });
+          if (value.excludedStockIds !== undefined) entitlements.at(-1).excludedStockIds = [...value.excludedStockIds].sort(compare);
+          if (value.requiredBy !== undefined) entitlements.at(-1).requiredBy = value.requiredBy;
         }
         const after = await load(); if (after.error) return after.error;
         const end = await clock.now(context); if (end.status !== 'ok') return end;

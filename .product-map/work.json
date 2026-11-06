@@ -1131,7 +1131,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T09:43:18Z",
+      "observed_at": "2026-11-06T09:56:16Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-117",
       "slices": [
         {
@@ -1166,8 +1166,8 @@
           "id": "producer-integration",
           "status": "in-progress",
           "title": "Trusted demand and actual supply integration",
-          "observed_at": "2026-11-06T09:43:18Z",
-          "evidence": "Resumed actual F99 saved-brief null renewal compatibility and strict mismatch gates; scoped31/31 pass. Future catalog/evaluator + actual F104/F92 composition remain open. docs/gcsp/evidence/fucq117/resume-receipt.json"
+          "observed_at": "2026-11-06T09:56:16Z",
+          "evidence": "Dedicated plan-owned future evaluator and actual saved-demand composition passed scoped42/42; exact decline history, all-configuration hard gates, advisory preferences and earlier requiredBy exercised. Accepted F77/F78 catalog identity, canonical PolicyService configuration prices, actual future terms and F104/F92/runtime composition remain open. docs/gcsp/evidence/fucq117/future-evaluator-receipt.json"
         },
         {
           "id": "final-validation",
