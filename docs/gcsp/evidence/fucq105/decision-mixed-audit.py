@@ -37,17 +37,24 @@ if any(digest(ROOT/p) != row['sha256'] for p, row in plan['harness'].items()):
     raise SystemExit('Frozen audit/helper identity changed; preserve the run for review.')
 r = module('audit_resources', ROOT/'_tools/test_resources.py')
 g = module('audit_git', ROOT/'_tools/scaffold_git.py')
-reservations = r.read_json(r.HostBudget(r.Policy(plan['limits']), directory=Path.home()/'.cache/agent-scaffolding/test-resources').path)
+ledger = module('audit_ledger', ROOT/'docs/gcsp/evidence/fucq105/decision-mixed-ledger.py')
+try:
+    reservation_absent = ledger.Budget(r, r.Policy(plan['limits']), plan['host_budget']).absence(c['token'])
+except BaseException:
+    reservation_absent = False
 
 checks = {'owner_exited': not r.process_alive(summary['owner']), 'scratch_absent': not os.path.lexists(c['root']),
     'launch_ownership_verified': c.get('child_ownership_and_join_verified') is True
         and (launch.get('attempted') is False and launch.get('state') == 'not-started'
              or launch.get('attempted') is True and launch.get('state') == 'joined' and launch.get('joined') is True
+             and launch.get('direct_joined') is True
              and isinstance(launch.get('pid'), int) and launch['pid'] in c['groups'])
         and launch.get('issues') == [],
     'groups_absent': all(r.group_has_live_members(group) is False for group in c['groups']),
     'processes_absent': all(not r.process_alive(row) for row in c['processes']),
-    'reservation_absent': isinstance(reservations, dict) and c['token'] not in reservations,
+    'reservation_absent': reservation_absent,
+    'ledger_staging_absent': all(row.get('state') == 'removed' and not os.path.lexists(row['path'])
+                                 for row in c.get('ledger_staging', [])),
     'local_sources_preserved': all(digest(ROOT/p) == h for p, h in summary['local_source_before'].items()),
     'harness_preserved': all(digest(ROOT/p) == row['sha256'] for p, row in plan['harness'].items())}
 node = Path(plan['node']['path']); st = node.stat()

@@ -48,6 +48,8 @@ After root reviews the published source identities, select this dedicated test a
 
 ## Existing mixed decision proof stays separate
 
+Current root update:102's actual100/106/107 proof failed8/11, returning null for valid reload/historical-brief/terminal-version cases;102 diagnosis/repair and its immutable pin remain outstanding. Root's1317-check cleanup audit does not establish durable-entry acceptance. The [current harness delta and selected actual-consumer case](decision-mixed-current-delta.md) records strict accounting/finalizer authoring and the next proof boundary. No eight-case harness execution is selected solely for refreshed evidence; no run is granted.
+
 The original actual106 memory proposal at `9090aff3b5779a6c80c4c9af099e8363726d2718` is retained as an immutable predecessor, with source-plan SHA256 `ce28e76ff4df809c7d68717eb8b2d6c65d7b50da863cf8ceac5b6f304174e4b1`, 51 modules/94 JavaScript edges/11 file inputs and original105 production pins. Its product/test/loader bytes and two cases/four checkpoints remain the basis of the separate [cancellation-safety harness successor](decision-mixed-cancellation-plan.md). That successor refreezes owned lifecycle/supervisor/auditor identities under root's authoring notice; the uncorrected predecessor is not a future launch proposal. This follow-up delta is not substituted into that product graph. Root must review the exact successor helper and composition identities before any execution. No seven-checkpoint rerun or extra grant is inferred.
 
 Agents: Hippety Hopper, existing requested/selected `gpt-6.1-sol` / `high`; no new spawn, fallback or descendants. Authoring only; technical pickup against the agreed interface does not imply completed integration or acceptance.

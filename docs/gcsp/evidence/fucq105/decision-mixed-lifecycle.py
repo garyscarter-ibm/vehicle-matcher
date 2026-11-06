@@ -1,6 +1,7 @@
 """Owned105 launch bookkeeping. Importing this module creates no processes, scratch or reservations."""
 from contextlib import contextmanager
 import signal
+import subprocess
 
 
 @contextmanager
@@ -31,7 +32,7 @@ class LaunchOwnership:
         self.attempted = False
         self.safe = True
         self.record = {'attempted': False, 'state': 'not-started', 'pid': None,
-                       'registration_persisted': False, 'joined': False, 'issues': []}
+                       'registration_persisted': False, 'direct_joined': False, 'joined': False, 'issues': []}
         scratch.record['child_launch'] = self.record
 
     def persist(self):
@@ -81,15 +82,19 @@ class LaunchOwnership:
             if process.pid not in self.scratch.record['groups']:
                 self.scratch.record['groups'].append(process.pid)
             self.record.update(pid=process.pid, state='stopping', joined=False)
+            # Direct captured-handle stop/join precedes queries, guards and manifest writes.
+            # A failed sample/persistence must never leave this direct child running.
+            try:
+                self.join_direct()
+            except BaseException as error:
+                self.record['issues'].append(type(error).__name__)
             try:
                 self.scratch.sample()
             except BaseException as error:
                 self.record['issues'].append(type(error).__name__)
             try:
-                if process.poll() is None or self.resources.group_has_live_members(process.pid) is not False:
+                if self.resources.group_has_live_members(process.pid) is True:
                     self.resources.stop_group(process)
-                else:
-                    process.wait()  # Reap the captured leader even if it already exited.
             except BaseException as error:
                 self.record['issues'].append(type(error).__name__)
             try:
@@ -99,7 +104,7 @@ class LaunchOwnership:
             except BaseException as error:
                 absent = False
                 self.record['issues'].append(type(error).__name__)
-            self.safe = absent and not self.record['issues']
+            self.safe = absent and self.record['direct_joined'] and not self.record['issues']
             self.record.update(state='joined' if self.safe else 'unresolved', joined=self.safe)
         try:
             self.persist()
@@ -108,6 +113,26 @@ class LaunchOwnership:
             self.record.update(state='unresolved', joined=False)
             self.record['issues'].append(type(error).__name__)
         return self.safe
+
+    def join_direct(self):
+        """Persistence-independent fallback; no completion flag is set before a successful wait."""
+        process = self.process
+        if process is None:
+            return
+        self.record['direct_joined'] = False
+        for action in (process.terminate, process.kill):
+            try:
+                if process.poll() is None:
+                    action()
+            except OSError:
+                pass
+            try:
+                process.wait(timeout=3)
+                self.record['direct_joined'] = True
+                return
+            except subprocess.TimeoutExpired:
+                continue
+        raise RuntimeError('Captured child stop/join is unproven')
 
     def require_safe(self):
         if not self.finish():

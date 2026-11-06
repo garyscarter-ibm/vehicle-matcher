@@ -19,7 +19,13 @@ class Process:
     def poll(self):
         return self.returncode
 
-    def wait(self):
+    def terminate(self):
+        self.returncode = 0
+
+    def kill(self):
+        self.returncode = 0
+
+    def wait(self, timeout=None):
         self.waits += 1
         return self.returncode
 
@@ -116,7 +122,8 @@ class LaunchCases(unittest.TestCase):
         self.ownership.register(self.process)
         self.resources.group = None
         self.assertFalse(self.ownership.finish())
-        self.assertEqual(self.resources.stops, 1)
+        self.assertEqual(self.resources.stops, 0)
+        self.assertEqual(self.process.returncode, 0)  # Direct child joined despite the unknown group snapshot.
         self.assertEqual(self.ownership.record['state'], 'unresolved')
 
     def test_known_live_descendant_blocks_cleanup_even_after_leader_and_group_exit(self):

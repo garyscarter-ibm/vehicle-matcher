@@ -1369,7 +1369,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T02:03:26Z",
+      "observed_at": "2026-11-06T02:16:36Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-105",
       "slices": [
         {
@@ -1397,8 +1397,8 @@
           "id": "decision-host",
           "status": "blocked",
           "title": "Actual FUCQ106 decision and delivered host integration",
-          "observed_at": "2026-11-06T02:03:26Z",
-          "evidence": "6 November harness successor authored/refrozen: explicit launch intent/handle/join; unresolved ownership blocks deletion/audit and explicit reservation release. Shared dead-owner pruning limit recorded. Eight fake-process cases unexecuted; Python AST/static only. Original51/94/11 product graph/test/loader and separate105follow-up unchanged. No runtime reproduction or new grant. docs/gcsp/evidence/fucq105/decision-mixed-cancellation-plan.md"
+          "observed_at": "2026-11-06T02:16:36Z",
+          "evidence": "6 November current authoring: own frozen-lock strict ledger replaces HostBudget; exact owner/root/row and complete foreign-preserving readback, no pruning/defaults/token-only release. Direct join before manifest/sample. No executions; eight fake cases unselected for refresh.102 actual proof8/11 failed; repair pin/final105/107 graph pending. Minimal actual-consumer acceptance selection: docs/gcsp/evidence/fucq105/decision-mixed-current-delta.md"
         },
         {
           "id": "browser",

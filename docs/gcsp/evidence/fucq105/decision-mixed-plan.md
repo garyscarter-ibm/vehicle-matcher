@@ -37,6 +37,8 @@ On success, errors or handled cancellation, stop/join the process group, retain 
 
 Root's subsequent shared-harness notice requires the [owned cancellation-safety successor](decision-mixed-cancellation-plan.md) before any execution proposal. This refreeze adds explicit pre-launch intent, retained child-handle ownership, deferred handled cancellation through finalizers, and fail-closed scratch/reservation/audit gates. Unknown attempted launch or group-query uncertainty cannot count as absence. Eight fake-process fault cases are authored and unexecuted. The original9090aff hash is historical; root reviews the new exact plan and helper/test identities before a separate grant. All product source, mixed cases, loader and environment pins retain their original bytes.
 
+Root's later review requires the [current strict-ledger/finalizer delta and actual-consumer selection](decision-mixed-current-delta.md). Owned frozen-lock accounting now replaces inherited HostBudget; no pruning, empty defaults, duplicate JSON or token-only mutation is accepted. Direct child join precedes fallible sampling/persistence. No eight-case harness run is selected merely to refresh evidence. Root reports102's actual durable-entry proof failed8/11; repaired102 pins and the fresh105/107 graph remain outstanding. This original two-case graph does not prove that journey.
+
 Authoring checks here were static committed-blob/hash/relative-edge reads and Python helper AST parsing only. Source closure found and corrected the omitted static VIN JSON input before publication. No Node syntax check, supervisor/loader invocation, mixed product import, test, scratch group, policy write or live request occurred. Root's execution result remains outstanding.
 
 ## UI and browser follow-on

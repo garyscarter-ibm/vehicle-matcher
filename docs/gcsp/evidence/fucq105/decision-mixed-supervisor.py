@@ -1,6 +1,7 @@
 """Authoring proposal. Requires an explicit external root review before one finite memory run."""
 from pathlib import Path
 import argparse
+import atexit
 import hashlib
 import importlib.util
 import json
@@ -52,8 +53,8 @@ for relative, row in plan['harness'].items():
 r = module('decision_resources', ROOT / '_tools/test_resources.py')
 g = module('decision_git', ROOT / '_tools/scaffold_git.py')
 lifecycle = module('decision_lifecycle', ROOT / 'docs/gcsp/evidence/fucq105/decision-mixed-lifecycle.py')
+ledger = module('decision_ledger', ROOT / 'docs/gcsp/evidence/fucq105/decision-mixed-ledger.py')
 policy = r.Policy(plan['limits'])
-host = r.HostBudget(policy, directory=Path.home()/'.cache/agent-scaffolding/test-resources')
 record_dir = BASE / run_id
 run_manifest = BASE / 'ownership' / (run_id + '.json')
 consumption = BASE / 'ownership' / (run_id + '-consumed.json')
@@ -81,7 +82,8 @@ class OwnedScratch(r.Scratch):
             seen.update({(v['pid'], v['start']): v for v in rows if v['pid'] in selected})
             self.record['processes'] = list(seen.values())
             r.atomic_json(self.manifest, self.record)
-        used = super().sample() + r.allocated_bytes(record_dir)
+        used = super().sample() + r.allocated_bytes(record_dir) \
+            + self.record.get('ledger_staging_peak_bytes', 0)  # Conservatively charge the bounded atomic ledger copy.
         self.record['peak_combined'] = max(self.record.get('peak_combined', 0), used)
         return used
 
@@ -101,7 +103,10 @@ class OwnedScratch(r.Scratch):
 scratch = OwnedScratch(record_dir, ROOT, policy)
 scratch.record.update(story='FUCQ-105', ports=[], profiles=[], dependency_links=[], processes=[])
 ownership = lifecycle.LaunchOwnership(r, scratch)
+host = ledger.Budget(r, policy, plan['host_budget'], scratch)
 cancel = threading.Event()
+# Registered before allocation. This fallback does no query, manifest write or ledger mutation.
+atexit.register(ownership.join_direct)
 r.atomic_json(run_manifest, {'owner': r.owner(), 'state': 'planned', 'run': run_id, 'review': str(review_path),
                              'root': str(scratch.root), 'scratch_manifest': str(scratch.manifest), 'output': str(record_dir)})
 r.atomic_json(record_dir / 'plan.json', {'source_plan_sha256': plan_hash, 'review_sha256': digest(review_path),
@@ -255,20 +260,29 @@ with lifecycle.deferred_cancellation(cancel):
         child_safe = ownership.finish()
         groups_absent = all(r.group_has_live_members(group) is False for group in scratch.record['groups'])
         processes_absent = all(not r.process_alive(row) for row in scratch.record['processes'])
-        # Do not explicitly release an uncertain reservation. Dead-owner pruning is shared policy.
-        if allocation and child_safe and groups_absent and processes_absent and not os.path.lexists(scratch.root):
+        release_proof = {'child_safe': child_safe, 'groups_absent': groups_absent,
+                         'processes_absent': processes_absent, 'scratch_absent': not os.path.lexists(scratch.root)}
+        # Strict adapter never prunes foreign/dead rows and mutates only its exact owner/root-bound row.
+        if host.attempted and all(release_proof.values()):
             try:
-                host.release(scratch.token)
+                host.release(scratch.token, release_proof)
             except BaseException:
                 failure = failure or 'ReservationReleaseUncertain'
-        reservation_record = r.read_json(host.path)
-        reservation_absent = isinstance(reservation_record, dict) and scratch.token not in reservation_record
+        try:
+            reservation_absent = host.absence(scratch.token)
+            reservation_known = True
+        except BaseException:
+            reservation_absent = False
+            reservation_known = False
+            failure = failure or 'ReservationObservationUnknown'
         cleanup = {'scratch_absent': not os.path.lexists(scratch.root),
             'child_ownership_and_join_verified': child_safe, 'child_launch': dict(ownership.record),
             'groups_absent': groups_absent,
             'processes_absent': processes_absent, 'reservation_released': reservation_absent,
-            'reservation_observation_known': isinstance(reservation_record, dict),
-            'reservation_retention_scope': 'No explicit uncertain release; shared HostBudget may prune dead-owner entries after supervisor exit. Root reconciliation remains required.',
+            'reservation_observation_known': reservation_known,
+            'reservation_intent': scratch.record.get('reservation_intent'),
+            'ledger_staging': scratch.record.get('ledger_staging', []),
+            'reservation_retention_scope': 'Owned strict ledger adapter; no pruning/defaults/token-only mutation. Unresolved accounting requires root reconciliation.',
             'root': str(scratch.root), 'groups': scratch.record['groups'], 'processes': scratch.record['processes'],
             'token': scratch.token, 'scratch_manifest': str(scratch.manifest), 'ports': [], 'profiles': [], 'dependency_links': []}
         if not all(cleanup[key] for key in ('child_ownership_and_join_verified', 'scratch_absent', 'groups_absent', 'processes_absent', 'reservation_released')):
