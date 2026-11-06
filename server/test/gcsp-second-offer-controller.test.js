@@ -83,6 +83,18 @@ test('stale version requires a refresh; forbidden and earlier-run responses do n
   }
 });
 
+test('authentication loss clears a saved receipt while non-auth source failure preserves it', async () => {
+  for (const status of ['unknown-principal', 'unavailable']) {
+    let response = question(); const { controller } = setup({ read: async () => response });
+    await controller.refresh(); controller.choose('estate'); await controller.confirm();
+    assert.deepEqual(controller.snapshot().savedChange, saved()); response = { status }; await controller.refresh();
+    const result = controller.snapshot();
+    assert.equal(result.state, status === 'unknown-principal' ? 'forbidden' : 'unavailable');
+    assert.deepEqual(result.savedChange, status === 'unknown-principal' ? null : saved());
+    assert.equal(result.canConfirm, false); assert.equal(result.question, null);
+  }
+});
+
 test('duplicate confirmation is suppressed and teardown ignores late server replies', async () => {
   let finish; let calls = 0; const { controller } = setup({ confirm: () => { calls += 1; return new Promise((resolve) => { finish = resolve; }); } });
   await controller.refresh(); controller.choose('estate'); const pending = controller.confirm(); await controller.confirm();

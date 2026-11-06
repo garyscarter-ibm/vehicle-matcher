@@ -93,7 +93,7 @@ export function createFollowupController({ decisionId, transport, createCommandI
         question: null, busy: false, error: '', canConfirm: false };
     } else {
       const stateName = outcome?.status === 'stale-run' ? 'stale-run'
-        : ['forbidden', 'missing-session', 'unknown-session', 'expired-session'].includes(outcome?.status) ? 'forbidden'
+        : ['forbidden', 'missing-session', 'unknown-session', 'unknown-principal', 'expired-session'].includes(outcome?.status) ? 'forbidden'
           : ['stale-version', 'conflict'].includes(outcome?.status) ? 'refresh-required' : 'unavailable';
       const savedChange = ['stale-run', 'forbidden'].includes(stateName) ? null
         : saved(outcome?.savedChange, decisionId) ? copy(outcome.savedChange) : state.savedChange;
