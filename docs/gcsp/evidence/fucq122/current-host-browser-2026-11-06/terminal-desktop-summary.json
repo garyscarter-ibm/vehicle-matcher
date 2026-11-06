@@ -1,0 +1,737 @@
+{
+  "story": "FUCQ-122",
+  "recordedAt": "2026-11-06T19:33:49.425068+00:00",
+  "grant": "fucq122-desktop-terminal-1927",
+  "grantConsumed": true,
+  "attempts": 1,
+  "retries": 0,
+  "sourceProposalCommit": "eb03d12aed3836bca42a10d533a5cd2d05ffa762",
+  "state": "incomplete",
+  "exitCode": 1,
+  "scope": "1280x900 existing manual setup -> resolved -> closed; original desktop terminal width coverage only; compound acceptance incomplete",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "reachedChecks": [
+    "Rendered help and review are read-only; one explicit confirmation creates one case",
+    "Actual presenter Greg queue mounts once; review is read-only; one confirmation records the manual update",
+    "Resolved: reviewed without writing, explicitly confirmed, ordinary Paula reload/history equals the stored record",
+    "Closed: reviewed without writing, explicitly confirmed, ordinary Paula reload/history equals the stored record"
+  ],
+  "reachedAssertionDetail": [
+    "Both Greg status choices were in the actual server projection; each review preserved the complete stored case and sent no update.",
+    "Each confirmation added one version/history event, retained the manual remedy, original case ID/reason/owner and every prior history item; expected resolved/closed history fields and dates matched.",
+    "Resolved projected only closed; closed projected no further status transitions.",
+    "For both states, ordinary presenter Paula return -> help navigation -> actual reload compared the complete employee record with the stored record; visible heading/facts/Recorded remedy/history row count matched."
+  ],
+  "caseReportBoundary": "Final report.case assignment occurs after the unchanged errors-empty audit and was not reached. Closed state and preserved-record assertions are evidenced by the reached Closed check and capture; no final raw case payload was retained.",
+  "posts": [
+    {
+      "requestId": 53,
+      "path": "/api/gcsp/cases",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "requestId": 57,
+      "path": "/api/gcsp/session/switch",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "requestId": 147,
+      "path": "/api/gcsp/scheme-team/cases/update",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "requestId": 151,
+      "path": "/api/gcsp/session/switch",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "requestId": 332,
+      "path": "/api/gcsp/session/switch",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "requestId": 422,
+      "path": "/api/gcsp/scheme-team/cases/update",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "requestId": 427,
+      "path": "/api/gcsp/session/switch",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "requestId": 614,
+      "path": "/api/gcsp/session/switch",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "requestId": 704,
+      "path": "/api/gcsp/scheme-team/cases/update",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "requestId": 709,
+      "path": "/api/gcsp/session/switch",
+      "method": "POST",
+      "status": 200
+    }
+  ],
+  "selectedPostCounts": {
+    "help": 1,
+    "updatesIncludingInitialManualSetup": 3
+  },
+  "networkCount": 874,
+  "keyboardObservationCount": 131,
+  "keyboardBoundary": "Existing Tab/native select/radio helpers and visible focus; automated text/date fill after Tab. Not complete keyboard-only or status-announcement evidence.",
+  "cookieAttributes": [
+    {
+      "name": "gcsp_presenter",
+      "path": "/api/gcsp",
+      "secure": true,
+      "httpOnly": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "gcsp_session",
+      "path": "/api/gcsp",
+      "secure": true,
+      "httpOnly": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "GCSP_LOCAL_BOOTSTRAP",
+      "path": "/",
+      "secure": true,
+      "httpOnly": true,
+      "sameSite": "Strict"
+    }
+  ],
+  "errors": [
+    {
+      "kind": "http",
+      "path": "/api/gcsp/manual/draft",
+      "status": 404
+    },
+    {
+      "kind": "console",
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "kind": "http",
+      "path": "/api/gcsp/manual/draft",
+      "status": 404
+    },
+    {
+      "kind": "console",
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "kind": "http",
+      "path": "/api/gcsp/manual/draft",
+      "status": 404
+    },
+    {
+      "kind": "console",
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "kind": "scenario",
+      "message": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     kind: 'http',\n+     path: '/api/gcsp/manual/draft',\n+     status: 404\n+   },\n+   {\n+     kind: 'console',\n+     message: 'Failed to load resource: the server responded with a status of 404 (Not Found)'\n+   },\n+   {\n+     kind: 'http',\n+     path: '/api/gcsp/manual/draft',\n+     status: 404\n+   },\n+   {\n+     kind: 'console',\n+     message: 'Failed to load resource: the server responded with a status of 404 (Not Found)'\n+   },\n+   {\n+     kind: 'http',\n+     path: '/api/gcsp/manual/draft',\n+     status: 404\n+   },\n+   {\n+     kind: 'console',\n+     message: 'Failed to load resource: the server responded with a status of 404 (Not Found)'\n+   }\n+ ]\n- []\n\n    at runCaseJourney (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/scenario-resolved-closed-proposed.mjs:283:45)\n    at async file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/browser-runner.mjs:52:17"
+    },
+    {
+      "kind": "request",
+      "id": 41,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:53197/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 1,
+      "failureDocumentURL": "https://localhost:53197/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "kind": "request",
+      "id": 40,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:53197/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 1,
+      "failureDocumentURL": "https://localhost:53197/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "kind": "request",
+      "id": 277,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:53197/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 4,
+      "failureDocumentURL": "https://localhost:53197/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "kind": "request",
+      "id": 276,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:53197/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 4,
+      "failureDocumentURL": "https://localhost:53197/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "kind": "request",
+      "id": 555,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:53197/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 8,
+      "failureDocumentURL": "https://localhost:53197/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "kind": "request",
+      "id": 554,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:53197/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 8,
+      "failureDocumentURL": "https://localhost:53197/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "kind": "request",
+      "id": 835,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:53197/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 12,
+      "failureDocumentURL": "https://localhost:53197/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "kind": "request",
+      "id": 834,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:53197/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 12,
+      "failureDocumentURL": "https://localhost:53197/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    }
+  ],
+  "errorCount": 15,
+  "requestFailures": [
+    {
+      "id": 41,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:53197/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 1,
+      "failureDocumentURL": "https://localhost:53197/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "id": 40,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:53197/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 1,
+      "failureDocumentURL": "https://localhost:53197/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "id": 277,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:53197/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 4,
+      "failureDocumentURL": "https://localhost:53197/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "id": 276,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:53197/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 4,
+      "failureDocumentURL": "https://localhost:53197/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "id": 322,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:53197/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 5,
+      "failureDocumentURL": "https://localhost:53197/gcsp-help.html",
+      "expectedNavigationCancellation": true
+    },
+    {
+      "id": 321,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:53197/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 5,
+      "failureDocumentURL": "https://localhost:53197/gcsp-help.html",
+      "expectedNavigationCancellation": true
+    },
+    {
+      "id": 555,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:53197/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 8,
+      "failureDocumentURL": "https://localhost:53197/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "id": 554,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:53197/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 8,
+      "failureDocumentURL": "https://localhost:53197/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "id": 604,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:53197/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 9,
+      "failureDocumentURL": "https://localhost:53197/gcsp-help.html",
+      "expectedNavigationCancellation": true
+    },
+    {
+      "id": 603,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:53197/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 9,
+      "failureDocumentURL": "https://localhost:53197/gcsp-help.html",
+      "expectedNavigationCancellation": true
+    },
+    {
+      "id": 835,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:53197/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 12,
+      "failureDocumentURL": "https://localhost:53197/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "id": 834,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:53197/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 12,
+      "failureDocumentURL": "https://localhost:53197/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "id": 884,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:53197/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 13,
+      "failureDocumentURL": "https://localhost:53197/gcsp-help.html",
+      "expectedNavigationCancellation": true
+    },
+    {
+      "id": 883,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:53197/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 13,
+      "failureDocumentURL": "https://localhost:53197/gcsp-help.html",
+      "expectedNavigationCancellation": true
+    }
+  ],
+  "requestFailureCounts": {
+    "total": 14,
+    "expectedNavigationCancellations": 6,
+    "unclassified": 8
+  },
+  "errorInterpretation": "All state checks/captures preceded the unchanged errors-empty audit. Three draft404/console pairs and eight unclassified aborted reads keep the raw result incomplete; preserve the six narrowly classified cancellations too. Consistent absent-draft service contract remains a source explanation, not retained HTTP response-body proof or permission for a clean-log rerun.",
+  "driverCleanupErrors": [],
+  "toolObservation": {
+    "launchReturnedSession": true,
+    "joinedExitCode": 1,
+    "finalOutputState": "incomplete",
+    "receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/journey-desktop-08db70bb7fd34e4dbcbbd8876c3abfad/receipt.json",
+    "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/ownership/journey-desktop-08db70bb7fd34e4dbcbbd8876c3abfad.json"
+  },
+  "captures": [
+    {
+      "path": "terminal-desktop-01-greg-resolved-review.png",
+      "shape": {
+        "width": 1280,
+        "scrollWidth": 1280,
+        "status": [
+          "Presenter controls ready",
+          "",
+          "Figures updated for 5 Nov 2026, 09:00 GMT.",
+          "DemandNo briefs yetNo employee has confirmed a brief yet, so there is no demand to show. Stock figures are still current.",
+          "Draft. Change values, then preview their effect.",
+          "Current case options loaded."
+        ]
+      },
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "visible": true
+      },
+      "sourcePath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/journey-desktop-08db70bb7fd34e4dbcbbd8876c3abfad/output/01-greg-resolved-review.png",
+      "sha256": "eaa161394f90e2a3fa5e592d79cdce477a523fd39cdc8cac959e93c1c250e533",
+      "bytes": 630197,
+      "locallyInspected": true,
+      "independentlyInspectedByRoot": true
+    },
+    {
+      "path": "terminal-desktop-02-paula-resolved-reload-history.png",
+      "shape": {
+        "width": 1280,
+        "scrollWidth": 1280,
+        "status": [
+          "Presenter controls ready",
+          "",
+          ""
+        ]
+      },
+      "focus": {
+        "tag": "SUMMARY",
+        "id": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "visible": true
+      },
+      "sourcePath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/journey-desktop-08db70bb7fd34e4dbcbbd8876c3abfad/output/02-paula-resolved-reload-history.png",
+      "sha256": "1f3bd6eef51e37404c26e49109bb124d6013d45421a8e7811d5c959bff16a992",
+      "bytes": 204990,
+      "locallyInspected": true,
+      "independentlyInspectedByRoot": true
+    },
+    {
+      "path": "terminal-desktop-03-greg-closed-review.png",
+      "shape": {
+        "width": 1280,
+        "scrollWidth": 1280,
+        "status": [
+          "Presenter controls ready",
+          "",
+          "Figures updated for 5 Nov 2026, 09:00 GMT.",
+          "DemandNo briefs yetNo employee has confirmed a brief yet, so there is no demand to show. Stock figures are still current.",
+          "Draft. Change values, then preview their effect.",
+          "Current case options loaded."
+        ]
+      },
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "visible": true
+      },
+      "sourcePath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/journey-desktop-08db70bb7fd34e4dbcbbd8876c3abfad/output/03-greg-closed-review.png",
+      "sha256": "791a32d769c1b10333cbc0a3090501d743d9aec1690aa71fc3fdd250e14665ec",
+      "bytes": 631996,
+      "locallyInspected": true,
+      "independentlyInspectedByRoot": true
+    },
+    {
+      "path": "terminal-desktop-04-paula-closed-reload-history.png",
+      "shape": {
+        "width": 1280,
+        "scrollWidth": 1280,
+        "status": [
+          "Presenter controls ready",
+          "",
+          ""
+        ]
+      },
+      "focus": {
+        "tag": "SUMMARY",
+        "id": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "visible": true
+      },
+      "sourcePath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/journey-desktop-08db70bb7fd34e4dbcbbd8876c3abfad/output/04-paula-closed-reload-history.png",
+      "sha256": "2f7820ceb2587e14537f80e34a562ba44a739fd820c7746568e448bfbc23fe26",
+      "bytes": 232293,
+      "locallyInspected": true,
+      "independentlyInspectedByRoot": true
+    }
+  ],
+  "visualReview": "All four originals inspected locally against experience-quality, shell references and current Density/shared component language. Paula resolved/closed fields, recorded manual remedy and three/four dated history entries are readable at 1280px, with teal history focus. Greg explicit resolved/closed confirmation focus is visible, but the narrow embedded queue/editor region and clipped table remain existing independent Medium FUCQ-150. All documents width/scrollWidth 1280. Full row traversal/sorting and complete keyboard/status announcements remain unproved.",
+  "independentRootCollectionPending": false,
+  "resources": {
+    "limits": {
+      "chromeInstances": 1,
+      "combinedBytes": 134217728,
+      "logBytes": 2097152,
+      "minimumRssBytes": 2147483648,
+      "requestedRssBytes": 2684354560,
+      "seconds": 120,
+      "workers": 1
+    },
+    "reservation": {
+      "disk": 134217728,
+      "ram": 2684354560
+    },
+    "rawAllRowAdmission": [
+      {
+        "at": 1793993438.240779,
+        "capacity": {
+          "active": 0,
+          "disk": 199599476736,
+          "free": 204968185856,
+          "low": false,
+          "parent": null,
+          "ram": 2707030016
+        },
+        "rawRows": 0
+      }
+    ],
+    "peakRssBytes": 1782988800,
+    "peakCombinedBytes": 93914648,
+    "removedScratchBytes": 58381592,
+    "retainedBytes": 2171104,
+    "compatibilityException": "OneDrive unavailable; bounded local Chrome profile/IPC compatibility working set; small local retained evidence.",
+    "manifestToFinalReceiptSeconds": 27.674,
+    "sourcePins": 700,
+    "sourceBeforeAfterEqual": true,
+    "productSourceMembership": 284,
+    "supervisorCleanup": {
+      "dependencyLinks": [],
+      "groupsAbsent": true,
+      "liveIdentities": [],
+      "monitorJoined": true,
+      "openFilesAbsent": true,
+      "portsClosed": {
+        "53197": true,
+        "53198": true
+      },
+      "profilePathProcesses": [],
+      "readersJoined": true,
+      "reservationReleased": true,
+      "scratchAbsent": true
+    },
+    "launcherPid": 40918,
+    "launcherStart": "Fri Nov  6 19:30:37 2026",
+    "tlsLedgerPid": 40942,
+    "fullOwnershipUnion": [
+      40918,
+      40937,
+      40942,
+      40963,
+      40983,
+      40984,
+      40986,
+      40987,
+      40997,
+      40999,
+      41001,
+      41002,
+      41005,
+      41006,
+      41008,
+      41009,
+      41032,
+      41033,
+      41034,
+      41053,
+      41075,
+      41309,
+      41341,
+      41435,
+      41483
+    ],
+    "groups": [
+      40918,
+      40937
+    ],
+    "portsClosed": {
+      "53197": {
+        "127.0.0.1": true,
+        "::1": true
+      },
+      "53198": {
+        "127.0.0.1": true,
+        "::1": true
+      }
+    },
+    "profileAbsent": true,
+    "scratchAbsent": true,
+    "tokenAbsent": true,
+    "rawHostRows": 0,
+    "launcherCleanupVerified": true,
+    "independentRootCleanupVerified": true,
+    "boundsSatisfied": true
+  },
+  "rawArtifacts": {
+    "receipt": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/journey-desktop-08db70bb7fd34e4dbcbbd8876c3abfad/receipt.json",
+      "sha256": "bb632eabb5137241e97a12c445ed8b76cd966f124c00c05d46df30b3e024147a"
+    },
+    "results": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/journey-desktop-08db70bb7fd34e4dbcbbd8876c3abfad/output/results.json",
+      "sha256": "54b1c81dd1d2eb9b19f408c30d1a45153318aa0e8fcd46808540a7aa61886f0d"
+    },
+    "manifest": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/ownership/journey-desktop-08db70bb7fd34e4dbcbbd8876c3abfad.json",
+      "sha256": "52497ac2c43036c8d48091ce9aada4f9200eaccd74d1e95c56ee008e8ddbedf3"
+    },
+    "processLedger": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/journey-desktop-08db70bb7fd34e4dbcbbd8876c3abfad/process-ledger.json",
+      "sha256": "016eb777178821cdc04c37930394e512450debb430c145a6a0b59e49101d8717"
+    },
+    "observedIdentities": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/journey-desktop-08db70bb7fd34e4dbcbbd8876c3abfad/owned-identities.json",
+      "sha256": "3d35fc380f0e3c7ba8b39d0347e4c717b3262c0c7f56dccc8775cc184d62728d"
+    },
+    "failureLog": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/journey-desktop-08db70bb7fd34e4dbcbbd8876c3abfad/run.log",
+      "sha256": "4f8d38e43b533e7e963569fc1c07c738f0186ebc61153801b3ac2b92a7a77294"
+    },
+    "workerObservation": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/coordination/fucq122-desktop-terminal-worker-observation-1927.json",
+      "sha256": "03491522131a0f412b1ae574ea57c1b86d7185e91d665f2c324511e14989e15d"
+    },
+    "workerCleanup": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/coordination/fucq122-desktop-terminal-worker-cleanup-1927.json",
+      "sha256": "81c4ffb531c766bc958e84e81032ed3f166249189d33636ed8758724fe923bd9"
+    },
+    "grant": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/coordination/fucq122-desktop-terminal-grant-1927.json",
+      "sha256": "6bed6020badd3b162d48662f1a68d90042d63c34e98a881e2adff129d8681efb"
+    },
+    "sourceBinding": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/binding-ready.json",
+      "sha256": "1ad207f2b8079867f19014b9b437d26e94967f920404930c2920ef32949e704e"
+    },
+    "sourcePlan": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/source-plan.json",
+      "sha256": "0d8856ded4dfe45ea1ab6a1808826fd719f2dc1670042768706a59b5963ba02f"
+    },
+    "independentRootCollection": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/coordination/fucq122-desktop-terminal-root-collection-1927.json",
+      "sha256": "348afaf50d765703fd5ee70e1c12f251452718b177adafacde746d66754cb5a5"
+    }
+  },
+  "inheritedStaleScopeMetadata": "FUCQ-122 selected 375px manual setup/resolved/closed/reload only; no waiting setup, HTTP/full-suite replay, native PostgreSQL, producer/stock/decline/lifecycle, other state/remedy/placement matrix or F149 acceptance.",
+  "scopeMetadataDisposition": "Raw inherited 375px width wording retained unchanged; exact desktop source binding/grant define actual 1280x900 terminal scope and charge all setup.",
+  "preservation": "Prior narrow terminal and desktop/narrow waiting outcomes/captures remain untouched. Original eight ACs/validate unchanged. Whole npm remains FAIL: 1590 total,1569 pass,16 fail,5 skipped. FUCQ-150 and FUCQ-146 remain independent. No product/foreign host repair, source repin, new agent/claim, full/native suite or clean-log retry.",
+  "remainingOriginalGaps": [
+    "Activity/order-progress help placement and browser repeat request; MSG-2026-11-06-GC-001 awaits Cowork relay/owner response",
+    "Greg full row readability, meaningful sorting/traversal",
+    "Applicable available-car and reviewed later-release demonstrations; extension only under permitted canonical policy",
+    "Trigger-open, empty queue, loading/source failure at required widths",
+    "Complete keyboard-only/focus/status-announcement evidence and original passing-npm requirement"
+  ],
+  "smallestNextUsefulClosure": "Host help wiring stays with existing FUCQ-95/FUCQ-120 lanes; root may select another bounded original gap. Do not repeat reached manual/terminal/waiting proofs.",
+  "noFurtherRuntimeAuthorised": true,
+  "fullAcceptance": false,
+  "doneRecommendation": false,
+  "independentRootCollection": {
+    "at": "2026-11-06T19:32:57.378112+00:00",
+    "sourceFilesVerified": 700,
+    "sourceBeforeAfterEqual": true,
+    "sourceMismatches": [],
+    "ownedUnionPids": [
+      40918,
+      40937,
+      40942,
+      40963,
+      40983,
+      40984,
+      40986,
+      40987,
+      40997,
+      40999,
+      41001,
+      41002,
+      41005,
+      41006,
+      41008,
+      41009,
+      41032,
+      41033,
+      41034,
+      41053,
+      41075,
+      41309,
+      41341,
+      41435,
+      41483
+    ],
+    "livePids": [],
+    "groups": [
+      40918,
+      40937
+    ],
+    "liveGroupPids": [],
+    "portsClosed": {
+      "53197": {
+        "127.0.0.1": true,
+        "::1": true
+      },
+      "53198": {
+        "127.0.0.1": true,
+        "::1": true
+      }
+    },
+    "scratchAbsent": true,
+    "profileAbsent": true,
+    "pathProcesses": [],
+    "openFiles": [],
+    "tokenAbsent": true,
+    "rawHostRows": 0,
+    "resourceBoundsSatisfied": true,
+    "cleanupVerified": true,
+    "visualReview": "All four original captures inspected. Paula resolved/closed state, recorded manual remedy and dated three/four-event history are readable at1280px; focused history heading and Greg confirmation have visible focus. No document overflow. Greg embedded queue/case remains cramped/clipped under existing independent Medium F150; no queue-readability or complete keyboard/status-announcement PASS.",
+    "runtimeGrantConsumed": true,
+    "fullAcceptance": false
+  }
+}
