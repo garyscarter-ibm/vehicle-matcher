@@ -15,8 +15,9 @@ with `-I -B`, an externally reviewed plan SHA, exact published revision and a ne
 selected mode. The latest core25 run at `68b7fed` passed 25/25 and was independently
 accepted at that scoped boundary. Both earlier incomplete attempts remain recorded
 below. The subsequent registry16 run at `dc2b5ca` also passed 16/16 at its separately
-accepted scoped boundary. Remaining integration and broader acceptance gates remain
-open. The old commands and results below are historical evidence for their original sources.
+accepted scoped boundary. The separately admitted default Paula HTTP case at `24bc2cd`
+then passed 1/1; its five filtered source cases remain unexercised. Remaining integration
+and broader acceptance gates remain open. Old commands/results retain their original source identities.
 
 Each future mode has one worker, a fresh strict host reservation and bounded owned scratch;
 compact summaries/manifests remain outside scratch in the shared
@@ -473,3 +474,28 @@ integration, browser/native/full/deployed acceptance, producer/model/corpus upta
 105-to-107 decision lookup/reload and full-story completion remain open. The 38 parser
 design fixtures remain unexecuted. The [single default Paula HTTP case proposal](eligibility-default-proposal-2026-11-06.json)
 is authored against the unchanged freeze and requires a new exact grant; no next mode ran.
+
+
+## Accepted default Paula HTTP at 24bc2cd, 6 November 2026
+
+The independently admitted default case passed **1/1**, with zero failures,
+cancellations, reported skips or todo cases. Five other cases in its source file were
+filtered and remain unexercised by this run. The lead audit passed 521 checks; root
+passed 993 checks and separately bound the lead before authorising publication.
+The [immutable default proof index](eligibility-default-24bc2cd-2026-11-06/README.md)
+preserves exact original log/summary/manifest/checkpoint/impact and lead/root/acceptance
+bytes, paths and hashes. Earlier failed, core25 and registry16 evidence is unchanged.
+
+This validates the ordinary same-source runtime/session/manual-account/brief path,
+canonical driver-fact parity, eligible recommendation and single-subject privacy
+suppression with unchanged preview domain rows. Wall time was 4.494 seconds, peak
+RSS 1001.625MiB within 1024MiB, and combined peak 4,348,476 bytes. Independent cleanup,
+postwrite output bounds and frozen input identity passed. The grant is consumed.
+
+The [weighted-publication proposal](eligibility-weighted-proposal-2026-11-06.json)
+is author-only: one other case in the same frozen file, with a coherent five-subject
+synthetic cohort, actual weighted preview/publication and pinned-history boundary.
+The measured default RAM margin is 22.375MiB; weighted peak is unknown and requires
+root review plus fresh strict admission before any grant. No next mode ran. Other
+runtime/integration, browser/native/full/deployed and full-story acceptance remain
+open; all 38 parser design fixtures remain unexecuted.
