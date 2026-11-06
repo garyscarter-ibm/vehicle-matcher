@@ -16,8 +16,10 @@ selected mode. The latest core25 run at `68b7fed` passed 25/25 and was independe
 accepted at that scoped boundary. Both earlier incomplete attempts remain recorded
 below. The subsequent registry16 run at `dc2b5ca` also passed 16/16 at its separately
 accepted scoped boundary. The separately admitted default Paula HTTP case at `24bc2cd`
-then passed 1/1; its five filtered source cases remain unexercised. Remaining integration
-and broader acceptance gates remain open. Old commands/results retain their original source identities.
+then passed 1/1; its five filtered source cases remain unexercised by that run. The separately
+admitted weighted HTTP case at `894b154` passed 1/1 with four disclosed synthetic stored
+subjects. Remaining integration and broader acceptance gates stay open. Earlier commands,
+results and grant states describe their original checkpoints.
 
 Each future mode has one worker, a fresh strict host reservation and bounded owned scratch;
 compact summaries/manifests remain outside scratch in the shared
@@ -499,3 +501,39 @@ The measured default RAM margin is 22.375MiB; weighted peak is unknown and requi
 root review plus fresh strict admission before any grant. No next mode ran. Other
 runtime/integration, browser/native/full/deployed and full-story acceptance remain
 open; all 38 parser design fixtures remain unexecuted.
+
+
+## Accepted weighted HTTP at 894b154, 6 November 2026
+
+The independently admitted delivered-memory weighted/publication case passed **1/1**,
+with zero failures, cancellations, reported skips or todo cases. Five other source
+cases were filtered and unexercised by this run; the default case has separate prior
+proof. The lead audit passed 557 checks; root passed 991 and separately bound the
+lead/postwrite receipts before authorising evidence-only publication. The
+[immutable weighted proof index](eligibility-weighted-894b154-2026-11-06/README.md)
+preserves nine original artifacts byte for byte, including root acceptance and
+historical unpublished/awaiting-lead markers. Earlier proof is unchanged.
+
+This is one authenticated default employee plus four explicitly synthetic coherent
+stored employee/slot/confirmed-brief clones. It proves available five-subject weighted
+fit, lower draft fit at body weight zero, unchanged demand gates and preview rows,
+ordinary HTTP publication and same-cookie successor context/1200-point recommendations.
+The old 1100-point quote/hold/offer and observed domain rows remain unchanged;
+policy/run references intentionally advance. This is not evidence of four additional
+authenticated default employees or a real population. Default canonical parity/privacy
+has its own proof.
+
+Wall time was 9.180 seconds, peak RSS 715.203125MiB within 1024MiB, and combined peak
+4,348,484 bytes. Scratch removal was 4,338,401 bytes. Independent source/output and
+cleanup checks passed; final conservative retained allocation was 102,528 bytes,
+including 98,432 receipt bytes within 256KiB. The grant is consumed. No helper,
+audit script, test or runtime probe was rerun for this publication checkpoint.
+
+The [runtime/scenario/lifecycle proposal](eligibility-runtime-proposal-2026-11-06.json)
+is author-only: four existing finite cases, filtering out both completed HTTP cases.
+Synthetic mechanics/reset, policy ownership/closure and missing-configuration refusal
+are distinct from actual producer journeys, canonical population and native database
+acceptance. Its peak is unknown; the existing resource envelope, fresh strict admission
+and a new exact once grant remain required. No next mode ran. Other integration,
+browser/native/full/deployed/producer/corpus/model/live and full-story acceptance remain
+open. All 38 parser design fixtures remain unexecuted.
