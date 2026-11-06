@@ -1,5 +1,11 @@
 # FUCQ-122 actual release integration plan, 6 November 2026
 
+Current follow-up: the dispatcher supplied adopted composition
+`f179ae6043414a2b07de3edb2b425338299ea37b` and selected the narrower
+[four-case C4 proposal](case-release-plan.md). It uses100's shared synthetic TEST
+profile interface, pending its publication. The nine cases and counts below
+remain the earlier planning basis; they are not a current execution freeze.
+
 Status: **author-only; stable source basis pinned, combined execution freeze has
 explicit gaps**. No mixed-source import, test, runtime, listener, browser, native
 or full-suite execution is authorised by this plan. The unchanged 81-check case

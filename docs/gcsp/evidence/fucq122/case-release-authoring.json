@@ -1,0 +1,84 @@
+{
+  "kind": "author-only C4 proposal; static validation, not integration or harness execution",
+  "observedAt": "2026-11-06T02:10:45.464256+00:00",
+  "candidate": "f179ae6043414a2b07de3edb2b425338299ea37b",
+  "expectedNames": [
+    "C4 actual92 snapshot and persisted driver reach case HTTP proposal with replay and no claim",
+    "C4 current persisted bound driver defeats contradictory flattened eligibility through actual HTTP",
+    "C4 actual manual claim removes the exact92 option and refuses a stale HTTP proposal",
+    "C4 actual buddy service occupation removes the exact92 option and refuses a stale HTTP proposal"
+  ],
+  "files": {
+    "docs/gcsp/evidence/fucq122/case-release-freeze.py": {
+      "bytes": 12672,
+      "sha256": "77884afc020316f8141da38e43a1dd2f6bf94fd401934c910887c3bde0ef8b0a"
+    },
+    "docs/gcsp/evidence/fucq122/case-release-launch.py": {
+      "bytes": 975,
+      "sha256": "eb4a6e145a17602e2e038e18768505b547d5afcbf86b003cf858fef4a9008070"
+    },
+    "docs/gcsp/evidence/fucq122/case-release-loader.mjs": {
+      "bytes": 3656,
+      "sha256": "f35329580b7841a254dbdf363cdf92c73b9e58424bb7bfd367d266aae3749dcb"
+    },
+    "docs/gcsp/evidence/fucq122/case-release-plan.md": {
+      "bytes": 9638,
+      "sha256": "e40ce11cb54314d3164e2366d0a1a5800611c3d05bdecf424cc9378139fcfa59"
+    },
+    "docs/gcsp/evidence/fucq122/case-release-resources.py": {
+      "bytes": 30596,
+      "sha256": "b1027f52dee6ef80ea6f29e9b4e1b3452062cdcb5f77218e917d5bbf008ae2f3"
+    },
+    "docs/gcsp/evidence/fucq122/case-release-supervisor.py": {
+      "bytes": 17002,
+      "sha256": "ec12367b70e0e10e46a1fab3479c3d5773e07a3aad5a57e573c5090eed1bf68a"
+    },
+    "docs/gcsp/evidence/fucq122/producer-integration-plan.md": {
+      "bytes": 13139,
+      "sha256": "59a799d50f7ee977f622a8c323c1f95c7bde0c4d15649da8769c9abc4a9af152"
+    },
+    "server/test/gcsp-case-release-http.test.js": {
+      "bytes": 15650,
+      "sha256": "8250cf300944ef07f0a091fa46ba212b78fd854b32a3501e5703da8540898cd9"
+    }
+  },
+  "profileInterface": {
+    "path": "server/test/helpers/runtime-composition-profile.js",
+    "observedUncommittedSHA256": "01c07f817d322ba7e33734ee58483d10afe1291c2eef0f055fa9b1d66b169925",
+    "publication": null,
+    "needs": "Dispatcher relay of100 immutable helper commit/path/hash and suitability of same prepared exact snapshot for current persisted driver plus confirmed five-seat hatch brief and actual manual/buddy evaluation."
+  },
+  "cancellationPattern": {
+    "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085/docs/gcsp/evidence/fucq107/controller-harness-proposal/controller-94e05ff-resources.py",
+    "sha256": "1c19f35495cd5a186dfcb75490a314814a9b37be594acaa51dcfbdcfae445790",
+    "status": "Unexecuted107 cancellation repair; this copy is independently unreviewed/unexecuted; only description and384to768MiBRAM changed."
+  },
+  "checks": {
+    "branch": true,
+    "parent": true,
+    "pythonAst": true,
+    "fourCases": true,
+    "noDirectStockWriter": true,
+    "noRuntimeFake": true,
+    "storeDiagnosticsRedacted": true,
+    "missingProfileVisible": true,
+    "noExecutableFreeze": true,
+    "noOwnedDependencyLink": true,
+    "noRuntimeOutput": true,
+    "resourcePatternExactAdaptation": true,
+    "unchanged:server/gcsp/cases/index.js": true,
+    "unchanged:server/gcsp/cases/http.js": true,
+    "unchanged:server/test/gcsp-case-options.test.js": true,
+    "unchanged:server/test/gcsp-renewal-case.test.js": true,
+    "whitespace": true
+  },
+  "pending": [
+    "C1 profile publication and interface/input reconciliation",
+    "complete finite source/installed/executable/harness freeze",
+    "independent source/materialization/loader/cancellation review",
+    "fresh exact C4 execution grant"
+  ],
+  "executed": [],
+  "allocations": [],
+  "scope": "No JS application/test/helper/loader/supervisor execution, no listener/DOM/browser/native/full/81 rerun, no borrowed dependency link or shared source changes."
+}
