@@ -1,3 +1,4 @@
+@import './publish/publish.css';
 /* Greg dashboard composition: denser than the employee body, same shell and tokens. Every selector is .gcsp scoped. */
 .gcsp .gcsp-greg { max-width: 1280px; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 20px; }
 .gcsp .gcsp-greg .gcsp-intro .vm-title { margin: 0 0 8px; font-size: 34px; }
@@ -23,7 +24,6 @@
 .gcsp .gcsp-greg-region { gap: 4px; padding: 12px 14px; background: var(--gcsp-surface-page); border: 1px dashed var(--gcsp-divider); border-radius: var(--gcsp-radius); }
 .gcsp .gcsp-greg-region .gcsp-greg-h2 { font-size: 15px; color: var(--gcsp-text-muted); }
 .gcsp .gcsp-greg-region .gcsp-note { font-size: 14px; }
-
 @media (max-width: 640px) {
   .gcsp .gcsp-greg { gap: 16px; }
   .gcsp .gcsp-greg .gcsp-intro .vm-title { font-size: 28px; }
