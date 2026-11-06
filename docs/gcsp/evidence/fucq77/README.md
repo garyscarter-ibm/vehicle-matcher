@@ -133,3 +133,23 @@ miss brief process/temporary-candidate peaks, so these are sampled measurements.
 removed total 28,041 bytes across both checkpoints; bounded expected-red evidence remains. No
 overlay, browser exception, large output or leftover exists. The receipt also discloses the initial
 selection-path metadata omission and its correction; unchanged checks were not rerun for paperwork.
+
+
+## Review fix 1 — invalid input classification
+
+Independent review of `3f5a48158fdb3a2d94cd0249341b30ce62dace12` found that the readiness
+early return also classified invalid plans as incomplete. The verifier now rejects `valid: false`
+before checking readiness. API and actual CLI regressions cover a wrong schema and a weakened
+minimum (invalid/exit 1), alongside the valid 74-pending draft (incomplete/exit 2). Every case
+retains zero accepted configurations and incomplete acceptance; no staged directory is accessed.
+
+Both new assertions failed before the one-line repair. The scoped plan/verifier command then
+passed **34/34**, zero skipped, with 478.955 ms test duration; no full suite was run. The receipt is
+`/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead77/review-fix1-checkpoint.json` and the refreshed shared impact map is
+`.claude/test-runs/impact/fucq77-verifier-d302d06ba27dfa56fdce4daf9aa86dbe8e36c44b68daf6a7c011d928d67385bd.json`.
+The two new owned scratch roots and process groups were verified absent, and all previous 14
+roots remained absent. Sampled peaks were 235,880,448 bytes RSS and 1,270,240 bytes scratch,
+within the same one-worker 128 MiB scratch/384 MiB sampled RAM/300-second limits. The successful
+log (5,684 bytes) was removed after retaining the summary; the bounded red log remains.
+No overlay, browser exception, leftover or source/browser/key/image/SQL call occurred. All
+current mapping, real producer, collection, browser, publication and full-validation gates remain open.

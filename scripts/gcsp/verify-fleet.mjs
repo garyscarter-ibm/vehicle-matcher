@@ -131,6 +131,7 @@ export async function verifyStagedFleet({ plan, matrixText, directory, minimumDi
   const planReport = validateDemoPlan(plan, { matrixText, verifyEvidence });
   const pending = { status: 'incomplete', plan: planReport, acceptanceComplete: false,
     acceptedDemoConfigurations: 0, unverifiedGates: [...UNVERIFIED_DEMO_GATES] };
+  if (!planReport.valid) return { ...pending, status: 'invalid' };
   if (!planReport.ready) return pending;
   if (typeof directory !== 'string' || !isAbsolute(directory)) return { ...pending, failure: { code: 'staged-directory-required' } };
   const { validateCorpusDirectory } = await import('../../server/gcsp/vehicle-evidence/corpus-publisher.js');

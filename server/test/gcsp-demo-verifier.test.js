@@ -1,8 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile, mkdtemp, rm, appendFile } from 'node:fs/promises';
+import { readFile, mkdtemp, rm, appendFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { spawnSync } from 'node:child_process';
 import { offlineEgressGuard } from './helpers/offline-egress-guard.js';
 
 // These are existing F54 records. Clones/mutations below are offline regressions, never source observations.
@@ -182,13 +184,59 @@ check('error reports expose row indexes and codes without source values or priva
   assert.ok(report.errors.every((error) => typeof error.code === 'string' && !Object.hasOwn(error, 'record')));
 });
 
+check('invalid plans are rejected before the valid pending-plan readiness branch', async (t) => {
+  const guard = offlineEgressGuard(t);
+  for (const change of [
+    (plan) => { plan.schemaVersion = 'invalid-schema'; },
+    (plan) => { plan.requirements.minimumDistinct = 199; },
+  ]) {
+    const plan = createDemoPlan(matrixText, { asOfDate: '2026-11-06' }); change(plan);
+    const report = await api.verifyStagedFleet({ plan, matrixText, directory: '/nonexistent-never-read' });
+    assert.equal(report.plan.valid, false);
+    assert.equal(report.status, 'invalid');
+    assert.equal(report.acceptanceComplete, false);
+    assert.equal(report.acceptedDemoConfigurations, 0);
+  }
+  guard.assertZero();
+});
+
+check('CLI distinguishes invalid plans exit 1 from a valid 74-pending plan exit 2', async (t) => {
+  const root = await mkdtemp(join(tmpdir(), 'f77-cli-plans-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const script = fileURLToPath(new URL('../../scripts/gcsp/verify-fleet.mjs', import.meta.url));
+  for (const [name, change, exit, status, valid] of [
+    ['schema', (plan) => { plan.schemaVersion = 'invalid-schema'; }, 1, 'invalid', false],
+    ['minimum', (plan) => { plan.requirements.minimumDistinct = 199; }, 1, 'invalid', false],
+    ['pending', () => {}, 2, 'incomplete', true],
+  ]) {
+    const plan = createDemoPlan(matrixText, { asOfDate: '2026-11-06' }); change(plan);
+    const path = join(root, `${name}.json`); await writeFile(path, JSON.stringify(plan));
+    const result = spawnSync(process.execPath, [script, '--config', path, '--staged',
+      '--directory', join(root, 'nonexistent-never-read'), '--require-distinct', '200'],
+    { encoding: 'utf8', timeout: 5000, maxBuffer: 32 * 1024 });
+    assert.equal(result.error, undefined, name);
+    assert.equal(result.signal, null, name);
+    assert.equal(result.status, exit, name);
+    assert.equal(result.stderr, '', name);
+    const report = JSON.parse(result.stdout);
+    assert.equal(report.status, status, name);
+    assert.equal(report.plan.valid, valid, name);
+    assert.equal(report.plan.ready, false, name);
+    assert.equal(report.acceptanceComplete, false, name);
+    assert.equal(report.acceptedDemoConfigurations, 0, name);
+    if (valid) assert.equal(report.plan.coverage.pending, 74);
+  }
+});
+
 check('pending plan blocks staged acceptance before any directory, source, key or browser work', async (t) => {
   const guard = offlineEgressGuard(t);
   const plan = JSON.parse(await readFile(new URL('../data/gcsp/vehicle-evidence/demo-plan.json', import.meta.url), 'utf8'));
   const matrixText = await readFile(new URL('../../docs/gcsp/sources/choices-eligibility-matrices-2024-10.md', import.meta.url), 'utf8');
   const report = await api.verifyStagedFleet({ plan, matrixText, directory: '/nonexistent-never-read' });
   assert.equal(report.status, 'incomplete');
+  assert.equal(report.plan.valid, true);
   assert.equal(report.plan.ready, false);
+  assert.equal(report.plan.coverage.pending, 74);
   assert.equal(report.acceptanceComplete, false);
   assert.equal(report.acceptedDemoConfigurations, 0);
   guard.assertZero();

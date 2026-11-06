@@ -1820,7 +1820,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T10:38:51Z",
+      "observed_at": "2026-11-06T10:45:23Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-77",
       "branch": "dev/DEV-2026-11-04-056",
       "workers": [
@@ -1828,10 +1828,10 @@
           "name": "Wile E. Coyote",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-06T10:38:50.999135+00:00",
-          "expires_at": "2026-11-06T10:38:50.999135+00:00",
-          "source": "thread 01a1b05f-fbf8-7d31-adb3-c60fd6aeeaf1; requested/selected/runtime gpt-6.1-sol/high; no fallback/descendants; code 606749158b541e51c95153145b56785e7997f11c",
-          "status": "stopped at scoped offline checkpoint; story blocked"
+          "observed_at": "2026-11-06T10:45:23.410816+00:00",
+          "expires_at": "2026-11-06T10:45:23.410816+00:00",
+          "source": "thread 01a1b05f-fbf8-7d31-adb3-c60fd6aeeaf1; requested/selected/runtime gpt-6.1-sol/high; no descendants;34/34 scoped; real source/integration pending",
+          "status": "stopped after review fix1 scoped checkpoint; story blocked"
         }
       ],
       "slices": [
@@ -1853,8 +1853,8 @@
           "id": "verifier-contract",
           "status": "in-progress",
           "title": "Offline complete identity enrichment and corpus verifier",
-          "observed_at": "2026-11-06T10:34:50Z",
-          "evidence": "Scoped F54 identity/count/checksum audit implemented; canonical F59/F60 real proof and full verifier acceptance remain open. See docs/gcsp/evidence/fucq77/producer-contract-gaps.md."
+          "observed_at": "2026-11-06T10:45:23.410816+00:00",
+          "evidence": "Scoped F54 audit and review-fix1 invalid API/CLI classification pass34/34; canonical F59/F60 real proof and full verifier acceptance remain open. docs/gcsp/evidence/fucq77/README.md."
         },
         {
           "id": "producer-integration",
