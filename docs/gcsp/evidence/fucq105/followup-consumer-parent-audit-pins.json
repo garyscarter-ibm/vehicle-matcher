@@ -6,18 +6,18 @@
   "reviewed_consumer_commit": "97adc05a3b822b0832d013a934c5e836e0fcfa45",
   "consumer_source_plan": {
     "path": "docs/gcsp/evidence/fucq105/followup-consumer-source-plan.json",
-    "sha256": "b1bceaf4c8a171ae18581ead189b9cff3f08283d27c30c3c9e7080c4be7714f9",
-    "bytes": 73819
+    "sha256": "19af2c40040919e88ed082a484fbb68997964b90be232b2e68e374d64189a243",
+    "bytes": 74919
   },
   "recipe": {
     "path": "docs/gcsp/evidence/fucq105/followup-consumer-parent-audit-recipe.md",
-    "sha256": "9a334c646a1557d7ede52e250e2a935b539608fe52673934c57ac00544289ed5",
+    "sha256": "682e1195b9f3988dcfb09d88c6b636605bda33bbdc8045b135b94172cd9ef314",
     "bytes": 18076
   },
   "existing_harness": {
     "server/test/gcsp-offer-view-followup-consumer.test.js": {
-      "sha256": "35952d75b1f7d0bd7edd39c5c4b5c88a374e9599f9cabe62ad0fb672a5dc3b54",
-      "bytes": 21419
+      "sha256": "2539bfc28f99d5ed4e5fe850c5860a2c89f95f273fa62c1c2cb5398418ba17a6",
+      "bytes": 21432
     },
     "docs/gcsp/evidence/fucq105/followup-consumer-loader.mjs": {
       "sha256": "b86ef4c3bff3af565a0d954fd12c845999cb10f0b8f511895dc8976a808cc784",
@@ -52,8 +52,8 @@
       "bytes": 129000
     },
     "docs/gcsp/evidence/fucq105/followup-consumer-bounds.py": {
-      "sha256": "2109919f9ebf38161a6d963310f949e4c88e39001b7e5d2651c1f770f8f9e628",
-      "bytes": 28284
+      "sha256": "be8176354fb6b17792171be7cc88f5bc76f35100195932dd571e4809ef5d5890",
+      "bytes": 28292
     }
   },
   "parent_contract": {
@@ -137,11 +137,11 @@
     "scope": "fucq105-followup-parent-audit",
     "parent_audit_id": "<unique ASCII suffix1..40>",
     "parent_audit_pins_sha256": "<SHA256 of this published pin sheet>",
-    "recipe_sha256": "9a334c646a1557d7ede52e250e2a935b539608fe52673934c57ac00544289ed5",
+    "recipe_sha256": "682e1195b9f3988dcfb09d88c6b636605bda33bbdc8045b135b94172cd9ef314",
     "driver_sha256": "<root-rendered exact one-off driver, reviewed before launch>",
     "python_path": "<root-pinned resolved executable>",
     "python_sha256": "<exact executable SHA256>",
-    "consumer_source_plan_sha256": "b1bceaf4c8a171ae18581ead189b9cff3f08283d27c30c3c9e7080c4be7714f9",
+    "consumer_source_plan_sha256": "19af2c40040919e88ed082a484fbb68997964b90be232b2e68e374d64189a243",
     "original_run_id": "<same root-granted consumer run>",
     "consumer_grant_sha256": "<immutable original grant>",
     "supervisor_wait_capture_sha256": "<actual captured tool/handle wait and complete bounded streams>",

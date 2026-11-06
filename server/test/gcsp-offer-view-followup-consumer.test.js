@@ -136,7 +136,7 @@ test('current105 reload opens actual102 persisted decline in employee-only107 an
     const target = new URL(url, origin); const headers = { origin };
     for (const [key, value] of Object.entries(options.headers || {})) headers[key.toLowerCase()] = value;
     if (cookie) headers.cookie = cookie;
-    const req = Readable.from(options.body ? [options.body] : []); req.method = options.method || 'GET'; req.headers = headers;
+    const req = Readable.from(options.body ? [Buffer.from(options.body)] : []); req.method = options.method || 'GET'; req.headers = headers;
     const responseHeaders = new Map(); let code; let answer;
     const res = { setHeader: (key, value) => responseHeaders.set(key.toLowerCase(), value) };
     const handler = target.pathname.startsWith('/api/gcsp/offer-followup') || target.pathname.startsWith('/api/gcsp/manual/')

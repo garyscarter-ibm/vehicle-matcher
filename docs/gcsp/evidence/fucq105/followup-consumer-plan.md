@@ -2,6 +2,10 @@
 
 6 November 2026. **Authoring only; no execution grant.** This packet adds one bounded actual-memory consumer case. It imports none of the accepted102 eleven-case registry and does not select the eight fake lifecycle cases. No product/helper import, test, loader, supervisor, listener, browser, native DB, process/scratch allocation or live-ledger read/lock/mutation occurred during authoring.
 
+## Owned validation successor, 6 November
+
+The actual1042 run reached2of4 checkpoints and failed at confirmation. Diagnosis traced the selected test shim emitting string POST chunks into the real employee middleware, which requires byte chunks for `Buffer.concat`. The shim now emits `Buffer.from(body)`; production code,100turn wait and acceptance assertions are unchanged. The root standing envelope also preapproves the exact bounds `.strip()` identity-ingestion repair after the actual parent preimport owner mismatch. Original evidence is preserved. Only the test/bounds harness rows and necessary plan/parent bindings are refreshed; graph membership, actual services, dependencies, budgets and authority are unchanged. The standing envelope authorises the selected bounded delivery loop; current result is pending, with browser/native/full and whole-story acceptance still excluded.
+
 ## Accepted service boundary
 
 Root cleared102's service-level blocker using combined commit `aac8a00b121cc10a23dce1a53e7f59b2a4ca6d07`, source-plan SHA256 `983a85e1e4630065d2fc1af428697d04b38a6277a52240a703746316244e1ebe`: scoped11/11, zero failed/skipped/cancelled/todo. Root's independent360 checks passed in `.claude/test-runs/ownership/fucq102-combined-result-root-0233.json`. The earlier8/11 failure and1317-check cleanup result remain historical evidence.

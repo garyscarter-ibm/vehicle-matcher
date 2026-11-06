@@ -404,7 +404,7 @@ class Aggregate:
             if min(pid, pgid) <= 0 or min(ppid, rss) < 0 or len(fields[5].split()) != 5:
                 raise BoundError('Invalid aggregate telemetry identity/RSS')
             rows.append(dict(pid=pid, ppid=ppid, pgid=pgid, rss=rss*1024,
-                             state=fields[4], start=fields[5]))
+                             state=fields[4], start=fields[5].strip()))
             if len(rows) > CONTRACT['entries']:
                 raise BoundError('Aggregate telemetry row cap')
         if not any(row['pid'] == os.getpid() for row in rows):

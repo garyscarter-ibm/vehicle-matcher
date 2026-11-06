@@ -1536,8 +1536,8 @@
   },
   "harness": {
     "server/test/gcsp-offer-view-followup-consumer.test.js": {
-      "sha256": "35952d75b1f7d0bd7edd39c5c4b5c88a374e9599f9cabe62ad0fb672a5dc3b54",
-      "bytes": 21419
+      "sha256": "2539bfc28f99d5ed4e5fe850c5860a2c89f95f273fa62c1c2cb5398418ba17a6",
+      "bytes": 21432
     },
     "docs/gcsp/evidence/fucq105/followup-consumer-loader.mjs": {
       "sha256": "b86ef4c3bff3af565a0d954fd12c845999cb10f0b8f511895dc8976a808cc784",
@@ -1572,8 +1572,8 @@
       "bytes": 129000
     },
     "docs/gcsp/evidence/fucq105/followup-consumer-bounds.py": {
-      "sha256": "2109919f9ebf38161a6d963310f949e4c88e39001b7e5d2651c1f770f8f9e628",
-      "bytes": 28284
+      "sha256": "be8176354fb6b17792171be7cc88f5bc76f35100195932dd571e4809ef5d5890",
+      "bytes": 28292
     }
   },
   "selected": "server/test/gcsp-offer-view-followup-consumer.test.js",
@@ -1782,5 +1782,16 @@
     "validation": "Authoring/text/hash/JSON/whitespace only; no syntax/AST invocation, reviewed helper import/execution, process probe, test, ledger read/mutation, scratch/resource allocation or runtime grant.",
     "review": "Independent review of changed helpers/caller adapters and current admission required before any original consumer or parent-audit grant.",
     "runtime_proof": false
+  },
+  "owned_confirmation_repair": {
+    "baseline_commit": "4b9066d0d7125d327da831ea2a13255a229fe146",
+    "superseded_plan_sha256": "b1bceaf4c8a171ae18581ead189b9cff3f08283d27c30c3c9e7080c4be7714f9",
+    "reproduction": "Actual1042 exit1,2/4 checkpoints: confirmation request is rejected before107 because test shim supplied string chunks to byte-oriented employee middleware.",
+    "test_repair": "Readable.from now receives Buffer.from(options.body), matching native HTTP request bytes; existing assertions/timeouts/case/checkpoints retained.",
+    "bounds_repair": "Exact root-preapproved ps-start.strip at identity ingestion only; old evidence unchanged.",
+    "production_changed": false,
+    "standing_envelope_path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/coordination/fucq105-owned-delivery-loop-20261106.json",
+    "standing_envelope_sha256": "319a5cf1ec640b5daa998cd79b87191250624ccb2ac7c9c56a267d0e89a78563",
+    "scope": "Same73 modules/137 product edges/24 test edges/12 file inputs/10 harness members and existing budgets/authority; selected runtime result pending."
   }
 }
