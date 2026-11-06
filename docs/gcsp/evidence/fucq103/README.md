@@ -321,3 +321,15 @@ parent/dispatcher resource audits passed and the browser lane/freeze were releas
 No retry, desktop/narrow journey, full suite or native run followed. Central
 composition owns the real service; later canonical registry changes invalidate
 the old browser catalogue and require renewed preparation/review.
+
+
+The [reviewed consumer registration](consumer-registration.md) adds the exact
+FUCQ-106 reason and corrected FUCQ-115 seven-row choice bundles to the existing
+immutable registry. New canonical adoption/dated-publication checks pass **6/6**;
+**15 existing regression checks** pass on identical production inputs and are
+reused from the preceding run, whose three new-fixture failures remain documented.
+The isolated dated80x4 command is actual PolicyService publication/readback, with
+unchanged seed, prices and history. It generates no learning records and proves
+no model/decision-consumer uptake. Both receipts and actual cleanup were reviewed.
+The old browser catalogue is superseded; central scenario composition and a new
+source freeze/admission are still needed before browser continuation.

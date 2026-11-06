@@ -4,6 +4,7 @@ import atexit
 import hashlib
 import json
 import os
+import re
 import shlex
 import signal
 import subprocess
@@ -19,6 +20,8 @@ shared = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs')
 run = 'fucq103-backend-' + uuid.uuid4().hex
 mode = sys.argv[1] if len(sys.argv) > 1 else 'publish'
 checks = {
+    'consumer-adoption': ['server/test/gcsp-policy-consumer-adoption.test.js'],
+    'consumer-registration': ['server/test/gcsp-policy-consumer-adoption.test.js', 'server/test/gcsp-policy-learning-adoption.test.js', 'server/test/gcsp-policy-adoption.test.js', 'server/test/gcsp-greg-publish-editor.test.js', 'server/test/gcsp-runtime-publication.test.js'],
     'learning-registration': ['server/test/gcsp-policy-learning-adoption.test.js', 'server/test/gcsp-policy-adoption.test.js', 'server/test/gcsp-greg-publish-editor.test.js', 'server/test/gcsp-runtime-publication.test.js'],
     'publish-editor': ['server/test/gcsp-greg-publish-editor.test.js', 'server/test/gcsp-policy-adoption.test.js', 'server/test/gcsp-greg-publish.test.js'],
     'publish-ui': ['server/test/gcsp-greg-publish-render.test.js'],
@@ -60,6 +63,7 @@ report = {'run': run, 'project': str(project), 'command': command, 'scope': 'sco
           'excluded': 'Full suite, PostgreSQL, browser and external integration; parent owns integration checkpoint.',
           'supervisor': str(Path(__file__).resolve()), 'manifest': str(scratch.manifest)}
 report['impactMap'] = {
+    'Exact FUCQ-106 reasons and FUCQ-115 choice bundles / same-provider missing-only adoption / isolated dated80x4 publication': ['server/test/gcsp-policy-consumer-adoption.test.js'],
     'Exact approved FUCQ-113 definition registry / missing-key adoption / same-provider ordinary context and readback': ['server/test/gcsp-policy-learning-adoption.test.js', 'server/test/gcsp-policy-adoption.test.js', 'server/test/gcsp-greg-publish-editor.test.js', 'server/test/gcsp-runtime-publication.test.js'],
     'Greg editor reviewed presentation bundle / optional field ranges / retained exact validation and pinned rows': ['server/test/gcsp-greg-publish-editor.test.js', 'server/test/gcsp-greg-publish-render.test.js', 'server/test/gcsp-greg-publish.test.js'],
     'PolicyService.adoptReviewedAssumptions / reviewed definitions / successor validation': ['server/test/gcsp-policy-adoption.test.js'],
@@ -73,6 +77,8 @@ source_paths.extend([str(Path(__file__).relative_to(project)), '_tools/test_reso
                      'server/test/helpers/greg-demand-run.js', 'server/test/helpers/employee-recommendation.js'])
 source_paths.extend(str(path.relative_to(project)) for path in (project / 'server/gcsp/policy/reviewed').glob('*.json'))
 source_paths.append('server/gcsp/predict/records/policy-definitions.json')
+if mode in ('consumer-registration', 'consumer-adoption'):
+    source_paths.append('docs/gcsp/evidence/fucq103/fucq115-dated-policy-command.json')
 for directory in ('server/gcsp/policy', 'server/gcsp/brief', 'server/gcsp/manual-context', 'server/gcsp/presenter-controls', 'server/gcsp/fixtures', 'server/gcsp/repository', 'server/gcsp/identity', 'server/gcsp/clock', 'server/gcsp/recommendation', 'server/scenarios/employee'):
     source_paths.extend(str(path.relative_to(project)) for path in (project / directory).glob('*.js'))
 if mode.startswith('publish-ui'):
@@ -184,7 +190,11 @@ def observed_rss(pgid):
     return rss
 
 resources.group_rss = observed_rss
-env = {key: value for key, value in os.environ.items() if not key.startswith('PG') and key not in ('GCSP_DATABASE_URL', 'DATABASE_URL', 'POSTGRES_URL', 'POSTGRESQL_URL')}
+removed_environment_keys = [key for key in os.environ if key.upper().startswith('PG')
+    or re.search(r'DATABASE|POSTGRES|(?:^|_)DB(?:_|$)|(?:^|_)SQL(?:_|$)|DEBUG|TRACE', key, re.I)
+    or key in ('DEMO_ACCESS_KEY', 'NODE_OPTIONS', 'NODE_PATH', 'NODE_V8_COVERAGE')]
+env = {key: value for key, value in os.environ.items() if key not in removed_environment_keys}
+report['removedEnvironmentKeys'] = sorted(removed_environment_keys)
 env.update(PYTHONDONTWRITEBYTECODE='1', SCAFFOLDING_HARNESS='codex')
 with resources.handled_termination():
     try:
@@ -196,7 +206,7 @@ with resources.handled_termination():
                 scratch.record['adoptedLinks'] = [{'link': str(a), 'target': str(b)} for a, b in adopted_links]
                 resources.atomic_json(scratch.manifest, scratch.record)
                 link.symlink_to(target, target_is_directory=True)
-        report['node'] = subprocess.check_output(['node', '--version'], text=True, timeout=5).strip()
+        report['node'] = subprocess.check_output(['node', '--version'], text=True, timeout=5, env=env).strip()
         host.acquire(scratch.token, 128 * resources.MIB, 768 * resources.MIB, project, root=scratch.root)
         reserved = True
         with scratch:
