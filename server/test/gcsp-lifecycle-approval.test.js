@@ -271,3 +271,29 @@ test('canonical seed carries the prepared FUCQ-111 rows exactly', async () => {
   for (const row of prepared.assumptions) assert.deepEqual(seed.assumptions.find((a) => a.key === row.key), row, row.key);
   assert.ok(seed.assumptions.some((a) => a.key === 'ordering.approvalStages.v1'));
 });
+
+test('renewal authority comes from the order slot: a second slot never inherits the employee default renewal', async (t) => {
+  const f = await setup(t, { changes: { 'lifecycle.approval.declineScenario.v1': { enabled: true, stage: 'HR approval', eventType: 'approval-declined',
+    reasonCode: 'hr-declined', reason: 'HR declined this order. The scheme team will contact you.' } } });
+  const added = await f.repository.transaction(f.paula, { commandId: 'slot-b', inputDigest: inputDigest('slot-b') }, (tx) => tx.insert('entitlement_slots',
+    { runId: f.paula.runId, entitlementSlotId: 'slot-paula-b', employeeId: f.paula.employeeId, renewalId: 'renewal-B', capacity: 1 }));
+  assert.equal(added.status, 'ok', JSON.stringify(added));
+  const onB = await f.seed({ ...f.paula, entitlementSlotId: 'slot-paula-b' }, { renewalId: 'renewal-A' });
+  const onDefault = await f.seed(f.paula);
+  let view = (await f.service.read(f.greg, { orderUuid: onB.orderUuid })).value;
+  assert.deepEqual([view.entitlementSlotId, view.renewalId, view.renewalAuthority], ['slot-paula-b', 'renewal-B', 'validated']);
+  const other = (await f.service.read(f.greg, { orderUuid: onDefault.orderUuid })).value;
+  assert.deepEqual([other.entitlementSlotId, other.renewalId, other.renewalAuthority], ['slot-paula', 'renewal-A', 'validated']);
+  view = await until(f, onB.orderUuid, (v) => v.outcome !== 'in-progress');
+  assert.equal(view.outcome, 'declined'); assert.equal(view.renewalId, 'renewal-B');
+  const events = await f.repository.query(f.greg, 'event_receipts', { consumerId: EXCEPTION_CONSUMER });
+  const forB = events.value.find((e) => e.outcome.value.orderUuid === onB.orderUuid).outcome.value;
+  assert.equal(forB.renewalId, 'renewal-B');
+  const mismatch = await f.repository.transaction(f.paula, { commandId: 'slot-b-mismatch', inputDigest: inputDigest('m') }, async (tx) => {
+    const ref = { table: 'employees', key: { runId: f.paula.runId, employeeId: f.paula.employeeId } };
+    const e = await tx.get(ref); return tx.compareAndSwap(ref, e.value.version, { entitlementSlotId: 'slot-paula-b' });
+  });
+  assert.equal(mismatch.status, 'ok');
+  const conflicting = (await f.service.read(f.greg, { orderUuid: onB.orderUuid })).value;
+  assert.deepEqual([conflicting.renewalId, conflicting.renewalAuthority], [null, 'missing'], 'employee and slot renewals disagree');
+});

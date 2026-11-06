@@ -639,7 +639,7 @@ employee sees only their own orders. Routes `GET /api/gcsp/orders/progress?order
 discard browser identity and run claims. The frozen server-internal `stagePort()` exposes the same two methods for
 DemoClock handlers without a role check, still bound to the current run and environment; it has no route. FUCQ-116
 consumes it as `lifecycleStages`. The view is `lifecycle.stages.v1` revision 2: run, order, employee, slot, renewal
-identity (`renewalAuthority` `validated` only with both slot and renewal; otherwise `missing` and `renewalId: null`),
+identity (`renewalAuthority` `validated` only from the order's own slot renewal, or the employee renewal for that same slot; otherwise `missing` and `renewalId: null`),
 source selection operation and versions, top-level pinned `policyVersion` with per-key provenance, `lifecycleRevision`,
 DemoClock `asOf`, stages with state, instant and provider reference, owner, next step, outcome, blocked reason and provider
 mode. Missing, pending, failed, unsupported and foreign reads return `not-found`, `unavailable` (`state: not-ready`),

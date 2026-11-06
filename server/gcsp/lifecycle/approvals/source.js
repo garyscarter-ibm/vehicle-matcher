@@ -51,15 +51,18 @@ export async function listSelectionOrders(reader) {
   return ok(rows.value.map(decodeSelectionOrder).filter((d) => d.status === 'ok').map((d) => d.value));
 }
 
-// Renewal identity comes only from the stored employee or slot authority; absence is an explicit gap.
+// The order's own slot is the renewal authority. The employee default counts only for that same slot, and
+// disagreement or absence is an explicit gap (FUCQ-71 pins no renewal on the selection).
 export async function readRenewalAuthority(get, runId, source) {
+  if (!text(source.entitlementSlotId)) return ok({ renewalId: null });
+  const slot = await get({ table: 'entitlement_slots', key: { runId, entitlementSlotId: source.entitlementSlotId } });
+  if (slot.status !== 'ok') return slot.status === 'not-found' ? ok({ renewalId: null }) : slot;
+  if (slot.value.employeeId !== source.employeeId) return ok({ renewalId: null });
   const employee = await get({ table: 'employees', key: { runId, employeeId: source.employeeId } });
-  if (employee.status !== 'ok') return employee.status === 'not-found' ? ok({ renewalId: null }) : employee;
-  let renewalId = employee.value.renewalId;
-  if (!text(renewalId, 128) && text(source.entitlementSlotId)) {
-    const slot = await get({ table: 'entitlement_slots', key: { runId, entitlementSlotId: source.entitlementSlotId } });
-    if (slot.status !== 'ok' && slot.status !== 'not-found') return slot;
-    if (slot.status === 'ok' && slot.value.employeeId === source.employeeId) renewalId = slot.value.renewalId;
-  }
-  return ok({ renewalId: text(renewalId, 128) ? renewalId : null });
+  if (employee.status !== 'ok' && employee.status !== 'not-found') return employee;
+  const fromEmployee = employee.status === 'ok' && employee.value.entitlementSlotId === source.entitlementSlotId
+    && text(employee.value.renewalId, 128) ? employee.value.renewalId : null;
+  const fromSlot = text(slot.value.renewalId, 128) ? slot.value.renewalId : null;
+  if (fromSlot && fromEmployee && fromSlot !== fromEmployee) return ok({ renewalId: null });
+  return ok({ renewalId: fromSlot ?? fromEmployee });
 }

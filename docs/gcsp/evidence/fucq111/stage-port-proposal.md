@@ -23,8 +23,9 @@ it as `lifecycleStages` and calls it synchronously inside its tick workflow; it 
 
 `contractVersion: "lifecycle.stages.v1"`, `schemaVersion: 1`; identity `runId, orderUuid, employeeId, entitlementSlotId, route`
 (`manual` for `cart`, `buddy` for `buddy-offer`); top-level pinned `policyVersion` (rev 2); `renewalId` and `renewalAuthority`
-(`validated` only when both `entitlementSlotId` and a stored employee/slot renewal exist, else `missing` with `renewalId: null`,
-never invented; `entitlementSlotId` may still be non-null when `missing`); `source` (selection `operationId`, `operationType: selection-order`,
+(`validated` only from the order's own slot: that slot's `renewalId`, or the employee's `renewalId` when the employee's
+`entitlementSlotId` is that same slot; if they disagree, or neither exists, `missing` with `renewalId: null`, never invented;
+`entitlementSlotId` may still be non-null when `missing`); `source` (selection `operationId`, `operationType: selection-order`,
 `sourceType`, `holdId`, `orderNumber`, `configurationId`, `receivedAt`, `quoteId`, `termsVersion`, `termsDigest`, pinned
 `approvalStages`, `policyVersion`, `operationVersion`, `providerReference`); `policy` (`policyVersion`, per-key provenance);
 `lifecycleRevision` (0 until the first tick, then +1 per transition); `asOf` (DemoClock); `stageList`, `currentStage`, `stages[]`
