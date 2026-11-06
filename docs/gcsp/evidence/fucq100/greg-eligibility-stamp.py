@@ -2,6 +2,7 @@
 """Exact granted targeted stamp; no execution without the reviewed catalogue identity."""
 import argparse
 import atexit
+import hashlib
 import importlib.util
 import json
 import os
@@ -32,8 +33,16 @@ def main():
     args = parser.parse_args()
     if not re.fullmatch('[a-zA-Z0-9_.-]+', args.dispatcher_grant) or not re.fullmatch('[a-f0-9]{64}', args.catalogue_sha256):
         raise RuntimeError('Invalid grant or catalogue identity')
+    catalogue_bytes = CATALOGUE.read_bytes()
+    if hashlib.sha256(catalogue_bytes).hexdigest() != args.catalogue_sha256:
+        raise RuntimeError('Reviewed catalogue identity mismatch')
+    reviewed = json.loads(catalogue_bytes)
+    # Admit every custom helper, including transitive test_resources, before any helper import.
+    for path, expected in reviewed['helpers'].items():
+        if hashlib.sha256(Path(path).read_bytes()).hexdigest() != expected:
+            raise RuntimeError('Reviewed helper drift: ' + path)
     supervisor = module('greg_eligibility_runner', SUPERVISOR)
-    if supervisor.sha(CATALOGUE) != args.catalogue_sha256 or supervisor.catalogue() != json.loads(CATALOGUE.read_text()):
+    if supervisor.catalogue() != reviewed:
         raise RuntimeError('Reviewed source catalogue drift')
     c = module('greg_outer_resource_helpers', RECORDS / 'runtime-supervisor.py')
     r = c.resources

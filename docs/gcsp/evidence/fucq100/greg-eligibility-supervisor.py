@@ -95,6 +95,9 @@ def catalogue():
 
 
 def run(plan, grant):
+    before = catalogue()
+    if before != plan:
+        raise RuntimeError('Frozen catalogue mismatch before helper import or allocation')
     c = module('greg_resource_helpers', BASE_RUNNER)
     r = c.resources
     policy = r.Policy({'chunk_scratch_mib': 128, 'chunk_ram_mib': 768, 'chunk_seconds': 120, 'log_mib': 0.25})
@@ -102,9 +105,6 @@ def run(plan, grant):
     name = 'greg-eligibility-' + uuid.uuid4().hex
     receipt_path = RECORDS / (name + '-receipt.json')
     scratch = c.SafeScratch(RECORDS, ROOT, policy, expected=65536, checkpoint=receipt_path)
-    before = catalogue()
-    if before != plan:
-        raise RuntimeError('Frozen catalogue mismatch before allocation')
     env, removed = c.sanitized_environment()
     # Access gates are set only inside the selected existing HTTP test; never inherit a deployed credential.
     for key in ['DEMO_ACCESS_KEY', 'BREVO_API_KEY', 'BREVO_SENDER_EMAIL', 'GCSP_NOTIFICATION_TRANSPORT']:

@@ -37,6 +37,10 @@ an aggregate score.
 The [run catalogue](evidence/fucq100/greg-eligibility-run-catalogue.json) records 108 source/resource
 and package metadata paths, 281 static edges, 54 installed pg identities, Node/Python and eight
 helper/configuration hashes. All identities are rechecked before allocation and after execution.
+The stamp first verifies the supplied catalogue hash and every helper hash using only standard-library
+code, before importing the supervisor or any custom helper. The inner supervisor compares its complete
+catalogue before importing runtime-supervisor and its transitive test_resources module. This admission
+ordering was corrected during static review; no test command was used to exercise the earlier ordering.
 A strict loader checks each file-backed ES module against the catalogue and records a bounded module
 journal. pg resolves to the previously audited read-only package; no source module is redirected.
 
