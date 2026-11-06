@@ -44,12 +44,13 @@ async function boundedRead(path) {
 export async function readRetainedHistoricalInput({ directory, snapshotPath, pins = HISTORICAL_PINS } = {}) {
   requireHistorical(isAbsolute(directory || '') && isAbsolute(snapshotPath || ''),
     'historical-path-required', 'Supply absolute retained artifact and snapshot paths.');
-  requireHistorical(same(pins, HISTORICAL_PINS), 'historical-pin-mismatch', 'Only the reviewed historical input pins are admitted.');
+  const retainedPins = clone(pins);
+  requireHistorical(same(retainedPins, HISTORICAL_PINS), 'historical-pin-mismatch', 'Only the reviewed historical input pins are admitted.');
   const raw = {};
   for (const [name, path] of [['manifest', `${directory}/manifest.json`],
     ['configurations', `${directory}/configurations.jsonl`], ['snapshot', snapshotPath]]) {
     raw[name] = await boundedRead(path);
-    requireHistorical(createHash('sha256').update(raw[name]).digest('hex') === pins[name],
+    requireHistorical(createHash('sha256').update(raw[name]).digest('hex') === retainedPins[name],
       'historical-pin-mismatch', `The retained ${name} differs from its reviewed source pin.`);
   }
   const manifest = JSON.parse(raw.manifest); const snapshot = JSON.parse(raw.snapshot);
@@ -61,9 +62,9 @@ export async function readRetainedHistoricalInput({ directory, snapshotPath, pin
   requireHistorical(row.catalogue.snapshotVersion === SNAPSHOT_VERSION && lookupIdentity
     && same(lookupIdentity, row.catalogue.lookupIdentity) && same(lookupIdentity, row.catalogue.resolvedLookupIdentity),
   'historical-input-invalid', 'The original complete catalogue identity must remain unchanged.');
-  const input = { row, manifest, snapshot, catalogueRequest, lookupIdentity, pins: clone(pins),
+  const input = { row, manifest, snapshot, catalogueRequest, lookupIdentity, pins: retainedPins,
     directory: resolve(directory), snapshotPath: resolve(snapshotPath) };
-  input.digest = inputDigest({ row, manifest, catalogueRequest, pins });
+  input.digest = inputDigest({ row, manifest, catalogueRequest, pins: retainedPins });
   inputs.add(input); return freeze(input);
 }
 

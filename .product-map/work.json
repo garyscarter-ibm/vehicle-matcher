@@ -1820,17 +1820,17 @@
       "original_status": "In Progress",
       "assignee": "usget",
       "type": "Story",
-      "observed_at": "2026-11-06T11:43:41Z",
+      "observed_at": "2026-11-06T11:57:05Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60",
       "workers": [
         {
           "name": "Scooby Doo",
           "role": "story-lead",
           "harness": "codex",
-          "observed_at": "2026-11-06T11:43:11.564242+00:00",
-          "expires_at": "2026-11-06T11:43:11.564242+00:00",
+          "observed_at": "2026-11-06T11:57:05.013401+00:00",
+          "expires_at": "2026-11-06T11:57:05.013401+00:00",
           "source": "thread 01a1b05f-dcbc-7e50-a2f9-0332b39f082a",
-          "status": "Stopped at retained historical checkpoint; requested/selected Sol/high, no fallback/descendants; scoped8/8; independent review and canonical assembly remain; no active claim"
+          "status": "Stopped at F2 repair checkpoint; requested/selected Sol/high, no fallback/descendants; scoped 9/9; re-review and canonical assembly remain; no active claim"
         }
       ],
       "slices": [
@@ -1852,8 +1852,8 @@
           "id": "shared-accounting",
           "status": "in-progress",
           "title": "Canonical collector session cache budget recovery integration",
-          "observed_at": "2026-11-06T11:43:40Z",
-          "evidence": "Actual frozen F59 v2 aee5e902 generic proof 6/6 and retained historical pipeline 8/8 pass: ingress/enrichment share one cache/ledger/deadline/lease; interruption resumes. Canonical shared-branch assembly remains. docs/gcsp/evidence/fucq60/historical-integration-evidence-2026-11-06.md."
+          "observed_at": "2026-11-06T11:57:04Z",
+          "evidence": "Actual frozen F59 v2 aee5e902 generic proof 6/6 retained; historical pipeline now 9/9 after reproduced F2 input-pin snapshot repair. Same cache/ledger/deadline/lease and recovery. Canonical assembly and independent re-review remain. docs/gcsp/evidence/fucq60/historical-integration-evidence-2026-11-06.md."
         },
         {
           "id": "real-source",
@@ -1871,15 +1871,15 @@
           "id": "focused-contracts",
           "status": "complete",
           "title": "Authored enrichment and F39 F42 focused contracts",
-          "observed_at": "2026-11-06T11:43:41Z",
-          "evidence": "Lead-reviewed new historical ingress/corpus join 8/8 pass, zero skips, against actual frozen modules. Prior unchanged generic-session 6/6 and pure/F39/F42 50/50 evidence retained by verified hashes; new producer-root environment separately recorded. Final suite remains open. docs/gcsp/evidence/fucq60/historical-integration-evidence-2026-11-06.md."
+          "observed_at": "2026-11-06T11:57:04Z",
+          "evidence": "Current historical file 9/9 pass, zero skips, after new immediate caller-pin mutation regression failed before narrow fix. Original pin/provenance and actual F39/F59/F60/F54 boundary pass; source frozen. Prior unchanged 6/6 generic-session and 50/50 pure/adapter evidence retained. Re-review/final suite remain. docs/gcsp/evidence/fucq60/historical-integration-evidence-2026-11-06.md."
         },
         {
           "id": "corpus-integration",
           "status": "in-progress",
           "title": "F54 corpus and presentation integration",
-          "observed_at": "2026-11-06T11:43:41Z",
-          "evidence": "Actual original-envelope retained candidate validation, immutable receipt/report sidecar join, isolated F54 registry publication/lookup and interruption/reopen pass in 8/8 scoped cases. Zero VIN/images; F60 remains incomplete, F54 complete means supported subset. Canonical activation/breadth/final integration remain. docs/gcsp/evidence/fucq60/historical-integration-evidence-2026-11-06.md."
+          "observed_at": "2026-11-06T11:57:05Z",
+          "evidence": "Original-envelope candidate/immutable sidecar/isolated registry lookup and recovery remain covered in current 9/9 actual-module file after F2 repair. Zero VIN/images; F60 incomplete, F54 complete means supported subset. Canonical activation, breadth, final integration and re-review remain. docs/gcsp/evidence/fucq60/historical-integration-evidence-2026-11-06.md."
         },
         {
           "id": "final-suite",

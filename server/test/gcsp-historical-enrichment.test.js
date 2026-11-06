@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { tmpdir } from 'node:os';
@@ -113,6 +113,36 @@ test('changed source pins and mutable caller inputs cannot become admitted histo
     await (await opening).run();
     const checkpoint = JSON.parse(await readFile(options.statePath, 'utf8'));
     assert.deepEqual(checkpoint.content.identity.stage.producerIdentity, producerIdentity);
+  });
+});
+
+test('historical input snapshots caller pins before asynchronous reads', async () => {
+  await fixture(async ({ api, root, input, open }) => {
+    const alternate = join(root, 'alternate');
+    await mkdir(alternate);
+    const manifest = structuredClone(input.manifest);
+    manifest.generatorVersion = 'caller-substituted-generator';
+    const manifestBytes = JSON.stringify(manifest);
+    await writeFile(join(alternate, 'manifest.json'), manifestBytes);
+    await writeFile(join(alternate, 'configurations.jsonl'), await readFile(join(directory, 'configurations.jsonl')));
+    const mutablePins = structuredClone(api.HISTORICAL_PINS);
+    const alteredRead = api.readRetainedHistoricalInput({ directory: alternate, snapshotPath, pins: mutablePins });
+    mutablePins.manifest = createHash('sha256').update(manifestBytes).digest('hex');
+    await assert.rejects(alteredRead, { code: 'historical-pin-mismatch' });
+
+    const retainedPins = structuredClone(api.HISTORICAL_PINS);
+    const retainedRead = api.readRetainedHistoricalInput({ directory, snapshotPath, pins: retainedPins });
+    for (const name of Object.keys(retainedPins)) retainedPins[name] = '0'.repeat(64);
+    const retainedInput = await retainedRead;
+    const expectedPins = {
+      manifest: 'c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709',
+      configurations: '9c1fb6a34e324e6e4937baa1e80eabafa44fae394dd138f2f77be9f6867e9855',
+      snapshot: 'ee1ae6c5cb6ab742f9a2959825ca722007409fa019d15acd44bb4b79984556a3',
+    };
+    assert.deepEqual(retainedInput.pins, expectedPins);
+    const result = await (await open({ input: retainedInput })).run();
+    assert.deepEqual(result.ingress.receipt.pins, expectedPins);
+    assert.equal(result.ingress.receipt.observedDate, '2026-11-01');
   });
 });
 
