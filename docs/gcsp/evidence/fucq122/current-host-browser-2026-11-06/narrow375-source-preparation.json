@@ -1,0 +1,54 @@
+{
+  "story": "FUCQ-122",
+  "state": "source-only prepared; HOLD for explicit dispatcher browser-lane grant",
+  "selectedChunk": "journey-narrow375",
+  "viewport": {
+    "width": 375,
+    "height": 812
+  },
+  "minimalNextCommandAfterGrant": "FUCQ122_BROWSER_LANE_GRANTED=explicit-root-release /usr/bin/python3 -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/browser-supervisor.py journey-narrow375",
+  "changedInput": "Only the existing supervisor mode argument changes from journey-desktop to journey-narrow375. The existing runner already maps this mode to 375x812. Scenario, runner, supervisor and finite source catalogue bytes are unchanged.",
+  "route": "fresh ordinary HTTPS help -> explicit Paula confirmation -> actual presenter Greg queue/options/review/manual update -> same-URL presenter Paula switch -> ordinary help navigation -> actual reload/history",
+  "scenarioSha256": "f109c63e26f4477267372f2f89c0b032fab1ecdea07827b98ddd48f8404a0a76",
+  "sourcePlanSha256": "0b6c8c636764ec21fee54fcb630b2567e5fa25f36b750f724386ebd21a6b433f",
+  "runnerSha256": "2d29ff6b4bae33584f7b543a39a6f8cf4ea34dfd0baa9f43d8c28fb4330eea37",
+  "supervisorSha256": "e7f05ca475dc915dc0b6d24b3c7a52430d99f01c27d7bb1c1deb1c43f35b521a",
+  "inheritedSupervisorSha256": "b17e1232addc1dbdcb51f2f0a5831155d4885a3b5b3813f909fcdd2ea1a73617",
+  "sourcePinCount": 695,
+  "sourcePinsUnchangedAtPreparation": true,
+  "sourceUnderTest": "Same read-only DEV-2026-11-04-060 HTTPS host/product bytes as the third desktop; not a claim that the whole latest shared tree is under test.",
+  "preservedInputSnapshots": [
+    "scenario-third-desktop.mjs",
+    "source-plan-third-desktop.json"
+  ],
+  "expectedCaptures": [
+    "01-paula-help.png",
+    "02-paula-confirmation.png",
+    "03-greg-actual-queue.png",
+    "04-greg-update-review.png",
+    "05-paula-reload-history.png"
+  ],
+  "evidenceObligation": "Inspect all actually produced captures at 375px against experience-quality/screens/COMPONENTS. Report reached assertions, keyboard methods/focus/status observations, overflow, every actual failure and exact receipt; no claim of all-state coverage from this route.",
+  "observationsPreserved": "Absent-draft 404 is consistent with the existing service contract but the desktop response body was not retained. Keep all six desktop aborts, including four unclassified. No scenario audit suppression/change: its errors-empty assertion is retained tooling behavior, not a new clean-console AC. Do not allocate a further run solely for a clean log.",
+  "budgets": {
+    "seconds": 120,
+    "maxRecursiveRssMiB": 2560,
+    "minAdmittedRssMiB": 2048,
+    "combinedScratchOutputMiB": 128,
+    "logMiB": 2,
+    "workers": 1,
+    "browsers": 1
+  },
+  "resourceContract": "Existing strict F103/F100 all-raw-row admission; no pruning/exemption. Manifest/finalizer before scratch; one owned bounded local Chrome profile/TMPDIR working set; recursive PID/group/profile/ports tracking; stop/join/removal/token absence; independent final cleanup receipt. No allocation before a new grant and admission.",
+  "grantNow": false,
+  "runtimeStarted": false,
+  "servicesStarted": false,
+  "chromeStarted": false,
+  "scratchOrReservationAllocated": false,
+  "syntaxOrTestsExecuted": false,
+  "productWrites": false,
+  "agentsSpawned": 0,
+  "scopeLimits": "Same manual route only. No full suite/native run, new producer/stock/decline/lifecycle scenario, bug pickup, product repair, validation framework or original AC amendment.",
+  "priorReceiptSha256": "3f31cd59b3a5f26c86ebf6b5fc47636fcac54c58a08052ce639d18a7f4525357",
+  "priorEvidenceCommit": "18b19d01d9081587f128656b9d6a2299d5105f0f"
+}
