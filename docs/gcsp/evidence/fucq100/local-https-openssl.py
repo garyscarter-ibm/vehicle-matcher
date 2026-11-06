@@ -1,8 +1,8 @@
-"""One exact test-certificate child, with stop-before-exec registration and wait4 accounting.
+"""One direct Darwin native spawn, with retained PID and wait4 accounting.
 
 Called only by local-https-preload.cjs. Never logs certificate, key or OpenSSL output.
-The child stays in the selected Node process group; its direct broker retains its
-Popen handle until wait4 has returned the exit and Darwin byte-valued ru_maxrss.
+Darwin posix_spawn creates the executable image without an interpreted child or
+forked Python memory phase. The broker retains the returned PID until wait4.
 """
 import hashlib
 import json
@@ -35,9 +35,10 @@ def main():
         raise RuntimeError('Certificate configuration drift')
     cfg = json.loads(cfg_path.read_text()); spec = cfg['certificate']
     args = sys.argv[2:]
-    child_mode = sys.argv[1] == '--child'
-    if sys.argv[1] not in ('--broker', '--child') or len(args) != 13:
+    if sys.argv[1] != '--broker' or len(args) != 13:
         raise RuntimeError('Unadmitted certificate argv')
+    if sys.platform != 'darwin' or not hasattr(os, 'posix_spawn'):
+        raise RuntimeError('Only the reviewed direct Darwin spawn is admitted')
     root = Path(args[6]).parent
     expected = ['req', '-x509', '-newkey', 'rsa:2048', '-nodes', '-keyout', str(root / 'localhost.key'),
                 '-out', str(root / 'localhost.crt'), '-days', '1', '-config', str(root / 'openssl.cnf')]
@@ -50,16 +51,12 @@ def main():
     native_env = {'PATH': '/usr/bin:/bin:/usr/sbin:/sbin', 'LC_ALL': 'C',
                   'TMPDIR': spec['scratch'], 'TMP': spec['scratch'], 'TEMP': spec['scratch'],
                   'OPENSSL_CONF': str(root / 'openssl.cnf')}
-    if child_mode:
-        # Popen has returned in the broker before this child can execute OpenSSL.
-        os.kill(os.getpid(), signal.SIGSTOP)
-        verify('/usr/bin/openssl', spec['pins']['/usr/bin/openssl'])
-        os.execve('/usr/bin/openssl', ['/usr/bin/openssl', *args], native_env)
     journal = Path(spec['journal']); deadline = min(time.monotonic() + 9,
         time.monotonic() + max(0, spec['workDeadlineEpochMs'] / 1000 - time.time()))
     # Intent and finalizer state precede this broker's first probe/child.
     state = {'kind': 'certificate', 'brokerPid': os.getpid(), 'pid': None, 'start': None,
-             'pgid': os.getpgrp(), 'state': 'creating', 'epochMs': round(time.time() * 1000)}
+             'pgid': os.getpgrp(), 'state': 'creating', 'epochMs': round(time.time() * 1000),
+             'spawn': 'darwin-os.posix_spawn'}
     def emit():
         line = (json.dumps(state, separators=(',', ':')) + '\n').encode()
         fd = os.open(journal, os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o600)
@@ -68,7 +65,11 @@ def main():
             os.write(fd, line)
         finally: os.close(fd)
     emit()
-    handle = None; joined = False; usage = None; cancelled = False
+    # Intent and retained state exist before even pipe allocation. No other
+    # reaper touches this PID, including on cancellation or a failed anchor.
+    handle = {'pid': None, 'returncode': None}
+    read_fd = write_fd = None
+    joined = False; usage = None; cancelled = False
     def cancel(number, frame):
         nonlocal cancelled
         cancelled = True
@@ -76,51 +77,64 @@ def main():
     def query(arguments, pid=None, until=None):
         left = (deadline if until is None else until) - time.monotonic()
         if left <= 0: raise TimeoutError('Certificate registration deadline')
-        p = subprocess.run(['/bin/ps', '-p', str(handle.pid if pid is None else pid), '-o', arguments],
+        p = subprocess.run(['/bin/ps', '-p', str(handle['pid'] if pid is None else pid), '-o', arguments],
                            capture_output=True, text=True, timeout=min(1, left))
         if p.returncode or p.stderr or not p.stdout.strip() or len(p.stdout) > 8192:
             raise RuntimeError('Unknown certificate process accounting')
         return p.stdout.strip()
     def reap(block=False):
         nonlocal joined, usage
-        pid, status, measured = os.wait4(handle.pid, 0 if block else os.WNOHANG)
+        pid, status, measured = os.wait4(handle['pid'], 0 if block else os.WNOHANG)
         if pid:
-            handle.returncode = os.waitstatus_to_exitcode(status)
+            handle['returncode'] = os.waitstatus_to_exitcode(status)
             usage = measured
+            joined = True
             if type(measured.ru_maxrss) not in (int, float) or measured.ru_maxrss <= 0:
                 raise RuntimeError('Unknown native certificate RSS')
-            joined = True
         return joined
     error = None; output = bytearray()
     try:
         state.update(brokerStart=query('lstart=', os.getpid()), brokerPgid=os.getpgrp(),
                      nodePid=os.getppid())
         emit()
-        # Keep the handle in scope across every registration/launch/cancel path.
-        handle = subprocess.Popen.__new__(subprocess.Popen)
-        subprocess.Popen.__init__(handle, [spec['python'], '-I', __file__, '--child', *args],
-            env=os.environ.copy(), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        state['pid'] = handle.pid; state['state'] = 'created'; emit()
-        while True:
-            pid, status = os.waitpid(handle.pid, os.WUNTRACED | os.WNOHANG)
-            if pid:
-                if not os.WIFSTOPPED(status):
-                    handle.returncode = os.waitstatus_to_exitcode(status)
-                    raise RuntimeError('Certificate child exited before registration; usage unknown')
-                break
-            if cancelled or time.monotonic() >= deadline: raise TimeoutError('Certificate registration cancelled')
-            time.sleep(0.005)
+        if cancelled or time.monotonic() >= deadline: raise TimeoutError('Certificate launch cancelled')
+        read_fd, write_fd = os.pipe()
+        if min(read_fd, write_fd) <= 2 or os.get_inheritable(read_fd) or os.get_inheritable(write_fd):
+            raise RuntimeError('Certificate pipe unexpectedly inheritable')
+        # The broker is single-threaded. Inventory currently open descriptors
+        # after listdir closes its own directory FD; all nonstandard descriptors
+        # are closed in the child after the output dup actions. No journal or
+        # configuration descriptor may leak, even if inherited by the broker.
+        descriptors = {read_fd, write_fd}
+        for value in os.listdir('/dev/fd'):
+            fd = int(value)
+            if fd <= 2: continue
+            try: os.fstat(fd)
+            except OSError as exc:
+                if exc.errno != 9: raise
+            else: descriptors.add(fd)
+        actions = [(os.POSIX_SPAWN_CLOSE, 0),
+                   (os.POSIX_SPAWN_DUP2, write_fd, 1), (os.POSIX_SPAWN_DUP2, write_fd, 2)]
+        actions += [(os.POSIX_SPAWN_CLOSE, fd) for fd in sorted(descriptors)]
+        defaults = tuple(getattr(signal, name) for name in
+                         ('SIGPIPE', 'SIGINT', 'SIGTERM', 'SIGXFZ', 'SIGXFSZ') if hasattr(signal, name))
+        verify('/usr/bin/openssl', spec['pins']['/usr/bin/openssl'])
+        if cancelled or time.monotonic() >= deadline: raise TimeoutError('Certificate launch cancelled')
+        # Direct libc/kernel spawn only: no Popen/fork fallback or Python child
+        # branch. Flag-only handlers cannot throw away a returned native PID.
+        handle['pid'] = os.posix_spawn('/usr/bin/openssl', ['/usr/bin/openssl', *args], native_env,
+            file_actions=actions, setsigmask=(), setsigdef=defaults)
+        state['pid'] = handle['pid']; state['state'] = 'created'; emit()
+        os.close(write_fd); write_fd = None
         state.update(start=query('lstart='), pgid=int(query('pgid=')),
-                     stoppedRssBytes=int(query('rss=')) * 1024, state='registered')
-        if state['pgid'] != os.getpgrp() or state['stoppedRssBytes'] <= 0:
-            raise RuntimeError('Certificate group/RSS unknown')
+                     state='registered')
+        if state['pgid'] != os.getpgrp(): raise RuntimeError('Certificate group unknown')
         state['probePeakRssBytes'] = int(resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss)
         if state['probePeakRssBytes'] <= 0: raise RuntimeError('Unknown registration probe RSS')
         emit()
-        os.kill(handle.pid, signal.SIGCONT)
         with selectors.DefaultSelector() as selector:
-            os.set_blocking(handle.stdout.fileno(), False)
-            selector.register(handle.stdout, selectors.EVENT_READ)
+            os.set_blocking(read_fd, False)
+            selector.register(read_fd, selectors.EVENT_READ)
             while selector.get_map() or not joined:
                 if cancelled or time.monotonic() >= deadline: raise TimeoutError('Certificate work deadline/cancellation')
                 for key, _ in selector.select(timeout=0.01):
@@ -134,7 +148,7 @@ def main():
     finally:
         end = time.monotonic() + 0.5
         try:
-            if handle is not None and getattr(handle, 'pid', None) and handle.returncode is None and not joined:
+            if handle['pid'] is not None and handle['returncode'] is None and not joined:
                 # A retained direct child cannot be PID-reused until wait4 reaps it.
                 # A fresh lstart/group anchor is additionally required to signal it.
                 if not reap():
@@ -142,29 +156,32 @@ def main():
                         state.update(start=query('lstart=', until=end), pgid=int(query('pgid=', until=end)))
                     if query('lstart=', until=end) != state['start'] or int(query('pgid=', until=end)) != state['pgid']:
                         raise RuntimeError('Certificate cancellation anchor uncertain')
-                    os.kill(handle.pid, signal.SIGKILL)
+                    os.kill(handle['pid'], signal.SIGKILL)
         except BaseException as exc:
             error = error or type(exc).__name__ + ': ' + str(exc)
         finally:
             # Anchor/probe/signal errors must not bypass direct wait4 or closure.
             try:
-                if handle is not None and getattr(handle, 'pid', None) and handle.returncode is None and not joined:
+                if handle['pid'] is not None and handle['returncode'] is None and not joined:
                     while not reap() and time.monotonic() < end: time.sleep(0.005)
                     if not joined: raise RuntimeError('Certificate direct join uncertain')
             except BaseException as exc:
                 error = error or type(exc).__name__ + ': ' + str(exc)
             finally:
-                if handle is not None and getattr(handle, 'stdout', None) is not None: handle.stdout.close()
-        state.update(state='joined' if joined else 'uncertain', returncode=getattr(handle, 'returncode', None),
+                for fd in (read_fd, write_fd):
+                    if fd is not None:
+                        try: os.close(fd)
+                        except OSError as exc: error = error or type(exc).__name__ + ': ' + str(exc)
+        state.update(state='joined' if joined else 'uncertain', returncode=handle['returncode'],
                      nativePeakRssBytes=None if usage is None else int(usage.ru_maxrss),
                      brokerPeakRssBytes=int(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss),
                      outputBytes=len(output), error=error, finishedEpochMs=round(time.time() * 1000))
-        if error or handle is None or getattr(handle, 'returncode', None) != 0:
+        if error or handle['returncode'] != 0:
             journal.with_name('openssl-output.log').write_bytes(output[:8192])
         emit()
     # Success preserves the utility's execFile callback contract. Failure passes
     # a nonzero exit, without echoing random key-generation output or private paths.
-    return 0 if joined and handle.returncode == 0 and error is None else 1
+    return 0 if joined and handle['returncode'] == 0 and error is None else 1
 
 
 if __name__ == '__main__':

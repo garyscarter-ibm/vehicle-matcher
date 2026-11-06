@@ -46,6 +46,8 @@ def main():
     chunk = sys.argv[1]; started = time.monotonic(); total_deadline = started + 180
     if sha(PLAN) != sys.argv[2]: raise RuntimeError('Unreviewed run plan')
     plan = json.loads(PLAN.read_text()); selection = plan['selections'][chunk]
+    if plan.get('executionAuthorised') is not True:
+        raise RuntimeError('Source-only accounting repair; no runtime grant')
     run = Path(plan['records']) / chunk
     run.mkdir(parents=True, exist_ok=False)
     provisional = run / 'provisional.json'; receipt_path = run / 'receipt.json'
@@ -188,6 +190,11 @@ def main():
                         scratch.record.setdefault('owned_pids', []).append({'pid': pid, 'start': start, 'pgid': group})
                         if group not in scratch.record['groups']: scratch.record['groups'].append(group)
                 if row.get('state') == 'joined':
+                    if row.get('spawn') != 'darwin-os.posix_spawn':
+                        raise r.ResourceError('Unreviewed certificate process lifetime')
+                    # Direct Darwin spawn creates only the native executable
+                    # image. Its retained PID/wait4 peak has no Python-to-exec
+                    # lifetime segment to omit. Never accept the old trampoline.
                     peaks = [row.get(k) for k in ('nativePeakRssBytes', 'brokerPeakRssBytes', 'probePeakRssBytes')]
                     if any(type(n) is not int or n <= 0 for n in peaks): raise r.ResourceError('Unknown certificate/probe RSS')
                     extra += sum(peaks)

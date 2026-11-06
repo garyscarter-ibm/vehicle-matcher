@@ -1,4 +1,4 @@
-"""Static-only refresh/freeze for two serial HTTPS grants; no probes or tests."""
+"""Static-only accounting repair freeze; execution disabled, no probes or tests."""
 import hashlib
 import json
 import os
@@ -13,6 +13,7 @@ RECORDS = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/
 GRANT = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/coordination/fucq100-https-finite-delivery-1315.md')
 SOURCE = HERE / 'local-https-source-plan.json'
 PLAN = HERE / 'local-https-run-plan.json'
+ORIGINAL_PLAN = HERE / 'local-https-run-plan-1315-original.json'
 sha = lambda path: hashlib.sha256(Path(path).read_bytes()).hexdigest()
 IMPORT = re.compile(r'''(?:^|\n)\s*(?:import|export)\s+(?:(?!;)[\s\S])*?\bfrom\s*['"]([^'"\n]+)['"]|\bimport\s*\(\s*['"]([^'"\n]+)['"]|(?:^|\n)\s*import\s*['"]([^'"\n]+)['"]''')
 URL = re.compile(r'''new\s+URL\(\s*['"]([^'"\n]+)['"]\s*,\s*import\.meta\.url''')
@@ -127,6 +128,9 @@ def refresh():
         'nativeEnvironment': 'PATH, LC_ALL=C, owned TMPDIR/TMP/TEMP, OPENSSL_CONF=the exact generated configuration; all other variables absent.',
         'resources': 'System platform dyld shared cache and LibreSSL defaults; no user config/provider/module paths admitted.',
         'instrumentation': ['local-https-preload.cjs', 'local-https-openssl.py'],
+        'nativeLaunch': 'Darwin os.posix_spawn directly creates the OpenSSL image; no Python trampoline, fork fallback or exec transition. Retained native PID, fresh lstart/PGID and direct wait4 are required.',
+        'nativeDescriptors': 'Closed stdin; non-inheritable output pipe duped to stdout/stderr; all broker descriptors above2 closed by ordered spawn file actions; no config/journal descriptor inherited.',
+        'nativeSignals': 'Empty signal mask; SIGPIPE/INT/TERM/XFZ/XFSZ reset where present; inherited selected process group.',
         'bounds': {'seconds': 10, 'outputBytes': 8192, 'requestsIdleSeconds': 5, 'responseBytes': 1048576}}
     return doc
 
@@ -162,7 +166,10 @@ def catalogue(doc):
         row['titles'] = re.findall(r"\btest\(\s*['\"](.*?)['\"]", (ROOT / row['file']).read_text())
         row['selectedTitles'] = row['titles'] if key == 'tls2' else [guard]
         row['excludedTitles'] = [] if key == 'tls2' else [t for t in row['titles'] if t != guard]
-    return {'schemaVersion': 1, 'scope': 'targeted only; conditional serial grants; no browser/native/live/full acceptance',
+    return {'schemaVersion': 1, 'scope': 'source-only accounting repair; unexecuted; no runtime grant or acceptance',
+            'executionAuthorised': False,
+            'admissionStatus': 'HOLD. TLS2 grant consumed under the original plan with incomplete RSS proof; brief1 unused and not admitted. Revised authorisation and exact independent review required before any execution.',
+            'originalPlanPath': str(ORIGINAL_PLAN), 'originalPlanSHA256': sha(ORIGINAL_PLAN),
             'productCheckpoint': '657c3a79695d8ab4670ebd1db1fb3edcaa83d382', 'reviewedProductTest': PINS,
             'grantPath': str(GRANT), 'grantSHA256': sha(GRANT), 'root': str(ROOT), 'records': str(RECORDS),
             'sourcePlanPath': str(SOURCE), 'sourcePlanSHA256': sha(SOURCE), 'sources': doc['sources'],

@@ -3481,7 +3481,7 @@
   "documentPins": {
     "docs/gcsp/local-https.md": "f2861252885e2092979430816a2539cf0fdaf2493632d9304e0df8fd09115059",
     "docs/gcsp/evidence/fucq100/local-https-validation-plan.md": "6054ae4e386ed7231db900aff908348cbfdcd21249faf5bf2fb2835bf30ccb58",
-    "_dev/in-progress/DEV-2026-11-04-060.md": "455264b08b43059aaf3e6b785faedf2ab20bf8f499c460ffffb2cfa554d31c28"
+    "_dev/in-progress/DEV-2026-11-04-060.md": "a3c2cbe1fbc00586a93215ef022dc0c54aab6e4218178f63982fa6192446e81c"
   },
   "actualValidation": [
     "Static source/authority/policy trace",
@@ -3596,6 +3596,9 @@
       "local-https-preload.cjs",
       "local-https-openssl.py"
     ],
+    "nativeLaunch": "Darwin os.posix_spawn directly creates the OpenSSL image; no Python trampoline, fork fallback or exec transition. Retained native PID, fresh lstart/PGID and direct wait4 are required.",
+    "nativeDescriptors": "Closed stdin; non-inheritable output pipe duped to stdout/stderr; all broker descriptors above2 closed by ordered spawn file actions; no config/journal descriptor inherited.",
+    "nativeSignals": "Empty signal mask; SIGPIPE/INT/TERM/XFZ/XFSZ reset where present; inherited selected process group.",
     "bounds": {
       "seconds": 10,
       "outputBytes": 8192,
