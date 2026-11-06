@@ -20,6 +20,15 @@ shared = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs')
 run = 'fucq103-backend-' + uuid.uuid4().hex
 mode = sys.argv[1] if len(sys.argv) > 1 else 'publish'
 checks = {
+    'eligibility-registry': ['server/test/gcsp-policy-consumer-adoption.test.js', 'server/test/gcsp-policy-adoption.test.js', 'server/test/gcsp-policy-learning-adoption.test.js'],
+    'eligibility-core': ['server/test/gcsp-greg-driver-eligibility.test.js', 'server/test/gcsp-greg-demand.test.js'],
+    'eligibility-default': ['server/test/gcsp-runtime-publication.test.js'],
+    'eligibility-weighted': ['server/test/gcsp-runtime-publication.test.js'],
+    'eligibility-runtime': ['server/test/gcsp-runtime-publication.test.js'],
+    'eligibility-publish': ['server/test/gcsp-greg-publish.test.js'],
+    'eligibility-activation': ['server/test/gcsp-policy-activation.test.js', 'server/test/gcsp-greg-publish-http.test.js'],
+    'eligibility-editor': ['server/test/gcsp-greg-publish-editor.test.js'],
+    'eligibility-dashboard': ['server/test/gcsp-greg-dashboard-data.test.js'],
     'canonical-runtime-focus': ['server/test/gcsp-runtime-publication.test.js'],
     'canonical-runtime': ['server/test/gcsp-runtime-publication.test.js', 'server/test/gcsp-policy-consumer-adoption.test.js', 'server/test/gcsp-greg-publish.test.js'],
     'consumer-adoption': ['server/test/gcsp-policy-consumer-adoption.test.js'],
@@ -42,11 +51,21 @@ checks = {
 }
 if mode not in checks:
     raise SystemExit('Unknown scoped check')
-combined_path = Path(__file__).with_name('runtime-combined-source-plan.json')
-combined = json.loads(combined_path.read_text()) if mode in ('canonical-runtime', 'canonical-runtime-focus') else None
-if combined and (combined['selectedTests'] != checks['canonical-runtime'] or not set(checks[mode]) <= set(combined['selectedTests'])):
+eligibility = mode.startswith('eligibility-')
+combined_path = Path(__file__).with_name('eligibility-combined-source-plan.json' if eligibility else 'runtime-combined-source-plan.json')
+combined = json.loads(combined_path.read_text()) if eligibility or mode in ('canonical-runtime', 'canonical-runtime-focus') else None
+selected_chunk = next((chunk for chunk in combined['chunks'] if chunk['mode'] == mode), None) if eligibility else None
+if eligibility:
+    if not selected_chunk or selected_chunk['tests'] != checks[mode]:
+        raise SystemExit('Eligibility source catalogue selected chunk differs')
+elif combined and (combined['selectedTests'] != checks['canonical-runtime'] or not set(checks[mode]) <= set(combined['selectedTests'])):
     raise SystemExit('Combined source catalogue selected tests differ')
-command = [combined['executables']['node']['path'] if combined else 'node', '--test', '--test-concurrency=1', *checks[mode]]
+command = [combined['executables']['node']['path'] if combined else 'node', '--test', '--test-concurrency=1']
+if selected_chunk and selected_chunk.get('namePattern'):
+    command.append('--test-name-pattern=' + selected_chunk['namePattern'])
+command.extend(checks[mode])
+if selected_chunk and command != selected_chunk['command']:
+    raise SystemExit('Eligibility command differs from frozen proposal')
 policy = resources.Policy({'chunk_scratch_mib': 128, 'chunk_ram_mib': 768, 'chunk_seconds': 120, 'log_mib': 2})
 host = resources.HostBudget(policy)
 
@@ -68,6 +87,8 @@ report = {'run': run, 'project': str(project), 'command': command, 'scope': 'sco
           'selection': 'Affected selector dry-run has no plug-in for unspecified JavaScript and proposes npm test. Reviewed and rejected broad fallback; explicit regression/caller commands selected.',
           'excluded': 'Full suite, PostgreSQL, browser and external integration; parent owns integration checkpoint.',
           'supervisor': str(Path(__file__).resolve()), 'manifest': str(scratch.manifest)}
+if eligibility:
+    report.update(impact=combined['impact'], selection=selected_chunk, excluded=combined['excluded'])
 report['impactMap'] = {
     'Exact100 runtime/index dependency adoption with retained103 registry/seed/scorer; actual HTTP scenarios, canonical step/reset, weighted preview, employee terms and history': ['server/test/gcsp-runtime-publication.test.js', 'server/test/gcsp-policy-consumer-adoption.test.js', 'server/test/gcsp-greg-publish.test.js'],
     'Exact FUCQ-106 reasons and FUCQ-115 choice bundles / same-provider missing-only adoption / isolated dated80x4 publication': ['server/test/gcsp-policy-consumer-adoption.test.js'],
@@ -78,6 +99,8 @@ report['impactMap'] = {
     'prepareSuccessor / completePublication / existing publisher and typed reads': ['server/test/gcsp-policy-versions.test.js', 'server/test/gcsp-policy-service.test.js', 'server/test/gcsp-greg-publish.test.js', 'server/test/gcsp-greg-demand.test.js'],
     'activateRunPolicy / identity wall clock / retained presenter clock compatibility': ['server/test/gcsp-policy-activation.test.js', 'server/test/gcsp-identity.test.js', 'server/test/gcsp-clock-reset.test.js', 'server/test/gcsp-presenter-controls.test.js'],
 }
+if eligibility:
+    report['impactMap'] = combined['impactMap']
 source_paths = ['server/gcsp/policy/reviewed-definitions.js', 'server/gcsp/runtime.js', 'server/test/helpers/gcsp-reviewed-runtime.js', 'server/index.js', 'server/gcsp/policy/activation.js', 'server/test/helpers/greg-publish-run.js', 'server/test/helpers/employee-recommendation-http.js', 'server/gcsp/policy/index.js', 'server/gcsp/policy/publish.js', 'server/scenarios/employee/index.js', *checks[mode],
                 *[str(p.relative_to(project)) for p in (project / 'server/gcsp/greg/publish').glob('*.js')]]
 source_paths.extend([str(Path(__file__).relative_to(project)), '_tools/test_resources.py', 'server/gcsp/greg/index.js', 'server/gcsp/policy/seed-v1.json',
@@ -251,6 +274,11 @@ with resources.handled_termination():
             report['result'] = resources.run_process(command, project, env, log, scratch, policy,
                                                    128 * resources.MIB, 768 * resources.MIB, 120, host)
             transcript = log.read_text(errors='replace')
+            if selected_chunk:
+                count = re.search(r'^(?:# |ℹ )pass\s+(\d+)', transcript, re.M)
+                report['matchedTestCount'] = int(count.group(1)) if count else None
+                if report['matchedTestCount'] != selected_chunk['expectedMatchedTests'] and not report['result'].get('issue'):
+                    report['result']['issue'] = 'unexpected-matched-test-count'
             report['summary'] = transcript[-12000:] if report['result']['rc'] or report['result']['issue'] else '\n'.join(
                 line for line in transcript.splitlines() if line.startswith(('# tests', '# pass', '# fail', '# skipped', '# duration', 'ℹ tests', 'ℹ pass', 'ℹ fail', 'ℹ skipped', 'ℹ duration')))
             report['removedBytes'] = resources.allocated_bytes(scratch.root)

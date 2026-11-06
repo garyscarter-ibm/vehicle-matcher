@@ -5,6 +5,7 @@ import { PolicyService, FilePolicyProvider, MemoryPolicyProvider, PostgresPolicy
 import { createMemoryRepository, createMemoryStore, inputDigest, ok, result } from '../gcsp/repository/index.js';
 import { startHttpServer, cookieOf } from './helpers/employee-recommendation-http.js';
 import { stock, fact, preference } from './helpers/employee-recommendation.js';
+import { projectRecommendationFacts } from '../gcsp/manual-context/recommendation-facts.js';
 import { saved } from './helpers/greg-demand-run.js';
 import { good, response, now, adoptionCommand } from './helpers/gcsp-reviewed-runtime.js';
 
@@ -19,8 +20,56 @@ async function open(t, overrides = {}) {
   const greg = { value: { setCookie: out.headers.get('set-cookie') } };
   return { ...f, session, http, gregSession: greg };
 }
-const rows = async (f) => Object.fromEntries(await Promise.all(['briefs', 'stock', 'holds', 'offers', 'quotes', 'employees']
+const rows = async (f) => Object.fromEntries(await Promise.all(['briefs', 'stock', 'holds', 'offers', 'quotes', 'employees', 'entitlement_slots', 'decisions']
   .map(async (table) => [table, good(await f.repository.query(f.session.value.context, table))])));
+
+async function canonicalSubject(f) {
+  const context = f.session.value.context;
+  const snapshot = await rows(f);
+  const employee = snapshot.employees.find((row) => row.employeeId === context.employeeId);
+  const slot = snapshot.entitlement_slots.find((row) => row.entitlementSlotId === context.entitlementSlotId);
+  const brief = snapshot.briefs.find((row) => row.employeeId === context.employeeId && row.briefVersion === 1);
+  const manual = employee.contract.manualContext;
+  assert.equal(Object.hasOwn(manual.employeeFacts, 'driverEligible'), false);
+  const contracts = manual.contracts.filter((row) => row.contractId === slot.contractId);
+  assert.equal(contracts.length, 1); assert.equal(contracts[0].slotId, slot.entitlementSlotId);
+  const drivers = manual.drivers.filter((row) => row.driverId === contracts[0].driverId);
+  assert.equal(drivers.length, 1); assert.equal(drivers[0].employeeId, employee.employeeId);
+  assert.equal(drivers[0].eligible.provenance.assurance, 'synthetic-scenario');
+  const projected = good(projectRecommendationFacts({ context, employee, brief, slots: snapshot.entitlement_slots, now }));
+  assert.deepEqual(projected.employeeFacts.driverEligible, drivers[0].eligible);
+  assert.deepEqual(projected.employeeFacts.driverEligible, good(await f.provider.resolve(context)).employeeFacts.driverEligible);
+  return { employee, slot, brief };
+}
+
+test('default Paula HTTP preparation preserves canonical driver parity and single-subject privacy suppression', async (t) => {
+  const f = await open(t); const context = f.session.value.context;
+  response(await f.http.request('/api/gcsp/manual/account', { session: f.session }));
+  const brief = saved();
+  response(await f.http.request('/api/gcsp/brief/draft', { session: f.session,
+    body: { commandId: 'default-draft', expectedBriefVersion: 0, expectedDraftVersion: 0, brief } }));
+  response(await f.http.request('/api/gcsp/brief/confirm', { session: f.session,
+    body: { commandId: 'default-confirm', expectedBriefVersion: 0, expectedDraftVersion: 1, consent: { search: true, hold: true } } }));
+  const candidate = stock(1, { modelLine: fact('G21 Touring') });
+  good(await f.repository.transaction(context, { commandId: 'default-stock', inputDigest: inputDigest(candidate) }, (tx) => tx.insert('stock', {
+    runId: context.runId, orderUuid: candidate.orderUuid, configurationId: candidate.configurationId, state: 'released', available: true,
+    facts: candidate.snapshot, release: { availability: { ...candidate.availability, availableFrom: now } },
+    visibility: { companyIds: [context.companyId], schemeIds: [context.schemeId], employeeIds: null } })));
+  await canonicalSubject(f);
+  const before = await rows(f);
+  assert.equal(before.briefs.filter((row) => row.status === 'confirmed').length, 1);
+  const employee = response(await f.http.request('/api/gcsp/recommendations', { session: f.session, body: { ...brief, briefVersion: 1 } }));
+  assert.equal(employee.decisions[0].gateStatus, 'eligible');
+  const demand = response(await f.http.request('/api/gcsp/greg/demand', { session: f.gregSession }));
+  assert.deepEqual(demand.demand.unmet.byGate, []);
+  const policy = response(await f.http.request('/api/gcsp/greg/policy', { session: f.gregSession }));
+  const preview = response(await f.http.request('/api/gcsp/greg/policy/preview', { session: f.gregSession,
+    body: { expectedActiveVersion: policy.activeVersion, changes: [{ id: 'weight:body', value: 0 }] } }));
+  assert.equal(preview.active.fit.meanBestScore.status, 'suppressed');
+  assert.equal(preview.draft.fit.meanBestScore.status, 'suppressed');
+  assert.equal(preview.active.fit.meanBestScore.fewerThan, 5);
+  await canonicalSubject(f); assert.deepEqual(await rows(f), before);
+});
 
 test('delivered memory runtime dependencies drive ordinary Greg publish and employee terms while protecting pinned history', async (t) => {
   const f = await open(t); const context = f.session.value.context;
@@ -37,26 +86,15 @@ test('delivered memory runtime dependencies drive ordinary Greg publish and empl
       release: { availability: { ...candidate.availability, availableFrom: now } },
       visibility: { companyIds: [context.companyId], schemeIds: [context.schemeId], employeeIds: null } }));
   };
+  response(await f.http.request('/api/gcsp/manual/account', { session: f.session }));
   await release(1);
   const brief = saved(); brief.preferences.fuel = preference('diesel');
   response(await f.http.request('/api/gcsp/brief/draft', { session: f.session,
     body: { commandId: 'runtime-draft', expectedBriefVersion: 0, expectedDraftVersion: 0, brief } }));
   response(await f.http.request('/api/gcsp/brief/confirm', { session: f.session,
     body: { commandId: 'runtime-confirm', expectedBriefVersion: 0, expectedDraftVersion: 1, consent: { search: true, hold: true } } }));
-  // Explicit trial preparation: project the actual persisted driver's fact into
-  // Greg's stored-subject shape, retaining its synthetic source and provenance.
-  const stored = good(await f.repository.read(context, { table: 'employees', key: { runId: context.runId, employeeId: context.employeeId } }));
-  const manual = stored.contract.manualContext;
-  const drivers = manual.drivers.filter((row) => row.kind === 'employee' && row.employeeId === context.employeeId);
-  assert.equal(drivers.length, 1); const eligibility = structuredClone(drivers[0].eligible);
-  assert.equal(eligibility.status, 'known'); assert.equal(eligibility.value, true);
-  assert.equal(eligibility.provenance.assurance, 'synthetic-scenario');
-  await write((tx) => tx.compareAndSwap({ table: 'employees', key: { runId: context.runId, employeeId: context.employeeId } },
-    stored.version, { contract: { ...stored.contract, manualContext: { ...manual,
-      employeeFacts: { ...manual.employeeFacts, driverEligible: eligibility } } } }));
-  // Five explicitly synthetic stored subjects meet the unchanged canonical privacy threshold.
-  const employee = good(await f.repository.read(context, { table: 'employees', key: { runId: context.runId, employeeId: context.employeeId } }));
-  const confirmed = good(await f.repository.read(context, { table: 'briefs', key: { runId: context.runId, employeeId: context.employeeId, briefVersion: 1 } }));
+  // Additional stored subjects are synthetic cohort inputs, not authenticated default employees.
+  const { employee, slot: canonicalSlot, brief: confirmed } = await canonicalSubject(f);
   const strip = ({ version, createdAt, updatedAt, ...row }) => row;
   await write(async (tx) => {
     for (let index = 2; index <= 5; index++) {
@@ -67,8 +105,7 @@ test('delivered memory runtime dependencies drive ordinary Greg publish and empl
           ? Object.fromEntries(Object.entries(value).map(([key, child]) => [key, rewrite(child)])) : value;
       good(await tx.insert('employees', { ...rewrite(strip(employee)), employeeId, principalId: employeeId,
         entitlementSlotId, name: `Synthetic subject ${index}` }));
-      good(await tx.insert('entitlement_slots', { runId: context.runId, entitlementSlotId, employeeId,
-        renewalId: `renewal:${employeeId}`, capacity: 1, employeeCapacity: 1, state: 'entitled' }));
+      good(await tx.insert('entitlement_slots', { ...rewrite(strip(canonicalSlot)), employeeId, entitlementSlotId }));
       good(await tx.insert('briefs', { ...rewrite(strip(confirmed)), employeeId, entitlementSlotId, confirmedBy: employeeId }));
     }
     return ok({ syntheticSubjects: 5 });
@@ -94,6 +131,11 @@ test('delivered memory runtime dependencies drive ordinary Greg publish and empl
   assert.ok(price, JSON.stringify(projection.fields[0]));
   const input = { expectedActiveVersion: projection.activeVersion, changes: [{ id: price.id, value: 1200 }] };
   const before = await rows(f);
+  for (const subject of before.employees.filter((row) => before.briefs.some((brief) => brief.employeeId === row.employeeId))) {
+    assert.equal(Object.hasOwn(subject.contract.manualContext.employeeFacts, 'driverEligible'), false);
+    const slot = before.entitlement_slots.find((row) => row.employeeId === subject.employeeId);
+    assert.ok(subject.contract.manualContext.contracts.some((row) => row.contractId === slot.contractId && row.slotId === slot.entitlementSlotId));
+  }
   const weighted = response(await f.http.request('/api/gcsp/greg/policy/preview', { session: f.gregSession,
     body: { expectedActiveVersion: projection.activeVersion, changes: [{ id: 'weight:body', value: 0 }] } }));
   assert.equal(weighted.active.fit.meanBestScore.status, 'available');

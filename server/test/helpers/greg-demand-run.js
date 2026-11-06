@@ -6,7 +6,8 @@ import { PolicyService } from '../../gcsp/policy/index.js';
 import { createDemoRuntime } from '../../gcsp/clock/index.js';
 import { BriefService } from '../../gcsp/brief/index.js';
 import { createGregDemandService } from '../../gcsp/greg/index.js';
-import { preference, essential, stock, fact, providerValue } from './employee-recommendation.js';
+import { seedManualDemoContext } from '../../gcsp/manual-context/fixtures.js';
+import { preference, essential, stock, fact } from './employee-recommendation.js';
 
 export { fact };
 const seed = JSON.parse(await readFile(new URL('../../gcsp/policy/seed-v1.json', import.meta.url)));
@@ -38,11 +39,7 @@ export async function setup({ threshold = 1, canonical = false, policyProvider, 
     const value = await repository.transaction(context, { commandId, inputDigest: inputDigest(commandId) }, work);
     assert.equal(value.status, 'ok', JSON.stringify(value)); return value;
   };
-  await write(async (tx) => {
-    const row = await tx.get({ table: 'employees', key: { runId: context.runId, employeeId: employee.employeeId } });
-    return tx.compareAndSwap({ table: 'employees', key: { runId: context.runId, employeeId: employee.employeeId } }, row.value.version,
-      { contract: { manualContext: { employeeFacts: providerValue().employeeFacts } } });
-  });
+  assert.equal((await seedManualDemoContext({ repository, identity, clock, context: employee })).status, 'ok');
   return { repository, policy, clock, identity, presenter, acting, context, employee, service, brief, write };
 }
 

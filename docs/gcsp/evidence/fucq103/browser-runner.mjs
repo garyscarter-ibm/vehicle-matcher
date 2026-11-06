@@ -25,7 +25,7 @@ const viewport = { width: chunk === 'journey-narrow320' ? 320 : 1280, height: 90
 const ledger = { pids: [process.pid], ports: [], profile: resolve(scratch, 'chrome-profile') };
 const report = { chunk, viewport, state: 'incomplete', checks: [], screenshots: [], responses: [],
   consoleErrors: [], pageErrors: [], requestFailures: [], resourceFailures: [], externalRequests: [], overflow: [],
-  scenario: 'Five synthetic persisted subjects; actual stored driver eligibility projected with provenance into Greg subject facts; canonical policy/privacy/cookies; memory provider',
+  scenario: 'Actual canonical default preparation plus four coherently bound synthetic stored subjects; pure bound-driver projection; canonical policy/privacy/cookies; memory provider',
   boundaries: 'Actual local memory runtime and HTTP adapters; no PostgreSQL, producer corpus, external integration or native proof.' };
 const good = (reply) => { assert.equal(reply?.status, 'ok', JSON.stringify(reply)); return reply.value; };
 const pause = (milliseconds) => new Promise((done) => setTimeout(done, milliseconds));
@@ -96,6 +96,7 @@ async function scenario(existing) {
   }
   const brief = { schemaVersion: 1, preferences: { body: preference('estate'), fuel: preference('diesel') },
     essentials: { seats: essential(5), modelLine: essential('G21 Touring', 'equals', null) } };
+  good((await request('/api/gcsp/manual/account')).json);
   await release(1);
   good((await request('/api/gcsp/brief/draft', { body: { commandId: 'browser-draft', expectedBriefVersion: 0, expectedDraftVersion: 0, brief } })).json);
   good((await request('/api/gcsp/brief/confirm', { body: { commandId: 'browser-confirm', expectedBriefVersion: 0,
@@ -114,17 +115,15 @@ async function scenario(existing) {
     return tx.compareAndSwap(ref, good(await tx.get(ref)).version, { state: 'held', held: true, available: false });
   });
   await release(2);
-  // Explicit synthetic scenario preparation, never a default/provider/seed repair.
-  const stored = good(await runtime.repository.read(paula, { table: 'employees', key: { runId: paula.runId, employeeId: paula.employeeId } }));
-  const manual = stored.contract.manualContext;
-  const drivers = manual.drivers.filter((row) => row.kind === 'employee' && row.employeeId === paula.employeeId);
-  assert.equal(drivers.length, 1); const eligibility = structuredClone(drivers[0].eligible);
-  assert.equal(eligibility.status, 'known'); assert.equal(eligibility.value, true);
-  assert.equal(eligibility.provenance.assurance, 'synthetic-scenario');
-  await write((tx) => tx.compareAndSwap({ table: 'employees', key: { runId: paula.runId, employeeId: paula.employeeId } },
-    stored.version, { contract: { ...stored.contract, manualContext: { ...manual,
-      employeeFacts: { ...manual.employeeFacts, driverEligible: eligibility } } } }));
   const originalEmployee = good(await runtime.repository.read(paula, { table: 'employees', key: { runId: paula.runId, employeeId: paula.employeeId } }));
+  const canonicalSlot = good(await runtime.repository.read(paula, { table: 'entitlement_slots', key: { runId: paula.runId, entitlementSlotId: paula.entitlementSlotId } }));
+  const manual = originalEmployee.contract.manualContext;
+  assert.equal(Object.hasOwn(manual.employeeFacts, 'driverEligible'), false);
+  const contracts = manual.contracts.filter((row) => row.contractId === canonicalSlot.contractId);
+  assert.equal(contracts.length, 1); assert.equal(contracts[0].slotId, paula.entitlementSlotId);
+  const drivers = manual.drivers.filter((row) => row.driverId === contracts[0].driverId);
+  assert.equal(drivers.length, 1); assert.equal(drivers[0].employeeId, paula.employeeId);
+  assert.equal(drivers[0].eligible.provenance.assurance, 'synthetic-scenario');
   const originalBrief = good(await runtime.repository.read(paula, { table: 'briefs', key: { runId: paula.runId, employeeId: paula.employeeId, briefVersion: 1 } }));
   const stripMetadata = ({ version, createdAt, updatedAt, ...row }) => row;
   // Persist four extra explicitly synthetic subjects; no identity principal, policy or privacy override.
@@ -137,8 +136,7 @@ async function scenario(existing) {
           ? Object.fromEntries(Object.entries(value).map(([key, child]) => [key, rewrite(child)])) : value;
       good(await tx.insert('employees', { ...rewrite(stripMetadata(originalEmployee)), employeeId, principalId: employeeId,
         entitlementSlotId, name: `Synthetic subject ${index}` }));
-      good(await tx.insert('entitlement_slots', { runId: paula.runId, entitlementSlotId, employeeId,
-        renewalId: `renewal:${employeeId}`, capacity: 1, employeeCapacity: 1, state: 'entitled' }));
+      good(await tx.insert('entitlement_slots', { ...rewrite(stripMetadata(canonicalSlot)), employeeId, entitlementSlotId }));
       good(await tx.insert('briefs', { ...rewrite(stripMetadata(originalBrief)), employeeId, entitlementSlotId, confirmedBy: employeeId }));
     }
     return ok({ syntheticSubjects: 5 });
@@ -152,7 +150,7 @@ async function scenario(existing) {
   assert.equal(adopted.activationRequired, false);
   await advance();
   report.initialPinnedDigest = hash(pinnedBefore);
-  mark('Real runtime, HTTP-confirmed brief and calculated 1100-point pinned quote; explicit stored driver-fact projection and five synthetic subjects; reviewed editor adoption');
+  mark('Real runtime, HTTP-confirmed brief and calculated 1100-point pinned quote; canonical bound-driver records and four additional synthetic stored subjects; reviewed editor adoption');
   return cookies;
 }
 function cookieForBrowser(line) {

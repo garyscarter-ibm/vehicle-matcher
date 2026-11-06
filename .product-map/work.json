@@ -1019,7 +1019,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-06T01:05:57Z",
+      "observed_at": "2026-11-06T01:39:18Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103",
       "jira_observed_at": "2026-11-05T22:40:24Z",
       "branch": "dev/DEV-2026-11-04-066",
@@ -1046,10 +1046,10 @@
       "slices": [
         {
           "id": "backend-projection",
-          "status": "complete",
+          "status": "in-progress",
           "title": "Editable policy projection and no-write preview",
-          "observed_at": "2026-11-05T23:02:40Z",
-          "evidence": "Lead reviewed and pushed8815732; parent focused15/15, source freeze and filesystem receipt8d6a6ea942884044a0b1f9962f078ee7; docs/gcsp/evidence/fucq103/README.md."
+          "observed_at": "2026-11-06T01:39:18Z",
+          "evidence": "Authoring: exact 38be4f5 four-file FUCQ-100 repair adopted with retained 103 scorer. Canonical helper/default Paula parity and coherent five-subject weighted publication need new combined proof. Frozen 217-source proposal selects 77 cases; no execution grant. docs/gcsp/evidence/fucq103/eligibility-combined-proposal-2026-11-06.md."
         },
         {
           "id": "activation-http",
@@ -1060,10 +1060,10 @@
         },
         {
           "id": "reviewed-adoption-runtime",
-          "status": "complete",
+          "status": "in-progress",
           "title": "Reviewed keyed adoption and delivered runtime",
-          "observed_at": "2026-11-05T23:02:41Z",
-          "evidence": "Lead reviewed and pushedf919da7; parent5/5adoption+4/4runtime, b3766e10/a7f301ac receipts; same provider, old rows unchanged, actual delivered dependencies."
+          "observed_at": "2026-11-06T01:39:18Z",
+          "evidence": "Prior runtime/adoption evidence retained. Proposed additive 107 exact question bundle/registry and canonical missing-only/tuned-key cases authored; 106/113/115 retained. Root review and execution pending; no 105→107 lookup/reload claim. docs/gcsp/evidence/fucq103/eligibility-combined-proposal-2026-11-06.md."
         },
         {
           "id": "publish-panel",
@@ -1083,8 +1083,8 @@
           "id": "rendered-integration",
           "status": "blocked",
           "title": "Desktop and narrow keyboard browser evidence",
-          "observed_at": "2026-11-06T01:05:57Z",
-          "evidence": "ecaef8a one prep + corrected-card desktop smoke PASS;200sources/251deps/4exec and actual cleanup audited. All8originals inspected; exact eligibleHTTP car2/1100 matches DOMidentity and visible Eligible. Held1/history retained. Default Greg projection repair with100; desktop/narrow publication-keyboard/full gates remain open. docs/gcsp/evidence/fucq103/browser-smoke-ecaef8a-2026-11-06.md."
+          "observed_at": "2026-11-06T01:39:18Z",
+          "evidence": "Prior ecaef8a corrected-card smoke remains scoped to old source. New canonical preparation/complete-slot cohort authored with exact 100 repair; frozen browser candidate awaits backend review and separate prep/desktop/narrow320 grants. No new browser/full/native execution. docs/gcsp/evidence/fucq103/eligibility-combined-proposal-2026-11-06.md."
         },
         {
           "id": "full-validation",

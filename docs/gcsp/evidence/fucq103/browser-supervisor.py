@@ -21,7 +21,7 @@ sys.path.insert(0, str(ROOT / '_tools'))
 import scaffold_git as G
 import test_resources as R
 
-BASE = '3f1cc3414d700b1028ff1fec640a40591324b728'
+BASE = 'd644288865f2dc799dd539be6429ee05833ed555'
 MODES = ('prep', 'smoke-desktop', 'journey-desktop', 'journey-narrow320')
 EXECUTABLE = {'.js', '.mjs', '.cjs', '.py', '.sh', '.html', '.css', '.json',
               '.svg', '.webp', '.png', '.jpg', '.jpeg', '.woff', '.woff2', '.pem'}

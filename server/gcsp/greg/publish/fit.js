@@ -1,5 +1,6 @@
 import { createEmployeeRecommendationService } from '../../recommendation/index.js';
 import { inputDigest, ok, result } from '../../repository/index.js';
+import { projectRecommendationFacts } from '../../manual-context/recommendation-facts.js';
 
 const visible = (stock, employee) => stock.visibility?.companyIds?.includes(employee.companyId)
   && stock.visibility?.schemeIds?.includes(employee.schemeId)
@@ -22,16 +23,19 @@ export async function evaluateFit({ rows, context, policy, time, threshold }) {
     const employee = rows.employees.find((row) => row.employeeId === brief.employeeId);
     if (!employee?.roles?.includes('employee')) return result('unavailable', { code: 'brief-owner-unavailable', retryable: true });
     const stock = rows.stock.filter((row) => ['released', 'held', 'allocated'].includes(row.state) && visible(row, employee));
-    const facts = structuredClone(employee.contract?.manualContext?.employeeFacts ?? {});
+    const employeeContext = { ...context, ...Object.fromEntries(['employeeId', 'companyId', 'schemeId', 'gradeId', 'entitlementSlotId']
+      .map((key) => [key, employee[key]])), roles: ['employee'] };
+    const projected = projectRecommendationFacts({ context: employeeContext, employee, brief,
+      slots: rows.entitlement_slots, now: time.value.now });
+    if (projected.status !== 'ok') return projected;
+    const facts = projected.value.employeeFacts;
     const charging = brief.essentials?.charging;
     if (charging) facts.charging = { status: charging.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown',
       value: charging.value, unit: null, provenance: { sourceRef: 'saved-brief', version: String(brief.briefVersion),
         observedAt: brief.confirmedAt, assurance: 'synthetic-scenario' } };
-    const employeeContext = { ...context, ...Object.fromEntries(['employeeId', 'companyId', 'schemeId', 'gradeId', 'entitlementSlotId']
-      .map((key) => [key, employee[key]])), roles: ['employee'] };
     const evaluator = createEmployeeRecommendationService({ policy, time: { async now() { return time; } },
       provider: { async resolve() { return ok({ runId: context.runId, environmentId: context.environmentId,
-        employeeId: employee.employeeId, factsVersion: `employee:${employee.version}`, stockVersion: inputDigest(stock), employeeFacts: facts,
+        employeeId: employee.employeeId, factsVersion: projected.value.factsVersion, stockVersion: inputDigest(stock), employeeFacts: facts,
         stock: stock.map((row) => ({ orderUuid: row.orderUuid, configurationId: row.configurationId, snapshot: row.facts,
           availability: { ...row.release?.availability, state: row.state === 'released' && row.available === true
             && row.held !== true && row.allocated !== true ? row.release?.availability?.state : 'unavailable' } })) }); } } });
