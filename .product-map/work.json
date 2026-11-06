@@ -1368,7 +1368,7 @@
       "id": "FUCQ-126",
       "jira_observation_basis": "Authenticated getJiraIssue FUCQ-126: In Progress/Gary Carter; no Jira write",
       "jira_observed_at": "2026-11-05T23:00:00Z",
-      "observed_at": "2026-11-06T10:08:26Z",
+      "observed_at": "2026-11-06T13:04:10Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -1400,9 +1400,9 @@
           "title": "Desktop and375px keyboard and actual HTTP proof"
         },
         {
-          "evidence": "Independent Claude review of5adba2e: HOLD. H1-H6 and owned R1-R9 environment/supervisor repairs authored; exact shared-helper patch supplied unapplied. Replacement physical freeze140source/data/helper/reference files+1975dependencies,267edges/29static sites. All six cases and resource/signal paths unexecuted; shared contract adoption/refreeze and independent admission required. docs/gcsp/evidence/fucq-126/http-review-repair-2026-11-06.md",
+          "evidence": "Isolated seven-key ALL-row Budget/Tree and external child journal authored; helper3e2b4d05 unchanged, shared patch not adopted. Six-case harness/guard retained.1975 dependency pins carried forward; no runtime/collection. HOLD: independent wrapper/H1-H6/R5-R9 review, fresh host anchors/output/admission and selected execution outstanding. docs/gcsp/evidence/fucq-126/http-isolated-resource-authoring-2026-11-06.md",
           "id": "integrated-validation",
-          "observed_at": "2026-11-06T02:14:13.172640+00:00",
+          "observed_at": "2026-11-06T13:04:10Z",
           "status": "in-progress",
           "title": "Current-base integration and authored full validation"
         },

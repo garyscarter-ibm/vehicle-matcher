@@ -1,6 +1,6 @@
 {
   "date": "2026-11-06",
-  "scope": "Independent-HOLD repair authoring: six HTTP cases, environment and supervisor, exact unapplied coordinator helper patch; unexecuted",
+  "scope": "Isolated story-owned strict resource wrapper for the unchanged six HTTP cases; authoring only, HOLD, unexecuted",
   "planningBase": "496b92a31310fd7308ecf2f6f55ba6737cad9a6d",
   "source": {
     "path": "server/test/helpers/presenter-http-proof.js",
@@ -12,7 +12,7 @@
   ],
   "productImports": [],
   "executed": false,
-  "validation": "Latest absence follow-up: static text/hash/Git metadata only; no generator/helper imports, AST/syntax execution, tests, runtime, probes, ledger reads or allocations. Prior2216 checks remain evidence for8ca2162, not a new execution claim.",
+  "validation": "Current isolated route: text/hash/JSON/Git metadata only; no reviewed-code import, AST/syntax execution, tests, runtime, probes, ledger reads, collectors or allocations. Prior2216 and parent936 receipts retain their own older bytes/scope.",
   "deliveryLossVariant": "Actual handler completes and Set-Cookie headers are applied, then the reply body is discarded; this is not every network-loss variant.",
   "boundaries": [
     "Calls the actual request listener; never listens or fetches externally",
@@ -22,9 +22,9 @@
     "Transport journal retains only method/path/status/byte counts; never tokens or business bodies"
   ],
   "pending": [
-    "Coordinator review/adoption of shared helper patch, caller compatibility validation and exact helper refreeze",
+    "Independent review of story-owned strict budget, recursive tree/probes, scratch finalizer and supervisor integration",
     "Independent review of replacement candidate/harness/static classification",
-    "Explicit six-case execution admission, refreshed host budget and absolute external output/impact/ownership plan"
+    "Explicit six-case execution admission, fresh strict ALL-row host budget and physical directory/lock anchors, absolute external output/impact/ownership plan"
   ],
   "executionAuthorized": false,
   "cancellationGuard": {
@@ -44,7 +44,7 @@
     "basis": "Dispatcher notice: inherited Popen-to-register handled-cancellation gap found in107 supervisor/resources; no runtime reproduction authorized.",
     "acceptedEarlierProof": "Prior actual126 selected checks remain scoped accepted; no claim that any actual run hit this edge.",
     "sourceFix": "Owned future guard defers SIGINT/SIGTERM during creation/registration, retains local Popen handle, stops/joins and verifies exact PID/start/group even when registration fails; cleanup failure stays explicit.",
-    "integrationStatus": "Owned supervisor/guard preserve cancellation-safe local-handle cleanup and add HUP/deadline handling. Future shared reservation contract required before allocation; exact coordinator patch supplied, not applied. No signal/resource execution.",
+    "integrationStatus": "Existing cancellation-safe child guard unchanged. Story-owned external launch journal, strict seven-key ALL-row budget, recursive process/RSS probes and bounded scratch finalizer authored; unexecuted and pending independent review/admission.",
     "reservationAndScratch": "No scratch deletion/reservation release may rely on an empty registry; require actual handle cleanup and independent absence evidence. Preserve a named issue and charge for remaining live resources."
   },
   "resourceHelperPlanningPin": {
@@ -54,15 +54,16 @@
   },
   "currentSourceRef": "f179ae6043414a2b07de3edb2b425338299ea37b",
   "currentFreeze": {
-    "path": "docs/gcsp/evidence/fucq-126/http-physical-candidate-review-repair-2026-11-06.json",
-    "sha256": "0d280b1cd6e7ddb140fa8479bf2e25e370329579eabb49afa16f75db29f3646f",
-    "sourceDataHelperReferenceFiles": 140,
+    "path": "docs/gcsp/evidence/fucq-126/http-physical-candidate-isolated-2026-11-06.json",
+    "sha256": "e5070237d174a7bf5f4ffe547b881f00d1808c11681c6d831f3e00a9c8368fb9",
+    "sourceDataHelperReferenceFiles": 138,
     "installedDependencyFiles": 1975,
-    "allFiles": 2115,
-    "distinctResolvedFiles": 2113,
+    "allFiles": 2113,
+    "distinctResolvedFiles": 2111,
     "literalEdges": 267,
     "classifiedSites": 29,
-    "candidateRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096"
+    "candidateRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096",
+    "dependencyPinsRevalidated": false
   },
   "authoredCases": [
     "release-http: startup and actual release IDs match controller count and inventory delta",
@@ -74,17 +75,17 @@
   ],
   "testAndSupervisorSources": [
     {
-      "path": "docs/gcsp/evidence/fucq-126/author-resource-contract-patch.py",
-      "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/docs/gcsp/evidence/fucq-126/author-resource-contract-patch.py",
-      "sha256": "375a49a4a473c899300d31e579f068a002737ce0c41bd7d21c119391010b7b0b",
-      "bytes": 17926,
+      "path": "docs/gcsp/evidence/fucq-126/cancellation-safe-child.py",
+      "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/docs/gcsp/evidence/fucq-126/cancellation-safe-child.py",
+      "sha256": "29436f5969d07438c8d7b612ae9222b27090adbee1287a63470ad4979232faa7",
+      "bytes": 5221,
       "role": "physical-source-data-helper-or-reference"
     },
     {
       "path": "docs/gcsp/evidence/fucq-126/http-release-supervisor.py",
       "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/docs/gcsp/evidence/fucq-126/http-release-supervisor.py",
-      "sha256": "e2bc2908e268cef908598463f687ca3339a7c0db6d6e3905815f6ba26f44d695",
-      "bytes": 19659,
+      "sha256": "827278e27692dcd6e6f60f14ba21ddab45779ed77d559341109b08c15abdbad1",
+      "bytes": 21351,
       "role": "physical-source-data-helper-or-reference"
     },
     {
@@ -97,8 +98,15 @@
     {
       "path": "docs/gcsp/evidence/fucq-126/prepare-reviewed-http-candidate.py",
       "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/docs/gcsp/evidence/fucq-126/prepare-reviewed-http-candidate.py",
-      "sha256": "d731b42a79fa4e273c56c5babb6e24faf11fef7e5e456c2a11eb91d8ad8efec6",
-      "bytes": 16996,
+      "sha256": "073413059c534b45c05c81e8e8aca9cc5df658fce8a600bdbf4d611a69144d16",
+      "bytes": 18708,
+      "role": "physical-source-data-helper-or-reference"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq-126/strict-http-resources.py",
+      "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/docs/gcsp/evidence/fucq-126/strict-http-resources.py",
+      "sha256": "9e3a7bda4a49d13ba3514eb572962166bc67bdcf3b89fdeb4f03b94f8de1ebec",
+      "bytes": 40357,
       "role": "physical-source-data-helper-or-reference"
     }
   ],
@@ -161,15 +169,6 @@
     ],
     "validation": "AST/source inspection only; not imported, executed or fault-tested."
   },
-  "resourceContractRequirement": {
-    "contract": 1,
-    "adoptedHelperSha256": null,
-    "currentHelperSha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
-    "proposedResultSha256": "fb6fa9130b4f379ac956178944afc30bc723f7243b6a36a54a5da8c6fe137ea5",
-    "patchPath": "docs/gcsp/evidence/fucq-126/shared-resource-contract-review-repair-2026-11-06.patch",
-    "patchSha256": "782e558285c4c5eaa6669b5a8a82194ae48dde9f7dda044a4026e560f75bd45e",
-    "state": "Coordinator patch supplied, not applied; exact adopted helper must be refrozen before admission"
-  },
   "reviewRepairOf": {
     "commit": "5adba2eac990028eda5113cea5a118c67818d131",
     "manifest": "docs/gcsp/evidence/fucq-126/http-physical-candidate-f179ae6-2026-11-06.json",
@@ -212,5 +211,70 @@
     "finding": "Only concrete MAJOR: lexists conflated missing scratch and failed lookup. Narrow lstat/parent-directory authoring repair; all existing owner/child/pending/ledger gates preserved.",
     "validation": "Static text/hash/Git metadata only; no generator/helper/AST/syntax execution, tests, runtime, probes, ledger reads or allocations.",
     "verdict": "HOLD retained; helper unapplied and execution admission unchanged."
-  }
+  },
+  "previousSharedPatchFreeze": {
+    "path": "docs/gcsp/evidence/fucq-126/http-physical-candidate-review-repair-2026-11-06.json",
+    "sha256": "0d280b1cd6e7ddb140fa8479bf2e25e370329579eabb49afa16f75db29f3646f",
+    "sourceDataHelperReferenceFiles": 140,
+    "installedDependencyFiles": 1975,
+    "allFiles": 2115,
+    "distinctResolvedFiles": 2113,
+    "literalEdges": 267,
+    "classifiedSites": 29,
+    "candidateRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096"
+  },
+  "historicalResourceContractProposal": {
+    "contract": 1,
+    "adoptedHelperSha256": null,
+    "currentHelperSha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "proposedResultSha256": "fb6fa9130b4f379ac956178944afc30bc723f7243b6a36a54a5da8c6fe137ea5",
+    "patchPath": "docs/gcsp/evidence/fucq-126/shared-resource-contract-review-repair-2026-11-06.patch",
+    "patchSha256": "782e558285c4c5eaa6669b5a8a82194ae48dde9f7dda044a4026e560f75bd45e",
+    "state": "Coordinator patch supplied, not applied; exact adopted helper must be refrozen before admission"
+  },
+  "resourceContractRequirement": {
+    "mode": "story-owned-strict-seven-key",
+    "helperSha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "wrapperSha256": "9e3a7bda4a49d13ba3514eb572962166bc67bdcf3b89fdeb4f03b94f8de1ebec",
+    "sharedHelperModified": false,
+    "ledgerKeys": [
+      "owner",
+      "disk",
+      "ram",
+      "used",
+      "rss",
+      "parent",
+      "root"
+    ],
+    "state": "Isolated wrapper authored only; independent review and fresh execution admission required"
+  },
+  "hostBudget": {
+    "directory": "/Users/garycarter/.cache/agent-scaffolding/test-resources",
+    "anchors": null,
+    "diskBytes": 134217728,
+    "ramBytes": 805306368,
+    "emergencyReserveBytes": 5368709120,
+    "ramReserveBytes": 536870912,
+    "preferredFreeBytes": 32212254720,
+    "admission": "Fresh strict ALL-row read and physical directory/lock anchors remain required; none collected here"
+  },
+  "fleetRisk": "Other unpatched launchers can still reap a dead supervisor owner row while its child/scratch survives. The story wrapper never reaps; only a coordinated upstream fleet rollout closes this risk.",
+  "strictWrapperLineage": {
+    "basis": "FUCQ-103 reviewed Budget/Tree, adapted as story-owned source; no import or execution",
+    "path": "docs/gcsp/evidence/fucq103/scoped-resources.py",
+    "sourceWorktree": "DEV-2026-11-04-066",
+    "sha256": "1e128d8d538b3d6ac9255adec1d2c8e05e9707ad66e965dd74ca0462f4b1231c"
+  },
+  "previousAbsenceCheckpoint": {
+    "publishedRevision": "a5b50abd3880b181916d313c8b9c0b73dbbd39cc",
+    "freezeSha256": "0d280b1cd6e7ddb140fa8479bf2e25e370329579eabb49afa16f75db29f3646f",
+    "parentStaticReviewReceipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq126-absence-review-1029.json",
+    "parentStaticReviewReceiptSha256": "d35497dffabbf9c7594559cabcd8171be156e4ab52c10a8b421d1f70d187b8c2",
+    "scope": "Prior root936 static absence review retained; not rerun and not runtime evidence for this wrapper."
+  },
+  "isolatedRouteReview": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/results/claude-assist-fucq126-2026-11-06-01.md",
+    "sha256": "732756a21acd6f36b87d478c9ee683ff47e35ce6f2a5fb67e802ae80e0772059"
+  },
+  "isolatedResourceNote": "docs/gcsp/evidence/fucq-126/http-isolated-resource-authoring-2026-11-06.md"
 }

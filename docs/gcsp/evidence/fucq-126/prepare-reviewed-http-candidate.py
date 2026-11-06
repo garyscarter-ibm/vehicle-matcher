@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Hash and classify an existing physical candidate; never load product code or allocate test resources."""
-import ast
 import hashlib
 import json
 import posixpath
@@ -10,9 +9,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[4]
 HERE = Path(__file__).resolve().parent
 PREFIX = str(HERE.relative_to(ROOT)) + '/'
-DESTINATION = HERE / 'http-physical-candidate-review-repair-2026-11-06.json'
-PATCH_RECEIPT = HERE / 'shared-resource-contract-review-repair-2026-11-06.json'
-patch_receipt = json.loads(PATCH_RECEIPT.read_text())
+DESTINATION = HERE / 'http-physical-candidate-isolated-2026-11-06.json'
+HELPER_SHA256 = '3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d'
 PRIOR = HERE / 'http-release-source-plan-38be4f5-2026-11-06.json'
 VIRTUAL = HERE / 'http-release-source-plan-f179ae6-2026-11-06.json'
 ADOPTION = HERE / 'http-candidate-adoption-f179ae6-2026-11-06.json'
@@ -51,8 +49,7 @@ pending = [case_file, PREFIX + 'http-release-supervisor.py', PREFIX + 'cancellat
            str(Path(__file__).relative_to(ROOT)), PREFIX + 'adopt-http-candidate-source.py',
            str(ADOPTION.relative_to(ROOT)), str(VIRTUAL.relative_to(ROOT)), str(PRIOR.relative_to(ROOT)),
            '_tools/test_resources.py', '_tools/test_stamp.py', '_tools/scaffold_git.py',
-           PREFIX + 'author-resource-contract-patch.py', PREFIX + 'shared-resource-contract-review-repair-2026-11-06.patch',
-           str(PATCH_RECEIPT.relative_to(ROOT)),
+           PREFIX + 'strict-http-resources.py',
            'package.json', 'package-lock.json', 'server/package.json', 'server/package-lock.json']
 seen, edges, unresolved, packages, navigation = set(), [], [], set(), []
 directory_roots = {'node_modules', 'server/node_modules',
@@ -87,8 +84,6 @@ while pending:
         continue
     seen.add(name)
     source = (ROOT / name).read_text()
-    if name.endswith('.py'):
-        ast.parse(source, filename=name)
     if not name.endswith(('.js', '.mjs')):
         continue
     pattern = r'''(?m)^\s*(?:import\s+(?:[^;]*?\s+from\s+)?|export\s+(?:\*|\{[^}]*\})\s+from\s+)(['"])([^'"\n]+)\1'''
@@ -207,17 +202,30 @@ for row in files:
     if row['target'] in resolved and resolved[row['target']] != identity:
         raise RuntimeError('Conflicting pins for an installed file alias: ' + row['path'])
     resolved[row['target']] = identity
+if sha(ROOT / '_tools/test_resources.py') != HELPER_SHA256:
+    raise RuntimeError('Shared helper differs from the unchanged planning pin.')
 plan = {
     'schemaVersion': 1, 'date': '2026-11-06', 'kind': 'Physical exact-source six-case candidate; statically validated and unexecuted',
     'centralRef': REF, 'candidateRoot': str(ROOT), 'executionAuthorized': False, 'executionReady': False, 'outputRoot': None,
     'files': files, 'directories': directories, 'absentFiles': absent, 'dependencyLinks': links, 'node': node,
-    'resourceHelper': '_tools/test_resources.py', 'childGuard': PREFIX + 'cancellation-safe-child.py',
+    'resourceHelper': '_tools/test_resources.py', 'strictResourceWrapper': PREFIX + 'strict-http-resources.py',
+    'childGuard': PREFIX + 'cancellation-safe-child.py',
     'supervisor': PREFIX + 'http-release-supervisor.py', 'caseFile': case_file, 'profileFiles': [case_file],
     'hostRegistryRoot': str((Path.home() / '.cache/agent-scaffolding/test-resources').resolve()), 'parentReservation': None,
-    'resourceContractRequirement': {'contract': 1, 'adoptedHelperSha256': None,
-        'currentHelperSha256': patch_receipt['baseSha256'], 'proposedResultSha256': patch_receipt['resultSha256'],
-        'patchPath': patch_receipt['patchPath'], 'patchSha256': patch_receipt['patchSha256'],
-        'state': 'Coordinator patch supplied, not applied; exact adopted helper must be refrozen before admission'},
+    'resourceContractRequirement': {'mode': 'story-owned-strict-seven-key', 'helperSha256': HELPER_SHA256,
+        'wrapperSha256': sha(HERE / 'strict-http-resources.py'), 'sharedHelperModified': False,
+        'ledgerKeys': ['owner', 'disk', 'ram', 'used', 'rss', 'parent', 'root'],
+        'state': 'Isolated wrapper authored only; independent review and fresh execution admission required'},
+    'hostBudget': {'directory': str((Path.home() / '.cache/agent-scaffolding/test-resources').resolve()),
+        'anchors': None, 'diskBytes': 128 * 1024 ** 2, 'ramBytes': 768 * 1024 ** 2,
+        'emergencyReserveBytes': 5 * 1024 ** 3, 'ramReserveBytes': 512 * 1024 ** 2,
+        'preferredFreeBytes': 30 * 1024 ** 3,
+        'admission': 'Fresh strict ALL-row read and physical directory/lock anchors remain required; none collected here'},
+    'fleetRisk': 'Other unpatched launchers can still reap a dead supervisor owner row while its child/scratch survives. '
+        'The story wrapper never reaps; only a coordinated upstream fleet rollout closes this risk.',
+    'strictWrapperLineage': {'basis': 'FUCQ-103 reviewed Budget/Tree, adapted as story-owned source; no import or execution', 'path': 'docs/gcsp/evidence/fucq103/scoped-resources.py', 'sourceWorktree': 'DEV-2026-11-04-066', 'sha256': '1e128d8d538b3d6ac9255adec1d2c8e05e9707ad66e965dd74ca0462f4b1231c'},
+    'previousAbsenceCheckpoint': {'publishedRevision': 'a5b50abd3880b181916d313c8b9c0b73dbbd39cc', 'freezeSha256': '0d280b1cd6e7ddb140fa8479bf2e25e370329579eabb49afa16f75db29f3646f', 'parentStaticReviewReceipt': '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq126-absence-review-1029.json', 'parentStaticReviewReceiptSha256': 'd35497dffabbf9c7594559cabcd8171be156e4ab52c10a8b421d1f70d187b8c2', 'scope': 'Prior root936 static absence review retained; not rerun and not runtime evidence for this wrapper.'},
+    'isolatedRouteReview': {'path': '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/results/claude-assist-fucq126-2026-11-06-01.md', 'sha256': '732756a21acd6f36b87d478c9ee683ff47e35ce6f2a5fb67e802ae80e0772059'},
     'manifestBinding': 'Future launch requires path plus explicit SHA256 of the final admitted manifest bytes; flags/output edits produce a new binding.',
     'caseNames': cases, 'edges': edges, 'unresolved': unresolved, 'packages': sorted(packages),
     'vehicleEvidenceRoot': corpus_root, 'navigationBoundaries': navigation,
@@ -247,9 +255,9 @@ plan = {
         'independentReport': '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/reviews/fucq126-claude-review-2026-11-06.md',
         'reportBytes': 11779, 'reportSha256': '7bb9ed97476951bdc12ba43a217e5df740c28a6d67b10bd3f7bcbe7ee132c216',
         'verdict': 'HOLD retained; repairs are authored and unexecuted'},
-    'pendingExecutionInputs': ['Coordinator review/adoption of shared helper patch, caller compatibility validation and exact helper refreeze',
+    'pendingExecutionInputs': ['Independent review of story-owned strict budget, recursive tree/probes, scratch finalizer and supervisor integration',
         'Independent review of replacement candidate/harness/static classification',
-        'Explicit six-case execution admission, refreshed host budget and absolute external output/impact/ownership plan'],
+        'Explicit six-case execution admission, fresh strict ALL-row host budget and physical directory/lock anchors, absolute external output/impact/ownership plan'],
     'separateAcceptanceGates': ['C5 delivered host subscription/navigation remains central100 work; not a six-case admission prerequisite.',
         'Trusted positive new-run source and six atomic business preparations remain open; no FUCQ77/78 or business acceptance.',
         'Browser/native/full execution lanes and paused96 unchanged.'],

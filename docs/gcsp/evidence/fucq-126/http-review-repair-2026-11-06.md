@@ -1,6 +1,10 @@
 # Independent-review repairs for the six HTTP cases
 
 6 November 2026. **Authored and statically checked; HOLD retained; no execution.**
+
+**Current candidate:** [isolated story-owned resource route](http-isolated-resource-authoring-2026-11-06.md)
+supersedes this page’s proposed shared-helper dependency. The patch and prior absence proof remain
+historical, unapplied evidence; do not adopt the patch. The six cases remain on HOLD and unexecuted.
 This replaces the planning identity for the six cases, preserving the earlier accepted controller
 and browser evidence and the separate C5 proposal. No product file or shared resource helper changes.
 
