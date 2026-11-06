@@ -1,6 +1,8 @@
 # Buddy normal-runtime integration plan
 
-FUCQ-100 / DEV-2026-11-04-060, 6 November 2026. **Preparation only.** The dispatcher requested this
+FUCQ-100 / DEV-2026-11-04-060, 6 November 2026. **Original preparation record at0478b501.**
+The subsequently granted local composition and selected evidence are recorded in
+[buddy-runtime-integration.md](buddy-runtime-integration.md). The remaining text preserves the reviewed plan. The dispatcher requested this
 finite source/lifecycle plan after independently auditing the completed 41 allocation manifests.
 No central/runtime, paused allocator, identity, policy, repository/core or other service source is
 changed here. No tests, runtime, listener, browser, native database, network provider or full suite
