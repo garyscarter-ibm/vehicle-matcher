@@ -1310,7 +1310,7 @@
     "Launcher -> runtime hash manifest generated solely from frozen embedded sources and pinned installed packages; stdin gate precedes guard/test import."
   ],
   "unknowns": [
-    "Original23fc796 causal row remains UNKNOWN. Separately granted7293e52 controller2/audit1 failed on captured question-mark OS state during execution; root cleanup PASS is separate. Reviewed five-field identity/RSS protocol repair is authored only; no new runtime admission/grant.",
+    "Original23fc796 causal row remains UNKNOWN. Separately granted7293e52 controller2/audit1 failed on captured question-mark OS state; its historical uncertainty is preserved. Newest09aa1c85 five-field attempt reached all three cases and failed0/3, controller2/audit1/Node1, with failed-run grade UNKNOWN and a separate spec/TAP mismatch. Root cleanup PASS19 is independent. Reviewed causal repair is authoring only; no fresh runtime admission/grant.",
     "Canonical additional policy bundle not yet coordinated.",
     "Explicit synthetic mechanics facts cannot establish live corpus realism or observed satisfaction.",
     "Remaining cache/access replay/acceptance/outcomes and composed/full validation remain unimplemented or unproved."
@@ -1321,16 +1321,16 @@
   },
   "authoredClosure": {
     "server/gcsp/comparison/harness.js": {
-      "sha256": "72cdc9465f1f37e5b6ed8d455d658adef42f4f61d595ca9cad29a5443f67d7a1",
-      "bytes": 17452
+      "sha256": "e8e018154ea16ad566ada81b32640986b596b690f43a995d98d827cdd102f4a7",
+      "bytes": 17461
     },
     "server/test/gcsp-comparison-current.test.js": {
-      "sha256": "3368759f0f406eff1039116064b78983013e637636d0e54d4f07348ee9bcfa3a",
-      "bytes": 7237
+      "sha256": "35065a80bd4e6a0863e7614251a081245a7f061a728630d03d8e9eef90e637d1",
+      "bytes": 8997
     },
     "server/test/fixtures/gcsp-comparison-current-outcomes.json": {
-      "sha256": "4e5fe98d96a337b7bf473fd89cb032f3f1aab962a9881bf44beba65136c52263",
-      "bytes": 2042
+      "sha256": "72d943e03a1f8a540873c0f15eeb83c4b8ee61b0fa5fa3938d10c3bea171cff1",
+      "bytes": 4317
     },
     "docs/gcsp/fucq134-outcome-policy-proposal.json": {
       "sha256": "ca85ca5eaf8e5fc6457e3bd01150687b3a574f7949d278fde98b0bcf3517b490",
@@ -1349,8 +1349,8 @@
       "bytes": 35448
     },
     "docs/gcsp/evidence/fucq134/first-chunk-supervisor.py": {
-      "sha256": "46a60ce4e8a9a529fcc3531c80b89179b869a7f7baec6c4ba4d5a7210963a73f",
-      "bytes": 18584
+      "sha256": "55c4b1cf67d5093af394a75fbbafe941103d975a325224aa0c503da5b719145e",
+      "bytes": 18607
     },
     "docs/gcsp/evidence/fucq134/first-chunk-freeze.py": {
       "sha256": "d047af7d501fc94840ce701d04296407deec933e4535af4a14ed10e39f99e8f6",
@@ -1366,7 +1366,7 @@
     "resourcePattern": "918ce04510fd327e860809e7de53bd636d1cf7da:docs/gcsp/models/fucq115-activation-resources.py adapted only in owned134 file",
     "supervisor": "docs/gcsp/evidence/fucq134/first-chunk-supervisor.py",
     "admission": "docs/gcsp/evidence/fucq134/first-chunk-admission.json",
-    "execution": "Both once-only grants consumed. Original23fc796 failed1/1 before Node; separately granted7293e52 failed2/1 during execution with exact state-grammar diagnostic. No completed three-case TAP result. Root independent cleanup PASS does not establish test success. Current five-field parser authoring requires implementation review and fresh execution admission.",
+    "execution": "All three once-only grants consumed. Newest09aa1c85 reached3cases/pass0/fail3, controller2/audit1/Node1; snapshot policy-table query and two zero-versus-two browse assertions failed; spec output independently violated exact TAP. Failed-run grade UNKNOWN; root cleanup PASS19 separate. Current causal repair requires implementation review and fresh runtime admission. Earlier pre-Node and captured OS-state failures remain unchanged.",
     "launchOwnershipRepair": "Static107finding: persist launch intent before Popen; defer SIGTERM/SIGINT through PID/start registration; unresolved launch cannot certify absence; cleanup adopts any supplied direct child handle. No reproduction/runtime granted.",
     "originalStaticReview": {
       "reviewer": "Dibble",
@@ -1483,6 +1483,24 @@
       "scope": "Five fields; both timestamp checks index4; remove only unused OS-state parsing/storage; all required-field/whole-snapshot checks, finite diagnostics and partial observations retained",
       "absence": "Unchanged: an extant unknown-start identity cannot establish absence; historical unknown start may resolve through missing PID plus kill(pid,0)->ESRCH. Zombie rows remain present.",
       "boundaries": "Everything from definitely_absent onward byte-identical; supervisor/freezer/completion/shared helpers unchanged; no fallback/skip/whitelist/retry/probe/test/allocation/new grant",
+      "agents": "requested/selected gpt-6.1-sol/high; no fallback or descendants"
+    },
+    "causalRepairAuthoring": {
+      "proposalRevision": "10b2db389654dfec5d68e15a2ca0d7fdfc601e7b",
+      "proposalSHA256": "e6fdda224ff96167e8d3945f5f85a3aa128a5c7b36fef49ccb8a156a11e8d6e5",
+      "reviewer": "Barney McGrew",
+      "review": "PASS for bounded authoring only; root local receipt fucq134-proposal-static-review-0942.json",
+      "reviewerAgents": "requested/selected gpt-6.1-sol/high; no fallback or descendants",
+      "priorAdmission": "07300f741f8eebc19a8baa68c571a924de4daa8429cbb1e693fdb51e6ba76079",
+      "changedConsumers": [
+        "server/gcsp/comparison/harness.js",
+        "server/test/gcsp-comparison-current.test.js",
+        "server/test/fixtures/gcsp-comparison-current-outcomes.json",
+        "docs/gcsp/evidence/fucq134/first-chunk-supervisor.py"
+      ],
+      "scope": "FOUNDATION_TABLES snapshot; selected synthetic F70 configuration plus necessary typed gate facts; bounded actual grade/decision-code assertion diagnostic; explicit TAP argument before unchanged gated launcher",
+      "preserved": "Actual66/base generator/canonical policy; expected-two assertion and all real gates; exact TAP parser; strict telemetry, all-reservation accounting, lifecycles, cleanup and limits",
+      "state": "authored; implementation review and fresh runtime admission required; no target execution",
       "agents": "requested/selected gpt-6.1-sol/high; no fallback or descendants"
     }
   }

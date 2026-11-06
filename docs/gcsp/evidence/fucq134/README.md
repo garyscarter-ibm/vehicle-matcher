@@ -1,6 +1,6 @@
 # FUCQ-134 first chunk review package
 
-**Newest five-field attempt: 0/3 cases passed; controller2/audit1. Diagnosis/proposal only; no execution grant.**
+**Causal repair authored; implementation review and fresh runtime admission required. Latest actual result remains0/3, controller2/audit1/Node1.**
 
 Checkpoint, 6 November 2026. Root's once-only execution at09aa1c85 reached all
 three cases: isolation failed on `snapshot:policy_versions`; both mechanics cases
@@ -8,8 +8,12 @@ failed with0 eligible cars against2 expected. Spec output also failed the separa
 TAP contract. Root's independent cleanup audit passed19checks/788identityrows;
 cleanup does not establish test success. The [current-route failure proposal](../../fucq134-current-route-failure-proposal.md)
 records evidence, the repository/PolicyService boundary, fixture incompatibility,
-the unobserved generated-grade limit and proposed reporter repair. No repair or
-retry is authorized by that note. All three once-only grants are consumed.
+the unobserved generated-grade limit and proposed reporter repair. Barney's
+independent static review passed that bounded authoring scope, and root authorized
+implementation. The [changed-consumer and validation proposal](../../fucq134-causal-repair-validation-proposal.md)
+records the authored FOUNDATION_TABLES sentinel, explicit synthetic F70 variant,
+bounded failure diagnostics, TAP argument and replacement freeze. No runtime
+rerun is authorized. All three once-only grants are consumed.
 
 The original23fc796 attempt remains controller1/audit1 before Node, with0/3
 tests reached and causal row UNKNOWN. The separately granted7293e52 attempt
@@ -21,9 +25,9 @@ cleanup reports. This package remains incomplete execution evidence.
 
 - Base: `034b56d08fb742d31478218b670552805d5840ab`.
 - Published real66: `eb5a677b37c486e3da7c4547803f739e22df8ac3`.
-- Admission SHA-256: `07300f741f8eebc19a8baa68c571a924de4daa8429cbb1e693fdb51e6ba76079`.
-- Composed source identity: `7a982714de7cf74968cabcfbe3712be2ff4c3fe75cf95acda3381044cffa4a82`.
-- 45 embedded source/data files, 971783 source bytes, 236 physical identities,
+- Admission SHA-256: `40b01c34dc43163f2c31cbb8668088489d6062875a0c5385bbfcd5cf449f75da`.
+- Composed source identity: `4305c000e321ceb67bd9d4cbecdf6440f1aca038f09815a71eade92339b0b311`.
+- 45 embedded source/data files, 975827 source bytes, 236 physical identities,
   14 installed packages. Embedded immutable blobs permit checking the complete
   source content before custom resource-helper imports. Installed dependencies
   remain in place; only the owned scratch mirror links to them, read only.
@@ -45,7 +49,8 @@ modify `_tools/test_resources.py`.
 
 The commands below document the reviewed execution contract. Root subsequently
 used the five-field publication for the failed attempt summarized above. These
-examples confer no grant and must not be reused as a retry.
+examples use the historical admission, confer no grant and must not be reused as
+a retry. The current replacement-identity proposal is linked above.
 
 The dispatcher first reviews the exact freeze and helper bytes. This plan-only
 command checks identities without importing custom helpers, allocating resources,

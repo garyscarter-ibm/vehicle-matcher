@@ -223,7 +223,7 @@ def execute(frozen, args, resources, guard, completion, environment, started):
         log = rdir / 'test.log'
         written = 0
         with log.open('xb') as stream:
-            command = [frozen['nodeExecutable'], str(mirror / 'server/test/helpers/gcsp-comparison-launch.mjs'),
+            command = [frozen['nodeExecutable'], '--test-reporter=tap', str(mirror / 'server/test/helpers/gcsp-comparison-launch.mjs'),
                 str(mirror / 'server/test/helpers/gcsp-comparison-guard.mjs'), str(runtime),
                 str(mirror / 'server/test/gcsp-comparison-current.test.js')]
             process = tree.launch(command, cwd=mirror, env=scratch.env(environment), stdin=subprocess.PIPE,

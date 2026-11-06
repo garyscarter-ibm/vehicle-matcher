@@ -3,7 +3,54 @@
   "evidenceStatus": "authored expectations only; no execution or computed outcome evidence",
   "purpose": "tiny explicit synthetic input variant for real66 mechanics; no BMW constructibility claim",
   "seed": "fucq134-first-mechanics",
-  "policyVariantSuffix": "+fucq134-mechanics-v1",
+  "policyVariantSuffix": "+fucq134-mechanics-v2",
+  "syntheticStock": {
+    "version": "fucq134-mechanics-fixture.v2",
+    "sourceDate": "2026-11-06",
+    "basis": "Explicitly selected synthetic F70 mechanics fixture. Canonical eligibility and monthly points remain authoritative; the structural identity and gate facts below are fictional assumptions, not observed BMW specifications or a constructible build.",
+    "configuration": {
+      "modelLine": "F70 Sports Hatch|120",
+      "configurationId": "Q01QRjcwOlJFRlBBSU5ULFJFRlRSSU0=",
+      "snapshotVersion": "fucq134-mechanics-fixture.v2",
+      "canonicalIdentity": {
+        "vgModelCode": "CMPF70",
+        "agModelCode": null,
+        "factoryOptionCodes": ["REFPAINT", "REFTRIM"],
+        "provenance": {
+          "kind": "synthetic",
+          "source": "FUCQ-134 mechanics fixture; CMP/REF codes are fictional and not observed BMW codes",
+          "observedDate": null
+        }
+      },
+      "configuration": {
+        "model": "120 (fictional mechanics configuration)",
+        "generation": "F70",
+        "body": "hatchback",
+        "powertrain": "petrol",
+        "vgModelCode": "CMPF70",
+        "market": "GB"
+      },
+      "sourceContext": {
+        "sourceRefs": [
+          "server/test/fixtures/gcsp-comparison-current-outcomes.json",
+          "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md"
+        ],
+        "observedDate": null,
+        "sourceKind": "synthetic-structural-fixture",
+        "confidence": "Fictional structural identity and necessary gate facts only; no observed factory build or verified specification",
+        "unresolvedFacts": ["exactFactoryOptions", "exactEquipment", "constructibility", "fullSpecifications"]
+      }
+    },
+    "facts": {
+      "fuel": { "status": "known", "value": "petrol", "unit": null },
+      "seats": { "status": "known", "value": 5, "unit": "count" },
+      "insuranceGroup": { "status": "known", "value": 25, "unit": "insurance-group" }
+    },
+    "limitations": [
+      "F70 configuration identity, petrol fuel, five seats and insurance group 25 are explicit synthetic mechanics assumptions, not verified BMW facts.",
+      "Unprovided equipment, performance and other specifications remain unknown; no factory constructibility or corpus coverage is established."
+    ]
+  },
   "overlay": {
     "comparison.cohortSize": 2,
     "comparison.carsPerEmployee": 1,
@@ -13,7 +60,7 @@
     },
     "comparison.modelLineMix": [
       {
-        "modelLine": "G21 Touring|320i",
+        "modelLine": "F70 Sports Hatch|120",
         "weight": 1
       }
     ],

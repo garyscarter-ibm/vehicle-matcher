@@ -1,5 +1,5 @@
 import { createMemoryRepository, createMemoryStore } from '../repository/memory.js';
-import { inputDigest, ok, TABLES } from '../repository/core.js';
+import { inputDigest, ok, FOUNDATION_TABLES } from '../repository/core.js';
 import { DemoIdentityAdapter } from '../identity/index.js';
 import { DemoClock } from '../clock/index.js';
 import { ManualContextService, createRepositoryManualPorts } from '../manual-context/index.js';
@@ -203,7 +203,7 @@ export async function openComparisonRun(options = {}) {
         adapter: adapterRow, limitations: adapter.limitations }),
       employeeContext(employeeId) { check(contexts.has(employeeId), 'employeeId'); return contexts.get(employeeId); },
       async snapshot() {
-        return Object.fromEntries(await Promise.all(Object.keys(TABLES).map(async (table) => [table,
+        return Object.fromEntries(await Promise.all(FOUNDATION_TABLES.map(async (table) => [table,
           value(await repository.query(scope, table), `snapshot:${table}`)])));
       },
       async release(releaseId) {

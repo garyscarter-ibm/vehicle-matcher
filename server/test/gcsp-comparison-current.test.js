@@ -23,6 +23,24 @@ async function mechanics(seed = fixture.seed) {
       status: proposed.status, basis: proposed.basis, source: proposed.source, sourceDate: proposed.sourceDate,
       policyVersion: input.policyVersion, effectiveFrom: input.effectiveFrom });
   }
+  const stock = fixture.syntheticStock;
+  const configurations = input.assumptions.find((row) => row.key === 'comparison.configurationSet.v1');
+  const adapter = input.assumptions.find((row) => row.key === 'comparison.recordAdapter.v1');
+  assert.equal(configurations.value.kind, 'reviewed-fixtures');
+  assert.equal(configurations.value.configurations.some((row) => row.modelLine === stock.configuration.modelLine), false);
+  assert.equal(Object.hasOwn(adapter.value.stockFactsByModelLine, stock.configuration.modelLine), false);
+  configurations.value.configurations.push(structuredClone(stock.configuration));
+  configurations.value.version = stock.version;
+  configurations.value.reviewedOn = stock.sourceDate;
+  configurations.value.basis = stock.basis;
+  adapter.value.stockFactsByModelLine[stock.configuration.modelLine] = structuredClone(stock.facts);
+  adapter.value.fixtureVersion = stock.version;
+  adapter.value.limitations.push(...stock.limitations);
+  for (const row of [configurations, adapter]) {
+    row.source = 'server/test/fixtures/gcsp-comparison-current-outcomes.json';
+    row.sourceDate = stock.sourceDate;
+    row.basis = stock.basis;
+  }
   const policy = new PolicyService({ provider: { async loadVersions() { return structuredClone([input]); } } });
   const origin = input.assumptions.find((row) => row.key === 'comparison.startsAt').value;
   const snapshot = await loadComparisonPolicy({ policyService: policy, policyRead: {
@@ -31,12 +49,21 @@ async function mechanics(seed = fixture.seed) {
     route: 'current', codeRevision: globalThis.comparisonCodeRevision ?? 'fucq134-unadmitted-direct-run' };
 }
 const requireOk = (result) => { assert.equal(result.status, 'ok', JSON.stringify(result)); return result.value; };
+const browseDiagnostic = (employee, browsed) => JSON.stringify({
+  gradeId: String(employee.gradeId).slice(0, 32), decisionCount: browsed.decisions.length,
+  decisions: browsed.decisions.slice(0, 2).map((decision) => ({
+    gateStatus: String(decision.gateStatus).slice(0, 32),
+    blockerCount: decision.blockers.length, unknownCount: decision.unknowns.length,
+    blockers: decision.blockers.slice(0, 8).map((entry) => String(entry.code).slice(0, 64)),
+    unknowns: decision.unknowns.slice(0, 8).map((entry) => String(entry.code).slice(0, 64)),
+  })),
+});
 async function claimFirst(run) {
   const employee = run.inputs.employees[0];
   const context = run.employeeContext(employee.employeeId);
   const browsed = requireOk(await run.claims.browseStock(context));
   assert.equal(browsed.ranked, false);
-  assert.equal(browsed.cars.length, run.inputs.stock.length);
+  assert.equal(browsed.cars.length, run.inputs.stock.length, browseDiagnostic(employee, browsed));
   const result = requireOk(await run.claims.claim(context, { commandId: 'mechanics-claim', ...browsed.cars[0].claimInput }));
   return { context, result };
 }
