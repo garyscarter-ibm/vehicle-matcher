@@ -4,7 +4,7 @@
 
 The original TAP retains all 14 exact case names, including `authentication loss clears a saved receipt while non-auth source failure preserves it`. The journal proves three application modules and four declared edges (two application and two builtin imports). All seven current source/input files match their immutable source; exact Node and every harness/executable/lock pin were preserved. No installed dependency was borrowed or installed.
 
-The exact pinned read-only audit returned PASS after supervisor exit. Its original receipt records 1,349 checks; the console's 1,350 includes the final receipt-size assertion performed after serialization. This is lead-side verification; dispatcher final independent audit remains outstanding. Neither the original audit nor the frozen auditor was altered or rerun to normalize that reporting difference.
+The exact pinned read-only audit returned PASS after supervisor exit. Its original receipt records 1,349 checks; the console's 1,350 includes the final receipt-size assertion performed after serialization. The dispatcher subsequently completed its independent final audit: **PASS, 1,313 checks**, at `2026-11-06T02:06:47.745123+00:00`, accepting controller14 only. Its byte-identical receipt is retained as `dispatcher-final-audit.json`. Neither the original audit nor the frozen auditor was altered or rerun to normalize that reporting difference.
 
 ## Execution and cleanup
 
@@ -19,7 +19,7 @@ The single test command was issued once. The subsequent pinned audit was read-on
 
 ## Original captures
 
-The adjacent files are byte-identical copies of the original run. `capture-index.json` binds their hashes and original location. The original manifest is below `ownership/`; its absolute scratch/run paths intentionally retain their real values.
+The seven original-run files are byte-identical copies. The eighth capture is the subsequent independent dispatcher receipt. `capture-index.json` binds their hashes and original location. The original manifest is below `ownership/`; its absolute scratch/run paths intentionally retain their real values.
 
 | Capture | Bytes | SHA-256 |
 |---|---:|---|
@@ -30,9 +30,10 @@ The adjacent files are byte-identical copies of the original run. `capture-index
 | `checkpoint.json` | 343 | `816ef3d6f11f999b5ac36e987edde3d34e5051de8d68abf1ecbe96d395f5edd9` |
 | `parent-audit.json` | 2456 | `c85218153180908149b7e972e8e8a4c8c4bb7df9ad3c72cee04271fbbdc21bf5` |
 | `ownership/a549946fa3d6419b934450b44a079e3b.json` | 1344 | `da4e8fb8e3a9149d5c352b6810d3fde42c86f2ad2df2387c2ab16d98b7e03a9a` |
+| `dispatcher-final-audit.json` | 1419 | `a10608354f7b05a0b12d9bcb16aaa5779e6ca38f856f43bfa5edd131eb439645` |
 
 ## Scope still outstanding
 
-This proves only the 14 controller/HTTP-adapter cases. Backend service 12/12 remains separate evidence in `../scoped-service-pass/`; prior policy 7/7 is a separate unchanged-graph result. They are not combined or rerun here. The nine renderer cases, canonical policy runtime registration, actual102/105/106/100 composition, authoritative navigation/reload, allocation/tick, evaluation/wait/no-match, browser/visual and full integration evidence remain open. Paused allocator 96 was untouched. **FUCQ-107 is not built.** No Jira, shared lane, producer, shared helper or product-map status changed.
+This proves only the 14 controller/HTTP-adapter cases. Backend service 12/12 remains separate evidence for old source `1683932` in `../scoped-service-pass/`; the renewal correction at `4b91d4b` is unexecuted and is not covered by that result; prior policy 7/7 is a separate unchanged-graph result. They are not combined or rerun here. The nine renderer cases, canonical policy runtime registration (103 source registration is independently accepted at `f80fc61`), actual102/105/106/100 composition, authoritative navigation/reload, allocation/tick, evaluation/wait/no-match, browser/visual and full integration evidence remain open. Paused allocator 96 was untouched. **FUCQ-107 is not built.** No Jira, shared lane, producer, shared helper or product-map status changed.
 
-Agents: Lego Batman lead requested/selected `gpt-6.1-sol`/high, no fallback; no new agent or descendant was launched. Launcher ownership and final receipt remain with the lead, with dispatcher final audit pending.
+Agents: Lego Batman lead requested/selected `gpt-6.1-sol`/high, no fallback; no new agent or descendant was launched. Launcher ownership and the lead receipt remain with the lead; the dispatcher final audit accepted this controller-only result.
