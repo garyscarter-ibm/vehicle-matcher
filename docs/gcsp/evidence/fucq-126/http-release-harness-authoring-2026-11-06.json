@@ -1,6 +1,6 @@
 {
   "date": "2026-11-06",
-  "scope": "Isolated story-owned strict resource wrapper for the unchanged six HTTP cases; authoring only, HOLD, unexecuted",
+  "scope": "N1-N4 source-only cleanup/query/failure/provenance repair following Granny LOW-effort HOLD; no runtime grant",
   "planningBase": "496b92a31310fd7308ecf2f6f55ba6737cad9a6d",
   "source": {
     "path": "server/test/helpers/presenter-http-proof.js",
@@ -12,7 +12,7 @@
   ],
   "productImports": [],
   "executed": false,
-  "validation": "Current isolated route: text/hash/JSON/Git metadata only; no reviewed-code import, AST/syntax execution, tests, runtime, probes, ledger reads, collectors or allocations. Prior2216 and parent936 receipts retain their own older bytes/scope.",
+  "validation": "N1-N4 repair: text/hash/JSON/Git metadata only. No reviewed code imports, AST/syntax tests, resource helper/probe/runtime/ledger execution or allocation. Manual candidate metadata refresh; reference preparation not executed. Prior Granny LOW review remains HOLD for ee405af; independent consequential review pending.",
   "deliveryLossVariant": "Actual handler completes and Set-Cookie headers are applied, then the reply body is discarded; this is not every network-loss variant.",
   "boundaries": [
     "Calls the actual request listener; never listens or fetches externally",
@@ -22,9 +22,10 @@
     "Transport journal retains only method/path/status/byte counts; never tokens or business bodies"
   ],
   "pending": [
-    "Independent review of story-owned strict budget, recursive tree/probes, scratch finalizer and supervisor integration",
-    "Independent review of replacement candidate/harness/static classification",
-    "Explicit six-case execution admission, fresh strict ALL-row host budget and physical directory/lock anchors, absolute external output/impact/ownership plan"
+    "Independent consequential source review of N1-N4 repair, ownership/PID-reuse safety and exact manual candidate",
+    "Separately admitted private-ledger wrapper lifecycle validation; no runtime grant exists",
+    "Fresh strict ALL-row host/lock anchors, locale and bounded ps bytes/latency observation; N5 unverified",
+    "Explicit unchanged-six-case admission, absolute external output/impact/ownership plan and final admitted manifest hash"
   ],
   "executionAuthorized": false,
   "cancellationGuard": {
@@ -54,8 +55,8 @@
   },
   "currentSourceRef": "f179ae6043414a2b07de3edb2b425338299ea37b",
   "currentFreeze": {
-    "path": "docs/gcsp/evidence/fucq-126/http-physical-candidate-isolated-2026-11-06.json",
-    "sha256": "e5070237d174a7bf5f4ffe547b881f00d1808c11681c6d831f3e00a9c8368fb9",
+    "path": "docs/gcsp/evidence/fucq-126/http-physical-candidate-cleanup-repair-2026-11-06.json",
+    "sha256": "79252c795eb2bdffcfeac429183587b6c9f831ff2f11270c823e8e2300555071",
     "sourceDataHelperReferenceFiles": 138,
     "installedDependencyFiles": 1975,
     "allFiles": 2113,
@@ -63,7 +64,8 @@
     "literalEdges": 267,
     "classifiedSites": 29,
     "candidateRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096",
-    "dependencyPinsRevalidated": false
+    "dependencyPinsRevalidated": false,
+    "preparationSourceRole": "reference-only, nonreproducing; manual source-pin refresh"
   },
   "authoredCases": [
     "release-http: startup and actual release IDs match controller count and inventory delta",
@@ -84,8 +86,8 @@
     {
       "path": "docs/gcsp/evidence/fucq-126/http-release-supervisor.py",
       "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/docs/gcsp/evidence/fucq-126/http-release-supervisor.py",
-      "sha256": "827278e27692dcd6e6f60f14ba21ddab45779ed77d559341109b08c15abdbad1",
-      "bytes": 21351,
+      "sha256": "18758a02e4dfe68404e0739e18df8e53a28717bc7e43dff29c003e3025f0b554",
+      "bytes": 23970,
       "role": "physical-source-data-helper-or-reference"
     },
     {
@@ -98,15 +100,15 @@
     {
       "path": "docs/gcsp/evidence/fucq-126/prepare-reviewed-http-candidate.py",
       "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/docs/gcsp/evidence/fucq-126/prepare-reviewed-http-candidate.py",
-      "sha256": "073413059c534b45c05c81e8e8aca9cc5df658fce8a600bdbf4d611a69144d16",
-      "bytes": 18708,
+      "sha256": "c93e2238c1c6c6f52a271dea6e24a4e9b4d8204b89cce170653265d4e807c1c6",
+      "bytes": 18824,
       "role": "physical-source-data-helper-or-reference"
     },
     {
       "path": "docs/gcsp/evidence/fucq-126/strict-http-resources.py",
       "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/docs/gcsp/evidence/fucq-126/strict-http-resources.py",
-      "sha256": "9e3a7bda4a49d13ba3514eb572962166bc67bdcf3b89fdeb4f03b94f8de1ebec",
-      "bytes": 40357,
+      "sha256": "e0c63effd13622961d32606954870185daf64e056806328225e600cc58784858",
+      "bytes": 44761,
       "role": "physical-source-data-helper-or-reference"
     }
   ],
@@ -235,7 +237,7 @@
   "resourceContractRequirement": {
     "mode": "story-owned-strict-seven-key",
     "helperSha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
-    "wrapperSha256": "9e3a7bda4a49d13ba3514eb572962166bc67bdcf3b89fdeb4f03b94f8de1ebec",
+    "wrapperSha256": "e0c63effd13622961d32606954870185daf64e056806328225e600cc58784858",
     "sharedHelperModified": false,
     "ledgerKeys": [
       "owner",
@@ -276,5 +278,42 @@
     "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/results/claude-assist-fucq126-2026-11-06-01.md",
     "sha256": "732756a21acd6f36b87d478c9ee683ff47e35ce6f2a5fb67e802ae80e0772059"
   },
-  "isolatedResourceNote": "docs/gcsp/evidence/fucq-126/http-isolated-resource-authoring-2026-11-06.md"
+  "isolatedResourceNote": "docs/gcsp/evidence/fucq-126/http-isolated-resource-authoring-2026-11-06.md",
+  "previousIsolatedFreeze": {
+    "path": "docs/gcsp/evidence/fucq-126/http-physical-candidate-isolated-2026-11-06.json",
+    "sha256": "e5070237d174a7bf5f4ffe547b881f00d1808c11681c6d831f3e00a9c8368fb9",
+    "sourceDataHelperReferenceFiles": 138,
+    "installedDependencyFiles": 1975,
+    "allFiles": 2113,
+    "distinctResolvedFiles": 2111,
+    "literalEdges": 267,
+    "classifiedSites": 29,
+    "candidateRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096",
+    "dependencyPinsRevalidated": false
+  },
+  "resourceQueryBudget": {
+    "work": 768,
+    "cleanupReserved": 256,
+    "total": 1024,
+    "sampleSeconds": 0.5
+  },
+  "preparationSource": {
+    "path": "docs/gcsp/evidence/fucq-126/prepare-reviewed-http-candidate.py",
+    "role": "reference-only full recollection outline; not a reproducer or author of this manual candidate",
+    "executed": false,
+    "reproducesThisCandidate": false,
+    "destinationIfSeparatelyAdmitted": "docs/gcsp/evidence/fucq-126/http-physical-candidate-reference-recollection-2026-11-06.json"
+  },
+  "cleanupReview": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/results/claude-assist-fucq126-2026-11-06-02.md",
+    "sha256": "bcaddfcfbd0b9d3430d9c8f770b376a70115b87edfec94436f5735b541a70a08",
+    "reviewedRevision": "ee405af10c5c1459cdcbe8591652e2a93c57a820",
+    "reviewer": "Granny",
+    "model": "claude-opus-5-5",
+    "reportedEffort": "LOW",
+    "verdict": "HOLD",
+    "blockingFinding": "N1 MAJOR",
+    "replacementIndependentlyReviewed": false
+  },
+  "cleanupRepairNote": "docs/gcsp/evidence/fucq-126/http-cleanup-authoring-repair-2026-11-06.md"
 }

@@ -1,6 +1,10 @@
 # Isolated resource authoring for the six HTTP cases
 
-6 November 2026. **HOLD; source-only authoring; unexecuted.** The shared patch is not adopted.
+6 November 2026. **HOLD; source-only authoring; unexecuted.**
+
+**Current follow-up:** [cleanup/query reserve and source-pin repair](http-cleanup-authoring-repair-2026-11-06.md)
+supersedes this checkpoint’s wrapper/supervisor bytes after Granny’s LOW-effort HOLD review.
+This page and its receipt retain the original source identity and proof limits. The shared patch is not adopted.
 This is the current resource route for the existing FUCQ-126 claim, replacing the shared-patch
 dependency at `a5b50abd3880b181916d313c8b9c0b73dbbd39cc`. It changes no product, UI or business scope.
 

@@ -17,6 +17,7 @@ import signal
 import stat
 import subprocess
 import time
+import threading
 import sys
 import uuid
 
@@ -122,7 +123,16 @@ class Observer:
     """
     def __init__(self, scratch, deadline):
         self.scratch, self.deadline, self.handles = scratch, deadline, {}
+        self.phase = 'work'
+        self.work_limit, self.total_limit = 768, 1024
         scratch.record['probes'] = []
+        scratch.record['queryBudget'] = {'work': self.work_limit, 'cleanupReserved': 256,
+                                        'total': self.total_limit, 'phase': self.phase}
+
+    def begin_cleanup(self):
+        # Monotone transition, armed before stop/proof even if work consumed its entire allowance.
+        self.phase = 'cleanup'
+        self.scratch.record['queryBudget']['phase'] = self.phase
 
     def clean(self, process, record):
         # This path never persists or probes before retaining and joining the handle.
@@ -134,7 +144,7 @@ class Observer:
                 except OSError:
                     pass
             try:
-                process.wait(timeout=min(0.75, remaining(until)))
+                process.wait(timeout=min(0.75, max(0, until - time.monotonic())))
                 break
             except subprocess.TimeoutExpired:
                 continue
@@ -160,9 +170,11 @@ class Observer:
         if command[0] not in ('/bin/ps', '/usr/bin/vm_stat', '/usr/sbin/lsof'):
             raise RuntimeError('Unadmitted lifecycle query')
         records = self.scratch.record['probes']
-        if len(records) >= 1024:
-            raise RuntimeError('Lifecycle query count exceeded its finite cap')
-        record = {'tool': Path(command[0]).name, 'phase': 'before-create', 'cleanupVerified': False}
+        limit = self.work_limit if self.phase == 'work' else self.total_limit
+        if len(records) >= limit:
+            raise RuntimeError('Lifecycle ' + self.phase + ' query allowance exhausted; cleanup reserve is separate')
+        query_started = time.monotonic()
+        record = {'budgetPhase': self.phase, 'tool': Path(command[0]).name, 'phase': 'before-create', 'cleanupVerified': False}
         records.append(record)
         process = None
         output = [bytearray(), bytearray()]
@@ -188,6 +200,8 @@ class Observer:
                                 raise RuntimeError('Lifecycle query output exceeded its cap')
                             output[key.data].extend(data)
                 process.wait(timeout=remaining(query_until))
+                record.update(stdoutBytes=len(output[0]), stderrBytes=len(output[1]),
+                              wallSeconds=time.monotonic() - query_started)
                 return subprocess.CompletedProcess(command, process.returncode,
                     output[0].decode('utf-8', errors='strict'), output[1].decode('utf-8', errors='strict'))
             finally:
@@ -202,11 +216,12 @@ class Observer:
                         self.scratch.save()
 
     def finish(self, until):
-        remaining(until)
+        self.begin_cleanup()
         with deferred_signals(self.scratch.record):
             for process, record in list(self.handles.values()):
                 if not self.clean(process, record):
                     raise RuntimeError('Retained lifecycle query handle remains unproven')
+            remaining(until)
             self.scratch.save()
         return not self.handles and all(row.get('cleanupVerified') is True for row in self.scratch.record['probes'])
 
@@ -659,33 +674,80 @@ class Tree:
         process = self.process
         if process is None:
             return
-        # Direct joining never queries or persists a manifest before wait.
-        for action in (process.terminate, process.kill):
+        # Emergency path: no query or persistence, and no time check may bypass the kill attempt.
+        # The only caller of this Popen's wait methods is this main thread. Default SIGCHLD
+        # leaves exited children waitable; handled cancellation stays deferred through proof/signal/join.
+        issue = None
+        with deferred_signals(self.scratch.record):
+            if process.returncode is None:
+                if threading.current_thread() is not threading.main_thread() or signal.getsignal(signal.SIGCHLD) != signal.SIG_DFL:
+                    issue = 'Unreaped-child ownership cannot be established with this thread/SIGCHLD handler'
+                else:
+                    try:
+                        waited, status = os.waitpid(process.pid, os.WNOHANG)
+                    except ChildProcessError:
+                        issue = 'Direct child was reaped outside its owning Popen handle'
+                    else:
+                        if waited == process.pid:
+                            # Do not signal this numeric group after reaping its leader. PID reuse is now possible.
+                            process.returncode = os.waitstatus_to_exitcode(status)
+                            self.joined = True
+                        elif waited == 0:
+                            # waitpid(0) proves it is still our unreaped child. With no intervening wait/reaper,
+                            # its PID cannot be reused, even if it exits before these fresh kernel identity reads.
+                            try:
+                                group, session = os.getpgid(process.pid), os.getsid(process.pid)
+                                if group != process.pid or session != process.pid or group == os.getpgrp():
+                                    raise RuntimeError('Direct child no longer owns its admitted session/group')
+                                self.scratch.record['emergencyGroupSignal'] = {'pid': process.pid, 'pgid': group,
+                                    'sid': session, 'basis': 'own-unreaped-child-WNOHANG-zero-and-fresh-getpgid-getsid',
+                                    'signal': 'SIGKILL', 'at': time.time()}
+                                os.killpg(group, signal.SIGKILL)
+                            except (OSError, RuntimeError) as error:
+                                issue = type(error).__name__ + ': ' + str(error)
+                        else:
+                            issue = 'Unexpected waitpid result for the owned direct child'
+                # Popen's own direct kill remains the fallback; never invent group authority from a stored PGID.
+                # This also runs after the deadline: the bounded wait below may be zero, but kill is still attempted.
+                if process.returncode is None:
+                    try:
+                        process.kill()
+                    except OSError as error:
+                        issue = issue or type(error).__name__ + ': ' + str(error)
             try:
-                if process.poll() is None:
-                    action()
-            except OSError:
-                pass
-            try:
-                process.wait(timeout=min(3, remaining(self.deadline)))
+                process.wait(timeout=min(3, max(0, self.deadline - time.monotonic())))
                 self.joined = True
-                return
             except subprocess.TimeoutExpired:
-                continue
-        raise RuntimeError('Direct child stop/join remains unproven')
+                issue = issue or 'Direct child join was not proved before the absolute deadline'
+            if issue is not None:
+                self.scratch.record.update(ownershipUncertain=True, directJoinIssue=issue)
+                raise RuntimeError(issue)
 
     def stop_join(self, process):
         # Retain the actual Popen handle before a query or journal can fail.
         if self.process is not None and self.process is not process:
             raise RuntimeError('Direct child handle ownership differs')
         self.process = process
+        self.observer.begin_cleanup()
         self.until = min(self.deadline, time.monotonic() + 6)
+        first = None
         try:
+            # Emergency group kill precedes every observation/wait that could reap the ownership anchor.
+            self.join_direct()
             self.retain_direct(process)
             return self._stop_observed()
+        except BaseException as error:
+            first = error
+            self.scratch.record['stopFailure'] = type(error).__name__ + ': ' + str(error)
+            raise
         finally:
             if self.process is not None and not self.joined:
-                self.join_direct()
+                try:
+                    self.join_direct()
+                except BaseException as error:
+                    self.scratch.record['directJoinFailure'] = type(error).__name__ + ': ' + str(error)
+                    if first is None:
+                        raise
 
     def _stop_observed(self):
         process = self.process
@@ -796,6 +858,7 @@ class Scratch:
 
 def cleanup_scratch(scratch, tree, observer, until, attempted, ownership):
     # The caller retains the reservation on every uncertainty or persistence failure.
+    observer.begin_cleanup()
     with deferred_signals(scratch.record):
         if attempted and ownership.get('cleanupVerified') is not True and ownership.get('phase') not in ('not-launched', 'no-child-created'):
             raise RuntimeError('Actual handle cleanup is unverified; retain scratch and charge')

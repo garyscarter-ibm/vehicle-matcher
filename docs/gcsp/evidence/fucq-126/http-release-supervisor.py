@@ -142,6 +142,8 @@ def run(manifest_path, expected_manifest_sha256, started, work_deadline, deadlin
         raise RuntimeError('Require the unchanged pinned shared helper and the isolated strict wrapper.')
     if sha(frozen('strictResourceWrapper'), work_deadline) != required['wrapperSha256']:
         raise RuntimeError('Story-owned resource wrapper identity differs.')
+    if plan.get('resourceQueryBudget') != {'work': 768, 'cleanupReserved': 256, 'total': 1024, 'sampleSeconds': 0.5}:
+        raise RuntimeError('Require the fixed separate work/cleanup query allowance and sampling interval.')
     policy = R.Policy({'chunk_scratch_mib': 128, 'chunk_ram_mib': 768, 'chunk_seconds': 120, 'log_mib': 2,
                        'local_scratch_reason': 'Bounded macOS Node IPC and V8 module observations.'})
     host_root = Path(plan['hostRegistryRoot'])
@@ -163,11 +165,23 @@ def run(manifest_path, expected_manifest_sha256, started, work_deadline, deadlin
     output_owner = output.parent / 'ownership' / (output.name + '.json')
     if not S.definitely_absent(output_owner):
         raise RuntimeError('Preserve existing ownership evidence.')
-    binding = {'manifest': str(manifest_path), 'manifestSha256': expected_manifest_sha256,
-               'hostRegistry': str(host_root / 'reservations.json'), 'workSeconds': 90, 'finalizationSeconds': 30, 'chunkSeconds': 120}
+    locale = {key: {'value': value if re.fullmatch(r'[A-Za-z0-9_.@-]{0,128}', value) else '<redacted-invalid-locale>',
+                    'sha256': hashlib.sha256(value.encode()).hexdigest()}
+              for key, value in os.environ.items() if key == 'LANG' or re.fullmatch(r'LC_[A-Z_]+', key)}
+    binding = {'locale': locale, 'manifest': str(manifest_path), 'manifestSha256': expected_manifest_sha256,
+               'queryBudget': plan['resourceQueryBudget'], 'hostRegistry': str(host_root / 'reservations.json'), 'workSeconds': 90, 'finalizationSeconds': 30, 'chunkSeconds': 120}
     receipt = output / 'receipt.json'
     ownership = {'phase': 'not-launched'}; entered = reserved = attempted = created = False
     scratch = None; observer = None; tree = None; host = None; process = None; outcome = {}; failures = []; source_same = None
+    primary_failure = None; secondary_failures = []
+
+    def remember_failure(error):
+        nonlocal primary_failure
+        message = type(error).__name__ + ': ' + str(error)
+        if primary_failure is None:
+            primary_failure = message
+        return message
+
     # This finalizer and the outer signal scope exist before the first allocation.
     try:
         R.atomic_json(output_owner, {'version': 1, 'owner': {'pid': os.getpid(), 'start': None}, 'root': str(output),
@@ -194,53 +208,87 @@ def run(manifest_path, expected_manifest_sha256, started, work_deadline, deadlin
         command = [plan['node']['path'], '--test', '--test-concurrency=1', '--test-reporter=tap', str(test_path)]
         log = scratch.root / 'original.tap'; peak_rss = 0; log_bytes = 0
 
+        def identify(pid):
+            try:
+                return tree.identify(pid)
+            except BaseException as error:
+                remember_failure(error)
+                raise
+
         def register(child, record):
             # Child state belongs only to this external ownership journal, never the shared row.
-            tree.register(child)
-            scratch.record.update(child=record, launchPending=False)
-            scratch.save()
-            R.atomic_json(receipt, {'state': 'running', 'command': command, 'child': dict(record), **binding})
+            try:
+                tree.register(child)
+                scratch.record.update(child=record, launchPending=False)
+                scratch.save()
+                R.atomic_json(receipt, {'state': 'running', 'command': command, 'child': dict(record), **binding})
+            except BaseException as error:
+                remember_failure(error)
+                raise
+
+        def stop_join(child):
+            try:
+                return tree.stop_join(child)
+            except BaseException as error:
+                remember_failure(error)
+                raise
 
         def absent(child, record):
-            proof = tree.proof(deadline)
-            return all(proof[key] is True for key in ('joined', 'pidsAbsent', 'groupsAbsent', 'portsClosed'))
+            try:
+                proof = tree.proof(deadline)
+                return all(proof[key] is True for key in ('joined', 'pidsAbsent', 'groupsAbsent', 'portsClosed'))
+            except BaseException as error:
+                remember_failure(error)
+                raise
 
         scratch.record.update(child=ownership, launchPending=True)
         scratch.save()
         attempted = True
+        next_sample = time.monotonic()
         with log.open('wb') as stream, selectors.DefaultSelector() as selector:
             try:
-                with guard.cancellation_safe_child(command, ownership=ownership, identify=tree.identify,
+                with guard.cancellation_safe_child(command, ownership=ownership, identify=identify,
                         register=register,
-                        stop_join=tree.stop_join,
+                        stop_join=stop_join,
                         verify_absent=absent, cwd=root, env=env, stdout=subprocess.PIPE,
                         stderr=subprocess.STDOUT) as process:
-                    selector.register(process.stdout, selectors.EVENT_READ)
-                    while process.poll() is None or selector.get_map():
-                        remaining(work_deadline)
-                        for key, _ in selector.select(timeout=min(0.1, remaining(work_deadline))):
-                            data = os.read(key.fd, 65536)
-                            if not data:
-                                selector.unregister(key.fileobj)
+                    try:
+                        selector.register(process.stdout, selectors.EVENT_READ)
+                        while process.poll() is None or selector.get_map():
+                            remaining(work_deadline)
+                            for key, _ in selector.select(timeout=min(0.1, remaining(work_deadline))):
+                                data = os.read(key.fd, 65536)
+                                if not data:
+                                    selector.unregister(key.fileobj)
+                                    continue
+                                available = 2 * R.MIB - log_bytes
+                                stream.write(data[:available]); stream.flush(); log_bytes += min(len(data), available)
+                                if len(data) > available:
+                                    raise RuntimeError('Capped TAP pipe exceeded its 2 MiB allowance; child stopped.')
+                            if time.monotonic() < next_sample:
                                 continue
-                            available = 2 * R.MIB - log_bytes
-                            stream.write(data[:available]); stream.flush(); log_bytes += min(len(data), available)
-                            if len(data) > available:
-                                raise RuntimeError('Capped TAP pipe exceeded its 2 MiB allowance; child stopped.')
-                        used = scratch.sample() + S.allocated_bytes(output)
-                        try:
-                            rss = tree.rss(work_deadline)
-                        except BaseException:
-                            # A failed/incomplete recursive snapshot cannot lower the charge.
-                            host.update(scratch.token, used, 768 * R.MIB)
-                            raise
-                        peak_rss = max(peak_rss, rss)
-                        if host.update(scratch.token, used, rss) is not True:
-                            raise RuntimeError('Resource accounting could not be updated safely.')
-                        if scratch.sample() > 124 * R.MIB or used > 128 * R.MIB or rss > 768 * R.MIB:
-                            raise RuntimeError('Owned combined disk/RAM limit exceeded.')
-                        if shutil.disk_usage(scratch.root).free < policy.reserve:
-                            raise RuntimeError('Emergency free-space reserve reached.')
+                            next_sample = time.monotonic() + 0.5
+                            used = scratch.sample() + S.allocated_bytes(output)
+                            try:
+                                rss = tree.rss(work_deadline)
+                            except BaseException as error:
+                                # Keep the primary observation failure even if full-charge telemetry also fails.
+                                remember_failure(error)
+                                try:
+                                    host.update(scratch.token, used, 768 * R.MIB)
+                                except BaseException as update_error:
+                                    secondary_failures.append('Full-charge telemetry: ' + type(update_error).__name__ + ': ' + str(update_error))
+                                raise
+                            peak_rss = max(peak_rss, rss)
+                            if host.update(scratch.token, used, rss) is not True:
+                                raise RuntimeError('Resource accounting could not be updated safely.')
+                            if scratch.sample() > 124 * R.MIB or used > 128 * R.MIB or rss > 768 * R.MIB:
+                                raise RuntimeError('Owned combined disk/RAM limit exceeded.')
+                            if shutil.disk_usage(scratch.root).free < policy.reserve:
+                                raise RuntimeError('Emergency free-space reserve reached.')
+                    except BaseException as error:
+                        remember_failure(error)
+                        raise
             finally:
                 if process is not None and process.stdout is not None:
                     process.stdout.close()
@@ -277,7 +325,10 @@ def run(manifest_path, expected_manifest_sha256, started, work_deadline, deadlin
         if process.returncode != 0 or S.allocated_bytes(output) > 4 * R.MIB:
             raise RuntimeError('Command failed or retained-output allowance exceeded.')
     except BaseException as error:
-        failures.append(type(error).__name__ + ': ' + str(error))
+        current = remember_failure(error)
+        failures.append(primary_failure)
+        if current != primary_failure:
+            secondary_failures.append('Guard/outer failure: ' + current)
         if entered and (scratch.root / 'original.tap').is_file() and created and not (output / 'original.tap').exists():
             try:
                 with (scratch.root / 'original.tap').open('rb') as stream:
@@ -292,6 +343,8 @@ def run(manifest_path, expected_manifest_sha256, started, work_deadline, deadlin
         reserved = host is not None and host.expected is not None
         try:
             remaining(final_deadline)
+            if observer is not None:
+                observer.begin_cleanup()
             if scratch is not None:
                 if tree is None or observer is None:
                     raise RuntimeError('Partial lifecycle setup; retain external ownership evidence.')
@@ -326,6 +379,7 @@ def run(manifest_path, expected_manifest_sha256, started, work_deadline, deadlin
         try:
             remaining(final_deadline)
             result = {'state': 'passed' if not failures and outcome.get('rc') == 0 else 'failed', 'failures': failures,
+                      'primaryFailure': primary_failure, 'secondaryFailures': secondary_failures,
                       'child': ownership, 'result': outcome,
                       'scratchManifest': str(scratch.manifest) if scratch is not None else None,
                       'scratchAbsent': scratch is None or S.definitely_absent(scratch.root), 'reservationReleased': not reserved,

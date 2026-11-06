@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Hash and classify an existing physical candidate; never load product code or allocate test resources."""
+"""REFERENCE ONLY: full physical recollection plan; not the generator of source-pin revision candidates.
+
+Never load product code or allocate test resources. Not executed in the source-only cleanup repair.
+"""
 import hashlib
 import json
 import posixpath
@@ -9,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[4]
 HERE = Path(__file__).resolve().parent
 PREFIX = str(HERE.relative_to(ROOT)) + '/'
-DESTINATION = HERE / 'http-physical-candidate-isolated-2026-11-06.json'
+DESTINATION = HERE / 'http-physical-candidate-reference-recollection-2026-11-06.json'
 HELPER_SHA256 = '3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d'
 PRIOR = HERE / 'http-release-source-plan-38be4f5-2026-11-06.json'
 VIRTUAL = HERE / 'http-release-source-plan-f179ae6-2026-11-06.json'
