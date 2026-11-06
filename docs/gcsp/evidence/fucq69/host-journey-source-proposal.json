@@ -72,14 +72,15 @@
   "helperProposal": {
     "closure": "docs/gcsp/evidence/fucq69/host-journey-closure.json",
     "path": "docs/gcsp/evidence/fucq69/host-journey-supervisor.py",
-    "probes": "Bounded pipe output/total deadlines/protected handles, cumulative60s/2048calls; no probes executed",
+    "probes": "Durable provisional owner/inventory beforefirstprocess; preallocated retained directhandles/PID/start-state untiljoined; protected percall/outercleanup; full final probe/Git session absence and resource proof. No execution.",
+    "review": "Dibble753cf72 HOLD exactly earlyprobehandleloss andmutable060source. Narrow author-only repairs proposed; all other reviewed graph/dependency/tool/test scope retained.",
     "schema": "Strict complete every-row reservation ancestry; fully charge max(reserved,observed); preserve foreign rows; exact own binding/readback",
-    "sourceInputs": "Exact read-only F100060 physical paths match9948bff; own test from89fe959; future scratch materialization only after grant",
+    "sourceInputs": "146 exact immutable Gitblob sources:145 F1009948bff plus unchanged test89fe959, via pinned scaffold_git API; separatelygranted owned/reserved mirror only",
     "state": "authored only, not syntax-checked/imported/executed"
   },
   "holds": [
     "Independent review of authored one-case test and new helper/source/dependency proposal",
-    "Exact isolated source materialization remains unapproved; no product adoption",
+    "Separate exact immutable source-mirror materialization grant; no product adoption or active060source reads",
     "Independent full ordinary closure/tool/helper/source namespace review and fresh physical all-reservation resource admission",
     "Actual account/resume route with active quote blocked by release-required save seam",
     "Normal account entry supplies no clock subscription; reset/principal-change notification and fresh default-run provider source remain separate",
@@ -1837,8 +1838,8 @@
       "specifier": "./ports.js"
     }
   ],
-  "method": "Reachability restriction of immutable F100 static catalogue; explicit package-scope/lock guards and computed logo resource. Every selected file has immutable Git blob/size/mode and independently checked SHA-256. Future test imports/dynamic reads still require exact admission; no product import or source transform.",
-  "ownedRecords": ".claude/test-runs/fucq69-host-journey/host-journey-<unique>/{plan.json,ownership/<token>.json,checkpoint.json,test.tap,receipt.json}",
+  "method": "Unchanged immutable9948bff reachability graph. Source content from exact Git blob IDs through pinned scaffold_git API into separatelygranted owned mirror; no mutable060 physical admission. Every source retains immutable blob/mode/size/SHA256; ordinary dependencies unchanged; no source transform.",
+  "ownedRecords": ".claude/test-runs/fucq69-host-journey/host-journey-<unique>/{plan.json,checkpoint.json,provisional-ownership.json,probe-ownership.json,ownership/<token>.json,test.tap,receipt.json}",
   "ownedScratch": "/private/tmp/test-stamp-shard-<unique-token>",
   "proposedAdoptionUnion": [
     "blocks/gcsp/manual-review/gcsp-manual-review.js",
@@ -4137,7 +4138,7 @@
       "verification": "current bytes hashed and identical immutable Git blob"
     }
   ],
-  "state": "author-only one-case test and finite supervisor/full ordinary closure authored; awaiting independent review, no execution grant",
+  "state": "author-only two-HOLD repair proposed; immutable source provider/provisional retained-handle ownership refreeze awaiting independent review; no execution grant",
   "story": "FUCQ-69",
   "testAuthoring": {
     "path": "server/test/gcsp-manual-gallery-review-journey.test.js",
@@ -4153,7 +4154,7 @@
   "transportProposal": {
     "buildServer": "buildServer({...runtime.dependencies,gcspAllowedOrigins:[origin]})",
     "origin": "https://composition.test",
-    "scope": "Scoped global fetch bridge for all actual default host adapters; restore descriptor after bounded disposal/settling. Actual handler/receivers/status/body; no listener/network/alternate successful envelope."
+    "scope": "Unchanged scoped global fetch bridge for actual default host adapters; actual handler/status/body, no listener or fabricated success."
   },
   "upstreamCatalogue": {
     "edgeCount": 350,

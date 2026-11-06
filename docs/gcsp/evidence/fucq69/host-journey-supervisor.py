@@ -24,6 +24,7 @@ import sys
 import tempfile
 import threading
 import time
+import types
 import uuid
 
 ROOT = Path(__file__).resolve().parents[4]
@@ -181,9 +182,14 @@ def verify_inputs(closure, deadline=None):
     destinations = set()
     for row in closure['sourceRows'] + closure['guardRows'] + closure['dependencyRows']:
         timely()
-        target = Path(row['inputPath'])
-        if target.resolve() != target or identity(target) != row['identity']:
-            raise RuntimeError('Frozen physical input changed: ' + row['inputPath'])
+        if row.get('sourceType') != 'git-blob':
+            target = Path(row['inputPath'])
+            if target.resolve() != target or identity(target) != row['identity']:
+                raise RuntimeError('Frozen physical input changed: ' + row['inputPath'])
+        elif (not re.fullmatch(r'[0-9a-f]{40}', row['gitBlob'])
+              or not re.fullmatch(r'[0-9a-f]{40}', row['publishedCommit'])
+              or set(row['identity']) != {'size', 'mode', 'sha256'}):
+            raise RuntimeError('Immutable source identity is malformed.')
         if row in closure['sourceRows'] or row in closure['dependencyRows']:
             destination = Path(row['path'])
             if (destination.is_absolute() or '..' in destination.parts or str(destination) in destinations):
@@ -261,27 +267,171 @@ def verify_materialized(closure, root, deadline):
 PROBE_SECONDS = 0.0
 PROBE_CALLS = 0
 PROBE_FAILURE = False
+PROBE_RECORDS = None
+PROBE_HANDLES = []  # Strong references survive every bounded-command escape, including early owner probes.
+PROBE_ISSUES = []
+PROBE_OWNER = None
+PROBE_TOKEN = None
+PROBE_FINALIZED = False
+PROBE_ABSENCE_SEQUENCE = None
 
 
-def bounded_probe(argv, seconds=3, cap=2 * MIB):
-    """Finite original output and wall time; protected local-handle cleanup on every path.
+def probe_inventory():
+    return {'schema': 1, 'state': 'incomplete' if PROBE_ISSUES else 'joined' if PROBE_FINALIZED else 'provisional',
+            'token': PROBE_TOKEN, 'owner': PROBE_OWNER,
+            'issues': list(PROBE_ISSUES), 'calls': PROBE_CALLS, 'seconds': PROBE_SECONDS,
+            'completeAbsenceThroughCommand': PROBE_ABSENCE_SEQUENCE,
+            'handles': [{key: value for key, value in item.items() if key != 'handle'}
+                        for item in PROBE_HANDLES]}
 
-    Each call <=seconds plus .5s protected stop/join. All probe calls together
-    <=60s (+one .5s cleanup), <=2048 calls; errors stay fatal. No inherited pipes
-    can keep the selector alive beyond the total deadline.
+
+def persist_probes():
+    if PROBE_RECORDS is None:
+        raise RuntimeError('External provisional ownership must precede every process launch.')
+    atomic_bytes(PROBE_RECORDS / 'probe-ownership.json',
+                 bounded_json_bytes(probe_inventory(), MIB), MIB)
+
+
+def probe_issue(message):
+    global PROBE_FAILURE
+    PROBE_FAILURE = True
+    if message not in PROBE_ISSUES:
+        PROBE_ISSUES.append(message)
+
+
+def persist_probe_uncertainty():
+    try:
+        persist_probes()
+    except BaseException as error:
+        # Never let diagnostic persistence gate a known-handle stop/join. The original
+        # provisional checkpoint remains incomplete; retain the strong handle in memory.
+        probe_issue('Probe inventory persistence failed: ' + type(error).__name__)
+
+
+def join_probe(item):
+    process = item['handle']
+    if process is None:
+        item.update(joined=True, returncode=None, startState='not-launched')
+        return True
+    if item['joined']:
+        return True
+    # The unreaped Popen handle owns this PID; no ps/start/group/manifest result gates cleanup.
+    for action in ('terminate', 'kill'):
+        try:
+            if process.poll() is None:
+                getattr(process, action)()
+        except ProcessLookupError:
+            pass
+        except BaseException as error:
+            probe_issue('Known probe handle signal failed: ' + type(error).__name__)
+        try:
+            process.wait(timeout=.25)
+            item.update(joined=True, returncode=process.returncode,
+                        startState='observed-and-joined' if item['start'] is not None else 'direct-handle-joined')
+            break
+        except subprocess.TimeoutExpired:
+            continue
+        except BaseException as error:
+            probe_issue('Known probe handle wait failed: ' + type(error).__name__)
+    if not item['joined']:
+        probe_issue('Known probe handle remains unjoined: ' + str(item['pid']))
+    persist_probe_uncertainty()
+    return item['joined']
+
+
+def cleanup_probes():
+    # A second protected sweep is independent of telemetry, reservations, resource
+    # accounting and prior inventory failures. Every handle stays strongly retained.
+    for item in reversed(PROBE_HANDLES):
+        try:
+            join_probe(item)
+        except BaseException as error:
+            probe_issue('Final known probe cleanup failed: ' + type(error).__name__)
+    persist_probe_uncertainty()
+    return all(item['joined'] for item in PROBE_HANDLES)
+
+
+def observe_probe_rows(rows, current_key):
+    global PROBE_OWNER
+    own = next((row for row in rows if row['pid'] == os.getpid()), None)
+    if own is None:
+        probe_issue('Supervisor start identity missing from complete snapshot.')
+        raise RuntimeError('Supervisor start identity is unknown.')
+    actual_owner = {'pid': own['pid'], 'start': own['start']}
+    if PROBE_OWNER.get('start') is not None and PROBE_OWNER != actual_owner:
+        probe_issue('Supervisor exact start identity changed.')
+        raise RuntimeError('Supervisor identity changed.')
+    PROBE_OWNER = actual_owner
+    for item in PROBE_HANDLES:
+        # A joined old PID with no captured start must never be rebound to a reused PID.
+        if item['joined'] and item['key'] != current_key:
+            continue
+        row = next((row for row in rows if row['pid'] == item['pid']), None)
+        if row is not None:
+            if item['start'] is not None and item['start'] != row['start']:
+                probe_issue('Probe PID/start identity changed.')
+                raise RuntimeError('Probe identity changed.')
+            item['start'] = row['start']
+            item['startState'] = 'observed-and-joined' if item['joined'] else 'observed-live'
+            item['observedPgid'] = row['pgid']
+    persist_probes()
+
+
+def probes_absent(rows):
+    global PROBE_ABSENCE_SEQUENCE
+    if not cleanup_probes() or PROBE_ISSUES:
+        return False
+    for item in PROBE_HANDLES:
+        # This ps snapshot contains its own already-joined process. Its direct handle
+        # proves its exit; any other surviving member of a launched session is unknown.
+        for row in rows:
+            if row['pgid'] != item['pid'] or row['stat'].startswith('Z'):
+                continue
+            if row['pid'] == item['pid'] and item['joined'] and item['start'] == row['start']:
+                continue
+            probe_issue('A probe session has a live or unknown descendant.')
+            return False
+    PROBE_ABSENCE_SEQUENCE = PROBE_CALLS
+    return True
+
+
+def bounded_command(argv, seconds=3, cap=2 * MIB, kind='probe', environment=None):
+    """Bounded output/deadline with preexisting durable inventory and retained handles.
+
+    No direct handle is discarded after a bounded wait failure. Such a failure is
+    sticky incomplete; final cleanup sweeps every retained probe/Git handle again.
     """
-    global PROBE_SECONDS, PROBE_CALLS, PROBE_FAILURE
-    if PROBE_ENV is None or PROBE_FAILURE or PROBE_SECONDS >= 60 or PROBE_CALLS >= 2048:
-        raise RuntimeError('Sanitized finite probe allowance is unavailable.')
-    if argv[0] not in ('/bin/ps', '/usr/bin/vm_stat', '/usr/sbin/lsof'):
-        raise RuntimeError('Unexpected probe executable.')
+    global PROBE_SECONDS, PROBE_CALLS
+    if PROBE_RECORDS is None or PROBE_ENV is None or PROBE_FAILURE or PROBE_SECONDS >= 60 or PROBE_CALLS >= 2048:
+        raise RuntimeError('External ownership or finite command allowance is unavailable.')
+    permitted = ('/bin/ps', '/usr/bin/vm_stat', '/usr/sbin/lsof') if kind == 'probe' else ('/Library/Developer/CommandLineTools/usr/bin/git',)
+    if argv[0] not in permitted:
+        raise RuntimeError('Unexpected bounded executable.')
     started = time.monotonic()
     deadline = started + min(seconds, 60 - PROBE_SECONDS)
-    process = None
     chunks = [bytearray(), bytearray()]
+    item = None
     succeeded = False
     try:
-        process = subprocess.Popen(argv, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=PROBE_ENV)
+        persist_probes()  # Durable owner/empty inventory exists even before the very first ps.
+        if threading.active_count() != 1:
+            raise RuntimeError('A bounded child requires the frozen single-threaded supervisor.')
+        item = {'key': len(PROBE_HANDLES) + 1, 'handle': None, 'pid': None,
+                'start': None, 'startState': 'not-launched', 'kind': kind,
+                'executable': argv[0], 'joined': False, 'returncode': None}
+        PROBE_HANDLES.append(item)  # Preallocate the strong-reference slot before Popen.
+        persist_probes()
+        prior_mask = signal.pthread_sigmask(signal.SIG_BLOCK, {signal.SIGINT, signal.SIGTERM})
+        try:
+            item['handle'] = subprocess.Popen(argv, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                env=PROBE_ENV if environment is None else environment, start_new_session=True,
+                preexec_fn=lambda: signal.pthread_sigmask(signal.SIG_SETMASK, prior_mask))
+            process = item['handle']
+            item['pid'] = process.pid
+            item['startState'] = 'unknown-until-observed-or-directly-joined'
+            persist_probes()
+        finally:
+            signal.pthread_sigmask(signal.SIG_SETMASK, prior_mask)
         with selectors.DefaultSelector() as selector:
             for index, stream in enumerate((process.stdout, process.stderr)):
                 os.set_blocking(stream.fileno(), False)
@@ -289,43 +439,114 @@ def bounded_probe(argv, seconds=3, cap=2 * MIB):
             while selector.get_map() or process.poll() is None:
                 remaining = deadline - time.monotonic()
                 if remaining <= 0:
-                    raise RuntimeError('Probe total deadline exceeded.')
+                    raise RuntimeError('Bounded command total deadline exceeded.')
                 for key, _ in selector.select(min(remaining, .05)):
                     block = os.read(key.fileobj.fileno(), 65536)
                     if not block:
                         selector.unregister(key.fileobj)
                     else:
                         if sum(map(len, chunks)) + len(block) > cap:
-                            raise RuntimeError('Probe combined output cap exceeded.')
+                            raise RuntimeError('Bounded command combined output cap exceeded.')
                         chunks[key.data].extend(block)
             process.wait(timeout=max(.001, deadline - time.monotonic()))
+            item.update(joined=True, returncode=process.returncode,
+                        startState='observed-and-joined' if item['start'] is not None else 'direct-handle-joined')
         succeeded = True
-        return subprocess.CompletedProcess(argv, process.returncode, bytes(chunks[0]), bytes(chunks[1]))
+        outcome = subprocess.CompletedProcess(argv, process.returncode, bytes(chunks[0]), bytes(chunks[1]))
+        outcome.owned_key = item['key']
+        return outcome
+    except BaseException as error:
+        probe_issue('Bounded command failed: ' + type(error).__name__)
+        persist_probe_uncertainty()  # Record uncertainty before the exception escapes.
+        raise
     finally:
         PROBE_CALLS += 1
-        try:
-            if process is not None:
-                # No telemetry, lock, manifest or resource query gates local cleanup.
-                if process.poll() is None:
-                    try: process.terminate()
-                    except ProcessLookupError: pass
-                    try: process.wait(timeout=.25)
-                    except subprocess.TimeoutExpired:
-                        try: process.kill()
-                        except ProcessLookupError: pass
-                        process.wait(timeout=.25)
-                else:
-                    process.wait(timeout=.001)
-        except BaseException:
-            PROBE_FAILURE = True
-            raise
-        finally:
-            if process is not None:
-                process.stdout.close()
-                process.stderr.close()
-            PROBE_SECONDS += time.monotonic() - started
-            if not succeeded or PROBE_SECONDS > 60.5:
-                PROBE_FAILURE = True
+        if item is not None:
+            try:
+                join_probe(item)
+            finally:
+                if item['handle'] is not None:
+                    for stream in (item['handle'].stdout, item['handle'].stderr):
+                        try:
+                            stream.close()
+                        except BaseException as error:
+                            probe_issue('Probe pipe close failed: ' + type(error).__name__)
+        PROBE_SECONDS += time.monotonic() - started
+        if not succeeded or PROBE_SECONDS > 60.5:
+            probe_issue('Bounded command failed or cumulative deadline exceeded.')
+        persist_probe_uncertainty()
+
+
+def bounded_probe(argv, seconds=3, cap=2 * MIB):
+    return bounded_command(argv, seconds=seconds, cap=cap)
+
+
+class ImmutableSourceProvider:
+    """Known snapshot/blob bytes through scaffold_git.git; no active source-tree reads.
+
+    The scaffold API's subprocess adapter is local to its module object: bounded
+    original binary output uses a reversible Latin-1 transport, never UTF-8 repair.
+    Every actual Git handle uses the same pre-owned durable command inventory.
+    """
+    def __init__(self, closure):
+        self.closure = closure
+        spec = importlib.util.spec_from_file_location('fucq69_frozen_scaffold_git', ROOT / '_tools/scaffold_git.py')
+        self.git_api = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.git_api)
+        if self.git_api._sweeping_on(ROOT):
+            raise RuntimeError('Immutable provider requires the frozen no-sweep setting.')
+        self.git_api.subprocess = types.SimpleNamespace(run=self._run)
+        self.known = {row['gitBlob']: row for row in closure['sourceRows']}
+        self.allowed = set()
+        self.tree_rows = {}
+        for row in closure['sourceRows']:
+            self.tree_rows.setdefault(row['publishedCommit'], []).append(row)
+            self.allowed.add(('cat-file', 'blob', row['gitBlob']))
+        for revision, rows in self.tree_rows.items():
+            self.allowed.add(('ls-tree', '-r', '-z', revision, '--', *sorted(row['path'] for row in rows)))
+
+    def _run(self, argv, capture_output=True, text=True, input=None):
+        args = tuple(argv[3:])
+        if (argv[:3] != ['git', '-C', ROOT] or args not in self.allowed
+                or not capture_output or not text or input is not None):
+            raise RuntimeError('Only exact known read-only scaffold Git calls are admitted.')
+        cap = 512 * 1024 if args[0] == 'ls-tree' else self.known[args[2]]['identity']['size'] + 65536
+        environment = dict(PROBE_ENV, GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL='/dev/null',
+                           GIT_TERMINAL_PROMPT='0', GIT_OPTIONAL_LOCKS='0', GIT_NO_REPLACE_OBJECTS='1', GIT_NO_LAZY_FETCH='1')
+        result = bounded_command([self.closure['sourceProvider']['gitExecutable'], '-C', str(ROOT), *args], cap=cap, kind='git', environment=environment)
+        return subprocess.CompletedProcess(argv, result.returncode,
+            result.stdout.decode('latin-1'), result.stderr.decode('latin-1'))
+
+    def catalogue(self):
+        for revision, rows in self.tree_rows.items():
+            args = ['ls-tree', '-r', '-z', revision, '--', *sorted(row['path'] for row in rows)]
+            code, output, error = self.git_api.git(ROOT, args)
+            if code or error:
+                raise RuntimeError('Immutable source tree is unavailable; no active-tree fallback.')
+            found = {}
+            for entry in output.split('\0'):
+                if not entry:
+                    continue
+                header, path = entry.split('\t', 1)
+                mode, kind, blob = header.split(' ')
+                if kind != 'blob' or path in found:
+                    raise RuntimeError('Immutable source tree has unexpected membership.')
+                found[path] = (int(mode, 8) & 0o7777, blob)
+            expected = {row['path']: (row['identity']['mode'], row['gitBlob']) for row in rows}
+            if found != expected:
+                raise RuntimeError('Immutable source path/mode/blob membership differs from the frozen closure.')
+        return True
+
+    def read(self, row):
+        code, output, error = self.git_api.git(ROOT, ['cat-file', 'blob', row['gitBlob']])
+        if code or error:
+            raise RuntimeError('Known immutable source blob is unavailable; no fallback or fetch.')
+        data = output.encode('latin-1')
+        identity = row['identity']
+        if (len(data) != identity['size'] or hashlib.sha256(data).hexdigest() != identity['sha256']
+                or hashlib.sha1(b'blob ' + str(len(data)).encode('ascii') + b'\0' + data).hexdigest() != row['gitBlob']):
+            raise RuntimeError('Immutable source size/SHA-256/Git-blob verification failed.')
+        return data
 
 
 def available_memory():
@@ -372,6 +593,7 @@ def snapshot():
             raise RuntimeError('Cannot parse an exact process start identity.')
         rows.append({'pid': int(fields[0]), 'ppid': int(fields[1]), 'pgid': int(fields[2]),
                      'rss': int(fields[3]) * 1024, 'stat': fields[4], 'start': started.group(0)})
+    observe_probe_rows(rows, probe.owned_key)
     if RESOURCE_ACCOUNT is not None:
         RESOURCE_ACCOUNT(rows, True)
     return rows
@@ -395,33 +617,9 @@ def parse_tap(raw, names):
     return {'counts': counts, 'subtests': subtests, 'successes': successes, 'complete': complete}
 
 
-def run():
+def run_admitted(args, closure, started, records):
     global PROBE_ENV, RESOURCE_ACCOUNT
-    started = time.monotonic()
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--dispatcher-grant', required=True)
-    parser.add_argument('--expected-closure-sha256', required=True)
-    args = parser.parse_args()
-    if not args.dispatcher_grant.strip() or not re.fullmatch('[0-9a-f]{64}', args.expected_closure_sha256):
-        parser.error('Supply the specific grant and reviewed closure SHA-256.')
     closure_path = HERE / 'host-journey-closure.json'
-    if digest(closure_path) != args.expected_closure_sha256:
-        raise RuntimeError('Reviewed closure changed; no allocation or product execution.')
-    if closure_path.stat().st_size > 4 * MIB:
-        raise RuntimeError('Closure exceeds its finite admission bound.')
-    closure = strict_json(closure_path.read_text())
-    if closure['state'] != 'frozen authoring; awaiting execution grant':
-        raise RuntimeError('Unexpected closure state.')
-    # Verify this file, all product/package bytes, Python and resource tools BEFORE importing project helpers.
-    verify_inputs(closure, started + 120)
-    # macOS's pinned /usr/bin/python3 launcher delegates to the separately pinned interpreter.
-    if (sys.executable != closure['python']['executablePath']
-            or str(Path(sys.executable).resolve()) != closure['python']['interpreterPath']):
-        raise RuntimeError('Use the frozen Python launcher/interpreter identity.')
-    if sys.version != closure['python']['version'] or not sys.flags.isolated or not sys.flags.no_site or not sys.dont_write_bytecode:
-        raise RuntimeError('Use the exact frozen isolated Python invocation.')
-    if os.environ.get('TEST_RESOURCE_PARENT_RESERVATION'):
-        raise RuntimeError('This proposal owns a top-level reservation; inherited reservations require a new review.')
     # Imported helpers also inherit this whitelist, including their ps/vm_stat subprocesses.
     PROBE_ENV = dict(closure['supervisorEnvironment'])
     os.environ.clear()
@@ -561,7 +759,10 @@ def run():
                     os.close(fd)
 
         def current_owner(self):
-            row = next((row for row in snapshot() if row['pid'] == os.getpid()), None)
+            rows = snapshot()
+            if not probes_absent(rows):
+                raise r.ResourceError('Complete current probe/Git session absence is uncertain.')
+            row = next((row for row in rows if row['pid'] == os.getpid()), None)
             if row is None or not row['start']:
                 raise r.ResourceError('Current supervisor owner identity is uncertain.')
             value = {'pid': row['pid'], 'start': row['start']}
@@ -669,15 +870,17 @@ def run():
         def absent(self):
             with self.locked():
                 data = self.registry()
-                self.current_owner()
+                # release() already proved current PID/start and all probe sessions
+                # before its locked mutation. Never create a new probe after release.
+                if self.owner != PROBE_OWNER or os.getpid() != self.owner['pid']:
+                    raise r.ResourceError('Released reservation owner identity differs.')
                 return (not self.issues and self.token not in data
                         and (self.expected is None or self.released))
 
     policy = r.Policy({'chunk_seconds': 120, 'chunk_ram_mib': 768, 'unit_ram_mib': 512,
                        'chunk_scratch_mib': 128, 'unit_scratch_mib': 48, 'log_mib': 2})
     host = StrictHost(policy, closure['hostAdmission'])
-    run_id = 'host-journey-' + uuid.uuid4().hex[:12]
-    records = ROOT.parents[1] / 'test-runs/fucq69-host-journey' / run_id
+    run_id = records.name
     ledger = {}  # (PID, start) -> immutable identity plus every observed parent/group transition.
     materialized = {}
     process = None
@@ -737,6 +940,8 @@ def run():
             return False
         try:
             rows = snapshot()
+            if not probes_absent(rows):
+                return False
             for group in record['groups']:
                 if any(not row['stat'].startswith('Z') for row in validate_group(rows, group)):
                     return False
@@ -750,7 +955,8 @@ def run():
             raise r.ResourceError('Numeric-only group registration is forbidden; use validated sample().')
 
         def __exit__(self, kind, value, tb):
-            stop_join()  # Local handle cleanup runs even if registration or an earlier finalizer failed.
+            stop_join()  # Local handle cleanup survives registration/finalizer failures.
+            cleanup_probes()
             if uncertain or host.issues or not absent(self.record):
                 raise r.ResourceError('Owned process cleanup uncertain; retain named scratch: ' + str(self.root))
             try:
@@ -936,11 +1142,13 @@ def run():
                     pass  # persist() already made the failure sticky; never replace the direct-cleanup result.
 
     plan = {'story': 'FUCQ-69', 'run': run_id, 'grant': args.dispatcher_grant,
-            'closureSha256': args.expected_closure_sha256, 'argv': closure['nodeArgv'],
+            'closureSha256': args.expected_closure_sha256, 'sourceMirrorGrant': args.source_mirror_grant,
+            'sourceProvider': closure['sourceProvider'], 'argv': closure['nodeArgv'],
             'cwd': str(scratch.root), 'scratch': str(scratch.root), 'manifest': str(scratch.manifest),
             'expectedNames': closure['expectedNames'], 'limits': closure['limits'], 'scope': closure['scope'],
             'supervisorEnvironment': dict(PROBE_ENV), 'hostAdmission': closure['hostAdmission']}
-    # Admission reads only: no records/scratch/lock/ledger creation and no foreign-row maintenance.
+    # External provisional owner/plan/checkpoint/probe inventory already exist.
+    # No scratch/lock/ledger creation and no foreign-row maintenance during admission.
     with host.locked():
         host.registry()
         host.owner = host.current_owner()
@@ -958,12 +1166,15 @@ def run():
             for parent in scratch.root.parents:
                 if os.path.lexists(parent / 'node_modules'):
                     raise r.ResourceError('Scratch ancestor dependency root exists: ' + str(parent))
-            def write(path, source, expected):
+            provider = ImmutableSourceProvider(closure)
+            provider.catalogue()
+            def write(path, source, expected, data=None):
                 target = scratch.root / path
                 target.resolve().relative_to(scratch.root.resolve())
                 if target.exists():
                     raise r.ResourceError('Duplicate materialization target: ' + path)
-                data = Path(source).read_bytes()
+                if data is None:
+                    data = Path(source).read_bytes()
                 if hashlib.sha256(data).hexdigest() != expected:
                     raise r.ResourceError('Input changed during materialization: ' + path)
                 target.parent.mkdir(parents=True, exist_ok=True)
@@ -972,7 +1183,8 @@ def run():
                 if cancel.is_set() or time.monotonic() > preparation_deadline:
                     raise r.ResourceError('Preparation cancelled or deadline exceeded.')
             for row in closure['sourceRows']:
-                write(row['path'], Path(row['inputPath']), row['identity']['sha256'])
+                write(row['path'], None, row['identity']['sha256'], data=provider.read(row))
+                meter(preparation_deadline)
             for index, row in enumerate(closure['dependencyRows']):
                 write(row['path'], Path(row['inputPath']), row['identity']['sha256'])
                 if index % 64 == 0:
@@ -1044,6 +1256,7 @@ def run():
             result['tap'] = parse_tap(raw_log.read_bytes(), closure['expectedNames'])
             result['materializedUnchanged'] = verify_materialized(closure, scratch.root, finalization_started + 120)
             verify_inputs(closure, finalization_started + 120)
+            provider.catalogue()
             timings['verificationSeconds'] = time.monotonic() - finalization_started
     except BaseException as error:
         result['issue'] = type(error).__name__ + ': ' + str(error)
@@ -1052,7 +1265,10 @@ def run():
         try:
             stop_join()
         finally:
-            join_local_handle()
+            try:
+                join_local_handle()
+            finally:
+                cleanup_probes()
         def check(work):
             try:
                 return bool(work())
@@ -1079,6 +1295,8 @@ def run():
                   'reservationAbsent': check(reservation_absent), 'allFrozenInputsUnchanged': frozen_inputs_unchanged,
                   'resourceAccountingThroughCleanup': cleanup_accounted and check(accounted_cleanup),
                   'notCancelled': not cancel.is_set(),
+                  'allProbeHandlesJoined': all(item['joined'] for item in PROBE_HANDLES),
+                  'probeInventoryCertain': not PROBE_ISSUES,
                   'originalLogComplete': result.get('logTruncated') is False and result.get('logDrained') is True,
                   'materializedUnchanged': result.get('materializedUnchanged') is True}
         passed = (result.get('rc') == 0 and not result.get('issue') and not uncertain and not host.issues and all(checks.values())
@@ -1091,7 +1309,10 @@ def run():
                    'groups': scratch.record['groups'], 'processes': list(ledger.values()),
                    'rootIdentity': root_identity, 'directHandleJoined': direct_handle_joined,
                    'hostAdmission': closure['hostAdmission'], 'hostIssues': host.issues,
-                   'probes': {'calls': PROBE_CALLS, 'seconds': PROBE_SECONDS, 'failed': PROBE_FAILURE},
+                   'probes': {'calls': PROBE_CALLS, 'seconds': PROBE_SECONDS, 'failed': PROBE_FAILURE,
+                              'inventory': str(records / 'probe-ownership.json'),
+                              'allDirectHandlesJoined': all(item['joined'] for item in PROBE_HANDLES),
+                              'completeAbsenceThroughCommand': PROBE_ABSENCE_SEQUENCE},
                    'ownedReservation': host.expected, 'foreignLedgerMutations': host.foreign_receipts,
                    'materialized': materialized, 'scope': closure['scope'],
                    'independentParentAudit': 'required separately; this receipt is the launching supervisor report'}
@@ -1147,10 +1368,91 @@ def run():
                 final_issue = 'final atomic output write failed; no further proof rewrite attempted'
         else:
             passed = False
-        print(json.dumps({'state': 'passed' if passed else 'incomplete', 'receipt': str(records / 'receipt.json'),
-                          'finalWriteIssue': final_issue}, sort_keys=True))
+        if final_issue is not None:
+            probe_issue('Final bounded receipt write did not complete.')
 
     return 0 if passed else 1
+
+
+def run():
+    global PROBE_RECORDS, PROBE_OWNER, PROBE_TOKEN, PROBE_FINALIZED
+    started = time.monotonic()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--dispatcher-grant', required=True)
+    parser.add_argument('--expected-closure-sha256', required=True)
+    parser.add_argument('--source-mirror-grant', required=True)
+    args = parser.parse_args()
+    if not args.dispatcher_grant.strip() or not args.source_mirror_grant.strip() or not re.fullmatch('[0-9a-f]{64}', args.expected_closure_sha256):
+        parser.error('Supply the specific grant and reviewed closure SHA-256.')
+    closure_path = HERE / 'host-journey-closure.json'
+    if digest(closure_path) != args.expected_closure_sha256:
+        raise RuntimeError('Reviewed closure changed; no allocation or product execution.')
+    if closure_path.stat().st_size > 4 * MIB:
+        raise RuntimeError('Closure exceeds its finite admission bound.')
+    closure = strict_json(closure_path.read_text())
+    if closure['state'] != 'frozen authoring; awaiting execution grant':
+        raise RuntimeError('Unexpected closure state.')
+    # Verify this file, all product/package bytes, Python and resource tools BEFORE importing project helpers.
+    verify_inputs(closure, started + 120)
+    # macOS's pinned /usr/bin/python3 launcher delegates to the separately pinned interpreter.
+    if (sys.executable != closure['python']['executablePath']
+            or str(Path(sys.executable).resolve()) != closure['python']['interpreterPath']):
+        raise RuntimeError('Use the frozen Python launcher/interpreter identity.')
+    if sys.version != closure['python']['version'] or not sys.flags.isolated or not sys.flags.no_site or not sys.dont_write_bytecode:
+        raise RuntimeError('Use the exact frozen isolated Python invocation.')
+    if os.environ.get('TEST_RESOURCE_PARENT_RESERVATION'):
+        raise RuntimeError('This proposal owns a top-level reservation; inherited reservations require a new review.')
+    # This bounded external incomplete record precedes importing/constructing any
+    # project helper, first owner ps, memory probe, Git handle or scratch allocation.
+    token = uuid.uuid4().hex
+    records = ROOT.parents[1] / 'test-runs/fucq69-host-journey' / ('host-journey-' + token[:12])
+    records.mkdir(mode=0o700, parents=True, exist_ok=False)
+    (records / 'ownership').mkdir(mode=0o700)
+    PROBE_RECORDS = records
+    PROBE_TOKEN = token
+    PROBE_OWNER = {'pid': os.getpid(), 'start': None}
+    provisional = {'state': 'incomplete', 'phase': 'provisional-before-first-probe',
+        'owner': PROBE_OWNER, 'token': token, 'grant': args.dispatcher_grant,
+        'sourceMirrorGrant': args.source_mirror_grant,
+        'closureSha256': args.expected_closure_sha256, 'selected': closure['expectedNames'],
+        'completed': [], 'probeInventory': str(records / 'probe-ownership.json'),
+        'scratch': None, 'authority': 'Provisional identity only; no PID/start or cleanup proof is inferred.'}
+    result = 1
+    try:
+        for name in ('plan.json', 'checkpoint.json', 'provisional-ownership.json'):
+            atomic_bytes(records / name, bounded_json_bytes(provisional, 16384), 16384)
+        persist_probes()
+        result = run_admitted(args, closure, started, records)
+    except BaseException as error:
+        probe_issue('Supervisor startup/body failed: ' + type(error).__name__)
+        persist_probe_uncertainty()
+    finally:
+        # Covers constructors, the very first ps, host admission and every pre-main-try escape.
+        joined = cleanup_probes()
+        if result == 0 and (PROBE_ABSENCE_SEQUENCE != PROBE_CALLS or not joined):
+            probe_issue('Final command inventory exceeds the last complete pre-release absence proof.')
+        if RESOURCE_ACCOUNT is not None:
+            try:
+                RESOURCE_ACCOUNT(None, True)
+            except BaseException as error:
+                probe_issue('Final all-handle accounting failed: ' + type(error).__name__)
+        persist_probe_uncertainty()
+        if not joined or PROBE_ISSUES:
+            result = 1
+            incomplete = dict(provisional, phase='incomplete-after-protected-finalizer',
+                              issues=list(PROBE_ISSUES), allProbeHandlesJoined=joined)
+            try:
+                atomic_bytes(records / 'checkpoint.json', bounded_json_bytes(incomplete, 16384), 16384)
+            except BaseException:
+                pass  # Original external incomplete provisional record remains authoritative.
+        PROBE_FINALIZED = joined and not PROBE_ISSUES
+        persist_probe_uncertainty()
+        if PROBE_ISSUES:
+            result = 1
+    print(json.dumps({'state': 'passed' if result == 0 else 'incomplete',
+                      'receipt': str(records / 'receipt.json'),
+                      'probeInventory': str(records / 'probe-ownership.json')}, sort_keys=True))
+    return result
 
 
 if __name__ == '__main__':

@@ -1,14 +1,16 @@
 {
-  "admission": "PROPOSAL ONLY; independent static review, exact isolated materialization permission, fresh strict physical HostBudget and a new exactly-once root grant required before helper/syntax/import/probe/test execution",
+  "admission": "AUTHOR-ONLY REPAIR PROPOSAL. Independent narrow review, separate immutable source-mirror materialization grant, fresh strict all-reservation admission and new exactly-once dispatcher grant required. No helper/syntax/import/probe/Git-provider/test/mirror execution authorised.",
   "counts": {
     "dependencyFiles": 1971,
+    "guards": 6,
     "importEdgeRecords": 351,
     "optionalAbsentEdges": 3,
     "packageEdges": 74,
     "packages": 52,
-    "physicalDirectories": 263,
+    "physicalDirectories": 259,
     "resolutionCandidates": 644,
-    "sourceFiles": 146
+    "sourceFiles": 146,
+    "tools": 8
   },
   "dependencyRows": [
     {
@@ -21749,8 +21751,8 @@
         "device": 16777232,
         "inode": 173299724,
         "mode": 420,
-        "sha256": "e648d8eb0a714a2cd11080d00e37e6b8600c9fcfb3c3a2d8c702dd9a952e49a4",
-        "size": 62170
+        "sha256": "61069a537637d6672dec79183384290a42872b19ac4364e0311dac6249d53f08",
+        "size": 77888
       },
       "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-068/docs/gcsp/evidence/fucq69/host-journey-supervisor.py",
       "path": "docs/gcsp/evidence/fucq69/host-journey-supervisor.py",
@@ -21761,8 +21763,8 @@
         "device": 16777232,
         "inode": 173294921,
         "mode": 420,
-        "sha256": "6b1df72372cdd18fb3d008e94e95c0e921d7d8a7827ac57387a680517610eb84",
-        "size": 19193
+        "sha256": "1f5d6ea8890a02fed5a7dce2a9fd44a4c4854fd850747147da9f05900088f1fa",
+        "size": 24887
       },
       "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-068/docs/gcsp/evidence/fucq69/host-journey-plan.md",
       "path": "docs/gcsp/evidence/fucq69/host-journey-plan.md",
@@ -21773,12 +21775,24 @@
         "device": 16777232,
         "inode": 173294214,
         "mode": 420,
-        "sha256": "74970b3e69fc58c2dc01f1d371ab297daca7b31ebd33302611e6895ebb186571",
-        "size": 167311
+        "sha256": "595aa166dadd15d64c12fef07ddc9e6a304fb5ce93790da4e5d6c03795b95eda",
+        "size": 167669
       },
       "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-068/docs/gcsp/evidence/fucq69/host-journey-source-proposal.json",
       "path": "docs/gcsp/evidence/fucq69/host-journey-source-proposal.json",
       "role": "guard-only"
+    },
+    {
+      "identity": {
+        "device": 16777232,
+        "inode": 172970430,
+        "mode": 420,
+        "sha256": "ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a",
+        "size": 129000
+      },
+      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-068/_tools/scaffold_git.py",
+      "path": "_tools/scaffold_git.py",
+      "role": "guard-only immutable Git provider API"
     }
   ],
   "hostAdmission": {
@@ -32441,69 +32455,31 @@
         "mode": 493
       },
       "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules"
-    },
-    {
-      "entries": [
-        "0001_transaction_foundation.sql",
-        "0002_policy_tables.sql",
-        "0003_renewal_cases.sql",
-        "index.js"
-      ],
-      "identity": {
-        "device": 16777232,
-        "inode": 172923243,
-        "mode": 493
-      },
-      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/migrations"
-    },
-    {
-      "entries": [
-        "active.json",
-        "identity-inventory.json",
-        "versions"
-      ],
-      "identity": {
-        "device": 16777232,
-        "inode": 172923190,
-        "mode": 493
-      },
-      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/data/gcsp/vehicle-evidence/lookup-reference.v1"
-    },
-    {
-      "entries": [
-        "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709"
-      ],
-      "identity": {
-        "device": 16777232,
-        "inode": 172923193,
-        "mode": 493
-      },
-      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions"
-    },
-    {
-      "entries": [
-        "configurations.jsonl",
-        "images.jsonl",
-        "manifest.json",
-        "vins.jsonl"
-      ],
-      "identity": {
-        "device": 16777232,
-        "inode": 172923194,
-        "mode": 493
-      },
-      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709"
     }
   ],
   "probeLimits": {
     "calls": 2048,
     "combinedOutputCapBytes": 2097152,
+    "coverage": "All ps/vm_stat/lsof and source-provider Git processes use the same finite command/handle inventory and cumulative cap.",
     "cumulativeSeconds": 60,
     "failure": "sticky incomplete; never bypass unconditional known-handle stop/join",
     "memoryOutputCapBytes": 65536,
     "perLsofSeconds": 5,
     "perPsVmSeconds": 3,
     "protectedStopJoinAdditionalSeconds": 0.5
+  },
+  "probeOwnership": {
+    "beforeFirstProcess": [
+      "plan.json",
+      "checkpoint.json",
+      "provisional-ownership.json",
+      "probe-ownership.json"
+    ],
+    "caps": "1MiB bounded inventory,16KiB provisional/checkpoint,existing64MiB serialization/4MiB final-output headroom; original TAP cap unchanged",
+    "cleanup": "Per-call retained-handle join plus outer finalizer covers first-owner-probe/constructor/admission failures. Current-owner ps validates every probe/Git session before the locked reservation release; afterward no process launches, direct owner/readback and joined/command-sequence proof only. Any uncertainty means incomplete, retained named inventory/root/reservation where still owned; no cleanup success inferred.",
+    "provisional": "Supervisor PID with explicit unknown start, unique token, exact closure/grants/selected case; never authority or absence proof",
+    "strongHandles": "Preallocated global slot before each Popen; retain direct handle/PID/observed start and joined/returncode state across every escape",
+    "unknownStart": "Remains explicit until exact current ps observation; a joined old PID is never rebound to a later process. No numeric-only cleanup when unknown. Direct Popen handle always authorises protected terminate/kill/join."
   },
   "productCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
   "python": {
@@ -32516,12 +32492,33 @@
       "--dispatcher-grant",
       "GRANT",
       "--expected-closure-sha256",
-      "REVIEWED_SHA256"
+      "REVIEWED_SHA256",
+      "--source-mirror-grant",
+      "SEPARATELY_REVIEWED_SOURCE_MIRROR_GRANT"
     ],
     "executablePath": "/Library/Developer/CommandLineTools/usr/bin/python3",
     "interpreterPath": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
     "path": "/usr/bin/python3",
     "version": "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]"
+  },
+  "repairDelta": {
+    "base": "753cf72f8566e159a964f51bc299aba6994c686d",
+    "changes": [
+      "Provisional external owner/plan/checkpoint/inventory precede first process",
+      "Global retained Popen slots, explicit unknown/observed starts, protected per-call/outer final cleanup and command-sequence absence before release",
+      "146 identical source/test content pins read from known immutable Git blobs through pinned scaffold API into separatelygranted owned mirror",
+      "Four active060 source-directory identities removed;259 installed-directory identities unchanged",
+      "One scaffold API guard and one actual Git executable added; original five guard roles/seven executable identities carried"
+    ],
+    "execution": "None; author-only narrowrepair awaiting review; no syntax/import/provider/helper/test/probe/ledger/mirror/scratch run",
+    "review": "Dibble two-finding HOLD; all remaining static graph/dependency/tool/test checks passed",
+    "unchanged": [
+      "Firstcase content29f6f1d5b99472283d0d8586949d625476127ccf7ad28fb983ad8044acb4ae65",
+      "F100product9948bff;145 original product source content pins; test89fe959",
+      "122 modules/351 edges/one exact test name",
+      "52packages/74manifestedges/1971dependencyfiles/644candidates/6installedguards",
+      "Strict reservation schema/ancestry/foreigncharging, Node cleanup,limits,Nodeargv,normaltransport,acceptedhistoryevidence"
+    ]
   },
   "resolutionCandidates": [
     {
@@ -35125,1904 +35122,1633 @@
       "source": "server/gcsp/repository/postgres.js"
     }
   ],
+  "sourceProvider": {
+    "allowed": "Exact full-hash ls-tree -r -z REF -- selected-paths and cat-file blob KNOWN_BLOB only",
+    "api": "Pinned _tools/scaffold_git.py git(ROOT,args), no active-tree reads",
+    "binaryTransport": "Private scaffold module subprocess adapter; bounded byte capture, reversible Latin-1 to preserve all binary bytes; size/SHA256/Gitblob verified before write",
+    "destination": "Unique manifest-owned scratch root is the isolated source/dependency mirror; requires --source-mirror-grant plus the separate dispatcher grant and fresh strict reservation before materialization",
+    "environment": {
+      "GIT_CONFIG_GLOBAL": "/dev/null",
+      "GIT_CONFIG_NOSYSTEM": "1",
+      "GIT_NO_LAZY_FETCH": "1",
+      "GIT_NO_REPLACE_OBJECTS": "1",
+      "GIT_OPTIONAL_LOCKS": "0",
+      "GIT_TERMINAL_PROMPT": "0"
+    },
+    "failure": "Missing tree/blob, wrong mode/hash/size, probe uncertainty or budget failure is incomplete; no fetch, replacement objects, mutable-tree fallback, product adoption or dependency install",
+    "gitExecutable": "/Library/Developer/CommandLineTools/usr/bin/git",
+    "kind": "ImmutableSourceProvider in host-journey-supervisor.py",
+    "snapshots": [
+      "89fe959752f3437734bb8bf2eef288b9a8510de1",
+      "9948bff11ed27f847436c6880db035fe8a54a784"
+    ]
+  },
   "sourceRows": [
     {
       "gitBlob": "03db2450d932f55611ee3e1344b41c5606a15647",
       "identity": {
-        "device": 16777232,
-        "inode": 172922148,
         "mode": 420,
         "sha256": "674a6adc350ce39dde798acda7279f8c1e1c0a5a91daa7a1d1c843616a2b442d",
         "size": 128435
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/assets/brand-hero/bmw.jpg",
       "path": "assets/brand-hero/bmw.jpg",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "d08e09443f3fad8f769ed2462180723dbafc28e6",
       "identity": {
-        "device": 16777232,
-        "inode": 172922156,
         "mode": 420,
         "sha256": "703c69d19aa0d2eda773a1b4022af2bf474c1058a4bafb84468abf7df63557ac",
         "size": 6479
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/assets/brand-logos/bmwgroup-bmw-mini.svg",
       "path": "assets/brand-logos/bmwgroup-bmw-mini.svg",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "db8367d91d040870f44ef374cda52c0b9ac068aa",
       "identity": {
-        "device": 16777232,
-        "inode": 172922175,
         "mode": 420,
         "sha256": "c2e71ea6e5b15a1d905e33ab72d78eb0f45039fe2508cad89b11654801749dee",
         "size": 5634
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp/account/account-view.js",
       "path": "blocks/gcsp/account/account-view.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "9991da6eb138e50a1587e1a759d725b6f3cf7caf",
       "identity": {
-        "device": 16777232,
-        "inode": 172922178,
         "mode": 420,
         "sha256": "6e55cfc13a86b715584ce85a76315248d61ae33bd5526399b64f87ad2b53c80c",
         "size": 22236
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp/account/gcsp-account.js",
       "path": "blocks/gcsp/account/gcsp-account.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "478ebd0333413b03e24a6d0aa2ae3145d0fd23cf",
       "identity": {
-        "device": 16777232,
-        "inode": 172922180,
         "mode": 420,
         "sha256": "eb89226f9ab8ff04b5c43dfc3c91b6e57c233ef88e273eaf8985895e79106453",
         "size": 3674
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp/account/http-adapter.js",
       "path": "blocks/gcsp/account/http-adapter.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "37929d289e15312d5edee9117eeffe00369da0c8",
       "identity": {
-        "device": 16777232,
-        "inode": 172922192,
         "mode": 420,
         "sha256": "e63cf63076f7bfa718b23b3e2a0d39ef6e57c58c4003f238b0059ce560ba0881",
         "size": 4700
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp/employee/fixtures.js",
       "path": "blocks/gcsp/employee/fixtures.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "49fe6a93ef56cfa0d6856c71dfee2736eeb41d95",
       "identity": {
-        "device": 16777232,
-        "inode": 172922194,
         "mode": 420,
         "sha256": "2f35c7983aafef2c8f1eb72f6c78341cbf1c76269110f6a25dca1b775f11df2b",
         "size": 8131
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp/employee/gcsp-employee.js",
       "path": "blocks/gcsp/employee/gcsp-employee.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "41ff23cd3772dde08fd8e24190c1e3919f7e8081",
       "identity": {
-        "device": 16777232,
-        "inode": 172922197,
         "mode": 420,
         "sha256": "a9146fc18cac0346a20b12c603df65a84dffc7bd46d267f2706f4e2c63b76af4",
         "size": 10013
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp/employee/representative-body.js",
       "path": "blocks/gcsp/employee/representative-body.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "2793b7cadddb064f734b49449a13e40e7134e343",
       "identity": {
-        "device": 16777232,
-        "inode": 172922211,
         "mode": 420,
         "sha256": "4df9e86f3d51f33397bd524b95f35a40240c931b441f91a7b8b05ef89fe508b4",
         "size": 2179
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp/kit/form-controls.js",
       "path": "blocks/gcsp/kit/form-controls.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "f95e8ca71e6f763126809c6f6f2631451cd615a2",
       "identity": {
-        "device": 16777232,
-        "inode": 173170082,
         "mode": 420,
         "sha256": "f53923f660fcb1222431c6500342e75065d10552a38f343900ef7cf234574dc8",
         "size": 7078
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp/manual-gallery/claim-controller.js",
       "path": "blocks/gcsp/manual-gallery/claim-controller.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "e8d94bc5b61a96ee0d4778f13bba8c08d03740fd",
       "identity": {
-        "device": 16777232,
-        "inode": 173170080,
         "mode": 420,
         "sha256": "0e11d30e5e31a5b2811b8fe4e84c87c11c66966656af79a8ca64d5ab23f2700f",
         "size": 3539
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp/manual-gallery/gallery-controller.js",
       "path": "blocks/gcsp/manual-gallery/gallery-controller.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "ca11de02588fbaec92d85215170171747aae336e",
       "identity": {
-        "device": 16777232,
-        "inode": 173170081,
         "mode": 420,
         "sha256": "c0cab59abacaa2b6a180db2480ad03bb09bf3018705567c5da9e467b4896b9d4",
         "size": 13841
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp/manual-gallery/gallery-model.js",
       "path": "blocks/gcsp/manual-gallery/gallery-model.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "3c152fd40da818827476ce0500cec821189ab7c4",
       "identity": {
-        "device": 16777232,
-        "inode": 173170078,
         "mode": 420,
         "sha256": "5adc83d6caeef5aefdc64dffe27948fc7d37981ba146c63e3eaaf27280205a9b",
         "size": 17376
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp/manual-gallery/gcsp-manual-gallery.js",
       "path": "blocks/gcsp/manual-gallery/gcsp-manual-gallery.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "b75e6b7238687c72a714f30cdf743ebf8540c054",
       "identity": {
-        "device": 16777232,
-        "inode": 173170083,
         "mode": 420,
         "sha256": "5e3dcc8d024ad2cdb3190e4862e4a99ef35a7995623c492ce9e4aff8883eb7de",
         "size": 1242
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp/manual-gallery/http-adapter.js",
       "path": "blocks/gcsp/manual-gallery/http-adapter.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "87c18b705a93abab5447edf4abb9365570e8cf3d",
       "identity": {
-        "device": 16777232,
-        "inode": 173170316,
         "mode": 420,
         "sha256": "4ef9173ff73be99c755dc357f0fc53c69b89086f5b9bfa1373bdb2a4a129822e",
         "size": 16555
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp/manual-review/gcsp-manual-review.js",
       "path": "blocks/gcsp/manual-review/gcsp-manual-review.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "ab282366f9c66e5ae85b33437d10ec8100dcbffc",
       "identity": {
-        "device": 16777232,
-        "inode": 173170400,
         "mode": 420,
         "sha256": "5b8dd0157f3f61f57bca77a702fa944fd23a63f953a87118bdcc73ad3e98e847",
         "size": 2078
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp/manual-review/http-adapter.js",
       "path": "blocks/gcsp/manual-review/http-adapter.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "49917658a3b6c2b3836738caccc91ee5660d22b5",
       "identity": {
-        "device": 16777232,
-        "inode": 173170494,
         "mode": 420,
         "sha256": "b77c9f936cfae036d6cce50917bdd5d022fdfba2a14f4cb6b189a1b966347355",
         "size": 12220
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp/manual-review/review-controller.js",
       "path": "blocks/gcsp/manual-review/review-controller.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "aa6910e99f88826188f693e6d887e3610be99526",
       "identity": {
-        "device": 16777232,
-        "inode": 173170582,
         "mode": 420,
         "sha256": "6c6eb31b97ea679d57953392e77342234952f5a4b8250a92074c978aaf9ef281",
         "size": 7575
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp/manual-review/review-model.js",
       "path": "blocks/gcsp/manual-review/review-model.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "1938a8b82c4726149449561df0e454d02bde1dd1",
       "identity": {
-        "device": 16777232,
-        "inode": 172922216,
         "mode": 420,
         "sha256": "6b03e4ba4b271e230b4259fcc92fb5d60651f899d55f3c0faf235782a7dae0a1",
         "size": 15701
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp/manual-setup/gcsp-manual-setup.js",
       "path": "blocks/gcsp/manual-setup/gcsp-manual-setup.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "1479fd430bacb0fa4283be656325d54c5b4bd26a",
       "identity": {
-        "device": 16777232,
-        "inode": 173167358,
         "mode": 420,
         "sha256": "f063c660a1d5ffe868fb01d88c250081e5ef0b5f8de7c14a36ffba36b277b095",
         "size": 3208
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp/manual-setup/journey.js",
       "path": "blocks/gcsp/manual-setup/journey.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "ff88b2413b9f65ea1600df58b11cc2ed5f6b6db2",
       "identity": {
-        "device": 16777232,
-        "inode": 172922220,
         "mode": 420,
         "sha256": "7c3b809d710906ac6c2963ef2519be5c8325ee980bc9cedcfb50caf1d09eb110",
         "size": 8872
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp/manual-setup/setup-controller.js",
       "path": "blocks/gcsp/manual-setup/setup-controller.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "7a80abc8eaf10bddab0ec3679272283e564f3ee3",
       "identity": {
-        "device": 16777232,
-        "inode": 172922221,
         "mode": 420,
         "sha256": "a69de6fc54f458a4fa73a7527f45c405c9da0fb12e37dd078bec04c0b7f62afe",
         "size": 9462
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp/manual-setup/setup-model.js",
       "path": "blocks/gcsp/manual-setup/setup-model.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "017a531043126ff11370ab677c9f8392d31e8309",
       "identity": {
-        "device": 16777232,
-        "inode": 172922241,
         "mode": 420,
         "sha256": "7e62088d69bfa43ff0ccff2678931fe1e48c7a0b3814184f449f308cf4ebaa01",
         "size": 10428
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp/shell/portal-shell.js",
       "path": "blocks/gcsp/shell/portal-shell.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "77234e1dc78cb56874c9cda761f470114a67b5f7",
       "identity": {
-        "device": 16777232,
-        "inode": 172922249,
         "mode": 420,
         "sha256": "eb6dcfb82aed8045228797f870a5e337ef7f0a8f3e136eb46804995d71838744",
         "size": 10235
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/vehicle-matcher/feedback-actions.js",
       "path": "blocks/vehicle-matcher/feedback-actions.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "7c7a52d7b7f1c4051fafe6ce53d089f8e79d6951",
       "identity": {
-        "device": 16777232,
-        "inode": 172922272,
         "mode": 420,
         "sha256": "485098aea61944c5fd62047164b4aabfdd1c95c2ff2be9aacf5dae211d195ec9",
         "size": 36275
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/vehicle-matcher/modes/brand-copy.js",
       "path": "blocks/vehicle-matcher/modes/brand-copy.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "90ee7a502ed43807d72f9eed689278b0cf3bffb4",
       "identity": {
-        "device": 16777232,
-        "inode": 172922282,
         "mode": 420,
         "sha256": "cc5d50468f45f1c751c597ece89ca5d7dfe88f70d98dd606104ad3504007f948",
         "size": 32636
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/vehicle-matcher/modes/result-card.js",
       "path": "blocks/vehicle-matcher/modes/result-card.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "7709d3007d2d849c29e799c013ee895e75354620",
       "identity": {
-        "device": 16777232,
-        "inode": 172922287,
         "mode": 420,
         "sha256": "49107097a7927e388ff78949045827f3a8903fea0bd758dbe1aa597bec82d8b2",
         "size": 4277
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/vehicle-matcher/ui.js",
       "path": "blocks/vehicle-matcher/ui.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "004dfb96eac323316200e3f4c1b7f9d4afcc0ab2",
       "identity": {
-        "device": 16777232,
-        "inode": 172923156,
         "mode": 420,
         "sha256": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
         "size": 19167
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/package-lock.json",
       "path": "package-lock.json",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "e69355381e41735f3cf4fbe3c44a7d18fee9d010",
       "identity": {
-        "device": 16777232,
-        "inode": 172923157,
         "mode": 420,
         "sha256": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
         "size": 662
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/package.json",
       "path": "package.json",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "77f274168dc6c5b65dbf0af1c2c8cb60221733a4",
       "identity": {
-        "device": 16777232,
-        "inode": 172923185,
         "mode": 420,
         "sha256": "ea63741b2fcb01dbe35dcdffdd66f7021a3c0219517a8de1487fae65f65299e2",
         "size": 46965
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/brands.js",
       "path": "server/brands.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "201b7b18ba283a2ec3e4d3dc7f2503740dfb2489",
       "identity": {
-        "device": 16777232,
-        "inode": 172923191,
         "mode": 420,
         "sha256": "8c797f87d050687c6d4efd4392061c65c753e5ee0177e77f9b5cab86dc3383bb",
         "size": 214
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/data/gcsp/vehicle-evidence/lookup-reference.v1/active.json",
       "path": "server/data/gcsp/vehicle-evidence/lookup-reference.v1/active.json",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "652d49fed947a712355bc1455404ee12aa9b87d6",
       "identity": {
-        "device": 16777232,
-        "inode": 172923192,
         "mode": 420,
         "sha256": "dd702f37aa81480d61b7a8a74d761abe026d25b39f056cf1d50698bbdf0edd4f",
         "size": 3653
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/data/gcsp/vehicle-evidence/lookup-reference.v1/identity-inventory.json",
       "path": "server/data/gcsp/vehicle-evidence/lookup-reference.v1/identity-inventory.json",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "f2d26243cf65ff3e3f962b4d7266c9916667d1da",
       "identity": {
-        "device": 16777232,
-        "inode": 172923195,
         "mode": 420,
         "sha256": "9c1fb6a34e324e6e4937baa1e80eabafa44fae394dd138f2f77be9f6867e9855",
         "size": 12296
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/configurations.jsonl",
       "path": "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/configurations.jsonl",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
       "identity": {
-        "device": 16777232,
-        "inode": 172923196,
         "mode": 420,
         "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "size": 0
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/images.jsonl",
       "path": "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/images.jsonl",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "091bd6b63c2aa2fb52edc6bf613998825004cecd",
       "identity": {
-        "device": 16777232,
-        "inode": 172923197,
         "mode": 420,
         "sha256": "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709",
         "size": 3093
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/manifest.json",
       "path": "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/manifest.json",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "5745df7ab1cb60ee1ee446c5c30f85731d946e79",
       "identity": {
-        "device": 16777232,
-        "inode": 172923198,
         "mode": 420,
         "sha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd",
         "size": 2565
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/vins.jsonl",
       "path": "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/vins.jsonl",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "b735284ad1a99008fb1a7e864b29c9301b0bd4e1",
       "identity": {
-        "device": 16777232,
-        "inode": 172923204,
         "mode": 420,
         "sha256": "9a107b2b90c21a116e2fb93ca88211b95250c4404f6468924e5e7f53d092a1fa",
         "size": 34889
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/data/gcsp/vehicle-evidence/vin-profiles.v1.json",
       "path": "server/data/gcsp/vehicle-evidence/vin-profiles.v1.json",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "b12b9ee1e7015f389e812f1f0163777ed15ffeb2",
       "identity": {
-        "device": 16777232,
-        "inode": 172923205,
         "mode": 420,
         "sha256": "7fd5b02df86c495971fc07ee310e8ffd02b351aecb09a124778d8d4d7147012e",
         "size": 5459
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/dealers.js",
       "path": "server/dealers.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "a5318ab8871af80b7d36e4827f6e27a0cf2ec988",
       "identity": {
-        "device": 16777232,
-        "inode": 172923206,
         "mode": 420,
         "sha256": "bbe8a865d280fb75075e93a139a3badbaa20972a18406baeeafb8ca2fc56a550",
         "size": 42306
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/engine.js",
       "path": "server/engine.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "cf2542a48ea356086e4094d29ea36166358cef01",
       "identity": {
-        "device": 16777232,
-        "inode": 172923207,
         "mode": 420,
         "sha256": "df483d2070913e193072f9e6561519bac7a2db670d55b058777f7010c4f83b4d",
         "size": 8620
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/ferrari-listing.js",
       "path": "server/ferrari-listing.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "561f2046cb2fd75650bed12435d1ca2aa8d940f7",
       "identity": {
-        "device": 16777232,
-        "inode": 173101732,
         "mode": 420,
         "sha256": "66e8d7de1662ac778ebc789aa9f93085abb9d2fafed528baf0fd90a9cb6bc771",
         "size": 436
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/adapters/manual-stock.js",
       "path": "server/gcsp/adapters/manual-stock.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "f42bb5dec59f0e851cbd1401f3c46397a86d0324",
       "identity": {
-        "device": 16777232,
-        "inode": 172923210,
         "mode": 420,
         "sha256": "b4384eb61ea60afb31570a3d2819ea686dff6aad0724cfda3f0b96788c01f2c4",
         "size": 646
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/brief/activity-http.js",
       "path": "server/gcsp/brief/activity-http.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "84e971aab8c2aa055ece06790e2bf1b48d715849",
       "identity": {
-        "device": 16777232,
-        "inode": 172923211,
         "mode": 420,
         "sha256": "dbf317b5aba98b1f6a723692e108a1b1a83637fb61e76ca33729dd90fe8b8f6f",
         "size": 7410
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/brief/activity.js",
       "path": "server/gcsp/brief/activity.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "1c79cd04e38a3cbeee9a31dd803cd2df5bfaf585",
       "identity": {
-        "device": 16777232,
-        "inode": 172923212,
         "mode": 420,
         "sha256": "df70b807923069db3b9d2b4a99ecd3ca887bc7683c5e536065c145c2664e8dc1",
         "size": 13068
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/brief/editor.js",
       "path": "server/gcsp/brief/editor.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "85404875db23d44c82990739731bae87e182f3db",
       "identity": {
-        "device": 16777232,
-        "inode": 172923213,
         "mode": 420,
         "sha256": "20a88f4cafa5c0009b54398682e1540cfabc2afea2b16935962b1406cbef8402",
         "size": 1754
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/brief/http.js",
       "path": "server/gcsp/brief/http.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "70b50f2f90b56f8a308826e2fb876b158c80b3f5",
       "identity": {
-        "device": 16777232,
-        "inode": 172923214,
         "mode": 420,
         "sha256": "22500a517f8232947b33ac274e32bf60746ba9d8199851e750784f57737ee418",
         "size": 19768
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/brief/index.js",
       "path": "server/gcsp/brief/index.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "2ca7e1c9fb9bcd9a4899faa3c3f91f2ed3377653",
       "identity": {
-        "device": 16777232,
-        "inode": 172923216,
         "mode": 420,
         "sha256": "d1b48cf2b47e2d19f80c61c90fdd234098d1ae480a591878ebb38f9fb51f0d65",
         "size": 1153
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/cases/http.js",
       "path": "server/gcsp/cases/http.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "0608caad5c737f525a87f67a201bf5b6df51eb98",
       "identity": {
-        "device": 16777232,
-        "inode": 172923217,
         "mode": 420,
         "sha256": "a080a47479444a94f041de1b0c094974c3eea655a8076f771ec33f82ecb43379",
         "size": 32087
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/cases/index.js",
       "path": "server/gcsp/cases/index.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "949353fe8d16d74e4c0324b306dc27755bc3c0d8",
       "identity": {
-        "device": 16777232,
-        "inode": 172923218,
         "mode": 420,
         "sha256": "44af7293f900f3a83bda7b98be094f50dd77de33383c279f8c582a013cbfa83e",
         "size": 1689
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/cases/notification.js",
       "path": "server/gcsp/cases/notification.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "4ca181cc16b9af5d9e82c44c41363ee31f6cdd5e",
       "identity": {
-        "device": 16777232,
-        "inode": 172923219,
         "mode": 420,
         "sha256": "c6ee2d24b019695a8bf3663fe2dd22fee5705aac65a7fff834f21b5c219209e7",
         "size": 1711
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/cases/policy.js",
       "path": "server/gcsp/cases/policy.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "c3fa39f7ab59b9f8644ddf226e453ec821cab455",
       "identity": {
-        "device": 16777232,
-        "inode": 172923221,
         "mode": 420,
         "sha256": "da019f6f766ec6ff22ab7346091ca9ef6744cde2608465f20d942c07ec083535",
         "size": 1978
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/clock/http.js",
       "path": "server/gcsp/clock/http.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "8e392c223a38805c64052094a0775f307e4019cf",
       "identity": {
-        "device": 16777232,
-        "inode": 172923222,
         "mode": 420,
         "sha256": "98d9e3ad778ad9a38aa3fb5f96f5a68040544ba328b79e263e661ec42c442c45",
         "size": 24094
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/clock/index.js",
       "path": "server/gcsp/clock/index.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "47ea7ce2a3bfb6f9aa822aedfdd9d0702842c49c",
       "identity": {
-        "device": 16777232,
-        "inode": 172923226,
         "mode": 420,
         "sha256": "848797ec98dd253c8c8daa4e1078f2b6ecc30b2807c713bf13615f2ead18ec2f",
         "size": 2686
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/fixtures/principals.js",
       "path": "server/gcsp/fixtures/principals.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "b44d26ce73cd494536fa7a076d169a8a1f2de0ed",
       "identity": {
-        "device": 16777232,
-        "inode": 172923227,
         "mode": 420,
         "sha256": "408f135c04ae909e717c30763073a3ea24a82c1e8643fabdea2888e22f1681f4",
         "size": 4895
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/fixtures/scenario-v1.js",
       "path": "server/gcsp/fixtures/scenario-v1.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "01cafcd62bed3fb293dbe8291d4d43d08f4bf911",
       "identity": {
-        "device": 16777232,
-        "inode": 172923229,
         "mode": 420,
         "sha256": "eca724465148032750c74c57882c0ee0ae69f3b119330194b9601b9b4bc1b73c",
         "size": 5754
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/fixtures/scenarios/catalogue-v1.js",
       "path": "server/gcsp/fixtures/scenarios/catalogue-v1.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "6959a38393ac5802561c41aacf65b2963bd55483",
       "identity": {
-        "device": 16777232,
-        "inode": 172923230,
         "mode": 420,
         "sha256": "e1e794e347833ae952352d7bdf2cbc9afae28c65a01edd76c570a6bf38c4cad4",
         "size": 4505
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/fixtures/scenarios/index.js",
       "path": "server/gcsp/fixtures/scenarios/index.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "61dc45fd932e2d3a42aad37c7f17ce3dca9fbfa8",
       "identity": {
-        "device": 16777232,
-        "inode": 172923233,
         "mode": 420,
         "sha256": "dfa42aedf5851af618311950100f9186a11880ce51d7a122bc115a2d8ea8aa2e",
         "size": 661
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/greg/http.js",
       "path": "server/gcsp/greg/http.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "eef2ca92468db23517650863b49a162573b8c969",
       "identity": {
-        "device": 16777232,
-        "inode": 172923234,
         "mode": 420,
         "sha256": "62452edd55d8834f029b1a4ab3dee2d252f3a4bc04c76431ad999909839f974c",
         "size": 14961
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/greg/index.js",
       "path": "server/gcsp/greg/index.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "99227e5cd63d6d60bb664096eb18573db3c5ee07",
       "identity": {
-        "device": 16777232,
-        "inode": 173101734,
         "mode": 420,
         "sha256": "d3249720c2d3a15164a3bfb402e5316ea8f4016dfe58db028590c56e728d6674",
         "size": 5082
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/greg/publish/fit.js",
       "path": "server/gcsp/greg/publish/fit.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "2cb1871119d5e594e43ebd3a293ed115b20a259e",
       "identity": {
-        "device": 16777232,
-        "inode": 173101735,
         "mode": 420,
         "sha256": "237a98fa9894fc1421d2426d14fbd84134ccfffe8a7ab701a265d23ea63b048e",
         "size": 1193
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/greg/publish/http.js",
       "path": "server/gcsp/greg/publish/http.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "ee5b9baa74aee0d5478e4cfb2037eab565450598",
       "identity": {
-        "device": 16777232,
-        "inode": 173101736,
         "mode": 420,
         "sha256": "63621b317268cfc9e9d6b99b71306eb5327a102ab4e4a1b1f98542dfd6edd1ae",
         "size": 14676
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/greg/publish/index.js",
       "path": "server/gcsp/greg/publish/index.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "397abacf26533c915928c2915feba299d5737d10",
       "identity": {
-        "device": 16777232,
-        "inode": 172923236,
         "mode": 420,
         "sha256": "86d3aa6bfc13ae6773c3861b7ef6c72fecfd31270b7c4f0609e240bd017b713e",
         "size": 6895
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/identity/http.js",
       "path": "server/gcsp/identity/http.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "a5f50ba9d14a8b06cfa70f7dcddfd68dadb79129",
       "identity": {
-        "device": 16777232,
-        "inode": 172923237,
         "mode": 420,
         "sha256": "4c60cd226ecceefcedd86c7da73a410bfabbeddbb05aab1aa997c98639f7612c",
         "size": 14177
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/identity/index.js",
       "path": "server/gcsp/identity/index.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "6cbd52c7b486a327e2bb3ca010b92176f185ac3a",
       "identity": {
-        "device": 16777232,
-        "inode": 173101738,
         "mode": 420,
         "sha256": "909926cc334b74b1d000fa12987fa8541d66eb445499d7fdaf03b241a29be6b7",
         "size": 1061
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/manual-claims/http.js",
       "path": "server/gcsp/manual-claims/http.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "99f509939554a6cef44fd3d68d8a99f23bf0f773",
       "identity": {
-        "device": 16777232,
-        "inode": 173101739,
         "mode": 420,
         "sha256": "32c80ef72d8329fcdbc4a208d9ab911f68156e6234d3917975754415d04ef059",
         "size": 34089
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/manual-claims/index.js",
       "path": "server/gcsp/manual-claims/index.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "faf95314da87037c6815bcd8664f4334a1ac3839",
       "identity": {
-        "device": 16777232,
-        "inode": 172923239,
         "mode": 420,
         "sha256": "e63bee220e6e563f96ee94a94f37500c67d0c2944b3909a0a8c7d3f1f89b01a6",
         "size": 4389
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/manual-context/fixtures.js",
       "path": "server/gcsp/manual-context/fixtures.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "213fad774823934ff2f1a9829c54aabbb568ce1f",
       "identity": {
-        "device": 16777232,
-        "inode": 172923240,
         "mode": 420,
         "sha256": "d49bbb756447e8b91ee90dd54e2240914b45e554d79428e54345a59585d4dc37",
         "size": 885
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/manual-context/http.js",
       "path": "server/gcsp/manual-context/http.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "69fd1f39db69c6d94c7ae5b0a01a046cbcfa4cfa",
       "identity": {
-        "device": 16777232,
-        "inode": 172923241,
         "mode": 420,
         "sha256": "3e694f3a68b9d3c9f40b44ddb785bec2edce3b3ada43d491995be77a2930fd43",
         "size": 30325
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/manual-context/index.js",
       "path": "server/gcsp/manual-context/index.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "188bd06580edce4306c2f89a43081e1d2486e009",
       "identity": {
-        "device": 16777232,
-        "inode": 172923242,
         "mode": 420,
         "sha256": "c1e7db5012f6d3212b79ad989e6cde5a0e390e2f4bfe50f91ee4c79c8a7a1267",
         "size": 4210
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/manual-context/ports.js",
       "path": "server/gcsp/manual-context/ports.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "5a75a7eaf889bc87bfd008c993bc53ecfea55acb",
       "identity": {
-        "device": 16777232,
-        "inode": 173136979,
         "mode": 420,
         "sha256": "4901d85a1a718529e3d85bba64b8de098105e945ae444127796c931b239571ec",
         "size": 4548
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/manual-context/recommendation-facts.js",
       "path": "server/gcsp/manual-context/recommendation-facts.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "23c1128e4604b9162988468c7cde81dacfd4f49e",
       "identity": {
-        "device": 16777232,
-        "inode": 173170076,
         "mode": 420,
         "sha256": "8d96ec48ca1fc9ff76f6dae6407a18a9c09844e3094b10a638a7b3215a7e549a",
         "size": 4241
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/manual-gallery/stock-read.js",
       "path": "server/gcsp/manual-gallery/stock-read.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "e4639964e5ee8c6a55a0670404248d0d2e378618",
       "identity": {
-        "device": 16777232,
-        "inode": 173170220,
         "mode": 420,
         "sha256": "e37dbc4dd6764f533be77341d07d1c4a4e4fe18fadcf0bc15ead4bb34186b22e",
         "size": 841
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/manual-review/http.js",
       "path": "server/gcsp/manual-review/http.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "eb49b116dec9f21c7b316c8b01aec4b464699b76",
       "identity": {
-        "device": 16777232,
-        "inode": 173170085,
         "mode": 420,
         "sha256": "86b850450957e27bbc12dceffe49aa27b27efe8a458abe4ba533ebf65fa6f323",
         "size": 16850
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/manual-review/index.js",
       "path": "server/gcsp/manual-review/index.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "3d5b82af9feb95febe29d6a6e3db99b278018f7b",
       "identity": {
-        "device": 16777232,
-        "inode": 173170108,
         "mode": 420,
         "sha256": "d70a4c1d51afd8acb180f6cc748de80a0bea37f157912db92a8e8ad1a4626d05",
         "size": 3202
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/manual-review/validation.js",
       "path": "server/gcsp/manual-review/validation.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "e668c5c67b2ba22ff3e8b4e3fe6182101d9832da",
       "identity": {
-        "device": 16777232,
-        "inode": 172923244,
         "mode": 420,
         "sha256": "3bde8db01f103141ca9bbe7398a6e1172df9b9789df745244a0071a00b9629d1",
         "size": 16691
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/migrations/0001_transaction_foundation.sql",
       "path": "server/gcsp/migrations/0001_transaction_foundation.sql",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "9b762bdb5272cbcc1a0dfe52971125b0f6880e9d",
       "identity": {
-        "device": 16777232,
-        "inode": 172923245,
         "mode": 420,
         "sha256": "65346093f811df63b225436a0ca35cd4061990a78caacb44ffde7b1effd1edd0",
         "size": 5387
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/migrations/0002_policy_tables.sql",
       "path": "server/gcsp/migrations/0002_policy_tables.sql",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "533f931b892a5b786ae78927d367a296b1a45d3c",
       "identity": {
-        "device": 16777232,
-        "inode": 172923246,
         "mode": 420,
         "sha256": "e76750fddd75b9d363fd209c243169ce1f9b06c78f96b7dbb74fe3c296f08c98",
         "size": 1093
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/migrations/0003_renewal_cases.sql",
       "path": "server/gcsp/migrations/0003_renewal_cases.sql",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "5d58a65ce5964be9caeec2380e0f739c86c0a3fc",
       "identity": {
-        "device": 16777232,
-        "inode": 172923247,
         "mode": 420,
         "sha256": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f",
         "size": 4706
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/migrations/index.js",
       "path": "server/gcsp/migrations/index.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "397ca5259e4c934ec9c6f9c6779a5e84b91b9b28",
       "identity": {
-        "device": 16777232,
-        "inode": 172923249,
         "mode": 420,
         "sha256": "df162186e33887287ebde5852c56a926f3c20873f17c80654989938af6feff58",
         "size": 1553
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/notify/captured.js",
       "path": "server/gcsp/notify/captured.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "b87eccdd27bdcdb218e4dd6d0b0217c659342c95",
       "identity": {
-        "device": 16777232,
-        "inode": 172923250,
         "mode": 420,
         "sha256": "ae3fd2f84fa3ddf1cea1e3bc05fe01944c7fc2094843b34e8b9eb8a2f16231ed",
         "size": 2703
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/notify/http.js",
       "path": "server/gcsp/notify/http.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "524c1c9dc18dbbbd482ee284d68c0e70b7494890",
       "identity": {
-        "device": 16777232,
-        "inode": 172923251,
         "mode": 420,
         "sha256": "f7f132bd7fac580cec1ce0e619d613a9a5de77fcefb92ccf27383348aac50fb7",
         "size": 13326
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/notify/index.js",
       "path": "server/gcsp/notify/index.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "ddb58b0893a01ecca4e70a7f31a5a86edad9fbab",
       "identity": {
-        "device": 16777232,
-        "inode": 172923252,
         "mode": 420,
         "sha256": "fa2895408bd05a5f5a7da2b1d4476df134886500578ca91342495b157f840a6e",
         "size": 354
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/notify/port.js",
       "path": "server/gcsp/notify/port.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "39cef663a695f8165fa38bfc4222c138876c5759",
       "identity": {
-        "device": 16777232,
-        "inode": 172923253,
         "mode": 420,
         "sha256": "fb9a3b9719c54000409553773698ef620bf35a5ba06c354f33b30cea7df839eb",
         "size": 3116
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/notify/templates.js",
       "path": "server/gcsp/notify/templates.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "8e194b336a1abb09307934895189faa6b4f95d95",
       "identity": {
-        "device": 16777232,
-        "inode": 173101740,
         "mode": 420,
         "sha256": "f37533eeb5309cb4eff6c6dcf0af5ab8a8819afdaa4d08b4baee0147d360e868",
         "size": 4776
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/offers/access-http.js",
       "path": "server/gcsp/offers/access-http.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "dac074058ada7700983eb174716dbdef202ccae9",
       "identity": {
-        "device": 16777232,
-        "inode": 173101741,
         "mode": 420,
         "sha256": "134e9d39253e934618f6cf38b334bb7cf0f8912443ee159e6167b949d4fdb34a",
         "size": 20668
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/offers/access.js",
       "path": "server/gcsp/offers/access.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "5f12c99e49afe5acc44ce62ad3f15684617bca8a",
       "identity": {
-        "device": 16777232,
-        "inode": 172926568,
         "mode": 420,
         "sha256": "b9f1a9be9cf42552a56313492bf0703b49ed715ffe2059f477ee11637c44b3d6",
         "size": 28746
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/offers/buddy-hold.js",
       "path": "server/gcsp/offers/buddy-hold.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "301f4332f958bf4a5c0c87bb35880b8474c8ed9e",
       "identity": {
-        "device": 16777232,
-        "inode": 173036110,
         "mode": 420,
         "sha256": "0284045ab38c22c305019ad4a560724aa233e830c6c37186d5661da430c59e01",
         "size": 24229
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/offers/buddy-remote.js",
       "path": "server/gcsp/offers/buddy-remote.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "ebd68032f1889290f2f85a33cd71de85cc9b63aa",
       "identity": {
-        "device": 16777232,
-        "inode": 173050749,
         "mode": 420,
         "sha256": "c5aaf8b2e3123301d50f3dade21e89e4f88abf12ede4e2c7ed801adbc56099cd",
         "size": 3135
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/offers/current-car-comparison.js",
       "path": "server/gcsp/offers/current-car-comparison.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "449ddc9a7672dbdafd1b1a99ba9537aac93584ff",
       "identity": {
-        "device": 16777232,
-        "inode": 172926567,
         "mode": 420,
         "sha256": "325b699d7dfdb435cd8713015017aa68bf735582f127d7d64a0e0fc819f7b915",
         "size": 1292
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/offers/offer-token.js",
       "path": "server/gcsp/offers/offer-token.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "b0ec9f184dd4150594d5014e56778d4929126cc7",
       "identity": {
-        "device": 16777232,
-        "inode": 173101742,
         "mode": 420,
         "sha256": "4e79235b761e8daf94f3cf2744c4bc585146181b410b64497669bd353ee7c4d6",
         "size": 2992
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/policy/activation.js",
       "path": "server/gcsp/policy/activation.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "ac3109f09e7ae2ec9779eb6eba2ccb85d1478a7c",
       "identity": {
-        "device": 16777232,
-        "inode": 173101743,
         "mode": 420,
         "sha256": "a2cb9a74946cd9eda413d896a0abc2f4299b3b75880a77ddd510667a5187c870",
         "size": 4407
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/policy/adoption.js",
       "path": "server/gcsp/policy/adoption.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "5924d7a1f982edcdcbef2b6352f318d631332dea",
       "identity": {
-        "device": 16777232,
-        "inode": 172923255,
         "mode": 420,
         "sha256": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
         "size": 7809
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/policy/file-provider.js",
       "path": "server/gcsp/policy/file-provider.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "409dd26a25effc6ab4bf17007ad87740a14fdb13",
       "identity": {
-        "device": 16777232,
-        "inode": 172923256,
         "mode": 420,
         "sha256": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
         "size": 10870
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/policy/index.js",
       "path": "server/gcsp/policy/index.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "91150990a6b482be0dc36dfee0f479881e017778",
       "identity": {
-        "device": 16777232,
-        "inode": 172923257,
         "mode": 420,
         "sha256": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
         "size": 1861
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/policy/memory-provider.js",
       "path": "server/gcsp/policy/memory-provider.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "34d13a241cc2a9275d287405aedda204f75f4ea8",
       "identity": {
-        "device": 16777232,
-        "inode": 172923258,
         "mode": 420,
         "sha256": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
         "size": 6553
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/policy/postgres-provider.js",
       "path": "server/gcsp/policy/postgres-provider.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "b05bfb12ff2f748d36c1c712ab432746aae5eb7d",
       "identity": {
-        "device": 16777232,
-        "inode": 172923260,
         "mode": 420,
         "sha256": "c521e15966be7762a3348ad860403ef555dd8cbd48405e7d23d9a7c6d262a826",
         "size": 9788
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/policy/publish.js",
       "path": "server/gcsp/policy/publish.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "20488faee62c9e947e3f02a08151613d367472d2",
       "identity": {
-        "device": 16777232,
-        "inode": 173101744,
         "mode": 420,
         "sha256": "75518df649ba542ad32b876f8ee1b680e29b417c3b1f8dc90fcf1d4713a42cbb",
         "size": 4243
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/policy/reviewed-definitions.js",
       "path": "server/gcsp/policy/reviewed-definitions.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "bcab48fcb59b1bdebe41290f18b280d1b6614500",
       "identity": {
-        "device": 16777232,
-        "inode": 173170072,
         "mode": 420,
         "sha256": "89565ec7fa05db042e623c6c88c132542505f7757848e61784f38d49b8391987",
         "size": 3569
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/policy/reviewed/fucq115-choice-model-v1.json",
       "path": "server/gcsp/policy/reviewed/fucq115-choice-model-v1.json",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "54e125ce3a487363e653456f17183bcbc60ea1d4",
       "identity": {
-        "device": 16777232,
-        "inode": 173101746,
         "mode": 420,
         "sha256": "7c7680227cdcd6e5f5afbb9fedb06b73c4768b2a3c7526cbf9cb9c03ccdfd8c3",
         "size": 883
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/policy/reviewed/greg-publish-editor-v1.json",
       "path": "server/gcsp/policy/reviewed/greg-publish-editor-v1.json",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "e73d6b48a77a2d2d14d94fc67420937bff07e4e0",
       "identity": {
-        "device": 16777232,
-        "inode": 173170073,
         "mode": 420,
         "sha256": "1f1b632be83ddef1a5656288b4e40c0378736cda5c21fcf03de68544dfbe688f",
         "size": 1105
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/policy/reviewed/offer-decline-reasons-v1.json",
       "path": "server/gcsp/policy/reviewed/offer-decline-reasons-v1.json",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "21d7f292d9f40edb9e5309f4a9a0d4bf97cff611",
       "identity": {
-        "device": 16777232,
-        "inode": 173170074,
         "mode": 420,
         "sha256": "2b634e30a65f8fce6a3cfef67e10b04e9dff72ecb4fe296c51330e98efe86d5d",
         "size": 3061
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/policy/reviewed/offer-followup-questions-v1.json",
       "path": "server/gcsp/policy/reviewed/offer-followup-questions-v1.json",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "758e8ed8d84d20cb16a5ca28fb8c6dfcd57a5503",
       "identity": {
-        "device": 16777232,
-        "inode": 173101747,
         "mode": 420,
         "sha256": "0e09fc7cde7677724153265042eb1f7a122c88115762a736a4bdf02a4b2e470a",
         "size": 580
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/policy/reviewed/presenter-controls-v1.json",
       "path": "server/gcsp/policy/reviewed/presenter-controls-v1.json",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "f92cae80fd724045da30bebac947fc86fa5056f5",
       "identity": {
-        "device": 16777232,
-        "inode": 172923261,
         "mode": 420,
         "sha256": "c58fcd9054fa32cded07c4ee742b39d196f94aa15c8d0fbf7752874954df8a31",
         "size": 493879
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/policy/seed-v1.json",
       "path": "server/gcsp/policy/seed-v1.json",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "a9bb08133e32f3c39458bbddf38b31648dd601c0",
       "identity": {
-        "device": 16777232,
-        "inode": 173101750,
         "mode": 420,
         "sha256": "c083ed58abcde595ac0cbf077b319b9102795506efb736c980d5f0cdba840143",
         "size": 2719
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/predict/records/policy-definitions.json",
       "path": "server/gcsp/predict/records/policy-definitions.json",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "a575d0125e29489c29b671c85e194a81fbf639ed",
       "identity": {
-        "device": 16777232,
-        "inode": 173101752,
         "mode": 420,
         "sha256": "89b21a616e479c27f54d0004fe54d3b93e2cfd557e803b8bc38c717e619a627a",
         "size": 4778
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/presenter-controls/commands.js",
       "path": "server/gcsp/presenter-controls/commands.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "0acfde47af940cab119c91f649b90e68b906cf42",
       "identity": {
-        "device": 16777232,
-        "inode": 173101753,
         "mode": 420,
         "sha256": "d575c0ea6b4ac3fb659fe05fa66535d942215342215c8e1a8ed73b000efaf672",
         "size": 823
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/presenter-controls/http.js",
       "path": "server/gcsp/presenter-controls/http.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "4887eb50c511b14e9be4d9e24efbc883a1c9311e",
       "identity": {
-        "device": 16777232,
-        "inode": 173101754,
         "mode": 420,
         "sha256": "06a518dc1ee15919ded29e938a717943816d591b1b79c442114a2aa8239704bd",
         "size": 1434
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/presenter-controls/index.js",
       "path": "server/gcsp/presenter-controls/index.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "9f63bed669ae8e053a72d51cac6f8eaedc63b3ff",
       "identity": {
-        "device": 16777232,
-        "inode": 172923263,
         "mode": 420,
         "sha256": "166f6f3c7d972a04903039c5b25fe5e24ec23155bc345c859fee45f1e06a54fd",
         "size": 683
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/recommendation/http.js",
       "path": "server/gcsp/recommendation/http.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "abbd4d2ac90899fff6dbcdf5565b7f7746d6df93",
       "identity": {
-        "device": 16777232,
-        "inode": 172923264,
         "mode": 420,
         "sha256": "08acfe895804cf60dcc178591ecbdd1816f12ce70944f832f1ae394902c7e172",
         "size": 18786
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/recommendation/index.js",
       "path": "server/gcsp/recommendation/index.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "66a3ecf454ed9bb3c0cbaa4cb6290e87f84524c7",
       "identity": {
-        "device": 16777232,
-        "inode": 172923267,
         "mode": 420,
         "sha256": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
         "size": 30666
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/repository/core.js",
       "path": "server/gcsp/repository/core.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "5a160e63416460947308fe4124cd847ee5c712db",
       "identity": {
-        "device": 16777232,
-        "inode": 172923268,
         "mode": 420,
         "sha256": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16",
         "size": 247
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/repository/index.js",
       "path": "server/gcsp/repository/index.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "6ae9360a70dbd2429632968ee30dc9fca9685592",
       "identity": {
-        "device": 16777232,
-        "inode": 172923269,
         "mode": 420,
         "sha256": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866",
         "size": 1561
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/repository/memory.js",
       "path": "server/gcsp/repository/memory.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "220f4938787faf42d2ae05f653a10181f8832d97",
       "identity": {
-        "device": 16777232,
-        "inode": 172923270,
         "mode": 420,
         "sha256": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
         "size": 5658
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/repository/postgres.js",
       "path": "server/gcsp/repository/postgres.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "cf2dd782c5c837435639619c3d0c375c4227d6dc",
       "identity": {
-        "device": 16777232,
-        "inode": 172923271,
         "mode": 420,
         "sha256": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
         "size": 5562
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/repository/schema.js",
       "path": "server/gcsp/repository/schema.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "0c8e885c9996dacc282482372e849dcc52e9ec9c",
       "identity": {
-        "device": 16777232,
-        "inode": 173167356,
         "mode": 420,
         "sha256": "d728142ebbf5d5cfe451e95e90cbacaeda6168bf1f158043780da67fc707a36f",
         "size": 9550
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/runtime.js",
       "path": "server/gcsp/runtime.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "f9ea39c811543b2060bfd34e1296bcd303946999",
       "identity": {
-        "device": 16777232,
-        "inode": 172923274,
         "mode": 420,
         "sha256": "4170f3760f9fd23478c286ab5a3140e9ad201b6e7c11d00c7f7beb75be773085",
         "size": 1162
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/scenarios/http.js",
       "path": "server/gcsp/scenarios/http.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "87de20a2ae6c89fae1a0c86ca5a5db4bfc0ab409",
       "identity": {
-        "device": 16777232,
-        "inode": 172923275,
         "mode": 420,
         "sha256": "02ec280d1407b9723ec55c4eb740eb209614b236cb8939cb45cd53c2c67b143b",
         "size": 5514
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/scenarios/index.js",
       "path": "server/gcsp/scenarios/index.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "37c5f83a28aac243fa13afd68ef352986c0a929c",
       "identity": {
-        "device": 16777232,
-        "inode": 173170068,
         "mode": 420,
         "sha256": "4bbd6d6f668b806876e81cc672b8361d820308d03d88e4086c1999142ff3e6ba",
         "size": 6502
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/stock/history-port.js",
       "path": "server/gcsp/stock/history-port.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "e66f4c1e40b9a2efc3334fe1b522c9c5d88ff62e",
       "identity": {
-        "device": 16777232,
-        "inode": 173170066,
         "mode": 420,
         "sha256": "7a41fbb67e5349d26748b5f0be5103eb1f6b6765a9b90ebe71a7d5416f9ea9aa",
         "size": 10621
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/stock/index.js",
       "path": "server/gcsp/stock/index.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "0f26cda41099ba4c5cde17511a8d44d2e25c4301",
       "identity": {
-        "device": 16777232,
-        "inode": 173170067,
         "mode": 420,
         "sha256": "e6f466b8d319e064bd9c928050beab1265501a12aae1c30b5af4443ee2a93aa5",
         "size": 3707
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/stock/port.js",
       "path": "server/gcsp/stock/port.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "ac1d12c8d2a42ed6099bd9e3fed1408dc60b9931",
       "identity": {
-        "device": 16777232,
-        "inode": 173170069,
         "mode": 420,
         "sha256": "2d194e674b9c1e2338bc879ce44bb6430770c385e117f3fc59c104d9161cbaf7",
         "size": 2820
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/stock/synthetic-provider.js",
       "path": "server/gcsp/stock/synthetic-provider.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "2b9a6389fbf4a3ded325b766d9b0000855db17e7",
       "identity": {
-        "device": 16777232,
-        "inode": 172923279,
         "mode": 420,
         "sha256": "db7e3fd9ff5ff4342872a54c6ca40dd3dda35fc31c51e3dbdb2910b067cd5e49",
         "size": 25651
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/vehicle-evidence/corpus-publisher.js",
       "path": "server/gcsp/vehicle-evidence/corpus-publisher.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "5b100b5aca49076c05d620ffef6f9b99f48d83ff",
       "identity": {
-        "device": 16777232,
-        "inode": 172923280,
         "mode": 420,
         "sha256": "89d805c94c5f7a9dd026daae40e42167355822961d07597bf0cf69c45b649088",
         "size": 4580
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/vehicle-evidence/identity-routing.js",
       "path": "server/gcsp/vehicle-evidence/identity-routing.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "cecee3ea9365365bbc433de4799c03716a884def",
       "identity": {
-        "device": 16777232,
-        "inode": 172923281,
         "mode": 420,
         "sha256": "c616bfed3ed62b4152a5636d6bcff442dbe0fa6793eb5b8efc894d0e486a8785",
         "size": 1197
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/vehicle-evidence/local-vehicle-lookup.js",
       "path": "server/gcsp/vehicle-evidence/local-vehicle-lookup.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "9781614f348deffd0151e2fb8ee410d90f3a00e9",
       "identity": {
-        "device": 16777232,
-        "inode": 172923284,
         "mode": 420,
         "sha256": "758f3a20ec9d0bbb6fd4853df16e0e3c8e891f732165a5584d7de5698aa7221f",
         "size": 21031
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/vehicle-evidence/synthetic-registry.js",
       "path": "server/gcsp/vehicle-evidence/synthetic-registry.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "da017388b54354ba8137bd8cbb9fa3fbed5703e3",
       "identity": {
-        "device": 16777232,
-        "inode": 172923285,
         "mode": 420,
         "sha256": "3886ac9377f3688d2bfe2c2af5a6fe330bb4b49d2f18bb049c8cc7f71d485cc8",
         "size": 9944
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/vehicle-evidence/vehicle-details-contract.js",
       "path": "server/gcsp/vehicle-evidence/vehicle-details-contract.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "8658d1a5fdc2cb20066b454861da62a0af3381ec",
       "identity": {
-        "device": 16777232,
-        "inode": 172923286,
         "mode": 420,
         "sha256": "9e118acfe39f550f06e6c319f536ca8768ca4b41820fd9ca9593e79b18f8c8f0",
         "size": 4359
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/vehicle-evidence/vehicle-evidence-handler.js",
       "path": "server/gcsp/vehicle-evidence/vehicle-evidence-handler.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "c7d972bde6e5a9cff977819d256a4abc1d4c7f64",
       "identity": {
-        "device": 16777232,
-        "inode": 172923287,
         "mode": 420,
         "sha256": "1184b7cc50565b180284e342183cca02e031a718a55f909b7980c34378a630e9",
         "size": 7416
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/vehicle-evidence/vehicle-lookup.js",
       "path": "server/gcsp/vehicle-evidence/vehicle-lookup.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "804e501082679962b139ff5b96abb515145c0e3b",
       "identity": {
-        "device": 16777232,
-        "inode": 172923288,
         "mode": 420,
         "sha256": "336d73b30e78ee4a6a1484598000497513a160a857d7b9533bd5ff3e55ff051e",
         "size": 19405
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/vehicle-evidence/vin-allocation.js",
       "path": "server/gcsp/vehicle-evidence/vin-allocation.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "ab7593af32ca88af7dc89a2b1195ed4ceb45e6b6",
       "identity": {
-        "device": 16777232,
-        "inode": 172923289,
         "mode": 420,
         "sha256": "56072df720ff4b32d26fcd099852f397f140ae44b4658532fa952d11c717260f",
         "size": 2849
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/vehicle-evidence/vin-generator.js",
       "path": "server/gcsp/vehicle-evidence/vin-generator.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "3b29b9d72002b8b9c3ce3dd38c63b1f9de9bb93f",
       "identity": {
-        "device": 16777232,
-        "inode": 172923290,
         "mode": 420,
         "sha256": "d3f6ea071027d787b2eeb6ebb8d70992845711c63ad084e0819403d6e13a90bd",
         "size": 9652
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp/vehicle-evidence/vin-profiles.js",
       "path": "server/gcsp/vehicle-evidence/vin-profiles.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "27b6500ddf418e2c51b906ed810994b682cbc5dd",
       "identity": {
-        "device": 16777232,
-        "inode": 172923291,
         "mode": 420,
         "sha256": "861414be6b2f715bfd890e36286c51df004162ae295e6997287582342f3d892c",
         "size": 6850
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/geocode.js",
       "path": "server/geocode.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "a4a7b787ab7b245c508c78d47731cf8c04dc44a8",
       "identity": {
-        "device": 16777232,
-        "inode": 172923292,
         "mode": 420,
         "sha256": "8fcc91b1adc729b0b7c0119c00608a8856d87144c6f16e08423924f100dd9534",
         "size": 5676
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/honda-listing.js",
       "path": "server/honda-listing.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "7db5d486957e71ec4cc3b0e9fafb9c3c0fa9070e",
       "identity": {
-        "device": 16777232,
-        "inode": 173167357,
         "mode": 420,
         "sha256": "b493a8f61fe797a03aa5a51d127a39186e5bd2cc657de5b22a511934a8a258cc",
         "size": 55819
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/index.js",
       "path": "server/index.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "a35b6c7584cfa7abaf82ed587be25e122e066d34",
       "identity": {
-        "device": 16777232,
-        "inode": 172923294,
         "mode": 420,
         "sha256": "142563394d5a3ba579c6d16787c97aa51dbaa8aa229947e2ac3534163f59585a",
         "size": 95061
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/mapping.js",
       "path": "server/mapping.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "d703d168cafccaa98c77a9df53bf92586c0a30c3",
       "identity": {
-        "device": 16777232,
-        "inode": 172923295,
         "mode": 420,
         "sha256": "9666ef1e6fe931378111b783ffefc26732af9ddc2d80834d7da2326155ee05fe",
         "size": 5724
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/motorrad-listing.js",
       "path": "server/motorrad-listing.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "600220842eceecf65062f8b042aeb57b831bca86",
       "identity": {
-        "device": 16777232,
-        "inode": 172923296,
         "mode": 420,
         "sha256": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
         "size": 5706
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/package-lock.json",
       "path": "server/package-lock.json",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "74e7fbb6986c2e27d3d5f5ba4a2d33a7630f2563",
       "identity": {
-        "device": 16777232,
-        "inode": 172923297,
         "mode": 420,
         "sha256": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139",
         "size": 373
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/package.json",
       "path": "server/package.json",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "dfcfc65b55867a100c34a83d83873c79ddc40996",
       "identity": {
-        "device": 16777232,
-        "inode": 172923298,
         "mode": 420,
         "sha256": "898716dfaf8a184fef39a9ae12b9d59b01cce94c48356dab5e3b4e81de62c26d",
         "size": 20998
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/questions.js",
       "path": "server/questions.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "07b24c2c237e0b18742fc8614dd8885adede878a",
       "identity": {
-        "device": 16777232,
-        "inode": 172923302,
         "mode": 420,
         "sha256": "50e3b25317158c29605420af080c1ec6bd76ded94d298d33badfc90a4dc0d91c",
         "size": 9089
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/scenarios/employee/index.js",
       "path": "server/scenarios/employee/index.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "299a2cb8905a525eee89edba71c622745d570050",
       "identity": {
-        "device": 16777232,
-        "inode": 172923306,
         "mode": 420,
         "sha256": "a9b59844ea5b862cc5effe509e988d41462f2a77683624d97ae51a18e4a6c133",
         "size": 77642
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/stock.js",
       "path": "server/stock.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "98f498f9c81b7c234553f28fa30d51d15ab8cc17",
       "identity": {
-        "device": 16777232,
-        "inode": 173173101,
         "mode": 420,
         "sha256": "01c07f817d322ba7e33734ee58483d10afe1291c2eef0f055fa9b1d66b169925",
         "size": 3118
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/test/helpers/runtime-composition-profile.js",
       "path": "server/test/helpers/runtime-composition-profile.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "af69248716e13b6d3d4e1303eb1f59a877eb2bca",
       "identity": {
-        "device": 16777232,
-        "inode": 172923413,
         "mode": 420,
         "sha256": "06c0910c131fdb0e2e4ef254dc5591f13c90ecb3f36f655aef3cb651aa0052a1",
         "size": 22234
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/vehicle-evidence/bmw-catalogue-adapter.js",
       "path": "server/vehicle-evidence/bmw-catalogue-adapter.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "0e7e6b36d88686e0a169f4b0da7c1748588b3bde",
       "identity": {
-        "device": 16777232,
-        "inode": 172923422,
         "mode": 420,
         "sha256": "ee1ae6c5cb6ab742f9a2959825ca722007409fa019d15acd44bb4b79984556a3",
         "size": 7364
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json",
       "path": "server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "746ce1b91c83dba0c1d45a756b1fecaf58128a3b",
       "identity": {
-        "device": 16777232,
-        "inode": 172923425,
         "mode": 420,
         "sha256": "cc02ff92ac13a25fdbe3a2325f60cafe2c16486e2f11d78a391f8664a217b5cc",
         "size": 9321
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/vehicles/index.js",
       "path": "server/vehicles/index.js",
-      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784"
+      "publishedCommit": "9948bff11ed27f847436c6880db035fe8a54a784",
+      "sourceType": "git-blob"
     },
     {
       "gitBlob": "933696526017f0226578d6ad5c86ca929dab7075",
       "identity": {
-        "device": 16777232,
-        "inode": 173298300,
         "mode": 420,
         "sha256": "29f6f1d5b99472283d0d8586949d625476127ccf7ad28fb983ad8044acb4ae65",
         "size": 21090
       },
-      "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-068/server/test/gcsp-manual-gallery-review-journey.test.js",
       "path": "server/test/gcsp-manual-gallery-review-journey.test.js",
-      "publishedCommit": "89fe959752f3437734bb8bf2eef288b9a8510de1"
+      "publishedCommit": "89fe959752f3437734bb8bf2eef288b9a8510de1",
+      "sourceType": "git-blob"
     }
   ],
   "state": "frozen authoring; awaiting execution grant",
@@ -37115,8 +36841,19 @@
       },
       "path": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
       "realpath": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9"
+    },
+    {
+      "identity": {
+        "device": 16777232,
+        "inode": 90764853,
+        "mode": 493,
+        "sha256": "41ae817006c126205f5d908fa351857d3df1ef6e21c9a516c4e9ea8ee2de935d",
+        "size": 7075168
+      },
+      "path": "/Library/Developer/CommandLineTools/usr/bin/git",
+      "realpath": "/Library/Developer/CommandLineTools/usr/bin/git"
     }
   ],
-  "validation": "Static JSON/stat/hash/Gitblob/manifest membership only. No Node, syntax/AST/compile, product/helper import, process/resource probe, ledger read/write or scratch allocation.",
+  "validation": "Static JSON/stat/hash/known Git-tree metadata only; current060journey drift not adopted. No new helper/provider/syntax/AST/import/test/probe/ledger/mirror/scratch execution.",
   "workspace": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-068"
 }
