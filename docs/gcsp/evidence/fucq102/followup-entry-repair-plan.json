@@ -61,7 +61,7 @@
       "sourceCommit": "4b91d4bb14103ac5a98f68900a540913f4cacf78",
       "path": "server/gcsp/offers/followup.js",
       "sha256": "54399693253ae9640dde77b70b54f073b08e634d6babb69ea129b0414a6cebd2",
-      "status": "await independent source review before adoption"
+      "status": "Independent static review HOLD: missing positive decision.versions.slot and current>=historical guard. Do not adopt this pin; await corrected reviewed pin."
     }
   },
   "sourceClosure": {
@@ -106,5 +106,11 @@
   "candidateSourcePlanSHA256": "24e43347b31c9e1557a89b6172bc05f333c3b7bf1884f576b0a14f60798755f6",
   "candidateAdmissionSHA256": "8d7fce9b848e811948b545d7c0ad83f6033c9779e7920acab98af82f9b962913",
   "candidateAdmissionStatus": "HOLD pending107; main refuses before custom helper imports; no execution command authorised",
-  "renewalRevisionCorrection": "Positive current slot revision >= historical pin; absent slot renewal falls back to verified hold/event; explicit populated conflicts/malformed values refuse; all-null preserved. Actual repository CAS positive controls authored, not executed."
+  "renewalRevisionCorrection": "Positive current slot revision >= historical pin; absent slot renewal falls back to verified hold/event; explicit populated conflicts/malformed values refuse; all-null preserved. Actual repository CAS positive controls authored, not executed.",
+  "reviewDisposition": {
+    "runnerAndDirectJoin": "Dispatcher retained scoped static PASS of b3079eb unchanged runner/direct-join delta; no runtime evidence.",
+    "107": "4b91d4b HOLD for missing historical slot pin validation; root routed minimal lead-owned repair.",
+    "access": "848a16f authored compatible-revision/nullable-slot correction; combined source review still required.",
+    "execution": "No fresh grant; original once-grant consumed."
+  }
 }

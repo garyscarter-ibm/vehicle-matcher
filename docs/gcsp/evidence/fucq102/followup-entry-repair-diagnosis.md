@@ -132,6 +132,15 @@ checks, not runtime or service proof. The candidate explicitly carries the old
 helpers, and refuses even its plan mode until a new combined freeze removes it.
 No execution command is proposed for this held candidate.
 
+Subsequent dispatcher review keeps the published 107 candidate `4b91d4b` on
+HOLD: it checks a positive current slot revision but omits the decision's positive
+historical slot pin and its lower-bound comparison. Its other nullable-renewal
+and slot-reread changes passed that scoped static review. The dispatcher retained
+the scoped static PASS for the unchanged `b3079eb` runner/direct-join cleanup
+delta. Await 107's corrected reviewed immutable pin before combined adoption; the
+freeze's earlier review-pending metadata is a historical snapshot, not approval.
+No fresh execution follows from either static result.
+
 105/client/host, deployed/browser/remote/native database/full-suite and final
 acceptance gates remain open. This evidence-only authoring change needs no new
 screen rendering; the existing visual contract still governs eventual integration.
