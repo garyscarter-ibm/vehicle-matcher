@@ -1820,17 +1820,17 @@
       "original_status": "In Progress",
       "assignee": "usget",
       "type": "Story",
-      "observed_at": "2026-11-06T11:28:29Z",
+      "observed_at": "2026-11-06T11:43:41Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60",
       "workers": [
         {
           "name": "Scooby Doo",
           "role": "story-lead",
           "harness": "codex",
-          "observed_at": "2026-11-06T11:28:01.704127+00:00",
-          "expires_at": "2026-11-06T11:28:01.704127+00:00",
+          "observed_at": "2026-11-06T11:43:11.564242+00:00",
+          "expires_at": "2026-11-06T11:43:11.564242+00:00",
           "source": "thread 01a1b05f-dcbc-7e50-a2f9-0332b39f082a",
-          "status": "Planning-only historical ingress handoff; requested/selected Sol/high, no fallback/descendants; no active worker claim"
+          "status": "Stopped at retained historical checkpoint; requested/selected Sol/high, no fallback/descendants; scoped8/8; independent review and canonical assembly remain; no active claim"
         }
       ],
       "slices": [
@@ -1852,15 +1852,15 @@
           "id": "shared-accounting",
           "status": "in-progress",
           "title": "Canonical collector session cache budget recovery integration",
-          "observed_at": "2026-11-06T11:10:05.689780+00:00",
-          "evidence": "Unchanged F60 consumer/proof passed6/6 against frozen F59 v2 aee5e902; actual cache/cursor, lifetime budget/retry/deadline and partial-facts assertions. Canonical shared-branch assembly remains. docs/gcsp/evidence/fucq60/session-enrichment.md."
+          "observed_at": "2026-11-06T11:43:40Z",
+          "evidence": "Actual frozen F59 v2 aee5e902 generic proof 6/6 and retained historical pipeline 8/8 pass: ingress/enrichment share one cache/ledger/deadline/lease; interruption resumes. Canonical shared-branch assembly remains. docs/gcsp/evidence/fucq60/historical-integration-evidence-2026-11-06.md."
         },
         {
           "id": "real-source",
-          "status": "not-started",
+          "status": "in-progress",
           "title": "Real catalogue source coverage evidence",
-          "observed_at": "2026-11-06T11:28:01.704127+00:00",
-          "evidence": "Retained 1 November registered F39/F54 sample identified for proposed historical reuse; no new qualification proof. Separate 6 November observation remains accepted 0; no additional configurations or 200-configuration coverage claimed."
+          "observed_at": "2026-11-06T11:43:40Z",
+          "evidence": "One pin-verified retained 1 November GB sample admitted by actual F39/F59 and preserved through F60/F54. No new collection/configuration; separate 6 November observation accepted 0. Wider source/scheme coverage and F77 required 200 distinct configurations remain. docs/gcsp/evidence/fucq60/historical-integration-evidence-2026-11-06.md."
         },
         {
           "id": "real-assets",
@@ -1871,15 +1871,15 @@
           "id": "focused-contracts",
           "status": "complete",
           "title": "Authored enrichment and F39 F42 focused contracts",
-          "observed_at": "2026-11-06T11:10:05.689780+00:00",
-          "evidence": "Lead reviewed producer v2 change and unchanged consumer/proof:6/6 real offline cases pass; matching prior50/50 pure/F39/F42 evidence reused by verified source/fixture/environment identity. Full suite remains separate."
+          "observed_at": "2026-11-06T11:43:41Z",
+          "evidence": "Lead-reviewed new historical ingress/corpus join 8/8 pass, zero skips, against actual frozen modules. Prior unchanged generic-session 6/6 and pure/F39/F42 50/50 evidence retained by verified hashes; new producer-root environment separately recorded. Final suite remains open. docs/gcsp/evidence/fucq60/historical-integration-evidence-2026-11-06.md."
         },
         {
           "id": "corpus-integration",
-          "status": "not-started",
+          "status": "in-progress",
           "title": "F54 corpus and presentation integration",
-          "observed_at": "2026-11-06T11:28:01.704127+00:00",
-          "evidence": "Planning only: historical-integration-plan-2026-11-06.md specifies retained 1 November ingress, common session, F54 original envelope and lookup composition, with missing qualifier/join ports explicit. No implementation or acceptance proof; slice remains not-started."
+          "observed_at": "2026-11-06T11:43:41Z",
+          "evidence": "Actual original-envelope retained candidate validation, immutable receipt/report sidecar join, isolated F54 registry publication/lookup and interruption/reopen pass in 8/8 scoped cases. Zero VIN/images; F60 remains incomplete, F54 complete means supported subset. Canonical activation/breadth/final integration remain. docs/gcsp/evidence/fucq60/historical-integration-evidence-2026-11-06.md."
         },
         {
           "id": "final-suite",
