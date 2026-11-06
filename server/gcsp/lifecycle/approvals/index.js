@@ -11,13 +11,16 @@ export const revisionConsumer = (orderUuid) => `lifecycle:approval:${orderUuid}`
 const revisionEvent = (n) => `revision:${String(n).padStart(6, '0')}`;
 const decisionId = (runId, orderUuid, stage) => `lifecycle-approval:${inputDigest([runId, orderUuid, stage])}`;
 const ref = (runId, table, key) => ({ table, key: { runId, ...key } });
+// Validated only with both a slot and a renewal; otherwise the renewal ID is withheld (FUCQ-116 consumer rule).
+const authority = (slot, renewalId) => (typeof slot === 'string' && slot && renewalId ? { renewalId, renewalAuthority: 'validated' }
+  : { renewalId: null, renewalAuthority: 'missing' });
 const command = (commandId, value) => ({ commandId, inputDigest: inputDigest(value) });
 const unavailable = () => result('unavailable', { retryable: true, reason: 'Order progress is unavailable. Try again shortly.' });
 // Repository writes made by the tick handler carry a system principal, never the presenter's identity.
 const systemContext = (context) => ({ environmentId: context.environmentId, runId: context.runId, principalId: HANDLER_ID, roles: [] });
 
 export class LifecycleApprovalService {
-  #repository; #policy; #clock; #identity; #status; #start;
+  #repository; #policy; #clock; #identity; #status; #start; #port;
   constructor({ repository, policy, clock, identity, status } = {}) {
     this.#repository = repository; this.#policy = policy; this.#clock = clock; this.#identity = identity; this.#status = status;
   }
@@ -69,41 +72,58 @@ export class LifecycleApprovalService {
       : operation?.state === 'pending' && operation.lastKnownState === 'unknown'
         ? { code: 'provider-uncertain', reason: 'Waiting for the approval system to confirm the last update.' } : null;
     return { contractVersion: CONTRACT, schemaVersion: 1, runId: record.runId, orderUuid: record.orderUuid, employeeId: record.employeeId,
-      entitlementSlotId: record.entitlementSlotId, renewalId, renewalAuthority: renewalId ? 'validated' : 'missing', route: record.route,
-      source: record.source, policy: { policyVersion: policy.policyVersion, provenance: policy.provenance },
+      entitlementSlotId: record.entitlementSlotId, ...authority(record.entitlementSlotId, renewalId), route: record.route,
+      source: record.source, policyVersion: policy.policyVersion, policy: { policyVersion: policy.policyVersion, provenance: policy.provenance },
       lifecycleRevision: record.lifecycleRevision, asOf, stageList: record.stageList, currentStage: record.currentStage,
       stages: record.stages, owner: step.owner, nextStep: step.nextStep, outcome: record.outcome, blocked,
       provider: { mode: this.#status?.mode ?? null, provider: this.#status?.provider ?? null, synthetic: this.#status?.mode === 'synthetic' } };
   }
 
   read(context, input = {}) { return this.#safe(async () => {
+    const role = await this.#role(context); if (role.status !== 'ok') return role;
+    return this.#readAs(context, input, role.value);
+  }); }
+
+  listOrders(context) { return this.#safe(async () => {
+    const role = await this.#role(context); if (role.status !== 'ok') return role;
+    return this.#listAs(context, role.value);
+  }); }
+
+  // Server-internal port for DemoClock handlers (FUCQ-116): no route and no browser role check. The clock's
+  // current-run check and run-bound repository reads still refuse any other run or environment.
+  stagePort() {
+    this.#port ??= Object.freeze({ contractVersion: CONTRACT,
+      read: (context, input = {}) => this.#safe(() => this.#readAs(context, input, 'system')),
+      listOrders: (context) => this.#safe(() => this.#listAs(context, 'system')) });
+    return this.#port;
+  }
+
+  async #readAs(context, input, scope) {
     if (!input || typeof input.orderUuid !== 'string' || !input.orderUuid || input.orderUuid.length > 128
       || Object.keys(input).some((k) => k !== 'orderUuid')) {
       return result('invalid', { code: 'invalid-order', reasons: [{ field: 'orderUuid', reason: 'Choose an order to view.' }] });
     }
-    const role = await this.#role(context); if (role.status !== 'ok') return role;
     if (!this.#repository || !this.#clock || !this.#policy) return unavailable();
     const time = await this.#clock.now(context); if (time.status !== 'ok') return time;
     const query = (table, filter) => this.#repository.query(context, table, filter);
-    const source = await findSelectionOrder(query, input.orderUuid, role.value === 'employee' ? context.employeeId : undefined);
+    const source = await findSelectionOrder(query, input.orderUuid, scope === 'employee' ? context.employeeId : undefined);
     if (source.status !== 'ok') return source;
     return this.#view(context, source.value, time.value.now);
-  }); }
+  }
 
-  list(context) { return this.#safe(async () => {
-    const role = await this.#role(context); if (role.status !== 'ok') return role;
+  async #listAs(context, scope) {
     if (!this.#repository || !this.#clock || !this.#policy) return unavailable();
     const time = await this.#clock.now(context); if (time.status !== 'ok') return time;
     const orders = await listSelectionOrders((table, filter) => this.#repository.query(context, table, filter));
     if (orders.status !== 'ok') return orders;
     const views = [];
-    for (const source of orders.value.filter((o) => role.value !== 'employee' || o.employeeId === context.employeeId)
+    for (const source of orders.value.filter((o) => scope !== 'employee' || o.employeeId === context.employeeId)
       .sort((a, b) => (a.orderUuid < b.orderUuid ? -1 : 1))) {
       const view = await this.#view(context, source, time.value.now); if (view.status !== 'ok') return view;
       views.push(view.value);
     }
     return ok({ contractVersion: CONTRACT, asOf: time.value.now, orders: views });
-  }); }
+  }
 
   async #view(context, source, asOf) {
     const policy = await this.#policyFor(context, source, asOf); if (policy.status !== 'ok') return policy;
@@ -127,10 +147,12 @@ export class LifecycleApprovalService {
     // Startup reconciles uncertain writes only; stage waits progress on presenter ticks alone (HLD review Q3).
     const run = await this.#repository.read(system, ref(system.runId, 'tick_runs', { tickId })); if (run.status !== 'ok') return run;
     const startup = run.value.targetClock?.kind === 'startup';
-    const counts = { orders: orders.value.length, advanced: 0, waiting: 0, blocked: 0, uncertain: 0, finished: 0 };
+    const counts = { orders: orders.value.length, advanced: 0, waiting: 0, blocked: 0, uncertain: 0, finished: 0, failed: [] };
+    // One order's refusal is recorded and skipped so others still progress; its stable command IDs make the retry safe.
     for (const source of [...orders.value].sort((a, b) => (a.orderUuid < b.orderUuid ? -1 : 1))) {
-      const step = await this.#advance(system, tickId, now, source, startup); if (step.status !== 'ok') return step;
-      counts[step.value] += 1;
+      let step; try { step = await this.#advance(system, tickId, now, source, startup); } catch { step = unavailable(); }
+      if (step.status === 'ok') counts[step.value] += 1;
+      else counts.failed.push({ orderUuid: source.orderUuid, status: step.status, code: step.code ?? step.reason ?? null });
     }
     return ok({ handlerId: HANDLER_ID, ...counts });
   }

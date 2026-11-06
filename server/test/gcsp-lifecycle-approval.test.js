@@ -9,23 +9,17 @@ import { RenewalCaseService } from '../gcsp/cases/index.js';
 import { createLifecycleApprovalService, HANDLER_ID, EXCEPTION_CONSUMER } from '../gcsp/lifecycle/approvals/index.js';
 import { createLifecycleApprovalRoutes } from '../gcsp/lifecycle/approvals/http.js';
 import { createSyntheticOrderingStatus, createLiveOrderingStatusStub } from '../gcsp/adapters/synthetic-ordering-status.js';
-import { acknowledgedSelection, pendingSelection } from './helpers/gcsp-lifecycle-approval.js';
+import { acknowledgedSelection, pendingSelection, createRealProducer } from './helpers/gcsp-lifecycle-approval.js';
 
 const AT = '2026-11-05T00:00:00.000Z';
-// The canonical seed lacks FUCQ-71's stage key and this story's rows until the serial policy lane lands; the test
-// reads the actual seed plus the exact prepared rows, so it exercises the same keys the shared source will carry.
+// Reads the canonical seed only; alternative values are explicit test inputs over it.
 async function policyWith(changes = {}) {
   const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
-  const prepared = JSON.parse(await readFile(new URL('./fixtures/gcsp-lifecycle-approval-policy.json', import.meta.url), 'utf8'));
-  const stageRow = { key: 'ordering.approvalStages.v1', value: ['HR approval', 'sales-manager approval', 'sent to ordering'],
-    unit: 'versioned synthetic ordering contract', status: 'assumed', source: 'docs/gcsp/manual-order-contract.md',
-    basis: 'FUCQ-71 ed20ca2 canonical target stage names.', sourceDate: '2026-11-05', policyVersion: 'gcsp-policy-v1', effectiveFrom: '2026-11-04T00:00:00.000Z' };
-  for (const row of [stageRow, ...prepared.assumptions]) if (!seed.assumptions.some((a) => a.key === row.key)) seed.assumptions.push(structuredClone(row));
   for (const [key, value] of Object.entries(changes)) seed.assumptions.find((a) => a.key === key).value = value;
   return new PolicyService({ provider: { async loadVersions() { return [seed]; } } });
 }
 
-async function setup(t, { changes, status = 'synthetic', stages, cases = false } = {}) {
+async function setup(t, { changes, status = 'synthetic', stages, cases = false, producer = false, extraHandler } = {}) {
   const policy = await policyWith(changes);
   const store = createMemoryStore(); const repository = createMemoryRepository({ store }); await repository.open();
   const runtime = await createDemoRuntime({ repository, policy, environmentId: 'lifecycle-test', environmentKind: 'synthetic',
@@ -38,6 +32,8 @@ async function setup(t, { changes, status = 'synthetic', stages, cases = false }
   const adapter = status === 'live' ? createLiveOrderingStatusStub() : typeof status === 'object' ? status : createSyntheticOrderingStatus({ repository });
   const service = createLifecycleApprovalService({ repository, policy, clock, identity, status: adapter });
   assert.equal((await service.start()).status, 'ok');
+  const real = producer ? await createRealProducer({ repository, policy, clock, identity }) : null;
+  if (extraHandler) assert.equal((await clock.registerHandler(extraHandler(service))).status, 'ok');
   const caseService = cases ? new RenewalCaseService({ repository, policy, clock, identity }) : null;
   if (caseService) assert.equal((await caseService.start()).status, 'ok');
   let ticks = 0;
@@ -50,7 +46,7 @@ async function setup(t, { changes, status = 'synthetic', stages, cases = false }
   };
   const seed = (context, options) => acknowledgedSelection(repository, context, { stages, ...options });
   t.after(() => repository.close());
-  return { repository, store, policy, clock, identity, presenter, paula, alex, greg, service, caseService, tick, seed };
+  return { repository, store, policy, clock, identity, presenter, paula, alex, greg, service, caseService, real, tick, seed };
 }
 const states = (view) => view.stages.map((s) => `${s.stage}:${s.state}`);
 const until = async (f, orderUuid, done, limit = 12) => {
@@ -72,7 +68,7 @@ test('stage order follows the canonical list with HR approval on, and drops it e
   const second = await off.seed(off.paula);
   const read = await off.service.read(off.greg, { orderUuid: second.orderUuid });
   assert.deepEqual(read.value.stageList, ['selection received', ...offStages]);
-  const listed = await off.service.list(off.presenter.value.context);
+  const listed = await off.service.listOrders(off.presenter.value.context);
   assert.deepEqual(listed.value.orders[0].stageList, read.value.stageList);
   const final = await until(off, second.orderUuid, (v) => v.outcome !== 'in-progress');
   assert.equal(final.outcome, 'sent-to-ordering'); assert.ok(!final.stages.some((s) => s.stage === 'HR approval'));
@@ -157,7 +153,7 @@ test('buddy and manual orders both progress through the same lifecycle', async (
   const a = await until(f, manual.orderUuid, (v) => v.outcome !== 'in-progress');
   const b = await until(f, buddy.orderUuid, (v) => v.outcome !== 'in-progress');
   assert.deepEqual([a.route, a.outcome, b.route, b.outcome], ['manual', 'sent-to-ordering', 'buddy', 'sent-to-ordering']);
-  const listed = await f.service.list(f.greg); assert.equal(listed.value.orders.length, 2);
+  const listed = await f.service.listOrders(f.greg); assert.equal(listed.value.orders.length, 2);
 });
 
 test('employee and run scoping, presenter/Greg reads, and truthful not-found and not-ready outcomes', async (t) => {
@@ -165,7 +161,7 @@ test('employee and run scoping, presenter/Greg reads, and truthful not-found and
   assert.equal((await f.service.read(f.alex, { orderUuid: order.orderUuid })).status, 'forbidden');
   assert.equal((await f.service.read(f.greg, { orderUuid: order.orderUuid })).status, 'ok');
   assert.equal((await f.service.read(f.presenter.value.context, { orderUuid: order.orderUuid })).status, 'ok');
-  assert.equal((await f.service.list(f.alex)).value.orders.length, 0);
+  assert.equal((await f.service.listOrders(f.alex)).value.orders.length, 0);
   assert.equal((await f.service.read(f.greg, { orderUuid: 'no-such-order' })).status, 'not-found');
   const pending = await pendingSelection(f.repository, f.alex);
   const notReady = await f.service.read(f.greg, { orderUuid: pending.orderUuid });
@@ -210,4 +206,68 @@ test('response-shape fixtures for the order progress screen match the read model
   for (const name of ['not-found', 'not-ready', 'forbidden']) assert.ok(fixtures[name].status, name);
   assert.ok(!JSON.stringify(fixtures).includes('—'), 'no em dashes in user-facing copy');
   assert.equal(HANDLER_ID < 'lifecycle-documents', true, 'approval handler sorts before the document handler');
+});
+
+test('real FUCQ-71 producer: ManualOrderService manual and buddy selections progress through every stage', async (t) => {
+  const f = await setup(t, { producer: true });
+  const manual = await f.real.submit(f.paula, { id: 801, type: 'cart' });
+  assert.equal(manual.submitted.status, 'ok', JSON.stringify(manual.submitted)); assert.ok(manual.submitted.value.order, 'acknowledged by synthetic-ordering:v1');
+  const buddy = await f.real.submit(f.alex, { id: 802, type: 'buddy-offer' });
+  assert.equal(buddy.submitted.status, 'ok', JSON.stringify(buddy.submitted));
+  const start = (await f.service.read(f.paula, { orderUuid: manual.orderUuid })).value;
+  assert.equal(start.source.operationType, 'selection-order'); assert.equal(start.source.operationId, manual.submitted.value.operationId);
+  assert.equal(start.policyVersion, 'gcsp-policy-v1'); assert.equal(start.entitlementSlotId, 'slot-paula');
+  assert.deepEqual([start.renewalAuthority, start.renewalId], ['missing', null], 'no renewal authority was supplied'); assert.deepEqual(start.source.approvalStages, ['HR approval', 'sales-manager approval', 'sent to ordering']);
+  const a = await until(f, manual.orderUuid, (v) => v.outcome !== 'in-progress', 16);
+  const b = await until(f, buddy.orderUuid, (v) => v.outcome !== 'in-progress', 16);
+  assert.deepEqual([a.route, a.outcome, b.route, b.outcome], ['manual', 'sent-to-ordering', 'buddy', 'sent-to-ordering']);
+  assert.ok(a.stages.every((s) => s.state === 'approved' && s.providerReference));
+  const acknowledged = await f.repository.query(f.greg, 'event_receipts', { consumerId: 'synthetic-ordering:v1' });
+  assert.equal(acknowledged.value.length, 2, 'FUCQ-71 acknowledgement receipts stay untouched');
+});
+
+test('one failing order is recorded and skipped while another order advances, and the tick replays identically', async (t) => {
+  const f = await setup(t);
+  const good = await f.seed(f.paula); const bad = await f.seed(f.alex, { stages: ['unknown approval', 'sent to ordering'] });
+  const first = await f.tick();
+  assert.equal(first.outcome.status, 'ok', JSON.stringify(first.outcome));
+  const handler = first.outcome.value.outcomes.find((o) => o.handlerId === HANDLER_ID).outcome.value;
+  assert.deepEqual(handler.failed.map((x) => [x.orderUuid, x.status]), [[bad.orderUuid, 'unavailable']]);
+  assert.equal(handler.advanced, 1);
+  assert.equal((await f.service.read(f.greg, { orderUuid: good.orderUuid })).value.currentStage, 'HR approval');
+  assert.equal((await f.service.read(f.greg, { orderUuid: bad.orderUuid })).status, 'unavailable');
+  const snapshot = structuredClone(f.store.state);
+  const replay = await f.clock.tick(f.presenter.value.context, { eventId: first.eventId, expectedClockVersion: first.clockVersion, inputDigest: inputDigest(first.eventId) });
+  assert.deepEqual(replay, first.outcome); assert.deepEqual(f.store.state, snapshot);
+});
+
+test('internal stagePort serves DemoClock handler contexts with a top-level policyVersion, bound to the current run', async (t) => {
+  const seen = [];
+  const f = await setup(t, { extraHandler: (service) => ({ handlerId: 'lifecycle-documents-probe', stage: 'pending-reconciliation',
+    handle: async ({ context }) => { const port = service.stagePort(); const listed = await port.listOrders(context);
+      const read = listed.value?.orders?.[0] ? await port.read(context, { orderUuid: listed.value.orders[0].orderUuid }) : null;
+      const foreign = await port.listOrders({ ...context, runId: 'another-run' });
+      seen.push({ roles: context.roles, listed: listed.status, count: listed.value?.orders?.length, read, foreign: foreign.status });
+      return { status: 'ok', value: { probed: true } }; } }) });
+  const order = await f.seed(f.paula); await f.tick(); await f.tick();
+  const last = seen.at(-1);
+  assert.deepEqual(last.roles, ['presenter']); assert.equal(last.listed, 'ok'); assert.equal(last.count, 1);
+  assert.equal(last.read.status, 'ok'); assert.equal(last.read.value.orderUuid, order.orderUuid);
+  assert.equal(last.read.value.policyVersion, 'gcsp-policy-v1'); assert.ok(last.read.value.lifecycleRevision >= 1, 'approval handler ran first');
+  assert.equal(last.foreign, 'stale-run');
+  // Startup ticks pass a context the identity service never issued (principalId clock-startup, roles []).
+  const system = { environmentId: f.paula.environmentId, runId: f.paula.runId, principalId: 'clock-startup', roles: [] };
+  const direct = await f.service.stagePort().read(system, { orderUuid: order.orderUuid });
+  assert.equal(direct.status, 'ok', JSON.stringify(direct)); assert.equal(direct.value.policyVersion, 'gcsp-policy-v1');
+  assert.equal((await f.service.read(system, { orderUuid: order.orderUuid })).status, 'forbidden', 'public read refuses it');
+  assert.equal((await f.service.stagePort().read({ ...system, environmentId: 'other' }, { orderUuid: order.orderUuid })).status, 'stale-run');
+  assert.equal(Object.isFrozen(f.service.stagePort()), true); assert.equal(f.service.stagePort(), f.service.stagePort());
+  assert.equal((await f.service.read({ ...f.paula }, { orderUuid: order.orderUuid })).status, 'forbidden', 'public read keeps its role check');
+});
+
+test('canonical seed carries the prepared FUCQ-111 rows exactly', async () => {
+  const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
+  const prepared = JSON.parse(await readFile(new URL('./fixtures/gcsp-lifecycle-approval-policy.json', import.meta.url), 'utf8'));
+  for (const row of prepared.assumptions) assert.deepEqual(seed.assumptions.find((a) => a.key === row.key), row, row.key);
+  assert.ok(seed.assumptions.some((a) => a.key === 'ordering.approvalStages.v1'));
 });

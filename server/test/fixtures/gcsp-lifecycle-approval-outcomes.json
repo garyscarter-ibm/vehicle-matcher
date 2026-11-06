@@ -1,5 +1,5 @@
 {
- "_note": "Response shapes for the order progress screen (FUCQ-111 lifecycle.stages.v1). Injected-producer examples; not FUCQ-71 integration evidence.",
+ "_note": "Response shapes for the order progress screen (FUCQ-111 lifecycle.stages.v1 revision 2). Injected-producer examples; not FUCQ-71 integration evidence.",
  "pending": {
   "status": "ok",
   "value": {
@@ -32,6 +32,7 @@
     "operationVersion": 2,
     "providerReference": "synthetic-ordering:v1:selection:example"
    },
+   "policyVersion": "gcsp-policy-v1",
    "policy": {
     "policyVersion": "gcsp-policy-v1",
     "provenance": [
@@ -44,19 +45,19 @@
      {
       "key": "lifecycle.approval.ticks.v1",
       "status": "assumed",
-      "source": "docs/gcsp/evidence/fucq111/stage-port-proposal.md",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
       "sourceDate": "2026-11-06"
      },
      {
       "key": "lifecycle.approval.declineScenario.v1",
       "status": "assumed",
-      "source": "docs/gcsp/evidence/fucq111/stage-port-proposal.md",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
       "sourceDate": "2026-11-06"
      },
      {
       "key": "lifecycle.approval.ownership.v1",
       "status": "assumed",
-      "source": "docs/gcsp/evidence/fucq111/stage-port-proposal.md",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
       "sourceDate": "2026-11-06"
      }
     ]
@@ -144,6 +145,7 @@
     "operationVersion": 2,
     "providerReference": "synthetic-ordering:v1:selection:example"
    },
+   "policyVersion": "gcsp-policy-v1",
    "policy": {
     "policyVersion": "gcsp-policy-v1",
     "provenance": [
@@ -156,19 +158,19 @@
      {
       "key": "lifecycle.approval.ticks.v1",
       "status": "assumed",
-      "source": "docs/gcsp/evidence/fucq111/stage-port-proposal.md",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
       "sourceDate": "2026-11-06"
      },
      {
       "key": "lifecycle.approval.declineScenario.v1",
       "status": "assumed",
-      "source": "docs/gcsp/evidence/fucq111/stage-port-proposal.md",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
       "sourceDate": "2026-11-06"
      },
      {
       "key": "lifecycle.approval.ownership.v1",
       "status": "assumed",
-      "source": "docs/gcsp/evidence/fucq111/stage-port-proposal.md",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
       "sourceDate": "2026-11-06"
      }
     ]
@@ -256,6 +258,7 @@
     "operationVersion": 2,
     "providerReference": "synthetic-ordering:v1:selection:example"
    },
+   "policyVersion": "gcsp-policy-v1",
    "policy": {
     "policyVersion": "gcsp-policy-v1",
     "provenance": [
@@ -268,19 +271,19 @@
      {
       "key": "lifecycle.approval.ticks.v1",
       "status": "assumed",
-      "source": "docs/gcsp/evidence/fucq111/stage-port-proposal.md",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
       "sourceDate": "2026-11-06"
      },
      {
       "key": "lifecycle.approval.declineScenario.v1",
       "status": "assumed",
-      "source": "docs/gcsp/evidence/fucq111/stage-port-proposal.md",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
       "sourceDate": "2026-11-06"
      },
      {
       "key": "lifecycle.approval.ownership.v1",
       "status": "assumed",
-      "source": "docs/gcsp/evidence/fucq111/stage-port-proposal.md",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
       "sourceDate": "2026-11-06"
      }
     ]
@@ -368,6 +371,7 @@
     "operationVersion": 2,
     "providerReference": "synthetic-ordering:v1:selection:example"
    },
+   "policyVersion": "gcsp-policy-v1",
    "policy": {
     "policyVersion": "gcsp-policy-v1",
     "provenance": [
@@ -380,19 +384,19 @@
      {
       "key": "lifecycle.approval.ticks.v1",
       "status": "assumed",
-      "source": "docs/gcsp/evidence/fucq111/stage-port-proposal.md",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
       "sourceDate": "2026-11-06"
      },
      {
       "key": "lifecycle.approval.declineScenario.v1",
       "status": "assumed",
-      "source": "docs/gcsp/evidence/fucq111/stage-port-proposal.md",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
       "sourceDate": "2026-11-06"
      },
      {
       "key": "lifecycle.approval.ownership.v1",
       "status": "assumed",
-      "source": "docs/gcsp/evidence/fucq111/stage-port-proposal.md",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
       "sourceDate": "2026-11-06"
      }
     ]

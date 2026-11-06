@@ -8,7 +8,7 @@ export function createLifecycleApprovalRoutes(service) {
         reasons: [{ field: 'query', reason: 'Order progress uses the current trusted session and demonstration run.' }] });
       if (!service || typeof service[operation] !== 'function') return result('unavailable', { retryable: true,
         reason: 'Order progress is unavailable. Ask the scheme team to check the service.' });
-      return operation === 'read' ? service.read(context, { orderUuid: searchParams.get('orderUuid') ?? undefined }) : service.list(context);
+      return operation === 'read' ? service.read(context, { orderUuid: searchParams.get('orderUuid') ?? undefined }) : service.listOrders(context);
     } });
-  return [route('/orders/progress', 'read'), route('/orders/progress/all', 'list')];
+  return [route('/orders/progress', 'read'), route('/orders/progress/all', 'listOrders')];
 }
