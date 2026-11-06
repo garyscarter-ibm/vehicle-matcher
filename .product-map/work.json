@@ -333,16 +333,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-34"
     },
     {
-      "id": "FUCQ-36",
-      "title": "Package and verify both launcher routes for the GCSP static site",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-36"
-    },
-    {
       "id": "FUCQ-37",
       "title": "Resolve the dated i5 catalogue sample through a snapshot adapter",
       "status": "In Review",
@@ -1620,6 +1610,60 @@
           "role": "story-lead",
           "source": "Thread01a1adf9-7f4a-7913-9cdb-532060b69a55 delivered scoped blocked checkpoint; requested/selected/effective gpt-6.1-sol/high; no fallback/descendants",
           "status": "stopped"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-36",
+      "title": "Package and verify both launcher routes for the GCSP static site",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-06T00:10:49Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-36",
+      "slices": [
+        {
+          "id": "manifest",
+          "status": "complete",
+          "title": "Directory-discovered-package-and-dependency-validation",
+          "observed_at": "2026-11-06T00:10:49Z",
+          "evidence": "Lead reviewed directory-discovered assembler/import-asset graph and package tests. Scoped package+launcher59/59 and UI ratchet42/42 pass; strict records targeted96639896 and a5995890. Actual browser/final integration are separately planned."
+        },
+        {
+          "id": "entry",
+          "status": "in-progress",
+          "title": "API-switch-and-root-prefix-entry-smokes",
+          "observed_at": "2026-11-06T00:10:49Z"
+        },
+        {
+          "id": "release",
+          "status": "in-progress",
+          "title": "Revision-compatibility-and-release-checklist",
+          "observed_at": "2026-11-06T00:10:49Z"
+        },
+        {
+          "id": "browser",
+          "status": "in-progress",
+          "title": "Assembled-desktop-narrow-keyboard-and-retail-matrix",
+          "observed_at": "2026-11-06T00:10:49Z"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Final-story-integration-and-required-full-validation"
+        }
+      ],
+      "unsliced": false,
+      "workers": [
+        {
+          "name": "Mary-Sue Walton",
+          "role": "story-lead",
+          "harness": "codex",
+          "source": "desktop chat 01a1ae28-6e71-7cf1-855c-85c7c38d3392; observed active own-slices",
+          "observed_at": "2026-11-06T00:07:21.185360+00:00",
+          "expires_at": "2026-11-06T02:07:21.185360+00:00",
+          "status": "active; assembler/tests/release and browser proof"
         }
       ]
     }
