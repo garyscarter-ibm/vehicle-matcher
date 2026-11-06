@@ -600,12 +600,12 @@
   },
   "plannedHarness": {
     "probe": "server/test/gcsp-manual-review-actual66.proof.mjs",
-    "probeSha256": "778594a8cfbde994438bbde08b7193b9cd7a4b6f3e8add343add5f0393f61bd6",
+    "probeSha256": "d5a629d1b34d2b8ed384e837b9c39822ad2c939b95f169fe28549949bb10e658",
     "loader": "docs/gcsp/evidence/fucq70/actual66-loader.mjs",
     "loaderSha256": "96933bd1378aa6b243865bb81b9dd8ce9aec2823e42cadfec5610dd81a530052",
     "supervisor": "docs/gcsp/evidence/fucq70/actual66-supervisor.py",
     "supervisorSha256": "4a1766de4b8e11f59749877241913eb2e032d59abb5c44b8c250c560216944b3",
-    "status": "narrow occupancy helper corrected against actual pinned stock state; unexecuted; exact review pending",
+    "status": "single sixth-case POST tally assertion corrected to exact[403]; unexecuted; exact review pending",
     "dependencyManifest": "docs/gcsp/evidence/fucq70/service-proof-dependencies.json",
     "dependencyManifestSha256": "6812e8aa4d1ac0f92d31c9bd7fbde994dbf1fb9f5a0c3703566f8072ccd1a812"
   },
@@ -615,7 +615,7 @@
     "rssBytes": 805306368,
     "scratchBytes": 134217728,
     "logBytes": 2097152,
-    "scratchRoot": "/private/tmp/test-stamp-shard-be80489a39220fe62ed2d08592a093a8",
+    "scratchRoot": "/private/tmp/test-stamp-shard-9ec433dfe1b45edaad89566fa9931d66",
     "externalReceiptDirectory": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66",
     "allocation": "none; deterministic root is planned, not created or reserved"
   },

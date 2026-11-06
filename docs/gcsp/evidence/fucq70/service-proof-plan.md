@@ -92,6 +92,10 @@ The separately admitted `0645d37` run reached all 46 application modules and all
 
 Every test body, all three release variants and the eight-setup after-hook remain byte-identical. Both original failures, loader/supervisor, 46 modules, six data inputs, eight external copies, singleton identities and dependency closure are unchanged. The revised manifest uses a fresh unused run identity. Static authoring only: no new Node, probe or diagnostic execution/allocation; exact root review and a new grant remain required.
 
+## Exact rejected-POST tally correction
+
+The admitted `b9ff9f0` result remains scoped 5/6 with all eight setups, preserved at [service-proof-occupancy-result.json](service-proof-occupancy-result.json). Dispatcher review authorised changing only the sixth-case zero-total review-POST assertion to exact ordered statuses `[403]`, retaining its deliberate origin rejection and detecting any additional transition attempt. All other probe bytes, six cases/eight setups, domain/binding/privacy assertions, sources/helpers/dependencies and original failures remain unchanged. [probe-post-tally-diagnosis.json](probe-post-tally-diagnosis.json) records exact before/after, new hashes and an unused planned run identity. No revised execution/allocation is included; exact review and a new grant remain required.
+
 ## Remaining acceptance and external ownership
 
 Passing would establish only this pinned memory-service/HTTP/controller protocol boundary. Actual FUCQ-92 release production, rendered FUCQ-69 callback/event and FUCQ-70 UI, desktop/320px/keyboard/tick captures, FUCQ-103 central session/routes/pending202/clock subscription, native PostgreSQL, authored serial full suite/strict stamp, repeatable integrated trials and final acceptance remain outstanding.

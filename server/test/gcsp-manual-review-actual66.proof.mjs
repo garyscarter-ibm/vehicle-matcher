@@ -337,6 +337,6 @@ test('actual identity/session isolation and competing review metadata readback f
   const result = await f.review.continue(); f.transport.after = null;
   assert.equal(injected, true); assert.equal(result.status, 'conflict'); assert.equal(f.review.state.conflict, true);
   assert.equal(f.review.state.details.specialRequirements, 'This tab reviewed value'); assert.equal(f.review.state.canContinue, false);
-  assert.equal(posts(f, 'claim/review').length, 0); assert.equal(f.continued.length, 0); assert.deepEqual(stableDomain(f), domain);
+  assert.deepEqual(posts(f, 'claim/review').map((r) => r.status), [403]); assert.equal(f.continued.length, 0); assert.deepEqual(stableDomain(f), domain);
   assert.equal(posts(f, 'claim').length, 1); occupancy(f, true);
 });

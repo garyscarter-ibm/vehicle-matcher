@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "status": "occupancy-probe-correction-authored-not-executed; exact execution admission required",
+  "status": "exact-rejected-POST-tally-authored-not-executed; exact execution admission required",
   "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070",
   "sharedRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher",
   "applicationSourceBase": "16a83dde4bfbd48721bce5c26f98b482f4f5db40",
   "sourcePlanPublication": "f0420d018889b6c6e65c4e46e3722000314b6f51",
-  "sourceManifestSha256": "80f4ff4244a508a0e97789c044d31216f51a152874b085299b78db574305c96c",
+  "sourceManifestSha256": "421e04eeadb8ec3f1b7da55405f2488172670be3933a9f695c32185f326b17db",
   "dependencyManifestSha256": "6812e8aa4d1ac0f92d31c9bd7fbde994dbf1fb9f5a0c3703566f8072ccd1a812",
   "ownedFiles": [
     {
       "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs",
-      "sha256": "778594a8cfbde994438bbde08b7193b9cd7a4b6f3e8add343add5f0393f61bd6"
+      "sha256": "d5a629d1b34d2b8ed384e837b9c39822ad2c939b95f169fe28549949bb10e658"
     },
     {
       "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-loader.mjs",
@@ -50,7 +50,7 @@
   "probe": {
     "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs",
     "relativePath": "server/test/gcsp-manual-review-actual66.proof.mjs",
-    "sha256": "778594a8cfbde994438bbde08b7193b9cd7a4b6f3e8add343add5f0393f61bd6",
+    "sha256": "d5a629d1b34d2b8ed384e837b9c39822ad2c939b95f169fe28549949bb10e658",
     "imports": [
       "blocks/gcsp/manual-gallery/claim-controller.js",
       "blocks/gcsp/manual-gallery/gallery-model.js",
@@ -85,9 +85,9 @@
   ],
   "topLevelTests": 6,
   "runtimeSetups": 8,
-  "runToken": "be80489a39220fe62ed2d08592a093a8",
-  "scratch": "/private/tmp/test-stamp-shard-be80489a39220fe62ed2d08592a093a8",
-  "records": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/be80489a39220fe62ed2d08592a093a8",
+  "runToken": "9ec433dfe1b45edaad89566fa9931d66",
+  "scratch": "/private/tmp/test-stamp-shard-9ec433dfe1b45edaad89566fa9931d66",
+  "records": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/9ec433dfe1b45edaad89566fa9931d66",
   "nodeArgv": [
     "/opt/homebrew/bin/node",
     "--experimental-loader",
@@ -125,7 +125,7 @@
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-supervisor.py",
     "audit",
     "--receipt",
-    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/be80489a39220fe62ed2d08592a093a8/receipt.json"
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/9ec433dfe1b45edaad89566fa9931d66/receipt.json"
   ],
   "limits": {
     "workers": 1,
@@ -133,12 +133,12 @@
     "rssBytes": 805306368,
     "scratchBytes": 134217728,
     "logBytes": 2097152,
-    "scratchRoot": "/private/tmp/test-stamp-shard-be80489a39220fe62ed2d08592a093a8",
+    "scratchRoot": "/private/tmp/test-stamp-shard-9ec433dfe1b45edaad89566fa9931d66",
     "externalReceiptDirectory": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66",
     "allocation": "none; deterministic root is planned, not created or reserved"
   },
   "execution": "single reviewed run token; refuse existing resources/evidence; no automatic repeat, source repair or fallback",
-  "validation": "Static exact prefix/suffix comparison confines probe delta to occupancy helper; six case bodies and eight-setup hook unchanged. Source/dependency/harness identities checked; no Node syntax/probe/diagnostic execution.",
+  "validation": "Static exact single assertion replacement verified; six cases/eight-setup hook, preceding403 assertion and subsequent no-callback/domain/one-claim/occupancy checks unchanged. No Node syntax/probe/diagnostic execution.",
   "loaderRegistration": {
     "url": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-loader.mjs",
     "parentUrl": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/",
@@ -158,5 +158,12 @@
     "diagnosis": "docs/gcsp/evidence/fucq70/probe-occupancy-diagnosis.json",
     "scope": "Only occupancy helper: authoritative stock.state plus existing occupying ledgers, exact shared binding and unchanged quote. Six case bodies, three release variants, eight-setup hook and all producer/loader/supervisor inputs unchanged.",
     "execution": "none; review and fresh grant required"
+  },
+  "tallyRevision": {
+    "priorHarnessCommit": "b9ff9f009ccb2d7469cfb87f5f543366c34d369f",
+    "priorResultCommit": "b64eeab25aa3b6e5a855830d52ed650d554775b3",
+    "diagnosis": "docs/gcsp/evidence/fucq70/probe-post-tally-diagnosis.json",
+    "scope": "Replace only sixth-case zero total claim/review POST count with exact ordered statuses[403]. Keeps the earlier origin rejection and proves continue adds no POST. All other probe bytes unchanged.",
+    "execution": "none; exact review and fresh grant required"
   }
 }
