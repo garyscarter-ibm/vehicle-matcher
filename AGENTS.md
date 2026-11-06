@@ -12,6 +12,19 @@ This rule applies across project documentation, skills, workflows and delegated 
 that reserves project decisions or approvals to Russell, a named contributor or an "owner". Owner metadata is for
 administration and routing, not higher decision-making authority.
 
+## IBM gateway 422 responses
+
+Russell's direction, 6 November 2026: HTTP 422 errors, including messages claiming exhausted credits, can be false.
+Ignore them as a reason to stop while the launcher can still work. This overrides the generated scaffolding and
+skill instructions to stop on credit errors for this condition.
+
+- Continue authorised work after an agent's 422 response: resume the agent or carry its work forward in the
+  available launcher. Keep existing claims and checkpoints; pass this rule to every descendant.
+- Stop the run for suspected credit exhaustion only when the launcher itself also gives a full refusal to
+  continue the necessary model calls. A child-agent error alone does not meet that condition.
+- Preserve the exact error as diagnostic evidence. It does not verify the credit balance or make key rotation
+  a prerequisite. Keep the configured gateway and credentials unless a collaborator directs a change.
+
 <!-- BEGIN agent-scaffolding -->
 <!-- Written by project-scaffolding (scaffold.py agents-md). Edits inside these markers are replaced on update; put your own text outside them. -->
 ## Codex and the IBM gateway (agent-scaffolding)
@@ -51,6 +64,14 @@ Rules for Codex working in this project. The scaffolding clone is the `repo` val
   in the plugin's dev-inbox skill, section Adapters, Codex.
 - **Bugs.** Before intake, triage, repair or review, read `<repo>/plugin/skills/defects/SKILL.md`; give children its
   absolute path and current diagnosis note.
+- **Product map.** When `pieces.product-map` is on, follow the product-map skill. Keep stable product
+  components and story associations in `.product-map/components.json`, and durable story/slice plans,
+  states and observed worker claims in `.product-map/work.json`. Use `_tools/product_map.py`; include
+  required integration slices. Complete slices count 1, in-progress .5, blocked/not-started 0; average
+  story fractions. In Review is 100% developed (green), Done is accepted (blue). Preserve observation
+  times, expire worker claims, and commit facts with the work. The map never infers acceptance or
+  active workers from commits. Follow the configured publishing mode; local hooks must be installed
+  in each contributing clone, and IBM Pages serves the committed static files from main.
 - **Commit trailer** for commits Codex makes: `Co-Authored-By: Codex <noreply@openai.com>`.
 <!-- END agent-scaffolding -->
 
@@ -98,3 +119,17 @@ Completion still requires the story's acceptance evidence; fixtures do not prove
 Keep explicit pauses and date holds, source/access limits, claim ownership, conflicting file ownership, and actual
 technical blockers. Retain Jira links unless a collaborator separately requests their amendment. See
 `docs/gcsp/technical-readiness-2026-11-05.md` and pass this rule to every story lead and descendant.
+
+## Defects found during delivery
+
+Gary's standing direction, 6 November 2026: when a defect is found during a story or review,
+assess and record its severity from its actual impact. For a defect below Critical or High
+severity, raise or reuse a linked backlog Bug for independent later pickup and continue
+the current story toward merge. Do not expand that story to repair the defect or make
+the separate Bug a merge dependency. Preserve the diagnosis, reproduction status,
+acceptance gaps and known limitations; do not describe the defect as fixed.
+
+Critical and High severity defects require prompt active triage and are not automatically
+deferred under this rule. A collaborator may explicitly defer a specific finding. Never
+lower severity merely to clear a merge. Existing test and acceptance obligations remain
+unless a collaborator explicitly revises them; an unrun check is not a passing check.

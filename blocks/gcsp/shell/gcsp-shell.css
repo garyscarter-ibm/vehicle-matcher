@@ -41,9 +41,9 @@
   color: var(--gcsp-on-accent);
   border-radius: var(--gcsp-radius);
   text-decoration: none;
-  transform: translateY(-200%);
+  transform: translateY(-200%); clip-path: inset(50%);
 }
-.gcsp-skip:focus { transform: translateY(0); }
+.gcsp-skip:focus { transform: translateY(0); clip-path: none; }
 
 /* ---------- header ---------- */
 .gcsp-header {

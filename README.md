@@ -97,6 +97,30 @@ https://<user>.github.io/<repo>/?api=https://bmw-matcher-api.onrender.com
 Without `?api=`, the page falls back to `http://localhost:8787` (local-dev
 default), so bookmark/share the URL *with* the param.
 
+## GCSP static package (separate release)
+
+Build the GCSP Render static site from `gcsp-poc` with the reusable assembler:
+
+```sh
+node scripts/assemble-site.mjs --output _site-gcsp --environment deployed --api https://YOUR-GCSP-API --revision YOUR-COMMIT
+```
+
+The output directory must be empty. For local development, omit `--environment`
+and `--api` to use `http://localhost:8787`. Add `--employee-disabled` to keep the
+complete retail launcher available while the employee route is unavailable.
+`--require-demo-pages` additionally enforces the offer/Greg/outbox walkthrough
+release gate and names any absent page. Ordinary assembly packages existing
+blocks and discovers later blocks without adding a story dependency.
+`site-manifest.json` records discovered GCSP blocks, exact file digests, API,
+revision and employee availability. The assembler checks local dependencies and
+required images before publication, and extracts the standalone script into an
+external module for the package's script CSP.
+
+The existing retail Pages workflow, Render blueprint and EDS sync are unchanged.
+No site is provisioned or deployed by this command. Follow the
+[GCSP revision, configuration and deployed-smoke checklist](docs/gcsp/evidence/fucq-12/fucq36-release.md)
+before a separately authorised release.
+
 ## Project layout
 
 ```
