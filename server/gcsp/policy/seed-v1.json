@@ -12551,6 +12551,102 @@
       "sourceDate": "2026-11-06",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "lifecycle.documents.exceptions.v1",
+      "value": {
+        "overdue": "document-overdue",
+        "failed": "document-failed"
+      },
+      "unit": "lifecycle-exception event type keys",
+      "status": "assumed",
+      "basis": "Keyed exception types recorded with the renewal-case receipt shape. The renewal-risk trigger uses them only when renewalCase.lifecycle.eventTypes selects them.",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-documents-and-readiness--fucq-116",
+      "sourceDate": "2026-11-06",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "lifecycle.documents.scenario.v1",
+      "value": {
+        "failItemIds": [],
+        "failureReason": "The synthetic provider reported this step as failed."
+      },
+      "unit": "item IDs selected to fail; reason text",
+      "status": "assumed",
+      "basis": "Difficult-case switch for the synthetic provider. Empty by default; a scenario version lists the scheme-team or retailer items that fail.",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-documents-and-readiness--fucq-116",
+      "sourceDate": "2026-11-06",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "lifecycle.documents.v1",
+      "value": {
+        "openingStage": "sent to ordering",
+        "openingState": "approved",
+        "items": [
+          {
+            "itemId": "agreement-acknowledgement",
+            "kind": "document",
+            "label": "Vehicle agreement",
+            "owner": "employee",
+            "action": "Acknowledge the agreement",
+            "dueSeconds": 172800,
+            "schemeIds": [
+              "choices-fs-uk",
+              "choices-rr-production"
+            ],
+            "basis": "Synthetic stand-in for signing the vehicle agreement; two demo days is a plausible response window. Signing may follow booking."
+          },
+          {
+            "itemId": "licence-check",
+            "kind": "document",
+            "label": "Driving licence check",
+            "owner": "scheme-team",
+            "progressSeconds": 3600,
+            "dueSeconds": 86400,
+            "schemeIds": [
+              "choices-fs-uk",
+              "choices-rr-production"
+            ],
+            "basis": "Synthetic scheme-team check of the employee's licence; an hour of demo time is a plausible turnaround."
+          },
+          {
+            "itemId": "vehicle-preparation",
+            "kind": "readiness",
+            "label": "Vehicle preparation",
+            "owner": "retailer",
+            "progressSeconds": 86400,
+            "dueSeconds": 259200,
+            "schemeIds": [
+              "choices-fs-uk",
+              "choices-rr-production"
+            ],
+            "basis": "Synthetic retailer preparation (valet, plates, handover pack); one demo day is plausible."
+          },
+          {
+            "itemId": "delivery-to-retailer",
+            "kind": "readiness",
+            "label": "Delivery to the retailer",
+            "owner": "retailer",
+            "progressSeconds": 172800,
+            "dueSeconds": 432000,
+            "schemeIds": [
+              "choices-fs-uk",
+              "choices-rr-production"
+            ],
+            "basis": "Synthetic transport of the car to the collecting retailer; two demo days is plausible."
+          }
+        ]
+      },
+      "unit": "document and readiness item registry; seconds of demo-clock time",
+      "status": "assumed",
+      "basis": "Plausible synthetic document and vehicle-readiness steps after an order is sent to ordering (HLD columns 12 and 13). Not BMW policy; owners, delays and the opening stage are revisable here.",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-documents-and-readiness--fucq-116",
+      "sourceDate": "2026-11-06",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
     }
   ]
 }
