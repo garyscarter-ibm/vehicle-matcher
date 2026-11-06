@@ -1,0 +1,55 @@
+{
+  "at": "2026-11-06T08:31:05.548253+00:00",
+  "verdict": "PASS",
+  "scope": "Nine exact original renderer cases only; browser/native/full/whole-story acceptance remains open",
+  "run": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-6b69f98c9b5643689d6c69c8762958a0",
+  "grant": "fucq107-renderer9-uri1-a8b8eb1-0708",
+  "grantStatus": "consumed-once",
+  "sourceCommit": "94e05ff9070aa19f5deb3e9997dfed96cc268473",
+  "publishedHarnessCommit": "a8b8eb123e2ebd21093ddcb70257e500f6833b9c",
+  "admissionSHA256": "d5893900496e23cc5d38907af05bb92672b6b9125b11ca7f4b2dceeea66ad866",
+  "counts": {
+    "tests": 9,
+    "suites": 0,
+    "pass": 9,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "names": [
+    "shared options preserve keyboard focus and do not confirm on selection",
+    "shared slider and labelled equipment textarea retain focused controls across edits",
+    "invalid, busy and saved states disable confirmation and move completed focus to the heading",
+    "uncertain state offers the same-command retry; unavailable keeps saved receipt without a no-match claim",
+    "comparison uses the supplied offer projector, shared cards/table and exact units/unknown/source evidence",
+    "absent or failed canonical offer projection never paints an unverified ready page",
+    "body teardown suppresses a late read; aborted mount performs no work",
+    "standard element retains a pre-upgrade adapter and disconnect cleans its pending body",
+    "owned block sources have no inline handlers, unsafe execution or stylesheet changes inside kit controls"
+  ],
+  "independentAuditorChecks": 19916,
+  "independentAuditor": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-6b69f98c9b5643689d6c69c8762958a0/parent-audit.json",
+    "sha256": "3fb6aef692a507447c093741bfd50bd3abbdb81d7660ca92b2bb44fe754a04c3"
+  },
+  "actualSupervisorExit": 0,
+  "actualIndependentAuditorExit": 0,
+  "originalTAPSHA256": "0124963a55df2c32a0352e2ed239e6ed37f035536dd86652811200a97a5d1b7b",
+  "originalJournalSHA256": "cb1166a7e9b62b2c09c77d52f43c08399c802895f78cb773f414c9363f4214c2",
+  "launcherReceipt": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq107-audit-launch-result-0813.json",
+    "sha256": "ca812e50058d6a27f32bf06dd165b62425b33cf2a5df7e9c80c439e472c7eeca"
+  },
+  "auditPeakAggregateRSS": 67682304,
+  "testPeakAggregateRSS": 308117504,
+  "testPeakCombinedBytes": 10902240,
+  "postwriteRunAllocatedBytes": 2220512,
+  "rootFinalReceiptAllowance": 65536,
+  "originalsUnchanged": true,
+  "scratchAndGroupAndOwnerAndReservationAbsent": true,
+  "cleanupMutations": 0,
+  "ledgerMutations": 0,
+  "priorFailedNineCaseRun": "Preserved; remains failed/unaccepted. This is a distinct new once-granted run.",
+  "next": "Evidence-only publication authorized. No rerun/nextvariant granted."
+}
