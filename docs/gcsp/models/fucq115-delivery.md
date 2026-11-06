@@ -162,3 +162,29 @@ This supersedes the prior seven-row metadata proposal. Existing13/13 and actual
 baseline/source evidence above retains its original tested identities; no code or
 statistical input changed, so no duplicate test allocation was made. The borrowed
 link remains absent and all prior cleanup receipts stand.
+
+## FUCQ-103 read-only review acknowledgement
+
+On6November2026, FUCQ-103 independently reported the published proposal at
+`9e2c2764dbe36f2ec45737b0833aeb78a54a7613` matches file SHA-256
+`89565ec7fa05db042e623c6c88c132542505f7757848e61784f38d49b8391987` and canonical
+bundle digest `dec7093d94d6ce4494c98a92b6aa2e0dc4207c1ee506d1eb449e51c36e9cd54d`.
+They accepted the214-character basis correction at read-only review. Registration
+and adoption are explicitly not yet implemented/published; this is not canonical
+activation or permission to run the320-record dataset.
+
+The reported existing interface reference is
+`3f1cc3414d700b1028ff1fec640a40591324b728`:
+`PolicyService.withPublicationPorts({ identity, clock, repository })`, then
+`adoptReviewedAssumptions(gregContext, { commandId, expectedActiveVersion,
+policyVersion, effectiveFrom, definitionSetId })`. Its five-key command supports
+missing-only append, original-command retry and current-run activation while
+retaining tuned values/provenance. This is upstream-reported interface context;
+Pluto has not imported or independently exercised that source. The dispatcher
+still reviews the finite immutable source composition before use.
+
+FUCQ-103 will supply a verified immutable registration/adoption checkpoint and
+dated existing-key publication inputs for cohort80/cycles4/record bound>=320/
+choice bound40000 and a comparison start at/after pinned preparation. Read back
+through one pinned PolicyService; never edit snapshot hashes or provenance to
+bypass publication. Existing13/13checks and clean-park receipts remain unchanged.
