@@ -1,11 +1,11 @@
 {
-  "verification": "Independent filesystem/process/open-file/reservation audit through service-v9; read-only, no test allocation",
-  "observedAt": "2026-11-06T00:00:45Z",
-  "latestResult": "service-v9-result.json",
-  "latestResultSHA256": "93574850cbbc074a4c05d38904dd43e2a9fdbaa144a7a33fd624a4b4bbf82f11",
-  "ownershipManifests": 18,
-  "scratchRoots": 10,
-  "sumMeasuredPeakScratchBytes": 65536,
+  "verification": "Independent filesystem/process/open-file/reservation audit through service-v9 and integration-v2; read-only, no test allocation",
+  "observedAt": "2026-11-06T00:11:03Z",
+  "latestResult": "integration-v2/result.json",
+  "latestResultSHA256": "461f15f3212fdc786572fe6e02834a7b4ba3dfd23e03390f3fc52703c4891583",
+  "ownershipManifests": 20,
+  "scratchRoots": 12,
+  "sumMeasuredPeakScratchBytes": 1333824,
   "temporaryLinksRemoved": 8,
   "ownedScratchRootsAbsent": true,
   "ownedDependencyLinksAbsent": true,
@@ -15,5 +15,13 @@
   "openFilesOnOwnedRoots": [],
   "ownReservationsReleased": true,
   "leftovers": [],
+  "historicalNullIdentityReconciliation": [
+    {
+      "manifest": "integration-v1/ownership/92d57c79ae1a442cbb7fbe1211955165.json",
+      "pid": 81041,
+      "start": null,
+      "currentlyAbsent": true
+    }
+  ],
   "retainedFailureLogsBounded": true
 }

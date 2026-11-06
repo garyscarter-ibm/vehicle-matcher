@@ -1,0 +1,37 @@
+TAP version 13
+# node:internal/modules/run_main:107
+#     triggerUncaughtException(
+#     ^
+# Error: Undeclared integration module mapping
+#     at resolve (file:///private/tmp/test-stamp-shard-92d57c79ae1a442cbb7fbe1211955165/integration-loader.mjs:20:55)
+#     at nextResolve (node:internal/modules/esm/hooks:769:28)
+#     at AsyncLoaderHooksOnLoaderHookWorker.resolve (node:internal/modules/esm/hooks:265:30)
+#     at \#resolve (node:internal/modules/esm/loader:687:37)
+#     at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)
+#     at node:internal/modules/esm/loader:639:32
+#     at TracingChannel.tracePromise (node:diagnostics_channel:539:22)
+#     at ModuleLoader.import (node:internal/modules/esm/loader:635:21)
+#     at AsyncLoaderHooksOnLoaderHookWorker.register (node:internal/modules/esm/hooks:177:34)
+#     at initializeAsyncLoaderHooksOnLoaderHookWorker (node:internal/modules/esm/worker:76:28)
+# Node.js v26.5.0
+# Subtest: server/test/gcsp-offer-decisions-integration.test.js
+not ok 1 - server/test/gcsp-offer-decisions-integration.test.js
+  ---
+  duration_ms: 137.435584
+  type: 'test'
+  location: '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/test/gcsp-offer-decisions-integration.test.js:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 142.289292

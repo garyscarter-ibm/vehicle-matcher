@@ -1,8 +1,11 @@
 # FUCQ-106 finite integration handoff
 
 Recorded 6 November 2026. Status: **blocked**, independent checkpoint published;
-this is a read-only source/port proposal awaiting dispatcher review. No additional
-source has been imported and no canonical policy has been activated. Jira journey
+the initial read-only proposal was reviewed and its first39 memory composition
+was approved and passed 12 cases. `actual-integration-checkpoint.json` records
+that later execution. The source-plan JSON is preserved unchanged as the reviewed
+record; 103 source/registration/adoption remains ungranted and no canonical policy
+has been activated. Jira journey
 links are context; the concrete remaining gates below determine completion.
 
 ## Immutable composition
@@ -43,8 +46,9 @@ Add only these four modules for the producer/access/decision composition:
 Total addition: **53,533 bytes**, 39 modules including the reused 35. The 106
 modules will be available at this checkpoint's final commit; hashes identify the
 exact bytes independently of the commit. Their relative import closure is already
-inside the 35. The new integration test entry remains to be authored, reviewed
-and hashed before execution; this proposal does not manufacture its result.
+inside the 35. The subsequently authored dedicated integration test entry is
+recorded with its exact pre-allocation hash in `actual-integration-checkpoint.json`;
+it adds one test entry to the 39 source modules.
 
 Preserve one canonical project-relative module URL for every import and re-export.
 The loader resolves canonical URLs once, then supplies hash-checked overlay bytes
@@ -84,7 +88,7 @@ shared gate before `gateAuthorized: true`, exact command Origin and safe headers
 Use in-memory request streams initially. Central server/host registration remains
 a separately coordinated writer and is not imported into this proof.
 
-First root check after approval and a fresh resource reservation: a new bounded
+Approved first check, now completed with a fresh resource reservation: the bounded
 `gcsp-offer-decisions-integration.test.js`, one worker, the same reviewed loader,
 real producer plus both real capabilities plus actual 106 service. Exercise accept,
 typed decline, same-command replay, changed intent, cross-employee/expired
@@ -183,7 +187,8 @@ Backend scoped evidence needs no new screenshots; page acceptance still does.
 25/25 scoped passes, zero skips, unchanged behavior hashes:
 `scoped-service-checkpoint.json`. Final independent cleanup is in
 `final-cleanup-receipt.json`. The seven stable slices remain unfinished and no
-authored acceptance is checked. The worker observation is stopped/expired on
-parking. Resume only the approved bounded integration scope with fresh headroom
+authored acceptance is checked. The approved first39 check now has 12/12 scoped memory passes; policy, remote,
+consumer, runtime and native/full gates remain open. The worker observation is
+stopped/expired on parking. Resume only approved bounded integration scope with fresh headroom
 and the normal owned scratch/finalizer contract; do not recreate the claim or
 worktree or infer completion from a published branch.

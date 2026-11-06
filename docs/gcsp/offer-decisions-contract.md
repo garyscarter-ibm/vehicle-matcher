@@ -1,7 +1,9 @@
 # Offer decisions · FUCQ-106
 
-Contract checkpoint, 5 November 2026. This is the independent decision boundary;
-producer/access/expiry, downstream, runtime and native acceptance remain open.
+Contract checkpoint, 5 November, with actual memory integration on 6 November
+2026. The approved producer/private-access/stored-subject/decision/expiry composition
+has 12 scoped passes. Canonical policy, remote/downstream, runtime and native/full
+acceptance remain open.
 No screen or policy seed changes are included. Follow `experience-quality.md`,
 the supplied account/replace-vehicle shell references and current Density tokens.
 FUCQ-105 consumes the outcomes below; an accepted offer is employee selection,
@@ -21,7 +23,9 @@ Readiness uses actual interfaces, not Jira journey order. Immutable source reads
 Owned new paths: `server/gcsp/offers/decision.js`, `decision-http.js`, dedicated
 `server/test/gcsp-offer-decisions*.test.js`, this contract and evidence. Root
 coordinates imports of immutable source paths and central runtime registration.
-No whole-branch merge, dirty-source copying, schema, producer, identity, brief,
+The dispatcher subsequently approved only the exact first39 memory-test composition
+recorded in `evidence/fucq106/actual-integration-checkpoint.json`. No whole-branch
+merge, dirty-source copying, schema, producer, identity, brief,
 policy seed, evaluator or central-host edits are part of this allocation.
 
 ## Commands and presentation
@@ -211,12 +215,14 @@ Stable slices are recorded through `_tools/product_map.py`:
 6. `runtime`: coordinated central host and handler registration; no competing central writer.
 7. `final-validation`: authored acceptance, native/full-suite and integrated response evidence.
 
-Before imports, root must coordinate the minimum immutable producer/evaluator/
-access files and their precise import closure. The finite proposal in
+Root coordinated the exact immutable producer/evaluator/access import closure.
+The initial finite proposal in
 `evidence/fucq106/integration-plan.md` reuses the reviewed 35-module/six-overlay
 producer composition, pins current access at `4a56d386`, and records exact source
-hashes/bytes, policy bundle and registration diff. No imports or policy activation
-have been performed. Remote adapter
+hashes/bytes, policy bundle and registration diff. Its first39 memory composition
+was approved and passed 12 actual integration cases. The exact source-plan JSON
+is retained unchanged as the reviewed record. No 103 policy/adoption source was
+imported and no registration patch or policy activation was performed. Remote adapter
 selection/release and downstream consumption need agreed executable ports.
 The independent service can progress with injected ports over real memory/
 PolicyService/DemoClock/identity; fake capability success never closes actual
@@ -246,11 +252,37 @@ Actual central dispatch/resolver composition is still open.
 The final independent checkpoint has 25/25 scoped passes and exact code hashes in
 `evidence/fucq106/scoped-service-checkpoint.json`. Fixtures use the actual merged
 shared calculation with a genuine account bridge; they do not establish the
-unimported stored-subject factory or FUCQ-102 capability parity. No source import
-expansion has occurred. The real-account guard is verified corrected at
+stored-subject factory or FUCQ-102 capability parity in that independent variant.
+The subsequent approved actual integration below supplies that memory evidence.
+The real-account guard is verified corrected at
 `b876536`, its regression is published at `a3fdcdf`, and the current access
 timing projection is verified at `4a56d386`.
 
 Canonical policy activation is coordinated through FUCQ-103's existing reviewed
 assumption bundle and same-provider adoption/CAS path. There is no seed/provider/
 schema shortcut or active fallback. All seven slice gates remain unfinished.
+
+## Actual memory integration checkpoint · 6 November 2026
+
+The dispatcher reviewed and approved exactly the first 39 modules in the published
+source plan (receipt `.claude/test-runs/ownership/fucq106-source-review-2357.json`).
+`gcsp-offer-decisions-integration.test.js` has **12/12 scoped passes**, zero skips,
+through actual FUCQ-100 producer and expiry, current FUCQ-102 private token/account
+capabilities, the actual stored-subject export and both 106 service/HTTP adapters.
+The hash-checked loader journal records one canonical identity for all 39 modules
+plus the test entry. No unmerged source files were copied into application paths.
+
+The tests prove local selection/decline, cross-route replay, changed intent,
+concurrent contradiction, cross-owner/copied-context/session expiry refusal,
+actual deadline expiry without decline/priority, stale reset, slot exclusion,
+pinned quote prices and current eligibility. Alternative reason-policy input also
+proves distinct current reason/exclusion versus retained price pins; this does
+not prove canonical activation. In-process request streams verify exact Origin,
+shared actual capability use and invalid-cookie refusal without account fallback.
+
+Exact source/test/loader/supervisor identities, module journal, commands, measured
+resources and safe response representatives are recorded in
+`evidence/fucq106/actual-integration-checkpoint.json`. The initial loader-bootstrap
+failure and final independent cleanup audit are retained. No full-suite stamp,
+remote adapter, actual 107/108 delivery, central runtime, browser or native database
+acceptance is claimed. The overall story remains blocked on these explicit gates.
