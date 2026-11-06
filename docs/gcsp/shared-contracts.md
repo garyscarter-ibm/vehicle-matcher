@@ -643,7 +643,7 @@ identity (`renewalAuthority` `validated` only from the order's own slot renewal,
 source selection operation and versions, top-level pinned `policyVersion` with per-key provenance, `lifecycleRevision`,
 DemoClock `asOf`, stages with state, instant and provider reference, owner, next step, outcome, blocked reason and provider
 mode. Missing, pending, failed, unsupported and foreign reads return `not-found`, `unavailable` (`state: not-ready`),
-`forbidden` or `stale-run`; none invents an order. `listOrders` also returns `failed` (at most 20 `{ orderUuid, status, code }`) and `failedCount`: an order with an undecodable source or a missing or malformed pinned policy is listed there and skipped, so healthy orders are still enumerated. An unavailable policy source, clock or repository, or a foreign run, refuses the whole list.
+`forbidden` or `stale-run`; none invents an order. `listOrders` also returns `failed` (at most 20 `{ orderUuid, status, code }`) and `failedCount`: an order with an undecodable source or a missing or malformed pinned policy row is listed there and skipped, so healthy orders are still enumerated. An unavailable or invalid shared policy source (or any other policy-wide error), an unavailable clock or repository, or a foreign run, refuses the whole list with its own status and cause.
 
 Transitions append completed `event_receipts` rows under `lifecycle:approval:<orderUuid>` (`revision:NNNNNN`, type
 `lifecycle-stage-changed`); each stage decision is one `pending_operations` row of type `lifecycle-approval-decision`
