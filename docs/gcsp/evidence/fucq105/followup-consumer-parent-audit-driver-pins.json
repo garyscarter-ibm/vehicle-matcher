@@ -1,0 +1,197 @@
+{
+  "schema": 1,
+  "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-080",
+  "kind": "standalone-parent-audit-driver-authoring-only",
+  "execution_requires_separate_root_grant": true,
+  "runtime_grant_issued": false,
+  "baseline_consumer_code_commit": "97adc05a3b822b0832d013a934c5e836e0fcfa45",
+  "recipe_publication_commit": "f2558fb1817301bb09c2fd1b95638f4b6f8322cd",
+  "driver": {
+    "path": "docs/gcsp/evidence/fucq105/followup-consumer-parent-audit-driver.py",
+    "sha256": "26bbd1ba79680356f7f962314e444fb140a7862571a41856560c6da7687cea2e",
+    "bytes": 31491
+  },
+  "interface": {
+    "path": "docs/gcsp/evidence/fucq105/followup-consumer-parent-audit-driver.md",
+    "sha256": "0b640d26f5b9a20d6d03e3d719e02fe979534b06ff90265ad74220284bfc6f0b",
+    "bytes": 9187
+  },
+  "recipe": {
+    "path": "docs/gcsp/evidence/fucq105/followup-consumer-parent-audit-recipe.md",
+    "sha256": "712f02dd1a25b1ec13fa2860c1f50679cd244e62cc85c268cb51853b5fdcba0d",
+    "bytes": 16254
+  },
+  "recipe_pins": {
+    "path": "docs/gcsp/evidence/fucq105/followup-consumer-parent-audit-pins.json",
+    "sha256": "c14078ced88762933828d05bd8fc0884f9b8bd56db59d671ed7534f5a07c2631",
+    "bytes": 6958
+  },
+  "consumer_plan": {
+    "path": "docs/gcsp/evidence/fucq105/followup-consumer-source-plan.json",
+    "sha256": "dc865716840e0edd49917f4b07b29ccf238f32087ed53d01d9a7bc3530003d5d",
+    "bytes": 72271
+  },
+  "existing_harness": {
+    "server/test/gcsp-offer-view-followup-consumer.test.js": {
+      "sha256": "35952d75b1f7d0bd7edd39c5c4b5c88a374e9599f9cabe62ad0fb672a5dc3b54",
+      "bytes": 21419
+    },
+    "docs/gcsp/evidence/fucq105/followup-consumer-loader.mjs": {
+      "sha256": "b86ef4c3bff3af565a0d954fd12c845999cb10f0b8f511895dc8976a808cc784",
+      "bytes": 2918
+    },
+    "docs/gcsp/evidence/fucq105/followup-consumer-supervisor.py": {
+      "sha256": "d383b76421cad91efbe8a0933c2707dbb6d11bb13ace8f61924d1b94ac0fee2d",
+      "bytes": 26805
+    },
+    "docs/gcsp/evidence/fucq105/followup-consumer-audit.py": {
+      "sha256": "78e39ae67e6dea25aa5b4ebd3c15d66a8e2bea3201d90f009eacba8e0e8db6cd",
+      "bytes": 12008
+    },
+    "docs/gcsp/evidence/fucq105/decision-mixed-ledger.py": {
+      "sha256": "14726d310da350b3d8e0b8b2c5e410d9f93167c841e52c9e4ede974a37870f69",
+      "bytes": 13685
+    },
+    "docs/gcsp/evidence/fucq105/decision-mixed-lifecycle.py": {
+      "sha256": "4f204054c465a45efba0256d770b763d60fdd886293dca00378e3d2d05a1852c",
+      "bytes": 6213
+    },
+    "_tools/test_resources.py": {
+      "sha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+      "bytes": 36093
+    },
+    "_tools/test_stamp.py": {
+      "sha256": "88a16018b5b8fa225463b590f2283b4baa6be4951f258bba4846eacc3795a49e",
+      "bytes": 36134
+    },
+    "_tools/scaffold_git.py": {
+      "sha256": "ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a",
+      "bytes": 129000
+    },
+    "docs/gcsp/evidence/fucq105/followup-consumer-bounds.py": {
+      "sha256": "250d99217547301126161e66c25b67d5b4cc9fb295e1b86fcb0a62f0e21ac41f",
+      "bytes": 20308
+    }
+  },
+  "python": {
+    "path": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+    "sha256": "ec201019b3d883e095e753405a6fc5c1ae8f3b4905231dfd3dc6b4a1f348056f",
+    "bytes": 102352,
+    "resolved_path": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+    "device": 16777232,
+    "inode": 90766555,
+    "mode": 493,
+    "uid": 0,
+    "nlink": 1
+  },
+  "dependency_paths": {
+    "pg": {
+      "installed_root": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/package.json",
+      "entry": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/index.js"
+    },
+    "jsdom": {
+      "installed_root": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/jsdom",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/jsdom/package.json",
+      "entry": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/jsdom/lib/api.js"
+    }
+  },
+  "node": {
+    "path": "/opt/homebrew/bin/node",
+    "realpath": "/opt/homebrew/Cellar/node/26.5.0/bin/node",
+    "sha256": "70851490e028b3d699a8d6d4e1de909af2a989359ae807974c92af9c6580a8e8",
+    "installationIdentity": [
+      16777232,
+      149228790
+    ]
+  },
+  "retained_dependencies": {
+    "pg": {
+      "version": "8.23.1",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/package.json",
+      "packageJsonSha256": "b1e53333a3d0c2c47c49a5cb919d221135dc03145df740925b899bc2baacc435",
+      "entry": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/index.js",
+      "entrySha256": "3fad6e6d3d976edbabe0cbc9e1d39f4340bcb719bbbb186a0d3a24f3dbd4a94c",
+      "installedRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg",
+      "installationDevice": 16777232,
+      "installationInode": 172770739,
+      "rule": "Retained read-only installed dependency; no install, download, DB connection or mutation. Verify before/after; lockfiles identify transitive versions; this is not a byte audit of all third-party transitive packages."
+    },
+    "jsdom": {
+      "version": "30.0.1",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/jsdom/package.json",
+      "packageJsonSha256": "e87940b12f720a5b735a5df82108b634a238b8c6ebced71050a346a1675575b9",
+      "entry": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/jsdom/lib/api.js",
+      "entrySha256": "22a63aa40bad13ea909a115b0c49fbae3493a291414765221942fc5d4396356f",
+      "installedRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/jsdom",
+      "installationDevice": 16777232,
+      "installationInode": 153860785,
+      "rule": "Retained read-only installed dependency; no install, download, DB connection or mutation. Verify before/after; lockfiles identify transitive versions; this is not a byte audit of all third-party transitive packages."
+    }
+  },
+  "parent_contract": {
+    "workers": 1,
+    "audit_seconds": 120,
+    "parent_seconds": 180,
+    "ram_mib": 768,
+    "minimum_ram_mib": 768,
+    "require_full_grant": true,
+    "combined_mib": 128,
+    "retained_mib": 8,
+    "readonly_original_admission_mib": 5,
+    "parent_metadata_allowance_mib": 3,
+    "parent_monitor_limit_mib": 640,
+    "additional_child_transient_charge_mib": 128,
+    "charge_rss": "parent_monitor.checkpoint() + 128*MIB; parent monitor already includes descendants and its own128MiB fixed allowances",
+    "stdout_bytes": 4096,
+    "stderr_bytes": 4096,
+    "supervisor_wait_capture_bytes": 16384,
+    "parent_phase_and_final_bytes": 65536,
+    "parent_manifest_bytes": 262144,
+    "original_snapshot_metadata_bytes": 262144,
+    "original_manifest_copy_bytes": 1048576,
+    "ledger_update_interval_seconds": 0.5,
+    "existing_bounds_contract": {
+      "combined_bytes": 134217728,
+      "ram_bytes": 805306368,
+      "retained_bytes": 8388608,
+      "json_bytes": 1048576,
+      "summary_bytes": 524288,
+      "terminal_bytes": 16384,
+      "audit_bytes": 16384,
+      "stdout_bytes": 4096,
+      "log_bytes": 2097152,
+      "journal_bytes": 262144,
+      "checkpoint_bytes": 65536,
+      "json_depth": 24,
+      "json_nodes": 32768,
+      "json_collection": 4096,
+      "json_string_chars": 65536,
+      "json_total_chars": 524288,
+      "entries": 4096,
+      "process_identities": 512,
+      "probe_bytes": 1048576,
+      "probe_timeout_seconds": 2,
+      "sample_interval_seconds": 0.2,
+      "helper_timeout_seconds": 5,
+      "helper_capture_bytes": 1048576,
+      "supervisor_seconds": 240,
+      "audit_seconds": 120,
+      "probe_ram_allowance": 33554432,
+      "encoding_ram_allowance": 67108864,
+      "ledger_ram_allowance": 33554432,
+      "ledger_disk_allowance": 4194304,
+      "atomic_disk_allowance": 1056768,
+      "terminal_disk_allowance": 65536,
+      "audit_disk_allowance": 65536
+    }
+  },
+  "consumer_graph_counts": {
+    "modules": 73,
+    "product_edges": 137,
+    "test_edges": 24,
+    "file_inputs": 12
+  },
+  "root_owned_inputs": "Required actual completed supervisor tool/handle wait capture, existing original consumer grant/summary/terminal/removed-state manifest, fresh separately hash-bound parent grant; no examples or success defaults. Interface document defines exact fields.",
+  "validation_boundary": "Source/text/order inspection and JSON/file SHA256/stat reads only; no driver/helper imports, syntax/AST invocation, tests, process probes, ledger/scratch/resource allocation or runtime execution."
+}

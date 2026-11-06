@@ -1,0 +1,59 @@
+# Exact parent audit driver and root input interface
+
+6 November 2026. Authoring only. `followup-consumer-parent-audit-driver.py` implements the separately published recipe without changing the consumer source plan or any of its ten pins. The separate `followup-consumer-parent-audit-driver-pins.json` binds the script, recipe/pin sheet, concrete Python file, current consumer plan/helpers, existing Node/dependency identities and resolved dependency paths. Root must review these exact bytes and current admission before a fresh parent-audit grant. No grant or example success capture is included.
+
+The pinned interpreter is the existing file `/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9`. Its SHA256/device/inode/mode/uid are recorded by reading the file/stat only; no additional target-interpreter or version probe was launched for this binding. Driver and auditor require `-B`. The standalone invocation takes exactly two required pairs: `--grant` followed by the absolute external root-authored grant, and `--supervisor-wait` followed by the absolute external root-authored actual wait capture. Missing or malformed arguments/inputs are refusals before helper imports, processes, scratch or ledger admission. The script derives the summary/terminal paths from the exact original run id; it cannot substitute arbitrary files through a summary argument.
+
+## Root-owned actual supervisor wait capture
+
+Root writes this immutable JSON from its original supervisor tool/handle wait result, with a16KiB total cap. There is no tool or process wait attestation service: root is responsible for the truth of this interface, then the separate grant binds its exact SHA256. A stored `passed` receipt, hand-entered exit guess, truncated tool output, missing stream or placeholder is insufficient. The driver does not rerun the supervisor.
+
+| Required field | Exact meaning |
+|---|---|
+| `kind` / `captured_by` | `fucq105-supervisor-wait` / `root` |
+| `capture_source` | `tool-wait-result` or `captured-Popen.wait` |
+| `capture_id` | Actual tool result/session/wait identity;1–128 ASCII letters/digits or `._:-` |
+| `wait_completed` | Boolean true from the actual completed wait |
+| `exit_code` | Actual integer process/tool wait code; unknown is rejected |
+| `stdout_complete`, `stderr_complete`, `truncated` | true, true, false from the actual capture; a passing truncated stream cannot be admitted |
+| `run_id` | Same `fucq105-followup-…` identity as the original root consumer grant |
+| `consumer_source_plan_sha256` | Exact unchanged consumer plan hash |
+| `consumer_grant_path`, `consumer_grant_sha256` | Absolute retained actual grant path and byte hash; the grant must exist, approve the original consumer scope/run/plan and equal `summary.review` |
+| `supervisor_command` | Actual five argv strings: resolved/absolute original supervisor Python, `-B`, this worktree's absolute `followup-consumer-supervisor.py`, `--review`, actual consumer grant path |
+| `owner` | Exact supervisor PID/start object from the completed run summary, retained with the actual wait |
+| `summary_sha256`, `terminal_sha256` | Actual immutable original output hashes |
+| `stdout`, `stderr` | Complete UTF-8 streams, at most4096 bytes each; preserve both even when exit is nonzero |
+| `stdout_sha256`, `stderr_sha256` | SHA256 of the exact UTF-8 bytes in the corresponding stream |
+
+For actual exit0 the supervisor stdout must also parse as its existing passed summary/terminal record with matching paths, and stderr must be empty. A nonzero original code can never become a passing parent result. Both original summary and terminal, original grant, removed-state original scratch manifest and all binding hashes must exist and match before any owned/shared helper import. The removed scratch manifest must still be available for its already planned independent audit; a previous audit is not silently retried.
+
+## Fresh separate parent grant
+
+Root supplies a JSON file outside the worktree and `/private/tmp`, at most64KiB. The driver requires these real values; no field has a success default:
+
+- `approved: true`, `scope: fucq105-followup-parent-audit`, and a fresh `parent_audit_id` of1–40 ASCII letters/digits/hyphens.
+- `driver_pins_sha256`, `driver_sha256`, `recipe_sha256`, `parent_audit_pins_sha256`, `consumer_source_plan_sha256` equal the published files.
+- `python_path` and `python_sha256` equal the concrete resolved executable in the driver pin sheet. Current executable identity must agree at admission and before release.
+- `original_run_id`, `consumer_grant_sha256`, `supervisor_wait_capture_sha256`, `summary_sha256`, `terminal_sha256` bind the actual original capture and outputs described above.
+
+The parent driver owns only the fresh sibling directory `<original-run>-parent-audit-<parent_audit_id>`, its separate Scratch token/root/manifest and exact fresh strict ledger row. It exclusively creates and inode-binds that output directory, refuses any existing/raced directory and never adopts a foreign directory. Its bounded writer refuses original-evidence paths even though they are included in allocation accounting. Root's consumer supervisor and its original reservation remain unchanged.
+
+## Implemented finite contract
+
+The driver installs the existing deferred cancellation and finite aggregate monitor, then imports only hash-admitted resources/ledger/lifecycle. It uses the frozen strict `Budget`, full768MiB admission (never a reduced grant),128MiB combined,8MiB retained, one120s auditor and180s parent. All original/read-only retained inputs must fit5MiB, reserving3MiB for parent output; all existing rows count toward admission. Parent monitor limit640MiB plus the additional128MiB child transient allowance charges768MiB aggregate. Captures are separate4KiB pipes, finite selectors and0.5s ledger updates; root must still account for sampled enforcement rather than claim an OS memory sandbox.
+
+Protected originals are snapshotted as bounded descriptor identity/size/time/hash metadata; the original disposable manifest is copied byte-for-byte before its existing auditor may remove it. The only permitted original changes are that deletion and creation of the existing bounded independent-audit receipt. Parent captures audit wait/stream hashes and reversible base64 bytes even when a later gate fails; incomplete/over-cap streams are explicitly labelled and never pass. The actual frozen auditor is launched once, with the actual original supervisor code. Direct captured-child stop/wait always precedes telemetry/persistence/queries; the unchanged lifecycle then verifies group/process/join evidence.
+
+Parent `audit-wait.json` and `pre-release.json` are written while the exact row is held. Protected originals/current source/helper/Python/Node/dependency identities, child/group/process/scratch absence and fresh actual allocation/RAM must pass before exact-row release. Unknown observations preserve the named row/root for root reconciliation; there is no pruning or alternate writer. A failed audit remains failed even when safe cleanup/release succeeds.
+
+One bounded `final.json` is written from the reserved terminal allowance, followed by actual postwrite allocation/RAM checks and monitor/probe join. No recursive receipt rewriting occurs. The parent emits at most4KiB stdout and its actual process status controls late failures. Root must retain the actual parent wait/stdout; a stored passed record alone never closes acceptance. Successful verbose logs, source copies, installations and unrelated roots are never removed or rewritten.
+
+## Static authoring boundary and concrete limitations
+
+This pass writes source and pin/interface documents only. Verification is text/control-order inspection, exact byte/hash/JSON binding, unchanged consumer pin/plan comparison, whitespace and named-path Git publication. **No driver/helper import or execution, syntax invocation/AST parsing, test, process probe, ledger read/lock/mutation, scratch/resource allocation, DB/browser/native/full run or descendants.** Python identity is file metadata/hash evidence only, not a claim of runtime suitability or a complete audit of the standard library.
+
+No concrete unresolved contract mismatch was found while rendering. The actual root wait capture, original runtime outputs and fresh parent grant do not exist in this authoring packet and cannot be substituted by examples. Reviewer confirmation of the exact standalone driver, runtime Python suitability/current admission and root-owned supervisor/audit/driver waits remain required before any grant or execution. The script's current hashes must be read from the separate pin sheet/publication receipt; the consumer plan remains unchanged.
+
+The shared AGENTS.md IBM gateway422 section was re-read during this pass: preserve an exact422 diagnostic and continue while the authorised launcher can still work; do not reroute models, rotate credentials or change the configured IBM gateway. No such error occurred and no descendants were launched.
+
+Agents: Hippety Hopper (they/them), existing requested/selected `gpt-6.1-sol` / `high`; no fallback or descendants.
