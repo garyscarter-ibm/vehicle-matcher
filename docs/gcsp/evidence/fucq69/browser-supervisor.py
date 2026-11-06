@@ -20,14 +20,16 @@ import test_resources as r
 import scaffold_git as g
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--width', type=int, choices=[1280, 320], required=True)
+parser.add_argument('--chunk', choices=['smoke-desktop', 'matrix-desktop', 'matrix-narrow'], required=True)
 parser.add_argument('--dispatcher-grant', required=True)
 args = parser.parse_args()
-run_id = '%s-%s' % (args.width, uuid.uuid4().hex[:12])
+width = 320 if args.chunk == 'matrix-narrow' else 1280
+timeout = 60 if args.chunk == 'smoke-desktop' else 120
+run_id = '%s-%s' % (args.chunk, uuid.uuid4().hex[:12])
 records = ROOT.parents[1] / 'test-runs/fucq69-browser' / run_id
 records.mkdir(parents=True)
 output = ROOT / 'docs/gcsp/evidence/fucq69/browser' / run_id
-policy = r.Policy({'chunk_seconds': 120, 'chunk_scratch_mib': 128, 'chunk_ram_mib': 2560,
+policy = r.Policy({'chunk_seconds': timeout, 'chunk_scratch_mib': 128, 'chunk_ram_mib': 2560,
                    'unit_scratch_mib': 32, 'unit_ram_mib': 2048, 'log_mib': 2})
 host = r.HostBudget(policy)
 class BrowserScratch(r.Scratch):
@@ -50,7 +52,7 @@ class BrowserScratch(r.Scratch):
 
 
 scratch = BrowserScratch(records, ROOT, policy, expected=32*r.MIB)
-command = ['node', str(ROOT/'docs/gcsp/evidence/fucq69/browser-runner.mjs'), '--width', str(args.width)]
+command = ['node', str(ROOT/'docs/gcsp/evidence/fucq69/browser-runner.mjs'), '--chunk', args.chunk]
 source_paths = sorted({*(ROOT/'blocks/gcsp').rglob('*.js'), *(ROOT/'blocks/gcsp').rglob('*.css'),
                        *(ROOT/'blocks/vehicle-matcher').rglob('*.js'), *(ROOT/'blocks/vehicle-matcher').rglob('*.css'),
                        ROOT/'gcsp-manual-gallery.html', ROOT/'gcsp-employee.css',
@@ -69,11 +71,11 @@ runtime = {'node': shutil.which('node'), 'python': sys.executable,
            'playwrightPackageSha256': hashlib.sha256(playwright_package.read_bytes()).hexdigest(),
            'chrome': str(chrome), 'chromeVersion': chrome_info['CFBundleShortVersionString'],
            'chromeDevice': chrome.stat().st_dev, 'chromeInode': chrome.stat().st_ino}
-plan = {'runtime': runtime, 'story': 'FUCQ-69', 'width': args.width, 'grant': args.dispatcher_grant, 'command': command,
+plan = {'runtime': runtime, 'story': 'FUCQ-69', 'chunk': args.chunk, 'width': width, 'grant': args.dispatcher_grant, 'command': command,
         'sourceHead': head.strip(), 'sourceHashes': source, 'headroom': host.headroom('/private/tmp'),
         'scope': 'Explicit read-only synthetic presentation fixtures; no claim/release integration',
         'compatibilityException': 'Active local browser profile/cache only; bounded retained PNG/JSON, scratch removed after verified process cleanup',
-        'limits': {'seconds': 120, 'rssMiB': 2560, 'minimumRssMiB': 2048, 'combinedDiskMiB': 128, 'logMiB': 2},
+        'limits': {'seconds': timeout, 'rssMiB': 2560, 'minimumRssMiB': 2048, 'combinedDiskMiB': 128, 'logMiB': 2},
         'scratch': str(scratch.root), 'retainedEvidence': str(output), 'manifest': str(scratch.manifest)}
 r.atomic_json(records/'plan.json', plan)
 ledger = {}
@@ -163,8 +165,16 @@ def combined_disk():
 r.group_rss = sample
 r.stop_group = stop_owned
 scratch.sample = combined_disk
-env = {k: v for k, v in os.environ.items() if 'DATABASE_URL' not in k.upper() and 'DB_URL' not in k.upper()
-       and not k.upper().startswith(('PG', 'POSTGRES'))}
+def excluded_environment(key):
+    upper = key.upper()
+    return ('DATABASE_URL' in upper or 'DB_URL' in upper or upper.startswith(('PG', 'POSTGRES', 'NODE_DEBUG', 'PWDEBUG', 'PLAYWRIGHT_DEBUG'))
+            or upper in {'NODE_OPTIONS', 'NODE_V8_COVERAGE', 'DEBUG', 'DEBUG_COLORS', 'DEBUG_DEPTH', 'DEBUG_SHOW_HIDDEN'})
+
+
+removed_environment = sorted(key for key in os.environ if excluded_environment(key))
+env = {key: value for key, value in os.environ.items() if not excluded_environment(key)}
+plan['removedEnvironmentKeys'] = removed_environment
+r.atomic_json(records/'plan.json', plan)
 env.update(FUCQ69_BROWSER_RUN=run_id, FUCQ69_SOURCE=head.strip())
 cancel = threading.Event()
 
@@ -181,7 +191,7 @@ try:
         raise r.ResourceError('Browser chunk cancelled before allocation')
     with scratch:
         result = r.run_process(command, str(ROOT), env, records/'run.log', scratch, policy,
-                               granted['disk'], granted['ram'], 120, host, cancel)
+                               granted['disk'], granted['ram'], timeout, host, cancel)
 except BaseException as error:
     result = {'rc': 1, 'issue': '%s: %s' % (type(error).__name__, error)}
 finally:

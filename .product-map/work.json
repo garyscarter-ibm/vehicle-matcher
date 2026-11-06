@@ -1383,8 +1383,8 @@
           "id": "rendered-browser",
           "status": "in-progress",
           "title": "Rendered exact-car browser, claim reconciliation and visual acceptance",
-          "observed_at": "2026-11-05T23:38:00Z",
-          "evidence": "Rendered claim/gallery/details, single-gallery and stylesheet gate pass independent131/0/0. Source/cleanup receipt fucq69-rendered-parent/parent-review-receipt.json. Browser helpers syntax pass; no browser grant/launch or visual acceptance yet."
+          "observed_at": "2026-11-06T00:06:09Z",
+          "evidence": "Current product174 hashes retain independent131/0/0.6Nov helper preparation adapts published122 observed-label keyboard evidence, trusted event trace and separately granted smoke/matrix chunks. Syntax/AST/source guards pass; no69browser run/grant. Actual92producer/claim70 and final suite remain open."
         },
         {
           "id": "released-integration",
@@ -1404,10 +1404,10 @@
           "name": "FUCQ-69 released car browser",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-05T23:38:00.512077Z",
-          "expires_at": "2026-11-05T23:53:00.512077Z",
-          "source": "Current chat01a1adde-8f98-7302-9b8a-e3d5d7f34dc5; effective gpt-6.1-sol/high verified; independent parent131/0/0 passed",
-          "status": "recording validated checkpoint"
+          "observed_at": "2026-11-06T00:06:10.047732Z",
+          "expires_at": "2026-11-06T00:21:10.047732Z",
+          "source": "Current chat01a1adde-8f98-7302-9b8a-e3d5d7f34dc5 observed working; Sol/high verified; no active child workers",
+          "status": "publishing browser helper preparation; no browser grant"
         },
         {
           "name": "Sniffles",
