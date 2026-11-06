@@ -1,0 +1,6 @@
+{
+  "validation": { "status": "invalid", "view": { "state": "validation", "action": "correct-fields" } },
+  "unknown": { "status": "pending", "operationState": "unknown", "order": null, "view": { "state": "handoff-pending", "action": "check-status" } },
+  "acknowledged": { "status": "ok", "orderNumber": "0000001", "orderStatus": "HR approval", "view": { "state": "awaiting-approval", "action": "view-order" } },
+  "allocationFailure": { "status": "ok", "operationState": "allocation-failed", "order": null, "view": { "state": "handoff-failed", "action": "contact-support" } }
+}
