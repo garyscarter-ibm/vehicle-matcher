@@ -1,8 +1,8 @@
 {
   "admissionRevision": {
-    "previousClosureSha256": "228cbd4b3f808c75ec625d6dd63e11ee06a3a860ec2a6c523ce8f73bf71ba5f6",
-    "previousProposalCommit": "99b7d598c76cdda9709e9a5ac8d8412fcefb2ced",
-    "reason": "Three scoped remaining static HOLD paths: fresh locked binding at deletion, accounting through cleanup, nonblocking regular-ledger open; prior accepted lifecycle/dependency findings retained; no runtime reproduction"
+    "previousClosureSha256": "3f3db2f80b7937e195155cb06efd1f1892cf51f0db6d21559d96defe98ad1aa4",
+    "previousProposalCommit": "bc741b1ec85397e12037609143a89d6334bd01ad",
+    "reason": "Single remaining final-output edge: bounded pre-encoded receipt/checkpoint with explicit serialization and atomic-write headroom; prior accepted cleanup/source/cases/tools/limits retained; independent postwrite parent audit required; no execution"
   },
   "counts": {
     "assetPaths": 2,
@@ -18398,8 +18398,8 @@
         "device": 16777232,
         "inode": 173171015,
         "mode": 420,
-        "sha256": "0067416f49a8f10a4b05f317b30c7b11142d7a4398352d1e90d2a208fcaa927b",
-        "size": 48308
+        "sha256": "a1eed95114bd17df4589af65765dea4ce50841260cf640828db27902054b0dc6",
+        "size": 53683
       },
       "path": "docs/gcsp/evidence/fucq69/history-back-supervisor.py",
       "publishedCommit": null,
@@ -18410,8 +18410,8 @@
         "device": 16777232,
         "inode": 173171592,
         "mode": 420,
-        "sha256": "ff633e5919f5cd13420e6a7f22a96ab0c627ae7996d79853623174ee3fba3d85",
-        "size": 21493
+        "sha256": "281eaf1c234e957edc016a493b0f7a0b6d2612618052ff9116ba5dc56b4839fe",
+        "size": 24929
       },
       "path": "docs/gcsp/evidence/fucq69/history-back-plan.md",
       "publishedCommit": null,

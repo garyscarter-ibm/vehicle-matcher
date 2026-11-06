@@ -1383,8 +1383,8 @@
           "id": "rendered-browser",
           "status": "in-progress",
           "title": "Rendered exact-car browser, claim reconciliation and visual acceptance",
-          "observed_at": "2026-11-06T02:27:38Z",
-          "evidence": "99b7d59 scoped HOLD: prior lifecycle/dependency review retained; authored fresh locked owner/root binding at delete, accounting through verification/cleanup/probes and nonblocking regular-ledger open. Plan has complete source narrative; helper/plan/catalogue pins revised only. Product0fa03f5/source/deps/4orderedcases/tools/admission/limits unchanged. No syntax/import/test/probe/allocation; fresh root review/grant required."
+          "observed_at": "2026-11-06T02:39:19Z",
+          "evidence": "bc741b1 cleanup/ledger/source review retained; one final-output edge authored: finite pre-encoded1MiB receipt/16KiB checkpoint,64MiB RAM+4MiB atomic-write headroom, incomplete on bounds/unknown/write error, independent parent postwrite audit. Helper/plan/catalogue only; product0fa03f5/all inputs/tools/admission/limits/4cases unchanged. No syntax/import/probe/test/allocation; root single-path review/grant pending."
         },
         {
           "id": "released-integration",

@@ -31,6 +31,78 @@ HERE = Path(__file__).resolve().parent
 MIB = 1024 ** 2
 PROBE_ENV = None
 RESOURCE_ACCOUNT = None
+FINAL_RECEIPT_CAP = MIB
+FINAL_CHECKPOINT_CAP = 16 * 1024
+FINAL_DISK_ALLOWANCE = 4 * MIB
+FINAL_MEMORY_ALLOWANCE = 64 * MIB
+FINAL_INCOMPLETE = b'{"state":"incomplete","completed":[],"issue":"Final receipt bounds, headroom or write failed; see plan.json and ownership."}\n'
+
+
+def bounded_json_bytes(value, cap):
+    """Finite streaming serialization: <=20k nodes, depth32, 16KiB strings, 128-bit integers."""
+    nodes = 0
+    def validate(item, depth=0):
+        nonlocal nodes
+        nodes += 1
+        if nodes > 20000 or depth > 32:
+            raise RuntimeError('Final receipt structure exceeds the frozen serializer bound.')
+        if item is None or type(item) is bool:
+            return
+        if type(item) is str:
+            if len(item) > 16384:
+                raise RuntimeError('Final receipt string exceeds the frozen serializer bound.')
+        elif type(item) is int:
+            if item.bit_length() > 128:
+                raise RuntimeError('Final receipt integer exceeds the frozen serializer bound.')
+        elif type(item) is float:
+            if not math.isfinite(item):
+                raise RuntimeError('Final receipt contains a nonfinite value.')
+        elif type(item) is dict:
+            for key, child in item.items():
+                if type(key) is not str:
+                    raise RuntimeError('Final receipt keys must be strings.')
+                validate(key, depth + 1)
+                validate(child, depth + 1)
+        elif type(item) in (list, tuple):
+            for child in item:
+                validate(child, depth + 1)
+        else:
+            raise RuntimeError('Final receipt contains an unsupported value.')
+    validate(value)
+    output = bytearray()
+    encoder = json.JSONEncoder(ensure_ascii=True, allow_nan=False, sort_keys=True, separators=(',', ':'))
+    for text in encoder.iterencode(value):  # Streaming default; a string token is bounded to 12*16384+2 ASCII bytes.
+        piece = text.encode('ascii')
+        if len(output) + len(piece) + 1 > cap:
+            raise RuntimeError('Final encoded receipt exceeds its frozen byte cap.')
+        output.extend(piece)
+    output.extend(b'\n')
+    return bytes(output)
+
+
+def atomic_bytes(path, payload, cap):
+    """Write already encoded bounded bytes, including the atomic temporary file in the allowance."""
+    if type(payload) is not bytes or len(payload) > cap:
+        raise RuntimeError('Final write payload exceeds its frozen byte cap.')
+    path = Path(path)
+    fd, temporary = tempfile.mkstemp(prefix='.fucq69-final-', dir=path.parent)
+    try:
+        view = memoryview(payload)
+        written = 0
+        while written < len(view):
+            count = os.write(fd, view[written:written + 65536])
+            if count <= 0:
+                raise RuntimeError('Final receipt write made no progress.')
+            written += count
+        os.fsync(fd)
+        os.close(fd)
+        fd = None
+        os.replace(temporary, path)
+    finally:
+        if fd is not None:
+            os.close(fd)
+        if os.path.lexists(temporary):
+            os.unlink(temporary)
 
 
 def strict_json(text):
@@ -863,26 +935,61 @@ def run():
                    'ownedReservation': host.expected, 'foreignLedgerMutations': host.foreign_receipts,
                    'materialized': materialized, 'scope': closure['scope'],
                    'independentParentAudit': 'required separately; this receipt is the launching supervisor report'}
-        r.atomic_json(records / 'receipt.json', receipt)
-        r.atomic_json(records / 'checkpoint.json', {'state': receipt['state'], 'selected': closure['expectedNames'],
-                      'completed': closure['expectedNames'] if passed else [], 'receipt': str(records / 'receipt.json')})
-        if not check(accounted_cleanup):
+        # One bounded final commit of pre-encoded receipt/checkpoint bytes; no proof-rewrite loop.
+        # The 64 MiB serializer allowance covers <=20k validated nodes, <=32 depth,
+        # <=16KiB strings (<=196,610-byte ASCII tokens), bounded sorting and <=1MiB buffers/copies.
+        # The 4 MiB disk allowance includes both durable outputs and simultaneous atomic temporaries.
+        final_issue = None
+        headroom_known = False
+        final_payloads = None
+        limits = granted or {'disk': 128 * MIB, 'ram': 768 * MIB}
+        try:
+            account_resources(None, True)
+            used_before_write = r.allocated_bytes(scratch.root) + r.allocated_bytes(records)
+            rss_before_write = result['peakConservativeAggregateRssBytes']
+            free_before_write = shutil.disk_usage('/private/tmp').free
+            headroom_known = True
+            if (used_before_write + FINAL_DISK_ALLOWANCE > limits['disk']
+                    or rss_before_write + FINAL_MEMORY_ALLOWANCE > limits['ram']
+                    or free_before_write < policy.reserve + FINAL_DISK_ALLOWANCE):
+                raise r.ResourceError('Final receipt serialization/atomic-write allowance cannot fit.')
+            checks['finalWriteHeadroomReserved'] = True
+            receipt['retainedAllocatedBeforeFinalWriteBytes'] = r.allocated_bytes(records)
+            receipt['combinedAllocatedPeakMeasuredThrough'] = 'before final bounded output write'
+            receipt['finalWrite'] = {
+                'receiptCapBytes': FINAL_RECEIPT_CAP, 'checkpointCapBytes': FINAL_CHECKPOINT_CAP,
+                'serializeMemoryAllowanceBytes': FINAL_MEMORY_ALLOWANCE, 'diskAllowanceBytes': FINAL_DISK_ALLOWANCE,
+                'allocatedUpperBoundBytes': max(scratch.record['peak'], used_before_write + FINAL_DISK_ALLOWANCE),
+                'rssChargeUpperBoundBytes': rss_before_write + FINAL_MEMORY_ALLOWANCE,
+                'independentParentPostwriteAuditRequired': True}
+            receipt['totalWallBeforeFinalWriteSeconds'] = receipt.pop('totalWallSeconds')
+            receipt_bytes = bounded_json_bytes(receipt, FINAL_RECEIPT_CAP)
+            checkpoint_bytes = bounded_json_bytes({'state': receipt['state'], 'selected': closure['expectedNames'],
+                'completed': closure['expectedNames'] if passed else [], 'receipt': str(records / 'receipt.json')},
+                FINAL_CHECKPOINT_CAP)
+            final_payloads = (receipt_bytes, checkpoint_bytes)
+        except BaseException:
             passed = False
             receipt['state'] = 'incomplete'
-            checks['resourceAccountingThroughCleanup'] = False
-            r.atomic_json(records / 'checkpoint.json', {'state': 'incomplete', 'selected': closure['expectedNames'],
-                          'completed': [], 'receipt': str(records / 'receipt.json')})
-        retained = r.allocated_bytes(records)
-        receipt['retainedAllocatedBytes'] = retained
-        receipt['combinedAllocatedPeakBytes'] = max(receipt['combinedAllocatedPeakBytes'], retained)
-        if retained > 128 * MIB or (granted is not None and retained > granted['disk']):
+            checks['finalWriteHeadroomReserved'] = False
+            final_issue = 'final serialization bounds or reserved headroom failed'
+            # Fixed constants need no serializer and no proof rewrite. Otherwise the original incomplete
+            # checkpoint/plan remains authoritative; never attempt output with unknown headroom.
+            if (headroom_known and used_before_write + 65536 <= limits['disk']
+                    and rss_before_write + MIB <= limits['ram'] and free_before_write >= policy.reserve + 65536):
+                final_payloads = (FINAL_INCOMPLETE, FINAL_INCOMPLETE)
+        if final_payloads is not None:
+            try:
+                atomic_bytes(records / 'receipt.json', final_payloads[0], FINAL_RECEIPT_CAP)
+                atomic_bytes(records / 'checkpoint.json', final_payloads[1], FINAL_CHECKPOINT_CAP)
+            except BaseException:
+                passed = False
+                final_issue = 'final atomic output write failed; no further proof rewrite attempted'
+        else:
             passed = False
-            receipt['state'] = 'incomplete'
-            receipt['uncertainties'].append('Final retained records exceeded the granted combined disk allowance.')
-            r.atomic_json(records / 'checkpoint.json', {'state': 'incomplete', 'selected': closure['expectedNames'],
-                          'completed': [], 'receipt': str(records / 'receipt.json')})
-        r.atomic_json(records / 'receipt.json', receipt)
-        print(json.dumps({'state': receipt['state'], 'checks': checks, 'receipt': str(records / 'receipt.json')}, sort_keys=True))
+        print(json.dumps({'state': 'passed' if passed else 'incomplete', 'receipt': str(records / 'receipt.json'),
+                          'finalWriteIssue': final_issue}, sort_keys=True))
+
     return 0 if passed else 1
 
 
