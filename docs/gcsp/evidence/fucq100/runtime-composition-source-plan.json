@@ -6,7 +6,7 @@
   "consumer_refs": {
     "92": "15a79957e61d81612311d3aab7dbf77733dc4e0d",
     "103": "f80fc61ca151cb46ad21cb2b19e704f4012d53de",
-    "69": "891b750cc928be8476f19d1980013df217ad8550",
+    "69": "0fa03f5eaced52eea7dbb8e3628a0a34318c8f41",
     "70": "73c645719f0536ff82e8004ade9b8844846ccef9",
     "122": "01546c49251df3182a4c164a45a10c7e82c9e2af",
     "126": "a10ca742d56aa24b6639d5af380fa76316048d11"
@@ -64,7 +64,7 @@
   ],
   "patch_sha256": "0413ff1ad2335ea6715d53bd6a3a4af20124ac47cdf23c20d6f42f9b65d7f626",
   "authoring_inputs": {
-    "runtime-composition-plan.py": "c9a7936f626cfcf857fc8ac0807450fc66d1fe5a8cff26f75b1eefadde609ed0",
+    "runtime-composition-plan.py": "a5c1f1fc682f366769b8152fb59364676be75f120077ed35c60c905bcdac9eb2",
     "runtime-composition-resources.json": "d792f0081f207fe7ed1443cd9c0b9e0319d92aa0ae68c6aaac3d4d76fa12a434"
   },
   "leaf_proposals": [
@@ -166,7 +166,7 @@
     },
     {
       "path": "server/gcsp/manual-gallery/stock-read.js",
-      "ref": "891b750cc928be8476f19d1980013df217ad8550",
+      "ref": "0fa03f5eaced52eea7dbb8e3628a0a34318c8f41",
       "sha256": "8d96ec48ca1fc9ff76f6dae6407a18a9c09844e3094b10a638a7b3215a7e549a",
       "origin": "69",
       "bytes": 4241,
@@ -174,15 +174,15 @@
     },
     {
       "path": "blocks/gcsp/manual-gallery/gcsp-manual-gallery.js",
-      "ref": "891b750cc928be8476f19d1980013df217ad8550",
-      "sha256": "f450a71818ee5db9522c314f213c32b98f5b6ad119932cf2daa6ddf0c694ff88",
+      "ref": "0fa03f5eaced52eea7dbb8e3628a0a34318c8f41",
+      "sha256": "5adc83d6caeef5aefdc64dffe27948fc7d37981ba146c63e3eaaf27280205a9b",
       "origin": "69",
-      "bytes": 15172,
+      "bytes": 17376,
       "adoption": true
     },
     {
       "path": "blocks/gcsp/manual-gallery/gcsp-manual-gallery.css",
-      "ref": "891b750cc928be8476f19d1980013df217ad8550",
+      "ref": "0fa03f5eaced52eea7dbb8e3628a0a34318c8f41",
       "sha256": "04830129917aa8c43caf135bc333e76b8a1ec3ed030a3fbf00bb945b1385b759",
       "origin": "69",
       "bytes": 2217,
@@ -190,7 +190,7 @@
     },
     {
       "path": "blocks/gcsp/manual-gallery/gallery-controller.js",
-      "ref": "891b750cc928be8476f19d1980013df217ad8550",
+      "ref": "0fa03f5eaced52eea7dbb8e3628a0a34318c8f41",
       "sha256": "0e11d30e5e31a5b2811b8fe4e84c87c11c66966656af79a8ca64d5ab23f2700f",
       "origin": "69",
       "bytes": 3539,
@@ -198,15 +198,15 @@
     },
     {
       "path": "blocks/gcsp/manual-gallery/gallery-model.js",
-      "ref": "891b750cc928be8476f19d1980013df217ad8550",
-      "sha256": "6cc5cfa1483d963038472ddc05227c2368a3ad07ca7a4ab25c6a324bf7f863bf",
+      "ref": "0fa03f5eaced52eea7dbb8e3628a0a34318c8f41",
+      "sha256": "c0cab59abacaa2b6a180db2480ad03bb09bf3018705567c5da9e467b4896b9d4",
       "origin": "69",
-      "bytes": 12116,
+      "bytes": 13841,
       "adoption": true
     },
     {
       "path": "blocks/gcsp/manual-gallery/claim-controller.js",
-      "ref": "891b750cc928be8476f19d1980013df217ad8550",
+      "ref": "0fa03f5eaced52eea7dbb8e3628a0a34318c8f41",
       "sha256": "f53923f660fcb1222431c6500342e75065d10552a38f343900ef7cf234574dc8",
       "origin": "69",
       "bytes": 7078,
@@ -214,7 +214,7 @@
     },
     {
       "path": "blocks/gcsp/manual-gallery/http-adapter.js",
-      "ref": "891b750cc928be8476f19d1980013df217ad8550",
+      "ref": "0fa03f5eaced52eea7dbb8e3628a0a34318c8f41",
       "sha256": "5e3dcc8d024ad2cdb3190e4862e4a99ef35a7995623c492ce9e4aff8883eb7de",
       "origin": "69",
       "bytes": 1242,
@@ -426,42 +426,42 @@
       "adoption": true
     },
     "blocks/gcsp/manual-gallery/claim-controller.js": {
-      "ref": "891b750cc928be8476f19d1980013df217ad8550",
+      "ref": "0fa03f5eaced52eea7dbb8e3628a0a34318c8f41",
       "sha256": "f53923f660fcb1222431c6500342e75065d10552a38f343900ef7cf234574dc8",
       "origin": "69",
       "bytes": 7078,
       "adoption": true
     },
     "blocks/gcsp/manual-gallery/gallery-controller.js": {
-      "ref": "891b750cc928be8476f19d1980013df217ad8550",
+      "ref": "0fa03f5eaced52eea7dbb8e3628a0a34318c8f41",
       "sha256": "0e11d30e5e31a5b2811b8fe4e84c87c11c66966656af79a8ca64d5ab23f2700f",
       "origin": "69",
       "bytes": 3539,
       "adoption": true
     },
     "blocks/gcsp/manual-gallery/gallery-model.js": {
-      "ref": "891b750cc928be8476f19d1980013df217ad8550",
-      "sha256": "6cc5cfa1483d963038472ddc05227c2368a3ad07ca7a4ab25c6a324bf7f863bf",
+      "ref": "0fa03f5eaced52eea7dbb8e3628a0a34318c8f41",
+      "sha256": "c0cab59abacaa2b6a180db2480ad03bb09bf3018705567c5da9e467b4896b9d4",
       "origin": "69",
-      "bytes": 12116,
+      "bytes": 13841,
       "adoption": true
     },
     "blocks/gcsp/manual-gallery/gcsp-manual-gallery.css": {
-      "ref": "891b750cc928be8476f19d1980013df217ad8550",
+      "ref": "0fa03f5eaced52eea7dbb8e3628a0a34318c8f41",
       "sha256": "04830129917aa8c43caf135bc333e76b8a1ec3ed030a3fbf00bb945b1385b759",
       "origin": "69",
       "bytes": 2217,
       "adoption": true
     },
     "blocks/gcsp/manual-gallery/gcsp-manual-gallery.js": {
-      "ref": "891b750cc928be8476f19d1980013df217ad8550",
-      "sha256": "f450a71818ee5db9522c314f213c32b98f5b6ad119932cf2daa6ddf0c694ff88",
+      "ref": "0fa03f5eaced52eea7dbb8e3628a0a34318c8f41",
+      "sha256": "5adc83d6caeef5aefdc64dffe27948fc7d37981ba146c63e3eaaf27280205a9b",
       "origin": "69",
-      "bytes": 15172,
+      "bytes": 17376,
       "adoption": true
     },
     "blocks/gcsp/manual-gallery/http-adapter.js": {
-      "ref": "891b750cc928be8476f19d1980013df217ad8550",
+      "ref": "0fa03f5eaced52eea7dbb8e3628a0a34318c8f41",
       "sha256": "5e3dcc8d024ad2cdb3190e4862e4a99ef35a7995623c492ce9e4aff8883eb7de",
       "origin": "69",
       "bytes": 1242,
@@ -1056,7 +1056,7 @@
       "bytes": 4548
     },
     "server/gcsp/manual-gallery/stock-read.js": {
-      "ref": "891b750cc928be8476f19d1980013df217ad8550",
+      "ref": "0fa03f5eaced52eea7dbb8e3628a0a34318c8f41",
       "sha256": "8d96ec48ca1fc9ff76f6dae6407a18a9c09844e3094b10a638a7b3215a7e549a",
       "origin": "69",
       "bytes": 4241,

@@ -24,7 +24,7 @@ need authoring and admission. No installed dependency was created or changed.
 | 100 | `38be4f5d95823b5f010a56c3d4b6cbda4eca55e8` | Shared foundation, actual manual preparation and four accepted driver-repair files. |
 | 103 | `f80fc61ca151cb46ad21cb2b19e704f4012d53de` | Seed, weighted employee scorer, additive registry and reviewed JSONs. Preserve106/113/115; include107's missing-only reviewed bundle. This published proposal has no mixed-run acceptance yet. |
 | 92 | `15a79957e61d81612311d3aab7dbf77733dc4e0d` | Only stock index, validation port, synthetic re-export dependency and history port. No older foundation files or fixture plans. |
-| 69 | `891b750cc928be8476f19d1980013df217ad8550` | Six gallery UI/HTTP/controller/style files and the post-claims stock-read decorator. |
+| 69 | `0fa03f5eaced52eea7dbb8e3628a0a34318c8f41` | Six gallery UI/HTTP/controller/style files and the post-claims stock-read decorator, including truthful history and visible blocked Back. |
 | 70 | `73c645719f0536ff82e8004ade9b8844846ccef9` | Five review UI/controller/style files and three metadata service/validation/HTTP files; existing event_receipts, no schema change. |
 | 122 | `01546c49251df3182a4c164a45a10c7e82c9e2af` | Two repaired case files. The older available/nested-candidate gate is excluded. |
 | 126 | `a10ca742d56aa24b6639d5af380fa76316048d11` | Exact controls result consumer plus its HTTP adapter and presenter-bar import. Presenter workspace/navigation is a separate boundary. |
@@ -36,6 +36,13 @@ SHA256 `8694f8e904018437cb16c9c0059c35135cca644674d1b1047574240f5f22f24b`.
 Its explicit57 resource paths are retained in the local
 [resource list](evidence/fucq100/runtime-composition-resources.json), then verified against exact
 baseline/adoption blobs. No mutable sibling worktree is needed to regenerate this proposal.
+
+69's source successor changes exactly two of the seven named leaves: `gallery-model.js` SHA256
+`c0cab59abacaa2b6a180db2480ad03bb09bf3018705567c5da9e467b4896b9d4` and
+`gcsp-manual-gallery.js` SHA256
+`5adc83d6caeef5aefdc64dffe27948fc7d37981ba146c63e3eaaf27280205a9b`. The other five hashes,
+including the claims controller, HTTP adapter and stock-read decorator, are unchanged. Its authored
+four-case component test remains69-owned; no test or browser evidence is inferred from publication.
 
 The JSON names every proposed leaf and its SHA256; copying whole branches is not proposed.
 The two already-identical103 reviewed JSONs remain pinned dependencies, not needless changes.
@@ -81,9 +88,10 @@ Reloaded active quoted claims enter review without a new claim command or fake h
 claim/details through the real credentialed HTTP adapter. Review Continue retains70's ready event;
 actual71 submission/freeze remains separately owned and unproved.
 
-Back is blocked at the host while69 reports an unresolved/occupying state.69 still owns the missing
-visible disabled-Back explanation and history presentation. This source draft cannot claim those
-UX gates. An optional trusted clock subscription refreshes current setup/review and both gallery
+Back is blocked at the host while69 reports an unresolved/occupying state. The proposed69 successor
+now also disables the visible Back control with an accessible explanation, and renders typed, employee-
+relative release history independently of suitability. Its interfaces are unchanged. Those changed UI
+bytes remain unexecuted and unadopted here; component and actual composed UX evidence are still required. An optional trusted clock subscription refreshes current setup/review and both gallery
 stock and claim reads, with no POST replay or browser-time release. A delivered reset/principal-change
 notification/subscription still needs the actual126 host integration; no invented event API is added.
 The controls module's presenter-page URL is recorded as navigation, not silently adopted workspace/
