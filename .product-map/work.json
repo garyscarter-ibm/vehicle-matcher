@@ -1369,7 +1369,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T01:06:01Z",
+      "observed_at": "2026-11-06T01:08:35Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-105",
       "slices": [
         {
@@ -1397,8 +1397,8 @@
           "id": "decision-host",
           "status": "blocked",
           "title": "Actual FUCQ106 decision and delivered host integration",
-          "observed_at": "2026-11-06T01:06:01Z",
-          "evidence": "Own consumer implementation now133 scoped checks PASS; server reason port exact106 command/revisions/readback, preview existing base/shell styles composed. No mixed actual106 imports or browser run. Canonical reason activation and frozen mixed test/helper root review remain; central owner supplies same-access singleton/real employee session, invalid-cookie no fallback, narrow gated route,/gcsp/offer and same-origin HTTPS. Root retains review/merge/closure. docs/gcsp/evidence/fucq105/decision-con"
+          "observed_at": "2026-11-06T01:08:35Z",
+          "evidence": "Published consumer b4efefec60577a14a98e6bae934741249bd7c20c:133scoped pass0skip; existing native forms/base/shell styles. Frozen successor48modules86edges,14-module mounted preview and35asset graph; static reads only. Actual mixed106 test/loader/supervisor need authorized preparation/root review. Canonical reason activation and central same-access singleton/real account session/invalid-cookie refusal/narrow gated route,/gcsp/offer,same-origin HTTPS/browser gates open. docs/gcsp/evidence/fucq105/"
         },
         {
           "id": "browser",
