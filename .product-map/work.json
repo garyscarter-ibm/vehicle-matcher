@@ -1383,8 +1383,8 @@
           "id": "rendered-browser",
           "status": "in-progress",
           "title": "Rendered exact-car browser, claim reconciliation and visual acceptance",
-          "observed_at": "2026-11-06T00:53:35Z",
-          "evidence": "Corrected granted exact5147ba4 desktop smoke PASS; both captures inspected, native keyboard/filter/font/shell and owned cleanup verified. docs/gcsp/evidence/fucq69/browser/smoke-desktop-49bf496834ac/README.md. Product174/131proof unchanged. Full desktop/320px/detail/recovery matrices and actual claim70/host acceptance remain open; grant consumed, browser lane released."
+          "observed_at": "2026-11-06T01:49:00Z",
+          "evidence": "Authored69 history consumer/visible guarded blockedBack and4componentcases; docs/gcsp/evidence/fucq69/README.md. No execution for changedbytes; exact source/helper/JSDOM freeze and review next. Prior131/smoke historical only; upstream9/70six reused separately.100host/runtime6ef6c5f external, not adopted; browser/matrices/claim70/acceptance open."
         },
         {
           "id": "released-integration",

@@ -14,6 +14,7 @@ const states = {
   idle: ['Released cars', ''], loading: ['Loading released cars', 'Checking availability.'],
   'empty-stock': ['No cars are available', 'Check again after the next release.'],
   'nothing-released-yet': ['No cars have been released yet', 'Check again after the first release.'],
+  'no-visible-releases': ['No released cars are visible to you yet', 'Refresh availability to check for new releases.'],
   'empty-search': ['No cars match these filters', 'Clear your filters to see all released cars.'],
   'no-suitable-stock': ['No suitable cars are available', 'Review the eligibility reasons or return to your choices.'],
   'source-unavailable': ['Availability is unavailable', 'Retry to check current released cars.'],
@@ -34,6 +35,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
   const prefix = `gcsp-gallery-${++sequence}`; const controls = {}; const cards = new Map();
   let nodes; let panel; let disposed = false; let started = false; let galleryState; let claimState; let detailId; let detailOrigin;
   const notify = (name, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(name, { detail, bubbles: true, composed: true }));
+  const canGoBack = () => !disposed && (adapter.readOnly === true || claimState?.blocked === false);
   const claim = createManualClaimController({ adapter, onChange(next) { claimState = next; onClaimState?.(next); draw(); },
     onConfirmed(detail) { if (!disposed) { onClaimConfirmed?.(detail); notify('gcsp:manual-claim-confirmed', detail); } },
     onFailure(outcome) { gallery.resetReviewAttempts(); gallery.reportOutcome(outcome); },
@@ -92,8 +94,21 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
       reason, detailSection('Scheme terms and sources', [{ label: 'Supplied scheme terms', value: detail.terms }]), ...sections);
     heading.focus();
   }
+  function drawHistory() {
+    const value = galleryState.releaseHistory; nodes.history.hidden = !value;
+    if (!value) { nodes.historySummary.textContent = ''; nodes.historyTime.textContent = ''; nodes.historySource.textContent = ''; return; }
+    const h = value.history;
+    nodes.historySummary.textContent = h.state === 'none-visible' ? 'No confirmed releases are visible to you yet.'
+      : `Release history: ${h.releasedCarCount.toLocaleString('en-GB')} ${h.releasedCarCount === 1 ? 'car' : 'cars'} in ${h.releaseCount.toLocaleString('en-GB')} ${h.releaseCount === 1 ? 'release' : 'releases'} visible to you.`;
+    nodes.historyTime.hidden = h.latestReleasedAt === null;
+    nodes.historyTime.textContent = h.latestReleasedAt === null ? '' : `Latest visible release: ${new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
+    }).format(new Date(h.latestReleasedAt))} UTC (demo time).`;
+    nodes.historySource.textContent = 'Current source version: unknown.';
+  }
   function draw() {
     if (!nodes || disposed) return;
+    drawHistory();
     for (const key of ['query', 'sort']) { const value = galleryState.controls[key] ?? (key === 'sort' ? 'name' : ''); if (controls[key].value !== value) controls[key].value = value; }
     updateOptions('series', galleryState.series, 'All series'); updateOptions('body', galleryState.bodies, 'All body styles');
     const c = galleryState.counts;
@@ -130,6 +145,10 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     nodes.check.hidden = !claimState.blocked || ['claiming', 'checking'].includes(claimState.state);
     nodes.check.disabled = ['claiming', 'checking'].includes(claimState.state);
     nodes.retry.hidden = claimState.state !== 'retry-available';
+    nodes.back.disabled = !canGoBack(); nodes.backReason.hidden = canGoBack();
+    nodes.backReason.textContent = canGoBack() ? '' : ['checking', 'claiming'].includes(claimState.state)
+      ? 'Wait for the reservation check before returning to your choices.'
+      : 'Resolve your current reservation before returning to your choices.';
   }
   const shell = mountEmployee(root, { brand, loadAccount: adapter.loadAccount?.bind(adapter), renderBody(main) {
     panel = el('section', 'vm gcsp-gallery-body'); cards.clear(); detailId = null;
@@ -139,13 +158,17 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     nodes = { counts: el('p', 'gcsp-note'), allowance: el('p', 'gcsp-gallery-allowance'), status: el('div', ''),
       grid: el('div', 'gcsp-gallery-grid'), results: el('div', 'gcsp-gallery-results'), detail: el('section', 'gcsp-gallery-detail'),
       claimMessage: el('p', 'gcsp-note'), check: button({ label: 'Check status', variant: 'ghost', onClick: () => claim.checkStatus() }),
-      retry: button({ label: 'Retry this reservation', variant: 'ghost', onClick: () => claim.retry() }) };
+      retry: button({ label: 'Retry this reservation', variant: 'ghost', onClick: () => claim.retry() }),
+      history: el('section', ''), historySummary: el('p', 'gcsp-note'), historyTime: el('p', 'gcsp-note'), historySource: el('p', 'gcsp-note'),
+      backReason: el('p', 'gcsp-note'), back: button({ label: 'Back to your choices', variant: 'ghost', describedBy: `${prefix}-back-reason`,
+        onClick() { if (!canGoBack()) return; onBack?.(); notify('gcsp:manual-gallery-back', {}); } }) };
     nodes.counts.setAttribute('role', 'status'); nodes.claimMessage.setAttribute('role', 'status'); nodes.detail.hidden = true;
+    nodes.history.setAttribute('aria-label', 'Release history'); nodes.history.dataset.releaseHistory = '';
+    nodes.history.append(nodes.historySummary, nodes.historyTime, nodes.historySource); nodes.backReason.id = `${prefix}-back-reason`;
     const claimNotice = el('section', 'gcsp-gallery-claim'); claimNotice.setAttribute('aria-label', 'Reservation status'); claimNotice.append(nodes.claimMessage, nodes.check, nodes.retry);
     nodes.results.append(nodes.status, nodes.grid);
     panel.append(screenIntro({ kicker: 'Choose your car', title: 'Released cars', lede: 'Browse the available cars. Review one to reserve it while you check the details.', level: 1 }),
-      nodes.allowance, filters, nodes.counts, claimNotice, nodes.results, nodes.detail,
-      button({ label: 'Back to your choices', variant: 'ghost', onClick() { onBack?.(); notify('gcsp:manual-gallery-back', {}); } }));
+      nodes.allowance, nodes.history, filters, nodes.counts, claimNotice, nodes.results, nodes.detail, nodes.back, nodes.backReason);
     if (adapter.readOnly) panel.prepend(el('p', 'gcsp-note', 'Read-only synthetic gallery · 5 November 2026'));
     main.replaceChildren(panel); draw();
     if (!started) { started = true; gallery.load(); claim.load(); }

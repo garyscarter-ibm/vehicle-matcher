@@ -111,13 +111,33 @@ const sortValue = (car, sort) => sort === 'points' ? car.cost.value : sort === '
   ? typeof car.fields.earliestCollection.value === 'string' && Number.isFinite(Date.parse(car.fields.earliestCollection.value))
     ? Date.parse(car.fields.earliestCollection.value) : null : text(car.detail.snapshot.display?.name);
 
-/** Failed reads remain failures. Release history is recognised only when explicitly supplied. */
+const record = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
+const instant = (value) => typeof value === 'string' && /Z$/.test(value) && Number.isFinite(Date.parse(value));
+const count = (value) => Number.isSafeInteger(value) && value >= 0;
+function validReleaseHistory(value) {
+  if (!record(value) || !text(value.runId) || !instant(value.observedAt) || !record(value.history)
+    || value.source?.state !== 'current-version-unknown') return false;
+  const h = value.history;
+  if (!count(h.releasedCarCount) || !count(h.releaseCount) || !Array.isArray(h.sourceVersions)
+    || h.sourceVersions.some((version) => !text(version)) || new Set(h.sourceVersions).size !== h.sourceVersions.length) return false;
+  if (h.state === 'none-visible') return h.releasedCarCount === 0 && h.releaseCount === 0
+    && h.latestReleasedAt === null && h.sourceVersions.length === 0;
+  return h.state === 'released' && h.releasedCarCount > 0 && h.releaseCount > 0 && h.releaseCount <= h.releasedCarCount
+    && instant(h.latestReleasedAt) && Date.parse(h.latestReleasedAt) <= Date.parse(value.observedAt)
+    && h.sourceVersions.length > 0 && h.sourceVersions.length <= h.releaseCount;
+}
+
+/** History describes employee-visible releases, independently of current suitability. */
 export function toManualGallery(envelope, controls = {}) {
-  const empty = { cars: [], allCars: [], counts: { records: 0, eligible: 0, visible: 0, visibleEligible: 0 }, series: [], bodies: [], controls: { ...controls }, envelope: clone(envelope) };
+  const empty = { cars: [], allCars: [], counts: { records: 0, eligible: 0, visible: 0, visibleEligible: 0 }, series: [], bodies: [], controls: { ...controls }, envelope: clone(envelope), releaseHistory: null };
   if (envelope?.status !== 'ok') return { ...empty, state: envelope?.status === 'stale-version' || envelope?.status === 'stale-run'
     ? 'context-refresh' : envelope?.view?.state === 'car-taken' ? 'car-taken' : 'source-unavailable' };
   const source = envelope.value;
-  if (source?.state === 'nothing-released-yet') return { ...empty, state: 'nothing-released-yet' };
+  if (source?.releaseHistory !== undefined && (!validReleaseHistory(source.releaseHistory)
+    || source.runId != null && source.runId !== source.releaseHistory.runId)) return { ...empty, state: 'source-unavailable' };
+  const releaseHistory = clone(source?.releaseHistory ?? null);
+  if (source?.state === 'nothing-released-yet') return { ...empty, releaseHistory,
+    state: releaseHistory ? releaseHistory.history.state === 'none-visible' ? 'no-visible-releases' : 'empty-stock' : 'nothing-released-yet' };
   if (!['available-stock', 'no-eligible-stock', 'empty-stock'].includes(source?.state) || !Array.isArray(source?.decisions) || source.decisions.some((decision) => !exactDecision(decision))
     || new Set(source.decisions.map((d) => d.orderUuid)).size !== source.decisions.length) return { ...empty, state: 'source-unavailable' };
   const allCars = source.decisions.map((decision) => toManualCar(decision, source.versions));
@@ -127,8 +147,9 @@ export function toManualGallery(envelope, controls = {}) {
     && (!controls.body || car.fields.body.value === controls.body)).sort((a, b) => optionalCompare(sortValue(a, sort), sortValue(b, sort))
       || compare(a.identity.orderNumber ?? a.id, b.identity.orderNumber ?? b.id) || compare(a.id, b.id));
   const eligible = allCars.filter((car) => car.gateStatus === 'eligible').length;
-  return { ...empty, state: !allCars.length ? 'empty-stock' : !cars.length ? 'empty-search' : !eligible ? 'no-suitable-stock' : 'available-stock',
-    allCars, cars, counts: { records: allCars.length, eligible, visible: cars.length, visibleEligible: cars.filter((car) => car.gateStatus === 'eligible').length },
+  return { ...empty, state: !allCars.length ? releaseHistory?.history.state === 'none-visible' ? 'no-visible-releases' : 'empty-stock'
+    : !cars.length ? 'empty-search' : !eligible ? 'no-suitable-stock' : 'available-stock',
+    releaseHistory, allCars, cars, counts: { records: allCars.length, eligible, visible: cars.length, visibleEligible: cars.filter((car) => car.gateStatus === 'eligible').length },
     series: options(allCars, (car) => car.series.value), bodies: options(allCars, (car) => car.fields.body.value), controls: { ...controls, sort },
     versions: clone(source.versions), assumptions: clone(source.assumptions), ranked: false, browsingReservesStock: false };
 }
