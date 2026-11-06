@@ -2,6 +2,7 @@
 """One dispatcher-granted, bounded read-only gallery browser chunk."""
 import argparse
 import hashlib
+import importlib.util
 import json
 import os
 import plistlib
@@ -23,6 +24,11 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--chunk', choices=['smoke-desktop', 'matrix-desktop', 'matrix-narrow'], required=True)
 parser.add_argument('--dispatcher-grant', required=True)
 args = parser.parse_args()
+guard_path = Path(__file__).with_name('browser-source-guard.py')
+guard_spec = importlib.util.spec_from_file_location('fucq69_static_assets', guard_path)
+guard = importlib.util.module_from_spec(guard_spec)
+guard_spec.loader.exec_module(guard)
+asset_closure = guard.check()  # Fail before a browser reservation/profile/listener exists.
 width = 320 if args.chunk == 'matrix-narrow' else 1280
 timeout = 60 if args.chunk == 'smoke-desktop' else 120
 run_id = '%s-%s' % (args.chunk, uuid.uuid4().hex[:12])
@@ -59,7 +65,9 @@ source_paths = sorted({*(ROOT/'blocks/gcsp').rglob('*.js'), *(ROOT/'blocks/gcsp'
                        *(ROOT/'blocks/vehicle-matcher/fonts').glob('*.woff*'),
                        *(ROOT/'blocks/gcsp/shell/fonts').glob('*.woff*'), ROOT/'assets/brand-hero/bmw.jpg',
                        ROOT/'docs/gcsp/evidence/fucq69/browser-runner.mjs', Path(__file__).resolve(),
-                       ROOT/'_tools/test_resources.py', ROOT/'_tools/scaffold_git.py'})
+                       ROOT/'_tools/test_resources.py', ROOT/'_tools/scaffold_git.py',
+                       guard_path, Path(__file__).with_name('browser-assets.json'),
+                       ROOT/'assets/brand-logos/bmwgroup-bmw-mini.svg'})
 source = {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in source_paths}
 rc, head, error = g.git(str(ROOT), ['rev-parse', 'HEAD'])
 assert rc == 0, error
@@ -71,7 +79,7 @@ runtime = {'node': shutil.which('node'), 'python': sys.executable,
            'playwrightPackageSha256': hashlib.sha256(playwright_package.read_bytes()).hexdigest(),
            'chrome': str(chrome), 'chromeVersion': chrome_info['CFBundleShortVersionString'],
            'chromeDevice': chrome.stat().st_dev, 'chromeInode': chrome.stat().st_ino}
-plan = {'runtime': runtime, 'story': 'FUCQ-69', 'chunk': args.chunk, 'width': width, 'grant': args.dispatcher_grant, 'command': command,
+plan = {'assetClosure': asset_closure, 'runtime': runtime, 'story': 'FUCQ-69', 'chunk': args.chunk, 'width': width, 'grant': args.dispatcher_grant, 'command': command,
         'sourceHead': head.strip(), 'sourceHashes': source, 'headroom': host.headroom('/private/tmp'),
         'scope': 'Explicit read-only synthetic presentation fixtures; no claim/release integration',
         'compatibilityException': 'Active local browser profile/cache only; bounded retained PNG/JSON, scratch removed after verified process cleanup',

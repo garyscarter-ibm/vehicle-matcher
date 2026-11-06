@@ -27,10 +27,8 @@ const result = { story: 'FUCQ-69', source: process.env.FUCQ69_SOURCE, chunk, wid
 const mime = (file) => ({ '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css',
   '.jpg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.woff': 'font/woff', '.woff2': 'font/woff2' })[path.extname(file)] ?? 'application/octet-stream';
 const served = new Map(); let origin; let context; let page; let bytes = 0;
-const permitted = (file) => file === 'gcsp-manual-gallery.html' || file === 'gcsp-employee.css'
-  || /^(blocks\/(gcsp|vehicle-matcher)\/).+\.(js|css)$/.test(file)
-  || /^blocks\/(vehicle-matcher|gcsp\/shell)\/fonts\/[^/]+\.(woff|woff2)$/.test(file)
-  || file === 'assets/brand-hero/bmw.jpg';
+const assetManifest = JSON.parse(await readFile(path.join(root, 'docs/gcsp/evidence/fucq69/browser-assets.json'), 'utf8'));
+const permitted = (file) => Object.hasOwn(assetManifest.files, file);
 const server = createServer(async (req, res) => {
   try {
     const url = new URL(req.url, origin ?? 'http://127.0.0.1');
@@ -41,6 +39,7 @@ const server = createServer(async (req, res) => {
     if (!file.startsWith(`${root}${path.sep}`) || !permitted(relative)) { res.writeHead(403); return res.end(); }
     const content = await readFile(file);
     const hash = createHash('sha256').update(content).digest('hex');
+    assert.equal(hash, assetManifest.files[relative], 'Served file must match reviewed static closure');
     assert.ok(!served.has(relative) || served.get(relative) === hash, 'Served source changed during browser proof');
     served.set(relative, hash);
     res.writeHead(200, { 'Content-Type': mime(file), 'Cache-Control': 'no-store',

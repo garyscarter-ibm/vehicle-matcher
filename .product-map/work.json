@@ -1383,8 +1383,8 @@
           "id": "rendered-browser",
           "status": "in-progress",
           "title": "Rendered exact-car browser, claim reconciliation and visual acceptance",
-          "observed_at": "2026-11-06T00:06:09Z",
-          "evidence": "Current product174 hashes retain independent131/0/0.6Nov helper preparation adapts published122 observed-label keyboard evidence, trusted event trace and separately granted smoke/matrix chunks. Syntax/AST/source guards pass; no69browser run/grant. Actual92producer/claim70 and final suite remain open."
+          "observed_at": "2026-11-06T00:15:28Z",
+          "evidence": "First granted84af623 desktop smoke INCOMPLETE on helper shell-logo403;2captures inspected, trusted native series/font passed, owned cleanup verified. Failure retained in docs/gcsp/evidence/fucq69/browser/smoke-desktop-c29e8def39c3/README.md. Static55-file/65-edge closure correction passes preparation only; no retry/matrix grant, product174/131proof unchanged."
         },
         {
           "id": "released-integration",
@@ -1404,10 +1404,10 @@
           "name": "FUCQ-69 released car browser",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-06T00:06:10.047732Z",
-          "expires_at": "2026-11-06T00:21:10.047732Z",
-          "source": "Current chat01a1adde-8f98-7302-9b8a-e3d5d7f34dc5 observed working; Sol/high verified; no active child workers",
-          "status": "publishing browser helper preparation; no browser grant"
+          "observed_at": "2026-11-06T00:15:28.582925Z",
+          "expires_at": "2026-11-06T00:30:28.582925Z",
+          "source": "Current chat01a1adde-8f98-7302-9b8a-e3d5d7f34dc5; Sol/high verified; no active child/browser workers",
+          "status": "publishing incomplete smoke evidence; browser lane released"
         },
         {
           "name": "Sniffles",
