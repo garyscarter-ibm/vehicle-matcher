@@ -181,7 +181,7 @@ for path in (ledger_directory, ledger_directory / 'reservations.lock'):
         'kind': 'directory' if stat.S_ISDIR(value.st_mode) else 'file', 'resolved': str(path.resolve(strict=True))}
 host_budget = {'directory': str(ledger_directory), 'anchors': anchors, 'emergencyReserveBytes': 5 * 1024 ** 3,
     'ramReserveBytes': 512 * 1024 ** 2, 'preferredFreeBytes': 30 * 1024 ** 3,
-    'diskBytes': 128 * 1024 ** 2, 'ramBytes': 768 * 1024 ** 2,
+    'diskBytes': 128 * 1024 ** 2, 'ramBytes': 1024 * 1024 ** 2,
     'ledgerPolicy': 'Strict required shape, known owners and acyclic parents; no default/pruning. Exact lock identity and owned release/readback.'}
 execution_contract = {'externalAdmission': ['--execute', '--source-plan-sha <externally-reviewed SHA256>',
         '--revision <exact-published-HEAD>', '--dispatcher-grant <new fucq103-MODE- grant>'],
@@ -239,7 +239,7 @@ backend = {**common, 'scope': 'proposed-scoped-combined-eligibility-and-registra
     'expectedMatchedTests': sum(chunk['expectedMatchedTests'] for chunk in selected),
     'impact': 'Exact100 repair with retained103 weighted scoring/runtime/seed; canonical actual default preparation and coherent synthetic cohort; additive107 same-provider registration proposal.',
     'excluded': 'Browser, full suite, native database/PostgreSQL connection, deployed/live systems, producer92/69/122/126 journeys,105→107 decision lookup/reload,113corpus/115training acceptance.',
-    'resourceContract': {'workers': 1, 'chunkSeconds': 120, 'chunkScratchMiB': 128, 'chunkRamMiB': 768, 'chunkLogMiB': 2,
+    'resourceContract': {'workers': 1, 'chunkSeconds': 120, 'chunkScratchMiB': 128, 'chunkRamMiB': 1024, 'chunkLogMiB': 2,
         'sharedOutput': '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs',
         'retainedReceiptHeadroomKiB': 256,
         'originalLogRetention': 'Entire bounded merged test.log on success/failure after stop/join and owned scratch identity proof; byte count/SHA/readback. Child log cap2MiB plus separate256KiB receipt headroom, all within128MiB combined.',

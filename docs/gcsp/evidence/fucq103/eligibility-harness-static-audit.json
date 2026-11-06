@@ -4,13 +4,13 @@
   "scope": "static-harness-authoring-only",
   "state": "PASS",
   "productAndTestFrozenRevision": "f80fc61ca151cb46ad21cb2b19e704f4012d53de",
-  "backendPlanSha256": "8a7380e1f6e8f7f019f36a5405c7d9e00470da0bcc357fadf830b27a74b1e55e",
-  "browserCandidatePlanSha256": "f8a42aa2fc517af20899fab90ca7178f4dce1e7ab6269248a34dd0d2cb3c7eaa",
+  "backendPlanSha256": "8ba30f9b6dba4bfe33048705137f098036debeb8801a1cfb30af2b21db3967ac",
+  "browserCandidatePlanSha256": "6d29c7f7351b350eddf0fb4f177b19572c2a1044eaeb19a1785087fff6d912f7",
   "harnessSha256": {
-    "scoped-supervisor.py": "b52436d9b8e2290d729d5b67b6a6549a8d6241e6c37b093e8d8e1682f46db8bd",
+    "scoped-supervisor.py": "f46c5a1100bee53b592d29735f3f2f193b817ae224707e770ed3901ca534a991",
     "scoped-resources.py": "203d108e45bcaff79ebf9d5997712c0480b277b4da3dca34263a29387ae2b69b",
     "scoped-test-launch.mjs": "a9893937cd7a3497d43f836919c47fd91485be0ca99efa54a3007ac10c376d1b",
-    "eligibility-source-catalogue.py": "cc1aea7a41971326c9c17465399a36e557e2afbb54301a446fe07cd1ffde8f69"
+    "eligibility-source-catalogue.py": "aa162e4fe21b3aedf20eeba421a96f6a79e9ce62c1d9d53ced127066b8263993"
   },
   "sourceFilesVerified": 219,
   "relativeEdgesVerified": 432,
@@ -75,7 +75,7 @@
     }
   ],
   "matchedCases": 77,
-  "sourceBytesForFiniteMirror": 3793286,
+  "sourceBytesForFiniteMirror": 3793290,
   "staticChecks": {
     "productAndTestBytesFrozen": true,
     "sharedResourceHelperFrozen": true,
@@ -108,7 +108,11 @@
     "retainedCopyCountedBeforeScratchDeletion": true,
     "separateReceiptHeadroomWithinCombinedBudget": true,
     "guardLauncherLifecycleDependencyBytesPreserved": true,
-    "originalLogDescriptorOpenNonblockingBeforeRegularFileRejection": true
+    "originalLogDescriptorOpenNonblockingBeforeRegularFileRejection": true,
+    "numericOnlyRamDeltaVerified": true,
+    "actualEnforcerPolicyAdmissionAndChunkRamAligned": true,
+    "originalRuntimeReceiptAndExternalArtifactsPreserved": true,
+    "allOtherSourceGraphDependencyExecutableIdentitiesUnchanged": true
   },
   "proposedFirstSequence": [
     "eligibility-core:25 separate grant",
@@ -122,7 +126,7 @@
   "resourceReservations": 0,
   "scratchAllocations": 0,
   "harnessPlanInvocations": 0,
-  "limitations": "Static byte/hash/JSON/Python AST/control-order review only. No execution, failure injection or log-retention correctness proof. Superseded45d337af grant unconsumed; replacement exact-revision once grant required. Browser/full/native/integration remain ungranted.",
+  "limitations": "Static audit for the proposed1024MiB revision only; it has not run. The original once-granted8568dae attempt stopped at799.17MiB against768MiB with empty log and no assertion verdict; original evidence retained in c60ccd4. No retry/registry/browser/native/full grant is active. Fresh strict budget must include any separate102 reservation.",
   "followupReview": {
     "priorHarnessRevision": "011325a4b9114450487d62890382952835e9b356",
     "priorDisposition": "HOLD: finalizer entry cancellation; persistence before direct join; invisible dependency symlinks",
@@ -161,5 +165,43 @@
       "docs/gcsp/evidence/fucq103/scoped-supervisor.py"
     ],
     "validation": "One-line byte delta and Python AST/control ordering only; no FIFO/probe/test/allocation"
+  },
+  "numericRamProposal": {
+    "scope": "Four numeric substitutions only; no execution of proposed source",
+    "originalAttemptEvidenceCommit": "c60ccd4f63e21eea4caa85055ce42f64213db668",
+    "originalAttemptRevision": "8568daee6a8b348a93f7a23cebf39e268aaa27df",
+    "originalAttemptGrant": "fucq103-eligibility-core-8568dae-0228",
+    "originalAttemptGrantState": "consumed-once-RESOURCE_INCOMPLETE-no-assertion-verdict",
+    "observedPeakAggregateRSSBytes": 837992448,
+    "observedPeakAggregateRSSMiB": 799.171875,
+    "priorRamCapMiB": 768,
+    "proposedRamCapMiB": 1024,
+    "headroomAboveObservedPeakMiB": 224.828125,
+    "hostRamReserveMiB": 512,
+    "freshStrictLockedBudgetRequired": true,
+    "otherActiveReservations": "Count every live reservation, including any separate102 lane; no historical headroom reuse",
+    "unchanged": [
+      "product/test/25-case graph",
+      "guard",
+      "launcher",
+      "120seconds",
+      "128MiB combined",
+      "2MiB merged log",
+      "256KiB receipts",
+      "one worker",
+      "5GiB disk reserve",
+      "512MiB RAM reserve"
+    ],
+    "sourcePinsChanged": [
+      "docs/gcsp/evidence/fucq103/eligibility-source-catalogue.py",
+      "docs/gcsp/evidence/fucq103/scoped-supervisor.py"
+    ],
+    "rootOriginalCleanupAudit": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-core-budget-stop-root-0228.json",
+      "sha256": "f8707b85305ab23868fdaca0f01a38cd909414b76e058220847bc171406a6ae5",
+      "reportedOutcome": "PASS",
+      "reportedCheckCount": 26
+    },
+    "replacementGrant": "required; none active"
   }
 }

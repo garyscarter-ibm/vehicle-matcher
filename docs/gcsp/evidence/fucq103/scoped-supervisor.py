@@ -200,7 +200,7 @@ def execute(args, plan, loaded, chunk, command, environment, resources, guard):
     shared = Path(plan['resourceContract']['sharedOutput'])
     run = 'fucq103-backend-' + uuid.uuid4().hex
     retained = shared / 'fucq103-backend' / run
-    policy = resources.Policy({'chunk_scratch_mib': 128, 'chunk_ram_mib': 768, 'chunk_seconds': 120, 'log_mib': 2,
+    policy = resources.Policy({'chunk_scratch_mib': 128, 'chunk_ram_mib': 1024, 'chunk_seconds': 120, 'log_mib': 2,
                                'reserve_free_gib': 5, 'ram_reserve_mib': 512, 'preferred_free_gib': 30})
     if policy.reserve != plan['hostBudget']['emergencyReserveBytes'] or int(policy.ram_reserve_mib * MIB) != plan['hostBudget']['ramReserveBytes']:
         raise RuntimeError('Resource helper reserve differs from explicit admission')
@@ -260,7 +260,7 @@ def execute(args, plan, loaded, chunk, command, environment, resources, guard):
                 budget.update(scratch.token, used, rss)
                 result.update(peakAggregateRSS=max(result.get('peakAggregateRSS', 0), rss),
                               peakCombinedBytes=max(result.get('peakCombinedBytes', 0), used))
-                if rss > 768 * MIB or used > 128 * MIB or time.monotonic() - started > 120:
+                if rss > 1024 * MIB or used > 128 * MIB or time.monotonic() - started > 120:
                     raise RuntimeError('Aggregate RAM/disk/time budget exceeded')
                 if guard.shutil.disk_usage(scratch.root).free < plan['hostBudget']['emergencyReserveBytes']:
                     raise RuntimeError('Host emergency disk reserve reached')

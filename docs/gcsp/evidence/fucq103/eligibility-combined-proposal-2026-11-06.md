@@ -30,11 +30,11 @@ The affected selector's prior reviewed fallback to broad `npm test` is not selec
 Use the pinned Python with `-I -B` from the owned DEV-066 worktree. Every invocation requires the external source-plan SHA. Execution also requires the exact reviewed published HEAD and a fresh mode-specific dispatcher grant. The JSON stores the pinned executables, commands and filters. **These commands are proposed, not granted.** First admit core 25, review its result/cleanup, then separately admit registry 16. Stop on failure; all remaining modes require separate review.
 
 ```sh
-/Library/Developer/CommandLineTools/usr/bin/python3 -I -B docs/gcsp/evidence/fucq103/scoped-supervisor.py eligibility-core --execute --source-plan-sha 8a7380e1f6e8f7f019f36a5405c7d9e00470da0bcc357fadf830b27a74b1e55e --revision <reviewed-published-HEAD> --dispatcher-grant <new-fucq103-eligibility-core-grant>
-/Library/Developer/CommandLineTools/usr/bin/python3 -I -B docs/gcsp/evidence/fucq103/scoped-supervisor.py eligibility-registry --execute --source-plan-sha 8a7380e1f6e8f7f019f36a5405c7d9e00470da0bcc357fadf830b27a74b1e55e --revision <reviewed-published-HEAD> --dispatcher-grant <separate-new-fucq103-eligibility-registry-grant>
+/Library/Developer/CommandLineTools/usr/bin/python3 -I -B docs/gcsp/evidence/fucq103/scoped-supervisor.py eligibility-core --execute --source-plan-sha 8ba30f9b6dba4bfe33048705137f098036debeb8801a1cfb30af2b21db3967ac --revision <reviewed-published-HEAD> --dispatcher-grant <new-fucq103-eligibility-core-grant>
+/Library/Developer/CommandLineTools/usr/bin/python3 -I -B docs/gcsp/evidence/fucq103/scoped-supervisor.py eligibility-registry --execute --source-plan-sha 8ba30f9b6dba4bfe33048705137f098036debeb8801a1cfb30af2b21db3967ac --revision <reviewed-published-HEAD> --dispatcher-grant <separate-new-fucq103-eligibility-registry-grant>
 ```
 
-The angle-bracket fields are required review-time substitutions, so these are command templates. `--plan --source-plan-sha 8a7380e1f6e8f7f019f36a5405c7d9e00470da0bcc357fadf830b27a74b1e55e` is the separate allocation-free source-admission action; it imports no custom helpers. It has not been executed in this repair checkpoint.
+The angle-bracket fields are required review-time substitutions, so these are command templates. `--plan --source-plan-sha 8ba30f9b6dba4bfe33048705137f098036debeb8801a1cfb30af2b21db3967ac` is the separate allocation-free source-admission action; it imports no custom helpers. It has not been executed in this repair checkpoint.
 
 | Mode | Expected matched tests | Purpose |
 |---|---:|---|
@@ -48,7 +48,7 @@ The angle-bracket fields are required review-time substitutions, so these are co
 | eligibility-dashboard |3| Real service steps, canonical privacy and real-projection shape |
 | eligibility-registry |16| Proposed107 and retained106/113/115/presenter registry/adoption boundaries |
 
-Backend chunks use one worker, 120s, 128MiB scratch, 768MiB RAM and 2MiB logs each. Require fresh HostBudget/reservation and an owned absolute scratch root/external manifest before allocation; register the finalizer first and propagate TMPDIR/TMP/TEMP. Retain bounded summaries/impact identity in shared `.claude/test-runs/ownership` and `impact`, clean each chunk, and independently verify process identities/groups, scratch/profile/link absence, ports closed and reservation release. No installs or shared/native database connection. The explicit PostgreSQL case refuses absent configuration without opening a connection. Nothing in this proposal grants allocation.
+Backend chunks use one worker, 120s, 128MiB scratch, 1024MiB RAM and 2MiB logs each. Require fresh HostBudget/reservation and an owned absolute scratch root/external manifest before allocation; register the finalizer first and propagate TMPDIR/TMP/TEMP. Retain bounded summaries/impact identity in shared `.claude/test-runs/ownership` and `impact`, clean each chunk, and independently verify process identities/groups, scratch/profile/link absence, ports closed and reservation release. No installs or shared/native database connection. The explicit PostgreSQL case refuses absent configuration without opening a connection. Nothing in this proposal grants allocation.
 
 The browser supervisor has not been repaired or admitted by this backend repair. Its refrozen candidate is `eligibility-browser-source-plan.json`, passed explicitly through `FUCQ103_SOURCE_PLAN`; it has a retained 103 ancestor anchor of d644288 and the exact combined current-source identities. Preparation has one worker, 120s, 128MiB scratch, 512MiB RAM and 2MiB logs, no runtime imports/browser. Each later browser chunk has one owned browser/worker, 120s, 128MiB combined retained scratch, 2560MiB requested RAM (2048 MiB minimum) and2MiB logs. Use fresh admission/ownership manifests and exact pushed `FUCQ103_FROZEN_REVISION`; browser mode receives no grant here. Static catalogue authoring hashes installed bytes but does not launch any pinned executable.
 
@@ -56,8 +56,8 @@ Excluded: full suite, native/deployed/live systems, actual92/69/122/126 producer
 
 ## Frozen authoring identities
 
-- Backend proposal SHA-256: `8a7380e1f6e8f7f019f36a5405c7d9e00470da0bcc357fadf830b27a74b1e55e`.
-- Browser proposal SHA-256: `f8a42aa2fc517af20899fab90ca7178f4dce1e7ab6269248a34dd0d2cb3c7eaa`.
+- Backend proposal SHA-256: `8ba30f9b6dba4bfe33048705137f098036debeb8801a1cfb30af2b21db3967ac`.
+- Browser proposal SHA-256: `6d29c7f7351b350eddf0fb4f177b19572c2a1044eaeb19a1785087fff6d912f7`.
 - 219 source files, 432 relative/resource edges, three directory inventories, 251 installed files, 8 executables; 11 unique selected test files and 77 proposed matched cases.
 - New graph author: `eligibility-source-catalogue.py`; static source reading, Python AST parsing, immutable Git blob/hash comparisons and JSON validation only. No test/resource allocations or cleanup debt created.
 - 107 bundle SHA-256: `2b634e30a65f8fce6a3cfef67e10b04e9dff72ecb4fe296c51330e98efe86d5d`; digest `bb05e490f85e9f6fd9aa1c424c849740ad2884cc62e9d9a2b98ee8f739f8b7ed`.
@@ -86,3 +86,10 @@ The dispatcher accepted the45d337af static delta, then superseded grant `fucq103
 The authorised narrow follow-up retains the complete bounded merged `test.log` after stop/join and owned scratch identity proof, on success and failure. Retention uses no-follow regular-file admission, exclusive destination creation, fsync and exact size/hash readback; the receipt records byte count and SHA-256. The full original is not clipped to make room for receipts. A separate256KiB receipt allowance accompanies the2MiB child-log cap; the transient scratch/log copy plus retained output remain subject to128MiB combined accounting. Unknown cleanup/retention state preserves the original scratch and reservation. Existing lifecycle, dependency, launcher and test selections are unchanged. Module evidence remains the admitted static source/edge/dependency identities; no new instrumentation or journal is added.
 
 Publish this new exact helper/plan revision for narrow static delta review and a replacement once grant before core25. Registry16 remains separately ungranted; no other execution is admitted here.
+
+
+## Numeric-only RAM proposal after the one granted core attempt
+
+The attempt at 8568dae consumed `fucq103-eligibility-core-8568dae-0228` once and stopped at 799.171875MiB aggregate RSS against 768MiB after 2.805seconds. Its original merged log is empty; no case names/counts or assertion verdict exist, so all 25 selected cases remain unproven. Runtime and independent lead cleanup passed; see `eligibility-core-8568dae-2026-11-06.json` and evidence-only commit c60ccd4. No retry or later mode ran. The earlier 45d337af grant remains superseded unconsumed.
+
+The dispatcher authorised a numeric-only 1024MiB aggregate proposal: 224.828125MiB headroom above the observed 799.171875MiB peak (about 28.13%). Only the supervisor’s actual RAM threshold and Policy value, plus the catalogue’s host reservation and chunk RAM identity, change. Product/tests, guard, launcher, 25-case commands/graph, 120seconds, 128MiB combined scratch/retained output, 2MiB merged child log, 256KiB receipt headroom, one worker, 5GiB disk reserve and 512MiB host RAM reserve stay unchanged. The original launch had 2,894,479,360bytes available and no outside pending reservation; that historical value is not admission for another run. Fresh strict locked HostBudget accounting and a new exact once grant remain mandatory. This proposal has not run; registry16 and all broader modes remain ungranted.
