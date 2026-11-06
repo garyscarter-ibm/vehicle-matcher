@@ -142,3 +142,50 @@ unchanged and requires a reviewed refreeze before any future browser grant.
 Dispatcher handoff: record this as a validated case-adapter checkpoint with live
 producer/rendered/full-suite acceptance outstanding. Preserve Jira dependencies,
 existing claims and shared writer ownership; no Story completion is implied.
+
+## Dispatcher acceptance and next-source readiness
+
+The dispatcher accepted published case checkpoint
+`9c43be94afd5c645a56c37fdb538f4f276310f5d` after its own product-diff review and
+100-check audit, recorded at
+`.claude/test-runs/ownership/fucq122-stock-adapter-result-audit-0033.json`.
+Its limits remain explicit: this unit run did not retain a full dependency byte
+inventory or every descendant PID identity. Group absence, scratch/reservation
+cleanup and adopted target identity/size were independently established. Final
+park receipt: `.claude/test-runs/fucq122-options/canonical-stock-adapter-final-park.json`;
+the exact borrowed symlink is absent and both dependency targets are preserved.
+
+Read-only follow-up found a remotely verified FUCQ-92 producer candidate at
+`15a79957e61d81612311d3aab7dbf77733dc4e0d`
+(`dev/DEV-2026-11-04-058`). Its `createStockReleaseService().register()` attaches the
+actual `stock-release` handler at the `release-pull` stage. The handler writes
+`released` stock with source-derived availability through the tick transaction.
+The retained synthetic/real-shaped provider fixtures contain label-only facts,
+legacy visibility and no source availability end. They therefore cannot alone
+prove a suitable case option. A later reviewed check must feed truthful normalized
+exact facts, visibility and source timing into the actual provider/pull boundary;
+it must not patch the resulting released row to manufacture suitability. Missing
+facts/timing must remain an unavailable outcome. No paused producer source was
+changed, imported or invoked.
+
+FUCQ-100's observed documentation HEAD was
+`4ab7713ef157d3ffc4f119a9ee69fd99fd308b7e`; its central eligibility product/test
+drafts were still uncommitted, with harness review corrections also in progress.
+Its existing `next-runtime-source-plan.json` still pins canonical `95d7741` and
+pre-repair cases `aedc5e6`, and explicitly excludes FUCQ-92 adoption. That record is
+not a freeze for the repaired case or the forthcoming central eligibility path.
+
+The next finite producer/transaction/HTTP-to-case execution plan is therefore
+**not ready to freeze**. It needs FUCQ-100's published validated eligibility and
+composition revisions, then a complete reviewed per-path import/config/input,
+installed-dependency and harness identity with the exact FUCQ-92 producer and
+`9c43be9` case source. FUCQ-100 retains the central eligibility/runtime writer lane;
+no duplicate manual-facts helper is being authored here. Any loopback HTTP case
+must be disclosed in that finite selection before a grant. Browser, native and
+full-suite lanes remain separate.
+
+The timestamped source observations and six candidate FUCQ-92 file hashes are
+retained in
+`.claude/test-runs/fucq122-options/next-producer-readiness-2026-11-06.json`.
+This follow-up is a readiness record, with no executable harness, source adoption,
+JavaScript import, test/producer call, listener or new scratch allocation.
