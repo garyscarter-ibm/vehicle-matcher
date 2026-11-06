@@ -1025,16 +1025,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-106"
     },
     {
-      "id": "FUCQ-107",
-      "title": "Confirm one preference change after declining and receive a second offer",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-107"
-    },
-    {
       "id": "FUCQ-108",
       "title": "Hand off a selected buddy offer through the ordering adapter",
       "status": "To Do",
@@ -1808,6 +1798,66 @@
           "observed_at": "2026-11-06T00:31:00.359880+00:00",
           "expires_at": "2026-11-06T01:01:00.359880+00:00",
           "status": "active; independent planner input/solver implementation"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-107",
+      "title": "Confirm one preference change after declining and receive a second offer",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-06T00:43:22Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-107",
+      "branch": "dev/DEV-2026-11-04-085",
+      "unsliced": false,
+      "workers": [
+        {
+          "name": "Lego Batman",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-06T00:42:26.440215Z",
+          "expires_at": "2026-11-06T02:42:26.440215Z",
+          "source": "thread 01a1ae4b-a637-7f31-a152-feda9925e927; requested/selected/effective gpt-6.1-sol/high verified turn_context",
+          "status": "planning"
+        }
+      ],
+      "slices": [
+        {
+          "id": "policy-question",
+          "status": "not-started",
+          "title": "One canonical typed-reason question"
+        },
+        {
+          "id": "confirmation",
+          "status": "not-started",
+          "title": "One explicit versioned BriefService change"
+        },
+        {
+          "id": "comparison",
+          "status": "not-started",
+          "title": "Two stored quote comparison and current-brief evidence"
+        },
+        {
+          "id": "client-states",
+          "status": "not-started",
+          "title": "Reloadable shared-kit follow-up states"
+        },
+        {
+          "id": "actual-integration",
+          "status": "not-started",
+          "title": "Actual decline event, release, allocation and second hold integration"
+        },
+        {
+          "id": "browser",
+          "status": "not-started",
+          "title": "375px and desktop keyboard visual review"
+        },
+        {
+          "id": "full-validation",
+          "status": "not-started",
+          "title": "Authored full validation and integration review"
         }
       ]
     }
