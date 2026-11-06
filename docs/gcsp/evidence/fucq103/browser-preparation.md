@@ -143,3 +143,11 @@ The parent independently verified the exact source identity, retained allocation
 scratch/PID/group/link absence and reservation release. This is static preparation
 only. All three browser chunks still require explicit dispatcher admission on the
 exact successor revision; rendered integration stays not-started.
+
+
+The separately admitted [desktop smoke](browser-smoke-2026-11-06.md) subsequently
+ran once at `7dcee90`. Its overall result is incomplete because the actual scenario
+catalogue returned HTTP 503. Resource/source audits passed; no browser retry or
+journey was admitted. The dispatcher released that freeze for the approved
+canonical registry checkpoint, which needs a fresh catalogue before any later
+browser execution.

@@ -311,3 +311,13 @@ This is preparation only; no rendered/browser, full-suite or native acceptance
 is inferred. FUCQ-69 released the sole-browser lane, but FUCQ-103 admission still
 requires dispatcher review of this exact pushed successor and an explicit grant.
 FUCQ-103 has not launched a browser.
+
+
+The subsequent [desktop smoke](browser-smoke-2026-11-06.md) ran exactly once at
+`7dcee90` and remains incomplete: actual presenter scenario catalogue requests
+returned HTTP 503 because the delivered composition lacks `gcspScenarios`.
+Functional smoke checkpoints and the original three captures are retained;
+parent/dispatcher resource audits passed and the browser lane/freeze were released.
+No retry, desktop/narrow journey, full suite or native run followed. Central
+composition owns the real service; later canonical registry changes invalidate
+the old browser catalogue and require renewed preparation/review.

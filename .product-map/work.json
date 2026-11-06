@@ -1019,7 +1019,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-06T00:14:29Z",
+      "observed_at": "2026-11-06T00:22:49Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103",
       "jira_observed_at": "2026-11-05T22:40:24Z",
       "branch": "dev/DEV-2026-11-04-066",
@@ -1081,10 +1081,10 @@
         },
         {
           "id": "rendered-integration",
-          "status": "not-started",
+          "status": "blocked",
           "title": "Desktop and narrow keyboard browser evidence",
-          "observed_at": "2026-11-06T00:14:29Z",
-          "evidence": "Corrected actual-runtime HTTPS preparation passes: prep-59dfbbd373b74a0db81c77f4a99f2ea6; plan d2545e4494d3c6e61fcae19d08bc4124a22f1a3b836825556bc9b1f7ba3b6abb pins171repo/251deps/4executables including computed portal logo. HTTP resource errors initialized/checked; inherited debug/trace filtering; parent independently verifies source freeze/resource cleanup. docs/gcsp/evidence/fucq103/browser-preparation.md. No browser launched; exact pushed successor and per-chunk admission remain outstanding."
+          "observed_at": "2026-11-06T00:22:49Z",
+          "evidence": "One admitted smoke at7dcee90 remains incomplete: three actual presenter/scenarios503 responses; runtime lacks gcspScenarios, central100/126composition owns actual service. Three functional marks reached; original1280x900captures inspected with viewport limits. Receipt smoke-desktop-fb26fd0c291e4207b22c11a523365812; parent/dispatcher verified source and actual cleanup. docs/gcsp/evidence/fucq103/browser-smoke-2026-11-06.md. Lane/freeze released; no retry/journeys/full/native. New registry checkpo"
         },
         {
           "id": "full-validation",
