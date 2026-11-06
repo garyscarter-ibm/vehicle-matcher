@@ -4,8 +4,10 @@ const code = (status) => ({ ok: 200, pending: 202, invalid: 400,
   'missing-session': 401, 'unknown-session': 401, 'expired-session': 401,
   forbidden: 403, 'not-found': 404, 'unknown-principal': 404,
   conflict: 409, 'stale-version': 409, 'stale-run': 409, unavailable: 503 })[status] ?? 503;
-const invalid = () => result('invalid', { code: 'invalid-offer-decision-request' });
-const unavailable = () => result('unavailable', { code: 'offer-decision-unavailable', retryable: true });
+const invalid = () => result('invalid', { code: 'invalid-offer-decision-request',
+  reasons: [{ field: 'request', reason: 'Supply the exact offer coordinates and a bounded JSON body.' }] });
+const unavailable = () => result('unavailable', { code: 'offer-decision-unavailable',
+  reason: 'Offer decisions are temporarily unavailable.', retryable: true });
 const fields = ['commandId', 'runId', 'decision', 'reasonCode',
   'expectedOfferVersion', 'expectedHoldVersion', 'expectedQuoteVersion'];
 

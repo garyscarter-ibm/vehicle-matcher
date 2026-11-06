@@ -12,7 +12,8 @@ const positive = (v) => Number.isSafeInteger(v) && v > 0;
 const instant = (v) => typeof v === 'string' && /Z$/.test(v) && Number.isFinite(Date.parse(v));
 const same = (a, b) => inputDigest(a) === inputDigest(b);
 const ref = (scope, table, key = {}) => ({ table, key: { runId: scope.runId, ...key } });
-const unavailable = (code = 'offer-decision-unavailable') => result('unavailable', { code, retryable: true });
+const unavailable = (code = 'offer-decision-unavailable') => result('unavailable', {
+  code, reason: 'Offer decisions are temporarily unavailable.', retryable: true });
 const invalid = () => result('invalid', { code: 'invalid-offer-decision', reasons: [
   { field: 'command', reason: 'Supply the exact offer, decision and current revisions.' }] });
 const conflict = (reason, current) => result('conflict', { reason, action: 'refresh', ...(current ? { current } : {}) });
@@ -206,7 +207,9 @@ export class OfferDecisionService {
     const driver = manual?.drivers?.find((d) => d.kind === 'employee' && d.employeeId === employee.employeeId);
     if (!candidate || !manual?.employeeFacts || !driver) return unavailable('stored-employee-facts-unavailable');
     const employeeFacts = structuredClone(manual.employeeFacts);
-    if (employeeFacts.driverEligible === undefined) employeeFacts.driverEligible = driver.eligible;
+    if (employeeFacts.driverEligible !== undefined && (employeeFacts.driverEligible.status !== driver.eligible?.status
+      || employeeFacts.driverEligible.value !== driver.eligible?.value)) return conflict('driver-authority-inconsistent');
+    employeeFacts.driverEligible = driver.eligible;
     const charging = brief.essentials.charging;
     employeeFacts.charging = { status: charging?.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown',
       value: charging?.value ?? null, unit: null, provenance: { sourceRef: charging?.source ?? 'brief:unresolved',

@@ -276,6 +276,16 @@ test('revalidation refuses driver changes and missing evaluator without changing
   assert.deepEqual(state(f), changed);
 });
 
+test('conflicting current driver facts cannot bypass revalidation with an older eligible projection', async () => {
+  const f = await setup(); const employee = await read(f, 'employees', { employeeId: f.context.employeeId });
+  const driver = employee.contract.manualContext.drivers.find((d) => d.kind === 'employee');
+  employee.contract.manualContext.employeeFacts.driverEligible = structuredClone(driver.eligible);
+  driver.eligible.value = false;
+  yes(await patch(f, 'employees', { employeeId: f.context.employeeId }, { contract: employee.contract }));
+  const before = state(f); const out = await f.service.decide(f.capability, f.input('accept'));
+  assert.equal(out.reason, 'driver-authority-inconsistent'); assert.deepEqual(state(f), before);
+});
+
 test('accepting after clock advance preserves the original still-valid quote', async () => {
   const f = await setup(); const quote = await read(f, 'quotes', { quoteId: 'quote-fixture' });
   const time = yes(await f.clock.now(f.context));
@@ -289,6 +299,14 @@ test('acceptance rejects an expired quote before the longer hold expires', async
   yes(await f.clock.advance(f.presenter.context, { commandId: 'quote-expired', expectedClockVersion: time.clockVersion, bySeconds: 3600 }));
   const before = state(f); const out = await f.service.decide(f.capability, f.input('accept'));
   assert.equal(out.reason, 'quote-no-longer-valid'); assert.deepEqual(state(f), before);
+});
+
+test('decline can release the still-current hold after its quote validity ends', async () => {
+  const f = await setup(); const time = yes(await f.clock.now(f.context));
+  yes(await f.clock.advance(f.presenter.context, { commandId: 'quote-ended', expectedClockVersion: time.clockVersion, bySeconds: 3600 }));
+  const out = yes(await f.service.decide(f.capability, f.input('decline')));
+  assert.equal(out.state, 'declined'); assert.equal((await read(f, 'stock', { orderUuid: f.car.orderUuid })).available, true);
+  assert.equal(yes(await f.repository.query(f.context, 'decisions'))[0].decision, 'decline');
 });
 
 test('pause does not revoke existing selection; a confirmed practical change requests review', async () => {

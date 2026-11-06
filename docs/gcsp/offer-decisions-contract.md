@@ -15,7 +15,7 @@ Readiness uses actual interfaces, not Jira journey order. Immutable source reads
 | Source | Evidence / required use |
 |---|---|
 | FUCQ-100 `a7fc8580efba36c329b2479711d6b66db53962bd` | `buddy-hold.js` persists exact hold/claim/quote/offer and current employee/slot/brief pins; `buddy-remote.js` retains exclusion during uncertainty; `recommendation/index.js` exports the internal stored-subject evaluator using the same calculation kernel. |
-| FUCQ-102 `ec70522c81e8b9f671a3c92cd46eea4cd0a13000` | Actual privately branded account/token capability; `authorizeOffer(context, { runId, offerId }, 'decide')` checks binding/session/current run/stored offer. Its contract SHA256 is `bc1dcaff59fec98086041ccf9f6701d128a51407e90545eaf5d5d9b199b163f2`. Historical `ec70522` rechecked account `read` for `decide`. Verified newer published `b87653662cb9a9ab5efe148f8f3e985b2ffa4aea` passes the action into its guard and uses real resource `write` for `decide`; the access owner is adding an observer regression test. There is no current write-guard defect claim. |
+| FUCQ-102 `4a56d386f031e7cf5a1fdeaefdcc612fb35cbd7b` | Actual privately branded account/token capability; `authorizeOffer(context, { runId, offerId }, 'decide')` checks binding/session/current run/stored offer. Verified contract SHA256 `1731acc4e8d50873e4f614836626202107c14d581661206ff0e71ef5f48acc88`, access module `134e9d39253e934618f6cf38b334bb7cf0f8912443ee159e6167b949d4fdb34a`. Historical `ec70522` used account `read` for `decide`; `b876536` corrected it to resource `write`, with regression at `a3fdcdf`. Current `4a56d386` also preserves decline availability after quote expiry until the hold deadline. No current guard or timing-projection defect is claimed. |
 | Current foundation | Repository `decisions`, `pending_operations`, `event_receipts`, immutable quotes/briefs; occupying hold/claim states; real PolicyService, DemoClock, identity and BriefService. |
 
 Owned new paths: `server/gcsp/offers/decision.js`, `decision-http.js`, dedicated
@@ -124,6 +124,15 @@ until a relevant confirmed brief change under `offer.declinedCar.exclusion`.
 No preference, consent, priority, satisfaction or brief row changes on decline.
 FUCQ-100 expiry creates no decline/reason/exclusion/priority record.
 
+Quote validity gates **acceptance**, not decline. With the current one-hour quote
+and two-hour buddy hold, an employee may still decline after quote expiry while
+the exact hold remains active. At the hold deadline a new decline is refused and
+FUCQ-100 performs expiry without a decline record. FUCQ-102's published
+`4a56d386` now distinguishes the actions: decline-only after quote expiry while
+the eligible hold remains active, and none at the exact hold deadline. The actual
+FUCQ-106 decision path and FUCQ-105 page integration still require proof; this
+story has not edited their files or claimed their acceptance.
+
 ## Canonical reason registry proposal
 
 Add exactly one assumption entry through the policy owner, not this story's seed
@@ -203,8 +212,11 @@ Stable slices are recorded through `_tools/product_map.py`:
 7. `final-validation`: authored acceptance, native/full-suite and integrated response evidence.
 
 Before imports, root must coordinate the minimum immutable producer/evaluator/
-access files (and their precise import closure), including the already corrected
-account `decide` write guard at `b876536` rather than historical `ec70522`. Policy activation is an exact additive proposal above. Remote adapter
+access files and their precise import closure. The finite proposal in
+`evidence/fucq106/integration-plan.md` reuses the reviewed 35-module/six-overlay
+producer composition, pins current access at `4a56d386`, and records exact source
+hashes/bytes, policy bundle and registration diff. No imports or policy activation
+have been performed. Remote adapter
 selection/release and downstream consumption need agreed executable ports.
 The independent service can progress with injected ports over real memory/
 PolicyService/DemoClock/identity; fake capability success never closes actual
@@ -231,13 +243,13 @@ on commands, bounded JSON and no browser identity claims. GET
 `/api/gcsp/offers/:offerId/decision-reasons?runId=...` projects the same registry.
 Actual central dispatch/resolver composition is still open.
 
-The final independent checkpoint has 23/23 scoped passes and exact code hashes in
+The final independent checkpoint has 25/25 scoped passes and exact code hashes in
 `evidence/fucq106/scoped-service-checkpoint.json`. Fixtures use the actual merged
 shared calculation with a genuine account bridge; they do not establish the
 unimported stored-subject factory or FUCQ-102 capability parity. No source import
 expansion has occurred. The real-account guard is verified corrected at
-`b876536`; the access owner reports its focused regression published at
-`a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed`.
+`b876536`, its regression is published at `a3fdcdf`, and the current access
+timing projection is verified at `4a56d386`.
 
 Canonical policy activation is coordinated through FUCQ-103's existing reviewed
 assumption bundle and same-provider adoption/CAS path. There is no seed/provider/

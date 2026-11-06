@@ -9,18 +9,18 @@
     "--test-concurrency=1",
     "server/test/gcsp-offer-decisions.test.js"
   ],
-  "tests": 23,
-  "passed": 23,
+  "tests": 25,
+  "passed": 25,
   "failed": 0,
   "skipped": 0,
   "identity": {
-    "server/gcsp/offers/decision.js": "20185a1493a82662ba01f60043543934959cb91be67013783bbe5596d6ec8d91",
-    "server/gcsp/offers/decision-http.js": "816ad8edb9ab0b502ef7cd6fbaff96f5bb43ee95a342319f2f39d08f95692957",
-    "server/test/gcsp-offer-decisions.test.js": "dce862a6f1df5191afe9ba5206ab206978cb0624e1acab60611ff02ca6cc0cc3"
+    "server/gcsp/offers/decision.js": "a934455a09beb13e3682c1f10ebea95f0549ff2fad8db03d54ff947e7ed7789a",
+    "server/gcsp/offers/decision-http.js": "223e3358569602145ecb2a5f967abf5a9e3ca78d688667d0e6c8bbb0c1779b96",
+    "server/test/gcsp-offer-decisions.test.js": "fe83e9ff13a95af4a843875e1977cd570fd5162d936e46b11bcdb9ef1ada488f"
   },
-  "source_identity_digest": "03506e326d71ff2b888762a2473a0e68a82090fcda9c8ba5f44a5c61905e3f5e",
-  "resource_receipt": ".claude/test-runs/fucq106/service-v6-result.json",
-  "impact": ".claude/test-runs/impact/fucq106-service-v6.json",
+  "source_identity_digest": "243d110105549b81f843717b276d57856cc0b057778dbd43e2d217797d979907",
+  "resource_receipt": ".claude/test-runs/fucq106/service-v9-result.json",
+  "impact": ".claude/test-runs/impact/fucq106-service-v9.json",
   "limits": {
     "seconds": 120,
     "ramMiB": 768,
@@ -29,8 +29,8 @@
     "workers": 1
   },
   "measured": {
-    "wallSeconds": 1.290658375,
-    "peakRSSBytes": 228835328,
+    "wallSeconds": 1.3202204590000002,
+    "peakRSSBytes": 226000896,
     "peakScratchBytes": 8192
   },
   "cleanup": {
@@ -50,5 +50,19 @@
     "Domain source-event receipt is not downstream delivery proof",
     "Remote decisions fail closed; no selection/release adapter accepted",
     "No central runtime, native PostgreSQL, full suite, browser, listener, network/mail or installs"
+  ],
+  "final_cleanup": "docs/gcsp/evidence/fucq106/final-cleanup-receipt.json",
+  "reuse_basis": "All behavior JavaScript and policy input hashes in service-v9 receipt still match. Later documentation/map edits do not change the tested behavior.",
+  "supervised_command": [
+    "python3",
+    "-I",
+    "-B",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq106/run-scoped.py",
+    "service-v9",
+    "node",
+    "--test",
+    "--test-reporter=tap",
+    "--test-concurrency=1",
+    "server/test/gcsp-offer-decisions.test.js"
   ]
 }

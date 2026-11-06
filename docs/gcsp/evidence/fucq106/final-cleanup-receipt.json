@@ -1,0 +1,19 @@
+{
+  "verification": "Independent filesystem/process/open-file/reservation audit through service-v9; read-only, no test allocation",
+  "observedAt": "2026-11-06T00:00:45Z",
+  "latestResult": "service-v9-result.json",
+  "latestResultSHA256": "93574850cbbc074a4c05d38904dd43e2a9fdbaa144a7a33fd624a4b4bbf82f11",
+  "ownershipManifests": 18,
+  "scratchRoots": 10,
+  "sumMeasuredPeakScratchBytes": 65536,
+  "temporaryLinksRemoved": 8,
+  "ownedScratchRootsAbsent": true,
+  "ownedDependencyLinksAbsent": true,
+  "installedDependencyTargetPreserved": true,
+  "liveOwnedProcesses": [],
+  "liveOwnedGroups": [],
+  "openFilesOnOwnedRoots": [],
+  "ownReservationsReleased": true,
+  "leftovers": [],
+  "retainedFailureLogsBounded": true
+}
