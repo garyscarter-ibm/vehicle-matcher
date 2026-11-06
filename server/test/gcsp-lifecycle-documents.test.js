@@ -1,15 +1,20 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, mkdtemp, writeFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { Readable } from 'node:stream';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok, result } from '../gcsp/repository/index.js';
-import { PolicyService } from '../gcsp/policy/index.js';
+import { PolicyService, FilePolicyProvider } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { createGcspHandler } from '../gcsp/identity/http.js';
 import { createLifecycleDocumentService, DOCUMENTS_HANDLER_ID, observeStage } from '../gcsp/lifecycle/documents/index.js';
 import { createDocumentRoutes } from '../gcsp/lifecycle/documents/http.js';
 import { RenewalCaseService } from '../gcsp/cases/index.js';
+import { createLifecycleApprovalService } from '../gcsp/lifecycle/approvals/index.js';
+import { createSyntheticOrderingStatus } from '../gcsp/adapters/synthetic-ordering-status.js';
+import { createRealProducer } from './helpers/gcsp-lifecycle-approval.js';
 import { createSyntheticDocumentStatus, createLiveDocumentStatusStub } from '../gcsp/adapters/synthetic-ordering-documents.js';
 
 const patch = JSON.parse(await readFile(new URL('./fixtures/gcsp-lifecycle-documents-policy-patch.json', import.meta.url), 'utf8'));
@@ -190,6 +195,63 @@ test('a producer forbidden read and foreign pending or declined orders are refus
     assert.equal((await f.service.readReadiness(f.paula, { orderUuid: ORDER })).status, 'forbidden');
   }
   assert.equal((await f.service.readReadiness(f.greg, { orderUuid: ORDER })).value.reason, 'opening-stage-not-reached');
+});
+
+// Real producer chain: FUCQ-71 ManualOrderService -> FUCQ-111 LifecycleApprovalService.stagePort() -> documents, one run.
+async function realChain(t, { approvalPolicy } = {}) {
+  const policy = await policyWith();
+  const f = await setup(t, { policy, register: false, stages: null });
+  assert.equal((await seedManualDemoContext({ repository: f.repository, identity: f.identity, clock: f.clock, context: f.alex })).status, 'ok');
+  const approvals = createLifecycleApprovalService({ repository: f.repository, policy: approvalPolicy ?? policy, clock: f.clock, identity: f.identity,
+    status: createSyntheticOrderingStatus({ repository: f.repository }) });
+  if (!approvalPolicy) assert.equal((await approvals.start()).status, 'ok');
+  const service = createLifecycleDocumentService({ repository: f.repository, policy, clock: f.clock, identity: f.identity,
+    lifecycleStages: approvals.stagePort(), provider: f.adapter });
+  assert.equal((await service.start()).status, 'ok');
+  const producer = await createRealProducer({ repository: f.repository, policy, clock: f.clock, identity: f.identity });
+  return { ...f, approvals, service, producer };
+}
+const documentsOutcome = (tick) => tick.outcomes.find((o) => o.handlerId === DOCUMENTS_HANDLER_ID).outcome;
+
+test('real stagePort: a healthy order opens, a corrupted order is diagnosed, not a global block; policy-wide and foreign refusals hold', async (t) => {
+  const f = await realChain(t);
+  const healthy = await f.producer.submit(f.paula, { id: 811, type: 'cart' });
+  const bad = await f.producer.submit(f.alex, { id: 812, type: 'cart' });
+  assert.equal(healthy.submitted.status, 'ok', JSON.stringify(healthy.submitted)); assert.equal(bad.submitted.status, 'ok', JSON.stringify(bad.submitted));
+  const corrupted = await f.repository.transaction(f.alex, { commandId: 'corrupt-real', inputDigest: inputDigest('corrupt-real') }, async (tx) => {
+    const ref = { table: 'pending_operations', key: { runId: f.alex.runId, operationId: bad.submitted.value.operationId } };
+    const row = await tx.get(ref); return tx.compareAndSwap(ref, row.value.version, { outcome: { status: 'unknown' } });
+  });
+  assert.equal(corrupted.status, 'ok');
+  let outcome; let opened = [];
+  for (let i = 0; i < 16 && opened.length === 0; i += 1) {
+    await f.advance(HOUR); outcome = documentsOutcome(await f.tick());
+    assert.equal(outcome.status, 'ok', JSON.stringify(outcome)); opened = await items(f);
+  }
+  assert.deepEqual(opened.map((o) => o.orderUuid), [healthy.orderUuid], 'the healthy order opened from the real approved stage');
+  const view = (await f.approvals.stagePort().read({ ...f.paula, principalId: 'clock-startup', roles: [] }, { orderUuid: healthy.orderUuid })).value;
+  assert.deepEqual([opened[0].opening.stage, opened[0].opening.lifecycleRevision, opened[0].opening.stagePolicyVersion], ['sent to ordering', view.lifecycleRevision, view.policyVersion]);
+  assert.equal(view.stages.find((s) => s.stage === 'sent to ordering').state, 'approved');
+  assert.deepEqual(outcome.value.producerFailed.map((x) => [x.orderUuid, x.code]), [[bad.orderUuid, 'selection-source-invalid']]);
+  assert.equal(outcome.value.producerFailedCount, 1); assert.equal(outcome.value.producer, 'ok');
+  assert.deepEqual((await items(f, f.alex)), [], 'the corrupted order opens nothing');
+  assert.equal((await f.service.readReadiness(f.alex, { orderUuid: healthy.orderUuid })).status, 'forbidden', 'foreign ownership refused');
+  assert.equal((await f.service.readReadiness(f.paula, { orderUuid: bad.orderUuid })).status, 'ok');
+  const ready = (await f.service.readReadiness(f.greg, { orderUuid: healthy.orderUuid })).value;
+  assert.deepEqual([ready.opened, ready.ready], [true, false]);
+
+  // Policy-wide: a real PolicyService over a malformed file in the launcher's owned TMPDIR refuses the whole list.
+  const dir = await mkdtemp(join(tmpdir(), 'fucq116-policy-')); t.after(() => rm(dir, { recursive: true, force: true }));
+  const filePath = join(dir, 'seed-v1.json'); await writeFile(filePath, '{ "schemaVersion": 1, ');
+  const broken = await realChain(t, { approvalPolicy: new PolicyService({ provider: new FilePolicyProvider({ filePath }) }) });
+  const order = await broken.producer.submit(broken.paula, { id: 813, type: 'cart' });
+  assert.equal(order.submitted.status, 'ok');
+  const refused = documentsOutcome(await broken.tick());
+  assert.equal(refused.status, 'ok');
+  assert.deepEqual(refused.value.producer, { status: 'invalid', code: 'source-invalid', scope: 'policy-wide' });
+  assert.deepEqual([refused.value.opened, refused.value.producerFailed], [0, []]);
+  const read = (await broken.service.readReadiness(broken.greg, { orderUuid: order.orderUuid })).value;
+  assert.deepEqual([read.state, read.reason, read.producerCode], ['not-open', 'stage-read-unavailable', 'source-invalid']);
 });
 
 test('the employee completes her task with a labelled synthetic acknowledgement; others are refused', async (t) => {

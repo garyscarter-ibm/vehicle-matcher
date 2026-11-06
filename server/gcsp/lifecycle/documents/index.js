@@ -22,7 +22,7 @@ export function observeStage(read, { context, orderUuid, openingStage, openingSt
   if (read.status === 'not-found') return notOpen('no-lifecycle-for-order');
   if (read.status === 'unsupported') return notOpen('stage-mode-unsupported');
   if (read.status === 'forbidden') return { status: 'forbidden', reason: 'stage-read-forbidden' };
-  if (read.status !== 'ok' || !object(read.value)) return notOpen('stage-read-unavailable');
+  if (read.status !== 'ok' || !object(read.value)) return notOpen('stage-read-unavailable', { producerStatus: read.status, producerCode: read.code ?? null });
   const v = read.value;
   if (v.contractVersion !== STAGE_CONTRACT) return notOpen('stage-contract-unsupported');
   if (v.runId !== context.runId || v.orderUuid !== orderUuid || !text(v.employeeId, 128)) return notOpen('stage-identity-mismatch');
@@ -196,18 +196,21 @@ export class LifecycleDocumentService {
     const prepared = await this.#now(context); if (prepared.error) return prepared.error;
     if (prepared.now !== now) return result('stale-version', { reason: 'Clock changed during this tick. Refresh and retry.' });
     // One order's failure is recorded and skipped; others still progress. Retries reuse stable per-order command IDs.
-    const summary = { producer: 'ok', opened: 0, notOpen: [], orders: [], blocked: [] };
+    const summary = { producer: 'ok', opened: 0, notOpen: [], orders: [], blocked: [], producerFailed: [], producerFailedCount: 0 };
     const lister = typeof this.#stages?.listOrders === 'function' ? 'listOrders' : typeof this.#stages?.list === 'function' ? 'list' : null;
     if (lister) {
       let listed;
       try { listed = await this.#stages[lister](context); } catch { listed = unavailable(); }
       if (listed?.status === 'ok' && Array.isArray(listed.value?.orders)) {
+        // The producer's per-order diagnostics stay visible; those orders are simply not opened.
+        if (Array.isArray(listed.value.failed)) summary.producerFailed = listed.value.failed.slice(0, 20).map(({ orderUuid, status, code }) => ({ orderUuid, status, code }));
+        summary.producerFailedCount = Number.isSafeInteger(listed.value.failedCount) ? listed.value.failedCount : summary.producerFailed.length;
         for (const orderUuid of listed.value.orders.map((o) => o?.orderUuid).filter((id) => text(id, 128))) {
           const opened = await this.#open(context, tickId, now, orderUuid, prepared.read);
           if (opened.status !== 'ok') { summary.blocked.push({ orderUuid, step: 'open', status: opened.status }); continue; }
           if (opened.value.opened) summary.opened += 1; else if (opened.value.status !== 'already-open') summary.notOpen.push({ orderUuid, reason: opened.value.reason });
         }
-      } else summary.producer = 'unavailable';
+      } else summary.producer = { status: listed?.status ?? 'unavailable', code: listed?.code ?? null, scope: listed?.scope ?? null };
     } else summary.producer = 'missing';
     const rows = await this.#repository.query(context, 'event_receipts', { consumerId: STATE_CONSUMER });
     if (rows.status !== 'ok') return rows;
@@ -257,7 +260,8 @@ export class LifecycleDocumentService {
     if (observed.status === 'forbidden') return result('forbidden', { reason: 'This order is not visible to you.' });
     if (role.value === 'employee' && observed.employeeId && observed.employeeId !== context.employeeId) return result('forbidden', { reason: 'These documents belong to another employee.' });
     const reason = observed.status === 'open' ? 'awaiting-document-tick' : observed.reason;
-    return ok({ orderUuid: input.orderUuid, opened: false, ready: false, state: 'not-open', reason, documentsComplete: false, vehicleReady: false });
+    const cause = observed.producerStatus ? { producerStatus: observed.producerStatus, producerCode: observed.producerCode } : {};
+    return ok({ orderUuid: input.orderUuid, opened: false, ready: false, state: 'not-open', reason, documentsComplete: false, vehicleReady: false, ...cause });
   }
 
   async completeTask(context, input = {}) {
