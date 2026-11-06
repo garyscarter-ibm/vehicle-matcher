@@ -126,3 +126,13 @@ append, plus the exact guard, plans, README and corroborating private report.
 Only this concise review conclusion and identity binding are published; raw
 coordinator/reviewer reports remain ignored. No runtime or syntax-test grant is
 issued, and no prior scoped result or failure is rewritten.
+
+## Later fixture packet review
+
+The subsequently authorized isolated fixture packet was authored and separately
+reviewed, but its outer supervisor failed the exact source-readiness gate with
+six MAJOR lifecycle/resource findings. No fixture or admission ran; the conditional
+one-time grant remains unused. The [packet review and concrete revision proposal](eligibility-owner-identity-fixture-review-2026-11-06.md)
+bind the unchanged source, private input/review identities, actual high-effort
+reviewer provenance and remaining execution obligations. The source-repair PASS
+above remains source-only and does not validate that rejected supervisor.
