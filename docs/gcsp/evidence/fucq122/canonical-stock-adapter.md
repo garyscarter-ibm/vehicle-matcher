@@ -189,3 +189,10 @@ retained in
 `.claude/test-runs/fucq122-options/next-producer-readiness-2026-11-06.json`.
 This follow-up is a readiness record, with no executable harness, source adoption,
 JavaScript import, test/producer call, listener or new scratch allocation.
+
+Subsequently, published FUCQ-100 eligibility checkpoint
+`38be4f5d95823b5f010a56c3d4b6cbda4eca55e8` unlocked author-only source planning.
+The [actual-release integration plan](producer-integration-plan.md) and its finite
+catalogue supersede the uncommitted-eligibility gap above. The exact combined
+runtime/server wiring, normalized source input and new-run/provider reset
+contract remain explicit gaps before an executable freeze or any execution grant.
