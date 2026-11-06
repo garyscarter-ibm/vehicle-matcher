@@ -41,7 +41,7 @@ def cancellation_safe_child(command, *, ownership, identify, register, stop_join
             raise KeyboardInterrupt('Owned child cancelled by signal %d' % signum)
 
     try:
-        for signum in (signal.SIGINT, signal.SIGTERM):
+        for signum in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP, signal.SIGALRM):
             previous[signum] = signal.getsignal(signum)
             signal.signal(signum, terminate)
         ownership['phase'] = 'creating'
@@ -71,6 +71,14 @@ def cancellation_safe_child(command, *, ownership, identify, register, stop_join
                     stop_join(process)
                 except BaseException as error:
                     cleanup_error = ChildCleanupError('Owned child stop/join failed: %s' % type(error).__name__)
+                # Close only pipe handles created by this Popen, including a failed register callback.
+                for name in ('stdin', 'stdout', 'stderr'):
+                    handle = getattr(process, name)
+                    if popen_options.get(name) == subprocess.PIPE and handle is not None:
+                        try:
+                            handle.close()
+                        except BaseException as error:
+                            cleanup_error = ChildCleanupError('Owned pipe close failed: %s' % type(error).__name__)
                 try:
                     stopped = process.poll() is not None
                     absent = verify_absent(process, ownership) is True

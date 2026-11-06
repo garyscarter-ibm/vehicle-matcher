@@ -17,7 +17,9 @@ const good = (reply) => { assert.equal(reply.status, 'ok', JSON.stringify(reply)
 const cookie = (values) => [values].flat().map((value) => value.split(';')[0]).join('; ');
 let dom; let mount; let http;
 const previousGlobals = new Map();
+const previousAccessKey = process.env.DEMO_ACCESS_KEY;
 before(async () => {
+  delete process.env.DEMO_ACCESS_KEY;
   dom = new JSDOM('<!doctype html><body></body>', { url: origin, pretendToBeVisual: true });
   for (const name of ['window', 'document', 'HTMLElement', 'customElements']) {
     previousGlobals.set(name, Object.getOwnPropertyDescriptor(globalThis, name));
@@ -29,6 +31,8 @@ before(async () => {
 });
 beforeEach(() => document.body.replaceChildren());
 after(() => {
+  if (previousAccessKey === undefined) delete process.env.DEMO_ACCESS_KEY;
+  else process.env.DEMO_ACCESS_KEY = previousAccessKey;
   dom?.window.close();
   for (const [name, descriptor] of previousGlobals) {
     if (descriptor) Object.defineProperty(globalThis, name, descriptor);
@@ -113,11 +117,17 @@ async function setup(t) {
   mountControl(); t.after(() => control.destroy());
   const button = (label) => [...host.querySelectorAll('button')].find((row) => row.textContent === label
     || row.textContent.startsWith(label + ' ('));
-  const ready = () => waitFor(() => button('Tick')?.disabled === false, 'Actual authenticated controls must load.');
+  const idle = () => control.root.hidden === false && control.root.getAttribute('aria-busy') === 'false';
+  const ready = () => waitFor(() => idle() && /^Tick \(/.test(button('Tick')?.textContent || '')
+    && button('Tick')?.disabled === false, 'Actual authorized, loaded controls must be idle.');
+  const retryReady = () => idle() && button('Retry original action')?.hidden === false
+    && button('Retry original action')?.disabled === false;
   await ready();
   return { runtime, presenter, adapter, transport, host, navigation, sent, pulls, initialStock, selected,
-    setFault(value) { fault = value; }, mountControl, ready,
-    click(label) { const node = button(label); assert.ok(node && !node.hidden && !node.disabled, label); node.click(); },
+    presenterPrincipalId: presenter.context.principalId,
+    setFault(value) { fault = value; }, mountControl, ready, retryReady,
+    click(label) { const node = button(label); assert.ok(idle(), 'Presenter root must be visible and idle: ' + label);
+      assert.ok(node && !node.hidden && !node.disabled, label); node.click(); },
     button, stock: () => runtime.repository.query(presenter.context, 'stock', {}).then(good),
     receipts: () => runtime.repository.query(presenter.context, 'event_receipts', { consumerId: 'stock-release' }).then(good) };
 }
@@ -166,7 +176,7 @@ test('release-http: lost body retries the exact committed command once', { timeo
   assert.match(f.host.textContent, new RegExp(`${f.selected.length} cars released`));
 });
 
-test('release-http: a genuine exhausted source reports zero on the next ordinary tick', { timeout: 10000 }, async (t) => {
+test('release-http: the isolated TEST source window reports zero after its offered stock is exhausted', { timeout: 10000 }, async (t) => {
   const f = await setup(t); await released(f); const stock = await f.stock();
   f.click('Tick');
   await waitFor(() => f.button('Tick')?.disabled === false && /0 cars released/.test(f.host.textContent), 'Real empty release must report zero.');
@@ -178,7 +188,7 @@ test('release-http: a genuine exhausted source reports zero on the next ordinary
 
 test('release-http: unavailable source refuses release without stock mutation', { timeout: 10000 }, async (t) => {
   const f = await setup(t); f.setFault('unavailable'); f.click('Next release');
-  await waitFor(() => f.pulls.length === 1 && f.button('Retry original action')?.hidden === false, 'Actual source refusal must settle.');
+  await waitFor(() => f.pulls.length === 1 && f.retryReady(), 'Actual source refusal must settle.');
   const state = good(await f.adapter.readControls());
   assert.equal(state.lastTick.outcomes.find((row) => row.handlerId === 'stock-release').outcome.status, 'unavailable');
   assert.match(f.host.textContent, /Release unavailable/); assert.doesNotMatch(f.host.textContent, /\d+ cars released/);
@@ -187,28 +197,32 @@ test('release-http: unavailable source refuses release without stock mutation', 
 
 test('release-http: malformed pull is rejected by the actual producer without stock mutation', { timeout: 10000 }, async (t) => {
   const f = await setup(t); f.setFault('malformed'); f.click('Next release');
-  await waitFor(() => f.pulls.length === 1 && f.button('Retry original action')?.hidden === false, 'Actual producer validation must settle.');
+  await waitFor(() => f.pulls.length === 1 && f.retryReady(), 'Actual producer validation must settle.');
   const state = good(await f.adapter.readControls());
   const outcome = state.lastTick.outcomes.find((row) => row.handlerId === 'stock-release').outcome;
   assert.equal(outcome.status, 'invalid'); assert.equal(outcome.code, 'invalid-stock-pull');
+  // The actual clock marks interrupted ticks retryable even for deterministic producer invalidity.
+  assert.equal(state.lastTick.state, 'interrupted');
   assert.match(f.host.textContent, /Release unavailable/); assert.doesNotMatch(f.host.textContent, /\d+ cars released/);
   assert.deepEqual(await f.stock(), f.initialStock); assert.deepEqual(await f.receipts(), []);
 });
 
-test('release-http: actual mechanics reset renews authority and old provider refuses the new run', { timeout: 10000 }, async (t) => {
+test('release-http: actual reset renews presenter cookies and the old run-bound TEST provider is refused', { timeout: 10000 }, async (t) => {
   const f = await setup(t); await released(f);
-  const before = good(await f.adapter.readControls()); const clock = f.runtime.clock; const service = f.runtime.stockRelease;
+  const before = good(await f.adapter.readControls());
   f.click('Reset scenario'); f.click('Confirm reset');
   await waitFor(() => f.navigation.length === 1, 'Actual acknowledged reset must request workspace navigation.');
   const fresh = good(await f.adapter.readControls()); const acting = good(await f.adapter.readContext());
   assert.notEqual(fresh.runId, before.runId); assert.equal(acting.runId, fresh.runId);
-  assert.equal(f.runtime.clock, clock); assert.equal(f.runtime.stockRelease, service);
+  assert.equal(acting.principalId, f.presenterPrincipalId);
+  assert.ok(acting.roles.includes('presenter'), 'Reset renewal must establish actual presenter acting authority.');
   const audit = good(await f.runtime.identity.createPresenterSession('TEST-new-run-read'));
   const newStock = good(await f.runtime.repository.query(audit.context, 'stock', {}));
+  assert.ok(newStock.length > 0, 'A real reset supplies fresh bootstrap stock identities.');
   assert.ok(newStock.every((row) => !f.initialStock.some((old) => old.orderUuid === row.orderUuid)));
   f.mountControl(); await f.ready(); f.click('Next release');
   await waitFor(() => f.pulls.some((request) => request.runId === fresh.runId)
-    && f.button('Retry original action')?.hidden === false, 'Old run-bound provider refusal must reach real HTTP/controller.');
+    && f.retryReady(), 'Old run-bound provider refusal must reach real HTTP/controller.');
   const refused = good(await f.adapter.readControls());
   const result = refused.lastTick.outcomes.find((row) => row.handlerId === 'stock-release');
   assert.equal(result.stage, 'release-pull'); assert.equal(result.outcome.status, 'invalid');

@@ -1,6 +1,6 @@
 {
   "date": "2026-11-06",
-  "scope": "Owned exact physical six-case HTTP candidate, isolated bootstrap-derived TEST profile, transport and cancellation-safe supervisor; statically validated and unexecuted",
+  "scope": "Independent-HOLD repair authoring: six HTTP cases, environment and supervisor, exact unapplied coordinator helper patch; unexecuted",
   "planningBase": "496b92a31310fd7308ecf2f6f55ba6737cad9a6d",
   "source": {
     "path": "server/test/helpers/presenter-http-proof.js",
@@ -12,7 +12,7 @@
   ],
   "productImports": [],
   "executed": false,
-  "validation": "Python AST/source inspection, frozen working-source and dependency hashes/membership, exact six-name extraction, links/JSON and named-path whitespace only. No Node, tests, product imports, cancellation reproduction or test allocation.",
+  "validation": "Source/metadata hashes, exact patch reconstruction in memory, Python AST/JSON, source graph and named-path whitespace only. No Node, product imports, tests, process/ledger/lsof probes or resource allocations.",
   "deliveryLossVariant": "Actual handler completes and Set-Cookie headers are applied, then the reply body is discarded; this is not every network-loss variant.",
   "boundaries": [
     "Calls the actual request listener; never listens or fetches externally",
@@ -22,14 +22,15 @@
     "Transport journal retains only method/path/status/byte counts; never tokens or business bodies"
   ],
   "pending": [
-    "Independent review of exact physical candidate/harness/static classification",
+    "Coordinator review/adoption of shared helper patch, caller compatibility validation and exact helper refreeze",
+    "Independent review of replacement candidate/harness/static classification",
     "Explicit six-case execution admission, refreshed host budget and absolute external output/impact/ownership plan"
   ],
   "executionAuthorized": false,
   "cancellationGuard": {
     "path": "docs/gcsp/evidence/fucq-126/cancellation-safe-child.py",
-    "sha256": "ab5e07e74a4b4a86953bc9e5f50e529379575b4ce187ffc70abde0109c0d2eab",
-    "bytes": 4643,
+    "sha256": "29436f5969d07438c8d7b612ae9222b27090adbee1287a63470ad4979232faa7",
+    "bytes": 5221,
     "imports": [
       "contextlib",
       "signal",
@@ -37,13 +38,13 @@
       "sys",
       "threading"
     ],
-    "validation": "AST/source inspection only; not imported, executed or fault-tested."
+    "validation": "AST/source inspection only. Adds SIGHUP/SIGALRM deferral and owned-pipe closure while retaining local-handle cleanup; unexecuted."
   },
   "cancellationFinding": {
     "basis": "Dispatcher notice: inherited Popen-to-register handled-cancellation gap found in107 supervisor/resources; no runtime reproduction authorized.",
     "acceptedEarlierProof": "Prior actual126 selected checks remain scoped accepted; no claim that any actual run hit this edge.",
     "sourceFix": "Owned future guard defers SIGINT/SIGTERM during creation/registration, retains local Popen handle, stops/joins and verifies exact PID/start/group even when registration fails; cleanup failure stays explicit.",
-    "integrationStatus": "Guard wired directly around Popen in authored supervisor; unexecuted. Registration failure stops/joins actual local handle; uncertainty retains scratch/reservation. Physical source/dependency pins are complete; independent review/execution admission remain pending.",
+    "integrationStatus": "Owned supervisor/guard preserve cancellation-safe local-handle cleanup and add HUP/deadline handling. Future shared reservation contract required before allocation; exact coordinator patch supplied, not applied. No signal/resource execution.",
     "reservationAndScratch": "No scratch deletion/reservation release may rely on an empty registry; require actual handle cleanup and independent absence evidence. Preserve a named issue and charge for remaining live resources."
   },
   "resourceHelperPlanningPin": {
@@ -53,12 +54,12 @@
   },
   "currentSourceRef": "f179ae6043414a2b07de3edb2b425338299ea37b",
   "currentFreeze": {
-    "path": "docs/gcsp/evidence/fucq-126/http-physical-candidate-f179ae6-2026-11-06.json",
-    "sha256": "efdb32a33413919315b4dbcc9a09c6b5e5be0d27602b1a9c2d8ac51801b84437",
-    "sourceDataHelperReferenceFiles": 137,
+    "path": "docs/gcsp/evidence/fucq-126/http-physical-candidate-review-repair-2026-11-06.json",
+    "sha256": "9206c77bf0fbcd4132974bbfe44d400b620936ce72d944bc2946015d1e706314",
+    "sourceDataHelperReferenceFiles": 140,
     "installedDependencyFiles": 1975,
-    "allFiles": 2112,
-    "distinctResolvedFiles": 2110,
+    "allFiles": 2115,
+    "distinctResolvedFiles": 2113,
     "literalEdges": 267,
     "classifiedSites": 29,
     "candidateRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096"
@@ -66,31 +67,38 @@
   "authoredCases": [
     "release-http: startup and actual release IDs match controller count and inventory delta",
     "release-http: lost body retries the exact committed command once",
-    "release-http: a genuine exhausted source reports zero on the next ordinary tick",
+    "release-http: the isolated TEST source window reports zero after its offered stock is exhausted",
     "release-http: unavailable source refuses release without stock mutation",
     "release-http: malformed pull is rejected by the actual producer without stock mutation",
-    "release-http: actual mechanics reset renews authority and old provider refuses the new run"
+    "release-http: actual reset renews presenter cookies and the old run-bound TEST provider is refused"
   ],
   "testAndSupervisorSources": [
     {
+      "path": "docs/gcsp/evidence/fucq-126/author-resource-contract-patch.py",
+      "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/docs/gcsp/evidence/fucq-126/author-resource-contract-patch.py",
+      "sha256": "29fcc90fa889c056ac28c0fa8c6d5ac46d123d8ec3eddb6d366395ae658220e7",
+      "bytes": 17381,
+      "role": "physical-source-data-helper-or-reference"
+    },
+    {
       "path": "docs/gcsp/evidence/fucq-126/http-release-supervisor.py",
       "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/docs/gcsp/evidence/fucq-126/http-release-supervisor.py",
-      "sha256": "de9c435e51f61f6722440b65dac778f44dbe9fb28553bcc6e5b9cb5267733ae6",
-      "bytes": 12912,
+      "sha256": "e2bc2908e268cef908598463f687ca3339a7c0db6d6e3905815f6ba26f44d695",
+      "bytes": 19659,
       "role": "physical-source-data-helper-or-reference"
     },
     {
       "path": "docs/gcsp/evidence/fucq-126/http-release.integration.mjs",
       "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/docs/gcsp/evidence/fucq-126/http-release.integration.mjs",
-      "sha256": "a85ddaa99a1f1ae892bc5979b4dc49cab3cd99ecd6b7598b2715b90218e2af0a",
-      "bytes": 15075,
+      "sha256": "0a423fc0117c0e5e48c4d212f77ade73103ef916a291ab73cf357bede166305f",
+      "bytes": 15952,
       "role": "physical-source-data-helper-or-reference"
     },
     {
-      "path": "docs/gcsp/evidence/fucq-126/prepare-physical-http-candidate.py",
-      "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/docs/gcsp/evidence/fucq-126/prepare-physical-http-candidate.py",
-      "sha256": "8e44028859459ff243ad1a16ce5856f61cb32c5c69ffb1a9a33a04183bbc89da",
-      "bytes": 14914,
+      "path": "docs/gcsp/evidence/fucq-126/prepare-reviewed-http-candidate.py",
+      "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/docs/gcsp/evidence/fucq-126/prepare-reviewed-http-candidate.py",
+      "sha256": "d731b42a79fa4e273c56c5babb6e24faf11fef7e5e456c2a11eb91d8ad8efec6",
+      "bytes": 16996,
       "role": "physical-source-data-helper-or-reference"
     }
   ],
@@ -128,5 +136,60 @@
     "changedFiles": 44,
     "preservedFiles": 9
   },
-  "executionReady": false
+  "executionReady": false,
+  "physicalFreezeBeforeIndependentHold": {
+    "path": "docs/gcsp/evidence/fucq-126/http-physical-candidate-f179ae6-2026-11-06.json",
+    "sha256": "efdb32a33413919315b4dbcc9a09c6b5e5be0d27602b1a9c2d8ac51801b84437",
+    "sourceDataHelperReferenceFiles": 137,
+    "installedDependencyFiles": 1975,
+    "allFiles": 2112,
+    "distinctResolvedFiles": 2110,
+    "literalEdges": 267,
+    "classifiedSites": 29,
+    "candidateRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096"
+  },
+  "previousUnexecutedGuard": {
+    "path": "docs/gcsp/evidence/fucq-126/cancellation-safe-child.py",
+    "sha256": "ab5e07e74a4b4a86953bc9e5f50e529379575b4ce187ffc70abde0109c0d2eab",
+    "bytes": 4643,
+    "imports": [
+      "contextlib",
+      "signal",
+      "subprocess",
+      "sys",
+      "threading"
+    ],
+    "validation": "AST/source inspection only; not imported, executed or fault-tested."
+  },
+  "resourceContractRequirement": {
+    "contract": 1,
+    "adoptedHelperSha256": null,
+    "currentHelperSha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "proposedResultSha256": "85a46c1db9390feaf733b96e4f8877306629247810070c64a8c108f960b4db39",
+    "patchPath": "docs/gcsp/evidence/fucq-126/shared-resource-contract-review-repair-2026-11-06.patch",
+    "patchSha256": "9e901954d31ce12eb71aef301622ebda5c7c0dc413dae51e89bdef315b00d3f2",
+    "state": "Coordinator patch supplied, not applied; exact adopted helper must be refrozen before admission"
+  },
+  "reviewRepairOf": {
+    "commit": "5adba2eac990028eda5113cea5a118c67818d131",
+    "manifest": "docs/gcsp/evidence/fucq-126/http-physical-candidate-f179ae6-2026-11-06.json",
+    "sha256": "efdb32a33413919315b4dbcc9a09c6b5e5be0d27602b1a9c2d8ac51801b84437",
+    "independentReport": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/reviews/fucq126-claude-review-2026-11-06.md",
+    "reportBytes": 11779,
+    "reportSha256": "7bb9ed97476951bdc12ba43a217e5df740c28a6d67b10bd3f7bcbe7ee132c216",
+    "verdict": "HOLD retained; repairs are authored and unexecuted"
+  },
+  "reviewRepairNote": "docs/gcsp/evidence/fucq-126/http-review-repair-2026-11-06.md",
+  "resourceLimits": {
+    "seconds": 120,
+    "ramMiB": 768,
+    "combinedDiskMiB": 128,
+    "logMiB": 2,
+    "workers": 1,
+    "workSeconds": 90,
+    "finalizationSeconds": 30,
+    "coverageFileMiB": 8,
+    "coverageTotalMiB": 64,
+    "coverageFiles": 128
+  }
 }

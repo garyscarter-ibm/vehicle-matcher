@@ -1,8 +1,13 @@
 # Actual composed release HTTP authoring
 
+**Launch-review status:** the earlier candidate described below received an independent HOLD.
+The [review-repair checkpoint](http-review-repair-2026-11-06.md) and
+[replacement freeze](http-physical-candidate-review-repair-2026-11-06.json) contain the authored repairs
+and explicit unapplied shared-helper gap. No six-case execution is admitted. The original manifest remains historical evidence.
+
 6 November 2026. **Physical candidate prepared and statically validated; unexecuted.** Canonical FUCQ-100 source is `f179ae6043414a2b07de3edb2b425338299ea37b`, which constructs the actual FUCQ-92 release service from an explicit `stockProvider` and exposes it for server startup registration. Dispatcher direction authorized minimum exact source adoption into the owned presenter worktree and finite static read classification with V8 module observations. Execution remains unauthorized.
 
-## Exact current authoring freeze
+## Earlier authoring freeze
 
 The [physical candidate manifest](http-physical-candidate-f179ae6-2026-11-06.json) pins the actual owned worktree at `/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096`: 137 source/data/helper/reference files, 267 literal edges and all 1,975 installed dependency file hashes, sizes and resolved targets. Two installed file aliases yield 2,110 distinct resolved files from 2,112 named entries. Both existing dependency links retain their targets/device/inode and complete directory memberships; the Node executable target/hash is pinned. No dependency installation occurred.
 
