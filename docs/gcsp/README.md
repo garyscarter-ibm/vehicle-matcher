@@ -6,6 +6,10 @@ Start here for every new GCSP discovery, foundation, design, implementation or r
 
 ## Latest build handover — 5 November 2026
 
+**Dispatcher resumed, 6 November:** Russell explicitly resumed the local dev poller. Read the
+[resume record](dev-poller-2026-11-06-resume.md) and current local directive. FUCQ-104/117 retain their existing
+claims and branches; the updated project HTTP422 rule supersedes the obsolete credential-refresh stop.
+
 **Scaffolding and component map, Russell, 5 November:** the [connected product map](https://garyscarter-ibm.github.io/vehicle-matcher/product-map/) links capabilities, Stories, development evidence and acceptance. GC pollers read [the tooling handoff](product-map-2026-11-05.md) after pulling; retain all current claims and pause boundaries.
 
 **Dispatcher restarted, 5 November:** explicit human direction resumed the local usget dev poller while AFK, using measured machine limits. Read [the restart record](dev-poller-2026-11-05-restart.md) for active lanes and current evidence. The earlier [travel handover](../HANDOVER-2026-11-05-TRAVEL.md) preserves the checkpoints; Gary’s pollers and claims keep their own lifecycle.
