@@ -1820,17 +1820,17 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T11:39:15Z",
+      "observed_at": "2026-11-06T11:47:54Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59",
       "workers": [
         {
           "name": "Cecil Turtle",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-06T11:38:53.414753+00:00",
-          "expires_at": "2026-11-06T11:38:53.414753+00:00",
+          "observed_at": "2026-11-06T11:47:54.247225+00:00",
+          "expires_at": "2026-11-06T11:47:54.247225+00:00",
           "source": "thread 01a1b054-1167-7820-b9f2-92ec81e37bbe",
-          "status": "checkpoint1 pure contract complete;20focused cases pass; awaiting review/publication; source qualification still blocked; Sol/high no descendants"
+          "status": "F4 mutation test corrected;21focused cases pass; awaiting independent re-review/publication; source qualification blocked; Sol/high no descendants"
         }
       ],
       "slices": [
@@ -1866,8 +1866,8 @@
           "id": "source-qualification",
           "status": "blocked",
           "title": "Selected real-source model mapping and solver integration (1 point)",
-          "observed_at": "2026-11-06T11:38:53.414753+00:00",
-          "evidence": "Checkpoint1 pure field verifier built;20/20focused cases pass with pinned1Nov/6Nov bytes,100%line/93.14%branch coverage. Artifact hash/own locator/date/context/request role/selection-bound quantity/duplicateJSON guards; admissionfalse. No AEE producer/F39/F60/F58/F77 edits or traffic. source-qualification-contract-2026-11-06/README.md+result.json. Later projection/registration and proposed4GET remain unallocated; all74mappings pending and8/200/20thresholds unchanged."
+          "observed_at": "2026-11-06T11:47:54.247225+00:00",
+          "evidence": "Checkpoint1 pure verifier unchanged eda266; F4 actual-input mutation test corrected after MAJOR review.21/21focused cases pass;100%line/93.14%branch coverage. Contract/mutation-review.json retains correction/hash/cleanup evidence; independent re-review pending. No AEE producer/F39/F60/F58/F77 edits or traffic; admissionfalse. Later projections/registration and proposed4GET unallocated; all74mappings pending and8/200/20thresholds unchanged."
         },
         {
           "id": "publication-contract",

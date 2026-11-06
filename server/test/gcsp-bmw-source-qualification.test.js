@@ -153,11 +153,23 @@ test('a retained projection without its observation date stays unqualified despi
   assert.deepEqual(result.fields.taxDate.reasons, ['missing-observation-date']);
 });
 
-test('artifact size limits and missing artifacts refuse qualification without mutating caller inputs', async () => {
-  const data = source(); const before = JSON.stringify(data);
+test('successful qualification preserves the actual supplied target, artifacts, claims and bytes', async () => {
+  const input = { target: structuredClone(target), artifacts: [artifact(source())], requiredFields: ['taxDate'],
+    claims: [claim('taxDate', '/model/taxDate')] };
+  const suppliedBytes = input.artifacts[0].bytes;
+  const before = { ...structuredClone(input), artifacts: input.artifacts.map((entry) => ({ ...structuredClone(entry), bytes: Buffer.from(entry.bytes) })) };
+  const result = await qualify(input);
+  assert.equal(result.fields.taxDate.status, 'qualified');
+  assert.equal(result.fields.taxDate.value, '2027-01-05');
+  assert.deepEqual(input, before);
+  assert.strictEqual(input.artifacts[0].bytes, suppliedBytes);
+  assert.deepEqual(suppliedBytes, before.artifacts[0].bytes);
+});
+
+test('artifact size limits and missing artifacts refuse qualification', async () => {
+  const data = source();
   const result = await qualify({ target, artifacts: [artifact(data)], requiredFields: ['taxDate'], claims: [claim('taxDate', '/model/taxDate', { artifactId: 'absent' })] });
   assert.deepEqual(result.fields.taxDate.reasons, ['missing-artifact']);
-  assert.equal(JSON.stringify(data), before);
   await assert.rejects(() => qualify({ target, artifacts: [artifact(data, { bytes: ' '.repeat(1024 * 1024 + 1) })], requiredFields: ['taxDate'], claims: [] }),
     { code: 'invalid-qualification-input' });
 });
