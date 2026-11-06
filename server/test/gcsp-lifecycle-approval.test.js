@@ -297,3 +297,33 @@ test('renewal authority comes from the order slot: a second slot never inherits 
   const conflicting = (await f.service.read(f.greg, { orderUuid: onB.orderUuid })).value;
   assert.deepEqual([conflicting.renewalId, conflicting.renewalAuthority], [null, 'missing'], 'employee and slot renewals disagree');
 });
+
+test('internal listOrders keeps healthy orders and diagnoses malformed ones; global failures still refuse', async (t) => {
+  const f = await setup(t);
+  const healthy = await f.seed(f.paula);
+  const badStages = await f.seed(f.alex, { stages: ['unknown approval', 'sent to ordering'] });
+  const badSource = await f.seed(f.alex);
+  const corrupted = await f.repository.transaction(f.alex, { commandId: 'corrupt', inputDigest: inputDigest('corrupt') }, async (tx) => {
+    const ref = { table: 'pending_operations', key: { runId: f.alex.runId, operationId: badSource.operationId } };
+    const row = await tx.get(ref); return tx.compareAndSwap(ref, row.value.version, { outcome: { status: 'unknown' } });
+  });
+  assert.equal(corrupted.status, 'ok');
+  const approved = await until(f, healthy.orderUuid, (v) => v.stages[1].state === 'approved');
+  assert.equal(approved.stages[1].stage, 'HR approval');
+  const system = { environmentId: f.paula.environmentId, runId: f.paula.runId, principalId: 'clock-startup', roles: [] };
+  const listed = await f.service.stagePort().listOrders(system);
+  assert.equal(listed.status, 'ok', JSON.stringify(listed));
+  assert.deepEqual(listed.value.orders.map((o) => o.orderUuid), [healthy.orderUuid]);
+  assert.equal(listed.value.orders[0].stages[1].state, 'approved');
+  assert.deepEqual(listed.value.failed.map((x) => [x.orderUuid, x.code]).sort(),
+    [[badSource.orderUuid, 'selection-source-invalid'], [badStages.orderUuid, 'lifecycle-policy-invalid']].sort());
+  assert.equal(listed.value.failedCount, 2);
+  const own = (await f.service.listOrders(f.paula)).value;
+  assert.deepEqual([own.orders.length, own.failed.length], [1, 0], 'an employee sees no other employee diagnostics');
+  assert.equal((await f.service.listOrders(f.alex)).value.failed.length, 2);
+  const down = createLifecycleApprovalService({ repository: f.repository, clock: f.clock, identity: f.identity,
+    policy: { async getAssumption() { return { status: 'unavailable', retryable: true }; } } });
+  const refused = await down.stagePort().listOrders(system);
+  assert.deepEqual([refused.status, refused.code], ['unavailable', 'policy-source-unavailable']);
+  assert.equal((await f.service.stagePort().listOrders({ ...system, runId: 'another-run' })).status, 'stale-run');
+});

@@ -8,7 +8,9 @@ may still be refined with the FUCQ-116 lead; any change bumps the revision here 
 ## Port (agreed)
 
 Public: `LifecycleApprovalService.read(context, { orderUuid })` and `listOrders(context)` (rev 2 rename of `list`), returning
-`ok(view)` and `ok({ contractVersion, asOf, orders: [view] })`; they require an employee, Greg or presenter session.
+`ok(view)` and `ok({ contractVersion, asOf, orders: [view], failed: [{ orderUuid, status, code }] (at most 20), failedCount })`. One order with a
+malformed source or pinned policy (`selection-source-invalid`, `lifecycle-policy-invalid`, `lifecycle-policy-unavailable`) is listed in `failed` and
+skipped; an unavailable policy source, clock or repository, or a foreign run, still refuses the whole list. Employees see only their own diagnostics; they require an employee, Greg or presenter session.
 Internal: `service.stagePort()` returns one frozen `{ contractVersion, read, listOrders }` with the same results and no role
 check, for DemoClock handlers (presenter tick contexts and startup `clock-startup` contexts with `roles: []`). It has no route;
 `clock.now(context)` and run-bound repository reads still refuse another run or environment (`stale-run`). FUCQ-116 receives

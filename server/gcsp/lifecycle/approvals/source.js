@@ -45,6 +45,20 @@ export async function findSelectionOrder(reader, orderUuid, employeeId) {
   return ready[0] ?? decoded[0];
 }
 
+// Acknowledged orders plus the completed rows that could not be decoded, so a list can diagnose them.
+export async function enumerateSelectionOrders(reader) {
+  const rows = await reader('pending_operations', { operationType: SELECTION_OPERATION });
+  if (rows.status !== 'ok') return rows;
+  const orders = []; const invalid = [];
+  for (const row of rows.value) {
+    const decoded = decodeSelectionOrder(row);
+    if (decoded.status === 'ok') orders.push(decoded.value);
+    else if (decoded.code === 'selection-source-invalid') invalid.push({ orderUuid: row.payload?.orderUuid ?? null,
+      employeeId: row.payload?.context?.employeeId ?? null, status: decoded.status, code: decoded.code });
+  }
+  return ok({ orders, invalid });
+}
+
 export async function listSelectionOrders(reader) {
   const rows = await reader('pending_operations', { operationType: SELECTION_OPERATION });
   if (rows.status !== 'ok') return rows;

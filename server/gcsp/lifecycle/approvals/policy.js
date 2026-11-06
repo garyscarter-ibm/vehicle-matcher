@@ -17,7 +17,9 @@ export async function loadLifecyclePolicy(policy, read, snapshot) {
   if (!policy || typeof policy.getAssumption !== 'function') return policyUnavailable();
   const keys = [STAGE_LIST_KEY, ...Object.values(LIFECYCLE_KEYS)];
   let rows;
-  try { rows = await Promise.all(keys.map((key) => policy.getAssumption(key, read))); } catch { return policyUnavailable(); }
+  try { rows = await Promise.all(keys.map((key) => policy.getAssumption(key, read))); } catch { return policyUnavailable('policy-source-unavailable'); }
+  // A down policy source is global; a missing or malformed pinned row is specific to the orders pinned to it.
+  if (rows.some((r) => r?.status === 'unavailable')) return policyUnavailable('policy-source-unavailable');
   if (rows.some((r) => r?.status !== 'ok' || r.policyVersion !== read.policyVersion || !text(r.value?.basis, 2000) || !text(r.value?.unit)
     || !['assumed', 'verified'].includes(r.value.status))) return policyUnavailable();
   const [stages, ticks, decline, ownership] = rows.map((r) => r.value.value);

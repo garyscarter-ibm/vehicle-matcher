@@ -1,12 +1,14 @@
 import { inputDigest, ok, result } from '../../repository/index.js';
 import { DECISION_OPERATION } from '../../adapters/synthetic-ordering-status.js';
 import { loadLifecyclePolicy, SELECTION_STAGE } from './policy.js';
-import { findSelectionOrder, listSelectionOrders, readRenewalAuthority } from './source.js';
+import { enumerateSelectionOrders, findSelectionOrder, listSelectionOrders, readRenewalAuthority } from './source.js';
 
 export const CONTRACT = 'lifecycle.stages.v1';
 export const HANDLER_ID = 'lifecycle-approvals';
 export const HANDLER_STAGE = 'pending-reconciliation';
 export const EXCEPTION_CONSUMER = 'lifecycle:exceptions';
+const ORDER_FAILURES = ['lifecycle-policy-unavailable', 'lifecycle-policy-invalid', 'selection-source-invalid'];
+const MAX_FAILED = 20;
 export const revisionConsumer = (orderUuid) => `lifecycle:approval:${orderUuid}`;
 const revisionEvent = (n) => `revision:${String(n).padStart(6, '0')}`;
 const decisionId = (runId, orderUuid, stage) => `lifecycle-approval:${inputDigest([runId, orderUuid, stage])}`;
@@ -111,18 +113,22 @@ export class LifecycleApprovalService {
     return this.#view(context, source.value, time.value.now);
   }
 
+  // One order's pinned-policy or source defect is listed in `failed` (bounded) and skipped; global failures still refuse.
   async #listAs(context, scope) {
     if (!this.#repository || !this.#clock || !this.#policy) return unavailable();
     const time = await this.#clock.now(context); if (time.status !== 'ok') return time;
-    const orders = await listSelectionOrders((table, filter) => this.#repository.query(context, table, filter));
-    if (orders.status !== 'ok') return orders;
-    const views = [];
-    for (const source of orders.value.filter((o) => scope !== 'employee' || o.employeeId === context.employeeId)
-      .sort((a, b) => (a.orderUuid < b.orderUuid ? -1 : 1))) {
-      const view = await this.#view(context, source, time.value.now); if (view.status !== 'ok') return view;
-      views.push(view.value);
+    const found = await enumerateSelectionOrders((table, filter) => this.#repository.query(context, table, filter));
+    if (found.status !== 'ok') return found;
+    const mine = (o) => scope !== 'employee' || o.employeeId === context.employeeId;
+    const views = []; const failed = found.value.invalid.filter(mine).map(({ orderUuid, status, code }) => ({ orderUuid, status, code }));
+    for (const source of found.value.orders.filter(mine).sort((a, b) => (a.orderUuid < b.orderUuid ? -1 : 1))) {
+      const view = await this.#view(context, source, time.value.now);
+      if (view.status === 'ok') views.push(view.value);
+      else if (ORDER_FAILURES.includes(view.code)) failed.push({ orderUuid: source.orderUuid, status: view.status, code: view.code });
+      else return view;
     }
-    return ok({ contractVersion: CONTRACT, asOf: time.value.now, orders: views });
+    return ok({ contractVersion: CONTRACT, asOf: time.value.now, orders: views,
+      failed: failed.slice(0, MAX_FAILED), failedCount: failed.length });
   }
 
   async #view(context, source, asOf) {
