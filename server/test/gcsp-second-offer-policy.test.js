@@ -34,7 +34,8 @@ function testPolicy({ overrides = {}, missing = null, mixedVersion = null, throw
       if (throws === key) throw new Error('provider secret must not escape');
       if (missing === key) return { status: 'invalid', policyVersion: pinnedRead.policyVersion, code: 'unknown-assumption' };
       if (Object.hasOwn(overrides, key)) return response(key, overrides[key], mixedVersion === key ? 'other-policy-version' : pinnedRead.policyVersion);
-      return canonical.getAssumption(key, pinnedRead);
+      const delegated = await canonical.getAssumption(key, pinnedRead);
+      return mixedVersion === key ? { ...delegated, policyVersion: 'other-policy-version' } : delegated;
     },
   };
 }

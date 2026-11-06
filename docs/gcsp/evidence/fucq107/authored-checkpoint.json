@@ -59,5 +59,24 @@
     "375px+desktop keyboard and visual review",
     "Authored full validation, UI ratchet, em-dash gate and full stamp under root serial grant"
   ],
-  "commitAuthorization": "Root dispatcher0033 specifically requested exact code/tests checkpoint before frozen closure review; no passing test or completion claim."
+  "commitAuthorization": "Root dispatcher0033 specifically requested exact code/tests checkpoint before frozen closure review; no passing test or completion claim.",
+  "policyValidationAttempt": {
+    "testedCommit": "7fd4c6f218285b0a1a4eb22b9a115f8fe68f9ef7",
+    "grant": "fucq107-frozen-7fd4c6f-0033",
+    "result": "7 executed,6passed,1failed; service12 not run; stopped first failing chunk.",
+    "evidence": "scoped-policy-attempt-1/",
+    "failedName": "missing, malformed and mixed-version canonical policy reads fail closed",
+    "diagnosis": "The test helper applied mixedVersion only to its override branch. brief.slider.maximum delegated to canonical PolicyService with unchanged policyVersion, so expected mixed-version unavailable was not exercised. Product validator correctly accepted the actual same-version input.",
+    "correction": "Narrow test helper now decorates the actual canonical delegation response with the requested mixedVersion while preserving contents/status; all seven case bodies and product modules unchanged. Retest awaits new frozen checkpoint review/grant.",
+    "cleanup": "Independent203check audit:source45+pg138/locks5+Node unchanged, original log retained, recorded child and group dead, supervisor owner dead,scratch removed,strict valid registry reservation absent.",
+    "caseCounts": {
+      "cancelled": 0,
+      "fail": 1,
+      "pass": 6,
+      "skipped": 0,
+      "suites": 0,
+      "tests": 7,
+      "todo": 0
+    }
+  }
 }

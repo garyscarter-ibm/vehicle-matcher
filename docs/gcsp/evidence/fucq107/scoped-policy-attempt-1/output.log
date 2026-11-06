@@ -1,0 +1,73 @@
+TAP version 13
+# (node:33696) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+# --import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/pg-loader-7fd4c6f.proposal.mjs", pathToFileURL("./")); register("/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/pg-loader-7fd4c6f.proposal.mjs", pathToFileURL("./"));'
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: reads all five canonical assumptions through PolicyService at the same pinned version
+ok 1 - reads all five canonical assumptions through PolicyService at the same pinned version
+  ---
+  duration_ms: 2.456417
+  type: 'test'
+  ...
+# Subtest: projects one question for every canonical typed reason and binds the current value and brief version
+ok 2 - projects one question for every canonical typed reason and binds the current value and brief version
+  ---
+  duration_ms: 1.349708
+  type: 'test'
+  ...
+# Subtest: missing, malformed and mixed-version canonical policy reads fail closed
+not ok 3 - missing, malformed and mixed-version canonical policy reads fail closed
+  ---
+  duration_ms: 1.398333
+  type: 'test'
+  location: '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085/server/test/gcsp-second-offer-policy.test.js:109:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'ok'
+    - 'unavailable'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'unavailable'
+  actual: 'ok'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085/server/test/gcsp-second-offer-policy.test.js:124:10)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: unregistered reasons are invalid and absent or unconfirmed targets are unavailable
+ok 4 - unregistered reasons are invalid and absent or unconfirmed targets are unavailable
+  ---
+  duration_ms: 0.901083
+  type: 'test'
+  ...
+# Subtest: option and slider changes accept only projected values and leave input brief unchanged
+ok 5 - option and slider changes accept only projected values and leave input brief unchanged
+  ---
+  duration_ms: 1.084375
+  type: 'test'
+  ...
+# Subtest: equipment changes preserve the registered essential shape and compare sets for no-op answers
+ok 6 - equipment changes preserve the registered essential shape and compare sets for no-op answers
+  ---
+  duration_ms: 1.010709
+  type: 'test'
+  ...
+# Subtest: provider exceptions are sanitized to a typed unavailable result
+ok 7 - provider exceptions are sanitized to a typed unavailable result
+  ---
+  duration_ms: 0.419209
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 6
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 177.327125
