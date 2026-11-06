@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-115",
+  "status": "blocked-preallocation",
+  "sourceCommit": "918ce04510fd327e860809e7de53bd636d1cf7da",
+  "grant": "fucq115-activation-918ce04-0139",
+  "admissionSHA256": "c4667c215fbaca5a15413df46e181118d5a8cde66dd2a127f0adb7b15bc13909",
+  "sourcePlanSHA256": "f884ae94ff85455aa8d56c38e0ed7e2be58d960a862e99359f5f318694fa65aa",
+  "command": [
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "docs/gcsp/models/fucq115-activation-supervisor.py",
+    "--execute",
+    "--admission-sha",
+    "c4667c215fbaca5a15413df46e181118d5a8cde66dd2a127f0adb7b15bc13909",
+    "--dispatcher-grant",
+    "fucq115-activation-918ce04-0139"
+  ],
+  "attempts": 1,
+  "exitCode": 1,
+  "run": ".claude/test-runs/fucq115/artifact-activation-v2-9efcc10376a148da9ca09142fb576a38",
+  "phase": "make_scratch initial strict process_snapshot, before external ownership manifest/finalizer/reservation/scratch allocation",
+  "failure": {
+    "type": "SnapshotUncertain",
+    "message": "OS process snapshot is incomplete or malformed",
+    "specificRejectedRows": "unknown; frozen snapshot validator did not persist rejected-row detail"
+  },
+  "reached": [
+    "Frozen204 helper/executable/dependency physical/content admission and37 absence probes",
+    "All77 immutable sources/4349951bytes verified",
+    "Sanitized allowlist applied",
+    "External execution plan and empty retained directory created"
+  ],
+  "unreached": [
+    "Ownership manifest/checkpoint/finalizer registration",
+    "HostBudget construction/acquisition and scratch allocation",
+    "Node/gated launcher/runtime/clock/cookie/canonical policy publication",
+    "Model-reference activation/historical reading",
+    "Any generation/training/evaluation/settings change/full integration"
+  ],
+  "filesystemEvidence": {
+    "ownershipDirectoryAbsent": true,
+    "checkpointAbsent": true,
+    "retainedDirectoryEmpty": true,
+    "worktreeDependencyLinkAbsent": true,
+    "scratchRootCreated": false,
+    "scratchRootBasis": "Frozen control flow failed in constructor before Scratch.__enter__; no scratch directory or reservation API was reached. No cleanup/allocation-success claim is manufactured.",
+    "resourceReleaseClaim": "not applicable: no reservation acquired; no ledger read or mutation attempted"
+  },
+  "postAttemptReadOnlyPinAudit": {
+    "nodes": 204,
+    "installedFiles": 138,
+    "packages": 14,
+    "absenceProbes": 37,
+    "allUnchanged": true,
+    "method": "stdlib physical/content comparison; no custom helper import, Node or OS query"
+  },
+  "evidence": {
+    "plan": {
+      "path": ".claude/test-runs/fucq115/artifact-activation-v2-9efcc10376a148da9ca09142fb576a38/plan.json",
+      "bytes": 9436,
+      "sha256": "6be5544bf1930ded5eae13713944498941100a214b1ce274db01d6780ff9f481"
+    },
+    "launcherFailure": {
+      "path": ".claude/test-runs/fucq115/artifact-activation-v2-9efcc10376a148da9ca09142fb576a38/launcher-failure.log",
+      "bytes": 1169,
+      "sha256": "a3c62b262f614a58dbf4e74f484144b2604b0c7b24e45343ab950e34876d34b5",
+      "basis": "Exact stderr copied from completed tool result; original tool transcript retained in this chat"
+    }
+  },
+  "remaining": "No automatic retry or source edits. Dispatcher review of failure/diagnosis and exact future scope required; actual activation and final scoped/full integration remain open."
+}

@@ -319,3 +319,23 @@ no JS/OS proof, test, resource reservation, activation, generation, training or
 tuning ran. Independent repair review, actual activation and final scoped/full
 integration remain open. Own worker observation expires at this handoff; no built
 or Jira acceptance transition.
+
+
+### Granted activation attempt · 6 November 2026
+
+Independent repaired admission PASS granted one exact run under
+`fucq115-activation-918ce04-0139`, source918ce045. It exited1 at initial strict
+`make_scratch -> process_snapshot` with SnapshotUncertain, before ownership
+manifest/checkpoint/finalizer, HostBudget/reservation, scratch allocation or any
+Node/runtime/activation call. No retry or source edit. Actual activation remains
+open; see `docs/gcsp/models/fucq115-activation-result.md` and the compact
+`fucq115-activation-run-receipt.json` for exact source/grant/paths/log hashes and
+reached/unreached evidence. Post-attempt stdlib-only204-pin/138-file/14-package/
+37-absence audit is unchanged. Worktree dependency link absent. No allocated
+resource cleanup success is manufactured for the unreached phase.
+
+The rejected OS row/global condition was not retained by the frozen preallocation
+probe, so cause remains unresolved pending bounded diagnostic evidence and new
+dispatcher scope. Prior evaluation/immutable artifact/adverse results unchanged;
+no training, tuning, settings, native/browser/network/full or production work.
+Own worker observation expires at handoff; no built or acceptance transition.
