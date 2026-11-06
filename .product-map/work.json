@@ -1005,16 +1005,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103"
     },
     {
-      "id": "FUCQ-104",
-      "title": "Track order requests from requested to confirmed to released",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-104"
-    },
-    {
       "id": "FUCQ-105",
       "title": "Show the offer's exact quote, current-car comparison and countdown",
       "status": "In Progress",
@@ -1133,16 +1123,6 @@
       "type": "Story",
       "observed_at": "2026-11-05T22:40:24Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-116"
-    },
-    {
-      "id": "FUCQ-117",
-      "title": "Plan feasible order quantities from expressed demand, supply and policy",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-117"
     },
     {
       "id": "FUCQ-118",
@@ -1482,80 +1462,6 @@
     },
     {
       "assignee": "Russell Gowers",
-      "branch": "dev/DEV-2026-11-04-058",
-      "id": "FUCQ-92",
-      "observed_at": "2026-11-05T23:55:18Z",
-      "original_status": "In Progress",
-      "slices": [
-        {
-          "evidence": "Published6b3484fb repairs operational state to released; status/nested eligibility remain available.19/19 scoped and unchanged actual F96/F100 proof3/3. Historical completed available rows require provenance/occupancy audit and controlled recovery before reuse; no native/live exposure established.",
-          "id": "release-core",
-          "observed_at": "2026-11-05T23:55:17.446023+00:00",
-          "status": "complete",
-          "title": "Pull provider, policy-driven release and atomic receipt"
-        },
-        {
-          "evidence": "Real FUCQ-77/78 configuration corpus and generated stock provider, actual confirmed-supply acknowledgement producer not available in shared tree; TEST fixtures prove port only.",
-          "id": "provider-integration",
-          "observed_at": "2026-11-05T23:14:17Z",
-          "status": "blocked",
-          "title": "Real FUCQ-77/78 source-backed stock and confirmed supply producer"
-        },
-        {
-          "evidence": "Exact persisted stock-release event contract published; shared buildServer/runtime/startup registration and manual/buddy consume path require coordinated producer composition.",
-          "id": "runtime-consumers",
-          "observed_at": "2026-11-05T23:14:17Z",
-          "status": "blocked",
-          "title": "Startup, presenter cue and manual/buddy shared-pool integration"
-        },
-        {
-          "evidence": "Authored npm test passed1262/1257/5 native skips/0fail on1fc492c; immediate strict stamp5307f70f762d. Complete actual source/provider/runtime acceptance still missing; docs/gcsp/evidence/fucq92/full-checkpoint.json.",
-          "id": "final-validation",
-          "observed_at": "2026-11-05T23:21:25Z",
-          "status": "blocked",
-          "title": "Required full suite and complete acceptance evidence"
-        }
-      ],
-      "status": "In Progress",
-      "title": "Release synthetic stock on a presenter tick from the next pull",
-      "type": "Story",
-      "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-92",
-      "workers": [
-        {
-          "expires_at": "2026-11-06T00:25:17.446023+00:00",
-          "harness": "codex",
-          "name": "The Brain",
-          "observed_at": "2026-11-05T23:55:17.446023+00:00",
-          "role": "story-lead",
-          "source": "thread 01a1adf9-7f4a-7913-9cdb-532060b69a55; requested/selected and verified gpt-6.1-sol/high",
-          "status": "active; additive authenticated release-history read port"
-        }
-      ]
-    },
-    {
-      "assignee": "Russell Gowers",
-      "id": "FUCQ-95",
-      "observed_at": "2026-11-05T23:55:18Z",
-      "original_status": "In Progress",
-      "status": "In Progress",
-      "title": "Show buddy activity and pause or resume the search",
-      "type": "Story",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-95",
-      "workers": [
-        {
-          "expires_at": "2026-11-06T00:25:17.446023+00:00",
-          "harness": "codex",
-          "name": "Mater",
-          "observed_at": "2026-11-05T23:55:17.446023+00:00",
-          "role": "story-lead",
-          "source": "Thread01a1adf9-5447-7220-8e41-86ea53f403e7;requested/selected/effective gpt-6.1-sol/high;no fallback. Published051a627 actual consumer; full plan pending refresh.",
-          "status": "active; current-base integration assessment"
-        }
-      ]
-    },
-    {
-      "assignee": "Russell Gowers",
       "id": "FUCQ-96",
       "observed_at": "2026-11-05T23:55:18Z",
       "original_status": "In Progress",
@@ -1610,6 +1516,118 @@
           "role": "story-lead",
           "source": "Thread01a1adf9-7f4a-7913-9cdb-532060b69a55 delivered scoped blocked checkpoint; requested/selected/effective gpt-6.1-sol/high; no fallback/descendants",
           "status": "stopped"
+        }
+      ]
+    },
+    {
+      "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-04-058",
+      "id": "FUCQ-92",
+      "observed_at": "2026-11-06T00:03:52Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "Operational released state and atomic producer preserved; scoped 19/19 plus authenticated visible-history 13/13. See fucq92/stock-state-repair.json and release-history-proof.json.",
+          "id": "release-core",
+          "observed_at": "2026-11-05T23:57:50.906138+00:00",
+          "status": "complete",
+          "title": "Pull provider, policy-driven release and atomic receipt"
+        },
+        {
+          "evidence": "Real FUCQ-77/78 configuration corpus and generated stock provider, actual confirmed-supply acknowledgement producer not available in shared tree; TEST fixtures prove port only.",
+          "id": "provider-integration",
+          "observed_at": "2026-11-05T23:14:17Z",
+          "status": "blocked",
+          "title": "Real FUCQ-77/78 source-backed stock and confirmed supply producer"
+        },
+        {
+          "evidence": "Actual fixed-pin F92→F96→F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
+          "id": "runtime-consumers",
+          "observed_at": "2026-11-05T23:57:50.906138+00:00",
+          "status": "blocked",
+          "title": "Startup, presenter cue and manual/buddy shared-pool integration"
+        },
+        {
+          "evidence": "Historical full suite predates state repair; scoped release19/19, fixed-pin consumer3/3, history13/13 retained. Real source/runtime/native acceptance and fresh admitted full suite remain.",
+          "id": "final-validation",
+          "observed_at": "2026-11-05T23:57:50.906138+00:00",
+          "status": "blocked",
+          "title": "Required full suite and complete acceptance evidence"
+        }
+      ],
+      "status": "In Progress",
+      "title": "Release synthetic stock on a presenter tick from the next pull",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-92",
+      "workers": [
+        {
+          "expires_at": "2026-11-05T23:57:50.906138+00:00",
+          "harness": "codex",
+          "name": "The Brain",
+          "observed_at": "2026-11-05T23:57:50.906138+00:00",
+          "role": "story-lead",
+          "source": "Implementation/selected validation complete; publication handoff only. Requested/selected/runtime gpt-6.1-sol/high; no descendants or fallback.",
+          "status": "stopped"
+        }
+      ]
+    },
+    {
+      "assignee": "Russell Gowers",
+      "id": "FUCQ-95",
+      "observed_at": "2026-11-06T00:03:52Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "Published reader/HTTP checkpoint and retained scoped activity/BriefService/identity evidence; genuine search/current-offer integration is separate.",
+          "id": "brief-activity",
+          "observed_at": "2026-11-05T23:59:26.684754Z",
+          "status": "complete",
+          "title": "Scoped brief permission and state-change activity projection"
+        },
+        {
+          "evidence": "Existing shared body/controller/menu/offer/timeline/custom element retained; current shell/CSP/ratchet and actual desktop/375px rendering pass. Actual check/source/current-offer states still require genuine contract-driven extension and all-state acceptance proof.",
+          "id": "activity-ui",
+          "observed_at": "2026-11-05T23:59:26.684754Z",
+          "status": "in-progress",
+          "title": "Shared activity body, controls and embeddable consumer"
+        },
+        {
+          "evidence": "Current base 49a2d0b reviewed: 98 scoped passes; ten actual startGcspDemo memory captures with canonical account, Brief consent, Back/reload, Pause/Resume, pending, 409/503 and keyboard Retry. Complete at trusted consumer boundary; real producers/final acceptance separate. See current-base-validation.json.",
+          "id": "live-consumer",
+          "observed_at": "2026-11-05T23:59:26.684754Z",
+          "status": "complete",
+          "title": "Trusted account/session live runtime consumer"
+        },
+        {
+          "evidence": "Required genuine last-successful-check outcome (including no match), durable source-delay/recovery, and canonical employee/run-scoped current-offer selection, display, link/access and declined/expired lifecycle facts. Existing F96 allocator receipts inspected read-only; runtime composition, F92 source-failure persistence and current-offer contracts remain unintegrated. No fixture closes this slice.",
+          "id": "producer-integration",
+          "observed_at": "2026-11-05T23:59:26.684754Z",
+          "status": "blocked",
+          "title": "Genuine search/source and current-offer lifecycle evidence"
+        },
+        {
+          "evidence": "Required authored projection/scoping/pause-effects tests; every listed state (never searched, searching/no-match, waiting offer, declined/expired offer, paused, source unavailable) at desktop/375px with keyboard-only and visible focus; reload of real server state; shared kit/catalogue/gallery/CSP and falling ratchet; real producer stop effects and current-offer handling; final serial npm test. Human layout review deferred to working end-to-end demo. Missing live states and final suite stay open.",
+          "id": "acceptance",
+          "observed_at": "2026-11-05T23:59:26.684754Z",
+          "status": "blocked",
+          "title": "All required states, full integration and final acceptance validation"
+        }
+      ],
+      "status": "In Progress",
+      "title": "Show buddy activity and pause or resume the search",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-95",
+      "workers": [
+        {
+          "expires_at": "2026-11-05T23:59:26.684754Z",
+          "harness": "codex",
+          "name": "Mater",
+          "observed_at": "2026-11-05T23:59:26.684754Z",
+          "role": "story-lead",
+          "source": "thread 01a1adf9-5447-7220-8e41-86ea53f403e7; requested/selected/effective gpt-6.1-sol/high verified turn_context",
+          "status": "stopped at scoped checkpoint"
         }
       ]
     },
@@ -1672,6 +1690,126 @@
         }
       ],
       "branch": "dev/DEV-2026-11-04-067"
+    },
+    {
+      "id": "FUCQ-104",
+      "title": "Track order requests from requested to confirmed to released",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-06T00:31:00Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-104",
+      "slices": [
+        {
+          "id": "records",
+          "status": "complete",
+          "title": "Distinct repository records and additive migration",
+          "observed_at": "2026-11-06T00:19:47Z",
+          "evidence": "Lead reviewed separate durable immutable acknowledgement records;45pass2native skips;docs/gcsp/greg-orders-contract.md. Native integration remains."
+        },
+        {
+          "id": "submission",
+          "status": "complete",
+          "title": "Version-pinned idempotent Greg order requests",
+          "observed_at": "2026-11-06T00:26:32Z",
+          "evidence": "Lead-reviewed service and authenticated HTTP: replay, version/stock/run fences and role refusals; scoped 46/46 with clock and demand; UI/runtime integration remains."
+        },
+        {
+          "id": "confirmation",
+          "status": "in-progress",
+          "title": "Synthetic production acknowledgement and keyed release queue",
+          "observed_at": "2026-11-06T00:26:32Z",
+          "evidence": "Saved partial/delay acknowledgements, keyed expected dates and retryable F92 queue port pass authored scoped tests; actual producer composition remains."
+        },
+        {
+          "id": "tracking",
+          "status": "in-progress",
+          "title": "Shared-kit order-tracking stages and keyboard states",
+          "observed_at": "2026-11-06T00:26:32Z",
+          "evidence": "Consistent tracking projection implemented; additive shared-kit block next."
+        },
+        {
+          "id": "release-allocation",
+          "status": "not-started",
+          "title": "Actual release, allocation and demand consumer integration"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Composed runtime, browser, native handoff and final validation"
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-04-089",
+      "workers": [
+        {
+          "name": "Buzz Lightyear",
+          "role": "story-lead",
+          "harness": "codex",
+          "source": "Thread01a1ae35-02f9-7152-a760-c25dc42194f9; requested/selected/effective gpt-6.1-sol/high verified; checkpoint6f57a05c538fa34361ba8594f152440ece851ed4; actual live progress",
+          "observed_at": "2026-11-06T00:31:00.359880+00:00",
+          "expires_at": "2026-11-06T01:01:00.359880+00:00",
+          "status": "active; service46scoped/HTTP complete; tracking and actual producer proof"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-117",
+      "title": "Plan feasible order quantities from expressed demand, supply and policy",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-06T00:31:00Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-117",
+      "slices": [
+        {
+          "id": "input-contract",
+          "status": "in-progress",
+          "title": "Input-contract",
+          "observed_at": "2026-11-06T00:31:00.359880+00:00",
+          "evidence": "Claimc02f363; actual source preflight and live lead contract work. Remaining canonical/default producer/full gates retained."
+        },
+        {
+          "id": "feasible-solver",
+          "status": "not-started",
+          "title": "Feasible-integer-solver"
+        },
+        {
+          "id": "explanations",
+          "status": "not-started",
+          "title": "Explained-alternatives"
+        },
+        {
+          "id": "canonical-policy",
+          "status": "not-started",
+          "title": "Canonical-policy"
+        },
+        {
+          "id": "producer-integration",
+          "status": "not-started",
+          "title": "Producer-integration"
+        },
+        {
+          "id": "final-validation",
+          "status": "not-started",
+          "title": "Final-validation"
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-04-090",
+      "workers": [
+        {
+          "name": "Doug the Dog",
+          "role": "story-lead",
+          "harness": "codex",
+          "source": "Thread01a1ae41-b758-7521-b89f-8cf6c6afd1ed; requested/selected/effective gpt-6.1-sol/high verified; checkpointc02f363ada73951db4876f6943c882a80f401716; actual live progress",
+          "observed_at": "2026-11-06T00:31:00.359880+00:00",
+          "expires_at": "2026-11-06T01:01:00.359880+00:00",
+          "status": "active; independent planner input/solver implementation"
+        }
+      ]
     }
   ]
 }
