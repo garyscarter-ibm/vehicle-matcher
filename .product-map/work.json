@@ -1369,7 +1369,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T00:04:12Z",
+      "observed_at": "2026-11-06T00:07:04Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-105",
       "slices": [
         {
@@ -1416,17 +1416,7 @@
         }
       ],
       "unsliced": false,
-      "workers": [
-        {
-          "name": "Hippety Hopper",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-06T00:01:45.977362Z",
-          "expires_at": "2026-11-06T00:41:45.977362Z",
-          "source": "chat 01a1ae02-de53-72b2-b9b2-174ab689fb22",
-          "status": "active; verified decline-only DTO and finite integration source plan; parent only"
-        }
-      ]
+      "workers": []
     }
   ]
 }
