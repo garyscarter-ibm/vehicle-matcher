@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-107",
+  "checkpoint": "Authored policy, confirmation and stored-comparison service, awaiting executable admission and actual integration; not built",
+  "observedAt": "2026-11-06T00:59:20.970108+00:00",
+  "testAttempt": {
+    "command": "node --test server/test/gcsp-second-offer-policy.test.js",
+    "supervisor": "external fucq107/run-scoped.py",
+    "result": "Infrastructure bootstrap failure before any product test case: ERR_MODULE_NOT_FOUND pg from PolicyService static PostgreSQL import. No retry/install/bypass.",
+    "receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/20261106T005040842547Z/receipt.json",
+    "rc": 1,
+    "wallSeconds": 0.264940833,
+    "peakRssBytes": 2342912,
+    "peakScratchBytes": 0,
+    "scratchRemoved": true,
+    "retainedBytes": 12288
+  },
+  "leadReview": "Canonical103 reasons include code,label,attribute; validator and scoped inputs now accept exact labelled shape. Read-only question and one-policy-derived change; real BriefService owns reducer, version, event, transaction and command replay. Reload retains saved change if comparison/evaluation source fails. Stored ready comparison is independent authored boundary; injected safe102 port test inputs are scoped, not producer proof.",
+  "agents": [
+    {
+      "name": "Lego Batman",
+      "requested": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "selected": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "effective": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "fallback": "none"
+    },
+    {
+      "name": "Baymax",
+      "requested": {
+        "model": "gpt-6-luna",
+        "effort": "high"
+      },
+      "selected": {
+        "model": "gpt-6-luna",
+        "effort": "high"
+      },
+      "effective": {
+        "model": "gpt-6-luna",
+        "effort": "high"
+      },
+      "fallback": "none",
+      "role": "mechanic; helper/test slice, lead corrected canonical reason label shape"
+    }
+  ],
+  "remainingGates": [
+    "Scoped policy/service checks after exact frozen executable closure review",
+    "103 canonical followup registration",
+    "Actual106 decline+release,102safe access,105public cards,100next offer producer;96explicitly paused",
+    "Client state/controller/sharedkit composition",
+    "375px+desktop keyboard and visual review",
+    "Authored full validation, UI ratchet, em-dash gate and full stamp under root serial grant"
+  ],
+  "commitAuthorization": "Root dispatcher0033 specifically requested exact code/tests checkpoint before frozen closure review; no passing test or completion claim."
+}

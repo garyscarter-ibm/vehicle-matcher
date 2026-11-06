@@ -1804,11 +1804,11 @@
     {
       "id": "FUCQ-107",
       "title": "Confirm one preference change after declining and receive a second offer",
-      "status": "To Do",
+      "status": "In Progress",
       "original_status": "To Do",
-      "assignee": "",
+      "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-06T00:43:22Z",
+      "observed_at": "2026-11-06T00:59:21Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-107",
       "branch": "dev/DEV-2026-11-04-085",
       "unsliced": false,
@@ -1817,27 +1817,42 @@
           "name": "Lego Batman",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-06T00:42:26.440215Z",
-          "expires_at": "2026-11-06T02:42:26.440215Z",
+          "observed_at": "2026-11-06T00:59:20.970108+00:00",
+          "expires_at": "2026-11-06T02:59:20.970108+00:00",
           "source": "thread 01a1ae4b-a637-7f31-a152-feda9925e927; requested/selected/effective gpt-6.1-sol/high verified turn_context",
-          "status": "planning"
+          "status": "authoring"
+        },
+        {
+          "name": "Baymax",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-06T00:59:20.970108+00:00",
+          "expires_at": "2026-11-06T00:59:20.970108+00:00",
+          "source": "collaboration /root/baymax; requested/selected/effective gpt-6-luna/high verified rollout01a1ae50-e524-7530-ac77-c8bb80eda9cb; source reviewed and labelled canonical reason shape corrected by lead",
+          "status": "stopped-before-tests-missing-pg"
         }
       ],
       "slices": [
         {
           "id": "policy-question",
-          "status": "not-started",
-          "title": "One canonical typed-reason question"
+          "status": "in-progress",
+          "title": "One canonical typed-reason question",
+          "observed_at": "2026-11-06T00:59:20.970108+00:00",
+          "evidence": "Authored isolated policy, confirmation and stored-comparison boundary; supervised product tests pending root-reviewed finite executable closure. Canonical103/actual102+106+100 integration remains open."
         },
         {
           "id": "confirmation",
-          "status": "not-started",
-          "title": "One explicit versioned BriefService change"
+          "status": "in-progress",
+          "title": "One explicit versioned BriefService change",
+          "observed_at": "2026-11-06T00:59:20.970108+00:00",
+          "evidence": "Authored isolated policy, confirmation and stored-comparison boundary; supervised product tests pending root-reviewed finite executable closure. Canonical103/actual102+106+100 integration remains open."
         },
         {
           "id": "comparison",
-          "status": "not-started",
-          "title": "Two stored quote comparison and current-brief evidence"
+          "status": "in-progress",
+          "title": "Two stored quote comparison and current-brief evidence",
+          "observed_at": "2026-11-06T00:59:20.970108+00:00",
+          "evidence": "Authored isolated policy, confirmation and stored-comparison boundary; supervised product tests pending root-reviewed finite executable closure. Canonical103/actual102+106+100 integration remains open."
         },
         {
           "id": "client-states",
