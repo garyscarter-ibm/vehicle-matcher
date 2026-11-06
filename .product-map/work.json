@@ -689,7 +689,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T01:14:08Z",
+      "observed_at": "2026-11-06T01:23:28Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-70",
       "tracker_observed_at": "2026-11-05T22:40:24Z",
       "branch": "dev/DEV-2026-11-04-070",
@@ -737,10 +737,10 @@
         },
         {
           "id": "service-integration",
-          "status": "not-started",
+          "status": "complete",
           "title": "Actual-frozen66-memory-producer-and-HTTP-integration",
-          "observed_at": "2026-11-06T01:14:08Z",
-          "evidence": "6 November: author exactly one sixth-case assertion replacement: reviewPOST statuses must equal[403], preserving deliberate rejection and proving no added transition attempt. Every other probe byte, six cases/eight setups and original scoped5/6 evidence unchanged. New probe/manifest hashes and unused token await exact root review; no Node execution/allocation. Five acceptance slices open."
+          "observed_at": "2026-11-06T01:23:28Z",
+          "evidence": "6 November: exact73c6457 scoped actual66 memory-service/HTTP/controller proof6/6 passed, eight genuine setups,46modules/6inputs/8copies/68dependencies match. service-proof-validation.json and exact receipt/checkpoint/imports retained; separate strict PID/start/group/locked-registry/scratch/listener audits passed. Scope excludes actual92/live/rendered69/central71/103/native/browser/full. Four remaining slices and story acceptance open; root final audit pending."
         },
         {
           "id": "submission-integration",
