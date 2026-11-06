@@ -1,4 +1,4 @@
-"""Static-only accounting repair freeze; execution disabled, no probes or tests."""
+"""Static-only freeze for the later1357 finite authority; no probes or tests."""
 import hashlib
 import json
 import os
@@ -9,11 +9,13 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[4]
 HERE = Path(__file__).resolve().parent
-RECORDS = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-1315')
-GRANT = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/coordination/fucq100-https-finite-delivery-1315.md')
+RECORDS = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-accounting-1357')
+GRANT = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/coordination/fucq100-corrected-accounting-finite-1357.md')
 SOURCE = HERE / 'local-https-source-plan.json'
 PLAN = HERE / 'local-https-run-plan.json'
 ORIGINAL_PLAN = HERE / 'local-https-run-plan-1315-original.json'
+SOURCE_ONLY_PLAN = HERE / 'local-https-run-plan-source-only-1344.json'
+EXECUTION_CONTRACT = HERE / 'local-https-execution-contract-1357.md'
 sha = lambda path: hashlib.sha256(Path(path).read_bytes()).hexdigest()
 IMPORT = re.compile(r'''(?:^|\n)\s*(?:import|export)\s+(?:(?!;)[\s\S])*?\bfrom\s*['"]([^'"\n]+)['"]|\bimport\s*\(\s*['"]([^'"\n]+)['"]|(?:^|\n)\s*import\s*['"]([^'"\n]+)['"]''')
 URL = re.compile(r'''new\s+URL\(\s*['"]([^'"\n]+)['"]\s*,\s*import\.meta\.url''')
@@ -154,7 +156,7 @@ def catalogue(doc):
                        str(HERE / 'runtime-composition-loader.mjs'), '--test-reporter=tap']
     guard = 'local host retains session and strict origin/context guards without serving private source'
     selections = {
-        'tls2': {'grant': 'fucq100-https-tls2-657c3a7-1315', 'file': 'server/test/gcsp-demo-tls.test.js',
+        'tls2': {'grant': 'fucq100-https-tls2-5cc3aed-1357', 'file': 'server/test/gcsp-demo-tls.test.js',
                  'arguments': ['--test', '--test-concurrency=1', 'server/test/gcsp-demo-tls.test.js'],
                  'counts': {'tests': 2, 'pass': 2, 'fail': 0, 'cancelled': 0, 'skipped': 0, 'todo': 0}},
         'brief1': {'grant': 'fucq100-https-brief1-657c3a7-1315', 'file': 'server/test/gcsp-brief-runtime.test.js',
@@ -166,10 +168,12 @@ def catalogue(doc):
         row['titles'] = re.findall(r"\btest\(\s*['\"](.*?)['\"]", (ROOT / row['file']).read_text())
         row['selectedTitles'] = row['titles'] if key == 'tls2' else [guard]
         row['excludedTitles'] = [] if key == 'tls2' else [t for t in row['titles'] if t != guard]
-    return {'schemaVersion': 1, 'scope': 'source-only accounting repair; unexecuted; no runtime grant or acceptance',
-            'executionAuthorised': False,
-            'admissionStatus': 'HOLD. TLS2 grant consumed under the original plan with incomplete RSS proof; brief1 unused and not admitted. Revised authorisation and exact independent review required before any execution.',
+    return {'schemaVersion': 1, 'scope': 'targeted corrected-accounting1357 conditional serial grants; no browser/nativeDB/live/full or story acceptance',
+            'executionAuthorised': True,
+            'admissionStatus': 'Conditional1357 authority only: new correctedTLS2 grant, then same remaining unused original brief1 allocation after same-plan correctedTLS2 PASS/resource proof/cleanup and independent exact review. Fresh physical and strict ALL-row admission required for each. Stop on first failure/refusal/uncertainty; no retry.',
             'originalPlanPath': str(ORIGINAL_PLAN), 'originalPlanSHA256': sha(ORIGINAL_PLAN),
+            'sourceOnlyPlanPath': str(SOURCE_ONLY_PLAN), 'sourceOnlyPlanSHA256': sha(SOURCE_ONLY_PLAN),
+            'executionContractPath': str(EXECUTION_CONTRACT), 'executionContractSHA256': sha(EXECUTION_CONTRACT),
             'productCheckpoint': '657c3a79695d8ab4670ebd1db1fb3edcaa83d382', 'reviewedProductTest': PINS,
             'grantPath': str(GRANT), 'grantSHA256': sha(GRANT), 'root': str(ROOT), 'records': str(RECORDS),
             'sourcePlanPath': str(SOURCE), 'sourcePlanSHA256': sha(SOURCE), 'sources': doc['sources'],

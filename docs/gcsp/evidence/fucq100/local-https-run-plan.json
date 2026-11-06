@@ -1,10 +1,14 @@
 {
   "schemaVersion": 1,
-  "scope": "source-only accounting repair; unexecuted; no runtime grant or acceptance",
-  "executionAuthorised": false,
-  "admissionStatus": "HOLD. TLS2 grant consumed under the original plan with incomplete RSS proof; brief1 unused and not admitted. Revised authorisation and exact independent review required before any execution.",
+  "scope": "targeted corrected-accounting1357 conditional serial grants; no browser/nativeDB/live/full or story acceptance",
+  "executionAuthorised": true,
+  "admissionStatus": "Conditional1357 authority only: new correctedTLS2 grant, then same remaining unused original brief1 allocation after same-plan correctedTLS2 PASS/resource proof/cleanup and independent exact review. Fresh physical and strict ALL-row admission required for each. Stop on first failure/refusal/uncertainty; no retry.",
   "originalPlanPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/local-https-run-plan-1315-original.json",
   "originalPlanSHA256": "db31dc84f6ff8a9cc1029fa3704e758e0a1783b46a9bd776f79038ee708e44d7",
+  "sourceOnlyPlanPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/local-https-run-plan-source-only-1344.json",
+  "sourceOnlyPlanSHA256": "4c27b347893f666deea849c73446f937f9b5a40301fe0e7bf00cf1d02815bbe5",
+  "executionContractPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/local-https-execution-contract-1357.md",
+  "executionContractSHA256": "034be1fbd1dfeba8cf779f763b0a8dbf6ff7242dfee2721a7b5d12af21b1fde5",
   "productCheckpoint": "657c3a79695d8ab4670ebd1db1fb3edcaa83d382",
   "reviewedProductTest": {
     "scripts/gcsp-demo.mjs": "9b683b703ba3fed309856954f26e6b685330bbb0936eaefffd5db5b45e028485",
@@ -13,10 +17,10 @@
     "server/test/gcsp-brief-runtime.test.js": "ba3882313ce8ed3d901d986711be832a0f6cb71c4e552274556fbf81b1cda1e1",
     "server/test/gcsp-offer-runtime-composition.test.js": "c3f09bae5901ec98ba2913698814567d90d186020275757be23d9b4948c3bf32"
   },
-  "grantPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/coordination/fucq100-https-finite-delivery-1315.md",
-  "grantSHA256": "113e08cc7717f56095957a4b97ece2d3d1e503f27591ecc76663e5fa5e19413f",
+  "grantPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/coordination/fucq100-corrected-accounting-finite-1357.md",
+  "grantSHA256": "931164d05b36c776a5bbd0c1ce03673ea0f9c24914c63cf9ef1b75b732378ff3",
   "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060",
-  "records": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-1315",
+  "records": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-accounting-1357",
   "sourcePlanPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/local-https-source-plan.json",
   "sourcePlanSHA256": "04faf4e9744f3d85aa814bf5d4219cade5aa0779f1b751e4d950fdadc15f46a9",
   "sources": {
@@ -243,7 +247,7 @@
   "installedPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-installed.json",
   "installedSHA256": "a99d30921387c85019fc60a9f7329f916603b89eeff80b8d3481035d8e42d72b",
   "helperHashes": {
-    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/local-https-catalogue.py": "c59072cfb85678f9c0f89036f1702219f53aa159d9c280e974d561b64897120b",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/local-https-catalogue.py": "a14e8910d85fe88bd2fa4c7ef90a9310067af4970352660518bec6d93b73d9d1",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/local-https-selected.py": "78a29f496d9cc07128df8090e9a8142b097d569e3142df1185971ee42cee9d30",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/local-https-preload.cjs": "8ea0807e12f7e11bf44630364f0bc780443bf54d4f1c8e9577ccd609908069b6",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/local-https-openssl.py": "56600d23376a2541c9ee8034774a25a8f0d65c27705c30e36ae9740961cf8913",
@@ -332,7 +336,7 @@
   "python": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
   "selections": {
     "tls2": {
-      "grant": "fucq100-https-tls2-657c3a7-1315",
+      "grant": "fucq100-https-tls2-5cc3aed-1357",
       "file": "server/test/gcsp-demo-tls.test.js",
       "arguments": [
         "--test",
