@@ -1,0 +1,113 @@
+{
+  "date": "2026-11-06",
+  "state": "proposal-only-awaiting-bounded-implementation-release",
+  "interfaceNoteRef": "04e88f4e77f5e1b7d0596532b69440dce43c37dc",
+  "contextSourcePins": [
+    {
+      "path": "gcsp-account.html",
+      "ref": "04e88f4e77f5e1b7d0596532b69440dce43c37dc",
+      "sha256": "2156befc328297a2658c3d9c0a4aff49835a581c3962180b22bf29544ec23067",
+      "bytes": 920,
+      "role": "Read-only interface context; not adopted into the six-case proof graph"
+    },
+    {
+      "path": "blocks/gcsp/account/harness.js",
+      "ref": "04e88f4e77f5e1b7d0596532b69440dce43c37dc",
+      "sha256": "606ec0b4b0f489d4e65340be292a4f2f5350c7ca81883393b7672f5fcd5c3991",
+      "bytes": 773,
+      "role": "Read-only interface context; not adopted into the six-case proof graph"
+    },
+    {
+      "path": "blocks/gcsp/manual-setup/journey.js",
+      "ref": "04e88f4e77f5e1b7d0596532b69440dce43c37dc",
+      "sha256": "f063c660a1d5ffe868fb01d88c250081e5ef0b5f8de7c14a36ffba36b277b095",
+      "bytes": 3208,
+      "role": "Read-only interface context; not adopted into the six-case proof graph"
+    },
+    {
+      "path": "blocks/gcsp/presenter-controls/controls.js",
+      "ref": "04e88f4e77f5e1b7d0596532b69440dce43c37dc",
+      "sha256": "418f3d4a9b41b3f402bb57bb3413a3838e838300ca7a8e45ccdfbeb451ec08c2",
+      "bytes": 17673,
+      "role": "Read-only interface context; not adopted into the six-case proof graph"
+    },
+    {
+      "path": "blocks/gcsp/presenter-controls/http-adapter.js",
+      "ref": "04e88f4e77f5e1b7d0596532b69440dce43c37dc",
+      "sha256": "3f4aa95412149f1f987024d6f755b6c02852c81ae561db0ff784dc3317121ab4",
+      "bytes": 1447,
+      "role": "Read-only interface context; not adopted into the six-case proof graph"
+    },
+    {
+      "path": "blocks/gcsp/employee/gcsp-employee.js",
+      "ref": "04e88f4e77f5e1b7d0596532b69440dce43c37dc",
+      "sha256": "2f35c7983aafef2c8f1eb72f6c78341cbf1c76269110f6a25dca1b775f11df2b",
+      "bytes": 8131,
+      "role": "Read-only interface context; not adopted into the six-case proof graph"
+    },
+    {
+      "path": "blocks/gcsp/shell/portal-shell.js",
+      "ref": "04e88f4e77f5e1b7d0596532b69440dce43c37dc",
+      "sha256": "7e62088d69bfa43ff0ccff2678931fe1e48c7a0b3814184f449f308cf4ebaa01",
+      "bytes": 10428,
+      "role": "Read-only interface context; not adopted into the six-case proof graph"
+    },
+    {
+      "path": "scripts/gcsp-demo.mjs",
+      "ref": "04e88f4e77f5e1b7d0596532b69440dce43c37dc",
+      "sha256": "6e537cc11f76286b89c5951d74079c6277c66140bb0a27b0d05be878f5dff2c2",
+      "bytes": 4991,
+      "role": "Read-only interface context; not adopted into the six-case proof graph"
+    },
+    {
+      "path": "server/gcsp/identity/http.js",
+      "ref": "04e88f4e77f5e1b7d0596532b69440dce43c37dc",
+      "sha256": "86d3aa6bfc13ae6773c3861b7ef6c72fecfd31270b7c4f0609e240bd017b713e",
+      "bytes": 6895,
+      "role": "Read-only interface context; not adopted into the six-case proof graph"
+    },
+    {
+      "path": "server/gcsp/identity/index.js",
+      "ref": "04e88f4e77f5e1b7d0596532b69440dce43c37dc",
+      "sha256": "4c60cd226ecceefcedd86c7da73a410bfabbeddbb05aab1aa997c98639f7612c",
+      "bytes": 14177,
+      "role": "Read-only interface context; not adopted into the six-case proof graph"
+    },
+    {
+      "path": "server/gcsp/clock/http.js",
+      "ref": "04e88f4e77f5e1b7d0596532b69440dce43c37dc",
+      "sha256": "da019f6f766ec6ff22ab7346091ca9ef6744cde2608465f20d942c07ec083535",
+      "bytes": 1978,
+      "role": "Read-only interface context; not adopted into the six-case proof graph"
+    },
+    {
+      "path": "server/gcsp/runtime.js",
+      "ref": "04e88f4e77f5e1b7d0596532b69440dce43c37dc",
+      "sha256": "d728142ebbf5d5cfe451e95e90cbacaeda6168bf1f158043780da67fc707a36f",
+      "bytes": 9550,
+      "role": "Read-only interface context; not adopted into the six-case proof graph"
+    }
+  ],
+  "proposal": {
+    "path": "docs/gcsp/evidence/fucq-126/manual-host-handoff-proposal-2026-11-06.md",
+    "sha256": "317dc3b42e03c3db6daaebb89fe0df9de3220ad9c3d418ac9a0f0da504e35664"
+  },
+  "frozenPhysicalCandidate": {
+    "commit": "953cf2201dc96e1adbfb000abe47169852c094ee",
+    "path": "docs/gcsp/evidence/fucq-126/http-physical-candidate-f179ae6-2026-11-06.json",
+    "sha256": "efdb32a33413919315b4dbcc9a09c6b5e5be0d27602b1a9c2d8ac51801b84437",
+    "unchanged": true
+  },
+  "destination": "/gcsp-account.html; in-place account host, existing navigate callback overridden",
+  "mount": "100-owned presenter region before existing gcsp-account journey root; one actual mountPresenterControls instance",
+  "proposedAdditionalOption": "onClockReadback({runId,principalId,clockVersion,tickId})",
+  "producerImplementation": false,
+  "executionAuthorized": false,
+  "executed": false,
+  "productFilesChanged": [],
+  "openGates": [
+    "Root/100 agreement and bounded implementation release",
+    "Fresh exact source freeze and separately admitted validation",
+    "Real new-run/business preparation for positive business acceptance"
+  ]
+}
