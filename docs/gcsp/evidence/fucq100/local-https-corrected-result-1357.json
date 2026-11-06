@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-100",
+  "recordedAt": "2026-11-06T14:10:24.020284+00:00",
+  "phase": "CorrectedTLS2 completed PASS with bounded resource/cleanup; brief1 unused, awaiting independent admission review",
+  "scope": "1357 corrected-accounting targeted HTTPS only; no story/browser/nativeDB/live/full acceptance",
+  "productTestCheckpoint": "657c3a79695d8ab4670ebd1db1fb3edcaa83d382",
+  "executionPlan": {
+    "path": "docs/gcsp/evidence/fucq100/local-https-run-plan.json",
+    "sha256": "3683906c123d334c3a1a68e2c73f3fcb3515f6c772c38180639a04a0d87fbcdc",
+    "sourcePlanSHA256": "04faf4e9744f3d85aa814bf5d4219cade5aa0779f1b751e4d950fdadc15f46a9",
+    "grantPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/coordination/fucq100-corrected-accounting-finite-1357.md",
+    "grantSHA256": "931164d05b36c776a5bbd0c1ce03673ea0f9c24914c63cf9ef1b75b732378ff3",
+    "records": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-accounting-1357"
+  },
+  "preservedDisabledSourceOnlyPlan": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/local-https-run-plan-source-only-1344.json",
+    "sha256": "4c27b347893f666deea849c73446f937f9b5a40301fe0e7bf00cf1d02815bbe5"
+  },
+  "originalTLS2": {
+    "grant": "fucq100-https-tls2-657c3a7-1315",
+    "consumed": true,
+    "resourceAudit": "HOLD; no retroactive upgrade",
+    "functional": "2/2",
+    "receiptPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-1315/tls2/receipt.json",
+    "receiptSHA256": "11cee8a147871dd4e10b70782c9f0c933caf6636fd1791297822316f0d89b91f",
+    "priorEvidence": "docs/gcsp/evidence/fucq100/local-https-result.json"
+  },
+  "tls2": {
+    "grant": "fucq100-https-tls2-5cc3aed-1357",
+    "consumed": true,
+    "selectionLaunched": true,
+    "head": "f1bca47c9d6a2123b847532e1664a18f44895207",
+    "receiptPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-accounting-1357/tls2/receipt.json",
+    "receiptSHA256": "c17a0ebbad4ea7164bbb3cca78eaf6c65b37fbca4a3c858e6581589f712537a8",
+    "passed": true,
+    "exitCode": 0,
+    "counts": {
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "workerSeconds": 5.6314682910000045,
+    "totalSeconds": 99.148965,
+    "chargedPeakRssBytes": 615464960,
+    "combinedOwnedDiskPeakBytes": 1564864,
+    "combinedLogsPeakBytes": 643023,
+    "cleanup": {
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "pidsAbsent": true,
+      "joined": true,
+      "openFilesAbsent": true,
+      "reservationAbsent": true
+    },
+    "cleanupErrors": [],
+    "sourceUnchanged": true,
+    "manifestState": "removed",
+    "joinedLaunches": 36,
+    "certificate": {
+      "spawn": "darwin-os.posix_spawn",
+      "returncode": 0,
+      "nativePeakRssBytes": 2195456,
+      "brokerPeakRssBytes": 22020096,
+      "probePeakRssBytes": 1441792,
+      "outputBytes": 263,
+      "error": null
+    },
+    "admission": {
+      "physicalMemory": 2815639552,
+      "chargedRam": 805306368,
+      "chargedDisk": 134217728,
+      "active": 1,
+      "free": 205270757376
+    },
+    "configSHA256": "d9335c86521e7c306066a4f3e723a2ab2557cf3df4c3de2ff4856b5c38f0dd05",
+    "exactCommand": [
+      "/opt/homebrew/bin/node",
+      "--no-warnings",
+      "--require",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-preload.cjs",
+      "--require",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/local-https-preload.cjs",
+      "--experimental-loader",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-loader.mjs",
+      "--test-reporter=tap",
+      "--test",
+      "--test-concurrency=1",
+      "server/test/gcsp-demo-tls.test.js"
+    ],
+    "selectionReview": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/reviews/fucq100-stanley-tiger-corrected-tls2-1357.md",
+      "sha256": "dc1c5911e7f5afcda6b76f6d7bd14743b83b57635bbefbec07f0f23753493c35"
+    },
+    "originals": {
+      "certificate.jsonl": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-accounting-1357/tls2/certificate.jsonl",
+        "bytes": 1550,
+        "sha256": "928c4119599416deeb42a00fc67e2fbbaea246c4b43fdd9948d50130cd003f09"
+      },
+      "cjs-modules.jsonl": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-accounting-1357/tls2/cjs-modules.jsonl",
+        "bytes": 7362,
+        "sha256": "c347dbf2c4ebc251621dfe4da0ab4d157fa91977ac34573b7cc496e9ed058388"
+      },
+      "esm-modules.jsonl": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-accounting-1357/tls2/esm-modules.jsonl",
+        "bytes": 170542,
+        "sha256": "0c5b88f1904aa91954b4d231f08cf1738021159d171a991bc9faf9063de91780"
+      },
+      "execution.json": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-accounting-1357/tls2/execution.json",
+        "bytes": 1679,
+        "sha256": "9906fc6bf05f6ac931708b0342dd45015bc63ca4e9e8ad9ec8a5a7684575edeb"
+      },
+      "ownership/5e3ea272c5594a7e8839654ead6dac22.json": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-accounting-1357/tls2/ownership/5e3ea272c5594a7e8839654ead6dac22.json",
+        "bytes": 10813,
+        "sha256": "d7fbdb22f8b1f685db7ec5f7a9bc2e0903ca759c627742645e41f9bbac5f86fc"
+      },
+      "provisional.json": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-accounting-1357/tls2/provisional.json",
+        "bytes": 2228,
+        "sha256": "1af32b54f54a18c244bffb904511b9df9b92cc6788c33fbdc2e39204b94c3bfe"
+      },
+      "raw.log": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-accounting-1357/tls2/raw.log",
+        "bytes": 627,
+        "sha256": "87c390b7d05e5fd4a0769d0b8e5e9d854f81e33bd382861e6e450a738fb53f90"
+      },
+      "receipt.json": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-accounting-1357/tls2/receipt.json",
+        "bytes": 1545,
+        "sha256": "c17a0ebbad4ea7164bbb3cca78eaf6c65b37fbca4a3c858e6581589f712537a8"
+      },
+      "targeted/targeted-c85bf4ffa153dc4ec63521eb7946951ba0fba686581f1cbcb6ec934b84a7c971-default-1793974140003508000.json": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-accounting-1357/tls2/targeted/targeted-c85bf4ffa153dc4ec63521eb7946951ba0fba686581f1cbcb6ec934b84a7c971-default-1793974140003508000.json",
+        "bytes": 3584,
+        "sha256": "b8e8f24854f8d9ecdd54d1943ef918838fd33807a67fc6277cd63d915c226845"
+      }
+    }
+  },
+  "brief1": {
+    "grant": "fucq100-https-brief1-657c3a7-1315",
+    "consumed": false,
+    "selectionLaunched": false,
+    "status": "Same remaining original allocation; needs corrected first originals, exact independent review and fresh admission"
+  },
+  "limits": {
+    "workers": 1,
+    "workSeconds": 120,
+    "supervisorSeconds": 180,
+    "rssBytes": 805306368,
+    "ownedDiskBytes": 134217728,
+    "logsBytes": 2097152,
+    "receiptBytes": 262144
+  },
+  "reviewer": {
+    "name": "Stanley Tiger",
+    "requestedModelEffort": "gpt-6.1-sol/high",
+    "selectedModelEffort": "gpt-6.1-sol/high",
+    "fallback": null,
+    "descendants": 0
+  },
+  "evidenceLimits": [
+    "New corrected accounting result is distinct from original consumed TLS2/resource HOLD",
+    "Module observations are not measured function/branch coverage",
+    "No browser/trust installation/Secure-cookie journey or rendered/keyboard evidence",
+    "No native/live database, external sender/service or full-suite validation",
+    "No unchanged lifecycle/consumer rerun; old lifecycle3/3/offer2/2/renewal19/20 remain historical",
+    "Claims/Jira/shared map/acceptance/merge unchanged; F71/F108/F112 gaps, F96/F139 pauses/date holds/foreign ownership preserved"
+  ]
+}
