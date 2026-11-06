@@ -1820,17 +1820,17 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T11:13:12Z",
+      "observed_at": "2026-11-06T11:18:18Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59",
       "workers": [
         {
           "name": "Cecil Turtle",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-06T11:13:12.012134+00:00",
-          "expires_at": "2026-11-06T11:43:12.012134+00:00",
+          "observed_at": "2026-11-06T11:18:18.689405+00:00",
+          "expires_at": "2026-11-06T11:18:18.689405+00:00",
           "source": "thread 01a1b054-1167-7820-b9f2-92ec81e37bbe",
-          "status": "active; docs/static historical route and current full plan; awaiting serial reservation; Sol/high, no descendants"
+          "status": "stopped; current full1291pass/5native skips; final evidence publication; source qualification/current-session publication open; Sol/high, no descendants"
         }
       ],
       "slices": [
@@ -1885,10 +1885,10 @@
         },
         {
           "id": "full-validation",
-          "status": "blocked",
+          "status": "complete",
           "title": "Authored serial npm test integration gate (1 point)",
-          "observed_at": "2026-11-06T11:13:12Z",
-          "evidence": "Exact current AEE full plan prepared with68test hashes, pinned supervisor/resource/dependency tools, command node --test --test-concurrency=1 server/test/**/*.test.js, one worker128MiB scratch/1GiB RAM/300s, nativeURL unset. Awaiting parent serial reservation; not run. Historical fdb71c2 full is not current evidence. current-full-2026-11-06/plan.json."
+          "observed_at": "2026-11-06T11:17:51Z",
+          "evidence": "Current authored full offline suite at7abeabc00587633211be6e822ea036b3dde16626:68files,1296tests/1291pass/5planned-nativePGskips/0fail,107.99s, complete1435file identity unchanged; AEE source/test pins match. Exact plan/result in current-full-2026-11-06/. Root/group81414/overlay absent,7922848B scratch removed. Shared ledger charging unverified during active run; parent manually counted usage. Native SQL and absent F60v2 assembly remain unproved."
         }
       ],
       "unsliced": false
