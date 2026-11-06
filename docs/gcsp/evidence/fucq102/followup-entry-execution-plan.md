@@ -62,15 +62,29 @@ review. Do not run even `--plan` before that review releases it.
 
 ## Resources, provenance and teardown
 
-The owned `followup-entry-resources.py` is a byte-for-byte frozen copy of the
-read-only 115 pattern at SHA-256
+The owned `followup-entry-resources.py` started from the read-only 115 pattern at SHA-256
 `362b879cbb29da02ffb4fae8bc641b98bee95ac3ba29cd8b52514b2657684c41`.
-It includes the minimal macOS outer trim on `lstart`. Root reported that the prior
+It retains the minimal macOS outer trim on `lstart`. Root reported that the prior
 `2ef0823...` pattern refused its initial OS snapshot before allocation; the trim
 delta's independent review was pending. No successful runtime lifecycle evidence is
-claimed for either the pattern or this owned adaptation. The paired 115 supervisor
+claimed here for this owned adaptation. Root later reported a scoped successful 115
+run with its own audit; that does not prove the cancellation edge below. The paired 115 supervisor
 `1e5a0811...` was inspected only as an authoring pattern; this supervisor is separately
 owned and requires its own review.
+
+Root's subsequent static 107 review identified an inherited cancellation gap between
+`Popen` return and initial tree ownership persistence. The owned resource adapter now
+records durable `creating` intent before creation, defers handled SIGTERM/SIGINT
+through registration, and retains the returned handle in the tree before control
+returns to the caller. It does not block the child signal mask. An unexpected
+exception with unresolved creation or an unregistered handle prevents any absence
+success, scratch deletion or reservation release. Cleanup explicitly adopts a
+known unregistered handle and stops/joins it; failure to establish its identity stays
+incomplete. The supervisor recovers the tree-held handle if cancellation interrupts
+its own assignment, including pipe cleanup. See `followup-entry-cancellation-review.md`
+for the static boundary analysis and remaining unexecuted validation. The new
+resource/supervisor/admission hashes supersede the original freeze; application
+sources, eleven selected cases and the 44-module graph remain unchanged.
 
 Fresh strict HostBudget: one worker, 120 seconds, 768 MiB aggregate parent/child/probe
 RSS, 128 MiB combined scratch plus retained allocation, 2 MiB combined child log.

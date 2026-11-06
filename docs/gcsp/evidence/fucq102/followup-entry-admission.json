@@ -123,8 +123,8 @@
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-resources.py",
       "targetDevice": 16777232,
       "targetInode": 173169072,
-      "bytes": 23276,
-      "sha256": "362b879cbb29da02ffb4fae8bc641b98bee95ac3ba29cd8b52514b2657684c41"
+      "bytes": 26858,
+      "sha256": "2f1188878d775edce6557e9630dca3e3c482d60484dfce53c472a1a5d1452b0d"
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-supervisor.py": {
       "kind": "file",
@@ -134,8 +134,8 @@
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-supervisor.py",
       "targetDevice": 16777232,
       "targetInode": 173169531,
-      "bytes": 16543,
-      "sha256": "9d8a5dad192033336729c9736db7f048dd043e11b6aa411a1d5928dd5087045a"
+      "bytes": 16740,
+      "sha256": "efb9e844f3f913dda0fb366d1e898297b4f6a7e753ae58f6dfbb8f03aeae390b"
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/package-lock.json": {
       "kind": "file",

@@ -147,9 +147,8 @@ def execute(frozen, args, resources, guard, sg, source_plan, source, environment
         line_tail = b''
         with log.open('xb') as stream:
             command = [frozen['nodeExecutable'], str(scratch.root / 'launch.mjs')]
-            process = subprocess.Popen(command, cwd=mirror, env=child_env, stdin=subprocess.PIPE,
+            process = tree.launch(command, cwd=mirror, env=child_env, stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, start_new_session=True)
-            tree.register(process)
             os.set_blocking(process.stdout.fileno(), False)
             def drain(stop_on_failure=True):
                 nonlocal written, line_tail
@@ -209,8 +208,12 @@ def execute(frozen, args, resources, guard, sg, source_plan, source, environment
     except BaseException as error:
         failure = {'type': type(error).__name__, 'message': str(error)[:1024]}
     finally:
+        # tree.launch may defer cancellation through registration and then raise
+        # before the caller's assignment. Recover that owned handle for pipe cleanup.
+        if process is None:
+            process = tree.process
         try:
-            result['processAbsence'] = tree.stop_join()
+            result['processAbsence'] = tree.stop_join(process)
         except BaseException as error:
             failure = failure or {'type': type(error).__name__, 'message': str(error)[:1024]}
         if process is not None:

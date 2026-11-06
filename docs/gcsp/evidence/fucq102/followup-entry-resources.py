@@ -5,6 +5,7 @@ cleanup and reservation release. A retained manifest includes every observed
 PID/start pair, including observations whose start cannot be established.
 """
 import atexit
+from contextlib import contextmanager
 import json
 import os
 from pathlib import Path
@@ -206,6 +207,33 @@ def make_budget(resources, policy, directory, lock_identity):
     return StrictBudget(policy, directory=directory)
 
 
+@contextmanager
+def defer_creation_cancellation(record, save):
+    """Defer handled signals until the returned child has durable ownership.
+
+    Do not block the OS signal mask: a new child must retain normal cancellation
+    behavior. Unexpected exceptions still meet the durable launch-intent guard.
+    """
+    previous = {sig: signal.getsignal(sig) for sig in [signal.SIGTERM, signal.SIGINT]}
+    pending = []
+    def defer(signum, frame):
+        pending.append(signum)
+    try:
+        for sig in previous:
+            signal.signal(sig, defer)
+        yield
+    finally:
+        try:
+            if pending:
+                record.setdefault('creationCancellation', []).extend(pending)
+                save()
+        finally:
+            for sig, handler in previous.items():
+                signal.signal(sig, handler)
+        if pending:
+            raise KeyboardInterrupt('Cancellation deferred through child registration')
+
+
 class ProcessTree:
     def __init__(self, resources, scratch):
         self.resources, self.scratch = resources, scratch
@@ -214,7 +242,8 @@ class ProcessTree:
         self.peak_rss = 0
         self.joined = False
         self.record = scratch.record
-        self.record.update(ownedPids=[], groups=[], uncertainGroups=[], processObservations=0)
+        self.record.update(ownedPids=[], groups=[], uncertainGroups=[], processObservations=0,
+                           launchState='not-started', launchPid=None)
 
     def save(self):
         self.resources.atomic_json(self.scratch.manifest, self.record)
@@ -286,22 +315,51 @@ class ProcessTree:
         self.record.setdefault('uncertainSnapshots', []).append(time.time())
         self.save()
 
+    def launch(self, *args, **kwargs):
+        if self.process is not None or self.record['launchState'] != 'not-started':
+            raise RuntimeError('Child launch already exists or is unresolved')
+        with defer_creation_cancellation(self.record, self.save):
+            # A failure anywhere after this write cannot take the empty-tree
+            # success path, even if Popen never returns an assignable handle.
+            self.record.update(launchState='creating', launchStartedAt=time.time())
+            self.save()
+            self.process = subprocess.Popen(*args, **kwargs)
+            self.register(self.process)
+        return self.process
+
     def register(self, process):
+        if self.process is not None and self.process is not process:
+            raise RuntimeError('Conflicting child handle; ownership is uncertain')
         self.process = process
         # Retain unknown before querying: a failed probe never drops its PID.
-        item = {'pid': process.pid, 'start': None, 'pgid': process.pid, 'ppid': os.getpid(), 'owned': True}
-        self.record['ownedPids'].append(item)
-        self.record['groups'].append(process.pid)
+        anchors = [item for item in self.record['ownedPids'] if item['pid'] == process.pid and item.get('owned')]
+        if len(anchors) > 1:
+            raise RuntimeError('Conflicting child identity observations')
+        item = anchors[0] if anchors else {'pid': process.pid, 'start': None, 'pgid': process.pid, 'ppid': os.getpid(), 'owned': True}
+        if not anchors:
+            self.record['ownedPids'].append(item)
+        if process.pid not in self.record['groups']:
+            self.record['groups'].append(process.pid)
+        self.record.update(launchState='registering', launchPid=process.pid)
         self.save()
         rows = process_snapshot()
         row = rows.get(process.pid)
         if row is None or row['pgid'] != process.pid or row['ppid'] != os.getpid():
             raise RuntimeError('Launched leader identity is unknown')
+        if item['start'] is not None and item['start'] != row['start']:
+            raise RuntimeError('Launched leader identity changed')
         item.update(start=row['start'])
         self.save()
         self.observe()
+        self.record['launchState'] = 'registered'
+        self.save()
 
     def proof(self):
+        if self.process is None:
+            if self.record['launchState'] != 'not-started' or self.record['ownedPids'] or self.record['groups']:
+                raise RuntimeError('Unresolved child creation cannot prove absence')
+        elif self.record['launchState'] != 'registered' or self.record['launchPid'] != self.process.pid:
+            raise RuntimeError('Unregistered child handle cannot prove absence')
         rows, members, _rss = self.observe()
         pids_absent = all(definitely_absent(item, rows) for item in self.record['ownedPids'])
         # An extant zombie is not absence. Wait/join precedes this proof.
@@ -314,8 +372,16 @@ class ProcessTree:
         self.save()
         return result
 
-    def stop_join(self):
+    def stop_join(self, process=None):
         try:
+            # Accept the caller's handle defensively. A cancellation after the
+            # launch return but before its assignment is covered by self.process.
+            if process is not None:
+                if self.process is not None and self.process is not process:
+                    raise RuntimeError('Conflicting cleanup child handle')
+                self.process = process
+            if self.process is not None and self.record['launchState'] != 'registered':
+                self.register(self.process)
             return self._stop_join()
         except BaseException as error:
             if isinstance(error, SnapshotUncertain):
@@ -354,6 +420,8 @@ class ProcessTree:
     def _stop_join(self):
         process = self.process
         if process is None:
+            if self.record['launchState'] != 'not-started':
+                raise RuntimeError('Child creation unresolved; preserve scratch and reservation')
             self.joined = True
             return self.proof()
         for sig in [signal.SIGTERM, signal.SIGKILL]:
