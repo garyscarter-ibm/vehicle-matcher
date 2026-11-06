@@ -6,11 +6,15 @@
   },
   "product_map": {
     "managed_files": {
-      "_tools/product_map.py": "7e5551d47211667034be1d5c0a7abf647730561454b39a132d98a49d18ef6009",
+      "_tools/product_map.py": "dceee85bb1d2cf077406b3c908987ce5e1226c7c7aa23de9a5b2b7c6360d22cc",
       "_tools/product_map_publish.py": "b0942033e2657351d84bb6abc962d92e22a1c196833d2069030f37d393fcc55f",
-      "_tools/product_map_assets/index.html": "edd66da04e4e9197c57f35b8ba1a3ac6f93a65e39aabeaf955903902e8195836",
-      "_tools/product_map_assets/map.css": "b66324ca5e47f3a382ec2f4d0c7faa65dfb36cb4f7d78e6fd1da68864ea993c5",
-      "_tools/product_map_assets/map.js": "b764c40e7e45713824c89a7d45800ed9e57944ae954ace6df3f61b7d3d3210ce"
+      "_tools/product_map_assets/index.html": "ed5d6eaefc307a44bf4750e52b59c6ba203b3703193810f05b9200ff4c7ec124",
+      "_tools/product_map_assets/map.css": "26a71a53bd4222431e8de15560e09051713ea1968a98d6596265640fb101cef1",
+      "_tools/product_map_assets/map.js": "0690b61641a05e777c1c700ca9e90fbc9834f2a7ea32de0817397a18fc95c263",
+      "_tools/product_map_assets/plex-sans-regular.woff2": "3b646991d30055a93a4ecc499713d4347953a74a947ecab435ab72070cbdab0e",
+      "_tools/product_map_assets/plex-sans-semibold.woff2": "8960851d691c054ed38e259bdcf1a6190d157b4203ed5bb32c632a863fb8ec2f",
+      "_tools/product_map_assets/LICENSE-plex.txt": "7e6b2818edbd8f6a01ae80641cc8f16a51080d08fb4e532be3a0b6f74adb07da",
+      "_tools/product_map_assets/LICENSE-carbon.txt": "037b3e9eaff51477b270e9082f54b99175e4dd893548654f00995045b68294b8"
     },
     "publish": {
       "mode": "actions",
