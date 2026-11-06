@@ -6,7 +6,9 @@
 
 The dispatcher approved the exact45-source/eight-overlay memory composition. The first selected integration run failed during loader registration before any product module or test phase loaded: attempted1/pass0/fail1/skip0. No strict receipt or product integration result exists. The loader's project guard omits its own registration entry; diagnosis and proposed narrow correction are in `producer-proof-result.md` and exact failure/resource identities in `producer-scoped.json`.
 
-Stopped at the first failure as explicitly instructed; no repair/retry. Independent process/filesystem/source/dependency cleanup audit passed. The validated73/73 consumer boundary below remains unchanged. Actual producer→102→105 integration and all broader acceptance gates remain open.
+Stopped at the first failure as explicitly instructed; the failed harness and receipts are published at `b19bfa6`. Independent process/filesystem/source/dependency cleanup audit passed. The validated73/73 consumer boundary below remains unchanged. Actual producer→102→105 integration and all broader acceptance gates remain open.
+
+The dispatcher then authorized a helper-only successor for review, using immutable106 loader `189ffa5` as a read-only reference. The loader now admits only its exact registration URL, verifies its recorded hash, and delegates `node:` builtins explicitly. The supervisor supplies loader URL/hash separately from the unchanged45 product rows. `producer-helper-successor.json` records final hashes, proposed argv and preparation receipts. Syntax, Python AST and exact-delta/source guards passed; no loader/test/product evaluation or integration retry occurred. A new root review and execution grant are required before another integration allocation. The worker remains parked with ownership retained.
 
 ## Last validated consumer checkpoint · 6 November 2026
 

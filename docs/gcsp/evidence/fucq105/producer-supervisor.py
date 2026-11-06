@@ -128,7 +128,8 @@ with r.handled_termination():
                     actual.write_text(text)
                 modules.append({'path': relative, 'canonical': canonical.as_uri(), 'url': actual.as_uri(),
                                 'sha256': row['sha256'], 'overlay': overlay})
-            mapping = {'modules': modules, 'test': {'path': str(TEST.relative_to(ROOT)), 'url': TEST.as_uri(),
+            mapping = {'modules': modules, 'loader': {'url': LOADER.as_uri(), 'sha256': digest(LOADER)},
+                       'test': {'path': str(TEST.relative_to(ROOT)), 'url': TEST.as_uri(),
                        'sha256': digest(TEST)}, 'projectRoot': ROOT.as_uri() + '/',
                        'overlayRoot': (scratch.root / 'overlays').as_uri() + '/',
                        'journal': str(scratch.root / 'modules.jsonl'),

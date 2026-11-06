@@ -47,3 +47,5 @@ Root retains merge/claim/closure and integration review. No browser/native DB/li
 ## Execution follow-up · 6 November 2026
 
 Root approved this exact source plan after independent verification. The first authored harness attempt failed during loader registration before any product source loaded. The explicit stop-at-first-failure condition was applied; no correction/retry. See `producer-proof-result.md` and `producer-scoped.json`. The immutable JSON source plan remains byte-for-byte unchanged; further execution awaits dispatcher direction.
+
+Subsequent dispatcher direction authorized only an owned-helper correction and immutable publication for review. Failed checkpoint `b19bfa6` preserves the original harness/receipt. The successor explicitly admits/hashes the existing loader registration URL and handles `node:` builtins without broadening product admission. `producer-helper-successor.json` pins its hashes, proposed argv and passing syntax/AST/static-guard preparation. No integration retry occurred; a fresh execution grant remains required.45 product modules, eight overlays,81 edges and five inputs are unchanged.
