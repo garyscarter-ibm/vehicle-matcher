@@ -1820,17 +1820,17 @@
       "original_status": "In Progress",
       "assignee": "usget",
       "type": "Story",
-      "observed_at": "2026-11-06T10:30:15Z",
+      "observed_at": "2026-11-06T10:37:32Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60",
       "workers": [
         {
           "name": "Scooby Doo",
           "role": "story-lead",
           "harness": "codex",
-          "observed_at": "2026-11-06T10:21:44.614624+00:00",
-          "expires_at": "2026-11-06T12:21:44.614624+00:00",
+          "observed_at": "2026-11-06T10:37:32.012772+00:00",
+          "expires_at": "2026-11-06T12:37:32.012772+00:00",
           "source": "thread 01a1b05f-dcbc-7e50-a2f9-0332b39f082a",
-          "status": "pure enrichment scoped work; requested/selected gpt-6.1-sol/high, no fallback"
+          "status": "Actual pinned F59 consumer scoped proof; requested/selected gpt-6.1-sol/high, no fallback"
         }
       ],
       "slices": [
@@ -1850,10 +1850,10 @@
         },
         {
           "id": "shared-accounting",
-          "status": "blocked",
+          "status": "in-progress",
           "title": "Canonical collector session cache budget recovery integration",
-          "observed_at": "2026-11-06T10:30:15Z",
-          "evidence": "F59 actual session published at fdb71c2a34b3501ed0549424947ec67c1145f433, parent supplied hash aed978263f9c. Consumer integration and collect/enrich/resume lifetime accounting proof remain."
+          "observed_at": "2026-11-06T10:37:32.012772+00:00",
+          "evidence": "Real F60 consumer passed 6/6 against pinned F59 fdb71c2; cache/cursor, lifetime budget/retry/deadline and partial facts retained. Canonical producer assembly remains; docs/gcsp/evidence/fucq60/session-enrichment.md."
         },
         {
           "id": "real-source",
@@ -1869,8 +1869,8 @@
           "id": "focused-contracts",
           "status": "complete",
           "title": "Authored enrichment and F39 F42 focused contracts",
-          "observed_at": "2026-11-06T10:26:24Z",
-          "evidence": "9 authored enrichment and 41 existing F39/F42 tests passed serially on pure checkpoint; strict targeted receipt e096f6c14e9c; final integrated npm test remains separate."
+          "observed_at": "2026-11-06T10:37:32.012772+00:00",
+          "evidence": "Lead reviewed actual F59 consumer and portable proof; 6/6 integration regressions plus 50/50 serial authored/F39/F42 contracts pass. Canonical assembly and final npm test remain separate."
         },
         {
           "id": "corpus-integration",

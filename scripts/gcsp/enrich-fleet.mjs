@@ -1,6 +1,7 @@
 import { bmwCatalogueLookupIdentity, mergeBmwCatalogueFacts, describeBmwEquipment }
   from '../../server/vehicle-evidence/bmw-catalogue-adapter.js';
 import { bmwImageLookupIdentity, presentBmwImage } from '../../server/vehicle-evidence/bmw-image-adapter.js';
+import { inputDigest } from '../../server/gcsp/repository/core.js';
 
 const METRICS = { seats: ['SEATS', 'COUNT'], luggageNormal: ['NORMAL', 'LITRES'],
   luggageExpanded: ['EXPANDED', 'LITRES'], acceleration: ['0–100 KM/H', 'SECONDS'],
@@ -172,4 +173,88 @@ export function reportEnrichment(records) {
     coverage: records.map((record) => ({ configurationId: record.configurationId, status: record.status,
       completeness: structuredClone(record.completeness), catalogue: record.sources.catalogue.outcome,
       image: record.sources.image.outcome })) };
+}
+
+export const ENRICHMENT_VERSION = '1';
+const requireEnrichment = (condition, errorCode, message) => {
+  if (!condition) throw Object.assign(new Error(message), { code: errorCode });
+};
+const operationName = (name) => typeof name === 'string' && /^[a-z][a-z0-9-]{0,31}$/.test(name)
+  && !['discover', 'solve'].includes(name);
+
+/** Consume the real collector session. All I/O, accounting, retries and persistence remain session-owned.
+ * Extra offline operations and their budgets must be registered before collection starts.
+ * An image operation resolves retained metadata only; it never authorises image downloads.
+ */
+export async function enrichFleet({ session, accepted, catalogueOperation = 'catalogue', imageOperation = null,
+  imageRequest = {}, catalogueOptions = {}, imageOptions = {}, retention = null, asOf,
+  stageId = 'enrichment', onPhase = async () => {} } = {}) {
+  requireEnrichment(typeof session?.withCheckpoint === 'function' && Array.isArray(accepted) && accepted.length <= 10000
+    && operationName(catalogueOperation) && (imageOperation === null || operationName(imageOperation)
+      && imageOperation !== catalogueOperation) && imageRequest !== null && typeof imageRequest === 'object'
+    && !Array.isArray(imageRequest) && Object.keys(imageRequest).every((key) => ['viewpoint', 'size'].includes(key))
+    && date(asOf) && typeof onPhase === 'function',
+  'invalid-enrichment', 'Inject a collector session, its accepted records, a dated policy and declared offline operations.');
+  // Snapshot caller input before any await; a changed selection/policy cannot resume prior outcomes.
+  const input = structuredClone({ accepted, catalogueOperation, imageOperation, imageRequest,
+    catalogueOptions, imageOptions, retention, asOf });
+  const stage = { id: stageId, version: ENRICHMENT_VERSION, inputDigest: inputDigest(input) };
+  return session.withCheckpoint(async ({ state, stageState, execute, commit, stop, checkDeadline }) => {
+    requireEnrichment(Array.isArray(state.accepted) && inputDigest(state.accepted) === inputDigest(input.accepted),
+      'accepted-input-mismatch', 'Only the same accepted collector records may enter this enrichment stage.');
+    const validRecord = (record) => {
+      const lookup = bmwCatalogueLookupIdentity(record?.catalogueRequest);
+      return typeof record?.configurationId === 'string' && record.configurationId.length > 0
+        && record.configurationId.length <= 4096 && lookup !== null && record.lookupIdentity !== undefined
+        && inputDigest(lookup) === inputDigest(record.lookupIdentity);
+    };
+    requireEnrichment(input.accepted.every(validRecord)
+      && new Set(input.accepted.map((record) => record.configurationId)).size === input.accepted.length,
+    'invalid-accepted-record', 'Accepted records must retain their exact resolved catalogue lookup and distinct configuration IDs.');
+    requireEnrichment(Number.isSafeInteger(stageState.cursor) && stageState.cursor >= 0
+      && stageState.cursor <= input.accepted.length && Array.isArray(stageState.records)
+      && stageState.records.length === stageState.cursor && stageState.records.every((record, index) =>
+        record.configurationId === input.accepted[index].configurationId && record.scope === 'session-enrichment'
+          && ['partial', 'rejected'].includes(record.status)),
+    'enrichment-state-invalid', 'The persisted enrichment cursor must match its committed ordered outcomes.');
+    const report = (reason) => {
+      const summary = reportEnrichment(stageState.records);
+      return { ...summary, scope: 'session-enrichment', status: 'incomplete',
+        processing: stageState.cursor === input.accepted.length ? 'finished' : 'stopped', reason,
+        qualification: 'offline-session-not-source-qualified', pending: input.accepted.length - stageState.cursor,
+        records: structuredClone(stageState.records), counts: structuredClone(state.counts),
+        outcomes: summary.counts, deadlineAt: state.deadlineAt };
+    };
+    try {
+      if (state.halted) stop(state.halted, true);
+      while (stageState.cursor < input.accepted.length) {
+        checkDeadline(); const record = input.accepted[stageState.cursor];
+        const catalogue = await execute(input.catalogueOperation, record.catalogueRequest);
+        await onPhase('enrichment-response-cached', { configurationId: record.configurationId, operation: input.catalogueOperation });
+        const request = { ...record.catalogueRequest, ...input.imageRequest };
+        // Image options may add only view/dimensions: they cannot replace a resolved source identity.
+        requireEnrichment(same(bmwCatalogueLookupIdentity(request), record.lookupIdentity),
+          'image-request-substitution', 'Image view/dimensions cannot substitute accepted catalogue context.');
+        let image; let imageStop;
+        if (input.imageOperation !== null) {
+          try { image = await execute(input.imageOperation, request); }
+          catch (error) { if (!error.stop) throw error; imageStop = error; }
+        }
+        if (input.imageOperation !== null && !imageStop) await onPhase('enrichment-response-cached', {
+          configurationId: record.configurationId, operation: input.imageOperation });
+        const output = enrichConfiguration({ configurationId: record.configurationId, request, catalogue, image,
+          catalogueOptions: input.catalogueOptions, imageOptions: input.imageOptions, retention: input.retention, asOf: input.asOf });
+        output.scope = 'session-enrichment'; output.completeness.sharedAccounting = 'shared-session-offline';
+        if (imageStop) output.sources.image.execution = { status: 'stopped', reason: imageStop.code };
+        stageState.records.push(output); stageState.cursor += 1; await commit('enrichment-outcome');
+        await onPhase('enrichment-outcome-committed', { configurationId: record.configurationId, cursor: stageState.cursor });
+        if (imageStop) throw imageStop;
+      }
+      return report('enrichment-processed');
+    } catch (error) {
+      if (!error.stop) throw error;
+      if (error.sticky) state.halted = error.code;
+      await commit('enrichment-stop'); return report(error.code);
+    }
+  }, { stage, initialState: { cursor: 0, records: [] } });
 }
