@@ -4,6 +4,12 @@ Backend-only scoped evidence. Full story acceptance remains open for normal runt
 bootstrap/deployment, deployed cookie/origin/browser, actual remote uncertainty,
 complete current-car facts and authored full-suite validation.
 
+The remaining original deployment landing URL criterion now has implementation
+and **95/95 targeted backend checks passing**, including trusted runtime config,
+local and remote producers, captured delivery and existing access parity.
+See [the current landing configuration result](landing-config-2026-11-06.md).
+Live deployment and full Story acceptance remain open.
+
 The combined follow-up entry check **passed 11/11**, with lead audit and root's
 independent 360-check audit passing. See [the scoped result](followup-entry-combined-result.md)
 for the exact source identity, original TAP, budget admission and cleanup receipt.

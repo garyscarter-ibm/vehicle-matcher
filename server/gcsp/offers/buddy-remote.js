@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.js';
 import { createRepositoryManualPorts } from '../manual-context/ports.js';
 import { createStoredSubjectRecommendationEvaluator } from '../recommendation/index.js';
-import { mintOfferToken } from './offer-token.js';
+import { mintOfferToken, resolveOfferLandingUrl } from './offer-token.js';
 
 const ref = (context, table, key = {}) => ({ table, key: { runId: context.runId, ...key } });
 const same = (a, b) => inputDigest(a) === inputDigest(b);
@@ -19,8 +19,9 @@ const termsBasis = ({ termsVersion, validFrom, validUntil, provenance, ...terms 
 // Backend lifecycle only. A subject is derived from an authenticated durable intent;
 // it is never used as a session or passed to an employee write entry.
 export class BuddyRemoteLifecycle {
-  #repository; #policy; #clock; #adapter;
-  constructor({ repository, policy, clock, adapter }) {
+  #repository; #policy; #clock; #adapter; #offerLandingUrl;
+  constructor({ repository, policy, clock, adapter, offerLandingUrl }) {
+    this.#offerLandingUrl = resolveOfferLandingUrl(offerLandingUrl);
     this.#repository = repository; this.#policy = policy; this.#clock = clock; this.#adapter = adapter;
   }
 
@@ -206,7 +207,8 @@ export class BuddyRemoteLifecycle {
       const changed = await tx.compareAndSwap(ref(context, table, { [key]: row[key] }), row.version, { state: 'active' });
       if (changed.status !== 'ok') return changed;
     }
-    const token = mintOfferToken({ environmentId: p.environmentId, runId: p.runId, offerId: p.offerId });
+    const token = mintOfferToken({ environmentId: p.environmentId, runId: p.runId, offerId: p.offerId },
+      { offerLandingUrl: this.#offerLandingUrl });
     const offer = await tx.insert('offers', { runId: p.runId, environmentId: p.environmentId, offerId: p.offerId,
       holdId: operation.holdId, quoteId: p.quoteId, employeeId: p.employeeId, orderUuid: p.orderUuid,
       state: 'active', briefVersion: p.expectedBriefVersion, policyVersion: p.authority.policyVersion,

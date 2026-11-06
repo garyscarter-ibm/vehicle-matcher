@@ -219,9 +219,17 @@ adoption, browser and central/runtime integration remain separate open gates.
 
 ## Deployment and validation boundaries
 
-The original landing URL comes from the FUCQ-100 deployment configuration for the
-GCSP static site. FUCQ-102 never invents an origin or mints an offer link. FUCQ-100
-is adding public `runId` beside `offerId`; the token remains in its fragment.
+The landing URL comes from trusted `createGcspRuntime({ offerLandingUrl })` or,
+when omitted, backend `GCSP_OFFER_LANDING_URL`. Configure the GCSP static site's
+full HTTPS page URL for email delivery, including any deployment path prefix.
+The same-origin local demo defaults to `/gcsp/offer`; an explicit root-relative
+path is also supported. Invalid configuration returns `invalid-offer-landing-url`
+before storage opens. Neither request bodies nor browser origins choose this value.
+Both local and remote FUCQ-100 producers receive the same trusted setting and
+retain allowed configured query context. They add public `offerId` and `runId`;
+the opaque token remains in its fragment with the unchanged environment/run/offer
+hash binding. Notification delivery carries the persisted link unchanged.
+See [the implementation and selected evidence](evidence/fucq102/landing-config-2026-11-06.md).
 
 Independent checks cover real memory repository/PolicyService/DemoIdentity/DemoClock,
 the exact published token verifier, every presentation state, no business mutation,
