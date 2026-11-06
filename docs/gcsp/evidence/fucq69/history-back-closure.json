@@ -1,8 +1,8 @@
 {
   "admissionRevision": {
-    "previousClosureSha256": "ebd23ad78184730c399584cdfe27c18d459629f977261f94334dad4f41cf19ad",
-    "previousProposalCommit": "2c2b8ea2fb6b6f723b6d0965a5a3282fbad48139",
-    "reason": "Four independent static HOLD findings; own supervisor/admission changes only; no runtime reproduction"
+    "previousClosureSha256": "228cbd4b3f808c75ec625d6dd63e11ee06a3a860ec2a6c523ce8f73bf71ba5f6",
+    "previousProposalCommit": "99b7d598c76cdda9709e9a5ac8d8412fcefb2ced",
+    "reason": "Three scoped remaining static HOLD paths: fresh locked binding at deletion, accounting through cleanup, nonblocking regular-ledger open; prior accepted lifecycle/dependency findings retained; no runtime reproduction"
   },
   "counts": {
     "assetPaths": 2,
@@ -18398,8 +18398,8 @@
         "device": 16777232,
         "inode": 173171015,
         "mode": 420,
-        "sha256": "162a811442d1421c14f2ca8139cbe78941c33f7026a00b5f4e88cb54837e650b",
-        "size": 43201
+        "sha256": "0067416f49a8f10a4b05f317b30c7b11142d7a4398352d1e90d2a208fcaa927b",
+        "size": 48308
       },
       "path": "docs/gcsp/evidence/fucq69/history-back-supervisor.py",
       "publishedCommit": null,
@@ -18410,8 +18410,8 @@
         "device": 16777232,
         "inode": 173171592,
         "mode": 420,
-        "sha256": "71471aad77d34a5c28ed7b4a93e9d4861dc65c57e29183ad2e534137814a95ec",
-        "size": 17918
+        "sha256": "ff633e5919f5cd13420e6a7f22a96ab0c627ae7996d79853623174ee3fba3d85",
+        "size": 21493
       },
       "path": "docs/gcsp/evidence/fucq69/history-back-plan.md",
       "publishedCommit": null,

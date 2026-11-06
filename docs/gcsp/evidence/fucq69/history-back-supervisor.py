@@ -14,6 +14,7 @@ import math
 import os
 from pathlib import Path
 import re
+import resource
 import selectors
 import shutil
 import signal
@@ -29,6 +30,7 @@ ROOT = Path(__file__).resolve().parents[4]
 HERE = Path(__file__).resolve().parent
 MIB = 1024 ** 2
 PROBE_ENV = None
+RESOURCE_ACCOUNT = None
 
 
 def strict_json(text):
@@ -100,6 +102,8 @@ def package_members(path):
 
 def verify_inputs(closure, deadline=None):
     def timely():
+        if RESOURCE_ACCOUNT is not None:
+            RESOURCE_ACCOUNT(None, False)
         if deadline is not None and time.monotonic() > deadline:
             raise RuntimeError('Input verification phase deadline exceeded.')
     for row in closure['sourceRows'] + closure['guardRows']:
@@ -138,13 +142,21 @@ def verify_inputs(closure, deadline=None):
             exists = (Path(candidate) / 'package.json').is_file()
             if exists != (candidate == row['resolvedPath']):
                 raise RuntimeError('Package resolution changed: ' + candidate)
+    if RESOURCE_ACCOUNT is not None:
+        RESOURCE_ACCOUNT(None, True)
 
 
 def snapshot():
     if PROBE_ENV is None:
         raise RuntimeError('Probe environment was not sanitized.')
-    probe = subprocess.run(['/bin/ps', '-axo', 'pid=,ppid=,pgid=,rss=,stat=,lstart=,args='],
-                           capture_output=True, text=True, timeout=3, check=True, env=PROBE_ENV)
+    if RESOURCE_ACCOUNT is not None:
+        RESOURCE_ACCOUNT(None, True)
+    try:
+        probe = subprocess.run(['/bin/ps', '-axo', 'pid=,ppid=,pgid=,rss=,stat=,lstart=,args='],
+                               capture_output=True, text=True, timeout=3, check=True, env=PROBE_ENV)
+    finally:
+        if RESOURCE_ACCOUNT is not None:
+            RESOURCE_ACCOUNT(None, True)  # Reaped probe high-water usage is charged even on telemetry failure.
     if probe.stderr or not probe.stdout.strip():
         raise RuntimeError('Process telemetry is uncertain.')
     rows = []
@@ -158,6 +170,8 @@ def snapshot():
             raise RuntimeError('Cannot parse an exact process start identity.')
         rows.append({'pid': int(fields[0]), 'ppid': int(fields[1]), 'pgid': int(fields[2]),
                      'rss': int(fields[3]) * 1024, 'stat': fields[4], 'start': started.group(0)})
+    if RESOURCE_ACCOUNT is not None:
+        RESOURCE_ACCOUNT(rows, True)
     return rows
 
 
@@ -180,7 +194,7 @@ def parse_tap(raw, names):
 
 
 def run():
-    global PROBE_ENV
+    global PROBE_ENV, RESOURCE_ACCOUNT
     started = time.monotonic()
     parser = argparse.ArgumentParser()
     parser.add_argument('--dispatcher-grant', required=True)
@@ -278,7 +292,7 @@ def run():
 
         def registry(self):
             # Called only under our already-open, identity-checked physical lock. Missing is an error.
-            fd = os.open(self.path, os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC)
+            fd = os.open(self.path, os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW | os.O_CLOEXEC)
             try:
                 info = os.fstat(fd)
                 linked = self.path.lstat()
@@ -444,6 +458,9 @@ def run():
     result = {'rc': None}
     timings = {}
     uncertain = []
+    granted = None
+    accounting_last = 0.0
+    accounting_live_rss = 0
 
     def sticky(message):
         if message not in uncertain:
@@ -509,14 +526,25 @@ def run():
             if uncertain or host.issues or not absent(self.record):
                 raise r.ResourceError('Owned process cleanup uncertain; retain named scratch: ' + str(self.root))
             try:
-                opened = subprocess.run(['/usr/sbin/lsof', '-t', '+D', str(self.root)],
-                                        capture_output=True, timeout=5, env=PROBE_ENV)
+                account_resources(None, True)
+                try:
+                    opened = subprocess.run(['/usr/sbin/lsof', '-t', '+D', str(self.root)],
+                                            capture_output=True, timeout=5, env=PROBE_ENV)
+                finally:
+                    account_resources(None, True)  # Includes this reaped probe's kernel high-water usage.
                 if opened.returncode != 1 or opened.stdout or opened.stderr:
                     raise r.ResourceError('Scratch open-file status uncertain; retain: ' + str(self.root))
             except BaseException as error:
                 sticky('Open-file telemetry: ' + type(error).__name__ + ': ' + str(error))
                 raise
-            return super().__exit__(kind, value, tb)
+            # Keep the exact binding locked through the shared helper's inode check and deletion.
+            # A fresh ledger/owner/root/allocation failure preserves scratch; cached host.issues is insufficient.
+            with host.locked():
+                host.bound(host.registry())
+                account_resources(None, True)
+                outcome = super().__exit__(kind, value, tb)
+                account_resources(None, True)
+                return outcome
 
     scratch = SafeScratch(records, ROOT, policy, expected=48 * MIB, checkpoint=records / 'checkpoint.json')
     original_sample = scratch.sample
@@ -528,6 +556,51 @@ def run():
         return used
 
     scratch.sample = combined_disk
+
+    def account_resources(rows=None, force=False):
+        nonlocal accounting_last, accounting_live_rss
+        try:
+            if sys.platform != 'darwin':
+                raise r.ResourceError('The frozen Darwin rusage byte units are required.')
+            if rows is not None:
+                supervisor = next((row for row in rows if row['pid'] == os.getpid()), None)
+                if supervisor is None or (host.owner is not None and supervisor['start'] != host.owner['start']):
+                    raise r.ResourceError('Resource accounting supervisor identity is uncertain.')
+                selected = {row['pid'] for row in rows if observed(row) or row['ppid'] == os.getpid()}
+                while True:
+                    expanded = selected | {row['pid'] for row in rows if row['ppid'] in selected}
+                    if expanded == selected:
+                        break
+                    selected = expanded
+                accounting_live_rss = sum(row['rss'] for row in rows if row['pid'] in selected)
+                result['peakAggregateRssBytes'] = max(result.get('peakAggregateRssBytes', 0),
+                                                       supervisor['rss'] + accounting_live_rss)
+            now = time.monotonic()
+            if not force and now - accounting_last < 0.2:
+                return
+            accounting_last = now
+            own_peak = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+            child_peak = resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss
+            if any(not math.isfinite(value) or value < 0 for value in (own_peak, child_peak)):
+                raise r.ResourceError('Kernel high-water resource accounting is uncertain.')
+            # A conservative charge, separate from sampled aggregate RSS: it also catches a short
+            # synchronous ps/lsof probe that finishes between snapshots, after its bounded wait.
+            charged_rss = int(own_peak + child_peak + accounting_live_rss)
+            result['peakConservativeAggregateRssBytes'] = max(result.get('peakConservativeAggregateRssBytes', 0), charged_rss)
+            result['kernelSupervisorPeakRssBytes'] = max(result.get('kernelSupervisorPeakRssBytes', 0), int(own_peak))
+            result['kernelReapedChildrenPeakRssBytes'] = max(result.get('kernelReapedChildrenPeakRssBytes', 0), int(child_peak))
+            used = r.allocated_bytes(scratch.root) + r.allocated_bytes(records)
+            scratch.record['peak'] = max(scratch.record['peak'], used)
+            limits = granted or {'disk': 128 * MIB, 'ram': 768 * MIB}
+            if charged_rss > limits['ram'] or used > limits['disk']:
+                raise r.ResourceError('Verification/cleanup aggregate resource charge exceeded the granted budget.')
+            if shutil.disk_usage('/private/tmp').free < policy.reserve:
+                raise r.ResourceError('Verification/cleanup reached the emergency disk reserve.')
+        except BaseException as error:
+            sticky('Resource accounting: ' + type(error).__name__ + ': ' + str(error))
+            raise
+
+    RESOURCE_ACCOUNT = account_resources
 
     def sample():
         nonlocal root_identity
@@ -756,18 +829,24 @@ def run():
                 uncertain.append(type(error).__name__ + ': ' + str(error))
                 return False
         processes_absent = check(lambda: absent(scratch.record))
-        if processes_absent and not os.path.lexists(scratch.root):
-            try:
-                host.release(scratch.token)
-            except BaseException as error:
-                uncertain.append('Reservation release: ' + str(error))
         def reservation_absent():
             return host.absent()
         def inputs_unchanged():
             verify_inputs(closure, cleanup_started + 120)
             return digest(closure_path) == args.expected_closure_sha256
+        frozen_inputs_unchanged = check(inputs_unchanged)
+        def accounted_cleanup():
+            account_resources(None, True)
+            return True
+        cleanup_accounted = check(accounted_cleanup)
+        if processes_absent and not os.path.lexists(scratch.root) and cleanup_accounted and not uncertain:
+            try:
+                host.release(scratch.token)
+            except BaseException as error:
+                uncertain.append('Reservation release: ' + str(error))
         checks = {'scratchAbsent': not os.path.lexists(scratch.root), 'ownedProcessesAbsent': processes_absent,
-                  'reservationAbsent': check(reservation_absent), 'allFrozenInputsUnchanged': check(inputs_unchanged),
+                  'reservationAbsent': check(reservation_absent), 'allFrozenInputsUnchanged': frozen_inputs_unchanged,
+                  'resourceAccountingThroughCleanup': cleanup_accounted and check(accounted_cleanup),
                   'notCancelled': not cancel.is_set(),
                   'originalLogComplete': result.get('logTruncated') is False and result.get('logDrained') is True,
                   'materializedUnchanged': result.get('materializedUnchanged') is True}
@@ -787,10 +866,16 @@ def run():
         r.atomic_json(records / 'receipt.json', receipt)
         r.atomic_json(records / 'checkpoint.json', {'state': receipt['state'], 'selected': closure['expectedNames'],
                       'completed': closure['expectedNames'] if passed else [], 'receipt': str(records / 'receipt.json')})
+        if not check(accounted_cleanup):
+            passed = False
+            receipt['state'] = 'incomplete'
+            checks['resourceAccountingThroughCleanup'] = False
+            r.atomic_json(records / 'checkpoint.json', {'state': 'incomplete', 'selected': closure['expectedNames'],
+                          'completed': [], 'receipt': str(records / 'receipt.json')})
         retained = r.allocated_bytes(records)
         receipt['retainedAllocatedBytes'] = retained
         receipt['combinedAllocatedPeakBytes'] = max(receipt['combinedAllocatedPeakBytes'], retained)
-        if retained > 128 * MIB or ('granted' in locals() and retained > granted['disk']):
+        if retained > 128 * MIB or (granted is not None and retained > granted['disk']):
             passed = False
             receipt['state'] = 'incomplete'
             receipt['uncertainties'].append('Final retained records exceeded the granted combined disk allowance.')

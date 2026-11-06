@@ -1383,8 +1383,8 @@
           "id": "rendered-browser",
           "status": "in-progress",
           "title": "Rendered exact-car browser, claim reconciliation and visual acceptance",
-          "observed_at": "2026-11-06T02:15:55Z",
-          "evidence": "Prior2c2b8ea harness held after4staticfindings. Revised own supervisor/admission + complete failure-path narrative for re-review: exact owner/physical lock/strict ledger, preserved foreignrows, PID-start/group proof, direct-handle finally, clean env/vm_stat pin. Product0fa03f5 and21source/1833dependency inventory unchanged; no helper syntax/import/test/probes/allocation. Fresh root grant required; acceptance open."
+          "observed_at": "2026-11-06T02:27:38Z",
+          "evidence": "99b7d59 scoped HOLD: prior lifecycle/dependency review retained; authored fresh locked owner/root binding at delete, accounting through verification/cleanup/probes and nonblocking regular-ledger open. Plan has complete source narrative; helper/plan/catalogue pins revised only. Product0fa03f5/source/deps/4orderedcases/tools/admission/limits unchanged. No syntax/import/test/probe/allocation; fresh root review/grant required."
         },
         {
           "id": "released-integration",
