@@ -1,0 +1,315 @@
+{
+  "schemaVersion": 1,
+  "status": "proposal-awaiting-independent-review-and-new-grant",
+  "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084",
+  "output": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122-c4",
+  "sourcePlanSHA256": "5daaae85cf909de78c4ec31dadd426f379902ed821597a38a14fcb768878f827",
+  "nodes": {
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-source-plan.json": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 173182539,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-source-plan.json",
+      "targetDevice": 16777232,
+      "targetInode": 173182539,
+      "bytes": 2485857,
+      "sha256": "5daaae85cf909de78c4ec31dadd426f379902ed821597a38a14fcb768878f827"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-freeze.py": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 173175661,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-freeze.py",
+      "targetDevice": 16777232,
+      "targetInode": 173175661,
+      "bytes": 14719,
+      "sha256": "56cbe485a156daf25dce16ffe3ce3cb5794ccd8783250a6895709982bfb0600e"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-loader.mjs": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 173175422,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-loader.mjs",
+      "targetDevice": 16777232,
+      "targetInode": 173175422,
+      "bytes": 3656,
+      "sha256": "f35329580b7841a254dbdf363cdf92c73b9e58424bb7bfd367d266aae3749dcb"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-launch.py": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 173175423,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-launch.py",
+      "targetDevice": 16777232,
+      "targetInode": 173175423,
+      "bytes": 975,
+      "sha256": "eb4a6e145a17602e2e038e18768505b547d5afcbf86b003cf858fef4a9008070"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-resources.py": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 173174770,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-resources.py",
+      "targetDevice": 16777232,
+      "targetInode": 173174770,
+      "bytes": 30596,
+      "sha256": "b1027f52dee6ef80ea6f29e9b4e1b3452062cdcb5f77218e917d5bbf008ae2f3"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-supervisor.py": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 173175923,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-supervisor.py",
+      "targetDevice": 16777232,
+      "targetInode": 173175923,
+      "bytes": 17955,
+      "sha256": "e2664b327e49ac376d3c3a0d3eda5aa6933d27baa0766e6d7ae5c548fe9c57fa"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/_tools/test_resources.py": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172915911,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/_tools/test_resources.py",
+      "targetDevice": 16777232,
+      "targetInode": 172915911,
+      "bytes": 36093,
+      "sha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/_tools/scaffold_git.py": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172915909,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/_tools/scaffold_git.py",
+      "targetDevice": 16777232,
+      "targetInode": 172915909,
+      "bytes": 129000,
+      "sha256": "ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/.claude/scaffolding.json": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 173013641,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/.claude/scaffolding.json",
+      "targetDevice": 16777232,
+      "targetInode": 173013641,
+      "bytes": 2634,
+      "sha256": "fe2cd2a523acd6b0c6be0b982efdf15fac297d7f17121225fa3543afa1bac051"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/server/test/gcsp-case-release-http.test.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 173174372,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/server/test/gcsp-case-release-http.test.js",
+      "targetDevice": 16777232,
+      "targetInode": 173174372,
+      "bytes": 15650,
+      "sha256": "8250cf300944ef07f0a091fa46ba212b78fd854b32a3501e5703da8540898cd9"
+    },
+    "/opt/homebrew/bin/node": {
+      "kind": "symlink",
+      "device": 16777232,
+      "inode": 149247099,
+      "mode": 493,
+      "resolved": "/opt/homebrew/Cellar/node/26.5.0/bin/node",
+      "targetDevice": 16777232,
+      "targetInode": 149228790,
+      "link": "../Cellar/node/26.5.0/bin/node",
+      "bytes": 50320,
+      "sha256": "70851490e028b3d699a8d6d4e1de909af2a989359ae807974c92af9c6580a8e8"
+    },
+    "/opt/homebrew/Cellar/node/26.5.0/bin/node": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 149228790,
+      "mode": 365,
+      "resolved": "/opt/homebrew/Cellar/node/26.5.0/bin/node",
+      "targetDevice": 16777232,
+      "targetInode": 149228790,
+      "bytes": 50320,
+      "sha256": "70851490e028b3d699a8d6d4e1de909af2a989359ae807974c92af9c6580a8e8"
+    },
+    "/usr/bin/python3": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 1152921500312571586,
+      "mode": 493,
+      "resolved": "/usr/bin/python3",
+      "targetDevice": 16777232,
+      "targetInode": 1152921500312571586,
+      "bytes": 118928,
+      "sha256": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818"
+    },
+    "/Library/Developer/CommandLineTools/usr/bin/python3": {
+      "kind": "symlink",
+      "device": 16777232,
+      "inode": 90764668,
+      "mode": 493,
+      "resolved": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+      "targetDevice": 16777232,
+      "targetInode": 90766555,
+      "link": "../../Library/Frameworks/Python3.framework/Versions/3.9/bin/python3",
+      "bytes": 102352,
+      "sha256": "ec201019b3d883e095e753405a6fc5c1ae8f3b4905231dfd3dc6b4a1f348056f"
+    },
+    "/bin/ps": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 1152921500312571423,
+      "mode": 2541,
+      "resolved": "/bin/ps",
+      "targetDevice": 16777232,
+      "targetInode": 1152921500312571423,
+      "bytes": 170816,
+      "sha256": "472992c470606d28f577590decfecd7f4a20f832fd92c671bebc6d44790b5d02"
+    },
+    "/usr/sbin/lsof": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 1152921500312576119,
+      "mode": 493,
+      "resolved": "/usr/sbin/lsof",
+      "targetDevice": 16777232,
+      "targetInode": 1152921500312576119,
+      "bytes": 307600,
+      "sha256": "28c36d6b6dfcce1f544717b0d1961aa03441ee0a736fee3e1eaeb215c0fbff4c"
+    },
+    "/usr/bin/vm_stat": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 1152921500312573093,
+      "mode": 493,
+      "resolved": "/usr/bin/vm_stat",
+      "targetDevice": 16777232,
+      "targetInode": 1152921500312573093,
+      "bytes": 101856,
+      "sha256": "04c1ec2d5939843c9a89a26791020d2017a50ff97a2d5b380af69d5fcdae5a63"
+    },
+    "/usr/bin/git": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 1152921500312571586,
+      "mode": 493,
+      "resolved": "/usr/bin/git",
+      "targetDevice": 16777232,
+      "targetInode": 1152921500312571586,
+      "bytes": 118928,
+      "sha256": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172915746,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084",
+      "targetDevice": 16777232,
+      "targetInode": 172915746
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172392488,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs",
+      "targetDevice": 16777232,
+      "targetInode": 172392488
+    },
+    "/private/tmp": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 161787486,
+      "mode": 1023,
+      "resolved": "/private/tmp",
+      "targetDevice": 16777232,
+      "targetInode": 161787486
+    },
+    "/Users/garycarter/.cache/agent-scaffolding/test-resources": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172282405,
+      "mode": 493,
+      "resolved": "/Users/garycarter/.cache/agent-scaffolding/test-resources",
+      "targetDevice": 16777232,
+      "targetInode": 172282405
+    },
+    "/Users/garycarter/.cache/agent-scaffolding/test-resources/reservations.lock": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172282406,
+      "mode": 420,
+      "resolved": "/Users/garycarter/.cache/agent-scaffolding/test-resources/reservations.lock",
+      "targetDevice": 16777232,
+      "targetInode": 172282406
+    }
+  },
+  "pythonExecutable": "/Library/Developer/CommandLineTools/usr/bin/python3",
+  "pythonVersion": "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]",
+  "ledgerDirectory": "/Users/garycarter/.cache/agent-scaffolding/test-resources",
+  "node": "/opt/homebrew/Cellar/node/26.5.0/bin/node",
+  "environment": {
+    "HOME": "/Users/garycarter",
+    "USER": "garycarter",
+    "LOGNAME": "garycarter",
+    "PATH": "/usr/bin:/bin:/usr/sbin:/sbin",
+    "LANG": "C",
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "GCSP_OFFLINE": "1"
+  },
+  "limits": {
+    "seconds": 120,
+    "rssMiB": 768,
+    "scratchAndRetainedMiB": 128,
+    "logAndJournalMiB": 2,
+    "workers": 1
+  },
+  "absence": [
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/server/node_modules"
+  ],
+  "commands": {
+    "author": [
+      "/usr/bin/python3",
+      "-I",
+      "-B",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-freeze.py",
+      "--profile-ref",
+      "46fa208e84a85ddc5cca843af59bb9794f63cada",
+      "--test-ref",
+      "5e16930bb70015ec518b921e7fb2e4673cb89640"
+    ],
+    "childTemplate": [
+      "/usr/bin/python3",
+      "-I",
+      "-B",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-launch.py",
+      "/opt/homebrew/Cellar/node/26.5.0/bin/node",
+      "--loader",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-loader.mjs",
+      "--test",
+      "--test-reporter=tap",
+      "--test-concurrency=1",
+      "{ownedSourceMirror}/server/test/gcsp-case-release-http.test.js"
+    ],
+    "executeTemplate": [
+      "/usr/bin/python3",
+      "-I",
+      "-B",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-supervisor.py",
+      "--execute",
+      "--admission-sha",
+      "<exact-reviewed-admission-SHA256>",
+      "--dispatcher-grant",
+      "<new-exact-fucq122-c4-grant>"
+    ]
+  },
+  "allocation": "none; source/package bytes only; no application or harness imports, reservations, scratch, probes or tests"
+}

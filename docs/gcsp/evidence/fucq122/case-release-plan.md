@@ -1,7 +1,7 @@
 # C4 actual release and persisted-driver case HTTP proposal
 
-6 November 2026. FUCQ-122 / DEV-2026-11-04-084. **Authored, unexecuted;
-profile publication and exact source/harness admission remain open.**
+6 November 2026. FUCQ-122 / DEV-2026-11-04-084. **Complete C4 source/admission
+package authored for independent review; tests and runtime harness unexecuted.**
 
 ## Decided
 
@@ -21,8 +21,11 @@ the request and parses the actual handler response. No successful response,
 case service, driver projection, stock writer or scorer is substituted.
 No TCP listener or DOM is needed for this selected handler proof.
 
-The C1 helper currently being authored by100 is
-`server/test/helpers/runtime-composition-profile.js`, with this observed interface:
+The dispatcher relayed FUCQ-100's published C1 helper at
+`46fa208e84a85ddc5cca843af59bb9794f63cada`, path
+`server/test/helpers/runtime-composition-profile.js`, SHA-256
+`01c07f817d322ba7e33734ee58483d10afe1291c2eef0f055fa9b1d66b169925`.
+Its exact immutable bytes independently match the previously observed interface:
 
 - `createCompositionTestProfile()` returns a trusted passive provider exposing
   `pull(request)`, `calls` and `prepare(runtime, employeeContext)`.
@@ -37,15 +40,14 @@ The C1 helper currently being authored by100 is
 - An unprepared new run returns typed `unavailable`. C4 requires no default
   fallback, new-run profile, second fixture producer, or provider factory API.
 
-This interface was read as uncommitted100 authoring, not adopted or frozen.
-The authoring record retains the observed helper hash. The precise need through
-the dispatcher to100 is **the published immutable helper commit/path/hash and
-confirmation that the prepared exact normalized snapshot remains suitable for
-the existing employee current contract's bound driver, an employee-entered
-five-seat hatch brief, and actual manual/buddy evaluation**. If the interface or
-input changes, update C4 before freeze. No new production API or central writer
-is requested. F77/F78 real corpus and default/reset business preparation remain
-actual acceptance gates; these four cases cannot satisfy them.
+The earlier authoring record describes the initial `5e16930` checkpoint, when
+that publication was missing. This source package closes that pin gap. The
+dispatcher reports independent FUCQ-100 source/composition review PASS for actual
+local-session/account/clock preparation and passive actual92 pull. Suitability
+for the case brief and actual manual/buddy boundaries is an authored C4 assertion,
+not an executed result. No new production API or central writer is requested.
+F77/F78 real corpus and default/reset business preparation remain actual
+acceptance gates; these four cases cannot satisfy them.
 
 ## Acceptance and selected evidence
 
@@ -69,8 +71,9 @@ host/browser work; these HTTP assertions do not replace those gates.
 The five owned harness files are `case-release-freeze.py`,
 `case-release-loader.mjs`, `case-release-launch.py`,
 `case-release-resources.py` and `case-release-supervisor.py` in this directory.
-They have only been authored and statically inspected; none has been imported,
-executed, probed or used to allocate resources.
+The freeze collector has run as static metadata authoring. The loader, launcher,
+resources and supervisor have only been authored and statically inspected;
+none has been imported, executed, probed or used to allocate resources.
 
 The owned resources file is a copy of107's unexecuted cancellation repair,
 with its source hash recorded and only the story description/RAM ceiling
@@ -86,12 +89,20 @@ scratch and reservation for explicit recovery. No reproduction was authorised.
 
 The static freeze requires both published C1-profile and C4-test commits. It
 collects a finite literal module/URL-asset closure from immutable Git objects:
-C4 test at its own pin, C1 helper at100's relayed pin, and remaining sources at
-the exact adopted composition. Nonliteral or unexpected imports fail authoring.
+C4 test and existing case HTTP client at `5e16930bb70015ec518b921e7fb2e4673cb89640`,
+C1 helper at100's relayed pin, and remaining sources at the exact adopted
+`f179ae6` composition. The owned HTTP client is absent from `f179ae6`; its single
+explicit source selection preserves that composition's existing product files.
+Nonliteral or unexpected imports fail authoring.
 It inventories the entire declared installed `pg` runtime/optional/peer package
 closure, optional absences and physical identities, executables and helpers.
-It authors `case-release-source-plan.json` and `case-release-admission.json` only
-after those inputs exist. Neither manifest exists in this checkpoint.
+The resulting `case-release-source-plan.json` contains 121 source/input/asset
+paths: 99 executable modules and 22 data/assets, with 287 literal module edges
+and 11 URL-asset edges, totaling 1,723,415 source bytes. Installed closure is 138
+files across 14 packages (469,685 bytes); optional `pg-native` remains absent at
+its declared resolution point. No packages were installed, linked or changed.
+The 23-node `case-release-admission.json` additionally pins owned helpers, source
+plan, current test, configuration, executables, directories and shared lock.
 
 After admission and a fresh reservation, the future supervisor materializes
 only those exact Git blobs inside its owned scratch source mirror. This is
@@ -104,21 +115,28 @@ module loads and the four original TAP names/counts must be observed.
 
 ## Validate and remaining gate
 
-Current validation is Python AST parsing, static interface/control-flow review,
-owned-file/hash inspection and Git whitespace checks only. JavaScript, tests,
-collector/freeze, loader, launcher, supervisor and resource helper have not run.
+Current validation is static Git-object/package inventory, Python AST parsing,
+interface/control-flow review, owned-file/hash inspection and Git whitespace
+checks only. JavaScript, tests, loader, launcher, supervisor and resource helper
+have not run. Collector attempts are retained in the freeze audit: the initial
+source selection lacked the owned client, and a prose comment was initially
+mistaken for a bare import. Both refused before writing a source/admission
+package; the collector now explicitly selects the client and anchors import
+declarations separately from dynamic/side-effect imports.
 The prior accepted81 proof remains separate and is not selected again.
 
-Before any execution: receive100's immutable profile pin through the dispatcher,
-reconcile its interface/input with these four tests, generate the complete source
-and physical admission, independently review the exact loader/resource/cancellation
-and source materialization behavior, and obtain a new exact C4 execution grant.
-There is presently no executable frozen command or execution permission.
+Before any execution: independently review the exact source/input assertions,
+installed closure, loader/resource/cancellation and source materialization
+behavior, then obtain a new exact C4 execution grant. All recorded command
+templates require that exact reviewed admission hash and a new C4 grant. No
+current execution permission exists.
 
 The proposed selected child is one `node --test --test-reporter=tap
 --test-concurrency=1` invocation of the four-case file, under the owned gated
-launcher and exact loader. The eventual absolute command, admission hash and
-grant must be frozen together; this document is not an invocation instruction.
+launcher and exact loader. The admission records the absolute collector and
+supervisor command templates and the sole owned-mirror substitution in the
+child command. The reviewed admission hash and grant must be supplied together;
+this document is not an execution instruction.
 
 Proposed maximum per chunk:120s,768MiB aggregate RSS including supervisor and
 probes,128MiB scratch plus all C4 retained outputs,2MiB combined original TAP and

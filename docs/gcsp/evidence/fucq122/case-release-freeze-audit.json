@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "kind": "Separate static C4 freeze verification; author check, not independent runtime admission review",
+  "observedAt": "2026-11-06T02:30:10.197334+00:00",
+  "result": "STATIC PASS",
+  "base": "5e16930bb70015ec518b921e7fb2e4673cb89640",
+  "admissionSHA256": "a0cdf391c8fbee19de9f7da1b4a12afe40bf38e61ecb669c9921dba06c8b51d2",
+  "sourcePlanSHA256": "5daaae85cf909de78c4ec31dadd426f379902ed821597a38a14fcb768878f827",
+  "sourceSelection": {
+    "composition": "f179ae6043414a2b07de3edb2b425338299ea37b",
+    "profile": {
+      "server/test/helpers/runtime-composition-profile.js": "46fa208e84a85ddc5cca843af59bb9794f63cada"
+    },
+    "ownedTestAndConsumers": {
+      "server/test/gcsp-case-release-http.test.js": "5e16930bb70015ec518b921e7fb2e4673cb89640",
+      "blocks/gcsp/cases/http-adapter.js": "5e16930bb70015ec518b921e7fb2e4673cb89640"
+    }
+  },
+  "counts": {
+    "sources": 121,
+    "modules": 99,
+    "dataAssets": 22,
+    "edges": 298,
+    "installedPackages": 14,
+    "installedFiles": 138,
+    "installedBytes": 469685,
+    "physicalNodes": 23,
+    "namedCases": 4
+  },
+  "checks": {
+    "sourcePlanDigest": true,
+    "exactBoundary": true,
+    "allImmutableGitBytes": true,
+    "helperPin": true,
+    "declaredEdgeAndDirectoryClosure": true,
+    "broadLiteralImportCrossCheck": true,
+    "physicalHelpersExecutablesAndInstalledBytes": true,
+    "installedFileSetsAndOptionalAbsences": true,
+    "noBorrowedDependencyLink": true,
+    "pythonAst": true,
+    "cancellationOwnershipAndFiniteCommandSource": true,
+    "noRuntimeOutputs": true,
+    "originalFourCasesUnchanged": true,
+    "whitespaceClean": true
+  },
+  "staticCollectorAttempts": [
+    {
+      "outcome": "REFUSED before manifests",
+      "reason": "Owned122 HTTP client is absent from f179ae6; added its exact5e16930 selection."
+    },
+    {
+      "outcome": "REFUSED before manifests",
+      "reason": "Comment prose matched a bare from import; declarations now anchored, with separate dynamic/side-effect forms."
+    },
+    {
+      "outcome": "AUTHORED metadata only",
+      "admissionSHA256": "a8c27e82aad765c5cc80acb3f1a328db250a349f60fae6fda8691ed941c54ebc"
+    },
+    {
+      "outcome": "AUTHORED metadata only; explicit command templates added",
+      "admissionSHA256": "ecc124ddeba159166c3dec84d383b5bbbd94cb25f72a5289a9e4cdb091a1427c"
+    },
+    {
+      "outcome": "AUTHORED current metadata only; package file-set and optional-path admission tightened",
+      "admissionSHA256": "a0cdf391c8fbee19de9f7da1b4a12afe40bf38e61ecb669c9921dba06c8b51d2"
+    }
+  ],
+  "remaining": [
+    "Independent source/input/loader/materialization/cancellation/resource review",
+    "Fresh exact C4 execution grant; no current execution permission",
+    "Actual four-case evidence and later real F77/F78/default-reset/browser/native/full gates"
+  ],
+  "executedApplicationOrHarness": [],
+  "allocatedTestResources": []
+}

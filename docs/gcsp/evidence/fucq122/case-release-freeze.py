@@ -19,6 +19,7 @@ HERE = Path(__file__).resolve().parent
 CANDIDATE = 'f179ae6043414a2b07de3edb2b425338299ea37b'
 TEST = 'server/test/gcsp-case-release-http.test.js'
 PROFILE = 'server/test/helpers/runtime-composition-profile.js'
+OWN_CONSUMERS = {'blocks/gcsp/cases/http-adapter.js'}
 OUT = ROOT.parents[2] / '.claude/test-runs/fucq122-c4'
 sys.path.insert(0, str(ROOT / '_tools'))
 import scaffold_git as G
@@ -89,7 +90,10 @@ def packages():
         if directory is None:
             if not optional:
                 raise RuntimeError('Required installed package missing: ' + name)
-            absent.append({'name': name, 'caller': str(caller)})
+            candidates = [str(ancestor / 'node_modules' / name) for ancestor in [caller, *caller.parents]]
+            if any(os.path.lexists(path) for path in candidates):
+                raise RuntimeError('Optional package has an incomplete/unreviewed installed path')
+            absent.append({'name': name, 'caller': str(caller), 'absentCandidates': candidates})
             continue
         edges.append({'name': name, 'caller': str(caller), 'root': str(directory)})
         if str(directory) in roots:
@@ -136,8 +140,13 @@ def main():
     rows, edges, directory_assets = {}, [], []
     queue = [TEST, 'package.json', 'package-lock.json', 'server/package.json', 'server/package-lock.json']
     def selected(path):
-        return args.test_ref if path == TEST else args.profile_ref if path == PROFILE else CANDIDATE
-    imports = re.compile(r"(?:\bfrom\s*|\bimport\s*\(\s*|\bimport\s+)[\'\"]([^\'\"]+)[\'\"]")
+        return args.test_ref if path == TEST or path in OWN_CONSUMERS else args.profile_ref if path == PROFILE else CANDIDATE
+    # Anchor declarations so prose such as "from 'a boot claim ...'" in a
+    # module comment cannot become a fabricated dependency. Dynamic imports
+    # and side-effect imports have their own literal forms.
+    imports = re.compile(r"^[ \t]*(?:import\s+(?:\{[^;]*?\}|\*\s+as\s+[\w$]+|[\w$]+(?:\s*,\s*\{[^;]*?\})?)|export\s+(?:\{[^;]*?\}|\*))\s+from\s*[\'\"]([^\'\"\n]+)[\'\"]", re.M)
+    side_effects = re.compile(r"^[ \t]*import\s*[\'\"]([^\'\"\n]+)[\'\"]", re.M)
+    dynamic_imports = re.compile(r"\bimport\s*\(\s*[\'\"]([^\'\"\n]+)[\'\"]")
     urls = re.compile(r"new\s+URL\(\s*[\'\"]([^\'\"]+)[\'\"]\s*,\s*import\.meta\.url")
     while queue:
         path = queue.pop()
@@ -153,7 +162,7 @@ def main():
         if kind != 'module':
             continue
         text = data.decode()
-        for specifier in imports.findall(text):
+        for specifier in [*imports.findall(text), *side_effects.findall(text), *dynamic_imports.findall(text)]:
             if specifier.startswith('.'):
                 target = normalize(path, specifier)
                 edges.append({'from': path, 'specifier': specifier, 'to': target, 'kind': 'module'})
@@ -191,6 +200,8 @@ def main():
         ast.parse(path.read_bytes(), filename=str(path))
     plan = {'schemaVersion': 1, 'status': 'frozen-for-review', 'requiresNewDispatcherGrant': True,
             'root': str(ROOT), 'candidate': CANDIDATE, 'profileRef': args.profile_ref, 'testRef': args.test_ref,
+            'sourceSelection': {'composition': CANDIDATE, 'profile': {PROFILE: args.profile_ref},
+                                'ownedTestAndConsumers': {path: args.test_ref for path in [TEST, *sorted(OWN_CONSUMERS)]}},
             'test': TEST, 'expectedNames': names, 'pending': [], 'rows': [rows[path] for path in sorted(rows)],
             'edges': edges, 'directoryAssets': directory_assets, 'installed': installed,
             'sourceMethod': 'Finite immutable Git blobs materialized only in owned scratch after admission/reservation; product worktree is never overlaid.',
@@ -220,6 +231,15 @@ def main():
                                  'PATH': '/usr/bin:/bin:/usr/sbin:/sbin', 'LANG': 'C', 'LC_ALL': 'C', 'TZ': 'UTC', 'GCSP_OFFLINE': '1'},
                  'limits': {'seconds': 120, 'rssMiB': 768, 'scratchAndRetainedMiB': 128, 'logAndJournalMiB': 2, 'workers': 1},
                  'absence': [str(ROOT / 'server/node_modules')],
+                 'commands': {
+                     'author': ['/usr/bin/python3', '-I', '-B', str(HERE / 'case-release-freeze.py'),
+                                '--profile-ref', args.profile_ref, '--test-ref', args.test_ref],
+                     'childTemplate': ['/usr/bin/python3', '-I', '-B', str(HERE / 'case-release-launch.py'),
+                                       str(Path('/opt/homebrew/bin/node').resolve()), '--loader', str(HERE / 'case-release-loader.mjs'),
+                                       '--test', '--test-reporter=tap', '--test-concurrency=1', '{ownedSourceMirror}/' + TEST],
+                     'executeTemplate': ['/usr/bin/python3', '-I', '-B', str(HERE / 'case-release-supervisor.py'),
+                                         '--execute', '--admission-sha', '<exact-reviewed-admission-SHA256>',
+                                         '--dispatcher-grant', '<new-exact-fucq122-c4-grant>']},
                  'allocation': 'none; source/package bytes only; no application or harness imports, reservations, scratch, probes or tests'}
     output = HERE / 'case-release-admission.json'
     output.write_text(json.dumps(admission, indent=2) + '\n')

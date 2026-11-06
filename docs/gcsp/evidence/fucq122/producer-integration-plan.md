@@ -2,8 +2,9 @@
 
 Current follow-up: the dispatcher supplied adopted composition
 `f179ae6043414a2b07de3edb2b425338299ea37b` and selected the narrower
-[four-case C4 proposal](case-release-plan.md). It uses100's shared synthetic TEST
-profile interface, pending its publication. The nine cases and counts below
+[four-case C4 proposal](case-release-plan.md). Its complete review package now
+pins FUCQ-100's shared synthetic TEST profile at `46fa208e84a85ddc5cca843af59bb9794f63cada`.
+Independent source/harness review and a new execution grant remain open. The nine cases and counts below
 remain the earlier planning basis; they are not a current execution freeze.
 
 Status: **author-only; stable source basis pinned, combined execution freeze has

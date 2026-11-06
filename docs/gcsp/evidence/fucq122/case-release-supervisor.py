@@ -79,11 +79,26 @@ def admit(expected_sha):
     if source['candidate'] != CANDIDATE or source['status'] != 'frozen-for-review' or source['pending'] \
             or source['test'] != 'server/test/gcsp-case-release-http.test.js' or len(source['expectedNames']) != 4:
         raise RuntimeError('C4 source/profile/test contract is incomplete')
+    expected_child = ['/usr/bin/python3', '-I', '-B', str(HERE / 'case-release-launch.py'), frozen['node'],
+                      '--loader', str(HERE / 'case-release-loader.mjs'), '--test', '--test-reporter=tap',
+                      '--test-concurrency=1', '{ownedSourceMirror}/' + source['test']]
+    if frozen['commands']['childTemplate'] != expected_child:
+        raise RuntimeError('C4 selected child command differs')
     for name, row in source['installed']['files'].items():
         physical(Path(name), row)
+    inventoried = set(source['installed']['files'])
+    for directory in source['installed']['packages']:
+        found = set()
+        for folder, dirs, names in os.walk(directory, followlinks=False):
+            dirs[:] = sorted(name for name in dirs if name not in ['node_modules', '.git'])
+            if any((Path(folder) / name).is_symlink() for name in dirs):
+                raise RuntimeError('Uninventoried installed directory link')
+            found.update(str(Path(folder) / name) for name in names)
+        expected = {name for name in inventoried if Path(name).is_relative_to(directory)}
+        if found != expected:
+            raise RuntimeError('Frozen installed package file set differs')
     for row in source['installed']['absentOptional']:
-        caller = Path(row['caller'])
-        if any((ancestor / 'node_modules' / row['name'] / 'package.json').is_file() for ancestor in [caller, *caller.parents]):
+        if any(os.path.lexists(path) for path in row['absentCandidates']):
             raise RuntimeError('Frozen optional dependency absence differs')
     return frozen, source
 
@@ -188,8 +203,7 @@ def execute(frozen, source, args, tr, guard, sg):
         journal.touch(exist_ok=False)
         loader = HERE / 'case-release-loader.mjs'
         entry = mirror / source['test']
-        command = ['/usr/bin/python3', '-I', '-B', str(HERE / 'case-release-launch.py'), frozen['node'],
-                   '--loader', str(loader), '--test', '--test-reporter=tap', '--test-concurrency=1', str(entry)]
+        command = [argument.replace('{ownedSourceMirror}', str(mirror)) for argument in frozen['commands']['childTemplate']]
         env = scratch.env(dict(frozen['environment']))
         env.update(FUCQ122_C4_PLAN=str(HERE / 'case-release-source-plan.json'),
                    FUCQ122_C4_PLAN_SHA=frozen['sourcePlanSHA256'], FUCQ122_C4_MIRROR=str(mirror),
