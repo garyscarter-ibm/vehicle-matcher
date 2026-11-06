@@ -2,22 +2,22 @@
   "schemaVersion": 1,
   "status": "source-authored-unexecuted",
   "story": "FUCQ-107",
-  "parentCheckpoint": "0f81ef4a9e1ec4bc90630acc0b3ad7522ede7c34",
+  "parentCheckpoint": "334877de235a8f84344dd93a3f27a40984fedabb",
   "priorBackendSource": "16839323f070f7c0ab81eb1ebf728627d283c71d",
   "changed": [
     {
       "path": "server/gcsp/offers/followup.js",
       "baseBytes": 16389,
       "baseSHA256": "bdd9dc0c57e62a08b866b9e204bbbb17b148a0534b65c37be92d3d8d7e49d875",
-      "bytes": 18416,
-      "sha256": "54399693253ae9640dde77b70b54f073b08e634d6babb69ea129b0414a6cebd2"
+      "bytes": 18500,
+      "sha256": "29a439ef9b14b84b43dbb3a5ac91e4e4421866d94ab03bf03c5e463fc8a72028"
     },
     {
       "path": "server/test/gcsp-second-offer.test.js",
       "baseBytes": 22670,
       "baseSHA256": "f29ac7a1acc4243b0772d25846375b1332a2e1f12bc12b9b1fe0d9c24a2cd13f",
-      "bytes": 28213,
-      "sha256": "aa19c1b16e56081adfa4fb43d8ccb5fd6e7c64ca999e49ef2f759b0dbacb5386"
+      "bytes": 29308,
+      "sha256": "0db9ea5298b0daa3e23f34a952c54c2336bc7ea46f566ba62baff78160589c4f"
     }
   ],
   "comparedGraphs": [
@@ -30,12 +30,12 @@
         {
           "path": "server/gcsp/offers/followup.js",
           "baseSHA256": "bdd9dc0c57e62a08b866b9e204bbbb17b148a0534b65c37be92d3d8d7e49d875",
-          "sha256": "54399693253ae9640dde77b70b54f073b08e634d6babb69ea129b0414a6cebd2"
+          "sha256": "29a439ef9b14b84b43dbb3a5ac91e4e4421866d94ab03bf03c5e463fc8a72028"
         },
         {
           "path": "server/test/gcsp-second-offer.test.js",
           "baseSHA256": "f29ac7a1acc4243b0772d25846375b1332a2e1f12bc12b9b1fe0d9c24a2cd13f",
-          "sha256": "aa19c1b16e56081adfa4fb43d8ccb5fd6e7c64ca999e49ef2f759b0dbacb5386"
+          "sha256": "0db9ea5298b0daa3e23f34a952c54c2336bc7ea46f566ba62baff78160589c4f"
         }
       ],
       "unchangedRows": [
@@ -376,6 +376,7 @@
     "two persisted quotes and the safe account port produce a comparison with explicit current inputs",
     "ordinary identity uses persisted slot renewal through question, save, reload and next-hold comparison",
     "unpopulated slot renewal uses the matched hold and event; explicit conflicts and malformed values refuse",
+    "historical slot pins must be valid and reached; compatible later current revisions remain usable",
     "slot content and version changes before question response or brief write refuse without a brief change",
     "HTTP descriptors require employee context, exact selector and delegated strict confirmation"
   ],
@@ -404,6 +405,10 @@
     {
       "test": "slot content and version changes before question response or brief write refuse without a brief change",
       "coverage": "Actual slot CAS content/version change during policy read refuses question and confirm; only injected CAS command receipt allowed, zero BriefService writes."
+    },
+    {
+      "test": "historical slot pins must be valid and reached; compatible later current revisions remain usable",
+      "coverage": "Require positive integer decision.versions.slot and current slot.version >= historical pin; missing/null/zero/negative/fraction/string/future pins refuse without writes; a real subsequent CAS version remains usable for question and save."
     }
   ],
   "boundaries": {
@@ -427,5 +432,25 @@
       "full suite"
     ]
   },
-  "execution": "No Node command, import, test or runtime probe performed. New graph requires dispatcher review and a separate execution grant. Prior service12 result proves only old source; unchanged controller14 and policy7 remain independent."
+  "execution": "No Node command, import, test or runtime probe performed. New graph requires dispatcher review and a separate execution grant. Prior service12 result proves only old source; unchanged controller14 and policy7 remain independent.",
+  "reviewAmendment": {
+    "reviewedCheckpoint": "4b91d4bb14103ac5a98f68900a540913f4cacf78",
+    "result": "SOURCE HOLD corrected in authored source only; narrow independent delta review pending",
+    "requested": "Require revision(decision.versions.slot) and current slot.version >= decision.versions.slot; fixture captures its actual slot revision.",
+    "reviewer": "gpt-6.1-sol/high; no fallback or descendants",
+    "minimalSourceDelta": [
+      {
+        "path": "server/gcsp/offers/followup.js",
+        "reviewedCheckpointSHA256": "54399693253ae9640dde77b70b54f073b08e634d6babb69ea129b0414a6cebd2",
+        "bytes": 18500,
+        "sha256": "29a439ef9b14b84b43dbb3a5ac91e4e4421866d94ab03bf03c5e463fc8a72028"
+      },
+      {
+        "path": "server/test/gcsp-second-offer.test.js",
+        "reviewedCheckpointSHA256": "aa19c1b16e56081adfa4fb43d8ccb5fd6e7c64ca999e49ef2f759b0dbacb5386",
+        "bytes": 29308,
+        "sha256": "0db9ea5298b0daa3e23f34a952c54c2336bc7ea46f566ba62baff78160589c4f"
+      }
+    ]
+  }
 }

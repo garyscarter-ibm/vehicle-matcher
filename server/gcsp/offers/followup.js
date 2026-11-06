@@ -113,6 +113,7 @@ export class OfferFollowupService {
     const relevant = new Set([event.briefVersion, decision.versions.pinnedBrief, ordered.at(-1)?.briefVersion]);
     if (slot.runId !== context.runId || slot.employeeId !== context.employeeId
       || slot.entitlementSlotId !== context.entitlementSlotId || !revision(slot.version)
+      || !revision(decision.versions.slot) || slot.version < decision.versions.slot
       || ![slot.renewalId, hold.renewalId, context.renewalId].every(renewal)
       || event.renewalId !== renewalId || (hold.renewalId ?? null) !== renewalId
       || !history.some((row) => row.status === 'confirmed' && row.briefVersion === decision.versions.pinnedBrief)

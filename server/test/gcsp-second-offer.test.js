@@ -60,7 +60,7 @@ async function setup(t, { alter = () => {}, missingPolicy = false, inputData, br
   assert.equal(approved.status, 'ok', JSON.stringify(approved));
   const now = (await clock.now(context)).value.now;
   const order = (await repository.query(context, 'stock')).value[0];
-  const versions = { brief: 1, pinnedBrief: 1, policy: context.policyVersion, quotePolicy: context.policyVersion };
+  const versions = { brief: 1, pinnedBrief: 1, slot: slot.version, policy: context.policyVersion, quotePolicy: context.policyVersion };
   const quote = { runId: context.runId, quoteId: 'old-quote', employeeId: context.employeeId,
     entitlementSlotId: context.entitlementSlotId, orderUuid: order.orderUuid, briefVersion: 1, policyVersion: context.policyVersion };
   const hold = { runId: context.runId, holdId: 'old-hold', quoteId: quote.quoteId, employeeId: context.employeeId,
@@ -344,6 +344,24 @@ test('unpopulated slot renewal uses the matched hold and event; explicit conflic
     assert.equal((await service.read(f.context, { decisionId: 'decline' })).status, 'unavailable');
     assert.deepEqual(await snapshot(f), before);
   }
+});
+
+test('historical slot pins must be valid and reached; compatible later current revisions remain usable', async (t) => {
+  for (const slotVersion of [undefined, null, 0, -1, 1.5, '1', 'future']) {
+    const f = await setup(t, { alter(rows) {
+      if (slotVersion === undefined) delete rows.decision.versions.slot;
+      else rows.decision.versions.slot = slotVersion === 'future' ? rows.decision.versions.slot + 1 : slotVersion;
+    } });
+    const before = await snapshot(f);
+    assert.equal((await f.service.read(f.context, { decisionId: 'decline' })).status, 'unavailable');
+    assert.deepEqual(await snapshot(f), before);
+  }
+  const f = await setup(t, { slotRenewalId: 'persisted-renewal' });
+  const later = await f.repository.transaction(f.context, command('compatible-later-slot'),
+    (tx) => tx.compareAndSwap(f.slotRef, f.slot.version, {}));
+  assert.equal(later.status, 'ok', JSON.stringify(later));
+  assert.equal(later.value.version, f.rows.decision.versions.slot + 1);
+  assert.equal((await f.service.confirm(f.context, await answer(f))).status, 'ok');
 });
 
 test('slot content and version changes before question response or brief write refuse without a brief change', async (t) => {
