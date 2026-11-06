@@ -1820,15 +1820,15 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T02:12:47Z",
+      "observed_at": "2026-11-06T02:34:58Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-134",
       "slices": [
         {
           "id": "isolated-real66",
           "status": "in-progress",
           "title": "Isolated memory run and real66 authority",
-          "observed_at": "2026-11-06T02:12:47Z",
-          "evidence": "Original static45-source/72-edge review reused; reserve/probe-pin/direct-join fixes refrozen. Awaiting delta admission; no runtime evidence. docs/gcsp/evidence/fucq134/README.md"
+          "observed_at": "2026-11-06T02:34:58Z",
+          "evidence": "Full expected-row locked deletion and verification/cleanup accounting authored/refrozen;45-source review reused. Static only, delta admission outstanding. docs/gcsp/evidence/fucq134/README.md"
         },
         {
           "id": "shared-matrix",
@@ -1862,14 +1862,14 @@
           "name": "Foghorn Leghorn",
           "harness": "codex",
           "role": "story-lead authoring",
-          "observed_at": "2026-11-06T02:12:48Z",
-          "expires_at": "2026-11-06T02:12:48Z",
+          "observed_at": "2026-11-06T02:34:59Z",
+          "expires_at": "2026-11-06T02:34:59Z",
           "source": "chat:01a1ae7e-03d5-76c0-a6c9-749592f0fe4c",
-          "status": "three original-review resource fixes refrozen; dispatcher delta admission/execution grant outstanding"
+          "status": "full-row ownership and cleanup-phase accounting refrozen; immutable delta admission outstanding"
         }
       ],
       "branch": "dev/DEV-2026-11-04-103",
-      "development_note": "Isolated-real66 in progress. Original static45-source/72-edge review reused;5GiB reserve, three probe-executable pins and unconditional fallback direct-join fixes batched/refrozen. No runtime imports/tests/proofs/reservations/scratch. Five other slices, canonical policy coordination and composed/full acceptance remain open."
+      "development_note": "Isolated-real66 in progress. Accepted45-source/72-edge review reused; second resource delta binds full expected ledger row through locked deletion and meters verification/cleanup with owned bounded probes. Static only; no runtime tests/probes/reservations/scratch. Five other slices and canonical policy/composed/full acceptance remain open."
     }
   ]
 }

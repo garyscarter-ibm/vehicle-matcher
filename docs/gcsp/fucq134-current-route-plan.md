@@ -236,7 +236,7 @@ PolicyService and never bypass its gate.
 
 Review package and exact proposed command:
 `docs/gcsp/evidence/fucq134/README.md`. Admission SHA-256:
-`18a58abb4ec2850b76672daaf52240f65c4b33d92713f9d9365f3bf362460593`.
+`36f30be3af9f3333e269af6dd5201f678d69824c9f23bb5fdb388e41b4318446`.
 45 source/data files include published66's matching context changes unchanged,
 base generator unchanged and owned six runtime/data files. Dependency and physical
 runtime identities are frozen before custom execution. Three Python ASTs, JSONs
@@ -261,6 +261,17 @@ identity remains unchanged. No runtime reproduction or test was performed.
 Independent original90a8b8c/cd244 review is complete: source composition45/72PASS;
 execution HOLD for5GiB reserve, missing ps/vm_stat/lsof pins and fallback failures
 skipping direct join. Owned repairs are now statically refrozen under admission
-`18a58abb4ec2850b76672daaf52240f65c4b33d92713f9d9365f3bf362460593` with235 physical identities. Original45 product/data sources and code
+`36f30be3af9f3333e269af6dd5201f678d69824c9f23bb5fdb388e41b4318446` with235 physical identities. Original45 product/data sources and code
 identity unchanged. No execution/reproduction/probe/allocation was performed.
 Root requested a clean published checkpoint before delta admission; no grant yet.
+
+
+Second immutable review (11c7ab1) passed the previous repairs and held full-row
+reservation/deletion binding plus cleanup-phase accounting. The owned helper
+repair now retains the entire expected row, validates it under the physical lock
+immediately before deletion, and meters setup/verification/cleanup snapshots and
+owned bounded vm_stat/lsof probes. Direct joins remain independent of meter/write
+failure. Source-pin verification stays within the reservation.120 seconds covers
+all phases, with ordinary execution stopping at110 for cleanup headroom. New
+admission `36f30be3af9f3333e269af6dd5201f678d69824c9f23bb5fdb388e41b4318446`;235 nodes and unchanged45 product/data sources. Static only;
+no runtime/probe/test execution or allocation. Dispatcher delta review remains.

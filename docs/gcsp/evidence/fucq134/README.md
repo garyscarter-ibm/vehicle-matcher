@@ -10,7 +10,7 @@ has occurred. This package is incomplete implementation evidence, not acceptance
 
 - Base: `034b56d08fb742d31478218b670552805d5840ab`.
 - Published real66: `eb5a677b37c486e3da7c4547803f739e22df8ac3`.
-- Admission SHA-256: `18a58abb4ec2850b76672daaf52240f65c4b33d92713f9d9365f3bf362460593`.
+- Admission SHA-256: `36f30be3af9f3333e269af6dd5201f678d69824c9f23bb5fdb388e41b4318446`.
 - Composed source identity: `7a982714de7cf74968cabcfbe3712be2ff4c3fe75cf95acda3381044cffa4a82`.
 - 45 embedded source/data files, 971783 source bytes, 235 physical identities,
   14 installed packages. Embedded immutable blobs permit checking the complete
@@ -37,13 +37,13 @@ command checks identities without importing custom helpers, allocating resources
 querying OS process state or importing JavaScript:
 
 ```sh
-/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --plan --admission-sha 18a58abb4ec2850b76672daaf52240f65c4b33d92713f9d9365f3bf362460593
+/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --plan --admission-sha 36f30be3af9f3333e269af6dd5201f678d69824c9f23bb5fdb388e41b4318446
 ```
 
 Only after an explicit new grant, replace `--plan` with `--execute` and append:
 
 ```text
---dispatcher-grant fucq134-first-chunk-18a58abb4ec2850b76672daaf52240f65c4b33d92713f9d9365f3bf362460593
+--dispatcher-grant fucq134-first-chunk-36f30be3af9f3333e269af6dd5201f678d69824c9f23bb5fdb388e41b4318446
 ```
 
 The argument records a grant; knowing the argument is not authorization. Selection
@@ -55,7 +55,8 @@ remain unverified runtime seams until the granted run. No upstream tests repeat.
 
 ## Ownership and limits
 
-- One worker, 120 seconds, 768 MiB aggregate recursive RSS including supervisor,
+- One worker, 120 seconds metered across phases, execution stops at110 seconds
+  to leave10 seconds for ordinary cleanup, 768 MiB aggregate recursive RSS including supervisor,
   128 MiB combined scratch/retained output and 2 MiB combined stdout/stderr log.
 - Fresh actual HostBudget reservation; at least 5 GiB host disk free and measured
   shared RAM headroom. Unknown ledger/process/capacity state refuses progress.
@@ -142,3 +143,39 @@ builder performs static reads/hashes; it did not execute the three probe binarie
 Root requested this clean checkpoint for delta admission. The proposed command
 above now names the superseding freeze, but remains unexecuted. Review the owned
 resource adapter, freezer, supervisor and admission delta before any new grant.
+
+
+## Full-row ownership and phase accounting repair
+
+Independent immutable11c7ab1 review passed the preceding three resource repairs,
+and held two further issues. This superseding helper-only delta addresses them:
+
+- StrictBudget retains a deep copy of the complete expected reservation row,
+  including capacity, parent and previous used/RSS telemetry. Every update and
+  release validates the complete previous row under the pinned physical lock,
+  verifies readback, then retains the next expected row. Immediately before owned
+  deletion the same lock covers exact-row validation, root inode/device recheck
+  and removal; uncertain or changed rows refuse deletion and retain scratch.
+- The single meter starts before initial admission and covers setup, verification,
+  execution and cleanup. All ProcessTree snapshots use it; RSS includes supervisor,
+  recursive known children and probes, plus a conservative process high-water
+  bound. Combined scratch/retained/manifest bytes, elapsed time and peaks remain
+  in the retained receipt. Source-pin verification occurs while the reservation
+  is still held. No resource verification is deferred until after release.
+- vm_stat and lsof use cancellation-safe tracked probe handles, bounded outputs
+  of128KiB and respective3/5-second probe deadlines. Their loops take metered ps
+  snapshots; snapshot deadlines respect the remaining120-second budget. Probe
+  PIDs/start/groups and joined states remain in the ownership manifest. The
+  ordinary execution budget is110 seconds, leaving10 for cleanup.
+
+Every probe and main-child failure path attempts bounded direct-handle stop/join
+before metering or persistence can fail again. Incomplete ownership, accounting
+or process proof prevents deletion/release and reports named leftovers; mandatory
+stop/join still runs if the meter reaches its deadline. Receipts retain actual
+elapsed time and failures rather than claiming an overrun stayed within budget.
+
+Static AST/JSON/full-row/deletion/probe-cleanup ordering, pin hashes and unchanged
+source checks only. No edited resource helper, OS probe, Node, supervisor plan,
+reproduction/test, reservation or scratch has run. All45source/72edge composition
+and three-case selection remain accepted separately and unchanged. This package
+requires a new dispatcher delta admission and execution grant.

@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import re
+import resource
 import stat
 import subprocess
 import sys
@@ -97,6 +98,7 @@ def main():
     args = parser.parse_args()
     if not re.fullmatch('[a-f0-9]{64}', args.admission_sha):
         parser.error('Supply the externally reviewed admission SHA')
+    started = time.monotonic()
     frozen = admit(args.admission_sha)
     if args.plan:
         print(json.dumps({'status': 'plan-only', 'codeRevision': frozen['codeRevision'],
@@ -112,10 +114,10 @@ def main():
     resources = imported(frozen, 'fucq134_resources', ROOT / '_tools/test_resources.py')
     guard = imported(frozen, 'fucq134_strict_resources', EVIDENCE / 'first-chunk-resources.py')
     with resources.handled_termination():
-        execute(frozen, args, resources, guard, environment)
+        execute(frozen, args, resources, guard, environment, started)
 
 
-def execute(frozen, args, resources, guard, environment):
+def execute(frozen, args, resources, guard, environment, started):
     import uuid
     policy = resources.Policy({'chunk_seconds': 120, 'chunk_ram_mib': 768, 'chunk_scratch_mib': 128,
                                'log_mib': 2, 'reserve_free_gib': 5})
@@ -127,19 +129,66 @@ def execute(frozen, args, resources, guard, environment):
     lock = frozen['nodes'][str(Path(frozen['ledgerDirectory']) / 'reservations.lock')]
     host = guard.make_budget(resources, policy, frozen['ledgerDirectory'], [lock['device'], lock['inode']])
     tree = guard.ProcessTree(resources, scratch)
-    finalizer = guard.Finalizer(resources, scratch, tree, host)
+    finalizer = guard.Finalizer(resources, scratch, tree, host, verify=lambda: admit(args.admission_sha))
     identity = {'story': 'FUCQ-134', 'variant': 'isolated-real66-three-mechanics-cases',
         'admissionSHA256': args.admission_sha, 'codeRevision': frozen['codeRevision'],
         'actual66': frozen['actual66'], 'base': frozen['base'], 'limits': frozen['limits'],
         'sources': {name: row['sha256'] for name, row in frozen['sources'].items()},
         'environmentDigest': sha(json.dumps(environment, sort_keys=True).encode())}
     process, failure, result = None, None, {}
-    started = time.monotonic()
+    tree.phase = 'setup'
+    tree.deadline = started + 120
+    def account(rows):
+        try:
+            unit = 1 if sys.platform == 'darwin' else 1024
+            own_peak = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss * unit
+            child_peak = resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss * unit
+            rss = result.get('lastAggregateRSS', own_peak)
+            if rows is not None:
+                selected = {os.getpid()} | {item['pid'] for item in tree.record['ownedPids']
+                    if item.get('start') and rows.get(item['pid'], {}).get('start') == item['start']}
+                anchored = {rows[pid]['pgid'] for pid in selected} & set(tree.record['groups'])
+                selected |= {row['pid'] for row in rows.values() if row['pgid'] in anchored}
+                while True:
+                    expanded = selected | {row['pid'] for row in rows.values() if row['ppid'] in selected}
+                    if expanded == selected:
+                        break
+                    selected = expanded
+                rss = sum(rows[pid]['rss'] for pid in selected)
+                result['lastAggregateRSS'] = rss
+            used = scratch.sample() + guard.allocated_bytes(rdir)
+            if os.path.lexists(scratch.manifest):
+                value = scratch.manifest.lstat()
+                used += max(value.st_size, value.st_blocks * 512)
+            elapsed = time.monotonic() - started
+            result.update(peakAggregateRSS=max(result.get('peakAggregateRSS', 0), rss, own_peak + child_peak),
+                peakCombinedBytes=max(result.get('peakCombinedBytes', 0), used), elapsedSeconds=elapsed,
+                accountingSamples=result.get('accountingSamples', 0) + 1, accountingPhase=tree.phase,
+                rssPeakBasis='recursive snapshots and conservative process high-water bound')
+            tree.record['accounting'] = {key: result[key] for key in ['peakAggregateRSS', 'peakCombinedBytes',
+                'elapsedSeconds', 'accountingSamples', 'accountingPhase', 'rssPeakBasis']}
+            if result['peakAggregateRSS'] > 768 * MIB or used > 128 * MIB or elapsed > 120:
+                raise RuntimeError('Aggregate RAM/combined disk/elapsed cap reached')
+            if guard.shutil.disk_usage(ROOT).free < policy.reserve:
+                raise RuntimeError('Host disk emergency reserve reached')
+            if rows is not None and getattr(host, 'owned', None):
+                host.update_owned(scratch.token, used, rss)
+                if time.monotonic() >= tree.deadline:
+                    raise RuntimeError('Resource deadline reached during ledger accounting')
+        except BaseException as error:
+            tree.record['accountingFailure'] = {'type': type(error).__name__, 'phase': tree.phase}
+            raise
+        finally:
+            result['elapsedSeconds'] = time.monotonic() - started
+            tree.record.setdefault('accounting', {})['elapsedSeconds'] = result['elapsedSeconds']
+    tree.account = account
     try:
+        rows = tree.snapshot()
+        scratch.record['owner'] = {key: rows[os.getpid()][key] for key in ['pid', 'start']}
         resources.atomic_json(scratch.manifest, scratch.record)
         resources.atomic_json(rdir / 'checkpoint.json', {'state': 'incomplete', 'identity': identity,
             'grant': args.dispatcher_grant, 'manifest': str(scratch.manifest)})
-        host.acquire_owned(scratch, guard.allocated_bytes(rdir) + scratch.manifest.stat().st_size)
+        host.acquire_owned(scratch, guard.allocated_bytes(rdir) + scratch.manifest.stat().st_size, tree)
         scratch.__enter__()
         mirror = scratch.root / 'mirror'
         files = {}
@@ -156,7 +205,11 @@ def execute(frozen, args, resources, guard, environment):
                 files[str(Path(package['realRoot']) / row['path'])] = row['sha256']
         runtime = scratch.root / 'runtime.json'
         resources.atomic_json(runtime, {'codeRevision': frozen['codeRevision'], 'files': files})
+        tree.phase = 'verification'
+        tree.snapshot()
         admit(args.admission_sha)
+        tree.snapshot()
+        tree.phase = 'execution'
         log = rdir / 'test.log'
         written = 0
         with log.open('xb') as stream:
@@ -180,22 +233,11 @@ def execute(frozen, args, resources, guard, environment):
                     raise RuntimeError('Combined child log cap reached')
                 return bool(block)
             def sample():
-                rows, members, child_rss = tree.observe()
+                _rows, members, _child_rss = tree.observe()
                 if len(members) != 1:
                     raise RuntimeError('Exactly one Node worker required')
-                owned = {row['pid'] for row in members}
-                probe_rss = sum(row['rss'] for row in rows.values() if row['ppid'] == os.getpid() and row['pid'] not in owned)
-                rss = child_rss + rows[os.getpid()]['rss'] + probe_rss
-                used = scratch.sample() + guard.allocated_bytes(rdir) + max(scratch.manifest.stat().st_size, scratch.manifest.stat().st_blocks * 512)
-                host.update_owned(scratch.token, used, rss)
-                result.update(peakAggregateRSS=max(result.get('peakAggregateRSS', 0), rss),
-                              peakCombinedBytes=max(result.get('peakCombinedBytes', 0), used))
-                if rss > 768 * MIB or used > 128 * MIB:
-                    raise RuntimeError('Aggregate RAM/combined disk cap reached')
-                if time.monotonic() - started > 120:
-                    raise RuntimeError('First chunk exceeded120seconds')
-                if guard.shutil.disk_usage(scratch.root).free < policy.reserve:
-                    raise RuntimeError('Host disk emergency reserve reached')
+                if time.monotonic() - started > 110:
+                    raise RuntimeError('Execution budget reached; reserve10seconds for cleanup')
             sample()
             process.stdin.write(b'1')
             process.stdin.flush()
@@ -221,6 +263,7 @@ def execute(frozen, args, resources, guard, environment):
     except BaseException as error:
         failure = {'type': type(error).__name__, 'message': str(error)[:1024]}
     finally:
+        tree.phase = 'cleanup'
         process = process if process is not None else tree.process
         try:
             result['processAbsence'] = tree.stop_join(process)
@@ -231,12 +274,9 @@ def execute(frozen, args, resources, guard, environment):
                 if pipe and not pipe.closed:
                     pipe.close()
         cleanup = finalizer.finish()
-    preserved = False
-    try:
-        admit(args.admission_sha)
-        preserved = True
-    except BaseException as error:
-        failure = failure or {'type': type(error).__name__, 'message': str(error)[:1024]}
+        result['elapsedSeconds'] = time.monotonic() - started
+        tree.record.setdefault('accounting', {})['elapsedSeconds'] = result['elapsedSeconds']
+    preserved = cleanup.get('pinsPreserved', False)
     passed = failure is None and cleanup['passed'] and preserved and result.get('rc') == 0
     receipt = {'identity': identity, 'grant': args.dispatcher_grant, 'passed': passed, 'failure': failure,
         'result': result, 'cleanup': cleanup, 'pinsPreserved': preserved, 'manifest': str(scratch.manifest),

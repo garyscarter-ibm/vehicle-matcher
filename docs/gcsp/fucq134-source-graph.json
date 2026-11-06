@@ -1345,16 +1345,16 @@
       "bytes": 2576
     },
     "docs/gcsp/evidence/fucq134/first-chunk-resources.py": {
-      "sha256": "41ddc69f3e72410f69aecc3e940f71174f2353e482df8cf98eedfda0f5946a18",
-      "bytes": 26944
+      "sha256": "daa06aaeec237b92111c4947399622636856ce79e311804d5898cfd6721ae74e",
+      "bytes": 34107
     },
     "docs/gcsp/evidence/fucq134/first-chunk-supervisor.py": {
-      "sha256": "5b00973961d5c35022cd8a6ac3d26c00ce29f2f65b437aca0228a419dd1c6e4f",
-      "bytes": 13084
+      "sha256": "1102fbed87e4d76a2ee8d02e5d6d3414a92fd4c5b924fb9670e21105b66cf002",
+      "bytes": 15521
     },
     "docs/gcsp/evidence/fucq134/first-chunk-freeze.py": {
-      "sha256": "834be93f354de0bc61d33c5636922a359342931a3e67de79eeb240825baad5d4",
-      "bytes": 6763
+      "sha256": "6c033a2bb4dd085de999e3e6a5ffa82f57ddfe1e54deb334e337e92a840181d3",
+      "bytes": 6923
     }
   },
   "firstChunkReview": {
@@ -1362,7 +1362,7 @@
     "resourcePattern": "918ce04510fd327e860809e7de53bd636d1cf7da:docs/gcsp/models/fucq115-activation-resources.py adapted only in owned134 file",
     "supervisor": "docs/gcsp/evidence/fucq134/first-chunk-supervisor.py",
     "admission": "docs/gcsp/evidence/fucq134/first-chunk-admission.json",
-    "execution": "Not authorized. Repaired static freeze needs dispatcher delta admission; no reproduction or runtime evidence.",
+    "execution": "Not authorized. Second repaired static freeze awaits immutable delta admission. No probe/helper/test execution or allocation.",
     "launchOwnershipRepair": "Static107finding: persist launch intent before Popen; defer SIGTERM/SIGINT through PID/start registration; unresolved launch cannot certify absence; cleanup adopts any supplied direct child handle. No reproduction/runtime granted.",
     "originalStaticReview": {
       "reviewer": "Dibble",
@@ -1374,7 +1374,17 @@
     "admissionRepairs": [
       "Restore5GiB free-disk reserve in executable Policy and admission limits.",
       "Pin ps/vm_stat/lsof binary contents and complete physical identities before custom resource-helper imports.",
-      "Protect bounded direct-child terminate/kill/wait in fallback finally from snapshot, manifest-persistence and signal failures; original failure still blocks cleanup/release."
-    ]
+      "Protect bounded direct-child terminate/kill/wait in fallback finally from snapshot, manifest-persistence and signal failures; original failure still blocks cleanup/release.",
+      "Retain complete expected reservation row including disk/ram/parent/used/rss; validate each mutation and immediately before scratch deletion while holding pinned physical ledger lock.",
+      "Use one recursive RSS/combined disk/elapsed meter for setup, verification and cleanup snapshots plus bounded owned vm_stat/lsof probes; direct-handle join is independent of meter/persistence failures."
+    ],
+    "resourceDeltaReview": {
+      "reviewer": "Dibble",
+      "revision": "11c7ab1fd420e5260eb2307922c58269bb9cba59",
+      "admission": "18a58abb4ec2850b76672daaf52240f65c4b33d92713f9d9365f3bf362460593",
+      "passed": "5GiB reserve, executable pins and protected direct stop/join;45source/72edge composition reused unchanged",
+      "held": "Full expected-row/deletion binding and verification/cleanup accounting",
+      "agents": "requested/selected gpt-6.1-sol/high; no fallback or descendants"
+    }
   }
 }

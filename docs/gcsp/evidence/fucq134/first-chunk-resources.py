@@ -5,6 +5,8 @@ cleanup and reservation release. A retained manifest includes every observed
 PID/start pair, including observations whose start cannot be established.
 """
 import atexit
+import contextlib
+import copy
 import json
 import os
 from pathlib import Path
@@ -36,10 +38,10 @@ class SnapshotUncertain(RuntimeError):
         self.observations = observations
 
 
-def process_snapshot():
+def process_snapshot(timeout=3):
     try:
         query = subprocess.run(['/bin/ps', '-axo', 'pid=,ppid=,pgid=,rss=,stat=,lstart='],
-                               capture_output=True, text=True, timeout=3)
+                               capture_output=True, text=True, timeout=timeout)
         output = query.stdout
         uncertain = query.returncode != 0 or bool(query.stderr) or not output.strip()
     except (OSError, subprocess.TimeoutExpired) as error:
@@ -140,11 +142,25 @@ def make_budget(resources, policy, directory, lock_identity):
                     parent = data[parent].get('parent')
             return data
 
-        def acquire_owned(self, scratch, retained_bytes):
-            rows = process_snapshot()
+        def acquire_owned(self, scratch, retained_bytes, tree):
+            rows = tree.snapshot()
             identity = {key: rows[os.getpid()][key] for key in ['pid', 'start']}
-            memory = resources.available_memory()
-            if type(memory) is not int or memory <= 0:
+            if identity != scratch.record['owner']:
+                raise RuntimeError('Scratch/reservation owner identity differs')
+            query = tree.probe(['/usr/bin/vm_stat'], timeout=3)
+            lines = query.stdout.decode('ascii').splitlines()
+            header = re.fullmatch(r'Mach Virtual Memory Statistics: \(page size of (\d+) bytes\)', lines[0]) if lines else None
+            counts = {}
+            for line in lines[1:]:
+                match = re.fullmatch(r'([^:]+):\s+(\d+)\.', line)
+                if not match or match[1] in counts:
+                    raise RuntimeError('Host RAM probe is malformed')
+                counts[match[1]] = int(match[2])
+            required = ['Pages free', 'Pages inactive', 'Pages purgeable']
+            if query.returncode or query.stderr or not header or not all(key in counts for key in required):
+                raise RuntimeError('Available host RAM is unknown')
+            memory = int(header[1]) * sum(counts[key] for key in required)
+            if memory <= 0:
                 raise RuntimeError('Available host RAM is unknown')
             free = shutil.disk_usage(scratch.project).free
             with resources.locked(self.directory / 'reservations.lock'):
@@ -162,27 +178,39 @@ def make_budget(resources, policy, directory, lock_identity):
                 row = {'owner': identity, 'disk': 128 * resources.MIB, 'ram': 768 * resources.MIB,
                        'used': retained_bytes, 'rss': 0, 'parent': None, 'root': str(scratch.root)}
                 data[scratch.token] = row
+                self.owned = (scratch.token, copy.deepcopy(row))
                 resources.atomic_json(self.path, data)
                 if self.ledger().get(scratch.token) != row:
                     raise RuntimeError('Reservation write/readback differs')
-                self.owned = (scratch.token, identity, str(scratch.root))
 
         def owned_row(self, data, token):
             expected = getattr(self, 'owned', None)
             row = data.get(token)
-            if not expected or expected[0] != token or row is None \
-                    or row['owner'] != expected[1] or row['root'] != expected[2]:
-                raise RuntimeError('Reservation ownership is unknown')
+            if not expected or expected[0] != token or row != expected[1]:
+                raise RuntimeError('Complete expected reservation row differs')
             return row
 
         def update_owned(self, token, used, rss):
             with resources.locked(self.directory / 'reservations.lock'):
                 data = self.ledger()
-                self.owned_row(data, token).update(used=used, rss=rss)
+                row = self.owned_row(data, token)
+                updated = copy.deepcopy(row)
+                updated.update(used=used, rss=rss)
+                data[token] = updated
                 resources.atomic_json(self.path, data)
-                row = self.owned_row(self.ledger(), token)
-                if row['used'] != used or row['rss'] != rss:
+                if self.ledger().get(token) != updated:
                     raise RuntimeError('Reservation telemetry differs')
+                self.owned = (token, copy.deepcopy(updated))
+
+        @contextlib.contextmanager
+        def validated_deletion(self, token):
+            with resources.locked(self.directory / 'reservations.lock'):
+                data = self.ledger()
+                self.owned_row(data, token)
+                if any(row['parent'] == token for row in data.values()):
+                    raise RuntimeError('Child reservation still refers to this token')
+                yield
+                self.owned_row(self.ledger(), token)
 
         def release_owned(self, token, proof):
             if not proof or not all(proof[key] for key in ['joined', 'pidsAbsent', 'groupsAbsent', 'scratchAbsent']):
@@ -211,15 +239,115 @@ class ProcessTree:
         self.samples = 0
         self.peak_rss = 0
         self.joined = False
+        self.account = None
+        self.deadline = None
+        self.probes = {}
         self.record = scratch.record
-        self.record.update(ownedPids=[], groups=[], uncertainGroups=[], processObservations=0)
+        self.record.update(ownedPids=[], groups=[], uncertainGroups=[], processObservations=0, probeLaunches=[])
 
     def save(self):
         self.resources.atomic_json(self.scratch.manifest, self.record)
 
+    def snapshot(self, deadline=None):
+        if self.account:
+            self.account(None)
+        deadlines = [value for value in [self.deadline, deadline] if value is not None]
+        remaining = min(deadlines) - time.monotonic() if deadlines else 3
+        if remaining <= 0:
+            raise RuntimeError('Resource-accounting deadline reached')
+        rows = process_snapshot(timeout=min(3, remaining))
+        if self.account:
+            self.account(rows)
+        return rows
+
+    def _launch_probe(self, index, command, deadline):
+        previous = {sig: signal.getsignal(sig) for sig in [signal.SIGTERM, signal.SIGINT]}
+        cancelled = []
+        def defer(signum, frame):
+            cancelled.append(signum)
+        try:
+            for sig in previous:
+                signal.signal(sig, defer)
+            launch = {'state': 'creating', 'command': command[0], 'pid': None}
+            self.record['probeLaunches'].append(launch)
+            self.save()
+            self.probes[index] = subprocess.Popen(command, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE, env=self.scratch.env(os.environ), start_new_session=True)
+            process = self.probes[index]
+            item = {'pid': process.pid, 'start': None, 'pgid': process.pid, 'ppid': os.getpid(), 'owned': True}
+            self.record['ownedPids'].append(item)
+            self.record['groups'].append(process.pid)
+            launch['pid'] = process.pid
+            self.save()
+            row = self.snapshot(deadline).get(process.pid)
+            if row:
+                if row['pgid'] != process.pid or row['ppid'] != os.getpid():
+                    raise RuntimeError('Probe identity differs')
+                item['start'] = row['start']
+            elif process.poll() is None:
+                raise RuntimeError('Probe identity is unknown')
+            launch['state'] = 'registered'
+            self.save()
+        finally:
+            if cancelled:
+                self.record['deferredProbeCancellation'] = cancelled
+            for sig, handler in previous.items():
+                signal.signal(sig, handler)
+        if cancelled:
+            raise KeyboardInterrupt('Cancellation deferred until probe ownership was persisted')
+        return self.probes[index]
+
+    def probe(self, command, timeout):
+        if command[0] not in ['/usr/bin/vm_stat', '/usr/sbin/lsof']:
+            raise RuntimeError('Unreviewed probe command')
+        index = len(self.record['probeLaunches'])
+        started = time.monotonic()
+        deadline = started + timeout
+        output, errors = bytearray(), bytearray()
+        try:
+            process = self._launch_probe(index, command, deadline)
+            for stream in [process.stdout, process.stderr]:
+                os.set_blocking(stream.fileno(), False)
+            def drain():
+                for stream, target in [(process.stdout, output), (process.stderr, errors)]:
+                    while True:
+                        try:
+                            data = os.read(stream.fileno(), 65536)
+                        except BlockingIOError:
+                            break
+                        if not data:
+                            break
+                        target.extend(data)
+                        if len(output) + len(errors) > 128 * 1024:
+                            raise RuntimeError('Probe output exceeds128KiB')
+            while True:
+                drain()
+                self.snapshot(deadline)
+                if process.poll() is not None:
+                    drain()
+                    break
+                if time.monotonic() >= deadline:
+                    raise RuntimeError('Probe time limit reached')
+                time.sleep(0.02)
+            return subprocess.CompletedProcess(command, process.returncode, bytes(output), bytes(errors))
+        finally:
+            process = self.probes.get(index)
+            if process is not None:
+                # Joining a known handle never depends on metering or persistence.
+                self._stop_handle(process)
+                for stream in [process.stdout, process.stderr]:
+                    if stream and not stream.closed:
+                        stream.close()
+                launch = self.record['probeLaunches'][index]
+                if process.returncode is not None and launch['state'] == 'registered':
+                    launch['state'] = 'joined'
+                if self.account:
+                    self.account(None)
+                self.save()
+
     def observe(self):
         try:
-            rows = process_snapshot()
+            rows = self.snapshot()
         except SnapshotUncertain as error:
             self.remember_uncertain(error)
             raise
@@ -293,7 +421,7 @@ class ProcessTree:
         self.record['ownedPids'].append(item)
         self.record['groups'].append(process.pid)
         self.save()
-        rows = process_snapshot()
+        rows = self.snapshot()
         row = rows.get(process.pid)
         if row is None or row['pgid'] != process.pid or row['ppid'] != os.getpid():
             raise RuntimeError('Launched leader identity is unknown')
@@ -315,6 +443,7 @@ class ProcessTree:
                 signal.signal(sig, defer)
             self.record['launch'] = {'state': 'creating', 'at': time.time(), 'pid': None}
             self.save()
+            self.joined = False
             self.process = subprocess.Popen(command, **options)
             self.register(self.process)
             self.record['launch'].update(state='registered', pid=self.process.pid)
@@ -337,6 +466,9 @@ class ProcessTree:
             raise RuntimeError('Unresolved child creation/registration; absence cannot be certified')
         if self.process is not None and not any(item['pid'] == self.process.pid for item in self.record['ownedPids']):
             raise RuntimeError('Direct child handle lacks persisted ownership')
+        if any(row['state'] != 'joined' or index not in self.probes or self.probes[index].returncode is None
+               for index, row in enumerate(self.record['probeLaunches'])):
+            raise RuntimeError('Probe creation/join is unresolved')
         rows, members, _rss = self.observe()
         pids_absent = all(definitely_absent(item, rows) for item in self.record['ownedPids'])
         # An extant zombie is not absence. Wait/join precedes this proof.
@@ -371,7 +503,7 @@ class ProcessTree:
                         if not item.get('owned') or not item.get('start'):
                             continue
                         try:
-                            current = process_snapshot().get(item['pid'])
+                            current = self.snapshot().get(item['pid'])
                             if current and current['start'] == item['start']:
                                 os.kill(item['pid'], sig)
                         except (OSError, RuntimeError, subprocess.TimeoutExpired) as error:
@@ -382,10 +514,14 @@ class ProcessTree:
                     self.save()
             finally:
                 self._stop_direct_handle()
+                if self.account:
+                    self.account(None)
             raise
 
     def _stop_direct_handle(self):
-        process = self.process
+        self._stop_handle(self.process)
+
+    def _stop_handle(self, process):
         if process is None:
             return
         # No manifest writes or OS snapshots may prevent bounded direct join.
@@ -397,7 +533,8 @@ class ProcessTree:
                 self.record.setdefault('directHandleErrors', []).append(type(error).__name__)
             try:
                 process.wait(timeout=3)
-                self.joined = True
+                if process is self.process:
+                    self.joined = True
                 break
             except BaseException as error:
                 self.record.setdefault('directHandleErrors', []).append(type(error).__name__)
@@ -412,7 +549,7 @@ class ProcessTree:
             # Signal exact observed identities individually. Never signal a
             # process merely because an old numeric group ID was retained.
             for row in sorted(members, key=lambda value: value['pid'] == process.pid):
-                fresh = process_snapshot()
+                fresh = self.snapshot()
                 current = fresh.get(row['pid'])
                 if current is None:
                     if not definitely_absent(row, fresh):
@@ -446,9 +583,8 @@ def make_scratch(resources, rdir, project, policy, ownership):
             self.project = Path(project)
             self.root = self.project / '.claude/test-scratch/fucq134' / self.token
             self.manifest = Path(ownership) / (self.token + '.json')
-            rows = process_snapshot()
             self.record = {'version': 1, 'token': self.token, 'root': str(self.root),
-                'owner': {key: rows[os.getpid()][key] for key in ['pid', 'start']},
+                'owner': {'pid': os.getpid(), 'start': None},
                 'state': 'planned', 'peak': 0, 'created': time.time(),
                 'checkpoint': str(rdir / 'checkpoint.json')}
 
@@ -475,10 +611,11 @@ def make_scratch(resources, rdir, project, policy, ownership):
 
 
 class Finalizer:
-    def __init__(self, resources, scratch, tree, budget):
+    def __init__(self, resources, scratch, tree, budget, verify):
         self.resources, self.scratch, self.tree, self.budget = resources, scratch, tree, budget
         self.attempted = False
         self.result = None
+        self.verify = verify
         atexit.register(self.finish)
 
     def finish(self):
@@ -499,31 +636,42 @@ class Finalizer:
         self.attempted = True
         result = {'passed': False, 'scratchAbsent': False, 'reservationAbsent': False}
         try:
+            self.tree.phase = 'cleanup'
             proof = self.tree.stop_join()
             if not all(proof[key] for key in ['joined', 'pidsAbsent', 'groupsAbsent']):
                 raise RuntimeError('Process proof incomplete; preserve scratch and reservation')
             self.scratch.record.update(state='stopped-and-joined', processAbsence=proof)
             self.tree.save()
+            self.tree.phase = 'cleanup-verification'
+            self.tree.snapshot()
+            self.verify()
+            self.tree.snapshot()
+            result['pinsPreserved'] = True
+            self.tree.phase = 'cleanup'
             scratch = self.scratch
             if os.path.lexists(scratch.root):
                 identity = scratch.root.lstat()
                 if scratch.root.is_symlink() or (identity.st_dev, identity.st_ino) != (scratch.record.get('device'), scratch.record.get('inode')):
                     raise RuntimeError('Scratch physical identity differs')
-                check = subprocess.run(['/usr/sbin/lsof', '-t', '+D', str(scratch.root)], capture_output=True, timeout=5)
+                check = self.tree.probe(['/usr/sbin/lsof', '-t', '+D', str(scratch.root)], timeout=5)
                 if check.returncode != 1 or check.stdout or check.stderr:
                     raise RuntimeError('Scratch open-file absence is unknown')
                 # Last complete OS proof immediately precedes deletion.
                 proof = self.tree.proof()
                 if not all(proof[key] for key in ['joined', 'pidsAbsent', 'groupsAbsent']):
                     raise RuntimeError('Process absence changed before deletion')
-                scratch.sample()
-                shutil.rmtree(scratch.root)
+                with self.budget.validated_deletion(scratch.token):
+                    identity = scratch.root.lstat()
+                    if scratch.root.is_symlink() or (identity.st_dev, identity.st_ino) != (scratch.record.get('device'), scratch.record.get('inode')):
+                        raise RuntimeError('Scratch identity changed before locked deletion')
+                    shutil.rmtree(scratch.root)
             if os.path.lexists(scratch.root):
                 raise RuntimeError('Scratch removal incomplete')
             proof['scratchAbsent'] = True
             scratch.record.update(state='removed', removed=time.time(), processAbsence=proof)
             self.tree.save()
             result.update(proof)
+            self.tree.snapshot()
             if getattr(self.budget, 'owned', None):
                 self.budget.release_owned(scratch.token, proof)
             result['reservationAbsent'] = self.budget.absence(scratch.token)

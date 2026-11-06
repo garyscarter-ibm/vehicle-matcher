@@ -112,7 +112,9 @@ def main():
         'installedRoot': str(installed), 'installedPackages': graph['installedPackages'],
         'ledgerDirectory': str(ledger), 'sources': sources, 'codeRevision': revision,
         'testNames': ['isolation', 'real-claim-review-allocate', 'untaken-expiry'],
-        'limits': {'seconds': 120, 'ramBytes': 768 * 1024 ** 2, 'combinedBytes': 128 * 1024 ** 2,
+        'limits': {'seconds': 120, 'executionSeconds': 110, 'probeOutputBytes': 128 * 1024,
+                   'snapshotSeconds': 3, 'lsofSeconds': 5, 'memoryProbeSeconds': 3,
+                   'ramBytes': 768 * 1024 ** 2, 'combinedBytes': 128 * 1024 ** 2,
                    'logBytes': 2 * 1024 ** 2, 'workerCount': 1, 'reserveFreeBytes': 5 * 1024 ** 3}}
     target = EVIDENCE / 'first-chunk-admission.json'
     target.write_text(json.dumps(result, indent=2, sort_keys=True) + '\n')
