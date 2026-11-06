@@ -1609,7 +1609,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T00:48:33Z",
+      "observed_at": "2026-11-06T00:56:01Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-115",
       "slices": [
         {
@@ -1637,8 +1637,8 @@
           "id": "evaluation",
           "status": "blocked",
           "title": "Actual-baselines-and-held-out-evaluation",
-          "observed_at": "2026-11-06T00:13:33Z",
-          "evidence": "Metric and actual99/29 adapter contracts validated;6-record pilot lacks later/unseen support and99 exactshares. Meaningful actual baselines/heldouts require pending canonical dataset. No invented metrics."
+          "observed_at": "2026-11-06T00:56:01Z",
+          "evidence": "Granted canonical320 generation/split passed; baseline.context failed cleanly. Owned baseline/CLI1e6e4a4 correction and76-file retained-input proposal authored, source/AST --plan checks pass; exact dispatcher delta review/grant required before execution. No regenerated or unchanged training retry. docs/gcsp/models/fucq115-retained-plan.md"
         },
         {
           "id": "artifact",
@@ -1649,10 +1649,10 @@
         },
         {
           "id": "policy",
-          "status": "in-progress",
+          "status": "blocked",
           "title": "Canonical-policy-adoption-and-dated-activation",
-          "observed_at": "2026-11-06T00:48:33Z",
-          "evidence": "Actual canonical learning/choice adoption, dated80x4publication, ordinary cookie activation/history/prices/retry pass. Model-reference activation remains unreached after own baseline.context mismatch. docs/gcsp/models/fucq115-canonical-result.md"
+          "observed_at": "2026-11-06T00:56:01Z",
+          "evidence": "Granted canonical320 generation/split passed; baseline.context failed cleanly. Owned baseline/CLI1e6e4a4 correction and76-file retained-input proposal authored, source/AST --plan checks pass; exact dispatcher delta review/grant required before execution. No regenerated or unchanged training retry. docs/gcsp/models/fucq115-retained-plan.md"
         },
         {
           "id": "acceptance",
@@ -1668,10 +1668,10 @@
           "name": "Pluto",
           "harness": "codex",
           "role": "story-lead/canonical result and baseline correction",
-          "observed_at": "2026-11-06T00:48:32.817283+00:00",
-          "expires_at": "2026-11-06T02:48:32.817283+00:00",
+          "observed_at": "2026-11-06T00:56:01.113049+00:00",
+          "expires_at": "2026-11-06T00:56:01.113049+00:00",
           "source": "thread 01a1ae22-e1cc-74a0-9717-21082afb1fd1",
-          "status": "active; stopped granted run at baseline.context, preserving result and authoring own correction; no retry"
+          "status": "stopped; evidence03f69a3 and owned correction1e6e4a4 published; finite retained-input proposal awaits exact dispatcher review, no retry"
         }
       ],
       "branch": "dev/DEV-2026-11-04-092"

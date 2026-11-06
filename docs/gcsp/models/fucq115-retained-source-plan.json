@@ -1,0 +1,1500 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-115",
+  "status": "proposed-retained-input-resume",
+  "purpose": "Corrected default CLI once on actual committed data/current+original historical policies; no generator/adoption/publication replay.",
+  "roots": [
+    "server/gcsp/runtime.js",
+    "server/gcsp/identity/http.js",
+    "server/gcsp/predict/records/index.js",
+    "scripts/gcsp/generate-learning-records.mjs",
+    "server/gcsp/predict/model/index.js",
+    "scripts/gcsp/train-choice-model.mjs",
+    "server/package.json",
+    "docs/gcsp/evidence/fucq103/fucq115-dated-policy-command.json"
+  ],
+  "canonicalCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+  "recordsCommit": "ddd884b33311b0d62225e107a4ba7d45a464c146",
+  "modelCommit": "1e6e4a42911bc58e5bce3f3f88fbeb464c7c5fcf",
+  "previousBaselineCommit": "163f35ba295ce3968634dd72f73f2a36881d4be1",
+  "files": {
+    "blocks/vehicle-matcher/feedback-actions.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "eb6dcfb82aed8045228797f870a5e337ef7f0a8f3e136eb46804995d71838744",
+      "bytes": 10235,
+      "current": "identical",
+      "edges": []
+    },
+    "docs/gcsp/evidence/fucq103/fucq115-dated-policy-command.json": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "f7424c94b73d6a027f89c6b794fe261ea81807469cfa9e0cfc36482bab35f579",
+      "bytes": 2099,
+      "current": "absent",
+      "edges": []
+    },
+    "docs/gcsp/models/choice-training-dataset.json": {
+      "sourceCommit": "1e6e4a42911bc58e5bce3f3f88fbeb464c7c5fcf",
+      "sha256": "49738aadd1f22ffee43df4d6d9e06695cb1ada6cca3c033bc8c0913b13dc6926",
+      "bytes": 2075907,
+      "current": "identical",
+      "edges": []
+    },
+    "docs/gcsp/models/choice-training-policy-base.json": {
+      "sourceCommit": "1e6e4a42911bc58e5bce3f3f88fbeb464c7c5fcf",
+      "sha256": "c58fcd9054fa32cded07c4ee742b39d196f94aa15c8d0fbf7752874954df8a31",
+      "bytes": 493879,
+      "current": "identical",
+      "edges": []
+    },
+    "docs/gcsp/models/choice-training-policy.json": {
+      "sourceCommit": "1e6e4a42911bc58e5bce3f3f88fbeb464c7c5fcf",
+      "sha256": "c2079525f409b0b8b94e23d2fbd0b0b8cba0dfe54bc22d46476ae3ec8a3b0f85",
+      "bytes": 406539,
+      "current": "identical",
+      "edges": []
+    },
+    "scripts/gcsp/generate-learning-records.mjs": {
+      "sourceCommit": "ddd884b33311b0d62225e107a4ba7d45a464c146",
+      "sha256": "bc58997977e3bc4f7e3e165b07d4e01efa7e0fd446b936954ee835d2cfa0bb61",
+      "bytes": 6627,
+      "current": "absent",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/file-provider.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/records/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/vehicle-evidence/synthetic-registry.js"
+        }
+      ]
+    },
+    "scripts/gcsp/train-choice-model.mjs": {
+      "sourceCommit": "1e6e4a42911bc58e5bce3f3f88fbeb464c7c5fcf",
+      "sha256": "67e8558fc7dbfa228ac83cbdf2e4947f5bfd6f682b820f7fc8c141fe69260609",
+      "bytes": 5056,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/artifact.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/baselines.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/optimizer.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/pipeline.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/records/index.js"
+        }
+      ]
+    },
+    "server/brands.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "ea63741b2fcb01dbe35dcdffdd66f7021a3c0219517a8de1487fae65f65299e2",
+      "bytes": 46965,
+      "current": "identical",
+      "edges": []
+    },
+    "server/data/gcsp/vehicle-evidence/vin-profiles.v1.json": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "9a107b2b90c21a116e2fb93ca88211b95250c4404f6468924e5e7f53d092a1fa",
+      "bytes": 34889,
+      "current": "identical",
+      "edges": []
+    },
+    "server/engine.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "bbe8a865d280fb75075e93a139a3badbaa20972a18406baeeafb8ca2fc56a550",
+      "bytes": 42306,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/brands.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/questions.js"
+        }
+      ]
+    },
+    "server/gcsp/brief/activity.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "dbf317b5aba98b1f6a723692e108a1b1a83637fb61e76ca33729dd90fe8b8f6f",
+      "bytes": 7410,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/file-provider.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/index.js"
+        }
+      ]
+    },
+    "server/gcsp/brief/editor.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "df70b807923069db3b9d2b4a99ecd3ca887bc7683c5e536065c145c2664e8dc1",
+      "bytes": 13068,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/scenarios/employee/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/file-provider.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/recommendation/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/index.js"
+        }
+      ]
+    },
+    "server/gcsp/brief/index.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "22500a517f8232947b33ac274e32bf60746ba9d8199851e750784f57737ee418",
+      "bytes": 19768,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "blocks/vehicle-matcher/feedback-actions.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/scenarios/employee/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/file-provider.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/recommendation/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/index.js"
+        }
+      ]
+    },
+    "server/gcsp/clock/index.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "98d9e3ad778ad9a38aa3fb5f96f5a68040544ba328b79e263e661ec42c442c45",
+      "bytes": 24094,
+      "current": "different",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/fixtures/scenario-v1.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/fixtures/scenarios/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/identity/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/file-provider.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/presenter-controls/commands.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/index.js"
+        }
+      ]
+    },
+    "server/gcsp/comparison/generator.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "596c26adfaef43443914e90f2675b528309e85d5fee5459aedc661845b0917cc",
+      "bytes": 24766,
+      "current": "identical",
+      "edges": []
+    },
+    "server/gcsp/fixtures/principals.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "848797ec98dd253c8c8daa4e1078f2b6ecc30b2807c713bf13615f2ead18ec2f",
+      "bytes": 2686,
+      "current": "identical",
+      "edges": []
+    },
+    "server/gcsp/fixtures/scenario-v1.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "408f135c04ae909e717c30763073a3ea24a82c1e8643fabdea2888e22f1681f4",
+      "bytes": 4895,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/file-provider.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/core.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/vehicle-evidence/vin-allocation.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/fixtures/principals.js"
+        }
+      ]
+    },
+    "server/gcsp/fixtures/scenarios/catalogue-v1.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "eca724465148032750c74c57882c0ee0ae69f3b119330194b9601b9b4bc1b73c",
+      "bytes": 5754,
+      "current": "identical",
+      "edges": []
+    },
+    "server/gcsp/fixtures/scenarios/index.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "e1e794e347833ae952352d7bdf2cbc9afae28c65a01edd76c570a6bf38c4cad4",
+      "bytes": 4505,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/core.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/fixtures/principals.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/fixtures/scenario-v1.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/fixtures/scenarios/catalogue-v1.js"
+        }
+      ]
+    },
+    "server/gcsp/greg/index.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "2457f2a122a9c1ee9b4014a65ae384f36bf83916d496fce744bcc8fc24182e0b",
+      "bytes": 14665,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/file-provider.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/recommendation/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/index.js"
+        }
+      ]
+    },
+    "server/gcsp/greg/publish/fit.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "eb0187dcf268f9d27befdec0f2a5b99aa72f2fe22b5b0824edf24b4c1643ff6c",
+      "bytes": 4826,
+      "current": "absent",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/recommendation/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/index.js"
+        }
+      ]
+    },
+    "server/gcsp/greg/publish/index.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "fdfaeee63bf42f39c66ecae357a4a940f2813db7f4b97b94dcb1503e9d79a6fb",
+      "bytes": 14655,
+      "current": "absent",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/activation.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/file-provider.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/greg/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/greg/publish/fit.js"
+        }
+      ]
+    },
+    "server/gcsp/identity/http.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "c9f004bd943a7ed9b975cbe20aa23a5270760d61427e0360b966cb21490fd8d7",
+      "bytes": 6881,
+      "current": "identical",
+      "edges": []
+    },
+    "server/gcsp/identity/index.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "4c60cd226ecceefcedd86c7da73a410bfabbeddbb05aab1aa997c98639f7612c",
+      "bytes": 14177,
+      "current": "different",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/fixtures/principals.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/activation.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/file-provider.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/index.js"
+        }
+      ]
+    },
+    "server/gcsp/manual-context/fixtures.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "e63bee220e6e563f96ee94a94f37500c67d0c2944b3909a0a8c7d3f1f89b01a6",
+      "bytes": 4389,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/index.js"
+        }
+      ]
+    },
+    "server/gcsp/manual-context/index.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "13601990b08dc420ffe51948a874de7299fce88991924b8447192c29c0acedf7",
+      "bytes": 28284,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/scenarios/employee/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/file-provider.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/recommendation/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/manual-context/ports.js"
+        }
+      ]
+    },
+    "server/gcsp/manual-context/ports.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "c1e7db5012f6d3212b79ad989e6cde5a0e390e2f4bfe50f91ee4c79c8a7a1267",
+      "bytes": 4210,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/index.js"
+        }
+      ]
+    },
+    "server/gcsp/migrations/index.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f",
+      "bytes": 4706,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/core.js"
+        }
+      ]
+    },
+    "server/gcsp/policy/activation.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "4e79235b761e8daf94f3cf2744c4bc585146181b410b64497669bd353ee7c4d6",
+      "bytes": 2992,
+      "current": "absent",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/file-provider.js"
+        }
+      ]
+    },
+    "server/gcsp/policy/adoption.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "a2cb9a74946cd9eda413d896a0abc2f4299b3b75880a77ddd510667a5187c870",
+      "bytes": 4407,
+      "current": "absent",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/activation.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/file-provider.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/publish.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/reviewed-definitions.js"
+        }
+      ]
+    },
+    "server/gcsp/policy/file-provider.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+      "bytes": 7809,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "file-url",
+          "target": "server/gcsp/policy/seed-v1.json"
+        }
+      ]
+    },
+    "server/gcsp/policy/index.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+      "bytes": 10870,
+      "current": "different",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/adoption.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/file-provider.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/memory-provider.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/postgres-provider.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/publish.js"
+        }
+      ]
+    },
+    "server/gcsp/policy/memory-provider.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
+      "bytes": 1861,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/core.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/file-provider.js"
+        }
+      ]
+    },
+    "server/gcsp/policy/postgres-provider.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+      "bytes": 6553,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/migrations/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/core.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/file-provider.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/publish.js"
+        }
+      ]
+    },
+    "server/gcsp/policy/publish.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "c521e15966be7762a3348ad860403ef555dd8cbd48405e7d23d9a7c6d262a826",
+      "bytes": 9788,
+      "current": "different",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/core.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/file-provider.js"
+        }
+      ]
+    },
+    "server/gcsp/policy/reviewed-definitions.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "4bb860c1f3f06c897924a4f6a4f849e2c95c4dd12ccbb2ab136f14bbfb337507",
+      "bytes": 3892,
+      "current": "absent",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/core.js"
+        },
+        {
+          "kind": "file-url",
+          "target": "server/gcsp/predict/records/policy-definitions.json"
+        },
+        {
+          "kind": "file-url",
+          "target": "server/gcsp/policy/reviewed/fucq115-choice-model-v1.json"
+        },
+        {
+          "kind": "file-url",
+          "target": "server/gcsp/policy/reviewed/greg-publish-editor-v1.json"
+        },
+        {
+          "kind": "file-url",
+          "target": "server/gcsp/policy/reviewed/offer-decline-reasons-v1.json"
+        },
+        {
+          "kind": "file-url",
+          "target": "server/gcsp/policy/reviewed/presenter-controls-v1.json"
+        }
+      ]
+    },
+    "server/gcsp/policy/reviewed/fucq115-choice-model-v1.json": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "89565ec7fa05db042e623c6c88c132542505f7757848e61784f38d49b8391987",
+      "bytes": 3569,
+      "current": "absent",
+      "edges": []
+    },
+    "server/gcsp/policy/reviewed/greg-publish-editor-v1.json": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "7c7680227cdcd6e5f5afbb9fedb06b73c4768b2a3c7526cbf9cb9c03ccdfd8c3",
+      "bytes": 883,
+      "current": "absent",
+      "edges": []
+    },
+    "server/gcsp/policy/reviewed/offer-decline-reasons-v1.json": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "1f1b632be83ddef1a5656288b4e40c0378736cda5c21fcf03de68544dfbe688f",
+      "bytes": 1105,
+      "current": "absent",
+      "edges": []
+    },
+    "server/gcsp/policy/reviewed/presenter-controls-v1.json": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "0e09fc7cde7677724153265042eb1f7a122c88115762a736a4bdf02a4b2e470a",
+      "bytes": 580,
+      "current": "absent",
+      "edges": []
+    },
+    "server/gcsp/policy/seed-v1.json": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "c58fcd9054fa32cded07c4ee742b39d196f94aa15c8d0fbf7752874954df8a31",
+      "bytes": 493879,
+      "current": "different",
+      "edges": []
+    },
+    "server/gcsp/predict/model/artifact.js": {
+      "sourceCommit": "1e6e4a42911bc58e5bce3f3f88fbeb464c7c5fcf",
+      "sha256": "f470c4512e09259a443ea4ceb81e29602d1606893a4179b7385ec9338983808b",
+      "bytes": 7505,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/features.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/optimizer.js"
+        }
+      ]
+    },
+    "server/gcsp/predict/model/baselines.js": {
+      "sourceCommit": "1e6e4a42911bc58e5bce3f3f88fbeb464c7c5fcf",
+      "sha256": "812f7d5236d2ef020610e24b2369906cd68db483a02f5e5f6d5463a590717660",
+      "bytes": 9569,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/scenarios/employee/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/clock/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/greg/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/optimizer.js"
+        }
+      ]
+    },
+    "server/gcsp/predict/model/dataset.js": {
+      "sourceCommit": "1e6e4a42911bc58e5bce3f3f88fbeb464c7c5fcf",
+      "sha256": "9972b1823a2d4c929c9067940ccd95deb46ce27265fa5f081864a974738b36dc",
+      "bytes": 5193,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/features.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/optimizer.js"
+        }
+      ]
+    },
+    "server/gcsp/predict/model/features.js": {
+      "sourceCommit": "1e6e4a42911bc58e5bce3f3f88fbeb464c7c5fcf",
+      "sha256": "36983ebd66dffa5bd79bbea6cf274232882a203572d174ffc0977787f9d54878",
+      "bytes": 3273,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/optimizer.js"
+        }
+      ]
+    },
+    "server/gcsp/predict/model/index.js": {
+      "sourceCommit": "1e6e4a42911bc58e5bce3f3f88fbeb464c7c5fcf",
+      "sha256": "dc95fea1e7a1615bcca954c9b0a80e0442c4667b649a134fcf49cfdfe1dd9369",
+      "bytes": 859,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/artifact.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/baselines.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/dataset.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/features.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/metrics.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/optimizer.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/pipeline.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/policy.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/split.js"
+        }
+      ]
+    },
+    "server/gcsp/predict/model/metrics.js": {
+      "sourceCommit": "1e6e4a42911bc58e5bce3f3f88fbeb464c7c5fcf",
+      "sha256": "73537e5718796ff4afc669119e15ee7fa10e30195749991673757fb15bb10be7",
+      "bytes": 6117,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/optimizer.js"
+        }
+      ]
+    },
+    "server/gcsp/predict/model/optimizer.js": {
+      "sourceCommit": "1e6e4a42911bc58e5bce3f3f88fbeb464c7c5fcf",
+      "sha256": "f7dee4b01895f1e4d0f2d3c335fe657cb44ac3eefd5cd3fb43e67e47b15c9e1b",
+      "bytes": 6383,
+      "current": "identical",
+      "edges": []
+    },
+    "server/gcsp/predict/model/pipeline.js": {
+      "sourceCommit": "1e6e4a42911bc58e5bce3f3f88fbeb464c7c5fcf",
+      "sha256": "68a50080d5207e11372954e6ecd822b9c894702e35541d885c22cbec1af4ac23",
+      "bytes": 3281,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/artifact.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/dataset.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/features.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/metrics.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/optimizer.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/policy.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/split.js"
+        }
+      ]
+    },
+    "server/gcsp/predict/model/policy.js": {
+      "sourceCommit": "1e6e4a42911bc58e5bce3f3f88fbeb464c7c5fcf",
+      "sha256": "8b576970039f35ca28269b16db81085c35ee430690395e157e3c87bdf3c6bf83",
+      "bytes": 4661,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/artifact.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/features.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/metrics.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/optimizer.js"
+        }
+      ]
+    },
+    "server/gcsp/predict/model/split.js": {
+      "sourceCommit": "1e6e4a42911bc58e5bce3f3f88fbeb464c7c5fcf",
+      "sha256": "7865dcb3c41921f5598918db268860ee68c5ab4b20a2577c393f3c86cd80b154",
+      "bytes": 3822,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/model/optimizer.js"
+        }
+      ]
+    },
+    "server/gcsp/predict/records/dataset.js": {
+      "sourceCommit": "ddd884b33311b0d62225e107a4ba7d45a464c146",
+      "sha256": "5d5eaf954def2ee605a0ed27410de6915c8fc691a3bcf02c15e6a4f33107b423",
+      "bytes": 3561,
+      "current": "absent",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/vehicles/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/records/generator.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/records/schema.js"
+        }
+      ]
+    },
+    "server/gcsp/predict/records/generator.js": {
+      "sourceCommit": "ddd884b33311b0d62225e107a4ba7d45a464c146",
+      "sha256": "a0f3703e5d9dc7fad3491db8a2206ce7165807011d819421c711e1c5e6d099c9",
+      "bytes": 19422,
+      "current": "absent",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/scenarios/employee/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/vehicles/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/comparison/generator.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/file-provider.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/records/schema.js"
+        }
+      ]
+    },
+    "server/gcsp/predict/records/index.js": {
+      "sourceCommit": "ddd884b33311b0d62225e107a4ba7d45a464c146",
+      "sha256": "e623314a8cca26b7418e32656addafc7e13a1cc7a93d80c51dc03698e2968221",
+      "bytes": 404,
+      "current": "absent",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/records/dataset.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/records/generator.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/records/observed.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/records/schema.js"
+        }
+      ]
+    },
+    "server/gcsp/predict/records/observed.js": {
+      "sourceCommit": "ddd884b33311b0d62225e107a4ba7d45a464c146",
+      "sha256": "913a6c11d6c874b16a2ae4eb151edf5d72984180b9d13b8e392e5d88244511e0",
+      "bytes": 12378,
+      "current": "absent",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/file-provider.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/predict/records/schema.js"
+        }
+      ]
+    },
+    "server/gcsp/predict/records/policy-definitions.json": {
+      "sourceCommit": "ddd884b33311b0d62225e107a4ba7d45a464c146",
+      "sha256": "c083ed58abcde595ac0cbf077b319b9102795506efb736c980d5f0cdba840143",
+      "bytes": 2719,
+      "current": "absent",
+      "edges": []
+    },
+    "server/gcsp/predict/records/schema.js": {
+      "sourceCommit": "ddd884b33311b0d62225e107a4ba7d45a464c146",
+      "sha256": "429fcc4abcb6bcf92e1b94291f9ea19a20f3883dc8d1add630a2434f84c394f5",
+      "bytes": 10197,
+      "current": "absent",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/file-provider.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/index.js"
+        }
+      ]
+    },
+    "server/gcsp/presenter-controls/commands.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "89b21a616e479c27f54d0004fe54d3b93e2cfd557e803b8bc38c717e619a627a",
+      "bytes": 4778,
+      "current": "absent",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/fixtures/scenario-v1.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/file-provider.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/core.js"
+        }
+      ]
+    },
+    "server/gcsp/recommendation/index.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "f0595fa37434b139d953db0ca89754ada08c9f6902abf3ea924addd2b72b6036",
+      "bytes": 16860,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/scenarios/employee/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/vehicles/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/file-provider.js"
+        }
+      ]
+    },
+    "server/gcsp/repository/core.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "c55c93c543886108f67aa12bc5c7519d50063e90ba4ec78df37aa0df56d6f311",
+      "bytes": 30014,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/schema.js"
+        }
+      ]
+    },
+    "server/gcsp/repository/index.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16",
+      "bytes": 247,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/core.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/memory.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/postgres.js"
+        }
+      ]
+    },
+    "server/gcsp/repository/memory.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866",
+      "bytes": 1561,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/core.js"
+        }
+      ]
+    },
+    "server/gcsp/repository/postgres.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
+      "bytes": 5658,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/migrations/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/core.js"
+        }
+      ]
+    },
+    "server/gcsp/repository/schema.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+      "bytes": 5562,
+      "current": "identical",
+      "edges": []
+    },
+    "server/gcsp/runtime.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "25e7c02cda0c3f09f0daec33d191514f88a9ccd2074d90ef6adb687ef1c34aa8",
+      "bytes": 6496,
+      "current": "different",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/brief/activity.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/brief/editor.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/brief/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/clock/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/greg/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/greg/publish/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/manual-context/fixtures.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/manual-context/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/index.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/index.js"
+        }
+      ]
+    },
+    "server/gcsp/vehicle-evidence/corpus-publisher.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "db7e3fd9ff5ff4342872a54c6ca40dd3dda35fc31c51e3dbdb2910b067cd5e49",
+      "bytes": 25651,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/vehicle-evidence/bmw-catalogue-adapter.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/core.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/vehicle-evidence/vin-generator.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/vehicle-evidence/vin-profiles.js"
+        }
+      ]
+    },
+    "server/gcsp/vehicle-evidence/synthetic-registry.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "758f3a20ec9d0bbb6fd4853df16e0e3c8e891f732165a5584d7de5698aa7221f",
+      "bytes": 21031,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/core.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/vehicle-evidence/corpus-publisher.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/vehicle-evidence/vin-generator.js"
+        }
+      ]
+    },
+    "server/gcsp/vehicle-evidence/vin-allocation.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "336d73b30e78ee4a6a1484598000497513a160a857d7b9533bd5ff3e55ff051e",
+      "bytes": 19405,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/repository/core.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/vehicle-evidence/vin-generator.js"
+        }
+      ]
+    },
+    "server/gcsp/vehicle-evidence/vin-generator.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "56072df720ff4b32d26fcd099852f397f140ae44b4658532fa952d11c717260f",
+      "bytes": 2849,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/gcsp/vehicle-evidence/vin-profiles.js"
+        }
+      ]
+    },
+    "server/gcsp/vehicle-evidence/vin-profiles.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "d3f6ea071027d787b2eeb6ebb8d70992845711c63ad084e0819403d6e13a90bd",
+      "bytes": 9652,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "file-url",
+          "target": "server/data/gcsp/vehicle-evidence/vin-profiles.v1.json"
+        }
+      ]
+    },
+    "server/package.json": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139",
+      "bytes": 373,
+      "current": "identical",
+      "edges": []
+    },
+    "server/questions.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "898716dfaf8a184fef39a9ae12b9d59b01cce94c48356dab5e3b4e81de62c26d",
+      "bytes": 20998,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/brands.js"
+        }
+      ]
+    },
+    "server/scenarios/employee/index.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "50e3b25317158c29605420af080c1ec6bd76ded94d298d33badfc90a4dc0d91c",
+      "bytes": 9089,
+      "current": "different",
+      "edges": [
+        {
+          "kind": "module",
+          "target": "server/engine.js"
+        },
+        {
+          "kind": "module",
+          "target": "server/gcsp/policy/file-provider.js"
+        }
+      ]
+    },
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "06c0910c131fdb0e2e4ef254dc5591f13c90ecb3f36f655aef3cb651aa0052a1",
+      "bytes": 22234,
+      "current": "identical",
+      "edges": [
+        {
+          "kind": "file-url",
+          "target": "server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json"
+        }
+      ]
+    },
+    "server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "ee1ae6c5cb6ab742f9a2959825ca722007409fa019d15acd44bb4b79984556a3",
+      "bytes": 7364,
+      "current": "identical",
+      "edges": []
+    },
+    "server/vehicles/index.js": {
+      "sourceCommit": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "cc02ff92ac13a25fdbe3a2325f60cafe2c16486e2f11d78a391f8664a217b5cc",
+      "bytes": 9321,
+      "current": "identical",
+      "edges": []
+    }
+  },
+  "bareModules": [
+    "node:crypto",
+    "node:fs/promises",
+    "node:path",
+    "node:url",
+    "pg"
+  ],
+  "directoryUrls": [
+    {
+      "from": "scripts/gcsp/train-choice-model.mjs",
+      "target": ".",
+      "kind": "file-url"
+    },
+    {
+      "from": "server/gcsp/migrations/index.js",
+      "target": "server/gcsp/migrations",
+      "kind": "file-url"
+    }
+  ],
+  "baselineIdentityComparison": {
+    "server/brands.js": {
+      "previousSha256": "ea63741b2fcb01dbe35dcdffdd66f7021a3c0219517a8de1487fae65f65299e2",
+      "selectedSha256": "ea63741b2fcb01dbe35dcdffdd66f7021a3c0219517a8de1487fae65f65299e2",
+      "identical": true
+    },
+    "server/engine.js": {
+      "previousSha256": "bbe8a865d280fb75075e93a139a3badbaa20972a18406baeeafb8ca2fc56a550",
+      "selectedSha256": "bbe8a865d280fb75075e93a139a3badbaa20972a18406baeeafb8ca2fc56a550",
+      "identical": true
+    },
+    "server/gcsp/clock/index.js": {
+      "previousSha256": "a1726ddc4ad11deb0b7044480d745180d4c7dff42b34e77305a090b35d38e40a",
+      "selectedSha256": "98d9e3ad778ad9a38aa3fb5f96f5a68040544ba328b79e263e661ec42c442c45",
+      "identical": false
+    },
+    "server/gcsp/fixtures/principals.js": {
+      "previousSha256": "848797ec98dd253c8c8daa4e1078f2b6ecc30b2807c713bf13615f2ead18ec2f",
+      "selectedSha256": "848797ec98dd253c8c8daa4e1078f2b6ecc30b2807c713bf13615f2ead18ec2f",
+      "identical": true
+    },
+    "server/gcsp/fixtures/scenario-v1.js": {
+      "previousSha256": "408f135c04ae909e717c30763073a3ea24a82c1e8643fabdea2888e22f1681f4",
+      "selectedSha256": "408f135c04ae909e717c30763073a3ea24a82c1e8643fabdea2888e22f1681f4",
+      "identical": true
+    },
+    "server/gcsp/fixtures/scenarios/catalogue-v1.js": {
+      "previousSha256": "eca724465148032750c74c57882c0ee0ae69f3b119330194b9601b9b4bc1b73c",
+      "selectedSha256": "eca724465148032750c74c57882c0ee0ae69f3b119330194b9601b9b4bc1b73c",
+      "identical": true
+    },
+    "server/gcsp/fixtures/scenarios/index.js": {
+      "previousSha256": "e1e794e347833ae952352d7bdf2cbc9afae28c65a01edd76c570a6bf38c4cad4",
+      "selectedSha256": "e1e794e347833ae952352d7bdf2cbc9afae28c65a01edd76c570a6bf38c4cad4",
+      "identical": true
+    },
+    "server/gcsp/greg/index.js": {
+      "previousSha256": "2457f2a122a9c1ee9b4014a65ae384f36bf83916d496fce744bcc8fc24182e0b",
+      "selectedSha256": "2457f2a122a9c1ee9b4014a65ae384f36bf83916d496fce744bcc8fc24182e0b",
+      "identical": true
+    },
+    "server/gcsp/identity/index.js": {
+      "previousSha256": "7b23c7a6f251edaa54ce8921eb29734976447239afd3cb58343d79f9e153c152",
+      "selectedSha256": "4c60cd226ecceefcedd86c7da73a410bfabbeddbb05aab1aa997c98639f7612c",
+      "identical": false
+    },
+    "server/gcsp/migrations/index.js": {
+      "previousSha256": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f",
+      "selectedSha256": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f",
+      "identical": true
+    },
+    "server/gcsp/policy/file-provider.js": {
+      "previousSha256": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+      "selectedSha256": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+      "identical": true
+    },
+    "server/gcsp/policy/index.js": {
+      "previousSha256": "087267e81d4a780ef300dba144d9de5c4978ca530fe8ea5b2f53e2ec41395a2c",
+      "selectedSha256": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+      "identical": false
+    },
+    "server/gcsp/policy/memory-provider.js": {
+      "previousSha256": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
+      "selectedSha256": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
+      "identical": true
+    },
+    "server/gcsp/policy/postgres-provider.js": {
+      "previousSha256": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+      "selectedSha256": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+      "identical": true
+    },
+    "server/gcsp/policy/publish.js": {
+      "previousSha256": "5731771b1b7607028cd923c33038a0a0da113d463b8042fdd0b60d9f0a63d023",
+      "selectedSha256": "c521e15966be7762a3348ad860403ef555dd8cbd48405e7d23d9a7c6d262a826",
+      "identical": false
+    },
+    "server/gcsp/recommendation/index.js": {
+      "previousSha256": "f0595fa37434b139d953db0ca89754ada08c9f6902abf3ea924addd2b72b6036",
+      "selectedSha256": "f0595fa37434b139d953db0ca89754ada08c9f6902abf3ea924addd2b72b6036",
+      "identical": true
+    },
+    "server/gcsp/repository/core.js": {
+      "previousSha256": "c55c93c543886108f67aa12bc5c7519d50063e90ba4ec78df37aa0df56d6f311",
+      "selectedSha256": "c55c93c543886108f67aa12bc5c7519d50063e90ba4ec78df37aa0df56d6f311",
+      "identical": true
+    },
+    "server/gcsp/repository/index.js": {
+      "previousSha256": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16",
+      "selectedSha256": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16",
+      "identical": true
+    },
+    "server/gcsp/repository/memory.js": {
+      "previousSha256": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866",
+      "selectedSha256": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866",
+      "identical": true
+    },
+    "server/gcsp/repository/postgres.js": {
+      "previousSha256": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
+      "selectedSha256": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
+      "identical": true
+    },
+    "server/gcsp/repository/schema.js": {
+      "previousSha256": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+      "selectedSha256": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+      "identical": true
+    },
+    "server/gcsp/vehicle-evidence/vin-allocation.js": {
+      "previousSha256": "336d73b30e78ee4a6a1484598000497513a160a857d7b9533bd5ff3e55ff051e",
+      "selectedSha256": "336d73b30e78ee4a6a1484598000497513a160a857d7b9533bd5ff3e55ff051e",
+      "identical": true
+    },
+    "server/gcsp/vehicle-evidence/vin-generator.js": {
+      "previousSha256": "56072df720ff4b32d26fcd099852f397f140ae44b4658532fa952d11c717260f",
+      "selectedSha256": "56072df720ff4b32d26fcd099852f397f140ae44b4658532fa952d11c717260f",
+      "identical": true
+    },
+    "server/gcsp/vehicle-evidence/vin-profiles.js": {
+      "previousSha256": "d3f6ea071027d787b2eeb6ebb8d70992845711c63ad084e0819403d6e13a90bd",
+      "selectedSha256": "d3f6ea071027d787b2eeb6ebb8d70992845711c63ad084e0819403d6e13a90bd",
+      "identical": true
+    },
+    "server/questions.js": {
+      "previousSha256": "898716dfaf8a184fef39a9ae12b9d59b01cce94c48356dab5e3b4e81de62c26d",
+      "selectedSha256": "898716dfaf8a184fef39a9ae12b9d59b01cce94c48356dab5e3b4e81de62c26d",
+      "identical": true
+    },
+    "server/scenarios/employee/index.js": {
+      "previousSha256": "43f50c04794902dd1d10a008f7882d335c1b5179f1c57a3f4ab9ea1293f7d844",
+      "selectedSha256": "50e3b25317158c29605420af080c1ec6bd76ded94d298d33badfc90a4dc0d91c",
+      "identical": false
+    },
+    "server/vehicles/index.js": {
+      "previousSha256": "cc02ff92ac13a25fdbe3a2325f60cafe2c16486e2f11d78a391f8664a217b5cc",
+      "selectedSha256": "cc02ff92ac13a25fdbe3a2325f60cafe2c16486e2f11d78a391f8664a217b5cc",
+      "identical": true
+    }
+  },
+  "executionBoundary": "Byte-exact single scratch mirror; only own baseline and CLI differ from reviewed73-file source. Three exact immutable committed inputs are added. No JS executed by this catalogue.",
+  "inactiveEdges": [
+    "Original canonical runtime/HTTP and generator CLI are retained in the reviewed source catalogue but not invoked in this variant.",
+    "PostgreSQL and corpus import edges remain inactive. No database open, corpus read or collection."
+  ],
+  "variant": "retained-training-v1",
+  "previousReviewedSourcePlanSHA256": "4736eb27feccd18d83c9f105d7a71d1130e1edd75006974c211fac208d1293a3",
+  "changedSourceFiles": [
+    {
+      "path": "scripts/gcsp/train-choice-model.mjs",
+      "previousSHA256": "3b2733d1628cd3335f92b5ceded1c6c6a96d6b43dbb06cfbb709a5f470f0a14c",
+      "sha256": "67e8558fc7dbfa228ac83cbdf2e4947f5bfd6f682b820f7fc8c141fe69260609"
+    },
+    {
+      "path": "server/gcsp/predict/model/baselines.js",
+      "previousSHA256": "6733a15ae6e6cc2e16daf21c1689217f9a4c82a67745a366c9f6859ed5662be5",
+      "sha256": "812f7d5236d2ef020610e24b2369906cd68db483a02f5e5f6d5463a590717660"
+    }
+  ],
+  "retainedInputPaths": [
+    "docs/gcsp/models/choice-training-dataset.json",
+    "docs/gcsp/models/choice-training-policy.json",
+    "docs/gcsp/models/choice-training-policy-base.json"
+  ],
+  "remainingGates": [
+    "Actual model-reference publication/activation remains separate and unexecuted.",
+    "Full/native/browser/corpus/live/calibration gates unchanged."
+  ]
+}

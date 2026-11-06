@@ -236,3 +236,20 @@ owned groups/scratch/reservation absent, dependency target inodes unchanged.
 Retained output2,600,960B; retained plus deliberate durable inputs5,087,232B.
 The dispatcher authorises read-only diagnosis and a narrow owned-model correction
 with a finite retained-input resume proposal; execution needs exact delta review.
+
+## Narrow correction and retained-input proposal
+
+Published `1e6e4a42911bc58e5bce3f3f88fbeb464c7c5fcf`: own baseline/CLI
+correction and exact actual historical seed. No shared source/provider change.
+The CLI explicitly requires the actual captured current plus original historical
+input, while the baseline advances actual clock and verifies identical snapshots
+and empty initial briefs. Full rationale is `fucq115-baseline-correction.md`.
+
+`fucq115-retained-plan.md` and its76-file source catalogue/entry/supervisor propose
+one default CLI attempt from the exact committed dataset and actual policy inputs,
+with no generation/adoption/publication/activation replay. Source-plan SHA-256
+`6a7f276a99307aba3af2b07498859bb3a8659025099f087fa89fc741b134a797`.
+Python AST and exact-source `--plan` checks passed; no JavaScript execution or new
+resource allocation occurred. Both changed source files remain behaviorally
+untested. Execution requires a new exact dispatcher review/grant. Actual baseline
+metrics, artifact, default CLI success, model activation and final/full gates remain.
