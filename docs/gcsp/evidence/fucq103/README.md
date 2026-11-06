@@ -12,7 +12,8 @@ Current source admission and proposed execution commands are in
 [the owned harness repair diagnosis](eligibility-harness-repair-2026-11-06.md).
 Only the nine frozen `eligibility-*` modes remain in the current supervisor. Use the pinned Python
 with `-I -B`, an externally reviewed plan SHA, exact published revision and a new grant for the
-selected mode. No runtime grant or proof is recorded for the repaired harness. The old commands
+selected mode. Two once-granted core25 attempts are recorded below; both are incomplete.
+No complete runtime proof is recorded for the repaired harness. The old commands
 and results below are historical evidence for their original sources.
 
 Each future mode has one worker, a fresh strict host reservation and bounded owned scratch;
@@ -393,3 +394,27 @@ command, source/environment identity and cleanup evidence are recorded in
 [the immutable attempt receipt](eligibility-core-8568dae-2026-11-06.json).
 The dispatcher authorised a numeric-only 1024MiB proposal for review; any future run still
 requires fresh strict HostBudget admission, 512MiB host reserve and a new exact grant.
+
+
+## Granted core25 attempt at 8bafa39, 6 November 2026
+
+The separate once-granted 1024MiB variant stopped after 6.961seconds with
+`RuntimeError: Malformed listener observation`. Peak aggregate RSS was
+874.984375MiB, within its 1024MiB cap; peak combined allocation was 4,348,451bytes.
+The entire original bounded merged log is retained: 1,717bytes, with 15 successful
+case lines and no final test summary. Core25 remains incomplete; neither a complete
+25-case result nor a product assertion failure is inferred. The grant was consumed
+once and no retry or later mode ran. The exact unexpected listener record is unknown
+because the raw failing query response was not retained.
+
+The runtime finalizer and independent lead audit confirmed absent owned PID/start
+pairs and process group, no owned-process open files, absent scratch/dependency links
+and released exact reservation token. All 219 source, 251 installed-byte and eight
+executable pins, dependency membership and resolver absences were rechecked; the
+product/test freeze remains unchanged. The independent lead audit passed 505 checks.
+Original summary, manifest, log and checkpoint identities, all 15 original case names,
+exact command, source/environment identity and cleanup evidence are in
+[the immutable attempt receipt](eligibility-core-8bafa39-2026-11-06.json).
+The earlier 8568dae receipt remains unchanged. Dispatcher independent audit and a
+separately authorised diagnosis/repair and fresh exact grant are required before
+further runtime work; registry16, browser, native and full-suite gates remain open.
