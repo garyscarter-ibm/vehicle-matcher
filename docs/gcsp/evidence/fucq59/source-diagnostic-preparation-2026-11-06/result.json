@@ -363,7 +363,7 @@
     "impactMap": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/f59-diagnostic-round1-19ac7ff91412b993.json",
     "nativeDurationMs": 8945.379125,
     "node": "v26.7.0",
-    "perTestContexts": "unavailable from native runner; combined coverage plus reviewed ownership/boundaries and44test timings",
+    "perTestContexts": "unavailable from native runner; combined coverage plus reviewed ownership/boundaries and50test timings",
     "priorEvidence": "prior21case qualifier proof reused at unchanged pins; prior full and F60nine-case proof remain historical on immutable old producer inputs; no matching new-producer consumer integration claim",
     "redGreen": [
       {
