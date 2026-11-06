@@ -9,7 +9,7 @@ import { createGcspRuntime } from '../server/gcsp/runtime.js';
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json',
   '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff': 'font/woff', '.woff2': 'font/woff2' };
-const sessionPage = (path) => ['/gcsp-brief-live.html', '/gcsp-activity-live.html'].includes(path);
+const sessionPage = (path) => ['/gcsp-brief-live.html', '/gcsp-activity-live.html', '/gcsp-account.html'].includes(path);
 const publicPath = (path) => sessionPage(path) || ['/gcsp-employee.css', '/favicon.ico'].includes(path)
   || path.startsWith('/blocks/') || path.startsWith('/assets/');
 

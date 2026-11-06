@@ -11,7 +11,48 @@
     "122": "01546c49251df3182a4c164a45a10c7e82c9e2af",
     "126": "a10ca742d56aa24b6639d5af380fa76316048d11"
   },
-  "live_product_unchanged": true,
+  "live_product_unchanged": false,
+  "owned_source_status": {
+    "server/gcsp/runtime.js": "applied",
+    "server/index.js": "applied",
+    "blocks/gcsp/manual-setup/journey.js": "applied",
+    "scripts/gcsp-demo.mjs": "applied",
+    "gcsp-account.html": "applied"
+  },
+  "live_leaf_status": {
+    "server/gcsp/stock/index.js": "missing",
+    "server/gcsp/stock/port.js": "missing",
+    "server/gcsp/stock/history-port.js": "missing",
+    "server/gcsp/stock/synthetic-provider.js": "missing",
+    "server/gcsp/policy/seed-v1.json": "base-retained",
+    "server/scenarios/employee/index.js": "base-retained",
+    "server/gcsp/policy/reviewed-definitions.js": "base-retained",
+    "server/gcsp/policy/reviewed/fucq115-choice-model-v1.json": "missing",
+    "server/gcsp/policy/reviewed/greg-publish-editor-v1.json": "present-exact",
+    "server/gcsp/policy/reviewed/offer-decline-reasons-v1.json": "missing",
+    "server/gcsp/policy/reviewed/presenter-controls-v1.json": "present-exact",
+    "server/gcsp/policy/reviewed/offer-followup-questions-v1.json": "missing",
+    "server/gcsp/manual-gallery/stock-read.js": "missing",
+    "blocks/gcsp/manual-gallery/gcsp-manual-gallery.js": "missing",
+    "blocks/gcsp/manual-gallery/gcsp-manual-gallery.css": "missing",
+    "blocks/gcsp/manual-gallery/gallery-controller.js": "missing",
+    "blocks/gcsp/manual-gallery/gallery-model.js": "missing",
+    "blocks/gcsp/manual-gallery/claim-controller.js": "missing",
+    "blocks/gcsp/manual-gallery/http-adapter.js": "missing",
+    "server/gcsp/manual-review/index.js": "missing",
+    "server/gcsp/manual-review/validation.js": "missing",
+    "server/gcsp/manual-review/http.js": "missing",
+    "blocks/gcsp/manual-review/gcsp-manual-review.js": "missing",
+    "blocks/gcsp/manual-review/http-adapter.js": "missing",
+    "blocks/gcsp/manual-review/review-controller.js": "missing",
+    "blocks/gcsp/manual-review/review-model.js": "missing",
+    "blocks/gcsp/manual-review/manual-review.css": "missing",
+    "server/gcsp/cases/index.js": "base-retained",
+    "server/gcsp/cases/http.js": "base-retained",
+    "blocks/gcsp/presenter-controls/controls.js": "missing",
+    "blocks/gcsp/presenter-controls/http-adapter.js": "missing",
+    "blocks/gcsp/kit/presenter-bar.js": "missing"
+  },
   "leaf_adoption_granted": false,
   "execution_granted": false,
   "owned_draft_paths": [
@@ -23,7 +64,7 @@
   ],
   "patch_sha256": "0413ff1ad2335ea6715d53bd6a3a4af20124ac47cdf23c20d6f42f9b65d7f626",
   "authoring_inputs": {
-    "runtime-composition-plan.py": "8950bcacf5e07decaa45fcb7cf78dcbc32ff779171ba361ea859fa7b4c2b5fd3",
+    "runtime-composition-plan.py": "c9a7936f626cfcf857fc8ac0807450fc66d1fe5a8cff26f75b1eefadde609ed0",
     "runtime-composition-resources.json": "d792f0081f207fe7ed1443cd9c0b9e0319d92aa0ae68c6aaac3d4d76fa12a434"
   },
   "leaf_proposals": [

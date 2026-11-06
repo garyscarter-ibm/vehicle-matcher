@@ -56,6 +56,7 @@ import { createBriefRoutes } from './gcsp/brief/http.js';
 import { createActivityRoutes } from './gcsp/brief/activity-http.js';
 import { createManualContextRoutes } from './gcsp/manual-context/http.js';
 import { createManualClaimsRoutes } from './gcsp/manual-claims/http.js';
+import { createManualReviewDetailsRoutes } from './gcsp/manual-review/http.js';
 import { createVehicleEvidenceHandler, isVehicleEvidencePath } from './gcsp/vehicle-evidence/vehicle-evidence-handler.js';
 import { createLocalVehicleEvidenceLookup } from './gcsp/vehicle-evidence/local-vehicle-lookup.js';
 import { createGregRoutes } from './gcsp/greg/http.js';
@@ -873,7 +874,8 @@ export function buildServer(deps = {}) {
       ? { ...deps.gcspRecommendations, time: deps.gcspClock } : deps.gcspRecommendations),
     ...createClockRoutes(deps.gcspClock), ...createOutboxRoutes(deps.gcspOutbox), ...createScenarioRoutes(deps.gcspScenarios, deps.gcspClock),
     ...createPresenterControlsRoutes({ clock: deps.gcspClock, identity: deps.gcspIdentity, scenarios: deps.gcspScenarios }),
-    ...createBriefRoutes(deps.gcspBrief, deps.gcspBriefEditor), ...createActivityRoutes(deps.gcspActivity), ...createCaseRoutes(deps.gcspCases), ...createManualContextRoutes(deps.gcspManualClaims || deps.gcspManual), ...createManualClaimsRoutes(deps.gcspManualClaims),
+    ...createBriefRoutes(deps.gcspBrief, deps.gcspBriefEditor), ...createActivityRoutes(deps.gcspActivity), ...createCaseRoutes(deps.gcspCases), ...createManualContextRoutes(deps.gcspManualRead || deps.gcspManualClaims || deps.gcspManual), ...createManualClaimsRoutes(deps.gcspManualClaims),
+    ...createManualReviewDetailsRoutes(deps.gcspManualReview),
     ...createGregRoutes(deps.gcspGreg), ...createGregPublishRoutes(gregPublish), ...(deps.gcspRoutes || [])],
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
@@ -892,6 +894,10 @@ export function buildServer(deps = {}) {
   });
 
   const gcspStartup = deps.gcspClock ? Promise.resolve().then(async () => {
+    if (deps.gcspStockRelease) {
+      const registered = await deps.gcspStockRelease.register();
+      if (registered.status !== 'ok') return registered;
+    }
     if (deps.gcspManualClaims) {
       const registered = await deps.gcspManualClaims.registerClockHandler();
       if (registered.status !== 'ok') return registered;

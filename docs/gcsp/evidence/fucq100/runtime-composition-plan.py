@@ -33,6 +33,8 @@ LEAVES = {
     '126': ['blocks/gcsp/presenter-controls/controls.js', 'blocks/gcsp/presenter-controls/http-adapter.js',
             'blocks/gcsp/kit/presenter-bar.js'],
 }
+OWNED = {'server/gcsp/runtime.js', 'server/index.js', 'blocks/gcsp/manual-setup/journey.js',
+         'scripts/gcsp-demo.mjs', 'gcsp-account.html'}
 IMPORTS = re.compile(r'''(?:^|\n)\s*(?:import|export)\s+(?:(?!;)[\s\S])*?\bfrom\s*['"]([^'"\n]+)['"]|\bimport\s*\(\s*['"]([^'"\n]+)['"]|(?:^|\n)\s*import\s*['"]([^'"\n]+)['"]|new\s+URL\(\s*['"]([^'"\n]+)['"]\s*,\s*import\.meta\.url''')
 sha = lambda b: hashlib.sha256(b).hexdigest()
 
@@ -91,7 +93,9 @@ cache, pins, proposals = {}, {}, []
 def baseline(path):
     b = (ROOT / path).read_bytes()
     assert path in tracked
-    assert hashlib.sha1(b'blob ' + str(len(b)).encode() + b'\0' + b).hexdigest() == tracked[path], ('base drift', path)
+    if hashlib.sha1(b'blob ' + str(len(b)).encode() + b'\0' + b).hexdigest() != tracked[path]:
+        assert path in OWNED or any(path in values for values in LEAVES.values()), ('base drift', path)
+        b = git(['show', BASE + ':' + path]).encode()
     return b
 
 
@@ -107,6 +111,20 @@ drafts = apply_patch(patch_path.read_text())
 for path, b in drafts.items():
     cache[path] = b
     pins[path] = {'ref': BASE, 'sha256': sha(b), 'before_sha256': sha(baseline(path)), 'origin': '100-virtual-draft', 'bytes': len(b)}
+owned_status = {}
+for path in drafts:
+    actual = sha((ROOT / path).read_bytes())
+    assert actual in [pins[path]['sha256'], pins[path]['before_sha256']], ('owned source drift', path)
+    owned_status[path] = 'applied' if actual == pins[path]['sha256'] else 'base'
+leaf_status = {}
+for entry in proposals:
+    path = entry['path']
+    actual = sha((ROOT / path).read_bytes()) if (ROOT / path).exists() else None
+    if actual == entry['sha256']:
+        leaf_status[path] = 'present-exact'
+    else:
+        assert actual == (sha(baseline(path)) if path in tracked else None), ('foreign leaf drift', path)
+        leaf_status[path] = 'base-retained' if actual is not None else 'missing'
 
 
 def read(path):
@@ -193,7 +211,9 @@ for value in executables.values():
     value.update(realpath=str(p.resolve()), device=st.st_dev, inode=st.st_ino, symlink=p.is_symlink())
 plan = {'schemaVersion': 1, 'kind': 'author-only source proposal; not execution admission or acceptance',
         'date': '2026-11-06', 'base': BASE, 'consumer_refs': REFS,
-        'live_product_unchanged': True, 'leaf_adoption_granted': False, 'execution_granted': False,
+        'live_product_unchanged': all(v == 'base' for v in owned_status.values()),
+        'owned_source_status': owned_status, 'live_leaf_status': leaf_status,
+        'leaf_adoption_granted': False, 'execution_granted': False,
         'owned_draft_paths': list(drafts), 'patch_sha256': sha(patch_path.read_bytes()),
         'authoring_inputs': {p.name: sha(p.read_bytes()) for p in [Path(__file__), HERE / 'runtime-composition-resources.json']},
         'leaf_proposals': proposals, 'roots': roots, 'sources': {p: pins[p] for p in sorted(seen)},

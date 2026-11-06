@@ -16,13 +16,18 @@ import { createBuddyHoldService } from './offers/buddy-hold.js';
 import { createOfferAccessService } from './offers/access.js';
 import { verifyOfferToken } from './offers/offer-token.js';
 import { createNotificationDispatcher } from './notify/index.js';
+import { createStockReleaseService } from './stock/index.js';
+import { createStockReleaseHistoryPort } from './stock/history-port.js';
+import { createManualGalleryStockRead } from './manual-gallery/stock-read.js';
+import { createRenewalCaseService } from './cases/index.js';
+import { ManualReviewDetailsService } from './manual-review/index.js';
 
 const unavailable = () => result('unavailable', { reason: 'The trusted demo runtime is unavailable.', retryable: true });
 const scoped = (value, context) => ['runId', 'environmentId', 'employeeId'].every((key) => value?.[key] === context[key]);
 
 // Explicit composition only. A failed PostgreSQL open never changes providers.
 export async function createGcspRuntime({ mode = 'postgres', repository, repositoryOptions, policy,
-  environmentId, policyAsOf, commandId, sessionNow = () => new Date().toISOString() } = {}) {
+  environmentId, policyAsOf, commandId, stockProvider, sessionNow = () => new Date().toISOString() } = {}) {
   if (!['postgres', 'memory'].includes(mode)) return result('invalid', { code: 'unsupported-repository-mode' });
   repository ??= mode === 'memory' ? createMemoryRepository({ store: createMemoryStore() }) : createPostgresRepository(repositoryOptions);
   const ownsPolicy = policy === undefined;
@@ -69,11 +74,26 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const scenarios = createScenarioService({ repository, policy: readPolicy, clock, identity });
     const adapter = createSyntheticManualStockAdapter();
     const manualClaims = createManualClaimsService({ repository, policy, clock, identity, manual: account, adapter });
+    // The trusted host supplies the existing pull port. No source is invented here.
+    const stockRelease = stockProvider === undefined ? undefined
+      : createStockReleaseService({ repository, policy, clock, identity, provider: stockProvider });
+    const releaseHistory = createStockReleaseHistoryPort({ repository, identity, clock });
+    const galleryRead = createManualGalleryStockRead({ manual: manualClaims, releaseHistory, identity, clock });
+    // Route reads through this facade; lifecycle and mutations keep the original instance.
+    const manualRead = Object.freeze({
+      readAccount: manualClaims.readAccount.bind(manualClaims),
+      readDraft: manualClaims.readDraft.bind(manualClaims),
+      saveDraft: manualClaims.saveDraft.bind(manualClaims),
+      browseStock: galleryRead.browseStock.bind(galleryRead),
+    });
+    const manualReview = new ManualReviewDetailsService({ repository, policy, identity, manualClaims });
+    const cases = createRenewalCaseService({ repository, policy, clock, identity });
     const buddy = createBuddyHoldService({ repository, policy, clock, identity, adapter });
     const offerAccess = createOfferAccessService({ repository, policy, clock, identity, environmentId, sessionNow, verifyOfferToken });
     notify = createNotificationDispatcher({ repository, policy, clock, environmentId });
     const dependencies = { gcspRepository: repository, gcspPolicy: policy, gcspGreg: greg, gcspGregPublish: gregPublish,
-      gcspScenarios: scenarios, gcspManualClaims: manualClaims, gcspBuddy: buddy, gcspOfferAccess: offerAccess,
+      gcspScenarios: scenarios, gcspManualClaims: manualClaims, gcspManualRead: manualRead, gcspManualReview: manualReview,
+      gcspStockRelease: stockRelease, gcspCases: cases, gcspBuddy: buddy, gcspOfferAccess: offerAccess,
       gcspNotify: notify, gcspOutbox: { repository },
       gcspIdentity: identity, gcspClock: clock, gcspManual: account, gcspBrief: brief,
       gcspBriefEditor: editor, gcspActivity: activity, gcspRecommendations: { provider, policy, time: clock } };
@@ -93,6 +113,6 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       if (seeded.status !== 'ok') return seeded;
       return ok({ context: acting.value.context, setCookie: [presenter.value.setCookie[1], acting.value.setCookie] });
     }
-    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, buddy, offerAccess, notify, dependencies, createLocalSession, close });
+    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, manualRead, manualReview, stockRelease, releaseHistory, cases, buddy, offerAccess, notify, dependencies, createLocalSession, close });
   } catch { await close(); return unavailable(); }
 }

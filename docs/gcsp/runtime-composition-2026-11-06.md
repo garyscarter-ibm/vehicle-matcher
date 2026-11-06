@@ -1,15 +1,16 @@
 # Central runtime and manual journey: exact source proposal
 
 FUCQ-100 / DEV-2026-11-04-060, 6 November 2026. Authoring checkpoint only.
-Live product source remains published `38be4f5d95823b5f010a56c3d4b6cbda4eca55e8`.
-The [patch](evidence/fucq100/runtime-composition-owned.patch) contains concrete drafts for the
-five authorised central/entry paths. It has not been applied: its imports require the separately
-proposed immutable leaves. No product module, service, test, provider or browser was executed.
+Accepted product base is `38be4f5d95823b5f010a56c3d4b6cbda4eca55e8`.
+The five authorised central/entry changes are now applied as actual product source. The
+[patch](evidence/fucq100/runtime-composition-owned.patch) retains their exact base-to-source delta.
+Required immutable leaf adoptions remain separately proposed below, so the working composition is
+not yet executable. No product module, service, test, provider or browser was executed.
 The accepted Greg eligibility 25/25 result and original runtime 9/9 result remain scoped historical
 evidence; neither is claimed as proof of this changed composition. FUCQ-100 remains In Progress.
 
 The [source plan](evidence/fucq100/runtime-composition-source-plan.json) freezes **191 paths,
-398 literal edges, 32 leaf candidates (30 different from the base)**, all five virtual postimages,
+398 literal edges, 32 leaf candidates (30 different from the base)**, all five owned postimages,
 54 rechecked installed pg identities and prospective helper/executable hashes. Every baseline file
 matches its Git blob at38be4f5; borrowed leaves come from exact commits. There are no unresolved
 literal imports. Dynamic/provider/navigation boundaries are explicitly retained. This is a source
@@ -50,8 +51,9 @@ Any later consumer publication requires comparison and a new freeze before execu
 
 The patch uses zero-context unified hunks. Application must first verify all five `before_sha256`
 pins in the JSON, then use `--unidiff-zero`; the authoring tool validates every hunk in memory.
-The current product tree is unchanged. The patch is for review, not an automatic source-adoption
-instruction. It deliberately does not include frozen66 or paused96 changes.
+All five current owned files match the patch postimage hashes. The JSON separately records each
+required leaf as exact-present, base-retained or missing. Authorised central changes are applied;
+leaf adoption remains a named source decision. No frozen66 or paused96 source is changed.
 
 ## Actual producer and authority bindings
 
@@ -164,6 +166,6 @@ executable/installed identities and audit all attempts independently, including 
 Retain compact receipts and useful original failure/TAP journals; no credentials or successful bulk traces.
 
 No test resources, scratch, service, listener or dependency installation were allocated in this authoring
-checkpoint. Its only retained outputs are the plan, exact patch, finite input list, generator and story note.
+checkpoint. Its retained outputs are the five owned source files, plan, exact patch, finite input list, generator and story note.
 Next decision: review the exact leaf adoption and passive source-profile preparation, then author/freeze
 the selected harness. This document does not grant mixed execution or mark any final acceptance complete.
