@@ -97,10 +97,11 @@ def install_strict_budget(resources):
         if not isinstance(value, dict): raise ValueError('Reservation ledger is not an object')
         for token, entry in value.items():
             if not isinstance(token, str) or not token or not isinstance(entry, dict) \
-                or not {'owner', 'disk', 'ram', 'used', 'rss', 'parent', 'root'} <= entry.keys():
+                or entry.keys() != {'owner', 'disk', 'ram', 'used', 'rss', 'parent', 'root'}:
                 raise ValueError('Invalid reservation entry')
             owner = entry.get('owner')
-            if not isinstance(owner, dict) or type(owner.get('pid')) is not int or owner['pid'] <= 0 \
+            if not isinstance(owner, dict) or owner.keys() != {'pid', 'start'} \
+                or type(owner.get('pid')) is not int or owner['pid'] <= 0 \
                 or not isinstance(owner.get('start'), str) or not owner['start'].strip():
                 raise ValueError('Invalid reservation owner')
             if any(type(entry.get(key)) is not int or entry[key] < 0 for key in ('disk', 'ram', 'used', 'rss')):
@@ -111,7 +112,8 @@ def install_strict_budget(resources):
                 raise ValueError('Reservation root must be absolute')
         for token in value:
             seen, current = set(), token
-            while current in value:
+            while current is not None:
+                if current not in value: raise ValueError('Dangling reservation ancestry')
                 if current in seen: raise ValueError('Cyclic reservation ancestry')
                 seen.add(current); current = value[current]['parent']
         return value

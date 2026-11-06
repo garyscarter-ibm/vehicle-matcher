@@ -9,6 +9,7 @@ import contextlib
 import hashlib
 import os
 from pathlib import Path
+import selectors
 import signal
 import subprocess
 import threading
@@ -39,11 +40,51 @@ def install(helpers, executables):
         if isinstance(start, str) and start.strip() and group != os.getpgrp() and group not in scratch.record['groups']:
             scratch.record['groups'].append(group)
 
-    def capture(scratch):
-        rows = helpers.process_snapshot()
+    def remaining(deadline):
+        seconds = deadline - time.monotonic()
+        if seconds <= 0:
+            raise resources.ResourceError('Open-file probe timeout')
+        return seconds
+
+    def deadline_query(arguments, deadline):
+        # These are the same ps interfaces as the shared probes, but each
+        # subprocess receives only the remaining work budget. Never reset a
+        # separate three-second allowance for each recorded identity.
+        try:
+            result = subprocess.run(['/bin/ps', *arguments], capture_output=True, text=True,
+                                    timeout=min(3, remaining(deadline)))
+        except subprocess.TimeoutExpired as exc:
+            raise resources.ResourceError('Open-file process query timeout') from exc
+        remaining(deadline)
+        return result
+
+    def process_identity(pid, deadline=None):
+        if deadline is None:
+            return resources.process_identity(pid)
+        result = deadline_query(['-p', str(pid), '-o', 'lstart='], deadline)
+        return result.stdout.strip() if result.returncode == 0 else None
+
+    def process_snapshot(deadline=None):
+        if deadline is None:
+            return helpers.process_snapshot()
+        result = deadline_query(['-axo', 'pid=,ppid=,pgid=,rss=,stat='], deadline)
+        if result.returncode != 0 or result.stderr or not result.stdout.strip():
+            raise resources.ResourceError('Cannot establish process ownership snapshot')
+        rows = []
+        for line in result.stdout.splitlines():
+            remaining(deadline)
+            parts = line.split()
+            if len(parts) != 5 or not all(part.isascii() and part.isdigit() for part in parts[:4]):
+                raise resources.ResourceError('Unparseable process ownership snapshot')
+            rows.append({'pid': int(parts[0]), 'ppid': int(parts[1]), 'pgid': int(parts[2]),
+                         'rss': int(parts[3]) * 1024, 'stat': parts[4]})
+        return rows
+
+    def capture(scratch, deadline=None):
+        rows = process_snapshot(deadline)
         by_pid = {row['pid']: row for row in rows}
         root = by_pid.get(supervisor['pid'])
-        if root is None or resources.process_identity(supervisor['pid']) != supervisor['start']:
+        if root is None or process_identity(supervisor['pid'], deadline) != supervisor['start']:
             raise resources.ResourceError('Launching supervisor identity is uncertain')
         selected = {supervisor['pid']}
         uncertain = set()
@@ -56,13 +97,15 @@ def install(helpers, executables):
                 continue
             expected = record.get('start')
             if pid not in starts:
-                starts[pid] = resources.process_identity(pid)
+                starts[pid] = process_identity(pid, deadline)
             current = starts[pid]
             if isinstance(expected, str) and expected.strip() and current == expected:
                 selected.add(pid)
             elif not isinstance(expected, str) or not expected.strip() or current is None:
                 uncertain.add(pid)
         while True:
+            if deadline is not None:
+                remaining(deadline)
             expanded = selected | {row['pid'] for row in rows if row['ppid'] in selected}
             if expanded == selected:
                 break
@@ -72,7 +115,7 @@ def install(helpers, executables):
         for pid in selected - {supervisor['pid']}:
             row = by_pid[pid]
             if pid not in starts:
-                starts[pid] = resources.process_identity(pid)
+                starts[pid] = process_identity(pid, deadline)
             remember(scratch, pid, starts[pid], row['pgid'])
         accounted = [row for row in rows if row['pid'] in selected | uncertain]
         rss = sum(row['rss'] for row in accounted)
@@ -83,6 +126,8 @@ def install(helpers, executables):
         scratch.record['rss_basis'] = 'launching supervisor and recursive child family, including then-active direct probes; unknown retained identities charged'
         scratch.record['aggregate_peak_rss'] = max(scratch.record.get('aggregate_peak_rss', 0), rss)
         persist(scratch)
+        if deadline is not None:
+            remaining(deadline)
         if rss > scratch.record.get('ram_limit', 768 * resources.MIB):
             raise resources.ResourceError('Supervisor/direct-probe/recursive aggregate RSS budget exceeded')
         return rss
@@ -228,29 +273,44 @@ def install(helpers, executables):
         process = subprocess.Popen.__new__(subprocess.Popen)
         process._composition_row = row
         scratch.__dict__.setdefault('_composition_handles', []).append(process)
-        stdout = stderr = b''
+        output_bytes = {'stdout': 0, 'stderr': 0}
         deadline = time.monotonic() + 5
         try:
             subprocess.Popen.__init__(process, [str(path), '-t', '+D', str(scratch.root)], env=scratch.env(os.environ),
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True)
-            row.update(state='registered', pid=process.pid, start=resources.process_identity(process.pid))
+            row.update(state='registered', pid=process.pid, start=process_identity(process.pid, deadline))
             remember(scratch, process.pid, row['start'], process.pid)
             persist(scratch)
-            while True:
-                try:
-                    stdout, stderr = process.communicate(timeout=0.1)
-                    break
-                except subprocess.TimeoutExpired as exc:
-                    if len(exc.output or b'') + len(exc.stderr or b'') > 8192:
-                        raise resources.ResourceError('Open-file probe output bound')
-                    rss = capture(scratch)
-                    if rss > scratch.record.get('ram_limit', 768 * resources.MIB):
-                        raise resources.ResourceError('Aggregate RSS exceeded during open-file probe')
-                    if time.monotonic() >= deadline:
-                        raise resources.ResourceError('Open-file probe timeout')
-            if len(stdout) + len(stderr) > 8192 or process.returncode != 1 or stdout or stderr:
+            with selectors.DefaultSelector() as selector:
+                for name in output_bytes:
+                    stream = getattr(process, name)
+                    os.set_blocking(stream.fileno(), False)
+                    selector.register(stream, selectors.EVENT_READ, name)
+                next_sample = time.monotonic()
+                while selector.get_map() or process.poll() is None:
+                    for key, _ in selector.select(timeout=min(0.1, remaining(deadline))):
+                        # One extra byte detects overflow; no communicate() or
+                        # buffered read may collect unbounded child output.
+                        allowance = 8192 - sum(output_bytes.values())
+                        try:
+                            data = os.read(key.fd, min(4096, allowance + 1))
+                        except BlockingIOError:
+                            continue
+                        output_bytes[key.data] += len(data)
+                        if sum(output_bytes.values()) > 8192:
+                            raise resources.ResourceError('Open-file probe output bound')
+                        if not data:
+                            selector.unregister(key.fileobj)
+                    remaining(deadline)
+                    if time.monotonic() >= next_sample:
+                        capture(scratch, deadline)
+                        next_sample = time.monotonic() + 0.1
+            remaining(deadline)
+            if process.returncode != 1 or any(output_bytes.values()):
                 raise resources.ResourceError('Open-file absence is unproven; scratch preserved')
         finally:
+            # The five-second work deadline never bypasses protected teardown
+            # and its existing independent bounded direct-handle joins.
             finish_handle(scratch, process, row, [getattr(process, 'stdout', None), getattr(process, 'stderr', None)],
                           groups=[process.pid] if type(getattr(process, 'pid', None)) is int else [])
         scratch.record['open_files_absent'] = {'executable': str(path), 'sha256': executables[str(path)]['sha256'],

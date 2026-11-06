@@ -6,7 +6,7 @@ postimages at6ef6c5f and adopts precisely30 changed named leaves; the two identi
 the32-row source plan. No other product files are changed by this authoring checkpoint.
 
 The exact [run catalogue](runtime-composition-run-catalogue.json) SHA-256 is
-`c6a977a08972cc183a5bda8b962bb8630889859b0f411a2233fe0beab87b85d1`. It freezes196 source/resource/configuration paths,350 edge records (348 literal and2 directory),
+`93f775a1cd917f50a37c1789dba41b6273bff2c94afa87dc6782f49fd0ae790a`. It freezes196 source/resource/configuration paths,350 edge records (348 literal and2 directory),
 all191 paths of the adopted source plan, seven test titles, helper/template bytes, Node/Python and
 six support executable identities (including pinned `/usr/sbin/lsof`). The selected graph and the adopted source graph are separately
 recorded; they are not summed as distinct paths or edges.
@@ -41,16 +41,28 @@ Native addons and unknown module paths/protocols are refused. This is not a file
 
 The original frozen publication46fa208 and catalogue2e529d7 remain in Git for review. Dibble's
 final static review found no source/composition defect and confirmed the seven cases; admission was
-HOLD on five owned harness issues. This revision changes only three owned Python helpers and their
-catalogue/notes. Product/test/profile, CJS/ESM guards and installed inventory bytes are unchanged.
+HOLD on five owned harness issues. Publication9c890d9 changed only three owned Python helpers and their
+catalogue/notes. This HOLD2 revision changes only its launch and supervisor helpers plus catalogue/notes. Product/test/profile, CJS/ESM guards and installed inventory bytes are unchanged.
 
 | Review issue | Revised owned contract |
 | --- | --- |
-| Missing or weakly owned ledger | Missing/symlink/unreadable/invalid ledger refuses. Every acquire/update/release has an independent process-local exact owner PID/start/root/parent/allocation binding. Reject token reuse, changed rows or uncertain mutations. Validate before write and strictly reread the complete ledger under the lock; every foreign row must remain equal. Headroom is read-only. Finalizers are idempotent only for a known released binding. |
+| Missing or weakly owned ledger | Missing/symlink/unreadable/invalid ledger refuses. Rows require exactly owner/disk/ram/used/rss/parent/root; owner requires exactly pid/start. Dangling and cyclic ancestry refuse before capacity or mutation; a parent cannot be removed while a child refers to it. Every acquire/update/release has an independent process-local exact owner PID/start/root/parent/allocation binding. Reject token reuse, changed rows or uncertain mutations. Validate before write and strictly reread the complete ledger under the lock; every foreign row must remain equal. Headroom is read-only. Finalizers are idempotent only for a known released binding. |
 | Numeric retained group signalling | Each signal takes a fresh complete process snapshot and requires a current saved PID/start member whose current PGID matches. Unknown/reused identities cannot anchor a signal. History preserves distinct PID/start pairs. Unanchored live groups produce a named cleanup failure. |
 | Join skipped by signal/query error or inherited unbounded wait | Adoption, queries and signals are protected by a direct-handle join in finally. Each wait has a5s bound, with one freshly anchored direct SIGKILL and a second5s join on timeout. Output closure and manifest persistence have their own finally. The inherited stop_group is replaced; no unbounded wait is called. Uncertain creation/survival preserves scratch/reservation. |
-| No open-file absence check | Before deletion, verify scratch device/inode, verify pinned lsof bytes/device/inode/realpath, and run one owned `lsof -t +D <owned-root>` probe. Only exit1 with empty stdout/stderr proves absence. Probe deadline5s/output8KiB; its handle uses the same registration/anchoring/bounded-join contract. Any error/uncertainty preserves scratch. Shared Scratch rechecks identity before deletion. |
+| No open-file absence check | Before deletion, verify scratch device/inode, verify pinned lsof bytes/device/inode/realpath, and run one owned `lsof -t +D <owned-root>` probe. Only exit1 with empty stdout/stderr proves absence. Probe work deadline5s is passed into snapshot and every PID/start query as their remaining timeout, with checks before/after queries and sampling. Nonblocking pipe reads count both streams, read at most the remaining8KiB allowance plus one overflow byte, and retain no cumulative output. Its handle uses the same registration/anchoring/bounded-join contract; protected teardown retains its separate bounded joins even after the work deadline. Any error/uncertainty preserves scratch. Shared Scratch rechecks identity before deletion. |
 | Incomplete RSS population | The shared sampler includes the launching supervisor and recursive child family, including direct probes present at the snapshot; detached recorded identities require fresh start matching. Unknown retained identities remain conservatively charged. Store supervisor/direct-child/uncertain accounting and the aggregate peak; both outer and inner paths use this same helper. |
+
+Scoped HOLD2 diagnosis and authoring delta, 6 November 2026: static review of immutable9c890d9
+found that subset row validation admitted unknown row/owner fields and ancestry silently stopped
+at a missing parent. It also found that lsof's nominal deadline was checked only after fixed3s
+snapshot/identity queries, and communicate() could buffer beyond8KiB before checking. The revised
+two helpers address precisely those paths; accepted bindings, foreign-row preservation, fresh
+signal anchors, distinct identity histories, direct joins and aggregate RSS semantics remain.
+Catalogue c6a977a08972cc183a5bda8b962bb8630889859b0f411a2233fe0beab87b85d1 remains the previous immutable freeze. Against9c890d9,
+only two helper hashes change; against46fa208, all196 source hashes, installed inventory, edge
+records, seven titles, command, limits and environment remain identical. The earlier lsof pin and
+explicit edge-count metadata additions from9c890d9 are retained. These are static checks only;
+no deadline, overflow, malformed-ledger or runtime/fault path has been exercised.
 
 Launch intent is durable before Popen creation; a retained handle precedes `Popen.__init__` and handled
 SIGTERM/SIGINT remains cooperative. No helper repair, probe or failure path has been executed here.
@@ -72,7 +84,7 @@ absence. A normal child exit alone cannot produce a successful receipt.
 Prospective exact command, **only after a separate execution grant for this catalogue**:
 
 ```sh
-/usr/bin/env -i PATH=/usr/bin:/bin:/usr/sbin:/sbin HOME=/Users/garycarter /usr/bin/python3 -I /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-stamp.py --catalogue-sha256 c6a977a08972cc183a5bda8b962bb8630889859b0f411a2233fe0beab87b85d1 --dispatcher-grant '<separate-grant-id>'
+/usr/bin/env -i PATH=/usr/bin:/bin:/usr/sbin:/sbin HOME=/Users/garycarter /usr/bin/python3 -I /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-stamp.py --catalogue-sha256 93f775a1cd917f50a37c1789dba41b6273bff2c94afa87dc6782f49fd0ae790a --dispatcher-grant '<separate-grant-id>'
 ```
 
 The wrapper admits all helper hashes before imports, sanitizes database aliases, deployed credentials,

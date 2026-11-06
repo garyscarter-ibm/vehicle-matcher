@@ -17846,10 +17846,10 @@
     }
   },
   "helpers": {
-    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-supervisor.py": "4f22b63967a37349668a068eb63d4142ea9e8239a734c9e86181a38dde906ae6",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-supervisor.py": "6d0ed076a44d2ae9be964ebd3b916310cb81e53ada39c9f3733d3e94c1047639",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-supervisor.py": "43026a725b6305fb8537e032049f0c19cf345bcdb8ee851c408e7dba5255bcc6",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-installed.json": "a99d30921387c85019fc60a9f7329f916603b89eeff80b8d3481035d8e42d72b",
-    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-launch.py": "baf0ba31330a868286df4586a360b64ca839344e7d679d0326512da314a24883",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-launch.py": "5b6edc6eb443785d4302e07548bddb277093114c05cf546f2a23ceff3216068b",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-loader.mjs": "48eead42bb58cbd39ad13abed0a7da7a175b13530b70d24bceafd96fe8efb8c9",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-preload.cjs": "d11e52a2601e0c15580b672c38a2fc85a20ef2906e85d97556166e4db3f4b365",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",

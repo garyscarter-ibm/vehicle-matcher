@@ -183,6 +183,17 @@ The current validation proposal repairs only ledger PID/start/root binding and s
 fresh process-group anchors with distinct PID/start history, protected bounded direct joins, pinned
 open-file absence checking, and full supervisor/direct-probe/recursive RSS sampling. Product, tests,
 TEST profile, installed inventory and CJS/ESM guards retain their original frozen bytes. The revised
-catalogue is `c6a977a08972cc183a5bda8b962bb8630889859b0f411a2233fe0beab87b85d1`:196 source/resource/configuration paths,350 edge records
+catalogue is `93f775a1cd917f50a37c1789dba41b6273bff2c94afa87dc6782f49fd0ae790a`:196 source/resource/configuration paths,350 edge records
 (348 literal and2 directory),1890 installed files and7 cases. Static metadata/hash/AST/diff/story
 checks only; no probes, helper execution, fault injection or test allocations. Execution remains held.
+
+The scoped HOLD2 review of9c890d9 left two exact gaps: subset ledger/owner shapes plus dangling
+ancestry, and lsof's late deadline check plus communicate buffering. This refreeze requires the
+exact seven-key row and two-key owner schema and rejects nonexistent parents before headroom or
+mutation. The lsof work deadline now reaches snapshot and every PID/start query, and nonblocking
+reads cap aggregate output at8KiB plus one overflow-detection byte. Protected teardown keeps its
+separate bounded direct joins. The accepted anchor/history/foreign-row/aggregate contracts are
+preserved. Only launch/supervisor helper hashes differ from9c890d9; all196 source hashes,1890
+installed entries, seven titles and prospective command bytes remain equal to46fa208. No helper,
+probe, business test, Node import, failure injection or test allocation was run. Delta review and
+a separate execution grant remain outstanding. The separate manual-host interface note is unchanged.
