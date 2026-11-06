@@ -46,13 +46,19 @@ The parent still reviews the exact new helper/plan identities before granting an
 
 Agents: Hippety Hopper (they/them), existing requested/selected `gpt-6.1-sol` / `high`; no fallback, new spawn or descendants.
 
+## Narrow nonblocking read repair
+
+Independent review at `773fc5cf5943fff10f05fa19be98b2d929b5c079` retained one P2: a FIFO without a writer could block `read_bytes` in `os.open` before `fstat` rejected its type. The auditor reads the summary before starting its monitor; supervisor checkpoints/journal use the same reader. This is a source finding, with no runtime reproduction claimed.
+
+The sole code delta adds `O_NONBLOCK` to `O_RDONLY | O_NOFOLLOW` before opening the descriptor. The existing `fstat` regular-file/single-link/size checks still precede every read; descriptor-based before/after identity/size/mtime checks and context-managed closure are unchanged. Special files remain rejected; no allowlist or new reader path is introduced. The source plan changes only this helper pin. Static AST/diff/hash checks cover the narrow change; no FIFO probe, runtime test, helper execution or allocation occurred. All other previously reviewed code/contracts remain byte-identical. Separate reviewer confirmation and root admission/grant remain pending.
+
 ## Frozen authoring identities
 
-Source-plan SHA256: `3ba774a7d04ef73e95588610891ae35beb1e578f7b84c38ffea4541ee0952d00`. All10 harness SHA256/byte identities match.
+Source-plan SHA256: `dc865716840e0edd49917f4b07b29ccf238f32087ed53d01d9a7bc3530003d5d`. All10 harness SHA256/byte identities match.
 
 | Owned helper | SHA256 | Bytes |
 |---|---|---:|
-| `followup-consumer-bounds.py` | `76af46c98429cbac41b965f6cc876678232ae24064812fd3154dc5bcc1b1744e` | 20292 |
+| `followup-consumer-bounds.py` | `250d99217547301126161e66c25b67d5b4cc9fb295e1b86fcb0a62f0e21ac41f` | 20308 |
 | `followup-consumer-supervisor.py` | `d383b76421cad91efbe8a0933c2707dbb6d11bb13ace8f61924d1b94ac0fee2d` | 26805 |
 | `followup-consumer-audit.py` | `78e39ae67e6dea25aa5b4ebd3c15d66a8e2bea3201d90f009eacba8e0e8db6cd` | 12008 |
 
