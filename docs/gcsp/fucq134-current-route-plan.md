@@ -236,7 +236,7 @@ PolicyService and never bypass its gate.
 
 Review package and exact proposed command:
 `docs/gcsp/evidence/fucq134/README.md`. Admission SHA-256:
-`354fbe5b69d469f5a9a61c0ce67fa1cb77ea8950e5cc8e4d93aef496b578a965`.
+`cd24455a4e1f5dee92b2e0c73e00b0f3093e05494aa1d00f317b069e607a8c9c`.
 45 source/data files include published66's matching context changes unchanged,
 base generator unchanged and owned six runtime/data files. Dependency and physical
 runtime identities are frozen before custom execution. Three Python ASTs, JSONs
@@ -249,3 +249,10 @@ approved hypothetical full-pool projection while actual release visibility, clai
 conflicts, hold timing and expiry stay real66 authority. Canonical missing-only
 policy adoption remains coordination through root after103/107's freeze. No
 shared seed/generator/manual66 source or real corpus claim was changed.
+
+
+Launch ownership follow-up: dispatcher static107 finding is addressed in owned
+resources/supervisor by prelaunch intent, deferred SIGTERM/SIGINT until persisted
+registration, local/tree handle recovery and fail-closed unresolved/conflicting
+handle proof. Current admission supersedes82df084's freeze; product/test code
+identity remains unchanged. No runtime reproduction or test was performed.

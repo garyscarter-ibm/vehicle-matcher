@@ -1345,12 +1345,12 @@
       "bytes": 2576
     },
     "docs/gcsp/evidence/fucq134/first-chunk-resources.py": {
-      "sha256": "ea72588bd4653e0c4be5377e4f1ac39ad3613dcf6892a53d77eb0a06deb0e5b5",
-      "bytes": 24089
+      "sha256": "7c919003817e3acb7c22d1e22862d8ca9c8323651a6d200227819514a3e0e7e2",
+      "bytes": 26664
     },
     "docs/gcsp/evidence/fucq134/first-chunk-supervisor.py": {
-      "sha256": "fbdc692aab84285128144fe44b5af40dc0c850e68499ffedbb574900030c3020",
-      "bytes": 13050
+      "sha256": "77b93b8c15a1eb707a0bebdbd801f86da3bf203a94532387d6569d0e50dfde3a",
+      "bytes": 13084
     },
     "docs/gcsp/evidence/fucq134/first-chunk-freeze.py": {
       "sha256": "b2770937ce4217c8fc4bc841d3067bba2b2a5e53c106655cdce5f4c4f59f22a0",
@@ -1362,6 +1362,7 @@
     "resourcePattern": "918ce04510fd327e860809e7de53bd636d1cf7da:docs/gcsp/models/fucq115-activation-resources.py adapted only in owned134 file",
     "supervisor": "docs/gcsp/evidence/fucq134/first-chunk-supervisor.py",
     "admission": "docs/gcsp/evidence/fucq134/first-chunk-admission.json",
-    "execution": "not authorised; no runtime evidence"
+    "execution": "not authorised; no runtime evidence",
+    "launchOwnershipRepair": "Static107finding: persist launch intent before Popen; defer SIGTERM/SIGINT through PID/start registration; unresolved launch cannot certify absence; cleanup adopts any supplied direct child handle. No reproduction/runtime granted."
   }
 }

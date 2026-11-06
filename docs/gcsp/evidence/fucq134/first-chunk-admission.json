@@ -1187,24 +1187,24 @@
       "targetInode": 173169478
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-resources.py": {
-      "bytes": 24089,
+      "bytes": 26664,
       "device": 16777232,
       "inode": 173168727,
       "kind": "file",
       "mode": 420,
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-resources.py",
-      "sha256": "ea72588bd4653e0c4be5377e4f1ac39ad3613dcf6892a53d77eb0a06deb0e5b5",
+      "sha256": "7c919003817e3acb7c22d1e22862d8ca9c8323651a6d200227819514a3e0e7e2",
       "targetDevice": 16777232,
       "targetInode": 173168727
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py": {
-      "bytes": 13050,
+      "bytes": 13084,
       "device": 16777232,
       "inode": 173169112,
       "kind": "file",
       "mode": 420,
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py",
-      "sha256": "fbdc692aab84285128144fe44b5af40dc0c850e68499ffedbb574900030c3020",
+      "sha256": "77b93b8c15a1eb707a0bebdbd801f86da3bf203a94532387d6569d0e50dfde3a",
       "targetDevice": 16777232,
       "targetInode": 173169112
     },
@@ -1220,13 +1220,13 @@
       "targetInode": 173164049
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/fucq134-source-graph.json": {
-      "bytes": 48425,
+      "bytes": 48688,
       "device": 16777232,
       "inode": 173163419,
       "kind": "file",
       "mode": 420,
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/fucq134-source-graph.json",
-      "sha256": "c1bfa54fc0f939a46a34fa55cf15ed30111c706a9d59cc2c6d235ad3b77cf2ca",
+      "sha256": "f3b5ce798d38da22c093ab5284db80d516ebfce0646786b658e0de8573e2adf1",
       "targetDevice": 16777232,
       "targetInode": 173163419
     },

@@ -8,7 +8,7 @@ has occurred. This package is incomplete implementation evidence, not acceptance
 
 - Base: `034b56d08fb742d31478218b670552805d5840ab`.
 - Published real66: `eb5a677b37c486e3da7c4547803f739e22df8ac3`.
-- Admission SHA-256: `354fbe5b69d469f5a9a61c0ce67fa1cb77ea8950e5cc8e4d93aef496b578a965`.
+- Admission SHA-256: `cd24455a4e1f5dee92b2e0c73e00b0f3093e05494aa1d00f317b069e607a8c9c`.
 - Composed source identity: `7a982714de7cf74968cabcfbe3712be2ff4c3fe75cf95acda3381044cffa4a82`.
 - 45 embedded source/data files, 971783 source bytes, 230 physical identities,
   14 installed packages. Embedded immutable blobs permit checking the complete
@@ -35,13 +35,13 @@ command checks identities without importing custom helpers, allocating resources
 querying OS process state or importing JavaScript:
 
 ```sh
-/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --plan --admission-sha 354fbe5b69d469f5a9a61c0ce67fa1cb77ea8950e5cc8e4d93aef496b578a965
+/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --plan --admission-sha cd24455a4e1f5dee92b2e0c73e00b0f3093e05494aa1d00f317b069e607a8c9c
 ```
 
 Only after an explicit new grant, replace `--plan` with `--execute` and append:
 
 ```text
---dispatcher-grant fucq134-first-chunk-354fbe5b69d469f5a9a61c0ce67fa1cb77ea8950e5cc8e4d93aef496b578a965
+--dispatcher-grant fucq134-first-chunk-cd24455a4e1f5dee92b2e0c73e00b0f3093e05494aa1d00f317b069e607a8c9c
 ```
 
 The argument records a grant; knowing the argument is not authorization. Selection
@@ -97,3 +97,20 @@ All six story acceptance boxes remain unchecked. Backend only; no screen.
 Review point: admit this exact composed source/guard/resource boundary before the
 first three-case run. Root retains queue, claims, Jira, merges, acceptance closure,
 shared full-suite/native/browser grants and heartbeat. No descendants were launched.
+
+## Superseding launch-ownership repair
+
+The admission above supersedes the authoring freeze in checkpoint82df084.
+Dispatcher's static107 review found the inherited115 Popen-to-registration gap;
+no134 run or observed134 failure occurred. The owned ProcessTree now persists a
+creating intent before Popen and defers handled SIGTERM/SIGINT through direct
+handle assignment, PID/start registration and persistence. It re-raises deferred
+cancellation only after registration. An unresolved launch or conflicting handle
+cannot certify process absence, so Finalizer cannot delete scratch or release
+its reservation. Supervisor cleanup recovers the tree's retained handle even if
+the launch call was interrupted before returning it to the local variable.
+
+Validation remains static AST/JSON/hash/diff inspection only. No cancellation
+reproduction, JavaScript import, supervisor plan/proof, reservation, scratch or
+test execution was authorized or performed. Product/test source identity remains
+unchanged; helper/graph/admission hashes changed and require renewed review.

@@ -163,9 +163,8 @@ def execute(frozen, args, resources, guard, environment):
             command = [frozen['nodeExecutable'], str(mirror / 'server/test/helpers/gcsp-comparison-launch.mjs'),
                 str(mirror / 'server/test/helpers/gcsp-comparison-guard.mjs'), str(runtime),
                 str(mirror / 'server/test/gcsp-comparison-current.test.js')]
-            process = subprocess.Popen(command, cwd=mirror, env=scratch.env(environment), stdin=subprocess.PIPE,
+            process = tree.launch(command, cwd=mirror, env=scratch.env(environment), stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, start_new_session=True)
-            tree.register(process)
             os.set_blocking(process.stdout.fileno(), False)
             def drain():
                 nonlocal written
@@ -222,8 +221,9 @@ def execute(frozen, args, resources, guard, environment):
     except BaseException as error:
         failure = {'type': type(error).__name__, 'message': str(error)[:1024]}
     finally:
+        process = process if process is not None else tree.process
         try:
-            result['processAbsence'] = tree.stop_join()
+            result['processAbsence'] = tree.stop_join(process)
         except BaseException as error:
             failure = failure or {'type': type(error).__name__, 'message': str(error)[:1024]}
         if process is not None:

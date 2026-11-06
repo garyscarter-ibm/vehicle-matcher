@@ -285,6 +285,8 @@ class ProcessTree:
         self.save()
 
     def register(self, process):
+        if self.process is not None and self.process is not process:
+            raise RuntimeError('A different direct child is already owned')
         self.process = process
         # Retain unknown before querying: a failed probe never drops its PID.
         item = {'pid': process.pid, 'start': None, 'pgid': process.pid, 'ppid': os.getpid(), 'owned': True}
@@ -299,7 +301,42 @@ class ProcessTree:
         self.save()
         self.observe()
 
+    def launch(self, command, **options):
+        if self.process is not None or 'launch' in self.record:
+            raise RuntimeError('Only one launch attempt is permitted')
+        previous = {sig: signal.getsignal(sig) for sig in [signal.SIGTERM, signal.SIGINT]}
+        cancelled = []
+        def defer(signum, frame):
+            cancelled.append(signum)
+        # Keep handled cancellation out of Popen's return/assignment interval.
+        # A persisted unresolved intent also covers exceptions without a handle.
+        try:
+            for sig in previous:
+                signal.signal(sig, defer)
+            self.record['launch'] = {'state': 'creating', 'at': time.time(), 'pid': None}
+            self.save()
+            self.process = subprocess.Popen(command, **options)
+            self.register(self.process)
+            self.record['launch'].update(state='registered', pid=self.process.pid)
+            self.save()
+        finally:
+            if cancelled:
+                self.record['deferredLaunchCancellation'] = cancelled
+            for sig, handler in previous.items():
+                signal.signal(sig, handler)
+        if cancelled:
+            self.save()
+            raise KeyboardInterrupt('Cancellation deferred until child ownership was persisted')
+        return self.process
+
     def proof(self):
+        launch = self.record.get('launch')
+        if self.record.get('unresolvedChildHandle'):
+            raise RuntimeError('Conflicting direct child handle; absence cannot be certified')
+        if launch and (launch['state'] != 'registered' or self.process is None):
+            raise RuntimeError('Unresolved child creation/registration; absence cannot be certified')
+        if self.process is not None and not any(item['pid'] == self.process.pid for item in self.record['ownedPids']):
+            raise RuntimeError('Direct child handle lacks persisted ownership')
         rows, members, _rss = self.observe()
         pids_absent = all(definitely_absent(item, rows) for item in self.record['ownedPids'])
         # An extant zombie is not absence. Wait/join precedes this proof.
@@ -312,8 +349,16 @@ class ProcessTree:
         self.save()
         return result
 
-    def stop_join(self):
+    def stop_join(self, process=None):
         try:
+            if process is not None and self.process is None:
+                self.record.setdefault('launch', {'state': 'unregistered', 'at': time.time(), 'pid': process.pid})
+                self.process = process
+                self.register(process)
+            elif process is not None and self.process is not process:
+                self.record['unresolvedChildHandle'] = {'pid': process.pid, 'at': time.time()}
+                self.save()
+                raise RuntimeError('Cleanup received a conflicting child handle')
             return self._stop_join()
         except BaseException as error:
             if isinstance(error, SnapshotUncertain):
