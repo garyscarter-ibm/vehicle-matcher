@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "source-authored-unexecuted",
+  "status": "source-correction-accepted; external-mixed-entry11-pass; own16-unexecuted",
   "story": "FUCQ-107",
   "parentCheckpoint": "334877de235a8f84344dd93a3f27a40984fedabb",
   "priorBackendSource": "16839323f070f7c0ab81eb1ebf728627d283c71d",
@@ -435,7 +435,7 @@
   "execution": "No Node command, import, test or runtime probe performed. New graph requires dispatcher review and a separate execution grant. Prior service12 result proves only old source; unchanged controller14 and policy7 remain independent.",
   "reviewAmendment": {
     "reviewedCheckpoint": "4b91d4bb14103ac5a98f68900a540913f4cacf78",
-    "result": "SOURCE HOLD corrected in authored source only; narrow independent delta review pending",
+    "result": "Dispatcher accepted corrected source17e7fe1 and released it to102; exact service exercised in accepted102 eleven-case combined graph.",
     "requested": "Require revision(decision.versions.slot) and current slot.version >= decision.versions.slot; fixture captures its actual slot revision.",
     "reviewer": "gpt-6.1-sol/high; no fallback or descendants",
     "minimalSourceDelta": [
@@ -452,5 +452,14 @@
         "sha256": "0db9ea5298b0daa3e23f34a952c54c2336bc7ea46f566ba62baff78160589c4f"
       }
     ]
+  },
+  "acceptedMixedEvidence": {
+    "sourcePublication": "aac8a00b121cc10a23dce1a53e7f59b2a4ca6d07",
+    "relativeEvidence": "accepted-account-entry-pass/capture-index.json",
+    "rootAuditSHA256": "c344026fc88aea61aafe39d0d16dcf0dbf8da234b9ad2cd22ce756826b49eaa2",
+    "rootChecks": 360,
+    "pass": 11,
+    "sourceSHA256": "29a439ef9b14b84b43dbb3a5ac91e4e4421866d94ab03bf03c5e463fc8a72028",
+    "scope": "Actual100/106 native-decline, authoritative102 account/cookie entry, ordinary107 question/save/reload; explicit question-policy input. Own16 remains unexecuted."
   }
 }
