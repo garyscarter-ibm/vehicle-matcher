@@ -1310,7 +1310,7 @@
     "Launcher -> runtime hash manifest generated solely from frozen embedded sources and pinned installed packages; stdin gate precedes guard/test import."
   ],
   "unknowns": [
-    "Original23fc796 snapshot causal row remains unknown. b343e1b initialization delta passed static review; current ASCII-padding normalization/bounded diagnostic delta is author-only. Unknown question-mark state still rejects the entire snapshot; no retry/current runtime admission.",
+    "Original23fc796 causal row remains UNKNOWN. Separately granted7293e52 controller2/audit1 failed on captured question-mark OS state during execution; root cleanup PASS is separate. Reviewed five-field identity/RSS protocol repair is authored only; no new runtime admission/grant.",
     "Canonical additional policy bundle not yet coordinated.",
     "Explicit synthetic mechanics facts cannot establish live corpus realism or observed satisfaction.",
     "Remaining cache/access replay/acceptance/outcomes and composed/full validation remain unimplemented or unproved."
@@ -1345,8 +1345,8 @@
       "bytes": 2576
     },
     "docs/gcsp/evidence/fucq134/first-chunk-resources.py": {
-      "sha256": "9b03afe1e55fcce8b41d44d9f8ca403a85d7af1558608bdb36aaf29399421d1a",
-      "bytes": 35759
+      "sha256": "301cb06742ef1fe4fac4d35f63b7e6a1accbc3ac743a21a23b18a1c2a40e6a1c",
+      "bytes": 35448
     },
     "docs/gcsp/evidence/fucq134/first-chunk-supervisor.py": {
       "sha256": "46a60ce4e8a9a529fcc3531c80b89179b869a7f7baec6c4ba4d5a7210963a73f",
@@ -1366,7 +1366,7 @@
     "resourcePattern": "918ce04510fd327e860809e7de53bd636d1cf7da:docs/gcsp/models/fucq115-activation-resources.py adapted only in owned134 file",
     "supervisor": "docs/gcsp/evidence/fucq134/first-chunk-supervisor.py",
     "admission": "docs/gcsp/evidence/fucq134/first-chunk-admission.json",
-    "execution": "No new grant. Parser compatibility/first-rejected-row diagnostic authoring only; original0/3 failed attempt and later742-row evidence reused, not rerun. Unknown state remains a runtime blocker pending separate current admission/diagnostic opportunity.",
+    "execution": "Both once-only grants consumed. Original23fc796 failed1/1 before Node; separately granted7293e52 failed2/1 during execution with exact state-grammar diagnostic. No completed three-case TAP result. Root independent cleanup PASS does not establish test success. Current five-field parser authoring requires implementation review and fresh execution admission.",
     "launchOwnershipRepair": "Static107finding: persist launch intent before Popen; defer SIGTERM/SIGINT through PID/start registration; unresolved launch cannot certify absence; cleanup adopts any supplied direct child handle. No reproduction/runtime granted.",
     "originalStaticReview": {
       "reviewer": "Dibble",
@@ -1385,7 +1385,8 @@
       "Keep completion margins and high-water RSS only in internal preflight/cap checks; shared ledger used/rss receive actual current sampled disk/RSS only.",
       "Open every bounded final-audit file O_NONBLOCK|O_NOFOLLOW before regular-file fstat/finite read; bound analogous nonblocking ticket-input read/EOF to3seconds and8KiB inside original120second deadline.",
       "Initialize retained directory/incomplete identity before first snapshot; capture firstFailure without secondary replacement and persist only after protected direct join. Original failed-run grant/manifest untouched; no parser, product or ledger changes and no new run grant.",
-      "Normalize only trailing ASCII ps column padding before both timestamp validations; retain exact strict predicates/partial observations and attach finite first-rejected/query diagnostic to SnapshotUncertain and firstFailure. Unknown states still fail the whole snapshot; no new runtime proof."
+      "Normalize only trailing ASCII ps column padding before both timestamp validations; retain exact strict predicates/partial observations and attach finite first-rejected/query diagnostic to SnapshotUncertain and firstFailure. Unknown states still fail the whole snapshot; no new runtime proof.",
+      "After narrow proposal review, use one PID/PPID/PGID/RSS/start fixed-field query; validate every required row, retain partial observations/bounded diagnostics and remove only unused OS-state parsing/storage. All code from definitely_absent onward remains unchanged; no fallback query or new run grant."
     ],
     "resourceDeltaReview": {
       "reviewer": "Dibble",
@@ -1442,6 +1443,46 @@
       "diagnostic": "SnapshotUncertain carries first rejected line/raw fixed fields/reason, query exit/error, bounded stderr/truncation and owner-row presence; copied into firstFailure without secondary replacement",
       "unknownState": "Question-mark remains unsupported and fatal; no whitelist, skip, foreign-harmlessness inference or absence/deletion/release relaxation",
       "evidence": "Reuse immutable later742-row capture: trailing ASCII spaces;741supported after padding-only normalization, one unsupported state. Original causal row UNKNOWN; no new probe/test/helper import.",
+      "agents": "requested/selected gpt-6.1-sol/high; no fallback or descendants"
+    },
+    "secondGrantedAttempt": {
+      "revision": "7293e52f313c02fd8c5dc8a8e0be74a1912da3fd",
+      "admission": "2c4deec6736bcb81944c06e5e3a4ff7b0d92044820c141d68beb181c7a7c399a",
+      "controllerExit": 2,
+      "auditExit": 1,
+      "toolWaitExit": 1,
+      "attemptReceipt": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq134-first-chunk-attempt-0837.json",
+        "sha256": "261f6e4f64c67b9ac033145c254f7122268a01a8dc98d7dace6f51fdeb73d629"
+      },
+      "manifest": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq134-ba7c9bc73b1d4c42b900a5d5637ce6db.json",
+        "sha256": "46a341ff0f95a99b4b68d87d57c8159b3b047baf932900ace061bd6a37c47e68"
+      },
+      "firstFailure": "execution SnapshotUncertain; query exit0/stderr empty/owner present; first rejected line626, state-grammar",
+      "rawFixedFields": "34537 34535   603      0 ?    Fri Nov  6 08:37:31 2026    ",
+      "historicalUncertainGroups": [
+        34518
+      ],
+      "rootCleanup": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq134-second-run-root-cleanup-0813.json",
+        "sha256": "a4157024d1f004858a4438fe9a569d694b98a5fcb4615b9fe467e7d6b0f6d548"
+      },
+      "rootCleanupResult": "PASS19;798 fresh identity rows and empty strict ledger; no mutations. Cleanup only, not test success. Original first-run cause UNKNOWN."
+    },
+    "identityRssProtocolRepair": {
+      "reviewer": "Dibble",
+      "proposalRevision": "02eda65732b294c3e7b2fd70ded84e9bc9ca51e0",
+      "reviewedProposalSHA256": "f238a112ea42fe2774427cd1311c0dc134579e90994373de7e532441a0bc1774",
+      "proposalReview": "PASS for minimal author-only implementation; implementation/runtime review remain separate",
+      "query": [
+        "/bin/ps",
+        "-axo",
+        "pid=,ppid=,pgid=,rss=,lstart="
+      ],
+      "scope": "Five fields; both timestamp checks index4; remove only unused OS-state parsing/storage; all required-field/whole-snapshot checks, finite diagnostics and partial observations retained",
+      "absence": "Unchanged: an extant unknown-start identity cannot establish absence; historical unknown start may resolve through missing PID plus kill(pid,0)->ESRCH. Zombie rows remain present.",
+      "boundaries": "Everything from definitely_absent onward byte-identical; supervisor/freezer/completion/shared helpers unchanged; no fallback/skip/whitelist/retry/probe/test/allocation/new grant",
       "agents": "requested/selected gpt-6.1-sol/high; no fallback or descendants"
     }
   }

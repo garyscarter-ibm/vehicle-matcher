@@ -1,9 +1,12 @@
 # FUCQ-134 fixed-field snapshot protocol proposal
 
 6 November 2026. Author-only diagnosis against publication
-`7293e52f313c02fd8c5dc8a8e0be74a1912da3fd`. Proposed change awaits narrow review;
-no helper change, alternate query, probe, test or retry is authorized by this note.
-Root retains independent failed-run audit and publication authority.
+`7293e52f313c02fd8c5dc8a8e0be74a1912da3fd`. Dibble passed narrow proposal review
+at `02eda65732b294c3e7b2fd70ded84e9bc9ca51e0`, proposal SHA-256
+`f238a112ea42fe2774427cd1311c0dc134579e90994373de7e532441a0bc1774`.
+Root authorized the minimal author-only implementation below. The authored
+repair awaits implementation review and fresh execution admission. No probe,
+test, allocation, retry or new run grant follows from this note.
 
 ## Preserved failure and evidence
 
@@ -42,9 +45,10 @@ The original earlier failed manifest remains SHA-256
 `098f4dcfa8a35de7d324a6391a7024759ab38d1898a4a0897f14840b655d13fc`;
 its causal row remains **UNKNOWN**. Neither later sample reconstructs it.
 
-## Current dependency trace
+## Published six-field dependency trace
 
-In `docs/gcsp/evidence/fucq134/first-chunk-resources.py`:
+At publication `7293e52`, in
+`docs/gcsp/evidence/fucq134/first-chunk-resources.py`:
 
 - Lines 42–98: `process_snapshot` requests PID, PPID, PGID, RSS, OS state and
   start; validates state and stores it. State rejection invalidates the whole
@@ -92,21 +96,25 @@ group checks and accounting, including rows outside the currently selected tree.
 
 This changes the required OS data contract globally. It does not add `?` to a
 state whitelist, skip a row, retry a rejected sample using fewer fields or treat
-an apparently foreign row as harmless. An owned identity with unknown start,
-unresolved launch or unanchored/shared group continues to block unsafe signals
-and absence/deletion/release proof. Historical uncertainty and failure evidence
-are never rewritten. Zombies remain present because presence is independent of
-STAT, and unknown identity/RSS fields remain fatal.
+an apparently foreign row as harmless. An extant owned identity with unknown
+start cannot establish absence or authorize an identity-based signal. Historical
+unknown start can resolve through a missing PID plus `os.kill(pid, 0)` returning
+`ProcessLookupError` (ESRCH), as the unchanged absence helper already permits.
+Unresolved launches and unanchored/shared groups retain their existing gates.
+Historical uncertainty and failure evidence are never rewritten. Zombies remain
+present because presence is independent of STAT, and invalid required
+identity/RSS fields remain fatal to the whole snapshot.
 
 ## Review boundary and remaining validation
 
 The trace supports removing an unused required field while preserving the
 existing sampled-identity model; it does not prove the proposed OS query works
-at runtime or strengthen the existing ps snapshot/race assumptions. Review must
-confirm the five required fields are sufficient for the accepted safety contract.
+at runtime or strengthen the existing ps snapshot/race assumptions. Dibble's
+proposal review accepted the five required fields for authoring the narrow
+repair; implementation and runtime validation are separate gates.
 
-If approved, implementation should be limited to the owned parser protocol,
-matching diagnostics/documentation and a new frozen admission. Keep all code
+The approved authoring is limited to the owned parser protocol, matching
+diagnostics/documentation and a new frozen admission. Keep all code
 from `def definitely_absent` onward, supervisor cleanup/signaling/accounting,
 shared helpers and completion/resource limits unchanged. Static review should
 compare those boundaries exactly and inspect partial-observation handling.

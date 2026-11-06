@@ -42,7 +42,7 @@ class SnapshotUncertain(RuntimeError):
 def process_snapshot(timeout=3):
     query_exit, query_error, stderr = None, None, ''
     try:
-        query = subprocess.run(['/bin/ps', '-axo', 'pid=,ppid=,pgid=,rss=,stat=,lstart='],
+        query = subprocess.run(['/bin/ps', '-axo', 'pid=,ppid=,pgid=,rss=,lstart='],
                                capture_output=True, text=True, timeout=timeout)
         output = query.stdout
         query_exit, stderr = query.returncode, query.stderr
@@ -63,31 +63,28 @@ def process_snapshot(timeout=3):
     for number, line in enumerate(output.splitlines(), 1):
         # ps pads the final lstart column. Normalize only trailing ASCII spaces
         # before BOTH partial and complete timestamp checks; grammar stays strict.
-        parts = line.rstrip(' ').split(None, 5)
+        parts = line.rstrip(' ').split(None, 4)
         partial = {key: int(parts[index]) if len(parts) > index and parts[index].isascii() and parts[index].isdigit() else None
                    for index, key in enumerate(['pid', 'ppid', 'pgid'])}
-        partial['start'] = parts[5] if len(parts) == 6 and re.fullmatch(
-            r'[A-Z][a-z]{2}\s+[A-Z][a-z]{2}\s+\d{1,2}\s+\d{2}:\d{2}:\d{2}\s+\d{4}', parts[5]) else None
+        partial['start'] = parts[4] if len(parts) == 5 and re.fullmatch(
+            r'[A-Z][a-z]{2}\s+[A-Z][a-z]{2}\s+\d{1,2}\s+\d{2}:\d{2}:\d{2}\s+\d{4}', parts[4]) else None
         if partial['pid'] and partial['pid'] > 0:
             observations.append(partial)
-        if len(parts) != 6 or any(not value.isascii() or not value.isdigit() for value in parts[:4]):
+        if len(parts) != 5 or any(not value.isascii() or not value.isdigit() for value in parts[:4]):
             uncertain = True
-            reject(number, line, 'column-count' if len(parts) != 6 else 'non-ascii-decimal-field')
+            reject(number, line, 'column-count' if len(parts) != 5 else 'non-ascii-decimal-field')
             continue
         pid, ppid, pgid, rss = map(int, parts[:4])
-        state, start = parts[4:]
-        if pid <= 0 or pgid <= 0 or pid in rows or not state or state[0] not in 'RSDTtWXZIU' \
-                or any(char not in '+<>AELNSsVWXl' for char in state[1:]) \
+        start = parts[4]
+        if pid <= 0 or pgid <= 0 or pid in rows \
                 or not re.fullmatch(r'[A-Z][a-z]{2}\s+[A-Z][a-z]{2}\s+\d{1,2}\s+\d{2}:\d{2}:\d{2}\s+\d{4}', start):
             uncertain = True
-            reason = 'pid-group-or-duplicate' if pid <= 0 or pgid <= 0 or pid in rows else \
-                'state-grammar' if not state or state[0] not in 'RSDTtWXZIU' \
-                or any(char not in '+<>AELNSsVWXl' for char in state[1:]) else 'start-grammar'
+            reason = 'pid-group-or-duplicate' if pid <= 0 or pgid <= 0 or pid in rows else 'start-grammar'
             reject(number, line, reason)
             partial['start'] = None
             continue
         rows[pid] = {'pid': pid, 'ppid': ppid, 'pgid': pgid, 'rss': rss * 1024,
-                     'state': state, 'start': start}
+                     'start': start}
     if uncertain or os.getpid() not in rows:
         bounded_stderr = stderr[:512]
         if isinstance(bounded_stderr, bytes):

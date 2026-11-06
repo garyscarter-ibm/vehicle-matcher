@@ -236,7 +236,7 @@ PolicyService and never bypass its gate.
 
 Review package and exact proposed command:
 `docs/gcsp/evidence/fucq134/README.md`. Admission SHA-256:
-`2c4deec6736bcb81944c06e5e3a4ff7b0d92044820c141d68beb181c7a7c399a`.
+`07300f741f8eebc19a8baa68c571a924de4daa8429cbb1e693fdb51e6ba76079`.
 45 source/data files include published66's matching context changes unchanged,
 base generator unchanged and owned six runtime/data files. Dependency and physical
 runtime identities are frozen before custom execution. Three Python ASTs, JSONs
@@ -378,3 +378,30 @@ helper imports or execution/allocation/retry. Separate current admission and
 new diagnostic opportunity are required before another grant. Root retains
 final receipt; blocked runtime lane parked while other stories advance.
 Requested/selected gpt-6.1-sol/high,no fallback/descendants; no new visual claim.
+
+
+## Five-field protocol authoring checkpoint · 6 November 2026
+
+Dibble passed the02eda657 proposal for minimal authoring. Parser now requests
+PID/PPID/PGID/RSS/start only, validates all five required fields on every row and
+uses index4 in both timestamp checks. Unused OS-state parsing/storage alone is
+removed. Partial observations, finite diagnostics and whole-snapshot refusal for
+invalid required fields remain. Everything from definitely_absent onward and
+supervisor/shared helpers/freezer/completion/resource limits is unchanged.
+Extant unknown-start identity cannot prove absence; historical unknown start can
+resolve through missing PID plus kill(pid,0)->ESRCH. Zombie rows stay present.
+
+Separately granted7293e52 run remains controller2/audit1/toolwait1 with exact
+state-grammar row626 and uncertainGroups[34518] preserved. Root cleanup PASS19
+is independent cleanup only, not a successful test or new-protocol proof. Actual
+attempt/tool evidence: ownership/fucq134-first-chunk-attempt-0837.json. Original
+first-run causal row UNKNOWN. No runtime retry/new grant follows this checkpoint.
+
+Authoring admission `07300f741f8eebc19a8baa68c571a924de4daa8429cbb1e693fdb51e6ba76079`;236physical nodes and unchanged
+45sources/971783bytes/accepted72edges/three cases/base/actual66/source identity.
+Static checks PASS: fourASTs/fiveJSONs, exact parser/safety-boundary comparison,
+normalization/partial observations/bounded diagnostics, evidence hashes/pins,
+source/limit/case reuse, map ownership and diff. No runtime helper import/execute,
+test/probe/allocation/retry or visual acceptance claim. Await implementation review
+and fresh execution admission. All acceptance/other five slices remain open.
+Requested/selected gpt-6.1-sol/high; no fallback or descendants; root final receipt.

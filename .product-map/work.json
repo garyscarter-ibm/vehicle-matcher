@@ -1820,15 +1820,15 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T07:50:21Z",
+      "observed_at": "2026-11-06T08:53:35Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-134",
       "slices": [
         {
           "id": "isolated-real66",
           "status": "in-progress",
           "title": "Isolated memory run and real66 authority",
-          "observed_at": "2026-11-06T07:50:21Z",
-          "evidence": "Initialization static PASS reused. ASCII padding normalization/bounded first-rejection diagnostics authored; unknown state remains fatal. Runtime blocker parked, no new grant/probe/test. docs/gcsp/evidence/fucq134/README.md"
+          "observed_at": "2026-11-06T08:53:35Z",
+          "evidence": "Second once-only run controller2/audit1 failed on captured OS state; root cleanup PASS separate. Reviewed five-field identity/RSS parser repair authored only, preserves strict identities/absence/ledger gates. Fresh implementation review/admission needed; no new grant. docs/gcsp/evidence/fucq134/README.md"
         },
         {
           "id": "shared-matrix",
@@ -1869,7 +1869,7 @@
         }
       ],
       "branch": "dev/DEV-2026-11-04-103",
-      "development_note": "Isolated-real66 in progress. Original once-only attempt0/3 failed before Node; initialization delta static PASS reused. ASCII-column padding normalization and finite first-rejected/query diagnostic authored. Unknown state still refuses whole snapshot and every absence/deletion/release gate; original causal row unknown. No new runtime grant/probe/test. Runtime blocker parked pending separate current admission/diagnostic opportunity. Other five slices and all acceptance remain open."
+      "development_note": "Isolated-real66 in progress. Second once-only7293e52 attempt controller2/audit1 failed in execution on captured OS-state grammar; root cleanup PASS separate, historical uncertainGroups retained. Reviewed five-field PID/PPID/PGID/RSS/start repair authored only. All downstream safety/limits and45sources/72edges/three cases unchanged. No new runtime grant/probe/test/allocation/retry; fresh implementation review/admission outstanding. Earlier causal row UNKNOWN. Other five slices and all acceptance open."
     }
   ]
 }

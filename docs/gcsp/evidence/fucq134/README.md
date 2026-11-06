@@ -1,19 +1,21 @@
 # FUCQ-134 first chunk review package
 
-**Parser compatibility/diagnostic delta pending review. Original once-only grant consumed; no new execution grant.**
+**Five-field protocol repair pending implementation review. Both once-only grants consumed; no execution grant.**
 
-Checkpoint, 6 November 2026. The one authorized23fc796 controller/audit attempt
-exited1/1 before Node, with0/3 tests reached. The manifest records SnapshotUncertain;
-missing retained-directory initialization then caused the secondary receipt-write
-failure. One separately authorized bounded cleanup snapshot was retained later.
-There has been no retry. The current source delta is authoring only and requires
-new immutable review/grant. This package is incomplete evidence, not acceptance.
+Checkpoint, 6 November 2026. The original23fc796 attempt exited controller1/audit1
+before Node, with0/3 tests reached; its causal row remains UNKNOWN. A separately
+granted once-only7293e52 attempt exited controller2/audit1 during execution on a
+captured `?` OS-state row. Node launched; no completed three-case TAP result.
+Root's independent cleanup PASS is separate from that failed result. Both grants
+are consumed. Dibble passed narrow proposal review; the current five-field parser
+repair is authoring only and needs implementation review and fresh execution
+admission. No retry or new grant follows. This package remains incomplete evidence.
 
 ## Frozen scope
 
 - Base: `034b56d08fb742d31478218b670552805d5840ab`.
 - Published real66: `eb5a677b37c486e3da7c4547803f739e22df8ac3`.
-- Admission SHA-256: `2c4deec6736bcb81944c06e5e3a4ff7b0d92044820c141d68beb181c7a7c399a`.
+- Admission SHA-256: `07300f741f8eebc19a8baa68c571a924de4daa8429cbb1e693fdb51e6ba76079`.
 - Composed source identity: `7a982714de7cf74968cabcfbe3712be2ff4c3fe75cf95acda3381044cffa4a82`.
 - 45 embedded source/data files, 971783 source bytes, 236 physical identities,
   14 installed packages. Embedded immutable blobs permit checking the complete
@@ -40,13 +42,13 @@ command checks identities without importing custom helpers, allocating resources
 querying OS process state or importing JavaScript:
 
 ```sh
-/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --plan --admission-sha 2c4deec6736bcb81944c06e5e3a4ff7b0d92044820c141d68beb181c7a7c399a
+/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --plan --admission-sha 07300f741f8eebc19a8baa68c571a924de4daa8429cbb1e693fdb51e6ba76079
 ```
 
 Only after an explicit new grant, replace `--plan` with `--execute` and append:
 
 ```text
---dispatcher-grant fucq134-first-chunk-2c4deec6736bcb81944c06e5e3a4ff7b0d92044820c141d68beb181c7a7c399a
+--dispatcher-grant fucq134-first-chunk-07300f741f8eebc19a8baa68c571a924de4daa8429cbb1e693fdb51e6ba76079
 ```
 
 The authorized execution must use an independent parent to retain the actual
@@ -55,12 +57,12 @@ proposed shell command has **not** run; it captures at most8KiB from the reviewe
 controller and creates no ticket file:
 
 ```sh
-if fucq134_completion_ticket="$(/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --execute --admission-sha 2c4deec6736bcb81944c06e5e3a4ff7b0d92044820c141d68beb181c7a7c399a --dispatcher-grant fucq134-first-chunk-2c4deec6736bcb81944c06e5e3a4ff7b0d92044820c141d68beb181c7a7c399a)"; then
+if fucq134_completion_ticket="$(/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --execute --admission-sha 07300f741f8eebc19a8baa68c571a924de4daa8429cbb1e693fdb51e6ba76079 --dispatcher-grant fucq134-first-chunk-07300f741f8eebc19a8baa68c571a924de4daa8429cbb1e693fdb51e6ba76079)"; then
   fucq134_controller_exit=0
 else
   fucq134_controller_exit=$?
 fi
-printf '%s\n' "$fucq134_completion_ticket" | /usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-completion.py --audit --controller-exit "$fucq134_controller_exit" --admission-sha 2c4deec6736bcb81944c06e5e3a4ff7b0d92044820c141d68beb181c7a7c399a
+printf '%s\n' "$fucq134_completion_ticket" | /usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-completion.py --audit --controller-exit "$fucq134_controller_exit" --admission-sha 07300f741f8eebc19a8baa68c571a924de4daa8429cbb1e693fdb51e6ba76079
 ```
 
 Completion requires controller exit0, the independent audit's bounded `complete`
@@ -74,8 +76,8 @@ The argument records a grant; knowing the argument is not authorization. Selecti
 is exactly `isolation`, `real-claim-review-allocate`, `untaken-expiry` from the
 new current-route test. The gated launcher imports that module directly, using
 Node's in-process test execution, and enforces three exact TAP names/counts.
-The frozen Node26 synchronous import hook and this direct test-launch behavior
-remain unverified runtime seams until the granted run. No upstream tests repeat.
+The frozen Node26 synchronous import hook and direct test-launch behavior have
+no completed three-case runtime proof. No upstream tests repeat.
 
 ## Ownership and limits
 
@@ -112,7 +114,9 @@ listener, network, browser, corpus, full-suite or large-output execution is gran
 Static checks only: four Python AST parses, JSON parses and complete explicit
 relative JS import edges. The freeze builder verified stored Git blobs and all
 installed file bytes against the earlier source graph. The original supervisor
-attempt failed before Node; `--plan` has not run. No test result is claimed.
+attempt failed before Node; the separately granted second attempt failed during
+execution without a three-case TAP result. `--plan` has not run. No passing test
+result is claimed.
 
 The harness creates a new memory store, trusted identity contexts and simulated
 clock, seeds explicitly fictional records, uses actual66 claim/review/allocation
@@ -339,3 +343,42 @@ map ownership and diff. No new test, probe, helper import/execution,
 allocation or retry. This cannot establish runtime compatibility while an
 unknown state persists. A separate current admission/diagnostic opportunity is
 required before another grant; root retains the final receipt.
+
+
+## Reviewed five-field identity/RSS protocol repair
+
+Dibble passed the proposal at02eda65732b294c3e7b2fd70ded84e9bc9ca51e0,
+SHA256f238a112ea42fe2774427cd1311c0dc134579e90994373de7e532441a0bc1774.
+Root authorized authoring only. The owned parser now requests exactly
+`/bin/ps -axo pid=,ppid=,pgid=,rss=,lstart=`. It removes only unused OS-state
+parsing/storage: five columns, `split(None, 4)`, both full timestamp checks at
+index4, unchanged ASCII decimals/positive PID+PGID/duplicate PID/start grammar.
+Every required row is validated; no skip, whitelist or fallback query. Partial
+observations and finite first-rejection/query diagnostics remain intact.
+
+All code from `def definitely_absent` onward is unchanged, as are supervisor,
+completion, freezer, shared helpers and resource limits. An extant unknown-start
+identity cannot prove absence. Historical unknown start may resolve when the PID
+is missing and kill(pid,0) returns ESRCH. Every returned zombie row remains present.
+
+The consumed7293e52 run remains controller2/audit1/toolwait1, no complete stdout
+or completed three-case TAP result. Its exact captured `?` row626 and historical
+uncertainGroups[34518] are preserved in ownership/fucq134-ba7c9bc73b1d4c42b900a5d5637ce6db.json,
+SHA25646a341ff0f95a99b4b68d87d57c8159b3b047baf932900ace061bd6a37c47e68.
+Actual tool results and bounded failure are retained in
+ownership/fucq134-first-chunk-attempt-0837.json,
+SHA256261f6e4f64c67b9ac033145c254f7122268a01a8dc98d7dace6f51fdeb73d629.
+Root ownership/fucq134-second-run-root-cleanup-0813.json PASS19/798identityrows
+establishes independent cleanup only; its RSS-free query does not validate this
+new protocol. Original first-run causal row remains UNKNOWN. Both grants consumed.
+
+Author static validation PASS: four ASTs/five owned JSONs, exact approved parser diff,
+required-field and partial-observation preservation, diagnostic bounds, unchanged
+safety suffix/supervisor/freezer/completion, immutable evidence/pins, source and
+limit/case reuse, map ownership and diff. New authoring admission
+`07300f741f8eebc19a8baa68c571a924de4daa8429cbb1e693fdb51e6ba76079`;236nodes/45sources/971783bytes/accepted72edges.
+No edited runtime helper import/execution, test, probe, reservation/scratch or retry.
+Static authoring freeze supports implementation review only; fresh current
+execution admission and a new explicit grant remain required. Harness-only:
+no screen or user-visible product behavior changed, so no new visual claim.
+Requested/selected gpt-6.1-sol/high; no fallback or descendants.
