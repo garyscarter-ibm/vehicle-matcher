@@ -82,6 +82,7 @@ An `ok` response has `value`:
   offerVersion, holdVersion,
   holdState, offerState,
   availableActions,      // [], ['decline'] or ['accept', 'decline']; no optimistic actions
+  followup,              // null | { decisionId }; verified completed decline only
   quote: {
     quoteId, configurationId, orderUuid, orderNumber, briefVersion, policyVersion,
     revisions,
@@ -117,6 +118,7 @@ The exact nested allowlist implemented by `access.js` is:
 
 | Path | Fields and types |
 |---|---|
+| `followup` | `null` or exactly `{decisionId:string}`. The persisted FUCQ-106 `offer-decision:<opaque digest>` handle; no event, actor, command, receipt or employee ID is added. It selects a follow-up; it is not authority. |
 | `quote.orderNumber` | Seven-digit **string** (leading zeros retained), or null when unavailable; never inferred from configuration/VIN. |
 | `quote.revisions` | `quote`: positive integer; optional `brief`, `facts`, `policy`, `stock`, `snapshot`, `terms`, `clock`, `availability`: supplied string/number/null revision. |
 | `quote.facts` | `contractVersion: 'vehicle-snapshot-v1'`, `candidateKey`, `sourceNamespace`, `snapshotVersion`, `observedAt`: strings; `identityKind: 'exact-stock'`; `sourceKeys: { stockId: string }`; `display` and `facts` below. No VIN or additional source keys. |
@@ -178,6 +180,42 @@ After full token/session verification, an earlier-run link returns only
 It returns no historical quote, state, identity or timing. An unverified old-run
 selector still returns generic not-found. Reset races and changed rows refuse
 mixed snapshots, asking the caller to retry rather than disclosing inconsistent data.
+
+## Decline follow-up entry · authored 6 November 2026
+
+The approved [entry plan](evidence/fucq102/followup-entry-plan.md) is now authored in
+the access-owned service with focused regressions. It has not executed under its
+new mixed-source graph; the existing 32/32 result remains evidence for its unchanged
+covered paths, not proof of this lookup.
+
+An authenticated current offer read recovers `followup: { decisionId }` only from
+one persisted FUCQ-106 decline for that exact offer and its single completed native
+`offer-decisions:events:v1` / `offer-declined` receipt. The private lookup verifies
+owner/run/car/hold/quote/slot/renewal, typed reason, current policy and quoted-policy
+pins, original successful result, event digest and input versions, and immutable
+confirmed historical brief. Terminal offer/hold revisions come from the successful
+post-write outcome; decision input versions are pre-write. Stock may have been used
+again after release. Reads preserve the deadline and never reserve the car again.
+
+All other states return `followup: null`. A consistently read declined offer also
+returns null when its follow-up source is missing, duplicate or malformed; the
+declined outcome and empty actions remain authoritative. FUCQ-105 should show an
+unavailable follow-up with explicit offer refresh, and preserve the new field through
+its strict projection. Repository failures and changed query membership, row contents
+or clock/run authority return typed retryable `unavailable`. The extra reads extend
+the existing consistency refusal; separate reads are not a new atomic snapshot.
+
+Cookie reload and account access reissue a genuine private context using the same
+composed access instance injected into FUCQ-106. No new selector endpoint or request
+field is introduced. There is no serialised brand or employee-role conversion.
+FUCQ-107's existing employee-authenticated read/confirm routes independently verify
+the ordinary employee session and decision ownership. Its host can receive the
+handle recovered by FUCQ-105 after refresh; the original offer URL retains only its
+existing `offerId` and `runId` selectors. Token-only access cannot authorise follow-up.
+
+No lookup read writes a row or command receipt, changes a brief, extends time,
+releases a hold or invokes allocation. Actual 106/107 execution, 105 projection/host
+adoption, browser and central/runtime integration remain separate open gates.
 
 ## Deployment and validation boundaries
 
