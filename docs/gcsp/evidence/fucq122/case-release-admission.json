@@ -68,8 +68,8 @@
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-supervisor.py",
       "targetDevice": 16777232,
       "targetInode": 173175923,
-      "bytes": 30580,
-      "sha256": "157dec2fa8ac3732e93e993bf28f1529165ecd8efcff66014722f2db002a2f50"
+      "bytes": 30764,
+      "sha256": "f9f0d287331b2734f3b2c2ce803e96ba82fd947497295fcbce54b3f09c73b116"
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/_tools/test_resources.py": {
       "kind": "file",
@@ -258,8 +258,8 @@
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-bounds.py",
       "targetDevice": 16777232,
       "targetInode": 173307467,
-      "bytes": 37562,
-      "sha256": "dfd8eb0f940057715df4d104cac17965715962f07f6a91542e30afa1d6d23519"
+      "bytes": 45148,
+      "sha256": "f0ef1df955b2163c385aed84a61c3e51476528081c0dbde32aacfe3a0bdf7bc2"
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-ledger.py": {
       "kind": "file",

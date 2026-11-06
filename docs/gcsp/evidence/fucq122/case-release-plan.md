@@ -73,8 +73,10 @@ The seven owned harness files are `case-release-freeze.py`,
 `case-release-supervisor.py`, `case-release-bounds.py` and `case-release-ledger.py`
 in this directory. The accounting repair is detailed in
 [case-release-accounting-repair.md](case-release-accounting-repair.md), with the
-current three-path follow-up in
+historical three-path follow-up in
 [case-release-probe-cleanup-repair.md](case-release-probe-cleanup-repair.md).
+The current initialization-ownership HOLD repair and exact pins are in
+[case-release-initialization-repair.md](case-release-initialization-repair.md).
 The freeze collector has run as static metadata authoring. The loader, launcher,
 resources and supervisor have only been authored and statically inspected;
 none has been imported, executed, probed or used to allocate resources.
@@ -169,6 +171,13 @@ The selected worker must stop by startup plus 90 seconds, leaving 30 seconds
 inside the same envelope for completion. Failed/stale/cancelled accounting
 prevents a successful exit and retains uncertain resources for explicit recovery.
 
+The run and ownership directories are claimed by exclusive descriptor-relative
+creation and bound by physical identity before registry writes. An existing
+run name refuses initialization, and failure remains memory-only until the
+initial exclusive manifest has been fsynced and read back. Later registry
+writes require those held directory bindings and the accepted manifest inode;
+readback must match the exact staging inode and payload. Refused collisions
+produce only bounded external diagnostics.
 The external provisional run/owner/probe manifest is durably written before
 `Aggregate.start()` and before either scratch-constructor identity probe.
 Every monitor query and captured helper has a prior intent, retained Popen

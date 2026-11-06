@@ -88,8 +88,8 @@ def encode(value, cap):
     return b''.join(chunks) + b'\n'
 
 
-def read_bytes(path, cap):
-    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+def read_bytes(path, cap, directory_fd=None):
+    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=directory_fd)
     with os.fdopen(fd, 'rb') as source:
         before = os.fstat(source.fileno())
         if not stat.S_ISREG(before.st_mode) or before.st_size < 0 or before.st_size > cap or before.st_nlink != 1:
@@ -198,32 +198,122 @@ class Processes:
         self.issue = None
         self.blocked = self.sealed = False
         self.sequence = 0
+        self.initialized = False
+        self.directory_bindings = {}
+        self.directory_fds = {}
+        self.manifest_identity = None
         self.record = {'state': 'provisional-before-first-probe', 'owner': {'pid': os.getpid(), 'start': None},
             'admissionSHA256': admission, 'grant': grant, 'scratchConstructor': 'not-started',
             'probeIntent': {'command': PS, 'captureBytes': CONTRACT['probe_bytes'],
                             'seconds': CONTRACT['probe_timeout_seconds'], 'newSession': True},
             'helpers': [], 'observed': [], 'issue': None}
 
+    @staticmethod
+    def directory_identity(value):
+        if not stat.S_ISDIR(value.st_mode) or value.st_uid != os.getuid():
+            raise BoundError('Run directory is not a physical directory owned by this UID')
+        return {'device': value.st_dev, 'inode': value.st_ino,
+                'uid': value.st_uid, 'mode': stat.S_IMODE(value.st_mode)}
+
+    @staticmethod
+    def file_identity(value):
+        if not stat.S_ISREG(value.st_mode) or value.st_nlink != 1 or value.st_uid != os.getuid():
+            raise BoundError('Registry manifest is not an owned single-link regular file')
+        return {'device': value.st_dev, 'inode': value.st_ino, 'uid': value.st_uid,
+                'mode': stat.S_IMODE(value.st_mode), 'bytes': value.st_size,
+                'mtime': value.st_mtime_ns, 'ctime': value.st_ctime_ns}
+
+    def require_binding(self, manifest=False):
+        run = self.path.parent.parent
+        paths = (run.parent, run, self.path.parent)
+        if set(self.directory_fds) != set(paths) or set(self.directory_bindings) != set(paths):
+            raise BoundError('No complete exclusive run-directory binding')
+        for index, path in enumerate(paths):
+            fd = self.directory_fds[path]
+            opened = self.directory_identity(os.fstat(fd))
+            named = path.lstat() if index == 0 else os.stat(path.name,
+                dir_fd=self.directory_fds[paths[index-1]], follow_symlinks=False)
+            if opened != self.directory_bindings[path] or self.directory_identity(named) != opened:
+                raise BoundError('Exclusive run-directory physical identity changed')
+        self.outputs.admissible(self.path)
+        if manifest:
+            if not self.initialized or self.manifest_identity is None:
+                raise BoundError('Registry initialization has not completed')
+            value = os.stat(self.path.name, dir_fd=self.directory_fds[self.path.parent], follow_symlinks=False)
+            if self.file_identity(value) != self.manifest_identity:
+                raise BoundError('Owned registry manifest identity changed')
+        return self.directory_fds[self.path.parent]
+
     def save(self):
-        self.outputs.record(self.path, self.record)
+        if not self.initialized:
+            raise BoundError('No registry write before successful exclusive initialization')
+        fd = self.require_binding(manifest=True)
+        value = self.outputs.record(self.path, self.record, directory_fd=fd,
+            guard=self.require_binding, target_guard=lambda: self.require_binding(manifest=True))
+        self.manifest_identity = self.file_identity(value)
 
     def fail(self, error):
         with self.lock:
             self.issue = self.issue or type(error).__name__
             self.record.update(state='uncertain', issue=self.issue)
             self.cancel.set()
-            if not self.sealed:
-                self.save()  # Sealed terminal hashes stay immutable; refused later work exits failed.
+            if self.sealed or not self.initialized:
+                return  # Before initialization only the supervisor's bounded external stderr is allowed.
+            try:
+                self.require_binding(manifest=True)
+            except (OSError, BoundError):
+                return  # Lost ownership never authorizes a fallback pathname write.
+            self.save()
 
     def initialize(self):
-        if os.path.lexists(self.path.parent.parent):
-            raise BoundError('Provisional run identity already exists')
-        self.outputs.record(self.path, self.record, exclusive=True)
-        # This durable intent precedes Aggregate.start and every shared helper/Scratch import.
+        run = self.path.parent.parent
+        self.outputs.admissible(self.path)
+        self.outputs.observe()
+        # The retained root may exist; the run and its ownership directory must be new.
+        try:
+            os.mkdir(run.parent, 0o700)
+        except FileExistsError:
+            pass
+        retained_parent = os.open(run.parent.parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        try:
+            os.fsync(retained_parent)
+        finally:
+            os.close(retained_parent)
+        out_fd = os.open(run.parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        self.directory_fds[run.parent] = out_fd
+        self.directory_bindings[run.parent] = self.directory_identity(os.fstat(out_fd))
+        if self.directory_identity(run.parent.lstat()) != self.directory_bindings[run.parent]:
+            raise BoundError('Retained root changed during open')
+        # mkdirat refuses collisions atomically: never inspect/adopt an existing run as ours.
+        os.mkdir(run.name, 0o700, dir_fd=out_fd)
+        run_value = os.stat(run.name, dir_fd=out_fd, follow_symlinks=False)
+        run_fd = os.open(run.name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=out_fd)
+        self.directory_fds[run] = run_fd
+        self.directory_bindings[run] = self.directory_identity(run_value)
+        if self.directory_identity(os.fstat(run_fd)) != self.directory_bindings[run]:
+            raise BoundError('New run changed during open')
+        os.mkdir(self.path.parent.name, 0o700, dir_fd=run_fd)
+        owned_value = os.stat(self.path.parent.name, dir_fd=run_fd, follow_symlinks=False)
+        owned_fd = os.open(self.path.parent.name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=run_fd)
+        self.directory_fds[self.path.parent] = owned_fd
+        self.directory_bindings[self.path.parent] = self.directory_identity(owned_value)
+        self.require_binding()
+        os.fsync(out_fd); os.fsync(run_fd); os.fsync(owned_fd)
+        self.record['directoryBinding'] = {str(path): value for path, value in self.directory_bindings.items()}
+        value = self.outputs.record(self.path, self.record, exclusive=True, directory_fd=owned_fd,
+                                    guard=self.require_binding)
+        self.manifest_identity = self.file_identity(value)
+        self.initialized = True
+        # Only now may Aggregate.start or a shared helper/Scratch constructor launch probes.
+
+    def close_binding(self):
+        for path, fd in list(self.directory_fds.items())[::-1]:
+            os.close(fd)
+            del self.directory_fds[path]
 
     def launch(self, command, proof=False, intent=None):
         with self.lock:
-            if self.issue or self.cancel.is_set() or self.sealed or (self.blocked and not proof) or time.monotonic() >= self.deadline:
+            if not self.initialized or self.issue or self.cancel.is_set() or self.sealed or (self.blocked and not proof) or time.monotonic() >= self.deadline:
                 raise BoundError('New helper/probe refused by sticky ownership state')
             if proof and (not self.blocked or self.handles):
                 raise BoundError('Proof query requires a quiescent process registry')
@@ -467,6 +557,8 @@ class Processes:
                 first = first or error
         if first is not None:
             raise first
+        if self.sealed or (not self.initialized and not self.handles):
+            self.close_binding()
 
 
 class Aggregate:
@@ -661,11 +753,11 @@ class Outputs:
                 raise BoundError('Output path contains symlink')
         return path
 
-    def write(self, path, payload, cap, exclusive=False):
+    def write(self, path, payload, cap, exclusive=False, directory_fd=None, guard=None, target_guard=None):
         with self.lock:
-            return self._write(path, payload, cap, exclusive)
+            return self._write(path, payload, cap, exclusive, directory_fd, guard, target_guard)
 
-    def _write(self, path, payload, cap, exclusive=False):
+    def _write(self, path, payload, cap, exclusive=False, directory_fd=None, guard=None, target_guard=None):
         if not self.diagnostics:
             self.monitor.check()
         if type(payload) is not bytes or len(payload) > cap or cap > CONTRACT['json_bytes']:
@@ -677,46 +769,79 @@ class Outputs:
             raise BoundError('Output would exceed combined cap')
         if before['retained_allocated_bytes'] + CONTRACT['stream_disk_allowance'] + len(payload) + 8192 > CONTRACT['retained_bytes']:
             raise BoundError('Output would exceed retained cap')
-        path.parent.mkdir(parents=True, exist_ok=True)
+        if directory_fd is None:
+            path.parent.mkdir(parents=True, exist_ok=True)
+        elif guard is None:
+            raise BoundError('Bound registry writer requires physical ownership guard')
+        if guard is not None:
+            guard()
         self.sequence += 1
         temporary = path.with_name('.'+path.name+'.owned-'+str(os.getpid())+'-'+str(self.sequence))
         self.temporaries.add(temporary)
-        fd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+        fd = os.open(temporary if directory_fd is None else temporary.name,
+                     os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600, dir_fd=directory_fd)
         identity = os.fstat(fd)
         try:
             with os.fdopen(fd, 'wb') as target:
                 target.write(payload); target.flush(); os.fsync(target.fileno())
             self.observe()  # Includes actual staging allocation, conservatively plus allowance.
             self.admissible(path)
-            if exclusive:
-                os.link(temporary, path, follow_symlinks=False)
-                temporary.unlink()
+            if guard is not None:
+                guard()
+            if target_guard is not None:
+                target_guard()
+            if directory_fd is None:
+                if exclusive:
+                    os.link(temporary, path, follow_symlinks=False)
+                    temporary.unlink()
+                else:
+                    os.replace(temporary, path)
+            elif exclusive:
+                os.link(temporary.name, path.name, src_dir_fd=directory_fd, dst_dir_fd=directory_fd, follow_symlinks=False)
+                os.unlink(temporary.name, dir_fd=directory_fd)
             else:
-                os.replace(temporary, path)
+                os.replace(temporary.name, path.name, src_dir_fd=directory_fd, dst_dir_fd=directory_fd)
+            if guard is not None:
+                guard()
             self.observe()
         finally:
-            if os.path.lexists(temporary):
-                current = temporary.lstat()
+            try:
+                current = os.stat(temporary if directory_fd is None else temporary.name,
+                                  dir_fd=directory_fd, follow_symlinks=False)
+            except FileNotFoundError:
+                current = None
+            if current is not None:
                 if (current.st_dev, current.st_ino) != (identity.st_dev, identity.st_ino):
                     raise BoundError('Temporary output identity unknown')
-                temporary.unlink()
+                os.unlink(temporary if directory_fd is None else temporary.name, dir_fd=directory_fd)
             self.temporaries.discard(temporary)
+        return identity  # The exact staging inode must also be the durable registry readback.
 
-    def record(self, path, value, exclusive=False):
-        # Provisional/failure ownership precedes monitor availability; all output bounds apply.
+    def record(self, path, value, exclusive=False, directory_fd=None, guard=None, target_guard=None):
+        # Registry records require the already-claimed physical ownership directory.
+        if directory_fd is None or guard is None:
+            raise BoundError('Registry writes require an exclusive physical run binding')
         with self.lock:
             previous = self.diagnostics
             self.diagnostics = True
             try:
+                guard()
                 payload = encode(value, CONTRACT['json_bytes'])
-                self.write(path, payload, CONTRACT['json_bytes'], exclusive=exclusive)
-                fd = os.open(Path(path).parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
-                try:
-                    os.fsync(fd)
-                finally:
-                    os.close(fd)
-                if read_bytes(path, CONTRACT['json_bytes']) != payload:
+                written = self.write(path, payload, CONTRACT['json_bytes'], exclusive=exclusive,
+                                     directory_fd=directory_fd, guard=guard, target_guard=target_guard)
+                os.fsync(directory_fd)
+                guard()
+                current = os.stat(Path(path).name, dir_fd=directory_fd, follow_symlinks=False)
+                accepted = Processes.file_identity(current)
+                if (current.st_dev, current.st_ino) != (written.st_dev, written.st_ino):
+                    raise BoundError('Durable process manifest is not the owned staging inode')
+                if read_bytes(Path(path).name, CONTRACT['json_bytes'], directory_fd=directory_fd) != payload:
                     raise BoundError('Durable process manifest readback differs')
+                guard()
+                current = os.stat(Path(path).name, dir_fd=directory_fd, follow_symlinks=False)
+                if Processes.file_identity(current) != accepted:
+                    raise BoundError('Durable process manifest identity changed during readback')
+                return current
             finally:
                 self.diagnostics = previous
 

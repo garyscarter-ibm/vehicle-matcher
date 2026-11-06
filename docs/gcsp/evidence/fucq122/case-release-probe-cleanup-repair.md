@@ -1,8 +1,12 @@
 # C4 probe ownership, telemetry and cleanup HOLD repair
 
 6 November 2026. FUCQ-122 / DEV-2026-11-04-084. Author-only repair from
-`379c31977adc9bd4dcc0dfcf75a5e1f979f8d2b6`; exact new pins await independent
-narrow review. No execution or success is claimed.
+`379c31977adc9bd4dcc0dfcf75a5e1f979f8d2b6`, published as
+`e0a0ecc695d7fda86c4bc9fbdc8c4624f9e8bf7e`. This is a historical receipt.
+Barney's subsequent review held initialization ownership only; its current
+diagnosis, repair and pins are in
+[case-release-initialization-repair.md](case-release-initialization-repair.md).
+No execution or success is claimed.
 
 ## Decided: current diagnosis
 

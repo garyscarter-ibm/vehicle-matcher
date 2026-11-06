@@ -541,6 +541,8 @@ def main():
         execute(frozen, args, tr, guard, ledger, sg, cancel, dest)
     except BaseException as error:
         if not REGISTRY.sealed:
+            # fail() is memory-only until exclusive initialization and physical binding succeed.
+            # Refused collisions reach only the bounded external stderr handler below.
             REGISTRY.fail(error)
         raise
     finally:
