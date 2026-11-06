@@ -1349,16 +1349,16 @@
       "bytes": 34191
     },
     "docs/gcsp/evidence/fucq134/first-chunk-supervisor.py": {
-      "sha256": "dcf7f49031752f7cb488c69a9972a32fab878b9fd50d0e3da2bad9b303457c22",
-      "bytes": 17308
+      "sha256": "14b57d765e09b299ffd114c9f749f72a31e97ad62cc62812cdcb7292a54bc8b3",
+      "bytes": 17355
     },
     "docs/gcsp/evidence/fucq134/first-chunk-freeze.py": {
       "sha256": "d047af7d501fc94840ce701d04296407deec933e4535af4a14ed10e39f99e8f6",
       "bytes": 7428
     },
     "docs/gcsp/evidence/fucq134/first-chunk-completion.py": {
-      "sha256": "816696405b94b3222a30c1b101866900495003cb7a77a622c66e80887287d518",
-      "bytes": 10366
+      "sha256": "cbf64db40bdf690b5875ee41628e2c7b5041651f30516b266a7006bdcfd03572",
+      "bytes": 11089
     }
   },
   "firstChunkReview": {
@@ -1366,7 +1366,7 @@
     "resourcePattern": "918ce04510fd327e860809e7de53bd636d1cf7da:docs/gcsp/models/fucq115-activation-resources.py adapted only in owned134 file",
     "supervisor": "docs/gcsp/evidence/fucq134/first-chunk-supervisor.py",
     "admission": "docs/gcsp/evidence/fucq134/first-chunk-admission.json",
-    "execution": "Not authorized. Final-output bounded completion and independent parent audit await immutable delta admission. No helper/probe/test execution or allocation.",
+    "execution": "Not authorized. Actual-current ledger usage and nonblocking finite audit-read delta await immutable review. No helper/probe/test execution or allocation.",
     "launchOwnershipRepair": "Static107finding: persist launch intent before Popen; defer SIGTERM/SIGINT through PID/start registration; unresolved launch cannot certify absence; cleanup adopts any supplied direct child handle. No reproduction/runtime granted.",
     "originalStaticReview": {
       "reviewer": "Dibble",
@@ -1381,7 +1381,9 @@
       "Protect bounded direct-child terminate/kill/wait in fallback finally from snapshot, manifest-persistence and signal failures; original failure still blocks cleanup/release.",
       "Retain complete expected reservation row including disk/ram/parent/used/rss; validate each mutation and immediately before scratch deletion while holding pinned physical ledger lock.",
       "Use one recursive RSS/combined disk/elapsed meter for setup, verification and cleanup snapshots plus bounded owned vm_stat/lsof probes; direct-handle join is independent of meter/persistence failures.",
-      "Reserve64MiB RAM/1MiB disk inside existing caps; bound/preencode final manifest/receipt/checkpoint and atomic temporary files; postwrite meter and independent parent audit require controller/audit exit0. No recursive receipt rewrites or completion claim from provisional files."
+      "Reserve64MiB RAM/1MiB disk inside existing caps; bound/preencode final manifest/receipt/checkpoint and atomic temporary files; postwrite meter and independent parent audit require controller/audit exit0. No recursive receipt rewrites or completion claim from provisional files.",
+      "Keep completion margins and high-water RSS only in internal preflight/cap checks; shared ledger used/rss receive actual current sampled disk/RSS only.",
+      "Open every bounded final-audit file O_NONBLOCK|O_NOFOLLOW before regular-file fstat/finite read; bound analogous nonblocking ticket-input read/EOF to3seconds and8KiB inside original120second deadline."
     ],
     "resourceDeltaReview": {
       "reviewer": "Dibble",
@@ -1397,6 +1399,14 @@
       "admission": "36f30be3af9f3333e269af6dd5201f678d69824c9f23bb5fdb388e41b4318446",
       "passed": "Full expected-row locked binding/deletion; accepted ledger/direct joins/pins and45-source/72-edge composition preserved",
       "held": "Final-output manifest/receipt/checkpoint tail after last resource meter",
+      "agents": "requested/selected gpt-6.1-sol/high; no fallback or descendants"
+    },
+    "actualUsageFifoReview": {
+      "reviewer": "Dibble",
+      "revision": "426d975e7345203c7b854a3e48e3913442da6222",
+      "admission": "970a2b8c8080b88c25651c604c8fc6bb30e639ed95de6c060da07d353911de6c",
+      "passed": "Bounded terminal-write completion, provisional files and mandatory controller AND audit exit0;236pins/45sources/72edges/three cases and original input identities match",
+      "held": "Unallocated margins/historical RSS in current ledger telemetry; blocking O_RDONLY before final-file type check",
       "agents": "requested/selected gpt-6.1-sol/high; no fallback or descendants"
     }
   }

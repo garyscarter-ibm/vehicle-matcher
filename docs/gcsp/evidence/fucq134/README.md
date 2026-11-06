@@ -10,7 +10,7 @@ has occurred. This package is incomplete implementation evidence, not acceptance
 
 - Base: `034b56d08fb742d31478218b670552805d5840ab`.
 - Published real66: `eb5a677b37c486e3da7c4547803f739e22df8ac3`.
-- Admission SHA-256: `970a2b8c8080b88c25651c604c8fc6bb30e639ed95de6c060da07d353911de6c`.
+- Admission SHA-256: `1c3589ee6002b0274a2a95779749e58dbd3d30604c1bc900cc9d81b91e54641d`.
 - Composed source identity: `7a982714de7cf74968cabcfbe3712be2ff4c3fe75cf95acda3381044cffa4a82`.
 - 45 embedded source/data files, 971783 source bytes, 236 physical identities,
   14 installed packages. Embedded immutable blobs permit checking the complete
@@ -37,13 +37,13 @@ command checks identities without importing custom helpers, allocating resources
 querying OS process state or importing JavaScript:
 
 ```sh
-/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --plan --admission-sha 970a2b8c8080b88c25651c604c8fc6bb30e639ed95de6c060da07d353911de6c
+/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --plan --admission-sha 1c3589ee6002b0274a2a95779749e58dbd3d30604c1bc900cc9d81b91e54641d
 ```
 
 Only after an explicit new grant, replace `--plan` with `--execute` and append:
 
 ```text
---dispatcher-grant fucq134-first-chunk-970a2b8c8080b88c25651c604c8fc6bb30e639ed95de6c060da07d353911de6c
+--dispatcher-grant fucq134-first-chunk-1c3589ee6002b0274a2a95779749e58dbd3d30604c1bc900cc9d81b91e54641d
 ```
 
 The authorized execution must use an independent parent to retain the actual
@@ -52,12 +52,12 @@ proposed shell command has **not** run; it captures at most8KiB from the reviewe
 controller and creates no ticket file:
 
 ```sh
-if fucq134_completion_ticket="$(/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --execute --admission-sha 970a2b8c8080b88c25651c604c8fc6bb30e639ed95de6c060da07d353911de6c --dispatcher-grant fucq134-first-chunk-970a2b8c8080b88c25651c604c8fc6bb30e639ed95de6c060da07d353911de6c)"; then
+if fucq134_completion_ticket="$(/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --execute --admission-sha 1c3589ee6002b0274a2a95779749e58dbd3d30604c1bc900cc9d81b91e54641d --dispatcher-grant fucq134-first-chunk-1c3589ee6002b0274a2a95779749e58dbd3d30604c1bc900cc9d81b91e54641d)"; then
   fucq134_controller_exit=0
 else
   fucq134_controller_exit=$?
 fi
-printf '%s\n' "$fucq134_completion_ticket" | /usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-completion.py --audit --controller-exit "$fucq134_controller_exit" --admission-sha 970a2b8c8080b88c25651c604c8fc6bb30e639ed95de6c060da07d353911de6c
+printf '%s\n' "$fucq134_completion_ticket" | /usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-completion.py --audit --controller-exit "$fucq134_controller_exit" --admission-sha 1c3589ee6002b0274a2a95779749e58dbd3d30604c1bc900cc9d81b91e54641d
 ```
 
 Completion requires controller exit0, the independent audit's bounded `complete`
@@ -83,6 +83,9 @@ remain unverified runtime seams until the granted run. No upstream tests repeat.
   serialization, all three atomic temporary files, bounded ticket/parent output
   and the sequential parent audit. Final manifest/receipt/checkpoint limits are
   64/64/8KiB; ticket/parent stdout limits are8KiB each.
+  These margins and historical RSS peaks are internal bounds only. Shared ledger
+  `used`/`rss` contain actual current sampled usage, so unused reservations remain
+  pending until physical capacity is consumed.
 - Fresh actual HostBudget reservation; at least 5 GiB host disk free and measured
   shared RAM headroom. Unknown ledger/process/capacity state refuses progress.
 - Scratch: story worktree `.claude/test-scratch/fucq134/fucq134-<token>`.
@@ -234,3 +237,26 @@ Unknown resource/write/audit state stays incomplete without recursive receipts.
 This is authored static evidence only. AST/JSON/ordering/source/pin checks and
 static freeze generation do not execute these helpers, supervisor, probes or
 tests. A new immutable delta admission and explicit execution grant remain due.
+
+## Actual-usage and nonblocking audit-read delta
+
+Dibble's immutable426d975 review accepted the terminal-write completion boundary
+and held two narrow issues. Shared ledger telemetry now receives actual current
+sampled disk/RSS, excluding completion margins and historical high-water RSS.
+Margins remain in internal cap/free-space checks; complete-row owner/root
+binding, locked deletion, exact release and foreign-row preservation are unchanged.
+
+Every bounded audit-file read (helper, manifest, receipt and checkpoint) opens
+with O_NONBLOCK and O_NOFOLLOW, then checks fstat for a regular file and its size
+before reading at most limit+1 bytes. A FIFO substitution therefore cannot wait
+for a writer before refusal. The analogous ticket-input pipe is nonblocking,
+bounded to8KiB and given a finite3-second read/EOF deadline within the original
+120-second overall audit deadline. The log is only lstat'ed; no other audit-file
+read bypasses this common reader. Unknown type/input/read/budget state remains
+incomplete, with both controller and audit exit0 still required for completion.
+
+This delta is static authoring only. No helper import, runtime/test/probe,
+reservation, scratch, browser, native or database execution occurred. Original
+45-source/72-edge composition, three cases, base/actual66/source identity and the
+236 physical-pin count remain unchanged. Targeted immutable delta review and a
+new execution grant remain outstanding.

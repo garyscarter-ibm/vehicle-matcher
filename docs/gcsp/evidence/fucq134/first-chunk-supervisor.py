@@ -175,8 +175,9 @@ def execute(frozen, args, resources, guard, completion, environment, started):
             if guard.shutil.disk_usage(ROOT).free < policy.reserve + completion.DISK_RESERVE:
                 raise RuntimeError('Host disk emergency reserve reached')
             if rows is not None and getattr(host, 'owned', None):
-                host.update_owned(scratch.token, used + completion.DISK_RESERVE,
-                                  max(rss, own_peak + child_peak) + completion.RAM_RESERVE)
+                # The ledger subtracts actual usage from pending reservations.
+                # Margins and historical peaks remain internal preflight bounds.
+                host.update_owned(scratch.token, used, rss)
                 if time.monotonic() >= tree.deadline:
                     raise RuntimeError('Resource deadline reached during ledger accounting')
         except BaseException as error:

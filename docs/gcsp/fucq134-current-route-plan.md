@@ -236,7 +236,7 @@ PolicyService and never bypass its gate.
 
 Review package and exact proposed command:
 `docs/gcsp/evidence/fucq134/README.md`. Admission SHA-256:
-`970a2b8c8080b88c25651c604c8fc6bb30e639ed95de6c060da07d353911de6c`.
+`1c3589ee6002b0274a2a95779749e58dbd3d30604c1bc900cc9d81b91e54641d`.
 45 source/data files include published66's matching context changes unchanged,
 base generator unchanged and owned six runtime/data files. Dependency and physical
 runtime identities are frozen before custom execution. Three Python ASTs, JSONs
@@ -300,3 +300,26 @@ Node, test, reproduction, reservation or scratch allocation occurred. This
 checkpoint awaits immutable delta admission and a new execution grant. The
 accepted ledger/direct-join/probe pins and exactly three mechanics cases remain
 unchanged; all acceptance and the five other slices remain outstanding.
+
+
+## Actual-usage and FIFO-read checkpoint · 6 November 2026
+
+Scoped426d975 review accepted terminal-write completion but held current ledger
+telemetry and blocking final-audit file open. The minimal owned delta reports
+actual sampled used/RSS to the ledger; completion margins and historical RSS
+remain internal preflight/cap checks. No accepted StrictBudget owner/root/full-row,
+locked deletion, foreign-row or exact-release logic changed. All bounded final
+file reads open O_NONBLOCK|O_NOFOLLOW before fstat regular-file/size refusal and
+finite read. The analogous ticket-input pipe now uses nonblocking bounded reads
+and a3-second EOF deadline inside the unchanged120-second overall limit.
+Provisional files, final accounting and controller AND audit exit0 gates remain.
+
+Superseding admission `1c3589ee6002b0274a2a95779749e58dbd3d30604c1bc900cc9d81b91e54641d`;236 physical identities,
+45sources/971783bytes, accepted72edges/three cases and original base/actual66/
+source identity unchanged. Selected validation is static AST/JSON, exact ledger
+argument/read-order/byte-deadline checks, hashes, source/pin reuse, map ownership
+and diff inspection only. Tests NOT RUN; no edited helper imports, supervisor
+plan, runtime/probe/reproduction, reservation/scratch/browser/native/database or
+descendants. No new visual acceptance applies to this harness-only delta. Await
+root's immutable targeted review and a new grant; all six acceptance checks and
+five remaining slices stay open. Requested/selected gpt-6.1-sol/high; no fallback.

@@ -1820,15 +1820,15 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T02:53:09Z",
+      "observed_at": "2026-11-06T06:47:09Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-134",
       "slices": [
         {
           "id": "isolated-real66",
           "status": "in-progress",
           "title": "Isolated memory run and real66 authority",
-          "observed_at": "2026-11-06T02:53:09Z",
-          "evidence": "Final-output completion bound and independent parent audit authored/refrozen; accepted45-source/72-edge composition reused. Static only; immutable delta admission outstanding. docs/gcsp/evidence/fucq134/README.md"
+          "observed_at": "2026-11-06T06:47:09Z",
+          "evidence": "Actual-current ledger telemetry and nonblocking finite audit reads authored/refrozen; accepted terminal-write boundary and45-source/72-edge composition reused. Static only; targeted delta admission outstanding. docs/gcsp/evidence/fucq134/README.md"
         },
         {
           "id": "shared-matrix",

@@ -90,7 +90,7 @@ def read_bounded(path, limit):
     def identity(value):
         return (value.st_dev, value.st_ino, value.st_mode, value.st_size, value.st_mtime_ns, value.st_ctime_ns)
     ancestors(path)
-    with os.fdopen(os.open(path, os.O_RDONLY | os.O_NOFOLLOW), 'rb') as stream:
+    with os.fdopen(os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK), 'rb') as stream:
         before = os.fstat(stream.fileno())
         if not stat.S_ISREG(before.st_mode) or before.st_size > limit:
             raise RuntimeError('Final file type/size differs')
@@ -99,6 +99,28 @@ def read_bounded(path, limit):
         if len(data) != before.st_size or identity(before) != identity(after) or identity(path.stat()) != identity(after):
             raise RuntimeError('Final file changed during audit')
     return data
+
+
+def read_ticket():
+    # The parent supplies a pipe. Do not wait indefinitely for bytes or EOF if
+    # that input is substituted; its three-second ceiling is within the overall
+    # controller-start-to-audit deadline checked after decoding.
+    descriptor = sys.stdin.fileno()
+    os.set_blocking(descriptor, False)
+    deadline = time.monotonic() + 3
+    data = bytearray()
+    while time.monotonic() < deadline:
+        try:
+            block = os.read(descriptor, TICKET_LIMIT + 1 - len(data))
+        except BlockingIOError:
+            time.sleep(0.01)
+            continue
+        if not block:
+            return bytes(data)
+        data.extend(block)
+        if len(data) > TICKET_LIMIT:
+            raise RuntimeError('Parent ticket byte limit reached')
+    raise RuntimeError('Parent ticket read deadline reached')
 
 
 def decoded(data):
@@ -200,9 +222,7 @@ def main():
     args = parser.parse_args()
     if not sys.flags.isolated or not sys.dont_write_bytecode or not re.fullmatch('[a-f0-9]{64}', args.admission_sha):
         raise RuntimeError('Use isolated no-bytecode Python with reviewed admission SHA')
-    data = sys.stdin.buffer.read(TICKET_LIMIT + 1)
-    if len(data) > TICKET_LIMIT:
-        raise RuntimeError('Parent ticket byte limit reached')
+    data = read_ticket()
     ticket = decoded(data)
     result = audit(ticket, args.controller_exit, args.admission_sha)
     # No receipt rewrite: parent exit0 AND this bounded stdout are the completion
