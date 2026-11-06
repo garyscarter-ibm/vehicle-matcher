@@ -1820,17 +1820,17 @@
       "original_status": "In Progress",
       "assignee": "usget",
       "type": "Story",
-      "observed_at": "2026-11-06T10:37:32Z",
+      "observed_at": "2026-11-06T10:40:27Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60",
       "workers": [
         {
           "name": "Scooby Doo",
           "role": "story-lead",
           "harness": "codex",
-          "observed_at": "2026-11-06T10:37:32.012772+00:00",
-          "expires_at": "2026-11-06T12:37:32.012772+00:00",
+          "observed_at": "2026-11-06T10:40:27.074625+00:00",
+          "expires_at": "2026-11-06T10:40:27.074625+00:00",
           "source": "thread 01a1b05f-dcbc-7e50-a2f9-0332b39f082a",
-          "status": "Actual pinned F59 consumer scoped proof; requested/selected gpt-6.1-sol/high, no fallback"
+          "status": "Consumer checkpoint published; scoped handoff, remaining integration gates explicit"
         }
       ],
       "slices": [
