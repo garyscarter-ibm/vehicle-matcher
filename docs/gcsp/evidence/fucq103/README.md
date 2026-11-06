@@ -14,8 +14,9 @@ Only the nine frozen `eligibility-*` modes remain in the current supervisor. Use
 with `-I -B`, an externally reviewed plan SHA, exact published revision and a new grant for the
 selected mode. The latest core25 run at `68b7fed` passed 25/25 and was independently
 accepted at that scoped boundary. Both earlier incomplete attempts remain recorded
-below. Registry16 and broader acceptance gates remain open. The old commands and
-results below are historical evidence for their original sources.
+below. The subsequent registry16 run at `dc2b5ca` also passed 16/16 at its separately
+accepted scoped boundary. Remaining integration and broader acceptance gates remain
+open. The old commands and results below are historical evidence for their original sources.
 
 Each future mode has one worker, a fresh strict host reservation and bounded owned scratch;
 compact summaries/manifests remain outside scratch in the shared
@@ -451,3 +452,24 @@ This scoped PASS does not prove registry16, remaining integration modes,
 browser/native/full/deployed acceptance or full-story completion. The 38 authored
 parser design fixtures remain unexecuted. Root retains the next admission and final
 acceptance; the story remains In Progress with rendered integration outstanding.
+
+
+## Accepted scoped registry16 at dc2b5ca, 6 November 2026
+
+The separately granted registry chunk passed **16/16**: eight consumer, five presenter
+adoption and three learning adoption cases, with zero failures, cancellations, skips
+or todo cases. The lead audit passed 523 checks; the corrected independent root audit
+passed 2,533 checks and authorised publication. The [immutable registry proof index](eligibility-registry-dc2b5ca-2026-11-06/README.md)
+retains exact original log/summary/manifest/checkpoint/impact bytes and both final audits,
+plus the superseded root receipt so its checkpoint-check correction remains traceable.
+All original paths, byte counts and hashes are preserved in the index. Prior failed-run
+and accepted core25 evidence remains unchanged.
+
+Wall time was 18.352 seconds, peak RSS 724.84375MiB within 1024MiB, and combined peak
+4,348,854 bytes. Runtime and independent audits verified owned process/group/port,
+scratch/dependency and reservation absence, postwrite bounds and unchanged frozen pins.
+This proves canonical reviewed-definition registration/adoption only; remaining runtime
+integration, browser/native/full/deployed acceptance, producer/model/corpus uptake,
+105-to-107 decision lookup/reload and full-story completion remain open. The 38 parser
+design fixtures remain unexecuted. The [single default Paula HTTP case proposal](eligibility-default-proposal-2026-11-06.json)
+is authored against the unchanged freeze and requires a new exact grant; no next mode ran.
