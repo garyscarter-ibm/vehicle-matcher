@@ -86,6 +86,12 @@ The revised loader/supervisor propose one explicit helper-registration edge: the
 
 Rejected specifier/parent identities are written to the existing bounded journal before throwing, with bounded safe displays and digests for unknown or sensitive URL values. Supervisor preserves registration/rejection events in its receipt and reports nonzero Node exit before secondary application-graph checks. The six cases/eight setups, probe, all application/data/dependency pins and singleton URLs are unchanged. The manifest uses a fresh unused scratch/record identity. [loader-registration-diagnosis.json](loader-registration-diagnosis.json) records observed evidence, upstream read-only references, hypothesis, exact delta and new hashes. This authoring includes no Node/diagnostic execution or allocation; another exact review/admission is required.
 
+## Narrow probe occupancy correction after the reached run
+
+The separately admitted `0645d37` run reached all 46 application modules and all six cases, then failed the shared probe's raw-stock-flag expectation; its reached failure and cleanup are preserved in [service-proof-registration-result.json](service-proof-registration-result.json). Actual repository `conditionalClaim` writes `stock.state: held`; pending states occupy through the real holds/claims ledger. The probe now checks that actual state plus the original exact row/occupancy counts, shared hold/claim/quote binding and unchanged binding/quote snapshots. It sets no product flag and changes no producer. [probe-occupancy-diagnosis.json](probe-occupancy-diagnosis.json) pins the evidence, exact helper-only scope and new hashes.
+
+Every test body, all three release variants and the eight-setup after-hook remain byte-identical. Both original failures, loader/supervisor, 46 modules, six data inputs, eight external copies, singleton identities and dependency closure are unchanged. The revised manifest uses a fresh unused run identity. Static authoring only: no new Node, probe or diagnostic execution/allocation; exact root review and a new grant remain required.
+
 ## Remaining acceptance and external ownership
 
 Passing would establish only this pinned memory-service/HTTP/controller protocol boundary. Actual FUCQ-92 release production, rendered FUCQ-69 callback/event and FUCQ-70 UI, desktop/320px/keyboard/tick captures, FUCQ-103 central session/routes/pending202/clock subscription, native PostgreSQL, authored serial full suite/strict stamp, repeatable integrated trials and final acceptance remain outstanding.

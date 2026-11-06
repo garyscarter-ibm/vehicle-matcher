@@ -43,8 +43,20 @@ function occupancy(f, occupied) {
   oneClaim(f);
   assert.equal(exactRows(f, 'holds').filter((r) => OCCUPYING_STATES.includes(r.state)).length, occupied ? 1 : 0);
   assert.equal(exactRows(f, 'claims').filter((r) => OCCUPYING_STATES.includes(r.state)).length, occupied ? 1 : 0);
+  const [hold] = exactRows(f, 'holds'); const [claim] = exactRows(f, 'claims'); const [quote] = exactRows(f, 'quotes');
   const car = table(f, 'stock').find((r) => r.orderUuid === f.car.orderUuid);
-  assert.equal(car.held, occupied); assert.equal(car.available, !occupied);
+  assert.equal(car.state, occupied ? 'held' : 'released');
+  assert.equal(claim.state, hold.state); assert.equal(claim.holdId, hold.holdId);
+  assert.equal(hold.quoteId, quote.quoteId); assert.equal(claim.quoteId, quote.quoteId);
+  assert.equal(quote.orderUuid, f.car.orderUuid); assert.equal(quote.configurationId, f.car.configurationId);
+  for (const row of [hold, claim, quote]) {
+    assert.equal(row.runId, f.context.runId); assert.equal(row.employeeId, f.context.employeeId);
+    assert.equal(row.entitlementSlotId, f.context.entitlementSlotId); assert.equal(row.policyVersion, f.context.policyVersion);
+  }
+  const binding = { holdId: hold.holdId, claimId: claim.claimId, quoteId: quote.quoteId,
+    orderUuid: hold.orderUuid, employeeId: hold.employeeId, entitlementSlotId: hold.entitlementSlotId };
+  f.occupancyBinding ??= copy(binding); f.occupancyQuote ??= copy(quote);
+  assert.deepEqual(binding, f.occupancyBinding); assert.deepEqual(quote, f.occupancyQuote);
 }
 function stableDomain(f) {
   return copy(Object.fromEntries(['stock', 'holds', 'claims', 'quotes'].map((name) => [name, table(f, name)])));
