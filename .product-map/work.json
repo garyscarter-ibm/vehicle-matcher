@@ -1368,7 +1368,7 @@
       "id": "FUCQ-126",
       "jira_observation_basis": "Authenticated getJiraIssue FUCQ-126: In Progress/Gary Carter; no Jira write",
       "jira_observed_at": "2026-11-05T23:00:00Z",
-      "observed_at": "2026-11-06T00:11:38Z",
+      "observed_at": "2026-11-06T00:33:27Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -1400,23 +1400,23 @@
           "title": "Desktop and375px keyboard and actual HTTP proof"
         },
         {
-          "evidence": "Sharedb11a7e61 integrated/pushed1002101;noGCSP runtime delta;authored npm test awaits root serial lane;no full stamp",
+          "evidence": "Root accepted composed runtime 95d7741 with existing 9/9 selected memory proof and 273-check source/resource review; presenter branch has not imported it. Source-only assessment complete; authored full test still awaits root lane, no full stamp. docs/gcsp/evidence/fucq-126/integration-assessment-95d7741-2026-11-06.md",
           "id": "integrated-validation",
-          "observed_at": "2026-11-05T23:02:34Z",
+          "observed_at": "2026-11-06T00:33:27.683736+00:00",
           "status": "in-progress",
           "title": "Current-base integration and authored full validation"
         },
         {
-          "evidence": "Source-only review, 6 Nov: FUCQ-103 at 3f1cc34 supplies reviewed presenter-controls-v1 adoption, same-provider runtime and domain-time activation. Presenter integration, missing-key adoption, run pins and fresh-context evidence remain open. docs/gcsp/evidence/fucq-126/integration-plan-2026-11-06.md",
+          "evidence": "Actual FUCQ-100 runtime 95d7741 supplies same-provider reviewed adoption; published 9/9 memory proof includes step readback and pinned quote preservation, independently accepted by root. Presenter branch/native/browser acceptance remains open. docs/gcsp/evidence/fucq-126/integration-assessment-95d7741-2026-11-06.md",
           "id": "stored-policy-adoption",
-          "observed_at": "2026-11-06T00:10:28.096225+00:00",
+          "observed_at": "2026-11-06T00:33:27.683736+00:00",
           "status": "blocked",
           "title": "Existing stored policy successor-key adoption"
         },
         {
-          "evidence": "Pinned FUCQ-100/103/122/126 sources provide buddy/case services. FUCQ-92 release source is not supplied; six business scenario loaders and atomic domain reset preparation remain unavailable. Paused FUCQ-96 pending-read integration remains. docs/gcsp/evidence/fucq-126/integration-plan-2026-11-06.md",
+          "evidence": "FUCQ-92 producer now supplied at 15a79957; absent from composed runtime 95d7741. Actual outcome uses orderUuids, presenter reads released. Run-aware source after reset and atomic business preparation remain missing; six authored gates and paused FUCQ-96 retained. docs/gcsp/evidence/fucq-126/integration-assessment-95d7741-2026-11-06.md",
           "id": "business-integration",
-          "observed_at": "2026-11-06T00:10:28.096225+00:00",
+          "observed_at": "2026-11-06T00:33:27.683736+00:00",
           "status": "blocked",
           "title": "Actual release counts and business scenario reset"
         }

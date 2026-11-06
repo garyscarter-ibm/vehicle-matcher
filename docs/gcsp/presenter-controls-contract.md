@@ -172,3 +172,12 @@ The pinned [6 November integration plan](evidence/fucq-126/integration-plan-2026
 records available FUCQ-100/103/122 interfaces, the exact policy-instance reset constraint,
 minimum central composition and remaining producer/validation gates. It is a source/documentation
 checkpoint, not an integration or test-execution grant.
+
+The subsequent [assessment against composed runtime 95d7741](evidence/fucq-126/integration-assessment-95d7741-2026-11-06.md)
+records actual runtime scenario/step/mechanics-reset and reviewed-adoption memory evidence.
+That runtime preserves the original readPolicy scenario binding and pending HTTP 202 map.
+FUCQ-92 release source is now supplied at `15a79957e61d81612311d3aab7dbf77733dc4e0d`, but is
+not composed there. Its committed result returns newly released `orderUuids`, while the current
+presenter reads only integer `released`; the assessment proposes a bounded controller adaptation.
+Actual run-aware provider/reset data and the six business scenario preparation gates remain open.
+No producer import, projection change or new execution is performed by this documentation update.
