@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-107",
+  "status": "failed-before-nine-cases; root-failed-run-cleanup-audit-pending",
+  "grant": "fucq107-renderer9-ed9f619-0236",
+  "admissionSHA256": "f547b6a33e40424af037694ef7d1aaf3b970c91e92d2e208214435b42a78293b",
+  "sourceCommit": "94e05ff9070aa19f5deb3e9997dfed96cc268473",
+  "harnessPublication": "ed9f619148c41b888761b2e226663afd5b43d866",
+  "originalRun": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-e4b7c26abd294bd78395d59c774ab8d7",
+  "files": [
+    {
+      "path": "plan.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-e4b7c26abd294bd78395d59c774ab8d7/plan.json",
+      "bytes": 1418,
+      "sha256": "925538d07188c0c5dc39a2b1b89a6b10a72dd8277c3fe8deba9aeebb6651f02e"
+    },
+    {
+      "path": "output.log",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-e4b7c26abd294bd78395d59c774ab8d7/output.log",
+      "bytes": 1572,
+      "sha256": "032ab91d90317cb900c68e43d02f9d86730f3ca5c8252e53b3323ca4e7201412"
+    },
+    {
+      "path": "modules.jsonl",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-e4b7c26abd294bd78395d59c774ab8d7/modules.jsonl",
+      "bytes": 10715,
+      "sha256": "66a92a4821317c94fd4ae37c30a32a875a595b9b646b2e91384af3f9fa858c2b"
+    },
+    {
+      "path": "summary.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-e4b7c26abd294bd78395d59c774ab8d7/summary.json",
+      "bytes": 1306,
+      "sha256": "d2da0636bd0c4d46fcd574fb854e427dbae9fec0e7bad549d9ab19c82baea2ab"
+    },
+    {
+      "path": "checkpoint.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-e4b7c26abd294bd78395d59c774ab8d7/checkpoint.json",
+      "bytes": 339,
+      "sha256": "fff48b7855aeb580b91aa61c5c8c5bad4a37e109349659d5cef06978abc7e64a"
+    },
+    {
+      "path": "ownership/1082c729a1cf4927adc4e9b4b129e744.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-e4b7c26abd294bd78395d59c774ab8d7/ownership/1082c729a1cf4927adc4e9b4b129e744.json",
+      "bytes": 1330,
+      "sha256": "816d97c972aa18240c4ede49953eedcf45f515e0d53c90029fe52b5bc9b2265e"
+    },
+    {
+      "path": "audit-tool-result.json",
+      "source": "Exact untruncated command-execution tool output from own chat; command ran once.",
+      "bytes": 1353,
+      "sha256": "dffd99ef1146d3df80c502dad3b9cdf3ca5edb5982edf42e230e96e3d544150d"
+    }
+  ],
+  "originalCounts": {
+    "tests": 1,
+    "suites": 0,
+    "pass": 0,
+    "fail": 1,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "expectedRendererCasesExecuted": 0,
+  "journalEvents": 38,
+  "lastJournalEvent": {
+    "kind": "refused-load",
+    "url": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts/dist/cjs/index.js"
+  },
+  "diagnosis": {
+    "observed": "Pinned loader refuses executable format for pinned tldts/dist/cjs/index.js; error occurs during JSDOM dependency loading before nine named renderer cases.",
+    "unknown": "Actual nextLoad returned format is not recorded; do not infer its value.",
+    "affected": "Owned loader and independent journal verifier allowlists may need review; product renderer/source failure is not established.",
+    "next": "Dispatcher independent failed-run cleanup audit, then separately authorize any minimal harness authoring/refreeze and a fresh run if wanted.",
+    "restriction": "No source/helper mutation, repair, retry, variant or extra execution was performed."
+  },
+  "cleanup": "Supervisor reports all cleanup flags true; exact pinned success auditor exited1 at reported-success before independent process/ledger/scratch checks and created no receipt. Root failed-run cleanup audit remains pending.",
+  "reusedProofs": "Separate accepted102 mixed11 and unchanged controller14/policy7; own16 and renderer9 remain unproved."
+}

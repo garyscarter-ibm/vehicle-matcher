@@ -1,5 +1,7 @@
 # FUCQ-107 renderer9 harness proposal
 
+Historical authoring proposal below. It was independently admitted and received one explicit grant on 6 November. The exact once-run attempt failed in dependency loading before any of the nine cases; see `../renderer-first-run-failure/README.md`. The grant is consumed, the original frozen files remain unchanged and no retry is authorized.
+
 6 November 2026. **Author-only, unreviewed and unexecuted.** This packet proposes one finite run of `server/test/gcsp-second-offer-render.test.js`. No execution grant exists. The accepted controller14 run is separate; no controller or backend rerun is selected. The renewal correction at `17e7fe1` does not intersect this renderer graph. FUCQ-107 is not built.
 
 The authoritative external prefix is `/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-`. The adjacent files are byte-identical review copies; `capture-index.json` binds their hashes. Runtime paths refer to the external originals. Any alteration requires a new freeze and review.
