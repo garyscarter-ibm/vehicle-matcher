@@ -1,5 +1,7 @@
 # Current HTTPS browser evidence — 6 November 2026
 
+**Latest changed-input desktop result: Greg's deliberate manual update and readback passed; the overall journey remains incomplete at the same-URL return-navigation wait.** See the second attempt below. Paula reload and 375px acceptance remain unproved.
+
 **The first desktop attempt is incomplete.** Paula's ordinary served help page and explicit confirmation worked, and the actual presenter switch loaded her case in Greg's embedded queue. The local scenario stopped at its comparison before Greg confirmed an update. Neither the manual-update/Paula-reload journey nor any compound original acceptance clause is complete.
 
 The test used the existing `scripts/gcsp-demo.mjs` HTTPS launcher, its delivered HTML/module scripts, canonical policy and explicit memory repository. It supplied no case/stock/lifecycle fixture and injected no authority cookies. The first ordinary HTML navigation adopted the real bootstrap cookies; the presenter UI switched to Greg. The browser context accepted the run-owned self-signed certificate; this is not certificate-trust or native PostgreSQL evidence.
@@ -34,3 +36,26 @@ One desktop chunk ran through a minimal local adaptation of the existing FUCQ-10
 The supervisor closed/joined owned resources and removed its bounded local Chrome profile/TMPDIR working set. Independent collection verified all 18 tracked process identities, process group 78836, profile-argument processes, ports 49279/49284, scratch and reservation token absent; raw host rows were zero. No narrow chunk was allocated. The Chrome local working-set compatibility exception and exact cleanup fields are retained in [the compact summary](first-desktop-summary.json).
 
 Original local receipt SHA-256: `2257108ad0aabb39e5771f72e00ca15806405bdad4adc8b134021b10cebfe2e9`. Raw logs, process ledgers, local source catalogues and polling coordination remain ignored/local. This checkpoint preserves useful failure evidence and exact rendered bytes; it is not a passing browser or suite stamp.
+
+## Second desktop attempt — role-aware comparison
+
+The dispatcher granted one new desktop confirmation after the FUCQ-103 lane closed. Only the local scenario input changed: compare every stored case field across roles while separately asserting Greg's `employeeName` against Paula's trusted `context.name`, and record exact failed requests and deliberate transitions. No product source changed. Original scenario/catalogue bytes for both attempts remain retained locally. Changed-input catalogue SHA-256: `f4648fdb7ad5be612e474571d8384bfe27bc983021b0776fcd4f8832a276fb89`.
+
+This attempt passed the complete cross-role no-write comparison on opening options and reviewing Greg's edit, and confirmed **one** case-update POST (HTTP 200). Subsequent authenticated Greg readback passed assertions for the unchanged case ID and owner, exactly one version increment, in-progress status, the intended next action and serialized UTC due time, manual-decision remedy, exactly one additional dated history entry and Greg actor ID. The source-level assertions remain intact; these are observed scoped checks rather than a full browser PASS.
+
+Ordinary UI switching back to Paula returned HTTP 200 for the session switch and served presenter HTML. The runner then failed with `Execution context was destroyed` while reading context: its URL-only wait was already satisfied on the existing `gcsp-presenter.html`, so it raced the fresh navigation. It did not reach Paula's help return or reload. A source-only correction now waits for an actual new document navigation, including when the URL stays the same; syntax passes, but that changed input has **not** been run under this checkpoint.
+
+Both initial failed reads remain recorded as actual unclassified observations. The new trace identifies requests 40 (`/api/gcsp/presenter/controls`) and 41 (`/api/gcsp/manual/account`) during transition 1, the initial about:blank → help navigation, rather than the later Greg switch. They were not retrospectively waived as successful navigation cancellations. Initial custom-element attribute/connection mounting and shell abort teardown are a source-supported next diagnosis, not established runtime cause. Future tracing also associates response request IDs with these failures.
+
+Four exact captures from the second attempt were inspected. The help/confirmation views retain visible focus and no document overflow; Greg's actual queue and update review retain the independently backlogged FUCQ-150 width defect. The focused explicit update confirmation is visible in the fourth capture. No product repair or AC expansion followed.
+
+| Capture | Actual state |
+| --- | --- |
+| [Second Paula help](second-01-paula-help.png) | Fresh no-case help, keyboard focus. |
+| [Second Paula confirmation](second-02-paula-confirmation.png) | Stated help effect before the one write. |
+| [Second Greg queue](second-03-greg-actual-queue.png) | Actual populated embedded queue. |
+| [Greg update review](second-04-greg-update-review.png) | In-progress/manual-decision review; explicit confirmation focused before write. |
+
+The [second compact summary](second-desktop-summary.json) retains exact errors, transitions, HTTP POST counts, capture hashes and cleanup. Admission was the full 2,560MiB maximum; recursive RSS peaked at 1,808,367,616 bytes and combined allocation at 11,572,633 bytes. Independent collection verified all 18 tracked identities, group 82254, profile arguments, ports 49611/49613, scratch and token absent, raw host rows zero, source-before/source-after unchanged and no narrow allocation. Receipt SHA-256: `ab0f2bb8f22611af9693a04c038bd7e367b69c2e2e5e4c004cae949a4ae79169`.
+
+This completes the granted second allocation and its cleanup checkpoint. Another runtime allocation requires the dispatcher lane grant; the current evidence does not establish Paula reload, 375px, remaining original state/remedy/placement obligations, native PostgreSQL or producer integration acceptance.
