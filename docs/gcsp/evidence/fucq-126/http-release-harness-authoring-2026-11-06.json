@@ -1,6 +1,6 @@
 {
   "date": "2026-11-06",
-  "scope": "Owned in-process request/cookie/fetch bridge authoring only",
+  "scope": "Owned six actual composed HTTP cases, isolated TEST pull profile, transport and cancellation-safe supervisor authoring; unexecuted",
   "planningBase": "496b92a31310fd7308ecf2f6f55ba6737cad9a6d",
   "source": {
     "path": "server/test/helpers/presenter-http-proof.js",
@@ -12,7 +12,7 @@
   ],
   "productImports": [],
   "executed": false,
-  "validation": "Manual source review, Python AST parse, named-path whitespace and metadata/hash checks only; no guard import, subprocess launch, Node, product execution or cancellation reproduction.",
+  "validation": "Python AST/source inspection, frozen working-source and dependency hashes/membership, exact six-name extraction, links/JSON and named-path whitespace only. No Node, tests, product imports, cancellation reproduction or test allocation.",
   "deliveryLossVariant": "Actual handler completes and Set-Cookie headers are applied, then the reply body is discarded; this is not every network-loss variant.",
   "boundaries": [
     "Calls the actual request listener; never listens or fetches externally",
@@ -22,11 +22,12 @@
     "Transport journal retains only method/path/status/byte counts; never tokens or business bodies"
   ],
   "pending": [
-    "Wire and review cancellation-safe creation/registration/cleanup in the actual supervisor, then refreeze all helper identities",
-    "Concrete central composition and trusted new-run data contract",
-    "Six-case integration setup/test source and exact names/counts",
-    "Owned resource supervisor and module/read observer source pins",
-    "Fresh complete executable source/dependency/output ownership plan and root review"
+    "Root review/admission of actual source union and owned harness",
+    "Read observer source/schema and complete literal/dynamic read allowlist",
+    "Concrete candidate root plus freshly pinned package resolution links/directory inventories",
+    "Flatten exact source/dependency/helper/profile files into launcher input manifest",
+    "Actual delivered C5 reset/principal subscription hook from sole central writer100",
+    "Trusted new-run source/preparation interface before positive post-reset or business acceptance"
   ],
   "executionAuthorized": false,
   "cancellationGuard": {
@@ -46,12 +47,60 @@
     "basis": "Dispatcher notice: inherited Popen-to-register handled-cancellation gap found in107 supervisor/resources; no runtime reproduction authorized.",
     "acceptedEarlierProof": "Prior actual126 selected checks remain scoped accepted; no claim that any actual run hit this edge.",
     "sourceFix": "Owned future guard defers SIGINT/SIGTERM during creation/registration, retains local Popen handle, stops/joins and verifies exact PID/start/group even when registration fails; cleanup failure stays explicit.",
-    "integrationStatus": "Not yet wired into an executable supervisor. Future launcher must use this reviewed guard or a reviewed shared resource-helper repair; directly wrapping the old run_process does not fix its hidden Popen gap.",
+    "integrationStatus": "Guard is now wired directly around Popen in the authored supervisor; unexecuted. Registration failures still stop/join the local handle; cleanup uncertainty retains scratch/reservation. Exact candidate/read observer/root review remain pending.",
     "reservationAndScratch": "No scratch deletion/reservation release may rely on an empty registry; require actual handle cleanup and independent absence evidence. Preserve a named issue and charge for remaining live resources."
   },
   "resourceHelperPlanningPin": {
     "path": "_tools/test_resources.py",
     "sha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
     "executionApproval": false
+  },
+  "currentSourceRef": "f179ae6043414a2b07de3edb2b425338299ea37b",
+  "currentFreeze": {
+    "path": "docs/gcsp/evidence/fucq-126/http-release-source-plan-f179ae6-2026-11-06.json",
+    "sha256": "1d99642d619be61d555dd11a2561a1ec3e920718ee49850772dbe40062d4b545",
+    "sourceFiles": 136,
+    "literalEdges": 275,
+    "hostEvidenceFiles": 3,
+    "dependencyFilesReferenced": 1975
+  },
+  "authoredCases": [
+    "release-http: startup and actual release IDs match controller count and inventory delta",
+    "release-http: lost body retries the exact committed command once",
+    "release-http: a genuine exhausted source reports zero on the next ordinary tick",
+    "release-http: unavailable source refuses release without stock mutation",
+    "release-http: malformed pull is rejected by the actual producer without stock mutation",
+    "release-http: actual mechanics reset renews authority and old provider refuses the new run"
+  ],
+  "testAndSupervisorSources": [
+    {
+      "path": "docs/gcsp/evidence/fucq-126/http-release-supervisor.py",
+      "ref": "owned-authoring",
+      "blob": null,
+      "sha256": "e8d0c20135e468fd4a9f9a9fddfd69fd819d3c507f5b25c0c000a64f7c59cd48",
+      "bytes": 12981
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq-126/http-release.integration.mjs",
+      "ref": "owned-authoring",
+      "blob": null,
+      "sha256": "a85ddaa99a1f1ae892bc5979b4dc49cab3cd99ecd6b7598b2715b90218e2af0a",
+      "bytes": 15075
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq-126/prepare-f179-http-freeze.py",
+      "ref": "owned-authoring",
+      "blob": null,
+      "sha256": "645fcec46b4bb9a8bb32e295b3775203ea69e89518e2da2c9d3163f5a51d077e",
+      "bytes": 8275
+    }
+  ],
+  "profile": {
+    "path": "docs/gcsp/evidence/fucq-126/http-release.integration.mjs",
+    "kind": "TEST isolated existing pull-port input derived from actual bootstrap identities/facts",
+    "businessFactsInvented": false,
+    "releasedRowsRepaired": false,
+    "newRunSuccess": false,
+    "deliveredHostProfile": false
   }
 }

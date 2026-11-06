@@ -1368,7 +1368,7 @@
       "id": "FUCQ-126",
       "jira_observation_basis": "Authenticated getJiraIssue FUCQ-126: In Progress/Gary Carter; no Jira write",
       "jira_observed_at": "2026-11-05T23:00:00Z",
-      "observed_at": "2026-11-06T01:59:58Z",
+      "observed_at": "2026-11-06T02:14:13Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -1400,9 +1400,9 @@
           "title": "Desktop and375px keyboard and actual HTTP proof"
         },
         {
-          "evidence": "Canonical100 eligibility checkpoint38be4f5 supplied. Read-only next HTTP-to-controller plan freezes124Gitblobs/242literaledges/1975installed files; no foreign adoption/execution grant. Existinga10ca74 selectedmodules/root2097audit retained. Next composedsource/test/supervisor/newrun inputs still needed; no full stamp. docs/gcsp/evidence/fucq-126/http-release-plan-38be4f5-2026-11-06.md Own in-process HTTP/cookie transport bridge authored and pinned, unexecuted; concrete central setup/test/supervisor still pending. http-release-harness-authoring-2026-11-06.json Future cancellation-safe child guard authored/pinned and AST-reviewed only; wiring/refreeze required before execution.",
+          "evidence": "Actual100 composition f179ae6 supplied. Six actualHTTP count/replay/empty/refusal/reset cases and cancellation-safe supervisor authored/unexecuted;136sources/275edges+3hostpins/1975unchangeddependency files. Read observer, physicalcandidate/admission and C5hostsubscription remain pending; no fullstamp. docs/gcsp/evidence/fucq-126/http-release-authoring-f179ae6-2026-11-06.md",
           "id": "integrated-validation",
-          "observed_at": "2026-11-06T01:59:58.010507+00:00",
+          "observed_at": "2026-11-06T02:14:13.172640+00:00",
           "status": "in-progress",
           "title": "Current-base integration and authored full validation"
         },
@@ -1414,9 +1414,9 @@
           "title": "Existing stored policy successor-key adoption"
         },
         {
-          "evidence": "Validated orderUuids projection remains publisheda10ca74. Canonical38be4f5 still has no release composition or run-aware factory; six proposed actualHTTP boundary cases await exact composedfreeze/admission. Positive postreset release and six atomic business preparations remain missing; paused96 retained. docs/gcsp/evidence/fucq-126/http-release-plan-38be4f5-2026-11-06.md",
+          "evidence": "Actual100 f179ae6 now constructs92release through explicitprovider. Own authoredsixcase TESTprofile derives bootstrapidentities and preserves their incompletefacts; no releasedrowrepair or executedbusinessproof. Trusted newrunfactory, actualC5hostsubscription and six atomicbusinesspreparations remain open; paused96 retained. docs/gcsp/evidence/fucq-126/http-release-authoring-f179ae6-2026-11-06.md",
           "id": "business-integration",
-          "observed_at": "2026-11-06T01:33:59.751835+00:00",
+          "observed_at": "2026-11-06T02:14:13.172640+00:00",
           "status": "blocked",
           "title": "Actual release counts and business scenario reset"
         }
