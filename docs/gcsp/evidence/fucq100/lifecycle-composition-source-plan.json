@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "status": "proposal-only; not applied or executed",
+  "baseRevision": "280db3ac3756b91e8674c46751df2694040e9423",
+  "ownedPaths": [
+    {
+      "path": "server/gcsp/runtime.js",
+      "preimageSha256": "d728142ebbf5d5cfe451e95e90cbacaeda6168bf1f158043780da67fc707a36f",
+      "postimageSha256": "6ef00541af22a7995ed66e97eed21b92e1fd3d7955c57ff9a3239eb8ff196170"
+    },
+    {
+      "path": "server/index.js",
+      "preimageSha256": "b493a8f61fe797a03aa5a51d127a39186e5bd2cc657de5b22a511934a8a258cc",
+      "postimageSha256": "79bf6dfe07a2b791cf3264cdc0215fac75f1b7d8a5db50ac10785858ee452e1f"
+    }
+  ],
+  "patch": {
+    "path": "docs/gcsp/evidence/fucq100/lifecycle-composition-owned.patch",
+    "sha256": "1c2b21bf0e1837acae48cf5529d4726b11dcbf1cd4aeb65cab7ed40dba820a62",
+    "format": "unified diff, zero context; verify exact preimages before application",
+    "staticApplyCheckOptions": [
+      "--unidiff-zero",
+      "--check"
+    ]
+  },
+  "inspectedSourcePins": [
+    {
+      "revision": "ed20ca2a774d9368b4fce87a7e69b5e2ae30a7e8",
+      "path": "server/gcsp/adapters/synthetic-ordering.js",
+      "sha256": "c2b83391dc0b32e811a407a546d600631254e73810fa90eecc4ad6f70c1392be",
+      "bytes": 2401
+    },
+    {
+      "revision": "ed20ca2a774d9368b4fce87a7e69b5e2ae30a7e8",
+      "path": "server/gcsp/manual-order/index.js",
+      "sha256": "b4b7798268cd51929b756ffb4c48e6f56579821094a0fa064f604d5886fcc352",
+      "bytes": 19660
+    },
+    {
+      "revision": "d392120b777583b716ad5d0b8484ba477fb5fe37",
+      "path": "server/gcsp/lifecycle/approvals/index.js",
+      "sha256": "66fe2e9d699fedddacfc7424bedace2b0837d0b3467afca8dc2ed3e68b995a16",
+      "bytes": 18617
+    },
+    {
+      "revision": "d392120b777583b716ad5d0b8484ba477fb5fe37",
+      "path": "server/gcsp/lifecycle/approvals/http.js",
+      "sha256": "ba533b630a8be38232822c55852fd0f16e05189d24bd7075d902f92dff2ef862",
+      "bytes": 1069
+    },
+    {
+      "revision": "d392120b777583b716ad5d0b8484ba477fb5fe37",
+      "path": "server/gcsp/adapters/synthetic-ordering-status.js",
+      "sha256": "3122f074ca1ee6614c58cc8bb53cb62ad7e10a5bcbc076dd8490b94b182390d2",
+      "bytes": 3425
+    },
+    {
+      "revision": "91c263f0ec9a35ba705e13085c8efe658e536514",
+      "path": "server/gcsp/lifecycle/documents/index.js",
+      "sha256": "2aa9a206e864a4a99890405e6b3893997f4162ade6a1d27cf1a92c754308322b",
+      "bytes": 22295
+    },
+    {
+      "revision": "91c263f0ec9a35ba705e13085c8efe658e536514",
+      "path": "server/gcsp/lifecycle/documents/http.js",
+      "sha256": "ba3e6791677490a9f8d5ea429be1f17f7710fcb9758610c65b64ee170a6005b4",
+      "bytes": 1193
+    },
+    {
+      "revision": "91c263f0ec9a35ba705e13085c8efe658e536514",
+      "path": "server/gcsp/adapters/synthetic-ordering-documents.js",
+      "sha256": "1236e1099f8de4e8aca4d33967acb0872f751dd3eb5334a56014ba0430d813df",
+      "bytes": 2939
+    },
+    {
+      "revision": "280db3ac3756b91e8674c46751df2694040e9423",
+      "path": "server/gcsp/clock/index.js",
+      "sha256": "98d9e3ad778ad9a38aa3fb5f96f5a68040544ba328b79e263e661ec42c442c45",
+      "bytes": 24094
+    },
+    {
+      "revision": "280db3ac3756b91e8674c46751df2694040e9423",
+      "path": "scripts/gcsp-demo.mjs",
+      "sha256": "6e537cc11f76286b89c5951d74079c6277c66140bb0a27b0d05be878f5dff2c2",
+      "bytes": 4991
+    },
+    {
+      "revision": "280db3ac3756b91e8674c46751df2694040e9423",
+      "path": "blocks/gcsp/account/harness.js",
+      "sha256": "606ec0b4b0f489d4e65340be292a4f2f5350c7ca81883393b7672f5fcd5c3991",
+      "bytes": 773
+    },
+    {
+      "revision": "280db3ac3756b91e8674c46751df2694040e9423",
+      "path": "blocks/gcsp/account/http-adapter.js",
+      "sha256": "eb89226f9ab8ff04b5c43dfc3c91b6e57c233ef88e273eaf8985895e79106453",
+      "bytes": 3674
+    }
+  ],
+  "transitiveExecutionClosureFrozen": false,
+  "unresolved": [
+    "Published FUCQ-111 stagePort() revision 2 implementation accepting trusted clock contexts, with top-level policyVersion, read(context,{orderUuid}) and listOrders(context).",
+    "Canonical policy seed integration and shared contracts are separate serial lanes.",
+    "Exact published module adoption and existing FUCQ-71 selection composition must reuse this single orderingAdapter.",
+    "Actual producer-to-stage-to-readiness, HTTP/startup and required full validation remain open."
+  ],
+  "executionPermission": "none; Resume7 and shared full suite not granted by this preparation",
+  "validation": {
+    "kind": "static source/hash/diff review only",
+    "plannedAfterSeparateAdmission": [
+      "Actual composed runtime constructor identity: one repository/policy/clock/identity and one ordering adapter with both capabilities.",
+      "Authenticated approval/document routes: own/foreign employee, Greg/presenter and unavailable outcomes.",
+      "Startup registration and failure propagation, roles-empty internal stage port and actual handler ordering.",
+      "Actual FUCQ-71 acknowledgement to FUCQ-111 stages to FUCQ-116 readiness on ticks, replay and synthetic provenance."
+    ],
+    "excluded": [
+      "No duplicate lifecycle service unit run against unchanged source/inputs.",
+      "No native/live/browser/full or Resume7 execution."
+    ],
+    "completedStaticChecks": [
+      "Twelve immutable source hashes matched.",
+      "Both owned product preimages matched and reconstructed postimage hashes matched.",
+      "git apply --unidiff-zero --check passed without applying the patch.",
+      "Named-path/trailing-whitespace/diff checks passed; no product/test/helper/catalogue changes."
+    ]
+  }
+}
