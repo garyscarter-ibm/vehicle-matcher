@@ -1383,15 +1383,15 @@
           "id": "rendered-browser",
           "status": "in-progress",
           "title": "Rendered exact-car browser, claim reconciliation and visual acceptance",
-          "observed_at": "2026-11-06T00:15:28Z",
-          "evidence": "First granted84af623 desktop smoke INCOMPLETE on helper shell-logo403;2captures inspected, trusted native series/font passed, owned cleanup verified. Failure retained in docs/gcsp/evidence/fucq69/browser/smoke-desktop-c29e8def39c3/README.md. Static55-file/65-edge closure correction passes preparation only; no retry/matrix grant, product174/131proof unchanged."
+          "observed_at": "2026-11-06T00:53:35Z",
+          "evidence": "Corrected granted exact5147ba4 desktop smoke PASS; both captures inspected, native keyboard/filter/font/shell and owned cleanup verified. docs/gcsp/evidence/fucq69/browser/smoke-desktop-49bf496834ac/README.md. Product174/131proof unchanged. Full desktop/320px/detail/recovery matrices and actual claim70/host acceptance remain open; grant consumed, browser lane released."
         },
         {
           "id": "released-integration",
           "status": "in-progress",
           "title": "Actual release-history and released-run browse-to-claim integration",
-          "observed_at": "2026-11-06T00:39:39Z",
-          "evidence": "Unexecuted bounded consumer authoring against exact100/92 sources; docs/gcsp/evidence/fucq69/integration-plan.md. Await dispatcher closure/argv grant before imports or execution."
+          "observed_at": "2026-11-06T00:53:35Z",
+          "evidence": "One granted exact6574dd2 read integration PASS9/9; actual100/66 authenticated HTTP plus actual92 tick/receipt. Independent identity/cleanup audit passed; portable result docs/gcsp/evidence/fucq69/released-integration/released-read-42ddd6eb4d16/README.md. Delivered wiring/history UI and browse-claim-readback70 remain open; TEST provider/occupation fixtures are scoped only; no retry."
         },
         {
           "id": "final-validation",
