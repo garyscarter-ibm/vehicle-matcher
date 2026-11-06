@@ -128,8 +128,21 @@ candidate = candidate[:start] + '''    def _read_ledger(self, lock_file):
     @staticmethod
     def _resources_absent(row):
         # Legacy rows with no root/child-state evidence remain charged for explicit reconciliation.
-        if (not row.get("root") or "children" not in row or row.get("launchPending") is not False
-                or os.path.lexists(row["root"])):
+        if not row.get("root") or "children" not in row or row.get("launchPending") is not False:
+            return False
+        try:
+            os.lstat(row["root"])
+        except FileNotFoundError:
+            # Missing ancestors or an unresolved/symlink parent are not definite scratch absence.
+            try:
+                parent = os.lstat(Path(row["root"]).parent)
+            except (OSError, ValueError):
+                return False
+            if not stat.S_ISDIR(parent.st_mode):
+                return False
+        except (OSError, ValueError):
+            return False
+        else:
             return False
         for child in row["children"]:
             if process_alive(child) or group_has_live_members(child["pgid"]) is not False:
@@ -304,7 +317,7 @@ receipt = {'date': '2026-11-06', 'kind': 'Exact coordinator patch only; shared h
            'resultSha256': hashlib.sha256(candidate.encode()).hexdigest(), 'resultBytes': len(candidate.encode()),
            'patchPath': str(patch_path.relative_to(ROOT)), 'patchSha256': hashlib.sha256(patch.encode()).hexdigest(),
            'requiredContract': 1, 'patchFormat': 'Zero-context unified diff; require exact base hash and --unidiff-zero if using Git apply.', 'covers': ['R1', 'R2', 'R3', 'R4 bounded wait', 'R7 helper open-file check'],
-           'validation': 'Exact baseline hash, unique edit anchors, resulting Python AST and unified diff authoring only.',
+           'validation': 'This narrow follow-up used static text/hash reconstruction only; no script, helper, AST or syntax execution. The generator retains its separately permissioned AST step for future use.',
            'remaining': ['Coordinator review/adoption and shared caller compatibility validation',
                          'No helper behavior, signal, corrupt-ledger, process, lsof or cancellation checks executed',
                          'Legacy rows lacking new child-state evidence stay charged for explicit reconciliation',

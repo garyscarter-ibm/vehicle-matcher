@@ -31,7 +31,7 @@
 @@ -97 +102 @@
 -            yield
 +            yield f
-@@ -213,0 +219,87 @@
+@@ -213,0 +219,100 @@
 +    def _read_ledger(self, lock_file):
 +        """Hold the existing stable lock; parse one bounded, no-follow ledger descriptor.
 +
@@ -111,15 +111,28 @@
 +    @staticmethod
 +    def _resources_absent(row):
 +        # Legacy rows with no root/child-state evidence remain charged for explicit reconciliation.
-+        if (not row.get("root") or "children" not in row or row.get("launchPending") is not False
-+                or os.path.lexists(row["root"])):
++        if not row.get("root") or "children" not in row or row.get("launchPending") is not False:
++            return False
++        try:
++            os.lstat(row["root"])
++        except FileNotFoundError:
++            # Missing ancestors or an unresolved/symlink parent are not definite scratch absence.
++            try:
++                parent = os.lstat(Path(row["root"]).parent)
++            except (OSError, ValueError):
++                return False
++            if not stat.S_ISDIR(parent.st_mode):
++                return False
++        except (OSError, ValueError):
++            return False
++        else:
 +            return False
 +        for child in row["children"]:
 +            if process_alive(child) or group_has_live_members(child["pgid"]) is not False:
 +                return False
 +        return True
 +
-@@ -215,8 +307,42 @@
+@@ -215,8 +320,42 @@
 -        """Probe process identities outside the reservation lock; an OS query can take seconds."""
 -        data = read_json(self.path, {}) or {}
 -        return {k: v["owner"] for k, v in data.items() if not process_alive(v["owner"])}
@@ -170,29 +183,29 @@
 +                raise ResourceError("cannot clear a foreign or missing launch")
 +            live[token]["launchPending"] = False
 +            self._write_ledger(live)
-@@ -262,3 +388,2 @@
+@@ -262,3 +401,2 @@
 -        with locked(self.directory / "reservations.lock"):
 -            live = self._live(dead)
 -            atomic_json(self.path, live)
 +        with locked(self.directory / "reservations.lock") as lock_file:
 +            live = self._live(dead, lock_file)
-@@ -268,0 +394,2 @@
+@@ -268,0 +407,2 @@
 +        if not identity.get("start"):
 +            raise ResourceError("cannot establish reservation owner start identity")
-@@ -270,2 +397,4 @@
+@@ -270,2 +410,4 @@
 -        with locked(self.directory / "reservations.lock"):
 -            live = self._live(dead)
 +        with locked(self.directory / "reservations.lock") as lock_file:
 +            live = self._live(dead, lock_file)
 +            if token in live:
 +                raise ResourceError("reservation token already exists")
-@@ -284,2 +413,3 @@
+@@ -284,2 +426,3 @@
 -                           "parent": capacity["parent"], "root": str(root) if root else None}
 -            atomic_json(self.path, live)
 +                           "parent": capacity["parent"], "root": str(root) if root else None,
 +                           "children": [], "launchPending": False}
 +            self._write_ledger(live)
-@@ -289,10 +419,10 @@
+@@ -289,10 +432,10 @@
 -        try:
 -            with locked(self.directory / "reservations.lock"):
 -                live = read_json(self.path, {}) or {}
@@ -213,7 +226,7 @@
 +            live[token].update(used=used, rss=rss)
 +            self._write_ledger(live)
 +            return True
-@@ -301,4 +431,15 @@
+@@ -301,4 +444,15 @@
 -        with locked(self.directory / "reservations.lock"):
 -            live = read_json(self.path, {}) or {}
 -            live.pop(token, None)
@@ -233,18 +246,18 @@
 +                raise ResourceError("reservation changed during release; charge retained")
 +            del live[token]
 +            self._write_ledger(live)
-@@ -327,2 +468,3 @@
+@@ -327,2 +481,3 @@
 -def stop_group(process):
 -    """Each supervised process owns a session, including its normally spawned descendants."""
 +def stop_group(process, timeout=9):
 +    """Bound leader waits; callers still verify the exact identity and full group absence."""
 +    deadline = time.monotonic() + timeout
-@@ -335 +476,0 @@
+@@ -335 +489,0 @@
 -            # macOS returns EPERM for zombie-only groups. Never hide denied signals to live/unknown groups.
-@@ -340 +481 @@
+@@ -340 +494 @@
 -            process.wait(timeout=3)
 +            process.wait(timeout=max(0.001, min(3, deadline - time.monotonic())))
-@@ -343,4 +484,4 @@
+@@ -343,4 +497,4 @@
 -        if sig == signal.SIGTERM:
 -            # The leader may exit before one of its children; the owned group still needs the second signal.
 -            continue
@@ -253,7 +266,7 @@
 +        process.wait(timeout=max(0.001, deadline - time.monotonic()))
 +    except subprocess.TimeoutExpired as error:
 +        raise ResourceError("owned child did not join before cleanup deadline") from error
-@@ -352,2 +493,10 @@
+@@ -352,2 +506,10 @@
 -        return sum(int(parts[1]) * 1024 for line in p.stdout.splitlines()
 -                   if len(parts := line.split()) == 2 and parts[0] == str(pgid))
 +        if p.returncode != 0 or p.stderr or not p.stdout.strip():
@@ -266,7 +279,7 @@
 +            if int(parts[0]) == pgid:
 +                total += int(parts[1]) * 1024
 +        return total
-@@ -355 +504,12 @@
+@@ -355 +517,12 @@
 -        return 0
 +        return None
 +
@@ -280,9 +293,9 @@
 +        raise ResourceError("cannot establish open-file absence; scratch retained: %s" % root) from error
 +    if result.returncode != 1 or result.stdout or result.stderr:
 +        raise ResourceError("open files or uncertain status; scratch retained: %s" % root)
-@@ -411,0 +572 @@
+@@ -411,0 +585 @@
 +            verify_no_open_files(self.root)
-@@ -502,0 +664,3 @@
+@@ -502,0 +677,3 @@
 +                if rss is None:
 +                    issue = "RAM observation uncertain; full reservation stays charged"
 +                    rss = ram_limit

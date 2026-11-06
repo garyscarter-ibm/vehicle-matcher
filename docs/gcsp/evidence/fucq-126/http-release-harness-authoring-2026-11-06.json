@@ -12,7 +12,7 @@
   ],
   "productImports": [],
   "executed": false,
-  "validation": "Source/metadata hashes, exact patch reconstruction in memory, Python AST/JSON, source graph and named-path whitespace only. No Node, product imports, tests, process/ledger/lsof probes or resource allocations.",
+  "validation": "Latest absence follow-up: static text/hash/Git metadata only; no generator/helper imports, AST/syntax execution, tests, runtime, probes, ledger reads or allocations. Prior2216 checks remain evidence for8ca2162, not a new execution claim.",
   "deliveryLossVariant": "Actual handler completes and Set-Cookie headers are applied, then the reply body is discarded; this is not every network-loss variant.",
   "boundaries": [
     "Calls the actual request listener; never listens or fetches externally",
@@ -55,7 +55,7 @@
   "currentSourceRef": "f179ae6043414a2b07de3edb2b425338299ea37b",
   "currentFreeze": {
     "path": "docs/gcsp/evidence/fucq-126/http-physical-candidate-review-repair-2026-11-06.json",
-    "sha256": "9206c77bf0fbcd4132974bbfe44d400b620936ce72d944bc2946015d1e706314",
+    "sha256": "0d280b1cd6e7ddb140fa8479bf2e25e370329579eabb49afa16f75db29f3646f",
     "sourceDataHelperReferenceFiles": 140,
     "installedDependencyFiles": 1975,
     "allFiles": 2115,
@@ -76,8 +76,8 @@
     {
       "path": "docs/gcsp/evidence/fucq-126/author-resource-contract-patch.py",
       "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/docs/gcsp/evidence/fucq-126/author-resource-contract-patch.py",
-      "sha256": "29fcc90fa889c056ac28c0fa8c6d5ac46d123d8ec3eddb6d366395ae658220e7",
-      "bytes": 17381,
+      "sha256": "375a49a4a473c899300d31e579f068a002737ce0c41bd7d21c119391010b7b0b",
+      "bytes": 17926,
       "role": "physical-source-data-helper-or-reference"
     },
     {
@@ -165,9 +165,9 @@
     "contract": 1,
     "adoptedHelperSha256": null,
     "currentHelperSha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
-    "proposedResultSha256": "85a46c1db9390feaf733b96e4f8877306629247810070c64a8c108f960b4db39",
+    "proposedResultSha256": "fb6fa9130b4f379ac956178944afc30bc723f7243b6a36a54a5da8c6fe137ea5",
     "patchPath": "docs/gcsp/evidence/fucq-126/shared-resource-contract-review-repair-2026-11-06.patch",
-    "patchSha256": "9e901954d31ce12eb71aef301622ebda5c7c0dc413dae51e89bdef315b00d3f2",
+    "patchSha256": "782e558285c4c5eaa6669b5a8a82194ae48dde9f7dda044a4026e560f75bd45e",
     "state": "Coordinator patch supplied, not applied; exact adopted helper must be refrozen before admission"
   },
   "reviewRepairOf": {
@@ -191,5 +191,26 @@
     "coverageFileMiB": 8,
     "coverageTotalMiB": 64,
     "coverageFiles": 128
+  },
+  "physicalFreezeBeforeAbsenceFollowup": {
+    "path": "docs/gcsp/evidence/fucq-126/http-physical-candidate-review-repair-2026-11-06.json",
+    "sha256": "9206c77bf0fbcd4132974bbfe44d400b620936ce72d944bc2946015d1e706314",
+    "sourceDataHelperReferenceFiles": 140,
+    "installedDependencyFiles": 1975,
+    "allFiles": 2115,
+    "distinctResolvedFiles": 2113,
+    "literalEdges": 267,
+    "classifiedSites": 29,
+    "candidateRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096"
+  },
+  "absenceFollowup": {
+    "revisionReviewed": "8ca2162679f0e2c65370b0f7652ee72f52dcd495",
+    "previousFreezeSha256": "9206c77bf0fbcd4132974bbfe44d400b620936ce72d944bc2946015d1e706314",
+    "reviewReceipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq126-repair-static-review-1016.json",
+    "reviewReceiptBytes": 2091,
+    "reviewReceiptSha256": "dfef013efa394ba3261e8d3ab9690eee1d9b0a55ad3003247a9647e24411fb30",
+    "finding": "Only concrete MAJOR: lexists conflated missing scratch and failed lookup. Narrow lstat/parent-directory authoring repair; all existing owner/child/pending/ledger gates preserved.",
+    "validation": "Static text/hash/Git metadata only; no generator/helper/AST/syntax execution, tests, runtime, probes, ledger reads or allocations.",
+    "verdict": "HOLD retained; helper unapplied and execution admission unchanged."
   }
 }

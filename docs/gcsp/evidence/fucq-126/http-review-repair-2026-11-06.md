@@ -4,6 +4,11 @@
 This replaces the planning identity for the six cases, preserving the earlier accepted controller
 and browser evidence and the separate C5 proposal. No product file or shared resource helper changes.
 
+**Latest narrow follow-up:** [scratch-absence authoring repair](http-absence-authoring-2026-11-06.md)
+replaces the proposed helper's ambiguous lexists absence check after review of `8ca2162`.
+Its validation is text/hash/Git metadata only; no new AST, syntax or runtime execution occurred.
+The earlier validation record below belongs to the preceding checkpoint. HOLD remains.
+
 ## Decided diagnosis and source basis
 
 Claude's independent report is
