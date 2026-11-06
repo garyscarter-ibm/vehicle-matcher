@@ -64,3 +64,11 @@ Exact identities, proof sources and ownership/checkpoint manifests are retained 
 The story remains **blocked** for GC-owned canonical runtime/host and reviewed identity adoption, source-backed choice/stock bootstrap, Gary's native migration0004/snapshot/transaction proof, and the authored final `npm test` at the dispatcher-admitted integration point. The additive module and synthetic producer/browser proofs do not close those gates.
 
 Canonical routing and concrete adoption steps: [F104 integration handoff](fucq104-integration-handoff-2026-11-06.md).
+
+## Resumed host attachment, 6 November 2026
+
+`attachGregOrders` in `blocks/gcsp/greg-orders/runtime.js` follows the existing dashboard's reserved region across actual remounts, mounts one registered order element, refreshes the same demand dashboard after a change, and restores the reserved content on replacement/stop/abort. It leaves identity/bootstrap and demand-adapter ownership with the host. The owned harness now uses it. Production disclosure remains an explicit host boolean, false by default.
+
+The helper, orders UI, dashboard and ratchet selection passed **74/74**, serially, with no skips/failures. The static CSP guard was corrected to distinguish a callback default from inline markup/DOM handlers; it retains executable-handler/eval/Function/string-timer checks. Current authenticated headless HTTPS proof submitted a real synthetic request, observed a fresh actual demand-route read, remounted the dashboard and retained one saved request/panel, then captured inspected normal viewports at1440/390 with no page overflow or page/console/external errors. Its first reused proof issued an already-expired absolute cookie; the proof now uses actual session wall time independently of the synthetic DemoClock. Product authentication was unchanged.
+
+Evidence is in [browser-attachment](evidence/fucq104/browser-attachment/attachment-report.json), with [the source/runtime mapping handoff](fucq104-source-runtime-handoff-2026-11-06.md). Scoped source key `a19b72e5fd3b17d9eb53961002d9f5d22ceea289ba06a420c83158c5d51376e9`, base `52663f78635e3194f7ed3f3118f7cddc2c22fb96`, aligned HEAD `f10a3aae94ff4a65463bf3b73962fc91136e0ccc`; exact source hashes and resource manifests remain under launching `.claude/dev-poller-resume-20261106/lead104/`. Canonical/native/source/full acceptance remains blocked.

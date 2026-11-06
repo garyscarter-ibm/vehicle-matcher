@@ -154,6 +154,8 @@ Gallery: the **GCSP Greg kit** section of [`components.html`](components.html) s
 
 `mountGregOrders(root, {adapter, productionControls, onChanged, signal})` and `<gcsp-greg-orders>` in `blocks/gcsp/greg-orders/` compose the existing `dataTable`, `labelledField`, `button`, `statusScreen` and `el`. This adds no competing kit primitive. Requested, confirmed and released counts stay separate; native model/derivative/quantity forms retain focus across refresh, and saved confirmations expose release-queue retry. The optional synthetic production disclosure uses the retained presenter cookie; the acting Greg cookie handles requests and queueing. The element accepts `adapter` as a property, emits `gcsp:orders-changed`, has `refresh()`, and aborts on disconnect. The [same-origin integration harness](blocks/gcsp/greg-orders/harness.html) mounts the panel in the existing dashboard region, requiring trusted backend session bootstrap and registered supply/demand routes. Its scoped composition stylesheet is capped separately; shared kit/gallery rows and existing caps remain intact. [Contract and browser evidence](docs/gcsp/greg-orders-contract.md).
 
+`attachGregOrders(dashboard, {adapter, productionControls, onChanged, signal})` in `blocks/gcsp/greg-orders/runtime.js` owns that existing region across dashboard remounts. It replaces prior listeners, refreshes the same demand dashboard after an order change, and restores the original reserved region on teardown or abort. Production controls default to hidden; the host selects disclosure. [Canonical host/source handoff](docs/gcsp/fucq104-source-runtime-handoff-2026-11-06.md).
+
 ## Not yet in the kit
 
 Hand-built in several modes (file counts at the time of writing):

@@ -103,6 +103,6 @@ test('HTTP transport includes credentials and exact body; failure never invents 
 test('new block source uses shared kit and has no inline code or CSP-forbidden execution', async () => {
   const base = new URL('../../blocks/gcsp/greg-orders/', import.meta.url);
   const source = (await Promise.all((await readdir(base)).filter((p) => /\.(?:js|html)$/.test(p)).map((p) => readFile(new URL(p, base), 'utf8')))).join('\n');
-  assert.doesNotMatch(source, /\beval\s*\(|new\s+Function\s*\(|\son\w+\s*=|<script\b[^>]*>\s*[^<\s]|set(?:Timeout|Interval)\s*\(\s*['"`]/i);
+  assert.doesNotMatch(source, /\beval\s*\(|new\s+Function\s*\(|<[^>]+\son\w+\s*=|\.on\w+\s*=|setAttribute\s*\(\s*['"]on|<script\b[^>]*>\s*[^<\s]|set(?:Timeout|Interval)\s*\(\s*['"`]/i);
   assert.match(source, /kit\/data-table/); assert.match(source, /kit\/form-controls/); assert.match(source, /vehicle-matcher\/ui/);
 });
