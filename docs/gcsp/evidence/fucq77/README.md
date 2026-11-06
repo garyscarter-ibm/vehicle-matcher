@@ -83,6 +83,31 @@ The second command performs an offline draft check and returns `valid: true`, `r
 It has no execution, key or transport capability. A future `collect-fleet --execute` must call
 the readiness guard before creating a source session; that producer integration remains open.
 
+The scoped verifier is `scripts/gcsp/verify-fleet.mjs`. `verifyFleetIdentity` consumes the existing
+F54 configuration records and audits VG-based padded Base64, sorted complete factory selection,
+paint/upholstery/accessory separation, duplicate signatures, explicit model-year unknowns and dates.
+`verifyFleetCoverage` counts exact range/VG/AG tuples per qualified matrix entry and applies both
+minima. Source/cache metadata does not enter its distinctness key. `configurationDeepLink` forms
+the exact factory-option route without making a browser request.
+
+`verifyStagedFleet` first checks plan readiness and then delegates compatible directory/schema/hash
+validation to F54's `validateCorpusDirectory`. It does not publish/select a version. Errors contain
+codes and row indexes; unrecognised input identifiers are never echoed. Even an identity/count pass
+reports `acceptanceComplete: false`, zero accepted demo configurations, and the unverified gates.
+It cannot stand in for the still unavailable canonical producer/live proof.
+
+```sh
+node --test server/test/gcsp-demo-plan.test.js server/test/gcsp-demo-verifier.test.js
+node scripts/gcsp/verify-fleet.mjs --config server/data/gcsp/vehicle-evidence/demo-plan.json --staged --require-distinct 200
+```
+
+The staged command returns exit **2** (`incomplete`) with all 74 mappings pending, before reading
+any staged directory or creating a session. Exit 1 means invalid/unavailable input. There is no
+full-acceptance exit 0 in this checkpoint. Tests use the actual F54 candidate writer/validator with
+zero VIN mappings and reject a checksum mutation; successful fixture counts do not become real data.
+The [producer contract gaps](producer-contract-gaps.md) record pinned F59/F60 shapes and the exact
+remaining source, enrichment, browser and publication integration requirements.
+
 The test selection excludes collector/enrichment/runtime/native SQL and full-suite acceptance.
 The JavaScript affected selector is unavailable, so the explicit narrow regression is selected.
 Persistent selection/ownership/checkpoint/cleanup receipts are in
@@ -91,3 +116,20 @@ shared impact evidence is under `.claude/test-runs/impact/`. One worker is limit
 scratch, 384 MiB sampled RAM and 300 seconds, with HostBudget reservation and finalizer cleanup.
 The vendored resource API exposes `Scratch`/`run_process` rather than `RunResources`; it provides
 the same owned root, external manifest, process-group join and verified-deletion lifecycle.
+
+
+The final scoped command added `--experimental-test-coverage`: **32/32 passed**, zero skipped,
+170.307 ms reported test duration. Aggregate file coverage was 91.95% lines/85% branches for the
+plan and 82.46% lines/80% branches for the verifier. Node supplied file aggregates rather than
+per-test coverage contexts; the shared impact map records reviewed function/assertion and
+fixture/configuration/subprocess edges. Imported VIN-generation functions had zero function coverage.
+
+The verifier receipt is
+`/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead77/verifier-checkpoint.json`.
+It records six tested source SHA-256 values, the exact command and expected incomplete CLI result.
+All 14 owned scratch roots and process groups were absent after teardown. Sampled peak RSS across
+all plan/verifier chunks was 134,529,024 bytes; sampled scratch was zero. The 200 ms sampler can
+miss brief process/temporary-candidate peaks, so these are sampled measurements. Successful logs
+removed total 28,041 bytes across both checkpoints; bounded expected-red evidence remains. No
+overlay, browser exception, large output or leftover exists. The receipt also discloses the initial
+selection-path metadata omission and its correction; unchanged checks were not rerun for paperwork.

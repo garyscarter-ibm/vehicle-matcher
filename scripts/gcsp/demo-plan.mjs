@@ -81,10 +81,15 @@ export function createDemoPlan(matrixText, { asOfDate } = {}) {
 /** verifyEvidence must check retained bytes/hash/locator and source claims, not just trust this JSON. */
 export function validateDemoPlan(plan, { matrixText, verifyEvidence } = {}) {
   const errors = []; const blockers = []; const coverage = { sourceRows: 0, modelLines: 0, mapped: 0, excluded: 0, pending: 0 };
-  const error = (code, lineId) => errors.push({ code, ...(lineId ? { lineId } : {}) });
+  const sourceIds = new Set();
+  const issue = (code, lineId) => ({ code, ...(sourceIds.has(lineId) ? { lineId } : {}) });
+  const error = (code, lineId) => errors.push(issue(code, lineId));
   if (!object(plan) || plan.schemaVersion !== DEMO_PLAN_SCHEMA) return { valid: false, ready: false, errors: [{ code: 'plan-schema' }], blockers, coverage };
   let expected;
-  try { expected = parseEligibilityMatrices(matrixText); } catch { error('matrix-source-unavailable'); }
+  try {
+    expected = parseEligibilityMatrices(matrixText);
+    expected.modelLines.forEach((line) => sourceIds.add(line.id));
+  } catch { error('matrix-source-unavailable'); }
   if (expected && (!same(plan.source, { path: MATRIX_PATH, sha256: hash(matrixText), effectiveDate: '2024-10-01' })
     || !same(plan.sourceRows, expected.sourceRows))) error('matrix-source-mismatch');
   if (!date(plan.qualificationDate) || !['pending', 'ready'].includes(plan.status)) error('qualification-context');
@@ -117,7 +122,7 @@ export function validateDemoPlan(plan, { matrixText, verifyEvidence } = {}) {
     coverage[mapping.status]++;
     if (mapping.status === 'pending') {
       if (!text(mapping.reason)) error('pending-reason', line.id);
-      blockers.push({ code: 'mapping-pending', lineId: line.id });
+      blockers.push(issue('mapping-pending', line.id));
       continue;
     }
     const evidence = mapping.evidence;
@@ -137,7 +142,7 @@ export function validateDemoPlan(plan, { matrixText, verifyEvidence } = {}) {
       || evidence.scope !== 'complete-current-uk-model-range') error('exclusion-evidence', line.id);
     let verified = false;
     try { verified = typeof verifyEvidence === 'function' && verifyEvidence(evidence, { line, mapping }) === true; } catch { /* Unavailable source proof stays blocked. */ }
-    if (!verified) blockers.push({ code: 'mapping-evidence-not-verified', lineId: line.id });
+    if (!verified) blockers.push(issue('mapping-evidence-not-verified', line.id));
   }
   coverage.sourceRows = plan.sourceRows?.length || 0; coverage.modelLines = seen.size;
   if (seen.size !== expectedLines.size) error('model-line-coverage');

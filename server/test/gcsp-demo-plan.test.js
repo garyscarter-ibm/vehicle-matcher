@@ -75,6 +75,14 @@ check('malformed plan containers produce invalid reports without trusting partia
   }
 });
 
+check('invalid source identifiers are never echoed into a validation report', () => {
+  const plan = draft();
+  plan.modelLines[0].id = 'PRIVATE-DO-NOT-PRINT';
+  const report = api.validateDemoPlan(plan, { matrixText });
+  assert.equal(report.valid, false);
+  assert.equal(JSON.stringify(report).includes('PRIVATE-DO-NOT-PRINT'), false);
+});
+
 check('removing a row, grade, towbar or atomic line cannot weaken coverage', () => {
   for (const mutate of [
     (p) => p.sourceRows.pop(), (p) => { delete p.sourceRows[0].grades['G7']; },

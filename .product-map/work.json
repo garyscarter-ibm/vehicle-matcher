@@ -1820,7 +1820,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T10:25:59Z",
+      "observed_at": "2026-11-06T10:34:50Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-77",
       "branch": "dev/DEV-2026-11-04-056",
       "workers": [
@@ -1853,12 +1853,15 @@
           "id": "verifier-contract",
           "status": "in-progress",
           "title": "Offline complete identity enrichment and corpus verifier",
-          "observed_at": "2026-11-06T10:22:08Z"
+          "observed_at": "2026-11-06T10:34:50Z",
+          "evidence": "Scoped F54 identity/count/checksum audit implemented; canonical F59/F60 real proof and full verifier acceptance remain open. See docs/gcsp/evidence/fucq77/producer-contract-gaps.md."
         },
         {
           "id": "producer-integration",
-          "status": "not-started",
-          "title": "Canonical F59 collection and F60 enrichment plan selection"
+          "status": "blocked",
+          "title": "Canonical F59 collection and F60 enrichment plan selection",
+          "observed_at": "2026-11-06T10:34:50Z",
+          "evidence": "Pinned F59 fdb71c2 is explicitly offline-fixture only; F60 cc94edc is pure stage with session consumer pending. No canonical live proof/plan-selection composition is integrated."
         },
         {
           "id": "real-collection",
