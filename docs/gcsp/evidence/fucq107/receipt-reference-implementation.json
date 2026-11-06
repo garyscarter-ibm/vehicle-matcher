@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "story": "FUCQ-107",
-  "status": "Approved exact repair applied; focused validation pending new frozen review/grant.",
+  "status": "Approved exact repair applied and scoped service validation passed12/12; story incomplete.",
   "approvedPatchSHA256": "0b33b2e5bd7301c03139121047a29d437c6eb06e538f63ab6947e441d39673db",
   "changedSourcePaths": [
     {
@@ -28,5 +28,29 @@
   "canonicalStorage": "Existing BriefService ID/type/version/time and event_receipts primary key remain unchanged; trace through consumerId/runId/eventId internally. No producer/schema/102/103 changes.",
   "callers": "Owned HTTP output forwards the DTO; draft client saved() requires event type/version and consumes no raw eventId. Public reference is not accepted as a command selector or authority.",
   "regression": "All12 service cases and existing acceptance/privacy assertions retained. Existing save/replay/reload case adds deterministic-reference and raw-ID-absence assertions; second decline fixture outcome now matches its own decision ID.",
-  "priorEvidence": "c536 policy7/7PASS retained; service10/12 failure originals retained. No retry executed after this repair."
+  "priorEvidence": "Separate c536 policy7/7PASS retained and reusable on unchanged reachable graph; original service10/12 failure retained.",
+  "validation": {
+    "testedSourceCommit": "16839323f070f7c0ab81eb1ebf728627d283c71d",
+    "grant": "fucq107-main12-1683932-0033",
+    "evidence": "scoped-service-pass/summary.json",
+    "counts": {
+      "cancelled": 0,
+      "fail": 0,
+      "pass": 12,
+      "skipped": 0,
+      "suites": 0,
+      "tests": 12,
+      "todo": 0
+    },
+    "independentAuditChecksPassed": 208,
+    "cleanup": {
+      "scratchRemoved": true,
+      "supervisorOwnerDead": true,
+      "childProcessesMatch": true,
+      "childrenDead": true,
+      "registryValid": true,
+      "reservationAbsent": true
+    },
+    "scope": "One frozen main12 service run only; no actual producer, browser, native, full or paused96 proof."
+  }
 }
