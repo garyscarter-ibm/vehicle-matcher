@@ -9,7 +9,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-06T00:26:52Z",
+      "observed_at": "2026-11-06T11:49:25Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-100",
       "source_observed_at": "2026-11-05T23:00:25Z",
       "branch": "dev/DEV-2026-11-04-060",
@@ -71,8 +71,8 @@
           "id": "runtime-integration",
           "status": "in-progress",
           "title": "Merged producer, identity and central lifecycle composition",
-          "observed_at": "2026-11-06T00:26:52Z",
-          "evidence": "Local composed memory checkpoint9/9 no skips: ordinary actual66/100/102/103/126 imports, authenticated scenario200/mechanics reset, captured token/access deadlines, both-way exclusion, retained-store startup, policy pins, late-registration503, settled observer/owned close.49manifests clean and158source/installed paths frozen; docs/gcsp/buddy-runtime-integration.md and evidence/fucq100/runtime-integration.json. Dispatcher merge/final/native/full, paused96 resolver/events/status-read and normal re"
+          "observed_at": "2026-11-06T11:49:25Z",
+          "evidence": "Published bc8a941adbf8bd74089b11b820c489551742ab12 composes actual102/106/107 durable offer access, decisions, employee follow-up and page entry with shared repository/policy/clock/identity. Lead2/2 actual memory and loopback HTTP cases; independent consequential review PASS and all193 frozen source hashes matched published revision. Original supervisor KeyError symlink retained; separate cleanup-only reconciliation independently collected with exact scratch/groups/PIDs/rows absent. Product evid"
         },
         {
           "id": "full-validation",
