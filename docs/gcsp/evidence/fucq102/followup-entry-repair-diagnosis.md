@@ -48,9 +48,12 @@ does not exercise this exceptional edge.
 ## Minimal owned change
 
 102 now reads the exact persisted entitlement slot, validates run, employee,
-slot ID, decision-pinned slot revision and the already-validated hold/event renewal.
-Null/absent historical renewal means unpopulated. Every explicit historical or
-slot renewal conflict/malformed value still refuses a handle. The slot row's full
+slot ID, positive current slot revision at least the decision's historical pin,
+and the already-validated hold/event renewal. Null/absent historical renewal means
+unpopulated; null/absent slot renewal uses the verified persisted hold/event
+binding, preserving the existing all-null case without inventing an identity.
+Every explicit historical or slot renewal conflict/malformed value still refuses
+a handle. The slot row's full
 content digest, status and revision are reread with the historical brief and native
 sources. Repository failure stays retryable `unavailable`; consistently absent or
 invalid source stays declined with null handle. Existing owner/run, receipt digest,
@@ -86,6 +89,14 @@ owner/renewal/revision/missing/malformed source, explicit bad historical renewal
 slot repository failure, and slot content/revision races. All reads must preserve
 the state digest. Real identity and the explicit injected 107 question input remain
 unchanged. This does not establish canonical default question registration.
+
+Review of immutable `b3079eb` found the first repair was too strict: equality to
+the historical slot revision also rejected a compatible later revision. The
+correction uses a positive lower bound, adds an actual repository CAS with
+unchanged authority as a positive control, and keeps a backward revision negative.
+It also exercises a later null slot renewal with the unchanged verified hold/event
+binding. The original setup, genuine identity, seed and positive 107 expectations
+remain intact. No corrected service case has been run.
 
 Only static Python AST parsing, literal source/graph inspection, immutable Git
 readback and whitespace checks are selected for authoring. No JavaScript or custom

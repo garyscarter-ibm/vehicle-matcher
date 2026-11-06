@@ -177,15 +177,26 @@ test('confirmed historical decline brief can differ from the immutable quoted br
 });
 
 test('terminal outcome versions survive quote expiry and later car reuse without extending the hold', async (t) => {
-  const f = await setup(t); const { decision, hold, offer } = f.source();
+  const f = await setup(t); const { decision, hold, offer, slot } = f.source();
   assert.equal(decision.versions.offer + 1, offer.version); assert.equal(decision.versions.hold + 1, hold.version);
   assert.notEqual(decision.versions.policy, decision.versions.quotePolicy);
   const deadline = hold.expiresAt; const stockRow = f.store.state.tables.stock.find((row) => row.orderUuid === f.car.orderUuid);
   yes(await f.raw.transaction(f.context, { commandId: 'later-car-use', inputDigest: inputDigest('later-car-use') },
     (tx) => tx.compareAndSwap(ref(f, 'stock', { orderUuid: f.car.orderUuid }), stockRow.version, { state: 'allocated', available: false, allocated: true })));
+  // A compatible repository rewrite advances the revision without changing
+  // the slot's owner/run/identity/renewal; the historical pin is a lower bound.
+  yes(await f.raw.transaction(f.context, { commandId: 'compatible-slot-revision', inputDigest: inputDigest('compatible-slot-revision') },
+    (tx) => tx.compareAndSwap(ref(f, 'entitlement_slots', { entitlementSlotId: slot.entitlementSlotId }), slot.version, { state: slot.state })));
+  assert.ok(f.source().slot.version > decision.versions.slot);
   await f.advance(3 * 60 * 60); const before = stateDigest(f);
   const dto = yes(await f.access.read(f.account)); assert.equal(dto.state, 'declined');
   assert.deepEqual(dto.followup, f.handle()); assert.equal(dto.expiresAt, deadline); assert.equal(stateDigest(f), before);
+  const currentSlot = f.source().slot;
+  yes(await f.raw.transaction(f.context, { commandId: 'unpopulated-slot-renewal', inputDigest: inputDigest('unpopulated-slot-renewal') },
+    (tx) => tx.compareAndSwap(ref(f, 'entitlement_slots', { entitlementSlotId: currentSlot.entitlementSlotId }), currentSlot.version, { renewalId: null })));
+  const afterSlotChange = stateDigest(f);
+  assert.deepEqual(yes(await f.access.read(f.account)).followup, f.handle());
+  assert.equal(stateDigest(f), afterSlotChange);
 });
 
 test('missing, duplicate or malformed decision sources preserve declined status with no handle', async (t) => {
@@ -206,7 +217,7 @@ test('missing, duplicate or malformed decision sources preserve declined status 
     ['conflicting slot owner', ({ slot }) => { slot.employeeId = 'other'; }],
     ['conflicting slot renewal', ({ slot }) => { slot.renewalId = 'other-renewal'; }],
     ['malformed slot renewal', ({ slot }) => { slot.renewalId = ''; }],
-    ['changed slot version', ({ slot }) => { slot.version += 1; }],
+    ['backward slot version', ({ slot, decision }) => { slot.version = decision.versions.slot - 1; }],
     ['missing slot', (_source, tables) => { tables.entitlement_slots = []; }],
   ]);
 });

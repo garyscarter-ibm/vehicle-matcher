@@ -8,16 +8,16 @@
   "originalRun": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/followup-9d6eec0b291741f1ba7fa06a4586a751",
   "owned": {
     "server/gcsp/offers/access.js": {
-      "sha256": "710c3fc7600f2ce1746b955372c49c043e30193defbd3c7a43f8563b87b0161b",
-      "bytes": 28960
+      "sha256": "63fac0a89e50b8b4bd5c8bed581dd49bed42519c76b2b6232de155533d37fb3c",
+      "bytes": 29034
     },
     "server/test/gcsp-offer-access-followup.test.js": {
-      "sha256": "b3a16d0d47cca53c0f0f5af84dd4354a038ba77c529a9eb3b915cd1cc268a6bb",
-      "bytes": 22385
+      "sha256": "9933ccf247bbf87fe5bd02441375668dec2a4b83570d8e4e0525657a49cb2b16",
+      "bytes": 23434
     },
     "docs/gcsp/offer-access-contract.md": {
-      "sha256": "03951c2d1fd7ae0252ab792b94192b01a48dfbc5518ab5bb02c30bcc3d385b40",
-      "bytes": 17641
+      "sha256": "48d51bcc1616c5f1ef964950f0275958e7092a4c9f36b8109796813ec4b0e656",
+      "bytes": 17858
     },
     "docs/gcsp/evidence/fucq102/followup-entry-launch.mjs": {
       "sha256": "7b182a799d14d32a5afa321aa00944be5ead16cb720cb257c3c6a5c9c0502116",
@@ -56,7 +56,13 @@
       "sha256": "bdd9dc0c57e62a08b866b9e204bbbb17b148a0534b65c37be92d3d8d7e49d875",
       "bytes": 16389
     },
-    "blocker": "Event renewal copied from persisted slot differs from genuine context absent renewal;107 lead owns persisted-slot correction. Positive case unchanged."
+    "blocker": "Event renewal copied from persisted slot differs from genuine context absent renewal;107 lead owns persisted-slot correction. Positive case unchanged.",
+    "publishedCandidate": {
+      "sourceCommit": "4b91d4bb14103ac5a98f68900a540913f4cacf78",
+      "path": "server/gcsp/offers/followup.js",
+      "sha256": "54399693253ae9640dde77b70b54f073b08e634d6babb69ea129b0414a6cebd2",
+      "status": "await independent source review before adoption"
+    }
   },
   "sourceClosure": {
     "baselineSourcePlanSHA256": "fd2eb341905bba23414e799bb011c0d415564c0c4ac656a0b0047d82a8111c3a",
@@ -94,5 +100,6 @@
   "ownedRepairCommit": "4474938cb6d0a3c24ac7202c6e1a4151600392b0",
   "candidateSourcePlanSHA256": "7c9c8c1ed9c442098de0e7184dea8c6cc782c859b65b5c8c881d52e4e988e252",
   "candidateAdmissionSHA256": "466cb85f46a7e36a639da7863cd35038a0ee2e4cc328de995c982ec4aa160d4a",
-  "candidateAdmissionStatus": "HOLD pending107; main refuses before custom helper imports; no execution command authorised"
+  "candidateAdmissionStatus": "HOLD pending107; main refuses before custom helper imports; no execution command authorised",
+  "renewalRevisionCorrection": "Positive current slot revision >= historical pin; absent slot renewal falls back to verified hold/event; explicit populated conflicts/malformed values refuse; all-null preserved. Actual repository CAS positive controls authored, not executed."
 }
