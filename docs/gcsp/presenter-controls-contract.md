@@ -136,9 +136,16 @@ It has no default fixture and no principal URL selector. Confirmed switches navi
 workspace within the same packaged base path. `gcsp-greg.html` remains its separate fixture host.
 
 Last-tick readback renders the server's `handlerOrder` and matching `outcomes`, missing stages and
-pending/refused results. A release count is displayed only when an actual successful `release-pull`
-handler explicitly supplies integer `outcome.value.released`. Missing counts say release unavailable;
-future cues alone establish no cars. A failed composed tick keeps the actual committed advance.
+pending/refused results. A release count requires exactly one registered `stock-release` /
+`release-pull` handler and exactly one successful matching result, with no contradictory missing
+stage. The tick run must match the current run; its event and tick IDs must agree. Result kind
+`stock-released` or `no-release` must carry that same run/tick and unique lowercase UUID-v4
+`orderUuids`. The count is that array's length, counting newly released cars rather than cumulative
+`visibleOrderUuids`. A genuine empty result reports zero; `no-release` with IDs is invalid.
+Malformed, duplicate, missing, pending, refused or mismatched release evidence says release
+unavailable. An unbound integer `released` is not a supported producer result. A committed release
+remains visible when a later handler is pending/refused. Future cues alone establish no cars.
+A failed composed tick keeps the actual committed advance.
 A known successful pending tick receipt keeps its pending handler details visible while allowing a
 deliberate next action or reset; it is not treated as an unknown command outcome. Typed field
 explanations in `reasons: [{ field, reason }]` are shown alongside the outcome/code.
@@ -177,7 +184,9 @@ The subsequent [assessment against composed runtime 95d7741](evidence/fucq-126/i
 records actual runtime scenario/step/mechanics-reset and reviewed-adoption memory evidence.
 That runtime preserves the original readPolicy scenario binding and pending HTTP 202 map.
 FUCQ-92 release source is now supplied at `15a79957e61d81612311d3aab7dbf77733dc4e0d`, but is
-not composed there. Its committed result returns newly released `orderUuids`, while the current
-presenter reads only integer `released`; the assessment proposes a bounded controller adaptation.
-Actual run-aware provider/reset data and the six business scenario preparation gates remain open.
-No producer import, projection change or new execution is performed by this documentation update.
+not composed there. Its committed result returns newly released `orderUuids`. The subsequent
+owned controller repair implements the bounded projection described above; the source-only
+assessment remains historical evidence. Actual producer-to-controller integration, run-aware
+provider/reset data and the six business scenario preparation gates remain open. The repair
+imports no producer or foreign runtime source. Its selected validation is recorded separately in
+`evidence/fucq-126/release-result-2026-11-06.md`; earlier browser evidence retains its original identity.

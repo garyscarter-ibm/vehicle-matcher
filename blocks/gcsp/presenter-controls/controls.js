@@ -11,6 +11,30 @@ const reason = (reply) => [reply?.status, reply?.code, reply?.reason,
     .map((row) => `${typeof row.field === 'string' ? `${row.field}: ` : ''}${row.reason}`) : []),
 ].filter(Boolean).map(explain).join(': ');
 const workspace = () => new URL('../../../gcsp-presenter.html', import.meta.url).href;
+const text = (value) => typeof value === 'string' && value.length > 0;
+const exactOrderId = (value) => typeof value === 'string'
+  && /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/.test(value);
+
+function releasedCarCount(state) {
+  const tick = state.lastTick;
+  if (!text(state.runId) || tick?.runId !== state.runId || !text(tick.tickId) || tick.eventId !== tick.tickId
+    || !Array.isArray(tick.handlerOrder) || !Array.isArray(tick.outcomes) || !Array.isArray(tick.missingStages)
+    || tick.missingStages.includes('release-pull')) return null;
+  const isRelease = (row) => row?.handlerId === 'stock-release' || row?.stage === 'release-pull';
+  const registrations = tick.handlerOrder.filter(isRelease);
+  const results = tick.outcomes.filter(isRelease);
+  if (registrations.length !== 1 || results.length !== 1
+    || registrations[0].handlerId !== 'stock-release' || registrations[0].stage !== 'release-pull'
+    || results[0].handlerId !== 'stock-release' || results[0].stage !== 'release-pull'
+    || results[0].outcome?.status !== 'ok') return null;
+  const value = results[0].outcome.value;
+  if (!['stock-released', 'no-release'].includes(value?.kind) || value.runId !== state.runId || value.tickId !== tick.tickId
+    || !Array.isArray(value.orderUuids) || !value.orderUuids.every(exactOrderId)
+    || new Set(value.orderUuids).size !== value.orderUuids.length
+    || value.kind === 'no-release' && value.orderUuids.length !== 0) return null;
+  // The committed producer result lists newly released cars, not cumulative visible stock.
+  return value.orderUuids.length;
+}
 
 // All controls retain their DOM identity while readback and results update.
 export function mountPresenterControls(host, { adapter = createPresenterHttpAdapter(),
@@ -124,16 +148,16 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     else {
       results.append(factList([{ label: 'Event', value: last.eventId || last.tickId }, { label: 'State', value: last.state }]));
       const order = el('ol', 'gcsp-presenter-handlers');
-      for (const descriptor of last.handlerOrder || []) {
-        const outcome = last.outcomes?.find((row) => row.handlerId === descriptor.handlerId);
+      const handlers = Array.isArray(last.outcomes) ? last.outcomes : [];
+      for (const descriptor of Array.isArray(last.handlerOrder) ? last.handlerOrder : []) {
+        if (!descriptor || typeof descriptor !== 'object') continue;
+        const outcome = handlers.find((row) => row?.handlerId === descriptor.handlerId);
         order.append(el('li', '', `${descriptor.stage} / ${descriptor.handlerId}: ${outcome ? explain(outcome.outcome) : 'Pending, no result reported'}`));
       }
       results.append(order);
-      if (last.missingStages?.length) results.append(el('p', 'gcsp-note', `Missing stages: ${last.missingStages.join(', ')}`));
-      const handlers = last.outcomes || [];
-      const release = handlers.find((row) => row.stage === 'release-pull');
-      const count = release?.outcome?.status === 'ok' ? release.outcome.value?.released : undefined;
-      results.append(el('p', 'gcsp-note', Number.isInteger(count) ? `${count} cars released` : 'Release unavailable: no released count reported'));
+      if (Array.isArray(last.missingStages) && last.missingStages.length) results.append(el('p', 'gcsp-note', `Missing stages: ${last.missingStages.join(', ')}`));
+      const count = releasedCarCount(state);
+      results.append(el('p', 'gcsp-note', count === null ? 'Release unavailable: no verified release result reported' : `${count} cars released`));
     }
     retry.hidden = !original || !uncertain; fresh.hidden = !(uncertain && original?.kind === 'switchPrincipal');
     if (!busy && focusAfterBusy) {

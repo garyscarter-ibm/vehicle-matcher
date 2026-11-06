@@ -114,9 +114,75 @@ test('tick preserves committed time and ordered pending/refused outcomes, never 
   assert.match(f.host.textContent, /Missing stages: manual-expiry/); assert.match(f.host.textContent, /Release unavailable/); assert.doesNotMatch(f.host.textContent, /0 cars/);
   f.control.destroy();
 });
-test('only an actual successful release handler supplied count is shown', async () => {
-  const f = setup({ readControls: async () => ok({ ...state(), lastTick: { state: 'completed', handlerOrder: [], outcomes: [{ stage: 'release-pull', outcome: ok({ released: 3 }) }] } }) });
-  await settle(); assert.match(f.host.textContent, /3 cars released/); f.control.destroy();
+// Contract-shaped unit inputs from FUCQ-92 15a79957; no producer/runtime source is imported.
+const releasedOrders = ['53ad1ee8-e846-4fa9-a4bd-58147ac3edb0', 'ccfe5227-fcc0-4b6f-8619-9bef72aaf223'];
+const releaseTick = () => ({ runId: 'run-a', tickId: 'release-tick', eventId: 'release-tick', state: 'completed',
+  handlerOrder: [{ handlerId: 'stock-release', stage: 'release-pull' }], missingStages: [],
+  outcomes: [{ handlerId: 'stock-release', stage: 'release-pull', outcome: ok({ kind: 'stock-released', runId: 'run-a', tickId: 'release-tick',
+    orderUuids: [...releasedOrders], visibleOrderUuids: [...releasedOrders, 'f06a7f64-c1d0-4e1d-9366-43f661c2a36b'] }) }] });
+test('release count uses committed newly released IDs, not visible stock or an unrelated integer', async () => {
+  const lastTick = releaseTick(); lastTick.outcomes[0].outcome.value.released = 999;
+  const f = setup({ readControls: async () => ok({ ...state(), lastTick }) });
+  await settle(); assert.match(f.host.textContent, /2 cars released/); assert.doesNotMatch(f.host.textContent, /999 cars released|3 cars released/);
+  f.control.destroy();
+});
+test('valid no-release and empty committed tranche results report zero', async () => {
+  for (const kind of ['no-release', 'stock-released']) {
+    const lastTick = releaseTick(); Object.assign(lastTick.outcomes[0].outcome.value, { kind, orderUuids: [] });
+    const f = setup({ readControls: async () => ok({ ...state(), lastTick }) });
+    await settle(); assert.match(f.host.textContent, /0 cars released/); f.control.destroy();
+  }
+});
+test('original tick result replay retains its count without accumulating across readbacks', async () => {
+  const lastTick = releaseTick(); const before = structuredClone(lastTick);
+  const f = setup({ readControls: async () => ok({ ...state(), lastTick }) });
+  await settle();
+  for (let i = 0; i < 2; i++) { await f.control.refresh(); assert.match(f.host.textContent, /2 cars released/); }
+  assert.deepEqual(lastTick, before); assert.doesNotMatch(f.host.textContent, /4 cars released|6 cars released/); f.control.destroy();
+});
+test('a committed release remains visible while a later handler is pending or refused', async () => {
+  for (const status of ['pending', 'forbidden']) {
+    const lastTick = releaseTick(); lastTick.state = status === 'pending' ? 'pending' : 'interrupted';
+    lastTick.handlerOrder.push({ handlerId: 'reconcile', stage: 'pending-reconciliation' });
+    lastTick.outcomes.push({ handlerId: 'reconcile', stage: 'pending-reconciliation', outcome: { status } });
+    const f = setup({ readControls: async () => ok({ ...state(), lastTick }) });
+    await settle(); assert.match(f.host.textContent, /2 cars released/); assert.match(f.host.textContent, new RegExp(status)); f.control.destroy();
+  }
+});
+const invalidReleaseResults = {
+  'missing IDs': (t) => { delete t.outcomes[0].outcome.value.orderUuids; },
+  'non-array IDs': (t) => { t.outcomes[0].outcome.value.orderUuids = 'not-an-array'; },
+  'duplicate IDs': (t) => { t.outcomes[0].outcome.value.orderUuids = [releasedOrders[0], releasedOrders[0]]; },
+  'malformed ID': (t) => { t.outcomes[0].outcome.value.orderUuids = ['not-an-exact-order']; },
+  'nonstring ID': (t) => { t.outcomes[0].outcome.value.orderUuids = [null]; },
+  'unknown kind': (t) => { t.outcomes[0].outcome.value.kind = 'queued-supply'; },
+  'no-release with IDs': (t) => { t.outcomes[0].outcome.value.kind = 'no-release'; },
+  'missing value': (t) => { delete t.outcomes[0].outcome.value; },
+  'pending release': (t) => { t.outcomes[0].outcome.status = 'pending'; },
+  'refused release': (t) => { t.outcomes[0].outcome.status = 'forbidden'; },
+  'unavailable release': (t) => { t.outcomes[0].outcome.status = 'unavailable'; },
+  'foreign result run': (t) => { t.outcomes[0].outcome.value.runId = 'run-other'; },
+  'foreign outer run': (t) => { t.runId = 'run-other'; },
+  'foreign result tick': (t) => { t.outcomes[0].outcome.value.tickId = 'old-tick'; },
+  'missing result tick': (t) => { delete t.outcomes[0].outcome.value.tickId; },
+  'mismatched event': (t) => { t.eventId = 'different-event'; },
+  'missing tick identity': (t) => { delete t.tickId; delete t.eventId; },
+  'unregistered release': (t) => { t.handlerOrder = []; },
+  'wrong registered handler': (t) => { t.handlerOrder[0].handlerId = 'synthetic-release'; },
+  'wrong result handler': (t) => { t.outcomes[0].handlerId = 'synthetic-release'; },
+  'wrong result stage': (t) => { t.outcomes[0].stage = 'outbox-dispatch'; },
+  'duplicate registration': (t) => { t.handlerOrder.push({ ...t.handlerOrder[0] }); },
+  'duplicate result': (t) => { t.outcomes.push(structuredClone(t.outcomes[0])); },
+  'missing outcome': (t) => { t.outcomes = []; },
+  'malformed outcomes': (t) => { t.outcomes = {}; },
+  'malformed registration': (t) => { t.handlerOrder = {}; },
+  'missing stage contradiction': (t) => { t.missingStages = ['release-pull']; },
+  'missing stage readback': (t) => { delete t.missingStages; },
+};
+for (const [name, mutate] of Object.entries(invalidReleaseResults)) test(`release count fails closed for ${name}`, async () => {
+  const lastTick = releaseTick(); mutate(lastTick);
+  const f = setup({ readControls: async () => ok({ ...state(), lastTick }) });
+  await settle(); assert.match(f.host.textContent, /Release unavailable/); assert.doesNotMatch(f.host.textContent, /\d+ cars released/); f.control.destroy();
 });
 test('reset current/chosen availability is explained and explicit confirmation captures canonical versions', async () => {
   const f = setup(); await settle(); const unavailable = choice(f, 'Scenario', 'business'); assert.equal(unavailable.disabled, false); unavailable.click(); assert.match(f.host.textContent, /actual-release-service/);
