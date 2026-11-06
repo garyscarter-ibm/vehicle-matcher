@@ -84,6 +84,12 @@ export function evaluateEssentials(snapshot, brief, config) {
 
 export function scorePreferences(snapshot, brief, employeeFacts, config, slider) {
   const components = []; const unknowns = []; const reasons = []; const tradeOffs = [];
+  const weights = config.preferenceWeights;
+  if (weights !== undefined && (!weights || typeof weights !== 'object' || Array.isArray(weights)
+    || Object.keys(weights).length !== Object.keys(config.preferences).length
+    || Object.keys(config.preferences).some((key) => !Object.hasOwn(weights, key) || !Number.isSafeInteger(weights[key]) || weights[key] < 0))) {
+    throw TypeError('Invalid recommendation preference weights');
+  }
   const car = { name: snapshot.display.name, ...Object.fromEntries(Object.entries(snapshot.facts)
     .filter(([, fact]) => fact.status === 'known').map(([key, fact]) => [key, fact.value])) };
   for (const [key, preference] of Object.entries(brief.preferences)) {
@@ -105,12 +111,15 @@ export function scorePreferences(snapshot, brief, employeeFacts, config, slider)
     const observed = Math.min(slider.maximum, ranked[d.component] * (d.scaleMultiplier ?? 1));
     if (!Number.isFinite(observed)) { unknowns.push({ code: 'preference-fact-unknown', field: key, facts: fields }); continue; }
     const score = d.type === 'slider' ? slider.maximum - Math.abs(preference.value - observed) : observed;
+    const policyWeight = weights === undefined ? 1 : weights[key];
+    const effectiveImportance = preference.importance * policyWeight;
     const evidence = { code: 'preference-fit', field: key, score, importance: preference.importance,
+      ...(weights === undefined ? {} : { policyWeight, effectiveImportance }),
       desired: preference.value, observed, facts: Object.fromEntries(fields.map((field) => [field, snapshot.facts[field]])) };
     components.push(evidence);
     (score === slider.maximum ? reasons : tradeOffs).push(evidence);
   }
-  const importance = components.reduce((total, component) => total + component.importance, 0);
-  return { score: importance ? Math.round(components.reduce((total, c) => total + c.score * c.importance, 0) / importance) : null,
+  const importance = components.reduce((total, component) => total + (component.effectiveImportance ?? component.importance), 0);
+  return { score: importance ? Math.round(components.reduce((total, c) => total + c.score * (c.effectiveImportance ?? c.importance), 0) / importance) : null,
     components, unknowns, reasons, tradeOffs };
 }

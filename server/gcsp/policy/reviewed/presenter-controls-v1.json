@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "definitionSetId": "presenter-controls-v1",
+  "revision": "1",
+  "definitions": [
+    {
+      "key": "clock.presenter.stepSeconds",
+      "value": 60,
+      "unit": "seconds",
+      "status": "assumed",
+      "basis": "A one-minute presenter step makes small time changes visible; named cues cover longer walkthrough jumps. Revisable demo assumption, not BMW policy.",
+      "source": "docs/gcsp/presenter-controls-contract.md",
+      "sourceDate": "2026-11-05"
+    }
+  ],
+  "digest": "a5a0476948ad990726829e343c40d7b5bc86d750177bb320d41751bcca4c9416"
+}

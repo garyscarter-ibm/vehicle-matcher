@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: C1 shared runtime authority and bound raw manual receivers serve authenticated setup
+ok 1 - C1 shared runtime authority and bound raw manual receivers serve authenticated setup
+  ---
+  duration_ms: 1118.899458
+  type: 'test'
+  ...
+# Subtest: C1 release registry is preseal and memoized while ordinary startup releases nothing
+ok 2 - C1 release registry is preseal and memoized while ordinary startup releases nothing
+  ---
+  duration_ms: 640.700416
+  type: 'test'
+  ...
+# Subtest: C1 actual pull commits exact TEST facts and authenticated decorated stock preserves raw claimInput
+ok 3 - C1 actual pull commits exact TEST facts and authenticated decorated stock preserves raw claimInput
+  ---
+  duration_ms: 1439.735084
+  type: 'test'
+  ...
+# Subtest: C1 omitted stock provider has no release service or synthetic fallback and reports missing stage
+ok 4 - C1 omitted stock provider has no release service or synthetic fallback and reports missing stage
+  ---
+  duration_ms: 867.895041
+  type: 'test'
+  ...
+# Subtest: C1 actual presealed clock refuses release registration and guards ordinary HTTP with503
+ok 5 - C1 actual presealed clock refuses release registration and guards ordinary HTTP with503
+  ---
+  duration_ms: 302.699667
+  type: 'test'
+  ...
+# Subtest: C1 real mechanics reset rejects stale employee and refuses missing fresh run TEST profile
+ok 6 - C1 real mechanics reset rejects stale employee and refuses missing fresh run TEST profile
+  ---
+  duration_ms: 2115.858958
+  type: 'test'
+  ...
+# Subtest: host account setup Back and resume retain real saved choices and unchanged current car
+ok 7 - host account setup Back and resume retain real saved choices and unchanged current car
+  ---
+  duration_ms: 2160.966458
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 10327.647125

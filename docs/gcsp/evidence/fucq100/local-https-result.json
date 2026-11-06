@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-100",
+  "recordedAt": "2026-11-06T13:55:00.389635+00:00",
+  "status": "TLS2 functional PASS and cleanup corroborated; resource audit HOLD; brief1 unlaunched; source-only repair independently reviewed PASS, execution disabled",
+  "testedCheckpoint": "f85be5ed782a7493806efaf94ee1de4ad6b54535",
+  "productTestCheckpoint": "657c3a79695d8ab4670ebd1db1fb3edcaa83d382",
+  "originalPlan": {
+    "path": "docs/gcsp/evidence/fucq100/local-https-run-plan-1315-original.json",
+    "sha256": "db31dc84f6ff8a9cc1029fa3704e758e0a1783b46a9bd776f79038ee708e44d7"
+  },
+  "originalSourcePlan": {
+    "path": "docs/gcsp/evidence/fucq100/local-https-source-plan-1315-original.json",
+    "sha256": "bcf6d725319bba97f87587d1503fc2df891431135c7fa8a207e35c7b40194bf4"
+  },
+  "productReview": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/reviews/fucq100-mary-sue-walton-https-1304.md",
+    "sha256": "1cbab13e6f51d5c66817971c120d37eb440c8d3537e326637b1bab8652f0f2e4",
+    "verdict": "PASS product/test only"
+  },
+  "tls2Review": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/reviews/fucq100-stanley-tiger-https-helper-1315.md",
+    "sha256": "eadd36531efe3e012807d936ea46850438455e8f9c33d082f6db601e78442158",
+    "verdict": "historical static PASS, superseded resource assurance by later runtime audit"
+  },
+  "secondReview": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/reviews/fucq100-stanley-tiger-https-brief1-1315.md",
+    "sha256": "95e434ef6f12c8e00debaaba7e347b2cd4e9712013015f75aa02d0f2c2c8faef",
+    "verdict": "BLOCKED; brief1 not admitted",
+    "reviewer": "Stanley Tiger",
+    "requestedModelEffort": "gpt-6.1-sol/high",
+    "selectedModelEffort": "gpt-6.1-sol/high",
+    "fallback": null
+  },
+  "tls2": {
+    "grant": "fucq100-https-tls2-657c3a7-1315",
+    "consumed": true,
+    "selectionLaunched": true,
+    "rawHarnessPassed": true,
+    "functionalOutcome": "PASS",
+    "resourceAudit": "HOLD",
+    "sourceUnchanged": true,
+    "exitCode": 0,
+    "counts": {
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "workerSeconds": 5.793177083000003,
+    "totalSeconds": 100.97500529199999,
+    "reportedAggregateRssBytes": 650493952,
+    "reportedCombinedOwnedDiskPeakBytes": 1564864,
+    "reportedCombinedLogsPeakBytes": 640243,
+    "cleanup": {
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "pidsAbsent": true,
+      "joined": true,
+      "openFilesAbsent": true,
+      "reservationAbsent": true
+    },
+    "cleanupErrors": [],
+    "manifestState": "removed",
+    "joinedLaunches": 36,
+    "cleanupQualification": "Corroborated from original receipt, retained joins/identity history and empty pinned lsof result; no new live reviewer probes."
+  },
+  "originals": {
+    "certificate.jsonl": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-1315/tls2/certificate.jsonl",
+      "sha256": "01336ba8f01bc22884362d84efb0359bb9be4ffd342ec206bf7d5149a90de3c2",
+      "bytes": 1444
+    },
+    "cjs-modules.jsonl": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-1315/tls2/cjs-modules.jsonl",
+      "sha256": "c347dbf2c4ebc251621dfe4da0ab4d157fa91977ac34573b7cc496e9ed058388",
+      "bytes": 7362
+    },
+    "esm-modules.jsonl": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-1315/tls2/esm-modules.jsonl",
+      "sha256": "0c5b88f1904aa91954b4d231f08cf1738021159d171a991bc9faf9063de91780",
+      "bytes": 170542
+    },
+    "execution.json": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-1315/tls2/execution.json",
+      "sha256": "b20ff4700673f39e29ea631f06fd9d989390aa3d5b5df85f8d0c828684139667",
+      "bytes": 1683
+    },
+    "ownership/801794f4ca494d2ca697dbd925898ded.json": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-1315/tls2/ownership/801794f4ca494d2ca697dbd925898ded.json",
+      "sha256": "61c1cb74506363c3c094731286cde28f580a808c436799b4e4a2aa7fc593c458",
+      "bytes": 10970
+    },
+    "provisional.json": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-1315/tls2/provisional.json",
+      "sha256": "78571f34e17aa73839bc671c9e8d833792755bc2113250c2dde64c5ed2982960",
+      "bytes": 2193
+    },
+    "raw.log": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-1315/tls2/raw.log",
+      "sha256": "e66b06a3ad0456c54e30e386c3c96eeb6ef5078792e08b151cbcfc38a2db41dc",
+      "bytes": 628
+    },
+    "receipt.json": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-1315/tls2/receipt.json",
+      "sha256": "11cee8a147871dd4e10b70782c9f0c933caf6636fd1791297822316f0d89b91f",
+      "bytes": 1529
+    },
+    "targeted/targeted-c85bf4ffa153dc4ec63521eb7946951ba0fba686581f1cbcb6ec934b84a7c971-default-1793972557605630000.json": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/https-1315/tls2/targeted/targeted-c85bf4ffa153dc4ec63521eb7946951ba0fba686581f1cbcb6ec934b84a7c971-default-1793972557605630000.json",
+      "sha256": "7672739ade5837da4999e565732617da2c8a16f3d45f898d046ad6890e7d5615",
+      "bytes": 3089
+    }
+  },
+  "resourceAudit": {
+    "diagnosis": "Completed charge omitted the interpreted trampoline pre-exec lifetime. Its final native wait4 peak is lower than its earlier stopped RSS; that peak cannot certify the entire process lifetime, including SIGCONT-to-exec. Stopped RSS alone is only a lower bound.",
+    "observedStoppedRssBytes": 20987904,
+    "postExecNativePeakRssBytes": 2211840,
+    "brokerPeakRssBytes": 20791296,
+    "probePeakRssBytes": 1425408,
+    "rssLimitBytes": 805306368,
+    "limitation": "No observed overrun is not proof of complete aggregate RSS compliance. Original passed:true remains immutable and is qualified, not rewritten."
+  },
+  "brief1": {
+    "grant": "fucq100-https-brief1-657c3a7-1315",
+    "consumed": false,
+    "selectionLaunched": false,
+    "outputDirectoryAbsent": true,
+    "reason": "Independent review blocked the incomplete original resource accounting; no runtime grant for repaired source."
+  },
+  "sourceOnlyRepair": {
+    "authorisation": "Dispatcher13:44 source-only accounting repair/refreeze and consequential review; explicitly no new runtime grant.",
+    "planPath": "docs/gcsp/evidence/fucq100/local-https-run-plan.json",
+    "planSHA256": "4c27b347893f666deea849c73446f937f9b5a40301fe0e7bf00cf1d02815bbe5",
+    "sourcePlanSHA256": "04faf4e9744f3d85aa814bf5d4219cade5aa0779f1b751e4d950fdadc15f46a9",
+    "executionAuthorised": false,
+    "executed": false,
+    "mechanism": "Direct Darwin os.posix_spawn for the native executable image replaces Python trampoline/exec; no fork fallback. Retained native PID/wait4 plus Node broker-close journal; fresh start/group, minimal environment, explicit FD/signal actions and bounded output/cancellation.",
+    "accountingEquation": "sampled supervisor/family RSS + direct-child high-water + native wait4 peak + broker self high-water + registration-probe high-water; conservative overlap retained. Certificate contributes256MiB until complete native evidence; completed rows must identify darwin-os.posix_spawn.",
+    "preservedGate": "First cleanup receipt plan SHA must still equal the current plan SHA. Refreeze does not satisfy that old-plan prerequisite or reuse a grant.",
+    "helperContractSHA256": "9da8618de3bd834a2f0af197cf44b3d871081d39f5f5e1aef53f14e68d5c5f06",
+    "helperHashes": {
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/local-https-catalogue.py": "c59072cfb85678f9c0f89036f1702219f53aa159d9c280e974d561b64897120b",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/local-https-selected.py": "78a29f496d9cc07128df8090e9a8142b097d569e3142df1185971ee42cee9d30",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/local-https-preload.cjs": "8ea0807e12f7e11bf44630364f0bc780443bf54d4f1c8e9577ccd609908069b6",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/local-https-openssl.py": "56600d23376a2541c9ee8034774a25a8f0d65c27705c30e36ae9740961cf8913",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-supervisor.py": "6d0ed076a44d2ae9be964ebd3b916310cb81e53ada39c9f3733d3e94c1047639",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-launch.py": "5b6edc6eb443785d4302e07548bddb277093114c05cf546f2a23ceff3216068b",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-loader.mjs": "48eead42bb58cbd39ad13abed0a7da7a175b13530b70d24bceafd96fe8efb8c9",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-preload.cjs": "d11e52a2601e0c15580b672c38a2fc85a20ef2906e85d97556166e4db3f4b365",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-supervisor.py": "43026a725b6305fb8537e032049f0c19cf345bcdb8ee851c408e7dba5255bcc6",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/_tools/test_stamp.py": "88a16018b5b8fa225463b590f2283b4baa6be4951f258bba4846eacc3795a49e",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/_tools/scaffold_git.py": "ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/.claude/scaffolding.json": "c55d2bf32288b5e19f6ac6e7c7b35d22013c80b757d5328c8257a4eac4ac560a"
+    },
+    "independentReview": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/reviews/fucq100-stanley-tiger-https-accounting-repair-1344.md",
+      "sha256": "08e2c7360e6968b24e4568098089265ff48d0b52766890b19b3e354912832c1e",
+      "verdict": "PASS source-only; explicitly NO runtime admission or acceptance",
+      "reviewer": "Stanley Tiger",
+      "requestedModelEffort": "gpt-6.1-sol/high",
+      "selectedModelEffort": "gpt-6.1-sol/high",
+      "fallback": null
+    }
+  },
+  "staticChecks": [
+    "AST parse of the three changed Python helpers",
+    "static-only physical source/native catalogue freeze:219sources/498edges",
+    "13helper hashes and5unchanged product/test pins; original run/source plan hashes preserved",
+    "Independent exact source-only consequential review PASS, execution disabled",
+    "Scaffold Git diff --check PASS"
+  ],
+  "excluded": [
+    "Any second TLS2 launch or grant reuse",
+    "brief1 runtime",
+    "Browser/trust installation/Secure-cookie acceptance/journey/rendered1280/375px/keyboard/reduced motion",
+    "Native/live database, real senders/external services, full suite",
+    "Unchanged lifecycle/consumer reruns",
+    "Claims/shared-map/Jira/merge/acceptance changes; foreign writes"
+  ],
+  "historicalOnly": {
+    "lifecycle": "3/3",
+    "offer": "2/2",
+    "renewal": "19/20; available/released fixture mismatch remains with F122"
+  },
+  "remaining": [
+    "Repaired helper has no dynamic evidence; revised reviewed continuation terms required",
+    "F71/F108 atomic-ordering and F71/F112 receipt gaps",
+    "Resume7/rendered/full/native/provider/journey acceptance remains open",
+    "F96/F139 pauses/date holds/source restrictions and foreign claims preserved"
+  ]
+}

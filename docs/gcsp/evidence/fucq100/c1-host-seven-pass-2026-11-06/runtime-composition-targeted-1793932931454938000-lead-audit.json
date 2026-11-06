@@ -1,0 +1,308 @@
+{
+  "run": "runtime-composition-targeted-1793932931454938000",
+  "at": "2026-11-06T02:44:08.465944+00:00",
+  "result": "PASS",
+  "grant": "fucq100-c1host7-9948bff-0242",
+  "tested_revision": "9948bff11ed27f847436c6880db035fe8a54a784",
+  "tested_tree": "685d78b073aa3231cd95989c3ac78cb1a572c4c6",
+  "catalogue_sha256": "93f775a1cd917f50a37c1789dba41b6273bff2c94afa87dc6782f49fd0ae790a",
+  "scope": "seven frozen C1/host cases only; synthetic TEST input",
+  "counts": {
+    "cancelled": 0,
+    "fail": 0,
+    "pass": 7,
+    "skipped": 0,
+    "tests": 7,
+    "todo": 0
+  },
+  "outer_wall_seconds": 15.9,
+  "inner_wall_seconds": 11.47879825,
+  "peak_aggregate_rss_bytes": 406536192,
+  "peak_inner_rss_bytes": 376471552,
+  "peak_combined_owned_scratch_bytes": 1433600,
+  "retained_tap_and_module_bytes": 598076,
+  "owned_pids_absent": [
+    11554,
+    11632,
+    11635,
+    11643,
+    11649,
+    11661,
+    11662,
+    11663,
+    11666,
+    11672,
+    11676,
+    11677,
+    11678,
+    11692,
+    11693,
+    11707,
+    11708,
+    11725,
+    11727,
+    11728,
+    11743,
+    11776,
+    11777,
+    11810,
+    11812,
+    11832,
+    11833,
+    11847,
+    11849,
+    11850,
+    11862,
+    11867,
+    11868,
+    11877,
+    11882,
+    11883,
+    11892,
+    11897,
+    11898,
+    11908,
+    11917,
+    11922,
+    11930,
+    11931,
+    11934,
+    11946,
+    11947,
+    11961,
+    11962,
+    11985,
+    11986,
+    11987,
+    11999,
+    12002,
+    12003,
+    12014,
+    12018,
+    12019,
+    12033,
+    12051,
+    12061,
+    12075,
+    12077,
+    12089,
+    12090,
+    12104,
+    12105,
+    12119,
+    12122,
+    12123,
+    12137,
+    12140,
+    12141,
+    12152,
+    12156,
+    12157,
+    12167,
+    12171,
+    12172,
+    12183,
+    12190,
+    12199,
+    12208,
+    12209,
+    12211,
+    12224,
+    12227,
+    12242,
+    12243,
+    12294,
+    12323,
+    12324,
+    12339,
+    12348,
+    12361,
+    12362,
+    12368,
+    12370,
+    12379,
+    12380,
+    12381,
+    12387,
+    12398,
+    12403,
+    12405,
+    12423,
+    12424,
+    12432,
+    12433,
+    12439,
+    12446,
+    12447,
+    12454,
+    12468,
+    12470,
+    12471,
+    12477
+  ],
+  "owned_groups_absent": [
+    11632,
+    11663,
+    12368,
+    12468
+  ],
+  "manifests": [
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/ownership/6a5b24c33f3e40f4ae4c2346a9c00a6f.json",
+      "token": "6a5b24c33f3e40f4ae4c2346a9c00a6f",
+      "root": "/private/tmp/test-stamp-shard-6a5b24c33f3e40f4ae4c2346a9c00a6f",
+      "peak_scratch_bytes": 1433600,
+      "aggregate_peak_rss_bytes": 376471552,
+      "effective_ram_limit": 735592448,
+      "launches": [
+        {
+          "kind": "selected-command",
+          "pid": 11663,
+          "start": "Fri Nov  6 02:42:14 2026",
+          "state": "joined"
+        },
+        {
+          "kind": "open-file-probe",
+          "pid": 12368,
+          "start": "Fri Nov  6 02:42:25 2026",
+          "state": "joined"
+        }
+      ],
+      "open_files_absent": {
+        "executable": "/usr/sbin/lsof",
+        "returncode": 1,
+        "sha256": "28c36d6b6dfcce1f544717b0d1961aa03441ee0a736fee3e1eaeb215c0fbff4c",
+        "stderr_bytes": 0,
+        "stdout_bytes": 0
+      },
+      "state": "removed"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/strict-runtime-composition/ownership/d690b4bfeefe4ef4bd6c3930bc8236fc.json",
+      "token": "d690b4bfeefe4ef4bd6c3930bc8236fc",
+      "root": "/private/tmp/test-stamp-shard-d690b4bfeefe4ef4bd6c3930bc8236fc",
+      "peak_scratch_bytes": 0,
+      "aggregate_peak_rss_bytes": 406536192,
+      "effective_ram_limit": 805306368,
+      "launches": [
+        {
+          "kind": "selected-command",
+          "pid": 11632,
+          "start": "Fri Nov  6 02:42:13 2026",
+          "state": "joined"
+        },
+        {
+          "kind": "open-file-probe",
+          "pid": 12468,
+          "start": "Fri Nov  6 02:42:28 2026",
+          "state": "joined"
+        }
+      ],
+      "open_files_absent": {
+        "executable": "/usr/sbin/lsof",
+        "returncode": 1,
+        "sha256": "28c36d6b6dfcce1f544717b0d1961aa03441ee0a736fee3e1eaeb215c0fbff4c",
+        "stderr_bytes": 0,
+        "stdout_bytes": 0
+      },
+      "state": "removed"
+    }
+  ],
+  "ledger": {
+    "path": "/Users/garycarter/.cache/agent-scaffolding/test-resources/reservations.json",
+    "strict_locked_read": true,
+    "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+    "remaining_rows": 0,
+    "owned_tokens_absent": true,
+    "foreign_mutation": "none in audit"
+  },
+  "ports": "none granted or registered; no listener launched; all owner/registered processes absent",
+  "journals": [
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-composition-targeted-1793932931454938000-inner-esm-modules.jsonl",
+      "bytes": 408319,
+      "sha256": "3cfc05de1143a674e84dbd37b2f8bc54448ff0e220dec54df489f394bf5a4f66",
+      "records": 2138,
+      "unique_paths": 322
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-composition-targeted-1793932931454938000-inner-cjs-modules.jsonl",
+      "bytes": 187875,
+      "sha256": "41973b082e398476fa132720db11beba6034ae96316b417c1a456ddf4ce913f5",
+      "records": 992,
+      "unique_paths": 990
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-composition-targeted-1793932931454938000-receipt.json",
+      "bytes": 8157,
+      "sha256": "f0452c70bda572fe37921d539ea695c8d2810639199175551b0e3e328cbba382"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-composition-targeted-1793932931454938000-inner-receipt.json",
+      "bytes": 773975,
+      "sha256": "4006303203620cedc7f0cbcff54962fa2e38f50988a94c43eb29c6dbcd7770b2"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-composition-targeted-1793932931454938000-inner-plan.json",
+      "bytes": 763574,
+      "sha256": "0de477dda3cb99dcb2b9a21f6c9906ac80d9b7aabf4448dd7dd5590cf09f6aea"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/ownership/6a5b24c33f3e40f4ae4c2346a9c00a6f.json",
+      "bytes": 3670,
+      "sha256": "565d2f418b8b79285612ce6e89640234e54a440f605902ed70f87d9a1c08d061"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/strict-runtime-composition/ownership/d690b4bfeefe4ef4bd6c3930bc8236fc.json",
+      "bytes": 4783,
+      "sha256": "62126b6bb9fd804b68810b00aba7b4df2cc4da0fa9cd4772fc34f87da9248f47"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-composition-targeted-1793932931454938000-inner.log",
+      "bytes": 1882,
+      "sha256": "c588ec367e1e2bfabb7c5ee5f065ce354b5fb7936d1bed21ea6ea849f0ff3cd3"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-composition-targeted-1793932931454938000-inner-esm-modules.jsonl",
+      "bytes": 408319,
+      "sha256": "3cfc05de1143a674e84dbd37b2f8bc54448ff0e220dec54df489f394bf5a4f66"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-composition-targeted-1793932931454938000-inner-cjs-modules.jsonl",
+      "bytes": 187875,
+      "sha256": "41973b082e398476fa132720db11beba6034ae96316b417c1a456ddf4ce913f5"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/strict-runtime-composition/targeted-517cbf62f07e54256a6c4329c54e22bc7639c5bc30af01f8163f2c1726354e42-default-1793932949582843000.json",
+      "bytes": 5191,
+      "sha256": "a8fb249bd2a597f9fff3ee407d62c2c5c8f486d4edc9939d93bd732e90738b32"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/strict-runtime-composition/checkpoints/26fddbc68a8cb63a8bfae73cb7b5898b970710af38b530a548d06df727931f9a.json",
+      "bytes": 3394,
+      "sha256": "432bc4bc1376b69d683369bc1a68eab3e768c85f1b013fbe5b240da6112be17a"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/strict-runtime-composition/logs/20261106-024213-pbvgiil1/run.json",
+      "bytes": 100,
+      "sha256": "4c3fb95b82d3fd9072cd72ba37f48ea0f886a371e440ea6bca267bfca0e07482"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/strict-runtime-composition/logs/20261106-024213-pbvgiil1/chunk-0001.log",
+      "bytes": 467,
+      "sha256": "7657bfc48b0cceda7751cbd29b781a6d80b853245e484986a2dcb5d750d90eeb"
+    }
+  ],
+  "static_and_runtime_audit_checks": 2288,
+  "failed_checks": [],
+  "pin_counts": {
+    "sources": 196,
+    "helpers": 11,
+    "installed_files": 1890,
+    "executables": 8
+  },
+  "scratch": "two small local macOS TMPDIR-compatible roots removed; no leftovers",
+  "acceptance_exclusions": "Six C1 cases plus account/setup/Back/resume; real default employee preparation; synthetic TEST pull input only"
+}

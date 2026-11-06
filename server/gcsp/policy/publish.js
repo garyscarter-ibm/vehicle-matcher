@@ -15,6 +15,16 @@ const validValue = (value, previous) => {
     && Object.keys(previous).every((key) => Object.hasOwn(value, key) && validValue(value[key], previous[key]));
   return false;
 };
+// A dated successor may adopt neutral employee preference multipliers without rewriting retained v1.
+function validPreferenceWeightAdoption(change, previous) {
+  if (change.table !== 'assumptions' || change.key !== 'employee.recommendation.v1'
+    || !object(previous) || Object.hasOwn(previous, 'preferenceWeights') || !object(previous.preferences)) return false;
+  const { preferenceWeights, ...retained } = change.patch.value ?? {};
+  if (inputDigest(retained) !== inputDigest(previous) || !object(preferenceWeights)) return false;
+  const keys = Object.keys(previous.preferences);
+  return Object.keys(preferenceWeights).length === keys.length && keys.every((key) => Object.hasOwn(preferenceWeights, key)
+    && Number.isSafeInteger(preferenceWeights[key]) && preferenceWeights[key] >= 0);
+}
 export const policyOutcome = (status, policyVersion, fields) => ({ status, ...structuredClone(fields), contractVersion: '1.0.0', policyVersion });
 export const publishInvalid = (field, reason) => policyOutcome('invalid', null, {
   code: 'invalid-policy-change', accepted: false, reasons: [{ field, reason }],
@@ -24,7 +34,7 @@ export const policyUnavailable = () => policyOutcome('unavailable', null, {
 });
 export const acceptedPublication = (record) => policyOutcome('ok', record.seed.policyVersion, { value: {
   accepted: true, policyVersion: record.seed.policyVersion, effectiveFrom: record.seed.effectiveFrom,
-  publisher: record.publisher, publishedAt: record.publishedAt,
+  publisher: record.publisher, publishedAt: record.publishedAt, ...(record.adoption ? { adoption: record.adoption } : {}),
 } });
 
 export function validateChangeSet(input) {
@@ -48,9 +58,9 @@ export function validateChangeSet(input) {
   return null;
 }
 
-export function preparePublication(records, context, input, now) {
+export function prepareSuccessor(records, context, input, now, digestInput = input) {
   let digest;
-  try { digest = inputDigest({ principalId: context.principalId, input }); }
+  try { digest = inputDigest({ principalId: context.principalId, input: digestInput }); }
   catch { return { outcome: publishInvalid('changeSet', 'Supply finite JSON values without cycles or unsupported types.') }; }
   const prior = records.find((record) => record.commandId === input.commandId);
   if (prior) return { outcome: prior.inputDigest === digest ? acceptedPublication(prior)
@@ -73,22 +83,34 @@ export function preparePublication(records, context, input, now) {
   next.effectiveFrom = input.effectiveFrom;
   delete next.effectiveTo;
   for (const table of Object.keys(POLICY_TABLES)) for (const row of next[table]) row.policyVersion = next.policyVersion;
+  return { next, predecessor, digest };
+}
+
+export function completePublication(records, context, input, now, { next, predecessor, digest }, audit = {}) {
+  try { snapshotVersions([...records.map(({ seed }) => seed), next]); }
+  catch { return { outcome: publishInvalid('changes', 'The complete changed policy must satisfy the seed schema, dates, references, units and provenance.') }; }
+  const record = { seed: next, seedDigest: inputDigest(next), publisher: context.principalId, publishedAt: now,
+    sourceVersion: predecessor.policyVersion, commandId: input.commandId, inputDigest: digest, ...audit };
+  return { record, outcome: acceptedPublication(record) };
+}
+
+export function preparePublication(records, context, input, now) {
+  const prepared = prepareSuccessor(records, context, input, now);
+  if (prepared.outcome) return prepared;
+  const { next } = prepared;
   for (const { table, key, patch } of input.changes) {
     const row = next[table].find((entry) => entry.key === key);
     const protectedFields = ['key', 'policyVersion', 'effectiveFrom', 'effectiveTo', 'linkId', 'ruleId', 'pricePlanId', 'priceEntryId', 'allowanceId'];
     if (!row || Object.keys(patch).some((field) => protectedFields.includes(field) || !Object.hasOwn(row, field))) {
       return { outcome: publishInvalid('changes.patch', 'Patch an existing entry field; identifiers and effective dates are immutable.') };
     }
-    if (Object.hasOwn(patch, 'value') && !validValue(patch.value, row.value)) {
+    if (Object.hasOwn(patch, 'value') && !validValue(patch.value, row.value)
+      && !validPreferenceWeightAdoption({ table, key, patch }, row.value)) {
       return { outcome: publishInvalid('changes.value', 'Preserve the existing value type and shape, with finite nonnegative numbers.') };
     }
     Object.assign(row, structuredClone(patch), { effectiveFrom: input.effectiveFrom });
   }
-  try { snapshotVersions([...records.map(({ seed }) => seed), next]); }
-  catch { return { outcome: publishInvalid('changes', 'The complete changed policy must satisfy the seed schema, dates, references, units and provenance.') }; }
-  const record = { seed: next, seedDigest: inputDigest(next), publisher: context.principalId, publishedAt: now,
-    sourceVersion: predecessor.policyVersion, commandId: input.commandId, inputDigest: digest };
-  return { record, outcome: acceptedPublication(record) };
+  return completePublication(records, context, input, now, prepared);
 }
 
 export async function publishPolicyVersion({ provider, identity, clock }, context, changeSet) {
