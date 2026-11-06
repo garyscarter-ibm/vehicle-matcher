@@ -1,4 +1,6 @@
-import { isAbsolute, resolve } from 'node:path';
+import { dirname, isAbsolute, resolve } from 'node:path';
+import { open } from 'node:fs/promises';
+import { settingsShapeReceiptBytes, validateSettingsShapeRefusal } from './settings-shape-report.mjs';
 import { fileURLToPath } from 'node:url';
 import { createCollectionSession, readCollectionJson as readBounded } from './collection-session.mjs';
 import { bmwCatalogueLookupIdentity } from '../../server/vehicle-evidence/bmw-catalogue-adapter.js';
@@ -278,10 +280,31 @@ export async function createPublicBmwQualificationDiagnostic({ plan: input, stat
     identity: { planDigest: inputDigest(plan), sourceVersion: plan.source.version, stage: 'source-qualification-diagnostic', version: '1', mode },
     operations: publicBmwQualificationOperations(plan), limits: plan.limits, statePath, http, now, onPhase,
     initialState: { diagnostic: null, accepted: [], rejected: [], duplicates: [] },
-    validateState: (state) => requireValue((state.diagnostic === null || object(state.diagnostic))
-      && ['accepted', 'rejected', 'duplicates'].every((key) => Array.isArray(state[key]) && state[key].length === 0),
-    'checkpoint-corrupt', 'A source diagnostic cannot contain admitted configurations.') });
-  return { session, run: () => session.withCheckpoint(async ({ state, execute, commit }) => {
+    validateState: (state) => {
+      requireValue((state.diagnostic === null || object(state.diagnostic))
+        && ['accepted', 'rejected', 'duplicates'].every((key) => Array.isArray(state[key]) && state[key].length === 0),
+      'checkpoint-corrupt', 'A source diagnostic cannot contain admitted configurations.');
+      if (state.diagnostic && Object.hasOwn(state.diagnostic, 'settingsShapeRefusal')) {
+        requireValue(Object.keys(state.diagnostic).length === 1, 'settings-shape-report-invalid', 'A refusal retains only its fixed settings report.');
+        validateSettingsShapeRefusal(state.diagnostic.settingsShapeRefusal, { plan, mode });
+        requireValue(state.halted === state.diagnostic.settingsShapeRefusal.reason,
+          'settings-shape-report-invalid', 'A settings report must retain its fail-closed stop.');
+      }
+    } });
+  return { session, exportSettingsShapeReceipt: (path) => session.withCheckpoint(async ({ state }) => {
+    requireValue(isAbsolute(path || ''), 'explicit-path-required', 'Supply an absolute owned receipt path.');
+    requireValue(state.diagnostic?.settingsShapeRefusal, 'settings-shape-report-unavailable', 'No validated settings refusal report is available.');
+    const stage = state.stages['source-qualification-diagnostic'];
+    requireValue(stage?.version === '1' && stage.inputDigest === inputDigest(plan), 'settings-shape-report-invalid', 'The diagnostic stage identity changed.');
+    const { bytes, sha256 } = settingsShapeReceiptBytes(state.diagnostic.settingsShapeRefusal, { plan, mode });
+    try {
+      const file = await open(path, 'wx', 0o600);
+      try { await file.writeFile(bytes); await file.sync(); } finally { await file.close(); }
+      const parent = await open(dirname(path), 'r');
+      try { await parent.sync(); } finally { await parent.close(); }
+    } catch { throw new CollectionError('settings-shape-export-failed', 'The safe settings receipt could not be written.'); }
+    return { schemaVersion: 'bmw-settings-shape-refusal-receipt.v1', bytes: bytes.length, sha256 };
+  }), run: () => session.withCheckpoint(async ({ state, execute, commit }) => {
     const report = (reason) => structuredClone({ status: 'incomplete', reason, qualification: 'observation-only-schema-diagnostic',
       admission: false, accepted: state.accepted, rejected: state.rejected, duplicates: state.duplicates,
       counts: state.counts, diagnostic: state.diagnostic, coverage: { distinctConfigurations: 0 } });
@@ -297,6 +320,9 @@ export async function createPublicBmwQualificationDiagnostic({ plan: input, stat
       return report('raw-schema-review-required');
     } catch (error) {
       if (!(error instanceof CollectionError)) throw error;
+      if (Object.hasOwn(error, 'settingsShapeRefusal')) {
+        state.diagnostic = { settingsShapeRefusal: validateSettingsShapeRefusal(error.settingsShapeRefusal, { plan, mode }) };
+      }
       state.halted = error.code; await commit('diagnostic-stop'); return report(error.code);
     }
   }, { stage: { id: 'source-qualification-diagnostic', version: '1', inputDigest: inputDigest(plan) } }) };

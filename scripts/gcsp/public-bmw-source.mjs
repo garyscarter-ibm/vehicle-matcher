@@ -1,6 +1,8 @@
 import { createHash } from 'node:crypto';
 import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { normaliseCodes, requireValue } from './configuration-key.mjs';
+import { assertCollectionHttpObservation } from './collection-session.mjs';
+import { createSettingsShapeRefusal } from './settings-shape-report.mjs';
 
 const object = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
 const same = (a, b) => inputDigest(a) === inputDigest(b);
@@ -171,8 +173,18 @@ export function publicBmwQualificationOperations(input) {
       return { settingsPath: paths[0], observation: observe(metadata, 'page') };
     }),
     settings: descriptor('bmw-settings', null, (value, _request, metadata) => {
-      treeHeader = headerFor(value, /^settingsVehicleTree$/, true);
-      localisationHeader = headerFor(value, /^settingsLocalisation$/, true);
+      assertCollectionHttpObservation(metadata); observe(metadata, 'settings');
+      let failedRole = 'tree';
+      try {
+        treeHeader = headerFor(value, /^settingsVehicleTree$/, true);
+        failedRole = 'localisation';
+        localisationHeader = headerFor(value, /^settingsLocalisation$/, true);
+      } catch (error) {
+        if (['settings-header-shape', 'settings-traversal-limit'].includes(error.code)) {
+          error.settingsShapeRefusal = createSettingsShapeRefusal({ settings: value, failedRole, reason: error.code, metadata, plan });
+        }
+        throw error;
+      }
       return { publicProfilesQualified: true, observation: observe(metadata, 'settings') };
     }, { cache: false, prepare: async ({ path }) => {
       requireValue(typeof path === 'string' && settingsPattern.test(path), 'settings-discovery-shape', 'Use the path discovered from the pinned page.');

@@ -7,6 +7,14 @@ import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { CollectionError, requireValue } from './configuration-key.mjs';
 
 export const COLLECTION_SESSION_VERSION = '2';
+// Only existing readHttp closures register objects; callers cannot attest copied metadata.
+// Injected same-process fetch remains a trusted port: membership is not network proof.
+const executorObservations = new WeakSet();
+export function assertCollectionHttpObservation(metadata) {
+  requireValue(metadata !== null && typeof metadata === 'object' && executorObservations.has(metadata),
+    'source-observation-metadata', 'Use the existing executor-owned HTTP observation.');
+}
+
 const object = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
 const same = (a, b) => inputDigest(a) === inputDigest(b);
 const bounded = (value, min, max) => Number.isSafeInteger(value) && value >= min && value <= max;
@@ -259,6 +267,7 @@ export async function createCollectionSession({ identity: stageIdentity, operati
             request: Object.freeze({ method: prepared.method, url: prepared.url }),
             observedAt: new Date(now()).toISOString(), responseBytes: bytes,
             responseSha256: createHash('sha256').update(body).digest('hex') });
+          executorObservations.add(metadata);
           return { value, metadata };
         } finally {
           if (reader) await reader.cancel().catch(() => {});

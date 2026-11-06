@@ -1816,7 +1816,7 @@
     {
       "assignee": "",
       "id": "FUCQ-59",
-      "observed_at": "2026-11-06T13:16:24Z",
+      "observed_at": "2026-11-06T13:37:20Z",
       "original_status": "To Do",
       "slices": [
         {
@@ -1848,9 +1848,9 @@
           "title": "Finite source budgets, deadlines and default no-traffic safety (2 points)"
         },
         {
-          "evidence": "Live diagnostic at0937991c stopped settings-header-shape after2GET/638409decodedBytes;tree0/options0,accepted0/all74pending. All4allowance consumed,zero retry.18runner+6supervisor offline scopedPASS and finalCODE+SECURITYPASS; source-diagnostic-live-2026-11-06/live-parent-audit.json confirms root/group/reservation absent,8192Bscratch/407Blog removed. No raw body/header/checkpoint retained. Offline profile-shape diagnosis next; no guard relaxation/new allocation. Qualification/F39-F54publication ",
+          "evidence": "Live diagnostic at0937991c stopped settings-header-shape after2GET/638409decodedBytes;tree0/options0,accepted0/all74pending. All4allowance consumed,zero retry.18runner+6supervisor offline scopedPASS and finalCODE+SECURITYPASS; source-diagnostic-live-2026-11-06/live-parent-audit.json confirms root/group/reservation absent,8192Bscratch/407Blog removed. No raw body/header/checkpoint retained. Offline profile-shape diagnosis next; no guard relaxation/new allocation. Qualification/F39-F54publication remains blocked. Offline safe settings refusal/report extension53/53 scopedPASS; helper100%lines/functions; no source allocation or admission. Evidence settings-shape-report-2026-11-06/result.json; CODE+SECURITY review pending; old spent marker/contracts/live evidence unchanged.",
           "id": "source-qualification",
-          "observed_at": "2026-11-06T13:16:24Z",
+          "observed_at": "2026-11-06T13:37:20.366643+00:00",
           "status": "blocked",
           "title": "Selected real-source model mapping and solver integration (1 point)"
         },
@@ -1883,13 +1883,13 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59",
       "workers": [
         {
-          "expires_at": "2026-11-06T12:15:12.743423+00:00",
+          "expires_at": "2026-11-06T13:37:20.366643+00:00",
           "harness": "codex",
           "name": "Cecil Turtle",
-          "observed_at": "2026-11-06T12:15:12.743423+00:00",
+          "observed_at": "2026-11-06T13:37:20.366643+00:00",
           "role": "story-lead",
           "source": "thread 01a1b054-1167-7820-b9f2-92ec81e37bbe",
-          "status": "Checkpoint2b executor metadata scoped35/35pass; exact byte/time/source/request/capability handoff; ready independent review. No source/full/F60-new-pin proof; qualification blocked; Sol/high no descendants"
+          "status": "Offline settings refusal/report checkpoint53/53 scopedPASS; stopped on checkpoint ready independent CODE/SECURITY review. source0/all74pending; sixcomplete/twoblocked; requested/selectedSol/high, no fallback/descendants"
         }
       ]
     }
