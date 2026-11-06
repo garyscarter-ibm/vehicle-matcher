@@ -147,10 +147,12 @@ do not establish live pending/allocated/reset integration acceptance.
 
 The [source/selection/resource inventory](evidence/fucq100/manual-journey-resume-source.json)
 freezes the current ordinary graph, installed inventory reference, actual inputs and exact seven
-selected titles (five new and two affected existing host cases). It is a static planning record.
-No future launcher or grant is supplied by it. Existing seven-case helpers bind the old catalogue
-and changed source postimages; they must not be run against these edits. A separately reviewed
-launcher/guard catalogue must bind this graph and selection before admission.
+selected titles (five new and two affected existing host cases). It is the immutable6562e59 static
+planning record; its then-missing launcher fields describe that checkpoint. The separately
+[authored current launcher/catalogue](evidence/fucq100/manual-resume-validation-plan.md) now binds
+the same graph and selection plus its new owned helpers. No execution grant or root admission is
+issued by either publication. Existing seven-case helpers bind the old catalogue and old source
+postimages; they must not be run against these edits. Current helper review/admission remains required.
 The previous grant was consumed; it authorises no retry or changed-source run. Provisional sizing
 may use the accepted run's15.9s/406536192B aggregate RSS/1433600B scratch, but new-case timing and
 coverage remain unmeasured. Required native/full/default-reset/rendered integration gates remain
@@ -166,6 +168,7 @@ observation times and worker expiry. The accepted scoped seven-case evidence doe
 this slice complete or the full story accepted. No shared map file is edited from this bounded
 worktree.
 
-Next: dispatcher review of the authored implementation, seven-title selection and current finite
-closure, with69 interface coordination. Runtime verification needs a separate current launcher,
-review and grant. No execution or acceptance result is inferred from this publication.
+Next: dispatcher review of the authored current launcher/guard/admission catalogue, seven-title
+selection and finite resource delta, with69 interface coordination. Root has accepted6562e59 for
+this authoring step; runtime verification still needs a separate current admission and grant.
+No execution or acceptance result is inferred from this publication.
