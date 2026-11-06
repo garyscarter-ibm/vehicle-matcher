@@ -298,3 +298,24 @@ passed. No JavaScript imported/executed, resources allocated, dependency link or
 activation run created. Actual activation and final scoped/full integration stay
 open; no built/accepted claim. The original synthetic limitations, optimizer
 iteration-limit and worse Brier results remain unchanged.
+
+
+### Strict activation harness proposal · 6 November 2026
+
+Dibble independently passed the original77-source/217-edge activation behavior,
+but held execution for pre-import identity, native injection, strict ledger and
+recursive process/RSS/teardown gaps. The dispatcher authorised only narrow owned
+harness authoring. `docs/gcsp/models/fucq115-activation-harness-repair.md` records
+the diagnosis, repair, exact hashes and proposed command. Frozen admission SHA
+`c4667c215fbaca5a15413df46e181118d5a8cde66dd2a127f0adb7b15bc13909` covers204
+physical/content identities,138 installed files across14 pg dependency packages
+and37 missing-resolution probes. No FUCQ-100/shared helper is copied or changed.
+
+The unchanged activation entry/catalogue/artifact remain pinned. A gated launcher,
+strict owned resource wrapper and exact frozen admission replace the unsafe
+inherited paths; malformed/unknown states preserve resources rather than claiming
+cleanup. Author-only AST/static symbols, metadata freeze and exact `--plan` passed;
+no JS/OS proof, test, resource reservation, activation, generation, training or
+tuning ran. Independent repair review, actual activation and final scoped/full
+integration remain open. Own worker observation expires at this handoff; no built
+or Jira acceptance transition.

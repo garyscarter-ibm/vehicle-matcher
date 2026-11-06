@@ -1,6 +1,6 @@
 # Existing-artifact dated activation proposal
 
-6 November 2026. Authored for exact dispatcher source/harness review; unexecuted.
+6 November 2026. Source behavior independently reviewed; strict harness repair authored for exact review, unexecuted. Read `fucq115-activation-harness-repair.md` for the current admission, command and lifecycle implementation. It supersedes the original2155241 supervisor/command below.
 The dispatcher independently audited the reached retained-input training result
 at `e3f1e0bbe874d6fbc48e65de80c03261f410abf6` (44 checks). This proposal follows
 the subsequent instruction to prepare **only actual model-reference publication
@@ -26,15 +26,18 @@ called. Filesystem-relative JSON dependencies use the same single scratch mirror
 
 | Review file | SHA-256 |
 | --- | --- |
-| `fucq115-activation-source-plan.py` | `52c778cb00469727b2250c2db930b0d702e4d6817d4cb439e95eabdb358c7a5c` |
 | `fucq115-activation-source-plan.json` | `f884ae94ff85455aa8d56c38e0ed7e2be58d960a862e99359f5f318694fa65aa` |
 | `fucq115-activation-run.mjs` | `bb7bf38bb1a93ab962123fd91aeb3d04484971e735c8cca1e1f16dd943e7bed9` |
-| `fucq115-activation-supervisor.py` | `edef90bd3915ae9d2759d914478ace2b98a1aa87b7a2271c064b991f522fb9c8` |
+| `fucq115-activation-admission.json` | `c4667c215fbaca5a15413df46e181118d5a8cde66dd2a127f0adb7b15bc13909` |
+| `fucq115-activation-freeze.py` | `28ad3a2fa5af1a8a6fa37244dfa15481c7fe1dfa5725f032d7f45b69c9e0b192` |
+| `fucq115-activation-resources.py` | `2ef0823acaf59764c3c9e0e3cb662f0bd72637f7ee569807c61c537d0b742949` |
+| `fucq115-activation-supervisor.py` | `1e5a0811b8cad6cf449905f72c1da49c59d9f6f486c95c791e40b3d496deefe9` |
+| `fucq115-activation-launch.mjs` | `e257c85510f7559f5aa4e0231ff2b8034bd80a111e833c1b877656927c7d270b` |
 
 After a new exact grant, the proposed single command is:
 
 ```text
-python3 -B docs/gcsp/models/fucq115-activation-supervisor.py --execute --dispatcher-grant GRANT
+/usr/bin/python3 -I -B docs/gcsp/models/fucq115-activation-supervisor.py --execute --admission-sha c4667c215fbaca5a15413df46e181118d5a8cde66dd2a127f0adb7b15bc13909 --dispatcher-grant GRANT
 ```
 
 The finite entry point will:
@@ -71,18 +74,15 @@ Success retains a compact activation report/command, with no copied dataset or
 artifact output. This proves isolated canonical publication and artifact reading;
 it does not put the model into runtime prediction or a production policy source.
 
-The reused bounded supervisor owns one fresh `_tools/test_resources.py` worker:
-120seconds,768MiB RAM,128MiB combined scratch/output,2MiB logs and2MiB retained
-output cap, with expected16MiB disk/256MiB minimum RAM. The external plan/retained
-root precede allocation; scratch ownership, process-group finalizer and owned
-TMPDIR/TMP/TEMP precede writes. Database/PG/GCSP/NODE/debug/trace/preload overrides
-are removed. Only a scratch-owned link uses the unchanged installed pg8.23.1.
-Stop/join, group/scratch/reservation/link absence and source/input/helper plus
-installed-target device/inode/hash preservation are verified afterward. Selected
-small outputs move on the same volume to retained output before scratch removal.
+The owned strict wrapper retains the same one-worker120s/768MiB/128MiB/2MiB
+limits. Its frozen admission covers imported helpers, executables and full reachable
+installed pg dependency contents before custom imports. The strict ledger,
+recursive PID/start/RSS tracking, gated launch and stop/join/absence-before-delete
+finalizer replace the earlier inherited cleanup. See the repair record for exact
+source/physical pins, refusal cases and the command; no shared helper is edited.
 
 Read-only catalogue construction, exact77-source/helper/Node/pg identity `--plan`
-and Python AST checks passed. No JavaScript syntax/behavior test, memory runtime,
+and Python AST checks passed. Python static symbol analysis and the strict frozen admission plan also passed. No JavaScript syntax/behavior test, memory runtime,
 new resource allocation or activation has executed. Prior13/13 remains at its
 original test identity; the successful default CLI/evaluation retains the exact
 retained-run identity. Fresh scoped/full integration remains the dispatcher's
