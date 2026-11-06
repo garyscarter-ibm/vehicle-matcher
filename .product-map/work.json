@@ -1609,7 +1609,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T00:38:04Z",
+      "observed_at": "2026-11-06T00:39:43Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-115",
       "slices": [
         {
@@ -1628,10 +1628,10 @@
         },
         {
           "id": "dataset",
-          "status": "in-progress",
+          "status": "blocked",
           "title": "Published-generator-and-meaningful-dataset",
-          "observed_at": "2026-11-06T00:38:04Z",
-          "evidence": "Canonical1030d3a accepted;73-file coherent source catalogue and bounded harness authored for dispatcher review. Python AST and sourcehash --plan passed; no JS imports/generation/test allocation. docs/gcsp/models/fucq115-canonical-plan.md"
+          "observed_at": "2026-11-06T00:39:43Z",
+          "evidence": "Canonical1030d3a accepted. Finite73-file plan/harness35fd9e5 pushed and sent to dispatcher for required exact source/execution review; no JS import or resource allocation. Existing scoped13/13 retains original identity. docs/gcsp/models/fucq115-canonical-plan.md"
         },
         {
           "id": "evaluation",
@@ -1649,10 +1649,10 @@
         },
         {
           "id": "policy",
-          "status": "in-progress",
+          "status": "blocked",
           "title": "Canonical-policy-adoption-and-dated-activation",
-          "observed_at": "2026-11-06T00:38:04Z",
-          "evidence": "Canonical1030d3a accepted;73-file coherent source catalogue and bounded harness authored for dispatcher review. Python AST and sourcehash --plan passed; no JS imports/generation/test allocation. docs/gcsp/models/fucq115-canonical-plan.md"
+          "observed_at": "2026-11-06T00:39:43Z",
+          "evidence": "Canonical1030d3a accepted. Finite73-file plan/harness35fd9e5 pushed and sent to dispatcher for required exact source/execution review; no JS import or resource allocation. Existing scoped13/13 retains original identity. docs/gcsp/models/fucq115-canonical-plan.md"
         },
         {
           "id": "acceptance",
@@ -1668,10 +1668,10 @@
           "name": "Pluto",
           "harness": "codex",
           "role": "story-lead/canonical integration plan",
-          "observed_at": "2026-11-06T00:38:03.669914+00:00",
-          "expires_at": "2026-11-06T02:38:03.669914+00:00",
+          "observed_at": "2026-11-06T00:39:43.286071+00:00",
+          "expires_at": "2026-11-06T00:39:43.286071+00:00",
           "source": "thread 01a1ae22-e1cc-74a0-9717-21082afb1fd1",
-          "status": "active; finite source/harness proposal, no execution allocation"
+          "status": "stopped; published finite plan35fd9e5 awaits dispatcher review, no execution allocation"
         }
       ],
       "branch": "dev/DEV-2026-11-04-092"
