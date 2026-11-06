@@ -689,7 +689,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T00:11:09Z",
+      "observed_at": "2026-11-06T00:31:27Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-70",
       "tracker_observed_at": "2026-11-05T22:40:24Z",
       "branch": "dev/DEV-2026-11-04-070",
@@ -739,8 +739,8 @@
           "id": "service-integration",
           "status": "not-started",
           "title": "Actual-frozen66-memory-producer-and-HTTP-integration",
-          "observed_at": "2026-11-06T00:11:09Z",
-          "evidence": "6 November plan only: service-proof-plan.md and service-proof-inputs.json pin actual66 eb5a677, genuine69 claim-controller callback and 46 modules. No imports/execution/allocation; exact plan and harness admission outstanding. Scoped counts unchanged; all five acceptance slices remain open."
+          "observed_at": "2026-11-06T00:31:27Z",
+          "evidence": "6 November: root admitted f0420d0 source plan for authoring. Concrete six-case/eight-setup probe+strict loader+owned supervisor authored; service-proof-harness.json pins files, commands and unused run root. No integration imports/execution/allocation; exact harness review pending. Existing counts and five remaining slices unchanged."
         },
         {
           "id": "submission-integration",

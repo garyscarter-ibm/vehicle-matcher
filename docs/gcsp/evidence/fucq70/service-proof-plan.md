@@ -1,6 +1,6 @@
 # Proposed actual FUCQ-66 integration proof — FUCQ-70
 
-**Plan only, 6 November 2026. Not admitted or executed.** This replaces the earlier three-file/symlink proposal. The dispatcher must review this exact source graph and execution boundary before integration modules are imported or any proof allocation starts. Preparing the plan does not complete an integration slice.
+**Source plan admitted for harness authoring, 6 November 2026; execution remains unadmitted.** Root independently verified all 46 modules, six file inputs and two retained pg identities at published `f0420d0`, recorded in shared `.claude/test-runs/ownership/fucq70-service-review-20261106.json`. The concrete probe/loader/supervisor below now require exact-byte/command review before imports, scratch copies or proof allocation. This replaces the earlier three-file/symlink proposal and completes no integration slice.
 
 ## Current checkpoint
 
@@ -60,7 +60,13 @@ The tested gallery callback is actual DOM-free claim owner `onConfirmed`. The re
 
 ## Exact loading, resources and teardown
 
-After source-plan admission, author only `server/test/gcsp-manual-review-actual66.proof.mjs` and an evidence-owned dedicated loader/supervisor. Review/hash their exact bytes and record actual Node/loader/package environment and selected command before execution. Missing probe/loader hashes hold execution; they do not imply approval to run a newly generated harness.
+The concrete probe is `server/test/gcsp-manual-review-actual66.proof.mjs`; the evidence-owned loader/supervisor are `actual66-loader.mjs` and `actual66-supervisor.py`. Their SHA-256 values, exact Node binary identity, six case names, eight setups, deterministic unused scratch/record paths and absolute Node argv are in [service-proof-harness.json](service-proof-harness.json). It also records the absolute sanitised supervisor launch prefix; the published harness commit and manifest digest are the two required launch arguments. No harness is executed during authoring.
+
+[service-proof-dependencies.json](service-proof-dependencies.json) pins the existing pg closure: 14 installed packages, 68 code/JSON files, 263,520 source bytes, each with device/inode/hash. It requires no install or link. Native CommonJS package resolution is checked against that finite installed closure before/after; the ESM journal does not claim to observe every CommonJS require edge. The application graph still contains exactly 46 modules and eight external byte copies.
+
+Supervisor checks its own/probe/loader/tool and manifest hashes, exact checkout commit and Node binary, and refuses an existing run token's evidence or scratch. It records source-before/source-after journals, the observed application import graph, copied producer/runtime-config hashes, process identities and resource receipts. A separate `audit --receipt ABSOLUTE_RECEIPT` process verifies resource absence and matching retained source/dependency identities. No automatic retry or producer repair can turn an incompatible source/protocol result into a pass.
+
+The reviewed launch uses `/usr/bin/env -i` before isolated Python. The child receives only allowed locale/path settings, owned temporary variables and the dedicated loader configuration; database aliases, debug/inspector variables, inherited preloads and credentials are excluded. The cap includes supervisor RSS, and failure output is read/retained as a bounded redacted tail even when the proof or loader fails. Python AST/import-graph/case-count review is static only; no Node syntax, probe, native, browser or full-suite result is claimed.
 
 Use a strict named ESM loader. Export exactly eight external files above byte-for-byte through scaffold Git into run-owned scratch; never copy a source/dependency tree or create a symlink. Canonicalise every admitted relative import to its manifest logical repository path: unchanged files resolve to hash-verified FUCQ-70 paths; selected files resolve to exact scratch copies. Repository/core and identity module URLs each have one canonical instance. Refuse unlisted executable imports, transformations, fallbacks and changed bytes. Built-in `node:` modules stay native. Record the observed import graph and reconcile it against this static manifest.
 

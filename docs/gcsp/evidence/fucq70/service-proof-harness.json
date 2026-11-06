@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "status": "authored-not-executed; exact execution admission required",
+  "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070",
+  "sharedRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher",
+  "applicationSourceBase": "16a83dde4bfbd48721bce5c26f98b482f4f5db40",
+  "sourcePlanPublication": "f0420d018889b6c6e65c4e46e3722000314b6f51",
+  "sourceManifestSha256": "9a489ecd03ec5da53fb53096cdb15eb39b1dafad12f003bd6190692f365bb2fd",
+  "dependencyManifestSha256": "6812e8aa4d1ac0f92d31c9bd7fbde994dbf1fb9f5a0c3703566f8072ccd1a812",
+  "ownedFiles": [
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs",
+      "sha256": "dac68e081ab985f9d089e34868dba44a05477064cd2f745af1aefd71becb5778"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-loader.mjs",
+      "sha256": "56a29602e12cc999d2d2e7d5c699adbc5aafb8e904ad7d611f2f4d69eced4299"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-supervisor.py",
+      "sha256": "69c36f5da1d3448c4b349c211ff9bae19df7391936b8abd2cb0953683a57ade6"
+    }
+  ],
+  "runtimeTools": [
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/_tools/test_resources.py",
+      "sha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/_tools/scaffold_git.py",
+      "sha256": "ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/scaffolding.json",
+      "sha256": "c3645062f8dd8ff6aa9f81a794dddc10fe8b9172475fa2d2174e7e6559672160"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/.claude/scaffolding.json",
+      "sha256": "c3645062f8dd8ff6aa9f81a794dddc10fe8b9172475fa2d2174e7e6559672160"
+    }
+  ],
+  "node": {
+    "path": "/opt/homebrew/bin/node",
+    "resolved": "/opt/homebrew/Cellar/node/26.5.0/bin/node",
+    "device": 16777232,
+    "inode": 149228790,
+    "sha256": "70851490e028b3d699a8d6d4e1de909af2a989359ae807974c92af9c6580a8e8",
+    "symlink": true
+  },
+  "probe": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs",
+    "relativePath": "server/test/gcsp-manual-review-actual66.proof.mjs",
+    "sha256": "dac68e081ab985f9d089e34868dba44a05477064cd2f745af1aefd71becb5778",
+    "imports": [
+      "blocks/gcsp/manual-gallery/claim-controller.js",
+      "blocks/gcsp/manual-gallery/gallery-model.js",
+      "blocks/gcsp/manual-gallery/http-adapter.js",
+      "blocks/gcsp/manual-review/http-adapter.js",
+      "blocks/gcsp/manual-review/review-controller.js",
+      "node:assert/strict",
+      "node:stream",
+      "node:test",
+      "server/gcsp/adapters/manual-stock.js",
+      "server/gcsp/clock/index.js",
+      "server/gcsp/identity/http.js",
+      "server/gcsp/manual-claims/http.js",
+      "server/gcsp/manual-claims/index.js",
+      "server/gcsp/manual-context/fixtures.js",
+      "server/gcsp/manual-context/http.js",
+      "server/gcsp/manual-context/index.js",
+      "server/gcsp/manual-review/http.js",
+      "server/gcsp/manual-review/index.js",
+      "server/gcsp/policy/index.js",
+      "server/gcsp/repository/index.js",
+      "server/test/helpers/employee-recommendation.js"
+    ]
+  },
+  "caseNames": [
+    "actual66 issued claim \u2192 actual69 confirmed readback callback \u2192 review without another claim",
+    "actual66 confirmed release remains available with invalid local contacts for cancel/back/change",
+    "actual66 historical success replay cannot authorise continuation after exact clock expiry",
+    "actual66 HTTP202 pending claim/replay reconciles before same-operation resend and actual GET confirmation",
+    "actual66 HTTP202 release stays occupied past deadline until matching terminal GET, retaining invalid edits",
+    "actual identity/session isolation and competing review metadata readback fail closed without a new claim"
+  ],
+  "topLevelTests": 6,
+  "runtimeSetups": 8,
+  "runToken": "afeca82c8ac84cf78a272ce8c66121e3",
+  "scratch": "/private/tmp/test-stamp-shard-afeca82c8ac84cf78a272ce8c66121e3",
+  "records": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/afeca82c8ac84cf78a272ce8c66121e3",
+  "nodeArgv": [
+    "/opt/homebrew/bin/node",
+    "--experimental-loader",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-loader.mjs",
+    "--test",
+    "--test-concurrency=1",
+    "--test-reporter=tap",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs"
+  ],
+  "launchPrefix": [
+    "/usr/bin/env",
+    "-i",
+    "PATH=/usr/bin:/bin:/opt/homebrew/bin",
+    "TZ=UTC",
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-supervisor.py",
+    "run"
+  ],
+  "launchSuffix": [
+    "--commit",
+    "PUBLISHED_HARNESS_COMMIT",
+    "--harness-sha256",
+    "SHA256_OF_THIS_MANIFEST"
+  ],
+  "independentAuditPrefix": [
+    "/usr/bin/env",
+    "-i",
+    "PATH=/usr/bin:/bin:/opt/homebrew/bin",
+    "TZ=UTC",
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-supervisor.py",
+    "audit",
+    "--receipt",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/afeca82c8ac84cf78a272ce8c66121e3/receipt.json"
+  ],
+  "limits": {
+    "workers": 1,
+    "wallSeconds": 120,
+    "rssBytes": 805306368,
+    "scratchBytes": 134217728,
+    "logBytes": 2097152,
+    "scratchRoot": "/private/tmp/test-stamp-shard-afeca82c8ac84cf78a272ce8c66121e3",
+    "externalReceiptDirectory": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66",
+    "allocation": "none; deterministic root is planned, not created or reserved"
+  },
+  "execution": "single reviewed run token; refuse existing resources/evidence; no automatic repeat, source repair or fallback",
+  "validation": "Python AST parsed; probe import graph/case count and all pinned source/dependency identities checked without loading integration modules. No Node syntax/probe run claimed."
+}

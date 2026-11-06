@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "story": "FUCQ-70",
   "date": "2026-11-06",
-  "status": "proposed-not-admitted-not-executed",
+  "status": "source-plan-admitted; harness-authored; execution-not-admitted",
   "base": "16a83dde4bfbd48721bce5c26f98b482f4f5db40",
   "externalSourceRefs": {
     "FUCQ-66": "eb5a677b37c486e3da7c4547803f739e22df8ac3",
@@ -600,10 +600,14 @@
   },
   "plannedHarness": {
     "probe": "server/test/gcsp-manual-review-actual66.proof.mjs",
-    "probeSha256": null,
-    "loaderSha256": null,
-    "supervisorSha256": null,
-    "status": "not-authored; exact bytes and runtime inputs must be reviewed before execution"
+    "probeSha256": "dac68e081ab985f9d089e34868dba44a05477064cd2f745af1aefd71becb5778",
+    "loader": "docs/gcsp/evidence/fucq70/actual66-loader.mjs",
+    "loaderSha256": "56a29602e12cc999d2d2e7d5c699adbc5aafb8e904ad7d611f2f4d69eced4299",
+    "supervisor": "docs/gcsp/evidence/fucq70/actual66-supervisor.py",
+    "supervisorSha256": "69c36f5da1d3448c4b349c211ff9bae19df7391936b8abd2cb0953683a57ade6",
+    "status": "authored and statically reviewed; not executed",
+    "dependencyManifest": "docs/gcsp/evidence/fucq70/service-proof-dependencies.json",
+    "dependencyManifestSha256": "6812e8aa4d1ac0f92d31c9bd7fbde994dbf1fb9f5a0c3703566f8072ccd1a812"
   },
   "resourceContract": {
     "workers": 1,
@@ -611,9 +615,9 @@
     "rssBytes": 805306368,
     "scratchBytes": 134217728,
     "logBytes": 2097152,
-    "scratchRoot": null,
+    "scratchRoot": "/private/tmp/test-stamp-shard-afeca82c8ac84cf78a272ce8c66121e3",
     "externalReceiptDirectory": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66",
-    "allocation": "none for plan preparation"
+    "allocation": "none; deterministic root is planned, not created or reserved"
   },
   "prohibited": [
     "foreign source edits",
@@ -629,9 +633,14 @@
     "submission/allocator execution"
   ],
   "executionHolds": [
-    "Dispatcher admission of exact source/test plan",
-    "Review and hash exact probe/loader/supervisor and final absolute argv",
-    "Record runtime and installed-package dependency graph/identity",
-    "Fresh HostBudget reservation, external manifest and registered finalizer before scratch"
-  ]
+    "Dispatcher review/admission of exact concrete harness digests and final absolute command",
+    "Fresh HostBudget reservation, external ownership manifest and registered finalizer before scratch",
+    "Actual source/protocol incompatibility must fail/checkpoint, without foreign-source repair or fallback"
+  ],
+  "sourcePlanReview": {
+    "ref": "f0420d018889b6c6e65c4e46e3722000314b6f51",
+    "receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq70-service-review-20261106.json",
+    "receiptSha256": "bae3e0198dd43d481680c7c25819f632498920b3b951c39270a26b0f56cc4208",
+    "decision": "author concrete probe/loader/supervisor; exact harness and command require review before allocation"
+  }
 }
