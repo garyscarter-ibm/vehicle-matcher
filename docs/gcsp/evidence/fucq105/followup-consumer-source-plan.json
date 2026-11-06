@@ -1544,12 +1544,12 @@
       "bytes": 2918
     },
     "docs/gcsp/evidence/fucq105/followup-consumer-supervisor.py": {
-      "sha256": "45ef3295beb26377742447422eef4b932dff1245a2d9992c088ab3644629a090",
-      "bytes": 19729
+      "sha256": "d383b76421cad91efbe8a0933c2707dbb6d11bb13ace8f61924d1b94ac0fee2d",
+      "bytes": 26805
     },
     "docs/gcsp/evidence/fucq105/followup-consumer-audit.py": {
-      "sha256": "011bcab1317c58abf9276f7129770af271bc2690576816e320b8b7efd629531d",
-      "bytes": 5679
+      "sha256": "78e39ae67e6dea25aa5b4ebd3c15d66a8e2bea3201d90f009eacba8e0e8db6cd",
+      "bytes": 12008
     },
     "docs/gcsp/evidence/fucq105/decision-mixed-ledger.py": {
       "sha256": "14726d310da350b3d8e0b8b2c5e410d9f93167c841e52c9e4ede974a37870f69",
@@ -1570,6 +1570,10 @@
     "_tools/scaffold_git.py": {
       "sha256": "ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a",
       "bytes": 129000
+    },
+    "docs/gcsp/evidence/fucq105/followup-consumer-bounds.py": {
+      "sha256": "76af46c98429cbac41b965f6cc876678232ae24064812fd3154dc5bcc1b1744e",
+      "bytes": 20292
     }
   },
   "selected": "server/test/gcsp-offer-view-followup-consumer.test.js",
@@ -1617,7 +1621,7 @@
     "chunk_ram_mib": 768,
     "log_mib": 2
   },
-  "minimum_ram_mib": 384,
+  "minimum_ram_mib": 640,
   "workers": 1,
   "environment_allowlist": [
     "PATH",
@@ -1634,10 +1638,11 @@
     "seconds": 25,
     "child_ram_mib": 384,
     "combined_scratch_output_mib": 12,
-    "basis": "Accepted102 proof15.849s/255672320B aggregate and prior105 JSDOM231817216B; one new setup/client boundary and worker. Hard ceilings120s/128MiB combined/768MiB RAM/2MiB logs; stop at first failure or pressure."
+    "basis": "Accepted102 and prior105 measurements are historical estimates only. New one-worker aggregate charge includes supervisor/descendants/probes, max(self+reaped-child high water), plus128MiB fixed RAM allowances. Worker120s, supervisor240s, parent audit120s; combined128MiB includes temporary allowances, retained8MiB, RAM768MiB, logs2MiB; admission640MiB. Stop at first failure/pressure. No execution.",
+    "aggregate_ram_mib": 640
   },
-  "cleanup": "Install deferred handled cancellation and persistence-independent direct-join fallback before allocation; external owner/launch/reservation/staging intent before owned allocation. Direct captured-child terminate/kill/wait before sample/persistence; no completion cache before guards. Explicit group/process/ownership and durable receipt gate scratch deletion. Owned strict frozen-lock regular ledger only: no pruning/defaults/duplicate JSON/token-only updates. Exact owner/root/full owned row, complete foreign-preserving readback and no dependent child reservations gate release. Declared bounded ledger staging cleaned only by owned inode and independently audited. Unknown child/OS/ledger/accounting leaves named failure; no false absence. Current105 graph is independently frozen; accepted102 service evidence reused. Original51/94/11 graph remains separate.",
-  "independent_audit": "python3 -B docs/gcsp/evidence/fucq105/followup-consumer-audit.py --summary <external-run>/summary.json; independent post-exit exact-plan audit; not executed during authoring.",
+  "cleanup": "Preserve unchanged exact-owner/root/row strict ledger and direct captured-child join. Own aggregate monitor starts before helper imports, reservation precedes heavy verification and persists through cleanup/final writes. Unknown/oversize/stale telemetry fails closed, never zero RSS. Finite structure/encoding and byte caps apply to loaded-instance writers, captures, journals, checkpoints, log and stdout. Bound and postcheck summary/ownership/impact before release, then write one immutable terminal receipt from reserved allowance and postcheck actual combined allocation/RAM. No recursive receipt rewrite; actual parent wait code plus independent post-exit bounded filesystem/cap audit gate acceptance. Final manifest binds release staging by hash. Unknown accounting retains named scratch/reservation; bounded diagnostic writes only. Parent owns later audit reservation, captured exit codes and final receipt. Sampled contract, not an OS memory sandbox.",
+  "independent_audit": "Parent reserves/charges the separate bounded audit and captures its exit status: python3 -B docs/gcsp/evidence/fucq105/followup-consumer-audit.py --summary <external-run>/summary.json --supervisor-exit-code <actual-parent-wait-code>; exact-plan post-exit actual retained blocks, artifact caps, temporary absence, final manifest hash and original identity/cleanup checks; bounded audit write followed by actual combined allocation/RAM postcheck, with no self-rewrite. Parent retains audit stdout/postwrite measurement and actual audit wait result as final receipt. Not executed during authoring.",
   "ui_browser_proposal": {
     "lane": "UNALLOCATED as of dispatcher0126;122 ownership statements in historical plans are superseded. No105 browser grant.",
     "asset_plan": "docs/gcsp/evidence/fucq105/decision-successor-source-plan.json",
@@ -1665,7 +1670,7 @@
     "No edits to100/102/107 products or shared resource/Git/test-stamp code"
   ],
   "authoring_validation": {
-    "python_asts": "Owned supervisor/auditor and unchanged strict ledger/lifecycle AST only; no helper import or execution",
+    "python_asts": "Owned bounds/supervisor/auditor and unchanged strict ledger/lifecycle AST only; no owned/shared helper import or execution",
     "immutable_blob_and_static_graph_reads": true,
     "javascript_syntax": "not invoked",
     "product_imports": false,
@@ -1686,7 +1691,7 @@
       "sha256": "14726d310da350b3d8e0b8b2c5e410d9f93167c841e52c9e4ede974a37870f69",
       "bytes": 13685
     },
-    "scope": "Exact published strict frozen-lock/full-row/foreign-preserving accounting and direct captured-child join before sample/persistence. No HostBudget/default/pruning/token-only writes. New supervisor/auditor differ only at plan/entry/env/count/scope.",
+    "scope": "Exact published strict frozen-lock/full-row/foreign-preserving ledger and direct captured-child join are unchanged. Owned supervisor/auditor/bounds add aggregate accounting and finite output gates without changing ledger release authority or launch lifecycle.",
     "lifecycle_fake_cases_executed": 0,
     "runtime_proof": false
   },
@@ -1718,17 +1723,53 @@
     "lock_wait_seconds": 2
   },
   "current_harness_delta": {
-    "predecessor_ref": "1a0c028a5114c99b4705d32acb2b60846a103eea",
+    "predecessor_ref": "0fe9fdfe040566eaa6dd0c085568892ca3f6ed83",
     "supervisor": "docs/gcsp/evidence/fucq105/followup-consumer-supervisor.py",
     "auditor": "docs/gcsp/evidence/fucq105/followup-consumer-audit.py",
     "strict_ledger_and_lifecycle_unchanged": true,
     "accepted102_service_blocker_cleared": true,
-    "consumer_validation": "pending exact static review/grant; no execution",
-    "no_new_execution_grant": true
+    "consumer_validation": "unexecuted; static-only owned harness repair/refreeze",
+    "no_new_execution_grant": true,
+    "bounds": "docs/gcsp/evidence/fucq105/followup-consumer-bounds.py",
+    "review": "Independent static pass of unchanged73/137/24/12 graph and prior9 harness pins; execution HOLD repaired by owned aggregate/output authoring. Now10 harness pins; separate exact static review/grant still required."
   },
   "injected_environment": {
     "GCSP_FUCQ105_FOLLOWUP_MAP": "<owned-root>/module-map.json",
     "GCSP_FUCQ105_FOLLOWUP_CHECKPOINT": "<owned-root>/checkpoints.json",
     "GCSP_FUCQ105_FOLLOWUP_QUESTION_INPUT": "<owned-root>/composition/server/gcsp/offers/followup-policy-definitions.json"
+  },
+  "accounting": {
+    "combined_bytes": 134217728,
+    "ram_bytes": 805306368,
+    "retained_bytes": 8388608,
+    "json_bytes": 1048576,
+    "summary_bytes": 524288,
+    "terminal_bytes": 16384,
+    "audit_bytes": 16384,
+    "stdout_bytes": 4096,
+    "log_bytes": 2097152,
+    "journal_bytes": 262144,
+    "checkpoint_bytes": 65536,
+    "json_depth": 24,
+    "json_nodes": 32768,
+    "json_collection": 4096,
+    "json_string_chars": 65536,
+    "json_total_chars": 524288,
+    "entries": 4096,
+    "process_identities": 512,
+    "probe_bytes": 1048576,
+    "probe_timeout_seconds": 2,
+    "sample_interval_seconds": 0.2,
+    "helper_timeout_seconds": 5,
+    "helper_capture_bytes": 1048576,
+    "supervisor_seconds": 240,
+    "audit_seconds": 120,
+    "probe_ram_allowance": 33554432,
+    "encoding_ram_allowance": 67108864,
+    "ledger_ram_allowance": 33554432,
+    "ledger_disk_allowance": 4194304,
+    "atomic_disk_allowance": 1056768,
+    "terminal_disk_allowance": 65536,
+    "audit_disk_allowance": 65536
   }
 }

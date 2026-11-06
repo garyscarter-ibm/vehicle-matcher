@@ -1,14 +1,17 @@
-"""Independent post-exit audit for an exact root-approved follow-up consumer run. No product imports."""
+"""Independent parent post-exit audit; bounded retained allocation and immutable receipts."""
 from pathlib import Path
 import argparse
+import atexit
 import hashlib
 import importlib.util
 import json
 import os
+import threading
 import time
 
 ROOT = Path(__file__).resolve().parents[4]
 BASE = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105')
+
 def module(name, path):
     spec = importlib.util.spec_from_file_location(name, path)
     value = importlib.util.module_from_spec(spec); spec.loader.exec_module(value); return value
@@ -22,74 +25,174 @@ def digest(path):
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--summary', required=True)
+parser.add_argument('--supervisor-exit-code', required=True, type=int,
+                    help='Actual captured parent wait result; a terminal receipt alone is insufficient')
 args = parser.parse_args()
 started = time.monotonic()
 summary_path = Path(args.summary).resolve()
 if not summary_path.is_relative_to(BASE) or summary_path.name != 'summary.json':
     raise SystemExit('Audit only a retained105 run summary.')
-summary = json.loads(summary_path.read_text())
 plan_path = ROOT/'docs/gcsp/evidence/fucq105/followup-consumer-source-plan.json'
-if digest(plan_path) != summary['source_plan_sha256']:
-    raise SystemExit('Use the exact reviewed plan; no resource cleanup attempted.')
-plan = json.loads(plan_path.read_text()); c = summary['cleanup']
-launch = c.get('child_launch', {})
+if plan_path.stat().st_size > 1048576:
+    raise SystemExit('Plan exceeds bootstrap byte cap')
+with plan_path.open('rb') as source:
+    payload = source.read(1048577)
+    if len(payload) > 1048576:
+        raise SystemExit('Plan byte cap exceeded')
+    plan = json.loads(payload)
 if any(digest(ROOT/p) != row['sha256'] for p, row in plan['harness'].items()):
     raise SystemExit('Frozen audit/helper identity changed; preserve the run for review.')
-r = module('audit_resources', ROOT/'_tools/test_resources.py')
-g = module('audit_git', ROOT/'_tools/scaffold_git.py')
-ledger = module('audit_ledger', ROOT/'docs/gcsp/evidence/fucq105/decision-mixed-ledger.py')
+b = module('audit_bounds', ROOT/'docs/gcsp/evidence/fucq105/followup-consumer-bounds.py')
+if plan['accounting'] != b.CONTRACT:
+    raise SystemExit('Accounting contract changed')
+summary = b.read_json(summary_path, b.CONTRACT['summary_bytes'])
+if digest(plan_path) != summary['source_plan_sha256']:
+    raise SystemExit('Use the exact reviewed plan; no resource cleanup attempted.')
+c = summary['cleanup']; launch = c.get('child_launch', {})
+run_dir = summary_path.parent
+run_id = run_dir.name
+if not run_id.startswith('fucq105-followup-') or Path(c['scratch_manifest']).parent != run_dir/'ownership':
+    raise SystemExit('Unexpected run/manifest binding')
+retained = [run_dir, BASE/'ownership'/(run_id+'.json'), BASE/'ownership'/(run_id+'-consumed.json'),
+            BASE.parent/'impact'/(run_id+'.json')]
+cancel = threading.Event()
+lifecycle = module('audit_lifecycle', ROOT/'docs/gcsp/evidence/fucq105/decision-mixed-lifecycle.py')
+cancellation = lifecycle.deferred_cancellation(cancel)
+cancellation.__enter__()
+atexit.register(cancellation.__exit__, None, None, None)
+monitor = b.Aggregate(cancel, b.CONTRACT['audit_seconds']).start()
+outputs = b.Outputs(c['root'], retained, monitor)
+checks = {}
+failure = None
+allocation_before = None
 try:
-    reservation_absent = ledger.Budget(r, r.Policy(plan['limits']), plan['host_budget']).absence(c['token'])
-except BaseException:
-    reservation_absent = False
-
-checks = {'owner_exited': not r.process_alive(summary['owner']), 'scratch_absent': not os.path.lexists(c['root']),
-    'launch_ownership_verified': c.get('child_ownership_and_join_verified') is True
-        and (launch.get('attempted') is False and launch.get('state') == 'not-started'
-             or launch.get('attempted') is True and launch.get('state') == 'joined' and launch.get('joined') is True
-             and launch.get('direct_joined') is True
-             and isinstance(launch.get('pid'), int) and launch['pid'] in c['groups'])
-        and launch.get('issues') == [],
-    'groups_absent': all(r.group_has_live_members(group) is False for group in c['groups']),
-    'processes_absent': all(not r.process_alive(row) for row in c['processes']),
-    'reservation_absent': reservation_absent,
-    'ledger_staging_absent': all(row.get('state') == 'removed' and not os.path.lexists(row['path'])
-                                 for row in c.get('ledger_staging', [])),
-    'local_sources_preserved': all(digest(ROOT/p) == h for p, h in summary['local_source_before'].items()),
-    'harness_preserved': all(digest(ROOT/p) == row['sha256'] for p, row in plan['harness'].items())}
-node = Path(plan['node']['path']); st = node.stat()
-checks['node_preserved'] = digest(node) == plan['node']['sha256'] and [st.st_dev, st.st_ino] == plan['node']['installationIdentity']
-checks['immutable_sources_inputs_preserved'] = True
-for relative, row in {**plan['modules'], **plan['file_inputs']}.items():
-    rc, text, err = g.git(ROOT, ['show', row['ref']+':'+relative])
-    checks['immutable_sources_inputs_preserved'] &= rc == 0 and hashlib.sha256(text.encode()).hexdigest() == row['sha256']
-checks['retained_dependencies_preserved'] = True
-for row in plan['retained_dependencies'].values():
-    st = Path(row['installedRoot']).stat()
-    checks['retained_dependencies_preserved'] &= digest(row['packageJson']) == row['packageJsonSha256'] \
-        and digest(row['entry']) == row['entrySha256'] \
-        and [st.st_dev, st.st_ino] == [row['installationDevice'], row['installationInode']]
-manifest = Path(c['scratch_manifest'])
-if manifest.exists():
-    data = json.loads(manifest.read_text())
-    checks['owned_removed_manifest'] = data['token'] == c['token'] and data['root'] == c['root'] \
-        and data['state'] == 'removed' and not r.process_alive(data['owner']) \
-        and data.get('child_launch') == launch and data.get('groups') == c['groups'] \
-        and data.get('processes') == c['processes']
-else:
-    checks['owned_removed_manifest'] = True
-if not all(checks.values()):
-    r.atomic_json(summary_path.parent/'independent-audit.json', {'status': 'failed', 'checks': checks,
-        'leftovers': [key for key, value in checks.items() if not value]})
-    raise SystemExit('Independent audit failed; preserve named resources for review.')
-# Only the independently verified disposable scratch manifest is removed. No source/environment deletion.
-if manifest.exists():
-    manifest.unlink()
-assert not manifest.exists()
-r.atomic_json(summary_path.parent/'independent-audit.json', {'status': 'passed', 'checks': checks,
-    'scratch_manifest_absent': not manifest.exists(), 'summary_sha256': digest(summary_path),
-    'audit_wall_seconds': time.monotonic() - started,
-    'open_file_scope': 'No post-deletion lsof success is claimed; owner/process/group absence and filesystem removal checked independently.',
-    'retained': 'Plan, grant consumption, checkpoints, canonical hash journal, strict evidence, concise summary and bounded failure log.',
-    'leftovers': []})
-print(json.dumps({'status': 'passed', 'audit': str(summary_path.parent/'independent-audit.json')}))
+    terminal = b.read_json(run_dir/'terminal.json', b.CONTRACT['terminal_bytes'])
+    final_manifest = b.read_json(c['scratch_manifest'])
+    r = module('audit_resources', ROOT/'_tools/test_resources.py')
+    g = module('audit_git', ROOT/'_tools/scaffold_git.py')
+    ledger = module('audit_ledger', ROOT/'docs/gcsp/evidence/fucq105/decision-mixed-ledger.py')
+    r.subprocess = b.Captures(); g.subprocess = b.Captures()
+    # This parent auditor observes strict accounting; it never releases or repairs a row.
+    try:
+        reservation_absent = ledger.Budget(r, r.Policy(plan['limits']), plan['host_budget']).absence(c['token'])
+    except BaseException:
+        reservation_absent = False
+    checks.update({
+        'actual_parent_wait_success': args.supervisor_exit_code == 0,
+        'terminal_success': terminal['status'] == 'passed' and terminal['failure'] is None
+            and terminal['bundle_written'] is True and terminal['reservation_released'] is True
+            and terminal['reservation_observation_known'] is True,
+        'immutable_summary_binding': terminal['summary_sha256'] == digest(summary_path)
+            and terminal['source_plan_sha256'] == summary['source_plan_sha256'],
+        'summary_success': summary['status'] == 'pending-independent-audit' and summary['failure'] is None
+            and summary['source_inputs_helpers_verified_after'] is True,
+        'aggregate_receipt': terminal['aggregate']['issue'] is None and terminal['aggregate']['samples'] > 0
+            and 0 < terminal['aggregate']['peak_charged_rss_bytes'] <= terminal['aggregate']['limit_bytes'] <= b.CONTRACT['ram_bytes'],
+        'final_combined_upper_bound': 0 < terminal['final_combined_upper_bound_bytes'] <= b.CONTRACT['combined_bytes']
+            and terminal['allocation_before_terminal']['charged_combined_bytes'] == terminal['final_combined_upper_bound_bytes'],
+        'owner_exited': not r.process_alive(summary['owner']), 'scratch_absent': not os.path.lexists(c['root']),
+        'launch_ownership_verified': c.get('child_ownership_and_join_verified') is True
+            and (launch.get('attempted') is False and launch.get('state') == 'not-started'
+                 or launch.get('attempted') is True and launch.get('state') == 'joined' and launch.get('joined') is True
+                 and launch.get('direct_joined') is True
+                 and isinstance(launch.get('pid'), int) and launch['pid'] in c['groups'])
+            and launch.get('issues') == [],
+        'groups_absent': all(r.group_has_live_members(group) is False for group in c['groups']),
+        'processes_absent': all(not r.process_alive(row) for row in c['processes']),
+        'reservation_absent': reservation_absent,
+        'ledger_staging_absent': all(row.get('state') == 'removed' and not os.path.lexists(row['path'])
+                                     for row in final_manifest.get('ledger_staging', []))
+            and len(final_manifest.get('ledger_staging', [])) == terminal['ledger_staging_count']
+            and digest(c['scratch_manifest']) == terminal['scratch_manifest_sha256'],
+        'local_sources_preserved': all(digest(ROOT/p) == h for p, h in summary['local_source_before'].items()),
+        'harness_preserved': all(digest(ROOT/p) == row['sha256'] for p, row in plan['harness'].items())})
+    node = Path(plan['node']['path']); st = node.stat()
+    checks['node_preserved'] = digest(node) == plan['node']['sha256'] and [st.st_dev, st.st_ino] == plan['node']['installationIdentity']
+    checks['immutable_sources_inputs_preserved'] = True
+    for relative, row in {**plan['modules'], **plan['file_inputs']}.items():
+        monitor.check()
+        if cancel.is_set():
+            raise b.BoundError('Audit cancelled')
+        rc, text, err = g.git(ROOT, ['show', row['ref']+':'+relative])
+        checks['immutable_sources_inputs_preserved'] &= rc == 0 and hashlib.sha256(text.encode()).hexdigest() == row['sha256']
+    checks['retained_dependencies_preserved'] = True
+    for row in plan['retained_dependencies'].values():
+        monitor.check()
+        st = Path(row['installedRoot']).stat()
+        checks['retained_dependencies_preserved'] &= digest(row['packageJson']) == row['packageJsonSha256'] \
+            and digest(row['entry']) == row['entrySha256'] \
+            and [st.st_dev, st.st_ino] == [row['installationDevice'], row['installationInode']]
+    manifest = Path(c['scratch_manifest'])
+    if manifest.exists():
+        data = b.read_json(manifest)
+        checks['owned_removed_manifest'] = data['token'] == c['token'] and data['root'] == c['root'] \
+            and data['state'] == 'removed' and not r.process_alive(data['owner']) \
+            and data.get('child_launch') == launch and data.get('groups') == c['groups'] \
+            and data.get('processes') == c['processes']
+    else:
+        checks['owned_removed_manifest'] = False
+    # Independent filesystem walk includes summary/terminal/strict/journal/ownership/impact,
+    # allocated blocks (not only logical lengths), and all fixed temporary/audit allowances.
+    allocation_before = outputs.observe()
+    checks['terminal_upper_bound_covers_actual_files'] = allocation_before['retained_allocated_bytes'] \
+        + allocation_before['scratch_allocated_bytes'] <= terminal['final_combined_upper_bound_bytes']
+    checks['retained_allocation_within_cap'] = allocation_before['retained_allocated_bytes'] <= b.CONTRACT['retained_bytes']
+    checks['combined_allocation_within_cap'] = allocation_before['charged_combined_bytes'] <= b.CONTRACT['combined_bytes']
+    checks['retained_artifact_caps'] = True
+    for folder, dirs, files in os.walk(run_dir, followlinks=False):
+        for name in files:
+            path = Path(folder)/name
+            cap = {'summary.json': b.CONTRACT['summary_bytes'], 'terminal.json': b.CONTRACT['terminal_bytes'],
+                   'modules.jsonl': b.CONTRACT['journal_bytes'], 'checkpoints.json': b.CONTRACT['checkpoint_bytes'],
+                   'failure.log': 65536}.get(name, b.CONTRACT['json_bytes'])
+            b.read_bytes(path, cap)
+            if name.endswith('.json'):
+                b.read_json(path, cap)
+    for path in retained[1:]:
+        b.read_json(path)
+    checks['owned_atomic_staging_absent'] = not b.temporary_leftovers(retained, summary['owner']['pid']) \
+        and not any(path.name.startswith('.') and '.owned-' in path.name for path in run_dir.rglob('*'))
+    monitor.check()
+    checks['parent_aggregate_within_cap'] = True
+    if cancel.is_set():
+        raise b.BoundError('Audit cancelled')
+    if not all(checks.values()):
+        raise b.BoundError('Independent audit gates failed')
+    # Only this independently verified disposable scratch manifest is removed.
+    if manifest.exists():
+        manifest.unlink()
+    checks['scratch_manifest_absent'] = not os.path.lexists(manifest)
+    if not checks['scratch_manifest_absent']:
+        raise b.BoundError('Scratch manifest deletion uncertain')
+except BaseException as error:
+    failure = type(error).__name__
+finally:
+    outputs.diagnostics = True
+    try:
+        # One finite audit receipt, then a separate actual filesystem check; no self-rewrite.
+        receipt = {'status': 'failed' if failure else 'passed', 'failure': failure, 'checks': checks,
+            'summary_sha256': digest(summary_path), 'terminal_sha256': digest(run_dir/'terminal.json'),
+            'allocation_before_audit': allocation_before, 'aggregate': monitor.receipt(),
+            'audit_wall_seconds': time.monotonic()-started,
+            'leftovers': [key for key, value in checks.items() if not value],
+            'scope': 'Independent actual retained blocks/per-file caps and fixed audit/atomic allowances; parent owns actual wait result and final receipt. No post-deletion lsof claim.'}
+        outputs.json(run_dir/'independent-audit.json', receipt, b.CONTRACT['audit_bytes'], exclusive=True)
+        postwrite = outputs.observe()  # Includes the actual audit receipt; failure exits nonzero.
+        monitor.checkpoint()
+        if postwrite['retained_allocated_bytes'] + postwrite['scratch_allocated_bytes'] > terminal['final_combined_upper_bound_bytes']:
+            raise b.BoundError('Terminal upper bound does not cover actual final audit allocation')
+    except BaseException:
+        failure = failure or 'AuditWriteOrPostwriteCheckFailed'
+    finally:
+        try:
+            monitor.stop()
+        except BaseException:
+            failure = failure or 'AuditMonitorJoinFailed'
+    if cancel.is_set():
+        failure = failure or 'AuditCancelled'
+    if monitor.issue:
+        failure = failure or 'AuditAggregateObservationFailed'
+    print(b.encode({'status': 'failed' if failure else 'passed', 'failure': failure,
+        'audit': str(run_dir/'independent-audit.json'), 'postwrite': postwrite if not failure else None},
+        b.CONTRACT['stdout_bytes']).decode(), end='')
+raise SystemExit(1 if failure else 0)
