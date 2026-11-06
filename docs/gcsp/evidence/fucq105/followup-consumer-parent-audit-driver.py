@@ -188,11 +188,117 @@ def bootstrap():
     require(not os.path.lexists(parent_dir))
     readonly = collapse([run, BASE/'ownership'/(run.name+'.json'), BASE/'ownership'/(run.name+'-consumed.json'),
         BASE.parent/'impact'/(run.name+'.json'), grant_path, wait_path, consumer_grant_path])
-    return dict(pins=pins, grant=grant, grant_path=grant_path, grant_info=grant_info,
+    c = dict(pins=pins, grant=grant, grant_path=grant_path, grant_info=grant_info,
         wait=wait, wait_path=wait_path, wait_info=wait_info, plan=plan, plan_info=plan_info,
         summary=summary, terminal=terminal, summary_path=summary_path, terminal_path=terminal_path,
         original_manifest_path=manifest_path, original_manifest_info=original_manifest_info,
         run=run, parent_dir=parent_dir, readonly=readonly, pin_info=pin_info)
+    source_identity(c)
+    admitted, used = inspect_originals(c, 5*MIB, required=True)
+    c['admitted_originals'] = admitted
+    c['admitted_original_allocated_bytes'] = used
+    return c
+
+
+def source_identity(c):
+    pinned_file(PINS, dict(bytes=c['pin_info']['size'], sha256=c['pin_info']['sha256']))
+    for key in ('driver', 'interface', 'recipe', 'recipe_pins', 'consumer_plan'):
+        pinned_file(ROOT/c['pins'][key]['path'], c['pins'][key])
+    for path, row in c['pins']['existing_harness'].items():
+        pinned_file(ROOT/path, row)
+    py = c['pins']['python']; identity = pinned_file(Path(py['resolved_path']), py)
+    require(all(identity[key] == py[key] for key in ('device', 'inode', 'mode', 'uid')))
+    node = c['plan']['node']; require(str(Path(node['path']).resolve()) == node['realpath'])
+    _, identity = regular(node['realpath'], 256*MIB, retain=False)
+    require(identity['sha256'] == node['sha256'] and [identity['device'], identity['inode']] == node['installationIdentity'])
+    for name, row in c['plan']['retained_dependencies'].items():
+        expected = c['pins']['dependency_paths'][name]
+        require(str(Path(row['installedRoot']).resolve()) == expected['installed_root'])
+        item = Path(row['installedRoot']).stat()
+        require([item.st_dev, item.st_ino] == [row['installationDevice'], row['installationInode']])
+        for key in ('packageJson', 'entry'):
+            require(str(Path(row[key]).resolve()) == expected[key])
+            require(sha(expected[key], MIB) == row[key+'Sha256'])
+    for relative, digest in c['summary']['local_source_before'].items():
+        require(type(relative) is str and not Path(relative).is_absolute() and '..' not in Path(relative).parts)
+        require(sha(ROOT/relative, MIB) == digest)
+
+def snapshot_bound(result):
+    # The snapshot has only fixed shallow records, finite paths and integer/hash values.
+    # Enforce the same node/string/encoded caps without importing the bounds helper.
+    nodes, chars = 1, 0
+    for path, row in result.items():
+        nodes += 2+2*len(row); chars += len(path)
+        for key, value in row.items():
+            chars += len(key)
+            if type(value) is str:
+                require(len(value) <= 65536); chars += len(value)
+            else:
+                require(type(value) is int and abs(value) < 2**63)
+        require(nodes <= 32768 and chars <= 524288)
+    size = 1
+    for part in json.JSONEncoder(sort_keys=True, separators=(',', ':'), allow_nan=False).iterencode(result):
+        size += len(part.encode('utf-8')); require(size <= 256*1024)
+
+
+def inspect_originals(c, maximum, required):
+    result = {}; documents = {}; entries = allocated = 0; seen = set()
+    external_owner = BASE/'ownership'/(c['run'].name+'.json')
+    external_consumption = BASE/'ownership'/(c['run'].name+'-consumed.json')
+    external_impact = BASE.parent/'impact'/(c['run'].name+'.json')
+    specific = {c['summary_path']:512*1024, c['terminal_path']:16384,
+        c['grant_path']:65536, c['wait_path']:16384, clean_path(c['summary']['review']):16384}
+    def visit(path, depth):
+        nonlocal entries, allocated
+        entries += 1; require(entries <= 4096 and depth <= 24)
+        clean_path(str(path)); item = path.lstat()
+        identity = (item.st_dev,item.st_ino)
+        require(identity not in seen); seen.add(identity)
+        allocated += max(item.st_size, item.st_blocks*512); require(allocated <= maximum)
+        if stat.S_ISDIR(item.st_mode):
+            result[str(path)] = dict(kind='directory', device=item.st_dev, inode=item.st_ino,
+                mode=stat.S_IMODE(item.st_mode), uid=item.st_uid)
+            with os.scandir(path) as children:
+                for child in children:
+                    visit(Path(child.path), depth+1)
+        else:
+            cap = specific.get(path, {'checkpoints.json':65536, 'modules.jsonl':256*1024,
+                'failure.log':65536, 'independent-audit.json':16384}.get(path.name, MIB))
+            raw, info = regular(path, cap)
+            require([info['device'],info['inode'],info['size'],info['mtime_ns']] ==
+                    [item.st_dev,item.st_ino,item.st_size,item.st_mtime_ns])
+            result[str(path)] = dict(kind='file', **info)
+            if path.suffix == '.json':
+                documents[str(path)] = decode(raw)
+    for path in c['readonly']:
+        visit(path, 0)
+    snapshot_bound(result)
+    if required:
+        needed = {c['summary_path'],c['terminal_path'],c['original_manifest_path'],c['run']/'plan.json',
+            external_owner,external_consumption,external_impact,c['grant_path'],c['wait_path'],
+            clean_path(c['summary']['review'])}
+        if c['wait']['exit_code'] == 0:
+            needed.update((c['run']/'checkpoints.json', c['run']/'modules.jsonl'))
+            strict = clean_path(c['summary']['strict_receipt'])
+            require(strict.parent == c['run']/'strict' and strict.name.startswith('targeted-') and strict.suffix == '.json')
+            needed.add(strict)
+        for path in needed:
+            require(str(path) in result and result[str(path)]['kind'] == 'file')
+        bound = {c['summary_path']:c['grant']['summary_sha256'],c['terminal_path']:c['grant']['terminal_sha256'],
+            c['original_manifest_path']:c['terminal']['scratch_manifest_sha256'],
+            c['grant_path']:c['grant_info']['sha256'],c['wait_path']:c['wait_info']['sha256'],
+            clean_path(c['summary']['review']):c['wait']['consumer_grant_sha256']}
+        for path, digest in bound.items():
+            require(result[str(path)]['sha256'] == digest)
+        owner = documents[str(external_owner)]; consumption = documents[str(external_consumption)]
+        impact = documents[str(external_impact)]; original_plan = documents[str(c['run']/'plan.json')]
+        require(owner['owner'] == c['summary']['owner'] and owner['output'] == str(c['run']))
+        require(consumption['owner'] == c['summary']['owner'] and consumption['run'] == c['run'].name)
+        require(consumption['review'] == c['summary']['review'] and consumption['plan_sha256'] == c['plan_info']['sha256'])
+        require(impact['plan_sha256'] == c['plan_info']['sha256'] and impact['test'] == c['plan']['selected'])
+        require(original_plan['source_plan_sha256'] == c['plan_info']['sha256'])
+        require(original_plan['review_sha256'] == c['wait']['consumer_grant_sha256'] and original_plan['selected'] == c['plan']['selected'])
+    return result, allocated
 
 
 def load(name, path):
@@ -219,46 +325,9 @@ def execute(c):
         value = monitor.checkpoint()+128*MIB
         require(value <= 768*MIB)
         return value
-    def source_identity():
-        pinned_file(PINS, dict(bytes=c['pin_info']['size'], sha256=c['pin_info']['sha256']))
-        for key in ('driver', 'interface', 'recipe', 'recipe_pins', 'consumer_plan'):
-            pinned_file(ROOT/c['pins'][key]['path'], c['pins'][key])
-        for path, row in c['pins']['existing_harness'].items():
-            pinned_file(ROOT/path, row)
-        py = c['pins']['python']; identity = pinned_file(Path(py['resolved_path']), py)
-        require(all(identity[key] == py[key] for key in ('device', 'inode', 'mode', 'uid')))
-        node = c['plan']['node']; require(str(Path(node['path']).resolve()) == node['realpath'])
-        _, identity = regular(node['realpath'], 256*MIB, retain=False)
-        require(identity['sha256'] == node['sha256'] and [identity['device'], identity['inode']] == node['installationIdentity'])
-        for name, row in c['plan']['retained_dependencies'].items():
-            expected = c['pins']['dependency_paths'][name]
-            require(str(Path(row['installedRoot']).resolve()) == expected['installed_root'])
-            item = Path(row['installedRoot']).stat()
-            require([item.st_dev, item.st_ino] == [row['installationDevice'], row['installationInode']])
-            for key in ('packageJson', 'entry'):
-                require(str(Path(row[key]).resolve()) == expected[key])
-                require(sha(expected[key], MIB) == row[key+'Sha256'])
-        for relative, digest in c['summary']['local_source_before'].items():
-            require(type(relative) is str and not Path(relative).is_absolute() and '..' not in Path(relative).parts)
-            require(sha(ROOT/relative, MIB) == digest)
     def capture_originals():
-        result = {}; entries = 0
-        def visit(path, depth):
-            nonlocal entries
-            entries += 1; require(entries <= 4096 and depth <= 24)
-            clean_path(str(path)); item = path.lstat()
-            if stat.S_ISDIR(item.st_mode):
-                result[str(path)] = dict(kind='directory', device=item.st_dev, inode=item.st_ino,
-                    mode=stat.S_IMODE(item.st_mode), uid=item.st_uid)
-                with os.scandir(path) as children:
-                    for child in children:
-                        visit(Path(child.path), depth+1)
-            else:
-                _, info = regular(path, MIB, retain=False)
-                result[str(path)] = dict(kind='file', **info)
-        for path in c['readonly']:
-            visit(path, 0)
-        b.encode(result, 256*1024)  # Finite snapshot before retaining/launching.
+        result, used = inspect_originals(c, 8*MIB, required=False)
+        b.encode(result, 256*1024)  # Retain the later shared-bound preservation check.
         return result
     def protected():
         actual = capture_originals(); expected = dict(snapshot)
@@ -326,8 +395,9 @@ def execute(c):
             parent_audit_id=c['grant']['parent_audit_id'], owner=scratch.record['owner']), exclusive=True)
         budget.update(scratch.token, outputs.observe()['charged_combined_bytes'], fresh())
         require(not r.process_alive(c['summary']['owner']) and not os.path.lexists(c['summary']['cleanup']['root']))
-        source_identity()
+        source_identity(c)
         snapshot = capture_originals()
+        require(snapshot == c['admitted_originals'])  # Reject changes since pre-import admission.
         outputs.json(c['parent_dir']/'original-identities.json', snapshot, 256*1024, exclusive=True)
         raw, info = regular(c['original_manifest_path'], MIB)
         require(info == {key: value for key, value in snapshot[str(c['original_manifest_path'])].items() if key != 'kind'})
@@ -375,7 +445,7 @@ def execute(c):
                         audit_code = process.returncode
                     process.stdout.close(); process.stderr.close()
             ownership.require_safe()
-            protected(); source_identity(); fresh()
+            protected(); source_identity(c); fresh()
             audit_output = decode(bytes(stdout))
             audit_data, audit_info = document(c['run']/'independent-audit.json', 16384)
             required = {'actual_parent_wait_success','terminal_success','immutable_summary_binding','summary_success',
@@ -431,7 +501,7 @@ def execute(c):
                 processes = all(not r.process_alive(row) for row in scratch.record['processes'])
             if snapshot is not None:
                 original_ok = protected()
-                source_identity()
+                source_identity(c)
             require(outputs is not None and safe and groups and processes and original_ok and not os.path.lexists(scratch.root))
             require(not b.temporary_leftovers([c['parent_dir']], os.getpid()))
             for index, path in enumerate(c['parent_dir'].rglob('*')):
@@ -444,7 +514,7 @@ def execute(c):
             used = outputs.observe()['charged_combined_bytes']; rss = fresh()
             require(allocation == dict(disk=128*MIB, ram=768*MIB))
             budget.update(scratch.token, used, rss)
-            protected(); source_identity(); outputs.observe(); fresh()
+            protected(); source_identity(c); outputs.observe(); fresh()
             postwrite_ready = True
         except BaseException as error:
             failure = failure or 'FinalVerification'+type(error).__name__; status = 1

@@ -48,11 +48,19 @@ Parent `audit-wait.json` and `pre-release.json` are written while the exact row 
 
 One bounded `final.json` is written from the reserved terminal allowance, followed by actual postwrite allocation/RAM checks and monitor/probe join. No recursive receipt rewriting occurs. The parent emits at most4KiB stdout and its actual process status controls late failures. Root must retain the actual parent wait/stdout; a stored passed record alone never closes acceptance. Successful verbose logs, source copies, installations and unrelated roots are never removed or rewritten.
 
+## Narrow complete-admission repair
+
+Independent review at `091c90703ab57e54fc22d295c949295252a8d2f8` passed the lifecycle/reservation/output sequence but held one P2: Node/dependency/local-source checks and complete original traversal occurred after helper imports/reservation, and the5MiB original check followed imports. Missing external ownership/consumption/impact therefore failed too late.
+
+The repair extracts source identity into a standard-library function and calls it inside bootstrap. A standard-library original traversal now rejects missing required original files, symlinks/aliases/special files, malformed JSON objects, descriptor changes, per-artifact byte-cap excess and aggregate original allocation above5MiB before any custom helper import/allocation. It validates required external ownership/consumption/impact and plan/run/hash bindings; successful original runs also require retained checkpoints/journal/strict receipt. Snapshot node/string/encoded bounds are checked without loading the bounds helper. Later source/preservation checks and shared-bound encoding remain; a before-launch comparison rejects changes since the admitted snapshot.
+
+All existing consumer ten pins, consumer plan, recipe and other reviewed reservation/lifecycle/terminal controls remain unchanged. This is source/text/hash authoring evidence only, with no syntax/AST/helper/test/probe/ledger/scratch/allocation execution. Narrow reviewer confirmation and the later root grant remain required.
+
 ## Static authoring boundary and concrete limitations
 
 This pass writes source and pin/interface documents only. Verification is text/control-order inspection, exact byte/hash/JSON binding, unchanged consumer pin/plan comparison, whitespace and named-path Git publication. **No driver/helper import or execution, syntax invocation/AST parsing, test, process probe, ledger read/lock/mutation, scratch/resource allocation, DB/browser/native/full run or descendants.** Python identity is file metadata/hash evidence only, not a claim of runtime suitability or a complete audit of the standard library.
 
-No concrete unresolved contract mismatch was found while rendering. The actual root wait capture, original runtime outputs and fresh parent grant do not exist in this authoring packet and cannot be substituted by examples. Reviewer confirmation of the exact standalone driver, runtime Python suitability/current admission and root-owned supervisor/audit/driver waits remain required before any grant or execution. The script's current hashes must be read from the separate pin sheet/publication receipt; the consumer plan remains unchanged.
+The identified late-admission mismatch is addressed in this authored narrow delta; its reviewer confirmation remains pending. The actual root wait capture, original runtime outputs and fresh parent grant do not exist in this authoring packet and cannot be substituted by examples. Reviewer confirmation of the exact standalone driver, runtime Python suitability/current admission and root-owned supervisor/audit/driver waits remain required before any grant or execution. The script's current hashes must be read from the separate pin sheet/publication receipt; the consumer plan remains unchanged.
 
 The shared AGENTS.md IBM gateway422 section was re-read during this pass: preserve an exact422 diagnostic and continue while the authorised launcher can still work; do not reroute models, rotate credentials or change the configured IBM gateway. No such error occurred and no descendants were launched.
 
