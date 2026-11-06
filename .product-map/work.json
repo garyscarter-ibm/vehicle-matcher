@@ -1609,7 +1609,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T00:39:43Z",
+      "observed_at": "2026-11-06T00:48:33Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-115",
       "slices": [
         {
@@ -1628,10 +1628,10 @@
         },
         {
           "id": "dataset",
-          "status": "blocked",
+          "status": "complete",
           "title": "Published-generator-and-meaningful-dataset",
-          "observed_at": "2026-11-06T00:39:43Z",
-          "evidence": "Canonical1030d3a accepted. Finite73-file plan/harness35fd9e5 pushed and sent to dispatcher for required exact source/execution review; no JS import or resource allocation. Existing scoped13/13 retains original identity. docs/gcsp/models/fucq115-canonical-plan.md"
+          "observed_at": "2026-11-06T00:48:33Z",
+          "evidence": "Lead inspected granted actual113 canonical CLI320-record dataset/manifest and leakage split:123train/152later/31unseen,10censored+4late excluded. Thin engineering support explicit:3train/7later chosen vehicles. Committed exact bytes and receipt; no corpus/calibration claim. docs/gcsp/models/fucq115-canonical-result.md"
         },
         {
           "id": "evaluation",
@@ -1649,10 +1649,10 @@
         },
         {
           "id": "policy",
-          "status": "blocked",
+          "status": "in-progress",
           "title": "Canonical-policy-adoption-and-dated-activation",
-          "observed_at": "2026-11-06T00:39:43Z",
-          "evidence": "Canonical1030d3a accepted. Finite73-file plan/harness35fd9e5 pushed and sent to dispatcher for required exact source/execution review; no JS import or resource allocation. Existing scoped13/13 retains original identity. docs/gcsp/models/fucq115-canonical-plan.md"
+          "observed_at": "2026-11-06T00:48:33Z",
+          "evidence": "Actual canonical learning/choice adoption, dated80x4publication, ordinary cookie activation/history/prices/retry pass. Model-reference activation remains unreached after own baseline.context mismatch. docs/gcsp/models/fucq115-canonical-result.md"
         },
         {
           "id": "acceptance",
@@ -1667,11 +1667,11 @@
         {
           "name": "Pluto",
           "harness": "codex",
-          "role": "story-lead/canonical integration plan",
-          "observed_at": "2026-11-06T00:39:43.286071+00:00",
-          "expires_at": "2026-11-06T00:39:43.286071+00:00",
+          "role": "story-lead/canonical result and baseline correction",
+          "observed_at": "2026-11-06T00:48:32.817283+00:00",
+          "expires_at": "2026-11-06T02:48:32.817283+00:00",
           "source": "thread 01a1ae22-e1cc-74a0-9717-21082afb1fd1",
-          "status": "stopped; published finite plan35fd9e5 awaits dispatcher review, no execution allocation"
+          "status": "active; stopped granted run at baseline.context, preserving result and authoring own correction; no retry"
         }
       ],
       "branch": "dev/DEV-2026-11-04-092"

@@ -215,3 +215,24 @@ The proposed run still needs dispatcher source/harness review before execution.
 No new allocation or dependency link exists. Prior scoped13/13 remains the latest
 executed model-test evidence, with its original identity; full acceptance remains
 open, including actual320-record training and both baseline holdouts.
+
+## Granted canonical generation result
+
+The exact reviewed grant `fucq115-canonical-35fd9e5-0033` was executed once.
+Actual canonical adoption/dating, ordinary activation/history/prices/retry, actual
+FUCQ-113 CLI generation of320 records, manifest validation and leakage-safe split
+passed. The dataset/policy bytes are now committed inputs. Split counts are
+123training/152later/31unseen/121familiar; training has only3 chosen vehicles,
+later7, and the raw data has291 waits. Structural configurations and thin evidence
+remain explicit. `fucq115-canonical-result.md` and the compact run receipt contain
+exact identities, counts, limits, failure diagnosis and cleanup.
+
+The run stopped at own `baseline.context`, before baseline metrics/artifact/CLI
+reproduction/model activation. A new baseline runtime creates a different policy
+run; actual MemoryPolicyProvider correctly starts it from the unmodified seed,
+which cannot equal the required adopted training version. No unchanged retry or
+generator replay occurred. Supervisor wall5.230332s/RSS233,553,920B/scratch7,223,553B;
+owned groups/scratch/reservation absent, dependency target inodes unchanged.
+Retained output2,600,960B; retained plus deliberate durable inputs5,087,232B.
+The dispatcher authorises read-only diagnosis and a narrow owned-model correction
+with a finite retained-input resume proposal; execution needs exact delta review.
