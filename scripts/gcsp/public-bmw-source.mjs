@@ -53,20 +53,29 @@ export function validatePublicBmwPlan(plan) {
 }
 
 function headerFor(settings, profileName, strict = false) {
-  let visited = 0; const profiles = []; const values = [];
+  let visited = 0; const profiles = []; const values = []; let invalidCandidate = false; let nestedRole = false;
   const visit = (value, fn, name = '', depth = 0) => {
     if (!object(value) && !Array.isArray(value)) return;
     requireValue(++visited <= 30000 && depth <= 24, 'settings-traversal-limit', 'The qualified settings traversal limit changed.');
     fn(value, name);
     for (const [key, entry] of Object.entries(value)) if (entry && typeof entry === 'object') visit(entry, fn, key, depth + 1);
   };
-  visit(settings, (value, name) => { if (profileName.test(name)) profiles.push(value); });
+  visit(settings, (value, name) => { if (!strict && profileName.test(name)) profiles.push(value); });
+  if (strict) {
+    const app = object(settings) && Object.hasOwn(settings, 'APP') ? settings.APP : undefined;
+    const backend = object(app) && Object.hasOwn(app, 'backend') ? app.backend : undefined;
+    if (object(backend) && Object.hasOwn(backend, profileName) && object(backend[profileName])) profiles.push(backend[profileName]);
+  }
+  const candidate = (entry) => { if (typeof entry === 'string') values.push(entry); else if (strict) invalidCandidate = true; };
   for (const profile of profiles) visit(profile, (value) => {
-    for (const [name, entry] of Object.entries(value)) if (name.toLowerCase() === 'x-api-key' && typeof entry === 'string') values.push(entry);
-    if (typeof value.name === 'string' && value.name.toLowerCase() === 'x-api-key' && typeof value.value === 'string') values.push(value.value);
+    for (const [name, entry] of Object.entries(value)) {
+      if (strict && name === profileName) nestedRole = true;
+      if (name.toLowerCase() === 'x-api-key') candidate(entry);
+    }
+    if (typeof value.name === 'string' && value.name.toLowerCase() === 'x-api-key') candidate(value.value);
   });
   const unique = [...new Set(values)];
-  requireValue((!strict || profiles.length === 1 && values.length === 1)
+  requireValue((!strict || profiles.length === 1 && values.length === 1 && !invalidCandidate && !nestedRole)
     && unique.length === 1 && unique[0].length > 0 && unique[0].length <= 4096,
     'settings-header-shape', 'The qualified public application header shape changed.');
   return { 'x-api-key': unique[0] };
@@ -176,9 +185,9 @@ export function publicBmwQualificationOperations(input) {
       assertCollectionHttpObservation(metadata); observe(metadata, 'settings');
       let failedRole = 'tree';
       try {
-        treeHeader = headerFor(value, /^settingsVehicleTree$/, true);
+        treeHeader = headerFor(value, 'settingsVehicleTree', true);
         failedRole = 'localisation';
-        localisationHeader = headerFor(value, /^settingsLocalisation$/, true);
+        localisationHeader = headerFor(value, 'settingsLocalisation', true);
       } catch (error) {
         if (['settings-header-shape', 'settings-traversal-limit'].includes(error.code)) {
           error.settingsShapeRefusal = createSettingsShapeRefusal({ settings: value, failedRole, reason: error.code, metadata, plan });

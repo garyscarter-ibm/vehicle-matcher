@@ -750,12 +750,13 @@ async function withDiagnostic(change, callback) {
     limits: { ...httpLimits(), requestBudgets: { page: 1, settings: 1, discover: 1, options: 1 }, maxAttempts: 1,
       sourceAttempts: 4, sourceBytes: 2097152, responseBytes: 1048576, operationTimeoutMs: 10000,
       deadlineMs: 45000, cacheRetentionMs: 86400000 } };
+  fixture.settings = { APP: { backend: fixture.profiles } };
   change?.(fixture, p);
   const settings = { plan: p, statePath: join(root, 'state'), mode: 'source-fixture', now: () => Date.parse('2026-11-06T12:30:00.000Z'),
     http: { kind: 'fixture', fetch: async (url, request) => {
       calls.push(url); assert.equal(request.method, 'GET'); assert.equal(request.credentials, 'omit'); assert.equal(request.redirect, 'manual');
       if (url === publicPage) return new Response('settings.fixture.json', { headers: { 'content-type': 'text/html' } });
-      if (url.includes('/settings.')) return Response.json(fixture.profiles);
+      if (url.includes('/settings.')) return Response.json(fixture.settings);
       if (url.includes('/model-matrices/')) { assert.equal(request.headers['x-api-key'], fixture.profiles.settingsVehicleTree['x-api-key']); return Response.json(fixture.tree); }
       assert.equal(url, 'https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en?trim=S0337');
       assert.equal(request.headers['x-api-key'], fixture.profiles.settingsLocalisation['x-api-key']);
@@ -764,6 +765,42 @@ async function withDiagnostic(change, callback) {
     } } };
   try { await callback({ fixture, p, settings, calls, root, create: module.createPublicBmwQualificationDiagnostic }); }
   finally { await rm(root, { recursive: true, force: true }); }
+}
+
+for (const role of ['settingsVehicleTree', 'settingsLocalisation']) {
+  test('qualification diagnostic selects canonical own APP.backend ' + role + ' despite unrelated profiles', async () => {
+    await withDiagnostic((fixture) => {
+      fixture.settings.unrelated = { [role]: { 'x-api-key': 'unrelated-header-must-not-be-selected' } };
+    }, async ({ create, settings, calls }) => {
+      const result = await (await create(settings)).run();
+      assert.equal(result.reason, 'raw-schema-review-required'); assert.equal(calls.length, 4);
+      assert.equal(result.admission, false); assert.deepEqual(result.accepted, []);
+      assert.equal(calls.some((url) => url.includes('/rulesolver/')), false);
+      assert.equal((await readFile(settings.statePath, 'utf8')).includes('unrelated-header-must-not-be-selected'), false);
+    });
+  });
+  for (const kind of ['missing-app', 'alias-app', 'nonobject-app', 'missing-backend', 'alias-backend', 'nonobject-backend',
+    'missing-role', 'alias-role', 'nonobject-role', 'array-role']) {
+    test('qualification diagnostic refuses ' + kind + ' canonical ' + role + ' despite global alternative', async () => {
+      await withDiagnostic((fixture) => {
+        fixture.settings.unrelated = { [role]: fixture.profiles[role] };
+        if (kind === 'missing-app') delete fixture.settings.APP;
+        if (kind === 'alias-app') { fixture.settings.app = fixture.settings.APP; delete fixture.settings.APP; }
+        if (kind === 'nonobject-app') fixture.settings.APP = [];
+        if (kind === 'missing-backend') delete fixture.settings.APP.backend;
+        if (kind === 'alias-backend') { fixture.settings.APP.Backend = fixture.profiles; delete fixture.settings.APP.backend; }
+        if (kind === 'nonobject-backend') fixture.settings.APP.backend = 'invalid';
+        if (kind === 'missing-role') delete fixture.profiles[role];
+        if (kind === 'alias-role') { fixture.profiles[role.toLowerCase()] = fixture.profiles[role]; delete fixture.profiles[role]; }
+        if (kind === 'nonobject-role') fixture.profiles[role] = 'invalid';
+        if (kind === 'array-role') fixture.profiles[role] = [{ 'x-api-key': 'invalid-array-header' }];
+      }, async ({ create, settings, calls }) => {
+        const result = await (await create(settings)).run();
+        assert.equal(result.reason, 'settings-header-shape'); assert.equal(calls.length, 2);
+        assert.equal(result.admission, false); assert.deepEqual(result.accepted, []);
+      });
+    });
+  }
 }
 
 test('qualification diagnostic observes four pinned GETs without solving, classifying or admitting a configuration', async () => {
@@ -868,7 +905,7 @@ test('qualification diagnostic scopes unique localisation bootstrap, dates and s
     ['date', 1, 'source-observation-date'], ['version', 0, 'diagnostic-plan-refused']]) {
     await withDiagnostic((fixture, p) => {
       if (kind === 'profile') delete fixture.profiles.settingsLocalisation;
-      if (kind === 'duplicate-profile') fixture.profiles.other = { settingsLocalisation: { 'x-api-key': 'fixture-localisation-header' } };
+      if (kind === 'duplicate-profile') fixture.profiles.settingsLocalisation.other = { settingsLocalisation: { 'x-api-key': 'fixture-localisation-header' } };
       if (kind === 'date') p.qualificationDate = '2026-11-07';
       if (kind === 'version') p.source.version = 'f58-20261105.v1';
     }, async ({ create, settings, calls }) => {

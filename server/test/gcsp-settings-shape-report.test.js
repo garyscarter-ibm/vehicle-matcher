@@ -31,7 +31,7 @@ async function fixture(change, callback) {
 function safeReport(result,role) {
  assert.equal(result.reason,'settings-header-shape');assert.equal(result.admission,false);assert.equal(result.accepted.length,0);
  const report=result.diagnostic?.settingsShapeRefusal;assert.ok(report,'refusal must retain a safe structural report');
- assert.equal(report.schemaVersion,'bmw-settings-shape-refusal.v1');assert.equal(report.failedRole,role);assert.equal(report.admission,false);
+ assert.equal(report.schemaVersion,'bmw-settings-shape-refusal.v2');assert.equal(report.selection,'APP.backend.own-property');assert.equal(report.failedRole,role);assert.equal(report.admission,false);
  assert.equal(report.observation.transportKind,'fixture');assert.equal(report.qualification,'unqualified-structural-observation');return report;
 }
 test('settings shape refusal preserves structural evidence through checkpoint reopen and safe receipt export',async()=>{
@@ -47,7 +47,11 @@ test('settings shape refusal preserves structural evidence through checkpoint re
 });
 const variants={
  missing:(p,label)=>delete p[label],
- duplicate:(p,label,secret)=>{p.other={[label]:{'x-api-key':secret}};},
+ duplicate:(p,label,secret)=>{p[label].other={[label]:{'x-api-key':secret}};},
+ nestedEmpty:(p,label)=>{p[label].other={[label]:{}};},
+ nestedScalar:(p,label)=>{p[label].other={[label]:'invalid'};},
+ mixedWrongType:(p,label)=>{p[label].headers=[{name:'x-api-key',value:42}];},
+ mixedWrongNamedType:(p,label)=>{p[label]['X-API-KEY']=42;},
  repeated:(p,label,secret)=>{p[label]['X-API-KEY']=secret;},
  conflicting:(p,label)=>{p[label]['X-API-KEY']='SYNTHETIC-CONFLICT-DO-NOT-RETAIN';},
  empty:(p,label)=>{p[label]['x-api-key']='';},
@@ -62,7 +66,7 @@ for(const role of ['tree','localisation'])for(const [kind,mutate]of Object.entri
   if(kind==='duplicate')assert.equal(row.profileMatches,2);
   if(kind==='repeated'){assert.equal(row.candidates.directProperty,2);assert.equal(row.candidates.distinctValues,1);}
   if(kind==='conflicting')assert.equal(row.candidates.distinctValues,2);
-  if(kind==='wrongType'||kind==='wrongNamedType')assert.equal(row.flags.wrongType,true);
+  if(['wrongType','wrongNamedType','mixedWrongType','mixedWrongNamedType'].includes(kind))assert.equal(row.flags.wrongType,true);
   if(kind==='empty')assert.equal(row.flags.empty,true);
   if(kind==='oversized')assert.equal(row.flags.oversized,true);
   if(kind==='scalarLabel')assert.equal(row.exactLabelScalarValues,1);
@@ -95,7 +99,7 @@ for(const representation of ['direct','name-value'])test('settings shape success
   await assert.rejects(f.diagnostic.exportSettingsShapeReceipt(join(f.root,'none.json')),{code:'settings-shape-report-unavailable'});assert.equal(f.calls.length,4);
  });
 });
-for(const kind of ['extra-key','counter','role','role-array','fixture-to-live','request','digest'])test('settings shape tampered '+kind+' report refuses checkpoint reopening and safe export',async()=>{
+for(const kind of ['extra-key','counter','role','role-array','fixture-to-live','request','digest','selection','downgrade'])test('settings shape tampered '+kind+' report refuses checkpoint reopening and safe export',async()=>{
  await fixture((_,p)=>delete p.settingsLocalisation,async f=>{
   safeReport(await f.diagnostic.run(),'localisation');const envelope=JSON.parse(await readFile(f.statePath));const report=envelope.content.diagnostic.settingsShapeRefusal;
   if(kind==='extra-key')report.leaked='SYNTHETIC-RAW-ERROR';
@@ -105,6 +109,8 @@ for(const kind of ['extra-key','counter','role','role-array','fixture-to-live','
   if(kind==='fixture-to-live')report.observation.transportKind='live';
   if(kind==='request')report.observation.request.url='https://unretained.invalid';
   if(kind==='digest')report.observation.responseSha256='incorrect';
+  if(kind==='selection')report.selection='whole-document';
+  if(kind==='downgrade')report.schemaVersion='bmw-settings-shape-refusal.v1';
   envelope.contentDigest=inputDigest(envelope.content);await writeFile(f.statePath,JSON.stringify(envelope)+'\n');const reopened=await createPublicBmwQualificationDiagnostic(f.options);
   const outcomes=[];
   for(const action of [()=>reopened.run(),()=>reopened.exportSettingsShapeReceipt(join(f.root,'refused.json'))]) {
@@ -118,5 +124,27 @@ test('settings shape copied and invented metadata cannot attest an executor obse
   const report=safeReport(await f.diagnostic.run(),'localisation');const helper=await import('../../scripts/gcsp/settings-shape-report.mjs');
   for(const metadata of [structuredClone(report.observation),{...report.observation,transportKind:'live'}])assert.throws(()=>helper.createSettingsShapeRefusal({settings:f.settings,failedRole:'localisation',reason:'settings-header-shape',metadata,plan:f.plan}),{code:'source-observation-metadata'});
   const operation=publicBmwQualificationOperations(f.plan).settings;assert.throws(()=>operation.project(f.settings,{},structuredClone(report.observation)),{code:'source-observation-metadata'});assert.equal(f.calls.length,2);
+ });
+});
+
+test('settings shape v2 refusal counters are canonical scoped despite unrelated same-name profiles',async()=>{
+ await fixture((s,p)=>{delete p.settingsLocalisation;s.other={settingsVehicleTree:{'x-api-key':'UNRELATED-SECRET'},settingsLocalisation:{'x-api-key':'UNRELATED-SECRET'}};},async f=>{
+  const report=safeReport(await f.diagnostic.run(),'localisation');
+  assert.equal(report.roles.tree.profileMatches,1);assert.equal(report.roles.tree.candidates.distinctValues,1);
+  assert.equal(report.roles.localisation.profileMatches,0);assert.equal(report.roles.localisation.candidates.distinctValues,0);
+  assert.equal(report.roles.tree.strictVerdict,'accepted');assert.equal(f.calls.length,2);
+  assert.equal(JSON.stringify(report).includes('UNRELATED-SECRET'),false);
+ });
+});
+test('settings shape historical v1 report keeps whole-document cardinality meaning and receipt export',async()=>{
+ await fixture((_,p)=>delete p.settingsLocalisation,async f=>{
+  await f.diagnostic.run();const helper=await import('../../scripts/gcsp/settings-shape-report.mjs');
+  const receipt=JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq59/settings-shape-live-2026-11-06/settings-shape.json',import.meta.url)));
+  const report=receipt.settingsShapeRefusal;assert.equal(report.schemaVersion,'bmw-settings-shape-refusal.v1');
+  assert.equal(report.roles.tree.profileMatches,2);assert.equal(report.roles.tree.candidates.distinctValues,1);assert.equal(report.roles.tree.strictVerdict,'refused');
+  assert.deepEqual(helper.validateSettingsShapeRefusal(report,{plan:f.plan,mode:'live'}),report);
+  assert.deepEqual(JSON.parse(helper.settingsShapeReceiptBytes(report,{plan:f.plan,mode:'live'}).bytes).settingsShapeRefusal,report);
+  const tampered=structuredClone(report);tampered.roles.tree.strictVerdict='accepted';
+  assert.throws(()=>helper.validateSettingsShapeRefusal(tampered,{plan:f.plan,mode:'live'}),{code:'settings-shape-report-invalid'});
  });
 });

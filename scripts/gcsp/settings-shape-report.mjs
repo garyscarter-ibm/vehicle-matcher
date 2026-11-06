@@ -35,15 +35,26 @@ function inspectRole(settings, label) {
     row.flags.empty ||= value.length === 0; row.flags.oversized ||= value.length > 4096;
   };
   try {
-    visit(settings, (value, name) => {
-      if (name === label) { add(row, 'profileMatches'); add(row.profileNodeKinds, Array.isArray(value) ? 'array' : 'object'); profiles.push(value); }
-      for (const [key, entry] of Object.entries(value)) {
-        if (key === label) add(row, 'exactLabelObjectKeys');
-        if (entry === label) add(row, 'exactLabelScalarValues');
-      }
-    });
+    // Keep the document guard; only the canonical profile contributes role and candidate counts.
+    visit(settings, () => {});
+    const app = object(settings) && Object.hasOwn(settings, 'APP') ? settings.APP : undefined;
+    const backend = object(app) && Object.hasOwn(app, 'backend') ? app.backend : undefined;
+    const present = object(backend) && Object.hasOwn(backend, label);
+    const profile = present ? backend[label] : undefined;
+    if (present) add(row, 'exactLabelObjectKeys');
+    if (object(backend)) for (const value of Object.values(backend)) if (value === label) add(row, 'exactLabelScalarValues');
+    if (object(profile) || Array.isArray(profile)) {
+      add(row, 'profileMatches'); add(row.profileNodeKinds, Array.isArray(profile) ? 'array' : 'object'); profiles.push(profile);
+    }
     for (const profile of profiles) visit(profile, (value) => {
-      for (const [name, entry] of Object.entries(value)) if (name.toLowerCase() === 'x-api-key') candidate(entry, 'directProperty');
+      for (const [name, entry] of Object.entries(value)) {
+        if (name === label) {
+          add(row, 'exactLabelObjectKeys');
+          if (object(entry) || Array.isArray(entry)) { add(row, 'profileMatches'); add(row.profileNodeKinds, Array.isArray(entry) ? 'array' : 'object'); }
+        }
+        if (entry === label) add(row, 'exactLabelScalarValues');
+        if (name.toLowerCase() === 'x-api-key') candidate(entry, 'directProperty');
+      }
       if (typeof value.name === 'string' && value.name.toLowerCase() === 'x-api-key') candidate(value.value, 'nameValue');
     });
   } catch (error) { if (error !== stop) throw error; }
@@ -56,13 +67,15 @@ function inspectRole(settings, label) {
   row.flags.multipleCandidates = occurrences > 1;
   row.flags.conflictingCandidates = unique.size > 1;
   row.strictVerdict = !complete ? 'unresolved-limit'
-    : row.profileMatches === 1 && occurrences === 1 && unique.size === 1 && !row.flags.empty && !row.flags.oversized ? 'accepted' : 'refused';
+    : row.profileMatches === 1 && row.profileNodeKinds.object === 1 && row.exactLabelObjectKeys === 1
+      && occurrences === 1 && unique.size === 1 && !row.flags.empty && !row.flags.oversized && !row.flags.wrongType ? 'accepted' : 'refused';
   return row;
 }
 
 export function validateSettingsShapeRefusal(report, { plan, mode }) {
-  invalid(exact(report, ['schemaVersion', 'qualification', 'admission', 'failedRole', 'reason', 'observation', 'layout', 'roles'])
-    && report.schemaVersion === 'bmw-settings-shape-refusal.v1' && report.qualification === 'unqualified-structural-observation'
+  const scoped = report?.schemaVersion === 'bmw-settings-shape-refusal.v2';
+  invalid(exact(report, ['schemaVersion', 'qualification', 'admission', 'failedRole', 'reason', 'observation', 'layout', 'roles', ...(scoped ? ['selection'] : [])])
+    && (scoped ? report.selection === 'APP.backend.own-property' : report.schemaVersion === 'bmw-settings-shape-refusal.v1') && report.qualification === 'unqualified-structural-observation'
     && report.admission === false && typeof report.failedRole === 'string' && Object.hasOwn(labels, report.failedRole)
     && ['settings-header-shape', 'settings-traversal-limit'].includes(report.reason));
   const observation = report.observation;
@@ -94,7 +107,8 @@ export function validateSettingsShapeRefusal(report, { plan, mode }) {
       && ['accepted', 'refused', 'unresolved-limit'].includes(row.strictVerdict));
     const occurrences = row.candidates.directProperty + row.candidates.nameValue;
     const complete = !row.traversal.limited && !row.traversal.countsCapped;
-    const strict = complete && row.profileMatches === 1 && occurrences === 1 && row.candidates.distinctValues === 1 && !row.flags.empty && !row.flags.oversized;
+    const strict = complete && row.profileMatches === 1 && occurrences === 1 && row.candidates.distinctValues === 1 && !row.flags.empty && !row.flags.oversized
+      && (!scoped || row.profileNodeKinds.object === 1 && row.exactLabelObjectKeys === 1 && !row.flags.wrongType);
     invalid(row.flags.missingProfile === (complete && row.profileMatches === 0) && row.flags.multipleProfiles === (row.profileMatches > 1)
       && row.flags.missingCandidate === (complete && occurrences === 0) && row.flags.multipleCandidates === (occurrences > 1)
       && row.flags.conflictingCandidates === (row.candidates.distinctValues > 1)
@@ -110,7 +124,7 @@ export function createSettingsShapeRefusal({ settings, failedRole, reason, metad
   assertCollectionHttpObservation(metadata);
   const appPresent = object(settings) && Object.hasOwn(settings, 'APP'); const app = appPresent ? settings.APP : undefined;
   const backendPresent = object(app) && Object.hasOwn(app, 'backend');
-  const report = { schemaVersion: 'bmw-settings-shape-refusal.v1', qualification: 'unqualified-structural-observation', admission: false,
+  const report = { schemaVersion: 'bmw-settings-shape-refusal.v2', selection: 'APP.backend.own-property', qualification: 'unqualified-structural-observation', admission: false,
     failedRole, reason, observation: structuredClone(metadata),
     layout: { status: 'unverified', appKind: kind(app, appPresent), backendKind: kind(backendPresent ? app.backend : undefined, backendPresent) },
     roles: Object.fromEntries(Object.entries(labels).map(([role, label]) => [role, inspectRole(settings, label)])) };

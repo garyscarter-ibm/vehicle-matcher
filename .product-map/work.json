@@ -1816,7 +1816,7 @@
     {
       "assignee": "",
       "id": "FUCQ-59",
-      "observed_at": "2026-11-06T14:54:11Z",
+      "observed_at": "2026-11-06T15:06:51Z",
       "original_status": "To Do",
       "slices": [
         {
@@ -1848,9 +1848,9 @@
           "title": "Finite source budgets, deadlines and default no-traffic safety (2 points)"
         },
         {
-          "evidence": "Actual14:48UTC separately allocated2GET observation at5d2d3a2a stopped settings-header-shape;638409decodedBytes,tree/localisation each2profiles/1distinct direct candidate/no conflict;layout unverified. accepted0/admissionfalse/all74pending;no downstream/solver/retry. Owning fixed structural export validated; parent verifies root/group/owner/launcher/token absent,12288Bscratch/61Blog removed. settings-shape-live-2026-11-06/{README.md,settings-shape.json,parent-audit.json}. All allocations/spent m",
+          "evidence": "Canonical APP.backend selector/v2 scope correction84/84 offline scopedPASS; old v1 report preserved/verifiable. No new source calls:14:48UTC2GET refusal remains latest, current layout/tree/options unqualified;accepted0/admissionfalse/all74pending. settings-compatibility-2026-11-06/validation.json; all allocations consumed.",
           "id": "source-qualification",
-          "observed_at": "2026-11-06T14:54:11Z",
+          "observed_at": "2026-11-06T15:04:41.021643+00:00",
           "status": "blocked",
           "title": "Selected real-source model mapping and solver integration (1 point)"
         },
@@ -1869,10 +1869,10 @@
           "title": "Retailer mapping and API regression boundary"
         },
         {
-          "evidence": "Current authored full offline suite at7abeabc00587633211be6e822ea036b3dde16626:68files,1296tests/1291pass/5planned-nativePGskips/0fail,107.99s, complete1435file identity unchanged; AEE source/test pins match. Exact plan/result in current-full-2026-11-06/. Root/group81414/overlay absent,7922848B scratch removed. Shared ledger charging unverified during active run; parent manually counted usage. Native SQL and absent F60v2 assembly remain unproved.",
+          "evidence": "Historical7abeabc full result68files/1296tests remains retained in current-full-2026-11-06; later executable changes invalidate it as current full proof. Current canonical settings correction84/84 scopedPASS only. Final combined-source full validation remains outstanding; no full rerun justified for this bounded correction. NativeSQL/F60v2 assembly also unproved.",
           "id": "full-validation",
-          "observed_at": "2026-11-06T11:17:51Z",
-          "status": "complete",
+          "observed_at": "2026-11-06T15:06:50.893204+00:00",
+          "status": "in-progress",
           "title": "Authored serial npm test integration gate (1 point)"
         }
       ],
@@ -1883,13 +1883,22 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59",
       "workers": [
         {
-          "expires_at": "2026-11-06T14:39:17.607117+00:00",
-          "harness": "codex",
           "name": "Cecil Turtle",
-          "observed_at": "2026-11-06T14:39:17.607117+00:00",
           "role": "story-lead",
-          "source": "thread 01a1b054-1167-7820-b9f2-92ec81e37bbe",
-          "status": "Fix1 reservation cleanup correction12supervisor methods scopedPASS, unchanged18Node/33producer reused; source0, ready parent audit; requested/selected/runtime-confirmedSol/high, no fallback/descendants"
+          "harness": "codex",
+          "source": "thread01a1b054-1167-7820-b9f2-92ec81e37bbe",
+          "observed_at": "2026-11-06T15:04:41.021643+00:00",
+          "expires_at": "2026-11-06T15:14:41.023254+00:00",
+          "status": "Canonical APP.backend correction84 scopedPASS; cleanup verified; freezing evidence/preparing next finite step; requested/selected/runtimeSol high; no fallback"
+        },
+        {
+          "name": "Sulley",
+          "role": "implementer",
+          "harness": "codex",
+          "source": "thread01a1b15c-c7b7-7ff1-ae8e-5d840ec09dbc",
+          "observed_at": "2026-11-06T15:04:41.021643+00:00",
+          "expires_at": "2026-11-06T15:04:41.021643+00:00",
+          "status": "Completed four-file canonical selector/v2 report correction; requested/selected/runtimeSol medium; no fallback/descendants; no child tests/scratch"
         }
       ]
     }
