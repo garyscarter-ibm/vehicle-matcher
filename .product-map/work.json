@@ -775,16 +775,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-77"
     },
     {
-      "id": "FUCQ-78",
-      "title": "Shape synthetic scheme stock from real stock-locator aggregates",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-78"
-    },
-    {
       "id": "FUCQ-79",
       "title": "Run GCSP transactions, policy and demo control on a shared foundation",
       "status": "In Review",
@@ -1820,6 +1810,89 @@
           "observed_at": "2026-11-06T00:52:49.287115+00:00",
           "expires_at": "2026-11-06T00:52:49.287115+00:00",
           "status": "stopped; explicit IBM Global422 Advantage Credits exhaustion; checkpoint preserved"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-78",
+      "title": "Shape synthetic scheme stock from real stock-locator aggregates",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-06T10:15:17Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-78",
+      "slices": [
+        {
+          "id": "generator",
+          "status": "complete",
+          "title": "Offline-PolicyService-stock-generator",
+          "observed_at": "2026-11-06T10:15:17Z",
+          "evidence": "Lead delivery review and independent review cleared retained-inventory/privacy/replay findings; final-generator9/9 at SHA2562a141a97. Offline mechanism only; source/native gates remain separate."
+        },
+        {
+          "id": "sampler",
+          "status": "complete",
+          "title": "Privacy-budget-sampler-boundary",
+          "observed_at": "2026-11-06T10:15:17Z",
+          "evidence": "Lead reviewed strict aggregate projection, proposed accepted-plan adapter, privacy budgets and stop/failure behavior; scoped17/17 pass. No live source requests or accepted F77 artifact."
+        },
+        {
+          "id": "actual-source",
+          "status": "blocked",
+          "title": "Accepted-F77-plan-and-real-aggregate-sampling",
+          "observed_at": "2026-11-06T10:00:26Z",
+          "evidence": "F77 accepted demo plan and >=200 real configurations are not available; current selected corpus has two configurations, not accepted coverage."
+        },
+        {
+          "id": "policy-publication",
+          "status": "blocked",
+          "title": "Canonical-observed-policy-and-release-assumptions",
+          "observed_at": "2026-11-06T10:00:26Z",
+          "evidence": "Await actual accepted aggregates and coordinated canonical seed ownership; no fictional observed data or second loader."
+        },
+        {
+          "id": "native-integration",
+          "status": "blocked",
+          "title": "Accepted-corpus-and-native-repository-integration",
+          "observed_at": "2026-11-06T10:00:26Z",
+          "evidence": "Accepted F77 corpus and GC native PostgreSQL integration evidence are outstanding."
+        },
+        {
+          "id": "distribution",
+          "status": "complete",
+          "title": "Distribution-report-and-one-key-policy-proof",
+          "observed_at": "2026-11-06T10:15:17Z",
+          "evidence": "Scoped generator9/9 proves deterministic Hamilton model/colour report and one-entry policy-change retention through actual PolicyService; observed canonical publication still blocked."
+        },
+        {
+          "id": "final-validation",
+          "status": "blocked",
+          "title": "Authored-final-npm-test",
+          "observed_at": "2026-11-06T10:00:26Z",
+          "evidence": "Authored final npm test requires dispatcher serial full-suite lane after source/integration gates."
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-04-057",
+      "workers": [
+        {
+          "name": "Granny",
+          "harness": "codex",
+          "role": "story-lead",
+          "status": "stopped; scoped offline checkpoint delivered; source/integration gates remain",
+          "observed_at": "2026-11-06T10:15:17.680548+00:00",
+          "expires_at": "2026-11-06T10:15:17.680548+00:00",
+          "source": "thread 01a1b04c-6c20-75d3-a2e9-f4f5249b23c8; parent confirmed runtime Sol/high"
+        },
+        {
+          "name": "Edna",
+          "harness": "codex",
+          "role": "implementer and independent generator reviewer",
+          "status": "stopped; scoped offline checkpoint delivered; source/integration gates remain",
+          "observed_at": "2026-11-06T10:15:17.680548+00:00",
+          "expires_at": "2026-11-06T10:15:17.680548+00:00",
+          "source": "thread 01a1b04e-1609-7ac2-84b5-359280f5a2ac; parent confirmed runtime Sol/medium"
         }
       ]
     }
