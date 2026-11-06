@@ -1,6 +1,33 @@
 import { portalShell } from '../shell/portal-shell.js';
 import { createOfferController } from './offer-controller.js';
 import { createOfferView } from './offer-view.js';
+import { el } from '../../vehicle-matcher/ui.js';
+
+// The trusted host binds this port to 107's body mount and its ordinary employee account loader.
+function followupMount(port) {
+  if (typeof port?.loadAccount !== 'function' || typeof port?.mount !== 'function') return undefined;
+  return (root, { decisionId }) => {
+    const abort = new AbortController(); let done = false; let cleanup;
+    const show = (message) => {
+      const note = el('p', 'gcsp-note', message); note.setAttribute('role', 'status'); root.replaceChildren(note);
+    };
+    const unavailable = () => show('Follow-up unavailable. Open this offer from your account or check again.');
+    show('Loading your account for the follow-up.');
+    void (async () => {
+      try {
+        const account = await port.loadAccount({ signal: abort.signal });
+        if (done) return;
+        if (account?.status !== 'ready') { unavailable(); return; }
+        cleanup = port.mount(root, { decisionId, signal: abort.signal });
+        if (typeof cleanup !== 'function') { cleanup = undefined; abort.abort(); unavailable(); }
+      } catch { if (!done) { abort.abort(); unavailable(); } }
+    })();
+    return () => {
+      if (done) return; done = true; abort.abort();
+      try { cleanup?.(); } finally { root.replaceChildren(); }
+    };
+  };
+}
 
 /** Standalone embeddable offer surface. A trusted host supplies real read and decision adapters. */
 export function mountOffer(root, adapter = {}) {
@@ -10,7 +37,8 @@ export function mountOffer(root, adapter = {}) {
   const controller = createOfferController({ read: adapter.read || (async () => ({ status: 'unavailable' })),
     decide: adapter.decide, readReasons: adapter.readReasons, createCommandId: adapter.createCommandId });
   const view = createOfferView(shell.main, { refresh: () => controller.refresh(), decide: (kind, options) => controller.decision(kind, options),
-    selectReason: controller.selectDeclineReason, cancelDecline: controller.cancelDecline, refreshReasons: controller.refreshDeclineReasons });
+    selectReason: controller.selectDeclineReason, cancelDecline: controller.cancelDecline, refreshReasons: controller.refreshDeclineReasons,
+    mountFollowup: followupMount(adapter.followup) });
   const update = (model) => view.update({ ...model, fixtureNotice: adapter.notice || model.fixtureNotice });
   const unsubscribe = controller.subscribe(update);
   update(controller.snapshot());

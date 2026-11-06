@@ -1,5 +1,6 @@
 // Safe display binding for FUCQ-102 schemaVersion 1, reviewed at 4a56d38.
 import { decisionView } from '../brief/brief-view-model.js';
+import { followupHandle } from './followup-entry.js';
 
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const text = (v) => typeof v === 'string' && v.length > 0;
@@ -176,6 +177,7 @@ export function toOfferPresentation(envelope, { reference } = {}) {
       reference: { offerId: v.offerId, runId: v.runId, offerVersion: v.offerVersion, holdVersion: v.holdVersion,
         quoteVersion: revisions.quote },
       now: v.serverNow, clockVersion: v.clockVersion, expiresAt: v.expiresAt, actionable: v.state === 'pending' && !uncertain,
-      actions, card: cardFor(quote), comparisonAvailable: false, currentCar } };
+      actions, card: cardFor(quote), comparisonAvailable: false, currentCar,
+      followup: followupHandle(v.followup, ['rejected', 'declined'].includes(v.offerState) && v.holdState === 'released' ? v.state : null) } };
   } catch { return { status: 'unavailable', retryable: true }; }
 }

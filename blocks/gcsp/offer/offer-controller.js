@@ -1,4 +1,5 @@
 // Presentation port only. HTTP access and decision authority are injected by the host.
+import { followupHandle } from './followup-entry.js';
 const copy = (value) => structuredClone(value);
 const states = new Set(['pending', 'accepted', 'declined', 'expired', 'superseded', 'earlier-run', 'not-found', 'uncertain', 'refused']);
 const instant = (value) => typeof value === 'string' && Number.isFinite(Date.parse(value));
@@ -19,7 +20,7 @@ export function countdownText(seconds) {
 
 function project(value, hasDecisionPort, hasReasonPort, declineReason) {
   if (!value || !states.has(value.state)) throw new TypeError('Missing authoritative offer state.');
-  const model = copy(value);
+  const model = copy({ ...value, followup: followupHandle(value.followup, value.state) });
   const seconds = remainingTime(model.expiresAt, model.now);
   const reference = model.reference;
   const bound = Boolean(reference && typeof reference.offerId === 'string' && reference.offerId.length > 0

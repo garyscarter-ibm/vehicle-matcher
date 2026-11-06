@@ -1,6 +1,7 @@
 import { el, screenIntro, button, factList } from '../../vehicle-matcher/ui.js';
 import { matchCard, mediaWell } from '../../vehicle-matcher/modes/result-card.js';
 import { labelledField, errorSummary } from '../kit/form-controls.js';
+import { followupHandle } from './followup-entry.js';
 
 const titles = { pending: 'Your car offer', accepted: 'Offer accepted', declined: 'Offer declined', expired: 'Offer expired',
   superseded: 'Offer superseded', 'earlier-run': 'Offer from an earlier demo run', 'not-found': 'Offer not found', refused: 'Offer unavailable',
@@ -38,7 +39,7 @@ function comparison(currentCar) {
 }
 
 /** Compose shared primitives only; server projection owns vehicle facts, terms and decisions. */
-export function createOfferView(root, { refresh, decide, selectReason, cancelDecline, refreshReasons } = {}) {
+export function createOfferView(root, { refresh, decide, selectReason, cancelDecline, refreshReasons, mountFollowup } = {}) {
   const page = el('div', 'vm gcsp-offer-body');
   page.id = `gcsp-offer-${++sequence}`;
   const content = el('div', 'gcsp-offer-content');
@@ -50,9 +51,21 @@ export function createOfferView(root, { refresh, decide, selectReason, cancelDec
   let messageNode; let clockNode; let asOfNode; let reasonNode;
   let reasonForm; let reasonSelect; let reasonStatus; let reasonField; let reasonSummary;
   let confirmButton; let cancelButton; let reasonsRefresh; let optionsKey; let wasOpen = false; let lastError = '';
+  let followupRoot; let followupKey; let cleanupFollowup;
+  const clearFollowup = () => {
+    const cleanup = cleanupFollowup; cleanupFollowup = undefined; followupKey = undefined;
+    try { cleanup?.(); } catch { /* Teardown cannot prevent the offer from updating. */ }
+  };
+  const refreshCurrent = () => { clearFollowup(); refresh?.(); };
+  const followupUnavailable = () => {
+    const note = el('p', 'gcsp-note', 'Follow-up unavailable. Check the current offer again.');
+    note.setAttribute('role', 'status'); followupRoot.replaceChildren(note);
+  };
   const announce = (text) => { if (text !== lastAnnouncement) { announcement.textContent = text; lastAnnouncement = text; } };
   function draw(model) {
     const focused = root.ownerDocument.activeElement?.dataset?.offerAction;
+    const followupFocused = followupRoot?.contains(root.ownerDocument.activeElement);
+    clearFollowup(); followupRoot = undefined;
     content.replaceChildren();
     optionsKey = undefined; wasOpen = false; lastError = '';
     const state = model.state;
@@ -99,14 +112,36 @@ export function createOfferView(root, { refresh, decide, selectReason, cancelDec
       confirmation.append(confirmButton, cancelButton, reasonsRefresh);
       reasonForm.append(reasonStatus, reasonSummary.root, reasonField.root, confirmation); content.append(reasonForm);
     }
+    if (state === 'declined') {
+      const section = el('section', 'gcsp-offer-content'); section.setAttribute('aria-label', 'Your next offer');
+      followupRoot = el('div'); followupRoot.dataset.offerFollowup = '';
+      section.append(el('h2', 'gcsp-h2', 'Your next offer'), followupRoot); content.append(section);
+    }
     if (state !== 'loading') {
-      const control = button({ label: state === 'error' ? 'Try again' : 'Check current state', variant: 'ghost', onClick: () => refresh?.() });
+      const control = button({ label: state === 'error' ? 'Try again' : 'Check current state', variant: 'ghost', onClick: refreshCurrent });
       control.dataset.offerAction = 'refresh'; content.append(control);
     }
-    if (focused) {
+    if (focused || followupFocused) {
       const target = content.querySelector(`[data-offer-action="${['accept', 'decline', 'refresh'].includes(focused) ? focused : 'refresh'}"]`);
       (target && !target.disabled ? target : content.querySelector('[data-offer-action="refresh"]'))?.focus();
     }
+  }
+  function updateFollowup(model) {
+    if (!followupRoot) return;
+    const handle = followupHandle(model.followup, model.state);
+    const key = JSON.stringify([model.reference?.runId, model.reference?.offerId, handle?.decisionId ?? null]);
+    if (key === followupKey) return;
+    const focused = followupRoot.contains(root.ownerDocument.activeElement);
+    clearFollowup(); followupKey = key;
+    followupUnavailable();
+    if (handle && typeof mountFollowup === 'function') {
+      try {
+        const cleanup = mountFollowup(followupRoot, handle);
+        if (typeof cleanup === 'function') cleanupFollowup = cleanup;
+        else followupUnavailable();
+      } catch { followupUnavailable(); }
+    }
+    if (focused) content.querySelector('[data-offer-action="refresh"]')?.focus();
   }
   function updateReasons(model) {
     const reason = model.declineReason || { open: false, status: 'idle', choices: [], selectedCode: '', error: '' };
@@ -144,6 +179,7 @@ export function createOfferView(root, { refresh, decide, selectReason, cancelDec
     if (structure !== nextStructure) { draw(model); structure = nextStructure; }
     messageNode.textContent = model.message || messages[model.state] || '';
     messageNode.hidden = !messageNode.textContent;
+    updateFollowup(model);
     if (model.state === 'pending') {
       clockNode.textContent = model.countdown || 'Time remaining unavailable';
       asOfNode.textContent = model.now ? `Demo time at last check: ${model.now}` : 'Demo time unavailable';
@@ -163,5 +199,5 @@ export function createOfferView(root, { refresh, decide, selectReason, cancelDec
     else if (model.state !== previousState || key !== previousIdentity) announce(titles[model.state] || titles.error);
     previousState = model.state; previousIdentity = key;
   }
-  return { update, destroy() { page.remove(); } };
+  return { update, destroy() { clearFollowup(); page.remove(); } };
 }
