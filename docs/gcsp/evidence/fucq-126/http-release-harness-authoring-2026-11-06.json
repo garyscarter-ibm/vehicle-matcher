@@ -12,7 +12,7 @@
   ],
   "productImports": [],
   "executed": false,
-  "validation": "Manual source review, named-path whitespace and metadata/hash checks only; no Node or product execution.",
+  "validation": "Manual source review, Python AST parse, named-path whitespace and metadata/hash checks only; no guard import, subprocess launch, Node, product execution or cancellation reproduction.",
   "deliveryLossVariant": "Actual handler completes and Set-Cookie headers are applied, then the reply body is discarded; this is not every network-loss variant.",
   "boundaries": [
     "Calls the actual request listener; never listens or fetches externally",
@@ -22,10 +22,36 @@
     "Transport journal retains only method/path/status/byte counts; never tokens or business bodies"
   ],
   "pending": [
+    "Wire and review cancellation-safe creation/registration/cleanup in the actual supervisor, then refreeze all helper identities",
     "Concrete central composition and trusted new-run data contract",
     "Six-case integration setup/test source and exact names/counts",
     "Owned resource supervisor and module/read observer source pins",
     "Fresh complete executable source/dependency/output ownership plan and root review"
   ],
-  "executionAuthorized": false
+  "executionAuthorized": false,
+  "cancellationGuard": {
+    "path": "docs/gcsp/evidence/fucq-126/cancellation-safe-child.py",
+    "sha256": "ab5e07e74a4b4a86953bc9e5f50e529379575b4ce187ffc70abde0109c0d2eab",
+    "bytes": 4643,
+    "imports": [
+      "contextlib",
+      "signal",
+      "subprocess",
+      "sys",
+      "threading"
+    ],
+    "validation": "AST/source inspection only; not imported, executed or fault-tested."
+  },
+  "cancellationFinding": {
+    "basis": "Dispatcher notice: inherited Popen-to-register handled-cancellation gap found in107 supervisor/resources; no runtime reproduction authorized.",
+    "acceptedEarlierProof": "Prior actual126 selected checks remain scoped accepted; no claim that any actual run hit this edge.",
+    "sourceFix": "Owned future guard defers SIGINT/SIGTERM during creation/registration, retains local Popen handle, stops/joins and verifies exact PID/start/group even when registration fails; cleanup failure stays explicit.",
+    "integrationStatus": "Not yet wired into an executable supervisor. Future launcher must use this reviewed guard or a reviewed shared resource-helper repair; directly wrapping the old run_process does not fix its hidden Popen gap.",
+    "reservationAndScratch": "No scratch deletion/reservation release may rely on an empty registry; require actual handle cleanup and independent absence evidence. Preserve a named issue and charge for remaining live resources."
+  },
+  "resourceHelperPlanningPin": {
+    "path": "_tools/test_resources.py",
+    "sha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "executionApproval": false
+  }
 }

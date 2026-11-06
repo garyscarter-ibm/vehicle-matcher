@@ -82,3 +82,29 @@ central composed checkpoint and reviewed source inputs. They are not supplied by
 No mixed imports, Node execution, tests, scratch or reservations are created for this authoring.
 The identity-only bootstrap stock gap remains: the actual release producer preserves existing
 row facts, so the future source/preparation owner must supply correct facts before release.
+
+## Handled-cancellation ownership correction before execution
+
+The dispatcher reported an inherited Popen-to-registry gap in another supervisor: handled
+SIGTERM/KeyboardInterrupt after creation but before initial ownership persistence could leave
+a real child outside the registry, allowing an empty-registry cleanup branch to claim absence.
+No runtime reproduction is authorized, and this notice does not establish that the earlier
+accepted FUCQ-126 run encountered the edge. Its evidence and source identity remain intact.
+
+The newly authored `cancellation-safe-child.py` is pinned in the authoring receipt. It defers
+SIGINT/SIGTERM exceptions through creation, local-handle assignment and registration/persistence,
+without inheriting a blocked signal mask into the child. Its finalizer always stops/joins the
+actual Popen handle, even when registration fails, and requires explicit exact PID/start/group
+absence verification. Cleanup exceptions or uncertain identity leave `cleanupVerified` false
+and raise an explicit cleanup error. A second handled cancellation is deferred through cleanup.
+The helper requires an outer handled-termination supervisor and an external ownership record
+created before launch. It is source/AST-reviewed only, not imported or executed.
+
+This correction must be wired and reviewed in the actual future supervisor before any execution
+proposal, then its source, resource helper, observer, test and data pins must be refrozen together.
+A wrapper around an unchanged `run_process` cannot close that function's internal Popen gap.
+The earlier `run-release-result-check.py` remains historical selected-run machinery, not the
+future launcher. A live or uncertain unregistered child must be adopted/stopped/joined from its
+actual local handle; an empty registry is insufficient. Scratch deletion and reservation release
+must be gated on real cleanup evidence, with named unresolved cleanup/resources retained on
+failure. The resource/output limits and no-execution boundary above remain unchanged.
