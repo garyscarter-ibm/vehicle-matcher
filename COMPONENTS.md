@@ -152,6 +152,8 @@ Looked at: `el`, `screenIntro`, `button`, `statusScreen` and `factList` (all reu
 
 Gallery: the **GCSP Greg kit** section of [`components.html`](components.html) shows `metricTile` exact, band and with a note, and `dataTable` with a long model name, a band cell and the empty state. The ratchet now also caps `blocks/gcsp/kit/gcsp-kit.css` and `blocks/gcsp/greg/gcsp-greg.css`.
 
+`mountGregOrders(root, {adapter, productionControls, onChanged, signal})` and `<gcsp-greg-orders>` in `blocks/gcsp/greg-orders/` compose the existing `dataTable`, `labelledField`, `button`, `statusScreen` and `el`. This adds no competing kit primitive. Requested, confirmed and released counts stay separate; native model/derivative/quantity forms retain focus across refresh, and saved confirmations expose release-queue retry. The optional synthetic production disclosure uses the retained presenter cookie; the acting Greg cookie handles requests and queueing. The element accepts `adapter` as a property, emits `gcsp:orders-changed`, has `refresh()`, and aborts on disconnect. The [same-origin integration harness](blocks/gcsp/greg-orders/harness.html) mounts the panel in the existing dashboard region, requiring trusted backend session bootstrap and registered supply/demand routes. Its scoped composition stylesheet is capped separately; shared kit/gallery rows and existing caps remain intact. [Contract and browser evidence](docs/gcsp/greg-orders-contract.md).
+
 ## Not yet in the kit
 
 Hand-built in several modes (file counts at the time of writing):

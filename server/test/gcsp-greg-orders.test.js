@@ -178,6 +178,46 @@ test('HTTP boundary uses separate real acting and presenter cookies and rejects 
   await f.repository.close();
 });
 
+test('tracking counts only successful release receipts matching retained stock provenance, including held stock', async () => {
+  const f = await serviceFixture(); const request = (await submit(f, 'one', 1)).value.request;
+  const supply = (await f.service.stepProduction(f.presenter, { commandId: 'confirmed-one', requestId: request.requestId,
+    expectedVersion: request.version, action: 'confirm', quantity: 1 })).value.supply;
+  const now = (await f.clock.now(f.greg)).value.now;
+  const release = { trancheId: 'explicit-reader-fixture', supplyId: supply.supplyId, releasedAt: now,
+    sourceVersion: 'explicit-source-v1', policyVersion: f.greg.policyVersion };
+  const outcome = ok({ kind: 'stock-released', runId: f.greg.runId, trancheId: release.trancheId, supplyId: supply.supplyId,
+    releasedAt: now, orderUuids: ['explicit-reader-car'], policyVersion: f.greg.policyVersion, source: { version: release.sourceVersion } });
+  const fixture = await f.repository.transaction(f.greg, { commandId: 'explicit-release-reader-fixture', inputDigest: inputDigest(outcome) }, async (tx) => {
+    const added = await tx.insert('stock', { runId: f.greg.runId, orderUuid: 'explicit-reader-car', state: 'held', available: false, held: true, release });
+    if (added.status !== 'ok') return added;
+    return tx.recordReceipt({ consumerId: 'stock-release', eventId: release.trancheId, eventType: 'stock-released', state: 'completed', outcome, inputDigest: inputDigest(outcome) });
+  });
+  assert.equal(fixture.status, 'ok', JSON.stringify(fixture));
+  const view = await f.service.readTracking(f.greg); assert.equal(view.status, 'ok', JSON.stringify(view));
+  assert.equal(view.value.requests[0].stage, 'released'); assert.equal(view.value.requests[0].releasedQuantity, 1);
+  const stockRef = { table: 'stock', key: { runId: f.greg.runId, orderUuid: 'explicit-reader-car' } };
+  const stock = (await f.repository.read(f.greg, stockRef)).value;
+  await f.repository.transaction(f.greg, { commandId: 'corrupt-reader-fixture', inputDigest: inputDigest('corrupt') },
+    (tx) => tx.compareAndSwap(stockRef, stock.version, { release: { ...release, sourceVersion: 'wrong-source' } }));
+  assert.equal((await f.service.readTracking(f.greg)).status, 'unavailable');
+  await f.repository.close();
+});
+
+test('tracking refuses mixed repository revisions and unavailable/empty production choice sets', async () => {
+  const f = await serviceFixture(); let stockReads = 0;
+  const repository = { ...f.repository, async query(context, table, ...rest) {
+    if (table === 'stock' && ++stockReads === 2) await f.repository.transaction(context,
+      { commandId: 'change-during-read', inputDigest: inputDigest('change') },
+      (tx) => tx.insert('stock', { runId: context.runId, orderUuid: 'reader-race', state: 'unreleased', available: false }));
+    return f.repository.query(context, table, ...rest);
+  } };
+  assert.equal((await createSupplyService({ ...f, repository }).readTracking(f.greg)).status, 'conflict');
+  const production = { async describe() { const out = await f.production.describe(); return ok({ ...out.value, choices: [] }); } };
+  const view = await createSupplyService({ ...f, production }).readTracking(f.greg);
+  assert.equal(view.status, 'ok'); assert.equal(view.value.adapter.status, 'unavailable');
+  await f.repository.close();
+});
+
 test('canonical lead-time change alters expected dates and delayed-command replay retains its original result after time advances', async () => {
   const source = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url)));
   source.assumptions.find((x) => x.key === 'supply.leadTimeDays').value = 2;

@@ -1703,7 +1703,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-06T00:26:32Z",
+      "observed_at": "2026-11-06T00:40:44Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-104",
       "slices": [
         {
@@ -1722,27 +1722,31 @@
         },
         {
           "id": "confirmation",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Synthetic production acknowledgement and keyed release queue",
-          "observed_at": "2026-11-06T00:26:32Z",
-          "evidence": "Saved partial/delay acknowledgements, keyed expected dates and retryable F92 queue port pass authored scoped tests; actual producer composition remains."
+          "observed_at": "2026-11-06T00:40:44Z",
+          "evidence": "Lead reviewed immutable partial/delay acknowledgements, keyed dates and retryable actual F92 queue. Final scoped119/119 and actual pinned producer1/1; canonical runtime/native gate separate. docs/gcsp/evidence/fucq104/README.md"
         },
         {
           "id": "tracking",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Shared-kit order-tracking stages and keyboard states",
-          "observed_at": "2026-11-06T00:26:32Z",
-          "evidence": "Consistent tracking projection implemented; additive shared-kit block next."
+          "observed_at": "2026-11-06T00:40:44Z",
+          "evidence": "Shared-kit block plus authenticated HTTPS seven-state desktop/narrow/keyboard proof; CSP/ratchet and119scoped passes. Focused shell counts1/continuous geometry and4inspected viewport captures supersede invalid fullPage artifacts. Canonical host adoption remains separate."
         },
         {
           "id": "release-allocation",
-          "status": "not-started",
-          "title": "Actual release, allocation and demand consumer integration"
+          "status": "complete",
+          "title": "Actual release, allocation and demand consumer integration",
+          "observed_at": "2026-11-06T00:40:44Z",
+          "evidence": "Actual pinned F92 15a79957/F96 d12358bc/F100 b4154ce3 and published trusted identity composed1/1: policy lead time, release3, real hold/offer/outbox, changed demand and replay. Explicit synthetic inputs/memory only; canonical source/runtime/native gate separate."
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Composed runtime, browser, native handoff and final validation"
+          "status": "blocked",
+          "title": "Composed runtime, browser, native handoff and final validation",
+          "observed_at": "2026-11-06T00:40:44Z",
+          "evidence": "GC-owned canonical runtime/server/Greg host and reviewed identity adoption, versioned source choice/stock bootstrap, Gary native migration0004/foundation snapshot/transaction proof, final authored npm test and canonical walkthrough remain. Module/browser proof does not close these gates."
         }
       ],
       "unsliced": false,
@@ -1752,10 +1756,10 @@
           "name": "Buzz Lightyear",
           "role": "story-lead",
           "harness": "codex",
-          "status": "active;independent supply-record/service and tracking implementation",
-          "source": "Thread01a1ae35-02f9-7152-a760-c25dc42194f9;requested/selectedSol/high;no fallback;nativeadoptionverified",
-          "observed_at": "2026-11-06T00:15:25.331354+00:00",
-          "expires_at": "2026-11-06T00:45:25.331354+00:00"
+          "status": "scoped checkpoint complete; awaiting dispatcher publication/integration",
+          "source": "thread01a1ae35-02f9-7152-a760-c25dc42194f9;requested/selected/runtime-verified gpt-6.1-sol/high;no fallback or descendants",
+          "observed_at": "2026-11-06T00:40:44Z",
+          "expires_at": "2026-11-06T00:40:44Z"
         }
       ]
     }

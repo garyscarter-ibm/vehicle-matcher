@@ -34,7 +34,7 @@ export function createSupplyService({ repository, policy, clock, identity, produ
   async function describe() {
     try {
       const out = await production?.describe?.();
-      return out?.status === 'ok' && provenance(out.value?.provenance) && Array.isArray(out.value.choices)
+      return out?.status === 'ok' && provenance(out.value?.provenance) && Array.isArray(out.value.choices) && out.value.choices.length > 0
         && out.value.choices.every((c) => fields(c, ['model', 'derivative']) && text(c.model) && text(c.derivative)) ? out : unavailable();
     } catch { return unavailable(); }
   }
@@ -169,7 +169,8 @@ export function createSupplyService({ repository, policy, clock, identity, produ
           && supplies.some((s) => s.supplyId === r.outcome.value?.supplyId))) {
           const value = receipt.outcome.value;
           if (value.runId !== context.runId || value.kind !== 'stock-released' || value.trancheId !== receipt.eventId
-            || !Array.isArray(value.orderUuids) || !value.orderUuids.every(text) || !validInstant(value.releasedAt)
+            || !Array.isArray(value.orderUuids) || !value.orderUuids.every(text) || new Set(value.orderUuids).size !== value.orderUuids.length
+            || !text(value.source?.version) || !text(value.policyVersion) || !validInstant(value.releasedAt)
             || Date.parse(value.releasedAt) > Date.parse(time.value.now)) return unavailable('Release provenance is unavailable.');
           for (const id of value.orderUuids) {
             const stock = rows.stock.find((s) => s.orderUuid === id);
