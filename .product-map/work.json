@@ -1559,47 +1559,57 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T23:52:26Z",
+      "observed_at": "2026-11-06T00:03:11Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-106",
       "slices": [
         {
           "id": "decision-protocol",
           "status": "in-progress",
           "title": "Decision-command-result-event-and-exclusion-contract",
-          "observed_at": "2026-11-05T23:42:38Z",
-          "evidence": "Contract-first source boundary checkpoint: docs/gcsp/offer-decisions-contract.md; no integration claimed."
+          "observed_at": "2026-11-06T00:03:11Z",
+          "evidence": "Finite source/port plan, exact proposed bundle/registration diff published; no import/activation. docs/gcsp/evidence/fucq106/integration-plan.md"
         },
         {
           "id": "policy-reasons",
-          "status": "not-started",
-          "title": "Canonical-decline-reasons-and-activation"
+          "status": "blocked",
+          "title": "Canonical-decline-reasons-and-activation",
+          "evidence": "Blocked pending reviewed bundle/registration review and same-provider canonical adoption proof; docs/gcsp/evidence/fucq106/integration-plan.md",
+          "observed_at": "2026-11-06T00:03:11Z"
         },
         {
           "id": "decision-service",
           "status": "in-progress",
           "title": "Transactional-decision-service-and-HTTP-protocol",
-          "observed_at": "2026-11-05T23:52:26Z",
-          "evidence": "Independent local service/HTTP contract tests; actual producer/access/runtime/remote and native/full acceptance open."
+          "observed_at": "2026-11-06T00:03:11Z",
+          "evidence": "25/25 scoped, v9 exact behavior identity; acceptance integration unfinished. docs/gcsp/evidence/fucq106/scoped-service-checkpoint.json"
         },
         {
           "id": "producer-access-expiry",
-          "status": "not-started",
-          "title": "Actual-producer-access-and-expiry-integration"
+          "status": "blocked",
+          "title": "Actual-producer-access-and-expiry-integration",
+          "evidence": "Blocked pending exact immutable 100/102/106 composition review and real decision/expiry proof; docs/gcsp/evidence/fucq106/integration-plan.md",
+          "observed_at": "2026-11-06T00:03:11Z"
         },
         {
           "id": "remote-events",
-          "status": "not-started",
-          "title": "Remote-uncertainty-and-downstream-events"
+          "status": "blocked",
+          "title": "Remote-uncertainty-and-downstream-events",
+          "evidence": "Blocked: executable offer-selection/release adapter and actual 107/108 consumer integration not supplied; docs/gcsp/evidence/fucq106/integration-plan.md",
+          "observed_at": "2026-11-06T00:03:11Z"
         },
         {
           "id": "runtime",
-          "status": "not-started",
-          "title": "Coordinated-runtime-registration"
+          "status": "blocked",
+          "title": "Coordinated-runtime-registration",
+          "evidence": "Blocked: central route/resolver/host writer coordination and integrated 105 states remain; docs/gcsp/evidence/fucq106/integration-plan.md",
+          "observed_at": "2026-11-06T00:03:11Z"
         },
         {
           "id": "final-validation",
-          "status": "not-started",
-          "title": "Authored-acceptance-and-final-validation"
+          "status": "blocked",
+          "title": "Authored-acceptance-and-final-validation",
+          "evidence": "Blocked: actual producer/access/expiry, canonical adoption, remote/consumers, native/full authored validation remain; docs/gcsp/evidence/fucq106/integration-plan.md",
+          "observed_at": "2026-11-06T00:03:11Z"
         }
       ],
       "unsliced": false,
@@ -1609,9 +1619,9 @@
           "harness": "codex",
           "role": "story-lead",
           "observed_at": "2026-11-05T23:52:26Z",
-          "expires_at": "2026-11-06T00:52:26Z",
+          "expires_at": "2026-11-06T00:03:11Z",
           "source": "codex:01a1ae15-a603-7d92-b832-f7ebcc446a84",
-          "status": "working"
+          "status": "stopped"
         }
       ]
     }
