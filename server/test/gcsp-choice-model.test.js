@@ -10,6 +10,8 @@ import { choiceProbabilities, conditionalLogitObjective, trainConditionalLogit,
 import { PolicyService, MemoryPolicyProvider } from '../gcsp/policy/index.js';
 import { createMemoryRepository, createMemoryStore } from '../gcsp/repository/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
+import { normalizeBaselineWeights, expressedDemandBaseline } from '../gcsp/predict/model/baselines.js';
+import { runCli } from '../../scripts/gcsp/train-choice-model.mjs';
 
 const optimizer = { maxIterations: 1000, gradientTolerance: 0.000001, initialStep: 4, maxBacktracks: 30 };
 function random(seed) { let x = seed; return () => { x = (Math.imul(x, 1664525) + 1013904223) >>> 0; return x / 2 ** 32; }; }
@@ -247,4 +249,33 @@ test('canonical missing keys are unavailable and alternative policy changes affe
     const nextRun = trainConditionalLogit(examples, { featureNames: ['x', 'y', 'wait'], regularization: after.value.regularization, optimizer });
     assert.notDeepEqual(initialRun.coefficients, nextRun.coefficients);
   } finally { await f.repository.close(); await f.provider.close(); await rm(directory, { recursive: true, force: true }); }
+});
+
+test('baseline mapping divides class mass over exact stock, smooths then reserves canonical wait mass', () => {
+  const example = { alternatives: [{ alternativeId: 'estate1', attributes: { body: 'estate' } },
+    { alternativeId: 'estate2', attributes: { body: 'estate' } }, { alternativeId: 'suv1', attributes: { body: 'suv' } },
+    { alternativeId: 'wait', isWait: true }] };
+  const projection = { basis: 'expressed-saved-demand', demand: { byBody: [
+    { key: 'estate', count: { kind: 'exact', value: 20 } }, { key: 'suv', count: { kind: 'exact', value: 10 } },
+  ] } };
+  const probabilities = expressedDemandBaseline(example, projection, { expressedDemandDimension: 'body' }, { waitShare: 0.1, smoothing: 0.001 });
+  const close = (actual) => actual.forEach((p, index) => assert.ok(Math.abs(p - [0.3, 0.3, 0.3, 0.1][index]) < 1e-12));
+  close(probabilities);
+  close(normalizeBaselineWeights(example, [0, 0, 0], { waitShare: 0.1, smoothing: 0.001 }));
+  const banded = structuredClone(projection); banded.demand.byBody[0].count = { kind: 'band', fewerThan: 5 };
+  assert.throws(() => expressedDemandBaseline(example, banded, { expressedDemandDimension: 'body' }, { waitShare: 0.1, smoothing: 0.001 }), { code: 'baseline-unavailable' });
+  assert.throws(() => expressedDemandBaseline(example, { ...projection, demand: { byBody: [] } },
+    { expressedDemandDimension: 'body' }, { waitShare: 0.1, smoothing: 0.001 }), { code: 'baseline-unavailable' });
+  assert.throws(() => normalizeBaselineWeights(example, [0, -1, 0], { waitShare: 0.1, smoothing: 0.001 }));
+  assert.deepEqual(normalizeBaselineWeights({ alternatives: [{ isWait: true }] }, [], { waitShare: 0.1, smoothing: 0.001 }), [1]);
+});
+
+test('offline CLI has a finite help contract and returns typed unavailable for missing data and invalid arguments', async () => {
+  let output = ''; let error = '';
+  assert.equal(await runCli({ argv: ['--help'], write: (s) => { output += s; } }), 0);
+  assert.ok(output.includes('Training never activates a model'));
+  assert.equal(await runCli({ argv: ['--dataset', join(tmpdir(), 'absent-choice-dataset.json')], writeError: (s) => { error = s; } }), 2);
+  assert.equal(JSON.parse(error).code, 'dataset-unavailable');
+  assert.equal(await runCli({ argv: ['--unsupported'], writeError: (s) => { error = s; } }), 2);
+  assert.equal(JSON.parse(error).code, 'invalid-arguments');
 });

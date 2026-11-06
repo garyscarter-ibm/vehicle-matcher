@@ -52,7 +52,8 @@ export function projectLearningChoices(input, { readLearningDataset, featureVers
     alternatives.push({ alternativeId: 'wait', isWait: true, vehicleClass: 'wait' });
     const chosenAlternativeId = waited ? 'wait' : record.target.orderRef;
     requireChoice(chosenAlternativeId !== null && alternatives.some((a) => a.alternativeId === chosenAlternativeId), 'target', 'ambiguous-target');
-    examples.push(buildChoiceFeatures({ recordId: record.recordId, cohort,
+    examples.push(buildChoiceFeatures({ recordId: record.recordId, cohort, employeeRef: record.subject.employeeRef,
+      entitlement: structuredClone(record.entitlement),
       cycle: { id: cycle.cycleId, index: cycle.index, startsAt: cycle.startsAt, until: cycle.until },
       observedAt, featuresAsOf: new Date(featuresAt).toISOString(), brief: structuredClone(record.brief), alternatives,
       chosenAlternativeId }, featureVersion));

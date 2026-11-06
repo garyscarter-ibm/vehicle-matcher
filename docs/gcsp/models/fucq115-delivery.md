@@ -55,7 +55,7 @@ exclusive publication/corruption checks, and real PolicyService dated publicatio
 and historical reads over a clearly labelled alternative test source. Changing
 regularization through that publication changes the next training coefficients.
 The arithmetic baseline fixture is explicitly not actual FUCQ-99/FUCQ-29 evidence.
-The initial test launch encountered missing `pg`; the worktree now has an ignored
+The initial test launch encountered missing `pg`; the worktree now has an untracked borrowed
 `server/node_modules` link to the existing installed main-clone dependency tree.
 No package was installed and no database was contacted.
 
@@ -88,3 +88,33 @@ Both remain within 120s/768MiB/128MiB/2MiB/one-worker bounds. All owned children
 stopped/joined; both scratch roots and host reservations verified absent. Manifests
 and retained bounded logs are referenced in the committed compact receipt.
 The test selector remains scoped; no full test stamp or native/live proof.
+
+## Offline pipeline and actual baseline adapter checkpoint
+
+The dedicated command now passes **13/13**, no skips, in 955ms. The new offline
+pipeline composes reader validation, temporal/cohort partitioning, training, actual
+baseline preparation, held-out metric comparisons, immutable artifact and safe
+summary. CLI `scripts/gcsp/train-choice-model.mjs` has explicit bounded inputs and
+returns typed unavailable for missing data; it never activates a model. The CLI
+training/default-data acceptance remains open, because the meaningful committed
+dataset and canonical key adoption are still absent.
+
+The dispatcher independently verified and approved all 27 immutable actual
+FUCQ-99/Greg, FUCQ-29/scorer and clock/repository sources. A fresh supervised pilot
+uses those actual services on the same six-record structural sample, with an
+explicit alternative policy source solely for contract evidence. Actual FUCQ-99
+reads three earlier-example employees; the adapter refuses absent/banded exact
+body shares. Actual FUCQ-29 scorePreferences produces a normalized distribution
+without claiming calibration. No baseline evaluation score or held-out result is
+invented. Numerical pure-contract checks separately cover exact-alternative class
+mass, smoothing before normalization, reserved pinned wait mass, zero/negative fit
+and missing/suppressed demand. One floating-point strict-equality assertion was
+corrected to a 1e-12 probability tolerance.
+
+The compact receipt now includes the full approved baseline source identity and
+all own code/CLI inputs. Dedicated wall 1.295s, sampled RSS 205,340,672 bytes,
+scratch 8,288 bytes. Actual baseline pilot wall 0.539s, scratch 311,424 bytes. Owned
+groups stopped/joined; scratch and reservations verified absent. Existing pg 8.23.1
+is borrowed through the explicitly untracked server/node_modules symlink; it is
+never staged and must be removed and verified at final parking. No source ignore
+rule or installed environment was changed.

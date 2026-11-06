@@ -6,3 +6,5 @@ export { canonicalJson, contentDigest, createModelArtifact, verifyModelArtifact,
   readModelArtifact, evaluationSummary } from './artifact.js';
 export { CHOICE_TRAINING_KEYS, loadChoiceTrainingPolicy, readActiveChoiceModel } from './policy.js';
 export { projectLearningChoices } from './dataset.js';
+export { trainChoiceDataset } from './pipeline.js';
+export { normalizeBaselineWeights, expressedDemandBaseline, prepareActualChoiceBaselines } from './baselines.js';
