@@ -1559,22 +1559,22 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T00:12:16Z",
+      "observed_at": "2026-11-06T00:59:34Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-106",
       "slices": [
         {
           "id": "decision-protocol",
           "status": "in-progress",
           "title": "Decision-command-result-event-and-exclusion-contract",
-          "observed_at": "2026-11-06T00:12:15Z",
-          "evidence": "First39 exact source composition reviewed and scoped execution passed. Proposed103 canonical bundle/registration remains ungranted. docs/gcsp/evidence/fucq106/integration-plan.md"
+          "observed_at": "2026-11-06T00:59:34Z",
+          "evidence": "Accepted25/12 evidence retained. Actual103 registry0d3a0aa accepted; separate exact42-module canonical run reached2pass/1fixture assertion fail/0skip/0cancel. No acceptance completed. docs/gcsp/evidence/fucq106/canonical-adoption-result.md"
         },
         {
           "id": "policy-reasons",
           "status": "blocked",
           "title": "Canonical-decline-reasons-and-activation",
-          "evidence": "Blocked pending reviewed bundle/registration review and same-provider canonical adoption proof; docs/gcsp/evidence/fucq106/integration-plan.md",
-          "observed_at": "2026-11-06T00:03:11Z"
+          "evidence": "Actual canonical adoption/current-run decline and real label-publication HTTP/history cases pass. Third price/acceptance case stops on scalar-versus-typed quote test mismatch; authorized one-line correction is unexecuted, fresh selected-case review/allocation required. docs/gcsp/evidence/fucq106/canonical-adoption-checkpoint.json",
+          "observed_at": "2026-11-06T00:59:34Z"
         },
         {
           "id": "decision-service",
@@ -1608,8 +1608,8 @@
           "id": "final-validation",
           "status": "blocked",
           "title": "Authored-acceptance-and-final-validation",
-          "evidence": "Blocked on canonical103 adoption, remote/107/108 consumers, central runtime and native/full authored gates.12/12 actual memory integration now passes; no full stamp. docs/gcsp/evidence/fucq106/actual-integration-checkpoint.json",
-          "observed_at": "2026-11-06T00:12:15Z"
+          "evidence": "25/25 independent and12/12 actual memory retained without rerun. New canonical grant consumed:2/3 pass, one test-contract mismatch; no retry/full/native/browser/remote/actual107/108 grant. Corrected test remains unexecuted. docs/gcsp/evidence/fucq106/canonical-adoption-result.md",
+          "observed_at": "2026-11-06T00:59:34Z"
         }
       ],
       "unsliced": false,

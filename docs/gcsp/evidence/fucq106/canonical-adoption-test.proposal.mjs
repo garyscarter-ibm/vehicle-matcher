@@ -178,7 +178,7 @@ test('actual same-provider publication changes current prices while canonical 10
   const time = yes(await f.clock.now(f.context));
   const price = yes(await f.policy.getPointsCost(f.context, priceCar,
     { runId: f.context.runId, asOf: time.now, policyVersion: 'fucq106-reasons-v2' }));
-  assert.equal(price.monthlyPoints, quote.monthlyPoints);
+  assert.deepEqual(quote.monthlyPoints, { value: price.monthlyPoints, unit: 'points' });
   const changedPoints = price.monthlyPoints + 100;
   await publishChange(f, [{ table: 'pricePlans', key: price.key,
     patch: { value: changedPoints, monthlyPoints: changedPoints, ...provenance } }]);

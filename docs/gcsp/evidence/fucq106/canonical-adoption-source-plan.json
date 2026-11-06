@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "story": "FUCQ-106",
-  "status": "planning proposal; not executed; exact source/harness review required",
+  "status": "post-run one-line test-contract correction; unexecuted; fresh exact review/allocation required",
   "observedAt": "2026-11-06T00:35:07.146960+00:00",
   "canonical103": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
   "baseline": {
@@ -917,8 +917,8 @@
   "test": {
     "sourcePath": "docs/gcsp/evidence/fucq106/canonical-adoption-test.proposal.mjs",
     "canonicalPath": "server/test/gcsp-offer-decisions-canonical-adoption.test.js",
-    "sha256": "0299ef59b7ba9fe64af177e3be3091e309b449d83f4bcba32e26a11157bc804a",
-    "bytes": 16075,
+    "sha256": "f31dcf480816fec2e9fc8040e87a15d1cbf02ef77222ca0ab1f7894329b4b63f",
+    "bytes": 16106,
     "selectedCases": 3
   },
   "harness": [
@@ -934,8 +934,8 @@
     },
     {
       "path": "docs/gcsp/evidence/fucq106/canonical-adoption-test.proposal.mjs",
-      "sha256": "0299ef59b7ba9fe64af177e3be3091e309b449d83f4bcba32e26a11157bc804a",
-      "bytes": 16075
+      "sha256": "f31dcf480816fec2e9fc8040e87a15d1cbf02ef77222ca0ab1f7894329b4b63f",
+      "bytes": 16106
     },
     {
       "path": "_tools/test_resources.py",
@@ -995,5 +995,13 @@
     "FUCQ115 adoption/generation/training",
     "live activation/network/mail/full suite"
   ],
-  "executed": false
+  "executed": false,
+  "revision": {
+    "executedSource": "fa3320caddd179ddd4d975324c408eb07d69a9af",
+    "executedPlanSha256": "ad78da691bf9eaac00e5ffeeda3b851bb096b18bc9640b77ac4b85355b6aa514",
+    "executedPlanPath": "docs/gcsp/evidence/fucq106/canonical-adoption-executed-source-plan.json",
+    "change": "Only replace the scalar-vs-object price assertion with exact typed quote {value: scalar policy price, unit: points} equality. No coercion or product change.",
+    "executed": false,
+    "retryAuthorized": false
+  }
 }
