@@ -68,9 +68,11 @@ host/browser work; these HTTP assertions do not replace those gates.
 
 ## Owned harness and cancellation repair
 
-The five owned harness files are `case-release-freeze.py`,
-`case-release-loader.mjs`, `case-release-launch.py`,
-`case-release-resources.py` and `case-release-supervisor.py` in this directory.
+The seven owned harness files are `case-release-freeze.py`,
+`case-release-loader.mjs`, `case-release-launch.py`, `case-release-resources.py`,
+`case-release-supervisor.py`, `case-release-bounds.py` and `case-release-ledger.py`
+in this directory. The accounting repair is detailed in
+[case-release-accounting-repair.md](case-release-accounting-repair.md).
 The freeze collector has run as static metadata authoring. The loader, launcher,
 resources and supervisor have only been authored and statically inspected;
 none has been imported, executed, probed or used to allocate resources.
@@ -101,7 +103,7 @@ paths: 99 executable modules and 22 data/assets, with 287 literal module edges
 and 11 URL-asset edges, totaling 1,723,415 source bytes. Installed closure is 138
 files across 14 packages (469,685 bytes); optional `pg-native` remains absent at
 its declared resolution point. No packages were installed, linked or changed.
-The 23-node `case-release-admission.json` additionally pins owned helpers, source
+The 25-node `case-release-admission.json` additionally pins owned helpers, source
 plan, current test, configuration, executables, directories and shared lock.
 
 After admission and a fresh reservation, the future supervisor materializes
@@ -115,10 +117,12 @@ module loads and the four original TAP names/counts must be observed.
 
 ## Validate and remaining gate
 
-Current validation is static Git-object/package inventory, Python AST parsing,
-interface/control-flow review, owned-file/hash inspection and Git whitespace
-checks only. JavaScript, tests, loader, launcher, supervisor and resource helper
-have not run. Collector attempts are retained in the freeze audit: the initial
+The earlier source freeze used static Git-object/package inventory and Python
+AST parsing. The subsequent accounting repair uses text/control-flow inspection,
+owned-file hashes and metadata authoring only: no syntax checks, AST parsing,
+collector/helper/test execution, probes, live ledger access or allocations.
+Its exact new pins await independent narrow review. JavaScript, tests, loader,
+launcher, supervisor and resource helper have not run. Collector attempts are retained in the freeze audit: the initial
 source selection lacked the owned client, and a prose comment was initially
 mistaken for a bare import. Both refused before writing a source/admission
 package; the collector now explicitly selects the client and anchors import
@@ -140,8 +144,8 @@ this document is not an execution instruction.
 
 Proposed maximum per chunk:120s,768MiB aggregate RSS including supervisor and
 probes,128MiB scratch plus all C4 retained outputs,2MiB combined original TAP and
-module journal,one worker. Fresh strict HostBudget and an external ownership
-manifest/finalizer precede scratch and child creation. Environment allowlisting
+module journal,one worker. A fresh strict owned ledger adapter and an external
+ownership manifest/finalizer precede scratch and child creation. Environment allowlisting
 precedes custom helper imports and removes DB/PG/credential/preload/coverage/debug
 inputs. There is no dependency installation or borrowed `server/node_modules`
 link. Track every PID/start/group and uncertainty, stop on first reached failure,
@@ -149,3 +153,28 @@ join before filesystem cleanup, retain bounded original failure evidence, verify
 all pinned bytes unchanged, and require independent process/group/scratch/strict
 ledger absence. Malformed/missing shared state fails closed. No retry, browser,
 native, full suite, real corpus collection or source-owner takeover is implied.
+
+The repaired proposal starts its monotonic 120-second envelope at supervisor
+startup. Finite hash-admitted bootstrap reads precede the continuous aggregate
+monitor; the first sample includes bootstrap high water. Shared imports, full
+admission, source audit/materialization, child, cleanup and postverification are
+all monitored. Fixed probe/encoding/ledger RAM allowances total 128MiB inside
+the 768MiB grant. Fixed staging, stream-growth and terminal/audit disk allowances
+stay inside 128MiB; every owned writer checks allocation before writing. JSON
+structure and encoding have separate finite bounds. TAP is capped at 1.5MiB and
+the unchanged loader journal at 0.5MiB, totaling 2MiB even with concurrent writes.
+The selected worker must stop by startup plus 90 seconds, leaving 30 seconds
+inside the same envelope for completion. Failed/stale/cancelled accounting
+prevents a successful exit and retains uncertain resources for explicit recovery.
+
+The complete reservation remains held through output, postwrite checks, probe
+and monitor join, and a finite nonblocking stdout write. Ledger `used`/`rss`
+credits stay zero so concurrent launchers cannot treat conservative high-water
+or transient estimates as already consumed host capacity. Actual charged peaks
+remain in the bounded evidence. A predeclared final ledger staging path permits
+strict release/readback as the last operation, without post-release artifact
+rewrites. Receipts explicitly say `pending-final-release-and-independent-audit`;
+only actual exit 0 plus independent exact-hash, process/group, scratch, ledger
+and staging absence can establish completion. The new adapter and supervisor
+have not executed, and independent static approval plus a fresh exact execution
+grant are still required.

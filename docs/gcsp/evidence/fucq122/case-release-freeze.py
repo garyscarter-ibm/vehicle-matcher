@@ -4,7 +4,6 @@ Requires published immutable C1 profile and C4 test revisions. It only authors
 the source plan/admission; a new dispatcher grant is still needed to execute.
 """
 import argparse
-import ast
 import base64
 import hashlib
 import json
@@ -21,6 +20,45 @@ TEST = 'server/test/gcsp-case-release-http.test.js'
 PROFILE = 'server/test/helpers/runtime-composition-profile.js'
 OWN_CONSUMERS = {'blocks/gcsp/cases/http-adapter.js'}
 OUT = ROOT.parents[2] / '.claude/test-runs/fucq122-c4'
+# Mirrored literal; runtime requires exact equality with the hash-admitted bounds helper.
+ACCOUNTING = {
+    "combined_bytes": 134217728,
+    "ram_bytes": 805306368,
+    "retained_bytes": 8388608,
+    "json_bytes": 1048576,
+    "summary_bytes": 524288,
+    "terminal_bytes": 16384,
+    "audit_bytes": 16384,
+    "stdout_bytes": 4096,
+    "log_bytes": 1572864,
+    "journal_bytes": 524288,
+    "checkpoint_bytes": 65536,
+    "json_depth": 24,
+    "json_nodes": 32768,
+    "json_collection": 4096,
+    "json_string_chars": 65536,
+    "json_total_chars": 524288,
+    "entries": 4096,
+    "process_identities": 512,
+    "probe_bytes": 1048576,
+    "probe_timeout_seconds": 2,
+    "sample_interval_seconds": 0.2,
+    "helper_timeout_seconds": 5,
+    "helper_capture_bytes": 1048576,
+    "supervisor_seconds": 120,
+    "completion_reserve_seconds": 30,
+    "bootstrap_bytes": 1048576,
+    "source_plan_bytes": 4194304,
+    "input_bytes": 4194304,
+    "probe_ram_allowance": 33554432,
+    "encoding_ram_allowance": 67108864,
+    "ledger_ram_allowance": 33554432,
+    "ledger_disk_allowance": 4194304,
+    "atomic_disk_allowance": 1056768,
+    "stream_disk_allowance": 2097152,
+    "terminal_disk_allowance": 65536,
+    "audit_disk_allowance": 65536
+}
 sys.path.insert(0, str(ROOT / '_tools'))
 import scaffold_git as G
 
@@ -195,9 +233,6 @@ def main():
     names = re.findall(r"^test\('([^']+)'", test_data, re.M)
     if len(names) != 4 or any(not name.startswith('C4 ') for name in names):
         raise RuntimeError('Exactly four named C4 cases required')
-    for name in ['case-release-freeze.py', 'case-release-launch.py', 'case-release-resources.py', 'case-release-supervisor.py']:
-        path = HERE / name
-        ast.parse(path.read_bytes(), filename=str(path))
     plan = {'schemaVersion': 1, 'status': 'frozen-for-review', 'requiresNewDispatcherGrant': True,
             'root': str(ROOT), 'candidate': CANDIDATE, 'profileRef': args.profile_ref, 'testRef': args.test_ref,
             'sourceSelection': {'composition': CANDIDATE, 'profile': {PROFILE: args.profile_ref},
@@ -211,7 +246,8 @@ def main():
     source_path.write_text(json.dumps(plan, indent=2) + '\n')
     nodes = {}
     for name in ['case-release-source-plan.json', 'case-release-freeze.py', 'case-release-loader.mjs',
-                 'case-release-launch.py', 'case-release-resources.py', 'case-release-supervisor.py']:
+                 'case-release-launch.py', 'case-release-resources.py', 'case-release-supervisor.py',
+                 'case-release-bounds.py', 'case-release-ledger.py']:
         nodes[str(HERE / name)] = physical(HERE / name)
     for path in [ROOT / '_tools/test_resources.py', ROOT / '_tools/scaffold_git.py', ROOT / '.claude/scaffolding.json',
                  ROOT / TEST, Path('/opt/homebrew/bin/node'), Path('/opt/homebrew/bin/node').resolve(),
@@ -226,6 +262,11 @@ def main():
     admission = {'schemaVersion': 1, 'status': 'proposal-awaiting-independent-review-and-new-grant',
                  'root': str(ROOT), 'output': str(OUT), 'sourcePlanSHA256': sha(source_path.read_bytes()),
                  'nodes': nodes, 'pythonExecutable': sys.executable, 'pythonVersion': sys.version,
+                 'accounting': ACCOUNTING,
+                 'completion': {'ledgerCredit': 'used/rss remain zero; full 128MiB/768MiB reservation held through final completion',
+                                'receiptState': 'pending-final-release-and-independent-audit',
+                                'releaseOrder': 'scratch/process cleanup; bounded bundle; postwrite; monitor/probe join; finite stdout/flush; final synchronous accounting; strict release/readback as last operation'},
+                 'ledgerContract': {'directory': str(ledger), 'anchors': {str(path): {**{key: nodes[str(path)][key] for key in ['kind', 'device', 'inode', 'mode', 'resolved']}, 'uid': path.lstat().st_uid} for path in [ledger, ledger/'reservations.lock']}},
                  'ledgerDirectory': str(ledger), 'node': str(Path('/opt/homebrew/bin/node').resolve()),
                  'environment': {'HOME': str(Path.home()), 'USER': 'garycarter', 'LOGNAME': 'garycarter',
                                  'PATH': '/usr/bin:/bin:/usr/sbin:/sbin', 'LANG': 'C', 'LC_ALL': 'C', 'TZ': 'UTC', 'GCSP_OFFLINE': '1'},

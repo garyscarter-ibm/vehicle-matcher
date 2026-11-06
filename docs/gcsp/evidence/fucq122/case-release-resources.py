@@ -6,8 +6,6 @@ PID/start pair, including observations whose start cannot be established.
 """
 import atexit
 import contextlib
-import fcntl
-import json
 import os
 from pathlib import Path
 import re
@@ -16,20 +14,11 @@ import signal
 import subprocess
 import time
 
+STOP_AT = None
 
-def strict_json(path):
-    def pairs(items):
-        result = {}
-        for key, value in items:
-            if key in result:
-                raise ValueError('Duplicate JSON key: ' + key)
-            result[key] = value
-        return result
 
-    def constant(value):
-        raise ValueError('Nonstandard JSON constant: ' + value)
-
-    return json.loads(Path(path).read_text(), object_pairs_hook=pairs, parse_constant=constant)
+def remaining(cap):
+    return cap if STOP_AT is None else max(0, min(cap, STOP_AT-time.monotonic()))
 
 
 class SnapshotUncertain(RuntimeError):
@@ -39,6 +28,8 @@ class SnapshotUncertain(RuntimeError):
 
 
 def process_snapshot():
+    if remaining(3) <= 0:
+        raise RuntimeError('Whole-chunk deadline reached; process absence unknown')
     try:
         query = subprocess.run(['/bin/ps', '-axo', 'pid=,ppid=,pgid=,rss=,stat=,lstart='],
                                capture_output=True, text=True, timeout=3)
@@ -127,152 +118,6 @@ def available_memory_strict():
     return int(page[1]) * sum(counts.values())
 
 
-def make_budget(resources, policy, directory, lock_identity):
-    class StrictBudget(resources.HostBudget):
-        def prohibited(self, *args, **kwargs):
-            raise RuntimeError('Use strict owned budget methods only')
-        headroom = acquire = update = release = prohibited
-
-        @contextlib.contextmanager
-        def locked(self):
-            # Open the existing frozen lock read-only: never recreate it or
-            # follow a replacement symlink before validating its identity.
-            path = self.directory / 'reservations.lock'
-            fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
-            try:
-                value = os.fstat(fd)
-                if (value.st_dev, value.st_ino) != tuple(lock_identity):
-                    raise RuntimeError('Opened reservation lock identity differs')
-                deadline = time.monotonic() + 2
-                while True:
-                    try:
-                        fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-                        break
-                    except BlockingIOError:
-                        if time.monotonic() >= deadline:
-                            raise RuntimeError('Strict shared resource ledger is busy')
-                        time.sleep(0.02)
-                try:
-                    yield
-                finally:
-                    fcntl.flock(fd, fcntl.LOCK_UN)
-            finally:
-                os.close(fd)
-
-        def ledger(self):
-            # Every caller holds the same machine-wide lock. Missing, malformed,
-            # duplicate-key, unknown-owner and cyclic-parent data are errors.
-            lock = self.directory / 'reservations.lock'
-            value = lock.lstat()
-            if lock.is_symlink() or (value.st_dev, value.st_ino) != tuple(lock_identity):
-                raise RuntimeError('Shared reservation lock identity differs')
-            if self.path.is_symlink() or not self.path.is_file():
-                raise RuntimeError('Reservation ledger missing or not a regular file')
-            data = strict_json(self.path)
-            if not isinstance(data, dict):
-                raise ValueError('Reservation ledger must be an object')
-            for token, row in data.items():
-                if not isinstance(token, str) or not token or not isinstance(row, dict) \
-                        or set(row) != {'owner', 'disk', 'ram', 'used', 'rss', 'parent', 'root'}:
-                    raise ValueError('Unknown reservation shape')
-                owner = row['owner']
-                if not isinstance(owner, dict) or set(owner) != {'pid', 'start'} \
-                        or type(owner['pid']) is not int or owner['pid'] <= 0 \
-                        or not isinstance(owner['start'], str) \
-                        or not re.fullmatch(r'[A-Z][a-z]{2}\s+[A-Z][a-z]{2}\s+\d{1,2}\s+\d{2}:\d{2}:\d{2}\s+\d{4}', owner['start']):
-                    raise ValueError('Unknown reservation owner')
-                if any(type(row[key]) is not int or row[key] < 0 for key in ['disk', 'ram', 'used', 'rss']):
-                    raise ValueError('Unknown reservation accounting')
-                if row['parent'] is not None and (not isinstance(row['parent'], str) or row['parent'] not in data):
-                    raise ValueError('Unknown reservation parent')
-                if row['root'] is not None and (not isinstance(row['root'], str) or not Path(row['root']).is_absolute()):
-                    raise ValueError('Unknown reservation root')
-                visited, parent = {token}, row['parent']
-                while parent is not None:
-                    if parent in visited or parent not in data or not isinstance(data[parent], dict):
-                        raise ValueError('Cyclic/unknown reservation ancestry')
-                    visited.add(parent)
-                    parent = data[parent].get('parent')
-            return data
-
-        def acquire_owned(self, scratch, retained_bytes):
-            rows = process_snapshot()
-            identity = {key: rows[os.getpid()][key] for key in ['pid', 'start']}
-            memory = available_memory_strict()
-            if type(memory) is not int or memory <= 0:
-                raise RuntimeError('Available host RAM is unknown')
-            free = shutil.disk_usage(scratch.root.parent).free
-            with self.locked():
-                data = self.ledger()
-                if scratch.token in data:
-                    raise RuntimeError('Reservation token already exists')
-                # Never prune others. Conservatively count nested reservations
-                # separately; stale or uncertain rows cannot disappear here.
-                disk_pending = sum(max(0, row['disk'] - row['used']) for row in data.values())
-                ram_pending = sum(max(0, row['ram'] - row['rss']) for row in data.values())
-                if free - self.policy.reserve - disk_pending < 128 * resources.MIB + retained_bytes:
-                    raise RuntimeError('Insufficient proven shared disk headroom')
-                if memory - ram_pending - int(self.policy.ram_reserve_mib * resources.MIB) < 768 * resources.MIB:
-                    raise RuntimeError('Insufficient proven shared RAM headroom')
-                row = {'owner': identity, 'disk': 128 * resources.MIB, 'ram': 768 * resources.MIB,
-                       'used': retained_bytes, 'rss': 0, 'parent': None, 'root': str(scratch.root)}
-                data[scratch.token] = row
-                resources.atomic_json(self.path, data)
-                if self.ledger().get(scratch.token) != row:
-                    raise RuntimeError('Reservation write/readback differs')
-                self.owned = (scratch.token, identity, str(scratch.root), row['disk'], row['ram'], row['parent'])
-
-        def owned_row(self, data, token):
-            expected = getattr(self, 'owned', None)
-            row = data.get(token)
-            if not expected or expected[0] != token or row is None \
-                    or row['owner'] != expected[1] or row['root'] != expected[2] \
-                    or (row['disk'], row['ram'], row['parent']) != expected[3:]:
-                raise RuntimeError('Reservation ownership is unknown')
-            return row
-
-        def update_owned(self, token, used, rss):
-            with self.locked():
-                if any(type(value) is not int or value < 0 for value in [used, rss]):
-                    raise RuntimeError('Invalid owned accounting update')
-                data = self.ledger()
-                self.owned_row(data, token).update(used=used, rss=rss)
-                resources.atomic_json(self.path, data)
-                row = self.owned_row(self.ledger(), token)
-                if row['used'] != used or row['rss'] != rss:
-                    raise RuntimeError('Reservation telemetry differs')
-
-        def release_owned(self, token, proof):
-            if not proof or not all(proof[key] for key in ['joined', 'pidsAbsent', 'groupsAbsent', 'scratchAbsent']):
-                raise RuntimeError('No proven cleanup authorises release')
-            with self.locked():
-                data = self.ledger()
-                self.owned_row(data, token)
-                if any(row['parent'] == token for row in data.values()):
-                    raise RuntimeError('Owned reservation still has descendants')
-                del data[token]
-                resources.atomic_json(self.path, data)
-                if self.ledger() != data:
-                    raise RuntimeError('Reservation release readback failed')
-
-        def authorize_cleanup(self, token):
-            with self.locked():
-                data = self.ledger()
-                if any(row['parent'] == token for row in data.values()):
-                    raise RuntimeError('Descendant reservation prevents scratch cleanup')
-                if getattr(self, 'owned', None):
-                    self.owned_row(data, token)
-                elif token in data:
-                    raise RuntimeError('Acquisition was uncertain; retain scratch and reservation')
-
-        def absence(self, token):
-            with self.locked():
-                data = self.ledger()
-                return token not in data and not any(row['parent'] == token for row in data.values())
-
-    return StrictBudget(policy, directory=directory)
-
-
 class ProcessTree:
     def __init__(self, resources, scratch):
         self.resources, self.scratch = resources, scratch
@@ -285,6 +130,9 @@ class ProcessTree:
                            launchAttempted=False, directHandleRetained=False, registrationComplete=False)
 
     def save(self):
+        if len(self.record['ownedPids']) > 512 or len(self.record['groups']) > 512 \
+                or len(self.record['uncertainGroups']) > 512:
+            raise RuntimeError('Owned process/group identity cap reached')
         self.resources.atomic_json(self.scratch.manifest, self.record)
 
     def observe(self):
@@ -443,7 +291,7 @@ class ProcessTree:
                 except OSError as error:
                     self.record.setdefault('directCleanupErrors', []).append(type(error).__name__)
                 try:
-                    process.wait(timeout=3)
+                    process.wait(timeout=remaining(3))
                     self.joined = True
                     self.record['directHandleJoined'] = True
                     return
@@ -508,11 +356,11 @@ class ProcessTree:
                 except ProcessLookupError:
                     continue
             try:
-                process.wait(timeout=3)
+                process.wait(timeout=remaining(3))
                 self.joined = True
             except subprocess.TimeoutExpired:
                 pass
-            deadline = time.monotonic() + 3
+            deadline = time.monotonic() + remaining(3)
             while time.monotonic() < deadline:
                 proof = self.proof()
                 if all(proof[key] for key in ['joined', 'pidsAbsent', 'groupsAbsent']):
@@ -562,7 +410,7 @@ class Finalizer:
         if self.attempted:
             return self.result
         self.attempted = True
-        result = {'passed': False, 'scratchAbsent': False, 'reservationAbsent': False}
+        result = {'passed': False, 'scratchAbsent': False, 'reservationHeldForCompletion': True}
         try:
             proof = self.tree.stop_join()
             if not all(proof[key] for key in ['joined', 'pidsAbsent', 'groupsAbsent']):
@@ -594,10 +442,8 @@ class Finalizer:
             scratch.record.update(state='removed', removed=time.time(), processAbsence=proof)
             self.tree.save()
             result.update(proof)
-            if getattr(self.budget, 'owned', None):
-                self.budget.release_owned(scratch.token, proof)
-            result['reservationAbsent'] = self.budget.absence(scratch.token)
-            result['passed'] = result['reservationAbsent']
+            # Main retains the strict row through outputs, verification and monitor join.
+            result['passed'] = True
             if self.scratch.record.get('cancellationDuringCleanup'):
                 result.update(passed=False, cancelledDuringCleanup=True)
         except BaseException as error:

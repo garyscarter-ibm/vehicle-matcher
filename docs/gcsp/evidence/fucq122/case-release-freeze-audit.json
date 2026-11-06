@@ -1,75 +1,130 @@
 {
-  "schemaVersion": 1,
-  "kind": "Separate static C4 freeze verification; author check, not independent runtime admission review",
-  "observedAt": "2026-11-06T02:30:10.197334+00:00",
-  "result": "STATIC PASS",
-  "base": "5e16930bb70015ec518b921e7fb2e4673cb89640",
-  "admissionSHA256": "a0cdf391c8fbee19de9f7da1b4a12afe40bf38e61ecb669c9921dba06c8b51d2",
+  "schemaVersion": 2,
+  "kind": "C4 accounting-repair static metadata receipt; not independent approval or execution evidence",
+  "observedAt": "2026-11-06T08:49:52.065473+00:00",
+  "result": "AUTHORED; NARROW INDEPENDENT REVIEW REQUIRED",
+  "repairBase": "4ede3ea203f88c7457f5172aef0a30b429b9c9e0",
+  "admissionSHA256": "22f52533b3b342cfedc6d9c8beb781e3a256395969388812992c53f016e32d00",
   "sourcePlanSHA256": "5daaae85cf909de78c4ec31dadd426f379902ed821597a38a14fcb768878f827",
-  "sourceSelection": {
-    "composition": "f179ae6043414a2b07de3edb2b425338299ea37b",
-    "profile": {
-      "server/test/helpers/runtime-composition-profile.js": "46fa208e84a85ddc5cca843af59bb9794f63cada"
+  "physicalNodes": 25,
+  "delta": {
+    "case-release-freeze.py": {
+      "bytes": 16554,
+      "sha256": "dafff573796c4412931bac6ad7d2897e361adb8d52d149cbe50250308e539bda"
     },
-    "ownedTestAndConsumers": {
-      "server/test/gcsp-case-release-http.test.js": "5e16930bb70015ec518b921e7fb2e4673cb89640",
-      "blocks/gcsp/cases/http-adapter.js": "5e16930bb70015ec518b921e7fb2e4673cb89640"
+    "case-release-resources.py": {
+      "bytes": 22200,
+      "sha256": "75dc6a2769919ae304e2d5d0415940a4f1132dde07ce1121ee6e06a1429be43b"
+    },
+    "case-release-supervisor.py": {
+      "bytes": 28334,
+      "sha256": "932363de4407a5ac8e0a9988bc888f43d8aa36e62d94edc2c5b0d38c655d06ec"
+    },
+    "case-release-bounds.py": {
+      "bytes": 22796,
+      "sha256": "5403919eebcb9c1cf7158b26f6a0d9d3be5a09cd0989bb1b7085da4ffbac5771"
+    },
+    "case-release-ledger.py": {
+      "bytes": 15929,
+      "sha256": "05b4f244ded5e36ffe57fbc0848b7f71753cb0efe44733bed18110d984f2e8a9"
     }
   },
-  "counts": {
-    "sources": 121,
-    "modules": 99,
-    "dataAssets": 22,
-    "edges": 298,
-    "installedPackages": 14,
-    "installedFiles": 138,
-    "installedBytes": 469685,
-    "physicalNodes": 23,
-    "namedCases": 4
-  },
-  "checks": {
-    "sourcePlanDigest": true,
-    "exactBoundary": true,
-    "allImmutableGitBytes": true,
-    "helperPin": true,
-    "declaredEdgeAndDirectoryClosure": true,
-    "broadLiteralImportCrossCheck": true,
-    "physicalHelpersExecutablesAndInstalledBytes": true,
-    "installedFileSetsAndOptionalAbsences": true,
-    "noBorrowedDependencyLink": true,
-    "pythonAst": true,
-    "cancellationOwnershipAndFiniteCommandSource": true,
-    "noRuntimeOutputs": true,
-    "originalFourCasesUnchanged": true,
-    "whitespaceClean": true
-  },
-  "staticCollectorAttempts": [
-    {
-      "outcome": "REFUSED before manifests",
-      "reason": "Owned122 HTTP client is absent from f179ae6; added its exact5e16930 selection."
-    },
-    {
-      "outcome": "REFUSED before manifests",
-      "reason": "Comment prose matched a bare from import; declarations now anchored, with separate dynamic/side-effect forms."
-    },
-    {
-      "outcome": "AUTHORED metadata only",
-      "admissionSHA256": "a8c27e82aad765c5cc80acb3f1a328db250a349f60fae6fda8691ed941c54ebc"
-    },
-    {
-      "outcome": "AUTHORED metadata only; explicit command templates added",
-      "admissionSHA256": "ecc124ddeba159166c3dec84d383b5bbbd94cb25f72a5289a9e4cdb091a1427c"
-    },
-    {
-      "outcome": "AUTHORED current metadata only; package file-set and optional-path admission tightened",
-      "admissionSHA256": "a0cdf391c8fbee19de9f7da1b4a12afe40bf38e61ecb669c9921dba06c8b51d2"
-    }
+  "sourceIdentityReview": "Dispatcher reports PASS for unchanged 121 blobs/298 edges/138 installed files/18 reviewed pins; not rerun here",
+  "performed": [
+    "Static source/control-flow reading",
+    "Text edits to five owned harness sources",
+    "Independent stdlib metadata authoring of changed/new file pins and accounting contract",
+    "Preserved source-plan and four-case-file hashes",
+    "Named-path Git publication"
+  ],
+  "notPerformed": [
+    "Syntax checks",
+    "AST parsing",
+    "Collector/helper/test execution",
+    "Probes",
+    "Live ledger access",
+    "Test allocations",
+    "Product/runtime/source adoption",
+    "Subagents"
   ],
   "remaining": [
-    "Independent source/input/loader/materialization/cancellation/resource review",
-    "Fresh exact C4 execution grant; no current execution permission",
-    "Actual four-case evidence and later real F77/F78/default-reset/browser/native/full gates"
+    "Independent narrow accounting/ledger/output review at exact new HEAD and admission SHA",
+    "Fresh exact C4 execution grant",
+    "Actual run and independent post-exit audit if granted"
   ],
-  "executedApplicationOrHarness": [],
-  "allocatedTestResources": []
+  "historicalSourceFreezeReceipt": {
+    "schemaVersion": 1,
+    "kind": "Separate static C4 freeze verification; author check, not independent runtime admission review",
+    "observedAt": "2026-11-06T02:30:10.197334+00:00",
+    "result": "STATIC PASS",
+    "base": "5e16930bb70015ec518b921e7fb2e4673cb89640",
+    "admissionSHA256": "a0cdf391c8fbee19de9f7da1b4a12afe40bf38e61ecb669c9921dba06c8b51d2",
+    "sourcePlanSHA256": "5daaae85cf909de78c4ec31dadd426f379902ed821597a38a14fcb768878f827",
+    "sourceSelection": {
+      "composition": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "profile": {
+        "server/test/helpers/runtime-composition-profile.js": "46fa208e84a85ddc5cca843af59bb9794f63cada"
+      },
+      "ownedTestAndConsumers": {
+        "server/test/gcsp-case-release-http.test.js": "5e16930bb70015ec518b921e7fb2e4673cb89640",
+        "blocks/gcsp/cases/http-adapter.js": "5e16930bb70015ec518b921e7fb2e4673cb89640"
+      }
+    },
+    "counts": {
+      "sources": 121,
+      "modules": 99,
+      "dataAssets": 22,
+      "edges": 298,
+      "installedPackages": 14,
+      "installedFiles": 138,
+      "installedBytes": 469685,
+      "physicalNodes": 23,
+      "namedCases": 4
+    },
+    "checks": {
+      "sourcePlanDigest": true,
+      "exactBoundary": true,
+      "allImmutableGitBytes": true,
+      "helperPin": true,
+      "declaredEdgeAndDirectoryClosure": true,
+      "broadLiteralImportCrossCheck": true,
+      "physicalHelpersExecutablesAndInstalledBytes": true,
+      "installedFileSetsAndOptionalAbsences": true,
+      "noBorrowedDependencyLink": true,
+      "pythonAst": true,
+      "cancellationOwnershipAndFiniteCommandSource": true,
+      "noRuntimeOutputs": true,
+      "originalFourCasesUnchanged": true,
+      "whitespaceClean": true
+    },
+    "staticCollectorAttempts": [
+      {
+        "outcome": "REFUSED before manifests",
+        "reason": "Owned122 HTTP client is absent from f179ae6; added its exact5e16930 selection."
+      },
+      {
+        "outcome": "REFUSED before manifests",
+        "reason": "Comment prose matched a bare from import; declarations now anchored, with separate dynamic/side-effect forms."
+      },
+      {
+        "outcome": "AUTHORED metadata only",
+        "admissionSHA256": "a8c27e82aad765c5cc80acb3f1a328db250a349f60fae6fda8691ed941c54ebc"
+      },
+      {
+        "outcome": "AUTHORED metadata only; explicit command templates added",
+        "admissionSHA256": "ecc124ddeba159166c3dec84d383b5bbbd94cb25f72a5289a9e4cdb091a1427c"
+      },
+      {
+        "outcome": "AUTHORED current metadata only; package file-set and optional-path admission tightened",
+        "admissionSHA256": "a0cdf391c8fbee19de9f7da1b4a12afe40bf38e61ecb669c9921dba06c8b51d2"
+      }
+    ],
+    "remaining": [
+      "Independent source/input/loader/materialization/cancellation/resource review",
+      "Fresh exact C4 execution grant; no current execution permission",
+      "Actual four-case evidence and later real F77/F78/default-reset/browser/native/full gates"
+    ],
+    "executedApplicationOrHarness": [],
+    "allocatedTestResources": []
+  }
 }
