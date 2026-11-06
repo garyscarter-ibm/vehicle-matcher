@@ -41,6 +41,41 @@ class BoundError(RuntimeError):
     pass
 
 
+def failure_detail(error, stage='unspecified', helper=None):
+    # Retain only approved source-authored reasons and locations, never traceback text/locals.
+    stages = ('unspecified', 'bootstrap', 'registry-initialization', 'monitor-start',
+              'initial-admission', 'shared-imports', 'execution', 'source-verification',
+              'helper-launch', 'helper-capture', 'helper-join', 'process-query-parse', 'aggregate-accounting')
+    reasons = ('Unknown process start syntax', 'Invalid process start date',
+               'Process start weekday/year differs', 'Incomplete or failed process query',
+               'Unknown process row', 'Duplicate or invalid process identity/state',
+               'Process query row cap', 'Supervisor absent from complete process query',
+               'Supervisor start identity changed', 'Direct helper parent/group differs',
+               'Direct helper start differs', 'Owned helper/descendant identity cap',
+               'Query producer absent from complete telemetry', 'Undeclared process query shape',
+               'Helper/probe capture timeout', 'Helper/probe combined capture byte cap')
+    result = {'type': type(error).__name__[:80],
+              'stage': stage if stage in stages else 'unspecified', 'reason': None}
+    if isinstance(error, BoundError) and len(error.args) == 1 and type(error.args[0]) is str and error.args[0] in reasons:
+        result['reason'] = error.args[0]
+    if type(helper) is int and 0 < helper <= CONTRACT['process_identities']:
+        result['helper'] = helper
+    allowed = {str(Path(__file__).with_name(name)): name
+               for name in ('case-release-bounds.py', 'case-release-supervisor.py')}
+    trace, frames, walked, omitted = error.__traceback__, [], 0, False
+    while trace is not None and walked < 16:
+        code = trace.tb_frame.f_code
+        if code.co_filename in allowed:
+            if len(frames) < 8:
+                frames.append({'file': allowed[code.co_filename], 'function': code.co_name[:80], 'line': trace.tb_lineno})
+            else:
+                omitted = True
+        trace = trace.tb_next
+        walked += 1
+    result.update(frames=frames, traceTruncated=omitted or trace is not None)
+    return result
+
+
 def structure(value):
     nodes = chars = 0
     def walk(item, depth):
@@ -252,8 +287,15 @@ class Processes:
             guard=self.require_binding, target_guard=lambda: self.require_binding(manifest=True))
         self.manifest_identity = self.file_identity(value)
 
-    def fail(self, error):
+    def remember_failure(self, error, stage='unspecified', helper=None):
         with self.lock:
+            if 'firstFailure' not in self.record:
+                self.record['firstFailure'] = failure_detail(error, stage, helper)
+        # Memory-only: existing guarded saves persist this; no cancellation/ownership decision changes.
+
+    def fail(self, error, stage='unspecified', helper=None):
+        with self.lock:
+            self.remember_failure(error, stage, helper)
             self.issue = self.issue or type(error).__name__
             self.record.update(state='uncertain', issue=self.issue)
             self.cancel.set()
@@ -341,7 +383,7 @@ class Processes:
                 if proc is not None:
                     self.handles[row['id']] = proc
                 try:
-                    self.fail(error)
+                    self.fail(error, stage='helper-launch', helper=row['id'])
                 finally:
                     if proc is not None:
                         self.join(proc, row)
@@ -360,7 +402,7 @@ class Processes:
                 self.save()
                 self.handles.pop(row['id'], None)  # Only after join, directory fsync and exact manifest readback.
         except BaseException as error:
-            self.fail(error)
+            self.fail(error, stage='helper-join', helper=row['id'])
             raise
 
     def observe(self, rows):
@@ -449,7 +491,7 @@ class Processes:
                 raise BoundError('Helper command argument bound')
             proc, row = self.launch(command, proof, intent)
         except BaseException as error:
-            self.fail(error)
+            self.fail(error, stage='helper-launch')
             raise
         chunks = {'stdout': [], 'stderr': []}
         size = 0
@@ -478,14 +520,15 @@ class Processes:
                     if proc.pid not in rows:
                         raise BoundError('Query producer absent from complete telemetry')
                     self.observe(rows)
-                except BaseException:
+                except BaseException as error:
+                    self.remember_failure(error, stage='process-query-parse', helper=row['id'])
                     self.remember_partial(out)
                     raise
             elif command and command[0] == '/bin/ps':
                 raise BoundError('Undeclared process query shape')
             return subprocess.CompletedProcess(command, rc, out, err), row['id'], rows
         except BaseException as error:
-            self.fail(error)
+            self.fail(error, stage='helper-capture', helper=row['id'])
             raise
         finally:
             self.join(proc, row)
@@ -584,7 +627,7 @@ class Aggregate:
     def failed(self, error):
         self.issue = self.issue or type(error).__name__
         self.cancel.set()
-        self.registry.fail(error)
+        self.registry.fail(error, stage='aggregate-accounting')
 
     def observe(self, rows=None, selected=None):
         scale = 1 if sys.platform == 'darwin' else 1024

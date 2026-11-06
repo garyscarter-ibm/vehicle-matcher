@@ -1,8 +1,8 @@
 # C4 actual release and persisted-driver case HTTP proposal
 
 6 November 2026. FUCQ-122 / DEV-2026-11-04-084. **Complete C4 source/admission
-package authored; one supervisor attempt failed before scratch/Node and no C4
-test ran. The consumed grant does not permit a retry.**
+package authored; two supervisor attempts failed before Node and no C4 test
+ran. Both consumed grants do not permit a retry.**
 
 ## Decided
 
@@ -78,15 +78,20 @@ historical three-path follow-up in
 [case-release-probe-cleanup-repair.md](case-release-probe-cleanup-repair.md).
 The historical initialization-ownership HOLD repair is in
 [case-release-initialization-repair.md](case-release-initialization-repair.md).
-The current pinned-executable admission repair, failed-attempt boundary and
-exact pins are in
+The historical pinned-executable admission repair is in
 [case-release-executable-admission-repair.md](case-release-executable-admission-repair.md).
+The current retained-diagnostics repair, unresolved rejection boundary and
+exact pins are in
+[case-release-retained-diagnostics.md](case-release-retained-diagnostics.md).
 The earlier freeze collector ran as static metadata authoring; the current
-collector changes have not run. The loader, launcher and resources remain
-unexecuted. The reviewed supervisor/bounds ran once through
-initial ownership and two joined monitor queries, then refused initial physical
-admission before shared imports, scratch, reservation or Node. The present
-repair uses static text/hash/metadata authoring only and does not rerun them.
+collector changes have not run. The loader and launcher remain unexecuted.
+The first supervisor attempt refused initial physical admission. The second
+passed that boundary and shared imports, returned a Scratch ownership object,
+acquired a reservation and reached source verification, then failed with 119
+joined helpers before a plan, physical scratch/source tree or Node. Root
+independently reconciled only its exact dead reservation and retained the
+original evidence. The present repair is static text/hash/metadata authoring
+and does not rerun either attempt.
 
 The owned resources file is a copy of107's unexecuted cancellation repair,
 with its source hash recorded and only the story description/RAM ceiling
@@ -132,10 +137,12 @@ The earlier source freeze used static Git-object/package inventory and Python
 AST parsing. The subsequent accounting repair uses text/control-flow inspection,
 owned-file hashes and metadata authoring only: no syntax checks, AST parsing,
 collector/helper/test execution, probes, live ledger access or allocations.
-The current executable-admission repair's exact pins await independent narrow
-review. JavaScript, tests, loader, launcher and resource helper have not run;
-the one earlier supervisor attempt failed before scratch/Node. The original
-failure evidence and root absence audit remain local and untouched. Collector
+The current retained-diagnostics repair's exact pins await independent narrow
+review. JavaScript, tests, loader and launcher have not run; both earlier
+supervisor attempts failed before Node. The second used the shared resource
+and owned resource/ledger helpers before refusing source verification. Original
+failure evidence and root audit/reconciliation receipts remain local and
+untouched. Collector
 attempts are retained in the freeze audit: the initial
 source selection lacked the owned client, and a prose comment was initially
 mistaken for a bare import. Both refused before writing a source/admission
@@ -219,7 +226,8 @@ another identity helper. A predeclared final ledger staging path permits
 release/readback as the last operation without post-release artifact rewrites.
 Receipts say `pending-final-release-and-independent-audit`; only actual exit 0
 plus independent exact-hash, all-process/group, scratch, ledger and staging
-absence can establish completion. The earlier supervisor attempt did not reach
-scratch/Node or execute a C4 test. The repaired executable admission remains
-unexecuted; independent static approval, fresh current admission and a new exact
-execution grant are required.
+absence can establish completion. Neither earlier supervisor attempt launched
+Node or executed a C4 test. The second failed in process-query parse/identity
+handling during source verification; its detailed invariant remains unknown.
+The diagnostic-retention changes are unexecuted; independent static approval,
+fresh current admission and a new exact execution grant are required.

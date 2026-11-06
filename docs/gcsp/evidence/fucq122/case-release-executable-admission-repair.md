@@ -1,7 +1,13 @@
 # C4 pinned system-launcher admission repair
 
 6 November 2026. FUCQ-122 / DEV-2026-11-04-084. Narrow author-only repair from
-`3f3362f484661ea3b5fad94065eb2162fc5ab896`. No retry or new runtime grant.
+`3f3362f484661ea3b5fad94065eb2162fc5ab896`, published as
+`81b049f73a82a85b22d254c5dc577951e1001c8b`. This is a historical repair
+receipt. Parent review/current admission passed before a separately granted
+attempt failed during source verification before Node. The current bounded
+diagnosis and diagnostic-retention pins are in
+[case-release-retained-diagnostics.md](case-release-retained-diagnostics.md).
+No retry is authorized by this note.
 
 ## Decided: current diagnosis
 

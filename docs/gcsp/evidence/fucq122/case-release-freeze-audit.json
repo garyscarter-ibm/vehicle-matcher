@@ -1,53 +1,27 @@
 {
-  "schemaVersion": 5,
-  "kind": "C4 pinned macOS system-launcher admission repair; static authoring receipt, not independent approval or retry evidence",
-  "observedAt": "2026-11-06T10:30:18.674624+00:00",
+  "schemaVersion": 6,
+  "kind": "C4 retained first-failure diagnostics; static authoring receipt, not diagnosis of the unknown rejection or retry evidence",
+  "observedAt": "2026-11-06T10:44:03.184259+00:00",
   "result": "AUTHORED; NARROW INDEPENDENT REVIEW AND FRESH CURRENT ADMISSION/GRANT REQUIRED",
-  "repairBase": "3f3362f484661ea3b5fad94065eb2162fc5ab896",
-  "admissionSHA256": "75e3f80e749d184b6e749ec899e0125b669cf91c68681ea560bb4f8852aa373b",
+  "repairBase": "81b049f73a82a85b22d254c5dc577951e1001c8b",
+  "admissionSHA256": "5f1a0973b8a22dc3858b340e36c76cc00c09ee44bae611a2ba0ecf680f38815f",
   "sourcePlanSHA256": "5daaae85cf909de78c4ec31dadd426f379902ed821597a38a14fcb768878f827",
   "testSHA256": "8250cf300944ef07f0a091fa46ba212b78fd854b32a3501e5703da8540898cd9",
   "physicalNodes": 25,
   "changedPins": {
+    "case-release-bounds.py": {
+      "bytes": 48095,
+      "sha256": "2d52a83409a80278baff940c68e375d881e0631a1e0916bb28cb6c5925717100"
+    },
+    "case-release-supervisor.py": {
+      "bytes": 33444,
+      "sha256": "f7ea65a2433bfaab1038a6ac6e0459aaa673a8242e5ccc9ec2cba91d4ec5d3d2"
+    }
+  },
+  "unchangedHelperPins": {
     "case-release-freeze.py": {
       "bytes": 18529,
       "sha256": "16192e1263c74ca9d8d64669be5954ccddee6bf52c3912e75f961c9c319e0223"
-    },
-    "case-release-supervisor.py": {
-      "bytes": 33294,
-      "sha256": "f13ea15ace4075eb72ec1a22f85810b419c865859d574a0324c50fb6dfa72adf"
-    }
-  },
-  "addedLauncherMetadata": {
-    "/usr/bin/python3": {
-      "device": 16777232,
-      "inode": 1152921500312571586,
-      "mode": 493,
-      "uid": 0,
-      "gid": 0,
-      "links": 78,
-      "bytes": 118928,
-      "mtimeNs": 1779353822000000000,
-      "ctimeNs": 1779353822000000000,
-      "flags": 524320
-    },
-    "/usr/bin/git": {
-      "device": 16777232,
-      "inode": 1152921500312571586,
-      "mode": 493,
-      "uid": 0,
-      "gid": 0,
-      "links": 78,
-      "bytes": 118928,
-      "mtimeNs": 1779353822000000000,
-      "ctimeNs": 1779353822000000000,
-      "flags": 524320
-    }
-  },
-  "unchangedAcceptedHelperPins": {
-    "case-release-bounds.py": {
-      "bytes": 45148,
-      "sha256": "f0ef1df955b2163c385aed84a61c3e51476528081c0dbde32aacfe3a0bdf7bc2"
     },
     "case-release-resources.py": {
       "bytes": 20893,
@@ -58,43 +32,51 @@
       "sha256": "8b9ef3ad344931700060ad769ed8cbc71f59d932f5dc0c5c29bfcd7398d42d8b"
     }
   },
-  "repairNote": "docs/gcsp/evidence/fucq122/case-release-executable-admission-repair.md",
-  "priorIndependentReview": {
-    "revision": "3f3362f484661ea3b5fad94065eb2162fc5ab896",
-    "admissionSHA256": "b3d1f7817e19aee5b9b7997535715e64af8c10815a7833fa84ed473c960f871b",
-    "verdict": "PASS; no blocking or major findings in the narrow initialization repair",
-    "scope": "Initialization ownership only; no approval of the new executable reader",
-    "receiptReference": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq122-initialization-static-review-0959.json",
-    "receiptDisposition": "Read-only local receipt, excluded from commit"
-  },
+  "repairNote": "docs/gcsp/evidence/fucq122/case-release-retained-diagnostics.md",
   "priorRuntimeAttempt": {
-    "revision": "3f3362f484661ea3b5fad94065eb2162fc5ab896",
-    "admissionSHA256": "b3d1f7817e19aee5b9b7997535715e64af8c10815a7833fa84ed473c960f871b",
-    "grant": "fucq122-c4-3f3362f-1016",
-    "grantState": "CONSUMED; no retry authorized",
+    "revision": "81b049f73a82a85b22d254c5dc577951e1001c8b",
+    "admissionSHA256": "75e3f80e749d184b6e749ec899e0125b669cf91c68681ea560bb4f8852aa373b",
+    "priorReview": "Parent reports repaired-source review and current static admission PASS before this one-use grant",
+    "grant": "fucq122-c4-81b049f-1029",
+    "grantState": "CONSUMED; no retry authorized; earlier 1016 grant also consumed",
+    "supervisorPid": 5655,
     "supervisorExit": 2,
-    "wallSeconds": 0.44190720899999997,
+    "wallSeconds": 7.9450083750000005,
     "stdoutBytes": 0,
-    "stderrExact": "C4 failure: BoundError\n",
-    "boundary": "Two ps helpers joined 0; uncertain BoundError; scratchConstructor not-started; no scratchRoot/nodePid; no C4 test executed",
-    "auditReference": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq122-root-audit-1016.json",
-    "auditSHA256": "86a88de3f51d2c8fa3bee3d21edafe2b254494fdfbf9d18e8cf7d9d07c8f98fb",
-    "auditDisposition": "PASS for recorded owner/probe PID/group/open-file and own reservation absence; runtime acceptance incomplete",
-    "originalDisposition": "Local failure manifest/streams/wait receipt retained unchanged; hashes compared read-only with root audit; raw reports excluded from commit"
+    "stderrBytes": 0,
+    "joinedHelpers": 119,
+    "boundary": "Scratch ownership object/root name/token returned; reservation acquired; query118 and source Git119 joined0; no plan/physical scratch/Node; uncertain BoundError with partial observations5802/5803",
+    "detailedCause": "UNKNOWN; no specific original exception reason or unsupported process state is claimed",
+    "waitReference": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq122-supervisor-wait-1029.json",
+    "reconciliationReference": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq122-root-reconcile-1029.json",
+    "reconciliationSHA256": "06533ec0583df17d8d32360938ab8feaad170b3e555bf81c0615c08fa27f1187",
+    "reconciliationDisposition": "PASS for recorded owner/helper PID/group/open-file absence, scratch/staging absence; only exact dead owned token781858c3b99f404c95902fdcadd3d60f removed; originals/foreign rows preserved",
+    "auditScriptBoundary": "Root timestamp-whitespace strip correction belongs only to root reconciliation, not the original runtime diagnosis",
+    "originalDisposition": "All 1016/1029 original artifact hashes compared read-only with retained root receipts; no originals altered or raw reports committed"
   },
   "diagnosis": [
-    "General bounded read_bytes correctly requires a single link but was also used for exact pinned read-only macOS launcher inputs with 78 links",
-    "Initial physical admission reaches /usr/bin/python3 before scratch, consistent with the observed failure boundary; no detailed runtime exception text is claimed",
-    "Dedicated readers for exactly /usr/bin/python3 and /usr/bin/git preserve exact content/physical/link metadata before and after reading; all mutable/input single-link readers remain unchanged"
+    "Retained uncertainObservations restrict the original failure to query118 strict parse/producer/identity handling; detailed rejected invariant remains unknown",
+    "execute catches an inner error locally and may later exit via SystemExit2 before summary/terminal output; outer SystemExit handling bypasses phase/type stderr",
+    "Keep one bounded firstFailure diagnostic in the existing registry before partial persistence and executor cleanup; persist only via existing guarded save/fail paths"
   ],
-  "validationScope": "This author-only repair; no new runtime or retry",
+  "diagnosticContract": {
+    "record": "firstFailure; first retained record wins",
+    "fields": "exception type, fixed stage, optional declared helper ID, approved constant process/capture reason or null, admitted source basename/function/line, truncation flag",
+    "tracebackLinks": 16,
+    "frames": 8,
+    "typeAndFunctionChars": 80,
+    "excluded": "arbitrary exception text, traceback text/source/locals, full paths, input values, raw process rows",
+    "persistence": "No new save/artifact/writer; existing physical/manifest/initialization/sealed guards and JSON/output bounds apply; lost ownership/sealing never permits fallback",
+    "controlFlow": "remember_failure is memory-only; no cancellation, parser, accounting, ownership or cleanup decision changes"
+  },
+  "validationScope": "This author-only repair; no new runtime, reproduction or retry",
   "performed": [
-    "Static source/control-flow reading of affected readers and admission callers",
-    "Two owned harness sources edited; bounded fixed-phase diagnostics added",
-    "Independent stdlib bounded physical/content/hash metadata authoring without C4 imports or collector execution",
-    "Every other admission value/node, existing executable physical/content fields, frozen source/test hashes and accepted helper bytes preserved",
-    "Original failed evidence hashes compared read-only against the independent root audit",
-    "Current links updated and exact historical initialization receipt retained",
+    "Static source/control-flow and retained-evidence reading",
+    "Owned bounds/supervisor diagnostic retention edits only",
+    "Independent stdlib changed-helper metadata/hash authoring",
+    "All other admission values/nodes, system-launcher contract, source/test hashes and freeze/resources/ledger helper bytes preserved",
+    "Both original failed evidence sets compared read-only against retained root audit/reconciliation hashes",
+    "Current links updated and exact historical executable-admission receipt retained",
     "Named-path Git publication"
   ],
   "notPerformed": [
@@ -103,7 +85,7 @@
     "Probes",
     "Live ledger access",
     "Mirrors or test allocations",
-    "Runtime retry",
+    "Runtime reproduction/retry",
     "Descendants",
     "Product/application source edits"
   ],
@@ -114,32 +96,63 @@
     "descendants": []
   },
   "remaining": [
-    "Independent narrow review at exact new HEAD/admission SHA",
+    "Independent narrow retained-diagnostics review at exact new HEAD/admission SHA",
     "Fresh current admission and one new exact scoped C4 execution grant",
+    "Detailed original parse/producer/identity rejection remains unresolved; no heuristic relaxation",
     "Actual four-case evidence and independent post-exit process/group/scratch/ledger/staging absence audit if authorized",
-    "Unchanged real-corpus/default-reset/native/browser/full acceptance gaps"
+    "Unchanged earlier81 proof and real-corpus/default-reset/native/browser/full acceptance boundaries"
   ],
-  "historicalInitializationReceipt": {
-    "schemaVersion": 4,
-    "kind": "C4 exclusive initialization ownership HOLD repair; static authoring receipt, not independent approval or execution evidence",
-    "observedAt": "2026-11-06T09:59:24.242282+00:00",
-    "result": "AUTHORED; NARROW INDEPENDENT REVIEW REQUIRED",
-    "repairBase": "e0a0ecc695d7fda86c4bc9fbdc8c4624f9e8bf7e",
-    "admissionSHA256": "b3d1f7817e19aee5b9b7997535715e64af8c10815a7833fa84ed473c960f871b",
+  "historicalExecutableAdmissionReceipt": {
+    "schemaVersion": 5,
+    "kind": "C4 pinned macOS system-launcher admission repair; static authoring receipt, not independent approval or retry evidence",
+    "observedAt": "2026-11-06T10:30:18.674624+00:00",
+    "result": "AUTHORED; NARROW INDEPENDENT REVIEW AND FRESH CURRENT ADMISSION/GRANT REQUIRED",
+    "repairBase": "3f3362f484661ea3b5fad94065eb2162fc5ab896",
+    "admissionSHA256": "75e3f80e749d184b6e749ec899e0125b669cf91c68681ea560bb4f8852aa373b",
     "sourcePlanSHA256": "5daaae85cf909de78c4ec31dadd426f379902ed821597a38a14fcb768878f827",
     "testSHA256": "8250cf300944ef07f0a091fa46ba212b78fd854b32a3501e5703da8540898cd9",
     "physicalNodes": 25,
     "changedPins": {
+      "case-release-freeze.py": {
+        "bytes": 18529,
+        "sha256": "16192e1263c74ca9d8d64669be5954ccddee6bf52c3912e75f961c9c319e0223"
+      },
+      "case-release-supervisor.py": {
+        "bytes": 33294,
+        "sha256": "f13ea15ace4075eb72ec1a22f85810b419c865859d574a0324c50fb6dfa72adf"
+      }
+    },
+    "addedLauncherMetadata": {
+      "/usr/bin/python3": {
+        "device": 16777232,
+        "inode": 1152921500312571586,
+        "mode": 493,
+        "uid": 0,
+        "gid": 0,
+        "links": 78,
+        "bytes": 118928,
+        "mtimeNs": 1779353822000000000,
+        "ctimeNs": 1779353822000000000,
+        "flags": 524320
+      },
+      "/usr/bin/git": {
+        "device": 16777232,
+        "inode": 1152921500312571586,
+        "mode": 493,
+        "uid": 0,
+        "gid": 0,
+        "links": 78,
+        "bytes": 118928,
+        "mtimeNs": 1779353822000000000,
+        "ctimeNs": 1779353822000000000,
+        "flags": 524320
+      }
+    },
+    "unchangedAcceptedHelperPins": {
       "case-release-bounds.py": {
         "bytes": 45148,
         "sha256": "f0ef1df955b2163c385aed84a61c3e51476528081c0dbde32aacfe3a0bdf7bc2"
       },
-      "case-release-supervisor.py": {
-        "bytes": 30764,
-        "sha256": "f9f0d287331b2734f3b2c2ce803e96ba82fd947497295fcbce54b3f09c73b116"
-      }
-    },
-    "unchangedAcceptedHelperPins": {
       "case-release-resources.py": {
         "bytes": 20893,
         "sha256": "ec90d203ae61f0fab4f0a8b3d1ec0b81b595f5b18b1375e1d772427ecd3ef080"
@@ -149,38 +162,54 @@
         "sha256": "8b9ef3ad344931700060ad769ed8cbc71f59d932f5dc0c5c29bfcd7398d42d8b"
       }
     },
-    "repairNote": "docs/gcsp/evidence/fucq122/case-release-initialization-repair.md",
+    "repairNote": "docs/gcsp/evidence/fucq122/case-release-executable-admission-repair.md",
     "priorIndependentReview": {
-      "revision": "e0a0ecc695d7fda86c4bc9fbdc8c4624f9e8bf7e",
-      "admissionSHA256": "74f3d50cb95e5d02751e44f72a9f336578bba1bc12386201a1534f5875d410fb",
-      "reviewer": "Barney McGrew",
-      "verdict": "HOLD",
-      "finding": "One MAJOR: failed initialization could nonexclusively replace an unowned run registry; run directory was not exclusively claimed",
-      "otherRepairs": "PASS for retained helper handles/sticky failures, strict complete telemetry/all reported RSS including zombies, and pinned cleanup authority through inode-bound deletion at that revision only",
-      "receiptReference": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq122-helper-repair-static-review-0942.json",
-      "receiptDisposition": "Read-only local coordination receipt; excluded from commit; no new review claimed"
+      "revision": "3f3362f484661ea3b5fad94065eb2162fc5ab896",
+      "admissionSHA256": "b3d1f7817e19aee5b9b7997535715e64af8c10815a7833fa84ed473c960f871b",
+      "verdict": "PASS; no blocking or major findings in the narrow initialization repair",
+      "scope": "Initialization ownership only; no approval of the new executable reader",
+      "receiptReference": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq122-initialization-static-review-0959.json",
+      "receiptDisposition": "Read-only local receipt, excluded from commit"
+    },
+    "priorRuntimeAttempt": {
+      "revision": "3f3362f484661ea3b5fad94065eb2162fc5ab896",
+      "admissionSHA256": "b3d1f7817e19aee5b9b7997535715e64af8c10815a7833fa84ed473c960f871b",
+      "grant": "fucq122-c4-3f3362f-1016",
+      "grantState": "CONSUMED; no retry authorized",
+      "supervisorExit": 2,
+      "wallSeconds": 0.44190720899999997,
+      "stdoutBytes": 0,
+      "stderrExact": "C4 failure: BoundError\n",
+      "boundary": "Two ps helpers joined 0; uncertain BoundError; scratchConstructor not-started; no scratchRoot/nodePid; no C4 test executed",
+      "auditReference": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq122-root-audit-1016.json",
+      "auditSHA256": "86a88de3f51d2c8fa3bee3d21edafe2b254494fdfbf9d18e8cf7d9d07c8f98fb",
+      "auditDisposition": "PASS for recorded owner/probe PID/group/open-file and own reservation absence; runtime acceptance incomplete",
+      "originalDisposition": "Local failure manifest/streams/wait receipt retained unchanged; hashes compared read-only with root audit; raw reports excluded from commit"
     },
     "diagnosis": [
-      "Claim run/ownership directories exclusively and bind held physical OUT/run/ownership identities before the first manifest write",
-      "Gate save and fail on successful initialization and preserved directory/manifest ownership; initialization refusal uses bounded external stderr only",
-      "Use descriptor-relative registry staging/replacement/readback, bind readback to the exact staging inode and preserve all existing process/telemetry/cleanup repairs"
+      "General bounded read_bytes correctly requires a single link but was also used for exact pinned read-only macOS launcher inputs with 78 links",
+      "Initial physical admission reaches /usr/bin/python3 before scratch, consistent with the observed failure boundary; no detailed runtime exception text is claimed",
+      "Dedicated readers for exactly /usr/bin/python3 and /usr/bin/git preserve exact content/physical/link metadata before and after reading; all mutable/input single-link readers remain unchanged"
     ],
+    "validationScope": "This author-only repair; no new runtime or retry",
     "performed": [
-      "Static text/control-flow reading of initialization, failure, save, writer/readback, teardown and callers",
-      "Owned bounds helper edited; supervisor failure comment clarified",
-      "Independent stdlib metadata/hash authoring for the two changed helper nodes",
-      "All other admission values/node identities compared; source-plan/test hashes and unchanged resources/ledger helper bytes preserved",
-      "Repair note and current links authored; historical receipts retained",
+      "Static source/control-flow reading of affected readers and admission callers",
+      "Two owned harness sources edited; bounded fixed-phase diagnostics added",
+      "Independent stdlib bounded physical/content/hash metadata authoring without C4 imports or collector execution",
+      "Every other admission value/node, existing executable physical/content fields, frozen source/test hashes and accepted helper bytes preserved",
+      "Original failed evidence hashes compared read-only against the independent root audit",
+      "Current links updated and exact historical initialization receipt retained",
       "Named-path Git publication"
     ],
     "notPerformed": [
       "Syntax/AST checks",
-      "C4 helper/import/test execution",
+      "C4 helper/import/test or collector execution",
       "Probes",
       "Live ledger access",
       "Mirrors or test allocations",
+      "Runtime retry",
       "Descendants",
-      "Product/runtime edits"
+      "Product/application source edits"
     ],
     "agents": {
       "requested": "gpt-6.1-sol/high",
@@ -189,48 +218,63 @@
       "descendants": []
     },
     "remaining": [
-      "Independent narrow initialization-ownership review at the exact new HEAD and admission SHA",
-      "Fresh exact C4 execution grant",
-      "Actual run and independent post-exit all-process/group/scratch/ledger/staging absence audit if authorized"
+      "Independent narrow review at exact new HEAD/admission SHA",
+      "Fresh current admission and one new exact scoped C4 execution grant",
+      "Actual four-case evidence and independent post-exit process/group/scratch/ledger/staging absence audit if authorized",
+      "Unchanged real-corpus/default-reset/native/browser/full acceptance gaps"
     ],
-    "historicalProbeCleanupReceipt": {
-      "schemaVersion": 3,
-      "kind": "Three-path C4 HOLD repair; static authoring receipt, not independent approval or execution evidence",
-      "observedAt": "2026-11-06T09:17:37.692896+00:00",
+    "historicalInitializationReceipt": {
+      "schemaVersion": 4,
+      "kind": "C4 exclusive initialization ownership HOLD repair; static authoring receipt, not independent approval or execution evidence",
+      "observedAt": "2026-11-06T09:59:24.242282+00:00",
       "result": "AUTHORED; NARROW INDEPENDENT REVIEW REQUIRED",
-      "repairBase": "379c31977adc9bd4dcc0dfcf75a5e1f979f8d2b6",
-      "admissionSHA256": "74f3d50cb95e5d02751e44f72a9f336578bba1bc12386201a1534f5875d410fb",
+      "repairBase": "e0a0ecc695d7fda86c4bc9fbdc8c4624f9e8bf7e",
+      "admissionSHA256": "b3d1f7817e19aee5b9b7997535715e64af8c10815a7833fa84ed473c960f871b",
       "sourcePlanSHA256": "5daaae85cf909de78c4ec31dadd426f379902ed821597a38a14fcb768878f827",
       "testSHA256": "8250cf300944ef07f0a091fa46ba212b78fd854b32a3501e5703da8540898cd9",
       "physicalNodes": 25,
       "changedPins": {
+        "case-release-bounds.py": {
+          "bytes": 45148,
+          "sha256": "f0ef1df955b2163c385aed84a61c3e51476528081c0dbde32aacfe3a0bdf7bc2"
+        },
+        "case-release-supervisor.py": {
+          "bytes": 30764,
+          "sha256": "f9f0d287331b2734f3b2c2ce803e96ba82fd947497295fcbce54b3f09c73b116"
+        }
+      },
+      "unchangedAcceptedHelperPins": {
         "case-release-resources.py": {
           "bytes": 20893,
           "sha256": "ec90d203ae61f0fab4f0a8b3d1ec0b81b595f5b18b1375e1d772427ecd3ef080"
-        },
-        "case-release-supervisor.py": {
-          "bytes": 30580,
-          "sha256": "157dec2fa8ac3732e93e993bf28f1529165ecd8efcff66014722f2db002a2f50"
-        },
-        "case-release-bounds.py": {
-          "bytes": 37562,
-          "sha256": "dfd8eb0f940057715df4d104cac17965715962f07f6a91542e30afa1d6d23519"
         },
         "case-release-ledger.py": {
           "bytes": 17133,
           "sha256": "8b9ef3ad344931700060ad769ed8cbc71f59d932f5dc0c5c29bfcd7398d42d8b"
         }
       },
+      "repairNote": "docs/gcsp/evidence/fucq122/case-release-initialization-repair.md",
+      "priorIndependentReview": {
+        "revision": "e0a0ecc695d7fda86c4bc9fbdc8c4624f9e8bf7e",
+        "admissionSHA256": "74f3d50cb95e5d02751e44f72a9f336578bba1bc12386201a1534f5875d410fb",
+        "reviewer": "Barney McGrew",
+        "verdict": "HOLD",
+        "finding": "One MAJOR: failed initialization could nonexclusively replace an unowned run registry; run directory was not exclusively claimed",
+        "otherRepairs": "PASS for retained helper handles/sticky failures, strict complete telemetry/all reported RSS including zombies, and pinned cleanup authority through inode-bound deletion at that revision only",
+        "receiptReference": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq122-helper-repair-static-review-0942.json",
+        "receiptDisposition": "Read-only local coordination receipt; excluded from commit; no new review claimed"
+      },
       "diagnosis": [
-        "Durable provisional ownership must precede first monitor and Scratch constructor probes; retain every helper/probe until durable join and include them in cleanup/release proof",
-        "Strict complete process query/rows required; reject stderr, duplicate PIDs, invalid starts/states and count all reported RSS",
-        "First OS proof, then one held pinned ledger lock/full-owned-row/dependent binding through final inode check and scratch deletion"
+        "Claim run/ownership directories exclusively and bind held physical OUT/run/ownership identities before the first manifest write",
+        "Gate save and fail on successful initialization and preserved directory/manifest ownership; initialization refusal uses bounded external stderr only",
+        "Use descriptor-relative registry staging/replacement/readback, bind readback to the exact staging inode and preserve all existing process/telemetry/cleanup repairs"
       ],
       "performed": [
-        "Static text/control-flow reading of demonstrated paths and callers",
-        "Four directly affected owned helper sources edited",
-        "Independent stdlib metadata/hash authoring",
-        "Unchanged test/source-plan hashes and original admission fields compared",
+        "Static text/control-flow reading of initialization, failure, save, writer/readback, teardown and callers",
+        "Owned bounds helper edited; supervisor failure comment clarified",
+        "Independent stdlib metadata/hash authoring for the two changed helper nodes",
+        "All other admission values/node identities compared; source-plan/test hashes and unchanged resources/ledger helper bytes preserved",
+        "Repair note and current links authored; historical receipts retained",
         "Named-path Git publication"
       ],
       "notPerformed": [
@@ -249,138 +293,199 @@
         "descendants": []
       },
       "remaining": [
-        "Independent exact-HEAD accounting/telemetry/cleanup review",
+        "Independent narrow initialization-ownership review at the exact new HEAD and admission SHA",
         "Fresh exact C4 execution grant",
         "Actual run and independent post-exit all-process/group/scratch/ledger/staging absence audit if authorized"
       ],
-      "historicalAccountingReceipt": {
-        "schemaVersion": 2,
-        "kind": "C4 accounting-repair static metadata receipt; not independent approval or execution evidence",
-        "observedAt": "2026-11-06T08:49:52.065473+00:00",
+      "historicalProbeCleanupReceipt": {
+        "schemaVersion": 3,
+        "kind": "Three-path C4 HOLD repair; static authoring receipt, not independent approval or execution evidence",
+        "observedAt": "2026-11-06T09:17:37.692896+00:00",
         "result": "AUTHORED; NARROW INDEPENDENT REVIEW REQUIRED",
-        "repairBase": "4ede3ea203f88c7457f5172aef0a30b429b9c9e0",
-        "admissionSHA256": "22f52533b3b342cfedc6d9c8beb781e3a256395969388812992c53f016e32d00",
+        "repairBase": "379c31977adc9bd4dcc0dfcf75a5e1f979f8d2b6",
+        "admissionSHA256": "74f3d50cb95e5d02751e44f72a9f336578bba1bc12386201a1534f5875d410fb",
         "sourcePlanSHA256": "5daaae85cf909de78c4ec31dadd426f379902ed821597a38a14fcb768878f827",
+        "testSHA256": "8250cf300944ef07f0a091fa46ba212b78fd854b32a3501e5703da8540898cd9",
         "physicalNodes": 25,
-        "delta": {
-          "case-release-freeze.py": {
-            "bytes": 16554,
-            "sha256": "dafff573796c4412931bac6ad7d2897e361adb8d52d149cbe50250308e539bda"
-          },
+        "changedPins": {
           "case-release-resources.py": {
-            "bytes": 22200,
-            "sha256": "75dc6a2769919ae304e2d5d0415940a4f1132dde07ce1121ee6e06a1429be43b"
+            "bytes": 20893,
+            "sha256": "ec90d203ae61f0fab4f0a8b3d1ec0b81b595f5b18b1375e1d772427ecd3ef080"
           },
           "case-release-supervisor.py": {
-            "bytes": 28334,
-            "sha256": "932363de4407a5ac8e0a9988bc888f43d8aa36e62d94edc2c5b0d38c655d06ec"
+            "bytes": 30580,
+            "sha256": "157dec2fa8ac3732e93e993bf28f1529165ecd8efcff66014722f2db002a2f50"
           },
           "case-release-bounds.py": {
-            "bytes": 22796,
-            "sha256": "5403919eebcb9c1cf7158b26f6a0d9d3be5a09cd0989bb1b7085da4ffbac5771"
+            "bytes": 37562,
+            "sha256": "dfd8eb0f940057715df4d104cac17965715962f07f6a91542e30afa1d6d23519"
           },
           "case-release-ledger.py": {
-            "bytes": 15929,
-            "sha256": "05b4f244ded5e36ffe57fbc0848b7f71753cb0efe44733bed18110d984f2e8a9"
+            "bytes": 17133,
+            "sha256": "8b9ef3ad344931700060ad769ed8cbc71f59d932f5dc0c5c29bfcd7398d42d8b"
           }
         },
-        "sourceIdentityReview": "Dispatcher reports PASS for unchanged 121 blobs/298 edges/138 installed files/18 reviewed pins; not rerun here",
+        "diagnosis": [
+          "Durable provisional ownership must precede first monitor and Scratch constructor probes; retain every helper/probe until durable join and include them in cleanup/release proof",
+          "Strict complete process query/rows required; reject stderr, duplicate PIDs, invalid starts/states and count all reported RSS",
+          "First OS proof, then one held pinned ledger lock/full-owned-row/dependent binding through final inode check and scratch deletion"
+        ],
         "performed": [
-          "Static source/control-flow reading",
-          "Text edits to five owned harness sources",
-          "Independent stdlib metadata authoring of changed/new file pins and accounting contract",
-          "Preserved source-plan and four-case-file hashes",
+          "Static text/control-flow reading of demonstrated paths and callers",
+          "Four directly affected owned helper sources edited",
+          "Independent stdlib metadata/hash authoring",
+          "Unchanged test/source-plan hashes and original admission fields compared",
           "Named-path Git publication"
         ],
         "notPerformed": [
-          "Syntax checks",
-          "AST parsing",
-          "Collector/helper/test execution",
+          "Syntax/AST checks",
+          "C4 helper/import/test execution",
           "Probes",
           "Live ledger access",
-          "Test allocations",
-          "Product/runtime/source adoption",
-          "Subagents"
+          "Mirrors or test allocations",
+          "Descendants",
+          "Product/runtime edits"
         ],
+        "agents": {
+          "requested": "gpt-6.1-sol/high",
+          "selected": "gpt-6.1-sol/high",
+          "fallback": "none",
+          "descendants": []
+        },
         "remaining": [
-          "Independent narrow accounting/ledger/output review at exact new HEAD and admission SHA",
+          "Independent exact-HEAD accounting/telemetry/cleanup review",
           "Fresh exact C4 execution grant",
-          "Actual run and independent post-exit audit if granted"
+          "Actual run and independent post-exit all-process/group/scratch/ledger/staging absence audit if authorized"
         ],
-        "historicalSourceFreezeReceipt": {
-          "schemaVersion": 1,
-          "kind": "Separate static C4 freeze verification; author check, not independent runtime admission review",
-          "observedAt": "2026-11-06T02:30:10.197334+00:00",
-          "result": "STATIC PASS",
-          "base": "5e16930bb70015ec518b921e7fb2e4673cb89640",
-          "admissionSHA256": "a0cdf391c8fbee19de9f7da1b4a12afe40bf38e61ecb669c9921dba06c8b51d2",
+        "historicalAccountingReceipt": {
+          "schemaVersion": 2,
+          "kind": "C4 accounting-repair static metadata receipt; not independent approval or execution evidence",
+          "observedAt": "2026-11-06T08:49:52.065473+00:00",
+          "result": "AUTHORED; NARROW INDEPENDENT REVIEW REQUIRED",
+          "repairBase": "4ede3ea203f88c7457f5172aef0a30b429b9c9e0",
+          "admissionSHA256": "22f52533b3b342cfedc6d9c8beb781e3a256395969388812992c53f016e32d00",
           "sourcePlanSHA256": "5daaae85cf909de78c4ec31dadd426f379902ed821597a38a14fcb768878f827",
-          "sourceSelection": {
-            "composition": "f179ae6043414a2b07de3edb2b425338299ea37b",
-            "profile": {
-              "server/test/helpers/runtime-composition-profile.js": "46fa208e84a85ddc5cca843af59bb9794f63cada"
+          "physicalNodes": 25,
+          "delta": {
+            "case-release-freeze.py": {
+              "bytes": 16554,
+              "sha256": "dafff573796c4412931bac6ad7d2897e361adb8d52d149cbe50250308e539bda"
             },
-            "ownedTestAndConsumers": {
-              "server/test/gcsp-case-release-http.test.js": "5e16930bb70015ec518b921e7fb2e4673cb89640",
-              "blocks/gcsp/cases/http-adapter.js": "5e16930bb70015ec518b921e7fb2e4673cb89640"
+            "case-release-resources.py": {
+              "bytes": 22200,
+              "sha256": "75dc6a2769919ae304e2d5d0415940a4f1132dde07ce1121ee6e06a1429be43b"
+            },
+            "case-release-supervisor.py": {
+              "bytes": 28334,
+              "sha256": "932363de4407a5ac8e0a9988bc888f43d8aa36e62d94edc2c5b0d38c655d06ec"
+            },
+            "case-release-bounds.py": {
+              "bytes": 22796,
+              "sha256": "5403919eebcb9c1cf7158b26f6a0d9d3be5a09cd0989bb1b7085da4ffbac5771"
+            },
+            "case-release-ledger.py": {
+              "bytes": 15929,
+              "sha256": "05b4f244ded5e36ffe57fbc0848b7f71753cb0efe44733bed18110d984f2e8a9"
             }
           },
-          "counts": {
-            "sources": 121,
-            "modules": 99,
-            "dataAssets": 22,
-            "edges": 298,
-            "installedPackages": 14,
-            "installedFiles": 138,
-            "installedBytes": 469685,
-            "physicalNodes": 23,
-            "namedCases": 4
-          },
-          "checks": {
-            "sourcePlanDigest": true,
-            "exactBoundary": true,
-            "allImmutableGitBytes": true,
-            "helperPin": true,
-            "declaredEdgeAndDirectoryClosure": true,
-            "broadLiteralImportCrossCheck": true,
-            "physicalHelpersExecutablesAndInstalledBytes": true,
-            "installedFileSetsAndOptionalAbsences": true,
-            "noBorrowedDependencyLink": true,
-            "pythonAst": true,
-            "cancellationOwnershipAndFiniteCommandSource": true,
-            "noRuntimeOutputs": true,
-            "originalFourCasesUnchanged": true,
-            "whitespaceClean": true
-          },
-          "staticCollectorAttempts": [
-            {
-              "outcome": "REFUSED before manifests",
-              "reason": "Owned122 HTTP client is absent from f179ae6; added its exact5e16930 selection."
-            },
-            {
-              "outcome": "REFUSED before manifests",
-              "reason": "Comment prose matched a bare from import; declarations now anchored, with separate dynamic/side-effect forms."
-            },
-            {
-              "outcome": "AUTHORED metadata only",
-              "admissionSHA256": "a8c27e82aad765c5cc80acb3f1a328db250a349f60fae6fda8691ed941c54ebc"
-            },
-            {
-              "outcome": "AUTHORED metadata only; explicit command templates added",
-              "admissionSHA256": "ecc124ddeba159166c3dec84d383b5bbbd94cb25f72a5289a9e4cdb091a1427c"
-            },
-            {
-              "outcome": "AUTHORED current metadata only; package file-set and optional-path admission tightened",
-              "admissionSHA256": "a0cdf391c8fbee19de9f7da1b4a12afe40bf38e61ecb669c9921dba06c8b51d2"
-            }
+          "sourceIdentityReview": "Dispatcher reports PASS for unchanged 121 blobs/298 edges/138 installed files/18 reviewed pins; not rerun here",
+          "performed": [
+            "Static source/control-flow reading",
+            "Text edits to five owned harness sources",
+            "Independent stdlib metadata authoring of changed/new file pins and accounting contract",
+            "Preserved source-plan and four-case-file hashes",
+            "Named-path Git publication"
+          ],
+          "notPerformed": [
+            "Syntax checks",
+            "AST parsing",
+            "Collector/helper/test execution",
+            "Probes",
+            "Live ledger access",
+            "Test allocations",
+            "Product/runtime/source adoption",
+            "Subagents"
           ],
           "remaining": [
-            "Independent source/input/loader/materialization/cancellation/resource review",
-            "Fresh exact C4 execution grant; no current execution permission",
-            "Actual four-case evidence and later real F77/F78/default-reset/browser/native/full gates"
+            "Independent narrow accounting/ledger/output review at exact new HEAD and admission SHA",
+            "Fresh exact C4 execution grant",
+            "Actual run and independent post-exit audit if granted"
           ],
-          "executedApplicationOrHarness": [],
-          "allocatedTestResources": []
+          "historicalSourceFreezeReceipt": {
+            "schemaVersion": 1,
+            "kind": "Separate static C4 freeze verification; author check, not independent runtime admission review",
+            "observedAt": "2026-11-06T02:30:10.197334+00:00",
+            "result": "STATIC PASS",
+            "base": "5e16930bb70015ec518b921e7fb2e4673cb89640",
+            "admissionSHA256": "a0cdf391c8fbee19de9f7da1b4a12afe40bf38e61ecb669c9921dba06c8b51d2",
+            "sourcePlanSHA256": "5daaae85cf909de78c4ec31dadd426f379902ed821597a38a14fcb768878f827",
+            "sourceSelection": {
+              "composition": "f179ae6043414a2b07de3edb2b425338299ea37b",
+              "profile": {
+                "server/test/helpers/runtime-composition-profile.js": "46fa208e84a85ddc5cca843af59bb9794f63cada"
+              },
+              "ownedTestAndConsumers": {
+                "server/test/gcsp-case-release-http.test.js": "5e16930bb70015ec518b921e7fb2e4673cb89640",
+                "blocks/gcsp/cases/http-adapter.js": "5e16930bb70015ec518b921e7fb2e4673cb89640"
+              }
+            },
+            "counts": {
+              "sources": 121,
+              "modules": 99,
+              "dataAssets": 22,
+              "edges": 298,
+              "installedPackages": 14,
+              "installedFiles": 138,
+              "installedBytes": 469685,
+              "physicalNodes": 23,
+              "namedCases": 4
+            },
+            "checks": {
+              "sourcePlanDigest": true,
+              "exactBoundary": true,
+              "allImmutableGitBytes": true,
+              "helperPin": true,
+              "declaredEdgeAndDirectoryClosure": true,
+              "broadLiteralImportCrossCheck": true,
+              "physicalHelpersExecutablesAndInstalledBytes": true,
+              "installedFileSetsAndOptionalAbsences": true,
+              "noBorrowedDependencyLink": true,
+              "pythonAst": true,
+              "cancellationOwnershipAndFiniteCommandSource": true,
+              "noRuntimeOutputs": true,
+              "originalFourCasesUnchanged": true,
+              "whitespaceClean": true
+            },
+            "staticCollectorAttempts": [
+              {
+                "outcome": "REFUSED before manifests",
+                "reason": "Owned122 HTTP client is absent from f179ae6; added its exact5e16930 selection."
+              },
+              {
+                "outcome": "REFUSED before manifests",
+                "reason": "Comment prose matched a bare from import; declarations now anchored, with separate dynamic/side-effect forms."
+              },
+              {
+                "outcome": "AUTHORED metadata only",
+                "admissionSHA256": "a8c27e82aad765c5cc80acb3f1a328db250a349f60fae6fda8691ed941c54ebc"
+              },
+              {
+                "outcome": "AUTHORED metadata only; explicit command templates added",
+                "admissionSHA256": "ecc124ddeba159166c3dec84d383b5bbbd94cb25f72a5289a9e4cdb091a1427c"
+              },
+              {
+                "outcome": "AUTHORED current metadata only; package file-set and optional-path admission tightened",
+                "admissionSHA256": "a0cdf391c8fbee19de9f7da1b4a12afe40bf38e61ecb669c9921dba06c8b51d2"
+              }
+            ],
+            "remaining": [
+              "Independent source/input/loader/materialization/cancellation/resource review",
+              "Fresh exact C4 execution grant; no current execution permission",
+              "Actual four-case evidence and later real F77/F78/default-reset/browser/native/full gates"
+            ],
+            "executedApplicationOrHarness": [],
+            "allocatedTestResources": []
+          }
         }
       }
     }

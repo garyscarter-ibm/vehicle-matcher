@@ -264,6 +264,7 @@ def report_tests(dest, source, mirror):
 
 
 def execute(frozen, args, tr, guard, ledger, sg, cancel, dest):
+    global PHASE
     policy = tr.Policy({'chunk_seconds': 120, 'chunk_ram_mib': 768, 'chunk_scratch_mib': 128,
                         'log_mib': 2, 'reserve_free_gib': 5, 'ram_reserve_mib': 512})
     scratch = host = tree = finalizer = None
@@ -306,10 +307,12 @@ def execute(frozen, args, tr, guard, ledger, sg, cancel, dest):
         frozen, source = admit(args.admission_sha)
         charge(True)
         tr.atomic_json(dest / 'checkpoint.json', {'state': 'incomplete', 'selected': source['expectedNames']})
+        PHASE = 'source-verification'
         tr.atomic_json(dest / 'plan.json', {'admissionSHA256': args.admission_sha, 'grant': args.dispatcher_grant,
             'sourceBefore': source_audit(source, sg), 'limits': frozen['limits'], 'accounting': frozen['accounting'],
             'manifest': str(scratch.manifest), 'owner': scratch.record['owner'],
             'scope': 'actual C4 in-process HTTP; synthetic TEST input; no listener'})
+        PHASE = 'execution'
         charge(True)
         scratch.__enter__()
         materialize(source, mirror)
@@ -386,6 +389,7 @@ def execute(frozen, args, tr, guard, ledger, sg, cancel, dest):
         mirror_audit(source, mirror)
         result['tests'] = report_tests(dest, source, mirror)
     except BaseException as error:
+        REGISTRY.remember_failure(error, stage=PHASE)
         failure = problem(error)
     finally:
         # Failed telemetry still permits finite teardown diagnostics, never a success claim.
@@ -584,7 +588,7 @@ def main():
         if not REGISTRY.sealed:
             # fail() is memory-only until exclusive initialization and physical binding succeed.
             # Refused collisions reach only the bounded external stderr handler below.
-            REGISTRY.fail(error)
+            REGISTRY.fail(error, stage=PHASE)
         raise
     finally:
         OUTPUTS.diagnostics = True
