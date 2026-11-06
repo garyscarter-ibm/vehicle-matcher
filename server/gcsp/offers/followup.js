@@ -38,7 +38,8 @@ function savedProjection(decisionId, brief, event) {
   const change = brief.postDeclineChange;
   return { schemaVersion: 1, state: 'change-saved', decisionId, briefVersion: brief.briefVersion,
     policyVersion: brief.policyVersion,
-    event: { eventId: event.eventId, eventType: event.eventType, briefVersion: event.briefVersion, occurredAt: event.occurredAt },
+    event: { receiptReference: `brief-change:${inputDigest({ consumerId: 'brief:changes', runId: event.runId, eventId: event.eventId })}`,
+      eventType: event.eventType, briefVersion: event.briefVersion, occurredAt: event.occurredAt },
     change: { path: change.path, before: structuredClone(change.before), after: structuredClone(change.after) } };
 }
 

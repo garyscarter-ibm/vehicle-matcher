@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-107",
+  "status": "Approved exact repair applied; focused validation pending new frozen review/grant.",
+  "approvedPatchSHA256": "0b33b2e5bd7301c03139121047a29d437c6eb06e538f63ab6947e441d39673db",
+  "changedSourcePaths": [
+    {
+      "path": "server/gcsp/offers/followup.js",
+      "currentSHA256": "527f0a50bbd44f1454a010ae2911f0e2aa91b6dc43cc12fdbe92c770da80cbea",
+      "proposedSHA256": "bdd9dc0c57e62a08b866b9e204bbbb17b148a0534b65c37be92d3d8d7e49d875"
+    },
+    {
+      "path": "server/test/gcsp-second-offer.test.js",
+      "currentSHA256": "bf65c4f140005ea69fe7cbe7650f93a88da53f3ec4469be204cfca88d73b430e",
+      "proposedSHA256": "f29ac7a1acc4243b0772d25846375b1332a2e1f12bc12b9b1fe0d9c24a2cd13f"
+    }
+  ],
+  "publicEvent": {
+    "fields": [
+      "receiptReference",
+      "eventType",
+      "briefVersion",
+      "occurredAt"
+    ],
+    "reference": "'brief-change:' + inputDigest({consumerId:'brief:changes',runId:event.runId,eventId:event.eventId})",
+    "meaning": "Opaque public reference derived from actual canonical receipt identity, not a new canonical event ID or capability. Stable for save/replay/reload/ready projections."
+  },
+  "canonicalStorage": "Existing BriefService ID/type/version/time and event_receipts primary key remain unchanged; trace through consumerId/runId/eventId internally. No producer/schema/102/103 changes.",
+  "callers": "Owned HTTP output forwards the DTO; draft client saved() requires event type/version and consumes no raw eventId. Public reference is not accepted as a command selector or authority.",
+  "regression": "All12 service cases and existing acceptance/privacy assertions retained. Existing save/replay/reload case adds deterministic-reference and raw-ID-absence assertions; second decline fixture outcome now matches its own decision ID.",
+  "priorEvidence": "c536 policy7/7PASS retained; service10/12 failure originals retained. No retry executed after this repair."
+}

@@ -110,6 +110,10 @@ test('confirmation uses real BriefService, preserves other inputs, replays and r
   const changed = await f.service.confirm(f.context, input);
   assert.equal(changed.status, 'ok', JSON.stringify(changed)); assert.equal(changed.value.state, 'change-saved');
   assert.equal(changed.value.briefVersion, 2); assert.equal(changed.value.event.eventType, 'brief-changed');
+  assert.equal(Object.hasOwn(changed.value.event, 'eventId'), false);
+  assert.equal(changed.value.event.receiptReference, `brief-change:${inputDigest({ consumerId: 'brief:changes',
+    runId: f.context.runId, eventId: `brief:${f.context.employeeId}:2` })}`);
+  assert.equal(JSON.stringify(changed).includes(f.context.employeeId), false);
   assert.deepEqual(changed.value.change, { path: 'preferences.body.value', before: 'estate', after: 'suv' });
   const current = (await f.brief.readCurrent(f.context)).value.brief;
   assert.equal(current.preferences.body.value, 'suv'); assert.deepEqual(current.essentials, f.initial.essentials);
@@ -156,7 +160,8 @@ test('question versions cannot cross a different completed decline', async (t) =
   const f = await setup(t); const input = await answer(f);
   const { decision, event } = f.rows;
   const inserted = await f.repository.transaction(f.context, command('another-fixture'), async (tx) => {
-    const d = await tx.insert('decisions', { ...decision, decisionId: 'another-decline', commandId: 'another-command' });
+    const d = await tx.insert('decisions', { ...decision, decisionId: 'another-decline', commandId: 'another-command',
+      outcome: ok({ state: 'declined', decisionId: 'another-decline' }) });
     if (d.status !== 'ok') return d;
     const e = { ...event, decisionId: 'another-decline', eventId: 'another-event' };
     return tx.recordReceipt({ ...f.rows.receipt, eventId: e.eventId, inputDigest: inputDigest(e), outcome: ok({ event: e }) });
