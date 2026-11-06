@@ -1,0 +1,526 @@
+{
+  "state": "incomplete",
+  "commandExitCode": 1,
+  "run": "journey-narrow375-6ad5f2312343458d9ea2ffb0b12e602c",
+  "scope": "one explicitly granted existing journey-narrow375 allocation; no further runtime",
+  "grant": {
+    "path": ".claude/coordination/fucq122-narrow375-grant-1758.json",
+    "sha256": "49af8d95df0f4be518f8af0b584907552427066d6915249f5cde090cfae48cfe",
+    "executionAllowance": 1,
+    "allocationsExecuted": 1
+  },
+  "preparationCommit": "9779a89e1fb71b7fdf13dc498d3fa46741823bae",
+  "viewport": {
+    "width": 375,
+    "height": 812
+  },
+  "sourcePlanSha256": "0b6c8c636764ec21fee54fcb630b2567e5fa25f36b750f724386ebd21a6b433f",
+  "sourcePinCount": 695,
+  "sourceUnchanged": true,
+  "allPinsRecheckedAtCollection": true,
+  "scenarioSha256": "f109c63e26f4477267372f2f89c0b032fab1ecdea07827b98ddd48f8404a0a76",
+  "runnerSha256": "2d29ff6b4bae33584f7b543a39a6f8cf4ea34dfd0baa9f43d8c28fb4330eea37",
+  "supervisorSha256": "e7f05ca475dc915dc0b6d24b3c7a52430d99f01c27d7bb1c1deb1c43f35b521a",
+  "receiptSha256": "7e3910b1e9e683d694aaeaf26dda24e7fde25bc3818b2001d5dbccda2d8d85ff",
+  "resultsSha256": "dc174061ee1c22217d0eaa2d3877e67f2510e0fd76ceaa9598f1c5a345ba81ed",
+  "boundary": "Existing current HTTPS launcher and delivered HTML/modules; explicit memory mode; untrusted local self-signed certificate accepted only by this test browser context. No certificate-trust/native/live acceptance claim.",
+  "setup": "Fresh empty browser context; first ordinary HTML GET adopts actual bootstrap cookies; presenter UI switches actors. No cookie injection or policy overrides.",
+  "checksPassedMarkers": [
+    "Rendered help and review are read-only; one explicit confirmation creates one case",
+    "Actual presenter Greg queue mounts once; review is read-only; one confirmation records the manual update"
+  ],
+  "additionalAssertionsReachedBeforeFinalAudit": [
+    "Same-URL presenter switch back to Paula completed a fresh document navigation and preserved run ID.",
+    "Ordinary help navigation and actual same-page reload both completed; all five document responses were HTTP 200 with authorityOnHtml false.",
+    "After reload, employee cases equalled every persisted Greg case field apart from his display-only employeeName.",
+    "Reloaded visible case contained original ID/reason, in-progress status, owner, next action, UTC due time and manual decision; no-priority copy was present.",
+    "Keyboard-opened dated history contained Greg principal ID, with visible focus in fifth capture.",
+    "Exactly one help POST and one case-update POST were asserted after reload; scoped secure/HttpOnly session and bootstrap cookie assertions passed."
+  ],
+  "reportShapeNote": "Only two explicit check markers were emitted. The reload marker, report.case assignment and passed state follow the failed final error audit and were never reached; reached reload assertions are evidenced by source ordering, five confirmed transitions, cookie observations and the fifth capture.",
+  "posts": [
+    {
+      "requestId": 49,
+      "path": "/api/gcsp/cases",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "requestId": 53,
+      "path": "/api/gcsp/session/switch",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "requestId": 145,
+      "path": "/api/gcsp/scheme-team/cases/update",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "requestId": 149,
+      "path": "/api/gcsp/session/switch",
+      "method": "POST",
+      "status": 200
+    }
+  ],
+  "draftResponses": [
+    {
+      "requestId": 229,
+      "path": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "status": 404
+    }
+  ],
+  "errors": [
+    {
+      "kind": "http",
+      "path": "/api/gcsp/manual/draft",
+      "status": 404
+    },
+    {
+      "kind": "console",
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "kind": "scenario",
+      "message": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     kind: 'http',\n+     path: '/api/gcsp/manual/draft',\n+     status: 404\n+   },\n+   {\n+     kind: 'console',\n+     message: 'Failed to load resource: the server responded with a status of 404 (Not Found)'\n+   }\n+ ]\n- []\n\n    at runCaseJourney (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/scenario.mjs:221:45)\n    at async file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/browser-runner.mjs:52:17"
+    },
+    {
+      "kind": "request",
+      "id": 37,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:50684/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 1,
+      "failureDocumentURL": "https://localhost:50684/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "kind": "request",
+      "id": 36,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:50684/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 1,
+      "failureDocumentURL": "https://localhost:50684/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "kind": "request",
+      "id": 271,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:50684/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 4,
+      "failureDocumentURL": "https://localhost:50684/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "kind": "request",
+      "id": 270,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:50684/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 4,
+      "failureDocumentURL": "https://localhost:50684/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    }
+  ],
+  "requestFailures": [
+    {
+      "id": 37,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:50684/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 1,
+      "failureDocumentURL": "https://localhost:50684/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "id": 36,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:50684/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 1,
+      "failureDocumentURL": "https://localhost:50684/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "id": 271,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:50684/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 4,
+      "failureDocumentURL": "https://localhost:50684/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "id": 270,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:50684/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 4,
+      "failureDocumentURL": "https://localhost:50684/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "id": 320,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:50684/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 5,
+      "failureDocumentURL": "https://localhost:50684/gcsp-help.html",
+      "expectedNavigationCancellation": true
+    },
+    {
+      "id": 319,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:50684/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 5,
+      "failureDocumentURL": "https://localhost:50684/gcsp-help.html",
+      "expectedNavigationCancellation": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": 1,
+      "from": "about:blank",
+      "target": "https://localhost:50684/gcsp-help.html",
+      "action": "Ordinary help navigation",
+      "confirmed": true
+    },
+    {
+      "id": 2,
+      "from": "https://localhost:50684/gcsp-help.html",
+      "target": "https://localhost:50684/gcsp-presenter.html",
+      "action": "Presenter UI switch to demo-greg",
+      "confirmed": true
+    },
+    {
+      "id": 3,
+      "from": "https://localhost:50684/gcsp-presenter.html",
+      "target": "https://localhost:50684/gcsp-presenter.html",
+      "action": "Presenter UI switch to demo-paula",
+      "confirmed": true
+    },
+    {
+      "id": 4,
+      "from": "https://localhost:50684/gcsp-presenter.html",
+      "target": "https://localhost:50684/gcsp-help.html",
+      "action": "Ordinary help navigation",
+      "confirmed": true
+    },
+    {
+      "id": 5,
+      "from": "https://localhost:50684/gcsp-help.html",
+      "target": "https://localhost:50684/gcsp-help.html",
+      "action": "Paula reload",
+      "confirmed": true
+    }
+  ],
+  "navigations": [
+    {
+      "path": "/gcsp-help.html",
+      "status": 200,
+      "authorityOnHtml": false
+    },
+    {
+      "path": "/gcsp-presenter.html",
+      "status": 200,
+      "authorityOnHtml": false
+    },
+    {
+      "path": "/gcsp-presenter.html",
+      "status": 200,
+      "authorityOnHtml": false
+    },
+    {
+      "path": "/gcsp-help.html",
+      "status": 200,
+      "authorityOnHtml": false
+    },
+    {
+      "path": "/gcsp-help.html",
+      "status": 200,
+      "authorityOnHtml": false
+    }
+  ],
+  "cookieAttributes": [
+    {
+      "name": "gcsp_presenter",
+      "path": "/api/gcsp",
+      "secure": true,
+      "httpOnly": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "gcsp_session",
+      "path": "/api/gcsp",
+      "secure": true,
+      "httpOnly": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "GCSP_LOCAL_BOOTSTRAP",
+      "path": "/",
+      "secure": true,
+      "httpOnly": true,
+      "sameSite": "Strict"
+    }
+  ],
+  "sourceDiagnosis": {
+    "draft404": "Registered GET /api/gcsp/manual/draft calls readDraft; no saved draft returns not-found/manual-draft, mapped by the common HTTP handler to 404. The account adapter preserves non-ok envelopes and account rendering/start controls accept not-found. Thus the observed 404 is consistent with a normal absent-draft contract; the actual response JSON was not retained, so its exact envelope is unproved. The HTTP and console observations remain unchanged in errors.",
+    "abortClassification": "Requests 36/37 (initial help) and 270/271 (help return) remain unclassified; 319/320 match the departing document URL of confirmed reload transition 5 and only these are expectedNavigationCancellation true. Remount cause remains a source-supported hypothesis without runtime lifecycle proof.",
+    "suppressionOrRepair": false
+  },
+  "captures": [
+    {
+      "file": "narrow375-01-paula-help.png",
+      "sha256": "99d4314c93aadb1a76d0822204e6c633844f60cc927f925c5f9c0674ac0b2e7d",
+      "bytes": 48476,
+      "imageDimensions": {
+        "width": 375,
+        "height": 1053
+      },
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "visible": true
+      },
+      "shape": {
+        "width": 375,
+        "scrollWidth": 375,
+        "status": [
+          "Presenter controls ready",
+          "",
+          "",
+          "No renewal caseHelp is available if you need the scheme team to review your renewal."
+        ]
+      },
+      "visuallyInspected": true
+    },
+    {
+      "file": "narrow375-02-paula-confirmation.png",
+      "sha256": "6acaa7287b1cb29a81ec51858ba18ff7a963ce2a049063880f3ae42d90e7f523",
+      "bytes": 72383,
+      "imageDimensions": {
+        "width": 375,
+        "height": 1225
+      },
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "visible": true
+      },
+      "shape": {
+        "width": 375,
+        "scrollWidth": 375,
+        "status": [
+          "Presenter controls ready",
+          "",
+          "",
+          "No renewal caseHelp is available if you need the scheme team to review your renewal."
+        ]
+      },
+      "visuallyInspected": true
+    },
+    {
+      "file": "narrow375-03-greg-actual-queue.png",
+      "sha256": "fb689cfe03cb58cf7379ce7fba75f757f8682d9c8b11ef11892d88df5981644a",
+      "bytes": 408581,
+      "imageDimensions": {
+        "width": 375,
+        "height": 5279
+      },
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-selection",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "visible": true
+      },
+      "shape": {
+        "width": 375,
+        "scrollWidth": 375,
+        "status": [
+          "Presenter controls ready",
+          "",
+          "Figures updated for 5 Nov 2026, 09:00 GMT.",
+          "DemandNo briefs yetNo employee has confirmed a brief yet, so there is no demand to show. Stock figures are still current.",
+          "Draft. Change values, then preview their effect.",
+          "1 renewal case loaded."
+        ]
+      },
+      "visuallyInspected": true
+    },
+    {
+      "file": "narrow375-04-greg-update-review.png",
+      "sha256": "b314e2bb4081fcd0d7b6e433dbad6bbac5f10dee416cad17107671971ecd75e0",
+      "bytes": 540793,
+      "imageDimensions": {
+        "width": 375,
+        "height": 6968
+      },
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "visible": true
+      },
+      "shape": {
+        "width": 375,
+        "scrollWidth": 375,
+        "status": [
+          "Presenter controls ready",
+          "",
+          "Figures updated for 5 Nov 2026, 09:00 GMT.",
+          "DemandNo briefs yetNo employee has confirmed a brief yet, so there is no demand to show. Stock figures are still current.",
+          "Draft. Change values, then preview their effect.",
+          "Current case options loaded."
+        ]
+      },
+      "visuallyInspected": true
+    },
+    {
+      "file": "narrow375-05-paula-reload-history.png",
+      "sha256": "b5823e254bfc54d3d88b01e2ac0d71303a1f790a66ed19428bb0b7db4f1f2346",
+      "bytes": 158652,
+      "imageDimensions": {
+        "width": 375,
+        "height": 2526
+      },
+      "focus": {
+        "tag": "SUMMARY",
+        "id": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "visible": true
+      },
+      "shape": {
+        "width": 375,
+        "scrollWidth": 375,
+        "status": [
+          "Presenter controls ready",
+          "",
+          ""
+        ]
+      },
+      "visuallyInspected": true
+    }
+  ],
+  "keyboardActions": 58,
+  "inputMethods": "Tab reachability, Enter/Space activation, native roving radio/select typeahead; text/date automated fill after Tab focus. Complete keyboard-only and screen-reader announcement proof is not claimed.",
+  "visualReview": "All five original captures inspected against experience-quality, agreed shell/screens and COMPONENTS. Readable wrapped help/confirmation/case/history, responsive shell, visible teal focus. Greg region stacks at full narrow width; contained table shows its first columns, with full horizontal traversal not exercised. FUCQ-150 remains separate desktop-region width scope; no fix is claimed. Original 375x6968 fourth PNG was additionally inspected at native-width in a temporary bottom crop, then the owned crop was removed; publication preserves original PNG bytes.",
+  "admitted": {
+    "disk": 134217728,
+    "ram": 2684354560
+  },
+  "peakRecursiveRssBytes": 1809858560,
+  "peakCombinedBytes": 11670967,
+  "limits": {
+    "chromeInstances": 1,
+    "combinedBytes": 134217728,
+    "logBytes": 2097152,
+    "minimumRssBytes": 2147483648,
+    "requestedRssBytes": 2684354560,
+    "seconds": 120,
+    "workers": 1
+  },
+  "removedScratchBytes": 10343607,
+  "compatibilityException": "OneDrive unavailable; bounded local Chrome profile/IPC compatibility working set; small local retained evidence.",
+  "cleanup": {
+    "at": "2026-11-06T18:04:35.716077+00:00",
+    "receiptSha256": "7e3910b1e9e683d694aaeaf26dda24e7fde25bc3818b2001d5dbccda2d8d85ff",
+    "trackedPidEntries": 19,
+    "ledgerOnlyPids": [
+      94751
+    ],
+    "allTrackedLedgerAndOwnerCount": 21,
+    "allOwnedPidsAbsent": true,
+    "liveOwnedPids": [],
+    "groups": [
+      94749
+    ],
+    "groupProcessesAbsent": true,
+    "profileArgumentsAbsent": true,
+    "scratchArgumentsAbsent": true,
+    "portsClosed": {
+      "50684": true,
+      "50685": true
+    },
+    "scratchAbsent": true,
+    "tokenAbsent": true,
+    "rawHostRows": 0,
+    "sourceBeforeAfterEqual": true,
+    "all695PinsRecheckedUnchanged": true,
+    "supervisorCleanup": {
+      "dependencyLinks": [],
+      "groupsAbsent": true,
+      "liveIdentities": [],
+      "monitorJoined": true,
+      "openFilesAbsent": true,
+      "portsClosed": {
+        "50684": true,
+        "50685": true
+      },
+      "profilePathProcesses": [],
+      "readersJoined": true,
+      "reservationReleased": true,
+      "scratchAbsent": true
+    }
+  },
+  "independentRootCleanup": {
+    "path": ".claude/coordination/fucq122-narrow375-root-collection-1758.json",
+    "sha256": "cc2be4815477a9dbf443eaf391c53b0c64435cd2592f0c870d7f9488fa1776fd",
+    "ownedPidCount": 20,
+    "cleanupPassed": true,
+    "rawHostRows": 0,
+    "all695PinsRechecked": true
+  },
+  "originalAcceptance": "This adds actual 375px evidence for the same help/manual-update/reload route only. No compound original AC is marked complete. The error audit is retained tool behavior, not an added clean-console requirement.",
+  "readinessRecommendation": "Adopt the coherent evidence checkpoint and continue demo integration under the existing merge disposition. No new product repair, native/producer or clean-log gate is proposed. Keep original remaining state/placement/remedy/keyboard/status and npm obligations visible; do not mark FUCQ-122 Done from this scoped journey.",
+  "remainingOriginalScope": "Activity/order-progress help placement; browser repeat request, proposed single-preference confirmation, applicable other options, trigger-open/waiting/resolved/closed/empty/loading/source-failure states; rendered queue full-row traversal and meaningful sorting; complete keyboard/focus/status evidence. DOM and service/controller passes remain credited.",
+  "existingSuite": "Corrected npm run remains FAIL: 1590 total,1569 passed,16 failed,five native cases skipped. No rerun; no additional native requirement added to FUCQ-122.",
+  "separateBug": {
+    "key": "FUCQ-150",
+    "severity": "Medium",
+    "state": "To Do",
+    "relation": "Relates FUCQ-122",
+    "attachmentId": "937236",
+    "repairOrBlockingLinkAdded": false
+  },
+  "additionalRuntimeAuthorized": false,
+  "fullSuiteRerun": false,
+  "nativeRun": false,
+  "productWrites": false,
+  "newAgents": 0,
+  "independentRootVisualReview": {
+    "path": ".claude/coordination/fucq122-narrow375-visual-review-1758.json",
+    "sha256": "47c2b1859c47c738ab7e802868834b0fa00e85317ccba6c2d76246ced02ce4ef",
+    "allFiveOriginalCaptureHashesMatch": true,
+    "rootInspected": true,
+    "findings": "Five original captures and derived Greg-bottom crop inspected. Help/confirmation/manual review/reload history readable at375px; visible cyan focus on actions/history; Greg queue rows use horizontally clipped table; table-scroll interaction untested. ExistingF150 desktop layout Bug remains separate. No complete-state, all-keyboard or source-producer claim. Raw run incomplete exit1 retains404/4unclassifiedaborts."
+  }
+}
