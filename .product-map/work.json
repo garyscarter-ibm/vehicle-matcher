@@ -1019,7 +1019,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-06T01:59:14Z",
+      "observed_at": "2026-11-06T09:09:45Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103",
       "jira_observed_at": "2026-11-05T22:40:24Z",
       "branch": "dev/DEV-2026-11-04-066",
@@ -1048,8 +1048,8 @@
           "id": "backend-projection",
           "status": "in-progress",
           "title": "Editable policy projection and no-write preview",
-          "observed_at": "2026-11-06T01:59:14Z",
-          "evidence": "f80fc61 product/test freeze retained. Owned backend harness repaired/refrozen:219 sources,77 proposed cases; static audit only, no runtime grant. First proposed core25 then separate registry16. docs/gcsp/evidence/fucq103/eligibility-harness-repair-2026-11-06.md."
+          "observed_at": "2026-11-06T09:09:45Z",
+          "evidence": "Current f80fc61 freeze: core25, registry16, default1, weighted1 and runtime4 independently accepted at their scoped boundaries. Weighted uses four synthetic clones; no canonical population claim. Current-source publish15/activation9/editor3/dashboard3 and rendered/full acceptance remain open. Runtime4 immutable packet: docs/gcsp/evidence/fucq103/eligibility-runtime-cba833f-2026-11-06/index.json."
         },
         {
           "id": "activation-http",
@@ -1062,8 +1062,8 @@
           "id": "reviewed-adoption-runtime",
           "status": "in-progress",
           "title": "Reviewed keyed adoption and delivered runtime",
-          "observed_at": "2026-11-06T01:59:14Z",
-          "evidence": "Dibble FINAL f80fc61 source/registration PASS; exact107 questions and106/113/115 retained. Runtime proof pending repaired-harness admission and separately granted registry16; no105→107 lookup/reload claim. docs/gcsp/evidence/fucq103/eligibility-harness-repair-2026-11-06.md."
+          "observed_at": "2026-11-06T09:09:45Z",
+          "evidence": "Registry16 and runtime4 accepted; runtime4 lead557/root992, exact four names/totals/pins/cleanup and postwrite verified. Synthetic mechanics/reset, provider lifetime and empty-Postgres-configuration refusal only; no live DB, producer or 105-to-107 lookup/reload acceptance. Earlier evidence preserved. docs/gcsp/evidence/fucq103/eligibility-runtime-cba833f-2026-11-06/index.json."
         },
         {
           "id": "publish-panel",
@@ -1083,8 +1083,8 @@
           "id": "rendered-integration",
           "status": "blocked",
           "title": "Desktop and narrow keyboard browser evidence",
-          "observed_at": "2026-11-06T01:59:14Z",
-          "evidence": "Prior ecaef8a smoke covers original source only. Canonical preparation/complete-slot browser candidate refrozen with219 sources; browser supervisor unrepaired/unadmitted. Backend review and separate prep/desktop/narrow320 grants pending. No new browser/full/native proof. docs/gcsp/evidence/fucq103/eligibility-harness-repair-2026-11-06.md."
+          "observed_at": "2026-11-06T09:09:45Z",
+          "evidence": "Current backend scoped proofs accepted; canonical prepared composition still needs separately admitted desktop/narrow320 keyboard journeys and actual employee outcome. Browser supervisor remains unrepaired/unadmitted. No browser/native/full allocation or acceptance. Producer92/69/122/126 integration remains outstanding; Jira journey links alone do not block independent backend pickup."
         },
         {
           "id": "full-validation",

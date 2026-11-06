@@ -18,8 +18,10 @@ below. The subsequent registry16 run at `dc2b5ca` also passed 16/16 at its separ
 accepted scoped boundary. The separately admitted default Paula HTTP case at `24bc2cd`
 then passed 1/1; its five filtered source cases remain unexercised by that run. The separately
 admitted weighted HTTP case at `894b154` passed 1/1 with four disclosed synthetic stored
-subjects. Remaining integration and broader acceptance gates stay open. Earlier commands,
-results and grant states describe their original checkpoints.
+subjects. The separate runtime/scenario/lifecycle selection at `cba833f` passed 4/4,
+covering synthetic mechanics/reset and provider/configuration refusal only. Remaining
+integration and broader acceptance gates stay open. Earlier commands, results and grant
+states describe their original checkpoints.
 
 Each future mode has one worker, a fresh strict host reservation and bounded owned scratch;
 compact summaries/manifests remain outside scratch in the shared
@@ -537,3 +539,45 @@ acceptance. Its peak is unknown; the existing resource envelope, fresh strict ad
 and a new exact once grant remain required. No next mode ran. Other integration,
 browser/native/full/deployed/producer/corpus/model/live and full-story acceptance remain
 open. All 38 parser design fixtures remain unexecuted.
+
+
+## Accepted runtime4 at cba833f, 6 November 2026
+
+The independently admitted runtime/scenario/lifecycle selection passed **4/4** exact
+cases, with zero failures, cancellations, reported skips or todo cases. Completed
+default and weighted HTTP cases were filtered and unexercised by this run. Lead
+passed 557 checks; root passed 992 and separately bound all five originals plus
+lead/postwrite before authorising evidence-only publication. The
+[immutable runtime4 proof index](eligibility-runtime-cba833f-2026-11-06/README.md)
+preserves nine original artifacts byte for byte, including acceptance and historical
+unpublished/awaiting-lead markers. Earlier failed and accepted proofs are unchanged.
+
+The cases prove synthetic memory mechanics/reset, provider lifetime and missing
+configuration refusal. Actual presenter controls preserve the original policy step
+and report the configured handler order; mechanics reset invalidates old identity
+and context and admits fresh presenter controls. Caller-owned file policy remains
+read-only and is not closed; owned memory policy/repository close once with failed-open
+cleanup. Explicit postgres EMPTY configuration refuses before any database connection
+and does not fall back. No live database/durability, producer lifecycle or new canonical
+population acceptance follows.
+
+Wall time was 5.954 seconds, peak RSS 789.3125MiB within 1024MiB, and combined peak
+4,348,531 bytes. Scratch removal was 4,338,401 bytes. Independent frozen-input, original
+output and cleanup checks passed; final conservative retained allocation was 102,528
+bytes, including 98,432 receipt bytes within 256KiB. The grant is consumed. No runtime
+import, helper/audit/test script or runtime probe was rerun for publication.
+
+The [editor-range service proposal](eligibility-editor-proposal-2026-11-06.json) selects
+three existing independent service cases and excludes all completed test selections.
+Its synthetic memory fixture uses explicit privacy threshold 1, not canonical cohort
+privacy; observed allRows equality excludes entitlement slots. It does not render
+controls or establish an actual hold/offer producer. The proposal has no execution
+grant; resource peak is unknown and fresh strict admission remains required.
+
+The [map observation](product-map-observation.json) records the accepted scoped proofs
+through the configured tool while keeping FUCQ-103 In Progress, backend slices in
+progress and rendered integration blocked. Jira and worker observation times are
+preserved. Configured Actions publication uses gcsp-poc data; this branch checkpoint
+does not claim a refreshed served map. Other backend, actual producer/consumer,
+rendered desktop/narrow keyboard, native/full/deployed/corpus/model/live and final
+acceptance gates remain open. All 38 parser design fixtures remain unexecuted.
