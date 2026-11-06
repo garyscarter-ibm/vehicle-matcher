@@ -176,9 +176,8 @@ def execute(frozen, args, tr, guard, source, identity, environment):
         written = 0
         with log.open('xb') as stream:
             command = ['/opt/homebrew/bin/node', str(scratch.root / 'launch.mjs'), str(scratch.root / 'entry.mjs'), str(mirror), str(scratch.root / 'output')]
-            process = subprocess.Popen(command, cwd=mirror, env=scratch.env(environment), stdin=subprocess.PIPE,
+            process = tree.launch(command, cwd=mirror, env=scratch.env(environment), stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, start_new_session=True)
-            tree.register(process)
             os.set_blocking(process.stdout.fileno(), False)
             def drain():
                 nonlocal written
@@ -228,6 +227,10 @@ def execute(frozen, args, tr, guard, source, identity, environment):
     except BaseException as error:
         failure = {'type': type(error).__name__, 'message': str(error)[:1024]}
     finally:
+        # Deferred cancellation may escape before launch returns to this local.
+        # The tree already owns the handle and its persisted registration.
+        if process is None:
+            process = tree.process
         try:
             result['processAbsence'] = tree.stop_join()
         except BaseException as error:

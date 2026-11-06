@@ -1,5 +1,14 @@
 # Existing-artifact dated activation proposal
 
+Current status,6November2026: this activation plan was executed once on73533d7
+under its exact grant and accepted after independent261-check audit; see
+`fucq115-activation-success.md`. Its command/admission below describe that
+historical proposal, not a renewed execution request. A later author-only
+cancellation repair/refreeze is in `fucq115-cancellation-repair.md`; independent
+review and any needed finite lifecycle proof remain. No activation replay is
+selected or granted. Final integration requirements are in
+`fucq115-final-validation-plan.md`.
+
 6 November 2026. Source behavior independently reviewed; strict harness repair authored for exact review, unexecuted. Read `fucq115-activation-harness-repair.md` for the current admission, command and lifecycle implementation. It supersedes the original2155241 supervisor/command below.
 The dispatcher independently audited the reached retained-input training result
 at `e3f1e0bbe874d6fbc48e65de80c03261f410abf6` (44 checks). This proposal follows

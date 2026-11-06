@@ -1609,7 +1609,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T01:58:18Z",
+      "observed_at": "2026-11-06T02:07:19Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-115",
       "slices": [
         {
@@ -1658,8 +1658,8 @@
           "id": "acceptance",
           "status": "blocked",
           "title": "Integration-and-final-acceptance",
-          "observed_at": "2026-11-06T01:58:18Z",
-          "evidence": "Isolated activation accepted; original11/13-test and actual CLI/artifact44-check proof retained at exact identities. Parent current-integration/evidence decision and authored full-suite gate remain. No new execution grant. Future execution needs cancellation-safe Popen registration repair/refreeze. Own worker remains expired. docs/gcsp/models/fucq115-final-validation-plan.md"
+          "observed_at": "2026-11-06T02:07:19Z",
+          "evidence": "Accepted actual activation/root261 audit preserved. Author-only cancellation-safe launch repair/refreeze2c7596db: only2of204 helper content identities differ; no lifecycle execution. Parent combined103/113/own source, minimal fault selection and authored npm-test gate remain. No new grant/retraining/full replay; worker already expired. docs/gcsp/models/fucq115-cancellation-repair.md"
         }
       ],
       "unsliced": false,

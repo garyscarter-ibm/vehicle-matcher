@@ -393,3 +393,36 @@ notified a Popen-to-registration cancellation gap; repair/refreeze before any
 future execution proposal. No reproduction/new grant follows that notice. Own
 worker remains expired while parked; no new claim, poller, descendants or Jira
 transition. Existing13-test result retains its original pre-correction identity.
+
+
+### Author-only cancellation repair/refreeze · 6 November 2026
+
+Dispatcher0159 direction authorised remaining-acceptance planning and minimal
+cancellation-safe harness authoring. Source review confirmed the Popen/initial
+registration gap; no runtime reproduction occurred. ProcessTree now owns creation,
+defers handled SIGTERM/SIGINT through persisted registration and strict readback,
+and keeps a pending latch when creation/registration is incomplete. Empty proof
+is refused; direct-handle stop/join is attempted even after metadata failure.
+The supervisor recovers the tree handle when deferred cancellation prevents its
+local return assignment. This is an authored proposal, not a tested repair.
+
+AST/compile-without-execution and static call-site/guard checks passed. Stdlib
+refreezeSHA2c7596db6b70126e71bda2902b4aeec92c3f1d883963ad1f175fdb4f0667e073
+changes only the two owned helper/supervisor content identities:202 other nodes,
+138 installed files/14 packages/37 absence probes and all77 immutable sources
+remain unchanged. No test, JS/Node, OS process query, resource reservation, scratch
+allocation, generation/training/settings/metrics/full run or new grant. Original
+failed/successful execution receipts, artifact and captured command/report stay
+unchanged at their original identities. No descendants or Jira change.
+
+Read-only local shared-ref snapshotbef528ba has37 matching catalogue files, seven
+different and33 absent; all absent sources exist at the reviewed published
+commits. Parent must agree the combined103/113/own checkpoint and exact affected
+caller changes before integrated validation; Jira links do not gate pickup.
+`docs/gcsp/models/fucq115-final-validation-plan.md` names the authored npm-test
+requirement, current source prerequisites and minimum lifecycle fault boundaries.
+Existing identical optimizer/dataset/baseline/activation proof is retained; no
+retraining or full run solely for completion. Details/hashes/delta/comparison:
+`fucq115-cancellation-repair.md` and `fucq115-cancellation-repair-receipt.json`.
+Policy delivery remains complete; acceptance/integration/full gate remains open.
+Own worker stays expired while awaiting independent review/exact concrete scope.

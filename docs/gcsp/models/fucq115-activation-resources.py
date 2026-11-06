@@ -213,8 +213,10 @@ class ProcessTree:
         self.samples = 0
         self.peak_rss = 0
         self.joined = False
+        self.launch_pending = False
         self.record = scratch.record
-        self.record.update(ownedPids=[], groups=[], uncertainGroups=[], processObservations=0)
+        self.record.update(ownedPids=[], groups=[], uncertainGroups=[], processObservations=0,
+                           launchState='not-started')
 
     def save(self):
         self.resources.atomic_json(self.scratch.manifest, self.record)
@@ -286,6 +288,50 @@ class ProcessTree:
         self.record.setdefault('uncertainSnapshots', []).append(time.time())
         self.save()
 
+    def launch(self, command, **options):
+        if self.process is not None or self.record['launchState'] != 'not-started':
+            raise RuntimeError('Only one owned launch is permitted')
+        previous = {sig: signal.getsignal(sig) for sig in [signal.SIGTERM, signal.SIGINT]}
+        cancelled = set()
+        def defer(signum, frame):
+            cancelled.add(signum)
+        try:
+            for sig in previous:
+                signal.signal(sig, defer)
+            # The durable pending state precedes Popen. If creation raises
+            # without returning a handle, an empty tree cannot prove absence.
+            self.launch_pending = True
+            self.record['launchState'] = 'creating'
+            self.save()
+            self.process = subprocess.Popen(command, **options)
+            self.register(self.process)
+            self.record['launchState'] = 'registered'
+            self.save()
+            if strict_json(self.scratch.manifest) != self.record:
+                raise RuntimeError('Initial launch ownership readback differs')
+            self.launch_pending = False
+        finally:
+            for sig, handler in previous.items():
+                signal.signal(sig, handler)
+        # Ownership and its readback are complete before cancellation escapes,
+        # even if the caller has not yet received the returned process handle.
+        if cancelled:
+            self.record['cancellationDuringLaunch'] = sorted(cancelled)
+            self.save()
+            raise KeyboardInterrupt('Cancellation deferred through launch registration')
+        return self.process
+
+    def require_registered(self):
+        state = self.record['launchState']
+        if self.launch_pending:
+            raise RuntimeError('Launch registration incomplete; preserve resources')
+        if self.process is None:
+            if state != 'not-started' or self.record['ownedPids'] or self.record['groups']:
+                raise RuntimeError('Missing launched child handle; preserve resources')
+        elif state != 'registered' or not any(item['pid'] == self.process.pid and item.get('owned')
+                                               for item in self.record['ownedPids']):
+            raise RuntimeError('Existing child is not registered; preserve resources')
+
     def register(self, process):
         self.process = process
         # Retain unknown before querying: a failed probe never drops its PID.
@@ -293,7 +339,11 @@ class ProcessTree:
         self.record['ownedPids'].append(item)
         self.record['groups'].append(process.pid)
         self.save()
-        rows = process_snapshot()
+        try:
+            rows = process_snapshot()
+        except SnapshotUncertain as error:
+            self.remember_uncertain(error)
+            raise
         row = rows.get(process.pid)
         if row is None or row['pgid'] != process.pid or row['ppid'] != os.getpid():
             raise RuntimeError('Launched leader identity is unknown')
@@ -302,6 +352,7 @@ class ProcessTree:
         self.observe()
 
     def proof(self):
+        self.require_registered()
         rows, members, _rss = self.observe()
         pids_absent = all(definitely_absent(item, rows) for item in self.record['ownedPids'])
         # An extant zombie is not absence. Wait/join precedes this proof.
@@ -318,40 +369,53 @@ class ProcessTree:
         try:
             return self._stop_join()
         except BaseException as error:
-            if isinstance(error, SnapshotUncertain):
-                self.remember_uncertain(error)
             # A still-unreaped direct child is ours even when ps fails. Stop and
             # join that handle; independently stop already-known descendants
             # where a fresh full snapshot proves their exact start. Unknowns
             # remain in the manifest and prevent deletion/release.
-            for sig in [signal.SIGTERM, signal.SIGKILL]:
-                for item in self.record['ownedPids']:
-                    if not item.get('owned') or not item.get('start'):
-                        continue
-                    try:
-                        current = process_snapshot().get(item['pid'])
-                        if current and current['start'] == item['start']:
-                            os.kill(item['pid'], sig)
-                    except (OSError, RuntimeError, subprocess.TimeoutExpired) as error:
-                        if isinstance(error, SnapshotUncertain):
-                            self.remember_uncertain(error)
-                        self.record.setdefault('cleanupSignalUncertainty', []).append({
-                            'pid': item['pid'], 'start': item['start'], 'error': type(error).__name__})
-                self.save()
-            process = self.process
-            if process is not None:
-                for action in [process.terminate, process.kill]:
-                    if process.poll() is None:
-                        action()
-                    try:
-                        process.wait(timeout=3)
-                        self.joined = True
-                        break
-                    except subprocess.TimeoutExpired:
-                        continue
+            try:
+                if isinstance(error, SnapshotUncertain):
+                    self.remember_uncertain(error)
+                if self.process is not None and not any(item['pid'] == self.process.pid
+                                                        for item in self.record['ownedPids']):
+                    self.record['ownedPids'].append({'pid': self.process.pid, 'start': None,
+                        'pgid': self.process.pid, 'ppid': os.getpid(), 'owned': True})
+                    if self.process.pid not in self.record['groups']:
+                        self.record['groups'].append(self.process.pid)
+                    self.save()
+                for sig in [signal.SIGTERM, signal.SIGKILL]:
+                    for item in self.record['ownedPids']:
+                        if not item.get('owned') or not item.get('start'):
+                            continue
+                        try:
+                            current = process_snapshot().get(item['pid'])
+                            if current and current['start'] == item['start']:
+                                os.kill(item['pid'], sig)
+                        except (OSError, RuntimeError, subprocess.TimeoutExpired) as signal_error:
+                            if isinstance(signal_error, SnapshotUncertain):
+                                self.remember_uncertain(signal_error)
+                            self.record.setdefault('cleanupSignalUncertainty', []).append({
+                                'pid': item['pid'], 'start': item['start'], 'error': type(signal_error).__name__})
+                    self.save()
+            finally:
+                # Persistence/probe failure must not bypass the direct handle.
+                # This best effort never clears the pending latch or grants
+                # scratch deletion/reservation release after a failed launch.
+                process = self.process
+                if process is not None:
+                    for action in [process.terminate, process.kill]:
+                        if process.poll() is None:
+                            action()
+                        try:
+                            process.wait(timeout=3)
+                            self.joined = True
+                            break
+                        except subprocess.TimeoutExpired:
+                            continue
             raise
 
     def _stop_join(self):
+        self.require_registered()
         process = self.process
         if process is None:
             self.joined = True

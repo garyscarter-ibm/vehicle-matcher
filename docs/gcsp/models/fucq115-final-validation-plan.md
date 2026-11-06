@@ -24,8 +24,10 @@ only as documented; actual canonical registration/adoption and activation cover
 the corrected proposal. The earlier11-test checkpoint has additional dataset,
 index and test-file differences and must not be relabelled as a current full pass.
 
-Before **any future execution proposal**, address the dispatcher-notified
-creation-to-registration cancellation gap in the owned supervisor/resources.
+The dispatcher-notified creation-to-registration cancellation gap is confirmed
+by source review. An author-only repair is now proposed in
+`fucq115-cancellation-repair.md`, with exact delta/freeze and shared-source facts
+in `fucq115-cancellation-repair-receipt.json`. It is not a runtime-tested repair.
 At73533d7 `fucq115-activation-supervisor.py`179–181 creates the child before
 `tree.register`; final cleanup232 calls `tree.stop_join`. An interrupt in between
 can leave the local child handle outside persisted tree ownership. The repair
@@ -35,6 +37,86 @@ absence. Refresh the bounded diagnosis, independently review the exact delta,
 refreeze affected identities and request an exact grant only if further runtime
 validation is needed. No runtime reproduction was performed or authorised by
 the notice; the accepted run has independent kernel/ledger/scratch absence proof.
+
+The proposed repair moves creation into `ProcessTree.launch`, defers handled
+SIGTERM/SIGINT through persisted registration/readback, retains a sticky pending
+latch on incomplete creation, rejects empty proof for an uncertain/existing
+unregistered handle, and attempts direct stop/join even if metadata persistence
+fails. Proposed admission SHA-256 is
+`2c7596db6b70126e71bda2902b4aeec92c3f1d883963ad1f175fdb4f0667e073`;
+only supervisor/resources content identities differ from the accepted204-node
+admission. Independent review and any required finite validation remain open.
+
+Minimum changed-boundary selection, **not executed or granted**:
+
+1. Deliver handled SIGTERM and SIGINT after the real gated child returns from
+   Popen, before initial registration. Require persisted PID/start/group and
+   readback before cancellation escapes, no gate byte/model entry execution,
+   recovery when the supervisor local handle is still unset, and actual
+   stop/join/PID/group absence before deletion/release.
+2. Inject a single initial-manifest save/readback failure with an existing gated
+   child handle. Require direct stop/join despite the persistence failure, an
+   incomplete checkpoint and refused inner deletion/release. An independent
+   enclosing controller must own the test scratch/reservation and its explicit
+   cleanup; do not create intentionally orphaned real host reservations. A
+   stubbed ledger can check refusal but cannot claim actual locked-ledger proof.
+3. Inject creation failure with no returned handle after the durable creating
+   marker. Require the pending state to forbid the empty-tree success path.
+   Check the unchanged successful registration/normal stop path in the same
+   finite probe. No activation, generator, training or metrics rerun is needed.
+
+The minimum is one separately reviewed lifecycle selection, not an execution
+grant or a requirement to rerun the accepted activation. Agree its exact test
+source, fault delivery points, enclosing cleanup and admission first. Static
+parse/control-flow checks already passed; they are not these runtime checks.
+
+For final integrated proof, the fixed local shared ref `gcsp-poc` at
+`bef528ba2f3a37ccee7faf75d4f09a09f3a4bd8c` has37 matching accepted catalogue
+files, seven different and33 absent. This observation is not a latest remote
+claim; no fetch or merge ran. All33 absent files are available from the existing
+reviewed source commits, so this is composition work rather than an unavailable
+source or Jira dependency gate. The seven changed boundaries are:
+
+```text
+server/gcsp/clock/index.js
+server/gcsp/identity/index.js
+server/gcsp/policy/index.js
+server/gcsp/policy/publish.js
+server/gcsp/policy/seed-v1.json
+server/gcsp/runtime.js
+server/scenarios/employee/index.js
+```
+
+Parent must agree the actual combined checkpoint containing canonical103
+`0d3a0aa2fcee5d26ad33e587578cff7cce169090`, actual113
+`ddd884b33311b0d62225e107a4ba7d45a464c146`, the own baseline correction/default
+CLI/artifact and any later shared-caller changes, with additive policy registry
+and source provenance preserved. The exact77 rows are already in
+`fucq115-activation-source-plan.json`; the new receipt records every shared
+comparison hash. The old local worktree seed must not replace the canonical
+reviewed seed or become another active-policy source.
+
+After that source decision, reuse exact existing proof for unchanged modules.
+Only if the combined delta leaves an uncovered boundary, consider the relevant
+existing test source from the selected checkpoint: policy activation/adoption/
+versions/service, identity, clock reset or runtime publication tests. Test names
+in103 include `gcsp-policy-activation.test.js`, `gcsp-policy-adoption.test.js` and
+`gcsp-runtime-publication.test.js`; common identity/clock tests are
+`gcsp-identity.test.js` and `gcsp-clock-reset.test.js`, all under `server/test/`.
+These are candidate boundaries, not an instruction to run every listed file.
+Inspect each selected test's exact imports and side effects before admission.
+The dedicated model test adds no need to repeat the committed dataset training.
+
+The exact authored full requirement remains **`npm test` passes**. At the fixed
+shared checkpoint, package.json expands this to
+`node --test server/test/**/*.test.js`. No full-suite result/stamp is present.
+Root must agree the integrated checkpoint and a resource-owned serial launcher
+covering that complete authored test set; a scoped pass cannot substitute for
+it. If one chunk cannot fit the agreed bounds, agree complete bounded chunks
+and aggregate their results before a full stamp. Do not launch the bare command,
+skip native-dependent tests as if passed, or widen to corpus/network work. Native
+availability is a separate explicit prerequisite for any selected test needing
+it; no live/native/corpus or calibration evidence is manufactured by fixtures.
 
 No current grant permits training/settings/metrics repetition, full suite, native
 database, browser/listener/network or corpus collection. Any authorised future
