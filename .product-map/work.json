@@ -1379,7 +1379,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T00:08:31Z",
+      "observed_at": "2026-11-06T00:13:34Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-115",
       "slices": [
         {
@@ -1398,36 +1398,38 @@
         },
         {
           "id": "dataset",
-          "status": "in-progress",
+          "status": "blocked",
           "title": "Published-generator-and-meaningful-dataset",
-          "observed_at": "2026-11-06T00:08:30Z",
-          "evidence": "Approved immutable actual113 reader/generator/CLI replay and projection pass six-record schema pilot; required320-record canonical-policy run, actual corpus and cohort support remain open. docs/gcsp/models/fucq115-delivery.md"
+          "observed_at": "2026-11-06T00:13:33Z",
+          "evidence": "Actual6-record source replay/projection passes; meaningful320-record/four-cycle G8-10 dataset needs canonical103 reviewed adoption and dated source publication. Structural source/corpus/observed-producer gates remain. docs/gcsp/models/fucq115-delivery.md"
         },
         {
           "id": "evaluation",
-          "status": "in-progress",
+          "status": "blocked",
           "title": "Actual-baselines-and-held-out-evaluation",
-          "observed_at": "2026-11-06T00:08:31Z",
-          "evidence": "Metric arithmetic/reliability/class/cohort/adverse comparison checks pass. Actual99/29 source plan proposed; actual baselines and meaningful holdouts remain open."
+          "observed_at": "2026-11-06T00:13:33Z",
+          "evidence": "Metric and actual99/29 adapter contracts validated;6-record pilot lacks later/unseen support and99 exactshares. Meaningful actual baselines/heldouts require pending canonical dataset. No invented metrics."
         },
         {
           "id": "artifact",
-          "status": "in-progress",
+          "status": "blocked",
           "title": "Immutable-artifact-and-safe-summary",
-          "observed_at": "2026-11-06T00:08:31Z",
-          "evidence": "Content address/atomic immutable publication/corruption tests pass; real trained artifact and populated safe summary await actual dataset+baselines."
+          "observed_at": "2026-11-06T00:13:33Z",
+          "evidence": "Artifact/digest/atomicimmutability/corruption contracts pass. Trained actual-source artifact and populated summary await dataset/baseline evaluation. Safe fixture stays unavailable/nullmetrics."
         },
         {
           "id": "policy",
-          "status": "in-progress",
+          "status": "blocked",
           "title": "Canonical-policy-adoption-and-dated-activation",
-          "observed_at": "2026-11-06T00:08:31Z",
-          "evidence": "Real PolicyService dated publication and historical pins pass with explicit alternative test source. Exact7-row reviewed bundle proposed; canonical103adoption remains open."
+          "observed_at": "2026-11-06T00:13:33Z",
+          "evidence": "Exact7-row reviewed-bundle proposal pushed; actual PolicyService publication/historicalpin contract passes alternative source. Canonical103 adoption/modelreference activation outstanding."
         },
         {
           "id": "acceptance",
-          "status": "not-started",
-          "title": "Integration-and-final-acceptance"
+          "status": "blocked",
+          "title": "Integration-and-final-acceptance",
+          "observed_at": "2026-11-06T00:13:34Z",
+          "evidence": "13/13scoped+actualsourcepilot pass; authored committeddata CLI, realartifact/bothbaselineholdout, canonicalactivation and root-only fullsuite grant remain. No built/fullstamp claim. Clean park; own worker claim expired."
         }
       ],
       "unsliced": false,
@@ -1436,10 +1438,10 @@
           "name": "Pluto",
           "harness": "codex",
           "role": "story-lead/direct initial slice",
-          "observed_at": "2026-11-05T23:57:00.180130Z",
-          "expires_at": "2026-11-06T01:57:00.180351Z",
+          "observed_at": "2026-11-06T00:13:33.000644Z",
+          "expires_at": "2026-11-06T00:13:33.000644Z",
           "source": "thread 01a1ae22-e1cc-74a0-9717-21082afb1fd1",
-          "status": "contract and independent offline model slice"
+          "status": "stopped; independent scoped checkpoints delivered, canonical integration pending"
         }
       ],
       "branch": "dev/DEV-2026-11-04-092"

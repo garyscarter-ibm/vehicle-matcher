@@ -281,9 +281,105 @@
     ]
   },
   "borrowedDependency": {
-    "ownedLink": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/server/node_modules",
+    "borrowedLink": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/server/node_modules",
     "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules",
-    "status": "untracked; remove and verify at final park",
-    "installedPgVersion": "8.23.1"
+    "pgVersion": "8.23.1",
+    "pgPackageSHA256": "b1e53333a3d0c2c47c49a5cb919d221135dc03145df740925b899bc2baacc435",
+    "linkRemoved": true,
+    "installedTargetPreserved": true
+  },
+  "finalPark": {
+    "at": "2026-11-06T00:13:33.000644Z",
+    "ownedRuns": [
+      {
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/.claude/test-runs/fucq115/ownership/503c883e89e94574a4210b24794415ab.json",
+        "root": "/private/tmp/test-stamp-shard-503c883e89e94574a4210b24794415ab",
+        "removed": true,
+        "reservationAbsent": true,
+        "peakScratch": 311424
+      },
+      {
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/.claude/test-runs/fucq115/ownership/570da9f9332e492dba5daf012c038bb4.json",
+        "root": "/private/tmp/test-stamp-shard-570da9f9332e492dba5daf012c038bb4",
+        "removed": true,
+        "reservationAbsent": true,
+        "peakScratch": 8288
+      },
+      {
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/.claude/test-runs/fucq115/ownership/5ced6dbe9c4e4a989a3c3e0036c4fe96.json",
+        "root": "/private/tmp/test-stamp-shard-5ced6dbe9c4e4a989a3c3e0036c4fe96",
+        "removed": true,
+        "reservationAbsent": true,
+        "peakScratch": 8288
+      },
+      {
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/.claude/test-runs/fucq115/ownership/6396402802e14dc19860c5b1e3e18f4f.json",
+        "root": "/private/tmp/test-stamp-shard-6396402802e14dc19860c5b1e3e18f4f",
+        "removed": true,
+        "reservationAbsent": true,
+        "peakScratch": 8288
+      },
+      {
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/.claude/test-runs/fucq115/ownership/7c9c7184b2c04e9e8360773935d2d069.json",
+        "root": "/private/tmp/test-stamp-shard-7c9c7184b2c04e9e8360773935d2d069",
+        "removed": true,
+        "reservationAbsent": true,
+        "peakScratch": 0
+      },
+      {
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/.claude/test-runs/fucq115/ownership/bf382031a2b144b3bf0339c8a5da031f.json",
+        "root": "/private/tmp/test-stamp-shard-bf382031a2b144b3bf0339c8a5da031f",
+        "removed": true,
+        "reservationAbsent": true,
+        "peakScratch": 8288
+      },
+      {
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/.claude/test-runs/fucq115/ownership/c95b6192751141cfbf79dc7df5b65ee0.json",
+        "root": "/private/tmp/test-stamp-shard-c95b6192751141cfbf79dc7df5b65ee0",
+        "removed": true,
+        "reservationAbsent": true,
+        "peakScratch": 8288
+      },
+      {
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/.claude/test-runs/fucq115/ownership/d33eb07e2d3b4832be7923023dcf7b43.json",
+        "root": "/private/tmp/test-stamp-shard-d33eb07e2d3b4832be7923023dcf7b43",
+        "removed": true,
+        "reservationAbsent": true,
+        "peakScratch": 311424
+      },
+      {
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/.claude/test-runs/fucq115/ownership/d3efbdb6b3154a109989faf1c0aa299a.json",
+        "root": "/private/tmp/test-stamp-shard-d3efbdb6b3154a109989faf1c0aa299a",
+        "removed": true,
+        "reservationAbsent": true,
+        "peakScratch": 311424
+      },
+      {
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/.claude/test-runs/fucq115/ownership/edf603eea0d646ebbc911f0e4fe1421e.json",
+        "root": "/private/tmp/test-stamp-shard-edf603eea0d646ebbc911f0e4fe1421e",
+        "removed": true,
+        "reservationAbsent": true,
+        "peakScratch": 8288
+      },
+      {
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/.claude/test-runs/fucq115/ownership/fae9f98d2d3e4ec4a2eae16721b873af.json",
+        "root": "/private/tmp/test-stamp-shard-fae9f98d2d3e4ec4a2eae16721b873af",
+        "removed": true,
+        "reservationAbsent": true,
+        "peakScratch": 0
+      }
+    ],
+    "borrowedDependency": {
+      "borrowedLink": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/server/node_modules",
+      "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules",
+      "pgVersion": "8.23.1",
+      "pgPackageSHA256": "b1e53333a3d0c2c47c49a5cb919d221135dc03145df740925b899bc2baacc435",
+      "linkRemoved": true,
+      "installedTargetPreserved": true
+    },
+    "retainedRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/.claude/test-runs/fucq115",
+    "retainedBytes": 256256,
+    "largeOutputException": false,
+    "leftovers": []
   }
 }

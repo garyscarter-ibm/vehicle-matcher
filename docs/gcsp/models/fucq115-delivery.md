@@ -118,3 +118,34 @@ groups stopped/joined; scratch and reservations verified absent. Existing pg 8.2
 is borrowed through the explicitly untracked server/node_modules symlink; it is
 never staged and must be removed and verified at final parking. No source ignore
 rule or installed environment was changed.
+
+## Clean park and exact resume boundary
+
+Independent checkpoints are published through `5f9a589de373ee089dcdcff47e1ad360b62a50ce`.
+The dispatcher is coordinating FUCQ-103 canonical adoption/publication, rather than
+another collaborator's approval. All collaborators retain equal authority.
+
+Remaining input is a complete immutable PolicyService source with the reviewed
+seven-row bundle adopted through FUCQ-103 and a dated publication for a meaningful
+actual FUCQ-113 run. Proposed generator changes: learning.cohortSize 80, cycles 4,
+maximumGeneratedRecords at least 320, maximumChoiceEntries 40,000; preserve all
+declared noise, waits, prices and response assumptions. Set comparison.startsAt
+at/after the preparation read instant: FUCQ-113 feature facts use policyRead.asOf,
+and this consumer refuses future feature/term/exposure evidence. Split earlier
+cycles 0/1, evaluate 2/3 and exclude canonical grade group G8-10 from all training.
+Verify actual support and exact FUCQ-99 demand shares; do not alter privacy bands,
+invent missing counts or mutate a snapshot to make a run pass. Root-reviewed exact
+source composition is required at resume; no broad source merge is implied.
+
+Then exercise the actual generator/manifest and CLI, inspect held-out baselines and
+thin classes, retain adverse results and model artifact under owned paths, publish
+its reference through the existing policy operation, check historical pins and
+complete root-granted final integration/full validation. Real corpus and observed
+producer evidence remain distinct from a structural-fixture synthetic pipeline.
+
+Final receipt verifies 11 owned scratch roots removed and all 11 reservations
+absent. The exact borrowed dependency symlink was removed; its installed pg 8.23.1
+target remains untouched (package SHA-256 in `fucq115-scoped-receipt.json`). Retained
+bounded manifests/checkpoints/logs total 256,256 allocated bytes under
+`.claude/test-runs/fucq115`; no owned filesystem/process leftovers. Only Pluto's
+observed worker claim was expired at parking. No other story/map row was changed.
