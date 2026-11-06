@@ -1892,6 +1892,17 @@
           "status": "stopped; explicit IBM Global422 Advantage Credits exhaustion; checkpoint preserved"
         }
       ]
+    },
+    {
+      "id": "FUCQ-149",
+      "title": "Resume the saved manual journey through the current claim",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": null,
+      "type": "Story",
+      "observed_at": "2026-11-06T17:11:02Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-149",
+      "unsliced": true
     }
   ]
 }
