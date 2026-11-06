@@ -1816,7 +1816,7 @@
     {
       "assignee": "",
       "id": "FUCQ-59",
-      "observed_at": "2026-11-06T15:06:51Z",
+      "observed_at": "2026-11-06T15:21:09Z",
       "original_status": "To Do",
       "slices": [
         {
@@ -1848,9 +1848,9 @@
           "title": "Finite source budgets, deadlines and default no-traffic safety (2 points)"
         },
         {
-          "evidence": "Canonical APP.backend selector/v2 scope correction84/84 offline scopedPASS; old v1 report preserved/verifiable. No new source calls:14:48UTC2GET refusal remains latest, current layout/tree/options unqualified;accepted0/admissionfalse/all74pending. settings-compatibility-2026-11-06/validation.json; all allocations consumed.",
+          "evidence": "Actual15:16UTC4GET916858B;canonical bootstrap works,tree2aliases/1model,options1root254definitions/all47codes. Safe projections/independent review in canonical-source-live-2026-11-06;accepted0/admissionfalse. Offline raw-to-retained binding,modelRange/transmission compatibility,prodDate/trim/accessoryquantity and solver remain unqualified.",
           "id": "source-qualification",
-          "observed_at": "2026-11-06T15:04:41.021643+00:00",
+          "observed_at": "2026-11-06T15:21:09.549218+00:00",
           "status": "blocked",
           "title": "Selected real-source model mapping and solver integration (1 point)"
         },
@@ -1876,7 +1876,7 @@
           "title": "Authored serial npm test integration gate (1 point)"
         }
       ],
-      "status": "To Do",
+      "status": "In Progress",
       "title": "Collect distinct constructible configurations with resumable batches",
       "type": "Story",
       "unsliced": false,
@@ -1887,9 +1887,9 @@
           "role": "story-lead",
           "harness": "codex",
           "source": "thread01a1b054-1167-7820-b9f2-92ec81e37bbe",
-          "observed_at": "2026-11-06T15:04:41.021643+00:00",
-          "expires_at": "2026-11-06T15:14:41.023254+00:00",
-          "status": "Canonical APP.backend correction84 scopedPASS; cleanup verified; freezing evidence/preparing next finite step; requested/selected/runtimeSol high; no fallback"
+          "observed_at": "2026-11-06T15:21:09.549218+00:00",
+          "expires_at": "2026-11-06T15:31:09.549218+00:00",
+          "status": "Independent actual-schema review complete; preparing offline qualifier binding;Sol/high,no fallback,no source replay"
         },
         {
           "name": "Sulley",
