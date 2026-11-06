@@ -1,0 +1,2565 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-102",
+  "variant": "actual100-103-106-107-memory-entry/explicit107-question-input",
+  "status": "unexecuted physical admission; independent source/harness review required",
+  "sourcePlanSHA256": "fd2eb341905bba23414e799bb011c0d415564c0c4ac656a0b0047d82a8111c3a",
+  "sourceModules": 44,
+  "sourceDataFiles": 7,
+  "selectedCases": 11,
+  "pythonExecutable": "/Library/Developer/CommandLineTools/usr/bin/python3",
+  "pythonVersion": "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]",
+  "nodeExecutable": "/opt/homebrew/bin/node",
+  "pgEntry": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/index.js",
+  "ledgerDirectory": "/Users/garycarter/.cache/agent-scaffolding/test-resources",
+  "command": [
+    "/opt/homebrew/bin/node",
+    "<manifest-owned scratch>/launch.mjs"
+  ],
+  "nodes": {
+    "/Library/Developer/CommandLineTools/usr/bin/python3": {
+      "kind": "symlink",
+      "device": 16777232,
+      "inode": 90764668,
+      "mode": 493,
+      "resolved": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+      "targetDevice": 16777232,
+      "targetInode": 90766555,
+      "link": "../../Library/Frameworks/Python3.framework/Versions/3.9/bin/python3",
+      "bytes": 102352,
+      "sha256": "ec201019b3d883e095e753405a6fc5c1ae8f3b4905231dfd3dc6b4a1f348056f"
+    },
+    "/Users/garycarter/.cache/agent-scaffolding/test-resources": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172282405,
+      "mode": 493,
+      "resolved": "/Users/garycarter/.cache/agent-scaffolding/test-resources",
+      "targetDevice": 16777232,
+      "targetInode": 172282405
+    },
+    "/Users/garycarter/.cache/agent-scaffolding/test-resources/reservations.lock": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172282406,
+      "mode": 420,
+      "resolved": "/Users/garycarter/.cache/agent-scaffolding/test-resources/reservations.lock",
+      "targetDevice": 16777232,
+      "targetInode": 172282406,
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/_tools/scaffold_git.py": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 173036669,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/_tools/scaffold_git.py",
+      "targetDevice": 16777232,
+      "targetInode": 173036669,
+      "bytes": 129000,
+      "sha256": "ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/_tools/test_resources.py": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 173036671,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/_tools/test_resources.py",
+      "targetDevice": 16777232,
+      "targetInode": 173036671,
+      "bytes": 36093,
+      "sha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-execution-source-plan.json": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 173169071,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-execution-source-plan.json",
+      "targetDevice": 16777232,
+      "targetInode": 173169071,
+      "bytes": 32608,
+      "sha256": "fd2eb341905bba23414e799bb011c0d415564c0c4ac656a0b0047d82a8111c3a"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-freeze.py": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 173170840,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-freeze.py",
+      "targetDevice": 16777232,
+      "targetInode": 173170840,
+      "bytes": 6447,
+      "sha256": "fa21bb80f6634a6a9e468ed69fdf2368e17b7d02b56fb4dfbd41e157344a2f18"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-launch.mjs": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 173169350,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-launch.mjs",
+      "targetDevice": 16777232,
+      "targetInode": 173169350,
+      "bytes": 1092,
+      "sha256": "47a2c9af61923ddaac04c10f97c40df09cf145ecc4fecc98724bf1e09fff2b08"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-loader.mjs": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 173169351,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-loader.mjs",
+      "targetDevice": 16777232,
+      "targetInode": 173169351,
+      "bytes": 2164,
+      "sha256": "16c2eb765c5fb34637846018973ed7e73d6ea1a37e08a8e585a8124fa2361483"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-resources.py": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 173169072,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-resources.py",
+      "targetDevice": 16777232,
+      "targetInode": 173169072,
+      "bytes": 23276,
+      "sha256": "362b879cbb29da02ffb4fae8bc641b98bee95ac3ba29cd8b52514b2657684c41"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-supervisor.py": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 173169531,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-supervisor.py",
+      "targetDevice": 16777232,
+      "targetInode": 173169531,
+      "bytes": 16543,
+      "sha256": "9d8a5dad192033336729c9736db7f048dd043e11b6aa411a1d5928dd5087045a"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/package-lock.json": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 173037703,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/package-lock.json",
+      "targetDevice": 16777232,
+      "targetInode": 173037703,
+      "bytes": 19167,
+      "sha256": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/server/gcsp/offers/access.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 173046840,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/server/gcsp/offers/access.js",
+      "targetDevice": 16777232,
+      "targetInode": 173046840,
+      "bytes": 27999,
+      "sha256": "d324f2657bf3689edc4b377a8a8e7f6fd24f6b018dcbda81770d8c8e1babe299"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/server/package-lock.json": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 173037844,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/server/package-lock.json",
+      "targetDevice": 16777232,
+      "targetInode": 173037844,
+      "bytes": 5706,
+      "sha256": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/server/test/gcsp-offer-access-followup.test.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 173167465,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/server/test/gcsp-offer-access-followup.test.js",
+      "targetDevice": 16777232,
+      "targetInode": 173167465,
+      "bytes": 20908,
+      "sha256": "2b375f05fa26daa0849875879030188b173f48ca814f5898d1f878371516d3ca"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/package-lock.json": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 154434019,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/package-lock.json",
+      "targetDevice": 16777232,
+      "targetInode": 154434019,
+      "bytes": 19167,
+      "sha256": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770727,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules",
+      "targetDevice": 16777232,
+      "targetInode": 172770727,
+      "children": [
+        ".package-lock.json",
+        "pg",
+        "pg-cloudflare",
+        "pg-connection-string",
+        "pg-int8",
+        "pg-pool",
+        "pg-protocol",
+        "pg-types",
+        "pgpass",
+        "postgres-array",
+        "postgres-bytea",
+        "postgres-date",
+        "postgres-interval",
+        "split2",
+        "xtend"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/.package-lock.json": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770896,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/.package-lock.json",
+      "targetDevice": 16777232,
+      "targetInode": 172770896,
+      "bytes": 5516,
+      "sha256": "04a4016750d016025a0e662b3cc556212627eed4681ed7969296f20437a79517"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770739,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg",
+      "targetDevice": 16777232,
+      "targetInode": 172770739,
+      "children": [
+        "LICENSE",
+        "README.md",
+        "esm",
+        "lib",
+        "package.json"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770728,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare",
+      "targetDevice": 16777232,
+      "targetInode": 172770728,
+      "children": [
+        "LICENSE",
+        "README.md",
+        "dist",
+        "esm",
+        "package.json",
+        "src"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/LICENSE": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770757,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/LICENSE",
+      "targetDevice": 16777232,
+      "targetInode": 172770757,
+      "bytes": 1077,
+      "sha256": "192b8f5c96900f04a1271dec39688655d7416c1c6ea84a508e18b50d2b6751f3"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/README.md": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770826,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/README.md",
+      "targetDevice": 16777232,
+      "targetInode": 172770826,
+      "bytes": 4383,
+      "sha256": "d76b5e56e088f30e86dba1466ed03adf924344db31278ec966c5a35d219aca26"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770758,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist",
+      "targetDevice": 16777232,
+      "targetInode": 172770758,
+      "children": [
+        "empty.d.ts",
+        "empty.js",
+        "empty.js.map",
+        "index.d.ts",
+        "index.js",
+        "index.js.map"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/empty.d.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770837,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/empty.d.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770837,
+      "bytes": 53,
+      "sha256": "d889ca31ecf859432c9e675cf056009a227f839856a8cac58a70875e2d619a8b"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/empty.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770780,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/empty.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770780,
+      "bytes": 258,
+      "sha256": "3f83d105df21adbeeffb03450deb422644c30023ece93b2d6191fac3c620a316"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/empty.js.map": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770818,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/empty.js.map",
+      "targetDevice": 16777232,
+      "targetInode": 172770818,
+      "bytes": 150,
+      "sha256": "d68e0a1a8fc1c84f026b87ff43556987d0fbf0c3cd6c2c3e2715164d4795bb93"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/index.d.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770844,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/index.d.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770844,
+      "bytes": 1156,
+      "sha256": "0db679917266057c64fb2f943bad559ced56831ff56870f877c71c14913cfde4"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/index.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770804,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/index.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770804,
+      "bytes": 5712,
+      "sha256": "fdd631639301f2a7478a4770415fafcde43209cdd54b6caa73154ca423137ebd"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/index.js.map": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770823,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/index.js.map",
+      "targetDevice": 16777232,
+      "targetInode": 172770823,
+      "bytes": 5769,
+      "sha256": "2c98af14fed37fdeb2bb9ca46dfb389eee0c4e9d6c6deda414f1e02dc5c5173a"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/esm": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770829,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/esm",
+      "targetDevice": 16777232,
+      "targetInode": 172770829,
+      "children": [
+        "index.mjs"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/esm/index.mjs": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770833,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/esm/index.mjs",
+      "targetDevice": 16777232,
+      "targetInode": 172770833,
+      "bytes": 87,
+      "sha256": "8a44ad34a1d541c0607579b46ab4eb3d60c614991429aa053763d7bca58cff7e"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/package.json": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770811,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/package.json",
+      "targetDevice": 16777232,
+      "targetInode": 172770811,
+      "bytes": 944,
+      "sha256": "93b30ce3bed1ce3b836aa344c8afdaab74a42c03720e8d5baa801b6ae84ca3e7"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/src": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770838,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/src",
+      "targetDevice": 16777232,
+      "targetInode": 172770838,
+      "children": [
+        "empty.ts",
+        "index.ts",
+        "types.d.ts"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/src/empty.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770841,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/src/empty.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770841,
+      "bytes": 144,
+      "sha256": "e9bbc49a0780b0f81e9b1906aef57ad9f9371aba33a9f4e9b9eb9191c0dc19c9"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/src/index.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770847,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/src/index.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770847,
+      "bytes": 5356,
+      "sha256": "50fe877a1f395ee129e1b97bcef3ef45a124e25586dc44c2799397604ea74c76"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/src/types.d.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770849,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/src/types.d.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770849,
+      "bytes": 612,
+      "sha256": "ba1c222e51377f1d8c47979ec6216e0a566d0828b10de794db31d6a44f5cf491"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770731,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string",
+      "targetDevice": 16777232,
+      "targetInode": 172770731,
+      "children": [
+        "LICENSE",
+        "README.md",
+        "esm",
+        "index.d.ts",
+        "index.js",
+        "package.json"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/LICENSE": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770753,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/LICENSE",
+      "targetDevice": 16777232,
+      "targetInode": 172770753,
+      "bytes": 1082,
+      "sha256": "2244b5486c4427001b6756a87b9a297d427c111dcc3ba64a097492a8979c23d0"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/README.md": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770790,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/README.md",
+      "targetDevice": 16777232,
+      "targetInode": 172770790,
+      "bytes": 4932,
+      "sha256": "c2cba494f78d950f91ec21298bbf60a949dc379d4f873ffe3ee319c918a175e0"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/esm": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770805,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/esm",
+      "targetDevice": 16777232,
+      "targetInode": 172770805,
+      "children": [
+        "index.mjs"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/esm/index.mjs": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770813,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/esm/index.mjs",
+      "targetDevice": 16777232,
+      "targetInode": 172770813,
+      "bytes": 336,
+      "sha256": "e5af439889cb873c459670b82503c7b0480c7055843c6482242e50282f76b1ee"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/index.d.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770817,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/index.d.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770817,
+      "bytes": 952,
+      "sha256": "ec0ec7d7d754b7d65faf256ad01d85b49a9417a7540161aa7a378969ae095c26"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/index.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770767,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/index.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770767,
+      "bytes": 7497,
+      "sha256": "d8c0ca43dc70daf05a9ff5469c92fd0a3cbcd11cacf68156ebb19ee32d127cfd"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/package.json": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770783,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/package.json",
+      "targetDevice": 16777232,
+      "targetInode": 172770783,
+      "bytes": 1349,
+      "sha256": "53d453c5a426e69a11ff479e0d8a293505faa1833e6eb3ff7ceefdaac569e3ea"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770730,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8",
+      "targetDevice": 16777232,
+      "targetInode": 172770730,
+      "children": [
+        "LICENSE",
+        "README.md",
+        "index.js",
+        "package.json"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/LICENSE": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770777,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/LICENSE",
+      "targetDevice": 16777232,
+      "targetInode": 172770777,
+      "bytes": 750,
+      "sha256": "4e8e87ccdfc7e4b47fd89015f78468aa53b6bf43ab6e6e12d43e8f55294911de"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/README.md": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770788,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/README.md",
+      "targetDevice": 16777232,
+      "targetInode": 172770788,
+      "bytes": 389,
+      "sha256": "d77eaaca16d1fe569ee6dc87d340d2fa6d14438652618a8cf20382e16648244a"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/index.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770764,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/index.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770764,
+      "bytes": 1572,
+      "sha256": "f991b0a41119bce0efbb471275dbd02de31a79fe6f87f8f5e5678e373a0f1627"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/package.json": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770749,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/package.json",
+      "targetDevice": 16777232,
+      "targetInode": 172770749,
+      "bytes": 475,
+      "sha256": "147155887a41bb6f69ff98b3dde827b7e6a8214c3a71938da4babf8e12adff2e"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770729,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool",
+      "targetDevice": 16777232,
+      "targetInode": 172770729,
+      "children": [
+        "LICENSE",
+        "README.md",
+        "esm",
+        "index.js",
+        "package.json"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/LICENSE": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770754,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/LICENSE",
+      "targetDevice": 16777232,
+      "targetInode": 172770754,
+      "bytes": 1073,
+      "sha256": "4f15ee7fc2a72082859d7e0d12dfa4bcdd70b1c744ad3850d07780730ac08557"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/README.md": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770806,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/README.md",
+      "targetDevice": 16777232,
+      "targetInode": 172770806,
+      "bytes": 13094,
+      "sha256": "9d7028ff70e7cddeb97e7a2fda222e12c0e52fe954baf640d62d29880d9628bb"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/esm": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770815,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/esm",
+      "targetDevice": 16777232,
+      "targetInode": 172770815,
+      "children": [
+        "index.mjs"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/esm/index.mjs": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770819,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/esm/index.mjs",
+      "targetDevice": 16777232,
+      "targetInode": 172770819,
+      "bytes": 125,
+      "sha256": "521c8058172944cb9ceaee95073b49950a3906f91263303837e89f9ee346e81e"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/index.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770768,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/index.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770768,
+      "bytes": 14460,
+      "sha256": "6f304776edaabde2954cbf8c4366fa6d9512bfba0e408e78cc56b3c46c69d058"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/package.json": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770799,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/package.json",
+      "targetDevice": 16777232,
+      "targetInode": 172770799,
+      "bytes": 1083,
+      "sha256": "0a9924def9e06f791b09a44eaefb227f323a39199887f6ce17b44cb5a9193134"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770732,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol",
+      "targetDevice": 16777232,
+      "targetInode": 172770732,
+      "children": [
+        "LICENSE",
+        "README.md",
+        "dist",
+        "esm",
+        "package.json",
+        "src"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/LICENSE": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770750,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/LICENSE",
+      "targetDevice": 16777232,
+      "targetInode": 172770750,
+      "bytes": 1077,
+      "sha256": "192b8f5c96900f04a1271dec39688655d7416c1c6ea84a508e18b50d2b6751f3"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/README.md": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770873,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/README.md",
+      "targetDevice": 16777232,
+      "targetInode": 172770873,
+      "bytes": 150,
+      "sha256": "163df61eaa9f5337d5c0fcb3c0f15207f91a208dbd12ed26582bfc1e9bd59180"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770751,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist",
+      "targetDevice": 16777232,
+      "targetInode": 172770751,
+      "children": [
+        "b.d.ts",
+        "b.js",
+        "b.js.map",
+        "buffer-reader.d.ts",
+        "buffer-reader.js",
+        "buffer-reader.js.map",
+        "buffer-writer.d.ts",
+        "buffer-writer.js",
+        "buffer-writer.js.map",
+        "inbound-parser.test.d.ts",
+        "inbound-parser.test.js",
+        "inbound-parser.test.js.map",
+        "index.d.ts",
+        "index.js",
+        "index.js.map",
+        "messages.d.ts",
+        "messages.js",
+        "messages.js.map",
+        "outbound-serializer.test.d.ts",
+        "outbound-serializer.test.js",
+        "outbound-serializer.test.js.map",
+        "parser.d.ts",
+        "parser.js",
+        "parser.js.map",
+        "serializer.d.ts",
+        "serializer.js",
+        "serializer.js.map"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/b.d.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770874,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/b.d.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770874,
+      "bytes": 11,
+      "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/b.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770779,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/b.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770779,
+      "bytes": 636,
+      "sha256": "a1024bdec7246a732be4713a3d3326258732971363ac234d4c1709fe54b48be1"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/b.js.map": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770854,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/b.js.map",
+      "targetDevice": 16777232,
+      "targetInode": 172770854,
+      "bytes": 812,
+      "sha256": "458d1437306773b76c28391cb340e4c3331e3d85d267fd508eac7773f81cb325"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-reader.d.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770879,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-reader.d.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770879,
+      "bytes": 365,
+      "sha256": "0d6484c7d84af67e685cae28bbc96fafdb7d90ae5952747cb6e1f0ca831464e6"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-reader.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770802,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-reader.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770802,
+      "bytes": 1600,
+      "sha256": "fdae5fd80c1ad1015f91a92da667467752eabdf531f19558897e205559e6b714"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-reader.js.map": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770855,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-reader.js.map",
+      "targetDevice": 16777232,
+      "targetInode": 172770855,
+      "bytes": 1717,
+      "sha256": "291ea861a3856e4e13bca046e0e79c0b7d9f84467f13f5498f0a403d17409b27"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-writer.d.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770881,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-writer.d.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770881,
+      "bytes": 636,
+      "sha256": "6847d4a9b10fc9b84eec9c56b99b7321337e018fdbf5be415d14467b98d73876"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-writer.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770814,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-writer.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770814,
+      "bytes": 4094,
+      "sha256": "78428fc0607cd87c28009159e87ca3704faf7bda000ea44d2ec46a97805cec9d"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-writer.js.map": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770857,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-writer.js.map",
+      "targetDevice": 16777232,
+      "targetInode": 172770857,
+      "bytes": 4170,
+      "sha256": "005eb1ea7ba6bc3af22e0ef96a7be80e7e824b6602df150f56b4ab5258fe583c"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/inbound-parser.test.d.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770883,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/inbound-parser.test.d.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770883,
+      "bytes": 11,
+      "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/inbound-parser.test.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770820,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/inbound-parser.test.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770820,
+      "bytes": 19844,
+      "sha256": "b7bcfce357865e993960da4e85d3095e35b8384d52cc3c17dd04dde7fea8e5ad"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/inbound-parser.test.js.map": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770858,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/inbound-parser.test.js.map",
+      "targetDevice": 16777232,
+      "targetInode": 172770858,
+      "bytes": 15213,
+      "sha256": "126aa1d6837e1e0f09d6f258f0ad741c8bcedd83af5c29f86e770b819a2a54a6"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/index.d.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770885,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/index.d.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770885,
+      "bytes": 271,
+      "sha256": "c2c9f431f788b434e6ae327844ef6712bb6a6a88ad08acf20bf6cfeb41d154ba"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/index.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770827,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/index.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770827,
+      "bytes": 775,
+      "sha256": "e7a99ac02633393d8c3ef16cd6385b8246100d28c838b02420844068429a46c9"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/index.js.map": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770862,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/index.js.map",
+      "targetDevice": 16777232,
+      "targetInode": 172770862,
+      "bytes": 522,
+      "sha256": "5b68cd072bef63afbc4da7e19f6e30f4d8a2c89d5a113193cf1f15eefacd5ef8"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/messages.d.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770887,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/messages.d.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770887,
+      "bytes": 6056,
+      "sha256": "4a20a0a39aca8738cc5088f9dea2969bf2af3ca1341c56071f513059b122d150"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/messages.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770836,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/messages.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770836,
+      "bytes": 4973,
+      "sha256": "dfd22ad639f3030b41617ff0ee201ece7cdbce4adb7e1aae7978541b1384cd31"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/messages.js.map": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770863,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/messages.js.map",
+      "targetDevice": 16777232,
+      "targetInode": 172770863,
+      "bytes": 3383,
+      "sha256": "811fb02046104bfd60c5478bab3e491e8f9eb88602a17ca47f5ae69c72580dd9"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/outbound-serializer.test.d.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770889,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/outbound-serializer.test.d.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770889,
+      "bytes": 11,
+      "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/outbound-serializer.test.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770840,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/outbound-serializer.test.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770840,
+      "bytes": 14588,
+      "sha256": "2f698de794633941a67fc04506d48bc85bc74f0e9927dae08548688a91246112"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/outbound-serializer.test.js.map": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770865,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/outbound-serializer.test.js.map",
+      "targetDevice": 16777232,
+      "targetInode": 172770865,
+      "bytes": 13013,
+      "sha256": "3bf6249e69edf1068e613db668872a3bc64a357701d1a2fddef22ba92baab911"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/parser.d.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770891,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/parser.d.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770891,
+      "bytes": 583,
+      "sha256": "effa1fd4980f6dff4e81ed67009b847d34449087504319f9a0dd081e8cf23a31"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/parser.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770846,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/parser.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770846,
+      "bytes": 13515,
+      "sha256": "6f841aabda7240df44e1b08bbe8e202502ead969576c1ecc17311af48f57f2ef"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/parser.js.map": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770869,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/parser.js.map",
+      "targetDevice": 16777232,
+      "targetInode": 172770869,
+      "bytes": 10727,
+      "sha256": "fbce35fbc7e1713ab9edcbbc3a98b978f699a26fe30fbc2afe5292b219ac7507"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/serializer.d.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770893,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/serializer.d.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770893,
+      "bytes": 1301,
+      "sha256": "a33c98f95c099c2a9a383b156c8f2a16605843d29455a954c1431bcbbc1ce35a"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/serializer.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770850,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/serializer.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770850,
+      "bytes": 7102,
+      "sha256": "0c81a499cd210334e14bc65ee514b2ecf842588e27533f5e9a461f914d0b9623"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/serializer.js.map": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770872,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/serializer.js.map",
+      "targetDevice": 16777232,
+      "targetInode": 172770872,
+      "bytes": 7334,
+      "sha256": "730d03a1396d473526f691495a0b09000840d33a66601e5982ae6df9ea37196c"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/esm": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770828,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/esm",
+      "targetDevice": 16777232,
+      "targetInode": 172770828,
+      "children": [
+        "index.js"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/esm/index.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770834,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/esm/index.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770834,
+      "bytes": 325,
+      "sha256": "0f6c279f5e18cbc73dd3eab808e6eaa9621ddd3511197da2e67106fdd0b2b3b2"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/package.json": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770851,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/package.json",
+      "targetDevice": 16777232,
+      "targetInode": 172770851,
+      "bytes": 1073,
+      "sha256": "a4a4e23027b26c72be7729d045d0100ad9329959db0449c535fa7b2ba2e717c6"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770875,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src",
+      "targetDevice": 16777232,
+      "targetInode": 172770875,
+      "children": [
+        "b.ts",
+        "buffer-reader.ts",
+        "buffer-writer.ts",
+        "inbound-parser.test.ts",
+        "index.ts",
+        "messages.ts",
+        "outbound-serializer.test.ts",
+        "parser.ts",
+        "serializer.ts",
+        "testing"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/b.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770876,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/b.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770876,
+      "bytes": 473,
+      "sha256": "eb585946649fd05e86397b77be4a9d00c225d2222cbc356d725afe11ea8ab265"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/buffer-reader.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770880,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/buffer-reader.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770880,
+      "bytes": 1409,
+      "sha256": "2465afc8aa6d9863357d35e2ccac9f6b2d0d5d6c10fc4b03d8b01dbc640f3b32"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/buffer-writer.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770882,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/buffer-writer.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770882,
+      "bytes": 3771,
+      "sha256": "568a874ad28c5b235f4c325ba469124a1eaeb029e0dbbdca243280f9186bd306"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/inbound-parser.test.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770884,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/inbound-parser.test.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770884,
+      "bytes": 15695,
+      "sha256": "3a65f5bf6bfee38c5d8cc85bc9ae993eef7c677ef05d080ee069ca1a5fed6e1e"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/index.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770886,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/index.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770886,
+      "bytes": 443,
+      "sha256": "a7acc3e9fd87b531b93012b3d4d3af0cb1ec88bc4f29ba76b4af9d3d6dde927a"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/messages.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770888,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/messages.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770888,
+      "bytes": 6458,
+      "sha256": "98ceb278f736325f847a0c8326aae46f2573f2a750b056d5061ae0d00714cd2d"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/outbound-serializer.test.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770890,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/outbound-serializer.test.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770890,
+      "bytes": 11375,
+      "sha256": "42d591bf94e2db92b4ae8848be5b543e3bbca97ff882d7d56b7d607929a5557b"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/parser.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770892,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/parser.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770892,
+      "bytes": 13057,
+      "sha256": "b991370b2b49c7a701e8b75fa0e18e43757c57ccf83b86d830866fcdd3ba825f"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/serializer.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770894,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/serializer.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770894,
+      "bytes": 7384,
+      "sha256": "1d02bc0ea6d07ee7a6e8779c033e0998d1871a320c74157c936a47535d4238bc"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/testing": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770877,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/testing",
+      "targetDevice": 16777232,
+      "targetInode": 172770877,
+      "children": [
+        "buffer-list.ts",
+        "test-buffers.ts"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/testing/buffer-list.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770878,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/testing/buffer-list.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770878,
+      "bytes": 1727,
+      "sha256": "01bce658cf7fbb2c03ebb4c3d7e729389d6b3c9edb3cbfc2e1864f2a76647a00"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/testing/test-buffers.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770895,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/testing/test-buffers.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770895,
+      "bytes": 4360,
+      "sha256": "556522ba2930a51c27b1ad945a6308f3a4d6b4f449a0f9d90e8bc631f9eb8536"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770733,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types",
+      "targetDevice": 16777232,
+      "targetInode": 172770733,
+      "children": [
+        ".travis.yml",
+        "Makefile",
+        "README.md",
+        "index.d.ts",
+        "index.js",
+        "index.test-d.ts",
+        "lib",
+        "package.json",
+        "test"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/.travis.yml": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770766,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/.travis.yml",
+      "targetDevice": 16777232,
+      "targetInode": 172770766,
+      "bytes": 83,
+      "sha256": "b09d0d2ec01d004669d7ff94f5fc91f380e88faece76226c7c72b0a99751dc36"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/Makefile": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770801,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/Makefile",
+      "targetDevice": 16777232,
+      "targetInode": 172770801,
+      "bytes": 232,
+      "sha256": "f8ef5d631da574fb89632ac2664fdab6150b122f06b700d95c98b247bce56257"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/README.md": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770808,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/README.md",
+      "targetDevice": 16777232,
+      "targetInode": 172770808,
+      "bytes": 3831,
+      "sha256": "ecda9bca71d3f0cee4e600d1dd2bef336213f39ef2e8fca6a1a1c1c8723f643a"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/index.d.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770778,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/index.d.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770778,
+      "bytes": 2627,
+      "sha256": "f60e3e3060207ac982da13363181fd7ee4beecc19a7c569f0d6bb034331066c2"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/index.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770789,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/index.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770789,
+      "bytes": 1214,
+      "sha256": "ece6d549270ba55d08126b10c9997324d808ee828ef00dad236e84e54d9d556d"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/index.test-d.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770796,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/index.test-d.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770796,
+      "bytes": 759,
+      "sha256": "da9b9d37dce95816b504a3b7577135a6060b1ba8053f0a643786ed672488bbdd"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770809,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib",
+      "targetDevice": 16777232,
+      "targetInode": 172770809,
+      "children": [
+        "arrayParser.js",
+        "binaryParsers.js",
+        "builtins.js",
+        "textParsers.js"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/arrayParser.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770816,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/arrayParser.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770816,
+      "bytes": 208,
+      "sha256": "cad20b20e6312125b45f74480eba3ef46b456997da4f53bbec56356d66edd730"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/binaryParsers.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770821,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/binaryParsers.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770821,
+      "bytes": 6063,
+      "sha256": "4b0105414068ea96450ef0d420db9449c00c565c5894683955af15bf94075fb9"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/builtins.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770824,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/builtins.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770824,
+      "bytes": 1564,
+      "sha256": "09213197e4b44012e4c83669aa80884a189e90c777ddfef1f44c90c412167354"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/textParsers.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770831,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/textParsers.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770831,
+      "bytes": 5367,
+      "sha256": "bd811a530000508b6b90c1db462078e122f0404769d73f57ad41fe90aca159bd"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/package.json": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770752,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/package.json",
+      "targetDevice": 16777232,
+      "targetInode": 172770752,
+      "bytes": 973,
+      "sha256": "3ec0293cb38cc8d9475e3eb32ac5f19d195bf9fccc8b19a0714e6ecd6e7c2cf0"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/test": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770830,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/test",
+      "targetDevice": 16777232,
+      "targetInode": 172770830,
+      "children": [
+        "index.js",
+        "types.js"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/test/index.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770835,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/test/index.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770835,
+      "bytes": 644,
+      "sha256": "903e76e7cd794c5f7918b67847e3790f4c582948eaf75ab9fd43d62278b44bc3"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/test/types.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770842,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/test/types.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770842,
+      "bytes": 11731,
+      "sha256": "b813a6ece808d40094bac1770d4d35cb0e17ae70a4236cc5c93846d72c08c159"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/LICENSE": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770755,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/LICENSE",
+      "targetDevice": 16777232,
+      "targetInode": 172770755,
+      "bytes": 1077,
+      "sha256": "192b8f5c96900f04a1271dec39688655d7416c1c6ea84a508e18b50d2b6751f3"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/README.md": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770868,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/README.md",
+      "targetDevice": 16777232,
+      "targetInode": 172770868,
+      "bytes": 4452,
+      "sha256": "a02996f80893c4436e600406d5b48cfbc8d5f9500b9f595a6779361ef3a0b4d2"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/esm": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770870,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/esm",
+      "targetDevice": 16777232,
+      "targetInode": 172770870,
+      "children": [
+        "index.mjs"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/esm/index.mjs": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770871,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/esm/index.mjs",
+      "targetDevice": 16777232,
+      "targetInode": 172770871,
+      "bytes": 579,
+      "sha256": "5ef4d06556eeb775987759c2c09229dca2139421ee40e819b566612db2b4a8dc"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770756,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib",
+      "targetDevice": 16777232,
+      "targetInode": 172770756,
+      "children": [
+        "client.js",
+        "connection-parameters.js",
+        "connection.js",
+        "crypto",
+        "defaults.js",
+        "index.js",
+        "native",
+        "query.js",
+        "result.js",
+        "stream.js",
+        "type-overrides.js",
+        "utils.js"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/client.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770812,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/client.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770812,
+      "bytes": 25715,
+      "sha256": "ad6aa93c26b0bf26db1f2ebe74216212790a04c41af5585c63760f9fa8322a32"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/connection-parameters.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770832,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/connection-parameters.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770832,
+      "bytes": 5957,
+      "sha256": "6b6548f99acba3502663a17a180582ba8e1f1725aa9d94b5f47cac19dcb6211b"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/connection.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770839,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/connection.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770839,
+      "bytes": 6399,
+      "sha256": "f93e914bf408657f2301393489da561a5a464e9c30f4f51b681b18a21a5f1c84"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770769,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto",
+      "targetDevice": 16777232,
+      "targetInode": 172770769,
+      "children": [
+        "cert-signatures.js",
+        "sasl.js",
+        "utils.js"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/cert-signatures.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770791,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/cert-signatures.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770791,
+      "bytes": 4089,
+      "sha256": "c4b666a8d8b0dedc0724fbeeb55333d15ced942d1b10f9cd854d77d7861b3d08"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/sasl.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770859,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/sasl.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770859,
+      "bytes": 9900,
+      "sha256": "99f1a2607fe2a29f1c4dd1aaf43dec0fc2b5de8755de72b39d3aa8c575bd6a71"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/utils.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770864,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/utils.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770864,
+      "bytes": 2649,
+      "sha256": "a849cfe22d7590d79ddee76c8d7a058e2b67360a0d76683275d34133e5637117"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/defaults.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770843,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/defaults.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770843,
+      "bytes": 2612,
+      "sha256": "d91c22d082ec974f9f878a71e8d9d56a7e5fa9a711cc63f32522b43f5e9169d4"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/index.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770845,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/index.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770845,
+      "bytes": 1810,
+      "sha256": "3fad6e6d3d976edbabe0cbc9e1d39f4340bcb719bbbb186a0d3a24f3dbd4a94c"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770822,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native",
+      "targetDevice": 16777232,
+      "targetInode": 172770822,
+      "children": [
+        "client.js",
+        "index.js",
+        "query.js"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/client.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770825,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/client.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770825,
+      "bytes": 11601,
+      "sha256": "53d4a4756bb7a33b08154c08047c48421216297bf9033a31445bbb24dc233ebe"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/index.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770848,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/index.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770848,
+      "bytes": 50,
+      "sha256": "99fb61cb78a6d78b7a5fc0b9ac264ad58272af48be4bc50bfdb948b1342e3292"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/query.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770852,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/query.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770852,
+      "bytes": 4836,
+      "sha256": "6a9a594fe12682d25b5dbc03c6e36d44ef303ca338cd4d59db3ce9c0919a3f8e"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/query.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770853,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/query.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770853,
+      "bytes": 7710,
+      "sha256": "ecf885185f0ad8b82c680a184d65bc08462fd2adee047218268c35dade9f8913"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/result.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770856,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/result.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770856,
+      "bytes": 2829,
+      "sha256": "6d7193da53f8557600a065e4356626026e8c5baf12c477dc19e439d8f204225c"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/stream.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770860,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/stream.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770860,
+      "bytes": 2132,
+      "sha256": "0bd4001775301604ddf7c94152e05f6f30a9354876717bdae2ab636d00eb12ba"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/type-overrides.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770861,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/type-overrides.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770861,
+      "bytes": 770,
+      "sha256": "47cb7f7bc6a6e1b1d4dc7c92bacacb436f12e99242b77da8391fd5b71991d2a5"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/utils.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770866,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/utils.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770866,
+      "bytes": 5797,
+      "sha256": "0348fa1818f4490823187cafc3d31738de7fe3bd30dd0cd12711c272367b2d80"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/package.json": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770867,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/package.json",
+      "targetDevice": 16777232,
+      "targetInode": 172770867,
+      "bytes": 1668,
+      "sha256": "b1e53333a3d0c2c47c49a5cb919d221135dc03145df740925b899bc2baacc435"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770734,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass",
+      "targetDevice": 16777232,
+      "targetInode": 172770734,
+      "children": [
+        "README.md",
+        "lib",
+        "package.json"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/README.md": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770810,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/README.md",
+      "targetDevice": 16777232,
+      "targetInode": 172770810,
+      "bytes": 3294,
+      "sha256": "62549909404b5a0dcb2b4b74c9a930baf8095dbcfa1543c4ffc79378acd22b57"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/lib": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770742,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/lib",
+      "targetDevice": 16777232,
+      "targetInode": 172770742,
+      "children": [
+        "helper.js",
+        "index.js"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/lib/helper.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770770,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/lib/helper.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770770,
+      "bytes": 5488,
+      "sha256": "28d823dcde115f31848ba93d9cb55ba20089ac701b6a38b228d185d96df4f1b5"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/lib/index.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770797,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/lib/index.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770797,
+      "bytes": 467,
+      "sha256": "cc95b8ef6c32a9afdc48b85a5e7128d5e29567f8ded02d9bf7acd27c3d870c39"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/package.json": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770803,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/package.json",
+      "targetDevice": 16777232,
+      "targetInode": 172770803,
+      "bytes": 1074,
+      "sha256": "d75240eb4fe759c10db9f903838275348676a8bdc1f329e20a833713cd7c99bd"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770735,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array",
+      "targetDevice": 16777232,
+      "targetInode": 172770735,
+      "children": [
+        "index.d.ts",
+        "index.js",
+        "license",
+        "package.json",
+        "readme.md"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/index.d.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770762,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/index.d.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770762,
+      "bytes": 131,
+      "sha256": "5e5cd3ad9676e8fa514b66502e5d132c537a9d78a849874c4b2d6f59aaff5acf"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/index.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770774,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/index.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770774,
+      "bytes": 2320,
+      "sha256": "807ba580ed423e518672c27b4022a56acb693be04349733ffc1fe6f324fbcee2"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/license": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770784,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/license",
+      "targetDevice": 16777232,
+      "targetInode": 172770784,
+      "bytes": 1111,
+      "sha256": "f057f36739d53d228a746de4440c1e0c644ecde06d6beab45337d39c9d12a393"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/package.json": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770747,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/package.json",
+      "targetDevice": 16777232,
+      "targetInode": 172770747,
+      "bytes": 649,
+      "sha256": "dcd6a505fcbc032b409ee2838ab2c776dea3a9cfe02b736364b6cb82a946665f"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/readme.md": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770794,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/readme.md",
+      "targetDevice": 16777232,
+      "targetInode": 172770794,
+      "bytes": 692,
+      "sha256": "d6b0e269174660704b3d72438334a52d2bcb2f353a3354f3c7cd65771e27c0de"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770736,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea",
+      "targetDevice": 16777232,
+      "targetInode": 172770736,
+      "children": [
+        "index.js",
+        "license",
+        "package.json",
+        "readme.md"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/index.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770765,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/index.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770765,
+      "bytes": 863,
+      "sha256": "c078b99e1009c4bcf6e3ab59d9fe808b12caee3461204ae599cdd9cccd990801"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/license": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770745,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/license",
+      "targetDevice": 16777232,
+      "targetInode": 172770745,
+      "bytes": 1111,
+      "sha256": "f057f36739d53d228a746de4440c1e0c644ecde06d6beab45337d39c9d12a393"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/package.json": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770775,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/package.json",
+      "targetDevice": 16777232,
+      "targetInode": 172770775,
+      "bytes": 617,
+      "sha256": "9125568c5fb51a65b8f11adb0080c2775b99ee82822d73bff8b56b2a9d47d7aa"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/readme.md": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770785,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/readme.md",
+      "targetDevice": 16777232,
+      "targetInode": 172770785,
+      "bytes": 504,
+      "sha256": "24d2c6e5bc32e86c9263af0d8ca2e5217a43565a311942888ba979fd5b0ed550"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770741,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date",
+      "targetDevice": 16777232,
+      "targetInode": 172770741,
+      "children": [
+        "index.js",
+        "license",
+        "package.json",
+        "readme.md"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/index.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770761,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/index.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770761,
+      "bytes": 2676,
+      "sha256": "9a09e3ec0775237576b1f6ff0fba0ed6171235aeded635a42c174b517e34cb1a"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/license": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770743,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/license",
+      "targetDevice": 16777232,
+      "targetInode": 172770743,
+      "bytes": 1111,
+      "sha256": "f057f36739d53d228a746de4440c1e0c644ecde06d6beab45337d39c9d12a393"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/package.json": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770771,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/package.json",
+      "targetDevice": 16777232,
+      "targetInode": 172770771,
+      "bytes": 607,
+      "sha256": "03f9edefa96697072075e02df045cc61ed4ca2f8dfffb1ff87f4070bc3404151"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/readme.md": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770781,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/readme.md",
+      "targetDevice": 16777232,
+      "targetInode": 172770781,
+      "bytes": 1521,
+      "sha256": "ac45d399addd5e87db86d35adf84755bceadb0aee2360daeffd7af2d4ab41472"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770737,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval",
+      "targetDevice": 16777232,
+      "targetInode": 172770737,
+      "children": [
+        "index.d.ts",
+        "index.js",
+        "license",
+        "package.json",
+        "readme.md"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/index.d.ts": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770759,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/index.d.ts",
+      "targetDevice": 16777232,
+      "targetInode": 172770759,
+      "bytes": 422,
+      "sha256": "71f9db35d9032bee846bafdf29caf0229ce594495f6c6457e65276afe962dc8a"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/index.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770772,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/index.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770772,
+      "bytes": 3413,
+      "sha256": "836fe0a39e52f051d62583d8375d3b270b4cb93dd026b125438a89e5a0258c41"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/license": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770782,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/license",
+      "targetDevice": 16777232,
+      "targetInode": 172770782,
+      "bytes": 1111,
+      "sha256": "f057f36739d53d228a746de4440c1e0c644ecde06d6beab45337d39c9d12a393"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/package.json": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770744,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/package.json",
+      "targetDevice": 16777232,
+      "targetInode": 172770744,
+      "bytes": 666,
+      "sha256": "cc3056db105e66c9128cb8a387cda782d5f1ae9281be90de0b8d26a90af89c57"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/readme.md": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770792,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/readme.md",
+      "targetDevice": 16777232,
+      "targetInode": 172770792,
+      "bytes": 1115,
+      "sha256": "f5399e5250a2cc93245d874dbfe3527e5845119a65b80ea13cbb66ccf913818e"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770740,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2",
+      "targetDevice": 16777232,
+      "targetInode": 172770740,
+      "children": [
+        "LICENSE",
+        "README.md",
+        "bench.js",
+        "index.js",
+        "package.json",
+        "test.js"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/LICENSE": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770746,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/LICENSE",
+      "targetDevice": 16777232,
+      "targetInode": 172770746,
+      "bytes": 764,
+      "sha256": "c372ef2fa1dfcb124ed807609751e75e3a009f108c5724916b489288fcb88a0c"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/README.md": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770798,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/README.md",
+      "targetDevice": 16777232,
+      "targetInode": 172770798,
+      "bytes": 3381,
+      "sha256": "7369c93bb01adc348ccdd1ac052880cc7d06e39a4a037c6a3f15175c3a6f0a64"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/bench.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770760,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/bench.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770760,
+      "bytes": 472,
+      "sha256": "de9eadc4133f88e9991f504899c47ef841ee923576dba2a8e50dc34a1d48692e"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/index.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770773,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/index.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770773,
+      "bytes": 3764,
+      "sha256": "842471719e0e901e01ae1a1d3a6a4d1ff3e36747a7f50d5644f09d1d595c1857"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/package.json": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770793,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/package.json",
+      "targetDevice": 16777232,
+      "targetInode": 172770793,
+      "bytes": 1113,
+      "sha256": "87b734c3087c8d9ed5d76d1bff00db30f960831ba8705dd18d73b180d08d2140"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/test.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770786,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/test.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770786,
+      "bytes": 7925,
+      "sha256": "de9619b9670887b6d1ed959287b96b46334cd9a6be21487c8a715afad90eade8"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend": {
+      "kind": "directory",
+      "device": 16777232,
+      "inode": 172770738,
+      "mode": 493,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend",
+      "targetDevice": 16777232,
+      "targetInode": 172770738,
+      "children": [
+        ".jshintrc",
+        "LICENSE",
+        "README.md",
+        "immutable.js",
+        "mutable.js",
+        "package.json",
+        "test.js"
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/.jshintrc": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770763,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/.jshintrc",
+      "targetDevice": 16777232,
+      "targetInode": 172770763,
+      "bytes": 545,
+      "sha256": "da3531289454b9a256c622c1a74771440d4f0e57092262902cefbc6830ec3a7c"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/LICENSE": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770787,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/LICENSE",
+      "targetDevice": 16777232,
+      "targetInode": 172770787,
+      "bytes": 1078,
+      "sha256": "82e67379203d5794e7c44549847d8d64ae6904591381682360470898bd306821"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/README.md": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770800,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/README.md",
+      "targetDevice": 16777232,
+      "targetInode": 172770800,
+      "bytes": 726,
+      "sha256": "fe5fb4d83470799709c32207fc1fff3e522070b2c625a9818f191125406cd360"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/immutable.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770776,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/immutable.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770776,
+      "bytes": 384,
+      "sha256": "04986f168b8f16f4f25237d0608cdf57b6ca14f100fed62c0295bda2559ab24b"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/mutable.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770795,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/mutable.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770795,
+      "bytes": 369,
+      "sha256": "71a38649c77408217483f81f55daee1d6646d6c670e3d034a4482cb3453886e9"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/package.json": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770748,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/package.json",
+      "targetDevice": 16777232,
+      "targetInode": 172770748,
+      "bytes": 1056,
+      "sha256": "b02ffef8cda96c5c3ee00a00390e63f608362c2ddfb3ed754e181d013a45d48a"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/test.js": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172770807,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/test.js",
+      "targetDevice": 16777232,
+      "targetInode": 172770807,
+      "bytes": 2307,
+      "sha256": "4a7a6d3aade85095607c4aa3bd99f74fa6adaa69058d156677ad7756955e80f6"
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/package-lock.json": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 172060328,
+      "mode": 420,
+      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/package-lock.json",
+      "targetDevice": 16777232,
+      "targetInode": 172060328,
+      "bytes": 5706,
+      "sha256": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e"
+    },
+    "/bin/ps": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 1152921500312571423,
+      "mode": 2541,
+      "resolved": "/bin/ps",
+      "targetDevice": 16777232,
+      "targetInode": 1152921500312571423,
+      "bytes": 170816,
+      "sha256": "472992c470606d28f577590decfecd7f4a20f832fd92c671bebc6d44790b5d02"
+    },
+    "/opt/homebrew/bin/node": {
+      "kind": "symlink",
+      "device": 16777232,
+      "inode": 149247099,
+      "mode": 493,
+      "resolved": "/opt/homebrew/Cellar/node/26.5.0/bin/node",
+      "targetDevice": 16777232,
+      "targetInode": 149228790,
+      "link": "../Cellar/node/26.5.0/bin/node",
+      "bytes": 50320,
+      "sha256": "70851490e028b3d699a8d6d4e1de909af2a989359ae807974c92af9c6580a8e8"
+    },
+    "/usr/bin/git": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 1152921500312571586,
+      "mode": 493,
+      "resolved": "/usr/bin/git",
+      "targetDevice": 16777232,
+      "targetInode": 1152921500312571586,
+      "bytes": 118928,
+      "sha256": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818"
+    },
+    "/usr/bin/python3": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 1152921500312571586,
+      "mode": 493,
+      "resolved": "/usr/bin/python3",
+      "targetDevice": 16777232,
+      "targetInode": 1152921500312571586,
+      "bytes": 118928,
+      "sha256": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818"
+    },
+    "/usr/bin/vm_stat": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 1152921500312573093,
+      "mode": 493,
+      "resolved": "/usr/bin/vm_stat",
+      "targetDevice": 16777232,
+      "targetInode": 1152921500312573093,
+      "bytes": 101856,
+      "sha256": "04c1ec2d5939843c9a89a26791020d2017a50ff97a2d5b380af69d5fcdae5a63"
+    },
+    "/usr/sbin/lsof": {
+      "kind": "file",
+      "device": 16777232,
+      "inode": 1152921500312576119,
+      "mode": 493,
+      "resolved": "/usr/sbin/lsof",
+      "targetDevice": 16777232,
+      "targetInode": 1152921500312576119,
+      "bytes": 307600,
+      "sha256": "28c36d6b6dfcce1f544717b0d1961aa03441ee0a736fee3e1eaeb215c0fbff4c"
+    }
+  },
+  "installedPackages": {
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg": {
+      "name": "pg",
+      "version": "8.23.1",
+      "edges": [
+        {
+          "name": "pg-cloudflare",
+          "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare",
+          "absentCandidates": [
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/node_modules/pg-cloudflare",
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg-cloudflare"
+          ]
+        },
+        {
+          "name": "pg-connection-string",
+          "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string",
+          "absentCandidates": [
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/node_modules/pg-connection-string",
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg-connection-string"
+          ]
+        },
+        {
+          "name": "pg-native",
+          "target": null,
+          "absentCandidates": [
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/node_modules/pg-native",
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg-native",
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-native",
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/pg-native",
+            "/Users/garycarter/Code/GitHub/node_modules/pg-native",
+            "/Users/garycarter/Code/node_modules/pg-native",
+            "/Users/garycarter/node_modules/pg-native",
+            "/Users/node_modules/pg-native",
+            "/node_modules/pg-native"
+          ]
+        },
+        {
+          "name": "pg-pool",
+          "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool",
+          "absentCandidates": [
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/node_modules/pg-pool",
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg-pool"
+          ]
+        },
+        {
+          "name": "pg-protocol",
+          "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol",
+          "absentCandidates": [
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/node_modules/pg-protocol",
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg-protocol"
+          ]
+        },
+        {
+          "name": "pg-types",
+          "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types",
+          "absentCandidates": [
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/node_modules/pg-types",
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg-types"
+          ]
+        },
+        {
+          "name": "pgpass",
+          "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass",
+          "absentCandidates": [
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/node_modules/pgpass",
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pgpass"
+          ]
+        }
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare": {
+      "name": "pg-cloudflare",
+      "version": "1.4.1",
+      "edges": []
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string": {
+      "name": "pg-connection-string",
+      "version": "2.14.1",
+      "edges": []
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8": {
+      "name": "pg-int8",
+      "version": "1.0.1",
+      "edges": []
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool": {
+      "name": "pg-pool",
+      "version": "3.14.0",
+      "edges": [
+        {
+          "name": "pg",
+          "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg",
+          "absentCandidates": [
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/node_modules/pg",
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg"
+          ]
+        }
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol": {
+      "name": "pg-protocol",
+      "version": "1.16.1",
+      "edges": []
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types": {
+      "name": "pg-types",
+      "version": "2.2.0",
+      "edges": [
+        {
+          "name": "pg-int8",
+          "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8",
+          "absentCandidates": [
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/node_modules/pg-int8",
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg-int8"
+          ]
+        },
+        {
+          "name": "postgres-array",
+          "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array",
+          "absentCandidates": [
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/node_modules/postgres-array",
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/postgres-array"
+          ]
+        },
+        {
+          "name": "postgres-bytea",
+          "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea",
+          "absentCandidates": [
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/node_modules/postgres-bytea",
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/postgres-bytea"
+          ]
+        },
+        {
+          "name": "postgres-date",
+          "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date",
+          "absentCandidates": [
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/node_modules/postgres-date",
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/postgres-date"
+          ]
+        },
+        {
+          "name": "postgres-interval",
+          "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval",
+          "absentCandidates": [
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/node_modules/postgres-interval",
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/postgres-interval"
+          ]
+        }
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass": {
+      "name": "pgpass",
+      "version": "1.0.5",
+      "edges": [
+        {
+          "name": "split2",
+          "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2",
+          "absentCandidates": [
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/node_modules/split2",
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/split2"
+          ]
+        }
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array": {
+      "name": "postgres-array",
+      "version": "2.0.0",
+      "edges": []
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea": {
+      "name": "postgres-bytea",
+      "version": "1.0.1",
+      "edges": []
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date": {
+      "name": "postgres-date",
+      "version": "1.0.7",
+      "edges": []
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval": {
+      "name": "postgres-interval",
+      "version": "1.2.0",
+      "edges": [
+        {
+          "name": "xtend",
+          "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend",
+          "absentCandidates": [
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/node_modules/xtend",
+            "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/xtend"
+          ]
+        }
+      ]
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2": {
+      "name": "split2",
+      "version": "4.2.0",
+      "edges": []
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend": {
+      "name": "xtend",
+      "version": "4.0.2",
+      "edges": []
+    }
+  },
+  "lockFiles": [
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/package-lock.json",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/server/package-lock.json",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/package-lock.json",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/.package-lock.json",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/package-lock.json"
+  ],
+  "absentResolutionCandidates": [
+    "/Users/garycarter/Code/GitHub/node_modules/pg-native",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/server/node_modules",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/pg-native",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg-cloudflare",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg-connection-string",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg-int8",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg-native",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg-pool",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg-protocol",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg-types",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pgpass",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/postgres-array",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/postgres-bytea",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/postgres-date",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/postgres-interval",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/split2",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/xtend",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-native",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/node_modules/pg",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/node_modules/pg-int8",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/node_modules/postgres-array",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/node_modules/postgres-bytea",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/node_modules/postgres-date",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/node_modules/postgres-interval",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/node_modules/pg-cloudflare",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/node_modules/pg-connection-string",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/node_modules/pg-native",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/node_modules/pg-pool",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/node_modules/pg-protocol",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/node_modules/pg-types",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/node_modules/pgpass",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/node_modules/split2",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/node_modules/xtend",
+    "/Users/garycarter/Code/node_modules/pg-native",
+    "/Users/garycarter/node_modules/pg-native",
+    "/Users/node_modules/pg-native",
+    "/node_modules/pg-native"
+  ],
+  "allocation": "none; no helper import, process proof, test, supervisor or dependency change"
+}
