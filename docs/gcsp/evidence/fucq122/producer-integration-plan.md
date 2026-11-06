@@ -4,8 +4,14 @@ Current follow-up: the dispatcher supplied adopted composition
 `f179ae6043414a2b07de3edb2b425338299ea37b` and selected the narrower
 [four-case C4 proposal](case-release-plan.md). Its complete review package now
 pins FUCQ-100's shared synthetic TEST profile at `46fa208e84a85ddc5cca843af59bb9794f63cada`.
-Independent source/harness review and a new execution grant remain open. The nine cases and counts below
-remain the earlier planning basis; they are not a current execution freeze.
+The original C4 run launched Node but stopped at the first setup brief draft:
+0 passed, 1 failed, 3 not reached. The narrow body-preference correction and
+retained C1 mismatch trace are now authored in
+[case-release-brief-correction.md](case-release-brief-correction.md), with
+refreshed source/admission pins. Focused review and an exact revised assignment
+for the unused one-run allowance remain open; no execution is authorized by
+this refreeze. The nine cases and counts below remain the earlier planning
+basis; they are not a current execution freeze.
 
 Status: **author-only; stable source basis pinned, combined execution freeze has
 explicit gaps**. No mixed-source import, test, runtime, listener, browser, native

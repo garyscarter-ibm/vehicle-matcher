@@ -3,7 +3,7 @@
   "status": "proposal-awaiting-independent-review-and-new-grant",
   "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084",
   "output": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122-c4",
-  "sourcePlanSHA256": "5daaae85cf909de78c4ec31dadd426f379902ed821597a38a14fcb768878f827",
+  "sourcePlanSHA256": "e509ec368b0f5888e3623e9cb17f75af5f351653351a7c0d5b5979262f8d5d87",
   "nodes": {
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-source-plan.json": {
       "kind": "file",
@@ -13,8 +13,8 @@
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-source-plan.json",
       "targetDevice": 16777232,
       "targetInode": 173182539,
-      "bytes": 2485857,
-      "sha256": "5daaae85cf909de78c4ec31dadd426f379902ed821597a38a14fcb768878f827"
+      "bytes": 2485861,
+      "sha256": "e509ec368b0f5888e3623e9cb17f75af5f351653351a7c0d5b5979262f8d5d87"
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-freeze.py": {
       "kind": "file",
@@ -112,8 +112,8 @@
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/server/test/gcsp-case-release-http.test.js",
       "targetDevice": 16777232,
       "targetInode": 173174372,
-      "bytes": 15650,
-      "sha256": "8250cf300944ef07f0a091fa46ba212b78fd854b32a3501e5703da8540898cd9"
+      "bytes": 15654,
+      "sha256": "54a1798996b607a8dc3af154fb38429a6ac6ed84c3fb1cd6de252d740ad56c03"
     },
     "/opt/homebrew/bin/node": {
       "kind": "symlink",
@@ -330,7 +330,7 @@
       "--profile-ref",
       "46fa208e84a85ddc5cca843af59bb9794f63cada",
       "--test-ref",
-      "5e16930bb70015ec518b921e7fb2e4673cb89640"
+      "1a20692f2f31ecf2f2a88864c64e1fa89b5e0d1c"
     ],
     "childTemplate": [
       "/usr/bin/python3",

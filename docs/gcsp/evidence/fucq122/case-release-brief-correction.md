@@ -14,11 +14,10 @@ unchanged. The FUCQ-100 C1 profile, canonical policy, product semantics and all
 shared/owned harness helpers retain their exact bytes. The separate
 alternative-car fixture observation is outside this correction.
 
-The corrected test is published before its source-plan reference is refreshed,
-so that reference names an immutable commit. The following metadata checkpoint
-will update this note and the current audit with the published test revision,
-source-plan hash and admission hash. This is independent stdlib authoring;
-`case-release-freeze.py` is not executed or imported.
+The corrected test was published first at
+`1a20692f2f31ecf2f2a88864c64e1fa89b5e0d1c`. The current source-plan and admission
+now pin that immutable test revision. This is independent stdlib authoring;
+`case-release-freeze.py` was not executed or imported.
 
 ## Retained run and cleanup
 
@@ -110,11 +109,16 @@ assertion is weakened to bypass them.
 ## Validate and remaining gate
 
 Corrected test: 15654 bytes, SHA-256 `54a1798996b607a8dc3af154fb38429a6ac6ed84c3fb1cd6de252d740ad56c03`.
-Static comparison restricts its delta to the one literal. Current plan/admission
-pins are refreshed separately after this test commit; historical receipts stay
-retained. Source selection will continue to match the collector's `selected()`:
-both the test and its owned HTTP client select the new test commit, with the
-client's blob/hash/payload unchanged. Composition/profile pins, all other rows,
+Git blob: `cf972c53576bae8d6c13bc0a0a0fac8aa39627ea`.
+Source-plan SHA-256: `e509ec368b0f5888e3623e9cb17f75af5f351653351a7c0d5b5979262f8d5d87`.
+Admission SHA-256: `ad7253650a90e8b090c6ad3d93defb8c1c857bcb369348c412d34bc32edd5151`.
+
+Static comparison restricts the test delta to the one literal. Historical
+receipts stay retained, including the exact prior audit object inside the
+current `case-release-freeze-audit.json`. Source selection matches the
+collector's `selected()`: both the test and its owned HTTP client select
+`1a20692f2f31ecf2f2a88864c64e1fa89b5e0d1c`, with the client's blob/hash/payload
+unchanged. Composition/profile pins, all other rows,
 edges/assets/installed inventory, four names, helper bytes, 25-node identities,
 launcher records, environment, budgets/accounting and ledger contract remain
 unchanged except the test/source-plan nodes' content/physical metadata.

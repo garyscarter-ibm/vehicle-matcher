@@ -1,8 +1,10 @@
 # C4 actual release and persisted-driver case HTTP proposal
 
-6 November 2026. FUCQ-122 / DEV-2026-11-04-084. **Complete C4 source/admission
-package authored; two supervisor attempts failed before Node and no C4 test
-ran. Both consumed grants do not permit a retry.**
+6 November 2026. FUCQ-122 / DEV-2026-11-04-084. **C4 correction/refreeze authored.
+The first two supervisor attempts stopped before Node. The third launched Node:
+0 passed, 1 setup failure, 3 not reached. All three grants remain consumed;
+one unused revised-run allowance still requires review and an exact revised
+assignment. This author-only checkpoint does not authorize execution.**
 
 ## Decided
 
@@ -11,8 +13,9 @@ composition at `f179ae6043414a2b07de3edb2b425338299ea37b`. It includes the
 reviewed 92/69/70/103/122/126 leaves and one shared repository, policy, clock,
 identity, release registry, manual/buddy authority and case service. FUCQ-100
 retains all central composition and C1 profile/preparation ownership. This
-checkpoint changes no product source, shared helper, Jira/map/claim, producer or
-paused source. It authors only the C4 file and its own proposed harness.
+correction changes no product source, shared/owned helper, Jira/map/claim,
+producer or paused source. Its test delta is one body preference literal;
+source/admission pins and evidence are refreshed for review.
 
 `server/test/gcsp-case-release-http.test.js` has four finite top-level cases.
 Requests enter the actual `buildServer` request listener as Node readable HTTP
@@ -44,9 +47,16 @@ Its exact immutable bytes independently match the previously observed interface:
 The earlier authoring record describes the initial `5e16930` checkpoint, when
 that publication was missing. This source package closes that pin gap. The
 dispatcher reports independent FUCQ-100 source/composition review PASS for actual
-local-session/account/clock preparation and passive actual92 pull. Suitability
-for the case brief and actual manual/buddy boundaries is an authored C4 assertion,
-not an executed result. No new production API or central writer is requested.
+local-session/account/clock preparation and passive actual92 pull. The retained
+profile body fact is `hatch`; the corrected brief preference is
+`hatchback`. Static tracing shows a finite body-preference score of 0 and a
+tradeoff, with no body hard filter or minimum preference score. This mismatch
+alone adds no unknown or suitability blocker. The trace and its exact retained
+source identities are in
+[case-release-brief-correction.md](case-release-brief-correction.md).
+Actual suitability and manual/buddy boundaries remain unproven by C4: the
+original run stopped at brief setup before any of those assertions. No new
+production API or central writer is requested.
 F77/F78 real corpus and default/reset business preparation remain actual
 acceptance gates; these four cases cannot satisfy them.
 
@@ -62,7 +72,9 @@ acceptance gates; these four cases cannot satisfy them.
 Each case owns a fresh actual memory runtime and closes it with `t.after`.
 The test never serializes contexts, cookies or full envelopes in diagnostics;
 whole-store equality uses digests to avoid exposing outbox access links.
-The four cases are proposed counts, with no result or runtime success claimed.
+The four authored cases retain their original names and assertions. The original
+run reported only the first setup failure: 1 reported, 0 passed, 1 failed,
+3 not reached, with no TAP summary. No corrected-test success is claimed.
 No visual/user-facing product source changed. The project's experience contract,
 agreed screen references and component gates continue to apply to later actual
 host/browser work; these HTTP assertions do not replace those gates.
@@ -80,18 +92,29 @@ The historical initialization-ownership HOLD repair is in
 [case-release-initialization-repair.md](case-release-initialization-repair.md).
 The historical pinned-executable admission repair is in
 [case-release-executable-admission-repair.md](case-release-executable-admission-repair.md).
-The current retained-diagnostics repair, unresolved rejection boundary and
-exact pins are in
+The historical retained-diagnostics repair is in
 [case-release-retained-diagnostics.md](case-release-retained-diagnostics.md).
-The earlier freeze collector ran as static metadata authoring; the current
-collector changes have not run. The loader and launcher remain unexecuted.
+The current one-literal correction, retained C1 trace, original failed-run and
+root cleanup evidence, exact new pins and remaining review gate are in
+[case-release-brief-correction.md](case-release-brief-correction.md).
+The earlier freeze collector ran as static metadata authoring; this refreeze
+uses independent stdlib byte/hash/metadata authoring without running or importing
+that collector. The loader and launcher were exercised by the third attempt;
+the corrected test has not run.
 The first supervisor attempt refused initial physical admission. The second
 passed that boundary and shared imports, returned a Scratch ownership object,
 acquired a reservation and reached source verification, then failed with 119
 joined helpers before a plan, physical scratch/source tree or Node. Root
 independently reconciled only its exact dead reservation and retained the
-original evidence. The present repair is static text/hash/metadata authoring
-and does not rerun either attempt.
+original evidence. The third attempt at `9dca7ba` passed source verification,
+launched Node and stopped on the first original TAP failure: the draft body
+preference `hatch` was invalid under the retained policy. The final query then
+again entered parse-or-identity rejection handling; its specific rejected
+invariant remains unknown. The original finalizer refused cleanup because
+scratch open-file absence was unknown. Later exact-owner reconciliation was
+independently collected by root's combined 721-check PASS receipt, retaining
+both original failures and incomplete behavior acceptance. The present repair
+is static text/hash/metadata authoring and repeats none of these runs or cleanup.
 
 The owned resources file is a copy of107's unexecuted cancellation repair,
 with its source hash recorded and only the story description/RAM ceiling
@@ -107,16 +130,19 @@ scratch and reservation for explicit recovery. No reproduction was authorised.
 
 The static freeze requires both published C1-profile and C4-test commits. It
 collects a finite literal module/URL-asset closure from immutable Git objects:
-C4 test and existing case HTTP client at `5e16930bb70015ec518b921e7fb2e4673cb89640`,
+C4 test and existing case HTTP client at `1a20692f2f31ecf2f2a88864c64e1fa89b5e0d1c`,
 C1 helper at100's relayed pin, and remaining sources at the exact adopted
-`f179ae6` composition. The owned HTTP client is absent from `f179ae6`; its single
+`f179ae6` composition. The client blob/hash/payload is unchanged from the prior
+test selection; both references follow the collector's existing `selected()`
+rule without changing the collector. The owned HTTP client is absent from
+`f179ae6`; its single
 explicit source selection preserves that composition's existing product files.
 Nonliteral or unexpected imports fail authoring.
 It inventories the entire declared installed `pg` runtime/optional/peer package
 closure, optional absences and physical identities, executables and helpers.
 The resulting `case-release-source-plan.json` contains 121 source/input/asset
 paths: 99 executable modules and 22 data/assets, with 287 literal module edges
-and 11 URL-asset edges, totaling 1,723,415 source bytes. Installed closure is 138
+and 11 URL-asset edges, totaling 1,723,419 source bytes. Installed closure is 138
 files across 14 packages (469,685 bytes); optional `pg-native` remains absent at
 its declared resolution point. No packages were installed, linked or changed.
 The 25-node `case-release-admission.json` additionally pins owned helpers, source
@@ -137,14 +163,15 @@ The earlier source freeze used static Git-object/package inventory and Python
 AST parsing. The subsequent accounting repair uses text/control-flow inspection,
 owned-file hashes and metadata authoring only: no syntax checks, AST parsing,
 collector/helper/test execution, probes, live ledger access or allocations.
-The current retained-diagnostics repair's exact pins await independent narrow
-review. JavaScript, tests, loader and launcher have not run; both earlier
-supervisor attempts failed before Node. The second used the shared resource
-and owned resource/ledger helpers before refusing source verification. Original
-failure evidence and root audit/reconciliation receipts remain local and
-untouched. Collector
-attempts are retained in the freeze audit: the initial
-source selection lacked the owned client, and a prose comment was initially
+The retained-diagnostics repair at `9dca7ba` passed independent review before
+grant `fucq122-c4-9dca7ba-1220` was consumed. The current brief-input correction
+and refreshed exact pins await focused independent review. The first two
+supervisor attempts stopped before Node; the third exercised JavaScript,
+loader and launcher, then failed at the first setup brief draft. The corrected
+test has not run. Original failure evidence and root audit/reconciliation
+receipts remain local and untouched. The exact prior audit object, including
+historical collector attempts, is nested in the current freeze audit. The
+initial source selection lacked the owned client, and a prose comment was initially
 mistaken for a bare import. Both refused before writing a source/admission
 package; the collector now explicitly selects the client and anchors import
 declarations separately from dynamic/side-effect imports.
@@ -152,9 +179,11 @@ The prior accepted81 proof remains separate and is not selected again.
 
 Before another execution: independently review the exact source/input assertions,
 installed closure, loader/resource/cancellation and source materialization
-behavior, then obtain a new exact C4 execution grant. All recorded command
-templates require that exact reviewed admission hash and a new C4 grant. No
-current execution permission exists.
+behavior and the narrow correction, then obtain a revised assignment binding
+the unused revised-run allowance to the exact reviewed revision/admission.
+All recorded command templates require the exact reviewed admission hash and
+an exact C4 grant. Refreezing is not execution approval; no current execution
+permission exists.
 
 The proposed selected child is one `node --test --test-reporter=tap
 --test-concurrency=1` invocation of the four-case file, under the owned gated
@@ -226,8 +255,12 @@ another identity helper. A predeclared final ledger staging path permits
 release/readback as the last operation without post-release artifact rewrites.
 Receipts say `pending-final-release-and-independent-audit`; only actual exit 0
 plus independent exact-hash, all-process/group, scratch, ledger and staging
-absence can establish completion. Neither earlier supervisor attempt launched
-Node or executed a C4 test. The second failed in process-query parse/identity
-handling during source verification; its detailed invariant remains unknown.
-The diagnostic-retention changes are unexecuted; independent static approval,
-fresh current admission and a new exact execution grant are required.
+absence can establish completion. The first two supervisor attempts did not
+launch Node; the second failed in process-query parse/identity handling during
+source verification. The third launched Node, failed in brief setup and later
+encountered another query parse-or-identity rejection. The specific rejected
+query invariant remains unknown. Diagnostic retention was exercised in the
+third attempt; the current brief-input correction remains unexecuted. Focused
+independent review, fresh current admission and an exact revised assignment
+remain required. Original failure evidence and later root-collected cleanup
+remain separate from behavior acceptance.
