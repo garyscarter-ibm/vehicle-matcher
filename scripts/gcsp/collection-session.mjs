@@ -1,4 +1,4 @@
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { mkdir, open, readdir, rename, rm } from 'node:fs/promises';
 import { basename, dirname, isAbsolute, join } from 'node:path';
 import { hostname } from 'node:os';
@@ -38,7 +38,7 @@ function readOnlyRequest(capability, request) {
     && object(request.headers) && Object.entries(request.headers).every(([key, value]) => ['bmw-model-tree', 'bmw-solver'].includes(capability) && key === 'x-api-key'
       && typeof value === 'string' && value.length > 0 && value.length <= 4096),
   'source-endpoint-refused', 'Only the pinned qualified public GET route/query and ephemeral application header are permitted.');
-  return request;
+  return Object.freeze({ method: request.method, url: url.href, headers: Object.freeze({ ...request.headers }) });
 }
 
 export async function readCollectionJson(path, bytes, code) {
@@ -144,6 +144,7 @@ export async function createCollectionSession({ identity: stageIdentity, operati
     ...(operations[name].kind === 'read-only-http' ? { capability: operations[name].capability, cache: operations[name].cache !== false } : {}) }]));
   const identity = { toolVersion: COLLECTION_SESSION_VERSION, stage: structuredClone(stageIdentity), sources,
     limitsDigest: inputDigest(limits), transport: hasHttp ? { kind: http.kind, allocation: http.allocation || null } : null };
+  const observationSources = structuredClone(sources); const transportKind = identity.transport?.kind;
   inputDigest(initialState);
   let running = false;
   return { async withCheckpoint(callback, { stage, initialState: stageInitialState = {} } = {}) {
@@ -185,14 +186,14 @@ export async function createCollectionSession({ identity: stageIdentity, operati
       persist = commit;
       const stop = (reason, sticky = false) => { if (sticky) state.halted = reason; const error = new CollectionError(reason, 'The bounded stage stopped with an incomplete checkpoint.'); error.stop = true; error.sticky = sticky; throw error; };
       const checkDeadline = () => { if (now() >= deadline) stop('deadline'); };
-      async function readHttp(descriptor, prepared, signal, operation) {
+      async function readHttp(prepared, signal, operation) {
         let reader; let response;
         try {
           response = await http.fetch(prepared.url, { method: 'GET', headers: prepared.headers,
             credentials: 'omit', cache: 'no-store', redirect: 'manual', signal });
           if (response.status >= 300 && response.status < 400) stop('source-redirect-refused', true);
           if (response.status !== 200) { const error = new CollectionError('source-http-failure', 'Public source HTTP failure.'); error.status = response.status; throw error; }
-          const expectedType = descriptor.capability === 'bmw-page' ? 'text/html' : 'application/json';
+          const expectedType = observationSources[operation].capability === 'bmw-page' ? 'text/html' : 'application/json';
           requireValue((response.headers.get('content-type') || '').split(';')[0] === expectedType, 'source-content-type', 'The qualified response content type changed.');
           if (Number(response.headers.get('content-length')) > limits.responseBytes) stop('response-byte-budget', true);
           const chunks = []; let bytes = 0;
@@ -215,9 +216,20 @@ export async function createCollectionSession({ identity: stageIdentity, operati
               chunks.push(part.value);
             }
           } finally { signal.removeEventListener('abort', abort); }
-          const text = Buffer.concat(chunks).toString('utf8');
-          if (expectedType === 'text/html') return text;
-          try { return JSON.parse(text); } catch { stop('source-json-shape', true); }
+          const body = Buffer.concat(chunks); const text = body.toString('utf8');
+          let value = text;
+          if (expectedType !== 'text/html') {
+            try { value = JSON.parse(text); } catch { stop('source-json-shape', true); }
+          }
+          // Exact decoded stream bytes, before UTF-8 decoding/JSON parsing. No body or header
+          // value enters this optional handoff, and request input cannot supply its provenance.
+          const metadata = Object.freeze({ schemaVersion: 'collection-http-observation.v1', operation,
+            sourceId: observationSources[operation].sourceId, sourceVersion: observationSources[operation].sourceVersion,
+            capability: observationSources[operation].capability, transportKind,
+            request: Object.freeze({ method: prepared.method, url: prepared.url }),
+            observedAt: new Date(now()).toISOString(), responseBytes: bytes,
+            responseSha256: createHash('sha256').update(body).digest('hex') });
+          return { value, metadata };
         } finally {
           if (reader) await reader.cancel().catch(() => {});
           else if (response?.body) await response.body.cancel().catch(() => {});
@@ -234,7 +246,7 @@ export async function createCollectionSession({ identity: stageIdentity, operati
           if (state.counts.operations[operation] >= limits.requestBudgets[operation]) stop('request-budget');
           if ((state.attempts[cacheKey] || 0) >= limits.maxAttempts) stop('retry-budget', true);
           const isHttp = descriptor.kind === 'read-only-http';
-          const prepared = isHttp ? readOnlyRequest(descriptor.capability, await descriptor.prepare(structuredClone(request))) : null;
+          const prepared = isHttp ? readOnlyRequest(observationSources[operation].capability, await descriptor.prepare(structuredClone(request))) : null;
           if (isHttp) {
             if (state.counts.httpAttempts >= limits.sourceAttempts) stop('source-attempt-budget', true);
             if (state.counts.decodedBytes >= limits.sourceBytes) stop('source-byte-budget', true);
@@ -243,14 +255,15 @@ export async function createCollectionSession({ identity: stageIdentity, operati
           }
           state.attempts[cacheKey] = (state.attempts[cacheKey] || 0) + 1;
           state.counts.operations[operation] += 1; await commit('request-count');
-          const controller = new AbortController(); activeController = controller; let timer; let value; let sourceTask;
+          const controller = new AbortController(); activeController = controller; let timer; let value; let sourceTask; let metadata;
           try {
-            sourceTask = Promise.resolve().then(() => isHttp ? readHttp(descriptor, prepared, controller.signal, operation)
+            sourceTask = Promise.resolve().then(() => isHttp ? readHttp(prepared, controller.signal, operation)
               : descriptor.execute(structuredClone(request), { signal: controller.signal }));
             value = await Promise.race([
               sourceTask,
               new Promise((resolve, reject) => { timer = setTimeout(() => { controller.abort(); reject(new CollectionError('operation-timeout', 'The source operation timed out.')); }, Math.min(limits.operationTimeoutMs, Math.max(1, deadline - now()))); }),
             ]);
+            if (isHttp) { metadata = value.metadata; value = value.value; }
             clearTimeout(timer); checkDeadline();
             if ([401, 403, 429].includes(value?.status)) { state.counts.failures += 1; stop(`source-http-${value.status}`, true); }
             if (typeof value?.status === 'number' || ['source-unavailable', 'source-failure', 'unavailable', 'error'].includes(value?.status)) throw new CollectionError('source-response-failure', 'The source returned a failed status.');
@@ -268,7 +281,9 @@ export async function createCollectionSession({ identity: stageIdentity, operati
             continue;
           } finally { clearTimeout(timer); activeController = undefined; }
           // Projection, validation and persistence errors are never transport retries.
-          const payload = descriptor.project ? await descriptor.project(value, request) : structuredClone(value);
+          // Cache hits return the original projected payload above; they neither project again
+          // nor manufacture a new observation time. Offline projectors receive no HTTP metadata.
+          const payload = descriptor.project ? await descriptor.project(value, request, metadata) : structuredClone(value);
           requireValue(Buffer.byteLength(JSON.stringify(payload)) <= 128 * 1024, 'operation-payload-budget', 'The operation response exceeds its bounded contract.');
           requireValue(!prepared || Object.values(prepared.headers).every((secret) => !JSON.stringify(payload).includes(secret)),
             'source-sensitive-projection', 'Ephemeral application headers cannot enter the response cache or checkpoint.');

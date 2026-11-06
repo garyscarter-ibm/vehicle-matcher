@@ -454,6 +454,107 @@ const pageOperation = (changes = {}) => ({ sourceId: 'bmw-uk-public', sourceVers
   prepare: async () => ({ method: 'GET', url: publicPage, headers: {} }),
   project: async () => ({ safe: true }), ...changes });
 
+test('HTTP projection metadata binds consumed bytes and validated request scope independently of caller assertions', async () => {
+  const { createCollectionSession } = await import('../../scripts/gcsp/collection-session.mjs');
+  const root = await mkdtemp(join(tmpdir(), 'f59-http-metadata-'));
+  const url = 'https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G61E&future-models=true&closest-fallback=true';
+  const header = 'synthetic-ephemeral-header';
+  const prepared = { method: 'GET', url, headers: { 'x-api-key': header } };
+  const body = Buffer.from('{ "label": "é", "n": 1 }\n');
+  let clock = Date.parse('2026-11-06T12:10:00.000Z'); let projected;
+  const request = { observedAt: '2000-01-01T00:00:00.000Z', sourceVersion: 'asserted-version', url: 'https://example.invalid' };
+  const operation = pageOperation({ capability: 'bmw-model-tree', prepare: async () => prepared,
+    project: async (value, actualRequest, metadata) => {
+      assert.deepEqual(value, { label: 'é', n: 1 }); assert.deepEqual(actualRequest, request);
+      assert.deepEqual(metadata, {
+        schemaVersion: 'collection-http-observation.v1', operation: 'discover', sourceId: 'bmw-uk-public',
+        sourceVersion: 'f58-20261105.v1', capability: 'bmw-model-tree', transportKind: 'fixture',
+        request: { method: 'GET', url }, observedAt: '2026-11-06T12:10:00.250Z', responseBytes: 26,
+        responseSha256: 'f61da410a91aa0a0c28414ca8ea3670285ea69ce8ca699293e9f9df3084158a7',
+      });
+      assert.equal(Object.isFrozen(metadata), true); assert.equal(Object.isFrozen(metadata.request), true);
+      assert.throws(() => { metadata.request.url = 'https://example.invalid'; }, TypeError);
+      assert.throws(() => { metadata.observedAt = request.observedAt; }, TypeError);
+      projected = metadata; return { safe: value.n, observation: metadata };
+    } });
+  try {
+    const session = await createCollectionSession({ identity: { run: 'metadata-fixture' }, now: () => clock,
+      limits: { ...httpLimits(), requestBudgets: { discover: 1 } }, statePath: join(root, 'state'), operations: { discover: operation },
+      http: { kind: 'fixture', fetch: async (actualUrl, options) => {
+        assert.equal(actualUrl, url); assert.equal(options.headers['x-api-key'], header);
+        prepared.url = 'https://example.invalid'; prepared.headers['x-api-key'] = 'changed-after-validation';
+        operation.sourceVersion = 'changed-after-validation'; operation.capability = 'bmw-page'; clock += 250;
+        return new Response(new ReadableStream({ start(controller) {
+          controller.enqueue(body.subarray(0, 13)); controller.enqueue(body.subarray(13)); controller.close();
+        } }), { headers: { 'content-type': 'application/json' } });
+      } } });
+    const result = await session.withCheckpoint(async ({ execute }) => execute('discover', request));
+    assert.equal(result.safe, 1); assert.deepEqual(result.observation, projected);
+    const state = JSON.parse(await readFile(join(root, 'state'), 'utf8')).content;
+    assert.equal(state.counts.decodedBytes, 26); assert.equal(state.counts.operationBytes.discover, 26);
+    assert.equal(state.counts.httpAttempts, 1); assert.equal(state.counts.sourceCalls, 0);
+    const retained = JSON.stringify(state);
+    for (const excluded of [header, 'x-api-key', 'changed-after-validation', 'asserted-version', 'label', 'é']) assert.equal(retained.includes(excluded), false, excluded);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('HTTP projection metadata is withheld for malformed JSON and returned failure status', async () => {
+  const { createCollectionSession } = await import('../../scripts/gcsp/collection-session.mjs');
+  const root = await mkdtemp(join(tmpdir(), 'f59-http-metadata-errors-'));
+  try {
+    for (const [kind, body, code, bytes] of [
+      ['malformed', '{"n":', 'source-json-shape', 5], ['status', '{"status":401}', 'source-http-401', 14],
+    ]) {
+      let projections = 0; let calls = 0;
+      const settings = { identity: { run: 'metadata-error', kind }, limits: httpLimits(), statePath: join(root, kind),
+        operations: { page: pageOperation({ capability: 'bmw-settings',
+          prepare: async () => ({ method: 'GET', url: 'https://configure.bmw.co.uk/en_GB/settings.fixture.json', headers: {} }),
+          project: async () => { projections += 1; return { safe: true }; } }) },
+        http: { kind: 'fixture', fetch: async () => { calls += 1; return new Response(body, { headers: { 'content-type': 'application/json' } }); } } };
+      for (let i = 0; i < 2; i += 1) await assert.rejects((await createCollectionSession(settings)).withCheckpoint(async ({ execute }) => execute('page', {})), { code });
+      assert.equal(projections, 0); assert.equal(calls, 1);
+      const state = JSON.parse(await readFile(settings.statePath, 'utf8')).content;
+      assert.equal(state.counts.decodedBytes, bytes); assert.equal(state.cache.length, 0); assert.equal(state.halted, code);
+    }
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('HTTP cached projection retains its original observation time and provenance across interrupted resume', async () => {
+  const { createCollectionSession } = await import('../../scripts/gcsp/collection-session.mjs');
+  const root = await mkdtemp(join(tmpdir(), 'f59-http-metadata-cache-'));
+  let clock = Date.parse('2026-11-06T12:11:00.000Z'); let calls = 0; let projections = 0; let first;
+  const settings = { identity: { run: 'cached-metadata-fixture' }, now: () => clock, limits: httpLimits(), statePath: join(root, 'state'),
+    operations: { page: pageOperation({ project: async (_value, _request, metadata) => {
+      projections += 1; assert.equal(metadata?.transportKind, 'fixture'); return { safe: true, observation: metadata };
+    } }) }, http: { kind: 'fixture', fetch: async () => { calls += 1; return new Response('unretained synthetic body', { headers: { 'content-type': 'text/html' } }); } } };
+  try {
+    await assert.rejects((await createCollectionSession(settings)).withCheckpoint(async ({ execute }) => {
+      first = await execute('page', {}); throw new Error('after-cache interruption');
+    }), /after-cache interruption/);
+    assert.equal(first.observation.observedAt, '2026-11-06T12:11:00.000Z');
+    clock += 1000;
+    const result = await (await createCollectionSession(settings)).withCheckpoint(async ({ execute, state }) => {
+      const cached = await execute('page', {}); return { cached, counts: structuredClone(state.counts) };
+    }, { stage: { id: 'later-stage', version: '1', inputDigest: inputDigest('metadata-cache') } });
+    assert.deepEqual(result.cached, first); assert.equal(calls, 1); assert.equal(projections, 1);
+    assert.equal(result.counts.httpAttempts, 1); assert.equal(result.counts.cacheHits.page, 1);
+    assert.equal((await readFile(settings.statePath, 'utf8')).includes('unretained synthetic body'), false);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('offline projection preserves existing callback values without claiming an HTTP observation', async () => {
+  const { createCollectionSession } = await import('../../scripts/gcsp/collection-session.mjs');
+  const root = await mkdtemp(join(tmpdir(), 'f59-offline-metadata-')); const request = { model: 'T5MJ' };
+  try {
+    const session = await createCollectionSession({ identity: { run: 'offline-metadata' }, limits: { ...plan().limits, requestBudgets: { facts: 1 } },
+      statePath: join(root, 'state'), operations: { facts: { sourceId: 'injected-offline', sourceVersion: '1', kind: 'offline',
+        execute: async () => ({ result: 'synthetic' }), project: async (value, actualRequest, metadata) => {
+          assert.deepEqual(actualRequest, request); assert.equal(metadata, undefined); return value;
+        } } } });
+    assert.deepEqual(await session.withCheckpoint(async ({ execute }) => execute('facts', request)), { result: 'synthetic' });
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
 test('read-only source executor refuses unknown routes, methods and credentials before spending an attempt', async () => {
   const { createCollectionSession } = await import('../../scripts/gcsp/collection-session.mjs');
   const root = await mkdtemp(join(tmpdir(), 'f59-http-'));
@@ -505,15 +606,15 @@ test('HTTP redirects, authentication, rate limits and stalled bodies stop withou
       for (let i = 0; i < 2; i += 1) await assert.rejects((await createCollectionSession(settings)).withCheckpoint(async ({ execute }) => execute('page', {})), { code });
       assert.equal(calls, 1);
     }
-    let canceled = false; let activeWrites = 0; let maxWrites = 0;
+    let canceled = false; let activeWrites = 0; let maxWrites = 0; let projections = 0;
     const settings = { identity: { kind: 'body-timeout' }, limits: { ...httpLimits(), operationTimeoutMs: 25 },
-      statePath: join(root, 'timeout'), operations: { page: pageOperation() },
+      statePath: join(root, 'timeout'), operations: { page: pageOperation({ project: async () => { projections += 1; return { safe: true }; } }) },
       onPhase: async (phase) => { if (phase === 'before-rename') { activeWrites += 1; maxWrites = Math.max(maxWrites, activeWrites); await new Promise((resolve) => setTimeout(resolve, 2)); activeWrites -= 1; } },
       http: { kind: 'fixture', fetch: async () => new Response(new ReadableStream({
         start(controller) { controller.enqueue(new TextEncoder().encode('abcd')); }, cancel() { canceled = true; }
       }), { headers: { 'content-type': 'text/html' } }) } };
     await assert.rejects((await createCollectionSession(settings)).withCheckpoint(async ({ execute }) => execute('page', {})), { code: 'operation-timeout' });
-    assert.equal(canceled, true); assert.equal(maxWrites, 1);
+    assert.equal(canceled, true); assert.equal(maxWrites, 1); assert.equal(projections, 0);
     const state = JSON.parse(await readFile(settings.statePath, 'utf8')).content;
     assert.equal(state.counts.timeouts, 1); assert.equal(state.counts.decodedBytes, 4); assert.equal(state.cache.length, 0);
     assert.deepEqual((await readdir(root)).filter((name) => name.includes('writer-') || name.includes('writing-')), []);

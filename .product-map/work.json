@@ -1814,84 +1814,84 @@
       ]
     },
     {
-      "id": "FUCQ-59",
-      "title": "Collect distinct constructible configurations with resumable batches",
-      "status": "To Do",
-      "original_status": "To Do",
       "assignee": "",
+      "id": "FUCQ-59",
+      "observed_at": "2026-11-06T12:15:13Z",
+      "original_status": "To Do",
+      "slices": [
+        {
+          "evidence": "Lead reviewed target Base64/accessory/alias behavior; two offline regression tests pass, scoped receipt lead59/receipt-identity-green.json; F54 publication compatibility remains separately planned.",
+          "id": "canonical-identity",
+          "observed_at": "2026-11-06T10:10:35Z",
+          "status": "complete",
+          "title": "Canonical configuration identity and factory/accessory separation (2 points)"
+        },
+        {
+          "evidence": "Lead reviewed exact F39 typed selection/context/solver changes; 24/24 offline regressions pass, receipt-lifetime-deadline-green.json. Real source separate.",
+          "id": "resolved-selection",
+          "observed_at": "2026-11-06T10:26:40Z",
+          "status": "complete",
+          "title": "Deterministic candidates and complete solver response validation (3 points)"
+        },
+        {
+          "evidence": "Lead reviewed version2 common session;31collector/session +29F39/F54 scoped tests pass60/60, including generic-stage persisted HTTP stops, deadline-byte accounting, cache/resume, SIGKILL and active writer boundaries. source-executor-2026-11-06/validation-and-cleanup.json.",
+          "id": "atomic-resume",
+          "observed_at": "2026-11-06T10:56:10Z",
+          "status": "complete",
+          "title": "Versioned bounded cache and atomic checkpoint/resume (3 points)"
+        },
+        {
+          "evidence": "Lead verified exact GET allowlist/header restrictions, combined4attempt/2MiB budgets,1MiB response,10s complete-body timeout/join and45s persisted deadline;60/60 scoped tests and actual4GET/200/782059B pilot, zero retries/images/browser/writes. Defaults retain zero traffic.",
+          "id": "finite-offline",
+          "observed_at": "2026-11-06T10:56:10Z",
+          "status": "complete",
+          "title": "Finite source budgets, deadlines and default no-traffic safety (2 points)"
+        },
+        {
+          "evidence": "Checkpoint2b metadata-only session handoff passes35/35scoped owning-file cases;100%line/97.36%branch/92.45%function session coverage. session-metadata-2026-11-06/result.json pins code/test/4owned roots/groups/overlay absence. No classifier/raw schema/admission/source-version activation; proposed4GET/F39 writer unallocated; accepted0/all74pending. Prior qualifier21case proof unchanged; F60 old9case proof does not cover new session identity. Source/publication slices remain blocked.",
+          "id": "source-qualification",
+          "observed_at": "2026-11-06T12:15:12.743423+00:00",
+          "status": "blocked",
+          "title": "Selected real-source model mapping and solver integration (1 point)"
+        },
+        {
+          "evidence": "Historical1Nov registered F39 snapshot and original F54 resolvedIdentity already support truthful partial publication (matching60/60 scoped evidence); physical production/modelYear/steering remain unknown. Fresh6Nov observation accepted0 cannot automatically compose through actual F60/F54 schemas. Only new-date/current-session publication remains blocked on explicit qualification/integration. readiness-2026-11-06.md; independent code/security reviews PASS AEE.",
+          "id": "publication-contract",
+          "observed_at": "2026-11-06T11:13:12Z",
+          "status": "blocked",
+          "title": "F39/F54 identity, provenance and selected-source compatibility (1 point)"
+        },
+        {
+          "evidence": "Lead reviewed authored retailer/API injected-memory scope; node --test server/test/brand.test.js server/test/api.test.js passes132/132, receipt-retailer-api.json.",
+          "id": "retailer-boundary",
+          "observed_at": "2026-11-06T10:26:40Z",
+          "status": "complete",
+          "title": "Retailer mapping and API regression boundary"
+        },
+        {
+          "evidence": "Current authored full offline suite at7abeabc00587633211be6e822ea036b3dde16626:68files,1296tests/1291pass/5planned-nativePGskips/0fail,107.99s, complete1435file identity unchanged; AEE source/test pins match. Exact plan/result in current-full-2026-11-06/. Root/group81414/overlay absent,7922848B scratch removed. Shared ledger charging unverified during active run; parent manually counted usage. Native SQL and absent F60v2 assembly remain unproved.",
+          "id": "full-validation",
+          "observed_at": "2026-11-06T11:17:51Z",
+          "status": "complete",
+          "title": "Authored serial npm test integration gate (1 point)"
+        }
+      ],
+      "status": "To Do",
+      "title": "Collect distinct constructible configurations with resumable batches",
       "type": "Story",
-      "observed_at": "2026-11-06T12:01:20Z",
+      "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59",
       "workers": [
         {
-          "name": "Cecil Turtle",
+          "expires_at": "2026-11-06T12:15:12.743423+00:00",
           "harness": "codex",
+          "name": "Cecil Turtle",
+          "observed_at": "2026-11-06T12:15:12.743423+00:00",
           "role": "story-lead",
-          "observed_at": "2026-11-06T12:01:20.580847+00:00",
-          "expires_at": "2026-11-06T12:01:20.580847+00:00",
           "source": "thread 01a1b054-1167-7820-b9f2-92ec81e37bbe",
-          "status": "Contract-only checkpoint2a: exact retained/raw-schema/time bindings recorded; no helper/tests/traffic. Prior21case qualifier/F4 independent re-review PASS. Producer/F39/F60 frozen; source qualification blocked; Sol/high no descendants"
+          "status": "Checkpoint2b executor metadata scoped35/35pass; exact byte/time/source/request/capability handoff; ready independent review. No source/full/F60-new-pin proof; qualification blocked; Sol/high no descendants"
         }
-      ],
-      "slices": [
-        {
-          "id": "canonical-identity",
-          "status": "complete",
-          "title": "Canonical configuration identity and factory/accessory separation (2 points)",
-          "observed_at": "2026-11-06T10:10:35Z",
-          "evidence": "Lead reviewed target Base64/accessory/alias behavior; two offline regression tests pass, scoped receipt lead59/receipt-identity-green.json; F54 publication compatibility remains separately planned."
-        },
-        {
-          "id": "resolved-selection",
-          "status": "complete",
-          "title": "Deterministic candidates and complete solver response validation (3 points)",
-          "observed_at": "2026-11-06T10:26:40Z",
-          "evidence": "Lead reviewed exact F39 typed selection/context/solver changes; 24/24 offline regressions pass, receipt-lifetime-deadline-green.json. Real source separate."
-        },
-        {
-          "id": "atomic-resume",
-          "status": "complete",
-          "title": "Versioned bounded cache and atomic checkpoint/resume (3 points)",
-          "observed_at": "2026-11-06T10:56:10Z",
-          "evidence": "Lead reviewed version2 common session;31collector/session +29F39/F54 scoped tests pass60/60, including generic-stage persisted HTTP stops, deadline-byte accounting, cache/resume, SIGKILL and active writer boundaries. source-executor-2026-11-06/validation-and-cleanup.json."
-        },
-        {
-          "id": "finite-offline",
-          "status": "complete",
-          "title": "Finite source budgets, deadlines and default no-traffic safety (2 points)",
-          "observed_at": "2026-11-06T10:56:10Z",
-          "evidence": "Lead verified exact GET allowlist/header restrictions, combined4attempt/2MiB budgets,1MiB response,10s complete-body timeout/join and45s persisted deadline;60/60 scoped tests and actual4GET/200/782059B pilot, zero retries/images/browser/writes. Defaults retain zero traffic."
-        },
-        {
-          "id": "source-qualification",
-          "status": "blocked",
-          "title": "Selected real-source model mapping and solver integration (1 point)",
-          "observed_at": "2026-11-06T12:01:20.580847+00:00",
-          "evidence": "Checkpoint1 verifier/F4 correction passed21scoped cases and independent re-review. Checkpoint2a contract-only gate records exact5Nov projection time16:03:36.375Z versus separate16:29refresh; raw options schema and executor byte/time binding remain unproved. source-qualification-plan-2026-11-06/projection-contract.{md,json}. No helper/tests/producer changes/traffic; proposed4GET and F39 writer unallocated; accepted0/all74pending. Source/publication slices stay blocked."
-        },
-        {
-          "id": "publication-contract",
-          "status": "blocked",
-          "title": "F39/F54 identity, provenance and selected-source compatibility (1 point)",
-          "observed_at": "2026-11-06T11:13:12Z",
-          "evidence": "Historical1Nov registered F39 snapshot and original F54 resolvedIdentity already support truthful partial publication (matching60/60 scoped evidence); physical production/modelYear/steering remain unknown. Fresh6Nov observation accepted0 cannot automatically compose through actual F60/F54 schemas. Only new-date/current-session publication remains blocked on explicit qualification/integration. readiness-2026-11-06.md; independent code/security reviews PASS AEE."
-        },
-        {
-          "id": "retailer-boundary",
-          "status": "complete",
-          "title": "Retailer mapping and API regression boundary",
-          "observed_at": "2026-11-06T10:26:40Z",
-          "evidence": "Lead reviewed authored retailer/API injected-memory scope; node --test server/test/brand.test.js server/test/api.test.js passes132/132, receipt-retailer-api.json."
-        },
-        {
-          "id": "full-validation",
-          "status": "complete",
-          "title": "Authored serial npm test integration gate (1 point)",
-          "observed_at": "2026-11-06T11:17:51Z",
-          "evidence": "Current authored full offline suite at7abeabc00587633211be6e822ea036b3dde16626:68files,1296tests/1291pass/5planned-nativePGskips/0fail,107.99s, complete1435file identity unchanged; AEE source/test pins match. Exact plan/result in current-full-2026-11-06/. Root/group81414/overlay absent,7922848B scratch removed. Shared ledger charging unverified during active run; parent manually counted usage. Native SQL and absent F60v2 assembly remain unproved."
-        }
-      ],
-      "unsliced": false
+      ]
     }
   ]
 }
