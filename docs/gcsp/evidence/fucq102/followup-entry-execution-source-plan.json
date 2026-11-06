@@ -877,11 +877,6 @@
       "to": "node:fs/promises"
     },
     {
-      "from": "server/test/gcsp-offer-access-followup.test.js",
-      "specifier": "node:test",
-      "to": "node:test"
-    },
-    {
       "from": "server/test/helpers/employee-recommendation.js",
       "specifier": "../../gcsp/policy/index.js",
       "to": "server/gcsp/policy/index.js"

@@ -14,7 +14,7 @@
       "status": "Read-only byte identity checked; independent source review pending; not adopted."
     }
   },
-  "sourcePlanSHA256": "6a1dee1b77dfc102b17c254b4d4923f22c8c912b81be91804498906a7f17d283",
+  "sourcePlanSHA256": "24e43347b31c9e1557a89b6172bc05f333c3b7bf1884f576b0a14f60798755f6",
   "sourceModules": 44,
   "sourceDataFiles": 7,
   "selectedCases": 11,
@@ -90,8 +90,8 @@
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-execution-source-plan.json",
       "targetDevice": 16777232,
       "targetInode": 173169071,
-      "bytes": 33446,
-      "sha256": "6a1dee1b77dfc102b17c254b4d4923f22c8c912b81be91804498906a7f17d283"
+      "bytes": 33313,
+      "sha256": "24e43347b31c9e1557a89b6172bc05f333c3b7bf1884f576b0a14f60798755f6"
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-freeze.py": {
       "kind": "file",
@@ -146,7 +146,7 @@
       "targetDevice": 16777232,
       "targetInode": 173169531,
       "bytes": 16941,
-      "sha256": "c74b3c7ec8d06fb0bba0ae3f014edd4b5181150af0049b0c16d914bb6c3ada69"
+      "sha256": "5310c7432fb265351b80467cca0c04f3801cf2736769c4592e4743cdc9e03a23"
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/package-lock.json": {
       "kind": "file",

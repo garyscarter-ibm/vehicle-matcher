@@ -118,11 +118,11 @@ selected review/grant; they have not been added to the eleven service cases.
 Owned application/test bytes are pinned at `848a16f8ceda2053e5441ded4ce0c5378df5b30f`.
 The original repair was published at `b3079eb`, a malformed-null-row guard at
 `4474938`, and the compatible-revision/nullable-slot correction at `848a16f`. The candidate remains 44
-modules, 122 relative edges, seven data files and eleven assertion cases.
+modules, 121 literal import occurrences (118 unique edges), seven data files and eleven assertion cases.
 Source-plan SHA-256:
-`6a1dee1b77dfc102b17c254b4d4923f22c8c912b81be91804498906a7f17d283`.
+`24e43347b31c9e1557a89b6172bc05f333c3b7bf1884f576b0a14f60798755f6`.
 Physical-admission SHA-256:
-`bc6c0d5cbba6055c09327ed1fa7d6b7245cc223e46dcbb12c34ca30021cd5cba`.
+`8d7fce9b848e811948b545d7c0ad83f6033c9779e7920acab98af82f9b962913`.
 
 Static readback matched 51 immutable source/data blobs, 193 physical identities
 and 38 absent resolution candidates, with 14 existing packages and five lock files.

@@ -28,7 +28,7 @@
       "bytes": 29295
     },
     "docs/gcsp/evidence/fucq102/followup-entry-supervisor.py": {
-      "sha256": "c74b3c7ec8d06fb0bba0ae3f014edd4b5181150af0049b0c16d914bb6c3ada69",
+      "sha256": "5310c7432fb265351b80467cca0c04f3801cf2736769c4592e4743cdc9e03a23",
       "bytes": 16941
     },
     "docs/gcsp/evidence/fucq102/followup-entry-freeze.py": {
@@ -67,9 +67,11 @@
   "sourceClosure": {
     "baselineSourcePlanSHA256": "fd2eb341905bba23414e799bb011c0d415564c0c4ac656a0b0047d82a8111c3a",
     "modules": 44,
-    "relativeImportEdges": 122,
+    "relativeImportEdges": 100,
     "dataFiles": 7,
-    "change": "Only owned access/test bytes plus removal of node:test builtin; final combined graph must be regenerated after repaired107 pin."
+    "change": "Owned access/test bytes and removal of node:test import edge/builtin;44-module graph checked literally,121 import occurrences /118 unique edges. Repaired107 adoption still held.",
+    "importEdges": 121,
+    "uniqueImportEdges": 118
   },
   "validation": {
     "pythonAST": [
@@ -94,12 +96,15 @@
     "immutableSourceReadbacks": 51,
     "physicalIdentityReadbacks": 193,
     "absentCandidates": 38,
-    "allReadbacksMatch": true
+    "allReadbacksMatch": true,
+    "literalImportOccurrences": 121,
+    "uniqueImportEdges": 118,
+    "literalImportGraphMatches": true
   },
   "nextGate": "Independently review source/harness and adopt repaired107 exact source, freeze combined admission, then new explicit grant. No retry of old grant.",
   "ownedRepairCommit": "848a16f8ceda2053e5441ded4ce0c5378df5b30f",
-  "candidateSourcePlanSHA256": "6a1dee1b77dfc102b17c254b4d4923f22c8c912b81be91804498906a7f17d283",
-  "candidateAdmissionSHA256": "bc6c0d5cbba6055c09327ed1fa7d6b7245cc223e46dcbb12c34ca30021cd5cba",
+  "candidateSourcePlanSHA256": "24e43347b31c9e1557a89b6172bc05f333c3b7bf1884f576b0a14f60798755f6",
+  "candidateAdmissionSHA256": "8d7fce9b848e811948b545d7c0ad83f6033c9779e7920acab98af82f9b962913",
   "candidateAdmissionStatus": "HOLD pending107; main refuses before custom helper imports; no execution command authorised",
   "renewalRevisionCorrection": "Positive current slot revision >= historical pin; absent slot renewal falls back to verified hold/event; explicit populated conflicts/malformed values refuse; all-null preserved. Actual repository CAS positive controls authored, not executed."
 }
