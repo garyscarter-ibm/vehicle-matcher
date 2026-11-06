@@ -5,6 +5,7 @@ import { Server, request } from 'node:https';
 import { mkdtemp, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { CookieJar } from 'jsdom';
 import { startGcspDemo } from '../../scripts/gcsp-demo.mjs';
 import { createOfferHttpTransport } from '../../blocks/gcsp/offer/http-adapter.js';
 import { createLocalHttpsFixture } from './helpers/local-https.js';
@@ -71,4 +72,49 @@ test('verified same-origin HTTPS serves real account and offer entry through the
     const denied = await https.fetch(app.origin + '/api/gcsp/context', { headers: { Cookie: session, Origin: app.origin } });
     assert.equal(denied.status, 401);
   } finally { process.env.DEMO_ACCESS_KEY = 'local-https-shared-test'; }
+});
+
+test('browser cookie paths preserve a deliberate Greg switch across real local page navigation', async (t) => {
+  const https = await createLocalHttpsFixture(t);
+  const opened = await startGcspDemo({ tls: https.configuration, accessKey: '', runtime: { mode: 'memory',
+    environmentId: 'local-navigation-test', policyAsOf: '2026-11-05T12:00:00.000Z', commandId: 'navigation-bootstrap' } });
+  assert.equal(opened.status, 'ok'); const app = opened.value; t.after(() => app.close());
+  const jar = new CookieJar();
+  async function browse(path, init = {}, cookies = jar) {
+    const url = new URL(path, app.origin).href;
+    const cookie = cookies.getCookieStringSync(url);
+    const response = await https.fetch(url, { ...init, headers: { Origin: app.origin, ...init.headers,
+      ...(cookie ? { Cookie: cookie } : {}) } });
+    for (const issued of response.headers.getSetCookie()) cookies.setCookieSync(issued, url);
+    return response;
+  }
+  const first = await browse('/gcsp-help.html?principalId=demo-greg&runId=forged');
+  assert.equal(first.status, 200);
+  assert.ok(first.headers.getSetCookie().every((value) => value.includes('; Secure') && value.includes('; HttpOnly')));
+  // A real browser sends only the non-authority marker on HTML requests. The
+  // two unchanged identity cookies are confined to their existing API path.
+  const htmlCookies = jar.getCookiesSync(`${app.origin}/gcsp-presenter.html`);
+  assert.deepEqual(htmlCookies.map((value) => value.key), ['GCSP_LOCAL_BOOTSTRAP']);
+  assert.equal(htmlCookies[0].path, '/'); assert.equal(htmlCookies[0].sameSite, 'strict');
+  const apiCookies = jar.getCookiesSync(`${app.origin}/api/gcsp/context`);
+  assert.equal(apiCookies.filter((value) => value.path === '/api/gcsp').length, 2);
+  const employee = await (await browse('/api/gcsp/context')).json();
+  assert.equal(employee.value.principalId, 'demo-paula');
+  const switched = await browse('/api/gcsp/session/switch', { method: 'POST',
+    headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ principalId: 'demo-greg', commandId: 'deliberate-greg' }) });
+  assert.equal(switched.status, 200);
+  assert.equal((await switched.json()).value.principalId, 'demo-greg');
+  for (const path of ['/gcsp-presenter.html', '/gcsp-greg.html', '/gcsp-case-queue.html', '/gcsp-help.html', '/gcsp-account.html']) {
+    assert.equal(jar.getCookieStringSync(new URL(path, app.origin).href), 'GCSP_LOCAL_BOOTSTRAP=1');
+    const page = await browse(path); assert.equal(page.status, 200);
+    assert.equal(page.headers.getSetCookie().length, 0, 'HTML navigation must not replace the deliberately selected acting session');
+    assert.equal((await (await browse('/api/gcsp/context')).json()).value.principalId, 'demo-greg');
+  }
+  const queue = await browse('/api/gcsp/scheme-team/cases'); assert.equal(queue.status, 200);
+  assert.equal((await queue.json()).status, 'ok');
+  const markerOnly = new CookieJar();
+  markerOnly.setCookieSync('GCSP_LOCAL_BOOTSTRAP=1; Path=/; Secure; HttpOnly; SameSite=Strict', app.origin);
+  assert.equal((await browse('/gcsp-presenter.html', {}, markerOnly)).status, 200);
+  const denied = await browse('/api/gcsp/context', {}, markerOnly);
+  assert.equal(denied.status, 401, 'The marker cannot authenticate an actor or presenter');
 });

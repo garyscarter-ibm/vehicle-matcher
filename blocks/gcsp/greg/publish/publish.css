@@ -1,0 +1,12 @@
+@import '../../kit/form-controls.css';
+.gcsp .gcsp-publish { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.gcsp .gcsp-publish-form, .gcsp .gcsp-publish-results, .gcsp .gcsp-publish-facts { display: grid; gap: 16px; min-width: 0; }
+.gcsp .gcsp-publish-weights { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 16px; }
+.gcsp .gcsp-publish-actions, .gcsp .gcsp-publish-metrics { display: flex; flex-wrap: wrap; gap: 12px; }
+.gcsp .gcsp-publish-results { padding-top: 16px; border-top: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-publish-results:empty { display: none; }
+.gcsp .gcsp-greg-region:has(> .gcsp-publish) { grid-column: 1 / -1; border-style: solid; padding: 20px; background: var(--gcsp-surface); }
+@media (max-width: 640px) {
+  .gcsp .gcsp-publish-actions .vm-btn { width: 100%; }
+  .gcsp .gcsp-greg-region:has(> .gcsp-publish) { padding: 12px; }
+}

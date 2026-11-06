@@ -9,7 +9,9 @@ import { createGcspRuntime } from '../server/gcsp/runtime.js';
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json',
   '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff': 'font/woff', '.woff2': 'font/woff2' };
-const sessionPage = (path) => ['/gcsp-brief-live.html', '/gcsp-activity-live.html', '/gcsp-account.html'].includes(path);
+const sessionPage = (path) => ['/gcsp-brief-live.html', '/gcsp-activity-live.html', '/gcsp-account.html',
+  '/gcsp-help.html', '/gcsp-greg.html', '/gcsp-case-queue.html', '/gcsp-presenter.html'].includes(path);
+const navigationCookie = 'GCSP_LOCAL_BOOTSTRAP';
 const publicPath = (path) => sessionPage(path) || ['/gcsp/offer', '/gcsp-offer.html', '/gcsp-employee.css', '/favicon.ico'].includes(path)
   || path.startsWith('/blocks/') || path.startsWith('/assets/');
 
@@ -42,12 +44,19 @@ export async function startGcspDemo({ runtime = {}, port = 0, root = ROOT, acces
       const canonicalPath = `/${relative(resolve(root), file).split(sep).join('/')}`;
       if (!file.startsWith(`${resolve(root)}${sep}`) || !publicPath(canonicalPath) || canonicalPath !== assetPath
         || !(await stat(file)).isFile()) { res.writeHead(404).end('Not found'); return; }
-      if (sessionPage(path)) {
+      // API cookies deliberately stay on /api/gcsp, so browsers do not send them
+      // on HTML navigation. This non-authority marker only prevents rebootstrap;
+      // every API request still authenticates the unchanged identity cookies.
+      const bootstrapped = req.headers.cookie?.split(';').some((value) => value.trim() === `${navigationCookie}=1`);
+      if (sessionPage(path) && !bootstrapped) {
         const session = await services.identity.resolveSession({ authorized: true, cookie: req.headers.cookie });
         if (session.status !== 'ok') {
           const issued = await services.createLocalSession();
           if (issued.status !== 'ok') { res.writeHead(503).end('The local demo could not start.'); return; }
-          res.setHeader('Set-Cookie', issued.value.setCookie);
+          const expires = issued.value.setCookie.at(-1).match(/; Expires=([^;]+)/)?.[1];
+          if (!expires) { res.writeHead(503).end('The local demo could not start.'); return; }
+          res.setHeader('Set-Cookie', [...issued.value.setCookie,
+            `${navigationCookie}=1; Path=/; HttpOnly; Secure; SameSite=Strict; Expires=${expires}`]);
         }
       }
       res.writeHead(200, { 'Content-Type': TYPES[extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-store',
@@ -87,6 +96,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
   if (app.status !== 'ok') { console.error(`GCSP local startup: ${app.status}${app.code ? ` (${app.code})` : ''}`); process.exitCode = 1; }
   else {
     console.log(`GCSP local demo: ${app.value.origin}/gcsp-account.html`);
+    console.log(`Presenter workspace: ${app.value.origin}/gcsp-presenter.html`);
     console.log(mode === 'memory' ? 'Explicit memory proof: state lasts only until this process stops; real released stock is not composed.' : 'PostgreSQL runtime; real released stock is not composed.');
     for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, async () => { await app.value.close(); process.exitCode = 0; });
   }
