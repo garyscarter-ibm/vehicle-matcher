@@ -36,7 +36,9 @@ function stagePort() {
       at: index < order.approved ? '2026-11-05T09:00:00.000Z' : null, providerReference: index <= order.approved ? `SYN-STAGE-${index}` : null }));
     return ok({ contractVersion: order.contractVersion ?? 'lifecycle.stages.v1', runId: order.runId ?? context.runId, orderUuid, employeeId: order.employeeId,
       ...(order.nestedPolicy ? { policy: { policyVersion: 'gcsp-policy-v1' } } : { policyVersion: 'gcsp-policy-v1' }), lifecycleRevision: order.revision, stageList: order.stageList, currentStage: order.stageList[order.approved] ?? null,
-      stages, outcome: order.approved >= order.stageList.length ? 'sent-to-ordering' : 'in-progress' });
+      entitlementSlotId: order.slot ?? 'slot-paula', renewalId: order.renewalId === undefined ? 'renewal:employee-paula' : order.renewalId,
+      renewalAuthority: order.renewalAuthority ?? (order.renewalId === null ? 'missing' : 'validated'),
+      stages, outcome: order.declined ? 'declined' : order.approved >= order.stageList.length ? 'sent-to-ordering' : 'in-progress' });
   }, async listOrders() { return ok({ orders: [...orders.keys()].map((orderUuid) => ({ orderUuid })) }); } };
 }
 const STAGES = ['selection received', 'HR approval', 'sales-manager approval', 'sent to ordering'];
@@ -126,6 +128,9 @@ test('missing, unsupported, stale or foreign stage reads stay explicitly not ope
   f.order({ reply: () => { throw new Error('down'); } }); assert.equal((await read()).value.reason, 'stage-read-unavailable');
   f.order({ revision: 0 }); assert.equal((await read()).value.reason, 'stage-revision-missing');
   f.order({ employeeId: 'employee-nobody' }); await f.tick(); assert.deepEqual(await items(f), []);
+  f.order({ renewalAuthority: 'validated', renewalId: null }); assert.equal((await read()).value.reason, 'stage-renewal-authority-invalid');
+  f.order({ slot: 'slot-alex' }); await f.tick(); assert.deepEqual(await items(f), []);
+  assert.equal((await f.service.readReadiness(f.paula, { orderUuid: ORDER })).value.reason, 'awaiting-document-tick');
   f.order({ nestedPolicy: true }); assert.equal((await read()).value.reason, 'awaiting-document-tick');
   const listOnly = stagePort(); listOnly.list = listOnly.listOrders; delete listOnly.listOrders;
   const viaList = await setup(t, { stages: listOnly }); viaList.order({ nestedPolicy: true }); await viaList.tick();
@@ -154,6 +159,37 @@ test('one order that cannot progress is recorded as blocked while another still 
   const orders = (await service.readItems(f.paula)).value.orders;
   assert.deepEqual(orders.map((o) => o.orderUuid), [ORDER]);
   assert.equal(item(orders[0], 'licence-check').status, 'complete');
+});
+
+test('exceptions carry the order\'s own slot and renewal, never the employee\'s default slot', async (t) => {
+  const f = await setup(t, { register: false });
+  const second = await f.repository.transaction(f.paula, { commandId: 'slot-b', inputDigest: inputDigest('slot-b') }, (tx) => tx.insert('entitlement_slots', {
+    runId: f.paula.runId, entitlementSlotId: 'slot-paula-b', employeeId: 'employee-paula', renewalId: 'renewal:employee-paula:b', capacity: 1, state: 'entitled' }));
+  assert.equal(second.status, 'ok', JSON.stringify(second));
+  const policy = await policyWith((rows) => [...rows, { ...rows[2], key: 'renewalCase.lifecycle.eventTypes', value: ['document-overdue'], unit: 'event type keys' }]);
+  const service = createLifecycleDocumentService({ repository: f.repository, policy, clock: f.clock, identity: f.identity, lifecycleStages: f.stages, provider: f.adapter });
+  const cases = new RenewalCaseService({ repository: f.repository, policy, clock: f.clock, identity: f.identity });
+  assert.equal((await service.start()).status, 'ok'); assert.equal((await cases.start()).status, 'ok');
+  f.order({ slot: 'slot-paula-b', renewalId: 'renewal:employee-paula:b' }); await f.tick(); await f.advance(2 * DAY + 1); await f.tick();
+  const [overdue] = await receipts(f, 'lifecycle-documents:exceptions:v1');
+  assert.deepEqual([overdue.outcome.value.entitlementSlotId, overdue.outcome.value.renewalId, overdue.outcome.value.renewalAuthority],
+    ['slot-paula-b', 'renewal:employee-paula:b', 'validated']);
+  // The consumer only matches the employee's default renewal, so the B-slot exception must not open a case against renewal A.
+  assert.deepEqual((await f.repository.query(f.paula, 'renewal_cases', {})).value.filter((c) => c.renewalId === 'renewal:employee-paula'), []);
+  const missing = await setup(t); missing.order({ renewalId: null, slot: null }); await missing.tick(); await missing.advance(2 * DAY + 1); await missing.tick();
+  const [unknown] = await receipts(missing, 'lifecycle-documents:exceptions:v1');
+  assert.deepEqual([unknown.outcome.value.renewalId, unknown.outcome.value.renewalAuthority], [null, 'missing']);
+});
+
+test('a producer forbidden read and foreign pending or declined orders are refused, never reported as not open', async (t) => {
+  const f = await setup(t);
+  f.order({ reply: result('forbidden', { reason: 'not yours' }) });
+  assert.equal((await f.service.readReadiness(f.greg, { orderUuid: ORDER })).status, 'forbidden');
+  for (const shape of [{ employeeId: 'employee-alex', approved: 2 }, { employeeId: 'employee-alex', approved: 2, declined: true }]) {
+    f.order({ ...shape, slot: 'slot-alex', renewalId: null });
+    assert.equal((await f.service.readReadiness(f.paula, { orderUuid: ORDER })).status, 'forbidden');
+  }
+  assert.equal((await f.service.readReadiness(f.greg, { orderUuid: ORDER })).value.reason, 'opening-stage-not-reached');
 });
 
 test('the employee completes her task with a labelled synthetic acknowledgement; others are refused', async (t) => {

@@ -21,19 +21,25 @@ export function observeStage(read, { context, orderUuid, openingStage, openingSt
   if (!read || typeof read.status !== 'string') return notOpen('stage-read-unavailable');
   if (read.status === 'not-found') return notOpen('no-lifecycle-for-order');
   if (read.status === 'unsupported') return notOpen('stage-mode-unsupported');
-  if (read.status === 'forbidden') return notOpen('stage-read-forbidden');
+  if (read.status === 'forbidden') return { status: 'forbidden', reason: 'stage-read-forbidden' };
   if (read.status !== 'ok' || !object(read.value)) return notOpen('stage-read-unavailable');
   const v = read.value;
   if (v.contractVersion !== STAGE_CONTRACT) return notOpen('stage-contract-unsupported');
   if (v.runId !== context.runId || v.orderUuid !== orderUuid || !text(v.employeeId, 128)) return notOpen('stage-identity-mismatch');
+  const employeeId = v.employeeId; // carried on every identified view so foreign pending/declined orders are refused
+  // Order-specific renewal authority from the producer; never replaced by the employee's default slot.
+  const authority = v.renewalAuthority === 'validated' ? text(v.entitlementSlotId, 128) && text(v.renewalId, 128)
+    : v.renewalAuthority === 'missing' && v.renewalId == null && (v.entitlementSlotId == null || text(v.entitlementSlotId, 128));
+  if (!authority) return notOpen('stage-renewal-authority-invalid', { employeeId });
+  const order = { entitlementSlotId: v.entitlementSlotId ?? null, renewalId: v.renewalId ?? null, renewalAuthority: v.renewalAuthority };
   // Producer view nests its pins (policy.policyVersion); a top-level field is accepted too.
   const policyVersion = v.policyVersion ?? v.policy?.policyVersion;
-  if (!(Number.isSafeInteger(v.lifecycleRevision) && v.lifecycleRevision > 0) || !text(policyVersion, 128)) return notOpen('stage-revision-missing');
-  if (!Array.isArray(v.stages)) return notOpen('stage-read-unavailable');
+  if (!(Number.isSafeInteger(v.lifecycleRevision) && v.lifecycleRevision > 0) || !text(policyVersion, 128)) return notOpen('stage-revision-missing', { employeeId });
+  if (!Array.isArray(v.stages)) return notOpen('stage-read-unavailable', { employeeId });
   const stage = v.stages.find((row) => row?.stage === openingStage);
-  if (!stage) return notOpen('opening-stage-not-in-lifecycle', { lifecycleRevision: v.lifecycleRevision });
-  if (stage.state !== openingState || !validInstant(stage.at)) return notOpen('opening-stage-not-reached', { lifecycleRevision: v.lifecycleRevision, stageState: stage.state ?? null });
-  return { status: 'open', employeeId: v.employeeId, observation: { contractVersion: v.contractVersion, stage: openingStage, state: stage.state,
+  if (!stage) return notOpen('opening-stage-not-in-lifecycle', { employeeId, lifecycleRevision: v.lifecycleRevision });
+  if (stage.state !== openingState || !validInstant(stage.at)) return notOpen('opening-stage-not-reached', { employeeId, lifecycleRevision: v.lifecycleRevision, stageState: stage.state ?? null });
+  return { status: 'open', employeeId, order, observation: { contractVersion: v.contractVersion, stage: openingStage, state: stage.state,
     stageAt: stage.at, providerReference: stage.providerReference ?? null, lifecycleRevision: v.lifecycleRevision, stagePolicyVersion: policyVersion } };
 }
 
@@ -78,21 +84,26 @@ export class LifecycleDocumentService {
     return { now: time.value.now, read: { runId: context.runId, asOf: time.value.now, policyVersion: run.value.policyVersion } };
   }
 
-  async #renewal(tx, context, employeeId) {
+  // Checks the order's own slot belongs to the employee and agrees with the producer's renewal; no default-slot fallback.
+  async #orderOwner(tx, context, employeeId, order) {
     const employee = await tx.get({ table: 'employees', key: { runId: context.runId, employeeId } });
+    if (employee.status === 'not-found' || employee.status === 'ok' && !employee.value.roles?.includes('employee')) return ok({ refused: 'stage-employee-unknown' });
     if (employee.status !== 'ok') return employee;
-    const slots = await tx.list('entitlement_slots', { employeeId }); if (slots.status !== 'ok') return slots;
-    const slot = slots.value.find((s) => s.entitlementSlotId === employee.value.entitlementSlotId);
-    return ok({ employee: employee.value, renewalId: text(employee.value.renewalId ?? slot?.renewalId, 128) ? employee.value.renewalId ?? slot.renewalId : null });
+    if (order.entitlementSlotId === null) return ok({ employee: employee.value });
+    const slot = await tx.get({ table: 'entitlement_slots', key: { runId: context.runId, entitlementSlotId: order.entitlementSlotId } });
+    if (slot.status === 'not-found' || slot.status === 'ok' && slot.value.employeeId !== employeeId) return ok({ refused: 'stage-slot-mismatch' });
+    if (slot.status !== 'ok') return slot;
+    if (order.renewalId !== null && text(slot.value.renewalId, 128) && slot.value.renewalId !== order.renewalId) return ok({ refused: 'stage-renewal-mismatch' });
+    return ok({ employee: employee.value });
   }
 
   async #open(context, tickId, now, orderUuid, read) {
     const config = await loadDocumentPolicy(this.#policy, read);
     if (config.status !== 'ok') return config;
     const observed = observeStage(await this.#readStage(context, orderUuid), { context, orderUuid, ...config.value });
-    if (observed.status !== 'open') return ok({ orderUuid, opened: false, ...observed });
+    if (observed.status !== 'open') return ok({ orderUuid, opened: false, ...observed, status: 'not-open' });
     return this.#repository.transaction(context, { commandId: `lifecycle-documents:open:${tickId}:${orderUuid}:${observed.observation.lifecycleRevision}`,
-      inputDigest: inputDigest({ tickId, orderUuid, observation: observed.observation, policyVersion: read.policyVersion }) }, async (tx) => {
+      inputDigest: inputDigest({ tickId, orderUuid, observation: observed.observation, order: observed.order, policyVersion: read.policyVersion }) }, async (tx) => {
       const existing = await tx.get(stateRef(context, orderUuid));
       if (existing.status === 'ok') {
         // Replay or later revision: keep document progress, record only the latest observed source revision.
@@ -103,11 +114,9 @@ export class LifecycleDocumentService {
         return changed.status === 'ok' ? ok({ orderUuid, opened: false, status: 'already-open' }) : changed;
       }
       if (existing.status !== 'not-found') return existing;
-      const owner = await this.#renewal(tx, context, observed.employeeId);
-      if (owner.status === 'not-found' || owner.status === 'ok' && !owner.value.employee.roles?.includes('employee')) {
-        return ok({ orderUuid, opened: false, status: 'not-open', reason: 'stage-employee-unknown' });
-      }
+      const owner = await this.#orderOwner(tx, context, observed.employeeId, observed.order);
       if (owner.status !== 'ok') return owner;
+      if (owner.value.refused) return ok({ orderUuid, opened: false, status: 'not-open', reason: owner.value.refused });
       const items = applicableItems(config.value, owner.value.employee.schemeId).map((item) => {
         const operationId = inputDigest([context.runId, orderUuid, item.itemId]).slice(0, 32);
         const assumption = config.value.assumptions[0];
@@ -117,7 +126,7 @@ export class LifecycleDocumentService {
           ...(item.owner === 'employee' ? {} : { operationId, progressAt: at(now, item.progressSeconds),
             fail: config.value.failItemIds.includes(item.itemId), failureReason: config.value.failureReason }) };
       });
-      const projection = { runId: context.runId, orderUuid, employeeId: observed.employeeId, renewalId: owner.value.renewalId,
+      const projection = { runId: context.runId, orderUuid, employeeId: observed.employeeId, ...observed.order,
         policyVersion: read.policyVersion, openedAt: now, opening: observed.observation, lastObservedRevision: observed.observation.lifecycleRevision,
         providerMode: this.#provider?.mode ?? 'unavailable', exceptionTypes: config.value.exceptionTypes, items, assumptions: config.value.assumptions };
       const inserted = await tx.insert('event_receipts', { runId: context.runId, consumerId: STATE_CONSUMER, eventId: orderUuid,
@@ -168,7 +177,7 @@ export class LifecycleDocumentService {
       for (const [item, type] of exceptions) {
         const value = { employeeId: current.employeeId, renewalId: current.renewalId, orderUuid: current.orderUuid, occurredAt: now,
           itemId: item.itemId, exceptionType: type, policyVersion: current.policyVersion, lifecycleRevision: current.opening.lifecycleRevision,
-          ...(current.renewalId ? {} : { renewalAuthority: 'missing' }), fictional: true };
+          entitlementSlotId: current.entitlementSlotId, renewalAuthority: current.renewalAuthority, fictional: true };
         const eventId = `${current.orderUuid}:${item.itemId}:${type}`;
         const recorded = await tx.recordReceipt({ consumerId: EXCEPTION_CONSUMER, eventId, eventType: type, handlerId: DOCUMENTS_HANDLER_ID,
           inputDigest: inputDigest({ eventId, occurredAt: now }), inputVersions: { policy: current.policyVersion }, state: 'completed', outcome: ok(value) });
@@ -245,7 +254,8 @@ export class LifecycleDocumentService {
     const config = await loadDocumentPolicy(this.#policy, prepared.read);
     const observed = config.status === 'ok' ? observeStage(await this.#readStage(context, input.orderUuid), { context, orderUuid: input.orderUuid, ...config.value })
       : notOpen('document-policy-unavailable');
-    if (role.value === 'employee' && observed.status === 'open' && observed.employeeId !== context.employeeId) return result('forbidden', { reason: 'These documents belong to another employee.' });
+    if (observed.status === 'forbidden') return result('forbidden', { reason: 'This order is not visible to you.' });
+    if (role.value === 'employee' && observed.employeeId && observed.employeeId !== context.employeeId) return result('forbidden', { reason: 'These documents belong to another employee.' });
     const reason = observed.status === 'open' ? 'awaiting-document-tick' : observed.reason;
     return ok({ orderUuid: input.orderUuid, opened: false, ready: false, state: 'not-open', reason, documentsComplete: false, vehicleReady: false });
   }

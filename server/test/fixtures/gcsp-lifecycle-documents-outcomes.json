@@ -79,7 +79,6 @@
     "notOpen.reason": [
       "no-lifecycle-for-order",
       "stage-mode-unsupported",
-      "stage-read-forbidden",
       "stage-read-unavailable",
       "stage-contract-unsupported",
       "stage-identity-mismatch",
@@ -87,7 +86,11 @@
       "opening-stage-not-in-lifecycle",
       "opening-stage-not-reached",
       "document-policy-unavailable",
-      "awaiting-document-tick"
+      "awaiting-document-tick",
+      "stage-renewal-authority-invalid",
+      "stage-slot-mismatch",
+      "stage-renewal-mismatch",
+      "stage-employee-unknown"
     ]
   },
   "exampleTask": {
@@ -114,11 +117,14 @@
     "exceptionType": "document-overdue",
     "policyVersion": "gcsp-policy-v1",
     "lifecycleRevision": 4,
-    "fictional": true
+    "fictional": true,
+    "entitlementSlotId": "slot-paula",
+    "renewalAuthority": "validated"
   },
   "optionalItemKeys": {
     "action": "employee-owned items only",
     "overdueRecordedAt": "set once the overdue exception receipt is recorded",
     "lastProviderOutcome": "unsupported or unavailable provider reply (live stub, missing adapter)"
-  }
+  },
+  "refusals": "A producer forbidden read, and a foreign order in any stage, return forbidden (HTTP 403), not not-open."
 }
