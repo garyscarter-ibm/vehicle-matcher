@@ -12,6 +12,11 @@ const messages = { accepted: 'Your selection is recorded. Ordering and approval 
   loading: 'Please wait.', uncertain: 'The current outcome is being checked. Actions are unavailable.' };
 let sequence = 0;
 
+const decisionReason = (model) => model.decisionUnavailable ? 'Decisions are unavailable on this page.'
+  : model.checkingExpiry ? 'Checking availability. Actions are unavailable.'
+    : model.canDecline && !model.canAccept ? 'Acceptance is unavailable. You can still decline this offer.'
+      : 'Actions depend on current server availability.';
+
 function comparison(currentCar) {
   const section = el('section', 'gcsp-panel gcsp-offer-current');
   section.append(el('h2', 'gcsp-h2', 'Your current car'));
@@ -61,8 +66,7 @@ export function createOfferView(root, { refresh, decide } = {}) {
       clockNode = el('p', 'gcsp-countdown'); asOfNode = el('p', 'gcsp-note');
       content.append(clockNode, asOfNode);
       const actions = el('div', 'gcsp-offer-actions');
-      const reason = el('p', 'gcsp-note', model.decisionUnavailable ? 'Decisions are unavailable on this page.'
-        : model.checkingExpiry ? 'Checking availability. Actions are unavailable.' : 'Actions depend on current server availability.');
+      const reason = el('p', 'gcsp-note', decisionReason(model));
       reason.id = `${page.id}-decision-reason`;
       reasonNode = reason;
       for (const [kind, label, enabled] of [['accept', 'Accept this offer', model.canAccept], ['decline', 'Decline this offer', model.canDecline]]) {
@@ -90,10 +94,13 @@ export function createOfferView(root, { refresh, decide } = {}) {
     if (model.state === 'pending') {
       clockNode.textContent = model.countdown || 'Time remaining unavailable';
       asOfNode.textContent = model.now ? `Demo time at last check: ${model.now}` : 'Demo time unavailable';
-      reasonNode.textContent = model.decisionUnavailable ? 'Decisions are unavailable on this page.'
-        : model.checkingExpiry ? 'Checking availability. Actions are unavailable.' : 'Actions depend on current server availability.';
+      reasonNode.textContent = decisionReason(model);
       content.querySelector('[data-offer-action="accept"]').disabled = !model.canAccept;
       content.querySelector('[data-offer-action="decline"]').disabled = !model.canDecline;
+      const focused = root.ownerDocument.activeElement;
+      if (focused?.disabled && ['accept', 'decline'].includes(focused.dataset.offerAction) && content.contains(focused)) {
+        content.querySelector('[data-offer-action="decline"]:enabled, [data-offer-action="accept"]:enabled, [data-offer-action="refresh"]')?.focus();
+      }
     }
     const key = `${model.state}:${model.reference?.offerId || ''}`;
     if (model.state === 'pending' && model.checkingExpiry) announce('The deadline has been reached. Checking the current offer state.');

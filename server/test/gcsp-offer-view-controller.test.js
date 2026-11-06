@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import { createOfferController, countdownText, remainingTime } from '../../blocks/gcsp/offer/offer-controller.js';
+import { toOfferPresentation } from '../../blocks/gcsp/offer/offer-projection.js';
 
 const pending = (overrides = {}) => ({ status: 'ok', value: { state: 'pending', actionable: true,
   reference: { offerId: 'offer-1', runId: 'run-1', offerVersion: 1, holdVersion: 1 },
@@ -93,4 +95,24 @@ test('failed command and failed readback keep an uncertain outcome, never a fabr
     decide: async () => { throw new Error('lost response'); } });
   await c.refresh(); await c.decision('decline');
   assert.equal(c.snapshot().state, 'uncertain'); assert.equal(c.snapshot().canDecline, false); c.destroy();
+});
+
+test('published decline-only sample blocks accept, allows only an injected decline spy and waits for readback', async () => {
+  const initial = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/producer-access.json', import.meta.url), 'utf8'));
+  const decline = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/producer-decline-access.json', import.meta.url), 'utf8'));
+  let dto = initial; const calls = [];
+  const c = createOfferController({ read: async () => toOfferPresentation({ status: 'ok', value: dto }),
+    createCommandId: () => 'decline-spy-only', decide: async ({ kind }) => { calls.push(kind); } });
+  try {
+    const before = await c.refresh(); assert.equal(before.canAccept, true); assert.equal(before.canDecline, true);
+    dto = decline; const current = await c.refresh();
+    assert.equal(current.canAccept, false); assert.equal(current.canDecline, true); assert.equal(current.seconds, 3600);
+    assert.equal(current.expiresAt, initial.expiresAt); assert.equal(current.state, 'pending');
+    await c.decision('accept'); assert.deepEqual(calls, []);
+    await c.decision('decline'); assert.deepEqual(calls, ['decline']);
+    assert.equal(c.snapshot().state, 'pending'); // The contract spy cannot establish a declined outcome.
+  } finally { c.destroy(); }
+  const readOnly = createOfferController({ read: async () => toOfferPresentation({ status: 'ok', value: decline }) });
+  try { const current = await readOnly.refresh(); assert.equal(current.canAccept, false); assert.equal(current.canDecline, false); }
+  finally { readOnly.destroy(); }
 });

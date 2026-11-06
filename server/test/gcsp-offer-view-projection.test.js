@@ -7,6 +7,8 @@ import { createOfferController } from '../../blocks/gcsp/offer/offer-controller.
 
 const bytes = await readFile(new URL('../../docs/gcsp/evidence/fucq105/representative-access.json', import.meta.url), 'utf8');
 const comparisonBytes = await readFile(new URL('../../docs/gcsp/evidence/fucq105/comparison-access.json', import.meta.url), 'utf8');
+const producerBytes = await readFile(new URL('../../docs/gcsp/evidence/fucq105/producer-access.json', import.meta.url), 'utf8');
+const declineBytes = await readFile(new URL('../../docs/gcsp/evidence/fucq105/producer-decline-access.json', import.meta.url), 'utf8');
 const sample = () => JSON.parse(bytes);
 const partial = () => JSON.parse(comparisonBytes);
 const envelope = (v = sample()) => ({ status: 'ok', value: v, contractVersion: '1.0.0' });
@@ -95,7 +97,7 @@ test('malformed identities, units, facts and unsupported schemas fail closed wit
     (v) => { v.quote.facts.facts.seats.status = 'unknown'; },
     (v) => { v.quote.facts.display.photo = 'javascript:alert(1)'; },
     (v) => { v.quote.facts.facts.seats.provenance.assurance = 'invented'; },
-    (v) => { v.availableActions = ['accept', 'accept']; }, (v) => { v.state = 'accepted'; },
+    (v) => { v.availableActions = ['accept', 'accept']; }, (v) => { v.availableActions = ['accept']; }, (v) => { v.state = 'accepted'; },
     (v) => { v.serverNow = null; }, (v) => { v.quote.quotedAt = '2026-02-30T12:00:00Z'; },
   ];
   for (const mutate of changes) {
@@ -149,6 +151,32 @@ test('approved partial metadata displays only the model and dated source with al
   assert.ok(car.facts.every((f) => f.value === null && f.missingLabel === 'Unknown'));
   assert.equal(v.card.members[0].terms[0].value, 1100); assert.equal(v.card.members[0].terms[0].allowance, 1300);
   car.source.sourceVersion = 'local edit'; car.facts[0].value = 'local edit'; assert.deepEqual(dto, before);
+});
+
+test('exact published producer samples preserve decline-only server authority and the original hold deadline', () => {
+  assert.equal(createHash('sha256').update(producerBytes).digest('hex'), 'e50f3c56f3df4d3437a6fd2ec91e62fd713e0c1c5a42ce0d44753110a5535080');
+  assert.equal(createHash('sha256').update(declineBytes).digest('hex'), 'c9a63f5b6dacfeb0c3720904ee218c085039903f55a74b551fb463fd70a626f5');
+  for (const bytes of [producerBytes, declineBytes]) {
+    const dto = JSON.parse(bytes); const result = toOfferPresentation(envelope(dto));
+    assert.equal(result.status, 'ok'); assert.equal(result.value.state, 'pending');
+    assert.deepEqual(result.value.actions, { accept: dto.availableActions.includes('accept'), decline: true });
+    assert.equal(result.value.expiresAt, '2026-11-05T14:00:00.000Z');
+    assert.equal(result.value.card.members[0].display.line, 'Order no. 0123456');
+    assert.deepEqual(result.value.currentCar.source, dto.comparison.currentCar.source);
+    assert.equal(result.value.comparisonAvailable, false);
+    assert.ok(result.value.currentCar.facts.every((f) => f.value === null));
+    assert.equal(JSON.stringify(result).match(/employeeId|principalId|tokenHash|tokenMetadata|contractId|employeeVersion|slotVersion|"binding"/), null);
+  }
+});
+
+test('decline-only authority survives missing comparison, while unavailable access discloses no offer', () => {
+  const dto = JSON.parse(declineBytes); delete dto.comparison;
+  const result = toOfferPresentation(envelope(dto)); assert.equal(result.status, 'ok');
+  assert.deepEqual(result.value.actions, { accept: false, decline: true }); assert.equal(result.value.currentCar, null);
+  for (const status of ['unavailable', 'forbidden', 'not-found', 'stale-run']) {
+    const outcome = toOfferPresentation({ status, value: JSON.parse(declineBytes) });
+    assert.equal(outcome.status, status); assert.equal(outcome.value, undefined);
+  }
 });
 
 test('all approved source modes and model length boundary retain dated provenance, including equal quote instants', () => {

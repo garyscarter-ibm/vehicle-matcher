@@ -1,4 +1,4 @@
-// Safe display binding for FUCQ-102 schemaVersion 1, reviewed at a3fdcdf.
+// Safe display binding for FUCQ-102 schemaVersion 1, reviewed at 4a56d38.
 import { decisionView } from '../brief/brief-view-model.js';
 
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
@@ -153,6 +153,7 @@ export function toOfferPresentation(envelope, { reference } = {}) {
       && instant(v.serverNow) && instant(v.expiresAt) && text(v.clockVersion) && positive(v.offerVersion) && positive(v.holdVersion)
       && text(v.holdState) && text(v.offerState) && Array.isArray(v.availableActions)
       && v.availableActions.every((action) => ['accept', 'decline'].includes(action)) && new Set(v.availableActions).size === v.availableActions.length
+      && (!v.availableActions.includes('accept') || v.availableActions.includes('decline'))
       && (v.state === 'pending' || v.availableActions.length === 0));
     need(!reference || v.offerId === reference.offerId && (!reference.runId || v.runId === reference.runId));
     need(object(q) && ['quoteId', 'configurationId', 'orderUuid', 'policyVersion'].every((key) => text(q[key]))

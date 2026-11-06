@@ -139,6 +139,33 @@ test('partial model and provenance use text nodes for untrusted display strings'
   assert.match(comparison.textContent, /<script>throw 1<\/script>/); view.destroy();
 });
 
+test('published decline-only DTO updates mounted actions and accessible explanation without resetting the hold countdown', async () => {
+  const initial = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/producer-access.json', import.meta.url), 'utf8'));
+  const decline = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/producer-decline-access.json', import.meta.url), 'utf8'));
+  let dto = initial; const calls = [];
+  const adapter = createOfferHttpAdapter({ location: { href: `https://example.test/gcsp/offer?offerId=${dto.offerId}` },
+    fetch: async () => ({ ok: true, headers: { get: () => 'application/json' }, json: async () => ({ status: 'ok', value: dto }) }) });
+  // Contract spy only; no actual FUCQ-106 command or successful decision is claimed.
+  const c = createOfferController({ ...adapter, createCommandId: () => 'render-decline-spy', decide: async ({ kind }) => { calls.push(kind); } });
+  const root = document.createElement('div'); document.body.append(root);
+  const view = createOfferView(root, { decide: c.decision }); const unsubscribe = c.subscribe(view.update);
+  try {
+    await c.refresh(); const accept = root.querySelector('[data-offer-action="accept"]'); accept.focus();
+    const declineButton = root.querySelector('[data-offer-action="decline"]'); const card = root.querySelector('.vm-card');
+    assert.equal(accept.disabled, false); assert.equal(declineButton.disabled, false);
+    dto = decline; await c.refresh();
+    assert.equal(root.querySelector('[data-offer-action="accept"]'), accept); assert.equal(root.querySelector('.vm-card'), card);
+    assert.equal(accept.disabled, true); assert.equal(declineButton.disabled, false); assert.equal(document.activeElement, declineButton);
+    const reason = root.querySelector(`#${accept.getAttribute('aria-describedby')}`);
+    assert.equal(reason.textContent, 'Acceptance is unavailable. You can still decline this offer.');
+    assert.match(root.textContent, /1 hour remaining/); assert.match(root.textContent, /Order no\. 0123456/);
+    assert.match(root.textContent, /Partial comparison/); assert.equal(root.querySelectorAll('.gcsp-offer-current dd.is-missing').length, 8);
+    accept.click(); assert.deepEqual(calls, []);
+    delete dto.comparison; await c.refresh();
+    assert.match(root.textContent, /Current-car details not supplied/); assert.equal(root.querySelector('[data-offer-action="decline"]').disabled, false);
+  } finally { unsubscribe(); c.destroy(); view.destroy(); }
+});
+
 test('scoped offer sources and harness obey embed CSP and composition styling boundaries', async () => {
   for (const file of ['offer-view.js', 'offer-controller.js', 'offer-projection.js', 'http-adapter.js', 'gcsp-offer.js', 'harness.js', 'fixtures.js', 'preview.html']) {
     const text = await readFile(new URL(`../../blocks/gcsp/offer/${file}`, import.meta.url), 'utf8');

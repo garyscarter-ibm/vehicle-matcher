@@ -2,7 +2,19 @@
 
 5 November 2026. **Partial development; full story acceptance remains incomplete.**
 
-## Current partial comparison checkpoint
+## Current decline-only checkpoint · 6 November 2026
+
+Verified published102 `4a56d386f031e7cf5a1fdeaefdcc612fb35cbd7b` and its contract/access/two safe producer sample hashes. Exact copies are `producer-access.json` and `producer-decline-access.json`. Unlike the earlier manually pinned schema samples, these DTOs came from actual100-to102 memory composition over synthetic inputs. The105 checks consume those immutable saved results; they have not run the producer/access source here.
+
+The page honors server actions independently: before quote expiry accept+decline; at quote expiry decline-only while the exact hold is active; at hold expiry none. It does not derive actions from browser time, reprice, or reset the hold. An accept-only public shape is rejected because the approved contract supports only none, decline-only, or both. Without an actual injected106 port both controls remain disabled. With a contract spy, decline-only enables only Decline and requires authoritative readback; the spy cannot claim a completed decline.
+
+A decline-only read now explains “Acceptance is unavailable. You can still decline this offer.” The same mounted controls/card remain, and focus moves from disabled Accept to an enabled control. Partial current-car metadata and all eight unknown facts remain truthful; absent comparison still preserves the offer. An unavailable access response discloses no cached car.
+
+**Ran73, OK73, zero failures/skips**, using the same four owned test files listed below. Strict targeted key `9a11cd6977a9eaeec123e61c29c9517e0646e19def5bebbdaa6f22ba86f5f656`, default variant/baseb95b4c8. `timing-scoped.json` holds exact source/input identities and receipt. Shared kit/styles/ratchet are unchanged; no unrelated rerun. This is saved-DTO/contract-spy/DOM evidence, not actual producer→105,106, browser or full-suite acceptance.
+
+Fresh HostBudget and the same one-worker120s/768MiB/128MiB/2MiB limits. Inner peak213,057,536B plus outer31,490,048B; outer scratch8,192B. Both owned roots/groups are absent, reservations released, exact dependency link removed and installed target preserved. The16,523B successful strict log directory was removed after retaining the result/impact/ownership/checkpoint summary. No browser/listener/nativeDB/live request/install or actual producer import occurred. A finite integration source plan follows for review before execution.
+
+## Earlier partial comparison checkpoint
 
 The offer consumes the approved immutable FUCQ-102 contract at `a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed`. `representative-access.json` and `comparison-access.json` are exact copies of its two safe samples. The contract/sample hashes and source identity are in `comparison-scoped.json`. These are access/evaluator results over synthetic inputs and reviewed pinned metadata; they do not prove actual FUCQ-100 producer-to-access integration.
 
@@ -12,7 +24,7 @@ Only nonblank models up to 256 characters and the approved synthetic/dated-snaps
 
 The exact offer retains its leading-zero order string, pinned monthly points/allowance, shared reasons, known/unknown facts and qualified imagery. Server DemoClock/hold expiry controls countdown; quote validity remains separate. The secure fragment exchange, cookie/account reads, authoritative read scheduler, exclusive states and teardown remain as previously delivered. Decisions are disabled without an actual injected FUCQ-106 port.
 
-## Current scoped validation
+## Earlier partial-comparison scoped validation
 
 `node --test --test-concurrency=1 --test-reporter=tap server/test/gcsp-offer-view-controller.test.js server/test/gcsp-offer-view-projection.test.js server/test/gcsp-offer-view-render.test.js server/test/gcsp-offer-view-http.test.js`
 

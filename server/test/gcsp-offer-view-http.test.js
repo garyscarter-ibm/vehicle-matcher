@@ -100,6 +100,19 @@ test('default HTTP adapter reads approved partial comparison without adding iden
   assert.equal(calls[0][1].method, 'GET'); assert.equal(calls[0][1].body, undefined);
 });
 
+test('published decline-only access DTO retains actions and exact pins; a later unavailable read returns no cached car', async () => {
+  const value = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/producer-decline-access.json', import.meta.url), 'utf8'));
+  let answer = response({ status: 'ok', value });
+  const adapter = createOfferHttpAdapter({ location: { href: `https://example.test/gcsp/offer?offerId=${value.offerId}&runId=${value.runId}` },
+    fetch: async () => answer });
+  const current = await adapter.read(); assert.equal(current.status, 'ok');
+  assert.deepEqual(current.value.actions, { accept: false, decline: true });
+  assert.equal(current.value.reference.offerId, value.offerId); assert.equal(current.value.expiresAt, value.expiresAt);
+  assert.equal(current.value.currentCar.source.observedAt, '2026-11-05T09:00:00.000Z'); assert.equal(adapter.decide, undefined);
+  answer = response({ status: 'unavailable' }, false);
+  assert.deepEqual(await adapter.read(), { status: 'unavailable' });
+});
+
 test('refresh scheduling requests server reads, skips busy requests and cancels without advancing time', async () => {
   const scheduled = new Map(); let nextId = 0; let events = 0; let resolveRead;
   const adapter = createOfferHttpAdapter({ location: { href: 'https://example.test/gcsp/offer?offerId=one' },
