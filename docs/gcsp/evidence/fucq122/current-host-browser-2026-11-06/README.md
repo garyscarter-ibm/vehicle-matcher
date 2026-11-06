@@ -2,6 +2,8 @@
 
 **Latest result: Paula's ordinary return and actual reload showed Greg's persisted manual update and dated history. The third desktop runner remains incomplete (exit 1) because its final audit retained a draft 404/console observation and four unclassified read aborts.** All five third-attempt captures were inspected; 375px and the remaining original acceptance obligations remain open. No complete browser, suite or compound acceptance PASS is claimed.
 
+The [original-AC evidence matrix](original-ac-evidence-matrix.md) credits the existing 22 DOM, actual HTTPS/controller and CookieJar passes alongside this desktop result, distinguishes remaining browser gaps from upstream composition, and adds no native or clean-console criterion. The [375px source-only input](narrow375-source-preparation.json) reuses the unchanged existing runner/scenario at 375×812; it is prepared and held, with no new runtime grant.
+
 **The first desktop attempt is incomplete.** Paula's ordinary served help page and explicit confirmation worked, and the actual presenter switch loaded her case in Greg's embedded queue. The local scenario stopped at its comparison before Greg confirmed an update. Neither the manual-update/Paula-reload journey nor any compound original acceptance clause is complete.
 
 The test used the existing `scripts/gcsp-demo.mjs` HTTPS launcher, its delivered HTML/module scripts, canonical policy and explicit memory repository. It supplied no case/stock/lifecycle fixture and injected no authority cookies. The first ordinary HTML navigation adopted the real bootstrap cookies; the presenter UI switched to Greg. The browser context accepted the run-owned self-signed certificate; this is not certificate-trust or native PostgreSQL evidence.
