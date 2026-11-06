@@ -6,7 +6,18 @@ Dispatcher: `01a1ab10-6556-7211-92a0-0dd0345e3f0d`.
 Requested/selected/effective: `gpt-6.1-sol/high`, no fallback; rollout turn_context verified.
 Gateway PASS: `api.servicesessentials.ibm.com` is under `ibm.com`. No descendants.
 
-Latest continuation, 6 November: root authorized the exact line130 handler-order
+Latest completion-clock continuation, 6 November: the run at57d8f17 genuinely
+passed3/3, including expiry, but independent audit1 refused incompatible
+cross-process monotonic epochs. Root authorized a small story-owned helper/freeze
+repair. It labels a macOS system-wide uptime clock in seconds, refuses unsupported
+contexts and preserves local intervals, strict ownership, reserves, cleanup and
+independent exits. All45 product/test sources remain identical. Original3/3 plus
+failed audit, older failures and incomplete receipts remain preserved. See the
+[clock repair and deferred finite validation](fucq134-completion-clock-repair.md).
+No runtime grant/retry, supervisory/completion execution, probe or test; static authoring only.
+Claim/lease and root merge/closure ownership remain unchanged. No descendants.
+
+Earlier assertion continuation, 6 November: root authorized the exact line130 handler-order
 assertion correction returned unapplied by Claude. The owning session changed
 only that assertion, refreshed source/admission pins and published these notes;
 no test, plan-only command, runtime/probe or new allocation was permitted or run.

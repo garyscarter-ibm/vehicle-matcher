@@ -1,8 +1,23 @@
 # FUCQ-134 first chunk review package
 
-**Handler-order assertion repair authored; independent review and fresh admission required. Latest actual result:2/3, controller2/audit1/Node1. No retry grant.**
+**Shared completion clock repair authored. Latest genuine TAP3/3 and controller0; audit1. Completion remains incomplete; no retry grant.**
 
-Latest authorized run, 6 November 2026, used published `5e660c93443eff9e845cc7e1b12a6553a15f4bb3`
+The authorized run at57d8f17 reached and passed all three cases, including the
+complete expiry assertions. Its independent audit refused `Controller start time
+is unknown`: the controller's process-local monotonic epoch was compared in a
+different Python3.9 process. Original receipts remain incomplete and unchanged.
+The [clock repair and deferred validation plan](../../fucq134-completion-clock-repair.md)
+records the exact original evidence, authored helper delta, replacement pins and
+next finite cross-process check. The new contract uses explicitly labelled macOS
+`CLOCK_UPTIME_RAW` seconds; unsupported platforms/APIs refuse. All product/test
+sources and resource/cleanup gates remain. No modified runtime helper, plan,
+clock probe or test ran during authoring; only static freezing and review.
+
+## Previous assertion repair and2/3 run
+
+**Historical2/3 run: controller2/audit1/Node1. Its grant remains consumed.**
+
+That authorized run, 6 November 2026, used published `5e660c93443eff9e845cc7e1b12a6553a15f4bb3`
 and admission `40b01c34dc43163f2c31cbb8668088489d6062875a0c5385bbfcd5cf449f75da`.
 Original TAP reports isolation and real-claim-review-allocate PASS, untaken-expiry
 FAIL: tests3/pass2/fail1/cancelled0/skipped0/todo0. The tick completed, but line130
@@ -59,17 +74,19 @@ cleanup reports. This package remains incomplete execution evidence.
 
 - Base: `034b56d08fb742d31478218b670552805d5840ab`.
 - Published real66: `eb5a677b37c486e3da7c4547803f739e22df8ac3`.
-- Admission SHA-256: `316af0b37317ee3a3250d695f741722a4e793ffd2cef6ee34191278f07041db8`.
+- Admission SHA-256: `1e6a0151cbd8ba8b1951fb02a8e0597b3821c651ad8ae5d57843f65e080f5104`.
 - Composed source identity: `92911cf980e13502fd897fb4a6b6f01be38b5477d691c865ced7b1437ecc81c9`.
+- Completion clock: `CLOCK_UPTIME_RAW`, platform `darwin`, units `seconds`.
 - 45 embedded source/data files, 975883 source bytes, 236 physical identities,
   14 installed packages. Embedded immutable blobs permit checking the complete
   source content before custom resource-helper imports. Installed dependencies
   remain in place; only the owned scratch mirror links to them, read only.
 
-Author static validation PASS: exact one-line delta and expected test hash,
-44 reused sources, unchanged producer/helper/clock/policy/limit/selection pins,
-four Python ASTs, strict JSON/content identities, eight original evidence hashes,
-documentation links and diff checks. This establishes no runtime result.
+Current static review covers all45 reused product/test sources, explicit clock
+metadata/readers and shared elapsed checks, unchanged local intervals and strict
+resource/helper/limit/selection gates, four Python ASTs, JSON/content identities,
+original evidence preservation and diff checks. This establishes no repaired
+runtime result or final completion.
 
 `first-chunk-admission.json` contains the complete source texts, source hashes,
 physical executable/helper/dependency identities and installed metadata.
@@ -89,8 +106,11 @@ modify `_tools/test_resources.py`.
 The commands below document the reviewed execution contract. Root subsequently
 used the five-field publication for the failed attempt summarized above. These
 examples use the historical admission, confer no grant and must not be reused as
-a retry. The latest assertion correction and replacement identity are recorded
+a retry. The latest completion-clock repair and replacement identity are recorded
 above; neither historical command block grants execution of this new freeze.
+No-execution/no-three-case-proof statements in dated earlier checkpoints describe
+those checkpoints. The latest genuine3/3 case evidence remains preserved above,
+with final completion still blocked by the independent audit failure.
 
 The dispatcher first reviews the exact freeze and helper bytes. This plan-only
 command checks identities without importing custom helpers, allocating resources,

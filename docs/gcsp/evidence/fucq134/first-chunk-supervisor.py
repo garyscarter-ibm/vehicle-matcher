@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import importlib.util
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -16,6 +17,17 @@ ROOT = Path(__file__).resolve().parents[4]
 EVIDENCE = ROOT / 'docs/gcsp/evidence/fucq134'
 MIB = 1024 ** 2
 SHARED = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs')
+COMPLETION_CLOCK = {'kind': 'CLOCK_UPTIME_RAW', 'platform': 'darwin', 'units': 'seconds'}
+
+
+def shared_clock_seconds():
+    if sys.platform != COMPLETION_CLOCK['platform'] or not hasattr(time, 'CLOCK_UPTIME_RAW') \
+            or not hasattr(time, 'clock_gettime'):
+        raise RuntimeError('Shared completion clock is unsupported')
+    value = time.clock_gettime(time.CLOCK_UPTIME_RAW)
+    if type(value) is not float or not math.isfinite(value) or value <= 0:
+        raise RuntimeError('Shared completion clock is unknown')
+    return value
 
 
 def sha(data):
@@ -60,6 +72,9 @@ def admit(expected_sha):
     plan = strict_json(data)
     if plan['root'] != str(ROOT) or plan['pythonExecutable'] != sys.executable or plan['pythonVersion'] != sys.version:
         raise RuntimeError('Reviewed checkout/interpreter differs')
+    if plan.get('completionClock') != COMPLETION_CLOCK or sys.platform != COMPLETION_CLOCK['platform'] \
+            or not hasattr(time, 'CLOCK_UPTIME_RAW') or not hasattr(time, 'clock_gettime'):
+        raise RuntimeError('Reviewed completion clock differs or is unsupported')
     for name, expected in plan['nodes'].items():
         physical(Path(name), expected)
     for name in plan['absent']:
@@ -98,6 +113,7 @@ def main():
     args = parser.parse_args()
     if not re.fullmatch('[a-f0-9]{64}', args.admission_sha):
         parser.error('Supply the externally reviewed admission SHA')
+    started_shared = shared_clock_seconds() if args.execute else None
     started = time.monotonic()
     frozen = admit(args.admission_sha)
     if args.plan:
@@ -114,11 +130,13 @@ def main():
     resources = imported(frozen, 'fucq134_resources', ROOT / '_tools/test_resources.py')
     guard = imported(frozen, 'fucq134_strict_resources', EVIDENCE / 'first-chunk-resources.py')
     completion = imported(frozen, 'fucq134_completion', EVIDENCE / 'first-chunk-completion.py')
+    if completion.COMPLETION_CLOCK != frozen['completionClock']:
+        raise RuntimeError('Admitted completion helper clock differs')
     with resources.handled_termination():
-        execute(frozen, args, resources, guard, completion, environment, started)
+        execute(frozen, args, resources, guard, completion, environment, started, started_shared)
 
 
-def execute(frozen, args, resources, guard, completion, environment, started):
+def execute(frozen, args, resources, guard, completion, environment, started, started_shared):
     import uuid
     policy = resources.Policy({'chunk_seconds': 120, 'chunk_ram_mib': 768, 'chunk_scratch_mib': 128,
                                'log_mib': 2, 'reserve_free_gib': 5})
@@ -133,6 +151,7 @@ def execute(frozen, args, resources, guard, completion, environment, started):
     finalizer = guard.Finalizer(resources, scratch, tree, host, verify=lambda: admit(args.admission_sha))
     identity = {'story': 'FUCQ-134', 'variant': 'isolated-real66-three-mechanics-cases',
         'admissionSHA256': args.admission_sha, 'codeRevision': frozen['codeRevision'],
+        'completionClock': frozen['completionClock'],
         'actual66': frozen['actual66'], 'base': frozen['base'], 'limits': frozen['limits'],
         'sources': {name: row['sha256'] for name, row in frozen['sources'].items()},
         'environmentDigest': sha(json.dumps(environment, sort_keys=True).encode())}
@@ -320,7 +339,8 @@ def execute(frozen, args, resources, guard, completion, environment, started):
     encoded = {name: completion.encode(value, completion.FILE_LIMITS[name], counters)
                for name, (_path, value) in payloads.items()}
     ticket = completion.encode({'candidatePassed': candidate_passed, 'controllerPid': os.getpid(),
-        'startedMonotonic': started, 'admissionSHA256': args.admission_sha, 'run': str(rdir),
+        'startedSharedSeconds': started_shared, 'completionClock': frozen['completionClock'],
+        'admissionSHA256': args.admission_sha, 'run': str(rdir),
         'completionSHA256': frozen['nodes'][str(EVIDENCE / 'first-chunk-completion.py')]['sha256'],
         'reserveRamBytes': completion.RAM_RESERVE, 'reserveDiskBytes': completion.DISK_RESERVE,
         'files': {name: {'path': str(payloads[name][0]), 'bytes': len(data), 'sha256': sha(data)}

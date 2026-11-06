@@ -19,6 +19,26 @@ FILE_LIMITS = {'manifest': 64 * 1024, 'receipt': 64 * 1024, 'checkpoint': 8 * 10
 TICKET_LIMIT = 8 * 1024
 ROOT = Path(__file__).resolve().parents[4]
 SHARED = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs')
+COMPLETION_CLOCK = {'kind': 'CLOCK_UPTIME_RAW', 'platform': 'darwin', 'units': 'seconds'}
+
+
+def shared_clock_seconds():
+    if sys.platform != COMPLETION_CLOCK['platform'] or not hasattr(time, 'CLOCK_UPTIME_RAW') \
+            or not hasattr(time, 'clock_gettime'):
+        raise RuntimeError('Shared completion clock is unsupported')
+    value = time.clock_gettime(time.CLOCK_UPTIME_RAW)
+    if type(value) is not float or not math.isfinite(value) or value <= 0:
+        raise RuntimeError('Shared completion clock is unknown')
+    return value
+
+
+def shared_elapsed_seconds(started):
+    if type(started) is not float or not math.isfinite(started) or started <= 0:
+        raise RuntimeError('Controller start time is unknown')
+    now = shared_clock_seconds()
+    if started > now:
+        raise RuntimeError('Controller start time is unknown')
+    return now - started
 
 
 def sha(data):
@@ -147,9 +167,11 @@ def audit(ticket, controller_exit, admission_sha):
         raise RuntimeError('Parent audit helper differs from admitted controller helper')
     if ticket['reserveRamBytes'] != RAM_RESERVE or ticket['reserveDiskBytes'] != DISK_RESERVE:
         raise RuntimeError('Completion reserve differs')
-    started = ticket['startedMonotonic']
-    if type(started) is not float or not math.isfinite(started) or not 0 < started <= time.monotonic():
-        raise RuntimeError('Controller start time is unknown')
+    if ticket.get('completionClock') != COMPLETION_CLOCK:
+        raise RuntimeError('Completion clock contract differs')
+    started = ticket.get('startedSharedSeconds')
+    if shared_elapsed_seconds(started) > 120:
+        raise RuntimeError('Overall completion deadline reached')
     rdir, manifest = Path(ticket['run']), Path(ticket['files']['manifest']['path'])
     if rdir.parent != SHARED / 'fucq134' or not re.fullmatch(r'first-chunk-[a-f0-9]{32}', rdir.name):
         raise RuntimeError('Run path differs from owned output layout')
@@ -188,6 +210,7 @@ def audit(ticket, controller_exit, admission_sha):
     receipt, checkpoint, record = values['receipt'], values['checkpoint'], values['manifest']
     if receipt['candidatePassed'] is not True or receipt['passed'] is not False \
             or receipt['identity']['admissionSHA256'] != admission_sha \
+            or receipt['identity'].get('completionClock') != COMPLETION_CLOCK \
             or checkpoint['state'] != 'incomplete' or checkpoint['candidatePassed'] is not True \
             or checkpoint['completion'] != 'awaiting-independent-parent-audit' \
             or record['finalizer'] != receipt['cleanup'] or record['finalizer']['passed'] is not True:
@@ -204,11 +227,12 @@ def audit(ticket, controller_exit, admission_sha):
     audit_peak = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss * unit
     # This process runs after controller exit. Its bounded working set is covered
     # by the controller's reserved RAM, not an unmetered concurrent child.
-    elapsed = time.monotonic() - started
+    elapsed = shared_elapsed_seconds(started)
     if audit_peak > RAM_RESERVE or allocated + DISK_RESERVE > 128 * MIB or elapsed > 120 \
             or shutil.disk_usage(ROOT).free < 5 * 1024 ** 3:
         raise RuntimeError('Parent postwrite RAM/disk/time/free-space budget failed')
     return {'state': 'complete', 'admissionSHA256': admission_sha, 'controllerExit': controller_exit,
+            'completionClock': COMPLETION_CLOCK,
             'run': str(rdir), 'files': ticket['files'], 'postwriteCombinedBytes': allocated,
             'parentPreoutputPeakRSS': audit_peak, 'preoutputElapsedSeconds': elapsed,
             'completionRequires': 'controller and parent audit exit0'}
@@ -230,7 +254,7 @@ def main():
     sys.stdout.buffer.write(encode(result, TICKET_LIMIT))
     sys.stdout.buffer.flush()
     unit = 1 if sys.platform == 'darwin' else 1024
-    if time.monotonic() - ticket['startedMonotonic'] > 120 \
+    if shared_elapsed_seconds(ticket['startedSharedSeconds']) > 120 \
             or resource.getrusage(resource.RUSAGE_SELF).ru_maxrss * unit > RAM_RESERVE:
         raise RuntimeError('Parent output exceeded overall time/RAM budget')
 

@@ -1310,7 +1310,7 @@
     "Launcher -> runtime hash manifest generated solely from frozen embedded sources and pinned installed packages; stdin gate precedes guard/test import."
   ],
   "unknowns": [
-    "Original23fc796 causal row remains UNKNOWN; separately granted7293e52 captured question-mark OS-state failure is preserved. The09aa1c85 attempt failed0/3, controller2/audit1/Node1, failed-run grade UNKNOWN, separate spec/TAP mismatch and root cleanup PASS19. The later5e660c93 authorized run failed2/3, controller2/audit1/Node1: handlerOrder object/string assertion mismatch; assertions after line130 remain UNKNOWN. Root independent collection PASS638 across100/134 is cleanup/evidence only. Grants consumed; new assertion correction is authoring only.",
+    "Latest57d8f17 run genuinely passed3/3 with controller0/Node0, but independent audit1 refused Controller start time is unknown. Original candidate/receipt remains incomplete. Cross-process Python3.9 monotonic epochs were independently diagnosed by root; the shared-clock helper correction is authoring only. Previous0/3 gradeUNKNOWN,2/3 failed run and older parser failures remain preserved. All grants consumed; no retry or story acceptance.",
     "Canonical additional policy bundle not yet coordinated.",
     "Explicit synthetic mechanics facts cannot establish live corpus realism or observed satisfaction.",
     "Remaining cache/access replay/acceptance/outcomes and composed/full validation remain unimplemented or unproved."
@@ -1349,16 +1349,16 @@
       "bytes": 35448
     },
     "docs/gcsp/evidence/fucq134/first-chunk-supervisor.py": {
-      "sha256": "55c4b1cf67d5093af394a75fbbafe941103d975a325224aa0c503da5b719145e",
-      "bytes": 18607
+      "sha256": "58973cd2e52c3d3eff8194795c877b5e2a863061c345d7e0644de2c8a27589ae",
+      "bytes": 19801
     },
     "docs/gcsp/evidence/fucq134/first-chunk-freeze.py": {
-      "sha256": "d047af7d501fc94840ce701d04296407deec933e4535af4a14ed10e39f99e8f6",
-      "bytes": 7428
+      "sha256": "b6c972882db06fc48fe165ae944ee76587d27b2a0a1a6fc52b0f9209e65ea7d3",
+      "bytes": 7563
     },
     "docs/gcsp/evidence/fucq134/first-chunk-completion.py": {
-      "sha256": "cbf64db40bdf690b5875ee41628e2c7b5041651f30516b266a7006bdcfd03572",
-      "bytes": 11089
+      "sha256": "8302181c22211fc7ce18c44d4013f583c3b4a47381533add977f9db1664c94d3",
+      "bytes": 12179
     }
   },
   "firstChunkReview": {
@@ -1366,7 +1366,7 @@
     "resourcePattern": "918ce04510fd327e860809e7de53bd636d1cf7da:docs/gcsp/models/fucq115-activation-resources.py adapted only in owned134 file",
     "supervisor": "docs/gcsp/evidence/fucq134/first-chunk-supervisor.py",
     "admission": "docs/gcsp/evidence/fucq134/first-chunk-admission.json",
-    "execution": "Latest authorized run at5e660c93443eff9e845cc7e1b12a6553a15f4bb3: tests3/pass2/fail1, controller2/audit1/Node1; isolation and real-claim-review-allocate passed, untaken-expiry failed at line130 on handlerOrder.includes(string). Post-line130 expiry assertions remain UNKNOWN. Original0/3 and earlier failures preserved. Root independent collection PASS638 across100/134 is separate evidence/cleanup only. Grant consumed; corrected assertion requires independent review, fresh admission and explicit grant.",
+    "execution": "Latest authorized run first-chunk-1c224188912d4bdaa7abe82794c1ebaa at57d8f1781eca0707994afa7eb26d26a8f4d15ff3: exact TAP tests3/pass3/fail0, Node0/controller0/audit1, complete expiry case passed; parent refused Controller start time is unknown. Cleanup passed separately. Cross-process helper clock defect confirmed by root. Original authenticated receipt/checkpoint stay incomplete; no retrospective ticket reinterpretation. Fresh shared-clock authoring needs consequential review and a new explicit execution grant.",
     "launchOwnershipRepair": "Static107finding: persist launch intent before Popen; defer SIGTERM/SIGINT through PID/start registration; unresolved launch cannot certify absence; cleanup adopts any supplied direct child handle. No reproduction/runtime granted.",
     "originalStaticReview": {
       "reviewer": "Dibble",
@@ -1514,6 +1514,22 @@
       "scope": "Replace string includes with some requiring handlerId manual-claim-expiry and stage manual-expiry; all other test bytes unchanged",
       "producerBasis": "Frozen DemoClock persists/returns handlerOrder objects; frozen manual-claims registers matching handlerId and stage",
       "state": "authoring only; independent review and fresh runtime admission required; no plan, probe or runtime execution",
+      "agents": "requested/selected gpt-6.1-sol/high; no fallback or descendants"
+    },
+    "completionClockRepairAuthoring": {
+      "baseRevision": "57d8f1781eca0707994afa7eb26d26a8f4d15ff3",
+      "brief": ".claude/coordination/fucq134-clock-repair-1304.md",
+      "report": ".claude/results/claude-assist-fucq134-2026-11-06-02.md",
+      "priorAdmission": "316af0b37317ee3a3250d695f741722a4e793ffd2cef6ee34191278f07041db8",
+      "clock": {
+        "kind": "CLOCK_UPTIME_RAW",
+        "platform": "darwin",
+        "units": "seconds"
+      },
+      "scope": "Story-owned supervisor/completion share explicit system clock timestamps; freeze clock kind/platform/units. Keep all process-local monotonic intervals and every resource/cleanup/completion gate.",
+      "consumerFields": "New startedSharedSeconds and completionClock ticket fields; legacy startedMonotonic tickets are not reinterpreted. Receipt identity and completion stdout carry the clock contract.",
+      "preserved": "All45 embedded product/test/fixture sources, original3/3/controller0/audit1 evidence, previous failed receipts,120second overall deadline, completion reserves, independent exits and ALL-row strict ownership.",
+      "state": "authoring only; static consequential review, bounded cross-process semantic validation and fresh runtime admission/grant remain required",
       "agents": "requested/selected gpt-6.1-sol/high; no fallback or descendants"
     }
   }

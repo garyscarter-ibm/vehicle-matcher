@@ -17,6 +17,7 @@ HELPERS = ['_tools/test_resources.py', '_tools/scaffold_git.py', 'docs/gcsp/evid
            'docs/gcsp/evidence/fucq134/first-chunk-supervisor.py', 'docs/gcsp/evidence/fucq134/first-chunk-freeze.py',
            'docs/gcsp/evidence/fucq134/first-chunk-completion.py',
            'docs/gcsp/fucq134-source-graph.json']
+COMPLETION_CLOCK = {'kind': 'CLOCK_UPTIME_RAW', 'platform': 'darwin', 'units': 'seconds'}
 
 
 def sha(data):
@@ -108,6 +109,7 @@ def main():
             raise RuntimeError('Worktree package installation must remain absent')
     result = {'schemaVersion': 1, 'status': 'authoring-only; execution requires dispatcher review/grant',
         'root': str(ROOT), 'base': graph['base'], 'actual66': graph['actual66'],
+        'completionClock': COMPLETION_CLOCK,
         'pythonExecutable': sys.executable, 'pythonVersion': sys.version,
         'nodeExecutable': graph['runtime']['nodeRealPath'], 'nodes': nodes, 'absent': absent,
         'installedRoot': str(installed), 'installedPackages': graph['installedPackages'],
