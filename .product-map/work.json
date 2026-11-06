@@ -553,16 +553,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59"
     },
     {
-      "id": "FUCQ-60",
-      "title": "Enrich resolved fleet configurations with matching facts and images",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60"
-    },
-    {
       "id": "FUCQ-61",
       "title": "Collect and validate 10,000 genuinely distinct BMW configurations",
       "status": "To Do",
@@ -1822,6 +1812,79 @@
           "status": "stopped; explicit IBM Global422 Advantage Credits exhaustion; checkpoint preserved"
         }
       ]
+    },
+    {
+      "id": "FUCQ-60",
+      "title": "Enrich resolved fleet configurations with matching facts and images",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "usget",
+      "type": "Story",
+      "observed_at": "2026-11-06T10:30:15Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60",
+      "workers": [
+        {
+          "name": "Scooby Doo",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-06T10:21:44.614624+00:00",
+          "expires_at": "2026-11-06T12:21:44.614624+00:00",
+          "source": "thread 01a1b05f-dcbc-7e50-a2f9-0332b39f082a",
+          "status": "pure enrichment scoped work; requested/selected gpt-6.1-sol/high, no fallback"
+        }
+      ],
+      "slices": [
+        {
+          "id": "exact-identity",
+          "status": "complete",
+          "title": "Exact configuration identity and fact projection",
+          "observed_at": "2026-11-06T10:26:24Z",
+          "evidence": "Lead reviewed exact identity/fact/selection projection and 50/50 scoped contracts passed; docs/gcsp/evidence/fucq60/pure-enrichment.md. Shared session/corpus/source gates remain separate."
+        },
+        {
+          "id": "image-projection",
+          "status": "complete",
+          "title": "Honest representative image and partial projection",
+          "observed_at": "2026-11-06T10:26:24Z",
+          "evidence": "Lead reviewed registered image identity/fidelity/retention/expiry and per-source hash references; 50/50 scoped contracts passed. Real asset coverage remains separate."
+        },
+        {
+          "id": "shared-accounting",
+          "status": "blocked",
+          "title": "Canonical collector session cache budget recovery integration",
+          "observed_at": "2026-11-06T10:30:15Z",
+          "evidence": "F59 actual session published at fdb71c2a34b3501ed0549424947ec67c1145f433, parent supplied hash aed978263f9c. Consumer integration and collect/enrich/resume lifetime accounting proof remain."
+        },
+        {
+          "id": "real-source",
+          "status": "not-started",
+          "title": "Real catalogue source coverage evidence"
+        },
+        {
+          "id": "real-assets",
+          "status": "not-started",
+          "title": "Representative retained asset fidelity evidence"
+        },
+        {
+          "id": "focused-contracts",
+          "status": "complete",
+          "title": "Authored enrichment and F39 F42 focused contracts",
+          "observed_at": "2026-11-06T10:26:24Z",
+          "evidence": "9 authored enrichment and 41 existing F39/F42 tests passed serially on pure checkpoint; strict targeted receipt e096f6c14e9c; final integrated npm test remains separate."
+        },
+        {
+          "id": "corpus-integration",
+          "status": "not-started",
+          "title": "F54 corpus and presentation integration"
+        },
+        {
+          "id": "final-suite",
+          "status": "not-started",
+          "title": "Authored final npm test integration gate"
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-04-033"
     }
   ]
 }
