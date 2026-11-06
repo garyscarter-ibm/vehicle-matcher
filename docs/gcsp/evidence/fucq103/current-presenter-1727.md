@@ -18,7 +18,7 @@ No page/console/resource/external-request failures were recorded. All ten captur
 
 ## Source, scenario and selection
 
-Current F100 worktree source was read-only; the 290 selected product files matched shared/main (`52ec27f`, including merged F100 `55d0831`). The 693-file source/helper/runner/dependency/executable catalogue was unchanged before/after. Only the ignored local runner's row-setup input changed:
+Current F100 worktree source was read-only; the 290 selected product files matched the shared `gcsp-poc` checkout (`52ec27f`, including merged F100 `55d0831`). The 693-file source/helper/runner/dependency/executable catalogue was unchanged before/after. Only the ignored local runner's row-setup input changed:
 
 - Old runner SHA256: `514ba2883843e5cc0d179cceb322f95cd7d79c8ef244eb3af8e1f5893b41d8f0`.
 - Changed runner SHA256: `478d742e2b95f87fbd0cc9100986177c57d61a3431c422d883dfa685f50cc271`.
