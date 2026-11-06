@@ -412,9 +412,10 @@ def execute(c):
                 r.atomic_json(self.manifest, self.record)
                 return value
             def __exit__(self, kind, value, tb):
-                ownership.join_direct()
-                require_descendant_joined()  # Every attempted outcome, before cleanup queries/deletion.
-                ownership.require_safe()
+                try:
+                    ownership.join_direct()
+                finally:
+                    ownership.require_safe()  # Always attempt owned group teardown before journal refusal.
                 with helpers.gate():
                     require_descendant_joined()
                     return super().__exit__(kind, value, tb)
@@ -542,9 +543,15 @@ def execute(c):
         # ownership/identity/resource proof fails. Unknown wait stays explicitly None.
         try:
             if ownership is not None:
-                ownership.join_direct()
-                if ownership.process is not None and ownership.record['direct_joined']:
-                    audit_code = ownership.process.returncode
+                try:
+                    ownership.join_direct()
+                finally:
+                    safe = ownership.finish()  # Independent of journal, wait-capture and stream failures.
+        except BaseException as error:
+            failure = failure or 'OwnedGroupTeardown'+type(error).__name__; status = 1
+        try:
+            if ownership is not None and ownership.process is not None and ownership.record['direct_joined']:
+                audit_code = ownership.process.returncode
             require(outputs is not None)
             outputs.json(c['parent_dir']/'audit-wait.json', dict(supervisor_exit_code=c['wait']['exit_code'],
                 supervisor_wait_sha256=c['wait_info']['sha256'], audit_exit_code=audit_code,
@@ -556,9 +563,8 @@ def execute(c):
         except BaseException as error:
             failure = failure or 'AuditWaitCapture'+type(error).__name__; status = 1
         try:
-            require_descendant_joined()  # Re-read after the unconditional direct-wait capture above.
+            require_descendant_joined()  # Re-read after unconditional direct wait and owned group teardown.
             if ownership is not None:
-                safe = ownership.finish()
                 groups = all(r.group_has_live_members(group) is False for group in scratch.record['groups'])
                 processes = all(not r.process_alive(row) for row in scratch.record['processes'])
             if snapshot is not None:
