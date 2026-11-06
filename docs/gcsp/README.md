@@ -4,7 +4,12 @@ Jira moved on 3 November 2026. Use the new site and keys below; the [migration r
 
 Start here for every new GCSP discovery, foundation, design, implementation or review session. Repository documents hold the project decisions; this chat history is not required context.
 
-## Latest build handover — 5 November 2026
+## Latest build handover — 6 November 2026
+
+**Integration handoffs for Russell's next poller pass, Gary, 6 November:** read the
+[FUCQ-100 and FUCQ-122 handover](codex-handover-2026-11-06-integration.md) after pulling.
+It identifies the existing FUCQ-96/FUCQ-95 owner actions, the unclaimed FUCQ-120 host,
+and the evidence still needed; it does not create new Stories or transfer claims.
 
 **Demo delivery and scope control, Gary, 6 November:** follow the shared [standing rules](build-rules.md#demo-delivery-and-scope-control)
 in every session and descendant: prioritise a complete working demo; backlog defects below Critical/High
