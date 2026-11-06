@@ -4,7 +4,7 @@ import { createGcspRuntime } from '../gcsp/runtime.js';
 import { PolicyService, FilePolicyProvider, MemoryPolicyProvider, PostgresPolicyProvider } from '../gcsp/policy/index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok, result } from '../gcsp/repository/index.js';
 import { startHttpServer, cookieOf } from './helpers/employee-recommendation-http.js';
-import { stock, fact } from './helpers/employee-recommendation.js';
+import { stock, fact, preference } from './helpers/employee-recommendation.js';
 import { saved } from './helpers/greg-demand-run.js';
 import { good, response, now, adoptionCommand } from './helpers/gcsp-reviewed-runtime.js';
 
@@ -38,11 +38,41 @@ test('delivered memory runtime dependencies drive ordinary Greg publish and empl
       visibility: { companyIds: [context.companyId], schemeIds: [context.schemeId], employeeIds: null } }));
   };
   await release(1);
-  const brief = saved();
+  const brief = saved(); brief.preferences.fuel = preference('diesel');
   response(await f.http.request('/api/gcsp/brief/draft', { session: f.session,
     body: { commandId: 'runtime-draft', expectedBriefVersion: 0, expectedDraftVersion: 0, brief } }));
   response(await f.http.request('/api/gcsp/brief/confirm', { session: f.session,
     body: { commandId: 'runtime-confirm', expectedBriefVersion: 0, expectedDraftVersion: 1, consent: { search: true, hold: true } } }));
+  // Explicit trial preparation: project the actual persisted driver's fact into
+  // Greg's stored-subject shape, retaining its synthetic source and provenance.
+  const stored = good(await f.repository.read(context, { table: 'employees', key: { runId: context.runId, employeeId: context.employeeId } }));
+  const manual = stored.contract.manualContext;
+  const drivers = manual.drivers.filter((row) => row.kind === 'employee' && row.employeeId === context.employeeId);
+  assert.equal(drivers.length, 1); const eligibility = structuredClone(drivers[0].eligible);
+  assert.equal(eligibility.status, 'known'); assert.equal(eligibility.value, true);
+  assert.equal(eligibility.provenance.assurance, 'synthetic-scenario');
+  await write((tx) => tx.compareAndSwap({ table: 'employees', key: { runId: context.runId, employeeId: context.employeeId } },
+    stored.version, { contract: { ...stored.contract, manualContext: { ...manual,
+      employeeFacts: { ...manual.employeeFacts, driverEligible: eligibility } } } }));
+  // Five explicitly synthetic stored subjects meet the unchanged canonical privacy threshold.
+  const employee = good(await f.repository.read(context, { table: 'employees', key: { runId: context.runId, employeeId: context.employeeId } }));
+  const confirmed = good(await f.repository.read(context, { table: 'briefs', key: { runId: context.runId, employeeId: context.employeeId, briefVersion: 1 } }));
+  const strip = ({ version, createdAt, updatedAt, ...row }) => row;
+  await write(async (tx) => {
+    for (let index = 2; index <= 5; index++) {
+      const employeeId = `runtime-synthetic-${index}`; const entitlementSlotId = `slot:${employeeId}`;
+      const rewrite = (value) => typeof value === 'string' ? value === context.entitlementSlotId ? entitlementSlotId
+        : value.replaceAll(context.employeeId, employeeId).replaceAll(employee.name, `Synthetic subject ${index}`)
+        : Array.isArray(value) ? value.map(rewrite) : value && typeof value === 'object'
+          ? Object.fromEntries(Object.entries(value).map(([key, child]) => [key, rewrite(child)])) : value;
+      good(await tx.insert('employees', { ...rewrite(strip(employee)), employeeId, principalId: employeeId,
+        entitlementSlotId, name: `Synthetic subject ${index}` }));
+      good(await tx.insert('entitlement_slots', { runId: context.runId, entitlementSlotId, employeeId,
+        renewalId: `renewal:${employeeId}`, capacity: 1, employeeCapacity: 1, state: 'entitled' }));
+      good(await tx.insert('briefs', { ...rewrite(strip(confirmed)), employeeId, entitlementSlotId, confirmedBy: employeeId }));
+    }
+    return ok({ syntheticSubjects: 5 });
+  });
   const request = { ...brief, briefVersion: 1 };
   const first = response(await f.http.request('/api/gcsp/recommendations', { session: f.session, body: request }));
   const pinned = first.recommendations[0]; assert.ok(pinned, JSON.stringify(first)); assert.equal(pinned.terms.points.value, 1100);
@@ -64,6 +94,13 @@ test('delivered memory runtime dependencies drive ordinary Greg publish and empl
   assert.ok(price, JSON.stringify(projection.fields[0]));
   const input = { expectedActiveVersion: projection.activeVersion, changes: [{ id: price.id, value: 1200 }] };
   const before = await rows(f);
+  const weighted = response(await f.http.request('/api/gcsp/greg/policy/preview', { session: f.gregSession,
+    body: { expectedActiveVersion: projection.activeVersion, changes: [{ id: 'weight:body', value: 0 }] } }));
+  assert.equal(weighted.active.fit.meanBestScore.status, 'available');
+  assert.equal(weighted.draft.fit.meanBestScore.status, 'available');
+  assert.ok(weighted.active.fit.meanBestScore.value > weighted.draft.fit.meanBestScore.value);
+  assert.deepEqual(weighted.active.demand.demand.unmet.byGate, weighted.draft.demand.demand.unmet.byGate);
+  assert.deepEqual(await rows(f), before);
   response(await f.http.request('/api/gcsp/greg/policy/preview', { session: f.gregSession, body: input }));
   assert.deepEqual(await rows(f), before);
   const published = response(await f.http.request('/api/gcsp/greg/policy/publish', { session: f.gregSession, body: {
@@ -77,6 +114,44 @@ test('delivered memory runtime dependencies drive ordinary Greg publish and empl
   assert.equal(good(await f.policy.getActiveVersion({ runId: context.runId, asOf: now })).policyVersion, published.policyVersion);
   const controls = response(await f.http.request('/api/gcsp/presenter/controls', { session: f.session }));
   assert.equal(controls.versions.policy, published.policyVersion);
+});
+
+test('combined runtime serves authenticated scenarios, canonical presenter step and real mechanics reset using original policy identity', async (t) => {
+  const readPolicy = new PolicyService({ provider: new MemoryPolicyProvider() });
+  const f = await open(t, { policy: readPolicy }); t.after(() => readPolicy.close());
+  assert.notEqual(f.policy, readPolicy);
+  assert.equal(f.dependencies.gcspScenarios, f.scenarios);
+  assert.equal(f.dependencies.gcspOfferAccess, f.offerAccess);
+  const oldEmployee = f.session.value.context;
+  const catalogue = response(await f.http.request('/api/gcsp/presenter/scenarios', { session: f.session }));
+  assert.ok(catalogue.scenarios.filter((row) => row.kind === 'journey').every((row) => !row.availability.available));
+  const controls = response(await f.http.request('/api/gcsp/presenter/controls', { session: f.session }));
+  assert.equal(controls.controls.step.value, 60);
+  const configured = good(await readPolicy.getAssumption('clock.presenter.stepSeconds', {
+    runId: oldEmployee.runId, asOf: controls.now, policyVersion: controls.versions.policy }));
+  assert.deepEqual(controls.controls.step, configured);
+  const tick = response(await f.http.request('/api/gcsp/presenter/controls/tick', { session: f.session,
+    body: { commandId: 'combined-step', expectedClockVersion: controls.clockVersion, mode: 'step' } }));
+  assert.equal(Date.parse(tick.advance.now) - Date.parse(controls.now), configured.value * 1000);
+  const handlers = ['manual-claim-expiry', 'buddy-expiry', 'captured-outbox'];
+  assert.deepEqual(tick.tick.handlerOrder.map((row) => row.handlerId), handlers);
+  const state = response(await f.http.request('/api/gcsp/presenter/scenarios/current', { session: f.session }));
+  const scenario = catalogue.scenarios.find((row) => row.kind === 'mechanics'); assert.ok(scenario);
+  const reset = response(await f.http.request('/api/gcsp/presenter/scenarios/reset', { session: f.session, body: {
+    commandId: 'combined-reset', expectedRunId: state.runId, expectedRunVersion: state.runVersion,
+    scenarioId: scenario.scenarioId, scenarioVersion: scenario.scenarioVersion,
+    fixtureVersion: scenario.fixtureVersion, policyVersion: scenario.policyVersion } }));
+  assert.notEqual(reset.runId, state.runId);
+  assert.equal((await f.identity.requireRole(oldEmployee, 'employee')).status, 'stale-run');
+  const stale = await f.http.request('/api/gcsp/context', { session: f.session });
+  assert.equal(stale.status, 409); assert.equal(stale.json.status, 'stale-run');
+  const presenter = good(await f.identity.createPresenterSession('combined-fresh-presenter'));
+  const freshSession = { value: { setCookie: presenter.setCookie } };
+  const fresh = response(await f.http.request('/api/gcsp/presenter/controls', { session: freshSession }));
+  const after = response(await f.http.request('/api/gcsp/presenter/controls/tick', { session: freshSession,
+    body: { commandId: 'combined-after-reset', expectedClockVersion: fresh.clockVersion, mode: 'step' } }));
+  assert.deepEqual(after.tick.handlerOrder.map((row) => row.handlerId), handlers);
+  assert.equal(fresh.controls.step.value, configured.value);
 });
 
 test('explicit file policy stays read-only under a memory runtime and caller policy is not closed', async (t) => {

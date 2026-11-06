@@ -327,7 +327,9 @@ class Supervisor:
         text = (HERE / 'browser-runner.mjs').read_text()
         required = ['FUCQ103_CHUNK', 'FUCQ103_OUTPUT', 'FUCQ103_SCRATCH', 'FUCQ103_PROCESS_LEDGER',
                     '--user-data-dir=', 'chrome-profile', 'buildServer', 'createGcspRuntime', 'https',
-                    'resourceFailures: []', 'report.resourceFailures.push', 'assert.deepEqual(report.resourceFailures, [])']
+                    'resourceFailures: []', 'report.resourceFailures.push', 'assert.deepEqual(report.resourceFailures, [])',
+                    'scrollIntoView', 'Capture target must be visible inside the viewport', 'focusPreserved: true',
+                    '.gcsp-brief-cards .vm-card-terms .vm-specs', 'surface, focusPreserved']
         if any(item not in text for item in required):
             raise R.ResourceError('Runner lacks required owned Chrome/TLS/runtime interface')
         forbidden = [r'secureCookies\s*:\s*false', r'sameSite\s*:\s*[\'\"](?:none|lax)[\'\"]',

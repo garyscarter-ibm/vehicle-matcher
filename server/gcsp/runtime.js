@@ -9,6 +9,13 @@ import { createBriefEditorService } from './brief/editor.js';
 import { createActivityService } from './brief/activity.js';
 import { createGregDemandService } from './greg/index.js';
 import { createGregPublishService } from './greg/publish/index.js';
+import { createScenarioService } from './scenarios/index.js';
+import { createSyntheticManualStockAdapter } from './adapters/manual-stock.js';
+import { createManualClaimsService } from './manual-claims/index.js';
+import { createBuddyHoldService } from './offers/buddy-hold.js';
+import { createOfferAccessService } from './offers/access.js';
+import { verifyOfferToken } from './offers/offer-token.js';
+import { createNotificationDispatcher } from './notify/index.js';
 
 const unavailable = () => result('unavailable', { reason: 'The trusted demo runtime is unavailable.', retryable: true });
 const scoped = (value, context) => ['runId', 'environmentId', 'employeeId'].every((key) => value?.[key] === context[key]);
@@ -21,11 +28,13 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
   const ownsPolicy = policy === undefined;
   const readPolicy = policy ?? new PolicyService({ provider: mode === 'memory'
     ? new MemoryPolicyProvider() : new PostgresPolicyProvider(repositoryOptions) });
-  let closed = false;
-  const close = async () => {
-    if (closed) return; closed = true;
-    try { await repository.close(); } finally { if (ownsPolicy) await readPolicy.close(); }
-  };
+  let closing; let notify;
+  // The trusted host settles startup and its initiating calls before closing.
+  const close = () => closing ??= (async () => {
+    try { notify?.close(); } finally {
+      try { await repository.close(); } finally { if (ownsPolicy) await readPolicy.close(); }
+    }
+  })();
   try {
     const opened = await repository.open();
     if (opened.status !== 'ok') { await close(); return opened; }
@@ -56,7 +65,16 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const activity = createActivityService({ repository, identity, clock });
     const greg = createGregDemandService({ repository, policy, clock, identity });
     const gregPublish = createGregPublishService({ repository, policy, clock, identity });
+    // Prepared scenario fixtures are branded by the exact policy instance used by the clock.
+    const scenarios = createScenarioService({ repository, policy: readPolicy, clock, identity });
+    const adapter = createSyntheticManualStockAdapter();
+    const manualClaims = createManualClaimsService({ repository, policy, clock, identity, manual: account, adapter });
+    const buddy = createBuddyHoldService({ repository, policy, clock, identity, adapter });
+    const offerAccess = createOfferAccessService({ repository, policy, clock, identity, environmentId, sessionNow, verifyOfferToken });
+    notify = createNotificationDispatcher({ repository, policy, clock, environmentId });
     const dependencies = { gcspRepository: repository, gcspPolicy: policy, gcspGreg: greg, gcspGregPublish: gregPublish,
+      gcspScenarios: scenarios, gcspManualClaims: manualClaims, gcspBuddy: buddy, gcspOfferAccess: offerAccess,
+      gcspNotify: notify, gcspOutbox: { repository },
       gcspIdentity: identity, gcspClock: clock, gcspManual: account, gcspBrief: brief,
       gcspBriefEditor: editor, gcspActivity: activity, gcspRecommendations: { provider, policy, time: clock } };
     // Backend-only local bootstrap. The browser cannot choose identities or receive raw credentials in JSON.
@@ -75,6 +93,6 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       if (seeded.status !== 'ok') return seeded;
       return ok({ context: acting.value.context, setCookie: [presenter.value.setCookie[1], acting.value.setCookie] });
     }
-    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, dependencies, createLocalSession, close });
+    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, buddy, offerAccess, notify, dependencies, createLocalSession, close });
   } catch { await close(); return unavailable(); }
 }

@@ -1019,7 +1019,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-06T00:22:49Z",
+      "observed_at": "2026-11-06T00:47:52Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103",
       "jira_observed_at": "2026-11-05T22:40:24Z",
       "branch": "dev/DEV-2026-11-04-066",
@@ -1083,8 +1083,8 @@
           "id": "rendered-integration",
           "status": "blocked",
           "title": "Desktop and narrow keyboard browser evidence",
-          "observed_at": "2026-11-06T00:22:49Z",
-          "evidence": "One admitted smoke at7dcee90 remains incomplete: three actual presenter/scenarios503 responses; runtime lacks gcspScenarios, central100/126composition owns actual service. Three functional marks reached; original1280x900captures inspected with viewport limits. Receipt smoke-desktop-fb26fd0c291e4207b22c11a523365812; parent/dispatcher verified source and actual cleanup. docs/gcsp/evidence/fucq103/browser-smoke-2026-11-06.md. Lane/freeze released; no retry/journeys/full/native. New registry checkpo"
+          "observed_at": "2026-11-06T00:47:52Z",
+          "evidence": "Exact100 runtime16adoptions now serve actualscenarios200/60sstep/mechanicsreset. Initial25/26; controlled synthetic driverfact projection focused5/5,21unchangedGreg/consumer reused. Default weightedpreview projection gap remains with100; prior smoke incomplete. Correctedtargetscroll+200sourcecatalogue pendingrootreview/staticprep/browsergrant. docs/gcsp/evidence/fucq103/runtime-combined-2026-11-06.md."
         },
         {
           "id": "full-validation",

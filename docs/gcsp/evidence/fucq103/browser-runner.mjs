@@ -25,7 +25,7 @@ const viewport = { width: chunk === 'journey-narrow320' ? 320 : 1280, height: 90
 const ledger = { pids: [process.pid], ports: [], profile: resolve(scratch, 'chrome-profile') };
 const report = { chunk, viewport, state: 'incomplete', checks: [], screenshots: [], responses: [],
   consoleErrors: [], pageErrors: [], requestFailures: [], resourceFailures: [], externalRequests: [], overflow: [],
-  scenario: 'Five synthetic persisted employee/confirmed-brief subjects; canonical policy/privacy/cookies; memory provider',
+  scenario: 'Five synthetic persisted subjects; actual stored driver eligibility projected with provenance into Greg subject facts; canonical policy/privacy/cookies; memory provider',
   boundaries: 'Actual local memory runtime and HTTP adapters; no PostgreSQL, producer corpus, external integration or native proof.' };
 const good = (reply) => { assert.equal(reply?.status, 'ok', JSON.stringify(reply)); return reply.value; };
 const pause = (milliseconds) => new Promise((done) => setTimeout(done, milliseconds));
@@ -114,6 +114,16 @@ async function scenario(existing) {
     return tx.compareAndSwap(ref, good(await tx.get(ref)).version, { state: 'held', held: true, available: false });
   });
   await release(2);
+  // Explicit synthetic scenario preparation, never a default/provider/seed repair.
+  const stored = good(await runtime.repository.read(paula, { table: 'employees', key: { runId: paula.runId, employeeId: paula.employeeId } }));
+  const manual = stored.contract.manualContext;
+  const drivers = manual.drivers.filter((row) => row.kind === 'employee' && row.employeeId === paula.employeeId);
+  assert.equal(drivers.length, 1); const eligibility = structuredClone(drivers[0].eligible);
+  assert.equal(eligibility.status, 'known'); assert.equal(eligibility.value, true);
+  assert.equal(eligibility.provenance.assurance, 'synthetic-scenario');
+  await write((tx) => tx.compareAndSwap({ table: 'employees', key: { runId: paula.runId, employeeId: paula.employeeId } },
+    stored.version, { contract: { ...stored.contract, manualContext: { ...manual,
+      employeeFacts: { ...manual.employeeFacts, driverEligible: eligibility } } } }));
   const originalEmployee = good(await runtime.repository.read(paula, { table: 'employees', key: { runId: paula.runId, employeeId: paula.employeeId } }));
   const originalBrief = good(await runtime.repository.read(paula, { table: 'briefs', key: { runId: paula.runId, employeeId: paula.employeeId, briefVersion: 1 } }));
   const stripMetadata = ({ version, createdAt, updatedAt, ...row }) => row;
@@ -142,7 +152,7 @@ async function scenario(existing) {
   assert.equal(adopted.activationRequired, false);
   await advance();
   report.initialPinnedDigest = hash(pinnedBefore);
-  mark('Real runtime, HTTP-confirmed brief and calculated 1100-point pinned quote; five synthetic persisted subjects; reviewed editor adoption');
+  mark('Real runtime, HTTP-confirmed brief and calculated 1100-point pinned quote; explicit stored driver-fact projection and five synthetic subjects; reviewed editor adoption');
   return cookies;
 }
 function cookieForBrowser(line) {
@@ -169,7 +179,12 @@ async function actualEmployee(page, expectedPoints, eligible) {
   await page.locator('.gcsp-brief-preview-status').filter({ hasText: eligible ? /[1-9].*eligible/ : /^0 eligible/ }).waitFor();
   const rendered = await page.locator('.gcsp-brief-preview').innerText();
   if (eligible) assert.ok(rendered.includes(String(expectedPoints)) || rendered.includes(expectedPoints.toLocaleString('en-GB')));
-  await capture(page, eligible ? `employee-${expectedPoints}` : 'employee-no-suitable');
+  const term = eligible ? page.locator('.gcsp-brief-cards .vm-card-terms .vm-specs')
+    .filter({ hasText: `${expectedPoints.toLocaleString('en-GB')} points a month` }).first()
+    : page.locator('.gcsp-brief-preview-status');
+  await capture(page, eligible ? `employee-${expectedPoints}` : 'employee-no-suitable', { target: term });
+  if (!eligible) await capture(page, 'employee-no-suitable-reasons', {
+    target: page.locator('.gcsp-brief-cards .vm-card-decision').first() });
   mark(`Actual employee brief HTTP preview/render ${eligible ? expectedPoints + ' points' : 'no suitable car'}`);
   await pageRequest(page, '/api/gcsp/session/switch', { principalId: 'demo-greg', commandId: `greg-${++sequence}` });
 }
@@ -185,14 +200,51 @@ async function priceRow(page) {
   const row = policy.fields.find((field) => field.kind === 'price' && field.matchValue === 'G21 Touring|320i' && field.schemeId === session.value.context.schemeId);
   assert.ok(row); await panel(page).getByLabel('Published points row', { exact: true }).selectOption(row.id); return { policy, row };
 }
-async function capture(page, name) {
-  const overflow = await page.evaluate(() => ({ width: innerWidth, document: document.documentElement.scrollWidth,
-    body: document.body.scrollWidth, offenders: [...document.querySelectorAll('body *')].filter((node) => {
-      const style = getComputedStyle(node); const rect = node.getBoundingClientRect();
-      return style.display !== 'none' && rect.width > 0 && rect.right > innerWidth + 1 && !node.closest('.gcsp-table-scroll, .gcsp-data-table-scroll');
-    }).slice(0, 12).map((node) => ({ tag: node.tagName, class: node.className })) }));
-  report.overflow.push({ name, ...overflow }); assert.ok(overflow.document <= viewport.width + 1, JSON.stringify(overflow));
-  const path = resolve(output, `${name}.png`); await page.screenshot({ path, fullPage: false }); report.screenshots.push({ name, path, viewport });
+async function captureTarget(page, name, target) {
+  const focus = await page.evaluateHandle(() => document.activeElement);
+  let surface = null;
+  try {
+    if (target) {
+      await target.waitFor({ state: 'visible' });
+      await target.evaluate((node) => node.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'instant' }));
+      surface = await target.evaluate((node) => {
+        const rect = node.getBoundingClientRect();
+        return { text: node.textContent.trim().slice(0, 500), tag: node.tagName, id: node.id,
+          rect: { x: rect.x, y: rect.y, width: rect.width, height: rect.height, right: rect.right, bottom: rect.bottom },
+          scroll: { x: scrollX, y: scrollY }, viewport: { width: innerWidth, height: innerHeight } };
+      });
+      const { rect } = surface;
+      assert.ok(rect.width > 0 && rect.height > 0 && rect.x >= -1 && rect.y >= -1
+        && rect.right <= viewport.width + 1 && rect.bottom <= viewport.height + 1,
+      `Capture target must be visible inside the viewport: ${JSON.stringify(surface)}`);
+    }
+    const overflow = await page.evaluate(() => ({ width: innerWidth, document: document.documentElement.scrollWidth,
+      body: document.body.scrollWidth, offenders: [...document.querySelectorAll('body *')].filter((node) => {
+        const style = getComputedStyle(node); const rect = node.getBoundingClientRect();
+        return style.display !== 'none' && rect.width > 0 && rect.right > innerWidth + 1 && !node.closest('.gcsp-table-wrap, .gcsp-table-scroll, .gcsp-data-table-scroll');
+      }).slice(0, 12).map((node) => ({ tag: node.tagName, class: node.className })) }));
+    report.overflow.push({ name, ...overflow }); assert.ok(overflow.document <= viewport.width + 1, JSON.stringify(overflow));
+    const path = resolve(output, `${name}.png`); await page.screenshot({ path, fullPage: false });
+    assert.equal(await page.evaluate((original) => document.activeElement === original, focus), true);
+    report.screenshots.push({ name, path, viewport, surface, focusPreserved: true });
+  } finally { await focus.dispose(); }
+}
+async function capture(page, name, { target, overview = false } = {}) {
+  if (overview || target) return captureTarget(page, name, target);
+  const publish = panel(page);
+  await captureTarget(page, name, name === 'validation-errors'
+    ? publish.locator('.gcsp-error-summary') : publish.locator('[role=status]').first());
+  const current = await publish.getAttribute('data-state');
+  if (current === 'draft') {
+    await captureTarget(page, `${name}-heading`, publish.locator('h2').first());
+    await captureTarget(page, `${name}-controls`, publish.locator('.gcsp-publish-control').first());
+  }
+  if (current === 'preview-ready') {
+    for (const [suffix, caption] of [['outcomes', 'Preview outcomes'], ['changes', 'Changed values in this preview']])
+      await captureTarget(page, `${name}-${suffix}`, publish.getByRole('region', { name: caption, exact: true }));
+  }
+  if (current === 'published')
+    await captureTarget(page, `${name}-details`, publish.locator('.gcsp-publish-results'));
 }
 async function observeBusy(page, path, busyState, name, action) {
   if (report.screenshots.some((capture) => capture.name === name)) return action();
@@ -327,7 +379,7 @@ async function journey(page) {
   mark('Standalone custom element actual non-Greg HTTP refusal');
 }
 async function smoke(page) {
-  await gregPage(page); await capture(page, 'draft-desktop');
+  await gregPage(page); await capture(page, 'draft-desktop-overview', { overview: true }); await capture(page, 'draft-desktop');
   await page.goto(origin + embedPath + '?view=dashboard'); await state(page, 'draft');
   assert.equal(await page.locator('gcsp-greg-dashboard').count(), 1);
   assert.equal(await page.locator('[data-proof-host]').getAttribute('data-ready'), 'true');

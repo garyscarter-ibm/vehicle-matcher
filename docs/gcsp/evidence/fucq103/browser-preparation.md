@@ -151,3 +151,14 @@ catalogue returned HTTP 503. Resource/source audits passed; no browser retry or
 journey was admitted. The dispatcher released that freeze for the approved
 canonical registry checkpoint, which needs a fresh catalogue before any later
 browser execution.
+
+## Combined runtime successor
+
+[The combined runtime checkpoint](runtime-combined-2026-11-06.md) records the exact
+FUCQ-100 adoptions, retained FUCQ-103 registry/seed/scorer and a fresh 200-file
+catalogue. Captures now scroll to the asserted panel/term and retain viewport
+geometry and focus evidence. The synthetic trial explicitly projects the actual
+stored driver's eligibility fact into Greg's stored-subject shape, preserving its
+provenance; this does not close the default-runtime projection gap. The earlier
+static preparation and smoke receipts do not validate this successor. Static
+preparation, browser admission and rendered acceptance remain pending review.

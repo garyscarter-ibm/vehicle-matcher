@@ -340,3 +340,13 @@ already match, 16 exact adoptions are proposed, and the current registry, presen
 step seed and weighted employee scorer are explicitly retained. Its 191-file
 candidate inventory is for review, not an executable freeze. Source adoption,
 combined-graph checks, static preparation and browser admission remain pending.
+
+The [combined runtime checkpoint](runtime-combined-2026-11-06.md) subsequently
+applies the dispatcher-approved 16 exact adoptions while retaining those three
+FUCQ-103 files. Authenticated scenarios, presenter step and mechanics reset pass.
+The initial selected run is 25/26; an explicitly labelled synthetic driver-fact
+projection corrects the trial input and the focused runtime run passes 5/5.
+Twenty-one unchanged Greg/consumer checks are reused transparently. Default-runtime
+weighted preview remains open with the central owner. The corrected capture runner
+and 200-file catalogue are refrozen for review; no browser or static preparation
+was executed at this new identity.

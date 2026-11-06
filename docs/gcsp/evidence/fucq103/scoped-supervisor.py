@@ -20,6 +20,8 @@ shared = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs')
 run = 'fucq103-backend-' + uuid.uuid4().hex
 mode = sys.argv[1] if len(sys.argv) > 1 else 'publish'
 checks = {
+    'canonical-runtime-focus': ['server/test/gcsp-runtime-publication.test.js'],
+    'canonical-runtime': ['server/test/gcsp-runtime-publication.test.js', 'server/test/gcsp-policy-consumer-adoption.test.js', 'server/test/gcsp-greg-publish.test.js'],
     'consumer-adoption': ['server/test/gcsp-policy-consumer-adoption.test.js'],
     'consumer-registration': ['server/test/gcsp-policy-consumer-adoption.test.js', 'server/test/gcsp-policy-learning-adoption.test.js', 'server/test/gcsp-policy-adoption.test.js', 'server/test/gcsp-greg-publish-editor.test.js', 'server/test/gcsp-runtime-publication.test.js'],
     'learning-registration': ['server/test/gcsp-policy-learning-adoption.test.js', 'server/test/gcsp-policy-adoption.test.js', 'server/test/gcsp-greg-publish-editor.test.js', 'server/test/gcsp-runtime-publication.test.js'],
@@ -40,7 +42,11 @@ checks = {
 }
 if mode not in checks:
     raise SystemExit('Unknown scoped check')
-command = ['node', '--test', '--test-concurrency=1', *checks[mode]]
+combined_path = Path(__file__).with_name('runtime-combined-source-plan.json')
+combined = json.loads(combined_path.read_text()) if mode in ('canonical-runtime', 'canonical-runtime-focus') else None
+if combined and (combined['selectedTests'] != checks['canonical-runtime'] or not set(checks[mode]) <= set(combined['selectedTests'])):
+    raise SystemExit('Combined source catalogue selected tests differ')
+command = [combined['executables']['node']['path'] if combined else 'node', '--test', '--test-concurrency=1', *checks[mode]]
 policy = resources.Policy({'chunk_scratch_mib': 128, 'chunk_ram_mib': 768, 'chunk_seconds': 120, 'log_mib': 2})
 host = resources.HostBudget(policy)
 
@@ -63,6 +69,7 @@ report = {'run': run, 'project': str(project), 'command': command, 'scope': 'sco
           'excluded': 'Full suite, PostgreSQL, browser and external integration; parent owns integration checkpoint.',
           'supervisor': str(Path(__file__).resolve()), 'manifest': str(scratch.manifest)}
 report['impactMap'] = {
+    'Exact100 runtime/index dependency adoption with retained103 registry/seed/scorer; actual HTTP scenarios, canonical step/reset, weighted preview, employee terms and history': ['server/test/gcsp-runtime-publication.test.js', 'server/test/gcsp-policy-consumer-adoption.test.js', 'server/test/gcsp-greg-publish.test.js'],
     'Exact FUCQ-106 reasons and FUCQ-115 choice bundles / same-provider missing-only adoption / isolated dated80x4 publication': ['server/test/gcsp-policy-consumer-adoption.test.js'],
     'Exact approved FUCQ-113 definition registry / missing-key adoption / same-provider ordinary context and readback': ['server/test/gcsp-policy-learning-adoption.test.js', 'server/test/gcsp-policy-adoption.test.js', 'server/test/gcsp-greg-publish-editor.test.js', 'server/test/gcsp-runtime-publication.test.js'],
     'Greg editor reviewed presentation bundle / optional field ranges / retained exact validation and pinned rows': ['server/test/gcsp-greg-publish-editor.test.js', 'server/test/gcsp-greg-publish-render.test.js', 'server/test/gcsp-greg-publish.test.js'],
@@ -93,6 +100,25 @@ if mode.startswith('publish-ui'):
     }
 source_paths = sorted(set(source_paths))
 report['pins'] = {name: hashlib.sha256((project / name).read_bytes()).hexdigest() for name in source_paths}
+def combined_identity():
+    if not combined:
+        return None
+    sources = {name: hashlib.sha256((project / name).read_bytes()).hexdigest() for name in combined['sources']}
+    installed = {name: hashlib.sha256(Path(name).read_bytes()).hexdigest() for name in combined['dependencies']['sources']}
+    members = sorted(str(p) for base in combined['dependencies']['roots'] for p in Path(base).rglob('*')
+                     if p.is_file() and not p.is_symlink() and '.bin' not in p.parts)
+    declared = sorted(p for p in installed if any(Path(base) in Path(p).parents for base in combined['dependencies']['roots']))
+    executables = {name: {'path': row['path'], 'sha256': hashlib.sha256(Path(row['path']).read_bytes()).hexdigest()}
+                   for name, row in combined['executables'].items()}
+    if sources != combined['sources'] or installed != combined['dependencies']['sources'] or members != declared or executables != combined['executables']:
+        raise resources.ResourceError('Combined source/dependency/executable freeze differs')
+    return {'catalogueSha256': hashlib.sha256(combined_path.read_bytes()).hexdigest(),
+            'sources': sources, 'installed': installed, 'installedMembership': members, 'executables': executables}
+
+if combined:
+    report['sourceBefore'] = combined_identity()
+    report['pins'] = report['sourceBefore']['sources']
+    report['combinedSourceCatalogue'] = str(combined_path)
 scratch.record.update(supervisorFinalizer=__file__, command=command, impact=report['impact'], retainedDependencies=[])
 
 def stop_owned():
@@ -131,9 +157,16 @@ def finalizer():
     report['ownedDescendants'] = tracked
     report['ownedPortsClosed'] = report['descendantsAbsent'] and report['groupsAbsent']
     report['sourcesUnchanged'] = all(hashlib.sha256((project / name).read_bytes()).hexdigest() == digest for name, digest in report['pins'].items())
+    if combined:
+        try:
+            report['sourceAfter'] = combined_identity()
+            report['sourcesUnchanged'] = report['sourceAfter'] == report['sourceBefore']
+        except Exception as error:
+            report['sourcesUnchanged'] = False
+            report['sourceIdentityError'] = type(error).__name__
     report['adoptedDependencies'] = []
-    for link, target in adopted_links:
-        removed = link.is_symlink() and link.resolve() == target.resolve()
+    for link, target, inode in adopted_links:
+        removed = link.is_symlink() and link.lstat().st_ino == inode and link.resolve() == target.resolve()
         if removed:
             link.unlink()
         report['adoptedDependencies'].append({'link': str(link), 'target': str(target), 'linkAbsent': not os.path.lexists(link), 'existingTargetPreserved': target.is_dir()})
@@ -202,11 +235,14 @@ with resources.handled_termination():
             link = project / relative
             target = shared.parent.parent / relative
             if not os.path.lexists(link) and target.is_dir():
-                adopted_links.append((link, target))
-                scratch.record['adoptedLinks'] = [{'link': str(a), 'target': str(b)} for a, b in adopted_links]
+                adopted_links.append((link, target, None))
+                scratch.record['adoptedLinks'] = [{'link': str(a), 'target': str(b), 'inode': inode} for a, b, inode in adopted_links]
                 resources.atomic_json(scratch.manifest, scratch.record)
                 link.symlink_to(target, target_is_directory=True)
-        report['node'] = subprocess.check_output(['node', '--version'], text=True, timeout=5, env=env).strip()
+                adopted_links[-1] = (link, target, link.lstat().st_ino)
+                scratch.record['adoptedLinks'][-1]['inode'] = link.lstat().st_ino
+                resources.atomic_json(scratch.manifest, scratch.record)
+        report['node'] = subprocess.check_output([command[0], '--version'], text=True, timeout=5, env=env).strip()
         host.acquire(scratch.token, 128 * resources.MIB, 768 * resources.MIB, project, root=scratch.root)
         reserved = True
         with scratch:
