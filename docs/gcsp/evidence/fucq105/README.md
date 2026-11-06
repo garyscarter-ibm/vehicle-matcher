@@ -2,13 +2,19 @@
 
 5 November 2026. **Partial development; full story acceptance remains incomplete.**
 
-## Latest integration attempt · 6 November 2026
+## Latest memory integration checkpoint · 6 November 2026
 
-The dispatcher approved the exact45-source/eight-overlay memory composition. The first selected integration run failed during loader registration before any product module or test phase loaded: attempted1/pass0/fail1/skip0. No strict receipt or product integration result exists. The loader's project guard omits its own registration entry; diagnosis and proposed narrow correction are in `producer-proof-result.md` and exact failure/resource identities in `producer-scoped.json`.
+Root reviewed published helper5f6dab8 and granted exactly one fresh execution. The actual100 producer →102 streamed HTTP access →105 controller/shared-card DOM lifecycle passed: **tests1/pass1/fail0/skip0**, all seven checkpoints complete. Strict targeted key `6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2`, executed head5f6dab8, default variant/baseb95b4c8. Exact45 product identities/eight overlays/five inputs and retained dependency identities matched; the journal has46 unique identities (45 product plus test) recorded twice each with consistent URL/hash. A corrected independent audit checks unique identities and all repeated records; no second run occurred. See `producer-integration-result.md` and `producer-integration-scoped.json` for provenance and teardown.
 
-Stopped at the first failure as explicitly instructed; the failed harness and receipts are published at `b19bfa6`. Independent process/filesystem/source/dependency cleanup audit passed. The validated73/73 consumer boundary below remains unchanged. Actual producer→102→105 integration and all broader acceptance gates remain open.
+Actual allocation/replay, one token exchange, cookie-jar reload/account-service parity, pinned points/partial comparison, real DemoClock quote/hold expiry with released stock, reset/earlier-run and refusal/unavailable behavior now have scoped memory evidence. The HTTP/cookie shim and JSDOM do not establish normal browser/host entry or deployed cookies. No106 port was injected. Complete current-car facts, actual106/delivered host, rendered1280/375 keyboard/reduced-motion, browser/presenter journeys, authored full validation and final acceptance remain open. All owned resources are absent, reservation released, first failed receipt preserved, and worker parked after the one granted result.
 
-The dispatcher then authorized a helper-only successor for review, using immutable106 loader `189ffa5` as a read-only reference. The loader now admits only its exact registration URL, verifies its recorded hash, and delegates `node:` builtins explicitly. The supervisor supplies loader URL/hash separately from the unchanged45 product rows. `producer-helper-successor.json` records final hashes, proposed argv and preparation receipts. Syntax, Python AST and exact-delta/source guards passed; no loader/test/product evaluation or integration retry occurred. A new root review and execution grant are required before another integration allocation. The worker remains parked with ownership retained.
+## Preserved bootstrap failure and helper preparation
+
+The dispatcher approved the exact45-source/eight-overlay memory composition. The first selected integration run failed during loader registration before any product module or test phase loaded: attempted1/pass0/fail1/skip0. That run produced no strict passing receipt or product integration result. The loader's project guard omitted its own registration entry; diagnosis and proposed narrow correction are in `producer-proof-result.md` and exact failure/resource identities in `producer-scoped.json`.
+
+Stopped at the first failure as explicitly instructed; the failed harness and receipts are published at `b19bfa6`. Independent process/filesystem/source/dependency cleanup audit passed. The validated73/73 consumer boundary below remains unchanged. At that failure checkpoint, actual producer→102→105 integration and all broader acceptance gates remained open.
+
+The dispatcher then authorized a helper-only successor for review, using immutable106 loader `189ffa5` as a read-only reference. The loader admits only its exact registration URL, verifies its recorded hash, and delegates `node:` builtins explicitly. The supervisor supplies loader URL/hash separately from the unchanged45 product rows. `producer-helper-successor.json` records final hashes, proposed argv and preparation receipts. Syntax, Python AST and exact-delta/source guards passed without loader/test/product evaluation in that preparation phase. Root subsequently reviewed the successor and supplied the separate one-run grant recorded above.
 
 ## Last validated consumer checkpoint · 6 November 2026
 
@@ -48,7 +54,7 @@ Both owned scratch roots and process groups are verified absent, and reservation
 
 ## Remaining acceptance
 
-- Actual FUCQ-100 producer → FUCQ-102 access → offer proof and full factual current-car comparison. Published producer `a7fc8580efba36c329b2479711d6b66db53962bd` is context; its internals are not bound here.
+- Full factual current-car comparison. Actual100→102→105 is proved only in the exact synthetic memory composition above; delivered runtime/host binding remains open.
 - Integration-approved FUCQ-106 decision port, uncertain-operation readback and delivered central host/runtime.
 - Actual email/account entry, secure-cookie reload/second-browser parity and real DemoClock presenter/expiry proof.
 - Every-state 1280/375 px rendered review, keyboard/focus, reduced motion, long names, absent imagery and no overflow.

@@ -1369,7 +1369,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T00:25:50Z",
+      "observed_at": "2026-11-06T00:30:56Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-105",
       "slices": [
         {
@@ -1390,8 +1390,8 @@
           "id": "access-producer",
           "status": "in-progress",
           "title": "Published FUCQ102 access bound to actual FUCQ100 producer",
-          "observed_at": "2026-11-06T00:25:50Z",
-          "evidence": "First integration remains1 attempted/0passed/1failed/0skipped;0product modules, immutable failed checkpoint b19bfa6. Dispatcher-authorized exact-loader admission/hash helper successor passes syntax/AST/static guards only;45 product identities/eight overlays/five inputs unchanged. No loader/product evaluation or retry. Await root review and fresh execution grant; worker parked, ownership retained. See docs/gcsp/evidence/fucq105/producer-helper-successor.json."
+          "observed_at": "2026-11-06T00:30:56Z",
+          "evidence": "Root granted one fresh exact5f6dab8 memory run:1test/1pass/0fail/0skip, all7 actual100→102 streamedHTTP→105 DOM lifecycle checkpoints. Strict key6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2;45 unique products/8overlays plus test, consistent duplicate hook records. Independent cleanup/source/dependency audit PASS; firstfailedreceipt preserved. No actual106/host/browser/full acceptance. Grant consumed, worker parked, root retains review/merge/closure. docs/gcsp/evidence/fucq105"
         },
         {
           "id": "decision-host",
