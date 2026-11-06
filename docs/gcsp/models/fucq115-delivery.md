@@ -188,3 +188,30 @@ dated existing-key publication inputs for cohort80/cycles4/record bound>=320/
 choice bound40000 and a comparison start at/after pinned preparation. Read back
 through one pinned PolicyService; never edit snapshot hashes or provenance to
 bypass publication. Existing13/13checks and clean-park receipts remain unchanged.
+
+## Canonical checkpoint and finite execution proposal
+
+FUCQ-103 published `0d3a0aa2fcee5d26ad33e587578cff7cce169090`; the
+dispatcher independently accepted its canonical registry/adoption evidence on
+6 November 2026. That supersedes the unpublished upstream state above. Pluto
+read the immutable registry, two added JSONs, actual runtime/activation interfaces,
+consumer adoption test and exact dated command without importing JavaScript.
+
+`fucq115-canonical-source-plan.json` records the proposed 73-file, 1,216,281-byte
+coherent graph: canonical 103 common modules, immutable published 113 records/CLI,
+and unchanged own model/CLI. Its SHA-256 is
+`4736eb27feccd18d83c9f105d7a71d1130e1edd75006974c211fac208d1293a3`.
+All five registered JSON dependencies are included. Five earlier baseline
+dependencies differ; their old and selected hashes are explicit. No mixed shared
+module identity, rewritten foreign source or policy snapshot overlay is proposed.
+
+The complete sequential harness, exact command, source delta, output caps and
+120s/768MiB/128MiB/2MiB one-worker resource plan are in
+`fucq115-canonical-plan.md`, `fucq115-canonical-run.mjs` and
+`fucq115-canonical-supervisor.py`. Source/catalogue/hash checks and Python AST
+parsing passed. The supervisor `--plan` rehashed all 73 sources and own helpers;
+no JavaScript import, syntax/test allocation, generator or training occurred.
+The proposed run still needs dispatcher source/harness review before execution.
+No new allocation or dependency link exists. Prior scoped13/13 remains the latest
+executed model-test evidence, with its original identity; full acceptance remains
+open, including actual320-record training and both baseline holdouts.
