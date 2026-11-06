@@ -20,6 +20,12 @@ primary identities, foreign ownership/run/slot/scheme and corrupt dated source/r
 produce generic unavailable. Demand performs this mapping before its no-visible-stock shortcut.
 Neither helper results nor aggregate errors expose driver identifiers or diagnostics.
 
+Static review corrected a draft exception that treated wholly missing manualContext as unconfirmed
+when no contract was referenced. Missing manualContext, account or source now always produces generic
+unavailable. The absent/ambiguous-driver outcome requires a valid account/source envelope. Focused
+expectations cover missing manualContext both with and without a contract reference, plus missing
+account and source. This correction does not add a product path or an executed case.
+
 Both repository loaders now include entitlement_slots in their existing stable-read sets. The fact
 identity includes employee and slot revisions. No records are updated or cached by these reads. Role
 checks, stock visibility, decline exclusion, privacy bands and policy/time/points/quote gates remain
