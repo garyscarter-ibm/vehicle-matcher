@@ -1,0 +1,126 @@
+{
+  "at": "2026-11-06T02:49:16.129295+00:00",
+  "story": "FUCQ-100",
+  "run": "runtime-composition-targeted-1793932931454938000",
+  "source": "9948bff11ed27f847436c6880db035fe8a54a784",
+  "grant": "fucq100-c1host7-9948bff-0242",
+  "status": "PASS for seven frozen C1/host cases only",
+  "tests": 7,
+  "pass": 7,
+  "fail": 0,
+  "cancelled": 0,
+  "skipped": 0,
+  "todo": 0,
+  "rootAuditChecks": 2287,
+  "peakAggregateRSS": 406536192,
+  "scope": "actual shared runtime/local employee preparation and synthetic TEST release input; account/setup/Back/resume",
+  "remainingAcceptance": [
+    "default/reset enriched corpus",
+    "F77/F78",
+    "complete journey UX/browser",
+    "native database",
+    "full-suite and deployed integration"
+  ],
+  "artifacts": [
+    {
+      "file": "runtime-composition-targeted-1793932931454938000-receipt.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-composition-targeted-1793932931454938000-receipt.json",
+      "bytes": 8157,
+      "sha256": "f0452c70bda572fe37921d539ea695c8d2810639199175551b0e3e328cbba382",
+      "byteIdentical": true
+    },
+    {
+      "file": "runtime-composition-targeted-1793932931454938000-inner-receipt.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-composition-targeted-1793932931454938000-inner-receipt.json",
+      "bytes": 773975,
+      "sha256": "4006303203620cedc7f0cbcff54962fa2e38f50988a94c43eb29c6dbcd7770b2",
+      "byteIdentical": true
+    },
+    {
+      "file": "runtime-composition-targeted-1793932931454938000-inner-plan.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-composition-targeted-1793932931454938000-inner-plan.json",
+      "bytes": 763574,
+      "sha256": "0de477dda3cb99dcb2b9a21f6c9906ac80d9b7aabf4448dd7dd5590cf09f6aea",
+      "byteIdentical": true
+    },
+    {
+      "file": "6a5b24c33f3e40f4ae4c2346a9c00a6f.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/ownership/6a5b24c33f3e40f4ae4c2346a9c00a6f.json",
+      "bytes": 3670,
+      "sha256": "565d2f418b8b79285612ce6e89640234e54a440f605902ed70f87d9a1c08d061",
+      "byteIdentical": true
+    },
+    {
+      "file": "d690b4bfeefe4ef4bd6c3930bc8236fc.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/strict-runtime-composition/ownership/d690b4bfeefe4ef4bd6c3930bc8236fc.json",
+      "bytes": 4783,
+      "sha256": "62126b6bb9fd804b68810b00aba7b4df2cc4da0fa9cd4772fc34f87da9248f47",
+      "byteIdentical": true
+    },
+    {
+      "file": "runtime-composition-targeted-1793932931454938000-inner.log",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-composition-targeted-1793932931454938000-inner.log",
+      "bytes": 1882,
+      "sha256": "c588ec367e1e2bfabb7c5ee5f065ce354b5fb7936d1bed21ea6ea849f0ff3cd3",
+      "byteIdentical": true
+    },
+    {
+      "file": "runtime-composition-targeted-1793932931454938000-inner-esm-modules.jsonl",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-composition-targeted-1793932931454938000-inner-esm-modules.jsonl",
+      "bytes": 408319,
+      "sha256": "3cfc05de1143a674e84dbd37b2f8bc54448ff0e220dec54df489f394bf5a4f66",
+      "byteIdentical": true
+    },
+    {
+      "file": "runtime-composition-targeted-1793932931454938000-inner-cjs-modules.jsonl",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-composition-targeted-1793932931454938000-inner-cjs-modules.jsonl",
+      "bytes": 187875,
+      "sha256": "41973b082e398476fa132720db11beba6034ae96316b417c1a456ddf4ce913f5",
+      "byteIdentical": true
+    },
+    {
+      "file": "targeted-517cbf62f07e54256a6c4329c54e22bc7639c5bc30af01f8163f2c1726354e42-default-1793932949582843000.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/strict-runtime-composition/targeted-517cbf62f07e54256a6c4329c54e22bc7639c5bc30af01f8163f2c1726354e42-default-1793932949582843000.json",
+      "bytes": 5191,
+      "sha256": "a8fb249bd2a597f9fff3ee407d62c2c5c8f486d4edc9939d93bd732e90738b32",
+      "byteIdentical": true
+    },
+    {
+      "file": "26fddbc68a8cb63a8bfae73cb7b5898b970710af38b530a548d06df727931f9a.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/strict-runtime-composition/checkpoints/26fddbc68a8cb63a8bfae73cb7b5898b970710af38b530a548d06df727931f9a.json",
+      "bytes": 3394,
+      "sha256": "432bc4bc1376b69d683369bc1a68eab3e768c85f1b013fbe5b240da6112be17a",
+      "byteIdentical": true
+    },
+    {
+      "file": "run.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/strict-runtime-composition/logs/20261106-024213-pbvgiil1/run.json",
+      "bytes": 100,
+      "sha256": "4c3fb95b82d3fd9072cd72ba37f48ea0f886a371e440ea6bca267bfca0e07482",
+      "byteIdentical": true
+    },
+    {
+      "file": "chunk-0001.log",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/strict-runtime-composition/logs/20261106-024213-pbvgiil1/chunk-0001.log",
+      "bytes": 467,
+      "sha256": "7657bfc48b0cceda7751cbd29b781a6d80b853245e484986a2dcb5d750d90eeb",
+      "byteIdentical": true
+    },
+    {
+      "file": "runtime-composition-targeted-1793932931454938000-lead-audit.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-composition-targeted-1793932931454938000-lead-audit.json",
+      "bytes": 9178,
+      "sha256": "536ade3a93411262d6bb87989a24cd9147a1513fcaba38a071a53c96cffca616",
+      "byteIdentical": true
+    },
+    {
+      "file": "fucq100-c1host7-root-result-0244.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq100-c1host7-root-result-0244.json",
+      "bytes": 355066,
+      "sha256": "2620bbc4ba03f6c553a849c58805a02c5a3190f63dab7c2fe409b406ddd4d343",
+      "byteIdentical": true
+    }
+  ],
+  "originalsUnmodified": true,
+  "newExecution": false
+}
