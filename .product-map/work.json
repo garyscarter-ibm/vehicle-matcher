@@ -1605,61 +1605,61 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-95",
-      "observed_at": "2026-11-05T23:56:25Z",
+      "observed_at": "2026-11-06T00:00:00Z",
       "original_status": "In Progress",
-      "status": "In Progress",
-      "title": "Show buddy activity and pause or resume the search",
-      "type": "Story",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-95",
-      "workers": [
-        {
-          "expires_at": "2026-11-06T00:26:25.226096Z",
-          "harness": "codex",
-          "name": "Mater",
-          "observed_at": "2026-11-05T23:56:25.226096Z",
-          "role": "story-lead",
-          "source": "thread01a1adf9-5447-7220-8e41-86ea53f403e7; requested/selected/effective gpt-6.1-sol/high verified turn_context",
-          "status": "working"
-        }
-      ],
       "slices": [
         {
           "evidence": "Published reader/HTTP checkpoint and retained scoped activity/BriefService/identity evidence; genuine search/current-offer integration is separate.",
           "id": "brief-activity",
-          "observed_at": "2026-11-05T23:56:25.226096Z",
+          "observed_at": "2026-11-05T23:59:26.684754Z",
           "status": "complete",
           "title": "Scoped brief permission and state-change activity projection"
         },
         {
-          "evidence": "Published051a627 controller/body/menu/custom-element with functional/browser evidence; revalidate current shared shell/theme.",
+          "evidence": "Existing shared body/controller/menu/offer/timeline/custom element retained; current shell/CSP/ratchet and actual desktop/375px rendering pass. Actual check/source/current-offer states still require genuine contract-driven extension and all-state acceptance proof.",
           "id": "activity-ui",
-          "observed_at": "2026-11-05T23:56:25.226096Z",
+          "observed_at": "2026-11-05T23:59:26.684754Z",
           "status": "in-progress",
           "title": "Shared activity body, controls and embeddable consumer"
         },
         {
-          "evidence": "Existing051a627 actual runtime consumer and101scoped passes/10captures; current base integration and changed-shell checks pending.",
+          "evidence": "Current base 49a2d0b reviewed: 98 scoped passes; ten actual startGcspDemo memory captures with canonical account, Brief consent, Back/reload, Pause/Resume, pending, 409/503 and keyboard Retry. Complete at trusted consumer boundary; real producers/final acceptance separate. See current-base-validation.json.",
           "id": "live-consumer",
-          "observed_at": "2026-11-05T23:56:25.226096Z",
-          "status": "in-progress",
+          "observed_at": "2026-11-05T23:59:26.684754Z",
+          "status": "complete",
           "title": "Trusted account/session live runtime consumer"
         },
         {
           "evidence": "Required genuine last-successful-check outcome (including no match), durable source-delay/recovery, and canonical employee/run-scoped current-offer selection, display, link/access and declined/expired lifecycle facts. Existing F96 allocator receipts inspected read-only; runtime composition, F92 source-failure persistence and current-offer contracts remain unintegrated. No fixture closes this slice.",
           "id": "producer-integration",
-          "observed_at": "2026-11-05T23:56:25.226096Z",
+          "observed_at": "2026-11-05T23:59:26.684754Z",
           "status": "blocked",
           "title": "Genuine search/source and current-offer lifecycle evidence"
         },
         {
           "evidence": "Required authored projection/scoping/pause-effects tests; every listed state (never searched, searching/no-match, waiting offer, declined/expired offer, paused, source unavailable) at desktop/375px with keyboard-only and visible focus; reload of real server state; shared kit/catalogue/gallery/CSP and falling ratchet; real producer stop effects and current-offer handling; final serial npm test. Human layout review deferred to working end-to-end demo. Missing live states and final suite stay open.",
           "id": "acceptance",
-          "observed_at": "2026-11-05T23:56:25.226096Z",
+          "observed_at": "2026-11-05T23:59:26.684754Z",
           "status": "blocked",
           "title": "All required states, full integration and final acceptance validation"
         }
       ],
-      "unsliced": false
+      "status": "In Progress",
+      "title": "Show buddy activity and pause or resume the search",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-95",
+      "workers": [
+        {
+          "expires_at": "2026-11-05T23:59:26.684754Z",
+          "harness": "codex",
+          "name": "Mater",
+          "observed_at": "2026-11-05T23:59:26.684754Z",
+          "role": "story-lead",
+          "source": "thread 01a1adf9-5447-7220-8e41-86ea53f403e7; requested/selected/effective gpt-6.1-sol/high verified turn_context",
+          "status": "stopped at scoped checkpoint"
+        }
+      ]
     }
   ]
 }
