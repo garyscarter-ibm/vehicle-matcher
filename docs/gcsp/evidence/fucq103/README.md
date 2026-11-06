@@ -333,3 +333,10 @@ unchanged seed, prices and history. It generates no learning records and proves
 no model/decision-consumer uptake. Both receipts and actual cleanup were reviewed.
 The old browser catalogue is superseded; central scenario composition and a new
 source freeze/admission are still needed before browser continuation.
+
+The [runtime adoption and corrected capture proposal](runtime-adoption-plan.md)
+compares published FUCQ-100 `95d7741` with canonical `0d3a0aa`: 81 backend files
+already match, 16 exact adoptions are proposed, and the current registry, presenter
+step seed and weighted employee scorer are explicitly retained. Its 191-file
+candidate inventory is for review, not an executable freeze. Source adoption,
+combined-graph checks, static preparation and browser admission remain pending.
