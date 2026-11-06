@@ -1,9 +1,35 @@
-# Greg eligibility repair: authored source awaiting execution review
+# Greg eligibility repair: first execution stopped at loader admission
 
 FUCQ-100, 6 November 2026. Dispatcher 0033 approved the four production paths and two test paths
 from the [diagnosis](buddy-greg-eligibility-diagnosis.md). FUCQ-103 released its three Greg paths.
-The draft is based on `f5f83cbaac71740d25e3de18498022c3f416998f`; it has not been executed or accepted.
+The draft is based on `f5f83cbaac71740d25e3de18498022c3f416998f`. Its first granted run stopped
+before any business case; the product draft remains unaccepted and uncommitted.
 No source from 103, 69, 122 or 126 was adopted.
+
+## First granted execution, 6 November 2026
+
+The dispatcher granted exactly one run, `fucq100-eligibility-f0e186d-0033`, against checkpoint
+`f0e186dd01c4053cdaa4609d5720c871f39ef9e0` and catalogue SHA-256
+`65b63242b8548984ae418cc01e137b29721ee06510d728821d8d46e2cb493b95`. All admission pins matched.
+The [failed-run evidence](evidence/fucq100/greg-eligibility-first-run.json) preserves the exact totals,
+original bounded log identity, receipts and independent cleanup audit.
+
+Node 26.5.0 refused self-registration with `Invalid loader registration` before either test module
+loaded. TAP reports two failed file subtests, zero passes/skips; none of the 25 business cases ran.
+The module journal does not exist because the resolver rejected the request before its first record
+call. Its path in the receipt is a proposed output path, not evidence that a journal was produced.
+No product or harness correction and no retry followed this failure.
+
+The observed failure is at the exact self URL/specifier/parent predicate. A static hypothesis is that
+the launcher supplies an absolute loader path while the predicate requires a URL specifier; the
+original error records neither specifier nor parent, so the failing disjunct is not established.
+A correction or diagnostic rerun requires a new dispatcher decision and reviewed pins.
+
+The independent parent audit verifies both manifests removed, owned scratch and reservations absent,
+all recorded and owner PIDs absent by ESRCH (including two with unknown recorded starts), complete
+group absence, no owned TCP listener, strict locked ledger validity, preserved worktree and all frozen
+108 source/8 helper/executable/54 installed hash and physical identities unchanged. The original log
+is retained at 2,460 bytes. Business acceptance remains unproved.
 
 ## Authored behavior
 
@@ -67,7 +93,7 @@ source gate; its published scorer is retained on that branch and is untouched he
 
 ## Proposed command and resource ownership
 
-After an exact dispatcher execution grant, invoke:
+The first grant above is consumed. Only after a new exact dispatcher execution grant, invoke:
 
 ```text
 /usr/bin/python3 -I docs/gcsp/evidence/fucq100/greg-eligibility-stamp.py --dispatcher-grant <grant> --catalogue-sha256 <reviewed hash>
