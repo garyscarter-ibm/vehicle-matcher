@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "evidenceStatus": "authored expectations only; no execution or computed outcome evidence",
+  "purpose": "tiny explicit synthetic input variant for real66 mechanics; no BMW constructibility claim",
+  "seed": "fucq134-first-mechanics",
+  "policyVariantSuffix": "+fucq134-mechanics-v1",
+  "overlay": {
+    "comparison.cohortSize": 2,
+    "comparison.carsPerEmployee": 1,
+    "comparison.renewalDays": {
+      "min": 30,
+      "max": 30
+    },
+    "comparison.modelLineMix": [
+      {
+        "modelLine": "G21 Touring|320i",
+        "weight": 1
+      }
+    ],
+    "comparison.releaseCadence": {
+      "firstReleaseDay": 0,
+      "intervalDays": 1,
+      "batchSize": 2
+    },
+    "comparison.accessGroups": [
+      {
+        "id": "mechanics-access",
+        "weight": 1,
+        "accessSeconds": {
+          "min": 0,
+          "max": 0
+        },
+        "responseSeconds": {
+          "min": 0,
+          "max": 0
+        }
+      }
+    ],
+    "comparison.needs.v1": {
+      "essentials": [
+        {
+          "weight": 1,
+          "value": {
+            "seats": {
+              "operator": "gte",
+              "value": 4,
+              "unit": "count"
+            }
+          }
+        }
+      ],
+      "preferences": {
+        "body": [
+          {
+            "value": "estate",
+            "weight": 1
+          }
+        ],
+        "fuel": [
+          {
+            "value": "petrol",
+            "weight": 1
+          }
+        ]
+      }
+    },
+    "comparison.importanceDistribution": [
+      {
+        "value": 100,
+        "weight": 1
+      }
+    ],
+    "comparison.briefNoise.v1": {
+      "accuratePreferenceProbability": 1,
+      "preserveEssentials": true
+    }
+  },
+  "expected": {
+    "afterClaim": "quoted",
+    "reviewPhase": "order-review",
+    "afterAllocation": "allocated",
+    "afterUntakenDeadline": "expired",
+    "returnedStock": "released",
+    "outboxJobs": 0,
+    "sentinelChanges": 0
+  },
+  "outcomeContractProposal": "docs/gcsp/fucq134-outcome-policy-proposal.json#outcomeContract"
+}

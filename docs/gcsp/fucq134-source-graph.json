@@ -1296,12 +1296,8 @@
     }
   },
   "futureFilesRequiringPreImportPin": [
-    "server/gcsp/comparison/harness.js",
     "server/gcsp/comparison/routes/current.js",
-    "server/gcsp/comparison/outcomes.js (if used)",
-    "server/test/gcsp-comparison-current.test.js",
-    "server/test/fixtures/gcsp-comparison-current-outcomes.json",
-    "run-owned supervisor and egress guard"
+    "shared evaluation cache and outcome writer when authored"
   ],
   "excludedOptionalNative": "pg-native; strip NODE_PG_FORCE_NATIVE and all other native/loader overrides; importing it is prohibited",
   "dynamicEdges": [
@@ -1309,15 +1305,63 @@
     "migrations -> SQL files listed for complete closure only; forbidden to call pg Pool/connect/migrate",
     "scenario fixture -> PolicyService clock.scenario/identity principals and allocator inventory; replace only run-owned scenario rows before clock composition",
     "installed pg -> lazy optional native getter must remain unused; pure memory only",
-    "test fixture -> named outcome JSON; no upstream tests or server/index.js import"
+    "test fixture -> named outcome JSON; no upstream tests or server/index.js import",
+    "New test -> named outcome JSON, explicit inactive proposal JSON and canonical FilePolicyProvider seed; all bytes embedded in reviewed freeze.",
+    "Launcher -> runtime hash manifest generated solely from frozen embedded sources and pinned installed packages; stdin gate precedes guard/test import."
   ],
   "unknowns": [
-    "new harness/test/supervisor/guard bytes do not exist yet; re-freeze their exact closure before any Node import",
-    "canonical additional policy bundle not yet coordinated",
-    "structural stock cannot establish live corpus realism or successful known-fact allocation"
+    "Owned first-chunk harness and guard are authored, never executed; supervisor/guard/freeze need dispatcher review before any import or allocation.",
+    "Canonical additional policy bundle not yet coordinated.",
+    "Explicit synthetic mechanics facts cannot establish live corpus realism or observed satisfaction.",
+    "Remaining cache/access replay/acceptance/outcomes and composed/full validation remain unimplemented or unproved."
   ],
   "supervisorPrimitives": {
     "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
     "_tools/scaffold_git.py": "ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a"
+  },
+  "authoredClosure": {
+    "server/gcsp/comparison/harness.js": {
+      "sha256": "72cdc9465f1f37e5b6ed8d455d658adef42f4f61d595ca9cad29a5443f67d7a1",
+      "bytes": 17452
+    },
+    "server/test/gcsp-comparison-current.test.js": {
+      "sha256": "3368759f0f406eff1039116064b78983013e637636d0e54d4f07348ee9bcfa3a",
+      "bytes": 7237
+    },
+    "server/test/fixtures/gcsp-comparison-current-outcomes.json": {
+      "sha256": "4e5fe98d96a337b7bf473fd89cb032f3f1aab962a9881bf44beba65136c52263",
+      "bytes": 2042
+    },
+    "docs/gcsp/fucq134-outcome-policy-proposal.json": {
+      "sha256": "ca85ca5eaf8e5fc6457e3bd01150687b3a574f7949d278fde98b0bcf3517b490",
+      "bytes": 10745
+    },
+    "server/test/helpers/gcsp-comparison-launch.mjs": {
+      "sha256": "7475185632fca1a863eed8aec68641ddde1fc00e4bcf91d6847f1629aba5af4a",
+      "bytes": 525
+    },
+    "server/test/helpers/gcsp-comparison-guard.mjs": {
+      "sha256": "7b74bd29fb7d933b5d47437ececcb926389ade6bef8514beed6e64683efe3df7",
+      "bytes": 2576
+    },
+    "docs/gcsp/evidence/fucq134/first-chunk-resources.py": {
+      "sha256": "ea72588bd4653e0c4be5377e4f1ac39ad3613dcf6892a53d77eb0a06deb0e5b5",
+      "bytes": 24089
+    },
+    "docs/gcsp/evidence/fucq134/first-chunk-supervisor.py": {
+      "sha256": "fbdc692aab84285128144fe44b5af40dc0c850e68499ffedbb574900030c3020",
+      "bytes": 13050
+    },
+    "docs/gcsp/evidence/fucq134/first-chunk-freeze.py": {
+      "sha256": "b2770937ce4217c8fc4bc841d3067bba2b2a5e53c106655cdce5f4c4f59f22a0",
+      "bytes": 6646
+    }
+  },
+  "firstChunkReview": {
+    "source": "actual66 dependency closure unchanged plus base generator and six authored local runtime/data files",
+    "resourcePattern": "918ce04510fd327e860809e7de53bd636d1cf7da:docs/gcsp/models/fucq115-activation-resources.py adapted only in owned134 file",
+    "supervisor": "docs/gcsp/evidence/fucq134/first-chunk-supervisor.py",
+    "admission": "docs/gcsp/evidence/fucq134/first-chunk-admission.json",
+    "execution": "not authorised; no runtime evidence"
   }
 }

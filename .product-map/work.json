@@ -1820,13 +1820,15 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T01:40:26Z",
+      "observed_at": "2026-11-06T01:52:51Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-134",
       "slices": [
         {
           "id": "isolated-real66",
-          "status": "not-started",
-          "title": "Isolated memory run and real66 authority"
+          "status": "in-progress",
+          "title": "Isolated memory run and real66 authority",
+          "observed_at": "2026-11-06T01:52:51Z",
+          "evidence": "Authored harness, three expectations, offline guard and finite supervisor; no runtime tests. Freeze awaits dispatcher review. docs/gcsp/evidence/fucq134/README.md"
         },
         {
           "id": "shared-matrix",
@@ -1860,14 +1862,14 @@
           "name": "Foghorn Leghorn",
           "harness": "codex",
           "role": "story-lead authoring",
-          "observed_at": "2026-11-06T01:40:26Z",
-          "expires_at": "2026-11-06T01:40:26Z",
+          "observed_at": "2026-11-06T01:54:52Z",
+          "expires_at": "2026-11-06T01:54:52Z",
           "source": "chat:01a1ae7e-03d5-76c0-a6c9-749592f0fe4c",
-          "status": "checkpointed; initial execution grant outstanding"
+          "status": "authoring checkpoint; dispatcher freeze review/execution grant outstanding"
         }
       ],
       "branch": "dev/DEV-2026-11-04-103",
-      "development_note": "Author-only plan/source pins; no tests or proof allocated. Actual66 composed execution, canonical policy bundle and shared final validation outstanding. See docs/gcsp/fucq134-current-route-plan.md."
+      "development_note": "Isolated-real66 slice in progress: authored memory harness, three synthetic mechanics expectations, offline guard and strict owned supervisor/freeze. No runtime execution/imports/proofs/reservations/scratch. Five other slices not started; canonical policy coordination and composed/full acceptance outstanding."
     }
   ]
 }

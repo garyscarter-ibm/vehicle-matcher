@@ -224,3 +224,28 @@ Then author the smallest isolated-real66 slice and owned supervisor/guard, re-fr
 complete bytes and graph, and obtain the execution grant before allocating/running.
 No first-proof execution is authorised by this initial assignment. Story is waiting at
 this dispatch boundary; no human approval is implied or requested by local owner metadata.
+
+## Authored first slice · 6 November 2026
+
+The dispatcher authorized authoring the smallest isolated-real66 slice, its
+three mechanics tests and owned supervisor/guard. The harness and fixture now
+exist. The comparison-only proposal contains a complete explicitly fictional
+record adapter; threshold70 and deterministic manual behavior remain inactive
+PolicyService proposals. Allowance variants must remain coherent with the actual
+PolicyService and never bypass its gate.
+
+Review package and exact proposed command:
+`docs/gcsp/evidence/fucq134/README.md`. Admission SHA-256:
+`354fbe5b69d469f5a9a61c0ce67fa1cb77ea8950e5cc8e4d93aef496b578a965`.
+45 source/data files include published66's matching context changes unchanged,
+base generator unchanged and owned six runtime/data files. Dependency and physical
+runtime identities are frozen before custom execution. Three Python ASTs, JSONs
+and explicit relative imports were checked statically. No JavaScript, supervisor
+plan/proof, test, reservation or scratch was run/allocated.
+
+`isolated-real66` is in progress, awaiting freeze review and a new execution grant.
+The other five slices remain not started. The once-per-seed cache will use the
+approved hypothetical full-pool projection while actual release visibility, claim
+conflicts, hold timing and expiry stay real66 authority. Canonical missing-only
+policy adoption remains coordination through root after103/107's freeze. No
+shared seed/generator/manual66 source or real corpus claim was changed.

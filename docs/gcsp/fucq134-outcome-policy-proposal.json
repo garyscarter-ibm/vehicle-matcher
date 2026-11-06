@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "story": "FUCQ-134",
   "status": "inactive proposal; not a policy provider or fallback",
-  "coordination": "Root/103 coordinates canonical insertion; this artifact alone grants no execution",
+  "coordination": "Root approved threshold70 and labelled full-pool projection on6November2026; missing-only canonical adoption remains with103 after its107freeze. Explicit mechanics-test variants may select these inputs; no product fallback.",
   "assumptions": [
     {
       "key": "comparison.acceptableFitThreshold",
@@ -40,20 +40,254 @@
     },
     {
       "key": "comparison.recordAdapter.v1",
-      "proposedValue": null,
+      "proposedValue": {
+        "schemaVersion": 1,
+        "fixtureVersion": "comparison-records.synthetic.v1",
+        "kind": "synthetic-mechanics-only",
+        "stockAvailabilityDaysAfterHorizon": 1,
+        "orderReferences": "sequential-run-local-seven-digits",
+        "principalIds": "derived-from-generated-employeeId",
+        "collectionChoice": "first-permitted-driver-contract-location; renewal-date",
+        "expectedReturnMileage": 0,
+        "specialRequirements": "",
+        "driver": {
+          "eligible": {
+            "status": "known",
+            "value": true,
+            "unit": null
+          },
+          "kind": "employee",
+          "licence": {
+            "displayNumber": "FICTIONAL-COMPARISON-LICENCE",
+            "categories": [
+              "car"
+            ],
+            "validFrom": "2020-01-01",
+            "validUntil": "2030-12-31"
+          }
+        },
+        "employeeFacts": {
+          "charging": {
+            "status": "known",
+            "value": "home",
+            "unit": null
+          },
+          "annualMileage": {
+            "status": "known",
+            "value": 12000,
+            "unit": "mi/year"
+          }
+        },
+        "contact": {
+          "phone": "01632 960000",
+          "emailTemplate": "{employeeId}@example.invalid"
+        },
+        "stockFactsByModelLine": {
+          "G20 Saloon|320i": {
+            "body": {
+              "status": "known",
+              "value": "saloon",
+              "unit": null
+            },
+            "fuel": {
+              "status": "known",
+              "value": "petrol",
+              "unit": null
+            },
+            "seats": {
+              "status": "known",
+              "value": 5,
+              "unit": "count"
+            },
+            "boot": {
+              "status": "known",
+              "value": 480,
+              "unit": "L"
+            },
+            "zeroTo62": {
+              "status": "known",
+              "value": 7.4,
+              "unit": "s"
+            },
+            "mpg": {
+              "status": "known",
+              "value": 45,
+              "unit": "mpg-imperial"
+            },
+            "sizeClass": {
+              "status": "known",
+              "value": 3,
+              "unit": "ordinal-1-5"
+            },
+            "tags": {
+              "status": "known",
+              "value": [
+                "cruiser"
+              ],
+              "unit": null
+            },
+            "insuranceGroup": {
+              "status": "known",
+              "value": 25,
+              "unit": "insurance-group"
+            },
+            "equipment": {
+              "status": "unknown",
+              "value": null,
+              "unit": "equipment-key"
+            },
+            "frontIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            },
+            "rearIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            }
+          },
+          "G21 Touring|320i": {
+            "body": {
+              "status": "known",
+              "value": "estate",
+              "unit": null
+            },
+            "fuel": {
+              "status": "known",
+              "value": "petrol",
+              "unit": null
+            },
+            "seats": {
+              "status": "known",
+              "value": 5,
+              "unit": "count"
+            },
+            "boot": {
+              "status": "known",
+              "value": 500,
+              "unit": "L"
+            },
+            "zeroTo62": {
+              "status": "known",
+              "value": 7.5,
+              "unit": "s"
+            },
+            "mpg": {
+              "status": "known",
+              "value": 44,
+              "unit": "mpg-imperial"
+            },
+            "sizeClass": {
+              "status": "known",
+              "value": 3,
+              "unit": "ordinal-1-5"
+            },
+            "tags": {
+              "status": "known",
+              "value": [
+                "cruiser"
+              ],
+              "unit": null
+            },
+            "insuranceGroup": {
+              "status": "known",
+              "value": 25,
+              "unit": "insurance-group"
+            },
+            "equipment": {
+              "status": "unknown",
+              "value": null,
+              "unit": "equipment-key"
+            },
+            "frontIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            },
+            "rearIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            }
+          },
+          "G61 i5|i5 40": {
+            "body": {
+              "status": "known",
+              "value": "estate",
+              "unit": null
+            },
+            "fuel": {
+              "status": "known",
+              "value": "ev",
+              "unit": null
+            },
+            "seats": {
+              "status": "known",
+              "value": 5,
+              "unit": "count"
+            },
+            "boot": {
+              "status": "known",
+              "value": 570,
+              "unit": "L"
+            },
+            "zeroTo62": {
+              "status": "known",
+              "value": 7.7,
+              "unit": "s"
+            },
+            "mpg": {
+              "status": "unknown",
+              "value": null,
+              "unit": "mpg-imperial"
+            },
+            "sizeClass": {
+              "status": "known",
+              "value": 4,
+              "unit": "ordinal-1-5"
+            },
+            "tags": {
+              "status": "known",
+              "value": [
+                "cruiser"
+              ],
+              "unit": null
+            },
+            "insuranceGroup": {
+              "status": "known",
+              "value": 25,
+              "unit": "insurance-group"
+            },
+            "equipment": {
+              "status": "unknown",
+              "value": null,
+              "unit": "equipment-key"
+            },
+            "frontIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            },
+            "rearIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            }
+          }
+        },
+        "unknownFieldRule": "retain-unknown-no-inference",
+        "suitabilityAvailability": "hypothetical-full-pool-at-origin; actual-release-clock-and-visibility-rechecked-by-real66",
+        "limitations": [
+          "Fictional facts for mechanics; not observed BMW configurations, insurance, licence or employee behaviour.",
+          "Underlying needs are synthetic latent inputs, not a real employee confirmation.",
+          "Equipment and ISOFIX facts are unknown; no factory-option or constructibility inference.",
+          "Live corpus realism/integration is separate acceptance evidence."
+        ]
+      },
       "unit": "versioned fictional input mapping and provenance",
-      "status": "proposal-incomplete",
-      "requiredFields": [
-        "explicit driver eligibility/licence categories and validity dates",
-        "charging assumption or explicit unknown",
-        "insurance group per configuration or explicit unknown",
-        "per-configuration complete synthetic fit/essential facts with units or explicit unknown",
-        "contact/example.invalid and no external transport",
-        "collection-window/choice mapping derived from manual.context.v1",
-        "run-owned principal/clock.scenario overrides derived from generator manifest",
-        "static availability projection labelled separately from actual release availability"
-      ],
-      "basis": "Generator structural configuration labels alone cannot establish these facts; coordinate one canonical bundle, no scattered enrichment or source realism claim",
+      "status": "assumed",
+      "basis": "Explicit fictional mechanical-proof inputs selected under6November root direction; none is a measured BMW specification, driver record or constructible configuration. Absent/unlisted fields remain unknown and gates fail closed.",
       "source": "FUCQ-134 adapter-boundary source inspection",
       "sourceDate": "2026-11-06"
     }
@@ -96,8 +330,9 @@
     "determinism": "Stable ordering and supplied simulated instants; no storage metadata, session randomness or wall time in canonical outcome"
   },
   "openSeams": [
-    "static shared suitability evaluation versus real release-time availability; mandatory live claim gates remain authoritative",
-    "generated allowance multiplier must be reflected by explicit PolicyService input variant, never a bypass",
-    "new facts must stay synthetic/unknown and retain configuration identity; no live corpus-realism assertion"
+    "missing-only canonical registry adoption coordinated by103 after107freeze",
+    "allowance multiplier requires an explicit coherent PolicyService input variant; harness rejects mismatch",
+    "full-pool projection approved; actual clock/visibility/claim gates remain real66 authority",
+    "new facts remain explicitly synthetic or unknown; no live corpus-realism assertion"
   ]
 }
