@@ -375,3 +375,21 @@ originals were inspected: car 2's 1100-point term and Eligible label visibly mat
 its HTTP decision and recorded DOM identity. Actual source/resource cleanup was
 independently verified. This closes the capture-selector limitation only; the
 default Greg projection gap and remaining desktop/narrow/full gates stay open.
+
+
+## Granted core25 attempt at 8568dae, 6 November 2026
+
+The once-granted `eligibility-core` attempt stopped at the aggregate RSS limit:
+799.171875MiB measured against 768MiB, after 2.805seconds and about 4.14MiB combined
+allocation. No matched-case names/counts or assertion verdict were produced; the original
+bounded merged log is empty and preserved with its exact SHA-256. All 25 selected cases
+remain unproven. This is a resource-limited incomplete attempt, with no product assertion
+failure inferred. The grant was consumed once and no retry or later mode ran.
+
+The runtime finalizer and independent lead audit confirmed joined/absent owned PID/start
+pairs and group, no owned-process open files, absent scratch/dependency links and absent
+owned reservation token. Original summary, manifest, log and checkpoint identities, exact
+command, source/environment identity and cleanup evidence are recorded in
+[the immutable attempt receipt](eligibility-core-8568dae-2026-11-06.json).
+The dispatcher authorised a numeric-only 1024MiB proposal for review; any future run still
+requires fresh strict HostBudget admission, 512MiB host reserve and a new exact grant.

@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-06",
+  "scope": "once-granted-core25-attempt-and-independent-cleanup-audit",
+  "run": "fucq103-backend-cf468d6aa302449e8974efc0aaea93be",
+  "revision": "8568daee6a8b348a93f7a23cebf39e268aaa27df",
+  "sourcePlanSHA256": "8a7380e1f6e8f7f019f36a5405c7d9e00470da0bcc357fadf830b27a74b1e55e",
+  "grant": "fucq103-eligibility-core-8568dae-0228",
+  "grantStatus": "consumed-once-stopped-no-retry",
+  "supersededGrant": {
+    "id": "fucq103-eligibility-core-45d337a-0214",
+    "status": "superseded-unconsumed"
+  },
+  "command": [
+    "/Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "--test",
+    "--test-concurrency=1",
+    "server/test/gcsp-greg-driver-eligibility.test.js",
+    "server/test/gcsp-greg-demand.test.js"
+  ],
+  "expectedCases": 25,
+  "matchedCaseEvidence": null,
+  "observedCaseNames": [],
+  "assertionVerdict": "none; resource-limited incomplete attempt",
+  "supervisorExitCode": 2,
+  "outcome": "resource-limit-stop",
+  "failure": {
+    "message": "Aggregate RAM/disk/time budget exceeded",
+    "type": "RuntimeError"
+  },
+  "peakAggregateRSSBytes": 837992448,
+  "peakAggregateRSSMiB": 799.171875,
+  "aggregateRSSCapBytes": 805306368,
+  "peakCombinedBytes": 4340269,
+  "wallSeconds": 2.8049662500000005,
+  "environmentSHA256": "75f674ca94ecfb5cbe2dd88f40f1f03bdd587311114e2211397094051352f361",
+  "admissionHeadroom": {
+    "availableRamBytes": 2894479360,
+    "freeBytes": 214286536704,
+    "lowDiskHeadroom": false,
+    "outsideDiskPending": 0,
+    "outsideRamPending": 0
+  },
+  "runtimeCleanup": {
+    "groupsAbsent": true,
+    "joined": true,
+    "observedPids": 3,
+    "passed": true,
+    "pidsAbsent": true,
+    "ports": [],
+    "portsClosed": true,
+    "removedBytes": 4334305,
+    "reservationAbsent": true,
+    "sampledAt": 1793932037.742949,
+    "scratchAbsent": true
+  },
+  "independentCleanup": {
+    "passed": true,
+    "sampledAt": 1793932129.9531279,
+    "ownedPidStarts": [
+      {
+        "pid": 99416,
+        "start": "Fri Nov 6 02:27:15 2026",
+        "absent": true,
+        "currentPidReused": false
+      },
+      {
+        "pid": 99427,
+        "start": "Fri Nov 6 02:27:16 2026",
+        "absent": true,
+        "currentPidReused": false
+      },
+      {
+        "pid": 99430,
+        "start": "Fri Nov 6 02:27:16 2026",
+        "absent": true,
+        "currentPidReused": false
+      }
+    ],
+    "groupsAbsent": [
+      99416
+    ],
+    "scratchAbsent": "/private/tmp/test-stamp-shard-eb4e4c3b67b840c1b27c7344abed61fe",
+    "worktreeDependencyLinksAbsent": true,
+    "ownedProcessOpenFilesQuery": {
+      "returncode": 1,
+      "stdoutBytes": 0,
+      "stderrBytes": 0
+    },
+    "predeleteOpenFilesGate": "Unchanged admitted Finalizer requires successful lsof +D absence before deletion; runtime cleanup passed. No separate raw lsof output is retained.",
+    "reservationTokenAbsent": "eb4e4c3b67b840c1b27c7344abed61fe",
+    "ledgerRead": "Strict read-only JSON under admitted no-follow physical lock; foreign reservations unchanged",
+    "ledgerSHA256AtAudit": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+    "remainingReservationCount": 0
+  },
+  "retainedOriginals": {
+    "summary": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-backend-cf468d6aa302449e8974efc0aaea93be-summary.json",
+      "bytes": 2827,
+      "sha256": "da742710791b57677e0f40ca00caeaa8e8f1f4cde85bf9315af8d2bc1c0bdfa5"
+    },
+    "manifest": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-backend-cf468d6aa302449e8974efc0aaea93be-manifest.json",
+      "bytes": 2134,
+      "sha256": "218dab25574db2dc98b61335f9978342652dc47e5caf20f1fc2d39999c6d2c57"
+    },
+    "originalMergedLog": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-backend/fucq103-backend-cf468d6aa302449e8974efc0aaea93be/test.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "checkpoint": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-backend/fucq103-backend-cf468d6aa302449e8974efc0aaea93be/checkpoint.json",
+      "bytes": 321,
+      "sha256": "8500e28c163fdae0aeec16eb52233065892e34ef419fcc904b58c49a187b7335"
+    }
+  },
+  "sourceIdentityBeforeAfter": {
+    "sameExactHeadUpstream": true,
+    "runtimeSourcesPreserved": true,
+    "leadVerifiedAllSourcePins": 219,
+    "installedBytePins": 251,
+    "executablePins": 8,
+    "productTestFrozenRevision": "f80fc61ca151cb46ad21cb2b19e704f4012d53de"
+  },
+  "limitsAndExclusions": "No retry/registry16/browser/native/full/central100/mixed execution. No product assertion failure inferred. All25 selected cases remain unproven; empty log gives no names/counts.",
+  "nextAuthorisedWork": "Numeric-only1024MiB aggregate proposal with fresh strict budget and512MiB host reserve at any replacement run; no execution grant."
+}
