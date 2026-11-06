@@ -1,6 +1,7 @@
-import { inputDigest, ok, result } from '../repository/index.js';
+import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.js';
 import { validInstant } from '../policy/file-provider.js';
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
+import { createRepositoryManualPorts } from '../manual-context/ports.js';
 import { loadCasePolicy, unavailable } from './policy.js';
 const object = (v) => v && typeof v === 'object' && !Array.isArray(v);
 const only = (v, keys) => object(v) && Object.keys(v).every((key) => keys.includes(key));
@@ -64,7 +65,7 @@ export class RenewalCaseService {
     const slots = await tx.list('entitlement_slots', { employeeId }); if (slots.status !== 'ok') return slots;
     const slot = slots.value.find((s) => s.entitlementSlotId === employee.entitlementSlotId);
     const renewalId = employee.renewalId ?? slot?.renewalId;
-    return text(renewalId, 128) ? ok({ employee, renewalId }) : invalid('renewalId', 'The actual renewal has not been supplied. Ask the scheme team to check your contract.', 'renewal-context-required');
+    return text(renewalId, 128) ? ok({ employee, renewalId, slot }) : invalid('renewalId', 'The actual renewal has not been supplied. Ask the scheme team to check your contract.', 'renewal-context-required');
   }
   async readHelp(context) {
     const allowed = await this.#authorized(context); if (allowed.status !== 'ok') return allowed;
@@ -239,14 +240,35 @@ export class RenewalCaseService {
       const car = await tx.get({ table: 'stock', key: { runId: context.runId, orderUuid: remedy.orderUuid } }); if (car.status !== 'ok') return car;
       const holds = await tx.list('holds', { orderUuid: remedy.orderUuid }); if (holds.status !== 'ok') return holds;
       const claims = await tx.list('claims', { orderUuid: remedy.orderUuid }); if (claims.status !== 'ok') return claims;
-      if (car.value.state !== 'available' || car.value.available === false || car.value.allocated === true || [...holds.value, ...claims.value].some((h) => ['active', 'claim-pending', 'release-pending', 'selection-pending'].includes(h.state))) return invalid('remedy.orderUuid', 'This car is unavailable. Review current stock.');
+      if (car.value.state !== 'released' || car.value.available !== true || car.value.held === true || car.value.allocated === true
+        || [...holds.value, ...claims.value].some((h) => OCCUPYING_STATES.includes(h.state))) return invalid('remedy.orderUuid', 'This car is unavailable. Review current stock.');
       const briefs = await tx.list('briefs', { employeeId: renewal.employee.employeeId }); if (briefs.status !== 'ok') return briefs;
       const brief = currentBrief(briefs.value);
-      const candidate = car.value.facts?.recommendationCandidate;
-      if (projection && (!brief || !candidate || candidate.orderUuid !== car.value.orderUuid || candidate.configurationId !== car.value.configurationId)) return unavailable();
-      if (!brief || !candidate || candidate.orderUuid !== car.value.orderUuid || candidate.configurationId !== car.value.configurationId) return invalid('remedy.orderUuid', 'The confirmed brief or exact vehicle facts are missing. Ask the scheme team to check them.');
-      const employeeContext = { ...context, ...renewal.employee, roles: ['employee'], runId: context.runId, policyVersion: p.read.policyVersion };
-      const employeeFacts = structuredClone(renewal.employee.contract?.manualContext?.employeeFacts ?? {});
+      if (!brief) return unavailable();
+      const employeeContext = { ...context, ...Object.fromEntries(['employeeId', 'companyId', 'schemeId', 'gradeId', 'entitlementSlotId']
+        .map((key) => [key, renewal.employee[key]])), roles: ['employee'], policyVersion: p.read.policyVersion };
+      if (renewal.employee.runId !== context.runId || ['employeeId', 'companyId', 'schemeId', 'gradeId', 'entitlementSlotId']
+        .some((key) => !text(employeeContext[key], 128))) return unavailable();
+      // These ports must see the same transaction/reader as the case command, including
+      // current stock, employee visibility and persisted driver records.
+      const ports = createRepositoryManualPorts({ policy: this.#policy, repository: {
+        read: (_context, reference) => tx.get(reference), query: (_context, table, filter) => tx.list(table, filter),
+      } });
+      const source = await ports.releasedStock.read(employeeContext); if (source.status !== 'ok') return source;
+      const drivers = await ports.driver.read(employeeContext); if (drivers.status !== 'ok') return unavailable();
+      if ([source.value, drivers.value].some((value) => value.runId !== context.runId || value.environmentId !== context.environmentId
+        || value.employeeId !== renewal.employee.employeeId) || drivers.value.repositoryVersion !== renewal.employee.version) return unavailable();
+      const candidate = source.value.stock.find((row) => row.orderUuid === remedy.orderUuid);
+      if (!candidate) return invalid('remedy.orderUuid', 'This car is not visible to the case employee. Review current stock.');
+      const contracts = renewal.employee.contract?.manualContext?.contracts;
+      const current = Array.isArray(contracts) ? contracts.filter((row) => row.status === 'current' && row.employeeId === employeeContext.employeeId
+        && row.schemeId === employeeContext.schemeId && row.slotId === employeeContext.entitlementSlotId) : [];
+      if (renewal.slot?.employeeId !== employeeContext.employeeId || !text(renewal.slot.contractId, 128)
+        || current.length !== 1 || current[0].contractId !== renewal.slot.contractId) return unavailable();
+      const bound = text(current[0].driverId, 128) && Array.isArray(drivers.value.drivers)
+        ? drivers.value.drivers.filter((row) => row.driverId === current[0].driverId && row.employeeId === employeeContext.employeeId) : [];
+      if (bound.length !== 1) return unavailable();
+      const employeeFacts = { ...structuredClone(drivers.value.employeeFacts ?? {}), driverEligible: structuredClone(bound[0].eligible) };
       const charging = brief.essentials.charging;
       employeeFacts.charging = { status: charging?.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown', value: charging?.value ?? null,
         unit: null, provenance: { sourceRef: charging?.source ?? 'brief:unresolved', version: String(brief.briefVersion), observedAt: brief.confirmedAt, assurance: 'synthetic-scenario' } };
@@ -254,12 +276,13 @@ export class RenewalCaseService {
         return ok({ now: p.now, runId: context.runId, clockVersion: p.clockVersion });
       } }, provider: { async resolve() {
         return ok({ runId: context.runId, environmentId: context.environmentId, employeeId: renewal.employee.employeeId, factsVersion: String(renewal.employee.version),
-          stockVersion: String(car.value.version), employeeFacts, stock: [candidate] });
+          stockVersion: source.value.sourceVersion, employeeFacts, stock: [candidate] });
       } } });
       const evaluated = await service.recommend(employeeContext, { schemaVersion: 1, briefVersion: brief.briefVersion, preferences: brief.preferences,
         essentials: Object.fromEntries(Object.entries(brief.essentials).filter(([key]) => key !== 'charging')) });
       const decision = evaluated.value?.decisions?.[0];
       if (evaluated.status !== 'ok') return projection && evaluated.status === 'invalid' ? unavailable() : evaluated;
+      if (!decision || decision.unknowns.length) return unavailable();
       return decision?.suitable ? ok(projection ? { ...remedy, configurationId: car.value.configurationId, snapshot: decision.snapshot } : remedy) : invalid('remedy.orderUuid', 'This car does not satisfy the current eligibility, essential, points and timing constraints.');
     }
     return invalid('remedy.type', 'Choose a supported scheme-team remedy.');

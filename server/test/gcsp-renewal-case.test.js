@@ -9,7 +9,7 @@ import { BriefService } from '../gcsp/brief/index.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { NotificationDispatcher } from '../gcsp/notify/index.js';
 import { createGcspHandler } from '../gcsp/identity/http.js';
-import { preference, essential, stock, providerValue, fact } from './helpers/employee-recommendation.js';
+import { preference, essential, stock, fact } from './helpers/employee-recommendation.js';
 const implementation = await import('../gcsp/cases/index.js').catch(() => ({}));
 const routes = await import('../gcsp/cases/http.js').catch(() => ({}));
 test('RenewalCaseService provides the owned repository-backed service and routes', () => {
@@ -192,19 +192,19 @@ caseTest('actual captured dispatcher consumes case updates after commit, retries
 caseTest('alternative car uses current eligibility, points, essentials and availability; unresolved charging stays unknown', async (t) => {
   const f = await setup(t); await confirmedBrief(f);
   await f.clock.advance(f.presenter.value.context, { commandId: 'noon', expectedClockVersion: '1', bySeconds: 10800 });
-  const employeeRow = (await f.repository.query(f.context, 'employees', { employeeId: f.context.employeeId })).value[0];
-  await employee(f, { contract: { ...employeeRow.contract, manualContext: { ...employeeRow.contract.manualContext, employeeFacts: providerValue().employeeFacts } } });
   const candidate = stock(771);
   const seedCar = (candidate) => f.repository.transaction(f.context, cmd('candidate:'+candidate.orderUuid), (tx) => tx.insert('stock', {
     runId: f.context.runId, orderUuid: candidate.orderUuid, orderNumber: '9876'+candidate.orderUuid.slice(-3), configurationId: candidate.configurationId,
-    state: 'available', available: true, facts: { recommendationCandidate: candidate } }));
+    state: 'released', available: true, held: false, allocated: false, facts: candidate.snapshot,
+    release: { availability: candidate.availability },
+    visibility: { companyIds: [f.context.companyId], schemeIds: [f.context.schemeId], employeeIds: null } }));
   await seedCar(candidate);
   let c = (await request(f)).value.case; c = (await update(f, c, 'in-progress')).value.case;
   const petrol = await update(f, c, 'remedy-proposed', { commandId: 'petrol', remedy: { type: 'alternative-car', orderUuid: candidate.orderUuid } });
   assert.equal(petrol.status, 'ok', JSON.stringify(petrol));
   c = (await update(f, petrol.value.case, 'in-progress', { commandId: 'review-plugin' })).value.case;
   const plugIn = stock(772, { fuel: fact('phev') }); await seedCar(plugIn);
-  assert.equal((await update(f, c, 'remedy-proposed', { commandId: 'unresolved-charging', remedy: { type: 'alternative-car', orderUuid: plugIn.orderUuid } })).status, 'invalid');
+  assert.equal((await update(f, c, 'remedy-proposed', { commandId: 'unresolved-charging', remedy: { type: 'alternative-car', orderUuid: plugIn.orderUuid } })).status, 'unavailable');
 });
 
 caseTest('actual HTTP composition ignores identity overrides and refuses cross-employee, scheme-role and stale-run access', async (t) => {

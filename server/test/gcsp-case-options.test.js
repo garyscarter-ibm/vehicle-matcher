@@ -1,14 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { createMemoryRepository, createMemoryStore, inputDigest, result } from '../gcsp/repository/index.js';
+import { createMemoryRepository, createMemoryStore, inputDigest, result, OCCUPYING_STATES } from '../gcsp/repository/index.js';
 import { createPolicyService, PolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { BriefService } from '../gcsp/brief/index.js';
 import { RenewalCaseService } from '../gcsp/cases/index.js';
 import { createCaseRoutes } from '../gcsp/cases/http.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
-import { preference, essential, stock, providerValue, fact } from './helpers/employee-recommendation.js';
+import { preference, essential, stock, fact } from './helpers/employee-recommendation.js';
 const command = (id) => ({ commandId: id, inputDigest: inputDigest(id) });
 async function setup(t, extension = false, confirmBrief = true) {
   const store = createMemoryStore();
@@ -38,12 +38,6 @@ async function setup(t, extension = false, confirmBrief = true) {
   assert.equal((await brief.confirm(context, { commandId: 'confirm', expectedBriefVersion: 0, expectedDraftVersion: 1, consent: { search: true, hold: true } })).status, 'ok');
   }
   assert.equal((await clock.advance(presenter, { commandId: 'noon', expectedClockVersion: '1', bySeconds: 10800 })).status, 'ok');
-  await repository.transaction(context, command('facts'), async (tx) => {
-    const ref = { table: 'employees', key: { runId: context.runId, employeeId: context.employeeId } };
-    const row = (await tx.get(ref)).value;
-    return tx.compareAndSwap(ref, row.version, { contract: { ...row.contract,
-      manualContext: { ...row.contract.manualContext, employeeFacts: providerValue().employeeFacts } } });
-  });
   t.after(() => repository.close());
   return { repository, store, policy, identity, clock, presenter, context, greg, brief, service, configuration, c };
 }
@@ -51,13 +45,46 @@ const read = (f) => f.service.readOptions(f.greg, { caseId: f.c.caseId });
 async function car(f, id, facts = {}, extra = {}) {
   const candidate = stock(id, facts);
   const inserted = await f.repository.transaction(f.context, command(`car:${id}`), (tx) => tx.insert('stock', {
-    runId: f.context.runId, orderUuid: candidate.orderUuid, orderNumber: `OPTION-${id}`, configurationId: candidate.configurationId,
-    state: 'available', available: true, facts: { recommendationCandidate: candidate }, ...extra }));
+    runId: f.context.runId, orderUuid: candidate.orderUuid, orderNumber: String(id).padStart(7, '0'), configurationId: candidate.configurationId,
+    state: 'released', available: true, held: false, allocated: false, facts: candidate.snapshot,
+    release: { availability: candidate.availability },
+    visibility: { companyIds: [f.context.companyId], schemeIds: [f.context.schemeId], employeeIds: null }, ...extra }));
   assert.equal(inserted.status, 'ok', JSON.stringify(inserted)); return candidate;
 }
 async function decline(f, id = 'decline') {
   return f.repository.transaction(f.context, command(id), (tx) => tx.insert('decisions', { runId: f.context.runId,
     decisionId: id, employeeId: f.context.employeeId, offerId: 'old-offer', decision: 'decline', versions: { brief: 1 } }));
+}
+async function patch(f, table, key, id, change) {
+  const changed = await f.repository.transaction(f.context, command(id), async (tx) => {
+    const ref = { table, key: { runId: f.context.runId, ...key } };
+    const row = await tx.get(ref); assert.equal(row.status, 'ok', JSON.stringify(row));
+    return tx.compareAndSwap(ref, row.value.version, change(row.value));
+  });
+  assert.equal(changed.status, 'ok', JSON.stringify(changed));
+  return changed.value;
+}
+const manual = (f, id, change) => patch(f, 'employees', { employeeId: f.context.employeeId }, id, (employee) => {
+  const contract = structuredClone(employee.contract); change(contract.manualContext);
+  return { contract };
+});
+async function progress(f) {
+  const changed = await f.service.update(f.greg, { commandId: 'progress', caseId: f.c.caseId, expectedVersion: f.c.version,
+    status: 'in-progress', reason: 'Review current alternative.', nextAction: 'Check the exact car.', dueAt: '2026-11-06T12:00:00.000Z' });
+  assert.equal(changed.status, 'ok', JSON.stringify(changed)); return changed.value.case;
+}
+const propose = (f, c, candidate, service = f.service) => service.update(f.greg, { commandId: 'propose', caseId: c.caseId,
+  expectedVersion: c.version, status: 'remedy-proposed', reason: 'Suitable released car reviewed.', nextAction: 'Discuss with Paula.',
+  dueAt: '2026-11-06T12:00:00.000Z', remedy: { type: 'alternative-car', orderUuid: candidate.orderUuid } });
+async function occupy(f, candidate, table, state) {
+  const inserted = await f.repository.transaction(f.context, command(`occupy:${table}:${state}`), async (tx) => {
+    const fields = { runId: f.context.runId, orderUuid: candidate.orderUuid, employeeId: f.context.employeeId,
+      entitlementSlotId: f.context.entitlementSlotId, renewalId: f.c.renewalId, type: 'buddy-offer',
+      expiresAt: '2026-11-06T12:00:00.000Z', policyVersion: f.context.policyVersion, holdId: 'occupied' };
+    const hold = await tx.insert('holds', { ...fields, state: table === 'holds' ? state : 'released' });
+    return table === 'holds' || hold.status !== 'ok' ? hold : tx.insert('claims', { ...fields, claimId: 'occupied', state });
+  });
+  assert.equal(inserted.status, 'ok', JSON.stringify(inserted));
 }
 test('options require trusted Greg/presenter and current run; route allows only caseId', async (t) => {
   const f = await setup(t);
@@ -192,4 +219,189 @@ test('queue and options use canonical employee names and server-owned status tra
   const failed = new RenewalCaseService({ ...f.configuration, repository: { ...f.repository,
     query(context, table, filter) { return table === 'employees' ? result('unavailable', { reason: 'Employee source failed.' }) : f.repository.query(context, table, filter); } } });
   assert.equal((await failed.list(f.greg)).status, 'unavailable');
+});
+
+test('canonical released stock projects and proposes through the command transaction without claiming it', async (t) => {
+  const f = await setup(t); const candidate = await car(f, 900, {}, { visibility: {
+    companyIds: [f.context.companyId], schemeIds: [f.context.schemeId], employeeIds: [f.context.employeeId],
+  } });
+  const projected = await read(f); assert.equal(projected.status, 'ok', JSON.stringify(projected));
+  const option = projected.value.options.alternativeCars.items[0];
+  assert.equal(option.orderUuid, candidate.orderUuid);
+  assert.equal(option.configurationId, candidate.configurationId);
+  assert.deepEqual(option.snapshot, candidate.snapshot);
+  const c = await progress(f); const before = structuredClone(f.store.state.tables);
+  let inTransaction = false; const trace = []; const globalDuringTransaction = [];
+  const guarded = { ...f.repository,
+    read(context, reference) {
+      if (inTransaction) { globalDuringTransaction.push(['read', reference.table]); assert.fail('Global read inside case command'); }
+      return f.repository.read(context, reference);
+    },
+    query(context, table, filter) {
+      if (inTransaction) { globalDuringTransaction.push(['query', table]); assert.fail('Global query inside case command'); }
+      return f.repository.query(context, table, filter);
+    },
+    transaction(context, input, work) {
+      return f.repository.transaction(context, input, async (tx) => {
+        inTransaction = true;
+        try { return await work({ ...tx,
+          get(reference) { trace.push(['get', reference.table, reference.key]); return tx.get(reference); },
+          list(table, filter) { trace.push(['list', table, filter]); return tx.list(table, filter); },
+        }); } finally { inTransaction = false; }
+      });
+    },
+  };
+  const changed = await propose(f, c, candidate, new RenewalCaseService({ ...f.configuration, repository: guarded }));
+  assert.equal(changed.status, 'ok', JSON.stringify(changed));
+  assert.deepEqual(changed.value.case.remedy, { type: 'alternative-car', orderUuid: candidate.orderUuid });
+  assert.deepEqual(globalDuringTransaction, []);
+  assert.equal(trace.filter(([kind, table]) => kind === 'get' && table === 'employees').length, 2);
+  assert.ok(trace.some(([kind, table]) => kind === 'list' && table === 'stock'));
+  assert.ok(trace.filter(([kind]) => kind === 'get').every(([, , key]) => key.runId === f.context.runId));
+  for (const table of Object.keys(before).filter((name) => !['renewal_cases', 'notification_outbox', 'event_receipts'].includes(name))) {
+    assert.deepEqual(f.store.state.tables[table], before[table], `${table} must remain unchanged`);
+  }
+  assert.equal(f.store.state.tables.notification_outbox.length, before.notification_outbox.length + 1);
+  assert.equal(f.store.state.tables.stock.find((row) => row.orderUuid === candidate.orderUuid).state, 'released');
+  assert.equal(f.store.state.tables.holds.length, 0); assert.equal(f.store.state.tables.claims.length, 0);
+});
+
+test('options exclude noncanonical lifecycle, unavailable flags and each employee visibility exclusion', async (t) => {
+  const f = await setup(t); const accepted = await car(f, 910);
+  const excluded = [{ state: 'available' }, { state: 'held' }, { state: 'allocated' }, { available: false },
+    { available: null }, { held: true }, { allocated: true },
+    { visibility: { companyIds: ['other-company'], schemeIds: [f.context.schemeId], employeeIds: null } },
+    { visibility: { companyIds: [f.context.companyId], schemeIds: ['other-scheme'], employeeIds: null } },
+    { visibility: { companyIds: [f.context.companyId], schemeIds: [f.context.schemeId], employeeIds: ['other-employee'] } },
+    { visibility: { companyIds: [f.context.companyId], schemeIds: [f.context.schemeId], employeeIds: [] } }];
+  for (const [i, extra] of excluded.entries()) await car(f, 911 + i, {}, extra);
+  const missing = stock(929);
+  assert.equal((await f.repository.transaction(f.context, command('missing-available'), (tx) => tx.insert('stock', {
+    runId: f.context.runId, orderUuid: missing.orderUuid, orderNumber: '0000929', configurationId: missing.configurationId,
+    state: 'released', held: false, allocated: false, facts: missing.snapshot, release: { availability: missing.availability },
+    visibility: { companyIds: [f.context.companyId], schemeIds: [f.context.schemeId], employeeIds: null },
+  }))).status, 'ok');
+  const options = await read(f); assert.equal(options.status, 'ok', JSON.stringify(options));
+  assert.deepEqual(options.value.options.alternativeCars.items.map((entry) => entry.orderUuid), [accepted.orderUuid]);
+});
+
+test('every canonical occupying hold and claim state prevents an alternative proposal', async (t) => {
+  for (const table of ['holds', 'claims']) for (const state of OCCUPYING_STATES) await t.test(`${table}: ${state}`, async (s) => {
+    const f = await setup(s); const candidate = await car(f, 930); const c = await progress(f);
+    assert.equal((await read(f)).value.options.alternativeCars.available, true);
+    await occupy(f, candidate, table, state);
+    const before = structuredClone(f.store.state);
+    assert.equal((await read(f)).value.options.alternativeCars.available, false);
+    assert.equal((await propose(f, c, candidate)).status, 'invalid');
+    assert.deepEqual(f.store.state, before);
+  });
+});
+
+test('proposal revalidates stock, visibility and suitability changed after options were read', async (t) => {
+  const changes = {
+    held: () => ({ held: true }), allocated: () => ({ allocated: true }), availability: () => ({ available: false }),
+    lifecycle: () => ({ state: 'held' }),
+    visibility: (row) => ({ visibility: { ...row.visibility, employeeIds: ['other-employee'] } }),
+    essentials: (row) => ({ facts: { ...row.facts, facts: { ...row.facts.facts, seats: fact(2, 'count') } } }),
+    expired: (row) => ({ release: { ...row.release, availability: { ...row.release.availability,
+      availableFrom: '2026-11-05T11:00:00.000Z', availableUntil: '2026-11-05T11:59:59.000Z' } } }),
+    future: (row) => ({ release: { ...row.release, availability: { ...row.release.availability, availableFrom: '2026-11-06T12:00:00.000Z' } } }),
+  };
+  for (const [name, change] of Object.entries(changes)) await t.test(name, async (s) => {
+    const f = await setup(s); const candidate = await car(f, 940); const c = await progress(f);
+    assert.equal((await read(f)).value.options.alternativeCars.available, true);
+    await patch(f, 'stock', { orderUuid: candidate.orderUuid }, `change:${name}`, change);
+    const before = structuredClone(f.store.state);
+    assert.equal((await propose(f, c, candidate)).status, 'invalid', name);
+    assert.deepEqual(f.store.state, before);
+    assert.equal((await read(f)).value.options.alternativeCars.available, false);
+  });
+});
+
+test('missing or unknown canonical facts, provenance, timing and visibility remain unavailable', async (t) => {
+  const changes = {
+    'missing facts': () => ({ facts: {} }),
+    'legacy nested candidate': () => ({ facts: { recommendationCandidate: stock(950) } }),
+    'wrong stock identity': (row) => ({ facts: { ...row.facts, sourceKeys: { stockId: stock(951).orderUuid } } }),
+    'missing snapshot version': (row) => { const facts = structuredClone(row.facts); delete facts.snapshotVersion; return { facts }; },
+    'missing source': (row) => { const facts = structuredClone(row.facts); delete facts.sourceNamespace; return { facts }; },
+    'unknown essential': (row) => ({ facts: { ...row.facts, facts: { ...row.facts.facts, seats: fact(null, 'count') } } }),
+    'missing availability': () => ({ release: {} }),
+    'missing availability version': (row) => { const release = structuredClone(row.release); delete release.availability.version; return { release }; },
+    'unknown availability': (row) => ({ release: { availability: { ...row.release.availability, state: 'unknown' } } }),
+    'missing timing': (row) => { const release = structuredClone(row.release); delete release.availability.availableUntil; return { release }; },
+    'unconfirmed visibility': () => ({ visibility: {} }),
+  };
+  for (const [name, change] of Object.entries(changes)) await t.test(name, async (s) => {
+    const f = await setup(s); const candidate = await car(f, 950); const c = await progress(f);
+    await patch(f, 'stock', { orderUuid: candidate.orderUuid }, `unknown:${name}`, change);
+    const before = structuredClone(f.store.state);
+    assert.equal((await read(f)).status, 'unavailable', name);
+    assert.equal((await propose(f, c, candidate)).status, 'unavailable', name);
+    assert.deepEqual(f.store.state, before);
+  });
+});
+
+test('persisted contract driver eligibility overrides contradictory cloned employee facts', async (t) => {
+  for (const eligible of [true, false]) await t.test(`bound eligible ${eligible}`, async (s) => {
+    const f = await setup(s); const candidate = await car(f, 960); const c = await progress(f);
+    await manual(f, 'contradictory-facts', (records) => {
+      records.drivers[0].eligible = fact(eligible);
+      records.employeeFacts.driverEligible = fact(!eligible);
+    });
+    const options = await read(f); assert.equal(options.status, 'ok', JSON.stringify(options));
+    assert.equal(options.value.options.alternativeCars.available, eligible);
+    assert.equal((await propose(f, c, candidate)).status, eligible ? 'ok' : 'invalid');
+  });
+});
+
+test('current contract binds its nominated driver rather than the first employee driver', async (t) => {
+  const f = await setup(t); const candidate = await car(f, 961); const c = await progress(f);
+  await manual(f, 'nominated-driver', (records) => {
+    records.drivers[0].eligible = fact(false);
+    records.contracts[0].driverId = records.drivers[1].driverId;
+    records.employeeFacts.driverEligible = fact(false);
+  });
+  assert.equal((await read(f)).value.options.alternativeCars.available, true);
+  assert.equal((await propose(f, c, candidate)).status, 'ok');
+});
+
+test('missing, ambiguous, mismatched or unknown persisted driver and contract evidence is unavailable', async (t) => {
+  const changes = {
+    'missing drivers': (records) => { delete records.drivers; },
+    'absent bound driver': (records) => { records.drivers.shift(); },
+    'missing driver binding': (records) => { delete records.contracts[0].driverId; },
+    'duplicate bound driver': (records) => { records.drivers.push(structuredClone(records.drivers[0])); },
+    'foreign bound driver': (records) => { records.drivers[0].employeeId = 'other-employee'; },
+    'missing eligible': (records) => { delete records.drivers[0].eligible; },
+    'unknown eligible': (records) => { records.drivers[0].eligible = fact(null); },
+    'missing eligible provenance': (records) => { delete records.drivers[0].eligible.provenance; },
+    'missing contract': (records) => { records.contracts = []; },
+    'duplicate current contract': (records) => { records.contracts.push({ ...records.contracts[0], contractId: 'second-current' }); },
+    'wrong current contract': (records) => { records.contracts[0].contractId = 'other-contract'; },
+    'wrong contract employee': (records) => { records.contracts[0].employeeId = 'other-employee'; },
+    'wrong contract scheme': (records) => { records.contracts[0].schemeId = 'other-scheme'; },
+    'wrong contract slot': (records) => { records.contracts[0].slotId = 'other-slot'; },
+    'unknown required-by': (records) => { records.employeeFacts.requiredBy = fact(null); },
+  };
+  for (const [name, change] of Object.entries(changes)) await t.test(name, async (s) => {
+    const f = await setup(s); const candidate = await car(f, 970); const c = await progress(f);
+    await manual(f, `driver:${name}`, change);
+    const before = structuredClone(f.store.state);
+    assert.equal((await read(f)).status, 'unavailable', name);
+    assert.equal((await propose(f, c, candidate)).status, 'unavailable', name);
+    assert.deepEqual(f.store.state, before);
+  });
+});
+
+test('proposal revalidates current driver eligibility after a suitable options projection', async (t) => {
+  const f = await setup(t); const candidate = await car(f, 980); const c = await progress(f);
+  assert.equal((await read(f)).value.options.alternativeCars.available, true);
+  await manual(f, 'driver-became-ineligible', (records) => {
+    records.drivers[0].eligible = fact(false); records.employeeFacts.driverEligible = fact(true);
+  });
+  const before = structuredClone(f.store.state);
+  assert.equal((await propose(f, c, candidate)).status, 'invalid');
+  assert.equal((await read(f)).value.options.alternativeCars.available, false);
+  assert.deepEqual(f.store.state, before);
 });
