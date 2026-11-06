@@ -6,6 +6,8 @@ Start here for every new GCSP discovery, foundation, design, implementation or r
 
 ## Latest build handover — 5 November 2026
 
+**Laptop pause, Russell, 6 November:** the local dev poller and its heartbeat are PAUSED on explicit human direction. All owned agents are stopped and cleanup is verified. Read [the current pause handover](../HANDOVER-2026-11-06-LAPTOP-PAUSE.md); scheduled messages cannot resume this run.
+
 **Dispatcher resumed, 6 November:** Russell explicitly resumed the local dev poller. Read the
 [resume record](dev-poller-2026-11-06-resume.md) and current local directive. FUCQ-104/117 retain their existing
 claims and branches; the updated project HTTP422 rule supersedes the obsolete credential-refresh stop.
