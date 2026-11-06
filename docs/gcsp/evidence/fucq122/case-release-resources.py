@@ -36,11 +36,20 @@ def process_snapshot():
     return PROCESS_ROWS(query.stdout, query.stderr, query.returncode)
 
 
+def process_identity(pid):
+    row = process_snapshot()[pid]
+    if row['rss'] is None:
+        raise RuntimeError('Owned process RSS unknown')
+    return row['start']
+
+
 def definitely_absent(record, rows):
-    """PID reuse is absence only when both starts are known and differ."""
+    """PID reuse is absence only with known RSS and two known, differing starts."""
     pid = record['pid']
     current = rows.get(pid)
     if current:
+        if current['rss'] is None:
+            return False
         return bool(record.get('start') and current['start'] != record['start'])
     try:
         os.kill(pid, 0)
@@ -143,6 +152,9 @@ class ProcessTree:
                 raise RuntimeError('Shared descendant process group refused')
             if group not in self.record['groups']:
                 self.record['groups'].append(group)
+        if any(row['rss'] is None for row in members) or any(
+                rows[item['pid']]['rss'] is None for item in known if item['pid'] in rows):
+            raise RuntimeError('Owned process RSS unknown')
         rss = sum(row['rss'] for row in members)
         self.peak_rss = max(self.peak_rss, rss)
         self.samples += 1
@@ -219,6 +231,8 @@ class ProcessTree:
         row = rows.get(process.pid)
         if row is None or row['pgid'] != process.pid or row['ppid'] != os.getpid():
             raise RuntimeError('Launched leader identity is unknown')
+        if row['rss'] is None:
+            raise RuntimeError('Owned process RSS unknown')
         item.update(**{key: row[key] for key in ['start', 'pgid', 'ppid']})
         self.record['groups'].append(row['pgid'])
         self.record['registrationComplete'] = True
@@ -270,21 +284,20 @@ class ProcessTree:
         try:
             return self._stop_join()
         except BaseException as error:
-            # Direct handle teardown is unconditional and precedes all
-            # potentially failing record writes and descendant observations.
+            # Direct teardown precedes every fallible record write or descendant query.
             self.stop_direct_handle()
             if isinstance(error, SnapshotUncertain):
                 self.remember_uncertain(error)
-            # A still-unreaped direct child is ours even when ps fails. Stop and
-            # join that handle; independently stop already-known descendants
-            # where a fresh full snapshot proves their exact start. Unknowns
-            # remain in the manifest and prevent deletion/release.
+            # Signal descendants only after a fresh owned selection proves exact start.
+            # Unknowns remain recorded and prevent deletion/release.
+            targets = tuple(self.record['ownedPids'])
             for sig in [signal.SIGTERM, signal.SIGKILL]:
-                for item in self.record['ownedPids']:
+                for item in targets:
                     if not item.get('owned') or not item.get('start'):
                         continue
                     try:
-                        current = process_snapshot().get(item['pid'])
+                        _fresh, members, _rss = self.observe()
+                        current = next((row for row in members if row['pid'] == item['pid']), None)
                         if current and current['start'] == item['start']:
                             os.kill(item['pid'], sig)
                     except (OSError, RuntimeError, subprocess.TimeoutExpired) as error:
@@ -310,7 +323,7 @@ class ProcessTree:
             # Signal exact observed identities individually. Never signal a
             # process merely because an old numeric group ID was retained.
             for row in sorted(members, key=lambda value: value['pid'] == process.pid):
-                fresh = process_snapshot()
+                fresh, fresh_members, _rss = self.observe()
                 current = fresh.get(row['pid'])
                 if current is None:
                     if not definitely_absent(row, fresh):
@@ -318,6 +331,8 @@ class ProcessTree:
                     continue
                 if current['start'] != row['start']:
                     continue
+                if not any(member['pid'] == row['pid'] for member in fresh_members):
+                    raise RuntimeError('Signal target ownership is uncertain')
                 try:
                     os.kill(row['pid'], sig)
                 except ProcessLookupError:

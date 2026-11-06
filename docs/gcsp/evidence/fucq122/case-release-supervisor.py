@@ -580,7 +580,7 @@ def main():
         guard.subprocess = BOUNDS.Captures(STARTED+120, REGISTRY)
         guard.allocated_bytes = lambda path: BOUNDS.allocation([Path(path)])
         tr.available_memory = guard.available_memory_strict
-        tr.process_identity = lambda pid: guard.process_snapshot()[pid]['start']
+        tr.process_identity = guard.process_identity
         ledger = imported(frozen, 'fucq122_c4_ledger', HERE/'case-release-ledger.py')
         PHASE = 'execution'
         execute(frozen, args, tr, guard, ledger, sg, cancel, dest)

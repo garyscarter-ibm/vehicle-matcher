@@ -53,11 +53,16 @@ def failure_detail(error, stage='unspecified', helper=None):
                'Supervisor start identity changed', 'Direct helper parent/group differs',
                'Direct helper start differs', 'Owned helper/descendant identity cap',
                'Query producer absent from complete telemetry', 'Undeclared process query shape',
-               'Helper/probe capture timeout', 'Helper/probe combined capture byte cap')
+               'Helper/probe capture timeout', 'Helper/probe combined capture byte cap',
+               'Supervisor RSS is unknown', 'Unknown process RSS start is not earlier than supervisor',
+               'Owned process RSS unknown')
     result = {'type': type(error).__name__[:80],
               'stage': stage if stage in stages else 'unspecified', 'reason': None}
     if isinstance(error, BoundError) and len(error.args) == 1 and type(error.args[0]) is str and error.args[0] in reasons:
         result['reason'] = error.args[0]
+    elif type(error) is RuntimeError and error.args == ('Owned process RSS unknown',):
+        # The owned resource adapter has no bounds import; retain only this exact constant.
+        result['reason'] = 'Owned process RSS unknown'
     if type(helper) is int and 0 < helper <= CONTRACT['process_identities']:
         result['helper'] = helper
     allowed = {str(Path(__file__).with_name(name)): name
@@ -229,7 +234,7 @@ def process_query_error(error, predicate, index=0, fields=(), parsed=0, previous
               'allRowsAccounting': 'complete-query-rejected; no partial RSS accepted'}
     if previous is not None:
         detail['duplicatePrevious'] = {key: str(previous[key]) for key in ('pid', 'ppid', 'pgid')}
-        detail['duplicatePrevious'].update(rssKiB=str(previous['rss']//1024),
+        detail['duplicatePrevious'].update(rssKiB=None if previous['rss'] is None else str(previous['rss']//1024),
             stat=previous['state'][:32], statTruncated=len(previous['state']) > 32, start=previous['start'])
     error._process_query_rejection = detail
     return error
@@ -250,6 +255,7 @@ def process_rows(output, error, rc):
                 raise process_query_error(BoundError('Unknown process row'), predicate, index, fields, len(rows))
         pid, ppid, pgid, rss = map(int, fields[:4])
         state = fields[4]
+        unknown_rss = state.startswith('?') and 'E' in state[1:] and fields[3] == '0'
         predicate = None
         state_index = None
         if pid <= 0:
@@ -264,7 +270,7 @@ def process_rows(output, error, rc):
             predicate = 'duplicate-pid'
         elif not state:
             predicate = 'state-empty'
-        elif state[0] not in 'RSDTtWXZIU':
+        elif state[0] not in 'RSDTtWXZIU' and not unknown_rss:
             predicate, state_index = 'state-leading-character', 0
         else:
             state_index = next((pos for pos, char in enumerate(state[1:], 1) if char not in '+<>AELNSsVWXl'), None)
@@ -280,11 +286,23 @@ def process_rows(output, error, rc):
                          'Process start weekday/year differs': 'start-weekday-or-year'}[rejected.args[0]]
             process_query_error(rejected, predicate, index, fields, len(rows))
             raise
-        rows[pid] = dict(pid=pid, ppid=ppid, pgid=pgid, rss=rss*1024, state=state, start=start)
+        rows[pid] = dict(pid=pid, ppid=ppid, pgid=pgid, rss=None if unknown_rss else rss*1024, state=state, start=start)
         if len(rows) > CONTRACT['entries']:
             raise process_query_error(BoundError('Process query row cap'), 'row-cap', index, fields, len(rows))
     if os.getpid() not in rows:
         raise process_query_error(BoundError('Supervisor absent from complete process query'), 'supervisor-absent', parsed=len(rows))
+    owner = rows[os.getpid()]
+    for index, row in enumerate(rows.values(), 1):
+        if row['rss'] is not None:
+            continue
+        fields = tuple(str(row[key]) for key in ('pid', 'ppid', 'pgid')) + ('0', row['state'], row['start'])
+        if owner['rss'] is None:
+            raise process_query_error(BoundError('Supervisor RSS is unknown'), 'supervisor-rss-unknown', index, fields, len(rows))
+        # Same complete snapshot and second-resolution dates only. Wall-clock rollback
+        # is possible: predating narrows acceptance and never proves foreign ownership.
+        if datetime.strptime(row['start'], '%a %b %d %H:%M:%S %Y') >= datetime.strptime(owner['start'], '%a %b %d %H:%M:%S %Y'):
+            raise process_query_error(BoundError('Unknown process RSS start is not earlier than supervisor'),
+                'unknown-rss-start-not-earlier', index, fields, len(rows))
     return rows
 
 
@@ -527,6 +545,8 @@ class Processes:
                 raise BoundError('Owned helper/descendant identity cap')
             self.record['observed'] = list(observed.values())
             self.save()
+            if any(rows[pid]['rss'] is None for pid in selected):
+                raise BoundError('Owned process RSS unknown')
             return selected
 
     def remember_partial(self, output):
@@ -637,6 +657,8 @@ class Processes:
             query = next(row for row in self.record['helpers'] if row['id'] == producer)
             for helper in self.record['helpers']:
                 for row in rows.values():
+                    if row['pid'] == helper['pid'] and row['rss'] is None:
+                        raise BoundError('Owned process RSS unknown')
                     if row['pid'] == query['pid'] and helper['id'] == producer:
                         continue  # Exact ps producer was directly joined after producing these rows.
                     if row['pgid'] == helper['group'] or (row['pid'] == helper['pid']
@@ -644,6 +666,8 @@ class Processes:
                         raise BoundError('Helper/probe process or group still present')
             for known in self.record['observed']:
                 current = rows.get(known['pid'])
+                if current and current['rss'] is None:
+                    raise BoundError('Owned process RSS unknown')
                 if current and current['pid'] != query['pid'] and current['start'] == known['start']:
                     raise BoundError('Observed descendant remains present')
             if any(row['ppid'] == os.getpid() and row['pid'] != query['pid'] for row in rows.values()):
@@ -720,6 +744,8 @@ class Aggregate:
                 + resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss)*scale
         allowances = sum(CONTRACT[key] for key in ('probe_ram_allowance', 'encoding_ram_allowance', 'ledger_ram_allowance'))
         # State never suppresses reported RSS, including a reported zombie value.
+        if rows is not None and any(rows[pid]['rss'] is None for pid in selected):
+            raise BoundError('Owned process RSS unknown')
         reported = sum(rows[pid]['rss'] for pid in selected) if rows is not None else max(0, self.rss-allowances)
         rss = max(reported, int(high)) + allowances
         with self.lock:
