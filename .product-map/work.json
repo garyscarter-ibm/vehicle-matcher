@@ -1559,15 +1559,15 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T00:03:11Z",
+      "observed_at": "2026-11-06T00:12:16Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-106",
       "slices": [
         {
           "id": "decision-protocol",
           "status": "in-progress",
           "title": "Decision-command-result-event-and-exclusion-contract",
-          "observed_at": "2026-11-06T00:03:11Z",
-          "evidence": "Finite source/port plan, exact proposed bundle/registration diff published; no import/activation. docs/gcsp/evidence/fucq106/integration-plan.md"
+          "observed_at": "2026-11-06T00:12:15Z",
+          "evidence": "First39 exact source composition reviewed and scoped execution passed. Proposed103 canonical bundle/registration remains ungranted. docs/gcsp/evidence/fucq106/integration-plan.md"
         },
         {
           "id": "policy-reasons",
@@ -1580,15 +1580,15 @@
           "id": "decision-service",
           "status": "in-progress",
           "title": "Transactional-decision-service-and-HTTP-protocol",
-          "observed_at": "2026-11-06T00:03:11Z",
-          "evidence": "25/25 scoped, v9 exact behavior identity; acceptance integration unfinished. docs/gcsp/evidence/fucq106/scoped-service-checkpoint.json"
+          "observed_at": "2026-11-06T00:12:15Z",
+          "evidence": "25/25 independent and separate12/12 actual integration memory checks. Local service unchanged. Remote/consumer/runtime/canonical/native/full acceptance open. docs/gcsp/evidence/fucq106/actual-integration-checkpoint.json"
         },
         {
           "id": "producer-access-expiry",
-          "status": "blocked",
+          "status": "in-progress",
           "title": "Actual-producer-access-and-expiry-integration",
-          "evidence": "Blocked pending exact immutable 100/102/106 composition review and real decision/expiry proof; docs/gcsp/evidence/fucq106/integration-plan.md",
-          "observed_at": "2026-11-06T00:03:11Z"
+          "evidence": "Approved first39 actual100 producer/expiry + actual102 token/account + actual stored-subject +106:12/12 memory passes, journal40 including test. docs/gcsp/evidence/fucq106/actual-integration-checkpoint.json; integrated runtime/native/full still open.",
+          "observed_at": "2026-11-06T00:12:15Z"
         },
         {
           "id": "remote-events",
@@ -1608,8 +1608,8 @@
           "id": "final-validation",
           "status": "blocked",
           "title": "Authored-acceptance-and-final-validation",
-          "evidence": "Blocked: actual producer/access/expiry, canonical adoption, remote/consumers, native/full authored validation remain; docs/gcsp/evidence/fucq106/integration-plan.md",
-          "observed_at": "2026-11-06T00:03:11Z"
+          "evidence": "Blocked on canonical103 adoption, remote/107/108 consumers, central runtime and native/full authored gates.12/12 actual memory integration now passes; no full stamp. docs/gcsp/evidence/fucq106/actual-integration-checkpoint.json",
+          "observed_at": "2026-11-06T00:12:15Z"
         }
       ],
       "unsliced": false,
@@ -1618,8 +1618,8 @@
           "name": "Mike Wazowski",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-05T23:52:26Z",
-          "expires_at": "2026-11-06T00:03:11Z",
+          "observed_at": "2026-11-06T00:09:12Z",
+          "expires_at": "2026-11-06T00:12:15Z",
           "source": "codex:01a1ae15-a603-7d92-b832-f7ebcc446a84",
           "status": "stopped"
         }
