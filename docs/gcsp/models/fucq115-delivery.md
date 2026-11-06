@@ -149,3 +149,16 @@ target remains untouched (package SHA-256 in `fucq115-scoped-receipt.json`). Ret
 bounded manifests/checkpoints/logs total 256,256 allocated bytes under
 `.claude/test-runs/fucq115`; no owned filesystem/process leftovers. Only Pluto's
 observed worker claim was expired at parking. No other story/map row was changed.
+
+## Reviewed-definition metadata correction
+
+FUCQ-103 review found the baseline basis was 287 characters; its schema allows
+256. Shortened only that basis to 214 characters and regenerated the canonical
+sorted-key JavaScript bundle digest. A deep comparison verifies every setting,
+value and other shape/provenance field is unchanged; every basis is within256.
+The current proposal file SHA-256 is `89565ec7fa05db042e623c6c88c132542505f7757848e61784f38d49b8391987`,
+bundle digest `dec7093d94d6ce4494c98a92b6aa2e0dc4207c1ee506d1eb449e51c36e9cd54d`.
+This supersedes the prior seven-row metadata proposal. Existing13/13 and actual
+baseline/source evidence above retains its original tested identities; no code or
+statistical input changed, so no duplicate test allocation was made. The borrowed
+link remains absent and all prior cleanup receipts stand.

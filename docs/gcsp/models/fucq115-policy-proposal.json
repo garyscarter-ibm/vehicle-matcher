@@ -90,10 +90,10 @@
       },
       "unit": "baseline-probability-mapping",
       "status": "assumed",
-      "basis": "Compute expressed body-demand shares from actual FUCQ-99; normalize actual FUCQ-29 fit across permitted alternatives. Divide body mass across exact alternatives. Use the canonical no-choice assumption for wait and an explicit small smoothing weight; these are uncalibrated demo mappings.",
+      "basis": "Map FUCQ-99 body demand and FUCQ-29 fit to assumed probabilities. Divide class mass over exact alternatives, reserve pinned wait mass and smooth non-wait weights. Synthetic demo evidence; not calibrated acceptance.",
       "source": "docs/gcsp/models/fucq115-contract.md",
       "sourceDate": "2026-11-05"
     }
   ],
-  "digest": "71cf67e576c531445e416d18d67999038bb5f13ede13b269091abcd701adc117"
+  "digest": "dec7093d94d6ce4494c98a92b6aa2e0dc4207c1ee506d1eb449e51c36e9cd54d"
 }

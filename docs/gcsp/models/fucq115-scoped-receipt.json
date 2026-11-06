@@ -381,5 +381,15 @@
     "retainedBytes": 256256,
     "largeOutputException": false,
     "leftovers": []
+  },
+  "proposalMetadataCorrection": {
+    "changedField": "choice.baseline.v1.basis",
+    "previousLength": 287,
+    "currentLength": 214,
+    "maximum": 256,
+    "settingsAndShapesUnchanged": true,
+    "proposalSHA256": "89565ec7fa05db042e623c6c88c132542505f7757848e61784f38d49b8391987",
+    "canonicalJavaScriptBundleDigest": "dec7093d94d6ce4494c98a92b6aa2e0dc4207c1ee506d1eb449e51c36e9cd54d",
+    "tests": "Reused exact unchanged13/13code/numericinput evidence; metadata-only correction, prior tested proposal identity retained."
   }
 }
