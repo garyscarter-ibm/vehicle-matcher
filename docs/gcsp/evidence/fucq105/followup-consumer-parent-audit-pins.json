@@ -6,13 +6,13 @@
   "reviewed_consumer_commit": "97adc05a3b822b0832d013a934c5e836e0fcfa45",
   "consumer_source_plan": {
     "path": "docs/gcsp/evidence/fucq105/followup-consumer-source-plan.json",
-    "sha256": "dc865716840e0edd49917f4b07b29ccf238f32087ed53d01d9a7bc3530003d5d",
-    "bytes": 72271
+    "sha256": "b1bceaf4c8a171ae18581ead189b9cff3f08283d27c30c3c9e7080c4be7714f9",
+    "bytes": 73819
   },
   "recipe": {
     "path": "docs/gcsp/evidence/fucq105/followup-consumer-parent-audit-recipe.md",
-    "sha256": "712f02dd1a25b1ec13fa2860c1f50679cd244e62cc85c268cb51853b5fdcba0d",
-    "bytes": 16254
+    "sha256": "9a334c646a1557d7ede52e250e2a935b539608fe52673934c57ac00544289ed5",
+    "bytes": 18076
   },
   "existing_harness": {
     "server/test/gcsp-offer-view-followup-consumer.test.js": {
@@ -24,12 +24,12 @@
       "bytes": 2918
     },
     "docs/gcsp/evidence/fucq105/followup-consumer-supervisor.py": {
-      "sha256": "d383b76421cad91efbe8a0933c2707dbb6d11bb13ace8f61924d1b94ac0fee2d",
-      "bytes": 26805
+      "sha256": "d39d05124555d4067425d7b07205d5e41adc9995bfeb49e85ae228dbea488cda",
+      "bytes": 33431
     },
     "docs/gcsp/evidence/fucq105/followup-consumer-audit.py": {
-      "sha256": "78e39ae67e6dea25aa5b4ebd3c15d66a8e2bea3201d90f009eacba8e0e8db6cd",
-      "bytes": 12008
+      "sha256": "316ec21f114625284b828dbead1741043ce3aa7b508912330d819b24cc18eddf",
+      "bytes": 14680
     },
     "docs/gcsp/evidence/fucq105/decision-mixed-ledger.py": {
       "sha256": "14726d310da350b3d8e0b8b2c5e410d9f93167c841e52c9e4ede974a37870f69",
@@ -52,8 +52,8 @@
       "bytes": 129000
     },
     "docs/gcsp/evidence/fucq105/followup-consumer-bounds.py": {
-      "sha256": "250d99217547301126161e66c25b67d5b4cc9fb295e1b86fcb0a62f0e21ac41f",
-      "bytes": 20308
+      "sha256": "2109919f9ebf38161a6d963310f949e4c88e39001b7e5d2651c1f770f8f9e628",
+      "bytes": 28284
     }
   },
   "parent_contract": {
@@ -128,18 +128,20 @@
     "--summary",
     "<original-run>/summary.json",
     "--supervisor-exit-code",
-    "<actual code from immutable root tool/handle wait capture>"
+    "<actual code from immutable root tool/handle wait capture>",
+    "--helper-journal",
+    "<owned-parent-output>/audit-helper-ownership.json"
   ],
   "grant_required": {
     "approved": true,
     "scope": "fucq105-followup-parent-audit",
     "parent_audit_id": "<unique ASCII suffix1..40>",
     "parent_audit_pins_sha256": "<SHA256 of this published pin sheet>",
-    "recipe_sha256": "712f02dd1a25b1ec13fa2860c1f50679cd244e62cc85c268cb51853b5fdcba0d",
+    "recipe_sha256": "9a334c646a1557d7ede52e250e2a935b539608fe52673934c57ac00544289ed5",
     "driver_sha256": "<root-rendered exact one-off driver, reviewed before launch>",
     "python_path": "<root-pinned resolved executable>",
     "python_sha256": "<exact executable SHA256>",
-    "consumer_source_plan_sha256": "dc865716840e0edd49917f4b07b29ccf238f32087ed53d01d9a7bc3530003d5d",
+    "consumer_source_plan_sha256": "b1bceaf4c8a171ae18581ead189b9cff3f08283d27c30c3c9e7080c4be7714f9",
     "original_run_id": "<same root-granted consumer run>",
     "consumer_grant_sha256": "<immutable original grant>",
     "supervisor_wait_capture_sha256": "<actual captured tool/handle wait and complete bounded streams>",
@@ -161,5 +163,6 @@
     },
     "fallback": false,
     "descendants": 0
-  }
+  },
+  "startup_helper_ownership": "Successor authoring repair from74b9f9d; three consumer helper rows plus minimal parent adapter/refrozen bindings; same graph/scope/budgets; fresh review/grants required; no execution."
 }

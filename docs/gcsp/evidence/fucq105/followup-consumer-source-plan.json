@@ -1544,12 +1544,12 @@
       "bytes": 2918
     },
     "docs/gcsp/evidence/fucq105/followup-consumer-supervisor.py": {
-      "sha256": "d383b76421cad91efbe8a0933c2707dbb6d11bb13ace8f61924d1b94ac0fee2d",
-      "bytes": 26805
+      "sha256": "d39d05124555d4067425d7b07205d5e41adc9995bfeb49e85ae228dbea488cda",
+      "bytes": 33431
     },
     "docs/gcsp/evidence/fucq105/followup-consumer-audit.py": {
-      "sha256": "78e39ae67e6dea25aa5b4ebd3c15d66a8e2bea3201d90f009eacba8e0e8db6cd",
-      "bytes": 12008
+      "sha256": "316ec21f114625284b828dbead1741043ce3aa7b508912330d819b24cc18eddf",
+      "bytes": 14680
     },
     "docs/gcsp/evidence/fucq105/decision-mixed-ledger.py": {
       "sha256": "14726d310da350b3d8e0b8b2c5e410d9f93167c841e52c9e4ede974a37870f69",
@@ -1572,8 +1572,8 @@
       "bytes": 129000
     },
     "docs/gcsp/evidence/fucq105/followup-consumer-bounds.py": {
-      "sha256": "250d99217547301126161e66c25b67d5b4cc9fb295e1b86fcb0a62f0e21ac41f",
-      "bytes": 20308
+      "sha256": "2109919f9ebf38161a6d963310f949e4c88e39001b7e5d2651c1f770f8f9e628",
+      "bytes": 28284
     }
   },
   "selected": "server/test/gcsp-offer-view-followup-consumer.test.js",
@@ -1771,5 +1771,16 @@
     "atomic_disk_allowance": 1056768,
     "terminal_disk_allowance": 65536,
     "audit_disk_allowance": 65536
+  },
+  "startup_helper_ownership_repair": {
+    "baseline_authoring_commit": "74b9f9df3511ba1b7ec6fc96ccb1e9b5f192f892",
+    "superseded_consumer_plan_sha256": "dc865716840e0edd49917f4b07b29ccf238f32087ed53d01d9a7bc3530003d5d",
+    "diagnosis": "Static early-path finding, not an observed runtime leak: first Aggregate and Scratch identity probes preceded provisional external ownership; Captures had no retained unresolved handle and Aggregate could replace one.",
+    "repair": "Bounded nonblocking bootstrap inputs and exclusive provisional external ownership before first helper; one durable serialized helper slot, immediate strong Popen retention, direct waits, sticky unresolved state, no replacement launches and encompassing final sweeps. Deletion/release/success are helper-aware.",
+    "journal": "16KiB outside disposable scratch; within existing retained roots and unchanged allowances; atomic staging visible to full caller accounting.",
+    "scope": "Same10 harness members,73 modules,137 product edges,24 test edges,12 file inputs, selected consumer case/four checkpoints, source/adoption/environment/ledger/lifecycle/budgets unchanged.",
+    "validation": "Authoring/text/hash/JSON/whitespace only; no syntax/AST invocation, reviewed helper import/execution, process probe, test, ledger read/mutation, scratch/resource allocation or runtime grant.",
+    "review": "Independent review of changed helpers/caller adapters and current admission required before any original consumer or parent-audit grant.",
+    "runtime_proof": false
   }
 }

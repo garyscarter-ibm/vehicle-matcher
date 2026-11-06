@@ -52,7 +52,7 @@ Independent review at `773fc5cf5943fff10f05fa19be98b2d929b5c079` retained one P2
 
 The sole code delta adds `O_NONBLOCK` to `O_RDONLY | O_NOFOLLOW` before opening the descriptor. The existing `fstat` regular-file/single-link/size checks still precede every read; descriptor-based before/after identity/size/mtime checks and context-managed closure are unchanged. Special files remain rejected; no allowlist or new reader path is introduced. The source plan changes only this helper pin. Static AST/diff/hash checks cover the narrow change; no FIFO probe, runtime test, helper execution or allocation occurred. All other previously reviewed code/contracts remain byte-identical. Separate reviewer confirmation and root admission/grant remain pending.
 
-## Frozen authoring identities
+## Historical dc865716 authoring identities
 
 Source-plan SHA256: `dc865716840e0edd49917f4b07b29ccf238f32087ed53d01d9a7bc3530003d5d`. All10 harness SHA256/byte identities match.
 
@@ -63,3 +63,21 @@ Source-plan SHA256: `dc865716840e0edd49917f4b07b29ccf238f32087ed53d01d9a7bc35300
 | `followup-consumer-audit.py` | `78e39ae67e6dea25aa5b4ebd3c15d66a8e2bea3201d90f009eacba8e0e8db6cd` | 12008 |
 
 Static gates passed: five Python AST parses without imports; constrained AST contract extraction; exact10 harness pins; unchanged source graph/adoption/Node/dependency/environment and strict host contracts; source-level writer/runner/release/postwrite gates; Git whitespace. This is static authoring evidence, not runtime validation.
+
+## Startup/helper ownership successor · authoring only
+
+Root confirmed a static early-path HOLD at74b9f9d: Aggregate starts before run paths/external manifest; Scratch owner() probes before that manifest; Captures loses its only handle on unresolved final wait, and Aggregate can replace an unresolved probe. This establishes a source defect, not an observed runtime leak. Affected writers are supervisor startup/finalization and bounds Aggregate/Captures; auditor/parent callers and their evidence gates require matching adapters. Shared resources and strict ledger/lifecycle source remain unchanged.
+
+The repair admits bounded physical grant/plan/helper paths with nonblocking descriptor reads, writes exclusive provisional external ownership and installs the encompassing finalizer before the first probe. HelperOwnership persists creating intent before Popen, retains the returned process immediately in its one serialized slot, directly terminates/kills/waits and closes both pipes on every outcome, and clears only after successful join/persistence. Unresolved join/operation/persistence remains sticky even if a later sweep reaps it; no replacement/new helper launch or success inference is allowed. Every finalizer sweeps regardless of monitor join failure. Serialized helper gates protect scratch/manifest deletion and exact-row release. Journal/staging use the unchanged16KiB artifact/retained and fixed atomic allowances, with actual full-root accounting after bootstrap.
+
+Minimal auditor/parent adapters supply the same external-to-scratch journal contract. The auditor receives its parent-owned sibling journal path; parent checks its captured-child identity/run/plan/summary and completed joins. Parent bootstrap now admits the closed original journal before imports under the same5MiB gate. Later original/source preservation and actual wait/capture requirements remain. Same10 harness members,73/137/24/12 graph, selected one-case/four checkpoints, unchanged test/loader/products/adoption/Node/dependencies and strict resource contracts.
+
+Current consumer source-plan SHA256: `b1bceaf4c8a171ae18581ead189b9cff3f08283d27c30c3c9e7080c4be7714f9`.
+
+| Changed consumer helper | SHA256 | Bytes |
+|---|---|---:|
+| `followup-consumer-supervisor.py` | `d39d05124555d4067425d7b07205d5e41adc9995bfeb49e85ae228dbea488cda` | 33431 |
+| `followup-consumer-audit.py` | `316ec21f114625284b828dbead1741043ce3aa7b508912330d819b24cc18eddf` | 14680 |
+| `followup-consumer-bounds.py` | `2109919f9ebf38161a6d963310f949e4c88e39001b7e5d2651c1f770f8f9e628` | 28284 |
+
+Validation for this successor is source/text/order comparison, JSON and byte/hash bindings, unchanged graph/selected scope/contract comparison, whitespace and explicit-path publication only. No syntax/AST invocation, reviewed helper import/execution, process probe/test, ledger read/mutation, scratch/resource allocation or runtime grant. Provisional PID has explicitly unknown start until the first joined telemetry result; it never substitutes success. Runtime scheduling, cancellation, timeout/recovery, file failures, OS/process behavior and enforcement remain unproved. Root owns independent review, current admission, fresh grant, actual waits and final receipt. No visual/product change or new screenshot requirement; story/map acceptance remains blocked.

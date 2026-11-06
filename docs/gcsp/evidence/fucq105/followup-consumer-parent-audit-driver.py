@@ -263,7 +263,7 @@ def inspect_originals(c, maximum, required):
                     visit(Path(child.path), depth+1)
         else:
             cap = specific.get(path, {'checkpoints.json':65536, 'modules.jsonl':256*1024,
-                'failure.log':65536, 'independent-audit.json':16384}.get(path.name, MIB))
+                'failure.log':65536, 'independent-audit.json':16384, 'helper-ownership.json':16384}.get(path.name, MIB))
             raw, info = regular(path, cap)
             require([info['device'],info['inode'],info['size'],info['mtime_ns']] ==
                     [item.st_dev,item.st_ino,item.st_size,item.st_mtime_ns])
@@ -275,7 +275,7 @@ def inspect_originals(c, maximum, required):
     snapshot_bound(result)
     if required:
         needed = {c['summary_path'],c['terminal_path'],c['original_manifest_path'],c['run']/'plan.json',
-            external_owner,external_consumption,external_impact,c['grant_path'],c['wait_path'],
+            external_owner,external_consumption,external_impact,c['run']/'helper-ownership.json',c['grant_path'],c['wait_path'],
             clean_path(c['summary']['review'])}
         if c['wait']['exit_code'] == 0:
             needed.update((c['run']/'checkpoints.json', c['run']/'modules.jsonl'))
@@ -293,6 +293,14 @@ def inspect_originals(c, maximum, required):
         owner = documents[str(external_owner)]; consumption = documents[str(external_consumption)]
         impact = documents[str(external_impact)]; original_plan = documents[str(c['run']/'plan.json')]
         require(owner['owner'] == c['summary']['owner'] and owner['output'] == str(c['run']))
+        helper = documents[str(c['run']/'helper-ownership.json')]
+        require(helper['owner'] == c['summary']['owner'] and helper['run'] == c['run'].name)
+        require(helper['source_plan_sha256'] == c['plan_info']['sha256'])
+        require(helper['review_sha256'] == c['wait']['consumer_grant_sha256'])
+        joined = helper['helper_ownership']
+        require(joined['closing'] is True and joined['issue'] is None and joined['pending'] is None)
+        require(type(joined['launches']) is int and type(joined['joined']) is int
+                and 0 < joined['launches'] <= 4096 and joined['launches'] == joined['joined'])
         require(consumption['owner'] == c['summary']['owner'] and consumption['run'] == c['run'].name)
         require(consumption['review'] == c['summary']['review'] and consumption['plan_sha256'] == c['plan_info']['sha256'])
         require(impact['plan_sha256'] == c['plan_info']['sha256'] and impact['test'] == c['plan']['selected'])
@@ -313,7 +321,15 @@ def execute(c):
     cancel = threading.Event()
     cancellation = lifecycle.deferred_cancellation(cancel); cancellation.__enter__()
     atexit.register(cancellation.__exit__, None, None, None)
-    monitor = b.Aggregate(cancel, 180); monitor.limit = 640*MIB
+    # Exclusive retained ownership exists before the first monitor/identity helper.
+    c['parent_dir'].mkdir(mode=0o700)
+    item = c['parent_dir'].lstat()
+    parent_directory_identity = (item.st_dev, item.st_ino)
+    helpers = b.HelperOwnership(c['parent_dir']/'helper-ownership.json', {
+        'kind': 'fucq105-parent-audit-helpers', 'original_run': c['run'].name,
+        'parent_audit_id': c['grant']['parent_audit_id'], 'grant_sha256': c['grant_info']['sha256'],
+        'source_plan_sha256': c['plan_info']['sha256'], 'output': str(c['parent_dir'])})
+    monitor = b.Aggregate(cancel, 180, helpers); monitor.limit = 640*MIB
     scratch = ownership = budget = outputs = None
     snapshot = None; allocation = None
     status, failure = 1, None
@@ -340,7 +356,7 @@ def execute(c):
         return True
     try:
         monitor.start()
-        r = load('parent_resources', ROOT/'_tools/test_resources.py'); r.subprocess = b.Captures()
+        r = load('parent_resources', ROOT/'_tools/test_resources.py'); r.subprocess = b.Captures(helpers)
         ledger = load('parent_ledger', HERE/'decision-mixed-ledger.py')
         policy = r.Policy(dict(chunk_seconds=120, chunk_scratch_mib=128, chunk_ram_mib=768, log_mib=2))
         class ParentScratch(r.Scratch):
@@ -359,16 +375,14 @@ def execute(c):
                 return value
             def __exit__(self, kind, value, tb):
                 ownership.require_safe()
-                return super().__exit__(kind, value, tb)
+                with helpers.gate():
+                    return super().__exit__(kind, value, tb)
         scratch = ParentScratch(c['parent_dir'], ROOT, policy)
         scratch.record.update(story='FUCQ-105-parent-audit', processes=[], ports=[], profiles=[], dependency_links=[])
         ownership = lifecycle.LaunchOwnership(r, scratch)
         atexit.register(ownership.join_direct)
         monitor.groups = scratch.record['groups']
         require(b.allocation(c['readonly']) <= 5*MIB)
-        c['parent_dir'].mkdir(mode=0o700)  # Exclusive ownership; a raced/foreign directory is never adopted.
-        item = c['parent_dir'].lstat()
-        parent_directory_identity = (item.st_dev, item.st_ino)
         scratch.record['parent_output_identity'] = list(parent_directory_identity)
         class ParentOutputs(b.Outputs):
             def observe(self):
@@ -383,6 +397,7 @@ def execute(c):
                 limit = 256*1024 if Path(path) == scratch.manifest or Path(path).name == 'original-identities.json' else 65536
                 return super().json(path, value, min(cap or limit, limit), exclusive)
         outputs = ParentOutputs(scratch.root, collapse(c['readonly']+[c['parent_dir']]), monitor)
+        helpers.account(outputs)
         r.atomic_json = outputs.json
         budget = ledger.Budget(r, policy, c['plan']['host_budget'], scratch)
         outputs.json(c['parent_dir']/'intent.json', dict(owner=scratch.record['owner'], root=str(scratch.root),
@@ -406,7 +421,8 @@ def execute(c):
             env = {key: value for key, value in os.environ.items() if key in ('PATH','HOME','USER','LOGNAME','LANG','LC_ALL','TZ','SHELL') or key.startswith('LC_')}
             env = scratch.env(env)
             command = [c['pins']['python']['resolved_path'], '-B', str(HERE/'followup-consumer-audit.py'),
-                       '--summary', str(c['summary_path']), '--supervisor-exit-code', str(c['wait']['exit_code'])]
+                       '--summary', str(c['summary_path']), '--supervisor-exit-code', str(c['wait']['exit_code']),
+                       '--helper-journal', str(c['parent_dir']/'audit-helper-ownership.json')]
             ownership.begin()
             launch_started = time.monotonic(); next_update = 0.0
             process = subprocess.Popen(command, cwd=str(ROOT), env=env, stdout=subprocess.PIPE,
@@ -448,13 +464,25 @@ def execute(c):
             protected(); source_identity(c); fresh()
             audit_output = decode(bytes(stdout))
             audit_data, audit_info = document(c['run']/'independent-audit.json', 16384)
-            required = {'actual_parent_wait_success','terminal_success','immutable_summary_binding','summary_success',
+            required = {'helper_ownership_and_joins_verified','actual_parent_wait_success','terminal_success','immutable_summary_binding','summary_success',
                 'aggregate_receipt','final_combined_upper_bound','owner_exited','scratch_absent','launch_ownership_verified',
                 'groups_absent','processes_absent','reservation_absent','ledger_staging_absent','local_sources_preserved',
                 'harness_preserved','node_preserved','immutable_sources_inputs_preserved','retained_dependencies_preserved',
                 'owned_removed_manifest','retained_allocation_within_cap','combined_allocation_within_cap',
                 'terminal_upper_bound_covers_actual_files','retained_artifact_caps','owned_atomic_staging_absent',
                 'parent_aggregate_within_cap','scratch_manifest_absent'}
+            child_helpers, child_helper_info = document(c['parent_dir']/'audit-helper-ownership.json',16384)
+            child_join = child_helpers['helper_ownership']
+            checks['audit_helpers_joined'] = child_helpers['owner']['pid'] == ownership.process.pid \
+                and any(all(child_helpers['owner'][key] == row[key] for key in ('pid','start'))
+                        for row in scratch.record['processes']) \
+                and child_helpers['run'] == c['run'].name \
+                and child_helpers['source_plan_sha256'] == c['plan_info']['sha256'] \
+                and child_helpers['summary_sha256'] == c['grant']['summary_sha256'] \
+                and child_join['closing'] is True and child_join['issue'] is None \
+                and child_join['pending'] is None and type(child_join['launches']) is int \
+                and type(child_join['joined']) is int and 0 < child_join['launches'] <= 4096 \
+                and child_join['launches'] == child_join['joined']
             checks['actual_waits_and_streams'] = c['wait']['exit_code'] == audit_code == 0 and not stderr \
                 and eof_seen == {'stdout','stderr'} and not stream_overflow
             checks['audit_stdout'] = audit_output['status'] == 'passed' and audit_output['failure'] is None \
@@ -520,8 +548,9 @@ def execute(c):
             failure = failure or 'FinalVerification'+type(error).__name__; status = 1
         if budget is not None and budget.attempted and postwrite_ready:
             try:
-                budget.release(scratch.token, dict(child_safe=safe, groups_absent=groups,
-                    processes_absent=processes, scratch_absent=not os.path.lexists(scratch.root)))
+                with helpers.gate():
+                    budget.release(scratch.token, dict(child_safe=safe, groups_absent=groups,
+                        processes_absent=processes, scratch_absent=not os.path.lexists(scratch.root)))
             except BaseException:
                 failure = failure or 'ParentReservationReleaseUncertain'; status = 1
         absent, known = False, False
@@ -562,7 +591,7 @@ def execute(c):
             monitor.stop()
         except BaseException:
             failure = failure or 'ParentMonitorJoinFailure'; status = 1
-        if monitor.issue or cancel.is_set() or not (postwrite_ready and absent and known):
+        if monitor.issue or helpers.issue or cancel.is_set() or not (postwrite_ready and absent and known):
             failure = failure or 'ParentFinalGateFailed'; status = 1
         # No further child/probe launch follows monitor join.
         sys.stdout.buffer.write(b.encode(dict(status='failed' if failure or status else 'passed', failure=failure,
