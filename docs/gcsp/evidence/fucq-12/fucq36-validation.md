@@ -8,8 +8,8 @@ title was verified; chat `01a1ae28-6e71-7cf1-855c-85c7c38d3392`.
 
 The browser artifacts were built from
 `0d8e56cba303441064b9bea87d44625c8f70c79b` plus the following frozen package
-content. The next published checkpoint retains those exact bytes; metadata-only
-updates and the authored full integration gate are recorded below when complete.
+content. Published checkpoint `db4fcbebd360006d81f3efd5fe1ac8d6f136dcea`
+retains those exact bytes. The authored full gate below used that frozen tree.
 The latest backend source commit in this tree is
 `fbcc2ae2f6d6721d36c49112c516ba52180d8aa9`; no backend code was changed by FUCQ-36.
 
@@ -97,11 +97,42 @@ only evidence harnesses/dependency setup, not product authentication or GC sourc
 
 ## Integration and resources
 
-The authored `npm test` full gate is pending at this checkpoint; no full stamp is
-claimed yet. Dispatcher granted the sole serial gate after frozen publication.
-The selected resource variant uses one Node test worker, 128 MiB scratch,
-768 MiB process-group RAM and a five-minute chunk, with the shared supervisor,
-owned manifests/finalizers and HostBudget reservations.
+The authored `npm test` full gate passed at the frozen published checkpoint:
+**1,265 tests, 1,260 passed, five native PostgreSQL checks skipped, zero failures**,
+59.8 seconds. `GCSP_DATABASE_URL` was explicitly absent in this offline variant.
+The full stamp is key `389edc75ff69`, tree `defacf5b85d4459d737846c7946208c473788336`,
+HEAD `db4fcbebd360006d81f3efd5fe1ac8d6f136dcea`, at
+`2026-11-06T00:30:22+0000`. Initial `--status` found none; post-run `--status`
+matched. The stamp parser does not count Node's current spec-format output;
+the counts above are from the actual complete npm-test summary.
+
+The dispatcher-authorised resource variant used one Node test worker, 128 MiB
+scratch, 768 MiB process-group RAM and a five-minute chunk, with the shared
+supervisor, owned manifests/finalizers and HostBudget reservations. A disposable
+PATH wrapper added only `--test-concurrency=1` to the authored `node --test`
+invocation. A process-local Git exclude file contained only
+`/server/node_modules`, the exact registered installed-dependency symlink.
+No repository/global Git configuration, source, test or evidence was excluded.
+Real Node was `/opt/homebrew/Cellar/node/26.7.0/bin/node`. Worktree 069's installed
+dependency tree was an explicit hashed test input; its lock matched this tree,
+SHA-256 `6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e`.
+
+Full execution identity: code
+`6f8bbb42d2a67c84d4b0927fbce06c88a6a2242831057cf2b743c61b90a76578`,
+environment `9b8990d022403afc2a33c475cc3e13f58e32e40ed29902d7c61be599c71d4f79`,
+settings `3e74914cb2cb57e59b490c6f39e0c06e26979bed25ff42d3fefcc787b71c8e89`.
+The exact dependency/ignore/wrapper inputs and hashes remain in the shared
+full-identity receipt. The full run peaked at **5,888,640 bytes scratch** and
+**446,021,632 bytes process-group RSS**; its bootstrap scratch peaked at 12,384
+bytes. Both roots, the wrapper/ignore files and the dependency link were removed;
+the matching HostBudget reservation is absent.
+
+Final edits mark integration complete, expire the worker and add this result and
+resource receipt. They change only story/map/evidence metadata. The committed
+completion receipt verifies no source, test or browser-helper differences from
+`db4fcbe`. The default stamp key includes the map JSON, so the exact premetadata
+stamp above is retained rather than described as a stamp for a later metadata
+tree. No full suite was repeated for those metadata-only edits.
 
 Scoped test and browser scratch was supervised and removed after every chunk.
 The temporary `server/node_modules` link used only the already installed locked
@@ -110,4 +141,11 @@ The actual worktree and source dependency installation were preserved. Browser
 profiles, local TLS material and the assembled trees lived only in owned local
 scratch; no generated archive or output approached 256 MiB, so no OneDrive
 allocation was required. Retained small reports/captures are evidence artifacts.
-Final measured cleanup and full-gate receipts will be appended here.
+The selected final scoped checks peaked at **8,796,288 bytes scratch** and **1,156,792,320 bytes
+RSS**; all selected roots are absent. The final inventory also includes earlier
+iterations: all **19** F36 manifest-owned roots are absent and all **18** recorded
+process groups are dead, with no matching reservation or dependency link. Across
+all iterations the highest recorded scratch peak was 11,053,056 bytes. Successful
+verbose logs were replaced by concise retained summaries; the small diagnosed
+offer-harness failure log remains useful evidence. `fucq36-completion.json` records
+the inventory, removed allocation, retained paths and metadata-only equivalence.
