@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok, result } from '../gcsp/repository/index.js';
@@ -93,6 +94,120 @@ async function advance(f, bySeconds) {
   if (advanced.status !== 'ok') return advanced;
   return f.clock.tick(f.presenter.context, { eventId: `tick-${state.clockVersion}-${bySeconds}`, expectedClockVersion: advanced.value.clockVersion, inputDigest: inputDigest({ bySeconds }) });
 }
+
+const caseSource = process.env.GCSP_F71_CASE_SOURCE_BASE64;
+async function pinnedRenewalCases(f) {
+  // Actual consumer from F100 4037b762086113e4970f651161471b603d39b4d5; only imports are relocated.
+  const source = Buffer.from(caseSource, 'base64').toString('utf8');
+  assert.equal(createHash('sha256').update(source).digest('hex'), 'a080a47479444a94f041de1b0c094974c3eea655a8076f771ec33f82ecb43379');
+  for (const [path, hash] of [
+    ['../gcsp/cases/policy.js', 'c6ee2d24b019695a8bf3663fe2dd22fee5705aac65a7fff834f21b5c219209e7'],
+    ['../gcsp/policy/file-provider.js', '3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad'],
+    ['../gcsp/manual-context/ports.js', 'c1e7db5012f6d3212b79ad989e6cde5a0e390e2f4bfe50f91ee4c79c8a7a1267'],
+  ]) assert.equal(createHash('sha256').update(await readFile(new URL(path, import.meta.url))).digest('hex'), hash);
+  const imports = new Set(['../repository/index.js', '../policy/file-provider.js', '../recommendation/index.js', '../manual-context/ports.js', './policy.js']);
+  const relocated = source.replace(/from '(\.[^']+)'/g, (statement, specifier) => {
+    assert.ok(imports.delete(specifier), `Unexpected consumer dependency: ${specifier}`);
+    return `from '${new URL(specifier, new URL('../gcsp/cases/index.js', import.meta.url)).href}'`;
+  });
+  assert.equal(imports.size, 0);
+  const { RenewalCaseService } = await import(`data:text/javascript;base64,${Buffer.from(relocated).toString('base64')}`);
+  return new RenewalCaseService(f);
+}
+async function renewalAuthority(f, { employeeRenewal = null, slotRenewal = null, holdRenewal } = {}) {
+  const changed = await f.repository.transaction(f.context, cmd(`renewal:${inputDigest({ employeeRenewal, slotRenewal, holdRenewal: holdRenewal ?? null })}`), async (tx) => {
+    const employee = await tx.get(ref(f, 'employees', { employeeId: f.context.employeeId }));
+    const updated = await tx.compareAndSwap(ref(f, 'employees', { employeeId: f.context.employeeId }), employee.value.version,
+      { renewalId: employeeRenewal, contract: { ...employee.value.contract, contractEndDate: '2026-11-10' } });
+    if (updated.status !== 'ok') return updated;
+    const slot = await tx.get(ref(f, 'entitlement_slots', { entitlementSlotId: f.context.entitlementSlotId }));
+    const entitled = await tx.compareAndSwap(ref(f, 'entitlement_slots', { entitlementSlotId: f.context.entitlementSlotId }), slot.value.version, { renewalId: slotRenewal });
+    if (entitled.status !== 'ok' || holdRenewal === undefined) return entitled;
+    const hold = await tx.get(ref(f, 'holds', { holdId: 'hold' }));
+    const held = await tx.compareAndSwap(ref(f, 'holds', { holdId: 'hold' }), hold.value.version, { renewalId: holdRenewal });
+    if (held.status === 'ok') f.input.source.expectedHoldVersion = held.value.version;
+    return held;
+  });
+  assert.equal(changed.status, 'ok', JSON.stringify(changed));
+}
+
+test('acknowledged selection satisfies pinned F112 renewal deadline consumer', { skip: !caseSource }, async (t) => {
+  const f = await setup(); t.after(() => f.repository.close());
+  await renewalAuthority(f, { slotRenewal: 'renewal-original' });
+  const cases = await pinnedRenewalCases(f); assert.equal((await cases.start()).status, 'ok');
+  const submitted = await f.service.submit(f.context, f.input); assert.equal(submitted.status, 'ok');
+  assert.equal((await advance(f, 1)).status, 'ok');
+  const found = await cases.readOwn(f.context);
+  assert.equal(found.status, 'ok', JSON.stringify(found));
+  assert.equal(found.value.cases.length, 0, 'Actual acknowledged selection must suppress its renewal deadline case');
+  const receipts = (await f.repository.query(f.context, 'event_receipts', { eventType: 'selection-acknowledged' })).value;
+  assert.equal(receipts.length, 1);
+  assert.equal(receipts[0].outcome.value.renewalId, 'renewal-original');
+  assert.equal(receipts[0].outcome.value.orderUuid, '00000000-0000-4000-8000-000000000011');
+  assert.equal(receipts[0].outcome.value.occurredAt, instant);
+  assert.equal(receipts[0].outcome.value.at, instant);
+  assert.deepEqual(receipts[0].outcome.value.order, submitted.value.order);
+  assert.deepEqual(await f.service.submit(f.context, { ...f.input, commandId: 'repeat' }), submitted);
+  assert.equal((await f.repository.query(f.context, 'event_receipts', { eventType: 'selection-acknowledged' })).value.length, 1);
+});
+
+test('selection pins only consistent actual employee and slot renewal authority', async (t) => {
+  for (const [name, authority, expected] of [
+    ['slot only', { slotRenewal: 'slot-renewal' }, 'slot-renewal'],
+    ['same default employee only', { employeeRenewal: 'employee-renewal' }, 'employee-renewal'],
+    ['matching authorities', { employeeRenewal: 'same-renewal', slotRenewal: 'same-renewal', holdRenewal: 'same-renewal' }, 'same-renewal'],
+    ['unknown', {}, null],
+    ['hold without employee or slot authority', { holdRenewal: 'unbound-renewal' }, null],
+    ['employee and slot disagree', { employeeRenewal: 'employee-renewal', slotRenewal: 'slot-renewal' }, null],
+    ['source hold disagrees', { slotRenewal: 'slot-renewal', holdRenewal: 'different-renewal' }, null],
+    ['malformed employee authority', { employeeRenewal: 42, slotRenewal: 'slot-renewal' }, null],
+  ]) await t.test(name, async (row) => {
+    const f = await setup(); row.after(() => f.repository.close());
+    await renewalAuthority(f, authority);
+    const submitted = await f.service.submit(f.context, f.input); assert.equal(submitted.status, 'ok', JSON.stringify(submitted));
+    assert.equal(submitted.value.selection.renewalId, expected);
+    assert.equal((await readOperation(f)).payload.selection.renewalId, expected);
+    const receipt = (await f.repository.query(f.context, 'event_receipts', { eventType: 'selection-acknowledged' })).value[0];
+    assert.equal(receipt.outcome.value.renewalId, expected);
+  });
+});
+
+test('delayed acknowledgement keeps its pinned renewal and does not suppress a later renewal', { skip: !caseSource }, async (t) => {
+  let writes = 0;
+  const f = await setup({ adapter: (g) => {
+    const provider = createSyntheticOrderingAdapter(g);
+    return { async execute(operation) { writes += 1; await provider.execute(operation); throw Error('lost acknowledgement'); },
+      reconcile: (operation) => provider.reconcile(operation) };
+  } }); t.after(() => f.repository.close());
+  await renewalAuthority(f, { employeeRenewal: 'renewal-original', slotRenewal: 'renewal-original' });
+  const cases = await pinnedRenewalCases(f); assert.equal((await cases.start()).status, 'ok');
+  assert.equal((await f.service.submit(f.context, f.input)).status, 'pending');
+  await renewalAuthority(f, { employeeRenewal: 'renewal-next', slotRenewal: 'renewal-next' });
+  const reconciled = await f.service.submit(f.context, { ...f.input, commandId: 'reconcile' });
+  assert.equal(reconciled.status, 'ok'); assert.equal(writes, 1);
+  const receipt = (await f.repository.query(f.context, 'event_receipts', { eventType: 'selection-acknowledged' })).value[0];
+  assert.equal(receipt.outcome.value.renewalId, 'renewal-original');
+  assert.equal((await advance(f, 1)).status, 'ok');
+  const found = await cases.readOwn(f.context); assert.equal(found.status, 'ok', JSON.stringify(found));
+  assert.equal(found.value.cases.length, 1);
+  assert.equal(found.value.cases[0].renewalId, 'renewal-next');
+  assert.equal(found.value.cases[0].trigger.type, 'renewal-deadline');
+});
+
+test('pending and failed handoffs do not suppress the pinned F112 deadline consumer', { skip: !caseSource }, async (t) => {
+  for (const state of ['unknown', 'unsupported']) await t.test(state, async (row) => {
+    const f = await setup({ adapter: () => ({ async reconcile(operation) { return scoped(operation, 'not-found'); },
+      async execute(operation) { return scoped(operation, state); } }) }); row.after(() => f.repository.close());
+    await renewalAuthority(f, { slotRenewal: 'renewal-original' });
+    const cases = await pinnedRenewalCases(f); assert.equal((await cases.start()).status, 'ok');
+    const response = await f.service.submit(f.context, f.input);
+    assert.equal(response.value.order, null);
+    assert.equal((await advance(f, 1)).status, 'ok');
+    const found = await cases.readOwn(f.context); assert.equal(found.status, 'ok', JSON.stringify(found));
+    assert.equal(found.value.cases.length, 1);
+    assert.equal((await f.repository.query(f.context, 'event_receipts', { eventType: 'selection-acknowledged' })).value.length, 0);
+  });
+});
 
 test('terms are versioned explicit fictional policy reads, missing central keys fail closed', async () => {
   const f = await setup(); const terms = await f.service.readTerms(f.context);

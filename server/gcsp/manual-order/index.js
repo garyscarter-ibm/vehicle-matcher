@@ -118,7 +118,11 @@ export class ManualOrderService {
       if (slot.value.employeeId !== context.employeeId || ['allocated', 'disabled'].includes(slot.value.state)) return conflict('entitlement-unavailable');
       const run = await tx.get(ref(context, 'runs', {})); if (run.status !== 'ok') return run;
       if (run.value.clockVersion !== time.value.clockVersion || run.value.policyVersion !== context.policyVersion) return conflict('clock-or-policy-changed');
-      const selection = { schemaVersion: 1, receivedAt: time.value.now, source: input.source, quote: q,
+      // Pin actual renewal authority before allocation; a hold alone cannot establish it.
+      const renewalIds = [slot.value.renewalId, employee.value.renewalId, h.renewalId].filter((value) => value != null);
+      const renewalId = (slot.value.renewalId != null || employee.value.renewalId != null)
+        && renewalIds.every((value) => text(value) && value === renewalIds[0]) ? renewalIds[0] : null;
+      const selection = { schemaVersion: 1, receivedAt: time.value.now, renewalId, source: input.source, quote: q,
         stock: { orderUuid: stock.value.orderUuid, orderNumber: stock.value.orderNumber, configurationId: stock.value.configurationId, facts: stock.value.facts },
         terms: terms.value, declarations: input.declarations, draft: prepared.value.draft, employee: prepared.value.employee,
         driver: prepared.value.driver, oldContract: prepared.value.oldContract ?? null, sourceVersions: prepared.value.versions ?? null,
@@ -223,7 +227,8 @@ export class ManualOrderService {
       const receipt = await tx.recordReceipt({ consumerId: `ordering:history:${context.employeeId}`, eventId: `${id}:outcome`,
         eventType: confirmed ? 'selection-acknowledged' : 'selection-handoff-failed', inputDigest: inputDigest(response), state: 'completed',
         outcome: ok({ operationId: id, at: time.value.now, employeeId: context.employeeId,
-          entitlementSlotId: context.entitlementSlotId, order: response }) });
+          entitlementSlotId: context.entitlementSlotId, order: response,
+          ...(confirmed ? { renewalId: selected.renewalId ?? null, orderUuid: operation.payload.orderUuid, occurredAt: time.value.now } : {}) }) });
       return receipt.status === 'ok' ? changed : receipt;
     });
     return finished.status === 'ok' ? projection(finished.value) : finished;
