@@ -1,7 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFile, mkdtemp, rm, writeFile, chmod, readdir } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { choiceProbabilities, conditionalLogitObjective, trainConditionalLogit,
-  validateExamples, featureVector, buildChoiceFeatures, FEATURE_SETS, splitChoiceExamples } from '../gcsp/predict/model/index.js';
+  validateExamples, featureVector, buildChoiceFeatures, FEATURE_SETS, splitChoiceExamples,
+  evaluateProbabilities, evaluateModelComparison, canonicalJson, contentDigest, createModelArtifact, verifyModelArtifact,
+  writeModelArtifact, readModelArtifact, evaluationSummary, loadChoiceTrainingPolicy, readActiveChoiceModel } from '../gcsp/predict/model/index.js';
+import { PolicyService, MemoryPolicyProvider } from '../gcsp/policy/index.js';
+import { createMemoryRepository, createMemoryStore } from '../gcsp/repository/index.js';
+import { createDemoRuntime } from '../gcsp/clock/index.js';
 
 const optimizer = { maxIterations: 1000, gradientTolerance: 0.000001, initialStep: 4, maxBacktracks: 30 };
 function random(seed) { let x = seed; return () => { x = (Math.imul(x, 1664525) + 1013904223) >>> 0; return x / 2 ** 32; }; }
@@ -106,4 +114,137 @@ test('leakage, conflicting cycles, empty holdouts and duplicate records fail exp
     const records = splitFixture(); mutate(records); assert.throws(() => splitChoiceExamples(records, split));
   }
   assert.throws(() => splitChoiceExamples(splitFixture(), { ...split, evaluationCycleIndices: [1, 2] }));
+});
+
+const settings = { reliabilityBands: 5, thinClassMinimum: 2, logFloor: 1e-15 };
+function arithmeticExamples() {
+  return ['a', 'wait'].map((chosenAlternativeId, i) => ({ recordId: `metric-${i}`, cohort: i ? 'unseen' : 'familiar',
+    chosenAlternativeId, alternatives: [{ alternativeId: 'a', vehicleClass: 'estate' }, { alternativeId: 'wait', isWait: true }] }));
+}
+const arithmeticPredictor = (r) => r.recordId === 'metric-0' ? [0.8, 0.2] : [0.3, 0.7];
+function arithmeticComparison() {
+  // Explicit arithmetic fixture: these are not FUCQ-99/FUCQ-29 service outputs.
+  const model = (predict) => ({ predict, provenance: { source: 'arithmetic-fixture-only', version: '1' } });
+  return evaluateModelComparison(arithmeticExamples(), { learned: model(() => [0.5, 0.5]),
+    expressedDemand: model(arithmeticPredictor), deterministicFit: model(arithmeticPredictor) }, settings);
+}
+
+test('log loss, multiclass Brier, reliability, cohort and thin-class results are computed from choices', () => {
+  const metrics = evaluateProbabilities(arithmeticExamples(), arithmeticPredictor, settings);
+  assert.ok(Math.abs(metrics.overall.logLoss - (-Math.log(0.8) - Math.log(0.7)) / 2) < 1e-12);
+  assert.ok(Math.abs(metrics.overall.brier - 0.13) < 1e-12);
+  assert.equal(metrics.reliability.reduce((n, b) => n + b.count, 0), 4);
+  assert.equal(metrics.reliability[1].count, 2); assert.equal(metrics.reliability[1].observedRate, 0);
+  assert.equal(metrics.byCohort.length, 2); assert.ok(metrics.byCohort.every((r) => r.thin));
+  assert.equal(metrics.byVehicleClass[0].key, 'estate'); assert.equal(metrics.byVehicleClass[0].observedCount, 1);
+  assert.equal(metrics.byVehicleClass[0].thin, true);
+  assert.ok(Math.abs(metrics.byVehicleClass[0].brier - 0.065) < 1e-12);
+  assert.equal(metrics.byChosenVehicleClass.length, 2);
+  const zero = evaluateProbabilities(arithmeticExamples(), () => [1, 0], settings);
+  assert.equal(zero.overall.zeroProbabilityOutcomes, 1); assert.ok(Number.isFinite(zero.overall.logLoss));
+  assert.equal(zero.reliability.at(-1).count, 2);
+  const comparison = arithmeticComparison();
+  assert.equal(comparison.deltas.expressedDemand.worseLogLoss, true);
+  assert.equal(comparison.deltas.deterministicFit.worseBrier, true);
+});
+
+test('missing baselines and malformed distributions are refused, without invented scores', () => {
+  assert.throws(() => evaluateModelComparison(arithmeticExamples(), { learned: {} }, settings), { code: 'baseline-unavailable' });
+  for (const probabilities of [[0.2, 0.2], [-0.1, 1.1], [NaN, 0], [1], [0, Infinity]])
+    assert.throws(() => evaluateProbabilities(arithmeticExamples(), () => probabilities, settings));
+});
+
+function arithmeticArtifact() {
+  return createModelArtifact({ schemaVersion: 1, modelVersion: 'conditional-logit.l2.v1', featureVersion: 'vehicle-preference-v1',
+    featureNames: [...FEATURE_SETS['vehicle-preference-v1']], coefficients: FEATURE_SETS['vehicle-preference-v1'].map(() => 0),
+    policyVersion: 'arithmetic-fixture-policy', trainingSettings: { regularization: 0.1 },
+    trainingManifest: { schemaVersion: 1, datasetKind: 'synthetic', generatorVersion: 'arithmetic-fixture.v1', seed: 'arithmetic-only',
+      dataHash: contentDigest(arithmeticExamples()), counts: { records: 4 }, privateRecordId: 'never-project-private-123' },
+    partition: { counts: { training: 2, later: 2, unseen: 1, familiar: 1 }, recordIds: ['never-project-private-123'] },
+    evaluation: arithmeticComparison(), provenance: { label: 'synthetic-trained', seed: 'arithmetic-only',
+      generatorVersion: 'arithmetic-fixture.v1', assumptions: ['Two arithmetic examples; no real baseline integration.'] },
+    limitations: ['Arithmetic contract fixture only; not BMW calibration.', 'IIA assumption applies.'] });
+}
+
+test('artifact canonical identity, atomic exclusive publication and corruption detection preserve immutable bytes', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'choice-artifact-'));
+  try {
+    assert.equal(canonicalJson({ z: 1, a: [2, 3] }), '{"a":[2,3],"z":1}');
+    assert.equal(contentDigest({ a: 1, b: 2 }), contentDigest({ b: 2, a: 1 }));
+    for (const value of [NaN, { x: undefined }, new Date(), Array(2)]) assert.throws(() => canonicalJson(value));
+    const cyclic = {}; cyclic.x = cyclic; assert.throws(() => canonicalJson(cyclic));
+    const artifact = arithmeticArtifact(); assert.ok(Object.isFrozen(artifact.payload.coefficients));
+    const first = await writeModelArtifact(directory, artifact); const bytes = await readFile(first.path, 'utf8');
+    assert.equal(first.reused, false); assert.equal((await writeModelArtifact(directory, artifact)).reused, true);
+    assert.equal(await readFile(first.path, 'utf8'), bytes);
+    assert.deepEqual(await readModelArtifact(first.path, artifact.artifactId), artifact);
+    const changed = structuredClone(artifact); changed.payload.coefficients[0] = 2;
+    assert.throws(() => verifyModelArtifact(changed), { code: 'artifact-corrupt' });
+    await chmod(first.path, 0o600); await writeFile(first.path, '{}');
+    await assert.rejects(readModelArtifact(first.path, artifact.artifactId));
+    await assert.rejects(writeModelArtifact(directory, artifact), { code: 'artifact-corrupt' });
+    assert.equal((await readdir(directory)).length, 1, 'No partial private writing files remain.');
+  } finally { await rm(directory, { recursive: true, force: true }); }
+});
+
+test('safe panel summary keeps adverse comparisons and synthetic limits, excludes record identities', () => {
+  const summary = evaluationSummary(arithmeticArtifact());
+  assert.equal(summary.status, 'evaluated'); assert.equal(summary.trainingOrigin.label, 'synthetic-trained');
+  assert.equal(summary.deltas.expressedDemand.worseLogLoss, true);
+  assert.ok(!JSON.stringify(summary).includes('never-project-private-123'));
+});
+
+async function alternativePolicyFixture() {
+  const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url)));
+  const proposal = JSON.parse(await readFile(new URL('../../docs/gcsp/models/fucq115-policy-proposal.json', import.meta.url)));
+  const { digest, ...bundle } = proposal; assert.equal(digest, contentDigest(bundle));
+  // Explicit alternative test source. Never used as an application fallback or canonical adoption proof.
+  for (const row of proposal.definitions) seed.assumptions.push({ ...row, effectiveFrom: seed.effectiveFrom, policyVersion: seed.policyVersion });
+  const provider = new MemoryPolicyProvider({ seedProvider: { async loadVersions() { return [seed]; } } });
+  const repository = createMemoryRepository({ store: createMemoryStore() });
+  assert.equal((await repository.open()).status, 'ok');
+  const readPolicy = new PolicyService({ provider });
+  const runtime = await createDemoRuntime({ repository, policy: readPolicy, environmentId: 'choice-model-fixture', environmentKind: 'synthetic',
+    policyAsOf: '2026-11-05T09:00:00.000Z', commandId: 'choice-bootstrap', sessionNow: () => '2026-11-05T09:00:00.000Z' });
+  assert.equal(runtime.status, 'ok', JSON.stringify(runtime));
+  const { clock, identity } = runtime.value;
+  const presenter = (await identity.createPresenterSession('presenter')).value.context;
+  const context = (await identity.switchPrincipal(presenter, 'demo-greg', 'greg')).value.context;
+  return { provider, repository, clock, identity, presenter, context, policy: new PolicyService({ provider, clock, identity }) };
+}
+
+test('canonical missing keys are unavailable and alternative policy changes affect settings via actual dated publication', async () => {
+  const read = { runId: 'choice-unavailable', asOf: '2026-11-05T09:00:00.000Z' };
+  assert.equal((await loadChoiceTrainingPolicy({ policyService: new PolicyService(), policyRead: read })).status, 'unavailable');
+  const f = await alternativePolicyFixture();
+  const directory = await mkdtemp(join(tmpdir(), 'choice-policy-'));
+  try {
+    const scoped = { ...read, runId: f.context.runId };
+    const before = await loadChoiceTrainingPolicy({ policyService: f.policy, policyRead: scoped });
+    assert.equal(before.status, 'ok'); assert.equal(before.value.regularization, 0.001);
+    const artifact = arithmeticArtifact(); await writeModelArtifact(directory, artifact);
+    assert.equal((await readActiveChoiceModel({ policyService: f.policy, policyRead: scoped, artifactDirectory: directory })).status, 'unavailable');
+    const provenance = { basis: 'Explicit alternative source for the dated training/activation contract test.',
+      source: 'server/test/gcsp-choice-model.test.js', sourceDate: '2026-11-05', status: 'assumed' };
+    const published = await f.policy.publishPolicyVersion(f.context, { commandId: 'choice-publish', expectedActiveVersion: before.value.policyVersion,
+      policyVersion: 'choice-test-v2', effectiveFrom: '2026-11-05T10:00:00.000Z', changes: [
+        { table: 'assumptions', key: 'choice.training.regularization', patch: { value: 1, ...provenance } },
+        { table: 'assumptions', key: 'choice.model.reference', patch: { value: { artifactId: artifact.artifactId,
+          featureVersion: artifact.payload.featureVersion, schemaVersion: 1 }, ...provenance } },
+      ] });
+    assert.equal(published.status, 'ok', JSON.stringify(published));
+    assert.equal((await loadChoiceTrainingPolicy({ policyService: f.policy, policyRead: scoped })).value.regularization, 0.001);
+    const later = { ...scoped, asOf: '2026-11-05T11:00:00.000Z' };
+    const after = await loadChoiceTrainingPolicy({ policyService: f.policy, policyRead: later });
+    assert.equal(after.value.regularization, 1);
+    const historical = await loadChoiceTrainingPolicy({ policyService: f.policy, policyRead: { ...later, policyVersion: before.value.policyVersion } });
+    assert.equal(historical.value.regularization, 0.001);
+    const active = await readActiveChoiceModel({ policyService: f.policy, policyRead: later, artifactDirectory: directory });
+    assert.equal(active.status, 'ok', JSON.stringify(active)); assert.equal(active.value.artifact.artifactId, artifact.artifactId);
+    assert.equal(active.policyVersion, 'choice-test-v2');
+    const examples = knownLogit().examples.slice(0, 200);
+    const initialRun = trainConditionalLogit(examples, { featureNames: ['x', 'y', 'wait'], regularization: before.value.regularization, optimizer });
+    const nextRun = trainConditionalLogit(examples, { featureNames: ['x', 'y', 'wait'], regularization: after.value.regularization, optimizer });
+    assert.notDeepEqual(initialRun.coefficients, nextRun.coefficients);
+  } finally { await f.repository.close(); await f.provider.close(); await rm(directory, { recursive: true, force: true }); }
 });

@@ -62,6 +62,19 @@ distribution proves arithmetic only, never either real baseline integration.
 Zero-probability outcomes are counted; a policy logarithm floor is reported.
 Poor results are retained, including worse-than-baseline deltas.
 
+The exact proposed `choice.baseline.v1` mapping first obtains wait mass `w` from
+the pinned `learning.noChoiceRate`. Expressed-demand weights are actual FUCQ-99
+body counts divided by the number of exact alternatives of that body in the
+current choice set. A missing or suppressed/banded requested count is typed
+unavailable, never decoded or replaced. Deterministic weights are actual FUCQ-29
+`scorePreferences` results; negative, unknown or nonfinite fit is unavailable.
+Zero fit remains zero before smoothing. Add the policy smoothing weight to every
+non-wait weight, normalize those weights to mass `1-w`, then append wait mass `w`.
+If no vehicle alternative exists, wait has probability 1. This is an explicit demo
+probability mapping, not calibrated fit or measured acceptance. Training briefs
+alone supply aggregate demand, with the latest earlier-cycle brief per employee;
+later and held-out cohort records cannot enter the baseline population.
+
 A safe forecast/plan-panel fixture will expose only aggregate metrics, support,
 versions, synthetic origin, limitations and baseline availability. No employee IDs,
 records or predicted success copy. Backend-only: no new screenshots or components.
@@ -101,7 +114,7 @@ The committed six-record fixture SHA-256
 `62d83d2caac6675a0f224cb86ff1d564d09f83596402458e506041facf0d5772` proves only schema.
 Proposed meaningful bounded run: actual published generator, one seed, 80 fictional
 employees across four nonoverlapping cycles (320 records), maximum 40,000 choice
-entries, grade-cohort support checked before training, explicit wait/noise and
+entries, canonical G8-10 grade-cohort support checked before training, explicit wait/noise and
 censoring reported. Retain canonical learning/comparison policy snapshots and input
 hashes. A larger coefficient-recovery unit experiment may use a separately labelled
 known-logit generator, but cannot masquerade as actual FUCQ-113 integration.

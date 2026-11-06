@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "status": "unavailable",
+  "code": "choice-evaluation-incomplete",
+  "label": "Synthetic model evaluation pending",
+  "artifactId": null,
+  "metrics": null,
+  "baselines": {
+    "expressedDemand": {
+      "status": "unavailable"
+    },
+    "deterministicFit": {
+      "status": "unavailable"
+    }
+  },
+  "trainingOrigin": {
+    "label": "synthetic-trained",
+    "configurationSource": "reviewed-fixtures"
+  },
+  "limitations": [
+    "The small schema sample does not establish model quality.",
+    "A larger later-cycle and unseen-cohort evaluation is required.",
+    "No prediction about BMW employees has been validated."
+  ]
+}

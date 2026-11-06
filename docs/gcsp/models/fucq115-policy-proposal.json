@@ -1,6 +1,7 @@
 {
-  "status": "proposed-not-adopted",
-  "story": "FUCQ-115",
+  "schemaVersion": 1,
+  "definitionSetId": "fucq115-choice-model-v1",
+  "revision": "choice-model-definitions.v1",
   "definitions": [
     {
       "key": "choice.training.regularization",
@@ -21,12 +22,12 @@
         ],
         "cohortField": "gradeId",
         "heldOutCohorts": [
-          "G8"
+          "G8-10"
         ]
       },
       "unit": "split-specification",
       "status": "assumed",
-      "basis": "Earlier two cycles train; later two evaluate. Grade G8 is excluded from all training; verify support before running.",
+      "basis": "Earlier two cycles train; later two evaluate. Canonical grade group G8-10 is excluded from all training; verify support before running.",
       "source": "docs/gcsp/models/fucq115-contract.md",
       "sourceDate": "2026-11-05"
     },
@@ -43,7 +44,7 @@
       "key": "choice.training.optimizer.v1",
       "value": {
         "maxIterations": 1500,
-        "gradientTolerance": 1e-06,
+        "gradientTolerance": 0.000001,
         "initialStep": 1,
         "maxBacktracks": 30
       },
@@ -78,6 +79,21 @@
       "basis": "No model is active until a reviewed artifact digest is published through the existing dated policy operation.",
       "source": "docs/gcsp/models/fucq115-contract.md",
       "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "choice.baseline.v1",
+      "value": {
+        "expressedDemandDimension": "body",
+        "deterministicFitMapping": "normalize-nonnegative-fit",
+        "smoothing": 0.001,
+        "waitShareKey": "learning.noChoiceRate"
+      },
+      "unit": "baseline-probability-mapping",
+      "status": "assumed",
+      "basis": "Compute expressed body-demand shares from actual FUCQ-99; normalize actual FUCQ-29 fit across permitted alternatives. Divide body mass across exact alternatives. Use the canonical no-choice assumption for wait and an explicit small smoothing weight; these are uncalibrated demo mappings.",
+      "source": "docs/gcsp/models/fucq115-contract.md",
+      "sourceDate": "2026-11-05"
     }
-  ]
+  ],
+  "digest": "71cf67e576c531445e416d18d67999038bb5f13ede13b269091abcd701adc117"
 }

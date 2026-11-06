@@ -1,0 +1,121 @@
+{
+  "scope": "independent contract+actual113 six-record replay, not full acceptance",
+  "dedicatedTests": {
+    "ran": 11,
+    "passed": 11,
+    "skipped": 0
+  },
+  "modelTests": {
+    "identity": {
+      "base": "fc1e283a079aa2ffe6e0a78fe74ba3002e7b9cda",
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-choice-model.test.js"
+      ],
+      "files": {
+        "docs/gcsp/models/fucq115-policy-proposal.json": "1c3fb9e359c448b1cae0bd1070a680df6285f1140a940a882df3bab664c1ed30",
+        "server/gcsp/policy/seed-v1.json": "c585213b98631d6e82acc1b3720d47efae49fdb502f5fc86fb440703ef6e41a6",
+        "server/gcsp/predict/model/artifact.js": "f470c4512e09259a443ea4ceb81e29602d1606893a4179b7385ec9338983808b",
+        "server/gcsp/predict/model/dataset.js": "eb87c399d304ac74fdc0750db832dab71c238351f59a3a6369f6e2163c5c54f2",
+        "server/gcsp/predict/model/features.js": "36983ebd66dffa5bd79bbea6cf274232882a203572d174ffc0977787f9d54878",
+        "server/gcsp/predict/model/index.js": "89ef9f80d24dbd07a3521d3f7eeed9ad6c7ad04c050a46507799bfc024255d07",
+        "server/gcsp/predict/model/metrics.js": "73537e5718796ff4afc669119e15ee7fa10e30195749991673757fb15bb10be7",
+        "server/gcsp/predict/model/optimizer.js": "f7dee4b01895f1e4d0f2d3c335fe657cb44ac3eefd5cd3fb43e67e47b15c9e1b",
+        "server/gcsp/predict/model/policy.js": "8b576970039f35ca28269b16db81085c35ee430690395e157e3c87bdf3c6bf83",
+        "server/gcsp/predict/model/split.js": "7865dcb3c41921f5598918db268860ee68c5ab4b20a2577c393f3c86cd80b154",
+        "server/test/gcsp-choice-model.test.js": "321ccdd4f55edde2bb44fabe05d57f71f84be98fddb64765725f30369dbe951c"
+      },
+      "story": "FUCQ-115",
+      "variant": "evaluation-artifact-v5"
+    },
+    "state": "complete",
+    "issues": [],
+    "results": [
+      {
+        "rc": 0,
+        "wall": 1.0515785830000002,
+        "peak_scratch": 8288,
+        "peak_rss": 206471168,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/.claude/test-runs/fucq115/ownership/570da9f9332e492dba5daf012c038bb4.json",
+        "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/.claude/test-runs/fucq115/evaluation-artifact-v5/chunk-0001.log",
+        "cleanup": {
+          "local_scratch_reason": "",
+          "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/.claude/test-runs/fucq115/ownership/570da9f9332e492dba5daf012c038bb4.json",
+          "peak": 8288,
+          "removed": true,
+          "root": "/private/tmp/test-stamp-shard-570da9f9332e492dba5daf012c038bb4"
+        }
+      }
+    ]
+  },
+  "actual113Pilot": {
+    "identity": {
+      "engine": "node26.registerHooks; canonical original URL identity for shared modules",
+      "files": {
+        "scripts/gcsp/generate-learning-records.mjs": "bc58997977e3bc4f7e3e165b07d4e01efa7e0fd446b936954ee835d2cfa0bb61",
+        "server/brands.js": "ea63741b2fcb01dbe35dcdffdd66f7021a3c0219517a8de1487fae65f65299e2",
+        "server/engine.js": "bbe8a865d280fb75075e93a139a3badbaa20972a18406baeeafb8ca2fc56a550",
+        "server/gcsp/comparison/generator.js": "596c26adfaef43443914e90f2675b528309e85d5fee5459aedc661845b0917cc",
+        "server/gcsp/migrations/index.js": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f",
+        "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+        "server/gcsp/policy/index.js": "087267e81d4a780ef300dba144d9de5c4978ca530fe8ea5b2f53e2ec41395a2c",
+        "server/gcsp/policy/memory-provider.js": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
+        "server/gcsp/policy/postgres-provider.js": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+        "server/gcsp/policy/publish.js": "5731771b1b7607028cd923c33038a0a0da113d463b8042fdd0b60d9f0a63d023",
+        "server/gcsp/predict/records/dataset.js": "5d5eaf954def2ee605a0ed27410de6915c8fc691a3bcf02c15e6a4f33107b423",
+        "server/gcsp/predict/records/generator.js": "a0f3703e5d9dc7fad3491db8a2206ce7165807011d819421c711e1c5e6d099c9",
+        "server/gcsp/predict/records/index.js": "e623314a8cca26b7418e32656addafc7e13a1cc7a93d80c51dc03698e2968221",
+        "server/gcsp/predict/records/observed.js": "913a6c11d6c874b16a2ae4eb151edf5d72984180b9d13b8e392e5d88244511e0",
+        "server/gcsp/predict/records/schema.js": "429fcc4abcb6bcf92e1b94291f9ea19a20f3883dc8d1add630a2434f84c394f5",
+        "server/gcsp/repository/core.js": "c55c93c543886108f67aa12bc5c7519d50063e90ba4ec78df37aa0df56d6f311",
+        "server/gcsp/repository/index.js": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16",
+        "server/gcsp/repository/memory.js": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866",
+        "server/gcsp/repository/postgres.js": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
+        "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+        "server/gcsp/vehicle-evidence/corpus-publisher.js": "db7e3fd9ff5ff4342872a54c6ca40dd3dda35fc31c51e3dbdb2910b067cd5e49",
+        "server/gcsp/vehicle-evidence/synthetic-registry.js": "758f3a20ec9d0bbb6fd4853df16e0e3c8e891f732165a5584d7de5698aa7221f",
+        "server/gcsp/vehicle-evidence/vin-generator.js": "56072df720ff4b32d26fcd099852f397f140ae44b4658532fa952d11c717260f",
+        "server/gcsp/vehicle-evidence/vin-profiles.js": "d3f6ea071027d787b2eeb6ebb8d70992845711c63ad084e0819403d6e13a90bd",
+        "server/questions.js": "898716dfaf8a184fef39a9ae12b9d59b01cce94c48356dab5e3b4e81de62c26d",
+        "server/scenarios/employee/index.js": "43f50c04794902dd1d10a008f7882d335c1b5179f1c57a3f4ab9ea1293f7d844",
+        "server/test/fixtures/gcsp-learning-dataset.json": "62d83d2caac6675a0f224cb86ff1d564d09f83596402458e506041facf0d5772",
+        "server/vehicle-evidence/bmw-catalogue-adapter.js": "06c0910c131fdb0e2e4ef254dc5591f13c90ecb3f36f655aef3cb651aa0052a1",
+        "server/vehicles/index.js": "cc02ff92ac13a25fdbe3a2325f60cafe2c16486e2f11d78a391f8664a217b5cc"
+      },
+      "modelFiles": {
+        "server/gcsp/predict/model/artifact.js": "f470c4512e09259a443ea4ceb81e29602d1606893a4179b7385ec9338983808b",
+        "server/gcsp/predict/model/dataset.js": "eb87c399d304ac74fdc0750db832dab71c238351f59a3a6369f6e2163c5c54f2",
+        "server/gcsp/predict/model/features.js": "36983ebd66dffa5bd79bbea6cf274232882a203572d174ffc0977787f9d54878",
+        "server/gcsp/predict/model/index.js": "89ef9f80d24dbd07a3521d3f7eeed9ad6c7ad04c050a46507799bfc024255d07",
+        "server/gcsp/predict/model/metrics.js": "73537e5718796ff4afc669119e15ee7fa10e30195749991673757fb15bb10be7",
+        "server/gcsp/predict/model/optimizer.js": "f7dee4b01895f1e4d0f2d3c335fe657cb44ac3eefd5cd3fb43e67e47b15c9e1b",
+        "server/gcsp/predict/model/policy.js": "8b576970039f35ca28269b16db81085c35ee430690395e157e3c87bdf3c6bf83",
+        "server/gcsp/predict/model/split.js": "7865dcb3c41921f5598918db268860ee68c5ab4b20a2577c393f3c86cd80b154"
+      },
+      "sourceCommit": "ddd884b33311b0d62225e107a4ba7d45a464c146",
+      "story": "FUCQ-115",
+      "variant": "actual113-projection-v1"
+    },
+    "state": "complete",
+    "issues": [],
+    "results": [
+      {
+        "rc": 0,
+        "wall": 0.275045875,
+        "peak_scratch": 311424,
+        "peak_rss": 2473984,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/.claude/test-runs/fucq115/ownership/d33eb07e2d3b4832be7923023dcf7b43.json",
+        "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/.claude/test-runs/fucq115/actual113-projection-v1/chunk-0001.log",
+        "cleanup": {
+          "local_scratch_reason": "",
+          "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/.claude/test-runs/fucq115/ownership/d33eb07e2d3b4832be7923023dcf7b43.json",
+          "peak": 311424,
+          "removed": true,
+          "root": "/private/tmp/test-stamp-shard-d33eb07e2d3b4832be7923023dcf7b43"
+        }
+      }
+    ]
+  }
+}

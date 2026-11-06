@@ -1379,7 +1379,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T00:00:36Z",
+      "observed_at": "2026-11-06T00:08:31Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-115",
       "slices": [
         {
@@ -1398,23 +1398,31 @@
         },
         {
           "id": "dataset",
-          "status": "not-started",
-          "title": "Published-generator-and-meaningful-dataset"
+          "status": "in-progress",
+          "title": "Published-generator-and-meaningful-dataset",
+          "observed_at": "2026-11-06T00:08:30Z",
+          "evidence": "Approved immutable actual113 reader/generator/CLI replay and projection pass six-record schema pilot; required320-record canonical-policy run, actual corpus and cohort support remain open. docs/gcsp/models/fucq115-delivery.md"
         },
         {
           "id": "evaluation",
-          "status": "not-started",
-          "title": "Actual-baselines-and-held-out-evaluation"
+          "status": "in-progress",
+          "title": "Actual-baselines-and-held-out-evaluation",
+          "observed_at": "2026-11-06T00:08:31Z",
+          "evidence": "Metric arithmetic/reliability/class/cohort/adverse comparison checks pass. Actual99/29 source plan proposed; actual baselines and meaningful holdouts remain open."
         },
         {
           "id": "artifact",
-          "status": "not-started",
-          "title": "Immutable-artifact-and-safe-summary"
+          "status": "in-progress",
+          "title": "Immutable-artifact-and-safe-summary",
+          "observed_at": "2026-11-06T00:08:31Z",
+          "evidence": "Content address/atomic immutable publication/corruption tests pass; real trained artifact and populated safe summary await actual dataset+baselines."
         },
         {
           "id": "policy",
-          "status": "not-started",
-          "title": "Canonical-policy-adoption-and-dated-activation"
+          "status": "in-progress",
+          "title": "Canonical-policy-adoption-and-dated-activation",
+          "observed_at": "2026-11-06T00:08:31Z",
+          "evidence": "Real PolicyService dated publication and historical pins pass with explicit alternative test source. Exact7-row reviewed bundle proposed; canonical103adoption remains open."
         },
         {
           "id": "acceptance",
