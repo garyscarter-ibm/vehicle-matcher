@@ -1638,7 +1638,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-06T00:31:00Z",
+      "observed_at": "2026-11-06T00:35:09Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-36",
       "slices": [
         {
@@ -1671,10 +1671,10 @@
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Final-story-integration-and-required-full-validation",
-          "observed_at": "2026-11-06T00:24:04Z",
-          "evidence": "Package/browser checkpoint frozen for authorised sole serial npm test full gate; no full acceptance claimed yet."
+          "observed_at": "2026-11-06T00:31:54Z",
+          "evidence": "Lead reviewed all authored acceptance and exact frozen db4fcbe full npm test:1265total/1260pass/5nativePGskipped/0fail; stamp389edc75ff69,59.8s. Both actual browser configs116checks, scoped package13/13 and ratchet42/42; cleanup verified. Later offer source visual issue remains explicitly separate under native no-dependency clause."
         }
       ],
       "unsliced": false,
@@ -1683,10 +1683,10 @@
           "name": "Mary-Sue Walton",
           "role": "story-lead",
           "harness": "codex",
-          "source": "Thread01a1ae28-6e71-7cf1-855c-85c7c38d3392; requested/selected/effective gpt-6.1-sol/high verified; checkpointdb4fcbebd360006d81f3efd5fe1ac8d6f136dcea; actual live progress",
-          "observed_at": "2026-11-06T00:31:00.359880+00:00",
-          "expires_at": "2026-11-06T01:01:00.359880+00:00",
-          "status": "active; frozen package/browser checkpoint; sole full running"
+          "source": "Thread 01a1ae28-6e71-7cf1-855c-85c7c38d3392; requested/selected gpt-6.1-sol/high; effective runtime not independently exposed; final frozen db4fcbe full proof and completion receipt",
+          "observed_at": "2026-11-06T00:31:54.753001+00:00",
+          "expires_at": "2026-11-06T00:31:54.753001+00:00",
+          "status": "stopped; story built and full integration proof complete; pending dispatcher merge/review"
         }
       ],
       "branch": "dev/DEV-2026-11-04-067"
