@@ -1,0 +1,551 @@
+{
+  "acceptance": {
+    "f39Writer": null,
+    "fourGetAllocation": null,
+    "fucq61Hold": "2026-11-13",
+    "mappedF77": 0,
+    "pendingF77": 74,
+    "publicAccepted": 0,
+    "sliceBlocked": 2,
+    "sliceComplete": 6,
+    "sliceTotal": 8,
+    "thresholds": {
+      "all74MappedMinimum": 592,
+      "deepLinks": 20,
+      "overall": 200,
+      "perMapping": 8
+    }
+  },
+  "acceptedTechnicalPlan": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/next-source-diagnostic-plan.json",
+    "sha256": "ab41373af49db062f1d7902e40d617afec6497cc1f43ad3c23fe970acf6afb03"
+  },
+  "agent": {
+    "descendants": 0,
+    "fallback": null,
+    "name": "Cecil Turtle",
+    "requestedEffort": "high",
+    "requestedModel": "gpt-6.1-sol",
+    "selectedEffort": "high",
+    "selectedModel": "gpt-6.1-sol"
+  },
+  "allocation": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/pass-1209/f59-diagnostic-preparation-allocation.json",
+  "baseHead": "4ea9077376c789f6fa6fca73e567c7a0a9b1efc2",
+  "codeTestIdentity": "19ac7ff91412b993630659ae1d01f77a1b4b682b5418af9d6ca241e85f2a4b18",
+  "correctionAllocation": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/pass-1229/f59-diagnostic-round1-allocation.json",
+  "correctionSelectedPlan": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/round1/selected-plan.json",
+  "dateRoles": {
+    "f39CatalogueDate": "actual snapshot observedDate",
+    "freshDiagnosticObservation": null,
+    "knownSeedSourceObservation": "2026-11-06T10:53:37.381Z",
+    "requestTrim": "S0337 is request input, not independent trim role",
+    "separateF58Refresh": "2026-11-05T16:29:12.119Z",
+    "strictF58Projection": "2026-11-05T16:03:36.375Z",
+    "unknown": "physical production/modelYear/plant/VIN fitting/RL meaning; accessory quantity and constructibility not learned here"
+  },
+  "experience": "HLD06 topology and screens unchanged; no product flow or canonical policy default added; visual reference N/A; synthetic diagnostic status/unknown/error/admission contracts checked",
+  "externalCorrectionReceipts": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/round1",
+  "externalReceipts": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation",
+  "frozenPaths": {
+    "docs/gcsp/evidence/fucq59/source-qualification-plan-2026-11-06/plan.json": "65d78142d43fcf5167e9d4c4e3710f07de97082a7418efad7b05bfa9cbc7c3c4",
+    "docs/gcsp/evidence/fucq59/source-qualification-plan-2026-11-06/projection-contract.json": "d6f6dd16dcd2cf63c1e67b5cccb11ba2e9eeee2ce138b9c2afd44603d7475385",
+    "docs/gcsp/evidence/fucq59/source-qualification-plan-2026-11-06/projection-contract.md": "d6c06138c02bf616b40f69ef783e53e00ff3faf5b8dab8c574534c2147abbc25",
+    "scripts/gcsp-demo.mjs": "b8ce1a7760ada2c7742f7869d1b1d6045af1777a2c3cc67be1ff1bc165345216",
+    "scripts/gcsp/bmw-source-qualification.mjs": "eda2660125ff589a968d861d02f86122ef71df30354351cfe4eee76f43d355e8",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "server/gcsp/runtime.js": "f4654b8053d3927a3564a3701784367e976b04549ee66fb1a9a754032f88cb16",
+    "server/gcsp/vehicle-evidence/corpus-publisher.js": "db7e3fd9ff5ff4342872a54c6ca40dd3dda35fc31c51e3dbdb2910b067cd5e49",
+    "server/index.js": "1560e4a99077e4ea648f66b87566b908404312787e5fdfcc59a5ba10debf1741",
+    "server/test/gcsp-bmw-source-qualification.test.js": "532ff51f8c37a2a743553715a14b2ce06db7e6b5c1962bcfaf8eb7b7096543f8",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "06c0910c131fdb0e2e4ef254dc5591f13c90ecb3f36f655aef3cb651aa0052a1",
+    "server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json": "ee1ae6c5cb6ab742f9a2959825ca722007409fa019d15acd44bb4b79984556a3"
+  },
+  "hashes": {
+    "scripts/gcsp/collect-fleet.mjs": "0a21dcb72437eb032ce53625b724f24e684ef71c5a9779967c56f145408d8ba4",
+    "scripts/gcsp/collection-session.mjs": "e232ac28fcf9645d4016d2a93de804e4cd7881de4e921a1c606b23447673f71f",
+    "scripts/gcsp/public-bmw-source.mjs": "38a946f3ab9aaa18c81efbaaa3778dbd3a52671281b34dc73fc8e213b64d803d",
+    "server/test/gcsp-fleet-collector.test.js": "d8c7c7315faa05c6bd328a9b7f8ada58fe31bf5c229a51c0e63106d920057ff9"
+  },
+  "implementation": {
+    "bootstrap": "exactly one settingsVehicleTree and settingsLocalisation profile/header; closure-only; no settings cache; bounded diagnostic document JSON replacer checks every decoded key/string value against both profile substrings before serialization/return/cache/checkpoint",
+    "checkpoint": "separate diagnostic stage/input identity with accepted/rejected/duplicates empty and distinctConfigurations0; completed resume returns original observations and zero requests; memory-only bootstrap cannot replenish spent settings budget; options prepare requires successful strict tree",
+    "exports": [
+      "validatePublicBmwDiagnosticPlan",
+      "publicBmwQualificationOperations",
+      "createPublicBmwQualificationDiagnostic"
+    ],
+    "jsonIntegrity": "diagnostic JSON fatal UTF8 and duplicate object-key refusal precede semantic projection; exact decoded stream count/SHA retained",
+    "options": "inspection-only allowlisted structural/code traversal,depth16/nodes4096/definitions512/candidateRoots8; unknown names/scalars counted or omitted; safe code/type/label plus issue and raw pointer records; status always unresolved/ambiguous/schema-review-required,admissionfalse",
+    "plan": "bmw-source-diagnostic-plan.v1 with fixed source/context and separate qualificationDate; one attempt per operation, max4attempts/2MiB decoded,1MiB response,10s operation/45s lifetime,1worker/no retries/images",
+    "retention": "safe document contains immutable executor observation, separately labelled request-input-only scope and report; exact UTF8(JSON.stringify(document)+newline) bytes/SHA; raw source body discarded",
+    "transport": "same createCollectionSession/readOnlyRequest/readHttp; exact new diagnostic capability version permits page/settings/discover/options and excludes solver; existing f58-20261105.v1 preserved",
+    "tree": "own direct /5 and /I modelRanges/G61E/models/T5MJ; six mandatory literals; typed allowlisted optional fields with complete presence equality; missing stays missing, no borrowed descendant/default fields",
+    "unwired": "no qualifier/classifier/source manifest/F39 registration/PolicyService/F54 publication/new runtime/provider or CLI activation"
+  },
+  "observedAt": "2026-11-06T12:48:07.938597+00:00",
+  "operations": {
+    "acceptedConfigurations": 0,
+    "browser": 0,
+    "credentials": 0,
+    "descendants": 0,
+    "fullRawRetention": 0,
+    "images": 0,
+    "network": 0,
+    "publicSource": 0,
+    "runtimeActivation": 0,
+    "solver": 0,
+    "sql": 0
+  },
+  "remainingGates": [
+    "independent diagnostic code/security review before any separately finite live allocation",
+    "actual raw localisation pointer/root/definition binding observation and independent contract review before classifier/qualifier wiring",
+    "fixed source-owned qualification manifest builder and field-specific E/X qualifier decision before any admission",
+    "new-date F39/F54 publication and actual matching producer/consumer integration"
+  ],
+  "resources": {
+    "chunkSeconds": 120,
+    "compatibilityException": null,
+    "dependencyInstall": false,
+    "finalSampledRssBytes": 344702976,
+    "independentAudit": true,
+    "largeOutput": false,
+    "ledger": "HostBudget short reservation plus parent actual-job accounting; continuous charging unclaimed",
+    "leftovers": [],
+    "logLimitBytes": 1048576,
+    "maximumSampledRssBytes": 354205696,
+    "overlays": [
+      {
+        "absent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/overlay-green-diagnostic-final.json",
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/node_modules"
+      },
+      {
+        "absent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/overlay-green-diagnostic-final44.json",
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/node_modules"
+      },
+      {
+        "absent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/overlay-red-cross-profile-secret.json",
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/node_modules"
+      },
+      {
+        "absent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/overlay-red-missing-diagnostic.json",
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/node_modules"
+      },
+      {
+        "absent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/overlay-red-tree-order.json",
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/node_modules"
+      },
+      {
+        "absent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/overlay-scoped-diagnostic.json",
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/node_modules"
+      },
+      {
+        "absent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/round1/overlay-green-decoded-header-final50.json",
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/node_modules"
+      },
+      {
+        "absent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/round1/overlay-red-escaped-header.json",
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/node_modules"
+      }
+    ],
+    "ownedRoots": [
+      {
+        "groupProcesses": [],
+        "groups": [
+          96981
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/runs/ownership/04021057a4f84a15b729ddb8738c0e8f.json",
+        "root": "/private/tmp/test-stamp-shard-04021057a4f84a15b729ddb8738c0e8f",
+        "rootAbsent": true,
+        "sampledScratchPeakBytes": 1106336
+      },
+      {
+        "groupProcesses": [],
+        "groups": [
+          95072
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/runs/ownership/2641d1b39258427db058641865f28c80.json",
+        "root": "/private/tmp/test-stamp-shard-2641d1b39258427db058641865f28c80",
+        "rootAbsent": true,
+        "sampledScratchPeakBytes": 24736
+      },
+      {
+        "groupProcesses": [],
+        "groups": [
+          94692
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/runs/ownership/3b06492973314197aad5586acbdabd29.json",
+        "root": "/private/tmp/test-stamp-shard-3b06492973314197aad5586acbdabd29",
+        "rootAbsent": true,
+        "sampledScratchPeakBytes": 20640
+      },
+      {
+        "groupProcesses": [],
+        "groups": [
+          93731
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/runs/ownership/5e9fffd1b12a44b3ab04c845d4bd9977.json",
+        "root": "/private/tmp/test-stamp-shard-5e9fffd1b12a44b3ab04c845d4bd9977",
+        "rootAbsent": true,
+        "sampledScratchPeakBytes": 0
+      },
+      {
+        "groupProcesses": [],
+        "groups": [
+          96582
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/runs/ownership/9ac93282fd4940378455a447a2952e30.json",
+        "root": "/private/tmp/test-stamp-shard-9ac93282fd4940378455a447a2952e30",
+        "rootAbsent": true,
+        "sampledScratchPeakBytes": 16544
+      },
+      {
+        "groupProcesses": [],
+        "groups": [
+          95555
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/runs/ownership/c724e0b2a0e84ed682eb4f2185d00a1f.json",
+        "root": "/private/tmp/test-stamp-shard-c724e0b2a0e84ed682eb4f2185d00a1f",
+        "rootAbsent": true,
+        "sampledScratchPeakBytes": 1114560
+      },
+      {
+        "groupProcesses": [],
+        "groups": [
+          11534
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/round1/runs/ownership/17cd3cb178454ae78142325683c3b4c3.json",
+        "root": "/private/tmp/test-stamp-shard-17cd3cb178454ae78142325683c3b4c3",
+        "rootAbsent": true,
+        "sampledScratchPeakBytes": 1106336
+      },
+      {
+        "groupProcesses": [],
+        "groups": [
+          10781
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/round1/runs/ownership/ecd003d0b03f418abac15fa5c7ae7027.json",
+        "root": "/private/tmp/test-stamp-shard-ecd003d0b03f418abac15fa5c7ae7027",
+        "rootAbsent": true,
+        "sampledScratchPeakBytes": 8320
+      }
+    ],
+    "preExistingUnownedBytecode": "_tools/__pycache__/jira_sync.cpython-314.pyc preserved",
+    "ramLimitBytes": 402653184,
+    "retainedExpectedRedLogs": [
+      {
+        "bytes": 2427,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/logs/red-cross-profile-secret/chunk-0001.log",
+        "retention": "retain-expected-red",
+        "sha256": "a89fa080769f754ecb071325a13b401890dde026d55739699617315fac000f04"
+      },
+      {
+        "bytes": 6646,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/logs/red-missing-diagnostic/chunk-0001.log",
+        "retention": "retain-expected-red",
+        "sha256": "3ab62ccb6734421aed90e411f968fe8dcbad73c714206f63083feed9e837c7aa"
+      },
+      {
+        "bytes": 2198,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/logs/red-tree-order/chunk-0001.log",
+        "retention": "retain-expected-red",
+        "sha256": "3e69bb27a600332d09efd8677baad11cb100573b0cbc1c1691b6267069857ffa"
+      },
+      {
+        "bytes": 9204,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/round1/logs/red-escaped-header/chunk-0001.log",
+        "retention": "retain-expected-red",
+        "sha256": "34a5c510424655098f6132f7952c9dd451d34348e74f08b3bd4d26d2c8a4c837"
+      }
+    ],
+    "round1Only": {
+      "finalSampledRssBytes": 344702976,
+      "leftovers": [],
+      "maximumSampledRssBytes": 344702976,
+      "sampledScratchRemovedTotalBytes": 1114656,
+      "successfulLogBytesRemoved": 9079
+    },
+    "sampledScratchRemovedTotalBytes": 3397472,
+    "samplingCaveat": "sampled peaks, not actual peaks or exact total allocated bytes",
+    "scratchLimitBytes": 67108864,
+    "successLogBytesRemoved": 26654,
+    "successLogsRemoved": [
+      {
+        "absent": true,
+        "bytes": 8286,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/logs/green-diagnostic-final/chunk-0001.log",
+        "sha256": "ecdded38da9727f059d00c5a60fd0e870a857e8a92cb6a672218fb5fb5c63310"
+      },
+      {
+        "absent": true,
+        "bytes": 8394,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/logs/green-diagnostic-final44/chunk-0001.log",
+        "sha256": "8a7e18cd0ab127e9adfe3cd2ea66df69e099a7eb0ebea954d16796ad9c323ae4"
+      },
+      {
+        "absent": true,
+        "bytes": 895,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/logs/scoped-diagnostic/chunk-0001.log",
+        "sha256": "d57b7d70c973025fc0ea17638bc8b5e0b99ad80a9a146a0ee1be6ce375128572"
+      },
+      {
+        "absent": true,
+        "bytes": 9079,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/round1/logs/green-decoded-header-final50/chunk-0001.log",
+        "retention": "remove-success",
+        "sha256": "0bf1020436c729ed79f9c7d51151451a7a0217dbebfd35619cff28e5d578acc9"
+      }
+    ],
+    "workers": 1
+  },
+  "reviewCorrection": {
+    "correction": "only diagnostic artifact serialization uses decoded key/string-value replacer checks for both memory-only profiles; existing bounded report traversal and128KiB session payload guard retained; unrelated legacy session/source code unchanged",
+    "diagnosis": "unescaped bootstrap substring compared with serialized JSON misses permitted quote/backslash content reflected by other profile response; old44case plain-value guard proof was incomplete",
+    "finding": "F1 in independent code/security round0 reviews",
+    "preservedPriorResult": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/round1/round0-result.json",
+      "sha256": "9de72bb37bb6b8a1f21b868c5bfdd91f7b9cfa294a6f88b83d3f95464b9a9c96"
+    },
+    "priorCodeTestIdentity": "16e9d4a1605318adee9e79b5fd0edd535477661aa1a867fe3667bb9a405230fd",
+    "priorPrepublication": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/prepublication.json",
+      "sha256": "73fa3856a237f504cb9bf643229e205df798a41ddd727ec8c40e93b60f7260d0"
+    },
+    "regression": "four quote/backslash cross-profile cases plus two profile/property-key cases; decoded recursive checkpoint/result inspection, rejected offending operation cache, durable halted resume without requests",
+    "reproduction": "synthetic fixture4expected failures showed actual header substrings in decoded returned values and parsed persisted diagnostic/cache; property-key2cases passed baseline",
+    "resourceAudit": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/round1/resource-audit.json",
+    "result": "final owning50/50pass,0fail/skip/cancel/todo; independent round1 review pending",
+    "reviews": [
+      "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/pass-1229/f59-diagnostic-code-round0.json",
+      "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/pass-1229/f59-diagnostic-security-round0.json"
+    ],
+    "round": 1
+  },
+  "schemaVersion": "f59-source-diagnostic-preparation-result.v1",
+  "sourceVersion": "f59-diagnostic-20261106.v1",
+  "status": "round1 retention correction scoped checks passed; independent re-reviews pending; no live allocation",
+  "validation": {
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "--experimental-test-coverage",
+      "server/test/gcsp-fleet-collector.test.js"
+    ],
+    "coverage": {
+      "scripts/gcsp/collect-fleet.mjs": {
+        "branches": 94.09,
+        "functions": 96.81,
+        "lines": 100
+      },
+      "scripts/gcsp/collection-session.mjs": {
+        "branches": 97.49,
+        "functions": 92.86,
+        "lines": 100
+      },
+      "scripts/gcsp/public-bmw-source.mjs": {
+        "branches": 91.84,
+        "functions": 100,
+        "lines": 99.25,
+        "uncoveredLines": [
+          119,
+          122
+        ]
+      }
+    },
+    "impactMap": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/f59-diagnostic-round1-19ac7ff91412b993.json",
+    "nativeDurationMs": 8945.379125,
+    "node": "v26.7.0",
+    "perTestContexts": "unavailable from native runner; combined coverage plus reviewed ownership/boundaries and44test timings",
+    "priorEvidence": "prior21case qualifier proof reused at unchanged pins; prior full and F60nine-case proof remain historical on immutable old producer inputs; no matching new-producer consumer integration claim",
+    "redGreen": [
+      {
+        "chunk": "green-diagnostic-final",
+        "log": {
+          "bytes": 8286,
+          "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/logs/green-diagnostic-final/chunk-0001.log",
+          "retention": "remove-success",
+          "sha256": "ecdded38da9727f059d00c5a60fd0e870a857e8a92cb6a672218fb5fb5c63310"
+        },
+        "nativeDurationMs": 7871.86125,
+        "returnCode": 0,
+        "supervisedWallSeconds": 8.09265925,
+        "tests": {
+          "cancelled": 0,
+          "fail": 0,
+          "pass": 43,
+          "skipped": 0,
+          "suites": 0,
+          "tests": 43,
+          "todo": 0
+        }
+      },
+      {
+        "chunk": "green-diagnostic-final44",
+        "log": {
+          "bytes": 8394,
+          "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/logs/green-diagnostic-final44/chunk-0001.log",
+          "retention": "remove-success",
+          "sha256": "8a7e18cd0ab127e9adfe3cd2ea66df69e099a7eb0ebea954d16796ad9c323ae4"
+        },
+        "nativeDurationMs": 8202.4425,
+        "returnCode": 0,
+        "supervisedWallSeconds": 8.465202375,
+        "tests": {
+          "cancelled": 0,
+          "fail": 0,
+          "pass": 44,
+          "skipped": 0,
+          "suites": 0,
+          "tests": 44,
+          "todo": 0
+        }
+      },
+      {
+        "chunk": "red-cross-profile-secret",
+        "log": {
+          "bytes": 2427,
+          "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/logs/red-cross-profile-secret/chunk-0001.log",
+          "retention": "retain-expected-red",
+          "sha256": "a89fa080769f754ecb071325a13b401890dde026d55739699617315fac000f04"
+        },
+        "nativeDurationMs": 2674.216541,
+        "returnCode": 1,
+        "supervisedWallSeconds": 2.893394583,
+        "tests": {
+          "cancelled": 0,
+          "fail": 1,
+          "pass": 8,
+          "skipped": 0,
+          "suites": 0,
+          "tests": 9,
+          "todo": 0
+        }
+      },
+      {
+        "chunk": "red-missing-diagnostic",
+        "log": {
+          "bytes": 6646,
+          "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/logs/red-missing-diagnostic/chunk-0001.log",
+          "retention": "retain-expected-red",
+          "sha256": "3ab62ccb6734421aed90e411f968fe8dcbad73c714206f63083feed9e837c7aa"
+        },
+        "nativeDurationMs": 90.281459,
+        "returnCode": 1,
+        "supervisedWallSeconds": 0.254055833,
+        "tests": {
+          "cancelled": 0,
+          "fail": 6,
+          "pass": 0,
+          "skipped": 0,
+          "suites": 0,
+          "tests": 6,
+          "todo": 0
+        }
+      },
+      {
+        "chunk": "red-tree-order",
+        "log": {
+          "bytes": 2198,
+          "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/logs/red-tree-order/chunk-0001.log",
+          "retention": "retain-expected-red",
+          "sha256": "3e69bb27a600332d09efd8677baad11cb100573b0cbc1c1691b6267069857ffa"
+        },
+        "nativeDurationMs": 2589.254458,
+        "returnCode": 1,
+        "supervisedWallSeconds": 2.814345833,
+        "tests": {
+          "cancelled": 0,
+          "fail": 1,
+          "pass": 7,
+          "skipped": 0,
+          "suites": 0,
+          "tests": 8,
+          "todo": 0
+        }
+      },
+      {
+        "chunk": "scoped-diagnostic",
+        "log": {
+          "bytes": 895,
+          "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/logs/scoped-diagnostic/chunk-0001.log",
+          "retention": "remove-success",
+          "sha256": "d57b7d70c973025fc0ea17638bc8b5e0b99ad80a9a146a0ee1be6ce375128572"
+        },
+        "nativeDurationMs": 2039.519291,
+        "returnCode": 0,
+        "supervisedWallSeconds": 2.1025925,
+        "tests": {
+          "cancelled": 0,
+          "fail": 0,
+          "pass": 6,
+          "skipped": 0,
+          "suites": 0,
+          "tests": 6,
+          "todo": 0
+        }
+      },
+      {
+        "chunk": "green-decoded-header-final50",
+        "log": {
+          "bytes": 9079,
+          "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/round1/logs/green-decoded-header-final50/chunk-0001.log",
+          "retention": "remove-success",
+          "sha256": "0bf1020436c729ed79f9c7d51151451a7a0217dbebfd35619cff28e5d578acc9"
+        },
+        "nativeDurationMs": 8945.379125,
+        "returnCode": 0,
+        "supervisedWallSeconds": 9.212928417,
+        "tests": {
+          "cancelled": 0,
+          "fail": 0,
+          "pass": 50,
+          "skipped": 0,
+          "suites": 0,
+          "tests": 50,
+          "todo": 0
+        }
+      },
+      {
+        "chunk": "red-escaped-header",
+        "log": {
+          "bytes": 9204,
+          "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/diagnostic-preparation/round1/logs/red-escaped-header/chunk-0001.log",
+          "retention": "retain-expected-red",
+          "sha256": "34a5c510424655098f6132f7952c9dd451d34348e74f08b3bd4d26d2c8a4c837"
+        },
+        "nativeDurationMs": 796.185,
+        "returnCode": 1,
+        "supervisedWallSeconds": 0.986639542,
+        "tests": {
+          "cancelled": 0,
+          "fail": 4,
+          "pass": 2,
+          "skipped": 0,
+          "suites": 0,
+          "tests": 6,
+          "todo": 0
+        }
+      }
+    ],
+    "scope": "owning collector/session test file, synthetic HTTP responses; not full suite",
+    "scopeSelection": "affected selector has no JavaScript plugin and npm-test fallback was reviewed, not admitted; narrow six-variant decoded retention red then complete owning50case file; existing44cases retained. No additional full/qualifier/F39/F54/F60 test files.",
+    "supervisedWallSeconds": 9.212928417,
+    "tests": {
+      "cancelled": 0,
+      "fail": 0,
+      "pass": 50,
+      "skipped": 0,
+      "suites": 0,
+      "tests": 50,
+      "todo": 0
+    }
+  }
+}

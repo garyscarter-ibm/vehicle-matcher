@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { normaliseCodes, requireValue } from './configuration-key.mjs';
 
@@ -10,6 +11,29 @@ const pageUrl = 'https://configure.bmw.co.uk/en_GB/configure/G61E/T5MJ';
 const treeUrl = 'https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G61E&future-models=true&closest-fallback=true';
 const solverUrl = 'https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/T5MJ?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKSFU%2CP0300%2CS0337%2CS043L&mandatory-elements=S0337';
 const settingsPattern = /^\/en_GB\/settings\.[a-zA-Z0-9]+\.json$/;
+const diagnosticVersion = 'f59-diagnostic-20261106.v1';
+const optionsUrl = 'https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en?trim=S0337';
+const diagnosticContext = { market: 'GB', locale: 'en-GB', modelCode: 'T5MJ', agModelCode: '72HH', catalogueRangeKey: 'G61E',
+  rawModelRange: 'G61', steeringLiteral: 'RL', orderDate: '2026-11-01', effectDate: '2027-01-05', trim: 'S0337' };
+const calendarDate = (value) => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)
+  && Number.isFinite(Date.parse(value + 'T00:00:00.000Z')) && new Date(value + 'T00:00:00.000Z').toISOString().slice(0, 10) === value;
+const bounded = (value, min, max) => Number.isSafeInteger(value) && value >= min && value <= max;
+
+export function validatePublicBmwDiagnosticPlan(plan) {
+  const l = plan?.limits;
+  requireValue(object(plan) && plan.schemaVersion === 'bmw-source-diagnostic-plan.v1'
+    && Object.keys(plan).every((key) => ['schemaVersion', 'planId', 'qualificationDate', 'source', 'context', 'limits'].includes(key))
+    && typeof plan.planId === 'string' && /^[A-Za-z0-9][A-Za-z0-9.-]{0,95}$/.test(plan.planId) && calendarDate(plan.qualificationDate)
+    && object(plan.source) && same(plan.source, { id: 'bmw-uk-public', version: diagnosticVersion, kind: 'public-bmw-uk' })
+    && object(plan.context) && same(plan.context, diagnosticContext) && object(l)
+    && object(l.requestBudgets) && same(l.requestBudgets, { page: 1, settings: 1, discover: 1, options: 1 }) && l.maxAttempts === 1
+    && bounded(l.sourceAttempts, 1, 4) && bounded(l.sourceBytes, 1, 2097152) && bounded(l.responseBytes, 1, 1048576)
+    && bounded(l.operationTimeoutMs, 1, 10000) && bounded(l.deadlineMs, 1, 45000) && l.retryDelayMs === 0 && l.concurrency === 1
+    && bounded(l.cacheEntries, 1, 16) && bounded(l.cacheRetentionMs, 1, 86400000)
+    && bounded(l.checkpointBytes, 1024, 1048576) && l.imageRequests === 0,
+  'diagnostic-plan-refused', 'Use the separate finite observation-only diagnostic plan and exact source context.');
+  return structuredClone(plan);
+}
 
 export function validatePublicBmwPlan(plan) {
   const l = plan.limits;
@@ -26,7 +50,7 @@ export function validatePublicBmwPlan(plan) {
   'public-source-plan-refused', 'Only the finite qualified known-seed source observation is executable.');
 }
 
-function headerFor(settings, profileName) {
+function headerFor(settings, profileName, strict = false) {
   let visited = 0; const profiles = []; const values = [];
   const visit = (value, fn, name = '', depth = 0) => {
     if (!object(value) && !Array.isArray(value)) return;
@@ -40,9 +64,138 @@ function headerFor(settings, profileName) {
     if (typeof value.name === 'string' && value.name.toLowerCase() === 'x-api-key' && typeof value.value === 'string') values.push(value.value);
   });
   const unique = [...new Set(values)];
-  requireValue(unique.length === 1 && unique[0].length > 0 && unique[0].length <= 4096,
+  requireValue((!strict || profiles.length === 1 && values.length === 1)
+    && unique.length === 1 && unique[0].length > 0 && unique[0].length <= 4096,
     'settings-header-shape', 'The qualified public application header shape changed.');
   return { 'x-api-key': unique[0] };
+}
+
+const optionalModelFields = ['taxDate', 'prodDate', 'modelName', 'modelNameRaw', 'derivative', 'bodyStyle', 'agBodyStyle',
+  'fuelTypeCode', 'hybridCode', 'engineSeries', 'driveType', 'transmission', 'trim'];
+const safeLabel = (value) => typeof value === 'string' && value.trim().length > 0 && value.length <= 160 && !/[\x00-\x1f\x7f<>]/u.test(value);
+function strictModelReport(value) {
+  requireValue(object(value) && Object.keys(value).length <= 100, 'source-tree-shape', 'Use a bounded full model tree.');
+  const nodes = ['5', 'I'].map((group) => {
+    const path = [group, 'modelRanges', 'G61E', 'models', 'T5MJ']; let record = value;
+    for (const key of path) record = object(record) && Object.hasOwn(record, key) ? record[key] : undefined;
+    requireValue(object(record), 'source-full-model-missing', 'Both direct full model records are required.');
+    requireValue(Object.entries(expected).every(([key, field]) => Object.hasOwn(record, key) && record[key] === field),
+      'source-model-substitution', 'The exact model, range and date literals must agree.');
+    const pointer = '/' + path.join('/'); const facts = { ...expected };
+    for (const key of optionalModelFields) if (Object.hasOwn(record, key)) {
+      const field = record[key];
+      const valid = key === 'taxDate' ? calendarDate(field)
+        : key === 'prodDate' ? typeof field === 'string' && /^\d{8}$/.test(field) && calendarDate(`${field.slice(0, 4)}-${field.slice(4, 6)}-${field.slice(6)}`)
+        : ['modelName', 'modelNameRaw', 'derivative'].includes(key) ? safeLabel(field)
+          : typeof field === 'string' && (['fuelTypeCode', 'transmission'].includes(key) ? /^[A-Z0-9]{1,16}$/ : /^[A-Z0-9]{2,16}$/).test(field);
+      requireValue(valid, 'source-model-field-value', 'A present direct optional model field failed its bounded type.');
+      facts[key] = field;
+    }
+    return { pointer, parentPointer: '/' + path.slice(0, -1).join('/'), facts,
+      fieldPointers: Object.fromEntries(Object.keys(facts).map((key) => [key, `${pointer}/${key}`])) };
+  });
+  requireValue(same(nodes[0].facts, nodes[1].facts), 'source-model-alias-conflict', 'Both full aliases must agree including optional-field presence.');
+  return { nodes, missingFields: optionalModelFields.filter((key) => !Object.hasOwn(nodes[0].facts, key)),
+    aliasAppearances: 2, distinctSelectedModels: 1, additionalConfigurations: 0 };
+}
+
+// These are inspection keys, not a declaration of an API root or semantic compatibility.
+// Unknown names and arbitrary scalar values are counted, never copied or traversed.
+const structuralKeys = new Set(['data', 'result', 'options', 'definitions', 'vehicle', 'model', 'models',
+  'option', 'optionType', 'phrases', 'longDescription', 'modelCode', 'effectDate', 'orderDate', 'language']);
+const optionCode = (key) => /^[A-Z0-9]{2,16}$/.test(key);
+function optionsShapeReport(value) {
+  const structure = []; const candidates = []; let visited = 0; let unknownFields = 0;
+  const visit = (entry, pointer, depth) => {
+    requireValue(++visited <= 4096 && depth <= 16, 'source-options-shape-limit', 'The safe structural report exceeded its finite traversal.');
+    structure.push({ pointer, type: entry === null ? 'null' : Array.isArray(entry) ? 'array' : typeof entry });
+    if (!object(entry) && !Array.isArray(entry)) return;
+    const entries = Object.entries(entry);
+    if (object(entry) && entries.length && entries.every(([key, definition]) => optionCode(key) && object(definition))) {
+      requireValue(entries.length <= 512 && candidates.length < 8, 'source-options-shape-limit', 'The candidate definition report exceeded its finite bounds.');
+      const definitions = entries.map(([code, definition]) => {
+        const row = { code, pointer: `${pointer}/${code}`, issues: [] };
+        if (typeof definition.option === 'string' && optionCode(definition.option)) row.option = definition.option;
+        else row.issues.push('option-value-type');
+        if (row.option !== undefined && row.option !== code) row.issues.push('option-key-mismatch');
+        if (typeof definition.optionType === 'string' && /^[A-Za-z0-9_-]{1,32}$/.test(definition.optionType)) row.optionType = definition.optionType;
+        else row.issues.push('option-type-value');
+        if (object(definition.phrases) && Object.hasOwn(definition.phrases, 'longDescription')) {
+          if (safeLabel(definition.phrases.longDescription)) row.longDescription = definition.phrases.longDescription;
+          else row.issues.push('long-description-unsafe');
+        }
+        return row;
+      });
+      candidates.push({ pointer, definitions });
+    }
+    for (const [key, child] of entries) {
+      if (Array.isArray(entry) || structuralKeys.has(key) || optionCode(key)) visit(child, `${pointer}/${key}`, depth + 1);
+      else unknownFields += 1;
+    }
+  };
+  visit(value, '', 0);
+  return { status: candidates.length > 1 ? 'ambiguous' : candidates.length === 1 ? 'schema-review-required' : 'unresolved',
+    candidates, structure, unknownFields, admission: false };
+}
+
+/** Fixed observation-only operations. The existing session owns all transport and retention budgets. */
+export function publicBmwQualificationOperations(input) {
+  const plan = validatePublicBmwDiagnosticPlan(input); let treeHeader; let localisationHeader; let treeQualified = false;
+  const observe = (metadata, operation) => {
+    requireValue(metadata?.schemaVersion === 'collection-http-observation.v1' && metadata.operation === operation
+      && metadata.sourceId === plan.source.id && metadata.sourceVersion === diagnosticVersion
+      && ['fixture', 'live'].includes(metadata.transportKind), 'source-observation-metadata', 'Use executor-owned diagnostic observation metadata.');
+    requireValue(metadata.observedAt.slice(0, 10) === plan.qualificationDate,
+      'source-observation-date', 'The actual source observation date differs from the pinned qualification date.');
+    return metadata;
+  };
+  const artifact = (report, metadata, operation, scope) => {
+    const document = { schemaVersion: 'bmw-source-diagnostic-observation.v1', observation: observe(metadata, operation),
+      requestScope: { role: 'request-input-only', ...scope }, report };
+    const secrets = [treeHeader, localisationHeader].flatMap((header) => header ? Object.values(header) : []);
+    // The report builders bound this document. Check decoded keys/values before JSON escaping.
+    const bytes = JSON.stringify(document, (key, value) => {
+      requireValue(secrets.every((secret) => !key.includes(secret) && (typeof value !== 'string' || !value.includes(secret))),
+        'source-sensitive-projection', 'No bootstrap profile value may enter any retained diagnostic projection.');
+      return value;
+    }) + '\n';
+    return { document, bytes: Buffer.byteLength(bytes), sha256: createHash('sha256').update(bytes).digest('hex') };
+  };
+  const descriptor = (capability, url, project, extra = {}) => ({ sourceId: plan.source.id, sourceVersion: diagnosticVersion,
+    kind: 'read-only-http', capability, prepare: async () => ({ method: 'GET', url, headers: {} }), project, ...extra });
+  return {
+    page: descriptor('bmw-page', pageUrl, (html, _request, metadata) => {
+      const paths = [...new Set([...html.matchAll(/(?:\/en_GB\/)?settings\.[a-zA-Z0-9]+\.json/g)]
+        .map((match) => match[0].startsWith('/en_GB/') ? match[0] : '/en_GB/' + match[0]))];
+      requireValue(paths.length === 1 && settingsPattern.test(paths[0]), 'settings-discovery-shape', 'The public page must identify one qualified settings file.');
+      return { settingsPath: paths[0], observation: observe(metadata, 'page') };
+    }),
+    settings: descriptor('bmw-settings', null, (value, _request, metadata) => {
+      treeHeader = headerFor(value, /^settingsVehicleTree$/, true);
+      localisationHeader = headerFor(value, /^settingsLocalisation$/, true);
+      return { publicProfilesQualified: true, observation: observe(metadata, 'settings') };
+    }, { cache: false, prepare: async ({ path }) => {
+      requireValue(typeof path === 'string' && settingsPattern.test(path), 'settings-discovery-shape', 'Use the path discovered from the pinned page.');
+      return { method: 'GET', url: 'https://configure.bmw.co.uk' + path, headers: {} };
+    } }),
+    discover: descriptor('bmw-model-tree', treeUrl, (value, _request, metadata) => {
+      const report = strictModelReport(value);
+      const result = artifact(report, metadata, 'discover',
+        { market: 'GB', treeRequestEffectDate: '2026-11-01', orderDate: '2026-11-01', catalogueRangeKey: 'G61E' });
+      treeQualified = true; return result;
+    },
+    { prepare: async () => {
+      requireValue(treeHeader, 'source-bootstrap-required', 'The memory-only tree header is unavailable.');
+      return { method: 'GET', url: treeUrl, headers: treeHeader };
+    } }),
+    options: descriptor('bmw-options', optionsUrl, (value, _request, metadata) => artifact(optionsShapeReport(value), metadata, 'options',
+      { market: 'GB', modelCode: 'T5MJ', effectDate: '2027-01-05', orderDate: '2026-11-01', language: 'en', trim: 'S0337' }),
+    { prepare: async () => {
+      requireValue(localisationHeader, 'source-bootstrap-required', 'The memory-only localisation header is unavailable.');
+      requireValue(treeQualified, 'source-tree-required', 'The strict full model context must be observed before options.');
+      return { method: 'GET', url: optionsUrl, headers: localisationHeader };
+    } }),
+  };
 }
 
 /** Source projections only. All traffic, deadlines, budgets, caching and persistence belong to the common session. */

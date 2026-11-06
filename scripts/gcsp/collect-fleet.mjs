@@ -4,7 +4,8 @@ import { createCollectionSession, readCollectionJson as readBounded } from './co
 import { bmwCatalogueLookupIdentity } from '../../server/vehicle-evidence/bmw-catalogue-adapter.js';
 import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { CollectionError, createConfigurationKey, normaliseCode, normaliseCodes, requireValue } from './configuration-key.mjs';
-import { publicBmwOperations, publicBmwObservation, validatePublicBmwPlan } from './public-bmw-source.mjs';
+import { publicBmwOperations, publicBmwObservation, validatePublicBmwPlan,
+  publicBmwQualificationOperations, validatePublicBmwDiagnosticPlan } from './public-bmw-source.mjs';
 
 export const COLLECTOR_VERSION = '2';
 const CONTEXT = ['catalogueDate', 'market', 'locale', 'orderDate', 'effectDate', 'productionDate', 'taxDate'];
@@ -266,6 +267,39 @@ async function createPublicCollector({ plan, source, policyService, policyRead, 
       state.halted = error.code; await commit('source-stop'); return report(error.code);
     }
   }, { stage: { id: 'collection', version: COLLECTOR_VERSION, inputDigest: inputDigest(plan) } }) };
+}
+
+/** Explicit observation-only stage; never invokes the collector's solver or publication ports. */
+export async function createPublicBmwQualificationDiagnostic({ plan: input, statePath, http, mode, now = Date.now, onPhase } = {}) {
+  const plan = validatePublicBmwDiagnosticPlan(input);
+  requireValue(['source-fixture', 'live'].includes(mode) && http?.kind === (mode === 'live' ? 'live' : 'fixture'),
+    'source-allocation-required', 'Use an explicit diagnostic transport and a separate allocation for live work.');
+  const session = await createCollectionSession({
+    identity: { planDigest: inputDigest(plan), sourceVersion: plan.source.version, stage: 'source-qualification-diagnostic', version: '1', mode },
+    operations: publicBmwQualificationOperations(plan), limits: plan.limits, statePath, http, now, onPhase,
+    initialState: { diagnostic: null, accepted: [], rejected: [], duplicates: [] },
+    validateState: (state) => requireValue((state.diagnostic === null || object(state.diagnostic))
+      && ['accepted', 'rejected', 'duplicates'].every((key) => Array.isArray(state[key]) && state[key].length === 0),
+    'checkpoint-corrupt', 'A source diagnostic cannot contain admitted configurations.') });
+  return { session, run: () => session.withCheckpoint(async ({ state, execute, commit }) => {
+    const report = (reason) => structuredClone({ status: 'incomplete', reason, qualification: 'observation-only-schema-diagnostic',
+      admission: false, accepted: state.accepted, rejected: state.rejected, duplicates: state.duplicates,
+      counts: state.counts, diagnostic: state.diagnostic, coverage: { distinctConfigurations: 0 } });
+    if (state.halted) return report(state.halted);
+    if (state.diagnostic) return report('raw-schema-review-required');
+    try {
+      const page = await execute('page', {});
+      const settings = await execute('settings', { path: page.settingsPath });
+      const tree = await execute('discover', {});
+      const options = await execute('options', {});
+      state.diagnostic = { bootstrapObservations: [page.observation, settings.observation], tree, options };
+      await commit('diagnostic-observation');
+      return report('raw-schema-review-required');
+    } catch (error) {
+      if (!(error instanceof CollectionError)) throw error;
+      state.halted = error.code; await commit('diagnostic-stop'); return report(error.code);
+    }
+  }, { stage: { id: 'source-qualification-diagnostic', version: '1', inputDigest: inputDigest(plan) } }) };
 }
 
 /** Invoking without an explicit offline fixture reports zero operations. Importing performs no work. */

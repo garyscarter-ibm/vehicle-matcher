@@ -1816,7 +1816,7 @@
     {
       "assignee": "",
       "id": "FUCQ-59",
-      "observed_at": "2026-11-06T12:15:13Z",
+      "observed_at": "2026-11-06T12:48:08Z",
       "original_status": "To Do",
       "slices": [
         {
@@ -1848,9 +1848,9 @@
           "title": "Finite source budgets, deadlines and default no-traffic safety (2 points)"
         },
         {
-          "evidence": "Checkpoint2b metadata-only session handoff passes35/35scoped owning-file cases;100%line/97.36%branch/92.45%function session coverage. session-metadata-2026-11-06/result.json pins code/test/4owned roots/groups/overlay absence. No classifier/raw schema/admission/source-version activation; proposed4GET/F39 writer unallocated; accepted0/all74pending. Prior qualifier21case proof unchanged; F60 old9case proof does not cover new session identity. Source/publication slices remain blocked.",
+          "evidence": "Round1 diagnostic F1 escaped-header guard corrected; decoded keys/values checked for both profiles. Final50/50scoped owning cases; quote/backslash2directions reproduced red with parsed checkpoint/cache evidence. source-diagnostic-preparation-2026-11-06/result.json pins identity/8owned root/group/overlay absences. Re-review pending; live0/classifier/admission/F39publication0; actual raw binding open. Accepted0/all74pending,6complete/2blocked; prior full/F60proof historical.",
           "id": "source-qualification",
-          "observed_at": "2026-11-06T12:15:12.743423+00:00",
+          "observed_at": "2026-11-06T12:48:08Z",
           "status": "blocked",
           "title": "Selected real-source model mapping and solver integration (1 point)"
         },
