@@ -1820,17 +1820,17 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T11:18:18Z",
+      "observed_at": "2026-11-06T11:28:43Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59",
       "workers": [
         {
           "name": "Cecil Turtle",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-06T11:18:18.689405+00:00",
-          "expires_at": "2026-11-06T11:18:18.689405+00:00",
+          "observed_at": "2026-11-06T11:28:42.935631+00:00",
+          "expires_at": "2026-11-06T11:28:42.935631+00:00",
           "source": "thread 01a1b054-1167-7820-b9f2-92ec81e37bbe",
-          "status": "stopped; current full1291pass/5native skips; final evidence publication; source qualification/current-session publication open; Sol/high, no descendants"
+          "status": "stopped; concrete source-qualification plan prepared; no new code/tests/traffic; next dispatcher review; Sol/high, no descendants"
         }
       ],
       "slices": [
@@ -1866,8 +1866,8 @@
           "id": "source-qualification",
           "status": "blocked",
           "title": "Selected real-source model mapping and solver integration (1 point)",
-          "observed_at": "2026-11-06T10:56:10Z",
-          "evidence": "Known T5MJ actual source integration observed once:4GET/200/782059B,47factory+SE000001, safe full model mapping retained. Sole allocation consumed. Broader scheme/profile and F39 dates/classification remain unqualified;1known observation and0accepted corpus rows do not prove200. source-executor-2026-11-06/observation.json."
+          "observed_at": "2026-11-06T11:28:43Z",
+          "evidence": "Concrete source-qualification implementation plan prepared against f4c9697/AEE + F58 7aa6bee7 + F77 15a98d5f,24input pins. Fixed known-seed/accepted[] and F39 fixed47/registration gaps explicit. Proposed4GET expandedtree/options missing-field diagnostic remains unadmitted0allocation; no solver repeat, no relaxed identity/quantity/classes. All74mappings pending;8per mapped and>=200overall preserved. source-qualification-plan-2026-11-06/README.md +plan.json; no code/tests/traffic."
         },
         {
           "id": "publication-contract",
