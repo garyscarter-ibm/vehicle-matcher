@@ -237,6 +237,7 @@ export class LifecycleDocumentService {
     const config = await loadDocumentPolicy(this.#policy, prepared.read);
     const observed = config.status === 'ok' ? observeStage(await this.#readStage(context, input.orderUuid), { context, orderUuid: input.orderUuid, ...config.value })
       : notOpen('document-policy-unavailable');
+    if (role.value === 'employee' && observed.status === 'open' && observed.employeeId !== context.employeeId) return result('forbidden', { reason: 'These documents belong to another employee.' });
     const reason = observed.status === 'open' ? 'awaiting-document-tick' : observed.reason;
     return ok({ orderUuid: input.orderUuid, opened: false, ready: false, state: 'not-open', reason, documentsComplete: false, vehicleReady: false });
   }

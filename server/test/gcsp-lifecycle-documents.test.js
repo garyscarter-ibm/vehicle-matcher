@@ -9,6 +9,7 @@ import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { createGcspHandler } from '../gcsp/identity/http.js';
 import { createLifecycleDocumentService, DOCUMENTS_HANDLER_ID, observeStage } from '../gcsp/lifecycle/documents/index.js';
 import { createDocumentRoutes } from '../gcsp/lifecycle/documents/http.js';
+import { RenewalCaseService } from '../gcsp/cases/index.js';
 import { createSyntheticDocumentStatus, createLiveDocumentStatusStub } from '../gcsp/adapters/synthetic-ordering-documents.js';
 
 const patch = JSON.parse(await readFile(new URL('./fixtures/gcsp-lifecycle-documents-policy-patch.json', import.meta.url), 'utf8'));
@@ -139,6 +140,9 @@ test('the employee completes her task with a labelled synthetic acknowledgement;
   assert.equal((await f.service.completeTask(f.alex, task)).status, 'forbidden');
   assert.deepEqual(await items(f, f.alex), []);
   assert.equal((await f.service.readReadiness(f.alex, { orderUuid: ORDER })).status, 'forbidden');
+  const unopened = await setup(t); unopened.order({ approved: 4, revision: 4 });
+  assert.equal((await unopened.service.readReadiness(unopened.alex, { orderUuid: ORDER })).status, 'forbidden');
+  assert.equal((await unopened.service.readReadiness(unopened.paula, { orderUuid: ORDER })).value.reason, 'awaiting-document-tick');
   assert.equal((await f.service.completeTask(f.paula, { ...task, itemId: 'licence-check' })).status, 'forbidden');
   assert.equal((await f.service.completeTask(f.paula, { ...task, acknowledgement: 'signed' })).status, 'invalid');
   const done = await f.service.completeTask(f.paula, task);
@@ -196,6 +200,19 @@ test('an overdue employee item is shown overdue and records one keyed lifecycle-
   assert.equal(overdue[0].outcome.status, 'ok');
 });
 
+test('the renewal-risk consumer opens a case from the overdue receipt only when policy selects its type', async (t) => {
+  for (const [types, expected] of [[['approval-declined'], 0], [['approval-declined', 'document-overdue'], 1]]) {
+    const policy = await policyWith((rows) => [...rows, { ...rows[2], key: 'renewalCase.lifecycle.eventTypes', value: types, unit: 'event type keys' }]);
+    const f = await setup(t, { policy, register: false });
+    const cases = new RenewalCaseService({ repository: f.repository, policy, clock: f.clock, identity: f.identity });
+    assert.equal((await f.service.start()).status, 'ok'); assert.equal((await cases.start()).status, 'ok');
+    f.order(); await f.tick(); await f.advance(2 * DAY + 1);
+    const outcome = await f.tick();
+    assert.deepEqual(outcome.handlerOrder.map((h) => h.handlerId), [DOCUMENTS_HANDLER_ID, 'renewal-risk-cases']);
+    assert.equal(outcome.outcomes.find((o) => o.handlerId === 'renewal-risk-cases').outcome.value.opened, expected);
+  }
+});
+
 test('the live-shaped stub reports writes as unsupported and never progresses an item', async (t) => {
   const stub = createLiveDocumentStatusStub();
   assert.equal((await stub.start({})).status, 'unsupported'); assert.equal((await stub.progress({}, 'now')).status, 'unsupported');
@@ -231,7 +248,8 @@ test('/api/gcsp document routes use the server-owned context and ignore browser 
   // Recorded response shapes for the later order progress screen (no screen in this story).
   const [order] = listed.value.value.orders;
   assert.deepEqual(Object.keys(order).sort(), [...shapes.orderKeys].sort());
-  assert.deepEqual(Object.keys(order.items[0]).sort(), [...shapes.itemKeys].sort());
+  for (const entry of order.items) assert.deepEqual(Object.keys(entry).filter((k) => !Object.hasOwn(shapes.optionalItemKeys, k)).sort(), [...shapes.itemKeys].sort());
+  assert.ok(Object.hasOwn(order.items[0], 'action'));
   assert.deepEqual(Object.keys(order.tasks[0]).sort(), [...shapes.taskKeys].sort());
   assert.deepEqual(Object.keys(order.readiness).sort(), [...shapes.readinessKeys].sort());
 });

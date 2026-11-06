@@ -5,20 +5,120 @@
     "GET /api/gcsp/documents/readiness?orderUuid=": "ok { orderUuid, opened, ready, state, documentsComplete, vehicleReady, blocking?, failed?, reason? }; employee (own order), greg or presenter",
     "POST /api/gcsp/documents/tasks/complete": "{ commandId, orderUuid, itemId, acknowledgement: 'synthetic' } -> ok { order }; forbidden for another employee's order or a non-employee item"
   },
-  "orderKeys": ["contractVersion", "runId", "orderUuid", "employeeId", "documentsRevision", "policyVersion", "openedAt", "opening", "lastObservedRevision", "providerMode", "items", "tasks", "readiness", "assumptions", "fictional"],
-  "itemKeys": ["itemId", "kind", "label", "owner", "status", "dueAt", "providerReference", "reason", "completedAt", "action", "assumption", "overdue"],
-  "taskKeys": ["itemId", "label", "action", "status", "dueAt", "overdue", "actionable", "acknowledgement"],
-  "readinessKeys": ["ready", "state", "documentsComplete", "vehicleReady", "blocking", "failed"],
+  "orderKeys": [
+    "contractVersion",
+    "runId",
+    "orderUuid",
+    "employeeId",
+    "documentsRevision",
+    "policyVersion",
+    "openedAt",
+    "opening",
+    "lastObservedRevision",
+    "providerMode",
+    "items",
+    "tasks",
+    "readiness",
+    "assumptions",
+    "fictional"
+  ],
+  "itemKeys": [
+    "itemId",
+    "kind",
+    "label",
+    "owner",
+    "status",
+    "dueAt",
+    "providerReference",
+    "reason",
+    "completedAt",
+    "assumption",
+    "overdue"
+  ],
+  "taskKeys": [
+    "itemId",
+    "label",
+    "action",
+    "status",
+    "dueAt",
+    "overdue",
+    "actionable",
+    "acknowledgement"
+  ],
+  "readinessKeys": [
+    "ready",
+    "state",
+    "documentsComplete",
+    "vehicleReady",
+    "blocking",
+    "failed"
+  ],
   "enums": {
-    "item.status": ["not-started", "waiting-for-employee", "in-progress", "complete", "failed"],
-    "item.owner": ["employee", "scheme-team", "retailer"],
-    "item.kind": ["document", "readiness"],
-    "readiness.state": ["waiting", "failed", "ready", "not-open"],
-    "notOpen.reason": ["no-lifecycle-for-order", "stage-mode-unsupported", "stage-read-forbidden", "stage-read-unavailable", "stage-contract-unsupported", "stage-identity-mismatch", "stage-revision-missing", "opening-stage-not-in-lifecycle", "opening-stage-not-reached", "document-policy-unavailable", "awaiting-document-tick"]
+    "item.status": [
+      "not-started",
+      "waiting-for-employee",
+      "in-progress",
+      "complete",
+      "failed"
+    ],
+    "item.owner": [
+      "employee",
+      "scheme-team",
+      "retailer"
+    ],
+    "item.kind": [
+      "document",
+      "readiness"
+    ],
+    "readiness.state": [
+      "waiting",
+      "failed",
+      "ready",
+      "not-open"
+    ],
+    "notOpen.reason": [
+      "no-lifecycle-for-order",
+      "stage-mode-unsupported",
+      "stage-read-forbidden",
+      "stage-read-unavailable",
+      "stage-contract-unsupported",
+      "stage-identity-mismatch",
+      "stage-revision-missing",
+      "opening-stage-not-in-lifecycle",
+      "opening-stage-not-reached",
+      "document-policy-unavailable",
+      "awaiting-document-tick"
+    ]
   },
-  "exampleTask": { "itemId": "agreement-acknowledgement", "label": "Vehicle agreement", "action": "Acknowledge the agreement", "status": "complete",
-    "dueAt": "2026-11-07T09:00:00.000Z", "overdue": false, "actionable": false,
-    "acknowledgement": { "kind": "synthetic-acknowledgement", "label": "Synthetic acknowledgement. Not a signature.", "at": "2026-11-05T09:00:00.000Z", "actorId": "demo-paula" } },
-  "exceptionReceiptValue": { "employeeId": "employee-paula", "renewalId": "renewal:employee-paula", "orderUuid": "<order uuid>", "occurredAt": "<DemoClock UTC>",
-    "itemId": "agreement-acknowledgement", "exceptionType": "document-overdue", "policyVersion": "gcsp-policy-v1", "lifecycleRevision": 4, "fictional": true }
+  "exampleTask": {
+    "itemId": "agreement-acknowledgement",
+    "label": "Vehicle agreement",
+    "action": "Acknowledge the agreement",
+    "status": "complete",
+    "dueAt": "2026-11-07T09:00:00.000Z",
+    "overdue": false,
+    "actionable": false,
+    "acknowledgement": {
+      "kind": "synthetic-acknowledgement",
+      "label": "Synthetic acknowledgement. Not a signature.",
+      "at": "2026-11-05T09:00:00.000Z",
+      "actorId": "demo-paula"
+    }
+  },
+  "exceptionReceiptValue": {
+    "employeeId": "employee-paula",
+    "renewalId": "renewal:employee-paula",
+    "orderUuid": "<order uuid>",
+    "occurredAt": "<DemoClock UTC>",
+    "itemId": "agreement-acknowledgement",
+    "exceptionType": "document-overdue",
+    "policyVersion": "gcsp-policy-v1",
+    "lifecycleRevision": 4,
+    "fictional": true
+  },
+  "optionalItemKeys": {
+    "action": "employee-owned items only",
+    "overdueRecordedAt": "set once the overdue exception receipt is recorded",
+    "lastProviderOutcome": "unsupported or unavailable provider reply (live stub, missing adapter)"
+  }
 }
