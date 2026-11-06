@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "outcome": "INCOMPLETE, exit1; requested target row not selected; no retry",
+  "nativeRowKeyboard": {
+    "method": "type-ahead then Tab",
+    "label": "choices-fs-uk · eligibilityModelKey: G21 Touring|320i",
+    "before": "price:price.choices-fs-uk.001",
+    "expected": "price:price.choices-fs-uk.015",
+    "expectedPoints": "1100",
+    "passed": false,
+    "after": "price:price.choices-fs-uk.002",
+    "projectedPoints": "800"
+  },
+  "notReached": [
+    "1200 keyboard edit",
+    "Preview",
+    "intentional Greg Publish/readback",
+    "actualEmployee",
+    "narrowRemaining"
+  ],
+  "limitedObservation": "Native keyboard selection changed .001 to .002; points800 matches both rows, so numeric value alone does not distinguish projection. Inspected screenshot shows M135 slider metadata and visible focus on input800. Intended .015/1100 and continuous row/edit/preview/publish path not established.",
+  "error": {
+    "name": "AssertionError",
+    "message": "Type-ahead did not establish the target native row; no retry\n+ actual - expected\n\n+ 'price:price.choices-fs-uk.002'\n- 'price:price.choices-fs-uk.015'\n                              ^\n",
+    "stack": "AssertionError [ERR_ASSERTION]: Type-ahead did not establish the target native row; no retry\n+ actual - expected\n\n+ 'price:price.choices-fs-uk.002'\n- 'price:price.choices-fs-uk.015'\n                              ^\n\n    at desktopHappyPath (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103/current-presenter-1718/keyboard-typeahead-1813/browser-runner.mjs:454:10)\n    at async start (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103/current-presenter-1718/keyboard-typeahead-1813/browser-runner.mjs:602:3)\n    at async file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103/current-presenter-1718/keyboard-typeahead-1813/browser-runner.mjs:611:7"
+  },
+  "source": {
+    "variantRunnerSha256": "095a43f352103c762b65a9f4a36458fe07d78340e137e85bcc48676c68fe5e58",
+    "originalRunnerSha256": "5dbda91a016c68aad4f1b4b3bcb04e13750b21c8a4d83bb94b5d3e7f142b2990",
+    "retainedSupervisorSha256": "463f77973463dae1420074effd27013f9c0798096601a66e26a857e2632e58bd",
+    "launchInputSha256": "d1406c9b09d27ba1cbb18584d465d24230b0a77b3eed0374181e278ca26275b2",
+    "diffSha256": "3eaa3797bc104c59a3949731beed4341bece07fb6459ffccfe8b7e76178a410f",
+    "planSha256": "ee95e2a696383abf790b100a4233d75cda3374089abb6a3591dd9f770648828b",
+    "allFiles": 987,
+    "matchingSharedProductInputFiles": 290,
+    "sharedRevisionAtSelection": "1c91c7872b56cc18ec621a44ad627d93e2d2b276",
+    "unchangedDuringRun": true,
+    "originalInputsPreserved": true
+  },
+  "resources": {
+    "rawRegistryBeforeLaunch": {},
+    "lockedRawRows": 0,
+    "limits": {
+      "chromeInstances": 1,
+      "combinedBytes": 134217728,
+      "logBytes": 2097152,
+      "minimumRssBytes": 2147483648,
+      "requestedRssBytes": 2684354560,
+      "seconds": 120,
+      "workers": 1
+    },
+    "reservation": {
+      "disk": 134217728,
+      "ram": 2684354560
+    },
+    "elapsedManifestToFinishSeconds": 10.627,
+    "peakRecursiveRssBytes": 1710915584,
+    "peakCombinedBytes": 10642776,
+    "removedScratchBytes": 10335448,
+    "retainedBytesAtReceipt": 663680,
+    "cleanup": {
+      "dependencyLinks": [],
+      "groupsAbsent": true,
+      "liveIdentities": [],
+      "monitorJoined": true,
+      "openFilesAbsent": true,
+      "portsClosed": {
+        "51182": true,
+        "51186": true
+      },
+      "profilePathProcesses": [],
+      "readersJoined": true,
+      "reservationReleased": true,
+      "scratchAbsent": true
+    },
+    "manifestState": "removed",
+    "compatibilityException": "OneDrive unavailable; bounded local Chrome profile/IPC compatibility working set; small local retained evidence."
+  },
+  "independentChecks": {
+    "sourceBeforeAfterEqual": true,
+    "scratchAbsentIndependentlyVerified": true,
+    "tokenAbsentIndependentlyVerified": true,
+    "ownedPidStartIdentitiesAbsentIndependentlyVerified": true,
+    "groupsAbsentIndependentlyVerified": true,
+    "portsClosedIndependentlyVerified": true,
+    "captureInspected": true,
+    "noFurtherRuntime": true
+  },
+  "localArtifacts": {
+    ".claude/test-runs/fucq103/current-presenter-1718/keyboard-typeahead-1813/journey-narrow320-6b0b331ea71e493c985d7dd61655cc6d/receipt.json": {
+      "bytes": 359637,
+      "sha256": "f90a37fe1675e73b04a1da0227f5507205eefc1ad2e9812ccf72a62a37877a6c"
+    },
+    ".claude/test-runs/fucq103/current-presenter-1718/keyboard-typeahead-1813/journey-narrow320-6b0b331ea71e493c985d7dd61655cc6d/output/results.json": {
+      "bytes": 212844,
+      "sha256": "28dc84d904dd3251fc578dd8075f23a523e9d6632a4d3fe1c4f4318d21ab5695"
+    },
+    ".claude/test-runs/fucq103/current-presenter-1718/keyboard-typeahead-1813/journey-narrow320-6b0b331ea71e493c985d7dd61655cc6d/output/keyboard-row-selection.png": {
+      "bytes": 70064,
+      "sha256": "8de733a8c2df5a532175a0dd2905fa007f7fb0b13b4f6ce609504396b6f77fc7"
+    },
+    ".claude/test-runs/fucq103/current-presenter-1718/keyboard-typeahead-1813/journey-narrow320-6b0b331ea71e493c985d7dd61655cc6d/retained-run.log": {
+      "bytes": 78,
+      "sha256": "cfcc8c87498b35ee849d9845692bf74bb691501c79838807f7e91a5336752d9c"
+    },
+    ".claude/test-runs/fucq103/current-presenter-1718/keyboard-typeahead-1813/selection.json": {
+      "bytes": 2114,
+      "sha256": "2f0f3cec856a91f7edac8ba83d825ece17d0b8d34a7541ffeec289a6e343558e"
+    },
+    ".claude/test-runs/fucq103/current-presenter-1718/keyboard-typeahead-1813/variant.diff": {
+      "bytes": 3569,
+      "sha256": "3eaa3797bc104c59a3949731beed4341bece07fb6459ffccfe8b7e76178a410f"
+    },
+    ".claude/test-runs/fucq103/current-presenter-1718/keyboard-typeahead-1813/source-plan.json": {
+      "bytes": 220991,
+      "sha256": "ee95e2a696383abf790b100a4233d75cda3374089abb6a3591dd9f770648828b"
+    },
+    ".claude/test-runs/fucq103/current-presenter-1718/keyboard-typeahead-1813/ownership/journey-narrow320-6b0b331ea71e493c985d7dd61655cc6d.json": {
+      "bytes": 1215,
+      "sha256": "843ac28e628ce6fd60735cc25bb15f90a5253b95a2b316c7ba2d9117e4d92938"
+    }
+  },
+  "disposition": "F103 In Review; full acceptance incomplete; npm1569passed/16failed/5skipped; independent F144/F146 unrepaired; no new gate or confirmed product defect",
+  "executionCount": 1,
+  "furtherRuntimeAuthorised": false
+}
