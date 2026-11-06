@@ -1703,18 +1703,21 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-06T00:15:25Z",
+      "observed_at": "2026-11-06T00:19:47Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-104",
       "slices": [
         {
           "id": "records",
-          "status": "not-started",
-          "title": "Distinct repository records and additive migration"
+          "status": "complete",
+          "title": "Distinct repository records and additive migration",
+          "observed_at": "2026-11-06T00:19:47Z",
+          "evidence": "Lead reviewed separate durable immutable acknowledgement records;45pass2native skips;docs/gcsp/greg-orders-contract.md. Native integration remains."
         },
         {
           "id": "submission",
-          "status": "not-started",
-          "title": "Version-pinned idempotent Greg order requests"
+          "status": "in-progress",
+          "title": "Version-pinned idempotent Greg order requests",
+          "observed_at": "2026-11-06T00:19:47Z"
         },
         {
           "id": "confirmation",

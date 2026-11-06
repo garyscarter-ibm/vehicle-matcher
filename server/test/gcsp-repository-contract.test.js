@@ -308,8 +308,10 @@ repositoryContract('memory', async () => {
 
 test('memory: explicit store and complete foundation vocabulary', async () => {
   assert.equal((await createMemoryRepository().open()).code, 'missing-store');
-  assert.equal(FOUNDATION_TABLES.length, 18);
-  assert.equal(Object.keys(TABLES).length, 24);
+  assert.equal(FOUNDATION_TABLES.length, 20);
+  assert.ok(FOUNDATION_TABLES.includes('future_order_requests'));
+  assert.ok(FOUNDATION_TABLES.includes('confirmed_supply'));
+  assert.equal(Object.keys(TABLES).length, 26);
   assert.equal(inputDigest({ b: 2, a: 1 }), inputDigest({ a: 1, b: 2 }));
 });
 
@@ -401,7 +403,7 @@ repositoryContract('postgresql driver double (not live SQL)', async () => {
 
 test('postgresql driver: migrations record checksums, rerun once and reject changed history', async () => {
   const driver = driverDouble();
-  assert.deepEqual((await migrationStatus(driver.pool)).value, { current: false, appliedVersions: [], pendingVersions: ['0001', '0002', '0003'] });
+  assert.deepEqual((await migrationStatus(driver.pool)).value, { current: false, appliedVersions: [], pendingVersions: (await loadMigrations()).map((row) => row.version) });
   assert.equal((await migrate(driver.pool)).status, 'ok');
   assert.equal((await migrate(driver.pool)).status, 'ok');
   assert.equal(driver.ddlExecutions(), 3);
