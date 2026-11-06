@@ -42,8 +42,12 @@ The proposed repair moves creation into `ProcessTree.launch`, defers handled
 SIGTERM/SIGINT through persisted registration/readback, retains a sticky pending
 latch on incomplete creation, rejects empty proof for an uncertain/existing
 unregistered handle, and attempts direct stop/join even if metadata persistence
-fails. Proposed admission SHA-256 is
-`2c7596db6b70126e71bda2902b4aeec92c3f1d883963ad1f175fdb4f0667e073`;
+fails. Its author-only finalizer-entry follow-up is
+`fucq115-finalizer-repair.md` and `fucq115-finalizer-repair-receipt.json`.
+CancellationScope latches handled signals before allocation through unconditional
+attached finalization; direct-handle signal errors cannot skip wait/escalation;
+receipt-write failure retains a stable failed result. Current admission SHA-256 is
+`5b15f6d48946d64b5e075d07e8e6c6cf6cd788bf22b7721428b6d1688176bce8`;
 only supervisor/resources content identities differ from the accepted204-node
 admission. Independent review and any required finite validation remain open.
 
@@ -64,6 +68,15 @@ Minimum changed-boundary selection, **not executed or granted**:
    marker. Require the pending state to forbid the empty-tree success path.
    Check the unchanged successful registration/normal stop path in the same
    finite probe. No activation, generator, training or metrics rerun is needed.
+4. Deliver handled cancellation at the transition from supervisor cleanup into
+   finalizer entry, also covering an earlier manifest-write exception. Require
+   the already-active scope to reach attached finalization before restoring
+   handlers; no skipped direct stop/join, successful-empty proof or release.
+5. Inject a direct-handle terminate/poll error plus unresolved first wait; require
+   attempted kill and second wait regardless of manifest persistence. Inject a
+   final receipt-write error and require a stable non-None failed result on
+   reentry. As with case2, an enclosing resource controller owns all real cleanup;
+   do not weaken foreign-ledger or owner-bound release to clean a probe.
 
 The minimum is one separately reviewed lifecycle selection, not an execution
 grant or a requirement to rerun the accepted activation. Agree its exact test
@@ -110,7 +123,9 @@ The dedicated model test adds no need to repeat the committed dataset training.
 The exact authored full requirement remains **`npm test` passes**. At the fixed
 shared checkpoint, package.json expands this to
 `node --test server/test/**/*.test.js`. No full-suite result/stamp is present.
-Root must agree the integrated checkpoint and a resource-owned serial launcher
+Root first coordinates its actual FUCQ-100 central-composition/consumer-repair/
+source-impact checkpoint, then agrees the integrated103/113/own source and a
+resource-owned serial launcher
 covering that complete authored test set; a scoped pass cannot substitute for
 it. If one chunk cannot fit the agreed bounds, agree complete bounded chunks
 and aggregate their results before a full stamp. Do not launch the bare command,

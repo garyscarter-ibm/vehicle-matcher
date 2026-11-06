@@ -106,6 +106,54 @@ def allocated_bytes(root):
     return total
 
 
+class CancellationScope:
+    """Latch handled cancellation before allocation until finalizer completion."""
+    def __init__(self):
+        self.signals = set()
+        self.previous = {}
+        self.finalizer = None
+        self.active = False
+
+    def __enter__(self):
+        self.previous = {sig: signal.getsignal(sig) for sig in [signal.SIGTERM, signal.SIGINT]}
+        try:
+            for sig in self.previous:
+                signal.signal(sig, self.defer)
+        except BaseException:
+            for sig, handler in self.previous.items():
+                signal.signal(sig, handler)
+            raise
+        self.active = True
+        return self
+
+    def defer(self, signum, frame):
+        # No I/O or asynchronous exception can skip a cleanup entry boundary.
+        self.signals.add(signum)
+
+    def attach(self, finalizer):
+        if not self.active or self.finalizer is not None:
+            raise RuntimeError('Finalizer needs one active cancellation scope')
+        self.finalizer = finalizer
+
+    def check(self):
+        if self.signals:
+            raise KeyboardInterrupt('Handled cancellation latched by resource scope')
+
+    def __exit__(self, kind, value, traceback):
+        try:
+            # Also covers exceptions before the supervisor reaches its own
+            # finalizer block, including manifest and pipe-write failures.
+            if self.finalizer is not None:
+                self.finalizer.finish()
+        finally:
+            self.active = False
+            for sig, handler in self.previous.items():
+                signal.signal(sig, handler)
+        if kind is None:
+            self.check()
+        return False
+
+
 def make_budget(resources, policy, directory, lock_identity):
     class StrictBudget(resources.HostBudget):
         def ledger(self):
@@ -401,18 +449,29 @@ class ProcessTree:
                 # Persistence/probe failure must not bypass the direct handle.
                 # This best effort never clears the pending latch or grants
                 # scratch deletion/reservation release after a failed launch.
-                process = self.process
-                if process is not None:
-                    for action in [process.terminate, process.kill]:
-                        if process.poll() is None:
-                            action()
-                        try:
-                            process.wait(timeout=3)
-                            self.joined = True
-                            break
-                        except subprocess.TimeoutExpired:
-                            continue
+                self.stop_direct_handle()
             raise
+
+    def stop_direct_handle(self):
+        process = self.process
+        if process is None:
+            return
+        errors = self.record.setdefault('directHandleCleanupErrors', [])
+        for name in ['terminate', 'kill']:
+            try:
+                if process.poll() is None:
+                    getattr(process, name)()
+            except BaseException as error:
+                errors.append({'phase': name, 'error': type(error).__name__})
+            # A failed signal action must not skip wait/join or escalation.
+            # This path performs no manifest I/O before either wait attempt.
+            try:
+                process.wait(timeout=3)
+                self.joined = True
+                return
+            except BaseException as error:
+                errors.append({'phase': 'wait-after-' + name, 'error': type(error).__name__})
+        raise RuntimeError('Direct child handle could not be joined; preserve resources')
 
     def _stop_join(self):
         self.require_registered()
@@ -470,16 +529,19 @@ def make_scratch(resources, rdir, root, policy):
 
 
 class Finalizer:
-    def __init__(self, resources, scratch, tree, budget):
+    def __init__(self, resources, scratch, tree, budget, cancellation):
         self.resources, self.scratch, self.tree, self.budget = resources, scratch, tree, budget
         self.attempted = False
         self.result = None
+        cancellation.attach(self)
         atexit.register(self.finish)
 
     def finish(self):
         previous = {sig: signal.getsignal(sig) for sig in [signal.SIGTERM, signal.SIGINT]}
         def deferred(signum, frame):
-            self.scratch.record.setdefault('cancellationDuringCleanup', []).append(signum)
+            signals = self.scratch.record.setdefault('cancellationDuringCleanup', [])
+            if signum not in signals:
+                signals.append(signum)
         try:
             for sig in previous:
                 signal.signal(sig, deferred)
@@ -491,8 +553,9 @@ class Finalizer:
     def _finish(self):
         if self.attempted:
             return self.result
+        self.result = {'passed': False, 'scratchAbsent': False, 'reservationAbsent': False}
         self.attempted = True
-        result = {'passed': False, 'scratchAbsent': False, 'reservationAbsent': False}
+        result = self.result
         try:
             proof = self.tree.stop_join()
             if not all(proof[key] for key in ['joined', 'pidsAbsent', 'groupsAbsent']):
@@ -527,7 +590,11 @@ class Finalizer:
                 result.update(passed=False, cancelledDuringCleanup=True)
         except BaseException as error:
             result['error'] = type(error).__name__ + ': ' + str(error)[:1024]
-        self.result = result
         self.scratch.record['finalizer'] = result
-        self.resources.atomic_json(self.scratch.manifest, self.scratch.record)
+        try:
+            self.resources.atomic_json(self.scratch.manifest, self.scratch.record)
+        except BaseException as error:
+            # Retain a failed, reusable result even when the receipt cannot be
+            # written. This never turns an unpersisted cleanup into a pass.
+            result.update(passed=False, receiptError=type(error).__name__ + ': ' + str(error)[:1024])
         return result

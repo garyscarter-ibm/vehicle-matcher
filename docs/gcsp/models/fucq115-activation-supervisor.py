@@ -137,9 +137,10 @@ def main():
                           'allocation': 'none; all identities verified before custom imports; no JavaScript/OS proof/test launched'}))
         return
     with tr.handled_termination():
-        execute(frozen, args, tr, guard, source, identity, environment)
+        with guard.CancellationScope() as cancellation:
+            execute(frozen, args, tr, guard, source, identity, environment, cancellation)
 
-def execute(frozen, args, tr, guard, source, identity, environment):
+def execute(frozen, args, tr, guard, source, identity, environment, cancellation):
     policy = tr.Policy({'chunk_seconds': 120, 'chunk_ram_mib': 768, 'chunk_scratch_mib': 128, 'log_mib': 2})
     rdir = ROOT / '.claude/test-runs/fucq115' / ('artifact-activation-v2-' + uuid.uuid4().hex)
     retained = rdir / 'retained'
@@ -152,12 +153,13 @@ def execute(frozen, args, tr, guard, source, identity, environment):
     lock = frozen['nodes'][str(Path(frozen['ledgerDirectory']) / 'reservations.lock')]
     host = guard.make_budget(tr, policy, frozen['ledgerDirectory'], [lock['device'], lock['inode']])
     tree = guard.ProcessTree(tr, scratch)
-    finalizer = guard.Finalizer(tr, scratch, tree, host)
+    finalizer = guard.Finalizer(tr, scratch, tree, host, cancellation)
     tr.atomic_json(scratch.manifest, scratch.record)
     tr.atomic_json(rdir / 'checkpoint.json', {'state': 'incomplete', 'identity': identity, 'manifest': str(scratch.manifest)})
     process, failure, result = None, None, {}
     started = time.monotonic()
     try:
+        cancellation.check()
         host.acquire_owned(scratch, guard.allocated_bytes(rdir))
         scratch.__enter__()
         mirror = scratch.root / 'mirror'
@@ -175,6 +177,7 @@ def execute(frozen, args, tr, guard, source, identity, environment):
         log = rdir / 'test.log'
         written = 0
         with log.open('xb') as stream:
+            cancellation.check()
             command = ['/opt/homebrew/bin/node', str(scratch.root / 'launch.mjs'), str(scratch.root / 'entry.mjs'), str(mirror), str(scratch.root / 'output')]
             process = tree.launch(command, cwd=mirror, env=scratch.env(environment), stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, start_new_session=True)
@@ -193,6 +196,7 @@ def execute(frozen, args, tr, guard, source, identity, environment):
                     raise RuntimeError('Combined child log cap reached')
                 return bool(block)
             def sample():
+                cancellation.check()
                 rows, members, child_rss = tree.observe()
                 owned = {row['pid'] for row in members}
                 probe_rss = sum(row['rss'] for row in rows.values()
@@ -274,8 +278,10 @@ def execute(frozen, args, tr, guard, source, identity, environment):
         cleanup = finalizer.finish()
     pins_preserved = False
     try:
+        cancellation.check()
         admit(args.admission_sha)
         pins_preserved = True
+        cancellation.check()
     except BaseException as error:
         failure = failure or {'type': type(error).__name__, 'message': str(error)[:1024]}
     passed = failure is None and cleanup['passed'] and pins_preserved and result.get('rc') == 0

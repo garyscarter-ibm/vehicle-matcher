@@ -145,8 +145,8 @@
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/docs/gcsp/models/fucq115-activation-resources.py",
       "targetDevice": 16777232,
       "targetInode": 173156473,
-      "bytes": 26788,
-      "sha256": "b759c332df8393a7a0ded5f287406631295aba2c706105a332afc7961c7f4c55"
+      "bytes": 29389,
+      "sha256": "40f2446431b7588336fcf8750581a7b87d03a059e77ccb7a1182363085e351d2"
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/docs/gcsp/models/fucq115-activation-run.mjs": {
       "kind": "file",
@@ -189,8 +189,8 @@
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/docs/gcsp/models/fucq115-activation-supervisor.py",
       "targetDevice": 16777232,
       "targetInode": 173144852,
-      "bytes": 15378,
-      "sha256": "0c9c5d6241ec5cd56349ecb099dc2036b07a22f90128ae632e651eae1630d230"
+      "bytes": 15637,
+      "sha256": "efeec15e17936f6bd9bcae347fc384f4eb80b20a3b5d3822fa626a16323bcd14"
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/docs/gcsp/models/fucq115-retained-source-plan.json": {
       "kind": "file",

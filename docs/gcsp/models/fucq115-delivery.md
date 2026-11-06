@@ -426,3 +426,34 @@ retraining or full run solely for completion. Details/hashes/delta/comparison:
 `fucq115-cancellation-repair.md` and `fucq115-cancellation-repair-receipt.json`.
 Policy delivery remains complete; acceptance/integration/full gate remains open.
 Own worker stays expired while awaiting independent review/exact concrete scope.
+
+
+### Author-only finalizer-entry refinement · 6 November 2026
+
+Following the dispatcher's concrete103 review notice, own5724a80 source tracing
+identified cancellation before finalizer entry, direct signal-action errors that
+can skip wait/escalation, and unstable failed receipt/reentry. CancellationScope
+now latches handled signals before allocation, attaches the finalizer before
+host acquisition and calls it unconditionally before restoring handlers. Direct
+cleanup attempts wait even after poll/terminate errors, then kill/second wait if
+unresolved. Finalizer stores a stable failed result before attempted and reports
+receipt-write failure as failed. This is authoring, not runtime proof.
+
+AST/compile-without-execution and static scope/finalizer/direct-handle call-site
+checks passed. Whole make_budget/process_snapshot/definitely_absent/make_scratch
+ASTs match5724a80: foreign-ledger/owner/bounds, strict uncertainty and release
+contracts stay intact. RefreezeSHA5b15f6d48946d64b5e075d07e8e6c6cf6cd788bf22b7721428b6d1688176bce8
+changes only supervisor/resources content identities;202 other nodes,77 sources,
+138 installed files/14 packages/37 absence probes unchanged. No tests, lifecycle
+module import, JS/Node, OS process query, reservation, test scratch, training,
+settings/metrics or full run. New exact helper review precedes any required run.
+
+Current proposal/receipt: `docs/gcsp/models/fucq115-finalizer-repair.md` and
+`fucq115-finalizer-repair-receipt.json`. The earlier author-only repair receipt,
+original failed attempt and accepted73533d7 activation/root261 audit remain
+unchanged. Minimum fault boundaries are extended in final-validation-plan; no
+new grant or automatic replay. Root coordinates actual100 central composition,
+consumer repairs/source impact and combined source before authored npm-test
+full validation. Actual corpus/outcome-producer dependence stays parked; existing
+identical optimizer/data/baseline/activation proof reused without calibration or
+native/live claims. Policy complete; final acceptance open; worker remains expired.

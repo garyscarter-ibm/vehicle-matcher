@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-115",
+  "phase": "author-only-finalizer-entry-and-direct-handle-refinement",
+  "observedAt": "2026-11-06T02:13:12.793508+00:00",
+  "parentSourceCommit": "5724a80443b0a222a41fb495eec3072feb765804",
+  "acceptedActualActivationSource": "73533d7c092911317f177469fc3e99fd37b5afaa",
+  "runtimeStatus": "not executed; independent review required",
+  "diagnosis": {
+    "sourceBasis": "5724a80 own supervisor/resource adapter, following dispatcher concrete finalizer-entry/direct-handle review notice",
+    "reproduction": "No runtime reproduction authorised or run",
+    "confirmedControlFlow": [
+      "Raised handled cancellation could escape between supervisor cleanup blocks before Finalizer.finish",
+      "Direct terminate/poll exception in fallback could skip wait and escalation",
+      "Finalizer attempted latch was set before a stable result existed; final receipt write failure escaped result return"
+    ],
+    "scope": "Owned future harness only; original accepted actual run and adverse model evidence unchanged"
+  },
+  "repair": {
+    "scope": "CancellationScope installed before execute allocation, attached finalizer before host acquire, cooperative cancellation checks at safe launch/sample/verification boundaries, unconditional scope-exit finalizer before restoring handlers",
+    "directHandle": "Stop/join has no manifest I/O prerequisite; poll/signal exceptions cannot bypass wait; failed first wait escalates to kill and second wait; unresolved join preserves resources",
+    "finalizer": "Stable failed result precedes attempted latch; receipt write failure marks failed and returns reusable non-None result",
+    "foreignLedgerAndOwners": "StrictBudget whole definition AST-identical; no foreign pruning, owner/bounds/release changes"
+  },
+  "freeze": {
+    "path": "docs/gcsp/models/fucq115-activation-admission.json",
+    "beforeSHA256": "2c7596db6b70126e71bda2902b4aeec92c3f1d883963ad1f175fdb4f0667e073",
+    "afterSHA256": "5b15f6d48946d64b5e075d07e8e6c6cf6cd788bf22b7721428b6d1688176bce8",
+    "nodes": 204,
+    "unchangedNodes": 202,
+    "changedNodes": [
+      {
+        "path": "docs/gcsp/models/fucq115-activation-resources.py",
+        "beforeSHA256": "b759c332df8393a7a0ded5f287406631295aba2c706105a332afc7961c7f4c55",
+        "afterSHA256": "40f2446431b7588336fcf8750581a7b87d03a059e77ccb7a1182363085e351d2",
+        "changedFields": [
+          "bytes",
+          "sha256"
+        ]
+      },
+      {
+        "path": "docs/gcsp/models/fucq115-activation-supervisor.py",
+        "beforeSHA256": "0c9c5d6241ec5cd56349ecb099dc2036b07a22f90128ae632e651eae1630d230",
+        "afterSHA256": "efeec15e17936f6bd9bcae347fc384f4eb80b20a3b5d3822fa626a16323bcd14",
+        "changedFields": [
+          "bytes",
+          "sha256"
+        ]
+      }
+    ],
+    "otherAdmissionFieldsUnchanged": true,
+    "installedFiles": 138,
+    "packages": 14,
+    "absenceProbes": 37,
+    "sourceFiles": 77,
+    "sourceBytes": 4349951,
+    "sourcePlanSHA256": "f884ae94ff85455aa8d56c38e0ed7e2be58d960a862e99359f5f318694fa65aa"
+  },
+  "authorChecks": [
+    {
+      "path": "docs/gcsp/models/fucq115-activation-resources.py",
+      "sha256": "40f2446431b7588336fcf8750581a7b87d03a059e77ccb7a1182363085e351d2",
+      "parseAndCompileWithoutExecution": "passed"
+    },
+    {
+      "path": "docs/gcsp/models/fucq115-activation-supervisor.py",
+      "sha256": "efeec15e17936f6bd9bcae347fc384f4eb80b20a3b5d3822fa626a16323bcd14",
+      "parseAndCompileWithoutExecution": "passed"
+    },
+    {
+      "path": "docs/gcsp/models/fucq115-activation-freeze.py",
+      "sha256": "28ad3a2fa5af1a8a6fa37244dfa15481c7fe1dfa5725f032d7f45b69c9e0b192",
+      "parseAndCompileWithoutExecution": "passed"
+    }
+  ],
+  "unchangedDefinitions": [
+    {
+      "definition": "make_budget",
+      "ASTUnchanged": true,
+      "ASTSHA256": "0cdb43d3e9f68ce9acdbeb602844cf26bf6515dcc92618026c622aedf191e084"
+    },
+    {
+      "definition": "process_snapshot",
+      "ASTUnchanged": true,
+      "ASTSHA256": "32e78b2555232d3074946c41f05333524ad062da07efbff4539318d90e192f05"
+    },
+    {
+      "definition": "definitely_absent",
+      "ASTUnchanged": true,
+      "ASTSHA256": "61eaf8e7e0b820747e47e20f642d1405c40c20dee229f4b047c64ce13064a73d"
+    },
+    {
+      "definition": "make_scratch",
+      "ASTUnchanged": true,
+      "ASTSHA256": "99cfd41b6b952543f4c52450af547c521bceba0817947ddb2f73e3a5b25d301e"
+    }
+  ],
+  "unchangedEvidenceEntryPaths": [
+    "docs/gcsp/models/fucq115-activation-run-receipt.json",
+    "docs/gcsp/models/fucq115-activation-result.md",
+    "docs/gcsp/models/fucq115-activation-success-receipt.json",
+    "docs/gcsp/models/fucq115-activation-success-report.json",
+    "docs/gcsp/models/fucq115-activation-published-command.json",
+    "docs/gcsp/models/fucq115-cancellation-repair-receipt.json",
+    "docs/gcsp/models/fucq115-activation-source-plan.json",
+    "docs/gcsp/models/fucq115-activation-run.mjs",
+    "docs/gcsp/models/fucq115-activation-launch.mjs",
+    "docs/gcsp/models/fucq115-activation-freeze.py",
+    "docs/gcsp/models/artifacts/2ce1109d986c7709bf9505f8e388e9c1479ff3c36e7cae86f656ff29bb973c7d.json"
+  ],
+  "runtime": {
+    "grant": null,
+    "tests": 0,
+    "NodeOrJavaScript": 0,
+    "processQueries": 0,
+    "reservations": 0,
+    "testScratch": 0,
+    "trainingSettingsMetrics": 0,
+    "fullSuite": 0,
+    "metadataFreezeOnly": true
+  },
+  "remaining": {
+    "helper": "Independent exact-delta review before any required future selection. Minimum lifecycle cases in final-validation-plan include cancellation at finalizer entry, manifest save/readback failure, signal-action failure with mandatory waits, and stable failed receipt/reentry. No runtime test result claimed.",
+    "full": "Root coordinates actual FUCQ-100 central composition/consumer repairs/source-impact agreement and final combined103/113/own checkpoint before authored npm-test full gate. No full grant.",
+    "upstream": "Actual corpus/outcome-producer dependencies parked; no fixture, calibration, native or live-producer pass inferred. Existing identical optimizer/data/baseline/activation proof reused."
+  }
+}

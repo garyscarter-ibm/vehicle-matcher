@@ -1,5 +1,10 @@
 # Cancellation-safe launch proposal
 
+Current follow-up: `fucq115-finalizer-repair.md` extends this5724a80 author-only
+proposal for finalizer entry, direct-handle wait/escalation and receipt-write
+failure. Its admission5b15f6d4 supersedes the historical2c7596db table below.
+Neither author-only proposal has runtime proof or an execution grant.
+
 6 November 2026. Dispatcher authorised author-only repair/refreeze after accepting
 the actual activation result. No new execution grant, runtime reproduction,
 lifecycle test or activation/training/settings/metrics/full run accompanies this
