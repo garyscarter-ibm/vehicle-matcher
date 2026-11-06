@@ -1379,7 +1379,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T23:57:58Z",
+      "observed_at": "2026-11-06T00:00:36Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-115",
       "slices": [
         {
@@ -1391,9 +1391,10 @@
         },
         {
           "id": "optimizer",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Features-splits-and-regularised-optimizer",
-          "observed_at": "2026-11-05T23:57:58Z"
+          "observed_at": "2026-11-06T00:00:36Z",
+          "evidence": "Lead reviewed new pure optimizer/features/split modules and caller boundary; six scoped tests pass including 4000-choice coefficient recovery, gradients, meaningful interactions and leakage refusal. Exact identities/resources: docs/gcsp/models/fucq115-delivery.md. Integration gates remain open."
         },
         {
           "id": "dataset",
