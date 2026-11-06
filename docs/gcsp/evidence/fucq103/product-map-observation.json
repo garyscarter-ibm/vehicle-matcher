@@ -5,7 +5,7 @@
   "original_status": "In Progress",
   "assignee": "Gary Carter",
   "type": "Story",
-  "observed_at": "2026-11-06T09:09:45Z",
+  "observed_at": "2026-11-06T09:47:31Z",
   "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103",
   "jira_observed_at": "2026-11-05T22:40:24Z",
   "branch": "dev/DEV-2026-11-04-066",
@@ -34,8 +34,8 @@
       "id": "backend-projection",
       "status": "in-progress",
       "title": "Editable policy projection and no-write preview",
-      "observed_at": "2026-11-06T09:09:45Z",
-      "evidence": "Current f80fc61 freeze: core25, registry16, default1, weighted1 and runtime4 independently accepted at their scoped boundaries. Weighted uses four synthetic clones; no canonical population claim. Current-source publish15/activation9/editor3/dashboard3 and rendered/full acceptance remain open. Runtime4 immutable packet: docs/gcsp/evidence/fucq103/eligibility-runtime-cba833f-2026-11-06/index.json."
+      "observed_at": "2026-11-06T09:47:31Z",
+      "evidence": "Current f80fc61 freeze: core25/registry16/default1/weighted1/runtime4/editor3 independently accepted within scoped limits. Editor3 is synthetic service proof, threshold1; no rendered/native/producer/full acceptance. Current-source publish15/activation9/dashboard3 and remaining acceptance gates stay open. Editor3 concise evidence: docs/gcsp/evidence/fucq103/eligibility-editor-a0fc026-2026-11-06/index.json."
     },
     {
       "id": "activation-http",

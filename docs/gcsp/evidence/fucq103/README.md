@@ -581,3 +581,36 @@ preserved. Configured Actions publication uses gcsp-poc data; this branch checkp
 does not claim a refreshed served map. Other backend, actual producer/consumer,
 rendered desktop/narrow keyboard, native/full/deployed/corpus/model/live and final
 acceptance gates remain open. All 38 parser design fixtures remain unexecuted.
+
+
+## Accepted editor3 at a0fc026, 6 November 2026
+
+The independent editor-range service selection passed **3/3** exact cases with zero
+failures, cancellations, skipped or todo cases. Lead passed 580 checks; root passed 1019
+and authorised scoped evidence publication. The [concise editor3 index](eligibility-editor-a0fc026-2026-11-06/index.json)
+binds all nine immutable originals and three private audit receipts by exact paths,
+bytes and hashes. Only concise evidence and the exact 514-byte SPEC log are published;
+raw coordinator/audit reports stay under ignored `.claude`.
+
+This is threshold 1 synthetic memory service evidence. Observed row preservation
+excludes entitlement slots; direct quote/hold/offer fixtures are not producer proof.
+The extreme-safe-integer case has no confirmed demand cohort and does not establish
+populated scoring. Wall 4.914s, peak 954.25MiB/1024MiB and combined 4,348,423B passed;
+bound independent cleanup receipts verify owned processes/group/listeners, scratch,
+dependencies and reservation absence. No test, audit or probe was rerun to publish.
+The consumed grant admits no further execution. Earlier immutable proofs remain unchanged.
+
+The [dashboard3 proposal](eligibility-dashboard-proposal-2026-11-06.json) is author-only:
+three positive source cases, six filtered/unexercised cases. It separates explicit
+threshold 1 service/shape fixtures from the canonical threshold 5 single-subject band
+check; shape compatibility does not establish numerical or semantic parity. Its peak
+is unknown. Future admission validates all reservations/full ancestry and current
+pressure, preserves foreign rows and permits independent bounded chunks to coexist;
+there is no empty-global-ledger requirement. Actual overlap or insufficient capacity
+blocks admission. A fresh exact grant is required; no next mode ran.
+
+The map records accepted scoped editor3 evidence while preserving In Progress, all
+slice states and Jira/worker observations. Hosted refresh is not claimed. Publish15,
+activation9, dashboard3 execution, rendered desktop/narrow keyboard, actual producers,
+consumer uptake, native/full/live/corpus/model/training and final acceptance stay open.
+All 38 parser design fixtures remain unexecuted.
