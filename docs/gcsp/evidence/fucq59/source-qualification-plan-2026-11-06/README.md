@@ -4,6 +4,8 @@
 
 **Goal:** make source evidence qualify exact catalogue records through the existing F59/F39/F54 ports, while preserving unknowns and the complete F77 scheme coverage.
 
+**6 November checkpoint 2a:** the dispatcher selected the [contract-only projection gate](projection-contract.md), with pinned evidence in [projection-contract.json](projection-contract.json). The original `plan.json` remains unchanged. No unused helper or invented response format was added; the existing producer graph stays frozen pending F60 review and the next allocated producer lane. Checkpoint 1's pure qualifier and F4 correction passed their scoped checks and independent re-review; raw-schema/observation binding and the proposed four-GET diagnostic remain unallocated engineering work.
+
 **Architecture:** extend validation/projection inside the existing collector/session and catalogue snapshot adapter. Keep its one accounting/cache/checkpoint path and versioned static corpus. No new runtime provider, component, store, dependency or connection is proposed; the normal design-first skill stops at unchanged topology. Any later live F39 provider or topology change requires its normal design review first. No browser/design-tab operation was performed in this planning chunk.
 
 **Tech stack:** existing Node ES modules, native test runner, PolicyService and bounded JSON artifacts; no new dependency.

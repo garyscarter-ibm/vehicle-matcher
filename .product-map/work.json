@@ -1820,17 +1820,17 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T11:47:54Z",
+      "observed_at": "2026-11-06T12:01:20Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59",
       "workers": [
         {
           "name": "Cecil Turtle",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-06T11:47:54.247225+00:00",
-          "expires_at": "2026-11-06T11:47:54.247225+00:00",
+          "observed_at": "2026-11-06T12:01:20.580847+00:00",
+          "expires_at": "2026-11-06T12:01:20.580847+00:00",
           "source": "thread 01a1b054-1167-7820-b9f2-92ec81e37bbe",
-          "status": "F4 mutation test corrected;21focused cases pass; awaiting independent re-review/publication; source qualification blocked; Sol/high no descendants"
+          "status": "Contract-only checkpoint2a: exact retained/raw-schema/time bindings recorded; no helper/tests/traffic. Prior21case qualifier/F4 independent re-review PASS. Producer/F39/F60 frozen; source qualification blocked; Sol/high no descendants"
         }
       ],
       "slices": [
@@ -1866,8 +1866,8 @@
           "id": "source-qualification",
           "status": "blocked",
           "title": "Selected real-source model mapping and solver integration (1 point)",
-          "observed_at": "2026-11-06T11:47:54.247225+00:00",
-          "evidence": "Checkpoint1 pure verifier unchanged eda266; F4 actual-input mutation test corrected after MAJOR review.21/21focused cases pass;100%line/93.14%branch coverage. Contract/mutation-review.json retains correction/hash/cleanup evidence; independent re-review pending. No AEE producer/F39/F60/F58/F77 edits or traffic; admissionfalse. Later projections/registration and proposed4GET unallocated; all74mappings pending and8/200/20thresholds unchanged."
+          "observed_at": "2026-11-06T12:01:20.580847+00:00",
+          "evidence": "Checkpoint1 verifier/F4 correction passed21scoped cases and independent re-review. Checkpoint2a contract-only gate records exact5Nov projection time16:03:36.375Z versus separate16:29refresh; raw options schema and executor byte/time binding remain unproved. source-qualification-plan-2026-11-06/projection-contract.{md,json}. No helper/tests/producer changes/traffic; proposed4GET and F39 writer unallocated; accepted0/all74pending. Source/publication slices stay blocked."
         },
         {
           "id": "publication-contract",
