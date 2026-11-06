@@ -32,15 +32,22 @@ plan_path = ROOT/'docs/gcsp/evidence/fucq105/decision-mixed-source-plan.json'
 if digest(plan_path) != summary['source_plan_sha256']:
     raise SystemExit('Use the exact reviewed plan; no resource cleanup attempted.')
 plan = json.loads(plan_path.read_text()); c = summary['cleanup']
+launch = c.get('child_launch', {})
 if any(digest(ROOT/p) != row['sha256'] for p, row in plan['harness'].items()):
     raise SystemExit('Frozen audit/helper identity changed; preserve the run for review.')
 r = module('audit_resources', ROOT/'_tools/test_resources.py')
 g = module('audit_git', ROOT/'_tools/scaffold_git.py')
+reservations = r.read_json(r.HostBudget(r.Policy(plan['limits']), directory=Path.home()/'.cache/agent-scaffolding/test-resources').path)
 
 checks = {'owner_exited': not r.process_alive(summary['owner']), 'scratch_absent': not os.path.lexists(c['root']),
-    'groups_absent': all(not r.group_has_live_members(group) for group in c['groups']),
+    'launch_ownership_verified': c.get('child_ownership_and_join_verified') is True
+        and (launch.get('attempted') is False and launch.get('state') == 'not-started'
+             or launch.get('attempted') is True and launch.get('state') == 'joined' and launch.get('joined') is True
+             and isinstance(launch.get('pid'), int) and launch['pid'] in c['groups'])
+        and launch.get('issues') == [],
+    'groups_absent': all(r.group_has_live_members(group) is False for group in c['groups']),
     'processes_absent': all(not r.process_alive(row) for row in c['processes']),
-    'reservation_absent': c['token'] not in r.read_json(r.HostBudget(r.Policy(plan['limits']), directory=Path.home()/'.cache/agent-scaffolding/test-resources').path, {}),
+    'reservation_absent': isinstance(reservations, dict) and c['token'] not in reservations,
     'local_sources_preserved': all(digest(ROOT/p) == h for p, h in summary['local_source_before'].items()),
     'harness_preserved': all(digest(ROOT/p) == row['sha256'] for p, row in plan['harness'].items())}
 node = Path(plan['node']['path']); st = node.stat()
@@ -59,7 +66,9 @@ manifest = Path(c['scratch_manifest'])
 if manifest.exists():
     data = json.loads(manifest.read_text())
     checks['owned_removed_manifest'] = data['token'] == c['token'] and data['root'] == c['root'] \
-        and data['state'] == 'removed' and not r.process_alive(data['owner'])
+        and data['state'] == 'removed' and not r.process_alive(data['owner']) \
+        and data.get('child_launch') == launch and data.get('groups') == c['groups'] \
+        and data.get('processes') == c['processes']
 else:
     checks['owned_removed_manifest'] = True
 if not all(checks.values()):

@@ -1369,7 +1369,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T01:49:12Z",
+      "observed_at": "2026-11-06T02:03:26Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-105",
       "slices": [
         {
@@ -1397,8 +1397,8 @@
           "id": "decision-host",
           "status": "blocked",
           "title": "Actual FUCQ106 decision and delivered host integration",
-          "observed_at": "2026-11-06T01:49:12Z",
-          "evidence": "6 November authoring: optional trusted loadAccount/mount follows102373d89a additive DTO and10794e05ff body port; new105bytes/tests unexecuted. Actual102 implementation/final source union/employee session/host still pending. Original9090aff actual106 mixed51/94/11 plan unchanged and separate; no new execution grant. docs/gcsp/evidence/fucq105/followup-entry-plan.md"
+          "observed_at": "2026-11-06T02:03:26Z",
+          "evidence": "6 November harness successor authored/refrozen: explicit launch intent/handle/join; unresolved ownership blocks deletion/audit and explicit reservation release. Shared dead-owner pruning limit recorded. Eight fake-process cases unexecuted; Python AST/static only. Original51/94/11 product graph/test/loader and separate105follow-up unchanged. No runtime reproduction or new grant. docs/gcsp/evidence/fucq105/decision-mixed-cancellation-plan.md"
         },
         {
           "id": "browser",

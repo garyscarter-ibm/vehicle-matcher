@@ -9,6 +9,7 @@ import re
 import shlex
 import subprocess
 import sys
+import threading
 import time
 
 ROOT = Path(__file__).resolve().parents[4]
@@ -50,6 +51,7 @@ for relative, row in plan['harness'].items():
         raise SystemExit('Frozen helper/test identity changed; review a new plan.')
 r = module('decision_resources', ROOT / '_tools/test_resources.py')
 g = module('decision_git', ROOT / '_tools/scaffold_git.py')
+lifecycle = module('decision_lifecycle', ROOT / 'docs/gcsp/evidence/fucq105/decision-mixed-lifecycle.py')
 policy = r.Policy(plan['limits'])
 host = r.HostBudget(policy, directory=Path.home()/'.cache/agent-scaffolding/test-resources')
 record_dir = BASE / run_id
@@ -59,6 +61,9 @@ if consumption.exists() or record_dir.exists():
     raise SystemExit('Run identity already used; no retry without a new root run grant.')
 
 class OwnedScratch(r.Scratch):
+    def child(self, process):
+        ownership.register(process)
+
     def sample(self):
         if self.record['groups']:
             snapshot = subprocess.run(['/bin/ps', '-axo', 'pid=,ppid=,pgid=,lstart='], capture_output=True, text=True, timeout=3)
@@ -81,6 +86,8 @@ class OwnedScratch(r.Scratch):
         return used
 
     def __exit__(self, kind, value, tb):
+        # Never delete a root using an empty/partially persisted child list as absence evidence.
+        ownership.require_safe()
         # Preserve bounded diagnostic evidence before the owned root is removed, including on an exception.
         log = self.root / 'checks.log'
         if log.exists() and (kind is not None or result and (result['rc'] or result['issue'])):
@@ -93,6 +100,8 @@ class OwnedScratch(r.Scratch):
 
 scratch = OwnedScratch(record_dir, ROOT, policy)
 scratch.record.update(story='FUCQ-105', ports=[], profiles=[], dependency_links=[], processes=[])
+ownership = lifecycle.LaunchOwnership(r, scratch)
+cancel = threading.Event()
 r.atomic_json(run_manifest, {'owner': r.owner(), 'state': 'planned', 'run': run_id, 'review': str(review_path),
                              'root': str(scratch.root), 'scratch_manifest': str(scratch.manifest), 'output': str(record_dir)})
 r.atomic_json(record_dir / 'plan.json', {'source_plan_sha256': plan_hash, 'review_sha256': digest(review_path),
@@ -136,9 +145,11 @@ observed = []
 phases = {}
 verified_after = False
 preparation_wall = None
-with r.handled_termination():
+with lifecycle.deferred_cancellation(cancel):
     try:
         verify()
+        if cancel.is_set():
+            raise KeyboardInterrupt('Cancelled before allocation')
         allocation = host.acquire(scratch.token, 128*r.MIB, 768*r.MIB, '/private/tmp', root=scratch.root,
                                   minimum_ram=384*r.MIB)
         # Consumption precedes the first scratch/source copy. A failed run never retries itself.
@@ -149,6 +160,8 @@ with r.handled_termination():
             mirror = scratch.root / 'composition'
             modules = []
             for relative, row in plan['modules'].items():
+                if cancel.is_set():
+                    raise KeyboardInterrupt('Cancelled before launch')
                 target = (mirror / relative).with_suffix('.mjs')
                 target.parent.mkdir(parents=True, exist_ok=True)
                 target.write_text(committed(relative, row))
@@ -194,8 +207,14 @@ with r.handled_termination():
                 global result
                 if chosen or settings.command != shlex.join(command):
                     raise RuntimeError('Unexpected selected command')
-                result = r.run_process(command, str(ROOT), env, log, scratch, policy,
-                    allocation['disk'], allocation['ram'], 120, host=host)
+                if cancel.is_set():
+                    raise KeyboardInterrupt('Cancelled before launch')
+                ownership.begin()
+                try:
+                    result = r.run_process(command, str(ROOT), env, log, scratch, policy,
+                        allocation['disk'], allocation['ram'], 120, host=host, cancel=cancel)
+                finally:
+                    ownership.require_safe()
                 counts = {key: int(value) for key, value in re.findall(r'^# (tests|pass|fail|skipped|cancelled) (\d+)$', log.read_text(), re.M)}
                 result['counts'] = counts
                 passed = result['rc'] == 0 and not result['issue'] and counts.get('tests') == 2 \
@@ -233,16 +252,29 @@ with r.handled_termination():
     except BaseException as error:
         failure = failure or type(error).__name__  # Provider/credential text is deliberately not retained.
     finally:
-        if allocation:
-            host.release(scratch.token)
+        child_safe = ownership.finish()
+        groups_absent = all(r.group_has_live_members(group) is False for group in scratch.record['groups'])
         processes_absent = all(not r.process_alive(row) for row in scratch.record['processes'])
+        # Do not explicitly release an uncertain reservation. Dead-owner pruning is shared policy.
+        if allocation and child_safe and groups_absent and processes_absent and not os.path.lexists(scratch.root):
+            try:
+                host.release(scratch.token)
+            except BaseException:
+                failure = failure or 'ReservationReleaseUncertain'
+        reservation_record = r.read_json(host.path)
+        reservation_absent = isinstance(reservation_record, dict) and scratch.token not in reservation_record
         cleanup = {'scratch_absent': not os.path.lexists(scratch.root),
-            'groups_absent': all(not r.group_has_live_members(group) for group in scratch.record['groups']),
-            'processes_absent': processes_absent, 'reservation_released': scratch.token not in r.read_json(host.path, {}),
+            'child_ownership_and_join_verified': child_safe, 'child_launch': dict(ownership.record),
+            'groups_absent': groups_absent,
+            'processes_absent': processes_absent, 'reservation_released': reservation_absent,
+            'reservation_observation_known': isinstance(reservation_record, dict),
+            'reservation_retention_scope': 'No explicit uncertain release; shared HostBudget may prune dead-owner entries after supervisor exit. Root reconciliation remains required.',
             'root': str(scratch.root), 'groups': scratch.record['groups'], 'processes': scratch.record['processes'],
             'token': scratch.token, 'scratch_manifest': str(scratch.manifest), 'ports': [], 'profiles': [], 'dependency_links': []}
-        if not all(cleanup[key] for key in ('scratch_absent', 'groups_absent', 'processes_absent', 'reservation_released')):
+        if not all(cleanup[key] for key in ('child_ownership_and_join_verified', 'scratch_absent', 'groups_absent', 'processes_absent', 'reservation_released')):
             failure = failure or 'CleanupIncomplete'
+        if cancel.is_set():
+            failure = failure or 'Cancelled'
         try:
             if not observed and (record_dir/'modules.jsonl').exists():
                 observed = [json.loads(line) for line in (record_dir/'modules.jsonl').read_text().splitlines()]

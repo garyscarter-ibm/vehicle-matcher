@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "story": "FUCQ-105",
-  "date": "2026-11-06T01:40:34.723897+00:00",
-  "status": "Concrete authored finite mixed decision proposal; UNEXECUTED, external exact root review required before any allocation/source copy/import",
+  "date": "2026-11-06T02:03:55.408520+00:00",
+  "status": "Authored cancellation-safety successor; UNEXECUTED. Exact external root review and separate run grant required.",
   "baseline": {
     "previous_plan": "docs/gcsp/evidence/fucq105/decision-successor-source-plan.json",
     "sha256": "619dd871d539e7222975bfcdfb7c4c1891bd9d7f37a4145ddf917ec6eacf319b",
@@ -80,21 +80,21 @@
       "sha256": "672d5f113751f2483a10dad219ce77d5d5c25b3b1cb1429cfc9b6aa1cb14f400",
       "bytes": 10411,
       "composition": "immutable-scratch-mirror",
-      "local_matches_pin": true
+      "local_matches_pin": false
     },
     "blocks/gcsp/offer/offer-projection.js": {
       "ref": "b4efefec60577a14a98e6bae934741249bd7c20c",
       "sha256": "fc8f500cd82ef4d18c9fde4062bb4880534c50e78bbcd729bd0a90b97457e64e",
       "bytes": 13287,
       "composition": "immutable-scratch-mirror",
-      "local_matches_pin": true
+      "local_matches_pin": false
     },
     "blocks/gcsp/offer/offer-view.js": {
       "ref": "b4efefec60577a14a98e6bae934741249bd7c20c",
       "sha256": "de5d37114ab4a4400d73a7086d8426c00d4d6cf63a77c22463a029316a324d4a",
       "bytes": 11461,
       "composition": "immutable-scratch-mirror",
-      "local_matches_pin": true
+      "local_matches_pin": false
     },
     "blocks/vehicle-matcher/feedback-actions.js": {
       "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
@@ -1123,12 +1123,12 @@
       "bytes": 2911
     },
     "docs/gcsp/evidence/fucq105/decision-mixed-supervisor.py": {
-      "sha256": "17dc50d12a3fdf89c2a9fdc0304950a30b9167657134f387e5a98e721444666f",
-      "bytes": 16977
+      "sha256": "04032c36c44476aaa73540cfaa41ecfd0d080d0f9a39d6ed00f9911f345cddeb",
+      "bytes": 18855
     },
     "docs/gcsp/evidence/fucq105/decision-mixed-audit.py": {
-      "sha256": "7082648f6615bb2f16c22c7b2f3c8434df9450c709e7ea1895d7e1415dc8ba13",
-      "bytes": 4716
+      "sha256": "fe0700c4b514c1daf0b0cbc0533deb4a883b06a6ff8121bb7c1925dc3d1d53ae",
+      "bytes": 5370
     },
     "_tools/test_resources.py": {
       "sha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
@@ -1141,6 +1141,14 @@
     "_tools/scaffold_git.py": {
       "sha256": "ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a",
       "bytes": 129000
+    },
+    "docs/gcsp/evidence/fucq105/decision-mixed-lifecycle.py": {
+      "sha256": "eb1f5209ef377823df68f57bea7ba71a3df60f525225fabc5e8fa2681459abd3",
+      "bytes": 5224
+    },
+    "docs/gcsp/evidence/fucq105/decision-mixed-lifecycle-test.py": {
+      "sha256": "b45b00ea4aec0c9a90eb79f664dfd5e9af400a7a490b8eb4fd3b71ba23b411bc",
+      "bytes": 6325
     }
   },
   "selected": "server/test/gcsp-offer-view-decision-mixed.test.js",
@@ -1202,7 +1210,7 @@
     "combined_scratch_output_mib": 8,
     "basis": "Prior actual106 canonical case3.716s/261767168B child peak and105 DOM231817216B, sequential one worker; no repeated lifecycle. Minimum384MiB shared headroom, at most768MiB; stop and replan on actual pressure."
   },
-  "cleanup": "External owned plan/run manifest before scratch. Fresh shared HostBudget, one group, owned TMPDIR/TMP/TEMP, stripped DB/PG/Node/preload/debug/trace env. Bound log2MiB; useful failure tail64KiB plus checkpoint/hash journal retained before finalizer deletion. Stop/join group on errors/cancellation; verify descendant PID/start identities, root absence and released reservation; immutable/local sources and installed identities before/after. Run independent committed audit after owner exits; remove only verified disposed scratch manifest. No lsof success inferred from deleted root. No archives or >=256MiB outputs planned.",
+  "cleanup": "External ownership before scratch, fresh shared HostBudget, one child group, bounded TMP/log/checkpoints. Defer handled cancellation through creation/registration/persistence/stop/join/final receipts. Record launch intent before calling shared launcher; retain actual handle before fallible registration and stop/join it on any later failure. Never infer absence from empty groups after an attempted launch or from unknown group status. Require durable explicit ownership/join and known group/process absence before scratch deletion; release reservation only after verified scratch removal too. Preserve unresolved scratch, withhold explicit reservation release and retain a named receipt for root reconciliation; shared dead-owner pruning means no lasting post-exit capacity hold is claimed. Reservation observations must be readable mappings, never defaults masking uncertainty. Independent exact-hash post-exit audit requires launch evidence and manifest agreement; remove only verified disposed manifest. No lsof claim from deleted root; no large outputs.",
   "independent_audit": "python3 -B docs/gcsp/evidence/fucq105/decision-mixed-audit.py --summary <external-run>/summary.json; no auto-execution during authoring.",
   "ui_browser_proposal": {
     "lane": "UNALLOCATED as of dispatcher0126;122 ownership statements in historical plans are superseded. No105 browser grant.",
@@ -1222,7 +1230,7 @@
     ],
     "reference": "docs/gcsp/experience-quality.md, supplied shell screenshots, FUCQ64 bodya7fc178, COMPONENTS.md and shared default Density tokens"
   },
-  "durable107_boundary": "Actual106 POST response decisionId is not retained by105 controller or102 safe public reload DTO. No107 import/callback or durable reload entry is claimed here. Root102 owns the minimal authorized lookup/projection plan;105 adds no shared access/runtime field.",
+  "durable107_boundary": "This mixed graph retains original105 and1024a56d38 bytes and imports no107. The separate authored105 follow-up delta atc408d3f uses the reviewed additive102373d89a interface and10794e05ff port;102 implementation/final combined graph/employee-session proof remain outstanding. Do not substitute that delta into this graph.",
   "exclusions": [
     "No unchanged seven-checkpoint producer lifecycle rerun or previous10612/3case rerun",
     "No native DB, network, listener, browser, mail, remote-provider success, central host/gate composition or authored full suite",
@@ -1233,8 +1241,29 @@
     "product_imports": false,
     "tests_executed": false,
     "scratch_or_process_groups_allocated": false,
-    "python_helpers": "AST parsed only",
+    "python_helpers": "All four owned Python helpers AST parsed only; no helper import or execution",
     "static_closure": true,
-    "test_helper_hashes_frozen": true
+    "test_helper_hashes_frozen": true,
+    "lifecycle_fault_cases_authored": 8,
+    "lifecycle_fault_cases_executed": 0,
+    "cancellation_source_control_flow_inspected": true
+  },
+  "cancellation_safety": {
+    "predecessor_ref": "9090aff3b5779a6c80c4c9af099e8363726d2718",
+    "predecessor_plan_sha256": "ce28e76ff4df809c7d68717eb8b2d6c65d7b50da863cf8ceac5b6f304174e4b1",
+    "diagnosis": "Source review only: shared Popen-before-registration try/finally interval and uncertain group None accepted as absence; no observed runtime occurrence.",
+    "owned_helper": "docs/gcsp/evidence/fucq105/decision-mixed-lifecycle.py",
+    "fault_cases": "docs/gcsp/evidence/fucq105/decision-mixed-lifecycle-test.py",
+    "fault_cases_authored": 8,
+    "fault_cases_executed": 0,
+    "future_fault_command": "python3 -B docs/gcsp/evidence/fucq105/decision-mixed-lifecycle-test.py; separate exact review/grant required, not selected by the two-case mixed run",
+    "protection": "Python SIGINT/SIGTERM handlers set the shared cancel event from before allocation through receipt finalizers; no inherited blocked-signal mask. Durable launch intent; actual handle retained before fallible registration; captured handle stopped/joined despite registration failure.",
+    "fail_closed": "Unknown attempted launch, live/unknown group/descendant, sample or persistence failure blocks deletion and reservation release. Only explicit False proves group absence. Independent post-exit audit requires explicit launch/join and manifest agreement.",
+    "unchanged": "51 product modules/94 product JS edges/11 inputs, two mixed cases/four checkpoints, mixed test/loader, upstream/package/environment and shared resource/stamp/Git bytes.",
+    "separate_followup_consumer_ref": "c408d3f637effa299f6307f93a1e2dcbb2c791f4",
+    "local_match_observations": "Refreshed from current worktree; false rows are still mirrored from their original immutable graph pins, not replaced by the separate follow-up delta.",
+    "no_new_execution_grant": true,
+    "runtime_reproduction": false,
+    "reservation_retention_limit": "Owned helper withholds explicit release for unresolved resources. Shared HostBudget can prune dead-owner entries after supervisor exit, so root reconciliation remains required before further allocation; no lasting capacity hold is claimed. Unreadable reservation registry is unknown, not absent."
   }
 }
