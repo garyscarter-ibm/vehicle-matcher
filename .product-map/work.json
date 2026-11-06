@@ -689,7 +689,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T00:51:19Z",
+      "observed_at": "2026-11-06T00:58:10Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-70",
       "tracker_observed_at": "2026-11-05T22:40:24Z",
       "branch": "dev/DEV-2026-11-04-070",
@@ -739,8 +739,8 @@
           "id": "service-integration",
           "status": "not-started",
           "title": "Actual-frozen66-memory-producer-and-HTTP-integration",
-          "observed_at": "2026-11-06T00:51:19Z",
-          "evidence": "6 November: preserve single eba14ad bootstrap failure and independent cleanup. Author only exact pinned self-loader/cwd registration edge plus bounded rejection specifier/parent journal and primary child failure receipt. Diagnosis remains a hypothesis; fresh run identity and new hashes await exact root review. No new Node execution/allocation; six cases and five acceptance slices still open."
+          "observed_at": "2026-11-06T00:58:10Z",
+          "evidence": "6 November: one separately admitted0645d37 run passed registration/imports46modules, then all6cases failed common probe raw stock.held assertion; after-hook8setup expected/6reached adds seventh failure. Pinned conditionalClaim writes stock.state, not raw booleans: probe expectation mismatch, no product defect inferred. Exact result/log/receipt/imports+independent cleanup published; no retry/repair. Five acceptance slices open."
         },
         {
           "id": "submission-integration",
