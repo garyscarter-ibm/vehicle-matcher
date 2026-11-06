@@ -54,6 +54,11 @@ def read_plan(expected):
             raise RuntimeError('Unreviewed resource limits')
     if plan['root'] != str(ROOT) or plan['sharedRoot'] != str(SHARED):
         raise RuntimeError('Harness belongs to a different checkout')
+    registration = plan['loaderRegistration']
+    if registration != {'url': (EVIDENCE / 'actual66-loader.mjs').as_uri(),
+                         'parentUrl': ROOT.as_uri() + '/',
+                         'sha256': digest(EVIDENCE / 'actual66-loader.mjs')}:
+        raise RuntimeError('Unreviewed loader registration edge')
     for item in plan['ownedFiles'] + plan['runtimeTools']:
         if digest(item['path']) != item['sha256']:
             raise RuntimeError('Reviewed harness/tool changed: ' + item['path'])
@@ -322,7 +327,8 @@ def run(expected_commit, expected_harness):
                 (scratch_root / 'package.json').write_text('{"type":"module"}\n')
                 probe = plan['probe']; probe_row = {'path': probe['relativePath'], 'url': Path(probe['path']).as_uri(),
                                                    'sha256': probe['sha256'], 'imports': probe['imports']}
-                config = {'kind': 'fucq70-actual66-exact-loader-v1', 'modules': runtime_modules, 'probe': probe_row,
+                config = {'kind': 'fucq70-actual66-exact-loader-v2', 'modules': runtime_modules, 'probe': probe_row,
+                          'loaderRegistration': plan['loaderRegistration'],
                           'dependencies': dependency['files'], 'pgEntry': dependency['entry'],
                           'pgImporters': dependency['applicationImporters'], 'journal': str(scratch_root / 'imports.ndjson')}
                 resources.atomic_json(scratch_root / 'loader-config.json', config)
@@ -343,6 +349,9 @@ def run(expected_commit, expected_harness):
                         resources.atomic_json(records / 'observed-imports.json', {'entries': journal,
                                               'commonJsBoundary': dependency['commonJsBoundary']})
                 text = raw.decode('utf8', errors='replace'); test_counts = counts(text)
+                if child_result['rc'] or child_result['issue']:
+                    raise RuntimeError('Node proof process failed before acceptance: rc=' + str(child_result['rc'])
+                                       + '; see bounded failure log and observed-imports when present')
                 expected = {row['path'] for row in inputs['modules']}
                 observed = {row['path'] for row in journal if row.get('stage') == 'load'} & expected
                 if observed != expected:
@@ -385,6 +394,8 @@ def run(expected_commit, expected_harness):
                    'issue': issue, 'tests': test_counts, 'result': child_result, 'scratch': str(scratch_root), 'token': token,
                    'ownership': ownership, 'cleanup': cleanup, 'sourceUnchanged': after == before,
                    'afterLocalFiles': local_after, 'copiedProducerHashes': copy_after, 'processSamples': sampled,
+                   'loaderDiagnostics': [row for row in journal if row.get('stage') in
+                                         ('reject', 'resolve-loader-registration', 'load-loader-registration')],
                    'runtimeInputHashesBefore': runtime_before, 'runtimeInputHashesAfter': runtime_after,
                    'wallSeconds': time.monotonic() - started, 'selectedCommand': plan['nodeArgv'],
                    'retainedFailureLog': str(records / 'failure.log') if (records / 'failure.log').exists() else None}

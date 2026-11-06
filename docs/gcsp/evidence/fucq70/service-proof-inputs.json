@@ -602,10 +602,10 @@
     "probe": "server/test/gcsp-manual-review-actual66.proof.mjs",
     "probeSha256": "dac68e081ab985f9d089e34868dba44a05477064cd2f745af1aefd71becb5778",
     "loader": "docs/gcsp/evidence/fucq70/actual66-loader.mjs",
-    "loaderSha256": "56a29602e12cc999d2d2e7d5c699adbc5aafb8e904ad7d611f2f4d69eced4299",
+    "loaderSha256": "96933bd1378aa6b243865bb81b9dd8ce9aec2823e42cadfec5610dd81a530052",
     "supervisor": "docs/gcsp/evidence/fucq70/actual66-supervisor.py",
-    "supervisorSha256": "69c36f5da1d3448c4b349c211ff9bae19df7391936b8abd2cb0953683a57ade6",
-    "status": "authored and statically reviewed; not executed",
+    "supervisorSha256": "4a1766de4b8e11f59749877241913eb2e032d59abb5c44b8c250c560216944b3",
+    "status": "revised self-registration edge and bounded diagnostics authored; not executed; exact review pending",
     "dependencyManifest": "docs/gcsp/evidence/fucq70/service-proof-dependencies.json",
     "dependencyManifestSha256": "6812e8aa4d1ac0f92d31c9bd7fbde994dbf1fb9f5a0c3703566f8072ccd1a812"
   },
@@ -615,7 +615,7 @@
     "rssBytes": 805306368,
     "scratchBytes": 134217728,
     "logBytes": 2097152,
-    "scratchRoot": "/private/tmp/test-stamp-shard-afeca82c8ac84cf78a272ce8c66121e3",
+    "scratchRoot": "/private/tmp/test-stamp-shard-52a55a02e3bef795332d9f0cc4467671",
     "externalReceiptDirectory": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66",
     "allocation": "none; deterministic root is planned, not created or reserved"
   },

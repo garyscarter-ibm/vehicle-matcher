@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "status": "authored-not-executed; exact execution admission required",
+  "status": "revised-registration-edge-authored-not-executed; exact execution admission required",
   "root": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070",
   "sharedRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher",
   "applicationSourceBase": "16a83dde4bfbd48721bce5c26f98b482f4f5db40",
   "sourcePlanPublication": "f0420d018889b6c6e65c4e46e3722000314b6f51",
-  "sourceManifestSha256": "9a489ecd03ec5da53fb53096cdb15eb39b1dafad12f003bd6190692f365bb2fd",
+  "sourceManifestSha256": "d5e2d2d1f122772329243d8ccd4a4dbce7835774cd0b9bb3c53d59d1db7c422a",
   "dependencyManifestSha256": "6812e8aa4d1ac0f92d31c9bd7fbde994dbf1fb9f5a0c3703566f8072ccd1a812",
   "ownedFiles": [
     {
@@ -14,11 +14,11 @@
     },
     {
       "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-loader.mjs",
-      "sha256": "56a29602e12cc999d2d2e7d5c699adbc5aafb8e904ad7d611f2f4d69eced4299"
+      "sha256": "96933bd1378aa6b243865bb81b9dd8ce9aec2823e42cadfec5610dd81a530052"
     },
     {
       "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-supervisor.py",
-      "sha256": "69c36f5da1d3448c4b349c211ff9bae19df7391936b8abd2cb0953683a57ade6"
+      "sha256": "4a1766de4b8e11f59749877241913eb2e032d59abb5c44b8c250c560216944b3"
     }
   ],
   "runtimeTools": [
@@ -85,9 +85,9 @@
   ],
   "topLevelTests": 6,
   "runtimeSetups": 8,
-  "runToken": "afeca82c8ac84cf78a272ce8c66121e3",
-  "scratch": "/private/tmp/test-stamp-shard-afeca82c8ac84cf78a272ce8c66121e3",
-  "records": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/afeca82c8ac84cf78a272ce8c66121e3",
+  "runToken": "52a55a02e3bef795332d9f0cc4467671",
+  "scratch": "/private/tmp/test-stamp-shard-52a55a02e3bef795332d9f0cc4467671",
+  "records": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/52a55a02e3bef795332d9f0cc4467671",
   "nodeArgv": [
     "/opt/homebrew/bin/node",
     "--experimental-loader",
@@ -125,7 +125,7 @@
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-supervisor.py",
     "audit",
     "--receipt",
-    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/afeca82c8ac84cf78a272ce8c66121e3/receipt.json"
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/52a55a02e3bef795332d9f0cc4467671/receipt.json"
   ],
   "limits": {
     "workers": 1,
@@ -133,10 +133,23 @@
     "rssBytes": 805306368,
     "scratchBytes": 134217728,
     "logBytes": 2097152,
-    "scratchRoot": "/private/tmp/test-stamp-shard-afeca82c8ac84cf78a272ce8c66121e3",
+    "scratchRoot": "/private/tmp/test-stamp-shard-52a55a02e3bef795332d9f0cc4467671",
     "externalReceiptDirectory": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66",
     "allocation": "none; deterministic root is planned, not created or reserved"
   },
   "execution": "single reviewed run token; refuse existing resources/evidence; no automatic repeat, source repair or fallback",
-  "validation": "Python AST parsed; probe import graph/case count and all pinned source/dependency identities checked without loading integration modules. No Node syntax/probe run claimed."
+  "validation": "Python AST and static boundary review only; unchanged 46 application modules, six file inputs, eight copies, six cases/eight planned setups. No Node syntax/probe/loader/diagnostic execution after the failed first run.",
+  "loaderRegistration": {
+    "url": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-loader.mjs",
+    "parentUrl": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/",
+    "sha256": "96933bd1378aa6b243865bb81b9dd8ce9aec2823e42cadfec5610dd81a530052"
+  },
+  "revision": {
+    "priorHarnessCommit": "eba14ad2405542deefa9ace761a54af4258c24d9",
+    "failedEvidenceCommit": "fec07bc90dab20cae357d0d6d64375c778b0c5d7",
+    "firstRunReceipt": "docs/gcsp/evidence/fucq70/service-proof-run-20261106/receipt.json",
+    "diagnosis": "docs/gcsp/evidence/fucq70/loader-registration-diagnosis.json",
+    "scope": "One exact pinned loader URL/path from the exact checkout cwd URL, hash-checked on resolution/load; bounded rejected specifier/parent identities; supervisor preserves child failure before graph completeness checks. Application graph and producer identities unchanged.",
+    "observedSelfRegistration": "hypothesis; first failure did not retain rejected specifier. No success claimed."
+  }
 }

@@ -78,6 +78,14 @@ External manifest/receipt/checkpoint destination: shared `.claude/test-runs/fucq
 
 All Git uses shared scaffold helper/short mutation mutex, never held over tests/waits. Each new commit message includes a blank line then literal `Co-Authored-By: Codex <noreply@openai.com>`, with commit-body verification. Preserve published history. No descendants are required; later briefs carry exact source/resource contract and explicit trailer rule.
 
+## Revised registration edge after the first failed run
+
+The original exact `eba14ad` command failed during Node ESM hook registration before any application case ran. [service-proof-result.json](service-proof-result.json) and the committed `service-proof-run-20261106/` exports preserve that result and independently verified cleanup. The first rejection did not record its specifier or parent. Self-registration is a hypothesis, not a confirmed cause or a successful correction.
+
+The revised loader/supervisor propose one explicit helper-registration edge: the loader's exact absolute path or `file:` URL, only from this checkout's exact working-directory `file:` URL with trailing slash. `loaderRegistration` in [service-proof-harness.json](service-proof-harness.json) records both URLs and the exact helper SHA-256; supervisor checks all three before allocation, and loader checks the hash before resolving/loading itself. This does not add an application module, import edge, fallback or transformation. Any other unlisted relative/bare/module load still fails.
+
+Rejected specifier/parent identities are written to the existing bounded journal before throwing, with bounded safe displays and digests for unknown or sensitive URL values. Supervisor preserves registration/rejection events in its receipt and reports nonzero Node exit before secondary application-graph checks. The six cases/eight setups, probe, all application/data/dependency pins and singleton URLs are unchanged. The manifest uses a fresh unused scratch/record identity. [loader-registration-diagnosis.json](loader-registration-diagnosis.json) records observed evidence, upstream read-only references, hypothesis, exact delta and new hashes. This authoring includes no Node/diagnostic execution or allocation; another exact review/admission is required.
+
 ## Remaining acceptance and external ownership
 
 Passing would establish only this pinned memory-service/HTTP/controller protocol boundary. Actual FUCQ-92 release production, rendered FUCQ-69 callback/event and FUCQ-70 UI, desktop/320px/keyboard/tick captures, FUCQ-103 central session/routes/pending202/clock subscription, native PostgreSQL, authored serial full suite/strict stamp, repeatable integrated trials and final acceptance remain outstanding.
