@@ -18,7 +18,7 @@ const car = (f) => f.store.state.tables.stock.find((row) => row.orderUuid === f.
 const keys = { stock: 'orderUuid', holds: 'holdId', claims: 'claimId', offers: 'offerId', employees: 'employeeId',
   entitlement_slots: 'entitlementSlotId', pending_operations: 'operationId' };
 
-async function setup(t) {
+async function setup(t, { offerLandingUrl } = {}) {
   const store = createMemoryStore(); const base = createMemoryRepository({ store });
   assert.equal((await base.open()).status, 'ok'); t.after(() => base.close());
   const control = { fail: null, failIntent: null, calls: [], onExecute: null, onReconcile: null };
@@ -61,7 +61,7 @@ async function setup(t) {
     release: { eventId: 'synthetic-release', availability: candidate.availability },
     visibility: { companyIds: [context.companyId], schemeIds: [context.schemeId], employeeIds: null },
   }))).status, 'ok');
-  const f = { store, repository, control, policy, clock, identity, presenter, context, brief, content, car: candidate };
+  const f = { store, repository, control, policy, clock, identity, presenter, context, brief, content, car: candidate, offerLandingUrl };
   const adapter = { mode: 'remote' };
   for (const method of ['execute', 'reconcile']) adapter[method] = async (op) => {
     const durable = operation(f, op.operationType);
@@ -160,6 +160,20 @@ test('matching rejected claim retires local exclusion without an offer or declin
   const f = await setup(t); f.control.onExecute = (op) => acknowledgement(op, 'rejected');
   assert.equal((await f.allocate()).status, 'pending'); released(f, 'released'); noOffer(f);
   assert.equal(operation(f).state, 'rejected');
+});
+
+test('configured remote landing destination reaches the outbox after pending claim restart and confirmation', async (t) => {
+  const f = await setup(t, { offerLandingUrl: 'https://deployment.example/employee/review.html?brand=mini' });
+  assert.equal((await f.allocate()).status, 'pending'); noOffer(f);
+  f.control.onReconcile = (op) => acknowledgement(op);
+  const clock = new DemoClock({ ...f, environmentId: f.context.environmentId, environmentKind: 'synthetic' });
+  const restarted = new BuddyHoldService({ ...f, clock });
+  assert.equal((await restarted.start()).status, 'ok');
+  assert.equal((await clock.reconcileStartup()).status, 'ok'); offered(f);
+  const link = new URL(f.store.state.tables.notification_outbox[0].payload.offerLink);
+  assert.equal(link.origin, 'https://deployment.example'); assert.equal(link.pathname, '/employee/review.html');
+  assert.equal(link.searchParams.get('brand'), 'mini');
+  assert.deepEqual([...link.searchParams.keys()].sort(), ['brand', 'offerId', 'runId']);
 });
 
 test('real backend startup reconciles unknown before confirming; restarts never issue employee sessions or duplicate offers', async (t) => {

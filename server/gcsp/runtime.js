@@ -17,7 +17,7 @@ import { createOfferAccessService, OFFER_ACCESS_COOKIE } from './offers/access.j
 import { createOfferDecisionService } from './offers/decision.js';
 import { createOfferFollowupService } from './offers/followup.js';
 import { createStoredSubjectRecommendationEvaluator } from './recommendation/index.js';
-import { verifyOfferToken } from './offers/offer-token.js';
+import { verifyOfferToken, resolveOfferLandingUrl } from './offers/offer-token.js';
 import { createNotificationDispatcher } from './notify/index.js';
 import { createStockReleaseService } from './stock/index.js';
 import { createStockReleaseHistoryPort } from './stock/history-port.js';
@@ -36,8 +36,11 @@ const scoped = (value, context) => ['runId', 'environmentId', 'employeeId'].ever
 
 // Explicit composition only. A failed PostgreSQL open never changes providers.
 export async function createGcspRuntime({ mode = 'postgres', repository, repositoryOptions, policy,
-  environmentId, policyAsOf, commandId, stockProvider, sessionNow = () => new Date().toISOString() } = {}) {
+  environmentId, policyAsOf, commandId, stockProvider, offerLandingUrl = process.env.GCSP_OFFER_LANDING_URL,
+  sessionNow = () => new Date().toISOString() } = {}) {
   if (!['postgres', 'memory'].includes(mode)) return result('invalid', { code: 'unsupported-repository-mode' });
+  try { offerLandingUrl = resolveOfferLandingUrl(offerLandingUrl); }
+  catch { return result('invalid', { code: 'invalid-offer-landing-url' }); }
   repository ??= mode === 'memory' ? createMemoryRepository({ store: createMemoryStore() }) : createPostgresRepository(repositoryOptions);
   const ownsPolicy = policy === undefined;
   const readPolicy = policy ?? new PolicyService({ provider: mode === 'memory'
@@ -105,7 +108,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const lifecycle = createLifecycleApprovalService({ repository, policy, clock, identity, status: orderingAdapter.status });
     const documents = createLifecycleDocumentService({ repository, policy, clock, identity,
       lifecycleStages: lifecycle.stagePort(), provider: orderingAdapter.documentStatus });
-    const buddy = createBuddyHoldService({ repository, policy, clock, identity, adapter });
+    const buddy = createBuddyHoldService({ repository, policy, clock, identity, adapter, offerLandingUrl });
     const offerAccess = createOfferAccessService({ repository, policy, clock, identity, environmentId, sessionNow, verifyOfferToken });
     const offerDecisions = createOfferDecisionService({ repository, policy, clock, access: offerAccess,
       createStoredSubjectEvaluator: createStoredSubjectRecommendationEvaluator, mode: adapter.mode });

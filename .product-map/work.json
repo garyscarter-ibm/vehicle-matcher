@@ -1901,7 +1901,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-06T19:52:39Z",
+      "observed_at": "2026-11-06T21:54:23Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-102",
       "workers": [],
       "slices": [
@@ -1944,15 +1944,15 @@
           "id": "validation",
           "status": "in-progress",
           "title": "Authored validation and acceptance disposition",
-          "observed_at": "2026-11-06T19:52:39Z",
-          "evidence": "Current32/32 pass; original landing URL criterion open; retained full1590:1569pass16fail5skip, independent Bugs deferred; no Done. docs/gcsp/evidence/fucq102/current-backend-2026-11-06.md"
+          "observed_at": "2026-11-06T21:54:23Z",
+          "evidence": "Current 95/95 targeted backend checks pass including original configured destination. Hosted deployment/full acceptance unrun; retained full1590:1569pass16fail5skip and independent deferred Bugs. No Done. docs/gcsp/evidence/fucq102/landing-config-2026-11-06.md"
         },
         {
           "id": "landing-url",
-          "status": "not-started",
+          "status": "complete",
           "title": "Original deployment-configured landing URL",
-          "observed_at": "2026-11-06T19:52:39Z",
-          "evidence": "Original AC5 remains open: relative generator path exists, deployment-configured landing URL input/composition not observed. docs/gcsp/evidence/fucq102/current-backend-2026-11-06.md"
+          "observed_at": "2026-11-06T21:54:23Z",
+          "evidence": "Original configured landing URL implemented through trusted runtime and both producers. Topic b1c10f7; 95/95 targeted checks, independent parent cleanup verified. docs/gcsp/evidence/fucq102/landing-config-2026-11-06.md. Hosted deployment/full acceptance unrun."
         }
       ],
       "unsliced": false
