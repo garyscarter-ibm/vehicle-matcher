@@ -253,3 +253,27 @@ Python AST and exact-source `--plan` checks passed; no JavaScript execution or n
 resource allocation occurred. Both changed source files remain behaviorally
 untested. Execution requires a new exact dispatcher review/grant. Actual baseline
 metrics, artifact, default CLI success, model activation and final/full gates remain.
+
+## Actual retained-input evaluation delivered
+
+Grant `fucq115-retained-c3e4c7a-0033` ran the default CLI once, successfully.
+Actual62-employee earlier-brief demand and deterministic-fit baselines were
+computed with unchanged privacy rules. Later152-choice logloss/Brier:
+learned0.1969166895/0.0564266199, expressed demand0.2078671946/0.0511443681,
+deterministic fit0.2124969079/0.0510270732. Lower overall logloss and worse Brier
+are both retained. Unseen31-choice and familiar121-choice metrics, reliability,
+class/cohort and thin flags are computed in the actual artifact and summary.
+
+Artifact ID `sha256:2ce1109d986c7709bf9505f8e388e9c1479ff3c36e7cae86f656ff29bb973c7d`
+is committed unchanged under `artifacts/`; safe summary fixture now contains exact
+actual evaluated output. Optimizer hit1500-iteration limit (gradient0.0002379891
+above1e-6); only3 training/7later chosen vehicles and8 later nonempty vehicle sets.
+All3 structural configurations lack seats/boot facts, so capacity-effect evidence
+is absent. Perfect wait-only cohort scores do not prove predictive skill.
+See `fucq115-evaluation-result.md` and `fucq115-retained-run-receipt.json`.
+
+Supervisor wall1.363722709s/RSS198,983,680B/scratch4,708,929B/exit0. Retained172,128B,
+retained+durable outputs340,064B. Sources/inputs/helpers/dependency identities and
+device/inodes unchanged; groups/scratch/reservation/link absent. No new model
+activation, generation/adoption replay, full/native/browser/corpus/live proof.
+Actual dated reference publication and final integration remain open.
