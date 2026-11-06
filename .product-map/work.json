@@ -1369,7 +1369,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T23:24:36Z",
+      "observed_at": "2026-11-06T10:12:03Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-69",
       "slices": [
         {
@@ -1390,8 +1390,8 @@
           "id": "released-integration",
           "status": "in-progress",
           "title": "Actual release-history and released-run browse-to-claim integration",
-          "observed_at": "2026-11-06T01:36:43Z",
-          "evidence": "Actual92read9/9 accepted/published891b750. Next author-only176file/355edge plan docs/gcsp/evidence/fucq69/journey-plan.md:2proposed DOMcases renderedgallery→actual66/70;100sole host/runtime writer. Await exact successor/provider/package/test/helper freeze and grant. No rerun/allocation; one desktop smoke is proposal only, broader acceptance open."
+          "observed_at": "2026-11-06T10:12:03Z",
+          "evidence": "Root accepted exact16f3448 one-case actual TEST release -> authenticated HTTP -> delivered gallery -> one claim/current read -> F70 review/save/host continuation: TAP1/1, supervisor/Node0, independent post-exit PASS. Original TAP/pins/resources: docs/gcsp/evidence/fucq69/host-journey/host-journey-32bcd3746127/README.md. Later F100 Resume adoption, second reload, normal/default/reset/principal, visual/native/live/full/story acceptance remain open;0959grants consumed, no rerun."
         },
         {
           "id": "final-validation",
