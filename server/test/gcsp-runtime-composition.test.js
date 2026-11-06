@@ -192,7 +192,8 @@ test('host account setup Back and resume retain real saved choices and unchanged
         choices: { mode: action.action === 'replace' ? 'replacement' : 'new', oldContractId: action.oldContractId, slotId: action.slotId, schemeId: action.schemeId } },
     })).json) };
   const { mountManualJourney } = await import('../../blocks/gcsp/manual-setup/journey.js');
-  let sequence = 0; destroy = mountManualJourney(root, { adapter, commandId: () => `host:${++sequence}` });
+  let sequence = 0; destroy = mountManualJourney(root, { adapter,
+    galleryAdapter: { ...adapter, readClaim: read('claim') }, commandId: () => `host:${++sequence}` });
   const waitFor = async (check) => { for (let i = 0; i < 200; i++) { if (check()) return; await new Promise((done) => setImmediate(done)); } assert.ok(check(), 'Expected host DOM state.'); };
   const click = (label) => { const button = [...root.querySelectorAll('button')].find((entry) => entry.textContent === label); assert.ok(button); button.click(); };
   await waitFor(() => root.querySelector('h1')?.textContent === 'Your cars'); click('Choose a replacement');

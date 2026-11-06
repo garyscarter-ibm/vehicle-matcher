@@ -2,26 +2,71 @@ import { mountAccount } from '../account/gcsp-account.js';
 import { mountManualSetup } from './gcsp-manual-setup.js';
 import { mountManualGallery } from '../manual-gallery/gcsp-manual-gallery.js';
 import { mountManualReview } from '../manual-review/gcsp-manual-review.js';
+import { createManualClaimController } from '../manual-gallery/claim-controller.js';
+import { createManualGalleryHttpAdapter } from '../manual-gallery/http-adapter.js';
+import { mountEmployee } from '../employee/gcsp-employee.js';
+import { statusScreen } from '../../vehicle-matcher/ui.js';
 
 export function mountManualJourney(root, options = {}) {
   const { galleryAdapter, reviewAdapter, subscribeClock, onReviewContinue, ...shared } = options;
-  let teardown; let disposed = false; let generation = 0; let view; let hint;
+  const claimAdapter = galleryAdapter ?? createManualGalleryHttpAdapter();
+  let teardown; let disconnectFocus; let disposed = false; let generation = 0; let view; let hint;
   function mount(next, render) {
     if (disposed) return;
     generation += 1; view = next;
-    teardown?.(); teardown = render(generation);
+    disconnectFocus?.();
+    teardown?.();
+    const ticket = generation;
+    const focus = () => {
+      if (disposed || ticket !== generation) return;
+      const heading = root.querySelector('main h1, main h2');
+      if (!heading) return;
+      heading.tabIndex = -1; heading.focus(); observer.disconnect();
+    };
+    const observer = new root.ownerDocument.defaultView.MutationObserver(focus);
+    observer.observe(root, { childList: true, subtree: true });
+    disconnectFocus = () => observer.disconnect();
+    teardown = render(ticket);
+    focus();
   }
   // Let the emitting controller finish before disposing its screen.
   function later(ticket, work) {
     queueMicrotask(() => { if (!disposed && ticket === generation) work(); });
   }
   function account() { mount('account', () => mountAccount(root, shared)); }
+  function enter(nextHint) {
+    hint = nextHint;
+    mount('checking', (ticket) => {
+      const reader = createManualClaimController({ adapter: claimAdapter });
+      const shell = mountEmployee(root, { brand: shared.brand,
+        async loadAccount({ signal }) {
+          const result = await (shared.adapter ?? claimAdapter).readAccount({ signal });
+          return result?.status === 'ok' ? { status: 'ready', name: result.value.account?.name,
+            context: [result.value.account?.companyId, result.value.account?.gradeId].filter(Boolean).join(', ') }
+            : { status: 'unavailable' };
+        },
+        renderBody(main) {
+          const status = statusScreen({ title: 'Checking your saved journey',
+            message: 'Reading your current reservation.' });
+          status.setAttribute('aria-busy', 'true'); main.replaceChildren(status);
+        },
+      });
+      const recover = (state) => later(ticket, () => {
+        // Only the existing reader's explicit nonoccupying proof permits a
+        // draft-editing screen. Gallery and review reread all claim authority.
+        if (state?.blocked === false && ['ready', 'released'].includes(state.state)) setup();
+        else gallery();
+      });
+      reader.load().then(recover, () => recover(null));
+      return () => { reader.destroy(); shell(); };
+    });
+  }
   function setup(nextHint = hint) {
     hint = nextHint;
     mount('setup', (ticket) => mountManualSetup(root, { ...shared, hint, onBack: () => later(ticket, account) }));
   }
   function gallery() {
-    mount('gallery', (ticket) => mountManualGallery(root, { brand: shared.brand, adapter: galleryAdapter,
+    mount('gallery', (ticket) => mountManualGallery(root, { brand: shared.brand, adapter: claimAdapter,
       commandId: shared.commandId,
       onBack() {
         // Keep the unresolved attempt and its retry command in its existing controller.
@@ -46,7 +91,7 @@ export function mountManualJourney(root, options = {}) {
     }));
   }
   const start = (event) => {
-    if (!disposed && event.target === root && view === 'account') setup(event.detail);
+    if (!disposed && event.target === root && view === 'account') later(generation, () => enter(event.detail));
   };
   const ready = (event) => {
     if (!disposed && event.target === root && view === 'setup') {
@@ -63,7 +108,7 @@ export function mountManualJourney(root, options = {}) {
   account();
   return () => {
     if (disposed) return;
-    disposed = true; generation += 1; unsubscribe?.();
+    disposed = true; generation += 1; unsubscribe?.(); disconnectFocus?.();
     root.removeEventListener('gcsp:journey-start', start);
     root.removeEventListener('gcsp:setup-ready', ready); teardown?.();
   };
