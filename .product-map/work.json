@@ -1820,15 +1820,15 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T06:47:09Z",
+      "observed_at": "2026-11-06T07:03:51Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-134",
       "slices": [
         {
           "id": "isolated-real66",
           "status": "in-progress",
           "title": "Isolated memory run and real66 authority",
-          "observed_at": "2026-11-06T06:47:09Z",
-          "evidence": "Actual-current ledger telemetry and nonblocking finite audit reads authored/refrozen; accepted terminal-write boundary and45-source/72-edge composition reused. Static only; targeted delta admission outstanding. docs/gcsp/evidence/fucq134/README.md"
+          "observed_at": "2026-11-06T07:03:51Z",
+          "evidence": "Original single attempt failed before Node0/3; later cleanup snapshot is separate evidence. Retained initialization/first-error repair authored, strict parser unchanged. New delta review/grant required. docs/gcsp/evidence/fucq134/README.md"
         },
         {
           "id": "shared-matrix",
@@ -1869,7 +1869,7 @@
         }
       ],
       "branch": "dev/DEV-2026-11-04-103",
-      "development_note": "Isolated-real66 in progress. Accepted45-source/72-edge review and full-row ledger/direct-join/pin boundary reused unchanged. Final-output reserve, finite preencoded files and mandatory independent parent postwrite audit authored/refrozen. Static only; no helper/probe/Node/test execution, reservations or scratch. Immutable delta admission, five other slices and canonical policy/composed/full acceptance remain open."
+      "development_note": "Isolated-real66 in progress. One authorized23fc796 controller/audit attempt failed1/1 before Node0/3; original snapshot row unknown, later bounded cleanup sample recorded separately. Retained initialization/firstFailure repair authored; strict parser, ledger/deletion and45-source/72-edge composition unchanged. No retry/new runtime grant. Immutable delta review, five other slices and canonical policy/composed/full acceptance remain open."
     }
   ]
 }

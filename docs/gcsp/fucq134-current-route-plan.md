@@ -236,7 +236,7 @@ PolicyService and never bypass its gate.
 
 Review package and exact proposed command:
 `docs/gcsp/evidence/fucq134/README.md`. Admission SHA-256:
-`1c3589ee6002b0274a2a95779749e58dbd3d30604c1bc900cc9d81b91e54641d`.
+`bb59a45825494e54f5156eae26a5e64d257cad04024ac75b7318a0835ba31486`.
 45 source/data files include published66's matching context changes unchanged,
 base generator unchanged and owned six runtime/data files. Dependency and physical
 runtime identities are frozen before custom execution. Three Python ASTs, JSONs
@@ -323,3 +323,31 @@ plan, runtime/probe/reproduction, reservation/scratch/browser/native/database or
 descendants. No new visual acceptance applies to this harness-only delta. Await
 root's immutable targeted review and a new grant; all six acceptance checks and
 five remaining slices stay open. Requested/selected gpt-6.1-sol/high; no fallback.
+
+
+## Failed-first-run initialization repair · 6 November 2026
+
+One root-authorized23fc796/1c3589ee controller→immediate audit attempt exited1/1
+before Node,0/3tests. The preserved original manifest records SnapshotUncertain;
+the primary malformed row is unknown. Missing retained directory caused the
+secondary final receipt traceback. Named scratch/run absent and pinned-lock own
+ledger token absent; process absence remained uncertified. Original grant/error/
+manifest are unchanged; no retry. README records original paths/hashes/metrics.
+
+One separately authorized bounded cleanup ps snapshot is retained locally as a
+later sample, not the original transcript. Its742 rows all have trailing ASCII
+lstart padding; independently stripping only that padding leaves741supported
+rows and one unsupported '?' state. Parser/unknown-state refusal stay unchanged.
+No additional probe or source/helper import was used for that saved-raw diagnosis.
+
+Owned supervisor repair initializes planned external manifest/private retained
+directory/incomplete checkpoint before first snapshot, preserves firstFailure
+with phase, saves only after protected direct join and refuses final writes if
+its retained directory was not initialized. Secondary errors cannot replace the
+first failure; final files remain incomplete absent controller/audit exit0.
+Superseding authoring admission `bb59a45825494e54f5156eae26a5e64d257cad04024ac75b7318a0835ba31486`;236pins,
+45sources/971783bytes, accepted72edges/three cases and original input identities
+unchanged. Ledger/deletion/completion/actual66 unchanged. Static AST/JSON/order/
+hash/source/evidence-preservation/map/diff checks only; repair unexecuted. No new
+run grant or descendants. Requested/selected gpt-6.1-sol/high; no fallback.
+All acceptance and other five slices remain outstanding; root owns final audit.

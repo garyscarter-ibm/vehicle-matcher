@@ -1,16 +1,19 @@
 # FUCQ-134 first chunk review package
 
-**Repaired static freeze pending dispatcher delta admission. No execution grant.**
+**Initialization repair pending delta admission. Original once-only grant consumed; no new execution grant.**
 
-Authoring checkpoint, 6 November 2026. No execution grant has been consumed. No
-JavaScript import, test, OS proof, HostBudget reservation or test scratch allocation
-has occurred. This package is incomplete implementation evidence, not acceptance.
+Checkpoint, 6 November 2026. The one authorized23fc796 controller/audit attempt
+exited1/1 before Node, with0/3 tests reached. The manifest records SnapshotUncertain;
+missing retained-directory initialization then caused the secondary receipt-write
+failure. One separately authorized bounded cleanup snapshot was retained later.
+There has been no retry. The current source delta is authoring only and requires
+new immutable review/grant. This package is incomplete evidence, not acceptance.
 
 ## Frozen scope
 
 - Base: `034b56d08fb742d31478218b670552805d5840ab`.
 - Published real66: `eb5a677b37c486e3da7c4547803f739e22df8ac3`.
-- Admission SHA-256: `1c3589ee6002b0274a2a95779749e58dbd3d30604c1bc900cc9d81b91e54641d`.
+- Admission SHA-256: `bb59a45825494e54f5156eae26a5e64d257cad04024ac75b7318a0835ba31486`.
 - Composed source identity: `7a982714de7cf74968cabcfbe3712be2ff4c3fe75cf95acda3381044cffa4a82`.
 - 45 embedded source/data files, 971783 source bytes, 236 physical identities,
   14 installed packages. Embedded immutable blobs permit checking the complete
@@ -37,13 +40,13 @@ command checks identities without importing custom helpers, allocating resources
 querying OS process state or importing JavaScript:
 
 ```sh
-/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --plan --admission-sha 1c3589ee6002b0274a2a95779749e58dbd3d30604c1bc900cc9d81b91e54641d
+/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --plan --admission-sha bb59a45825494e54f5156eae26a5e64d257cad04024ac75b7318a0835ba31486
 ```
 
 Only after an explicit new grant, replace `--plan` with `--execute` and append:
 
 ```text
---dispatcher-grant fucq134-first-chunk-1c3589ee6002b0274a2a95779749e58dbd3d30604c1bc900cc9d81b91e54641d
+--dispatcher-grant fucq134-first-chunk-bb59a45825494e54f5156eae26a5e64d257cad04024ac75b7318a0835ba31486
 ```
 
 The authorized execution must use an independent parent to retain the actual
@@ -52,12 +55,12 @@ proposed shell command has **not** run; it captures at most8KiB from the reviewe
 controller and creates no ticket file:
 
 ```sh
-if fucq134_completion_ticket="$(/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --execute --admission-sha 1c3589ee6002b0274a2a95779749e58dbd3d30604c1bc900cc9d81b91e54641d --dispatcher-grant fucq134-first-chunk-1c3589ee6002b0274a2a95779749e58dbd3d30604c1bc900cc9d81b91e54641d)"; then
+if fucq134_completion_ticket="$(/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --execute --admission-sha bb59a45825494e54f5156eae26a5e64d257cad04024ac75b7318a0835ba31486 --dispatcher-grant fucq134-first-chunk-bb59a45825494e54f5156eae26a5e64d257cad04024ac75b7318a0835ba31486)"; then
   fucq134_controller_exit=0
 else
   fucq134_controller_exit=$?
 fi
-printf '%s\n' "$fucq134_completion_ticket" | /usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-completion.py --audit --controller-exit "$fucq134_controller_exit" --admission-sha 1c3589ee6002b0274a2a95779749e58dbd3d30604c1bc900cc9d81b91e54641d
+printf '%s\n' "$fucq134_completion_ticket" | /usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-completion.py --audit --controller-exit "$fucq134_controller_exit" --admission-sha bb59a45825494e54f5156eae26a5e64d257cad04024ac75b7318a0835ba31486
 ```
 
 Completion requires controller exit0, the independent audit's bounded `complete`
@@ -108,8 +111,8 @@ listener, network, browser, corpus, full-suite or large-output execution is gran
 
 Static checks only: four Python AST parses, JSON parses and complete explicit
 relative JS import edges. The freeze builder verified stored Git blobs and all
-installed file bytes against the earlier source graph. The supervisor itself has
-not run, including `--plan`. No test result is claimed.
+installed file bytes against the earlier source graph. The original supervisor
+attempt failed before Node; `--plan` has not run. No test result is claimed.
 
 The harness creates a new memory store, trusted identity contexts and simulated
 clock, seeds explicitly fictional records, uses actual66 claim/review/allocation
@@ -260,3 +263,44 @@ reservation, scratch, browser, native or database execution occurred. Original
 45-source/72-edge composition, three cases, base/actual66/source identity and the
 236 physical-pin count remain unchanged. Targeted immutable delta review and a
 new execution grant remain outstanding.
+
+## Failed first attempt and retained-initialization repair
+
+The23fc796 attempt used admission
+`1c3589ee6002b0274a2a95779749e58dbd3d30604c1bc900cc9d81b91e54641d`.
+Both exits were1; controller ticket and audit stdout were empty. The original
+manifest is retained unchanged at
+`/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq134-0fba9cfbd4934d5a85a18daf6f49b50e.json`,
+SHA256 `098f4dcfa8a35de7d324a6391a7024759ab38d1898a4a0897f14840b655d13fc`.
+It records planned state, empty child/group/probe observations and a failed
+SnapshotUncertain finalizer. Recorded peak RSS30965760bytes, combined disk4096bytes,
+elapsed0.411seconds. The named scratch and original run directory are absent;
+no log/receipt/checkpoint exists. An independent pinned-lock read found the owned
+ledger token absent. Process absence remains uncertified. All236pins were intact.
+
+The original snapshot bytes were not retained; its exact offending row is
+unknown. The later authorized cleanup audit is explicitly a separate sample:
+`/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq134-snapshot-audit-0fba9cfb-a44a784d57c148cf95587ed9667b43d7.json`,
+SHA256 `156305bad25f5b29ffa61a5809f9c2d41af0275235237770eb23c0c3babb043a`.
+Its adjacent `.stdout.txt` holds43779bytes, SHA256
+`819986fcf54911ee8b79e72fd4dba2e904ccb4b0c3b9b03e08a1f7a7f2333bb2`;
+adjacent `.stderr.txt` is empty. Exact ps fields exclude arguments/secrets; the
+direct child exited0/joined in0.0535seconds within3seconds/128KiB/64MiB bounds.
+All742 later rows have four trailing ASCII lstart spaces; one additionally has
+unsupported state `?`. Independently removing only padding validates741 rows,
+leaving that state rejected. This does not reconstruct the original failure.
+The strict parser and supported-state grammar are unchanged in this checkpoint.
+
+The owned supervisor now initializes an external planned manifest, private
+retained directory and incomplete identity checkpoint before its first snapshot.
+The first error retains its phase and cannot be replaced by cleanup errors.
+Its evidence save follows the protected direct stop/join attempt; save errors
+remain secondary. Final incomplete checkpoint/receipt/manifest retain the first
+failure. Failed directory initialization forbids final writes into an unowned
+directory. No uncertain process observation becomes a success or deletion proof.
+This prevents the missing-directory tail from obscuring the earlier failure.
+
+No product/source/dependency, parser, ledger/deletion, completion-budget or
+actual66 changes. No additional test/probe/helper execution, new scratch or retry
+was used to validate the authored repair. Static checks and a new freeze support
+delta review only; snapshot compatibility and runtime proof remain outstanding.

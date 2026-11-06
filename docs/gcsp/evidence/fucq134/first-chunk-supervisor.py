@@ -137,6 +137,7 @@ def execute(frozen, args, resources, guard, completion, environment, started):
         'sources': {name: row['sha256'] for name, row in frozen['sources'].items()},
         'environmentDigest': sha(json.dumps(environment, sort_keys=True).encode())}
     process, failure, result = None, None, {}
+    retained_ready = False
     tree.phase = 'setup'
     tree.deadline = started + 120
     def account(rows):
@@ -188,11 +189,15 @@ def execute(frozen, args, resources, guard, completion, environment, started):
             tree.record.setdefault('accounting', {})['elapsedSeconds'] = result['elapsedSeconds']
     tree.account = account
     try:
+        # Retain an incomplete identity before the first fallible OS snapshot.
+        resources.atomic_json(scratch.manifest, scratch.record)
+        rdir.mkdir(mode=0o700, parents=True)
+        retained_ready = True
+        resources.atomic_json(rdir / 'checkpoint.json', {'state': 'incomplete', 'identity': identity,
+            'grant': args.dispatcher_grant, 'manifest': str(scratch.manifest)})
         rows = tree.snapshot()
         scratch.record['owner'] = {key: rows[os.getpid()][key] for key in ['pid', 'start']}
         resources.atomic_json(scratch.manifest, scratch.record)
-        resources.atomic_json(rdir / 'checkpoint.json', {'state': 'incomplete', 'identity': identity,
-            'grant': args.dispatcher_grant, 'manifest': str(scratch.manifest)})
         host.acquire_owned(scratch, guard.allocated_bytes(rdir) + scratch.manifest.stat().st_size, tree)
         scratch.__enter__()
         mirror = scratch.root / 'mirror'
@@ -266,23 +271,35 @@ def execute(frozen, args, resources, guard, completion, environment, started):
                 or names != frozen['testNames']:
             raise RuntimeError('Selected three-case TAP contract failed')
     except BaseException as error:
-        failure = {'type': type(error).__name__, 'message': str(error)[:1024]}
+        failure = {'type': type(error).__name__, 'message': str(error)[:1024], 'phase': tree.phase}
+        scratch.record['firstFailure'] = failure
     finally:
         tree.phase = 'cleanup'
         process = process if process is not None else tree.process
         try:
             result['processAbsence'] = tree.stop_join(process)
         except BaseException as error:
-            failure = failure or {'type': type(error).__name__, 'message': str(error)[:1024]}
+            if failure is None:
+                failure = {'type': type(error).__name__, 'message': str(error)[:1024], 'phase': tree.phase}
+                scratch.record['firstFailure'] = failure
         if process is not None:
             for pipe in [process.stdin, process.stdout]:
                 if pipe and not pipe.closed:
                     pipe.close()
+        if failure is not None:
+            # Persistence errors cannot precede or bypass protected direct join,
+            # and cannot replace the first error with a secondary cleanup error.
+            try:
+                tree.save()
+            except BaseException as error:
+                scratch.record['failureEvidenceError'] = {'type': type(error).__name__, 'message': str(error)[:1024]}
         cleanup = finalizer.finish()
         result['elapsedSeconds'] = time.monotonic() - started
         tree.record.setdefault('accounting', {})['elapsedSeconds'] = result['elapsedSeconds']
     preserved = cleanup.get('pinsPreserved', False)
     candidate_passed = failure is None and cleanup['passed'] and preserved and result.get('rc') == 0
+    if not retained_ready:
+        raise RuntimeError('Retained output directory not initialized; inspect external firstFailure')
     tree.phase = 'final-output'
     account(None)
     receipt = {'identity': identity, 'grant': args.dispatcher_grant, 'passed': False,
@@ -291,6 +308,7 @@ def execute(frozen, args, resources, guard, completion, environment, started):
         'wallSeconds': time.monotonic() - started, 'proofBoundary': 'three real66 mechanics cases only; no route/cache/outcome/corpus/UI/native/full acceptance'}
     checkpoint = {'state': 'incomplete', 'candidatePassed': candidate_passed,
         'completion': 'awaiting-independent-parent-audit',
+        'firstFailure': failure,
         'receipt': str(rdir / 'receipt.json'), 'manifest': str(scratch.manifest)}
     payloads = {'manifest': (scratch.manifest, scratch.record),
                 'receipt': (rdir / 'receipt.json', receipt), 'checkpoint': (rdir / 'checkpoint.json', checkpoint)}
