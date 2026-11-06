@@ -1,0 +1,19 @@
+@import "../employee/gcsp-employee.css";
+@import "../kit/form-controls.css";
+
+gcsp-manual-review { display: block; }
+.gcsp .gcsp-review-body { display: grid; gap: 24px; min-width: 0; overflow-wrap: anywhere; }
+.gcsp .gcsp-review-layout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 24px; min-width: 0; }
+.gcsp .gcsp-review-column, .gcsp .gcsp-review-vehicle { min-width: 0; display: grid; align-content: start; gap: 16px; }
+.gcsp .gcsp-review-form, .gcsp .gcsp-review-context { min-width: 0; padding: 24px; border: 1px solid var(--gcsp-divider); background: var(--gcsp-surface); border-radius: var(--gcsp-radius); }
+.gcsp .gcsp-review-form { display: flex; flex-direction: column; gap: 20px; }
+.gcsp .gcsp-review-time { padding: 16px 20px; background: var(--gcsp-accent-soft); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
+.gcsp .gcsp-review-countdown { margin: 0; font-size: 24px; font-variant-numeric: tabular-nums; }
+.gcsp .gcsp-review-announcement { margin: 0; }
+.gcsp .gcsp-review-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.gcsp .gcsp-review-form .gcsp-h2, .gcsp .gcsp-review-context .gcsp-h2 { margin-top: 0; }
+@media (max-width: 760px) {
+  .gcsp .gcsp-review-layout { grid-template-columns: minmax(0, 1fr); }
+  .gcsp .gcsp-review-form, .gcsp .gcsp-review-context { padding: 16px; }
+  .gcsp .gcsp-review-actions > .vm-btn { width: 100%; white-space: normal; }
+}

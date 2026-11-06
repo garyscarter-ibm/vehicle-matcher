@@ -4,7 +4,27 @@ Jira moved on 3 November 2026. Use the new site and keys below; the [migration r
 
 Start here for every new GCSP discovery, foundation, design, implementation or review session. Repository documents hold the project decisions; this chat history is not required context.
 
-## Latest build handover — 5 November 2026
+## Latest build handover — 6 November 2026
+
+**Integration handoffs for Russell's next poller pass, Gary, 6 November:** read the
+[FUCQ-100 and FUCQ-122 handover](codex-handover-2026-11-06-integration.md) after pulling.
+It identifies the existing FUCQ-96/FUCQ-95 owner actions, the unclaimed FUCQ-120 host,
+and the evidence still needed; it does not create new Stories or transfer claims.
+
+**Demo delivery and scope control, Gary, 6 November:** follow the shared [standing rules](build-rules.md#demo-delivery-and-scope-control)
+in every session and descendant: prioritise a complete working demo; backlog defects below Critical/High
+independently; keep claimed ACs fixed and raise new features/proposed AC changes as separate Stories for
+review and prioritisation before build. FUCQ-149 holds the Resume scope extracted from FUCQ-100.
+
+**Laptop pause, Russell, 6 November:** the local dev poller and its heartbeat are PAUSED on explicit human direction. All owned agents are stopped and cleanup is verified. Read [the current pause handover](../HANDOVER-2026-11-06-LAPTOP-PAUSE.md); scheduled messages cannot resume this run.
+
+**Dispatcher resumed, 6 November:** Russell explicitly resumed the local dev poller. Read the
+[resume record](dev-poller-2026-11-06-resume.md) and current local directive. FUCQ-104/117 retain their existing
+claims and branches; the updated project HTTP422 rule supersedes the obsolete credential-refresh stop.
+
+**Completion priority, Russell, 6 November:** finish existing In Progress stories first. The
+[current blocker checklist](completion-blockers-2026-11-06.md) identifies concrete source, mail,
+runtime and native-storage actions and corrects historical blockers against the latest published work.
 
 **Scaffolding and component map, Russell, 5 November:** the [connected product map](https://garyscarter-ibm.github.io/vehicle-matcher/product-map/) links capabilities, Stories, development evidence and acceptance. GC pollers read [the tooling handoff](product-map-2026-11-05.md) after pulling; retain all current claims and pause boundaries.
 

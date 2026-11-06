@@ -1,0 +1,104 @@
+{
+  "story": "FUCQ-35",
+  "chunk": "flow",
+  "width": 1280,
+  "runtime": "actual memory repository, PolicyService, identity, manual service, HTTP and delivered account/setup journey",
+  "checks": [
+    "launcher reaches real account over authorised HTTP",
+    "embedded skip hidden before focus, keyboard-visible and enters main",
+    "refresh retains one real entry",
+    "keyboard return and browser Back reach same entry",
+    "actual account save continues into delivered manual setup",
+    "desktop/narrow shell and recovery controls fit viewport",
+    "standalone skip hidden before focus, keyboard-visible and enters main"
+  ],
+  "api": [
+    {
+      "path": "/api/gcsp/manual/account",
+      "method": "GET",
+      "status": 200,
+      "envelopeStatus": "ok"
+    },
+    {
+      "path": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "status": 404,
+      "envelopeStatus": "not-found"
+    },
+    {
+      "path": "/api/gcsp/manual/account",
+      "method": "GET",
+      "status": 200,
+      "envelopeStatus": "ok"
+    },
+    {
+      "path": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "status": 404,
+      "envelopeStatus": "not-found"
+    },
+    {
+      "path": "/api/gcsp/manual/account",
+      "method": "GET",
+      "status": 200,
+      "envelopeStatus": "ok"
+    },
+    {
+      "path": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "status": 404,
+      "envelopeStatus": "not-found"
+    },
+    {
+      "path": "/api/gcsp/manual/account",
+      "method": "GET",
+      "status": 200,
+      "envelopeStatus": "ok"
+    },
+    {
+      "path": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "status": 404,
+      "envelopeStatus": "not-found"
+    },
+    {
+      "path": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "status": 404,
+      "envelopeStatus": "not-found"
+    },
+    {
+      "path": "/api/gcsp/manual/draft",
+      "method": "POST",
+      "status": 200,
+      "envelopeStatus": "ok"
+    },
+    {
+      "path": "/api/gcsp/manual/account",
+      "method": "GET",
+      "status": 200,
+      "envelopeStatus": "ok"
+    },
+    {
+      "path": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "status": 200,
+      "envelopeStatus": "ok"
+    }
+  ],
+  "pageErrors": [],
+  "screenshots": [
+    "flow-1280-account.png",
+    "flow-1280-embedded-skip-focused.png",
+    "flow-1280-setup.png",
+    "flow-1280-standalone-skip-focused.png",
+    "flow-1280-standalone.png"
+  ],
+  "external": [],
+  "cleanup": {
+    "browserClosed": true,
+    "listenerClosed": true,
+    "runtimeClosed": true
+  },
+  "status": "passed"
+}

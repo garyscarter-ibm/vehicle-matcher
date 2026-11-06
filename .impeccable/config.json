@@ -11,6 +11,15 @@
         ],
         "createdAt": "2026-11-05T04:21:43.634Z",
         "reason": "Agent triage: FUCQ-93 captured offer email intentionally uses Arial,sans-serif as a local system-font fallback for script-free offline HTML; no web-font request or application-font change."
+      },
+      {
+        "rule": "overused-font",
+        "value": "helvetica",
+        "files": [
+          "blocks/demo-launcher/entry-host.css"
+        ],
+        "createdAt": "2026-11-05T23:37:07.769Z",
+        "reason": "Agent: intentional inherited demo-host system fallback, identical to existing block.html line 19; preserve launcher continuity and the agreed shared GCSP Density theme."
       }
     ]
   }
