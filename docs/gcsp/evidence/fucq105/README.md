@@ -2,6 +2,10 @@
 
 5 November 2026. **Partial development; full story acceptance remains incomplete.**
 
+## Owned follow-up checkpoint · 6 November 2026
+
+[The owned follow-up result](followup-consumer-owned-result.md) records the publishedd9a2c04 HTTP test-shim correction and exact preapproved identity trim: actual consumer1/1 and all4 checkpoints passed, supervisor exit0. Production modules and wait/assertion limits were unchanged. The separate parent functional audit failed with sticky helper ownership; root independent cleanup-only PASS1826 removed only its exact empty scratch/dead row and preserved original evidence. Parent audit, delivered/browser/native/full and whole-story acceptance remain open.
+
 ## Next source/consumer/host plan · 6 November 2026
 
 Root accepted the actual100→102→105 scoped proof through `.claude/test-runs/ownership/fucq105-producer-result-0033.json` (107 independent checks passed). `decision-host-plan.md` and `decision-host-source-plan.json` now record the next read-only plan:47 existing service/display modules/84 edges, plus one existing form helper for the proposed48-module reason UI. No code/import/overlay/test/allocation occurred. The plan identifies105's missing quote revision and reason input, requires one shared actual102 access instance for106 commands, separates independent canonical accept/refusal from policy-owner reason adoption, and records delivered `/gcsp/offer`/dispatch/origin prerequisites. Root reviews final sources/assertions before any new allocation;122 retains the browser lane.105 reserves the first-offer block and publishes exact API/quote pins for107 reuse in its own wrapper.

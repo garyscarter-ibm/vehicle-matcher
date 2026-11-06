@@ -1369,7 +1369,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T09:20:08Z",
+      "observed_at": "2026-11-06T11:05:00Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-105",
       "slices": [
         {
@@ -1397,8 +1397,8 @@
           "id": "decision-host",
           "status": "blocked",
           "title": "Actual FUCQ106 decision and delivered host integration",
-          "observed_at": "2026-11-06T09:20:08Z",
-          "evidence": "Startup ownership successor authored from74b9f9d: provisional external manifest before probes; durable retained helper slot, sticky join failure/no replacements, all-outcome sweeps and caller gates. Same10-member harness/73/137/24/12 graph/test/loader/products/limits. No runtime leak observed, imports/probes/tests/allocation/grant. Independent changed-byte review/current admission/consumer-parent actual waits pending. docs/gcsp/evidence/fucq105/followup-consumer-accounting-repair.md"
+          "observed_at": "2026-11-06T11:05:00Z",
+          "evidence": "Published d9a2c04/plan19af2c4: consumer1/1, all4 checkpoints, supervisor0 after byte-body shim correction; no production change. Parent/auditor1 remain FAIL, first cause unknown. Root cleanup-only PASS1826 preserves originals/removes exact dead root+row. No retry. Delivered host/browser/native/full/final acceptance open. Evidence: docs/gcsp/evidence/fucq105/followup-consumer-owned-result.md"
         },
         {
           "id": "browser",
