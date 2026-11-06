@@ -78,5 +78,28 @@
       "tests": 7,
       "todo": 0
     }
+  },
+  "admittedC536Results": {
+    "testedCommit": "c536ab490fbed3d1bb96a0b6fa007cdc85d139a8",
+    "grant": "fucq107-policy-c536ab4-0033",
+    "policy": {
+      "counts": {
+        "tests": 7,
+        "pass": 7,
+        "fail": 0
+      },
+      "evidence": "scoped-policy-pass/"
+    },
+    "service": {
+      "counts": {
+        "tests": 12,
+        "pass": 10,
+        "fail": 2
+      },
+      "evidence": "scoped-service-attempt-1/"
+    },
+    "cleanup": "Independent208check audits per run verify exact frozen source/input/helper/pg/Node identities, original logs/journals, recorded child PID/start/group dead, supervisor owner dead,scratch removed,strict valid reservation absence.",
+    "repair": "saved-event-repair.proposal.json, not applied; source remains frozen at c536 bytes.",
+    "limitations": "No full-suite stamp or actual canonical registry/decline producer/offer-access/allocation/browser evidence."
   }
 }

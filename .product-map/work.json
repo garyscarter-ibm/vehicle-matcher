@@ -1808,7 +1808,7 @@
       "original_status": "To Do",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-06T00:59:21Z",
+      "observed_at": "2026-11-06T01:16:36Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-107",
       "branch": "dev/DEV-2026-11-04-085",
       "unsliced": false,
@@ -1817,10 +1817,10 @@
           "name": "Lego Batman",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-06T00:59:20.970108+00:00",
+          "observed_at": "2026-11-06T01:16:35.937156+00:00",
           "expires_at": "2026-11-06T02:59:20.970108+00:00",
           "source": "thread 01a1ae4b-a637-7f31-a152-feda9925e927; requested/selected/effective gpt-6.1-sol/high verified turn_context",
-          "status": "authoring"
+          "status": "scoped-validation; repair proposal pending review"
         },
         {
           "name": "Baymax",
@@ -1837,22 +1837,22 @@
           "id": "policy-question",
           "status": "in-progress",
           "title": "One canonical typed-reason question",
-          "observed_at": "2026-11-06T00:59:20.970108+00:00",
-          "evidence": "Authored isolated policy, confirmation and stored-comparison boundary; supervised product tests pending root-reviewed finite executable closure. Canonical103/actual102+106+100 integration remains open."
+          "observed_at": "2026-11-06T01:16:35.937156+00:00",
+          "evidence": "c536ab4:7/7canonical-policy scoped cases passed; immutable graph/pg/Node/process/strictcleanup independently audited208checks. Canonical103 registration and actual source integration remain pending."
         },
         {
           "id": "confirmation",
           "status": "in-progress",
           "title": "One explicit versioned BriefService change",
-          "observed_at": "2026-11-06T00:59:20.970108+00:00",
-          "evidence": "Authored isolated policy, confirmation and stored-comparison boundary; supervised product tests pending root-reviewed finite executable closure. Canonical103/actual102+106+100 integration remains open."
+          "observed_at": "2026-11-06T01:16:35.937156+00:00",
+          "evidence": "c536ab4:12service cases ran10pass2fail, stopped. New-decline fixture outcome mismatch and raw saved-eventID embedding employeeID diagnosed; exact narrow repair proposal awaits root review. Actual producer/browser/full gates remain open."
         },
         {
           "id": "comparison",
           "status": "in-progress",
           "title": "Two stored quote comparison and current-brief evidence",
-          "observed_at": "2026-11-06T00:59:20.970108+00:00",
-          "evidence": "Authored isolated policy, confirmation and stored-comparison boundary; supervised product tests pending root-reviewed finite executable closure. Canonical103/actual102+106+100 integration remains open."
+          "observed_at": "2026-11-06T01:16:35.937156+00:00",
+          "evidence": "c536ab4:12service cases ran10pass2fail, stopped. New-decline fixture outcome mismatch and raw saved-eventID embedding employeeID diagnosed; exact narrow repair proposal awaits root review. Actual producer/browser/full gates remain open."
         },
         {
           "id": "client-states",
