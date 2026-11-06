@@ -3,8 +3,8 @@
 Backend service, activation and runtime slices: trusted editable projection, real no-write demand/fit preview,
 immutable publication, narrow legacy weight adoption, unchanged pinned terms and strict
 route definitions. Later slices add domain-time activation, ordinary HTTP consumption,
-the integrated publish panel and exact reviewed learning-definition registration. No rendered
-browser screen, live BMW or native database proof is claimed by this implementer.
+the integrated publish panel and exact reviewed learning-definition registration. Historical implementation entries below precede the controlled browser evidence.
+No live BMW or native database proof is claimed by this implementer.
 `../../greg-publish.md` records the presentation contract and remaining integration work.
 
 Run from the assigned worktree with `python3 docs/gcsp/evidence/fucq103/scoped-supervisor.py <mode>`.
@@ -350,3 +350,13 @@ Twenty-one unchanged Greg/consumer checks are reused transparently. Default-runt
 weighted preview remains open with the central owner. The corrected capture runner
 and 200-file catalogue are refrozen for review; no browser or static preparation
 was executed at this new identity.
+
+
+The [combined-runtime desktop smoke](browser-smoke-f6a66e8-2026-11-06.md) subsequently
+passed one static preparation and one controlled smoke at published `f6a66e8`.
+All eight originals and actual source/resource cleanup were independently audited.
+The employee screenshot shows the held first car's 1100-point term; the HTTP
+preview's eligible car is a separate decision. The dispatcher accepted the diagnosis and authorised a runner-only capture
+correction, now authored with refreshed catalogues and awaiting new admission.
+There is no product gating change or retry. Desktop/narrow journeys and the
+default stored-subject projection repair remain open; this is no final acceptance.

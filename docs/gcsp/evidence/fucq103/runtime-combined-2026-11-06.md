@@ -120,3 +120,12 @@ registration. No new definition set, business journey, generator/training,
 live/shared activation, external send, full suite or native run is part of this
 checkpoint. All implementation, source review and direct bounded execution in
 this checkpoint were performed by the parent; no new agents were launched.
+
+
+The dispatcher later admitted [one static preparation and one controlled desktop
+smoke](browser-smoke-f6a66e8-2026-11-06.md) at published `f6a66e8`. Both passed
+their selected checks and actual source/resource audits. The employee cost capture
+selected held car 1 rather than the separately eligible car 2; its blocker remains
+correct. The dispatcher accepted the linked diagnosis and authorised a runner-only
+capture correction, now authored and awaiting new admission. This adds no
+default-runtime, full journey, native or final acceptance claim.

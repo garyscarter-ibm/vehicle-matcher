@@ -175,14 +175,33 @@ async function actualEmployee(page, expectedPoints, eligible) {
   await page.goto(origin + embedPath + '?view=brief');
   const response = await responsePromise; const value = good(await response.json());
   assert.equal(value.eligibleCount > 0, eligible);
-  if (eligible) assert.ok(value.decisions.some((decision) => decision.gateStatus === 'eligible' && decision.terms.points.value === expectedPoints));
+  const eligibleDecisions = eligible ? value.decisions.filter((decision) => decision.gateStatus === 'eligible'
+    && decision.terms.points.value === expectedPoints) : [];
+  if (eligible) assert.equal(eligibleDecisions.length, 1, 'Expected one exact eligible HTTP decision at the requested points');
   await page.locator('.gcsp-brief-preview-status').filter({ hasText: eligible ? /[1-9].*eligible/ : /^0 eligible/ }).waitFor();
   const rendered = await page.locator('.gcsp-brief-preview').innerText();
   if (eligible) assert.ok(rendered.includes(String(expectedPoints)) || rendered.includes(expectedPoints.toLocaleString('en-GB')));
+  let eligibleCard; let cardEvidence;
+  if (eligible) {
+    const decision = eligibleDecisions[0];
+    assert.match(decision.orderUuid, /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
+    eligibleCard = page.locator(`.gcsp-brief-cards .vm-card[data-member-id="${decision.orderUuid}"][data-gate="eligible"]`);
+    assert.equal(await eligibleCard.count(), 1, 'The eligible HTTP decision must identify one rendered card');
+    const gate = eligibleCard.locator('.vm-card-gate');
+    assert.equal(await gate.isVisible(), true); assert.equal(await gate.innerText(), 'Eligible');
+    cardEvidence = { http: { orderUuid: decision.orderUuid, gateStatus: decision.gateStatus, points: decision.terms.points },
+      dom: await eligibleCard.evaluate((node) => ({ memberId: node.dataset.memberId, gate: node.dataset.gate,
+        gateText: node.querySelector('.vm-card-gate').textContent.trim() })) };
+    assert.equal(cardEvidence.dom.memberId, cardEvidence.http.orderUuid);
+    assert.equal(cardEvidence.dom.gate, cardEvidence.http.gateStatus);
+  }
   const term = eligible ? page.locator('.gcsp-brief-cards .vm-card-terms .vm-specs')
-    .filter({ hasText: `${expectedPoints.toLocaleString('en-GB')} points a month` }).first()
+    .and(eligibleCard.locator('.vm-card-terms .vm-specs'))
+    .filter({ hasText: `${expectedPoints.toLocaleString('en-GB')} points a month` })
     : page.locator('.gcsp-brief-preview-status');
+  assert.equal(await term.count(), 1, 'The capture must target one term on the matching decision card');
   await capture(page, eligible ? `employee-${expectedPoints}` : 'employee-no-suitable', { target: term });
+  if (eligible) report.screenshots.at(-1).employeeDecision = cardEvidence;
   if (!eligible) await capture(page, 'employee-no-suitable-reasons', {
     target: page.locator('.gcsp-brief-cards .vm-card-decision').first() });
   mark(`Actual employee brief HTTP preview/render ${eligible ? expectedPoints + ' points' : 'no suitable car'}`);

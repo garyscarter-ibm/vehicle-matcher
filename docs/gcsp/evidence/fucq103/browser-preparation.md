@@ -162,3 +162,16 @@ stored driver's eligibility fact into Greg's stored-subject shape, preserving it
 provenance; this does not close the default-runtime projection gap. The earlier
 static preparation and smoke receipts do not validate this successor. Static
 preparation, browser admission and rendered acceptance remain pending review.
+
+
+## Executed combined-runtime preparation and controlled smoke
+
+At `f6a66e88a3ab264681b389c43d5d60aa81dfa9fb`, the dispatcher subsequently
+admitted exactly one new preparation and one conditional desktop smoke. Both
+passed with the unchanged 200-file catalogue and independent parent source/actual
+cleanup audits. [The successor evidence](browser-smoke-f6a66e8-2026-11-06.md)
+records original captures, resource receipts, the held-car capture-selector
+limitation and its read-only diagnosis. Default Greg eligibility projection,
+rendered desktop/narrow journeys and final acceptance remain unfinished. The dispatcher subsequently authorised the runner-only exact-decision capture
+correction; refreshed source identities are in that evidence. No further browser
+execution is granted by these results.

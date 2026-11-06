@@ -1019,7 +1019,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-06T00:47:52Z",
+      "observed_at": "2026-11-06T01:01:13Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103",
       "jira_observed_at": "2026-11-05T22:40:24Z",
       "branch": "dev/DEV-2026-11-04-066",
@@ -1083,8 +1083,8 @@
           "id": "rendered-integration",
           "status": "blocked",
           "title": "Desktop and narrow keyboard browser evidence",
-          "observed_at": "2026-11-06T00:47:52Z",
-          "evidence": "Exact100 runtime16adoptions now serve actualscenarios200/60sstep/mechanicsreset. Initial25/26; controlled synthetic driverfact projection focused5/5,21unchangedGreg/consumer reused. Default weightedpreview projection gap remains with100; prior smoke incomplete. Correctedtargetscroll+200sourcecatalogue pendingrootreview/staticprep/browsergrant. docs/gcsp/evidence/fucq103/runtime-combined-2026-11-06.md."
+          "observed_at": "2026-11-06T01:01:13Z",
+          "evidence": "f6a66e8 one prep + controlled desktop smoke PASS; parent/root source/resource audits and8original PNGs checked. Capture selected held car1 term; eligible car2 is separate. Dispatcher accepted diagnosis; runner-only exact-decision capture correction authored/catalogues refreshed, pending new admission. Default Greg eligibility gap with100; desktop/narrow/full gates open. docs/gcsp/evidence/fucq103/browser-smoke-f6a66e8-2026-11-06.md."
         },
         {
           "id": "full-validation",
