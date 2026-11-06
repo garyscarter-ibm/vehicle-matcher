@@ -247,14 +247,21 @@ def run(plan, grant):
                 allowed = {Path(path).as_uri(): value for path, value in files.items()}
                 loader = scratch.root / 'loader.mjs'
                 journal = scratch.root / 'modules.jsonl'
-                loader.write_text('import{readFileSync,appendFileSync,existsSync,statSync}from"node:fs";import{createHash}from"node:crypto";'
+                loader.write_text('import{readFileSync,appendFileSync,existsSync,statSync}from"node:fs";import{createHash}from"node:crypto";import{fileURLToPath}from"node:url";'
                     + 'const allowed=new Map(Object.entries(' + json.dumps(allowed) + '));const journal=' + json.dumps(str(journal)) + ';'
                     + 'const own=import.meta.url,ownParent=' + json.dumps(ROOT.as_uri() + '/') + ',ownHash=process.env.FUCQ100_GREG_LOADER_SHA256;'
+                    + 'const ownPath=fileURLToPath(own),ownSpecifiers=new Set([own,ownPath]);let diagnostics=0;'
+                    + 'function coordinate(v){if(typeof v!=="string")return null;if(v.startsWith("/"))return v.split(/[?#]/,1)[0].slice(0,512);'
+                    + 'try{const u=new URL(v);if(u.protocol!=="file:")return "<"+u.protocol+">";u.username="";u.password="";u.search="";u.hash="";return u.href.slice(0,512);}catch{return "<unrecognized>";}}'
+                    + 'function diagnostic(outcome,s,parent,resolved){if(diagnostics++<4)process.stderr.write("GCSP_LOADER_REGISTRATION "+JSON.stringify({outcome,'
+                    + 'specifierForm:s===own?"file-url":s===ownPath?"absolute-path":"unexpected",specifier:coordinate(s),parentURL:coordinate(parent),'
+                    + 'resolvedURL:coordinate(resolved),expectedURL:coordinate(own),expectedParent:coordinate(ownParent),parentMatches:parent===ownParent})+"\\n");}'
                     + 'function record(u,expected){if(!expected||createHash("sha256").update(readFileSync(new URL(u))).digest("hex")!==expected)throw Error("Module drift "+u);'
                     + 'if(existsSync(journal)&&statSync(journal).size>131072)throw Error("Module journal bound");'
                     + 'appendFileSync(journal,JSON.stringify({url:u,sha256:expected})+"\\n");}'
                     + 'export async function resolve(s,c,next){const r=s==="pg"?{url:' + json.dumps(PG_ENTRY.as_uri())
-                    + ',shortCircuit:true}:await next(s,c);if(r.url===own){if(s!==own||c.parentURL!==ownParent)throw Error("Invalid loader registration");record(own,ownHash);}'
+                    + ',shortCircuit:true}:await next(s,c);if(r.url===own){if(!ownSpecifiers.has(s)||c.parentURL!==ownParent){diagnostic("rejected",s,c.parentURL,r.url);throw Error("Invalid loader registration");}'
+                    + 'record(own,ownHash);diagnostic("admitted",s,c.parentURL,r.url);}'
                     + 'else if(r.url.startsWith("file:")&&!allowed.has(r.url))throw Error("Undeclared module "+r.url);return r;}'
                     + 'export async function load(u,c,next){if(u.startsWith("file:"))record(u,u===own?ownHash:allowed.get(u));return next(u,c);}\n')
                 env['FUCQ100_GREG_LOADER_SHA256'] = sha(loader)

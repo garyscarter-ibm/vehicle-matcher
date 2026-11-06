@@ -1,0 +1,31 @@
+{
+  "kind": "author-only exact loader admission repair; not executed",
+  "prior_failed_checkpoint": "b95146efb95fdc4b98634c5d624026c513f9242a",
+  "original_failure_evidence": "docs/gcsp/evidence/fucq100/greg-eligibility-first-run.json",
+  "original_failure_log_unchanged": true,
+  "diagnosis": "Static hypothesis: absolute launcher path rejected by former URL-only predicate. Actual rejected arguments were not observed.",
+  "delta": [
+    "Own specifier Set contains only exact owned file URL and fileURLToPath(own).",
+    "Resolved own URL, exact worktree-directory parent, generated-byte hash and bounded module journal remain required.",
+    "At most four safe registration diagnostics per loader instance; each coordinate capped at512characters, URL credentials/query/fragment stripped and non-file URL contents omitted."
+  ],
+  "catalogue_sha256": "76259196e7cea4123a3312d32b28574d7dd859907ecc4af449449e82fab55207",
+  "supervisor_sha256": "e5c61567e00d1cfb567301ebe1164c74c8dbd300e7a144a67187eb8b45feda61",
+  "stamp_sha256": "0f8525994aba6a60fce172be30e2bb6c02d964403f2e870fd02d1351b27f02e2",
+  "source_graph_unchanged": true,
+  "changed_source_hashes": {
+    "server/gcsp/manual-context/recommendation-facts.js": "4901d85a1a718529e3d85bba64b8de098105e945ae444127796c931b239571ec",
+    "server/gcsp/greg/index.js": "62452edd55d8834f029b1a4ab3dee2d252f3a4bc04c76431ad999909839f974c",
+    "server/gcsp/greg/publish/index.js": "63621b317268cfc9e9d6b99b71306eb5327a102ab4e4a1b1f98542dfd6edd1ae",
+    "server/gcsp/greg/publish/fit.js": "d3249720c2d3a15164a3bfb402e5316ea8f4016dfe58db028590c56e728d6674",
+    "server/test/gcsp-greg-driver-eligibility.test.js": "f7b0ec23ff95f8cef01a6b332f4a4342156d91df24702fcb9023683f3d7f6148",
+    "server/test/gcsp-greg-demand.test.js": "005d6025f98a03a3c013be08d013cd3d0c9b7faa9487ffe2c124d2bb9ec914ba"
+  },
+  "selected_business_cases": 25,
+  "source_paths": 108,
+  "static_edges": 281,
+  "installed_files": 54,
+  "helper_hashes": 8,
+  "new_execution_grant": null,
+  "retry_executed": false
+}

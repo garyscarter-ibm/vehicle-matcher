@@ -2386,7 +2386,7 @@
     "sha256": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818"
   },
   "helpers": {
-    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/greg-eligibility-supervisor.py": "45a0db9e93b534d00e14f8b82cce343ba2a33a3ece47041a800b35f984caa59e",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/greg-eligibility-supervisor.py": "e5c61567e00d1cfb567301ebe1164c74c8dbd300e7a144a67187eb8b45feda61",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-supervisor.py": "43026a725b6305fb8537e032049f0c19cf345bcdb8ee851c408e7dba5255bcc6",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-installed-closure.json": "3cb38953d0bd475e6e13913e4b6c0f00ffb3a12e6547c3bf820bd64cbefaebee",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
