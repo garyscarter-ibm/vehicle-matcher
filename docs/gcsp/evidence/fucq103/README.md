@@ -1,5 +1,11 @@
 # FUCQ-103 scoped implementation evidence
 
+Latest source-only resource correction: [raw owner identity compatibility](eligibility-owner-identity-repair-2026-11-06.md).
+The owned guard preserves raw `lstart` spacing for legacy launcher accounting while
+retaining normalized process comparisons. Both current plans are refrozen; this
+correction has no execution grant. Prior scoped proofs remain tied to their original
+commits and digests, with no completed-mode rerun or whole-story acceptance.
+
 Backend service, activation and runtime slices: trusted editable projection, real no-write demand/fit preview,
 immutable publication, narrow legacy weight adoption, unchanged pinned terms and strict
 route definitions. Later slices add domain-time activation, ordinary HTTP consumption,
@@ -7,7 +13,7 @@ the integrated publish panel and exact reviewed learning-definition registration
 No live BMW or native database proof is claimed by this implementer.
 `../../greg-publish.md` records the presentation contract and remaining integration work.
 
-Current source admission and proposed execution commands are in
+Historical source admissions and proposed execution commands are in
 [the combined proposal](eligibility-combined-proposal-2026-11-06.md) and
 [the owned harness repair diagnosis](eligibility-harness-repair-2026-11-06.md).
 Only the nine frozen `eligibility-*` modes remain in the current supervisor. Use the pinned Python

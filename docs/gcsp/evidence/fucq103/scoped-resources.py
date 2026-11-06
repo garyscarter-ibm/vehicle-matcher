@@ -68,8 +68,12 @@ def parse_snapshot(output, returncode, stderr, supervisor):
         tail = fields[4].split(None, 5)
         # A supplied unknown start stays explicit. It cannot anchor ownership.
         if tail and tail[0] in ('-', '?', '??'):
+            raw_start = None
             identity, command = None, fields[4].split(None, 1)[1] if len(fields[4].split(None, 1)) == 2 else ''
         elif len(tail) == 6 and start_identity(' '.join(tail[:5])):
+            # Legacy launchers compare owner.start with raw ps lstart text.
+            # Keep its internal padding separate from normalized PID identity.
+            raw_start = re.match(r'\S+(?:\s+\S+){4}', fields[4]).group()
             identity, command = start_identity(' '.join(tail[:5])), tail[5]
         else:
             unknown = True
@@ -79,7 +83,7 @@ def parse_snapshot(output, returncode, stderr, supervisor):
             unknown = True
             continue
         rows[pid] = {'pid': pid, 'ppid': parent, 'pgid': group, 'rss': rss * 1024,
-                     'start': identity, 'command': command}
+                     'start': identity, 'rawStart': raw_start, 'command': command}
     if unknown or supervisor not in rows or not rows[supervisor]['start']:
         raise SnapshotUnknown(observations)
     return rows
@@ -268,7 +272,7 @@ class Budget:
 
     def acquire(self, scratch, retained):
         rows = process_snapshot()
-        identity = {key: rows[os.getpid()][key] for key in ('pid', 'start')}
+        identity = {'pid': os.getpid(), 'start': rows[os.getpid()]['rawStart']}
         memory = available_memory()
         if type(memory) is not int or memory <= 0:
             raise RuntimeError('Host available RAM is unknown')
@@ -597,7 +601,7 @@ def make_scratch(resources, retained, project, policy):
             raise RuntimeError('Only the admitted finalizer may delete owned scratch')
     rows = process_snapshot()
     scratch = Scratch(retained, project, policy, expected=128 * MIB)
-    scratch.record['owner'] = {key: rows[os.getpid()][key] for key in ('pid', 'start')}
+    scratch.record['owner'] = {'pid': os.getpid(), 'start': rows[os.getpid()]['rawStart']}
     return scratch
 
 
