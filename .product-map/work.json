@@ -1005,49 +1005,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103"
     },
     {
-      "id": "FUCQ-104",
-      "title": "Track order requests from requested to confirmed to released",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-06T00:11:50Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-104",
-      "slices": [
-        {
-          "id": "records",
-          "status": "not-started",
-          "title": "Distinct repository records and additive migration"
-        },
-        {
-          "id": "submission",
-          "status": "not-started",
-          "title": "Version-pinned idempotent Greg order requests"
-        },
-        {
-          "id": "confirmation",
-          "status": "not-started",
-          "title": "Synthetic production acknowledgement and keyed release queue"
-        },
-        {
-          "id": "tracking",
-          "status": "not-started",
-          "title": "Shared-kit order-tracking stages and keyboard states"
-        },
-        {
-          "id": "release-allocation",
-          "status": "not-started",
-          "title": "Actual release, allocation and demand consumer integration"
-        },
-        {
-          "id": "integration",
-          "status": "not-started",
-          "title": "Composed runtime, browser, native handoff and final validation"
-        }
-      ],
-      "unsliced": false
-    },
-    {
       "id": "FUCQ-105",
       "title": "Show the offer's exact quote, current-car comparison and countdown",
       "status": "In Progress",
@@ -1685,31 +1642,39 @@
       ]
     },
     {
-      "assignee": "Russell Gowers",
-      "branch": "dev/DEV-2026-11-04-067",
       "id": "FUCQ-36",
-      "observed_at": "2026-11-06T00:03:53Z",
+      "title": "Package and verify both launcher routes for the GCSP static site",
+      "status": "In Progress",
       "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-06T00:15:25Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-36",
       "slices": [
         {
           "id": "manifest",
-          "status": "not-started",
-          "title": "Directory-discovered-package-and-dependency-validation"
+          "status": "complete",
+          "title": "Directory-discovered-package-and-dependency-validation",
+          "observed_at": "2026-11-06T00:10:49Z",
+          "evidence": "Lead reviewed directory-discovered assembler/import-asset graph and package tests. Scoped package+launcher59/59 and UI ratchet42/42 pass; strict records targeted96639896 and a5995890. Actual browser/final integration are separately planned."
         },
         {
           "id": "entry",
-          "status": "not-started",
-          "title": "API-switch-and-root-prefix-entry-smokes"
+          "status": "in-progress",
+          "title": "API-switch-and-root-prefix-entry-smokes",
+          "observed_at": "2026-11-06T00:10:49Z"
         },
         {
           "id": "release",
-          "status": "not-started",
-          "title": "Revision-compatibility-and-release-checklist"
+          "status": "in-progress",
+          "title": "Revision-compatibility-and-release-checklist",
+          "observed_at": "2026-11-06T00:10:49Z"
         },
         {
           "id": "browser",
-          "status": "not-started",
-          "title": "Assembled-desktop-narrow-keyboard-and-retail-matrix"
+          "status": "in-progress",
+          "title": "Assembled-desktop-narrow-keyboard-and-retail-matrix",
+          "observed_at": "2026-11-06T00:10:49Z"
         },
         {
           "id": "integration",
@@ -1717,20 +1682,72 @@
           "title": "Final-story-integration-and-required-full-validation"
         }
       ],
-      "status": "In Progress",
-      "title": "Package and verify both launcher routes for the GCSP static site",
-      "type": "Story",
       "unsliced": false,
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-36",
       "workers": [
         {
-          "expires_at": "2026-11-06T00:33:52.505300+00:00",
-          "harness": "codex",
           "name": "Mary-Sue Walton",
-          "observed_at": "2026-11-06T00:03:52.505300+00:00",
           "role": "story-lead",
-          "source": "Thread01a1ae28-6e71-7cf1-855c-85c7c38d3392;requested/selected/effective gpt-6.1-sol/high;no fallback;title verified",
-          "status": "active;dynamic static assembly and package tests"
+          "harness": "codex",
+          "source": "Thread01a1ae28-6e71-7cf1-855c-85c7c38d3392;requested/selected/runtimeverifiedSol/high;0d8e56c scoped checkpoint and live lead progress",
+          "observed_at": "2026-11-06T00:15:25.331354+00:00",
+          "expires_at": "2026-11-06T00:45:25.331354+00:00",
+          "status": "active; assembler/tests/release and browser proof"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-04-067"
+    },
+    {
+      "id": "FUCQ-104",
+      "title": "Track order requests from requested to confirmed to released",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-06T00:15:25Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-104",
+      "slices": [
+        {
+          "id": "records",
+          "status": "not-started",
+          "title": "Distinct repository records and additive migration"
+        },
+        {
+          "id": "submission",
+          "status": "not-started",
+          "title": "Version-pinned idempotent Greg order requests"
+        },
+        {
+          "id": "confirmation",
+          "status": "not-started",
+          "title": "Synthetic production acknowledgement and keyed release queue"
+        },
+        {
+          "id": "tracking",
+          "status": "not-started",
+          "title": "Shared-kit order-tracking stages and keyboard states"
+        },
+        {
+          "id": "release-allocation",
+          "status": "not-started",
+          "title": "Actual release, allocation and demand consumer integration"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Composed runtime, browser, native handoff and final validation"
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-04-089",
+      "workers": [
+        {
+          "name": "Buzz Lightyear",
+          "role": "story-lead",
+          "harness": "codex",
+          "status": "active;independent supply-record/service and tracking implementation",
+          "source": "Thread01a1ae35-02f9-7152-a760-c25dc42194f9;requested/selectedSol/high;no fallback;nativeadoptionverified",
+          "observed_at": "2026-11-06T00:15:25.331354+00:00",
+          "expires_at": "2026-11-06T00:45:25.331354+00:00"
         }
       ]
     }
