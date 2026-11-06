@@ -59,7 +59,7 @@ async function setup(t) {
   f.employeeApi = caseAdapter(f, employeeCookie); f.gregApi = caseAdapter(f, f.gregCookie);
   // Actual persisted employee preparation is owned by createLocalSession/C1.
   // A brief is employee input; no test-authored manual facts or released rows.
-  const preference = { value: 'hatch', importance: 100, valueState: 'confirmed', importanceState: 'confirmed', source: 'employee' };
+  const preference = { value: 'hatchback', importance: 100, valueState: 'confirmed', importanceState: 'confirmed', source: 'employee' };
   good((await http(f, '/api/gcsp/brief/draft', { body: { commandId: 'case-brief-draft',
     expectedBriefVersion: 0, expectedDraftVersion: 0,
     brief: { schemaVersion: 1, preferences: { body: preference }, essentials: {
