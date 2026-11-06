@@ -15,7 +15,7 @@ export const HISTORICAL_PINS = Object.freeze({
   snapshot: 'ee1ae6c5cb6ab742f9a2959825ca722007409fa019d15acd44bb4b79984556a3',
 });
 const PRODUCER_PINS = {
-  'scripts/gcsp/collection-session.mjs': '7495084c33c84538beb6ae3a04a292dbc0a800af6c9a10144de8e9728fc4b4b2',
+  'scripts/gcsp/collection-session.mjs': '67eff0ad3311d0bfbc13bfe03816fd4e55c1f4fc9af1ae5c2814bf87941ccbe4',
   'scripts/gcsp/configuration-key.mjs': '2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60',
 };
 const SNAPSHOT_VERSION = 'bmw-gb-i5-2026-11-01.v1';

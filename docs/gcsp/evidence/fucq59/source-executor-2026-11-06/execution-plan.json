@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "f59-source-executor-execution-plan.v1",
+  "run": "devpoller-resume20261106-f59-source-executor",
+  "executable": true,
+  "readOnly": true,
+  "allocation": {
+    "id": "f59-known-seed-20261106-four-get",
+    "sourceVersion": "f58-20261105.v1",
+    "attempts": 4,
+    "bytes": 2097152
+  },
+  "allocationAuthority": "Parent explicitly allocated at most four GET attempts after persisted plan/pins and offline route/budget/deadline/byte/privacy checks. This is the sole allocation, not per-stage.",
+  "collectionPlanSha256": "457e00d36ba7703710b4f9b709b05defc1f6d3492c2d1211fefb531ea16740e5",
+  "codePins": {
+    "scripts/gcsp/collect-fleet.mjs": "d039d3c8a8acf216204bd83831c70d6001d0e277aec94bd51397a9738341449c",
+    "scripts/gcsp/collection-session.mjs": "7495084c33c84538beb6ae3a04a292dbc0a800af6c9a10144de8e9728fc4b4b2",
+    "scripts/gcsp/public-bmw-source.mjs": "4a4137830ba863f1a373d6a01b6b5a7fb3705f465cbec21a7c8933eed55f7703",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "server/test/gcsp-fleet-collector.test.js": "3aa25380dd7989b953e5459b6f0b25c694421ed48d82b291e4a835a1babf35e7",
+    "server/gcsp/policy/seed-v1.json": "c585213b98631d6e82acc1b3720d47efae49fdb502f5fc86fb440703ef6e41a6",
+    "server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json": "ee1ae6c5cb6ab742f9a2959825ca722007409fa019d15acd44bb4b79984556a3",
+    "docs/gcsp/evidence/fucq59/source-executor-2026-11-06/run-pilot.mjs": "6b6cb52d4038c88c9e04b528f6f1147f34445c77f132b2c9e9c1da87df1bbeb1"
+  },
+  "sourceEvidence": {
+    "commit": "7aa6bee7d7da3b46d14cfe5a0becff93d0a029bd",
+    "qualificationSha256": "c5fd355259c610435055a2934dd2357502c442768c5f6bcc13b0ffdc1101d41c",
+    "fullModelSelectorSha256": "f3accdd334a64d9c0eabcfde35a4b26d81dba64fbe6a48558f2daab8f3032b13"
+  },
+  "routes": {
+    "page": "https://configure.bmw.co.uk/en_GB/configure/G61E/T5MJ",
+    "settingsOrigin": "https://configure.bmw.co.uk",
+    "settingsPathPattern": "^/en_GB/settings\\.[a-zA-Z0-9]+\\.json$",
+    "tree": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G61E&future-models=true&closest-fallback=true",
+    "solver": "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/T5MJ?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKSFU%2CP0300%2CS0337%2CS043L&mandatory-elements=S0337"
+  },
+  "resources": {
+    "workers": 1,
+    "scratchMiB": 128,
+    "ramMiB": 384,
+    "chunkSeconds": 300,
+    "sourceWallMs": 45000,
+    "completeRequestTimeoutMs": 10000,
+    "responseDecodedBytes": 1048576,
+    "aggregateDecodedBytes": 2097152,
+    "checkpointBytes": 1048576,
+    "cacheEntries": 16,
+    "cacheRetentionMs": 86400000,
+    "largeOutputs": false
+  },
+  "privacy": "Raw page/settings/tree/solver bodies are never persisted. Public application headers stay in closure memory and only go to pinned UCP GETs. Retain strict safe projections/counters/provenance, source HTTP status/type and hashes. No VIN, plate, customer, login, browser, image or source writes.",
+  "stop": "Any endpoint/key/shape/access change stops; no retries, alternate endpoints, credentials or allowlist broadening. Exclusive durable marker consumes allocation before traffic; never repeat this pilot.",
+  "acceptanceLimit": "Known 47 factory plus one source-typed accessory observation only. Accessory quantity, model year, production/tax dates and canonical F39 adapter readiness stay unknown/unqualified; accepted corpus count remains zero."
+}

@@ -543,14 +543,84 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-57"
     },
     {
-      "id": "FUCQ-59",
-      "title": "Collect distinct constructible configurations with resumable batches",
-      "status": "To Do",
-      "original_status": "To Do",
       "assignee": "",
+      "id": "FUCQ-59",
+      "observed_at": "2026-11-06T12:15:13Z",
+      "original_status": "To Do",
+      "slices": [
+        {
+          "evidence": "Lead reviewed target Base64/accessory/alias behavior; two offline regression tests pass, scoped receipt lead59/receipt-identity-green.json; F54 publication compatibility remains separately planned.",
+          "id": "canonical-identity",
+          "observed_at": "2026-11-06T10:10:35Z",
+          "status": "complete",
+          "title": "Canonical configuration identity and factory/accessory separation (2 points)"
+        },
+        {
+          "evidence": "Lead reviewed exact F39 typed selection/context/solver changes; 24/24 offline regressions pass, receipt-lifetime-deadline-green.json. Real source separate.",
+          "id": "resolved-selection",
+          "observed_at": "2026-11-06T10:26:40Z",
+          "status": "complete",
+          "title": "Deterministic candidates and complete solver response validation (3 points)"
+        },
+        {
+          "evidence": "Lead reviewed version2 common session;31collector/session +29F39/F54 scoped tests pass60/60, including generic-stage persisted HTTP stops, deadline-byte accounting, cache/resume, SIGKILL and active writer boundaries. source-executor-2026-11-06/validation-and-cleanup.json.",
+          "id": "atomic-resume",
+          "observed_at": "2026-11-06T10:56:10Z",
+          "status": "complete",
+          "title": "Versioned bounded cache and atomic checkpoint/resume (3 points)"
+        },
+        {
+          "evidence": "Lead verified exact GET allowlist/header restrictions, combined4attempt/2MiB budgets,1MiB response,10s complete-body timeout/join and45s persisted deadline;60/60 scoped tests and actual4GET/200/782059B pilot, zero retries/images/browser/writes. Defaults retain zero traffic.",
+          "id": "finite-offline",
+          "observed_at": "2026-11-06T10:56:10Z",
+          "status": "complete",
+          "title": "Finite source budgets, deadlines and default no-traffic safety (2 points)"
+        },
+        {
+          "evidence": "Checkpoint2b metadata-only session handoff passes35/35scoped owning-file cases;100%line/97.36%branch/92.45%function session coverage. session-metadata-2026-11-06/result.json pins code/test/4owned roots/groups/overlay absence. No classifier/raw schema/admission/source-version activation; proposed4GET/F39 writer unallocated; accepted0/all74pending. Prior qualifier21case proof unchanged; F60 old9case proof does not cover new session identity. Source/publication slices remain blocked.",
+          "id": "source-qualification",
+          "observed_at": "2026-11-06T12:15:12.743423+00:00",
+          "status": "blocked",
+          "title": "Selected real-source model mapping and solver integration (1 point)"
+        },
+        {
+          "evidence": "Historical1Nov registered F39 snapshot and original F54 resolvedIdentity already support truthful partial publication (matching60/60 scoped evidence); physical production/modelYear/steering remain unknown. Fresh6Nov observation accepted0 cannot automatically compose through actual F60/F54 schemas. Only new-date/current-session publication remains blocked on explicit qualification/integration. readiness-2026-11-06.md; independent code/security reviews PASS AEE.",
+          "id": "publication-contract",
+          "observed_at": "2026-11-06T11:13:12Z",
+          "status": "blocked",
+          "title": "F39/F54 identity, provenance and selected-source compatibility (1 point)"
+        },
+        {
+          "evidence": "Lead reviewed authored retailer/API injected-memory scope; node --test server/test/brand.test.js server/test/api.test.js passes132/132, receipt-retailer-api.json.",
+          "id": "retailer-boundary",
+          "observed_at": "2026-11-06T10:26:40Z",
+          "status": "complete",
+          "title": "Retailer mapping and API regression boundary"
+        },
+        {
+          "evidence": "Current authored full offline suite at7abeabc00587633211be6e822ea036b3dde16626:68files,1296tests/1291pass/5planned-nativePGskips/0fail,107.99s, complete1435file identity unchanged; AEE source/test pins match. Exact plan/result in current-full-2026-11-06/. Root/group81414/overlay absent,7922848B scratch removed. Shared ledger charging unverified during active run; parent manually counted usage. Native SQL and absent F60v2 assembly remain unproved.",
+          "id": "full-validation",
+          "observed_at": "2026-11-06T11:17:51Z",
+          "status": "complete",
+          "title": "Authored serial npm test integration gate (1 point)"
+        }
+      ],
+      "status": "To Do",
+      "title": "Collect distinct constructible configurations with resumable batches",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59",
+      "workers": [
+        {
+          "expires_at": "2026-11-06T12:15:12.743423+00:00",
+          "harness": "codex",
+          "name": "Cecil Turtle",
+          "observed_at": "2026-11-06T12:15:12.743423+00:00",
+          "role": "story-lead",
+          "source": "thread 01a1b054-1167-7820-b9f2-92ec81e37bbe",
+          "status": "Checkpoint2b executor metadata scoped35/35pass; exact byte/time/source/request/capability handoff; ready independent review. No source/full/F60-new-pin proof; qualification blocked; Sol/high no descendants"
+        }
+      ]
     },
     {
       "id": "FUCQ-61",
@@ -1827,10 +1897,10 @@
           "name": "Scooby Doo",
           "role": "story-lead",
           "harness": "codex",
-          "observed_at": "2026-11-06T11:57:05.013401+00:00",
-          "expires_at": "2026-11-06T11:57:05.013401+00:00",
+          "observed_at": "2026-11-06T12:31:19.407940+00:00",
+          "expires_at": "2026-11-06T12:31:19.407940+00:00",
           "source": "thread 01a1b05f-dcbc-7e50-a2f9-0332b39f082a",
-          "status": "Stopped at F2 repair checkpoint; requested/selected Sol/high, no fallback/descendants; scoped 9/9; re-review and canonical assembly remain; no active claim"
+          "status": "Canonical local prepublication checkpoint: scoped 9+6 passed with zero skips; requested/selected/verified Sol/high, no fallback or descendants. Worker expires at handoff; parent exact review/publication and wider runtime/native/source/asset/full gates remain."
         }
       ],
       "slices": [
@@ -1852,8 +1922,8 @@
           "id": "shared-accounting",
           "status": "in-progress",
           "title": "Canonical collector session cache budget recovery integration",
-          "observed_at": "2026-11-06T11:57:04Z",
-          "evidence": "Actual frozen F59 v2 aee5e902 generic proof 6/6 retained; historical pipeline now 9/9 after reproduced F2 input-pin snapshot repair. Same cache/ledger/deadline/lease and recovery. Canonical assembly and independent re-review remain. docs/gcsp/evidence/fucq60/historical-integration-evidence-2026-11-06.md."
+          "observed_at": "2026-11-06T12:31:19.407940+00:00",
+          "evidence": "Canonical local F59 4ea9077/F60 candidate passes 9 historical + 6 generic cases, zero skips, with F60_PRODUCER_ROOT unset. Cache/ledger/deadline/lease and recovery share the actual local producer. Prior F2 exact re-reviews passed; parent two-pin/evidence review/publication and shared-runtime integration remain. docs/gcsp/evidence/fucq60/canonical-assembly-2026-11-06/result.json."
         },
         {
           "id": "real-source",
@@ -1871,15 +1941,15 @@
           "id": "focused-contracts",
           "status": "complete",
           "title": "Authored enrichment and F39 F42 focused contracts",
-          "observed_at": "2026-11-06T11:57:04Z",
-          "evidence": "Current historical file 9/9 pass, zero skips, after new immediate caller-pin mutation regression failed before narrow fix. Original pin/provenance and actual F39/F59/F60/F54 boundary pass; source frozen. Prior unchanged 6/6 generic-session and 50/50 pure/adapter evidence retained. Re-review/final suite remain. docs/gcsp/evidence/fucq60/historical-integration-evidence-2026-11-06.md."
+          "observed_at": "2026-11-06T12:31:19.407940+00:00",
+          "evidence": "Canonical local historical 9/9 plus generic real-session 6/6 pass, zero skips, at reviewed producer session 67eff0ad; F2 immediate caller-pin race preserved. Prior unchanged 50/50 pure/adapter and independently reviewed 35-case producer evidence reused, no rerun. Explicit plan after unsupported selector; final suite remains. docs/gcsp/evidence/fucq60/canonical-assembly-2026-11-06/result.json."
         },
         {
           "id": "corpus-integration",
           "status": "in-progress",
           "title": "F54 corpus and presentation integration",
-          "observed_at": "2026-11-06T11:57:05Z",
-          "evidence": "Original-envelope candidate/immutable sidecar/isolated registry lookup and recovery remain covered in current 9/9 actual-module file after F2 repair. Zero VIN/images; F60 incomplete, F54 complete means supported subset. Canonical activation, breadth, final integration and re-review remain. docs/gcsp/evidence/fucq60/historical-integration-evidence-2026-11-06.md."
+          "observed_at": "2026-11-06T12:31:19.407940+00:00",
+          "evidence": "Canonical local candidate validates original-envelope retained historical candidate/sidecar/isolated registry/lookup and recovery in 9/9 cases. Zero VIN/images; F60 incomplete/offline-session-not-source-qualified; F54 complete means supported catalogue subset. Parent review/publication, shared corpus/presentation activation, native integration, breadth and final validation remain. docs/gcsp/evidence/fucq60/canonical-assembly-2026-11-06/result.json."
         },
         {
           "id": "final-suite",

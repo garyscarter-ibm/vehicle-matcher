@@ -15,7 +15,7 @@ const repository = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const producerRoot = process.env.F60_PRODUCER_ROOT || repository;
 assert.ok(isAbsolute(producerRoot), 'Select an absolute actual producer root.');
 const producerIdentity = {
-  'scripts/gcsp/collection-session.mjs': '7495084c33c84538beb6ae3a04a292dbc0a800af6c9a10144de8e9728fc4b4b2',
+  'scripts/gcsp/collection-session.mjs': '67eff0ad3311d0bfbc13bfe03816fd4e55c1f4fc9af1ae5c2814bf87941ccbe4',
   'scripts/gcsp/configuration-key.mjs': '2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60',
 };
 for (const [path, expected] of Object.entries(producerIdentity)) {

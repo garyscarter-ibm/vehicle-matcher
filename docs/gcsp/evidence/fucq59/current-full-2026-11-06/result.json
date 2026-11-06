@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-59",
+  "status": "passed authored offline full manifest; native PostgreSQL not exercised",
+  "testedHead": "7abeabc00587633211be6e822ea036b3dde16626",
+  "implementationCommit": "aee5e902a20d82b880694064a10ad9842aaddd3a",
+  "planSha256": "6d016b33a50eaf0a67778e4366e0f0df1c550babd07c67abfa95a9e69271bf90",
+  "supervisorSha256": "8a2d15cec97b67a046a65f70561d8a43d8e5af28d2bf21cd82f444997683fb5a",
+  "command": [
+    "node",
+    "--test",
+    "--test-concurrency=1",
+    "server/test/**/*.test.js"
+  ],
+  "nodeVersion": "v26.7.0",
+  "testFiles": 68,
+  "sourceFiles": 1435,
+  "completeSourceIdentityUnchanged": true,
+  "sourceIdentityDigest": "1512fd72fbb361eb631160247d09d5cb911d643761419649f97cc90de725f027",
+  "testManifestDigest": "3cff4401e8649d49689970ddc26cbb4c95716a11bf4b69efb474a2101edbd7bb",
+  "totals": {
+    "tests": 1296,
+    "pass": 1291,
+    "fail": 0,
+    "cancelled": 0,
+    "skip": 5,
+    "todo": 0
+  },
+  "nativeSkipLines": [
+    "\ufe63 PostgreSQL native parity: NOT RUN; GCSP_DATABASE_URL unset, Render integration gate remains blocked (0.145417ms) # SKIP",
+    "\ufe63 native PostgreSQL rows/dates, seed replay, immutable SQL and reopen agree with memory (0.157833ms) # SKIP",
+    "\ufe63 native PostgreSQL mid-publication SQL failure rolls back every typed row and permits a valid retry (0.030709ms) # SKIP",
+    "\ufe63 postgresql native constraints reject a second occupying hold and claim (0.512625ms) # GCSP_DATABASE_URL is unset; native SQL constraints were not run",
+    "\ufe63 postgresql: shared TransactionRepository contract (0.029334ms) # GCSP_DATABASE_URL is unset; PostgreSQL integration was not run"
+  ],
+  "unexpectedSkips": [],
+  "nativeTruth": "All68 authored files ran. GCSP_DATABASE_URL explicitly absent only in child; five native PostgreSQL tests skipped as planned; no native SQL evidence/stamp. Driver-double tests are not native proof.",
+  "wallSeconds": 107.987886084,
+  "resources": {
+    "workers": 1,
+    "budgetScratchMiB": 128,
+    "budgetRamMiB": 1024,
+    "timeoutSeconds": 300,
+    "sampledPeakScratchBytes": 7922848,
+    "sampledPeakRssBytes": 377307136,
+    "removedScratch": "/private/tmp/test-stamp-shard-984874e305534f89bef10f7be9f7b113",
+    "group": 81414,
+    "rootAbsent": true,
+    "groupAbsent": true,
+    "overlayAbsent": true,
+    "largeOutput": false,
+    "compatibilityException": null,
+    "leftovers": []
+  },
+  "reservationCaveat": "Parent observed shared reservations.json empty at11:15:23/11:16:11UTC during this active owned run. Parent confirmed the same process ps lstart differs under C versus en_GB locale; which process removed the registry entry is unproven. Continuous global charging is not verified. Parent counted actual resource use manually and directed this bounded run to continue; no helper edits/rerun or external-worker interference. Separate evidence: pass-1103/resource-registry-locale-anomaly.json.",
+  "externalEvidenceRoot": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/full-aee-validation",
+  "externalEvidence": [
+    "manifest-full-aee-current.json",
+    "selected-full-aee-current.json",
+    "receipt-full-aee-current.json",
+    "overlay-full-aee-current.json",
+    "independent-cleanup-check.json",
+    "runs/ownership/984874e305534f89bef10f7be9f7b113.json",
+    "runs/checkpoints/a7244221238774248e1ef694eedae4cd56c56b9db197e98add77d751a2b0ba0c.json"
+  ],
+  "successfulLog": {
+    "sha256": "bd28375d9cb7959f35bb12708dfbe1c715e6e0e6fb8c78860216a1fcae9a64f1",
+    "bytes": 126669,
+    "state": "removed after independent parent audit; SHA, bytes, totals, exact native skips and relevant60mapped test timings retained",
+    "absentVerified": true,
+    "removedBytes": 126669
+  },
+  "scopeLimits": [
+    "F60 version2 assembly absent from tested branch; independent cross-worktree evidence belongs to F60",
+    "6November observation still unqualified; accepted public corpus rows0",
+    "broader model/profile and200real configurations not proved",
+    "browser/deep-link and native PostgreSQL not exercised"
+  ],
+  "additionalTraffic": {
+    "sourceRequests": 0,
+    "browser": 0,
+    "nativeSql": 0,
+    "sourceWrites": 0,
+    "credentialWork": 0
+  },
+  "agents": {
+    "lead": "Cecil Turtle",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "selectedModel": "gpt-6.1-sol",
+    "selectedEffort": "high",
+    "fallback": null,
+    "descendants": 0
+  },
+  "parentAudit": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/pass-1103/f59-current-full-parent-audit.json"
+}
