@@ -22,17 +22,19 @@ The current production choice DTO contains exactly `{model, derivative}`. Reques
 
 Before activation, the F77 publication/F78 bootstrap and planner adapter need one agreed, immutable mapping per production source version:
 
+F78 contributes stock aggregates, stock identities and lead times. Configuration costs and eligibility belong to canonical F82/PolicyService policy, keyed by `configurationId`; they are outside F78's scope.
+
 | Mapping fact | Required evidence/use |
 | --- | --- |
 | Publication identity and digest | The actual retained F77 configuration publication and accepted coverage, not a count inferred from a historical receipt. |
 | Stable planner model and derivative IDs | Explicit membership of each `{model, derivative}` production choice in the published model/derivative groups. Never derive IDs by normalising labels. |
 | `configurationIds` | Explicit existing configuration IDs that belong to that choice, with source/version provenance. F117 can join its catalog's `production:{model,derivative}` to these IDs. This is an integration requirement, not a newly accepted source schema. |
-| Cost and policy pins | Canonical F78/F82 assumption keys/values/versions and eligibility evidence used by F117. Do not fill costs from model names or an unversioned fixture. |
+| Cost and policy pins | Canonical F82/PolicyService configuration costs and eligibility, keyed by `configurationId`, with assumption keys/values/versions and evidence used by F117. Do not fill costs from model names or an unversioned fixture. |
 | Exact stock and release relationship | F78/F92 provider must resolve a confirmed `supplyId` into exact source-backed stock. A successful F92 receipt's `eventId`/`trancheId` must match each persisted stock row's `release` provenance before it counts as released. |
 
 Every source revision requires its own retained mapping. Historical requests/confirmations must continue to resolve against their original provenance; a current catalog must not silently reinterpret an old label. Ambiguous or missing membership/cost/source versions remain unavailable integration inputs. A future source shape that cannot satisfy the current strict submit/production ports needs a separately coordinated additive contract change.
 
-The active `lookup-reference.v1` artifact currently has **two configurations**, as verified by the dispatcher/scoper on 6 November; older F58 receipts mention three. Neither the active two nor the historical three establish the required accepted F77 real-configuration coverage. No accepted F77 publication or F78 production/configuration/cost mapping is available to this lead. Small synthetic proof inputs remain explicitly labelled qualification data.
+The active `lookup-reference.v1` artifact currently has **two configurations**, as verified by the dispatcher/scoper on 6 November; older F58 receipts mention three. Neither the active two nor the historical three establish the required accepted F77 real-configuration coverage. No accepted F77 publication, versioned production/configuration membership mapping or canonical F82/PolicyService configuration cost and eligibility mapping is available to this lead. Small synthetic proof inputs remain explicitly labelled qualification data.
 
 F104's trusted submission remains `submit(gregContext,{commandId,model,derivative,quantity,expectedPolicyVersion,expectedStockVersion})`, with pins from `readTracking.value.versions`. Extra fields are rejected. There is no atomic batch-submit port; any F119 per-row submission and recovery contract must be coordinated separately. This handoff changes neither F117 planning nor predict/plan files.
 
