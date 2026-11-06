@@ -1820,17 +1820,17 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T10:26:40Z",
+      "observed_at": "2026-11-06T10:32:06Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59",
       "workers": [
         {
           "name": "Cecil Turtle",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-06T10:26:40.343179+00:00",
-          "expires_at": "2026-11-06T12:26:40.343179+00:00",
+          "observed_at": "2026-11-06T10:32:06.474199+00:00",
+          "expires_at": "2026-11-06T10:32:06.474199+00:00",
           "source": "thread 01a1b054-1167-7820-b9f2-92ec81e37bbe",
-          "status": "scoped checkpoint; serial full validation next"
+          "status": "stopped; offline implementation validated/published, real-source gates blocked"
         }
       ],
       "slices": [
@@ -1885,10 +1885,10 @@
         },
         {
           "id": "full-validation",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Authored serial npm test integration gate (1 point)",
-          "observed_at": "2026-11-06T10:26:40Z",
-          "evidence": "Parent admitted one serial npm test run after scoped checkpoint; not yet executed. Full suite cannot clear real-source qualification."
+          "observed_at": "2026-11-06T10:32:06Z",
+          "evidence": "Reviewed frozen fdb71c2 exact npm expansion:68files/1289total/1284pass/5nativePGskips/0fail,73.43s; all1423source hashes unchanged. Full authored manifest executed; source/native gates remain. validation-summary.json; owned cleanup verified."
         }
       ],
       "unsliced": false
