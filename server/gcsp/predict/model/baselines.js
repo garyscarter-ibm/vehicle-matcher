@@ -30,6 +30,9 @@ export function expressedDemandBaseline(example, projection, mapping, options) {
 // The actual service imports are deferred until an explicit offline training run.
 export async function prepareActualChoiceBaselines({ training, settings, policyService, policyRead }) {
   const read = { ...policyRead, policyVersion: settings.policyVersion };
+  const trainingPolicy = await policyService.getPolicySnapshot(read);
+  requireChoice(trainingPolicy?.status === 'ok' && trainingPolicy.policyVersion === settings.policyVersion,
+    'baseline.training-policy', 'baseline-unavailable');
   const readKey = async (key) => {
     const out = await policyService.getAssumption(key, read);
     requireChoice(out?.status === 'ok' && out.policyVersion === settings.policyVersion
@@ -60,9 +63,26 @@ export async function prepareActualChoiceBaselines({ training, settings, policyS
     const { clock, identity } = runtime.value;
     const presenter = await identity.createPresenterSession('offline-baseline-presenter');
     requireChoice(presenter.status === 'ok', 'baseline.presenter', 'baseline-unavailable');
+    const initialClock = await clock.now(presenter.value.context);
+    requireChoice(initialClock.status === 'ok' && Number.isFinite(Date.parse(read.asOf))
+      && Number.isFinite(Date.parse(initialClock.value.now)) && Date.parse(initialClock.value.now) <= Date.parse(read.asOf),
+    'baseline.clock', 'baseline-unavailable');
+    if (Date.parse(initialClock.value.now) < Date.parse(read.asOf)) {
+      const advanced = await clock.advance(presenter.value.context, { commandId: 'offline-baseline-training-instant',
+        expectedClockVersion: initialClock.value.clockVersion, to: read.asOf });
+      requireChoice(advanced.status === 'ok', 'baseline.clock', 'baseline-unavailable');
+    }
     const acting = await identity.switchPrincipal(presenter.value.context, 'demo-greg', 'offline-baseline-greg');
     requireChoice(acting.status === 'ok' && acting.value.context.policyVersion === settings.policyVersion, 'baseline.context', 'baseline-unavailable');
     const context = acting.value.context;
+    // A new run must resolve the identical retained source, never another run's
+    // authority or a seed-only replacement for the selected training version.
+    const baselinePolicy = await policyService.getPolicySnapshot({ ...read, runId: context.runId });
+    requireChoice(baselinePolicy.status === 'ok' && inputDigest(baselinePolicy.value) === inputDigest(trainingPolicy.value),
+      'baseline.policy-identity', 'baseline-unavailable');
+    const initialBriefs = await repository.query(context, 'briefs');
+    requireChoice(initialBriefs.status === 'ok' && initialBriefs.value.length === 0,
+      'baseline.initial-population', 'baseline-unavailable');
     // Retain only the latest earlier-cycle confirmed brief for each training employee.
     const people = new Map();
     for (const example of [...training].sort((a, b) => a.observedAt.localeCompare(b.observedAt))) {

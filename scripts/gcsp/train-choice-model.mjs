@@ -9,16 +9,19 @@ import { writeModelArtifact } from '../../server/gcsp/predict/model/artifact.js'
 const projectRoot = fileURLToPath(new URL('../../', import.meta.url));
 const usage = `Train and evaluate the offline synthetic choice model.
 Usage: node scripts/gcsp/train-choice-model.mjs [options]
-  --dataset FILE        Manifest-backed FUCQ-113 dataset JSON
-  --policy-file FILE    Complete reviewed immutable PolicyService source
+  --dataset FILE        Manifest-backed FUCQ-113 dataset (default: committed demo)
+  --policy-file FILE    Immutable policy version (default: committed canonical capture)
+  --retained-policy-file FILE  Original historical policy for runtime bootstrap
   --policy-version ID   Pin a retained training policy version
   --as-of ISO          Policy read instant (otherwise source effectiveFrom)
   --run-id ID          Isolated offline policy-read scope
   --output DIR         Immutable content-addressed artifact directory
   --help               Show this help
 Training never activates a model. Missing data/policy/baselines return unavailable.
+The default policy source includes its committed, unchanged original historical version.
+An explicit --policy-file needs any required history supplied explicitly.
 `;
-const optionsWithValues = new Set(['dataset', 'policy-file', 'policy-version', 'as-of', 'run-id', 'output']);
+const optionsWithValues = new Set(['dataset', 'policy-file', 'retained-policy-file', 'policy-version', 'as-of', 'run-id', 'output']);
 function parse(argv) {
   const options = {};
   for (let i = 0; i < argv.length; i += 1) {
@@ -34,8 +37,13 @@ function parse(argv) {
 export async function runCli({ argv = [], write = (s) => process.stdout.write(s), writeError = (s) => process.stderr.write(s) } = {}) {
   try {
     const options = parse(argv); if (options.help) { write(usage); return 0; }
-    const provider = new FilePolicyProvider(options['policy-file'] ? { filePath: resolve(options['policy-file']) } : {});
-    const versions = await provider.loadVersions();
+    const policyPath = resolve(options['policy-file'] ?? join(projectRoot, 'docs/gcsp/models/choice-training-policy.json'));
+    const history = options['retained-policy-file'] ? [resolve(options['retained-policy-file'])]
+      : options['policy-file'] ? [] : [join(projectRoot, 'docs/gcsp/models/choice-training-policy-base.json')];
+    const provider = new FilePolicyProvider({ filePath: policyPath, retainedFilePaths: history });
+    let versions;
+    try { versions = await provider.loadVersions(); }
+    catch { throw new ChoiceModelError('choice-policy-unavailable', 'policy-source'); }
     const version = options['policy-version'] ? versions.find((v) => v.policyVersion === options['policy-version']) : versions[0];
     if (!version) throw new ChoiceModelError('choice-policy-unavailable', 'policy-version');
     const policyService = new PolicyService({ provider });
