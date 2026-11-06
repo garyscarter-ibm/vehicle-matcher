@@ -50,7 +50,10 @@ export function createExpressedOrderForecastProvider({ repository, identity, clo
           if (!employee || !employee.roles?.includes('employee') || !text(employee.renewalId) || !text(employee.entitlementSlotId)) return unavailable('planning-forecast-entitlement-missing');
           const slot = rows.entitlement_slots.find((s) => s.entitlementSlotId === employee.entitlementSlotId);
           if (!slot || slot.employeeId !== employee.employeeId || slot.renewalId !== employee.renewalId
-            || (brief.renewalId !== undefined && brief.renewalId !== employee.renewalId)
+            // F99's BriefService persists null when its server context has no
+            // renewalId. The exact employee/slot pair above supplies that link;
+            // an explicitly recorded renewal must still agree with it.
+            || (brief.renewalId != null && brief.renewalId !== employee.renewalId)
             || (brief.entitlementSlotId !== undefined && brief.entitlementSlotId !== slot.entitlementSlotId)) return unavailable('planning-forecast-entitlement-mismatch');
           const renewalAt = renewalInstant(employee); if (!renewalAt) return unavailable('planning-renewal-unconfirmed');
           if (Date.parse(renewalAt) > Date.parse(read.horizonEnd)) { excluded.push({ employeeId: employee.employeeId, reason: 'outside-horizon' }); continue; }

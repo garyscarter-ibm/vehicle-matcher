@@ -1131,7 +1131,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T00:38:58Z",
+      "observed_at": "2026-11-06T09:43:18Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-117",
       "slices": [
         {
@@ -1164,10 +1164,10 @@
         },
         {
           "id": "producer-integration",
-          "status": "blocked",
+          "status": "in-progress",
           "title": "Trusted demand and actual supply integration",
-          "observed_at": "2026-11-06T00:51:22.475977+00:00",
-          "evidence": "Latest saved-demand prototype30tests:28pass2fail at entitlement mapping; explicit Global422 interrupted lead. Concrete canonical catalog/evaluator integration remains open."
+          "observed_at": "2026-11-06T09:43:18Z",
+          "evidence": "Resumed actual F99 saved-brief null renewal compatibility and strict mismatch gates; scoped31/31 pass. Future catalog/evaluator + actual F104/F92 composition remain open. docs/gcsp/evidence/fucq117/resume-receipt.json"
         },
         {
           "id": "final-validation",

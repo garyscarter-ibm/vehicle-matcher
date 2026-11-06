@@ -308,6 +308,7 @@ test('trusted expressed forecast reads actual F99 saved briefs without inverting
   const f = await forecastRun();
   const publicBefore = await f.service.readDemand(f.context);
   assert.equal(publicBefore.value.demand.activeBriefs.count.kind, 'band');
+  assert.equal((await f.repository.query(f.context, 'briefs')).value[0].renewalId, null);
   const out = await f.provider.readForecast(f.context, f.read); assert.equal(out.status, 'ok');
   assert.equal(out.value.forecast.basis, 'expressed-saved-demand');
   assert.equal(out.value.forecast.entitlements.length, 1); assert.equal(out.value.forecast.entitlements[0].renewalAt, '2026-11-26T23:59:59.999Z');
@@ -315,6 +316,19 @@ test('trusted expressed forecast reads actual F99 saved briefs without inverting
   assert.equal(out.value.forecast.entitlements[0].entitlementId, f.employee.entitlementSlotId);
   assert.equal(f.calls(), 1); assert.deepEqual(await f.service.readDemand(f.context), publicBefore);
   assert.equal((await f.provider.readForecast({ ...f.context }, f.read)).status, 'forbidden');
+});
+
+test('trusted forecast rejects an explicitly conflicting saved renewal or entitlement', async () => {
+  for (const patch of [{ renewalId: 'another-renewal' }, { entitlementSlotId: 'another-slot' }]) {
+    const f = await forecastRun();
+    await f.write(async (tx) => {
+      const brief = (await tx.list('briefs')).value[0];
+      return tx.insert('briefs', { ...brief, briefVersion: brief.briefVersion + 1,
+        previousBriefVersion: brief.briefVersion, ...patch });
+    });
+    assert.equal((await f.provider.readForecast(f.context, f.read)).code, 'planning-forecast-entitlement-mismatch');
+    assert.equal(f.calls(), 0);
+  }
 });
 
 test('default forecast fails closed without future evaluation, a known renewal or matching versions', async () => {
