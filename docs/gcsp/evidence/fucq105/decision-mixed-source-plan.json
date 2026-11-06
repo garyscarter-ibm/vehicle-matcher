@@ -1,0 +1,1240 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-105",
+  "date": "2026-11-06T01:40:34.723897+00:00",
+  "status": "Concrete authored finite mixed decision proposal; UNEXECUTED, external exact root review required before any allocation/source copy/import",
+  "baseline": {
+    "previous_plan": "docs/gcsp/evidence/fucq105/decision-successor-source-plan.json",
+    "sha256": "619dd871d539e7222975bfcdfb7c4c1891bd9d7f37a4145ddf917ec6eacf319b",
+    "old_modules": 48,
+    "old_import_edges": 86,
+    "current_modules": 51,
+    "current_import_edges": 94,
+    "added_modules": [
+      "server/gcsp/policy/activation.js",
+      "server/gcsp/policy/adoption.js",
+      "server/gcsp/policy/reviewed-definitions.js"
+    ],
+    "replaced_modules": [
+      "server/gcsp/policy/index.js",
+      "server/gcsp/policy/publish.js"
+    ],
+    "reason": "Actual accepted103 canonical adoption/publication path adds3policy modules and5reviewed JSON inputs. Historical48/86 union is insufficient; no module omitted to retain a stale count. Include the previously unpinned34,889-byte static VIN registry URL input, without claiming its use in these cases."
+  },
+  "source_refs": {
+    "consumer": "b4efefec60577a14a98e6bae934741249bd7c20c",
+    "producer": "a7fc8580efba36c329b2479711d6b66db53962bd",
+    "access": "4a56d386f031e7cf5a1fdeaefdcc612fb35cbd7b",
+    "106_canonical_package": "90cb70ce951a4c9de934e792b8b7fbee0665d934",
+    "106_publication": "7c280b8eb76dce4a8a65b3017026dc8a74ebbd15",
+    "canonical103": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+    "root100_eligibility_checkpoint_not_selected": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8"
+  },
+  "root100_scope": "38be4f5 repairs Greg publication/manual driver input paths, absent from this accepted producer/106 consumer boundary. Do not import unrelated Greg paths or rerun25/25. Pin that exact checkpoint only if a later concrete interface requires it.",
+  "canonical_source_plan": {
+    "ref": "90cb70ce951a4c9de934e792b8b7fbee0665d934",
+    "path": "docs/gcsp/evidence/fucq106/canonical-adoption-source-plan.json",
+    "sha256": "db0dfa478ddef3594abe5c74c0aaeddeefc61e9bd8fcedee4c0ba832ec178746"
+  },
+  "accepted_prior_evidence": {
+    "docs/gcsp/evidence/fucq106/canonical-adoption-typed-checkpoint.json": {
+      "ref": "7c280b8eb76dce4a8a65b3017026dc8a74ebbd15",
+      "sha256": "6574c9f141c5f6ab85abda892e31565cc5140e8fc7d9e348dbe2a408cda39e52",
+      "role": "Accepted prior106 scoped evidence; reused, not rerun."
+    },
+    "docs/gcsp/evidence/fucq106/canonical-adoption-typed-result.md": {
+      "ref": "7c280b8eb76dce4a8a65b3017026dc8a74ebbd15",
+      "sha256": "6deadd1efecdf07538a02768fcfd31538df9c2b7d7ad8573eb76fdade171016c",
+      "role": "Accepted prior106 scoped evidence; reused, not rerun."
+    },
+    "docs/gcsp/evidence/fucq106/canonical-adoption-typed-final-audit.json": {
+      "ref": "7c280b8eb76dce4a8a65b3017026dc8a74ebbd15",
+      "sha256": "975d1b496bf41506379db0c47278d0eeb7d5669d9c4382b05f335268f132c672",
+      "role": "Accepted prior106 scoped evidence; reused, not rerun."
+    }
+  },
+  "modules": {
+    "blocks/gcsp/brief/brief-view-model.js": {
+      "ref": "b7061e9e7d6117319b76e429b6acbd2041ae8229",
+      "sha256": "7eea953d26aaeded1f6fe5ac219ebcc0f0c739f8f003b7ca61414dc4da1aa366",
+      "bytes": 4268,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "blocks/gcsp/kit/form-controls.js": {
+      "ref": "b7061e9e7d6117319b76e429b6acbd2041ae8229",
+      "sha256": "4df9e86f3d51f33397bd524b95f35a40240c931b441f91a7b8b05ef89fe508b4",
+      "bytes": 2179,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "blocks/gcsp/offer/http-adapter.js": {
+      "ref": "b4efefec60577a14a98e6bae934741249bd7c20c",
+      "sha256": "7ed45f955e5bdb437cb94f62bef0dbb3b8ac9d5ad2a8c477f4fe91da5297fbc5",
+      "bytes": 8303,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "blocks/gcsp/offer/offer-controller.js": {
+      "ref": "b4efefec60577a14a98e6bae934741249bd7c20c",
+      "sha256": "672d5f113751f2483a10dad219ce77d5d5c25b3b1cb1429cfc9b6aa1cb14f400",
+      "bytes": 10411,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "blocks/gcsp/offer/offer-projection.js": {
+      "ref": "b4efefec60577a14a98e6bae934741249bd7c20c",
+      "sha256": "fc8f500cd82ef4d18c9fde4062bb4880534c50e78bbcd729bd0a90b97457e64e",
+      "bytes": 13287,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "blocks/gcsp/offer/offer-view.js": {
+      "ref": "b4efefec60577a14a98e6bae934741249bd7c20c",
+      "sha256": "de5d37114ab4a4400d73a7086d8426c00d4d6cf63a77c22463a029316a324d4a",
+      "bytes": 11461,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "blocks/vehicle-matcher/feedback-actions.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "eb6dcfb82aed8045228797f870a5e337ef7f0a8f3e136eb46804995d71838744",
+      "bytes": 10235,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "blocks/vehicle-matcher/modes/brand-copy.js": {
+      "ref": "b7061e9e7d6117319b76e429b6acbd2041ae8229",
+      "sha256": "485098aea61944c5fd62047164b4aabfdd1c95c2ff2be9aacf5dae211d195ec9",
+      "bytes": 36275,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "blocks/vehicle-matcher/modes/result-card.js": {
+      "ref": "b7061e9e7d6117319b76e429b6acbd2041ae8229",
+      "sha256": "cc5d50468f45f1c751c597ece89ca5d7dfe88f70d98dd606104ad3504007f948",
+      "bytes": 32636,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "blocks/vehicle-matcher/ui.js": {
+      "ref": "b7061e9e7d6117319b76e429b6acbd2041ae8229",
+      "sha256": "49107097a7927e388ff78949045827f3a8903fea0bd758dbe1aa597bec82d8b2",
+      "bytes": 4277,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/brands.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "ea63741b2fcb01dbe35dcdffdd66f7021a3c0219517a8de1487fae65f65299e2",
+      "bytes": 46965,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/engine.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "bbe8a865d280fb75075e93a139a3badbaa20972a18406baeeafb8ca2fc56a550",
+      "bytes": 42306,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/gcsp/brief/index.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "22500a517f8232947b33ac274e32bf60746ba9d8199851e750784f57737ee418",
+      "bytes": 19768,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/gcsp/clock/index.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "a1726ddc4ad11deb0b7044480d745180d4c7dff42b34e77305a090b35d38e40a",
+      "bytes": 23255,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/gcsp/fixtures/principals.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "848797ec98dd253c8c8daa4e1078f2b6ecc30b2807c713bf13615f2ead18ec2f",
+      "bytes": 2686,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/gcsp/fixtures/scenario-v1.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "408f135c04ae909e717c30763073a3ea24a82c1e8643fabdea2888e22f1681f4",
+      "bytes": 4895,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/gcsp/fixtures/scenarios/catalogue-v1.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "eca724465148032750c74c57882c0ee0ae69f3b119330194b9601b9b4bc1b73c",
+      "bytes": 5754,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/gcsp/fixtures/scenarios/index.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "e1e794e347833ae952352d7bdf2cbc9afae28c65a01edd76c570a6bf38c4cad4",
+      "bytes": 4505,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/gcsp/identity/index.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "7b23c7a6f251edaa54ce8921eb29734976447239afd3cb58343d79f9e153c152",
+      "bytes": 12789,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/gcsp/manual-context/fixtures.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "e63bee220e6e563f96ee94a94f37500c67d0c2944b3909a0a8c7d3f1f89b01a6",
+      "bytes": 4389,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/gcsp/manual-context/ports.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "c1e7db5012f6d3212b79ad989e6cde5a0e390e2f4bfe50f91ee4c79c8a7a1267",
+      "bytes": 4210,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/gcsp/migrations/index.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f",
+      "bytes": 4706,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/gcsp/offers/access-http.js": {
+      "ref": "4a56d386f031e7cf5a1fdeaefdcc612fb35cbd7b",
+      "sha256": "f37533eeb5309cb4eff6c6dcf0af5ab8a8819afdaa4d08b4baee0147d360e868",
+      "bytes": 4776,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": false
+    },
+    "server/gcsp/offers/access.js": {
+      "ref": "4a56d386f031e7cf5a1fdeaefdcc612fb35cbd7b",
+      "sha256": "134e9d39253e934618f6cf38b334bb7cf0f8912443ee159e6167b949d4fdb34a",
+      "bytes": 20668,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": false
+    },
+    "server/gcsp/offers/buddy-hold.js": {
+      "ref": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "sha256": "b9f1a9be9cf42552a56313492bf0703b49ed715ffe2059f477ee11637c44b3d6",
+      "bytes": 28746,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": false
+    },
+    "server/gcsp/offers/buddy-remote.js": {
+      "ref": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "sha256": "0284045ab38c22c305019ad4a560724aa233e830c6c37186d5661da430c59e01",
+      "bytes": 24229,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": false
+    },
+    "server/gcsp/offers/current-car-comparison.js": {
+      "ref": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "sha256": "c5aaf8b2e3123301d50f3dade21e89e4f88abf12ede4e2c7ed801adbc56099cd",
+      "bytes": 3135,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": false
+    },
+    "server/gcsp/offers/decision-http.js": {
+      "ref": "da4a2c824d7d73b118185c4cfc6395d4e9254e4f",
+      "sha256": "223e3358569602145ecb2a5f967abf5a9e3ca78d688667d0e6c8bbb0c1779b96",
+      "bytes": 4782,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": false
+    },
+    "server/gcsp/offers/decision.js": {
+      "ref": "da4a2c824d7d73b118185c4cfc6395d4e9254e4f",
+      "sha256": "a934455a09beb13e3682c1f10ebea95f0549ff2fad8db03d54ff947e7ed7789a",
+      "bytes": 23307,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": false
+    },
+    "server/gcsp/offers/offer-token.js": {
+      "ref": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "sha256": "325b699d7dfdb435cd8713015017aa68bf735582f127d7d64a0e0fc819f7b915",
+      "bytes": 1292,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": false
+    },
+    "server/gcsp/policy/activation.js": {
+      "ref": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "4e79235b761e8daf94f3cf2744c4bc585146181b410b64497669bd353ee7c4d6",
+      "bytes": 2992,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": false
+    },
+    "server/gcsp/policy/adoption.js": {
+      "ref": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "a2cb9a74946cd9eda413d896a0abc2f4299b3b75880a77ddd510667a5187c870",
+      "bytes": 4407,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": false
+    },
+    "server/gcsp/policy/file-provider.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+      "bytes": 7809,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/gcsp/policy/index.js": {
+      "ref": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+      "bytes": 10870,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": false
+    },
+    "server/gcsp/policy/memory-provider.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
+      "bytes": 1861,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/gcsp/policy/postgres-provider.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+      "bytes": 6553,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/gcsp/policy/publish.js": {
+      "ref": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "c521e15966be7762a3348ad860403ef555dd8cbd48405e7d23d9a7c6d262a826",
+      "bytes": 9788,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": false
+    },
+    "server/gcsp/policy/reviewed-definitions.js": {
+      "ref": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "4bb860c1f3f06c897924a4f6a4f849e2c95c4dd12ccbb2ab136f14bbfb337507",
+      "bytes": 3892,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": false
+    },
+    "server/gcsp/recommendation/index.js": {
+      "ref": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "sha256": "08acfe895804cf60dcc178591ecbdd1816f12ce70944f832f1ae394902c7e172",
+      "bytes": 18786,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": false
+    },
+    "server/gcsp/repository/core.js": {
+      "ref": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "sha256": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+      "bytes": 30666,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": false
+    },
+    "server/gcsp/repository/index.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16",
+      "bytes": 247,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/gcsp/repository/memory.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866",
+      "bytes": 1561,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/gcsp/repository/postgres.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
+      "bytes": 5658,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/gcsp/repository/schema.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+      "bytes": 5562,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/gcsp/vehicle-evidence/vin-allocation.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "336d73b30e78ee4a6a1484598000497513a160a857d7b9533bd5ff3e55ff051e",
+      "bytes": 19405,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/gcsp/vehicle-evidence/vin-generator.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "56072df720ff4b32d26fcd099852f397f140ae44b4658532fa952d11c717260f",
+      "bytes": 2849,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/gcsp/vehicle-evidence/vin-profiles.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "d3f6ea071027d787b2eeb6ebb8d70992845711c63ad084e0819403d6e13a90bd",
+      "bytes": 9652,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/questions.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "898716dfaf8a184fef39a9ae12b9d59b01cce94c48356dab5e3b4e81de62c26d",
+      "bytes": 20998,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/scenarios/employee/index.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "43f50c04794902dd1d10a008f7882d335c1b5179f1c57a3f4ab9ea1293f7d844",
+      "bytes": 8375,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/test/helpers/employee-recommendation.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "39b7e47f9298d155759fa440bd412ebb86bfc009b7ec9d9d1167bdb88970ce9a",
+      "bytes": 2798,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    },
+    "server/vehicles/index.js": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "cc02ff92ac13a25fdbe3a2325f60cafe2c16486e2f11d78a391f8664a217b5cc",
+      "bytes": 9321,
+      "composition": "immutable-scratch-mirror",
+      "local_matches_pin": true
+    }
+  },
+  "module_count": 51,
+  "expected_unique_journal_identities": 52,
+  "import_edges": [
+    {
+      "from": "blocks/gcsp/brief/brief-view-model.js",
+      "specifier": "../../vehicle-matcher/modes/result-card.js",
+      "to": "blocks/vehicle-matcher/modes/result-card.js"
+    },
+    {
+      "from": "blocks/gcsp/kit/form-controls.js",
+      "specifier": "../../vehicle-matcher/ui.js",
+      "to": "blocks/vehicle-matcher/ui.js"
+    },
+    {
+      "from": "blocks/gcsp/offer/http-adapter.js",
+      "specifier": "./offer-projection.js",
+      "to": "blocks/gcsp/offer/offer-projection.js"
+    },
+    {
+      "from": "blocks/gcsp/offer/offer-projection.js",
+      "specifier": "../brief/brief-view-model.js",
+      "to": "blocks/gcsp/brief/brief-view-model.js"
+    },
+    {
+      "from": "blocks/gcsp/offer/offer-view.js",
+      "specifier": "../../vehicle-matcher/ui.js",
+      "to": "blocks/vehicle-matcher/ui.js"
+    },
+    {
+      "from": "blocks/gcsp/offer/offer-view.js",
+      "specifier": "../../vehicle-matcher/modes/result-card.js",
+      "to": "blocks/vehicle-matcher/modes/result-card.js"
+    },
+    {
+      "from": "blocks/gcsp/offer/offer-view.js",
+      "specifier": "../kit/form-controls.js",
+      "to": "blocks/gcsp/kit/form-controls.js"
+    },
+    {
+      "from": "blocks/vehicle-matcher/modes/brand-copy.js",
+      "specifier": "../ui.js",
+      "to": "blocks/vehicle-matcher/ui.js"
+    },
+    {
+      "from": "blocks/vehicle-matcher/modes/result-card.js",
+      "specifier": "../ui.js",
+      "to": "blocks/vehicle-matcher/ui.js"
+    },
+    {
+      "from": "blocks/vehicle-matcher/modes/result-card.js",
+      "specifier": "./brand-copy.js",
+      "to": "blocks/vehicle-matcher/modes/brand-copy.js"
+    },
+    {
+      "from": "server/engine.js",
+      "specifier": "./questions.js",
+      "to": "server/questions.js"
+    },
+    {
+      "from": "server/engine.js",
+      "specifier": "./brands.js",
+      "to": "server/brands.js"
+    },
+    {
+      "from": "server/gcsp/brief/index.js",
+      "specifier": "../repository/index.js",
+      "to": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/brief/index.js",
+      "specifier": "../policy/file-provider.js",
+      "to": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/brief/index.js",
+      "specifier": "../../scenarios/employee/index.js",
+      "to": "server/scenarios/employee/index.js"
+    },
+    {
+      "from": "server/gcsp/brief/index.js",
+      "specifier": "../recommendation/index.js",
+      "to": "server/gcsp/recommendation/index.js"
+    },
+    {
+      "from": "server/gcsp/brief/index.js",
+      "specifier": "../../../blocks/vehicle-matcher/feedback-actions.js",
+      "to": "blocks/vehicle-matcher/feedback-actions.js"
+    },
+    {
+      "from": "server/gcsp/clock/index.js",
+      "specifier": "../repository/index.js",
+      "to": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/clock/index.js",
+      "specifier": "../identity/index.js",
+      "to": "server/gcsp/identity/index.js"
+    },
+    {
+      "from": "server/gcsp/clock/index.js",
+      "specifier": "../policy/file-provider.js",
+      "to": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/clock/index.js",
+      "specifier": "../fixtures/scenario-v1.js",
+      "to": "server/gcsp/fixtures/scenario-v1.js"
+    },
+    {
+      "from": "server/gcsp/clock/index.js",
+      "specifier": "../fixtures/scenarios/index.js",
+      "to": "server/gcsp/fixtures/scenarios/index.js"
+    },
+    {
+      "from": "server/gcsp/fixtures/scenario-v1.js",
+      "specifier": "./principals.js",
+      "to": "server/gcsp/fixtures/principals.js"
+    },
+    {
+      "from": "server/gcsp/fixtures/scenario-v1.js",
+      "specifier": "../vehicle-evidence/vin-allocation.js",
+      "to": "server/gcsp/vehicle-evidence/vin-allocation.js"
+    },
+    {
+      "from": "server/gcsp/fixtures/scenario-v1.js",
+      "specifier": "../repository/core.js",
+      "to": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/fixtures/scenario-v1.js",
+      "specifier": "../policy/file-provider.js",
+      "to": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/fixtures/scenarios/index.js",
+      "specifier": "../scenario-v1.js",
+      "to": "server/gcsp/fixtures/scenario-v1.js"
+    },
+    {
+      "from": "server/gcsp/fixtures/scenarios/index.js",
+      "specifier": "../principals.js",
+      "to": "server/gcsp/fixtures/principals.js"
+    },
+    {
+      "from": "server/gcsp/fixtures/scenarios/index.js",
+      "specifier": "../../repository/core.js",
+      "to": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/fixtures/scenarios/index.js",
+      "specifier": "../../policy/index.js",
+      "to": "server/gcsp/policy/index.js"
+    },
+    {
+      "from": "server/gcsp/fixtures/scenarios/index.js",
+      "specifier": "./catalogue-v1.js",
+      "to": "server/gcsp/fixtures/scenarios/catalogue-v1.js"
+    },
+    {
+      "from": "server/gcsp/identity/index.js",
+      "specifier": "../repository/index.js",
+      "to": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/identity/index.js",
+      "specifier": "../fixtures/principals.js",
+      "to": "server/gcsp/fixtures/principals.js"
+    },
+    {
+      "from": "server/gcsp/manual-context/fixtures.js",
+      "specifier": "../repository/index.js",
+      "to": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/manual-context/ports.js",
+      "specifier": "../repository/index.js",
+      "to": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/migrations/index.js",
+      "specifier": "../repository/core.js",
+      "to": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/offers/access-http.js",
+      "specifier": "./access.js",
+      "to": "server/gcsp/offers/access.js"
+    },
+    {
+      "from": "server/gcsp/offers/access.js",
+      "specifier": "../repository/index.js",
+      "to": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/offers/access.js",
+      "specifier": "../../vehicles/index.js",
+      "to": "server/vehicles/index.js"
+    },
+    {
+      "from": "server/gcsp/offers/buddy-hold.js",
+      "specifier": "../repository/index.js",
+      "to": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/offers/buddy-hold.js",
+      "specifier": "../brief/index.js",
+      "to": "server/gcsp/brief/index.js"
+    },
+    {
+      "from": "server/gcsp/offers/buddy-hold.js",
+      "specifier": "../manual-context/ports.js",
+      "to": "server/gcsp/manual-context/ports.js"
+    },
+    {
+      "from": "server/gcsp/offers/buddy-hold.js",
+      "specifier": "./offer-token.js",
+      "to": "server/gcsp/offers/offer-token.js"
+    },
+    {
+      "from": "server/gcsp/offers/buddy-hold.js",
+      "specifier": "./buddy-remote.js",
+      "to": "server/gcsp/offers/buddy-remote.js"
+    },
+    {
+      "from": "server/gcsp/offers/buddy-hold.js",
+      "specifier": "./current-car-comparison.js",
+      "to": "server/gcsp/offers/current-car-comparison.js"
+    },
+    {
+      "from": "server/gcsp/offers/buddy-remote.js",
+      "specifier": "../repository/index.js",
+      "to": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/offers/buddy-remote.js",
+      "specifier": "../manual-context/ports.js",
+      "to": "server/gcsp/manual-context/ports.js"
+    },
+    {
+      "from": "server/gcsp/offers/buddy-remote.js",
+      "specifier": "../recommendation/index.js",
+      "to": "server/gcsp/recommendation/index.js"
+    },
+    {
+      "from": "server/gcsp/offers/buddy-remote.js",
+      "specifier": "./offer-token.js",
+      "to": "server/gcsp/offers/offer-token.js"
+    },
+    {
+      "from": "server/gcsp/offers/current-car-comparison.js",
+      "specifier": "../policy/file-provider.js",
+      "to": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/offers/decision-http.js",
+      "specifier": "../repository/index.js",
+      "to": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/offers/decision.js",
+      "specifier": "../repository/index.js",
+      "to": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/offers/decision.js",
+      "specifier": "../manual-context/ports.js",
+      "to": "server/gcsp/manual-context/ports.js"
+    },
+    {
+      "from": "server/gcsp/policy/activation.js",
+      "specifier": "../repository/index.js",
+      "to": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/policy/activation.js",
+      "specifier": "./file-provider.js",
+      "to": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/policy/adoption.js",
+      "specifier": "./file-provider.js",
+      "to": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/policy/adoption.js",
+      "specifier": "./reviewed-definitions.js",
+      "to": "server/gcsp/policy/reviewed-definitions.js"
+    },
+    {
+      "from": "server/gcsp/policy/adoption.js",
+      "specifier": "./publish.js",
+      "to": "server/gcsp/policy/publish.js"
+    },
+    {
+      "from": "server/gcsp/policy/adoption.js",
+      "specifier": "./activation.js",
+      "to": "server/gcsp/policy/activation.js"
+    },
+    {
+      "from": "server/gcsp/policy/index.js",
+      "specifier": "./file-provider.js",
+      "to": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/policy/index.js",
+      "specifier": "./postgres-provider.js",
+      "to": "server/gcsp/policy/postgres-provider.js"
+    },
+    {
+      "from": "server/gcsp/policy/index.js",
+      "specifier": "./publish.js",
+      "to": "server/gcsp/policy/publish.js"
+    },
+    {
+      "from": "server/gcsp/policy/index.js",
+      "specifier": "./adoption.js",
+      "to": "server/gcsp/policy/adoption.js"
+    },
+    {
+      "from": "server/gcsp/policy/index.js",
+      "specifier": "./file-provider.js",
+      "to": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/policy/index.js",
+      "specifier": "./postgres-provider.js",
+      "to": "server/gcsp/policy/postgres-provider.js"
+    },
+    {
+      "from": "server/gcsp/policy/index.js",
+      "specifier": "./memory-provider.js",
+      "to": "server/gcsp/policy/memory-provider.js"
+    },
+    {
+      "from": "server/gcsp/policy/memory-provider.js",
+      "specifier": "./file-provider.js",
+      "to": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/policy/memory-provider.js",
+      "specifier": "../repository/core.js",
+      "to": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/policy/postgres-provider.js",
+      "specifier": "./file-provider.js",
+      "to": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/policy/postgres-provider.js",
+      "specifier": "../migrations/index.js",
+      "to": "server/gcsp/migrations/index.js"
+    },
+    {
+      "from": "server/gcsp/policy/postgres-provider.js",
+      "specifier": "../repository/core.js",
+      "to": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/policy/postgres-provider.js",
+      "specifier": "./publish.js",
+      "to": "server/gcsp/policy/publish.js"
+    },
+    {
+      "from": "server/gcsp/policy/publish.js",
+      "specifier": "./file-provider.js",
+      "to": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/policy/publish.js",
+      "specifier": "../repository/core.js",
+      "to": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/policy/reviewed-definitions.js",
+      "specifier": "../repository/core.js",
+      "to": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/recommendation/index.js",
+      "specifier": "../../vehicles/index.js",
+      "to": "server/vehicles/index.js"
+    },
+    {
+      "from": "server/gcsp/recommendation/index.js",
+      "specifier": "../policy/file-provider.js",
+      "to": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/recommendation/index.js",
+      "specifier": "../../scenarios/employee/index.js",
+      "to": "server/scenarios/employee/index.js"
+    },
+    {
+      "from": "server/gcsp/repository/core.js",
+      "specifier": "./schema.js",
+      "to": "server/gcsp/repository/schema.js"
+    },
+    {
+      "from": "server/gcsp/repository/core.js",
+      "specifier": "./schema.js",
+      "to": "server/gcsp/repository/schema.js"
+    },
+    {
+      "from": "server/gcsp/repository/index.js",
+      "specifier": "./memory.js",
+      "to": "server/gcsp/repository/memory.js"
+    },
+    {
+      "from": "server/gcsp/repository/index.js",
+      "specifier": "./postgres.js",
+      "to": "server/gcsp/repository/postgres.js"
+    },
+    {
+      "from": "server/gcsp/repository/index.js",
+      "specifier": "./core.js",
+      "to": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/repository/memory.js",
+      "specifier": "./core.js",
+      "to": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/repository/postgres.js",
+      "specifier": "./core.js",
+      "to": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/repository/postgres.js",
+      "specifier": "../migrations/index.js",
+      "to": "server/gcsp/migrations/index.js"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/vin-allocation.js",
+      "specifier": "../repository/core.js",
+      "to": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/vin-allocation.js",
+      "specifier": "./vin-generator.js",
+      "to": "server/gcsp/vehicle-evidence/vin-generator.js"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/vin-generator.js",
+      "specifier": "./vin-profiles.js",
+      "to": "server/gcsp/vehicle-evidence/vin-profiles.js"
+    },
+    {
+      "from": "server/questions.js",
+      "specifier": "./brands.js",
+      "to": "server/brands.js"
+    },
+    {
+      "from": "server/scenarios/employee/index.js",
+      "specifier": "../../engine.js",
+      "to": "server/engine.js"
+    },
+    {
+      "from": "server/scenarios/employee/index.js",
+      "specifier": "../../gcsp/policy/file-provider.js",
+      "to": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/test/helpers/employee-recommendation.js",
+      "specifier": "../../gcsp/policy/index.js",
+      "to": "server/gcsp/policy/index.js"
+    },
+    {
+      "from": "server/test/helpers/employee-recommendation.js",
+      "specifier": "../../vehicles/index.js",
+      "to": "server/vehicles/index.js"
+    }
+  ],
+  "static_import_edge_count": 94,
+  "file_inputs": {
+    "package-lock.json": {
+      "ref": "b7061e9e7d6117319b76e429b6acbd2041ae8229",
+      "sha256": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+      "read_only": true,
+      "bytes": 19167
+    },
+    "package.json": {
+      "ref": "b7061e9e7d6117319b76e429b6acbd2041ae8229",
+      "sha256": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
+      "read_only": true,
+      "bytes": 662
+    },
+    "server/data/gcsp/vehicle-evidence/vin-profiles.v1.json": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "9a107b2b90c21a116e2fb93ca88211b95250c4404f6468924e5e7f53d092a1fa",
+      "bytes": 34889,
+      "read_only": true,
+      "basis": "Static import.meta.url input closure; optional runtime use is not asserted."
+    },
+    "server/gcsp/policy/reviewed/fucq115-choice-model-v1.json": {
+      "ref": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "89565ec7fa05db042e623c6c88c132542505f7757848e61784f38d49b8391987",
+      "bytes": 3569,
+      "read_only": true
+    },
+    "server/gcsp/policy/reviewed/greg-publish-editor-v1.json": {
+      "ref": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "7c7680227cdcd6e5f5afbb9fedb06b73c4768b2a3c7526cbf9cb9c03ccdfd8c3",
+      "bytes": 883,
+      "read_only": true
+    },
+    "server/gcsp/policy/reviewed/offer-decline-reasons-v1.json": {
+      "ref": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "1f1b632be83ddef1a5656288b4e40c0378736cda5c21fcf03de68544dfbe688f",
+      "bytes": 1105,
+      "read_only": true
+    },
+    "server/gcsp/policy/reviewed/presenter-controls-v1.json": {
+      "ref": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "0e09fc7cde7677724153265042eb1f7a122c88115762a736a4bdf02a4b2e470a",
+      "bytes": 580,
+      "read_only": true
+    },
+    "server/gcsp/policy/seed-v1.json": {
+      "ref": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "c585213b98631d6e82acc1b3720d47efae49fdb502f5fc86fb440703ef6e41a6",
+      "bytes": 493400,
+      "read_only": true
+    },
+    "server/gcsp/predict/records/policy-definitions.json": {
+      "ref": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "c083ed58abcde595ac0cbf077b319b9102795506efb736c980d5f0cdba840143",
+      "bytes": 2719,
+      "read_only": true
+    },
+    "server/package-lock.json": {
+      "ref": "b7061e9e7d6117319b76e429b6acbd2041ae8229",
+      "sha256": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+      "read_only": true,
+      "bytes": 5706
+    },
+    "server/package.json": {
+      "ref": "b7061e9e7d6117319b76e429b6acbd2041ae8229",
+      "sha256": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139",
+      "read_only": true,
+      "bytes": 373
+    }
+  },
+  "file_edges": [
+    {
+      "from": "server/gcsp/policy/file-provider.js",
+      "specifier": "./seed-v1.json",
+      "to": "server/gcsp/policy/seed-v1.json"
+    },
+    {
+      "from": "server/gcsp/policy/reviewed-definitions.js",
+      "specifier": "./reviewed/presenter-controls-v1.json",
+      "to": "server/gcsp/policy/reviewed/presenter-controls-v1.json"
+    },
+    {
+      "from": "server/gcsp/policy/reviewed-definitions.js",
+      "specifier": "./reviewed/greg-publish-editor-v1.json",
+      "to": "server/gcsp/policy/reviewed/greg-publish-editor-v1.json"
+    },
+    {
+      "from": "server/gcsp/policy/reviewed-definitions.js",
+      "specifier": "../predict/records/policy-definitions.json",
+      "to": "server/gcsp/predict/records/policy-definitions.json"
+    },
+    {
+      "from": "server/gcsp/policy/reviewed-definitions.js",
+      "specifier": "./reviewed/offer-decline-reasons-v1.json",
+      "to": "server/gcsp/policy/reviewed/offer-decline-reasons-v1.json"
+    },
+    {
+      "from": "server/gcsp/policy/reviewed-definitions.js",
+      "specifier": "./reviewed/fucq115-choice-model-v1.json",
+      "to": "server/gcsp/policy/reviewed/fucq115-choice-model-v1.json"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/vin-profiles.js",
+      "specifier": "../../data/gcsp/vehicle-evidence/vin-profiles.v1.json",
+      "to": "server/data/gcsp/vehicle-evidence/vin-profiles.v1.json"
+    }
+  ],
+  "test_import_edges": [
+    {
+      "from": "server/test/gcsp-offer-view-decision-mixed.test.js",
+      "specifier": "../gcsp/repository/index.js",
+      "to": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/test/gcsp-offer-view-decision-mixed.test.js",
+      "specifier": "../gcsp/policy/index.js",
+      "to": "server/gcsp/policy/index.js"
+    },
+    {
+      "from": "server/test/gcsp-offer-view-decision-mixed.test.js",
+      "specifier": "../gcsp/policy/activation.js",
+      "to": "server/gcsp/policy/activation.js"
+    },
+    {
+      "from": "server/test/gcsp-offer-view-decision-mixed.test.js",
+      "specifier": "../gcsp/clock/index.js",
+      "to": "server/gcsp/clock/index.js"
+    },
+    {
+      "from": "server/test/gcsp-offer-view-decision-mixed.test.js",
+      "specifier": "../gcsp/brief/index.js",
+      "to": "server/gcsp/brief/index.js"
+    },
+    {
+      "from": "server/test/gcsp-offer-view-decision-mixed.test.js",
+      "specifier": "../gcsp/manual-context/fixtures.js",
+      "to": "server/gcsp/manual-context/fixtures.js"
+    },
+    {
+      "from": "server/test/gcsp-offer-view-decision-mixed.test.js",
+      "specifier": "../gcsp/offers/buddy-hold.js",
+      "to": "server/gcsp/offers/buddy-hold.js"
+    },
+    {
+      "from": "server/test/gcsp-offer-view-decision-mixed.test.js",
+      "specifier": "../gcsp/offers/offer-token.js",
+      "to": "server/gcsp/offers/offer-token.js"
+    },
+    {
+      "from": "server/test/gcsp-offer-view-decision-mixed.test.js",
+      "specifier": "../gcsp/recommendation/index.js",
+      "to": "server/gcsp/recommendation/index.js"
+    },
+    {
+      "from": "server/test/gcsp-offer-view-decision-mixed.test.js",
+      "specifier": "../gcsp/offers/access.js",
+      "to": "server/gcsp/offers/access.js"
+    },
+    {
+      "from": "server/test/gcsp-offer-view-decision-mixed.test.js",
+      "specifier": "../gcsp/offers/access-http.js",
+      "to": "server/gcsp/offers/access-http.js"
+    },
+    {
+      "from": "server/test/gcsp-offer-view-decision-mixed.test.js",
+      "specifier": "../gcsp/offers/decision.js",
+      "to": "server/gcsp/offers/decision.js"
+    },
+    {
+      "from": "server/test/gcsp-offer-view-decision-mixed.test.js",
+      "specifier": "../gcsp/offers/decision-http.js",
+      "to": "server/gcsp/offers/decision-http.js"
+    },
+    {
+      "from": "server/test/gcsp-offer-view-decision-mixed.test.js",
+      "specifier": "./helpers/employee-recommendation.js",
+      "to": "server/test/helpers/employee-recommendation.js"
+    },
+    {
+      "from": "server/test/gcsp-offer-view-decision-mixed.test.js",
+      "specifier": "../../blocks/gcsp/offer/http-adapter.js",
+      "to": "blocks/gcsp/offer/http-adapter.js"
+    },
+    {
+      "from": "server/test/gcsp-offer-view-decision-mixed.test.js",
+      "specifier": "../../blocks/gcsp/offer/offer-controller.js",
+      "to": "blocks/gcsp/offer/offer-controller.js"
+    },
+    {
+      "from": "server/test/gcsp-offer-view-decision-mixed.test.js",
+      "specifier": "../../blocks/gcsp/offer/offer-view.js",
+      "to": "blocks/gcsp/offer/offer-view.js"
+    }
+  ],
+  "retained_dependencies": {
+    "pg": {
+      "version": "8.23.1",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/package.json",
+      "packageJsonSha256": "b1e53333a3d0c2c47c49a5cb919d221135dc03145df740925b899bc2baacc435",
+      "entry": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/index.js",
+      "entrySha256": "3fad6e6d3d976edbabe0cbc9e1d39f4340bcb719bbbb186a0d3a24f3dbd4a94c",
+      "installedRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg",
+      "installationDevice": 16777232,
+      "installationInode": 172770739,
+      "rule": "Retained read-only installed dependency; no install, download, DB connection or mutation. Verify before/after; lockfiles identify transitive versions; this is not a byte audit of all third-party transitive packages."
+    },
+    "jsdom": {
+      "version": "30.0.1",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/jsdom/package.json",
+      "packageJsonSha256": "e87940b12f720a5b735a5df82108b634a238b8c6ebced71050a346a1675575b9",
+      "entry": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/jsdom/lib/api.js",
+      "entrySha256": "22a63aa40bad13ea909a115b0c49fbae3493a291414765221942fc5d4396356f",
+      "installedRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/jsdom",
+      "installationDevice": 16777232,
+      "installationInode": 153860785,
+      "rule": "Retained read-only installed dependency; no install, download, DB connection or mutation. Verify before/after; lockfiles identify transitive versions; this is not a byte audit of all third-party transitive packages."
+    }
+  },
+  "node": {
+    "path": "/opt/homebrew/bin/node",
+    "realpath": "/opt/homebrew/Cellar/node/26.5.0/bin/node",
+    "sha256": "70851490e028b3d699a8d6d4e1de909af2a989359ae807974c92af9c6580a8e8",
+    "installationIdentity": [
+      16777232,
+      149228790
+    ]
+  },
+  "harness": {
+    "server/test/gcsp-offer-view-decision-mixed.test.js": {
+      "sha256": "b8cb10ad26be9326ae9f37a60a59325ed8f02b6dfadf20f3239ac99d5905baa4",
+      "bytes": 22191
+    },
+    "docs/gcsp/evidence/fucq105/decision-mixed-loader.mjs": {
+      "sha256": "49a3b173a86b30682e2af489aeada366c5238f879a271bca394e4e7652764a63",
+      "bytes": 2911
+    },
+    "docs/gcsp/evidence/fucq105/decision-mixed-supervisor.py": {
+      "sha256": "17dc50d12a3fdf89c2a9fdc0304950a30b9167657134f387e5a98e721444666f",
+      "bytes": 16977
+    },
+    "docs/gcsp/evidence/fucq105/decision-mixed-audit.py": {
+      "sha256": "7082648f6615bb2f16c22c7b2f3c8434df9450c709e7ea1895d7e1415dc8ba13",
+      "bytes": 4716
+    },
+    "_tools/test_resources.py": {
+      "sha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+      "bytes": 36093
+    },
+    "_tools/test_stamp.py": {
+      "sha256": "88a16018b5b8fa225463b590f2283b4baa6be4951f258bba4846eacc3795a49e",
+      "bytes": 36134
+    },
+    "_tools/scaffold_git.py": {
+      "sha256": "ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a",
+      "bytes": 129000
+    }
+  },
+  "selected": "server/test/gcsp-offer-view-decision-mixed.test.js",
+  "selected_cases": 2,
+  "validation_base": "b95b4c8ad8a4534cbf03f287eb62fc8a57bbda96",
+  "selection_reason": "New105 consumer boundary only: actual100-produced quote/private102 token and real employee account cookie to actual106 streamed HTTP commands/reasons then105 controller/JSDOM. Test exact3revisions, invalid-cookie no fallback/origin/gate/stale refusal, committed response/readback loss then authoritative accepted read and account replay once; actual canonical registry missing/adoption/dated label publication/activation to required native control and decline after quote expiry preserving original hold, quote, brief and one typed source event. Reuse unchanged seven-phase producer/access lifecycle and106 backend checks; no broad/full/browser/remote/native run.",
+  "expected_checkpoints": [
+    "same-instance-revisions-invalid-cookie-origin-gate-and-stale-refusal",
+    "actual-commit-loss-uncertainty-authoritative-accepted-account-replay-once",
+    "canonical-missing-adopted-published-reason-list-required-and-mounted-refresh",
+    "actual106-decline-after-quote-expiry-original-hold-quote-brief-and-event-once"
+  ],
+  "identity_contract": [
+    "One actual102 access service is passed to actual access HTTP, actual106 service and trusted decision resolver; canonical map gives one identity per module.",
+    "Real employee identity.switchPrincipal cookie is re-resolved through actual identity.resolveSession; account authority is never fabricated/copied. Presented access cookie, even invalid, is handled exclusively by actual access.fromSession; no account fallback.",
+    "Initial explicit synthetic stock/manual context feeds actual100 allocation; no pending offer, quote, DTO, private capability, reason registry or event is hand-authored. Canonical policy writer methods adopt/publish/activate reviewed assumptions.",
+    "Streamed handler harness passes gateAuthorized to exercise handler refusal only; it is not the actual deployed shared gate. No delivered session/browser claim."
+  ],
+  "mirror_layout": "After root review only, mirror every pinned module as .mjs and every JSON input at its original relative directory under one owned composition root; source bytes unchanged. Exact loader resolves every canonical project URL to exactly one mirror URL, rejects undeclared project modules and checks source/dependency hashes. This preserves private access singleton and import.meta.url JSON locality without shared edits or dependency links.",
+  "command_template": [
+    "<pinned-node>",
+    "--no-warnings",
+    "--loader",
+    "<owned>/decision-mixed-loader.mjs",
+    "--test",
+    "--test-concurrency=1",
+    "--test-reporter=tap",
+    "<owned>/server/test/gcsp-offer-view-decision-mixed.test.js"
+  ],
+  "root_review_schema": {
+    "approved": true,
+    "scope": "fucq105-decision-mixed-memory",
+    "plan_sha256": "<exact SHA256 of this final published JSON>",
+    "run_id": "fucq105-decision-<unique-root-grant-id>"
+  },
+  "launch": "python3 -B docs/gcsp/evidence/fucq105/decision-mixed-supervisor.py --review <external-root-review.json>; stops before allocation if exact grant/helper hashes are absent or changed. Unique consumption record before first source copy; no automatic retry.",
+  "limits": {
+    "chunk_seconds": 120,
+    "chunk_scratch_mib": 128,
+    "chunk_ram_mib": 768,
+    "log_mib": 2
+  },
+  "minimum_ram_mib": 384,
+  "workers": 1,
+  "environment_allowlist": [
+    "PATH",
+    "HOME",
+    "USER",
+    "LOGNAME",
+    "LANG",
+    "LC_ALL",
+    "TZ",
+    "SHELL",
+    "LC_*"
+  ],
+  "expected": {
+    "seconds": 15,
+    "child_ram_mib": 320,
+    "combined_scratch_output_mib": 8,
+    "basis": "Prior actual106 canonical case3.716s/261767168B child peak and105 DOM231817216B, sequential one worker; no repeated lifecycle. Minimum384MiB shared headroom, at most768MiB; stop and replan on actual pressure."
+  },
+  "cleanup": "External owned plan/run manifest before scratch. Fresh shared HostBudget, one group, owned TMPDIR/TMP/TEMP, stripped DB/PG/Node/preload/debug/trace env. Bound log2MiB; useful failure tail64KiB plus checkpoint/hash journal retained before finalizer deletion. Stop/join group on errors/cancellation; verify descendant PID/start identities, root absence and released reservation; immutable/local sources and installed identities before/after. Run independent committed audit after owner exits; remove only verified disposed scratch manifest. No lsof success inferred from deleted root. No archives or >=256MiB outputs planned.",
+  "independent_audit": "python3 -B docs/gcsp/evidence/fucq105/decision-mixed-audit.py --summary <external-run>/summary.json; no auto-execution during authoring.",
+  "ui_browser_proposal": {
+    "lane": "UNALLOCATED as of dispatcher0126;122 ownership statements in historical plans are superseded. No105 browser grant.",
+    "asset_plan": "docs/gcsp/evidence/fucq105/decision-successor-source-plan.json",
+    "asset_plan_sha256": "619dd871d539e7222975bfcdfb7c4c1891bd9d7f37a4145ddf917ec6eacf319b",
+    "assets": 35,
+    "stylesheet_order": [
+      "blocks/vehicle-matcher/vehicle-matcher.css",
+      "blocks/gcsp/shell/gcsp-shell.css",
+      "blocks/gcsp/offer/gcsp-offer.css"
+    ],
+    "before_allocation": "Root reviews actual delivered host/source/gate/same-origin composition and a separate smoke plan, browser/profile/port ownership plus teardown. Current JSDOM proof cannot close these gates.",
+    "matrix": [
+      "Actual email fragment removal/exchange and secure-cookie reload; real account entry and invalid-cookie refusal",
+      "1280/375 pending/reasons loading/unavailable/required/changed label/confirm/cancel/uncertain/accepted/declined; keyboard focus, narrow overflow, reduced motion and fallback imagery",
+      "Real same-origin delivered /gcsp/offer entry, second browser and presenter readback as admitted; no fixture declared as live proof"
+    ],
+    "reference": "docs/gcsp/experience-quality.md, supplied shell screenshots, FUCQ64 bodya7fc178, COMPONENTS.md and shared default Density tokens"
+  },
+  "durable107_boundary": "Actual106 POST response decisionId is not retained by105 controller or102 safe public reload DTO. No107 import/callback or durable reload entry is claimed here. Root102 owns the minimal authorized lookup/projection plan;105 adds no shared access/runtime field.",
+  "exclusions": [
+    "No unchanged seven-checkpoint producer lifecycle rerun or previous10612/3case rerun",
+    "No native DB, network, listener, browser, mail, remote-provider success, central host/gate composition or authored full suite",
+    "No policy/seed/shared runtime/server/identity/100 edits; no caller-created private access context or fallback reason category",
+    "No story acceptance, Jira transition, worker claim/ownership change or107 durable reload-entry claim"
+  ],
+  "authoring_validation": {
+    "product_imports": false,
+    "tests_executed": false,
+    "scratch_or_process_groups_allocated": false,
+    "python_helpers": "AST parsed only",
+    "static_closure": true,
+    "test_helper_hashes_frozen": true
+  }
+}

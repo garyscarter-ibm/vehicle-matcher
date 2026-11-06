@@ -1369,7 +1369,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T01:08:35Z",
+      "observed_at": "2026-11-06T01:40:54Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-105",
       "slices": [
         {
@@ -1397,15 +1397,15 @@
           "id": "decision-host",
           "status": "blocked",
           "title": "Actual FUCQ106 decision and delivered host integration",
-          "observed_at": "2026-11-06T01:08:35Z",
-          "evidence": "Published consumer b4efefec60577a14a98e6bae934741249bd7c20c:133scoped pass0skip; existing native forms/base/shell styles. Frozen successor48modules86edges,14-module mounted preview and35asset graph; static reads only. Actual mixed106 test/loader/supervisor need authorized preparation/root review. Canonical reason activation and central same-access singleton/real account session/invalid-cookie refusal/narrow gated route,/gcsp/offer,same-origin HTTPS/browser gates open. docs/gcsp/evidence/fucq105/"
+          "observed_at": "2026-11-06T01:40:54Z",
+          "evidence": "Dispatcher0126 authorized authoring only: concrete2case actual106/102/100→105 proposal frozen against90cb70c/7c280b8 canonical103. Corrected51modules94JSedges+17test edges/11inputs7JSONedges; exact test/loader/supervisor/auditor/deps/Node and cleanup proposal. Static closure/AST only; no tests/imports/mirrors/allocation. Root review/separate one-run grant outstanding. Shared host/gate/same-origin and root102 durable decision-ID entry remain. docs/gcsp/evidence/fucq105/decision-mixed-plan.md"
         },
         {
           "id": "browser",
           "status": "blocked",
           "title": "Desktop and 375px rendered keyboard, reload and second-browser proof",
-          "observed_at": "2026-11-05T23:33:14Z",
-          "evidence": "Root owns sole browser lane; no browser/listener grant. Required1280/375 keyboard, responsive and real repeated-access/presenter proof outstanding."
+          "observed_at": "2026-11-06T01:40:54Z",
+          "evidence": "Dispatcher0126: browser lane UNALLOCATED, earlier122-owner statements historical; no105 browser grant.35asset closure and existing base→shell→offer stylesheet order retained.1280/375 keyboard/reduced-motion/normal email-cookie-account/second-browser smoke proposal needs corrected mixed review plus exact delivered host/gate/same-origin/resource pins before allocation. No browser/profile/listener/live request performed. docs/gcsp/evidence/fucq105/decision-browser-smoke-plan.md"
         },
         {
           "id": "validation",
