@@ -767,6 +767,110 @@ async function withDiagnostic(change, callback) {
   finally { await rm(root, { recursive: true, force: true }); }
 }
 
+async function withRetainedSource(callback) {
+  const { createHash } = await import('node:crypto');
+  const { createPublicBmwQualificationDiagnostic } = await import('../../scripts/gcsp/collect-fleet.mjs');
+  const base = new URL('../../docs/gcsp/evidence/fucq59/canonical-source-live-2026-11-06/', import.meta.url);
+  const raw = await Promise.all(['tree.json', 'options.json'].map((file) => readFile(new URL(file, base))));
+  const hashes = ['06d13000d124fed336d39379cc6984ede0d6a0eced57cde955389c186932a228',
+    '6883be7544a6c03ef523aa6287a74c03fddd9b0e09b80127c25b72c1bec0061b'];
+  const packed = (bytes) => ({ document: JSON.parse(bytes), bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') });
+  raw.forEach((bytes, index) => assert.equal(packed(bytes).sha256, hashes[index]));
+  const plan = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq59/canonical-source-preparation-2026-11-06/diagnostic-plan.json', import.meta.url)));
+  const root = await mkdtemp(join(tmpdir(), 'f59-retained-binding-')); let fetches = 0;
+  try {
+    const diagnostic = await createPublicBmwQualificationDiagnostic({ plan, statePath: join(root, 'state'), mode: 'source-fixture',
+      http: { kind: 'fixture', fetch: async () => { fetches += 1; throw new Error('offline replay forbids source'); } } });
+    assert.equal(typeof diagnostic.qualifyRetained, 'function', 'the owning diagnostic must expose its actual retained-artifact caller');
+    const reseal = (entry, change) => { const copy = structuredClone(entry.document); change(copy); return packed(Buffer.from(JSON.stringify(copy) + '\n')); };
+    await callback({ diagnostic, tree: packed(raw[0]), options: packed(raw[1]), reseal });
+    assert.equal(fetches, 0);
+    const after = await Promise.all(['tree.json', 'options.json'].map((file) => readFile(new URL(file, base))));
+    after.forEach((bytes, index) => assert.equal(packed(bytes).sha256, hashes[index]));
+  } finally { await rm(root, { recursive: true, force: true }); }
+}
+
+test('retained source binding replays the actual safe outputs through the owning diagnostic caller', async () => {
+  await withRetainedSource(async ({ diagnostic, tree, options }) => {
+    const result = diagnostic.qualifyRetained({ tree, options });
+    assert.equal(result.status, 'incomplete'); assert.equal(result.admission, false);
+    assert.deepEqual(result.accepted, []);
+    assert.equal(result.fields.rawModelRange.value, 'G61'); assert.equal(result.fields.transmission.value, 'X');
+    assert.equal(result.fields.derivative.value, 'I5 40'); assert.equal(result.fields.taxDate.value, '2027-01-05');
+    assert.deepEqual(result.fields.paint.value, { code: 'P0300', type: 'paint' });
+    assert.deepEqual(result.fields.upholstery.value, { code: 'FKSFU', type: 'upholstery' });
+    for (const field of ['productionDate', 'trim', 'accessoryQuantity', 'modelName', 'fuelTypeCode']) assert.equal(result.fields[field].status, 'missing', field);
+    assert.equal(result.sourceBindings.options.definitionRoot, ''); assert.equal(result.sourceBindings.options.definitionCount, 254);
+    assert.equal(result.fields.paint.evidence[0].sourcePointer, '/P0300');
+    assert.equal(result.fields.paint.evidence[0].pointer, '/report/candidates/0/definitions/242');
+    assert.equal(result.sourceBindings.tree.responseSha256, tree.document.observation.responseSha256);
+  });
+});
+
+test('retained source binding rejects changed hashes requests source metadata and request fact promotion', async () => {
+  await withRetainedSource(async ({ diagnostic, tree, options, reseal }) => {
+    const changed = [
+      { ...options, sha256: '0'.repeat(64) },
+      reseal(options, (d) => { d.observation.request.url += '&extra=1'; }),
+      reseal(options, (d) => { d.observation.sourceVersion = 'other'; }),
+      reseal(options, (d) => { d.observation.sourceId = 'other'; }),
+      reseal(options, (d) => { d.observation.transportKind = 'fixture'; }),
+      reseal(options, (d) => { d.observation.observedAt = '2026-11-05T15:16:26.640Z'; }),
+      reseal(options, (d) => { d.observation.observedAt = '2026-11-06T15:16:26.000Z'; }),
+      reseal(options, (d) => { d.observation.observedAt = '2026-11-06T15:17:26.640Z'; }),
+      reseal(options, (d) => { delete d.observation.responseSha256; }),
+      reseal(options, (d) => { d.requestScope.role = 'response'; }),
+      reseal(options, (d) => { d.requestScope.modelCode = 'T5ML'; }),
+    ];
+    for (const entry of changed) assert.throws(() => diagnostic.qualifyRetained({ tree, options: entry }), { code: 'source-qualification-binding' });
+  });
+});
+
+test('retained source binding refuses moved duplicate ambiguous and inconsistent option definitions', async () => {
+  await withRetainedSource(async ({ diagnostic, tree, options, reseal }) => {
+    const changes = [
+      (d) => { d.report.candidates[0].pointer = '/options'; },
+      (d) => { d.report.candidates.push(structuredClone(d.report.candidates[0])); },
+      (d) => { d.report.candidates[0].definitions.push(structuredClone(d.report.candidates[0].definitions[0])); },
+      (d) => { d.report.candidates[0].definitions[0].pointer = '/other'; },
+      (d) => { d.report.candidates[0].definitions[0].option = 'OTHER'; },
+      (d) => { d.report.candidates[0].definitions[0].issues.push('option-key-mismatch'); },
+      (d) => { d.report.candidates[0].definitions[0].longDescription = '<script>unsafe</script>'; },
+    ];
+    for (const change of changes) assert.throws(() => diagnostic.qualifyRetained({ tree, options: reseal(options, change) }), { code: 'source-qualification-binding' });
+  });
+});
+
+test('retained source binding refuses tree aliases field-pointer substitutions and optional-presence changes', async () => {
+  await withRetainedSource(async ({ diagnostic, tree, options, reseal }) => {
+    const changes = [
+      (d) => { d.report.nodes[0].pointer = '/defaultModel'; },
+      (d) => { d.report.nodes[1].pointer = d.report.nodes[0].pointer; },
+      (d) => { d.report.nodes.reverse(); },
+      (d) => { d.report.nodes.push(structuredClone(d.report.nodes[0])); },
+      (d) => { d.report.nodes[0].fieldPointers.taxDate = '/requestScope/orderDate'; },
+      (d) => { d.report.nodes[1].facts.derivative = 'OTHER'; },
+      (d) => { delete d.report.nodes[1].facts.taxDate; },
+      (d) => { d.report.nodes[0].facts.prodDate = '20270230'; d.report.nodes[1].facts.prodDate = '20270230'; },
+    ];
+    for (const change of changes) assert.throws(() => diagnostic.qualifyRetained({ tree: reseal(tree, change), options }), { code: 'source-qualification-binding' });
+  });
+});
+
+test('qualification diagnostic retained source binding uses the same qualifier on run and resume', async () => {
+  await withDiagnostic((fixture) => { fixture.options = fixture.options.result.options; }, async ({ create, settings, calls }) => {
+    const diagnostic = await create(settings); const result = await diagnostic.run();
+    assert.equal(result.reason, 'field-qualification-incomplete');
+    assert.equal(result.fieldQualification.fields.paint.status, 'qualified');
+    assert.equal(result.fieldQualification.fields.taxDate.status, 'qualified');
+    assert.equal(result.fieldQualification.fields.trim.status, 'missing');
+    assert.equal(result.fieldQualification.fields.accessoryQuantity.status, 'missing');
+    assert.deepEqual(result.fieldQualification, diagnostic.qualifyRetained(result.diagnostic));
+    assert.deepEqual(await (await create(settings)).run(), result); assert.equal(calls.length, 4);
+    assert.equal(result.admission, false); assert.deepEqual(result.accepted, []);
+  });
+});
+
 for (const role of ['settingsVehicleTree', 'settingsLocalisation']) {
   test('qualification diagnostic selects canonical own APP.backend ' + role + ' despite unrelated profiles', async () => {
     await withDiagnostic((fixture) => {

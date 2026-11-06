@@ -7,7 +7,7 @@ import { bmwCatalogueLookupIdentity } from '../../server/vehicle-evidence/bmw-ca
 import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { CollectionError, createConfigurationKey, normaliseCode, normaliseCodes, requireValue } from './configuration-key.mjs';
 import { publicBmwOperations, publicBmwObservation, validatePublicBmwPlan,
-  publicBmwQualificationOperations, validatePublicBmwDiagnosticPlan } from './public-bmw-source.mjs';
+  publicBmwQualificationOperations, validatePublicBmwDiagnosticPlan, qualifyPublicBmwDiagnosticFields } from './public-bmw-source.mjs';
 
 export const COLLECTOR_VERSION = '2';
 const CONTEXT = ['catalogueDate', 'market', 'locale', 'orderDate', 'effectDate', 'productionDate', 'taxDate'];
@@ -291,7 +291,8 @@ export async function createPublicBmwQualificationDiagnostic({ plan: input, stat
           'settings-shape-report-invalid', 'A settings report must retain its fail-closed stop.');
       }
     } });
-  return { session, exportSettingsShapeReceipt: (path) => session.withCheckpoint(async ({ state }) => {
+  const qualifyRetained = (retained) => qualifyPublicBmwDiagnosticFields(plan, retained);
+  return { session, qualifyRetained, exportSettingsShapeReceipt: (path) => session.withCheckpoint(async ({ state }) => {
     requireValue(isAbsolute(path || ''), 'explicit-path-required', 'Supply an absolute owned receipt path.');
     requireValue(state.diagnostic?.settingsShapeRefusal, 'settings-shape-report-unavailable', 'No validated settings refusal report is available.');
     const stage = state.stages['source-qualification-diagnostic'];
@@ -305,9 +306,16 @@ export async function createPublicBmwQualificationDiagnostic({ plan: input, stat
     } catch { throw new CollectionError('settings-shape-export-failed', 'The safe settings receipt could not be written.'); }
     return { schemaVersion: 'bmw-settings-shape-refusal-receipt.v1', bytes: bytes.length, sha256 };
   }), run: () => session.withCheckpoint(async ({ state, execute, commit }) => {
-    const report = (reason) => structuredClone({ status: 'incomplete', reason, qualification: 'observation-only-schema-diagnostic',
+    const report = (reason) => {
+      let fieldQualification = null;
+      if (state.diagnostic?.tree && state.diagnostic?.options) {
+        try { fieldQualification = qualifyRetained(state.diagnostic); }
+        catch (error) { if (error.code !== 'source-qualification-binding') throw error; }
+      }
+      return structuredClone({ status: 'incomplete', reason: fieldQualification ? 'field-qualification-incomplete' : reason, qualification: 'observation-only-schema-diagnostic',
       admission: false, accepted: state.accepted, rejected: state.rejected, duplicates: state.duplicates,
-      counts: state.counts, diagnostic: state.diagnostic, coverage: { distinctConfigurations: 0 } });
+      counts: state.counts, diagnostic: state.diagnostic, fieldQualification, coverage: { distinctConfigurations: 0 } });
+    };
     if (state.halted) return report(state.halted);
     if (state.diagnostic) return report('raw-schema-review-required');
     try {

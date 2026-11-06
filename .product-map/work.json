@@ -1814,10 +1814,10 @@
       ]
     },
     {
-      "assignee": "",
+      "assignee": "Russell Gowers",
       "id": "FUCQ-59",
-      "observed_at": "2026-11-06T15:21:09Z",
-      "original_status": "To Do",
+      "observed_at": "2026-11-06T15:38:49Z",
+      "original_status": "In Progress",
       "slices": [
         {
           "evidence": "Lead reviewed target Base64/accessory/alias behavior; two offline regression tests pass, scoped receipt lead59/receipt-identity-green.json; F54 publication compatibility remains separately planned.",
@@ -1848,9 +1848,9 @@
           "title": "Finite source budgets, deadlines and default no-traffic safety (2 points)"
         },
         {
-          "evidence": "Actual15:16UTC4GET916858B;canonical bootstrap works,tree2aliases/1model,options1root254definitions/all47codes. Safe projections/independent review in canonical-source-live-2026-11-06;accepted0/admissionfalse. Offline raw-to-retained binding,modelRange/transmission compatibility,prodDate/trim/accessoryquantity and solver remain unqualified.",
+          "evidence": "Actual 15:16 UTC observation retained. Fixed owning binder and offline replay pass 69 scoped checks: 15 fields qualify, nine missing. Evidence: canonical-source-field-binding-2026-11-06. Production date, model trim, accessory quantity and solver remain open; accepted 0, admission false. No source replay.",
           "id": "source-qualification",
-          "observed_at": "2026-11-06T15:21:09.549218+00:00",
+          "observed_at": "2026-11-06T15:38:48.934995+00:00",
           "status": "blocked",
           "title": "Selected real-source model mapping and solver integration (1 point)"
         },
@@ -1869,9 +1869,9 @@
           "title": "Retailer mapping and API regression boundary"
         },
         {
-          "evidence": "Historical7abeabc full result68files/1296tests remains retained in current-full-2026-11-06; later executable changes invalidate it as current full proof. Current canonical settings correction84/84 scopedPASS only. Final combined-source full validation remains outstanding; no full rerun justified for this bounded correction. NativeSQL/F60v2 assembly also unproved.",
+          "evidence": "Historical 7abeabc full result remains retained. Current binder passes 69 scoped checks and same-caller replay; no current full/native claim. Final combined-source integration checkpoint remains planned. Source qualification and F39/F54/F60 assembly still incomplete.",
           "id": "full-validation",
-          "observed_at": "2026-11-06T15:06:50.893204+00:00",
+          "observed_at": "2026-11-06T15:38:48.934995+00:00",
           "status": "in-progress",
           "title": "Authored serial npm test integration gate (1 point)"
         }
@@ -1887,9 +1887,9 @@
           "role": "story-lead",
           "harness": "codex",
           "source": "thread01a1b054-1167-7820-b9f2-92ec81e37bbe",
-          "observed_at": "2026-11-06T15:21:09.549218+00:00",
-          "expires_at": "2026-11-06T15:31:09.549218+00:00",
-          "status": "Independent actual-schema review complete; preparing offline qualifier binding;Sol/high,no fallback,no source replay"
+          "observed_at": "2026-11-06T15:38:48.934995+00:00",
+          "expires_at": "2026-11-06T15:38:48.934995+00:00",
+          "status": "stopped; frozen binder checkpoint complete; 69 scoped passes and offline replay; requested/selected/runtime Sol high, no fallback"
         },
         {
           "name": "Sulley",
@@ -1900,7 +1900,8 @@
           "expires_at": "2026-11-06T15:04:41.021643+00:00",
           "status": "Completed four-file canonical selector/v2 report correction; requested/selected/runtimeSol medium; no fallback/descendants; no child tests/scratch"
         }
-      ]
+      ],
+      "branch": "dev/DEV-2026-11-04-032"
     }
   ]
 }

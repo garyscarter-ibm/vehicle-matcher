@@ -19,6 +19,87 @@ async function qualify(input) {
   return qualifyBmwSourceFields(input);
 }
 
+test('reviewed modelRange source alias retains G61 independently of catalogue G61E', async () => {
+  const result = await qualify({ target, artifacts: [artifact(source({ model: { ...source().model, modelRange: 'G61' } }))],
+    requiredFields: ['rawModelRange'], claims: [claim('rawModelRange', '/model/modelRange')] });
+  assert.equal(result.fields.rawModelRange.value, 'G61');
+});
+
+test('reviewed transmission X is accepted without admitting arbitrary single-character codes', async () => {
+  for (const [value, expected] of [['X', 'X'], ['A', null], ['AB', 'AB'], ['', null]]) {
+    const result = await qualify({ target, artifacts: [artifact(source({ model: { ...source().model, transmission: value } }))],
+      requiredFields: ['transmission'], claims: [claim('transmission', '/model/transmission')] });
+    assert.equal(result.fields.transmission.value, expected, value);
+  }
+});
+
+test('linked response context uses an earlier pinned artifact and refuses request-only context', async () => {
+  const options = { observedDate: '2026-11-06', options: { P0300: { option: 'P0300', optionType: 'paint' } } };
+  const sourceEntry = artifact(source());
+  const optionsEntry = artifact(options, { id: 'options', contextArtifactId: 'source' });
+  for (const [entries, expected] of [
+    [[sourceEntry, optionsEntry], 'qualified'],
+    [[{ ...sourceEntry, responseRoots: ['/options'] }, optionsEntry], 'missing'],
+    [[{ ...sourceEntry, requestRoots: ['/request', '/model'] }, optionsEntry], 'missing'],
+    [[artifact(source({ model: { ...source().model, modelCode: 'T5ML' } })), optionsEntry], 'missing'],
+    [[artifact(source({ observedDate: '2026-11-05' })), optionsEntry], 'missing'],
+    [[{ ...sourceEntry, sha256: '0'.repeat(64) }, optionsEntry], 'missing'],
+    [[optionsEntry, sourceEntry], 'missing'],
+    [[sourceEntry, { ...optionsEntry, contextArtifactId: 'missing' }], 'missing'],
+  ]) {
+    const result = await qualify({ target, artifacts: entries, requiredFields: ['paint'],
+    claims: [claim('paint', '/options/P0300', { code: 'P0300', artifactId: 'options' })] });
+    assert.equal(result.fields.paint.status, expected);
+    if (expected === 'qualified') assert.equal(result.fields.paint.evidence[0].contextArtifactId, 'source');
+  }
+});
+
+test('retained source binding qualifies a definition row only with its exact raw code pointer', async () => {
+  const row = { code: 'P0300', option: 'P0300', optionType: 'paint', pointer: '/P0300', issues: [] };
+  const data = { schemaVersion: 'bmw-source-diagnostic-observation.v1',
+    observation: { schemaVersion: 'collection-http-observation.v1', observedAt: '2026-11-06T15:16:26.640Z',
+      operation: 'options', capability: 'bmw-options', sourceId: 'bmw-uk-public', sourceVersion: 'f59-diagnostic-20261106.v1',
+      transportKind: 'fixture', request: { method: 'GET', url: 'https://example.test/synthetic-options' },
+      responseBytes: 1, responseSha256: 'a'.repeat(64) },
+    requestScope: { role: 'request-input-only' },
+    report: { status: 'schema-review-required', admission: false, structure: [], unknownFields: 0,
+      candidates: [{ pointer: '', definitions: [row] }] } };
+  const field = claim('paint', '/report/candidates/0/definitions/0', { code: 'P0300', sourcePointer: '/P0300' });
+  const entry = artifact(data, { id: 'options', contextArtifactId: 'source', observedDatePointer: '/observation/observedAt',
+    observedDateFormat: 'iso-timestamp', responseRoots: ['/report/candidates/0/definitions'] });
+  field.artifactId = 'options';
+  const result = await qualify({ target, artifacts: [artifact(source()), entry], requiredFields: ['paint'], claims: [field] });
+  assert.deepEqual(result.fields.paint.value, { code: 'P0300', type: 'paint' });
+  assert.equal(result.fields.paint.evidence[0].sourcePointer, '/P0300');
+  for (const change of [
+    (d) => { d.report.candidates[0].definitions[0].pointer = '/nearby/P0300'; },
+    (d) => { d.report.candidates[0].definitions[0].code = 'P0475'; },
+    (d) => { d.report.candidates[0].definitions[0].option = 'P0475'; },
+    (d) => { d.schemaVersion = 'invented'; },
+    (d) => { d.report.candidates[0].pointer = '/options'; },
+    (d) => { d.report.candidates.push(structuredClone(d.report.candidates[0])); },
+    (d) => { d.report.candidates[0].definitions.push(structuredClone(d.report.candidates[0].definitions[0])); },
+    (d) => { d.report.candidates[0].definitions = { 0: d.report.candidates[0].definitions[0] }; },
+    (d) => { d.report.candidates[0].definitions[0].phrases = { longDescription: 'invented raw wrapper' }; },
+    (d) => { delete d.report; },
+  ]) {
+    const copy = structuredClone(data); change(copy);
+    const invalid = await qualify({ target, artifacts: [artifact(source()), artifact(copy, {
+      id: entry.id, contextArtifactId: entry.contextArtifactId, observedDatePointer: entry.observedDatePointer,
+      observedDateFormat: entry.observedDateFormat, responseRoots: entry.responseRoots })], requiredFields: ['paint'], claims: [field] });
+    assert.equal(invalid.fields.paint.status, 'missing');
+  }
+  for (const sourcePointer of [undefined, '/P0475', '/options/P0300']) {
+    const invalid = await qualify({ target, artifacts: [artifact(source()), entry], requiredFields: ['paint'],
+      claims: [{ ...field, sourcePointer }] });
+    assert.equal(invalid.fields.paint.status, 'missing');
+  }
+  const arbitrary = { observedDate: '2026-11-06', model: source().model, definitions: [row] };
+  const invalid = await qualify({ target, artifacts: [artifact(arbitrary, { responseRoots: ['/definitions'] })],
+    requiredFields: ['paint'], claims: [claim('paint', '/definitions/0', { code: 'P0300', sourcePointer: '/P0300' })] });
+  assert.equal(invalid.fields.paint.status, 'missing');
+});
+
 test('direct pinned response facts retain exact field provenance without granting admission', async () => {
   const result = await qualify({ target, artifacts: [artifact(source())], requiredFields: ['taxDate', 'productionDate'],
     claims: [claim('taxDate', '/model/taxDate'), claim('productionDate', '/model/prodDate')] });

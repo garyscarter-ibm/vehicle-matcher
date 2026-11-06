@@ -3,6 +3,7 @@ import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { normaliseCodes, requireValue } from './configuration-key.mjs';
 import { assertCollectionHttpObservation } from './collection-session.mjs';
 import { createSettingsShapeRefusal } from './settings-shape-report.mjs';
+import { qualifyBmwSourceFields } from './bmw-source-qualification.mjs';
 
 const object = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
 const same = (a, b) => inputDigest(a) === inputDigest(b);
@@ -147,6 +148,95 @@ function optionsShapeReport(value) {
   visit(value, '', 0);
   return { status: candidates.length > 1 ? 'ambiguous' : candidates.length === 1 ? 'schema-review-required' : 'unresolved',
     candidates, structure, unknownFields, admission: false };
+}
+
+/** Fixed retained-field binding. Hashes identify supplied safe bytes; the owning diagnostic establishes source provenance. */
+export function qualifyPublicBmwDiagnosticFields(input, retained) {
+  const check = (value) => requireValue(value, 'source-qualification-binding', 'Use matching bounded retained diagnostic artifacts and the reviewed field bindings.');
+  try {
+    const plan = validatePublicBmwDiagnosticPlan(input);
+    const artifacts = ['tree', 'options'].map((id) => {
+      const item = retained?.[id]; check(object(item) && object(item.document));
+      const bytes = JSON.stringify(item.document) + '\n';
+      check(Buffer.byteLength(bytes) <= 131072 && item.bytes === Buffer.byteLength(bytes)
+        && item.sha256 === createHash('sha256').update(bytes).digest('hex'));
+      const document = item.document; const m = document.observation;
+      check(document.schemaVersion === 'bmw-source-diagnostic-observation.v1'
+        && same(Object.keys(document).sort(), ['observation', 'report', 'requestScope', 'schemaVersion'])
+        && object(m) && same(Object.keys(m).sort(), ['capability', 'observedAt', 'operation', 'request', 'responseBytes', 'responseSha256', 'schemaVersion', 'sourceId', 'sourceVersion', 'transportKind'])
+        && m.schemaVersion === 'collection-http-observation.v1' && m.sourceId === plan.source.id
+        && m.sourceVersion === plan.source.version && ['live', 'fixture'].includes(m.transportKind)
+        && m.operation === (id === 'tree' ? 'discover' : 'options') && m.capability === (id === 'tree' ? 'bmw-model-tree' : 'bmw-options')
+        && same(m.request, { method: 'GET', url: id === 'tree' ? treeUrl : optionsUrl })
+        && typeof m.observedAt === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(m.observedAt)
+        && new Date(m.observedAt).toISOString() === m.observedAt && m.observedAt.slice(0, 10) === plan.qualificationDate
+        && bounded(m.responseBytes, 1, plan.limits.responseBytes) && typeof m.responseSha256 === 'string' && /^[a-f0-9]{64}$/.test(m.responseSha256));
+      check(same(document.requestScope, id === 'tree'
+        ? { role: 'request-input-only', market: 'GB', treeRequestEffectDate: '2026-11-01', orderDate: '2026-11-01', catalogueRangeKey: 'G61E' }
+        : { role: 'request-input-only', market: 'GB', modelCode: 'T5MJ', effectDate: '2027-01-05', orderDate: '2026-11-01', language: 'en', trim: 'S0337' }));
+      return { id, bytes, sha256: item.sha256, json: document,
+        observedDatePointer: '/observation/observedAt', observedDateFormat: 'iso-timestamp',
+        requestRoots: ['/requestScope', '/observation/request'] };
+    });
+    const [tree, options] = artifacts;
+    const elapsed = Date.parse(options.json.observation.observedAt) - Date.parse(tree.json.observation.observedAt);
+    check(tree.json.observation.transportKind === options.json.observation.transportKind && elapsed >= 0 && elapsed <= plan.limits.deadlineMs);
+    const report = tree.json.report; check(object(report) && Array.isArray(report.nodes) && report.nodes.length === 2);
+    // This local validation view contains only the two retained fact records, never raw response bytes.
+    const validationTree = Object.fromEntries(['5', 'I'].map((group, index) => [group,
+      { modelRanges: { G61E: { models: { T5MJ: report.nodes[index].facts } } } }]));
+    check(same(report, strictModelReport(validationTree)));
+    const shape = options.json.report;
+    check(object(shape) && shape.status === 'schema-review-required' && shape.admission === false
+      && same(Object.keys(shape).sort(), ['admission', 'candidates', 'status', 'structure', 'unknownFields'])
+      && Array.isArray(shape.candidates) && shape.candidates.length === 1 && object(shape.candidates[0]) && shape.candidates[0].pointer === ''
+      && same(Object.keys(shape.candidates[0]).sort(), ['definitions', 'pointer'])
+      && Array.isArray(shape.structure) && shape.structure.length <= 4096
+      && Number.isSafeInteger(shape.unknownFields) && shape.unknownFields >= 0);
+    const definitions = shape.candidates[0].definitions;
+    check(Array.isArray(definitions) && definitions.length > 0 && definitions.length <= 512);
+    const codes = new Set();
+    for (const row of definitions) {
+      check(object(row) && Object.keys(row).every((key) => ['code', 'pointer', 'issues', 'option', 'optionType', 'longDescription'].includes(key))
+        && typeof row.code === 'string' && optionCode(row.code) && !codes.has(row.code) && row.option === row.code && row.pointer === '/' + row.code
+        && Array.isArray(row.issues) && row.issues.length === 0
+        && typeof row.optionType === 'string' && /^[A-Za-z0-9_-]{1,32}$/.test(row.optionType)
+        && (!Object.hasOwn(row, 'longDescription') || safeLabel(row.longDescription)));
+      codes.add(row.code);
+    }
+    const context = Object.fromEntries(['modelCode', 'agModelCode', 'orderDate', 'effectDate'].map((key) => [key, expected[key]]));
+    const contextPointers = Object.fromEntries(Object.keys(context).map((key) => [key, '/report/nodes/0/facts/' + key]));
+    tree.context = contextPointers; tree.responseRoots = ['/report/nodes/0/facts', '/report/nodes/1/facts'];
+    options.context = contextPointers; options.contextArtifactId = 'tree'; options.responseRoots = ['/report/candidates/0/definitions'];
+    const sourceFields = { modelCode: 'modelCode', agModelCode: 'agModelCode', rawModelRange: 'modelRange', steeringLiteral: 'steering',
+      orderDate: 'orderDate', effectDate: 'effectDate', taxDate: 'taxDate', productionDate: 'prodDate', modelName: 'modelName',
+      derivative: 'derivative', bodyStyle: 'bodyStyle', engineSeries: 'engineSeries', fuelTypeCode: 'fuelTypeCode',
+      hybridCode: 'hybridCode', driveType: 'driveType', transmission: 'transmission', trim: 'trim' };
+    const claims = [];
+    report.nodes.forEach((node, index) => {
+      for (const [field, sourceKey] of Object.entries(sourceFields)) {
+        const key = field === 'modelName' && !Object.hasOwn(node.facts, sourceKey) ? 'modelNameRaw' : sourceKey;
+        if (Object.hasOwn(node.facts, key)) claims.push({ field, artifactId: 'tree',
+          pointer: `/report/nodes/${index}/facts/${key}`, sourcePointer: node.fieldPointers[key] });
+      }
+    });
+    for (const [field, code] of [['paint', 'P0300'], ['upholstery', 'FKSFU']]) {
+      const index = definitions.findIndex((row) => row.code === code);
+      if (index !== -1) claims.push({ field, code, artifactId: 'options',
+        pointer: `/report/candidates/0/definitions/${index}`, sourcePointer: '/' + code });
+    }
+    const result = qualifyBmwSourceFields({ target: { observedDate: plan.qualificationDate, context }, artifacts, claims,
+      requiredFields: [...Object.keys(sourceFields), 'paint', 'upholstery', 'accessoryQuantity', 'physicalProductionDate', 'modelYear', 'plant', 'verifiedFitted'] });
+    return { ...result, accepted: [], sourceBindings: Object.fromEntries(artifacts.map((artifact) => [artifact.id, {
+      artifactSha256: artifact.sha256, responseSha256: artifact.json.observation.responseSha256,
+      responseBytes: artifact.json.observation.responseBytes, observedAt: artifact.json.observation.observedAt,
+      transportKind: artifact.json.observation.transportKind, request: artifact.json.observation.request,
+      ...(artifact.id === 'options' ? { definitionRoot: '', definitionCount: definitions.length,
+        contextArtifactId: 'tree', contextBasis: 'strict-model-response-associated-with-exact-options-request', requestScopeRole: 'request-input-only' }
+        : { rawModelPointers: report.nodes.map((node) => node.pointer) }) }])) };
+  } catch {
+    check(false);
+  }
 }
 
 /** Fixed observation-only operations. The existing session owns all transport and retention budgets. */
