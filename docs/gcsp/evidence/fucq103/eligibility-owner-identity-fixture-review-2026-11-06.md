@@ -107,6 +107,40 @@ no-site launch with explicit resolver closure. Execute retained verified source
 buffers. Defer the whole-run alarm during child creation/registration and deliver
 any pending timeout only after the direct handle has been retained.
 
+### Exact command and accounting deltas proposed
+
+The rejected command is the pinned Python with `-I -B`, the rejected `outer.py`,
+and `--plan-sha` / `--review-sha` arguments. A revised candidate would add `-S`,
+use separately authored supervisor/worker paths and a new frozen plan, and bind a
+parent preflight receipt through an explicit `--preflight-sha` argument. No revised
+executable or digest is admitted by this proposal. Preserve the rejected five-file
+packet and failed review verbatim; do not revise them in place or create a PASS
+gate from this document.
+
+| Boundary | Proposed treatment |
+| --- | --- |
+| Selected assertions | Same twelve synthetic cases, once total; no additional application or actual lifecycle category. |
+| Worker | One gated fixture worker; supervisor, worker, pre-exec broker and every query count in aggregate RSS. |
+| Git commands | Same four read-only checks: HEAD, upstream, clean status and exact branch live remote. Parent owns their handles, descendants, inputs, output and receipt. |
+| Whole clock | Keep the existing 30-second allowance across the combined preflight, admission, fixtures, cleanup and final output. Moving preflight outside that clock would be a resource-contract change and is not selected here. |
+| Allocation/output | Same 16MiB combined, 256KiB logs and 64KiB receipts, including preflight receipts/output and all new protocol files. |
+| Reserves/accounting | Same 5GiB disk and 512MiB physical RAM reserves; locked strict seven-key ALL-row admission with no pruning. |
+
+Relocation alone does not solve Git's executable/configuration closure. A revised
+plan must identify and freeze that effective non-secret closure without reading
+credentials, or retain it as a concrete admission blocker. No assumption that an
+ordinary parent Git invocation satisfies this proof is made.
+
+There is also a concrete query-bootstrap constraint: `Tree.register` and
+`Tree.observe` call `process_snapshot`, which invokes the query facade. Wrapping
+each `ps` query in another unmodified tree registration would recurse. The narrow
+adapter must therefore define a finite bootstrap for the exact native resource
+queries, retain their real direct handles before cancellation/timeout delivery,
+and bind their identity, descendants, aggregate memory and final joins without
+recursive query creation. A registration/checkpoint abstraction by itself is
+insufficient. Until that mechanism and Git closure are authored and exactly
+reviewed, there is no complete corrected supervisor to admit under this envelope.
+
 Keep the twelve-case synthetic selection and all existing limits. A revised
 packet requires a new exact independent review and fresh strict locked seven-key
 ALL-row admission, counting every stale, foreign or unresolved reservation without
