@@ -445,3 +445,187 @@ test('identity refuses missing policy, empty factory selection and accessory pol
   assert.throws(() => key({ vgModelCode: 'T5MJ', factoryOptionCodes: ['SE000001'] }), { code: 'accessory-in-factory-selection' });
   assert.throws(() => key({ vgModelCode: 'T5MJ', factoryOptionCodes: ['S0337'], aliases: { S0337: '0337', '0337': 'S0337' } }), { code: 'invalid-alias' });
 });
+
+const publicPage = 'https://configure.bmw.co.uk/en_GB/configure/G61E/T5MJ';
+const httpLimits = () => ({ ...plan().limits, requestBudgets: { page: 4 }, sourceAttempts: 4,
+  sourceBytes: 2 * 1024 * 1024, responseBytes: 1024 * 1024 });
+const pageOperation = (changes = {}) => ({ sourceId: 'bmw-uk-public', sourceVersion: 'f58-20261105.v1',
+  kind: 'read-only-http', capability: 'bmw-page',
+  prepare: async () => ({ method: 'GET', url: publicPage, headers: {} }),
+  project: async () => ({ safe: true }), ...changes });
+
+test('read-only source executor refuses unknown routes, methods and credentials before spending an attempt', async () => {
+  const { createCollectionSession } = await import('../../scripts/gcsp/collection-session.mjs');
+  const root = await mkdtemp(join(tmpdir(), 'f59-http-'));
+  let calls = 0;
+  try {
+    for (const bad of [{ method: 'POST', url: publicPage }, { method: 'GET', url: publicPage + '?other=1' },
+      { method: 'GET', url: 'https://configure.bmw.co.uk/en_GB/garage' },
+      { method: 'GET', url: 'https://example.invalid/en_GB/configure/G61E/T5MJ' },
+      { method: 'GET', url: publicPage, headers: { 'x-api-key': 'must-stay-on-ucp' } },
+      { method: 'GET', url: publicPage, headers: { cookie: 'private' } }]) {
+      const session = await createCollectionSession({ identity: { run: inputDigest(bad) }, limits: httpLimits(),
+        operations: { page: pageOperation({ prepare: async () => ({ headers: {}, ...bad }) }) }, statePath: join(root, inputDigest(bad)),
+        http: { kind: 'fixture', fetch: async () => { calls += 1; return new Response(''); } } });
+      await assert.rejects(session.withCheckpoint(async ({ execute }) => execute('page', {})), { code: 'source-endpoint-refused' });
+    }
+    assert.equal(calls, 0);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('HTTP byte limits stop declared and streamed excess with durable accounting', async () => {
+  const { createCollectionSession } = await import('../../scripts/gcsp/collection-session.mjs');
+  const root = await mkdtemp(join(tmpdir(), 'f59-http-bytes-'));
+  try {
+    for (const kind of ['declared', 'response', 'aggregate']) {
+      const limits = { ...httpLimits(), sourceBytes: kind === 'aggregate' ? 3 : 20, responseBytes: kind === 'response' ? 3 : 10 };
+      const statePath = join(root, kind); let calls = 0;
+      const session = await createCollectionSession({ identity: { kind }, limits, statePath, operations: { page: pageOperation() },
+        http: { kind: 'fixture', fetch: async () => { calls += 1; return new Response('abcd', { headers: {
+          'content-type': 'text/html', ...(kind === 'declared' ? { 'content-length': '11' } : {}) } }); } } });
+      await assert.rejects(session.withCheckpoint(async ({ execute }) => execute('page', {})),
+        { code: kind === 'aggregate' ? 'source-byte-budget' : 'response-byte-budget' });
+      const state = JSON.parse(await readFile(statePath, 'utf8')).content;
+      assert.equal(state.counts.httpAttempts, 1); assert.equal(state.counts.decodedBytes, kind === 'declared' ? 0 : 4);
+      assert.equal(state.cache.length, 0);
+      await assert.rejects(session.withCheckpoint(async ({ execute }) => execute('page', { next: true })), { code: state.halted });
+      assert.equal(calls, 1);
+    }
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('HTTP redirects, authentication, rate limits and stalled bodies stop without retry or overlapping persistence', async () => {
+  const { createCollectionSession } = await import('../../scripts/gcsp/collection-session.mjs');
+  const root = await mkdtemp(join(tmpdir(), 'f59-http-stops-'));
+  try {
+    for (const status of [302, 401, 403, 429]) {
+      let calls = 0; const settings = { identity: { status }, limits: httpLimits(), statePath: join(root, String(status)), operations: { page: pageOperation() },
+        http: { kind: 'fixture', fetch: async () => { calls += 1; return new Response('', { status, headers: { location: 'https://example.invalid' } }); } } };
+      const code = status === 302 ? 'source-redirect-refused' : `source-http-${status}`;
+      for (let i = 0; i < 2; i += 1) await assert.rejects((await createCollectionSession(settings)).withCheckpoint(async ({ execute }) => execute('page', {})), { code });
+      assert.equal(calls, 1);
+    }
+    let canceled = false; let activeWrites = 0; let maxWrites = 0;
+    const settings = { identity: { kind: 'body-timeout' }, limits: { ...httpLimits(), operationTimeoutMs: 25 },
+      statePath: join(root, 'timeout'), operations: { page: pageOperation() },
+      onPhase: async (phase) => { if (phase === 'before-rename') { activeWrites += 1; maxWrites = Math.max(maxWrites, activeWrites); await new Promise((resolve) => setTimeout(resolve, 2)); activeWrites -= 1; } },
+      http: { kind: 'fixture', fetch: async () => new Response(new ReadableStream({
+        start(controller) { controller.enqueue(new TextEncoder().encode('abcd')); }, cancel() { canceled = true; }
+      }), { headers: { 'content-type': 'text/html' } }) } };
+    await assert.rejects((await createCollectionSession(settings)).withCheckpoint(async ({ execute }) => execute('page', {})), { code: 'operation-timeout' });
+    assert.equal(canceled, true); assert.equal(maxWrites, 1);
+    const state = JSON.parse(await readFile(settings.statePath, 'utf8')).content;
+    assert.equal(state.counts.timeouts, 1); assert.equal(state.counts.decodedBytes, 4); assert.equal(state.cache.length, 0);
+    assert.deepEqual((await readdir(root)).filter((name) => name.includes('writer-') || name.includes('writing-')), []);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('HTTP bytes already consumed at the absolute deadline remain counted after resume', async () => {
+  const { createCollectionSession } = await import('../../scripts/gcsp/collection-session.mjs');
+  const root = await mkdtemp(join(tmpdir(), 'f59-http-deadline-')); let clock = 0; let calls = 0;
+  const settings = { identity: { kind: 'absolute-http-deadline' }, limits: httpLimits(), statePath: join(root, 'state'), now: () => clock,
+    operations: { page: pageOperation() }, http: { kind: 'fixture', fetch: async () => { calls += 1;
+      return new Response(new ReadableStream({ pull(controller) { clock = 45000; controller.enqueue(new TextEncoder().encode('abcd')); controller.close(); } }),
+        { headers: { 'content-type': 'text/html' } }); } } };
+  settings.limits.deadlineMs = 45000;
+  try {
+    await assert.rejects((await createCollectionSession(settings)).withCheckpoint(async ({ execute }) => execute('page', {})), { code: 'deadline' });
+    const state = JSON.parse(await readFile(settings.statePath, 'utf8')).content;
+    assert.equal(state.counts.decodedBytes, 4); assert.equal(state.counts.httpAttempts, 1);
+    await assert.rejects((await createCollectionSession(settings)).withCheckpoint(async ({ execute }) => execute('page', {})), { code: 'deadline' });
+    assert.equal(calls, 1);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('public source refuses changed settings, compact references and incomplete or retyped solver selections', async () => {
+  const { createFleetCollector } = await import('../../scripts/gcsp/collect-fleet.mjs');
+  const root = await mkdtemp(join(tmpdir(), 'f59-public-shape-'));
+  try {
+    for (const kind of ['settings', 'compact', 'substitution', 'selection', 'type']) {
+      const { p, tree, solver } = await publicFixture(); let calls = 0;
+      if (kind === 'compact') { delete tree['5'].modelRanges.G61E.models; delete tree.I.modelRanges.G61E.models; tree['5'].modelRanges.G61E.lines = { defaultModel: { modelCode: 'T5MJ' } }; }
+      if (kind === 'substitution') tree.I.modelRanges.G61E.models.T5MJ.effectDate = '2027-01-06';
+      if (kind === 'selection') delete solver.configuration.elements.S043L;
+      if (kind === 'type') solver.configuration.elements.SE000001.type = 'option';
+      const settings = { plan: p, source: { kind: 'public-bmw-uk', version: p.source.version }, mode: 'source-fixture',
+        http: { kind: 'fixture', fetch: async (url) => {
+          calls += 1;
+          if (url === publicPage) return new Response('settings.fixture.json', { headers: { 'content-type': 'text/html' } });
+          if (url.includes('/settings.')) return Response.json(kind === 'settings' ? { wrongProfile: { 'x-api-key': 'test-only' } }
+            : { settingsVehicleTree: { 'x-api-key': 'test-only' }, settingsRules: { 'x-api-key': 'test-only' } });
+          return Response.json(url.includes('/model-matrices/') ? tree : solver);
+        } }, policyService: new PolicyService(), policyRead, statePath: join(root, kind) };
+      const expected = { settings: 'settings-header-shape', compact: 'source-full-model-missing', substitution: 'source-model-substitution',
+        selection: 'source-selection-changed', type: 'source-selection-changed' }[kind];
+      const result = await (await createFleetCollector(settings)).run();
+      assert.equal(result.reason, expected); assert.deepEqual(result.sourceObservations, []); assert.deepEqual(result.accepted, []);
+      const previous = calls; assert.equal((await (await createFleetCollector(settings)).run()).reason, expected); assert.equal(calls, previous);
+      const persisted = await readFile(settings.statePath, 'utf8'); assert.equal(persisted.includes('test-only'), false);
+    }
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('HTTP attempts and decoded bytes persist across stage changes, cached reuse and recreated sessions', async () => {
+  const { createCollectionSession } = await import('../../scripts/gcsp/collection-session.mjs');
+  const root = await mkdtemp(join(tmpdir(), 'f59-http-budget-'));
+  try {
+    const limits = httpLimits(); limits.sourceAttempts = 2; limits.sourceBytes = 8;
+    const settings = { identity: { run: 'shared-http-fixture' }, limits, operations: { page: pageOperation() }, statePath: join(root, 'state'),
+      http: { kind: 'fixture', fetch: async () => new Response('abcd', { headers: { 'content-type': 'text/html' } }) } };
+    await (await createCollectionSession(settings)).withCheckpoint(async ({ execute }) => execute('page', { n: 1 }));
+    const result = await (await createCollectionSession(settings)).withCheckpoint(async ({ execute, state }) => {
+      await execute('page', { n: 1 }); await execute('page', { n: 2 }); return structuredClone(state);
+    }, { stage: { id: 'enrichment', version: '1', inputDigest: inputDigest('http-budget') } });
+    assert.equal(result.counts.httpAttempts, 2); assert.equal(result.counts.decodedBytes, 8); assert.equal(result.counts.sourceCalls, 0);
+    assert.equal(result.counts.cacheHits.page, 1);
+    await assert.rejects((await createCollectionSession(settings)).withCheckpoint(async ({ execute }) => execute('page', { n: 3 })), { code: 'source-attempt-budget' });
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+async function publicFixture() {
+  const snapshot = JSON.parse(await readFile(new URL('../vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json', import.meta.url), 'utf8'));
+  const p = plan({ source: { id: 'bmw-uk-public', version: 'f58-20261105.v1', kind: 'public-bmw-uk' }, target: 1, candidateCount: 1,
+    context: { catalogueDate: '2026-11-01', market: 'GB', locale: 'en-GB', orderDate: '2026-11-01', effectDate: '2027-01-05' },
+    knownSelection: { factoryCodes: snapshot.selectedOptions, accessoryCodes: ['SE000001'] },
+    limits: { ...httpLimits(), requestBudgets: { page: 1, settings: 1, discover: 1, solve: 1 }, maxAttempts: 1,
+      operationTimeoutMs: 10000, deadlineMs: 45000, cacheRetentionMs: 86400000 } });
+  const record = { modelCode: 'T5MJ', agModelCode: '72HH', modelRange: 'G61', steering: 'RL', orderDate: '2026-11-01', effectDate: '2027-01-05' };
+  const tree = { '5': { modelRanges: { G61E: { models: { T5MJ: record } } } }, I: { modelRanges: { G61E: { models: { T5MJ: { ...record } } } } } };
+  const elements = Object.fromEntries([...snapshot.selectedOptions, 'SE000001'].map((code) => [code, { code, type: code.startsWith('SE') ? 'accessory' : 'option' }]));
+  const solver = { constructible: true, configuration: { modelCode: 'T5MJ', elements }, privateOrder: 'must-not-retain-raw-response' };
+  return { p, tree, solver };
+}
+
+test('actual qualified source shapes use the same collector/session without fabricating F39 dates or observation provenance', async () => {
+  const { p, tree, solver } = await publicFixture(); const { createFleetCollector } = await import('../../scripts/gcsp/collect-fleet.mjs');
+  const root = await mkdtemp(join(tmpdir(), 'f59-public-flow-')); const calls = [];
+  const secret = 'test-only-public-application-header';
+  try {
+    const fetch = async (url, options) => {
+      calls.push(url); assert.equal(options.method, 'GET'); assert.equal(options.credentials, 'omit'); assert.equal(options.redirect, 'manual');
+      if (url === publicPage) return new Response('<script src="/en_GB/settings.fixture.json"></script>', { headers: { 'content-type': 'text/html' } });
+      if (url === 'https://configure.bmw.co.uk/en_GB/settings.fixture.json') return Response.json({ settingsVehicleTree: { 'x-api-key': secret }, settingsRuleSolver: { 'x-api-key': secret } });
+      assert.equal(options.headers['x-api-key'], secret);
+      if (url.includes('/model-matrices/')) return Response.json(tree);
+      if (url.includes('/rulesolver/')) return Response.json(solver);
+      throw new Error('unexpected route');
+    };
+    const settings = { plan: p, source: { kind: 'public-bmw-uk', version: p.source.version }, mode: 'source-fixture',
+      http: { kind: 'fixture', fetch }, policyService: new PolicyService(), policyRead, statePath: join(root, 'state') };
+    const collector = await createFleetCollector(settings); const result = await collector.run();
+    assert.equal(calls.length, 4); assert.equal(result.counts.httpAttempts, 4); assert.equal(result.counts.sourceCalls, 0);
+    assert.equal(result.accepted.length, 0); assert.equal(result.status, 'incomplete');
+    assert.equal(result.sourceObservations.length, 1);
+    const observation = result.sourceObservations[0];
+    assert.equal(observation.provenance.kind, 'synthetic-http-fixture'); assert.equal(observation.constructible, true);
+    assert.equal(observation.modelYear.state, 'unknown'); assert.equal(observation.canonicalAdapterContext.status, 'unqualified');
+    assert.equal(observation.sourceContext.modelRangeField, 'G61'); assert.equal(observation.sourceContext.catalogueRangeKey, 'G61E');
+    assert.equal(Object.hasOwn(observation.sourceContext, 'productionDate'), false);
+    assert.equal(observation.originalRequest.elements.join(','), 'FKSFU,P0300,S0337,S043L');
+    assert.equal(observation.resolvedSelection.selectedOptions.length, 47); assert.equal(observation.resolvedSelection.selectedAccessories[0].quantity, null);
+    const persisted = await readFile(settings.statePath, 'utf8');
+    assert.equal(persisted.includes(secret), false); assert.equal(persisted.includes('privateOrder'), false);
+    const resumed = await (await createFleetCollector(settings)).run(); assert.equal(calls.length, 4); assert.equal(resumed.sourceObservations.length, 1);
+    await assert.rejects(createFleetCollector({ ...settings, mode: 'live' }), { code: 'source-allocation-required' });
+  } finally { await rm(root, { recursive: true, force: true }); }
+});

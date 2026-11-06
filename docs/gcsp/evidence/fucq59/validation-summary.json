@@ -38,5 +38,6 @@
     "scripts/gcsp/collection-session.mjs": "aed978263f9c904c9c5f75daf9d1ff254bdd02ec177d5cd04421c5e8cfa70881",
     "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
     "server/test/gcsp-fleet-collector.test.js": "45ef544fa672e3645e342b84c326a073aaecc354e7d1e29825c3505ca182a544"
-  }
+  },
+  "applicability": "Historical pre-HTTP source/test identity only. Current scoped result and pilot: source-executor-2026-11-06/validation-and-cleanup.json"
 }

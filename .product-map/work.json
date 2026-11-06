@@ -1820,17 +1820,17 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T10:32:06Z",
+      "observed_at": "2026-11-06T10:57:16Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59",
       "workers": [
         {
           "name": "Cecil Turtle",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-06T10:32:06.474199+00:00",
-          "expires_at": "2026-11-06T10:32:06.474199+00:00",
+          "observed_at": "2026-11-06T10:57:15.990070+00:00",
+          "expires_at": "2026-11-06T10:57:15.990070+00:00",
           "source": "thread 01a1b054-1167-7820-b9f2-92ec81e37bbe",
-          "status": "stopped; offline implementation validated/published, real-source gates blocked"
+          "status": "stopped; source executor validated and4GET pilot consumed; publishing checkpoint; Sol/high, no descendants"
         }
       ],
       "slices": [
@@ -1852,29 +1852,29 @@
           "id": "atomic-resume",
           "status": "complete",
           "title": "Versioned bounded cache and atomic checkpoint/resume (3 points)",
-          "observed_at": "2026-11-06T10:26:40Z",
-          "evidence": "Lead reviewed bounded checksummed cache, actual SIGKILL/staging recovery, writer contention and durable retries; 24/24 offline tests, receipt-lifetime-deadline-green.json."
+          "observed_at": "2026-11-06T10:56:10Z",
+          "evidence": "Lead reviewed version2 common session;31collector/session +29F39/F54 scoped tests pass60/60, including generic-stage persisted HTTP stops, deadline-byte accounting, cache/resume, SIGKILL and active writer boundaries. source-executor-2026-11-06/validation-and-cleanup.json."
         },
         {
           "id": "finite-offline",
           "status": "complete",
           "title": "Finite source budgets, deadlines and default no-traffic safety (2 points)",
-          "observed_at": "2026-11-06T10:26:40Z",
-          "evidence": "Lead reviewed no-traffic defaults/CLI, finite operation attempts/budgets/timeouts, persisted run deadline and actual collection-to-enrichment ledger/cache regression; 24/24 offline tests."
+          "observed_at": "2026-11-06T10:56:10Z",
+          "evidence": "Lead verified exact GET allowlist/header restrictions, combined4attempt/2MiB budgets,1MiB response,10s complete-body timeout/join and45s persisted deadline;60/60 scoped tests and actual4GET/200/782059B pilot, zero retries/images/browser/writes. Defaults retain zero traffic."
         },
         {
           "id": "source-qualification",
           "status": "blocked",
           "title": "Selected real-source model mapping and solver integration (1 point)",
-          "observed_at": "2026-11-06T10:26:40Z",
-          "evidence": "No live request allocation in this lane. F58 must qualify selected real source mapping/GB-RHD/constructibility; 2 retained configurations and 3 historical observations do not prove 200/10000."
+          "observed_at": "2026-11-06T10:56:10Z",
+          "evidence": "Known T5MJ actual source integration observed once:4GET/200/782059B,47factory+SE000001, safe full model mapping retained. Sole allocation consumed. Broader scheme/profile and F39 dates/classification remain unqualified;1known observation and0accepted corpus rows do not prove200. source-executor-2026-11-06/observation.json."
         },
         {
           "id": "publication-contract",
           "status": "blocked",
           "title": "F39/F54 identity, provenance and selected-source compatibility (1 point)",
-          "observed_at": "2026-11-06T10:26:40Z",
-          "evidence": "Offline retained F39 identity/F54 publisher compatibility passes in 24 collector tests plus 29 boundary tests; actual selected-source integration remains unexercised."
+          "observed_at": "2026-11-06T10:56:10Z",
+          "evidence": "Current F39/F54 scoped boundary29/29 passes plus31collector/session. Actual source observation explicitly lacks productionDate/taxDate/trim/paint-upholstery classification/accessory quantity, so canonicalAdapterContext remains unqualified and accepted corpus rows0. No actual source publication claimed."
         },
         {
           "id": "retailer-boundary",
@@ -1885,10 +1885,10 @@
         },
         {
           "id": "full-validation",
-          "status": "complete",
+          "status": "blocked",
           "title": "Authored serial npm test integration gate (1 point)",
-          "observed_at": "2026-11-06T10:32:06Z",
-          "evidence": "Reviewed frozen fdb71c2 exact npm expansion:68files/1289total/1284pass/5nativePGskips/0fail,73.43s; all1423source hashes unchanged. Full authored manifest executed; source/native gates remain. validation-summary.json; owned cleanup verified."
+          "observed_at": "2026-11-06T10:56:10Z",
+          "evidence": "Changed source executor has current60/60 scoped validation and one consumed4GET pilot. Historical fdb71c2 full1284pass/5native skips does not validate changed source; parent explicitly grants no new full suite. Native SQL excluded."
         }
       ],
       "unsliced": false

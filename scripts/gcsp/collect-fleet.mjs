@@ -4,8 +4,9 @@ import { createCollectionSession, readCollectionJson as readBounded } from './co
 import { bmwCatalogueLookupIdentity } from '../../server/vehicle-evidence/bmw-catalogue-adapter.js';
 import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { CollectionError, createConfigurationKey, normaliseCode, normaliseCodes, requireValue } from './configuration-key.mjs';
+import { publicBmwOperations, publicBmwObservation, validatePublicBmwPlan } from './public-bmw-source.mjs';
 
-export const COLLECTOR_VERSION = '1';
+export const COLLECTOR_VERSION = '2';
 const CONTEXT = ['catalogueDate', 'market', 'locale', 'orderDate', 'effectDate', 'productionDate', 'taxDate'];
 const MODEL = ['modelCode', 'agModelCode', 'modelRange', 'rawModelRange', 'trim'];
 const TYPES = ['option', 'paint', 'upholstery', 'accessory'];
@@ -24,7 +25,7 @@ function validatePlan(plan) {
     && object(plan.policyRead) && version(plan.policyRead.policyVersion)
     && typeof plan.policyRead.asOf === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(plan.policyRead.asOf)
     && Number.isFinite(Date.parse(plan.policyRead.asOf))
-    && object(plan.context) && CONTEXT.every((key) => typeof plan.context[key] === 'string')
+    && object(plan.context) && (plan.source.kind === 'public-bmw-uk' || CONTEXT.every((key) => typeof plan.context[key] === 'string'))
     && Array.isArray(plan.models) && plan.models.length > 0 && plan.models.length <= 100
     && plan.models.every((code) => typeof code === 'string' && /^[A-Z0-9]{4,12}$/.test(code))
     && new Set(plan.models).size === plan.models.length && bounded(plan.target, 1, 10000)
@@ -36,6 +37,7 @@ function validatePlan(plan) {
     && object(l.requestBudgets) && ['discover', 'solve'].every((key) => bounded(l.requestBudgets[key], 0, 100000))
     && (plan.candidates === undefined || (Array.isArray(plan.candidates) && plan.candidates.length <= l.maxCandidates)),
   'invalid-plan', 'Supply a finite versioned plan with explicit offline budgets; supported concurrency is one and image requests are zero.');
+  if (plan.source.kind === 'public-bmw-uk') validatePublicBmwPlan(plan);
   return structuredClone(plan);
 }
 
@@ -150,9 +152,12 @@ export function validateSolverResponse(candidate, response, key) {
 
 /** No default network transport exists. Only an explicitly injected offline source is executable here. */
 export async function createFleetCollector({ plan: input, source, policyService, policyRead, statePath,
-  operations = {}, mode = 'dry-run', now = Date.now, onPhase = async () => {} } = {}) {
-  requireValue(mode !== 'live', 'live-source-unallocated', 'Live source execution is not allocated to this collector lane.');
+  operations = {}, http, mode = 'dry-run', now = Date.now, onPhase = async () => {} } = {}) {
   const plan = validatePlan(input);
+  if (plan.source.kind === 'public-bmw-uk' && !NO_TRAFFIC.includes(mode)) {
+    return createPublicCollector({ plan, source, policyService, policyRead, statePath, operations, http, mode, now, onPhase });
+  }
+  requireValue(mode !== 'live', 'live-source-unallocated', 'Live source execution requires the qualified public-source plan and explicit allocation.');
   requireValue(mode === 'offline' || NO_TRAFFIC.includes(mode), 'invalid-mode', 'Choose explicit offline execution or a no-traffic inspection mode.');
   if (NO_TRAFFIC.includes(mode)) return { run: async () => ({ status: 'incomplete', reason: mode, accepted: [], rejected: [], duplicates: [], counts: freshCounts(), coverage: { distinctConfigurations: 0, target: plan.target } }) };
   requireValue(source?.kind === 'offline' && version(source.version) && typeof source.discover === 'function' && typeof source.solve === 'function',
@@ -220,6 +225,45 @@ export async function createFleetCollector({ plan: input, source, policyService,
       if (!error.stop) throw error;
       if (error.sticky) state.halted = error.code;
       await commit('stop'); return report(error.code);
+    }
+  }, { stage: { id: 'collection', version: COLLECTOR_VERSION, inputDigest: inputDigest(plan) } }) };
+}
+
+async function createPublicCollector({ plan, source, policyService, policyRead, statePath, operations, http, mode, now, onPhase }) {
+  requireValue(['source-fixture', 'live'].includes(mode) && source?.kind === 'public-bmw-uk'
+    && source.version === plan.source.version && http?.kind === (mode === 'live' ? 'live' : 'fixture'),
+  'source-allocation-required', 'Select a matching explicit public-source transport and live allocation.');
+  requireValue(policyRead === undefined || policyRead.asOf === plan.policyRead.asOf
+    && policyRead.policyVersion === plan.policyRead.policyVersion, 'policy-read-mismatch', 'Use the plan policy date/version.');
+  const key = await createConfigurationKey({ policyService, policyRead: { runId: `collector-${plan.planId}`, ...plan.policyRead } });
+  const identity = { planDigest: inputDigest(plan), sourceVersion: source.version, toolVersion: COLLECTOR_VERSION,
+    signaturePolicyVersion: key.policyVersion, mode };
+  const publicOperations = publicBmwOperations(plan);
+  requireValue(!Object.keys(operations).some((name) => Object.hasOwn(publicOperations, name)), 'invalid-session', 'Additional stages cannot replace source operations.');
+  const session = await createCollectionSession({ identity, limits: plan.limits, statePath, now, onPhase, http,
+    initialState: { sourceObservations: [], accepted: [], rejected: [], duplicates: [] },
+    validateState: (state) => requireValue(Array.isArray(state.sourceObservations) && state.sourceObservations.length <= 1
+      && ['accepted', 'rejected', 'duplicates'].every((field) => Array.isArray(state[field]) && state[field].length === 0),
+    'checkpoint-corrupt', 'The qualified source observation is separate from corpus-ready configurations.'),
+    operations: { ...operations, ...publicOperations } });
+  return { session, run: () => session.withCheckpoint(async ({ state, execute, commit }) => {
+    const report = (reason) => ({ status: 'incomplete', reason, qualification: 'canonical-adapter-context-unqualified',
+      ...structuredClone({ accepted: state.accepted, rejected: state.rejected, duplicates: state.duplicates,
+        sourceObservations: state.sourceObservations, counts: state.counts }),
+      coverage: { distinctConfigurations: 0, sourceObservations: state.sourceObservations.length, target: plan.target }, checkpoint: statePath });
+    if (state.halted) return report(state.halted);
+    if (state.sourceObservations.length) return report('source-observed-context-unqualified');
+    try {
+      const page = await execute('page', {});
+      await execute('settings', { path: page.settingsPath });
+      const model = await execute('discover', {});
+      const selection = await execute('solve', {});
+      state.sourceObservations.push(publicBmwObservation({ plan, model, selection, key, mode, observedAt: new Date(now()).toISOString() }));
+      await commit('source-observation');
+      return report('source-observed-context-unqualified');
+    } catch (error) {
+      if (!(error instanceof CollectionError)) throw error;
+      state.halted = error.code; await commit('source-stop'); return report(error.code);
     }
   }, { stage: { id: 'collection', version: COLLECTOR_VERSION, inputDigest: inputDigest(plan) } }) };
 }

@@ -6,13 +6,40 @@ import { setTimeout as delay } from 'node:timers/promises';
 import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { CollectionError, requireValue } from './configuration-key.mjs';
 
-export const COLLECTION_SESSION_VERSION = '1';
+export const COLLECTION_SESSION_VERSION = '2';
 const object = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
 const same = (a, b) => inputDigest(a) === inputDigest(b);
 const bounded = (value, min, max) => Number.isSafeInteger(value) && value >= min && value <= max;
 const version = (value) => typeof value === 'string' && /^[A-Za-z0-9][A-Za-z0-9.-]{0,95}$/.test(value);
 const freshCounts = (names) => ({ sourceCalls: 0, operations: Object.fromEntries(names.map((n) => [n, 0])),
-  cacheHits: Object.fromEntries(names.map((n) => [n, 0])), failures: 0, timeouts: 0, substitutions: 0, cacheEvictions: 0 });
+  cacheHits: Object.fromEntries(names.map((n) => [n, 0])), failures: 0, timeouts: 0, substitutions: 0, cacheEvictions: 0,
+  httpAttempts: 0, decodedBytes: 0, operationBytes: Object.fromEntries(names.map((n) => [n, 0])) });
+
+const PUBLIC_SOURCE_VERSION = 'f58-20261105.v1';
+const PUBLIC_PAGE = 'https://configure.bmw.co.uk/en_GB/configure/G61E/T5MJ';
+const TREE_PATH = '/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01';
+const SOLVER_PATH = '/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/T5MJ';
+const CAPABILITIES = ['bmw-page', 'bmw-settings', 'bmw-model-tree', 'bmw-solver'];
+function readOnlyRequest(capability, request) {
+  let url;
+  try { url = new URL(request?.url); } catch { /* refused below */ }
+  const query = url && Object.fromEntries(url.searchParams);
+  const exactQuery = (expected) => url.searchParams.size === Object.keys(expected).length && same(query, expected);
+  const allowed = url && url.protocol === 'https:' && !url.username && !url.password && !url.hash
+    && (capability === 'bmw-page' ? url.href === PUBLIC_PAGE
+      : capability === 'bmw-settings' ? url.origin === 'https://configure.bmw.co.uk'
+        && /^\/en_GB\/settings\.[a-zA-Z0-9]+\.json$/.test(url.pathname) && !url.search
+        : url.origin === 'https://prod.ucp.bmw.cloud' && (capability === 'bmw-model-tree'
+          ? url.pathname === TREE_PATH && exactQuery({ 'gfs-policy': 'none', cluster: 'default', 'model-ranges': 'G61E', 'future-models': 'true', 'closest-fallback': 'true' })
+          : capability === 'bmw-solver' && url.pathname === SOLVER_PATH && exactQuery({
+            'add-rules-for-mandatory-element-classes': 'fabric,paint,rim', application: 'connext',
+            'included-elements': 'FKSFU,P0300,S0337,S043L', 'mandatory-elements': 'S0337' })));
+  requireValue(allowed && request.method === 'GET' && Object.keys(request).every((key) => ['method', 'url', 'headers'].includes(key))
+    && object(request.headers) && Object.entries(request.headers).every(([key, value]) => ['bmw-model-tree', 'bmw-solver'].includes(capability) && key === 'x-api-key'
+      && typeof value === 'string' && value.length > 0 && value.length <= 4096),
+  'source-endpoint-refused', 'Only the pinned qualified public GET route/query and ephemeral application header are permitted.');
+  return request;
+}
 
 export async function readCollectionJson(path, bytes, code) {
   const file = await open(path, 'r');
@@ -82,13 +109,16 @@ async function checkpointLock(path) {
 }
 
 /** One injected offline executor for collection and enrichment stages. No provider is installed here. */
-export async function createCollectionSession({ identity: stageIdentity, operations, limits, statePath,
+export async function createCollectionSession({ identity: stageIdentity, operations, limits, statePath, http,
   initialState = {}, validateState = () => {}, now = Date.now, onPhase = async () => {} } = {}) {
   const names = Object.keys(operations || {}).sort();
   requireValue(object(stageIdentity) && object(initialState) && names.length > 0 && names.length <= 16
     && names.every((name) => /^[a-z][a-z0-9-]{0,31}$/.test(name) && object(operations[name])
       && version(operations[name].sourceId) && version(operations[name].sourceVersion)
-      && operations[name].kind === 'offline' && typeof operations[name].execute === 'function')
+      && (operations[name].kind === 'offline' && typeof operations[name].execute === 'function'
+        || operations[name].kind === 'read-only-http' && operations[name].sourceVersion === PUBLIC_SOURCE_VERSION
+          && CAPABILITIES.includes(operations[name].capability) && typeof operations[name].prepare === 'function'
+          && typeof operations[name].project === 'function'))
     && object(limits) && object(limits.requestBudgets)
     && same(Object.keys(limits.requestBudgets).sort(), names)
     && names.every((name) => bounded(limits.requestBudgets[name], 0, 100000))
@@ -99,11 +129,21 @@ export async function createCollectionSession({ identity: stageIdentity, operati
     && bounded(limits.checkpointBytes, 1024, 16 * 1024 * 1024)
     && !Object.keys(initialState).some((field) => ['identity', 'counts', 'cache', 'attempts', 'halted', 'stages', 'deadlineAt'].includes(field)),
   'invalid-session', 'Inject named offline operations with explicit finite budgets and a separate stage/input identity.');
+  const hasHttp = names.some((name) => operations[name].kind === 'read-only-http');
+  requireValue(!hasHttp || object(http) && ['fixture', 'live'].includes(http.kind) && typeof http.fetch === 'function'
+    && bounded(limits.sourceAttempts, 1, 3000) && bounded(limits.sourceBytes, 1, 64 * 1024 * 1024)
+    && bounded(limits.responseBytes, 1, 2 * 1024 * 1024)
+    && (http.kind !== 'live' || object(http.allocation) && version(http.allocation.id)
+      && http.allocation.sourceVersion === PUBLIC_SOURCE_VERSION && http.allocation.planDigest === stageIdentity.planDigest
+      && limits.sourceAttempts <= http.allocation.attempts && limits.sourceBytes <= http.allocation.bytes
+      && bounded(http.allocation.attempts, 1, 3000) && bounded(http.allocation.bytes, 1, 64 * 1024 * 1024)
+      && limits.maxAttempts === 1), 'source-allocation-required', 'Public HTTP execution requires an explicit transport, finite combined attempt/byte limits and a pinned live allocation.');
   requireValue(typeof statePath === 'string' && isAbsolute(statePath), 'explicit-path-required', 'Supply an absolute owned checkpoint path.');
   const sources = Object.fromEntries(names.map((name) => [name, { sourceId: operations[name].sourceId,
-    sourceVersion: operations[name].sourceVersion, kind: operations[name].kind }]));
+    sourceVersion: operations[name].sourceVersion, kind: operations[name].kind,
+    ...(operations[name].kind === 'read-only-http' ? { capability: operations[name].capability, cache: operations[name].cache !== false } : {}) }]));
   const identity = { toolVersion: COLLECTION_SESSION_VERSION, stage: structuredClone(stageIdentity), sources,
-    limitsDigest: inputDigest(limits) };
+    limitsDigest: inputDigest(limits), transport: hasHttp ? { kind: http.kind, allocation: http.allocation || null } : null };
   inputDigest(initialState);
   let running = false;
   return { async withCheckpoint(callback, { stage, initialState: stageInitialState = {} } = {}) {
@@ -111,7 +151,7 @@ export async function createCollectionSession({ identity: stageIdentity, operati
       && typeof stage.inputDigest === 'string' && /^[a-f0-9]{64}$/.test(stage.inputDigest) && object(stageInitialState),
     'invalid-stage', 'A stage has its own ID, version, input digest and optional data, separate from run identity.');
     requireValue(!running, 'checkpoint-busy', 'This session already owns an active checkpoint.'); running = true;
-    let ownership; let state; let inFlight = null; let activeController;
+    let ownership; let state; let inFlight = null; let activeController; let persist;
     try {
       await mkdir(dirname(statePath), { recursive: true }); ownership = await checkpointLock(statePath);
       let envelope;
@@ -128,8 +168,10 @@ export async function createCollectionSession({ identity: stageIdentity, operati
           && object(state.attempts) && Object.entries(state.attempts).every(([key, count]) => /^[a-f0-9]{64}$/.test(key) && bounded(count, 1, limits.maxAttempts))
           && names.every((name) => bounded(state.counts.operations?.[name], 0, limits.requestBudgets[name])
             && bounded(state.counts.cacheHits?.[name], 0, Number.MAX_SAFE_INTEGER))
-          && ['sourceCalls', 'failures', 'timeouts', 'substitutions', 'cacheEvictions'].every((field) => bounded(state.counts[field], 0, Number.MAX_SAFE_INTEGER))
-          && state.counts.sourceCalls === 0 && Number.isFinite(state.deadlineAt)
+          && ['sourceCalls', 'failures', 'timeouts', 'substitutions', 'cacheEvictions', 'httpAttempts', 'decodedBytes'].every((field) => bounded(state.counts[field], 0, Number.MAX_SAFE_INTEGER))
+          && object(state.counts.operationBytes) && names.every((name) => bounded(state.counts.operationBytes[name], 0, Number.MAX_SAFE_INTEGER))
+          && (hasHttp ? state.counts.httpAttempts <= limits.sourceAttempts && state.counts.sourceCalls <= state.counts.httpAttempts : state.counts.sourceCalls === 0 && state.counts.httpAttempts === 0)
+          && Number.isFinite(state.deadlineAt)
           && (state.halted === null || typeof state.halted === 'string'), 'checkpoint-corrupt', 'Checkpoint accounting is invalid.');
         for (const cached of state.cache) requireValue(names.includes(cached.operation) && /^[a-f0-9]{64}$/.test(cached.cacheKey)
           && Number.isFinite(cached.expiresAt) && inputDigest(cached.payload) === cached.payloadDigest,
@@ -140,24 +182,73 @@ export async function createCollectionSession({ identity: stageIdentity, operati
       const commit = async (kind = 'checkpoint') => {
         validateState(state); await writeAtomic(statePath, state, limits.checkpointBytes, onPhase, kind, ownership.staging);
       };
+      persist = commit;
       const stop = (reason, sticky = false) => { if (sticky) state.halted = reason; const error = new CollectionError(reason, 'The bounded stage stopped with an incomplete checkpoint.'); error.stop = true; error.sticky = sticky; throw error; };
       const checkDeadline = () => { if (now() >= deadline) stop('deadline'); };
+      async function readHttp(descriptor, prepared, signal, operation) {
+        let reader; let response;
+        try {
+          response = await http.fetch(prepared.url, { method: 'GET', headers: prepared.headers,
+            credentials: 'omit', cache: 'no-store', redirect: 'manual', signal });
+          if (response.status >= 300 && response.status < 400) stop('source-redirect-refused', true);
+          if (response.status !== 200) { const error = new CollectionError('source-http-failure', 'Public source HTTP failure.'); error.status = response.status; throw error; }
+          const expectedType = descriptor.capability === 'bmw-page' ? 'text/html' : 'application/json';
+          requireValue((response.headers.get('content-type') || '').split(';')[0] === expectedType, 'source-content-type', 'The qualified response content type changed.');
+          if (Number(response.headers.get('content-length')) > limits.responseBytes) stop('response-byte-budget', true);
+          const chunks = []; let bytes = 0;
+          reader = response.body.getReader();
+          const abort = () => { reader.cancel().catch(() => {}); };
+          signal.addEventListener('abort', abort, { once: true });
+          try {
+            while (true) {
+              const part = await reader.read();
+              if (!part.done) {
+                const size = part.value.byteLength; bytes += size;
+                state.counts.decodedBytes += size; state.counts.operationBytes[operation] += size;
+                await commit('source-bytes');
+              }
+              checkDeadline();
+              if (signal.aborted) throw new CollectionError('operation-timeout', 'The complete source request timed out.');
+              if (part.done) break;
+              if (bytes > limits.responseBytes) stop('response-byte-budget', true);
+              if (state.counts.decodedBytes > limits.sourceBytes) stop('source-byte-budget', true);
+              chunks.push(part.value);
+            }
+          } finally { signal.removeEventListener('abort', abort); }
+          const text = Buffer.concat(chunks).toString('utf8');
+          if (expectedType === 'text/html') return text;
+          try { return JSON.parse(text); } catch { stop('source-json-shape', true); }
+        } finally {
+          if (reader) await reader.cancel().catch(() => {});
+          else if (response?.body) await response.body.cancel().catch(() => {});
+        }
+      }
       async function perform(operation, request) {
         if (state.halted) stop(state.halted, true);
         checkDeadline(); const descriptor = operations[operation];
         const cacheKey = inputDigest({ operation, ...sources[operation], request });
-        const cached = state.cache.find((row) => row.cacheKey === cacheKey && row.expiresAt > now());
+        const cached = descriptor.cache !== false && state.cache.find((row) => row.cacheKey === cacheKey && row.expiresAt > now());
         if (cached) { state.counts.cacheHits[operation] += 1; return structuredClone(cached.payload); }
         for (let attempt = 0; attempt < limits.maxAttempts; attempt += 1) {
           checkDeadline();
           if (state.counts.operations[operation] >= limits.requestBudgets[operation]) stop('request-budget');
           if ((state.attempts[cacheKey] || 0) >= limits.maxAttempts) stop('retry-budget', true);
+          const isHttp = descriptor.kind === 'read-only-http';
+          const prepared = isHttp ? readOnlyRequest(descriptor.capability, await descriptor.prepare(structuredClone(request))) : null;
+          if (isHttp) {
+            if (state.counts.httpAttempts >= limits.sourceAttempts) stop('source-attempt-budget', true);
+            if (state.counts.decodedBytes >= limits.sourceBytes) stop('source-byte-budget', true);
+            state.counts.httpAttempts += 1;
+            if (http.kind === 'live') state.counts.sourceCalls += 1;
+          }
           state.attempts[cacheKey] = (state.attempts[cacheKey] || 0) + 1;
           state.counts.operations[operation] += 1; await commit('request-count');
-          const controller = new AbortController(); activeController = controller; let timer; let value;
+          const controller = new AbortController(); activeController = controller; let timer; let value; let sourceTask;
           try {
+            sourceTask = Promise.resolve().then(() => isHttp ? readHttp(descriptor, prepared, controller.signal, operation)
+              : descriptor.execute(structuredClone(request), { signal: controller.signal }));
             value = await Promise.race([
-              Promise.resolve().then(() => descriptor.execute(structuredClone(request), { signal: controller.signal })),
+              sourceTask,
               new Promise((resolve, reject) => { timer = setTimeout(() => { controller.abort(); reject(new CollectionError('operation-timeout', 'The source operation timed out.')); }, Math.min(limits.operationTimeoutMs, Math.max(1, deadline - now()))); }),
             ]);
             clearTimeout(timer); checkDeadline();
@@ -165,11 +256,13 @@ export async function createCollectionSession({ identity: stageIdentity, operati
             if (typeof value?.status === 'number' || ['source-unavailable', 'source-failure', 'unavailable', 'error'].includes(value?.status)) throw new CollectionError('source-response-failure', 'The source returned a failed status.');
           } catch (error) {
             clearTimeout(timer);
+            if (isHttp) { controller.abort(); await sourceTask.catch(() => {}); }
             if (error.stop) { if (error.sticky) await commit('stop'); throw error; }
             if ([401, 403, 429].includes(error.status ?? error.statusCode)) { state.counts.failures += 1; stop(`source-http-${error.status ?? error.statusCode}`, true); }
             state.counts.failures += 1;
             if (error.code === 'operation-timeout') state.counts.timeouts += 1;
             await commit('source-failure');
+            if (isHttp) stop(error.code === 'operation-timeout' ? 'operation-timeout' : 'source-failure', true);
             if (attempt + 1 === limits.maxAttempts) stop('source-failure', true);
             if (limits.retryDelayMs) await delay(Math.min(limits.retryDelayMs, Math.max(0, deadline - now())));
             continue;
@@ -177,6 +270,9 @@ export async function createCollectionSession({ identity: stageIdentity, operati
           // Projection, validation and persistence errors are never transport retries.
           const payload = descriptor.project ? await descriptor.project(value, request) : structuredClone(value);
           requireValue(Buffer.byteLength(JSON.stringify(payload)) <= 128 * 1024, 'operation-payload-budget', 'The operation response exceeds its bounded contract.');
+          requireValue(!prepared || Object.values(prepared.headers).every((secret) => !JSON.stringify(payload).includes(secret)),
+            'source-sensitive-projection', 'Ephemeral application headers cannot enter the response cache or checkpoint.');
+          if (descriptor.cache === false) return structuredClone(payload);
           const previous = state.cache.length;
           state.cache = state.cache.filter((row) => row.expiresAt > now() && row.cacheKey !== cacheKey);
           state.counts.cacheEvictions += previous - state.cache.length;
@@ -204,6 +300,9 @@ export async function createCollectionSession({ identity: stageIdentity, operati
         stageState = state.stages[stage.id].data;
       }
       return await callback({ state, stageState, execute, commit, stop, checkDeadline });
+    } catch (error) {
+      if (error.stop && error.sticky && persist) await persist('stop');
+      throw error;
     } finally {
       try { if (inFlight) { activeController?.abort(); await inFlight.catch(() => {}); } }
       finally { try { if (ownership) await ownership.release(); } finally { running = false; } }
