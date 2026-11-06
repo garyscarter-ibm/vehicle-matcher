@@ -2,7 +2,11 @@
 
 6 November 2026. Root receivedc7c584a as **authoring only** and required strict owned ledger mutation and review of the103 finalizer findings before admission. This successor remains unexecuted. No helper import, test, lock acquisition, ledger mutation, scratch mirror, process, browser/native/full run or grant has occurred. Read-only filesystem metadata pins the existing directory/lock; ledger contents were not copied or printed.
 
-## Current source and diagnosis
+## Latest accepted upstream and new consumer packet
+
+Root subsequently cleared102's service blocker: combinedaac8a00/source-plan983a85e passed11/11 with zero others, and root independent360 checks passed. Access848a16f and107followup17e7fe now supply the accepted service pins. The earlier8/11 failure below is historical. The [new own105 actual-consumer packet](followup-consumer-plan.md) freezes73 modules/137 product edges/24 test edges/12 inputs, one case/four checkpoints, preserving the strict ledger and direct-join source from1a0c028 unchanged. It remains unexecuted and requires exact scoped review plus a separate grant. Explicit question-policy input does not establish default registration/runtime adoption. No100/102/107 product changes, backend-registry rerun or fake-lifecycle refresh are selected.
+
+## Prior source and diagnosis
 
 The current105 product remainsc408d3f: strict handle projection/controller clones, declined follow-up unavailable/refresh and a fresh account-gated injected107 body mount. Its ten authored tests remain unexecuted. This checkpoint adds no product behavior and does not manufacture a decision handle to compensate for a missing server projection.
 

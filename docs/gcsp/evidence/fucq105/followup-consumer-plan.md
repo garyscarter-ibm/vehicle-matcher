@@ -1,0 +1,38 @@
+# FUCQ-105 actual follow-up consumer packet
+
+6 November 2026. **Authoring only; no execution grant.** This packet adds one bounded actual-memory consumer case. It imports none of the accepted102 eleven-case registry and does not select the eight fake lifecycle cases. No product/helper import, test, loader, supervisor, listener, browser, native DB, process/scratch allocation or live-ledger read/lock/mutation occurred during authoring.
+
+## Accepted service boundary
+
+Root cleared102's service-level blocker using combined commit `aac8a00b121cc10a23dce1a53e7f59b2a4ca6d07`, source-plan SHA256 `983a85e1e4630065d2fc1af428697d04b38a6277a52240a703746316244e1ebe`: scoped11/11, zero failed/skipped/cancelled/todo. Root's independent360 checks passed in `.claude/test-runs/ownership/fucq102-combined-result-root-0233.json`. The earlier8/11 failure and1317-check cleanup result remain historical evidence.
+
+The exact102 access implementation is `848a16f8ceda2053e5441ded4ce0c5378df5b30f`, `server/gcsp/offers/access.js` SHA256 `63fac0a89e50b8b4bd5c8bed581dd49bed42519c76b2b6232de155533d37fb3c`. The107 service is `17e7fe19029c2cb1c41711f48bf6fd4413ee96d6`, `server/gcsp/offers/followup.js` SHA256 `29a439ef9b14b84b43dbb3a5ac91e4e4421866d94ab03bf03c5e463fc8a72028`.
+
+That result proves the actual-memory100/102/106/107 native decline, authenticated reload, question and confirmation boundary. Explicit107-owned question-policy input remains distinct from canonical default registration/runtime adoption. It proves no105 client, deployed host/gate/cookie, native DB, browser or full-suite acceptance.
+
+## Frozen composition
+
+[The source plan](followup-consumer-source-plan.json) selects `server/test/gcsp-offer-view-followup-consumer.test.js`: one case, four checkpoints,73 immutable modules,137 product JavaScript edges,24 test import edges and12 file inputs. It adds current105 production from immutable `1a0c028a5114c99b4705d32acb2b60846a103eea` (same consumer bytes asc408d3f), inspected107 client ports from94e05ff, real manual account service/adapter and shared identity HTTP middleware. Every canonical module has exactly one selected identity. Existing100/102/107 products and the original51/94/11 mixed proposal are unchanged.
+
+The new loader maps declared canonical URLs to one owned `.mjs` mirror, checks hashes and rejects undeclared project modules. JSON inputs keep relative locality in that mirror; the explicit question bundle path is injected by the supervisor and frozen in the plan. Retained Node, pg/jsdom entry/package hashes, installation identities and lockfiles are pinned. This is not a full byte audit of every third-party transitive file; that boundary is explicit for scoped review.
+
+`followup-consumer-supervisor.py` and `followup-consumer-audit.py` preserve the published1a0c028 owned strict-ledger and direct-join lifecycle source exactly. Their delta selects the new plan/test/loader, one-case totals, environment and grant scope. Accounting retains the frozen physical directory/lock, strict bounded regular ledger, complete owner/root/row checks, foreign-preserving readback and descriptor-bound staging. Direct captured-child join precedes sample/persistence; no inherited HostBudget, missing-ledger default, pruning or token-only mutation is introduced. No runtime cancellation/accounting result is claimed.
+
+## Selected consumer acceptance
+
+1. Actual100 allocates from explicit synthetic inventory and confirmed brief1. Confirm brief2 before actual106 decline, adopt the canonical decline-reason policy and reissue the employee session through actual identity. One actual102 instance owns the access handler,106 decision service and trusted resolver.105's real HTTP/controller loses the committed decline response and reloads the persisted opaque handle. Assert historical brief1/2 and terminal outcome pins, original quote/deadline, zero decision actions, invalid-cookie refusal without account fallback and107 refusal of offer-cookie-only access.
+2. Reopen only original offer/run coordinates through actual102 HTTP and current105 projector/controller/host.105's account loader uses the real manual account HTTP adapter, shared employee middleware, ManualContextService and repository ports. After its fresh ready account result, pass only `{decisionId,signal}` into real107 body/controller/HTTP. Require the actual question; selecting an answer and an ordinary105 read retain the mounted controls and focus without writes.
+3. Confirm one changed answer through107. Require saved brief3 and the public opaque `brief-change:` receipt, then reopen original offer/run coordinates and require the saved-change display. Preserve quoted brief1 and hold deadline, one106 decline, one107 confirmation and one native decision event. No POST result or browser storage supplies the entry handle.
+4. In the same owned setup, remove or malform the native source and require declined+null/unavailable; race the actual source read and require whole-read error. Restore native state, explicitly refresh using GETs only and require saved reload. Removed handle and host teardown abort/dispose107 mounts; no duplicate decision/confirmation/event is introduced. Fault variants never manufacture a successful DTO, handle, event or private context.
+
+An assertion or teardown failure stops this single case immediately. Four named checkpoints retain progress; no automatic retry or backend-registry rerun is planned.
+
+## Review and resource boundary
+
+Before execution root must review the exact published plan, source/input/helper/environment identities and this scope, then supply a separate fresh one-use `fucq105-followup-consumer-memory` grant. The new supervisor refuses absent/changed grants and identities before allocation. There is no grant in this publication.
+
+Proposed hard ceilings remain one worker,120 seconds,128MiB combined scratch/output including bounded ledger staging,768MiB RAM and2MiB logs, with minimum384MiB proven shared RAM headroom. Estimated current case25s/384MiB child/12MiB combined is a plan, not a measurement. On first failure or pressure retain bounded evidence, join owned children, preserve unresolved resources and independently audit process/group/root/staging/reservation absence after exit. Existing strict accounting/finalizers remain mandatory; no live accounting was probed for this authoring.
+
+Functional105 consumer acceptance remains pending. Delivered host/gate/same-origin HTTPS and actual email/account cookie delivery, canonical question-policy registration,1280/375 keyboard/reduced-motion and rendered visual review, second browser/presenter, native DB, full suite and collaborator acceptance remain open. The reference is `docs/gcsp/experience-quality.md`, supplied shell screenshots, FUCQ64 bodya7fc178, `COMPONENTS.md` and shared Density tokens. Browser lane remains UNALLOCATED.
+
+Agents: Hippety Hopper, existing requested/selected `gpt-6.1-sol` / `high`; no new spawn, fallback or descendants. No Jira, status, claim or ownership change.
