@@ -1055,16 +1055,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-101"
     },
     {
-      "id": "FUCQ-102",
-      "title": "Open an offer from a run-bound link that shows its current state",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "Gary Carter",
-      "type": "Story",
-      "observed_at": "2026-11-05T23:21:35Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-102"
-    },
-    {
       "id": "FUCQ-105",
       "title": "Show the offer's exact quote, current-car comparison and countdown",
       "status": "In Progress",
@@ -1903,6 +1893,69 @@
       "type": "Story",
       "observed_at": "2026-11-06T18:05:53Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103"
+    },
+    {
+      "id": "FUCQ-102",
+      "title": "Open an offer from a run-bound link that shows its current state",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-06T19:52:39Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-102",
+      "workers": [],
+      "slices": [
+        {
+          "id": "contract",
+          "status": "complete",
+          "title": "One-offer HTTP and durable capability contract",
+          "observed_at": "2026-11-06T19:52:38Z",
+          "evidence": "Current integrated backend32/32, unchanged product source and original tests with canonical imports; docs/gcsp/evidence/fucq102/current-backend-2026-11-06.md. Not browser/native/full acceptance."
+        },
+        {
+          "id": "access",
+          "status": "complete",
+          "title": "Hash exchange and current-state access service",
+          "observed_at": "2026-11-06T19:52:38Z",
+          "evidence": "Current integrated backend32/32, unchanged product source and original tests with canonical imports; docs/gcsp/evidence/fucq102/current-backend-2026-11-06.md. Not browser/native/full acceptance."
+        },
+        {
+          "id": "http",
+          "status": "complete",
+          "title": "Origin-gated cookie and account adapter",
+          "observed_at": "2026-11-06T19:52:38Z",
+          "evidence": "Current integrated backend32/32, unchanged product source and original tests with canonical imports; docs/gcsp/evidence/fucq102/current-backend-2026-11-06.md. Not browser/native/full acceptance."
+        },
+        {
+          "id": "producer",
+          "status": "complete",
+          "title": "Actual token producer and local expiry integration",
+          "observed_at": "2026-11-06T19:52:38Z",
+          "evidence": "Current integrated backend32/32, unchanged product source and original tests with canonical imports; docs/gcsp/evidence/fucq102/current-backend-2026-11-06.md. Not browser/native/full acceptance."
+        },
+        {
+          "id": "runtime",
+          "status": "complete",
+          "title": "Central offer route and reload integration",
+          "observed_at": "2026-11-06T19:52:38Z",
+          "evidence": "Current integrated backend32/32, unchanged product source and original tests with canonical imports; docs/gcsp/evidence/fucq102/current-backend-2026-11-06.md. Not browser/native/full acceptance."
+        },
+        {
+          "id": "validation",
+          "status": "in-progress",
+          "title": "Authored validation and acceptance disposition",
+          "observed_at": "2026-11-06T19:52:39Z",
+          "evidence": "Current32/32 pass; original landing URL criterion open; retained full1590:1569pass16fail5skip, independent Bugs deferred; no Done. docs/gcsp/evidence/fucq102/current-backend-2026-11-06.md"
+        },
+        {
+          "id": "landing-url",
+          "status": "not-started",
+          "title": "Original deployment-configured landing URL",
+          "observed_at": "2026-11-06T19:52:39Z",
+          "evidence": "Original AC5 remains open: relative generator path exists, deployment-configured landing URL input/composition not observed. docs/gcsp/evidence/fucq102/current-backend-2026-11-06.md"
+        }
+      ],
+      "unsliced": false
     }
   ]
 }
