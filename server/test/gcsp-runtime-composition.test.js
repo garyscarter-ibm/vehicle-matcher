@@ -9,6 +9,16 @@ import { createMemoryRepository, createMemoryStore, inputDigest } from '../gcsp/
 import { createCompositionTestProfile } from './helpers/runtime-composition-profile.js';
 
 const origin = 'https://composition.test';
+const expectedRegistrations = [
+  { handlerId: 'stock-release', stage: 'release-pull' },
+  { handlerId: 'manual-claim-expiry', stage: 'manual-expiry' },
+  { handlerId: 'buddy-expiry', stage: 'buddy-expiry' },
+  { handlerId: 'selection-order-reconciliation', stage: 'pending-reconciliation' },
+  { handlerId: 'lifecycle-approvals', stage: 'pending-reconciliation' },
+  { handlerId: 'lifecycle-documents', stage: 'pending-reconciliation' },
+  { handlerId: 'renewal-risk-cases', stage: 'pending-reconciliation' },
+  { handlerId: 'captured-outbox', stage: 'outbox-dispatch' },
+];
 // Deliberately never serialize a result/context/cookie into assertion diagnostics.
 const good = (value) => { assert.equal(value?.status, 'ok'); return value.value; };
 const cookies = (value) => [value].flat().map((entry) => entry.split(';')[0]).join('; ');
@@ -90,12 +100,12 @@ test('C1 shared runtime authority and bound raw manual receivers serve authentic
 
 test('C1 release registry is preseal and memoized while ordinary startup releases nothing', async (t) => {
   const f = await setup(t);
-  assert.deepEqual(f.registrations.map((row) => row.handlerId),
-    ['stock-release', 'manual-claim-expiry', 'buddy-expiry', 'renewal-risk-cases', 'captured-outbox']);
-  assert.equal(f.registrations.find((row) => row.handlerId === 'stock-release').stage, 'release-pull');
+  assert.deepEqual(f.registrations, expectedRegistrations);
   good(await f.stockRelease.register()); good(await f.manualClaims.registerClockHandler());
-  good(await f.buddy.start()); good(await f.cases.start()); good(await f.notify.start()); good(await f.server.gcspStartup);
-  assert.equal(f.registrations.length, 5); assert.equal(f.profile.calls.length, 0);
+  good(await f.buddy.start()); good(await f.manualOrder.registerClockHandler());
+  good(await f.lifecycle.start()); good(await f.documents.start());
+  good(await f.cases.start()); good(await f.notify.start()); good(await f.server.gcspStartup);
+  assert.deepEqual(f.registrations, expectedRegistrations); assert.equal(f.profile.calls.length, 0);
   assert.equal(f.store.state.tables.event_receipts.filter((row) => row.consumerId === 'stock-release').length, 0);
   assert.equal(f.store.state.tables.stock.filter((row) => row.release).length, 0);
 });
@@ -165,7 +175,7 @@ test('C1 real mechanics reset rejects stale employee and refuses missing fresh r
   assert.equal(unavailable.handlerOutcome.status, 'unavailable');
   assert.equal(f.profile.calls.at(-1).runId, f.employee.runId);
   assert.equal((await f.repository.read(f.employee, ref(f.employee, 'stock', { orderUuid: car.orderUuid }))).status, 'not-found');
-  assert.equal(f.registrations.length, 5);
+  assert.deepEqual(f.registrations, expectedRegistrations);
 });
 
 test('host account setup Back and resume retain real saved choices and unchanged current car', async (t) => {
