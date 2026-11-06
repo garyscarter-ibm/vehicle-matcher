@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
-  "status": "proposal-only; not applied or executed",
-  "baseRevision": "280db3ac3756b91e8674c46751df2694040e9423",
+  "status": "refreshed proposal only; not applied or executed; final FUCQ-116 producer checkpoint pending",
+  "baseRevision": "45c62e5147a1fa03c8dfd1f02e7d5731f87e980b",
   "ownedPaths": [
     {
       "path": "server/gcsp/runtime.js",
-      "preimageSha256": "d728142ebbf5d5cfe451e95e90cbacaeda6168bf1f158043780da67fc707a36f",
-      "postimageSha256": "6ef00541af22a7995ed66e97eed21b92e1fd3d7955c57ff9a3239eb8ff196170"
+      "preimageSha256": "3127b615da3171b3ad61c08d8361ed9134dd08af180615cc0cd589a5b2d507bd",
+      "postimageSha256": "9f3cc66b77df3a0a63a9811e15ae277812653a14b9512e904ff958b6c56b9696"
     },
     {
       "path": "server/index.js",
-      "preimageSha256": "b493a8f61fe797a03aa5a51d127a39186e5bd2cc657de5b22a511934a8a258cc",
-      "postimageSha256": "79bf6dfe07a2b791cf3264cdc0215fac75f1b7d8a5db50ac10785858ee452e1f"
+      "preimageSha256": "4eda862a9a73d5b42a08b02b9a6f394f9c093e24a9a6c9785633ca7146019cd7",
+      "postimageSha256": "417dd0ec325c060cc48adf38fe19f664ff9ad65f625826d56c5b3efa4370bf9d"
     }
   ],
   "patch": {
     "path": "docs/gcsp/evidence/fucq100/lifecycle-composition-owned.patch",
-    "sha256": "1c2b21bf0e1837acae48cf5529d4726b11dcbf1cd4aeb65cab7ed40dba820a62",
+    "sha256": "182928aab04547b2e159d2720c669d41f6135b8248f845194030d9189b8c86a2",
     "format": "unified diff, zero context; verify exact preimages before application",
     "staticApplyCheckOptions": [
       "--unidiff-zero",
@@ -37,61 +37,61 @@
       "bytes": 19660
     },
     {
-      "revision": "d392120b777583b716ad5d0b8484ba477fb5fe37",
+      "revision": "2b3fee00853cd4fd5bd201f2f12d7777dd493c7c",
       "path": "server/gcsp/lifecycle/approvals/index.js",
-      "sha256": "66fe2e9d699fedddacfc7424bedace2b0837d0b3467afca8dc2ed3e68b995a16",
-      "bytes": 18617
+      "sha256": "731ce7f165cfebfd38b147d22fce6dbdfa7d8526dcc2a836cbf72937ce710651",
+      "bytes": 20641
     },
     {
-      "revision": "d392120b777583b716ad5d0b8484ba477fb5fe37",
+      "revision": "2b3fee00853cd4fd5bd201f2f12d7777dd493c7c",
       "path": "server/gcsp/lifecycle/approvals/http.js",
-      "sha256": "ba533b630a8be38232822c55852fd0f16e05189d24bd7075d902f92dff2ef862",
-      "bytes": 1069
+      "sha256": "49875b0b0cc3190518c07696a03e076525b7616c435ed4c93eb4f7a4398deafa",
+      "bytes": 1081
     },
     {
-      "revision": "d392120b777583b716ad5d0b8484ba477fb5fe37",
+      "revision": "2b3fee00853cd4fd5bd201f2f12d7777dd493c7c",
       "path": "server/gcsp/adapters/synthetic-ordering-status.js",
       "sha256": "3122f074ca1ee6614c58cc8bb53cb62ad7e10a5bcbc076dd8490b94b182390d2",
       "bytes": 3425
     },
     {
-      "revision": "91c263f0ec9a35ba705e13085c8efe658e536514",
+      "revision": "66c84cb6e22a5a0f112997e3e2c54968d832b979",
       "path": "server/gcsp/lifecycle/documents/index.js",
-      "sha256": "2aa9a206e864a4a99890405e6b3893997f4162ade6a1d27cf1a92c754308322b",
-      "bytes": 22295
+      "sha256": "e9d912715d6f533ac7fdfa6f0fc0423c72da18a1c854f89d27e690f95c2c719d",
+      "bytes": 23676
     },
     {
-      "revision": "91c263f0ec9a35ba705e13085c8efe658e536514",
+      "revision": "66c84cb6e22a5a0f112997e3e2c54968d832b979",
       "path": "server/gcsp/lifecycle/documents/http.js",
       "sha256": "ba3e6791677490a9f8d5ea429be1f17f7710fcb9758610c65b64ee170a6005b4",
       "bytes": 1193
     },
     {
-      "revision": "91c263f0ec9a35ba705e13085c8efe658e536514",
+      "revision": "66c84cb6e22a5a0f112997e3e2c54968d832b979",
       "path": "server/gcsp/adapters/synthetic-ordering-documents.js",
       "sha256": "1236e1099f8de4e8aca4d33967acb0872f751dd3eb5334a56014ba0430d813df",
       "bytes": 2939
     },
     {
-      "revision": "280db3ac3756b91e8674c46751df2694040e9423",
+      "revision": "45c62e5147a1fa03c8dfd1f02e7d5731f87e980b",
       "path": "server/gcsp/clock/index.js",
       "sha256": "98d9e3ad778ad9a38aa3fb5f96f5a68040544ba328b79e263e661ec42c442c45",
       "bytes": 24094
     },
     {
-      "revision": "280db3ac3756b91e8674c46751df2694040e9423",
+      "revision": "45c62e5147a1fa03c8dfd1f02e7d5731f87e980b",
       "path": "scripts/gcsp-demo.mjs",
-      "sha256": "6e537cc11f76286b89c5951d74079c6277c66140bb0a27b0d05be878f5dff2c2",
-      "bytes": 4991
+      "sha256": "9c9030c392e3295e1cb30e04e6b1cfe9702cfa7bec0810c8827bca23c67da516",
+      "bytes": 5154
     },
     {
-      "revision": "280db3ac3756b91e8674c46751df2694040e9423",
+      "revision": "45c62e5147a1fa03c8dfd1f02e7d5731f87e980b",
       "path": "blocks/gcsp/account/harness.js",
       "sha256": "606ec0b4b0f489d4e65340be292a4f2f5350c7ca81883393b7672f5fcd5c3991",
       "bytes": 773
     },
     {
-      "revision": "280db3ac3756b91e8674c46751df2694040e9423",
+      "revision": "45c62e5147a1fa03c8dfd1f02e7d5731f87e980b",
       "path": "blocks/gcsp/account/http-adapter.js",
       "sha256": "eb89226f9ab8ff04b5c43dfc3c91b6e57c233ef88e273eaf8985895e79106453",
       "bytes": 3674
@@ -99,12 +99,13 @@
   ],
   "transitiveExecutionClosureFrozen": false,
   "unresolved": [
-    "Published FUCQ-111 stagePort() revision 2 implementation accepting trusted clock contexts, with top-level policyVersion, read(context,{orderUuid}) and listOrders(context).",
-    "Canonical policy seed integration and shared contracts are separate serial lanes.",
-    "Exact published module adoption and existing FUCQ-71 selection composition must reuse this single orderingAdapter.",
-    "Actual producer-to-stage-to-readiness, HTTP/startup and required full validation remain open."
+    "Final FUCQ-116 actual FUCQ-111 producer integration checkpoint and exact source pins must replace the current consumer pin before application.",
+    "Canonical policy seed integration and shared contracts remain separate serial lanes.",
+    "Exact leaf adoption and FUCQ-71 selection producer composition remain pending; selection must reuse this single orderingAdapter.",
+    "Actual producer-to-stage-to-readiness, HTTP/startup and required combined-source full validation remain open.",
+    "Known FUCQ-106-to-71 atomic conversion and FUCQ-71-to-112 selection receipt mismatches are unchanged."
   ],
-  "executionPermission": "none; Resume7 and shared full suite not granted by this preparation",
+  "executionPermission": "none; root must provide final FUCQ-116 producer checkpoint and concrete execution admission; no runtime/test/browser/TLS/native/live/full or Resume7 grant",
   "validation": {
     "kind": "static source/hash/diff review only",
     "plannedAfterSeparateAdmission": [
@@ -114,14 +115,24 @@
       "Actual FUCQ-71 acknowledgement to FUCQ-111 stages to FUCQ-116 readiness on ticks, replay and synthetic provenance."
     ],
     "excluded": [
-      "No duplicate lifecycle service unit run against unchanged source/inputs.",
-      "No native/live/browser/full or Resume7 execution."
+      "No product patch application, leaf adoption or runtime/helper redesign.",
+      "No test, Node check, probe, ledger access, scratch allocation, browser/TLS/native/live/full or Resume7 execution."
     ],
     "completedStaticChecks": [
-      "Twelve immutable source hashes matched.",
-      "Both owned product preimages matched and reconstructed postimage hashes matched.",
+      "Twelve immutable source hashes and lengths matched the current named producer/consumer/base pins.",
+      "Both active owned product preimages matched the base; reconstructed patch postimage hashes matched.",
       "git apply --unidiff-zero --check passed without applying the patch.",
-      "Named-path/trailing-whitespace/diff checks passed; no product/test/helper/catalogue changes."
+      "Exactly four named preparation/story files changed; whitespace passed; no product/test/helper/catalogue or shared map changes."
     ]
+  },
+  "offerProductRevision": "bc8a941adbf8bd74089b11b820c489551742ab12",
+  "approvalProducerRevision": "2b3fee00853cd4fd5bd201f2f12d7777dd493c7c",
+  "documentsConsumerRevision": "66c84cb6e22a5a0f112997e3e2c54968d832b979",
+  "finalDocumentsProducerRevision": null,
+  "interfaceBasis": {
+    "producer": "Actual FUCQ-111 stagePort() returns frozen read(context,{orderUuid}) and listOrders(context) over trusted run-bound reads; public service methods retain role checks.",
+    "consumer": "Current FUCQ-116 consumes lifecycle.stages.v1, approved stage.at, policyVersion (top-level or nested), lifecycleRevision and order-specific renewalAuthority/entitlementSlotId/renewalId.",
+    "sharedComposition": "Proposed one ordering adapter exposes status and documentStatus; services share repository/policy/clock/identity; documents receives lifecycle.stagePort() directly. Existing offer access/decision/follow-up wiring is preserved.",
+    "registration": "Await approvals then documents after buddy and before cases/notifications/reconcileStartup; preserve non-ok results. Clock stage/handler ID determines execution order."
   }
 }
