@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { createServer } from 'node:http';
+import { createServer } from 'node:https';
 import { readFile, stat } from 'node:fs/promises';
 import { extname, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -13,13 +13,22 @@ const sessionPage = (path) => ['/gcsp-brief-live.html', '/gcsp-activity-live.htm
 const publicPath = (path) => sessionPage(path) || ['/gcsp/offer', '/gcsp-offer.html', '/gcsp-employee.css', '/favicon.ico'].includes(path)
   || path.startsWith('/blocks/') || path.startsWith('/assets/');
 
-// Separate loopback entry; it neither changes the retail launcher nor adds a remote sign-in route.
-export async function startGcspDemo({ runtime = {}, port = 0, root = ROOT, accessKey = process.env.DEMO_ACCESS_KEY } = {}) {
-  const opened = await createGcspRuntime(runtime); if (opened.status !== 'ok') return opened;
-  const services = opened.value;
-  let api; let origin; let closed = false;
-  const server = createServer(async (req, res) => {
+const tlsConfiguration = () => ({ keyFile: process.env.GCSP_TLS_KEY_FILE, certFile: process.env.GCSP_TLS_CERT_FILE,
+  passphrase: process.env.GCSP_TLS_KEY_PASSPHRASE });
+const tlsRefusal = (code) => ({ status: 'invalid', code,
+  reason: 'Configure a valid local HTTPS certificate and private key.', retryable: false });
+
+// One HTTPS loopback origin serves both entries and the unchanged shared API gate.
+export async function startGcspDemo({ runtime = {}, port = 0, root = ROOT, accessKey = process.env.DEMO_ACCESS_KEY,
+  tls = tlsConfiguration() } = {}) {
+  if (!tls || typeof tls !== 'object' || Array.isArray(tls)
+    || Object.keys(tls).some((key) => !['keyFile', 'certFile', 'passphrase'].includes(key))
+    || !['keyFile', 'certFile'].every((key) => typeof tls[key] === 'string' && tls[key].trim())
+    || tls.passphrase !== undefined && typeof tls.passphrase !== 'string') return tlsRefusal('local-tls-configuration-required');
+  let api; let origin; let services; let server; let ready = false; let closed = false;
+  const handle = async (req, res) => {
     try {
+      if (!ready) { res.writeHead(503).end('The local demo is starting.'); return; }
       if (req.headers.host !== new URL(origin).host) { res.writeHead(403).end(); return; }
       const path = decodeURIComponent(new URL(req.url, origin).pathname);
       if (path.startsWith('/api/gcsp/')) {
@@ -45,34 +54,39 @@ export async function startGcspDemo({ runtime = {}, port = 0, root = ROOT, acces
         'Referrer-Policy': 'no-referrer' });
       res.end(await readFile(file));
     } catch { res.writeHead(404).end('Not found'); }
-  });
+  };
+  // Validate TLS before opening repositories or allocating a listener. Never expose file or OpenSSL errors.
+  try {
+    const [key, cert] = await Promise.all([readFile(tls.keyFile), readFile(tls.certFile)]);
+    server = createServer({ key, cert, passphrase: tls.passphrase, minVersion: 'TLSv1.2' }, handle);
+  } catch { return tlsRefusal('local-tls-configuration-invalid'); }
+  const opened = await createGcspRuntime(runtime); if (opened.status !== 'ok') return opened;
+  services = opened.value;
   const close = async () => {
-    if (closed) return; closed = true;
+    if (closed) return; closed = true; ready = false;
     await new Promise((done) => { server.close(done); server.closeAllConnections(); });
     api?.closeAllConnections(); await services.close();
   };
   try {
     await new Promise((done, reject) => { server.once('error', reject); server.listen(port, 'localhost', done); });
-    origin = `http://localhost:${server.address().port}`;
+    origin = `https://localhost:${server.address().port}`;
     api = buildServer({ ...services.dependencies, gcspAllowedOrigins: [origin] });
     const startup = await api.gcspStartup;
     if (startup?.status !== 'ok') { await close(); return startup; }
+    ready = true;
     return { status: 'ok', value: { origin, server, services, close } };
   } catch { await close(); return { status: 'unavailable', reason: 'The local demo could not start.', retryable: true }; }
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   const mode = process.env.GCSP_REPOSITORY_MODE || 'postgres';
-  let connectionString = process.env.GCSP_DATABASE_URL;
-  if (!connectionString && mode === 'postgres') {
-    try { connectionString = (await readFile(resolve(ROOT, '.claude/gcsp-database-url'), 'utf8')).trim(); } catch { /* Missing configuration remains an explicit refusal. */ }
-  }
+  const connectionString = process.env.GCSP_DATABASE_URL;
   const app = await startGcspDemo({ port: Number(process.env.PORT) || 3001, runtime: { mode,
     repositoryOptions: { connectionString }, environmentId: process.env.GCSP_ENVIRONMENT_ID || 'gcsp-local-functional',
     policyAsOf: new Date().toISOString(), commandId: 'local-bootstrap' } });
   if (app.status !== 'ok') { console.error(`GCSP local startup: ${app.status}${app.code ? ` (${app.code})` : ''}`); process.exitCode = 1; }
   else {
-    console.log(`GCSP local demo: ${app.value.origin}/gcsp-brief-live.html`);
+    console.log(`GCSP local demo: ${app.value.origin}/gcsp-account.html`);
     console.log(mode === 'memory' ? 'Explicit memory proof: state lasts only until this process stops; real released stock is not composed.' : 'PostgreSQL runtime; real released stock is not composed.');
     for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, async () => { await app.value.close(); process.exitCode = 0; });
   }

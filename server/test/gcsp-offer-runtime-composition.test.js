@@ -7,6 +7,7 @@ import { createCompositionTestProfile } from './helpers/runtime-composition-prof
 import { essential, preference } from './helpers/employee-recommendation.js';
 import { inputDigest } from '../gcsp/repository/index.js';
 import { getReviewedDefinitionSet } from '../gcsp/policy/reviewed-definitions.js';
+import { createLocalHttpsFixture } from './helpers/local-https.js';
 
 // Report only status/coordinates, never contexts, cookies, captured mail or credentials.
 const good = (outcome) => { assert.equal(outcome?.status, 'ok'); return outcome.value; };
@@ -19,7 +20,8 @@ async function waitFor(predicate) {
 
 async function setup(t) {
   const profile = createCompositionTestProfile();
-  const app = good(await startGcspDemo({ port: 0, accessKey: '', runtime: { mode: 'memory', stockProvider: profile,
+  const https = await createLocalHttpsFixture(t); const fetch = https.fetch;
+  const app = good(await startGcspDemo({ port: 0, accessKey: '', tls: https.configuration, runtime: { mode: 'memory', stockProvider: profile,
     environmentId: 'offer-composition', policyAsOf: '2026-11-05T09:00:00.000Z', commandId: 'offer-bootstrap',
     sessionNow: () => '2026-11-06T00:00:00.000Z' } }));
   t.after(() => app.close());
@@ -78,7 +80,7 @@ async function setup(t) {
       ...(body === undefined ? {} : { body: JSON.stringify(body) }) });
     return { status: response.status, headers: response.headers, json: await response.json() };
   };
-  return { ...app, ...runtime, runtime, employee, presenter, session, profile, car, offer, path, query, request };
+  return { ...app, ...runtime, runtime, employee, presenter, session, profile, car, offer, path, query, request, fetch };
 }
 
 test('composed offer entry reloads the real declined offer and saves the employee follow-up under adopted policy', async (t) => {
@@ -86,13 +88,13 @@ test('composed offer entry reloads the real declined offer and saves the employe
   assert.equal(f.dependencies.gcspOfferAccess, f.offerAccess);
   assert.equal(f.dependencies.gcspOfferDecisions, f.offerDecisions);
   assert.equal(f.dependencies.gcspOfferFollowup, f.offerFollowup);
-  const page = await fetch(`${f.origin}/gcsp/offer?offerId=${encodeURIComponent(f.offer.offerId)}`);
+  const page = await f.fetch(`${f.origin}/gcsp/offer?offerId=${encodeURIComponent(f.offer.offerId)}`);
   assert.equal(page.status, 200); assert.ok(page.headers.get('set-cookie') === null);
   assert.equal(page.headers.get('referrer-policy'), 'no-referrer');
   const html = await page.text(); assert.ok(html.includes('/blocks/gcsp/offer/entry-harness.js'));
   assert.ok(html.indexOf('offer/gcsp-offer.css') < html.indexOf('offer-followup/gcsp-offer-followup.css'));
   for (const asset of ['/blocks/gcsp/offer/entry-harness.js', '/blocks/gcsp/offer-followup/gcsp-offer-followup.css']) {
-    const loaded = await fetch(f.origin + asset); assert.equal(loaded.status, 200); await loaded.arrayBuffer();
+    const loaded = await f.fetch(f.origin + asset); assert.equal(loaded.status, 200); await loaded.arrayBuffer();
   }
   const current = good((await f.request(f.path + f.query)).json);
   const reasons = good((await f.request(`${f.path}/decision-reasons${f.query}`)).json);
@@ -124,7 +126,7 @@ test('composed offer entry reloads the real declined offer and saves the employe
   const transport = (input, init = {}) => {
     const url = new URL(input, 'https://offer-composition.test'); assert.equal(url.origin, 'https://offer-composition.test');
     requests.push({ path: url.pathname, method: init.method || 'GET' });
-    return fetch(f.origin + url.pathname + url.search, { ...init, headers: { ...init.headers, Cookie: f.session, Origin: f.origin } });
+    return f.fetch(f.origin + url.pathname + url.search, { ...init, headers: { ...init.headers, Cookie: f.session, Origin: f.origin } });
   };
   const root = dom.window.document.querySelector('gcsp-offer');
   dispose = mountOfferEntry(root, { fetch: transport, location, history: { replaceState() {} } });
