@@ -1369,7 +1369,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T11:05:00Z",
+      "observed_at": "2026-11-06T11:19:43Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-105",
       "slices": [
         {
@@ -1397,8 +1397,8 @@
           "id": "decision-host",
           "status": "blocked",
           "title": "Actual FUCQ106 decision and delivered host integration",
-          "observed_at": "2026-11-06T11:05:00Z",
-          "evidence": "Published d9a2c04/plan19af2c4: consumer1/1, all4 checkpoints, supervisor0 after byte-body shim correction; no production change. Parent/auditor1 remain FAIL, first cause unknown. Root cleanup-only PASS1826 preserves originals/removes exact dead root+row. No retry. Delivered host/browser/native/full/final acceptance open. Evidence: docs/gcsp/evidence/fucq105/followup-consumer-owned-result.md"
+          "observed_at": "2026-11-06T11:19:43Z",
+          "evidence": "Source boundary: shared32baef82 has no offer entry;100280db3ac lacks106/107 dispatch and needs10263fac0a8 durable lookup. Existing105 ports and passing consumer reused.1034c0cbcfc registers107 questions; run adoption/HTTPS employee-cookie/rendered375 gates open.107 CSS outside35asset graph. Parent audit FAIL; no rerun or expanded grants. docs/gcsp/evidence/fucq105/followup-consumer-owned-result.md"
         },
         {
           "id": "browser",

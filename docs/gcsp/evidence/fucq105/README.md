@@ -4,6 +4,8 @@
 
 ## Owned follow-up checkpoint · 6 November 2026
 
+[The delivered source boundary](followup-consumer-owned-result.md#delivered-account-to-offer-source-boundary) pins the actual shared host and current 100/102/106/107 sources. Central offer entry/dispatch and HTTPS-session wiring remain absent; 100's newer runtime needs current 102's durable lookup. 103's question bundle is now registered and matches 107; actual-run adoption/readback remains open. Existing 105 ports need no product change. The passing consumer case is reused; no helper redesign, rerun or browser allocation occurred.
+
 [The owned follow-up result](followup-consumer-owned-result.md) records the publishedd9a2c04 HTTP test-shim correction and exact preapproved identity trim: actual consumer1/1 and all4 checkpoints passed, supervisor exit0. Production modules and wait/assertion limits were unchanged. The separate parent functional audit failed with sticky helper ownership; root independent cleanup-only PASS1826 removed only its exact empty scratch/dead row and preserved original evidence. Parent audit, delivered/browser/native/full and whole-story acceptance remain open.
 
 ## Next source/consumer/host plan · 6 November 2026

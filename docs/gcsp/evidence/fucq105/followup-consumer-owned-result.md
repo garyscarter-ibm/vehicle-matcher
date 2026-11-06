@@ -4,6 +4,35 @@
 
 The tested and pushed revision is `d9a2c04f40d0bfb263e1c3bfb71b7e7ace455226`, source-plan SHA256 `19af2c40040919e88ed082a484fbb68997964b90be232b2e68e374d64189a243`. The root standing delivery envelope SHA256 is `319a5cf1ec640b5daa998cd79b87191250624ccb2ac7c9c56a267d0e89a78563`; grants name the actual delegated issuer. Root delta review is `.claude/test-runs/ownership/fucq105-owned-delta-review-1055.json`. Unchanged reviews were reused; no descendants or unchanged retry ran.
 
+## Delivered account-to-offer source boundary
+
+Source inspection on 6 November 2026, 11:17 UTC; remote heads were read back through the scaffold Git wrapper. These are available sources, not a running combined host:
+
+| Source | Exact revision |
+|---|---|
+| Shared `gcsp-poc` host | `32baef82dba3b92eea14830e89473f3d80892597` |
+| 100 / DEV-060 producer and newer runtime | `280db3ac3756b91e8674c46751df2694040e9423` |
+| 102 / DEV-061 access | `3a0860f1ee4c987d492c09086cde3b75f74bf9ef` |
+| 106 / DEV-074 decision | `b84a34a51a85486ce4339234765ca9f56cdfd289` |
+| 107 / DEV-085 follow-up | `869d3947a810079577b5dee4c90310c3200ae0d3` |
+| 103 / DEV-066 reviewed policy registry | `4c0cbcfcab52da9f6cf54a5cba743390dc1f7c7e` |
+
+105 source at `b66a729cf88539a8dbf366df040242d46cb89844` is unchanged from the passing packet. The selected 100 producer, 102 access, 106 decision and 107 client/service modules at the heads above match that packet's individual SHA256 pins. This comparison does not admit their complete branch trees as an already-tested union.
+
+| Required input | Available source and actual delivery limit |
+|---|---|
+| Account-to-offer entry | Shared `blocks/demo-launcher/employee-entry.js` loads the manual account journey only. Shared `server/gcsp/runtime.js` composes account/brief services, without offer services. Its `server/index.js` has the existing `gcspRoutes` extension, without offer access/decision dispatch. No delivered `/gcsp/offer` mount was found. |
+| HTTP dispatch | 100's newer `server/gcsp/runtime.js:91–99` composes buddy, access and notification services; `server/index.js:926–959` dispatches access behind the actual shared gate. It does not compose 106 decisions or 107 follow-up. Its access module SHA256 `134e9d39253e934618f6cf38b334bb7cf0f8912443ee159e6167b949d4fdb34a` predates the durable lookup. The required 102 module is `63fac0a89e50b8b4bd5c8bed581dd49bed42519c76b2b6232de155533d37fb3c`. |
+| HTTPS and employee session | 100's `scripts/gcsp-demo.mjs` provides an HTTP loopback host and account/brief/activity session pages, without `/gcsp/offer`. 105 defaults to HTTPS; 102 defaults to a Secure, HttpOnly offer cookie scoped to `/api/gcsp/offers`. The existing ordinary employee loader is `blocks/gcsp/shell/account-runtime.js`; 107 independently authenticates employee routes. No delivered HTTPS origin, normal employee cookie or second-browser receipt is established here. A client localhost option does not change the server cookie contract. |
+| Persisted decline | Current 102 verifies the native completed decision, released hold, event receipt, revisions and query/clock consistency before returning `{decisionId}`. The passing case exercises actual 106 write/lost response and 102 reload through this source. No live/native persisted decline was read in this pass. |
+| Registered question policy | **Registration is now available:** 103's `reviewed-definitions.js` registers `offer-followup-questions-v1`; its definitions equal 107's bundle. The registered file SHA256 is `2b634e30a65f8fce6a3cfef67e10b04e9dff72ecb4fe296c51330e98efe86d5d`, digest `bb05e490f85e9f6fd9aa1c424c849740ad2884cc62e9d9a2b98ee8f739f8b7ed`. 100 carries those same registry/file bytes. `PolicyService.adoptReviewedAssumptions` supplies the intentional server operation; runtime startup does not call it. The passing case supplies explicit question-policy input, so run adoption/activation and pinned PolicyService readback remain unproved. |
+
+The smallest remaining composition is in the central host/runtime owners' files: serve the produced offer path on the approved origin; bind current 102 access to the same repository/policy/clock/identity used by 100 and 106; dispatch 106 through its real access resolver and 107 through the employee middleware; supply the actual run's adopted question policy. Presented invalid offer cookies must retain the existing refusal precedence. The host can already bind `mountOffer(root, {account, ...createOfferHttpAdapter({fetch: gatedFetch, enableDecisions: true}), followup: {loadAccount, mount}})`; its mount closure calls the existing `mountFollowupBody` with the opaque selector, abort signal and trusted fetch/projector/navigation. The initial account display comes from the real loader; 105 still performs its fresh readiness check before follow-up mounting. No missing owned105 port or justified product change was found. Enabling the standalone preview would leave these central edges absent.
+
+The existing renderer is `offer/preview.html` → `harness.js` → `mountOffer`/`createOfferView`; its named fixtures remain synthetic and its default HTTP adapter is non-actionable. The passing `gcsp-offer-view-followup-consumer.test.js` already mounts the real 107 body; render/decision/followup-entry tests cover DOM states and focus. `gcsp-offer-view-render.test.js` checks scoped embed CSP, and `ui-ratchet.test.js` supplies the existing component checks. They do not measure browser layout. The 35-asset preview graph contains no 107 assets: the combined render also needs 107's `gcsp-offer-followup.css` (SHA256 `be31a68a28e64735ffa93a5a3037d7705d8fea25d0fc0caaff2c8815cd4b8d0d`) after the existing base → shell → offer styles, preserving relative kit/font/image paths. Actual 375/1280px keyboard/reduced-motion rendering remains unallocated.
+
+Only source/text/hash inspection was performed for this boundary. No test rerun, product/helper execution, browser, listener, native database, live request or resource allocation occurred. The prior audit failure and all acceptance/claim states remain unchanged.
+
 ## Diagnosis and correction
 
 The actual1042 run failed at the confirmation checkpoint after reaching the first two checkpoints. Its selected test HTTP shim emitted string chunks from `Readable.from([body])`, while real `server/gcsp/identity/http.js:readBody` combines native request byte chunks with `Buffer.concat`. This rejected the confirmation body before the real107 service could save it. The correction is `Readable.from([Buffer.from(body)])`. Production105/100/102/106/107 modules, the100turn wait, assertions and input semantics are unchanged; there is no evidence of timing flakiness or a107 product defect.
@@ -38,6 +67,6 @@ Root independently reconciled exactly the failed parent run: cleanup-only PASS18
 
 Root additionally verified all17 protected original directory/file identities and byte hashes against the before-audit snapshot: `.claude/test-runs/ownership/fucq105-protected-originals-root-1101.json`, SHA256 `af2dff94e0c191e56b883c185467d0e54e8a6bc3a6c9e08ce1b002cd218a134c`. The passing consumer evidence is preserved and is not rerun to clear the parent-audit failure.
 
-Cleanup success does not convert the parent functional audit to PASS. Delivered host/gate/HTTPS-cookie entry, canonical question-policy registration, desktop/375px rendered keyboard/reduced-motion and second-browser evidence, native DB, full-suite lane and final collaborator acceptance remain open. No visual/component/style change was made; the agreed shell/FUCQ64/shared-kit references remain binding. Story and slice acceptance are not advanced.
+Cleanup success does not convert the parent functional audit to PASS. Delivered host/gate/HTTPS-cookie entry, actual-run question-policy adoption/readback, desktop/375px rendered keyboard/reduced-motion and second-browser evidence, native DB, full-suite lane and final collaborator acceptance remain open. The later source boundary above establishes registration only. No visual/component/style change was made; the agreed shell/FUCQ64/shared-kit references remain binding. Story and slice acceptance are not advanced.
 
 Agents: Hippety Hopper; requested/selected `gpt-6.1-sol` / `high`; no fallback or descendants.
