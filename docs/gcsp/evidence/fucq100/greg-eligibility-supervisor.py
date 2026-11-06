@@ -193,8 +193,7 @@ def run(plan, grant):
         for row in members:
             if not any(item['pid'] == row['pid'] for item in scratch.record.get('owned_pids', [])):
                 start = r.process_identity(row['pid'])
-                if start:
-                    scratch.record.setdefault('owned_pids', []).append({'pid': row['pid'], 'start': start, 'pgid': row['pgid']})
+                scratch.record.setdefault('owned_pids', []).append({'pid': row['pid'], 'start': start, 'pgid': row['pgid']})
         for group in {row['pgid'] for row in members}:
             if any(row['pgid'] == group and row['pid'] not in chosen for row in rows):
                 raise RuntimeError('Shared descendant group refused')

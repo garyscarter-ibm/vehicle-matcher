@@ -96,6 +96,8 @@ was edited. Outer cleanup uncertainty forces a nonzero stamp result.
 Both local PID probes require ESRCH or a different nonempty start identity to prove the recorded
 process is gone. Permission errors, failed ps/identity queries and missing start identities remain
 unproved; strict group checks and SafeScratch retention still apply.
+Both samplers record every observed owned PID even when its start query fails. Such a record cannot
+disappear from the final proof: a missing start keeps absence unproved while that PID exists.
 Preparation time is separate from the 120-second child bound. Independent final audit remains the
 launching session's responsibility. No resources have been allocated by catalogue generation.
 
