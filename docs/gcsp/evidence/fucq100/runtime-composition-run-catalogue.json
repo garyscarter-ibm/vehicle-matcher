@@ -1974,6 +1974,10 @@
       "path": "server/gcsp/manual-context/ports.js"
     }
   ],
+  "edge_counts": {
+    "literal": 348,
+    "directory": 2
+  },
   "installed": {
     "kind": "Finite existing pg module set plus full JSDOM package/resource namespace; metadata only, no resolution/import execution",
     "inventory_inputs": {
@@ -17831,20 +17835,28 @@
       "inode": 1152921500312573093,
       "realpath": "/usr/bin/vm_stat",
       "symlink": false
+    },
+    "/usr/sbin/lsof": {
+      "path": "/usr/sbin/lsof",
+      "sha256": "28c36d6b6dfcce1f544717b0d1961aa03441ee0a736fee3e1eaeb215c0fbff4c",
+      "device": 16777232,
+      "inode": 1152921500312576119,
+      "realpath": "/usr/sbin/lsof",
+      "symlink": false
     }
   },
   "helpers": {
-    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-supervisor.py": "7d4f83aaab5d1c3b0aa70d19d5008b809c1e764a9cc1974f640052595d2ffe5a",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-supervisor.py": "4f22b63967a37349668a068eb63d4142ea9e8239a734c9e86181a38dde906ae6",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-supervisor.py": "43026a725b6305fb8537e032049f0c19cf345bcdb8ee851c408e7dba5255bcc6",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-installed.json": "a99d30921387c85019fc60a9f7329f916603b89eeff80b8d3481035d8e42d72b",
-    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-launch.py": "0c9df59a60f7b5e321739bde929db1d030785c55473eac039068d44f25658aa9",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-launch.py": "baf0ba31330a868286df4586a360b64ca839344e7d679d0326512da314a24883",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-loader.mjs": "48eead42bb58cbd39ad13abed0a7da7a175b13530b70d24bceafd96fe8efb8c9",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-preload.cjs": "d11e52a2601e0c15580b672c38a2fc85a20ef2906e85d97556166e4db3f4b365",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/_tools/scaffold_git.py": "ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/_tools/test_stamp.py": "88a16018b5b8fa225463b590f2283b4baa6be4951f258bba4846eacc3795a49e",
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/.claude/scaffolding.json": "c55d2bf32288b5e19f6ac6e7c7b35d22013c80b757d5328c8257a4eac4ac560a",
-    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-stamp.py": "0c091e71ea556efe876ec58b899d4c78d570b1aa19e23f2ab007be396078887e"
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-stamp.py": "1f71092a82a9fe74e91b3d42f8fcfc43fdba68c009ee55f38f2b9197f3d80e89"
   },
   "tests": {
     "server/test/gcsp-runtime-composition.test.js": [

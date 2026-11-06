@@ -71,11 +71,15 @@ def install_strict_pid_probe(helpers):
 
 
 def install_strict_budget(resources):
+    # One process-local registry is shared by all HostBudget instances here,
+    # including the finalizer's new instance. Bindings never come from a row
+    # that a caller merely found under a supplied token.
+    bindings = {}
+
     def pairs(items):
         value = {}
         for key, item in items:
-            if key in value:
-                raise ValueError('Duplicate reservation JSON key')
+            if key in value: raise ValueError('Duplicate reservation JSON key')
             value[key] = item
         return value
 
@@ -83,13 +87,14 @@ def install_strict_budget(resources):
         raise ValueError('Nonstandard reservation JSON constant: ' + value)
 
     def ledger(path):
-        try:
-            contents = path.read_text()
-        except FileNotFoundError:
-            return {}
-        value = json.loads(contents, object_pairs_hook=pairs, parse_constant=constant)
-        if not isinstance(value, dict):
-            raise ValueError('Reservation ledger is not an object')
+        # Absence, symlinks, unreadable content and malformed state are errors,
+        # never an empty ledger. This launcher does not bootstrap/reconcile it.
+        if path.is_symlink(): raise ValueError('Reservation ledger is a symlink')
+        value = json.loads(path.read_text(), object_pairs_hook=pairs, parse_constant=constant)
+        return validate(value)
+
+    def validate(value):
+        if not isinstance(value, dict): raise ValueError('Reservation ledger is not an object')
         for token, entry in value.items():
             if not isinstance(token, str) or not token or not isinstance(entry, dict) \
                 or not {'owner', 'disk', 'ram', 'used', 'rss', 'parent', 'root'} <= entry.keys():
@@ -100,9 +105,10 @@ def install_strict_budget(resources):
                 raise ValueError('Invalid reservation owner')
             if any(type(entry.get(key)) is not int or entry[key] < 0 for key in ('disk', 'ram', 'used', 'rss')):
                 raise ValueError('Invalid reservation accounting')
-            if any(entry.get(key) is not None and (not isinstance(entry[key], str) or not entry[key])
-                   for key in ('parent', 'root')):
+            if any(entry.get(key) is not None and (not isinstance(entry[key], str) or not entry[key]) for key in ('parent', 'root')):
                 raise ValueError('Invalid reservation binding')
+            if entry['root'] is not None and not Path(entry['root']).is_absolute():
+                raise ValueError('Reservation root must be absolute')
         for token in value:
             seen, current = set(), token
             while current in value:
@@ -110,37 +116,111 @@ def install_strict_budget(resources):
                 seen.add(current); current = value[current]['parent']
         return value
 
+    def current_owner():
+        owner = resources.owner()
+        if owner.get('pid') != os.getpid() or not isinstance(owner.get('start'), str) or not owner['start'].strip():
+            raise resources.ResourceError('Cannot establish exact reservation owner')
+        return owner
+
+    def binding_key(budget, token):
+        return (str(budget.path.absolute()), token)
+
+    def store(path, before, after, token):
+        # Only the named owned row may differ; verify the complete strict
+        # readback (including every foreign row) while the lock remains held.
+        if {key: row for key, row in before.items() if key != token} != \
+                {key: row for key, row in after.items() if key != token}:
+            raise resources.ResourceError('Foreign reservation mutation refused')
+        validate(after)
+        resources.atomic_json(path, after)
+        if ledger(path) != after: raise resources.ResourceError('Reservation write/readback mismatch')
+
     class StrictBudget(resources.HostBudget):
         def _dead_owners(self):
-            # Do not silently reconcile another launch, or free a dead owner's
-            # reservation while its scratch/descendants may remain. Only this
-            # launch's guarded release can discharge its owned tokens.
-            return {}
+            return {}  # Never reconcile another launch's reservation.
 
         def _live(self, dead):
-            return {key: entry for key, entry in ledger(self.path).items()
-                    if key not in dead or entry['owner'] != dead[key]}
+            return ledger(self.path)
+
+        def headroom(self, volume):
+            free, memory = resources.shutil.disk_usage(volume).free, resources.available_memory()
+            with resources.locked(self.directory / 'reservations.lock'):
+                return self._capacity(ledger(self.path), free, memory)
+
+        def _owned(self, token, entries, caller, allow_released=False):
+            binding = bindings.get(binding_key(self, token))
+            if binding is None or binding['owner'] != caller:
+                raise resources.ResourceError('Reservation has no exact caller ownership binding')
+            if binding['phase'] == 'released' and allow_released and token not in entries:
+                return binding
+            if binding['phase'] != 'active' or token not in entries:
+                raise resources.ResourceError('Owned reservation missing or mutation uncertain')
+            row = entries[token]
+            if any(row[key] != binding[key] for key in ('owner', 'root', 'parent', 'disk', 'ram')):
+                raise resources.ResourceError('Reservation owner PID/start/root/allocation binding changed')
+            return binding
+
+        def acquire(self, token, disk, ram, volume, root=None, minimum_disk=None, minimum_ram=None):
+            owner = current_owner()
+            if not isinstance(token, str) or not token or root is None or not Path(root).is_absolute():
+                raise resources.ResourceError('Supply exact token and absolute owned root')
+            if binding_key(self, token) in bindings:
+                raise resources.ResourceError('Reservation token reuse refused')
+            free, memory = resources.shutil.disk_usage(volume).free, resources.available_memory()
+            with resources.locked(self.directory / 'reservations.lock'):
+                before = ledger(self.path)
+                if token in before: raise resources.ResourceError('Existing reservation token refused')
+                capacity = self._capacity(before, free, memory)
+                need_disk = disk if minimum_disk is None else minimum_disk
+                need_ram = ram if minimum_ram is None else minimum_ram
+                if need_disk > capacity['disk'] or capacity['ram'] is not None and need_ram > capacity['ram']:
+                    raise resources.CapacityError('Indivisible owned chunk cannot fit declared minima', capacity)
+                disk = min(disk, capacity['disk'])
+                ram = ram if capacity['ram'] is None else min(ram, capacity['ram'])
+                row = {'owner': owner, 'disk': disk, 'ram': ram, 'used': 0, 'rss': 0,
+                       'parent': capacity['parent'], 'root': str(root)}
+                binding = {key: row[key] for key in ('owner', 'root', 'parent', 'disk', 'ram')}
+                binding['phase'] = 'writing'
+                bindings[binding_key(self, token)] = binding
+                after = dict(before); after[token] = row
+                store(self.path, before, after, token)
+                binding['phase'] = 'active'
+                return {'disk': disk, 'ram': ram}
 
         def update(self, token, used, rss):
+            if any(type(value) is not int or value < 0 for value in (used, rss)):
+                raise resources.ResourceError('Invalid owned usage accounting')
+            caller = current_owner()
             with resources.locked(self.directory / 'reservations.lock'):
-                entries = ledger(self.path)
-                if token not in entries: raise resources.ResourceError('Owned reservation missing')
-                entries[token].update(used=used, rss=rss)
-                resources.atomic_json(self.path, entries)
+                before = ledger(self.path); binding = self._owned(token, before, caller)
+                after = dict(before); after[token] = dict(before[token], used=used, rss=rss)
+                binding['phase'] = 'writing'
+                store(self.path, before, after, token)
+                binding['phase'] = 'active'
                 return True
 
         def release(self, token):
+            caller = current_owner()
             with resources.locked(self.directory / 'reservations.lock'):
-                entries = ledger(self.path)
-                entries.pop(token, None)
-                resources.atomic_json(self.path, entries)
+                before = ledger(self.path); binding = self._owned(token, before, caller, allow_released=True)
+                if binding['phase'] == 'released': return
+                after = dict(before); del after[token]
+                binding['phase'] = 'writing'
+                store(self.path, before, after, token)
+                binding['phase'] = 'released'
 
         def reservation_state(self, token):
             try:
+                caller = current_owner() if binding_key(self, token) in bindings else None
                 with resources.locked(self.directory / 'reservations.lock'):
-                    return {'absent': token not in ledger(self.path), 'error': None}
+                    entries = ledger(self.path)
+                    binding = bindings.get(binding_key(self, token))
+                    if binding is not None:
+                        self._owned(token, entries, caller, allow_released=True)
+                    return {'absent': token not in entries, 'error': None, 'binding_owned': binding is not None,
+                            'released': binding is not None and binding['phase'] == 'released'}
             except (OSError, ValueError, resources.ResourceError) as exc:
-                return {'absent': False, 'error': type(exc).__name__ + ': ' + str(exc)}
+                return {'absent': False, 'error': type(exc).__name__ + ': ' + str(exc), 'binding_owned': False, 'released': False}
 
     resources.HostBudget = StrictBudget
 
@@ -220,10 +300,12 @@ def catalogue():
     return {'kind': 'finite C1 composition and host regression proposal; not executed',
             'base': '38be4f5d95823b5f010a56c3d4b6cbda4eca55e8', 'source_checkpoint': 'f179ae6043414a2b07de3edb2b425338299ea37b',
             'selected': SELECTED, 'changed': CHANGED,
-            'sources': dict(sorted(sources.items())), 'edges': edges, 'installed': installed,
+            'sources': dict(sorted(sources.items())), 'edges': edges,
+            'edge_counts': {'literal': sum('specifier' in row for row in edges), 'directory': sum('directory' in row for row in edges)},
+            'installed': installed,
             'python': identity('/usr/bin/python3'), 'node': identity(NODE),
             'support_executables': {path: identity(path) for path in
-                ['/usr/bin/env', '/usr/bin/git', '/bin/sh', '/bin/ps', '/usr/bin/vm_stat']},
+                ['/usr/bin/env', '/usr/bin/git', '/bin/sh', '/bin/ps', '/usr/bin/vm_stat', '/usr/sbin/lsof']},
             'helpers': {str(path): sha(path) for path in helpers}, 'tests': titles, 'expected_test_count': 7,
             'command_template': [str(NODE), '--no-warnings', '--require', str(PRELOAD),
                 '--experimental-loader', str(LOADER), '--test-concurrency=1', '--test-reporter=tap', '--test', *SELECTED],
@@ -250,7 +332,7 @@ def run(plan, grant):
     r = c.resources
     install_strict_budget(r)
     launch = module('composition_owned_launch', LAUNCH)
-    joined = launch.install(c)
+    joined = launch.install(c, plan['support_executables'])
     policy = r.Policy({'chunk_scratch_mib': 128, 'chunk_ram_mib': 768, 'chunk_seconds': 120, 'log_mib': 0.25})
     host = r.HostBudget(policy)
     parent = os.environ.get('FUCQ100_COMPOSITION_PARENT_RUN')
@@ -263,49 +345,13 @@ def run(plan, grant):
         for source, suffix in [('raw.log', '.log'), ('esm-modules.jsonl', '-esm-modules.jsonl'),
                                ('cjs-modules.jsonl', '-cjs-modules.jsonl')]}
     env, removed = sanitized_environment(c)
-    samples = []
-    original_stop = r.stop_group
-    def sample(pgid):
-        rows = c.process_snapshot()
-        chosen = {row['pid'] for row in rows if row['pgid'] in scratch.record['groups']}
-        while True:
-            expanded = chosen | {row['pid'] for row in rows if row['ppid'] in chosen}
-            if expanded == chosen:
-                break
-            chosen = expanded
-        members = [row for row in rows if row['pid'] in chosen]
-        for row in members:
-            if not any(item['pid'] == row['pid'] for item in scratch.record.get('owned_pids', [])):
-                start = r.process_identity(row['pid'])
-                scratch.record.setdefault('owned_pids', []).append({'pid': row['pid'], 'start': start, 'pgid': row['pgid']})
-        for group in {row['pgid'] for row in members}:
-            if any(row['pgid'] == group and row['pid'] not in chosen for row in rows):
-                raise RuntimeError('Shared descendant group refused')
-            if group not in scratch.record['groups']:
-                scratch.record['groups'].append(group)
-        r.atomic_json(scratch.manifest, scratch.record)
-        samples.append({'at': time.time(), 'members': len(members), 'rss': sum(row['rss'] for row in members)})
-        return sum(row['rss'] for row in members)
-    def stop(process):
-        original_stop(process)
-        for group in scratch.record['groups']:
-            if group == process.pid:
-                continue
-            for sig in (signal.SIGTERM, signal.SIGKILL):
-                if r.group_has_live_members(group) is False:
-                    break
-                try:
-                    os.killpg(group, sig)
-                except ProcessLookupError:
-                    break
-        if not c.await_owned_absence(scratch.record):
-            raise RuntimeError('Owned process survived; scratch is preserved')
-    r.group_rss, r.stop_group = sample, stop
+    samples = joined.samples
     cleanup_errors = []
     def finalize():
         if not os.path.lexists(scratch.root) and joined(scratch) and c.await_owned_absence(scratch.record):
             try:
-                host.release(scratch.token)
+                state = host.reservation_state(scratch.token)
+                if state['binding_owned'] and not state['released']: host.release(scratch.token)
             except (OSError, ValueError, r.ResourceError) as exc:
                 cleanup_errors.append(type(exc).__name__ + ': ' + str(exc))
     atexit.register(finalize)
@@ -350,7 +396,7 @@ def run(plan, grant):
         reservation = host.reservation_state(scratch.token)
         cleanup = {'scratch_absent': not os.path.lexists(scratch.root), 'groups_absent': c.all_groups_absent(scratch.record),
                    'pids_absent': c.all_owned_pids_absent(scratch.record),
-                   'launches_joined': joined(scratch), 'output_bounded': not scratch.record.get('output_bound_exceeded', False),
+                   'launches_joined': joined(scratch), 'open_files_absence_checked': bool(scratch.record.get('open_files_absent')), 'output_bounded': not scratch.record.get('output_bound_exceeded', False),
                    'reservation_absent': reservation['absent'] and not cleanup_errors}
         if reservation['error'] or cleanup_errors:
             error = error or 'Reservation cleanup: ' + str(reservation['error'] or cleanup_errors)

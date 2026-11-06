@@ -49,56 +49,13 @@ def main():
     r = c.resources
     supervisor.install_strict_budget(r)
     launch = module('composition_outer_launch', supervisor.LAUNCH)
-    joined = launch.install(c)
-    instances, samples = [], []
+    joined = launch.install(c, reviewed['support_executables'])
+    instances, samples = [], joined.samples
     class Owned(c.SafeScratch):
         def __init__(self, *values, **kwargs):
             super().__init__(*values, **kwargs)
             instances.append(self)
     r.Scratch = Owned
-    original_stop = r.stop_group
-    def sample(pgid):
-        scratch = next((item for item in instances if pgid in item.record['groups']), None)
-        if scratch is None:
-            raise RuntimeError('Missing outer scratch owner')
-        rows = c.process_snapshot()
-        chosen = {row['pid'] for row in rows if row['pgid'] in scratch.record['groups']}
-        while True:
-            expanded = chosen | {row['pid'] for row in rows if row['ppid'] in chosen}
-            if expanded == chosen:
-                break
-            chosen = expanded
-        members = [row for row in rows if row['pid'] in chosen]
-        for row in members:
-            if not any(item['pid'] == row['pid'] for item in scratch.record.get('owned_pids', [])):
-                start = r.process_identity(row['pid'])
-                scratch.record.setdefault('owned_pids', []).append({'pid': row['pid'], 'start': start, 'pgid': row['pgid']})
-        for group in {row['pgid'] for row in members}:
-            if any(row['pgid'] == group and row['pid'] not in chosen for row in rows):
-                raise RuntimeError('Shared outer descendant group refused')
-            if group not in scratch.record['groups']:
-                scratch.record['groups'].append(group)
-        r.atomic_json(scratch.manifest, scratch.record)
-        samples.append({'at': time.time(), 'members': len(members), 'rss': sum(row['rss'] for row in members)})
-        return sum(row['rss'] for row in members)
-    def stop(process):
-        scratch = next((item for item in instances if process.pid in item.record['groups']), None)
-        original_stop(process)
-        if scratch is None:
-            raise RuntimeError('Missing outer stop owner')
-        for group in scratch.record['groups']:
-            if group == process.pid:
-                continue
-            for sig in (signal.SIGTERM, signal.SIGKILL):
-                if r.group_has_live_members(group) is False:
-                    break
-                try:
-                    os.killpg(group, sig)
-                except ProcessLookupError:
-                    break
-        if not c.await_owned_absence(scratch.record):
-            raise RuntimeError('Outer descendant survived')
-    r.group_rss, r.stop_group = sample, stop
     stamp = module('composition_targeted_stamp', ROOT / '_tools/test_stamp.py')
     stamp.resource_module = lambda: r
     g = module('composition_stamp_git', ROOT / '_tools/scaffold_git.py')
@@ -137,7 +94,9 @@ def main():
         for scratch in instances:
             if not os.path.lexists(scratch.root) and joined(scratch) and c.await_owned_absence(scratch.record):
                 try:
-                    r.HostBudget(r.Policy(limits)).release(scratch.token)
+                    budget = r.HostBudget(r.Policy(limits))
+                    state = budget.reservation_state(scratch.token)
+                    if state['binding_owned'] and not state['released']: budget.release(scratch.token)
                 except (OSError, ValueError, r.ResourceError) as exc:
                     cleanup_errors.append(type(exc).__name__ + ': ' + str(exc))
     atexit.register(finalize)
@@ -160,11 +119,12 @@ def main():
             nested.update(scratch_absent=not os.path.lexists(inner_manifest['root']),
                 groups_absent=c.all_groups_absent(inner_manifest), pids_absent=c.all_owned_pids_absent(inner_manifest),
                 launches_joined=all(row.get('state') == 'joined' for row in inner_manifest.get('launches', [])),
+                open_files_absence_checked=bool(inner_manifest.get('open_files_absent')),
                 reservation=r.HostBudget(r.Policy(limits)).reservation_state(inner_manifest['token']),
                 receipt_passed=inner_receipt.get('passed') is True,
                 catalogue_unchanged=inner_receipt.get('catalogue') == reviewed)
             nested['passed'] = all(nested[key] for key in ('scratch_absent', 'groups_absent', 'pids_absent',
-                'launches_joined', 'receipt_passed', 'catalogue_unchanged')) and nested['reservation']['absent']
+                'launches_joined', 'open_files_absence_checked', 'receipt_passed', 'catalogue_unchanged')) and nested['reservation']['absent']
         except (OSError, ValueError, KeyError, TypeError, RuntimeError) as exc:
             nested.update(passed=False, audit_error=type(exc).__name__ + ': ' + str(exc))
         receipt = {'run': run, 'code': code, 'grant': args.dispatcher_grant, 'command': command,
@@ -172,10 +132,10 @@ def main():
                    'cleanup_errors': cleanup_errors, 'nested_independent_audit': nested,
                    'manifests': [{'path': str(scratch.manifest), 'scratch_absent': not os.path.lexists(scratch.root),
                                   'groups_absent': c.all_groups_absent(scratch.record), 'pids_absent': c.all_owned_pids_absent(scratch.record),
-                                  'launches_joined': joined(scratch), 'reservation': r.HostBudget(r.Policy(limits)).reservation_state(scratch.token)}
+                                  'launches_joined': joined(scratch), 'open_files_absence_checked': bool(scratch.record.get('open_files_absent')), 'reservation': r.HostBudget(r.Policy(limits)).reservation_state(scratch.token)}
                                  for scratch in instances]}
         if cleanup_errors or not nested['passed'] or any(not (row['scratch_absent'] and row['groups_absent'] and row['pids_absent']
-                                      and row['launches_joined'] and row['reservation']['absent']) for row in receipt['manifests']):
+                                      and row['launches_joined'] and row['open_files_absence_checked'] and row['reservation']['absent']) for row in receipt['manifests']):
             code = receipt['code'] = code or 1
         r.atomic_json(RECORDS / (run + '-receipt.json'), receipt)
         print(json.dumps({key: value for key, value in receipt.items() if key != 'samples'}))

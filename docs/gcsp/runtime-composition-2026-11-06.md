@@ -174,3 +174,15 @@ Retain compact receipts and useful original failure/TAP journals; no credentials
 No test resources, scratch, service, listener or dependency installation were allocated in this authoring
 checkpoint. Its retained outputs are the five owned source files, plan, exact patch, finite input list, generator and story note.
 The six C1 cases, affected setup/back regression, explicitly synthetic TEST profile and strict owned harness are now authored/frozen in the linked validation proposal. Next step: separate dispatcher review and exact execution grant. Positive business/default/reset source preparation remains open. This document does not grant mixed execution or mark any final acceptance complete.
+
+
+## Owned harness admission revision
+
+The seven-case publication46fa208 was held after independent static review of five harness gaps.
+The current validation proposal repairs only ledger PID/start/root binding and strict write/readback,
+fresh process-group anchors with distinct PID/start history, protected bounded direct joins, pinned
+open-file absence checking, and full supervisor/direct-probe/recursive RSS sampling. Product, tests,
+TEST profile, installed inventory and CJS/ESM guards retain their original frozen bytes. The revised
+catalogue is `c6a977a08972cc183a5bda8b962bb8630889859b0f411a2233fe0beab87b85d1`:196 source/resource/configuration paths,350 edge records
+(348 literal and2 directory),1890 installed files and7 cases. Static metadata/hash/AST/diff/story
+checks only; no probes, helper execution, fault injection or test allocations. Execution remains held.

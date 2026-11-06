@@ -6,9 +6,9 @@ postimages at6ef6c5f and adopts precisely30 changed named leaves; the two identi
 the32-row source plan. No other product files are changed by this authoring checkpoint.
 
 The exact [run catalogue](runtime-composition-run-catalogue.json) SHA-256 is
-`2e529d7284ea253ab8d03faf3a3b1ca1e748313700d35ac903eb20ee11daff7c`. It freezes196 source/resource/configuration paths,350 selected literal edges,
+`c6a977a08972cc183a5bda8b962bb8630889859b0f411a2233fe0beab87b85d1`. It freezes196 source/resource/configuration paths,350 edge records (348 literal and2 directory),
 all191 paths of the adopted source plan, seven test titles, helper/template bytes, Node/Python and
-five support executable identities. The selected graph and the adopted source graph are separately
+six support executable identities (including pinned `/usr/sbin/lsof`). The selected graph and the adopted source graph are separately
 recorded; they are not summed as distinct paths or edges.
 
 | Case | Actual boundary and evidence to require |
@@ -39,13 +39,23 @@ hits and JSON; the ESM loader verifies resolved and loaded files. Both guards ar
 The exact loader registration admits its own absolute path or file URL only at the exact parent URL.
 Native addons and unknown module paths/protocols are refused. This is not a filesystem/network sandbox.
 
-The owned launcher addresses the dispatcher's static cancellation finding: the old Popen→registration
-pattern could lose a handle when a handled signal raised in that gap. The new adapter persists launch
-intent and retains the Python handle before `Popen.__init__`, defers SIGTERM/SIGINT to cooperative
-cancellation, and adopts/stops/joins any existing handle even when registration persistence failed.
-An unknown creation state prevents scratch deletion and reservation release. Strict reservation JSON
-rejects duplicates, non-objects, invalid entries and cycles at admission/update/release. Unknown PID
-start/query state stays charged until ESRCH or confirmed PID reuse. No reproduction was executed.
+The original frozen publication46fa208 and catalogue2e529d7 remain in Git for review. Dibble's
+final static review found no source/composition defect and confirmed the seven cases; admission was
+HOLD on five owned harness issues. This revision changes only three owned Python helpers and their
+catalogue/notes. Product/test/profile, CJS/ESM guards and installed inventory bytes are unchanged.
+
+| Review issue | Revised owned contract |
+| --- | --- |
+| Missing or weakly owned ledger | Missing/symlink/unreadable/invalid ledger refuses. Every acquire/update/release has an independent process-local exact owner PID/start/root/parent/allocation binding. Reject token reuse, changed rows or uncertain mutations. Validate before write and strictly reread the complete ledger under the lock; every foreign row must remain equal. Headroom is read-only. Finalizers are idempotent only for a known released binding. |
+| Numeric retained group signalling | Each signal takes a fresh complete process snapshot and requires a current saved PID/start member whose current PGID matches. Unknown/reused identities cannot anchor a signal. History preserves distinct PID/start pairs. Unanchored live groups produce a named cleanup failure. |
+| Join skipped by signal/query error or inherited unbounded wait | Adoption, queries and signals are protected by a direct-handle join in finally. Each wait has a5s bound, with one freshly anchored direct SIGKILL and a second5s join on timeout. Output closure and manifest persistence have their own finally. The inherited stop_group is replaced; no unbounded wait is called. Uncertain creation/survival preserves scratch/reservation. |
+| No open-file absence check | Before deletion, verify scratch device/inode, verify pinned lsof bytes/device/inode/realpath, and run one owned `lsof -t +D <owned-root>` probe. Only exit1 with empty stdout/stderr proves absence. Probe deadline5s/output8KiB; its handle uses the same registration/anchoring/bounded-join contract. Any error/uncertainty preserves scratch. Shared Scratch rechecks identity before deletion. |
+| Incomplete RSS population | The shared sampler includes the launching supervisor and recursive child family, including direct probes present at the snapshot; detached recorded identities require fresh start matching. Unknown retained identities remain conservatively charged. Store supervisor/direct-child/uncertain accounting and the aggregate peak; both outer and inner paths use this same helper. |
+
+Launch intent is durable before Popen creation; a retained handle precedes `Popen.__init__` and handled
+SIGTERM/SIGINT remains cooperative. No helper repair, probe or failure path has been executed here.
+RSS is sampled, not an operating-system memory sandbox. The maximum is applied to the complete
+observed population rather than just the selected child group. Foreign reservations are never pruned.
 
 Both outer stamp and inner runner use one worker,120s maximum per chunk,768MiB aggregate recursive
 RSS,128MiB scratch and2MiB combined logs. Prospective peak is4MiB scratch/512MiB RAM/30s; these are
@@ -62,7 +72,7 @@ absence. A normal child exit alone cannot produce a successful receipt.
 Prospective exact command, **only after a separate execution grant for this catalogue**:
 
 ```sh
-/usr/bin/env -i PATH=/usr/bin:/bin:/usr/sbin:/sbin HOME=/Users/garycarter /usr/bin/python3 -I /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-stamp.py --catalogue-sha256 2e529d7284ea253ab8d03faf3a3b1ca1e748313700d35ac903eb20ee11daff7c --dispatcher-grant '<separate-grant-id>'
+/usr/bin/env -i PATH=/usr/bin:/bin:/usr/sbin:/sbin HOME=/Users/garycarter /usr/bin/python3 -I /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-stamp.py --catalogue-sha256 c6a977a08972cc183a5bda8b962bb8630889859b0f411a2233fe0beab87b85d1 --dispatcher-grant '<separate-grant-id>'
 ```
 
 The wrapper admits all helper hashes before imports, sanitizes database aliases, deployed credentials,
