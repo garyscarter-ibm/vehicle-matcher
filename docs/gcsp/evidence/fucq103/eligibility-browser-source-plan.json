@@ -321,6 +321,22 @@
     "python": {
       "path": "/Library/Developer/CommandLineTools/usr/bin/python3",
       "sha256": "ec201019b3d883e095e753405a6fc5c1ae8f3b4905231dfd3dc6b4a1f348056f"
+    },
+    "git": {
+      "path": "/usr/bin/git",
+      "sha256": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818"
+    },
+    "ps": {
+      "path": "/bin/ps",
+      "sha256": "472992c470606d28f577590decfecd7f4a20f832fd92c671bebc6d44790b5d02"
+    },
+    "lsof": {
+      "path": "/usr/sbin/lsof",
+      "sha256": "28c36d6b6dfcce1f544717b0d1961aa03441ee0a736fee3e1eaeb215c0fbff4c"
+    },
+    "vm_stat": {
+      "path": "/usr/bin/vm_stat",
+      "sha256": "04c1ec2d5939843c9a89a26791020d2017a50ff97a2d5b380af69d5fcdae5a63"
     }
   },
   "explicitDynamicEdges": [
@@ -455,9 +471,11 @@
     "docs/gcsp/evidence/fucq103/browser-embed.mjs": "daab99710162392a17f2dae21538b03651bf9bad3bb07981a05b7b16f53a21e5",
     "docs/gcsp/evidence/fucq103/browser-runner.mjs": "d5e271500daeeb7ecd87a59f4abd3a8981970e83528324387836fa70c3edbfc2",
     "docs/gcsp/evidence/fucq103/browser-supervisor.py": "2eb571002b42f67ebbefdb6d4bb4e9ce7446aa4ad646438d636875a6fd99fb4c",
-    "docs/gcsp/evidence/fucq103/eligibility-source-catalogue.py": "c7de3c9e627f9a63c598129f1de80b9c361eab34ac74b6d73cd89eac424ade65",
+    "docs/gcsp/evidence/fucq103/eligibility-source-catalogue.py": "26d49819acf0852ce601a40a34442dcfbf8f103f63fd2a1f9a626b4c54bcf8a0",
     "docs/gcsp/evidence/fucq103/fucq115-dated-policy-command.json": "f7424c94b73d6a027f89c6b794fe261ea81807469cfa9e0cfc36482bab35f579",
-    "docs/gcsp/evidence/fucq103/scoped-supervisor.py": "fd2b99e794ef8e3eecbeeaddd2cfb1320d8a11b1394a820360aa3165803cbe56",
+    "docs/gcsp/evidence/fucq103/scoped-resources.py": "198bd1d339b323c74c68e6902bfe3a4bae40707ccf3ca6f94dc21804533fec64",
+    "docs/gcsp/evidence/fucq103/scoped-supervisor.py": "baa4a660ebf6694625477ad608f613df830b7bbdf6a3f25c8a56e2f77bd1ebcb",
+    "docs/gcsp/evidence/fucq103/scoped-test-launch.mjs": "a9893937cd7a3497d43f836919c47fd91485be0ca99efa54a3007ac10c376d1b",
     "docs/gcsp/evidence/fucq103/source-catalogue.py": "3a9164ebbca3eee2cf658288759fa21101d7e0ba611e865554838d0758592a41",
     "gcsp-presenter.html": "ff00a6784b38e8142dfe90d7ccf3af510a1c95ce32477a65af71b70f0b23e71e",
     "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
@@ -2801,21 +2819,8 @@
   "state": "frozen-authoring-proposal-awaiting-execution-review",
   "repairRevision": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
   "followupRevision": "16839323f070f7c0ab81eb1ebf728627d283c71d",
+  "productAndTestFrozenRevision": "f80fc61ca151cb46ad21cb2b19e704f4012d53de",
   "directoryResources": {
-    "server/gcsp/migrations": [
-      "server/gcsp/migrations/0001_transaction_foundation.sql",
-      "server/gcsp/migrations/0002_policy_tables.sql",
-      "server/gcsp/migrations/0003_renewal_cases.sql",
-      "server/gcsp/migrations/index.js"
-    ],
-    "server/data/gcsp/vehicle-evidence/lookup-reference.v1": [
-      "server/data/gcsp/vehicle-evidence/lookup-reference.v1/active.json",
-      "server/data/gcsp/vehicle-evidence/lookup-reference.v1/identity-inventory.json",
-      "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/configurations.jsonl",
-      "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/images.jsonl",
-      "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/manifest.json",
-      "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/vins.jsonl"
-    ],
     "blocks/gcsp/greg": [
       "blocks/gcsp/greg/demand-copy.js",
       "blocks/gcsp/greg/demand-view.js",
@@ -2831,7 +2836,71 @@
       "blocks/gcsp/greg/publish/publish.css",
       "blocks/gcsp/greg/publish/register.js",
       "blocks/gcsp/greg/register.js"
+    ],
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1": [
+      "server/data/gcsp/vehicle-evidence/lookup-reference.v1/active.json",
+      "server/data/gcsp/vehicle-evidence/lookup-reference.v1/identity-inventory.json",
+      "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/configurations.jsonl",
+      "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/images.jsonl",
+      "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/manifest.json",
+      "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/vins.jsonl"
+    ],
+    "server/gcsp/migrations": [
+      "server/gcsp/migrations/0001_transaction_foundation.sql",
+      "server/gcsp/migrations/0002_policy_tables.sql",
+      "server/gcsp/migrations/0003_renewal_cases.sql",
+      "server/gcsp/migrations/index.js"
     ]
+  },
+  "hostBudget": {
+    "directory": "/Users/garycarter/.cache/agent-scaffolding/test-resources",
+    "anchors": {
+      "/Users/garycarter/.cache/agent-scaffolding/test-resources": {
+        "device": 16777232,
+        "inode": 172282405,
+        "mode": 493,
+        "kind": "directory",
+        "resolved": "/Users/garycarter/.cache/agent-scaffolding/test-resources"
+      },
+      "/Users/garycarter/.cache/agent-scaffolding/test-resources/reservations.lock": {
+        "device": 16777232,
+        "inode": 172282406,
+        "mode": 420,
+        "kind": "file",
+        "resolved": "/Users/garycarter/.cache/agent-scaffolding/test-resources/reservations.lock"
+      }
+    },
+    "emergencyReserveBytes": 5368709120,
+    "ramReserveBytes": 536870912,
+    "preferredFreeBytes": 32212254720,
+    "diskBytes": 134217728,
+    "ramBytes": 805306368,
+    "ledgerPolicy": "Strict required shape, known owners and acyclic parents; no default/pruning. Exact lock identity and owned release/readback."
+  },
+  "executionContract": {
+    "externalAdmission": [
+      "--execute",
+      "--source-plan-sha <externally-reviewed SHA256>",
+      "--revision <exact-published-HEAD>",
+      "--dispatcher-grant <new fucq103-MODE- grant>"
+    ],
+    "planAction": "--plan --source-plan-sha <externally-reviewed SHA256>; custom imports/allocation/application execution absent",
+    "sequence": [
+      "eligibility-core",
+      "eligibility-registry"
+    ],
+    "remainingModesRequireSeparateReview": true,
+    "serverDependencies": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules",
+    "mirror": "Finite admitted source bytes copied under owned scratch; dependency link only inside scratch; no worktree links.",
+    "processGate": "Leader PID/start and recursive ownership recorded before the Node launcher receives its stdin gate.",
+    "environment": "Closed HOME/USER/LOGNAME/LANG/LC_CTYPE/TZ allowlist; fixed PATH/LC_ALL/PYTHONDONTWRITEBYTECODE/SCAFFOLDING_HARNESS. No inherited LD_/DYLD_/native/database/debug families.",
+    "cleanup": "Strict process/start/group/port proof and open-file absence before scratch deletion; exact owned reservation release only after deletion/readback. Uncertainty retains manifests/scratch/reservation.",
+    "referenceOnly": {
+      "revision": "918ce04510fd327e860809e7de53bd636d1cf7da",
+      "resourcesSha256": "2ef0823acaf59764c3c9e0e3cb662f0bd72637f7ee569807c61c537d0b742949",
+      "supervisorSha256": "1e5a0811b8cad6cf449905f72c1da49c59d9f6f486c95c791e40b3d496deefe9",
+      "claim": "Read-only strict ownership design reference; no source adoption or115 actual activation pass claim."
+    }
   },
   "composition": [
     {
@@ -2984,12 +3053,22 @@
     {
       "path": "docs/gcsp/evidence/fucq103/eligibility-source-catalogue.py",
       "before": null,
-      "after": "c7de3c9e627f9a63c598129f1de80b9c361eab34ac74b6d73cd89eac424ade65"
+      "after": "26d49819acf0852ce601a40a34442dcfbf8f103f63fd2a1f9a626b4c54bcf8a0"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq103/scoped-resources.py",
+      "before": null,
+      "after": "198bd1d339b323c74c68e6902bfe3a4bae40707ccf3ca6f94dc21804533fec64"
     },
     {
       "path": "docs/gcsp/evidence/fucq103/scoped-supervisor.py",
       "before": "044e4232ca172fd91d605db8c1c978ae814c808886dd1565fa76385a809ec521",
-      "after": "fd2b99e794ef8e3eecbeeaddd2cfb1320d8a11b1394a820360aa3165803cbe56"
+      "after": "baa4a660ebf6694625477ad608f613df830b7bbdf6a3f25c8a56e2f77bd1ebcb"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq103/scoped-test-launch.mjs",
+      "before": null,
+      "after": "a9893937cd7a3497d43f836919c47fd91485be0ca99efa54a3007ac10c376d1b"
     },
     {
       "path": "server/gcsp/greg/index.js",

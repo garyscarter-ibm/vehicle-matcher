@@ -1019,7 +1019,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-06T01:39:18Z",
+      "observed_at": "2026-11-06T01:59:14Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103",
       "jira_observed_at": "2026-11-05T22:40:24Z",
       "branch": "dev/DEV-2026-11-04-066",
@@ -1048,8 +1048,8 @@
           "id": "backend-projection",
           "status": "in-progress",
           "title": "Editable policy projection and no-write preview",
-          "observed_at": "2026-11-06T01:39:18Z",
-          "evidence": "Authoring: exact 38be4f5 four-file FUCQ-100 repair adopted with retained 103 scorer. Canonical helper/default Paula parity and coherent five-subject weighted publication need new combined proof. Frozen 217-source proposal selects 77 cases; no execution grant. docs/gcsp/evidence/fucq103/eligibility-combined-proposal-2026-11-06.md."
+          "observed_at": "2026-11-06T01:59:14Z",
+          "evidence": "f80fc61 product/test freeze retained. Owned backend harness repaired/refrozen:219 sources,77 proposed cases; static audit only, no runtime grant. First proposed core25 then separate registry16. docs/gcsp/evidence/fucq103/eligibility-harness-repair-2026-11-06.md."
         },
         {
           "id": "activation-http",
@@ -1062,8 +1062,8 @@
           "id": "reviewed-adoption-runtime",
           "status": "in-progress",
           "title": "Reviewed keyed adoption and delivered runtime",
-          "observed_at": "2026-11-06T01:39:18Z",
-          "evidence": "Prior runtime/adoption evidence retained. Proposed additive 107 exact question bundle/registry and canonical missing-only/tuned-key cases authored; 106/113/115 retained. Root review and execution pending; no 105→107 lookup/reload claim. docs/gcsp/evidence/fucq103/eligibility-combined-proposal-2026-11-06.md."
+          "observed_at": "2026-11-06T01:59:14Z",
+          "evidence": "Dibble FINAL f80fc61 source/registration PASS; exact107 questions and106/113/115 retained. Runtime proof pending repaired-harness admission and separately granted registry16; no105→107 lookup/reload claim. docs/gcsp/evidence/fucq103/eligibility-harness-repair-2026-11-06.md."
         },
         {
           "id": "publish-panel",
@@ -1083,8 +1083,8 @@
           "id": "rendered-integration",
           "status": "blocked",
           "title": "Desktop and narrow keyboard browser evidence",
-          "observed_at": "2026-11-06T01:39:18Z",
-          "evidence": "Prior ecaef8a corrected-card smoke remains scoped to old source. New canonical preparation/complete-slot cohort authored with exact 100 repair; frozen browser candidate awaits backend review and separate prep/desktop/narrow320 grants. No new browser/full/native execution. docs/gcsp/evidence/fucq103/eligibility-combined-proposal-2026-11-06.md."
+          "observed_at": "2026-11-06T01:59:14Z",
+          "evidence": "Prior ecaef8a smoke covers original source only. Canonical preparation/complete-slot browser candidate refrozen with219 sources; browser supervisor unrepaired/unadmitted. Backend review and separate prep/desktop/narrow320 grants pending. No new browser/full/native proof. docs/gcsp/evidence/fucq103/eligibility-harness-repair-2026-11-06.md."
         },
         {
           "id": "full-validation",

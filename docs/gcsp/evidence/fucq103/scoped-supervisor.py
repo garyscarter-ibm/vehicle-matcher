@@ -1,26 +1,24 @@
-"""Bounded offline FUCQ-103 proofs. One reserved child group and no dependency installation."""
-from pathlib import Path
-import atexit
+"""Admitted FUCQ-103 scoped checks. Standard-library admission precedes custom imports.
+
+Only the frozen eligibility modes are executable here. Historical receipts remain
+unchanged. --plan checks bytes only; --execute requires external SHA/revision/grant.
+"""
+import argparse
 import hashlib
-import json
 import os
+from pathlib import Path
 import re
-import shlex
-import signal
+import stat
 import subprocess
 import sys
 import time
+import types
 import uuid
+import json
 
 project = Path(__file__).resolve().parents[4]
-sys.path.insert(0, str(project / '_tools'))
-import test_resources as resources
-
-shared = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs')
-run = 'fucq103-backend-' + uuid.uuid4().hex
-mode = sys.argv[1] if len(sys.argv) > 1 else 'publish'
+here = Path(__file__).resolve().parent
 checks = {
-    'eligibility-registry': ['server/test/gcsp-policy-consumer-adoption.test.js', 'server/test/gcsp-policy-adoption.test.js', 'server/test/gcsp-policy-learning-adoption.test.js'],
     'eligibility-core': ['server/test/gcsp-greg-driver-eligibility.test.js', 'server/test/gcsp-greg-demand.test.js'],
     'eligibility-default': ['server/test/gcsp-runtime-publication.test.js'],
     'eligibility-weighted': ['server/test/gcsp-runtime-publication.test.js'],
@@ -29,268 +27,284 @@ checks = {
     'eligibility-activation': ['server/test/gcsp-policy-activation.test.js', 'server/test/gcsp-greg-publish-http.test.js'],
     'eligibility-editor': ['server/test/gcsp-greg-publish-editor.test.js'],
     'eligibility-dashboard': ['server/test/gcsp-greg-dashboard-data.test.js'],
-    'canonical-runtime-focus': ['server/test/gcsp-runtime-publication.test.js'],
-    'canonical-runtime': ['server/test/gcsp-runtime-publication.test.js', 'server/test/gcsp-policy-consumer-adoption.test.js', 'server/test/gcsp-greg-publish.test.js'],
-    'consumer-adoption': ['server/test/gcsp-policy-consumer-adoption.test.js'],
-    'consumer-registration': ['server/test/gcsp-policy-consumer-adoption.test.js', 'server/test/gcsp-policy-learning-adoption.test.js', 'server/test/gcsp-policy-adoption.test.js', 'server/test/gcsp-greg-publish-editor.test.js', 'server/test/gcsp-runtime-publication.test.js'],
-    'learning-registration': ['server/test/gcsp-policy-learning-adoption.test.js', 'server/test/gcsp-policy-adoption.test.js', 'server/test/gcsp-greg-publish-editor.test.js', 'server/test/gcsp-runtime-publication.test.js'],
-    'publish-editor': ['server/test/gcsp-greg-publish-editor.test.js', 'server/test/gcsp-policy-adoption.test.js', 'server/test/gcsp-greg-publish.test.js'],
-    'publish-ui': ['server/test/gcsp-greg-publish-render.test.js'],
-    'publish-ui-callers': ['server/test/gcsp-greg-dashboard.test.js', 'server/test/shared-kit-contracts.test.js', 'server/test/gcsp-presenter-controls-render.test.js', 'server/test/gcsp-manual-setup-render.test.js'],
-    'publish-ui-ratchet': ['server/test/ui-ratchet.test.js', 'server/test/render.test.js'],
-    'adoption': ['server/test/gcsp-policy-adoption.test.js'],
-    'runtime-publication': ['server/test/gcsp-runtime-publication.test.js'],
-    'runtime-callers': ['server/test/gcsp-brief-runtime.test.js', 'server/test/gcsp-manual-setup-render.test.js'],
-    'activation': ['server/test/gcsp-policy-activation.test.js'],
-    'activation-http': ['server/test/gcsp-greg-publish-http.test.js'],
-    'identity-clock': ['server/test/gcsp-identity.test.js', 'server/test/gcsp-clock-reset.test.js', 'server/test/gcsp-presenter-controls.test.js'],
-    'employee-boundaries': ['server/test/employee-recommendation-api.test.js', 'server/test/gcsp-brief-editor.test.js'],
-    'publish': ['server/test/gcsp-greg-publish.test.js'],
-    'scoring': ['server/test/employee-recommendation.test.js', 'server/test/feedback-actions.test.js', 'server/test/employee-recommendation-api.test.js', 'server/test/shared-kit-contracts.test.js'],
-    'policy-demand': ['server/test/gcsp-policy-service.test.js', 'server/test/gcsp-policy-versions.test.js', 'server/test/gcsp-greg-demand.test.js'],
+    'eligibility-registry': ['server/test/gcsp-policy-consumer-adoption.test.js', 'server/test/gcsp-policy-adoption.test.js', 'server/test/gcsp-policy-learning-adoption.test.js'],
 }
-if mode not in checks:
-    raise SystemExit('Unknown scoped check')
-eligibility = mode.startswith('eligibility-')
-combined_path = Path(__file__).with_name('eligibility-combined-source-plan.json' if eligibility else 'runtime-combined-source-plan.json')
-combined = json.loads(combined_path.read_text()) if eligibility or mode in ('canonical-runtime', 'canonical-runtime-focus') else None
-selected_chunk = next((chunk for chunk in combined['chunks'] if chunk['mode'] == mode), None) if eligibility else None
-if eligibility:
-    if not selected_chunk or selected_chunk['tests'] != checks[mode]:
-        raise SystemExit('Eligibility source catalogue selected chunk differs')
-elif combined and (combined['selectedTests'] != checks['canonical-runtime'] or not set(checks[mode]) <= set(combined['selectedTests'])):
-    raise SystemExit('Combined source catalogue selected tests differ')
-command = [combined['executables']['node']['path'] if combined else 'node', '--test', '--test-concurrency=1']
-if selected_chunk and selected_chunk.get('namePattern'):
-    command.append('--test-name-pattern=' + selected_chunk['namePattern'])
-command.extend(checks[mode])
-if selected_chunk and command != selected_chunk['command']:
-    raise SystemExit('Eligibility command differs from frozen proposal')
-policy = resources.Policy({'chunk_scratch_mib': 128, 'chunk_ram_mib': 768, 'chunk_seconds': 120, 'log_mib': 2})
-host = resources.HostBudget(policy)
+MIB = 1024 ** 2
 
-class OwnedScratch(resources.Scratch):
-    def __exit__(self, kind, value, traceback):
-        stop_owned()
-        return super().__exit__(kind, value, traceback)
 
-scratch = OwnedScratch(shared, project, policy, expected=128 * resources.MIB)
-scratch.manifest = shared / 'ownership' / (run + '-manifest.json')
-summary_path = shared / 'ownership' / (run + '-summary.json')
-tracked = {}
-reserved = False
-finished = False
-adopted_links = []
-report = {'run': run, 'project': str(project), 'command': command, 'scope': 'scoped',
-          'impact': 'PolicyService publication/activation and reviewed assumption adoption; same-provider runtime composition, Greg projection/preview/publish and ordinary employee HTTP callers. No native/database/UI proof.',
-          'limits': {'seconds': 120, 'rssMiB': 768, 'scratchMiB': 128, 'logMiB': 2, 'workers': 1},
-          'selection': 'Affected selector dry-run has no plug-in for unspecified JavaScript and proposes npm test. Reviewed and rejected broad fallback; explicit regression/caller commands selected.',
-          'excluded': 'Full suite, PostgreSQL, browser and external integration; parent owns integration checkpoint.',
-          'supervisor': str(Path(__file__).resolve()), 'manifest': str(scratch.manifest)}
-if eligibility:
-    report.update(impact=combined['impact'], selection=selected_chunk, excluded=combined['excluded'])
-report['impactMap'] = {
-    'Exact100 runtime/index dependency adoption with retained103 registry/seed/scorer; actual HTTP scenarios, canonical step/reset, weighted preview, employee terms and history': ['server/test/gcsp-runtime-publication.test.js', 'server/test/gcsp-policy-consumer-adoption.test.js', 'server/test/gcsp-greg-publish.test.js'],
-    'Exact FUCQ-106 reasons and FUCQ-115 choice bundles / same-provider missing-only adoption / isolated dated80x4 publication': ['server/test/gcsp-policy-consumer-adoption.test.js'],
-    'Exact approved FUCQ-113 definition registry / missing-key adoption / same-provider ordinary context and readback': ['server/test/gcsp-policy-learning-adoption.test.js', 'server/test/gcsp-policy-adoption.test.js', 'server/test/gcsp-greg-publish-editor.test.js', 'server/test/gcsp-runtime-publication.test.js'],
-    'Greg editor reviewed presentation bundle / optional field ranges / retained exact validation and pinned rows': ['server/test/gcsp-greg-publish-editor.test.js', 'server/test/gcsp-greg-publish-render.test.js', 'server/test/gcsp-greg-publish.test.js'],
-    'PolicyService.adoptReviewedAssumptions / reviewed definitions / successor validation': ['server/test/gcsp-policy-adoption.test.js'],
-    'PolicyService.withPublicationPorts / createGcspRuntime.dependencies / provider ownership': ['server/test/gcsp-runtime-publication.test.js', 'server/test/gcsp-brief-runtime.test.js', 'server/test/gcsp-manual-setup-render.test.js'],
-    'prepareSuccessor / completePublication / existing publisher and typed reads': ['server/test/gcsp-policy-versions.test.js', 'server/test/gcsp-policy-service.test.js', 'server/test/gcsp-greg-publish.test.js', 'server/test/gcsp-greg-demand.test.js'],
-    'activateRunPolicy / identity wall clock / retained presenter clock compatibility': ['server/test/gcsp-policy-activation.test.js', 'server/test/gcsp-identity.test.js', 'server/test/gcsp-clock-reset.test.js', 'server/test/gcsp-presenter-controls.test.js'],
-}
-if eligibility:
-    report['impactMap'] = combined['impactMap']
-source_paths = ['server/gcsp/policy/reviewed-definitions.js', 'server/gcsp/runtime.js', 'server/test/helpers/gcsp-reviewed-runtime.js', 'server/index.js', 'server/gcsp/policy/activation.js', 'server/test/helpers/greg-publish-run.js', 'server/test/helpers/employee-recommendation-http.js', 'server/gcsp/policy/index.js', 'server/gcsp/policy/publish.js', 'server/scenarios/employee/index.js', *checks[mode],
-                *[str(p.relative_to(project)) for p in (project / 'server/gcsp/greg/publish').glob('*.js')]]
-source_paths.extend([str(Path(__file__).relative_to(project)), '_tools/test_resources.py', 'server/gcsp/greg/index.js', 'server/gcsp/policy/seed-v1.json',
-                     'server/test/helpers/greg-demand-run.js', 'server/test/helpers/employee-recommendation.js'])
-source_paths.extend(str(path.relative_to(project)) for path in (project / 'server/gcsp/policy/reviewed').glob('*.json'))
-source_paths.append('server/gcsp/predict/records/policy-definitions.json')
-if mode in ('consumer-registration', 'consumer-adoption'):
-    source_paths.append('docs/gcsp/evidence/fucq103/fucq115-dated-policy-command.json')
-for directory in ('server/gcsp/policy', 'server/gcsp/brief', 'server/gcsp/manual-context', 'server/gcsp/presenter-controls', 'server/gcsp/fixtures', 'server/gcsp/repository', 'server/gcsp/identity', 'server/gcsp/clock', 'server/gcsp/recommendation', 'server/scenarios/employee'):
-    source_paths.extend(str(path.relative_to(project)) for path in (project / directory).glob('*.js'))
-if mode.startswith('publish-ui'):
-    source_paths.extend(str(p.relative_to(project)) for folder in ('blocks/gcsp/greg', 'blocks/gcsp/kit', 'blocks/gcsp/shell', 'blocks/gcsp/presenter-controls', 'blocks/gcsp/presenter', 'blocks/gcsp/manual-setup', 'blocks/gcsp/account') for p in (project / folder).rglob('*') if p.is_file() and p.suffix in ('.js', '.css'))
-    source_paths.extend(['blocks/vehicle-matcher/ui.js', 'blocks/vehicle-matcher/modes/question-ui.js', 'blocks/vehicle-matcher/question-controls.css', 'blocks/vehicle-matcher/component-gallery.js', 'components.html', 'gcsp-greg.html', 'server/test/ui-ratchet.json', 'server/test/helpers/gcsp-reviewed-runtime.js'])
-    report['impact'] = 'Greg publish HTTP adapter/panel/custom element; actual HTTP dashboard composition and existing caseQueue/presenter caller boundaries; additive component gallery/CSS ratchet and user-copy rules. No browser or native proof.'
-    report['impactMap'] = {
-        'publish/http-adapter request/outcome validation / panel state, native identity, preview gate, stable retry / callback-owned single sliders and exact-value synchronization / standalone element lifecycle': ['server/test/gcsp-greg-publish-render.test.js'],
-        'Greg HTTP adapter publish port / mountGregDashboard reserved region / custom element ready-remount compatibility': ['server/test/gcsp-greg-publish-render.test.js', 'server/test/gcsp-greg-dashboard.test.js', 'server/test/gcsp-presenter-controls-render.test.js'],
-        'shared form/kit imports, gallery and additive publish CSS': ['server/test/shared-kit-contracts.test.js', 'server/test/ui-ratchet.test.js', 'server/test/render.test.js'],
-        'errorSummary optional selection identity / retained default focus routing / manual setup and presenter callers': ['server/test/gcsp-greg-publish-render.test.js', 'server/test/gcsp-manual-setup-render.test.js', 'server/test/gcsp-presenter-controls-render.test.js'],
-    }
-source_paths = sorted(set(source_paths))
-report['pins'] = {name: hashlib.sha256((project / name).read_bytes()).hexdigest() for name in source_paths}
-def combined_identity():
-    if not combined:
-        return None
-    sources = {name: hashlib.sha256((project / name).read_bytes()).hexdigest() for name in combined['sources']}
-    installed = {name: hashlib.sha256(Path(name).read_bytes()).hexdigest() for name in combined['dependencies']['sources']}
-    members = sorted(str(p) for base in combined['dependencies']['roots'] for p in Path(base).rglob('*')
-                     if p.is_file() and not p.is_symlink() and '.bin' not in p.parts)
-    declared = sorted(p for p in installed if any(Path(base) in Path(p).parents for base in combined['dependencies']['roots']))
-    executables = {name: {'path': row['path'], 'sha256': hashlib.sha256(Path(row['path']).read_bytes()).hexdigest()}
-                   for name, row in combined['executables'].items()}
-    if sources != combined['sources'] or installed != combined['dependencies']['sources'] or members != declared or executables != combined['executables']:
-        raise resources.ResourceError('Combined source/dependency/executable freeze differs')
-    return {'catalogueSha256': hashlib.sha256(combined_path.read_bytes()).hexdigest(),
-            'sources': sources, 'installed': installed, 'installedMembership': members, 'executables': executables}
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
 
-if combined:
-    report['sourceBefore'] = combined_identity()
-    report['pins'] = report['sourceBefore']['sources']
-    report['combinedSourceCatalogue'] = str(combined_path)
-scratch.record.update(supervisorFinalizer=__file__, command=command, impact=report['impact'], retainedDependencies=[])
 
-def stop_owned():
-    for sig in (signal.SIGTERM, signal.SIGKILL):
-        for pid, identity in tracked.items():
-            if identity and resources.process_identity(pid) == identity:
-                try:
-                    os.kill(pid, sig)
-                except ProcessLookupError:
-                    pass
-        if sig == signal.SIGTERM:
-            time.sleep(0.1)
-    for group in scratch.record['groups']:
-        for sig in (signal.SIGTERM, signal.SIGKILL):
-            if resources.group_has_live_members(group) is False:
-                break
-            try:
-                os.killpg(group, sig)
-            except ProcessLookupError:
-                break
-            deadline = time.monotonic() + 3
-            while resources.group_has_live_members(group) is not False and time.monotonic() < deadline:
-                time.sleep(0.05)
+def strict_json(data):
+    def pairs(items):
+        result = {}
+        for key, value in items:
+            if key in result:
+                raise ValueError('Duplicate admission JSON key: ' + key)
+            result[key] = value
+        return result
+    def constant(value):
+        raise ValueError('Nonstandard admission JSON constant: ' + value)
+    return json.loads(data, object_pairs_hook=pairs, parse_constant=constant)
 
-def finalizer():
-    global finished
-    if finished:
+
+def anchor(path):
+    value = path.lstat()
+    if path.is_symlink() or not (stat.S_ISDIR(value.st_mode) or stat.S_ISREG(value.st_mode)):
+        raise RuntimeError('Host accounting anchor is not physical')
+    return {'device': value.st_dev, 'inode': value.st_ino, 'mode': stat.S_IMODE(value.st_mode),
+            'kind': 'directory' if stat.S_ISDIR(value.st_mode) else 'file', 'resolved': str(path.resolve(strict=True))}
+
+
+def admit(expected):
+    if not sys.flags.isolated or not sys.dont_write_bytecode:
+        raise RuntimeError('Use the pinned Python with -I -B')
+    data = (here / 'eligibility-combined-source-plan.json').read_bytes()
+    if sha(data) != expected:
+        raise RuntimeError('Source-plan SHA differs from the external reviewed command')
+    plan = strict_json(data)
+    if plan['executables']['python']['path'] != sys.executable:
+        raise RuntimeError('Running Python differs from the admitted interpreter')
+    loaded = {}
+    for relative, expected_hash in plan['sources'].items():
+        path = project / relative
+        if Path(relative).is_absolute() or '..' in Path(relative).parts or project not in path.resolve().parents:
+            raise RuntimeError('Source path escapes the worktree')
+        data = path.read_bytes()
+        if sha(data) != expected_hash:
+            raise RuntimeError('Admitted source differs: ' + relative)
+        loaded[relative] = data
+    required = {'_tools/test_resources.py', '_tools/scaffold_git.py', str(Path(__file__).relative_to(project)),
+                'docs/gcsp/evidence/fucq103/scoped-resources.py', 'docs/gcsp/evidence/fucq103/scoped-test-launch.mjs'}
+    if not required <= loaded.keys():
+        raise RuntimeError('Source plan omits an executable helper')
+    for absolute, expected_hash in plan['dependencies']['sources'].items():
+        if sha(Path(absolute).read_bytes()) != expected_hash:
+            raise RuntimeError('Installed dependency differs')
+    members = {str(path) for base in plan['dependencies']['roots'] for path in Path(base).rglob('*')
+               if path.is_file() and not path.is_symlink() and '.bin' not in path.parts}
+    declared = {name for name in plan['dependencies']['sources']
+                if any(Path(base) in Path(name).parents for base in plan['dependencies']['roots'])}
+    if members != declared:
+        raise RuntimeError('Installed dependency membership differs')
+    for relative, expected_members in plan['directoryResources'].items():
+        members = sorted(str(path.relative_to(project)) for path in (project / relative).rglob('*') if path.is_file())
+        if members != expected_members:
+            raise RuntimeError('Source directory membership differs: ' + relative)
+    for name, item in plan['executables'].items():
+        if sha(Path(item['path']).read_bytes()) != item['sha256']:
+            raise RuntimeError('Admitted executable differs: ' + name)
+    for name, expected_anchor in plan['hostBudget']['anchors'].items():
+        if anchor(Path(name)) != expected_anchor:
+            raise RuntimeError('Host accounting anchor differs')
+    if any(os.path.lexists(project / name) for name in ('node_modules', 'server/node_modules')):
+        raise RuntimeError('Worktree dependency resolution must remain absent; use the owned mirror')
+    if set(checks) != {chunk['mode'] for chunk in plan['chunks']}:
+        raise RuntimeError('Selected modes differ')
+    return plan, loaded
+
+
+def imported(loaded, relative, name):
+    data = loaded[relative]
+    # Execute exactly the already admitted bytes; never reopen via an import loader.
+    module = types.ModuleType(name)
+    module.__file__ = str(project / relative)
+    sys.modules[name] = module
+    exec(compile(data, module.__file__, 'exec'), module.__dict__)
+    return module
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('mode', choices=sorted(checks))
+    action = parser.add_mutually_exclusive_group(required=True)
+    action.add_argument('--plan', action='store_true')
+    action.add_argument('--execute', action='store_true')
+    parser.add_argument('--source-plan-sha', required=True)
+    parser.add_argument('--revision')
+    parser.add_argument('--dispatcher-grant')
+    args = parser.parse_args()
+    if not re.fullmatch('[a-f0-9]{64}', args.source_plan_sha):
+        parser.error('Supply the externally admitted source-plan SHA')
+    if args.execute and (not re.fullmatch('[a-f0-9]{40}', args.revision or '')
+                         or not (args.dispatcher_grant or '').startswith('fucq103-' + args.mode + '-')):
+        parser.error('Execution needs the exact reviewed revision and a new grant for this mode')
+    plan, loaded = admit(args.source_plan_sha)
+    chunk = next(item for item in plan['chunks'] if item['mode'] == args.mode)
+    command = [plan['executables']['node']['path'], '--test', '--test-concurrency=1']
+    if chunk.get('namePattern'):
+        command.append('--test-name-pattern=' + chunk['namePattern'])
+    command.extend(checks[args.mode])
+    if command != chunk['command'] or checks[args.mode] != chunk['tests']:
+        raise RuntimeError('Selected command differs from the admitted graph')
+    if args.plan:
+        print(json.dumps({'state': 'plan-only', 'sourcePlanSHA256': args.source_plan_sha, 'chunk': chunk,
+                          'customImports': 0, 'scratchAllocations': 0, 'testRuns': 0}))
         return
-    stop_owned()
-    if reserved:
-        host.release(scratch.token)
-    report.update(scratchAbsent=not os.path.lexists(scratch.root),
-                  groupsAbsent=all(resources.group_has_live_members(group) is False for group in scratch.record['groups']),
-                  descendantsAbsent=all(not identity or resources.process_identity(pid) != identity for pid, identity in tracked.items()),
-                  budgetReleased=scratch.token not in resources.read_json(Path.home() / '.cache/agent-scaffolding/test-resources/reservations.json', {}))
-    report['ownedDescendants'] = tracked
-    report['ownedPortsClosed'] = report['descendantsAbsent'] and report['groupsAbsent']
-    report['sourcesUnchanged'] = all(hashlib.sha256((project / name).read_bytes()).hexdigest() == digest for name, digest in report['pins'].items())
-    if combined:
-        try:
-            report['sourceAfter'] = combined_identity()
-            report['sourcesUnchanged'] = report['sourceAfter'] == report['sourceBefore']
-        except Exception as error:
-            report['sourcesUnchanged'] = False
-            report['sourceIdentityError'] = type(error).__name__
-    report['adoptedDependencies'] = []
-    for link, target, inode in adopted_links:
-        removed = link.is_symlink() and link.lstat().st_ino == inode and link.resolve() == target.resolve()
-        if removed:
-            link.unlink()
-        report['adoptedDependencies'].append({'link': str(link), 'target': str(target), 'linkAbsent': not os.path.lexists(link), 'existingTargetPreserved': target.is_dir()})
-    report['finishedAt'] = time.time()
-    scratch.record.update({key: report[key] for key in ('scratchAbsent', 'groupsAbsent', 'descendantsAbsent', 'budgetReleased')})
+    # Closed allowlist removes every inherited loader/native/database/debug family.
+    environment = {key: value for key, value in os.environ.items()
+                   if key in ('HOME', 'USER', 'LOGNAME', 'LANG', 'LC_CTYPE', 'TZ')}
+    environment.update(PATH='/usr/bin:/bin:/usr/sbin:/sbin', LC_ALL='C', PYTHONDONTWRITEBYTECODE='1', SCAFFOLDING_HARNESS='codex')
+    os.environ.clear()
+    os.environ.update(environment)
+    resources = imported(loaded, '_tools/test_resources.py', 'fucq103_admitted_resources')
+    git = imported(loaded, '_tools/scaffold_git.py', 'fucq103_admitted_git')
+    guard = imported(loaded, 'docs/gcsp/evidence/fucq103/scoped-resources.py', 'fucq103_owned_guard')
+    for query in (['rev-parse', 'HEAD'], ['rev-parse', '@{upstream}']):
+        rc, value, error = git.git(project, query)
+        if rc or value.strip() != args.revision:
+            raise RuntimeError('Execution revision is not exact published upstream HEAD')
+    rc, value, error = git.git(project, ['status', '--porcelain'])
+    if rc or value:
+        raise RuntimeError('Execution requires a clean owned worktree')
+    with resources.handled_termination():
+        execute(args, plan, loaded, chunk, command, environment, resources, guard)
+
+
+def execute(args, plan, loaded, chunk, command, environment, resources, guard):
+    shared = Path(plan['resourceContract']['sharedOutput'])
+    run = 'fucq103-backend-' + uuid.uuid4().hex
+    retained = shared / 'fucq103-backend' / run
+    policy = resources.Policy({'chunk_scratch_mib': 128, 'chunk_ram_mib': 768, 'chunk_seconds': 120, 'log_mib': 2,
+                               'reserve_free_gib': 5, 'ram_reserve_mib': 512, 'preferred_free_gib': 30})
+    if policy.reserve != plan['hostBudget']['emergencyReserveBytes'] or int(policy.ram_reserve_mib * MIB) != plan['hostBudget']['ramReserveBytes']:
+        raise RuntimeError('Resource helper reserve differs from explicit admission')
+    scratch = guard.make_scratch(resources, shared, project, policy)
+    scratch.manifest = shared / 'ownership' / (run + '-manifest.json')
+    scratch.record.update(run=run, retainedRoot=str(retained), sourcePlanSHA256=args.source_plan_sha,
+                          grant=args.dispatcher_grant, revision=args.revision, command=command)
+    budget = guard.Budget(resources, policy, plan['hostBudget'])
+    tree = guard.Tree(resources, scratch)
+    finalizer = guard.Finalizer(resources, scratch, tree, budget)
+    # External manifest and finalizer precede the reservation, scratch and retained root.
     resources.atomic_json(scratch.manifest, scratch.record)
-    resources.atomic_json(summary_path, report)
-    finished = True
-    print(json.dumps({'summary': str(summary_path), 'manifest': str(scratch.manifest), 'result': report.get('result'),
-                      'cleanup': {key: report[key] for key in ('scratchAbsent', 'groupsAbsent', 'descendantsAbsent', 'budgetReleased', 'sourcesUnchanged')}}))
-
-# Registered before either reservation or owned scratch allocation.
-atexit.register(finalizer)
-resources.atomic_json(scratch.manifest, scratch.record)
-
-def observed_rss(pgid):
-    snapshot = subprocess.run(['/bin/ps', '-axo', 'pid=,ppid=,pgid=,rss=,args='], capture_output=True, text=True, timeout=3)
-    if snapshot.returncode:
-        raise resources.ResourceError('Cannot verify child ownership')
-    rows = [line.strip().split(None, 4) for line in snapshot.stdout.splitlines()]
-    rows = [row for row in rows if len(row) == 5]
-    owned = {pgid} | {int(row[0]) for row in rows if int(row[2]) == pgid}
-    while True:
-        expanded = owned | {int(row[0]) for row in rows if int(row[1]) in owned}
-        if expanded == owned:
-            break
-        owned = expanded
-    rss = 0
-    for pid, ppid, group, memory, argv in rows:
-        if int(pid) not in owned:
-            continue
-        tracked.setdefault(int(pid), resources.process_identity(int(pid)))
-        rss += int(memory) * 1024
-        if int(group) != pgid:
-            if int(group) == os.getpgrp():
-                raise resources.ResourceError('Child escaped to supervisor process group')
-            if int(group) not in scratch.record['groups']:
-                scratch.record['groups'].append(int(group))
-                resources.atomic_json(scratch.manifest, scratch.record)
-        args = shlex.split(argv)
-        if args and Path(args[0]).name == 'node' and '--test' in args and '--test-concurrency=1' not in args:
-            raise resources.ResourceError('Unbounded Node worker count')
-    lsof = Path('/usr/sbin/lsof')
-    if lsof.exists():
-        ports = subprocess.run([str(lsof), '-nP', '-a', '-p', ','.join(str(pid) for pid in sorted(owned)),
-                                '-iTCP', '-sTCP:LISTEN', '-Fpn'], capture_output=True, text=True, timeout=3)
-        if ports.returncode not in (0, 1):
-            raise resources.ResourceError('Cannot inspect owned listening ports')
-        if ports.stdout:
-            report.setdefault('ownedPortSamples', [])
-            sample = ports.stdout[:2048]
-            if sample not in report['ownedPortSamples'] and len(report['ownedPortSamples']) < 32:
-                report['ownedPortSamples'].append(sample)
-    return rss
-
-resources.group_rss = observed_rss
-removed_environment_keys = [key for key in os.environ if key.upper().startswith('PG')
-    or re.search(r'DATABASE|POSTGRES|(?:^|_)DB(?:_|$)|(?:^|_)SQL(?:_|$)|DEBUG|TRACE', key, re.I)
-    or key in ('DEMO_ACCESS_KEY', 'NODE_OPTIONS', 'NODE_PATH', 'NODE_V8_COVERAGE')]
-env = {key: value for key, value in os.environ.items() if key not in removed_environment_keys}
-report['removedEnvironmentKeys'] = sorted(removed_environment_keys)
-env.update(PYTHONDONTWRITEBYTECODE='1', SCAFFOLDING_HARNESS='codex')
-with resources.handled_termination():
+    result, failure, process = {}, None, None
+    started = time.monotonic()
     try:
-        for relative in ('node_modules', 'server/node_modules'):
-            link = project / relative
-            target = shared.parent.parent / relative
-            if not os.path.lexists(link) and target.is_dir():
-                adopted_links.append((link, target, None))
-                scratch.record['adoptedLinks'] = [{'link': str(a), 'target': str(b), 'inode': inode} for a, b, inode in adopted_links]
-                resources.atomic_json(scratch.manifest, scratch.record)
-                link.symlink_to(target, target_is_directory=True)
-                adopted_links[-1] = (link, target, link.lstat().st_ino)
-                scratch.record['adoptedLinks'][-1]['inode'] = link.lstat().st_ino
-                resources.atomic_json(scratch.manifest, scratch.record)
-        report['node'] = subprocess.check_output([command[0], '--version'], text=True, timeout=5, env=env).strip()
-        host.acquire(scratch.token, 128 * resources.MIB, 768 * resources.MIB, project, root=scratch.root)
-        reserved = True
-        with scratch:
-            env.update(XDG_CACHE_HOME=str(scratch.root / 'cache'), npm_config_cache=str(scratch.root / 'npm-cache'))
-            log = scratch.root / 'test.log'
-            report['result'] = resources.run_process(command, project, env, log, scratch, policy,
-                                                   128 * resources.MIB, 768 * resources.MIB, 120, host)
-            transcript = log.read_text(errors='replace')
-            if selected_chunk:
-                count = re.search(r'^(?:# |ℹ )pass\s+(\d+)', transcript, re.M)
-                report['matchedTestCount'] = int(count.group(1)) if count else None
-                if report['matchedTestCount'] != selected_chunk['expectedMatchedTests'] and not report['result'].get('issue'):
-                    report['result']['issue'] = 'unexpected-matched-test-count'
-            report['summary'] = transcript[-12000:] if report['result']['rc'] or report['result']['issue'] else '\n'.join(
-                line for line in transcript.splitlines() if line.startswith(('# tests', '# pass', '# fail', '# skipped', '# duration', 'ℹ tests', 'ℹ pass', 'ℹ fail', 'ℹ skipped', 'ℹ duration')))
-            report['removedBytes'] = resources.allocated_bytes(scratch.root)
-            impact_key = resources.digest(report['pins'])
-            resources.atomic_json(shared / 'impact' / (impact_key + '.json'), {'pins': report['pins'], 'command': command,
-                'summary': str(summary_path), 'impact': report['impact'], 'functions': report['impactMap'], 'scope': 'scoped', 'coverage': 'Reviewed import/caller boundaries; no measured per-test coverage.'})
+        budget.acquire(scratch, scratch.manifest.stat().st_size)
+        retained.mkdir(parents=True, exist_ok=False)
+        resources.atomic_json(retained / 'checkpoint.json', {'state': 'incomplete', 'mode': args.mode,
+            'sourcePlanSHA256': args.source_plan_sha, 'revision': args.revision, 'manifest': str(scratch.manifest)})
+        scratch.__enter__()
+        mirror = scratch.root / 'mirror'
+        for name, data in loaded.items():
+            target = mirror / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(data)
+        (mirror / 'server/node_modules').symlink_to(plan['executionContract']['serverDependencies'], target_is_directory=True)
+        admit(args.source_plan_sha)
+        launcher = mirror / 'docs/gcsp/evidence/fucq103/scoped-test-launch.mjs'
+        launch = [command[0], str(launcher), *command[1:]]
+        log = scratch.root / 'test.log'
+        written = 0
+        with log.open('xb') as stream:
+            with guard.creation_window(scratch.record):
+                process = subprocess.Popen(launch, cwd=mirror, env=scratch.env(environment), stdin=subprocess.PIPE,
+                                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT, start_new_session=True)
+                tree.register(process)
+            os.set_blocking(process.stdout.fileno(), False)
+            def drain():
+                nonlocal written
+                try:
+                    block = os.read(process.stdout.fileno(), 65536)
+                except BlockingIOError:
+                    return False
+                room = 2 * MIB - written
+                stream.write(block[:room]); stream.flush()
+                written += min(room, len(block))
+                if len(block) > room:
+                    raise RuntimeError('Child log cap exceeded')
+                return bool(block)
+            def sample():
+                rows, members = tree.observe()
+                tree.sample_ports(members)
+                owned = {row['pid'] for row in members}
+                rss = sum(row['rss'] for row in members) + rows[os.getpid()]['rss'] + sum(
+                    row['rss'] for row in rows.values() if row['ppid'] == os.getpid() and row['pid'] not in owned)
+                used = scratch.sample() + guard.allocated_bytes(retained) + scratch.manifest.stat().st_size
+                budget.update(scratch.token, used, rss)
+                result.update(peakAggregateRSS=max(result.get('peakAggregateRSS', 0), rss),
+                              peakCombinedBytes=max(result.get('peakCombinedBytes', 0), used))
+                if rss > 768 * MIB or used > 128 * MIB or time.monotonic() - started > 120:
+                    raise RuntimeError('Aggregate RAM/disk/time budget exceeded')
+                if guard.shutil.disk_usage(scratch.root).free < plan['hostBudget']['emergencyReserveBytes']:
+                    raise RuntimeError('Host emergency disk reserve reached')
+            sample()
+            process.stdin.write(b'1'); process.stdin.flush(); process.stdin.close()
+            while True:
+                drain()
+                if process.poll() is not None:
+                    break
+                sample()
+                time.sleep(0.1)
+            proof = tree.stop_join()
+            while drain():
+                pass
+            result.update(rc=process.returncode, logBytes=written, processAbsence=proof)
+        transcript = log.read_text(errors='replace')
+        count = re.search(r'^(?:# |ℹ )pass\s+(\d+)', transcript, re.M)
+        result['matchedTestCount'] = int(count.group(1)) if count else None
+        result['summary'] = transcript[-12000:] if process.returncode else '\n'.join(
+            line for line in transcript.splitlines() if re.match(r'^(?:# |ℹ )(?:tests|pass|fail|skipped|duration)', line))
+        if process.returncode != 0 or result['matchedTestCount'] != chunk['expectedMatchedTests']:
+            raise RuntimeError('Scoped test failure or unexpected matched-test count')
+        admit(args.source_plan_sha)
+    except BaseException as error:
+        failure = {'type': type(error).__name__, 'message': str(error)[:1024]}
     finally:
-        finalizer()
+        try:
+            process = process or tree.process
+            if process is not None:
+                tree.retain_direct(process)
+                if process.stdin and not process.stdin.closed:
+                    process.stdin.close()
+                if process.stdout:
+                    process.stdout.close()
+        except BaseException as error:
+            failure = failure or {'type': type(error).__name__, 'message': str(error)[:1024]}
+        finally:
+            def preserve_failure():
+                log = scratch.root / 'test.log'
+                if failure is not None and log.is_file() and retained.is_dir():
+                    fd = os.open(log, os.O_RDONLY | os.O_NOFOLLOW)
+                    with os.fdopen(fd, 'rb') as source:
+                        if not stat.S_ISREG(os.fstat(source.fileno()).st_mode):
+                            raise RuntimeError('Owned failure log is not a regular file')
+                        size = source.seek(0, os.SEEK_END)
+                        source.seek(max(0, size - 256 * 1024))
+                        data = source.read(256 * 1024)
+                    (retained / 'failure.log').write_bytes(data)
+                    result['retainedFailureLog'] = {'path': str(retained / 'failure.log'),
+                        'originalBytes': size, 'retainedBytes': len(data), 'truncated': size > len(data)}
+            cleanup = finalizer.finish(preserve_failure)
+    preserved = False
+    try:
+        admit(args.source_plan_sha)
+        preserved = True
+    except BaseException as error:
+        failure = failure or {'type': type(error).__name__, 'message': str(error)[:1024]}
+    passed = failure is None and cleanup['passed'] and preserved and result.get('rc') == 0
+    summary = {'run': run, 'scope': 'scoped', 'revision': args.revision, 'grant': args.dispatcher_grant,
+               'sourcePlanSHA256': args.source_plan_sha, 'chunk': chunk, 'passed': passed,
+               'failure': failure, 'result': result, 'cleanup': cleanup, 'sourcesPreserved': preserved,
+               'impactMap': plan['impactMap'], 'exclusions': plan['excluded'],
+               'environmentSHA256': sha(json.dumps(environment, sort_keys=True).encode()), 'wallSeconds': time.monotonic() - started}
+    summary_path = shared / 'ownership' / (run + '-summary.json')
+    resources.atomic_json(summary_path, summary)
+    if retained.is_dir():
+        resources.atomic_json(retained / 'checkpoint.json', {'state': 'complete' if passed else 'incomplete',
+            'summary': str(summary_path), 'manifest': str(scratch.manifest)})
+    if guard.allocated_bytes(retained) + summary_path.stat().st_size + scratch.manifest.stat().st_size > 2 * MIB:
+        raise RuntimeError('Retained diagnostic cap exceeded')
+    if passed:
+        resources.atomic_json(shared / 'impact' / (args.source_plan_sha + '-' + args.mode + '.json'), {
+            'sourcePlanSHA256': args.source_plan_sha, 'mode': args.mode, 'summary': str(summary_path),
+            'functions': plan['impactMap'], 'coverage': 'Reviewed finite imports/callers; no measured per-test coverage.'})
+    print(json.dumps({'summary': str(summary_path), 'manifest': str(scratch.manifest), 'passed': passed, 'cleanup': cleanup}))
+    if not passed:
+        raise SystemExit(2)
 
-if report.get('result', {}).get('rc') or report.get('result', {}).get('issue'):
-    print(report.get('summary', ''))
-    raise SystemExit(1)
-if (not all(report[key] for key in ('scratchAbsent', 'groupsAbsent', 'descendantsAbsent', 'budgetReleased', 'sourcesUnchanged'))
-    or not all(item['linkAbsent'] and item['existingTargetPreserved'] for item in report['adoptedDependencies'])):
-    raise SystemExit(2)
+
+if __name__ == '__main__':
+    main()

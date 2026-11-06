@@ -7,10 +7,17 @@ the integrated publish panel and exact reviewed learning-definition registration
 No live BMW or native database proof is claimed by this implementer.
 `../../greg-publish.md` records the presentation contract and remaining integration work.
 
-Run from the assigned worktree with `python3 docs/gcsp/evidence/fucq103/scoped-supervisor.py <mode>`.
-Each mode uses one worker, a fresh host reservation and bounded owned scratch; successful
-verbose output is removed and compact summaries/manifests remain outside scratch in the
-shared `/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/` directory.
+Current source admission and proposed execution commands are in
+[the combined proposal](eligibility-combined-proposal-2026-11-06.md) and
+[the owned harness repair diagnosis](eligibility-harness-repair-2026-11-06.md).
+Only the nine frozen `eligibility-*` modes remain in the current supervisor. Use the pinned Python
+with `-I -B`, an externally reviewed plan SHA, exact published revision and a new grant for the
+selected mode. No runtime grant or proof is recorded for the repaired harness. The old commands
+and results below are historical evidence for their original sources.
+
+Each future mode has one worker, a fresh strict host reservation and bounded owned scratch;
+compact summaries/manifests remain outside scratch in the shared
+`/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/` directory.
 
 | Mode | Result | Retained summary basename |
 | --- | --- | --- |

@@ -5,6 +5,7 @@ import hashlib
 import json
 import posixpath
 import re
+import stat
 from pathlib import Path
 import sys
 
@@ -21,6 +22,7 @@ prior = json.loads((HERE / 'browser-source-plan.json').read_text())
 node = prior['executables']['node']['path']
 chunks = [
     ('eligibility-core', ['gcsp-greg-driver-eligibility', 'gcsp-greg-demand'], None, 25),
+    ('eligibility-registry', ['gcsp-policy-consumer-adoption', 'gcsp-policy-adoption', 'gcsp-policy-learning-adoption'], None, 16),
     ('eligibility-default', ['gcsp-runtime-publication'], '^default Paula HTTP', 1),
     ('eligibility-weighted', ['gcsp-runtime-publication'], '^delivered memory runtime', 1),
     ('eligibility-runtime', ['gcsp-runtime-publication'], '^(combined runtime|explicit file policy|runtime closes|explicit postgres)', 4),
@@ -28,7 +30,6 @@ chunks = [
     ('eligibility-activation', ['gcsp-policy-activation', 'gcsp-greg-publish-http'], None, 9),
     ('eligibility-editor', ['gcsp-greg-publish-editor'], None, 3),
     ('eligibility-dashboard', ['gcsp-greg-dashboard-data'], '^(real service:|every fixture projection)', 3),
-    ('eligibility-registry', ['gcsp-policy-consumer-adoption', 'gcsp-policy-adoption', 'gcsp-policy-learning-adoption'], None, 16),
 ]
 selected = []
 for mode, names, pattern, count in chunks:
@@ -38,9 +39,10 @@ for mode, names, pattern, count in chunks:
         command.append('--test-name-pattern=' + pattern)
     command.extend(tests)
     selected.append({'mode': mode, 'tests': tests, 'namePattern': pattern, 'expectedMatchedTests': count, 'command': command,
-        'supervisedCommand': [prior['executables']['python']['path'], '-B', 'docs/gcsp/evidence/fucq103/scoped-supervisor.py', mode]})
+        'supervisedCommand': [prior['executables']['python']['path'], '-I', '-B', 'docs/gcsp/evidence/fucq103/scoped-supervisor.py', mode]})
 roots = set(prior['sources']) | {name for chunk in selected for name in chunk['tests']} | {
     str(Path(__file__).relative_to(ROOT)), '.claude/scaffolding.json',
+    'docs/gcsp/evidence/fucq103/scoped-resources.py', 'docs/gcsp/evidence/fucq103/scoped-test-launch.mjs',
     'server/gcsp/manual-context/recommendation-facts.js', 'server/gcsp/policy/reviewed/offer-followup-questions-v1.json'}
 # readFile template in the registry test is a finite definitions[] lookup, not an open runtime path.
 explicit = list(prior['explicitDynamicEdges']) + [
@@ -104,6 +106,35 @@ for name, item in prior['executables'].items():
     if sha(Path(item['path'])) != item['sha256']:
         raise ValueError('Executable changed: ' + name)
 
+executables = dict(prior['executables'])
+for name, absolute in {'git': '/usr/bin/git', 'ps': '/bin/ps', 'lsof': '/usr/sbin/lsof', 'vm_stat': '/usr/bin/vm_stat'}.items():
+    executables[name] = {'path': absolute, 'sha256': sha(Path(absolute))}
+ledger_directory = Path('/Users/garycarter/.cache/agent-scaffolding/test-resources')
+anchors = {}
+for path in (ledger_directory, ledger_directory / 'reservations.lock'):
+    value = path.lstat()
+    if path.is_symlink() or not (stat.S_ISDIR(value.st_mode) or stat.S_ISREG(value.st_mode)):
+        raise ValueError('Host accounting anchor is not physical')
+    anchors[str(path)] = {'device': value.st_dev, 'inode': value.st_ino, 'mode': stat.S_IMODE(value.st_mode),
+        'kind': 'directory' if stat.S_ISDIR(value.st_mode) else 'file', 'resolved': str(path.resolve(strict=True))}
+host_budget = {'directory': str(ledger_directory), 'anchors': anchors, 'emergencyReserveBytes': 5 * 1024 ** 3,
+    'ramReserveBytes': 512 * 1024 ** 2, 'preferredFreeBytes': 30 * 1024 ** 3,
+    'diskBytes': 128 * 1024 ** 2, 'ramBytes': 768 * 1024 ** 2,
+    'ledgerPolicy': 'Strict required shape, known owners and acyclic parents; no default/pruning. Exact lock identity and owned release/readback.'}
+execution_contract = {'externalAdmission': ['--execute', '--source-plan-sha <externally-reviewed SHA256>',
+        '--revision <exact-published-HEAD>', '--dispatcher-grant <new fucq103-MODE- grant>'],
+    'planAction': '--plan --source-plan-sha <externally-reviewed SHA256>; custom imports/allocation/application execution absent',
+    'sequence': ['eligibility-core', 'eligibility-registry'], 'remainingModesRequireSeparateReview': True,
+    'serverDependencies': next(base for base in prior['dependencies']['roots'] if base.endswith('/server/node_modules')),
+    'mirror': 'Finite admitted source bytes copied under owned scratch; dependency link only inside scratch; no worktree links.',
+    'processGate': 'Leader PID/start and recursive ownership recorded before the Node launcher receives its stdin gate.',
+    'environment': 'Closed HOME/USER/LOGNAME/LANG/LC_CTYPE/TZ allowlist; fixed PATH/LC_ALL/PYTHONDONTWRITEBYTECODE/SCAFFOLDING_HARNESS. No inherited LD_/DYLD_/native/database/debug families.',
+    'cleanup': 'Strict process/start/group/port proof and open-file absence before scratch deletion; exact owned reservation release only after deletion/readback. Uncertainty retains manifests/scratch/reservation.',
+    'referenceOnly': {'revision': '918ce04510fd327e860809e7de53bd636d1cf7da',
+        'resourcesSha256': '2ef0823acaf59764c3c9e0e3cb662f0bd72637f7ee569807c61c537d0b742949',
+        'supervisorSha256': '1e5a0811b8cad6cf449905f72c1da49c59d9f6f486c95c791e40b3d496deefe9',
+        'claim': 'Read-only strict ownership design reference; no source adoption or115 actual activation pass claim.'}}
+
 incoming = ['server/gcsp/manual-context/recommendation-facts.js', 'server/gcsp/greg/index.js',
     'server/gcsp/greg/publish/index.js', 'server/gcsp/greg/publish/fit.js',
     'server/test/gcsp-greg-driver-eligibility.test.js', 'server/test/gcsp-greg-demand.test.js']
@@ -132,9 +163,11 @@ impact = {
 }
 common = {'schemaVersion': 1, 'state': 'frozen-authoring-proposal-awaiting-execution-review',
     'runtimeBaseRevision': BASE, 'repairRevision': REPAIR, 'followupRevision': FOLLOWUP,
+    'productAndTestFrozenRevision': 'f80fc61ca151cb46ad21cb2b19e704f4012d53de',
     'sources': dict(sorted(sources.items())), 'relativeEdges': sorted(edges, key=lambda r: (r['from'], r['specifier'])),
-    'explicitDynamicEdges': explicit, 'directoryResources': directories, 'packageSpecifiers': sorted(packages),
-    'packageResolutionManifests': sorted(manifests), 'dependencies': prior['dependencies'], 'executables': prior['executables'],
+    'explicitDynamicEdges': explicit, 'directoryResources': dict(sorted(directories.items())), 'packageSpecifiers': sorted(packages),
+    'packageResolutionManifests': sorted(manifests), 'dependencies': prior['dependencies'], 'executables': executables,
+    'hostBudget': host_budget, 'executionContract': execution_contract,
     'composition': provenance, 'impactMap': impact,
     'sourceMethod': 'Prior audited frontend/asset roots plus current literal import/export/new URL and HTML/CSS resource closure; finite dynamic edges and directory membership explicit. Python AST only; no application imports or execution.',
     'deltaFromPriorBrowser': [{'path': name, 'before': prior['sources'].get(name), 'after': value}
@@ -146,7 +179,7 @@ backend = {**common, 'scope': 'proposed-scoped-combined-eligibility-and-registra
     'excluded': 'Browser, full suite, native database/PostgreSQL connection, deployed/live systems, producer92/69/122/126 journeys,105→107 decision lookup/reload,113corpus/115training acceptance.',
     'resourceContract': {'workers': 1, 'chunkSeconds': 120, 'chunkScratchMiB': 128, 'chunkRamMiB': 768, 'chunkLogMiB': 2,
         'sharedOutput': '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs',
-        'require': ['fresh HostBudget reservation', 'owned root and external manifest before allocation', 'registered finalizer',
+        'require': ['external admitted source-plan SHA before custom imports', 'fresh strict HostBudget reservation', 'owned root and external manifest before allocation', 'registered finalizer',
             'TMPDIR/TMP/TEMP inherited', 'before/after graph identity', 'stop at first failure', 'independent filesystem/process/group/link/port/reservation cleanup review']}}
 browser = {**prior, **common, 'purpose': 'Candidate canonical preparation plus weighted preview/publication journey; no execution grant.',
     'runtimeAdoptionRevision': REPAIR, 'retained103Revision': BASE,
@@ -158,5 +191,5 @@ with G.checkout_mutex(ROOT):
         (HERE / name).write_text(json.dumps(value, indent=2) + '\n')
 print(json.dumps({'sourceFiles': len(sources), 'edges': len(edges), 'selectedTests': len(backend['selectedTests']),
     'expectedMatchedTests': backend['expectedMatchedTests'], 'installedFiles': len(prior['dependencies']['sources']),
-    'executables': len(prior['executables']), 'runtimeImports': 0, 'testRuns': 0, 'browserLaunches': 0,
+    'executables': len(executables), 'runtimeImports': 0, 'testRuns': 0, 'browserLaunches': 0,
     'backendSha256': sha(HERE / 'eligibility-combined-source-plan.json'), 'browserSha256': sha(HERE / 'eligibility-browser-source-plan.json')}))

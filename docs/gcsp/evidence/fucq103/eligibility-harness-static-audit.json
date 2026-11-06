@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-06",
+  "scope": "static-harness-authoring-only",
+  "state": "PASS",
+  "productAndTestFrozenRevision": "f80fc61ca151cb46ad21cb2b19e704f4012d53de",
+  "backendPlanSha256": "edd904c14f38378475d6d9925c7f9e6eb7f136440129abdcd6c9a3f658df5c2c",
+  "browserCandidatePlanSha256": "d3e8139e4285d0e5a3f6648cc4f5c7a5f0e850b97fbec009b5b5767cc1f1d2e9",
+  "harnessSha256": {
+    "scoped-supervisor.py": "baa4a660ebf6694625477ad608f613df830b7bbdf6a3f25c8a56e2f77bd1ebcb",
+    "scoped-resources.py": "198bd1d339b323c74c68e6902bfe3a4bae40707ccf3ca6f94dc21804533fec64",
+    "scoped-test-launch.mjs": "a9893937cd7a3497d43f836919c47fd91485be0ca99efa54a3007ac10c376d1b",
+    "eligibility-source-catalogue.py": "26d49819acf0852ce601a40a34442dcfbf8f103f63fd2a1f9a626b4c54bcf8a0"
+  },
+  "sourceFilesVerified": 219,
+  "relativeEdgesVerified": 432,
+  "directoryInventoriesVerified": 3,
+  "installedFilesVerified": 251,
+  "executablesVerified": 8,
+  "immutableCompositionsVerified": 14,
+  "pythonAstFilesParsed": [
+    "_tools/scaffold_git.py",
+    "_tools/test_resources.py",
+    "docs/gcsp/evidence/fucq103/browser-supervisor.py",
+    "docs/gcsp/evidence/fucq103/eligibility-source-catalogue.py",
+    "docs/gcsp/evidence/fucq103/scoped-resources.py",
+    "docs/gcsp/evidence/fucq103/scoped-supervisor.py",
+    "docs/gcsp/evidence/fucq103/source-catalogue.py"
+  ],
+  "selectedCaseCounts": [
+    {
+      "mode": "eligibility-core",
+      "matched": 25,
+      "excludedByName": 0
+    },
+    {
+      "mode": "eligibility-registry",
+      "matched": 16,
+      "excludedByName": 0
+    },
+    {
+      "mode": "eligibility-default",
+      "matched": 1,
+      "excludedByName": 5
+    },
+    {
+      "mode": "eligibility-weighted",
+      "matched": 1,
+      "excludedByName": 5
+    },
+    {
+      "mode": "eligibility-runtime",
+      "matched": 4,
+      "excludedByName": 2
+    },
+    {
+      "mode": "eligibility-publish",
+      "matched": 15,
+      "excludedByName": 0
+    },
+    {
+      "mode": "eligibility-activation",
+      "matched": 9,
+      "excludedByName": 0
+    },
+    {
+      "mode": "eligibility-editor",
+      "matched": 3,
+      "excludedByName": 0
+    },
+    {
+      "mode": "eligibility-dashboard",
+      "matched": 3,
+      "excludedByName": 6
+    }
+  ],
+  "matchedCases": 77,
+  "sourceBytesForFiniteMirror": 3785393,
+  "staticChecks": {
+    "productAndTestBytesFrozen": true,
+    "sharedResourceHelperFrozen": true,
+    "historicalCataloguesAndAuditPreserved": true,
+    "foreignMapRowsWorkersJiraObservationsPreserved": true,
+    "worktreeDependencyLinksAbsent": true,
+    "diffWhitespaceClean": true,
+    "externalDigestBeforePlanLoadAndCustomImports": true,
+    "planBranchReturnsBeforeCustomImports": true,
+    "creationAssignmentRegistrationInsideCancellationDeferral": true,
+    "launcherGateAfterRegistration": true,
+    "returnedHandleRetainedBeforePipeClosing": true,
+    "nestedFinalizerAfterPipeErrors": true,
+    "stopJoinAndFreshAbsenceBeforeScratchDeletion": true,
+    "scratchAbsenceBeforeOwnedReservationRelease": true,
+    "noPermissiveLedgerDefaultOrNumericGroupSignalling": true,
+    "failureLogRetentionAfterScratchIdentity": true,
+    "failureLogOpenedNoFollowAndRegular": true
+  },
+  "proposedFirstSequence": [
+    "eligibility-core:25 separate grant",
+    "eligibility-registry:16 separate grant after result/cleanup review"
+  ],
+  "applicationImports": 0,
+  "guardOrSupervisorImports": 0,
+  "testRuns": 0,
+  "browserLaunches": 0,
+  "nativeDatabaseCalls": 0,
+  "resourceReservations": 0,
+  "scratchAllocations": 0,
+  "harnessPlanInvocations": 0,
+  "limitations": "Byte/JSON/hash/Python AST and finite JS test-name inspection only. Assertions inspect authored control placement; no failure/cancellation execution or runtime-correctness proof. Browser supervisor unrepaired/unadmitted. Combined77, canonical107 activation, browser/full/native acceptance remain unexecuted for these bytes.115 scoped result does not validate103."
+}
