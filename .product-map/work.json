@@ -1559,29 +1559,29 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T00:59:34Z",
+      "observed_at": "2026-11-06T01:08:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-106",
       "slices": [
         {
           "id": "decision-protocol",
           "status": "in-progress",
           "title": "Decision-command-result-event-and-exclusion-contract",
-          "observed_at": "2026-11-06T00:59:34Z",
-          "evidence": "Accepted25/12 evidence retained. Actual103 registry0d3a0aa accepted; separate exact42-module canonical run reached2pass/1fixture assertion fail/0skip/0cancel. No acceptance completed. docs/gcsp/evidence/fucq106/canonical-adoption-result.md"
+          "observed_at": "2026-11-06T01:08:06Z",
+          "evidence": "Retained 25/25 independent and 12/12 actual-memory proofs. Separate corrected canonical grant reaches 3/3, zero fail/skip/cancel; adoption and decision replay preserve original outcomes. Original 2/3 receipt remains separate. Integrated acceptance open. docs/gcsp/evidence/fucq106/canonical-adoption-typed-result.md"
         },
         {
           "id": "policy-reasons",
-          "status": "blocked",
+          "status": "in-progress",
           "title": "Canonical-decline-reasons-and-activation",
-          "evidence": "Actual canonical adoption/current-run decline and real label-publication HTTP/history cases pass. Third price/acceptance case stops on scalar-versus-typed quote test mismatch; authorized one-line correction is unexecuted, fresh selected-case review/allocation required. docs/gcsp/evidence/fucq106/canonical-adoption-checkpoint.json",
-          "observed_at": "2026-11-06T00:59:34Z"
+          "evidence": "Separate reviewed grant proves 3/3 canonical memory cases: actual103 adoption/activation reaches106 decline, real price publication preserves accepted typed quote, label publication reaches actual102-backed HTTP/history. Original 2/3 unchanged; dispatcher acceptance and wider integration remain open. docs/gcsp/evidence/fucq106/canonical-adoption-typed-checkpoint.json",
+          "observed_at": "2026-11-06T01:08:06Z"
         },
         {
           "id": "decision-service",
           "status": "in-progress",
           "title": "Transactional-decision-service-and-HTTP-protocol",
-          "observed_at": "2026-11-06T00:12:15Z",
-          "evidence": "25/25 independent and separate12/12 actual integration memory checks. Local service unchanged. Remote/consumer/runtime/canonical/native/full acceptance open. docs/gcsp/evidence/fucq106/actual-integration-checkpoint.json"
+          "observed_at": "2026-11-06T01:08:07Z",
+          "evidence": "Unchanged 106 service: 25/25 independent, 12/12 actual memory retained; separate 3/3 canonical memory now proves current eligibility with original typed quote/price-policy pin. Remote/actual consumers/runtime/native/full acceptance open. docs/gcsp/evidence/fucq106/canonical-adoption-typed-result.md"
         },
         {
           "id": "producer-access-expiry",
@@ -1608,8 +1608,8 @@
           "id": "final-validation",
           "status": "blocked",
           "title": "Authored-acceptance-and-final-validation",
-          "evidence": "25/25 independent and12/12 actual memory retained without rerun. New canonical grant consumed:2/3 pass, one test-contract mismatch; no retry/full/native/browser/remote/actual107/108 grant. Corrected test remains unexecuted. docs/gcsp/evidence/fucq106/canonical-adoption-result.md",
-          "observed_at": "2026-11-06T00:59:34Z"
+          "evidence": "Separate corrected canonical grant consumed: 3/3 pass, zero fail/skip/cancel; original 2/3 and accepted 25/12 proofs retained unchanged. 55 source/input/harness/receipt pins and 43 identities match. Open-file scan not established. No further execution; remote/actual107/108/runtime/rendered/native/full gates open. docs/gcsp/evidence/fucq106/canonical-adoption-typed-result.md",
+          "observed_at": "2026-11-06T01:08:07Z"
         }
       ],
       "unsliced": false,
