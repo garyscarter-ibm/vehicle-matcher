@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-134",
+  "status": "inactive proposal; not a policy provider or fallback",
+  "coordination": "Root/103 coordinates canonical insertion; this artifact alone grants no execution",
+  "assumptions": [
+    {
+      "key": "comparison.acceptableFitThreshold",
+      "proposedValue": 70,
+      "unit": "calculated fit on canonical 0-100 scale",
+      "status": "assumed",
+      "basis": "Explicit plausible demonstration acceptance boundary, revisable; null/unknown fit fails",
+      "source": "FUCQ-134 current-route comparison design",
+      "sourceDate": "2026-11-06"
+    },
+    {
+      "key": "comparison.manualRoute.v1",
+      "proposedValue": {
+        "nonParticipants": "same-manual-route",
+        "buddyNeverActs": "same-manual-route",
+        "candidateOrder": "stated-fit-descending-then-orderUuid",
+        "accessTies": "employeeId-ascending",
+        "eventOrder": [
+          "release",
+          "expiry",
+          "access",
+          "response"
+        ],
+        "responseDelay": "generated-responseSeconds-after-claim",
+        "unacceptableHold": "expire-without-taking",
+        "conflict": "refresh-and-next-candidate",
+        "renewalDeadline": "inclusive",
+        "expiryReentry": "next-modelled-access-event"
+      },
+      "unit": "versioned synthetic manual behaviour",
+      "status": "assumed",
+      "basis": "Finite reproducible first-come-first-served baseline; no automatic buddy win or claim-rule change",
+      "source": "FUCQ-134 current-route comparison design",
+      "sourceDate": "2026-11-06"
+    },
+    {
+      "key": "comparison.recordAdapter.v1",
+      "proposedValue": null,
+      "unit": "versioned fictional input mapping and provenance",
+      "status": "proposal-incomplete",
+      "requiredFields": [
+        "explicit driver eligibility/licence categories and validity dates",
+        "charging assumption or explicit unknown",
+        "insurance group per configuration or explicit unknown",
+        "per-configuration complete synthetic fit/essential facts with units or explicit unknown",
+        "contact/example.invalid and no external transport",
+        "collection-window/choice mapping derived from manual.context.v1",
+        "run-owned principal/clock.scenario overrides derived from generator manifest",
+        "static availability projection labelled separately from actual release availability"
+      ],
+      "basis": "Generator structural configuration labels alone cannot establish these facts; coordinate one canonical bundle, no scattered enrichment or source realism claim",
+      "source": "FUCQ-134 adapter-boundary source inspection",
+      "sourceDate": "2026-11-06"
+    }
+  ],
+  "outcomeContract": {
+    "schemaVersion": 1,
+    "envelope": [
+      "seed",
+      "policyVersion",
+      "route",
+      "inputHash",
+      "codeRevision",
+      "generatorVersion",
+      "policyAssumptions",
+      "limitations"
+    ],
+    "employee": [
+      "employeeId",
+      "accessGroup",
+      "renewalAt",
+      "orderUuid|null",
+      "takenAt|null",
+      "noneByRenewal",
+      "claims",
+      "retries",
+      "expiries",
+      "underlyingGateStatus",
+      "underlyingFit|null",
+      "claimEvidence"
+    ],
+    "car": [
+      "orderUuid",
+      "state: allocated|held-not-taken|unused",
+      "allocatedAt|null",
+      "employeeId|null",
+      "heldNotTakenDays",
+      "heldIntervals"
+    ],
+    "accounting": "Sum exact simulated occupied intervals which end untaken; include those durations even if car is later allocated. Classify final state separately; expiry is not dislike. Every employee/car record carries seed, policyVersion, route.",
+    "determinism": "Stable ordering and supplied simulated instants; no storage metadata, session randomness or wall time in canonical outcome"
+  },
+  "openSeams": [
+    "static shared suitability evaluation versus real release-time availability; mandatory live claim gates remain authoritative",
+    "generated allowance multiplier must be reflected by explicit PolicyService input variant, never a bypass",
+    "new facts must stay synthetic/unknown and retain configuration identity; no live corpus-realism assertion"
+  ]
+}
