@@ -80,6 +80,8 @@ def main():
         add(path, content=True)
     add(Path(sys.executable), content=True)
     add(Path('/usr/bin/python3'), content=True)
+    for executable in ['/bin/ps', '/usr/bin/vm_stat', '/usr/sbin/lsof']:
+        add(Path(executable), content=True)
     installed = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules')
     add(installed, children=True)
     add(installed / '.package-lock.json', content=True)
@@ -111,7 +113,7 @@ def main():
         'ledgerDirectory': str(ledger), 'sources': sources, 'codeRevision': revision,
         'testNames': ['isolation', 'real-claim-review-allocate', 'untaken-expiry'],
         'limits': {'seconds': 120, 'ramBytes': 768 * 1024 ** 2, 'combinedBytes': 128 * 1024 ** 2,
-                   'logBytes': 2 * 1024 ** 2, 'workerCount': 1, 'reserveFreeBytes': 2 * 1024 ** 3}}
+                   'logBytes': 2 * 1024 ** 2, 'workerCount': 1, 'reserveFreeBytes': 5 * 1024 ** 3}}
     target = EVIDENCE / 'first-chunk-admission.json'
     target.write_text(json.dumps(result, indent=2, sort_keys=True) + '\n')
     print(json.dumps({'path': str(target), 'sha256': sha(target.read_bytes()), 'codeRevision': revision,

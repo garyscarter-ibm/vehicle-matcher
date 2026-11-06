@@ -1,5 +1,7 @@
 # FUCQ-134 first chunk review package
 
+**Repaired static freeze pending dispatcher delta admission. No execution grant.**
+
 Authoring checkpoint, 6 November 2026. No execution grant has been consumed. No
 JavaScript import, test, OS proof, HostBudget reservation or test scratch allocation
 has occurred. This package is incomplete implementation evidence, not acceptance.
@@ -8,9 +10,9 @@ has occurred. This package is incomplete implementation evidence, not acceptance
 
 - Base: `034b56d08fb742d31478218b670552805d5840ab`.
 - Published real66: `eb5a677b37c486e3da7c4547803f739e22df8ac3`.
-- Admission SHA-256: `cd24455a4e1f5dee92b2e0c73e00b0f3093e05494aa1d00f317b069e607a8c9c`.
+- Admission SHA-256: `18a58abb4ec2850b76672daaf52240f65c4b33d92713f9d9365f3bf362460593`.
 - Composed source identity: `7a982714de7cf74968cabcfbe3712be2ff4c3fe75cf95acda3381044cffa4a82`.
-- 45 embedded source/data files, 971783 source bytes, 230 physical identities,
+- 45 embedded source/data files, 971783 source bytes, 235 physical identities,
   14 installed packages. Embedded immutable blobs permit checking the complete
   source content before custom resource-helper imports. Installed dependencies
   remain in place; only the owned scratch mirror links to them, read only.
@@ -35,13 +37,13 @@ command checks identities without importing custom helpers, allocating resources
 querying OS process state or importing JavaScript:
 
 ```sh
-/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --plan --admission-sha cd24455a4e1f5dee92b2e0c73e00b0f3093e05494aa1d00f317b069e607a8c9c
+/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --plan --admission-sha 18a58abb4ec2850b76672daaf52240f65c4b33d92713f9d9365f3bf362460593
 ```
 
 Only after an explicit new grant, replace `--plan` with `--execute` and append:
 
 ```text
---dispatcher-grant fucq134-first-chunk-cd24455a4e1f5dee92b2e0c73e00b0f3093e05494aa1d00f317b069e607a8c9c
+--dispatcher-grant fucq134-first-chunk-18a58abb4ec2850b76672daaf52240f65c4b33d92713f9d9365f3bf362460593
 ```
 
 The argument records a grant; knowing the argument is not authorization. Selection
@@ -55,7 +57,7 @@ remain unverified runtime seams until the granted run. No upstream tests repeat.
 
 - One worker, 120 seconds, 768 MiB aggregate recursive RSS including supervisor,
   128 MiB combined scratch/retained output and 2 MiB combined stdout/stderr log.
-- Fresh actual HostBudget reservation; at least 2 GiB host disk free and measured
+- Fresh actual HostBudget reservation; at least 5 GiB host disk free and measured
   shared RAM headroom. Unknown ledger/process/capacity state refuses progress.
 - Scratch: story worktree `.claude/test-scratch/fucq134/fucq134-<token>`.
 - External manifest: shared `.claude/test-runs/ownership/fucq134-<token>.json`.
@@ -114,3 +116,29 @@ Validation remains static AST/JSON/hash/diff inspection only. No cancellation
 reproduction, JavaScript import, supervisor plan/proof, reservation, scratch or
 test execution was authorized or performed. Product/test source identity remains
 unchanged; helper/graph/admission hashes changed and require renewed review.
+
+
+## Original review and repaired delta
+
+Dibble's independent review of90a8b8c/cd24455a admitted the original45-source,
+72-edge composition separately and held execution for three resource issues.
+That source composition is reused unchanged; no runtime proof was accepted or run
+for134. The repaired package batches exactly those findings:
+
+- Policy and admitted limits now retain the existing5GiB free-disk reserve.
+- `/bin/ps`, `/usr/bin/vm_stat` and `/usr/sbin/lsof` have exact binary-content,
+  physical and ancestor pins checked before custom resource-helper imports.
+- Snapshot, persistence or fallback signalling failures enter a finally that
+  attempts bounded direct-child terminate/kill/wait without manifest writes or
+  OS snapshots. The original failure remains fatal; no failed telemetry or
+  uncertain process state can authorize scratch deletion/reservation release.
+
+The new admission contains235 physical identities and unchanged45 embedded
+sources/971783bytes. Its product/test code identity remains unchanged. Static
+Python AST, structural cleanup-ordering, JSON, hash, source-reuse and diff checks
+only; no helper/probe/Node/supervisor/test execution or allocation. The freeze
+builder performs static reads/hashes; it did not execute the three probe binaries.
+
+Root requested this clean checkpoint for delta admission. The proposed command
+above now names the superseding freeze, but remains unexecuted. Review the owned
+resource adapter, freezer, supervisor and admission delta before any new grant.

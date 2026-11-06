@@ -361,38 +361,46 @@ class ProcessTree:
                 raise RuntimeError('Cleanup received a conflicting child handle')
             return self._stop_join()
         except BaseException as error:
-            if isinstance(error, SnapshotUncertain):
-                self.remember_uncertain(error)
-            # A still-unreaped direct child is ours even when ps fails. Stop and
-            # join that handle; independently stop already-known descendants
-            # where a fresh full snapshot proves their exact start. Unknowns
-            # remain in the manifest and prevent deletion/release.
-            for sig in [signal.SIGTERM, signal.SIGKILL]:
-                for item in self.record['ownedPids']:
-                    if not item.get('owned') or not item.get('start'):
-                        continue
-                    try:
-                        current = process_snapshot().get(item['pid'])
-                        if current and current['start'] == item['start']:
-                            os.kill(item['pid'], sig)
-                    except (OSError, RuntimeError, subprocess.TimeoutExpired) as error:
-                        if isinstance(error, SnapshotUncertain):
-                            self.remember_uncertain(error)
-                        self.record.setdefault('cleanupSignalUncertainty', []).append({
-                            'pid': item['pid'], 'start': item['start'], 'error': type(error).__name__})
-                self.save()
-            process = self.process
-            if process is not None:
-                for action in [process.terminate, process.kill]:
-                    if process.poll() is None:
-                        action()
-                    try:
-                        process.wait(timeout=3)
-                        self.joined = True
-                        break
-                    except subprocess.TimeoutExpired:
-                        continue
+            try:
+                if isinstance(error, SnapshotUncertain):
+                    self.remember_uncertain(error)
+                # Descendant signals still require fresh exact PID/start proof.
+                # Persistence failures cannot bypass the direct-handle finally.
+                for sig in [signal.SIGTERM, signal.SIGKILL]:
+                    for item in self.record['ownedPids']:
+                        if not item.get('owned') or not item.get('start'):
+                            continue
+                        try:
+                            current = process_snapshot().get(item['pid'])
+                            if current and current['start'] == item['start']:
+                                os.kill(item['pid'], sig)
+                        except (OSError, RuntimeError, subprocess.TimeoutExpired) as error:
+                            if isinstance(error, SnapshotUncertain):
+                                self.remember_uncertain(error)
+                            self.record.setdefault('cleanupSignalUncertainty', []).append({
+                                'pid': item['pid'], 'start': item['start'], 'error': type(error).__name__})
+                    self.save()
+            finally:
+                self._stop_direct_handle()
             raise
+
+    def _stop_direct_handle(self):
+        process = self.process
+        if process is None:
+            return
+        # No manifest writes or OS snapshots may prevent bounded direct join.
+        for action in [process.terminate, process.kill]:
+            try:
+                if process.poll() is None:
+                    action()
+            except BaseException as error:
+                self.record.setdefault('directHandleErrors', []).append(type(error).__name__)
+            try:
+                process.wait(timeout=3)
+                self.joined = True
+                break
+            except BaseException as error:
+                self.record.setdefault('directHandleErrors', []).append(type(error).__name__)
 
     def _stop_join(self):
         process = self.process

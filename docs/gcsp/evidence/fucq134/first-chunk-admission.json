@@ -863,7 +863,7 @@
     "combinedBytes": 134217728,
     "logBytes": 2097152,
     "ramBytes": 805306368,
-    "reserveFreeBytes": 2147483648,
+    "reserveFreeBytes": 5368709120,
     "seconds": 120,
     "workerCount": 1
   },
@@ -1176,24 +1176,24 @@
       "targetInode": 173168726
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-freeze.py": {
-      "bytes": 6646,
+      "bytes": 6763,
       "device": 16777232,
       "inode": 173169478,
       "kind": "file",
       "mode": 420,
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-freeze.py",
-      "sha256": "b2770937ce4217c8fc4bc841d3067bba2b2a5e53c106655cdce5f4c4f59f22a0",
+      "sha256": "834be93f354de0bc61d33c5636922a359342931a3e67de79eeb240825baad5d4",
       "targetDevice": 16777232,
       "targetInode": 173169478
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-resources.py": {
-      "bytes": 26664,
+      "bytes": 26944,
       "device": 16777232,
       "inode": 173168727,
       "kind": "file",
       "mode": 420,
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-resources.py",
-      "sha256": "7c919003817e3acb7c22d1e22862d8ca9c8323651a6d200227819514a3e0e7e2",
+      "sha256": "41ddc69f3e72410f69aecc3e940f71174f2353e482df8cf98eedfda0f5946a18",
       "targetDevice": 16777232,
       "targetInode": 173168727
     },
@@ -1204,7 +1204,7 @@
       "kind": "file",
       "mode": 420,
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py",
-      "sha256": "77b93b8c15a1eb707a0bebdbd801f86da3bf203a94532387d6569d0e50dfde3a",
+      "sha256": "5b00973961d5c35022cd8a6ac3d26c00ce29f2f65b437aca0228a419dd1c6e4f",
       "targetDevice": 16777232,
       "targetInode": 173169112
     },
@@ -1220,13 +1220,13 @@
       "targetInode": 173164049
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/fucq134-source-graph.json": {
-      "bytes": 48688,
+      "bytes": 49586,
       "device": 16777232,
       "inode": 173163419,
       "kind": "file",
       "mode": 420,
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/fucq134-source-graph.json",
-      "sha256": "f3b5ce798d38da22c093ab5284db80d516ebfce0646786b658e0de8573e2adf1",
+      "sha256": "d6ccc435f677a0d5c0ced36d6f816172a5e1bfad6bdc232ae76ac33b2200ac1d",
       "targetDevice": 16777232,
       "targetInode": 173163419
     },
@@ -3387,6 +3387,26 @@
       "targetDevice": 16777232,
       "targetInode": 172770807
     },
+    "/bin": {
+      "device": 16777232,
+      "inode": 1152921500312571376,
+      "kind": "directory",
+      "mode": 493,
+      "resolved": "/bin",
+      "targetDevice": 16777232,
+      "targetInode": 1152921500312571376
+    },
+    "/bin/ps": {
+      "bytes": 170816,
+      "device": 16777232,
+      "inode": 1152921500312571423,
+      "kind": "file",
+      "mode": 2541,
+      "resolved": "/bin/ps",
+      "sha256": "472992c470606d28f577590decfecd7f4a20f832fd92c671bebc6d44790b5d02",
+      "targetDevice": 16777232,
+      "targetInode": 1152921500312571423
+    },
     "/opt": {
       "device": 16777232,
       "inode": 26138,
@@ -3480,6 +3500,37 @@
       "sha256": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818",
       "targetDevice": 16777232,
       "targetInode": 1152921500312571586
+    },
+    "/usr/bin/vm_stat": {
+      "bytes": 101856,
+      "device": 16777232,
+      "inode": 1152921500312573093,
+      "kind": "file",
+      "mode": 493,
+      "resolved": "/usr/bin/vm_stat",
+      "sha256": "04c1ec2d5939843c9a89a26791020d2017a50ff97a2d5b380af69d5fcdae5a63",
+      "targetDevice": 16777232,
+      "targetInode": 1152921500312573093
+    },
+    "/usr/sbin": {
+      "device": 16777232,
+      "inode": 1152921500312575895,
+      "kind": "directory",
+      "mode": 493,
+      "resolved": "/usr/sbin",
+      "targetDevice": 16777232,
+      "targetInode": 1152921500312575895
+    },
+    "/usr/sbin/lsof": {
+      "bytes": 307600,
+      "device": 16777232,
+      "inode": 1152921500312576119,
+      "kind": "file",
+      "mode": 493,
+      "resolved": "/usr/sbin/lsof",
+      "sha256": "28c36d6b6dfcce1f544717b0d1961aa03441ee0a736fee3e1eaeb215c0fbff4c",
+      "targetDevice": 16777232,
+      "targetInode": 1152921500312576119
     }
   },
   "pythonExecutable": "/Library/Developer/CommandLineTools/usr/bin/python3",

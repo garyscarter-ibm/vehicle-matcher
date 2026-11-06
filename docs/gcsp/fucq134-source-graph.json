@@ -1345,16 +1345,16 @@
       "bytes": 2576
     },
     "docs/gcsp/evidence/fucq134/first-chunk-resources.py": {
-      "sha256": "7c919003817e3acb7c22d1e22862d8ca9c8323651a6d200227819514a3e0e7e2",
-      "bytes": 26664
+      "sha256": "41ddc69f3e72410f69aecc3e940f71174f2353e482df8cf98eedfda0f5946a18",
+      "bytes": 26944
     },
     "docs/gcsp/evidence/fucq134/first-chunk-supervisor.py": {
-      "sha256": "77b93b8c15a1eb707a0bebdbd801f86da3bf203a94532387d6569d0e50dfde3a",
+      "sha256": "5b00973961d5c35022cd8a6ac3d26c00ce29f2f65b437aca0228a419dd1c6e4f",
       "bytes": 13084
     },
     "docs/gcsp/evidence/fucq134/first-chunk-freeze.py": {
-      "sha256": "b2770937ce4217c8fc4bc841d3067bba2b2a5e53c106655cdce5f4c4f59f22a0",
-      "bytes": 6646
+      "sha256": "834be93f354de0bc61d33c5636922a359342931a3e67de79eeb240825baad5d4",
+      "bytes": 6763
     }
   },
   "firstChunkReview": {
@@ -1362,7 +1362,19 @@
     "resourcePattern": "918ce04510fd327e860809e7de53bd636d1cf7da:docs/gcsp/models/fucq115-activation-resources.py adapted only in owned134 file",
     "supervisor": "docs/gcsp/evidence/fucq134/first-chunk-supervisor.py",
     "admission": "docs/gcsp/evidence/fucq134/first-chunk-admission.json",
-    "execution": "not authorised; no runtime evidence",
-    "launchOwnershipRepair": "Static107finding: persist launch intent before Popen; defer SIGTERM/SIGINT through PID/start registration; unresolved launch cannot certify absence; cleanup adopts any supplied direct child handle. No reproduction/runtime granted."
+    "execution": "Not authorized. Repaired static freeze needs dispatcher delta admission; no reproduction or runtime evidence.",
+    "launchOwnershipRepair": "Static107finding: persist launch intent before Popen; defer SIGTERM/SIGINT through PID/start registration; unresolved launch cannot certify absence; cleanup adopts any supplied direct child handle. No reproduction/runtime granted.",
+    "originalStaticReview": {
+      "reviewer": "Dibble",
+      "revision": "90a8b8c3f7c073f73eae5f0c205d34885b3a9387",
+      "admission": "cd24455a4e1f5dee92b2e0c73e00b0f3093e05494aa1d00f317b069e607a8c9c",
+      "sourceComposition": "PASS45sources72edges; actual66 closure/base generator/own6 runtime-data unchanged",
+      "executionAdmission": "HOLD; three issues routed for owned helper repair only"
+    },
+    "admissionRepairs": [
+      "Restore5GiB free-disk reserve in executable Policy and admission limits.",
+      "Pin ps/vm_stat/lsof binary contents and complete physical identities before custom resource-helper imports.",
+      "Protect bounded direct-child terminate/kill/wait in fallback finally from snapshot, manifest-persistence and signal failures; original failure still blocks cleanup/release."
+    ]
   }
 }

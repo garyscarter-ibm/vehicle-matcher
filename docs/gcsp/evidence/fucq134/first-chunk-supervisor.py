@@ -118,7 +118,7 @@ def main():
 def execute(frozen, args, resources, guard, environment):
     import uuid
     policy = resources.Policy({'chunk_seconds': 120, 'chunk_ram_mib': 768, 'chunk_scratch_mib': 128,
-                               'log_mib': 2, 'reserve_free_gib': 2})
+                               'log_mib': 2, 'reserve_free_gib': 5})
     rdir = SHARED / 'fucq134' / ('first-chunk-' + uuid.uuid4().hex)
     for path in [rdir.parent, *rdir.parent.parents, SHARED / 'ownership']:
         if path.is_symlink():

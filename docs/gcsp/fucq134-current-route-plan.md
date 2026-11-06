@@ -183,7 +183,7 @@ symlink-free containment and executable/source/package/helper pins, create manif
 outside scratch, reserve fresh actual HostBudget under its shared short-held ledger lock.
 Request one worker, ≤120 seconds, 768 MiB recursive process RSS, 128 MiB scratch and
 2 MiB bounded log. No advisory agent-count/reserve override bypasses the reservation.
-Require at least 2 GiB free; query actual headroom at launch. Do not hold Git mutex while
+Require at least 5 GiB free; query actual headroom at launch. Do not hold Git mutex while
 waiting/testing. No dependency installation or network/listener/native/browser grant.
 
 Node pin: `/opt/homebrew/Cellar/node/26.5.0/bin/node`, SHA-256
@@ -236,7 +236,7 @@ PolicyService and never bypass its gate.
 
 Review package and exact proposed command:
 `docs/gcsp/evidence/fucq134/README.md`. Admission SHA-256:
-`cd24455a4e1f5dee92b2e0c73e00b0f3093e05494aa1d00f317b069e607a8c9c`.
+`18a58abb4ec2850b76672daaf52240f65c4b33d92713f9d9365f3bf362460593`.
 45 source/data files include published66's matching context changes unchanged,
 base generator unchanged and owned six runtime/data files. Dependency and physical
 runtime identities are frozen before custom execution. Three Python ASTs, JSONs
@@ -256,3 +256,11 @@ resources/supervisor by prelaunch intent, deferred SIGTERM/SIGINT until persiste
 registration, local/tree handle recovery and fail-closed unresolved/conflicting
 handle proof. Current admission supersedes82df084's freeze; product/test code
 identity remains unchanged. No runtime reproduction or test was performed.
+
+
+Independent original90a8b8c/cd244 review is complete: source composition45/72PASS;
+execution HOLD for5GiB reserve, missing ps/vm_stat/lsof pins and fallback failures
+skipping direct join. Owned repairs are now statically refrozen under admission
+`18a58abb4ec2850b76672daaf52240f65c4b33d92713f9d9365f3bf362460593` with235 physical identities. Original45 product/data sources and code
+identity unchanged. No execution/reproduction/probe/allocation was performed.
+Root requested a clean published checkpoint before delta admission; no grant yet.
