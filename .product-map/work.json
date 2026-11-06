@@ -1609,7 +1609,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T01:04:24Z",
+      "observed_at": "2026-11-06T01:09:56Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-115",
       "slices": [
         {
@@ -1651,8 +1651,8 @@
           "id": "policy",
           "status": "blocked",
           "title": "Canonical-policy-adoption-and-dated-activation",
-          "observed_at": "2026-11-06T00:56:01Z",
-          "evidence": "Granted canonical320 generation/split passed; baseline.context failed cleanly. Owned baseline/CLI1e6e4a4 correction and76-file retained-input proposal authored, source/AST --plan checks pass; exact dispatcher delta review/grant required before execution. No regenerated or unchanged training retry. docs/gcsp/models/fucq115-retained-plan.md"
+          "observed_at": "2026-11-06T01:09:56Z",
+          "evidence": "Existing actual artifact/evaluation e3f1e0b independently audited. Finite77-file activation proposal authored; only immutable artifact added to reviewed graph. Await exact source/harness grant; no execution. docs/gcsp/models/fucq115-activation-plan.md"
         },
         {
           "id": "acceptance",
@@ -1668,10 +1668,10 @@
           "name": "Pluto",
           "harness": "codex",
           "role": "story-lead/granted retained-input training",
-          "observed_at": "2026-11-06T01:00:04.462368+00:00",
-          "expires_at": "2026-11-06T02:00:04.462368+00:00",
+          "observed_at": "2026-11-06T01:09:56.132728+00:00",
+          "expires_at": "2026-11-06T01:09:56.132728+00:00",
           "source": "thread 01a1ae22-e1cc-74a0-9717-21082afb1fd1",
-          "status": "active; exact dispatcher grant fucq115-retained-c3e4c7a-0033, one CLI attempt"
+          "status": "stopped; authored77-file existing-artifact activation proposal awaits dispatcher exact review; no allocation"
         }
       ],
       "branch": "dev/DEV-2026-11-04-092"
