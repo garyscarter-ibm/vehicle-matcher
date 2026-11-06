@@ -1065,16 +1065,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-102"
     },
     {
-      "id": "FUCQ-103",
-      "title": "Preview and publish points and recommendation weights",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "Gary Carter",
-      "type": "Story",
-      "observed_at": "2026-11-05T23:00:25Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103"
-    },
-    {
       "id": "FUCQ-105",
       "title": "Show the offer's exact quote, current-car comparison and countdown",
       "status": "In Progress",
@@ -1903,6 +1893,16 @@
       "observed_at": "2026-11-06T17:11:02Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-149",
       "unsliced": true
+    },
+    {
+      "id": "FUCQ-103",
+      "title": "Preview and publish points and recommendation weights",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-06T18:05:53Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103"
     }
   ]
 }
