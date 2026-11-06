@@ -4,13 +4,13 @@ FUCQ-100 / DEV-2026-11-04-060, 6 November 2026. Authoring checkpoint only.
 Accepted product base is `38be4f5d95823b5f010a56c3d4b6cbda4eca55e8`.
 The five authorised central/entry changes are now applied as actual product source. The
 [patch](evidence/fucq100/runtime-composition-owned.patch) retains their exact base-to-source delta.
-Required immutable leaf adoptions remain separately proposed below, so the working composition is
-not yet executable. No product module, service, test, provider or browser was executed.
+Dispatcher authorised the exact30 changed leaf blobs below after independent pin/interface review.
+They are now adopted; all32 named dependencies match their immutable pins. Mixed execution remains unaccepted. No product module, service, test, provider or browser was executed.
 The accepted Greg eligibility 25/25 result and original runtime 9/9 result remain scoped historical
 evidence; neither is claimed as proof of this changed composition. FUCQ-100 remains In Progress.
 
 The [source plan](evidence/fucq100/runtime-composition-source-plan.json) freezes **191 paths,
-398 literal edges, 32 leaf candidates (30 different from the base)**, all five owned postimages,
+398 literal edges, 32 named dependencies (30 adopted changes from the base)**, all five owned postimages,
 54 rechecked installed pg identities and prospective helper/executable hashes. Every baseline file
 matches its Git blob at38be4f5; borrowed leaves come from exact commits. There are no unresolved
 literal imports. Dynamic/provider/navigation boundaries are explicitly retained. This is a source
@@ -60,7 +60,7 @@ The patch uses zero-context unified hunks. Application must first verify all fiv
 pins in the JSON, then use `--unidiff-zero`; the authoring tool validates every hunk in memory.
 All five current owned files match the patch postimage hashes. The JSON separately records each
 required leaf as exact-present, base-retained or missing. Authorised central changes are applied;
-leaf adoption remains a named source decision. No frozen66 or paused96 source is changed.
+the exact30 leaf adoptions are applied under the dispatcher grant. No frozen66 or paused96 source is changed.
 
 ## Actual producer and authority bindings
 
@@ -91,7 +91,7 @@ actual71 submission/freeze remains separately owned and unproved.
 Back is blocked at the host while69 reports an unresolved/occupying state. The proposed69 successor
 now also disables the visible Back control with an accessible explanation, and renders typed, employee-
 relative release history independently of suitability. Its interfaces are unchanged. Those changed UI
-bytes remain unexecuted and unadopted here; component and actual composed UX evidence are still required. An optional trusted clock subscription refreshes current setup/review and both gallery
+bytes are now adopted here but remain unexecuted; component and actual composed UX evidence are still required. An optional trusted clock subscription refreshes current setup/review and both gallery
 stock and claim reads, with no POST replay or browser-time release. A delivered reset/principal-change
 notification/subscription still needs the actual126 host integration; no invented event API is added.
 The controls module's presenter-page URL is recorded as navigation, not silently adopted workspace/
@@ -175,5 +175,5 @@ Retain compact receipts and useful original failure/TAP journals; no credentials
 
 No test resources, scratch, service, listener or dependency installation were allocated in this authoring
 checkpoint. Its retained outputs are the five owned source files, plan, exact patch, finite input list, generator and story note.
-Next decision: review the exact leaf adoption and passive source-profile preparation, then author/freeze
-the selected harness. This document does not grant mixed execution or mark any final acceptance complete.
+Next step: author/freeze the six C1 cases, affected setup/back regression, explicitly synthetic TEST
+profile and strict harness. Positive business/default/reset source preparation remains open. This document does not grant mixed execution or mark any final acceptance complete.

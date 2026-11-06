@@ -213,7 +213,7 @@ plan = {'schemaVersion': 1, 'kind': 'author-only source proposal; not execution 
         'date': '2026-11-06', 'base': BASE, 'consumer_refs': REFS,
         'live_product_unchanged': all(v == 'base' for v in owned_status.values()),
         'owned_source_status': owned_status, 'live_leaf_status': leaf_status,
-        'leaf_adoption_granted': False, 'execution_granted': False,
+        'leaf_adoption_granted': True, 'execution_granted': False,
         'owned_draft_paths': list(drafts), 'patch_sha256': sha(patch_path.read_bytes()),
         'authoring_inputs': {p.name: sha(p.read_bytes()) for p in [Path(__file__), HERE / 'runtime-composition-resources.json']},
         'leaf_proposals': proposals, 'roots': roots, 'sources': {p: pins[p] for p in sorted(seen)},

@@ -37,6 +37,13 @@ const gregEditor = JSON.parse(await readFile(new URL('./reviewed/greg-publish-ed
 if (!validateReviewedDefinitionSet(gregEditor)) throw new TypeError('The reviewed Greg editor assumption definition is invalid.');
 const learning = JSON.parse(await readFile(new URL('../predict/records/policy-definitions.json', import.meta.url), 'utf8'));
 if (!validateReviewedDefinitionSet(learning)) throw new TypeError('The reviewed learning assumption definition is invalid.');
+const offerDeclineReasons = JSON.parse(await readFile(new URL('./reviewed/offer-decline-reasons-v1.json', import.meta.url), 'utf8'));
+if (!validateReviewedDefinitionSet(offerDeclineReasons)) throw new TypeError('The reviewed offer decline assumption definition is invalid.');
+const choiceModel = JSON.parse(await readFile(new URL('./reviewed/fucq115-choice-model-v1.json', import.meta.url), 'utf8'));
+if (!validateReviewedDefinitionSet(choiceModel)) throw new TypeError('The reviewed choice model assumption definition is invalid.');
+const offerFollowupQuestions = JSON.parse(await readFile(new URL('./reviewed/offer-followup-questions-v1.json', import.meta.url), 'utf8'));
+if (!validateReviewedDefinitionSet(offerFollowupQuestions)) throw new TypeError('The reviewed offer follow-up question definition is invalid.');
 const registry = freeze({ [presenter.definitionSetId]: presenter, [gregEditor.definitionSetId]: gregEditor,
-  [learning.definitionSetId]: learning });
+  [learning.definitionSetId]: learning, [offerDeclineReasons.definitionSetId]: offerDeclineReasons,
+  [choiceModel.definitionSetId]: choiceModel, [offerFollowupQuestions.definitionSetId]: offerFollowupQuestions });
 export const getReviewedDefinitionSet = (definitionSetId) => Object.hasOwn(registry, definitionSetId) ? registry[definitionSetId] : null;
