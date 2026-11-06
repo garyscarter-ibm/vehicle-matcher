@@ -25,6 +25,26 @@ skill instructions to stop on credit errors for this condition.
 - Preserve the exact error as diagnostic evidence. It does not verify the credit balance or make key rotation
   a prerequisite. Keep the configured gateway and credentials unless a collaborator directs a change.
 
+## Demo delivery, defects and claimed scope
+
+Gary's standing direction, 6 November 2026, applies to every harness, session, reviewer and descendant.
+Follow the full policy in `docs/gcsp/build-rules.md`, section "Demo delivery and scope control".
+
+- Prioritise a complete, working, demoable product and prompt integration of coherent increments. Keep
+  optional hardening, refactoring and validation-framework expansion off the current delivery path.
+- Triage defects honestly. Capture every defect below Critical/High as a linked backlog Bug for independent
+  prioritisation; it does not expand or block the current Story's review/merge. Critical/High defects require
+  resolution or an explicit collaborator decision to defer them. Preserve any specifically authorised deferral.
+- Keep a claimed Story's acceptance criteria fixed. New feature requests and proposed AC additions/changes
+  become separate backlog Stories for collaborator review and prioritisation before pickup/build. Agent or
+  dispatcher authorisation alone cannot expand the claimed contract. Preserve the original Story's scope and
+  distinguish an unmet original criterion from a proposed addition.
+- Record actual failed, skipped and unrun checks, known defects and any authorised merge exception. A merged
+  integration checkpoint does not establish full acceptance or authorise a Done transition.
+
+Pass these rules and their document path in every delegated brief. Changes to project policy belong in shared
+project instructions; Gary's personal polling setup and local coordination files remain local.
+
 <!-- BEGIN agent-scaffolding -->
 <!-- Written by project-scaffolding (scaffold.py agents-md). Edits inside these markers are replaced on update; put your own text outside them. -->
 ## Codex and the IBM gateway (agent-scaffolding)

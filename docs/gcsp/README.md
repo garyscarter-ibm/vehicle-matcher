@@ -6,6 +6,11 @@ Start here for every new GCSP discovery, foundation, design, implementation or r
 
 ## Latest build handover — 5 November 2026
 
+**Demo delivery and scope control, Gary, 6 November:** follow the shared [standing rules](build-rules.md#demo-delivery-and-scope-control)
+in every session and descendant: prioritise a complete working demo; backlog defects below Critical/High
+independently; keep claimed ACs fixed and raise new features/proposed AC changes as separate Stories for
+review and prioritisation before build. FUCQ-149 holds the Resume scope extracted from FUCQ-100.
+
 **Laptop pause, Russell, 6 November:** the local dev poller and its heartbeat are PAUSED on explicit human direction. All owned agents are stopped and cleanup is verified. Read [the current pause handover](../HANDOVER-2026-11-06-LAPTOP-PAUSE.md); scheduled messages cannot resume this run.
 
 **Dispatcher resumed, 6 November:** Russell explicitly resumed the local dev poller. Read the

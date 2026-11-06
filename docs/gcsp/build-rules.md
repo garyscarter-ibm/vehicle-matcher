@@ -2,6 +2,35 @@
 
 Binding direction from Russell, 2 November 2026. Every GCSP story author, designer, implementer and reviewer reads this file and passes the relevant rules to child agents. These decisions supersede earlier scope-reduction suggestions and requirements to settle every demo policy before building.
 
+## Demo delivery and scope control
+
+Gary's standing directions, 6 November 2026, apply to story authors, implementers, reviewers, dispatchers and
+every descendant, across all harnesses. They take precedence over earlier workflow wording where it conflicts.
+
+1. **Deliver a complete working demo.** Prioritise connected, demoable journeys and integrate coherent,
+   validated increments promptly. Avoid optional hardening, refactoring and new validation frameworks while
+   they delay the planned demonstration. Retain the agreed adapter, authority and access boundaries.
+2. **Backlog lower-severity defects.** Triage the actual impact. Every defect below Critical/High becomes a
+   linked backlog Bug to be reviewed and picked up independently later. Record its evidence, severity, originating
+   Story and known limitation; it does not expand or block the current Story's review or merge. Critical/High
+   defects require resolution or an explicit collaborator decision to defer them. A specific deferral, including
+   Gary's FUCQ-100 integration disposition, remains specific and does not lower the recorded severity.
+3. **Keep claimed acceptance stable.** New feature requests and proposed AC additions or changes become
+   separate, bounded backlog Stories for collaborator review and prioritisation before pickup/build. Link the
+   originating Story for traceability rather than adding an automatic blocking dependency. Agent/dispatcher
+   approval of implementation work does not authorise expanding a claimed Story's ACs. Any explicit human
+   instruction to revise an existing contract must be recorded and reconciled in Jira and the claimed record.
+4. **Preserve the original obligations and evidence.** An unmet original AC remains part of the current Story;
+   it cannot be reclassified as a new feature merely to declare completion. Record real test failures, skips,
+   unrun checks and deferred defects. An authorised integration merge may unblock other work while full
+   acceptance remains open; it is not a passing suite, an accepted Story or permission to mark Done.
+
+FUCQ-149 is the backlog proposal extracted from the agent-added manual Resume criterion in FUCQ-100.
+It awaits collaborator review and prioritisation; FUCQ-100 retains its original seven backend criteria.
+Already-merged implementation and separately tracked defects remain available for that review.
+
+Pass this section, the experience contract and the relevant original ACs in every delegated brief.
+
 ## Complete the planned demonstration
 
 All planned capabilities in the candidate demonstration journey and HLD must work. Russell confirms that there is time to build them. Plan sequencing and dependencies toward completing the whole build; the 30-minute presentation slot determines the walkthrough, not a reduced implementation scope. Earlier stretch labels do not justify deferring a planned capability.
