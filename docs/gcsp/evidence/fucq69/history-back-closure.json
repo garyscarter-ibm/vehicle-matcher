@@ -1,4 +1,9 @@
 {
+  "admissionRevision": {
+    "previousClosureSha256": "ebd23ad78184730c399584cdfe27c18d459629f977261f94334dad4f41cf19ad",
+    "previousProposalCommit": "2c2b8ea2fb6b6f723b6d0965a5a3282fbad48139",
+    "reason": "Four independent static HOLD findings; own supervisor/admission changes only; no runtime reproduction"
+  },
   "counts": {
     "assetPaths": 2,
     "dependencyFiles": 1833,
@@ -18393,8 +18398,8 @@
         "device": 16777232,
         "inode": 173171015,
         "mode": 420,
-        "sha256": "e31520735e0df2884ae358fad89d9c171cd69d04eebdc116270a9e958e9a084b",
-        "size": 27038
+        "sha256": "162a811442d1421c14f2ca8139cbe78941c33f7026a00b5f4e88cb54837e650b",
+        "size": 43201
       },
       "path": "docs/gcsp/evidence/fucq69/history-back-supervisor.py",
       "publishedCommit": null,
@@ -18405,14 +18410,31 @@
         "device": 16777232,
         "inode": 173171592,
         "mode": 420,
-        "sha256": "073088c9a886238f563c689728d6d1051edb8278d4251ef354145cbc160af385",
-        "size": 11586
+        "sha256": "71471aad77d34a5c28ed7b4a93e9d4861dc65c57e29183ad2e534137814a95ec",
+        "size": 17918
       },
       "path": "docs/gcsp/evidence/fucq69/history-back-plan.md",
       "publishedCommit": null,
       "role": "authored-plan"
     }
   ],
+  "hostAdmission": {
+    "directory": "/Users/garycarter/.cache/agent-scaffolding/test-resources",
+    "directoryIdentity": {
+      "device": 16777232,
+      "inode": 172282405,
+      "mode": 493
+    },
+    "ledgerMode": 384,
+    "ledgerPath": "/Users/garycarter/.cache/agent-scaffolding/test-resources/reservations.json",
+    "ledgerPolicy": "Existing regular strict JSON object; duplicate keys/missing ledger fail; dynamic inode from atomic writes; every foreign row preserved and fully charged; exact own owner/root/allocation/state and full readback required",
+    "lockIdentity": {
+      "device": 16777232,
+      "inode": 172282406,
+      "mode": 420
+    },
+    "lockPath": "/Users/garycarter/.cache/agent-scaffolding/test-resources/reservations.lock"
+  },
   "hostRegistryDirectory": "/Users/garycarter/.cache/agent-scaffolding/test-resources",
   "importEdges": [
     {
@@ -24583,6 +24605,15 @@
   ],
   "state": "frozen authoring; awaiting execution grant",
   "story": "FUCQ-69",
+  "supervisorEnvironment": {
+    "FORCE_COLOR": "0",
+    "HOME": "/Users/garycarter",
+    "LANG": "C",
+    "LC_ALL": "C",
+    "NO_COLOR": "1",
+    "PATH": "/usr/bin:/bin",
+    "TZ": "UTC"
+  },
   "testRoot": "server/test/gcsp-manual-gallery-history-back.test.js",
   "tools": [
     {
@@ -24628,6 +24659,17 @@
       },
       "path": "/usr/sbin/lsof",
       "realpath": "/usr/sbin/lsof"
+    },
+    {
+      "identity": {
+        "device": 16777232,
+        "inode": 1152921500312573093,
+        "mode": 493,
+        "sha256": "04c1ec2d5939843c9a89a26791020d2017a50ff97a2d5b380af69d5fcdae5a63",
+        "size": 101856
+      },
+      "path": "/usr/bin/vm_stat",
+      "realpath": "/usr/bin/vm_stat"
     }
   ],
   "workspace": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-068"
