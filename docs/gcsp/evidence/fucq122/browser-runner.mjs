@@ -194,7 +194,11 @@ async function updateForm(status, { remedyKey = '', decision, preferenceValue, u
   await select(page, 'Next case status', status);
   await enterText(page, 'Reason for this update', 'Scheme team reviewed this synthetic renewal.');
   await enterText(page, 'Next action', 'Contact Paula with the reviewed next action.');
-  await enterText(page, 'Next action due, demo clock (UTC)', '2026-11-07T12:00:00');
+  const dueInput = '2026-11-07T12:00';
+  await enterText(page, 'Next action due, demo clock (UTC)', dueInput);
+  const nativeDueInput = await page.getByLabel('Next action due, demo clock (UTC)', { exact: true }).inputValue();
+  assert.equal(nativeDueInput, dueInput, 'Native datetime-local retains the canonical minute-precision value');
+  check('Native due input readback', { value: nativeDueInput });
   if (remedyKey) await select(page, 'Remedy to record', remedyKey);
   if (decision) await enterText(page, 'Authorised scheme-team decision', decision);
   if (preferenceValue !== undefined) {
@@ -210,7 +214,10 @@ async function confirmUpdate(status, options = {}) {
   await capture(greg.page, 'review-' + report.captures.length, { target: greg.page.locator('.gcsp-case-confirmation') });
   await activate(greg.page, 'Confirm case update'); await settled(greg.page);
   assert.match(await greg.page.locator('.gcsp-case-status').innerText(), /recorded/);
-  const c = ok(await api(greg, '/scheme-team/cases')).cases[0]; assert.equal(c.status, status); return c;
+  const c = ok(await api(greg, '/scheme-team/cases')).cases[0]; assert.equal(c.status, status);
+  assert.equal(c.dueAt, '2026-11-07T12:00:00.000Z', 'Application serializes and persists the intended UTC due instant');
+  check('Serialized UTC due instant from authenticated case readback', { dueAt: c.dueAt });
+  return c;
 }
 async function confirmedBrief() {
   const data = { schemaVersion: 1, preferences: { body: preference('estate'), comfort: preference(75, 0) },
