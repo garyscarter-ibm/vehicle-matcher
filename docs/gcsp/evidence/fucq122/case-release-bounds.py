@@ -1,6 +1,8 @@
 """Owned finite I/O and sampled aggregate accounting; no import-time I/O or allocation."""
 from pathlib import Path
 import atexit
+from datetime import datetime
+import re
 import io
 import json
 import math
@@ -149,131 +151,408 @@ def allocation(paths):
     return total
 
 
-class Aggregate:
-    """Supervisor plus recursive descendants, recorded identities and owned groups.
+PS = ['/bin/ps', '-axo', 'pid=,ppid=,pgid=,rss=,stat=,lstart=']
 
-    Sampling is an execution contract, not a native RSS sandbox. The fixed RAM reserve
-    covers probe/encoding/ledger transients; self/reaped-child high water conservatively
-    covers short-lived helpers between snapshots. Unknown/oversize telemetry is failure.
-    """
+
+def normalized_start(value):
+    match = re.fullmatch(r'(Mon|Tue|Wed|Thu|Fri|Sat|Sun) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) +([0-9]{1,2}) ([0-9]{2}:[0-9]{2}:[0-9]{2}) ([0-9]{4})', value)
+    if not match:
+        raise BoundError('Unknown process start syntax')
+    try:
+        date = datetime.strptime(value, '%a %b %d %H:%M:%S %Y')
+    except ValueError:
+        raise BoundError('Invalid process start date')
+    if date.year < 1970 or date.strftime('%a') != match[1]:
+        raise BoundError('Process start weekday/year differs')
+    return date.strftime('%a %b ') + str(date.day) + date.strftime(' %H:%M:%S %Y')
+
+
+def process_rows(output, error, rc):
+    if rc != 0 or error or not isinstance(output, str) or not output or not output.endswith('\n'):
+        raise BoundError('Incomplete or failed process query')
+    rows = {}
+    for line in output.splitlines():
+        fields = line.split(None, 5)
+        if len(fields) != 6 or any(not item.isascii() or not item.isdigit() or len(item) > 19 for item in fields[:4]):
+            raise BoundError('Unknown process row')
+        pid, ppid, pgid, rss = map(int, fields[:4])
+        state = fields[4]
+        if pid <= 0 or pgid <= 0 or max(pid, ppid, pgid) >= 2**63 or rss > (2**63-1)//1024 or pid in rows or not state or state[0] not in 'RSDTtWXZIU' \
+                or any(char not in '+<>AELNSsVWXl' for char in state[1:]):
+            raise BoundError('Duplicate or invalid process identity/state')
+        rows[pid] = dict(pid=pid, ppid=ppid, pgid=pgid, rss=rss*1024,
+                         state=state, start=normalized_start(fields[5].strip()))
+        if len(rows) > CONTRACT['entries']:
+            raise BoundError('Process query row cap')
+    if os.getpid() not in rows:
+        raise BoundError('Supervisor absent from complete process query')
+    return rows
+
+
+class Processes:
+    """External intent before the first probe; every direct handle retained until durable join."""
+    def __init__(self, outputs, path, deadline, cancel, admission, grant):
+        self.outputs, self.path, self.deadline, self.cancel = outputs, Path(path), deadline, cancel
+        self.lock = threading.RLock()
+        self.handles = {}
+        self.issue = None
+        self.blocked = self.sealed = False
+        self.sequence = 0
+        self.record = {'state': 'provisional-before-first-probe', 'owner': {'pid': os.getpid(), 'start': None},
+            'admissionSHA256': admission, 'grant': grant, 'scratchConstructor': 'not-started',
+            'probeIntent': {'command': PS, 'captureBytes': CONTRACT['probe_bytes'],
+                            'seconds': CONTRACT['probe_timeout_seconds'], 'newSession': True},
+            'helpers': [], 'observed': [], 'issue': None}
+
+    def save(self):
+        self.outputs.record(self.path, self.record)
+
+    def fail(self, error):
+        with self.lock:
+            self.issue = self.issue or type(error).__name__
+            self.record.update(state='uncertain', issue=self.issue)
+            self.cancel.set()
+            if not self.sealed:
+                self.save()  # Sealed terminal hashes stay immutable; refused later work exits failed.
+
+    def initialize(self):
+        if os.path.lexists(self.path.parent.parent):
+            raise BoundError('Provisional run identity already exists')
+        self.outputs.record(self.path, self.record, exclusive=True)
+        # This durable intent precedes Aggregate.start and every shared helper/Scratch import.
+
+    def launch(self, command, proof=False, intent=None):
+        with self.lock:
+            if self.issue or self.cancel.is_set() or self.sealed or (self.blocked and not proof) or time.monotonic() >= self.deadline:
+                raise BoundError('New helper/probe refused by sticky ownership state')
+            if proof and (not self.blocked or self.handles):
+                raise BoundError('Proof query requires a quiescent process registry')
+            if len(self.record['helpers']) >= CONTRACT['process_identities']:
+                raise BoundError('Finite helper/probe identity cap')
+            structure(command)
+            self.sequence += 1
+            row = {'id': self.sequence, 'command': list(command), 'pid': None, 'start': None,
+                   'group': None, 'state': 'planned', 'directHandleRetained': False, 'joined': False}
+            self.record['helpers'].append(row)
+            if intent is not None:
+                intent(row['id'])
+            self.save()  # A launch intent exists even if Popen/retention/persistence fails next.
+            proc = None
+            try:
+                if self.cancel.is_set() or time.monotonic() >= self.deadline:
+                    raise BoundError('Launch intent exceeded the whole-chunk deadline or was cancelled')
+                proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True)
+                self.handles[row['id']] = proc
+                row.update(pid=proc.pid, group=proc.pid, state='retained', directHandleRetained=True)
+                self.save()
+                return proc, row
+            except BaseException as error:
+                # Keep the direct handle before any diagnostic persistence can fail.
+                if proc is not None:
+                    self.handles[row['id']] = proc
+                try:
+                    self.fail(error)
+                finally:
+                    if proc is not None:
+                        self.join(proc, row)
+                raise
+
+    def join(self, proc, row):
+        # Never infer a signal target from a persisted PID: only the retained Popen handle.
+        try:
+            if proc.poll() is None:
+                proc.kill()
+            rc = proc.wait(timeout=2)
+            for pipe in (proc.stdout, proc.stderr):
+                pipe.close()
+            with self.lock:
+                row.update(joined=True, returncode=rc, state='joined')
+                self.save()
+                self.handles.pop(row['id'], None)  # Only after join, directory fsync and exact manifest readback.
+        except BaseException as error:
+            self.fail(error)
+            raise
+
+    def observe(self, rows):
+        with self.lock:
+            owner = rows[os.getpid()]
+            expected = self.record['owner']['start']
+            if expected is not None and expected != owner['start']:
+                raise BoundError('Supervisor start identity changed')
+            self.record['owner']['start'] = owner['start']
+            for helper in self.record['helpers']:
+                row = rows.get(helper['pid'])
+                if row and not helper['joined']:
+                    if row['ppid'] != os.getpid() or row['pgid'] != helper['group']:
+                        raise BoundError('Direct helper parent/group differs')
+                    if helper['start'] is not None and helper['start'] != row['start']:
+                        raise BoundError('Direct helper start differs')
+                    helper['start'] = row['start']
+            observed = {(row['pid'], row['start']): row for row in self.record['observed']}
+            groups = {row['group'] for row in self.record['helpers'] if row['group'] is not None}
+            selected = {os.getpid()} | {row['pid'] for row in rows.values()
+                                       if row['pgid'] in groups or (row['pid'], row['start']) in observed}
+            while True:
+                more = {row['pid'] for row in rows.values() if row['ppid'] in selected} - selected
+                if not more:
+                    break
+                selected.update(more)
+            for pid in selected - {os.getpid()}:
+                row = rows.get(pid)
+                if row is not None:
+                    observed[(pid, row['start'])] = {key: row[key] for key in ('pid', 'ppid', 'pgid', 'start')}
+            identities = set(observed)
+            identities.update((row['pid'], row['start']) for row in self.record['helpers'] if row['pid'] is not None)
+            # A not-yet-observed direct PID counts once, not once more when its start arrives.
+            identities = {(pid, start) for pid, start in identities
+                          if start is not None or not any(other == pid and value is not None for other, value in identities)}
+            if len(identities) > CONTRACT['process_identities']:
+                raise BoundError('Owned helper/descendant identity cap')
+            self.record['observed'] = list(observed.values())
+            self.save()
+            return selected
+
+    def remember_partial(self, output):
+        # Strict rejection must not discard relevant PID observations with unknown fields.
+        with self.lock:
+            observations = []
+            truncated = False
+            for index, line in enumerate(output.splitlines()):
+                if index >= CONTRACT['entries']:
+                    truncated = True
+                    break
+                fields = line.split(None, 5)
+                row = {key: int(fields[pos]) if len(fields) > pos and fields[pos].isascii() and fields[pos].isdigit() and len(fields[pos]) <= 19 and int(fields[pos]) < 2**63 else None
+                       for pos, key in enumerate(('pid', 'ppid', 'pgid'))}
+                row['start'] = None
+                if len(fields) == 6:
+                    try:
+                        row['start'] = normalized_start(fields[5].strip())
+                    except BoundError:
+                        pass
+                if row['pid'] is not None and row['pid'] > 0:
+                    observations.append(row)
+            selected = {os.getpid()} | {row['pid'] for row in self.record['helpers'] if row['pid'] is not None}
+            selected |= {row['pid'] for row in self.record['observed']}
+            if self.record.get('nodePid') is not None:
+                selected.add(self.record['nodePid'])
+            groups = {row['group'] for row in self.record['helpers'] if row['group'] is not None}
+            while True:
+                more = {row['pid'] for row in observations if row['ppid'] in selected or row['pgid'] in groups} - selected
+                if not more:
+                    break
+                selected.update(more)
+            relevant = [row for row in observations if row['pid'] in selected and row['pid'] != os.getpid()]
+            if len(relevant) > CONTRACT['process_identities']:
+                relevant = relevant[:CONTRACT['process_identities']]
+                truncated = True
+            self.record.update(uncertainObservations=relevant, uncertainObservationsTruncated=truncated)
+            self.save()  # Unknown/truncated state can never authorize deletion/release.
+
+    def capture(self, command, cap, seconds, proof=False, intent=None):
+        deadline = min(self.deadline, time.monotonic()+seconds)
+        try:
+            if not isinstance(command, (list, tuple)) or not 1 <= len(command) <= 32:
+                raise BoundError('Finite helper command vector required')
+            command = [os.fspath(part) for part in command]
+            if any(not isinstance(part, str) or len(part) > 4096 for part in command):
+                raise BoundError('Helper command argument bound')
+            proc, row = self.launch(command, proof, intent)
+        except BaseException as error:
+            self.fail(error)
+            raise
+        chunks = {'stdout': [], 'stderr': []}
+        size = 0
+        rows = None
+        try:
+            with selectors.DefaultSelector() as ready:
+                ready.register(proc.stdout, selectors.EVENT_READ, 'stdout')
+                ready.register(proc.stderr, selectors.EVENT_READ, 'stderr')
+                while ready.get_map():
+                    if time.monotonic() >= deadline:
+                        raise BoundError('Helper/probe capture timeout')
+                    for key, mask in ready.select(0.05):
+                        block = os.read(key.fd, 65536)
+                        if not block:
+                            ready.unregister(key.fd)
+                        else:
+                            size += len(block)
+                            if size > cap:
+                                raise BoundError('Helper/probe combined capture byte cap')
+                            chunks[key.data].append(block)
+            rc = proc.wait(timeout=1)
+            out, err = (b''.join(chunks[key]).decode('utf-8', errors='strict') for key in ('stdout', 'stderr'))
+            if command == PS:
+                try:
+                    rows = process_rows(out, err, rc)
+                    if proc.pid not in rows:
+                        raise BoundError('Query producer absent from complete telemetry')
+                    self.observe(rows)
+                except BaseException:
+                    self.remember_partial(out)
+                    raise
+            elif command and command[0] == '/bin/ps':
+                raise BoundError('Undeclared process query shape')
+            return subprocess.CompletedProcess(command, rc, out, err), row['id'], rows
+        except BaseException as error:
+            self.fail(error)
+            raise
+        finally:
+            self.join(proc, row)
+
+    def quiesce(self):
+        with self.lock:
+            self.blocked = True
+            if self.issue or self.handles:
+                raise BoundError('Unresolved helper/probe prevents quiescence')
+
+    def resume(self):
+        with self.lock:
+            if self.issue or self.sealed or self.handles:
+                raise BoundError('Uncertain or sealed registry cannot resume')
+            self.blocked = False
+
+    def absence(self, rows, producer):
+        with self.lock:
+            if not self.blocked or self.issue or self.handles or not all(row['joined'] for row in self.record['helpers']):
+                raise BoundError('Every helper/probe must be durably joined')
+            query = next(row for row in self.record['helpers'] if row['id'] == producer)
+            for helper in self.record['helpers']:
+                for row in rows.values():
+                    if row['pid'] == query['pid'] and helper['id'] == producer:
+                        continue  # Exact ps producer was directly joined after producing these rows.
+                    if row['pgid'] == helper['group'] or (row['pid'] == helper['pid']
+                            and (helper['start'] is None or row['start'] == helper['start'])):
+                        raise BoundError('Helper/probe process or group still present')
+            for known in self.record['observed']:
+                current = rows.get(known['pid'])
+                if current and current['pid'] != query['pid'] and current['start'] == known['start']:
+                    raise BoundError('Observed descendant remains present')
+            if any(row['ppid'] == os.getpid() and row['pid'] != query['pid'] for row in rows.values()):
+                raise BoundError('Supervisor has an undeclared or unjoined child')
+            proof = {'helpers_joined': True, 'helpers_absent': True, 'groups_absent': True,
+                     'owner_start': rows[os.getpid()]['start'], 'producer': producer, 'sequence': self.sequence}
+            self.record['lastAbsence'] = proof
+            self.save()
+            return proof
+
+    def seal(self, proof):
+        with self.lock:
+            if self.issue or self.handles or not self.blocked or proof != self.record.get('lastAbsence') \
+                    or proof['sequence'] != self.sequence:
+                raise BoundError('Final helper/probe absence proof differs')
+            self.record['state'] = 'sealed-all-helpers-joined-and-absent'
+            try:
+                self.save()
+            except BaseException as error:
+                self.fail(error)
+                raise
+            self.sealed = True
+
+    def require_sealed(self):
+        if not self.sealed or self.issue or self.handles or not self.blocked \
+                or self.record.get('lastAbsence', {}).get('sequence') != self.sequence:
+            raise BoundError('Final helper/probe barrier is not sealed')
+
+    def stop(self):
+        with self.lock:
+            self.blocked = True
+            pending = [(proc, next(row for row in self.record['helpers'] if row['id'] == identity))
+                       for identity, proc in self.handles.items()]
+        first = None
+        for proc, row in pending:
+            try:
+                self.join(proc, row)
+            except BaseException as error:
+                first = first or error
+        if first is not None:
+            raise first
+
+
+class Aggregate:
+    """Whole-chunk telemetry plus fixed transients; registry owns every query handle."""
     def __init__(self, cancel, seconds):
         self.cancel, self.seconds = cancel, seconds
         self.started = time.monotonic()
         self.limit = CONTRACT['ram_bytes']
         self.groups = []
-        self.seen, self.rows = {}, []
         self.peak = self.rss = self.samples = 0
-        self.last_sample = 0.0
+        self.last_sample = self.last_query = 0.0
         self.issue = None
         self.stop_event = threading.Event()
         self.lock = threading.Lock()
-        self.probe_lock = threading.Lock()
-        self.probe = None
+        self.probe_lock = threading.RLock()
+        self.probe = None  # Registry event ID, retained if join/persistence is unresolved.
         self.thread = None
         self.observer = None
+        self.registry = None
+        self.quiesced = False
         atexit.register(self.stop)
 
-    def snapshot(self):
-        with self.probe_lock:
-            return self._snapshot()
+    def failed(self, error):
+        self.issue = self.issue or type(error).__name__
+        self.cancel.set()
+        self.registry.fail(error)
 
-    def _snapshot(self):
-        if time.monotonic() >= self.started + self.seconds:
-            raise BoundError('Whole-chunk deadline reached; no new probe')
-        # Capture the probe handle before reads; never subprocess.run(capture_output=...).
-        proc = subprocess.Popen(['/bin/ps', '-axo', 'pid=,ppid=,pgid=,rss=,stat=,lstart='],
-                                stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
-        self.probe = proc
-        chunks, size = [], 0
-        deadline = min(self.started+self.seconds, time.monotonic()+CONTRACT['probe_timeout_seconds'])
-        try:
-            with selectors.DefaultSelector() as ready:
-                ready.register(proc.stdout, selectors.EVENT_READ)
-                while True:
-                    if time.monotonic() > deadline:
-                        raise BoundError('Aggregate telemetry timed out')
-                    if not ready.select(0.05):
-                        continue
-                    block = os.read(proc.stdout.fileno(), 65536)
-                    if not block:
-                        break
-                    size += len(block)
-                    if size > CONTRACT['probe_bytes']:
-                        raise BoundError('Aggregate telemetry exceeds byte cap')
-                    chunks.append(block)
-            if proc.wait(timeout=1):
-                raise BoundError('Aggregate telemetry failed')
-            rows = []
-            for line in b''.join(chunks).decode('ascii').splitlines():
-                fields = line.split(None, 5)
-                if len(fields) != 6:
-                    raise BoundError('Unknown aggregate telemetry row')
-                pid, ppid, pgid, rss = map(int, fields[:4])
-                if min(pid, pgid) <= 0 or min(ppid, rss) < 0 or len(fields[5].split()) != 5:
-                    raise BoundError('Invalid aggregate telemetry identity/RSS')
-                rows.append(dict(pid=pid, ppid=ppid, pgid=pgid, rss=rss*1024,
-                                 state=fields[4], start=fields[5]))
-                if len(rows) > CONTRACT['entries']:
-                    raise BoundError('Aggregate telemetry row cap')
-            if not any(row['pid'] == os.getpid() for row in rows):
-                raise BoundError('Supervisor absent from telemetry')
-            selected = {os.getpid()} | {row['pid'] for row in rows if row['pgid'] in self.groups
-                                        or (row['pid'], row['start']) in self.seen}
-            while True:
-                more = {row['pid'] for row in rows if row['ppid'] in selected} - selected
-                if not more:
-                    break
-                selected.update(more)
-            owned = [row for row in rows if row['pid'] in selected]
-            # Probes are independently captured/joined, not unbounded historical identity rows.
-            for row in owned:
-                if row['pid'] not in (os.getpid(), proc.pid):
-                    self.seen[(row['pid'], row['start'])] = {key: row[key] for key in ('pid', 'ppid', 'pgid', 'start')}
-            if len(self.seen) > CONTRACT['process_identities']:
-                raise BoundError('Owned process identity cap')
-            scale = 1 if sys.platform == 'darwin' else 1024
-            high = (resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
-                    + resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss)*scale
-            rss = max(sum(row['rss'] for row in owned if not row['state'].startswith('Z')), int(high))
-            rss += sum(CONTRACT[key] for key in ('probe_ram_allowance', 'encoding_ram_allowance', 'ledger_ram_allowance'))
-            with self.lock:
-                self.rows = list(self.seen.values())
-                self.rss = rss; self.peak = max(self.peak, rss); self.samples += 1
-                self.last_sample = time.monotonic()
-            if rss > self.limit:
-                raise BoundError('Owned aggregate RAM exceeds grant')
-            if self.observer is not None:
-                self.observer()
-            if time.monotonic() - self.started > self.seconds:
-                raise BoundError('Owned supervisor deadline exceeded')
-        finally:
-            # Direct handle stop/wait always precedes any status persistence.
+    def observe(self, rows=None, selected=None):
+        scale = 1 if sys.platform == 'darwin' else 1024
+        high = (resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+                + resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss)*scale
+        allowances = sum(CONTRACT[key] for key in ('probe_ram_allowance', 'encoding_ram_allowance', 'ledger_ram_allowance'))
+        # State never suppresses reported RSS, including a reported zombie value.
+        reported = sum(rows[pid]['rss'] for pid in selected) if rows is not None else max(0, self.rss-allowances)
+        rss = max(reported, int(high)) + allowances
+        with self.lock:
+            self.rss = rss; self.peak = max(self.peak, rss); self.samples += 1
+            self.last_sample = time.monotonic()
+        if rss > self.limit or time.monotonic()-self.started > self.seconds:
+            raise BoundError('Whole-chunk aggregate RAM/deadline exceeded')
+        if self.observer is not None:
+            self.observer()
+        return rss
+
+    def snapshot(self, proof=False):
+        with self.probe_lock:
+            if self.issue or self.registry.issue or self.probe is not None:
+                raise BoundError('Sticky telemetry/probe ownership failure; no new query')
+            if self.quiesced and not proof:
+                return self.observe()
             try:
-                if proc.poll() is None:
-                    proc.kill()
-                proc.wait(timeout=2)
-            finally:
-                proc.stdout.close()
-                if proc.poll() is not None:
-                    self.probe = None
+                # Planned/retained/joined query state is persisted by the registry.
+                result, identity, rows = self.registry.capture(PS, CONTRACT['probe_bytes'], CONTRACT['probe_timeout_seconds'], proof,
+                    intent=lambda identity: setattr(self, 'probe', identity))
+                if identity in self.registry.handles:
+                    raise BoundError('Captured probe/helper remains unresolved')
+                self.probe = None
+                self.last_query = time.monotonic()
+                selected = self.registry.observe(rows)
+                selected |= {row['pid'] for row in rows.values() if row['pgid'] in self.groups}
+                self.observe(rows, selected)
+                return rows, identity
+            except BaseException as error:
+                # The registry keeps the exact unresolved direct handle. Never overwrite it.
+                self.failed(error)
+                raise
 
     def loop(self):
-        while not self.stop_event.is_set():
+        while not self.stop_event.is_set() and not self.issue and not self.registry.issue:
             try:
                 self.snapshot()
             except BaseException as error:
-                self.issue = self.issue or type(error).__name__
-                self.cancel.set()
+                if not self.issue:
+                    self.failed(error)
+                break  # Failure is sticky; cleanup may only stop already-retained handles.
             self.stop_event.wait(CONTRACT['sample_interval_seconds'])
 
     def start(self):
-        self.snapshot()  # Fail before verification or shared-helper imports on unknown telemetry.
+        self.snapshot()
         self.thread = threading.Thread(target=self.loop, name='owned-aggregate', daemon=True)
         self.thread.start()
         return self
 
     def check(self):
-        if self.cancel.is_set() or self.issue or not self.samples or self.rss > self.limit or time.monotonic()-self.started > self.seconds \
+        if self.cancel.is_set() or self.issue or self.registry.issue or not self.samples or self.rss > self.limit \
+                or time.monotonic()-self.started > self.seconds \
                 or time.monotonic()-self.last_sample > CONTRACT['probe_timeout_seconds']+1:
             raise BoundError('Owned aggregate observation failed or exceeded limit')
         if not self.thread or not self.thread.is_alive():
@@ -281,38 +560,64 @@ class Aggregate:
         return self.rss
 
     def checkpoint(self):
-        try:
-            self.snapshot()
-        except BaseException as error:
-            self.issue = self.issue or type(error).__name__
-            self.cancel.set()
-            raise
+        self.snapshot()
         return self.check()
+
+    def quiesce(self):
+        with self.probe_lock:
+            self.quiesced = True
+            self.registry.quiesce()
+
+    def resume(self):
+        with self.probe_lock:
+            self.registry.resume()
+            self.quiesced = False
+
+    def absence(self):
+        try:
+            self.quiesce()
+            rows, identity = self.snapshot(proof=True)
+            return rows, self.registry.absence(rows, identity)
+        except BaseException as error:
+            self.failed(error)
+            raise
 
     def stop(self):
         self.stop_event.set()
+        problem = None
         if self.thread:
             self.thread.join(timeout=6)
             if self.thread.is_alive():
-                raise BoundError('Aggregate monitor join unknown')
-            self.thread = None
-        if self.probe is not None:
-            self.probe.kill(); self.probe.wait(timeout=2)
-            self.probe = None
+                problem = BoundError('Aggregate monitor join unknown')
+            else:
+                self.thread = None
+        try:
+            if self.registry is not None:
+                self.registry.stop()  # Attempt every retained direct handle, even if thread join failed.
+        finally:
+            self.quiesced = True
+        if problem is not None:
+            self.failed(problem)
+            raise problem
 
     def final_checkpoint(self):
-        # Synchronous accounting after monitor join; the reservation is still held.
-        if self.thread and self.thread.is_alive():
+        if self.thread:
             raise BoundError('Final accounting requires joined monitor')
-        self.snapshot()
-        if self.issue or self.cancel.is_set():
-            raise BoundError('Final aggregate state is failed or cancelled')
-        return self.rss
+        rows, proof = self.absence()
+        self.registry.seal(proof)
+        return rows, proof
+
+    def final_observe(self):
+        self.registry.require_sealed()
+        if self.issue or self.registry.issue or self.cancel.is_set():
+            raise BoundError('Final aggregate state failed or cancelled')
+        return self.observe()  # Sealed, no children; self/child high water and fixed transients.
 
     def receipt(self):
         return {'peak_charged_rss_bytes': self.peak, 'samples': self.samples,
-                'issue': self.issue, 'limit_bytes': self.limit,
-                'basis': 'sampled supervisor+recursive descendants+owned groups/identities; max(self+reaped-child high water); fixed probe/encoding/ledger allowances'}
+                'issue': self.issue or self.registry.issue, 'limit_bytes': self.limit,
+                'process_manifest': str(self.registry.path),
+                'basis': 'strict complete process rows; all reported RSS; recursive descendants+owned groups; self/reaped-child high water; fixed transients'}
 
 
 class Outputs:
@@ -397,6 +702,24 @@ class Outputs:
                 temporary.unlink()
             self.temporaries.discard(temporary)
 
+    def record(self, path, value, exclusive=False):
+        # Provisional/failure ownership precedes monitor availability; all output bounds apply.
+        with self.lock:
+            previous = self.diagnostics
+            self.diagnostics = True
+            try:
+                payload = encode(value, CONTRACT['json_bytes'])
+                self.write(path, payload, CONTRACT['json_bytes'], exclusive=exclusive)
+                fd = os.open(Path(path).parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+                try:
+                    os.fsync(fd)
+                finally:
+                    os.close(fd)
+                if read_bytes(path, CONTRACT['json_bytes']) != payload:
+                    raise BoundError('Durable process manifest readback differs')
+            finally:
+                self.diagnostics = previous
+
     def json(self, path, value, cap=None, exclusive=False):
         if not self.diagnostics:
             self.monitor.check()
@@ -439,9 +762,9 @@ class Quiet(io.TextIOBase):
 
 
 class Captures:
-    """Bound captured helper subprocesses on loaded module instances only."""
-    def __init__(self, deadline):
-        self.deadline = deadline
+    """Bounded shared-module adapter; every helper uses the durable process registry."""
+    def __init__(self, deadline, registry):
+        self.deadline, self.registry = deadline, registry
 
     def __getattr__(self, name):
         return getattr(subprocess, name)
@@ -449,36 +772,11 @@ class Captures:
     def run(self, command, capture_output=False, text=False, input=None, timeout=None, **options):
         if not capture_output or input is not None or options:
             raise BoundError('Unexpected helper subprocess contract')
-        deadline = min(self.deadline, time.monotonic() + min(timeout or CONTRACT['helper_timeout_seconds'], CONTRACT['helper_timeout_seconds']))
-        if time.monotonic() >= deadline:
-            raise BoundError('Whole-chunk deadline reached; no new helper')
-        proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        streams = {'stdout': [], 'stderr': []}
-        size = 0
-        try:
-            with selectors.DefaultSelector() as ready:
-                ready.register(proc.stdout, selectors.EVENT_READ, 'stdout')
-                ready.register(proc.stderr, selectors.EVENT_READ, 'stderr')
-                while ready.get_map():
-                    if time.monotonic() > deadline:
-                        raise BoundError('Helper subprocess timeout')
-                    for key, mask in ready.select(0.05):
-                        block = os.read(key.fd, 65536)
-                        if not block:
-                            ready.unregister(key.fd)
-                        else:
-                            size += len(block)
-                            if size > CONTRACT['helper_capture_bytes']:
-                                raise BoundError('Helper capture byte cap')
-                            streams[key.data].append(block)
-            rc = proc.wait(timeout=1)
-            out, err = (b''.join(streams[key]) for key in ('stdout', 'stderr'))
-            return subprocess.CompletedProcess(command, rc, out.decode() if text else out, err.decode() if text else err)
-        finally:
-            if proc.poll() is None:
-                proc.kill()
-            proc.wait(timeout=2)
-            proc.stdout.close(); proc.stderr.close()
+        result, identity, rows = self.registry.capture(command, CONTRACT['helper_capture_bytes'],
+            min(timeout or CONTRACT['helper_timeout_seconds'], CONTRACT['helper_timeout_seconds']))
+        if text:
+            return result
+        return subprocess.CompletedProcess(command, result.returncode, result.stdout.encode(), result.stderr.encode())
 
 
 def temporary_leftovers(paths, pid):

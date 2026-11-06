@@ -213,13 +213,14 @@ class Budget:
                 staging['state'] = 'removed'
                 self.resources.atomic_json(self.scratch.manifest, self.scratch.record)
 
-    def owned(self, data, token):
+    def owned(self, data, token, owner_start=None):
         if self.expected is None or token != self.expected[0] or data.get(token) != self.expected[1]:
             raise RuntimeError('Exact owned reservation row differs')
         row = data[token]
+        observed_start = self.resources.process_identity(os.getpid()) if owner_start is None else owner_start
         if row['owner'] != self.scratch.record['owner'] or row['root'] != str(self.scratch.root) \
                 or row['parent'] is not None or row['owner']['pid'] != os.getpid() \
-                or self.resources.process_identity(os.getpid()) != row['owner']['start']:
+                or observed_start != row['owner']['start']:
             raise RuntimeError('Reservation owner/root binding differs')
         return row
 
@@ -273,6 +274,22 @@ class Budget:
             elif token in data or self.attempted:
                 raise RuntimeError('Uncertain acquisition prevents cleanup')
 
+    @contextmanager
+    def cleanup_authority(self, token, owner_start):
+        if not isinstance(owner_start, str) or not valid_start(owner_start):
+            raise RuntimeError('Fresh complete OS owner proof required for cleanup')
+        with self.locked():
+            data = self.ledger()
+            if any(row['parent'] == token for row in data.values()):
+                raise RuntimeError('Dependent reservation prevents scratch deletion')
+            if self.expected is not None:
+                self.owned(data, token, owner_start=owner_start)
+            elif token in data or self.attempted:
+                raise RuntimeError('Uncertain acquisition prevents scratch deletion')
+            yield  # Held physical lock covers the caller's last inode check and rmtree.
+            if self.ledger() != data:
+                raise RuntimeError('Complete ledger changed under cleanup authority')
+
     def prepare_final_release(self, token):
         self.authorize_cleanup(token)
         if self.final_staging is not None:
@@ -286,10 +303,12 @@ class Budget:
         self.resources.atomic_json(self.scratch.manifest, self.scratch.record)
 
     def release(self, token, proof):
-        if not all(proof.get(key) is True for key in ('child_safe', 'groups_absent', 'processes_absent', 'scratch_absent')):
+        if not all(proof.get(key) is True for key in ('child_safe', 'groups_absent', 'processes_absent', 'scratch_absent', 'helpers_safe')):
             raise RuntimeError('Complete child/scratch proof is required for release')
+        if not valid_start(proof.get('owner_start')):
+            raise RuntimeError('Fresh sealed process owner proof required for final release')
         with self.locked():
-            data = self.ledger(); self.owned(data, token)
+            data = self.ledger(); self.owned(data, token, owner_start=proof['owner_start'])
             if any(row['parent'] == token for row in data.values()):
                 raise RuntimeError('Owned reservation has dependent children')
             updated = copy.deepcopy(data); del updated[token]

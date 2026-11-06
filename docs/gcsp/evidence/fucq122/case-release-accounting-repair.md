@@ -1,5 +1,12 @@
 # C4 accounting HOLD repair — static authoring only
 
+Historical first accounting repair published at
+`379c31977adc9bd4dcc0dfcf75a5e1f979f8d2b6`. The subsequent independent review
+held three probe/telemetry/cleanup paths. Current exact pins and the follow-up
+diagnosis are in [case-release-probe-cleanup-repair.md](case-release-probe-cleanup-repair.md).
+The admission and helper hashes below identify that historical checkpoint.
+
+
 6 November 2026. FUCQ-122 / DEV-2026-11-04-084. Repair base
 `4ede3ea203f88c7457f5172aef0a30b429b9c9e0`. This repairs only owned C4
 accounting, ledger and output. It requests narrow independent static review;

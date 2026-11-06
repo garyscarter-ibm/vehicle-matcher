@@ -29,7 +29,7 @@ HERE = Path(__file__).resolve().parent
 OUT = ROOT.parents[2] / '.claude/test-runs/fucq122-c4'
 MIB = 1024 ** 2
 CANDIDATE = 'f179ae6043414a2b07de3edb2b425338299ea37b'
-BOUNDS = MONITOR = OUTPUTS = None
+BOUNDS = MONITOR = OUTPUTS = REGISTRY = None
 
 
 def check():
@@ -227,23 +227,17 @@ def report_tests(dest, source, mirror):
             'installedCoverage': 'Static complete package inventory; no exhaustive CommonJS coverage claim.'}
 
 
-def execute(frozen, args, tr, guard, ledger, sg, cancel):
+def execute(frozen, args, tr, guard, ledger, sg, cancel, dest):
     policy = tr.Policy({'chunk_seconds': 120, 'chunk_ram_mib': 768, 'chunk_scratch_mib': 128,
                         'log_mib': 2, 'reserve_free_gib': 5, 'ram_reserve_mib': 512})
-    dest = OUT / ('case-http-' + uuid.uuid4().hex)
-    scratch = guard.make_scratch(tr, dest, ROOT, policy)
-    OUTPUTS.scratch = scratch.root
-    host = ledger.Budget(tr, policy, frozen['ledgerContract'], BOUNDS, STARTED+120, scratch)
-    tree = guard.ProcessTree(tr, scratch)
-    finalizer = guard.Finalizer(tr, scratch, tree, host)
+    scratch = host = tree = finalizer = None
     result, failure, source = {}, None, None
-    mirror = scratch.root / 'source'
     last_charge = 0.0
 
     def charge(force=False):
         nonlocal last_charge
         value = check()
-        if host.expected is not None and (force or time.monotonic()-last_charge >= 0.2):
+        if host is not None and host.expected is not None and (force or time.monotonic()-last_charge >= 0.2):
             # Credit none of the reservation back to concurrent launchers. Charged
             # high-water/transient observations are evidence, not currently consumed host bytes.
             host.update(scratch.token, 0, 0)
@@ -254,6 +248,21 @@ def execute(frozen, args, tr, guard, ledger, sg, cancel):
         return {'type': type(error).__name__, 'message': str(error)[:1024]}
 
     try:
+        with REGISTRY.lock:
+            REGISTRY.record['scratchConstructor'] = 'planned'
+            REGISTRY.save()
+        # Both constructor identity probes already have external run/owner/probe intents.
+        scratch = guard.make_scratch(tr, dest, ROOT, policy)
+        OUTPUTS.scratch = scratch.root
+        with REGISTRY.lock:
+            REGISTRY.record.update(scratchConstructor='returned', scratchRoot=str(scratch.root),
+                                   scratchManifest=str(scratch.manifest))
+            REGISTRY.save()
+        scratch.record['processManifest'] = str(REGISTRY.path)
+        host = ledger.Budget(tr, policy, frozen['ledgerContract'], BOUNDS, STARTED+120, scratch)
+        tree = guard.ProcessTree(tr, scratch)
+        finalizer = guard.Finalizer(tr, scratch, tree, host, MONITOR)
+        mirror = scratch.root / 'source'
         # Manifest/intent writes are bounded and charged before scratch or source creation.
         tr.atomic_json(scratch.manifest, scratch.record)
         host.acquire(scratch.token, 128*MIB, 768*MIB, scratch.root.parent, root=scratch.root)
@@ -289,6 +298,9 @@ def execute(frozen, args, tr, guard, ledger, sg, cancel):
         with (dest / 'output.log').open('xb') as stream:
             process = tree.launch(command, cwd=ROOT, env=env, stdin=subprocess.PIPE,
                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT, start_new_session=True)
+            with REGISTRY.lock:
+                REGISTRY.record['nodePid'] = process.pid
+                REGISTRY.save()
             tree.register(process)
             MONITOR.groups = list(scratch.record['groups'])
             os.set_blocking(process.stdout.fileno(), False)
@@ -342,11 +354,12 @@ def execute(frozen, args, tr, guard, ledger, sg, cancel):
     finally:
         # Failed telemetry still permits finite teardown diagnostics, never a success claim.
         OUTPUTS.diagnostics = True
-        try:
-            result['processAbsence'] = tree.stop_join()
-        except BaseException as error:
-            failure = failure or problem(error)
-        process = tree.process
+        if tree is not None:
+            try:
+                result['processAbsence'] = tree.stop_join()
+            except BaseException as error:
+                failure = failure or problem(error)
+        process = tree.process if tree is not None else None
         if process is not None:
             for pipe in [process.stdin, process.stdout]:
                 if pipe is not None:
@@ -354,7 +367,9 @@ def execute(frozen, args, tr, guard, ledger, sg, cancel):
                         pipe.close()
                     except OSError as error:
                         failure = failure or problem(error)
-        cleanup = finalizer.finish()  # Joins/removes owned scratch; deliberately retains ledger row.
+        cleanup = finalizer.finish() if finalizer is not None else {'passed': False}
+    if scratch is None or host is None or tree is None or finalizer is None:
+        raise SystemExit(2)  # Main's external registry owns and joins any constructor probes.
     preserved = False
     try:
         charge(True)
@@ -379,55 +394,63 @@ def execute(frozen, args, tr, guard, ledger, sg, cancel):
                    'admissionSHA256': args.admission_sha, 'grant': args.dispatcher_grant,
                    'status': 'pending-final-release-and-independent-audit', 'candidatePassed': candidate,
                    'failure': failure, 'result': result, 'cleanup': cleanup, 'pinsPreserved': preserved,
-                   'manifest': str(scratch.manifest), 'ownedRoot': str(scratch.root),
-                   'owner': scratch.record['owner'], 'wallSeconds': time.monotonic()-STARTED,
-                   'allocation': value, 'aggregate': MONITOR.receipt()}
+                   'manifest': str(scratch.manifest), 'processManifest': str(REGISTRY.path),
+                   'ownedRoot': str(scratch.root), 'owner': scratch.record['owner'],
+                   'wallSeconds': time.monotonic()-STARTED, 'allocation': value, 'aggregate': MONITOR.receipt()}
         OUTPUTS.json(dest/'summary.json', summary, BOUNDS.CONTRACT['summary_bytes'])
         OUTPUTS.json(dest/'checkpoint.json', {'state': 'pending-final-release-and-independent-audit',
                      'summary': str(dest/'summary.json')}, BOUNDS.CONTRACT['checkpoint_bytes'])
         charge(True)
-        OUTPUTS.json(dest/'terminal.json', {'status': 'pending-final-release-and-independent-audit',
-            'candidatePassed': candidate, 'failure': failure, 'admissionSHA256': args.admission_sha,
-            'summarySHA256': sha(BOUNDS.read_bytes(dest/'summary.json', BOUNDS.CONTRACT['summary_bytes'])),
-            'manifestSHA256': sha(BOUNDS.read_bytes(scratch.manifest, BOUNDS.CONTRACT['json_bytes'])),
-            'reservationHeld': host.expected is not None, 'allocation': OUTPUTS.observe(),
-            'aggregate': MONITOR.receipt(), 'independentAuditRequired': True,
-            'completionRule': 'Require actual exit 0, exact terminal/summary/manifest hashes, pins and independent process/group/scratch/ledger/staging absence. No stored passed result.'},
-            BOUNDS.CONTRACT['terminal_bytes'], exclusive=True)
-        # No manifest/output writes after this point, including the final ledger mutation.
         OUTPUTS.observe(); MONITOR.checkpoint()
         bundle_written = True
     except BaseException as error:
         failure = failure or problem(error)
     finally:
         try:
-            MONITOR.stop()  # Probe/thread join happens while the full completion charge is held.
+            MONITOR.stop()  # All active probes/direct handles joined while completion charge held.
         except BaseException as error:
             failure = failure or problem(error)
     try:
-        MONITOR.final_checkpoint()
-        OUTPUTS.observe()
+        # Last complete OS query: its own exact producer is directly joined and persisted.
+        # A sealed registry prevents every later helper/probe launch, including ledger-owner probes.
+        rows, helpers = MONITOR.final_checkpoint()
+        final_child = tree.proof(rows)
+        if not all(final_child[key] for key in ('joined', 'pidsAbsent', 'groupsAbsent')):
+            raise RuntimeError('Final Node/process/group absence changed')
+        proof.update(helpers_safe=all(helpers[key] for key in ('helpers_joined', 'helpers_absent', 'groups_absent')),
+                     owner_start=helpers['owner_start'])
+        candidate = failure is None and cleanup['passed'] and preserved and result.get('rc') == 0
+        OUTPUTS.json(dest/'terminal.json', {'status': 'pending-final-release-and-independent-audit',
+            'candidatePassed': candidate, 'failure': failure, 'admissionSHA256': args.admission_sha,
+            'summarySHA256': sha(BOUNDS.read_bytes(dest/'summary.json', BOUNDS.CONTRACT['summary_bytes'])) if bundle_written else None,
+            'manifestSHA256': sha(BOUNDS.read_bytes(scratch.manifest, BOUNDS.CONTRACT['json_bytes'])),
+            'processManifest': str(REGISTRY.path),
+            'processManifestSHA256': sha(BOUNDS.read_bytes(REGISTRY.path, BOUNDS.CONTRACT['json_bytes'])),
+            'helperProof': helpers, 'reservationHeld': host.expected is not None,
+            'allocation': OUTPUTS.observe(), 'aggregate': MONITOR.receipt(), 'independentAuditRequired': True,
+            'completionRule': 'Require exit 0, exact terminal/summary/scratch+process manifest hashes, pins and independent all-process/group/scratch/ledger/staging absence. No stored passed result.'},
+            BOUNDS.CONTRACT['terminal_bytes'], exclusive=True)
+        # No ownership/retained artifact writes or process launches follow the terminal receipt.
+        OUTPUTS.observe(); MONITOR.final_observe()
         if cancel.is_set() or scratch.record.get('cancellationDuringCleanup'):
             raise RuntimeError('Cancellation prevents successful completion')
-        # Finite stdout is emitted and flushed before release; exit/audit determines completion.
         BOUNDS.emit(BOUNDS.encode({'run': str(dest), 'status': 'pending-final-release-and-independent-audit',
             'failure': failure, 'bundleWritten': bundle_written}, BOUNDS.CONTRACT['stdout_bytes']), STARTED+120)
-        MONITOR.final_checkpoint()
-        OUTPUTS.observe()
+        MONITOR.final_observe(); OUTPUTS.observe()
         if not bundle_written or host.final_staging is None or not all(proof.values()):
             raise RuntimeError('Incomplete final bundle/proof retains reservation')
-        # Last operation: bounded descriptor-relative release/readback/staging removal. No helper
-        # probes, retained writes, stdout, or monitor join follow reservation removal.
         host.completion_check = lambda: final_release_check(cancel)
-        host.release(scratch.token, proof)
+        host.release(scratch.token, proof)  # No new owner probe: use the fresh sealed OS owner proof.
     except BaseException:
         raise SystemExit(2)
     raise SystemExit(2 if failure else 0)
 
 
 def final_release_check(cancel):
+    REGISTRY.require_sealed()
+    MONITOR.final_observe()
     if cancel.is_set() or MONITOR.issue or time.monotonic()-STARTED > 120 \
-            or time.monotonic()-MONITOR.last_sample > BOUNDS.CONTRACT['probe_timeout_seconds']+1:
+            or time.monotonic()-MONITOR.last_query > BOUNDS.CONTRACT['probe_timeout_seconds']+1:
         raise RuntimeError('Final release accounting is stale, cancelled or over deadline')
     OUTPUTS.observe()
     if min(shutil.disk_usage('/private/tmp').free, shutil.disk_usage(OUT.parent).free) < 5*1024**3:
@@ -471,7 +494,7 @@ def bootstrap(expected_sha):
 
 
 def main():
-    global BOUNDS, MONITOR, OUTPUTS
+    global BOUNDS, MONITOR, OUTPUTS, REGISTRY
     parser = argparse.ArgumentParser()
     parser.add_argument('--execute', action='store_true', required=True)
     parser.add_argument('--admission-sha', required=True)
@@ -494,25 +517,35 @@ def main():
         if min(shutil.disk_usage('/private/tmp').free, shutil.disk_usage(OUT.parent).free) < 5*1024**3:
             raise RuntimeError('Whole-chunk disk emergency bound reached')
     MONITOR.observer = observe
+    dest = OUT / ('case-http-' + uuid.uuid4().hex)
+    REGISTRY = BOUNDS.Processes(OUTPUTS, dest/'ownership/processes.json', STARTED+120, cancel,
+                               args.admission_sha, args.dispatcher_grant)
+    MONITOR.registry = REGISTRY
     try:
+        REGISTRY.initialize()  # External provisional run/owner/probe intent precedes the first probe.
         MONITOR.start()  # Bootstrap high water/deadline included; precedes all shared imports.
         frozen, _ = admit(args.admission_sha, source_required=False)
         tr = imported(frozen, 'fucq122_c4_shared_resources', ROOT/'_tools/test_resources.py')
         tr.atomic_json = OUTPUTS.json
-        tr.subprocess = BOUNDS.Captures(STARTED+120)
+        tr.subprocess = BOUNDS.Captures(STARTED+120, REGISTRY)
         sg = imported(frozen, 'fucq122_c4_git', ROOT/'_tools/scaffold_git.py')
-        sg.subprocess = BOUNDS.Captures(STARTED+120)
+        sg.subprocess = BOUNDS.Captures(STARTED+120, REGISTRY)
         guard = imported(frozen, 'fucq122_c4_owned_resources', HERE/'case-release-resources.py')
+        guard.PROCESS_ROWS = BOUNDS.process_rows
         guard.STOP_AT = STARTED+120
-        guard.subprocess = BOUNDS.Captures(STARTED+120)
+        guard.subprocess = BOUNDS.Captures(STARTED+120, REGISTRY)
         guard.allocated_bytes = lambda path: BOUNDS.allocation([Path(path)])
         tr.available_memory = guard.available_memory_strict
         tr.process_identity = lambda pid: guard.process_snapshot()[pid]['start']
         ledger = imported(frozen, 'fucq122_c4_ledger', HERE/'case-release-ledger.py')
-        execute(frozen, args, tr, guard, ledger, sg, cancel)
+        execute(frozen, args, tr, guard, ledger, sg, cancel, dest)
+    except BaseException as error:
+        if not REGISTRY.sealed:
+            REGISTRY.fail(error)
+        raise
     finally:
-        if MONITOR.thread is not None or MONITOR.probe is not None:
-            MONITOR.stop()
+        OUTPUTS.diagnostics = True
+        MONITOR.stop()
         for sig, handler in previous.items():
             signal.signal(sig, handler)
 

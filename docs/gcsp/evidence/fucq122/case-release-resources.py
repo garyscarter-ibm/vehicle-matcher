@@ -15,6 +15,7 @@ import subprocess
 import time
 
 STOP_AT = None
+PROCESS_ROWS = None
 
 
 def remaining(cap):
@@ -28,45 +29,11 @@ class SnapshotUncertain(RuntimeError):
 
 
 def process_snapshot():
-    if remaining(3) <= 0:
-        raise RuntimeError('Whole-chunk deadline reached; process absence unknown')
-    try:
-        query = subprocess.run(['/bin/ps', '-axo', 'pid=,ppid=,pgid=,rss=,stat=,lstart='],
-                               capture_output=True, text=True, timeout=3)
-        output = query.stdout
-        uncertain = query.returncode != 0 or bool(query.stderr) or not output.strip()
-    except (OSError, subprocess.TimeoutExpired) as error:
-        output = getattr(error, 'stdout', None) or ''
-        if isinstance(output, bytes):
-            output = output.decode('utf-8', errors='replace')
-        uncertain = True
-    rows, observations = {}, []
-    for line in output.splitlines():
-        parts = line.split(None, 5)
-        if len(parts) == 6:
-            parts[5] = parts[5].strip()
-        partial = {key: int(parts[index]) if len(parts) > index and parts[index].isascii() and parts[index].isdigit() else None
-                   for index, key in enumerate(['pid', 'ppid', 'pgid'])}
-        partial['start'] = parts[5] if len(parts) == 6 and re.fullmatch(
-            r'[A-Z][a-z]{2}\s+[A-Z][a-z]{2}\s+\d{1,2}\s+\d{2}:\d{2}:\d{2}\s+\d{4}', parts[5]) else None
-        if partial['pid'] and partial['pid'] > 0:
-            observations.append(partial)
-        if len(parts) != 6 or any(not value.isascii() or not value.isdigit() for value in parts[:4]):
-            uncertain = True
-            continue
-        pid, ppid, pgid, rss = map(int, parts[:4])
-        state, start = parts[4:]
-        if pid <= 0 or pgid <= 0 or pid in rows or not state or state[0] not in 'RSDTtWXZIU' \
-                or any(char not in '+<>AELNSsVWXl' for char in state[1:]) \
-                or not re.fullmatch(r'[A-Z][a-z]{2}\s+[A-Z][a-z]{2}\s+\d{1,2}\s+\d{2}:\d{2}:\d{2}\s+\d{4}', start):
-            uncertain = True
-            partial['start'] = None
-            continue
-        rows[pid] = {'pid': pid, 'ppid': ppid, 'pgid': pgid, 'rss': rss * 1024,
-                     'state': state, 'start': start}
-    if uncertain or os.getpid() not in rows:
-        raise SnapshotUncertain(observations)
-    return rows
+    if remaining(3) <= 0 or PROCESS_ROWS is None:
+        raise RuntimeError('Whole-chunk deadline/parser binding unknown; no process query')
+    query = subprocess.run(['/bin/ps', '-axo', 'pid=,ppid=,pgid=,rss=,stat=,lstart='],
+                           capture_output=True, text=True, timeout=3)
+    return PROCESS_ROWS(query.stdout, query.stderr, query.returncode)
 
 
 def definitely_absent(record, rows):
@@ -135,9 +102,9 @@ class ProcessTree:
             raise RuntimeError('Owned process/group identity cap reached')
         self.resources.atomic_json(self.scratch.manifest, self.record)
 
-    def observe(self):
+    def observe(self, rows=None):
         try:
-            rows = process_snapshot()
+            rows = process_snapshot() if rows is None else rows
         except SnapshotUncertain as error:
             self.remember_uncertain(error)
             raise
@@ -258,8 +225,8 @@ class ProcessTree:
         self.save()
         self.observe()
 
-    def proof(self):
-        rows, members, _rss = self.observe()
+    def proof(self, rows=None):
+        rows, members, _rss = self.observe(rows)
         registered = not self.record['launchAttempted'] or (self.process is not None
             and self.record['directHandleRetained'] and self.record['registrationComplete']
             and any(item.get('direct') and item['pid'] == self.process.pid and item.get('start')
@@ -388,8 +355,9 @@ def make_scratch(resources, rdir, root, policy):
 
 
 class Finalizer:
-    def __init__(self, resources, scratch, tree, budget):
+    def __init__(self, resources, scratch, tree, budget, monitor):
         self.resources, self.scratch, self.tree, self.budget = resources, scratch, tree, budget
+        self.monitor = monitor
         self.attempted = False
         self.result = None
         atexit.register(self.finish)
@@ -418,26 +386,27 @@ class Finalizer:
             self.scratch.record.update(state='stopped-and-joined', processAbsence=proof)
             self.tree.save()
             scratch = self.scratch
-            self.budget.authorize_cleanup(scratch.token)
             if os.path.lexists(scratch.root):
-                identity = scratch.root.lstat()
-                if scratch.root.is_symlink() or (identity.st_dev, identity.st_ino) != (scratch.record.get('device'), scratch.record.get('inode')):
-                    raise RuntimeError('Scratch physical identity differs')
                 check = subprocess.run(['/usr/sbin/lsof', '-t', '+D', str(scratch.root)], capture_output=True, timeout=5)
                 if check.returncode != 1 or check.stdout or check.stderr:
                     raise RuntimeError('Scratch open-file absence is unknown')
-                # Last complete OS proof immediately precedes deletion.
-                self.budget.authorize_cleanup(scratch.token)
-                proof = self.tree.proof()
-                if not all(proof[key] for key in ['joined', 'pidsAbsent', 'groupsAbsent']):
-                    raise RuntimeError('Process absence changed before deletion')
-                fresh = scratch.root.lstat()
-                if scratch.root.is_symlink() or (fresh.st_dev, fresh.st_ino) != (scratch.record['device'], scratch.record['inode']):
-                    raise RuntimeError('Scratch identity changed before deletion')
-                scratch.sample()
-                shutil.rmtree(scratch.root)
-            if os.path.lexists(scratch.root):
-                raise RuntimeError('Scratch removal incomplete')
+            # Stop new monitor/helper probes; the last query producer is joined before proof.
+            rows, helper_proof = self.monitor.absence()
+            proof = self.tree.proof(rows)
+            if not all(proof[key] for key in ['joined', 'pidsAbsent', 'groupsAbsent']):
+                raise RuntimeError('Final complete process absence is unknown')
+            proof['helpersAbsent'] = helper_proof['helpers_absent']
+            # OS proof first; hold the pinned lock and full owned-row/dependent binding
+            # continuously through the final inode check, deletion and absence check.
+            with self.budget.cleanup_authority(scratch.token, helper_proof['owner_start']):
+                if os.path.lexists(scratch.root):
+                    scratch.sample()
+                    fresh = scratch.root.lstat()
+                    if scratch.root.is_symlink() or (fresh.st_dev, fresh.st_ino) != (scratch.record.get('device'), scratch.record.get('inode')):
+                        raise RuntimeError('Scratch identity changed before deletion')
+                    shutil.rmtree(scratch.root)
+                if os.path.lexists(scratch.root):
+                    raise RuntimeError('Scratch removal incomplete')
             proof['scratchAbsent'] = True
             scratch.record.update(state='removed', removed=time.time(), processAbsence=proof)
             self.tree.save()
@@ -448,6 +417,11 @@ class Finalizer:
                 result.update(passed=False, cancelledDuringCleanup=True)
         except BaseException as error:
             result['error'] = type(error).__name__ + ': ' + str(error)[:1024]
+            if self.monitor.quiesced:
+                self.monitor.failed(error)
+        finally:
+            if self.monitor.quiesced and not self.monitor.issue and not self.monitor.registry.issue:
+                self.monitor.resume()
         self.result = result
         self.scratch.record['finalizer'] = result
         self.resources.atomic_json(self.scratch.manifest, self.scratch.record)

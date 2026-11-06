@@ -72,7 +72,9 @@ The seven owned harness files are `case-release-freeze.py`,
 `case-release-loader.mjs`, `case-release-launch.py`, `case-release-resources.py`,
 `case-release-supervisor.py`, `case-release-bounds.py` and `case-release-ledger.py`
 in this directory. The accounting repair is detailed in
-[case-release-accounting-repair.md](case-release-accounting-repair.md).
+[case-release-accounting-repair.md](case-release-accounting-repair.md), with the
+current three-path follow-up in
+[case-release-probe-cleanup-repair.md](case-release-probe-cleanup-repair.md).
 The freeze collector has run as static metadata authoring. The loader, launcher,
 resources and supervisor have only been authored and statically inspected;
 none has been imported, executed, probed or used to allocate resources.
@@ -167,14 +169,36 @@ The selected worker must stop by startup plus 90 seconds, leaving 30 seconds
 inside the same envelope for completion. Failed/stale/cancelled accounting
 prevents a successful exit and retains uncertain resources for explicit recovery.
 
+The external provisional run/owner/probe manifest is durably written before
+`Aggregate.start()` and before either scratch-constructor identity probe.
+Every monitor query and captured helper has a prior intent, retained Popen
+handle, persisted PID and explicit known/unknown normalized start until join.
+Directory fsync and exact manifest readback precede dropping a joined handle.
+Unresolved join, persistence, query or telemetry failure is sticky and blocks
+new probes. The finite registry and both ownership manifests remain within
+the same existing bounds; no budget or selected-command change is made.
+
+One strict parser requires a complete successful query, empty stderr, unique
+PIDs, valid full start dates/weekday with normalized identity, and valid process
+states. Aggregate RSS includes every reported value, including zombie rows.
+Before scratch deletion, probes are quiesced, the final exact query producer
+is joined, and all captured helpers/groups/observed descendants plus the Node
+tree must be absent. After that OS proof, the pinned accounting lock remains
+held across fresh complete owned-row/dependent validation, the final scratch
+inode check, deletion and absence check. No helper query occurs inside that
+critical section. Monitoring continues with self/reaped-child high water and
+fixed transients while the process-launch barrier is closed.
+
 The complete reservation remains held through output, postwrite checks, probe
-and monitor join, and a finite nonblocking stdout write. Ledger `used`/`rss`
-credits stay zero so concurrent launchers cannot treat conservative high-water
-or transient estimates as already consumed host capacity. Actual charged peaks
-remain in the bounded evidence. A predeclared final ledger staging path permits
-strict release/readback as the last operation, without post-release artifact
-rewrites. Receipts explicitly say `pending-final-release-and-independent-audit`;
-only actual exit 0 plus independent exact-hash, process/group, scratch, ledger
-and staging absence can establish completion. The new adapter and supervisor
-have not executed, and independent static approval plus a fresh exact execution
-grant are still required.
+and monitor join, and finite nonblocking stdout. Ledger `used`/`rss` credits
+stay zero; actual charged peaks remain in the bounded evidence. After the last
+complete process query is joined, a permanent barrier seals every helper/probe
+launch. The terminal receipt hashes both final ownership manifests. Subsequent
+resource checks use self/reaped-child high water and the reserved allowances;
+strict final release uses that sealed OS owner proof rather than launching
+another identity helper. A predeclared final ledger staging path permits
+release/readback as the last operation without post-release artifact rewrites.
+Receipts say `pending-final-release-and-independent-audit`; only actual exit 0
+plus independent exact-hash, all-process/group, scratch, ledger and staging
+absence can establish completion. The helpers and supervisor remain unexecuted;
+independent static approval and a fresh exact execution grant are required.
