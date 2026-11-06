@@ -14,8 +14,7 @@ The [source plan](evidence/fucq100/runtime-composition-source-plan.json) freezes
 54 rechecked installed pg identities and prospective helper/executable hashes. Every baseline file
 matches its Git blob at38be4f5; borrowed leaves come from exact commits. There are no unresolved
 literal imports. Dynamic/provider/navigation boundaries are explicitly retained. This is a source
-proposal, not a complete execution catalogue: new test, provider/profile and supervisor bytes still
-need authoring and admission. No installed dependency was created or changed.
+proposal retained as the adoption record. The separately [frozen seven-case execution proposal](evidence/fucq100/runtime-composition-validation-plan.md) now supplies authored test, synthetic TEST profile and strict harness bytes; execution admission is still held. No installed dependency was created or changed.
 
 ## Immutable consumers and the finite delta
 
@@ -153,12 +152,11 @@ The proposal names intended cases, not an invented executed test count.
 
 Initial in-process chunks each use **120s /768MiB aggregate RSS /128MiB scratch /2MiB combined logs /
 one worker**. Freeze actual adopted source, test, profile, input, environment, installed package,
-executable, loader and supervisor identities before asking for one exact command. No current
-supervisor admits this changed graph. Browser desktop/keyboard/narrow checks, full and native gates
+executable, loader and supervisor identities before asking for one exact command. The new frozen supervisor describes this changed graph; it has not been executed or granted. Browser desktop/keyboard/narrow checks, full and native gates
 need separate proposals and grants; prior UI fixture evidence does not satisfy the changed journey.
 
 Each future chunk gets a fresh run token and absolute scratch root under
-`/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-composition-<token>/scratch`.
+`/private/tmp/test-stamp-shard-<token>` (the existing macOS TMPDIR compatibility path).
 Its ownership manifest, checkpoints, bounded useful logs and receipt live outside that scratch.
 Establish the external manifest and finalizer before allocation; reserve current HostBudget under its
 short strict JSON-ledger lock; set owned TMPDIR/TMP/TEMP. Launch clean env-i Python with exact helper
@@ -175,5 +173,4 @@ Retain compact receipts and useful original failure/TAP journals; no credentials
 
 No test resources, scratch, service, listener or dependency installation were allocated in this authoring
 checkpoint. Its retained outputs are the five owned source files, plan, exact patch, finite input list, generator and story note.
-Next step: author/freeze the six C1 cases, affected setup/back regression, explicitly synthetic TEST
-profile and strict harness. Positive business/default/reset source preparation remains open. This document does not grant mixed execution or mark any final acceptance complete.
+The six C1 cases, affected setup/back regression, explicitly synthetic TEST profile and strict owned harness are now authored/frozen in the linked validation proposal. Next step: separate dispatcher review and exact execution grant. Positive business/default/reset source preparation remains open. This document does not grant mixed execution or mark any final acceptance complete.
