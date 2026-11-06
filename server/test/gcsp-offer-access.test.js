@@ -11,8 +11,7 @@ import { createOfferAccessHandler } from '../gcsp/offers/access-http.js';
 import { buildServer } from '../index.js';
 import { stock as candidateStock, brief, fact } from './helpers/employee-recommendation.js';
 
-if (!process.env.GCSP_OFFER_TOKEN_MODULE) throw Error('Run the scoped supervisor with the verified published FUCQ-100 token module.');
-const { mintOfferToken, verifyOfferToken } = await import(process.env.GCSP_OFFER_TOKEN_MODULE);
+import { mintOfferToken, verifyOfferToken } from '../gcsp/offers/offer-token.js';
 const cmd = (commandId, data = commandId) => ({ commandId, inputDigest: inputDigest(data) });
 const cookieOf = (value) => [value].flat().map((cookie) => cookie.split(';')[0]).join('; ');
 const reference = (table, scope, key) => ({ table, key: { runId: scope.runId, ...key } });

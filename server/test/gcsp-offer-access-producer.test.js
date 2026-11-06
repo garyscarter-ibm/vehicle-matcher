@@ -9,11 +9,8 @@ import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { createOfferAccessService } from '../gcsp/offers/access.js';
 import { stock, essential, preference } from './helpers/employee-recommendation.js';
 
-if (!process.env.GCSP_BUDDY_HOLD_MODULE || !process.env.GCSP_PRODUCER_MODULE_MAP) {
-  throw Error('Use the exact approved producer-composition supervisor.');
-}
-const { BuddyHoldService } = await import(process.env.GCSP_BUDDY_HOLD_MODULE);
-const { verifyOfferToken } = await import(process.env.GCSP_OFFER_TOKEN_MODULE);
+import { BuddyHoldService } from '../gcsp/offers/buddy-hold.js';
+import { verifyOfferToken } from '../gcsp/offers/offer-token.js';
 const ref = (f, table, key = {}) => ({ table, key: { runId: f.context.runId, ...key } });
 const cookieOf = (value) => value.split(';')[0];
 const passed = (outcome) => { assert.equal(outcome.status, 'ok'); return outcome.value; };
