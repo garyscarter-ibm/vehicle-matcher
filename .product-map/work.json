@@ -543,16 +543,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-57"
     },
     {
-      "id": "FUCQ-59",
-      "title": "Collect distinct constructible configurations with resumable batches",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59"
-    },
-    {
       "id": "FUCQ-60",
       "title": "Enrich resolved fleet configurations with matching facts and images",
       "status": "To Do",
@@ -1822,6 +1812,73 @@
           "status": "stopped; explicit IBM Global422 Advantage Credits exhaustion; checkpoint preserved"
         }
       ]
+    },
+    {
+      "id": "FUCQ-59",
+      "title": "Collect distinct constructible configurations with resumable batches",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-06T10:10:35Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59",
+      "workers": [
+        {
+          "name": "Cecil Turtle",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-06T10:09:18.930856+00:00",
+          "expires_at": "2026-11-06T13:09:18.930972+00:00",
+          "source": "thread 01a1b054-1167-7820-b9f2-92ec81e37bbe",
+          "status": "active offline implementation"
+        }
+      ],
+      "slices": [
+        {
+          "id": "canonical-identity",
+          "status": "complete",
+          "title": "Canonical configuration identity and factory/accessory separation (2 points)",
+          "observed_at": "2026-11-06T10:10:35Z",
+          "evidence": "Lead reviewed target Base64/accessory/alias behavior; two offline regression tests pass, scoped receipt lead59/receipt-identity-green.json; F54 publication compatibility remains separately planned."
+        },
+        {
+          "id": "resolved-selection",
+          "status": "in-progress",
+          "title": "Deterministic candidates and complete solver response validation (3 points)",
+          "observed_at": "2026-11-06T10:10:35Z"
+        },
+        {
+          "id": "atomic-resume",
+          "status": "not-started",
+          "title": "Versioned bounded cache and atomic checkpoint/resume (3 points)"
+        },
+        {
+          "id": "finite-offline",
+          "status": "not-started",
+          "title": "Finite source budgets, deadlines and default no-traffic safety (2 points)"
+        },
+        {
+          "id": "source-qualification",
+          "status": "not-started",
+          "title": "Selected real-source model mapping and solver integration (1 point)"
+        },
+        {
+          "id": "publication-contract",
+          "status": "not-started",
+          "title": "F39/F54 identity, provenance and selected-source compatibility (1 point)"
+        },
+        {
+          "id": "retailer-boundary",
+          "status": "not-started",
+          "title": "Retailer mapping and API regression boundary"
+        },
+        {
+          "id": "full-validation",
+          "status": "not-started",
+          "title": "Authored serial npm test integration gate (1 point)"
+        }
+      ],
+      "unsliced": false
     }
   ]
 }
