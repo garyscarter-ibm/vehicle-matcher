@@ -124,7 +124,7 @@ export class LifecycleApprovalService {
     for (const source of found.value.orders.filter(mine).sort((a, b) => (a.orderUuid < b.orderUuid ? -1 : 1))) {
       const view = await this.#view(context, source, time.value.now);
       if (view.status === 'ok') views.push(view.value);
-      else if (ORDER_FAILURES.includes(view.code)) failed.push({ orderUuid: source.orderUuid, status: view.status, code: view.code });
+      else if (view.scope !== 'policy-wide' && ORDER_FAILURES.includes(view.code)) failed.push({ orderUuid: source.orderUuid, status: view.status, code: view.code });
       else return view;
     }
     return ok({ contractVersion: CONTRACT, asOf: time.value.now, orders: views,
@@ -158,6 +158,7 @@ export class LifecycleApprovalService {
     for (const source of [...orders.value].sort((a, b) => (a.orderUuid < b.orderUuid ? -1 : 1))) {
       let step; try { step = await this.#advance(system, tickId, now, source, startup); } catch { step = unavailable(); }
       if (step.status === 'ok') counts[step.value] += 1;
+      else if (step.scope === 'policy-wide') return step;
       else counts.failed.push({ orderUuid: source.orderUuid, status: step.status, code: step.code ?? step.reason ?? null });
     }
     return ok({ handlerId: HANDLER_ID, ...counts });

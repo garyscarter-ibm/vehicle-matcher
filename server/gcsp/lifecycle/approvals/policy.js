@@ -7,6 +7,9 @@ export const LIFECYCLE_KEYS = Object.freeze({ ticks: 'lifecycle.approval.ticks.v
 export const SELECTION_STAGE = 'selection received';
 const ALLOWED_STAGES = [['sales-manager approval', 'sent to ordering'], ['HR approval', 'sales-manager approval', 'sent to ordering']];
 const OWNERS = ['HR', 'sales manager', 'ordering', 'scheme team'];
+const ORDER_SCOPED = [['invalid', 'unknown-assumption'], ['not-found', 'policy-version-not-found']];
+// Marks a refusal that affects every order, so lists and ticks refuse as a whole instead of skipping one order.
+export const policyWide = (outcome) => ({ ...outcome, scope: 'policy-wide' });
 const text = (v, max = 200) => typeof v === 'string' && v.trim().length > 0 && v.length <= max && !v.includes('—');
 const object = (v) => v && typeof v === 'object' && !Array.isArray(v);
 export const policyUnavailable = (code = 'lifecycle-policy-unavailable') => result('unavailable', { code, retryable: true,
@@ -17,9 +20,11 @@ export async function loadLifecyclePolicy(policy, read, snapshot) {
   if (!policy || typeof policy.getAssumption !== 'function') return policyUnavailable();
   const keys = [STAGE_LIST_KEY, ...Object.values(LIFECYCLE_KEYS)];
   let rows;
-  try { rows = await Promise.all(keys.map((key) => policy.getAssumption(key, read))); } catch { return policyUnavailable('policy-source-unavailable'); }
-  // A down policy source is global; a missing or malformed pinned row is specific to the orders pinned to it.
-  if (rows.some((r) => r?.status === 'unavailable')) return policyUnavailable('policy-source-unavailable');
+  try { rows = await Promise.all(keys.map((key) => policy.getAssumption(key, read))); } catch { return policyWide(policyUnavailable('policy-source-unavailable')); }
+  // Only a missing pinned row or version is specific to the orders pinned to it; any other refusal (source-invalid,
+  // unavailable, unknown) is policy-wide and keeps its own status and cause.
+  const wide = rows.find((r) => r?.status !== 'ok' && !ORDER_SCOPED.some(([status, code]) => r?.status === status && r?.code === code));
+  if (wide) return policyWide(wide?.status ? structuredClone(wide) : policyUnavailable('policy-source-unavailable'));
   if (rows.some((r) => r?.status !== 'ok' || r.policyVersion !== read.policyVersion || !text(r.value?.basis, 2000) || !text(r.value?.unit)
     || !['assumed', 'verified'].includes(r.value.status))) return policyUnavailable();
   const [stages, ticks, decline, ownership] = rows.map((r) => r.value.value);

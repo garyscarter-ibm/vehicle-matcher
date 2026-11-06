@@ -1,9 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, mkdtemp, writeFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { once } from 'node:events';
 import { createMemoryRepository, createMemoryStore, inputDigest } from '../gcsp/repository/index.js';
-import { PolicyService } from '../gcsp/policy/index.js';
+import { PolicyService, FilePolicyProvider } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { RenewalCaseService } from '../gcsp/cases/index.js';
 import { createLifecycleApprovalService, HANDLER_ID, EXCEPTION_CONSUMER } from '../gcsp/lifecycle/approvals/index.js';
@@ -19,7 +21,7 @@ async function policyWith(changes = {}) {
   return new PolicyService({ provider: { async loadVersions() { return [seed]; } } });
 }
 
-async function setup(t, { changes, status = 'synthetic', stages, cases = false, producer = false, extraHandler } = {}) {
+async function setup(t, { changes, status = 'synthetic', stages, cases = false, producer = false, extraHandler, servicePolicy } = {}) {
   const policy = await policyWith(changes);
   const store = createMemoryStore(); const repository = createMemoryRepository({ store }); await repository.open();
   const runtime = await createDemoRuntime({ repository, policy, environmentId: 'lifecycle-test', environmentKind: 'synthetic',
@@ -30,7 +32,7 @@ async function setup(t, { changes, status = 'synthetic', stages, cases = false, 
   const as = async (id) => (await identity.switchPrincipal(presenter.value.context, id, id)).value.context;
   const [paula, alex, greg] = [await as('demo-paula'), await as('demo-alex'), await as('demo-greg')];
   const adapter = status === 'live' ? createLiveOrderingStatusStub() : typeof status === 'object' ? status : createSyntheticOrderingStatus({ repository });
-  const service = createLifecycleApprovalService({ repository, policy, clock, identity, status: adapter });
+  const service = createLifecycleApprovalService({ repository, policy: servicePolicy ?? policy, clock, identity, status: adapter });
   assert.equal((await service.start()).status, 'ok');
   const real = producer ? await createRealProducer({ repository, policy, clock, identity }) : null;
   if (extraHandler) assert.equal((await clock.registerHandler(extraHandler(service))).status, 'ok');
@@ -324,6 +326,27 @@ test('internal listOrders keeps healthy orders and diagnoses malformed ones; glo
   const down = createLifecycleApprovalService({ repository: f.repository, clock: f.clock, identity: f.identity,
     policy: { async getAssumption() { return { status: 'unavailable', retryable: true }; } } });
   const refused = await down.stagePort().listOrders(system);
-  assert.deepEqual([refused.status, refused.code], ['unavailable', 'policy-source-unavailable']);
+  assert.deepEqual([refused.status, refused.scope], ['unavailable', 'policy-wide']);
   assert.equal((await f.service.stagePort().listOrders({ ...system, runId: 'another-run' })).status, 'stale-run');
+});
+
+test('a shared policy source that fails validation refuses the whole list, read and tick with its own cause', async (t) => {
+  // Real PolicyService over a malformed source file in this run's own scratch (TMPDIR is the launcher's owned root).
+  const dir = await mkdtemp(join(tmpdir(), 'fucq111-policy-')); t.after(() => rm(dir, { recursive: true, force: true }));
+  const filePath = join(dir, 'seed-v1.json'); await writeFile(filePath, '{ "schemaVersion": 1, ');
+  const broken = new PolicyService({ provider: new FilePolicyProvider({ filePath }) });
+  const f = await setup(t, { servicePolicy: broken });
+  const healthy = await f.seed(f.paula); await f.seed(f.alex);
+  const system = { environmentId: f.paula.environmentId, runId: f.paula.runId, principalId: 'clock-startup', roles: [] };
+  const listed = await f.service.stagePort().listOrders(system);
+  assert.deepEqual([listed.status, listed.code, listed.scope], ['invalid', 'source-invalid', 'policy-wide'], JSON.stringify(listed));
+  assert.equal(listed.value, undefined, 'no partial list');
+  const read = await f.service.read(f.greg, { orderUuid: healthy.orderUuid });
+  assert.deepEqual([read.status, read.code], ['invalid', 'source-invalid']);
+  const pub = await f.service.listOrders(f.greg); assert.deepEqual([pub.status, pub.code], ['invalid', 'source-invalid']);
+  const ticked = await f.tick();
+  assert.equal(ticked.outcome.status, 'unavailable', 'the clock interrupts the tick instead of recording per-order skips');
+  assert.equal(ticked.outcome.handlerId, HANDLER_ID);
+  const revisions = await f.repository.query(f.greg, 'event_receipts', { consumerId: `lifecycle:approval:${healthy.orderUuid}` });
+  assert.equal(revisions.value.length, 0, 'no order advanced under a broken shared policy');
 });
