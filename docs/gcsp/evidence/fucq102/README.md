@@ -9,7 +9,8 @@ handles and a spec/TAP reporter mismatch that prevented stopping on the first ca
 failure. See [the original failure receipt](followup-entry-result.md); source pins
 and cleanup were retained and verified. No retry or acceptance follows from it.
 The [minimal renewal/runner/lifecycle repair](followup-entry-repair-diagnosis.md)
-is authored only; combined 107 source, independent review and a new grant remain
+is authored only. The [combined candidate](followup-entry-combined-plan.md) adopts
+reviewed 107 service `17e7fe1`; combined static review and a new grant remain
 required before execution.
 
 The earlier access/timing checkpoint ran:

@@ -1,5 +1,10 @@
 # Author-only diagnosis and repair after the failed entry
 
+Current authoring release: the [combined candidate](followup-entry-combined-plan.md)
+adopts reviewed 107 service `17e7fe1` and clears the earlier source hold. The
+historical hold states below remain part of the repair record. Combined static
+review and a new execution grant remain required; no repaired test has run.
+
 6 November 2026. **No repaired application, launcher, supervisor or resource
 adapter has been executed or imported.** The original 8/11 failure and
 stop-first-failure deviation remain in [the original receipt](followup-entry-result.md).
