@@ -86,8 +86,10 @@ a guessed principal or reuse presenter roles as the acting employee's permission
 Scoped tests validate backend presentation contracts and the UI consumer below. The UI follows experience-quality.md, supplied shell references
 `screens/00-employee-account.webp` and `screens/01-replace-vehicle.webp`, the reviewed employee
 body at `evidence/fucq-6/README.md` revision a7fc178, COMPONENTS.md and current shared Density
-tokens. Actual release counts, full journey reset, browser evidence and live PostgreSQL remain
-separate integration acceptance; synthetic handlers do not prove those producers exist.
+tokens. The accepted desktop/narrow browser evidence is recorded in
+`evidence/fucq-126/browser-after-results.json`; actual release counts, full journey reset and
+live PostgreSQL remain separate integration acceptance. Synthetic handlers do not prove those
+producers exist.
 
 ## UI consumer · FUCQ-126
 
@@ -141,21 +143,32 @@ A known successful pending tick receipt keeps its pending handler details visibl
 deliberate next action or reset; it is not treated as an unknown command outcome. Typed field
 explanations in `reasons: [{ field, reason }]` are shown alongside the outcome/code.
 The UI adds no policy fallback, business producer or source authority. Scoped DOM/transport checks
-and isolated gallery fixtures establish presentation behavior; browser captures, actual business
-release/count and full business-scenario reset remain separate acceptance evidence.
+and isolated gallery fixtures establish presentation behavior. The accepted 17 desktop and 17
+narrow browser checks cover the recorded isolated actual-HTTP composition; actual business
+release/count, full business-scenario reset and the broader unexecuted browser variants remain
+separate acceptance evidence.
 
 ## Existing policy and producer integration gates
 
 The new assumed step in the edited seed applies only when that snapshot is first imported. An
 existing stored `gcsp-policy-v1` is immutable: neither reseeding it nor rewriting its rows is an
-adoption mechanism. The current publisher patches existing keys and cannot introduce this new
-assumption. Existing database-backed runs therefore need a reviewed successor snapshot/key
-adoption mechanism, then actual activation and run pinning through the policy work (FUCQ-103/83).
-Until then, `presenter-step-unavailable` is the honest control result; core clock operations still
-work. No local step fallback or database mutation is part of FUCQ-126.
+adoption mechanism. The ordinary publisher patches existing keys. Source review on 6 November
+at FUCQ-103 `3f1cc3414d700b1028ff1fec640a40591324b728` confirms a separate reviewed server-only
+`PolicyService.adoptReviewedAssumptions` operation with bundle `presenter-controls-v1`, plus
+same-provider runtime composition and persisted domain-time run activation. That mechanism is
+available but is not integrated into this FUCQ-126 checkpoint. Its actual adoption, activation
+and fresh-context readback must be proved in the integrated runtime, with native durability
+remaining subject to the relevant acceptance/access lane. Until adoption, missing-key runs
+return `presenter-step-unavailable`; core clock operations still work. No local step fallback
+or retained-policy overwrite is part of FUCQ-126.
 
 For completion, compose the actual FUCQ-92 release producer and actual FUCQ-125 business scenario
 preparers, then exercise next release, verify the reported number against actual inventory, and
 reset into another available business scenario with a new run/context. Preserve ordered receipts
 and run/policy identities. The clock-mechanics scenario, an unavailable catalogue row, or a
 synthetic handler only proves that narrower boundary. These business acceptance items stay open.
+
+The pinned [6 November integration plan](evidence/fucq-126/integration-plan-2026-11-06.md)
+records available FUCQ-100/103/122 interfaces, the exact policy-instance reset constraint,
+minimum central composition and remaining producer/validation gates. It is a source/documentation
+checkpoint, not an integration or test-execution grant.

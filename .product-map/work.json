@@ -1368,7 +1368,7 @@
       "id": "FUCQ-126",
       "jira_observation_basis": "Authenticated getJiraIssue FUCQ-126: In Progress/Gary Carter; no Jira write",
       "jira_observed_at": "2026-11-05T23:00:00Z",
-      "observed_at": "2026-11-05T23:49:37Z",
+      "observed_at": "2026-11-06T00:11:38Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -1407,16 +1407,16 @@
           "title": "Current-base integration and authored full validation"
         },
         {
-          "evidence": "Existing immutablegcsp-policy-v1 lacks new step;publisher patches existing keys only;reviewed successor-key mechanism/activation needed viaFUCQ103/83",
+          "evidence": "Source-only review, 6 Nov: FUCQ-103 at 3f1cc34 supplies reviewed presenter-controls-v1 adoption, same-provider runtime and domain-time activation. Presenter integration, missing-key adoption, run pins and fresh-context evidence remain open. docs/gcsp/evidence/fucq-126/integration-plan-2026-11-06.md",
           "id": "stored-policy-adoption",
-          "observed_at": "2026-11-05T23:02:34Z",
+          "observed_at": "2026-11-06T00:10:28.096225+00:00",
           "status": "blocked",
           "title": "Existing stored policy successor-key adoption"
         },
         {
-          "evidence": "Actual FUCQ92release and FUCQ125business preparers absent under paused claims;synthetic fixtures cannot prove release counts/business resets",
+          "evidence": "Pinned FUCQ-100/103/122/126 sources provide buddy/case services. FUCQ-92 release source is not supplied; six business scenario loaders and atomic domain reset preparation remain unavailable. Paused FUCQ-96 pending-read integration remains. docs/gcsp/evidence/fucq-126/integration-plan-2026-11-06.md",
           "id": "business-integration",
-          "observed_at": "2026-11-05T23:02:34Z",
+          "observed_at": "2026-11-06T00:10:28.096225+00:00",
           "status": "blocked",
           "title": "Actual release counts and business scenario reset"
         }
