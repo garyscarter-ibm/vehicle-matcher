@@ -26,13 +26,15 @@ export function observeStage(read, { context, orderUuid, openingStage, openingSt
   const v = read.value;
   if (v.contractVersion !== STAGE_CONTRACT) return notOpen('stage-contract-unsupported');
   if (v.runId !== context.runId || v.orderUuid !== orderUuid || !text(v.employeeId, 128)) return notOpen('stage-identity-mismatch');
-  if (!(Number.isSafeInteger(v.lifecycleRevision) && v.lifecycleRevision > 0) || !text(v.policyVersion, 128)) return notOpen('stage-revision-missing');
+  // Producer view nests its pins (policy.policyVersion); a top-level field is accepted too.
+  const policyVersion = v.policyVersion ?? v.policy?.policyVersion;
+  if (!(Number.isSafeInteger(v.lifecycleRevision) && v.lifecycleRevision > 0) || !text(policyVersion, 128)) return notOpen('stage-revision-missing');
   if (!Array.isArray(v.stages)) return notOpen('stage-read-unavailable');
   const stage = v.stages.find((row) => row?.stage === openingStage);
   if (!stage) return notOpen('opening-stage-not-in-lifecycle', { lifecycleRevision: v.lifecycleRevision });
   if (stage.state !== openingState || !validInstant(stage.at)) return notOpen('opening-stage-not-reached', { lifecycleRevision: v.lifecycleRevision, stageState: stage.state ?? null });
   return { status: 'open', employeeId: v.employeeId, observation: { contractVersion: v.contractVersion, stage: openingStage, state: stage.state,
-    stageAt: stage.at, providerReference: stage.providerReference ?? null, lifecycleRevision: v.lifecycleRevision, stagePolicyVersion: v.policyVersion } };
+    stageAt: stage.at, providerReference: stage.providerReference ?? null, lifecycleRevision: v.lifecycleRevision, stagePolicyVersion: policyVersion } };
 }
 
 const overdueAt = (item, now) => item.owner === 'employee' && !['complete', 'failed'].includes(item.status) && Date.parse(now) > Date.parse(item.dueAt);
@@ -185,9 +187,10 @@ export class LifecycleDocumentService {
     const prepared = await this.#now(context); if (prepared.error) return prepared.error;
     if (prepared.now !== now) return result('stale-version', { reason: 'Clock changed during this tick. Refresh and retry.' });
     const summary = { producer: 'ok', opened: 0, notOpen: [], orders: [] };
-    if (this.#stages && typeof this.#stages.listOrders === 'function') {
+    const lister = typeof this.#stages?.listOrders === 'function' ? 'listOrders' : typeof this.#stages?.list === 'function' ? 'list' : null;
+    if (lister) {
       let listed;
-      try { listed = await this.#stages.listOrders(context); } catch { listed = unavailable(); }
+      try { listed = await this.#stages[lister](context); } catch { listed = unavailable(); }
       if (listed?.status === 'ok' && Array.isArray(listed.value?.orders)) {
         for (const orderUuid of listed.value.orders.map((o) => o?.orderUuid).filter((id) => text(id, 128))) {
           const opened = await this.#open(context, tickId, now, orderUuid, prepared.read);
@@ -208,7 +211,11 @@ export class LifecycleDocumentService {
 
   async #employeeOrOperator(context) {
     if (!this.#identity) return unavailable();
-    for (const role of ['employee', 'greg', 'presenter']) if ((await this.#identity.requireRole(context, role)).status === 'ok') return ok(role);
+    for (const role of ['employee', 'greg', 'presenter']) {
+      const allowed = await this.#identity.requireRole(context, role);
+      if (allowed.status === 'ok') return ok(role);
+      if (allowed.status !== 'forbidden') return allowed; // stale-run, expired session and the like pass through
+    }
     return result('forbidden', { reason: 'Only the employee, the scheme team or the presenter can read document progress.' });
   }
 

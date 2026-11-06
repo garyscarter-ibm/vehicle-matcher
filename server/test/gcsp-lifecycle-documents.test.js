@@ -35,7 +35,7 @@ function stagePort() {
     const stages = order.stageList.map((stage, index) => ({ stage, state: index < order.approved ? 'approved' : index === order.approved ? 'pending' : 'not-started',
       at: index < order.approved ? '2026-11-05T09:00:00.000Z' : null, providerReference: index <= order.approved ? `SYN-STAGE-${index}` : null }));
     return ok({ contractVersion: order.contractVersion ?? 'lifecycle.stages.v1', runId: order.runId ?? context.runId, orderUuid, employeeId: order.employeeId,
-      policyVersion: 'gcsp-policy-v1', lifecycleRevision: order.revision, stageList: order.stageList, currentStage: order.stageList[order.approved] ?? null,
+      ...(order.nestedPolicy ? { policy: { policyVersion: 'gcsp-policy-v1' } } : { policyVersion: 'gcsp-policy-v1' }), lifecycleRevision: order.revision, stageList: order.stageList, currentStage: order.stageList[order.approved] ?? null,
       stages, outcome: order.approved >= order.stageList.length ? 'sent-to-ordering' : 'in-progress' });
   }, async listOrders() { return ok({ orders: [...orders.keys()].map((orderUuid) => ({ orderUuid })) }); } };
 }
@@ -126,6 +126,13 @@ test('missing, unsupported, stale or foreign stage reads stay explicitly not ope
   f.order({ reply: () => { throw new Error('down'); } }); assert.equal((await read()).value.reason, 'stage-read-unavailable');
   f.order({ revision: 0 }); assert.equal((await read()).value.reason, 'stage-revision-missing');
   f.order({ employeeId: 'employee-nobody' }); await f.tick(); assert.deepEqual(await items(f), []);
+  f.order({ nestedPolicy: true }); assert.equal((await read()).value.reason, 'awaiting-document-tick');
+  const listOnly = stagePort(); listOnly.list = listOnly.listOrders; delete listOnly.listOrders;
+  const viaList = await setup(t, { stages: listOnly }); viaList.order({ nestedPolicy: true }); await viaList.tick();
+  assert.equal((await items(viaList)).length, 1);
+  const staleIdentity = { requireRole: async () => result('stale-run', { reason: 'earlier run' }) };
+  const staleService = createLifecycleDocumentService({ repository: f.repository, policy: await policyWith(), clock: f.clock, identity: staleIdentity, lifecycleStages: f.stages });
+  assert.equal((await staleService.readReadiness(f.greg, { orderUuid: ORDER })).status, 'stale-run');
   const none = await setup(t, { stages: null }); const outcome = await none.tick();
   assert.equal(outcome.outcomes.find((o) => o.handlerId === DOCUMENTS_HANDLER_ID).outcome.value.producer, 'missing');
   assert.equal((await none.service.readReadiness(none.paula, { orderUuid: ORDER })).value.reason, 'stage-read-unavailable');
