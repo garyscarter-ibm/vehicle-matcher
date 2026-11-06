@@ -282,8 +282,8 @@
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-bounds.py",
       "targetDevice": 16777232,
       "targetInode": 173307467,
-      "bytes": 48095,
-      "sha256": "2d52a83409a80278baff940c68e375d881e0631a1e0916bb28cb6c5925717100"
+      "bytes": 53788,
+      "sha256": "6a4cc6c958bc460fccc2b5604c8728172b2ed96599a3372ad0d60c36b93a94da"
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/case-release-ledger.py": {
       "kind": "file",

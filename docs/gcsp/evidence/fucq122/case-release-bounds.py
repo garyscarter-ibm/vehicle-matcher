@@ -73,6 +73,8 @@ def failure_detail(error, stage='unspecified', helper=None):
         trace = trace.tb_next
         walked += 1
     result.update(frames=frames, traceTruncated=omitted or trace is not None)
+    if type(error) is BoundError and type(error.__dict__.get('_process_query_rejection')) is dict:
+        result['processQuery'] = error.__dict__['_process_query_rejection']
     return result
 
 
@@ -202,25 +204,87 @@ def normalized_start(value):
     return date.strftime('%a %b ') + str(date.day) + date.strftime(' %H:%M:%S %Y')
 
 
+def process_query_error(error, predicate, index=0, fields=(), parsed=0, previous=None, state_index=None):
+    # Only declared ps metadata; never retain the line, command arguments or stderr.
+    numeric = ('pid', 'ppid', 'pgid', 'rssKiB')
+    row = {key: fields[pos] if len(fields) > pos and fields[pos].isascii()
+           and fields[pos].isdigit() and len(fields[pos]) <= 19 else None
+           for pos, key in enumerate(numeric)}
+    state = fields[4] if len(fields) > 4 else ''
+    safe_state = 'RSDTtWXZIU+<>AELNSsVWXl'
+    row['stat'] = ''.join(char if char in safe_state else '?' for char in state[:32])
+    row['statChars'] = len(state)
+    row['statTruncated'] = len(state) > 32
+    row['statRedacted'] = any(char not in safe_state for char in state[:32])
+    start = fields[5].strip() if len(fields) == 6 else ''
+    shaped_start = re.fullmatch(r'(Mon|Tue|Wed|Thu|Fri|Sat|Sun) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) +([0-9]{1,2}) ([0-9]{2}:[0-9]{2}:[0-9]{2}) ([0-9]{4})', start)
+    row['start'] = ' '.join(start.split()) if shaped_start else None
+    row['startChars'] = len(start)
+    row['startRedacted'] = bool(start) and not shaped_start
+    detail = {'predicate': predicate, 'rowIndex': index, 'parsedRows': parsed,
+              'row': row, 'duplicatePrevious': None,
+              'invalidNumericFields': [key for key in numeric if row[key] is None],
+              'rejectedStateIndex': state_index,
+              'rejectedStateCodePoint': ord(state[state_index]) if state_index is not None else None,
+              'allRowsAccounting': 'complete-query-rejected; no partial RSS accepted'}
+    if previous is not None:
+        detail['duplicatePrevious'] = {key: str(previous[key]) for key in ('pid', 'ppid', 'pgid')}
+        detail['duplicatePrevious'].update(rssKiB=str(previous['rss']//1024),
+            stat=previous['state'][:32], statTruncated=len(previous['state']) > 32, start=previous['start'])
+    error._process_query_rejection = detail
+    return error
+
+
 def process_rows(output, error, rc):
     if rc != 0 or error or not isinstance(output, str) or not output or not output.endswith('\n'):
-        raise BoundError('Incomplete or failed process query')
+        predicate = 'query-exit' if rc != 0 else 'query-stderr' if error else 'query-output-type' if not isinstance(output, str) else 'query-empty' if not output else 'query-final-newline'
+        raise process_query_error(BoundError('Incomplete or failed process query'), predicate)
     rows = {}
-    for line in output.splitlines():
+    for index, line in enumerate(output.splitlines(), 1):
         fields = line.split(None, 5)
-        if len(fields) != 6 or any(not item.isascii() or not item.isdigit() or len(item) > 19 for item in fields[:4]):
-            raise BoundError('Unknown process row')
+        if len(fields) != 6:
+            raise process_query_error(BoundError('Unknown process row'), 'field-count', index, fields, len(rows))
+        for key, item in zip(('pid', 'ppid', 'pgid', 'rss'), fields[:4]):
+            if not item.isascii() or not item.isdigit() or len(item) > 19:
+                predicate = key + ('-non-ascii' if not item.isascii() else '-non-decimal' if not item.isdigit() else '-digits-cap')
+                raise process_query_error(BoundError('Unknown process row'), predicate, index, fields, len(rows))
         pid, ppid, pgid, rss = map(int, fields[:4])
         state = fields[4]
-        if pid <= 0 or pgid <= 0 or max(pid, ppid, pgid) >= 2**63 or rss > (2**63-1)//1024 or pid in rows or not state or state[0] not in 'RSDTtWXZIU' \
-                or any(char not in '+<>AELNSsVWXl' for char in state[1:]):
-            raise BoundError('Duplicate or invalid process identity/state')
-        rows[pid] = dict(pid=pid, ppid=ppid, pgid=pgid, rss=rss*1024,
-                         state=state, start=normalized_start(fields[5].strip()))
+        predicate = None
+        state_index = None
+        if pid <= 0:
+            predicate = 'pid-nonpositive'
+        elif pgid <= 0:
+            predicate = 'pgid-nonpositive'
+        elif max(pid, ppid, pgid) >= 2**63:
+            predicate = next(key + '-range' for key, value in (('pid', pid), ('ppid', ppid), ('pgid', pgid)) if value >= 2**63)
+        elif rss > (2**63-1)//1024:
+            predicate = 'rss-range'
+        elif pid in rows:
+            predicate = 'duplicate-pid'
+        elif not state:
+            predicate = 'state-empty'
+        elif state[0] not in 'RSDTtWXZIU':
+            predicate, state_index = 'state-leading-character', 0
+        else:
+            state_index = next((pos for pos, char in enumerate(state[1:], 1) if char not in '+<>AELNSsVWXl'), None)
+            if state_index is not None:
+                predicate = 'state-modifier-character'
+        if predicate is not None:
+            raise process_query_error(BoundError('Duplicate or invalid process identity/state'), predicate,
+                index, fields, len(rows), rows.get(pid) if predicate == 'duplicate-pid' else None, state_index)
+        try:
+            start = normalized_start(fields[5].strip())
+        except BoundError as rejected:
+            predicate = {'Unknown process start syntax': 'start-syntax', 'Invalid process start date': 'start-date',
+                         'Process start weekday/year differs': 'start-weekday-or-year'}[rejected.args[0]]
+            process_query_error(rejected, predicate, index, fields, len(rows))
+            raise
+        rows[pid] = dict(pid=pid, ppid=ppid, pgid=pgid, rss=rss*1024, state=state, start=start)
         if len(rows) > CONTRACT['entries']:
-            raise BoundError('Process query row cap')
+            raise process_query_error(BoundError('Process query row cap'), 'row-cap', index, fields, len(rows))
     if os.getpid() not in rows:
-        raise BoundError('Supervisor absent from complete process query')
+        raise process_query_error(BoundError('Supervisor absent from complete process query'), 'supervisor-absent', parsed=len(rows))
     return rows
 
 
@@ -289,8 +353,29 @@ class Processes:
 
     def remember_failure(self, error, stage='unspecified', helper=None):
         with self.lock:
+            if 'firstFailure' in self.record and 'firstProcessQueryRejection' in self.record:
+                return
+            detail = failure_detail(error, stage, helper)
             if 'firstFailure' not in self.record:
-                self.record['firstFailure'] = failure_detail(error, stage, helper)
+                self.record['firstFailure'] = detail
+            if 'processQuery' in detail and 'firstProcessQueryRejection' not in self.record:
+                # Metadata links are diagnostic candidates, never identity/ownership proof.
+                known_pids = {os.getpid()} | {row['pid'] for row in self.record['helpers'] if row['pid'] is not None}
+                known_pids.update(row['pid'] for row in self.record['observed'])
+                if self.record.get('nodePid') is not None:
+                    known_pids.add(self.record['nodePid'])
+                groups = {row['group'] for row in self.record['helpers'] if row['group'] is not None}
+                links = []
+                query = detail['processQuery']
+                for label, row in (('row', query['row']), ('duplicatePrevious', query['duplicatePrevious'])):
+                    if row is not None:
+                        for key, known in (('pid', known_pids), ('ppid', known_pids), ('pgid', groups)):
+                            value = row[key]
+                            if value is not None and int(value) < 2**63 and int(value) in known:
+                                links.append(label + '.' + key)
+                self.record['firstProcessQueryRejection'] = {**query, 'stage': detail['stage'],
+                    'helper': detail.get('helper'), 'recordedMetadataLinks': links,
+                    'ownedAccounting': 'possible-recorded-metadata-link' if links else 'unresolved-no-recorded-link'}
         # Memory-only: existing guarded saves persist this; no cancellation/ownership decision changes.
 
     def fail(self, error, stage='unspecified', helper=None):

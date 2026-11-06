@@ -1,10 +1,10 @@
 # C4 actual release and persisted-driver case HTTP proposal
 
-6 November 2026. FUCQ-122 / DEV-2026-11-04-084. **C4 correction/refreeze authored.
-The first two supervisor attempts stopped before Node. The third launched Node:
-0 passed, 1 setup failure, 3 not reached. All three grants remain consumed;
-one unused revised-run allowance still requires review and an exact revised
-assignment. This author-only checkpoint does not authorize execution.**
+6 November 2026. FUCQ-122 / DEV-2026-11-04-084. **Parser diagnostics/refreeze
+authored. The latest attempt at `45a32d9` exited 2 before Node, at process-row
+parse/helper 129; no C4 cases ran. Both revised allowances are consumed.
+The previous Node run's 0 passed, 1 setup failure and 3 not reached remain
+preserved. This author-only checkpoint authorizes no retry.**
 
 ## Decided
 
@@ -13,9 +13,9 @@ composition at `f179ae6043414a2b07de3edb2b425338299ea37b`. It includes the
 reviewed 92/69/70/103/122/126 leaves and one shared repository, policy, clock,
 identity, release registry, manual/buddy authority and case service. FUCQ-100
 retains all central composition and C1 profile/preparation ownership. This
-correction changes no product source, shared/owned helper, Jira/map/claim,
-producer or paused source. Its test delta is one body preference literal;
-source/admission pins and evidence are refreshed for review.
+checkpoint changes only the owned bounds helper's bounded diagnostics, its
+admission pin and evidence. Product sources, shared helpers, the corrected test,
+profile/policy, Jira/map/claim, producer and paused sources remain unchanged.
 
 `server/test/gcsp-case-release-http.test.js` has four finite top-level cases.
 Requests enter the actual `buildServer` request listener as Node readable HTTP
@@ -94,13 +94,16 @@ The historical pinned-executable admission repair is in
 [case-release-executable-admission-repair.md](case-release-executable-admission-repair.md).
 The historical retained-diagnostics repair is in
 [case-release-retained-diagnostics.md](case-release-retained-diagnostics.md).
-The current one-literal correction, retained C1 trace, original failed-run and
-root cleanup evidence, exact new pins and remaining review gate are in
+The historical one-literal correction, retained C1 trace and earlier failed-run/
+root PASS721 cleanup evidence are in
 [case-release-brief-correction.md](case-release-brief-correction.md).
+The current parser diagnosis, bounded metadata contract, latest original
+failure/root cleanup evidence, exact pins and deferred validation selection are
+in [case-release-parser-diagnostics.md](case-release-parser-diagnostics.md).
 The earlier freeze collector ran as static metadata authoring; this refreeze
 uses independent stdlib byte/hash/metadata authoring without running or importing
 that collector. The loader and launcher were exercised by the third attempt;
-the corrected test has not run.
+no corrected-test case result is established by the latest attempt.
 The first supervisor attempt refused initial physical admission. The second
 passed that boundary and shared imports, returned a Scratch ownership object,
 acquired a reservation and reached source verification, then failed with 119
@@ -115,6 +118,12 @@ scratch open-file absence was unknown. Later exact-owner reconciliation was
 independently collected by root's combined 721-check PASS receipt, retaining
 both original failures and incomplete behavior acceptance. The present repair
 is static text/hash/metadata authoring and repeats none of these runs or cleanup.
+The fourth attempt, grant `fucq122-c4-45a32d9-1251`, failed before Node at helper
+129 with `Duplicate or invalid process identity/state`. Its specific predicate
+and rejected row were not retained, so the cause remains UNKNOWN. The original
+finalizer refused on sticky ownership state. The worker later reconciled the
+exact token; root's combined 20-check PASS collection independently retained
+that cleanup and the original failures. Both revised allowances are now consumed.
 
 The owned resources file is a copy of107's unexecuted cancellation repair,
 with its source hash recorded and only the story description/RAM ceiling
@@ -164,12 +173,15 @@ AST parsing. The subsequent accounting repair uses text/control-flow inspection,
 owned-file hashes and metadata authoring only: no syntax checks, AST parsing,
 collector/helper/test execution, probes, live ledger access or allocations.
 The retained-diagnostics repair at `9dca7ba` passed independent review before
-grant `fucq122-c4-9dca7ba-1220` was consumed. The current brief-input correction
-and refreshed exact pins await focused independent review. The first two
-supervisor attempts stopped before Node; the third exercised JavaScript,
-loader and launcher, then failed at the first setup brief draft. The corrected
-test has not run. Original failure evidence and root audit/reconciliation
-receipts remain local and untouched. The exact prior audit object, including
+grant `fucq122-c4-9dca7ba-1220` was consumed. The brief-input correction and
+refreshed pins were selected by grant 1251 after root's 984-check current
+admission PASS. That attempt stopped
+before Node at process-row parsing, so the correction's case outcomes remain
+unknown. The current parser diagnostic change and refreshed admission await
+focused independent review. The first two supervisor attempts also stopped
+before Node; the third exercised JavaScript, loader and launcher, then failed
+at the first setup brief draft. Original failure evidence and root audit/
+reconciliation receipts remain local and untouched. The exact prior audit object, including
 historical collector attempts, is nested in the current freeze audit. The
 initial source selection lacked the owned client, and a prose comment was initially
 mistaken for a bare import. Both refused before writing a source/admission
@@ -179,11 +191,13 @@ The prior accepted81 proof remains separate and is not selected again.
 
 Before another execution: independently review the exact source/input assertions,
 installed closure, loader/resource/cancellation and source materialization
-behavior and the narrow correction, then obtain a revised assignment binding
-the unused revised-run allowance to the exact reviewed revision/admission.
-All recorded command templates require the exact reviewed admission hash and
-an exact C4 grant. Refreezing is not execution approval; no current execution
-permission exists.
+behavior and the bounded diagnostic change. The next proposed selection is
+one isolated parser-boundary driver with nine finite groups, documented in the
+current diagnosis note; its source, command, inputs, resource admission and
+explicit assignment remain to be prepared. No revised allowance remains.
+All recorded C4 command templates require the exact reviewed admission hash
+and a new exact grant. Refreezing is not execution approval; no current
+execution permission exists.
 
 The proposed selected child is one `node --test --test-reporter=tap
 --test-concurrency=1` invocation of the four-case file, under the owned gated
@@ -260,7 +274,9 @@ launch Node; the second failed in process-query parse/identity handling during
 source verification. The third launched Node, failed in brief setup and later
 encountered another query parse-or-identity rejection. The specific rejected
 query invariant remains unknown. Diagnostic retention was exercised in the
-third attempt; the current brief-input correction remains unexecuted. Focused
-independent review, fresh current admission and an exact revised assignment
-remain required. Original failure evidence and later root-collected cleanup
-remain separate from behavior acceptance.
+third attempt and again in the fourth attempt's parser failure. The new
+predicate/metadata diagnostics remain unexecuted. Focused independent review,
+a finite parser-boundary validation plan and a new exact assignment remain
+required. The helper-129 rejection does not establish which combined condition
+failed and supports no platform syntax relaxation. Original failure evidence
+and later root-collected cleanup remain separate from behavior acceptance.
