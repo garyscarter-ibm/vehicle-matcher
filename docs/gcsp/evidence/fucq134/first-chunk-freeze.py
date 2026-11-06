@@ -15,6 +15,7 @@ LOCAL = ['server/gcsp/comparison/harness.js', 'server/test/gcsp-comparison-curre
          'server/test/fixtures/gcsp-comparison-current-outcomes.json', 'docs/gcsp/fucq134-outcome-policy-proposal.json']
 HELPERS = ['_tools/test_resources.py', '_tools/scaffold_git.py', 'docs/gcsp/evidence/fucq134/first-chunk-resources.py',
            'docs/gcsp/evidence/fucq134/first-chunk-supervisor.py', 'docs/gcsp/evidence/fucq134/first-chunk-freeze.py',
+           'docs/gcsp/evidence/fucq134/first-chunk-completion.py',
            'docs/gcsp/fucq134-source-graph.json']
 
 
@@ -115,6 +116,11 @@ def main():
         'limits': {'seconds': 120, 'executionSeconds': 110, 'probeOutputBytes': 128 * 1024,
                    'snapshotSeconds': 3, 'lsofSeconds': 5, 'memoryProbeSeconds': 3,
                    'ramBytes': 768 * 1024 ** 2, 'combinedBytes': 128 * 1024 ** 2,
+                   'completionReserveRamBytes': 64 * 1024 ** 2, 'completionReserveDiskBytes': 1024 ** 2,
+                   'finalManifestBytes': 64 * 1024, 'finalReceiptBytes': 64 * 1024,
+                   'finalCheckpointBytes': 8 * 1024, 'completionTicketBytes': 8 * 1024,
+                   'finalJsonNodes': 4096, 'finalJsonDepth': 16, 'finalStringCodepoints': 16 * 1024,
+                   'finalTotalStringCodepoints': 64 * 1024,
                    'logBytes': 2 * 1024 ** 2, 'workerCount': 1, 'reserveFreeBytes': 5 * 1024 ** 3}}
     target = EVIDENCE / 'first-chunk-admission.json'
     target.write_text(json.dumps(result, indent=2, sort_keys=True) + '\n')

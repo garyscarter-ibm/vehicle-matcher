@@ -1345,16 +1345,20 @@
       "bytes": 2576
     },
     "docs/gcsp/evidence/fucq134/first-chunk-resources.py": {
-      "sha256": "daa06aaeec237b92111c4947399622636856ce79e311804d5898cfd6721ae74e",
-      "bytes": 34107
+      "sha256": "889502bc579e791b4b3afc4ced34fee47fb3277af8acffbb69b660a36ae4811d",
+      "bytes": 34191
     },
     "docs/gcsp/evidence/fucq134/first-chunk-supervisor.py": {
-      "sha256": "1102fbed87e4d76a2ee8d02e5d6d3414a92fd4c5b924fb9670e21105b66cf002",
-      "bytes": 15521
+      "sha256": "dcf7f49031752f7cb488c69a9972a32fab878b9fd50d0e3da2bad9b303457c22",
+      "bytes": 17308
     },
     "docs/gcsp/evidence/fucq134/first-chunk-freeze.py": {
-      "sha256": "6c033a2bb4dd085de999e3e6a5ffa82f57ddfe1e54deb334e337e92a840181d3",
-      "bytes": 6923
+      "sha256": "d047af7d501fc94840ce701d04296407deec933e4535af4a14ed10e39f99e8f6",
+      "bytes": 7428
+    },
+    "docs/gcsp/evidence/fucq134/first-chunk-completion.py": {
+      "sha256": "816696405b94b3222a30c1b101866900495003cb7a77a622c66e80887287d518",
+      "bytes": 10366
     }
   },
   "firstChunkReview": {
@@ -1362,7 +1366,7 @@
     "resourcePattern": "918ce04510fd327e860809e7de53bd636d1cf7da:docs/gcsp/models/fucq115-activation-resources.py adapted only in owned134 file",
     "supervisor": "docs/gcsp/evidence/fucq134/first-chunk-supervisor.py",
     "admission": "docs/gcsp/evidence/fucq134/first-chunk-admission.json",
-    "execution": "Not authorized. Second repaired static freeze awaits immutable delta admission. No probe/helper/test execution or allocation.",
+    "execution": "Not authorized. Final-output bounded completion and independent parent audit await immutable delta admission. No helper/probe/test execution or allocation.",
     "launchOwnershipRepair": "Static107finding: persist launch intent before Popen; defer SIGTERM/SIGINT through PID/start registration; unresolved launch cannot certify absence; cleanup adopts any supplied direct child handle. No reproduction/runtime granted.",
     "originalStaticReview": {
       "reviewer": "Dibble",
@@ -1376,7 +1380,8 @@
       "Pin ps/vm_stat/lsof binary contents and complete physical identities before custom resource-helper imports.",
       "Protect bounded direct-child terminate/kill/wait in fallback finally from snapshot, manifest-persistence and signal failures; original failure still blocks cleanup/release.",
       "Retain complete expected reservation row including disk/ram/parent/used/rss; validate each mutation and immediately before scratch deletion while holding pinned physical ledger lock.",
-      "Use one recursive RSS/combined disk/elapsed meter for setup, verification and cleanup snapshots plus bounded owned vm_stat/lsof probes; direct-handle join is independent of meter/persistence failures."
+      "Use one recursive RSS/combined disk/elapsed meter for setup, verification and cleanup snapshots plus bounded owned vm_stat/lsof probes; direct-handle join is independent of meter/persistence failures.",
+      "Reserve64MiB RAM/1MiB disk inside existing caps; bound/preencode final manifest/receipt/checkpoint and atomic temporary files; postwrite meter and independent parent audit require controller/audit exit0. No recursive receipt rewrites or completion claim from provisional files."
     ],
     "resourceDeltaReview": {
       "reviewer": "Dibble",
@@ -1384,6 +1389,14 @@
       "admission": "18a58abb4ec2850b76672daaf52240f65c4b33d92713f9d9365f3bf362460593",
       "passed": "5GiB reserve, executable pins and protected direct stop/join;45source/72edge composition reused unchanged",
       "held": "Full expected-row/deletion binding and verification/cleanup accounting",
+      "agents": "requested/selected gpt-6.1-sol/high; no fallback or descendants"
+    },
+    "completionDeltaReview": {
+      "reviewer": "Dibble",
+      "revision": "2dd62e4a1c5b99463ee9d1c243e327cb127524c8",
+      "admission": "36f30be3af9f3333e269af6dd5201f678d69824c9f23bb5fdb388e41b4318446",
+      "passed": "Full expected-row locked binding/deletion; accepted ledger/direct joins/pins and45-source/72-edge composition preserved",
+      "held": "Final-output manifest/receipt/checkpoint tail after last resource meter",
       "agents": "requested/selected gpt-6.1-sol/high; no fallback or descendants"
     }
   }

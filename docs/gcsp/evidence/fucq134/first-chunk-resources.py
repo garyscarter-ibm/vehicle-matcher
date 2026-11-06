@@ -682,5 +682,6 @@ class Finalizer:
             result['error'] = type(error).__name__ + ': ' + str(error)[:1024]
         self.result = result
         self.scratch.record['finalizer'] = result
-        self.resources.atomic_json(self.scratch.manifest, self.scratch.record)
+        # The supervisor preencodes this final manifest with receipt/checkpoint
+        # inside its reserved completion budget. No unmetered write after release.
         return result

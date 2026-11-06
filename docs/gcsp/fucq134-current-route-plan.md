@@ -236,7 +236,7 @@ PolicyService and never bypass its gate.
 
 Review package and exact proposed command:
 `docs/gcsp/evidence/fucq134/README.md`. Admission SHA-256:
-`36f30be3af9f3333e269af6dd5201f678d69824c9f23bb5fdb388e41b4318446`.
+`970a2b8c8080b88c25651c604c8fc6bb30e639ed95de6c060da07d353911de6c`.
 45 source/data files include published66's matching context changes unchanged,
 base generator unchanged and owned six runtime/data files. Dependency and physical
 runtime identities are frozen before custom execution. Three Python ASTs, JSONs
@@ -275,3 +275,28 @@ failure. Source-pin verification stays within the reservation.120 seconds covers
 all phases, with ordinary execution stopping at110 for cleanup headroom. New
 admission `36f30be3af9f3333e269af6dd5201f678d69824c9f23bb5fdb388e41b4318446`;235 nodes and unchanged45 product/data sources. Static only;
 no runtime/probe/test execution or allocation. Dispatcher delta review remains.
+
+
+## Final-output completion checkpoint · 6 November 2026
+
+Immutable2dd62e4 review passed complete-row locked binding/deletion; its sole
+remaining hold was the final manifest/receipt/checkpoint write tail. The narrow
+owned delta reserves64MiB RAM/1MiB disk within768/128MiB caps at every meter,
+limits the combined payload graph before encoding, preencodes64/64/8KiB final
+files once, writes them once via bounded exclusive atomic temporary files, and
+meters after every write/stdout flush. The admission-pinned completion helper
+also supplies a separate parent audit. The proposed parent command captures the
+actual controller exit, verifies bounded file hashes/inventory and actual
+postwrite disk/free-space/RSS/time within the original120-second deadline.
+Completion requires both controller and audit exit0 plus the audit output.
+Provisional on-disk files remain incomplete; errors/unknowns never trigger a
+recursive receipt rewrite or retry.
+
+Superseding admission `970a2b8c8080b88c25651c604c8fc6bb30e639ed95de6c060da07d353911de6c`;236 physical identities.
+All45source/72edge composition and source identity remain unchanged. Four Python
+ASTs, JSON, structural ordering, helper/content pins and immutable source reuse
+were checked statically. No edited helper import, supervisor plan, OS probe,
+Node, test, reproduction, reservation or scratch allocation occurred. This
+checkpoint awaits immutable delta admission and a new execution grant. The
+accepted ledger/direct-join/probe pins and exactly three mechanics cases remain
+unchanged; all acceptance and the five other slices remain outstanding.

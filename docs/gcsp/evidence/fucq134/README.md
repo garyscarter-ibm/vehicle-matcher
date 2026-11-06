@@ -10,9 +10,9 @@ has occurred. This package is incomplete implementation evidence, not acceptance
 
 - Base: `034b56d08fb742d31478218b670552805d5840ab`.
 - Published real66: `eb5a677b37c486e3da7c4547803f739e22df8ac3`.
-- Admission SHA-256: `36f30be3af9f3333e269af6dd5201f678d69824c9f23bb5fdb388e41b4318446`.
+- Admission SHA-256: `970a2b8c8080b88c25651c604c8fc6bb30e639ed95de6c060da07d353911de6c`.
 - Composed source identity: `7a982714de7cf74968cabcfbe3712be2ff4c3fe75cf95acda3381044cffa4a82`.
-- 45 embedded source/data files, 971783 source bytes, 235 physical identities,
+- 45 embedded source/data files, 971783 source bytes, 236 physical identities,
   14 installed packages. Embedded immutable blobs permit checking the complete
   source content before custom resource-helper imports. Installed dependencies
   remain in place; only the owned scratch mirror links to them, read only.
@@ -37,14 +37,35 @@ command checks identities without importing custom helpers, allocating resources
 querying OS process state or importing JavaScript:
 
 ```sh
-/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --plan --admission-sha 36f30be3af9f3333e269af6dd5201f678d69824c9f23bb5fdb388e41b4318446
+/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --plan --admission-sha 970a2b8c8080b88c25651c604c8fc6bb30e639ed95de6c060da07d353911de6c
 ```
 
 Only after an explicit new grant, replace `--plan` with `--execute` and append:
 
 ```text
---dispatcher-grant fucq134-first-chunk-36f30be3af9f3333e269af6dd5201f678d69824c9f23bb5fdb388e41b4318446
+--dispatcher-grant fucq134-first-chunk-970a2b8c8080b88c25651c604c8fc6bb30e639ed95de6c060da07d353911de6c
 ```
+
+The authorized execution must use an independent parent to retain the actual
+controller exit status and immediately audit its bounded stdout ticket. This
+proposed shell command has **not** run; it captures at most8KiB from the reviewed
+controller and creates no ticket file:
+
+```sh
+if fucq134_completion_ticket="$(/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --execute --admission-sha 970a2b8c8080b88c25651c604c8fc6bb30e639ed95de6c060da07d353911de6c --dispatcher-grant fucq134-first-chunk-970a2b8c8080b88c25651c604c8fc6bb30e639ed95de6c060da07d353911de6c)"; then
+  fucq134_controller_exit=0
+else
+  fucq134_controller_exit=$?
+fi
+printf '%s\n' "$fucq134_completion_ticket" | /usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-completion.py --audit --controller-exit "$fucq134_controller_exit" --admission-sha 970a2b8c8080b88c25651c604c8fc6bb30e639ed95de6c060da07d353911de6c
+```
+
+Completion requires controller exit0, the independent audit's bounded `complete`
+stdout **and audit exit0**. Parent output alone cannot pass after a late audit
+failure. The caller retains both statuses and that output as its final receipt.
+No controller/audit error, absent ticket or delayed audit permits a retry or
+completion claim. On-disk receipt/checkpoint remain provisional and incomplete;
+the parent does not rewrite them to account for their own writes.
 
 The argument records a grant; knowing the argument is not authorization. Selection
 is exactly `isolation`, `real-claim-review-allocate`, `untaken-expiry` from the
@@ -58,6 +79,10 @@ remain unverified runtime seams until the granted run. No upstream tests repeat.
 - One worker, 120 seconds metered across phases, execution stops at110 seconds
   to leave10 seconds for ordinary cleanup, 768 MiB aggregate recursive RSS including supervisor,
   128 MiB combined scratch/retained output and 2 MiB combined stdout/stderr log.
+- Every meter reserves64MiB RAM and1MiB disk **inside** those caps for final
+  serialization, all three atomic temporary files, bounded ticket/parent output
+  and the sequential parent audit. Final manifest/receipt/checkpoint limits are
+  64/64/8KiB; ticket/parent stdout limits are8KiB each.
 - Fresh actual HostBudget reservation; at least 5 GiB host disk free and measured
   shared RAM headroom. Unknown ledger/process/capacity state refuses progress.
 - Scratch: story worktree `.claude/test-scratch/fucq134/fucq134-<token>`.
@@ -78,7 +103,7 @@ listener, network, browser, corpus, full-suite or large-output execution is gran
 
 ## Evidence and remaining work
 
-Static checks only: three Python AST parses, JSON parses and complete explicit
+Static checks only: four Python AST parses, JSON parses and complete explicit
 relative JS import edges. The freeze builder verified stored Git blobs and all
 installed file bytes against the earlier source graph. The supervisor itself has
 not run, including `--plan`. No test result is claimed.
@@ -179,3 +204,33 @@ source checks only. No edited resource helper, OS probe, Node, supervisor plan,
 reproduction/test, reservation or scratch has run. All45source/72edge composition
 and three-case selection remain accepted separately and unchanged. This package
 requires a new dispatcher delta admission and execution grant.
+
+## Final-output completion delta
+
+Immutable2dd62e4 review passed full-row locked binding/deletion and identified one
+remaining tail: final manifest/receipt/checkpoint writes followed the last meter.
+Only that completion boundary changes here. Accepted ledger/direct-join/pin code,
+45-source/72-edge composition and three mechanics cases stay unchanged.
+
+`first-chunk-completion.py` is an owned, admission-pinned helper. Before encoding,
+it limits all three payloads together to4096 JSON nodes, depth16,16Ki codepoints
+per string and64Ki codepoints total,64-bit integers and finite floats. They are
+preencoded once into64/64/8KiB maxima, then written once via exclusive, named
+atomic temporary files. Existing targets plus all temporary/encoded bytes fit
+within the explicit1MiB disk/64MiB RAM reserves. Encoding/write/budget errors leave
+the existing incomplete checkpoint and any exact named leftovers; there is no
+fallback rewrite or retry.
+
+Finalizer returns its final record for that bounded write. The shared meter
+checks RAM/disk/time before encoding, before writing, after each write and after
+ticket stdout flush. The files claim only a candidate result. The separate
+parent audit requires the actual controller exit0, the admitted helper hash,
+matching bounded file hashes/sizes, exact retained inventory with no atomic
+temporary files, owned scratch absence and consistent provisional result. It
+checks actual retained allocation/free space, its own RSS within the reserved
+64MiB and the same120-second start-to-audit deadline, including final stdout.
+Unknown resource/write/audit state stays incomplete without recursive receipts.
+
+This is authored static evidence only. AST/JSON/ordering/source/pin checks and
+static freeze generation do not execute these helpers, supervisor, probes or
+tests. A new immutable delta admission and explicit execution grant remain due.

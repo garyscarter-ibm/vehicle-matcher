@@ -113,11 +113,12 @@ def main():
     os.environ.update(environment)
     resources = imported(frozen, 'fucq134_resources', ROOT / '_tools/test_resources.py')
     guard = imported(frozen, 'fucq134_strict_resources', EVIDENCE / 'first-chunk-resources.py')
+    completion = imported(frozen, 'fucq134_completion', EVIDENCE / 'first-chunk-completion.py')
     with resources.handled_termination():
-        execute(frozen, args, resources, guard, environment, started)
+        execute(frozen, args, resources, guard, completion, environment, started)
 
 
-def execute(frozen, args, resources, guard, environment, started):
+def execute(frozen, args, resources, guard, completion, environment, started):
     import uuid
     policy = resources.Policy({'chunk_seconds': 120, 'chunk_ram_mib': 768, 'chunk_scratch_mib': 128,
                                'log_mib': 2, 'reserve_free_gib': 5})
@@ -164,15 +165,18 @@ def execute(frozen, args, resources, guard, environment, started):
             result.update(peakAggregateRSS=max(result.get('peakAggregateRSS', 0), rss, own_peak + child_peak),
                 peakCombinedBytes=max(result.get('peakCombinedBytes', 0), used), elapsedSeconds=elapsed,
                 accountingSamples=result.get('accountingSamples', 0) + 1, accountingPhase=tree.phase,
-                rssPeakBasis='recursive snapshots and conservative process high-water bound')
+                rssPeakBasis='recursive snapshots and conservative process high-water bound',
+                completionReserveRamBytes=completion.RAM_RESERVE, completionReserveDiskBytes=completion.DISK_RESERVE)
             tree.record['accounting'] = {key: result[key] for key in ['peakAggregateRSS', 'peakCombinedBytes',
                 'elapsedSeconds', 'accountingSamples', 'accountingPhase', 'rssPeakBasis']}
-            if result['peakAggregateRSS'] > 768 * MIB or used > 128 * MIB or elapsed > 120:
+            if result['peakAggregateRSS'] + completion.RAM_RESERVE > 768 * MIB \
+                    or used + completion.DISK_RESERVE > 128 * MIB or elapsed > 120:
                 raise RuntimeError('Aggregate RAM/combined disk/elapsed cap reached')
-            if guard.shutil.disk_usage(ROOT).free < policy.reserve:
+            if guard.shutil.disk_usage(ROOT).free < policy.reserve + completion.DISK_RESERVE:
                 raise RuntimeError('Host disk emergency reserve reached')
             if rows is not None and getattr(host, 'owned', None):
-                host.update_owned(scratch.token, used, rss)
+                host.update_owned(scratch.token, used + completion.DISK_RESERVE,
+                                  max(rss, own_peak + child_peak) + completion.RAM_RESERVE)
                 if time.monotonic() >= tree.deadline:
                     raise RuntimeError('Resource deadline reached during ledger accounting')
         except BaseException as error:
@@ -277,15 +281,37 @@ def execute(frozen, args, resources, guard, environment, started):
         result['elapsedSeconds'] = time.monotonic() - started
         tree.record.setdefault('accounting', {})['elapsedSeconds'] = result['elapsedSeconds']
     preserved = cleanup.get('pinsPreserved', False)
-    passed = failure is None and cleanup['passed'] and preserved and result.get('rc') == 0
-    receipt = {'identity': identity, 'grant': args.dispatcher_grant, 'passed': passed, 'failure': failure,
+    candidate_passed = failure is None and cleanup['passed'] and preserved and result.get('rc') == 0
+    tree.phase = 'final-output'
+    account(None)
+    receipt = {'identity': identity, 'grant': args.dispatcher_grant, 'passed': False,
+        'candidatePassed': candidate_passed, 'completion': 'awaiting-independent-parent-audit', 'failure': failure,
         'result': result, 'cleanup': cleanup, 'pinsPreserved': preserved, 'manifest': str(scratch.manifest),
         'wallSeconds': time.monotonic() - started, 'proofBoundary': 'three real66 mechanics cases only; no route/cache/outcome/corpus/UI/native/full acceptance'}
-    resources.atomic_json(rdir / 'receipt.json', receipt)
-    resources.atomic_json(rdir / 'checkpoint.json', {'state': 'complete' if passed else 'incomplete',
-        'receipt': str(rdir / 'receipt.json'), 'manifest': str(scratch.manifest)})
-    print(json.dumps({'run': str(rdir), 'passed': passed, 'failure': failure, 'cleanup': cleanup}))
-    if not passed:
+    checkpoint = {'state': 'incomplete', 'candidatePassed': candidate_passed,
+        'completion': 'awaiting-independent-parent-audit',
+        'receipt': str(rdir / 'receipt.json'), 'manifest': str(scratch.manifest)}
+    payloads = {'manifest': (scratch.manifest, scratch.record),
+                'receipt': (rdir / 'receipt.json', receipt), 'checkpoint': (rdir / 'checkpoint.json', checkpoint)}
+    counters = [0, 0]
+    encoded = {name: completion.encode(value, completion.FILE_LIMITS[name], counters)
+               for name, (_path, value) in payloads.items()}
+    ticket = completion.encode({'candidatePassed': candidate_passed, 'controllerPid': os.getpid(),
+        'startedMonotonic': started, 'admissionSHA256': args.admission_sha, 'run': str(rdir),
+        'completionSHA256': frozen['nodes'][str(EVIDENCE / 'first-chunk-completion.py')]['sha256'],
+        'reserveRamBytes': completion.RAM_RESERVE, 'reserveDiskBytes': completion.DISK_RESERVE,
+        'files': {name: {'path': str(payloads[name][0]), 'bytes': len(data), 'sha256': sha(data)}
+                  for name, data in encoded.items()}}, completion.TICKET_LIMIT)
+    account(None)
+    for name, data in encoded.items():
+        completion.write_once(payloads[name][0], data)
+        account(None)
+    # The independent parent checks actual files/disk/time after this process has
+    # exited0. These immutable on-disk candidates never assert completion alone.
+    sys.stdout.buffer.write(ticket)
+    sys.stdout.buffer.flush()
+    account(None)
+    if not candidate_passed:
         sys.exit(2)
 
 
