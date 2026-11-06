@@ -598,6 +598,35 @@ Each aggregate returns `{ count, versions: { brief: [], policy: [] } }`. The ass
 
 The existing `employee.recommendation.v1` registry additively permits optional `essentials.modelLine = { operator: equals, type: string, unit: null }`. Existing generic BriefService persistence/validation and FUCQ-29 essential gates apply unchanged; no older brief requires this field. Unspecified model choices are explicit, never inferred from current cars or rankings. The existing declined-car exclusion key remains authority; pause/resume and provenance-only or equipment-order changes do not reopen an unchanged declined exact car. Typed decline grouping excludes reason free text. The [full dashboard response contract and repeatable scenarios](greg-demand.md) record input shapes, privacy/version/empty/unavailable/refresh states and upstream producer boundaries. Backend-only: no new screen/component or rendered screenshot claim; experience-quality and agreed shell/Used Cars body references continue to govern its future consumer.
 
+## Selection ordering checkpoint · FUCQ-71
+
+`ManualOrderService` exposes trusted employee `readTerms(context)`, `submit(context,input)` and `readOrder(context)`
+ports; the exact input/projection and remaining integration gates are in [the ordering contract](manual-order-contract.md).
+The existing stock `orderUuid`, seven-digit `orderNumber` and `configurationId` are authoritative; no replacement
+order number or approval is generated. Internal handoff/reconciliation phases remain separate from the configured
+employee-facing target approval stage.
+
+The additive assumed canonical keys `ordering.terms.v1` and `ordering.approvalStages.v1` supply fictional versioned
+terms/declarations/expiry and optional HR → sales-manager → sent-to-ordering names. They use PolicyService and its
+retained versions; stored SQL versions require normal publication/activation. Missing or invalid terms fail closed.
+The immutable selection snapshot is carried by the existing `pending_operations` row and selection-history receipts;
+this checkpoint adds no table, migration, repository provider or independent mutable store.
+
+Source converters accept `convertSelection(context,allocationInput,{commitSelection})`. Their existing source
+authority repeats live checks, calls `commitSelection(tx)` before changing its active hold, and commits selection,
+claim/hold, stock and slot in that same transaction. A refusal rolls everything back. Pending atomic conversions are
+observed through source reconciliation before any ordering write; no retry or tick starts a second allocation.
+The callback is trusted startup composition, never a browser-supplied function. FUCQ-108 supplies the buddy source;
+it does not inherit manual-only assumptions. The retained FUCQ-66 producer has no transactional callback method yet,
+so its passing read-only producer test remains the labelled two-transaction compatibility boundary. Actual producer
+integration, account/runtime consumers, configured native PostgreSQL/reopen and final validation remain incomplete.
+
+The synthetic ordering provider persists scoped idempotent receipts in the repository. Every attempt reconciles
+before resend; only matching authoritative absence permits execute. Unknown or malformed responses retain occupied
+ownership, and unsupported/rejected outcomes never fabricate a confirmation. Reconciliation registers on DemoClock's
+existing `pending-reconciliation` stage. Backend presentation fixtures cover validation, pending, failure and actual
+approval status; rendered consumer evidence belongs to FUCQ-72.
+
 ## Ownership and extensions
 
 FUCQ-53's [synthetic identity allocation contract](synthetic-identity-allocation.md) adds offline `allocateSyntheticIdentities` / `allocateInventoryFile` ports, immutable whole-inventory replay, delivered/current-only VIN generation and `publishStockOrders` through the existing repository transaction port. Stock imports start unreleased, carry no VIN and preserve current operational state; `runs.versions.syntheticIdentityInventory` records the artifact revision/digest. Only the seven-digit order reference is exposed by the employee projection. File publication and PostgreSQL import are separate stages with independently atomic failure; this adds no repository table, public write endpoint or scheme-policy source.
@@ -633,6 +662,7 @@ Retail `publicMatch.listings[]` additively retains the evaluator's exact `decisi
 
 | Version / date / owner | Change and keyed assumptions |
 |---|---|
+| 1.0.0 / 2026-11-05 / FUCQ-71 | Adds the isolated shared selection-ordering port, durable scoped synthetic provider and DemoClock reconciliation; canonical assumed `ordering.terms.v1` / `ordering.approvalStages.v1` and a trusted source transaction callback. Uses existing repository tables, preserves exact stock order identity and target approval names. F71 callback commit/rollback/pending and policy boundaries are scoped evidence; Gary's actual transactional producer, configured SQL/reopen, account/runtime and final whole-suite gates remain incomplete. |
 | 1.0.0 / 2026-11-05 / FUCQ-83 | Source checkpoint: additive dated policy tables/migration 0002, idempotent seed, PostgreSQL and explicit memory providers, trusted Greg immutable publishing/replay and unchanged pinned reads. Existing assumptions/0003/consumers remain unchanged. Configured native policy/factory/repository proof passes with exact schema cleanup; combined offline full 1,235 total/1,230 passed/5 native skips has matching strict stamp 07aea3ec1a62. No screen or fresh diagram-render claim. |
 | 1.0.0 / 2026-11-05 / FUCQ-94 | Adds canonical editor context and server-only real unsaved preview through strict employee HTTP routes, explicit draft/base provenance, independent consent and truthful empty-equipment no. No approved recommendation downgrade, writes, holds or new screen. |
 | 1.0.0 / 2026-11-05 / FUCQ-57 | Adds mandatory configured-provider identity classification and successful-result binding checks through the existing retained registry/current-run inventory, preserving the FUCQ-55 envelope and FUCQ-43 real guard. Actual five-WMI generated-store HTTP/in-process/start/reset proofs retain honest US/LHD, unknown and representative-image-contract states. No live authorisation, mutable stock/policy/retail change or new screen. |
