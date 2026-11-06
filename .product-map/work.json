@@ -1703,7 +1703,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-06T00:19:47Z",
+      "observed_at": "2026-11-06T00:26:32Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-104",
       "slices": [
         {
@@ -1715,19 +1715,24 @@
         },
         {
           "id": "submission",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Version-pinned idempotent Greg order requests",
-          "observed_at": "2026-11-06T00:19:47Z"
+          "observed_at": "2026-11-06T00:26:32Z",
+          "evidence": "Lead-reviewed service and authenticated HTTP: replay, version/stock/run fences and role refusals; scoped 46/46 with clock and demand; UI/runtime integration remains."
         },
         {
           "id": "confirmation",
-          "status": "not-started",
-          "title": "Synthetic production acknowledgement and keyed release queue"
+          "status": "in-progress",
+          "title": "Synthetic production acknowledgement and keyed release queue",
+          "observed_at": "2026-11-06T00:26:32Z",
+          "evidence": "Saved partial/delay acknowledgements, keyed expected dates and retryable F92 queue port pass authored scoped tests; actual producer composition remains."
         },
         {
           "id": "tracking",
-          "status": "not-started",
-          "title": "Shared-kit order-tracking stages and keyboard states"
+          "status": "in-progress",
+          "title": "Shared-kit order-tracking stages and keyboard states",
+          "observed_at": "2026-11-06T00:26:32Z",
+          "evidence": "Consistent tracking projection implemented; additive shared-kit block next."
         },
         {
           "id": "release-allocation",
