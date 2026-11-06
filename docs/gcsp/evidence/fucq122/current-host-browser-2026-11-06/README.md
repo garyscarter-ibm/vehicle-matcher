@@ -1,6 +1,6 @@
 # Current HTTPS browser evidence — 6 November 2026
 
-**Latest changed-input desktop result: Greg's deliberate manual update and readback passed; the overall journey remains incomplete at the same-URL return-navigation wait.** See the second attempt below. Paula reload and 375px acceptance remain unproved.
+**Latest result: Paula's ordinary return and actual reload showed Greg's persisted manual update and dated history. The third desktop runner remains incomplete (exit 1) because its final audit retained a draft 404/console observation and four unclassified read aborts.** All five third-attempt captures were inspected; 375px and the remaining original acceptance obligations remain open. No complete browser, suite or compound acceptance PASS is claimed.
 
 **The first desktop attempt is incomplete.** Paula's ordinary served help page and explicit confirmation worked, and the actual presenter switch loaded her case in Greg's embedded queue. The local scenario stopped at its comparison before Greg confirmed an update. Neither the manual-update/Paula-reload journey nor any compound original acceptance clause is complete.
 
@@ -58,4 +58,41 @@ Four exact captures from the second attempt were inspected. The help/confirmatio
 
 The [second compact summary](second-desktop-summary.json) retains exact errors, transitions, HTTP POST counts, capture hashes and cleanup. Admission was the full 2,560MiB maximum; recursive RSS peaked at 1,808,367,616 bytes and combined allocation at 11,572,633 bytes. Independent collection verified all 18 tracked identities, group 82254, profile arguments, ports 49611/49613, scratch and token absent, raw host rows zero, source-before/source-after unchanged and no narrow allocation. Receipt SHA-256: `ab0f2bb8f22611af9693a04c038bd7e367b69c2e2e5e4c004cae949a4ae79169`.
 
-This completes the granted second allocation and its cleanup checkpoint. Another runtime allocation requires the dispatcher lane grant; the current evidence does not establish Paula reload, 375px, remaining original state/remedy/placement obligations, native PostgreSQL or producer integration acceptance.
+At the second-attempt checkpoint, Paula reload was still unproved. The dispatcher subsequently granted the third desktop allocation recorded below. The second attempt did not establish 375px, remaining original state/remedy/placement obligations, native PostgreSQL or producer integration acceptance.
+
+
+## Third desktop attempt — ordinary Paula return and reload
+
+The dispatcher granted one final changed-input desktop attempt. The local scenario waited for a fresh document navigation when switching actors on the same presenter URL, and correlated responses with request IDs. No product source changed. The 695-pin catalogue SHA-256 was `0b6c8c636764ec21fee54fcb630b2567e5fa25f36b750f724386ebd21a6b433f`; source-before/source-after matched, and all exact pins were rechecked unchanged during collection.
+
+The help review remained read-only, one explicit confirmation opened the case, and Greg's actual embedded queue loaded it. Opening options and reviewing the update preserved every stored case field. One explicit case-update POST persisted the version increment, in-progress status, unchanged owner, intended action/due time, manual decision and additional dated Greg history entry. Both writes returned HTTP 200.
+
+Switching back to Paula completed a fresh document navigation on the same presenter URL. Ordinary help navigation and an actual reload then succeeded. The reloaded employee record equalled the complete persisted Greg record apart from his display-only employee name. Visible ID, original reason, owner, status, next action, UTC due time and manual decision were asserted; keyboard-opened dated history contained Greg's actor ID. No-priority copy and the final one-help/one-update POST counts were asserted. The actual scoped Secure/HttpOnly session and bootstrap cookie checks passed. All five HTML requests returned HTTP 200 without API authority cookies on their HTML paths.
+
+These assertions occurred before the final error audit, which failed. Only the first two explicit check markers were emitted; the final reload marker, `report.case` assignment and passed state were never reached. The result remains **incomplete, exit 1**. The exact errors, six failed reads, confirmed transitions, cookies and capture hashes are retained in [the third compact summary](third-desktop-summary.json).
+
+### Retained observations and bounded source diagnosis
+
+- GET `/api/gcsp/manual/draft` returned 404 (request 231), with one generic browser console 404 message. The registered route calls `ManualContextService.readDraft`, which returns `not-found` when no saved draft exists (`server/gcsp/manual-context/index.js:156`). The common handler maps that status to 404 (`server/gcsp/identity/http.js:2`). The account adapter preserves non-ok envelopes, and the account view/start controls explicitly accept `not-found` (`blocks/gcsp/account/gcsp-account.js:151`, `:219`). This is consistent with the normal absent-draft contract. The observed response JSON was not retained, so its exact envelope is unproved. The HTTP and console observations remain in the recorded errors; no successful rerun or error waiver is implied.
+- Six GET `net::ERR_ABORTED` observations remain exact. Requests 325/326 belong to the confirmed deliberate help reload and match its departing document URL; only these two are classified expected navigation cancellations. Requests 36/37 during initial navigation and 276/277 on help return originate in the newly loaded help document, rather than the departing document, so all four remain unclassified in `errors`.
+- `GcspHelpElement` can mount from both connected and observed-attribute callbacks, tearing down an earlier mount; the employee shell uses abort teardown. That supports remount as a hypothesis for the four aborts, without runtime lifecycle proof. No product defect or fix is inferred solely from those observations. There was no product repair, suppression, AC expansion or further runtime allocation.
+
+### Third rendered review
+
+All five exact captures were visually inspected. Paula's help, confirmation and reloaded case/history use readable shared shell/controls; the focused controls/history summary have visible teal outlines. All captured documents are 1280px wide with no horizontal document overflow. Greg's queue and update review retain the independently backlogged FUCQ-150 width defect; that known defect is not described as fixed.
+
+| Capture | Actual state |
+| --- | --- |
+| [Third Paula help](third-01-paula-help.png) | No case; help open; Ask for help focused before any write. |
+| [Third Paula confirmation](third-02-paula-confirmation.png) | Stated effect and reason; explicit confirmation focused before the help write. |
+| [Third Greg queue](third-03-greg-actual-queue.png) | Actual populated embedded queue; native case selector focused. |
+| [Third Greg update review](third-04-greg-update-review.png) | In-progress/manual-decision review; explicit update confirmation focused before the update write. |
+| [Paula reload and history](third-05-paula-reload-history.png) | Persisted status, owner, action, due time and manual decision; both dated history entries; history summary focused. |
+
+### Third cleanup and remaining original acceptance
+
+Admission was 2,383,036,416 bytes RAM, within the granted minimum/maximum. Recursive RSS peaked at 1,965,408,256 bytes; combined allocation peaked at 11,794,232 bytes. The one-browser/worker, 120-second, 128MiB combined and 2MiB log contract and bounded local Chrome compatibility exception were unchanged. Independent collection verified all 18 tracked identities and launching owner, group 85863, profile-argument processes, ports 49826/49829, scratch and reservation token absent; raw host rows were zero. Monitors/readers joined, open files were absent and no dependency links remained. The dispatcher's independent root collection agrees. No narrow allocation occurred.
+
+Receipt SHA-256: `3f31cd59b3a5f26c86ebf6b5fc47636fcac54c58a08052ce639d18a7f4525357`. Raw logs, source catalogues and coordination stay local/ignored. The standalone script intended to write `third-desktop-selection.json` did not create that file and is not claimed as passing; the actual supervisor validated the existing changed-input catalogue before allocation and created the normal manifest/finalizer.
+
+The existing launcher/controller and CookieJar/HTTPS passes retain their separate scope. This actual browser journey adds delivered script/custom-element initialization, ordinary role navigation/cookie preservation, manual-update persistence through Paula's real reload, scoped visible fields and five desktop focus/capture observations. It does not complete any compound original AC. Remaining obligations include activity/order-progress placement and adding to an existing case; queue full row-field/deadline/status sorting acceptance; actual available-car, single-preference relaxation, later-release and policy-gated extension integration; trigger-open, waiting-for-Paula, resolved/closed, empty queue, loading/source-failure and other required state coverage; 375px and complete keyboard/focus/status/visual coverage; and shared-kit/ratchet acceptance. The corrected whole npm run remains FAIL (1,590 total, 1,569 passed, 16 failed, five native PostgreSQL skipped). Native PostgreSQL, actual producer/stock/decline/lifecycle and FUCQ-149 acceptance are not established. No further browser, narrow or full-suite runtime is authorised by this checkpoint.
