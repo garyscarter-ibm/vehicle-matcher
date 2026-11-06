@@ -119,3 +119,17 @@ Completion still requires the story's acceptance evidence; fixtures do not prove
 Keep explicit pauses and date holds, source/access limits, claim ownership, conflicting file ownership, and actual
 technical blockers. Retain Jira links unless a collaborator separately requests their amendment. See
 `docs/gcsp/technical-readiness-2026-11-05.md` and pass this rule to every story lead and descendant.
+
+## Defects found during delivery
+
+Gary's standing direction, 6 November 2026: when a defect is found during a story or review,
+assess and record its severity from its actual impact. For a defect below Critical or High
+severity, raise or reuse a linked backlog Bug for independent later pickup and continue
+the current story toward merge. Do not expand that story to repair the defect or make
+the separate Bug a merge dependency. Preserve the diagnosis, reproduction status,
+acceptance gaps and known limitations; do not describe the defect as fixed.
+
+Critical and High severity defects require prompt active triage and are not automatically
+deferred under this rule. A collaborator may explicitly defer a specific finding. Never
+lower severity merely to clear a merge. Existing test and acceptance obligations remain
+unless a collaborator explicitly revises them; an unrun check is not a passing check.
