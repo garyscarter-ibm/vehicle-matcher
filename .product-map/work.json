@@ -1368,7 +1368,7 @@
       "id": "FUCQ-126",
       "jira_observation_basis": "Authenticated getJiraIssue FUCQ-126: In Progress/Gary Carter; no Jira write",
       "jira_observed_at": "2026-11-05T23:00:00Z",
-      "observed_at": "2026-11-06T13:57:18Z",
+      "observed_at": "2026-11-06T14:07:33Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -1400,9 +1400,9 @@
           "title": "Desktop and375px keyboard and actual HTTP proof"
         },
         {
-          "evidence": "Granny LOW-effort source review of ee405af: HOLD/N1 MAJOR. Cleanup query reserve/throttle, owned unreaped-leader group signal and primary failure preservation authored; manual candidate/preparation reference role explicit. Unchanged seven-key ALL ledger/helper and six cases; no runtime. Independent consequential review and fresh grants pending. docs/gcsp/evidence/fucq-126/http-cleanup-authoring-repair-2026-11-06.md",
+          "evidence": "Doc Hudson gpt-6.1-sol/high independent source PASS at9a9f66f; N1-N4 repaired in source only. Candidate79252c79 unchanged; N5 host ps measurement OPEN. HOLD, execution flags false, anchors/output null; private lifecycle,host admission,six HTTP and business/browser/native/full proof outstanding. docs/gcsp/evidence/fucq-126/http-cleanup-source-review-2026-11-06.json",
           "id": "integrated-validation",
-          "observed_at": "2026-11-06T13:57:18Z",
+          "observed_at": "2026-11-06T14:07:33Z",
           "status": "in-progress",
           "title": "Current-base integration and authored full validation"
         },
