@@ -69,10 +69,18 @@
   "expectedNames": [
     "actual released TEST stock reaches the delivered host gallery and one quoted review without reclaim"
   ],
+  "helperProposal": {
+    "closure": "docs/gcsp/evidence/fucq69/host-journey-closure.json",
+    "path": "docs/gcsp/evidence/fucq69/host-journey-supervisor.py",
+    "probes": "Bounded pipe output/total deadlines/protected handles, cumulative60s/2048calls; no probes executed",
+    "schema": "Strict complete every-row reservation ancestry; fully charge max(reserved,observed); preserve foreign rows; exact own binding/readback",
+    "sourceInputs": "Exact read-only F100060 physical paths match9948bff; own test from89fe959; future scratch materialization only after grant",
+    "state": "authored only, not syntax-checked/imported/executed"
+  },
   "holds": [
     "Independent review of authored one-case test and new helper/source/dependency proposal",
     "Exact isolated source materialization remains unapproved; no product adoption",
-    "Complete ordinary installed package/executable/helper/environment closure and fresh physical resource admission",
+    "Independent full ordinary closure/tool/helper/source namespace review and fresh physical all-reservation resource admission",
     "Actual account/resume route with active quote blocked by release-required save seam",
     "Normal account entry supplies no clock subscription; reset/principal-change notification and fresh default-run provider source remain separate",
     "Synthetic TEST profile cannot establish BMW/F77/F78/default-reset source acceptance"
@@ -83,11 +91,19 @@
       "pg"
     ],
     "jsdomReference": "history-back-closure.json: 38 packages/1833 files; reuse only after exact identities/membership/resolution checks",
+    "optionalAbsent": [
+      "canvas",
+      "pg-native",
+      "@noble/hashes"
+    ],
+    "packageEdges": 74,
+    "packages": 52,
     "referenceInventoryCatalogue": "docs/gcsp/evidence/fucq100/runtime-composition-run-catalogue.json",
     "referenceInventoryEntries": 1890,
     "referenceInventoryRef": "9948bff11ed27f847436c6880db035fe8a54a784",
-    "required": "Freeze complete ordinary JSDOM/pg package resolution, membership, optional absences, manifests/locks and helper/executable/environment identities after test authoring. F100 loader/preload/harness excluded; no install, checkout dependency link or custom loader proposed.",
-    "status": "not frozen for this ordinary-resolution run"
+    "regularFiles": 1971,
+    "required": "Independent review of full closure, exact source isolation permission, new exactly-once grant and fresh strict physical all-reservation HostBudget required. No test/helper/syntax/import/probe execution or scratch allocation authorised.",
+    "status": "Proposed complete ordinary namespace frozen in host-journey-closure.json; not executed"
   },
   "limits": {
     "aggregateMiB": 768,
@@ -4121,7 +4137,7 @@
       "verification": "current bytes hashed and identical immutable Git blob"
     }
   ],
-  "state": "author-only one-case test authored; helper/dependency admission proposal in progress; no execution grant",
+  "state": "author-only one-case test and finite supervisor/full ordinary closure authored; awaiting independent review, no execution grant",
   "story": "FUCQ-69",
   "testAuthoring": {
     "path": "server/test/gcsp-manual-gallery-review-journey.test.js",
