@@ -1,15 +1,21 @@
 # FUCQ-134 first chunk review package
 
-**Five-field protocol repair pending implementation review. Both once-only grants consumed; no execution grant.**
+**Newest five-field attempt: 0/3 cases passed; controller2/audit1. Diagnosis/proposal only; no execution grant.**
 
-Checkpoint, 6 November 2026. The original23fc796 attempt exited controller1/audit1
-before Node, with0/3 tests reached; its causal row remains UNKNOWN. A separately
-granted once-only7293e52 attempt exited controller2/audit1 during execution on a
-captured `?` OS-state row. Node launched; no completed three-case TAP result.
-Root's independent cleanup PASS is separate from that failed result. Both grants
-are consumed. Dibble passed narrow proposal review; the current five-field parser
-repair is authoring only and needs implementation review and fresh execution
-admission. No retry or new grant follows. This package remains incomplete evidence.
+Checkpoint, 6 November 2026. Root's once-only execution at09aa1c85 reached all
+three cases: isolation failed on `snapshot:policy_versions`; both mechanics cases
+failed with0 eligible cars against2 expected. Spec output also failed the separate
+TAP contract. Root's independent cleanup audit passed19checks/788identityrows;
+cleanup does not establish test success. The [current-route failure proposal](../../fucq134-current-route-failure-proposal.md)
+records evidence, the repository/PolicyService boundary, fixture incompatibility,
+the unobserved generated-grade limit and proposed reporter repair. No repair or
+retry is authorized by that note. All three once-only grants are consumed.
+
+The original23fc796 attempt remains controller1/audit1 before Node, with0/3
+tests reached and causal row UNKNOWN. The separately granted7293e52 attempt
+remains controller2/audit1 on the captured `?` OS-state row, with no completed
+three-case TAP result. Preserve both historical failures and their separate
+cleanup reports. This package remains incomplete execution evidence.
 
 ## Frozen scope
 
@@ -35,7 +41,11 @@ HostBudget ledger, retains unknown process observations, signals exact PID/start
 identities and refuses deletion/release when absence is uncertain. It does not
 modify `_tools/test_resources.py`.
 
-## Proposed command, not yet run
+## Historical pre-execution command proposal
+
+The commands below document the reviewed execution contract. Root subsequently
+used the five-field publication for the failed attempt summarized above. These
+examples confer no grant and must not be reused as a retry.
 
 The dispatcher first reviews the exact freeze and helper bytes. This plan-only
 command checks identities without importing custom helpers, allocating resources,
