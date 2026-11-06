@@ -133,7 +133,7 @@ def execute(frozen, args, resources, guard, sg, source_plan, source, environment
             path = EVIDENCE / owned
             physical(path, frozen['nodes'][str(path)])
             (scratch.root / target).write_bytes(path.read_bytes())
-        mapping = {'entry': (ROOT / source_plan['entry']).as_uri(), 'modules': [
+        mapping = {'entry': (ROOT / source_plan['entry']).as_uri(), 'selectedCases': source_plan['selectedCases'], 'modules': [
             {'path': name, 'canonical': (ROOT / name).as_uri(), 'url': (mirror / name).with_suffix('.mjs').as_uri(), 'sha256': row['sha256']}
             for name, row in source_plan['modules'].items()], 'edges': source_plan['importEdges'],
             'builtins': source_plan['builtins'], 'pgEntry': frozen['pgEntry'], 'journal': str(scratch.root / 'modules.jsonl')}

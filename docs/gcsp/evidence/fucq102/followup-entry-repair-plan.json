@@ -1,0 +1,90 @@
+{
+  "story": "FUCQ-102",
+  "status": "author-only owned repair; NOT EXECUTED; repaired107 immutable source/review/exact grant required",
+  "observedAt": "2026-11-06T02:14:54.912416+00:00",
+  "originalFailedHarness": "da78f25d2214b60f34f8c2b2c18992c43592cfb4",
+  "evidenceCheckpoint": "4362c7667b38ec1f4d518be629d3e79e4ec286d9",
+  "originalGrantConsumed": "fucq102-followup-da78f25-0159",
+  "originalRun": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/followup-9d6eec0b291741f1ba7fa06a4586a751",
+  "owned": {
+    "server/gcsp/offers/access.js": {
+      "sha256": "347d472c9cba6913c50c68692ea9dd413f0c8232c9e32662c3351df6fa4e2280",
+      "bytes": 28959
+    },
+    "server/test/gcsp-offer-access-followup.test.js": {
+      "sha256": "b3a16d0d47cca53c0f0f5af84dd4354a038ba77c529a9eb3b915cd1cc268a6bb",
+      "bytes": 22385
+    },
+    "docs/gcsp/offer-access-contract.md": {
+      "sha256": "03951c2d1fd7ae0252ab792b94192b01a48dfbc5518ab5bb02c30bcc3d385b40",
+      "bytes": 17641
+    },
+    "docs/gcsp/evidence/fucq102/followup-entry-launch.mjs": {
+      "sha256": "7b182a799d14d32a5afa321aa00944be5ead16cb720cb257c3c6a5c9c0502116",
+      "bytes": 2997
+    },
+    "docs/gcsp/evidence/fucq102/followup-entry-resources.py": {
+      "sha256": "2972e0bcbf00439aec34fcb26e7686a63f70b9be1d290aede2851f2fe42f52ad",
+      "bytes": 29295
+    },
+    "docs/gcsp/evidence/fucq102/followup-entry-supervisor.py": {
+      "sha256": "1f64d7621ae707495bfccb6ea393ef881e1c5b72e53caa601deddd10fa07197e",
+      "bytes": 16787
+    },
+    "docs/gcsp/evidence/fucq102/followup-entry-freeze.py": {
+      "sha256": "c5cc3f4ac49333d4c3de98e59e59b4c34dc558e981b392220993b06aca5c873c",
+      "bytes": 6465
+    }
+  },
+  "selectedCases": [
+    "actual 100/106 decline survives a lost response and cookie/account reload into employee-only 107",
+    "follow-up entry keeps the existing private instance, owner, selector and run authority",
+    "active, accepted, expired, superseded and pending releases never query a follow-up selector",
+    "confirmed historical decline brief can differ from the immutable quoted brief",
+    "terminal outcome versions survive quote expiry and later car reuse without extending the hold",
+    "missing, duplicate or malformed decision sources preserve declined status with no handle",
+    "only one complete native decline receipt with valid digest and pins supplies a handle",
+    "valid digests cannot substitute a different employee, run, slot, renewal, car or brief",
+    "pre-write revisions, inconsistent outcome pins and future source times cannot supply a handle",
+    "repository query failures and unavailable history return typed unavailable without writes",
+    "decision membership, receipt membership, history and clock races refuse a mixed follow-up read"
+  ],
+  "runner": "Frozen callback registry, serial execution and awaited after hooks; direct TAP; break before next case on failure. Parent TAP gate retained.",
+  "pending107": {
+    "currentSource": {
+      "sourceCommit": "16839323f070f7c0ab81eb1ebf728627d283c71d",
+      "sha256": "bdd9dc0c57e62a08b866b9e204bbbb17b148a0534b65c37be92d3d8d7e49d875",
+      "bytes": 16389
+    },
+    "blocker": "Event renewal copied from persisted slot differs from genuine context absent renewal;107 lead owns persisted-slot correction. Positive case unchanged."
+  },
+  "sourceClosure": {
+    "baselineSourcePlanSHA256": "fd2eb341905bba23414e799bb011c0d415564c0c4ac656a0b0047d82a8111c3a",
+    "modules": 44,
+    "relativeImportEdges": 122,
+    "dataFiles": 7,
+    "change": "Only owned access/test bytes plus removal of node:test builtin; final combined graph must be regenerated after repaired107 pin."
+  },
+  "validation": {
+    "pythonAST": [
+      "followup-entry-resources.py",
+      "followup-entry-supervisor.py",
+      "followup-entry-freeze.py"
+    ],
+    "caseNames": 11,
+    "runtimeImports": 0,
+    "testsExecuted": 0,
+    "probes": 0,
+    "testAllocations": 0,
+    "limits": {
+      "seconds": 120,
+      "ramBytes": 805306368,
+      "combinedBytes": 134217728,
+      "logBytes": 2097152,
+      "workers": 1
+    },
+    "diskReserveBytes": 5368709120,
+    "ramReserveBytes": 536870912
+  },
+  "nextGate": "Independently review source/harness and adopt repaired107 exact source, freeze combined admission, then new explicit grant. No retry of old grant."
+}

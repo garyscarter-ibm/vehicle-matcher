@@ -303,7 +303,18 @@ export class OfferAccessService {
     if (history.status !== 'ok' || history.value?.runId !== binding.runId || history.value.employeeId !== offer.employeeId
       || !revision(history.value.version) || history.value.briefVersion !== versions.brief || history.value.status !== 'confirmed'
       || !instant(history.value.confirmedAt) || Date.parse(history.value.confirmedAt) > Date.parse(event.occurredAt)
-      || history.value.entitlementSlotId !== hold.entitlementSlotId || (history.value.renewalId ?? null) !== event.renewalId) return observed;
+      || history.value.entitlementSlotId !== hold.entitlementSlotId) return observed;
+    // BriefService can retain an unpopulated renewal while 100/106 resolve it
+    // from the persisted entitlement. A caller context is not that authority.
+    const slotRef = ref('entitlement_slots', binding.runId, { entitlementSlotId: hold.entitlementSlotId });
+    const slot = await this.#repository.read(scope, slotRef);
+    if (!['ok', 'not-found'].includes(slot.status)) return { error: unavailable() };
+    observed.rows.push({ ref: slotRef, status: slot.status, digest: slot.status === 'ok' ? inputDigest(slot.value) : null });
+    const renewal = slot.value?.renewalId ?? null;
+    if (slot.status !== 'ok' || slot.value.runId !== binding.runId || slot.value.employeeId !== offer.employeeId
+      || slot.value.entitlementSlotId !== hold.entitlementSlotId || slot.value.version !== versions.slot
+      || renewal !== null && !text(renewal) || event.renewalId !== renewal
+      || history.value.renewalId != null && (!text(history.value.renewalId) || history.value.renewalId !== renewal)) return observed;
     observed.value = { decisionId: decision.decisionId };
     return observed;
   }

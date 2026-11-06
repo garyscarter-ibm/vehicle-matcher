@@ -118,7 +118,7 @@ The exact nested allowlist implemented by `access.js` is:
 
 | Path | Fields and types |
 |---|---|
-| `followup` | `null` or exactly `{decisionId:string}`. The persisted FUCQ-106 `offer-decision:<opaque digest>` handle; no event, actor, command, receipt or employee ID is added. It selects a follow-up; it is not authority. |
+| `followup` | `null` or exactly `{decisionId:string}`. The persisted FUCQ-106 `offer-decision:<opaque digest>` handle; no event, actor, command, receipt or employee ID is added. It selects a follow-up; it is not authority. The exact persisted entitlement slot must still match run, owner, slot, decision-pinned revision and the hold/native-event renewal. A null/absent historical brief renewal is unpopulated; every explicit conflicting or malformed renewal refuses the handle. Slot content and revision join the mixed-read rechecks. |
 | `quote.orderNumber` | Seven-digit **string** (leading zeros retained), or null when unavailable; never inferred from configuration/VIN. |
 | `quote.revisions` | `quote`: positive integer; optional `brief`, `facts`, `policy`, `stock`, `snapshot`, `terms`, `clock`, `availability`: supplied string/number/null revision. |
 | `quote.facts` | `contractVersion: 'vehicle-snapshot-v1'`, `candidateKey`, `sourceNamespace`, `snapshotVersion`, `observedAt`: strings; `identityKind: 'exact-stock'`; `sourceKeys: { stockId: string }`; `display` and `facts` below. No VIN or additional source keys. |

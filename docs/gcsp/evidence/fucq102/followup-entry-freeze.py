@@ -94,7 +94,7 @@ def main():
         raise RuntimeError('Absent resolution changed while freezing')
     source_data = (EVIDENCE / 'followup-entry-execution-source-plan.json').read_bytes()
     source = json.loads(source_data)
-    plan = {'schemaVersion': 1, 'story': 'FUCQ-102', 'variant': 'actual100-103-106-107-memory-entry/explicit107-question-input',
+    plan = {'schemaVersion': 1, 'story': 'FUCQ-102', 'variant': 'actual100-103-106-107-memory-entry/explicit107-question-input/sequential-tap-v2',
             'status': 'unexecuted physical admission; independent source/harness review required',
             'sourcePlanSHA256': hashlib.sha256(source_data).hexdigest(), 'sourceModules': len(source['modules']),
             'sourceDataFiles': len(source['files']), 'selectedCases': len(source['selectedCases']),

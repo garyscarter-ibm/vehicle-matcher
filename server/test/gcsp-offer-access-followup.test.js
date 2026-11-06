@@ -1,5 +1,5 @@
-// Authored, unexecuted. Requires the separately reviewed immutable 100/103/106/107 source graph.
-import test from 'node:test';
+// The reviewed launcher executes these assertion cases sequentially and stops
+// before invoking another case on any assertion or teardown failure.
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok } from '../gcsp/repository/index.js';
@@ -16,6 +16,8 @@ import { createOfferFollowupService } from '../gcsp/offers/followup.js';
 import { stock, essential, preference } from './helpers/employee-recommendation.js';
 
 if (!process.env.FUCQ102_FOLLOWUP_MODULE_MAP) throw Error('Use the reviewed FUCQ-102 follow-up supervisor.');
+export const followupEntryCases = [];
+const test = (name, run) => followupEntryCases.push(Object.freeze({ name, run }));
 const questionBundle = JSON.parse(await readFile(new URL('../gcsp/offers/followup-policy-definitions.json', import.meta.url), 'utf8'));
 const yes = (out) => { assert.equal(out.status, 'ok', `Expected ok, received ${out.status}`); return out.value; };
 const cookieOf = (exchanged) => exchanged.setCookie.split(';')[0];
@@ -89,7 +91,8 @@ async function setup(t, { reviseBeforeDecline = false, decline = true } = {}) {
     receipt: store.state.tables.event_receipts.find((row) => row.consumerId === DECISION_EVENTS),
     offer: store.state.tables.offers.find((row) => row.offerId === f.selector.offerId),
     hold: store.state.tables.holds.find((row) => row.holdId === f.produced.hold.holdId),
-    history: store.state.tables.briefs.find((row) => row.employeeId === context.employeeId && row.briefVersion === (reviseBeforeDecline ? 2 : 1)) });
+    history: store.state.tables.briefs.find((row) => row.employeeId === context.employeeId && row.briefVersion === (reviseBeforeDecline ? 2 : 1)),
+    slot: store.state.tables.entitlement_slots.find((row) => row.entitlementSlotId === context.entitlementSlotId) });
   f.advance = async (seconds) => {
     const now = yes(await clock.now(context));
     yes(await clock.advance(presenter.context, { commandId: `advance-${now.clockVersion}`, expectedClockVersion: now.clockVersion, bySeconds: seconds }));
@@ -113,6 +116,9 @@ async function corruptions(f, variants) {
 
 test('actual 100/106 decline survives a lost response and cookie/account reload into employee-only 107', async (t) => {
   const f = await setup(t); const before = stateDigest(f);
+  const { history, slot, receipt } = f.source();
+  assert.equal(history.renewalId ?? null, null); assert.equal(f.context.renewalId ?? null, null);
+  assert.equal(typeof slot.renewalId, 'string'); assert.equal(receipt.outcome.value.event.renewalId, slot.renewalId);
   // Ignore the POST result at entry: the selector comes solely from the authoritative read.
   const dto = yes(await f.access.read(f.account)); assert.deepEqual(dto.followup, f.handle());
   const restarted = createOfferAccessService(f.options);
@@ -195,6 +201,13 @@ test('missing, duplicate or malformed decision sources preserve declined status 
     ['missing completed release reason', ({ hold }) => { delete hold.releaseReason; }],
     ['missing confirmed history', (_source, tables) => { tables.briefs = []; }],
     ['unconfirmed history', ({ history }) => { history.status = 'draft'; }],
+    ['conflicting history renewal', ({ history }) => { history.renewalId = 'other-renewal'; }],
+    ['malformed history renewal', ({ history }) => { history.renewalId = 7; }],
+    ['conflicting slot owner', ({ slot }) => { slot.employeeId = 'other'; }],
+    ['conflicting slot renewal', ({ slot }) => { slot.renewalId = 'other-renewal'; }],
+    ['malformed slot renewal', ({ slot }) => { slot.renewalId = ''; }],
+    ['changed slot version', ({ slot }) => { slot.version += 1; }],
+    ['missing slot', (_source, tables) => { tables.entitlement_slots = []; }],
   ]);
 });
 
@@ -234,7 +247,7 @@ test('pre-write revisions, inconsistent outcome pins and future source times can
 
 test('repository query failures and unavailable history return typed unavailable without writes', async (t) => {
   const f = await setup(t); const originalQuery = f.repository.query; const originalRead = f.repository.read;
-  for (const table of ['decisions', 'event_receipts', 'briefs']) {
+  for (const table of ['decisions', 'event_receipts', 'briefs', 'entitlement_slots']) {
     f.repository.query = async (...args) => args[1] === table ? { status: 'unavailable' } : originalQuery(...args);
     f.repository.read = async (...args) => args[1].table === table ? { status: 'unavailable' } : originalRead(...args);
     const before = stateDigest(f); assert.equal((await f.access.read(f.account)).status, 'unavailable', table);
@@ -245,7 +258,7 @@ test('repository query failures and unavailable history return typed unavailable
 
 test('decision membership, receipt membership, history and clock races refuse a mixed follow-up read', async (t) => {
   const f = await setup(t); const baseline = structuredClone(f.store.state);
-  for (const kind of ['new-decision', 'new-event', 'changed-event', 'missing-history', 'new-history', 'clock', 'policy']) {
+  for (const kind of ['new-decision', 'new-event', 'changed-event', 'missing-history', 'new-history', 'slot-content', 'slot-version', 'clock', 'policy']) {
     f.store.state = structuredClone(baseline); f.hooks.query = null; f.hooks.read = null;
     if (kind === 'new-history') f.store.state.tables.briefs = [];
     f.hooks.query = async (_scope, table) => {
@@ -262,6 +275,13 @@ test('decision membership, receipt membership, history and clock races refuse a 
       if (kind === 'missing-history') f.store.state.tables.briefs = [];
       else f.store.state.tables.briefs = structuredClone(baseline.tables.briefs);
     };
+    if (['slot-content', 'slot-version'].includes(kind)) f.hooks.read = (_scope, reference) => {
+      if (reference.table !== 'entitlement_slots') return; f.hooks.read = null;
+      const { slot } = f.source();
+      if (kind === 'slot-content') slot.renewalId = 'changed'; else slot.version += 1;
+    };
     assert.equal((await f.access.read(f.account)).status, 'unavailable', kind);
   }
 });
+
+Object.freeze(followupEntryCases);

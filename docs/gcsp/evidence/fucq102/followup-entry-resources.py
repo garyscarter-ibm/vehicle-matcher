@@ -171,6 +171,13 @@ def make_budget(resources, policy, directory, lock_identity):
                 if self.ledger().get(scratch.token) != row:
                     raise RuntimeError('Reservation write/readback differs')
                 self.owned = (scratch.token, identity, str(scratch.root))
+                scratch.record['budgetAdmission'] = {
+                    'admitted': True, 'sampledAt': time.time(), 'diskFreeBytes': free,
+                    'availableRAMBytes': memory, 'pendingDiskBytes': disk_pending, 'pendingRAMBytes': ram_pending,
+                    'diskReserveBytes': self.policy.reserve,
+                    'ramReserveBytes': int(self.policy.ram_reserve_mib * resources.MIB),
+                    'reservation': dict(row)}
+                resources.atomic_json(scratch.manifest, scratch.record)
 
         def owned_row(self, data, token):
             expected = getattr(self, 'owned', None)
@@ -384,37 +391,62 @@ class ProcessTree:
                 self.register(self.process)
             return self._stop_join()
         except BaseException as error:
-            if isinstance(error, SnapshotUncertain):
-                self.remember_uncertain(error)
-            # A still-unreaped direct child is ours even when ps fails. Stop and
-            # join that handle; independently stop already-known descendants
-            # where a fresh full snapshot proves their exact start. Unknowns
-            # remain in the manifest and prevent deletion/release.
-            for sig in [signal.SIGTERM, signal.SIGKILL]:
-                for item in self.record['ownedPids']:
-                    if not item.get('owned') or not item.get('start'):
-                        continue
-                    try:
-                        current = process_snapshot().get(item['pid'])
-                        if current and current['start'] == item['start']:
-                            os.kill(item['pid'], sig)
-                    except (OSError, RuntimeError, subprocess.TimeoutExpired) as error:
-                        if isinstance(error, SnapshotUncertain):
+            # No probe or manifest write may prevent direct-handle shutdown.
+            # Failure to persist still re-raises and forbids deletion/release.
+            previous = {sig: signal.getsignal(sig) for sig in [signal.SIGTERM, signal.SIGINT]}
+            def deferred(signum, frame):
+                self.record.setdefault('cancellationDuringCleanup', []).append(signum)
+            def remember_failure(phase, failure):
+                self.record.setdefault('cleanupErrors', []).append({
+                    'phase': phase, 'type': type(failure).__name__, 'message': str(failure)[:1024]})
+            try:
+                for sig in previous:
+                    signal.signal(sig, deferred)
+            finally:
+                # Even handler installation failure reaches the direct handle.
+                try:
+                    process = self.process
+                    if process is not None:
+                        for action in [process.terminate, process.kill]:
+                            try:
+                                if process.poll() is None:
+                                    action()
+                            except BaseException as failure:
+                                remember_failure('direct-signal', failure)
+                            try:
+                                process.wait(timeout=3)
+                                self.joined = True
+                                break
+                            except BaseException as failure:
+                                remember_failure('direct-join', failure)
+                    # The handle is dealt with before any persistence attempt.
+                    if isinstance(error, SnapshotUncertain):
+                        try:
                             self.remember_uncertain(error)
-                        self.record.setdefault('cleanupSignalUncertainty', []).append({
-                            'pid': item['pid'], 'start': item['start'], 'error': type(error).__name__})
-                self.save()
-            process = self.process
-            if process is not None:
-                for action in [process.terminate, process.kill]:
-                    if process.poll() is None:
-                        action()
+                        except BaseException as failure:
+                            remember_failure('snapshot-persistence', failure)
+                    for sig in [signal.SIGTERM, signal.SIGKILL]:
+                        for item in self.record['ownedPids']:
+                            if not item.get('owned') or not item.get('start'):
+                                continue
+                            try:
+                                current = process_snapshot().get(item['pid'])
+                                if current and current['start'] == item['start']:
+                                    os.kill(item['pid'], sig)
+                            except BaseException as failure:
+                                if isinstance(failure, SnapshotUncertain):
+                                    try:
+                                        self.remember_uncertain(failure)
+                                    except BaseException as write_error:
+                                        remember_failure('snapshot-persistence', write_error)
+                                remember_failure('descendant-signal', failure)
                     try:
-                        process.wait(timeout=3)
-                        self.joined = True
-                        break
-                    except subprocess.TimeoutExpired:
-                        continue
+                        self.save()
+                    except BaseException as failure:
+                        remember_failure('cleanup-persistence', failure)
+                finally:
+                    for sig, handler in previous.items():
+                        signal.signal(sig, handler)
             raise
 
     def _stop_join(self):
@@ -484,6 +516,8 @@ class Finalizer:
         previous = {sig: signal.getsignal(sig) for sig in [signal.SIGTERM, signal.SIGINT]}
         def deferred(signum, frame):
             self.scratch.record.setdefault('cancellationDuringCleanup', []).append(signum)
+            if self.result is not None:
+                self.result.update(passed=False, cancelledDuringCleanup=True)
         try:
             for sig in previous:
                 signal.signal(sig, deferred)
@@ -495,8 +529,10 @@ class Finalizer:
     def _finish(self):
         if self.attempted:
             return self.result
-        self.attempted = True
         result = {'passed': False, 'scratchAbsent': False, 'reservationAbsent': False}
+        self.result = result
+        # finish() has installed cancellation handlers before this latch.
+        self.attempted = True
         try:
             proof = self.tree.stop_join()
             if not all(proof[key] for key in ['joined', 'pidsAbsent', 'groupsAbsent']):
@@ -533,5 +569,8 @@ class Finalizer:
             result['error'] = type(error).__name__ + ': ' + str(error)[:1024]
         self.result = result
         self.scratch.record['finalizer'] = result
-        self.resources.atomic_json(self.scratch.manifest, self.scratch.record)
+        try:
+            self.resources.atomic_json(self.scratch.manifest, self.scratch.record)
+        except BaseException as error:
+            result.update(passed=False, persistenceError=type(error).__name__ + ': ' + str(error)[:1024])
         return result

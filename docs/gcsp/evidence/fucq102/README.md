@@ -8,6 +8,9 @@ The new follow-up entry check **failed: 8/11 passed**, with three missing expect
 handles and a spec/TAP reporter mismatch that prevented stopping on the first case
 failure. See [the original failure receipt](followup-entry-result.md); source pins
 and cleanup were retained and verified. No retry or acceptance follows from it.
+The [minimal renewal/runner/lifecycle repair](followup-entry-repair-diagnosis.md)
+is authored only; combined 107 source, independent review and a new grant remain
+required before execution.
 
 The earlier access/timing checkpoint ran:
 

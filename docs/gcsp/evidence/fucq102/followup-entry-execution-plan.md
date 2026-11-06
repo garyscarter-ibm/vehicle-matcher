@@ -1,5 +1,12 @@
 # Frozen follow-up entry validation proposal
 
+**Historical proposal:** this freeze was executed once at `da78f25` and failed
+8/11, with a spec/TAP deviation. See [the retained original result](followup-entry-result.md).
+The [author-only repair diagnosis](followup-entry-repair-diagnosis.md) and
+[replacement plan](followup-entry-repair-plan.json) supersede its runner/lifecycle
+description. Repaired 107 source and a new combined freeze/review/grant remain
+required; the old admission/grant cannot authorise changed bytes.
+
 6 November 2026. **Authoring only; no supervisor, JavaScript import or test has run.**
 The implementation and eleven named cases are frozen at local commit
 `754b70c3422f962c8c179f1a30a3bfc782ce86eb`; its first ordinary push was rejected
