@@ -1609,7 +1609,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T01:48:08Z",
+      "observed_at": "2026-11-06T01:58:18Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-115",
       "slices": [
         {
@@ -1649,17 +1649,17 @@
         },
         {
           "id": "policy",
-          "status": "blocked",
+          "status": "complete",
           "title": "Canonical-policy-adoption-and-dated-activation",
-          "observed_at": "2026-11-06T01:48:08Z",
-          "evidence": "Original preallocation failure fbff6ae preserved. Authorised read-only OS metadata query identifies lstart trailing padding; one normalization authored and frozen (only resource helper identity differs). Static/admission plan passes; no repaired live probe, Node, retry/test/resource allocation. docs/gcsp/models/fucq115-activation-os-repair.md"
+          "observed_at": "2026-11-06T01:58:17Z",
+          "evidence": "Actual canonical cookie/clock/publishPolicyVersion activation on73533d7 passed four checks; dispatcher261-check audit accepted exact77-row graph, original artifact and full cleanup. v4 historical reference unavailable; v5 effective2026-11-06T09:00:03Z. Original failed attempt/adverse metrics preserved. docs/gcsp/models/fucq115-activation-success.md"
         },
         {
           "id": "acceptance",
           "status": "blocked",
           "title": "Integration-and-final-acceptance",
-          "observed_at": "2026-11-06T00:13:34Z",
-          "evidence": "13/13scoped+actualsourcepilot pass; authored committeddata CLI, realartifact/bothbaselineholdout, canonicalactivation and root-only fullsuite grant remain. No built/fullstamp claim. Clean park; own worker claim expired."
+          "observed_at": "2026-11-06T01:58:18Z",
+          "evidence": "Isolated activation accepted; original11/13-test and actual CLI/artifact44-check proof retained at exact identities. Parent current-integration/evidence decision and authored full-suite gate remain. No new execution grant. Future execution needs cancellation-safe Popen registration repair/refreeze. Own worker remains expired. docs/gcsp/models/fucq115-final-validation-plan.md"
         }
       ],
       "unsliced": false,

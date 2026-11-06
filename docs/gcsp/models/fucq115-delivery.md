@@ -359,3 +359,37 @@ probe or activation; no retry/test/Node/resource allocation ran. Exact current
 command/hashes and diagnosis: `docs/gcsp/models/fucq115-activation-os-repair.md`
 and `fucq115-activation-os-diagnosis.json`. Await independent review/new concrete
 grant. Policy/acceptance remain blocked; own worker expires at handoff.
+
+
+### Accepted isolated activation · 6 November 2026
+
+Grant `fucq115-activation-73533d7-0139` executed once on73533d7, exit0,
+passed four actual canonical cookie/clock/policy checks. Only the retained
+`choice.model.reference` was scheduled as `fucq115-trained-choice-v5`, effective
+2026-11-06T09:00:03.000Z; the same cookie changes from v4/unavailable to v5/original
+artifact on that boundary. Historical v4, all unrelated rows/prices, original
+artifact155,035B and all77 source rows remain unchanged; retry append-once.
+No generation/training/settings/metrics repeat or production activation.
+
+Lead cleanup audit and independent dispatcher261-check audit PASS. Resource-phase
+wall3.651619333s, sampled aggregateRSS252,723,200B, combined allocation4,585,985B,
+scratch4,557,153B/log2469B/selected retained8192B. Complete checkpoint, removed
+manifest, owner70719/Node70888/group70888 kernel-absent, scratch/reservation/link
+absent;204 physical/content identities,138 installed files/14 packages and37
+absence probes unchanged. External run:
+`.claude/test-runs/fucq115/artifact-activation-v2-7a50f0c2ad4942b8934ac117c9ef02e8`.
+Exact ownership/checkpoint/summary/lead audit paths and parent receipt hash are
+in `docs/gcsp/models/fucq115-activation-success-receipt.json`; actual report,
+command and narrative are separately committed. Failed918ce04 attempt/receipt
+and minimal OS-padding diagnosis/repair remain unchanged.
+
+Original worseBrier/familiar-fit-loss,3train/7later choices, unknown seats/boot
+and optimizer iteration-limit1500/gradient0.00023798911905714262 remain explicit.
+No convergence, calibration, actual corpus or live producer claim. Policy slice
+is complete at its accepted isolated delivery boundary; final integration and
+authored full-suite gate remain open. `fucq115-final-validation-plan.md` records
+exact proof reuse, remaining decisions and future-execution hold. Dispatcher
+notified a Popen-to-registration cancellation gap; repair/refreeze before any
+future execution proposal. No reproduction/new grant follows that notice. Own
+worker remains expired while parked; no new claim, poller, descendants or Jira
+transition. Existing13-test result retains its original pre-correction identity.
