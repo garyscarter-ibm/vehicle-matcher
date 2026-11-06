@@ -336,6 +336,44 @@ def execute(c):
     audit_code = None; stdout = bytearray(); stderr = bytearray()
     eof_seen = set(); stream_overflow = []
     checks = {}; postwrite_ready = False; audit_data = None; audit_output = None
+    descendant_verified = False; descendant_issue = None; descendant_info = None
+    def require_descendant_joined():
+        nonlocal descendant_verified, descendant_issue, descendant_info
+        descendant_verified = False
+        try:
+            require(descendant_issue is None and ownership is not None)
+            if ownership.attempted is False:
+                # Explicit no-launch state; an attempted/missing child never takes this branch.
+                require(ownership.record['attempted'] is False and ownership.process is None)
+                descendant_verified = True
+                return
+            require(ownership.attempted is True and ownership.record['attempted'] is True)
+            require(ownership.process is not None and ownership.record['direct_joined'] is True)
+            require(type(ownership.process.returncode) is int)
+            child_helpers, info = document(c['parent_dir']/'audit-helper-ownership.json',16384)
+            child_join = child_helpers['helper_ownership']
+            require(child_helpers['kind'] == 'fucq105-independent-audit-helpers')
+            require(child_helpers['output'] == str(c['parent_dir'])
+                    and child_helpers['journal_parent'] == list(parent_directory_identity))
+            require(child_helpers['owner']['pid'] == ownership.process.pid
+                and any(all(child_helpers['owner'][key] == row[key] for key in ('pid','start'))
+                        for row in scratch.record['processes'])
+                and child_helpers['run'] == c['run'].name
+                and child_helpers['source_plan_sha256'] == c['plan_info']['sha256']
+                and child_helpers['summary_sha256'] == c['grant']['summary_sha256']
+                and child_join['closing'] is True and child_join['issue'] is None
+                and child_join['pending'] is None and type(child_join['launches']) is int
+                and type(child_join['joined']) is int and 0 < child_join['launches'] <= 4096
+                and child_join['launches'] == child_join['joined'])
+            require(descendant_info is None or info == descendant_info)
+            descendant_info = info
+            descendant_verified = True
+            checks['audit_helpers_joined'] = True
+        except BaseException as error:
+            descendant_issue = descendant_issue or type(error).__name__
+            checks['audit_helpers_joined'] = False
+            raise
+
     def fresh():
         require(time.monotonic()-STARTED <= 180 and not cancel.is_set())
         value = monitor.checkpoint()+128*MIB
@@ -374,8 +412,11 @@ def execute(c):
                 r.atomic_json(self.manifest, self.record)
                 return value
             def __exit__(self, kind, value, tb):
+                ownership.join_direct()
+                require_descendant_joined()  # Every attempted outcome, before cleanup queries/deletion.
                 ownership.require_safe()
                 with helpers.gate():
+                    require_descendant_joined()
                     return super().__exit__(kind, value, tb)
         scratch = ParentScratch(c['parent_dir'], ROOT, policy)
         scratch.record.update(story='FUCQ-105-parent-audit', processes=[], ports=[], profiles=[], dependency_links=[])
@@ -459,7 +500,10 @@ def execute(c):
                 finally:
                     if ownership.record['direct_joined']:
                         audit_code = process.returncode
-                    process.stdout.close(); process.stderr.close()
+                    try:
+                        process.stdout.close(); process.stderr.close()
+                    finally:
+                        require_descendant_joined()  # Independent of audit exit/assertion success.
             ownership.require_safe()
             protected(); source_identity(c); fresh()
             audit_output = decode(bytes(stdout))
@@ -471,18 +515,7 @@ def execute(c):
                 'owned_removed_manifest','retained_allocation_within_cap','combined_allocation_within_cap',
                 'terminal_upper_bound_covers_actual_files','retained_artifact_caps','owned_atomic_staging_absent',
                 'parent_aggregate_within_cap','scratch_manifest_absent'}
-            child_helpers, child_helper_info = document(c['parent_dir']/'audit-helper-ownership.json',16384)
-            child_join = child_helpers['helper_ownership']
-            checks['audit_helpers_joined'] = child_helpers['owner']['pid'] == ownership.process.pid \
-                and any(all(child_helpers['owner'][key] == row[key] for key in ('pid','start'))
-                        for row in scratch.record['processes']) \
-                and child_helpers['run'] == c['run'].name \
-                and child_helpers['source_plan_sha256'] == c['plan_info']['sha256'] \
-                and child_helpers['summary_sha256'] == c['grant']['summary_sha256'] \
-                and child_join['closing'] is True and child_join['issue'] is None \
-                and child_join['pending'] is None and type(child_join['launches']) is int \
-                and type(child_join['joined']) is int and 0 < child_join['launches'] <= 4096 \
-                and child_join['launches'] == child_join['joined']
+            require_descendant_joined()
             checks['actual_waits_and_streams'] = c['wait']['exit_code'] == audit_code == 0 and not stderr \
                 and eof_seen == {'stdout','stderr'} and not stream_overflow
             checks['audit_stdout'] = audit_output['status'] == 'passed' and audit_output['failure'] is None \
@@ -523,6 +556,7 @@ def execute(c):
         except BaseException as error:
             failure = failure or 'AuditWaitCapture'+type(error).__name__; status = 1
         try:
+            require_descendant_joined()  # Re-read after the unconditional direct-wait capture above.
             if ownership is not None:
                 safe = ownership.finish()
                 groups = all(r.group_has_live_members(group) is False for group in scratch.record['groups'])
@@ -530,12 +564,14 @@ def execute(c):
             if snapshot is not None:
                 original_ok = protected()
                 source_identity(c)
-            require(outputs is not None and safe and groups and processes and original_ok and not os.path.lexists(scratch.root))
+            require(outputs is not None and descendant_verified and safe and groups and processes
+                    and original_ok and not os.path.lexists(scratch.root))
             require(not b.temporary_leftovers([c['parent_dir']], os.getpid()))
             for index, path in enumerate(c['parent_dir'].rglob('*')):
                 require(index < 4096 and not (path.name.startswith('.') and '.owned-' in path.name))
             outputs.json(c['parent_dir']/'pre-release.json', dict(status='failed' if failure else 'pending-release', failure=failure,
                 checks=checks, protected_originals=original_ok, child_launch=dict(ownership.record),
+                descendant_helpers_verified=descendant_verified, descendant_helper_journal=descendant_info,
                 driver_pins_sha256=c['pin_info']['sha256'], owner=scratch.record['owner'], token=scratch.token,
                 root=str(scratch.root), scratch_manifest=str(scratch.manifest), allocation=outputs.observe(),
                 parent_aggregate=monitor.receipt(), extra_child_allowance_bytes=128*MIB), exclusive=True)
@@ -549,6 +585,7 @@ def execute(c):
         if budget is not None and budget.attempted and postwrite_ready:
             try:
                 with helpers.gate():
+                    require_descendant_joined()  # Fresh mandatory gate immediately before exact-row release.
                     budget.release(scratch.token, dict(child_safe=safe, groups_absent=groups,
                         processes_absent=processes, scratch_absent=not os.path.lexists(scratch.root)))
             except BaseException:
@@ -575,6 +612,8 @@ def execute(c):
                 original_token=c['summary']['cleanup']['token'], original_root=c['summary']['cleanup']['root'],
                 parent_token=scratch.token, parent_root=str(scratch.root), parent_owner=scratch.record['owner'],
                 child_launch=dict(ownership.record), groups_absent=groups, processes_absent=processes,
+                descendant_helpers_verified=descendant_verified, descendant_helper_issue=descendant_issue,
+                descendant_helper_journal=descendant_info,
                 scratch_absent=not os.path.lexists(scratch.root), protected_originals=original_ok,
                 parent_manifest_sha256=sha(scratch.manifest,256*1024), reservation_absent=absent,
                 reservation_observation_known=known, postwrite_verified_before_release=postwrite_ready,

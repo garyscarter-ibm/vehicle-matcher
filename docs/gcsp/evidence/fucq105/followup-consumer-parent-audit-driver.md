@@ -64,6 +64,14 @@ Parent creates/inode-binds its fresh output directory and helper journal before 
 
 Only three of the ten consumer helper rows change. Consumer graph/source/test/loader, strict ledger/lifecycle, accepted102/107 boundary and budgets remain unchanged. No syntax/AST/helper/test/probe/ledger/scratch/allocation execution or runtime grant.
 
+## All-outcome descendant ownership gate
+
+Dot's independent static review of `4f65fa3002f204ad0b5b06ca64c4957ed726aed2` held one MAJOR: parent scratch deletion/release used only parent helper state, while the captured auditor journal was checked on success. A nonzero auditor with unresolved descendant ownership could therefore reach otherwise passing parent cleanup proofs. This is static failure-path evidence, not an observed runtime leak; the original review remains unchanged.
+
+After every attempted auditor launch, direct wait precedes the same bounded16KiB journal verification regardless of exit/assertion outcome. The journal must bind the captured auditor PID/start, parent directory, run, plan and summary, and show closed ownership, no issue/pending handle and exact bounded joined counters. The first verified descriptor/hash identity is preserved for later checks. Missing, malformed, changed or unresolved evidence sets a sticky failure. Explicit untouched no-launch state is the sole case that needs no child journal.
+
+Parent scratch exit verifies this descendant gate before cleanup queries and again immediately before deletion; finalization repeats it after unconditional direct-wait capture, and exact-row release checks it again inside the parent helper gate. Descendant uncertainty retains both scratch and reservation. A nonzero assertion result with completely resolved ownership may still clean up/release under all existing proofs while remaining failed overall. Pre-release/final receipts name the actual descendant evidence and any uncertainty. Bootstrap, ten consumer pins/plan, selected test/graph, recipe, budgets and strict resource/ledger contracts are unchanged. Authoring/text/hash only; no syntax/AST/helper/probe/test/ledger/allocation execution or grant.
+
 ## Static authoring boundary and concrete limitations
 
 This pass writes source and pin/interface documents only. Verification is text/control-order inspection, exact byte/hash/JSON binding, unchanged consumer pin/plan comparison, whitespace and named-path Git publication. **No driver/helper import or execution, syntax invocation/AST parsing, test, process probe, ledger read/lock/mutation, scratch/resource allocation, DB/browser/native/full run or descendants.** Python identity is file metadata/hash evidence only, not a claim of runtime suitability or a complete audit of the standard library.
