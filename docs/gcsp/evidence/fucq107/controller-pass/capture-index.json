@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-107",
+  "status": "scoped-controller14-pass-parent-final-audit-pending",
+  "sourceCommit": "94e05ff9070aa19f5deb3e9997dfed96cc268473",
+  "harnessCommit": "00900926ee86d380f706726b91892fa6376837ed",
+  "admissionSHA256": "6dfe2623e3ac0ece6b352abdb336cab59a29a7d535c270a4c68973bf321d6a27",
+  "grant": "fucq107-controller14-0090092-0159",
+  "originalRun": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/controller14-d26530673e474ed69caaa21443acc7ea",
+  "files": [
+    {
+      "path": "plan.json",
+      "bytes": 1432,
+      "sha256": "df9ab1f3dbf561e07af07f79bec5cd1e45489d835cefeb9fc574714be4aab173"
+    },
+    {
+      "path": "output.log",
+      "bytes": 4049,
+      "sha256": "c1afb64e3721a906362c3d7ba61ed7db0bff6cc33a6111b35be7eac0c8d1fbdd"
+    },
+    {
+      "path": "modules.jsonl",
+      "bytes": 3292,
+      "sha256": "5c30afb8276fdef33aa8f240e53897608c8aa28304a61e2c90dc9afccf9a50a2"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 2800,
+      "sha256": "631eed62df8a58a729ffdb3bc1bc57d7c99e9bfa19ec288db3691ff2d17b84e4"
+    },
+    {
+      "path": "checkpoint.json",
+      "bytes": 343,
+      "sha256": "816ef3d6f11f999b5ac36e987edde3d34e5051de8d68abf1ecbe96d395f5edd9"
+    },
+    {
+      "path": "parent-audit.json",
+      "bytes": 2456,
+      "sha256": "c85218153180908149b7e972e8e8a4c8c4bb7df9ad3c72cee04271fbbdc21bf5"
+    },
+    {
+      "path": "ownership/a549946fa3d6419b934450b44a079e3b.json",
+      "bytes": 1344,
+      "sha256": "da4e8fb8e3a9149d5c352b6810d3fde42c86f2ad2df2387c2ab16d98b7e03a9a"
+    }
+  ],
+  "scope": "Only the frozen14 controller/HTTP-adapter cases; all source/current/Node/helper pins unchanged. No producer, renderer, backend rerun, browser, native, network or full validation.",
+  "testImpact": {
+    "basis": "Explicit regression/boundary selection plus original observed module/load graph; no per-function instrumentation or wider integration claim.",
+    "sourceManifestSHA256": "bf9b0638f69c923efc16c8fa4a62ebc77698d4ed159523f26e971bc28ef42a68",
+    "selected": [
+      "server/test/gcsp-second-offer-controller.test.js"
+    ],
+    "functionToCases": [
+      {
+        "path": "blocks/gcsp/offer-followup/followup-controller.js",
+        "functions": [
+          "createFollowupController",
+          "receive",
+          "choose",
+          "confirm",
+          "refresh",
+          "destroy"
+        ],
+        "cases": [
+          "question load and local choice write nothing; only explicit confirmation sends the five fields",
+          "unchanged and invalid choices cannot confirm for options, slider or equipment",
+          "uncertain retries retain the identical command even when a status read still returns the question",
+          "reload preserves a committed saved receipt when evaluation is unavailable",
+          "missing evaluation and invented waiting or no-match envelopes fail closed",
+          "ready requires a distinct offer and the current quote brief; malformed requirement rows fail closed",
+          "stale version requires a refresh; forbidden and earlier-run responses do not retain account data",
+          "authentication loss clears a saved receipt while non-auth source failure preserves it",
+          "duplicate confirmation is suppressed and teardown ignores late server replies",
+          "snapshots and observers cannot mutate the server question or retained command",
+          "malformed questions and malformed success receipts cannot produce a confirmed save"
+        ]
+      },
+      {
+        "path": "blocks/gcsp/offer-followup/http-adapter.js",
+        "functions": [
+          "createFollowupHttpAdapter",
+          "read",
+          "confirm"
+        ],
+        "cases": [
+          "HTTP adapter sends strict selectors and confirmation with session cookies and no-store",
+          "HTTP adapter rejects extra authority and incomplete bodies without fetching",
+          "HTTP abort, malformed JSON and unsuccessful HTTP success envelopes remain unavailable"
+        ]
+      }
+    ],
+    "fixtures": "Inline values/functions in the exact pinned controller test; no external fixture, database or producer import. Four package metadata inputs remain pinned.",
+    "subprocessEdges": "Gated Python direct child execs exact Node test coordinator; one observed Node test child, identities retained in original ownership manifest.",
+    "unobservedBoundaries": [
+      "real server/session/PolicyService",
+      "renderer/jsdom/browser",
+      "actual producer composition",
+      "allocator/tick and evaluation",
+      "full-suite effects"
+    ],
+    "timing": "2.485448625 seconds includes supervisor/OS/cleanup overhead; original TAP retains each test duration."
+  }
+}

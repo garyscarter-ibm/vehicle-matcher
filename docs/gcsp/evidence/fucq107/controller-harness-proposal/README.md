@@ -1,5 +1,7 @@
 # FUCQ-107 controller14 harness proposal
 
+Historical proposal below. On 6 November 2026, independent delta admission passed and the dispatcher granted one exact run. The [scoped controller14 result](../controller-pass/README.md) records 14/14 PASS and read-only audit PASS; dispatcher final audit remains pending. The earlier no-grant/unexecuted statements below describe the authoring checkpoint.
+
 Author-only checkpoint with handled-cancellation repair, 6 November 2026. **Unreviewed and unexecuted.** The dispatcher has authorised the minimal authentication repair and this external supervisor/lifecycle repair, then a review freeze. There is no execution grant. No broader backend, renderer, mixed-producer, browser, native or full-suite work is authorised by this checkpoint. FUCQ-107 is not built.
 
 The scoped product source is immutable `94e05ff9070aa19f5deb3e9997dfed96cc268473`: three JavaScript modules, four package metadata inputs, two application imports and two builtin imports. The controller source differs from the rejected `942c854` proposal only in the `unknown-principal` authentication branch and its saved-receipt regression. All original 13 cases remain, with one added case for authentication loss versus ordinary source unavailability. Exact 14 names and all seven source hashes are in `controller-94e05ff-source.json`.
