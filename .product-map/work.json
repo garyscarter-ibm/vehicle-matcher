@@ -1820,17 +1820,17 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T10:57:16Z",
+      "observed_at": "2026-11-06T11:13:12Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59",
       "workers": [
         {
           "name": "Cecil Turtle",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-06T10:57:15.990070+00:00",
-          "expires_at": "2026-11-06T10:57:15.990070+00:00",
+          "observed_at": "2026-11-06T11:13:12.012134+00:00",
+          "expires_at": "2026-11-06T11:43:12.012134+00:00",
           "source": "thread 01a1b054-1167-7820-b9f2-92ec81e37bbe",
-          "status": "stopped; source executor validated and4GET pilot consumed; publishing checkpoint; Sol/high, no descendants"
+          "status": "active; docs/static historical route and current full plan; awaiting serial reservation; Sol/high, no descendants"
         }
       ],
       "slices": [
@@ -1873,8 +1873,8 @@
           "id": "publication-contract",
           "status": "blocked",
           "title": "F39/F54 identity, provenance and selected-source compatibility (1 point)",
-          "observed_at": "2026-11-06T10:56:10Z",
-          "evidence": "Current F39/F54 scoped boundary29/29 passes plus31collector/session. Actual source observation explicitly lacks productionDate/taxDate/trim/paint-upholstery classification/accessory quantity, so canonicalAdapterContext remains unqualified and accepted corpus rows0. No actual source publication claimed."
+          "observed_at": "2026-11-06T11:13:12Z",
+          "evidence": "Historical1Nov registered F39 snapshot and original F54 resolvedIdentity already support truthful partial publication (matching60/60 scoped evidence); physical production/modelYear/steering remain unknown. Fresh6Nov observation accepted0 cannot automatically compose through actual F60/F54 schemas. Only new-date/current-session publication remains blocked on explicit qualification/integration. readiness-2026-11-06.md; independent code/security reviews PASS AEE."
         },
         {
           "id": "retailer-boundary",
@@ -1887,8 +1887,8 @@
           "id": "full-validation",
           "status": "blocked",
           "title": "Authored serial npm test integration gate (1 point)",
-          "observed_at": "2026-11-06T10:56:10Z",
-          "evidence": "Changed source executor has current60/60 scoped validation and one consumed4GET pilot. Historical fdb71c2 full1284pass/5native skips does not validate changed source; parent explicitly grants no new full suite. Native SQL excluded."
+          "observed_at": "2026-11-06T11:13:12Z",
+          "evidence": "Exact current AEE full plan prepared with68test hashes, pinned supervisor/resource/dependency tools, command node --test --test-concurrency=1 server/test/**/*.test.js, one worker128MiB scratch/1GiB RAM/300s, nativeURL unset. Awaiting parent serial reservation; not run. Historical fdb71c2 full is not current evidence. current-full-2026-11-06/plan.json."
         }
       ],
       "unsliced": false
