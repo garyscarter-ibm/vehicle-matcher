@@ -12,9 +12,10 @@ Current source admission and proposed execution commands are in
 [the owned harness repair diagnosis](eligibility-harness-repair-2026-11-06.md).
 Only the nine frozen `eligibility-*` modes remain in the current supervisor. Use the pinned Python
 with `-I -B`, an externally reviewed plan SHA, exact published revision and a new grant for the
-selected mode. Two once-granted core25 attempts are recorded below; both are incomplete.
-No complete runtime proof is recorded for the repaired harness. The old commands
-and results below are historical evidence for their original sources.
+selected mode. The latest core25 run at `68b7fed` passed 25/25 and was independently
+accepted at that scoped boundary. Both earlier incomplete attempts remain recorded
+below. Registry16 and broader acceptance gates remain open. The old commands and
+results below are historical evidence for their original sources.
 
 Each future mode has one worker, a fresh strict host reservation and bounded owned scratch;
 compact summaries/manifests remain outside scratch in the shared
@@ -427,3 +428,26 @@ design expectations are authored and unexecuted. The dispatcher independently pa
 34 cleanup checks on the original attempt. See the current repair note and static audit.
 No probe, listener, retry or further test allocation was authorised or performed;
 this successor awaits dispatcher review and a fresh exact grant.
+
+
+## Accepted scoped core25 at 68b7fed, 6 November 2026
+
+The subsequent once-granted normal core25 run passed **25/25**, with zero failures,
+cancellations, skips or todo cases. The exact eight driver and 17 demand case names
+match the published tests. The finalizer, independent 516-check lead audit and
+514-check root audit passed; root authorised evidence publication after its final
+review. The [immutable proof index](eligibility-core-68b7fed-2026-11-06/README.md)
+links byte-for-byte copies of the bounded original log, summary, manifest,
+checkpoint and both audits, with all original byte counts and SHA-256 identities.
+
+Wall time was 18.042 seconds, peak aggregate RSS 988.3125MiB within 1024MiB, and
+peak combined allocation 4,348,560 bytes. Owned processes/group/port, scratch,
+worktree dependency paths and reservation token are absent. All source, dependency
+and executable pins match the tested revision; product/tests remain frozen at
+f80fc61. Earlier failed-run originals and receipts are unchanged.
+
+Grant `fucq103-eligibility-core-68b7fed-0639` is consumed; no retry or next mode ran.
+This scoped PASS does not prove registry16, remaining integration modes,
+browser/native/full/deployed acceptance or full-story completion. The 38 authored
+parser design fixtures remain unexecuted. Root retains the next admission and final
+acceptance; the story remains In Progress with rendered integration outstanding.
