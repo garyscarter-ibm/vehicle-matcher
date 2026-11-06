@@ -4,14 +4,19 @@ Backend-only scoped evidence. Full story acceptance remains open for normal runt
 bootstrap/deployment, deployed cookie/origin/browser, actual remote uncertainty,
 complete current-car facts and authored full-suite validation.
 
-The new follow-up entry check **failed: 8/11 passed**, with three missing expected
+The combined follow-up entry check **passed 11/11**, with lead audit and root's
+independent 360-check audit passing. See [the scoped result](followup-entry-combined-result.md)
+for the exact source identity, original TAP, budget admission and cleanup receipt.
+Full story acceptance remains open.
+
+The first follow-up entry check **failed: 8/11 passed**, with three missing expected
 handles and a spec/TAP reporter mismatch that prevented stopping on the first case
 failure. See [the original failure receipt](followup-entry-result.md); source pins
 and cleanup were retained and verified. No retry or acceptance follows from it.
 The [minimal renewal/runner/lifecycle repair](followup-entry-repair-diagnosis.md)
-is authored only. The [combined candidate](followup-entry-combined-plan.md) adopts
-reviewed 107 service `17e7fe1`; combined static review and a new grant remain
-required before execution.
+and [combined candidate](followup-entry-combined-plan.md) record the authoring and
+review history before the successful once-only run. Reviewed 107 service `17e7fe1`
+was used; no execution grant remains active.
 
 The earlier access/timing checkpoint ran:
 

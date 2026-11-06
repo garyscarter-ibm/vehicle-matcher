@@ -2,8 +2,9 @@
 
 Current authoring release: the [combined candidate](followup-entry-combined-plan.md)
 adopts reviewed 107 service `17e7fe1` and clears the earlier source hold. The
-historical hold states below remain part of the repair record. Combined static
-review and a new execution grant remain required; no repaired test has run.
+historical hold states below remain part of the repair record. The subsequent
+[once-only scoped run](followup-entry-combined-result.md) passed 11/11 with lead
+and root audits. No execution grant remains active.
 
 6 November 2026. **No repaired application, launcher, supervisor or resource
 adapter has been executed or imported.** The original 8/11 failure and

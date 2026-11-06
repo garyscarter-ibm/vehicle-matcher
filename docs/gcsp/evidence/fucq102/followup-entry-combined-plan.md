@@ -1,5 +1,9 @@
 # Combined follow-up entry candidate for static review
 
+Subsequent execution: [the once-only scoped result](followup-entry-combined-result.md)
+passed 11/11 with lead/root audits. The proposal and pre-execution statements
+below remain the historical frozen-plan record. Its execution grant is consumed.
+
 6 November 2026. **Authoring only; no repaired application, runtime helper,
 launcher, supervisor or test has been imported or executed.** The dispatcher
 released the exact FUCQ-107 service below after its narrow SOURCE static PASS.
