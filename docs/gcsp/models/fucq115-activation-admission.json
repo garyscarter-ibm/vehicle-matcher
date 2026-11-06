@@ -145,8 +145,8 @@
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/docs/gcsp/models/fucq115-activation-resources.py",
       "targetDevice": 16777232,
       "targetInode": 173156473,
-      "bytes": 23056,
-      "sha256": "2ef0823acaf59764c3c9e0e3cb662f0bd72637f7ee569807c61c537d0b742949"
+      "bytes": 23276,
+      "sha256": "362b879cbb29da02ffb4fae8bc641b98bee95ac3ba29cd8b52514b2657684c41"
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-092/docs/gcsp/models/fucq115-activation-run.mjs": {
       "kind": "file",

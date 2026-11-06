@@ -55,3 +55,23 @@ Actual dated activation and final scoped/full integration remain open. Existing
 training/evaluation/artifact evidence retains its original identity, adverse
 Brier scores, optimizer iteration-limit and thin synthetic structural support.
 Story completion, acceptance and production activation are not claimed.
+
+
+### Authorised OS schema diagnosis and repair proposal · 6 November 2026
+
+Original failed activation evidence is published at fbff6ae and preserved. One
+authorised bounded read-only macOS ps query returned0/no stderr/662rows; all
+rejections came from trailing padding in its final lstart column. The20 retained
+metadata samples pass the existing strict date regex after outer trim (0before/
+20after). No full command arguments or environment values retained.
+
+The minimal owned repair adds only lstart outer normalization before unchanged
+strict validation; no shared helper, supervisor, entry, artifact, training or
+source-graph edit. Frozen admission
+`1fc1376aadeaa5e6652bf923356ae457074ae43697750f819ddb31934b55c9d9`
+differs from c4667c21 in only the resource helper identity. AST/static symbols,
+metadata freeze/delta and exact --plan pass. This does not prove the repaired live
+probe or activation; no retry/test/Node/resource allocation ran. Exact current
+command/hashes and diagnosis: `docs/gcsp/models/fucq115-activation-os-repair.md`
+and `fucq115-activation-os-diagnosis.json`. Await independent review/new concrete
+grant. Policy/acceptance remain blocked; own worker expires at handoff.

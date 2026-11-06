@@ -28,16 +28,16 @@ called. Filesystem-relative JSON dependencies use the same single scratch mirror
 | --- | --- |
 | `fucq115-activation-source-plan.json` | `f884ae94ff85455aa8d56c38e0ed7e2be58d960a862e99359f5f318694fa65aa` |
 | `fucq115-activation-run.mjs` | `bb7bf38bb1a93ab962123fd91aeb3d04484971e735c8cca1e1f16dd943e7bed9` |
-| `fucq115-activation-admission.json` | `c4667c215fbaca5a15413df46e181118d5a8cde66dd2a127f0adb7b15bc13909` |
+| `fucq115-activation-admission.json` | `1fc1376aadeaa5e6652bf923356ae457074ae43697750f819ddb31934b55c9d9` |
 | `fucq115-activation-freeze.py` | `28ad3a2fa5af1a8a6fa37244dfa15481c7fe1dfa5725f032d7f45b69c9e0b192` |
-| `fucq115-activation-resources.py` | `2ef0823acaf59764c3c9e0e3cb662f0bd72637f7ee569807c61c537d0b742949` |
+| `fucq115-activation-resources.py` | `362b879cbb29da02ffb4fae8bc641b98bee95ac3ba29cd8b52514b2657684c41` |
 | `fucq115-activation-supervisor.py` | `1e5a0811b8cad6cf449905f72c1da49c59d9f6f486c95c791e40b3d496deefe9` |
 | `fucq115-activation-launch.mjs` | `e257c85510f7559f5aa4e0231ff2b8034bd80a111e833c1b877656927c7d270b` |
 
 After a new exact grant, the proposed single command is:
 
 ```text
-/usr/bin/python3 -I -B docs/gcsp/models/fucq115-activation-supervisor.py --execute --admission-sha c4667c215fbaca5a15413df46e181118d5a8cde66dd2a127f0adb7b15bc13909 --dispatcher-grant GRANT
+/usr/bin/python3 -I -B docs/gcsp/models/fucq115-activation-supervisor.py --execute --admission-sha 1fc1376aadeaa5e6652bf923356ae457074ae43697750f819ddb31934b55c9d9 --dispatcher-grant GRANT
 ```
 
 The finite entry point will:
@@ -89,3 +89,13 @@ retained-run identity. Fresh scoped/full integration remains the dispatcher's
 serial lane. The canonical settings-change acceptance test retains its original
 alternative-source evidence; this proposal does not add a settings-change run.
 Story completion and Jira acceptance remain open.
+
+
+## Current OS-padding repair proposal
+
+The one granted918ce04 attempt stopped before allocation; its unchanged original
+failure receipt is published at fbff6ae. Read `fucq115-activation-os-repair.md` and
+`fucq115-activation-os-diagnosis.json` for the authorised read-only diagnosis and
+minimal lstart outer-padding normalization. The hashes/current command above now
+refer to that unexecuted repair proposal; the former c4667c21 admission remains
+preserved with the actual failed attempt. No renewed activation grant is implied.

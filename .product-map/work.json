@@ -1609,7 +1609,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T01:44:21Z",
+      "observed_at": "2026-11-06T01:48:08Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-115",
       "slices": [
         {
@@ -1651,8 +1651,8 @@
           "id": "policy",
           "status": "blocked",
           "title": "Canonical-policy-adoption-and-dated-activation",
-          "observed_at": "2026-11-06T01:44:21Z",
-          "evidence": "One exact grant fucq115-activation-918ce04-0139 exited1 at initial strict OS snapshot, before manifest/reservation/scratch/Node/activation. No retry. All204 pins/138 installed files/14 packages/37 absences unchanged; rejected OS field unresolved. docs/gcsp/models/fucq115-activation-result.md"
+          "observed_at": "2026-11-06T01:48:08Z",
+          "evidence": "Original preallocation failure fbff6ae preserved. Authorised read-only OS metadata query identifies lstart trailing padding; one normalization authored and frozen (only resource helper identity differs). Static/admission plan passes; no repaired live probe, Node, retry/test/resource allocation. docs/gcsp/models/fucq115-activation-os-repair.md"
         },
         {
           "id": "acceptance",
@@ -1667,11 +1667,11 @@
         {
           "name": "Pluto",
           "harness": "codex",
-          "role": "story-lead/granted activation proof",
-          "observed_at": "2026-11-06T01:44:20.814206+00:00",
-          "expires_at": "2026-11-06T01:44:20.814206+00:00",
+          "role": "story-lead/author-only OS padding repair",
+          "observed_at": "2026-11-06T01:48:08.207979+00:00",
+          "expires_at": "2026-11-06T01:48:08.207979+00:00",
           "source": "thread 01a1ae22-e1cc-74a0-9717-21082afb1fd1",
-          "status": "stopped; one exact grant consumed, preallocation strict OS snapshot failure; no retry or Node/resource allocation"
+          "status": "stopped; one read-only diagnosis and minimal lstart normalization proposal frozen; independent review/new grant needed; no retry"
         }
       ],
       "branch": "dev/DEV-2026-11-04-092"

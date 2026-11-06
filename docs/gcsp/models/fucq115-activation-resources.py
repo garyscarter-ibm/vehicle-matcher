@@ -50,6 +50,10 @@ def process_snapshot():
     rows, observations = {}, []
     for line in output.splitlines():
         parts = line.split(None, 5)
+        if len(parts) == 6:
+            # macOS pads the final lstart column. Match the per-PID helper's
+            # outer trim before validating/comparing the actual timestamp.
+            parts[5] = parts[5].strip()
         partial = {key: int(parts[index]) if len(parts) > index and parts[index].isascii() and parts[index].isdigit() else None
                    for index, key in enumerate(['pid', 'ppid', 'pgid'])}
         partial['start'] = parts[5] if len(parts) == 6 and re.fullmatch(
