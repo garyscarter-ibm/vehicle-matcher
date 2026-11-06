@@ -37,7 +37,8 @@ function absoluteLink(value, base) {
   if (!base || !safeOfferLink(value)) return null;
   try {
     const link = new URL(value, base);
-    if (link.username || link.password || link.hash || link.origin !== base.origin) return null;
+    const fragmentValid = !value.includes('#') || /^#token=[A-Za-z0-9_-]{43}$/.test(link.hash);
+    if (link.username || link.password || !fragmentValid || link.origin !== base.origin) return null;
     const route = `${base.pathname}gcsp/offer`;
     if (value.startsWith('/') && link.pathname === '/gcsp/offer') link.pathname = route;
     if (link.pathname !== route) return null;

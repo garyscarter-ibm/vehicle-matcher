@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { createPolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok } from '../gcsp/repository/index.js';
@@ -10,7 +11,9 @@ import { createOutboxRoutes } from '../gcsp/notify/http.js';
 const SECRET = 'synthetic-provider-secret';
 const ADDRESS = 'approved@example.test';
 const BASE = 'https://demo.example.test/vehicle-matcher/';
-const LINK = '/gcsp/offer?token=fictional-access-value&run=synthetic';
+const TOKEN = 'A'.repeat(43); // Synthetic token with FUCQ-100's 32-byte base64url shape.
+const LINK = `/gcsp/offer?offerId=offer-one&runId=synthetic#token=${TOKEN}`;
+const OFFER_TOKEN_SHA256 = '325b699d7dfdb435cd8713015017aa68bf735582f127d7d64a0e0fc819f7b915';
 const WALL = '2026-11-05T10:00:00.000Z';
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 const env = (patch = {}) => ({ GCSP_MAIL_TRANSPORT: 'brevo', GCSP_BREVO_API_KEY: SECRET,
@@ -30,6 +33,7 @@ async function setup(t, { mail = {}, link = LINK, state = 'pending', outcome, at
   assert.equal(runtime.status, 'ok');
   const { clock, identity } = runtime.value;
   const context = (await identity.createPresenterSession('presenter')).value.context;
+  if (typeof link === 'function') link = link({ environmentId: context.environmentId, runId: context.runId, offerId: 'offer-one' });
   const ports = { repository, policy, clock, environmentId: 'mail-test', mail: { env: env(), wallNow: () => WALL, ...mail } };
   const dispatcher = new notify.NotificationDispatcher(ports);
   const f = { store, repository, policy, clock, identity, context, ports, dispatcher };
@@ -78,12 +82,39 @@ test('backend selection defaults to capture and explicit configured dispatcher s
   assert.match(payload.headers.idempotencyKey, UUID); assert.equal(payload.headers.idempotencyKey, job.outcome.provider.idempotencyKey);
   assert.equal(job.state, 'sent'); assert.equal(job.transport, 'configured');
   assert.equal(job.outcome.provider.messageId, '<accepted@smtp.test>'); assert.equal(job.outcome.provider.state, 'confirmed');
-  assert.equal(job.outcome.message.offerLink, `${BASE}gcsp/offer?token=fictional-access-value&run=synthetic`);
+  assert.equal(job.outcome.message.offerLink, `${BASE}gcsp/offer?offerId=offer-one&runId=synthetic#token=${TOKEN}`);
+  assert.ok(payload.textContent.includes(`${BASE}gcsp/offer?offerId=offer-one&runId=synthetic#token=${TOKEN}`));
+  assert.ok(payload.htmlContent.includes(`href="${BASE}gcsp/offer?offerId=offer-one&amp;runId=synthetic#token=${TOKEN}"`));
   assert.match(payload.htmlContent, /BMW &lt;Touring&gt;/); assert.doesNotMatch(payload.textContent, /No email has been sent/);
   assert.match(payload.textContent, /Provider acceptance does not confirm inbox delivery/);
   const projected = await createOutboxRoutes({ repository: f.repository })[0].handle({ context: f.context, body: {}, searchParams: new URLSearchParams() });
   assert.equal(projected.value.messages[0].state, 'sent'); assert.equal(projected.value.messages[0].textBody, payload.textContent);
   for (const privateValue of [SECRET, ADDRESS, '<accepted@smtp.test>', job.outcome.provider.idempotencyKey]) assert.ok(!JSON.stringify(projected).includes(privateValue));
+});
+
+test('pinned FUCQ-100 producer fragment survives renderer and configured outbound bodies', {
+  skip: !process.env.GCSP_F98_OFFER_TOKEN_SOURCE_BASE64,
+}, async (t) => {
+  // The supervised integration selection supplies the immutable reviewed Git blob in memory.
+  // Hash admission precedes import; no producer file is copied into this checkout.
+  const source = Buffer.from(process.env.GCSP_F98_OFFER_TOKEN_SOURCE_BASE64, 'base64');
+  assert.equal(createHash('sha256').update(source).digest('hex'), OFFER_TOKEN_SHA256);
+  const { mintOfferToken, verifyOfferToken } = await import(`data:text/javascript;base64,${source.toString('base64')}`);
+  let minted; let binding; let sent;
+  const f = await setup(t, { link: (input) => { binding = input; minted = mintOfferToken(input); return minted.offerLink; },
+    mail: { fetchImpl: async (_url, options) => { sent = JSON.parse(options.body); return response(); } } });
+  const token = minted.offerLink.split('#token=')[1];
+  assert.match(token, /^[A-Za-z0-9_-]{43}$/);
+  assert.equal(verifyOfferToken(token, binding, minted.tokenHash), true);
+  await f.dispatcher.dispatchPending();
+  const job = await row(f);
+  assert.equal(job.state, 'sent');
+  const expected = `${BASE}gcsp/offer?offerId=offer-one&runId=${encodeURIComponent(f.context.runId)}#token=${token}`;
+  assert.equal(job.outcome.message.offerLink, expected);
+  assert.ok(sent.textContent.includes(expected));
+  assert.ok(sent.htmlContent.includes(`href="${BASE}gcsp/offer?offerId=offer-one&amp;runId=${encodeURIComponent(f.context.runId)}#token=${token}"`));
+  assert.equal(new URL(job.outcome.message.offerLink).searchParams.has('token'), false);
+  assert.equal(job.outcome.provider.messageId, '<accepted@smtp.test>');
 });
 
 test('capture is committed before provider network and does not mark a failed send sent', async (t) => {
@@ -141,7 +172,7 @@ test('timeout and thrown provider diagnostics remain retryable and never reach l
     await dispatcher.dispatchPending(); dispatcher.close();
     const job = await row(f); assert.equal(job.state, 'retrying'); assert.equal(job.outcome.error, kind === 'timeout' ? 'provider-timeout' : 'provider-unavailable');
     assert.ok(job.outcome.message); assert.equal(logs.length, 1);
-    for (const value of [SECRET, ADDRESS, LINK, 'fictional-access-value']) assert.ok(!JSON.stringify(logs).includes(value));
+    for (const value of [SECRET, ADDRESS, LINK, TOKEN]) assert.ok(!JSON.stringify(logs).includes(value));
   });
 });
 
@@ -181,16 +212,29 @@ test('duplicate response is ambiguous and expired wall-time window refuses anoth
   assert.equal(job.state, 'failed'); assert.equal(job.outcome.error, 'provider-window-expired'); assert.equal(calls, 1); assert.ok(job.outcome.message);
 });
 
-test('real transport resolves only canonical public project links and preserves query/run access data', async (t) => {
-  for (const link of [`${BASE}gcsp/offer?token=fictional-access-value&run=synthetic`, 'https://unrelated.test/gcsp/offer?token=x',
-    'https://user:password@demo.example.test/vehicle-matcher/gcsp/offer', '/other/route?token=x', '/gcsp/offer?token=x#fragment']) {
-    await t.test(link.split('?')[0], async (st) => {
+test('real transport preserves canonical fragment links and refuses unsafe public links', async (t) => {
+  const canonical = `${BASE}gcsp/offer?offerId=offer-one&runId=synthetic#token=${TOKEN}`;
+  const legacy = `${BASE}gcsp/offer?token=fictional-access-value&run=synthetic`;
+  for (const [name, link, expected] of [
+    ['canonical relative', LINK, canonical], ['canonical absolute', canonical, canonical],
+    ['legacy query without fragment', legacy, legacy],
+    ['wrong origin', `https://unrelated.test/gcsp/offer?offerId=offer-one&runId=synthetic#token=${TOKEN}`, null],
+    ['credentials', 'https://user:password@demo.example.test/vehicle-matcher/gcsp/offer', null],
+    ['wrong route', `/other/route#token=${TOKEN}`, null],
+    ['unknown fragment', '/gcsp/offer#fragment', null], ['bare fragment', '/gcsp/offer#', null],
+    ['empty token', '/gcsp/offer#token=', null], ['short token', `/gcsp/offer#token=${'A'.repeat(42)}`, null],
+    ['invalid token alphabet', `/gcsp/offer#token=${'A'.repeat(42)}.`, null],
+    ['duplicate token', `${LINK}&token=${TOKEN}`, null], ['extra fragment field', `${LINK}&extra=x`, null],
+    ['encoded fragment field', `/gcsp/offer#%74oken=${TOKEN}`, null],
+  ]) {
+    await t.test(name, async (st) => {
       let calls = 0; const f = await setup(st, { link, mail: { fetchImpl: async () => { calls++; return response(); } } });
       await f.dispatcher.dispatchPending(); const job = await row(f);
-      const accepted = link === `${BASE}gcsp/offer?token=fictional-access-value&run=synthetic`;
+      const accepted = expected !== null;
       assert.equal(calls, accepted ? 1 : 0); assert.equal(job.state, accepted ? 'sent' : 'failed');
       if (!link.includes('user:password@')) assert.ok(job.outcome.message);
-      if (accepted) assert.equal(job.outcome.message.offerLink, link);
+      if (accepted) assert.equal(job.outcome.message.offerLink, expected);
+      else if (!link.includes('user:password@')) assert.equal(job.outcome.error, 'offer-link-invalid');
     });
   }
 });
