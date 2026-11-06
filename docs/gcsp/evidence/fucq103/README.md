@@ -301,9 +301,13 @@ published with exact remote readback; there is no current publication blocker.
 
 The [executable browser preparation checkpoint](browser-preparation.md) records the
 three planned actual-runtime chunks, finite source/dependency catalogue, secure
-HTTPS session setup, supervisor lifecycle and final passing static receipt
-`prep-9cedffdb5a9640fa95ce3fc876761641`. The parent independently verified source
-freeze and actual resource cleanup. This is preparation only; no rendered/browser,
-full-suite or native acceptance is inferred. Dispatcher review of the exact pushed
-revision and explicit per-chunk admission remain necessary. The active sole-browser
-lane is currently held by FUCQ-69; FUCQ-103 has not launched a browser.
+HTTPS session setup and supervisor lifecycle. Its corrected static receipt
+`prep-59dfbbd373b74a0db81c77f4a99f2ea6` covers the explicit computed logo edge,
+initialized HTTP-resource error check and inherited debug/trace filtering, with
+plan SHA-256 `d2545e4494d3c6e61fcae19d08bc4124a22f1a3b836825556bc9b1f7ba3b6abb`.
+The parent independently verified all 171 repository/251 dependency/four executable
+identities and actual resource cleanup. Earlier receipts remain documented.
+This is preparation only; no rendered/browser, full-suite or native acceptance
+is inferred. FUCQ-69 released the sole-browser lane, but FUCQ-103 admission still
+requires dispatcher review of this exact pushed successor and an explicit grant.
+FUCQ-103 has not launched a browser.

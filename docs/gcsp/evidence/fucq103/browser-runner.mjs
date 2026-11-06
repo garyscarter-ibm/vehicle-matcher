@@ -24,7 +24,7 @@ const sourcePlan = JSON.parse(await readFile(process.env.FUCQ103_SOURCE_PLAN, 'u
 const viewport = { width: chunk === 'journey-narrow320' ? 320 : 1280, height: 900 };
 const ledger = { pids: [process.pid], ports: [], profile: resolve(scratch, 'chrome-profile') };
 const report = { chunk, viewport, state: 'incomplete', checks: [], screenshots: [], responses: [],
-  consoleErrors: [], pageErrors: [], requestFailures: [], externalRequests: [], overflow: [],
+  consoleErrors: [], pageErrors: [], requestFailures: [], resourceFailures: [], externalRequests: [], overflow: [],
   scenario: 'Five synthetic persisted employee/confirmed-brief subjects; canonical policy/privacy/cookies; memory provider',
   boundaries: 'Actual local memory runtime and HTTP adapters; no PostgreSQL, producer corpus, external integration or native proof.' };
 const good = (reply) => { assert.equal(reply?.status, 'ok', JSON.stringify(reply)); return reply.value; };
@@ -404,6 +404,8 @@ async function start() {
   page.on('requestfailed', (req) => report.requestFailures.push({ path: new URL(req.url()).pathname, failure: req.failure()?.errorText }));
   page.on('response', (response) => {
     const path = new URL(response.url()).pathname;
+    if (response.status() >= 400 && !(path.startsWith(apiPath) && [403, 409].includes(response.status())))
+      report.resourceFailures.push({ path, status: response.status() });
     if (!path.startsWith(apiPath)) return;
     const job = (async () => { const json = await response.json(); report.responses.push({ path, status: response.status(), body: json }); })()
       .catch(() => {}).finally(() => responseJobs.delete(job)); responseJobs.add(job);
@@ -411,6 +413,7 @@ async function start() {
   if (chunk === 'smoke-desktop') await smoke(page); else await journey(page);
   await Promise.all(responseJobs);
   assert.deepEqual(report.pageErrors, []); assert.deepEqual(report.externalRequests, []);
+  assert.deepEqual(report.resourceFailures, []);
   const unexpectedFailures = report.requestFailures.filter((failure) => !(failure.path === apiPath + '/publish'
     && chunk !== 'smoke-desktop') && !(failure.path === apiPath && chunk === 'smoke-desktop'));
   assert.deepEqual(unexpectedFailures, []);

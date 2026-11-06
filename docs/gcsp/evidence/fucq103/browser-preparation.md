@@ -48,7 +48,8 @@ uses a fresh machine-wide HostBudget reservation, tracks recursive and detached
 process identities/ports/profile/open files, joins monitor/readers/processes,
 verifies cleanup and removes only owned scratch and inode/target-matched dependency
 links. Uncertain roots are preserved with an explicit cleanup issue. Environment
-DB aliases, PG variables and Node preload/coverage options are removed without
+DB aliases, PG variables, Node preload/coverage options and DEBUG/TRACE-named
+variables (including NODE_DEBUG, PWDEBUG, PLAYWRIGHT_DEBUG and DEBUG) are removed without
 reading a secret file. Small local scratch is a declared browser IPC/profile
 compatibility exception; no large output is planned.
 
@@ -73,9 +74,9 @@ Both saved cartoon titles and effective model/effort were independently verified
 from their app state and session metadata. The parent reviewed and refined the
 supervisor and authored the driver/embed/catalogue. No child publishes changes.
 
-## Preparation result
+## Previous published preparation result
 
-The final frozen-source preparation passed on 6 November in 3.92 seconds. Receipt:
+The preceding published preparation passed on 6 November in 3.92 seconds. Receipt:
 `/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-browser/prep-9cedffdb5a9640fa95ce3fc876761641/receipt.json`.
 External manifest:
 `/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-browser/ownership/prep-9cedffdb5a9640fa95ce3fc876761641.json`.
@@ -95,10 +96,50 @@ worktree dependency link was created. Parent independently checked the receipt,
 manifest, actual filesystem, PID/group absence and source identity equality.
 
 Two earlier successful preparation receipts cover earlier harness identities and
-are not substitutes for this final receipt. An initial invocation had an extra
+are not substitutes for that published receipt. An initial invocation had an extra
 punctuation argument and exited before allocating resources. Source review then
 corrected custom-element definition order, error-link order/focus assumptions,
 strict dirty-plan/dependency membership guards, Enter activation and final retained
 receipt accounting. The old undercounted receipts are retained transparently;
 the final allocation field matches the actual filesystem. No browser/runtime was
 started in any preparation pass.
+
+
+## Corrected finite asset closure
+
+The published `4c4a31ea74ec217e821fb0f28d862870eb995757` preparation is superseded
+for admission by this helper-only correction. Diagnosis: the literal static scan
+missed `portal-shell.js`'s `LOGO(name)` template URL, invoked with
+`bmwgroup-bmw-mini`. The catalogue now explicitly records that dynamic edge and
+`assets/brand-logos/bmwgroup-bmw-mini.svg`, SHA-256
+`703c69d19aa0d2eda773a1b4022af2bf474c1058a4bafb84468abf7df63557ac`.
+The SVG has no nested href, URL, image or script reference. Auditing the finite
+JS/HTML/CSS closure found no other computed static asset path: the representative
+employee image is the already-pinned literal `bmw.jpg`; actual brief decisions use
+synthetic stock with no photo; remaining computed URLs are API routes. CSS font
+URLs and entrypoint modules remain individually pinned. The runner initializes
+`resourceFailures`, retains unexpected HTTP errors and requires the list to stay
+empty; static guards check initialization, collection and the assertion. The
+supervisor removes inherited debug/trace variables by name without retaining values.
+No product runtime source changed.
+
+The corrected preparation passed on 6 November in 3.69 seconds. Receipt:
+`/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-browser/prep-59dfbbd373b74a0db81c77f4a99f2ea6/receipt.json`.
+Manifest:
+`/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-browser/ownership/prep-59dfbbd373b74a0db81c77f4a99f2ea6.json`.
+Source-plan SHA-256:
+`d2545e4494d3c6e61fcae19d08bc4124a22f1a3b836825556bc9b1f7ba3b6abb`.
+All 171 repository sources, 251 installed dependency files and four executables
+match before/after and independent parent rehash. AST, both MJS syntax checks and
+static guards pass; runtime imports and browser launches remain zero.
+
+Peak combined allocation is 143,424 bytes and peak RSS 28,819,456 bytes. Final
+retained allocation is 139,328 bytes, independently matched to the filesystem.
+Owned scratch `/private/tmp/test-stamp-shard-be08fe459ff745e0a34838694379224f`
+held zero file bytes and is absent. Owned groups/PIDs 83938 and 83941 and supervisor
+83913 are absent. Monitor/readers joined; open files/ports are clear; reservation
+is released; no dependency link was created and the shared target remains present.
+The parent independently verified the exact source identity, retained allocation,
+scratch/PID/group/link absence and reservation release. This is static preparation
+only. All three browser chunks still require explicit dispatcher admission on the
+exact successor revision; rendered integration stays not-started.

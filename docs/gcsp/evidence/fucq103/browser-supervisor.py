@@ -326,7 +326,8 @@ class Supervisor:
                 checked.append(relative)
         text = (HERE / 'browser-runner.mjs').read_text()
         required = ['FUCQ103_CHUNK', 'FUCQ103_OUTPUT', 'FUCQ103_SCRATCH', 'FUCQ103_PROCESS_LEDGER',
-                    '--user-data-dir=', 'chrome-profile', 'buildServer', 'createGcspRuntime', 'https']
+                    '--user-data-dir=', 'chrome-profile', 'buildServer', 'createGcspRuntime', 'https',
+                    'resourceFailures: []', 'report.resourceFailures.push', 'assert.deepEqual(report.resourceFailures, [])']
         if any(item not in text for item in required):
             raise R.ResourceError('Runner lacks required owned Chrome/TLS/runtime interface')
         forbidden = [r'secureCookies\s*:\s*false', r'sameSite\s*:\s*[\'\"](?:none|lax)[\'\"]',
@@ -356,6 +357,7 @@ class Supervisor:
         removed = []
         for key in list(env):
             if (key.upper().startswith('PG') or re.search(r'DATABASE|POSTGRES|(?:^|_)DB(?:_|$)|(?:^|_)SQL(?:_|$)', key, re.I)
+                    or re.search(r'DEBUG|TRACE', key, re.I)
                     or key in ('DEMO_ACCESS_KEY', 'NODE_V8_COVERAGE', 'NODE_OPTIONS', 'NODE_PATH')):
                 removed.append(key)
                 del env[key]

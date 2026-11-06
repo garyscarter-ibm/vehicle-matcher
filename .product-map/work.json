@@ -1019,7 +1019,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-06T00:08:49Z",
+      "observed_at": "2026-11-06T00:14:29Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103",
       "jira_observed_at": "2026-11-05T22:40:24Z",
       "branch": "dev/DEV-2026-11-04-066",
@@ -1083,8 +1083,8 @@
           "id": "rendered-integration",
           "status": "not-started",
           "title": "Desktop and narrow keyboard browser evidence",
-          "observed_at": "2026-11-06T00:08:49Z",
-          "evidence": "Executable actual-runtime HTTPS harness frozen; final static prep passes, source/dependency equality and actual resource cleanup verified: prep-9cedffdb5a9640fa95ce3fc876761641. docs/gcsp/evidence/fucq103/browser-preparation.md. Three chunks proposed1280/320px; browser admission and rendered acceptance remain outstanding."
+          "observed_at": "2026-11-06T00:14:29Z",
+          "evidence": "Corrected actual-runtime HTTPS preparation passes: prep-59dfbbd373b74a0db81c77f4a99f2ea6; plan d2545e4494d3c6e61fcae19d08bc4124a22f1a3b836825556bc9b1f7ba3b6abb pins171repo/251deps/4executables including computed portal logo. HTTP resource errors initialized/checked; inherited debug/trace filtering; parent independently verifies source freeze/resource cleanup. docs/gcsp/evidence/fucq103/browser-preparation.md. No browser launched; exact pushed successor and per-chunk admission remain outstanding."
         },
         {
           "id": "full-validation",

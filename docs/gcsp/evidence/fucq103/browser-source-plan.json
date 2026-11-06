@@ -326,6 +326,13 @@
       "sha256": "ec201019b3d883e095e753405a6fc5c1ae8f3b4905231dfd3dc6b4a1f348056f"
     }
   },
+  "explicitDynamicEdges": [
+    {
+      "from": "blocks/gcsp/shell/portal-shell.js",
+      "reason": "LOGO(name) template URL invoked with bmwgroup-bmw-mini in actual portalShell",
+      "to": "assets/brand-logos/bmwgroup-bmw-mini.svg"
+    }
+  ],
   "playwrightEntry": "/Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/index.mjs",
   "preparationBudget": {
     "browser": false,
@@ -345,11 +352,12 @@
   "purpose": "Preparation only until dispatcher reviews exact pushed freeze; no browser grant implied",
   "runtimeBaseRevision": "3f1cc3414d700b1028ff1fec640a40591324b728",
   "schemaVersion": 1,
-  "sourceMethod": "Finite static import/export/literal new URL/HTML src-href/CSS import-url closure from listed entrypoints; absent relative edges fail generation; installed package trees pinned separately. The source plan cannot self-hash.",
+  "sourceMethod": "Finite static import/export/literal new URL/HTML src-href/CSS import-url closure from listed entrypoints; absent relative edges fail generation; installed package trees pinned separately. The source plan cannot self-hash. Explicit audited dynamic asset edges are separately listed.",
   "sources": {
     "_tools/scaffold_git.py": "ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a",
     "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
     "assets/brand-hero/bmw.jpg": "674a6adc350ce39dde798acda7279f8c1e1c0a5a91daa7a1d1c843616a2b442d",
+    "assets/brand-logos/bmwgroup-bmw-mini.svg": "703c69d19aa0d2eda773a1b4022af2bf474c1058a4bafb84468abf7df63557ac",
     "blocks/gcsp/account/account-view.js": "c2e71ea6e5b15a1d905e33ab72d78eb0f45039fe2508cad89b11654801749dee",
     "blocks/gcsp/account/gcsp-account.css": "e445f913f913a94048388fc4a3d0fb5b937055ac4a6219fd8abb167e0d15eae3",
     "blocks/gcsp/account/gcsp-account.js": "6e55cfc13a86b715584ce85a76315248d61ae33bd5526399b64f87ad2b53c80c",
@@ -428,8 +436,8 @@
     "blocks/vehicle-matcher/vehicle-matcher.css": "11d7af7f3f05766c9c32c107f75f31d269d5531de4040938b34cea8b3854ea94",
     "docs/gcsp/evidence/fucq103/browser-embed.html": "c16cf6e535cb7a8b4dddb691e0d7de973736066c24d88db5147c6401d7d398e9",
     "docs/gcsp/evidence/fucq103/browser-embed.mjs": "daab99710162392a17f2dae21538b03651bf9bad3bb07981a05b7b16f53a21e5",
-    "docs/gcsp/evidence/fucq103/browser-runner.mjs": "0e419bac670dcb19d527c71547a0d97e2faf700b1a7034fd65ff5d290756459f",
-    "docs/gcsp/evidence/fucq103/browser-supervisor.py": "d697b9fb276e48ef5282b0abe17b9d7f4a254fb7c2611ec319bb9213f560b316",
+    "docs/gcsp/evidence/fucq103/browser-runner.mjs": "edd91e4814b5c291a09f73a90d6886a91a3d758824b30f890083a8ed8481bf48",
+    "docs/gcsp/evidence/fucq103/browser-supervisor.py": "b2007dcdd93db5dda9262de415bbe818d5ec38d1145d1a75749098dd193b9dcc",
     "gcsp-presenter.html": "ff00a6784b38e8142dfe90d7ccf3af510a1c95ce32477a65af71b70f0b23e71e",
     "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
     "package.json": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
