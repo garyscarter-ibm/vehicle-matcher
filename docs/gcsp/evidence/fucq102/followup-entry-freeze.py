@@ -96,6 +96,7 @@ def main():
     source = json.loads(source_data)
     plan = {'schemaVersion': 1, 'story': 'FUCQ-102', 'variant': 'actual100-103-106-107-memory-entry/explicit107-question-input/sequential-tap-v2',
             'status': 'unexecuted physical admission; independent source/harness review required',
+            'pendingIntegration': source.get('pendingIntegration'),
             'sourcePlanSHA256': hashlib.sha256(source_data).hexdigest(), 'sourceModules': len(source['modules']),
             'sourceDataFiles': len(source['files']), 'selectedCases': len(source['selectedCases']),
             'pythonExecutable': sys.executable, 'pythonVersion': sys.version, 'nodeExecutable': '/opt/homebrew/bin/node',

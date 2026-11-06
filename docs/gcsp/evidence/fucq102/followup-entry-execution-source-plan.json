@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "story": "FUCQ-102",
-  "status": "authored finite composition; NOT EXECUTED; source/harness review and exact new grant required",
-  "observedAt": "2026-11-06T01:50:55.272840+00:00",
-  "implementationCommit": "754b70c3422f962c8c179f1a30a3bfc782ce86eb",
+  "status": "AUTHORED repair candidate; HOLD pending repaired107 immutable source and independent source/harness review/new exact grant",
+  "observedAt": "2026-11-06T02:17:15.654216+00:00",
+  "implementationCommit": "4474938cb6d0a3c24ac7202c6e1a4151600392b0",
   "entry": "server/test/gcsp-offer-access-followup.test.js",
   "selectedCases": [
     "actual 100/106 decline survives a lost response and cookie/account reload into employee-only 107",
@@ -85,9 +85,9 @@
       "bytes": 4706
     },
     "server/gcsp/offers/access.js": {
-      "sourceCommit": "754b70c3422f962c8c179f1a30a3bfc782ce86eb",
-      "sha256": "d324f2657bf3689edc4b377a8a8e7f6fd24f6b018dcbda81770d8c8e1babe299",
-      "bytes": 27999
+      "sourceCommit": "4474938cb6d0a3c24ac7202c6e1a4151600392b0",
+      "sha256": "710c3fc7600f2ce1746b955372c49c043e30193defbd3c7a43f8563b87b0161b",
+      "bytes": 28960
     },
     "server/gcsp/offers/buddy-hold.js": {
       "sourceCommit": "a7fc8580efba36c329b2479711d6b66db53962bd",
@@ -225,9 +225,9 @@
       "bytes": 8375
     },
     "server/test/gcsp-offer-access-followup.test.js": {
-      "sourceCommit": "754b70c3422f962c8c179f1a30a3bfc782ce86eb",
-      "sha256": "2b375f05fa26daa0849875879030188b173f48ca814f5898d1f878371516d3ca",
-      "bytes": 20908
+      "sourceCommit": "4474938cb6d0a3c24ac7202c6e1a4151600392b0",
+      "sha256": "b3a16d0d47cca53c0f0f5af84dd4354a038ba77c529a9eb3b915cd1cc268a6bb",
+      "bytes": 22385
     },
     "server/test/helpers/employee-recommendation.js": {
       "sourceCommit": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
@@ -241,7 +241,7 @@
     }
   },
   "moduleCount": 44,
-  "moduleBytes": 535517,
+  "moduleBytes": 537955,
   "files": {
     "server/gcsp/policy/seed-v1.json": {
       "sourceCommit": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
@@ -897,7 +897,6 @@
     "node:crypto",
     "node:fs/promises",
     "node:path",
-    "node:test",
     "node:url"
   ],
   "externalPackages": [
@@ -918,5 +917,11 @@
     "logBytes": 2097152,
     "workers": 1
   },
-  "executed": false
+  "executed": false,
+  "pendingIntegration": {
+    "story": "FUCQ-107",
+    "currentSourceCommit": "16839323f070f7c0ab81eb1ebf728627d283c71d",
+    "blocker": "Real ordinary context has no renewal; source still compares event renewal to that missing context field. Await lead-owned persisted-slot correction; do not execute this candidate."
+  },
+  "runner": "Immutable callback registry; exact-name sequential awaited assertion+cleanup cases; launcher emits TAP and breaks before next invocation on first failure."
 }

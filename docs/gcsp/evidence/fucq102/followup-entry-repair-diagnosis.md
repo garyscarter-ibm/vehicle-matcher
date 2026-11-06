@@ -102,6 +102,25 @@ aggregate RAM, 128 MiB combined allocation, 2 MiB log, one worker, 5 GiB disk an
 Cancellation and persistent-write failure injection require separate explicitly
 selected review/grant; they have not been added to the eleven service cases.
 
+## Held candidate freeze
+
+Owned application/test bytes are pinned at `4474938cb6d0a3c24ac7202c6e1a4151600392b0`
+(the main repair was published at `b3079eb`; the following one-line access guard
+keeps a null malformed slot on the declined/null path). The candidate remains 44
+modules, 122 relative edges, seven data files and eleven assertion cases.
+Source-plan SHA-256:
+`7c9c8c1ed9c442098de0e7184dea8c6cc782c859b65b5c8c881d52e4e988e252`.
+Physical-admission SHA-256:
+`466cb85f46a7e36a639da7863cd35038a0ee2e4cc328de995c982ec4aa160d4a`.
+
+Static readback matched 51 immutable source/data blobs, 193 physical identities
+and 38 absent resolution candidates, with 14 existing packages and five lock files.
+Python AST parsing and the exact eleven declared names passed. These are authoring
+checks, not runtime or service proof. The candidate explicitly carries the old
+107 integration blocker. The supervisor checks that hold before importing custom
+helpers, and refuses even its plan mode until a new combined freeze removes it.
+No execution command is proposed for this held candidate.
+
 105/client/host, deployed/browser/remote/native database/full-suite and final
 acceptance gates remain open. This evidence-only authoring change needs no new
 screen rendering; the existing visual contract still governs eventual integration.

@@ -18,7 +18,7 @@ import uuid
 ROOT = Path(__file__).resolve().parents[4]
 EVIDENCE = ROOT / 'docs/gcsp/evidence/fucq102'
 SHARED = Path('/Users/garycarter/Code/GitHub/vehicle-matcher')
-SOURCE_SHA = 'fd2eb341905bba23414e799bb011c0d415564c0c4ac656a0b0047d82a8111c3a'
+SOURCE_SHA = '7c9c8c1ed9c442098de0e7184dea8c6cc782c859b65b5c8c881d52e4e988e252'
 MIB = 1024 ** 2
 
 
@@ -291,6 +291,9 @@ def main():
     if args.execute and not (args.dispatcher_grant or '').startswith('fucq102-followup-'):
         parser.error('Execution requires the new exact follow-up grant')
     frozen = admit(args.admission_sha)
+    source_plan = strict_json((EVIDENCE / 'followup-entry-execution-source-plan.json').read_bytes())
+    if source_plan.get('pendingIntegration'):
+        raise RuntimeError('Source plan has an unresolved integration hold; no helper import or execution')
     environment = {key: value for key, value in os.environ.items() if key in ['HOME', 'USER', 'LOGNAME', 'LANG', 'LC_CTYPE', 'TZ']}
     environment.update(PATH='/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin', LC_ALL='C')
     os.environ.clear()
@@ -298,7 +301,6 @@ def main():
     resources = imported(frozen, 'fucq102_verified_resources', ROOT / '_tools/test_resources.py')
     sg = imported(frozen, 'fucq102_verified_git', ROOT / '_tools/scaffold_git.py')
     guard = imported(frozen, 'fucq102_owned_strict_resources', EVIDENCE / 'followup-entry-resources.py')
-    source_plan = strict_json((EVIDENCE / 'followup-entry-execution-source-plan.json').read_bytes())
     source = sources(source_plan, sg)
     admit(args.admission_sha)
     if args.plan:

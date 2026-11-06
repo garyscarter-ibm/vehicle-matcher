@@ -8,8 +8,8 @@
   "originalRun": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/followup-9d6eec0b291741f1ba7fa06a4586a751",
   "owned": {
     "server/gcsp/offers/access.js": {
-      "sha256": "347d472c9cba6913c50c68692ea9dd413f0c8232c9e32662c3351df6fa4e2280",
-      "bytes": 28959
+      "sha256": "710c3fc7600f2ce1746b955372c49c043e30193defbd3c7a43f8563b87b0161b",
+      "bytes": 28960
     },
     "server/test/gcsp-offer-access-followup.test.js": {
       "sha256": "b3a16d0d47cca53c0f0f5af84dd4354a038ba77c529a9eb3b915cd1cc268a6bb",
@@ -28,12 +28,12 @@
       "bytes": 29295
     },
     "docs/gcsp/evidence/fucq102/followup-entry-supervisor.py": {
-      "sha256": "1f64d7621ae707495bfccb6ea393ef881e1c5b72e53caa601deddd10fa07197e",
-      "bytes": 16787
+      "sha256": "fbe119290e20cf223600550d94d917561d347bd46fa3c699b31a5015fadb0721",
+      "bytes": 16941
     },
     "docs/gcsp/evidence/fucq102/followup-entry-freeze.py": {
-      "sha256": "c5cc3f4ac49333d4c3de98e59e59b4c34dc558e981b392220993b06aca5c873c",
-      "bytes": 6465
+      "sha256": "ce1863a6f98815abe7497dadd688deced8703c6dbee3ff5eacab8bea0ba6ab35",
+      "bytes": 6533
     }
   },
   "selectedCases": [
@@ -84,7 +84,15 @@
       "workers": 1
     },
     "diskReserveBytes": 5368709120,
-    "ramReserveBytes": 536870912
+    "ramReserveBytes": 536870912,
+    "immutableSourceReadbacks": 51,
+    "physicalIdentityReadbacks": 193,
+    "absentCandidates": 38,
+    "allReadbacksMatch": true
   },
-  "nextGate": "Independently review source/harness and adopt repaired107 exact source, freeze combined admission, then new explicit grant. No retry of old grant."
+  "nextGate": "Independently review source/harness and adopt repaired107 exact source, freeze combined admission, then new explicit grant. No retry of old grant.",
+  "ownedRepairCommit": "4474938cb6d0a3c24ac7202c6e1a4151600392b0",
+  "candidateSourcePlanSHA256": "7c9c8c1ed9c442098de0e7184dea8c6cc782c859b65b5c8c881d52e4e988e252",
+  "candidateAdmissionSHA256": "466cb85f46a7e36a639da7863cd35038a0ee2e4cc328de995c982ec4aa160d4a",
+  "candidateAdmissionStatus": "HOLD pending107; main refuses before custom helper imports; no execution command authorised"
 }
