@@ -113,6 +113,51 @@ def absent(item, rows):
     return False
 
 
+def listener_ports(output, pids):
+    # lsof 4.91 emits f framing even with -Fpn. Request it explicitly on all versions.
+    current, descriptor, named = None, None, False
+    processes, files, observed = set(), set(), set()
+    admitted = {str(pid): pid for pid in pids}
+
+    def malformed(reason, field):
+        diagnostic = ascii(field[:64])[:128]
+        raise RuntimeError('Malformed listener observation (' + reason + '): ' + diagnostic)
+
+    def finish(field):
+        if current is not None and (descriptor is None or not named):
+            malformed('incomplete process/file frame', field)
+
+    for line in output.splitlines():
+        if re.fullmatch(r'p[0-9]+', line):
+            finish(line)
+            if line[1:] not in admitted or line[1:] in processes:
+                malformed('foreign or duplicate PID', line)
+            processes.add(line[1:])
+            current, descriptor, named = admitted[line[1:]], None, False
+        elif re.fullmatch(r'f[0-9]+', line):
+            if current is None or (descriptor is not None and not named):
+                malformed('file outside process or missing name', line)
+            key = (current, line[1:])
+            if key in files:
+                malformed('duplicate file descriptor', line)
+            files.add(key)
+            descriptor, named = line[1:], False
+        elif line.startswith('n'):
+            if current is None or descriptor is None or named:
+                malformed('name outside file or duplicate name', line)
+            match = re.fullmatch(r'n.+:([0-9]{1,5})', line)
+            if not match or not 0 < int(match.group(1)) <= 65535:
+                malformed('invalid listener port', line)
+            observed.add(int(match.group(1)))
+            if len(observed) > 128:
+                raise RuntimeError('Owned listener observation cap exceeded')
+            named = True
+        else:
+            malformed('unknown field', line)
+    finish('<end>')
+    return observed
+
+
 def allocated_bytes(root):
     if not os.path.lexists(root):
         return 0
@@ -433,20 +478,10 @@ class Tree:
             return
         pids = {row['pid'] for row in members}
         reply = subprocess.run(['/usr/sbin/lsof', '-nP', '-a', '-p', ','.join(map(str, sorted(pids))),
-                                '-iTCP', '-sTCP:LISTEN', '-Fpn'], capture_output=True, text=True, timeout=3)
+                                '-iTCP', '-sTCP:LISTEN', '-Fpfn'], capture_output=True, text=True, timeout=3)
         if reply.stderr or reply.returncode not in (0, 1) or (reply.returncode == 1 and reply.stdout):
             raise RuntimeError('Owned listener query is unknown')
-        current, observed = None, set()
-        for line in reply.stdout.splitlines():
-            if re.fullmatch(r'p[0-9]+', line) and int(line[1:]) in pids:
-                current = int(line[1:])
-            elif current is not None and line.startswith('n') and re.search(r':([0-9]+)$', line):
-                port = int(re.search(r':([0-9]+)$', line).group(1))
-                if not 0 < port <= 65535:
-                    raise RuntimeError('Malformed listener port')
-                observed.add(port)
-            else:
-                raise RuntimeError('Malformed listener observation')
+        observed = listener_ports(reply.stdout, pids)
         if reply.returncode == 0 and not observed:
             raise RuntimeError('Empty successful listener query')
         ports = set(self.scratch.record['ports']) | observed

@@ -418,3 +418,12 @@ exact command, source/environment identity and cleanup evidence are in
 The earlier 8568dae receipt remains unchanged. Dispatcher independent audit and a
 separately authorised diagnosis/repair and fresh exact grant are required before
 further runtime work; registry16, browser, native and full-suite gates remain open.
+
+
+The subsequent source-only listener correction requests explicit `p`/`f`/`n` framing
+for the installed lsof 4.91 contract, preserves strict ownership/port/error checks and
+adds bounded offending-field diagnostics. Both source plans are refrozen; 38 synthetic
+design expectations are authored and unexecuted. The dispatcher independently passed
+34 cleanup checks on the original attempt. See the current repair note and static audit.
+No probe, listener, retry or further test allocation was authorised or performed;
+this successor awaits dispatcher review and a fresh exact grant.

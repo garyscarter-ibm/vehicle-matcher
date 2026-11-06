@@ -30,11 +30,11 @@ The affected selector's prior reviewed fallback to broad `npm test` is not selec
 Use the pinned Python with `-I -B` from the owned DEV-066 worktree. Every invocation requires the external source-plan SHA. Execution also requires the exact reviewed published HEAD and a fresh mode-specific dispatcher grant. The JSON stores the pinned executables, commands and filters. **These commands are proposed, not granted.** First admit core 25, review its result/cleanup, then separately admit registry 16. Stop on failure; all remaining modes require separate review.
 
 ```sh
-/Library/Developer/CommandLineTools/usr/bin/python3 -I -B docs/gcsp/evidence/fucq103/scoped-supervisor.py eligibility-core --execute --source-plan-sha 8ba30f9b6dba4bfe33048705137f098036debeb8801a1cfb30af2b21db3967ac --revision <reviewed-published-HEAD> --dispatcher-grant <new-fucq103-eligibility-core-grant>
-/Library/Developer/CommandLineTools/usr/bin/python3 -I -B docs/gcsp/evidence/fucq103/scoped-supervisor.py eligibility-registry --execute --source-plan-sha 8ba30f9b6dba4bfe33048705137f098036debeb8801a1cfb30af2b21db3967ac --revision <reviewed-published-HEAD> --dispatcher-grant <separate-new-fucq103-eligibility-registry-grant>
+/Library/Developer/CommandLineTools/usr/bin/python3 -I -B docs/gcsp/evidence/fucq103/scoped-supervisor.py eligibility-core --execute --source-plan-sha edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9 --revision <reviewed-published-HEAD> --dispatcher-grant <new-fucq103-eligibility-core-grant>
+/Library/Developer/CommandLineTools/usr/bin/python3 -I -B docs/gcsp/evidence/fucq103/scoped-supervisor.py eligibility-registry --execute --source-plan-sha edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9 --revision <reviewed-published-HEAD> --dispatcher-grant <separate-new-fucq103-eligibility-registry-grant>
 ```
 
-The angle-bracket fields are required review-time substitutions, so these are command templates. `--plan --source-plan-sha 8ba30f9b6dba4bfe33048705137f098036debeb8801a1cfb30af2b21db3967ac` is the separate allocation-free source-admission action; it imports no custom helpers. It has not been executed in this repair checkpoint.
+The angle-bracket fields are required review-time substitutions, so these are command templates. `--plan --source-plan-sha edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9` is the separate allocation-free source-admission action; it imports no custom helpers. It has not been executed in this repair checkpoint.
 
 | Mode | Expected matched tests | Purpose |
 |---|---:|---|
@@ -56,8 +56,8 @@ Excluded: full suite, native/deployed/live systems, actual92/69/122/126 producer
 
 ## Frozen authoring identities
 
-- Backend proposal SHA-256: `8ba30f9b6dba4bfe33048705137f098036debeb8801a1cfb30af2b21db3967ac`.
-- Browser proposal SHA-256: `6d29c7f7351b350eddf0fb4f177b19572c2a1044eaeb19a1785087fff6d912f7`.
+- Backend proposal SHA-256: `edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9`.
+- Browser proposal SHA-256: `0fe25d3786ed4184af57d37fd5bc148e5ee7a748405401bb2a3b21f1638c3af8`.
 - 219 source files, 432 relative/resource edges, three directory inventories, 251 installed files, 8 executables; 11 unique selected test files and 77 proposed matched cases.
 - New graph author: `eligibility-source-catalogue.py`; static source reading, Python AST parsing, immutable Git blob/hash comparisons and JSON validation only. No test/resource allocations or cleanup debt created.
 - 107 bundle SHA-256: `2b634e30a65f8fce6a3cfef67e10b04e9dff72ecb4fe296c51330e98efe86d5d`; digest `bb05e490f85e9f6fd9aa1c424c849740ad2884cc62e9d9a2b98ee8f739f8b7ed`.
@@ -93,3 +93,26 @@ Publish this new exact helper/plan revision for narrow static delta review and a
 The attempt at 8568dae consumed `fucq103-eligibility-core-8568dae-0228` once and stopped at 799.171875MiB aggregate RSS against 768MiB after 2.805seconds. Its original merged log is empty; no case names/counts or assertion verdict exist, so all 25 selected cases remain unproven. Runtime and independent lead cleanup passed; see `eligibility-core-8568dae-2026-11-06.json` and evidence-only commit c60ccd4. No retry or later mode ran. The earlier 45d337af grant remains superseded unconsumed.
 
 The dispatcher authorised a numeric-only 1024MiB aggregate proposal: 224.828125MiB headroom above the observed 799.171875MiB peak (about 28.13%). Only the supervisor’s actual RAM threshold and Policy value, plus the catalogue’s host reservation and chunk RAM identity, change. Product/tests, guard, launcher, 25-case commands/graph, 120seconds, 128MiB combined scratch/retained output, 2MiB merged child log, 256KiB receipt headroom, one worker, 5GiB disk reserve and 512MiB host RAM reserve stay unchanged. The original launch had 2,894,479,360bytes available and no outside pending reservation; that historical value is not admission for another run. Fresh strict locked HostBudget accounting and a new exact once grant remain mandatory. This proposal has not run; registry16 and all broader modes remain ungranted.
+
+
+## Listener-parser successor awaiting review
+
+The 1024MiB proposal subsequently consumed once grant `fucq103-eligibility-core-8bafa39-0236`
+at 8bafa39 and stopped on `Malformed listener observation`. It retained 15 successful
+original case lines and no final 25-case summary. Runtime and independent lead cleanup
+passed; evidence-only checkpoint bdc3f39 preserves the exact originals and receipt.
+The dispatcher independently verified cleanup with 34 checks. No retry occurred.
+Earlier sections describe their original authoring checkpoints.
+
+The dispatcher authorised this minimal source-only compatibility correction. The
+hashed installed 4.91 manual declares mandatory `f` file framing, whereas the previous
+parser accepted only `p`/`n`. The original unexpected record remains unknown because
+raw listener output was not retained. Explicit `-Fpfn` and structured owned `p`/`f`/`n`
+parsing now preserve PID binding, strict unknown/duplicate/incomplete refusal,
+valid finite ports and bounded offending-field diagnostics. The repair note and
+current static audit record 32 parser and six wrapper design fixtures, all unexecuted.
+Only the owned resource helper pin changes in the 219-file/432-edge plans; all
+product/test bytes, dependencies, executables, lifecycle controls and budgets
+remain unchanged. No helper import, probe, listener/reproduction, test or allocation
+is claimed. The command templates above use the new plan SHA and still require a
+reviewed published revision and a new exact grant before execution.

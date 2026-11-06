@@ -1,5 +1,8 @@
 # FUCQ-103 owned harness repair, 6 November 2026
 
+Earlier sections record authoring at their original revisions. The latest listener correction below
+and the two immutable core25 attempt receipts provide the current state.
+
 ## Diagnosis and scope
 
 Dispatcher review of `f80fc61ca151cb46ad21cb2b19e704f4012d53de` accepted the product/source composition and exact 107 registration, then refused runtime admission because of inherited supervision defects. The reproduced evidence is source inspection, not an executed failure: custom `test_resources` imported before hash admission; the combined plan had no externally admitted digest; inherited loader/native environment families survived; permissive JSON/default ledger/release behavior hid accounting uncertainty; missing process starts or failed queries could look absent; scratch was deleted before explicit absence proof; malformed RSS rows/stderr/empty snapshots were discarded. A subsequent shared review identified handled cancellation between Popen creation and initial ownership persistence.
@@ -58,3 +61,45 @@ The existing finalizer callback now retains the full original bounded test.log a
 Child stdout/stderr remain merged under the 2MiB cap. Metadata has a separate 256KiB retained receipt allowance; scratch, retained original and records stay within the existing 128MiB combined reservation. If receipt accounting exceeds its bound, the result/checkpoint stays failed/incomplete while preserving the original log. No original is silently shortened for metadata. Unknown retention state fails cleanup and retains scratch/reservation. Resource guard, launcher, product/test code, dependency/resolver and lifecycle checks remain unchanged.
 
 Only supervisor/catalogue pins and their corresponding graph/evidence are refrozen. A replacement exact-revision once grant is required before any core 25 execution. Registry 16, browser, central100, mixed, native and full validation remain ungranted. No run, probe, application/guard/supervisor import, test scratch or reservation was created in this preservation authoring checkpoint.
+
+
+## Listener framing after the consumed 8bafa39 attempt
+
+The separate 1024MiB grant ran once at 8bafa39 and stopped after 6.961 seconds with
+`Malformed listener observation`, within its RAM cap. The original 1,717-byte merged
+log has 15 successful case lines and no final 25-case summary. Receipt
+`eligibility-core-8bafa39-2026-11-06.json` preserves the originals and 505-check lead
+audit; the earlier 8568dae resource-stop receipt is unchanged. The dispatcher also
+independently verified cleanup with 34 checks; its receipt path and hash are in the
+current static audit. No product assertion failure or complete core25 result is inferred.
+
+Diagnosis: static inspection confirms a listener-parser compatibility defect. The
+installed primary manual `/usr/share/man/man8/lsof.8` identifies 4.91 and describes
+process sets starting with `p`, file sets starting with `f`, and `f file descriptor (always selected)`.
+The admitted `/usr/sbin/lsof` byte stream contains 4.91 version strings. The old
+`-Fpn` parser accepted only `p`/`n` and rejected `f`. The raw failed query response was
+not retained, so the exact offending field from the consumed attempt is unknown.
+The official upstream manual is <https://lsof.readthedocs.io/en/latest/manpage/>;
+this diagnosis is grounded in the hashed installed primary manual and pinned binary,
+without invoking lsof or opening a listener.
+
+The correction requests `-Fpfn` explicitly and parses owned `pPID`/`fFD`/`nendpoint`
+frames with numeric descriptors. Every file requires exactly one endpoint; process/file
+transitions reject incomplete frames. Foreign or duplicate PID frames, duplicate
+descriptors/names, unknown fields and malformed ports fail closed. Ports remain 1..65535
+with 128 unique ports per observation and the existing cumulative 128-port cap. Parser
+errors retain an offending-field sample bounded to 128 ASCII characters. Query return/stderr
+rules, owned PID binding, port persistence and every other guard AST are unchanged.
+
+`eligibility-listener-parser-fixtures.json` authors 32 parser and six wrapper expectations,
+including installed 4.91 framing, multiple owned processes/files, IPv4/IPv6/wildcard
+endpoints, duplicate/incomplete/unknown records, invalid ports, caps and diagnostic
+bounds. These are source-review design fixtures, not original observations or
+executed tests. The static audit parses Python AST and data only; no guard/supervisor
+import, lsof probe, listener/reproduction, test/browser/native call, reservation or
+scratch allocation occurred. Only the owned resource helper pin changes in both
+refrozen plans. Product/tests remain exact f80fc61; supervisor, launcher, catalogue,
+all 251 installed and eight executable pins, source membership/edges and all limits
+are unchanged. A fresh exact once grant is required after dispatcher review; no retry
+or next mode is authorised by this source checkpoint. The browser supervisor remains
+unrepaired and unadmitted.
