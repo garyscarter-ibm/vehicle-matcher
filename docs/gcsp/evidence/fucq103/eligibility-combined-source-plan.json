@@ -95,10 +95,10 @@
     "docs/gcsp/evidence/fucq103/browser-embed.mjs": "daab99710162392a17f2dae21538b03651bf9bad3bb07981a05b7b16f53a21e5",
     "docs/gcsp/evidence/fucq103/browser-runner.mjs": "d5e271500daeeb7ecd87a59f4abd3a8981970e83528324387836fa70c3edbfc2",
     "docs/gcsp/evidence/fucq103/browser-supervisor.py": "2eb571002b42f67ebbefdb6d4bb4e9ce7446aa4ad646438d636875a6fd99fb4c",
-    "docs/gcsp/evidence/fucq103/eligibility-source-catalogue.py": "768e25837fb861db9a42f95170d7f6e604815c15cadc1a5fd8a127054235f455",
+    "docs/gcsp/evidence/fucq103/eligibility-source-catalogue.py": "cc1aea7a41971326c9c17465399a36e557e2afbb54301a446fe07cd1ffde8f69",
     "docs/gcsp/evidence/fucq103/fucq115-dated-policy-command.json": "f7424c94b73d6a027f89c6b794fe261ea81807469cfa9e0cfc36482bab35f579",
     "docs/gcsp/evidence/fucq103/scoped-resources.py": "203d108e45bcaff79ebf9d5997712c0480b277b4da3dca34263a29387ae2b69b",
-    "docs/gcsp/evidence/fucq103/scoped-supervisor.py": "f77679c463805a5cf73a583e025389bf6c687252cad7fa645ed2f24133d31425",
+    "docs/gcsp/evidence/fucq103/scoped-supervisor.py": "f00c966a1b53f209d8459c1be13fed3262ee0e5e47ec99864e5aab8eea475797",
     "docs/gcsp/evidence/fucq103/scoped-test-launch.mjs": "a9893937cd7a3497d43f836919c47fd91485be0ca99efa54a3007ac10c376d1b",
     "docs/gcsp/evidence/fucq103/source-catalogue.py": "3a9164ebbca3eee2cf658288759fa21101d7e0ba611e865554838d0758592a41",
     "gcsp-presenter.html": "ff00a6784b38e8142dfe90d7ccf3af510a1c95ce32477a65af71b70f0b23e71e",
@@ -3495,7 +3495,7 @@
     {
       "path": "docs/gcsp/evidence/fucq103/eligibility-source-catalogue.py",
       "before": null,
-      "after": "768e25837fb861db9a42f95170d7f6e604815c15cadc1a5fd8a127054235f455"
+      "after": "cc1aea7a41971326c9c17465399a36e557e2afbb54301a446fe07cd1ffde8f69"
     },
     {
       "path": "docs/gcsp/evidence/fucq103/scoped-resources.py",
@@ -3505,7 +3505,7 @@
     {
       "path": "docs/gcsp/evidence/fucq103/scoped-supervisor.py",
       "before": "044e4232ca172fd91d605db8c1c978ae814c808886dd1565fa76385a809ec521",
-      "after": "f77679c463805a5cf73a583e025389bf6c687252cad7fa645ed2f24133d31425"
+      "after": "f00c966a1b53f209d8459c1be13fed3262ee0e5e47ec99864e5aab8eea475797"
     },
     {
       "path": "docs/gcsp/evidence/fucq103/scoped-test-launch.mjs",
@@ -3830,6 +3830,8 @@
     "chunkRamMiB": 768,
     "chunkLogMiB": 2,
     "sharedOutput": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs",
+    "retainedReceiptHeadroomKiB": 256,
+    "originalLogRetention": "Entire bounded merged test.log on success/failure after stop/join and owned scratch identity proof; byte count/SHA/readback. Child log cap2MiB plus separate256KiB receipt headroom, all within128MiB combined.",
     "require": [
       "external admitted source-plan SHA before custom imports",
       "fresh strict HostBudget reservation",

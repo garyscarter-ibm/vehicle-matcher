@@ -241,6 +241,8 @@ backend = {**common, 'scope': 'proposed-scoped-combined-eligibility-and-registra
     'excluded': 'Browser, full suite, native database/PostgreSQL connection, deployed/live systems, producer92/69/122/126 journeys,105→107 decision lookup/reload,113corpus/115training acceptance.',
     'resourceContract': {'workers': 1, 'chunkSeconds': 120, 'chunkScratchMiB': 128, 'chunkRamMiB': 768, 'chunkLogMiB': 2,
         'sharedOutput': '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs',
+        'retainedReceiptHeadroomKiB': 256,
+        'originalLogRetention': 'Entire bounded merged test.log on success/failure after stop/join and owned scratch identity proof; byte count/SHA/readback. Child log cap2MiB plus separate256KiB receipt headroom, all within128MiB combined.',
         'require': ['external admitted source-plan SHA before custom imports', 'fresh strict HostBudget reservation', 'owned root and external manifest before allocation', 'registered finalizer',
             'TMPDIR/TMP/TEMP inherited', 'before/after graph identity', 'stop at first failure', 'independent filesystem/process/group/link/port/reservation cleanup review']}}
 browser = {**prior, **common, 'purpose': 'Candidate canonical preparation plus weighted preview/publication journey; no execution grant.',

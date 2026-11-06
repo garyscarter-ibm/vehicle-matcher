@@ -298,20 +298,37 @@ def execute(args, plan, loaded, chunk, command, environment, resources, guard):
         except BaseException as error:
             failure = failure or {'type': type(error).__name__, 'message': str(error)[:1024]}
         finally:
-            def preserve_failure():
+            def preserve_output():
                 log = scratch.root / 'test.log'
-                if failure is not None and log.is_file() and retained.is_dir():
-                    fd = os.open(log, os.O_RDONLY | os.O_NOFOLLOW)
-                    with os.fdopen(fd, 'rb') as source:
-                        if not stat.S_ISREG(os.fstat(source.fileno()).st_mode):
-                            raise RuntimeError('Owned failure log is not a regular file')
-                        size = source.seek(0, os.SEEK_END)
-                        source.seek(max(0, size - 256 * 1024))
-                        data = source.read(256 * 1024)
-                    (retained / 'failure.log').write_bytes(data)
-                    result['retainedFailureLog'] = {'path': str(retained / 'failure.log'),
-                        'originalBytes': size, 'retainedBytes': len(data), 'truncated': size > len(data)}
-            cleanup = finalizer.finish(preserve_failure)
+                if not os.path.lexists(log):
+                    result['retainedTestLog'] = {'state': 'not-created'}
+                    return
+                fd = os.open(log, os.O_RDONLY | os.O_NOFOLLOW)
+                with os.fdopen(fd, 'rb') as source:
+                    identity = os.fstat(source.fileno())
+                    if not stat.S_ISREG(identity.st_mode) or identity.st_size > 2 * MIB:
+                        raise RuntimeError('Owned original log is not a bounded regular file')
+                    data = source.read(2 * MIB + 1)
+                    if len(data) != identity.st_size:
+                        raise RuntimeError('Original bounded log changed during retention')
+                receipt_headroom = plan['resourceContract']['retainedReceiptHeadroomKiB'] * 1024
+                before = scratch.sample() + guard.allocated_bytes(retained) + scratch.manifest.stat().st_size
+                if before + len(data) + receipt_headroom > 128 * MIB:
+                    raise RuntimeError('Full original log and receipt headroom exceed combined budget')
+                destination = retained / 'test.log'
+                with destination.open('xb') as output:
+                    output.write(data)
+                    output.flush()
+                    os.fsync(output.fileno())
+                digest = sha(data)
+                if destination.stat().st_size != len(data) or sha(destination.read_bytes()) != digest:
+                    raise RuntimeError('Original log retention readback differs')
+                result['retainedTestLog'] = {'path': str(destination), 'byteCount': len(data),
+                    'sha256': digest, 'entireBoundedOriginal': True, 'truncated': False}
+                used = scratch.sample() + guard.allocated_bytes(retained) + scratch.manifest.stat().st_size
+                budget.update(scratch.token, used, result.get('peakAggregateRSS', 0))
+                result['peakCombinedBytes'] = max(result.get('peakCombinedBytes', 0), used)
+            cleanup = finalizer.finish(preserve_output)
     preserved = False
     try:
         admit(args.source_plan_sha)
@@ -329,12 +346,24 @@ def execute(args, plan, loaded, chunk, command, environment, resources, guard):
     if retained.is_dir():
         resources.atomic_json(retained / 'checkpoint.json', {'state': 'complete' if passed else 'incomplete',
             'summary': str(summary_path), 'manifest': str(scratch.manifest)})
-    if guard.allocated_bytes(retained) + summary_path.stat().st_size + scratch.manifest.stat().st_size > 2 * MIB:
-        raise RuntimeError('Retained diagnostic cap exceeded')
+    impact_path = shared / 'impact' / (args.source_plan_sha + '-' + args.mode + '.json')
     if passed:
-        resources.atomic_json(shared / 'impact' / (args.source_plan_sha + '-' + args.mode + '.json'), {
+        resources.atomic_json(impact_path, {
             'sourcePlanSHA256': args.source_plan_sha, 'mode': args.mode, 'summary': str(summary_path),
             'functions': plan['impactMap'], 'coverage': 'Reviewed finite imports/callers; no measured per-test coverage.'})
+    log_path = retained / 'test.log'
+    original_log_bytes = max(log_path.stat().st_size, log_path.stat().st_blocks * 512) if log_path.is_file() else 0
+    retained_bytes = guard.allocated_bytes(retained) + summary_path.stat().st_size + scratch.manifest.stat().st_size
+    if passed:
+        retained_bytes += impact_path.stat().st_size
+    receipt_bytes = retained_bytes - original_log_bytes
+    if receipt_bytes > plan['resourceContract']['retainedReceiptHeadroomKiB'] * 1024 or retained_bytes > 2 * MIB + 256 * 1024:
+        passed = False
+        summary.update(passed=False, retentionFailure='Retained receipt headroom exceeded; original log preserved')
+        resources.atomic_json(summary_path, summary)
+        if retained.is_dir():
+            resources.atomic_json(retained / 'checkpoint.json', {'state': 'incomplete',
+                'summary': str(summary_path), 'manifest': str(scratch.manifest)})
     print(json.dumps({'summary': str(summary_path), 'manifest': str(scratch.manifest), 'passed': passed, 'cleanup': cleanup}))
     if not passed:
         raise SystemExit(2)
