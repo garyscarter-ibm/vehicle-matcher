@@ -4,7 +4,7 @@ owned PID and group; the supervisor recursively records Node test descendants.
 """
 import os
 import sys
-EXPECTED = ['/opt/homebrew/Cellar/node/26.5.0/bin/node', '--import', '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-loader.mjs', '--test', '--test-reporter=tap', '--test-concurrency=1', 'server/test/gcsp-second-offer-render.test.js']
+EXPECTED = ['/opt/homebrew/Cellar/node/26.5.0/bin/node', '--import', '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-loader.mjs', '--test', '--test-reporter=tap', '--test-concurrency=1', 'server/test/gcsp-second-offer-render.test.js']
 if not sys.flags.isolated or not sys.dont_write_bytecode or sys.argv[1:] != EXPECTED:
     raise RuntimeError('Reviewed launch command differs')
 if os.read(0, 1) != b'1':

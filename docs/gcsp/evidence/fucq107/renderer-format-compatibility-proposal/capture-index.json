@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "story": "FUCQ-107",
-  "status": "unreviewed-unexecuted-compatibility-proposal-no-grant",
+  "status": "unreviewed-unexecuted-launcher-argv-delta-proposal-no-grant",
   "externalPrefix": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-",
   "priorPublication": "ed9f619148c41b888761b2e226663afd5b43d866",
   "priorAdmissionSHA256": "f547b6a33e40424af037694ef7d1aaf3b970c91e92d2e208214435b42a78293b",
-  "admissionSHA256": "91141d2838b6808304caed74eb1b602ffe598e6fc2055b18904d463737fa874e",
+  "admissionSHA256": "a9ce7ec7f13b94f677ab74c3a61fa945be2ab6dec18930cb6ba133b1de569524",
   "files": [
     {
       "path": "renderer-94e05ff-cjs1-source.json",
@@ -46,8 +46,8 @@
     {
       "path": "renderer-94e05ff-cjs1-launch.py",
       "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-launch.py",
-      "bytes": 820,
-      "sha256": "3f20c1e2b1915efebf76ef6e16f90ad344d72232c74a7c9ca3e6071ae32a89f3"
+      "bytes": 825,
+      "sha256": "9e80006cf1969dec2dd7d34396536e36e28b62250f967c787b8392710a345eb0"
     },
     {
       "path": "renderer-94e05ff-cjs1-resources.py",
@@ -77,19 +77,39 @@
       "path": "renderer-94e05ff-cjs1-admission.json",
       "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-admission.json",
       "bytes": 1099504,
-      "sha256": "91141d2838b6808304caed74eb1b602ffe598e6fc2055b18904d463737fa874e"
+      "sha256": "a9ce7ec7f13b94f677ab74c3a61fa945be2ab6dec18930cb6ba133b1de569524"
     },
     {
       "path": "renderer-94e05ff-cjs1-author-static-review.json",
       "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-author-static-review.json",
-      "bytes": 2372,
-      "sha256": "23675b6640a9213070d6803b23308da94f23ba8ddf01c332d473f0a6e3c28e9d"
+      "bytes": 3884,
+      "sha256": "dd5e821782bb7fa02ca6d701804c8c27a30ebba97dbf4c4e4e96236608b06708"
     },
     {
       "path": "renderer-94e05ff-cjs1-vs-ed9.diff",
       "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-vs-ed9.diff",
       "bytes": 14147,
       "sha256": "2d5ba07276be91e3db8ad13cce767b22bb21014b2141b839164c1d603a1b5919"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-launcher-argv-repair.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-launcher-argv-repair.json",
+      "bytes": 3054,
+      "sha256": "f1a9cc3d66f3bd306ab2636ae86966f0e8ecb549b77de01d1d09f0805a318dac"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-author-static-review-c1eb265.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-author-static-review-c1eb265.json",
+      "bytes": 2372,
+      "sha256": "23675b6640a9213070d6803b23308da94f23ba8ddf01c332d473f0a6e3c28e9d"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-vs-c1-argv.diff",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-vs-c1-argv.diff",
+      "bytes": 1446,
+      "sha256": "f861be7586585b818688de5ffd30d1930271165f498deff229a97161db9d3ec3"
     }
-  ]
+  ],
+  "supersedesAdmissionSHA256": "91141d2838b6808304caed74eb1b602ffe598e6fc2055b18904d463737fa874e",
+  "priorCompatibilityPublication": "c1eb26537c96c6fbd14aad290f614960c55dce63"
 }

@@ -126,8 +126,8 @@
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-launch.py",
       "targetDevice": 16777232,
       "targetInode": 173191869,
-      "bytes": 820,
-      "sha256": "3f20c1e2b1915efebf76ef6e16f90ad344d72232c74a7c9ca3e6071ae32a89f3"
+      "bytes": 825,
+      "sha256": "9e80006cf1969dec2dd7d34396536e36e28b62250f967c787b8392710a345eb0"
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-loader.mjs": {
       "kind": "file",
