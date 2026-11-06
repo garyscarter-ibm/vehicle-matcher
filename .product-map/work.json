@@ -689,7 +689,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T00:31:27Z",
+      "observed_at": "2026-11-06T00:47:54Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-70",
       "tracker_observed_at": "2026-11-05T22:40:24Z",
       "branch": "dev/DEV-2026-11-04-070",
@@ -739,8 +739,8 @@
           "id": "service-integration",
           "status": "not-started",
           "title": "Actual-frozen66-memory-producer-and-HTTP-integration",
-          "observed_at": "2026-11-06T00:31:27Z",
-          "evidence": "6 November: root admitted f0420d0 source plan for authoring. Concrete six-case/eight-setup probe+strict loader+owned supervisor authored; service-proof-harness.json pins files, commands and unused run root. No integration imports/execution/allocation; exact harness review pending. Existing counts and five remaining slices unchanged."
+          "observed_at": "2026-11-06T00:47:54Z",
+          "evidence": "6 November: one admitted eba14ad harness run failed at strict loader bootstrap before six cases/eight setups; no import journal, no retry. service-proof-result.json and exact failure/receipt exported. Independent process confirms scratch, PIDs/groups and reservation absent; sources unchanged. Prior scoped counts and five acceptance slices remain open; revised harness admission needed."
         },
         {
           "id": "submission-integration",
