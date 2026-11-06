@@ -1820,7 +1820,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T10:34:50Z",
+      "observed_at": "2026-11-06T10:38:51Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-77",
       "branch": "dev/DEV-2026-11-04-056",
       "workers": [
@@ -1828,10 +1828,10 @@
           "name": "Wile E. Coyote",
           "harness": "codex",
           "role": "story-lead",
-          "observed_at": "2026-11-06T10:22:08.041924+00:00",
-          "expires_at": "2026-11-06T12:22:08.041924+00:00",
-          "source": "explicit dispatcher assignment 2026-11-06",
-          "status": "offline plan/verifier"
+          "observed_at": "2026-11-06T10:38:50.999135+00:00",
+          "expires_at": "2026-11-06T10:38:50.999135+00:00",
+          "source": "thread 01a1b05f-fbf8-7d31-adb3-c60fd6aeeaf1; requested/selected/runtime gpt-6.1-sol/high; no fallback/descendants; code 606749158b541e51c95153145b56785e7997f11c",
+          "status": "stopped at scoped offline checkpoint; story blocked"
         }
       ],
       "slices": [
