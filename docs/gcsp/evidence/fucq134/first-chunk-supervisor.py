@@ -272,6 +272,8 @@ def execute(frozen, args, resources, guard, completion, environment, started):
             raise RuntimeError('Selected three-case TAP contract failed')
     except BaseException as error:
         failure = {'type': type(error).__name__, 'message': str(error)[:1024], 'phase': tree.phase}
+        if isinstance(error, guard.SnapshotUncertain):
+            failure['snapshotDiagnostic'] = error.diagnostic
         scratch.record['firstFailure'] = failure
     finally:
         tree.phase = 'cleanup'
@@ -281,6 +283,8 @@ def execute(frozen, args, resources, guard, completion, environment, started):
         except BaseException as error:
             if failure is None:
                 failure = {'type': type(error).__name__, 'message': str(error)[:1024], 'phase': tree.phase}
+                if isinstance(error, guard.SnapshotUncertain):
+                    failure['snapshotDiagnostic'] = error.diagnostic
                 scratch.record['firstFailure'] = failure
         if process is not None:
             for pipe in [process.stdin, process.stdout]:

@@ -236,7 +236,7 @@ PolicyService and never bypass its gate.
 
 Review package and exact proposed command:
 `docs/gcsp/evidence/fucq134/README.md`. Admission SHA-256:
-`bb59a45825494e54f5156eae26a5e64d257cad04024ac75b7318a0835ba31486`.
+`2c4deec6736bcb81944c06e5e3a4ff7b0d92044820c141d68beb181c7a7c399a`.
 45 source/data files include published66's matching context changes unchanged,
 base generator unchanged and owned six runtime/data files. Dependency and physical
 runtime identities are frozen before custom execution. Three Python ASTs, JSONs
@@ -351,3 +351,30 @@ unchanged. Ledger/deletion/completion/actual66 unchanged. Static AST/JSON/order/
 hash/source/evidence-preservation/map/diff checks only; repair unexecuted. No new
 run grant or descendants. Requested/selected gpt-6.1-sol/high; no fallback.
 All acceptance and other five slices remain outstanding; root owns final audit.
+
+
+## Parser padding/first-rejection diagnostic checkpoint · 6 November 2026
+
+Dibble independently passed b343e1b initialization-only. Root's separate minimal
+parser authoring scope now strips only trailing ASCII column spaces before BOTH
+partial/full timestamp validations. Original column/decimal/PID/PGID/duplicate,
+state and timestamp predicates are unchanged; the full partial-observation list
+is retained. Unknown '?' rows still fail the entire snapshot and every absence/
+deletion/release gate. No skip, whitelist or foreign-harmlessness inference.
+
+SnapshotUncertain retains one first-rejected line (63-bit number), raw fixed
+fields (256codepoints), truncation/reason, query exit/error and bounded stderr
+(512codepoints or512input bytes). FirstFailure copies that finite diagnostic,
+without replacing the primary error with secondary cleanup uncertainty. Root's
+saved742-row later evidence is reused, not rerun; original causal row UNKNOWN.
+The remaining unknown state still blocks runtime compatibility acceptance.
+
+New authoring admission `2c4deec6736bcb81944c06e5e3a4ff7b0d92044820c141d68beb181c7a7c399a`;236nodes,
+45sources/971783bytes/accepted72edges/three exact cases and original base/actual66/
+source identity unchanged. Static checks PASS: AST/JSON, exact unchanged
+validation/observation/ownership predicates, normalization/diagnostic ordering,
+finite bounds, hashes/evidence reuse, map ownership and diff. No tests/probes/
+helper imports or execution/allocation/retry. Separate current admission and
+new diagnostic opportunity are required before another grant. Root retains
+final receipt; blocked runtime lane parked while other stories advance.
+Requested/selected gpt-6.1-sol/high,no fallback/descendants; no new visual claim.

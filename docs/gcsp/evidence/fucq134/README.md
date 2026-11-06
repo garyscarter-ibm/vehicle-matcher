@@ -1,6 +1,6 @@
 # FUCQ-134 first chunk review package
 
-**Initialization repair pending delta admission. Original once-only grant consumed; no new execution grant.**
+**Parser compatibility/diagnostic delta pending review. Original once-only grant consumed; no new execution grant.**
 
 Checkpoint, 6 November 2026. The one authorized23fc796 controller/audit attempt
 exited1/1 before Node, with0/3 tests reached. The manifest records SnapshotUncertain;
@@ -13,7 +13,7 @@ new immutable review/grant. This package is incomplete evidence, not acceptance.
 
 - Base: `034b56d08fb742d31478218b670552805d5840ab`.
 - Published real66: `eb5a677b37c486e3da7c4547803f739e22df8ac3`.
-- Admission SHA-256: `bb59a45825494e54f5156eae26a5e64d257cad04024ac75b7318a0835ba31486`.
+- Admission SHA-256: `2c4deec6736bcb81944c06e5e3a4ff7b0d92044820c141d68beb181c7a7c399a`.
 - Composed source identity: `7a982714de7cf74968cabcfbe3712be2ff4c3fe75cf95acda3381044cffa4a82`.
 - 45 embedded source/data files, 971783 source bytes, 236 physical identities,
   14 installed packages. Embedded immutable blobs permit checking the complete
@@ -40,13 +40,13 @@ command checks identities without importing custom helpers, allocating resources
 querying OS process state or importing JavaScript:
 
 ```sh
-/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --plan --admission-sha bb59a45825494e54f5156eae26a5e64d257cad04024ac75b7318a0835ba31486
+/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --plan --admission-sha 2c4deec6736bcb81944c06e5e3a4ff7b0d92044820c141d68beb181c7a7c399a
 ```
 
 Only after an explicit new grant, replace `--plan` with `--execute` and append:
 
 ```text
---dispatcher-grant fucq134-first-chunk-bb59a45825494e54f5156eae26a5e64d257cad04024ac75b7318a0835ba31486
+--dispatcher-grant fucq134-first-chunk-2c4deec6736bcb81944c06e5e3a4ff7b0d92044820c141d68beb181c7a7c399a
 ```
 
 The authorized execution must use an independent parent to retain the actual
@@ -55,12 +55,12 @@ proposed shell command has **not** run; it captures at most8KiB from the reviewe
 controller and creates no ticket file:
 
 ```sh
-if fucq134_completion_ticket="$(/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --execute --admission-sha bb59a45825494e54f5156eae26a5e64d257cad04024ac75b7318a0835ba31486 --dispatcher-grant fucq134-first-chunk-bb59a45825494e54f5156eae26a5e64d257cad04024ac75b7318a0835ba31486)"; then
+if fucq134_completion_ticket="$(/usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-supervisor.py --execute --admission-sha 2c4deec6736bcb81944c06e5e3a4ff7b0d92044820c141d68beb181c7a7c399a --dispatcher-grant fucq134-first-chunk-2c4deec6736bcb81944c06e5e3a4ff7b0d92044820c141d68beb181c7a7c399a)"; then
   fucq134_controller_exit=0
 else
   fucq134_controller_exit=$?
 fi
-printf '%s\n' "$fucq134_completion_ticket" | /usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-completion.py --audit --controller-exit "$fucq134_controller_exit" --admission-sha bb59a45825494e54f5156eae26a5e64d257cad04024ac75b7318a0835ba31486
+printf '%s\n' "$fucq134_completion_ticket" | /usr/bin/env -i HOME=/Users/garycarter USER=garycarter LOGNAME=garycarter PATH=/usr/bin:/bin:/usr/sbin:/sbin LC_ALL=C TZ=Europe/London /usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-103/docs/gcsp/evidence/fucq134/first-chunk-completion.py --audit --controller-exit "$fucq134_controller_exit" --admission-sha 2c4deec6736bcb81944c06e5e3a4ff7b0d92044820c141d68beb181c7a7c399a
 ```
 
 Completion requires controller exit0, the independent audit's bounded `complete`
@@ -304,3 +304,38 @@ No product/source/dependency, parser, ledger/deletion, completion-budget or
 actual66 changes. No additional test/probe/helper execution, new scratch or retry
 was used to validate the authored repair. Static checks and a new freeze support
 delta review only; snapshot compatibility and runtime proof remain outstanding.
+
+## ASCII column padding and bounded rejection diagnostic
+
+Dibble's independent b343e1b initialization-only static PASS is retained at
+`/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq134-init-review-0708.json`.
+Root authorized this separate, minimal author-only parser follow-up. Both
+partial and complete timestamp checks now receive the same fields after
+`line.rstrip(' ')`: only trailing ASCII column spaces are removed. Existing
+column/decimal/PID/PGID/duplicate, state and complete timestamp predicates remain
+unchanged. The preserved742-row later sample supports this formatting change;
+its one `?` state still fails the entire snapshot. Original causality remains
+unknown. No unknown row is skipped, whitelisted or treated as harmless/absent.
+
+`SnapshotUncertain` now retains one first-rejected-row diagnostic:1-based line
+number capped at63bits, raw fixed-field line capped at256codepoints, truncation
+flags and a fixed rejection reason. Query exit/error, stderr capped at512
+codepoints (or512input bytes decoded on timeout), its truncation flag and the
+required owner's row-presence flag accompany it. The command still requests
+only PID/PPID/PGID/RSS/state/start fields, never process arguments or secrets.
+Empty output, query failure/stderr, missing owner or any invalid row still
+refuses the snapshot; no rejected row is needed for the query-level diagnostic.
+
+The existing complete partial-observation list is unchanged, including unknown
+starts for invalid rows. The primary SnapshotUncertain diagnostic is copied into
+firstFailure in both execution and first-cleanup-error paths; later failures do
+not replace it. Protected direct join still precedes its explicit evidence save.
+Ownership/absence/deletion/release and ledger/resource/completion rules remain
+unchanged. These finite fields fit the existing final-output graph/file limits.
+
+Static validation passed: AST/JSON, exact predicate/normalization/observation and
+diagnostic-bound inspection, hashes/source reuse, original evidence preservation,
+map ownership and diff. No new test, probe, helper import/execution,
+allocation or retry. This cannot establish runtime compatibility while an
+unknown state persists. A separate current admission/diagnostic opportunity is
+required before another grant; root retains the final receipt.
