@@ -1,5 +1,19 @@
 {
   "adoptionPermission": "None in this checkpoint. The listed differences define exact candidate bytes for a future root-approved isolated materialization, not permission to overwrite this checkout or foreign-owned/frozen files. F100 keeps host/runtime/server ownership.",
+  "blockedCase": {
+    "name": "existing quoted authority reloads through the delivered host without invented confirmation or duplicate claim",
+    "next": "Shared host/authority route resolution; no synthetic setup-ready or direct review workaround",
+    "reason": "Actual Resume mounts setup; Continue always saves; active cart hold makes saveDraft conflict/release-required before gallery can redirect.",
+    "selected": false,
+    "snapshot": "9948bff11ed27f847436c6880db035fe8a54a784",
+    "writers": [
+      "blocks/gcsp/account/gcsp-account.js:294-303",
+      "blocks/gcsp/manual-setup/journey.js",
+      "blocks/gcsp/manual-setup/gcsp-manual-setup.js:148-160",
+      "blocks/gcsp/manual-setup/setup-controller.js:94-124",
+      "server/gcsp/manual-context/index.js:231-234"
+    ]
+  },
   "boundaryOnlyDifferences": [
     "gcsp-account.html",
     "scripts/gcsp-demo.mjs"
@@ -50,17 +64,16 @@
     "No browser/visual/320px/keyboard acceptance from JSDOM",
     "No duplicate C1/C2/C4/C5 or unchanged F69 four/nine/F70 six/131 runs",
     "No native DB/listener/live source/deployed-host/F71 allocation/final full-suite acceptance",
-    "No product adoption/helper/test execution/descendants during proposal authoring"
+    "No product adoption/helper/syntax/import/test execution/probes/ledger/scratch/descendants during authoring"
   ],
   "expectedNames": [
-    "actual released TEST stock reaches the delivered host gallery and one quoted review without reclaim",
-    "existing quoted authority reloads through the delivered host without invented confirmation or duplicate claim"
+    "actual released TEST stock reaches the delivered host gallery and one quoted review without reclaim"
   ],
   "holds": [
-    "Root approval of exact adoption union and new test authoring",
-    "New two-case test and specifically reviewed supervisor not authored/frozen",
+    "Independent review of authored one-case test and new helper/source/dependency proposal",
+    "Exact isolated source materialization remains unapproved; no product adoption",
     "Complete ordinary installed package/executable/helper/environment closure and fresh physical resource admission",
-    "Existing-claim reload must use actual permitted account/resume/setup route; its availability is an unproved test target, never permission for fabricated setup-ready dispatch",
+    "Actual account/resume route with active quote blocked by release-required save seam",
     "Normal account entry supplies no clock subscription; reset/principal-change notification and fresh default-run provider source remain separate",
     "Synthetic TEST profile cannot establish BMW/F77/F78/default-reset source acceptance"
   ],
@@ -4108,8 +4121,13 @@
       "verification": "current bytes hashed and identical immutable Git blob"
     }
   ],
-  "state": "author-only C3 proposal; no adoption, test authoring or execution grant",
+  "state": "author-only one-case test authored; helper/dependency admission proposal in progress; no execution grant",
   "story": "FUCQ-69",
+  "testAuthoring": {
+    "path": "server/test/gcsp-manual-gallery-review-journey.test.js",
+    "sha256": "29f6f1d5b99472283d0d8586949d625476127ccf7ad28fb983ad8044acb4ae65",
+    "validation": "Static text/source/metadata review only; no syntax/import/test/helper execution"
+  },
   "testProfile": {
     "path": "server/test/helpers/runtime-composition-profile.js",
     "ref": "9948bff11ed27f847436c6880db035fe8a54a784",
@@ -4119,7 +4137,7 @@
   "transportProposal": {
     "buildServer": "buildServer({...runtime.dependencies,gcspAllowedOrigins:[origin]})",
     "origin": "https://composition.test",
-    "scope": "Explicit test Origin allowlist only; original bound runtime authority/receivers preserved; no listener or alternate service success"
+    "scope": "Scoped global fetch bridge for all actual default host adapters; restore descriptor after bounded disposal/settling. Actual handler/receivers/status/body; no listener/network/alternate successful envelope."
   },
   "upstreamCatalogue": {
     "edgeCount": 350,
