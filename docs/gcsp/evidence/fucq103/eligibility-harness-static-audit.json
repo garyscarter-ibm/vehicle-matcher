@@ -4,10 +4,10 @@
   "scope": "static-harness-authoring-only",
   "state": "PASS",
   "productAndTestFrozenRevision": "f80fc61ca151cb46ad21cb2b19e704f4012d53de",
-  "backendPlanSha256": "3c8ba633091d6588b0bbbde6222b793dac4308edfffbd3bae25eb6b47c57c86b",
-  "browserCandidatePlanSha256": "35bc5f62f2f0fb4866db36d03d55bab00157554d226c247865e084e713cc9fc2",
+  "backendPlanSha256": "8a7380e1f6e8f7f019f36a5405c7d9e00470da0bcc357fadf830b27a74b1e55e",
+  "browserCandidatePlanSha256": "f8a42aa2fc517af20899fab90ca7178f4dce1e7ab6269248a34dd0d2cb3c7eaa",
   "harnessSha256": {
-    "scoped-supervisor.py": "f00c966a1b53f209d8459c1be13fed3262ee0e5e47ec99864e5aab8eea475797",
+    "scoped-supervisor.py": "b52436d9b8e2290d729d5b67b6a6549a8d6241e6c37b093e8d8e1682f46db8bd",
     "scoped-resources.py": "203d108e45bcaff79ebf9d5997712c0480b277b4da3dca34263a29387ae2b69b",
     "scoped-test-launch.mjs": "a9893937cd7a3497d43f836919c47fd91485be0ca99efa54a3007ac10c376d1b",
     "eligibility-source-catalogue.py": "cc1aea7a41971326c9c17465399a36e557e2afbb54301a446fe07cd1ffde8f69"
@@ -75,7 +75,7 @@
     }
   ],
   "matchedCases": 77,
-  "sourceBytesForFiniteMirror": 3793270,
+  "sourceBytesForFiniteMirror": 3793286,
   "staticChecks": {
     "productAndTestBytesFrozen": true,
     "sharedResourceHelperFrozen": true,
@@ -107,7 +107,8 @@
     "originalLogNotClippedForReceiptHeadroom": true,
     "retainedCopyCountedBeforeScratchDeletion": true,
     "separateReceiptHeadroomWithinCombinedBudget": true,
-    "guardLauncherLifecycleDependencyBytesPreserved": true
+    "guardLauncherLifecycleDependencyBytesPreserved": true,
+    "originalLogDescriptorOpenNonblockingBeforeRegularFileRejection": true
   },
   "proposedFirstSequence": [
     "eligibility-core:25 separate grant",
@@ -151,5 +152,14 @@
     "retainedReceiptHeadroomBytes": 262144,
     "combinedByteCap": 134217728,
     "moduleEvidence": "Existing admitted static source/edge/dependency identities; no instrumentation/journal added"
+  },
+  "nonblockingLogOpenReview": {
+    "priorRevision": "9a1f565c0a54cf9c791a1bdf63e091e2b4ee1b96",
+    "finding": "Blocking descriptor open could wait on FIFO before regular-file rejection under deferred cancellation",
+    "change": "Add O_NONBLOCK alongside O_RDONLY|O_NOFOLLOW; existing fstat/size rejection and fail/retain behavior unchanged",
+    "sourcePinsChanged": [
+      "docs/gcsp/evidence/fucq103/scoped-supervisor.py"
+    ],
+    "validation": "One-line byte delta and Python AST/control ordering only; no FIFO/probe/test/allocation"
   }
 }

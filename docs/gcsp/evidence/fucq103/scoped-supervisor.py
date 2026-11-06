@@ -303,7 +303,7 @@ def execute(args, plan, loaded, chunk, command, environment, resources, guard):
                 if not os.path.lexists(log):
                     result['retainedTestLog'] = {'state': 'not-created'}
                     return
-                fd = os.open(log, os.O_RDONLY | os.O_NOFOLLOW)
+                fd = os.open(log, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
                 with os.fdopen(fd, 'rb') as source:
                     identity = os.fstat(source.fileno())
                     if not stat.S_ISREG(identity.st_mode) or identity.st_size > 2 * MIB:

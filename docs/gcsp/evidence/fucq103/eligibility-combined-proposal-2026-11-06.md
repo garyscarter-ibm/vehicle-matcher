@@ -30,11 +30,11 @@ The affected selector's prior reviewed fallback to broad `npm test` is not selec
 Use the pinned Python with `-I -B` from the owned DEV-066 worktree. Every invocation requires the external source-plan SHA. Execution also requires the exact reviewed published HEAD and a fresh mode-specific dispatcher grant. The JSON stores the pinned executables, commands and filters. **These commands are proposed, not granted.** First admit core 25, review its result/cleanup, then separately admit registry 16. Stop on failure; all remaining modes require separate review.
 
 ```sh
-/Library/Developer/CommandLineTools/usr/bin/python3 -I -B docs/gcsp/evidence/fucq103/scoped-supervisor.py eligibility-core --execute --source-plan-sha 3c8ba633091d6588b0bbbde6222b793dac4308edfffbd3bae25eb6b47c57c86b --revision <reviewed-published-HEAD> --dispatcher-grant <new-fucq103-eligibility-core-grant>
-/Library/Developer/CommandLineTools/usr/bin/python3 -I -B docs/gcsp/evidence/fucq103/scoped-supervisor.py eligibility-registry --execute --source-plan-sha 3c8ba633091d6588b0bbbde6222b793dac4308edfffbd3bae25eb6b47c57c86b --revision <reviewed-published-HEAD> --dispatcher-grant <separate-new-fucq103-eligibility-registry-grant>
+/Library/Developer/CommandLineTools/usr/bin/python3 -I -B docs/gcsp/evidence/fucq103/scoped-supervisor.py eligibility-core --execute --source-plan-sha 8a7380e1f6e8f7f019f36a5405c7d9e00470da0bcc357fadf830b27a74b1e55e --revision <reviewed-published-HEAD> --dispatcher-grant <new-fucq103-eligibility-core-grant>
+/Library/Developer/CommandLineTools/usr/bin/python3 -I -B docs/gcsp/evidence/fucq103/scoped-supervisor.py eligibility-registry --execute --source-plan-sha 8a7380e1f6e8f7f019f36a5405c7d9e00470da0bcc357fadf830b27a74b1e55e --revision <reviewed-published-HEAD> --dispatcher-grant <separate-new-fucq103-eligibility-registry-grant>
 ```
 
-The angle-bracket fields are required review-time substitutions, so these are command templates. `--plan --source-plan-sha 3c8ba633091d6588b0bbbde6222b793dac4308edfffbd3bae25eb6b47c57c86b` is the separate allocation-free source-admission action; it imports no custom helpers. It has not been executed in this repair checkpoint.
+The angle-bracket fields are required review-time substitutions, so these are command templates. `--plan --source-plan-sha 8a7380e1f6e8f7f019f36a5405c7d9e00470da0bcc357fadf830b27a74b1e55e` is the separate allocation-free source-admission action; it imports no custom helpers. It has not been executed in this repair checkpoint.
 
 | Mode | Expected matched tests | Purpose |
 |---|---:|---|
@@ -56,8 +56,8 @@ Excluded: full suite, native/deployed/live systems, actual92/69/122/126 producer
 
 ## Frozen authoring identities
 
-- Backend proposal SHA-256: `3c8ba633091d6588b0bbbde6222b793dac4308edfffbd3bae25eb6b47c57c86b`.
-- Browser proposal SHA-256: `35bc5f62f2f0fb4866db36d03d55bab00157554d226c247865e084e713cc9fc2`.
+- Backend proposal SHA-256: `8a7380e1f6e8f7f019f36a5405c7d9e00470da0bcc357fadf830b27a74b1e55e`.
+- Browser proposal SHA-256: `f8a42aa2fc517af20899fab90ca7178f4dce1e7ab6269248a34dd0d2cb3c7eaa`.
 - 219 source files, 432 relative/resource edges, three directory inventories, 251 installed files, 8 executables; 11 unique selected test files and 77 proposed matched cases.
 - New graph author: `eligibility-source-catalogue.py`; static source reading, Python AST parsing, immutable Git blob/hash comparisons and JSON validation only. No test/resource allocations or cleanup debt created.
 - 107 bundle SHA-256: `2b634e30a65f8fce6a3cfef67e10b04e9dff72ecb4fe296c51330e98efe86d5d`; digest `bb05e490f85e9f6fd9aa1c424c849740ad2884cc62e9d9a2b98ee8f739f8b7ed`.
