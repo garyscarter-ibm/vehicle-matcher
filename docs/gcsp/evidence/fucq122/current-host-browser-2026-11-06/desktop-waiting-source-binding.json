@@ -1,0 +1,220 @@
+{
+  "story": "FUCQ-122",
+  "preparedAt": "2026-11-06T19:12:53.125264+00:00",
+  "state": "UNEXECUTED SOURCE PROPOSAL; exact dispatcher source/resource review and separate execution grant required",
+  "ownedBaseCommit": "1f05e48e408d7cd1b5c8f263747460fabc92c7c5",
+  "sharedCommitObserved": "96e930454828a43e545cf40ee06e2f37291cc259",
+  "sharedAskedCoworkLinePreserved": "- asked Cowork: MSG-2026-11-06-GC-001 routes the existing FUCQ-122 activity-help integration to the FUCQ-95 host owner and preserves the FUCQ-120 seam. Awaiting Cowork relay/owner response; no new Story, claim or AC change.",
+  "selectedScenario": {
+    "assistedSetup": "Existing canonical two-bundle recipe, brief save/confirm, labelled TEST stock pull/release and buddy.allocate in the existing owned worker; actual offer decline through UI.",
+    "mode": "journey-desktop",
+    "rootExecutionGrantReceived": false,
+    "scenario": "waiting-for-Paula -> explicit preference review/confirmation -> ordinary reload/current history",
+    "scenarioPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-waiting-source-proposed/scenario-waiting-proposed.mjs",
+    "scenarioSha256": "0b8ff42df04a644097f6d342e7c86bf6814a8ad1b6632562ef835f91c4a436c2",
+    "sourceOnly": true,
+    "unexecuted": true,
+    "viewport": {
+      "width": 1280,
+      "height": 900
+    }
+  },
+  "proposedEntryInvocationOnly": "FUCQ122_BROWSER_LANE_GRANTED=explicit-root-release /usr/bin/python3 -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-waiting-source-proposed/browser-supervisor.py journey-desktop",
+  "sourceInputs": {
+    "browser-runner.mjs": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-waiting-source-proposed/browser-runner.mjs",
+      "sha256": "3228e150e9cb9349796cee3617b3caf8589364a70772b113de83c01615b2bf53",
+      "parentPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/waiting-source-proposed/browser-runner.mjs",
+      "parentSha256": "d656d38f34dcc9c05f98059cdd1e6d2e7284a30d0ccc8705b5d7042cf529d20d",
+      "changedLines": 1
+    },
+    "scenario-waiting-proposed.mjs": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-waiting-source-proposed/scenario-waiting-proposed.mjs",
+      "sha256": "0b8ff42df04a644097f6d342e7c86bf6814a8ad1b6632562ef835f91c4a436c2",
+      "parentPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/waiting-source-proposed/scenario-waiting-proposed.mjs",
+      "parentSha256": "3ecc3cd56ccf1585e11f555a1442eb6d371e6a34a9805ec79b1745cbdec2b757",
+      "changedLines": 1
+    },
+    "browser-supervisor.py": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-waiting-source-proposed/browser-supervisor.py",
+      "sha256": "b8a8d71f3c37abea0fce8bfc3c943821235011c406e9125f7126b7e923c7157b",
+      "parentPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/waiting-source-proposed/browser-supervisor.py",
+      "parentSha256": "b8a8d71f3c37abea0fce8bfc3c943821235011c406e9125f7126b7e923c7157b",
+      "changedLines": 0
+    }
+  },
+  "sourcePlan": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-waiting-source-proposed/source-plan.json",
+    "sha256": "67b9a6f3d9f2d18bbbccead7ea8f4a329f152120f661c905bb1a90bc8c1eee38",
+    "pinCount": 706,
+    "parentPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/waiting-source-proposed/source-plan.json",
+    "parentSha256": "5d6dc71ce7940cb32bc1c136965ca8c51440f2786da5fddb1b7facda9f23c097",
+    "all703ParentPinsRetainedUnchanged": true,
+    "addedPins": {
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-waiting-source-proposed/browser-runner.mjs": "3228e150e9cb9349796cee3617b3caf8589364a70772b113de83c01615b2bf53",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-waiting-source-proposed/scenario-waiting-proposed.mjs": "0b8ff42df04a644097f6d342e7c86bf6814a8ad1b6632562ef835f91c4a436c2",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-waiting-source-proposed/browser-supervisor.py": "b8a8d71f3c37abea0fce8bfc3c943821235011c406e9125f7126b7e923c7157b"
+    },
+    "sourceRoots": [
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/vehicle-matcher",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/assets"
+    ],
+    "membershipCount": 284,
+    "membershipSha256": "cc4b35d4167a598748a7eb83a3e6d610d605e1ad4c97c8868be6530ec5bb7408"
+  },
+  "inherited": {
+    "f122Wrapper": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/resolved-closed-selected-1819/browser-supervisor.py",
+      "sha256": "b8a8d71f3c37abea0fce8bfc3c943821235011c406e9125f7126b7e923c7157b",
+      "copiedByteForByte": true
+    },
+    "f103Supervisor": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103/current-presenter-1718/browser-supervisor.py",
+      "sha256": "b17e1232addc1dbdcb51f2f0a5831155d4885a3b5b3813f909fcdd2ea1a73617"
+    },
+    "strictBudget": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-supervisor.py",
+      "sha256": "6d0ed076a44d2ae9be964ebd3b916310cb81e53ada39c9f3733d3e94c1047639"
+    },
+    "resourceHelper": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/_tools/test_resources.py",
+      "sha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d"
+    },
+    "baseScenario": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/scenario.mjs",
+      "sha256": "f109c63e26f4477267372f2f89c0b032fab1ecdea07827b98ddd48f8404a0a76"
+    },
+    "baseRunner": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/resolved-closed-selected-1819/browser-runner.mjs",
+      "sha256": "36ee4f152878e74b39976f2ca595a68f3f420f1c9b68494e7f4197a306ca84fc"
+    },
+    "receiptScopeCaveat": "Unchanged wrapper report.excluded is historical manual/resolved/closed text, inconsistent with this waiting/assisted-input proposal. Preserve and identify it, not an evidence claim that setup is excluded.",
+    "reachedNarrowScenario": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/waiting-source-proposed/scenario-waiting-proposed.mjs",
+      "sha256": "3ecc3cd56ccf1585e11f555a1442eb6d371e6a34a9805ec79b1745cbdec2b757"
+    },
+    "reachedNarrowRunner": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/waiting-source-proposed/browser-runner.mjs",
+      "sha256": "d656d38f34dcc9c05f98059cdd1e6d2e7284a30d0ccc8705b5d7042cf529d20d"
+    },
+    "reachedNarrowWrapper": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/waiting-source-proposed/browser-supervisor.py",
+      "sha256": "b8a8d71f3c37abea0fce8bfc3c943821235011c406e9125f7126b7e923c7157b",
+      "copiedByteForByte": true
+    }
+  },
+  "exactDiffDocument": {
+    "path": "docs/gcsp/evidence/fucq122/current-host-browser-2026-11-06/desktop-waiting-source-proposal.md",
+    "sha256": "e1c8b78801c9dc7191f208796d20db354c79a17303b6e258923af80880fbf2ca"
+  },
+  "executables": {
+    "chrome": {
+      "path": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+      "sha256": "3f0acaf1e585195596d73ffa1824baa72c3c3ac115b5cfc43d789030a3f23d93"
+    },
+    "git": {
+      "path": "/usr/bin/git",
+      "sha256": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818"
+    },
+    "lsof": {
+      "path": "/usr/sbin/lsof",
+      "sha256": "28c36d6b6dfcce1f544717b0d1961aa03441ee0a736fee3e1eaeb215c0fbff4c"
+    },
+    "node": {
+      "path": "/Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "sha256": "05d9888b3883526095889643ea7b14457ccb9c070875e5b9543bc0314601fb40"
+    },
+    "openssl": {
+      "path": "/usr/bin/openssl",
+      "sha256": "517827f877751b6d7abebe404a296fa8e82425c63694a73ab06db35e6d9a8362"
+    },
+    "ps": {
+      "path": "/bin/ps",
+      "sha256": "472992c470606d28f577590decfecd7f4a20f832fd92c671bebc6d44790b5d02"
+    },
+    "python": {
+      "path": "/Library/Developer/CommandLineTools/usr/bin/python3",
+      "sha256": "ec201019b3d883e095e753405a6fc5c1ae8f3b4905231dfd3dc6b4a1f348056f"
+    },
+    "vm_stat": {
+      "path": "/usr/bin/vm_stat",
+      "sha256": "04c1ec2d5939843c9a89a26791020d2017a50ff97a2d5b380af69d5fcdae5a63"
+    }
+  },
+  "playwrightEntry": "/Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/index.mjs",
+  "expectedPosts": {
+    "offerDecision": 1,
+    "help": 1,
+    "gregCaseUpdate": 2,
+    "employeeChangeAfterDecline": 1,
+    "offerFollowupConfirm": 0
+  },
+  "captures": [
+    "01-greg-preference-review.png",
+    "02-paula-waiting.png",
+    "03-paula-preference-review.png",
+    "04-paula-confirmed-reload-history.png"
+  ],
+  "limits": {
+    "seconds": 120,
+    "maximumRecursiveRssMiB": 2560,
+    "minimumAdmissionMiB": 2048,
+    "combinedScratchOutputMiB": 128,
+    "logMiB": 2,
+    "workers": 1,
+    "chromeInstances": 1,
+    "attempts": 1,
+    "retries": 0
+  },
+  "wallBoundary": "Existing monitored 120s elapsed-work deadline; existing finite driver/finalizer cleanup timeouts may extend total wall time; no new OS-wide watchdog.",
+  "freshAdmission": {
+    "allocatedDuringPreparation": false,
+    "registry": "/Users/garycarter/.cache/agent-scaffolding/test-resources/reservations.json",
+    "newTokenRequired": true,
+    "freshMeasuredDiskAndRamRequired": true,
+    "chargeAllRawRows": true,
+    "deadOwnerPruning": false,
+    "parentExemption": false,
+    "foreignReconciliation": false,
+    "lockDeadlineSeconds": 2,
+    "diskReserveGiB": 5,
+    "ramReserveMiB": 512,
+    "automaticRetries": 0
+  },
+  "ownership": {
+    "runPattern": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-waiting-source-proposed/journey-desktop-<uuid>",
+    "manifestPattern": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-waiting-source-proposed/ownership/journey-desktop-<uuid>.json",
+    "receiptPattern": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-waiting-source-proposed/journey-desktop-<uuid>/receipt.json",
+    "scratchPattern": "/private/tmp/test-stamp-shard-<token>",
+    "ledger": "process-ledger.json",
+    "observedIdentities": "owned-identities.json",
+    "union": "launcher PID/start plus full ledger/observed descendant PIDs/PGIDs, including short-lived TLS; actual ephemeral HTTPS/CDP ports and profile/scratch/token; independent root collection required",
+    "finalizer": "Unchanged inherited Supervisor.finalize; atexit + handled_termination + explicit finally; exact identity/inode checks, stop/join, absence checks and owned token release"
+  },
+  "preservedNarrowOutcome": {
+    "summaryCommit": "19e4a7552a82a1422fec1cf44bae0465382c6ca1",
+    "receiptSha256": "e4f8bd8bf946e1096fda92b706094a4b71949f2ecc753d858b07a25423db00bc",
+    "state": "incomplete",
+    "exitCode": 1,
+    "reachedChecks": 3,
+    "errors": 9,
+    "requestFailures": 10,
+    "unclassifiedReadAborts": 6,
+    "replacedOrRetried": false
+  },
+  "scope": {
+    "durablePaths": [
+      "docs/gcsp/evidence/fucq122/current-host-browser-2026-11-06/desktop-waiting-source-proposal.md",
+      "docs/gcsp/evidence/fucq122/current-host-browser-2026-11-06/desktop-waiting-source-binding.json"
+    ],
+    "runtimeSyntaxTestsOrApplicationHelperProbesExecuted": false,
+    "servicesBrowserDbScratchReservationsAllocated": false,
+    "supervisorProductStoryAcResultOrJiraModified": false,
+    "agentsOrClaimsCreated": false,
+    "rootExecutionGrantReceived": false,
+    "acceptancePassClaimed": false,
+    "remainingAcceptance": "All original gaps remain, including unobserved desktop waiting/confirmation, pending host help routing and failed npm result; no Done recommendation."
+  }
+}
