@@ -1369,7 +1369,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T00:30:56Z",
+      "observed_at": "2026-11-06T00:44:41Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-105",
       "slices": [
         {
@@ -1397,8 +1397,8 @@
           "id": "decision-host",
           "status": "blocked",
           "title": "Actual FUCQ106 decision and delivered host integration",
-          "observed_at": "2026-11-05T23:33:14Z",
-          "evidence": "Real FUCQ106 decision port and delivered host registration are not supplied in owned scope; no simulated success."
+          "observed_at": "2026-11-06T00:44:41Z",
+          "evidence": "Root accepted actual100→102→105 memory proof (0033 receipt,107checks). Read-only next plan pins47modules84edges plus prospective form helper48; no imports/tests/allocation.105 must forward quote revision and collect actual106 server reason code. Canonical accept/refusal independent; successful decline needs policy-owner registry adoption. Delivered /gcsp/offer, narrow gated one-offer dispatch/same-access-instance composition/same-origin HTTPS host ref still required.122 owns browser lane. Root r"
         },
         {
           "id": "browser",
