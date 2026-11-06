@@ -13,7 +13,10 @@ import { createScenarioService } from './scenarios/index.js';
 import { createSyntheticManualStockAdapter } from './adapters/manual-stock.js';
 import { createManualClaimsService } from './manual-claims/index.js';
 import { createBuddyHoldService } from './offers/buddy-hold.js';
-import { createOfferAccessService } from './offers/access.js';
+import { createOfferAccessService, OFFER_ACCESS_COOKIE } from './offers/access.js';
+import { createOfferDecisionService } from './offers/decision.js';
+import { createOfferFollowupService } from './offers/followup.js';
+import { createStoredSubjectRecommendationEvaluator } from './recommendation/index.js';
 import { verifyOfferToken } from './offers/offer-token.js';
 import { createNotificationDispatcher } from './notify/index.js';
 import { createStockReleaseService } from './stock/index.js';
@@ -90,10 +93,21 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const cases = createRenewalCaseService({ repository, policy, clock, identity });
     const buddy = createBuddyHoldService({ repository, policy, clock, identity, adapter });
     const offerAccess = createOfferAccessService({ repository, policy, clock, identity, environmentId, sessionNow, verifyOfferToken });
+    const offerDecisions = createOfferDecisionService({ repository, policy, clock, access: offerAccess,
+      createStoredSubjectEvaluator: createStoredSubjectRecommendationEvaluator, mode: adapter.mode });
+    const offerFollowup = createOfferFollowupService({ repository, policy, clock, identity, brief, offers: offerAccess });
+    const resolveOfferAccess = async ({ selector, cookie }) => {
+      const hasOfferCookie = typeof cookie === 'string' && cookie.split(';')
+        .some((part) => part.trim().startsWith(`${OFFER_ACCESS_COOKIE}=`));
+      if (hasOfferCookie) return offerAccess.fromSession(selector, cookie);
+      const resolved = await identity.resolveSession({ authorized: true, cookie });
+      return resolved.status === 'ok' ? offerAccess.fromAccount(resolved.value, selector) : resolved;
+    };
     notify = createNotificationDispatcher({ repository, policy, clock, environmentId });
     const dependencies = { gcspRepository: repository, gcspPolicy: policy, gcspGreg: greg, gcspGregPublish: gregPublish,
       gcspScenarios: scenarios, gcspManualClaims: manualClaims, gcspManualRead: manualRead, gcspManualReview: manualReview,
       gcspStockRelease: stockRelease, gcspCases: cases, gcspBuddy: buddy, gcspOfferAccess: offerAccess,
+      gcspOfferDecisions: offerDecisions, gcspResolveOfferAccess: resolveOfferAccess, gcspOfferFollowup: offerFollowup,
       gcspNotify: notify, gcspOutbox: { repository },
       gcspIdentity: identity, gcspClock: clock, gcspManual: account, gcspBrief: brief,
       gcspBriefEditor: editor, gcspActivity: activity, gcspRecommendations: { provider, policy, time: clock } };
@@ -113,6 +127,6 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       if (seeded.status !== 'ok') return seeded;
       return ok({ context: acting.value.context, setCookie: [presenter.value.setCookie[1], acting.value.setCookie] });
     }
-    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, manualRead, manualReview, stockRelease, releaseHistory, cases, buddy, offerAccess, notify, dependencies, createLocalSession, close });
+    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, manualRead, manualReview, stockRelease, releaseHistory, cases, buddy, offerAccess, offerDecisions, offerFollowup, resolveOfferAccess, notify, dependencies, createLocalSession, close });
   } catch { await close(); return unavailable(); }
 }

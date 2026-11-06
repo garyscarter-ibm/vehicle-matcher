@@ -9,6 +9,12 @@ const unavailable = () => result('unavailable', { reason: 'Offer access is unava
 const stale = () => result('stale-run', { reason: 'This offer belongs to an earlier demo run.' });
 const invalid = () => result('invalid', { code: 'invalid-offer-selector', reason: 'Supply only the exact offer coordinates.' });
 const text = (value) => typeof value === 'string' && value.trim().length > 0 && value.length <= 128;
+const revision = (value) => Number.isSafeInteger(value) && value > 0;
+const same = (left, right) => {
+  try { return inputDigest(left) === inputDigest(right); } catch { return false; }
+};
+const declineEvents = 'offer-decisions:events:v1';
+const queryDigest = (rows) => inputDigest(rows.map((row) => inputDigest(row)).sort());
 const instant = (value) => typeof value === 'string' && /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{3})?Z$/.test(value) && Number.isFinite(Date.parse(value));
 const only = (value, keys) => value && typeof value === 'object' && !Array.isArray(value)
   && Reflect.ownKeys(value).every((key) => keys.includes(key));
@@ -64,7 +70,7 @@ function currentCarComparison(quote) {
     unknowns: [...comparisonFields] };
 }
 
-function presentation(offer, hold, quote, stock, clock) {
+function presentation(offer, hold, quote, stock, clock, followup) {
   const snapshot = createVehicleSnapshot(quote.facts);
   const terms = createEmployeeTerms(quote.terms);
   if (snapshot.identityKind !== 'exact-stock' || snapshot.sourceKeys.stockId !== offer.orderUuid
@@ -104,7 +110,7 @@ function presentation(offer, hold, quote, stock, clock) {
   return freezeVehicleData({ schemaVersion: 1, offerId: offer.offerId, runId: offer.runId, state, reason,
     serverNow: clock.now, clockVersion: clock.clockVersion, expiresAt: hold.expiresAt,
     offerVersion: offer.version, holdVersion: hold.version, offerState: offer.state, holdState: hold.state,
-    availableActions,
+    availableActions, followup,
     quote: { ...select(quote, ['quoteId', 'configurationId', 'orderUuid', 'briefVersion', 'policyVersion', 'quotedAt', 'validUntil']),
       orderNumber: /^\d{7}$/.test(stock.orderNumber ?? '') ? stock.orderNumber : null,
       revisions: { quote: quote.version, ...safeFields(decision.versions, ['brief', 'facts', 'policy', 'stock', 'snapshot', 'terms', 'clock', 'availability']) },
@@ -236,6 +242,97 @@ export class OfferAccessService {
     try { const state = await this.#guard(context, action); return state.error ?? ok({ ...state.binding }); } catch { return unavailable(); }
   }
 
+  async #followup(state, hold, quote) {
+    const observed = { value: null, queries: [], rows: [] };
+    const { offer, binding, run, clock } = state; const scope = this.#scope(binding.runId);
+    if (!['rejected', 'declined'].includes(offer.state) || hold.state !== 'released'
+      || hold.releaseReason !== 'offer-declined') return observed;
+    const decisions = await this.#repository.query(scope, 'decisions', { offerId: offer.offerId });
+    if (decisions.status !== 'ok' || !Array.isArray(decisions.value)) return { error: unavailable() };
+    observed.queries.push({ table: 'decisions', filter: { offerId: offer.offerId }, digest: queryDigest(decisions.value) });
+    if (decisions.value.length !== 1) return observed;
+    const decision = decisions.value[0];
+    if (!decision || typeof decision !== 'object' || Array.isArray(decision)) return observed;
+    const versions = decision.versions; const outcome = decision.outcome?.value;
+    if (!/^offer-decision:[a-f0-9]{64}$/.test(decision.decisionId ?? '') || !revision(decision.version)
+      || !text(offer.employeeId) || !text(hold.entitlementSlotId)
+      || decision.runId !== binding.runId || decision.offerId !== offer.offerId || decision.holdId !== hold.holdId
+      || decision.employeeId !== offer.employeeId || decision.decision !== 'decline'
+      || !['code', 'label', 'attribute'].every((key) => text(decision.reason?.[key]))
+      || decision.reason.policyVersion !== run.policyVersion || versions?.policy !== run.policyVersion
+      || versions.quotePolicy !== quote.policyVersion || !text(versions.clock)
+      || !['brief', 'pinnedBrief', 'quote', 'offer', 'hold', 'employee', 'slot', 'stock'].every((key) => revision(versions[key]))
+      || decision.outcome?.status !== 'ok' || decision.originalResponse?.status !== 'ok'
+      || !same(decision.originalResponse, decision.outcome)
+      || outcome?.schemaVersion !== 1 || outcome.decisionId !== decision.decisionId
+      || outcome.runId !== binding.runId || outcome.offerId !== offer.offerId || outcome.requestedDecision !== 'decline'
+      || outcome.state !== 'declined' || outcome.reason !== 'declined'
+      || outcome.offerState !== offer.state || outcome.holdState !== hold.state
+      || !revision(outcome.offerVersion) || outcome.offerVersion !== offer.version
+      || !revision(outcome.holdVersion) || outcome.holdVersion !== hold.version
+      || !revision(outcome.quoteVersion) || outcome.quoteVersion !== quote.version || versions.quote !== quote.version
+      || outcome.quoteId !== quote.quoteId || outcome.policyVersion !== quote.policyVersion
+      || outcome.expiresAt !== hold.expiresAt || !instant(outcome.serverNow)
+      || outcome.clockVersion !== versions.clock || versions.pinnedBrief !== quote.briefVersion) return observed;
+    const receipts = await this.#repository.query(scope, 'event_receipts', { consumerId: declineEvents, eventType: 'offer-declined' });
+    if (receipts.status !== 'ok' || !Array.isArray(receipts.value)) return { error: unavailable() };
+    const matching = receipts.value.filter((row) => row?.outcome?.value?.event?.decisionId === decision.decisionId);
+    observed.queries.push({ table: 'event_receipts', filter: { consumerId: declineEvents, eventType: 'offer-declined' },
+      decisionId: decision.decisionId, digest: queryDigest(matching) });
+    if (matching.length !== 1) return observed;
+    const receipt = matching[0]; const event = receipt.outcome.value.event;
+    if (!revision(receipt.version) || receipt.runId !== binding.runId || receipt.consumerId !== declineEvents
+      || receipt.eventType !== 'offer-declined' || receipt.state !== 'completed' || receipt.outcome.status !== 'ok'
+      || event.schemaVersion !== 1 || event.type !== 'offer-declined' || !text(event.eventId)
+      || receipt.eventId !== event.eventId || receipt.inputDigest !== inputDigest(event)
+      || !same(receipt.inputVersions, versions) || event.runId !== binding.runId
+      || event.employeeId !== offer.employeeId || event.offerId !== offer.offerId || event.holdId !== hold.holdId
+      || event.quoteId !== quote.quoteId || event.orderUuid !== offer.orderUuid
+      || event.entitlementSlotId !== hold.entitlementSlotId || event.entitlementSlotId !== quote.entitlementSlotId
+      || event.renewalId !== (hold.renewalId ?? null) || event.reasonCode !== decision.reason.code
+      || event.briefVersion !== versions.brief || event.policyVersion !== run.policyVersion
+      || !instant(event.occurredAt) || event.occurredAt !== outcome.serverNow
+      || Date.parse(event.occurredAt) > Date.parse(clock.now)
+      || versions.exclusion?.key !== 'offer.declinedCar.exclusion'
+      || versions.exclusion.value !== 'untilRelevantConfirmedBriefChange' || versions.exclusion.policyVersion !== run.policyVersion
+      || !same(event.exclusion, versions.exclusion)) return observed;
+    const historyRef = ref('briefs', binding.runId, { employeeId: offer.employeeId, briefVersion: versions.brief });
+    const history = await this.#repository.read(scope, historyRef);
+    if (!['ok', 'not-found'].includes(history.status)) return { error: unavailable() };
+    observed.rows.push({ ref: historyRef, status: history.status, digest: history.status === 'ok' ? inputDigest(history.value) : null });
+    if (history.status !== 'ok' || history.value?.runId !== binding.runId || history.value.employeeId !== offer.employeeId
+      || !revision(history.value.version) || history.value.briefVersion !== versions.brief || history.value.status !== 'confirmed'
+      || !instant(history.value.confirmedAt) || Date.parse(history.value.confirmedAt) > Date.parse(event.occurredAt)
+      || history.value.entitlementSlotId !== hold.entitlementSlotId) return observed;
+    // BriefService can retain an unpopulated renewal while 100/106 resolve it
+    // from the persisted entitlement. A caller context is not that authority.
+    const slotRef = ref('entitlement_slots', binding.runId, { entitlementSlotId: hold.entitlementSlotId });
+    const slot = await this.#repository.read(scope, slotRef);
+    if (!['ok', 'not-found'].includes(slot.status)) return { error: unavailable() };
+    observed.rows.push({ ref: slotRef, status: slot.status, digest: slot.status === 'ok' ? inputDigest(slot.value) : null });
+    const renewal = slot.value?.renewalId ?? event.renewalId;
+    if (slot.status !== 'ok' || slot.value?.runId !== binding.runId || slot.value.employeeId !== offer.employeeId
+      || slot.value.entitlementSlotId !== hold.entitlementSlotId || !revision(slot.value.version) || slot.value.version < versions.slot
+      || renewal !== null && (!text(renewal) || renewal !== renewal.trim()) || event.renewalId !== renewal
+      || history.value.renewalId != null && (!text(history.value.renewalId) || history.value.renewalId !== renewal)) return observed;
+    observed.value = { decisionId: decision.decisionId };
+    return observed;
+  }
+
+  async #sameFollowup(scope, observed) {
+    for (const query of observed.queries) {
+      const found = await this.#repository.query(scope, query.table, query.filter);
+      if (found.status !== 'ok' || !Array.isArray(found.value)) return false;
+      const rows = query.decisionId ? found.value.filter((row) => row?.outcome?.value?.event?.decisionId === query.decisionId) : found.value;
+      if (queryDigest(rows) !== query.digest) return false;
+    }
+    for (const row of observed.rows) {
+      const found = await this.#repository.read(scope, row.ref);
+      if (found.status !== row.status || found.status === 'ok' && inputDigest(found.value) !== row.digest) return false;
+    }
+    return true;
+  }
+
   async read(context) {
     try {
       const state = await this.#guard(context); if (state.error) return state.error;
@@ -248,13 +345,17 @@ export class OfferAccessService {
         || !instant(quote.validUntil) || ['employeeId', 'orderUuid', 'quoteId', 'policyVersion'].some((key) => hold[key] !== offer[key])
         || ['employeeId', 'orderUuid', 'policyVersion', 'briefVersion'].some((key) => quote[key] !== offer[key])
         || stock.configurationId !== quote.configurationId) return unavailable();
-      const value = presentation(offer, hold, quote, stock, state.clock);
+      const followup = await this.#followup(state, hold, quote); if (followup.error) return followup.error;
+      const value = presentation(offer, hold, quote, stock, state.clock, followup.value);
       const final = await this.#guard(context); if (final.error) return final.error;
       const again = await Promise.all(refs.map((entry) => this.#repository.read(scope, entry)));
       if (final.offer.version !== offer.version || final.clock.clockVersion !== state.clock.clockVersion
+        || final.run.version !== state.run.version || final.run.policyVersion !== state.run.policyVersion
         || final.clock.now !== state.clock.now || again.some((row, i) => row.status !== 'ok' || row.value.version !== found[i].value.version)) return unavailable();
+      if (!await this.#sameFollowup(scope, followup)) return unavailable();
       const latest = await this.#guard(context); if (latest.error) return latest.error;
-      if (latest.offer.version !== offer.version || latest.clock.clockVersion !== state.clock.clockVersion || latest.clock.now !== state.clock.now) return unavailable();
+      if (latest.offer.version !== offer.version || latest.clock.clockVersion !== state.clock.clockVersion || latest.clock.now !== state.clock.now
+        || latest.run.version !== state.run.version || latest.run.policyVersion !== state.run.policyVersion) return unavailable();
       return ok(value);
     } catch { return unavailable(); }
   }

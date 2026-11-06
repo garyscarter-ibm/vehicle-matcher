@@ -46,6 +46,8 @@ import { fetchDealerDirectory } from './dealers.js';
 import { geocodePostcode } from './geocode.js';
 import { createGcspHandler } from './gcsp/identity/http.js';
 import { createOfferAccessHandler } from './gcsp/offers/access-http.js';
+import { createOfferDecisionHandler } from './gcsp/offers/decision-http.js';
+import { createOfferFollowupRoutes } from './gcsp/offers/followup-http.js';
 import { createEmployeeRecommendationRoutes } from './gcsp/recommendation/http.js';
 import { createClockRoutes } from './gcsp/clock/http.js';
 import { createOutboxRoutes } from './gcsp/notify/http.js';
@@ -876,13 +878,17 @@ export function buildServer(deps = {}) {
     ...createPresenterControlsRoutes({ clock: deps.gcspClock, identity: deps.gcspIdentity, scenarios: deps.gcspScenarios }),
     ...createBriefRoutes(deps.gcspBrief, deps.gcspBriefEditor), ...createActivityRoutes(deps.gcspActivity), ...createCaseRoutes(deps.gcspCases), ...createManualContextRoutes(deps.gcspManualRead || deps.gcspManualClaims || deps.gcspManual), ...createManualClaimsRoutes(deps.gcspManualClaims),
     ...createManualReviewDetailsRoutes(deps.gcspManualReview),
+    ...createOfferFollowupRoutes(deps.gcspOfferFollowup),
     ...createGregRoutes(deps.gcspGreg), ...createGregPublishRoutes(gregPublish), ...(deps.gcspRoutes || [])],
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
   const handleOfferAccess = createOfferAccessHandler({ service: deps.gcspOfferAccess, identity: deps.gcspIdentity, allowedOrigins });
+  const handleOfferDecision = createOfferDecisionHandler({ service: deps.gcspOfferDecisions,
+    resolveAccess: deps.gcspResolveOfferAccess, allowedOrigins });
   // Reuse both origin/preflight boundaries while startup blocks business dispatch.
   const unavailableGcsp = createGcspHandler({ allowedOrigins });
   const unavailableOfferAccess = createOfferAccessHandler({ allowedOrigins });
+  const unavailableOfferDecision = createOfferDecisionHandler({ allowedOrigins });
   const handleVehicleEvidence = createVehicleEvidenceHandler({
     lookup: deps.gcspVehicleEvidence?.lookup || createLocalVehicleEvidenceLookup({
       root: deps.gcspVehicleEvidence?.root || process.env.GCSP_VEHICLE_EVIDENCE_ROOT,
@@ -924,9 +930,11 @@ export function buildServer(deps = {}) {
     const { pathname, searchParams } = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
     const isGcsp = pathname === '/api/gcsp' || pathname.startsWith('/api/gcsp/');
     const isOfferAccess = /^\/api\/gcsp\/offers\/[^/]+$/.test(pathname);
+    const isOfferDecision = /^\/api\/gcsp\/offers\/[^/]+\/(decision|decision-reasons)$/.test(pathname);
     const isVehicleEvidence = isVehicleEvidencePath(req.url);
 
     if (req.method === 'OPTIONS') {
+      if (isOfferDecision) return handleOfferDecision({ req, res, pathname, searchParams, sendJson });
       if (isOfferAccess) return handleOfferAccess({ req, res, pathname, searchParams, sendJson });
       if (isVehicleEvidence) return handleVehicleEvidence({ req, res, sendJson, corsHeaders: CORS_HEADERS });
       if (isGcsp) return handleGcsp({ req, res, pathname, searchParams, sendJson, corsHeaders: CORS_HEADERS });
@@ -940,6 +948,7 @@ export function buildServer(deps = {}) {
 
     // Health and preflight stay open; every API consumer below passes the shared gate.
     if (!isAuthorized(req)) {
+      if (isOfferDecision) return handleOfferDecision({ req, res, pathname, searchParams, sendJson, gateAuthorized: false });
       if (isOfferAccess) return handleOfferAccess({ req, res, pathname, searchParams, sendJson, gateAuthorized: false });
       if (isVehicleEvidence) return handleVehicleEvidence({ req, res, sendJson, gateAuthorized: false });
       if (isGcsp) return handleGcsp({ req, res, pathname, searchParams, sendJson, gateAuthorized: false });
@@ -953,8 +962,10 @@ export function buildServer(deps = {}) {
       if (deps.gcspClock && startup?.status !== 'ok') {
         const unavailable = { status: 'unavailable', reason: 'GCSP startup reconciliation is unavailable.', retryable: true, contractVersion: '1.0.0' };
         const sendUnavailable = (response, status, payload, headers) => sendJson(response, status, status === 503 ? unavailable : payload, headers);
-        return (isOfferAccess ? unavailableOfferAccess : unavailableGcsp)({ req, res, pathname, searchParams, sendJson: sendUnavailable });
+        return (isOfferDecision ? unavailableOfferDecision : isOfferAccess ? unavailableOfferAccess : unavailableGcsp)(
+          { req, res, pathname, searchParams, sendJson: sendUnavailable, gateAuthorized: true });
       }
+      if (isOfferDecision) return handleOfferDecision({ req, res, pathname, searchParams, sendJson, gateAuthorized: true });
       if (isOfferAccess) return handleOfferAccess({ req, res, pathname, searchParams, sendJson });
       return handleGcsp({ req, res, pathname, searchParams, sendJson });
     }

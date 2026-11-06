@@ -10,7 +10,7 @@ const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json',
   '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff': 'font/woff', '.woff2': 'font/woff2' };
 const sessionPage = (path) => ['/gcsp-brief-live.html', '/gcsp-activity-live.html', '/gcsp-account.html'].includes(path);
-const publicPath = (path) => sessionPage(path) || ['/gcsp-employee.css', '/favicon.ico'].includes(path)
+const publicPath = (path) => sessionPage(path) || ['/gcsp/offer', '/gcsp-offer.html', '/gcsp-employee.css', '/favicon.ico'].includes(path)
   || path.startsWith('/blocks/') || path.startsWith('/assets/');
 
 // Separate loopback entry; it neither changes the retail launcher nor adds a remote sign-in route.
@@ -28,9 +28,10 @@ export async function startGcspDemo({ runtime = {}, port = 0, root = ROOT, acces
         api.emit('request', req, res); return;
       }
       if (req.method !== 'GET' || !publicPath(path)) { res.writeHead(404).end('Not found'); return; }
-      const file = resolve(root, `.${path}`);
+      const assetPath = path === '/gcsp/offer' ? '/gcsp-offer.html' : path;
+      const file = resolve(root, `.${assetPath}`);
       const canonicalPath = `/${relative(resolve(root), file).split(sep).join('/')}`;
-      if (!file.startsWith(`${resolve(root)}${sep}`) || !publicPath(canonicalPath) || canonicalPath !== path
+      if (!file.startsWith(`${resolve(root)}${sep}`) || !publicPath(canonicalPath) || canonicalPath !== assetPath
         || !(await stat(file)).isFile()) { res.writeHead(404).end('Not found'); return; }
       if (sessionPage(path)) {
         const session = await services.identity.resolveSession({ authorized: true, cookie: req.headers.cookie });
@@ -40,7 +41,8 @@ export async function startGcspDemo({ runtime = {}, port = 0, root = ROOT, acces
           res.setHeader('Set-Cookie', issued.value.setCookie);
         }
       }
-      res.writeHead(200, { 'Content-Type': TYPES[extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-store' });
+      res.writeHead(200, { 'Content-Type': TYPES[extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-store',
+        'Referrer-Policy': 'no-referrer' });
       res.end(await readFile(file));
     } catch { res.writeHead(404).end('Not found'); }
   });
