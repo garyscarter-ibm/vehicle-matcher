@@ -1388,8 +1388,10 @@
         },
         {
           "id": "released-integration",
-          "status": "not-started",
-          "title": "Actual release-history and released-run browse-to-claim integration"
+          "status": "in-progress",
+          "title": "Actual release-history and released-run browse-to-claim integration",
+          "observed_at": "2026-11-06T00:39:39Z",
+          "evidence": "Unexecuted bounded consumer authoring against exact100/92 sources; docs/gcsp/evidence/fucq69/integration-plan.md. Await dispatcher closure/argv grant before imports or execution."
         },
         {
           "id": "final-validation",
