@@ -1816,7 +1816,7 @@
     {
       "assignee": "",
       "id": "FUCQ-59",
-      "observed_at": "2026-11-06T14:17:00Z",
+      "observed_at": "2026-11-06T14:39:17Z",
       "original_status": "To Do",
       "slices": [
         {
@@ -1848,9 +1848,9 @@
           "title": "Finite source budgets, deadlines and default no-traffic safety (2 points)"
         },
         {
-          "evidence": "Live diagnostic at0937991c stopped settings-header-shape after2GET/638409decodedBytes;tree0/options0,accepted0/all74pending. All4allowance consumed,zero retry.18runner+6supervisor offline scopedPASS and finalCODE+SECURITYPASS; source-diagnostic-live-2026-11-06/live-parent-audit.json confirms root/group/reservation absent,8192Bscratch/407Blog removed. No raw body/header/checkpoint retained. Offline profile-shape diagnosis next; no guard relaxation/new allocation. Qualification/F39-F54publication remains blocked. Offline safe settings refusal/report extension53/53 scopedPASS; helper100%lines/functions; no source allocation or admission. Evidence settings-shape-report-2026-11-06/result.json; CODE+SECURITY review pending; old spent marker/contracts/live evidence unchanged. CODE round0 role-array coercion reproduced through resealed checkpoint reopen+export; round1 noncoercing role guard33/33 scopedPASS. round1.json; parent audit/publication/reviews pending. Zero source allocation; qualification remains blocked. Producer CODE+SECURITY round1PASS retained at0f069686. Distinct settings-shape live preparation is OFFLINE ONLY: final18runner+8supervisor scopedPASS, zero source allocation; canonical6identity9d63aa36 unchanged, producer33 reused. New twoGET plan/runner/one-shot/supervisor handoff awaits parent audit/publication/independent reviews and separately recorded execution allocation. settings-shape-live-preparation-2026-11-06/{README.md,validation-summary.json,resource-audit.json,immutable-audit.json}. All5outer+2nested roots/owners/groups/reservations absent, no owned leftovers. Qualification/admission/current-date publication remains blocked.",
+          "evidence": "Live diagnostic at0937991c stopped settings-header-shape after2GET/638409decodedBytes;tree0/options0,accepted0/all74pending. All4allowance consumed,zero retry.18runner+6supervisor offline scopedPASS and finalCODE+SECURITYPASS; source-diagnostic-live-2026-11-06/live-parent-audit.json confirms root/group/reservation absent,8192Bscratch/407Blog removed. No raw body/header/checkpoint retained. Offline profile-shape diagnosis next; no guard relaxation/new allocation. Qualification/F39-F54publication remains blocked. Offline safe settings refusal/report extension53/53 scopedPASS; helper100%lines/functions; no source allocation or admission. Evidence settings-shape-report-2026-11-06/result.json; CODE+SECURITY review pending; old spent marker/contracts/live evidence unchanged. CODE round0 role-array coercion reproduced through resealed checkpoint reopen+export; round1 noncoercing role guard33/33 scopedPASS. round1.json; parent audit/publication/reviews pending. Zero source allocation; qualification remains blocked. Producer CODE+SECURITY round1PASS retained at0f069686. Distinct settings-shape live preparation is OFFLINE ONLY: final18runner+8supervisor scopedPASS, zero source allocation; canonical6identity9d63aa36 unchanged, producer33 reused. New twoGET plan/runner/one-shot/supervisor handoff awaits parent audit/publication/independent reviews and separately recorded execution allocation. settings-shape-live-preparation-2026-11-06/{README.md,validation-summary.json,resource-audit.json,immutable-audit.json}. All5outer+2nested roots/owners/groups/reservations absent, no owned leftovers. Qualification/admission/current-date publication remains blocked. Sam CODE round0 found false-clean reservation release; fix1 adds bounded owned-token verification and named failure/leftover/nonzero terminal result. Final12supervisor methods scopedPASS (8existing+3fault+1success); unchanged18Node/33producer proof reused, zero source allocation. fix1/result.json and resource-audit.json verify2outer+9nested resources and prior7absent; current correctionCODE/securitydelta reviews pending, prior parentSECURITY round0PASS atac39df95. Qualification remains blocked.",
           "id": "source-qualification",
-          "observed_at": "2026-11-06T14:17:00.118876+00:00",
+          "observed_at": "2026-11-06T14:39:17.607117+00:00",
           "status": "blocked",
           "title": "Selected real-source model mapping and solver integration (1 point)"
         },
@@ -1883,13 +1883,13 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59",
       "workers": [
         {
-          "expires_at": "2026-11-06T14:17:00.118876+00:00",
+          "expires_at": "2026-11-06T14:39:17.607117+00:00",
           "harness": "codex",
           "name": "Cecil Turtle",
-          "observed_at": "2026-11-06T14:17:00.118876+00:00",
+          "observed_at": "2026-11-06T14:39:17.607117+00:00",
           "role": "story-lead",
           "source": "thread 01a1b054-1167-7820-b9f2-92ec81e37bbe",
-          "status": "Offline settings observation preparation final18Node+8Python scopedPASS; zero source allocation, ready parent audit; requested/selected/runtime-confirmedSol/high, no fallback/descendants"
+          "status": "Fix1 reservation cleanup correction12supervisor methods scopedPASS, unchanged18Node/33producer reused; source0, ready parent audit; requested/selected/runtime-confirmedSol/high, no fallback/descendants"
         }
       ]
     }

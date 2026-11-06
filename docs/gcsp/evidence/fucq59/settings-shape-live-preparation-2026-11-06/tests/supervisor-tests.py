@@ -100,6 +100,70 @@ class SettingsSupervisorTests(unittest.TestCase):
         self.assertEqual(path.read_bytes(),before)
         self.assertEqual(path.stat().st_mode & 0o777,0o600)
 
+    def _reservation_release_case(self, mode):
+        policy = resources.Policy(dict(chunk_scratch_mib=8, chunk_ram_mib=128, chunk_seconds=10, log_mib=1))
+        original_release, original_read = resources.HostBudget.release, supervisor.read_small
+        tokens, receipt = [], None
+        identity = dict(pid=os.getpid(), start=resources.process_identity(os.getpid()))
+        ledger = resources.HostBudget(policy).path
+        def release(host, token):
+            tokens.append(token)
+            if mode == 'raises':
+                raise OSError('SYNTHETIC PRIVATE release failure')
+            if mode != 'retains-token':
+                original_release(host, token)
+        def read(path, *args, **kwargs):
+            if mode == 'unreadable-ledger' and Path(path) == ledger:
+                raise OSError('SYNTHETIC PRIVATE verification failure')
+            return original_read(path, *args, **kwargs)
+        try:
+            with mock.patch.object(resources.HostBudget, 'release', release), mock.patch.object(supervisor, 'read_small', read):
+                receipt = supervisor.supervise_once(command=[sys.executable, '-I', '-B', '-c', 'pass'], cwd=self.root,
+                    rdir=self.root/('supervision-'+mode), output=self.root/('observation-'+mode), marker=self.root/('marker-'+mode),
+                    allocation=self.allocation, launcher_owner=identity, resources=resources,
+                    disk=8*1048576, ram=128*1048576, seconds=10)
+            self.assertEqual(receipt['process']['returnCode'], 0)
+            self.assertIsNone(receipt['process']['stopIssue'])
+            self.assertTrue(receipt['scratchAbsent'])
+            self.assertEqual(receipt['manifestState'], 'removed')
+            self.assertTrue(all(g['absent'] for g in receipt['groups']))
+            if mode == 'success':
+                self.assertIsNone(receipt['failure'])
+                self.assertEqual(receipt['leftovers'], [])
+                expected_status, expected_absent = 'released', True
+            else:
+                self.assertEqual(receipt['failure'], 'reservation-cleanup-failed', 'unresolved release must prevent clean completion')
+                self.assertEqual(receipt['leftovers'], ['reservation:'+tokens[0]])
+                expected_status, expected_absent = {'raises':('failed', False), 'retains-token':('still-present', False), 'unreadable-ledger':('unverified', None)}[mode]
+            self.assertEqual(receipt['reservationRelease'], dict(status=expected_status, absent=expected_absent))
+            summary, code = supervisor.terminal_result(receipt)
+            self.assertEqual(code, int(mode != 'success'))
+            self.assertEqual(summary['reservationRelease'], receipt['reservationRelease'])
+            self.assertEqual(summary['failure'], receipt['failure'])
+            self.assertEqual(summary['leftovers'], receipt['leftovers'])
+            self.assertNotIn('SYNTHETIC PRIVATE', json.dumps(receipt)+json.dumps(summary))
+        finally:
+            # Faults apply only to the supervisor under test. The test owner releases each actual owned token.
+            for token in set(tokens):
+                original_release(resources.HostBudget(policy), token)
+                self.assertNotIn(token, json.loads(ledger.read_text()))
+            if receipt is not None:
+                record=resources.read_json(receipt['ownershipManifest'])
+                proofs.append(dict(case=mode, receipt=receipt, ownership=record, reservationAbsent=True,
+                    cleanup='Independent test finalizer released only its captured token after injecting the supervisor fault'))
+
+    def test_reservation_release_exception_is_a_named_cleanup_failure(self):
+        self._reservation_release_case('raises')
+
+    def test_reservation_release_success_without_removal_is_a_named_cleanup_failure(self):
+        self._reservation_release_case('retains-token')
+
+    def test_reservation_release_verification_io_failure_is_a_named_cleanup_failure(self):
+        self._reservation_release_case('unreadable-ledger')
+
+    def test_verified_reservation_release_reports_successful_terminal_completion(self):
+        self._reservation_release_case('success')
+
     def test_actual_launcher_identity_death_stops_joins_and_removes_owned_group(self):
         # This synthetic owner is the same identity interface main fills from its real synchronous parent.
         owner=subprocess.Popen([sys.executable,'-I','-B','-c','import time; time.sleep(30)'])

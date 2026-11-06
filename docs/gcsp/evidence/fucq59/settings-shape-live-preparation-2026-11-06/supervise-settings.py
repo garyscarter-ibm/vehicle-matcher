@@ -138,6 +138,34 @@ class ParentCancellation:
         return not self.resources.process_alive(self.identity)
 
 
+def release_reservation(host, token, resources):
+    """A release call alone cannot prove that the owned token is absent."""
+    failed = False
+    try:
+        host.release(token)
+    except BaseException:
+        failed = True
+    try:
+        with resources.locked(host.directory / 'reservations.lock'):
+            registry = read_small(host.path, 131072)
+            require(type(registry) is dict)
+            absent = token not in registry
+    except BaseException:
+        absent = None
+    status = 'failed' if failed else 'unverified' if absent is None else 'released' if absent else 'still-present'
+    return dict(status=status, absent=absent)
+
+
+def terminal_result(receipt):
+    """The printed cleanup status and process exit use the same reservation result."""
+    summary = dict(failure=receipt['failure'], scratchAbsent=receipt['scratchAbsent'],
+                   reservationRelease=receipt['reservationRelease'], leftovers=receipt['leftovers'])
+    code = int(bool(receipt['failure'] or not receipt['process'] or receipt['process']['returnCode']
+                    or receipt['process']['stopIssue'] or receipt['leftovers']
+                    or receipt['reservationRelease']['status'] not in ('not-acquired', 'released')))
+    return summary, code
+
+
 def supervise_once(*, command, cwd, rdir, output, marker, allocation, launcher_owner, resources,
                    disk=64 * 1048576, ram=384 * 1048576, seconds=120):
     """One invocation only. Existing Scratch/run_process own group join and all teardown."""
@@ -172,21 +200,23 @@ def supervise_once(*, command, cwd, rdir, output, marker, allocation, launcher_o
         except BaseException as error:
             failure = 'handled-cancellation' if isinstance(error, KeyboardInterrupt) else 'supervisor-stopped'
         finally:
+            release = dict(status='not-acquired', absent=None)
             if reserved:
-                try:
-                    host.release(scratch.token)
-                except BaseException:
-                    receipt['reservationReleaseIssue'] = 'unresolved-owned-token-only'
+                release = release_reservation(host, scratch.token, resources)
+                if release['status'] != 'released':
+                    failure = failure or 'reservation-cleanup-failed'
             observation = safe_observation(output, allocation)
             manifest = resources.read_json(scratch.manifest, {})
             manifest = manifest if type(manifest) is dict else {}
-            receipt.update(failure=failure, observation=observation,
+            receipt.update(failure=failure, observation=observation, reservationRelease=release,
                            process=None if outcome is None else dict(returnCode=outcome['rc'], wallSeconds=outcome['wall'], sampledRssBytes=outcome['peak_rss'], sampledScratchBytes=outcome['peak_scratch'], stopIssue='bounded-process-stop' if outcome['issue'] else None),
                            sampledScratchRemovedBytes=scratch.record['peak'], scratchAbsent=not os.path.lexists(scratch.root),
                            manifestState=manifest.get('state'), markerPresent=marker.is_file() and not marker.is_symlink(),
                            launcherAbsent=cancel.is_set(), groups=[dict(pgid=p, absent=resources.group_has_live_members(p) is False) for p in scratch.record['groups']],
                            completedAt=datetime.datetime.now(datetime.timezone.utc).isoformat())
             receipt['leftovers'] = ([str(scratch.root)] if os.path.lexists(scratch.root) else []) + ['pgid:' + str(g['pgid']) for g in receipt['groups'] if not g['absent']]
+            if release['status'] not in ('not-acquired', 'released'):
+                receipt['leftovers'].append('reservation:' + scratch.token)
             resources.atomic_json(rdir / 'supervisor-receipt.json', receipt)
     return receipt
 
@@ -230,8 +260,9 @@ def main():
     receipt = supervise_once(command=[selected['nodeRuntime'], str(BASE / 'run-settings.mjs'), '{allocation}'], cwd=root,
                              rdir=BASE / 'supervision', output=output, marker=marker, allocation=allocation,
                              launcher_owner=launcher, resources=resources)
-    print(json.dumps(dict(failure=receipt['failure'], scratchAbsent=receipt['scratchAbsent'], leftovers=receipt['leftovers'])))
-    return int(bool(receipt['failure'] or not receipt['process'] or receipt['process']['returnCode'] or receipt['process']['stopIssue'] or receipt['leftovers']))
+    summary, code = terminal_result(receipt)
+    print(json.dumps(summary))
+    return code
 
 
 if __name__ == '__main__':

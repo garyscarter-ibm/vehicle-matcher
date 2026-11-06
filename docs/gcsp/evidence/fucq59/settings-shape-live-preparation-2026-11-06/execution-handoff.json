@@ -55,7 +55,7 @@
     "scratchRoot": "PENDING_OWNED_ABSOLUTE_ROOT",
     "sourceVersion": "f59-diagnostic-20261106.v1",
     "supervisorFinalizerRegistered": false,
-    "supervisorSha256": "b998f48ba8b3f63e1fb211dece46b670db61286aa6adf471f1de4398d00ba245"
+    "supervisorSha256": "b54db5af92313ee7b190dd8ef9bc0d96e9470b8ac6c9af4e1791f4352c7c775e"
   },
   "authority": {
     "background": "No browser or foreground interaction under this plan.",
@@ -105,10 +105,11 @@
     "sha256": "951458bc15139afeaaa836a8c58e11bb0f0113a87ee73898147945d81c3b107c",
     "sourceVersion": "f59-diagnostic-20261106.v1"
   },
-  "preparedAt": "2026-11-06T14:10:11.592764+00:00",
+  "preparedAt": "2026-11-06T14:38:39.459908+00:00",
   "producer": {
     "baseCommit": "0f0696861dbffd3f75ee21e2396341c701689a4d",
     "commit": "PENDING_PUBLISHED_PREPARATION_COMMIT",
+    "correctionBaseCommit": "ac39df9589aaaedddd67a02241494a500e85e0bb",
     "frozenContractHashes": {
       "docs/gcsp/evidence/fucq59/source-qualification-plan-2026-11-06/plan.json": "65d78142d43fcf5167e9d4c4e3710f07de97082a7418efad7b05bfa9cbc7c3c4",
       "docs/gcsp/evidence/fucq59/source-qualification-plan-2026-11-06/projection-contract.json": "d6f6dd16dcd2cf63c1e67b5cccb11ba2e9eeee2ce138b9c2afd44603d7475385",
@@ -198,7 +199,7 @@
       "url": "https://configure.bmw.co.uk/en_GB/settings.<single page-discovered alphanumeric id>.json"
     }
   ],
-  "status": "OFFLINE PREPARATION; zero source allocation; parent audit/publication and independent reviews pending",
+  "status": "OFFLINE CORRECTION; zero source allocation; parent audit/publication and independent correction reviews pending",
   "stopConditions": [
     "Maximum TWO total qualified GET attempts: page then settings, concurrency1,retries0; canonical per-operation budgets remain1, but shared sourceAttempts2 stops before discover transport. No options/model-tree/solver requests.",
     "Strict settings refusal retains only validated fixed structural report and typed safe status/count/provenance. Unexpected strict success becomes strict-settings-inconclusive after source-attempt-budget and exports no report; admissionfalse.",
@@ -214,6 +215,7 @@
     "passiveOnImport": true,
     "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/supervise-settings.py",
     "publicationGate": "Supported scaffold_git/checkout_mutex verifies clean tracked HEAD and exact published origin topic SHA; pinned source/test/frozen/import graph hashes and runtime/review/plan/runner/handoff/supervisor/resource/git-tool bytes required.",
+    "reservationRelease": "Calls trusted HostBudget.release, then independently reads only owned-token membership from a bounded ledger under the trusted short lock. Exception, retained token or failed verification yields fixed reservation status, named reservation-cleanup-failed/owned-token leftover, terminal summary and nonzero exit. Failed release remains failure even if token is subsequently observed absent.",
     "resourceToolPath": "/Users/usget/Claude/vehicle-matcher/_tools/test_resources.py",
     "resourceToolSha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
     "runtimePath": "/opt/homebrew/Cellar/node/26.7.0/bin/node",
@@ -221,19 +223,22 @@
     "selectionExistsNow": false,
     "selectionPath": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/execution-selection.json",
     "selectionSchema": "f59-settings-execution-selection.v1",
-    "sha256": "b998f48ba8b3f63e1fb211dece46b670db61286aa6adf471f1de4398d00ba245"
+    "sha256": "b54db5af92313ee7b190dd8ef9bc0d96e9470b8ac6c9af4e1791f4352c7c775e"
   },
   "validation": {
+    "correctionEvidence": "fix1/result.json",
     "fullNativeBrowserSource": "No current proof claimed; previous evidence historical",
-    "preparationIdentity": "e741c3a77b49ba3447395d3e4774600688b71993130bc9d254329e133974e0e3",
+    "preparationIdentity": "eecc0f714f7680083c180082ccc0674c3590ca652cdaabefe264899eecd757f6",
     "producerDedicatedCasesReused": 33,
+    "producerEvidence": "Unchanged33dedicated producer proof; no rerun",
     "producerIdentity": "9d63aa36a7bbbb29432d4a8b03f2cd585abfdd4e53d671919a8798f28f674a1b",
     "reviews": {
-      "code": "PENDING",
-      "security": "PENDING"
+      "code": "CORRECTION_PENDING; Sam round0failed atac39df95",
+      "security": "CORRECTION_DELTA_PENDING; parent independent round0PASS atac39df95; Pugh no completed verdict"
     },
     "runnerCases": 18,
-    "status": "SCOPED OFFLINE ONLY",
-    "supervisorCases": 8
+    "runnerEvidence": "Unchanged18Node helper proof at prior exact runner/plan/test/runtime; no rerun",
+    "status": "SCOPED OFFLINE FIX1:12supervisor cases; unchanged18Node/33producer proof reused",
+    "supervisorCases": 12
   }
 }
