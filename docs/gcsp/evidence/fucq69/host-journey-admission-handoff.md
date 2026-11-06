@@ -1,5 +1,7 @@
 # FUCQ-69 root admission handoff · 6 November 2026
 
+**Historical consumed freeze:** root consumed the two `0911` grants once at `6b2b6a0`; the supervisor exited 1 before Node and the original run remains incomplete. Root completed separate cleanup. The [parser diagnosis and new review freeze](host-journey-parser-repair.md) supersede the launch pins below. Those historical pins and command are preserved for provenance and must not be reused. The revised parser has no execution grant.
+
 **State: static PASS only; no mirror, execution, probe, import or allocation grant.** Root reports technical_readiness_review's narrow PASS at `b9a55cdf08d77f737431cc3c394ca3e107032589`: both HOLDs resolved; requested/selected `gpt-6.1-sol` / `high`, no fallback. Author's 3,209 static metadata/carried-pin checks passed. No new helper/provider/syntax/test was executed. This handoff changes no frozen input.
 
 Working directory: `/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-068`; branch `dev/DEV-2026-11-04-068`. Reviewed source/helper checkpoint: `b9a55cdf08d77f737431cc3c394ca3e107032589`. The 145 F100 sources stay at `9948bff11ed27f847436c6880db035fe8a54a784`; the own test stays at `89fe959752f3437734bb8bf2eef288b9a8510de1`, SHA-256 `29f6f1d5b99472283d0d8586949d625476127ccf7ad28fb983ad8044acb4ae65`. F100's later `6562e596ea8ff55352ee0a60b4c666d09303ff8a` Resume repair is not adopted. The second reload case remains held.

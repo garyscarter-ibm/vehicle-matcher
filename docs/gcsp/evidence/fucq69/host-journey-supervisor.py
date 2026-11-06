@@ -274,6 +274,7 @@ PROBE_OWNER = None
 PROBE_TOKEN = None
 PROBE_FINALIZED = False
 PROBE_ABSENCE_SEQUENCE = None
+PROBE_FIRST_SNAPSHOT_REJECTION = None
 
 
 def probe_inventory():
@@ -281,6 +282,7 @@ def probe_inventory():
             'token': PROBE_TOKEN, 'owner': PROBE_OWNER,
             'issues': list(PROBE_ISSUES), 'calls': PROBE_CALLS, 'seconds': PROBE_SECONDS,
             'completeAbsenceThroughCommand': PROBE_ABSENCE_SEQUENCE,
+            'firstSnapshotRejection': PROBE_FIRST_SNAPSHOT_REJECTION,
             'handles': [{key: value for key, value in item.items() if key != 'handle'}
                         for item in PROBE_HANDLES]}
 
@@ -571,28 +573,48 @@ def available_memory():
 
 
 def snapshot():
+    global PROBE_FIRST_SNAPSHOT_REJECTION
     if PROBE_ENV is None:
         raise RuntimeError('Probe environment was not sanitized.')
     if RESOURCE_ACCOUNT is not None:
         RESOURCE_ACCOUNT(None, True)
     try:
-        probe = bounded_probe(['/bin/ps', '-axo', 'pid=,ppid=,pgid=,rss=,stat=,lstart=,args='])
+        probe = bounded_probe(['/bin/ps', '-axo', 'pid=,ppid=,pgid=,rss=,stat=,lstart='])
     finally:
         if RESOURCE_ACCOUNT is not None:
             RESOURCE_ACCOUNT(None, True)  # Reaped probe high-water usage is charged even on telemetry failure.
     if probe.returncode or probe.stderr or not probe.stdout.strip():
         raise RuntimeError('Process telemetry is uncertain.')
     rows = []
-    for line in probe.stdout.decode('utf-8', errors='strict').splitlines():
-        fields = line.split(None, 10)
-        if (len(fields) != 11 or any(not value.isdigit() for value in fields[:4])
-                or not re.fullmatch(r'[RSDTtWXZIU][+<>AELNSsVWXl]*', fields[4])):
+    seen = set()
+    for number, line in enumerate(probe.stdout.decode('utf-8', errors='strict').splitlines(), 1):
+        # Only ps's final ASCII column padding is removed. Preserve exact internal
+        # start spacing; unused command arguments must not gate identity admission.
+        fields = line.rstrip(' ').split(None, 5)
+        reason = None
+        if len(fields) != 6:
+            reason = 'column-count'
+        elif any(not value.isascii() or not value.isdigit() for value in fields[:4]):
+            reason = 'non-ascii-decimal-field'
+        elif int(fields[0]) <= 0 or int(fields[2]) <= 0 or int(fields[0]) in seen:
+            reason = 'pid-group-or-duplicate'
+        elif not re.fullmatch(r'[RSDTtWXZIU][+<>AELNSsVWXl]*', fields[4]):
+            reason = 'state-grammar'
+        elif not fields[5].isascii() or not re.fullmatch(r'(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun) +(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) +\d{1,2} +\d{2}:\d{2}:\d{2} +\d{4}', fields[5]):
+            reason = 'start-grammar'
+        if reason is not None:
+            if PROBE_FIRST_SNAPSHOT_REJECTION is None:
+                # The query contains fixed ownership fields only, never args.
+                # Preserve the first rejected row without overwriting it in cleanup.
+                PROBE_FIRST_SNAPSHOT_REJECTION = {
+                    'command': probe.owned_key, 'line': min(number, (1 << 63) - 1),
+                    'lineCapped': number >= (1 << 63), 'rawFixedFields': line[:256],
+                    'rawTruncated': len(line) > 256, 'reason': reason}
+                persist_probe_uncertainty()
             raise RuntimeError('Cannot parse process ownership telemetry.')
-        started = re.search(r'\b(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2}\s+\d{2}:\d{2}:\d{2}\s+\d{4}\b', line)
-        if started is None:
-            raise RuntimeError('Cannot parse an exact process start identity.')
+        seen.add(int(fields[0]))
         rows.append({'pid': int(fields[0]), 'ppid': int(fields[1]), 'pgid': int(fields[2]),
-                     'rss': int(fields[3]) * 1024, 'stat': fields[4], 'start': started.group(0)})
+                     'rss': int(fields[3]) * 1024, 'stat': fields[4], 'start': fields[5]})
     observe_probe_rows(rows, probe.owned_key)
     if RESOURCE_ACCOUNT is not None:
         RESOURCE_ACCOUNT(rows, True)

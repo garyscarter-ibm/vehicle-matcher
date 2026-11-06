@@ -71,12 +71,22 @@
   ],
   "helperProposal": {
     "closure": "docs/gcsp/evidence/fucq69/host-journey-closure.json",
+    "parserRepair": {
+      "diagnosis": "docs/gcsp/evidence/fucq69/host-journey-parser-repair.md",
+      "query": [
+        "/bin/ps",
+        "-axo",
+        "pid=,ppid=,pgid=,rss=,stat=,lstart="
+      ],
+      "review": "Independent review required; original failing row unknown, no retry under consumed 0911 grants",
+      "scope": "Six fixed fields; trailing ASCII padding only; exact full start; ASCII decimals/positive PID+PGID/duplicate checks; unchanged state grammar/zombie consumers; one bounded fixed-field first-rejection diagnostic in existing inventory"
+    },
     "path": "docs/gcsp/evidence/fucq69/host-journey-supervisor.py",
     "probes": "Durable provisional owner/inventory beforefirstprocess; preallocated retained directhandles/PID/start-state untiljoined; protected percall/outercleanup; full final probe/Git session absence and resource proof. No execution.",
     "review": "Dibble753cf72 HOLD exactly earlyprobehandleloss andmutable060source. Narrow author-only repairs proposed; all other reviewed graph/dependency/tool/test scope retained.",
     "schema": "Strict complete every-row reservation ancestry; fully charge max(reserved,observed); preserve foreign rows; exact own binding/readback",
     "sourceInputs": "146 exact immutable Gitblob sources:145 F1009948bff plus unchanged test89fe959, via pinned scaffold_git API; separatelygranted owned/reserved mirror only",
-    "state": "authored only, not syntax-checked/imported/executed"
+    "state": "revised parser authored only, not syntax-checked/imported/executed; historical 6b2b6a0 invocation incomplete before Node"
   },
   "holds": [
     "Independent review of authored one-case test and new helper/source/dependency proposal",
@@ -4138,7 +4148,7 @@
       "verification": "current bytes hashed and identical immutable Git blob"
     }
   ],
-  "state": "author-only two-HOLD repair proposed; immutable source provider/provisional retained-handle ownership refreeze awaiting independent review; no execution grant",
+  "state": "author-only six-field process parser/first-rejection diagnostic refreeze; prior 0911 grants consumed once with incomplete preparation; awaiting independent review and new grants",
   "story": "FUCQ-69",
   "testAuthoring": {
     "path": "server/test/gcsp-manual-gallery-review-journey.test.js",

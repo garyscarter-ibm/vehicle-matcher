@@ -21751,8 +21751,8 @@
         "device": 16777232,
         "inode": 173299724,
         "mode": 420,
-        "sha256": "61069a537637d6672dec79183384290a42872b19ac4364e0311dac6249d53f08",
-        "size": 77888
+        "sha256": "9f03afbb92d2b7cea2213de33e8081c3654e001b6e4b2d1f8f83ce1b0547d782",
+        "size": 79112
       },
       "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-068/docs/gcsp/evidence/fucq69/host-journey-supervisor.py",
       "path": "docs/gcsp/evidence/fucq69/host-journey-supervisor.py",
@@ -21763,8 +21763,8 @@
         "device": 16777232,
         "inode": 173294921,
         "mode": 420,
-        "sha256": "1f5d6ea8890a02fed5a7dce2a9fd44a4c4854fd850747147da9f05900088f1fa",
-        "size": 24887
+        "sha256": "9d1530462d91bd65f8503490654393299f6a110da341aed1d7600e3e9f3149f7",
+        "size": 27259
       },
       "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-068/docs/gcsp/evidence/fucq69/host-journey-plan.md",
       "path": "docs/gcsp/evidence/fucq69/host-journey-plan.md",
@@ -21775,8 +21775,8 @@
         "device": 16777232,
         "inode": 173294214,
         "mode": 420,
-        "sha256": "595aa166dadd15d64c12fef07ddc9e6a304fb5ce93790da4e5d6c03795b95eda",
-        "size": 167669
+        "sha256": "88e6d18185b65c53c8e1d4b10c205dd4bb555d78d4fd144fd62b77ae5bbd7612",
+        "size": 168333
       },
       "inputPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-068/docs/gcsp/evidence/fucq69/host-journey-source-proposal.json",
       "path": "docs/gcsp/evidence/fucq69/host-journey-source-proposal.json",
@@ -27640,6 +27640,22 @@
       "version": "4.0.2"
     }
   ],
+  "parserRepair": {
+    "base": "6b2b6a06fe157f7d1083b9dabab33db0f24bb665",
+    "diagnosis": "docs/gcsp/evidence/fucq69/host-journey-parser-repair.md",
+    "diagnostic": "At most one firstSnapshotRejection in existing <=1MiB probe inventory: command key/capped 1-based line/<=256 fixed-field characters/truncation flag/fixed reason; no command args; protected persistence; no overwrite by cleanup",
+    "execution": "Author-only static text/JSON/hash/carried-field validation; no parser/helper/syntax/AST/import/test/probe/ledger/mirror/scratch execution; both prior0911grants consumed, independent review/current admission/two new grants required",
+    "originalResult": "Actual supervisor exit1, incomplete preparation/no Node; exact rejected row and predicate unknown; originals preserved; independent root cleanup PASS1932",
+    "originalRun": "host-journey-181feb945bd6",
+    "parser": "Six fixed fields; rstrip ASCII space only; split(None,5); ASCII decimal fields, positive PID+PGID, duplicate PID rejection; full ASCII start with internal spacing preserved",
+    "query": [
+      "/bin/ps",
+      "-axo",
+      "pid=,ppid=,pgid=,rss=,stat=,lstart="
+    ],
+    "state": "Exact existing state grammar/all four zombie consumers unchanged; unknown state refuses whole snapshot",
+    "unchanged": "All146source/test rows/122modules/351edges/52packages/74manifestedges/1971dependencyfiles/259dirs/644candidates/6guards/8tools/Nodeargv/name/budgets/provider/ownership/cleanup/strictreservation/heldsecondreload"
+  },
   "physicalDirectories": [
     {
       "entries": [
@@ -36854,6 +36870,6 @@
       "realpath": "/Library/Developer/CommandLineTools/usr/bin/git"
     }
   ],
-  "validation": "Static JSON/stat/hash/known Git-tree metadata only; current060journey drift not adopted. No new helper/provider/syntax/AST/import/test/probe/ledger/mirror/scratch execution.",
+  "validation": "Current parser repair: static source text/JSON/hash/carried-field comparison only; no revised helper/parser/syntax/AST/import/test/probe/ledger/mirror/scratch execution. Original6b2b6a0 once-run incomplete before Node; exact original rejected row unknown; originals preserved. Prior source/dependency/tool content pins unchanged.",
   "workspace": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-068"
 }
