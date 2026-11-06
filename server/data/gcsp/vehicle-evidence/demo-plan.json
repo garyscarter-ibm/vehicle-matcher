@@ -1,0 +1,4903 @@
+{
+  "schemaVersion": "gcsp-demo-plan.v1",
+  "status": "pending",
+  "qualificationDate": "2026-11-06",
+  "source": {
+    "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+    "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+    "effectiveDate": "2024-10-01"
+  },
+  "sourceRows": [
+    {
+      "id": "fs-uk-001",
+      "scheme": "fs-uk",
+      "range": "1 Series",
+      "model": "F70 Sports Hatch",
+      "vehicleClass": "UKL",
+      "engineLabel": "120",
+      "towbar": false,
+      "grades": {
+        "G1-6": true,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 17,
+      "sourceText": "| 1 Series | F70 Sports Hatch | UKL | 120 |  | ✓ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-002",
+      "scheme": "fs-uk",
+      "range": "1 Series",
+      "model": "F70 Sports Hatch",
+      "vehicleClass": "UKL",
+      "engineLabel": "M135",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 18,
+      "sourceText": "| 1 Series | F70 Sports Hatch | UKL | M135 |  | ✗ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-003",
+      "scheme": "fs-uk",
+      "range": "2 Series",
+      "model": "F44 Gran Coupe",
+      "vehicleClass": "UKL",
+      "engineLabel": "218i, 220i",
+      "towbar": false,
+      "grades": {
+        "G1-6": true,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 19,
+      "sourceText": "| 2 Series | F44 Gran Coupe | UKL | 218i, 220i |  | ✓ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-004",
+      "scheme": "fs-uk",
+      "range": "2 Series",
+      "model": "F44 Gran Coupe",
+      "vehicleClass": "UKL",
+      "engineLabel": "M235i",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 20,
+      "sourceText": "| 2 Series | F44 Gran Coupe | UKL | M235i |  | ✗ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-005",
+      "scheme": "fs-uk",
+      "range": "2 Series",
+      "model": "G42 Coupe",
+      "vehicleClass": "UKL",
+      "engineLabel": "220i",
+      "towbar": false,
+      "grades": {
+        "G1-6": true,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 21,
+      "sourceText": "| 2 Series | G42 Coupe | UKL | 220i |  | ✓ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-006",
+      "scheme": "fs-uk",
+      "range": "2 Series",
+      "model": "G42 Coupe",
+      "vehicleClass": "UKL",
+      "engineLabel": "230i",
+      "towbar": false,
+      "grades": {
+        "G1-6": true,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 22,
+      "sourceText": "| 2 Series | G42 Coupe | UKL | 230i |  | ✓ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-007",
+      "scheme": "fs-uk",
+      "range": "2 Series",
+      "model": "G42 Coupe",
+      "vehicleClass": "UKL",
+      "engineLabel": "M240i",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 23,
+      "sourceText": "| 2 Series | G42 Coupe | UKL | M240i |  | ✗ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-008",
+      "scheme": "fs-uk",
+      "range": "2 Series",
+      "model": "U06 Active Tourer",
+      "vehicleClass": "UKL",
+      "engineLabel": "220i",
+      "towbar": false,
+      "grades": {
+        "G1-6": true,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 24,
+      "sourceText": "| 2 Series | U06 Active Tourer | UKL | 220i |  | ✓ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-009",
+      "scheme": "fs-uk",
+      "range": "2 Series",
+      "model": "U06 Active Tourer",
+      "vehicleClass": "UKL",
+      "engineLabel": "225xe",
+      "towbar": false,
+      "grades": {
+        "G1-6": true,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 25,
+      "sourceText": "| 2 Series | U06 Active Tourer | UKL | 225xe |  | ✓ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-010",
+      "scheme": "fs-uk",
+      "range": "2 Series",
+      "model": "U06 Active Tourer",
+      "vehicleClass": "UKL",
+      "engineLabel": "230e",
+      "towbar": false,
+      "grades": {
+        "G1-6": true,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 26,
+      "sourceText": "| 2 Series | U06 Active Tourer | UKL | 230e |  | ✓ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-011",
+      "scheme": "fs-uk",
+      "range": "3 Series",
+      "model": "G20 Saloon",
+      "vehicleClass": "KKL",
+      "engineLabel": "320i",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 27,
+      "sourceText": "| 3 Series | G20 Saloon | KKL | 320i |  | ✗ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-012",
+      "scheme": "fs-uk",
+      "range": "3 Series",
+      "model": "G20 Saloon",
+      "vehicleClass": "KKL",
+      "engineLabel": "330e",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 28,
+      "sourceText": "| 3 Series | G20 Saloon | KKL | 330e |  | ✗ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-013",
+      "scheme": "fs-uk",
+      "range": "3 Series",
+      "model": "G20 Saloon",
+      "vehicleClass": "KKL",
+      "engineLabel": "M340i",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 29,
+      "sourceText": "| 3 Series | G20 Saloon | KKL | M340i |  | ✗ | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-014",
+      "scheme": "fs-uk",
+      "range": "3 Series",
+      "model": "G21 Touring",
+      "vehicleClass": "KKL",
+      "engineLabel": "320i",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 30,
+      "sourceText": "| 3 Series | G21 Touring | KKL | 320i | T | ✗ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-015",
+      "scheme": "fs-uk",
+      "range": "3 Series",
+      "model": "G21 Touring",
+      "vehicleClass": "KKL",
+      "engineLabel": "330e",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 31,
+      "sourceText": "| 3 Series | G21 Touring | KKL | 330e | T | ✗ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-016",
+      "scheme": "fs-uk",
+      "range": "3 Series",
+      "model": "G21 Touring",
+      "vehicleClass": "KKL",
+      "engineLabel": "M340i",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 32,
+      "sourceText": "| 3 Series | G21 Touring | KKL | M340i | T | ✗ | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-017",
+      "scheme": "fs-uk",
+      "range": "4 Series",
+      "model": "G22 Coupe",
+      "vehicleClass": "KKL",
+      "engineLabel": "420i",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 33,
+      "sourceText": "| 4 Series | G22 Coupe | KKL | 420i |  | ✗ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-018",
+      "scheme": "fs-uk",
+      "range": "4 Series",
+      "model": "G22 Coupe",
+      "vehicleClass": "KKL",
+      "engineLabel": "M440i",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 34,
+      "sourceText": "| 4 Series | G22 Coupe | KKL | M440i |  | ✗ | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-019",
+      "scheme": "fs-uk",
+      "range": "4 Series",
+      "model": "G23 Convertible",
+      "vehicleClass": "KKL",
+      "engineLabel": "420i",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 35,
+      "sourceText": "| 4 Series | G23 Convertible | KKL | 420i |  | ✗ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-020",
+      "scheme": "fs-uk",
+      "range": "4 Series",
+      "model": "G23 Convertible",
+      "vehicleClass": "KKL",
+      "engineLabel": "M440i",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 36,
+      "sourceText": "| 4 Series | G23 Convertible | KKL | M440i |  | ✗ | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-021",
+      "scheme": "fs-uk",
+      "range": "4 Series",
+      "model": "G26 Gran Coupe",
+      "vehicleClass": "KKL",
+      "engineLabel": "420i",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 37,
+      "sourceText": "| 4 Series | G26 Gran Coupe | KKL | 420i |  | ✗ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-022",
+      "scheme": "fs-uk",
+      "range": "4 Series",
+      "model": "G26 Gran Coupe",
+      "vehicleClass": "KKL",
+      "engineLabel": "M440i",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 38,
+      "sourceText": "| 4 Series | G26 Gran Coupe | KKL | M440i |  | ✗ | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-023",
+      "scheme": "fs-uk",
+      "range": "5 Series",
+      "model": "G60 Saloon",
+      "vehicleClass": "MKL",
+      "engineLabel": "520i",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 39,
+      "sourceText": "| 5 Series | G60 Saloon | MKL | 520i |  | ✗ | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-024",
+      "scheme": "fs-uk",
+      "range": "5 Series",
+      "model": "G60 Saloon",
+      "vehicleClass": "MKL",
+      "engineLabel": "530e",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 40,
+      "sourceText": "| 5 Series | G60 Saloon | MKL | 530e |  | ✗ | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-025",
+      "scheme": "fs-uk",
+      "range": "5 Series",
+      "model": "G60 Saloon",
+      "vehicleClass": "MKL",
+      "engineLabel": "550e",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 41,
+      "sourceText": "| 5 Series | G60 Saloon | MKL | 550e |  | ✗ | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-026",
+      "scheme": "fs-uk",
+      "range": "5 Series",
+      "model": "G61 Touring",
+      "vehicleClass": "MKL",
+      "engineLabel": "530e",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 42,
+      "sourceText": "| 5 Series | G61 Touring | MKL | 530e | T | ✗ | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-027",
+      "scheme": "fs-uk",
+      "range": "Z Series",
+      "model": "G29 Z4",
+      "vehicleClass": "KKL",
+      "engineLabel": "20i",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 43,
+      "sourceText": "| Z Series | G29 Z4 | KKL | 20i |  | ✗ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-028",
+      "scheme": "fs-uk",
+      "range": "Z Series",
+      "model": "G29 Z4",
+      "vehicleClass": "KKL",
+      "engineLabel": "M40i",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 44,
+      "sourceText": "| Z Series | G29 Z4 | KKL | M40i |  | ✗ | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-029",
+      "scheme": "fs-uk",
+      "range": "X Models",
+      "model": "U11 X1",
+      "vehicleClass": "UKL",
+      "engineLabel": "18d",
+      "towbar": true,
+      "grades": {
+        "G1-6": true,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 45,
+      "sourceText": "| X Models | U11 X1 | UKL | 18d | T | ✓ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-030",
+      "scheme": "fs-uk",
+      "range": "X Models",
+      "model": "U11 X1",
+      "vehicleClass": "UKL",
+      "engineLabel": "20i",
+      "towbar": true,
+      "grades": {
+        "G1-6": true,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 46,
+      "sourceText": "| X Models | U11 X1 | UKL | 20i | T | ✓ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-031",
+      "scheme": "fs-uk",
+      "range": "X Models",
+      "model": "U11 X1",
+      "vehicleClass": "UKL",
+      "engineLabel": "23d, 23i",
+      "towbar": true,
+      "grades": {
+        "G1-6": true,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 47,
+      "sourceText": "| X Models | U11 X1 | UKL | 23d, 23i | T | ✓ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-032",
+      "scheme": "fs-uk",
+      "range": "X Models",
+      "model": "U11 X1",
+      "vehicleClass": "UKL",
+      "engineLabel": "25e",
+      "towbar": true,
+      "grades": {
+        "G1-6": true,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 48,
+      "sourceText": "| X Models | U11 X1 | UKL | 25e | T | ✓ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-033",
+      "scheme": "fs-uk",
+      "range": "X Models",
+      "model": "U11 X1",
+      "vehicleClass": "UKL",
+      "engineLabel": "30e",
+      "towbar": true,
+      "grades": {
+        "G1-6": true,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 49,
+      "sourceText": "| X Models | U11 X1 | UKL | 30e | T | ✓ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-034",
+      "scheme": "fs-uk",
+      "range": "X Models",
+      "model": "U11 X1",
+      "vehicleClass": "UKL",
+      "engineLabel": "M35i",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 50,
+      "sourceText": "| X Models | U11 X1 | UKL | M35i | T | ✗ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-035",
+      "scheme": "fs-uk",
+      "range": "X Models",
+      "model": "U10 X2",
+      "vehicleClass": "UKL",
+      "engineLabel": "20i",
+      "towbar": true,
+      "grades": {
+        "G1-6": true,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 51,
+      "sourceText": "| X Models | U10 X2 | UKL | 20i | T | ✓ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-036",
+      "scheme": "fs-uk",
+      "range": "X Models",
+      "model": "U10 X2",
+      "vehicleClass": "UKL",
+      "engineLabel": "M35i",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 52,
+      "sourceText": "| X Models | U10 X2 | UKL | M35i | T | ✗ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-037",
+      "scheme": "fs-uk",
+      "range": "X Models",
+      "model": "G01 X3",
+      "vehicleClass": "KKL",
+      "engineLabel": "xDrive20d, 20i",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 53,
+      "sourceText": "| X Models | G01 X3 | KKL | xDrive20d, 20i | T | ✗ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-038",
+      "scheme": "fs-uk",
+      "range": "X Models",
+      "model": "G01 X3",
+      "vehicleClass": "KKL",
+      "engineLabel": "30e",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 54,
+      "sourceText": "| X Models | G01 X3 | KKL | 30e | T | ✗ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-039",
+      "scheme": "fs-uk",
+      "range": "X Models",
+      "model": "G01 X3",
+      "vehicleClass": "KKL",
+      "engineLabel": "M40i",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 55,
+      "sourceText": "| X Models | G01 X3 | KKL | M40i | T | ✗ | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-040",
+      "scheme": "fs-uk",
+      "range": "X Models",
+      "model": "G02 X4",
+      "vehicleClass": "KKL",
+      "engineLabel": "xDrive20d",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 56,
+      "sourceText": "| X Models | G02 X4 | KKL | xDrive20d | T | ✗ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-041",
+      "scheme": "fs-uk",
+      "range": "X Models",
+      "model": "G02 X4",
+      "vehicleClass": "KKL",
+      "engineLabel": "M40i",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 57,
+      "sourceText": "| X Models | G02 X4 | KKL | M40i | T | ✗ | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-042",
+      "scheme": "fs-uk",
+      "range": "X Models",
+      "model": "G05 X5",
+      "vehicleClass": "MKL",
+      "engineLabel": "xDrive30d, 40d",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 58,
+      "sourceText": "| X Models | G05 X5 | MKL | xDrive30d, 40d | T | ✗ | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-043",
+      "scheme": "fs-uk",
+      "range": "X Models",
+      "model": "G05 X5",
+      "vehicleClass": "MKL",
+      "engineLabel": "50e",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 59,
+      "sourceText": "| X Models | G05 X5 | MKL | 50e | T | ✗ | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-044",
+      "scheme": "fs-uk",
+      "range": "X Models",
+      "model": "G05 X5",
+      "vehicleClass": "MKL",
+      "engineLabel": "xDrive M60i",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": false,
+        "G11-14": true
+      },
+      "sourceLine": 60,
+      "sourceText": "| X Models | G05 X5 | MKL | xDrive M60i | T | ✗ | ✗ | ✗ | ✓ |"
+    },
+    {
+      "id": "fs-uk-045",
+      "scheme": "fs-uk",
+      "range": "X Models",
+      "model": "G06 X6",
+      "vehicleClass": "MKL",
+      "engineLabel": "xDrive30d",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 61,
+      "sourceText": "| X Models | G06 X6 | MKL | xDrive30d | T | ✗ | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-046",
+      "scheme": "fs-uk",
+      "range": "X Models",
+      "model": "G06 X6",
+      "vehicleClass": "MKL",
+      "engineLabel": "xDrive40i, 40d",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 62,
+      "sourceText": "| X Models | G06 X6 | MKL | xDrive40i, 40d | T | ✗ | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-047",
+      "scheme": "fs-uk",
+      "range": "X Models",
+      "model": "G06 X6",
+      "vehicleClass": "MKL",
+      "engineLabel": "xDrive M60i",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": false,
+        "G11-14": true
+      },
+      "sourceLine": 63,
+      "sourceText": "| X Models | G06 X6 | MKL | xDrive M60i | T | ✗ | ✗ | ✗ | ✓ |"
+    },
+    {
+      "id": "fs-uk-048",
+      "scheme": "fs-uk",
+      "range": "BMW i",
+      "model": "U11 iX1",
+      "vehicleClass": "UKL",
+      "engineLabel": "iX1 20",
+      "towbar": true,
+      "grades": {
+        "G1-6": true,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 64,
+      "sourceText": "| BMW i | U11 iX1 | UKL | iX1 20 | T | ✓ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-049",
+      "scheme": "fs-uk",
+      "range": "BMW i",
+      "model": "U11 iX1",
+      "vehicleClass": "UKL",
+      "engineLabel": "iX1 30",
+      "towbar": true,
+      "grades": {
+        "G1-6": true,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 65,
+      "sourceText": "| BMW i | U11 iX1 | UKL | iX1 30 | T | ✓ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-050",
+      "scheme": "fs-uk",
+      "range": "BMW i",
+      "model": "U10 iX2",
+      "vehicleClass": "UKL",
+      "engineLabel": "iX2 20",
+      "towbar": true,
+      "grades": {
+        "G1-6": true,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 66,
+      "sourceText": "| BMW i | U10 iX2 | UKL | iX2 20 | T | ✓ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-051",
+      "scheme": "fs-uk",
+      "range": "BMW i",
+      "model": "U10 iX2",
+      "vehicleClass": "UKL",
+      "engineLabel": "iX2 30",
+      "towbar": true,
+      "grades": {
+        "G1-6": true,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 67,
+      "sourceText": "| BMW i | U10 iX2 | UKL | iX2 30 | T | ✓ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-052",
+      "scheme": "fs-uk",
+      "range": "BMW i",
+      "model": "G26 i4",
+      "vehicleClass": "KKL",
+      "engineLabel": "i4 35",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 68,
+      "sourceText": "| BMW i | G26 i4 | KKL | i4 35 |  | ✗ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-053",
+      "scheme": "fs-uk",
+      "range": "BMW i",
+      "model": "G26 i4",
+      "vehicleClass": "KKL",
+      "engineLabel": "i4 40",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": true,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 69,
+      "sourceText": "| BMW i | G26 i4 | KKL | i4 40 |  | ✗ | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-054",
+      "scheme": "fs-uk",
+      "range": "BMW i",
+      "model": "G26 i4",
+      "vehicleClass": "KKL",
+      "engineLabel": "i4 M50",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 70,
+      "sourceText": "| BMW i | G26 i4 | KKL | i4 M50 |  | ✗ | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-055",
+      "scheme": "fs-uk",
+      "range": "BMW i",
+      "model": "G60 i5",
+      "vehicleClass": "MKL",
+      "engineLabel": "i5 40",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 71,
+      "sourceText": "| BMW i | G60 i5 | MKL | i5 40 |  | ✗ | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-056",
+      "scheme": "fs-uk",
+      "range": "BMW i",
+      "model": "G60 i5",
+      "vehicleClass": "MKL",
+      "engineLabel": "i5 M60",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": false,
+        "G11-14": true
+      },
+      "sourceLine": 72,
+      "sourceText": "| BMW i | G60 i5 | MKL | i5 M60 |  | ✗ | ✗ | ✗ | ✓ |"
+    },
+    {
+      "id": "fs-uk-057",
+      "scheme": "fs-uk",
+      "range": "BMW i",
+      "model": "G61 i5",
+      "vehicleClass": "MKL",
+      "engineLabel": "i5 40",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 73,
+      "sourceText": "| BMW i | G61 i5 | MKL | i5 40 | T | ✗ | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-058",
+      "scheme": "fs-uk",
+      "range": "BMW i",
+      "model": "G61 i5",
+      "vehicleClass": "MKL",
+      "engineLabel": "i5 M60",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": false,
+        "G11-14": true
+      },
+      "sourceLine": 74,
+      "sourceText": "| BMW i | G61 i5 | MKL | i5 M60 | T | ✗ | ✗ | ✗ | ✓ |"
+    },
+    {
+      "id": "fs-uk-059",
+      "scheme": "fs-uk",
+      "range": "BMW i",
+      "model": "i20 iX",
+      "vehicleClass": "MKL",
+      "engineLabel": "iX 40",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 75,
+      "sourceText": "| BMW i | i20 iX | MKL | iX 40 | T | ✗ | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-060",
+      "scheme": "fs-uk",
+      "range": "BMW i",
+      "model": "i20 iX",
+      "vehicleClass": "MKL",
+      "engineLabel": "iX 50",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": true,
+        "G11-14": true
+      },
+      "sourceLine": 76,
+      "sourceText": "| BMW i | i20 iX | MKL | iX 50 | T | ✗ | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "fs-uk-061",
+      "scheme": "fs-uk",
+      "range": "BMW i",
+      "model": "i20 iX",
+      "vehicleClass": "MKL",
+      "engineLabel": "iX M60",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": false,
+        "G11-14": true
+      },
+      "sourceLine": 77,
+      "sourceText": "| BMW i | i20 iX | MKL | iX M60 | T | ✗ | ✗ | ✗ | ✓ |"
+    },
+    {
+      "id": "fs-uk-062",
+      "scheme": "fs-uk",
+      "range": "M",
+      "model": "M Power",
+      "vehicleClass": "M",
+      "engineLabel": "M2",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": false,
+        "G11-14": true
+      },
+      "sourceLine": 78,
+      "sourceText": "| M | M Power | M | M2 |  | ✗ | ✗ | ✗ | ✓ |"
+    },
+    {
+      "id": "fs-uk-063",
+      "scheme": "fs-uk",
+      "range": "M",
+      "model": "M Power",
+      "vehicleClass": "M",
+      "engineLabel": "M3",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": false,
+        "G11-14": true
+      },
+      "sourceLine": 79,
+      "sourceText": "| M | M Power | M | M3 |  | ✗ | ✗ | ✗ | ✓ |"
+    },
+    {
+      "id": "fs-uk-064",
+      "scheme": "fs-uk",
+      "range": "M",
+      "model": "M Power",
+      "vehicleClass": "M",
+      "engineLabel": "M4",
+      "towbar": false,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": false,
+        "G11-14": true
+      },
+      "sourceLine": 80,
+      "sourceText": "| M | M Power | M | M4 |  | ✗ | ✗ | ✗ | ✓ |"
+    },
+    {
+      "id": "fs-uk-065",
+      "scheme": "fs-uk",
+      "range": "M",
+      "model": "M Power",
+      "vehicleClass": "M",
+      "engineLabel": "X3M, X4M",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": false,
+        "G11-14": true
+      },
+      "sourceLine": 81,
+      "sourceText": "| M | M Power | M | X3M, X4M | T | ✗ | ✗ | ✗ | ✓ |"
+    },
+    {
+      "id": "fs-uk-066",
+      "scheme": "fs-uk",
+      "range": "M",
+      "model": "M Power",
+      "vehicleClass": "M",
+      "engineLabel": "X5M, X6M",
+      "towbar": true,
+      "grades": {
+        "G1-6": false,
+        "G7": false,
+        "G8-10": false,
+        "G11-14": true
+      },
+      "sourceLine": 82,
+      "sourceText": "| M | M Power | M | X5M, X6M | T | ✗ | ✗ | ✗ | ✓ |"
+    },
+    {
+      "id": "rr-production-001",
+      "scheme": "rr-production",
+      "range": "1 Series",
+      "model": "F70 Sports Hatch",
+      "vehicleClass": "UKL",
+      "engineLabel": "120",
+      "towbar": false,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 93,
+      "sourceText": "| 1 Series | F70 Sports Hatch | UKL | 120 |  | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-002",
+      "scheme": "rr-production",
+      "range": "1 Series",
+      "model": "F70 Sports Hatch",
+      "vehicleClass": "UKL",
+      "engineLabel": "M135",
+      "towbar": false,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 94,
+      "sourceText": "| 1 Series | F70 Sports Hatch | UKL | M135 |  | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-003",
+      "scheme": "rr-production",
+      "range": "2 Series",
+      "model": "F44 Gran Coupe",
+      "vehicleClass": "UKL",
+      "engineLabel": "218i, 220i",
+      "towbar": false,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 95,
+      "sourceText": "| 2 Series | F44 Gran Coupe | UKL | 218i, 220i |  | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-004",
+      "scheme": "rr-production",
+      "range": "2 Series",
+      "model": "F44 Gran Coupe",
+      "vehicleClass": "UKL",
+      "engineLabel": "M235i",
+      "towbar": false,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 96,
+      "sourceText": "| 2 Series | F44 Gran Coupe | UKL | M235i |  | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-005",
+      "scheme": "rr-production",
+      "range": "2 Series",
+      "model": "G42 Coupe",
+      "vehicleClass": "UKL",
+      "engineLabel": "220i",
+      "towbar": false,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 97,
+      "sourceText": "| 2 Series | G42 Coupe | UKL | 220i |  | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-006",
+      "scheme": "rr-production",
+      "range": "2 Series",
+      "model": "G42 Coupe",
+      "vehicleClass": "UKL",
+      "engineLabel": "230i",
+      "towbar": false,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 98,
+      "sourceText": "| 2 Series | G42 Coupe | UKL | 230i |  | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-007",
+      "scheme": "rr-production",
+      "range": "2 Series",
+      "model": "G42 Coupe",
+      "vehicleClass": "UKL",
+      "engineLabel": "M240i",
+      "towbar": false,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 99,
+      "sourceText": "| 2 Series | G42 Coupe | UKL | M240i |  | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-008",
+      "scheme": "rr-production",
+      "range": "2 Series",
+      "model": "U06 Active Tourer",
+      "vehicleClass": "UKL",
+      "engineLabel": "220i",
+      "towbar": false,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 100,
+      "sourceText": "| 2 Series | U06 Active Tourer | UKL | 220i |  | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-009",
+      "scheme": "rr-production",
+      "range": "2 Series",
+      "model": "U06 Active Tourer",
+      "vehicleClass": "UKL",
+      "engineLabel": "225xe",
+      "towbar": false,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 101,
+      "sourceText": "| 2 Series | U06 Active Tourer | UKL | 225xe |  | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-010",
+      "scheme": "rr-production",
+      "range": "2 Series",
+      "model": "U06 Active Tourer",
+      "vehicleClass": "UKL",
+      "engineLabel": "230e",
+      "towbar": false,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 102,
+      "sourceText": "| 2 Series | U06 Active Tourer | UKL | 230e |  | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-011",
+      "scheme": "rr-production",
+      "range": "3 Series",
+      "model": "G20 Saloon",
+      "vehicleClass": "KKL",
+      "engineLabel": "320i",
+      "towbar": false,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 103,
+      "sourceText": "| 3 Series | G20 Saloon | KKL | 320i |  | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-012",
+      "scheme": "rr-production",
+      "range": "3 Series",
+      "model": "G20 Saloon",
+      "vehicleClass": "KKL",
+      "engineLabel": "330e",
+      "towbar": false,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 104,
+      "sourceText": "| 3 Series | G20 Saloon | KKL | 330e |  | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-013",
+      "scheme": "rr-production",
+      "range": "3 Series",
+      "model": "G20 Saloon",
+      "vehicleClass": "KKL",
+      "engineLabel": "M340i",
+      "towbar": false,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 105,
+      "sourceText": "| 3 Series | G20 Saloon | KKL | M340i |  | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-014",
+      "scheme": "rr-production",
+      "range": "3 Series",
+      "model": "G21 Touring",
+      "vehicleClass": "KKL",
+      "engineLabel": "320i",
+      "towbar": true,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 106,
+      "sourceText": "| 3 Series | G21 Touring | KKL | 320i | T | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-015",
+      "scheme": "rr-production",
+      "range": "3 Series",
+      "model": "G21 Touring",
+      "vehicleClass": "KKL",
+      "engineLabel": "330e",
+      "towbar": true,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 107,
+      "sourceText": "| 3 Series | G21 Touring | KKL | 330e | T | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-016",
+      "scheme": "rr-production",
+      "range": "3 Series",
+      "model": "G21 Touring",
+      "vehicleClass": "KKL",
+      "engineLabel": "M340i",
+      "towbar": true,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 108,
+      "sourceText": "| 3 Series | G21 Touring | KKL | M340i | T | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-017",
+      "scheme": "rr-production",
+      "range": "4 Series",
+      "model": "G22 Coupe",
+      "vehicleClass": "KKL",
+      "engineLabel": "420i",
+      "towbar": false,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 109,
+      "sourceText": "| 4 Series | G22 Coupe | KKL | 420i |  | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-018",
+      "scheme": "rr-production",
+      "range": "4 Series",
+      "model": "G22 Coupe",
+      "vehicleClass": "KKL",
+      "engineLabel": "M440i",
+      "towbar": false,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 110,
+      "sourceText": "| 4 Series | G22 Coupe | KKL | M440i |  | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-019",
+      "scheme": "rr-production",
+      "range": "4 Series",
+      "model": "G23 Convertible",
+      "vehicleClass": "KKL",
+      "engineLabel": "420i",
+      "towbar": false,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 111,
+      "sourceText": "| 4 Series | G23 Convertible | KKL | 420i |  | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-020",
+      "scheme": "rr-production",
+      "range": "4 Series",
+      "model": "G23 Convertible",
+      "vehicleClass": "KKL",
+      "engineLabel": "M440i",
+      "towbar": false,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 112,
+      "sourceText": "| 4 Series | G23 Convertible | KKL | M440i |  | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-021",
+      "scheme": "rr-production",
+      "range": "4 Series",
+      "model": "G26 Gran Coupe",
+      "vehicleClass": "KKL",
+      "engineLabel": "420i",
+      "towbar": false,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 113,
+      "sourceText": "| 4 Series | G26 Gran Coupe | KKL | 420i |  | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-022",
+      "scheme": "rr-production",
+      "range": "4 Series",
+      "model": "G26 Gran Coupe",
+      "vehicleClass": "KKL",
+      "engineLabel": "M440i",
+      "towbar": false,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 114,
+      "sourceText": "| 4 Series | G26 Gran Coupe | KKL | M440i |  | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-023",
+      "scheme": "rr-production",
+      "range": "5 Series",
+      "model": "G60 Saloon",
+      "vehicleClass": "MKL",
+      "engineLabel": "520i",
+      "towbar": false,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 115,
+      "sourceText": "| 5 Series | G60 Saloon | MKL | 520i |  | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-024",
+      "scheme": "rr-production",
+      "range": "5 Series",
+      "model": "G60 Saloon",
+      "vehicleClass": "MKL",
+      "engineLabel": "530e",
+      "towbar": false,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 116,
+      "sourceText": "| 5 Series | G60 Saloon | MKL | 530e |  | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-025",
+      "scheme": "rr-production",
+      "range": "5 Series",
+      "model": "G60 Saloon",
+      "vehicleClass": "MKL",
+      "engineLabel": "550e",
+      "towbar": false,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 117,
+      "sourceText": "| 5 Series | G60 Saloon | MKL | 550e |  | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-026",
+      "scheme": "rr-production",
+      "range": "5 Series",
+      "model": "G61 Touring",
+      "vehicleClass": "MKL",
+      "engineLabel": "530e",
+      "towbar": true,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 118,
+      "sourceText": "| 5 Series | G61 Touring | MKL | 530e | T | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-027",
+      "scheme": "rr-production",
+      "range": "Z Series",
+      "model": "G29 Z4",
+      "vehicleClass": "KKL",
+      "engineLabel": "20i",
+      "towbar": false,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 119,
+      "sourceText": "| Z Series | G29 Z4 | KKL | 20i |  | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-028",
+      "scheme": "rr-production",
+      "range": "Z Series",
+      "model": "G29 Z4",
+      "vehicleClass": "KKL",
+      "engineLabel": "M40i",
+      "towbar": false,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 120,
+      "sourceText": "| Z Series | G29 Z4 | KKL | M40i |  | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-029",
+      "scheme": "rr-production",
+      "range": "X Models",
+      "model": "U11 X1",
+      "vehicleClass": "UKL",
+      "engineLabel": "18d",
+      "towbar": true,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 121,
+      "sourceText": "| X Models | U11 X1 | UKL | 18d | T | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-030",
+      "scheme": "rr-production",
+      "range": "X Models",
+      "model": "U11 X1",
+      "vehicleClass": "UKL",
+      "engineLabel": "20d/20i",
+      "towbar": true,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 122,
+      "sourceText": "| X Models | U11 X1 | UKL | 20d/20i | T | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-031",
+      "scheme": "rr-production",
+      "range": "X Models",
+      "model": "U11 X1",
+      "vehicleClass": "UKL",
+      "engineLabel": "23d, 23i",
+      "towbar": true,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 123,
+      "sourceText": "| X Models | U11 X1 | UKL | 23d, 23i | T | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-032",
+      "scheme": "rr-production",
+      "range": "X Models",
+      "model": "U11 X1",
+      "vehicleClass": "UKL",
+      "engineLabel": "25e",
+      "towbar": true,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 124,
+      "sourceText": "| X Models | U11 X1 | UKL | 25e | T | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-033",
+      "scheme": "rr-production",
+      "range": "X Models",
+      "model": "U11 X1",
+      "vehicleClass": "UKL",
+      "engineLabel": "30e",
+      "towbar": true,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 125,
+      "sourceText": "| X Models | U11 X1 | UKL | 30e | T | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-034",
+      "scheme": "rr-production",
+      "range": "X Models",
+      "model": "U11 X1",
+      "vehicleClass": "UKL",
+      "engineLabel": "M35i",
+      "towbar": true,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 126,
+      "sourceText": "| X Models | U11 X1 | UKL | M35i | T | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-035",
+      "scheme": "rr-production",
+      "range": "X Models",
+      "model": "U10 X2",
+      "vehicleClass": "UKL",
+      "engineLabel": "20i",
+      "towbar": true,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 127,
+      "sourceText": "| X Models | U10 X2 | UKL | 20i | T | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-036",
+      "scheme": "rr-production",
+      "range": "X Models",
+      "model": "U10 X2",
+      "vehicleClass": "UKL",
+      "engineLabel": "M35i",
+      "towbar": true,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 128,
+      "sourceText": "| X Models | U10 X2 | UKL | M35i | T | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-037",
+      "scheme": "rr-production",
+      "range": "X Models",
+      "model": "G01 X3",
+      "vehicleClass": "KKL",
+      "engineLabel": "xDrive20d, 20i",
+      "towbar": true,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 129,
+      "sourceText": "| X Models | G01 X3 | KKL | xDrive20d, 20i | T | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-038",
+      "scheme": "rr-production",
+      "range": "X Models",
+      "model": "G01 X3",
+      "vehicleClass": "KKL",
+      "engineLabel": "30e",
+      "towbar": true,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 130,
+      "sourceText": "| X Models | G01 X3 | KKL | 30e | T | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-039",
+      "scheme": "rr-production",
+      "range": "X Models",
+      "model": "G01 X3",
+      "vehicleClass": "KKL",
+      "engineLabel": "M40i",
+      "towbar": true,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 131,
+      "sourceText": "| X Models | G01 X3 | KKL | M40i | T | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-040",
+      "scheme": "rr-production",
+      "range": "X Models",
+      "model": "G02 X4",
+      "vehicleClass": "KKL",
+      "engineLabel": "xDrive20d",
+      "towbar": true,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 132,
+      "sourceText": "| X Models | G02 X4 | KKL | xDrive20d | T | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-041",
+      "scheme": "rr-production",
+      "range": "X Models",
+      "model": "G02 X4",
+      "vehicleClass": "KKL",
+      "engineLabel": "M40i",
+      "towbar": true,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 133,
+      "sourceText": "| X Models | G02 X4 | KKL | M40i | T | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-042",
+      "scheme": "rr-production",
+      "range": "X Models",
+      "model": "G05 X5",
+      "vehicleClass": "MKL",
+      "engineLabel": "xDrive30d, 40d",
+      "towbar": true,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 134,
+      "sourceText": "| X Models | G05 X5 | MKL | xDrive30d, 40d | T | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-043",
+      "scheme": "rr-production",
+      "range": "X Models",
+      "model": "G05 X5",
+      "vehicleClass": "MKL",
+      "engineLabel": "50e",
+      "towbar": true,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 135,
+      "sourceText": "| X Models | G05 X5 | MKL | 50e | T | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-044",
+      "scheme": "rr-production",
+      "range": "X Models",
+      "model": "G05 X5",
+      "vehicleClass": "MKL",
+      "engineLabel": "xDrive M60i",
+      "towbar": true,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": false,
+        "G11 & G12": true
+      },
+      "sourceLine": 136,
+      "sourceText": "| X Models | G05 X5 | MKL | xDrive M60i | T | ✗ | ✗ | ✓ |"
+    },
+    {
+      "id": "rr-production-045",
+      "scheme": "rr-production",
+      "range": "X Models",
+      "model": "G06 X6",
+      "vehicleClass": "MKL",
+      "engineLabel": "xDrive30d",
+      "towbar": true,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 137,
+      "sourceText": "| X Models | G06 X6 | MKL | xDrive30d | T | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-046",
+      "scheme": "rr-production",
+      "range": "X Models",
+      "model": "G06 X6",
+      "vehicleClass": "MKL",
+      "engineLabel": "xDrive40i, 40d",
+      "towbar": true,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 138,
+      "sourceText": "| X Models | G06 X6 | MKL | xDrive40i, 40d | T | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-047",
+      "scheme": "rr-production",
+      "range": "X Models",
+      "model": "G06 X6",
+      "vehicleClass": "MKL",
+      "engineLabel": "xDrive M60i",
+      "towbar": false,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": false,
+        "G11 & G12": true
+      },
+      "sourceLine": 139,
+      "sourceText": "| X Models | G06 X6 | MKL | xDrive M60i |  | ✗ | ✗ | ✓ |"
+    },
+    {
+      "id": "rr-production-048",
+      "scheme": "rr-production",
+      "range": "BMW i",
+      "model": "U11 iX1",
+      "vehicleClass": "UKL",
+      "engineLabel": "iX1 20",
+      "towbar": true,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 140,
+      "sourceText": "| BMW i | U11 iX1 | UKL | iX1 20 | T | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-049",
+      "scheme": "rr-production",
+      "range": "BMW i",
+      "model": "U11 iX1",
+      "vehicleClass": "UKL",
+      "engineLabel": "iX1 30",
+      "towbar": true,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 141,
+      "sourceText": "| BMW i | U11 iX1 | UKL | iX1 30 | T | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-050",
+      "scheme": "rr-production",
+      "range": "BMW i",
+      "model": "U10 iX2",
+      "vehicleClass": "UKL",
+      "engineLabel": "iX2 20",
+      "towbar": true,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 142,
+      "sourceText": "| BMW i | U10 iX2 | UKL | iX2 20 | T | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-051",
+      "scheme": "rr-production",
+      "range": "BMW i",
+      "model": "U10 iX2",
+      "vehicleClass": "UKL",
+      "engineLabel": "iX2 30",
+      "towbar": true,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 143,
+      "sourceText": "| BMW i | U10 iX2 | UKL | iX2 30 | T | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-052",
+      "scheme": "rr-production",
+      "range": "BMW i",
+      "model": "G26 i4",
+      "vehicleClass": "KKL",
+      "engineLabel": "i4 35",
+      "towbar": false,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 144,
+      "sourceText": "| BMW i | G26 i4 | KKL | i4 35 |  | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-053",
+      "scheme": "rr-production",
+      "range": "BMW i",
+      "model": "G26 i4",
+      "vehicleClass": "KKL",
+      "engineLabel": "i4 40",
+      "towbar": false,
+      "grades": {
+        "PG1": true,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 145,
+      "sourceText": "| BMW i | G26 i4 | KKL | i4 40 |  | ✓ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-054",
+      "scheme": "rr-production",
+      "range": "BMW i",
+      "model": "G26 i4",
+      "vehicleClass": "KKL",
+      "engineLabel": "i4 M50",
+      "towbar": false,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 146,
+      "sourceText": "| BMW i | G26 i4 | KKL | i4 M50 |  | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-055",
+      "scheme": "rr-production",
+      "range": "BMW i",
+      "model": "G60 i5",
+      "vehicleClass": "MKL",
+      "engineLabel": "i5 40",
+      "towbar": false,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 147,
+      "sourceText": "| BMW i | G60 i5 | MKL | i5 40 |  | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-056",
+      "scheme": "rr-production",
+      "range": "BMW i",
+      "model": "G60 i5",
+      "vehicleClass": "MKL",
+      "engineLabel": "i5 M60",
+      "towbar": false,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": false,
+        "G11 & G12": true
+      },
+      "sourceLine": 148,
+      "sourceText": "| BMW i | G60 i5 | MKL | i5 M60 |  | ✗ | ✗ | ✓ |"
+    },
+    {
+      "id": "rr-production-057",
+      "scheme": "rr-production",
+      "range": "BMW i",
+      "model": "G61 i5",
+      "vehicleClass": "MKL",
+      "engineLabel": "i5 40",
+      "towbar": true,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 149,
+      "sourceText": "| BMW i | G61 i5 | MKL | i5 40 | T | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-058",
+      "scheme": "rr-production",
+      "range": "BMW i",
+      "model": "G61 i5",
+      "vehicleClass": "MKL",
+      "engineLabel": "i5 M60",
+      "towbar": true,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": false,
+        "G11 & G12": true
+      },
+      "sourceLine": 150,
+      "sourceText": "| BMW i | G61 i5 | MKL | i5 M60 | T | ✗ | ✗ | ✓ |"
+    },
+    {
+      "id": "rr-production-059",
+      "scheme": "rr-production",
+      "range": "BMW i",
+      "model": "i20 iX",
+      "vehicleClass": "MKL",
+      "engineLabel": "iX 40",
+      "towbar": true,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 151,
+      "sourceText": "| BMW i | i20 iX | MKL | iX 40 | T | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-060",
+      "scheme": "rr-production",
+      "range": "BMW i",
+      "model": "i20 iX",
+      "vehicleClass": "MKL",
+      "engineLabel": "iX 50",
+      "towbar": true,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": true,
+        "G11 & G12": true
+      },
+      "sourceLine": 152,
+      "sourceText": "| BMW i | i20 iX | MKL | iX 50 | T | ✗ | ✓ | ✓ |"
+    },
+    {
+      "id": "rr-production-061",
+      "scheme": "rr-production",
+      "range": "BMW i",
+      "model": "i20 iX",
+      "vehicleClass": "MKL",
+      "engineLabel": "iX M60",
+      "towbar": true,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": false,
+        "G11 & G12": true
+      },
+      "sourceLine": 153,
+      "sourceText": "| BMW i | i20 iX | MKL | iX M60 | T | ✗ | ✗ | ✓ |"
+    },
+    {
+      "id": "rr-production-062",
+      "scheme": "rr-production",
+      "range": "M",
+      "model": "M Power",
+      "vehicleClass": "M",
+      "engineLabel": "M2",
+      "towbar": false,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": false,
+        "G11 & G12": true
+      },
+      "sourceLine": 154,
+      "sourceText": "| M | M Power | M | M2 |  | ✗ | ✗ | ✓ |"
+    },
+    {
+      "id": "rr-production-063",
+      "scheme": "rr-production",
+      "range": "M",
+      "model": "M Power",
+      "vehicleClass": "M",
+      "engineLabel": "M3",
+      "towbar": false,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": false,
+        "G11 & G12": true
+      },
+      "sourceLine": 155,
+      "sourceText": "| M | M Power | M | M3 |  | ✗ | ✗ | ✓ |"
+    },
+    {
+      "id": "rr-production-064",
+      "scheme": "rr-production",
+      "range": "M",
+      "model": "M Power",
+      "vehicleClass": "M",
+      "engineLabel": "M4",
+      "towbar": false,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": false,
+        "G11 & G12": true
+      },
+      "sourceLine": 156,
+      "sourceText": "| M | M Power | M | M4 |  | ✗ | ✗ | ✓ |"
+    },
+    {
+      "id": "rr-production-065",
+      "scheme": "rr-production",
+      "range": "M",
+      "model": "M Power",
+      "vehicleClass": "M",
+      "engineLabel": "X3M, X4M",
+      "towbar": true,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": false,
+        "G11 & G12": true
+      },
+      "sourceLine": 157,
+      "sourceText": "| M | M Power | M | X3M, X4M | T | ✗ | ✗ | ✓ |"
+    },
+    {
+      "id": "rr-production-066",
+      "scheme": "rr-production",
+      "range": "M",
+      "model": "M Power",
+      "vehicleClass": "M",
+      "engineLabel": "X5M, X6M",
+      "towbar": true,
+      "grades": {
+        "PG1": false,
+        "G8 - G10": false,
+        "G11 & G12": true
+      },
+      "sourceLine": 158,
+      "sourceText": "| M | M Power | M | X5M, X6M | T | ✗ | ✗ | ✓ |"
+    }
+  ],
+  "modelLines": [
+    {
+      "id": "line-f70-sports-hatch-120",
+      "range": "1 Series",
+      "model": "F70 Sports Hatch",
+      "vehicleClass": "UKL",
+      "engine": "120",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-001",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": true,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 17
+        },
+        {
+          "sourceRowId": "rr-production-001",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 93
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-f70-sports-hatch-m135",
+      "range": "1 Series",
+      "model": "F70 Sports Hatch",
+      "vehicleClass": "UKL",
+      "engine": "M135",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-002",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 18
+        },
+        {
+          "sourceRowId": "rr-production-002",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 94
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-f44-gran-coupe-218i",
+      "range": "2 Series",
+      "model": "F44 Gran Coupe",
+      "vehicleClass": "UKL",
+      "engine": "218i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-003",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": true,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 19
+        },
+        {
+          "sourceRowId": "rr-production-003",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 95
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-f44-gran-coupe-220i",
+      "range": "2 Series",
+      "model": "F44 Gran Coupe",
+      "vehicleClass": "UKL",
+      "engine": "220i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-003",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": true,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 19
+        },
+        {
+          "sourceRowId": "rr-production-003",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 95
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-f44-gran-coupe-m235i",
+      "range": "2 Series",
+      "model": "F44 Gran Coupe",
+      "vehicleClass": "UKL",
+      "engine": "M235i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-004",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 20
+        },
+        {
+          "sourceRowId": "rr-production-004",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 96
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g42-coupe-220i",
+      "range": "2 Series",
+      "model": "G42 Coupe",
+      "vehicleClass": "UKL",
+      "engine": "220i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-005",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": true,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 21
+        },
+        {
+          "sourceRowId": "rr-production-005",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 97
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g42-coupe-230i",
+      "range": "2 Series",
+      "model": "G42 Coupe",
+      "vehicleClass": "UKL",
+      "engine": "230i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-006",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": true,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 22
+        },
+        {
+          "sourceRowId": "rr-production-006",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 98
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g42-coupe-m240i",
+      "range": "2 Series",
+      "model": "G42 Coupe",
+      "vehicleClass": "UKL",
+      "engine": "M240i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-007",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 23
+        },
+        {
+          "sourceRowId": "rr-production-007",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 99
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-u06-active-tourer-220i",
+      "range": "2 Series",
+      "model": "U06 Active Tourer",
+      "vehicleClass": "UKL",
+      "engine": "220i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-008",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": true,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 24
+        },
+        {
+          "sourceRowId": "rr-production-008",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 100
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-u06-active-tourer-225xe",
+      "range": "2 Series",
+      "model": "U06 Active Tourer",
+      "vehicleClass": "UKL",
+      "engine": "225xe",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-009",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": true,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 25
+        },
+        {
+          "sourceRowId": "rr-production-009",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 101
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-u06-active-tourer-230e",
+      "range": "2 Series",
+      "model": "U06 Active Tourer",
+      "vehicleClass": "UKL",
+      "engine": "230e",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-010",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": true,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 26
+        },
+        {
+          "sourceRowId": "rr-production-010",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 102
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g20-saloon-320i",
+      "range": "3 Series",
+      "model": "G20 Saloon",
+      "vehicleClass": "KKL",
+      "engine": "320i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-011",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 27
+        },
+        {
+          "sourceRowId": "rr-production-011",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 103
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g20-saloon-330e",
+      "range": "3 Series",
+      "model": "G20 Saloon",
+      "vehicleClass": "KKL",
+      "engine": "330e",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-012",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 28
+        },
+        {
+          "sourceRowId": "rr-production-012",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 104
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g20-saloon-m340i",
+      "range": "3 Series",
+      "model": "G20 Saloon",
+      "vehicleClass": "KKL",
+      "engine": "M340i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-013",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 29
+        },
+        {
+          "sourceRowId": "rr-production-013",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 105
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g21-touring-320i",
+      "range": "3 Series",
+      "model": "G21 Touring",
+      "vehicleClass": "KKL",
+      "engine": "320i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-014",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 30
+        },
+        {
+          "sourceRowId": "rr-production-014",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 106
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g21-touring-330e",
+      "range": "3 Series",
+      "model": "G21 Touring",
+      "vehicleClass": "KKL",
+      "engine": "330e",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-015",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 31
+        },
+        {
+          "sourceRowId": "rr-production-015",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 107
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g21-touring-m340i",
+      "range": "3 Series",
+      "model": "G21 Touring",
+      "vehicleClass": "KKL",
+      "engine": "M340i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-016",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 32
+        },
+        {
+          "sourceRowId": "rr-production-016",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 108
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g22-coupe-420i",
+      "range": "4 Series",
+      "model": "G22 Coupe",
+      "vehicleClass": "KKL",
+      "engine": "420i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-017",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 33
+        },
+        {
+          "sourceRowId": "rr-production-017",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 109
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g22-coupe-m440i",
+      "range": "4 Series",
+      "model": "G22 Coupe",
+      "vehicleClass": "KKL",
+      "engine": "M440i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-018",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 34
+        },
+        {
+          "sourceRowId": "rr-production-018",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 110
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g23-convertible-420i",
+      "range": "4 Series",
+      "model": "G23 Convertible",
+      "vehicleClass": "KKL",
+      "engine": "420i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-019",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 35
+        },
+        {
+          "sourceRowId": "rr-production-019",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 111
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g23-convertible-m440i",
+      "range": "4 Series",
+      "model": "G23 Convertible",
+      "vehicleClass": "KKL",
+      "engine": "M440i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-020",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 36
+        },
+        {
+          "sourceRowId": "rr-production-020",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 112
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g26-gran-coupe-420i",
+      "range": "4 Series",
+      "model": "G26 Gran Coupe",
+      "vehicleClass": "KKL",
+      "engine": "420i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-021",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 37
+        },
+        {
+          "sourceRowId": "rr-production-021",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 113
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g26-gran-coupe-m440i",
+      "range": "4 Series",
+      "model": "G26 Gran Coupe",
+      "vehicleClass": "KKL",
+      "engine": "M440i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-022",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 38
+        },
+        {
+          "sourceRowId": "rr-production-022",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 114
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g60-saloon-520i",
+      "range": "5 Series",
+      "model": "G60 Saloon",
+      "vehicleClass": "MKL",
+      "engine": "520i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-023",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 39
+        },
+        {
+          "sourceRowId": "rr-production-023",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 115
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g60-saloon-530e",
+      "range": "5 Series",
+      "model": "G60 Saloon",
+      "vehicleClass": "MKL",
+      "engine": "530e",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-024",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 40
+        },
+        {
+          "sourceRowId": "rr-production-024",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 116
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g60-saloon-550e",
+      "range": "5 Series",
+      "model": "G60 Saloon",
+      "vehicleClass": "MKL",
+      "engine": "550e",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-025",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 41
+        },
+        {
+          "sourceRowId": "rr-production-025",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 117
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g61-touring-530e",
+      "range": "5 Series",
+      "model": "G61 Touring",
+      "vehicleClass": "MKL",
+      "engine": "530e",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-026",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 42
+        },
+        {
+          "sourceRowId": "rr-production-026",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 118
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g29-z4-20i",
+      "range": "Z Series",
+      "model": "G29 Z4",
+      "vehicleClass": "KKL",
+      "engine": "20i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-027",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 43
+        },
+        {
+          "sourceRowId": "rr-production-027",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 119
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g29-z4-m40i",
+      "range": "Z Series",
+      "model": "G29 Z4",
+      "vehicleClass": "KKL",
+      "engine": "M40i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-028",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 44
+        },
+        {
+          "sourceRowId": "rr-production-028",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 120
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-u11-x1-18d",
+      "range": "X Models",
+      "model": "U11 X1",
+      "vehicleClass": "UKL",
+      "engine": "18d",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-029",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": true,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 45
+        },
+        {
+          "sourceRowId": "rr-production-029",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 121
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-u11-x1-20i",
+      "range": "X Models",
+      "model": "U11 X1",
+      "vehicleClass": "UKL",
+      "engine": "20i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-030",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": true,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 46
+        },
+        {
+          "sourceRowId": "rr-production-030",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 122
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-u11-x1-23d",
+      "range": "X Models",
+      "model": "U11 X1",
+      "vehicleClass": "UKL",
+      "engine": "23d",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-031",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": true,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 47
+        },
+        {
+          "sourceRowId": "rr-production-031",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 123
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-u11-x1-23i",
+      "range": "X Models",
+      "model": "U11 X1",
+      "vehicleClass": "UKL",
+      "engine": "23i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-031",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": true,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 47
+        },
+        {
+          "sourceRowId": "rr-production-031",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 123
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-u11-x1-25e",
+      "range": "X Models",
+      "model": "U11 X1",
+      "vehicleClass": "UKL",
+      "engine": "25e",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-032",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": true,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 48
+        },
+        {
+          "sourceRowId": "rr-production-032",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 124
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-u11-x1-30e",
+      "range": "X Models",
+      "model": "U11 X1",
+      "vehicleClass": "UKL",
+      "engine": "30e",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-033",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": true,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 49
+        },
+        {
+          "sourceRowId": "rr-production-033",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 125
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-u11-x1-m35i",
+      "range": "X Models",
+      "model": "U11 X1",
+      "vehicleClass": "UKL",
+      "engine": "M35i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-034",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 50
+        },
+        {
+          "sourceRowId": "rr-production-034",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 126
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-u10-x2-20i",
+      "range": "X Models",
+      "model": "U10 X2",
+      "vehicleClass": "UKL",
+      "engine": "20i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-035",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": true,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 51
+        },
+        {
+          "sourceRowId": "rr-production-035",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 127
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-u10-x2-m35i",
+      "range": "X Models",
+      "model": "U10 X2",
+      "vehicleClass": "UKL",
+      "engine": "M35i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-036",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 52
+        },
+        {
+          "sourceRowId": "rr-production-036",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 128
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g01-x3-xdrive20d",
+      "range": "X Models",
+      "model": "G01 X3",
+      "vehicleClass": "KKL",
+      "engine": "xDrive20d",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-037",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 53
+        },
+        {
+          "sourceRowId": "rr-production-037",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 129
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g01-x3-20i",
+      "range": "X Models",
+      "model": "G01 X3",
+      "vehicleClass": "KKL",
+      "engine": "20i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-037",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 53
+        },
+        {
+          "sourceRowId": "rr-production-037",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 129
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g01-x3-30e",
+      "range": "X Models",
+      "model": "G01 X3",
+      "vehicleClass": "KKL",
+      "engine": "30e",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-038",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 54
+        },
+        {
+          "sourceRowId": "rr-production-038",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 130
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g01-x3-m40i",
+      "range": "X Models",
+      "model": "G01 X3",
+      "vehicleClass": "KKL",
+      "engine": "M40i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-039",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 55
+        },
+        {
+          "sourceRowId": "rr-production-039",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 131
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g02-x4-xdrive20d",
+      "range": "X Models",
+      "model": "G02 X4",
+      "vehicleClass": "KKL",
+      "engine": "xDrive20d",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-040",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 56
+        },
+        {
+          "sourceRowId": "rr-production-040",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 132
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g02-x4-m40i",
+      "range": "X Models",
+      "model": "G02 X4",
+      "vehicleClass": "KKL",
+      "engine": "M40i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-041",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 57
+        },
+        {
+          "sourceRowId": "rr-production-041",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 133
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g05-x5-xdrive30d",
+      "range": "X Models",
+      "model": "G05 X5",
+      "vehicleClass": "MKL",
+      "engine": "xDrive30d",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-042",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 58
+        },
+        {
+          "sourceRowId": "rr-production-042",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 134
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g05-x5-40d",
+      "range": "X Models",
+      "model": "G05 X5",
+      "vehicleClass": "MKL",
+      "engine": "40d",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-042",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 58
+        },
+        {
+          "sourceRowId": "rr-production-042",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 134
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g05-x5-50e",
+      "range": "X Models",
+      "model": "G05 X5",
+      "vehicleClass": "MKL",
+      "engine": "50e",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-043",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 59
+        },
+        {
+          "sourceRowId": "rr-production-043",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 135
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g05-x5-xdrive-m60i",
+      "range": "X Models",
+      "model": "G05 X5",
+      "vehicleClass": "MKL",
+      "engine": "xDrive M60i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-044",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": false,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 60
+        },
+        {
+          "sourceRowId": "rr-production-044",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": false,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 136
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g06-x6-xdrive30d",
+      "range": "X Models",
+      "model": "G06 X6",
+      "vehicleClass": "MKL",
+      "engine": "xDrive30d",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-045",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 61
+        },
+        {
+          "sourceRowId": "rr-production-045",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 137
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g06-x6-xdrive40i",
+      "range": "X Models",
+      "model": "G06 X6",
+      "vehicleClass": "MKL",
+      "engine": "xDrive40i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-046",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 62
+        },
+        {
+          "sourceRowId": "rr-production-046",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 138
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g06-x6-40d",
+      "range": "X Models",
+      "model": "G06 X6",
+      "vehicleClass": "MKL",
+      "engine": "40d",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-046",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 62
+        },
+        {
+          "sourceRowId": "rr-production-046",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 138
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g06-x6-xdrive-m60i",
+      "range": "X Models",
+      "model": "G06 X6",
+      "vehicleClass": "MKL",
+      "engine": "xDrive M60i",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-047",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": false,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 63
+        },
+        {
+          "sourceRowId": "rr-production-047",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": false,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 139
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-u11-ix1-ix1-20",
+      "range": "BMW i",
+      "model": "U11 iX1",
+      "vehicleClass": "UKL",
+      "engine": "iX1 20",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-048",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": true,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 64
+        },
+        {
+          "sourceRowId": "rr-production-048",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 140
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-u11-ix1-ix1-30",
+      "range": "BMW i",
+      "model": "U11 iX1",
+      "vehicleClass": "UKL",
+      "engine": "iX1 30",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-049",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": true,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 65
+        },
+        {
+          "sourceRowId": "rr-production-049",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 141
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-u10-ix2-ix2-20",
+      "range": "BMW i",
+      "model": "U10 iX2",
+      "vehicleClass": "UKL",
+      "engine": "iX2 20",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-050",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": true,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 66
+        },
+        {
+          "sourceRowId": "rr-production-050",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 142
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-u10-ix2-ix2-30",
+      "range": "BMW i",
+      "model": "U10 iX2",
+      "vehicleClass": "UKL",
+      "engine": "iX2 30",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-051",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": true,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 67
+        },
+        {
+          "sourceRowId": "rr-production-051",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 143
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g26-i4-i4-35",
+      "range": "BMW i",
+      "model": "G26 i4",
+      "vehicleClass": "KKL",
+      "engine": "i4 35",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-052",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 68
+        },
+        {
+          "sourceRowId": "rr-production-052",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 144
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g26-i4-i4-40",
+      "range": "BMW i",
+      "model": "G26 i4",
+      "vehicleClass": "KKL",
+      "engine": "i4 40",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-053",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": true,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 69
+        },
+        {
+          "sourceRowId": "rr-production-053",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 145
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g26-i4-i4-m50",
+      "range": "BMW i",
+      "model": "G26 i4",
+      "vehicleClass": "KKL",
+      "engine": "i4 M50",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-054",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 70
+        },
+        {
+          "sourceRowId": "rr-production-054",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 146
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g60-i5-i5-40",
+      "range": "BMW i",
+      "model": "G60 i5",
+      "vehicleClass": "MKL",
+      "engine": "i5 40",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-055",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 71
+        },
+        {
+          "sourceRowId": "rr-production-055",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 147
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g60-i5-i5-m60",
+      "range": "BMW i",
+      "model": "G60 i5",
+      "vehicleClass": "MKL",
+      "engine": "i5 M60",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-056",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": false,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 72
+        },
+        {
+          "sourceRowId": "rr-production-056",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": false,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 148
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g61-i5-i5-40",
+      "range": "BMW i",
+      "model": "G61 i5",
+      "vehicleClass": "MKL",
+      "engine": "i5 40",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-057",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 73
+        },
+        {
+          "sourceRowId": "rr-production-057",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 149
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-g61-i5-i5-m60",
+      "range": "BMW i",
+      "model": "G61 i5",
+      "vehicleClass": "MKL",
+      "engine": "i5 M60",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-058",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": false,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 74
+        },
+        {
+          "sourceRowId": "rr-production-058",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": false,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 150
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-i20-ix-ix-40",
+      "range": "BMW i",
+      "model": "i20 iX",
+      "vehicleClass": "MKL",
+      "engine": "iX 40",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-059",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 75
+        },
+        {
+          "sourceRowId": "rr-production-059",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 151
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-i20-ix-ix-50",
+      "range": "BMW i",
+      "model": "i20 iX",
+      "vehicleClass": "MKL",
+      "engine": "iX 50",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-060",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": true,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 76
+        },
+        {
+          "sourceRowId": "rr-production-060",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 152
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-i20-ix-ix-m60",
+      "range": "BMW i",
+      "model": "i20 iX",
+      "vehicleClass": "MKL",
+      "engine": "iX M60",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-061",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": false,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 77
+        },
+        {
+          "sourceRowId": "rr-production-061",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": false,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 153
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-m-power-m2",
+      "range": "M",
+      "model": "M Power",
+      "vehicleClass": "M",
+      "engine": "M2",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-062",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": false,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 78
+        },
+        {
+          "sourceRowId": "rr-production-062",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": false,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 154
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-m-power-m3",
+      "range": "M",
+      "model": "M Power",
+      "vehicleClass": "M",
+      "engine": "M3",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-063",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": false,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 79
+        },
+        {
+          "sourceRowId": "rr-production-063",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": false,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 155
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-m-power-m4",
+      "range": "M",
+      "model": "M Power",
+      "vehicleClass": "M",
+      "engine": "M4",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-064",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": false,
+            "G11-14": true
+          },
+          "towbar": false,
+          "sourceLine": 80
+        },
+        {
+          "sourceRowId": "rr-production-064",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": false,
+            "G11 & G12": true
+          },
+          "towbar": false,
+          "sourceLine": 156
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-m-power-x3m",
+      "range": "M",
+      "model": "M Power",
+      "vehicleClass": "M",
+      "engine": "X3M",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-065",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": false,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 81
+        },
+        {
+          "sourceRowId": "rr-production-065",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": false,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 157
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-m-power-x4m",
+      "range": "M",
+      "model": "M Power",
+      "vehicleClass": "M",
+      "engine": "X4M",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-065",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": false,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 81
+        },
+        {
+          "sourceRowId": "rr-production-065",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": false,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 157
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-m-power-x5m",
+      "range": "M",
+      "model": "M Power",
+      "vehicleClass": "M",
+      "engine": "X5M",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-066",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": false,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 82
+        },
+        {
+          "sourceRowId": "rr-production-066",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": false,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 158
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-m-power-x6m",
+      "range": "M",
+      "model": "M Power",
+      "vehicleClass": "M",
+      "engine": "X6M",
+      "eligibility": [
+        {
+          "sourceRowId": "fs-uk-066",
+          "scheme": "fs-uk",
+          "grades": {
+            "G1-6": false,
+            "G7": false,
+            "G8-10": false,
+            "G11-14": true
+          },
+          "towbar": true,
+          "sourceLine": 82
+        },
+        {
+          "sourceRowId": "rr-production-066",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": false,
+            "G8 - G10": false,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 158
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    },
+    {
+      "id": "line-u11-x1-20d",
+      "range": "X Models",
+      "model": "U11 X1",
+      "vehicleClass": "UKL",
+      "engine": "20d",
+      "eligibility": [
+        {
+          "sourceRowId": "rr-production-030",
+          "scheme": "rr-production",
+          "grades": {
+            "PG1": true,
+            "G8 - G10": true,
+            "G11 & G12": true
+          },
+          "towbar": true,
+          "sourceLine": 122
+        }
+      ],
+      "mapping": {
+        "status": "pending",
+        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+      }
+    }
+  ],
+  "requirements": {
+    "minimumPerMappedLine": 8,
+    "minimumDistinct": 200,
+    "minimumDeepLinkChecks": 20,
+    "variation": [
+      "paint",
+      "upholstery",
+      "wheels",
+      "pack"
+    ],
+    "completeSolverOptions": true,
+    "rejectChangedModelCode": true,
+    "exactDeepLinkSelections": true,
+    "realEnrichment": true,
+    "versionedF54Publication": true,
+    "lookupCountAndHashReconciliation": true
+  },
+  "identity": {
+    "modelCodeField": "vgModelCode",
+    "normalisation": "uppercase",
+    "separator": ",",
+    "encoding": "base64-padded",
+    "includePaintAndUpholstery": true,
+    "completeFactoryOptions": true,
+    "excludeDealerAccessories": true
+  },
+  "sourceBudget": {
+    "maximumRequests": 3000,
+    "concurrency": 2,
+    "stopOrBackoffStatuses": [
+      401,
+      403,
+      429
+    ],
+    "resumableCheckpoints": true,
+    "requireFiniteLiveChunkPlan": true
+  },
+  "execution": {
+    "defaultMode": "offline",
+    "allowCI": false,
+    "allowDemoStartup": false,
+    "allowRuntimeBMWCalls": false,
+    "liveRequestsThisCheckpoint": 0,
+    "liveChunkPlan": null
+  },
+  "retainedMeasurements": {
+    "currentSelectedRecords": 2,
+    "historicalConstructibleObservations": 3,
+    "acceptedDemoConfigurations": 0,
+    "note": "Separate historical measurements from FUCQ-58; neither establishes demo acceptance or fresh mapping."
+  },
+  "publication": {
+    "boundary": "FUCQ-54",
+    "files": [
+      "manifest.json",
+      "configurations.jsonl"
+    ],
+    "reportPath": "docs/gcsp/evidence/fucq-20/demo-collection-report.json"
+  }
+}

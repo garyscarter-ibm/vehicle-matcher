@@ -765,16 +765,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-76"
     },
     {
-      "id": "FUCQ-77",
-      "title": "Collect a demo set of real BMW configurations for the scheme models",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-77"
-    },
-    {
       "id": "FUCQ-78",
       "title": "Shape synthetic scheme stock from real stock-locator aggregates",
       "status": "To Do",
@@ -1822,6 +1812,81 @@
           "status": "stopped; explicit IBM Global422 Advantage Credits exhaustion; checkpoint preserved"
         }
       ]
+    },
+    {
+      "id": "FUCQ-77",
+      "title": "Collect a demo set of real BMW configurations for the scheme models",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-06T10:25:59Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-77",
+      "branch": "dev/DEV-2026-11-04-056",
+      "workers": [
+        {
+          "name": "Wile E. Coyote",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-06T10:22:08.041924+00:00",
+          "expires_at": "2026-11-06T12:22:08.041924+00:00",
+          "source": "explicit dispatcher assignment 2026-11-06",
+          "status": "offline plan/verifier"
+        }
+      ],
+      "slices": [
+        {
+          "id": "plan-contract",
+          "status": "complete",
+          "title": "Exact matrix coverage and fail-closed demo plan contract",
+          "observed_at": "2026-11-06T10:25:59Z",
+          "evidence": "docs/gcsp/evidence/fucq77/README.md: lead reviewed exact 132-row/74-entry proposal, 16/16 scoped offline regressions and offline CLI passed 6 November; ready:false with 74 pending. Current mapping acceptance remains separately blocked."
+        },
+        {
+          "id": "source-mapping",
+          "status": "blocked",
+          "title": "Evidence-backed current UK mappings or justified exclusions",
+          "observed_at": "2026-11-06T10:22:08Z",
+          "evidence": "Exact dated UK range/VG/AG identities and exclusion evidence are unresolved; zero-source offline lane cannot establish them."
+        },
+        {
+          "id": "verifier-contract",
+          "status": "in-progress",
+          "title": "Offline complete identity enrichment and corpus verifier",
+          "observed_at": "2026-11-06T10:22:08Z"
+        },
+        {
+          "id": "producer-integration",
+          "status": "not-started",
+          "title": "Canonical F59 collection and F60 enrichment plan selection"
+        },
+        {
+          "id": "real-collection",
+          "status": "not-started",
+          "title": "Bounded resumable at-least-200 real configurations"
+        },
+        {
+          "id": "deep-link-proof",
+          "status": "not-started",
+          "title": "Twenty exact headless resolved-selection checks"
+        },
+        {
+          "id": "publication-lookup",
+          "status": "not-started",
+          "title": "F54 versioned publication and lookup reconciliation"
+        },
+        {
+          "id": "authored-focused-suite",
+          "status": "not-started",
+          "title": "Authored collector and verifier focused integration suite"
+        },
+        {
+          "id": "final-integration-suite",
+          "status": "not-started",
+          "title": "Parent-coordinated final npm test checkpoint"
+        }
+      ],
+      "unsliced": false
     }
   ]
 }
