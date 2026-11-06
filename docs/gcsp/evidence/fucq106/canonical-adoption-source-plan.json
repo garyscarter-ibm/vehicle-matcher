@@ -917,8 +917,8 @@
   "test": {
     "sourcePath": "docs/gcsp/evidence/fucq106/canonical-adoption-test.proposal.mjs",
     "canonicalPath": "server/test/gcsp-offer-decisions-canonical-adoption.test.js",
-    "sha256": "d069d75a451709af3b873c0c31abb824b61e2123a546cad60955fa7ec7dff7e7",
-    "bytes": 16076,
+    "sha256": "0299ef59b7ba9fe64af177e3be3091e309b449d83f4bcba32e26a11157bc804a",
+    "bytes": 16075,
     "selectedCases": 3
   },
   "harness": [
@@ -934,8 +934,8 @@
     },
     {
       "path": "docs/gcsp/evidence/fucq106/canonical-adoption-test.proposal.mjs",
-      "sha256": "d069d75a451709af3b873c0c31abb824b61e2123a546cad60955fa7ec7dff7e7",
-      "bytes": 16076
+      "sha256": "0299ef59b7ba9fe64af177e3be3091e309b449d83f4bcba32e26a11157bc804a",
+      "bytes": 16075
     },
     {
       "path": "_tools/test_resources.py",

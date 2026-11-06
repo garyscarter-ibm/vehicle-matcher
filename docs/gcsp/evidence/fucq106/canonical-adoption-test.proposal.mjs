@@ -229,4 +229,3 @@ test('one real policy edit reaches the decision HTTP registry projection and pre
   assert.equal(retained.value.reasons[0].label, decision.reason.label);
   f.assertCustody(response.value);
 });
-
