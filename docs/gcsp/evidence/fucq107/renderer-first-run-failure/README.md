@@ -18,8 +18,12 @@ The supervisor returned exit 2, with child exit 1, `passed:false`, `pinsPreserve
 
 Recorded supervisor PID 6567 started `Fri Nov  6 02:34:53 2026`. Direct child/group 6641 started `Fri Nov  6 02:34:57 2026`; worker 6656 started `Fri Nov  6 02:34:58 2026`. The manifest reports both children joined/absent, group absent, removed scratch `/private/tmp/test-stamp-shard-1082c729a1cf4927adc4e9b4b129e744` and released reservation `1082c729a1cf4927adc4e9b4b129e744`.
 
-The exact separately pinned auditor then ran once. It exited 1 at `reported-success` because this run failed, before its independent process/ledger/scratch checks, and wrote no audit receipt. Its original tool output is retained in `audit-tool-result.json`. **Dispatcher independent failed-run cleanup audit remains pending.** The supervisor report is not substituted for that audit, and no fresh cleanup/probe was performed by this evidence capture.
+The exact separately pinned auditor then ran once. It exited 1 at `reported-success` because this run failed, before its independent process/ledger/scratch checks, and wrote no audit receipt. Its original tool output is retained in `audit-tool-result.json`.
+
+The dispatcher subsequently completed the independent failed-run cleanup audit: **32 checks PASS**, observed at `2026-11-06T02:40:11.044276+00:00`. Its byte-identical receipt is `dispatcher-failed-run-cleanup-audit.json`, 3,640 bytes, SHA-256 `6867d2a016187bb498b4acb6dffec1fc6c3a5f532ebf848daefccf8fa6898e5d`. The audit independently checked a fresh complete process snapshot, recorded PID/start identities and group ESRCH, the strict locked ledger, scratch/token absence, the original failure/log hash and the 38-event final tldts refusal. This closes cleanup only. The original success auditor remains failed and no renderer case passed. This publication reused the dispatcher receipt without performing new probes.
+
+The separately authorised source-backed compatibility authoring is in `../renderer-format-compatibility-proposal/README.md`. It preserves all original reviewed files and failure captures. The old grant is consumed; independent review and a new exact grant remain necessary before any retry.
 
 Separate accepted actual102 mixed11 and unchanged controller14/policy7 proofs remain valid. Own107's sixteen-case backend selection and nine renderer cases remain unproved; actual105/client/browser/full acceptance stays open. **FUCQ-107 is not built.** No Jira, shared lane, product-map or acceptance state changed; allocator96 was neither read nor run.
 
-Agents: Lego Batman requested/selected `gpt-6.1-sol` / high, no fallback or descendants. The launching lead retains responsibility for this original lifecycle receipt; dispatcher failed-run audit is still required.
+Agents: Lego Batman requested/selected `gpt-6.1-sol` / high, no fallback or descendants. The launching lead retains the original lifecycle evidence and the separate dispatcher cleanup audit together.

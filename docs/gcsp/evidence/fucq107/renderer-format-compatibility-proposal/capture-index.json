@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-107",
+  "status": "unreviewed-unexecuted-compatibility-proposal-no-grant",
+  "externalPrefix": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-",
+  "priorPublication": "ed9f619148c41b888761b2e226663afd5b43d866",
+  "priorAdmissionSHA256": "f547b6a33e40424af037694ef7d1aaf3b970c91e92d2e208214435b42a78293b",
+  "admissionSHA256": "91141d2838b6808304caed74eb1b602ffe598e6fc2055b18904d463737fa874e",
+  "files": [
+    {
+      "path": "renderer-94e05ff-cjs1-source.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-source.json",
+      "bytes": 17693,
+      "sha256": "fb9cb018534ca934ebb74582a440f0fab3d2ab4b6ccfa05880d9f1f5f103cda8"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-dependencies.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-dependencies.json",
+      "bytes": 597255,
+      "sha256": "59838f3f60cc54ffffd4150aad7d9fbfdeef0bfc3408de3e7b1c76929a852597"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-node.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-node.json",
+      "bytes": 486,
+      "sha256": "0e7261d7c74fb4048118f2c78403ab00bda93ef51ce7d3f51a5c30576460bd10"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-impact.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-impact.json",
+      "bytes": 4505,
+      "sha256": "b00cba9056131efc6189a1acc1273dc6e9ffb73f3572ed2d5090d7bd9c2f9af7"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-formats.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-formats.json",
+      "bytes": 105535,
+      "sha256": "5c5188be909988c0a7d19b6df1f4a7a3eaea8e120acb9008ac8a3bd971cf288e"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-loader.mjs",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-loader.mjs",
+      "bytes": 8696,
+      "sha256": "42d43f59e9dfee71a2176c58988dfeeeda679fc68cdc27cedcd12da934042376"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-launch.py",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-launch.py",
+      "bytes": 820,
+      "sha256": "3f20c1e2b1915efebf76ef6e16f90ad344d72232c74a7c9ca3e6071ae32a89f3"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-resources.py",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-resources.py",
+      "bytes": 30601,
+      "sha256": "1c19f35495cd5a186dfcb75490a314814a9b37be594acaa51dcfbdcfae445790"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-supervisor.py",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-supervisor.py",
+      "bytes": 18581,
+      "sha256": "80ed784913b831069593c7725805f5909c2a3b71596c24f43c964d36ee0c3be7"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-audit.py",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-audit.py",
+      "bytes": 17596,
+      "sha256": "72bdb97e370ba70ebb47f47c14c907f2d7b39421339e46e7c2b022696c8e836e"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-freeze.py",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-freeze.py",
+      "bytes": 10495,
+      "sha256": "5f9718615c78c1e148a582826354e3de9775ff91f858d020e80690c1ee03d9c9"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-admission.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-admission.json",
+      "bytes": 1099504,
+      "sha256": "91141d2838b6808304caed74eb1b602ffe598e6fc2055b18904d463737fa874e"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-author-static-review.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-author-static-review.json",
+      "bytes": 2372,
+      "sha256": "23675b6640a9213070d6803b23308da94f23ba8ddf01c332d473f0a6e3c28e9d"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-vs-ed9.diff",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-vs-ed9.diff",
+      "bytes": 14147,
+      "sha256": "2d5ba07276be91e3db8ad13cce767b22bb21014b2141b839164c1d603a1b5919"
+    }
+  ]
+}

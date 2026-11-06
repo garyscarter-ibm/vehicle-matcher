@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "story": "FUCQ-107",
-  "status": "failed-before-nine-cases; root-failed-run-cleanup-audit-pending",
+  "status": "failed-before-nine-cases; root-independent-cleanup-PASS32; grant-consumed",
   "grant": "fucq107-renderer9-ed9f619-0236",
   "admissionSHA256": "f547b6a33e40424af037694ef7d1aaf3b970c91e92d2e208214435b42a78293b",
   "sourceCommit": "94e05ff9070aa19f5deb3e9997dfed96cc268473",
@@ -49,6 +49,12 @@
       "source": "Exact untruncated command-execution tool output from own chat; command ran once.",
       "bytes": 1353,
       "sha256": "dffd99ef1146d3df80c502dad3b9cdf3ca5edb5982edf42e230e96e3d544150d"
+    },
+    {
+      "path": "dispatcher-failed-run-cleanup-audit.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq107-failed-run-cleanup-root-0242.json",
+      "bytes": 3640,
+      "sha256": "6867d2a016187bb498b4acb6dffec1fc6c3a5f532ebf848daefccf8fa6898e5d"
     }
   ],
   "originalCounts": {
@@ -70,9 +76,9 @@
     "observed": "Pinned loader refuses executable format for pinned tldts/dist/cjs/index.js; error occurs during JSDOM dependency loading before nine named renderer cases.",
     "unknown": "Actual nextLoad returned format is not recorded; do not infer its value.",
     "affected": "Owned loader and independent journal verifier allowlists may need review; product renderer/source failure is not established.",
-    "next": "Dispatcher independent failed-run cleanup audit, then separately authorize any minimal harness authoring/refreeze and a fresh run if wanted.",
+    "next": "Source-backed loader+both-validator compatibility authoring/refreeze only; independent review and a new exact grant are required before any retry.",
     "restriction": "No source/helper mutation, repair, retry, variant or extra execution was performed."
   },
-  "cleanup": "Supervisor reports all cleanup flags true; exact pinned success auditor exited1 at reported-success before independent process/ledger/scratch checks and created no receipt. Root failed-run cleanup audit remains pending.",
+  "cleanup": "Dispatcher independent failed-run audit PASS32 at 2026-11-06T02:40:11.044276+00:00; exact receipt captured. The original success auditor still failed at reported-success and produced no receipt. No retry grant.",
   "reusedProofs": "Separate accepted102 mixed11 and unchanged controller14/policy7; own16 and renderer9 remain unproved."
 }

@@ -1,0 +1,159 @@
+{
+  "at": "2026-11-06T02:40:11.044276+00:00",
+  "story": "FUCQ-107",
+  "grant": "fucq107-renderer9-ed9f619-0236",
+  "grantStatus": "consumed",
+  "outcome": "INCOMPLETE executable-format loader refusal; one file-level failure before9 cases; actual returned format unknown",
+  "cleanupAuditPassed": true,
+  "checks": [
+    {
+      "name": "complete bounded process snapshot",
+      "pass": true
+    },
+    {
+      "name": "auditor present",
+      "pass": true
+    },
+    {
+      "name": "lock regular",
+      "pass": true
+    },
+    {
+      "name": "lock identity",
+      "pass": true
+    },
+    {
+      "name": "bounded regular ledger",
+      "pass": true
+    },
+    {
+      "name": "whole bounded ledger",
+      "pass": true
+    },
+    {
+      "name": "ledger identity",
+      "pass": true
+    },
+    {
+      "name": "ledger object",
+      "pass": true
+    },
+    {
+      "name": "all ledger rows validated",
+      "pass": true
+    },
+    {
+      "name": "exact consumed grant",
+      "pass": true
+    },
+    {
+      "name": "failed run recorded",
+      "pass": true
+    },
+    {
+      "name": "original log hash and bytes",
+      "pass": true
+    },
+    {
+      "name": "sources preserved reported",
+      "pass": true
+    },
+    {
+      "name": "manifest removed",
+      "pass": true
+    },
+    {
+      "name": "scratch including symlink absent",
+      "pass": true
+    },
+    {
+      "name": "reservation independently absent",
+      "pass": true
+    },
+    {
+      "name": "PID/start absent 6567",
+      "pass": true
+    },
+    {
+      "name": "PID/start absent 6641",
+      "pass": true
+    },
+    {
+      "name": "PID/start absent 6656",
+      "pass": true
+    },
+    {
+      "name": "group snapshot absent 6641",
+      "pass": true
+    },
+    {
+      "name": "group ESRCH 6641",
+      "pass": true
+    },
+    {
+      "name": "reported cleanup joined",
+      "pass": true
+    },
+    {
+      "name": "reported cleanup pidsAbsent",
+      "pass": true
+    },
+    {
+      "name": "reported cleanup groupsAbsent",
+      "pass": true
+    },
+    {
+      "name": "reported cleanup scratchAbsent",
+      "pass": true
+    },
+    {
+      "name": "reported cleanup reservationAbsent",
+      "pass": true
+    },
+    {
+      "name": "reported cleanup passed",
+      "pass": true
+    },
+    {
+      "name": "no uncertain groups",
+      "pass": true
+    },
+    {
+      "name": "one file TAP failure before renderer cases",
+      "pass": true
+    },
+    {
+      "name": "38 journal events",
+      "pass": true
+    },
+    {
+      "name": "last tldts refused-load",
+      "pass": true
+    },
+    {
+      "name": "registration complete",
+      "pass": true
+    }
+  ],
+  "originals": {
+    "summary": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-e4b7c26abd294bd78395d59c774ab8d7/summary.json",
+      "bytes": 1306,
+      "sha256": "d2da0636bd0c4d46fcd574fb854e427dbae9fec0e7bad549d9ab19c82baea2ab"
+    },
+    "manifest": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-e4b7c26abd294bd78395d59c774ab8d7/ownership/1082c729a1cf4927adc4e9b4b129e744.json",
+      "bytes": 1330,
+      "sha256": "816d97c972aa18240c4ede49953eedcf45f515e0d53c90029fe52b5bc9b2265e"
+    },
+    "log": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-e4b7c26abd294bd78395d59c774ab8d7/output.log",
+      "bytes": 1572,
+      "sha256": "032ab91d90317cb900c68e43d02f9d86730f3ca5c8252e53b3323ca4e7201412"
+    }
+  },
+  "freshProcessRows": 737,
+  "strictLedgerRows": 0,
+  "noRootTestAllocation": true,
+  "originalsUnmodified": true
+}
