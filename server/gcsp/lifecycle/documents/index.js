@@ -186,7 +186,8 @@ export class LifecycleDocumentService {
   async #tick({ context, tickId, now }) {
     const prepared = await this.#now(context); if (prepared.error) return prepared.error;
     if (prepared.now !== now) return result('stale-version', { reason: 'Clock changed during this tick. Refresh and retry.' });
-    const summary = { producer: 'ok', opened: 0, notOpen: [], orders: [] };
+    // One order's failure is recorded and skipped; others still progress. Retries reuse stable per-order command IDs.
+    const summary = { producer: 'ok', opened: 0, notOpen: [], orders: [], blocked: [] };
     const lister = typeof this.#stages?.listOrders === 'function' ? 'listOrders' : typeof this.#stages?.list === 'function' ? 'list' : null;
     if (lister) {
       let listed;
@@ -194,7 +195,7 @@ export class LifecycleDocumentService {
       if (listed?.status === 'ok' && Array.isArray(listed.value?.orders)) {
         for (const orderUuid of listed.value.orders.map((o) => o?.orderUuid).filter((id) => text(id, 128))) {
           const opened = await this.#open(context, tickId, now, orderUuid, prepared.read);
-          if (opened.status !== 'ok') return opened;
+          if (opened.status !== 'ok') { summary.blocked.push({ orderUuid, step: 'open', status: opened.status }); continue; }
           if (opened.value.opened) summary.opened += 1; else if (opened.value.status !== 'already-open') summary.notOpen.push({ orderUuid, reason: opened.value.reason });
         }
       } else summary.producer = 'unavailable';
@@ -203,7 +204,7 @@ export class LifecycleDocumentService {
     if (rows.status !== 'ok') return rows;
     for (const row of rows.value) {
       const advanced = await this.#advance(context, tickId, now, row);
-      if (advanced.status !== 'ok') return advanced;
+      if (advanced.status !== 'ok') { summary.blocked.push({ orderUuid: row.eventId, step: 'progress', status: advanced.status }); continue; }
       summary.orders.push(advanced.value);
     }
     return ok(summary);

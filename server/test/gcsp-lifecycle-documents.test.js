@@ -139,6 +139,23 @@ test('missing, unsupported, stale or foreign stage reads stay explicitly not ope
   assert.equal(observeStage(undefined, { context: f.paula, orderUuid: ORDER, openingStage: 'x', openingState: 'approved' }).status, 'not-open');
 });
 
+test('one order that cannot progress is recorded as blocked while another still progresses', async (t) => {
+  const f = await setup(t, { register: false }); const BAD = '0b0b0b0b-1111-4222-8333-444444444444';
+  const failing = { ...f.repository, transaction: (c, command, work) => command.commandId.includes(BAD)
+    ? Promise.resolve(result('unavailable', { reason: 'synthetic-order-failure', retryable: true })) : f.repository.transaction(c, command, work) };
+  const service = createLifecycleDocumentService({ repository: failing, policy: await policyWith(), clock: f.clock, identity: f.identity,
+    lifecycleStages: f.stages, provider: f.adapter });
+  assert.equal((await service.start()).status, 'ok');
+  f.order(); f.stages.orders.set(BAD, { employeeId: 'employee-paula', stageList: STAGES, approved: 4, revision: 4 });
+  const outcome = (await f.tick()).outcomes.find((o) => o.handlerId === DOCUMENTS_HANDLER_ID).outcome;
+  assert.equal(outcome.status, 'ok');
+  assert.deepEqual(outcome.value.blocked, [{ orderUuid: BAD, step: 'open', status: 'unavailable' }]);
+  await f.advance(HOUR); await f.tick();
+  const orders = (await service.readItems(f.paula)).value.orders;
+  assert.deepEqual(orders.map((o) => o.orderUuid), [ORDER]);
+  assert.equal(item(orders[0], 'licence-check').status, 'complete');
+});
+
 test('the employee completes her task with a labelled synthetic acknowledgement; others are refused', async (t) => {
   const f = await setup(t); f.order(); await f.tick();
   const [order] = await items(f);
