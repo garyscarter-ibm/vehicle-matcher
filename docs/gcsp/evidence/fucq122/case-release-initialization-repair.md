@@ -1,8 +1,12 @@
 # C4 exclusive initialization ownership repair
 
 6 November 2026. FUCQ-122 / DEV-2026-11-04-084. Author-only repair from
-`e0a0ecc695d7fda86c4bc9fbdc8c4624f9e8bf7e`; independent narrow review of the
-new checkpoint and admission is required. C4 remains unexecuted.
+`e0a0ecc695d7fda86c4bc9fbdc8c4624f9e8bf7e`, published as
+`3f3362f484661ea3b5fad94065eb2162fc5ab896`. This is a historical authoring
+receipt. Root's subsequent narrow static review passed. A later one-use
+supervisor attempt failed during admission before scratch/Node; the current
+diagnosis, repair and pins are in
+[case-release-executable-admission-repair.md](case-release-executable-admission-repair.md).
 
 ## Decided: current diagnosis
 

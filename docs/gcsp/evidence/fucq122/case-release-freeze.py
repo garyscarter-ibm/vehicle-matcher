@@ -20,6 +20,7 @@ TEST = 'server/test/gcsp-case-release-http.test.js'
 PROFILE = 'server/test/helpers/runtime-composition-profile.js'
 OWN_CONSUMERS = {'blocks/gcsp/cases/http-adapter.js'}
 OUT = ROOT.parents[2] / '.claude/test-runs/fucq122-c4'
+SYSTEM_LAUNCHERS = frozenset((Path('/usr/bin/python3'), Path('/usr/bin/git')))
 # Mirrored literal; runtime requires exact equality with the hash-admitted bounds helper.
 ACCOUNTING = {
     "combined_bytes": 134217728,
@@ -85,6 +86,32 @@ def immutable(ref, path):
     return blob, data
 
 
+def system_launcher_identity(value):
+    if not stat.S_ISREG(value.st_mode) or value.st_uid != 0 or value.st_gid != 0 \
+            or value.st_mode & 0o022 or not value.st_mode & 0o111 or value.st_nlink < 1:
+        raise RuntimeError('System launcher must be a protected root-owned executable regular file')
+    return {'device': value.st_dev, 'inode': value.st_ino, 'mode': stat.S_IMODE(value.st_mode),
+            'uid': value.st_uid, 'gid': value.st_gid, 'links': value.st_nlink, 'bytes': value.st_size,
+            'mtimeNs': value.st_mtime_ns, 'ctimeNs': value.st_ctime_ns, 'flags': getattr(value, 'st_flags', 0)}
+
+
+def system_launcher_bytes(path, expected):
+    if sys.platform != 'darwin' or path not in SYSTEM_LAUNCHERS or path.resolve(strict=True) != path:
+        raise RuntimeError('System launcher reader is limited to the two exact macOS paths')
+    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+    with os.fdopen(fd, 'rb') as source:
+        before = os.fstat(source.fileno())
+        if system_launcher_identity(before) != expected or not 0 <= before.st_size <= ACCOUNTING['input_bytes'] \
+                or system_launcher_identity(path.lstat()) != expected:
+            raise RuntimeError('System launcher physical/link identity differs before read')
+        data = source.read(ACCOUNTING['input_bytes']+1)
+        if len(data) != before.st_size or len(data) > ACCOUNTING['input_bytes'] \
+                or system_launcher_identity(os.fstat(source.fileno())) != expected \
+                or system_launcher_identity(path.lstat()) != expected:
+            raise RuntimeError('System launcher physical/link identity changed during bounded read')
+    return data
+
+
 def physical(path, content=True):
     value, target = path.lstat(), path.stat()
     kind = 'symlink' if stat.S_ISLNK(value.st_mode) else 'directory' if stat.S_ISDIR(value.st_mode) else 'file' if stat.S_ISREG(value.st_mode) else None
@@ -95,7 +122,11 @@ def physical(path, content=True):
     if kind == 'symlink':
         row['link'] = os.readlink(path)
     if stat.S_ISREG(target.st_mode) and content:
-        data = path.read_bytes()
+        if path in SYSTEM_LAUNCHERS:
+            row['systemLauncher'] = system_launcher_identity(value)
+            data = system_launcher_bytes(path, row['systemLauncher'])
+        else:
+            data = path.read_bytes()
         row.update(bytes=len(data), sha256=sha(data))
     return row
 
