@@ -34,9 +34,25 @@ complete browser asset manifest, dependency admission catalogue or strict test s
 
 ## Concrete remaining interfaces and ownership
 
+Dispatcher follow-up after `0d7fe9bf`: FUCQ-100 now owns the minimal extension of
+`blocks/gcsp/manual-setup/journey.js` (setup-ready→actual69 gallery→actual70 review), together with
+the existing central runtime/server lane. File ownership is allocated; a concrete integrated source
+pin and the release/reset/source preparation are still pending. FUCQ-70's mount/controller ports
+already match that bridge, so no consumer, test or helper implementation change is needed now.
+The [frozen review leaf and existing test-source graph](ui-review-leaf-sources.json) records the
+unchanged owned bytes and the exact shared-source candidate. It does not invent the unpublished
+central host,69 journey test/helper or foreign71 interface.
+
+F69 subsequently published its matching author-only journey proposal at
+`bdae9bf720a484fbb5284f398f6bd7b110770630`; source-plan SHA-256
+`8694f8e904018437cb16c9c0059c35135cca644674d1b1047574240f5f22f24b`.
+Its eight cited70 product files at `73c6457` are byte-identical to this frozen review leaf.
+The new69 test/helpers remain unimplemented and unadmitted; that source plan does not close
+the host/bootstrap/provider-reset/installed-JSDOM gates or change ownership.
+
 | Gap observed in exact source | Required next change or evidence | Scope boundary |
 | --- | --- | --- |
-| `blocks/gcsp/manual-setup/journey.js` mounts account/setup only; setup emits `gcsp:setup-ready`, with no gallery/review route consumer. | An agreed host must handle setup-ready, mount the actual gallery, then consume exactly one confirmed notification and mount review. Specify the host file/entry URL and shell ownership before authoring it. | Host/launcher ownership needs dispatcher allocation. No existing route is invented here. |
+| The pinned `blocks/gcsp/manual-setup/journey.js` mounts account/setup only; setup emits `gcsp:setup-ready`, with no gallery/review route consumer. | FUCQ-100 owns the allocated host extension. It must handle setup-ready, mount the actual gallery, then consume exactly one confirmed notification and mount review. Publish exact host/entry/reset/source bytes before the new gate. | Ownership is resolved; delivered source integration remains pending. F70 makes no central edit. |
 | `createGcspRuntime` constructs manualClaims but no review-details service; `buildServer` registers manual/claim routes without review-details. | Construct `ManualReviewDetailsService({repository,policy,identity,manualClaims})` from those exact same instances and register `createManualReviewDetailsRoutes(service)` through the existing authenticated route boundary. `gcspRoutes` is an available additive route seam; it does not construct the service automatically. | Runtime/server composition owner; FUCQ-70 supplies its modules without editing central files. |
 | F92 is not constructed or registered by this default runtime/startup; history decoration exists only in F69's tested facade. | Bind an explicit run-bound provider, call `release.register()` before clock reconciliation seals the registry, and join history **after** `manualClaims.browseStock` enriches exact decisions/claimInput. Bind all other manual operations to the original instance; object spreading a class instance is insufficient. Preserve its authentication and expiry/pending reconciliation. | F92 source is read-only. Central owner supplies the production binding; a test facade alone proves only that facade. |
 | No shared tick/reset subscription reaches a mounted review. `subscribeClock` is a mount option; the standard review element currently forwards only adapter/brand/loadAccount. | The host should use the mount API, supply an unsubscribe-producing subscription, and refresh after confirmed presenter operations, reconnect and navigation. Mount a fresh controller after a different hold/run; dispose the old subscription. | Do not assume setting an arbitrary custom-element property wires ticks. No browser timer, inferred time, automatic release or deadline renewal. |
@@ -50,6 +66,12 @@ default100 and retained103 have identical `server/gcsp/identity/http.js` bytes w
 Keep that exact boundary during wiring and prove it on the final composed graph. No new shared
 identity patch is proposed. Read the actual technical interfaces, not dependency links, for readiness;
 explicit source/ownership pauses and the absence of an execution grant still apply.
+
+No new metadata schema or submission port is required for the browse→review gate: the actual70
+service stores its saved versions in existing `event_receipts`. The host consumes the real ready
+callback after current readback. It must not fabricate a saved-event receipt, submission adapter,
+accepted order or71 interface to continue beyond that boundary. The actual foreign71 contract
+remains unknown and its integration slice remains open.
 
 ## Intended host behavior
 

@@ -689,7 +689,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T01:31:45Z",
+      "observed_at": "2026-11-06T01:38:22Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-70",
       "tracker_observed_at": "2026-11-05T22:40:24Z",
       "branch": "dev/DEV-2026-11-04-070",
@@ -751,8 +751,8 @@
           "id": "visual",
           "status": "not-started",
           "title": "Desktop-320px-keyboard-and-presenter-tick-browser-evidence",
-          "observed_at": "2026-11-06T01:31:45Z",
-          "evidence": "Author-only next actual browse/review UI plan: docs/gcsp/evidence/fucq70/ui-journey-plan.md and ui-journey-sources.json. Published default100 eligibility38be4f5,69 gallery891b750,92 release15a7995,70 review76a4bf4, retained103d644288;132 candidatefiles/270literal edges. Host/central routes/release-history/tick wiring unadmitted; no product import, UI/browser/native/full run or allocation; no visual acceptance."
+          "observed_at": "2026-11-06T01:38:22Z",
+          "evidence": "Dispatcher allocated minimal setup-ready→69gallery→70review host journey.js and existing central runtime/server to FUCQ-100 after0d7fe9bf. No70consumer/controller/test/helper change needed. ui-review-leaf-sources.json freezes36candidate nodes/44literal edges,10owned byte-identical leaves, existing14/7 double-based test sources; exact future central/69test/helper/package/input pins still pending. Author-only; no execution/browser/native/full grant or allocation. Actual71 unknown; no adapter/fake "
         },
         {
           "id": "full",
