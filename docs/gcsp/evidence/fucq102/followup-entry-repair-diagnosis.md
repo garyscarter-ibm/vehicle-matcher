@@ -115,14 +115,14 @@ selected review/grant; they have not been added to the eleven service cases.
 
 ## Held candidate freeze
 
-Owned application/test bytes are pinned at `4474938cb6d0a3c24ac7202c6e1a4151600392b0`
-(the main repair was published at `b3079eb`; the following one-line access guard
-keeps a null malformed slot on the declined/null path). The candidate remains 44
+Owned application/test bytes are pinned at `848a16f8ceda2053e5441ded4ce0c5378df5b30f`.
+The original repair was published at `b3079eb`, a malformed-null-row guard at
+`4474938`, and the compatible-revision/nullable-slot correction at `848a16f`. The candidate remains 44
 modules, 122 relative edges, seven data files and eleven assertion cases.
 Source-plan SHA-256:
-`7c9c8c1ed9c442098de0e7184dea8c6cc782c859b65b5c8c881d52e4e988e252`.
+`6a1dee1b77dfc102b17c254b4d4923f22c8c912b81be91804498906a7f17d283`.
 Physical-admission SHA-256:
-`466cb85f46a7e36a639da7863cd35038a0ee2e4cc328de995c982ec4aa160d4a`.
+`bc6c0d5cbba6055c09327ed1fa7d6b7245cc223e46dcbb12c34ca30021cd5cba`.
 
 Static readback matched 51 immutable source/data blobs, 193 physical identities
 and 38 absent resolution candidates, with 14 existing packages and five lock files.

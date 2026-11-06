@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "story": "FUCQ-102",
   "status": "AUTHORED repair candidate; HOLD pending repaired107 immutable source and independent source/harness review/new exact grant",
-  "observedAt": "2026-11-06T02:17:15.654216+00:00",
-  "implementationCommit": "4474938cb6d0a3c24ac7202c6e1a4151600392b0",
+  "observedAt": "2026-11-06T02:21:22.272666+00:00",
+  "implementationCommit": "848a16f8ceda2053e5441ded4ce0c5378df5b30f",
   "entry": "server/test/gcsp-offer-access-followup.test.js",
   "selectedCases": [
     "actual 100/106 decline survives a lost response and cookie/account reload into employee-only 107",
@@ -85,9 +85,9 @@
       "bytes": 4706
     },
     "server/gcsp/offers/access.js": {
-      "sourceCommit": "4474938cb6d0a3c24ac7202c6e1a4151600392b0",
-      "sha256": "710c3fc7600f2ce1746b955372c49c043e30193defbd3c7a43f8563b87b0161b",
-      "bytes": 28960
+      "sourceCommit": "848a16f8ceda2053e5441ded4ce0c5378df5b30f",
+      "sha256": "63fac0a89e50b8b4bd5c8bed581dd49bed42519c76b2b6232de155533d37fb3c",
+      "bytes": 29034
     },
     "server/gcsp/offers/buddy-hold.js": {
       "sourceCommit": "a7fc8580efba36c329b2479711d6b66db53962bd",
@@ -225,9 +225,9 @@
       "bytes": 8375
     },
     "server/test/gcsp-offer-access-followup.test.js": {
-      "sourceCommit": "4474938cb6d0a3c24ac7202c6e1a4151600392b0",
-      "sha256": "b3a16d0d47cca53c0f0f5af84dd4354a038ba77c529a9eb3b915cd1cc268a6bb",
-      "bytes": 22385
+      "sourceCommit": "848a16f8ceda2053e5441ded4ce0c5378df5b30f",
+      "sha256": "9933ccf247bbf87fe5bd02441375668dec2a4b83570d8e4e0525657a49cb2b16",
+      "bytes": 23434
     },
     "server/test/helpers/employee-recommendation.js": {
       "sourceCommit": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
@@ -241,7 +241,7 @@
     }
   },
   "moduleCount": 44,
-  "moduleBytes": 537955,
+  "moduleBytes": 539078,
   "files": {
     "server/gcsp/policy/seed-v1.json": {
       "sourceCommit": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
@@ -921,7 +921,13 @@
   "pendingIntegration": {
     "story": "FUCQ-107",
     "currentSourceCommit": "16839323f070f7c0ab81eb1ebf728627d283c71d",
-    "blocker": "Real ordinary context has no renewal; source still compares event renewal to that missing context field. Await lead-owned persisted-slot correction; do not execute this candidate."
+    "blocker": "Real ordinary context has no renewal; source still compares event renewal to that missing context field. Await lead-owned persisted-slot correction; do not execute this candidate.",
+    "publishedCandidate": {
+      "sourceCommit": "4b91d4bb14103ac5a98f68900a540913f4cacf78",
+      "path": "server/gcsp/offers/followup.js",
+      "sha256": "54399693253ae9640dde77b70b54f073b08e634d6babb69ea129b0414a6cebd2",
+      "status": "Read-only byte identity checked; independent source review pending; not adopted."
+    }
   },
   "runner": "Immutable callback registry; exact-name sequential awaited assertion+cleanup cases; launcher emits TAP and breaks before next invocation on first failure."
 }

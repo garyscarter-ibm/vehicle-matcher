@@ -18,7 +18,7 @@ import uuid
 ROOT = Path(__file__).resolve().parents[4]
 EVIDENCE = ROOT / 'docs/gcsp/evidence/fucq102'
 SHARED = Path('/Users/garycarter/Code/GitHub/vehicle-matcher')
-SOURCE_SHA = '7c9c8c1ed9c442098de0e7184dea8c6cc782c859b65b5c8c881d52e4e988e252'
+SOURCE_SHA = '6a1dee1b77dfc102b17c254b4d4923f22c8c912b81be91804498906a7f17d283'
 MIB = 1024 ** 2
 
 

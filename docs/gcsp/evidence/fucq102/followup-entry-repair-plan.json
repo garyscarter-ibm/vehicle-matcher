@@ -28,7 +28,7 @@
       "bytes": 29295
     },
     "docs/gcsp/evidence/fucq102/followup-entry-supervisor.py": {
-      "sha256": "fbe119290e20cf223600550d94d917561d347bd46fa3c699b31a5015fadb0721",
+      "sha256": "c74b3c7ec8d06fb0bba0ae3f014edd4b5181150af0049b0c16d914bb6c3ada69",
       "bytes": 16941
     },
     "docs/gcsp/evidence/fucq102/followup-entry-freeze.py": {
@@ -97,9 +97,9 @@
     "allReadbacksMatch": true
   },
   "nextGate": "Independently review source/harness and adopt repaired107 exact source, freeze combined admission, then new explicit grant. No retry of old grant.",
-  "ownedRepairCommit": "4474938cb6d0a3c24ac7202c6e1a4151600392b0",
-  "candidateSourcePlanSHA256": "7c9c8c1ed9c442098de0e7184dea8c6cc782c859b65b5c8c881d52e4e988e252",
-  "candidateAdmissionSHA256": "466cb85f46a7e36a639da7863cd35038a0ee2e4cc328de995c982ec4aa160d4a",
+  "ownedRepairCommit": "848a16f8ceda2053e5441ded4ce0c5378df5b30f",
+  "candidateSourcePlanSHA256": "6a1dee1b77dfc102b17c254b4d4923f22c8c912b81be91804498906a7f17d283",
+  "candidateAdmissionSHA256": "bc6c0d5cbba6055c09327ed1fa7d6b7245cc223e46dcbb12c34ca30021cd5cba",
   "candidateAdmissionStatus": "HOLD pending107; main refuses before custom helper imports; no execution command authorised",
   "renewalRevisionCorrection": "Positive current slot revision >= historical pin; absent slot renewal falls back to verified hold/event; explicit populated conflicts/malformed values refuse; all-null preserved. Actual repository CAS positive controls authored, not executed."
 }

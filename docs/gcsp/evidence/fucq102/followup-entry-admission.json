@@ -6,9 +6,15 @@
   "pendingIntegration": {
     "story": "FUCQ-107",
     "currentSourceCommit": "16839323f070f7c0ab81eb1ebf728627d283c71d",
-    "blocker": "Real ordinary context has no renewal; source still compares event renewal to that missing context field. Await lead-owned persisted-slot correction; do not execute this candidate."
+    "blocker": "Real ordinary context has no renewal; source still compares event renewal to that missing context field. Await lead-owned persisted-slot correction; do not execute this candidate.",
+    "publishedCandidate": {
+      "sourceCommit": "4b91d4bb14103ac5a98f68900a540913f4cacf78",
+      "path": "server/gcsp/offers/followup.js",
+      "sha256": "54399693253ae9640dde77b70b54f073b08e634d6babb69ea129b0414a6cebd2",
+      "status": "Read-only byte identity checked; independent source review pending; not adopted."
+    }
   },
-  "sourcePlanSHA256": "7c9c8c1ed9c442098de0e7184dea8c6cc782c859b65b5c8c881d52e4e988e252",
+  "sourcePlanSHA256": "6a1dee1b77dfc102b17c254b4d4923f22c8c912b81be91804498906a7f17d283",
   "sourceModules": 44,
   "sourceDataFiles": 7,
   "selectedCases": 11,
@@ -84,8 +90,8 @@
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-execution-source-plan.json",
       "targetDevice": 16777232,
       "targetInode": 173169071,
-      "bytes": 33114,
-      "sha256": "7c9c8c1ed9c442098de0e7184dea8c6cc782c859b65b5c8c881d52e4e988e252"
+      "bytes": 33446,
+      "sha256": "6a1dee1b77dfc102b17c254b4d4923f22c8c912b81be91804498906a7f17d283"
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-freeze.py": {
       "kind": "file",
@@ -140,7 +146,7 @@
       "targetDevice": 16777232,
       "targetInode": 173169531,
       "bytes": 16941,
-      "sha256": "fbe119290e20cf223600550d94d917561d347bd46fa3c699b31a5015fadb0721"
+      "sha256": "c74b3c7ec8d06fb0bba0ae3f014edd4b5181150af0049b0c16d914bb6c3ada69"
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/package-lock.json": {
       "kind": "file",
@@ -161,8 +167,8 @@
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/server/gcsp/offers/access.js",
       "targetDevice": 16777232,
       "targetInode": 173046840,
-      "bytes": 28960,
-      "sha256": "710c3fc7600f2ce1746b955372c49c043e30193defbd3c7a43f8563b87b0161b"
+      "bytes": 29034,
+      "sha256": "63fac0a89e50b8b4bd5c8bed581dd49bed42519c76b2b6232de155533d37fb3c"
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/server/package-lock.json": {
       "kind": "file",
@@ -183,8 +189,8 @@
       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/server/test/gcsp-offer-access-followup.test.js",
       "targetDevice": 16777232,
       "targetInode": 173167465,
-      "bytes": 22385,
-      "sha256": "b3a16d0d47cca53c0f0f5af84dd4354a038ba77c529a9eb3b915cd1cc268a6bb"
+      "bytes": 23434,
+      "sha256": "9933ccf247bbf87fe5bd02441375668dec2a4b83570d8e4e0525657a49cb2b16"
     },
     "/Users/garycarter/Code/GitHub/vehicle-matcher/package-lock.json": {
       "kind": "file",
