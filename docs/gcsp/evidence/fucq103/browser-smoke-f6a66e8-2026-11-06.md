@@ -151,3 +151,11 @@ earlier smoke is evidence for its original runner only.
 
 No new runtime import, static-preparation supervisor, browser, journey, full suite
 or native allocation ran after the correction. Original captures are unchanged.
+
+
+The dispatcher later admitted [one preparation and one exact-card desktop
+smoke](browser-smoke-ecaef8a-2026-11-06.md) at published `ecaef8a`. Both passed;
+the original successor capture visibly shows car 2, its 1100-point term and
+Eligible label with matching HTTP/DOM identity metadata. The source-specific
+limitation recorded above is preserved historically. No journey/full/native or
+default Greg projection acceptance was added.

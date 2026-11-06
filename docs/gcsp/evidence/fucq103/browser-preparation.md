@@ -175,3 +175,11 @@ limitation and its read-only diagnosis. Default Greg eligibility projection,
 rendered desktop/narrow journeys and final acceptance remain unfinished. The dispatcher subsequently authorised the runner-only exact-decision capture
 correction; refreshed source identities are in that evidence. No further browser
 execution is granted by these results.
+
+
+The [exact-card successor](browser-smoke-ecaef8a-2026-11-06.md) then passed one
+new preparation and one conditional smoke at `ecaef8a`, catalogue
+`1e58256450ecb0b7d55bb1e1c24a5c0332500aaeb35386449660f6d59381b6de`.
+The original employee PNG visibly captures eligible car 2, its 1100-point term
+and Eligible label; HTTP/DOM identity metadata and parent cleanup audits match.
+No journey or broader acceptance follows from that scoped result.

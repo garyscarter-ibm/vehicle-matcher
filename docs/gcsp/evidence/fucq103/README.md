@@ -360,3 +360,11 @@ preview's eligible car is a separate decision. The dispatcher accepted the diagn
 correction, now authored with refreshed catalogues and awaiting new admission.
 There is no product gating change or retry. Desktop/narrow journeys and the
 default stored-subject projection repair remain open; this is no final acceptance.
+
+
+The [exact eligible-card smoke](browser-smoke-ecaef8a-2026-11-06.md) subsequently
+passed one admitted preparation and one desktop smoke at `ecaef8a`. All eight
+originals were inspected: car 2's 1100-point term and Eligible label visibly match
+its HTTP decision and recorded DOM identity. Actual source/resource cleanup was
+independently verified. This closes the capture-selector limitation only; the
+default Greg projection gap and remaining desktop/narrow/full gates stay open.
