@@ -63,7 +63,7 @@ function inspectRole(settings, label) {
 export function validateSettingsShapeRefusal(report, { plan, mode }) {
   invalid(exact(report, ['schemaVersion', 'qualification', 'admission', 'failedRole', 'reason', 'observation', 'layout', 'roles'])
     && report.schemaVersion === 'bmw-settings-shape-refusal.v1' && report.qualification === 'unqualified-structural-observation'
-    && report.admission === false && Object.hasOwn(labels, report.failedRole)
+    && report.admission === false && typeof report.failedRole === 'string' && Object.hasOwn(labels, report.failedRole)
     && ['settings-header-shape', 'settings-traversal-limit'].includes(report.reason));
   const observation = report.observation;
   invalid(exact(observation, ['schemaVersion', 'operation', 'sourceId', 'sourceVersion', 'capability', 'transportKind', 'request', 'observedAt', 'responseBytes', 'responseSha256'])

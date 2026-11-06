@@ -95,17 +95,22 @@ for(const representation of ['direct','name-value'])test('settings shape success
   await assert.rejects(f.diagnostic.exportSettingsShapeReceipt(join(f.root,'none.json')),{code:'settings-shape-report-unavailable'});assert.equal(f.calls.length,4);
  });
 });
-for(const kind of ['extra-key','counter','role','fixture-to-live','request','digest'])test('settings shape tampered '+kind+' report refuses checkpoint reopening and safe export',async()=>{
+for(const kind of ['extra-key','counter','role','role-array','fixture-to-live','request','digest'])test('settings shape tampered '+kind+' report refuses checkpoint reopening and safe export',async()=>{
  await fixture((_,p)=>delete p.settingsLocalisation,async f=>{
   safeReport(await f.diagnostic.run(),'localisation');const envelope=JSON.parse(await readFile(f.statePath));const report=envelope.content.diagnostic.settingsShapeRefusal;
   if(kind==='extra-key')report.leaked='SYNTHETIC-RAW-ERROR';
   if(kind==='counter')report.roles.tree.profileMatches=30001;
   if(kind==='role')report.failedRole='caller-defined';
+  if(kind==='role-array')report.failedRole=[report.failedRole];
   if(kind==='fixture-to-live')report.observation.transportKind='live';
   if(kind==='request')report.observation.request.url='https://unretained.invalid';
   if(kind==='digest')report.observation.responseSha256='incorrect';
   envelope.contentDigest=inputDigest(envelope.content);await writeFile(f.statePath,JSON.stringify(envelope)+'\n');const reopened=await createPublicBmwQualificationDiagnostic(f.options);
-  await assert.rejects(reopened.run(),{code:'settings-shape-report-invalid'});await assert.rejects(reopened.exportSettingsShapeReceipt(join(f.root,'refused.json')),{code:'settings-shape-report-invalid'});assert.equal(f.calls.length,2);
+  const outcomes=[];
+  for(const action of [()=>reopened.run(),()=>reopened.exportSettingsShapeReceipt(join(f.root,'refused.json'))]) {
+   try {await action();outcomes.push('resolved');} catch(error) {outcomes.push(error.code);}
+  }
+  assert.deepEqual(outcomes,['settings-shape-report-invalid','settings-shape-report-invalid']);assert.equal(f.calls.length,2);
  });
 });
 test('settings shape copied and invented metadata cannot attest an executor observation',async()=>{
