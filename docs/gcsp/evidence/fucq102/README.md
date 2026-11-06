@@ -4,7 +4,12 @@ Backend-only scoped evidence. Full story acceptance remains open for normal runt
 bootstrap/deployment, deployed cookie/origin/browser, actual remote uncertainty,
 complete current-car facts and authored full-suite validation.
 
-The latest checkpoint runs:
+The new follow-up entry check **failed: 8/11 passed**, with three missing expected
+handles and a spec/TAP reporter mismatch that prevented stopping on the first case
+failure. See [the original failure receipt](followup-entry-result.md); source pins
+and cleanup were retained and verified. No retry or acceptance follows from it.
+
+The earlier access/timing checkpoint ran:
 
 ```sh
 python3 -B docs/gcsp/evidence/fucq102/scoped-supervisor.py --producer --strict
