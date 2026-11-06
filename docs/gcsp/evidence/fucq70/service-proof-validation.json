@@ -266,6 +266,12 @@
       "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/9ec433dfe1b45edaad89566fa9931d66/ownership/9ec433dfe1b45edaad89566fa9931d66.json",
       "sha256": "51ff95f1157091e9ccaad5a46112cc2521e358e230aa47badcd937d6964003eb",
       "bytes": 723
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-run-20261106-passed/dispatcher-final-audit.json",
+      "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq70-focused-pass-audit-0033.json",
+      "sha256": "4f3191be5ca574199592ee7aef8056ec7a7aeed63ae7fe4e79e90ebb453b4be7",
+      "bytes": 20423
     }
   ],
   "retainedRunDirectory": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/9ec433dfe1b45edaad89566fa9931d66",
@@ -286,7 +292,17 @@
     "full",
     "delivery"
   ],
-  "dispatcherFinalReview": "pending; root retains final audit and acceptance responsibility",
+  "dispatcherFinalReview": {
+    "status": "PASS accepted scoped actual66/69 memory-service/HTTP/controller boundary; story acceptance remains open",
+    "checks": 131,
+    "auditAt": "2026-11-06T01:24:18.903706+00:00",
+    "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq70-focused-pass-audit-0033.json",
+    "export": "docs/gcsp/evidence/fucq70/service-proof-run-20261106-passed/dispatcher-final-audit.json",
+    "sha256": "4f3191be5ca574199592ee7aef8056ec7a7aeed63ae7fe4e79e90ebb453b4be7",
+    "rawSuccessTapRetained": false,
+    "evidenceLimit": "Receipt/counts, exact selected case names, checkpoint and unchanged admitted supervisor enforcement retained. Original successful raw TAP was not retained and was not independently reparsed. No rerun to recreate it.",
+    "remainingAuthority": "Root retains final story acceptance, execution grants, Jira, claims and merges."
+  },
   "priorScopedCounts": {
     "metadata": "15/15",
     "controller": "14/14",
