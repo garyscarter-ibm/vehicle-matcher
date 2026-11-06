@@ -1820,17 +1820,17 @@
       "original_status": "In Progress",
       "assignee": "usget",
       "type": "Story",
-      "observed_at": "2026-11-06T10:40:27Z",
+      "observed_at": "2026-11-06T11:10:05Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60",
       "workers": [
         {
           "name": "Scooby Doo",
           "role": "story-lead",
           "harness": "codex",
-          "observed_at": "2026-11-06T10:40:27.074625+00:00",
-          "expires_at": "2026-11-06T10:40:27.074625+00:00",
+          "observed_at": "2026-11-06T11:10:05.689780+00:00",
+          "expires_at": "2026-11-06T11:10:05.689780+00:00",
           "source": "thread 01a1b05f-dcbc-7e50-a2f9-0332b39f082a",
-          "status": "Consumer checkpoint published; scoped handoff, remaining integration gates explicit"
+          "status": "Frozen v2 consumer proof scoped handoff; requested/selected Sol/high, no fallback; no active worker claim"
         }
       ],
       "slices": [
@@ -1852,8 +1852,8 @@
           "id": "shared-accounting",
           "status": "in-progress",
           "title": "Canonical collector session cache budget recovery integration",
-          "observed_at": "2026-11-06T10:37:32.012772+00:00",
-          "evidence": "Real F60 consumer passed 6/6 against pinned F59 fdb71c2; cache/cursor, lifetime budget/retry/deadline and partial facts retained. Canonical producer assembly remains; docs/gcsp/evidence/fucq60/session-enrichment.md."
+          "observed_at": "2026-11-06T11:10:05.689780+00:00",
+          "evidence": "Unchanged F60 consumer/proof passed6/6 against frozen F59 v2 aee5e902; actual cache/cursor, lifetime budget/retry/deadline and partial-facts assertions. Canonical shared-branch assembly remains. docs/gcsp/evidence/fucq60/session-enrichment.md."
         },
         {
           "id": "real-source",
@@ -1869,8 +1869,8 @@
           "id": "focused-contracts",
           "status": "complete",
           "title": "Authored enrichment and F39 F42 focused contracts",
-          "observed_at": "2026-11-06T10:37:32.012772+00:00",
-          "evidence": "Lead reviewed actual F59 consumer and portable proof; 6/6 integration regressions plus 50/50 serial authored/F39/F42 contracts pass. Canonical assembly and final npm test remain separate."
+          "observed_at": "2026-11-06T11:10:05.689780+00:00",
+          "evidence": "Lead reviewed producer v2 change and unchanged consumer/proof:6/6 real offline cases pass; matching prior50/50 pure/F39/F42 evidence reused by verified source/fixture/environment identity. Full suite remains separate."
         },
         {
           "id": "corpus-integration",
