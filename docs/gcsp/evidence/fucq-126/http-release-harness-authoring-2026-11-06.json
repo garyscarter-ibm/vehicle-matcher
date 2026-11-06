@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-06",
+  "scope": "Owned in-process request/cookie/fetch bridge authoring only",
+  "planningBase": "496b92a31310fd7308ecf2f6f55ba6737cad9a6d",
+  "source": {
+    "path": "server/test/helpers/presenter-http-proof.js",
+    "sha256": "a1da24ecf831f90ed43c329f345f2c7bf947cbf299fa60889d25c2991d51314e",
+    "bytes": 5476
+  },
+  "imports": [
+    "node:stream"
+  ],
+  "productImports": [],
+  "executed": false,
+  "validation": "Manual source review, named-path whitespace and metadata/hash checks only; no Node or product execution.",
+  "deliveryLossVariant": "Actual handler completes and Set-Cookie headers are applied, then the reply body is discarded; this is not every network-loss variant.",
+  "boundaries": [
+    "Calls the actual request listener; never listens or fetches externally",
+    "Requires explicit HTTPS test origin and unchanged adapter credentials include",
+    "Uses cookies issued by actual identity/bootstrap and actual Set-Cookie renewal/deletion",
+    "Preserves actual status/JSON and exact adapter body; no business DTO substitution",
+    "Transport journal retains only method/path/status/byte counts; never tokens or business bodies"
+  ],
+  "pending": [
+    "Concrete central composition and trusted new-run data contract",
+    "Six-case integration setup/test source and exact names/counts",
+    "Owned resource supervisor and module/read observer source pins",
+    "Fresh complete executable source/dependency/output ownership plan and root review"
+  ],
+  "executionAuthorized": false
+}

@@ -1368,7 +1368,7 @@
       "id": "FUCQ-126",
       "jira_observation_basis": "Authenticated getJiraIssue FUCQ-126: In Progress/Gary Carter; no Jira write",
       "jira_observed_at": "2026-11-05T23:00:00Z",
-      "observed_at": "2026-11-06T01:33:59Z",
+      "observed_at": "2026-11-06T01:38:43Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -1400,9 +1400,9 @@
           "title": "Desktop and375px keyboard and actual HTTP proof"
         },
         {
-          "evidence": "Canonical100 eligibility checkpoint38be4f5 supplied. Read-only next HTTP-to-controller plan freezes124Gitblobs/242literaledges/1975installed files; no foreign adoption/execution grant. Existinga10ca74 selectedmodules/root2097audit retained. Next composedsource/test/supervisor/newrun inputs still needed; no full stamp. docs/gcsp/evidence/fucq-126/http-release-plan-38be4f5-2026-11-06.md",
+          "evidence": "Canonical100 eligibility checkpoint38be4f5 supplied. Read-only next HTTP-to-controller plan freezes124Gitblobs/242literaledges/1975installed files; no foreign adoption/execution grant. Existinga10ca74 selectedmodules/root2097audit retained. Next composedsource/test/supervisor/newrun inputs still needed; no full stamp. docs/gcsp/evidence/fucq-126/http-release-plan-38be4f5-2026-11-06.md Own in-process HTTP/cookie transport bridge authored and pinned, unexecuted; concrete central setup/test/supervisor still pending. http-release-harness-authoring-2026-11-06.json",
           "id": "integrated-validation",
-          "observed_at": "2026-11-06T01:33:59.751835+00:00",
+          "observed_at": "2026-11-06T01:38:43.581405+00:00",
           "status": "in-progress",
           "title": "Current-base integration and authored full validation"
         },

@@ -64,3 +64,21 @@ Capture the actual selected case names, totals, pass/fail/skips and bounded orig
 ## Checkpoint validation
 
 Only source/documentation inspection and finite hashing occur here. The planning manifest has 124 source blobs, 242 literal edges, 1,975 installed dependency file identities, zero literal unresolved paths and zero content collisions. No new tests or resource reservations are created. Existing accepted `a10ca74` controller/ratchet receipts remain unchanged; dispatcher independently accepted that narrow checkpoint with its 2,097-check source/resource audit. Product controller source and the earlier browser evidence retain their exact bytes and scope.
+
+## Subsequent owned transport authoring
+
+The own `server/test/helpers/presenter-http-proof.js` bridge is now authored separately from
+central composition. Its [authoring receipt](http-release-harness-authoring-2026-11-06.json)
+pins the exact bytes and records that it has not executed. It imports only `node:stream` and
+calls the real server request listener, supplies the explicit host/Origin and actual issued
+cookies, applies real Set-Cookie renewal/deletion, and passes status/JSON to the unchanged
+adapter. Its deliberate lost-reply variant discards the body after the handler completes and
+cookie headers are applied; it does not stand for every network-loss variant. The bounded
+transport journal contains method/path/status/byte counts, never credentials or business bodies.
+
+This is a scoped test jar for the actual identity cookies, not browser-cookie acceptance proof.
+The six-case test setup, source/read observer and resource supervisor still need the concrete
+central composed checkpoint and reviewed source inputs. They are not supplied by the bridge.
+No mixed imports, Node execution, tests, scratch or reservations are created for this authoring.
+The identity-only bootstrap stock gap remains: the actual release producer preserves existing
+row facts, so the future source/preparation owner must supply correct facts before release.
