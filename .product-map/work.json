@@ -1125,16 +1125,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-116"
     },
     {
-      "id": "FUCQ-117",
-      "title": "Plan feasible order quantities from expressed demand, supply and policy",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-117"
-    },
-    {
       "id": "FUCQ-118",
       "title": "Plan the old car's return separately from the new car's handover",
       "status": "To Do",
@@ -1648,38 +1638,43 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-06T00:15:25Z",
+      "observed_at": "2026-11-06T00:31:00Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-36",
       "slices": [
         {
           "id": "manifest",
           "status": "complete",
           "title": "Directory-discovered-package-and-dependency-validation",
-          "observed_at": "2026-11-06T00:10:49Z",
-          "evidence": "Lead reviewed directory-discovered assembler/import-asset graph and package tests. Scoped package+launcher59/59 and UI ratchet42/42 pass; strict records targeted96639896 and a5995890. Actual browser/final integration are separately planned."
+          "observed_at": "2026-11-06T00:26:47Z",
+          "evidence": "Lead reviewed final directory graph including gallery-linked public Density preview and nested future offer page;13/13 package cases pass. Frozen assembler SHAe568b983 and package-test SHA56ab5e00; named missing imports/assets/modules and API/CSP boundaries verified."
         },
         {
           "id": "entry",
-          "status": "in-progress",
+          "status": "complete",
           "title": "API-switch-and-root-prefix-entry-smokes",
-          "observed_at": "2026-11-06T00:10:49Z"
+          "observed_at": "2026-11-06T00:24:04Z",
+          "evidence": "Lead reviewed copied API/default/switch bindings, deterministic13 package cases and actual assembled browser116 local plus116 deployed-style HTTPS root/prefix checks with real memory identity/account200, no JS/local HTTP asset errors."
         },
         {
           "id": "release",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Revision-compatibility-and-release-checklist",
-          "observed_at": "2026-11-06T00:10:49Z"
+          "observed_at": "2026-11-06T00:26:47Z",
+          "evidence": "Lead reviewed README/HLD and release/validation notes: exact source/config/migration0001-0003/seed hashes, no later block dependency, employee switch, root/prefix routes, unknown GC provisioning/live state and later authorised release checks; retail workflows untouched."
         },
         {
           "id": "browser",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Assembled-desktop-narrow-keyboard-and-retail-matrix",
-          "observed_at": "2026-11-06T00:10:49Z"
+          "observed_at": "2026-11-06T00:24:04Z",
+          "evidence": "Inspected desktop/narrow launcher/retail/real employee/Greg/outbox/gallery captures and employee-disabled/service-error states. Each API configuration116rows/14captures; root/prefix/reloads,6brandsx5modes and disabled matrix. Immutable later offer proof is separately qualified in evidence."
         },
         {
           "id": "integration",
-          "status": "not-started",
-          "title": "Final-story-integration-and-required-full-validation"
+          "status": "in-progress",
+          "title": "Final-story-integration-and-required-full-validation",
+          "observed_at": "2026-11-06T00:24:04Z",
+          "evidence": "Package/browser checkpoint frozen for authorised sole serial npm test full gate; no full acceptance claimed yet."
         }
       ],
       "unsliced": false,
@@ -1688,10 +1683,10 @@
           "name": "Mary-Sue Walton",
           "role": "story-lead",
           "harness": "codex",
-          "source": "Thread01a1ae28-6e71-7cf1-855c-85c7c38d3392;requested/selected/runtimeverifiedSol/high;0d8e56c scoped checkpoint and live lead progress",
-          "observed_at": "2026-11-06T00:15:25.331354+00:00",
-          "expires_at": "2026-11-06T00:45:25.331354+00:00",
-          "status": "active; assembler/tests/release and browser proof"
+          "source": "Thread01a1ae28-6e71-7cf1-855c-85c7c38d3392; requested/selected/effective gpt-6.1-sol/high verified; checkpointdb4fcbebd360006d81f3efd5fe1ac8d6f136dcea; actual live progress",
+          "observed_at": "2026-11-06T00:31:00.359880+00:00",
+          "expires_at": "2026-11-06T01:01:00.359880+00:00",
+          "status": "active; frozen package/browser checkpoint; sole full running"
         }
       ],
       "branch": "dev/DEV-2026-11-04-067"
@@ -1703,28 +1698,36 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-06T00:15:25Z",
+      "observed_at": "2026-11-06T00:31:00Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-104",
       "slices": [
         {
           "id": "records",
-          "status": "not-started",
-          "title": "Distinct repository records and additive migration"
+          "status": "complete",
+          "title": "Distinct repository records and additive migration",
+          "observed_at": "2026-11-06T00:19:47Z",
+          "evidence": "Lead reviewed separate durable immutable acknowledgement records;45pass2native skips;docs/gcsp/greg-orders-contract.md. Native integration remains."
         },
         {
           "id": "submission",
-          "status": "not-started",
-          "title": "Version-pinned idempotent Greg order requests"
+          "status": "complete",
+          "title": "Version-pinned idempotent Greg order requests",
+          "observed_at": "2026-11-06T00:26:32Z",
+          "evidence": "Lead-reviewed service and authenticated HTTP: replay, version/stock/run fences and role refusals; scoped 46/46 with clock and demand; UI/runtime integration remains."
         },
         {
           "id": "confirmation",
-          "status": "not-started",
-          "title": "Synthetic production acknowledgement and keyed release queue"
+          "status": "in-progress",
+          "title": "Synthetic production acknowledgement and keyed release queue",
+          "observed_at": "2026-11-06T00:26:32Z",
+          "evidence": "Saved partial/delay acknowledgements, keyed expected dates and retryable F92 queue port pass authored scoped tests; actual producer composition remains."
         },
         {
           "id": "tracking",
-          "status": "not-started",
-          "title": "Shared-kit order-tracking stages and keyboard states"
+          "status": "in-progress",
+          "title": "Shared-kit order-tracking stages and keyboard states",
+          "observed_at": "2026-11-06T00:26:32Z",
+          "evidence": "Consistent tracking projection implemented; additive shared-kit block next."
         },
         {
           "id": "release-allocation",
@@ -1744,10 +1747,67 @@
           "name": "Buzz Lightyear",
           "role": "story-lead",
           "harness": "codex",
-          "status": "active;independent supply-record/service and tracking implementation",
-          "source": "Thread01a1ae35-02f9-7152-a760-c25dc42194f9;requested/selectedSol/high;no fallback;nativeadoptionverified",
-          "observed_at": "2026-11-06T00:15:25.331354+00:00",
-          "expires_at": "2026-11-06T00:45:25.331354+00:00"
+          "source": "Thread01a1ae35-02f9-7152-a760-c25dc42194f9; requested/selected/effective gpt-6.1-sol/high verified; checkpoint6f57a05c538fa34361ba8594f152440ece851ed4; actual live progress",
+          "observed_at": "2026-11-06T00:31:00.359880+00:00",
+          "expires_at": "2026-11-06T01:01:00.359880+00:00",
+          "status": "active; service46scoped/HTTP complete; tracking and actual producer proof"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-117",
+      "title": "Plan feasible order quantities from expressed demand, supply and policy",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-06T00:31:00Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-117",
+      "slices": [
+        {
+          "id": "input-contract",
+          "status": "in-progress",
+          "title": "Input-contract",
+          "observed_at": "2026-11-06T00:31:00.359880+00:00",
+          "evidence": "Claimc02f363; actual source preflight and live lead contract work. Remaining canonical/default producer/full gates retained."
+        },
+        {
+          "id": "feasible-solver",
+          "status": "not-started",
+          "title": "Feasible-integer-solver"
+        },
+        {
+          "id": "explanations",
+          "status": "not-started",
+          "title": "Explained-alternatives"
+        },
+        {
+          "id": "canonical-policy",
+          "status": "not-started",
+          "title": "Canonical-policy"
+        },
+        {
+          "id": "producer-integration",
+          "status": "not-started",
+          "title": "Producer-integration"
+        },
+        {
+          "id": "final-validation",
+          "status": "not-started",
+          "title": "Final-validation"
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-04-090",
+      "workers": [
+        {
+          "name": "Doug the Dog",
+          "role": "story-lead",
+          "harness": "codex",
+          "source": "Thread01a1ae41-b758-7521-b89f-8cf6c6afd1ed; requested/selected/effective gpt-6.1-sol/high verified; checkpointc02f363ada73951db4876f6943c882a80f401716; actual live progress",
+          "observed_at": "2026-11-06T00:31:00.359880+00:00",
+          "expires_at": "2026-11-06T01:01:00.359880+00:00",
+          "status": "active; independent planner input/solver implementation"
         }
       ]
     }
