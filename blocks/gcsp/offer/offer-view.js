@@ -1,5 +1,6 @@
 import { el, screenIntro, button, factList } from '../../vehicle-matcher/ui.js';
 import { matchCard, mediaWell } from '../../vehicle-matcher/modes/result-card.js';
+import { labelledField, errorSummary } from '../kit/form-controls.js';
 
 const titles = { pending: 'Your car offer', accepted: 'Offer accepted', declined: 'Offer declined', expired: 'Offer expired',
   superseded: 'Offer superseded', 'earlier-run': 'Offer from an earlier demo run', 'not-found': 'Offer not found', refused: 'Offer unavailable',
@@ -14,7 +15,9 @@ let sequence = 0;
 
 const decisionReason = (model) => model.decisionUnavailable ? 'Decisions are unavailable on this page.'
   : model.checkingExpiry ? 'Checking availability. Actions are unavailable.'
-    : model.canDecline && !model.canAccept ? 'Acceptance is unavailable. You can still decline this offer.'
+    : model.declineReason?.open ? 'Choose a reason to decline this offer.'
+      : model.declineUnavailable ? 'Declining is unavailable. Check the current offer again.'
+    : model.canDecline && model.actions?.accept !== true ? 'Acceptance is unavailable. You can still decline this offer.'
       : 'Actions depend on current server availability.';
 
 function comparison(currentCar) {
@@ -35,7 +38,7 @@ function comparison(currentCar) {
 }
 
 /** Compose shared primitives only; server projection owns vehicle facts, terms and decisions. */
-export function createOfferView(root, { refresh, decide } = {}) {
+export function createOfferView(root, { refresh, decide, selectReason, cancelDecline, refreshReasons } = {}) {
   const page = el('div', 'vm gcsp-offer-body');
   page.id = `gcsp-offer-${++sequence}`;
   const content = el('div', 'gcsp-offer-content');
@@ -45,10 +48,13 @@ export function createOfferView(root, { refresh, decide } = {}) {
   page.append(content, announcement); root.replaceChildren(page);
   let lastAnnouncement = ''; let previousState; let previousIdentity; let structure;
   let messageNode; let clockNode; let asOfNode; let reasonNode;
+  let reasonForm; let reasonSelect; let reasonStatus; let reasonField; let reasonSummary;
+  let confirmButton; let cancelButton; let reasonsRefresh; let optionsKey; let wasOpen = false; let lastError = '';
   const announce = (text) => { if (text !== lastAnnouncement) { announcement.textContent = text; lastAnnouncement = text; } };
   function draw(model) {
     const focused = root.ownerDocument.activeElement?.dataset?.offerAction;
     content.replaceChildren();
+    optionsKey = undefined; wasOpen = false; lastError = '';
     const state = model.state;
     content.append(screenIntro({ title: titles[state] || titles.error, level: 1 }));
     messageNode = el('p', 'gcsp-note', model.message || messages[state]);
@@ -75,6 +81,23 @@ export function createOfferView(root, { refresh, decide } = {}) {
         control.dataset.offerAction = kind; actions.append(control);
       }
       content.append(reason, actions);
+      reasonForm = el('section', 'gcsp-offer-content'); reasonForm.setAttribute('aria-label', 'Decline this offer');
+      reasonStatus = el('p', 'gcsp-note'); reasonStatus.setAttribute('role', 'status'); reasonStatus.tabIndex = -1;
+      reasonSelect = el('select'); reasonSelect.required = true; reasonSelect.dataset.offerReason = '';
+      reasonSelect.addEventListener('change', () => selectReason?.(reasonSelect.value));
+      const fieldId = `${page.id}-decline-reason`;
+      reasonField = labelledField({ id: fieldId, label: 'Reason for declining', control: reasonSelect });
+      reasonSummary = errorSummary({ id: `${page.id}-reason-errors` });
+      const confirmation = el('div', 'gcsp-offer-actions');
+      confirmButton = button({ label: 'Confirm decline', variant: 'primary',
+        onClick: () => decide?.('decline', { reasonCode: reasonSelect.value }) });
+      confirmButton.dataset.offerAction = 'decline-confirm';
+      cancelButton = button({ label: 'Cancel', variant: 'ghost', onClick: () => cancelDecline?.() });
+      cancelButton.dataset.offerAction = 'decline-cancel';
+      reasonsRefresh = button({ label: 'Check reasons again', variant: 'ghost', onClick: () => refreshReasons?.() });
+      reasonsRefresh.dataset.offerAction = 'reasons-refresh';
+      confirmation.append(confirmButton, cancelButton, reasonsRefresh);
+      reasonForm.append(reasonStatus, reasonSummary.root, reasonField.root, confirmation); content.append(reasonForm);
     }
     if (state !== 'loading') {
       const control = button({ label: state === 'error' ? 'Try again' : 'Check current state', variant: 'ghost', onClick: () => refresh?.() });
@@ -84,6 +107,36 @@ export function createOfferView(root, { refresh, decide } = {}) {
       const target = content.querySelector(`[data-offer-action="${['accept', 'decline', 'refresh'].includes(focused) ? focused : 'refresh'}"]`);
       (target && !target.disabled ? target : content.querySelector('[data-offer-action="refresh"]'))?.focus();
     }
+  }
+  function updateReasons(model) {
+    const reason = model.declineReason || { open: false, status: 'idle', choices: [], selectedCode: '', error: '' };
+    reasonForm.hidden = !reason.open;
+    content.querySelector('[data-offer-action="decline"]').hidden = reason.open;
+    const key = JSON.stringify(reason.choices);
+    if (optionsKey !== key) {
+      const placeholder = el('option', null, 'Choose a reason'); placeholder.value = '';
+      reasonSelect.replaceChildren(placeholder);
+      for (const choice of reason.choices) { const option = el('option', null, choice.label); option.value = choice.code; reasonSelect.append(option); }
+      optionsKey = key;
+    }
+    reasonSelect.value = reason.selectedCode;
+    reasonSelect.disabled = reason.status !== 'ready' || !model.canDecline;
+    confirmButton.disabled = reasonSelect.disabled;
+    reasonStatus.textContent = reason.status === 'loading' ? 'Loading reasons.'
+      : reason.status === 'unavailable' ? 'Reasons are unavailable. Check again.' : '';
+    reasonsRefresh.hidden = reason.status === 'loading';
+    reasonField.setError(reason.error);
+    reasonSummary.update(reason.error ? [{ id: reasonSelect.id, message: reason.error }] : []);
+    const active = root.ownerDocument.activeElement;
+    if (reason.open && !wasOpen) (reason.status === 'ready' ? reasonSelect : reasonStatus).focus();
+    else if (reason.open && active === reasonStatus) {
+      if (reason.status === 'ready') reasonSelect.focus();
+      else if (reason.status === 'unavailable') reasonsRefresh.focus();
+    } else if (!reason.open && wasOpen) {
+      content.querySelector('[data-offer-action="decline"]:enabled, [data-offer-action="refresh"]')?.focus();
+    }
+    if (reason.open && reason.error && reason.error !== lastError) reasonSummary.focus();
+    lastError = reason.error; wasOpen = reason.open;
   }
   function update(model) {
     const nextStructure = JSON.stringify([model.state, model.card, model.currentCar, model.fixtureNotice]);
@@ -97,9 +150,11 @@ export function createOfferView(root, { refresh, decide } = {}) {
       reasonNode.textContent = decisionReason(model);
       content.querySelector('[data-offer-action="accept"]').disabled = !model.canAccept;
       content.querySelector('[data-offer-action="decline"]').disabled = !model.canDecline;
+      updateReasons(model);
       const focused = root.ownerDocument.activeElement;
-      if (focused?.disabled && ['accept', 'decline'].includes(focused.dataset.offerAction) && content.contains(focused)) {
-        content.querySelector('[data-offer-action="decline"]:enabled, [data-offer-action="accept"]:enabled, [data-offer-action="refresh"]')?.focus();
+      if (focused?.disabled && content.contains(focused)) {
+        (model.declineReason?.open ? cancelButton
+          : content.querySelector('[data-offer-action="decline"]:enabled, [data-offer-action="accept"]:enabled, [data-offer-action="refresh"]'))?.focus();
       }
     }
     const key = `${model.state}:${model.reference?.offerId || ''}`;

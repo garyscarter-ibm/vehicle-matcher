@@ -146,7 +146,8 @@ test('published decline-only DTO updates mounted actions and accessible explanat
   const adapter = createOfferHttpAdapter({ location: { href: `https://example.test/gcsp/offer?offerId=${dto.offerId}` },
     fetch: async () => ({ ok: true, headers: { get: () => 'application/json' }, json: async () => ({ status: 'ok', value: dto }) }) });
   // Contract spy only; no actual FUCQ-106 command or successful decision is claimed.
-  const c = createOfferController({ ...adapter, createCommandId: () => 'render-decline-spy', decide: async ({ kind }) => { calls.push(kind); } });
+  const c = createOfferController({ ...adapter, readReasons: async () => ({ status: 'ok', value: { schemaVersion: 1, key: 'offer.declineReasons.v1', policyVersion: 'contract-spy', reasons: [{ code: 'test-reason', label: 'Test reason', attribute: 'body' }] } }),
+    createCommandId: () => 'render-decline-spy', decide: async ({ kind }) => { calls.push(kind); } });
   const root = document.createElement('div'); document.body.append(root);
   const view = createOfferView(root, { decide: c.decision }); const unsubscribe = c.subscribe(view.update);
   try {

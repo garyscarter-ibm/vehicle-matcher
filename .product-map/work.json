@@ -1369,7 +1369,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-06T00:44:41Z",
+      "observed_at": "2026-11-06T01:06:01Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-105",
       "slices": [
         {
@@ -1383,8 +1383,8 @@
           "id": "controller",
           "status": "in-progress",
           "title": "Exclusive states, authoritative countdown and uncertain decisions",
-          "observed_at": "2026-11-05T23:26:59Z",
-          "evidence": "Independent injected-port controller implemented; scoped tests and lead review in progress. Actual DemoClock/access/decision-host gates remain."
+          "observed_at": "2026-11-06T01:06:01Z",
+          "evidence": "6 November authorized105 consumer checkpoint: forwards quote revision; opt-in exact106 transport and required server-listed decline lifecycle/readback; shared forms.14decision+119affected/ratchet scoped pass0skip; strict keyf6b779f5ff34620e5ee4be779b355d516c0fbbc2bc39eb7acffb5956bce9de2c. Independent cleanup/dependency audit PASS. Actual106/host/browser/full acceptance remain. docs/gcsp/evidence/fucq105/decision-consumer-result.md"
         },
         {
           "id": "access-producer",
@@ -1397,8 +1397,8 @@
           "id": "decision-host",
           "status": "blocked",
           "title": "Actual FUCQ106 decision and delivered host integration",
-          "observed_at": "2026-11-06T00:44:41Z",
-          "evidence": "Root accepted actual100→102→105 memory proof (0033 receipt,107checks). Read-only next plan pins47modules84edges plus prospective form helper48; no imports/tests/allocation.105 must forward quote revision and collect actual106 server reason code. Canonical accept/refusal independent; successful decline needs policy-owner registry adoption. Delivered /gcsp/offer, narrow gated one-offer dispatch/same-access-instance composition/same-origin HTTPS host ref still required.122 owns browser lane. Root r"
+          "observed_at": "2026-11-06T01:06:01Z",
+          "evidence": "Own consumer implementation now133 scoped checks PASS; server reason port exact106 command/revisions/readback, preview existing base/shell styles composed. No mixed actual106 imports or browser run. Canonical reason activation and frozen mixed test/helper root review remain; central owner supplies same-access singleton/real employee session, invalid-cookie no fallback, narrow gated route,/gcsp/offer and same-origin HTTPS. Root retains review/merge/closure. docs/gcsp/evidence/fucq105/decision-con"
         },
         {
           "id": "browser",

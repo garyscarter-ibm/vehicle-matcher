@@ -15,7 +15,7 @@ export function offerFixture(name) {
   if (name === 'no-image') member.media = {};
   return { status: 'ok', value: { state: ['no-image', 'low-time', 'checking-expiry'].includes(name) ? 'pending' : name,
     card: { schemaVersion: 1, members: [member] }, actionable: false, actions: { accept: false, decline: false },
-    reference: { offerId: 'presentation-example', runId: 'presentation-example', offerVersion: 1, holdVersion: 1 },
+    reference: { offerId: 'presentation-example', runId: 'presentation-example', offerVersion: 1, holdVersion: 1, quoteVersion: 1 },
     now: '2026-11-05T12:00:00.000Z', expiresAt: name === 'checking-expiry' ? '2026-11-05T12:00:00.000Z'
       : name === 'low-time' ? '2026-11-05T12:03:00.000Z' : '2026-11-05T14:00:00.000Z',
     currentCar: { display: { name: 'G21 320i M Sport Touring' }, media: {},

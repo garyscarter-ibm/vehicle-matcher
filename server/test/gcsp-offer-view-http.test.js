@@ -125,3 +125,12 @@ test('refresh scheduling requests server reads, skips busy requests and cancels 
   tick(); assert.equal(events, 1); assert.equal(scheduled.size, 1);
   unsubscribe(); assert.equal(scheduled.size, 0);
 });
+
+test('decision and reason ports require explicit trusted-host opt-in', () => {
+  for (const enableDecisions of [undefined, false, 'true', 1]) {
+    const adapter = createOfferHttpAdapter({ enableDecisions, location: { href: 'https://example.test/gcsp/offer?offerId=one' } });
+    assert.equal(adapter.decide, undefined); assert.equal(adapter.readReasons, undefined);
+  }
+  const adapter = createOfferHttpAdapter({ enableDecisions: true, location: { href: 'https://example.test/gcsp/offer?offerId=one' } });
+  assert.equal(typeof adapter.decide, 'function'); assert.equal(typeof adapter.readReasons, 'function');
+});

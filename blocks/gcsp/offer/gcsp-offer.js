@@ -8,8 +8,9 @@ export function mountOffer(root, adapter = {}) {
     navigation: adapter.navigation || [], breadcrumbs: [{ label: 'Your offer' }], onNavigate: adapter.onNavigate });
   root.replaceChildren(shell.root);
   const controller = createOfferController({ read: adapter.read || (async () => ({ status: 'unavailable' })),
-    decide: adapter.decide, createCommandId: adapter.createCommandId });
-  const view = createOfferView(shell.main, { refresh: () => controller.refresh(), decide: (kind) => controller.decision(kind) });
+    decide: adapter.decide, readReasons: adapter.readReasons, createCommandId: adapter.createCommandId });
+  const view = createOfferView(shell.main, { refresh: () => controller.refresh(), decide: (kind, options) => controller.decision(kind, options),
+    selectReason: controller.selectDeclineReason, cancelDecline: controller.cancelDecline, refreshReasons: controller.refreshDeclineReasons });
   const update = (model) => view.update({ ...model, fixtureNotice: adapter.notice || model.fixtureNotice });
   const unsubscribe = controller.subscribe(update);
   update(controller.snapshot());

@@ -3,6 +3,22 @@ import { toOfferPresentation } from './offer-projection.js';
 const unavailable = () => ({ status: 'unavailable', retryable: true });
 const statuses = new Set(['ok', 'not-found', 'stale-run', 'forbidden', 'unavailable', 'invalid', 'conflict', 'pending', 'stale-version']);
 const locator = (value) => typeof value === 'string' && value.length > 0 && value.length <= 512 && !/[\s\u0000-\u001f\u007f]/u.test(value);
+const text = (value) => typeof value === 'string' && value.trim().length > 0 && value.length <= 128;
+const positive = (value) => Number.isSafeInteger(value) && value > 0;
+const object = (value) => value !== null && typeof value === 'object' && Object.getPrototypeOf(value) === Object.prototype;
+const hasOnlyKeys = (value, keys) => object(value) && Reflect.ownKeys(value).every((key) => keys.includes(key));
+
+/** Copy only the server's fixed reason registry; there is no consumer fallback list. */
+function reasons(outcome) {
+  const value = outcome?.value;
+  if (outcome?.status !== 'ok') return { status: statuses.has(outcome?.status) ? outcome.status : 'unavailable' };
+  if (!object(value) || value.schemaVersion !== 1 || value.key !== 'offer.declineReasons.v1' || !text(value.policyVersion)
+    || !Array.isArray(value.reasons) || !value.reasons.length || value.reasons.length > 128
+    || value.reasons.some((row) => !object(row) || !['code', 'label', 'attribute'].every((key) => text(row[key])))
+    || new Set(value.reasons.map((row) => row.code)).size !== value.reasons.length) return unavailable();
+  return { status: 'ok', value: { schemaVersion: 1, key: value.key, policyVersion: value.policyVersion,
+    reasons: value.reasons.map(({ code, label, attribute }) => ({ code, label, attribute })) } };
+}
 
 /** Capture an email credential once and synchronously remove it from browser history before any request. */
 export function createOfferHttpTransport({ fetch: request = globalThis.fetch, location = globalThis.location,
@@ -38,7 +54,28 @@ export function createOfferHttpTransport({ fetch: request = globalThis.fetch, lo
     } catch { return unavailable(); }
   }
 
+  const bound = (offer) => valid && !token && text(offer?.offerId) && text(offer?.runId)
+    && offer.offerId === reference.offerId && (!reference.runId || offer.runId === reference.runId);
+
   return { reference,
+    async readReasons({ offer } = {}, { signal } = {}) {
+      if (!bound(offer)) return { status: 'not-found' };
+      return reasons(await call(`/api/gcsp/offers/${encodeURIComponent(offer.offerId)}/decision-reasons?runId=${encodeURIComponent(offer.runId)}`,
+        { method: 'GET', headers: { Accept: 'application/json' }, signal }));
+    },
+    async decide(input, { signal } = {}) {
+      const offer = input?.offer;
+      if (!hasOnlyKeys(input, ['kind', 'offer', 'commandId', 'reasonCode']) || !bound(offer)
+        || !hasOnlyKeys(offer, ['offerId', 'runId', 'offerVersion', 'holdVersion', 'quoteVersion'])
+        || !['accept', 'decline'].includes(input.kind) || !text(input.commandId)
+        || !['offerVersion', 'holdVersion', 'quoteVersion'].every((key) => positive(offer[key]))
+        || (input.kind === 'decline' ? !text(input.reasonCode) : Object.hasOwn(input, 'reasonCode'))) return { status: 'invalid' };
+      const body = { commandId: input.commandId, runId: offer.runId, decision: input.kind,
+        expectedOfferVersion: offer.offerVersion, expectedHoldVersion: offer.holdVersion, expectedQuoteVersion: offer.quoteVersion,
+        ...(input.kind === 'decline' ? { reasonCode: input.reasonCode } : {}) };
+      return call(`/api/gcsp/offers/${encodeURIComponent(offer.offerId)}/decision`, { method: 'POST',
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal });
+    },
     async read({ signal } = {}) {
       if (!valid) return { status: 'not-found' };
       if (token && !exchangeAttempted) {
@@ -58,11 +95,15 @@ export function createOfferHttpTransport({ fetch: request = globalThis.fetch, lo
 
 /** Bind the approved public DTO to the shared card without calculating policy or fabricating decisions. */
 export function createOfferHttpAdapter({ project = toOfferPresentation, schedule = globalThis.setTimeout,
-  cancel = globalThis.clearTimeout, refreshMs = 5000, ...options } = {}) {
+  cancel = globalThis.clearTimeout, refreshMs = 5000, enableDecisions = false, ...options } = {}) {
   const transport = createOfferHttpTransport(options);
   if (typeof schedule !== 'function' || typeof cancel !== 'function' || !Number.isInteger(refreshMs)
     || refreshMs <= 0 || refreshMs > 2147483647) throw new TypeError('Supply a bounded refresh scheduler.');
   let busy = 0;
+  const decisionPorts = enableDecisions === true ? {
+    async readReasons(...args) { ++busy; try { return await transport.readReasons(...args); } finally { --busy; } },
+    async decide(...args) { ++busy; try { return await transport.decide(...args); } finally { --busy; } },
+  } : {};
   return { async read(input) {
     ++busy;
     try {
@@ -73,6 +114,7 @@ export function createOfferHttpAdapter({ project = toOfferPresentation, schedule
     } catch { return unavailable(); }
     finally { --busy; }
   },
+  ...decisionPorts,
   subscribeClock(listener) {
     let alive = true; let timer;
     const next = () => {

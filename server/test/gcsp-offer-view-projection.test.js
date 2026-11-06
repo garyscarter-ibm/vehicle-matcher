@@ -237,3 +237,11 @@ for (const [name, mutate] of invalidComparisons) test(`invalid comparison falls 
   assert.equal(outcome.value.card.members[0].display.line, 'Order no. 0999987');
   assert.deepEqual(outcome.value.actions, { accept: true, decline: true });
 });
+
+test('decision reference forwards the validated immutable quote revision without internal authority', () => {
+  const dto = sample(); dto.quote.revisions.quote = 7;
+  const outcome = toOfferPresentation({ status: 'ok', value: dto });
+  assert.equal(outcome.status, 'ok');
+  assert.deepEqual(outcome.value.reference, { offerId: dto.offerId, runId: dto.runId,
+    offerVersion: dto.offerVersion, holdVersion: dto.holdVersion, quoteVersion: 7 });
+});

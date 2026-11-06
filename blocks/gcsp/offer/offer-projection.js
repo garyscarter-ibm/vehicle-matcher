@@ -173,7 +173,8 @@ export function toOfferPresentation(envelope, { reference } = {}) {
     return { status: 'ok', value: { state: uncertain ? 'uncertain' : v.state, reason: v.reason,
       ...(uncertain ? { message: v.reason === 'release-pending' ? 'The release is being confirmed. Actions are unavailable.'
         : 'Your decision is being confirmed. Actions are unavailable.' } : {}),
-      reference: { offerId: v.offerId, runId: v.runId, offerVersion: v.offerVersion, holdVersion: v.holdVersion },
+      reference: { offerId: v.offerId, runId: v.runId, offerVersion: v.offerVersion, holdVersion: v.holdVersion,
+        quoteVersion: revisions.quote },
       now: v.serverNow, clockVersion: v.clockVersion, expiresAt: v.expiresAt, actionable: v.state === 'pending' && !uncertain,
       actions, card: cardFor(quote), comparisonAvailable: false, currentCar } };
   } catch { return { status: 'unavailable', retryable: true }; }

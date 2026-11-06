@@ -5,7 +5,7 @@ import { createOfferController, countdownText, remainingTime } from '../../block
 import { toOfferPresentation } from '../../blocks/gcsp/offer/offer-projection.js';
 
 const pending = (overrides = {}) => ({ status: 'ok', value: { state: 'pending', actionable: true,
-  reference: { offerId: 'offer-1', runId: 'run-1', offerVersion: 1, holdVersion: 1 },
+  reference: { offerId: 'offer-1', runId: 'run-1', offerVersion: 1, holdVersion: 1, quoteVersion: 1 },
   now: '2026-11-05T12:00:00.000Z', expiresAt: '2026-11-05T14:00:00.000Z',
   actions: { accept: true, decline: true }, ...overrides } });
 const deferred = () => { let resolve; const promise = new Promise((r) => { resolve = r; }); return { promise, resolve }; };
@@ -93,7 +93,7 @@ test('failed command and failed readback keep an uncertain outcome, never a fabr
   let reads = 0;
   const c = createOfferController({ read: async () => ++reads === 1 ? pending() : { status: 'unavailable' },
     decide: async () => { throw new Error('lost response'); } });
-  await c.refresh(); await c.decision('decline');
+  await c.refresh(); await c.decision('accept');
   assert.equal(c.snapshot().state, 'uncertain'); assert.equal(c.snapshot().canDecline, false); c.destroy();
 });
 
@@ -102,6 +102,7 @@ test('published decline-only sample blocks accept, allows only an injected decli
   const decline = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/producer-decline-access.json', import.meta.url), 'utf8'));
   let dto = initial; const calls = [];
   const c = createOfferController({ read: async () => toOfferPresentation({ status: 'ok', value: dto }),
+    readReasons: async () => ({ status: 'ok', value: { schemaVersion: 1, key: 'offer.declineReasons.v1', policyVersion: 'contract-spy', reasons: [{ code: 'test-reason', label: 'Test reason', attribute: 'body' }] } }),
     createCommandId: () => 'decline-spy-only', decide: async ({ kind }) => { calls.push(kind); } });
   try {
     const before = await c.refresh(); assert.equal(before.canAccept, true); assert.equal(before.canDecline, true);
@@ -109,7 +110,8 @@ test('published decline-only sample blocks accept, allows only an injected decli
     assert.equal(current.canAccept, false); assert.equal(current.canDecline, true); assert.equal(current.seconds, 3600);
     assert.equal(current.expiresAt, initial.expiresAt); assert.equal(current.state, 'pending');
     await c.decision('accept'); assert.deepEqual(calls, []);
-    await c.decision('decline'); assert.deepEqual(calls, ['decline']);
+    await c.decision('decline'); assert.deepEqual(calls, []);
+    await c.decision('decline', { reasonCode: 'test-reason' }); assert.deepEqual(calls, ['decline']);
     assert.equal(c.snapshot().state, 'pending'); // The contract spy cannot establish a declined outcome.
   } finally { c.destroy(); }
   const readOnly = createOfferController({ read: async () => toOfferPresentation({ status: 'ok', value: decline }) });
