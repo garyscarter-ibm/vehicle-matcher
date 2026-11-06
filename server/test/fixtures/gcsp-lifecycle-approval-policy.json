@@ -1,5 +1,5 @@
 {
-  "purpose": "Prepared additive canonical policy rows for FUCQ-111 (serial policy lane). Append to seed-v1.json assumptions; ordering.approvalStages.v1 comes from FUCQ-71 ed20ca2 unchanged.",
+  "purpose": "FUCQ-111 canonical rows, now in seed-v1.json assumptions. Tests assert these match the seed exactly; this file is not a registry.",
   "assumptions": [
     {
       "key": "lifecycle.approval.ticks.v1",
@@ -9,12 +9,12 @@
         "sent to ordering": 1
       },
       "unit": "presenter ticks per stage",
+      "status": "assumed",
       "basis": "Two presenter ticks per approval keeps each wait visible in a walkthrough; real approval turnaround is unknown and is revised through trials.",
-      "source": "docs/gcsp/evidence/fucq111/stage-port-proposal.md",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
       "sourceDate": "2026-11-06",
       "policyVersion": "gcsp-policy-v1",
-      "effectiveFrom": "2026-11-04T00:00:00.000Z",
-      "status": "assumed"
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
       "key": "lifecycle.approval.declineScenario.v1",
@@ -26,12 +26,12 @@
         "reason": "The sales manager declined this order. The scheme team will contact you."
       },
       "unit": "scenario selection",
+      "status": "assumed",
       "basis": "Off by default; a presenter scenario enables it to show the difficult case. The event type matches renewalCase.lifecycle.eventTypes.",
-      "source": "docs/gcsp/evidence/fucq111/stage-port-proposal.md",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
       "sourceDate": "2026-11-06",
       "policyVersion": "gcsp-policy-v1",
-      "effectiveFrom": "2026-11-04T00:00:00.000Z",
-      "status": "assumed"
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
       "key": "lifecycle.approval.ownership.v1",
@@ -66,12 +66,12 @@
         }
       },
       "unit": "owner and next-step labels",
+      "status": "assumed",
       "basis": "Target platform owners per stage (HLD review Q19); labels are concise demo copy, not BMW workflow text.",
-      "source": "docs/gcsp/evidence/fucq111/stage-port-proposal.md",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
       "sourceDate": "2026-11-06",
       "policyVersion": "gcsp-policy-v1",
-      "effectiveFrom": "2026-11-04T00:00:00.000Z",
-      "status": "assumed"
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
     }
   ]
 }

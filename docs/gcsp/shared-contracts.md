@@ -627,6 +627,46 @@ ownership, and unsupported/rejected outcomes never fabricate a confirmation. Rec
 existing `pending-reconciliation` stage. Backend presentation fixtures cover validation, pending, failure and actual
 approval status; rendered consumer evidence belongs to FUCQ-72.
 
+## Lifecycle approval stages · FUCQ-111
+
+`LifecycleApprovalService` (`server/gcsp/lifecycle/approvals/`) owns one approval lifecycle per acknowledged FUCQ-71
+`selection-order` operation, keyed by its allocated `orderUuid`, for manual (`cart`) and buddy (`buddy-offer`) sources.
+The stage list is `selection received` followed by the order's pinned `ordering.approvalStages.v1` snapshot; HR approval
+is present only when that key contains it. A later active policy never relabels an existing order.
+
+Public reads `read(context,{orderUuid})` and `listOrders(context)` require an employee, Greg or presenter session; an
+employee sees only their own orders. Routes `GET /api/gcsp/orders/progress?orderUuid=` and `/api/gcsp/orders/progress/all`
+discard browser identity and run claims. The frozen server-internal `stagePort()` exposes the same two methods for
+DemoClock handlers without a role check, still bound to the current run and environment; it has no route. FUCQ-116
+consumes it as `lifecycleStages`. The view is `lifecycle.stages.v1` revision 2: run, order, employee, slot, renewal
+identity (`renewalAuthority` `validated` only with both slot and renewal; otherwise `missing` and `renewalId: null`),
+source selection operation and versions, top-level pinned `policyVersion` with per-key provenance, `lifecycleRevision`,
+DemoClock `asOf`, stages with state, instant and provider reference, owner, next step, outcome, blocked reason and provider
+mode. Missing, pending, failed, unsupported and foreign reads return `not-found`, `unavailable` (`state: not-ready`),
+`forbidden` or `stale-run`; none invents an order.
+
+Transitions append completed `event_receipts` rows under `lifecycle:approval:<orderUuid>` (`revision:NNNNNN`, type
+`lifecycle-stage-changed`); each stage decision is one `pending_operations` row of type `lifecycle-approval-decision`
+reused for every retry. No table or migration is added. Handler `lifecycle-approvals` registers in
+`pending-reconciliation` and sorts before `lifecycle-documents`. Presenter ticks count keyed ticks once per tick ID, then
+ask the ordering status capability (`synthetic-ordering-status:v1`, beside FUCQ-71's single adapter); startup ticks only
+reconcile. Uncertain writes stay pending and are reconciled before retry; the live-shaped stub reports every write
+unsupported and leaves the stage. One failing order is recorded in the handler outcome and the rest still advance.
+
+A declined stage atomically records `lifecycle:exceptions` with the keyed event type and top-level `employeeId`,
+`renewalId`, `orderUuid`, `occurredAt`, plus stage, reason, revision, transition and provider identity; the FUCQ-112
+consumer opens a renewal case from it when renewal authority is validated.
+
+| Key | Assumed default |
+|---|---|
+| `lifecycle.approval.ticks.v1` | HR approval 2, sales-manager approval 2, sent to ordering 1; presenter ticks |
+| `lifecycle.approval.declineScenario.v1` | disabled; stage sales-manager approval; `approval-declined` |
+| `lifecycle.approval.ownership.v1` | owner and next step per stage and outcome |
+
+Response shapes for the later order progress screen are `server/test/fixtures/gcsp-lifecycle-approval-outcomes.json`.
+Remaining: FUCQ-71's selection-acknowledged receipt lacks top-level `renewalId`/`orderUuid`/`occurredAt`, and no
+validated renewal authority is seeded, so decline cases stay unopened in the default run; runtime composition is FUCQ-100's lane.
+
 ## Ownership and extensions
 
 FUCQ-53's [synthetic identity allocation contract](synthetic-identity-allocation.md) adds offline `allocateSyntheticIdentities` / `allocateInventoryFile` ports, immutable whole-inventory replay, delivered/current-only VIN generation and `publishStockOrders` through the existing repository transaction port. Stock imports start unreleased, carry no VIN and preserve current operational state; `runs.versions.syntheticIdentityInventory` records the artifact revision/digest. Only the seven-digit order reference is exposed by the employee projection. File publication and PostgreSQL import are separate stages with independently atomic failure; this adds no repository table, public write endpoint or scheme-policy source.
@@ -662,6 +702,7 @@ Retail `publicMatch.listings[]` additively retains the evaluator's exact `decisi
 
 | Version / date / owner | Change and keyed assumptions |
 |---|---|
+| 1.0.0 / 2026-11-06 / FUCQ-111 | Adds LifecycleApprovalService, `lifecycle.stages.v1` rev 2 read/listOrders and internal stagePort, synthetic ordering status capability and live stub, versioned receipt transitions (no table), `lifecycle-approvals` handler and assumed `lifecycle.approval.{ticks,declineScenario,ownership}.v1`. |
 | 1.0.0 / 2026-11-05 / FUCQ-71 | Adds the isolated shared selection-ordering port, durable scoped synthetic provider and DemoClock reconciliation; canonical assumed `ordering.terms.v1` / `ordering.approvalStages.v1` and a trusted source transaction callback. Uses existing repository tables, preserves exact stock order identity and target approval names. F71 callback commit/rollback/pending and policy boundaries are scoped evidence; Gary's actual transactional producer, configured SQL/reopen, account/runtime and final whole-suite gates remain incomplete. |
 | 1.0.0 / 2026-11-05 / FUCQ-83 | Source checkpoint: additive dated policy tables/migration 0002, idempotent seed, PostgreSQL and explicit memory providers, trusted Greg immutable publishing/replay and unchanged pinned reads. Existing assumptions/0003/consumers remain unchanged. Configured native policy/factory/repository proof passes with exact schema cleanup; combined offline full 1,235 total/1,230 passed/5 native skips has matching strict stamp 07aea3ec1a62. No screen or fresh diagram-render claim. |
 | 1.0.0 / 2026-11-05 / FUCQ-94 | Adds canonical editor context and server-only real unsaved preview through strict employee HTTP routes, explicit draft/base provenance, independent consent and truthful empty-equipment no. No approved recommendation downgrade, writes, holds or new screen. |
