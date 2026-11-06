@@ -1,0 +1,77 @@
+{
+  "purpose": "Prepared additive canonical policy rows for FUCQ-111 (serial policy lane). Append to seed-v1.json assumptions; ordering.approvalStages.v1 comes from FUCQ-71 ed20ca2 unchanged.",
+  "assumptions": [
+    {
+      "key": "lifecycle.approval.ticks.v1",
+      "value": {
+        "HR approval": 2,
+        "sales-manager approval": 2,
+        "sent to ordering": 1
+      },
+      "unit": "presenter ticks per stage",
+      "basis": "Two presenter ticks per approval keeps each wait visible in a walkthrough; real approval turnaround is unknown and is revised through trials.",
+      "source": "docs/gcsp/evidence/fucq111/stage-port-proposal.md",
+      "sourceDate": "2026-11-06",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z",
+      "status": "assumed"
+    },
+    {
+      "key": "lifecycle.approval.declineScenario.v1",
+      "value": {
+        "enabled": false,
+        "stage": "sales-manager approval",
+        "eventType": "approval-declined",
+        "reasonCode": "sales-manager-declined",
+        "reason": "The sales manager declined this order. The scheme team will contact you."
+      },
+      "unit": "scenario selection",
+      "basis": "Off by default; a presenter scenario enables it to show the difficult case. The event type matches renewalCase.lifecycle.eventTypes.",
+      "source": "docs/gcsp/evidence/fucq111/stage-port-proposal.md",
+      "sourceDate": "2026-11-06",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z",
+      "status": "assumed"
+    },
+    {
+      "key": "lifecycle.approval.ownership.v1",
+      "value": {
+        "stages": {
+          "selection received": {
+            "owner": "ordering",
+            "nextStep": "Approval checks start"
+          },
+          "HR approval": {
+            "owner": "HR",
+            "nextStep": "HR decision"
+          },
+          "sales-manager approval": {
+            "owner": "sales manager",
+            "nextStep": "Sales-manager decision"
+          },
+          "sent to ordering": {
+            "owner": "ordering",
+            "nextStep": "Ordering confirms the order"
+          }
+        },
+        "outcomes": {
+          "declined": {
+            "owner": "scheme team",
+            "nextStep": "Scheme team reviews the decline"
+          },
+          "sent-to-ordering": {
+            "owner": "ordering",
+            "nextStep": "Appointment to be arranged"
+          }
+        }
+      },
+      "unit": "owner and next-step labels",
+      "basis": "Target platform owners per stage (HLD review Q19); labels are concise demo copy, not BMW workflow text.",
+      "source": "docs/gcsp/evidence/fucq111/stage-port-proposal.md",
+      "sourceDate": "2026-11-06",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z",
+      "status": "assumed"
+    }
+  ]
+}
