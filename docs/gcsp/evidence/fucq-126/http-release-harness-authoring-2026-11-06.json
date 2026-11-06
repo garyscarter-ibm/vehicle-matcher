@@ -1,6 +1,6 @@
 {
   "date": "2026-11-06",
-  "scope": "Owned six actual composed HTTP cases, isolated TEST pull profile, transport and cancellation-safe supervisor authoring; unexecuted",
+  "scope": "Owned exact physical six-case HTTP candidate, isolated bootstrap-derived TEST profile, transport and cancellation-safe supervisor; statically validated and unexecuted",
   "planningBase": "496b92a31310fd7308ecf2f6f55ba6737cad9a6d",
   "source": {
     "path": "server/test/helpers/presenter-http-proof.js",
@@ -22,12 +22,8 @@
     "Transport journal retains only method/path/status/byte counts; never tokens or business bodies"
   ],
   "pending": [
-    "Root review/admission of actual source union and owned harness",
-    "Read observer source/schema and complete literal/dynamic read allowlist",
-    "Concrete candidate root plus freshly pinned package resolution links/directory inventories",
-    "Flatten exact source/dependency/helper/profile files into launcher input manifest",
-    "Actual delivered C5 reset/principal subscription hook from sole central writer100",
-    "Trusted new-run source/preparation interface before positive post-reset or business acceptance"
+    "Independent review of exact physical candidate/harness/static classification",
+    "Explicit six-case execution admission, refreshed host budget and absolute external output/impact/ownership plan"
   ],
   "executionAuthorized": false,
   "cancellationGuard": {
@@ -47,7 +43,7 @@
     "basis": "Dispatcher notice: inherited Popen-to-register handled-cancellation gap found in107 supervisor/resources; no runtime reproduction authorized.",
     "acceptedEarlierProof": "Prior actual126 selected checks remain scoped accepted; no claim that any actual run hit this edge.",
     "sourceFix": "Owned future guard defers SIGINT/SIGTERM during creation/registration, retains local Popen handle, stops/joins and verifies exact PID/start/group even when registration fails; cleanup failure stays explicit.",
-    "integrationStatus": "Guard is now wired directly around Popen in the authored supervisor; unexecuted. Registration failures still stop/join the local handle; cleanup uncertainty retains scratch/reservation. Exact candidate/read observer/root review remain pending.",
+    "integrationStatus": "Guard wired directly around Popen in authored supervisor; unexecuted. Registration failure stops/joins actual local handle; uncertainty retains scratch/reservation. Physical source/dependency pins are complete; independent review/execution admission remain pending.",
     "reservationAndScratch": "No scratch deletion/reservation release may rely on an empty registry; require actual handle cleanup and independent absence evidence. Preserve a named issue and charge for remaining live resources."
   },
   "resourceHelperPlanningPin": {
@@ -57,12 +53,15 @@
   },
   "currentSourceRef": "f179ae6043414a2b07de3edb2b425338299ea37b",
   "currentFreeze": {
-    "path": "docs/gcsp/evidence/fucq-126/http-release-source-plan-f179ae6-2026-11-06.json",
-    "sha256": "1d99642d619be61d555dd11a2561a1ec3e920718ee49850772dbe40062d4b545",
-    "sourceFiles": 136,
-    "literalEdges": 275,
-    "hostEvidenceFiles": 3,
-    "dependencyFilesReferenced": 1975
+    "path": "docs/gcsp/evidence/fucq-126/http-physical-candidate-f179ae6-2026-11-06.json",
+    "sha256": "efdb32a33413919315b4dbcc9a09c6b5e5be0d27602b1a9c2d8ac51801b84437",
+    "sourceDataHelperReferenceFiles": 137,
+    "installedDependencyFiles": 1975,
+    "allFiles": 2112,
+    "distinctResolvedFiles": 2110,
+    "literalEdges": 267,
+    "classifiedSites": 29,
+    "candidateRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096"
   },
   "authoredCases": [
     "release-http: startup and actual release IDs match controller count and inventory delta",
@@ -75,24 +74,24 @@
   "testAndSupervisorSources": [
     {
       "path": "docs/gcsp/evidence/fucq-126/http-release-supervisor.py",
-      "ref": "owned-authoring",
-      "blob": null,
-      "sha256": "e8d0c20135e468fd4a9f9a9fddfd69fd819d3c507f5b25c0c000a64f7c59cd48",
-      "bytes": 12981
+      "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/docs/gcsp/evidence/fucq-126/http-release-supervisor.py",
+      "sha256": "de9c435e51f61f6722440b65dac778f44dbe9fb28553bcc6e5b9cb5267733ae6",
+      "bytes": 12912,
+      "role": "physical-source-data-helper-or-reference"
     },
     {
       "path": "docs/gcsp/evidence/fucq-126/http-release.integration.mjs",
-      "ref": "owned-authoring",
-      "blob": null,
+      "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/docs/gcsp/evidence/fucq-126/http-release.integration.mjs",
       "sha256": "a85ddaa99a1f1ae892bc5979b4dc49cab3cd99ecd6b7598b2715b90218e2af0a",
-      "bytes": 15075
+      "bytes": 15075,
+      "role": "physical-source-data-helper-or-reference"
     },
     {
-      "path": "docs/gcsp/evidence/fucq-126/prepare-f179-http-freeze.py",
-      "ref": "owned-authoring",
-      "blob": null,
-      "sha256": "645fcec46b4bb9a8bb32e295b3775203ea69e89518e2da2c9d3163f5a51d077e",
-      "bytes": 8275
+      "path": "docs/gcsp/evidence/fucq-126/prepare-physical-http-candidate.py",
+      "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/docs/gcsp/evidence/fucq-126/prepare-physical-http-candidate.py",
+      "sha256": "8e44028859459ff243ad1a16ce5856f61cb32c5c69ffb1a9a33a04183bbc89da",
+      "bytes": 14914,
+      "role": "physical-source-data-helper-or-reference"
     }
   ],
   "profile": {
@@ -102,5 +101,32 @@
     "releasedRowsRepaired": false,
     "newRunSuccess": false,
     "deliveredHostProfile": false
-  }
+  },
+  "separateAcceptanceGates": [
+    "C5 delivered host subscription/navigation remains central100 work; not a six-case admission prerequisite.",
+    "Trusted positive new-run source and six atomic business preparations remain open; no FUCQ77/78 or business acceptance.",
+    "Browser/native/full execution lanes and paused96 unchanged."
+  ],
+  "historicalVirtualFreeze": {
+    "path": "docs/gcsp/evidence/fucq-126/http-release-source-plan-f179ae6-2026-11-06.json",
+    "sha256": "1d99642d619be61d555dd11a2561a1ec3e920718ee49850772dbe40062d4b545",
+    "sourceFiles": 136,
+    "literalEdges": 275,
+    "hostEvidenceFiles": 3,
+    "dependencyFilesReferenced": 1975
+  },
+  "readClassification": {
+    "method": "finite-static-source-review",
+    "filesystemReadsObserved": false,
+    "classifiedSites": 29,
+    "eagerLocalCorpusLoadIncluded": true,
+    "unclassifiedSites": []
+  },
+  "sourceAdoption": {
+    "receipt": "docs/gcsp/evidence/fucq-126/http-candidate-adoption-f179ae6-2026-11-06.json",
+    "sha256": "2dd1cb1284b9904ef4a3090de14449089875e9eaab58f291cf95989639b82a0e",
+    "changedFiles": 44,
+    "preservedFiles": 9
+  },
+  "executionReady": false
 }

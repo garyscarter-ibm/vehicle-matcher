@@ -30,14 +30,27 @@ def main(manifest_path):
     files = {str((root / row['path']).resolve()): row for row in plan['files']}
 
     def verify_sources():
-        same = all(Path(path).is_file() and Path(path).stat().st_size == row['bytes']
-                   and sha(Path(path)) == row['sha256'] for path, row in files.items())
+        same = all((root / row['path']).is_file()
+                   and str((root / row['path']).resolve()) == row['target']
+                   and (root / row['path']).stat().st_size == row['bytes']
+                   and sha(root / row['path']) == row['sha256'] for row in plan['files'])
         for entry in plan['directories']:
             folder = root / entry['path']
             members = list(folder.rglob('*'))
             if any(p.is_symlink() and p.is_dir() for p in members):
                 return False
             if sorted(str(p.relative_to(folder)) for p in members if p.is_file()) != entry['files']:
+                return False
+        for entry in plan.get('absentFiles', []):
+            if os.path.lexists(root / entry):
+                return False
+        node_identity = plan['node']
+        node_path = Path(node_identity['path'])
+        if str(node_path.resolve()) != node_identity['target'] or sha(node_path) != node_identity['sha256']:
+            return False
+        for link in plan['dependencyLinks']:
+            path = root / link['path']; current = path.lstat()
+            if (str(path.resolve()), current.st_dev, current.st_ino) != (link['target'], link['device'], link['inode']):
                 return False
         return same
 
@@ -47,20 +60,21 @@ def main(manifest_path):
             raise RuntimeError('Unpinned launcher/input: ' + name)
         return path
 
-    # Verify helper bytes before importing them, and refuse absent observer/case/profile inputs.
+    # Verify helper bytes before importing them; filesystem reads are statically classified, not observed.
     if not verify_sources():
         raise RuntimeError('Frozen candidate source/dependency bytes do not match.')
     resource_path, guard_path = frozen('resourceHelper'), frozen('childGuard')
-    test_path, observer_path = frozen('caseFile'), frozen('readObserver')
+    test_path = frozen('caseFile')
+    classification = plan.get('readClassification', {})
+    if classification.get('method') != 'finite-static-source-review' or classification.get('filesystemReadsObserved') is not False:
+        raise RuntimeError('Require the explicit bounded static read classification.')
+    if not classification.get('sites') or classification.get('unclassifiedSites') != []:
+        raise RuntimeError('Classify every enumerated product read/dynamic-import site before launch.')
     if frozen('supervisor') != Path(__file__).resolve():
         raise RuntimeError('This supervisor is not the frozen launcher.')
     node = Path(plan['node']['path'])
     if str(node.resolve()) != plan['node']['target'] or sha(node) != plan['node']['sha256']:
         raise RuntimeError('Node identity changed.')
-    for link in plan['dependencyLinks']:
-        path = root / link['path']; current = path.lstat()
-        if (str(path.resolve()), current.st_dev, current.st_ino) != (link['target'], link['device'], link['inode']):
-            raise RuntimeError('Dependency resolution link changed.')
     for name in plan['profileFiles']:
         frozen_profile = (root / name).resolve()
         if str(frozen_profile) not in files:
@@ -75,7 +89,7 @@ def main(manifest_path):
     R = load('fucq126_resources', resource_path)
     guard = load('fucq126_child_guard', guard_path)
     policy = R.Policy({'chunk_scratch_mib': 128, 'chunk_ram_mib': 768, 'chunk_seconds': 120, 'log_mib': 2,
-                       'local_scratch_reason': 'Bounded macOS Node IPC, coverage and read journal.'})
+                       'local_scratch_reason': 'Bounded macOS Node IPC and V8 module observations.'})
     host = R.HostBudget(policy)
     output = Path(plan['outputRoot'])
     if not output.is_absolute() or not output.name.startswith('fucq126-') or output.exists():
@@ -96,12 +110,12 @@ def main(manifest_path):
             host.acquire(scratch.token, 128 * R.MIB, 768 * R.MIB, root, root=scratch.root); reserved = True
             env = scratch.env(os.environ)
             for key in list(env):
-                if key.startswith(('PG', 'NODE_', 'NPM_', 'npm_')) or re.search(r'(DATABASE|POSTGRES|DB|SQL).*URL', key, re.I):
+                if key.startswith(('PG', 'NODE_', 'NPM_', 'npm_', 'GCSP_')) or re.search(r'(DATABASE|POSTGRES|DB|SQL).*URL', key, re.I):
                     env.pop(key, None)
-            journal = scratch.root / 'reads'; journal.mkdir()
-            env.update(NODE_V8_COVERAGE=str(scratch.root / 'coverage'), FUCQ126_READ_JOURNAL=str(journal),
+            env.update(NODE_V8_COVERAGE=str(scratch.root / 'coverage'),
+                       GCSP_VEHICLE_EVIDENCE_ROOT=str(root / plan['vehicleEvidenceRoot']),
                        TEST_RESOURCE_PARENT_RESERVATION=scratch.token)
-            command = [str(node), '--import', str(observer_path), '--test', '--test-concurrency=1', '--test-reporter=tap', str(test_path)]
+            command = [str(node), '--test', '--test-concurrency=1', '--test-reporter=tap', str(test_path)]
             log = scratch.root / 'original.tap'; started = time.monotonic(); peak_rss = 0
 
             def register(process, record):
@@ -147,28 +161,12 @@ def main(manifest_path):
                 'blocks/gcsp/presenter-controls/http-adapter.js', 'server/test/helpers/presenter-http-proof.js']}
             if not required_modules.issubset(observed) or observed - files.keys():
                 raise RuntimeError('Required actual modules unobserved or product/dependency closure unpinned.')
-            reads = {}; read_count = 0
-            for file in journal.glob('*.jsonl'):
-                with file.open() as stream:
-                    while True:
-                        line = stream.readline(16385)
-                        if not line:
-                            break
-                        if len(line) > 16384:
-                            raise RuntimeError('Read journal row exceeded its bound.')
-                        row = json.loads(line); path = str(Path(row['path']).resolve())
-                        if row.get('kind') != 'read' or path not in files:
-                            raise RuntimeError('Unexpected read outside the frozen allowlist.')
-                        reads[path] = reads.get(path, 0) + 1; read_count += 1
-                        if read_count > 100000:
-                            raise RuntimeError('Read journal count exceeded its finite plan.')
-            if not reads:
-                raise RuntimeError('Read journal is absent.')
             if not verify_sources():
                 raise RuntimeError('Candidate source changed during execution.')
             (output / 'original.tap').write_text(tap)
             outcome = {'rc': process.returncode, 'names': names, 'totals': totals, 'tapSha256': sha(log),
-                       'modules': sorted(observed), 'reads': reads, 'wallSeconds': time.monotonic() - started,
+                       'modules': sorted(observed), 'filesystemReadsObserved': False,
+                       'readClassification': classification, 'wallSeconds': time.monotonic() - started,
                        'peakRss': peak_rss, 'peakScratch': scratch.record['peak']}
             if process.returncode != 0 or R.allocated_bytes(output) > 4 * R.MIB:
                 raise RuntimeError('Command failed or retained-output allowance exceeded.')

@@ -1,29 +1,52 @@
 import { randomUUID } from 'node:crypto';
 import { createMemoryRepository, createMemoryStore, createPostgresRepository, inputDigest, ok, result } from './repository/index.js';
-import { createPolicyService } from './policy/index.js';
+import { PolicyService, MemoryPolicyProvider, PostgresPolicyProvider } from './policy/index.js';
 import { createDemoRuntime } from './clock/index.js';
 import { createManualContextService, createRepositoryManualPorts } from './manual-context/index.js';
 import { seedManualDemoContext } from './manual-context/fixtures.js';
 import { createBriefService } from './brief/index.js';
 import { createBriefEditorService } from './brief/editor.js';
 import { createActivityService } from './brief/activity.js';
+import { createGregDemandService } from './greg/index.js';
+import { createGregPublishService } from './greg/publish/index.js';
+import { createScenarioService } from './scenarios/index.js';
+import { createSyntheticManualStockAdapter } from './adapters/manual-stock.js';
+import { createManualClaimsService } from './manual-claims/index.js';
+import { createBuddyHoldService } from './offers/buddy-hold.js';
+import { createOfferAccessService } from './offers/access.js';
+import { verifyOfferToken } from './offers/offer-token.js';
+import { createNotificationDispatcher } from './notify/index.js';
+import { createStockReleaseService } from './stock/index.js';
+import { createStockReleaseHistoryPort } from './stock/history-port.js';
+import { createManualGalleryStockRead } from './manual-gallery/stock-read.js';
+import { createRenewalCaseService } from './cases/index.js';
+import { ManualReviewDetailsService } from './manual-review/index.js';
 
 const unavailable = () => result('unavailable', { reason: 'The trusted demo runtime is unavailable.', retryable: true });
 const scoped = (value, context) => ['runId', 'environmentId', 'employeeId'].every((key) => value?.[key] === context[key]);
 
 // Explicit composition only. A failed PostgreSQL open never changes providers.
-export async function createGcspRuntime({ mode = 'postgres', repository, repositoryOptions, policy = createPolicyService(),
-  environmentId, policyAsOf, commandId, sessionNow = () => new Date().toISOString() } = {}) {
+export async function createGcspRuntime({ mode = 'postgres', repository, repositoryOptions, policy,
+  environmentId, policyAsOf, commandId, stockProvider, sessionNow = () => new Date().toISOString() } = {}) {
   if (!['postgres', 'memory'].includes(mode)) return result('invalid', { code: 'unsupported-repository-mode' });
   repository ??= mode === 'memory' ? createMemoryRepository({ store: createMemoryStore() }) : createPostgresRepository(repositoryOptions);
-  let closed = false;
-  const close = async () => { if (!closed) { closed = true; await repository.close(); } };
+  const ownsPolicy = policy === undefined;
+  const readPolicy = policy ?? new PolicyService({ provider: mode === 'memory'
+    ? new MemoryPolicyProvider() : new PostgresPolicyProvider(repositoryOptions) });
+  let closing; let notify;
+  // The trusted host settles startup and its initiating calls before closing.
+  const close = () => closing ??= (async () => {
+    try { notify?.close(); } finally {
+      try { await repository.close(); } finally { if (ownsPolicy) await readPolicy.close(); }
+    }
+  })();
   try {
     const opened = await repository.open();
     if (opened.status !== 'ok') { await close(); return opened; }
-    const initialized = await createDemoRuntime({ repository, policy, environmentId, environmentKind: 'synthetic', policyAsOf, commandId, sessionNow });
+    const initialized = await createDemoRuntime({ repository, policy: readPolicy, environmentId, environmentKind: 'synthetic', policyAsOf, commandId, sessionNow });
     if (initialized.status !== 'ok') { await close(); return initialized; }
     const { clock, identity } = initialized.value;
+    policy = readPolicy.withPublicationPorts({ identity, clock, repository });
     const ports = createRepositoryManualPorts({ repository, policy });
     const account = createManualContextService({ repository, policy, clock, identity, ports });
     const brief = createBriefService({ repository, policy, clock, identity });
@@ -45,7 +68,34 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     } };
     const editor = createBriefEditorService({ brief, account, provider, policy, clock, identity });
     const activity = createActivityService({ repository, identity, clock });
-    const dependencies = { gcspIdentity: identity, gcspClock: clock, gcspManual: account, gcspBrief: brief,
+    const greg = createGregDemandService({ repository, policy, clock, identity });
+    const gregPublish = createGregPublishService({ repository, policy, clock, identity });
+    // Prepared scenario fixtures are branded by the exact policy instance used by the clock.
+    const scenarios = createScenarioService({ repository, policy: readPolicy, clock, identity });
+    const adapter = createSyntheticManualStockAdapter();
+    const manualClaims = createManualClaimsService({ repository, policy, clock, identity, manual: account, adapter });
+    // The trusted host supplies the existing pull port. No source is invented here.
+    const stockRelease = stockProvider === undefined ? undefined
+      : createStockReleaseService({ repository, policy, clock, identity, provider: stockProvider });
+    const releaseHistory = createStockReleaseHistoryPort({ repository, identity, clock });
+    const galleryRead = createManualGalleryStockRead({ manual: manualClaims, releaseHistory, identity, clock });
+    // Route reads through this facade; lifecycle and mutations keep the original instance.
+    const manualRead = Object.freeze({
+      readAccount: manualClaims.readAccount.bind(manualClaims),
+      readDraft: manualClaims.readDraft.bind(manualClaims),
+      saveDraft: manualClaims.saveDraft.bind(manualClaims),
+      browseStock: galleryRead.browseStock.bind(galleryRead),
+    });
+    const manualReview = new ManualReviewDetailsService({ repository, policy, identity, manualClaims });
+    const cases = createRenewalCaseService({ repository, policy, clock, identity });
+    const buddy = createBuddyHoldService({ repository, policy, clock, identity, adapter });
+    const offerAccess = createOfferAccessService({ repository, policy, clock, identity, environmentId, sessionNow, verifyOfferToken });
+    notify = createNotificationDispatcher({ repository, policy, clock, environmentId });
+    const dependencies = { gcspRepository: repository, gcspPolicy: policy, gcspGreg: greg, gcspGregPublish: gregPublish,
+      gcspScenarios: scenarios, gcspManualClaims: manualClaims, gcspManualRead: manualRead, gcspManualReview: manualReview,
+      gcspStockRelease: stockRelease, gcspCases: cases, gcspBuddy: buddy, gcspOfferAccess: offerAccess,
+      gcspNotify: notify, gcspOutbox: { repository },
+      gcspIdentity: identity, gcspClock: clock, gcspManual: account, gcspBrief: brief,
       gcspBriefEditor: editor, gcspActivity: activity, gcspRecommendations: { provider, policy, time: clock } };
     // Backend-only local bootstrap. The browser cannot choose identities or receive raw credentials in JSON.
     async function createLocalSession() {
@@ -63,6 +113,6 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       if (seeded.status !== 'ok') return seeded;
       return ok({ context: acting.value.context, setCookie: [presenter.value.setCookie[1], acting.value.setCookie] });
     }
-    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, dependencies, createLocalSession, close });
+    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, manualRead, manualReview, stockRelease, releaseHistory, cases, buddy, offerAccess, notify, dependencies, createLocalSession, close });
   } catch { await close(); return unavailable(); }
 }

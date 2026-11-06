@@ -1368,7 +1368,7 @@
       "id": "FUCQ-126",
       "jira_observation_basis": "Authenticated getJiraIssue FUCQ-126: In Progress/Gary Carter; no Jira write",
       "jira_observed_at": "2026-11-05T23:00:00Z",
-      "observed_at": "2026-11-06T02:14:13Z",
+      "observed_at": "2026-11-06T02:31:05Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -1400,7 +1400,7 @@
           "title": "Desktop and375px keyboard and actual HTTP proof"
         },
         {
-          "evidence": "Actual100 composition f179ae6 supplied. Six actualHTTP count/replay/empty/refusal/reset cases and cancellation-safe supervisor authored/unexecuted;136sources/275edges+3hostpins/1975unchangeddependency files. Read observer, physicalcandidate/admission and C5hostsubscription remain pending; no fullstamp. docs/gcsp/evidence/fucq-126/http-release-authoring-f179ae6-2026-11-06.md",
+          "evidence": "Physical candidate adopts44 exact canonicalf179ae6 product paths and preserves9 accepted126 leaves. SixHTTP cases/supervisor remain unexecuted;137source/data/helper/reference files,267literal edges,1975dependency files and29 static read/import sites pinned. Generic observer removed by direction; eager local corpus load included. Independent execution review/admission pending. C5 is separate, not six-case admission blocker. docs/gcsp/evidence/fucq-126/http-release-authoring-f179ae6-2026-11-06.md",
           "id": "integrated-validation",
           "observed_at": "2026-11-06T02:14:13.172640+00:00",
           "status": "in-progress",
@@ -1414,7 +1414,7 @@
           "title": "Existing stored policy successor-key adoption"
         },
         {
-          "evidence": "Actual100 f179ae6 now constructs92release through explicitprovider. Own authoredsixcase TESTprofile derives bootstrapidentities and preserves their incompletefacts; no releasedrowrepair or executedbusinessproof. Trusted newrunfactory, actualC5hostsubscription and six atomicbusinesspreparations remain open; paused96 retained. docs/gcsp/evidence/fucq-126/http-release-authoring-f179ae6-2026-11-06.md",
+          "evidence": "Physical canonical100 f179ae6 composition constructs92release through explicitprovider. Own sixcase TESTprofile preserves bootstrapidentity facts; all cases unexecuted, no businessfact repair. Positive newrun source, actualC5hostsubscription and six atomicbusinesspreparations remain separate open gates; paused96 retained. docs/gcsp/evidence/fucq-126/http-release-authoring-f179ae6-2026-11-06.md",
           "id": "business-integration",
           "observed_at": "2026-11-06T02:14:13.172640+00:00",
           "status": "blocked",

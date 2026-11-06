@@ -1,6 +1,8 @@
 import { createHash, randomBytes } from 'node:crypto';
 import { inputDigest, ok, result } from '../repository/index.js';
 import { loadDemoPrincipalSeed } from '../fixtures/principals.js';
+import { activateRunPolicy } from '../policy/activation.js';
+import { validInstant } from '../policy/file-provider.js';
 
 export const SESSION_COOKIE = 'gcsp_session';
 export const PRESENTER_COOKIE = 'gcsp_presenter';
@@ -49,8 +51,16 @@ export class DemoIdentityAdapter {
       if (found.value.current !== true || found.value.status === 'historical') return { error: refused('stale-run') };
       const instant = this.#sessionNow();
       if (typeof instant !== 'string' || !Number.isFinite(Date.parse(instant))) return { error: unavailable() };
-      return { scope, run: found.value, instant, read: { runId: current.runId, asOf: instant, policyVersion: found.value.policyVersion } };
+      return { scope, run: found.value, instant, read: { runId: current.runId, asOf: validInstant(found.value.clockInstant) ? found.value.clockInstant : instant, policyVersion: found.value.policyVersion } };
     } catch { return { error: unavailable() }; }
+  }
+
+  async #adoptPolicy(state) {
+    if (state.error || state.run.status === 'historical' || state.run.clockInstant === undefined) return state;
+    const activated = await activateRunPolicy({ repository: this.#repository, policy: this.#policy }, state.scope);
+    if (activated.status !== 'ok') return { error: activated };
+    return { ...state, run: activated.value.run, read: { runId: state.scope.runId,
+      asOf: activated.value.asOf, policyVersion: activated.value.policyVersion } };
   }
 
   async #configuration(state) {
@@ -124,7 +134,7 @@ export class DemoIdentityAdapter {
   async createPresenterSession(commandId) {
     const seeded = await this.seedPrincipals();
     if (seeded.status !== 'ok') return seeded;
-    const state = await this.#run();
+    const state = await this.#adoptPolicy(await this.#run());
     if (state.error) return state.error;
     const config = await this.#configuration(state);
     if (config.error) return config.error;
@@ -163,6 +173,8 @@ export class DemoIdentityAdapter {
     if (session.environmentId !== state.scope.environmentId) return refused('forbidden');
     if (!Number.isFinite(Date.parse(session.expiresAt))) return unavailable();
     if (Date.parse(state.instant) >= Date.parse(session.expiresAt)) return refused('expired-session');
+    state = await this.#adoptPolicy(state);
+    if (state.error) return state.error;
     const config = await this.#configuration(state);
     if (config.error) return config.error;
     const principal = config.principals.find((p) => p.principalId === session.actingPrincipalId);
@@ -185,7 +197,10 @@ export class DemoIdentityAdapter {
   }
 
   async switchPrincipal(context, principalId, commandId) {
-    const state = await this.#guard(context);
+    const guarded = await this.#guard(context);
+    if (guarded.error) return guarded.error;
+    if (!context.roles.includes('presenter')) return refused('forbidden');
+    const state = await this.#adoptPolicy(guarded);
     if (state.error) return state.error;
     const config = await this.#configuration(state);
     if (config.error) return config.error;

@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "definitionSetId": "fucq115-choice-model-v1",
+  "revision": "choice-model-definitions.v1",
+  "definitions": [
+    {
+      "key": "choice.training.regularization",
+      "value": 0.001,
+      "unit": "dimensionless",
+      "status": "assumed",
+      "basis": "L2 penalty on average negative conditional log likelihood; small interpretable demo starting value.",
+      "source": "docs/gcsp/models/fucq115-contract.md",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "choice.training.split.v1",
+      "value": {
+        "lastTrainingCycleIndex": 1,
+        "evaluationCycleIndices": [
+          2,
+          3
+        ],
+        "cohortField": "gradeId",
+        "heldOutCohorts": [
+          "G8-10"
+        ]
+      },
+      "unit": "split-specification",
+      "status": "assumed",
+      "basis": "Earlier two cycles train; later two evaluate. Canonical grade group G8-10 is excluded from all training; verify support before running.",
+      "source": "docs/gcsp/models/fucq115-contract.md",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "choice.training.featureSet",
+      "value": "vehicle-preference-v1",
+      "unit": "feature-version",
+      "status": "assumed",
+      "basis": "Interpretable vehicle body/fuel/capacity/cost and stated-preference/importance/essential-capacity interactions.",
+      "source": "docs/gcsp/models/fucq115-contract.md",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "choice.training.optimizer.v1",
+      "value": {
+        "maxIterations": 1500,
+        "gradientTolerance": 0.000001,
+        "initialStep": 1,
+        "maxBacktracks": 30
+      },
+      "unit": "optimizer-settings",
+      "status": "assumed",
+      "basis": "Deterministic bounded full-batch gradient descent with Armijo line search.",
+      "source": "docs/gcsp/models/fucq115-contract.md",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "choice.evaluation.v1",
+      "value": {
+        "reliabilityBands": 10,
+        "thinClassMinimum": 20,
+        "logFloor": 1e-15
+      },
+      "unit": "evaluation-settings",
+      "status": "assumed",
+      "basis": "Ten probability bands; flag groups under 20 choices; explicit numerical logarithm floor, with zero-probability events counted.",
+      "source": "docs/gcsp/models/fucq115-contract.md",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "choice.model.reference",
+      "value": {
+        "artifactId": "unavailable",
+        "featureVersion": "unavailable",
+        "schemaVersion": 1
+      },
+      "unit": "immutable-model-reference",
+      "status": "assumed",
+      "basis": "No model is active until a reviewed artifact digest is published through the existing dated policy operation.",
+      "source": "docs/gcsp/models/fucq115-contract.md",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "choice.baseline.v1",
+      "value": {
+        "expressedDemandDimension": "body",
+        "deterministicFitMapping": "normalize-nonnegative-fit",
+        "smoothing": 0.001,
+        "waitShareKey": "learning.noChoiceRate"
+      },
+      "unit": "baseline-probability-mapping",
+      "status": "assumed",
+      "basis": "Map FUCQ-99 body demand and FUCQ-29 fit to assumed probabilities. Divide class mass over exact alternatives, reserve pinned wait mass and smooth non-wait weights. Synthetic demo evidence; not calibrated acceptance.",
+      "source": "docs/gcsp/models/fucq115-contract.md",
+      "sourceDate": "2026-11-05"
+    }
+  ],
+  "digest": "dec7093d94d6ce4494c98a92b6aa2e0dc4207c1ee506d1eb449e51c36e9cd54d"
+}

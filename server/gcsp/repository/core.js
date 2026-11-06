@@ -141,7 +141,15 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
     const replayId = inputDigest(Object.fromEntries(schema.key.map((key) => [key, input[key]])));
     const digest = inputDigest(contentRow(input));
     const original = rows('event_receipts').find((item) => item.consumerId === `repository:insert:${table}` && item.eventId === replayId);
-    if (original) return original.inputDigest === digest ? structuredClone(original.outcome) : conflict('idempotency-input-changed');
+    if (original) {
+      if (original.inputDigest !== digest) return conflict('idempotency-input-changed');
+      const outcome = structuredClone(original.outcome);
+      // Rehydrate only from the digest-validated original command, never the mutable job.
+      if (table === 'notification_outbox' && original.inputVersions?.offerLinkFromInsertInput === 1) {
+        outcome.value.payload.offerLink = structuredClone(input.payload.offerLink);
+      }
+      return outcome;
+    }
     const existing = rows(table).find((row) => schema.key.every((key) => equal(row[key], input[key])));
     if (existing) return equal(contentRow(existing), contentRow(input)) ? ok(existing) : conflict('duplicate-key', summary(existing));
     const timestamp = now();
@@ -149,7 +157,14 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
     const violation = constraint(table, row);
     if (violation) return violation;
     state.tables[table].push(row);
-    if (table !== 'event_receipts') state.tables.event_receipts.push({ runId: context.runId, consumerId: `repository:insert:${table}`, eventId: replayId, inputDigest: digest, state: 'completed', outcome: structuredClone(ok(row)), version: 1, createdAt: timestamp, updatedAt: timestamp });
+    if (table !== 'event_receipts') {
+      const outcome = structuredClone(ok(row));
+      const omitLink = table === 'notification_outbox' && plain(row.payload) && Object.hasOwn(row.payload, 'offerLink');
+      if (omitLink) delete outcome.value.payload.offerLink;
+      state.tables.event_receipts.push({ runId: context.runId, consumerId: `repository:insert:${table}`, eventId: replayId,
+        inputDigest: digest, state: 'completed', outcome, ...(omitLink ? { inputVersions: { offerLinkFromInsertInput: 1 } } : {}),
+        version: 1, createdAt: timestamp, updatedAt: timestamp });
+    }
     return ok(row);
   };
   const cas = (ref, expectedVersion, patch) => {

@@ -1,0 +1,436 @@
+{
+  "date": "2026-11-06",
+  "state": "adopted-exact-unexecuted",
+  "sourceRef": "f179ae6043414a2b07de3edb2b425338299ea37b",
+  "authorization": "Dispatcher authorized minimum adoption into owned126 tree for exact candidate; no execution grant.",
+  "changed": [
+    {
+      "path": "server/gcsp/adapters/manual-stock.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "561f2046cb2fd75650bed12435d1ca2aa8d940f7",
+      "sha256": "66e8d7de1662ac778ebc789aa9f93085abb9d2fafed528baf0fd90a9cb6bc771",
+      "bytes": 436,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/cases/http.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "2ca7e1c9fb9bcd9a4899faa3c3f91f2ed3377653",
+      "sha256": "d1b48cf2b47e2d19f80c61c90fdd234098d1ae480a591878ebb38f9fb51f0d65",
+      "bytes": 1153,
+      "beforeSha256": "53a2cbe7fec5079d5d84c0d7a3090cad94e94788779153607d38530c6b10431f",
+      "operation": "replace-exact"
+    },
+    {
+      "path": "server/gcsp/cases/index.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "0608caad5c737f525a87f67a201bf5b6df51eb98",
+      "sha256": "a080a47479444a94f041de1b0c094974c3eea655a8076f771ec33f82ecb43379",
+      "bytes": 32087,
+      "beforeSha256": "7ea3de632c5845eafc3b0a429b847b640bf3dc9b4ad1ab43cd3e19871f47d1f7",
+      "operation": "replace-exact"
+    },
+    {
+      "path": "server/gcsp/greg/index.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "eef2ca92468db23517650863b49a162573b8c969",
+      "sha256": "62452edd55d8834f029b1a4ab3dee2d252f3a4bc04c76431ad999909839f974c",
+      "bytes": 14961,
+      "beforeSha256": "2457f2a122a9c1ee9b4014a65ae384f36bf83916d496fce744bcc8fc24182e0b",
+      "operation": "replace-exact"
+    },
+    {
+      "path": "server/gcsp/greg/publish/fit.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "99227e5cd63d6d60bb664096eb18573db3c5ee07",
+      "sha256": "d3249720c2d3a15164a3bfb402e5316ea8f4016dfe58db028590c56e728d6674",
+      "bytes": 5082,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/greg/publish/http.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "2cb1871119d5e594e43ebd3a293ed115b20a259e",
+      "sha256": "237a98fa9894fc1421d2426d14fbd84134ccfffe8a7ab701a265d23ea63b048e",
+      "bytes": 1193,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/greg/publish/index.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "ee5b9baa74aee0d5478e4cfb2037eab565450598",
+      "sha256": "63621b317268cfc9e9d6b99b71306eb5327a102ab4e4a1b1f98542dfd6edd1ae",
+      "bytes": 14676,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/identity/http.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "397abacf26533c915928c2915feba299d5737d10",
+      "sha256": "86d3aa6bfc13ae6773c3861b7ef6c72fecfd31270b7c4f0609e240bd017b713e",
+      "bytes": 6895,
+      "beforeSha256": "c9f004bd943a7ed9b975cbe20aa23a5270760d61427e0360b966cb21490fd8d7",
+      "operation": "replace-exact"
+    },
+    {
+      "path": "server/gcsp/identity/index.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "a5f50ba9d14a8b06cfa70f7dcddfd68dadb79129",
+      "sha256": "4c60cd226ecceefcedd86c7da73a410bfabbeddbb05aab1aa997c98639f7612c",
+      "bytes": 14177,
+      "beforeSha256": "49beb6c708068599f22fe3a5f338bffb59cf6d557c034aed395b485fc9ac87f7",
+      "operation": "replace-exact"
+    },
+    {
+      "path": "server/gcsp/manual-claims/http.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "6cbd52c7b486a327e2bb3ca010b92176f185ac3a",
+      "sha256": "909926cc334b74b1d000fa12987fa8541d66eb445499d7fdaf03b241a29be6b7",
+      "bytes": 1061,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/manual-claims/index.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "99f509939554a6cef44fd3d68d8a99f23bf0f773",
+      "sha256": "32c80ef72d8329fcdbc4a208d9ab911f68156e6234d3917975754415d04ef059",
+      "bytes": 34089,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/manual-context/index.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "69fd1f39db69c6d94c7ae5b0a01a046cbcfa4cfa",
+      "sha256": "3e694f3a68b9d3c9f40b44ddb785bec2edce3b3ada43d491995be77a2930fd43",
+      "bytes": 30325,
+      "beforeSha256": "13601990b08dc420ffe51948a874de7299fce88991924b8447192c29c0acedf7",
+      "operation": "replace-exact"
+    },
+    {
+      "path": "server/gcsp/manual-context/recommendation-facts.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "5a75a7eaf889bc87bfd008c993bc53ecfea55acb",
+      "sha256": "4901d85a1a718529e3d85bba64b8de098105e945ae444127796c931b239571ec",
+      "bytes": 4548,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/manual-gallery/stock-read.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "23c1128e4604b9162988468c7cde81dacfd4f49e",
+      "sha256": "8d96ec48ca1fc9ff76f6dae6407a18a9c09844e3094b10a638a7b3215a7e549a",
+      "bytes": 4241,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/manual-review/http.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "e4639964e5ee8c6a55a0670404248d0d2e378618",
+      "sha256": "e37dbc4dd6764f533be77341d07d1c4a4e4fe18fadcf0bc15ead4bb34186b22e",
+      "bytes": 841,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/manual-review/index.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "eb49b116dec9f21c7b316c8b01aec4b464699b76",
+      "sha256": "86b850450957e27bbc12dceffe49aa27b27efe8a458abe4ba533ebf65fa6f323",
+      "bytes": 16850,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/manual-review/validation.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "3d5b82af9feb95febe29d6a6e3db99b278018f7b",
+      "sha256": "d70a4c1d51afd8acb180f6cc748de80a0bea37f157912db92a8e8ad1a4626d05",
+      "bytes": 3202,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/notify/index.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "524c1c9dc18dbbbd482ee284d68c0e70b7494890",
+      "sha256": "f7f132bd7fac580cec1ce0e619d613a9a5de77fcefb92ccf27383348aac50fb7",
+      "bytes": 13326,
+      "beforeSha256": "159deb2546525ca83b6e792392e001b0165c4423be499d75a53b517c7f7f6d32",
+      "operation": "replace-exact"
+    },
+    {
+      "path": "server/gcsp/offers/access-http.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "8e194b336a1abb09307934895189faa6b4f95d95",
+      "sha256": "f37533eeb5309cb4eff6c6dcf0af5ab8a8819afdaa4d08b4baee0147d360e868",
+      "bytes": 4776,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/offers/access.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "dac074058ada7700983eb174716dbdef202ccae9",
+      "sha256": "134e9d39253e934618f6cf38b334bb7cf0f8912443ee159e6167b949d4fdb34a",
+      "bytes": 20668,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/offers/buddy-hold.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "5f12c99e49afe5acc44ce62ad3f15684617bca8a",
+      "sha256": "b9f1a9be9cf42552a56313492bf0703b49ed715ffe2059f477ee11637c44b3d6",
+      "bytes": 28746,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/offers/buddy-remote.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "301f4332f958bf4a5c0c87bb35880b8474c8ed9e",
+      "sha256": "0284045ab38c22c305019ad4a560724aa233e830c6c37186d5661da430c59e01",
+      "bytes": 24229,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/offers/current-car-comparison.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "ebd68032f1889290f2f85a33cd71de85cc9b63aa",
+      "sha256": "c5aaf8b2e3123301d50f3dade21e89e4f88abf12ede4e2c7ed801adbc56099cd",
+      "bytes": 3135,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/offers/offer-token.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "449ddc9a7672dbdafd1b1a99ba9537aac93584ff",
+      "sha256": "325b699d7dfdb435cd8713015017aa68bf735582f127d7d64a0e0fc819f7b915",
+      "bytes": 1292,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/policy/activation.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "b0ec9f184dd4150594d5014e56778d4929126cc7",
+      "sha256": "4e79235b761e8daf94f3cf2744c4bc585146181b410b64497669bd353ee7c4d6",
+      "bytes": 2992,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/policy/adoption.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "ac3109f09e7ae2ec9779eb6eba2ccb85d1478a7c",
+      "sha256": "a2cb9a74946cd9eda413d896a0abc2f4299b3b75880a77ddd510667a5187c870",
+      "bytes": 4407,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/policy/index.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "409dd26a25effc6ab4bf17007ad87740a14fdb13",
+      "sha256": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+      "bytes": 10870,
+      "beforeSha256": "087267e81d4a780ef300dba144d9de5c4978ca530fe8ea5b2f53e2ec41395a2c",
+      "operation": "replace-exact"
+    },
+    {
+      "path": "server/gcsp/policy/publish.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "b05bfb12ff2f748d36c1c712ab432746aae5eb7d",
+      "sha256": "c521e15966be7762a3348ad860403ef555dd8cbd48405e7d23d9a7c6d262a826",
+      "bytes": 9788,
+      "beforeSha256": "5731771b1b7607028cd923c33038a0a0da113d463b8042fdd0b60d9f0a63d023",
+      "operation": "replace-exact"
+    },
+    {
+      "path": "server/gcsp/policy/reviewed-definitions.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "20488faee62c9e947e3f02a08151613d367472d2",
+      "sha256": "75518df649ba542ad32b876f8ee1b680e29b417c3b1f8dc90fcf1d4713a42cbb",
+      "bytes": 4243,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/policy/reviewed/fucq115-choice-model-v1.json",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "bcab48fcb59b1bdebe41290f18b280d1b6614500",
+      "sha256": "89565ec7fa05db042e623c6c88c132542505f7757848e61784f38d49b8391987",
+      "bytes": 3569,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/policy/reviewed/greg-publish-editor-v1.json",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "54e125ce3a487363e653456f17183bcbc60ea1d4",
+      "sha256": "7c7680227cdcd6e5f5afbb9fedb06b73c4768b2a3c7526cbf9cb9c03ccdfd8c3",
+      "bytes": 883,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/policy/reviewed/offer-decline-reasons-v1.json",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "e73d6b48a77a2d2d14d94fc67420937bff07e4e0",
+      "sha256": "1f1b632be83ddef1a5656288b4e40c0378736cda5c21fcf03de68544dfbe688f",
+      "bytes": 1105,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/policy/reviewed/offer-followup-questions-v1.json",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "21d7f292d9f40edb9e5309f4a9a0d4bf97cff611",
+      "sha256": "2b634e30a65f8fce6a3cfef67e10b04e9dff72ecb4fe296c51330e98efe86d5d",
+      "bytes": 3061,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/policy/reviewed/presenter-controls-v1.json",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "758e8ed8d84d20cb16a5ca28fb8c6dfcd57a5503",
+      "sha256": "0e09fc7cde7677724153265042eb1f7a122c88115762a736a4bdf02a4b2e470a",
+      "bytes": 580,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/predict/records/policy-definitions.json",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "a9bb08133e32f3c39458bbddf38b31648dd601c0",
+      "sha256": "c083ed58abcde595ac0cbf077b319b9102795506efb736c980d5f0cdba840143",
+      "bytes": 2719,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/recommendation/index.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "abbd4d2ac90899fff6dbcdf5565b7f7746d6df93",
+      "sha256": "08acfe895804cf60dcc178591ecbdd1816f12ce70944f832f1ae394902c7e172",
+      "bytes": 18786,
+      "beforeSha256": "f0595fa37434b139d953db0ca89754ada08c9f6902abf3ea924addd2b72b6036",
+      "operation": "replace-exact"
+    },
+    {
+      "path": "server/gcsp/repository/core.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "66a3ecf454ed9bb3c0cbaa4cb6290e87f84524c7",
+      "sha256": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+      "bytes": 30666,
+      "beforeSha256": "c55c93c543886108f67aa12bc5c7519d50063e90ba4ec78df37aa0df56d6f311",
+      "operation": "replace-exact"
+    },
+    {
+      "path": "server/gcsp/runtime.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "0c8e885c9996dacc282482372e849dcc52e9ec9c",
+      "sha256": "d728142ebbf5d5cfe451e95e90cbacaeda6168bf1f158043780da67fc707a36f",
+      "bytes": 9550,
+      "beforeSha256": "f4654b8053d3927a3564a3701784367e976b04549ee66fb1a9a754032f88cb16",
+      "operation": "replace-exact"
+    },
+    {
+      "path": "server/gcsp/stock/history-port.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "37c5f83a28aac243fa13afd68ef352986c0a929c",
+      "sha256": "4bbd6d6f668b806876e81cc672b8361d820308d03d88e4086c1999142ff3e6ba",
+      "bytes": 6502,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/stock/index.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "e66f4c1e40b9a2efc3334fe1b522c9c5d88ff62e",
+      "sha256": "7a41fbb67e5349d26748b5f0be5103eb1f6b6765a9b90ebe71a7d5416f9ea9aa",
+      "bytes": 10621,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/stock/port.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "0f26cda41099ba4c5cde17511a8d44d2e25c4301",
+      "sha256": "e6f466b8d319e064bd9c928050beab1265501a12aae1c30b5af4443ee2a93aa5",
+      "bytes": 3707,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/gcsp/stock/synthetic-provider.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "ac1d12c8d2a42ed6099bd9e3fed1408dc60b9931",
+      "sha256": "2d194e674b9c1e2338bc879ce44bb6430770c385e117f3fc59c104d9161cbaf7",
+      "bytes": 2820,
+      "beforeSha256": null,
+      "operation": "add"
+    },
+    {
+      "path": "server/index.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "7db5d486957e71ec4cc3b0e9fafb9c3c0fa9070e",
+      "sha256": "b493a8f61fe797a03aa5a51d127a39186e5bd2cc657de5b22a511934a8a258cc",
+      "bytes": 55819,
+      "beforeSha256": "5e9a211b0f7252c5949016b3d52694cefd09381c576783c8df7aa5f6a03a14f2",
+      "operation": "replace-exact"
+    },
+    {
+      "path": "server/scenarios/employee/index.js",
+      "ref": "f179ae6043414a2b07de3edb2b425338299ea37b",
+      "blob": "07b24c2c237e0b18742fc8614dd8885adede878a",
+      "sha256": "50e3b25317158c29605420af080c1ec6bd76ded94d298d33badfc90a4dc0d91c",
+      "bytes": 9089,
+      "beforeSha256": "43f50c04794902dd1d10a008f7882d335c1b5179f1c57a3f4ab9ea1293f7d844",
+      "operation": "replace-exact"
+    }
+  ],
+  "preservedBefore": {
+    "blocks/gcsp/presenter-controls/controls.js": "418f3d4a9b41b3f402bb57bb3413a3838e838300ca7a8e45ccdfbeb451ec08c2",
+    "blocks/gcsp/presenter-controls/http-adapter.js": "3f4aa95412149f1f987024d6f755b6c02852c81ae561db0ff784dc3317121ab4",
+    "blocks/gcsp/kit/presenter-bar.js": "7725c4e465290ff4ab79e4a98266963951562e40355f5b0480d3da8b1e1cb2f6",
+    "server/gcsp/presenter-controls/commands.js": "89b21a616e479c27f54d0004fe54d3b93e2cfd557e803b8bc38c717e619a627a",
+    "server/gcsp/presenter-controls/http.js": "d575c0ea6b4ac3fb659fe05fa66535d942215342215c8e1a8ed73b000efaf672",
+    "server/gcsp/presenter-controls/index.js": "06a518dc1ee15919ded29e938a717943816d591b1b79c442114a2aa8239704bd",
+    "server/gcsp/scenarios/index.js": "02ec280d1407b9723ec55c4eb740eb209614b236cb8939cb45cd53c2c67b143b",
+    "server/gcsp/clock/index.js": "98d9e3ad778ad9a38aa3fb5f96f5a68040544ba328b79e263e661ec42c442c45",
+    "server/gcsp/policy/seed-v1.json": "c58fcd9054fa32cded07c4ee742b39d196f94aa15c8d0fbf7752874954df8a31"
+  },
+  "excluded": [
+    "Upstream tests/reference documents",
+    "C5 host/shell/launcher integration",
+    "New reset/event API",
+    "Business facts/atomic preparation",
+    "TEST46fa profile not needed by isolated count cases"
+  ],
+  "execution": "No product imports, Node, tests, probes or test-resource allocations.",
+  "preservedAfter": {
+    "blocks/gcsp/presenter-controls/controls.js": "418f3d4a9b41b3f402bb57bb3413a3838e838300ca7a8e45ccdfbeb451ec08c2",
+    "blocks/gcsp/presenter-controls/http-adapter.js": "3f4aa95412149f1f987024d6f755b6c02852c81ae561db0ff784dc3317121ab4",
+    "blocks/gcsp/kit/presenter-bar.js": "7725c4e465290ff4ab79e4a98266963951562e40355f5b0480d3da8b1e1cb2f6",
+    "server/gcsp/presenter-controls/commands.js": "89b21a616e479c27f54d0004fe54d3b93e2cfd557e803b8bc38c717e619a627a",
+    "server/gcsp/presenter-controls/http.js": "d575c0ea6b4ac3fb659fe05fa66535d942215342215c8e1a8ed73b000efaf672",
+    "server/gcsp/presenter-controls/index.js": "06a518dc1ee15919ded29e938a717943816d591b1b79c442114a2aa8239704bd",
+    "server/gcsp/scenarios/index.js": "02ec280d1407b9723ec55c4eb740eb209614b236cb8939cb45cd53c2c67b143b",
+    "server/gcsp/clock/index.js": "98d9e3ad778ad9a38aa3fb5f96f5a68040544ba328b79e263e661ec42c442c45",
+    "server/gcsp/policy/seed-v1.json": "c58fcd9054fa32cded07c4ee742b39d196f94aa15c8d0fbf7752874954df8a31"
+  },
+  "changedCount": 44,
+  "adoptedBytes": 473766
+}

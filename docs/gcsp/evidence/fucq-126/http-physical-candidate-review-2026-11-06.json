@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-06",
+  "state": "statically-validated-unexecuted",
+  "candidateManifest": "docs/gcsp/evidence/fucq-126/http-physical-candidate-f179ae6-2026-11-06.json",
+  "sha256": "efdb32a33413919315b4dbcc9a09c6b5e5be0d27602b1a9c2d8ac51801b84437",
+  "staticChecks": 2134,
+  "namedFileEntriesVerified": 2112,
+  "checks": [
+    "Actual file SHA256/size/resolved target",
+    "Complete directory membership and absent fallback",
+    "Dependency link target/device/inode and Node target/SHA256",
+    "All pinned Python ASTs and metadata JSON",
+    "Exact six case names and disabled admission flags",
+    "No generic read observer/preload/journal remains in supervisor",
+    "Only two own map evidence strings change; states/Jira/worker observations preserved"
+  ],
+  "executionAuthorized": false,
+  "executed": false,
+  "noAllocation": "No Node, products, tests, probes, scratch or reservations."
+}
