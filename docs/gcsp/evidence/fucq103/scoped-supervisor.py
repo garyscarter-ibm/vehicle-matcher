@@ -57,6 +57,31 @@ def anchor(path):
             'kind': 'directory' if stat.S_ISDIR(value.st_mode) else 'file', 'resolved': str(path.resolve(strict=True))}
 
 
+def dependency_entries(roots):
+    entries = {}
+    for absolute in roots:
+        root = Path(absolute)
+        for path in (root, *root.parents):
+            if not stat.S_ISDIR(path.lstat().st_mode):
+                raise RuntimeError('Dependency ancestor must be a physical directory')
+        entries[str(root)] = 'directory'
+        pending = [root]
+        while pending:
+            folder = pending.pop()
+            with os.scandir(folder) as scan:
+                children = sorted(scan, key=lambda item: item.name)
+            for child in children:
+                mode = child.stat(follow_symlinks=False).st_mode
+                if stat.S_ISDIR(mode):
+                    entries[child.path] = 'directory'
+                    pending.append(Path(child.path))
+                elif stat.S_ISREG(mode):
+                    entries[child.path] = 'file'
+                else:
+                    raise RuntimeError('Dependency symlink or special entry is not admitted')
+    return dict(sorted(entries.items()))
+
+
 def admit(expected):
     if not sys.flags.isolated or not sys.dont_write_bytecode:
         raise RuntimeError('Use the pinned Python with -I -B')
@@ -79,15 +104,24 @@ def admit(expected):
                 'docs/gcsp/evidence/fucq103/scoped-resources.py', 'docs/gcsp/evidence/fucq103/scoped-test-launch.mjs'}
     if not required <= loaded.keys():
         raise RuntimeError('Source plan omits an executable helper')
-    for absolute, expected_hash in plan['dependencies']['sources'].items():
-        if sha(Path(absolute).read_bytes()) != expected_hash:
-            raise RuntimeError('Installed dependency differs')
-    members = {str(path) for base in plan['dependencies']['roots'] for path in Path(base).rglob('*')
-               if path.is_file() and not path.is_symlink() and '.bin' not in path.parts}
-    declared = {name for name in plan['dependencies']['sources']
-                if any(Path(base) in Path(name).parents for base in plan['dependencies']['roots'])}
+    dependencies = plan['dependencies']
+    entries = dependency_entries(dependencies['roots'])
+    if entries != dependencies['entries']:
+        raise RuntimeError('Installed file/directory membership differs')
+    members = {name for name, kind in entries.items() if kind == 'file'}
+    declared = {name for name in dependencies['sources']
+                if any(Path(base) in Path(name).parents for base in dependencies['roots'])}
     if members != declared:
         raise RuntimeError('Installed dependency membership differs')
+    for absolute in dependencies['resolverAbsences']:
+        if os.path.lexists(absolute):
+            raise RuntimeError('Unadmitted package resolution candidate exists: ' + absolute)
+    for absolute, identity in dependencies['resolverSearchDirectories'].items():
+        if anchor(Path(absolute)) != identity:
+            raise RuntimeError('Package resolution directory identity differs')
+    for absolute, expected_hash in dependencies['sources'].items():
+        if sha(Path(absolute).read_bytes()) != expected_hash:
+            raise RuntimeError('Installed dependency differs')
     for relative, expected_members in plan['directoryResources'].items():
         members = sorted(str(path.relative_to(project)) for path in (project / relative).rglob('*') if path.is_file())
         if members != expected_members:
@@ -144,8 +178,8 @@ def main():
         return
     # Closed allowlist removes every inherited loader/native/database/debug family.
     environment = {key: value for key, value in os.environ.items()
-                   if key in ('HOME', 'USER', 'LOGNAME', 'LANG', 'LC_CTYPE', 'TZ')}
-    environment.update(PATH='/usr/bin:/bin:/usr/sbin:/sbin', LC_ALL='C', PYTHONDONTWRITEBYTECODE='1', SCAFFOLDING_HARNESS='codex')
+                   if key in ('USER', 'LOGNAME', 'LANG', 'LC_CTYPE', 'TZ')}
+    environment.update(HOME=plan['dependencies']['resolverHome'], PATH='/usr/bin:/bin:/usr/sbin:/sbin', LC_ALL='C', PYTHONDONTWRITEBYTECODE='1', SCAFFOLDING_HARNESS='codex')
     os.environ.clear()
     os.environ.update(environment)
     resources = imported(loaded, '_tools/test_resources.py', 'fucq103_admitted_resources')

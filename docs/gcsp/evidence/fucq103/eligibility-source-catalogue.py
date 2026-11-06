@@ -3,6 +3,7 @@
 import ast
 import hashlib
 import json
+import os
 import posixpath
 import re
 import stat
@@ -93,18 +94,79 @@ while pending:
         else:
             pending.append(target); edges.append({'from': relative, 'specifier': spec, 'path': target})
 
+def dependency_entries(roots):
+    entries = {}
+    for absolute in roots:
+        root = Path(absolute)
+        for path in (root, *root.parents):
+            if not stat.S_ISDIR(path.lstat().st_mode):
+                raise RuntimeError('Dependency ancestor must be a physical directory')
+        entries[str(root)] = 'directory'
+        pending = [root]
+        while pending:
+            folder = pending.pop()
+            with os.scandir(folder) as scan:
+                children = sorted(scan, key=lambda item: item.name)
+            for child in children:
+                mode = child.stat(follow_symlinks=False).st_mode
+                if stat.S_ISDIR(mode):
+                    entries[child.path] = 'directory'
+                    pending.append(Path(child.path))
+                elif stat.S_ISREG(mode):
+                    entries[child.path] = 'file'
+                else:
+                    raise RuntimeError('Dependency symlink or special entry is not admitted')
+    return dict(sorted(entries.items()))
+
+
 # Installed code/executables are read from the prior actual inventory, not installed or launched.
 for absolute, expected in prior['dependencies']['sources'].items():
     if sha(Path(absolute)) != expected:
         raise ValueError('Installed dependency changed: ' + absolute)
-installed = {str(p) for base in prior['dependencies']['roots'] for p in Path(base).rglob('*')
-             if p.is_file() and not p.is_symlink() and '.bin' not in p.parts}
+entries = dependency_entries(prior['dependencies']['roots'])
+installed = {name for name, kind in entries.items() if kind == 'file'}
 declared = {p for p in prior['dependencies']['sources'] if any(Path(base) in Path(p).parents for base in prior['dependencies']['roots'])}
 if installed != declared:
     raise ValueError('Installed dependency membership changed')
 for name, item in prior['executables'].items():
     if sha(Path(item['path'])) != item['sha256']:
         raise ValueError('Executable changed: ' + name)
+
+server_dependencies = Path(prior['dependencies']['linkTargets']['server/node_modules'])
+package_names = set(packages)
+for name in installed:
+    path = Path(name)
+    if server_dependencies in path.parents and path.suffix in ('.js', '.mjs', '.cjs'):
+        for spec in re.findall(r"\brequire\(\s*['\"]([^'\"]+)['\"]\s*\)", path.read_text()):
+            if not spec.startswith(('.', '/', 'node:')):
+                package_names.add('/'.join(spec.split('/')[:2]) if spec.startswith('@') else spec.split('/')[0])
+searches = {path / 'node_modules' for path in server_dependencies.parents}
+searches.update(Path(name) / 'node_modules' for name, kind in entries.items()
+                if kind == 'directory' and (Path(name) == server_dependencies or server_dependencies in Path(name).parents))
+searches.update({Path.home() / '.node_modules', Path.home() / '.node_libraries',
+    Path(prior['executables']['node']['path']).parent.parent / 'lib/node'})
+absences, search_directories = set(), {}
+for search in sorted(searches):
+    if str(search) in entries:
+        continue
+    if not os.path.lexists(search):
+        absences.add(str(search))
+        continue
+    value = search.lstat()
+    if not stat.S_ISDIR(value.st_mode):
+        raise RuntimeError('External resolver directory is not physical')
+    search_directories[str(search)] = {'device': value.st_dev, 'inode': value.st_ino,
+        'mode': stat.S_IMODE(value.st_mode), 'kind': 'directory', 'resolved': str(search.resolve(strict=True))}
+    for name in sorted(package_names):
+        for suffix in ('', '.js', '.json', '.node'):
+            candidate = str(search / (name + suffix))
+            if os.path.lexists(candidate):
+                raise RuntimeError('Unpinned external package resolution candidate exists: ' + candidate)
+            absences.add(candidate)
+dependencies = {**prior['dependencies'], 'entries': entries, 'resolverAbsences': sorted(absences),
+    'resolverSearchDirectories': search_directories, 'resolverPackageNames': sorted(package_names),
+    'resolverHome': str(Path.home()),
+    'membershipPolicy': 'All physical files and directories, including empty directories; reject every symlink/special entry. Freeze nested/external/global package resolution absences for finite server require/import names.'}
 
 executables = dict(prior['executables'])
 for name, absolute in {'git': '/usr/bin/git', 'ps': '/bin/ps', 'lsof': '/usr/sbin/lsof', 'vm_stat': '/usr/bin/vm_stat'}.items():
@@ -128,7 +190,7 @@ execution_contract = {'externalAdmission': ['--execute', '--source-plan-sha <ext
     'serverDependencies': next(base for base in prior['dependencies']['roots'] if base.endswith('/server/node_modules')),
     'mirror': 'Finite admitted source bytes copied under owned scratch; dependency link only inside scratch; no worktree links.',
     'processGate': 'Leader PID/start and recursive ownership recorded before the Node launcher receives its stdin gate.',
-    'environment': 'Closed HOME/USER/LOGNAME/LANG/LC_CTYPE/TZ allowlist; fixed PATH/LC_ALL/PYTHONDONTWRITEBYTECODE/SCAFFOLDING_HARNESS. No inherited LD_/DYLD_/native/database/debug families.',
+    'environment': 'Closed USER/LOGNAME/LANG/LC_CTYPE/TZ allowlist; fixed admitted HOME and PATH/LC_ALL/PYTHONDONTWRITEBYTECODE/SCAFFOLDING_HARNESS. No inherited LD_/DYLD_/native/database/debug families.',
     'cleanup': 'Strict process/start/group/port proof and open-file absence before scratch deletion; exact owned reservation release only after deletion/readback. Uncertainty retains manifests/scratch/reservation.',
     'referenceOnly': {'revision': '918ce04510fd327e860809e7de53bd636d1cf7da',
         'resourcesSha256': '2ef0823acaf59764c3c9e0e3cb662f0bd72637f7ee569807c61c537d0b742949',
@@ -166,7 +228,7 @@ common = {'schemaVersion': 1, 'state': 'frozen-authoring-proposal-awaiting-execu
     'productAndTestFrozenRevision': 'f80fc61ca151cb46ad21cb2b19e704f4012d53de',
     'sources': dict(sorted(sources.items())), 'relativeEdges': sorted(edges, key=lambda r: (r['from'], r['specifier'])),
     'explicitDynamicEdges': explicit, 'directoryResources': dict(sorted(directories.items())), 'packageSpecifiers': sorted(packages),
-    'packageResolutionManifests': sorted(manifests), 'dependencies': prior['dependencies'], 'executables': executables,
+    'packageResolutionManifests': sorted(manifests), 'dependencies': dependencies, 'executables': executables,
     'hostBudget': host_budget, 'executionContract': execution_contract,
     'composition': provenance, 'impactMap': impact,
     'sourceMethod': 'Prior audited frontend/asset roots plus current literal import/export/new URL and HTML/CSS resource closure; finite dynamic edges and directory membership explicit. Python AST only; no application imports or execution.',

@@ -30,11 +30,11 @@ The affected selector's prior reviewed fallback to broad `npm test` is not selec
 Use the pinned Python with `-I -B` from the owned DEV-066 worktree. Every invocation requires the external source-plan SHA. Execution also requires the exact reviewed published HEAD and a fresh mode-specific dispatcher grant. The JSON stores the pinned executables, commands and filters. **These commands are proposed, not granted.** First admit core 25, review its result/cleanup, then separately admit registry 16. Stop on failure; all remaining modes require separate review.
 
 ```sh
-/Library/Developer/CommandLineTools/usr/bin/python3 -I -B docs/gcsp/evidence/fucq103/scoped-supervisor.py eligibility-core --execute --source-plan-sha edd904c14f38378475d6d9925c7f9e6eb7f136440129abdcd6c9a3f658df5c2c --revision <reviewed-published-HEAD> --dispatcher-grant <new-fucq103-eligibility-core-grant>
-/Library/Developer/CommandLineTools/usr/bin/python3 -I -B docs/gcsp/evidence/fucq103/scoped-supervisor.py eligibility-registry --execute --source-plan-sha edd904c14f38378475d6d9925c7f9e6eb7f136440129abdcd6c9a3f658df5c2c --revision <reviewed-published-HEAD> --dispatcher-grant <separate-new-fucq103-eligibility-registry-grant>
+/Library/Developer/CommandLineTools/usr/bin/python3 -I -B docs/gcsp/evidence/fucq103/scoped-supervisor.py eligibility-core --execute --source-plan-sha 4ba55de9b866bd24c1a8ec02e309ef834ecfcd90c907a92d35b8d8f60cbb1d31 --revision <reviewed-published-HEAD> --dispatcher-grant <new-fucq103-eligibility-core-grant>
+/Library/Developer/CommandLineTools/usr/bin/python3 -I -B docs/gcsp/evidence/fucq103/scoped-supervisor.py eligibility-registry --execute --source-plan-sha 4ba55de9b866bd24c1a8ec02e309ef834ecfcd90c907a92d35b8d8f60cbb1d31 --revision <reviewed-published-HEAD> --dispatcher-grant <separate-new-fucq103-eligibility-registry-grant>
 ```
 
-The angle-bracket fields are required review-time substitutions, so these are command templates. `--plan --source-plan-sha edd904c14f38378475d6d9925c7f9e6eb7f136440129abdcd6c9a3f658df5c2c` is the separate allocation-free source-admission action; it imports no custom helpers. It has not been executed in this repair checkpoint.
+The angle-bracket fields are required review-time substitutions, so these are command templates. `--plan --source-plan-sha 4ba55de9b866bd24c1a8ec02e309ef834ecfcd90c907a92d35b8d8f60cbb1d31` is the separate allocation-free source-admission action; it imports no custom helpers. It has not been executed in this repair checkpoint.
 
 | Mode | Expected matched tests | Purpose |
 |---|---:|---|
@@ -56,8 +56,8 @@ Excluded: full suite, native/deployed/live systems, actual92/69/122/126 producer
 
 ## Frozen authoring identities
 
-- Backend proposal SHA-256: `edd904c14f38378475d6d9925c7f9e6eb7f136440129abdcd6c9a3f658df5c2c`.
-- Browser proposal SHA-256: `d3e8139e4285d0e5a3f6648cc4f5c7a5f0e850b97fbec009b5b5767cc1f1d2e9`.
+- Backend proposal SHA-256: `4ba55de9b866bd24c1a8ec02e309ef834ecfcd90c907a92d35b8d8f60cbb1d31`.
+- Browser proposal SHA-256: `c15b316867c7563b82f83a4c0e627181e499b59aaeb308a6fba70b2fcf02015b`.
 - 219 source files, 432 relative/resource edges, three directory inventories, 251 installed files, 8 executables; 11 unique selected test files and 77 proposed matched cases.
 - New graph author: `eligibility-source-catalogue.py`; static source reading, Python AST parsing, immutable Git blob/hash comparisons and JSON validation only. No test/resource allocations or cleanup debt created.
 - 107 bundle SHA-256: `2b634e30a65f8fce6a3cfef67e10b04e9dff72ecb4fe296c51330e98efe86d5d`; digest `bb05e490f85e9f6fd9aa1c424c849740ad2884cc62e9d9a2b98ee8f739f8b7ed`.
@@ -72,3 +72,8 @@ Product and test bytes remain frozen at `f80fc61ca151cb46ad21cb2b19e704f4012d53d
 Budget admission explicitly reserves 5GiB emergency disk headroom and 512MiB host RAM headroom; 30GiB free is an adjustment trigger. The exact ledger directory and physical directory/lock identities are recorded in the plan rather than inherited implicitly. No foreign reservation is pruned. Only known exact owned PID/start pairs may be signalled; unknown snapshots/starts retain the cleanup issue. Stop/join and PID/group/port absence precede scratch open-file checks and deletion, then strict owned release/readback. Failure logs retain at most 256KiB outside scratch before deletion. These are authored controls, not executed cleanup evidence.
 
 Handled SIGINT/SIGTERM are deferred across child creation, handle assignment and initial ownership registration while the launcher gate remains closed. Cleanup retains any returned unregistered Popen handle, marks ownership uncertain, and explicitly stops/joins it; an empty tree cannot prove absence while a direct handle exists. No child signal mask is inherited from the supervisor. This cancellation-path repair is static only.
+
+
+## Follow-up static HOLD repair
+
+Dibble held `011325a` after tracing three remaining harness defects: cancellation could set the finalizer attempted flag before handler setup; a failed manifest write could skip direct-child joining; and dependency inventory ignored undeclared symlinks. Product/source PASS remains separate from runtime admission. The owned follow-up removes the attempted flag, leaves interrupted entry retryable, and makes direct-child stop/join independent of persistence. Dependency admission now records physical file/directory membership, rejects symlinks/special entries, and freezes nested, ancestor and legacy global resolver absences for the finite server package names. HOME is fixed to the admitted resolver identity. These are static repairs only; core25 remains ungranted.

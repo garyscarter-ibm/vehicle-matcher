@@ -474,7 +474,33 @@ class Tree:
         self.save()
         return proof
 
+    def join_direct(self):
+        process = self.process
+        if process is None:
+            return
+        # Direct joining never queries or persists a manifest before wait.
+        for action in (process.terminate, process.kill):
+            try:
+                if process.poll() is None:
+                    action()
+            except OSError:
+                pass
+            try:
+                process.wait(timeout=3)
+                self.joined = True
+                return
+            except subprocess.TimeoutExpired:
+                continue
+        raise RuntimeError('Direct child stop/join remains unproven')
+
     def stop_join(self):
+        try:
+            return self._stop_observed()
+        finally:
+            if self.process is not None and not self.joined:
+                self.join_direct()
+
+    def _stop_observed(self):
         process = self.process
         if process is None:
             self.joined = True
@@ -522,19 +548,6 @@ class Tree:
                         self.scratch.record.setdefault('signalUncertainty', []).append({
                             'pid': item['pid'], 'start': item['start'], 'error': type(error).__name__})
                 self.save()
-            # A live direct Popen handle is still owned when the OS query fails.
-            for action in (process.terminate, process.kill):
-                if process.poll() is None:
-                    try:
-                        action()
-                    except OSError as error:
-                        self.scratch.record.setdefault('directSignalErrors', []).append(type(error).__name__)
-                try:
-                    process.wait(timeout=3)
-                    self.joined = True
-                    break
-                except subprocess.TimeoutExpired:
-                    continue
             # Unknown descendants remain recorded and prevent deletion/release.
             raise
 
@@ -556,20 +569,26 @@ def make_scratch(resources, retained, project, policy):
 class Finalizer:
     def __init__(self, resources, scratch, tree, budget):
         self.resources, self.scratch, self.tree, self.budget = resources, scratch, tree, budget
-        self.attempted, self.result = False, None
+        self.result = None
         atexit.register(self.finish)
 
     def finish(self, preserve=None):
-        if self.attempted:
+        if self.result is not None:
             return self.result
-        self.attempted = True
-        previous = {sig: signal.getsignal(sig) for sig in (signal.SIGTERM, signal.SIGINT)}
+        previous = {}
         def deferred(signum, frame):
             self.scratch.record.setdefault('cancellationDuringCleanup', []).append(signum)
         result = {'passed': False, 'scratchAbsent': False, 'reservationAbsent': False}
+        # Entry cancellation leaves result unset, so atexit can retry.
         try:
-            for sig in previous:
+            for sig in (signal.SIGTERM, signal.SIGINT):
+                previous[sig] = signal.getsignal(sig)
                 signal.signal(sig, deferred)
+        except BaseException:
+            for sig, handler in previous.items():
+                signal.signal(sig, handler)
+            raise
+        try:
             proof = self.tree.stop_join()
             if not all(proof[key] is True for key in ('joined', 'pidsAbsent', 'groupsAbsent', 'portsClosed')):
                 raise RuntimeError('Process cleanup is unproven; retain scratch and reservation')
@@ -602,12 +621,19 @@ class Finalizer:
         except BaseException as error:
             result['error'] = type(error).__name__ + ': ' + str(error)[:1024]
         finally:
-            for sig, handler in previous.items():
-                signal.signal(sig, handler)
-        self.result = result
-        self.scratch.record['finalizer'] = result
-        try:
-            self.resources.atomic_json(self.scratch.manifest, self.scratch.record)
-        except BaseException as error:
-            result.update(passed=False, receiptError=type(error).__name__ + ': ' + str(error)[:1024])
+            try:
+                if self.tree.process is not None and not self.tree.joined:
+                    self.tree.join_direct()
+            except BaseException as error:
+                result.update(passed=False, directJoinError=type(error).__name__ + ': ' + str(error)[:1024])
+            # Memoize only after cleanup and the persistence-independent join.
+            self.result = result
+            self.scratch.record['finalizer'] = result
+            try:
+                self.resources.atomic_json(self.scratch.manifest, self.scratch.record)
+            except BaseException as error:
+                result.update(passed=False, receiptError=type(error).__name__ + ': ' + str(error)[:1024])
+            finally:
+                for sig, handler in previous.items():
+                    signal.signal(sig, handler)
         return result
