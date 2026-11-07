@@ -1,0 +1,36 @@
+{
+  "id": "f60-1f7e-four-get-observation-20261107.v1",
+  "status": "prepared-awaiting-parent-exact-hash-review",
+  "planDigest": "dd190625f3de63f0c9a2740bb90b56a33228fa65d5ff7833940c70e07d39d93a",
+  "attempts": 4,
+  "decodedBytes": 4194304,
+  "responseBytes": 1048576,
+  "sourceSeconds": 90,
+  "supervisorSeconds": 120,
+  "workers": 1,
+  "hostRamMiB": 512,
+  "childRamMiB": 448,
+  "scratchMiB": 64,
+  "primary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq60/actual-v2-observation-2026-11-07/observer-checkpoint.json",
+  "acceptedSource": {
+    "path": "docs/gcsp/evidence/fucq59/f70-1f7e-first32-solver-2026-11-07/accepted.jsonl",
+    "fileSha256": "845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080",
+    "line": 1,
+    "lineSha256": "cf62b45203b45bc00bf6562141c7df28c3527490ef6a7886da0c981548e5317c"
+  },
+  "codePins": {
+    "scripts/gcsp/bmw-public-registration.mjs": "965f1ccb0699ae75cbfdd74bb6f2855095bc6f66113158b08948d649eb384d2c",
+    "scripts/gcsp/collection-session.mjs": "918512334fa3a350f9578548f622e1b4de903eec7091b7c7aac05dc5e5344b2e",
+    "scripts/gcsp/public-bmw-source.mjs": "e1dbfe1c83c10a2319872677940e0f24a61f6067bc56661cda112a3fa69457a0",
+    "scripts/gcsp/enrichment-observation.mjs": "29d41aefcd2b3d74a876219ad960cc901f6677cc7e483710216eb710ab788a29",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+    "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "docs/gcsp/evidence/fucq60/actual-v2-observation-2026-11-07/run-live.mjs": "92046907573a2be75bdc20a4d13d68e85630f291611b49f77c1b45cd9afe619e",
+    "docs/gcsp/evidence/fucq60/actual-v2-observation-2026-11-07/supervise.py": "83630de60b4df2ef88b053d80f5737d82887d9c565d0890e4e1bcf18ea32a7af",
+    "docs/gcsp/evidence/fucq60/actual-v2-observation-2026-11-07/observation-plan.json": "d5b5ecd918e2f06af4a9a8d5ff41f72410c8ae02c71fdee9340c0e89e1ba61a7",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d"
+  },
+  "scope": "Exact accepted 1F7E/82GE row; observation only, no facts admission, no binary, no opaque URL retention, no retry, no runtime publication"
+}

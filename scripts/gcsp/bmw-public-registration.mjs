@@ -10,6 +10,7 @@ export const BMW_CONTEXT_SOURCE_VERSION = 'f59-context-qualification-20261107.v1
 export const BMW_MODEL_OPTIONS_SOURCE_VERSION = 'f59-model-options-qualification-20261107.v1';
 export const BMW_OPTIONS_SOURCE_VERSION = 'f59-options-qualification-20261107.v1';
 export const BMW_INVENTORY_SOURCE_VERSION = 'f59-range-inventory-20261107.v1';
+export const BMW_ENRICHMENT_OBSERVATION_SOURCE_VERSION = 'f60-enrichment-observation-20261107.v1';
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const same = (a, b) => inputDigest(a) === inputDigest(b);
 const bounded = (v, min, max) => Number.isSafeInteger(v) && v >= min && v <= max;
@@ -17,6 +18,34 @@ const token = (v) => typeof v === 'string' && /^[A-Z0-9]{1,16}$/.test(v);
 const code = (v) => typeof v === 'string' && /^[A-Z0-9]{4,12}$/.test(v);
 const date = (v) => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)
   && Number.isFinite(Date.parse(v)) && new Date(v).toISOString().slice(0, 10) === v;
+
+/** Accepted-selection request scope only; this does not qualify returned facts or imagery. */
+export function validateBmwEnrichmentObservationRegistration(value) {
+  requireValue(object(value) && same(Object.keys(value).sort(), ['accessories', 'bindingDigest', 'configurationId',
+    'factoryOptionCodes', 'model', 'paintCode', 'schemaVersion', 'sourceAcceptedSha256', 'upholsteryCode'])
+    && value.schemaVersion === 'bmw-public-enrichment-observation-registration.v1'
+    && ['bindingDigest', 'sourceAcceptedSha256'].every((name) => typeof value[name] === 'string' && /^[a-f0-9]{64}$/.test(value[name]))
+    && Array.isArray(value.factoryOptionCodes) && bounded(value.factoryOptionCodes.length, 1, 256)
+    && value.factoryOptionCodes.every((item, index) => code(item) && (!index || value.factoryOptionCodes[index - 1] < item))
+    && Array.isArray(value.accessories) && value.accessories.length === 0
+    && code(value.paintCode) && code(value.upholsteryCode) && value.factoryOptionCodes.includes(value.paintCode)
+    && value.factoryOptionCodes.includes(value.upholsteryCode),
+  'source-enrichment-registration', 'Pin one complete accepted factory selection, typed appearance and no unqualified accessory transport.');
+  validateBmwModelRegistration(value.model);
+  requireValue(!Object.hasOwn(value.model, 'optionsTrim') && value.configurationId === Buffer.from(
+    `${value.model.modelCode}:${value.factoryOptionCodes.join(',')}`).toString('base64'),
+  'source-enrichment-registration', 'Retain the exact canonical model/selection ID and separate dated context.');
+  return structuredClone(value);
+}
+
+export function bmwEnrichmentObservationRequestUrls(input) {
+  const r = validateBmwEnrichmentObservationRegistration(input); const m = r.model;
+  return {
+    page: `https://configure.bmw.co.uk/en_GB/configure/${m.catalogueRangeKey}/${m.modelCode}`,
+    technical: `https://prod.ucp.bmw.cloud/otd/country-groups/eu27+/ag-models/${m.agModelCode}/validity-dates/${m.effectDate}/otd-for-configuration?${new URLSearchParams({ 'included-options': r.factoryOptionCodes.join(',') })}`,
+    'image-manifest': `https://prod.cosy.bmw.cloud/image-urls/dynamic-named-images/mandators/connext-bmw/collections/stage-fullscreen-views-legacy-newnames/brands/bmwCar/models/${m.agModelCode}?${new URLSearchParams({ effectdate: m.effectDate.replaceAll('-', ''), hub: 'CLOUD_PROD_INTERNET', imagetype: 'webp', options: r.factoryOptionCodes.join(',') })}`,
+  };
+}
 
 /** Trusted plan data pins a context; its later full response still has to corroborate it. */
 export function validateBmwModelRegistration(value) {

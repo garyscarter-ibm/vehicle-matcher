@@ -1,0 +1,87 @@
+{
+  "status": "scoped-live-partial-corpus-verified",
+  "observedAt": "2026-11-07T04:15:01.562177+00:00",
+  "code": "6feb8f2a22d48188230b6d70e9c74154d3fdae18",
+  "probeTree": "1a5cec92603083c43800a5cf54e394f1ec05d195",
+  "deployment": 7616322037,
+  "manifestDigest": "86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f",
+  "sourceConfigurations": 1133,
+  "configurations": 1134,
+  "retainedSyntheticVins": 1,
+  "registeredRepresentativeImages": 2,
+  "compared": 1135,
+  "errors": 0,
+  "totalGET": 1141,
+  "decodedBytes": 12379407,
+  "actualFailedAttemptsPreserved": true,
+  "completedMatchesReplayed": 0,
+  "diagnosticGETs": 2,
+  "diagnosticDTOComparisons": 0,
+  "firstHealthFailureStatus": "not recorded by originalprobe; live-health-unavailable/0bytes only",
+  "earlierTimeoutCause": "unestablished",
+  "remoteProviderEgress": "not instrumented remotely; Linuxoffline/sourceproof separate",
+  "latencyMs": {
+    "scope": "1135 actual successfulrecordrequests; no extra benchmark or SLA assertion",
+    "median": 46.02862499999901,
+    "p95": 71.92908400000306,
+    "p99": 131.4542919999949,
+    "max": 272.5425419999956
+  },
+  "cleanup": [
+    {
+      "code_identity_unchanged": true,
+      "compatibility_exception": null,
+      "dependency_link_absent": true,
+      "groups_absent": true,
+      "removed_allocation_bytes": 782432,
+      "reservation_absent": true,
+      "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/aggregate1133-ready/live-audit/result.json",
+      "scratch": "/private/tmp/test-stamp-shard-19a2633a3a4a44c196e48ba258d55343",
+      "scratch_absent": true,
+      "time": "2026-11-07T04:07:56.669188+00:00"
+    },
+    {
+      "code_identity_unchanged": true,
+      "compatibility_exception": null,
+      "dependency_link_absent": true,
+      "groups_absent": true,
+      "removed_allocation_bytes": 807008,
+      "reservation_absent": true,
+      "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/aggregate1133-ready/live-audit-resume1/result.json",
+      "scratch": "/private/tmp/test-stamp-shard-e1275414ff8040008040870fc6e3fe8d",
+      "scratch_absent": true,
+      "time": "2026-11-07T04:09:19.998206+00:00"
+    },
+    {
+      "code_identity_unchanged": true,
+      "compatibility_exception": null,
+      "dependency_link_absent": true,
+      "groups_absent": true,
+      "removed_allocation_bytes": 819296,
+      "reservation_absent": true,
+      "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/aggregate1133-ready/live-audit-resume2/result.json",
+      "scratch": "/private/tmp/test-stamp-shard-cf236967b0be4130bc41bbca003e1f5d",
+      "scratch_absent": true,
+      "time": "2026-11-07T04:14:02.703156+00:00"
+    }
+  ],
+  "removedScratchBytes": 2408736,
+  "acceptance": false,
+  "remaining": [
+    "actual10000distinctsource",
+    "everyrequiredscheme/model/profile/year/plant/fiveWMIcoverage",
+    "applicableenrichment/order-reference",
+    "configuredconsumerfailures"
+  ],
+  "linuxActualBuild": {
+    "run": 42336809118,
+    "conclusion": "success",
+    "directDTO": 1135,
+    "HTTPunique": 1135,
+    "configuredPassed": 1133,
+    "configuredFailed": 2,
+    "rawAudit": "invalid-active",
+    "actualHttpsCalls": 44,
+    "offlineSourceOrProviderCalls": 0
+  }
+}

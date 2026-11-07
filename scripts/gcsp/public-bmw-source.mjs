@@ -2,6 +2,8 @@ import { createHash } from 'node:crypto';
 import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { CollectionError, normaliseCodes, requireValue } from './configuration-key.mjs';
 import { assertCollectionHttpObservation } from './collection-session.mjs';
+import { BMW_ENRICHMENT_OBSERVATION_SOURCE_VERSION, bmwEnrichmentObservationRequestUrls,
+  validateBmwEnrichmentObservationRegistration } from './bmw-public-registration.mjs';
 import { createSettingsShapeRefusal } from './settings-shape-report.mjs';
 import { qualifyBmwSourceFields } from './bmw-source-qualification.mjs';
 import { BMW_BATCH_SOURCE_VERSION, BMW_MODEL_AXIS_BATCH_SOURCE_VERSION, isBmwModelBatchPlan, isBmwBatchPlan, bmwBatchPlanRequestUrls, validateBmwModelAxisBatchCandidateDefinitions, BMW_CONTEXT_SOURCE_VERSION, BMW_OPTIONS_SOURCE_VERSION, BMW_MODEL_OPTIONS_SOURCE_VERSION, BMW_INVENTORY_SOURCE_VERSION,
@@ -24,6 +26,135 @@ const diagnosticContext = { market: 'GB', locale: 'en-GB', modelCode: 'T5MJ', ag
 const calendarDate = (value) => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)
   && Number.isFinite(Date.parse(value + 'T00:00:00.000Z')) && new Date(value + 'T00:00:00.000Z').toISOString().slice(0, 10) === value;
 const bounded = (value, min, max) => Number.isSafeInteger(value) && value >= min && value <= max;
+
+export function validatePublicBmwEnrichmentObservationPlan(input) {
+  const p = input; const l = p?.limits;
+  requireValue(object(p) && same(Object.keys(p).sort(), ['limits', 'planId', 'qualificationDate', 'registration', 'schemaVersion', 'source'])
+    && p.schemaVersion === 'bmw-enrichment-observation-plan.v1' && typeof p.planId === 'string'
+    && /^[A-Za-z0-9][A-Za-z0-9.-]{0,95}$/.test(p.planId) && calendarDate(p.qualificationDate)
+    && same(p.source, { id: 'bmw-uk-public', version: BMW_ENRICHMENT_OBSERVATION_SOURCE_VERSION, kind: 'public-bmw-uk' })
+    && object(l) && l.maxAttempts === 1 && l.retryDelayMs === 0 && l.concurrency === 1 && l.imageRequests === 0
+    && l.sourceAttempts === 4 && l.sourceBytes === 4194304 && l.responseBytes === 1048576
+    && l.operationTimeoutMs === 10000 && l.deadlineMs === 90000 && l.checkpointBytes === 4194304
+    && l.cacheEntries === 8 && l.cacheRetentionMs === 86400000
+    && same(l.requestBudgets, { page: 1, settings: 1, technical: 1, 'image-manifest': 1 }),
+  'source-enrichment-plan', 'Use the exact four-GET observation ceiling with no binary/image or retry allowance.');
+  validateBmwEnrichmentObservationRegistration(p.registration);
+  return structuredClone(p);
+}
+
+function enrichmentContext(value, r) {
+  const expected = { modelCode: r.model.modelCode, agModelCode: r.model.agModelCode,
+    market: r.model.market, locale: r.model.locale, orderDate: r.model.orderDate, effectDate: r.model.effectDate };
+  for (const entry of [value, value.context].filter(object)) {
+    requireValue(Object.entries(expected).every(([name, known]) => !Object.hasOwn(entry, name) || entry[name] === known),
+      'source-context-mismatch', 'A returned identity/date cannot substitute the registered request context.');
+  }
+  if (Object.hasOwn(value, 'preConfigurationOptions')) requireValue(Array.isArray(value.preConfigurationOptions)
+    && value.preConfigurationOptions.every((code) => r.factoryOptionCodes.includes(code)),
+  'source-context-mismatch', 'Returned preconfiguration codes must be within the exact accepted selection.');
+}
+
+function technicalObservation(value, r) {
+  requireValue(object(value) && object(value.values) && Object.keys(value.values).length <= 512,
+    'source-technical-shape', 'Inspect a bounded OTD object with a directly keyed values map.');
+  enrichmentContext(value, r);
+  const scalar = (v) => typeof v === 'number' && Number.isFinite(v) || typeof v === 'string' && /^[0-9:.,+% −-]{1,64}$/.test(v);
+  const rows = Object.entries(value.values).map(([code, entry]) => {
+    requireValue(/^[A-Z0-9_]{1,96}$/.test(code) && object(entry), 'source-technical-shape', 'Technical value keys and entries changed.');
+    const row = { code, pointer: '/values/' + code, fields: Object.keys(entry).filter((key) => /^[A-Za-z][A-Za-z0-9_]{0,63}$/.test(key)).sort() };
+    for (const field of ['targetValue', 'textValue', 'minValue', 'maxValue']) if (scalar(entry[field])) row[field] = entry[field];
+    if (typeof entry.referenceName === 'string' && /^[A-Z0-9_]{1,96}$/.test(entry.referenceName)) row.referenceName = entry.referenceName;
+    for (const field of ['unit', 'unitCode', 'status']) if (scalar(entry[field])
+      || typeof entry[field] === 'string' && /^[A-Z][A-Z0-9_ /.-]{0,31}$/.test(entry[field])) row[field] = entry[field];
+    return row;
+  });
+  return { status: 'schema-review-required', admission: false, meaningsQualified: false, unitsQualified: false,
+    businessKey: typeof value.businessKey === 'string' && /^[A-Za-z0-9_-]{1,64}$/.test(value.businessKey) ? value.businessKey : null,
+    sourceStatus: scalar(value.status) ? value.status : null, values: rows,
+    preConfigurationOptions: Array.isArray(value.preConfigurationOptions) ? [...value.preConfigurationOptions] : null };
+}
+
+function imageManifestObservation(value, r) {
+  requireValue(object(value), 'source-image-manifest-shape', 'Inspect one JSON image manifest without downloading its URLs.');
+  enrichmentContext(value, r); const views = []; const dimensions = []; const structure = []; let visited = 0;
+  const visit = (entry, pointer, depth = 0) => {
+    requireValue(++visited <= 4096 && depth <= 20, 'source-image-manifest-shape', 'The manifest exceeds its bounded inspection shape.');
+    if (!object(entry) && !Array.isArray(entry)) return;
+    if (object(entry) && Number.isSafeInteger(entry.width) && Number.isSafeInteger(entry.height)) {
+      dimensions.push({ pointer, value: { width: entry.width, height: entry.height } });
+    }
+    if (object(entry) && object(entry.distinctionParameters) && typeof entry.distinctionParameters.POV === 'string'
+      && /^[A-Z0-9]{1,32}$/.test(entry.distinctionParameters.POV)) {
+      views.push({ pointer, viewpoint: entry.distinctionParameters.POV, imageUrlPresent: typeof entry.viewImage === 'string',
+        fidelity: { model: 'unknown', paint: 'unknown', wheels: 'unknown', interior: 'unknown', equipment: 'unknown', exactVehicle: 'unknown' } });
+    }
+    const keys = Object.keys(entry);
+    structure.push({ pointer, type: Array.isArray(entry) ? 'array' : 'object', keys: keys.filter((key) => /^[A-Za-z0-9_-]{1,64}$/.test(key)) });
+    for (const [key, child] of Object.entries(entry)) if (child && typeof child === 'object') {
+      requireValue(/^[A-Za-z0-9_-]{1,64}$/.test(key), 'source-image-manifest-shape', 'Unrecognised manifest field path.');
+      visit(child, pointer + '/' + key, depth + 1);
+    }
+  };
+  visit(value, '');
+  requireValue(views.length <= 256 && dimensions.length <= 64 && structure.length <= 1024,
+    'source-image-manifest-shape', 'Inspect only the bounded manifest structure and view metadata.');
+  return { status: 'schema-review-required', admission: false, assetsDownloaded: 0, urlsRetained: false, views, dimensions, structure };
+}
+
+/** Observation descriptors share the existing persisted executor; no technical/image authority is granted here. */
+export function publicBmwEnrichmentObservationOperations(input) {
+  const plan = validatePublicBmwEnrichmentObservationPlan(input); const r = plan.registration;
+  const urls = bmwEnrichmentObservationRequestUrls(r); let technicalHeader; let imageHeader;
+  const observe = (metadata) => {
+    assertCollectionHttpObservation(metadata);
+    requireValue(metadata.sourceVersion === plan.source.version && metadata.observedAt.slice(0, 10) === plan.qualificationDate,
+      'source-observation-date', 'Retain the executor-owned observation on the pinned qualification day.');
+    return metadata;
+  };
+  const artifact = (value, metadata, role, project) => {
+    const secrets = [...Object.values(technicalHeader || {}), ...Object.values(imageHeader || {})];
+    requireValue(secrets.every((secret) => !JSON.stringify(value).includes(secret)),
+      'source-sensitive-projection', 'Bootstrap credentials cannot enter retained source observations.');
+    const document = { schemaVersion: 'bmw-enrichment-source-observation.v1', observation: observe(metadata),
+      requestScope: { role: 'request-input-only', registration: structuredClone(r), operation: role }, report: project(value, r) };
+    const bytes = JSON.stringify(document) + '\n';
+    return { document, bytes: Buffer.byteLength(bytes), sha256: createHash('sha256').update(bytes).digest('hex') };
+  };
+  const descriptor = (capability, url, project, extra = {}) => ({ sourceId: plan.source.id, sourceVersion: plan.source.version,
+    kind: 'read-only-http', capability, strictJson: true, requestRegistration: r,
+    prepare: async () => ({ method: 'GET', url, headers: {} }), project, ...extra });
+  return {
+    page: descriptor('bmw-page', urls.page, (html, _request, metadata) => {
+      const paths = [...new Set([...html.matchAll(/(?:\/en_GB\/)?settings\.[a-zA-Z0-9]+\.json/g)]
+        .map((match) => match[0].startsWith('/en_GB/') ? match[0] : '/en_GB/' + match[0]))];
+      requireValue(paths.length === 1 && settingsPattern.test(paths[0]), 'settings-discovery-shape', 'Require one current settings path.');
+      return { settingsPath: paths[0], observation: observe(metadata) };
+    }),
+    settings: descriptor('bmw-settings', null, (value, _request, metadata) => {
+      observe(metadata); const app = value?.APP || value?.app; const backend = app?.backend || app?.BACKEND;
+      const normalized = { APP: { backend } };
+      technicalHeader = headerFor(normalized, 'settingsOtd', true); imageHeader = headerFor(normalized, 'settingsCosy', true);
+      let visited = 0; let cosyHost = false;
+      const scan = (entry, depth = 0) => {
+        requireValue(++visited <= 4096 && depth <= 20, 'settings-header-shape', 'Bound the exact COSY profile inspection.');
+        if (typeof entry === 'string') { try { if (new URL(entry).origin === 'https://prod.cosy.bmw.cloud') cosyHost = true; } catch {} }
+        else if (entry && typeof entry === 'object') Object.values(entry).forEach((child) => scan(child, depth + 1));
+      };
+      scan(backend.settingsCosy); requireValue(cosyHost, 'settings-header-shape', 'The exact COSY profile must name the registered source host.');
+      return { technicalProfileQualified: true, imageManifestProfileQualified: true };
+    }, { cache: false, prepare: async ({ path }) => {
+      requireValue(typeof path === 'string' && settingsPattern.test(path), 'settings-discovery-shape', 'Use the one discovered settings path.');
+      return { method: 'GET', url: 'https://configure.bmw.co.uk' + path, headers: {} };
+    } }),
+    technical: descriptor('bmw-otd', urls.technical, (value, _request, metadata) => artifact(value, metadata, 'technical', technicalObservation),
+      { prepare: async () => { requireValue(technicalHeader, 'source-bootstrap-required', 'Require the memory-only OTD profile.');
+        return { method: 'GET', url: urls.technical, headers: technicalHeader }; } }),
+    'image-manifest': descriptor('bmw-image-manifest', urls['image-manifest'], (value, _request, metadata) => artifact(value, metadata, 'image-manifest', imageManifestObservation),
+      { prepare: async () => { requireValue(imageHeader, 'source-bootstrap-required', 'Require the memory-only COSY profile.');
+        return { method: 'GET', url: urls['image-manifest'], headers: imageHeader }; } }),
+  };
+}
 
 export function validatePublicBmwContextPlan(plan) {
   const l = plan?.limits;

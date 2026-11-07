@@ -5,6 +5,8 @@ import { hostname } from 'node:os';
 import { setTimeout as delay } from 'node:timers/promises';
 import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { CollectionError, requireValue } from './configuration-key.mjs';
+import { BMW_ENRICHMENT_OBSERVATION_SOURCE_VERSION, bmwEnrichmentObservationRequestUrls,
+  validateBmwEnrichmentObservationRegistration } from './bmw-public-registration.mjs';
 import { BMW_BATCH_SOURCE_VERSION, isBmwModelBatchPlan, BMW_CONTEXT_SOURCE_VERSION, BMW_OPTIONS_SOURCE_VERSION, BMW_MODEL_OPTIONS_SOURCE_VERSION, BMW_INVENTORY_SOURCE_VERSION,
   bmwPublicRequestUrls, bmwModelBatchRequestUrls, validateBmwModelBatchRequestRegistration, bmwModelOptionsRequestUrls, validateBmwModelOptionsRequestRegistration, bmwInventoryRequestUrls, validateBmwInventoryRequestRegistration,
   validateBmwBatchRequestRegistration, validateBmwContextRequestRegistration, validateBmwOptionsRequestRegistration } from './bmw-public-registration.mjs';
@@ -40,6 +42,14 @@ function readOnlyRequest(capability, request, registration, sourceVersion) {
   const query = url && Object.fromEntries(url.searchParams);
   const exactQuery = (expected) => url.searchParams.size === Object.keys(expected).length && same(query, expected);
   const batchAllowed = () => {
+    if (registration.schemaVersion === 'bmw-public-enrichment-observation-registration.v1') {
+      const urls = bmwEnrichmentObservationRequestUrls(registration);
+      return capability === 'bmw-page' ? url.href === urls.page
+        : capability === 'bmw-otd' ? url.href === urls.technical
+          : capability === 'bmw-image-manifest' ? url.href === urls['image-manifest']
+            : capability === 'bmw-settings' && url.origin === 'https://configure.bmw.co.uk'
+              && /^\/en_GB\/settings\.[a-zA-Z0-9]+\.json$/.test(url.pathname) && !url.search;
+    }
     if (registration.schemaVersion === 'bmw-public-range-inventory-registration.v1') {
       const urls = bmwInventoryRequestUrls(registration);
       return capability === 'bmw-page' ? url.href === urls.page
@@ -67,7 +77,7 @@ function readOnlyRequest(capability, request, registration, sourceVersion) {
             'add-rules-for-mandatory-element-classes': 'fabric,paint,rim', application: 'connext',
             'included-elements': 'FKSFU,P0300,S0337,S043L', 'mandatory-elements': 'S0337' })));
   requireValue(allowed && request.method === 'GET' && Object.keys(request).every((key) => ['method', 'url', 'headers'].includes(key))
-    && object(request.headers) && Object.entries(request.headers).every(([key, value]) => ['bmw-model-tree', 'bmw-solver', 'bmw-options'].includes(capability) && key === 'x-api-key'
+    && object(request.headers) && Object.entries(request.headers).every(([key, value]) => ['bmw-model-tree', 'bmw-solver', 'bmw-options', 'bmw-otd', 'bmw-image-manifest'].includes(capability) && key === 'x-api-key'
       && typeof value === 'string' && value.length > 0 && value.length <= 4096),
   'source-endpoint-refused', 'Only the pinned qualified public GET route/query and ephemeral application header are permitted.');
   return Object.freeze({ method: request.method, url: url.href, headers: Object.freeze({ ...request.headers }) });
@@ -167,7 +177,10 @@ export async function createCollectionSession({ identity: stageIdentity, operati
       && version(operations[name].sourceId) && version(operations[name].sourceVersion)
       && (operations[name].kind === 'offline' && typeof operations[name].execute === 'function'
         || operations[name].kind === 'read-only-http'
-          && (operations[name].sourceVersion === PUBLIC_SOURCE_VERSION && CAPABILITIES.includes(operations[name].capability)
+          && (operations[name].sourceVersion === BMW_ENRICHMENT_OBSERVATION_SOURCE_VERSION
+              && ['bmw-page', 'bmw-settings', 'bmw-otd', 'bmw-image-manifest'].includes(operations[name].capability)
+              && validateBmwEnrichmentObservationRegistration(operations[name].requestRegistration)
+            || operations[name].sourceVersion === PUBLIC_SOURCE_VERSION && CAPABILITIES.includes(operations[name].capability)
             || operations[name].sourceVersion === DIAGNOSTIC_SOURCE_VERSION && DIAGNOSTIC_CAPABILITIES.includes(operations[name].capability)
             || operations[name].sourceVersion === BMW_BATCH_SOURCE_VERSION && [...CAPABILITIES, 'bmw-options'].includes(operations[name].capability)
               && validateBmwBatchRequestRegistration(operations[name].requestRegistration)
@@ -208,6 +221,7 @@ export async function createCollectionSession({ identity: stageIdentity, operati
   const sources = Object.fromEntries(names.map((name) => [name, { sourceId: operations[name].sourceId,
     sourceVersion: operations[name].sourceVersion, kind: operations[name].kind,
     ...(operations[name].kind === 'read-only-http' ? { capability: operations[name].capability, cache: operations[name].cache !== false,
+      ...(operations[name].sourceVersion === BMW_ENRICHMENT_OBSERVATION_SOURCE_VERSION ? { requestRegistration: validateBmwEnrichmentObservationRegistration(operations[name].requestRegistration) } : {}),
       ...(operations[name].sourceVersion === BMW_BATCH_SOURCE_VERSION ? { requestRegistration: validateBmwBatchRequestRegistration(operations[name].requestRegistration) } : {}),
       ...(isBmwModelBatchPlan({ source: { version: operations[name].sourceVersion } }) ? { requestRegistration: validateBmwModelBatchRequestRegistration(operations[name].requestRegistration, operations[name].sourceVersion) } : {}),
       ...(operations[name].sourceVersion === BMW_CONTEXT_SOURCE_VERSION ? { requestRegistration: validateBmwContextRequestRegistration(operations[name].requestRegistration) } : {}),
@@ -344,8 +358,12 @@ export async function createCollectionSession({ identity: stageIdentity, operati
             ]);
             if (isHttp) { metadata = value.metadata; value = value.value; }
             clearTimeout(timer); checkDeadline();
-            if ([401, 403, 429].includes(value?.status)) { state.counts.failures += 1; stop(`source-http-${value.status}`, true); }
-            if (typeof value?.status === 'number' || ['source-unavailable', 'source-failure', 'unavailable', 'error'].includes(value?.status)) throw new CollectionError('source-response-failure', 'The source returned a failed status.');
+            // OTD's JSON status is source data. Actual HTTP status has already been
+            // checked by readHttp; retain this field only for this registered observer.
+            const otdObservation = isHttp && descriptor.sourceVersion === BMW_ENRICHMENT_OBSERVATION_SOURCE_VERSION
+              && descriptor.capability === 'bmw-otd';
+            if (!otdObservation && [401, 403, 429].includes(value?.status)) { state.counts.failures += 1; stop(`source-http-${value.status}`, true); }
+            if ((!otdObservation && typeof value?.status === 'number') || ['source-unavailable', 'source-failure', 'unavailable', 'error'].includes(value?.status)) throw new CollectionError('source-response-failure', 'The source returned a failed status.');
           } catch (error) {
             clearTimeout(timer);
             if (isHttp) { controller.abort(); await sourceTask.catch(() => {}); }

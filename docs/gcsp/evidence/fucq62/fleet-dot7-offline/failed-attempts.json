@@ -1,0 +1,130 @@
+{
+  "candidate": {
+    "result": {
+      "issue": null,
+      "issue_kind": null,
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot7-offline/candidate/command.log",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot7-offline/candidate/ownership/f1248ff10cb945ef9165de8535ae4e5a.json",
+      "peak_rss": 290488320,
+      "peak_scratch": 4964352,
+      "rc": 1,
+      "wall": 7.581294166
+    },
+    "cleanup": {
+      "cloudScratchAbsent": true,
+      "codeIdentityUnchanged": true,
+      "compatibilityException": null,
+      "dependencyLinkAbsent": true,
+      "freeDiskBytes": 57096986624,
+      "groupsAbsent": true,
+      "inputIdentityUnchanged": true,
+      "leftovers": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot7-offline/candidate/ownership/f1248ff10cb945ef9165de8535ae4e5a.json",
+      "removedCloudScratchAllocationBytes": 0,
+      "removedScratchPeakBytes": 4964352,
+      "reservationAbsent": true,
+      "retainedAllocationBytes": 21332160,
+      "retainedLogicalBytes": 21326958,
+      "retainedOutput": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot7-offline-20261107",
+      "scratch": "/private/tmp/test-stamp-shard-f1248ff10cb945ef9165de8535ae4e5a",
+      "scratchAbsent": true
+    }
+  },
+  "audit": {
+    "result": {
+      "issue": null,
+      "issue_kind": null,
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot7-offline/audit/command.log",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot7-offline/audit/ownership/73b90a6de943454faf0feae0b52dbf08.json",
+      "peak_rss": 264749056,
+      "peak_scratch": 0,
+      "rc": 1,
+      "wall": 11.173043708000002
+    },
+    "cleanup": {
+      "cloudScratchAbsent": true,
+      "codeIdentityUnchanged": true,
+      "compatibilityException": null,
+      "dependencyLinkAbsent": true,
+      "freeDiskBytes": 56937455616,
+      "groupsAbsent": true,
+      "inputIdentityUnchanged": true,
+      "leftovers": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot7-offline/audit/ownership/73b90a6de943454faf0feae0b52dbf08.json",
+      "removedCloudScratchAllocationBytes": 0,
+      "removedScratchPeakBytes": 0,
+      "reservationAbsent": true,
+      "retainedAllocationBytes": 152207072,
+      "retainedLogicalBytes": 151694586,
+      "retainedOutput": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot7-offline-20261107",
+      "scratch": "/private/tmp/test-stamp-shard-73b90a6de943454faf0feae0b52dbf08",
+      "scratchAbsent": true
+    }
+  },
+  "http-complement": {
+    "result": {
+      "issue": null,
+      "issue_kind": null,
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot7-offline/http-complement/command.log",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot7-offline/http-complement/ownership/c0cf96078d9b40af95311792bc527cac.json",
+      "peak_rss": 185188352,
+      "peak_scratch": 0,
+      "rc": 1,
+      "wall": 3.06233075
+    },
+    "cleanup": {
+      "cloudScratchAbsent": true,
+      "codeIdentityUnchanged": true,
+      "compatibilityException": null,
+      "dependencyLinkAbsent": true,
+      "freeDiskBytes": 56889561088,
+      "groupsAbsent": true,
+      "inputIdentityUnchanged": true,
+      "leftovers": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot7-offline/http-complement/ownership/c0cf96078d9b40af95311792bc527cac.json",
+      "removedCloudScratchAllocationBytes": 0,
+      "removedScratchPeakBytes": 0,
+      "reservationAbsent": true,
+      "retainedAllocationBytes": 152485600,
+      "retainedLogicalBytes": 151966769,
+      "retainedOutput": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot7-offline-20261107",
+      "scratch": "/private/tmp/test-stamp-shard-c0cf96078d9b40af95311792bc527cac",
+      "scratchAbsent": true
+    }
+  },
+  "preallocationFailures": [
+    "candidate2 resume preflight lacked descriptor-inputs file; no allocation; corrected before recorded phase",
+    "audit preflight syntax error in supervisor mapping; no allocation; corrected before recorded phase"
+  ],
+  "recovery": {
+    "result": {
+      "issue": "RAM exceeded 469762048-byte chunk budget (measured 475693056)",
+      "issue_kind": null,
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot7-offline/recovery/command.log",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot7-offline/recovery/ownership/467c9c60de9441b79069222039c2d203.json",
+      "peak_rss": 475693056,
+      "peak_scratch": 8192,
+      "rc": -15,
+      "wall": 14.439927083
+    },
+    "cleanup": {
+      "cloudScratchAbsent": true,
+      "codeIdentityUnchanged": true,
+      "compatibilityException": null,
+      "dependencyLinkAbsent": true,
+      "freeDiskBytes": 56763920384,
+      "groupsAbsent": true,
+      "inputIdentityUnchanged": true,
+      "leftovers": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot7-offline/recovery/ownership/467c9c60de9441b79069222039c2d203.json",
+      "removedCloudScratchAllocationBytes": 102107168,
+      "removedScratchPeakBytes": 8192,
+      "reservationAbsent": true,
+      "retainedAllocationBytes": 152678112,
+      "retainedLogicalBytes": 152154973,
+      "retainedOutput": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot7-offline-20261107",
+      "scratch": "/private/tmp/test-stamp-shard-467c9c60de9441b79069222039c2d203",
+      "scratchAbsent": true
+    }
+  }
+}
