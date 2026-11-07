@@ -2644,7 +2644,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T12:28:02Z",
+      "observed_at": "2026-11-07T12:32:50Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62",
       "claim_evidence": "Claimed owning035 at34a793e3; root checkpoint authorisation, Jira OAuth unavailable. Full acceptance remains open.",
       "slices": [
@@ -2699,10 +2699,10 @@
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Application and deployed integration acceptance",
-          "observed_at": "2026-11-07T12:28:02Z",
-          "evidence": "Linux readback 42370480081 returned ready .10; .12 is not verified live. Reviewed Render-selector fix c87b6f07 passed 9 focused regressions and deployment 7620961777 is pending. Prepared separate three-GET diagnostic2 remains unexecuted. Public .12 Linux restore/offline/assets/boundary evidence passed; deployment success will require exact release/DTO readback."
+          "observed_at": "2026-11-07T12:32:50Z",
+          "evidence": "Actual public .12 live verified by run42372746118 at13144e31: health/readiness/configuration HTTP200, exact manifest3b2a883c...cce30 and expected DTO82712c8d...e2e4. Replacement Render deployment7620961777/c87b6f07 succeeded. Root verified retained hashes and cleanup: groups/scratch absent16946Bremoved. Scoped restore/offline/assets/boundary passed; prior failures and deferred consumers remain explicit. Development ready for review; no acceptance claim."
         },
         {
           "id": "large-artifact-restore",

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "f58-63-board-sync-pending.v1",
-  "recordedAt": "2026-11-07T12:28:39.065740+00:00",
+  "recordedAt": "2026-11-07T12:32:50.837416+00:00",
   "source": "Independent delivery reviews and exact retained evidence; tracker mutation unperformed",
   "observedTrackerStatus": "In Progress",
   "trackerStatusObservation": "Last successful observation; current read failed authentication",
@@ -9,11 +9,11 @@
     "FUCQ-58",
     "FUCQ-59",
     "FUCQ-60",
-    "FUCQ-61"
+    "FUCQ-61",
+    "FUCQ-62"
   ],
   "stillDelivering": {
-    "FUCQ-62": "Replacement Render deployment7620961777 at c87b6f07 succeeded2026-11-07T12:28:04Z; separate exact .12 release and DTO readback pending.",
-    "FUCQ-63": "Three direct/HTTP PostgreSQL order comparisons pass; consumer proof setup omitted retained inventory snapshot. Separate setup correction being prepared with unchanged criteria; nativeProof remains false."
+    "FUCQ-63": "Corrected isolated snapshot publication passed independent static review, merged8c76c963; one actual native proof42372886620 running with unchanged assertions."
   },
   "transitionsSucceeded": [],
   "acceptedOrDone": [],
@@ -23,5 +23,6 @@
     "F61 irrecoverable outcome/history accounting limits and original RAM overrun remain",
     "2707 consumer failures remain deferred and unfixed"
   ],
-  "statusReport": "docs/gcsp/f58-63-morning-status-2026-11-07.md"
+  "statusReport": "docs/gcsp/f58-63-morning-status-2026-11-07.md",
+  "latestTrackerCheckAt": "2026-11-07T12:31:00Z"
 }
