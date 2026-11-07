@@ -155,6 +155,8 @@ function publicOrigin(value) {
 export async function startHostedGcsp({ buildServer, env = process.env, port, root = REPO_ROOT } = {}) {
   const origin = publicOrigin(env.GCSP_PUBLIC_ORIGIN ?? '');
   if (!origin) return failure('public-origin-required');
+  // Fail closed: the hosted pages and /api/* are only open behind the demo key.
+  if (!env.DEMO_ACCESS_KEY) return failure('access-key-required');
   const options = gcspRuntimeOptions({ env, defaultMode: 'memory', defaultEnvironmentId: 'gcsp-hosted-demo', commandId: 'hosted-bootstrap' });
   const opened = await createGcspRuntime(options.runtime);
   if (opened.status !== 'ok') return opened;

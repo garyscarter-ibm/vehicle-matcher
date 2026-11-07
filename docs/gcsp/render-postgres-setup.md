@@ -27,7 +27,7 @@ server-issued session cookies first-party; `gcsp-site` and `gcsp-api` are differ
 would drop cross-site cookies. `gcsp-site` redirects those page addresses to `gcsp-api`. The demo runs in memory mode;
 the database stays for the PostgreSQL proofs (FUCQ-83, FUCQ-66) and for `GCSP_REPOSITORY_MODE=postgres`.
 
-If `DEMO_ACCESS_KEY` is set, the first live page in each browser asks for it once ("Open the demo"), then remembers it
+`DEMO_ACCESS_KEY` is required with `GCSP_RUNTIME=1`. The first live page in each browser asks for it once ("Open the demo"), then remembers it
 for 12 hours in an HttpOnly cookie. Emailed offer links (`/gcsp/offer`) never ask: they carry their own offer token.
 
 ### Backend settings on `gcsp-api`
@@ -41,7 +41,7 @@ for 12 hours in an HttpOnly cookie. Emailed offer links (`/gcsp/offer`) never as
 | `GCSP_ALLOWED_ORIGINS` | Blueprint | Extra origins allowed to call `/api/gcsp/*` (`gcsp-site`). `GCSP_PUBLIC_ORIGIN` is always allowed. |
 | `GCSP_OFFLINE` | Blueprint | `1`: no live retailer warmers at boot. |
 | `GCSP_DATABASE_URL` | Blueprint, from `gcsp-db` | Used only in postgres mode and by vehicle evidence. |
-| `DEMO_ACCESS_KEY` | Dashboard only | The demo key. Empty leaves the API and pages open. |
+| `DEMO_ACCESS_KEY` | Dashboard only | The demo key. Required: without it `gcsp-api` refuses to start (`access-key-required`). |
 | `GCSP_MAIL_TRANSPORT` | Dashboard only | `brevo` sends real email. Unset keeps every email captured in the outbox. |
 | `GCSP_MAIL_FROM`, `GCSP_MAIL_FROM_NAME` | Dashboard only | The verified Brevo sender. |
 | `GCSP_MAIL_RECIPIENTS` | Dashboard only | JSON map of demo principal to address. |
@@ -74,8 +74,8 @@ beginning, and keep the page in use. A paid `starter` instance does not sleep; w
    - **Blueprint Path:** `render.gcsp.yaml`. This field matters most: left empty, Render reads the retail `render.yaml`.
 4. Render lists what it will create: `gcsp-db`, `gcsp-api` and `gcsp-site`. If you see `bmw-matcher-api`, stop: the
    Blueprint Path is wrong.
-5. It asks for one value, `DEMO_ACCESS_KEY`. Enter the demo password you want on the GCSP API, or leave it empty for
-   an open API. You can change it later on `gcsp-api`'s **Environment** page.
+5. It asks for one value, `DEMO_ACCESS_KEY`. Enter the demo password you want on the GCSP API. It is required: without
+   it `gcsp-api` refuses to start. You can change it later on `gcsp-api`'s **Environment** page.
 6. Click **Apply**. Render creates the database first, then builds both services. Wait until all three show **Live**
    or **Available** (5 to 10 minutes).
 
@@ -139,7 +139,6 @@ database's external address. Render filled in the internal one for `gcsp-api`.
    - `/components.html` shows the component gallery.
    - `/gcsp-presenter.html` redirects to `gcsp-api`, asks for the demo key once, and opens the presenter workspace.
 
-   If you set `DEMO_ACCESS_KEY`, the first page that calls the API asks for it once.
 4. **Live demo**, on `gcsp-api`: Reset on the presenter page, a tick, Paula's offer and the outbox. The smoke steps
    are in the FUCQ-180 result.
 5. Then tell me "Render is set up". I'll check that the database connects without printing the URL, and tell Russell's
@@ -172,7 +171,8 @@ The command has passed with actual public assets and an offline restart locally.
 | A page says the API can't be reached | `GCSP_API_URL` doesn't match `gcsp-api`'s address, or the backend is asleep | Do step 3, then retry after a minute. |
 | `/api/gcsp/*` returns "This origin is not allowed" | `GCSP_ALLOWED_ORIGINS` doesn't exactly match `gcsp-site`'s address | Do step 3. |
 | `/api/gcsp/*` returns "GCSP identity has not been configured" | `GCSP_RUNTIME` isn't `1` on `gcsp-api` | Check the Blueprint synced; redeploy. |
-| Deploy fails with "GCSP hosted startup: invalid (public-origin-required)" | `GCSP_PUBLIC_ORIGIN` is missing or not an exact `https://` origin | Set it to `gcsp-api`'s address, no trailing slash. |
+| Deploy fails with "GCSP hosted startup: invalid (public-origin-required)" | `GCSP_PUBLIC_ORIGIN` is missing or not an exact `https://` origin | Set it to `gcsp-api`'s address, no trailing slash.
+| Deploy fails with "GCSP hosted startup: invalid (access-key-required)" | `DEMO_ACCESS_KEY` is empty on `gcsp-api` | Add it on the **Environment** page; redeploy. | |
 | Live pages show stale or empty state after a break | The free instance slept, so memory mode started a new run | Wait for `/health`, then Reset on the presenter page. |
 | Contract tests can't connect | URL is missing `?sslmode=require` | Add it to `.claude/gcsp-database-url`. |
 
