@@ -13,6 +13,7 @@ import { vehicleEvidenceHttpStatus } from '../../server/gcsp/vehicle-evidence/ve
 import { installFleetOfflineGuard } from './fleet-offline-guard.mjs';
 import { validateCorpusDirectory, readCorpusFile, contentChecksum } from '../../server/gcsp/vehicle-evidence/corpus-publisher.js';
 import { createPolicyService } from '../../server/gcsp/policy/index.js';
+import { APPROVED_CORPUS_IMAGES } from '../../server/gcsp/vehicle-evidence/registered-corpus-images.js';
 import { createConfigurationKey } from './configuration-key.mjs';
 
 const limitations = Object.freeze([
@@ -272,6 +273,7 @@ export async function verifyFleetCli(argv = process.argv.slice(2), write = (valu
   }
   const integer = (name, fallback) => values.has(name) ? (/^[1-9][0-9]*$/.test(values.get(name)) ? Number(values.get(name)) : NaN) : fallback;
   const options = { requiredDistinct: integer('--require-distinct', 10000), plan, policyService: createPolicyService(),
+    approvedImages: APPROVED_CORPUS_IMAGES,
     policyRead: { runId: values.get('--run-id') || 'fleet-verification', asOf: values.get('--as-of') || new Date().toISOString() } };
   let report;
   if (values.has('--staged')) {
