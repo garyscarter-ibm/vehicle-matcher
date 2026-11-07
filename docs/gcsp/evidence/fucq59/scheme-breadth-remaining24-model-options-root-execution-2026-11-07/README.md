@@ -1,0 +1,7 @@
+# Isolated root execution: remaining24breadth options contexts
+
+This distinct unspent root allocation contains the24actual fullmodel/explicitline contexts outside the first six. It permits at most96GETs, four per model, only after separateexactparent release. Complete aliases, rawrange/cataloguerange distinction and explicitline/included/defaultrelationships remain pinned to retained actualinventory. No BASIC_LINE or M_PERFORMANCE_LINE trim is inferred. The nineunusableline models andI20emptytree remain gaps.
+
+The rootcheckout, uniqueexternalcontrol output and no dependencylink isolate execution from035G42. Firstsixrootpins are unchanged. One worker,512MiBhost/448MiBchild,64MiBscratch,4MiBdecoded/context,1MiBresponse,90/105/120seconds source/child/chunk,2400seconds finite series and96MiBaggregate decoded cap. Expectedretained128MiB; firstwriteprimary/export bytes stay here. Exclusiveconsumedmarkers, no retry/replay, firstincomplete stop and sourcechildjoin/export/cleanup remain required. Solver,image,browser,admission/capacitycredit zero.
+
+Scoped preparation passed28/28, zero skips, in8.91754125seconds on currentrootcode: all30actualprovenance proposals,24exactfourGETfixtures, URL/pin/no-grant and copiedactual sevencheck retainedverifier. validation.json records independent scratch/group/reservation/link absence. Actual sourcequalification is unrun; all31schemejoins,distribution/downstream/originalacceptance obligations remain open.
