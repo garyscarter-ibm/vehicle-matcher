@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "render-deployment-target-observation.v1",
+  "source": "Root-provided GitHub/Render deployment identity; this packet performed no deployment or application request",
+  "githubDeploymentId": 7620961777,
+  "actualDeploymentId": "dep-dbnhane8bjmc73a7v5qg",
+  "code": "c87b6f075c4e79bee93b71e1965ad23310ab8473",
+  "createdAt": "2026-11-07T12:11:09Z",
+  "state": "in_progress",
+  "stateCreatedAt": "2026-11-07T12:11:10Z",
+  "completedAt": null,
+  "successObserved": false,
+  "environmentUrl": "https://gcsp-api.onrender.com",
+  "applicationGetPerformed": false
+}

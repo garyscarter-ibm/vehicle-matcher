@@ -1,11 +1,11 @@
-name: GCSP .12 Linux live transport diagnostic
+name: GCSP .12 Linux live transport diagnostic 2
 
 on:
   push:
     branches: [gcsp-poc]
     paths:
       - .github/workflows/gcsp-live-dot12-diagnostic.yml
-      - docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic-20261107/**
+      - docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic2-20261107/**
   workflow_dispatch:
     inputs:
       reviewed_plan_sha256:
@@ -35,8 +35,8 @@ jobs:
       - name: One bounded Linux health readiness and exact first DTO observation
         shell: bash
         env:
-          REVIEWED_PLAN_SHA256: 0b763e9d72c9fe9cfa1e8e20b988abf1916c2bea6e4eea2d24b2beeba10b5cce
+          REVIEWED_PLAN_SHA256: 627a4704d1a03f2eb944ab99f01993a11883fbb7175f50f590470a63d3f8e043
           REQUESTED_PLAN_SHA256: ${{ inputs.reviewed_plan_sha256 }}
         run: |
           set -euo pipefail
-          python3 -B -I docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic-20261107/supervise.py
+          python3 -B -I docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic2-20261107/supervise.py
