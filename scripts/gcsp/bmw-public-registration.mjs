@@ -2,6 +2,7 @@ import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { requireValue } from './configuration-key.mjs';
 
 export const BMW_BATCH_SOURCE_VERSION = 'f59-batch-20261107.v1';
+export const BMW_CONTEXT_SOURCE_VERSION = 'f59-context-qualification-20261107.v1';
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const same = (a, b) => inputDigest(a) === inputDigest(b);
 const bounded = (v, min, max) => Number.isSafeInteger(v) && v >= min && v <= max;
@@ -21,6 +22,14 @@ export function validateBmwModelRegistration(value) {
     && Array.isArray(value.aliases) && bounded(value.aliases.length, 1, 8) && value.aliases.every(token)
     && new Set(value.aliases).size === value.aliases.length && (value.optionsTrim === undefined || code(value.optionsTrim)),
   'source-model-registration', 'Pin a bounded GB/RL model context, exact full aliases and separate source dates.');
+  return structuredClone(value);
+}
+
+/** Qualification has no trim default, candidate allowlist or construction capability. */
+export function validateBmwContextRequestRegistration(value) {
+  requireValue(object(value) && same(Object.keys(value), ['model']) && object(value.model)
+    && !Object.hasOwn(value.model, 'optionsTrim'), 'source-context-plan', 'Inspect direct model facts before allocating trim or candidate requests.');
+  validateBmwModelRegistration(value.model);
   return structuredClone(value);
 }
 
