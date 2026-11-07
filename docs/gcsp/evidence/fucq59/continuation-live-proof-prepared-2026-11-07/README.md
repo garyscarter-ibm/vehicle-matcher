@@ -12,4 +12,18 @@ The maximum combined traffic is ten serial GETs: eight bootstrap plus two fresh 
 
 Root must integrate/review the High stop-preservation fix, recheck all reservation/index/code hashes against the latest integrated state, confirm the two registered requests remain unspent, verify no other source lane owns them, and select the explicit fresh allocations before any request. Only one successor chain may be selected: Medium FUCQ-152 allows independent allocation IDs to fork the same predecessor. This preparation does not repair that backlog Bug.
 
-The proof establishes no distinct-admission promise, publication/default-store change, stock/VIN/profile coverage, imagery or full Story acceptance. Canonical overlap may leave the two-row target incomplete even when interruption/continuation behavior is evidenced. Cross-allocation bootstrap metadata reuse remains unproved because each phase still needs fresh live capabilities. No execution receipt exists here.
+The proof establishes no distinct-admission promise, publication/default-store change, stock/VIN/profile coverage, imagery or full Story acceptance. Canonical overlap may leave the two-row target incomplete even when interruption/continuation behavior is evidenced. Cross-allocation bootstrap metadata reuse remains unproved because each phase still needs fresh live capabilities. The scoped offline receipt below establishes the harness contract only.
+
+
+The executable supervisor is `supervise-proof.py`, which starts `run-phase.mjs` in an owned child group. `execution-contract.json` pins the current merged runtime separately from the historical plan/reservation and producer annotation. It includes the original unchanged retention exporter and synthetic test transport. The tested runtime tree is merge `8884b2e9` (attribution-only amended commit `2ece6483` has the identical tree), including shared `dfeaadc1`; production runtime hashes changed only through that reviewed shared merge. No production file is edited by these helpers.
+
+`offline-validation.json` records three passing scoped tests (zero skips, zero actual source requests): forced child SIGKILL after cursor1, byteexact export and continuation; graceful interruption exit75; and pre-allocation grant/pin refusals. Every owned group, scratch root, host reservation and temporary dependency link is absent. Synthetic primaries and bounded diagnostic receipts are retained outside scratch at the paths in that receipt. The fixture models the source protocol; it cannot establish actual source binding or live acceptance.
+
+`grant-template.json` is deliberately non-executable (`mode` and authorization are `not-granted`, source lane false). Root must create a separate exact grant after review and fresh lane/reservation checks. Preserve its exact bytes across both commands. From the owning036 worktree, the concrete commands are:
+
+```sh
+/usr/bin/python3 -I /Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq59/continuation-live-proof-prepared-2026-11-07/supervise-proof.py --grant /ABS/ROOT-GRANT.json --phase A
+/usr/bin/python3 -I /Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq59/continuation-live-proof-prepared-2026-11-07/supervise-proof.py --grant /ABS/ROOT-GRANT.json --phase B
+```
+
+Run phase B only if A's supervisor receipt is proofReady. A durable outside manifest precedes primary creation, and a fresh phase once marker precedes HTTP. The supervisor preserves the primary, joins the child, reuses the retention exporter, and records cleanup. Export failure, source refusal or incomplete checkpoint produces a failed receipt and prevents phase B. It never deletes primary deliverables. Missing/checkpoint-invalid failure counts remain unknown rather than being reported as zero live requests.
