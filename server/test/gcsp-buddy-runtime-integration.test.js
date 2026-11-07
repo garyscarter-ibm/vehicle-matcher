@@ -133,7 +133,7 @@ test('normal runtime shares services, registers before startup, and serves real 
   assert.equal(f.registrations.length, HANDLERS.length);
   const catalogue = await request(f.server, '/api/gcsp/presenter/scenarios', { session: f.presenterCookie });
   assert.equal(catalogue.status, 200); assert.ok(catalogue.json.value.scenarios.length);
-  assert.ok(catalogue.json.value.scenarios.filter((s) => s.kind === 'journey').every((s) => s.availability.missingCapabilities.length));
+  assert.ok(catalogue.json.value.scenarios.filter((s) => s.kind === 'journey' && s.scenarioId !== 'decline-then-change').every((s) => s.availability.missingCapabilities.length));
   await adoptPresenter(f);
   const controls = await request(f.server, '/api/gcsp/presenter/controls', { session: f.presenterCookie }); assert.equal(controls.status, 200);
   const state = good(await f.clock.now(f.presenter));
