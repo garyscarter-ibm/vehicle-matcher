@@ -6,6 +6,13 @@ export const preferenceLabel = (path) => String(path ?? '').replace(/^preference
   .replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (letter) => letter.toUpperCase());
 export const shown = (value) => value == null ? 'Not supplied' : Array.isArray(value) ? value.join(', ')
   : typeof value === 'object' ? JSON.stringify(value) : String(value);
+const words = (value) => String(value ?? '').replace(/-/g, ' ').replace(/^./, (letter) => letter.toUpperCase());
+// Readable labels for server keys; unknown keys stay visible rather than hidden.
+export const roleLabel = (value) => value == null ? 'Not supplied'
+  : ({ 'scheme-team': 'Scheme team', employee: 'Employee', system: 'Automatic check' }[value] ?? words(value));
+export const triggerLabel = (t) => !t?.type ? 'Not supplied' : ({ 'employee-request': 'Help request',
+  'renewal-deadline': 'Renewal deadline approaching' }[t.type] ?? ({ 'approval-declined': 'Order approval declined',
+  'appointment-no-show': 'Missed handover appointment' }[t.eventType] ?? words(t.eventType ?? t.type)));
 export function clockTime(value) {
   return typeof value === 'string' && Number.isFinite(Date.parse(value))
     ? new Date(value).toISOString().replace('T', ' ').replace(/\.000Z$/, ' UTC').replace(/Z$/, ' UTC') : 'Not supplied';
@@ -17,9 +24,9 @@ export function renderCaseContent(c, { onReviewRelaxation, pending = false, head
   const root = el('article', 'gcsp-case-detail');
   root.dataset.caseId = c.caseId;
   root.append(screenIntro({ kicker: 'Renewal case', title: caseStatus(c.status), level: headingLevel }), facts([
-    ['Case reference', c.caseId], ['Owner', c.owner?.name ?? c.owner?.role], ['Owner role', c.owner?.role],
+    ['Case reference', c.caseId], ['Owner', c.owner?.name ?? c.owner?.role], ['Owner role', roleLabel(c.owner?.role)],
     ['Reason', c.reason], ['Latest update', c.history?.at(-1)?.reason ?? c.reason],
-    ['Opened from', c.trigger?.type], ['Next action', c.nextAction], ['Due, demo clock (UTC)', clockTime(c.dueAt)],
+    ['Opened from', triggerLabel(c.trigger)], ['Next action', c.nextAction], ['Due, demo clock (UTC)', clockTime(c.dueAt)],
     ['Renewal deadline (calendar date)', c.renewalDeadline ?? 'Needs confirmation'],
   ]));
   if (c.fictional) root.append(el('p', 'gcsp-note', 'Synthetic demonstration case.'));
@@ -54,7 +61,7 @@ export function renderCaseContent(c, { onReviewRelaxation, pending = false, head
   const list = el('ol', 'gcsp-case-events');
   for (const h of c.history ?? []) {
     const row = el('li', 'gcsp-case-event');
-    row.append(facts([['Demo clock (UTC)', clockTime(h.at)], ['Actor', h.actorId], ['Role', h.actorRole],
+    row.append(facts([['Demo clock (UTC)', clockTime(h.at)], ['Actor', audience === 'employee' && h.actorId === c.employeeId ? 'You' : h.actorRole === 'system' ? 'Automatic check' : h.actorId], ['Role', roleLabel(h.actorRole)],
       ['Status', caseStatus(h.status)], ['Reason', h.reason], ['Next action', h.nextAction], ['Due, demo clock (UTC)', clockTime(h.dueAt)]]));
     list.append(row);
   }
