@@ -1,6 +1,9 @@
 name: GCSP public health diagnostic
 
 on:
+  push:
+    branches: [gcsp-poc]
+    paths: [.github/workflows/gcsp-health-diagnostic.yml]
   workflow_dispatch:
 
 permissions:
