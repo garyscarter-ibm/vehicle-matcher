@@ -54,6 +54,18 @@ Durable shared briefs/holds/offers use managed PostgreSQL behind the repository 
 
 Later BMW hosting depends on sanctioned identity/roles, authoritative facts/rules/quotes/stock, supported actions/events, exclusive reservation authority, durable infrastructure and operational ownership. Diagrammed future adapters are required capabilities, not verified BMW endpoints. The shared demo password does not provide employee identity. The planned 1,000-employee comparison is included under the [full-build direction](../gcsp/build-rules.md), with captured notifications and the same decision/allocation logic.
 
+**GCSP package preparation, FUCQ-36:** [`scripts/assemble-site.mjs`](../../scripts/assemble-site.mjs)
+implements the existing separate static-site assembly boundary. It discovers every
+`blocks/gcsp/` directory and includes the shared launcher, real employee entry,
+retail block, gallery, styles, fonts and required brand/image assets. The
+[release checklist](../gcsp/evidence/fucq-12/fucq36-release.md) defines the proposed
+Render build from `gcsp-poc`, explicit API/revision configuration, employee switch,
+exact migration/seed expectations and later deployed checks. Local artifact
+validation does not establish deployment, current backend revision or database
+readiness. The existing retail workflows/blueprint and diagram statuses are
+unchanged. Missing direct offer UI remains an explicit release gate until its
+actual block/page is integrated; a source branch preview is separate evidence.
+
 ## Validation and review
 
 The as-built view was independently reverse-engineered from source. The expanded design received an independent architecture review; corrections included notification atomicity, durable-brief migration order and preserving the configured retail blend. Requested/selected pairs: as-built implementer `gpt-6.1-sol` / `medium`; design reviewers `gpt-6.1-sol` / `high`, no fallback or descendants. Effective runtime selections were not independently inspected.

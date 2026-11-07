@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "final-jira-publish-readback.v1",
+  "observedAt": "2026-11-07T13:03:57.326Z",
+  "cloudId": "9024e134-9d2e-4f15-af8d-4df1fd4c2cb1",
+  "stories": [
+    {
+      "key": "FUCQ-63",
+      "status": "In Review",
+      "type": "Story",
+      "summary": "Prove full-corpus lookup and offline recovery through the port"
+    },
+    {
+      "key": "FUCQ-62",
+      "status": "In Review",
+      "type": "Story",
+      "summary": "Publish the configuration corpus and generate stock by order reference"
+    },
+    {
+      "key": "FUCQ-61",
+      "status": "In Review",
+      "type": "Story",
+      "summary": "Collect and validate 10,000 genuinely distinct BMW configurations"
+    },
+    {
+      "key": "FUCQ-60",
+      "status": "In Review",
+      "type": "Story",
+      "summary": "Enrich resolved fleet configurations with matching facts and images"
+    },
+    {
+      "key": "FUCQ-59",
+      "status": "In Review",
+      "type": "Story",
+      "summary": "Collect distinct constructible configurations with resumable batches"
+    },
+    {
+      "key": "FUCQ-58",
+      "status": "In Review",
+      "type": "Story",
+      "summary": "Qualify fleet coverage and budgets before collecting configurations"
+    }
+  ],
+  "comments": [
+    {
+      "key": "FUCQ-63",
+      "status": "In Review",
+      "comment": {
+        "id": "3627793",
+        "body": "Final publication check, 7 November 2026: fleet Actions run42374040814 passed on9b13ba2be2ed7feea767ab20e08dc6c048aef30f (Node20/Linux; exact31assets; cold and zero-egress offline restore; five scoped runtime references). Combined phase358seconds; owned925253632byte CI cache/scratch was removed and absence verified. Two scoped consumer failures and the original2707 remain deferred underFUCQ-158; no full-suite/full10002 repeat or acceptance claim.\n\nPR34 merged the six canonical tracker records into trustedmain9ab7e1729a08ac0a35da4b3684d2ad143e3551c6. Pages run42375092002 passed; actual public readback generated13:02:23UTC shows FUCQ-58–63 In Review, progress100, no conflicts. Jira delivery comments and deferredFUCQ-156–165 are reconciled. FUCQ-166 independently records the earlier stale-serving fault; the current publication succeeded, but its recurring cause is unconfirmed and no workflow repair is claimed.\n\nNative PostgreSQL run42372886620 and actual live.12 run42372746118 remain the previously recorded passing scoped proofs. Acceptance gaps and failed historical receipts remain unchanged. Sequence58–63 is handed over In Review; this session stops after final receipts.\n\nhttps://github.com/garyscarter-ibm/vehicle-matcher/actions/runs/42374040814  \nhttps://github.com/garyscarter-ibm/vehicle-matcher/actions/runs/42375092002  \nEvidence: docs/gcsp/evidence/f58-63-final-publish-actions-2026-11-07/",
+        "created": "2026-11-07T07:03:22.015-0600",
+        "updated": "2026-11-07T07:03:22.015-0600"
+      }
+    },
+    {
+      "key": "FUCQ-166",
+      "status": "To Do",
+      "comment": {
+        "id": "3627792",
+        "body": "Current publication workaround verified: data-only PR34 merged at13:02:06UTC asmain9ab7e1729a08ac0a35da4b3684d2ad143e3551c6; Pages42375092002 passed at13:02:34UTC. Actual public JSON readback generated13:02:23UTC shows all six target Stories In Review/progress100/conflictfalse, sourcegcsp-poc693844ae9ffbb00763c2a1e50fe35f866176e164 and currentmain9ab7e172…. This resolves the current visible synchronization. It does not establish the recurring stale-serving root cause or a workflow repair; keep this MediumBug To Do for independent later diagnosis. Same-SHA dedup remains unproved. Original stale reads and exact uploaded artifact are preserved in the evidence directory.",
+        "created": "2026-11-07T07:03:21.240-0600",
+        "updated": "2026-11-07T07:03:21.240-0600"
+      }
+    }
+  ],
+  "acceptance": false
+}

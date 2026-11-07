@@ -1,0 +1,128 @@
+{
+  "at": "2026-11-06T14:38:39.459908+00:00",
+  "coverage": "12unittest methods; elapsed total recorded, no measured per-method timings or coverage contexts. Ownership and subprocess boundaries explicitly reviewed; missing observations do not establish irrelevance.",
+  "files": {
+    "diagnostic-plan.json": "951458bc15139afeaaa836a8c58e11bb0f0113a87ee73898147945d81c3b107c",
+    "run-settings.mjs": "0a83a709c886fa1297d412f23488c8fce7f8722df0c77e1d7f3259c0f237e9f8",
+    "supervise-settings.py": "b54db5af92313ee7b190dd8ef9bc0d96e9470b8ac6c9af4e1791f4352c7c775e",
+    "tests/runner-tests.mjs": "f05546affca633ee2771b7cd38551ca7cb3bf31dfa14da539770a6beb33fc379",
+    "tests/supervisor-tests.py": "929422f788b9c5c164cec7c49660097732c4ba27f36d3f963e36c277f7447f50"
+  },
+  "fixCodeTestIdentity": "432eb34827185a4795ce20afdcffb5a60903244036f701a462231237bf756c3d",
+  "functionOwnership": [
+    {
+      "boundaries": [
+        "Actual trusted HostBudget acquire/release, bounded locked ledger membership of owned token",
+        "Injected releaseexception/noop/tokenretention/verificationIO plus independently finalized captured tokens",
+        "Actual child0exit/processgroup/rootcleanup and synthetic launcher death",
+        "Typed resource receipt, named leftover, shared terminal printed status/exit"
+      ],
+      "file": "supervise-settings.py",
+      "functions": [
+        "release_reservation",
+        "supervise_once",
+        "terminal_result",
+        "main terminal delegation"
+      ],
+      "tests": [
+        "test_missing_malformed_and_nonobject_receipt_remain_unknown",
+        "test_only_exact_typed_pinned_accounting_reaches_fallback",
+        "test_boolean_extra_fields_admission_and_array_coercion_refuse",
+        "test_truthful_threshold_overrun_is_not_clamped_to_plan",
+        "test_export_requires_matching_bounded_file_not_receipt_claim_alone",
+        "test_invalid_receipt_io_and_symlink_never_break_fallback",
+        "test_exclusive_registration_prevents_duplicate_invocation_after_prelaunch_failure",
+        "test_reservation_release_exception_is_a_named_cleanup_failure",
+        "test_reservation_release_success_without_removal_is_a_named_cleanup_failure",
+        "test_reservation_release_verification_io_failure_is_a_named_cleanup_failure",
+        "test_verified_reservation_release_reports_successful_terminal_completion",
+        "test_actual_launcher_identity_death_stops_joins_and_removes_owned_group"
+      ]
+    }
+  ],
+  "historical": "Previous18Node+8Python preparation evidence preserved atac39df95 and top-level validation-summary.json; current affected supervisor proof is12, not a cumulative count. Prior21/full/native remain historical.",
+  "key": "eecc0f714f7680083c180082ccc0674c3590ca652cdaabefe264899eecd757f6",
+  "observedTests": [
+    "test_missing_malformed_and_nonobject_receipt_remain_unknown",
+    "test_only_exact_typed_pinned_accounting_reaches_fallback",
+    "test_boolean_extra_fields_admission_and_array_coercion_refuse",
+    "test_truthful_threshold_overrun_is_not_clamped_to_plan",
+    "test_export_requires_matching_bounded_file_not_receipt_claim_alone",
+    "test_invalid_receipt_io_and_symlink_never_break_fallback",
+    "test_exclusive_registration_prevents_duplicate_invocation_after_prelaunch_failure",
+    "test_reservation_release_exception_is_a_named_cleanup_failure",
+    "test_reservation_release_success_without_removal_is_a_named_cleanup_failure",
+    "test_reservation_release_verification_io_failure_is_a_named_cleanup_failure",
+    "test_verified_reservation_release_reports_successful_terminal_completion",
+    "test_actual_launcher_identity_death_stops_joins_and_removes_owned_group"
+  ],
+  "planDigest": "a4c5ec2f914e113eb716cf9b70f99d1f02aea160c672f4caf5fc1f64b91d85dc",
+  "producer": {
+    "scripts/gcsp/collect-fleet.mjs": "8bc059fcec47c46c6e209b8e64fc11c519083fd62fde1652d7229d7c5adc689b",
+    "scripts/gcsp/collection-session.mjs": "b2cd36ec77c2f63fd58795e83125ef135732e6b768a9e1492caf194c94b9248c",
+    "scripts/gcsp/public-bmw-source.mjs": "68f5104c3c9f303af89a91e2e3c8c2474b66956e03271bf61bf42e703155d30f",
+    "scripts/gcsp/settings-shape-report.mjs": "e6f4bade6186fc4b122052749fb2a0e518f889f68d771b17524a4e63cc2f0113",
+    "server/test/gcsp-fleet-collector.test.js": "d8c7c7315faa05c6bd328a9b7f8ada58fe31bf5c229a51c0e63106d920057ff9",
+    "server/test/gcsp-settings-shape-report.test.js": "f1ca4f0b7cccb7a657a987dc6d882f6a8eaec1458ab62b83e88669ae34be4115"
+  },
+  "proofReused": {
+    "nodeFiles": {
+      "diagnostic-plan.json": "951458bc15139afeaaa836a8c58e11bb0f0113a87ee73898147945d81c3b107c",
+      "run-settings.mjs": "0a83a709c886fa1297d412f23488c8fce7f8722df0c77e1d7f3259c0f237e9f8",
+      "tests/runner-tests.mjs": "f05546affca633ee2771b7cd38551ca7cb3bf31dfa14da539770a6beb33fc379"
+    },
+    "nodeRunnerMethods": 18,
+    "nodeRuntimeSha256": "1ef99ea25fe70c9b67e7efe768ef8ee22148d3cabc703db6131b57aeb617d040",
+    "producerFiles": {
+      "scripts/gcsp/collect-fleet.mjs": "8bc059fcec47c46c6e209b8e64fc11c519083fd62fde1652d7229d7c5adc689b",
+      "scripts/gcsp/collection-session.mjs": "b2cd36ec77c2f63fd58795e83125ef135732e6b768a9e1492caf194c94b9248c",
+      "scripts/gcsp/public-bmw-source.mjs": "68f5104c3c9f303af89a91e2e3c8c2474b66956e03271bf61bf42e703155d30f",
+      "scripts/gcsp/settings-shape-report.mjs": "e6f4bade6186fc4b122052749fb2a0e518f889f68d771b17524a4e63cc2f0113",
+      "server/test/gcsp-fleet-collector.test.js": "d8c7c7315faa05c6bd328a9b7f8ada58fe31bf5c229a51c0e63106d920057ff9",
+      "server/test/gcsp-settings-shape-report.test.js": "f1ca4f0b7cccb7a657a987dc6d882f6a8eaec1458ab62b83e88669ae34be4115"
+    },
+    "producerIdentity": "9d63aa36a7bbbb29432d4a8b03f2cd585abfdd4e53d671919a8798f28f674a1b",
+    "producerMethods": 33,
+    "reason": "Python supervisor cleanup is not imported by Node helper suite; identical plan/runner/tests/runtime; new dynamic main/handoff execution remains pending, no rerun.",
+    "resourceToolSha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d"
+  },
+  "schemaVersion": "affected-test-impact.v1",
+  "selectedCommands": {
+    "green": [
+      "python3",
+      "-I",
+      "-B",
+      "tests/supervisor-tests.py"
+    ],
+    "red": [
+      "python3",
+      "-I",
+      "-B",
+      "tests/supervisor-tests.py",
+      "-k",
+      "reservation_release"
+    ]
+  },
+  "selectorReview": {
+    "command": [
+      "python3",
+      "-I",
+      "-B",
+      "_tools/test_stamp.py",
+      "--affected",
+      "HEAD",
+      "--dry-run"
+    ],
+    "observed": "No plug-in for unspecified language; proposes npm test full fallback. Inspected only; broad fallback not run.",
+    "reason": "Only passive Python supervisor cleanup and its receipt/terminal caller change; explicit8existing+4new supervisor methods cover three release faults and successful verified completion."
+  },
+  "timing": {
+    "currentGreenSampledRssBytes": 36716544,
+    "currentGreenSampledScratchBytes": 118594,
+    "currentGreenWallSeconds": 2.2483029160066508
+  },
+  "unknown": [
+    "Runner/supervisor mains and live-source/publication/allocation gates unexecuted",
+    "No current full/native/browser/source proof; per-test contexts unavailable"
+  ]
+}

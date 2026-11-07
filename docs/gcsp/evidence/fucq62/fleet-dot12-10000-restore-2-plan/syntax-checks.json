@@ -1,0 +1,64 @@
+{
+  "scope": "static-only attempt2 preparation",
+  "planSha256": "e6f47f8e8c15d74f6e5bada85cf0d2c162a0043001cfd71238cfa40652b492aa",
+  "codePins": 231,
+  "runtimePins": 102,
+  "checks": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-2-plan/boundary.mjs",
+      "kind": "Node syntax only",
+      "rc": 0,
+      "stderr": ""
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-2-plan/common.mjs",
+      "kind": "Node syntax only",
+      "rc": 0,
+      "stderr": ""
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-2-plan/followthrough.mjs",
+      "kind": "Node syntax only",
+      "rc": 0,
+      "stderr": ""
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-2-plan/recovery.mjs",
+      "kind": "Node syntax only",
+      "rc": 0,
+      "stderr": ""
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-2-plan/verify-assets.mjs",
+      "kind": "Node syntax only",
+      "rc": 0,
+      "stderr": ""
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-2-plan/group-proof.py",
+      "kind": "Python compile in memory",
+      "rc": 0
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-2-plan/supervise.py",
+      "kind": "Python compile in memory",
+      "rc": 0
+    }
+  ],
+  "allCodeAndRuntimePinsChecked": true,
+  "publicTargetPinsChecked": true,
+  "runtimeTargetPinsChecked": true,
+  "frozenOriginalPlanAndResultUnchanged": true,
+  "copiedDriversUnchanged": [
+    "boundary.mjs",
+    "common.mjs",
+    "followthrough.mjs",
+    "recovery.mjs",
+    "verify-assets.mjs",
+    "group-proof.py"
+  ],
+  "runtimeExecuted": false,
+  "networkRequests": 0,
+  "scratchCreated": false,
+  "acceptance": false
+}

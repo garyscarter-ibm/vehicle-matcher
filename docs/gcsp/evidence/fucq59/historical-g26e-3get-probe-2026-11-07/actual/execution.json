@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "historical-g26e-execution.v1",
+  "allocationId": "historical-g26e-20241001-20261107-once",
+  "startedAt": "2026-11-07T05:59:08.365Z",
+  "planSha256": "1348ab7a25d94a4a73858fd08003853327729d03043cb284c94acf759aaaeab5",
+  "parentReleaseSha256": "1536eec1df3b10470daffef7d1e58ff550f8483079964dbb1a8cd69428b282e7",
+  "requestsReserved": 3,
+  "actualAttemptsOnInterruption": "unknown unless observation completes; all reserved calls remain unreplayable",
+  "readOnly": true
+}

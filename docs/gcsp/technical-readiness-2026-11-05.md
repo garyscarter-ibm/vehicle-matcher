@@ -48,3 +48,12 @@ must be additive and retain all other stories' entries; no branch may overwrite 
 
 Reviewer requested/selected `gpt-6.1-sol` / `high`, no fallback or descendants. No tests, services, native database calls
 or browsers were allocated during this assessment.
+
+
+## Follow-up source review, 6 November
+
+FUCQ-117 can build its independent pure planner under `server/gcsp/predict/plan/` against the approved HLD forecast+supply+policy boundary and FUCQ-104's actual published request/confirmation records (`a53d711`, service `6f57a05`). Its default producer is still a real integration task: FUCQ-99's public `readDemand` exposes privacy-banded marginal groups, not joint entitlement/renewal/acceptable-choice incidence. Do not invert suppression, count one employee in every alternative or claim the default works from injected forecasts. Canonical planning keys must be introduced through the existing versioned PolicyService activation path; no consumer fallback registry. Source ownership is disjoint from GC's learned-model work and Buzz's supply modules.
+
+FUCQ-108 has an actual transaction mismatch, independently of Jira status. FUCQ-106 `53cbb58` confirms local acceptance by allocating hold/claim/stock/slot then emitting `offer-accepted`. FUCQ-71 `ed20ca2` calls a source `convertSelection` whose transaction must call `commitSelection` while hold/slot remain active, persisting ordering pending intent/history before allocation. Consuming the accepted event afterwards cannot make these writes atomic and fails the active-state guards. Buddy quote brief versions also require an agreed translation from the current ordering draft-version input. Coordinate the trusted producer/converter seam with FUCQ-106's current owner; preserve its claim and build no second ordering adapter. Existing owner comment `1447000` records the observed boundary. No FUCQ-108 claim was taken on this pass.
+
+FUCQ-96's trusted `DemoIdentityAdapter.resolveEmployeeContext` exists in its published `d12358bc` identity source (lines 206–222), with presenter/session/run and stored employee/slot guards. It is absent from the shared foundation until integration. Actual pinned producer composition can use that same immutable identity module throughout; fixture contexts do not establish shared-runtime integration, and worktree-only code must never be treated as a published contract.

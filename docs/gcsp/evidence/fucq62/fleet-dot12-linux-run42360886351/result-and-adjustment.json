@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "linux-run-timing-adjustment.v1",
+  "runId": 42360886351,
+  "attempt": 1,
+  "commit": "b85250d5b36cca920e781b133cbf1a0e425df1bb",
+  "originalConclusion": "failure",
+  "releaseId": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "actual": {
+    "npmCiSecondsRounded": 0,
+    "npmCiElapsedSecondsFromLog": 0.560242,
+    "coldRestore": "passed",
+    "coldRestoreSecondsRounded": 121,
+    "coldRestoreElapsedSecondsFromLog": 120.580825,
+    "buildHttpsCalls": 62,
+    "sourceConfigurations": 10000,
+    "offline": "timeout",
+    "offlineSeconds": 90,
+    "exit": 124,
+    "verifyAssets": "unrun",
+    "boundary": "unrun",
+    "hostedScratchRemovedKiB": 903560,
+    "hostedScratchAbsent": true,
+    "hostedArchiveRetained": false
+  },
+  "diagnosis": "The offline command reached its explicit timeout90s, returning124. No production error or completed offline result was observed; offline idempotence remains unproved in this run. This is a test-time ceiling observation, not evidence of a production defect.",
+  "afterBudget": {
+    "jobMinutes": 12,
+    "workers": 1,
+    "npmCiSeconds": 90,
+    "downloadSeconds": 240,
+    "offlineSeconds": 180,
+    "verifyAssetsSeconds": 60,
+    "boundarySeconds": 120,
+    "phaseSumSeconds": 690,
+    "jobHeadroomSeconds": 30,
+    "observedSetupSeconds": 14
+  },
+  "budgetBasis": "Root directs retaining npm90s, download240s and boundary120s unchanged. Actual npm0.56s/cold121s do not justify introducing lower ceilings while fixing offline timeout. Offline doubles90\u2192180s without claiming sufficiency; verify-assets doubles30\u219260s for31 cache assets plus restored store hash reads, actual timing unknown. Sum690s requires12min job for30s nominal headroom; observed setup14s leaves16s for post steps/other overhead. All phases remain bounded and fail closed.",
+  "workflow": {
+    "path": ".github/workflows/gcsp-fleet-build.yml",
+    "actualRunBeforeSha256": "f918b16ecd7aaa5c7d00cf4e0518300ab1d8a01c9f632036918af84fdc15d34d",
+    "afterSha256": "c4daf45e49ec149a8f2eb205101810fd62ed53eb554acbf918c3efa7023f4cc9",
+    "diagnosticBlockUnchanged": true,
+    "diagnosticBlockSha256": "fa16179a8cb70d10eb9aaec6ac619d20ad713a14f84f3ad2149a0d02f0563758",
+    "changedBehavior": "Only offline/verify test timeout values,12min outer job and matching690s ownership manifest; npm/download/boundary ceilings, release, restore commands, heap, assertions and cleanup remain exact actual-run version."
+  },
+  "decision": "Root explicitly allows Render integration from actual cold BUILD pass; this run does not prove whole-workflow green or offline/boundary acceptance.",
+  "newRuntimeExecutions": 0,
+  "newSourceRequests": 0,
+  "newApplicationGETs": 0,
+  "fullSuiteRun": false,
+  "acceptance": false,
+  "originalColdFailureCauseProved": false,
+  "agent": {
+    "name": "Mike Wazowski",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "medium",
+    "selectedModel": "gpt-6.1-sol",
+    "selectedEffort": "medium",
+    "effectiveRuntimeVerified": false,
+    "descendants": 0
+  },
+  "pins": {
+    "cold-restore-receipt.json": {
+      "bytes": 1835,
+      "sha256": "2f58d11cba5346252af400b56c2947975b7ddf5dcf5c0c8d255e54f347681e69"
+    },
+    "job-log.txt": {
+      "bytes": 22325,
+      "sha256": "d294fb051979eeb59a4a7a8db3ab46b5d7194db6d5cea8b401ddb0cf122186fc"
+    },
+    "local-readback-cleanup.json": {
+      "bytes": 1271,
+      "sha256": "3c05c800236450045a0e65418b8118bab6bbf58fe8338874f4da75d5187025e8"
+    },
+    "phase-and-cleanup.txt": {
+      "bytes": 747,
+      "sha256": "79a44631bc783989913563a35766a7425cc97300c42408e1ba0baaf8d47afe54"
+    },
+    "run-metadata.json": {
+      "bytes": 1868,
+      "sha256": "d00c863c0355fe45f212b1de32ee507ba2e954ecc61e0e87c89f23696c97df57"
+    },
+    "workflow-timing.patch": {
+      "bytes": 2568,
+      "sha256": "96cc7111355d02c9946b38aca33e50df461b1e12c6e9183c63e3f5f3b91e5344"
+    }
+  },
+  "remoteChunkException": {
+    "authorizedBy": "Root task steering,2026-11-07",
+    "defaultMinutes": 10,
+    "selectedMinutes": 12,
+    "reason": "Indivisible exact public restore followed by genuine offline and boundary verification; retain existing transport/install ceilings while adjusting observed offline timeout. Expected actual runtime is substantially below sum of ceilings; no new local disk or RAM allocation for CI.",
+    "remoteWorkers": 1,
+    "remoteScratchBudgetMiB": 2048,
+    "localRuntimeExecutions": 0
+  }
+}

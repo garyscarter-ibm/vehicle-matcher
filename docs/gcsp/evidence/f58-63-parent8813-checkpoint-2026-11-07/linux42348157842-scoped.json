@@ -1,0 +1,14 @@
+{
+  "conclusion": "success",
+  "createdAt": "2026-11-07T06:42:03Z",
+  "headSha": "84056a18cfeb2396abd83ab51ce4a47b9ac64189",
+  "status": "completed",
+  "updatedAt": "2026-11-07T06:45:43Z",
+  "scope": "Node20Linux exact26assets coldrestore+offline repeat+5runtime boundaryrefs; full4668proofnotreplayed",
+  "manifestDigest": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+  "originalConsumerFailures": 1313,
+  "scopedConsumerFailures": 2,
+  "sourceCalls": 0,
+  "acceptance": false,
+  "logSha256": "7613edd421ab873676db9325a411f81fef87df1581fe65ac53fa353fc15000f3"
+}

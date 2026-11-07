@@ -1,0 +1,28 @@
+{
+  "at": "2026-11-07T03:21:35.266810+00:00",
+  "run": "f62-dot6-ordinary",
+  "changedPaths": [
+    "render.gcsp.yaml",
+    ".github/workflows/gcsp-fleet-build.yml",
+    "docs/gcsp/evidence/fucq62/activate-fleet-dot6.mjs",
+    "server/data/gcsp/vehicle-evidence/fleet-source.v1"
+  ],
+  "regression": "coherent869source public/ordinary/build manifest with unchanged480configuration histories",
+  "selected": "existingpublisher publication/idempotent/coldimage; allpubliccorpusbytepins; old29versionfilepins and history; real871productionparity after actualdeployment",
+  "excluded": "No source calls, stock generation, fullsuite/nativePostgreSQL or repeated .5proof",
+  "resources": {
+    "workers": 1,
+    "hostRamMiB": 512,
+    "childRamMiB": 448,
+    "scratchMiB": 64,
+    "seconds": 90
+  },
+  "expected": {
+    "diskMiB": 34,
+    "ramMiB": 340,
+    "seconds": 15
+  },
+  "candidate": "frozen869source421ccd4...",
+  "precondition": "Public21asset actualCLIrestore871direct/871HTTP/changedrollback success before ordinarymutation",
+  "teardown": "externalScratchmanifest/finalizer/groupjoin/dependencyinodecheck/scratchabsence; durable ordinarystore preserved"
+}

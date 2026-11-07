@@ -1,0 +1,14 @@
+{
+  "authorized": false,
+  "phase": "install-2-preflight",
+  "planSha256": "5453c8680cf2302bca7dfc9ba9491abcb1f3dcd973a3b07788daa38bfdc1c8a5",
+  "codePins": {
+    "docs/gcsp/evidence/fucq63/native-install-2-preflight-2026-11-07/group-proof.py": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
+    "docs/gcsp/evidence/fucq63/native-install-2-preflight-2026-11-07/preflight.py": "706b54901af44d5cd0ed1e0ebb5700e8e654ac06018c773425b1d9046015d6be",
+    "docs/gcsp/evidence/fucq63/native-install-2-preflight-2026-11-07/supervise.py": "74123f4f46d95bfee637b7165c7029d59eab0da1af63a7d693c637b791b639de",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d"
+  },
+  "installAllowed": false,
+  "nativeAllowed": false,
+  "newRequestCeiling": 5
+}

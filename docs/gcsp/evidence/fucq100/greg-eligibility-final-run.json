@@ -1,0 +1,149 @@
+{
+  "at": 1793928245.261631,
+  "grant": "fucq100-eligibility-ba33b71-0033",
+  "tested_checkpoint": "ba33b715ca42b879013626eae6511e20301d56bf",
+  "no_launch_before_hold_release": true,
+  "launch_environment": "/usr/bin/env -i PATH=/usr/bin:/bin:/usr/sbin:/sbin /usr/bin/python3 -I",
+  "inner_receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/greg-eligibility-ee0ffb3768db4e2aba4bd180ee542e14-receipt.json",
+  "outer_receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/greg-eligibility-targeted-1793928175148539000-receipt.json",
+  "strict_targeted_evidence": ".claude/test-runs/fucq100/strict-greg-eligibility/targeted-8a49ed80eba4b166bd5af45a2f0b93ad26b94185cf3ff79f1fddf8d7bbb0d482-default-1793928193951677000.json",
+  "counts": {
+    "cancelled": 0,
+    "fail": 0,
+    "pass": 25,
+    "skipped": 0,
+    "tests": 25,
+    "todo": 0
+  },
+  "business_cases_executed": 25,
+  "business_names": [
+    "saved current brief, not draft/history/current-car/retail sample, drives model/body/fuel/essentials",
+    "unspecified model and indifferent/unconfirmed preferences remain explicit instead of inferred demand",
+    "unmet demand distinguishes no released stock, shared essential gate, and sufficient actual release",
+    "unknown employee authority stays needs-confirmation and stock visibility cannot widen eligibility",
+    "real offer/decision/hold/allocation records drive outcomes with typed declines and versions",
+    "all counts below canonical threshold are bands without a raw count or personal fields",
+    "threshold policy alternatives change every projection consistently; absent or invalid threshold fails closed",
+    "Greg service refuses employees, presenters and forged server context; old run after reset is stale",
+    "registered HTTP route enforces role and rejects browser run selectors under server identity",
+    "successive brief/release/decline/selection inputs change actual projection identity and figures",
+    "canonical optional model-line essential persists through BriefService and gates an actual wrong model",
+    "same declined exact car remains blocked until a relevant confirmed brief change, including pause/resume",
+    "a concurrent repository revision causes refresh conflict instead of a mixed projection",
+    "unmet evaluation reads all repository candidates beyond a retail-sized display limit",
+    "unregistered decline types and free text are replaced with a counted unclassified reason",
+    "buildServer exposes a no-store trusted Greg GET, origin/session/gate refusal and stale-run protection",
+    "equipment set order and duplicate keys cannot reopen an unchanged declined car",
+    "default manual preparation supplies the same actual driver fact to employee and Greg without a persisted flattened field",
+    "bound false, absent, unknown, nonboolean and uncertain provenance retain their shared recommendation refusal",
+    "explicit current driver binding selects the owned nominated driver and never chooses an eligible fallback",
+    "absent driver choice stays unconfirmed only when no explicit contract reference requires it",
+    "foreign, duplicate, dangling and malformed source bindings return only generic unavailable",
+    "invalid subject bindings are refused before demand can take the no-stock or hidden-stock shortcut",
+    "coherent synthetic cohort preserves canonical suppression and never persists the derived driver fact",
+    "employee and slot revisions participate in both Greg read fences"
+  ],
+  "registration_diagnostics": [
+    {
+      "outcome": "admitted",
+      "specifierForm": "absolute-path",
+      "specifier": "/private/tmp/[redacted-opaque-value]/loader.mjs",
+      "parentURL": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/",
+      "resolvedURL": "file:///private/tmp/[redacted-opaque-value]/loader.mjs",
+      "expectedURL": "file:///private/tmp/[redacted-opaque-value]/loader.mjs",
+      "expectedParent": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/",
+      "parentMatches": true
+    },
+    {
+      "outcome": "admitted",
+      "specifierForm": "absolute-path",
+      "specifier": "/private/tmp/[redacted-opaque-value]/loader.mjs",
+      "parentURL": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/",
+      "resolvedURL": "file:///private/tmp/[redacted-opaque-value]/loader.mjs",
+      "expectedURL": "file:///private/tmp/[redacted-opaque-value]/loader.mjs",
+      "expectedParent": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/",
+      "parentMatches": true
+    }
+  ],
+  "observed_loader_cause": "Both actual registrations used the owned absolute path with exact expected worktree parent and resolved own URL. The former URL-only predicate would reject this observed specifier.",
+  "module_journal": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/greg-eligibility-ee0ffb3768db4e2aba4bd180ee542e14-modules.jsonl",
+    "bytes": 55570,
+    "sha256": "18de748a07a8f83a76fb95a5bb72110046722ce7f454d478b276d31ec8fa1a8f",
+    "entries": 266,
+    "unique_urls": 92,
+    "self_entries": 2,
+    "all_entries_allowed_and_pinned": true
+  },
+  "log": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/greg-eligibility-ee0ffb3768db4e2aba4bd180ee542e14.log",
+    "bytes": 7765,
+    "sha256": "b9cd1dc96a82ebed606b1ca71d023dba5124d018ed0347d6874fb21bc79566ba"
+  },
+  "source_paths": 108,
+  "source_edges": 281,
+  "installed_files": 54,
+  "helpers": 8,
+  "sources_match": true,
+  "helpers_match": true,
+  "executables_match": true,
+  "installed_hashes_and_physical_identities_match": true,
+  "worktree_target_exists": true,
+  "owned_listeners": [],
+  "strict_ledger_valid": true,
+  "original_failed_log_preserved": true,
+  "passed_cleanup": true,
+  "source_unchanged": true,
+  "result": "PASS scoped25businesscases; no103combined/browser/native/full/provider acceptance",
+  "measured": {
+    "inner_wall_seconds": 15.248218375,
+    "inner_peak_rss_bytes": 283770880,
+    "inner_peak_scratch_bytes": 102400,
+    "outer_sampled_peak_rss_bytes": 304693248
+  },
+  "kind": "successful scoped Greg eligibility validation; broader acceptance open",
+  "catalogue_sha256": "76259196e7cea4123a3312d32b28574d7dd859907ecc4af449449e82fab55207",
+  "supervisor_sha256": "e5c61567e00d1cfb567301ebe1164c74c8dbd300e7a144a67187eb8b45feda61",
+  "stamp_sha256": "0f8525994aba6a60fce172be30e2bb6c02d964403f2e870fd02d1351b27f02e2",
+  "changed_source_hashes": {
+    "server/gcsp/manual-context/recommendation-facts.js": "4901d85a1a718529e3d85bba64b8de098105e945ae444127796c931b239571ec",
+    "server/gcsp/greg/index.js": "62452edd55d8834f029b1a4ab3dee2d252f3a4bc04c76431ad999909839f974c",
+    "server/gcsp/greg/publish/index.js": "63621b317268cfc9e9d6b99b71306eb5327a102ab4e4a1b1f98542dfd6edd1ae",
+    "server/gcsp/greg/publish/fit.js": "d3249720c2d3a15164a3bfb402e5316ea8f4016dfe58db028590c56e728d6674",
+    "server/test/gcsp-greg-driver-eligibility.test.js": "f7b0ec23ff95f8cef01a6b332f4a4342156d91df24702fcb9023683f3d7f6148",
+    "server/test/gcsp-greg-demand.test.js": "005d6025f98a03a3c013be08d013cd3d0c9b7faa9487ffe2c124d2bb9ec914ba"
+  },
+  "independent_parent_audit": ".claude/test-runs/fucq100/parent-greg-eligibility-final-audit.json",
+  "manifests": [
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/ownership/1bbb76c6343f402d9fcd487f3ab98eb8.json",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/strict-greg-eligibility/ownership/ab174da347c64dc98353e4e370acf5ef.json",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/ownership/ccb3087a8232404cbb6adc8081ba0127.json",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/strict-greg-eligibility/ownership/47528a4c7a514276aa027918408f0c7b.json"
+  ],
+  "recorded_pid_observations": 22,
+  "unknown_start_observations": 12,
+  "original_failed_evidence": "docs/gcsp/evidence/fucq100/greg-eligibility-first-run.json",
+  "limits": {
+    "seconds": 120,
+    "rss_bytes": 805306368,
+    "scratch_bytes": 134217728,
+    "combined_logs_bytes": 2097152,
+    "workers": 1
+  },
+  "broader_acceptance": {
+    "root_final_audit": "focused201checksPASS; broader composition/acceptance open",
+    "103_weighted_combined_default_runtime": false,
+    "browser": false,
+    "native": false,
+    "full_suite": false,
+    "external_provider": false,
+    "story_acceptance": false
+  },
+  "source_hash_map_sha256": "0021f2870a32f0d4b8e23f21b269a1b360781c17c0678b05a5d02a477dbf5052",
+  "static_edges_sha256": "d6dd45dda94e421abbc19666b3718c540cebba241884ade6242cc042d2508c8d",
+  "dispatcher_focused_audit": {
+    "path": ".claude/test-runs/ownership/fucq100-focused-pass-audit-0033.json",
+    "checks": 201,
+    "result": "PASS"
+  }
+}

@@ -1,0 +1,234 @@
+{
+  "schemaVersion": "g42-six-model-options-actual-validation.v1",
+  "status": "spent-complete; never replay",
+  "checkedAt": "2026-11-07T03:59:28.940529+00:00",
+  "sourceAllocation": "g42-six-model-options-20261107-once",
+  "executionPlanSha256": "08ef0489dec0cabacdd4a96922c092b39ef4860437f45710d129ced3100c6328",
+  "planDigest": "bed0e64233f8ad760418e92e5e59c5b089b8d0a71117b2155174a406527c642c",
+  "parentRelease": {
+    "path": "parent-release.json",
+    "sha256": "c33d6179d30a8049226f58e29f5e8d4e15817f7385da3d040fd568aeb6cad148"
+  },
+  "source": {
+    "publicGETs": 24,
+    "http200": 24,
+    "decodedBytes": 4886297,
+    "elapsedSeconds": 9.284,
+    "maxChildRssBytes": 84967424,
+    "sourceScratchBytesRemoved": 0,
+    "contexts": [
+      {
+        "id": "2pma",
+        "reason": "source-options-qualified",
+        "primarySha256": "dabdb626d09e3235d890ccc5e283e8a2582514c7ae33129aa7dd46b62d90ed75",
+        "decodedBytes": 811879,
+        "optionsBytes": 54744,
+        "sourceElapsedMs": 1057
+      },
+      {
+        "id": "2pmb",
+        "reason": "source-options-qualified",
+        "primarySha256": "b07c7505c24fcf75ab7125e3205670200d9ae2c3a02ee7d4844dbb0edaca8add",
+        "decodedBytes": 813436,
+        "optionsBytes": 56301,
+        "sourceElapsedMs": 1090
+      },
+      {
+        "id": "2ppa",
+        "reason": "source-options-qualified",
+        "primarySha256": "a88ae28bd176e29528652a83477adf1f9303bc28e1bccef65874dae3189fa3da",
+        "decodedBytes": 817047,
+        "optionsBytes": 59912,
+        "sourceElapsedMs": 1068
+      },
+      {
+        "id": "2ppb",
+        "reason": "source-options-qualified",
+        "primarySha256": "996aeece4a7c898b6a0257361b70d93b726541156d990efe9ff925a5437aade7",
+        "decodedBytes": 817439,
+        "optionsBytes": 60304,
+        "sourceElapsedMs": 1091
+      },
+      {
+        "id": "2pbc",
+        "reason": "source-options-qualified",
+        "primarySha256": "6202c37322a5bab19c45c82afddbada33ae702cb1bebd1fc2c3d41508e42f26f",
+        "decodedBytes": 813673,
+        "optionsBytes": 56538,
+        "sourceElapsedMs": 1432
+      },
+      {
+        "id": "2pmc",
+        "reason": "source-options-qualified",
+        "primarySha256": "54a947140bd7f2b98211078f0ce01ac5b30fe62a6c00e9921d2df295b0b7f74e",
+        "decodedBytes": 812823,
+        "optionsBytes": 55688,
+        "sourceElapsedMs": 1136
+      }
+    ]
+  },
+  "retainedProof": {
+    "rc": 0,
+    "wall": 0.488121916,
+    "issue": null,
+    "issue_kind": null,
+    "peak_rss": 134873088,
+    "peak_scratch": 139456,
+    "testCounts": {
+      "fail": 0,
+      "pass": 9,
+      "skipped": 0,
+      "tests": 9
+    },
+    "identityUnchanged": true,
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-six-model-options/retained/ownership/ab8ed896ac5a47c9adb1aac42d6d2de5.json"
+  },
+  "selection": {
+    "command": "docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/validate-retained.py",
+    "scope": "retained only; six semantic model/line/options and seals, root release/event counts/pins/empty indexes, resealed substitutions, copied actual primary resumes without fetching",
+    "excluded": [
+      "public source traffic",
+      "full suite",
+      "production inventory repair",
+      "solver/images/admissions/capacity/publication"
+    ],
+    "codeInputPins": 45,
+    "runtimePins": 2,
+    "all47PinsMatch": true,
+    "measuredCoverageContexts": "not available in selected Node runner; reviewed function/fixture boundaries retained in shared impact map"
+  },
+  "cleanup": {
+    "sourceOwnedRuns": [
+      {
+        "context": "2pma",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-six-model-options/live/2pma/ownership/99a6afd4ccb4426e9e5a1c89caebcf4c.json",
+        "root": "/private/tmp/test-stamp-shard-99a6afd4ccb4426e9e5a1c89caebcf4c",
+        "scratchAbsent": true,
+        "groupsAbsent": true,
+        "reservationAbsent": true,
+        "removedBytes": 0
+      },
+      {
+        "context": "2pmb",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-six-model-options/live/2pmb/ownership/610afaf442b64344a2c52a864a95dfe3.json",
+        "root": "/private/tmp/test-stamp-shard-610afaf442b64344a2c52a864a95dfe3",
+        "scratchAbsent": true,
+        "groupsAbsent": true,
+        "reservationAbsent": true,
+        "removedBytes": 0
+      },
+      {
+        "context": "2ppa",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-six-model-options/live/2ppa/ownership/ec0426004e194c7683a2153a94041698.json",
+        "root": "/private/tmp/test-stamp-shard-ec0426004e194c7683a2153a94041698",
+        "scratchAbsent": true,
+        "groupsAbsent": true,
+        "reservationAbsent": true,
+        "removedBytes": 0
+      },
+      {
+        "context": "2ppb",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-six-model-options/live/2ppb/ownership/89b81fbd03544d8d99c63151a1a5fe11.json",
+        "root": "/private/tmp/test-stamp-shard-89b81fbd03544d8d99c63151a1a5fe11",
+        "scratchAbsent": true,
+        "groupsAbsent": true,
+        "reservationAbsent": true,
+        "removedBytes": 0
+      },
+      {
+        "context": "2pbc",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-six-model-options/live/2pbc/ownership/44091d7a3a884cfcbd49fd8cb9726854.json",
+        "root": "/private/tmp/test-stamp-shard-44091d7a3a884cfcbd49fd8cb9726854",
+        "scratchAbsent": true,
+        "groupsAbsent": true,
+        "reservationAbsent": true,
+        "removedBytes": 0
+      },
+      {
+        "context": "2pmc",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-six-model-options/live/2pmc/ownership/1d30c6488d4f47c6aa8137cb7b67d58c.json",
+        "root": "/private/tmp/test-stamp-shard-1d30c6488d4f47c6aa8137cb7b67d58c",
+        "scratchAbsent": true,
+        "groupsAbsent": true,
+        "reservationAbsent": true,
+        "removedBytes": 0
+      }
+    ],
+    "retainedProof": {
+      "compatibility_exception": null,
+      "groups_absent": true,
+      "leftovers": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-six-model-options/retained/ownership/ab8ed896ac5a47c9adb1aac42d6d2de5.json",
+      "removed_allocation_bytes": 139456,
+      "reservation_absent": true,
+      "scratchRoot": "/private/tmp/test-stamp-shard-ab8ed896ac5a47c9adb1aac42d6d2de5",
+      "scratch_absent": true
+    },
+    "sourceGroupsStoppedJoined": true,
+    "sourceReservationsAbsent": true,
+    "allSevenScratchRootsAbsent": true,
+    "removedAllocationBytes": 139456,
+    "compatibilityException": null,
+    "leftovers": []
+  },
+  "typedAxesIndex": {
+    "path": "typed-axes-index.json",
+    "sha256": "be3f25912146a42eaba0d266560384ef3300b59eca18f8816a402c5ce5a62ba7",
+    "counts": [
+      {
+        "id": "2pma",
+        "definitions": 112,
+        "paint": 10,
+        "fabric": 8,
+        "rim": 5
+      },
+      {
+        "id": "2pmb",
+        "definitions": 115,
+        "paint": 10,
+        "fabric": 8,
+        "rim": 7
+      },
+      {
+        "id": "2ppa",
+        "definitions": 118,
+        "paint": 10,
+        "fabric": 8,
+        "rim": 5
+      },
+      {
+        "id": "2ppb",
+        "definitions": 119,
+        "paint": 10,
+        "fabric": 8,
+        "rim": 5
+      },
+      {
+        "id": "2pbc",
+        "definitions": 121,
+        "paint": 11,
+        "fabric": 8,
+        "rim": 6
+      },
+      {
+        "id": "2pmc",
+        "definitions": 120,
+        "paint": 11,
+        "fabric": 8,
+        "rim": 6
+      }
+    ]
+  },
+  "admitted": 0,
+  "newConfigurations": 0,
+  "sourceCapacityCredit": 0,
+  "solverRequests": 0,
+  "imageRequests": 0,
+  "productionInventoryBugFixed": false,
+  "acceptance": false,
+  "remaining": [
+    "prepare concrete typed axes finite solver batch from these actual observations",
+    "root review and separately released solver allocation",
+    "source constructibility, cumulative canonical and spent-index validation before any capacity claim"
+  ]
+}

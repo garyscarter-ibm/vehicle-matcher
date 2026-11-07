@@ -1,0 +1,7 @@
+# Single bounded public retry failed
+
+Parent independently reviewed all six pins and released one fresh attempt with22 exact assets/63,361,942 payload-byte descriptor bounds, at most44 approved anonymous network requests including redirects,90 seconds, one worker,512MiBhost/448MiBaggregatechildRSS and192MiBownedcloudscratch. The four original reviewed files and both new wrapper files were unchanged during the run.
+
+The production CLI returned generic `artifact-release-failed` after44 approved requests (22redirects and22status200), zero denied calls and no credentials. Exactly one download CLI child ran. No successful cold-restore receipt exists for this retry; asset integrity,1,135publicDTO/HTTPparity and changed recovery are not established by these network counts. The first actual public restore/restart receipt and successful exact-byte offline sequence remain separate evidence. Cause remains unestablished; no runtime fix, acceptance waiver or further public retry occurred.
+
+Elapsed20.816seconds; peak sampled aggregateRSS313,196,544bytes. Cleanup removed64,980,288bytes of owned OneDrive scratch; allgroups/scratch/link/reservations absent, code/input identities unchanged and no leftovers or compatibility exception. `download-retry-failed.json` retains the complete bounded result, cap and network receipts. The original bounded command log remains in the named metadata path. No success `download-retry/receipt.json` exists, and ordinary activation remains pending the parent decision.

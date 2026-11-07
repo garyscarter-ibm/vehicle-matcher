@@ -1,0 +1,1107 @@
+{
+  "isLast": true,
+  "issues": [
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:russells-macbook-air",
+          "kind:data",
+          "migrated-from-sandbox003-fucq-57",
+          "size:M"
+        ],
+        "status": {
+          "name": "In Review"
+        },
+        "summary": "Qualify fleet coverage and budgets before collecting configurations",
+        "updated": "2026-11-07T06:43:44.455-0600"
+      },
+      "key": "FUCQ-58"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:mac",
+          "kind:code",
+          "migrated-from-sandbox003-fucq-58",
+          "size:L"
+        ],
+        "status": {
+          "name": "In Review"
+        },
+        "summary": "Collect distinct constructible configurations with resumable batches",
+        "updated": "2026-11-07T06:48:55.476-0600"
+      },
+      "key": "FUCQ-59"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:mac",
+          "kind:code",
+          "migrated-from-sandbox003-fucq-59",
+          "size:M"
+        ],
+        "status": {
+          "name": "In Review"
+        },
+        "summary": "Enrich resolved fleet configurations with matching facts and images",
+        "updated": "2026-11-07T06:48:54.106-0600"
+      },
+      "key": "FUCQ-60"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "host:russells-macbook-air",
+          "kind:data",
+          "migrated-from-sandbox003-fucq-60",
+          "size:L"
+        ],
+        "status": {
+          "name": "In Review"
+        },
+        "summary": "Collect and validate 10,000 genuinely distinct BMW configurations",
+        "updated": "2026-11-07T06:49:55.478-0600"
+      },
+      "key": "FUCQ-61"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:russells-macbook-air",
+          "kind:data",
+          "migrated-from-sandbox003-fucq-61",
+          "size:M"
+        ],
+        "status": {
+          "name": "In Review"
+        },
+        "summary": "Publish the configuration corpus and generate stock by order reference",
+        "updated": "2026-11-07T06:49:55.995-0600"
+      },
+      "key": "FUCQ-62"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:russells-macbook-air",
+          "kind:code",
+          "migrated-from-sandbox003-fucq-62",
+          "size:M"
+        ],
+        "status": {
+          "name": "In Review"
+        },
+        "summary": "Prove full-corpus lookup and offline recovery through the port",
+        "updated": "2026-11-07T07:03:22.015-0600"
+      },
+      "key": "FUCQ-63"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "handoff-gary",
+          "host:garys-macbook-pro",
+          "kind:code",
+          "manual-journey",
+          "migrated-from-sandbox003-fucq-65",
+          "postgresql-handoff",
+          "size:L"
+        ],
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Persist exact manual claims and expiry through a shared authority",
+        "updated": "2026-11-05T17:34:03.675-0600"
+      },
+      "key": "FUCQ-66"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "host:garys-macbook-pro",
+          "kind:ui",
+          "manual-journey",
+          "migrated-from-sandbox003-fucq-68",
+          "size:L"
+        ],
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Browse released cars with visual cards and complete vehicle details",
+        "updated": "2026-11-05T18:02:50.997-0600"
+      },
+      "key": "FUCQ-69"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:russells-macbook-air",
+          "kind:code",
+          "manual-journey",
+          "migrated-from-sandbox003-fucq-70",
+          "size:L"
+        ],
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Submit manual selections through an idempotent ordering adapter",
+        "updated": "2026-11-06T10:15:14.289-0600"
+      },
+      "key": "FUCQ-71"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "host:mac",
+          "kind:data",
+          "size:M"
+        ],
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Verify scheme coverage using the collected BMW configuration corpus",
+        "updated": "2026-11-07T06:54:28.848-0600"
+      },
+      "key": "FUCQ-77"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "host:mac",
+          "kind:code",
+          "size:M"
+        ],
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Shape synthetic scheme stock from real stock-locator aggregates",
+        "updated": "2026-11-07T06:54:28.891-0600"
+      },
+      "key": "FUCQ-78"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:russells-macbook-air",
+          "kind:code",
+          "size:M"
+        ],
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Release synthetic stock on a presenter tick from the next pull",
+        "updated": "2026-11-06T10:21:39.112-0600"
+      },
+      "key": "FUCQ-92"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:russells-macbook-air",
+          "kind:ui",
+          "size:M"
+        ],
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Show buddy activity and pause or resume the search",
+        "updated": "2026-11-05T10:25:19.993-0600"
+      },
+      "key": "FUCQ-95"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:russells-macbook-air",
+          "kind:code",
+          "size:L"
+        ],
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Allocate released cars across competing briefs by the policy tie-break",
+        "updated": "2026-11-06T11:51:36.416-0600"
+      },
+      "key": "FUCQ-96"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:russells-macbook-air",
+          "kind:code",
+          "size:S"
+        ],
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Send offer emails through one real transport once a sender is set up",
+        "updated": "2026-11-06T09:15:27.884-0600"
+      },
+      "key": "FUCQ-98"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:garys-macbook-pro",
+          "kind:code",
+          "size:M"
+        ],
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Hold the allocated car and create its offer and outbox job in one transaction",
+        "updated": "2026-11-06T11:09:45.292-0600"
+      },
+      "key": "FUCQ-100"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:garys-macbook-pro",
+          "kind:code",
+          "size:M"
+        ],
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Open an offer from a run-bound link that shows its current state",
+        "updated": "2026-11-05T17:51:16.672-0600"
+      },
+      "key": "FUCQ-102"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:russells-macbook-air",
+          "kind:ui",
+          "size:M"
+        ],
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Track order requests from requested to confirmed to released",
+        "updated": "2026-11-06T03:59:38.554-0600"
+      },
+      "key": "FUCQ-104"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:garys-macbook-pro",
+          "kind:ui",
+          "size:L"
+        ],
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Show the offer's exact quote, current-car comparison and countdown",
+        "updated": "2026-11-05T18:30:59.938-0600"
+      },
+      "key": "FUCQ-105"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:garys-macbook-pro",
+          "kind:code",
+          "size:M"
+        ],
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Accept, decline or expire an offer with idempotent outcomes",
+        "updated": "2026-11-05T18:30:08.648-0600"
+      },
+      "key": "FUCQ-106"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:garys-macbook-pro",
+          "kind:ui",
+          "size:L"
+        ],
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Confirm one preference change after declining and receive a second offer",
+        "updated": "2026-11-06T03:42:11.744-0600"
+      },
+      "key": "FUCQ-107"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "size:M"
+        ],
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Hand off a selected buddy offer through the ordering adapter",
+        "updated": "2026-11-04T15:03:08.399-0600"
+      },
+      "key": "FUCQ-108"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "size:M"
+        ],
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Verify Paula's critical path end to end with browser evidence",
+        "updated": "2026-11-04T14:58:56.181-0600"
+      },
+      "key": "FUCQ-109"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "host:garys-macbook-pro",
+          "kind:code",
+          "size:M"
+        ],
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Progress a selected order through the target approval states on presenter ticks",
+        "updated": "2026-11-06T10:59:51.180-0600"
+      },
+      "key": "FUCQ-111"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "size:M"
+        ],
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Request and confirm a replacement handover appointment",
+        "updated": "2026-11-07T07:57:08.987-0600"
+      },
+      "key": "FUCQ-114"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "host:garys-macbook-pro",
+          "kind:code",
+          "size:M"
+        ],
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Track documents and vehicle readiness with a named owner for each",
+        "updated": "2026-11-06T10:59:53.328-0600"
+      },
+      "key": "FUCQ-116"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:russells-macbook-air",
+          "kind:code",
+          "size:L"
+        ],
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Plan feasible order quantities from expressed demand, supply and policy",
+        "updated": "2026-11-06T03:59:39.090-0600"
+      },
+      "key": "FUCQ-117"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "size:S"
+        ],
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Plan and schedule the old car's separate return",
+        "updated": "2026-11-07T07:57:46.112-0600"
+      },
+      "key": "FUCQ-118"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "size:M"
+        ],
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Preview a replan after constraint edits and submit the plan as a request",
+        "updated": "2026-11-04T15:02:18.369-0600"
+      },
+      "key": "FUCQ-119"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:ui",
+          "size:L"
+        ],
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Show Paula order progress, outstanding actions and confirmed handover and return plans",
+        "updated": "2026-11-07T07:57:50.313-0600"
+      },
+      "key": "FUCQ-120"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:ui",
+          "size:L"
+        ],
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Show Greg's recommended order plan as a panel on his dashboard",
+        "updated": "2026-11-04T15:02:21.377-0600"
+      },
+      "key": "FUCQ-121"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:garys-macbook-pro",
+          "kind:ui",
+          "size:M"
+        ],
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Let Paula find help and see named case ownership and status",
+        "updated": "2026-11-07T07:57:54.806-0600"
+      },
+      "key": "FUCQ-122"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "kind:code",
+          "size:M"
+        ],
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Verify approval, documents and confirmed handover and return planning end to end",
+        "updated": "2026-11-07T07:58:07.929-0600"
+      },
+      "key": "FUCQ-124"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "displayName": "Gary Carter"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:garys-macbook-pro",
+          "kind:ui",
+          "size:M"
+        ],
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Operate the main demo with tick, release, reset and role controls",
+        "updated": "2026-11-07T07:58:11.890-0600"
+      },
+      "key": "FUCQ-126"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "size:S"
+        ],
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Replay decline, one confirmed change and a matching second offer",
+        "updated": "2026-11-07T07:58:15.651-0600"
+      },
+      "key": "FUCQ-128"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "size:M"
+        ],
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Measure the process comparison across seeds and store immutable results",
+        "updated": "2026-11-07T07:58:27.900-0600"
+      },
+      "key": "FUCQ-136"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "size:M"
+        ],
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Run the process comparison offline and read its stored result",
+        "updated": "2026-11-07T07:58:31.788-0600"
+      },
+      "key": "FUCQ-137"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:ui",
+          "size:L"
+        ],
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Show the stored process comparison and assumptions on Greg's dashboard",
+        "updated": "2026-11-07T07:58:35.995-0600"
+      },
+      "key": "FUCQ-138"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "moscow-after-demo",
+          "scope-split-2026-11-07",
+          "size:M",
+          "split-from-FUCQ-114"
+        ],
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Record handover completion, no-show and rebooking",
+        "updated": "2026-11-07T07:57:09.037-0600"
+      },
+      "key": "FUCQ-167"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "moscow-after-demo",
+          "scope-split-2026-11-07",
+          "size:S",
+          "split-from-FUCQ-118"
+        ],
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Confirm an old-car return or missed return and update the current-car relationship",
+        "updated": "2026-11-07T07:57:46.153-0600"
+      },
+      "key": "FUCQ-168"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:ui",
+          "moscow-after-demo",
+          "scope-split-2026-11-07",
+          "size:M",
+          "split-from-FUCQ-120"
+        ],
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Show physical handover and return outcomes with rebooking actions",
+        "updated": "2026-11-07T07:57:50.354-0600"
+      },
+      "key": "FUCQ-169"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:ui",
+          "moscow-could",
+          "scope-split-2026-11-07",
+          "size:M",
+          "split-from-FUCQ-122"
+        ],
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Work the renewal-risk queue, remedies and advanced employee case interactions",
+        "updated": "2026-11-07T07:57:54.848-0600"
+      },
+      "key": "FUCQ-170"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "kind:code",
+          "moscow-after-demo",
+          "scope-split-2026-11-07",
+          "size:M",
+          "split-from-FUCQ-124"
+        ],
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Verify terminal handover, return and advanced renewal-help scenarios",
+        "updated": "2026-11-07T07:58:07.970-0600"
+      },
+      "key": "FUCQ-171"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:ui",
+          "moscow-could",
+          "scope-split-2026-11-07",
+          "size:S",
+          "split-from-FUCQ-126"
+        ],
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Choose and reset the wider presenter scenario catalogue",
+        "updated": "2026-11-07T07:58:11.929-0600"
+      },
+      "key": "FUCQ-172"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "moscow-could",
+          "scope-split-2026-11-07",
+          "size:S",
+          "split-from-FUCQ-128"
+        ],
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Replay a confirmed preference change while no second car is available",
+        "updated": "2026-11-07T07:58:15.688-0600"
+      },
+      "key": "FUCQ-173"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "moscow-could",
+          "scope-split-2026-11-07",
+          "size:M",
+          "split-from-FUCQ-136"
+        ],
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Compare alternative order mixes, points and buddy hold durations",
+        "updated": "2026-11-07T07:58:27.948-0600"
+      },
+      "key": "FUCQ-174"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "moscow-could",
+          "scope-split-2026-11-07",
+          "size:M",
+          "split-from-FUCQ-137"
+        ],
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Start and monitor responsive comparison worker jobs from the browser",
+        "updated": "2026-11-07T07:58:31.823-0600"
+      },
+      "key": "FUCQ-175"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "issuetype": {
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:ui",
+          "moscow-could",
+          "scope-split-2026-11-07",
+          "size:M",
+          "split-from-FUCQ-138"
+        ],
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Choose comparison experiments and rerun hold-duration scenarios on the dashboard",
+        "updated": "2026-11-07T07:58:36.028-0600"
+      },
+      "key": "FUCQ-176"
+    }
+  ],
+  "observedAt": "2026-11-07T14:07:07.097Z",
+  "status": 200
+}

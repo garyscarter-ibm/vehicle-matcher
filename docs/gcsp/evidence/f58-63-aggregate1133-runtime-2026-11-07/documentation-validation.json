@@ -1,0 +1,12 @@
+{
+  "scope": "documentation-only receipt/map checkpoint; actual scopedlive/Linux/ordinary/sourceproof reused at exactpinnedidentities",
+  "time": "2026-11-07T04:16:51.567755+00:00",
+  "parsedJSON": 26,
+  "mapJSONParsed": true,
+  "whitespace": "passed",
+  "newCode": false,
+  "fullSuite": "excluded: no executable change; existing scopedproof evidence included",
+  "scratchCreated": false,
+  "compatibilityException": null,
+  "leftovers": []
+}

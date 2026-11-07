@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "f70-optional-axis-pilot32-actual-validation.v1",
+  "scope": "actual finite parent-released32 solver requests and20 scoped strict retained checks; global union remains required",
+  "codeCommit": "655090f9fe8fcab70a5769ff21462e9701e91ef3",
+  "seriesPlanSha256": "0ce8c0fac3aeed115772d7cd0b0a24d9736e2e63a37d8f47853394109b482a7b",
+  "parentReleaseSha256": "92ba5ca497da99b0d91caa3acae8cb466ac798edd866c008db166cb6a870221d",
+  "outputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-pilot32-20261107-once",
+  "source": {
+    "contexts": 4,
+    "solverAttempts": 32,
+    "bootstrapGets": 16,
+    "publicGetAttempts": 48,
+    "decodedBytes": 3656678,
+    "elapsedSeconds": 81.83154816599999,
+    "actualDistinctNewAdmissionsAgainstPinnedPrefix": 32,
+    "duplicates": 0,
+    "rejected": 0,
+    "allOptionalInputsSurvived": true,
+    "allFrozenCodePinsUnchanged": true
+  },
+  "retainedProof": {
+    "tests": 20,
+    "pass": 20,
+    "fail": 0,
+    "skipped": 0,
+    "sessions": [
+      {
+        "session": 1,
+        "model": "1F7A",
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-pilot32-20261107-once/sessions/session001/live-validation.json",
+        "sha256": "5e6354f4901682db23673eb222046254a201ba7ac37565b09e945951530e610b",
+        "primarySha256": "c8904620974ae18cf16c67a6e6358c1bc25e45880f5454f01b507d04a5e500d8",
+        "retainedChecks": {
+          "tests": 5,
+          "pass": 5,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "newlyAccepted": 8,
+        "gets": 12,
+        "decodedBytes": 900420,
+        "optionalInputsSurvived": true
+      },
+      {
+        "session": 2,
+        "model": "1F7C",
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-pilot32-20261107-once/sessions/session002/live-validation.json",
+        "sha256": "b4fa178154ef5a8bb753d5f124de1d2c9199c26cb634406da8f5372848d63d57",
+        "primarySha256": "e9d0484f63844aea0cf5d2f32b01e4049fa71f051ebbd1e77b2c830a348671e8",
+        "retainedChecks": {
+          "tests": 5,
+          "pass": 5,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "newlyAccepted": 8,
+        "gets": 12,
+        "decodedBytes": 916391,
+        "optionalInputsSurvived": true
+      },
+      {
+        "session": 3,
+        "model": "1F7D",
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-pilot32-20261107-once/sessions/session003/live-validation.json",
+        "sha256": "b597f8ca317fba5b002580165b2db738cc7ff13ce387a7bf5fc22abb2f11c007",
+        "primarySha256": "06720a5e468b7ee37c1c0e053c5aa389dd5511e81c6a9e8a44aabf2bfab33b70",
+        "retainedChecks": {
+          "tests": 5,
+          "pass": 5,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "newlyAccepted": 8,
+        "gets": 12,
+        "decodedBytes": 914420,
+        "optionalInputsSurvived": true
+      },
+      {
+        "session": 4,
+        "model": "1F7F",
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-pilot32-20261107-once/sessions/session004/live-validation.json",
+        "sha256": "f8b75868af28090f0cfb5a367894ce90025e8f7f458869e1f20b5302ee334da1",
+        "primarySha256": "b6a48fa440bf17f85e84032f4b6ecacb6c178ccf3dfe7b7b56d78e8953b230b3",
+        "retainedChecks": {
+          "tests": 5,
+          "pass": 5,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "newlyAccepted": 8,
+        "gets": 12,
+        "decodedBytes": 925447,
+        "optionalInputsSurvived": true
+      }
+    ]
+  },
+  "localCumulative": {
+    "canonicalEntries": 2386,
+    "admittedSourceConfigurations": 2383,
+    "spentSolverRequests": 3188,
+    "canonicalPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-pilot32-20261107-once/sessions/session004/final-canonical-index.json",
+    "canonicalSha256": "23c21b54d688e5cf116d9ce67fc6c6ae157783d5ca39c2355355318da563bd82",
+    "spentPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-pilot32-20261107-once/sessions/session004/final-spent-request-index.json",
+    "spentSha256": "e8b44cc12d06e5d5ebce963fbc0db59d8e0ee4688850b9705a3d450c4aa32f2f"
+  },
+  "outerExecution": {
+    "exitStatus": 1,
+    "originalDiagnostic": "phase cleanup has a named unresolved allocation; primary preserved",
+    "originalAllStageGroupsAbsent": false,
+    "receiptPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-pilot32-20261107-once/pilot-receipt.json",
+    "receiptSha256": "5dba09dca76a291dca69f299cc56bdbf3c319abfd25ea2318f34261105c969f7",
+    "cleanupPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-pilot32-20261107-once/pilot-cleanup.json",
+    "cleanupSha256": "e038af1d99ad60274d298ded16475e5bf15defc9d5e55b83a97bf031fde0197e",
+    "reason": "finite-pilot-exhausted"
+  },
+  "independentCleanup": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-pilot32-20261107-once/independent-cleanup-reconciliation.json",
+    "sha256": "d79239aee791b31d4c14c67baa090e6851742ef43fec074bafb8213f5851c60b",
+    "ownedGroupsAbsent": 24,
+    "ownedScratchRootsAbsent": 8,
+    "dependencyLinkAbsent": true,
+    "seriesReservationAbsentAsRecorded": true,
+    "removedScratchBytes": 2113920,
+    "retainedLogicalBytes": 25368313,
+    "compatibilityException": null,
+    "leftovers": []
+  },
+  "globalUnion": {
+    "required": true,
+    "performedHere": false,
+    "includes": "selectedG42session059 + G42session060 actual/proof limits + subsequentG42 actual suffix + thisF70pilot",
+    "cumulativeCapacityCredit": 0
+  },
+  "sourceContinuationGranted": false,
+  "suffixCandidatesPrepared": 5535,
+  "acceptance": false,
+  "remaining": [
+    "separately reviewed release/allocation for prepared5535 suffix candidates",
+    "final global F70+G42 canonical/spent union proof",
+    "F60 enrichment/F54 publication/application integration",
+    "post12November F61 target10000 acceptance and physical distribution"
+  ],
+  "knownDiagnostic": "Existing outer group-absence diagnostic remains open; no original receipt or proof modified."
+}

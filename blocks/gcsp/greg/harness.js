@@ -3,6 +3,7 @@ import './publish/register.js';
 import { el } from '../../vehicle-matcher/ui.js';
 import { defineGcspGregDashboard } from './gcsp-greg.js';
 import { FIXTURE_NAMES } from './fixtures.js';
+import '../cases/register.js';
 
 const requested = new URLSearchParams(globalThis.location?.search || '').get('fixture');
 const host = document.querySelector('gcsp-greg-dashboard');

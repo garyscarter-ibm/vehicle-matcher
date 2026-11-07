@@ -1,0 +1,9 @@
+{
+  "authorized": false,
+  "phase": "virtual-deadline",
+  "planSha256": "REPLACE_AFTER_EXACT_REVIEW",
+  "codePins": "COPY_EXACT_PLAN_CODEPINS",
+  "publicGETs": 0,
+  "sourceRequests": 0,
+  "nativeRequests": 0
+}

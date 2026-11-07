@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "six-story-map-data-sync.v1",
+  "observedAt": "2026-11-07T12:58:16.712913+00:00",
+  "branch": "dev/DEV-2026-11-04-069",
+  "priorHead": "4336075942b4fc13dfdca76fea167b002ba77831",
+  "newHead": "4f7635afc27a73f0d397659ee8eba992334e0db8",
+  "changedPath": ".product-map/work.json",
+  "changedRows": [
+    "FUCQ-58",
+    "FUCQ-59",
+    "FUCQ-60",
+    "FUCQ-61",
+    "FUCQ-62",
+    "FUCQ-63"
+  ],
+  "nonTargetRowsUnchanged": true,
+  "canonicalHead": "693844ae9ffbb00763c2a1e50fe35f866176e164",
+  "canonicalObservedAt": "2026-11-07T12:44:22.530Z",
+  "canonicalRowSha256": {
+    "FUCQ-60": "117cbe856945ecd868bdf33f3984a90047d11959457a9eb5951a0d3fa99352dd",
+    "FUCQ-58": "42ed0c49e6545229c347bb657954783cfddd318787b3270168ba2b200dbe7e9b",
+    "FUCQ-61": "267378f4da4a7edf059a8bded9d0859b4b09d6dbe444f5e064445845dc442d86",
+    "FUCQ-59": "de31f6068bf228e146d634116a6ea15c7394ee554e5709af7934cb1a143204c6",
+    "FUCQ-62": "2c5cb8eba119766982b5457d2cd7c8687bf135892b61b070f4d5050b216ee6f4",
+    "FUCQ-63": "e3beee846918e00904d9919fd85671f3fb732cdd61aebe9eab11d8338b2f87d2"
+  },
+  "push": "normal fast-forward; remote tip guarded twice; exact new remote tip read back",
+  "activeSourceCheckout": "untouched; no claim or F66 code changes",
+  "fileBeforeSha256": "1194c3224a586f958639218475b1b34bb4d60b46f02763fd4e8d57c279944a11",
+  "fileAfterSha256": "ace5f59984141b9566c435e08071ba8be12b9e434a66e3027ba6917e0c0b0fb9",
+  "worktree": "/Users/usget/.codex/worktrees/f58-63-map-sync/vehicle-matcher",
+  "archive": {
+    "status": "retained clean source checkout",
+    "archiveToolRefusal": "The task's primary checkout cannot be removed.",
+    "originalCheckoutAttachRefusal": "The checkout exists but is not a managed worktree.",
+    "measuredAllocatedKiB": 140488,
+    "sourceNotTestScratch": true,
+    "worktree": "/Users/usget/.codex/worktrees/f58-63-map-sync/vehicle-matcher",
+    "unownedSources": "untouched"
+  },
+  "mainMirror": {
+    "priorHead": "ce9706edb01a3d130b993bca8232bb81d4d6b70a",
+    "dataCommit": "38de6c17252ea7b85f20d1c62406e8428d095390",
+    "branch": "codex/f58-63-map-sync",
+    "pullRequest": "https://github.com/garyscarter-ibm/vehicle-matcher/pull/34",
+    "directPush": "refused GH006: changes must be made through a pull request",
+    "changedPath": ".product-map/work.json",
+    "syncedRows": [
+      "FUCQ-58",
+      "FUCQ-59",
+      "FUCQ-60",
+      "FUCQ-61",
+      "FUCQ-62",
+      "FUCQ-63"
+    ],
+    "nonTargetRowsUnchanged": true,
+    "sourceCodeUnchanged": true,
+    "publicReadback": "verified six In Review/progress100/no conflicts",
+    "mergedHead": "9ab7e1729a08ac0a35da4b3684d2ad143e3551c6",
+    "mergedAt": "2026-11-07T13:02:06Z",
+    "pagesRun": 42375092002,
+    "readback": "served-map-final-readback.json"
+  }
+}

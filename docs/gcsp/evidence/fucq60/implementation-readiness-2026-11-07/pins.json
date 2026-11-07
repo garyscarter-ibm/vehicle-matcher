@@ -1,0 +1,210 @@
+{
+  "schemaVersion": "f60-readiness-review.v1",
+  "date": "2026-11-07",
+  "reviewedRootHead": "3eb3035fe54069c157de4e43357e10e3821e0620",
+  "documentBranchBase": "f0ec601163da7058f168374b0ef7e39053b1364d",
+  "recommendation": "ready-for-in-review",
+  "acceptanceOrStatusChanged": false,
+  "reviewer": {
+    "name": "Charlie Dog",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "selectedModel": "gpt-6.1-sol",
+    "selectedEffort": "high",
+    "runtimeVerified": false,
+    "descendants": 0
+  },
+  "scope": "Read-only bounded implementation/evidence review against five original F60 AC after binding4NovemberQ13; docs-only output. No new tests, source/network/native/UI, scratch or descendants.",
+  "codePins": [
+    {
+      "file": "scripts/gcsp/enrich-fleet.mjs",
+      "bytes": 36421,
+      "sha256": "0f77c577ddaf0cf91fdae00377f398723d38c77f30210976a1c94391944db7bd",
+      "sameAsSealed10000Proof": true
+    },
+    {
+      "file": "scripts/gcsp/collect-fleet.mjs",
+      "bytes": 61807,
+      "sha256": "ba3864cee32f480facde57a2d2c9dbf944d571878bb2a9cece220955357ab1de",
+      "sameAsSealed10000Proof": true
+    },
+    {
+      "file": "scripts/gcsp/collection-session.mjs",
+      "bytes": 34621,
+      "sha256": "bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790",
+      "sameAsSealed10000Proof": true
+    },
+    {
+      "file": "server/vehicle-evidence/bmw-catalogue-adapter.js",
+      "bytes": 26024,
+      "sha256": "90cf9187cb44dc6d17e6984a0fdc25dc13fc9078c23d3652d779a565cedc29a7",
+      "sameAsSealed10000Proof": true
+    },
+    {
+      "file": "server/gcsp/vehicle-evidence/registered-corpus-images.js",
+      "bytes": 6080,
+      "sha256": "47d27d11406e5ffe05790be8893395b6399b142d8befd268d30b5c60407b9e8e",
+      "sameAsSealed10000Proof": "outside sealed runtime code set; separately reviewed evidence boundary"
+    },
+    {
+      "file": "server/test/gcsp-fleet-enrichment.test.js",
+      "bytes": 13186,
+      "sha256": "4ee1d93c51c1a8df0589f7db58438f414a7f9a02cc704f9519d1bc7e8db1d09a",
+      "sameAsSealed10000Proof": "outside sealed runtime code set; separately reviewed evidence boundary"
+    },
+    {
+      "file": "server/test/gcsp-source-enrichment.test.js",
+      "bytes": 8374,
+      "sha256": "b496a869791a984eb2c361a53ba979ebee83a00a8b96cd753a75c94f0913c282",
+      "sameAsSealed10000Proof": "outside sealed runtime code set; separately reviewed evidence boundary"
+    },
+    {
+      "file": "server/test/gcsp-historical-enrichment.test.js",
+      "bytes": 16163,
+      "sha256": "3601244186dd3f412470f19684e724452ff9c6ffc1e91f17277fffe10649a19c",
+      "sameAsSealed10000Proof": "outside sealed runtime code set; separately reviewed evidence boundary"
+    },
+    {
+      "file": "server/test/gcsp-technical-supplement.test.js",
+      "bytes": 9145,
+      "sha256": "2191f25656c39fe2a259ba4b1e34eb7a106d60131cef6d18bf14a044a8c7611f",
+      "sameAsSealed10000Proof": "outside sealed runtime code set; separately reviewed evidence boundary"
+    }
+  ],
+  "evidencePins": [
+    {
+      "file": "docs/gcsp/hld-agreement-2026-11-04.md",
+      "bytes": 2958,
+      "sha256": "b95c2fc548310edb90e1f7b746933418c7b0e98da9b45ac0ec3447940d8bca67"
+    },
+    {
+      "file": "docs/gcsp/fucq-13-19-stories.md",
+      "bytes": 183529,
+      "sha256": "435a62e8bcc23f1e82f59603622734a32b089e17a1ed0478686cdbd9dd73b8f5"
+    },
+    {
+      "file": "docs/gcsp/evidence/fucq60/exact10000-common-session-results-2026-11-07/final-receipt.json",
+      "bytes": 1483,
+      "sha256": "cc8604d085b76a37d45d2c095074f17087d0a6e6cf861c846140b670b3b4783e"
+    },
+    {
+      "file": "docs/gcsp/evidence/fucq60/exact10000-common-session-results-2026-11-07/results.json",
+      "bytes": 9088,
+      "sha256": "f372ef8575e336802db3e59e90c1c0ffa85b69697fe81d99e0a883f452d0de01"
+    },
+    {
+      "file": "docs/gcsp/evidence/fucq60/exact10000-common-session-results-2026-11-07/phase156-original-cleanup.json",
+      "bytes": 1017,
+      "sha256": "649b665a7843c26c1cb5be858fd9757e3df325be5487d8832a2ea889ecf6e1ee"
+    },
+    {
+      "file": "docs/gcsp/evidence/fucq60/exact10000-common-session-dependency-retry-2026-11-07/plan.json",
+      "bytes": 96514,
+      "sha256": "0eb2698603bcec192202bd0b743cd0278e807b688537951bd26f10179a17a518"
+    },
+    {
+      "file": "docs/gcsp/evidence/fucq60/exact10000-retained-coverage-2026-11-07/receipt.json",
+      "bytes": 2113,
+      "sha256": "f4ba9f2b1c61807149496dacbfe659d7596ddb6f2eae5c301ecdcec345ccfce9"
+    },
+    {
+      "file": "docs/gcsp/evidence/fucq60/pilot311-replay-results/final-receipt.json",
+      "bytes": 4358,
+      "sha256": "fe8b8d06d6c0e6bf09134aab668487cbdc7674df763f6efa8ad05d8c16c4f31b"
+    },
+    {
+      "file": "docs/gcsp/evidence/fucq60/source-v2-enrichment-2026-11-07.md",
+      "bytes": 10465,
+      "sha256": "032aab1c7bd4d86d6f0639f1b6c0352b05f8af53034afec4eb124ae3cad176ba"
+    },
+    {
+      "file": "docs/gcsp/evidence/fucq60/retained-image-pilot1-results/actual-receipt.json",
+      "bytes": 9259,
+      "sha256": "8608c97bfd93989a3acce6cc1eb68d70623c744302406b0d8faaf63ad88e0227"
+    },
+    {
+      "file": "docs/gcsp/evidence/fucq60/v2-image-capture-2026-11-07/capture-verification.json",
+      "bytes": 1540,
+      "sha256": "eecf1d974bfc1bb9d0e3a60ff8f12131be6b210093875fb6f59502ba0234b4fe"
+    },
+    {
+      "file": "docs/gcsp/evidence/fucq60/technical-supplement-2026-11-07/summary.json",
+      "bytes": 3302,
+      "sha256": "654c5d898304fac20b065968da03e4b90c1c34a60e400754c4c8e83c389318a5"
+    },
+    {
+      "file": "docs/gcsp/evidence/fucq60/otd-qualification-review-2026-11-07.md",
+      "bytes": 3432,
+      "sha256": "cd624bf034e17a9637851ead0176e10067a446280acd80045a8bb91975da32c2"
+    },
+    {
+      "file": "docs/gcsp/evidence/f58-63-runtime-2026-11-07/full-test-result.json",
+      "bytes": 985,
+      "sha256": "859117eb6cc78dbb5b2e7c69733e336dfb50109cc325e5f4c5ca3de2fe9aba0d"
+    },
+    {
+      "file": "docs/gcsp/evidence/fucq62/fleet-dot7-offline/consumer-bug-draft.md",
+      "bytes": 3747,
+      "sha256": "fe2e608371f1398ae047ebee531f58c0a7e8fa302661f453e272740b2d85d4ca"
+    },
+    {
+      "file": "docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan/README.md",
+      "bytes": 5492,
+      "sha256": "e0119bd3941483d9f5d259733c63f0226bc0db1338c528d9e622547708619371"
+    }
+  ],
+  "sealedProof": {
+    "planSha256": "0eb2698603bcec192202bd0b743cd0278e807b688537951bd26f10179a17a518",
+    "codeIdentity": "60d013bdd9242e00f33be7a3db33a4b1e57c7273dcd9a2842e0c0ec4ac2fcc51",
+    "finalReceiptSha256": "cc8604d085b76a37d45d2c095074f17087d0a6e6cf861c846140b670b3b4783e",
+    "actualRetainedSelections": 10000,
+    "currentF60Sessions": 10000,
+    "exactContextAndSelection": 10000,
+    "partial": 10000,
+    "rejected": 0,
+    "separateCollectorSameSessionBridgePassed": true,
+    "bridgeAddsCohortRows": 0,
+    "sourceCalls": 0,
+    "networkCalls": 0
+  },
+  "retainedSelectionPins": [
+    {
+      "artifact": "selection-manifest.json",
+      "bytes": 15991212,
+      "sha256": "216359c111a5169d15a98de1c476a5c62714a3b3a7ee71431c325a45c90f096f"
+    },
+    {
+      "artifact": "coverage.json",
+      "bytes": 2434066,
+      "sha256": "801cb148b1f68f4186bc4855fa8bdabeca275cf43b52ce8f4aa63de17eb94353"
+    },
+    {
+      "artifact": "selection-receipt.json",
+      "bytes": 904,
+      "sha256": "13c8ae1533f8e12e300d345ff5c312b8f97bd9db57a8540626270b6efa8a1203"
+    }
+  ],
+  "canonicalIndexes": {
+    "baseline8051": "27f64e520748836f9f88db39f15725e78daa535db9f253e1ae7b9772ad1f2991",
+    "final10351": "09ca95146b2ae87bb494d9f5bf3fccc12af69ba4cc68ed3d83b79965cd2df4bc"
+  },
+  "originalFullSuite": {
+    "head": "e60c70e6de6a2636750fdf99943e138b89b63932",
+    "tests": 1872,
+    "pass": 1848,
+    "fail": 19,
+    "skipped": 5,
+    "exitCode": 1,
+    "freshRunByThisReview": false
+  },
+  "preservedIssues": [
+    "phase156 original supervisor exit1/failed cleanup retained; later physical cleanup reconciliation does not rewrite original result",
+    "current2707 configured-consumer failures under existing specifically authorised Medium deferral; no acceptance waiver",
+    "F60P2technical-options substitution and P3all-unknown measurement-completeness findings deferred, not fixed",
+    "Linux/deployment run42360886351 and native/current-run proof remain independent; no result inferred"
+  ],
+  "newCriticalHighGaps": [],
+  "newCodeChanges": [],
+  "scratchAllocatedBytes": 0,
+  "scratchLeftovers": []
+}

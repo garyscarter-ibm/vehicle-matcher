@@ -1,19 +1,21 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { request as httpRequest } from 'node:http';
+import { request as httpsRequest } from 'node:https';
 import { mkdtemp, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createGcspRuntime } from '../gcsp/runtime.js';
 import { startGcspDemo } from '../../scripts/gcsp-demo.mjs';
 import { JSDOM } from 'jsdom';
+import { createLocalHttpsFixture } from './helpers/local-https.js';
 
 const options = { mode: 'memory', environmentId: 'brief-live-test', policyAsOf: '2026-11-05T12:00:00.000Z',
   commandId: 'bootstrap', sessionNow: () => new Date().toISOString() };
 const cookie = (headers) => headers.getSetCookie().map((entry) => entry.split(';')[0]).join('; ');
 
 async function local(t) {
-  const app = await startGcspDemo({ runtime: options, port: 0 });
+  const https = await createLocalHttpsFixture(t); const fetch = https.fetch;
+  const app = await startGcspDemo({ runtime: options, port: 0, tls: https.configuration });
   assert.equal(app.status, 'ok'); t.after(() => app.value.close());
   const { origin } = app.value;
   const page = await fetch(`${origin}/gcsp-brief-live.html`);
@@ -26,7 +28,7 @@ async function local(t) {
       ...(body === undefined ? {} : { body: JSON.stringify(body) }) });
     return { status: response.status, headers: response.headers, json: await response.json() };
   };
-  return { ...app.value, request, session };
+  return { ...app.value, request, session, fetch, ca: https.ca };
 }
 
 test('runtime refuses implicit memory fallback and unknown repository modes', async () => {
@@ -74,22 +76,24 @@ test('local host retains session and strict origin/context guards without servin
   assert.equal(foreign.status, 403);
   const forged = await app.request('/api/gcsp/brief/preview', { employeeId: 'another-employee' });
   assert.equal(forged.status, 400); assert.equal(forged.json.code, 'browser-context-forbidden');
-  const unauthenticated = await fetch(`${app.origin}/api/gcsp/brief/editor`);
+  const unauthenticated = await app.fetch(`${app.origin}/api/gcsp/brief/editor`);
   assert.equal(unauthenticated.status, 401);
-  // Fetch owns its Host header; use a raw HTTP client to exercise the host guard.
+  // Use a verified TLS client with a different Host header to exercise the host guard.
   const foreignHost = await new Promise((done, reject) => {
-    const request = httpRequest(`${app.origin}/gcsp-brief-live.html`, { headers: { Host: 'foreign.invalid' } }, (response) => {
+    const request = httpsRequest(`${app.origin}/gcsp-brief-live.html`, { ca: app.ca, servername: 'localhost', rejectUnauthorized: true,
+      headers: { Host: 'foreign.invalid' } }, (response) => {
       response.resume(); done(response.statusCode);
     });
+    request.setTimeout(5000, () => request.destroy(new Error('Local HTTPS request timed out.')));
     request.on('error', reject); request.end();
   });
   assert.equal(foreignHost, 403);
-  const page = await fetch(`${app.origin}/gcsp-brief-live.html`, { headers: { Cookie: app.session } });
+  const page = await app.fetch(`${app.origin}/gcsp-brief-live.html`, { headers: { Cookie: app.session } });
   assert.equal(page.headers.getSetCookie().length, 0);
   for (const path of ['/server/index.js', '/.claude/gcsp-database-url', '/_tools/test_stamp.py', '/blocks/%2f..%2fserver/index.js']) {
-    assert.equal((await fetch(`${app.origin}${path}`)).status, 404);
+    assert.equal((await app.fetch(`${app.origin}${path}`)).status, 404);
   }
-  const script = await fetch(`${app.origin}/blocks/gcsp/brief/runtime.js`); assert.equal(script.status, 200);
+  const script = await app.fetch(`${app.origin}/blocks/gcsp/brief/runtime.js`); assert.equal(script.status, 200);
 });
 
 test('browser runtime adapter uses supplied same-origin fetch and projects the existing account shape', async () => {
@@ -116,7 +120,8 @@ test('exact activity entry boundary establishes the same session without assumin
   const root = await mkdtemp(join(tmpdir(), 'gcsp-activity-entry-'));
   t.after(() => rm(root, { recursive: true, force: true }));
   await writeFile(join(root, 'gcsp-activity-live.html'), '<!doctype html><title>Activity entry boundary fixture</title>');
-  const opened = await startGcspDemo({ runtime: options, root }); assert.equal(opened.status, 'ok');
+  const https = await createLocalHttpsFixture(t); const fetch = https.fetch;
+  const opened = await startGcspDemo({ runtime: options, root, tls: https.configuration }); assert.equal(opened.status, 'ok');
   t.after(() => opened.value.close());
   const { origin } = opened.value;
   const page = await fetch(`${origin}/gcsp-activity-live.html`); assert.equal(page.status, 200);

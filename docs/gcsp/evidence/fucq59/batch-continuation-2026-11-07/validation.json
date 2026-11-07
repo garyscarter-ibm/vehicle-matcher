@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "f59-batch-continuation-validation.v1",
+  "date": "2026-11-07",
+  "story": "FUCQ-59",
+  "scope": "offline explicit interrupted source-batch continuation API",
+  "acceptance": "partial; actual LIVE interruption/continuation and bootstrap-cache reuse across allocations not established",
+  "agents": [
+    {
+      "name": "Mike Wazowski",
+      "requestedModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "selectedModel": "gpt-6.1-sol",
+      "selectedEffort": "medium",
+      "effectiveRuntime": "unverified",
+      "fallback": null,
+      "descendants": 0
+    }
+  ],
+  "command": "node --test --test-concurrency=1 server/test/gcsp-bmw-source-batch.test.js server/test/gcsp-fleet-collector.test.js",
+  "result": {
+    "tests": 95,
+    "passed": 95,
+    "failed": 0,
+    "skipped": 0,
+    "batchTests": 18,
+    "sharedCollectorTests": 77,
+    "scope": "scoped",
+    "wallSeconds": 21.146862166002393
+  },
+  "identity": {
+    "scripts/gcsp/bmw-selection-binding.mjs": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+    "scripts/gcsp/capture-bmw-selection.mjs": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+    "scripts/gcsp/collect-fleet.mjs": "35d52baa024593499351984bb3631ed8defed0a151efd233dff14af79c1eee65",
+    "scripts/gcsp/collection-session.mjs": "1f22fe1cdf27d3e6f2be015e32b69b5ecc435c546fe9964396270e3db6e9421e",
+    "scripts/gcsp/public-bmw-source.mjs": "4f5c93505c7e558d0ff3cf3afadbfb97ef45bde9b615e9033c8d440628b75f24",
+    "server/test/gcsp-bmw-source-batch.test.js": "6aa0579c362abf135805a2ebd94e33d954b52def10301ad777e0b8d3cb3a636d",
+    "server/test/gcsp-fleet-collector.test.js": "b9b05f9fb7a0564d486c17ecb0be731c8af2ddb0d177543f9608b3a952739c88"
+  },
+  "unchangedPinnedModules": [
+    "scripts/gcsp/collection-session.mjs",
+    "scripts/gcsp/capture-bmw-selection.mjs",
+    "scripts/gcsp/public-bmw-source.mjs",
+    "scripts/gcsp/bmw-selection-binding.mjs"
+  ],
+  "redEvidence": [
+    {
+      "phase": "red",
+      "tests": 11,
+      "passed": 8,
+      "failed": 3,
+      "reason": "continuation ignored; fresh5-attempt allocation rejected against original6-attempt limits"
+    },
+    {
+      "phase": "red-boundaries",
+      "tests": 15,
+      "passed": 13,
+      "failed": 2,
+      "reason": "tampered solver cache and lost destination checkpoint did not yet refuse"
+    },
+    {
+      "phase": "red-request-binding",
+      "tests": 18,
+      "passed": 17,
+      "failed": 1,
+      "reason": "valid solver observation rebound to another candidate cache key did not yet refuse"
+    },
+    {
+      "phase": "first combined94",
+      "tests": 94,
+      "passed": 93,
+      "failed": 1,
+      "reason": "deadline fixture used1ms real timer; existing operation-timeout won before fake deadline; fixture changed to10000ms and explicit fake expiry; final95pass"
+    }
+  ],
+  "cases": [
+    "immutable predecessor and prior admissions; fresh4GETbootstrap+pending solver; completed restart zero additional calls",
+    "immutable solver cache recovery without request replay",
+    "spent solver without cached response rejected without admission/reissue",
+    "changed predecessor bytes or snapshot binding, partial bootstrap, reused allocation, destination rebinding and lost destination refusal",
+    "cached payload strict binder and exact candidate request association",
+    "fresh source context/hash change fails closed before pending solve",
+    "fresh finite attempt and lifetime deadline limits",
+    "second interruption recovers response; cumulative attempts5+5+4=14"
+  ],
+  "boundaries": {
+    "sourceTraffic": 0,
+    "transport": "scripted trusted injected fetch only; live mode label is not network proof",
+    "fullSuite": "not selected; batch-only API change with explicit shared-session boundaries",
+    "screens": "none changed; no visual gate required",
+    "architecture": "existing collector/session/registered source; no new provider or wire format",
+    "freshBootstrapRequired": true,
+    "sourceFailure": "source context change fails closed",
+    "maximumContinuationAllocations": 32
+  },
+  "resources": {
+    "workers": 1,
+    "budgetScratchMiB": 64,
+    "budgetHostRamMiB": 512,
+    "budgetChildRamMiB": 448,
+    "budgetSeconds": 90,
+    "peakScratchBytes": 2920704,
+    "peakRssBytes": 360333312,
+    "compatibilityException": null
+  },
+  "cleanup": {
+    "compatibility_exception": null,
+    "dependency_link_absent": true,
+    "removed_bytes": 2920704,
+    "scratch_absent": true
+  },
+  "externalReceipts": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f59-continuation",
+  "limitations": [
+    "No actual LIVE interrupted batch was resumed in this assignment.",
+    "Page/settings/tree/options are fetched under each new explicit allocation; cross-allocation bootstrap metadata cache reuse remains a prerequisite gap against full AC4.",
+    "Original qualification-day/source-plan/policy/producer context must remain unchanged; changed source stops.",
+    "Caller must preserve/freeze predecessors and all spent allocation markers; checkpoint loss grants no replay.",
+    "No full F58/F59/F61 target or Story Done claim."
+  ]
+}

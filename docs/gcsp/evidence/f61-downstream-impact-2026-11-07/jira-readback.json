@@ -1,0 +1,2355 @@
+{
+  "schemaVersion": 1,
+  "purpose": "FUCQ-61 downstream impact audit and collaborator-authorised FUCQ-77/FUCQ-78 reconciliation",
+  "observedAt": "2026-11-07T12:54:29.652Z",
+  "mutations": [
+    {
+      "issue": "FUCQ-77",
+      "operation": "update",
+      "status": "ok"
+    },
+    {
+      "issue": "FUCQ-78",
+      "operation": "update",
+      "status": "ok"
+    },
+    {
+      "link": "62530",
+      "operation": "delete",
+      "status": "ok"
+    }
+  ],
+  "checks": {
+    "acceptanceAreas": true,
+    "planUnchanged": true,
+    "identityUnchanged": true,
+    "factsImagesUnchanged": true,
+    "configuratorUnchanged": true,
+    "publicationUnchanged": true,
+    "f78AcceptanceUnchanged": true,
+    "jiraReadback": [
+      {
+        "assigneePreserved": true,
+        "descriptionMatches": true,
+        "key": "FUCQ-77",
+        "otherLinksPreserved": true,
+        "removedLinkAbsent": true,
+        "statusPreserved": true,
+        "summaryMatches": true
+      },
+      {
+        "assigneePreserved": true,
+        "descriptionMatches": true,
+        "key": "FUCQ-78",
+        "otherLinksPreserved": true,
+        "removedLinkAbsent": true,
+        "statusPreserved": true,
+        "summaryMatches": true
+      }
+    ]
+  },
+  "changedIssues": [
+    {
+      "key": "FUCQ-77",
+      "summary": "Verify scheme coverage using the collected BMW configuration corpus",
+      "status": "In Progress",
+      "assignee": "Russell Gowers",
+      "updated": "2026-11-07T06:54:28.848-0600",
+      "links": [
+        {
+          "id": "62528",
+          "inward": "FUCQ-59",
+          "type": "Blocks"
+        },
+        {
+          "id": "62529",
+          "inward": "FUCQ-60",
+          "type": "Blocks"
+        },
+        {
+          "id": "62619",
+          "outward": "FUCQ-113",
+          "type": "Blocks"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-78",
+      "summary": "Shape synthetic scheme stock from real stock-locator aggregates",
+      "status": "In Progress",
+      "assignee": "Russell Gowers",
+      "updated": "2026-11-07T06:54:28.891-0600",
+      "links": [
+        {
+          "id": "62531",
+          "inward": "FUCQ-53",
+          "type": "Blocks"
+        },
+        {
+          "id": "62554",
+          "outward": "FUCQ-92",
+          "type": "Blocks"
+        },
+        {
+          "id": "62597",
+          "inward": "FUCQ-81",
+          "type": "Blocks"
+        },
+        {
+          "id": "62598",
+          "inward": "FUCQ-82",
+          "type": "Blocks"
+        }
+      ]
+    }
+  ],
+  "audit": {
+    "observedAt": [
+      "2026-11-07T12:55:20.549Z",
+      "2026-11-07T12:55:38.018Z"
+    ],
+    "queries": [
+      "project = FUCQ AND issuetype = Story AND statusCategory != Done ORDER BY key ASC",
+      "project = FUCQ AND issuetype = Story AND (description ~ \"configuration\" OR description ~ \"corpus\" OR description ~ \"fleet\" OR key in (FUCQ-77,FUCQ-78,FUCQ-113,FUCQ-115,FUCQ-117,FUCQ-133,FUCQ-134,FUCQ-135)) ORDER BY key ASC"
+    ],
+    "unacceptedStoryCount": 56,
+    "unacceptedByStatus": {
+      "To Do": 26,
+      "In Review": 6,
+      "In Progress": 24
+    },
+    "corpusRelatedSearchCount": 66,
+    "fullyReadIssueDescriptions": [
+      "FUCQ-77",
+      "FUCQ-78",
+      "FUCQ-104",
+      "FUCQ-113",
+      "FUCQ-115",
+      "FUCQ-117",
+      "FUCQ-133",
+      "FUCQ-134",
+      "FUCQ-135"
+    ],
+    "codeInspection": [
+      {
+        "path": "server/gcsp/comparison/generator.js",
+        "symbols": [
+          "loadComparisonPolicy",
+          "validateConfiguration"
+        ],
+        "effect": "Existing corpus port and pinned dataset/version/manifest branch"
+      },
+      {
+        "path": "server/gcsp/policy/seed-v1.json",
+        "key": "comparison.configurationSet.v1",
+        "valueKind": "reviewed-fixtures",
+        "effect": "Corpus selection is not yet active in the reviewed seed"
+      },
+      {
+        "ref": "ddd884b",
+        "path": "server/gcsp/predict/records/generator.js",
+        "symbols": [
+          "loadLearningPolicy",
+          "features"
+        ],
+        "effect": "Published F113 generator already delegates to the comparison corpus port, preserves unknown features and requires dated eligibility/points"
+      }
+    ],
+    "unacceptedStories": [
+      {
+        "key": "FUCQ-27",
+        "status": "To Do",
+        "summary": "Share pure recommendation evaluation behind the retail compatibility layer",
+        "updated": "2026-11-04T13:36:14.884-0600",
+        "links": [
+          {
+            "id": "62346",
+            "inward": "FUCQ-22",
+            "type": "Blocks"
+          },
+          {
+            "id": "62347",
+            "inward": "FUCQ-23",
+            "type": "Blocks"
+          },
+          {
+            "id": "62348",
+            "inward": "FUCQ-26",
+            "type": "Blocks"
+          },
+          {
+            "id": "62350",
+            "outward": "FUCQ-28",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "npm test — passes; attach the differential result and tested revision/configuration to the story result.",
+        "sourceMentionsFullLength": 104
+      },
+      {
+        "key": "FUCQ-28",
+        "status": "To Do",
+        "summary": "Build grouped result views from complete exact-car decisions",
+        "updated": "2026-11-04T13:36:55.190-0600",
+        "links": [
+          {
+            "id": "62349",
+            "inward": "FUCQ-23",
+            "type": "Blocks"
+          },
+          {
+            "id": "62350",
+            "inward": "FUCQ-27",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-46",
+        "status": "To Do",
+        "summary": "Resolve a live catalogue configuration behind the snapshot contract",
+        "updated": "2026-11-05T07:29:01.345-0600",
+        "links": [
+          {
+            "id": "62379",
+            "inward": "FUCQ-39",
+            "type": "Blocks"
+          },
+          {
+            "id": "62380",
+            "outward": "FUCQ-47",
+            "type": "Blocks"
+          },
+          {
+            "id": "62381",
+            "outward": "FUCQ-48",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "Implement the existing C13 catalogue contract using the selected matrix, constructibility, option-label and OTD families or documented approved replacement; inject HTTP transport and keep snapshot the default.Carry requested/resolved GB market/locale, model/range/AG, order/effect/production/tax dates, trim and complete sorted selected options through the chain. Preserve source option versus accessory typing and inspect constructibility, added/removed/ignored/invalid options.Report actual resolution differences; changed model/market/date, incomplete/invalid selection or option loss never silently becomes the requested configuration. G21/T3MQ resolving to T3SK petrol is a rejected mismatch before specs/images join.Map only evidenced meanings/units and selected-equipment labels into the same contract. Missing/0000 remains unknown; definition/available/selected/fitted are distinct; retail prices never become GCSP points.Explicit provider configuration with absent access/credentials returns",
+        "sourceMentionsFullLength": 1574
+      },
+      {
+        "key": "FUCQ-47",
+        "status": "To Do",
+        "summary": "Bound live catalogue failures and preserve truthful fallback",
+        "updated": "2026-11-03T08:39:54.113-0600",
+        "links": [
+          {
+            "id": "62380",
+            "inward": "FUCQ-46",
+            "type": "Blocks"
+          },
+          {
+            "id": "62382",
+            "outward": "FUCQ-48",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "As a catalogue consumer, I want bounded failures and accurate freshness so an unreliable source cannot quietly substitute stale or wrong configuration facts.",
+        "sourceMentionsFullLength": 157
+      },
+      {
+        "key": "FUCQ-48",
+        "status": "To Do",
+        "summary": "Verify the selected live catalogue provider with redacted evidence",
+        "updated": "2026-11-03T08:39:54.136-0600",
+        "links": [
+          {
+            "id": "62381",
+            "inward": "FUCQ-46",
+            "type": "Blocks"
+          },
+          {
+            "id": "62382",
+            "inward": "FUCQ-47",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "Provide an opt-in bounded read-only smoke harness/procedure outside npm test and ordinary lookup, taking its source/access context from secure backend configuration rather than command-line secrets.The authorised positive run proves exact requested/resolved identity/dates/complete options, one constructible normalised configuration and representative evidenced technical values/units against source output; retain only redacted normalised comparisons and provider/version/date/limitations.A separate controlled mismatch fixture verifies G21/T3MQ→T3SK petrol rejection; do not require the live source still to reproduce a historical substitution or accept it as success.Verify source unavailability yields the documented explicit snapshot choice/unavailable label with no credential or raw source leakage; no garage/share write or telemetry/eligibility assertion occurs.The setup/evidence record distinguishes observed unsupported demo access, authorised live demo proof and supported production int",
+        "sourceMentionsFullLength": 1528
+      },
+      {
+        "key": "FUCQ-58",
+        "status": "In Review",
+        "summary": "Qualify fleet coverage and budgets before collecting configurations",
+        "updated": "2026-11-07T06:43:44.455-0600",
+        "links": [
+          {
+            "id": "62395",
+            "inward": "FUCQ-52",
+            "type": "Blocks"
+          },
+          {
+            "id": "62396",
+            "inward": "FUCQ-37",
+            "type": "Blocks"
+          },
+          {
+            "id": "62397",
+            "outward": "FUCQ-59",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "This section overrides any conflicting criteria below. Vehicles now have three identities: a configuration (configurationId, immutable corpus), an exact stock car (synthetic order reference, Postgres, generated per demo run) and a delivered car (VIN attached at delivery or for an employee's current car only). Backend consumers use the lookup module in-process through its port; the HTTP route wraps the same module and contract tests prove equivalence. Record: docs/design/hld-review-gc.md and docs/design/gcsp-high-level-design.md on gcsp-poc.\nFor this story: coverage and budgets are measured over distinct configurations. No VINs are minted for the corpus.\nAs a demo fleet curator, I want an executable evidence-backed collection plan so the 10,000-car target uses plausible identities and a controlled source budget.\nPublish a versioned machine-readable fleet plan covering actual model/AG/derivative/generation/body/powertrain identifiers, market/steering/locale, order/effect/catalogue dates,",
+        "sourceMentionsFullLength": 4908
+      },
+      {
+        "key": "FUCQ-59",
+        "status": "In Review",
+        "summary": "Collect distinct constructible configurations with resumable batches",
+        "updated": "2026-11-07T06:48:55.476-0600",
+        "links": [
+          {
+            "id": "62397",
+            "inward": "FUCQ-58",
+            "type": "Blocks"
+          },
+          {
+            "id": "62398",
+            "inward": "FUCQ-39",
+            "type": "Blocks"
+          },
+          {
+            "id": "62399",
+            "outward": "FUCQ-60",
+            "type": "Blocks"
+          },
+          {
+            "id": "62528",
+            "outward": "FUCQ-77",
+            "type": "Blocks"
+          },
+          {
+            "id": "340003",
+            "outward": "FUCQ-152",
+            "type": "Relates"
+          },
+          {
+            "id": "340005",
+            "inward": "FUCQ-154",
+            "type": "Relates"
+          },
+          {
+            "id": "340009",
+            "inward": "FUCQ-156",
+            "type": "Relates"
+          },
+          {
+            "id": "340010",
+            "inward": "FUCQ-157",
+            "type": "Relates"
+          },
+          {
+            "id": "340014",
+            "inward": "FUCQ-161",
+            "type": "Relates"
+          },
+          {
+            "id": "340018",
+            "inward": "FUCQ-165",
+            "type": "Relates"
+          }
+        ],
+        "sourceMentions": "This section overrides any conflicting criteria below. Vehicles now have three identities: a configuration (configurationId, immutable corpus), an exact stock car (synthetic order reference, Postgres, generated per demo run) and a delivered car (VIN attached at delivery or for an employee's current car only). Backend consumers use the lookup module in-process through its port; the HTTP route wraps the same module and contract tests prove equivalence. Record: docs/design/hld-review-gc.md and docs/design/gcsp-high-level-design.md on gcsp-poc.\nFor this story: collected records are configurations keyed by configurationId. No VIN is assigned during collection. The canonical distinctness key below is the configurationId, computed by the target platform's rule (HLD section \"Synthetic identifier formats\", updated 4 Nov after round 3): standard padded Base64 of vgModelCode + : + every resolved factory option code (paint, upholstery and equipment), upper-cased, sorted and comma-joined. Dealer ac",
+        "sourceMentionsFullLength": 5665
+      },
+      {
+        "key": "FUCQ-60",
+        "status": "In Review",
+        "summary": "Enrich resolved fleet configurations with matching facts and images",
+        "updated": "2026-11-07T06:48:54.106-0600",
+        "links": [
+          {
+            "id": "62399",
+            "inward": "FUCQ-59",
+            "type": "Blocks"
+          },
+          {
+            "id": "62400",
+            "inward": "FUCQ-39",
+            "type": "Blocks"
+          },
+          {
+            "id": "62401",
+            "inward": "FUCQ-42",
+            "type": "Blocks"
+          },
+          {
+            "id": "62402",
+            "outward": "FUCQ-61",
+            "type": "Blocks"
+          },
+          {
+            "id": "62529",
+            "outward": "FUCQ-77",
+            "type": "Blocks"
+          },
+          {
+            "id": "340015",
+            "inward": "FUCQ-162",
+            "type": "Relates"
+          },
+          {
+            "id": "340016",
+            "inward": "FUCQ-163",
+            "type": "Relates"
+          }
+        ],
+        "sourceMentions": "This section overrides any conflicting criteria below. Vehicles now have three identities: a configuration (configurationId, immutable corpus), an exact stock car (synthetic order reference, Postgres, generated per demo run) and a delivered car (VIN attached at delivery or for an employee's current car only). Backend consumers use the lookup module in-process through its port; the HTTP route wraps the same module and contract tests prove equivalence. Record: docs/design/hld-review-gc.md and docs/design/gcsp-high-level-design.md on gcsp-poc.\nFor this story: enrichment attaches facts and images to configurations, not to VINs or stock cars.\nAs a demo consumer, I want configuration-specific specifications and honest imagery so each fictional vehicle has useful facts without unsupported equipment or appearance claims.\nUse each accepted configuration's same resolved model/AG, market, dates and complete selected elements to fetch technical data and resolve images through FUCQ-14/FUCQ-15 contr",
+        "sourceMentionsFullLength": 4511
+      },
+      {
+        "key": "FUCQ-61",
+        "status": "In Review",
+        "summary": "Collect and validate 10,000 genuinely distinct BMW configurations",
+        "updated": "2026-11-07T06:49:55.478-0600",
+        "links": [
+          {
+            "id": "62402",
+            "inward": "FUCQ-60",
+            "type": "Blocks"
+          },
+          {
+            "id": "62403",
+            "outward": "FUCQ-62",
+            "type": "Blocks"
+          },
+          {
+            "id": "340002",
+            "inward": "FUCQ-151",
+            "type": "Relates"
+          }
+        ],
+        "sourceMentions": "This section overrides any conflicting criteria below. Vehicles now have three identities: a configuration (configurationId, immutable corpus), an exact stock car (synthetic order reference, Postgres, generated per demo run) and a delivered car (VIN attached at delivery or for an employee's current car only). Backend consumers use the lookup module in-process through its port; the HTTP route wraps the same module and contract tests prove equivalence. Record: docs/design/hld-review-gc.md and docs/design/gcsp-high-level-design.md on gcsp-poc.\nFor this story: distinctness is proved over configuration signatures. Never count repeated builds given new identifiers as distinct.\nAs the demo owner, I want the actual 10,000-configuration corpus so fleet scale is supported by collected evidence rather than a theoretical generator.\nExecute the qualified resumable collection/enrichment plan to produce 10,000 genuinely distinct complete resolved configurations. Recompute the semantic distinctness ke",
+        "sourceMentionsFullLength": 4914
+      },
+      {
+        "key": "FUCQ-62",
+        "status": "In Review",
+        "summary": "Publish the configuration corpus and generate stock by order reference",
+        "updated": "2026-11-07T06:49:55.995-0600",
+        "links": [
+          {
+            "id": "62403",
+            "inward": "FUCQ-61",
+            "type": "Blocks"
+          },
+          {
+            "id": "62404",
+            "inward": "FUCQ-53",
+            "type": "Blocks"
+          },
+          {
+            "id": "62405",
+            "inward": "FUCQ-54",
+            "type": "Blocks"
+          },
+          {
+            "id": "62406",
+            "outward": "FUCQ-63",
+            "type": "Blocks"
+          },
+          {
+            "id": "340004",
+            "inward": "FUCQ-153",
+            "type": "Relates"
+          },
+          {
+            "id": "340006",
+            "inward": "FUCQ-155",
+            "type": "Relates"
+          },
+          {
+            "id": "340012",
+            "inward": "FUCQ-159",
+            "type": "Relates"
+          },
+          {
+            "id": "340013",
+            "inward": "FUCQ-160",
+            "type": "Relates"
+          },
+          {
+            "id": "340017",
+            "inward": "FUCQ-164",
+            "type": "Relates"
+          }
+        ],
+        "sourceMentions": "This section overrides any conflicting criteria below. Vehicles now have three identities: a configuration (configurationId, immutable corpus), an exact stock car (synthetic order reference, Postgres, generated per demo run) and a delivered car (VIN attached at delivery or for an employee's current car only). Backend consumers use the lookup module in-process through its port; the HTTP route wraps the same module and contract tests prove equivalence. Record: docs/design/hld-review-gc.md and docs/design/gcsp-high-level-design.md on gcsp-poc.\nFor this story: publish the corpus keyed by configurationId. A seeded synthetic stock generator writes order references that point at corpus configurations into the Postgres stock table for each demo run. VINs exist only for delivered and current cars.\nAs a demo operator, I want an atomic versioned fleet release so every distinct configuration has a stable VIN and an invalid release cannot break the working demo.\nReuse FUCQ-19 generation/registry/lo",
+        "sourceMentionsFullLength": 5828
+      },
+      {
+        "key": "FUCQ-63",
+        "status": "In Review",
+        "summary": "Prove full-corpus lookup and offline recovery through the port",
+        "updated": "2026-11-07T06:49:56.489-0600",
+        "links": [
+          {
+            "id": "62406",
+            "inward": "FUCQ-62",
+            "type": "Blocks"
+          },
+          {
+            "id": "62407",
+            "inward": "FUCQ-55",
+            "type": "Blocks"
+          },
+          {
+            "id": "62408",
+            "inward": "FUCQ-56",
+            "type": "Blocks"
+          },
+          {
+            "id": "62409",
+            "inward": "FUCQ-57",
+            "type": "Blocks"
+          },
+          {
+            "id": "340011",
+            "inward": "FUCQ-158",
+            "type": "Relates"
+          }
+        ],
+        "sourceMentions": "This section overrides any conflicting criteria below. Vehicles now have three identities: a configuration (configurationId, immutable corpus), an exact stock car (synthetic order reference, Postgres, generated per demo run) and a delivered car (VIN attached at delivery or for an employee's current car only). Backend consumers use the lookup module in-process through its port; the HTTP route wraps the same module and contract tests prove equivalence. Record: docs/design/hld-review-gc.md and docs/design/gcsp-high-level-design.md on gcsp-poc.\nFor this story: prove lookup by configurationId and order reference across the full corpus through the in-process port, plus an HTTP route contract test. Prove offline recovery as before.\nAs a demo operator, I want measured lookup and recovery evidence on the real loaded corpus so the demonstration works offline at its intended scale.\nExercise actual HTTP lookups through the consuming adapter for each WMI and representative derivatives, paint/uphols",
+        "sourceMentionsFullLength": 5079
+      },
+      {
+        "key": "FUCQ-66",
+        "status": "In Progress",
+        "summary": "Persist exact manual claims and expiry through a shared authority",
+        "updated": "2026-11-05T17:34:03.675-0600",
+        "links": [
+          {
+            "id": "62412",
+            "inward": "FUCQ-65",
+            "type": "Blocks"
+          },
+          {
+            "id": "62418",
+            "outward": "FUCQ-70",
+            "type": "Blocks"
+          },
+          {
+            "id": "62420",
+            "outward": "FUCQ-71",
+            "type": "Blocks"
+          },
+          {
+            "id": "62540",
+            "inward": "FUCQ-81",
+            "type": "Blocks"
+          },
+          {
+            "id": "62541",
+            "inward": "FUCQ-85",
+            "type": "Blocks"
+          },
+          {
+            "id": "62651",
+            "outward": "FUCQ-134",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "Implement the manual claim slice on FUCQ-81's shared transaction repository (do not build a separate repository or schema): versioned drafts, run-scoped shared exact stock with employee/entitlement-scoped access and claims, claims, pinned quotes, expiry and pending operations. Any table or column this needs is an additive migration recorded in docs/gcsp/shared-contracts.md. Retain state across backend restart using the agreed SQL repository provider; in-memory/browser-only storage cannot satisfy completion.Browsing never reserves. An explicit Review/select action conditionally claims one exact released vehicle after revalidating current employee/driver eligibility, entitlement limits, draft/stock versions and terms. Two competing employees or tabs produce at most one active holder; retries are idempotent.Store server expiry timestamps and configurable, separately named manual preview and order-review timing semantics. Their precise defaults/transition are documented demo assumptions pe",
+        "sourceMentionsFullLength": 4037
+      },
+      {
+        "key": "FUCQ-69",
+        "status": "In Progress",
+        "summary": "Browse released cars with visual cards and complete vehicle details",
+        "updated": "2026-11-05T18:02:50.997-0600",
+        "links": [
+          {
+            "id": "62416",
+            "inward": "FUCQ-68",
+            "type": "Blocks"
+          },
+          {
+            "id": "62417",
+            "inward": "FUCQ-31",
+            "type": "Blocks"
+          },
+          {
+            "id": "62419",
+            "outward": "FUCQ-70",
+            "type": "Blocks"
+          },
+          {
+            "id": "62425",
+            "outward": "FUCQ-73",
+            "type": "Blocks"
+          },
+          {
+            "id": "62591",
+            "inward": "FUCQ-92",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "Replace series/body tiles and the dense model table with visual series/body navigation and exact-car cards using the complete released-stock projection that FUCQ-92 writes. Preserve quick text search, useful sorting, availability/record counts and a discoverable path to all eligible exact vehicles; browsing never claims.Retain screenshot 03–05 facts: available allowance, model/body/engine, exterior/interior, monthly scheme cost/contribution with period, points where available, NEDC and WLTP CO2 as distinct typed observations, transmission, insurance group and earliest collection. Missing values stay unknown, not zero.Vehicle details expose configured options/equipment, specification, image disclaimer/provenance and relevant historic fields from the inventory. Distinguish exact fitted facts, model/reference data and representative images. Stock/quote/identity remain aligned when changing exact member; no aggregate equipment union becomes an exact claim.Ineligible or confirmation-needed ",
+        "sourceMentionsFullLength": 4533
+      },
+      {
+        "key": "FUCQ-70",
+        "status": "In Progress",
+        "summary": "Review a claimed car with contact details and return mileage",
+        "updated": "2026-11-06T10:21:37.162-0600",
+        "links": [
+          {
+            "id": "62418",
+            "inward": "FUCQ-66",
+            "type": "Blocks"
+          },
+          {
+            "id": "62419",
+            "inward": "FUCQ-69",
+            "type": "Blocks"
+          },
+          {
+            "id": "62421",
+            "outward": "FUCQ-72",
+            "type": "Blocks"
+          },
+          {
+            "id": "62426",
+            "outward": "FUCQ-73",
+            "type": "Blocks"
+          },
+          {
+            "id": "62592",
+            "inward": "FUCQ-85",
+            "type": "Blocks"
+          },
+          {
+            "id": "339961",
+            "inward": "FUCQ-141",
+            "type": "Relates"
+          }
+        ],
+        "sourceMentions": "[ ] Show a useful hold/review countdown and its consequence, with accessible low-time/expired announcements that do not speak every second. The countdown is computed from the server expiry timestamp against FUCQ-85's demo clock, and the hold length is the hold.cart value read from FUCQ-82 through PolicyService, not a literal in this story. Both timing phases follow configured policy; refresh, Back/Forward, a presenter tick or reopening does not extend the claim.\nHLD review, 4 November 2026 (docs/design/hld-review-gc.md; Russell's agreement in docs/gcsp/hld-agreement-2026-11-04.md): GCSP UI lives in separate blocks under blocks/gcsp/ that import the shared kit; vehicle-matcher stays retail-only (Q8). Each GCSP block also mounts as a standard custom element, with no inline scripts, inline event-handler attributes, eval, new Function or string timers (Q18; docs/gcsp/experience-quality.md, Embeddable blocks). Managed PostgreSQL behind the repository port is the agreed store, and pg is the ",
+        "sourceMentionsFullLength": 1667
+      },
+      {
+        "key": "FUCQ-71",
+        "status": "In Progress",
+        "summary": "Submit manual selections through an idempotent ordering adapter",
+        "updated": "2026-11-06T10:15:14.289-0600",
+        "links": [
+          {
+            "id": "62420",
+            "inward": "FUCQ-66",
+            "type": "Blocks"
+          },
+          {
+            "id": "62422",
+            "outward": "FUCQ-72",
+            "type": "Blocks"
+          },
+          {
+            "id": "62427",
+            "outward": "FUCQ-73",
+            "type": "Blocks"
+          },
+          {
+            "id": "62575",
+            "outward": "FUCQ-108",
+            "type": "Blocks"
+          },
+          {
+            "id": "62593",
+            "inward": "FUCQ-81",
+            "type": "Blocks"
+          },
+          {
+            "id": "62594",
+            "inward": "FUCQ-85",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "Add versioned terms/declaration read and selection-submit/order-read contracts behind replaceable scheme terms and ordering ports. Supply a coherent fictional terms version; the clipped screenshot cannot establish the full approved wording or set of controls.Submit checks principal/entitlement, exact live claim and expiry, draft/stock/policy versions, pinned terms/quote validity, required contact/return data, driver/licence and all applicable declarations again. Reject stale/expired/invalid submissions with reviewable reasons, without releasing confirmed ownership to another chooser mid-operation.Persist selection-received and pending handoff before an external-shaped write; an acknowledged synthetic adapter returns one generated order reference plus the actual approval-pending state. Repeated/double-click/retried requests return the same operation/order, never duplicate orders.Persist unknown/time-out outcomes using the same operation/idempotency key, and reconcile them before retry o",
+        "sourceMentionsFullLength": 3977
+      },
+      {
+        "key": "FUCQ-72",
+        "status": "To Do",
+        "summary": "Review declarations and show the actual order handoff outcome",
+        "updated": "2026-11-05T01:51:21.935-0600",
+        "links": [
+          {
+            "id": "62421",
+            "inward": "FUCQ-70",
+            "type": "Blocks"
+          },
+          {
+            "id": "62422",
+            "inward": "FUCQ-71",
+            "type": "Blocks"
+          },
+          {
+            "id": "62428",
+            "outward": "FUCQ-73",
+            "type": "Blocks"
+          },
+          {
+            "id": "62602",
+            "outward": "FUCQ-111",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "Replace the dense screenshot 06 summary with readable review sections for order/contract/collection/contact/requirements, employee and nominated driver/licence, and exact car/specification/options/terms. Preserve every relevant inventory field through visible key facts or accessible details; distinguish absent historic values from required inputs.Provide edit links to the correct section with defined claim/quote invalidation. Display the points cost against the allowance (a cash contribution only if the policy source enables it, which it does not for Choices, Q16), contract term+mileage, requested versus earliest collection and any return information. No screenshot inconsistency is copied into the synthetic transaction.Present all applicable versioned terms/declarations with accessible text/links and explicit unchecked acknowledgements, including employee and nominated-driver conditions where configured. The screenshot is clipped; use labelled synthetic wording until SAN-020 supplies a",
+        "sourceMentionsFullLength": 3526
+      },
+      {
+        "key": "FUCQ-73",
+        "status": "To Do",
+        "summary": "Verify the complete manual journey and its employee entry contract",
+        "updated": "2026-11-04T14:39:57.537-0600",
+        "links": [
+          {
+            "id": "62423",
+            "inward": "FUCQ-67",
+            "type": "Blocks"
+          },
+          {
+            "id": "62424",
+            "inward": "FUCQ-68",
+            "type": "Blocks"
+          },
+          {
+            "id": "62425",
+            "inward": "FUCQ-69",
+            "type": "Blocks"
+          },
+          {
+            "id": "62426",
+            "inward": "FUCQ-70",
+            "type": "Blocks"
+          },
+          {
+            "id": "62427",
+            "inward": "FUCQ-71",
+            "type": "Blocks"
+          },
+          {
+            "id": "62428",
+            "inward": "FUCQ-72",
+            "type": "Blocks"
+          },
+          {
+            "id": "62595",
+            "inward": "FUCQ-85",
+            "type": "Blocks"
+          },
+          {
+            "id": "62596",
+            "inward": "FUCQ-92",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "Automate coherent new/self-driver and replacement/permitted-additional-driver journeys against synthetic providers through the real HTTP/application path and configured SQL repository. Assert chosen inputs reach one acknowledged order/current history; no named-winner or canned confirmation shortcut.Exercise no HR/entitlement, no stock vs outage, unknown essential/terms, stock contention, stale draft/quote, short hold expiry, double submit, lost provider response/pending reconciliation and process reopen. Hold expiry, reopen and reconciliation scenarios advance time with FUCQ-85 presenter ticks and start from its reset, not an injected clock of their own. Stock in every journey comes from FUCQ-78's generator through FUCQ-92's released pool. Current and requested/confirmed lifecycle dates remain distinct.Complete the screenshot information trace in manual-journey-refinement.md with implemented screen/component and evidence paths for every group, including history/driver details, search/s",
+        "sourceMentionsFullLength": 3977
+      },
+      {
+        "key": "FUCQ-77",
+        "status": "In Progress",
+        "summary": "Verify scheme coverage using the collected BMW configuration corpus",
+        "updated": "2026-11-07T06:54:28.848-0600",
+        "links": [
+          {
+            "id": "62528",
+            "inward": "FUCQ-59",
+            "type": "Blocks"
+          },
+          {
+            "id": "62529",
+            "inward": "FUCQ-60",
+            "type": "Blocks"
+          },
+          {
+            "id": "62619",
+            "outward": "FUCQ-113",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "As the demo owner, I want to reuse FUCQ-61's collected BMW configuration corpus, prove which scheme model lines it covers and verify configurator round trips, so every car selected for the demo has traceable constructibility evidence and only genuine coverage or evidence gaps require further collection.\nGary's 4 November decision uses real BMW configurations with synthetic stock on top. FUCQ-61 has since delivered a retained, verified cohort of exactly 10,000 distinct configurations; it is In Review, not accepted as Done. This story now starts with that corpus and its original source, solver and FUCQ-60 enrichment evidence rather than collecting a separate demo set from scratch. Map existing records to every line in the October 2024 scheme matrices, select a qualifying demo subset, verify the configurator links and collect or enrich only evidenced gaps. FUCQ-78 can use the existing corpus for its synthetic-stock work without waiting for this story's final coverage report. Corpus size a",
+        "sourceMentionsFullLength": 4320
+      },
+      {
+        "key": "FUCQ-78",
+        "status": "In Progress",
+        "summary": "Shape synthetic scheme stock from real stock-locator aggregates",
+        "updated": "2026-11-07T06:54:28.891-0600",
+        "links": [
+          {
+            "id": "62531",
+            "inward": "FUCQ-53",
+            "type": "Blocks"
+          },
+          {
+            "id": "62554",
+            "outward": "FUCQ-92",
+            "type": "Blocks"
+          },
+          {
+            "id": "62597",
+            "inward": "FUCQ-81",
+            "type": "Blocks"
+          },
+          {
+            "id": "62598",
+            "inward": "FUCQ-82",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "Gary decided on 4 November that real configurations come from the sibling story, \"Collect a demo set of real BMW configurations for the scheme models\" (FUCQ-77). Stock on top of them is synthetic, shaped by aggregate figures from BMW's public new-car stock locator. The locator returns real UK stock as JSON with no key, but carries no option codes (docs/gcsp/bmw-interface-research.md, follow-up \"real data for the demo\", and docs/gcsp/evidence/fucq-4/stock-locator-2026-11-04.json).\nThis story takes over FUCQ-62's sentence \"a seeded synthetic stock generator writes order references … into the Postgres stock table\". FUCQ-62 keeps corpus publication.\n[ ] Sampling. An explicit, offline-by-default script samples the stock locator for each scheme model line in the FUCQ-77 demo plan.\nEach car has an orderUuid, a 7-digit orderNumber and an 8-digit wholesalerOrderId (FUCQ-53 allocator), the configurationId of a FUCQ-77 configuration, a stock account, a status, a release window and a confirmed del",
+        "sourceMentionsFullLength": 1771
+      },
+      {
+        "key": "FUCQ-92",
+        "status": "In Progress",
+        "summary": "Release synthetic stock on a presenter tick from the next pull",
+        "updated": "2026-11-06T10:21:39.112-0600",
+        "links": [
+          {
+            "id": "62553",
+            "inward": "FUCQ-85",
+            "type": "Blocks"
+          },
+          {
+            "id": "62554",
+            "inward": "FUCQ-78",
+            "type": "Blocks"
+          },
+          {
+            "id": "62555",
+            "outward": "FUCQ-96",
+            "type": "Blocks"
+          },
+          {
+            "id": "62589",
+            "outward": "FUCQ-104",
+            "type": "Blocks"
+          },
+          {
+            "id": "62591",
+            "outward": "FUCQ-69",
+            "type": "Blocks"
+          },
+          {
+            "id": "62596",
+            "outward": "FUCQ-73",
+            "type": "Blocks"
+          },
+          {
+            "id": "62635",
+            "outward": "FUCQ-126",
+            "type": "Blocks"
+          },
+          {
+            "id": "339964",
+            "inward": "FUCQ-142",
+            "type": "Relates"
+          }
+        ],
+        "sourceMentions": "depends_on: FUCQ-85, FUCQ-78\na synthetic provider over FUCQ-78's stock, arranged in tranches;\n[ ] Release handler: a release handler registered on FUCQ-85's tick registry pulls the list and compares it with the known stock. Each newly released exact car is inserted as available, scoped to the run, with its orderUuid, 7-digit orderNumber and configurationId. An event receipt records the tranche ID.\nserver/gcsp/fixtures/ (tranche plan over FUCQ-78 stock)\nGary's data route (4 November): real configurations with synthetic stock on top (FUCQ-77, FUCQ-78).",
+        "sourceMentionsFullLength": 556
+      },
+      {
+        "key": "FUCQ-95",
+        "status": "In Progress",
+        "summary": "Show buddy activity and pause or resume the search",
+        "updated": "2026-11-05T10:25:19.993-0600",
+        "links": [
+          {
+            "id": "62551",
+            "inward": "FUCQ-91",
+            "type": "Blocks"
+          },
+          {
+            "id": "62552",
+            "inward": "FUCQ-64",
+            "type": "Blocks"
+          },
+          {
+            "id": "62614",
+            "outward": "FUCQ-122",
+            "type": "Blocks"
+          },
+          {
+            "id": "62637",
+            "outward": "FUCQ-127",
+            "type": "Blocks"
+          },
+          {
+            "id": "62644",
+            "outward": "FUCQ-130",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-96",
+        "status": "In Progress",
+        "summary": "Allocate released cars across competing briefs by the policy tie-break",
+        "updated": "2026-11-06T11:51:36.416-0600",
+        "links": [
+          {
+            "id": "62555",
+            "inward": "FUCQ-92",
+            "type": "Blocks"
+          },
+          {
+            "id": "62556",
+            "inward": "FUCQ-91",
+            "type": "Blocks"
+          },
+          {
+            "id": "62557",
+            "inward": "FUCQ-29",
+            "type": "Blocks"
+          },
+          {
+            "id": "62558",
+            "outward": "FUCQ-100",
+            "type": "Blocks"
+          },
+          {
+            "id": "62573",
+            "outward": "FUCQ-107",
+            "type": "Blocks"
+          },
+          {
+            "id": "62638",
+            "outward": "FUCQ-127",
+            "type": "Blocks"
+          },
+          {
+            "id": "62656",
+            "outward": "FUCQ-135",
+            "type": "Blocks"
+          },
+          {
+            "id": "62693",
+            "outward": "FUCQ-104",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-98",
+        "status": "In Progress",
+        "summary": "Send offer emails through one real transport once a sender is set up",
+        "updated": "2026-11-06T09:15:27.884-0600",
+        "links": [
+          {
+            "id": "62563",
+            "inward": "FUCQ-93",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "[ ] One real transport: one real MailTransport adapter for the sender that is set up, behind FUCQ-93's port. It is selected only by backend configuration. With no configuration, the captured transport stays the default and nothing changes.\n[ ] Allow-list: recipients come from a configured list of demo addresses. Mail to any other address is refused and recorded, never sent.\nBrevo reuse handoff, 5 November 2026, requested by Russell: read docs/gcsp/email-transport.md. Reuse Deckhead's transactional HTTP method with built-in fetch: POST https://api.brevo.com/v3/smtp/email, backend-only api-key, both rendered GCSP bodies and a stable per-run/job provider idempotency key. The handoff reproduces the method, proposed backend configuration, StanleyPi sender-domain evidence, source revision and remaining setup checks, so another machine does not need those local checkouts. The credential is a Brevo API key; no new PAT is needed for this method.\nPreserve FUCQ-93's port, capture, canonical retry",
+        "sourceMentionsFullLength": 1874
+      },
+      {
+        "key": "FUCQ-100",
+        "status": "In Progress",
+        "summary": "Hold the allocated car and create its offer and outbox job in one transaction",
+        "updated": "2026-11-06T11:09:45.292-0600",
+        "links": [
+          {
+            "id": "62558",
+            "inward": "FUCQ-96",
+            "type": "Blocks"
+          },
+          {
+            "id": "62564",
+            "outward": "FUCQ-102",
+            "type": "Blocks"
+          },
+          {
+            "id": "62657",
+            "outward": "FUCQ-135",
+            "type": "Blocks"
+          },
+          {
+            "id": "339958",
+            "inward": "FUCQ-140",
+            "type": "Relates"
+          },
+          {
+            "id": "339960",
+            "inward": "FUCQ-141",
+            "type": "Relates"
+          },
+          {
+            "id": "339962",
+            "inward": "FUCQ-142",
+            "type": "Relates"
+          },
+          {
+            "id": "339965",
+            "inward": "FUCQ-143",
+            "type": "Relates"
+          },
+          {
+            "id": "339970",
+            "inward": "FUCQ-144",
+            "type": "Relates"
+          },
+          {
+            "id": "339971",
+            "inward": "FUCQ-145",
+            "type": "Relates"
+          },
+          {
+            "id": "339972",
+            "inward": "FUCQ-146",
+            "type": "Relates"
+          },
+          {
+            "id": "339975",
+            "inward": "FUCQ-149",
+            "type": "Relates"
+          }
+        ],
+        "sourceMentions": "Q15: two hold types sharing one authority. The buddy hold is a proposed new capability with a configurable duration.",
+        "sourceMentionsFullLength": 116
+      },
+      {
+        "key": "FUCQ-102",
+        "status": "In Progress",
+        "summary": "Open an offer from a run-bound link that shows its current state",
+        "updated": "2026-11-05T17:51:16.672-0600",
+        "links": [
+          {
+            "id": "62564",
+            "inward": "FUCQ-100",
+            "type": "Blocks"
+          },
+          {
+            "id": "62565",
+            "inward": "FUCQ-84",
+            "type": "Blocks"
+          },
+          {
+            "id": "62566",
+            "inward": "FUCQ-85",
+            "type": "Blocks"
+          },
+          {
+            "id": "62567",
+            "outward": "FUCQ-105",
+            "type": "Blocks"
+          },
+          {
+            "id": "62570",
+            "outward": "FUCQ-106",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "[ ] Landing URL: the landing URL comes from deployment configuration for the GCSP static site (Q1), never hard-coded.",
+        "sourceMentionsFullLength": 117
+      },
+      {
+        "key": "FUCQ-104",
+        "status": "In Progress",
+        "summary": "Track order requests from requested to confirmed to released",
+        "updated": "2026-11-06T03:59:38.554-0600",
+        "links": [
+          {
+            "id": "62588",
+            "inward": "FUCQ-101",
+            "type": "Blocks"
+          },
+          {
+            "id": "62589",
+            "inward": "FUCQ-92",
+            "type": "Blocks"
+          },
+          {
+            "id": "62626",
+            "outward": "FUCQ-117",
+            "type": "Blocks"
+          },
+          {
+            "id": "62693",
+            "inward": "FUCQ-96",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-105",
+        "status": "In Progress",
+        "summary": "Show the offer's exact quote, current-car comparison and countdown",
+        "updated": "2026-11-05T18:30:59.938-0600",
+        "links": [
+          {
+            "id": "62567",
+            "inward": "FUCQ-102",
+            "type": "Blocks"
+          },
+          {
+            "id": "62568",
+            "inward": "FUCQ-31",
+            "type": "Blocks"
+          },
+          {
+            "id": "62569",
+            "inward": "FUCQ-64",
+            "type": "Blocks"
+          },
+          {
+            "id": "62576",
+            "outward": "FUCQ-109",
+            "type": "Blocks"
+          },
+          {
+            "id": "62611",
+            "outward": "FUCQ-120",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-106",
+        "status": "In Progress",
+        "summary": "Accept, decline or expire an offer with idempotent outcomes",
+        "updated": "2026-11-05T18:30:08.648-0600",
+        "links": [
+          {
+            "id": "62570",
+            "inward": "FUCQ-102",
+            "type": "Blocks"
+          },
+          {
+            "id": "62571",
+            "outward": "FUCQ-107",
+            "type": "Blocks"
+          },
+          {
+            "id": "62574",
+            "outward": "FUCQ-108",
+            "type": "Blocks"
+          },
+          {
+            "id": "62642",
+            "outward": "FUCQ-129",
+            "type": "Blocks"
+          },
+          {
+            "id": "62658",
+            "outward": "FUCQ-135",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-107",
+        "status": "In Progress",
+        "summary": "Confirm one preference change after declining and receive a second offer",
+        "updated": "2026-11-06T03:42:11.744-0600",
+        "links": [
+          {
+            "id": "62571",
+            "inward": "FUCQ-106",
+            "type": "Blocks"
+          },
+          {
+            "id": "62572",
+            "inward": "FUCQ-91",
+            "type": "Blocks"
+          },
+          {
+            "id": "62573",
+            "inward": "FUCQ-96",
+            "type": "Blocks"
+          },
+          {
+            "id": "62577",
+            "outward": "FUCQ-109",
+            "type": "Blocks"
+          },
+          {
+            "id": "62590",
+            "inward": "FUCQ-30",
+            "type": "Blocks"
+          },
+          {
+            "id": "62640",
+            "outward": "FUCQ-128",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-108",
+        "status": "To Do",
+        "summary": "Hand off a selected buddy offer through the ordering adapter",
+        "updated": "2026-11-04T15:03:08.399-0600",
+        "links": [
+          {
+            "id": "62574",
+            "inward": "FUCQ-106",
+            "type": "Blocks"
+          },
+          {
+            "id": "62575",
+            "inward": "FUCQ-71",
+            "type": "Blocks"
+          },
+          {
+            "id": "62578",
+            "outward": "FUCQ-109",
+            "type": "Blocks"
+          },
+          {
+            "id": "62601",
+            "outward": "FUCQ-111",
+            "type": "Blocks"
+          },
+          {
+            "id": "62646",
+            "outward": "FUCQ-131",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "HR approval (configurable, because the target may drop it);",
+        "sourceMentionsFullLength": 59
+      },
+      {
+        "key": "FUCQ-109",
+        "status": "To Do",
+        "summary": "Verify Paula's critical path end to end with browser evidence",
+        "updated": "2026-11-04T14:58:56.181-0600",
+        "links": [
+          {
+            "id": "62576",
+            "inward": "FUCQ-105",
+            "type": "Blocks"
+          },
+          {
+            "id": "62577",
+            "inward": "FUCQ-107",
+            "type": "Blocks"
+          },
+          {
+            "id": "62578",
+            "inward": "FUCQ-108",
+            "type": "Blocks"
+          },
+          {
+            "id": "62579",
+            "inward": "FUCQ-97",
+            "type": "Blocks"
+          },
+          {
+            "id": "62618",
+            "outward": "FUCQ-124",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-111",
+        "status": "In Progress",
+        "summary": "Progress a selected order through the target approval states on presenter ticks",
+        "updated": "2026-11-06T10:59:51.180-0600",
+        "links": [
+          {
+            "id": "62601",
+            "inward": "FUCQ-108",
+            "type": "Blocks"
+          },
+          {
+            "id": "62602",
+            "inward": "FUCQ-72",
+            "type": "Blocks"
+          },
+          {
+            "id": "62605",
+            "outward": "FUCQ-114",
+            "type": "Blocks"
+          },
+          {
+            "id": "62606",
+            "outward": "FUCQ-116",
+            "type": "Blocks"
+          },
+          {
+            "id": "339973",
+            "inward": "FUCQ-147",
+            "type": "Relates"
+          }
+        ],
+        "sourceMentions": "Q19: the target's approval stage names, with HR approval configurable.",
+        "sourceMentionsFullLength": 70
+      },
+      {
+        "key": "FUCQ-113",
+        "status": "In Progress",
+        "summary": "Record learning records for Greg's demand model, observed and synthetic",
+        "updated": "2026-11-05T16:57:28.638-0600",
+        "links": [
+          {
+            "id": "62619",
+            "inward": "FUCQ-77",
+            "type": "Blocks"
+          },
+          {
+            "id": "62620",
+            "inward": "FUCQ-81",
+            "type": "Blocks"
+          },
+          {
+            "id": "62621",
+            "inward": "FUCQ-82",
+            "type": "Blocks"
+          },
+          {
+            "id": "62622",
+            "inward": "FUCQ-99",
+            "type": "Blocks"
+          },
+          {
+            "id": "62623",
+            "outward": "FUCQ-115",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "depends_on: FUCQ-77, FUCQ-81, FUCQ-82, FUCQ-99\nVehicle alternatives come from FUCQ-77's real configurations.\n[ ] Manifest: each generated dataset writes a manifest with record counts, cycles, seed, generator version, policy version and the configuration set it used. Training (the next Story in FUCQ-74) reads only datasets with a manifest.\nQ13: vehicles are keyed by configurationId; the 200-plus real configurations supply vehicle features, not employee-choice labels.",
+        "sourceMentionsFullLength": 470
+      },
+      {
+        "key": "FUCQ-114",
+        "status": "To Do",
+        "summary": "Request, confirm and complete a handover appointment, or record a no-show",
+        "updated": "2026-11-04T14:58:44.948-0600",
+        "links": [
+          {
+            "id": "62605",
+            "inward": "FUCQ-111",
+            "type": "Blocks"
+          },
+          {
+            "id": "62607",
+            "outward": "FUCQ-118",
+            "type": "Blocks"
+          },
+          {
+            "id": "62608",
+            "outward": "FUCQ-120",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-115",
+        "status": "In Progress",
+        "summary": "Train the choice model offline and evaluate it on held-out cycles",
+        "updated": "2026-11-05T18:09:46.641-0600",
+        "links": [
+          {
+            "id": "62623",
+            "inward": "FUCQ-113",
+            "type": "Blocks"
+          },
+          {
+            "id": "62624",
+            "inward": "FUCQ-83",
+            "type": "Blocks"
+          },
+          {
+            "id": "62629",
+            "outward": "FUCQ-123",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-116",
+        "status": "In Progress",
+        "summary": "Track documents and vehicle readiness with a named owner for each",
+        "updated": "2026-11-06T10:59:53.328-0600",
+        "links": [
+          {
+            "id": "62606",
+            "inward": "FUCQ-111",
+            "type": "Blocks"
+          },
+          {
+            "id": "62609",
+            "outward": "FUCQ-120",
+            "type": "Blocks"
+          },
+          {
+            "id": "339974",
+            "inward": "FUCQ-148",
+            "type": "Relates"
+          }
+        ],
+        "sourceMentions": "[ ] Item set from policy: the documents (for example the agreement to sign and licence check) and the car's readiness steps (for example preparation and delivery to the retailer) come from PolicyService keys, each labelled a synthetic assumption with its basis. The scheme's configuration decides which apply.",
+        "sourceMentionsFullLength": 309
+      },
+      {
+        "key": "FUCQ-117",
+        "status": "In Progress",
+        "summary": "Plan feasible order quantities from expressed demand, supply and policy",
+        "updated": "2026-11-06T03:59:39.090-0600",
+        "links": [
+          {
+            "id": "62625",
+            "inward": "FUCQ-99",
+            "type": "Blocks"
+          },
+          {
+            "id": "62626",
+            "inward": "FUCQ-104",
+            "type": "Blocks"
+          },
+          {
+            "id": "62627",
+            "outward": "FUCQ-119",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-118",
+        "status": "To Do",
+        "summary": "Plan the old car's return separately from the new car's handover",
+        "updated": "2026-11-04T14:58:47.011-0600",
+        "links": [
+          {
+            "id": "62607",
+            "inward": "FUCQ-114",
+            "type": "Blocks"
+          },
+          {
+            "id": "62610",
+            "outward": "FUCQ-120",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-119",
+        "status": "To Do",
+        "summary": "Preview a replan after constraint edits and submit the plan as a request",
+        "updated": "2026-11-04T15:02:18.369-0600",
+        "links": [
+          {
+            "id": "62627",
+            "inward": "FUCQ-117",
+            "type": "Blocks"
+          },
+          {
+            "id": "62628",
+            "outward": "FUCQ-121",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-120",
+        "status": "To Do",
+        "summary": "Show Paula her order progress, handover plan and who owns each next step",
+        "updated": "2026-11-04T14:58:53.918-0600",
+        "links": [
+          {
+            "id": "62608",
+            "inward": "FUCQ-114",
+            "type": "Blocks"
+          },
+          {
+            "id": "62609",
+            "inward": "FUCQ-116",
+            "type": "Blocks"
+          },
+          {
+            "id": "62610",
+            "inward": "FUCQ-118",
+            "type": "Blocks"
+          },
+          {
+            "id": "62611",
+            "inward": "FUCQ-105",
+            "type": "Blocks"
+          },
+          {
+            "id": "62612",
+            "inward": "FUCQ-67",
+            "type": "Blocks"
+          },
+          {
+            "id": "62616",
+            "outward": "FUCQ-124",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-121",
+        "status": "To Do",
+        "summary": "Show Greg's recommended order plan as a panel on his dashboard",
+        "updated": "2026-11-04T15:02:21.377-0600",
+        "links": [
+          {
+            "id": "62628",
+            "inward": "FUCQ-119",
+            "type": "Blocks"
+          },
+          {
+            "id": "62630",
+            "outward": "FUCQ-123",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-122",
+        "status": "In Progress",
+        "summary": "Ask for help, and let the scheme team work the renewal-risk case",
+        "updated": "2026-11-06T11:28:48.159-0600",
+        "links": [
+          {
+            "id": "62613",
+            "inward": "FUCQ-112",
+            "type": "Blocks"
+          },
+          {
+            "id": "62614",
+            "inward": "FUCQ-95",
+            "type": "Blocks"
+          },
+          {
+            "id": "62615",
+            "inward": "FUCQ-101",
+            "type": "Blocks"
+          },
+          {
+            "id": "62617",
+            "outward": "FUCQ-124",
+            "type": "Blocks"
+          },
+          {
+            "id": "339976",
+            "inward": "FUCQ-150",
+            "type": "Relates"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-123",
+        "status": "To Do",
+        "summary": "Forecast demand with the learned model, shown beside the baseline plan",
+        "updated": "2026-11-04T15:02:22.471-0600",
+        "links": [
+          {
+            "id": "62629",
+            "inward": "FUCQ-115",
+            "type": "Blocks"
+          },
+          {
+            "id": "62630",
+            "inward": "FUCQ-121",
+            "type": "Blocks"
+          },
+          {
+            "id": "62631",
+            "inward": "FUCQ-29",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-124",
+        "status": "To Do",
+        "summary": "Verify the lifecycle after selection end to end with browser evidence",
+        "updated": "2026-11-04T14:58:56.207-0600",
+        "links": [
+          {
+            "id": "62616",
+            "inward": "FUCQ-120",
+            "type": "Blocks"
+          },
+          {
+            "id": "62617",
+            "inward": "FUCQ-122",
+            "type": "Blocks"
+          },
+          {
+            "id": "62618",
+            "inward": "FUCQ-109",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "node --test server/test/gcsp-lifecycle-e2e.test.js: the buddy and manual paths and each difficult case pass against the in-memory repository double, and on the configured PostgreSQL provider where available.",
+        "sourceMentionsFullLength": 207
+      },
+      {
+        "key": "FUCQ-126",
+        "status": "In Progress",
+        "summary": "Give the presenter controls for ticks, releases, reset, scenarios and role",
+        "updated": "2026-11-06T10:21:40.396-0600",
+        "links": [
+          {
+            "id": "62633",
+            "inward": "FUCQ-125",
+            "type": "Blocks"
+          },
+          {
+            "id": "62634",
+            "inward": "FUCQ-64",
+            "type": "Blocks"
+          },
+          {
+            "id": "62635",
+            "inward": "FUCQ-92",
+            "type": "Blocks"
+          },
+          {
+            "id": "62636",
+            "outward": "FUCQ-127",
+            "type": "Blocks"
+          },
+          {
+            "id": "62639",
+            "outward": "FUCQ-128",
+            "type": "Blocks"
+          },
+          {
+            "id": "62641",
+            "outward": "FUCQ-129",
+            "type": "Blocks"
+          },
+          {
+            "id": "62643",
+            "outward": "FUCQ-130",
+            "type": "Blocks"
+          },
+          {
+            "id": "62645",
+            "outward": "FUCQ-131",
+            "type": "Blocks"
+          },
+          {
+            "id": "339959",
+            "inward": "FUCQ-140",
+            "type": "Relates"
+          },
+          {
+            "id": "339963",
+            "inward": "FUCQ-142",
+            "type": "Relates"
+          },
+          {
+            "id": "339966",
+            "inward": "FUCQ-143",
+            "type": "Relates"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-127",
+        "status": "To Do",
+        "summary": "Replay the no-suitable-match scenario",
+        "updated": "2026-11-04T15:02:56.622-0600",
+        "links": [
+          {
+            "id": "62636",
+            "inward": "FUCQ-126",
+            "type": "Blocks"
+          },
+          {
+            "id": "62637",
+            "inward": "FUCQ-95",
+            "type": "Blocks"
+          },
+          {
+            "id": "62638",
+            "inward": "FUCQ-96",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-128",
+        "status": "To Do",
+        "summary": "Replay the decline-then-change scenario",
+        "updated": "2026-11-04T15:02:59.644-0600",
+        "links": [
+          {
+            "id": "62639",
+            "inward": "FUCQ-126",
+            "type": "Blocks"
+          },
+          {
+            "id": "62640",
+            "inward": "FUCQ-107",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-129",
+        "status": "To Do",
+        "summary": "Replay the offer-expiry scenario",
+        "updated": "2026-11-04T15:03:03.371-0600",
+        "links": [
+          {
+            "id": "62641",
+            "inward": "FUCQ-126",
+            "type": "Blocks"
+          },
+          {
+            "id": "62642",
+            "inward": "FUCQ-106",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-130",
+        "status": "To Do",
+        "summary": "Replay the unavailable-data scenario",
+        "updated": "2026-11-04T15:03:05.677-0600",
+        "links": [
+          {
+            "id": "62643",
+            "inward": "FUCQ-126",
+            "type": "Blocks"
+          },
+          {
+            "id": "62644",
+            "inward": "FUCQ-95",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-131",
+        "status": "To Do",
+        "summary": "Replay the uncertain-handoff scenario",
+        "updated": "2026-11-04T15:03:08.428-0600",
+        "links": [
+          {
+            "id": "62645",
+            "inward": "FUCQ-126",
+            "type": "Blocks"
+          },
+          {
+            "id": "62646",
+            "inward": "FUCQ-108",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-134",
+        "status": "In Progress",
+        "summary": "Replay today's first-come-first-served release for a seeded cohort in an isolated run",
+        "updated": "2026-11-05T19:36:04.202-0600",
+        "links": [
+          {
+            "id": "62649",
+            "inward": "FUCQ-133",
+            "type": "Blocks"
+          },
+          {
+            "id": "62650",
+            "inward": "FUCQ-29",
+            "type": "Blocks"
+          },
+          {
+            "id": "62651",
+            "inward": "FUCQ-66",
+            "type": "Blocks"
+          },
+          {
+            "id": "62652",
+            "inward": "FUCQ-81",
+            "type": "Blocks"
+          },
+          {
+            "id": "62653",
+            "inward": "FUCQ-85",
+            "type": "Blocks"
+          },
+          {
+            "id": "62654",
+            "outward": "FUCQ-135",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-135",
+        "status": "To Do",
+        "summary": "Replay the buddy route for the same cohort through allocation, holds and decisions",
+        "updated": "2026-11-04T15:16:26.790-0600",
+        "links": [
+          {
+            "id": "62654",
+            "inward": "FUCQ-134",
+            "type": "Blocks"
+          },
+          {
+            "id": "62655",
+            "inward": "FUCQ-93",
+            "type": "Blocks"
+          },
+          {
+            "id": "62656",
+            "inward": "FUCQ-96",
+            "type": "Blocks"
+          },
+          {
+            "id": "62657",
+            "inward": "FUCQ-100",
+            "type": "Blocks"
+          },
+          {
+            "id": "62658",
+            "inward": "FUCQ-106",
+            "type": "Blocks"
+          },
+          {
+            "id": "62659",
+            "outward": "FUCQ-136",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "Q15: the buddy offer hold is a proposed new capability with a configurable duration.",
+        "sourceMentionsFullLength": 84
+      },
+      {
+        "key": "FUCQ-136",
+        "status": "To Do",
+        "summary": "Measure both routes across seeds and store an unchangeable comparison result",
+        "updated": "2026-11-04T15:16:34.573-0600",
+        "links": [
+          {
+            "id": "62659",
+            "inward": "FUCQ-135",
+            "type": "Blocks"
+          },
+          {
+            "id": "62660",
+            "outward": "FUCQ-137",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-137",
+        "status": "To Do",
+        "summary": "Run comparison jobs in a worker, presenter-only, with a command-line twin",
+        "updated": "2026-11-04T15:16:51.656-0600",
+        "links": [
+          {
+            "id": "62660",
+            "inward": "FUCQ-136",
+            "type": "Blocks"
+          },
+          {
+            "id": "62661",
+            "inward": "FUCQ-84",
+            "type": "Blocks"
+          },
+          {
+            "id": "62662",
+            "outward": "FUCQ-138",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-138",
+        "status": "To Do",
+        "summary": "Show the route comparison panel on Greg's dashboard with assumptions and a hold rerun",
+        "updated": "2026-11-04T15:16:59.066-0600",
+        "links": [
+          {
+            "id": "62662",
+            "inward": "FUCQ-137",
+            "type": "Blocks"
+          },
+          {
+            "id": "62663",
+            "inward": "FUCQ-101",
+            "type": "Blocks"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      },
+      {
+        "key": "FUCQ-149",
+        "status": "To Do",
+        "summary": "Resume the saved manual journey through the current claim",
+        "updated": "2026-11-06T11:09:44.287-0600",
+        "links": [
+          {
+            "id": "339975",
+            "outward": "FUCQ-100",
+            "type": "Relates"
+          }
+        ],
+        "sourceMentions": "",
+        "sourceMentionsFullLength": 0
+      }
+    ],
+    "corpusRelatedStories": [
+      {
+        "key": "FUCQ-21",
+        "status": "Done",
+        "summary": "Capture the retail recommendation compatibility contract",
+        "updated": "2026-11-06T17:47:03.582-0600"
+      },
+      {
+        "key": "FUCQ-25",
+        "status": "Done",
+        "summary": "Preserve used-car context in generated share links",
+        "updated": "2026-11-06T17:47:08.813-0600"
+      },
+      {
+        "key": "FUCQ-26",
+        "status": "Done",
+        "summary": "Represent exact vehicle facts and scenario-specific financial terms",
+        "updated": "2026-11-06T17:47:09.978-0600"
+      },
+      {
+        "key": "FUCQ-27",
+        "status": "To Do",
+        "summary": "Share pure recommendation evaluation behind the retail compatibility layer",
+        "updated": "2026-11-04T13:36:14.884-0600"
+      },
+      {
+        "key": "FUCQ-28",
+        "status": "To Do",
+        "summary": "Build grouped result views from complete exact-car decisions",
+        "updated": "2026-11-04T13:36:55.190-0600"
+      },
+      {
+        "key": "FUCQ-29",
+        "status": "Done",
+        "summary": "Recommend employee cars through a separate policy using the shared core",
+        "updated": "2026-11-06T17:47:11.250-0600"
+      },
+      {
+        "key": "FUCQ-32",
+        "status": "Done",
+        "summary": "Resolve experience and brand routes while preserving existing links",
+        "updated": "2026-11-06T17:47:13.793-0600"
+      },
+      {
+        "key": "FUCQ-34",
+        "status": "Done",
+        "summary": "Return to the launcher without losing the used-car journey context",
+        "updated": "2026-11-06T17:47:15.949-0600"
+      },
+      {
+        "key": "FUCQ-36",
+        "status": "Done",
+        "summary": "Package and verify both launcher routes for the GCSP static site",
+        "updated": "2026-11-06T17:47:17.565-0600"
+      },
+      {
+        "key": "FUCQ-37",
+        "status": "Done",
+        "summary": "Resolve the dated i5 catalogue sample through a snapshot adapter",
+        "updated": "2026-11-06T17:47:18.394-0600"
+      },
+      {
+        "key": "FUCQ-38",
+        "status": "Done",
+        "summary": "Preserve equipment certainty and partial catalogue facts",
+        "updated": "2026-11-06T17:47:19.298-0600"
+      },
+      {
+        "key": "FUCQ-39",
+        "status": "Done",
+        "summary": "Resolve snapshot variants and failures without silent substitution",
+        "updated": "2026-11-06T17:47:19.981-0600"
+      },
+      {
+        "key": "FUCQ-40",
+        "status": "Done",
+        "summary": "Resolve registered white and black configuration renders",
+        "updated": "2026-11-06T17:47:21.079-0600"
+      },
+      {
+        "key": "FUCQ-41",
+        "status": "Done",
+        "summary": "Return honest missing-image and fidelity results",
+        "updated": "2026-11-06T17:47:21.725-0600"
+      },
+      {
+        "key": "FUCQ-42",
+        "status": "Done",
+        "summary": "Select offline image views and sizes with exact lookup identity",
+        "updated": "2026-11-06T17:47:22.574-0600"
+      },
+      {
+        "key": "FUCQ-43",
+        "status": "Done",
+        "summary": "Expose offline handbook metadata with a synthetic-identity guard",
+        "updated": "2026-11-06T17:47:23.712-0600"
+      },
+      {
+        "key": "FUCQ-44",
+        "status": "Done",
+        "summary": "Retrieve guide metadata through fresh-key BMW encryption",
+        "updated": "2026-11-06T17:47:24.343-0600"
+      },
+      {
+        "key": "FUCQ-46",
+        "status": "To Do",
+        "summary": "Resolve a live catalogue configuration behind the snapshot contract",
+        "updated": "2026-11-05T07:29:01.345-0600"
+      },
+      {
+        "key": "FUCQ-47",
+        "status": "To Do",
+        "summary": "Bound live catalogue failures and preserve truthful fallback",
+        "updated": "2026-11-03T08:39:54.113-0600"
+      },
+      {
+        "key": "FUCQ-48",
+        "status": "To Do",
+        "summary": "Verify the selected live catalogue provider with redacted evidence",
+        "updated": "2026-11-03T08:39:54.136-0600"
+      },
+      {
+        "key": "FUCQ-49",
+        "status": "Done",
+        "summary": "Resolve named live renders for complete snapshot configurations",
+        "updated": "2026-11-06T17:47:26.189-0600"
+      },
+      {
+        "key": "FUCQ-50",
+        "status": "Done",
+        "summary": "Apply permitted image freshness and honest failure choices",
+        "updated": "2026-11-06T17:47:26.992-0600"
+      },
+      {
+        "key": "FUCQ-51",
+        "status": "Done",
+        "summary": "Verify live paint variation and the agreed asset delivery route",
+        "updated": "2026-11-06T17:47:27.773-0600"
+      },
+      {
+        "key": "FUCQ-52",
+        "status": "Done",
+        "summary": "Select evidenced VIN profiles for delivered and current cars",
+        "updated": "2026-11-06T17:47:29.316-0600"
+      },
+      {
+        "key": "FUCQ-53",
+        "status": "Done",
+        "summary": "Allocate repeatable synthetic order references and delivered-car VINs",
+        "updated": "2026-11-06T17:47:30.171-0600"
+      },
+      {
+        "key": "FUCQ-54",
+        "status": "Done",
+        "summary": "Publish and load immutable configuration and identity datasets atomically",
+        "updated": "2026-11-06T17:47:31.090-0600"
+      },
+      {
+        "key": "FUCQ-55",
+        "status": "Done",
+        "summary": "Look up synthetic vehicles by configuration, order reference or VIN",
+        "updated": "2026-11-06T17:47:31.834-0600"
+      },
+      {
+        "key": "FUCQ-56",
+        "status": "Done",
+        "summary": "Consume vehicle details through an in-process port with interchangeable adapters",
+        "updated": "2026-11-06T17:47:32.792-0600"
+      },
+      {
+        "key": "FUCQ-57",
+        "status": "Done",
+        "summary": "Keep synthetic identities offline across failures, resets and provider switches",
+        "updated": "2026-11-06T17:47:33.759-0600"
+      },
+      {
+        "key": "FUCQ-58",
+        "status": "In Review",
+        "summary": "Qualify fleet coverage and budgets before collecting configurations",
+        "updated": "2026-11-07T06:43:44.455-0600"
+      },
+      {
+        "key": "FUCQ-59",
+        "status": "In Review",
+        "summary": "Collect distinct constructible configurations with resumable batches",
+        "updated": "2026-11-07T06:48:55.476-0600"
+      },
+      {
+        "key": "FUCQ-60",
+        "status": "In Review",
+        "summary": "Enrich resolved fleet configurations with matching facts and images",
+        "updated": "2026-11-07T06:48:54.106-0600"
+      },
+      {
+        "key": "FUCQ-61",
+        "status": "In Review",
+        "summary": "Collect and validate 10,000 genuinely distinct BMW configurations",
+        "updated": "2026-11-07T06:49:55.478-0600"
+      },
+      {
+        "key": "FUCQ-62",
+        "status": "In Review",
+        "summary": "Publish the configuration corpus and generate stock by order reference",
+        "updated": "2026-11-07T06:49:55.995-0600"
+      },
+      {
+        "key": "FUCQ-63",
+        "status": "In Review",
+        "summary": "Prove full-corpus lookup and offline recovery through the port",
+        "updated": "2026-11-07T06:49:56.489-0600"
+      },
+      {
+        "key": "FUCQ-65",
+        "status": "Done",
+        "summary": "Resolve manual-selection context and validate employee journey drafts",
+        "updated": "2026-11-06T17:47:40.122-0600"
+      },
+      {
+        "key": "FUCQ-66",
+        "status": "In Progress",
+        "summary": "Persist exact manual claims and expiry through a shared authority",
+        "updated": "2026-11-05T17:34:03.675-0600"
+      },
+      {
+        "key": "FUCQ-68",
+        "status": "Done",
+        "summary": "Collect scheme driver and collection choices without losing context",
+        "updated": "2026-11-06T17:47:42.831-0600"
+      },
+      {
+        "key": "FUCQ-69",
+        "status": "In Progress",
+        "summary": "Browse released cars with visual cards and complete vehicle details",
+        "updated": "2026-11-05T18:02:50.997-0600"
+      },
+      {
+        "key": "FUCQ-70",
+        "status": "In Progress",
+        "summary": "Review a claimed car with contact details and return mileage",
+        "updated": "2026-11-06T10:21:37.162-0600"
+      },
+      {
+        "key": "FUCQ-71",
+        "status": "In Progress",
+        "summary": "Submit manual selections through an idempotent ordering adapter",
+        "updated": "2026-11-06T10:15:14.289-0600"
+      },
+      {
+        "key": "FUCQ-72",
+        "status": "To Do",
+        "summary": "Review declarations and show the actual order handoff outcome",
+        "updated": "2026-11-05T01:51:21.935-0600"
+      },
+      {
+        "key": "FUCQ-73",
+        "status": "To Do",
+        "summary": "Verify the complete manual journey and its employee entry contract",
+        "updated": "2026-11-04T14:39:57.537-0600"
+      },
+      {
+        "key": "FUCQ-77",
+        "status": "In Progress",
+        "summary": "Collect a demo set of real BMW configurations for the scheme models",
+        "updated": "2026-11-06T05:50:19.093-0600"
+      },
+      {
+        "key": "FUCQ-78",
+        "status": "In Progress",
+        "summary": "Shape synthetic scheme stock from real stock-locator aggregates",
+        "updated": "2026-11-06T05:50:19.478-0600"
+      },
+      {
+        "key": "FUCQ-81",
+        "status": "Done",
+        "summary": "Store GCSP transactions in managed PostgreSQL behind a repository port",
+        "updated": "2026-11-06T17:47:45.293-0600"
+      },
+      {
+        "key": "FUCQ-84",
+        "status": "Done",
+        "summary": "Resolve demo employees, Greg and the presenter with server-owned run scope",
+        "updated": "2026-11-06T17:47:49.235-0600"
+      },
+      {
+        "key": "FUCQ-85",
+        "status": "Done",
+        "summary": "Drive demo time with presenter ticks and reset a run cleanly",
+        "updated": "2026-11-06T17:47:50.524-0600"
+      },
+      {
+        "key": "FUCQ-92",
+        "status": "In Progress",
+        "summary": "Release synthetic stock on a presenter tick from the next pull",
+        "updated": "2026-11-06T10:21:39.112-0600"
+      },
+      {
+        "key": "FUCQ-96",
+        "status": "In Progress",
+        "summary": "Allocate released cars across competing briefs by the policy tie-break",
+        "updated": "2026-11-06T11:51:36.416-0600"
+      },
+      {
+        "key": "FUCQ-97",
+        "status": "Done",
+        "summary": "Show the presenter each captured offer email in an outbox viewer",
+        "updated": "2026-11-06T17:47:55.915-0600"
+      },
+      {
+        "key": "FUCQ-98",
+        "status": "In Progress",
+        "summary": "Send offer emails through one real transport once a sender is set up",
+        "updated": "2026-11-06T09:15:27.884-0600"
+      },
+      {
+        "key": "FUCQ-100",
+        "status": "In Progress",
+        "summary": "Hold the allocated car and create its offer and outbox job in one transaction",
+        "updated": "2026-11-06T11:09:45.292-0600"
+      },
+      {
+        "key": "FUCQ-102",
+        "status": "In Progress",
+        "summary": "Open an offer from a run-bound link that shows its current state",
+        "updated": "2026-11-05T17:51:16.672-0600"
+      },
+      {
+        "key": "FUCQ-108",
+        "status": "To Do",
+        "summary": "Hand off a selected buddy offer through the ordering adapter",
+        "updated": "2026-11-04T15:03:08.399-0600"
+      },
+      {
+        "key": "FUCQ-111",
+        "status": "In Progress",
+        "summary": "Progress a selected order through the target approval states on presenter ticks",
+        "updated": "2026-11-06T10:59:51.180-0600"
+      },
+      {
+        "key": "FUCQ-112",
+        "status": "Done",
+        "summary": "Open an owned renewal-risk case on request or a configured trigger",
+        "updated": "2026-11-06T17:48:01.646-0600"
+      },
+      {
+        "key": "FUCQ-113",
+        "status": "In Progress",
+        "summary": "Record learning records for Greg's demand model, observed and synthetic",
+        "updated": "2026-11-05T16:57:28.638-0600"
+      },
+      {
+        "key": "FUCQ-115",
+        "status": "In Progress",
+        "summary": "Train the choice model offline and evaluate it on held-out cycles",
+        "updated": "2026-11-05T18:09:46.641-0600"
+      },
+      {
+        "key": "FUCQ-116",
+        "status": "In Progress",
+        "summary": "Track documents and vehicle readiness with a named owner for each",
+        "updated": "2026-11-06T10:59:53.328-0600"
+      },
+      {
+        "key": "FUCQ-117",
+        "status": "In Progress",
+        "summary": "Plan feasible order quantities from expressed demand, supply and policy",
+        "updated": "2026-11-06T03:59:39.090-0600"
+      },
+      {
+        "key": "FUCQ-124",
+        "status": "To Do",
+        "summary": "Verify the lifecycle after selection end to end with browser evidence",
+        "updated": "2026-11-04T14:58:56.207-0600"
+      },
+      {
+        "key": "FUCQ-125",
+        "status": "Done",
+        "summary": "Set up named acceptance scenarios from versioned fixtures on reset",
+        "updated": "2026-11-06T17:48:03.010-0600"
+      },
+      {
+        "key": "FUCQ-133",
+        "status": "Done",
+        "summary": "Generate seeded employees, stock and releases from PolicyService keys",
+        "updated": "2026-11-06T17:48:04.683-0600"
+      },
+      {
+        "key": "FUCQ-134",
+        "status": "In Progress",
+        "summary": "Replay today's first-come-first-served release for a seeded cohort in an isolated run",
+        "updated": "2026-11-05T19:36:04.202-0600"
+      },
+      {
+        "key": "FUCQ-135",
+        "status": "To Do",
+        "summary": "Replay the buddy route for the same cohort through allocation, holds and decisions",
+        "updated": "2026-11-04T15:16:26.790-0600"
+      }
+    ]
+  },
+  "validationScope": "Administrative story, dependency, documentation and product-map metadata only. No application test, new source collection, live configurator round trip, model training, policy activation or replay is claimed."
+}

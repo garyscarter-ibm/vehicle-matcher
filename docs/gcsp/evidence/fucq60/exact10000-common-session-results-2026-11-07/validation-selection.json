@@ -1,0 +1,29 @@
+{
+  "acceptance": false,
+  "affectedCallers": [],
+  "changedPaths": [
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq60/exact10000-common-session-results-2026-11-07"
+  ],
+  "excluded": [
+    {
+      "area": "Data chunks, collector source work, network/native/UI and full suite",
+      "reason": "Already-authorized finite run completed; report-only change has no code or callers. No new replay or source expansion authorized."
+    }
+  ],
+  "integrationBoundaries": [
+    "Signed offline summary receipt and final physical cleanup",
+    "Parent audit and original phase156 failed cleanup plus separate reconciliation",
+    "Byte-exact retained evidence hashes"
+  ],
+  "regression": "No production/proof/runtime code changes; report must preserve sealed results, controls and pending acceptance",
+  "scope": "documentation and compact retained evidence only",
+  "scratch": "No report scratch allocation; durable report below256KiB, runtime scratch already owned and finalized by sealed supervisor",
+  "selectedChecks": [
+    "Parse every result JSON and verify all copied evidence byte-for-byte against absolute retained originals",
+    "Verify report final receipt and signed summary grant/parent audit identities and hashes;158ordered data receipt pins",
+    "Independently inspect all159owned scratch roots/groups/reservations and final dependency-link absence plus all vendor/codepins",
+    "Check aggregate row counts/source qualifications/control caveats against sealed final receipt and diagnostics",
+    "git diff --check; review exact report-only staged paths",
+    "Review proof exclusions against4NovemberQ13 amended identity scope; no invented10000VIN/fleetVIN qualification or automatic58/61/publication gates"
+  ]
+}

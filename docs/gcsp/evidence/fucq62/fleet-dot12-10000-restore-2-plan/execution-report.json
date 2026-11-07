@@ -1,0 +1,67 @@
+{
+  "scope": "actual root-executed scoped second .12 cold attempt",
+  "planSha256": "e6f47f8e8c15d74f6e5bada85cf0d2c162a0043001cfd71238cfa40652b492aa",
+  "runtimeTarget": "b0f05852f93bad1de8c907b6090c56fc9982e4d8",
+  "publicTarget": "15fde2c3c24b5da02206501576a3baeb19e9a78c",
+  "launcher": "root mandatory-cleanup controller; child performed no duplicate execution",
+  "download": {
+    "status": "failed",
+    "result": {
+      "issue": null,
+      "issue_kind": null,
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot12-restore-2/download-2/command.log",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot12-restore-2/download-2/ownership/adfe135d5f1b4638af3b36c2ba9d8b8d.json",
+      "peak_rss": 349274112,
+      "peak_scratch": 6373436,
+      "rc": 1,
+      "wall": 179.57054929199998
+    },
+    "resultFileSha256": "63b3e33ca4a44edf8639fbf8357c8c5c371f968339d702cf0b7b2bc03d8022bc",
+    "network": {
+      "receipt": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/restored-public-2/download-2/network.json",
+      "sha256": "4911c1a6322eded26f11800c5acca910f97f91c434c0dc04ceddadab2c272d22",
+      "attempts": 62,
+      "denied": 0,
+      "github302": 31,
+      "cdn200": 31
+    },
+    "retainedLogicalBytesBeforeCleanup": 574382841,
+    "failure": {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/restored-public-2/download-2/stage-1-failure.json",
+      "sha256": "a85d039df6b7ab3705a19b53ed6b7f239be21baef0361fbd1da156778a31ab8c",
+      "cliStatus": "artifact-release-failed",
+      "underlyingCause": "not exposed by generic CLI catch; unresolved here"
+    },
+    "coldRestoreSucceeded": false,
+    "allAssetsHashValidatedProved": false
+  },
+  "offline": "unrun after failed download phase",
+  "recovery": "unrun after failed download phase",
+  "cleanup": {
+    "status": "passed",
+    "result": {
+      "issue": null,
+      "peak_rss": 0,
+      "rc": 0,
+      "wall": 0.052736374999999946
+    },
+    "resultFileSha256": "801aeaa411bcb864329222d89a69cfde64054bc72903cdfe915aa7e345d288f4",
+    "receiptSha256": "26afef3d9b904e922950bbd5712172d8560b51dcfd2ebaae0d86e006a8ff32ec",
+    "removedScratchPeakBytes": 6373436,
+    "removedRetainedAllocatedBytes": 585725536,
+    "removedAllocationSumBytes": 592098972,
+    "scratchRoots": [
+      "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/restored-public-2/.scratch/test-stamp-shard-adfe135d5f1b4638af3b36c2ba9d8b8d",
+      "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/restored-public-2/.scratch/test-stamp-shard-2ef344d1c5ad486f86d07d45680057d2"
+    ],
+    "independentPhysicalScratchAndRetainedAbsenceChecked": true,
+    "groupsAndReservationsAbsentBySupervisorReceipts": true,
+    "compatibilityException": null,
+    "leftovers": []
+  },
+  "originalFailedPlanUnchanged": true,
+  "newExecutionOrNetworkByChild": false,
+  "acceptance": false,
+  "nativeProof": "unrun",
+  "storyDone": false
+}

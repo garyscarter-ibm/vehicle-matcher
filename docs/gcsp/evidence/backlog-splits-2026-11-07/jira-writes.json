@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "authorisationDate": "2026-11-07",
+  "authorisedBy": "Russell Gowers",
+  "state": "native-splits-applied",
+  "created": [
+    {
+      "sourceKey": "FUCQ-114",
+      "newKey": "FUCQ-167",
+      "newId": "1501437",
+      "createdAt": "2026-11-07T13:56:37.295Z",
+      "sourceUpdated": true,
+      "splitLinked": true,
+      "verifiedAt": "2026-11-07T13:57:10.262Z",
+      "status": "To Do"
+    },
+    {
+      "sourceKey": "FUCQ-118",
+      "newKey": "FUCQ-168",
+      "newId": "1501438",
+      "createdAt": "2026-11-07T13:57:44.409Z",
+      "sourceUpdated": true,
+      "splitLinked": true,
+      "verifiedAt": "2026-11-07T13:57:46.924Z",
+      "status": "To Do"
+    },
+    {
+      "sourceKey": "FUCQ-120",
+      "newKey": "FUCQ-169",
+      "newId": "1501439",
+      "createdAt": "2026-11-07T13:57:48.817Z",
+      "sourceUpdated": true,
+      "splitLinked": true,
+      "verifiedAt": "2026-11-07T13:57:51.361Z",
+      "status": "To Do"
+    },
+    {
+      "sourceKey": "FUCQ-122",
+      "newKey": "FUCQ-170",
+      "newId": "1501440",
+      "createdAt": "2026-11-07T13:57:53.016Z",
+      "sourceUpdated": true,
+      "splitLinked": true,
+      "verifiedAt": "2026-11-07T13:57:55.863Z",
+      "status": "To Do"
+    },
+    {
+      "sourceKey": "FUCQ-124",
+      "newKey": "FUCQ-171",
+      "newId": "1501441",
+      "createdAt": "2026-11-07T13:58:06.727Z",
+      "sourceUpdated": true,
+      "splitLinked": true,
+      "verifiedAt": "2026-11-07T13:58:08.748Z",
+      "status": "To Do"
+    },
+    {
+      "sourceKey": "FUCQ-126",
+      "newKey": "FUCQ-172",
+      "newId": "1501442",
+      "createdAt": "2026-11-07T13:58:10.326Z",
+      "sourceUpdated": true,
+      "splitLinked": true,
+      "verifiedAt": "2026-11-07T13:58:12.634Z",
+      "status": "To Do"
+    },
+    {
+      "sourceKey": "FUCQ-128",
+      "newKey": "FUCQ-173",
+      "newId": "1501443",
+      "createdAt": "2026-11-07T13:58:14.375Z",
+      "sourceUpdated": true,
+      "splitLinked": true,
+      "verifiedAt": "2026-11-07T13:58:16.417Z",
+      "status": "To Do"
+    },
+    {
+      "sourceKey": "FUCQ-136",
+      "newKey": "FUCQ-174",
+      "newId": "1501444",
+      "createdAt": "2026-11-07T13:58:26.406Z",
+      "sourceUpdated": true,
+      "splitLinked": true,
+      "verifiedAt": "2026-11-07T13:58:28.698Z",
+      "status": "To Do"
+    },
+    {
+      "sourceKey": "FUCQ-137",
+      "newKey": "FUCQ-175",
+      "newId": "1501445",
+      "createdAt": "2026-11-07T13:58:30.287Z",
+      "sourceUpdated": true,
+      "splitLinked": true,
+      "verifiedAt": "2026-11-07T13:58:32.858Z",
+      "status": "To Do"
+    },
+    {
+      "sourceKey": "FUCQ-138",
+      "newKey": "FUCQ-176",
+      "newId": "1501446",
+      "createdAt": "2026-11-07T13:58:34.402Z",
+      "sourceUpdated": true,
+      "splitLinked": true,
+      "verifiedAt": "2026-11-07T13:58:36.717Z",
+      "status": "To Do"
+    }
+  ]
+}

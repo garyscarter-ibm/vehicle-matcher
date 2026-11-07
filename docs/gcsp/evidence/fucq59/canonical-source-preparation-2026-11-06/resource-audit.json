@@ -1,0 +1,52 @@
+{
+  "auditedAt": "2026-11-06T15:13:26.760308+00:00",
+  "checks": [
+    {
+      "groups": [
+        84294
+      ],
+      "groupsAbsent": true,
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/regression-run/ownership/647abb47a97942babaf59c1fb3d3fb46.json",
+      "owner": {
+        "pid": 84279,
+        "start": "Fri Nov  6 15:12:26 2026"
+      },
+      "ownerAbsent": true,
+      "peakAllocatedBytes": 0,
+      "root": "/private/tmp/test-stamp-shard-647abb47a97942babaf59c1fb3d3fb46",
+      "rootAbsent": true,
+      "state": "removed",
+      "token": "647abb47a97942babaf59c1fb3d3fb46",
+      "tokenAbsent": true
+    }
+  ],
+  "compatibilityException": null,
+  "currentProducerPinsMatch": true,
+  "exactReviewedReleaseHelper": true,
+  "largeOutput": false,
+  "leftovers": [],
+  "peakSemantics": "sampled; zero sampled scratch is not a claim that transient synthetic fixtures allocated no bytes",
+  "removedCheckpointLocks": [
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/regression-run/checkpoints/52661f0acddcae6e43274b2f6ea47526cc077e2110a99ea9d472f0d05fb7c588.json.lock"
+  ],
+  "removedLogBytes": 1178,
+  "removedLogs": [
+    {
+      "bytes": 1178,
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/regression-run/logs/chunk-0001.log"
+    }
+  ],
+  "sampledPeakRssBytes": 28393472,
+  "sampledPeakScratchBytes": 0,
+  "schemaVersion": "f59-canonical-four-get-port-resource-audit.v1",
+  "scope": "12 offline cleanup-port regression methods only; no source main/full suite",
+  "sourcePathsAbsent": [
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/execution-selection.json",
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/execution-once.json",
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/observation",
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/supervision"
+  ],
+  "sourceRequests": 0,
+  "unchangedRunner": true,
+  "unownedBytecodePreserved": true
+}

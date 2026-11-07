@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "f60-technical-supplement-delivery.v1",
+  "scope": "scoped existing exact-rowF60technical integration",
+  "status": "55selected-checks-passed",
+  "codePins": {
+    "server/gcsp/vehicle-evidence/registered-technical-facts.js": "0109334b8657a225e498d3ff78068827880e6f2d6bff527c349a265792d8018f",
+    "server/data/gcsp/vehicle-evidence/registered-technical/1f7e-2026-11-07.json": "c113780f0a2529240a24c1cf49fe25a81986dee88dfefe0b047b7a50bd258a22",
+    "server/gcsp/vehicle-evidence/corpus-publisher.js": "fa1618642c137c8aa2c0d7749d91e749554bcca6608bac71ae527b147c9ef9bc",
+    "server/gcsp/vehicle-evidence/synthetic-registry.js": "38f86f5121fae767465b81a4615355b7577c35f6b74ed57263441240d617f1e4",
+    "server/gcsp/vehicle-evidence/vehicle-details-contract.js": "28d09b0060646930cc3aa2dd08d4d6f744c65e32b40a2ebd55a1b59b392ca62f",
+    "scripts/gcsp/verify-fleet.mjs": "0511976dbbaafcbad22672625bbf29bba644ed24848b9bbdb9375faad92f62f4",
+    "server/test/gcsp-technical-supplement.test.js": "2191f25656c39fe2a259ba4b1e34eb7a106d60131cef6d18bf14a044a8c7611f"
+  },
+  "phases": [
+    {
+      "phase": "final",
+      "passed": 3,
+      "resultsSha256": "22052a2dbd5ebdae1d4547c7c35ad6c9f2c941ee949b57056ffaeb674a0b3293",
+      "seconds": 30.233376874995884,
+      "peakRssBytes": 285982720,
+      "removedScratchBytes": 177760
+    },
+    {
+      "phase": "legacy-registry",
+      "passed": 11,
+      "resultsSha256": "9215ed8765cb11ea26a638e885eb6630a558347c9980307a18e724c8af6d6b3b",
+      "seconds": 4.651727040996775,
+      "peakRssBytes": 255410176,
+      "removedScratchBytes": 312320
+    },
+    {
+      "phase": "legacy-contracts",
+      "passed": 26,
+      "resultsSha256": "1d70036d3d275b20bd4ff6b02d69b61575545dbf7d5eb2b673ed9c285005e8c2",
+      "seconds": 3.1496881670027506,
+      "peakRssBytes": 246759424,
+      "removedScratchBytes": 0
+    },
+    {
+      "phase": "legacy-audit",
+      "passed": 15,
+      "resultsSha256": "0367970abce8820b6c1f1a2bab808f109c8d8b7cc6dd32564e47c04de9d1ea47",
+      "seconds": 4.22142708300089,
+      "peakRssBytes": 315342848,
+      "removedScratchBytes": 156704
+    }
+  ],
+  "passed": 55,
+  "failed": 0,
+  "skipped": 0,
+  "facts": {
+    "seats": 5,
+    "luggageNormal": 300,
+    "luggageExpanded": 1135,
+    "acceleration": 7.8
+  },
+  "unitsAuthority": "existing approved reference-code mapping; no source-returned units claimed",
+  "scopeConfigurationCount": 1,
+  "originalCatalogueAndConfigurationBytesUnchanged": true,
+  "originalConfigurationAndIdentityHistoryUnchanged": true,
+  "manifestSchema": "opt-in2; existing1unchanged",
+  "runtimePublication": false,
+  "sourceRequests": 0,
+  "nativeSqlChecks": 0,
+  "fullStoryAcceptance": false,
+  "full10000TargetMet": false,
+  "maximumSampledRssBytes": 315342848,
+  "allOwnedScratchGroupsLinksReservationsAbsent": true,
+  "compatibilityException": null,
+  "leftovers": [],
+  "coverageContexts": "not measured; explicit fixture/ownership/boundary checks",
+  "unrun": [
+    "actual .8plus supplement publication and ordinary activation",
+    "full corpus after adding supplement",
+    "Linux/live deployment",
+    "native current-run stock proof",
+    "authored full suite beyondselectedboundarychecks"
+  ],
+  "knownDefects": "existing consumer469error deferral and F60P2/P3deferrals untouched"
+}

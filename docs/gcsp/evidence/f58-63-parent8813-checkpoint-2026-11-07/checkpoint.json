@@ -1,0 +1,70 @@
+{
+  "updated": "2026-11-07T06:40:33.260957+00:00",
+  "scope": "ordered58-63continuation; honestpartialacceptance",
+  "source": {
+    "admitted": 8813,
+    "canonical": 8816,
+    "spentIndexEntries": 11623,
+    "remaining10000": 1187,
+    "newStrictAdmissions": 762,
+    "strictChecksReused": 670,
+    "readOnlyChecks": 45777,
+    "sourceReplay": 0,
+    "failedSourceCredit": 0
+  },
+  "runtime": {
+    "publicVersion": ".10",
+    "sourceConfigurations": 4666,
+    "manifest": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+    "deployment": 7617678535,
+    "deploymentStatus": "in_progress_at_latest_observation",
+    "linuxRun": 42347409603,
+    "linuxStatus": "failed-exit124-no-proved-phase-cause",
+    "localOrdinaryVersion": ".9",
+    "consumerFailuresKnown": 1313,
+    "consumerSeverity": "Medium deferred"
+  },
+  "build": {
+    "dot11Candidate": "failed-artifact-changed;828immutablepinsunchanged; no candidate created;3exactshardsretained",
+    "candidateGroupJoined": true,
+    "candidateScratchRemovedBytes": 64536576,
+    "nativeInstall": "failed-beforeinstall;installed[];3requests;originalexceptionsuppressed;noactualcauseproved",
+    "nativeJoined": true,
+    "nativeScratchRemovedBytes": 14811520,
+    "aliases": "existingicu4c@78andopenssl@3unchanged"
+  },
+  "sourceActive": {
+    "Minnie": "exact1156 once; original10:47:51.950882UTCdeadline",
+    "Charlie": "fresh960phase03 separatelyreleased; original241-360only"
+  },
+  "stories": {
+    "FUCQ-58": "In Progress; originalacceptanceunwaived",
+    "FUCQ-59": "In Progress; originalacceptanceunwaived",
+    "FUCQ-60": "In Progress; originalacceptanceunwaived",
+    "FUCQ-61": "In Progress; originalacceptanceunwaived",
+    "FUCQ-62": "In Progress; originalacceptanceunwaived",
+    "FUCQ-63": "In Progress; originalacceptanceunwaived"
+  },
+  "cleanup": {
+    "newSourceStrictProofRootsAbsent": 268,
+    "allObservedGroupsReservationsAbsent": true,
+    "candidateScratchLinkGroupsReservationAbsent": true,
+    "nativeScratchLinkGroupsReservationAbsent": true,
+    "compatibilityException": null,
+    "unownedUntrackedFilesPreserved": true
+  },
+  "retainedFiles": [
+    "global-union8813-parent-audit.py",
+    "global-union8813-parent-audit.json",
+    "global-union8813-parent-audit-ownership.json",
+    "f70-suffix1156-parent-release.json",
+    "breadth30-phase03-960-parent-release.json",
+    "dot11-8051-candidate-root-review.json",
+    "dot11-8051-candidate-parent-release.json",
+    "fleet-dot11-8051-candidate-result.json",
+    "fleet-dot11-8051-candidate-cleanup.json",
+    "install-result.json",
+    "install-cleanup.json",
+    "linux42347409603-failure.log"
+  ]
+}

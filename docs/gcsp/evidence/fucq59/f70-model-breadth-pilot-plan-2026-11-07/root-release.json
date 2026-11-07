@@ -1,0 +1,26 @@
+{
+  "authority": "root exact once release in task messages",
+  "allocationId": "f70-model-breadth-20261107-a29846efc0977283",
+  "contexts": [
+    "1f7a",
+    "1f7c",
+    "1f7d",
+    "1f7f"
+  ],
+  "publicGetCeiling": 20,
+  "solverCeiling": 4,
+  "decodedByteCeiling": 16777216,
+  "retries": 0,
+  "automaticContinuation": false,
+  "stop": "first failed/incomplete/duplicate-only context",
+  "scope": "actual finite pilot only; root owns integration/publication; next breadth preparation has no traffic grant",
+  "parentVerified": {
+    "executionPlanSha256": "b0e54612f65c08319b80819f3939821f30f67a012468a43fc735908fd43e6e81",
+    "runnerSha256": "1ada2f41a17c9a9972b35dd10864b1aba3cce53a5a767735b9458624480991b7",
+    "supervisorSha256": "d0f3930f7c739021739c2722a23ba434e488ebf69bb65572511de49e2ba58ca8",
+    "codePins": 22,
+    "sourcePins": 21,
+    "canonicalIndexEntries": 872,
+    "spentIndexEntries": 1582
+  }
+}

@@ -1,5 +1,7 @@
 # FUCQ-132 · The 1,000-employee comparison stories
 
+**Current scope revision, 7 November:** this document preserves the original publication. The [authorised split decision](build-rules.md#scope-split-decision-7-november-2026) retains the process-only measures/immutable result in FUCQ-136, offline execution and actual result-read route in FUCQ-137, and stored-result display in FUCQ-138. Optional experiment types, browser worker jobs and interactive reruns are new To Do Stories FUCQ-174, FUCQ-175 and FUCQ-176. Use current Jira/local contracts and the [MoSCoW tables](backlog-moscow-review-2026-11-07.md) for pickup; the historical descriptions below remain the publication record.
+
 **Published and verified on 4 November 2026.** Readiness item C8: one Epic, [FUCQ-132](https://ibm-consulting.atlassian.net/browse/FUCQ-132) "Compare today's release route with the buddy route over 1,000 fictional employees", with six native Stories, FUCQ-133 to FUCQ-138. They build on the foundation, [FUCQ-79](fucq-79-stories.md), and on the critical path, [FUCQ-86 to 90](fucq-86-90-stories.md).
 - The Epic is In Progress, with Start date 2026-11-04.
 - The Stories are To Do and unassigned, at High (P2, `due 2026-11-12: GCSP demo`). No Story Points were authored.

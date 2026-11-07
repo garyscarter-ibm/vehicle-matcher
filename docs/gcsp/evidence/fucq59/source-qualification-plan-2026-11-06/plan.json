@@ -1,0 +1,351 @@
+{
+  "schemaVersion": "f59-source-qualification-implementation-plan.v1",
+  "status": "proposed implementation; no code or request executed",
+  "date": "2026-11-06",
+  "lead": {
+    "name": "Cecil Turtle",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "selectedModel": "gpt-6.1-sol",
+    "selectedEffort": "high",
+    "fallback": null,
+    "descendants": 0
+  },
+  "frozenHeads": {
+    "F59": "f4c9697e5ee1eecf7cfbf288aae11e266c9f2c72",
+    "F58": "7aa6bee7d7da3b46d14cfe5a0becff93d0a029bd",
+    "F77": "15a98d5f6c83f0c77ad7ca2950420c6826f5545c"
+  },
+  "implementationCommit": "aee5e902a20d82b880694064a10ad9842aaddd3a",
+  "inputs": {
+    "F59": {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+      "pins": {
+        "scripts/gcsp/collect-fleet.mjs": "d039d3c8a8acf216204bd83831c70d6001d0e277aec94bd51397a9738341449c",
+        "scripts/gcsp/collection-session.mjs": "7495084c33c84538beb6ae3a04a292dbc0a800af6c9a10144de8e9728fc4b4b2",
+        "scripts/gcsp/public-bmw-source.mjs": "4a4137830ba863f1a373d6a01b6b5a7fb3705f465cbec21a7c8933eed55f7703",
+        "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+        "server/vehicle-evidence/bmw-catalogue-adapter.js": "06c0910c131fdb0e2e4ef254dc5591f13c90ecb3f36f655aef3cb651aa0052a1",
+        "server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json": "ee1ae6c5cb6ab742f9a2959825ca722007409fa019d15acd44bb4b79984556a3",
+        "server/gcsp/vehicle-evidence/corpus-publisher.js": "db7e3fd9ff5ff4342872a54c6ca40dd3dda35fc31c51e3dbdb2910b067cd5e49",
+        "docs/gcsp/evidence/fucq59/source-executor-2026-11-06/observation.json": "1ce513909d0196b08808af896914a0e041322ef88d2c06eda73532ff404d29dc",
+        "docs/gcsp/evidence/fucq-4/configuration-generation-native-2026-11-01.json": "86ecfe66b2353ce92936afde5022c366d2d41088f747ddd9ed3e13d8a515676d",
+        "docs/gcsp/evidence/fucq-4/observations-2026-11-01.json": "bac972549f3b5cc1c09408535349d6f6e32330f3060056a16f0012e5fad3a3dc",
+        "docs/gcsp/evidence/fucq-4/requests-2026-11-01.json": "95f34ab64e1fea98827170a3b1ead8fef9cd72d62fba28b32f9548bb30fd9c1e",
+        "docs/gcsp/evidence/fucq-4/public-website-key-native-2026-11-01.json": "74f79103bdea542ad26d0290a6fb5b11fbe82b5a4ad3daa70563a3b207316e4e",
+        "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md": "9bc5c9d915373bc812d375823a65fa9a658f285223c45a622877eee2b66bf6d1"
+      }
+    },
+    "F58": {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-031",
+      "pins": {
+        "docs/gcsp/evidence/fucq-58/full-model-selector-2026-11-05/evidence/full-model-selector.mjs": "f3accdd334a64d9c0eabcfde35a4b26d81dba64fbe6a48558f2daab8f3032b13",
+        "docs/gcsp/evidence/fucq-58/steering-diagnostic-2026-11-05/evidence/projection.json": "0da1ccbfed44b62f94000eb96e32022e3967a331f9bff9a2b4c9f92fda98dc8b",
+        "docs/gcsp/evidence/fucq-58/known-seed-refresh-2026-11-05/evidence/observation.json": "1fa5a52de21d27cc45555b69a29d97c90d5ad800001e880405bb35093ff66ca7",
+        "docs/gcsp/evidence/fucq-58/scheme-catalogue-2026-11-05/observation.json": "25636b87dfe942d385da5cee721fee8e59d53b216411277031d60626de36c4ec",
+        "docs/gcsp/evidence/fucq-58/g61-field-ledger-2026-11-05/ledger.json": "05ebdf57f35862cd9d3a0c9e1533fb281999274c3a3810519c5c00d6ffe1490d"
+      }
+    },
+    "F77": {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-056",
+      "pins": {
+        "scripts/gcsp/demo-plan.mjs": "963fbdb36754fb7c17a29ef5aaafe20373bd2fb8d14d33d2d9de50c4d388ad01",
+        "scripts/gcsp/verify-fleet.mjs": "40cf92dabdecfc051cb92c451b8fc62adbe33bba3f08d34b9244c87da347d504",
+        "server/data/gcsp/vehicle-evidence/demo-plan.json": "160164327f445ff9c78240cf7273906d7e746481133f0990e57daff18b546ff6",
+        "docs/gcsp/evidence/fucq77/README.md": "ebbb2c135406302f47c738239385df6b2589fc62a8b3f9ebf33f001ff86e0ceb",
+        "docs/gcsp/evidence/fucq77/producer-contract-gaps.md": "116b7a8546bef04bbc7b4ac2008550e2f2fe23efda21319fee2da5eb684ba980",
+        "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93"
+      }
+    }
+  },
+  "scope": {
+    "owns": [
+      "F59 source projections and field-level qualification report within existing collector/session",
+      "proposed source-neutral retained evidence contract",
+      "coordinated exact snapshot registration through existing F39 adapter only"
+    ],
+    "excludes": [
+      "Scooby F60 historical consumer integration",
+      "editing F58/F77 claim or accepted plan",
+      "runtime activation or selected corpus",
+      "VIN/profile generation or activation",
+      "source calls in planning chunk",
+      "images/browser/SQL/credentials",
+      "full suite or descendants"
+    ]
+  },
+  "fieldQualification": [
+    {
+      "field": "market/locale/VG/AG/catalogueRange/rawRange/orderDate/effectDate",
+      "current": "6Nov observation retains known exact context; tree request date differs from resolved model effect date",
+      "requirement": "preserve original source locators/date and exact identity; full duplicate groups checked by F58 strict selector"
+    },
+    {
+      "field": "model/engine/body mapping",
+      "current": "1Nov model excerpt has I5 40/modelName/body;6Nov projection does not retain these; F77 exact74entry mappings all pending",
+      "requirement": "direct current typed full-model facts plus explicit reviewed target-to-source crosswalk, not broad-generation/engine inference"
+    },
+    {
+      "field": "taxDate",
+      "current": "5Nov retained strict target nodes contain2027-01-05;6Nov projection discarded it",
+      "requirement": "fresh exact full-model field or preserve historical date as historical, never relabel"
+    },
+    {
+      "field": "productionDate",
+      "current": "1Nov catalogue model.prodDate20270105 only; fresh direct target projection lacks this field",
+      "requirement": "explicit dated source catalogue-context field; never infer from effectDate or physical vehicle build"
+    },
+    {
+      "field": "trim",
+      "current": "1Nov explicit S0337;6Nov solver mandatory S0337 is request context, not independent source trim-role proof",
+      "requirement": "field-level explicit source trim role/context; known request parameter cannot promote itself to observed fact"
+    },
+    {
+      "field": "paint/upholstery classes",
+      "current": "1Nov explicit optionType definitions;6Nov elements only type option/accessory",
+      "requirement": "exact model/date localisation option map, bounded strings, option code equals key; fabric maps to upholstery only through explicit existing type mapping"
+    },
+    {
+      "field": "accessory quantity",
+      "current": "fresh SE000001 quantity null; historical quantity1 belongs to white pricing request/snapshot",
+      "requirement": "positive integer explicitly evidenced for exact selected accessory/context; do not default1, drop accessory or transfer quantity across configurations/dates"
+    },
+    {
+      "field": "modelYear/physical production/plant/steering meaning/VIN fitting",
+      "current": "unknown/unqualified; RL is literal; no enabled compatible G61 GB/RHD VIN profile",
+      "requirement": "preserve explicit unknowns; separate F52/F58 evidence lane before any synthetic delivered/current VIN use, no USprofile substitution"
+    },
+    {
+      "field": "catalogueDate versus observedDate versus request dates",
+      "current": "F59 unqualified plan context calls2026-11-01 catalogueDate, while actual pilot observed6Nov. Existing F39 catalogueDate equals snapshot observedDate.",
+      "requirement": "Explicit new qualified F39 context catalogueDate6Nov, exact source observation date, separate tree request/order1Nov and resolvedeffect5Jan. No silent reuse of historical catalogueDate."
+    }
+  ],
+  "producerGaps": [
+    {
+      "path": "scripts/gcsp/public-bmw-source.mjs",
+      "gap": "validatePublicBmwPlan pins one model/known47selection, target1 and exactly page/settings/discover/solve; projection loses richer model/classification context"
+    },
+    {
+      "path": "scripts/gcsp/collection-session.mjs",
+      "gap": "sourceVersion/capabilities and exact request allowlist permit only known four GETs; new option projection capability/version requires explicit reviewed route support, not arbitrary injected URL"
+    },
+    {
+      "path": "scripts/gcsp/collect-fleet.mjs",
+      "gap": "public state validator enforces accepted/rejected/duplicates all empty; sourceObservations<=1; no source-qualified accepted-row route. Offline accepted records are offline-fixture."
+    },
+    {
+      "path": "server/vehicle-evidence/bmw-catalogue-adapter.js",
+      "gap": "one allowlisted snapshot; validSnapshot requires exactly47selectedOptions. This is a sample cardinality restriction, not a universal BMW count. Request identity/date/trim/accessory completeness guards remain mandatory."
+    },
+    {
+      "path": "server/gcsp/vehicle-evidence/corpus-publisher.js",
+      "gap": "closed F54 dated-snapshot schema accepts exact F39 envelopes, not raw sourceObservations; no new format necessary if projected through current envelope."
+    },
+    {
+      "path": "F77 scripts/gcsp/demo-plan.mjs",
+      "gap": "ready guard requires every74entry mapped/excluded with current-date verified bytes/locator; no permissive verifyEvidence. Qualification discovery can progress individually while full collection readiness remains false."
+    }
+  ],
+  "nextRequestProposal": {
+    "admitted": false,
+    "allocation": null,
+    "purpose": "Close discarded current G61 model/engine/body/taxDate and option-type fields; discover explicit production/trim fields if present. No solver repeat and no promise of complete F39 qualification.",
+    "sourceVersion": "bmw-uk-qualification-20261106.v1-proposed",
+    "preconditions": [
+      "parent reviews this concrete plan and supplies new finite allocation; consumed pilot cannot be reused",
+      "review/implement typed bounded projections and exact session route capability; pass selected offline safety checks first",
+      "freeze executable/source/plan pins; exclusive once marker before first request",
+      "existing6Nov solver observation bytes and exact full selection pinned; do not refresh it merely for counting",
+      "confirm exact new settingsLocalisation public profile shape and source context; absent/ambiguous profile stops before options",
+      "reserve actual host jobs manually alongside broker because continuous locale-sensitive ledger accounting is not reliable",
+      "link allocation debit to parent F77 job budget; remain within3000combined source attempts; no implicit per-stage/session reset allowance",
+      "If actual observed calendar date differs from F77 qualificationDate2026-11-06, revise and repin plan/date explicitly; do not relabel5Nov or1Nov evidence as current."
+    ],
+    "requests": [
+      {
+        "operation": "page",
+        "method": "GET",
+        "url": "https://configure.bmw.co.uk/en_GB/configure/G61E/T5MJ",
+        "fields": [
+          "one validated settings path"
+        ],
+        "locator": "settings.<bounded alphanumeric>.json link"
+      },
+      {
+        "operation": "settings",
+        "method": "GET",
+        "urlRule": "https://configure.bmw.co.uk/en_GB/<single settings path discovered from pinned page>",
+        "fields": [
+          "settingsVehicleTree and settingsLocalisation ephemeral application headers"
+        ],
+        "locator": "exact named settings profiles; values closure-only, never persisted"
+      },
+      {
+        "operation": "discover",
+        "method": "GET",
+        "url": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G61E&future-models=true&closest-fallback=true",
+        "fields": [
+          "modelCode",
+          "agModelCode",
+          "modelRange",
+          "orderDate",
+          "effectDate",
+          "taxDate",
+          "prodDate if present",
+          "modelName/modelNameRaw/derivative if present",
+          "bodyStyle/agBodyStyle if present",
+          "fuelTypeCode/hybridCode/engineSeries/driveType/transmission if present",
+          "explicit trim field if present"
+        ],
+        "locators": [
+          "5/modelRanges/G61E/models/T5MJ",
+          "I/modelRanges/G61E/models/T5MJ"
+        ],
+        "validation": "require strict full record/parent relations and consistent complete selected projections in5/I; no compact refs or descendant date borrowing; bounded calendar/code/label fields; optional absent fields stay unknown"
+      },
+      {
+        "operation": "options",
+        "method": "GET",
+        "url": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en?trim=S0337",
+        "fields": [
+          "bounded code-keyed option, optionType, phrases.longDescription",
+          "typed paint/fabric/other definitions and selected-code presence; no inference from prefix",
+          "explicit accessory quantity/trim role only if actual independently scoped field exists"
+        ],
+        "locators": [
+          "FKSFU/optionType",
+          "P0300/optionType",
+          "S0337 if present"
+        ],
+        "validation": "fresh tree context must still match pinned6Nov solver context before request; trimS0337 is an explicit query input not proof of trim role. Options availability does not establish constructibility or accessory quantity."
+      }
+    ],
+    "limits": {
+      "attempts": 4,
+      "perOperation": 1,
+      "concurrency": 1,
+      "retries": 0,
+      "retryDelayMs": 0,
+      "responseDecodedBytes": 1048576,
+      "totalDecodedBytes": 2097152,
+      "operationTimeoutMs": 10000,
+      "absoluteDeadlineMs": 45000,
+      "imageRequests": 0,
+      "solverRequests": 0,
+      "browserRequests": 0,
+      "writes": 0,
+      "cacheEntries": 16,
+      "cacheRetentionMs": 86400000,
+      "checkpointBytes": 1048576,
+      "settingsCached": false
+    },
+    "expectedDecodedBytesFromPriorSameRoutes": 916858,
+    "stopConditions": [
+      "401/403/429 durable stop, no retries or credential rotation",
+      "redirect/non200/malformed/private-field/shape/duplicate conflict/context substitution refusal",
+      "attempt/decoded-byte/body-timeout/absolute-deadline stop with cancellation joined",
+      "missing header/production/trim/quantity remains unqualified; do not add endpoints or guess",
+      "partial resume cannot replenish bootstrap or allocation; memory-only settings unavailable means honest stop"
+    ],
+    "output": "safe semantic projection + exact per-field artifact SHA/JSON-pointer/date/source confidence + request ledger; raw bodies/keys discarded, no new accepted corpus rows solely from this diagnostic"
+  },
+  "implementationCheckpoints": [
+    {
+      "id": "field-evidence-contract",
+      "scope": "pure bounded evidence verifier/projector plus retained input ledger; zero network",
+      "paths": [
+        "scripts/gcsp/bmw-source-qualification.mjs (proposed internal module)",
+        "server/test/gcsp-bmw-source-qualification.test.js (proposed)",
+        "own evidence docs"
+      ],
+      "deliverable": "field-level qualified/missing/conflict report; preserve mixed-date facts and exact source scope; fail closed on nonexistent locator/mismatched hash/unsupported same-ID promotion"
+    },
+    {
+      "id": "qualified-source-projection",
+      "scope": "parameterised explicit operation descriptors through existing common session, strict F58 selector semantics, new source version and options capability",
+      "paths": [
+        "scripts/gcsp/public-bmw-source.mjs",
+        "scripts/gcsp/collection-session.mjs",
+        "scripts/gcsp/collect-fleet.mjs",
+        "server/test/gcsp-fleet-collector.test.js"
+      ],
+      "deliverable": "diagnostic still observation-only until complete field manifest; later admitted4GET chunk can produce useful current facts without consumed-seed refresh"
+    },
+    {
+      "id": "exact-f39-registration",
+      "scope": "only after dispatcher assigns shared F39 writer and qualification proof complete",
+      "paths": [
+        "server/vehicle-evidence/bmw-catalogue-adapter.js",
+        "server/vehicle-evidence/snapshots/ approved new immutable JSON",
+        "server/test/bmw-catalogue-adapter.test.js"
+      ],
+      "deliverable": "allowlisted immutable snapshot registration binds full exact identity and expected complete code set/count/hash; replace fixed47 sample check with bounded registered identity validation, keeping every request/date/accessory/trim and no-fallback guard"
+    },
+    {
+      "id": "qualified-accepted-publication-boundary",
+      "scope": "explicit mode/source-qualified validation in owning F59 path, followed by unchanged F54 port; F60 consumer remains Scooby-owned",
+      "paths": [
+        "scripts/gcsp/collect-fleet.mjs",
+        "scripts/gcsp/bmw-source-qualification.mjs (proposed)",
+        "server/test/gcsp-fleet-collector.test.js",
+        "server/test/gcsp-vin-publication.test.js"
+      ],
+      "deliverable": "only complete evidence+registered F39 exact result can populate accepted; candidate retains original request/full resolved selectedElements/solver changes/canonical identity. F54 staged candidate validates zero VINs/no selected-runtime activation. Fixtures stay synthetic; real results require actual proof."
+    }
+  ],
+  "validationPlan": {
+    "planningChunk": "static JSON/links/pins/diff-check only; no tests or scratch",
+    "narrowCommands": [
+      [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-bmw-source-qualification.test.js"
+      ],
+      [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-fleet-collector.test.js",
+        "server/test/bmw-catalogue-adapter.test.js",
+        "server/test/gcsp-vin-publication.test.js"
+      ]
+    ],
+    "conditionalF77Boundary": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "server/test/gcsp-demo-plan.test.js",
+      "server/test/gcsp-demo-verifier.test.js"
+    ],
+    "cases": [
+      "missing or forged source locator/hash; mixed source dates; same canonical ID cannot import dates/quantity; field conflicts; explicit unknown physical/modelYear",
+      "strict full5/I equality, compactref/descendant borrowing refusal, wrong engine/body/model no mapping; 74pending remains incomplete",
+      "options typed class mismatch/unsafe labels/unknown values; mandatory parameter cannot prove trim; null/0/fraction quantity cannot accept",
+      "registered47and48factorycount samples with distinct paint/pack signatures; reordered codes same ID; accessory-only/date/source differences no added count",
+      "F39 wrong context remains identity-mismatch, unsupported snapshot fails, no outbound or nearby fallback",
+      "new route/method/query/header/duplicate query rejection before spending; one persisted ledger including options, lifetime source/image/bytes/time limits and interrupted resume no replenishment",
+      "qualified factory selection leads exactF39/F54 staged publication; missingfield observation stays accepted0; no runtime/VIN write"
+    ],
+    "reuse": "current matching60/60 scoped and1291pass/5native skips full at7abeabc retained for unchanged identity. New source changes need selected checks; no automatic full suite. F60 cross-worktree/historical adapter proof belongs to Scooby.",
+    "resources": "Before later checks: selected commands+identity, external ownership manifest before owned root, finalizer before process, TMPDIR/TMP/TEMP, one worker64MiB scratch/384MiB RAM/120s per narrow chunk,1MiB log; manual actual job accounting plus HostBudget. Stop/join exact groups, remove roots/owned overlays/bytecode, retain concise summary and failure evidence. All Python -I -B or PYTHONDONTWRITEBYTECODE=1. >=256MiB output directly to OneDrive; none expected."
+  },
+  "acceptanceAccounting": {
+    "currentAcceptedPublicRows": 0,
+    "allRequiredEntries": 74,
+    "minimumPerMappedEntry": 8,
+    "minimumOverall": 200,
+    "minimumIfAll74Mapped": 592,
+    "minimumRealHeadlessDeepLinks": 20,
+    "mappedNow": 0,
+    "excludedNow": 0,
+    "noPruning": true,
+    "currentPlanReady": false,
+    "profile": "Catalogue source qualification and real constructibility are separate from delivered/current VIN-profile activation. Preserve unknown RL/modelYear/plant and existing UK candidates; do not substitute enabled US/LHD profiles or require VIN generation to publish a configuration-only row.",
+    "postDemoHold": "FUCQ-61 no10k run before13November2026"
+  },
+  "designAndOwnership": "Existing Node catalogue provider + shared collector/session + versioned static corpus connection on HLD06 remains unchanged; this plan proposes internal validation/projection/registration only, no new component/store/dependency/connection or runtime provider. Design skill unchanged-topology gate applies. If implementation adds a liveF39 provider or rewires a component, stop that scope for normal design-first review. F39 local storyDEV-016 closed/merged5b30feb; absence of active shared writer still must be confirmed by dispatcher before edits; no ownership granted by this plan.",
+  "nextDispatcherDecision": "Assign offline field-contract/projection work in F59, coordinate F39 registration writer and F58/F77 owners, then review the exact4GET missing-field diagnostic after offline checks and frozen executable pins. No new source allocation is granted by this proposal.",
+  "catalogueDateRule": "F39 sourceIdentity sets catalogueDate=data.observedDate. A newly qualified6Nov snapshot therefore uses catalogueDate2026-11-06, while orderDate/tree-request effect may remain2026-11-01 and resolved model effect2027-01-05. Do not copy the old public observation plan.context.catalogueDate into a new snapshot. New accepted source version/plan must explicitly reconcile this distinction. Keep old1Nov snapshot untouched. No date/metadata change increases canonical distinct count."
+}

@@ -1,7 +1,7 @@
 import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.js';
 import { BriefService } from '../brief/index.js';
 import { createRepositoryManualPorts } from '../manual-context/ports.js';
-import { mintOfferToken } from './offer-token.js';
+import { mintOfferToken, resolveOfferLandingUrl } from './offer-token.js';
 import { BuddyRemoteLifecycle } from './buddy-remote.js';
 import { createCurrentCarComparison } from './current-car-comparison.js';
 
@@ -27,11 +27,12 @@ const pending = (operation) => result('pending', { operationId: operation.operat
 // Facts, permission, time, quote, command digest and access token are server owned.
 export class BuddyHoldService {
   #repository; #policy; #clock; #identity; #adapter;
-  #startup; #remote;
-  constructor({ repository, policy, clock, identity, adapter } = {}) {
+  #startup; #remote; #offerLandingUrl;
+  constructor({ repository, policy, clock, identity, adapter, offerLandingUrl } = {}) {
+    this.#offerLandingUrl = resolveOfferLandingUrl(offerLandingUrl);
     this.#repository = repository; this.#policy = policy; this.#clock = clock;
     this.#identity = identity; this.#adapter = adapter;
-    this.#remote = new BuddyRemoteLifecycle({ repository, policy, clock, adapter });
+    this.#remote = new BuddyRemoteLifecycle({ repository, policy, clock, adapter, offerLandingUrl: this.#offerLandingUrl });
   }
 
   start() {
@@ -326,7 +327,8 @@ export class BuddyHoldService {
           } });
         return operation.status === 'ok' ? pending(operation.value) : operation;
       }
-      const token = mintOfferToken({ environmentId: context.environmentId, runId: context.runId, offerId });
+      const token = mintOfferToken({ environmentId: context.environmentId, runId: context.runId, offerId },
+        { offerLandingUrl: this.#offerLandingUrl });
       const offer = await tx.insert('offers', { runId: context.runId, environmentId: context.environmentId, offerId,
         holdId, quoteId, employeeId: context.employeeId, orderUuid: input.orderUuid, state: 'active',
         briefVersion: input.expectedBriefVersion, policyVersion: context.policyVersion, expiresAt,

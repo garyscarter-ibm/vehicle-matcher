@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "f59-live-diagnostic-receipt.v1",
+  "allocation": "f59-canonical-source-20261106",
+  "producerCommit": "f8a3e21ec7b476ba93b359b16d066b7648104728",
+  "codeTestIdentity": "29f3d4b9641af6787bd153ab0d8f2a2ce657cca649ac73416e9358459b5c8613",
+  "planSha256": "e033e926c3da90bd2463dff1bbeb7b141be1923beccacdd5be3312bfb5715452",
+  "planDigest": "3b0094041a34dba309d3cd83c775aaef721b3769c3d0d39bc144bae135caf533",
+  "startedAt": "2026-11-06T15:16:25.042Z",
+  "completedAt": "2026-11-06T15:16:26.701Z",
+  "reason": "raw-schema-review-required",
+  "cancelled": false,
+  "counts": {
+    "sourceCalls": 4,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "cacheEvictions": 0,
+    "httpAttempts": 4,
+    "decodedBytes": 916858,
+    "operations": {
+      "page": 1,
+      "settings": 1,
+      "discover": 1,
+      "options": 1
+    },
+    "cacheHits": {
+      "page": 0,
+      "settings": 0,
+      "discover": 0,
+      "options": 0
+    },
+    "operationBytes": {
+      "page": 17763,
+      "settings": 620646,
+      "discover": 139586,
+      "options": 138863
+    }
+  },
+  "countBasis": "executor final result",
+  "checkpoint": {
+    "status": "valid",
+    "sha256": "90933f06b31d660800a0920874aafbeaaeb3d2cd72c51ab46c644384f4bd5fd0",
+    "bytes": 199413,
+    "retained": false
+  },
+  "artifacts": [
+    {
+      "operation": "discover",
+      "file": "tree.json",
+      "bytes": 3439,
+      "sha256": "06d13000d124fed336d39379cc6984ede0d6a0eced57cde955389c186932a228"
+    },
+    {
+      "operation": "options",
+      "file": "options.json",
+      "bytes": 93956,
+      "sha256": "6883be7544a6c03ef523aa6287a74c03fddd9b0e09b80127c25b72c1bec0061b"
+    }
+  ],
+  "exportFailures": [],
+  "bootstrapObservations": [
+    {
+      "schemaVersion": "collection-http-observation.v1",
+      "operation": "page",
+      "sourceId": "bmw-uk-public",
+      "sourceVersion": "f59-diagnostic-20261106.v1",
+      "capability": "bmw-page",
+      "transportKind": "live",
+      "request": {
+        "method": "GET",
+        "url": "https://configure.bmw.co.uk/en_GB/configure/G61E/T5MJ"
+      },
+      "observedAt": "2026-11-06T15:16:25.406Z",
+      "responseBytes": 17763,
+      "responseSha256": "13f758d6afecbe037dd12a18f866fa902061de19c276678fc3990ac3e01484ff"
+    },
+    {
+      "schemaVersion": "collection-http-observation.v1",
+      "operation": "settings",
+      "sourceId": "bmw-uk-public",
+      "sourceVersion": "f59-diagnostic-20261106.v1",
+      "capability": "bmw-settings",
+      "transportKind": "live",
+      "request": {
+        "method": "GET",
+        "url": "https://configure.bmw.co.uk/en_GB/settings.f8e66668.json"
+      },
+      "observedAt": "2026-11-06T15:16:25.925Z",
+      "responseBytes": 620646,
+      "responseSha256": "f8e66668d6a148e556d6890f028beb96d302b214b8b9608d68f974dbd079738b"
+    }
+  ],
+  "qualification": "observation-only-schema-diagnostic",
+  "admission": false,
+  "accepted": [],
+  "distinctConfigurations": 0,
+  "solver": 0,
+  "sourceWrites": 0,
+  "imageRequests": 0,
+  "browser": 0,
+  "sql": 0,
+  "credentialLookups": 0,
+  "fullRawRetention": 0,
+  "cleanup": "PENDING supervisor process-group join, scratch removal and independent absence receipt; once marker remains spent",
+  "reviewRequired": "actual raw localisation pointer/root binding; no classifier, F39/F54 publication or schema compatibility claim"
+}

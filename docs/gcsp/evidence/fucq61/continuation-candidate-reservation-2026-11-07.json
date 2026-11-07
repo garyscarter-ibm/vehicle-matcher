@@ -1,0 +1,108 @@
+{
+  "schemaVersion": "two-candidate-continuation-preparation.v1",
+  "status": "reserved for Mike preparation; no traffic grant and not spent",
+  "scope": "Root-authorised preparation of at most2 fresh solver requests+8bootstrap; pilot320 allowance is fully spent",
+  "source": {
+    "id": "bmw-uk-public",
+    "version": "f59-batch-20261107.v1",
+    "kind": "public-bmw-uk"
+  },
+  "modelRegistration": {
+    "schemaVersion": "bmw-public-model-registration.v1",
+    "modelCode": "T5MJ",
+    "agModelCode": "72HH",
+    "catalogueRangeKey": "G61E",
+    "rawModelRange": "G61",
+    "aliases": [
+      "5",
+      "I"
+    ],
+    "market": "GB",
+    "locale": "en-GB",
+    "steering": "RL",
+    "catalogueDate": "2026-11-01",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05",
+    "optionsTrim": "S0337"
+  },
+  "qualificationDate": "2026-11-07",
+  "sourceEvidence": {
+    "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/final-canonical-index.json": {
+      "fileSha256": "30321ec3074c044700b1c77b8f15322f7f18910fd4723cb041912b7d66b1671c",
+      "canonicalDigest": "f6a6fc378ebf01ecd4828c0f8d648192728b61a6ec57da8c37064fa4a2e34d40"
+    },
+    "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/final-spent-request-index.json": {
+      "fileSha256": "5125cbc694f93dc34138fec3c53a2f1eb3fe305ae859b3a617bf23e4a5610978",
+      "canonicalDigest": "4053cf5826ef9ac16d55b318cb34b8f38da58fc9b2ad01c5dea355c1a4b583ce"
+    },
+    "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk10/collection-plan.json": {
+      "fileSha256": "33e13fd625b8a43a09f68f00449d4efa30dc1959ad71b0c19009aae530f9b5fd",
+      "canonicalDigest": "8d7f6bdb011d4dc59d01ae9339684669e1e69ea741ffb2f19b49fd20a3a36ee7"
+    },
+    "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk10/tree.json": {
+      "fileSha256": "ae4150853d2fd05c7843a0df3a9b3a5d777e8fd8fc485568a31dfb3d5ed1d0fc",
+      "canonicalDigest": "29e3ce24a0a6e71f3a5c934b08e8edbbe8abd4c088569d6803702285af08485d"
+    },
+    "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk10/options.json": {
+      "fileSha256": "55a13acfe621cb96aafe635de9948fdccd15e52da10d814c41cfd52d1c94e1e3",
+      "canonicalDigest": "24710fa7b3138e8105d6812bff1e3a692a59ed59206541f119bca06cf219b37c"
+    }
+  },
+  "priorAdmitted": 340,
+  "trackedSpentSolverRequests": 405,
+  "candidates": [
+    {
+      "candidateId": "candidate-e384e23e4375b5f677c65619",
+      "request": {
+        "includedElements": [
+          "FKSFU",
+          "P0300",
+          "S0337",
+          "S03G9",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "requestDigest": "e384e23e4375b5f677c656192cf1ea776c70847df4a0b47d9bfff52a6fad805a",
+      "canonicalConfigurationId": null,
+      "canonicalStatus": "unknown until actual complete solver selection; no admission promise",
+      "rawRequestDigest": "e76e9acb3ffb9a4b9282d226ffd54e0fecf370e179186106dd0c8fd2ec641812"
+    },
+    {
+      "candidateId": "candidate-c9eeb5c73605462a742f76bf",
+      "request": {
+        "includedElements": [
+          "FKSFU",
+          "P0300",
+          "S0337",
+          "S03GD",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "requestDigest": "c9eeb5c73605462a742f76bf8fc4447bc2f5f5e346f4ca8741c8933262ce6e20",
+      "canonicalConfigurationId": null,
+      "canonicalStatus": "unknown until actual complete solver selection; no admission promise",
+      "rawRequestDigest": "408935ca734f5fa15fcb6db0a313fbd00c2e4470ccff7744c424413939952e95"
+    }
+  ],
+  "priorProducerPins": {
+    "projectorSha256": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+    "qualifierSha256": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+    "sessionSha256": "1f22fe1cdf27d3e6f2be015e32b69b5ecc435c546fe9964396270e3db6e9421e",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "priorSnapshotVersion": "bmw-gb-t5mj-pilot10-2026-11-07.v2",
+  "newProducerPins": "Must match root reviewed post-High-fix production/session code; prior pins remain immutable historical evidence",
+  "acceptance": false,
+  "digestBasis": {
+    "requestDigest": "inputDigest({ modelRegistration: reservation.modelRegistration, request: candidate.request })",
+    "rawRequestDigest": "inputDigest(candidate.request)",
+    "spentIndexProducer": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/finalize-pilot.py:33",
+    "interpretation": "Registered request identity includes the full source model context; raw request alone is not the spent-index key."
+  }
+}

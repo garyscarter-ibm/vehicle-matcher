@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "bounded-evidence-handoff.v1",
+  "runId": 42360886351,
+  "scope": "original failed-run evidence plus unexecuted timing adjustment",
+  "outputLogicalBytesBeforeThisReceipt": 39070,
+  "maximumOutputBytes": 1048576,
+  "allLocalOwnedScratchAbsent": true,
+  "retainedArchive": false,
+  "runtimeAcceptance": false,
+  "pins": {
+    "README.md": {
+      "bytes": 2932,
+      "sha256": "4d48b6973c70ccf8a30913f0c561e4c2b2c4d11b6f4fe29e439875a6bdaaf7ec"
+    },
+    "cold-restore-receipt.json": {
+      "bytes": 1835,
+      "sha256": "2f58d11cba5346252af400b56c2947975b7ddf5dcf5c0c8d255e54f347681e69"
+    },
+    "job-log.txt": {
+      "bytes": 22325,
+      "sha256": "d294fb051979eeb59a4a7a8db3ab46b5d7194db6d5cea8b401ddb0cf122186fc"
+    },
+    "local-readback-cleanup.json": {
+      "bytes": 1271,
+      "sha256": "3c05c800236450045a0e65418b8118bab6bbf58fe8338874f4da75d5187025e8"
+    },
+    "phase-and-cleanup.txt": {
+      "bytes": 747,
+      "sha256": "79a44631bc783989913563a35766a7425cc97300c42408e1ba0baaf8d47afe54"
+    },
+    "result-and-adjustment.json": {
+      "bytes": 4456,
+      "sha256": "e9db1c892a9674088f298e1ad66bbb6481c1698843ef326b739af1774dd401ce"
+    },
+    "run-metadata.json": {
+      "bytes": 1868,
+      "sha256": "d00c863c0355fe45f212b1de32ee507ba2e954ecc61e0e87c89f23696c97df57"
+    },
+    "static-validation.json": {
+      "bytes": 1068,
+      "sha256": "9fb5569b5a3be5277700a9c37c204347d4cd4d1576254012734a29fa91c84925"
+    },
+    "workflow-timing.patch": {
+      "bytes": 2568,
+      "sha256": "96cc7111355d02c9946b38aca33e50df461b1e12c6e9183c63e3f5f3b91e5344"
+    }
+  }
+}

@@ -120,7 +120,7 @@ Shared by the employee entry now and Greg's views later; scoped tokens and style
 | Call | Use for |
 |---|---|
 | `density-typography.css` (imported by the default theme) | Shared source-derived families and weights: large titles BMW Medium 500; body/inputs/options system 400; smaller headings/buttons/emphasis system 600; table headers system 500; plain text/code the Density mono stack. Reuse semantic `--gcsp-font-*` aliases instead of introducing view-specific fonts or retail weights. The gallery's Density typography, question-controls, cards, tables and message-list examples exercise these roles. Local responsive sizes and italic missing-data cues remain intentional adaptations. |
-| `portalShell({ title, account, navigation, active, breadcrumbs, onNavigate, onRetryAccount, presenterControls })` | The slim branded header with locally packaged BMW GROUP/BMW/MINI Density artwork, account loading/ready/unavailable-with-Retry states, `<nav aria-label="Portal">`, optional breadcrumbs, skip link and `<main>`. Ready accounts use a compact single-row native disclosure with full name/context inside; Escape closes it and returns focus. Unavailable accounts show a short status with the full message available to assistive technology and in the tooltip. Returns `{ root, main, presenterRegion, setAccount, setActive, setBreadcrumbs, destroy }`. Presenter region defaults to HTTP authorization; use `presenterControls: false` for isolated embedders or `{ adapter, navigate, commandId }` for an injected port. |
+| `portalShell({ title, account, navigation, active, breadcrumbs, onNavigate, onRetryAccount, presenterControls })` | The slim branded header with locally packaged BMW GROUP/BMW/MINI Density artwork, account loading/ready/unavailable-with-Retry states, `<nav aria-label="Portal">`, optional breadcrumbs, skip link and `<main>`. Ready accounts use a compact single-row native disclosure with full name/context inside; Escape closes it and returns focus. Unavailable accounts show a short status with the full message available to assistive technology and in the tooltip. Presenter controls appear only after the existing presenter API authorises them; pass `false` to omit them. Returns `{ root, main, presenterRegion, setAccount, setActive, setBreadcrumbs, destroy }`. |
 | `accountNavigation({ items, active, expanded, onNavigate, onToggle })` | Narrow icon sidebar with a label toggle. Selected items use pale cyan, teal text/icon and a teal left edge, following the supplied GCSP shell. Unavailable items are disabled buttons with a visible reason, never dead links. Used inside `portalShell`. |
 | `svgIcon(paths)` | Decorative inline SVG icon built with `createElementNS`. |
 | `mountEmployee(root, ctx)` / `<gcsp-employee>` (`blocks/gcsp/employee/gcsp-employee.js`) | The employee entry. Contract in [docs/gcsp/employee-entry-contract.md](docs/gcsp/employee-entry-contract.md). |
@@ -148,9 +148,20 @@ Looked at: `el`, `screenIntro`, `button`, `statusScreen` and `factList` (all reu
 |---|---|
 | `metricTile({ label, count: { label, isBand }, note, level })` (`metric-tile.js`) | One labelled figure. `level` is `headline`, `standard` or `compact`. A band reads "fewer than N" and is described as a privacy band; a missing count reads "Not supplied". |
 | `dataTable({ caption, columns: [{ key, label, numeric }], rows, emptyText, id })` (`data-table.js`) | A real `<table>` with `<caption>`, `th scope="col"`, first cell `th scope="row"`, right-aligned tabular numeric columns and band cells marked like tiles, inside a `role="region"` `tabindex="0"` scroll area labelled by the caption. No rows shows one `emptyText` row. Cells are strings, numbers or `{ label, isBand }`. |
-| `mountGregDashboard(root, ctx)` / `<gcsp-greg-dashboard>` (`gcsp-greg.js`) | Greg's view in `portalShell`: meta strip, headline tiles, demand, unmet needs, offers and stock, and five reserved empty regions (publish, order tracking, prediction, route comparison, case queue). Returns a teardown with `refresh()` and `regions`. Contract in [docs/gcsp/greg-dashboard-contract.md](docs/gcsp/greg-dashboard-contract.md). Harness: [`gcsp-greg.html`](gcsp-greg.html). |
+| `mountGregDashboard(root, ctx)` / `<gcsp-greg-dashboard>` (`gcsp-greg.js`) | Greg's view in `portalShell`: meta strip, headline tiles, demand, unmet needs, offers and stock, plus regions for publishing, order tracking, prediction, route comparison and the case queue. A supplied `publishAdapter` mounts the existing publication panel. Returns a teardown with `refresh()` and `regions`. Contract in [docs/gcsp/greg-dashboard-contract.md](docs/gcsp/greg-dashboard-contract.md). Synthetic dashboard harness: [`gcsp-greg.html`](gcsp-greg.html); live workspace: [`gcsp-presenter.html`](gcsp-presenter.html). |
 
 Gallery: the **GCSP Greg kit** section of [`components.html`](components.html) shows `metricTile` exact, band and with a note, and `dataTable` with a long model name, a band cell and the empty state. The ratchet now also caps `blocks/gcsp/kit/gcsp-kit.css` and `blocks/gcsp/greg/gcsp-greg.css`.
+
+## GCSP renewal cases and presenter workspace
+
+The adopted case and publication views compose `screenIntro`, `button`, `statusScreen`, `factList`, `dataTable` and the shared labelled fields/error summary. They introduce no new shared primitive. Their styles use the existing GCSP tokens and have explicit ratchet caps.
+
+| Call | Use for |
+|---|---|
+| `mountHelp(root, options)` / `<gcsp-help>` (`blocks/gcsp/cases/gcsp-help.js`) | Employee renewal help, explicit request review/confirmation and current case readback. [`gcsp-help.html`](gcsp-help.html) uses the existing HTTP case and account adapters; named fixtures are explicit snapshots. |
+| `mountCaseQueue(root, options)` / `<gcsp-case-queue>` (`blocks/gcsp/cases/gcsp-case-queue.js`) | Greg's current scheme-team cases and deliberate case actions. The live workspace embeds it in the dashboard's existing `caseQueue` region. [`gcsp-case-queue.html`](gcsp-case-queue.html) is the standalone HTTP entry. |
+| `mountGregPublish(root, options)` (`blocks/gcsp/greg/publish/panel.js`) | Server-projected policy values, preview and explicit publication of the reviewed changes, with held-offer readback. Its gallery adapter supplies synthetic component states only. |
+| `mountPresenterWorkspace(host, options)` (`blocks/gcsp/presenter-controls/workspace.js`) | Reads the actual acting context, then mounts the existing employee manual journey or Greg HTTP dashboard with publication and the case queue. Presenter switching/reset returns to [`gcsp-presenter.html`](gcsp-presenter.html); the employee account retains Resume and renewal-help navigation. |
 
 ## Not yet in the kit
 
@@ -178,7 +189,9 @@ Reuse `el`, `screenIntro`, `button` and `mediaWell`. Decision cards represent ex
 | `experienceChoice({ title, description, image?, imageLabel?, action, reason?, status?, secondaryAction? })` (`components.js`) | A semantic destination article with an h2, shared media fallback, visible state/reason, and native action. Disabled actions reference the visible reason. Labels survive failed imagery. |
 | `brandSelector({ value?, onChange, label? })` (`components.js`) | A labelled native select with all six retail brands and All brands. Decorative logo failures keep text labels. Emits the selected brand or null without navigating or writing policy. |
 | `renderLauncher(root, context, { input? })` (`launcher.js`) | Composes the two destination choices and keeps the selected brand visible. Used cars retains the resolver's URL context; employee BMW selection is explicit. |
-| `bootDemo({ root?, employeeCapability?, decorateRetail? })` (`boot.js`) | Gate and route integration. A capability is available only with `enabled === true` and a real `mount(root, context)` function. The default remains unavailable pending FUCQ-35 registration; a boolean alone cannot enable an entry. |
+| `bootDemo({ root?, employeeCapability?, decorateRetail? })` (`boot.js`) | Gate and route integration. A capability is available only with `enabled === true` and a real `mount(root, context)` function. Library boot stays unavailable until supplied a real capability; public boot registers the lazily loaded employee journey. A boolean alone cannot enable an entry. |
+
+`createEmployeeCapability({ enabled, load, fetchImpl })` in `employee-entry.js` registers `<gcsp-employee-entry>`, a launcher-owned light-DOM adapter over the delivered `mountManualJourney`. It loads the existing account/setup styles on employee entry, passes the shared cookie-authorised HTTP adapter, and tears down on navigation. It supplies no identity or scheme policy.
 
 The existing single `components.html` gallery includes a local brand callback, long destination title, missing images, loading and unavailable choices. No employee shell is duplicated. Launcher JavaScript is an explicit ratchet root; the shared primitive module is excluded as kit code. New surface checks reject inline scripts/handlers and unsafe execution.
 
@@ -198,35 +211,6 @@ Looked at `renderOptionList` and `renderRangeSlider`: they supply question butto
 | Call | Use for |
 |---|---|
 | `labelledField({ id, label, control, hint, error })` | Associates a unique id with a native control, label, optional hint and inline error. Returns `{ root, setError }`; updates preserve the control and manage `aria-invalid` and `aria-describedby`. |
-| `errorSummary({ id, title, errors: [{ id, message, selectionId? }], onSelect })` | Links validation messages to controls. Returns `{ root, update, focus }`; focus targets its heading and links target the real control ID. Optional `onSelect(id, selectionId)` distinguishes multiple rows edited through one native control while retaining that valid focus target. |
+| `errorSummary({ id, title, errors: [{ id, message }], onSelect })` | Links validation messages to controls. Returns `{ root, update, focus }`; focus targets its heading and links target the relevant control. |
 
 `mountManualSetup(root, { adapter, brand, hint, onBack, onSupport, commandId })` and `<gcsp-manual-setup>` compose the employee shell, shared forms and existing heading/button/status/facts/typed terms. Native controls remain mounted through input and asynchronous state updates. The controller supplies permitted choices, source facts and errors. `gcsp-manual-setup.html` loads the authenticated draft directly; `mountManualJourney` connects account journey hints to a fresh trusted setup read and saves valid choices before Back. The bubbling/composed `gcsp:setup-ready` event carries exact mode/old-contract/slot/scheme/draft/context hints after a successful complete save and current availability; it creates no claim.
-
-
-## GCSP presenter controls (`blocks/gcsp/presenter-controls/`)
-
-Component plan: reuse `button`, `factList`, `statusScreen` and `labelledField`; extend `portalShell` with the optional presenter region. Native `details` supplies the disclosure. No reusable disclosure abstraction or duplicate host styles are needed.
-
-| Component | Use instead |
-|---|---|
-| `mountPresenterControls(host, { adapter, commandId, navigate })` | Shared presenter strip with stable native fields, server-projected policy step/cues/principals, confirmed reset, ordered tick receipts, exact original-command retry and actual-context switch reconciliation. Returns `{ root, refresh, destroy }`. Use instead of per-page presenter actions. |
-| `<gcsp-presenter-controls>` / `defineGcspPresenterControls(registry)` | Standard custom element, adapter property, disconnect teardown. Load `presenter-controls/register.js` and the shared shell styles. The parent `.gcsp` supplies Density tokens. |
-| `mountPresenterWorkspace(host, options)` | Reads actual server context and mounts the account or Greg HTTP surface. Harness `gcsp-presenter.html`; never selects a principal from URL/fixtures. |
-
-Styles live in `presenter-controls/presenter-controls.css`, imported by the shared shell, with a ratchet cap. The GCSP gallery includes an explicitly isolated pending/missing-release example; it makes no release or scenario capability claim. Functional tests: `server/test/gcsp-presenter-controls-render.test.js`, shell/CSP checks and UI ratchet. Browser evidence remains a separate gate.
-
-## Greg policy preview and publish (`blocks/gcsp/greg/publish/`)
-
-`mountGregPublish(root, { adapter, commandId?, signal? })` composes `screenIntro`, `button`, `statusScreen`,
-`factList`, `labelledField`, `errorSummary`, `dataTable` and `metricTile`. Import `publish.css` with the
-shared GCSP kit. `defineGcspGregPublish()` registers `<gcsp-greg-publish>`; its `adapter` property accepts
-the same readPolicy/preview/publish port. Native points selector/input, optional shared `renderRangeSlider(single: true)` controls and projected weight inputs remain
-mounted through edits and requests. The server supplies values, units and provenance; no policy defaults
-are invented by the browser. Server-projected presentation ranges are explicitly assumed; exact legal values outside them are retained and explained without clamping. Missing ranges keep numeric-only editing. Edit invalidates preview. Publication requires an explicit current preview;
-uncertain or pending publication retains the identical original command for a safe retry.
-
-The actual Greg HTTP adapter exposes `publish`, composed into the dashboard's reserved publish region
-by both the custom element and programmatic `publishAdapter` option. A bubbling/composed
-`gcsp:policy-published` event refreshes dashboard figures without remounting the panel. Named demand
-fixtures never load live policy. The single gallery includes a clearly labelled synthetic interaction
-example; it provides no evidence of live integration. Browser evidence remains required.

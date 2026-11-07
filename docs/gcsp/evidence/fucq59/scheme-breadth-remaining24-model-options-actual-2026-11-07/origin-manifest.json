@@ -1,0 +1,1087 @@
+{
+  "scope": "exact actual retained copies; originals unchanged",
+  "sourceExecutionPlanSha256": "1445b639ef3b7cb19ec1e09b389e98be8a5f511b80024aa17b0931194f39b02d",
+  "sourceProofSha256": "d9b612b3d5369de9918917a0d4ce0434ca07b708a0372c03ddf9a29c26c7e566",
+  "copies": [
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3be/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3be/qualification-plan.json",
+      "sha256": "587c074404acb01474aad1c6aae31b2b92ded9be330c5a8c7d1712c84179dafa"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3be/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3be/collector-checkpoint.json",
+      "sha256": "b2bc71eda11486e92c7f8ef77204784b31f6ce566e7a14f7bb4027c83145aae7"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3be/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3be/options.json",
+      "sha256": "f7c808f9474677ce22d66dd0ed3c4b75b217c4ad95363a2ebee1daa746c738eb"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3be/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3be/tree.json",
+      "sha256": "87a9de880f37656929b451ccd34e402a8a3c2d2efb3ce48abb656e32c60287a6"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3be/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3be/line-relationships.json",
+      "sha256": "f06e8e452ddc55abe1862c9ce3ca077890935409c03155f900595e99ecc31463"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3be/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3be/receipt.json",
+      "sha256": "79b80284d0318b84984d88353eac6e17c005eaa0137981df71cc5e2df1b6e928"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3be/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3be/checkpoint-export.json",
+      "sha256": "db0bff3bd68b618bae1e8315c212e5226f54bc8b9325cde25d63f40d49b076c9"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3be/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3be/execution-once.json",
+      "sha256": "4fe10ad2295d9fea49d41f130efe916e0e98b1c2dee44306e420c7a63e9d2146"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3be/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3be/source-events.jsonl",
+      "sha256": "056213f90dd5ebfcb3dd14ff94eb44b39092b9dee5177434af710b40f6164d1e"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3mr/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3mr/qualification-plan.json",
+      "sha256": "5795e9c8455f133d6d5355d0bf0022dbefe1ab3b71d9a51b2398f4cc53754d18"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3mr/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3mr/collector-checkpoint.json",
+      "sha256": "a0dc7be02bdf1528d59b11e6acd0f983400409f9383455269b992597e2f77ea6"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3mr/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3mr/options.json",
+      "sha256": "78041a211040603865faa840652ee9d5ec07b9841de6e02afef82bd5b121140b"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3mr/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3mr/tree.json",
+      "sha256": "38bd0c667c802a60c10a53713bcef82edbc1ee4a9db805c5e5039e80ce4d1583"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3mr/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3mr/line-relationships.json",
+      "sha256": "3257c1e61b3651a6b129517ffb0daad835e612e4543964320eaf0c94a40cde95"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3mr/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3mr/receipt.json",
+      "sha256": "04c7d9adcb34985b054cd79981e370405f8e3e266bf4eb7b18c2238f001861d4"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3mr/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3mr/checkpoint-export.json",
+      "sha256": "f8ca5d6a4e30abc1f6bc4ff2fdd858d7895d4af5c06b2b361217a11e2c958f10"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3mr/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3mr/execution-once.json",
+      "sha256": "6fc7256804a06c7c405704aa6d8dd60cfca98d7b8467cbc1e5e7ec115d305803"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3mr/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3mr/source-events.jsonl",
+      "sha256": "bd95644823b8a905c8cd215fe05f6d82f8bd876de62c0d29ff783bd01fb8e9f5"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pf/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pf/qualification-plan.json",
+      "sha256": "d0297cd8222a7fab4890ca8cb6e7ddec37251fd5157a4b3cc33690d5ab56fe94"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pf/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pf/collector-checkpoint.json",
+      "sha256": "a6a1850ee78707f18814b86b1e07d7db4860380462811ba965f4ea54016b5ae6"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pf/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pf/options.json",
+      "sha256": "46e14ee12b3f0a9b856a8cdf7cf1821750757aab5d7bf1e9c4f1c11814f9bd55"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pf/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pf/tree.json",
+      "sha256": "9152b9b557bc7648f32dc671f27e5459932ed4ddb83a4fe44faa1481e0e1c144"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pf/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pf/line-relationships.json",
+      "sha256": "41f3e16247908036fce145333a70f87a50baf527591f64bdb02d0e449a8b201e"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pf/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pf/receipt.json",
+      "sha256": "6a626199648ea6549da6fbebba5e5d98afc602ec365e75279b9fb841fcddc139"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pf/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pf/checkpoint-export.json",
+      "sha256": "3a3aa90f9087cb8019e972548fb44217d9da7127da000b8cf8a5272b7671d09f"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pf/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pf/execution-once.json",
+      "sha256": "501153f8864846a38c3dde15c7c7cc49ef4de52bc9e1fe826828df266e728e83"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pf/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pf/source-events.jsonl",
+      "sha256": "4db0b44b782f0614ae6d630697d91e2db0499d625c11afd3852a83148eac100b"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pk/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pk/qualification-plan.json",
+      "sha256": "54642174246893a280df37716a9a24b8a82824fd44b6d6db92163440a1189ec0"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pk/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pk/collector-checkpoint.json",
+      "sha256": "8afd1bee863b2e2ddbcd2a6ef7c94b47eec76345c8d81fd4a585c2374eaeef37"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pk/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pk/options.json",
+      "sha256": "6999d04f9ee50cd95fd54ab4d1e0c77496bb392c351c42e84f4ef0dffb6fc452"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pk/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pk/tree.json",
+      "sha256": "5fd00de5fda06c57903e980f3c3dbdbb047e053d5fc03ece4c1d9731fe3efe87"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pk/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pk/line-relationships.json",
+      "sha256": "efd46f4fc21b72e3a264af9df1f52f8424efc3801675df26d99ceef6e0a1490c"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pk/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pk/receipt.json",
+      "sha256": "e79c9b92d27ab506860fcd4f0ec9b8fd8643fb747d130f86b260fb6b6caa4fc2"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pk/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pk/checkpoint-export.json",
+      "sha256": "4aaf0f965943faf297593961e3913e2217ab851ee38f0350726b66fb145653be"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pk/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pk/execution-once.json",
+      "sha256": "a02b25b83bb10f731818dc1876de05d935ff8db4e691d60f691321129d6f99cb"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pk/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pk/source-events.jsonl",
+      "sha256": "2d624e6930cbc0f923c6124df877f8a2b76a7ca2ca2059395a82135315bcfa44"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pr/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pr/qualification-plan.json",
+      "sha256": "073c5aa6aca465cd21e3da3b5abd7a6639066472c51b7b5089b156820c21902d"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pr/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pr/collector-checkpoint.json",
+      "sha256": "c10b3fb77a6a6ffa0de9cbcc0bb37e6d0a7e74a40bae825ba2e9ee2af9f94043"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pr/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pr/options.json",
+      "sha256": "f77eb7089da29c4210656d2810996e0dc4b3d338066b2a722276190176426395"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pr/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pr/tree.json",
+      "sha256": "8723f2a3002891d25400fac32ec66cdf67c517f24dee7ee9e330489f0ad52acf"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pr/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pr/line-relationships.json",
+      "sha256": "146e5d1d684c101ccfacc75c6f7bf65aa87ca6ed2a46dfd5e1ab4d297d2d2d5b"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pr/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pr/receipt.json",
+      "sha256": "715c33580d72771788246e43a98d52b42b936c48df714ed73ba6c1ab8ddcb17e"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pr/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pr/checkpoint-export.json",
+      "sha256": "2e21490139b3f7b68df6ac8b96b292535ac346e1dd1d4b812d0e2e1885fcef1f"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pr/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pr/execution-once.json",
+      "sha256": "49ed262ebfd1aee8021698e6f244be67626fd887dd7a5bcaf38f53c44a3e742b"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pr/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pr/source-events.jsonl",
+      "sha256": "cb74d8dbe14d5056c97c9ad055ede98d0fddbcd19a0a71f6be2a09cd1fc0a9a1"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1h/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1h/qualification-plan.json",
+      "sha256": "23b364b0f1e3717afab4cf13d6c046db211e6580756fc4b572e426fd2b51a6a9"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1h/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1h/collector-checkpoint.json",
+      "sha256": "ca7baf3765f1b697375f692ddfe38afb0da85fc5dd7314deaa9e9651eeefbc34"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1h/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1h/options.json",
+      "sha256": "655b15b5a9772ea82a49b354bb82015483ddbb6dab817536c49bdd729987be88"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1h/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1h/tree.json",
+      "sha256": "cff24421dd6e72106121962d1c0a3fa47646c90b640a0e8869c1467246b733f9"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1h/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1h/line-relationships.json",
+      "sha256": "881f1c03afa4d1ef3c613a434a211108f38ee6958b86a8c2400cda8d1bdc4392"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1h/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1h/receipt.json",
+      "sha256": "01520ef081515bc3b3bb78c867b30719f036b44ff1f10f99cc0d3928ee2c7de1"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1h/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1h/checkpoint-export.json",
+      "sha256": "0b54c9dacf66fb413acdd6405e22cff9ee029cf90b36363212d51980b910a6b2"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1h/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1h/execution-once.json",
+      "sha256": "d090f223677eef76da5cec3ce11569ea2fa494e3f9f0dea774e4a735e93394f1"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1h/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1h/source-events.jsonl",
+      "sha256": "2f95d259226683e2a3e4f60d090032d9b86d6536595b1d739f6300c91c471759"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1k/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1k/qualification-plan.json",
+      "sha256": "52aec254e144a7e089210c9566e52ba566144199dab6939ae25009d48ae13143"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1k/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1k/collector-checkpoint.json",
+      "sha256": "f9091ef2cd37dd2f2953e2af66a689059377efc61464d7c63ef270ec45adbd60"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1k/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1k/options.json",
+      "sha256": "ce1b4d545105a1e65bea1356b233fb95a96fe6ec79d5d7e50ae0746e07131b85"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1k/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1k/tree.json",
+      "sha256": "8106d956668db3a9b910b9487d140745639f95a28243ad50338cd365ef940f7f"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1k/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1k/line-relationships.json",
+      "sha256": "6ad8b94b11fd7f7772158e6ac8ad352bb31c28238d54d629e2d7834c90efce1f"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1k/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1k/receipt.json",
+      "sha256": "908f7f902fee74d17fab6d30cf29b20ec6158dd593191363dbc62604795d65b4"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1k/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1k/checkpoint-export.json",
+      "sha256": "3bee7802334ea68c65e4e077f5111677a043c5236c4c4247742e5b5ae3d8917f"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1k/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1k/execution-once.json",
+      "sha256": "4bd0cbc0530781e4f4115e8e961ca83fcafa76b63257142cddce1836d25a81d8"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1k/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1k/source-events.jsonl",
+      "sha256": "40ea133483dfd12f655ff9da68268c8740eaa061e9352afb7d938388d99eff85"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1l/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1l/qualification-plan.json",
+      "sha256": "d3c490a3bebf162e1d7d9e9e735cef8b7240cc1ec2759ea425b6f15a6a199e96"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1l/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1l/collector-checkpoint.json",
+      "sha256": "0e3d4ecf34c3c9aba047b190035b916308cf4194c83e6af7386a64500d23282d"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1l/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1l/options.json",
+      "sha256": "3b3e15efc99dcd22f986ececc62b20ea01fd2c53e7d9611a0497fde5d2ec2dd0"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1l/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1l/tree.json",
+      "sha256": "aff6ac249b7f438219e4091c7d93826883186af7c216f75526848f8f0f30009e"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1l/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1l/line-relationships.json",
+      "sha256": "5b452c01c6e1e3368b48a9a390e3476aa6dc87fa7594b545e9e71db2a2c33f68"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1l/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1l/receipt.json",
+      "sha256": "da72896a0c794c1089e5df642b48ef6388f60945c4987de4f859e66141a41ae8"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1l/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1l/checkpoint-export.json",
+      "sha256": "ffaa903585b5285930054fe51c6e6184b7ef0cb74905400eb9e22681c465cbdf"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1l/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1l/execution-once.json",
+      "sha256": "101a9fbc0ce1e7807f1c84ef6ea109cd5009f14efe39ca67e23b0b6cd16bad0d"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1l/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1l/source-events.jsonl",
+      "sha256": "951bec4538c942a3d46e45f1fb64c9532f27dec6641f953c047a1d09f2f84086"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x135/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x135/qualification-plan.json",
+      "sha256": "c66860aa609521de775251f7a12aa13464d9a3da3d0594a85bd03621c051dbbd"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x135/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x135/collector-checkpoint.json",
+      "sha256": "a89c446071df14b1d636172e7023f774d438e16a51cb78e631480f8efdae26c1"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x135/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x135/options.json",
+      "sha256": "838b2f44c2f8d24da163e6cdd18aca8f3c5c677b88d84719a45346e84025f39a"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x135/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x135/tree.json",
+      "sha256": "da8b7a5a4741d701d0d8484cc3cb114b2ef91ab7c1a87935cba4184e7c27cba0"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x135/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x135/line-relationships.json",
+      "sha256": "2e0134a2d4d793a8f2af53bf204afe5593b31ccd1000416fcd8a822bc65dd397"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x135/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x135/receipt.json",
+      "sha256": "fad82ca618441d723b8e0273d4ef9d66acb79c706b769e08a09c0608bcc19e42"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x135/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x135/checkpoint-export.json",
+      "sha256": "1a3e5ac7a92f9ead0277a813b9946dc46e96ac18ab9793a1418062005050dcee"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x135/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x135/execution-once.json",
+      "sha256": "134e471b73d7a0ea6d81ed2be5bb92f870be3fc93b47c12fd2b6befaaaddd7b9"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x135/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x135/source-events.jsonl",
+      "sha256": "96735db31f80c1f140ff0388706e26ceb9455f58490341f5b3f48ea5c1c97085"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m1/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m1/qualification-plan.json",
+      "sha256": "43b4e644547f5b6d8a24c6fa9e2e1b6c20e6c0b8e13029c65f57ddbc171ffac7"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m1/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m1/collector-checkpoint.json",
+      "sha256": "01e200a2f946a3c6d7c11efe9291b10eb30e47f8b7f3b1f771a6fed5cc6c4172"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m1/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m1/options.json",
+      "sha256": "6229aa8d41810791f9594ab394d61a445b07589a95e46e25a9d9d3d8a85b0d0e"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m1/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m1/tree.json",
+      "sha256": "15f660f0895ca7b755474e3814c0f23d1936a4c4d7334a5f4fc71c12ad2da8c1"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m1/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m1/line-relationships.json",
+      "sha256": "6860bf7a890ef0ec3e46505d4e7ed43afcb551f852e5548bf0d45e924a5c5d77"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m1/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m1/receipt.json",
+      "sha256": "21828da1178d1a618855c5b7bff8eff032396b04c5e6a08a4ca8617e34360dac"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m1/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m1/checkpoint-export.json",
+      "sha256": "6063cc0c58e8dfea29caddd853a883875cfa2596f31d443870a002017757eeb0"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m1/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m1/execution-once.json",
+      "sha256": "84a80fdae34c92ac666d7c1e298e7ed34ed151b1537afdcb4ef96c2d08231524"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m1/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m1/source-events.jsonl",
+      "sha256": "616b21a2b570a66e47edab01f0dbd680f1bc5f60e165746e7163d59703a5d55c"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m2/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m2/qualification-plan.json",
+      "sha256": "b053b0cfd39e8e8e604a787ef2da03a970e195acfb575624d63b9f151795bc86"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m2/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m2/collector-checkpoint.json",
+      "sha256": "22efdb4af641245c2cca7d262a59b81087c796ad54e57e5d0cec3f75d381e40a"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m2/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m2/options.json",
+      "sha256": "b5f140d587e9e6fabbccfbfdb3a499b1904f6048bec9370b17950eabf1a1c1bf"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m2/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m2/tree.json",
+      "sha256": "cc5e908c456b2d57c67ab943dc803404572dd46383653960e7f0518992da9439"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m2/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m2/line-relationships.json",
+      "sha256": "7cdb34b87d175aea039bf0329462af02b1aaa503afccdb26dbfdbe36026310cc"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m2/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m2/receipt.json",
+      "sha256": "269d7ce58d94885b492d8c9782a093348917580f08c3ed8c16dc2bc2264869c6"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m2/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m2/checkpoint-export.json",
+      "sha256": "881e0569e32a44cbe528e1d9caa134c7c9cb4f8796584bb730616348f406056a"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m2/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m2/execution-once.json",
+      "sha256": "34921cdc030bd15fdbcbd139ce6f4734454e5c34999194d3ac017cf364af6c8e"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m2/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m2/source-events.jsonl",
+      "sha256": "8e2ab987482f5c9654c0d0f41e6b0978b1b83ad0cae629df1a672a3ce5cabb93"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m3/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m3/qualification-plan.json",
+      "sha256": "13fc6439cdcd982c9a0a569a898b5bed498749d444bc67b9318f0a9a15a5fc04"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m3/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m3/collector-checkpoint.json",
+      "sha256": "3e4e8510835d0a4cfaec6de565f1ca771bf4178d2f7d2607c1488ac4b369524e"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m3/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m3/options.json",
+      "sha256": "b3810a3ebdde7838b645953b32fff3bd48cdf3968d652b793551944c270b0a77"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m3/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m3/tree.json",
+      "sha256": "376058c6dcc8c3db81995161593d178c2e1db9cc8519484032f6a37c769d6010"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m3/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m3/line-relationships.json",
+      "sha256": "5f7ebf81925d4a28562edd5b62f56e3042fdbe4aedcf2afa9afb7d9d4729b78c"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m3/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m3/receipt.json",
+      "sha256": "0202ab36e7a9e3c4f8ffaafd54ea8297e1b0100dd5362be09d2a7beea884b118"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m3/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m3/checkpoint-export.json",
+      "sha256": "acbdd282e67d14a98524f8aded27fbb1100b8373346010f8655f7d7e08df6a86"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m3/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m3/execution-once.json",
+      "sha256": "40037e87db034bd00fe115d1e82b6d13e5fbef6a3c483a000c169c0e3a90d30d"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m3/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m3/source-events.jsonl",
+      "sha256": "8e0882c91cd1cccac7ed6f1d37c33b406a9257480b4de4cb281425118594f637"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m6/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m6/qualification-plan.json",
+      "sha256": "0c3724cd63baa36021c8e878a9c60222bf4f97357a1ff68fefb47d48aa36cfd4"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m6/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m6/collector-checkpoint.json",
+      "sha256": "1b297fee6bf07186c9dacbd91ba61ff2a1db92fbbe446dae9745426bb4dec5cd"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m6/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m6/options.json",
+      "sha256": "ef3e5c37190a10ea8dd7c9f655fe8cbe7d267fa5b98a4ebffcdcf45f5a6b484e"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m6/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m6/tree.json",
+      "sha256": "903c3f8799284e044356bd1adce83fddf052386750aafbc577160a5c89e9a067"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m6/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m6/line-relationships.json",
+      "sha256": "2288e17c394accef233c07b68936d3f09389524f53608239884e9917b0763a66"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m6/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m6/receipt.json",
+      "sha256": "2e5b5a6ba0078b5e6846b5840f7cd0658774cbe4daedc8bdab81ae5eac1c6d68"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m6/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m6/checkpoint-export.json",
+      "sha256": "43225791d74eee154bff924ef1c3780d76ffb83d82ccae09a1edbf7bcbb60fb3"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m6/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m6/execution-once.json",
+      "sha256": "9130cf1b9632db97c53ca153910ab84b1736eb152a470bc53306c49c7ff8593b"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m6/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m6/source-events.jsonl",
+      "sha256": "291f1472bdb3a4920e1409e069ac6b1d34527b8f5777ff5a0efb30cb0a901894"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m7/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m7/qualification-plan.json",
+      "sha256": "ff88a10f6a2acaccf7acc87a8841ad4d5d0d356599b5c64205c2d5ae2a6ae317"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m7/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m7/collector-checkpoint.json",
+      "sha256": "0a261d3dae10c037582f1a486547756443408c1cc113dbd6f89f8da191615f95"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m7/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m7/options.json",
+      "sha256": "196a0250bacd175b01d309aab706ee51e8ab20fcff220233cd9579f8020d1cdd"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m7/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m7/tree.json",
+      "sha256": "90c5339fd54e02209895dfbd00edb94faf33e6d9c8adefdda8ea24cc788c01f0"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m7/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m7/line-relationships.json",
+      "sha256": "5135c9315e1a93ee314231d489446955bd00c4003772abdc33d3f00e4b2b6050"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m7/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m7/receipt.json",
+      "sha256": "7c4889a5ccde99b518d13654b4e67c566d93dcc7f372f47f7fdc90087374c296"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m7/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m7/checkpoint-export.json",
+      "sha256": "a19f855be80e10ceddce09aa74b3b173e0f7f0eb2cdbe71e04f5c230e0cff403"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m7/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m7/execution-once.json",
+      "sha256": "121451e35887d2c70fbb0dc7ccd6b1fdb9f357d00f9eb2fe41ce78c4b56a1a64"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m7/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m7/source-events.jsonl",
+      "sha256": "42e46ef1f4eab20b63b21c4649372e5c468b0fe7dfff3573e3c23258756471aa"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x0/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x0/qualification-plan.json",
+      "sha256": "93078f25da896f5c70963e2b5cc92e5bf0597264fc665bd81523690c69fac758"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x0/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x0/collector-checkpoint.json",
+      "sha256": "4416ae4667d4ee4c05f3c22d6608c89661b064156baf215ed9e53d432e78bf8d"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x0/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x0/options.json",
+      "sha256": "1935032d615fe53d7dae2c0a6dbd99bd9a0a9f0897b99640265e8cd880b34a63"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x0/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x0/tree.json",
+      "sha256": "576111385aa18afdb1a64a432180f30e7e589bba4f106a6a102b55b52d94448e"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x0/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x0/line-relationships.json",
+      "sha256": "74ae11a9568e8ed156c311ec1b7b919aebb4f4a4b9b96c83acd89113a8ad949c"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x0/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x0/receipt.json",
+      "sha256": "43098750f058f81671e2b3030c1d06fb4ccf4a3b87460ea8b03f17367a66bdce"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x0/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x0/checkpoint-export.json",
+      "sha256": "06703c11f04a52e3353de89e2754f71205c886b5b51de3f592abbb939956549d"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x0/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x0/execution-once.json",
+      "sha256": "0662e2673547456f09d2bbcb058e1ecee29770b02c27a96ea8f33da166ec693f"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x0/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x0/source-events.jsonl",
+      "sha256": "9b8290fe384c1957f65fe98114e5d88ee683aeeb298c04e553cee86cbfa7b8f6"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x2/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x2/qualification-plan.json",
+      "sha256": "bfc0f16e983da1de389645c6db0dafbb554667a34a07d941eb1e5054dee9b578"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x2/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x2/collector-checkpoint.json",
+      "sha256": "b46fb0cac96866f64d13b0d57536d4a6f634e9b7a35020cf03d3a0a3d2509ec2"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x2/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x2/options.json",
+      "sha256": "c5a333ae9238141c046f73e8ba0f0e42f8cdd0972f3ab0c016e1a547eb049f97"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x2/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x2/tree.json",
+      "sha256": "d6bc8ce5a6d4323deaef11b286cb55f0c4daa97b61b3c18c00c59a3805eb6b1d"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x2/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x2/line-relationships.json",
+      "sha256": "44a2d0d95d1a177b3d8ce15e3bac43730a2d4b8306a795f03bfa45a92e5b3bfa"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x2/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x2/receipt.json",
+      "sha256": "6ac577b8141f40df838024d67fb081ed0fb06d6aa709cee083a2970c62d27c6e"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x2/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x2/checkpoint-export.json",
+      "sha256": "cd3870483b0b90a66cfc288ce4862343a01c19dd28e73a03f6766f6c05f83102"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x2/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x2/execution-once.json",
+      "sha256": "be426521ce024a441d169c220bfa1352a97a8e4a4f36c9aa575d620db7b014e9"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x2/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x2/source-events.jsonl",
+      "sha256": "d68b18fd5b29c61acdafb228341e68be6cc91ed3d3a63c616d22ece50aafd8b9"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x3/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x3/qualification-plan.json",
+      "sha256": "9c4f51a3b18f26ade94f0900304a3d36247db8a9e1f11cbaa976e3560905c10a"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x3/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x3/collector-checkpoint.json",
+      "sha256": "2e58cf1de75a470b9bcd194a9ea391233d81f76ba401be9159b3c73f9829bdea"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x3/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x3/options.json",
+      "sha256": "10877464330bee3002715d52b1603b15c719b7ad61e80972258016bb4b17bcb0"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x3/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x3/tree.json",
+      "sha256": "5fe75d64f9c78d4fa22b7f4fe992692fb43c0d0796a2c4971af2fccbe9ddea04"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x3/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x3/line-relationships.json",
+      "sha256": "2ab7b0f3947891b2c4c9c005f2acff1c3e7df726665e72b1958158e12450e6fc"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x3/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x3/receipt.json",
+      "sha256": "5562e66837eb4b67b51f95c7ce55d52ae444a2e46e084f928889ec357cf598fb"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x3/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x3/checkpoint-export.json",
+      "sha256": "47869a58de18e49d5897bc1582544c0f985db31463220f595ef648e8a329e3e1"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x3/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x3/execution-once.json",
+      "sha256": "1e38f9f7e3b94bdc7f8d4d73dba966eec2e9c7a77469a3d8ff9c6f3a1ab84028"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x3/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x3/source-events.jsonl",
+      "sha256": "6ec1c465079f6de47f07b25e2e4bb08281715201a632452032542aad29d581c0"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x6/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x6/qualification-plan.json",
+      "sha256": "f35afd59cee1a4d76061d3a28b73ad555367f5d006f5442587e383083e5c32af"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x6/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x6/collector-checkpoint.json",
+      "sha256": "d1981abebc6b76f113838e9f1d0732a083dfa7e8a83263dff6c435aba0f83414"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x6/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x6/options.json",
+      "sha256": "52dd007a96138e052a8ce120c0747141cf549104222aac3a1ff706b2364ea8b3"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x6/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x6/tree.json",
+      "sha256": "cc14baca7dd4f39fff050f05d3ef7ce534f7e68da9e8bb15f8ccef7fef12f566"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x6/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x6/line-relationships.json",
+      "sha256": "8768155247091b2748c083d0e2bf45576f03d737bb2af1e47dece7f6cedab093"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x6/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x6/receipt.json",
+      "sha256": "a13e215554be8cdd70d806bd2c949c9a43e09bdc6b5e3893de530d8d320b8d6e"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x6/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x6/checkpoint-export.json",
+      "sha256": "8fec54847c64576a449f9bc13e2d365d902e07e50b60d6fe22ef518157b14185"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x6/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x6/execution-once.json",
+      "sha256": "43c59e419944bb467ad2ea47920169e3ac2a14dfde6d0b953bdfa24c71a846e9"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x6/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x6/source-events.jsonl",
+      "sha256": "511b088604d650949af95fa70c4ccc14c3afdd410668cb1e70643d655efc5fce"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x7/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x7/qualification-plan.json",
+      "sha256": "83c7e4a63397af83e7ac68eaff24bc0b6168bd45ca783e85c389ddbe5951273e"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x7/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x7/collector-checkpoint.json",
+      "sha256": "c53db5a988f1c508a0588d9b84e6fc902771ab4cab474cd4749a361f8dde76af"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x7/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x7/options.json",
+      "sha256": "0e9a8d84004f5291e316ce60e47e3e32311c86d74eac487ee74dbdd310cbc805"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x7/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x7/tree.json",
+      "sha256": "081923e19bb4e3aa53546b350699fa7d42cc8bcaa8c924041c9ce04ed6cf3ceb"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x7/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x7/line-relationships.json",
+      "sha256": "7345281fd413a6caebe8b902166111746213d35961956b113b46dc49d434016c"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x7/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x7/receipt.json",
+      "sha256": "5c7689c928ff6fa4cd1504946959300e4d7de7a2f313f80ba96b4896cf7bd6dd"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x7/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x7/checkpoint-export.json",
+      "sha256": "ec81ecc2c71f4bfd5f787a8282c9eefbe5c40599f9c1185199688f99043c39d5"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x7/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x7/execution-once.json",
+      "sha256": "3c67b70f32569ed5b5afd4070e8c442830514e4cb641d2dee56753c315b51db1"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x7/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x7/source-events.jsonl",
+      "sha256": "a42672b3280a5297863dd9a5b742c592be76903d96ebd21bbb6da42c05b82d9f"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1xl/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1xl/qualification-plan.json",
+      "sha256": "f242dca3026fff26cb4fb959d5fb4e05f1ddd148c4b1a6c58a8ffcea4251662c"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1xl/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1xl/collector-checkpoint.json",
+      "sha256": "519e6fcca90e553324fcd482f57786c1966afc789484e4aefd0206813bd65513"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1xl/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1xl/options.json",
+      "sha256": "66460565e46d77e6022c833e6e0a174cc7d86bcb5c3e073c6a624d08326d0bf4"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1xl/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1xl/tree.json",
+      "sha256": "beae907b19495688115cc01745c53834ef18a56a815f2a847a0573309448a527"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1xl/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1xl/line-relationships.json",
+      "sha256": "cd977d4cea22e2d8928f08e8f23e74e2f342730c91aaccd307dec4e070a12526"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1xl/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1xl/receipt.json",
+      "sha256": "b993c6e35d5d29deb99ae72e4083ea8ee54e8127c005f002f8e469c354cd28bb"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1xl/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1xl/checkpoint-export.json",
+      "sha256": "8ecd63c137759a50521b0aecec7dfdc8861fb64df28b103f0f71ce4f886a6c09"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1xl/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1xl/execution-once.json",
+      "sha256": "bb6a39f471f60e7d866c483bf758250930a5d676b96ec45be2c006e243777f16"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1xl/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1xl/source-events.jsonl",
+      "sha256": "25ed0a0e31a59164d873377a62de08c62276b0e72f042791fd79432f4caee114"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u10-ix25/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix25/qualification-plan.json",
+      "sha256": "9ed17a7a1fa9437798695246f183046bd7bd90b11f53ac9053bac7880e36aa1a"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u10-ix25/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix25/collector-checkpoint.json",
+      "sha256": "1d841702310829a9ddf6bb398b62471cf9382bb5517697989e61d1bfb29db930"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u10-ix25/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix25/options.json",
+      "sha256": "980e764e04fd4a5bda4d2d4d0aaa2982fb01a033b05043906686b05971f0fe87"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u10-ix25/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix25/tree.json",
+      "sha256": "18f9668a0a24d7a83ebbd3732aaa91671f847ef45cbca7b8a082df813c1914f8"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u10-ix25/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix25/line-relationships.json",
+      "sha256": "1b8e0a878c14e2258dc9bf4df57c8d67f326975d85bda2e5f11ee9ba598a25dd"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u10-ix25/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix25/receipt.json",
+      "sha256": "dd034a333e7c40e6bfc1cdc39e9a59e6b173939102c9ea51d4e62ebe1d89e9bc"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u10-ix25/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix25/checkpoint-export.json",
+      "sha256": "7033bb0638d1643bb782ceb2f211924fbd598b3b7859c320cdb41dd6ce1a5529"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u10-ix25/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix25/execution-once.json",
+      "sha256": "80c9019a511f395ace6aa7ba86c6db0a00832a41cf5fbd43eea606be55aa09dc"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u10-ix25/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix25/source-events.jsonl",
+      "sha256": "c31d34dbc873bb7451bab8ff3e515d051e8d1715dfd4ccb358d9e7556eed6e4f"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u10-x235/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x235/qualification-plan.json",
+      "sha256": "0a2963b8658f2e2da36c994a0d5c2dc9bffabd395e4dfc068eeb1b5a6f010ff5"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u10-x235/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x235/collector-checkpoint.json",
+      "sha256": "de1849bc51a8954c0b95b2bc00e587620f5c869873da20ba6d96568882f2942d"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u10-x235/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x235/options.json",
+      "sha256": "c079666996bd42db14440a5a87401110e9d4888cc7e0ab049c1712b1e1ec821f"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u10-x235/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x235/tree.json",
+      "sha256": "6ae9917472523561f56f4788fe7d80390f84f75ea5228037c8a94d95f9fcb652"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u10-x235/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x235/line-relationships.json",
+      "sha256": "26b6ae52928ff087c7666aeb2c75b073609a0191a8334636c4dd57c2237c180d"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u10-x235/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x235/receipt.json",
+      "sha256": "d0574ce7dcd77b22edf730e9c8b7fd5f4760c10374336bbeda86989e03f97b21"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u10-x235/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x235/checkpoint-export.json",
+      "sha256": "f288941d5d899b52206444e58fcc022c39f1b92fb1b244e72636cc882cf31c12"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u10-x235/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x235/execution-once.json",
+      "sha256": "9a6b472765ea80b6a3ada853dad4c0726624cca5a9bdb1b426e4d69a5f36cc10"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u10-x235/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x235/source-events.jsonl",
+      "sha256": "52500bdb634b3ac1aed5898fd928f581cccc0c6e8bcea4fd186b5f81a325b92e"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g26e-i4mg/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/i4mg/qualification-plan.json",
+      "sha256": "ee1527b5b6d586435b646534cc1aa36675a93249a7917fb5ed6211334c60d1ad"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g26e-i4mg/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/i4mg/collector-checkpoint.json",
+      "sha256": "14264b351f605ead3c452caf9f07b208b676907ceb7826c0b18258065a40cdce"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g26e-i4mg/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/i4mg/options.json",
+      "sha256": "5d2bc9ff7ee2a64b025fe77e52590b34fd1e8e12515244d77053959fd3b5e889"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g26e-i4mg/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/i4mg/tree.json",
+      "sha256": "270045aa90f0ceb466ab4c66aad0d3b92498f8ea73a5920134c1e9368883d4cc"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g26e-i4mg/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/i4mg/line-relationships.json",
+      "sha256": "084515824fd72f8a207ce3f20c87f0aced40b2aefb9b11d6a21f0ed81abd1268"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g26e-i4mg/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/i4mg/receipt.json",
+      "sha256": "920c3fbb803b5eca5aa8d24d567ec336d210a963ac7ba241a9d1b9765433ce91"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g26e-i4mg/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/i4mg/checkpoint-export.json",
+      "sha256": "9e50bdce9f46741a9cebcc13fe5675597a3bc45b759529b3ef4c1c8f22d65342"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g26e-i4mg/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/i4mg/execution-once.json",
+      "sha256": "ea5c0e1be2d4e5c56aef7ff9d664a7b3bfb8f09236700b4893992590d44b426a"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g26e-i4mg/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/i4mg/source-events.jsonl",
+      "sha256": "f3f851dee0d7368cb48dffe792c390f13cda4628f17f224ca9b834e052e1077b"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g26e-i4pc/qualification-plan.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/i4pc/qualification-plan.json",
+      "sha256": "f392696f22f7fd280a61277b1ef72fb781404e5c246d16c164ad042dd4179ee5"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g26e-i4pc/collector-checkpoint.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/i4pc/collector-checkpoint.json",
+      "sha256": "0ff9cd21aa93e5e82ce48aaa8774159cda57c40b1add12ef44e4104d5751560f"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g26e-i4pc/options.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/i4pc/options.json",
+      "sha256": "0d55a4799e9d2c08085b13f90359e7dee203c737a4073134ba29f32d988753fe"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g26e-i4pc/tree.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/i4pc/tree.json",
+      "sha256": "c8bdaed9f21a7f65d6903581cc2df951c52675af3b31571cc762ef7c92ac83a2"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g26e-i4pc/line-relationships.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/i4pc/line-relationships.json",
+      "sha256": "4ccd5fbb9a9fc62eb0fac0508955cbbc761c858b9dd8ff5e8479367070ace28d"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g26e-i4pc/receipt.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/i4pc/receipt.json",
+      "sha256": "eb2db6ed98108ca47b2bccfff04d3729bc8de2d7756846ad157cef5d20d76390"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g26e-i4pc/checkpoint-export.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/i4pc/checkpoint-export.json",
+      "sha256": "b2dea1cd7ba88be413a6a8425471f23b6359950bdee3c4776bf81336abab1a93"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g26e-i4pc/execution-once.json",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/i4pc/execution-once.json",
+      "sha256": "518ff0523bf3cc652c294e1fa433f631d8f6d923198e287dcdfb92f529e9debb"
+    },
+    {
+      "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g26e-i4pc/source-events.jsonl",
+      "destination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/i4pc/source-events.jsonl",
+      "sha256": "c4a235ae233798986f0328d36f14cd595fc5bee2a2e158e66906b16b7b5f311e"
+    }
+  ]
+}

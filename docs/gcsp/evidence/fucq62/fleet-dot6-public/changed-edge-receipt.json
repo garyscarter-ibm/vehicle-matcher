@@ -1,0 +1,15 @@
+{
+  "status": "dot6-only-source-rollback-passed",
+  "releaseId": "421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d",
+  "corruptNewOnlySource": {
+    "previousRecovered": true,
+    "previousManifestDigest": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+    "sourceConfigurations": 479,
+    "images": 1,
+    "selectionAndCompleteHistoryBytesUnchanged": true
+  },
+  "exactSourceRestored": true,
+  "freshCurrentLoad": "421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d",
+  "providerEgress": 0,
+  "unchangedRecoveryMatrixReused": true
+}

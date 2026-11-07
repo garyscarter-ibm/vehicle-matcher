@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "g42-continuation-original-coverage-gaps.v1",
+  "ledgerPath": "docs/gcsp/evidence/fucq59/scheme-line-breadth-preparation-2026-11-07/target-ledger.json",
+  "ledgerSha256": "a6352d3ccc1280e8651be1f528f989a4be4dea405796e57fc4ddffb6935ad612",
+  "targetCount": 31,
+  "schemeLinesProvenCompleteByThisSourceRun": 0,
+  "remaining": [
+    "original31scheme-line coverage joins",
+    "model/profile/year/plant/five-WMI distribution evidence",
+    "target10000distinct admitted source configurations",
+    "F60 enrichment and F54 publication/application integration",
+    "original F61 acceptance gate"
+  ],
+  "noSubstitution": true,
+  "acceptance": false
+}

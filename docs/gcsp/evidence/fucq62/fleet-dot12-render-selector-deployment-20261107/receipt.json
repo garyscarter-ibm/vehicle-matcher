@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "gcsp-render-deployment-observation.v1",
+  "status": "success",
+  "scope": "GitHub deployment metadata only",
+  "sourceFixTip": "e33b6c9a1f9c127fcd720dafbe12011b268d557a",
+  "integrationHead": "c87b6f075c4e79bee93b71e1965ad23310ab8473",
+  "deployment": {
+    "created_at": "2026-11-07T12:11:09Z",
+    "environment": "gcsp-poc - gcsp-api",
+    "id": 7620961777,
+    "ref": "gcsp-poc",
+    "sha": "c87b6f075c4e79bee93b71e1965ad23310ab8473",
+    "statuses_url": "https://api.github.com/repos/garyscarter-ibm/vehicle-matcher/deployments/7620961777/statuses",
+    "updated_at": "2026-11-07T12:28:04Z"
+  },
+  "render": {
+    "serviceId": "srv-dbm9cim1egvs73bo6g5g",
+    "deploymentId": "dep-dbnhane8bjmc73a7v5qg",
+    "dashboardUrl": "https://dashboard.render.com/web/srv-dbm9cim1egvs73bo6g5g/deploys/dep-dbnhane8bjmc73a7v5qg"
+  },
+  "terminal": {
+    "githubStatusId": 21650333270,
+    "state": "success",
+    "completedAt": "2026-11-07T12:28:04Z",
+    "observedAt": "2026-11-07T12:28:20Z",
+    "environment": "gcsp-poc - gcsp-api",
+    "environmentUrl": "https://gcsp-api.onrender.com"
+  },
+  "snapshots": [
+    {
+      "observedAt": "2026-11-07T12:11:34Z",
+      "created_at": "2026-11-07T12:11:09Z",
+      "environment": "gcsp-poc - gcsp-api",
+      "state": "in_progress",
+      "statusId": 21649718408,
+      "statusCreatedAt": "2026-11-07T12:11:10Z",
+      "renderDeploymentId": "dep-dbnhane8bjmc73a7v5qg"
+    },
+    {
+      "observedAt": "2026-11-07T12:12:42Z",
+      "state": "in_progress",
+      "statusId": 21649718408,
+      "statusCreatedAt": "2026-11-07T12:11:10Z",
+      "renderDeploymentId": "dep-dbnhane8bjmc73a7v5qg"
+    },
+    {
+      "observedAt": "2026-11-07T12:13:50Z",
+      "state": "in_progress",
+      "statusId": 21649718408,
+      "statusCreatedAt": "2026-11-07T12:11:10Z",
+      "renderDeploymentId": "dep-dbnhane8bjmc73a7v5qg"
+    },
+    {
+      "observedAt": "2026-11-07T12:15:04Z",
+      "state": "in_progress",
+      "statusId": 21649718408,
+      "statusCreatedAt": "2026-11-07T12:11:10Z",
+      "renderDeploymentId": "dep-dbnhane8bjmc73a7v5qg"
+    },
+    {
+      "observedAt": "2026-11-07T12:16:14Z",
+      "state": "in_progress",
+      "statusId": 21649718408,
+      "statusCreatedAt": "2026-11-07T12:11:10Z",
+      "renderDeploymentId": "dep-dbnhane8bjmc73a7v5qg"
+    },
+    {
+      "observedAt": "2026-11-07T12:17:25Z",
+      "state": "in_progress",
+      "statusId": 21649718408,
+      "statusCreatedAt": "2026-11-07T12:11:10Z",
+      "renderDeploymentId": "dep-dbnhane8bjmc73a7v5qg"
+    },
+    {
+      "observedAt": "2026-11-07T12:18:35Z",
+      "state": "in_progress",
+      "statusId": 21649718408,
+      "statusCreatedAt": "2026-11-07T12:11:10Z",
+      "renderDeploymentId": "dep-dbnhane8bjmc73a7v5qg"
+    },
+    {
+      "observedAt": "2026-11-07T12:28:20Z",
+      "state": "success",
+      "statusId": 21650333270,
+      "statusCreatedAt": "2026-11-07T12:28:04Z",
+      "statusUpdatedAt": "2026-11-07T12:28:04Z",
+      "renderDeploymentId": "dep-dbnhane8bjmc73a7v5qg"
+    }
+  ],
+  "observation": {
+    "method": "authenticated gh api GitHub deployment metadata; compact projections; >=60 seconds between status snapshots",
+    "applicationRequests": 0,
+    "browserOperations": 0,
+    "renderCredentialAccess": false,
+    "workflowDispatches": 0,
+    "deploymentsTriggeredByObserver": 0
+  },
+  "limits": {
+    "snapshotCount": 8,
+    "retainedReceiptMaximumBytes": 32768,
+    "unobservedInterval": "No deployment states beyond the returned GitHub metadata are inferred."
+  },
+  "resourceReceipt": {
+    "scratchCreated": false,
+    "scratchRemovedBytes": 0,
+    "ownedChildren": 0,
+    "archives": 0,
+    "compatibilityExceptions": [],
+    "leftovers": [],
+    "retained": "receipt.json and README.md only; no raw logs or response bodies"
+  },
+  "acceptance": {
+    "liveManifestVerified": false,
+    "configurationEndpointChecked": false,
+    "fullCorpusConsumerReplay": false,
+    "storyDone": false,
+    "reason": "A successful deployment is infrastructure evidence; the separately authorised live observation remains unrun."
+  }
+}
