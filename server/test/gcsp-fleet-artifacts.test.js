@@ -4,6 +4,7 @@ import { mkdtemp, readFile, rm, writeFile, stat } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { createHash } from 'node:crypto';
+import { pathToFileURL } from 'node:url';
 import { validateRelease, releaseLimits } from '../gcsp/vehicle-evidence/fleet-release.js';
 import { downloadAsset } from '../gcsp/vehicle-evidence/fleet-artifacts.js';
 import { writeCorpusCandidate, validateCorpusDirectory } from '../gcsp/vehicle-evidence/corpus-publisher.js';
@@ -22,6 +23,23 @@ test('release descriptor rejects traversal, unapproved hosts, oversized source s
 });
 function fixture() { return { schemaVersion: 'fleet-release.v1', releaseId: 'a'.repeat(64), manifestDigest: 'a'.repeat(64), previousManifestDigest: null,
   datasetId: 'test', version: '1', jsonlMaxBytes: 67108864, assets: [asset], sources: [] }; }
+test('recovery manifests retain their code-owned byte bound and direct anchors take precedence', async (t) => {
+  const directory = await mkdtemp(join(tmpdir(), 'release-limit-test-'));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const modulePath = join(directory, 'fleet-release.mjs');
+  await writeFile(modulePath, await readFile(new URL('../gcsp/vehicle-evidence/fleet-release.js', import.meta.url)));
+  const previous = 'b'.repeat(64);
+  const descriptors = [{ ...fixture(), previousManifestDigest: previous, jsonlMaxBytes: 268435456 }];
+  await writeFile(join(directory, 'fleet-releases.json'), JSON.stringify(descriptors));
+  const projected = await import(pathToFileURL(modulePath).href);
+  assert.equal(projected.releaseLimits('a'.repeat(64)).maxBytes, 268435456);
+  assert.equal(projected.releaseLimits(previous).maxBytes, 268435456);
+  assert.equal(projected.releaseLimits('c'.repeat(64)).maxBytes, 67108864);
+  descriptors.push({ ...fixture(), releaseId: previous, manifestDigest: previous, jsonlMaxBytes: 67108864 });
+  await writeFile(join(directory, 'fleet-releases.json'), JSON.stringify(descriptors));
+  const direct = await import(pathToFileURL(modulePath).href + '?direct-anchor');
+  assert.equal(direct.releaseLimits(previous).maxBytes, 67108864);
+});
 test('validator selects limits from exact manifest bytes and selector overrides caller limits', async (t) => {
   const directory = await destination(t); const written = await writeCorpusCandidate(directory, await corpusInput(), options);
   assert.equal(written.status, 'ok'); let selected;

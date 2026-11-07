@@ -2025,5 +2025,464 @@
         ]
       }
     ]
+  },
+  {
+    "schemaVersion": "fleet-release.v1",
+    "releaseId": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+    "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+    "previousManifestDigest": "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab",
+    "datasetId": "gcsp-source-fleet",
+    "version": "2026-11-07.12",
+    "jsonlMaxBytes": 268435456,
+    "assets": [
+      {
+        "name": "store--active.json",
+        "path": "store/active.json",
+        "bytes": 374,
+        "sha256": "c2a0d0dd900d579f79bd0a962dacefb7835139b44e7477102d79132e83514fcc",
+        "role": "corpus",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/store--active.json"
+      },
+      {
+        "name": "store--last-good.json",
+        "path": "store/last-good.json",
+        "bytes": 198,
+        "sha256": "ba61af11aba47c54682e9d17c89f94f62fbd7d7c12855dd863d2b4f8ea0c6ac1",
+        "role": "corpus",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/store--last-good.json"
+      },
+      {
+        "name": "store--identity-inventory.json",
+        "path": "store/identity-inventory.json",
+        "bytes": 5759517,
+        "sha256": "b87886218fa8fdfc4520008f7a4ee4acf87f49650e785af75d4759044cae5b29",
+        "role": "corpus",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/store--identity-inventory.json"
+      },
+      {
+        "name": "store--versions--3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30--manifest.json",
+        "path": "store/versions/3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30/manifest.json",
+        "bytes": 8264,
+        "sha256": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+        "role": "corpus",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/store--versions--3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30--manifest.json"
+      },
+      {
+        "name": "store--versions--3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30--configurations.jsonl",
+        "path": "store/versions/3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30/configurations.jsonl",
+        "bytes": 190860237,
+        "sha256": "dfc4f427479e9cbb8029df52b838b1d682d268059b533d7634e79b63ab810865",
+        "role": "corpus",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/store--versions--3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30--configurations.jsonl"
+      },
+      {
+        "name": "store--versions--3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30--vins.jsonl",
+        "path": "store/versions/3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30/vins.jsonl",
+        "bytes": 2565,
+        "sha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd",
+        "role": "corpus",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/store--versions--3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30--vins.jsonl"
+      },
+      {
+        "name": "store--versions--3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30--images.jsonl",
+        "path": "store/versions/3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30/images.jsonl",
+        "bytes": 1410,
+        "sha256": "eb04f0dca3046b045dd000ef4312eabc3d4b9af59b141cb0bd0e26a32230588a",
+        "role": "corpus",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/store--versions--3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30--images.jsonl"
+      },
+      {
+        "name": "store--versions--77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab--manifest.json",
+        "path": "store/versions/77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab/manifest.json",
+        "bytes": 8255,
+        "sha256": "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab",
+        "role": "corpus",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/store--versions--77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab--manifest.json"
+      },
+      {
+        "name": "store--versions--77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab--configurations.jsonl",
+        "path": "store/versions/77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab/configurations.jsonl",
+        "bytes": 154046635,
+        "sha256": "d3da484c55797f30bb6bff4630a01e5e7ef4746e854f850b9839bc49d1dc3396",
+        "role": "corpus",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/store--versions--77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab--configurations.jsonl"
+      },
+      {
+        "name": "store--versions--77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab--vins.jsonl",
+        "path": "store/versions/77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab/vins.jsonl",
+        "bytes": 2565,
+        "sha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd",
+        "role": "corpus",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/store--versions--77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab--vins.jsonl"
+      },
+      {
+        "name": "store--versions--77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab--images.jsonl",
+        "path": "store/versions/77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab/images.jsonl",
+        "bytes": 1410,
+        "sha256": "eb04f0dca3046b045dd000ef4312eabc3d4b9af59b141cb0bd0e26a32230588a",
+        "role": "corpus",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/store--versions--77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab--images.jsonl"
+      },
+      {
+        "name": "sources--a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265.jsonl",
+        "path": "sources/a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265.jsonl",
+        "bytes": 603088,
+        "sha256": "a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265",
+        "role": "source",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/sources--a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265.jsonl",
+        "origin": "batch32-2026-11-07.jsonl"
+      },
+      {
+        "name": "sources--1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802.jsonl",
+        "path": "sources/1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802.jsonl",
+        "bytes": 21408,
+        "sha256": "1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802",
+        "role": "source",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/sources--1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802.jsonl",
+        "origin": "continuation1-2026-11-07.jsonl"
+      },
+      {
+        "name": "sources--f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8.jsonl",
+        "path": "sources/f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8.jsonl",
+        "bytes": 159220,
+        "sha256": "f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8",
+        "role": "source",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/sources--f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8.jsonl",
+        "origin": "f70-first8-2026-11-07.jsonl"
+      },
+      {
+        "name": "sources--00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a.jsonl",
+        "path": "sources/00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a.jsonl",
+        "bytes": 6832119,
+        "sha256": "00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a",
+        "role": "source",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/sources--00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a.jsonl",
+        "origin": "pilot311-2026-11-07.jsonl"
+      },
+      {
+        "name": "sources--845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080.jsonl",
+        "path": "sources/845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080.jsonl",
+        "bytes": 409709,
+        "sha256": "845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080",
+        "role": "source",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/sources--845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080.jsonl",
+        "origin": "f70-1f7e-first32-2026-11-07.jsonl"
+      },
+      {
+        "name": "sources--5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7.jsonl",
+        "path": "sources/5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7.jsonl",
+        "bytes": 689849,
+        "sha256": "5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7",
+        "role": "source",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/sources--5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7.jsonl",
+        "origin": "f70-1f7e-core01-2026-11-07.jsonl"
+      },
+      {
+        "name": "sources--14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6.jsonl",
+        "path": "sources/14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6.jsonl",
+        "bytes": 689844,
+        "sha256": "14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6",
+        "role": "source",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/sources--14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6.jsonl",
+        "origin": "f70-1f7e-core02-2026-11-07.jsonl"
+      },
+      {
+        "name": "sources--c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06.jsonl",
+        "path": "sources/c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06.jsonl",
+        "bytes": 689836,
+        "sha256": "c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06",
+        "role": "source",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/sources--c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06.jsonl",
+        "origin": "f70-1f7e-core03-2026-11-07.jsonl"
+      },
+      {
+        "name": "sources--acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d.jsonl",
+        "path": "sources/acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d.jsonl",
+        "bytes": 323364,
+        "sha256": "acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d",
+        "role": "source",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/sources--acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d.jsonl",
+        "origin": "f70-1f7e-core04-2026-11-07.jsonl"
+      },
+      {
+        "name": "sources--6d1df1e9dde9d019e9f3a7dc3e22727d9df11b655ef0128e81c5ed75551a5b11.jsonl",
+        "path": "sources/6d1df1e9dde9d019e9f3a7dc3e22727d9df11b655ef0128e81c5ed75551a5b11.jsonl",
+        "bytes": 8697624,
+        "sha256": "6d1df1e9dde9d019e9f3a7dc3e22727d9df11b655ef0128e81c5ed75551a5b11",
+        "role": "source",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/sources--6d1df1e9dde9d019e9f3a7dc3e22727d9df11b655ef0128e81c5ed75551a5b11.jsonl",
+        "origin": "f70-typed-axis390-2026-11-07.jsonl"
+      },
+      {
+        "name": "sources--fd8d384e60b2058e27ee0b95c089cb7f7183bfd2d511761e39e566a6fc8cde9c.jsonl",
+        "path": "sources/fd8d384e60b2058e27ee0b95c089cb7f7183bfd2d511761e39e566a6fc8cde9c.jsonl",
+        "bytes": 5985315,
+        "sha256": "fd8d384e60b2058e27ee0b95c089cb7f7183bfd2d511761e39e566a6fc8cde9c",
+        "role": "source",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/sources--fd8d384e60b2058e27ee0b95c089cb7f7183bfd2d511761e39e566a6fc8cde9c.jsonl",
+        "origin": "f70-model-trim264-2026-11-07.jsonl"
+      },
+      {
+        "name": "sources--4d5d0766342d817d06f3e60aed1ae87ba4446c4510cf00c18cb32798f56aeeda.jsonl",
+        "path": "sources/4d5d0766342d817d06f3e60aed1ae87ba4446c4510cf00c18cb32798f56aeeda.jsonl",
+        "bytes": 16411688,
+        "sha256": "4d5d0766342d817d06f3e60aed1ae87ba4446c4510cf00c18cb32798f56aeeda",
+        "role": "source",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/sources--4d5d0766342d817d06f3e60aed1ae87ba4446c4510cf00c18cb32798f56aeeda.jsonl",
+        "origin": "f70-model-axis790-2026-11-07.jsonl"
+      },
+      {
+        "name": "sources--00a7db972439971fe87060c4e58e3228875ce7f1ea8e204b715521808d530064.jsonl",
+        "path": "sources/00a7db972439971fe87060c4e58e3228875ce7f1ea8e204b715521808d530064.jsonl",
+        "bytes": 11435963,
+        "sha256": "00a7db972439971fe87060c4e58e3228875ce7f1ea8e204b715521808d530064",
+        "role": "source",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/sources--00a7db972439971fe87060c4e58e3228875ce7f1ea8e204b715521808d530064.jsonl",
+        "origin": "global-union501-2026-11-07-9.jsonl"
+      },
+      {
+        "name": "sources--34b8befe36cee454171e72dbcea4b67a947a69990098a190d327c033dccbd8b3.jsonl",
+        "path": "sources/34b8befe36cee454171e72dbcea4b67a947a69990098a190d327c033dccbd8b3.jsonl",
+        "bytes": 33542272,
+        "sha256": "34b8befe36cee454171e72dbcea4b67a947a69990098a190d327c033dccbd8b3",
+        "role": "source",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/sources--34b8befe36cee454171e72dbcea4b67a947a69990098a190d327c033dccbd8b3.jsonl",
+        "origin": "global-union2242-part01-2026-11-07-10.jsonl"
+      },
+      {
+        "name": "sources--da1eb59e4e5f8dee9dd06e8877da275c2eb79e541dea90c793559fac6cd188ff.jsonl",
+        "path": "sources/da1eb59e4e5f8dee9dd06e8877da275c2eb79e541dea90c793559fac6cd188ff.jsonl",
+        "bytes": 16909795,
+        "sha256": "da1eb59e4e5f8dee9dd06e8877da275c2eb79e541dea90c793559fac6cd188ff",
+        "role": "source",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/sources--da1eb59e4e5f8dee9dd06e8877da275c2eb79e541dea90c793559fac6cd188ff.jsonl",
+        "origin": "global-union2242-part02-2026-11-07-10.jsonl"
+      },
+      {
+        "name": "sources--65d24a89759a34c4ebc6827c6c8960f5c7093891b15cd0ff1edc4343402b08a3.jsonl",
+        "path": "sources/65d24a89759a34c4ebc6827c6c8960f5c7093891b15cd0ff1edc4343402b08a3.jsonl",
+        "bytes": 33554086,
+        "sha256": "65d24a89759a34c4ebc6827c6c8960f5c7093891b15cd0ff1edc4343402b08a3",
+        "role": "source",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/sources--65d24a89759a34c4ebc6827c6c8960f5c7093891b15cd0ff1edc4343402b08a3.jsonl",
+        "origin": "global-union3385-part01-2026-11-07-11.jsonl"
+      },
+      {
+        "name": "sources--d46fc498d664a64196f3f5499dba22bc0bee48eefa12452ea23c5d6104133012.jsonl",
+        "path": "sources/d46fc498d664a64196f3f5499dba22bc0bee48eefa12452ea23c5d6104133012.jsonl",
+        "bytes": 33551571,
+        "sha256": "d46fc498d664a64196f3f5499dba22bc0bee48eefa12452ea23c5d6104133012",
+        "role": "source",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/sources--d46fc498d664a64196f3f5499dba22bc0bee48eefa12452ea23c5d6104133012.jsonl",
+        "origin": "global-union3385-part02-2026-11-07-11.jsonl"
+      },
+      {
+        "name": "sources--19f597db5359212cf0615bbf2ef3518fca4f014c591ee962ccd07db513966874.jsonl",
+        "path": "sources/19f597db5359212cf0615bbf2ef3518fca4f014c591ee962ccd07db513966874.jsonl",
+        "bytes": 10262576,
+        "sha256": "19f597db5359212cf0615bbf2ef3518fca4f014c591ee962ccd07db513966874",
+        "role": "source",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/sources--19f597db5359212cf0615bbf2ef3518fca4f014c591ee962ccd07db513966874.jsonl",
+        "origin": "global-union3385-part03-2026-11-07-11.jsonl"
+      },
+      {
+        "name": "sources--eb348cecdaa2638b2e42c2b9442b038ebf93b46a4d4594878fdc3e7f697921ed.jsonl",
+        "path": "sources/eb348cecdaa2638b2e42c2b9442b038ebf93b46a4d4594878fdc3e7f697921ed.jsonl",
+        "bytes": 33535153,
+        "sha256": "eb348cecdaa2638b2e42c2b9442b038ebf93b46a4d4594878fdc3e7f697921ed",
+        "role": "source",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/sources--eb348cecdaa2638b2e42c2b9442b038ebf93b46a4d4594878fdc3e7f697921ed.jsonl",
+        "origin": "global-union1949-part01-2026-11-07-12.jsonl"
+      },
+      {
+        "name": "sources--b795672aa8c4acefa8aee923743deb9a88c5f768cae66227569e94eac543f21c.jsonl",
+        "path": "sources/b795672aa8c4acefa8aee923743deb9a88c5f768cae66227569e94eac543f21c.jsonl",
+        "bytes": 9386931,
+        "sha256": "b795672aa8c4acefa8aee923743deb9a88c5f768cae66227569e94eac543f21c",
+        "role": "source",
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/sources--b795672aa8c4acefa8aee923743deb9a88c5f768cae66227569e94eac543f21c.jsonl",
+        "origin": "global-union1949-part02-2026-11-07-12.jsonl"
+      }
+    ],
+    "sources": [
+      {
+        "path": "sources/a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265.jsonl",
+        "sha256": "a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265",
+        "bytes": 603088,
+        "manifestDigests": [
+          "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+          "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab"
+        ]
+      },
+      {
+        "path": "sources/1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802.jsonl",
+        "sha256": "1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802",
+        "bytes": 21408,
+        "manifestDigests": [
+          "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+          "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab"
+        ]
+      },
+      {
+        "path": "sources/f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8.jsonl",
+        "sha256": "f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8",
+        "bytes": 159220,
+        "manifestDigests": [
+          "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+          "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab"
+        ]
+      },
+      {
+        "path": "sources/00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a.jsonl",
+        "sha256": "00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a",
+        "bytes": 6832119,
+        "manifestDigests": [
+          "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+          "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab"
+        ]
+      },
+      {
+        "path": "sources/845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080.jsonl",
+        "sha256": "845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080",
+        "bytes": 409709,
+        "manifestDigests": [
+          "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+          "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab"
+        ]
+      },
+      {
+        "path": "sources/5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7.jsonl",
+        "sha256": "5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7",
+        "bytes": 689849,
+        "manifestDigests": [
+          "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+          "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab"
+        ]
+      },
+      {
+        "path": "sources/14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6.jsonl",
+        "sha256": "14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6",
+        "bytes": 689844,
+        "manifestDigests": [
+          "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+          "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab"
+        ]
+      },
+      {
+        "path": "sources/c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06.jsonl",
+        "sha256": "c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06",
+        "bytes": 689836,
+        "manifestDigests": [
+          "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+          "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab"
+        ]
+      },
+      {
+        "path": "sources/acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d.jsonl",
+        "sha256": "acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d",
+        "bytes": 323364,
+        "manifestDigests": [
+          "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+          "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab"
+        ]
+      },
+      {
+        "path": "sources/6d1df1e9dde9d019e9f3a7dc3e22727d9df11b655ef0128e81c5ed75551a5b11.jsonl",
+        "sha256": "6d1df1e9dde9d019e9f3a7dc3e22727d9df11b655ef0128e81c5ed75551a5b11",
+        "bytes": 8697624,
+        "manifestDigests": [
+          "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+          "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab"
+        ]
+      },
+      {
+        "path": "sources/fd8d384e60b2058e27ee0b95c089cb7f7183bfd2d511761e39e566a6fc8cde9c.jsonl",
+        "sha256": "fd8d384e60b2058e27ee0b95c089cb7f7183bfd2d511761e39e566a6fc8cde9c",
+        "bytes": 5985315,
+        "manifestDigests": [
+          "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+          "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab"
+        ]
+      },
+      {
+        "path": "sources/4d5d0766342d817d06f3e60aed1ae87ba4446c4510cf00c18cb32798f56aeeda.jsonl",
+        "sha256": "4d5d0766342d817d06f3e60aed1ae87ba4446c4510cf00c18cb32798f56aeeda",
+        "bytes": 16411688,
+        "manifestDigests": [
+          "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+          "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab"
+        ]
+      },
+      {
+        "path": "sources/00a7db972439971fe87060c4e58e3228875ce7f1ea8e204b715521808d530064.jsonl",
+        "sha256": "00a7db972439971fe87060c4e58e3228875ce7f1ea8e204b715521808d530064",
+        "bytes": 11435963,
+        "manifestDigests": [
+          "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+          "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab"
+        ]
+      },
+      {
+        "path": "sources/34b8befe36cee454171e72dbcea4b67a947a69990098a190d327c033dccbd8b3.jsonl",
+        "sha256": "34b8befe36cee454171e72dbcea4b67a947a69990098a190d327c033dccbd8b3",
+        "bytes": 33542272,
+        "manifestDigests": [
+          "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+          "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab"
+        ]
+      },
+      {
+        "path": "sources/da1eb59e4e5f8dee9dd06e8877da275c2eb79e541dea90c793559fac6cd188ff.jsonl",
+        "sha256": "da1eb59e4e5f8dee9dd06e8877da275c2eb79e541dea90c793559fac6cd188ff",
+        "bytes": 16909795,
+        "manifestDigests": [
+          "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+          "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab"
+        ]
+      },
+      {
+        "path": "sources/65d24a89759a34c4ebc6827c6c8960f5c7093891b15cd0ff1edc4343402b08a3.jsonl",
+        "sha256": "65d24a89759a34c4ebc6827c6c8960f5c7093891b15cd0ff1edc4343402b08a3",
+        "bytes": 33554086,
+        "manifestDigests": [
+          "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+          "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab"
+        ]
+      },
+      {
+        "path": "sources/d46fc498d664a64196f3f5499dba22bc0bee48eefa12452ea23c5d6104133012.jsonl",
+        "sha256": "d46fc498d664a64196f3f5499dba22bc0bee48eefa12452ea23c5d6104133012",
+        "bytes": 33551571,
+        "manifestDigests": [
+          "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+          "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab"
+        ]
+      },
+      {
+        "path": "sources/19f597db5359212cf0615bbf2ef3518fca4f014c591ee962ccd07db513966874.jsonl",
+        "sha256": "19f597db5359212cf0615bbf2ef3518fca4f014c591ee962ccd07db513966874",
+        "bytes": 10262576,
+        "manifestDigests": [
+          "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+          "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab"
+        ]
+      },
+      {
+        "path": "sources/eb348cecdaa2638b2e42c2b9442b038ebf93b46a4d4594878fdc3e7f697921ed.jsonl",
+        "sha256": "eb348cecdaa2638b2e42c2b9442b038ebf93b46a4d4594878fdc3e7f697921ed",
+        "bytes": 33535153,
+        "manifestDigests": [
+          "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30"
+        ]
+      },
+      {
+        "path": "sources/b795672aa8c4acefa8aee923743deb9a88c5f768cae66227569e94eac543f21c.jsonl",
+        "sha256": "b795672aa8c4acefa8aee923743deb9a88c5f768cae66227569e94eac543f21c",
+        "bytes": 9386931,
+        "manifestDigests": [
+          "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30"
+        ]
+      }
+    ]
   }
 ]

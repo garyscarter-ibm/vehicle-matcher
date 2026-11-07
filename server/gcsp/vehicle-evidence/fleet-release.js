@@ -44,4 +44,7 @@ const trusted = releases.map(validateRelease);
 if (new Set(trusted.map((r) => r.releaseId)).size !== trusted.length) throw new TypeError('Duplicate release anchor');
 export const fleetReleases = Object.freeze(trusted);
 export function releaseForManifest(digest) { return trusted.find((r) => r.manifestDigest === digest) ?? trusted.find((r) => r.previousManifestDigest === digest) ?? null; }
-export function releaseLimits(digest) { return Object.freeze({ maxBytes: (releaseForManifest(digest)?.manifestDigest === digest ? releaseForManifest(digest).jsonlMaxBytes : 67108864), maxRowBytes: 1048576, maxRows: 100000 }); }
+export function releaseLimits(digest) {
+  return Object.freeze({ maxBytes: releaseForManifest(digest)?.jsonlMaxBytes ?? 67108864,
+    maxRowBytes: 1048576, maxRows: 100000 });
+}
