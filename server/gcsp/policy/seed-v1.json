@@ -13181,6 +13181,380 @@
       "sourceDate": "2026-11-07",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "orderPlan.horizonDays",
+      "value": 120,
+      "unit": "days",
+      "status": "assumed",
+      "basis": "Plausible four-month synthetic planning horizon that covers the demo renewals; revisable through trials. Not a BMW procurement rule.",
+      "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "orderPlan.budgetMinor",
+      "value": 20000000,
+      "unit": "GBP minor units",
+      "status": "assumed",
+      "basis": "Synthetic 200,000 GBP hard procurement envelope for the demo catalogue; no BMW budget or cost claim.",
+      "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "orderPlan.currency",
+      "value": "GBP",
+      "unit": "ISO currency",
+      "status": "assumed",
+      "basis": "Synthetic UK planning currency. Every catalogue unit cost must use this currency.",
+      "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "orderPlan.modelBounds",
+      "value": [
+        {
+          "modelId": "g20-saloon",
+          "min": 0,
+          "max": 4
+        },
+        {
+          "modelId": "g21-touring",
+          "min": 0,
+          "max": 3
+        },
+        {
+          "modelId": "g61-i5",
+          "min": 0,
+          "max": 2
+        }
+      ],
+      "unit": "new vehicles per model",
+      "status": "assumed",
+      "basis": "Synthetic per-model order limits over the orderPlan.catalog.v1 model ids; a model bound sums its sibling derivatives. Revisable through trials.",
+      "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "orderPlan.derivativeBounds",
+      "value": [
+        {
+          "derivativeId": "g20-saloon-320i",
+          "min": 0,
+          "max": 3
+        },
+        {
+          "derivativeId": "g20-saloon-330e",
+          "min": 0,
+          "max": 2
+        },
+        {
+          "derivativeId": "g21-touring-320i",
+          "min": 0,
+          "max": 3
+        },
+        {
+          "derivativeId": "g61-i5-40",
+          "min": 0,
+          "max": 2
+        }
+      ],
+      "unit": "new vehicles per derivative",
+      "status": "assumed",
+      "basis": "Synthetic per-derivative order limits over the orderPlan.catalog.v1 derivative ids; small enough for the exhaustive demo search. Revisable through trials.",
+      "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "orderPlan.objectiveWeights",
+      "value": {
+        "coverage": 100,
+        "unallocatedStock": 10,
+        "costMinor": 0
+      },
+      "unit": "objective utility per covered entitlement / unmatched vehicle / currency minor unit",
+      "status": "assumed",
+      "basis": "Prefer acceptable renewal coverage, then reduce unmatched stock; budget stays a hard limit. Not measured employee utility weights.",
+      "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "orderPlan.catalog.v1",
+      "value": {
+        "version": "order-plan-catalog.v1",
+        "currency": "GBP",
+        "assurance": "synthetic-scenario",
+        "derivatives": [
+          {
+            "derivativeId": "g20-saloon-320i",
+            "modelId": "g20-saloon",
+            "production": {
+              "model": "G20 Saloon",
+              "derivative": "320i"
+            },
+            "unitCostMinor": 3900000,
+            "configurationIds": [
+              "Q01QRzIwOlJFRlBBSU5ULFJFRlRSSU0="
+            ]
+          },
+          {
+            "derivativeId": "g20-saloon-330e",
+            "modelId": "g20-saloon",
+            "production": {
+              "model": "G20 Saloon",
+              "derivative": "330e"
+            },
+            "unitCostMinor": 4600000,
+            "configurationIds": [
+              "Q01QRzIwRTpSRUZQQUlOVCxSRUZUUklN"
+            ]
+          },
+          {
+            "derivativeId": "g21-touring-320i",
+            "modelId": "g21-touring",
+            "production": {
+              "model": "G21 Touring",
+              "derivative": "320i"
+            },
+            "unitCostMinor": 4200000,
+            "configurationIds": [
+              "Q01QRzIxOlJFRlBBSU5ULFJFRlRSSU0="
+            ]
+          },
+          {
+            "derivativeId": "g61-i5-40",
+            "modelId": "g61-i5",
+            "production": {
+              "model": "G61 i5",
+              "derivative": "i5 40"
+            },
+            "unitCostMinor": 6200000,
+            "configurationIds": [
+              "Q01QRzYxOlJFRlBBSU5ULFJFRlRSSU0="
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "configurationId": "Q01QRzIwOlJFRlBBSU5ULFJFRlRSSU0=",
+            "derivativeId": "g20-saloon-320i",
+            "version": "order-plan-catalog.v1",
+            "display": {
+              "name": "Synthetic 3 Series Saloon 320i"
+            },
+            "facts": {
+              "eligibilityModelKey": {
+                "value": "G20 Saloon|320i",
+                "unit": null
+              },
+              "modelLine": {
+                "value": "G20 Saloon",
+                "unit": null
+              },
+              "body": {
+                "value": "saloon",
+                "unit": null
+              },
+              "fuel": {
+                "value": "petrol",
+                "unit": null
+              },
+              "seats": {
+                "value": 5,
+                "unit": "count"
+              },
+              "boot": {
+                "value": 480,
+                "unit": "L"
+              },
+              "zeroTo62": {
+                "value": 7.4,
+                "unit": "s"
+              },
+              "sizeClass": {
+                "value": 2,
+                "unit": "ordinal-1-5"
+              },
+              "tags": {
+                "value": [
+                  "cruiser"
+                ],
+                "unit": null
+              },
+              "mpg": {
+                "value": 45,
+                "unit": "mpg-imperial"
+              }
+            }
+          },
+          {
+            "configurationId": "Q01QRzIwRTpSRUZQQUlOVCxSRUZUUklN",
+            "derivativeId": "g20-saloon-330e",
+            "version": "order-plan-catalog.v1",
+            "display": {
+              "name": "Synthetic 3 Series Saloon 330e"
+            },
+            "facts": {
+              "eligibilityModelKey": {
+                "value": "G20 Saloon|330e",
+                "unit": null
+              },
+              "modelLine": {
+                "value": "G20 Saloon",
+                "unit": null
+              },
+              "body": {
+                "value": "saloon",
+                "unit": null
+              },
+              "fuel": {
+                "value": "phev",
+                "unit": null
+              },
+              "seats": {
+                "value": 5,
+                "unit": "count"
+              },
+              "boot": {
+                "value": 375,
+                "unit": "L"
+              },
+              "zeroTo62": {
+                "value": 6.1,
+                "unit": "s"
+              },
+              "sizeClass": {
+                "value": 2,
+                "unit": "ordinal-1-5"
+              },
+              "tags": {
+                "value": [
+                  "cruiser"
+                ],
+                "unit": null
+              }
+            }
+          },
+          {
+            "configurationId": "Q01QRzIxOlJFRlBBSU5ULFJFRlRSSU0=",
+            "derivativeId": "g21-touring-320i",
+            "version": "order-plan-catalog.v1",
+            "display": {
+              "name": "Synthetic 3 Series Touring 320i"
+            },
+            "facts": {
+              "eligibilityModelKey": {
+                "value": "G21 Touring|320i",
+                "unit": null
+              },
+              "modelLine": {
+                "value": "G21 Touring",
+                "unit": null
+              },
+              "body": {
+                "value": "estate",
+                "unit": null
+              },
+              "fuel": {
+                "value": "petrol",
+                "unit": null
+              },
+              "seats": {
+                "value": 5,
+                "unit": "count"
+              },
+              "boot": {
+                "value": 500,
+                "unit": "L"
+              },
+              "zeroTo62": {
+                "value": 7.4,
+                "unit": "s"
+              },
+              "sizeClass": {
+                "value": 2,
+                "unit": "ordinal-1-5"
+              },
+              "tags": {
+                "value": [
+                  "family"
+                ],
+                "unit": null
+              },
+              "mpg": {
+                "value": 44,
+                "unit": "mpg-imperial"
+              }
+            }
+          },
+          {
+            "configurationId": "Q01QRzYxOlJFRlBBSU5ULFJFRlRSSU0=",
+            "derivativeId": "g61-i5-40",
+            "version": "order-plan-catalog.v1",
+            "display": {
+              "name": "Synthetic i5 eDrive40 Touring"
+            },
+            "facts": {
+              "eligibilityModelKey": {
+                "value": "G61 i5|i5 40",
+                "unit": null
+              },
+              "modelLine": {
+                "value": "G61 i5",
+                "unit": null
+              },
+              "body": {
+                "value": "estate",
+                "unit": null
+              },
+              "fuel": {
+                "value": "ev",
+                "unit": null
+              },
+              "seats": {
+                "value": 5,
+                "unit": "count"
+              },
+              "boot": {
+                "value": 490,
+                "unit": "L"
+              },
+              "zeroTo62": {
+                "value": 6.1,
+                "unit": "s"
+              },
+              "sizeClass": {
+                "value": 3,
+                "unit": "ordinal-1-5"
+              },
+              "tags": {
+                "value": [
+                  "electric"
+                ],
+                "unit": null
+              }
+            }
+          }
+        ]
+      },
+      "unit": "synthetic order-planning catalogue (derivatives, unit costs, configurations)",
+      "status": "assumed",
+      "basis": "Synthetic catalogue of four derivatives over three models, bound to the reviewed structural configuration ids (the 330e id is minted in the same Base64 format). Unit costs are synthetic GBP minor units, not BMW prices or procurement data; facts are compact assumed values, not a published corpus.",
+      "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
     }
   ]
 }
