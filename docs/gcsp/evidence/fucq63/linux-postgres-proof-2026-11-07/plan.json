@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "f63-linux-postgres-orders-plan.v1",
+  "status": "prepared-unexecuted-reviewed-integration-push-required",
+  "releaseId": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "corpusVersion": "2026-11-07.12",
+  "datasetId": "gcsp-source-fleet",
+  "asOf": "2026-11-07T00:00:00.000Z",
+  "selectionSha256": "dbb5be7d9f776bd97361d34d52a69490fd81d3e614f15cf52d63597179c354b5",
+  "expected": {
+    "publicAssetCount": 31,
+    "publicAssetBytes": 574382841,
+    "sourceConfigurations": 10000,
+    "configurations": 10001,
+    "vinMappings": 1,
+    "selectedOrders": 3,
+    "maxRestoreFetches": 124,
+    "deferredConsumerFailures": 2707
+  },
+  "resource": {
+    "workers": 1,
+    "jobSeconds": 600,
+    "supervisorSeconds": 520,
+    "nodeGroupRssMiB": 768,
+    "nodeHeapMiB": 512,
+    "postgresContainerMiB": 512,
+    "postgresTmpfsMiB": 192,
+    "supervisorRssMiB": 128,
+    "aggregateRamMiB": 1408,
+    "aggregateWorkingDataMiB": 2048,
+    "runnerWorkingDataMiB": 1856,
+    "phaseSeconds": {
+      "npm-ci": 90,
+      "restore": 240,
+      "orders": 180
+    },
+    "minimumFreeMiB": 5120,
+    "boundedPhaseLogBytes": 16384,
+    "retainedReceiptLimitBytes": 65536,
+    "compatibilityException": "Bounded tool-required ephemeral CI PostgreSQL service data (tmpfs <=192MiB) and public restore/cache working data; no retained archive. Platform registers service teardown before creation; supervisor registers owned-root finalizer before allocation."
+  },
+  "selectedChecks": [
+    "Production public cold restore of exact .12 with code-owned approved URLs and byte/hash validation",
+    "Actual production three-migration ledger on isolated PostgreSQL16 service",
+    "Three retained source configurations matched to frozen .12 observations",
+    "Production allocator plus publishStockOrders into one exact current run",
+    "Close production seed repository and reopen production PostgreSQL repository with migrate:false",
+    "Unchanged proveCurrentOrderReferences for three exact UUIDs: native rows, direct DTO, configured consumer, actual loopback HTTP, zero external source attempts and current-run stability",
+    "Owned process/container/data cleanup and verified absence"
+  ],
+  "excludedChecks": [
+    "Full suite",
+    "Full 10000 consumer replay or repair of deferred2707 failures",
+    "10k stock/VIN generation",
+    "Mac installation",
+    "Managed Render database/persistence",
+    "Deployment or browser acceptance",
+    "Source collection"
+  ],
+  "codePinSourceHead": "e4a8c50ecdf9affa3f7b5840d0379e93ca7ae0d3",
+  "codePins": {
+    "server/gcsp/vehicle-evidence/fleet-releases.json": "e13a5f99167bea65cc9a04e6eae41cec56b55caaa229b640e0e47b20f44301e0",
+    "server/gcsp/vehicle-evidence/fleet-release.js": "1cadb13cbd9851eea93be14096328353970e3210b4f00e1ecf5ae8362f6289b4",
+    "server/gcsp/vehicle-evidence/fleet-artifacts.js": "0bb5079b92a0a8df997708a6f266a2de84603ebd53efdf291a15edffd0d92811",
+    "server/gcsp/vehicle-evidence/synthetic-registry.js": "38f86f5121fae767465b81a4615355b7577c35f6b74ed57263441240d617f1e4",
+    "server/gcsp/vehicle-evidence/vin-allocation.js": "336d73b30e78ee4a6a1484598000497513a160a857d7b9533bd5ff3e55ff051e",
+    "server/gcsp/vehicle-evidence/vehicle-lookup.js": "1184b7cc50565b180284e342183cca02e031a718a55f909b7980c34378a630e9",
+    "server/gcsp/vehicle-evidence/application-vehicle-details.js": "64bb6073a90f8aca27766c314a08073ee9df320e2683122cd05b3c6fe49d808f",
+    "server/gcsp/repository/postgres.js": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/migrations/index.js": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f",
+    "server/gcsp/migrations/0001_transaction_foundation.sql": "3bde8db01f103141ca9bbe7398a6e1172df9b9789df745244a0071a00b9629d1",
+    "server/gcsp/migrations/0002_policy_tables.sql": "65346093f811df63b225436a0ca35cd4061990a78caacb44ffde7b1effd1edd0",
+    "server/gcsp/migrations/0003_renewal_cases.sql": "e76750fddd75b9d363fd209c243169ce1f9b06c78f96b7dbb74fe3c296f08c98",
+    "scripts/gcsp/fleet-offline-guard.mjs": "881926639dfab681a917212696e50c6420a0a2b0dcd66dd1a126950283239e59",
+    "docs/gcsp/evidence/fucq63/order-reference-2026-11-07/prove-orders.mjs": "d768ba9636e564842433627750c6530cca8c4161836da0bb38f9e65dbf2f8847"
+  },
+  "acceptance": false,
+  "testImpact": {
+    "selectionReason": "No application behavior changed. The new workflow directly exercises the existing real stock producer/repository/lookup boundary; the first meaningful native check runs once in reviewed CI. No broad suite selection is justified.",
+    "unknownUntilCI": [
+      "Linux helper execution",
+      "native PostgreSQL allocator/publisher/close-reopen/order-port parity",
+      "actual resource measurements and teardown"
+    ],
+    "boundaries": {
+      "orders.mjs": [
+        "three retained configuration DTO pins",
+        "production migration ledger",
+        "current-run creation",
+        "allocateSyntheticIdentities",
+        "publishStockOrders",
+        "PostgreSQL close/reopen",
+        "proveCurrentOrderReferences"
+      ],
+      "run.py": [
+        "exact public restore",
+        "sequential subprocess/resource limits",
+        "owned receipt/checkpoint/teardown"
+      ],
+      "proveCurrentOrderReferences": [
+        "repository currentRun/read",
+        "registry getConfiguration",
+        "configured consumer",
+        "actual buildServer loopback HTTP",
+        "offline egress guard"
+      ]
+    },
+    "fixtureEdges": "Exact public .12 corpus, three retained passing source IDs, one isolated run/schema and ephemeral PostgreSQL16 service. No managed database, external source or full consumer coverage inference."
+  },
+  "executionTrigger": {
+    "push": {
+      "branches": [
+        "gcsp-poc"
+      ],
+      "paths": [
+        ".github/workflows/gcsp-native-orders.yml",
+        "docs/gcsp/evidence/fucq63/linux-postgres-proof-2026-11-07/**"
+      ]
+    },
+    "workflowDispatchPreserved": true,
+    "operation": "Root merges once and observes the resulting integration-push run; topic branch pushes do not match. No agent manual dispatch or merge.",
+    "repeatBehavior": "Future gcsp-poc pushes changing these exact paths also trigger this workflow; concurrency remains one job."
+  }
+}

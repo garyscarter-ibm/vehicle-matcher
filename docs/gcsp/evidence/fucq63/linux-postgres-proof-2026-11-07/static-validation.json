@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "f63-linux-postgres-static-validation.v1",
+  "status": "passed",
+  "scope": "Local authoring/static checks only; first meaningful native execution remains the root-reviewed gcsp-poc integration-push CI run.",
+  "python": "in-memory compilation passed; runner not executed",
+  "node": "orders.mjs --check passed; module imports not executed",
+  "yaml": "Ruby Psych parsed and narrow gcsp-poc push plus preserved workflow_dispatch/service/resource/cleanup structure checked; YAML1.1 on-key true handled explicitly",
+  "codePinsRecomputed": 15,
+  "retainedReceiptPinsVerified": 1,
+  "actualDot12PassingConfigurationsMatched": 3,
+  "relativeImportsResolved": 11,
+  "localReadmeLinksResolved": 4,
+  "resourceArithmetic": "2048MiB working data;1408MiB aggregate RAM;510s phase ceilings;520s supervisor;600s job",
+  "whitespace": "passed",
+  "productionPathsChanged": [],
+  "runtimeTests": 0,
+  "nativeCalls": 0,
+  "localRestoreCalls": 0,
+  "packageInstallCalls": 0,
+  "sourceCalls": 0,
+  "workflowDispatches": 0,
+  "scratchAllocatedBytes": 0,
+  "removedAllocationBytes": 0,
+  "disposableLeftovers": [],
+  "unrun": [
+    "npm ci",
+    "public restore",
+    "PostgreSQL16 service/bootstrap/migrations",
+    "new seed/allocator/publisher/close-reopen/proof",
+    "runtime budgets/finalizer"
+  ],
+  "acceptance": false,
+  "bash": "Both workflow run blocks pass bash -n through stdin; neither executed",
+  "triggerCorrection": {
+    "reason": "Root confirmed default branch main; branch-only manual workflow registration cannot be assumed. A narrow integration-push trigger starts the reviewed run without editing main.",
+    "pushBranches": [
+      "gcsp-poc"
+    ],
+    "pushPaths": [
+      ".github/workflows/gcsp-native-orders.yml",
+      "docs/gcsp/evidence/fucq63/linux-postgres-proof-2026-11-07/**"
+    ],
+    "workflowDispatchPreserved": true,
+    "agentMerges": 0,
+    "workflowDispatches": 0,
+    "runtimeSourceIdentitiesUnchanged": {
+      "run.py": "a6f779afe04f142552b302d2e19048c355ebd1c0633ad66a2c3f678f6c59ffce",
+      "orders.mjs": "2a73ee9ba07ba45b51c28591369fa912a6c0b6db7f2af71d92bcb0a44270b41f",
+      "selection.json": "dbb5be7d9f776bd97361d34d52a69490fd81d3e614f15cf52d63597179c354b5"
+    }
+  }
+}
