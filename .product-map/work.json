@@ -661,16 +661,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60"
     },
     {
-      "id": "FUCQ-61",
-      "title": "Collect and validate 10,000 genuinely distinct BMW configurations",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-61"
-    },
-    {
       "id": "FUCQ-62",
       "title": "Publish the configuration corpus and generate stock by order reference",
       "status": "To Do",
@@ -2063,6 +2053,60 @@
         }
       ],
       "unsliced": false
+    },
+    {
+      "id": "FUCQ-61",
+      "title": "Collect and validate 10,000 genuinely distinct BMW configurations",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-07T00:36:58Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-61",
+      "slices": [
+        {
+          "id": "source-run",
+          "status": "not-started",
+          "title": "Execute qualified real collection"
+        },
+        {
+          "id": "semantic-audit",
+          "status": "in-progress",
+          "title": "Recompute all accepted signatures",
+          "observed_at": "2026-11-07T00:34:28Z",
+          "evidence": "Scoped consumer6/6 fixture checks passed; lead review and actual corpus acceptance outstanding. docs/gcsp/evidence/fucq61/staged-verifier-2026-11-07.md"
+        },
+        {
+          "id": "staged-verifier",
+          "status": "in-progress",
+          "title": "Validate staged artifacts and counts",
+          "observed_at": "2026-11-07T00:34:28Z",
+          "evidence": "Scoped consumer6/6 fixture checks passed; lead review and actual corpus acceptance outstanding. docs/gcsp/evidence/fucq61/staged-verifier-2026-11-07.md"
+        },
+        {
+          "id": "coverage-audit",
+          "status": "not-started",
+          "title": "Report actual coverage completeness and budgets"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Integrate actual collected enriched corpus and cached replay"
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-04-034",
+      "workers": [
+        {
+          "name": "Mike Wazowski",
+          "role": "implementer; staged-verifier and semantic-audit slices only",
+          "harness": "codex",
+          "status": "scoped implementation ready for lead review; no test or source processes active",
+          "source": "thread01a1b36c-bb11-7852-9691-6eab307a6c09 requested/selected gpt-6.1-sol/medium; runtime unverified; no fallback or descendants",
+          "observed_at": "2026-11-07T00:36:58.177428+00:00",
+          "expires_at": "2026-11-07T00:36:58.177428+00:00"
+        }
+      ]
     }
   ]
 }
