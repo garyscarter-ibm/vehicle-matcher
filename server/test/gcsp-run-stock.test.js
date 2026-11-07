@@ -97,17 +97,20 @@ test('default run: generated stock, Next release at the first cadence window, re
   assert.equal(good(await f.controls.readState(f.context)).controls.nextRelease.at, windows[1]);
 });
 
-test('eligibility keys come from policy: the evidenced AG code maps, others stay unmapped, one entry changes it', async (t) => {
+test('eligibility keys come from policy: evidenced AG codes map, others stay unmapped, one entry changes it', async (t) => {
   const f = await compose(t, { environmentId: 'run-stock-keys' });
   const rows = generatedRows(await f.stock());
   const mapped = rows.filter((row) => factOf(row, 'eligibilityModelKey') !== undefined);
-  assert.ok(mapped.length > 0 && mapped.length < rows.length, 'only some cars are mapped');
-  assert.ok(mapped.every((row) => factOf(row, 'eligibilityModelKey') === 'G61 i5|i5 40' && factOf(row, 'body') === 'estate' && factOf(row, 'fuel') === 'ev' && factOf(row, 'seats') === 5));
+  const keys = ['G61 i5|i5 40', 'F70 Sports Hatch|120', 'F70 Sports Hatch|M135', 'G42 Coupe|220i', 'G42 Coupe|230i', 'G42 Coupe|M240i'];
+  assert.ok(mapped.length > 0, 'evidenced cars are mapped');
+  assert.ok(mapped.every((row) => keys.includes(factOf(row, 'eligibilityModelKey')) && factOf(row, 'body') !== undefined && factOf(row, 'seats') > 0), JSON.stringify([...new Set(mapped.map((r) => [factOf(r, 'eligibilityModelKey'), factOf(r, 'body'), factOf(r, 'seats'), factOf(r, 'fuel')].join(',')))]));
+  const i5 = mapped.filter((row) => factOf(row, 'eligibilityModelKey') === 'G61 i5|i5 40');
+  assert.ok(i5.every((row) => factOf(row, 'body') === 'estate' && factOf(row, 'fuel') === 'ev' && factOf(row, 'seats') === 5));
   assert.ok(rows.filter((row) => !mapped.includes(row)).every((row) => factOf(row, 'body') === undefined), 'unmapped cars carry no model facts');
   assert.equal((await tick(f, 'keys-release-1')).status, 'ok');
   assert.equal((await tick(f, 'keys-release-2')).status, 'ok');
   const released = (await f.stock()).filter((row) => row.state === 'released');
-  assert.ok(released.some((row) => factOf(row, 'eligibilityModelKey') === 'G61 i5|i5 40'), 'a released car is eligible-keyed');
+  assert.ok(released.some((row) => keys.includes(factOf(row, 'eligibilityModelKey'))), 'a released car is eligible-keyed');
   const policy = await alternativePolicy((entry) => { entry('stock.eligibilityModelKeys.v1').value = { '72HH': 'G21 Touring|320i' }; });
   const changed = await compose(t, { policy, environmentId: 'run-stock-keys-alt' });
   const alt = generatedRows(await changed.stock()).filter((row) => factOf(row, 'eligibilityModelKey') !== undefined);

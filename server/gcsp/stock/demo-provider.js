@@ -22,9 +22,19 @@ const MODELS = {
   i5: { configurationId: 'Q01QRzYxOlJFRlBBSU5ULFJFRlRSSU0=', key: 'G61 i5|i5 40', name: 'Synthetic i5 eDrive40 Touring',
     body: 'estate', fuel: 'ev', boot: 490, zeroTo62: 6.1, sizeClass: 3, insuranceGroup: 35, tags: ['electric'] },
 };
+// Generated-stock lines with no demo car (FUCQ-77 mappings): line specs from MODEL_SPECS, insurance group and tags synthetic.
+const f70 = { body: 'hatchback', fuel: 'petrol', boot: 380, zeroTo62: 8.4, sizeClass: 1 };
+const g42 = { body: 'coupe', fuel: 'petrol', boot: 390, zeroTo62: 6.5, sizeClass: 1, seats: 4, tags: ['sporty'] };
+const BROWSE_LINES = [
+  { ...f70, key: 'F70 Sports Hatch|120', insuranceGroup: 22, tags: ['city'] },
+  { ...f70, key: 'F70 Sports Hatch|M135', insuranceGroup: 36, tags: ['sporty'] },
+  { ...g42, key: 'G42 Coupe|220i', insuranceGroup: 29 },
+  { ...g42, key: 'G42 Coupe|230i', insuranceGroup: 33 },
+  { ...g42, key: 'G42 Coupe|M240i', insuranceGroup: 42 },
+];
 // Browse facts of a model line by its eligibility key, as { name: { value, unit } }; shared with generated stock.
 export function modelBrowseFacts(key) {
-  const model = Object.values(MODELS).find((row) => row.key === key);
+  const model = [...Object.values(MODELS), ...BROWSE_LINES].find((row) => row.key === key);
   return model ? browseFacts(model) : null;
 }
 const digest = (...parts) => createHash('sha256').update(parts.join('|')).digest();
@@ -36,7 +46,7 @@ function orderUuid(runId, index) {
 }
 
 function browseFacts(model) {
-  return { body: { value: model.body, unit: null }, fuel: { value: model.fuel, unit: null }, seats: { value: 5, unit: 'count' },
+  return { body: { value: model.body, unit: null }, fuel: { value: model.fuel, unit: null }, seats: { value: model.seats ?? 5, unit: 'count' },
     boot: { value: model.boot, unit: 'L' }, sizeClass: { value: model.sizeClass, unit: 'ordinal-1-5' }, zeroTo62: { value: model.zeroTo62, unit: 's' },
     insuranceGroup: { value: model.insuranceGroup, unit: 'insurance-group' }, tags: { value: model.tags, unit: null },
     ...(model.mpg ? { mpg: { value: model.mpg, unit: 'mpg-imperial' } } : {}) };
