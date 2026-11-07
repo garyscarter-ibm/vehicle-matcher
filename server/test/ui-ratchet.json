@@ -204,6 +204,10 @@
       "max_lines": 12
     },
     {
+      "path": "blocks/gcsp/greg-orders/greg-orders.css",
+      "max_lines": 23
+    },
+    {
       "path": "blocks/gcsp/brief/gcsp-brief.css",
       "max_lines": 37
     },

@@ -1,0 +1,693 @@
+{
+  "story": "FUCQ-104",
+  "base": "http://localhost:3017",
+  "startedAt": "2026-11-07T18:21:34.021Z",
+  "widths": {
+    "desktop": 1280,
+    "narrow": 375
+  },
+  "screenshots": [
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/integrated/empty-1280-dashboard.png",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/integrated/empty-1280-panel.png",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/integrated/empty-375-dashboard.png",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/integrated/empty-375-panel.png",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/integrated/requested-1280-panel.png",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/integrated/requested-375-panel.png",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/integrated/partly-confirmed-1280-panel.png",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/integrated/partly-confirmed-375-panel.png",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/integrated/delayed-1280-panel.png",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/integrated/delayed-375-panel.png",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/integrated/dashboard-before-release-1280.png",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/integrated/dashboard-after-cue-tick-1280.png",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/integrated/released-1280-panel.png",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/integrated/released-375-panel.png",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/integrated/dashboard-after-release-1280.png",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/integrated/focus-visible-375.png",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/integrated/released-375-table-scrolled.png"
+  ],
+  "steps": {
+    "open-workspace": {
+      "ok": true,
+      "ms": 1711
+    },
+    "switch-to-greg": {
+      "ok": true,
+      "ms": 8292
+    },
+    "capture-empty": {
+      "ok": true,
+      "ms": 5487
+    },
+    "submit-request-1": {
+      "ok": true,
+      "ms": 2658
+    },
+    "capture-requested": {
+      "ok": true,
+      "ms": 2210
+    },
+    "confirm-2": {
+      "ok": true,
+      "ms": 2992,
+      "queueStepOnScreen": []
+    },
+    "capture-partly-confirmed": {
+      "ok": true,
+      "ms": 2157
+    },
+    "delay-second": {
+      "ok": true,
+      "ms": 5274
+    },
+    "capture-delayed": {
+      "ok": true,
+      "ms": 2193
+    },
+    "read-release-cue": {
+      "ok": true,
+      "ms": 456,
+      "cueText": "Release cue: 2026-11-05T09:30:00.000Z"
+    },
+    "dashboard-before-release": {
+      "ok": true,
+      "ms": 579
+    },
+    "tick-to-presenter-release-cue": {
+      "ok": true,
+      "ms": 10766,
+      "target": "2026-11-05T09:30:00.000Z",
+      "presenterMessage": "Action recorded",
+      "ordersChangedWithoutRefresh": false,
+      "dashboardChangedWithoutRefresh": true,
+      "requestsSinceAction": [
+        "GET /api/gcsp/greg/demand 200",
+        "GET /api/gcsp/greg/orders 200"
+      ],
+      "releasedCountText": "5 cars released",
+      "lastTickRelease": "release-pull / stock-release: {\"status\":\"ok\",\"value\":{\"kind\":\"stock-released\",\"runId\":\"demo-901a63c8bfe9c455146f6b62d8f64b7d\",\"trancheId\":\"demo-synthetic-stock-v1:demo-release-1:0\",\"windowId\":\"demo-release-1\",\"supplyId\":null,\"tickId\":\"presenter-ece80d1421a0c2f943a17e45b486a03d9cd647a8e30449f33d5fe758f1ef4dc3\",\"releasedAt\":\"2026-11-05T09:30:00.000Z\",\"orderUuids\":[\"57aa6a92-558d-46e2-b223-7845ad159d94\",\"b69e05eb-aa29-4"
+    },
+    "dashboard-after-cue-tick": {
+      "ok": true,
+      "ms": 2468
+    },
+    "read-supply-instant": {
+      "ok": true,
+      "ms": 47,
+      "cueTextAfterFirstTick": "Next release unavailable: No future release cue is configured.",
+      "tableRow": "3 Series Touring 320i | Partly confirmed | 3 | 2 | 0 | Confirmed: 2 due 31 Dec 2026",
+      "dueDateShown": "due 31 Dec 2026",
+      "endOfDueDateUtc": "2026-12-31T23:59:59.000Z",
+      "chosenTarget": "2026-12-31T23:59:59.000Z",
+      "chosenFrom": "end of the due date shown in the table (instant itself is not shown)"
+    },
+    "tick-to-supply-date": {
+      "ok": true,
+      "ms": 4768,
+      "target": "2026-12-31T23:59:59.000Z",
+      "presenterMessage": "Action recorded",
+      "ordersChangedWithoutRefresh": true,
+      "dashboardChangedWithoutRefresh": true,
+      "requestsSinceAction": [
+        "GET /api/gcsp/greg/demand 200",
+        "GET /api/gcsp/greg/orders 200"
+      ],
+      "releasedCountText": "2 cars released",
+      "lastTickRelease": "release-pull / stock-release: {\"status\":\"ok\",\"value\":{\"kind\":\"stock-released\",\"runId\":\"demo-901a63c8bfe9c455146f6b62d8f64b7d\",\"trancheId\":\"demo-synthetic-stock-v1:supply-supply-86678f84f7e82867138db9d1613ddcb2:0\",\"windowId\":\"supply-supply-86678f84f7e82867138db9d1613ddcb2\",\"supplyId\":\"supply-86678f84f7e82867138db9d1613ddcb2\",\"tickId\":\"presenter-986709af58e85800f565b72122f8fa3e31515fa35c0a97b638a4bf6eda0c76d8\",\"release"
+    },
+    "settle-release": {
+      "ok": true,
+      "ms": 2,
+      "extraActions": [],
+      "releasedForRow": "2"
+    },
+    "capture-released": {
+      "ok": true,
+      "ms": 5991
+    },
+    "tab-order-1280": {
+      "ok": true,
+      "ms": 1257,
+      "stops": 15
+    },
+    "tab-order-and-focus-375": {
+      "ok": true,
+      "ms": 3331,
+      "stops": 15
+    },
+    "em-dash-check": {
+      "ok": true,
+      "ms": 1,
+      "panelHasEmDash": false,
+      "pageHasEmDash": false,
+      "panelChars": 891
+    },
+    "table-scrolled-375": {
+      "ok": true,
+      "ms": 3638,
+      "focusedRegion": "div:region",
+      "scrollLeft": 321,
+      "scrollWidth": 700,
+      "clientWidth": 349,
+      "ordersTop": 467
+    }
+  },
+  "tabOrder": {
+    "desktop-1280": {
+      "sequence": [
+        "button: Refresh orders",
+        "div: Requested, confirmed and released carsCarStageRequestedConfirmedReleasedExpected",
+        "select[select-one]: Model",
+        "select[select-one]: Derivative",
+        "input[number]: Quantity",
+        "button[submit]: Submit request",
+        "summary: Synthetic production controls",
+        "select[select-one]: Request",
+        "select[select-one]: Production response",
+        "input[date]: Delay until",
+        "input[date]: Delay until",
+        "input[date]: Delay until",
+        "input[date]: Delay until (NOT focus-visible)",
+        "input[text]: Delay reason",
+        "button[submit]: Save production response"
+      ],
+      "enabledVisibleControlsWithNegativeTabindex": []
+    },
+    "narrow-375": {
+      "sequence": [
+        "button: Refresh orders",
+        "div: Requested, confirmed and released carsCarStageRequestedConfirmedReleasedExpected",
+        "select[select-one]: Model",
+        "select[select-one]: Derivative",
+        "input[number]: Quantity",
+        "button[submit]: Submit request",
+        "summary: Synthetic production controls",
+        "select[select-one]: Request",
+        "select[select-one]: Production response",
+        "input[date]: Delay until",
+        "input[date]: Delay until",
+        "input[date]: Delay until",
+        "input[date]: Delay until (NOT focus-visible)",
+        "input[text]: Delay reason",
+        "button[submit]: Save production response"
+      ],
+      "enabledVisibleControlsWithNegativeTabindex": []
+    }
+  },
+  "snapshots": {
+    "empty": {
+      "orders": [
+        "No requests yet. Choose a model, derivative and quantity to request cars."
+      ],
+      "ordersEmpty": true,
+      "notice": "Orders up to date.",
+      "queue": [],
+      "requestOptions": [],
+      "source": "Orders up to date.",
+      "dashboard": "DEMAND AND SUPPLY SCHEME ORDERING Demand and supply What employees have saved and confirmed they need, set against released stock and the outcomes of offers. Figures for 5 Nov 2026, 09:00 GMT (demo clock) Policy version gcsp-policy-v1+offer-journey-v1 Brief versions None yet Basis Expressed saved demand Figures version 8246bca4 What employees have saved and confirmed they need. It is not satisfaction and not a prediction. Counts below 5 show as fewer than 5, so small groups cannot be picked out. Refresh Figures updated for 5 Nov 2026, 09:00 GMT. DEMAND No briefs yet No employee has confirmed a brief yet, so there is no demand to show. Stock figures are still current. Stock Released stock is open to employees. Held stock is reserved for an offer. Allocated stock is taken by a selection. Stock by model line Model line Released Held Allocated No stock has been released yet ",
+      "figuresVersion": "8246bca4",
+      "presenterMsg": "Loading presenter controls"
+    },
+    "requested": {
+      "orders": [
+        "3 Series Touring 320i | Requested | 3 | 0 | 0 | Awaiting production response"
+      ],
+      "ordersEmpty": false,
+      "notice": "Request submitted. Awaiting production response.",
+      "queue": [],
+      "requestOptions": [
+        "3 Series Touring 320i: 3 outstanding"
+      ],
+      "source": "Request submitted. Awaiting production response.",
+      "dashboard": "DEMAND AND SUPPLY SCHEME ORDERING Demand and supply What employees have saved and confirmed they need, set against released stock and the outcomes of offers. Figures for 5 Nov 2026, 09:00 GMT (demo clock) Policy version gcsp-policy-v1+offer-journey-v1 Brief versions None yet Basis Expressed saved demand Figures version 8246bca4 What employees have saved and confirmed they need. It is not satisfaction and not a prediction. Counts below 5 show as fewer than 5, so small groups cannot be picked out. Refresh Refreshing the figures. DEMAND No briefs yet No employee has confirmed a brief yet, so there is no demand to show. Stock figures are still current. Stock Released stock is open to employees. Held stock is reserved for an offer. Allocated stock is taken by a selection. Stock by model line Model line Released Held Allocated No stock has been released yet ",
+      "figuresVersion": "8246bca4",
+      "presenterMsg": "Presenter controls ready"
+    },
+    "partlyConfirmed": {
+      "orders": [
+        "3 Series Touring 320i | Partly confirmed | 3 | 2 | 0 | Confirmed: 2 due 31 Dec 2026"
+      ],
+      "ordersEmpty": false,
+      "notice": "Production confirmed; release is queued for its expected date.",
+      "queue": [],
+      "requestOptions": [
+        "3 Series Touring 320i: 1 outstanding"
+      ],
+      "source": "Production confirmed; release is queued for its expected date.",
+      "dashboard": "DEMAND AND SUPPLY SCHEME ORDERING Demand and supply What employees have saved and confirmed they need, set against released stock and the outcomes of offers. Figures for 5 Nov 2026, 09:00 GMT (demo clock) Policy version gcsp-policy-v1+offer-journey-v1 Brief versions None yet Basis Expressed saved demand Figures version 8246bca4 What employees have saved and confirmed they need. It is not satisfaction and not a prediction. Counts below 5 show as fewer than 5, so small groups cannot be picked out. Refresh Figures updated for 5 Nov 2026, 09:00 GMT. DEMAND No briefs yet No employee has confirmed a brief yet, so there is no demand to show. Stock figures are still current. Stock Released stock is open to employees. Held stock is reserved for an offer. Allocated stock is taken by a selection. Stock by model line Model line Released Held Allocated No stock has been released yet ",
+      "figuresVersion": "8246bca4",
+      "presenterMsg": "Presenter controls ready"
+    },
+    "delayed": {
+      "orders": [
+        "3 Series Touring 320i | Partly confirmed | 3 | 2 | 0 | Confirmed: 2 due 31 Dec 2026",
+        "i5 Touring eDrive40 | Delayed | 1 | 0 | 0 | 1 delayed until 20 Nov 2026: Supplier slot moved"
+      ],
+      "ordersEmpty": false,
+      "notice": "Production delay saved.",
+      "queue": [],
+      "requestOptions": [
+        "3 Series Touring 320i: 1 outstanding",
+        "i5 Touring eDrive40: 1 outstanding"
+      ],
+      "source": "Production delay saved.",
+      "dashboard": "DEMAND AND SUPPLY SCHEME ORDERING Demand and supply What employees have saved and confirmed they need, set against released stock and the outcomes of offers. Figures for 5 Nov 2026, 09:00 GMT (demo clock) Policy version gcsp-policy-v1+offer-journey-v1 Brief versions None yet Basis Expressed saved demand Figures version 8246bca4 What employees have saved and confirmed they need. It is not satisfaction and not a prediction. Counts below 5 show as fewer than 5, so small groups cannot be picked out. Refresh Refreshing the figures. DEMAND No briefs yet No employee has confirmed a brief yet, so there is no demand to show. Stock figures are still current. Stock Released stock is open to employees. Held stock is reserved for an offer. Allocated stock is taken by a selection. Stock by model line Model line Released Held Allocated No stock has been released yet ",
+      "figuresVersion": "8246bca4",
+      "presenterMsg": "Presenter controls ready"
+    },
+    "beforeRelease": {
+      "orders": [
+        "3 Series Touring 320i | Partly confirmed | 3 | 2 | 0 | Confirmed: 2 due 31 Dec 2026",
+        "i5 Touring eDrive40 | Delayed | 1 | 0 | 0 | 1 delayed until 20 Nov 2026: Supplier slot moved"
+      ],
+      "ordersEmpty": false,
+      "notice": "Production delay saved.",
+      "queue": [],
+      "requestOptions": [
+        "3 Series Touring 320i: 1 outstanding",
+        "i5 Touring eDrive40: 1 outstanding"
+      ],
+      "source": "Production delay saved.",
+      "dashboard": "DEMAND AND SUPPLY SCHEME ORDERING Demand and supply What employees have saved and confirmed they need, set against released stock and the outcomes of offers. Figures for 5 Nov 2026, 09:00 GMT (demo clock) Policy version gcsp-policy-v1+offer-journey-v1 Brief versions None yet Basis Expressed saved demand Figures version 8246bca4 What employees have saved and confirmed they need. It is not satisfaction and not a prediction. Counts below 5 show as fewer than 5, so small groups cannot be picked out. Refresh Figures updated for 5 Nov 2026, 09:00 GMT. DEMAND No briefs yet No employee has confirmed a brief yet, so there is no demand to show. Stock figures are still current. Stock Released stock is open to employees. Held stock is reserved for an offer. Allocated stock is taken by a selection. Stock by model line Model line Released Held Allocated No stock has been released yet ",
+      "figuresVersion": "8246bca4",
+      "presenterMsg": "Presenter controls ready"
+    },
+    "afterCueTick": {
+      "orders": [
+        "3 Series Touring 320i | Partly confirmed | 3 | 2 | 0 | Confirmed: 2 due 31 Dec 2026",
+        "i5 Touring eDrive40 | Delayed | 1 | 0 | 0 | 1 delayed until 20 Nov 2026: Supplier slot moved"
+      ],
+      "ordersEmpty": false,
+      "notice": "Orders up to date.",
+      "queue": [],
+      "requestOptions": [
+        "3 Series Touring 320i: 1 outstanding",
+        "i5 Touring eDrive40: 1 outstanding"
+      ],
+      "source": "Orders up to date.",
+      "dashboard": "DEMAND AND SUPPLY SCHEME ORDERING Demand and supply What employees have saved and confirmed they need, set against released stock and the outcomes of offers. Figures for 5 Nov 2026, 09:30 GMT (demo clock) Policy version gcsp-policy-v1+offer-journey-v1 Brief versions None yet Basis Expressed saved demand Figures version 9ea456d1 What employees have saved and confirmed they need. It is not satisfaction and not a prediction. Counts below 5 show as fewer than 5, so small groups cannot be picked out. Refresh Figures updated for 5 Nov 2026, 09:30 GMT. DEMAND No briefs yet No employee has confirmed a brief yet, so there is no demand to show. Stock figures are still current. Stock Released stock is open to employees. Held stock is reserved for an offer. Allocated stock is taken by a selection. Stock by model line Model line Released Held Allocated G20 Saloon fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden G21 Touring fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden G61 i5 fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden ",
+      "figuresVersion": "9ea456d1",
+      "presenterMsg": "Action recorded"
+    },
+    "beforeSupplyRelease": {
+      "orders": [
+        "3 Series Touring 320i | Partly confirmed | 3 | 2 | 0 | Confirmed: 2 due 31 Dec 2026",
+        "i5 Touring eDrive40 | Delayed | 1 | 0 | 0 | 1 delayed until 20 Nov 2026: Supplier slot moved"
+      ],
+      "ordersEmpty": false,
+      "notice": "Orders up to date.",
+      "queue": [],
+      "requestOptions": [
+        "3 Series Touring 320i: 1 outstanding",
+        "i5 Touring eDrive40: 1 outstanding"
+      ],
+      "source": "Orders up to date.",
+      "dashboard": "DEMAND AND SUPPLY SCHEME ORDERING Demand and supply What employees have saved and confirmed they need, set against released stock and the outcomes of offers. Figures for 5 Nov 2026, 09:30 GMT (demo clock) Policy version gcsp-policy-v1+offer-journey-v1 Brief versions None yet Basis Expressed saved demand Figures version 9ea456d1 What employees have saved and confirmed they need. It is not satisfaction and not a prediction. Counts below 5 show as fewer than 5, so small groups cannot be picked out. Refresh Figures updated for 5 Nov 2026, 09:30 GMT. DEMAND No briefs yet No employee has confirmed a brief yet, so there is no demand to show. Stock figures are still current. Stock Released stock is open to employees. Held stock is reserved for an offer. Allocated stock is taken by a selection. Stock by model line Model line Released Held Allocated G20 Saloon fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden G21 Touring fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden G61 i5 fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden ",
+      "figuresVersion": "9ea456d1",
+      "presenterMsg": "Action recorded"
+    },
+    "afterSupplyTick": {
+      "orders": [
+        "3 Series Touring 320i | Partly released | 3 | 2 | 2 | Confirmed: 2 due 31 Dec 2026. Released 31 Dec 2026",
+        "i5 Touring eDrive40 | Delayed | 1 | 0 | 0 | 1 delayed until 20 Nov 2026: Supplier slot moved"
+      ],
+      "ordersEmpty": false,
+      "notice": "Orders up to date.",
+      "queue": [],
+      "requestOptions": [
+        "3 Series Touring 320i: 1 outstanding",
+        "i5 Touring eDrive40: 1 outstanding"
+      ],
+      "source": "Orders up to date.",
+      "dashboard": "DEMAND AND SUPPLY SCHEME ORDERING Demand and supply What employees have saved and confirmed they need, set against released stock and the outcomes of offers. Figures for 31 Dec 2026, 23:59 GMT (demo clock) Policy version gcsp-policy-v1+offer-journey-v1 Brief versions None yet Basis Expressed saved demand Figures version fa3fb0f2 What employees have saved and confirmed they need. It is not satisfaction and not a prediction. Counts below 5 show as fewer than 5, so small groups cannot be picked out. Refresh Figures updated for 31 Dec 2026, 23:59 GMT. DEMAND No briefs yet No employee has confirmed a brief yet, so there is no demand to show. Stock figures are still current. Stock Released stock is open to employees. Held stock is reserved for an offer. Allocated stock is taken by a selection. Stock by model line Model line Released Held Allocated G20 Saloon fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden G21 Touring fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden G61 i5 fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden ",
+      "figuresVersion": "fa3fb0f2",
+      "presenterMsg": "Action recorded"
+    },
+    "released": {
+      "orders": [
+        "3 Series Touring 320i | Partly released | 3 | 2 | 2 | Confirmed: 2 due 31 Dec 2026. Released 31 Dec 2026",
+        "i5 Touring eDrive40 | Delayed | 1 | 0 | 0 | 1 delayed until 20 Nov 2026: Supplier slot moved"
+      ],
+      "ordersEmpty": false,
+      "notice": "Orders up to date.",
+      "queue": [],
+      "requestOptions": [
+        "3 Series Touring 320i: 1 outstanding",
+        "i5 Touring eDrive40: 1 outstanding"
+      ],
+      "source": "Orders up to date.",
+      "dashboard": "DEMAND AND SUPPLY SCHEME ORDERING Demand and supply What employees have saved and confirmed they need, set against released stock and the outcomes of offers. Figures for 31 Dec 2026, 23:59 GMT (demo clock) Policy version gcsp-policy-v1+offer-journey-v1 Brief versions None yet Basis Expressed saved demand Figures version fa3fb0f2 What employees have saved and confirmed they need. It is not satisfaction and not a prediction. Counts below 5 show as fewer than 5, so small groups cannot be picked out. Refresh Figures updated for 31 Dec 2026, 23:59 GMT. DEMAND No briefs yet No employee has confirmed a brief yet, so there is no demand to show. Stock figures are still current. Stock Released stock is open to employees. Held stock is reserved for an offer. Allocated stock is taken by a selection. Stock by model line Model line Released Held Allocated G20 Saloon fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden G21 Touring fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden G61 i5 fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden ",
+      "figuresVersion": "fa3fb0f2",
+      "presenterMsg": "Action recorded"
+    },
+    "final": {
+      "orders": [
+        "3 Series Touring 320i | Partly released | 3 | 2 | 2 | Confirmed: 2 due 31 Dec 2026. Released 31 Dec 2026",
+        "i5 Touring eDrive40 | Delayed | 1 | 0 | 0 | 1 delayed until 20 Nov 2026: Supplier slot moved"
+      ],
+      "ordersEmpty": false,
+      "notice": "Orders up to date.",
+      "queue": [],
+      "requestOptions": [
+        "3 Series Touring 320i: 1 outstanding",
+        "i5 Touring eDrive40: 1 outstanding"
+      ],
+      "source": "Orders up to date.",
+      "dashboard": "DEMAND AND SUPPLY SCHEME ORDERING Demand and supply What employees have saved and confirmed they need, set against released stock and the outcomes of offers. Figures for 31 Dec 2026, 23:59 GMT (demo clock) Policy version gcsp-policy-v1+offer-journey-v1 Brief versions None yet Basis Expressed saved demand Figures version fa3fb0f2 What employees have saved and confirmed they need. It is not satisfaction and not a prediction. Counts below 5 show as fewer than 5, so small groups cannot be picked out. Refresh Figures updated for 31 Dec 2026, 23:59 GMT. DEMAND No briefs yet No employee has confirmed a brief yet, so there is no demand to show. Stock figures are still current. Stock Released stock is open to employees. Held stock is reserved for an offer. Allocated stock is taken by a selection. Stock by model line Model line Released Held Allocated G20 Saloon fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden G21 Touring fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden G61 i5 fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden fewer than 5 , a privacy band: the exact count is hidden ",
+      "figuresVersion": "fa3fb0f2",
+      "presenterMsg": "Action recorded"
+    }
+  },
+  "console": [],
+  "pageErrors": [],
+  "logErrors": [
+    {
+      "stage": "open-workspace",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://localhost:3017/favicon.ico"
+    },
+    {
+      "stage": "switch-to-greg",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://localhost:3017/api/gcsp/manual/draft"
+    }
+  ],
+  "failedRequests": [],
+  "badResponses": [
+    {
+      "stage": "open-workspace",
+      "url": "http://localhost:3017/favicon.ico",
+      "status": 404
+    },
+    {
+      "stage": "switch-to-greg",
+      "url": "http://localhost:3017/api/gcsp/manual/draft",
+      "status": 404
+    }
+  ],
+  "api": [
+    {
+      "stage": "open-workspace",
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "status": 200
+    },
+    {
+      "stage": "open-workspace",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 200
+    },
+    {
+      "stage": "open-workspace",
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "status": 200
+    },
+    {
+      "stage": "open-workspace",
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "status": 404
+    },
+    {
+      "stage": "open-workspace",
+      "method": "GET",
+      "path": "/api/gcsp/offers/current",
+      "status": 200
+    },
+    {
+      "stage": "open-workspace",
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "status": 200
+    },
+    {
+      "stage": "open-workspace",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "status": 200
+    },
+    {
+      "stage": "switch-to-greg",
+      "method": "POST",
+      "path": "/api/gcsp/session/switch",
+      "status": 200
+    },
+    {
+      "stage": "switch-to-greg",
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "status": 200
+    },
+    {
+      "stage": "switch-to-greg",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 200
+    },
+    {
+      "stage": "switch-to-greg",
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "status": 200
+    },
+    {
+      "stage": "switch-to-greg",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "status": 200
+    },
+    {
+      "stage": "switch-to-greg",
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "status": 200
+    },
+    {
+      "stage": "switch-to-greg",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 200
+    },
+    {
+      "stage": "switch-to-greg",
+      "method": "GET",
+      "path": "/api/gcsp/greg/policy",
+      "status": 200
+    },
+    {
+      "stage": "switch-to-greg",
+      "method": "GET",
+      "path": "/api/gcsp/greg/demand",
+      "status": 200
+    },
+    {
+      "stage": "switch-to-greg",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases",
+      "status": 200
+    },
+    {
+      "stage": "switch-to-greg",
+      "method": "GET",
+      "path": "/api/gcsp/greg/orders",
+      "status": 200
+    },
+    {
+      "stage": "switch-to-greg",
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "status": 200
+    },
+    {
+      "stage": "switch-to-greg",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "status": 200
+    },
+    {
+      "stage": "submit-request-1",
+      "method": "POST",
+      "path": "/api/gcsp/greg/orders",
+      "status": 200
+    },
+    {
+      "stage": "submit-request-1",
+      "method": "GET",
+      "path": "/api/gcsp/greg/orders",
+      "status": 200
+    },
+    {
+      "stage": "submit-request-1",
+      "method": "GET",
+      "path": "/api/gcsp/greg/demand",
+      "status": 200
+    },
+    {
+      "stage": "confirm-2",
+      "method": "POST",
+      "path": "/api/gcsp/presenter/production",
+      "status": 200
+    },
+    {
+      "stage": "confirm-2",
+      "method": "POST",
+      "path": "/api/gcsp/greg/orders/queue",
+      "status": 200
+    },
+    {
+      "stage": "confirm-2",
+      "method": "GET",
+      "path": "/api/gcsp/greg/orders",
+      "status": 200
+    },
+    {
+      "stage": "confirm-2",
+      "method": "GET",
+      "path": "/api/gcsp/greg/demand",
+      "status": 200
+    },
+    {
+      "stage": "delay-second",
+      "method": "POST",
+      "path": "/api/gcsp/greg/orders",
+      "status": 200
+    },
+    {
+      "stage": "delay-second",
+      "method": "GET",
+      "path": "/api/gcsp/greg/orders",
+      "status": 200
+    },
+    {
+      "stage": "delay-second",
+      "method": "GET",
+      "path": "/api/gcsp/greg/demand",
+      "status": 200
+    },
+    {
+      "stage": "delay-second",
+      "method": "POST",
+      "path": "/api/gcsp/presenter/production",
+      "status": 200
+    },
+    {
+      "stage": "delay-second",
+      "method": "GET",
+      "path": "/api/gcsp/greg/orders",
+      "status": 200
+    },
+    {
+      "stage": "delay-second",
+      "method": "GET",
+      "path": "/api/gcsp/greg/demand",
+      "status": 200
+    },
+    {
+      "stage": "tick-to-presenter-release-cue",
+      "method": "POST",
+      "path": "/api/gcsp/presenter/controls/tick",
+      "status": 200
+    },
+    {
+      "stage": "tick-to-presenter-release-cue",
+      "method": "GET",
+      "path": "/api/gcsp/greg/demand",
+      "status": 200
+    },
+    {
+      "stage": "tick-to-presenter-release-cue",
+      "method": "GET",
+      "path": "/api/gcsp/greg/orders",
+      "status": 200
+    },
+    {
+      "stage": "tick-to-presenter-release-cue",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 200
+    },
+    {
+      "stage": "tick-to-presenter-release-cue",
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "status": 200
+    },
+    {
+      "stage": "tick-to-presenter-release-cue",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "status": 200
+    },
+    {
+      "stage": "tick-to-supply-date",
+      "method": "POST",
+      "path": "/api/gcsp/presenter/controls/tick",
+      "status": 200
+    },
+    {
+      "stage": "tick-to-supply-date",
+      "method": "GET",
+      "path": "/api/gcsp/greg/demand",
+      "status": 200
+    },
+    {
+      "stage": "tick-to-supply-date",
+      "method": "GET",
+      "path": "/api/gcsp/greg/orders",
+      "status": 200
+    },
+    {
+      "stage": "tick-to-supply-date",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 200
+    },
+    {
+      "stage": "tick-to-supply-date",
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "status": 200
+    },
+    {
+      "stage": "tick-to-supply-date",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "status": 200
+    }
+  ],
+  "notes": [
+    "i5 Touring derivatives offered: eDrive40"
+  ],
+  "framing": {
+    "empty-1280-panel": 60,
+    "empty-375-panel": 60,
+    "requested-1280-panel": 60,
+    "requested-375-panel": 61,
+    "partly-confirmed-1280-panel": 60,
+    "partly-confirmed-375-panel": 61,
+    "delayed-1280-panel": 60,
+    "delayed-375-panel": 61,
+    "released-1280-panel": 60,
+    "released-375-panel": 61
+  },
+  "cueText": "Release cue: 2026-11-05T09:30:00.000Z",
+  "tablePartlyConfirmedTiming": [
+    "3 Series Touring 320i | Partly confirmed | 3 | 2 | 0 | Confirmed: 2 due 31 Dec 2026"
+  ],
+  "focusAt375": {
+    "name": "Submit request",
+    "focusVisible": true,
+    "outline": "solid 2px rgb(2, 145, 183)",
+    "rect": [
+      12,
+      625,
+      351,
+      44
+    ]
+  },
+  "finishedAt": "2026-11-07T18:22:41.447Z",
+  "chromeProfileDeleted": true
+}

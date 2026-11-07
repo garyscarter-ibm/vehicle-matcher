@@ -226,6 +226,10 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
           uncertain = true; message.textContent = `Switch uncertain or refused: ${reason(reply)}. Selected principal is not confirmed. Retry original or deliberately issue again.`;
         }
       }
+      if (reply.status === 'ok' && command.kind !== 'reset' && command.kind !== 'switchPrincipal') {
+        const Event = host.ownerDocument?.defaultView?.CustomEvent;
+        if (Event) host.dispatchEvent(new Event('gcsp:presenter-action', { bubbles: true, detail: { kind: command.kind } }));
+      }
       busy = false;
       const fresh = await refreshState();
       if (retrying && command.kind === 'reset' && reply.status === 'stale-run'
