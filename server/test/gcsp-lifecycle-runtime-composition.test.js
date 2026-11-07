@@ -85,7 +85,7 @@ async function select(f) {
   assert.equal(submitted.view.state, 'awaiting-approval'); assert.equal(submitted.order.status, 'confirmed');
   assert.deepEqual(good(await f.manualOrder.submit(f.employee, input)), submitted);
   const persisted = good(await f.repository.read(f.employee, ref(f.employee, 'pending_operations', { operationId: submitted.operationId })));
-  assert.equal(persisted.payload.atomicConversion, false); // Current F66 exposes allocate, not the F106 atomic port.
+  assert.equal(persisted.payload.atomicConversion, true); // F66 converts through FUCQ-71's atomic callback.
   assert.equal(persisted.lastKnownState, 'acknowledged');
   assert.equal(good(await f.repository.read(f.employee, ref(f.employee, 'holds', { holdId: reviewed.hold.holdId }))).state, 'allocated');
   return { car, submitted, operation: persisted };

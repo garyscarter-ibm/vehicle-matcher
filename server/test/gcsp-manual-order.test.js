@@ -381,7 +381,7 @@ test('converter revalidation and definitive allocation refusals stay reviewable,
   assert.equal((await missing.submit(after.context, after.input)).status, 'unavailable');
 });
 
-test('actual manual claims review and allocation feed common ordering without copying its implementation', async () => {
+async function actualClaimsReview() {
   const f = await runtime(await policyWith()); await seedManualDemoContext(f);
   f.manual = new ManualContextService({ ...f, ports: createRepositoryManualPorts(f) });
   f.claims = createManualClaimsService({ ...f, adapter: createSyntheticManualStockAdapter() });
@@ -407,8 +407,32 @@ test('actual manual claims review and allocation feed common ordering without co
   const freshDraft = await f.manual.readDraft(f.context);
   assert.equal(freshDraft.value.requiresRefresh, false, JSON.stringify({ draftStage: freshDraft.value.draftStage, requiresRefresh: freshDraft.value.requiresRefresh, draftVersion: freshDraft.value.draftVersion }));
   const stockRow = (await f.repository.read(f.context, ref(f, 'stock', { orderUuid: h.orderUuid }))).value;
-  const response = await service.submit(f.context, { commandId: 'submit', source: { type: 'cart', holdId: h.holdId,
+  const input = { commandId: 'submit', source: { type: 'cart', holdId: h.holdId,
     expectedHoldVersion: h.version, expectedDraftVersion: 1 }, expectedQuoteId: q.quoteId, expectedStockVersion: stockRow.version,
-    termsDigest: terms.value.termsDigest, declarations: { terms: true, driver: true, return: true } });
+    termsDigest: terms.value.termsDigest, declarations: { terms: true, driver: true, return: true } };
+  return { f, service, input, claimInput: browse.value.cars[0].claimInput, holdId: h.holdId, orderUuid: h.orderUuid };
+}
+
+test('actual manual claims review and allocation feed common ordering without copying its implementation', async () => {
+  const { f, service, input, claimInput, orderUuid } = await actualClaimsReview();
+  const response = await service.submit(f.context, input);
   assert.equal(response.status, 'ok', JSON.stringify({status: response.status, reason: response.reason, state: response.value?.operationState})); assert.equal(response.value.order.orderNumber, '7654321');
+  assert.equal((await readOperation(f)).payload.atomicConversion, true, 'Actual FUCQ-66 claims must convert through the atomic callback');
+  assert.equal((await f.repository.read(f.context, ref(f, 'stock', { orderUuid }))).value.state, 'allocated');
+  assert.equal((await f.repository.read(f.context, ref(f, 'entitlement_slots', { entitlementSlotId: f.context.entitlementSlotId }))).value.state, 'allocated');
+  const competing = await f.claims.claim(f.context, { commandId: 'second-claim', ...claimInput });
+  assert.notEqual(competing.status, 'ok', 'An acknowledged selection stops competing manual claims for the slot');
+  assert.deepEqual(await service.submit(f.context, { ...input, commandId: 'double-click' }), response);
+});
+
+test('actual manual claims refusal inside conversion leaves no selection, history or allocation', async () => {
+  const { f, service, input, holdId, orderUuid } = await actualClaimsReview();
+  const refused = await service.submit(f.context, { ...input, expectedStockVersion: input.expectedStockVersion + 1 });
+  assert.equal(refused.status, 'conflict', JSON.stringify(refused)); assert.equal(refused.reason, 'stock-changed');
+  assert.equal((await f.repository.query(f.context, 'pending_operations', { operationType: 'selection-order' })).value.length, 0);
+  assert.equal((await f.repository.query(f.context, 'event_receipts', { eventType: 'selection-received' })).value.length, 0);
+  assert.equal((await f.repository.read(f.context, ref(f, 'holds', { holdId }))).value.state, 'active');
+  assert.equal((await f.repository.read(f.context, ref(f, 'stock', { orderUuid }))).value.state, 'held');
+  const corrected = await service.submit(f.context, { ...input, commandId: 'corrected' });
+  assert.equal(corrected.status, 'ok', JSON.stringify(corrected)); assert.equal(corrected.value.order.orderNumber, '7654321');
 });
