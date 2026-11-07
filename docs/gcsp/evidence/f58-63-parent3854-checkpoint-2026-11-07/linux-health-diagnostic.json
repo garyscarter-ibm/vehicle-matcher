@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "public-health-diagnostic.v1",
+  "action": 42341056489,
+  "head": "f109031459bc90492f93718111adfb6ee3ef56a0",
+  "observations": [
+    {
+      "at": "2026-11-07T05:03:14.013256+00:00",
+      "attempts": 1,
+      "bodySha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bounded": true,
+      "bytes": 0,
+      "elapsedMs": 244.12,
+      "headers": {
+        "date": "Sat, 07 Nov 2026 05:03:14 GMT",
+        "rndr-id": "fd482b94-5649-4722",
+        "server": "cloudflare",
+        "x-render-routing": "hibernate-wake-error"
+      },
+      "method": "GET",
+      "scope": "public health only; no credentials, source traffic, retries, files or acceptance assertion",
+      "service": "gcsp-api",
+      "status": 503
+    },
+    {
+      "at": "2026-11-07T05:03:14.257465+00:00",
+      "attempts": 1,
+      "bodySha256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+      "bounded": true,
+      "bytes": 11,
+      "elapsedMs": 177.34,
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "date": "Sat, 07 Nov 2026 05:03:14 GMT",
+        "rndr-id": "ed5b2f56-b23e-4782",
+        "server": "cloudflare"
+      },
+      "healthOk": true,
+      "method": "GET",
+      "scope": "public health only; no credentials, source traffic, retries, files or acceptance assertion",
+      "service": "retail-api",
+      "status": 200
+    }
+  ],
+  "totalGcspHealthAttempts": 5,
+  "liveDtoCompared": 0,
+  "underlyingRenderCause": "unestablished",
+  "acceptance": false
+}
