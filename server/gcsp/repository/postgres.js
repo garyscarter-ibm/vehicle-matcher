@@ -18,18 +18,28 @@ export function createPostgresRepository(options = {}) {
     ? result('conflict', { reason: error.code === '23505' ? 'database-constraint-conflict' : 'missing-reference', current: {} })
     : unavailable();
 
-  async function snapshot(client, context) {
+  // One simple-protocol string: lock first, then the snapshot as its own statement (fresh READ COMMITTED snapshot).
+  function snapshotSql(context, commit) {
+    const scope = context?.runId == null ? ' WHERE false' : ` WHERE run_id = ${pg.escapeLiteral(String(context.runId))}`;
+    const selects = FOUNDATION_TABLES.map((table) => `SELECT ${pg.escapeLiteral(table)} AS t, data FROM ${tableName(table)}${table === 'runs' ? '' : scope}`);
+    const lock = pg.escapeLiteral(`gcsp:run:${schema}:${context?.runId ?? ''}`);
+    return `BEGIN; SELECT pg_advisory_xact_lock(hashtextextended(${lock}, 0)); ${selects.join(' UNION ALL ')}${commit ? '; COMMIT' : ''}`;
+  }
+
+  function toState(results) {
     const state = createState();
-    for (const table of FOUNDATION_TABLES) {
-      const query = table === 'runs'
-        ? await client.query(`SELECT data FROM ${tableName(table)}`)
-        : await client.query(`SELECT data FROM ${tableName(table)} WHERE run_id = $1`, [context?.runId ?? null]);
-      state.tables[table] = query.rows.map((row) => row.data);
-    }
+    for (const { t, data } of results[2].rows) state.tables[t].push(data);
     return state;
   }
 
-  async function flush(client, before, after, context) {
+  // Tables with partial unique indexes on mutable state keep ordered per-row updates.
+  const ROW_UPDATE_TABLES = new Set(['runs', 'holds', 'claims']);
+  const NUMERIC_KEYS = new Set(['briefVersion']);
+  const CHUNK = 500;
+  const concurrentWrite = () => Object.assign(new Error('concurrent-write'), { code: '40001' });
+
+  async function flush(client, before, after) {
+    const updates = [];
     const inserts = [];
     for (const table of FOUNDATION_TABLES) {
       const previous = new Map(before.tables[table].map((row) => [keyOf(table, row), row]));
@@ -38,15 +48,38 @@ export function createPostgresRepository(options = {}) {
         const old = previous.get(keyOf(table, row));
         if (!old) { inserts.push([table, row]); continue; }
         if (inputDigest(old) === inputDigest(row)) continue;
-        const keys = TABLES[table].key;
+        updates.push([table, row, old.version]);
+      }
+    }
+    for (const table of FOUNDATION_TABLES) {
+      const rows = updates.filter(([name]) => name === table);
+      const keys = TABLES[table].key;
+      if (ROW_UPDATE_TABLES.has(table)) {
         const where = keys.map((key, index) => `${sqlName(column(key))} = $${index + 2}`).join(' AND ');
-        const updated = await client.query(`UPDATE ${tableName(table)} SET data = $1::jsonb WHERE ${where} AND version = $${keys.length + 2}`,
-          [JSON.stringify(row), ...keys.map((key) => row[key]), old.version]);
-        if (updated.rowCount !== 1) throw Object.assign(new Error('concurrent-write'), { code: '40001' });
+        for (const [, row, old] of rows) {
+          const updated = await client.query(`UPDATE ${tableName(table)} SET data = $1::jsonb WHERE ${where} AND version = $${keys.length + 2}`,
+            [JSON.stringify(row), ...keys.map((key) => row[key]), old]);
+          if (updated.rowCount !== 1) throw concurrentWrite();
+        }
+        continue;
+      }
+      const where = keys.map((key) => `t.${sqlName(column(key))} = (v.data->>'${key}')${NUMERIC_KEYS.has(key) ? '::bigint' : ''}`).join(' AND ');
+      for (let offset = 0; offset < rows.length; offset += CHUNK) {
+        const chunk = rows.slice(offset, offset + CHUNK);
+        const updated = await client.query(`UPDATE ${tableName(table)} AS t SET data = v.data FROM (SELECT e->'row' AS data, (e->>'old')::bigint AS old
+          FROM jsonb_array_elements($1::jsonb) AS e) AS v WHERE ${where} AND t.version = v.old`,
+        [JSON.stringify(chunk.map(([, row, old]) => ({ row, old })))]);
+        if (updated.rowCount !== chunk.length) throw concurrentWrite();
       }
     }
     // Updates release existing partial-index entries before replacement rows are inserted.
-    for (const [table, row] of inserts) await client.query(`INSERT INTO ${tableName(table)} (data) VALUES ($1::jsonb)`, [JSON.stringify(row)]);
+    for (const table of FOUNDATION_TABLES) {
+      const rows = inserts.filter(([name]) => name === table).map(([, row]) => row);
+      for (let offset = 0; offset < rows.length; offset += CHUNK) {
+        await client.query(`INSERT INTO ${tableName(table)} (data) SELECT value FROM jsonb_array_elements($1::jsonb) WITH ORDINALITY AS e(value, ordinality) ORDER BY ordinality`,
+          [JSON.stringify(rows.slice(offset, offset + CHUNK))]);
+      }
+    }
   }
 
   async function run(context, work, write) {
@@ -54,18 +87,16 @@ export function createPostgresRepository(options = {}) {
     let begun = false;
     try {
       client = await pool.connect();
-      await client.query('BEGIN'); begun = true;
-      await client.query('SELECT pg_advisory_xact_lock(hashtextextended($1, 0))', [`gcsp:run:${schema}:${context?.runId ?? ''}`]);
-      const state = await snapshot(client, context);
+      begun = true;
+      const state = toState(await client.query(snapshotSql(context, !write)));
       if (!write) {
-        const outcome = await work(state);
-        await client.query('COMMIT'); begun = false;
-        return outcome;
+        begun = false;
+        return await work(state);
       }
       const before = structuredClone(state);
       const { commit, outcome } = await work(state);
       if (!commit) { await client.query('ROLLBACK'); begun = false; return outcome; }
-      await flush(client, before, state, context);
+      await flush(client, before, state);
       await client.query('COMMIT'); begun = false;
       return outcome;
     } catch (error) {
@@ -88,7 +119,7 @@ export function createPostgresRepository(options = {}) {
           const parsed = new URL(connectionString);
           if (!['postgres:', 'postgresql:'].includes(parsed.protocol)) return invalid('invalid-database-url', 'GCSP_DATABASE_URL');
           pool = new pg.Pool({ connectionString, max: 4, connectionTimeoutMillis: 5000,
-            idleTimeoutMillis: 10000, statement_timeout: 10000, query_timeout: 15000 });
+            keepAlive: true, allowExitOnIdle: true, idleTimeoutMillis: 300000, statement_timeout: 10000, query_timeout: 15000 });
           pool.on('error', () => {});
           owned = true;
         } catch { return invalid('invalid-database-url', 'GCSP_DATABASE_URL'); }

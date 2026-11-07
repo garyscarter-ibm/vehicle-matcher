@@ -494,10 +494,21 @@ function driverDouble({ state = { tables: Object.fromEntries(Object.keys(TABLES)
       queries.push(sql);
       if (sql === 'BEGIN') { savepoint = { data: structuredClone(data), applied: structuredClone(applied), exists }; return { rows: [] }; }
       if (sql === 'ROLLBACK') { if (savepoint) ({ data, applied, exists } = savepoint); savepoint = undefined; return { rows: [] }; }
-      if (sql === 'COMMIT') {
+      const commit = () => {
         savepoint = undefined;
         if (uncertainCommit && data.tables.holds.length) { uncertainCommit = false; throw new Error('PRIVATE_DATABASE_DETAIL'); }
         return { rows: [] };
+      };
+      if (sql === 'COMMIT') return commit();
+      if (sql.startsWith('BEGIN; SELECT pg_advisory_xact_lock')) {
+        // Simple-protocol multi-statement: BEGIN, lock, one UNION ALL snapshot, optional COMMIT.
+        savepoint = { data: structuredClone(data), applied: structuredClone(applied), exists };
+        const rows = sql.split('; ')[2].split(' UNION ALL ').flatMap((part) => {
+          const [, name, scope] = part.match(/^SELECT '([a-z_]+)' AS t, data FROM "[a-z_]+"\."[a-z_]+"( WHERE .*)?$/);
+          const runId = scope?.match(/^ WHERE run_id = '(.*)'$/)?.[1];
+          return data.tables[name].filter((row) => !scope || (scope !== ' WHERE false' && row.runId === runId)).map((row) => ({ t: name, data: structuredClone(row) }));
+        });
+        return [{ rows: [] }, { rows: [] }, { rows }, ...(sql.endsWith('; COMMIT') ? [commit()] : [])];
       }
       if (sql.startsWith('SELECT to_regclass')) return { rows: [{ name: exists ? 'schema_migrations' : null }] };
       if (sql.startsWith('SELECT version, filename, checksum')) return { rows: structuredClone(applied) };
@@ -511,10 +522,17 @@ function driverDouble({ state = { tables: Object.fromEntries(Object.keys(TABLES)
         return { rows: [] };
       }
       const table = sql.match(/(?:FROM|INTO|UPDATE) "[a-z_0-9]+"\."([a-z_]+)"/)?.[1];
-      if (sql.startsWith('SELECT data')) return { rows: data.tables[table].filter((row) => !values.length || row.runId === values[0]).map((row) => ({ data: structuredClone(row) })) };
       if (sql.startsWith('INSERT INTO') && table) {
         if (table === failTable) throw new Error('PRIVATE_DATABASE_DETAIL');
-        data.tables[table].push(JSON.parse(values[0])); return { rowCount: 1, rows: [] };
+        const rows = JSON.parse(values[0]); data.tables[table].push(...rows); return { rowCount: rows.length, rows: [] };
+      }
+      if (sql.startsWith('UPDATE') && table && sql.includes('jsonb_array_elements')) {
+        let rowCount = 0;
+        for (const { row, old } of JSON.parse(values[0])) {
+          const index = data.tables[table].findIndex((current) => TABLES[table].key.every((key) => current[key] === row[key]) && current.version === old);
+          if (index >= 0) { data.tables[table][index] = row; rowCount += 1; }
+        }
+        return { rowCount, rows: [] };
       }
       if (sql.startsWith('UPDATE') && table) {
         const replacement = JSON.parse(values[0]);
@@ -625,5 +643,27 @@ test('postgresql driver: a reset flush failure restores current run and leaves n
   assert.equal(reset.status, 'unavailable');
   assert.deepEqual(driver.read(), before);
   assert.equal((await repository.currentRun(c.environmentId)).value.runId, c.runId);
+  await repository.close();
+});
+
+test('postgresql driver: round trips stay constant per read and per transaction', async () => {
+  const driver = driverDouble();
+  const repository = createPostgresRepository({ pool: driver.pool });
+  await repository.open(); await setup(repository);
+  const count = async (work) => { const before = driver.queries.length; await work(); return driver.queries.length - before; };
+  assert.equal(await count(() => repository.query(ctx(), 'stock')), 1);
+  assert.equal(await count(() => repository.read(ctx(), ref('stock', { orderUuid: 'car-a' }))), 1);
+  const bulk = await count(() => repository.transaction(ctx(), command(), async (tx) => {
+    for (let i = 0; i < 50; i += 1) await tx.insert('stock', { runId: 'run-a', orderUuid: `bulk-${i}`, orderNumber: `B${i}`, state: 'available' });
+    return ok('bulk');
+  }));
+  assert.ok(bulk <= 4, `snapshot, batched inserts per table, commit (got ${bulk})`);
+  assert.equal((await repository.query(ctx(), 'stock')).value.length, 52);
+  const edit = await count(() => repository.transaction(ctx(), command(), async (tx) => {
+    for (const orderUuid of ['car-a', 'car-b']) await tx.compareAndSwap(ref('stock', { orderUuid }), 1, { state: 'held' });
+    return ok('edit');
+  }));
+  assert.ok(edit <= 4, `snapshot, batched update, command record, commit (got ${edit})`);
+  assert.deepEqual((await repository.query(ctx(), 'stock', { state: 'held' })).value.map((row) => row.version), [2, 2]);
   await repository.close();
 });

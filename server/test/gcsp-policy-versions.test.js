@@ -192,8 +192,9 @@ test('configured database errors never fall back to file values or expose driver
 test('PostgreSQL driver double round-trips complete typed rows and rolls back failed publication (not native SQL proof)', async () => {
   const migrations = await loadMigrations();
   let tables = Object.fromEntries(['policy_versions', ...Object.values(POLICY_TABLES)].map((table) => [table, []]));
-  let previous; let failTable; let releases = 0;
+  let previous; let failTable; let releases = 0; let queryCount = 0;
   const client = { release() { releases += 1; }, async query(sql, values = []) {
+    queryCount += 1;
     if (sql === 'BEGIN') { previous = structuredClone(tables); return { rows: [] }; }
     if (sql === 'ROLLBACK') { tables = previous; return { rows: [] }; }
     if (sql === 'COMMIT' || sql.includes('pg_advisory_xact_lock')) return { rows: [] };
@@ -217,6 +218,9 @@ test('PostgreSQL driver double round-trips complete typed rows and rolls back fa
     f = await setup(provider);
     const seed = await new FilePolicyProvider().loadVersions(await f.read());
     assert.deepEqual(await provider.loadVersions(await f.read()), seed);
+    const warm = await provider.loadVersions(await f.read()); const counted = queryCount;
+    assert.equal(await provider.loadVersions(await f.read()), warm);
+    assert.equal(queryCount - counted, 1, 'a cached policy read is one header query');
     failTable = 'price_plans';
     const failed = await f.policy.publishPolicyVersion(f.greg, change());
     assert.equal(failed.status, 'unavailable'); assert.doesNotMatch(JSON.stringify(failed), /private|password/);
