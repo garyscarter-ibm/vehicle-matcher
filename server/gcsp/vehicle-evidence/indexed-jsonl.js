@@ -11,6 +11,24 @@ const sha = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const identity = (info) => Object.freeze(Object.fromEntries(
   ['dev', 'ino', 'size', 'mtimeNs', 'ctimeNs'].map((key) => [key, String(info[key])])));
 const sameIdentity = (left, right) => Object.keys(left).every((key) => left[key] === right[key]);
+function confirmMetadataChange(fd, expected, current, checksum) {
+  // File providers can update metadata without touching bytes. Keep every data identity
+  // guard, and confirm the entire indexed byte snapshot before accepting only a new ctime.
+  if (!checksum || Object.keys(expected).some((key) => key !== 'ctimeNs' && expected[key] !== current[key])
+    || !sameIdentity(current, identity(fstatSync(fd, { bigint: true })))) {
+    fail('artifact-changed', 'Indexed artifact identity changed.');
+  }
+  const hash = createHash('sha256'); const buffer = Buffer.alloc(64 * 1024); let position = 0;
+  while (position < Number(current.size)) {
+    const count = readSync(fd, buffer, 0, Math.min(buffer.length, Number(current.size) - position), position);
+    if (!count) fail('artifact-changed', 'Indexed artifact became incomplete.');
+    hash.update(buffer.subarray(0, count)); position += count;
+  }
+  if (hash.digest('hex') !== checksum || !sameIdentity(current, identity(fstatSync(fd, { bigint: true })))) {
+    fail('artifact-changed', 'Indexed artifact bytes or identity changed.');
+  }
+  return current;
+}
 function parse(bytes, label) {
   let row;
   try { row = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes)); }
@@ -20,11 +38,15 @@ function parse(bytes, label) {
 }
 
 /** Read one detached record. No descriptors or full envelopes remain cached. */
-export function readIndexedRow(path, expectedIdentity, entry) {
+export function readIndexedRow(path, expectedIdentity, entry, integrity) {
   let fd;
   try {
     fd = openSync(path, 'r');
-    if (!sameIdentity(identity(fstatSync(fd, { bigint: true })), expectedIdentity)) fail('artifact-changed', 'Indexed artifact identity changed.');
+    const current = identity(fstatSync(fd, { bigint: true }));
+    if (!sameIdentity(current, expectedIdentity)) {
+      expectedIdentity = confirmMetadataChange(fd, expectedIdentity, current, integrity?.checksum);
+      integrity.identity = expectedIdentity;
+    }
     const bytes = Buffer.alloc(entry.length); let offset = 0;
     while (offset < bytes.length) {
       const count = readSync(fd, bytes, offset, bytes.length - offset, entry.offset + offset);
@@ -50,7 +72,7 @@ export async function indexJsonl(path, { maxBytes = JSONL_MAX_BYTES, maxRowBytes
   try {
     const initial = await file.stat({ bigint: true });
     if (!initial.isFile() || initial.size > BigInt(maxBytes)) fail('artifact-size', 'Artifact exceeds the bounded streaming file limit.');
-    const expectedIdentity = identity(initial); const hash = createHash('sha256');
+    let expectedIdentity = identity(initial); const hash = createHash('sha256');
     const entries = []; const byKey = new Map(); const buffer = Buffer.alloc(chunkBytes);
     let pending = Buffer.alloc(0); let consumed = 0; let total = 0;
     while (true) {
@@ -73,10 +95,12 @@ export async function indexJsonl(path, { maxBytes = JSONL_MAX_BYTES, maxRowBytes
       pending = Buffer.from(bytes.subarray(start));
       if (pending.length > maxRowBytes) fail('artifact-row-size', 'JSONL record exceeds its bounded row limit.');
     }
-    if (!sameIdentity(expectedIdentity, identity(await file.stat({ bigint: true })))) fail('artifact-changed', 'Artifact changed during indexing.');
+    const checksum = hash.digest('hex'); const current = identity(await file.stat({ bigint: true }));
+    if (!sameIdentity(expectedIdentity, current)) expectedIdentity = confirmMetadataChange(file.fd, expectedIdentity, current, checksum);
     if (pending.length) fail('truncated-jsonl', 'JSONL must end with a newline; interrupted records cannot activate.');
-    const read = (entry) => entry ? readIndexedRow(path, expectedIdentity, entry) : undefined;
-    return Object.freeze({ length: entries.length, checksum: hash.digest('hex'), identity: expectedIdentity,
+    const integrity = { identity: expectedIdentity, checksum };
+    const read = (entry) => entry ? readIndexedRow(path, integrity.identity, entry, integrity) : undefined;
+    return Object.freeze({ length: entries.length, checksum, get identity() { return integrity.identity; },
       get: (id) => read(byKey.get(id)), metadata: (id) => byKey.get(id),
       *metadataEntries() { yield* entries; },
       *[Symbol.iterator]() { for (const entry of entries) yield read(entry); } });
