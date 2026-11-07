@@ -12750,6 +12750,97 @@
       "sourceDate": "2026-11-07",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "lifecycle.return.options.v1",
+      "value": {
+        "choices": [
+          {
+            "id": "same-visit",
+            "label": "Return it when the new car is handed over"
+          },
+          {
+            "id": "separate",
+            "label": "Return it on a separate day"
+          }
+        ],
+        "rules": {
+          "same-visit": {
+            "requiresHandoverStates": [
+              "scheduled"
+            ],
+            "location": "handover-retailer",
+            "slot": "handover-slot"
+          },
+          "separate": {
+            "requiresHandoverStates": [
+              "scheduled"
+            ],
+            "location": "handover-retailer",
+            "slot": "after-handover",
+            "notBeforeHandoverEnd": true,
+            "maxDaysAfterHandover": 7,
+            "slots": {
+              "earliestLeadDays": 2,
+              "daysOffered": 10,
+              "slotMinutes": 60,
+              "dailyStartTimes": [
+                "09:00",
+                "13:00"
+              ]
+            }
+          }
+        }
+      },
+      "unit": "choice IDs with labels; handover states; days from the demo clock date and from the handover; minutes; UTC HH:MM daily start times",
+      "basis": "Synthetic demo assumption: Paula may return the old car at the new car's handover or on a separate day within a week after it, once the handover is scheduled. Not BMW policy; revisable here.",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-return-plan--fucq-118",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "lifecycle.return.ownership.v1",
+      "value": {
+        "states": {
+          "not-requested": {
+            "owner": "employee",
+            "nextStep": "Choose when to return your current car."
+          },
+          "requested": {
+            "owner": "retailer",
+            "nextStep": "Waiting for the retailer to confirm your return slot."
+          },
+          "change-proposed": {
+            "owner": "employee",
+            "nextStep": "Accept the new time to confirm your return."
+          },
+          "scheduled": {
+            "owner": "retailer",
+            "nextStep": "Keep driving your current car until the return."
+          }
+        },
+        "ineligible": {
+          "owner": "employee",
+          "nextStep": "Confirm your new car's handover first, then plan the return."
+        },
+        "pending": {
+          "owner": "scheme-team",
+          "nextStep": "Waiting for the scheme team to confirm the last update."
+        },
+        "blocked": {
+          "owner": "scheme-team",
+          "nextStep": "The scheme team will review why this was not accepted."
+        }
+      },
+      "unit": "owner and next-step label per return state",
+      "basis": "Synthetic demo assumption: who acts next at each return state (HLD review Q19, states reused from the handover appointment). Owners are Paula (employee), the retailer or the scheme team; labels are concise demo copy.",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-return-plan--fucq-118",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
     }
   ]
 }

@@ -62,6 +62,7 @@ import { createManualReviewDetailsRoutes } from './gcsp/manual-review/http.js';
 import { createLifecycleApprovalRoutes } from './gcsp/lifecycle/approvals/http.js';
 import { createDocumentRoutes } from './gcsp/lifecycle/documents/http.js';
 import { createAppointmentRoutes } from './gcsp/lifecycle/appointments/http.js';
+import { createReturnPlanRoutes } from './gcsp/lifecycle/return-plan/http.js';
 import { createVehicleEvidenceHandler, isVehicleEvidencePath } from './gcsp/vehicle-evidence/vehicle-evidence-handler.js';
 import { createLocalVehicleEvidenceLookup } from './gcsp/vehicle-evidence/local-vehicle-lookup.js';
 import { createGregRoutes } from './gcsp/greg/http.js';
@@ -883,7 +884,7 @@ export function buildServer(deps = {}) {
     ...createManualReviewDetailsRoutes(deps.gcspManualReview),
     ...createOfferFollowupRoutes(deps.gcspOfferFollowup),
     ...createLifecycleApprovalRoutes(deps.gcspLifecycle), ...createDocumentRoutes(deps.gcspDocuments),
-    ...createAppointmentRoutes(deps.gcspAppointments),
+    ...createAppointmentRoutes(deps.gcspAppointments), ...createReturnPlanRoutes(deps.gcspReturnPlan),
     ...createGregRoutes(deps.gcspGreg), ...createGregPublishRoutes(gregPublish), ...(deps.gcspRoutes || [])],
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
@@ -937,6 +938,10 @@ export function buildServer(deps = {}) {
     if (deps.gcspAppointments) {
       const appointments = await deps.gcspAppointments.start();
       if (appointments.status !== 'ok') return appointments;
+    }
+    if (deps.gcspReturnPlan) {
+      const returns = await deps.gcspReturnPlan.start();
+      if (returns.status !== 'ok') return returns;
     }
     // Notification registration precedes the clock sealing its registry. Startup
     // drains already committed jobs even though clock startup omits allocation.
