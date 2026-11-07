@@ -1127,7 +1127,70 @@
       "assignee": "Gary Carter",
       "type": "Story",
       "observed_at": "2026-11-07T14:07:07Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-106"
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-106",
+      "slices": [
+        {
+          "id": "decision-protocol",
+          "status": "complete",
+          "title": "Decision-command-result-event-and-exclusion-contract",
+          "observed_at": "2026-11-07T15:45:00Z",
+          "evidence": "Verified on merged gcsp-poc 446b7b2d: service/routes composed in runtime.js and index.js; scoped 152/154 pass. Claude story-lead 2026-11-07."
+        },
+        {
+          "id": "policy-reasons",
+          "status": "complete",
+          "title": "Canonical-decline-reasons-and-activation",
+          "evidence": "Verified on merged gcsp-poc 446b7b2d: service/routes composed in runtime.js and index.js; scoped 152/154 pass. Claude story-lead 2026-11-07.",
+          "observed_at": "2026-11-07T15:45:00Z"
+        },
+        {
+          "id": "decision-service",
+          "status": "complete",
+          "title": "Transactional-decision-service-and-HTTP-protocol",
+          "observed_at": "2026-11-07T15:45:00Z",
+          "evidence": "Verified on merged gcsp-poc 446b7b2d: service/routes composed in runtime.js and index.js; scoped 152/154 pass. Claude story-lead 2026-11-07."
+        },
+        {
+          "id": "producer-access-expiry",
+          "status": "complete",
+          "title": "Actual-producer-access-and-expiry-integration",
+          "evidence": "Verified on merged gcsp-poc 446b7b2d: service/routes composed in runtime.js and index.js; scoped 152/154 pass. Claude story-lead 2026-11-07.",
+          "observed_at": "2026-11-07T15:45:00Z"
+        },
+        {
+          "id": "remote-events",
+          "status": "complete",
+          "title": "Remote-uncertainty-and-downstream-events",
+          "evidence": "Local adapter releases in-transaction; remote adapter and 107/108 consumption are other stories (out_of_scope). Claude story-lead 2026-11-07.",
+          "observed_at": "2026-11-07T15:45:00Z"
+        },
+        {
+          "id": "runtime",
+          "status": "complete",
+          "title": "Coordinated-runtime-registration",
+          "evidence": "Verified on merged gcsp-poc 446b7b2d: service/routes composed in runtime.js and index.js; scoped 152/154 pass. Claude story-lead 2026-11-07.",
+          "observed_at": "2026-11-07T15:45:00Z"
+        },
+        {
+          "id": "final-validation",
+          "status": "in-progress",
+          "title": "Authored-acceptance-and-final-validation",
+          "evidence": "Scoped 152/154 pass, 2 supervisor-gated skips, on merged gcsp-poc 446b7b2d; npm test not yet run (lock held, base red).",
+          "observed_at": "2026-11-07T15:45:00Z"
+        }
+      ],
+      "unsliced": false,
+      "workers": [
+        {
+          "name": "Claude story-lead",
+          "harness": "claude-code",
+          "role": "story-lead",
+          "observed_at": "2026-11-07T15:45:00Z",
+          "expires_at": "2026-11-07T17:45:00Z",
+          "source": "claude-code story-lead (opus)",
+          "status": "active"
+        }
+      ]
     },
     {
       "id": "FUCQ-107",

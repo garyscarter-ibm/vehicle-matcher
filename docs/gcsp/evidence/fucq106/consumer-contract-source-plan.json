@@ -1,0 +1,1125 @@
+{
+  "schemaVersion": 1,
+  "at": "2026-11-06T01:32:02.127620+00:00",
+  "story": "FUCQ-106",
+  "status": "Read-only actual105/107 source and contract plan; no execution approval",
+  "refs": {
+    "caller105": "b4efefec60577a14a98e6bae934741249bd7c20c",
+    "caller107": "16839323f070f7c0ab81eb1ebf728627d283c71d",
+    "evidence107": "805c0c53e855b6486d771e0e5ee567b4a302f46f",
+    "canonical106": "90cb70ce951a4c9de934e792b8b7fbee0665d934",
+    "publication106": "7c280b8eb76dce4a8a65b3017026dc8a74ebbd15",
+    "canonical103": "0d3a0aa2fcee5d26ad33e587578cff7cce169090"
+  },
+  "authority": "Dispatcher0126:105 owns next mixed command/access/reasons/controller proof;107 owns client confirmation;106 inspects shared bindings and missing owned ports only.",
+  "canonicalBasis": {
+    "path": "docs/gcsp/evidence/fucq106/canonical-adoption-source-plan.json",
+    "sha256": "db0dfa478ddef3594abe5c74c0aaeddeefc61e9bd8fcedee4c0ba832ec178746",
+    "modulesRetained": 42,
+    "inputsRetained": 6,
+    "retainedImmutableProducerSelections": 11,
+    "note": "Producer selections are intentional immutable100/103 sources. No requirement to remove overlays; one canonical identity per path remains binding."
+  },
+  "union": {
+    "modules": [
+      {
+        "path": "blocks/gcsp/brief/brief-view-model.js",
+        "source": "b4efefec60577a14a98e6bae934741249bd7c20c",
+        "sha256": "7eea953d26aaeded1f6fe5ac219ebcc0f0c739f8f003b7ca61414dc4da1aa366",
+        "bytes": 4268,
+        "selection": "105 transitive shared display dependency"
+      },
+      {
+        "path": "blocks/gcsp/kit/form-controls.js",
+        "source": "b4efefec60577a14a98e6bae934741249bd7c20c",
+        "sha256": "4df9e86f3d51f33397bd524b95f35a40240c931b441f91a7b8b05ef89fe508b4",
+        "bytes": 2179,
+        "selection": "105 transitive shared display dependency"
+      },
+      {
+        "path": "blocks/gcsp/offer/http-adapter.js",
+        "source": "b4efefec60577a14a98e6bae934741249bd7c20c",
+        "sha256": "7ed45f955e5bdb437cb94f62bef0dbb3b8ac9d5ad2a8c477f4fe91da5297fbc5",
+        "bytes": 8303,
+        "selection": "105 current production caller"
+      },
+      {
+        "path": "blocks/gcsp/offer/offer-controller.js",
+        "source": "b4efefec60577a14a98e6bae934741249bd7c20c",
+        "sha256": "672d5f113751f2483a10dad219ce77d5d5c25b3b1cb1429cfc9b6aa1cb14f400",
+        "bytes": 10411,
+        "selection": "105 current production caller"
+      },
+      {
+        "path": "blocks/gcsp/offer/offer-projection.js",
+        "source": "b4efefec60577a14a98e6bae934741249bd7c20c",
+        "sha256": "fc8f500cd82ef4d18c9fde4062bb4880534c50e78bbcd729bd0a90b97457e64e",
+        "bytes": 13287,
+        "selection": "105 current production caller"
+      },
+      {
+        "path": "blocks/gcsp/offer/offer-view.js",
+        "source": "b4efefec60577a14a98e6bae934741249bd7c20c",
+        "sha256": "de5d37114ab4a4400d73a7086d8426c00d4d6cf63a77c22463a029316a324d4a",
+        "bytes": 11461,
+        "selection": "105 current production caller"
+      },
+      {
+        "path": "blocks/vehicle-matcher/feedback-actions.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "eb6dcfb82aed8045228797f870a5e337ef7f0a8f3e136eb46804995d71838744",
+        "bytes": 10235,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "blocks/vehicle-matcher/modes/brand-copy.js",
+        "source": "b4efefec60577a14a98e6bae934741249bd7c20c",
+        "sha256": "485098aea61944c5fd62047164b4aabfdd1c95c2ff2be9aacf5dae211d195ec9",
+        "bytes": 36275,
+        "selection": "105 transitive shared display dependency"
+      },
+      {
+        "path": "blocks/vehicle-matcher/modes/result-card.js",
+        "source": "b4efefec60577a14a98e6bae934741249bd7c20c",
+        "sha256": "cc5d50468f45f1c751c597ece89ca5d7dfe88f70d98dd606104ad3504007f948",
+        "bytes": 32636,
+        "selection": "105 transitive shared display dependency"
+      },
+      {
+        "path": "blocks/vehicle-matcher/ui.js",
+        "source": "b4efefec60577a14a98e6bae934741249bd7c20c",
+        "sha256": "49107097a7927e388ff78949045827f3a8903fea0bd758dbe1aa597bec82d8b2",
+        "bytes": 4277,
+        "selection": "105 transitive shared display dependency"
+      },
+      {
+        "path": "server/brands.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "ea63741b2fcb01dbe35dcdffdd66f7021a3c0219517a8de1487fae65f65299e2",
+        "bytes": 46965,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/engine.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "bbe8a865d280fb75075e93a139a3badbaa20972a18406baeeafb8ca2fc56a550",
+        "bytes": 42306,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/brief/index.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "22500a517f8232947b33ac274e32bf60746ba9d8199851e750784f57737ee418",
+        "bytes": 19768,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/clock/index.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "a1726ddc4ad11deb0b7044480d745180d4c7dff42b34e77305a090b35d38e40a",
+        "bytes": 23255,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/fixtures/principals.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "848797ec98dd253c8c8daa4e1078f2b6ecc30b2807c713bf13615f2ead18ec2f",
+        "bytes": 2686,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/fixtures/scenario-v1.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "408f135c04ae909e717c30763073a3ea24a82c1e8643fabdea2888e22f1681f4",
+        "bytes": 4895,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/fixtures/scenarios/catalogue-v1.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "eca724465148032750c74c57882c0ee0ae69f3b119330194b9601b9b4bc1b73c",
+        "bytes": 5754,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/fixtures/scenarios/index.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "e1e794e347833ae952352d7bdf2cbc9afae28c65a01edd76c570a6bf38c4cad4",
+        "bytes": 4505,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/identity/index.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "7b23c7a6f251edaa54ce8921eb29734976447239afd3cb58343d79f9e153c152",
+        "bytes": 12789,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/manual-context/fixtures.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "e63bee220e6e563f96ee94a94f37500c67d0c2944b3909a0a8c7d3f1f89b01a6",
+        "bytes": 4389,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/manual-context/ports.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "c1e7db5012f6d3212b79ad989e6cde5a0e390e2f4bfe50f91ee4c79c8a7a1267",
+        "bytes": 4210,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/migrations/index.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f",
+        "bytes": 4706,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/offers/access-http.js",
+        "source": "4a56d386f031e7cf5a1fdeaefdcc612fb35cbd7b",
+        "sha256": "f37533eeb5309cb4eff6c6dcf0af5ab8a8819afdaa4d08b4baee0147d360e868",
+        "bytes": 4776,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/offers/access.js",
+        "source": "4a56d386f031e7cf5a1fdeaefdcc612fb35cbd7b",
+        "sha256": "134e9d39253e934618f6cf38b334bb7cf0f8912443ee159e6167b949d4fdb34a",
+        "bytes": 20668,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/offers/buddy-hold.js",
+        "source": "a7fc8580efba36c329b2479711d6b66db53962bd",
+        "sha256": "b9f1a9be9cf42552a56313492bf0703b49ed715ffe2059f477ee11637c44b3d6",
+        "bytes": 28746,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/offers/buddy-remote.js",
+        "source": "a7fc8580efba36c329b2479711d6b66db53962bd",
+        "sha256": "0284045ab38c22c305019ad4a560724aa233e830c6c37186d5661da430c59e01",
+        "bytes": 24229,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/offers/current-car-comparison.js",
+        "source": "a7fc8580efba36c329b2479711d6b66db53962bd",
+        "sha256": "c5aaf8b2e3123301d50f3dade21e89e4f88abf12ede4e2c7ed801adbc56099cd",
+        "bytes": 3135,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/offers/decision-http.js",
+        "source": "da4a2c824d7d73b118185c4cfc6395d4e9254e4f",
+        "sha256": "223e3358569602145ecb2a5f967abf5a9e3ca78d688667d0e6c8bbb0c1779b96",
+        "bytes": 4782,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/offers/decision.js",
+        "source": "da4a2c824d7d73b118185c4cfc6395d4e9254e4f",
+        "sha256": "a934455a09beb13e3682c1f10ebea95f0549ff2fad8db03d54ff947e7ed7789a",
+        "bytes": 23307,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/offers/followup-comparison.js",
+        "source": "16839323f070f7c0ab81eb1ebf728627d283c71d",
+        "sha256": "8a7120e2f217b4a6842081e70d90cf0d170939ffa5b9e75ba1aec0330877395f",
+        "bytes": 2608,
+        "selection": "107 service pin; client still separately owned"
+      },
+      {
+        "path": "server/gcsp/offers/followup-http.js",
+        "source": "16839323f070f7c0ab81eb1ebf728627d283c71d",
+        "sha256": "b9c1f59fa083a658d0c801fc59c335cb84ddf7b454d3fc60636fcc85306375d0",
+        "bytes": 1420,
+        "selection": "107 service pin; client still separately owned"
+      },
+      {
+        "path": "server/gcsp/offers/followup-policy.js",
+        "source": "16839323f070f7c0ab81eb1ebf728627d283c71d",
+        "sha256": "d65f690d498c0c9c668e4969c2663245da24b47010c7daff9da5c4920163dc39",
+        "bytes": 16391,
+        "selection": "107 service pin; client still separately owned"
+      },
+      {
+        "path": "server/gcsp/offers/followup.js",
+        "source": "16839323f070f7c0ab81eb1ebf728627d283c71d",
+        "sha256": "bdd9dc0c57e62a08b866b9e204bbbb17b148a0534b65c37be92d3d8d7e49d875",
+        "bytes": 16389,
+        "selection": "107 service pin; client still separately owned"
+      },
+      {
+        "path": "server/gcsp/offers/offer-token.js",
+        "source": "a7fc8580efba36c329b2479711d6b66db53962bd",
+        "sha256": "325b699d7dfdb435cd8713015017aa68bf735582f127d7d64a0e0fc819f7b915",
+        "bytes": 1292,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/policy/activation.js",
+        "source": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+        "sha256": "4e79235b761e8daf94f3cf2744c4bc585146181b410b64497669bd353ee7c4d6",
+        "bytes": 2992,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/policy/adoption.js",
+        "source": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+        "sha256": "a2cb9a74946cd9eda413d896a0abc2f4299b3b75880a77ddd510667a5187c870",
+        "bytes": 4407,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/policy/file-provider.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+        "bytes": 7809,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/policy/index.js",
+        "source": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+        "sha256": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+        "bytes": 10870,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/policy/memory-provider.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
+        "bytes": 1861,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/policy/postgres-provider.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+        "bytes": 6553,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/policy/publish.js",
+        "source": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+        "sha256": "c521e15966be7762a3348ad860403ef555dd8cbd48405e7d23d9a7c6d262a826",
+        "bytes": 9788,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/policy/reviewed-definitions.js",
+        "source": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+        "sha256": "4bb860c1f3f06c897924a4f6a4f849e2c95c4dd12ccbb2ab136f14bbfb337507",
+        "bytes": 3892,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/recommendation/index.js",
+        "source": "a7fc8580efba36c329b2479711d6b66db53962bd",
+        "sha256": "08acfe895804cf60dcc178591ecbdd1816f12ce70944f832f1ae394902c7e172",
+        "bytes": 18786,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/repository/core.js",
+        "source": "a7fc8580efba36c329b2479711d6b66db53962bd",
+        "sha256": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+        "bytes": 30666,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/repository/index.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16",
+        "bytes": 247,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/repository/memory.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866",
+        "bytes": 1561,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/repository/postgres.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
+        "bytes": 5658,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/repository/schema.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+        "bytes": 5562,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/vehicle-evidence/vin-allocation.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "336d73b30e78ee4a6a1484598000497513a160a857d7b9533bd5ff3e55ff051e",
+        "bytes": 19405,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/vehicle-evidence/vin-generator.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "56072df720ff4b32d26fcd099852f397f140ae44b4658532fa952d11c717260f",
+        "bytes": 2849,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/gcsp/vehicle-evidence/vin-profiles.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "d3f6ea071027d787b2eeb6ebb8d70992845711c63ad084e0819403d6e13a90bd",
+        "bytes": 9652,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/questions.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "898716dfaf8a184fef39a9ae12b9d59b01cce94c48356dab5e3b4e81de62c26d",
+        "bytes": 20998,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/scenarios/employee/index.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "43f50c04794902dd1d10a008f7882d335c1b5179f1c57a3f4ab9ea1293f7d844",
+        "bytes": 8375,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/test/helpers/employee-recommendation.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "39b7e47f9298d155759fa440bd412ebb86bfc009b7ec9d9d1167bdb88970ce9a",
+        "bytes": 2798,
+        "selection": "retained exact canonical106 plan"
+      },
+      {
+        "path": "server/vehicles/index.js",
+        "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+        "sha256": "cc02ff92ac13a25fdbe3a2325f60cafe2c16486e2f11d78a391f8664a217b5cc",
+        "bytes": 9321,
+        "selection": "retained exact canonical106 plan"
+      }
+    ],
+    "moduleCount": 55,
+    "moduleBytes": 641353,
+    "relativeImportEdges": [
+      {
+        "from": "server/engine.js",
+        "specifier": "./brands.js",
+        "to": "server/brands.js"
+      },
+      {
+        "from": "server/engine.js",
+        "specifier": "./questions.js",
+        "to": "server/questions.js"
+      },
+      {
+        "from": "server/gcsp/brief/index.js",
+        "specifier": "../../../blocks/vehicle-matcher/feedback-actions.js",
+        "to": "blocks/vehicle-matcher/feedback-actions.js"
+      },
+      {
+        "from": "server/gcsp/brief/index.js",
+        "specifier": "../../scenarios/employee/index.js",
+        "to": "server/scenarios/employee/index.js"
+      },
+      {
+        "from": "server/gcsp/brief/index.js",
+        "specifier": "../policy/file-provider.js",
+        "to": "server/gcsp/policy/file-provider.js"
+      },
+      {
+        "from": "server/gcsp/brief/index.js",
+        "specifier": "../recommendation/index.js",
+        "to": "server/gcsp/recommendation/index.js"
+      },
+      {
+        "from": "server/gcsp/brief/index.js",
+        "specifier": "../repository/index.js",
+        "to": "server/gcsp/repository/index.js"
+      },
+      {
+        "from": "server/gcsp/clock/index.js",
+        "specifier": "../fixtures/scenario-v1.js",
+        "to": "server/gcsp/fixtures/scenario-v1.js"
+      },
+      {
+        "from": "server/gcsp/clock/index.js",
+        "specifier": "../fixtures/scenarios/index.js",
+        "to": "server/gcsp/fixtures/scenarios/index.js"
+      },
+      {
+        "from": "server/gcsp/clock/index.js",
+        "specifier": "../identity/index.js",
+        "to": "server/gcsp/identity/index.js"
+      },
+      {
+        "from": "server/gcsp/clock/index.js",
+        "specifier": "../policy/file-provider.js",
+        "to": "server/gcsp/policy/file-provider.js"
+      },
+      {
+        "from": "server/gcsp/clock/index.js",
+        "specifier": "../repository/index.js",
+        "to": "server/gcsp/repository/index.js"
+      },
+      {
+        "from": "server/gcsp/fixtures/scenario-v1.js",
+        "specifier": "../policy/file-provider.js",
+        "to": "server/gcsp/policy/file-provider.js"
+      },
+      {
+        "from": "server/gcsp/fixtures/scenario-v1.js",
+        "specifier": "../repository/core.js",
+        "to": "server/gcsp/repository/core.js"
+      },
+      {
+        "from": "server/gcsp/fixtures/scenario-v1.js",
+        "specifier": "../vehicle-evidence/vin-allocation.js",
+        "to": "server/gcsp/vehicle-evidence/vin-allocation.js"
+      },
+      {
+        "from": "server/gcsp/fixtures/scenario-v1.js",
+        "specifier": "./principals.js",
+        "to": "server/gcsp/fixtures/principals.js"
+      },
+      {
+        "from": "server/gcsp/fixtures/scenarios/index.js",
+        "specifier": "../../policy/index.js",
+        "to": "server/gcsp/policy/index.js"
+      },
+      {
+        "from": "server/gcsp/fixtures/scenarios/index.js",
+        "specifier": "../../repository/core.js",
+        "to": "server/gcsp/repository/core.js"
+      },
+      {
+        "from": "server/gcsp/fixtures/scenarios/index.js",
+        "specifier": "../principals.js",
+        "to": "server/gcsp/fixtures/principals.js"
+      },
+      {
+        "from": "server/gcsp/fixtures/scenarios/index.js",
+        "specifier": "../scenario-v1.js",
+        "to": "server/gcsp/fixtures/scenario-v1.js"
+      },
+      {
+        "from": "server/gcsp/fixtures/scenarios/index.js",
+        "specifier": "./catalogue-v1.js",
+        "to": "server/gcsp/fixtures/scenarios/catalogue-v1.js"
+      },
+      {
+        "from": "server/gcsp/identity/index.js",
+        "specifier": "../fixtures/principals.js",
+        "to": "server/gcsp/fixtures/principals.js"
+      },
+      {
+        "from": "server/gcsp/identity/index.js",
+        "specifier": "../repository/index.js",
+        "to": "server/gcsp/repository/index.js"
+      },
+      {
+        "from": "server/gcsp/manual-context/fixtures.js",
+        "specifier": "../repository/index.js",
+        "to": "server/gcsp/repository/index.js"
+      },
+      {
+        "from": "server/gcsp/manual-context/ports.js",
+        "specifier": "../repository/index.js",
+        "to": "server/gcsp/repository/index.js"
+      },
+      {
+        "from": "server/gcsp/migrations/index.js",
+        "specifier": "../repository/core.js",
+        "to": "server/gcsp/repository/core.js"
+      },
+      {
+        "from": "server/gcsp/offers/buddy-hold.js",
+        "specifier": "../brief/index.js",
+        "to": "server/gcsp/brief/index.js"
+      },
+      {
+        "from": "server/gcsp/offers/buddy-hold.js",
+        "specifier": "../manual-context/ports.js",
+        "to": "server/gcsp/manual-context/ports.js"
+      },
+      {
+        "from": "server/gcsp/offers/buddy-hold.js",
+        "specifier": "../repository/index.js",
+        "to": "server/gcsp/repository/index.js"
+      },
+      {
+        "from": "server/gcsp/offers/buddy-hold.js",
+        "specifier": "./buddy-remote.js",
+        "to": "server/gcsp/offers/buddy-remote.js"
+      },
+      {
+        "from": "server/gcsp/offers/buddy-hold.js",
+        "specifier": "./current-car-comparison.js",
+        "to": "server/gcsp/offers/current-car-comparison.js"
+      },
+      {
+        "from": "server/gcsp/offers/buddy-hold.js",
+        "specifier": "./offer-token.js",
+        "to": "server/gcsp/offers/offer-token.js"
+      },
+      {
+        "from": "server/gcsp/offers/buddy-remote.js",
+        "specifier": "../manual-context/ports.js",
+        "to": "server/gcsp/manual-context/ports.js"
+      },
+      {
+        "from": "server/gcsp/offers/buddy-remote.js",
+        "specifier": "../recommendation/index.js",
+        "to": "server/gcsp/recommendation/index.js"
+      },
+      {
+        "from": "server/gcsp/offers/buddy-remote.js",
+        "specifier": "../repository/index.js",
+        "to": "server/gcsp/repository/index.js"
+      },
+      {
+        "from": "server/gcsp/offers/buddy-remote.js",
+        "specifier": "./offer-token.js",
+        "to": "server/gcsp/offers/offer-token.js"
+      },
+      {
+        "from": "server/gcsp/offers/current-car-comparison.js",
+        "specifier": "../policy/file-provider.js",
+        "to": "server/gcsp/policy/file-provider.js"
+      },
+      {
+        "from": "server/gcsp/policy/index.js",
+        "specifier": "./adoption.js",
+        "to": "server/gcsp/policy/adoption.js"
+      },
+      {
+        "from": "server/gcsp/policy/index.js",
+        "specifier": "./file-provider.js",
+        "to": "server/gcsp/policy/file-provider.js"
+      },
+      {
+        "from": "server/gcsp/policy/index.js",
+        "specifier": "./memory-provider.js",
+        "to": "server/gcsp/policy/memory-provider.js"
+      },
+      {
+        "from": "server/gcsp/policy/index.js",
+        "specifier": "./postgres-provider.js",
+        "to": "server/gcsp/policy/postgres-provider.js"
+      },
+      {
+        "from": "server/gcsp/policy/index.js",
+        "specifier": "./publish.js",
+        "to": "server/gcsp/policy/publish.js"
+      },
+      {
+        "from": "server/gcsp/policy/memory-provider.js",
+        "specifier": "../repository/core.js",
+        "to": "server/gcsp/repository/core.js"
+      },
+      {
+        "from": "server/gcsp/policy/memory-provider.js",
+        "specifier": "./file-provider.js",
+        "to": "server/gcsp/policy/file-provider.js"
+      },
+      {
+        "from": "server/gcsp/policy/postgres-provider.js",
+        "specifier": "../migrations/index.js",
+        "to": "server/gcsp/migrations/index.js"
+      },
+      {
+        "from": "server/gcsp/policy/postgres-provider.js",
+        "specifier": "../repository/core.js",
+        "to": "server/gcsp/repository/core.js"
+      },
+      {
+        "from": "server/gcsp/policy/postgres-provider.js",
+        "specifier": "./file-provider.js",
+        "to": "server/gcsp/policy/file-provider.js"
+      },
+      {
+        "from": "server/gcsp/policy/postgres-provider.js",
+        "specifier": "./publish.js",
+        "to": "server/gcsp/policy/publish.js"
+      },
+      {
+        "from": "server/gcsp/policy/publish.js",
+        "specifier": "../repository/core.js",
+        "to": "server/gcsp/repository/core.js"
+      },
+      {
+        "from": "server/gcsp/policy/publish.js",
+        "specifier": "./file-provider.js",
+        "to": "server/gcsp/policy/file-provider.js"
+      },
+      {
+        "from": "server/gcsp/recommendation/index.js",
+        "specifier": "../../scenarios/employee/index.js",
+        "to": "server/scenarios/employee/index.js"
+      },
+      {
+        "from": "server/gcsp/recommendation/index.js",
+        "specifier": "../../vehicles/index.js",
+        "to": "server/vehicles/index.js"
+      },
+      {
+        "from": "server/gcsp/recommendation/index.js",
+        "specifier": "../policy/file-provider.js",
+        "to": "server/gcsp/policy/file-provider.js"
+      },
+      {
+        "from": "server/gcsp/repository/core.js",
+        "specifier": "./schema.js",
+        "to": "server/gcsp/repository/schema.js"
+      },
+      {
+        "from": "server/gcsp/repository/index.js",
+        "specifier": "./core.js",
+        "to": "server/gcsp/repository/core.js"
+      },
+      {
+        "from": "server/gcsp/repository/index.js",
+        "specifier": "./memory.js",
+        "to": "server/gcsp/repository/memory.js"
+      },
+      {
+        "from": "server/gcsp/repository/index.js",
+        "specifier": "./postgres.js",
+        "to": "server/gcsp/repository/postgres.js"
+      },
+      {
+        "from": "server/gcsp/repository/memory.js",
+        "specifier": "./core.js",
+        "to": "server/gcsp/repository/core.js"
+      },
+      {
+        "from": "server/gcsp/repository/postgres.js",
+        "specifier": "../migrations/index.js",
+        "to": "server/gcsp/migrations/index.js"
+      },
+      {
+        "from": "server/gcsp/repository/postgres.js",
+        "specifier": "./core.js",
+        "to": "server/gcsp/repository/core.js"
+      },
+      {
+        "from": "server/gcsp/vehicle-evidence/vin-allocation.js",
+        "specifier": "../repository/core.js",
+        "to": "server/gcsp/repository/core.js"
+      },
+      {
+        "from": "server/gcsp/vehicle-evidence/vin-allocation.js",
+        "specifier": "./vin-generator.js",
+        "to": "server/gcsp/vehicle-evidence/vin-generator.js"
+      },
+      {
+        "from": "server/gcsp/vehicle-evidence/vin-generator.js",
+        "specifier": "./vin-profiles.js",
+        "to": "server/gcsp/vehicle-evidence/vin-profiles.js"
+      },
+      {
+        "from": "server/questions.js",
+        "specifier": "./brands.js",
+        "to": "server/brands.js"
+      },
+      {
+        "from": "server/scenarios/employee/index.js",
+        "specifier": "../../engine.js",
+        "to": "server/engine.js"
+      },
+      {
+        "from": "server/scenarios/employee/index.js",
+        "specifier": "../../gcsp/policy/file-provider.js",
+        "to": "server/gcsp/policy/file-provider.js"
+      },
+      {
+        "from": "server/test/helpers/employee-recommendation.js",
+        "specifier": "../../gcsp/policy/index.js",
+        "to": "server/gcsp/policy/index.js"
+      },
+      {
+        "from": "server/test/helpers/employee-recommendation.js",
+        "specifier": "../../vehicles/index.js",
+        "to": "server/vehicles/index.js"
+      },
+      {
+        "from": "server/gcsp/offers/access.js",
+        "specifier": "../../vehicles/index.js",
+        "to": "server/vehicles/index.js"
+      },
+      {
+        "from": "server/gcsp/offers/access.js",
+        "specifier": "../repository/index.js",
+        "to": "server/gcsp/repository/index.js"
+      },
+      {
+        "from": "server/gcsp/offers/access-http.js",
+        "specifier": "./access.js",
+        "to": "server/gcsp/offers/access.js"
+      },
+      {
+        "from": "server/gcsp/offers/decision.js",
+        "specifier": "../manual-context/ports.js",
+        "to": "server/gcsp/manual-context/ports.js"
+      },
+      {
+        "from": "server/gcsp/offers/decision.js",
+        "specifier": "../repository/index.js",
+        "to": "server/gcsp/repository/index.js"
+      },
+      {
+        "from": "server/gcsp/offers/decision-http.js",
+        "specifier": "../repository/index.js",
+        "to": "server/gcsp/repository/index.js"
+      },
+      {
+        "from": "server/gcsp/policy/adoption.js",
+        "specifier": "./activation.js",
+        "to": "server/gcsp/policy/activation.js"
+      },
+      {
+        "from": "server/gcsp/policy/adoption.js",
+        "specifier": "./file-provider.js",
+        "to": "server/gcsp/policy/file-provider.js"
+      },
+      {
+        "from": "server/gcsp/policy/adoption.js",
+        "specifier": "./publish.js",
+        "to": "server/gcsp/policy/publish.js"
+      },
+      {
+        "from": "server/gcsp/policy/adoption.js",
+        "specifier": "./reviewed-definitions.js",
+        "to": "server/gcsp/policy/reviewed-definitions.js"
+      },
+      {
+        "from": "server/gcsp/policy/activation.js",
+        "specifier": "../repository/index.js",
+        "to": "server/gcsp/repository/index.js"
+      },
+      {
+        "from": "server/gcsp/policy/activation.js",
+        "specifier": "./file-provider.js",
+        "to": "server/gcsp/policy/file-provider.js"
+      },
+      {
+        "from": "server/gcsp/policy/reviewed-definitions.js",
+        "specifier": "../repository/core.js",
+        "to": "server/gcsp/repository/core.js"
+      },
+      {
+        "from": "server/gcsp/offers/followup.js",
+        "specifier": "../policy/file-provider.js",
+        "to": "server/gcsp/policy/file-provider.js"
+      },
+      {
+        "from": "server/gcsp/offers/followup.js",
+        "specifier": "../repository/core.js",
+        "to": "server/gcsp/repository/core.js"
+      },
+      {
+        "from": "server/gcsp/offers/followup.js",
+        "specifier": "./followup-comparison.js",
+        "to": "server/gcsp/offers/followup-comparison.js"
+      },
+      {
+        "from": "server/gcsp/offers/followup.js",
+        "specifier": "./followup-policy.js",
+        "to": "server/gcsp/offers/followup-policy.js"
+      },
+      {
+        "from": "server/gcsp/offers/followup-http.js",
+        "specifier": "../repository/core.js",
+        "to": "server/gcsp/repository/core.js"
+      },
+      {
+        "from": "server/gcsp/offers/followup-policy.js",
+        "specifier": "../repository/core.js",
+        "to": "server/gcsp/repository/core.js"
+      },
+      {
+        "from": "server/gcsp/offers/followup-comparison.js",
+        "specifier": "../repository/core.js",
+        "to": "server/gcsp/repository/core.js"
+      },
+      {
+        "from": "blocks/gcsp/offer/http-adapter.js",
+        "specifier": "./offer-projection.js",
+        "to": "blocks/gcsp/offer/offer-projection.js"
+      },
+      {
+        "from": "blocks/gcsp/offer/offer-projection.js",
+        "specifier": "../brief/brief-view-model.js",
+        "to": "blocks/gcsp/brief/brief-view-model.js"
+      },
+      {
+        "from": "blocks/gcsp/offer/offer-view.js",
+        "specifier": "../../vehicle-matcher/modes/result-card.js",
+        "to": "blocks/vehicle-matcher/modes/result-card.js"
+      },
+      {
+        "from": "blocks/gcsp/offer/offer-view.js",
+        "specifier": "../../vehicle-matcher/ui.js",
+        "to": "blocks/vehicle-matcher/ui.js"
+      },
+      {
+        "from": "blocks/gcsp/offer/offer-view.js",
+        "specifier": "../kit/form-controls.js",
+        "to": "blocks/gcsp/kit/form-controls.js"
+      },
+      {
+        "from": "blocks/gcsp/brief/brief-view-model.js",
+        "specifier": "../../vehicle-matcher/modes/result-card.js",
+        "to": "blocks/vehicle-matcher/modes/result-card.js"
+      },
+      {
+        "from": "blocks/vehicle-matcher/modes/result-card.js",
+        "specifier": "../ui.js",
+        "to": "blocks/vehicle-matcher/ui.js"
+      },
+      {
+        "from": "blocks/vehicle-matcher/modes/result-card.js",
+        "specifier": "./brand-copy.js",
+        "to": "blocks/vehicle-matcher/modes/brand-copy.js"
+      },
+      {
+        "from": "blocks/gcsp/kit/form-controls.js",
+        "specifier": "../../vehicle-matcher/ui.js",
+        "to": "blocks/vehicle-matcher/ui.js"
+      },
+      {
+        "from": "blocks/vehicle-matcher/modes/brand-copy.js",
+        "specifier": "../ui.js",
+        "to": "blocks/vehicle-matcher/ui.js"
+      }
+    ],
+    "edgeCount": 98,
+    "externalSpecifiers": [
+      "node:crypto",
+      "node:fs/promises",
+      "node:path",
+      "node:url",
+      "pg"
+    ],
+    "entry105": [
+      "blocks/gcsp/offer/http-adapter.js",
+      "blocks/gcsp/offer/offer-controller.js",
+      "blocks/gcsp/offer/offer-projection.js",
+      "blocks/gcsp/offer/offer-view.js"
+    ],
+    "entry107": [
+      "server/gcsp/offers/followup.js",
+      "server/gcsp/offers/followup-http.js",
+      "server/gcsp/offers/followup-policy.js",
+      "server/gcsp/offers/followup-comparison.js"
+    ],
+    "scope": "Existing canonical42 plus exact105 presentation roots and107 service modules. Static literal imports/reexports/dynamic literals only. No future test/helper/client/host closure or execution manifest is claimed."
+  },
+  "inputs": [
+    {
+      "path": "server/gcsp/policy/seed-v1.json",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "c585213b98631d6e82acc1b3720d47efae49fdb502f5fc86fb440703ef6e41a6",
+      "bytes": 493400
+    },
+    {
+      "path": "server/gcsp/policy/reviewed/presenter-controls-v1.json",
+      "source": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "0e09fc7cde7677724153265042eb1f7a122c88115762a736a4bdf02a4b2e470a",
+      "bytes": 580
+    },
+    {
+      "path": "server/gcsp/policy/reviewed/greg-publish-editor-v1.json",
+      "source": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "7c7680227cdcd6e5f5afbb9fedb06b73c4768b2a3c7526cbf9cb9c03ccdfd8c3",
+      "bytes": 883
+    },
+    {
+      "path": "server/gcsp/predict/records/policy-definitions.json",
+      "source": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "c083ed58abcde595ac0cbf077b319b9102795506efb736c980d5f0cdba840143",
+      "bytes": 2719
+    },
+    {
+      "path": "server/gcsp/policy/reviewed/offer-decline-reasons-v1.json",
+      "source": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "1f1b632be83ddef1a5656288b4e40c0378736cda5c21fcf03de68544dfbe688f",
+      "bytes": 1105
+    },
+    {
+      "path": "server/gcsp/policy/reviewed/fucq115-choice-model-v1.json",
+      "source": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "sha256": "89565ec7fa05db042e623c6c88c132542505f7757848e61784f38d49b8391987",
+      "bytes": 3569
+    }
+  ],
+  "assetsForLaterRenderedScope": [
+    {
+      "source": "b4efefec60577a14a98e6bae934741249bd7c20c",
+      "path": "blocks/gcsp/offer/gcsp-offer.css",
+      "sha256": "d5e0f0dae8adf3f6e25144f1a0bd2ffc28955b6b5749ac9f24ac686c1060d501",
+      "bytes": 735
+    },
+    {
+      "source": "b4efefec60577a14a98e6bae934741249bd7c20c",
+      "path": "blocks/gcsp/kit/form-controls.css",
+      "sha256": "0dec8818344defbe8b5718cdeef131d71faae782515f8ea3dce56b9e43002057",
+      "bytes": 1680
+    }
+  ],
+  "questionDefinitionProposal": {
+    "source": "16839323f070f7c0ab81eb1ebf728627d283c71d",
+    "path": "server/gcsp/offers/followup-policy-definitions.json",
+    "sha256": "2b634e30a65f8fce6a3cfef67e10b04e9dff72ecb4fe296c51330e98efe86d5d",
+    "bytes": 3061,
+    "digest": "bb05e490f85e9f6fd9aa1c424c849740ad2884cc62e9d9a2b98ee8f739f8b7ed",
+    "runtimeInput": false,
+    "gap": "Canonical103 registration/adoption publication not supplied. Never inject as fallback or load as active canonical policy."
+  },
+  "evidenceAndContracts": [
+    {
+      "source": "b4efefec60577a14a98e6bae934741249bd7c20c",
+      "path": "docs/gcsp/evidence/fucq105/decision-consumer-result.md",
+      "sha256": "865f39382090afca509015c07dfb0ac8f96e95be1e212144b4b6aba963a01895",
+      "bytes": 4056
+    },
+    {
+      "source": "b4efefec60577a14a98e6bae934741249bd7c20c",
+      "path": "docs/gcsp/evidence/fucq105/decision-consumer-scoped.json",
+      "sha256": "6c06233e4efb83fb0e44183e9715963530123908055b88d43b1d73d83d20eea5",
+      "bytes": 29318
+    },
+    {
+      "source": "b4efefec60577a14a98e6bae934741249bd7c20c",
+      "path": "docs/gcsp/evidence/fucq105/decision-host-source-plan.json",
+      "sha256": "8f4d16db9fd4cc90537e32d11c71167fba3e529dafe5de65a6606c22569d6aab",
+      "bytes": 49403
+    },
+    {
+      "source": "16839323f070f7c0ab81eb1ebf728627d283c71d",
+      "path": "docs/gcsp/offer-followup-contract.md",
+      "sha256": "485d59494afb7aa9224d2164a7255578620ddce1990d736ae688e10284b81884",
+      "bytes": 12371
+    },
+    {
+      "source": "805c0c53e855b6486d771e0e5ee567b4a302f46f",
+      "path": "docs/gcsp/evidence/fucq107/scoped-service-pass/summary.json",
+      "sha256": "1afb3cf66879f3fba07a8f4b47fab6c4e11de22b9632a1ed3bd0af41553e151b",
+      "bytes": 5662
+    },
+    {
+      "source": "7c280b8eb76dce4a8a65b3017026dc8a74ebbd15",
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-typed-checkpoint.json",
+      "sha256": "6574c9f141c5f6ab85abda892e31565cc5140e8fc7d9e348dbe2a408cda39e52",
+      "bytes": 8027
+    },
+    {
+      "source": "90cb70ce951a4c9de934e792b8b7fbee0665d934",
+      "path": "docs/gcsp/offer-decisions-contract.md",
+      "sha256": "28e0c9233dc898d3e9ca1c617ecd924d5ecf1d5d16d900eeb8c69480d09e02ac",
+      "bytes": 17860
+    },
+    {
+      "source": "4a56d386f031e7cf5a1fdeaefdcc612fb35cbd7b",
+      "path": "docs/gcsp/offer-access-contract.md",
+      "sha256": "1731acc4e8d50873e4f614836626202107c14d581661206ff0e71ef5f48acc88",
+      "bytes": 14600
+    }
+  ],
+  "sharedBindings": [
+    "One repository core/store, policy provider and PolicyService, DemoClock and IdentityService across actual100/102/106/107.",
+    "One actual102 access instance binds access HTTP,106 private resolver,106 service and107 offers.fromAccount; no copied capability or fabricated identity.",
+    "Use actual100 producer and stored-subject evaluator from canonical106 map; same token verifier, current run, employee/slot and original quote/hold pins.",
+    "Re-resolve genuine acting session after canonical activation;107 reads context.policyVersion and requires it equal actual reason/event policy. Do not mutate/fabricate frozen contexts.",
+    "105 request exact fields and revisions match106. Use explicit enableDecisions:true, real streamed handlers, actual102 authoritative reread and current registry; no controller-spy claim.",
+    "107 uses actual106 decisionId and completed offer-decisions:events:v1 receipt. Its inputDigest/inputVersions, run/employee/slot/renewal, reason/brief/quote pins and released hold checks match the source106 shape.",
+    "107 confirmation calls actual BriefService.changeAfterDecline with ordinary employee authority. Its public receiptReference is a projection of actual brief:changes receipt identity, never authority."
+  ],
+  "gaps": [
+    {
+      "id": "105-mixed-proof",
+      "owner": "105",
+      "fact": "Consumer revision/reason/transport source gaps are closed at b4efefec; current evidence uses contract spies. Mixed actual106 command/access/reason/controller proof remains.",
+      "next": "105 lead prepares only its owned proof against reviewed canonical module union; no duplicate106 test."
+    },
+    {
+      "id": "107-canonical-question",
+      "owner": "103 policy owner through root",
+      "fact": "Pinned103 registry does not register offer-followup-questions-v1.107 source reads offer.followupQuestions.v1 and has no runtime fallback.",
+      "next": "Obtain exact published registration/adoption/source revision; extend and review map before successful real question/confirmation proof. Current missing-key unavailable path can be planned separately."
+    },
+    {
+      "id": "durable-followup-selector",
+      "owner": "root coordinates102/105/107;106 only if assigned",
+      "fact": "106 POST outcome exposes decisionId.102 public offer read DTO and105 projection omit it;105 controller discards POST payload.107 read/confirm require decisionId.",
+      "next": "Actual106 response ID suffices only for narrow in-process service proof. Root chooses authorized persisted lookup/projection for reload/lost-response entry; no new106 port required for narrow proof, no speculative API implemented."
+    },
+    {
+      "id": "107-client-pin",
+      "owner": "107",
+      "fact": "Service16839323 and evidence805c0c53 are pinned; active client implementation has no immutable supplied revision.",
+      "next": "107 owns client confirmation. Obtain its published roots/assets and complete closure before client/rendered integration plan is executable."
+    },
+    {
+      "id": "107-after-save",
+      "owner": "root/107/96 lane",
+      "fact": "Source107 returns unavailable with savedChange when no unique actual later offer exists; no waiting/no-match source is supplied.",
+      "next": "Preserve96 pause; do not fabricate next offer/evaluation or claim actual next-tick allocation."
+    },
+    {
+      "id": "policy-lifecycle",
+      "owner": "root/107/policy owner",
+      "fact": "107 requires historical decline/event policy equal current context.policyVersion. A later activated policy after decline is therefore an unproved unavailable path, not automatic continuity.",
+      "next": "Plan equal-policy baseline using genuinely resolved current session; route policy-change continuity requirement to107/103 owners without106 mutation."
+    }
+  ],
+  "minimal106PortAssessment": {
+    "requiredForNextMixed105Proof": [],
+    "requiredForNarrowActual107ServiceProof": [],
+    "conditionalCandidate": "Only if root assigns durable selector responsibility to106: scoped read lookup from authorized offer to persisted decision/outcome, preserving private102 authorization. Exact API/owner/review remains undecided; no implementation authorized."
+  },
+  "nextBoundaries": [
+    {
+      "owner": "105",
+      "scope": "Actual100\u2192102\u2192106\u2192105 local memory accept/decline/reasons/readback with exact revisions, original quote/deadline, one decision/event, token/account access and fail-closed invalid-cookie behavior. Canonical reason adoption proof reused, not rerun as a separate suite.",
+      "gate": "Final105 test/helper/dependency/source pins, root union review and fresh bounded grant."
+    },
+    {
+      "owner": "107",
+      "scope": "After canonical question publication, consume actual106 confirmed decline ID and receipt with genuine current employee context; read one question, confirm once through actual BriefService, replay/reload saved receipt; absent downstream remains unavailable with savedChange.",
+      "gate": "Question registry publication, exact107 client pin if included, final test/helper/source pins and separate root review/grant. No allocator96 or second-offer-ready claim."
+    }
+  ],
+  "resources": {
+    "allocated": false,
+    "productImports": false,
+    "testsExecuted": 0,
+    "proposedExecution": "No grant. Any future run requires exact selected cases, final test/loader/supervisor hashes and reviewed union; fresh HostBudget/external manifest/finalizer; one worker120s768MiB128MiB combined2MiB log, reduce on pressure; independently verify PIDs/groups/scratch/reservations and preserved dependencies.",
+    "dependencies": "Keep canonical pg hash/device/inode and105 accepted jsdom identity; final complete dependency closure must be reviewed by proof owner. No install/link/copy in this planning activity."
+  },
+  "exclusions": [
+    "Remote71/108/shared intake",
+    "actual108 consumer",
+    "allocator96 source or execution",
+    "central100/host runtime composition writes",
+    "new105/107 implementation",
+    "browser/listener/profile/native/full/network/mail",
+    "Jira mutation/merge/claim changes",
+    "feature/test/helper execution"
+  ],
+  "acceptedCanonicalAudit": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq106-typed-result-audit-0033.json",
+    "sha256": "56bf80f17d1c159e36b883340fc45bbd167d85bf5a8a6c328ad60191dfa75e42",
+    "status": "PASS",
+    "note": "All43 identities and expected11 immutable100/103 producer selections accepted. Initial no-overlay assessment corrected and retained separately."
+  }
+}
