@@ -1,0 +1,123 @@
+{
+  "state": "passed",
+  "chunk": "smoke-desktop",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "checks": [
+    {
+      "name": "Native disclosure opens with Enter; Tab reaches tick; Escape closes and returns focus"
+    },
+    {
+      "name": "Actual policy step and handler receipt",
+      "before": "2026-11-05T09:00:00.000Z",
+      "after": "2026-11-05T09:01:00.000Z",
+      "step": {
+        "key": "clock.presenter.stepSeconds",
+        "value": 60,
+        "unit": "seconds",
+        "status": "assumed",
+        "basis": "A one-minute presenter step makes small time changes visible; named cues cover longer walkthrough jumps. Revisable demo assumption, not BMW policy.",
+        "source": "docs/gcsp/presenter-controls-contract.md",
+        "sourceDate": "2026-11-05",
+        "policyVersion": "gcsp-policy-v1",
+        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+      },
+      "missingStages": [
+        "release-pull",
+        "manual-expiry",
+        "buddy-expiry",
+        "pending-reconciliation",
+        "buddy-allocation",
+        "outbox-dispatch"
+      ]
+    }
+  ],
+  "captures": [
+    {
+      "name": "01-idle-collapsed",
+      "file": "01-idle-collapsed.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "BODY",
+      "activeText": "\n  Skip to contentGroup Car Schemes PortalPPresenter (fictional)Presenter (ficti",
+      "outline": "none"
+    },
+    {
+      "name": "02-idle-open-keyboard",
+      "file": "02-idle-open-keyboard.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "BUTTON",
+      "activeText": "Tick (60 seconds)",
+      "outline": "solid"
+    },
+    {
+      "name": "03-actual-tick-missing-release",
+      "file": "03-actual-tick-missing-release.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "BUTTON",
+      "activeText": "Tick (60 seconds)",
+      "outline": "none"
+    }
+  ],
+  "errors": [],
+  "boundary": "Actual buildServer routes, memory repository, canonical services. No stock/release producer composed.",
+  "syntheticInputs": [],
+  "expectedTransportFailures": [],
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "POST",
+      "path": "/api/gcsp/presenter/controls/tick",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "httpStatus": 200,
+      "status": "ok"
+    }
+  ],
+  "port": 55024,
+  "chromeDebugPort": 55026,
+  "listenerClosed": true
+}

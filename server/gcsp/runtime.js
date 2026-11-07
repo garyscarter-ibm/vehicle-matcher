@@ -129,6 +129,8 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       gcspBuddy: buddy, gcspOfferAccess: offerAccess,
       gcspOfferDecisions: offerDecisions, gcspResolveOfferAccess: resolveOfferAccess, gcspOfferFollowup: offerFollowup,
       gcspNotify: notify, gcspOutbox: { repository },
+      // Backend-only; the switch route calls it with the server-issued employee context, replay-safe per run.
+      gcspPrepareEmployee: (context) => seedManualDemoContext({ repository, identity, clock, context }),
       gcspIdentity: identity, gcspClock: clock, gcspManual: account, gcspBrief: brief,
       gcspBriefEditor: editor, gcspActivity: activity, gcspRecommendations: { provider, policy, time: clock } };
     // Backend-only local bootstrap. The browser cannot choose identities or receive raw credentials in JSON.

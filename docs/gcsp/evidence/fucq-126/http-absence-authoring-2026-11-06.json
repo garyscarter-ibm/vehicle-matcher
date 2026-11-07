@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-06",
+  "state": "narrow-author-only-HOLD-helper-unapplied",
+  "reviewedRevision": "8ca2162679f0e2c65370b0f7652ee72f52dcd495",
+  "baseSha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+  "patch": {
+    "path": "docs/gcsp/evidence/fucq-126/shared-resource-contract-review-repair-2026-11-06.patch",
+    "sha256": "782e558285c4c5eaa6669b5a8a82194ae48dde9f7dda044a4026e560f75bd45e"
+  },
+  "proposedHelper": {
+    "sha256": "fb6fa9130b4f379ac956178944afc30bc723f7243b6a36a54a5da8c6fe137ea5",
+    "bytes": 45463
+  },
+  "freeze": {
+    "path": "docs/gcsp/evidence/fucq-126/http-physical-candidate-review-repair-2026-11-06.json",
+    "sha256": "0d280b1cd6e7ddb140fa8479bf2e25e370329579eabb49afa16f75db29f3646f"
+  },
+  "generator": {
+    "path": "docs/gcsp/evidence/fucq-126/author-resource-contract-patch.py",
+    "sha256": "375a49a4a473c899300d31e579f068a002737ce0c41bd7d21c119391010b7b0b"
+  },
+  "patchHunksReconstructedAsText": 24,
+  "behaviorDelta": "Only _resources_absent: explicit lstat; only definite missing root with resolved directory parent; retain charge on all other errors. All strict schema/lock/owner/children/pending gates preserved.",
+  "checks": [
+    "Exact base/previous reviewed result/current patch-result hashes",
+    "Text-only patch reconstruction and single-method delta comparison",
+    "Generator template matches proposed method",
+    "Only three physical input pins and patch/result/follow-up references changed",
+    "Admission/HOLD/outputRoot and adopted-helper gate unchanged",
+    "Supervisor/harness/guard/C5/prior2216-check receipt and map/Jira/worker source observations unchanged",
+    "Named-path whitespace and metadata JSON"
+  ],
+  "validationLimit": "Static text/hash/Git metadata only. No generator/helper import, AST/syntax execution, test/runtime/probe/ledger read/collector allocation. Dependency pins carried forward, not revalidated.",
+  "executionAuthorized": false,
+  "executionReady": false,
+  "outputRoot": null,
+  "applied": false,
+  "executed": false,
+  "remaining": [
+    "Coordinator review/adoption of shared helper patch, caller compatibility validation and exact helper refreeze",
+    "Independent review of replacement candidate/harness/static classification",
+    "Explicit six-case execution admission, refreshed host budget and absolute external output/impact/ownership plan"
+  ]
+}
