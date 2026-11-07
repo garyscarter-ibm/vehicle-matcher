@@ -1,0 +1,14 @@
+{
+  "scope": "delta from completed registry-load diagnostic",
+  "previousPlanSha256": "44098dc3cadeca67e5dd0a706e95e9f6cf97d93b8fe1fd3c264d019c98afdff4",
+  "previousPassedReceiptSha256": "0ba3afc6631cde9ecd183257a020eef1ddf20aea4b410d6fbd415956f5f714b8",
+  "newPlanSha256": "2ea8139da9c52a93c65a422d3bd39bc6b782e25415c41f229f3b5d8837d12df6",
+  "changedCall": "registry.load(package/store)\u2192restoreFleetRelease(existing package cache, fresh owned store,offline:true) once",
+  "instrumentationRemoved": true,
+  "unchangedRuntimeInputPins": 102,
+  "unchangedPackageInputPins": 31,
+  "scratchIncrease": "64MiB\u2192512MiB for350691430Bcorpuscopy plus5381665Bruntime and overhead",
+  "hostAndDurationUnchanged": "1GiBhost/512MiBheap/180s",
+  "freshOwnedStore": "TMPDIR/restored-store",
+  "noExecution": true
+}
