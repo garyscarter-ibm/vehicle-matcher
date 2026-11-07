@@ -23,14 +23,14 @@ jobs:
       - name: Build restore and offline audit of the exact public release
         shell: bash
         env:
-          RELEASE: 7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431
+          RELEASE: 421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d
         run: |
           set -euo pipefail
           task_root="$RUNNER_TEMP/gcsp-fleet-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           manifest="$GITHUB_WORKSPACE/.claude/test-runs/ci-fleet-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.json"
           test ! -e "$task_root"
           mkdir -p "$(dirname "$manifest")"
-          printf '{"root":"%s","owner":"%s","workers":1,"scratchBudgetMiB":2048,"seconds":240,"scope":"Node20 Linux exact public release restore and481record offline audit"}\n' "$task_root" "$GITHUB_RUN_ID" > "$manifest"
+          printf '{"root":"%s","owner":"%s","workers":1,"scratchBudgetMiB":2048,"seconds":240,"scope":"Node20 Linux exact public release restore and871record offline audit"}\n' "$task_root" "$GITHUB_RUN_ID" > "$manifest"
           cleanup() {
             result=$?
             if test -d "$task_root"; then
@@ -50,7 +50,7 @@ jobs:
           timeout 120s node --max-old-space-size=256 scripts/fleet-artifacts.mjs restore --release "$RELEASE" --store "$task_root/store" --cache "$task_root/cache" --network download > "$task_root/download.json"
           timeout 60s node --max-old-space-size=256 scripts/fleet-artifacts.mjs restore --release "$RELEASE" --store "$task_root/store" --cache "$task_root/cache" --network offline > "$task_root/offline.json"
           cd ..
-          timeout 60s node --max-old-space-size=256 scripts/gcsp/verify-fleet.mjs --active --store "$task_root/store" --require-distinct 479 --offline --http --endpoint http://127.0.0.1:0 --concurrency 1 --sample-size 481 --run-id ci-fleet-node20 --as-of 2026-11-07T00:00:00.000Z > "$task_root/audit.json"
+          timeout 60s node --max-old-space-size=256 scripts/gcsp/verify-fleet.mjs --active --store "$task_root/store" --require-distinct 869 --offline --http --endpoint http://127.0.0.1:0 --concurrency 1 --sample-size 871 --run-id ci-fleet-node20 --as-of 2026-11-07T00:00:00.000Z > "$task_root/audit.json"
           node --input-type=module - "$task_root" <<'JS'
           import assert from 'node:assert/strict';
           import { readFile } from 'node:fs/promises';
@@ -59,8 +59,8 @@ jobs:
           const download=await read('download'),offline=await read('offline'),audit=await read('audit');
           assert.equal(download.status,'ok');assert.equal(download.active.manifestDigest,process.env.RELEASE);
           assert.equal(offline.status,'ok');assert.equal(offline.idempotent,true);assert.equal(offline.externalCalls,0);
-          assert.equal(audit.status,'verified-active');assert.equal(audit.actual.sourceConfigurations,479);assert.equal(audit.actual.images,1);
-          assert.equal(audit.audit.checked,481);assert.equal(audit.audit.errors,0);assert.equal(audit.http.requests,481);assert.equal(audit.http.errors,0);assert.equal(audit.http.serverClosed,true);
+          assert.equal(audit.status,'verified-active');assert.equal(audit.actual.sourceConfigurations,869);assert.equal(audit.actual.images,1);
+          assert.equal(audit.audit.checked,871);assert.equal(audit.audit.errors,0);assert.equal(audit.http.requests,871);assert.equal(audit.http.errors,0);assert.equal(audit.http.serverClosed,true);
           assert.equal(audit.egress.externalCalls,0);assert.equal(audit.egress.sourceCalls,0);
-          console.log(JSON.stringify({runtime:process.version,platform:process.platform,release:process.env.RELEASE,source:479,total:480,vins:1,images:1,direct:481,http:481,errors:0,offlineEgress:0,buildHttpsCalls:download.externalCalls,scope:'scoped build proof; original10k/breadth and actualRender acceptance remain open'}));
+          console.log(JSON.stringify({runtime:process.version,platform:process.platform,release:process.env.RELEASE,source:869,total:870,vins:1,images:1,direct:871,http:871,errors:0,offlineEgress:0,buildHttpsCalls:download.externalCalls,scope:'scoped build proof; original10k/breadth and actualRender acceptance remain open'}));
           JS
