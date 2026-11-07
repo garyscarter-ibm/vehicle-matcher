@@ -1,0 +1,319 @@
+{
+  "schemaVersion": "f59-original-six-ac-completion-assessment.v1",
+  "observedAt": "2026-11-07T08:35:48.832819+00:00",
+  "story": "FUCQ-59",
+  "assessmentScope": "read-only code/evidence assessment, followed by compact documentation publication; no tests/source calls/Jira mutation",
+  "implementationStatus": "developed",
+  "recommendedJiraStatus": "In Review",
+  "acceptanceStatus": "pending",
+  "done": false,
+  "jiraMutated": false,
+  "conclusion": "No concrete remaining F59 implementation blocker identified. Original acceptance obligations remain, particularly AC4 capability-refresh interpretation and honest current validation disposition.",
+  "baselineCommit": "e287fa05d9842fd8ff7bf7f794f23f673d99b78b",
+  "agent": {
+    "name": "Minnie Mouse",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "medium",
+    "selectedModel": "gpt-6.1-sol",
+    "selectedEffort": "medium",
+    "effectiveRuntimeVerified": false,
+    "descendants": 0
+  },
+  "contracts": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/AGENTS.md",
+      "sha256": "69c7eb1adad9c21d8d86578c883cc288836328934224b719b1bcdf0574a755c8",
+      "bytes": 12290
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/README.md",
+      "sha256": "350534582817b84d978a34325c70b2bf0c5b0abfa09550b3761d769674b9e13c",
+      "bytes": 25577
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/demo-brief.md",
+      "sha256": "7da7dc24aa50a0d0ed54f1f784c2cd7f931421464361c0719951ec643f1eed5b",
+      "bytes": 34730
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/build-rules.md",
+      "sha256": "f68bf735f59762abded95c10a12b38881404dcf18c300ec37af6ecd0812c7fd9",
+      "bytes": 9333
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/experience-quality.md",
+      "sha256": "5d30701b637877b3a056ad933e9dbce3a8ace97d3af3e5b6720ea05072cb501d",
+      "bytes": 10493
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/fucq-13-19-stories.md",
+      "sha256": "435a62e8bcc23f1e82f59603622734a32b089e17a1ed0478686cdbd9dd73b8f5",
+      "bytes": 183529
+    },
+    {
+      "path": "/Users/usget/.codex/AGENTS.md",
+      "sha256": "4a8e4b6319132b601d09ea27afc6fe5b724f40311b28c70e5aebab0f5a1144a3",
+      "bytes": 18316
+    }
+  ],
+  "ongoingScopeRules": [
+    "Retain the six original AC and authored Validate; no claimed scope expansion.",
+    "Use the current exact adapter/policy/session boundaries and explicit unknown/partial outcomes.",
+    "Backlog defects below Critical/High independently; preserve authorised deferrals and genuine original acceptance gaps.",
+    "Root owns source allocations, integration, Jira, publication and acceptance. No descendants, tests, source/browser/SQL calls or scratch allocation in this assessment.",
+    "Apply global AGENTS gateway/resource rules, project equal collaborator authority/422 direction, build-rules Demo delivery and scope control, demo-brief adapter boundaries and experience-quality contract.",
+    "No screen or user-visible behavior change: contract evidence applies; new screenshots are unnecessary."
+  ],
+  "codePins": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/scripts/gcsp/collect-fleet.mjs",
+      "sha256": "ba3864cee32f480facde57a2d2c9dbf944d571878bb2a9cece220955357ab1de",
+      "bytes": 61807,
+      "sharedRootSame": true
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/scripts/gcsp/collection-session.mjs",
+      "sha256": "bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790",
+      "bytes": 34621,
+      "sharedRootSame": true
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/scripts/gcsp/configuration-key.mjs",
+      "sha256": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+      "bytes": 3865,
+      "sharedRootSame": true
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/scripts/gcsp/bmw-public-registration.mjs",
+      "sha256": "b4eed688fff481af4d422f3612be71184df689ff943fef3d339dc9392a960460",
+      "bytes": 21274,
+      "sharedRootSame": true
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/scripts/gcsp/public-bmw-source.mjs",
+      "sha256": "14600d91932c33b691801197ea28812c98bb08ea9603f293829ffeff09b48235",
+      "bytes": 92441,
+      "sharedRootSame": true
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/scripts/gcsp/capture-bmw-selection.mjs",
+      "sha256": "14c255be3696d8d0512d9d4ddc03f24bae138d83f4d548bd813b07d1a5eb9892",
+      "bytes": 9632,
+      "sharedRootSame": true
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/scripts/gcsp/bmw-selection-binding.mjs",
+      "sha256": "480f1e3d1496bcb8d808ec75839634808a2923cdbf8411df61b0f819bdec3f38",
+      "bytes": 30251,
+      "sharedRootSame": true
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/vehicle-evidence/bmw-catalogue-adapter.js",
+      "sha256": "90cf9187cb44dc6d17e6984a0fdc25dc13fc9078c23d3652d779a565cedc29a7",
+      "bytes": 26024,
+      "sharedRootSame": true
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/vehicle-evidence/bmw-catalogue-v2.js",
+      "sha256": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56",
+      "bytes": 23590,
+      "sharedRootSame": true
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/test/gcsp-fleet-collector.test.js",
+      "sha256": "b9b05f9fb7a0564d486c17ecb0be731c8af2ddb0d177543f9608b3a952739c88",
+      "bytes": 88994,
+      "sharedRootSame": true
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/test/gcsp-bmw-source-batch.test.js",
+      "sha256": "2aeadfd650d8b8c79c7e559753d9530dcf885054d66c6e0fe9c8508ad2f6b252",
+      "bytes": 25172,
+      "sharedRootSame": true
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/test/gcsp-bmw-model-batch.test.js",
+      "sha256": "818bb46fc261093d1e5dd70c2c5c5e27f172e654f67fa80db9d3e4c2b6cdfa1a",
+      "bytes": 21449,
+      "sharedRootSame": true
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/test/gcsp-bmw-enrichment-observation.test.js",
+      "sha256": "33a7f04ddc0e7e749a4bf0b55b4d9594ae39497c429f0ecd18a022818a56d89c",
+      "bytes": 14686,
+      "sharedRootSame": true
+    }
+  ],
+  "evidencePins": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-optional-axis-implementation-2026-11-07/integration-validation.json",
+      "sha256": "caac2cbc4b216d4224e49f2667f4aa11196a0f57610660e5a051cf3add4769c8",
+      "bytes": 8543
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/context-continuation-integration-2026-11-07/receipt.json",
+      "sha256": "d46f0cb29cd4fd88280db0adcb6e643a580471345896dcdd5986a0e38d704507",
+      "bytes": 4614
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/continuation-live-proof-2026-11-07/final-receipt.json",
+      "sha256": "e4fae0fdb86df0a8302b2b9ab0bf3a0c1dbc75d9524b55ff1a67e795aec6b910",
+      "bytes": 14701
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/continuation-live-proof-2026-11-07/README.md",
+      "sha256": "55b83307287b9194d6030264df2d393e8184bb7a837882e34820c213190e08fa",
+      "bytes": 4238
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/validation-summary.json",
+      "sha256": "dfe9c1966baab9cd964c46f7f119d873463334953b22de9d3acb7119f97f3b9a",
+      "bytes": 1994
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-optional-axis-suffix3623-2026-11-07/offline-validation.json",
+      "sha256": "2517734f2d24107f857dbe1cd7a06e5b1f37859c4c4bbf49eabfe47f1b3475ae",
+      "bytes": 7383
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq60/exact10000-retained-coverage-2026-11-07/README.md",
+      "sha256": "206827fdf1b700b032b5a7ce7b77c6f93ba546841dbb3ec58015842403ebbea4",
+      "bytes": 11068
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq60/exact10000-retained-coverage-2026-11-07/receipt.json",
+      "sha256": "f4ba9f2b1c61807149496dacbfe659d7596ddb6f2eae5c301ecdcec345ccfce9",
+      "bytes": 2113
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.product-map/work.json",
+      "sha256": "adee86010042c9f231e436324dbede718fff8de6655a945c0a00658f2f2de71d",
+      "bytes": 116754
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/global-union10351-parent-audit.json",
+      "sha256": "058c09180381e4098ef36c90fb8d06491fb407b65ecff102a9ba586968c46d70",
+      "bytes": 81325
+    }
+  ],
+  "acceptanceCriteria": [
+    {
+      "number": 1,
+      "original": "Discover the plan's real model/AG mapping and selectable code definitions through the selected source boundary. Generate seeded option candidates and sort/deduplicate request element codes before rule solving; separate options from accessories while preserving the complete successful element request semantics.",
+      "status": "developed; actual bounded source evidence retained",
+      "evidence": "Exact registered model/AG/tree context, typed selectable definitions, seeded/sorted/deduplicated candidates and separate accessories exist in the current collector/source/binder.",
+      "limit": "Broader model-family, scheme/profile/year/plant/five-WMI coverage is separate source work; it is not an automatic F59 BUILD gate."
+    },
+    {
+      "number": 2,
+      "original": "Accept only constructible complete responses with consistent requested/resolved model/AG, market and date context. Retain complete selected elements and typed option/accessory sets. Detect source-added/removed/ignored requests; record solver changes and never mark an ignored requested feature as selected. Reject model/date substitutions and inconsistent or incomplete responses.",
+      "status": "developed; actual complete selections retained",
+      "evidence": "Strict response and retained binding checks preserve full factory/accessory-code selections, exact market/date/model context and solver changes, rejecting substitutions or inconsistent/incomplete responses.",
+      "limit": "Admitted source rows are partial catalogues: unsupported facts, equipment availability/fitting and some accessory quantities remain unknown. Source admission is not overall Story acceptance."
+    },
+    {
+      "number": 3,
+      "original": "Create a canonical semantic distinctness key from resolved model/derivative/body/powertrain and complete selected options, including paint/upholstery/equipment. Retain context-aware source keys separately. Normalise order, aliases and equivalent code forms so changed VINs, request seed, dates/timestamps, metadata/source versions and alternative requests resolving identically do not inflate the count; accessory-only variants do not pad the configuration target.",
+      "status": "developed; agreed canonical policy implemented",
+      "evidence": "The agreed padded Base64 identity is VG model plus sorted complete factory codes including paint/upholstery/equipment. Date/metadata/request/accessory variants cannot inflate it; source lookup/binding identity is separate. The sealed exact10000 selection comes from the parent-proved10351 union.",
+      "limit": "Body and model names remain unknown in the admitted inventory. Raw range literals and model-code prefixes do not prove body/powertrain/profile semantics; no independent body/powertrain coverage claim is made."
+    },
+    {
+      "number": 4,
+      "original": "Persist accepted/rejected/duplicate records and deterministic queue/checkpoints atomically. Resume after interruption without re-fetching valid cache entries, corrupting checkpoints or changing published identities; reject incompatible plan/source/tool versions rather than mix them silently.",
+      "status": "developed; acceptance interpretation unresolved",
+      "evidence": "Atomic session persistence and strict identity/cache checks exist. Actual two-process proof preserves predecessor bytes/outcomes/IDs, executes both candidate solvers exactly once, and completed restart makes zero calls.",
+      "limit": "Cross-allocation bootstrap-cache reuse is unproved. Continuation intentionally budgets four fresh page/settings/tree/options reads for ephemeral capabilities and compares the fresh retained context before solving. Whether that fulfils the original no-refetch-valid-cache clause requires explicit review; this assessment does not silently waive it. Medium FUCQ-152 remains deferred/unfixed; one successor chain was selected."
+    },
+    {
+      "number": 5,
+      "original": "Enforce finite timeouts/retries, conservative configured concurrency, per-source caching/retention and the run's request/image budgets. Stop or back off on 401/403/429 and source failures; report actual per-operation counts, cache hits, failures, substitutions, resolved duplicates and coverage progress. Never rotate around limits.",
+      "status": "developed; scoped limits/accounting evidence",
+      "evidence": "The actual shared session enforces concurrency1, finite retries/timeouts/deadline/cache/retention/request/image limits, durable auth/rate/refusal stops and actual operation/cache/failure/substitution/duplicate/progress reporting. Retained source series preserve actual counts and cleanup.",
+      "limit": "Historical failures and the separately deferred interrupted-series verifier limitation remain recorded. No extra allocation, limit rotation or acceptance is inferred."
+    },
+    {
+      "number": 6,
+      "original": "Collector commands are explicit offline/dry-run or live execution; importing a module, running CI, starting the demo and VIN lookup cannot launch bulk traffic. Under-target results retain a resumable checkpoint and an incomplete report, with no fabricated configurations.",
+      "status": "developed; no-traffic and shortfall evidence",
+      "evidence": "Explicit offline/live/capture routes and no-traffic inspection modes exist; current retained collector tests cover import/default/dry-run/CI/lookup. Actual continuation honestly reports target2 unmet/queue-exhausted with resumable retained state.",
+      "limit": "No fabricated rows are needed. Publication/default-store/application acceptance belongs to its actual downstream evidence; fixtures alone do not prove it."
+    }
+  ],
+  "retainedValidation": {
+    "currentScoped": {
+      "receipt": "docs/gcsp/evidence/fucq59/f70-optional-axis-implementation-2026-11-07/integration-validation.json",
+      "boundaryChecksPassed": 133,
+      "correctedF60ObserverChecksPassed": 10,
+      "meaning": "Composite scoped evidence: first143 checks had142pass/1obsolete F60 absence assertion failure; only that test changed, then10/10passed. Not a new full-suite run.",
+      "suppliedCodeAndTestPinsMatchCurrent": true,
+      "collectorHash": "ba3864cee32f480facde57a2d2c9dbf944d571878bb2a9cece220955357ab1de"
+    },
+    "historicalFullF59": {
+      "receipt": "docs/gcsp/evidence/fucq59/validation-summary.json",
+      "sourceCommit": "fdb71c2a34b3501ed0549424947ec67c1145f433",
+      "tests": 1289,
+      "pass": 1284,
+      "fail": 0,
+      "skipped": 5,
+      "applicability": "Different older collector/session/test identity; native PostgreSQL exclusions retained; not a current full pass."
+    },
+    "laterHistoricalFull": {
+      "reference": ".product-map/work.json FUCQ-60 full-validation evidence",
+      "sourceCommit": "e60c70e6",
+      "tests": 1872,
+      "pass": 1848,
+      "fail": 19,
+      "skipped": 5,
+      "disposition": "Owning fixture repair passed12 scoped tests;16 independent failures deferred under FUCQ-144\u2013146. Original failures/skips remain historical; scoped repairs do not produce a passing full run."
+    },
+    "authoredRetailerApi": "Historical132 passing brand/API checks are retained in implementation-plan.md; no current rerun or current full-suite applicability claimed.",
+    "currentAuthoredNpmPassEstablished": false,
+    "testsRunByAssessment": 0,
+    "sourceRequestsByAssessment": 0
+  },
+  "sourceEvidence": {
+    "admittedSourceCount": 10351,
+    "canonicalIndexSha256": "09ca95146b2ae87bb494d9f5bf3fccc12af69ba4cc68ed3d83b79965cd2df4bc",
+    "sealedSelectionCount": 10000,
+    "selectionManifestSha256": "216359c111a5169d15a98de1c476a5c62714a3b3a7ee71431c325a45c90f096f",
+    "vgCodes": 43,
+    "agCodes": 26,
+    "allSelectedMarket": "GB",
+    "allSelectedLocale": "en-GB",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05",
+    "sourceSteeringLiteral": "RL",
+    "literalPhysicalMeaningInferred": false,
+    "sourceAdmissionEstablishesStoryAcceptance": false
+  },
+  "smallestClosureActions": [
+    "Publish this exact six-AC evidence mapping for independent review; no implementation change is identified by the assessment.",
+    "Review and explicitly resolve the AC4 fresh capability-bootstrap interpretation against the original valid-cache clause; preserve the unproved cross-allocation reuse limit.",
+    "Record the current scoped pass evidence, historical failed/skipped full results and unrun authored checks. Any acceptance/validation exception requires an explicit collaborator decision; do not invent a current npm pass."
+  ],
+  "notAutomaticBuildDependencies": [
+    "F58 broader family/profile/year/plant/five-WMI qualification",
+    "31-model scheme joins",
+    "Known technical values or images for every row beyond the original explicit unknown/partial outcomes",
+    "Repair of independently deferred Medium bugs",
+    "Downstream publication/application acceptance without its own concrete interface blocker"
+  ],
+  "preservedF60Plan": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq60/exact10000-common-session-plan-2026-11-07/plan.json",
+    "sha256": "27452f15da2cc3900832815efb811387a982e7197a0d4bcfa67694b10e6cddcc",
+    "bytes": 49758
+  },
+  "resources": {
+    "scratchCreated": false,
+    "childrenStarted": 0,
+    "testsRun": 0,
+    "sourceCalls": 0,
+    "networkCallsExcludingAuthorisedGitPush": 0,
+    "largeOutputs": false,
+    "removedAllocationBytes": 0,
+    "compatibilityException": null,
+    "ownedDisposableLeftovers": [],
+    "unownedFilePreserved": "_tools/__pycache__/test_resources.cpython-314.pyc"
+  }
+}
