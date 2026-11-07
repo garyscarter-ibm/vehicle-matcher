@@ -1,0 +1,448 @@
+{
+  "observations": [
+    {
+      "label": "candidate",
+      "reference": "E071",
+      "values": {
+        "acceptance": false,
+        "canonicalIndex": {
+          "candidateUnion": 10001,
+          "entries": 10354,
+          "excludedIdentities": 353
+        },
+        "compatibilityException": {
+          "expectedLocalPeakMiB": 720,
+          "kind": "tool-required-active-build-working-data",
+          "localMaximumMiB": 1024,
+          "reason": "Unchanged production writer/indexer uses a bounded stable local active working set. Prior OneDrive ctime race is unproved. No production fix.",
+          "retainedExport": "Two exact new source shards and four completed candidate files directOneDrive; candidate readback verified",
+          "teardown": "Stop/join child group; prove absence and no open scratch files; remove inode-owned scratch; record measured peak and absence"
+        },
+        "files": [
+          {
+            "bytes": 8264,
+            "name": "manifest.json",
+            "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/candidate/manifest.json",
+            "sha256": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30"
+          },
+          {
+            "bytes": 190860237,
+            "name": "configurations.jsonl",
+            "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/candidate/configurations.jsonl",
+            "sha256": "dfc4f427479e9cbb8029df52b838b1d682d268059b533d7634e79b63ab810865"
+          },
+          {
+            "bytes": 2565,
+            "name": "vins.jsonl",
+            "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/candidate/vins.jsonl",
+            "sha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd"
+          },
+          {
+            "bytes": 1410,
+            "name": "images.jsonl",
+            "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/candidate/images.jsonl",
+            "sha256": "eb04f0dca3046b045dd000ef4312eabc3d4b9af59b141cb0bd0e26a32230588a"
+          }
+        ],
+        "imageBytesIdentical": true,
+        "oldConfigurationLinesByteIdentical": 8052,
+        "ordinaryPublicationExecuted": false,
+        "originalFailurePreserved": true,
+        "priorOneDriveRaceCauseProved": false,
+        "publicUploadExecuted": false,
+        "sourceRegistrations": 9999,
+        "status": "offline-candidate-validated",
+        "technicalSupplements": 1,
+        "vinBytesIdentical": true
+      }
+    },
+    {
+      "label": "semantic",
+      "reference": "E072",
+      "values": {
+        "acceptance": false,
+        "activeStrictCliExecuted": false,
+        "codeIdentity": "0c8dca4d6e256434ecabd591ef1d02bb908fe4f57bb0b5882f4655298ec479b4",
+        "completeResolvedDistinct": 10000,
+        "distinctConfigurations": 10001,
+        "externalCalls": 0,
+        "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+        "sourceCalls": 0,
+        "status": "existing-staged-semantic-verifier-passed"
+      }
+    },
+    {
+      "label": "isolated restart",
+      "reference": "E073",
+      "values": {
+        "acceptance": false,
+        "activeSha256": "c2a0d0dd900d579f79bd0a962dacefb7835139b44e7477102d79132e83514fcc",
+        "addedDatasetVersions": 1,
+        "bodyLengthUnknown": true,
+        "configurationCount": 10001,
+        "externalCalls": 0,
+        "historySha256": "b87886218fa8fdfc4520008f7a4ee4acf87f49650e785af75d4759044cae5b29",
+        "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+        "ordinaryPublicationExecuted": false,
+        "previousManifestDigest": "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab",
+        "priorDatasetsUnchanged": true,
+        "priorIdentitiesUnchanged": true,
+        "priorVersionFilesByteIdentical": true,
+        "publicUploadExecuted": false,
+        "retainedPriorConfigurations": 8052,
+        "status": "isolated-additive-publish-restart-idempotence-passed",
+        "technicalSupplementExact": true
+      }
+    },
+    {
+      "label": "isolated rollback",
+      "reference": "E074",
+      "values": {
+        "acceptance": false,
+        "activeSha256": "c2a0d0dd900d579f79bd0a962dacefb7835139b44e7477102d79132e83514fcc",
+        "cases": {
+          "changedSupplementValue": {
+            "bodyLengthUnknown": true,
+            "priorExactSupplementPreserved": true,
+            "recoveredManifestDigest": "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab",
+            "selectionAndHistoryUnchanged": true,
+            "sourceConfigurations": 8051
+          },
+          "corruptCurrentManifest": {
+            "bodyLengthUnknown": true,
+            "priorExactSupplementPreserved": true,
+            "recoveredManifestDigest": "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab",
+            "selectionAndHistoryUnchanged": true,
+            "sourceConfigurations": 8051
+          }
+        },
+        "disposableCloudRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/rollback-scratch",
+        "exactCurrentManifestRestored": true,
+        "externalCalls": 0,
+        "historySha256": "b87886218fa8fdfc4520008f7a4ee4acf87f49650e785af75d4759044cae5b29",
+        "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+        "ordinaryPublicationExecuted": false,
+        "publicUploadExecuted": false,
+        "status": "owned-corrupt-current-rollback-to-dot11-and-fresh-restart-passed"
+      }
+    },
+    {
+      "label": "local replay",
+      "reference": "E075",
+      "values": {
+        "acceptance": false,
+        "allRequestSetSha256": "a0942f6f38cefceaff62dc67d206e2a0ba0a48d6e2863884405170e4d1259409",
+        "boundariesExact": true,
+        "chunkedRetainedAuditReconciled": true,
+        "codeExact": true,
+        "configurationReferences": 10001,
+        "consumerErrors": 2707,
+        "consumerFailuresByModel": {
+          "1F7A": 859,
+          "1F7C": 1848
+        },
+        "deploymentExecuted": false,
+        "directErrors": 0,
+        "duplicateCount": 0,
+        "environmentExact": true,
+        "exactRequestUnion": true,
+        "existingRetainedHelperBodyUnchanged": true,
+        "expectedReferences": 10002,
+        "fullSuiteRun": false,
+        "httpErrors": 0,
+        "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+        "manifestExact": true,
+        "nativeStockProof": "unrun; no repository/context/orderUUIDs supplied",
+        "ordinaryPublicationExecuted": false,
+        "priorDot11StrictAudit": {
+          "acceptanceGapPreserved": true,
+          "finalReportAvailable": false,
+          "rc": -15,
+          "seconds": 300.033,
+          "status": "timeout"
+        },
+        "publicUploadExecuted": false,
+        "retainedComparatorBodySha256": "c7dfafd144736bad384272c65ea828b726f76151ce8b4044ad5a929469fc429c",
+        "retainedErrors": 0,
+        "stagedSemanticTarget": 10000,
+        "status": "operational-proof-completed-consumer-acceptance-failed",
+        "strictCliCompleted": false,
+        "vinReferences": 1
+      }
+    },
+    {
+      "label": "current F60 final receipt",
+      "reference": "E076",
+      "values": {}
+    },
+    {
+      "label": "current F60 results",
+      "reference": "E077",
+      "values": {}
+    },
+    {
+      "label": "forced stop checkpoint proof",
+      "reference": "E078",
+      "values": {
+        "capacityCredit": 0,
+        "cases": [
+          {
+            "case": "sigterm",
+            "checkpointPersistedOutsideScratch": true,
+            "issue": null,
+            "issue_kind": null,
+            "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/retention-proof/sigterm.log",
+            "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/retention-proof/ownership/565f7e4860dc43ae8ed11245a02d9323.json",
+            "peak_rss": 118915072,
+            "peak_scratch": 4096,
+            "primaryNeverDeleted": true,
+            "rc": -15,
+            "semantic": {
+              "admitted": 1,
+              "configurationId": "VDVNSjpGS1NKWCxQMEM0UCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHUSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+              "status": "qualified-after-cleanup"
+            },
+            "wall": 0.48596475000000006
+          },
+          {
+            "case": "sigkill",
+            "checkpointPersistedOutsideScratch": true,
+            "issue": null,
+            "issue_kind": null,
+            "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/retention-proof/sigkill.log",
+            "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/retention-proof/ownership/cc75e6a485114de78a765b2e68e6f7b3.json",
+            "peak_rss": 141508608,
+            "peak_scratch": 4096,
+            "primaryNeverDeleted": true,
+            "rc": -9,
+            "semantic": {
+              "admitted": 1,
+              "configurationId": "VDVNSjpGS1NKWCxQMEM0UCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHUSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+              "status": "qualified-after-cleanup"
+            },
+            "wall": 0.48873429199999996
+          }
+        ],
+        "dependencyLinkAbsent": true,
+        "newSourceRequests": 0,
+        "source": "one immutable actual32 source-bound record reused in synthetic interruption harness",
+        "status": "passed"
+      }
+    },
+    {
+      "label": "actual two-process collector continuation",
+      "reference": "E079",
+      "values": {
+        "acceptance": false,
+        "checks": {
+          "allCleanupVerified": true,
+          "candidate0SolverNotRepeated": true,
+          "candidate1SolverExactlyOnce": true,
+          "codeInputNodePinsUnchanged": true,
+          "completedRestartCalls": 0,
+          "exportByteExact": true,
+          "freshBootstrapReportsAndRawResponseHashesMatch": true,
+          "predecessorByteUnchanged": true,
+          "priorOutcomesPreserved": true,
+          "registeredAdapterPartial": 2,
+          "strictBindersQualified": 2
+        },
+        "compatibilityException": null,
+        "contractSha256": "850c5219c098d55aadd8833aa3b6b2e7c3f07234cd2ab489ce93e09a33bac28f",
+        "disposableLeftovers": [],
+        "finalCanonicalIndexDigest": "c7c096d456c1f9802edee02b2d0aee02d21a50dbf05810d4f75e51ae1f3634ed",
+        "finalSpentIndexDigest": "293eb92bade137332c45700cec30593d2aa7425b27eb071596696397d1c60779",
+        "grantSha256": "ecfb1c92e531568352668ea5e9da1201347f16652520c25608aeed1d6d3ce084",
+        "knownLimitations": [
+          "FUCQ-152 Medium remains deferred/unfixed; exactly one successor operationally selected",
+          "cross-allocation bootstrap reuse remains unproved; both allocations perform fresh bootstrap",
+          "one dated T5MJ/72HH/G61E GB/RL context; no physical/VIN/WMI/profile/plant inference",
+          "accessory quantities, measurements, availability and verified fitting remain unknown",
+          "no publication/default-store/application or fullF59/F61 acceptance inferred"
+        ],
+        "observedAt": "2026-11-07T01:40:48.178536+00:00",
+        "offlineVerifier": {
+          "cleanup": {
+            "compatibility_exception": null,
+            "dependency_link_absent": true,
+            "removed_bytes": 0,
+            "scratch_absent": true
+          },
+          "initialHarnessFailure": "Adapter options were initially passed full envelope; strict closed options refused invalid-input. Corrected verifier to exact five contract option fields; no production or source change.",
+          "resourceResult": {
+            "identity": {
+              "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+              "docs/gcsp/evidence/fucq59/canonical-source-live-2026-11-06/options.json": "6883be7544a6c03ef523aa6287a74c03fddd9b0e09b80127c25b72c1bec0061b",
+              "docs/gcsp/evidence/fucq59/continuation-live-proof-2026-11-07/verify-retained.mjs": "9be6a72d643f3a2107e6ccffa2d8ad136e0420515b7bede02fc90eaf7fe0fcc5",
+              "docs/gcsp/evidence/fucq59/continuation-live-proof-prepared-2026-11-07/collection-plan.json": "067ff3523ba174789f37bceeb935f2067aa40d0fcd440315757f292d05bc890e",
+              "docs/gcsp/evidence/fucq59/continuation-live-proof-prepared-2026-11-07/execution-contract.json": "850c5219c098d55aadd8833aa3b6b2e7c3f07234cd2ab489ce93e09a33bac28f",
+              "docs/gcsp/evidence/fucq59/continuation-live-proof-prepared-2026-11-07/preparation.json": "4bda7a6b198f8786c231bb7367190f6bbf8fd0a3e19a4d0db37052831aaf8c3f",
+              "docs/gcsp/evidence/fucq59/continuation-live-proof-prepared-2026-11-07/run-phase.mjs": "792c50e0ec5564cf0d74b12603bcab46bab87853bf2a309e8c174311e52b6ba4",
+              "docs/gcsp/evidence/fucq59/continuation-live-proof-prepared-2026-11-07/supervise-proof.py": "722a564c4149932588fbc1469ebb48393594545d1b83022f27af46bde71db64f",
+              "docs/gcsp/evidence/fucq59/continuation-live-proof-prepared-2026-11-07/tests/fixture-transport.mjs": "f29c7561fae9b050911b15ebce5e70e230a572967f165b0b377aeba6780ebdcd",
+              "docs/gcsp/evidence/fucq59/continuation-live-proof-prepared-2026-11-07/tests/offline-proof.py": "da75e8a5aa55aa1f83fa68b6b78e4207e4da0243cc5c273a73a4ae041d93cbd2",
+              "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+              "scripts/gcsp/bmw-public-registration.mjs": "c0f36030c0696afc51c5e44732064c126434fba5e9d14595833b1c8fc4eb27a2",
+              "scripts/gcsp/bmw-selection-binding.mjs": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+              "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+              "scripts/gcsp/capture-bmw-selection.mjs": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+              "scripts/gcsp/collect-fleet.mjs": "f3eeccddc2d2e235af45864ce3020babea7ae618070a69a9435247620d6a93ad",
+              "scripts/gcsp/collection-session.mjs": "104aed62df3a8934bcda5484e0297a7ab4d84cfd1231b81b921be61aedd31939",
+              "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+              "scripts/gcsp/public-bmw-source.mjs": "0e746b7d9addb56bfb3a7211616b6b8dfa2ff31469ef102aafa57ddfb11fc375",
+              "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+              "server/gcsp/migrations/index.js": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f",
+              "server/gcsp/policy/activation.js": "4e79235b761e8daf94f3cf2744c4bc585146181b410b64497669bd353ee7c4d6",
+              "server/gcsp/policy/adoption.js": "a2cb9a74946cd9eda413d896a0abc2f4299b3b75880a77ddd510667a5187c870",
+              "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+              "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+              "server/gcsp/policy/memory-provider.js": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
+              "server/gcsp/policy/postgres-provider.js": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+              "server/gcsp/policy/publish.js": "c521e15966be7762a3348ad860403ef555dd8cbd48405e7d23d9a7c6d262a826",
+              "server/gcsp/policy/reviewed-definitions.js": "75518df649ba542ad32b876f8ee1b680e29b417c3b1f8dc90fcf1d4713a42cbb",
+              "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+              "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+              "server/gcsp/repository/index.js": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16",
+              "server/gcsp/repository/memory.js": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866",
+              "server/gcsp/repository/postgres.js": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
+              "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+              "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+              "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+            },
+            "issue": null,
+            "issue_kind": null,
+            "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f59-live-verification/verified.log",
+            "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f59-live-verification/ownership/b689b27f80f04ac7967ffb5c208f4574.json",
+            "peak_rss": 2228224,
+            "peak_scratch": 0,
+            "rc": 0,
+            "wall": 0.24586258300000002
+          }
+        },
+        "outcomes": [
+          {
+            "accessoryQuantities": "unknown",
+            "bindingDigest": "589d623a5f5701e59afb7080d23a773fc7e46e8dd5a6694ff490bc64b3119f02",
+            "candidateId": "candidate-e384e23e4375b5f677c65619",
+            "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+            "novelAgainstAll343PriorIds": false,
+            "novelAgainstPrior340Admitted": false,
+            "outcome": "duplicate",
+            "request": {
+              "includedElements": [
+                "FKSFU",
+                "P0300",
+                "S0337",
+                "S03G9",
+                "S043L"
+              ],
+              "mandatoryElements": [
+                "S0337"
+              ]
+            },
+            "requestDigest": "e384e23e4375b5f677c656192cf1ea776c70847df4a0b47d9bfff52a6fad805a",
+            "solverRetainedSha256": "299ca152c788e05fce0b938c7e3eaacd5c901c69453e6ecd02d2c53226a8fcd3",
+            "verifiedFitted": "unknown"
+          },
+          {
+            "accessoryQuantities": "unknown",
+            "bindingDigest": "00a386a320c893ef43e023c62de8753571c83562de6005f332a3c33ee4072252",
+            "candidateId": "candidate-c9eeb5c73605462a742f76bf",
+            "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHRCxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+            "novelAgainstAll343PriorIds": true,
+            "novelAgainstPrior340Admitted": true,
+            "outcome": "accepted",
+            "request": {
+              "includedElements": [
+                "FKSFU",
+                "P0300",
+                "S0337",
+                "S03GD",
+                "S043L"
+              ],
+              "mandatoryElements": [
+                "S0337"
+              ]
+            },
+            "requestDigest": "c9eeb5c73605462a742f76bf8fc4447bc2f5f5e346f4ca8741c8933262ce6e20",
+            "solverRetainedSha256": "6890801b6ece7c9aed898ecbad839090bf63e17f9f3402e01d2cdb8e5dff17a7",
+            "verifiedFitted": "unknown"
+          }
+        ],
+        "primaryOriginalsRetainedOutsideScratch": true,
+        "priorSpentIndexDigest": "4053cf5826ef9ac16d55b318cb34b8f38da58fc9b2ad01c5dea355c1a4b583ce",
+        "removedScratchBytes": 0,
+        "retainedEvidenceBytesBeforeReadme": 2981125,
+        "schemaVersion": "f59-actual-continuation-final-receipt.v1",
+        "scope": "actual two-process interruption/continuation proof; finite target2 not met; fullStory acceptance incomplete",
+        "selectedValidation": "actual bounded chain plus exact retained-artifact/binder/adapter/count/index/cleanup checks; no repeated source execution or full test suite",
+        "target": {
+          "actualNewDistinct": 1,
+          "expectedNewDistinct": 2,
+          "met": false,
+          "reason": "queue-exhausted after one prior canonical duplicate"
+        },
+        "totals": {
+          "actualGets": 10,
+          "bootstrapGets": 8,
+          "cumulativeAdmittedSourceConfigurations": 341,
+          "cumulativeSpentSolverRequests": 407,
+          "decodedBytes": 1841762,
+          "duplicates": 1,
+          "newAccepted": 1,
+          "priorAdmittedSourceConfigurations": 340,
+          "priorSpentSolverRequests": 405,
+          "rejected": 0,
+          "retries": 0,
+          "solverGets": 2
+        }
+      }
+    },
+    {
+      "label": "historical public publication observation",
+      "reference": "E080",
+      "values": {
+        "acceptance": false,
+        "assets": 31,
+        "bytes": 574382841,
+        "checkedAt": "2026-11-07T08:50:00.527844+00:00",
+        "coldLinuxDeployment": "Separate; publication alone does not prove restore/build/live readiness",
+        "consumerFailures": 2707,
+        "nativeAcceptance": "Unrun",
+        "newApplicationGETs": 0,
+        "ordinaryStoreMutation": false,
+        "protectedDot10UnchangedPerActualPublisherAssertions": true,
+        "publicReleaseId": 437448005,
+        "releaseId": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+        "remoteMetadataExactPerActualPublisherReceipt": true,
+        "removedScratchPeakBytesSum": 3387828,
+        "retainedEvidenceDirectory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot12-10000-public-plan",
+        "scope": "actual immutable .12 publication evidence independently checked from retained local receipts; no fresh remote query",
+        "sourceRequests": 0,
+        "tag": "fleet-2026-11-07-12",
+        "target": "15fde2c3c24b5da02206501576a3baeb19e9a78c"
+      }
+    },
+    {
+      "label": "historical scoped staged verifier tests",
+      "reference": "E081",
+      "values": {
+        "issue": null,
+        "issue_kind": null,
+        "peak_rss": 276217856,
+        "peak_scratch": 1671392,
+        "rc": 0,
+        "wall": 0.9896615829929942
+      }
+    }
+  ],
+  "replayLimits": {
+    "fullSuite": "unrun for this report",
+    "nativeDatabase": "unrun for this report",
+    "publicColdRestore": "Root status at 09:16 UTC records attempt2 failure after downloading31assets; no later restore or live claim is made here",
+    "upstreamRebuild": "not rerun; no claim that current upstream reproduces all historical source results"
+  },
+  "schemaVersion": "f61-exact10000-closeout-evidence.v1",
+  "stagedSemanticReference": "E004",
+  "storyAcceptance": "not transitioned; root/collaborator review owns acceptance"
+}
