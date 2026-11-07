@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "selectedChecks": [
+    "forced SIGTERM supervisor+child group",
+    "forced SIGKILL supervisor+child group",
+    "atomic envelope+artifact hash export",
+    "actual accepted source binder after cleanup"
+  ],
+  "excluded": [
+    "network/source calls",
+    "full suite",
+    "runtime/UI/publication acceptance",
+    "production hot-path repair"
+  ],
+  "codePins": {
+    "proof-supervisor.py": "9033c1a0dbdff07fe399fc206d91a25c08622976584e0efe493375dfb19195ab",
+    "export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+    "run-proof.py": "d186e9290b21b004fd60bf95db24c06b275908a24a8f4c2b9c10e73f2964418d",
+    "proof-child.mjs": "101d1a2272cadc5a92c568ea19632ba9887c103f7239f60e2695dcac426a6d17"
+  }
+}
