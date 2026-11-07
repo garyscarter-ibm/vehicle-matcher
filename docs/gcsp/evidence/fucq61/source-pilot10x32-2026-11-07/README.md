@@ -1,11 +1,24 @@
-# Finite 10 × 32 source pilot plan — 7 November 2026
+# Actual finite 10 × 32 source pilot — 7 November 2026
 
-Prepared for root review; no source traffic has started. `pilot-plan.json` pins ten exact 32-candidate plans and the 16-candidate variants for a resource fallback. The upper bound is 320 solver requests and 360 total GETs, one serial source worker, zero retries. Each chunk retains its own fresh model/alias and option qualification, with 120 seconds source wall, 10 seconds per complete request, 1 MiB per decoded response and 8 MiB aggregate decoded bytes.
+The root-approved finite pilot completed ten serial chunks with **311 new distinct admitted source configurations, 9 source-not-constructible outcomes and 0 duplicates**. It used exactly 320 solver requests / 360 actual GETs, 10,528,822 decoded bytes and 278.404 seconds of source execution, with one worker and zero retries. Durable admitted source capacity is **340**, including the prior 29. Every row remains within the single qualified T5MJ / 72HH / G61E GB/RL context.
 
-The primary atomic checkpoint lives in each retained chunk directory from its first write, with a pre-created retained-deliverables manifest and external ownership manifest. The supervisor uses the same exporter verified by the two-case forced-termination proof before scratch cleanup. A failed export is a named issue and the primary is never deleted. Resource ceilings select the already pinned 16-candidate variant for following chunks; source/refusal, export and identity failures stop the pilot. No allocation is replayed.
+| Chunk | Accepted | Rejected | Duplicates | Source seconds | Peak child RSS bytes |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 01 | 30 | 2 | 0 | 26.581 | 345,817,088 |
+| 02 | 32 | 0 | 0 | 30.184 | 359,940,096 |
+| 03 | 31 | 1 | 0 | 27.353 | 344,096,768 |
+| 04 | 31 | 1 | 0 | 28.219 | 348,618,752 |
+| 05 | 31 | 1 | 0 | 27.777 | 340,721,664 |
+| 06 | 32 | 0 | 0 | 28.375 | 359,612,416 |
+| 07 | 31 | 1 | 0 | 27.028 | 316,030,976 |
+| 08 | 31 | 1 | 0 | 27.463 | 362,807,296 |
+| 09 | 31 | 1 | 0 | 27.056 | 361,168,896 |
+| 10 | 31 | 1 | 0 | 28.368 | 337,969,152 |
 
-All 85 previously spent solver requests are excluded from the 320 unique candidate inputs. The first 147 inputs use the interrupted allocation's still-unspent requests. `prepare-chunk.py` performs no HTTP: immediately before a chunk it persists the selected exact plan, prior canonical index, cumulative spent index, code/producer pins and allocation. Canonical dedup consumes retained admitted records from earlier chunks and preserves the prior reference/admission labels. Every actually started solver request becomes spent.
+The observed pilot yield is 97.1875%; it does not promise future yield or source capacity. Only chunks02 and06 met their finite target32; the other chunks remain locally incomplete with `queue-exhausted`. Full10k, broader model/profile/year/plant/five-WMI coverage, F60 enrichment/publication/application and F77 acceptance remain incomplete. No F61 Done claim is made. The lost interrupted200 captures contribute zero capacity, while all53 spent solver requests remain excluded.
 
-Expected retained output is 40 MiB total; peak owned scratch is 64 MiB and host RAM reservation 512 MiB (448 MiB child ceiling), reused sequentially. Expected duration is about five minutes based on the successful32 run; the source maximum is twenty minutes across ten chunks. No archives or files expected at 256 MiB are created. Scratch is removed and checkpoint results reviewed after every chunk. Existing source/producer pins and all previous observations remain immutable.
+`final-canonical-index.json` preserves admitted-source versus reference origins. `final-spent-request-index.json` contains405 unique tracked spent solver requests:32 first-batch,53 interrupted and320 pilot. Every chunk excluded all prior canonical IDs and spent requests. The immutable `pilot-plan.json` remains the original approved plan; the final receipt records its digest rather than rewriting it.
 
-The lane remains with Charlie's F62, Mike's bridge/F63 and root's final npm validation before this pilot unless root explicitly agrees a brief source slot. Traffic requires root's explicit pilot authorisation and a clean lane acknowledgment. Retained admitted source capacity starts at 29; fixture rows, lost callbacks and new request inputs do not increase it. No F61 Done/full10k or runtime acceptance is inferred.
+Each primary checkpoint was a retained deliverable from its first write and equals its exported state. Per-chunk checks verified source artifact hashes/bytes, counts, canonical uniqueness/prior exclusion, code/plan/index pins and exact attempt accounting. The proved finalizer exported before scratch cleanup. All ten process groups, scratch roots, dependency links and reservations are absent, with zero writer metadata or compatibility exception. Peak child RSS was 362,807,296 bytes; removed scratch allocation was 0 bytes because primary/source outputs are retained outside scratch. Retained evidence measured 54,847,703 bytes before this final receipt/README rewrite; no archive or output approaching256MiB was created.
+
+The throughput issue is linked backlog Bug **FUCQ-151 (Medium)**. The 32-candidate workaround does not fix it. The realistic next multi-context qualification proposal and five-WMI boundary are in `../../../f61-capacity-route-2026-11-07.md`. Source traffic after this finite pilot is held pending root review of the next exact plans/code pins. No additional allocation is granted by this receipt.
