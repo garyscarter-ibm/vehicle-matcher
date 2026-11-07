@@ -1,0 +1,44 @@
+{
+  "scope": "static preparation only",
+  "checks": [
+    {
+      "path": "activate.mjs",
+      "nodeSyntax": true
+    },
+    {
+      "path": "verify-assets.mjs",
+      "nodeSyntax": true
+    },
+    {
+      "path": "common.mjs",
+      "nodeSyntax": true
+    },
+    {
+      "path": "followthrough.mjs",
+      "nodeSyntax": true
+    },
+    {
+      "path": "recovery.mjs",
+      "nodeSyntax": true
+    },
+    {
+      "path": "boundary.mjs",
+      "nodeSyntax": true
+    },
+    {
+      "path": "group-proof.py",
+      "pythonInMemoryCompile": true
+    },
+    {
+      "path": "supervise.py",
+      "pythonInMemoryCompile": true
+    }
+  ],
+  "codePinsChecked": 170,
+  "patchesCheckedAgainstCurrentRoot": 2,
+  "destinationBeforeScratch": true,
+  "runtimeExecuted": false,
+  "networkExecuted": false,
+  "scratchAllocated": false,
+  "acceptance": false
+}
