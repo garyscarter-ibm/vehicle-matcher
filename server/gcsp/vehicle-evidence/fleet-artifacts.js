@@ -3,7 +3,7 @@ import { createReadStream } from 'node:fs';
 import { lstat, mkdir, open, rename, rm } from 'node:fs/promises';
 import { dirname, isAbsolute, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { fleetReleases, approvedAssetUrl, DEFAULT_ARTIFACT_ROOT, releaseLimits } from './fleet-release.js';
+import { fleetReleases, approvedAssetUrl, DEFAULT_ARTIFACT_ROOT, releaseLimits, EMPTY_SHA256 } from './fleet-release.js';
 import { durableCopy } from './corpus-publisher.js';
 import { createSyntheticRegistry } from './synthetic-registry.js';
 import { createPolicyService } from '../policy/index.js';
@@ -19,7 +19,11 @@ export async function downloadAsset(asset, destination, { fetchImpl = fetch, tim
   const controller = new AbortController(); const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
     if (!Number.isSafeInteger(asset.bytes) || asset.bytes < 0 || asset.bytes > 268435456 || !/^[a-f0-9]{64}$/.test(asset.sha256)) throw new TypeError('Invalid byte/hash bound');
+    if (asset.bytes === 0 && asset.sha256 !== EMPTY_SHA256) throw new TypeError('Invalid empty artifact checksum');
     file = await open(destination, 'wx', 0o600); owned = true;
+    // The code-owned release pins these exact empty bytes. GitHub rejects empty
+    // uploads; materialize the pinned file locally without a transport request.
+    if (asset.bytes === 0) { await file.sync(); await file.close(); file = null; return; }
     let response;
     for (let redirects = 0; redirects <= 3; redirects++) {
       response = await fetchImpl(url, { redirect: 'manual', signal: controller.signal, headers: { 'Accept-Encoding': 'identity' } });
