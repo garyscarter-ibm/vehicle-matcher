@@ -657,7 +657,7 @@
       "original_status": "In Progress",
       "assignee": "usget",
       "type": "Story",
-      "observed_at": "2026-11-07T00:33:53Z",
+      "observed_at": "2026-11-07T00:43:37Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60",
       "workers": [
         {
@@ -707,8 +707,8 @@
           "id": "shared-accounting",
           "status": "in-progress",
           "title": "Canonical collector session cache budget recovery integration",
-          "observed_at": "2026-11-07T00:33:52Z",
-          "evidence": "Current source-admitted v2 same-session cache interruption/reopen 3/3 and portable existing session 6/6 pass with one catalogue call. Fresh cached historical 9/9 at session db0b4b9e also pass. Shared runtime/native integration remains; evidence/source-v2-enrichment-2026-11-07.md."
+          "observed_at": "2026-11-07T00:43:37Z",
+          "evidence": "Current F59 batch producer/session follow-up passes 18/18: source3, fresh cached historical9, portable session6. Session1f22fe1c; enrichment29301f1b unchanged. Two current pins updated; original source/history immutable. Shared runtime/native integration remains; current-f59-batch/summary.json."
         },
         {
           "id": "real-source",
@@ -726,8 +726,8 @@
           "id": "focused-contracts",
           "status": "complete",
           "title": "Authored enrichment and F39 F42 focused contracts",
-          "observed_at": "2026-11-07T00:33:52Z",
-          "evidence": "All 82 selected cases pass with zero skips:11 pure + 3 retained-source + 53 catalogue/v2/image contracts + 9 fresh cached historical replay + 6 portable session. Frozen source 29301f1b; old provenance unchanged, current-session pins updated narrowly. Full npm suite unrun."
+          "observed_at": "2026-11-07T00:43:37Z",
+          "evidence": "Earlier82/82 scoped evidence retained at earlier producer identities. Current F59 batch/source/session follow-up18/18 passes, zero skips; pure/catalogue/image source unchanged. No full npm claim. docs/gcsp/evidence/fucq60/source-v2-enrichment-2026-11-07.md."
         },
         {
           "id": "corpus-integration",
