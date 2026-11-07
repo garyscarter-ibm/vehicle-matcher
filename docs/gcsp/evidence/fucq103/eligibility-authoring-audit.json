@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "scope": "static-authoring-only",
+  "state": "PASS",
+  "retainedBase": "d644288865f2dc799dd539be6429ee05833ed555",
+  "backendPlanSha256": "4d4809e63c80bcfacebced40c2ef78039f648ff81e7af8e37b5b9c481f91122f",
+  "browserPlanSha256": "e8e87519bcf47ea429b2d98a7dcfe57be3a3048ae52874eb8ed2c8bff3fd4fb0",
+  "sourceFilesVerified": 217,
+  "relativeEdgesVerified": 432,
+  "installedFilesVerified": 251,
+  "executablesVerified": 4,
+  "immutableCompositionsVerified": 14,
+  "selectedCaseCounts": [
+    {
+      "mode": "eligibility-core",
+      "matched": 25,
+      "excludedByName": 0
+    },
+    {
+      "mode": "eligibility-default",
+      "matched": 1,
+      "excludedByName": 5
+    },
+    {
+      "mode": "eligibility-weighted",
+      "matched": 1,
+      "excludedByName": 5
+    },
+    {
+      "mode": "eligibility-runtime",
+      "matched": 4,
+      "excludedByName": 2
+    },
+    {
+      "mode": "eligibility-publish",
+      "matched": 15,
+      "excludedByName": 0
+    },
+    {
+      "mode": "eligibility-activation",
+      "matched": 9,
+      "excludedByName": 0
+    },
+    {
+      "mode": "eligibility-editor",
+      "matched": 3,
+      "excludedByName": 0
+    },
+    {
+      "mode": "eligibility-dashboard",
+      "matched": 3,
+      "excludedByName": 6
+    },
+    {
+      "mode": "eligibility-registry",
+      "matched": 16,
+      "excludedByName": 0
+    }
+  ],
+  "matchedCases": 77,
+  "pythonAstParsed": true,
+  "diffWhitespaceClean": true,
+  "foreignMapRowsPreserved": true,
+  "acceptedCataloguesPreserved": true,
+  "applicationImports": 0,
+  "testRuns": 0,
+  "browserLaunches": 0,
+  "nativeDatabaseCalls": 0,
+  "scratchAllocations": 0,
+  "limitations": "Source/hash/JSON/Python AST and finite test-name review only; JS syntax/runtime, combined behavior, canonical107 activation, browser and full acceptance remain unexecuted."
+}

@@ -162,6 +162,14 @@
     {
       "path": "blocks/gcsp/shell/density-typography.css",
       "max_lines": 50
+    },
+    {
+      "path": "blocks/gcsp/presenter-controls/presenter-controls.css",
+      "max_lines": 17
+    },
+    {
+      "path": "blocks/gcsp/greg/publish/publish.css",
+      "max_lines": 13
     }
   ],
   "baseline": {

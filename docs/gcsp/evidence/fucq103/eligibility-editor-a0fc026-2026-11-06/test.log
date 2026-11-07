@@ -1,0 +1,11 @@
+✔ reviewed editor bundle is immutable, digest checked, explicitly assumed and absent from unchanged seed (3.753041ms)
+✔ missing key keeps exact editing; intentional reviewed adoption projects ranges and preserves pinned rows and old snapshots (566.904042ms)
+✔ one canonical range change updates every projected control while legal exact values remain unbounded by presentation (943.568375ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1682.475625
