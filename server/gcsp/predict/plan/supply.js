@@ -44,7 +44,7 @@ export function resolveSupplyRecords({ runId, asOf, catalogVersion, catalog, row
       stock.push({ stockId: row.orderUuid, derivativeId: derivative.derivativeId, availableAt,
         heldForEntitlementSlotId: held ? holds[0].entitlementSlotId : null, visibility: structuredClone(row.visibility) });
     }
-    const inbound = []; const releasedIds = new Map(); const byRequest = new Map();
+    const inbound = []; const releasedIds = new Map(); const byRequest = new Map(); const releases = [];
     for (const supply of rows.confirmed_supply) {
       const request = rows.future_order_requests.find((r) => r.requestId === supply.requestId);
       const derivative = request && productionMap.get(inputDigest([request.model, request.derivative]));
@@ -60,6 +60,8 @@ export function resolveSupplyRecords({ runId, asOf, catalogVersion, catalog, row
         if (value.runId !== runId || value.kind !== 'stock-released' || value.trancheId !== receipt.eventId
           || !Array.isArray(value.orderUuids) || !value.orderUuids.every(text) || new Set(value.orderUuids).size !== value.orderUuids.length
           || !instant(value.releasedAt) || Date.parse(value.releasedAt) > Date.parse(asOf)) return unavailable('planning-release-provenance-invalid');
+        if (value.orderUuids.length) releases.push({ kind: 'released', requestId: request.requestId, supplyId: supply.supplyId,
+          quantity: value.orderUuids.length, at: value.releasedAt });
         for (const id of value.orderUuids) {
           const exact = rows.stock.find((s) => s.orderUuid === id);
           if (!exact || exact.release?.supplyId !== supply.supplyId || exact.release?.trancheId !== value.trancheId
@@ -85,7 +87,29 @@ export function resolveSupplyRecords({ runId, asOf, catalogVersion, catalog, row
     if (rows.stock.some((s) => text(s.release?.supplyId) && rows.confirmed_supply.some((a) => a.supplyId === s.release.supplyId)
       && ['released', 'held', 'allocated'].includes(s.state) && !releasedIds.has(s.orderUuid))) return unavailable('planning-release-receipt-missing');
     stock.sort((a, b) => compare(a.stockId, b.stockId)); inbound.sort((a, b) => compare(a.supplyId, b.supplyId));
-    return { status: 'ok', contractVersion: CONTRACT_VERSION, value: { runId, asOf, stock, inbound,
+    // Requests are labelled intent only and never counted as supply; responses are the audit trail of replies.
+    const requests = []; const delays = [];
+    for (const row of rows.future_order_requests) {
+      const derivative = productionMap.get(inputDigest([row.model, row.derivative]));
+      if (!derivative || !integer(row.quantity)) return unavailable('planning-catalog-mapping-missing');
+      requests.push({ requestId: row.requestId, commandId: row.commandId ?? null, derivativeId: derivative.derivativeId,
+        quantity: row.quantity, state: row.state ?? null, requestedAt: row.requestedAt ?? null });
+      for (const h of row.history ?? []) if (h?.state === 'delayed' && instant(h.at) && Date.parse(h.at) <= Date.parse(asOf)) {
+        delays.push({ kind: 'delayed', requestId: row.requestId, at: h.at, delayUntil: h.until ?? h.delayUntil ?? null, reason: h.reason ?? null });
+      }
+    }
+    const total = new Map(); const confirmations = [];
+    for (const a of [...rows.confirmed_supply].sort((x, y) => Date.parse(x.confirmedAt) - Date.parse(y.confirmedAt) || compare(x.supplyId, y.supplyId))) {
+      const sum = (total.get(a.requestId) ?? 0) + a.quantity; total.set(a.requestId, sum);
+      const wanted = rows.future_order_requests.find((r) => r.requestId === a.requestId).quantity;
+      confirmations.push({ kind: sum < wanted ? 'partly-confirmed' : 'confirmed', requestId: a.requestId, supplyId: a.supplyId,
+        quantity: a.quantity, at: a.confirmedAt });
+    }
+    const idOf = (r) => `${r.requestId}|${r.kind}|${r.supplyId ?? ''}`;
+    const responses = [...confirmations, ...delays, ...releases]
+      .sort((a, b) => Date.parse(a.at) - Date.parse(b.at) || compare(idOf(a), idOf(b)));
+    requests.sort((a, b) => compare(a.requestId, b.requestId));
+    return { status: 'ok', contractVersion: CONTRACT_VERSION, value: { runId, asOf, stock, inbound, requests, responses,
       versions: { stock: inputDigest({ stock: rows.stock, holds: rows.holds }), supply: inputDigest({ requests: rows.future_order_requests,
         confirmations: rows.confirmed_supply, receipts: rows.event_receipts }), catalog: catalogVersion } } };
   } catch { return unavailable('planning-supply-input-invalid'); }

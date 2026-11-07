@@ -13290,6 +13290,21 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "orderPlan.gregEditableKeys",
+      "value": [
+        "orderPlan.modelBounds",
+        "orderPlan.derivativeBounds",
+        "orderPlan.budgetMinor"
+      ],
+      "unit": "policy keys",
+      "status": "assumed",
+      "basis": "Greg may edit order quantity bounds and the budget envelope; eligibility, essentials, catalogue and objective weights are not editable.",
+      "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "orderPlan.catalog.v1",
       "value": {
         "version": "order-plan-catalog.v1",
