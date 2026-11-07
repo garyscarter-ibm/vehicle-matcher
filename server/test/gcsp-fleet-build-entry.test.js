@@ -14,7 +14,7 @@ test('npm install prepares the GCSP fleet even when the remote build command onl
     config: yaml, restore: async (options) => { calls.push(options); return { status: 'ok', active: { manifestDigest: options.releaseId } }; },
   });
   assert.equal(calls.length, 1);
-  assert.equal(calls[0].releaseId, '0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a');
+  assert.equal(calls[0].releaseId, '3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30');
   assert.equal(calls[0].offline, false);
   assert.match(calls[0].store, /\/server\/data\/gcsp\/vehicle-evidence\/fleet-source\.v1$/);
   assert.match(calls[0].cacheRoot, /\/server\/data\/gcsp\/vehicle-evidence\/fleet-artifacts\.v1$/);
