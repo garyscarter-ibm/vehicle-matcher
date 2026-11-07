@@ -21,3 +21,10 @@ HISTORICAL_G26E_PARENT_RELEASE_SHA256=EXACT_PARENT_RELEASE_SHA256 \
 ```
 
 Any HTTP/refusal/shape/privacy/resource/budget failure stops and retains its result. An empty or unmatched tree completes only as a dated gap. No second request plan is implied. Original coverage and downstream acceptance gates remain open.
+
+
+## Actual one-shot result
+
+Parent release1536eec1df3b10470daffef7d1e58ff550f8483079964dbb1a8cd69428b282e7 consumed once on7November2026. Actual3 GET in344ms: page200/17,763decoded bytes,settings200/620,646bytes, historicalG26E tree400/zero bodybytes. The2024-10-01 order/effect context with both flagsfalse returned no model context; no configurations or profile activations were produced. This400 does not establish all historical support absent, M50 availability or any scheme/constructibility/production acceptance. No date fallback, retry or solver request followed.
+
+actual-source-audit.json independently verifies all8code/10input/2runtime pins unchanged, all three actual statuses and zero capacity credit, plus source scratch/group/token absence.0scratch bytes removed;4,749 actual evidence bytes retained;dependency path untouched;no compatibility exception or leftovers.

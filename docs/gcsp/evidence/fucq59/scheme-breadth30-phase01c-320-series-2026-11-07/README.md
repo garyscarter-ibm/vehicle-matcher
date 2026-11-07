@@ -1,0 +1,13 @@
+# Exact remaining breadth templates81–120
+
+This finite continuation preserves the original phase01 clock: consumed2026-11-07T05:46:57.228279Z, absolute deadline2026-11-07T06:16:57.228279Z. It cannot reset the clock, use a later deadline or replay any existing source root.
+
+Forty original immutable templates81–120 become local sessions1–40, preserving originalPoolNumber. Their exact320 solver digests are distinct from the local79-session strict prefix and the eight conservatively excluded unsolved session080 digests. The independently reviewed entire original960 allocation is disjoint from the entire F70 future3623 allocation; a newer global union is required for global counting, not for this independent source BUILD.
+
+Initial baseline is6306 actual admitted configurations /6309 canonical entries /8076 actual spent solver requests. Session080 made2 actual GET, no solver, no admissions, then settings transport-refused ETIMEDOUT; its receipt and original spent history remain immutable. The interrupted source phase has950 actual GET /632 solver. This continuation permits at most480 GET /320 solver, giving aggregate ceilings1430 GET /952 solver within the original1440/960 allocation; the excluded eight requests stay unused.
+
+One worker,64 MiB active scratch,512 MiB RAM,32 MiB retained shard,1.5 GiB continuation retention cap, about650 MB expected/300 sec. Retained large output goes directly to OneDrive. Original retained bytes plus the new cap remain below the original4 GiB retention ceiling. Every owned child is joined and each root/group/token/dependency link is checked absent on exit.
+
+Preparation checks select exact plans/digests, unchanged code/source/runtime/base pins, all no-grant entry points, first freeze immutability, actual safe event handling, adopted strict5 reconciliation against a small retained real pilot input, process-group unknown handling, exact parent-prefix refresh and original expired-deadline refusal before allocation. No public traffic or production source fix is part of preparation. attempt01 had9pass/1fixture failure: the deadline fixture used a local output path and hit the cloud-containment guard first; attempt02 corrected that fixture and passed10/10. attempt03 adds the smaller explicit continuation retention/accounting ceiling. All failed evidence is retained and no full suite is claimed.
+
+Separate exact parent release is still required. Parent may use its independent partial-prefix audit to refresh once; this does not authorise source or establish F61 acceptance. Source command after root release is BREADTH30_PHASE01C_PHASE_GRANT=scheme-breadth30-phase01c-320-20261107-once-phase01c /usr/bin/python3 -I -B run-series.py phase01c.
