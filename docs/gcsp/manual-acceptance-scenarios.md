@@ -158,7 +158,9 @@ FUCQ-125's integrated source `87c0b4ec86312887c7f807746b143e7eb2074b98` passed t
 
 ## Presenter strip and live workspace · FUCQ-126
 
-Start from a trusted backend bootstrap with the separate presenter-control and acting cookies.
+Start the local host: `GCSP_REPOSITORY_MODE=memory GCSP_TLS_KEY_FILE=... GCSP_TLS_CERT_FILE=... node scripts/gcsp-demo.mjs`
+(see `local-https.md`; the certificate must be trusted by the browser). Opening `gcsp-presenter.html` issues the
+trusted backend bootstrap with the separate presenter-control and acting cookies.
 Open `gcsp-presenter.html` through the packaged same-origin static/API host. The runtime selects
 its employee, Greg or presenter surface from actual `/api/gcsp/context`; no person belongs in the URL.
 A shared-key gate, where configured, must already be satisfied by the host. A missing control
@@ -173,6 +175,8 @@ cookie hides the strip entirely even when the acting person is an employee or Gr
 2. Choose **Tick**, a server-projected named cue or a future UTC ISO target, or **Next release**.
    Check actual new time and handler results in server order. Missing release handlers say release
    unavailable; they do not report zero cars. A future cue does not establish release capability.
+   The launcher composes synthetic demo stock (`server/gcsp/stock/demo-provider.js`): from 09:00, **Next release**
+   moves to the 09:30 cue and reports 5 cars released; a repeat shows "No future release cue is configured".
 3. Select an unavailable scenario radio; the choice remains enabled and inspectable. Its missing
    capabilities appear and Reset is disabled. Ordinary readbacks preserve a deliberate choice. Choose
    the available clock-mechanics scenario, press **Reset scenario**, then cancel once. Confirm a
@@ -181,6 +185,7 @@ cookie hides the strip entirely even when the acting person is an employee or Gr
 4. Select an employee or Greg from the server-projected choices and press **Switch principal**.
    A confirmed actual context navigates to `gcsp-presenter.html` and loads that person's HTTP surface.
    Switch back through the same controls. `gcsp-greg.html` is not live-principal proof.
+   Paula, Alex and, after a reset, the new run's employees open a prepared account (Sam's scheme is unsupported).
 5. For a deliberately dropped command response, choose **Retry original action**. Verify the request
    body and command ID match exactly; rapid duplicate clicks must produce only one request.
    If session issuance cannot replay its raw cookie, actual context decides whether installation
@@ -192,7 +197,8 @@ The corrected browser matrix at `393dedc` passed 17 checks at both desktop and 3
 Tab, Enter, Escape, radio arrows/Home/End, visible focus and readback focus preservation. The lead
 personally inspected all 50 original captures and independently verified cleanup. This is the actual
 HTTP memory composition with explicitly synthetic account inputs, not a delivered business journey.
-The isolated gallery example demonstrates pending/missing-release presentation only. No actual
-business release producer or complete business-scenario reset has been demonstrated by this UI work.
+The isolated gallery example demonstrates pending/missing-release presentation only. 7 November: live HTTPS smoke on the composed launcher read back a 5-car release, idempotent tick/release replays,
+employee/Greg switches with ready accounts and a mechanics reset into a new run. Journey scenarios, including the main
+walkthrough, remain "not available yet" in the FUCQ-125 catalogue.
 The browser runner matrix is `evidence/fucq-126/ui-browser-plan.md`; dated observations and captures
 must be added after execution, without relabelling mock failure states as real integration proof.
