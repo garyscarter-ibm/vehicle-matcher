@@ -1,16 +1,20 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { Readable } from 'node:stream';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok, result } from '../gcsp/repository/index.js';
 import { PolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { createLifecycleAppointmentService, APPOINTMENT_HANDLER_ID } from '../gcsp/lifecycle/appointments/index.js';
+import { createAppointmentRoutes } from '../gcsp/lifecycle/appointments/http.js';
+import { createGcspHandler } from '../gcsp/identity/http.js';
 import { createLifecycleApprovalService } from '../gcsp/lifecycle/approvals/index.js';
 import { createSyntheticOrderingStatus } from '../gcsp/adapters/synthetic-ordering-status.js';
 import { createSyntheticAppointments, createLiveAppointmentsStub, APPOINTMENT_CONSUMER, OPERATION_TYPES } from '../gcsp/adapters/synthetic-appointments.js';
 import { createRealProducer } from './helpers/gcsp-lifecycle-approval.js';
 
+const shapes = JSON.parse(await readFile(new URL('./fixtures/gcsp-lifecycle-appointment-outcomes.json', import.meta.url), 'utf8'));
 const SEED = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
 const seedValue = (key) => SEED.assumptions.find((a) => a.key === key).value;
 const SLOTS = seedValue('lifecycle.appointments.slots.v1');
@@ -91,7 +95,7 @@ async function setup(t, { policy, live = false, stages = stagePort() } = {}) {
   const order = (patch = {}) => stages.orders.set(ORDER, { employeeId: 'employee-paula', stageList: STAGES, approved: 4, revision: 4, ...patch });
   const now = async () => (await clock.now(p)).value.now;
   return { repository, clock, identity, service, stages, provider, synthetic, tick, advance, order, now, presenter: p, paula: paula.value.context,
-    alex: alex.value.context, greg: greg.value.context };
+    alex: alex.value.context, greg: greg.value.context, sessions: { paula, alex, greg } };
 }
 const read = async (f, context = f.paula) => { const r = await f.service.read(context, { orderUuid: ORDER }); assert.equal(r.status, 'ok', JSON.stringify(r)); return r.value; };
 const request = (f, slotId, context = f.paula) => f.service.request(context, { orderUuid: ORDER, slotId });
@@ -373,4 +377,91 @@ test('real FUCQ-111 stage port: refused until the order is sent to ordering, the
   await f.advance(DELAY); await f.tick();
   const done = await view();
   assert.deepEqual([done.state, done.booked, done.slot, done.history.map((h) => h.state)], ['scheduled', true, open.offeredSlots[0], ['requested', 'scheduled']]);
+});
+
+// A route caller bound to the real shared handler; sessions come from setup, never from the request.
+const http = (f) => {
+  const handler = createGcspHandler({ identity: f.identity, routes: createAppointmentRoutes(f.service), allowedOrigins: ['https://appointments.test'] });
+  const cookie = (session) => [session.value.setCookie].flat().map((c) => c.split(';')[0]).join('; ');
+  return async (path, { body, session = f.sessions.paula, query = '' } = {}) => {
+    const req = Readable.from(body ? [Buffer.from(JSON.stringify(body))] : []);
+    Object.assign(req, { method: body ? 'POST' : 'GET', headers: { origin: 'https://appointments.test', cookie: cookie(session) } });
+    let sent; const res = { setHeader() {} };
+    await handler({ req, res, pathname: `/api/gcsp${path}`, searchParams: new URLSearchParams(query), sendJson: (r, code, value) => { sent = { code, value }; } });
+    return sent;
+  };
+};
+
+test('/api/gcsp appointment routes request, read and accept as the server-owned employee and ignore browser identity', async (t) => {
+  const f = await setup(t, { policy: await policyWith((get) => { get('lifecycle.appointments.scenario.v1').proposeChange = true; }) }); f.order();
+  const call = http(f);
+  const early = await call('/appointments', { query: `orderUuid=${ORDER}&employeeId=employee-alex&runId=other` });
+  assert.deepEqual([early.code, early.value.value.employeeId, early.value.value.runId], [200, 'employee-paula', f.paula.runId], 'forged query identity is stripped');
+  const open = await call('/appointments', { query: `orderUuid=${ORDER}` });
+  assert.equal(open.code, 200); assert.equal(open.value.value.state, 'not-requested');
+  const [slot] = open.value.value.offeredSlots;
+  const asked = await call('/appointments/request', { body: { orderUuid: ORDER, slotId: slot.slotId, employeeId: 'employee-alex', runId: 'other', roles: ['presenter'] } });
+  assert.equal(asked.code, 200, JSON.stringify(asked));
+  assert.deepEqual([asked.value.value.state, asked.value.value.booked, asked.value.value.employeeId, asked.value.value.runId],
+    ['requested', false, 'employee-paula', f.paula.runId]);
+  assert.deepEqual((await call('/appointments/request', { body: { orderUuid: ORDER, slotId: slot.slotId } })).value, asked.value, 'repeat returns the same appointment');
+  assert.deepEqual((await call('/appointments', { query: `orderUuid=${ORDER}` })).value.value, asked.value.value);
+  assert.equal((await call('/appointments', { session: f.sessions.alex, query: `orderUuid=${ORDER}` })).code, 403);
+  assert.equal((await call('/appointments/request', { session: f.sessions.alex, body: { orderUuid: ORDER, slotId: slot.slotId } })).code, 403);
+  assert.equal((await call('/appointments', { session: f.sessions.greg, query: `orderUuid=${ORDER}` })).code, 200);
+  assert.equal((await call('/appointments', { query: 'other=1' })).code, 400);
+
+  await f.advance(DELAY); await f.tick();
+  const proposed = (await call('/appointments', { query: `orderUuid=${ORDER}` })).value.value;
+  assert.deepEqual([proposed.state, proposed.booked], ['change-proposed', false]);
+  assert.equal((await call('/appointments/accept', { session: f.sessions.alex, body: { orderUuid: ORDER, proposalId: proposed.proposalId } })).code, 403);
+  const accepted = await call('/appointments/accept', { body: { orderUuid: ORDER, proposalId: proposed.proposalId, employeeId: 'employee-alex' } });
+  assert.equal(accepted.code, 200, JSON.stringify(accepted));
+  assert.deepEqual([accepted.value.value.state, accepted.value.value.booked, accepted.value.value.employeeId], ['scheduled', true, 'employee-paula']);
+});
+
+// Recorded response shapes for the later appointment screen (FUCQ-120); no screen in this story.
+test('recorded appointment response shapes match real service output, with owners and next steps from policy', async (t) => {
+  const keys = (v) => Object.keys(v).sort();
+  const f = await setup(t, { policy: await policyWith((get) => { get('lifecycle.appointments.confirmation.v1').providerTimeoutMs = 20; }) }); f.order();
+  const seeded = { 'not-requested': OWNERSHIP.states['not-requested'], requested: OWNERSHIP.states.requested, 'change-proposed': OWNERSHIP.states['change-proposed'],
+    pending: OWNERSHIP.pending, scheduled: OWNERSHIP.states.scheduled };
+  for (const [name, want] of Object.entries(seeded)) assert.deepEqual([shapes.states[name].owner, shapes.states[name].nextStep], [want.owner, want.nextStep], `fixture ${name} matches the policy seed`);
+  const expectShape = (view, name) => {
+    const want = shapes.states[name];
+    assert.deepEqual(keys(view), [...shapes.readModelKeys].sort(), name);
+    assert.deepEqual([view.state, view.booked, view.owner, view.nextStep], [want.state, want.booked, want.owner, want.nextStep], name);
+    assert.deepEqual([view.pending?.step ?? null, view.blocked?.code ?? null], [want.pendingStep, want.blockedCode], name);
+    assert.deepEqual(view.history.map((h) => h.state), want.history, name);
+    for (const h of view.history) assert.deepEqual(keys(h), [...shapes.historyKeys].sort());
+  };
+  const [slot] = await offered(f);
+  expectShape(await read(f), 'not-requested');
+  const requested = (await request(f, slot.slotId)).value;
+  expectShape(requested, 'requested');
+  assert.deepEqual([requested.owner, requested.nextStep], [OWNERSHIP.states.requested.owner, OWNERSHIP.states.requested.nextStep]);
+  await f.advance(DELAY); f.provider.fault.confirm = 'hang'; await f.tick();
+  const pending = await read(f); expectShape(pending, 'pending');
+  assert.deepEqual([pending.owner, pending.nextStep], [OWNERSHIP.pending.owner, OWNERSHIP.pending.nextStep]);
+  assert.deepEqual(keys(pending.pending), [...shapes.pendingKeys].sort());
+  await f.tick(); const scheduled = await read(f); expectShape(scheduled, 'scheduled');
+  assert.deepEqual([scheduled.owner, scheduled.nextStep], [OWNERSHIP.states.scheduled.owner, OWNERSHIP.states.scheduled.nextStep]);
+  assert.deepEqual(keys(scheduled.slot), [...shapes.slotKeys].sort());
+
+  const g = await setup(t, { policy: await policyWith((get) => { get('lifecycle.appointments.scenario.v1').proposeChange = true; }) }); g.order();
+  await request(g, (await offered(g))[0].slotId); await g.advance(DELAY); await g.tick();
+  const proposed = await read(g); expectShape(proposed, 'change-proposed');
+  assert.deepEqual([proposed.owner, proposed.nextStep], [OWNERSHIP['states']['change-proposed'].owner, OWNERSHIP['states']['change-proposed'].nextStep]);
+  assert.deepEqual(keys(proposed.proposedSlot), [...shapes.slotKeys].sort());
+
+  const live = await setup(t, { live: true }); live.order();
+  const unsupported = await request(live, 'slot-20261107T0900Z');
+  assert.equal(unsupported.status, shapes.unsupported.status); assert.equal(unsupported.code, shapes.unsupported.code);
+  assert.deepEqual(keys(unsupported), [...shapes.unsupported.keys].sort());
+  assert.equal(typeof unsupported.reason, 'string');
+  const h = await setup(t); h.order();
+  h.provider.fault.requestSlot = { refuse: { status: 'unsupported', code: shapes.unsupported.code, reason: 'Booking is not connected.' } };
+  const refused = await request(h, (await offered(h))[0].slotId);
+  assert.deepEqual(keys(refused), [...shapes.unsupported.keysWhenProviderRefusesAfterOffering].sort());
+  assert.deepEqual([refused.appointment.owner, refused.appointment.nextStep, refused.appointment.booked], [OWNERSHIP.blocked.owner, OWNERSHIP.blocked.nextStep, false]);
 });

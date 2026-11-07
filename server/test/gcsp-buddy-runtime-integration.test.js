@@ -12,9 +12,9 @@ import { stock, essential, preference, fact } from './helpers/employee-recommend
 const origin = 'https://demo.invalid';
 // Registration order across the composed runtime; other stories add handlers here.
 const HANDLERS = ['manual-claim-expiry', 'buddy-expiry', 'selection-order-reconciliation', 'lifecycle-approvals',
-  'lifecycle-documents', 'renewal-risk-cases', 'captured-outbox'];
+  'lifecycle-documents', 'lifecycle-appointments', 'renewal-risk-cases', 'captured-outbox'];
 // A tick runs handlers in stage order, which differs from registration order.
-const TICK_ORDER = ['manual-claim-expiry', 'buddy-expiry', 'lifecycle-approvals', 'lifecycle-documents', 'renewal-risk-cases',
+const TICK_ORDER = ['manual-claim-expiry', 'buddy-expiry', 'lifecycle-appointments', 'lifecycle-approvals', 'lifecycle-documents', 'renewal-risk-cases',
   'selection-order-reconciliation', 'captured-outbox'];
 const command = (commandId) => ({ commandId, inputDigest: inputDigest(commandId) });
 const ref = (context, table, key = {}) => ({ table, key: { runId: context.runId, ...key } });
