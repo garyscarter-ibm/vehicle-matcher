@@ -1,0 +1,537 @@
+{
+  "schemaVersion": "1",
+  "planVersion": "fleet-plan.v1",
+  "identityScope": "configuration-corpus",
+  "seed": "fucq58-authorised-pilot-20261105",
+  "registryVersion": "vin-profiles.v1",
+  "tool": {
+    "version": "fleet-plan.v1",
+    "kind": "observed",
+    "source": "scripts/gcsp/fleet-plan.mjs",
+    "observedDate": "2026-11-05",
+    "confidence": "offline qualification and bounded pilot plan; no bulk collector"
+  },
+  "coverage": {
+    "requestedWmis": [
+      "WBA",
+      "WBS",
+      "WBY",
+      "5UX",
+      "5YM"
+    ],
+    "additionalWmis": [
+      "3MW",
+      "3MF",
+      "WB5",
+      "WBX"
+    ],
+    "exclusions": [
+      {
+        "scope": "additional WMI references",
+        "reason": "No enabled complete profile/catalogue coverage selected"
+      },
+      {
+        "scope": "UK descriptor/year/plant qualification",
+        "reason": "Existing observations are unactivated candidates, not corroborated profiles"
+      },
+      {
+        "scope": "all scheme model lines",
+        "reason": "All retained 2024 scheme model lines are enumerated; exact current catalogue joins remain unqualified, including discontinued generations"
+      }
+    ],
+    "schemeModelLines": [
+      "F70 Sports Hatch",
+      "F44 Gran Coupe",
+      "G42 Coupe",
+      "U06 Active Tourer",
+      "G20 Saloon",
+      "G21 Touring",
+      "G22 Coupe",
+      "G23 Convertible",
+      "G26 Gran Coupe",
+      "G60 Saloon",
+      "G61 Touring",
+      "G29 Z4",
+      "U11 X1",
+      "U10 X2",
+      "G01 X3",
+      "G02 X4",
+      "G05 X5",
+      "G06 X6",
+      "U11 iX1",
+      "U10 iX2",
+      "G26 i4",
+      "G60 i5",
+      "G61 i5",
+      "i20 iX",
+      "M Power: M2",
+      "M Power: M3",
+      "M Power: M4",
+      "M Power: X3M",
+      "M Power: X4M",
+      "M Power: X5M",
+      "M Power: X6M"
+    ],
+    "schemeSource": {
+      "kind": "eligibility-only",
+      "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+      "observedDate": "2026-11-01",
+      "confidence": "October 2024 eligibility only; not current catalogue or VIN evidence",
+      "provenanceKind": "observed"
+    }
+  },
+  "families": [
+    {
+      "familyId": "gb-i5-g61-t5mj-pilot",
+      "context": {
+        "model": "i5",
+        "derivative": "i5 eDrive40 M Sport Touring",
+        "generation": "G61",
+        "body": "Touring",
+        "powertrain": "electric",
+        "drive": "rear-wheel",
+        "transmission": null,
+        "engineCode": null,
+        "agModelCode": "72HH",
+        "vgModelCode": null,
+        "market": "GB",
+        "region": "Europe",
+        "steering": "RHD",
+        "modelYear": null,
+        "productionEra": null,
+        "productionDate": null,
+        "plant": null,
+        "modelCode": "T5MJ",
+        "modelRange": "G61E",
+        "locale": "en-GB",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05",
+        "catalogueDate": "2026-11-01"
+      },
+      "schemeModelLine": "G61 i5",
+      "catalogueVersion": "bmw-gb-i5-2026-11-01.v1",
+      "wmi": null,
+      "profileId": null,
+      "profileVersion": null,
+      "profileEvidence": null,
+      "optionFamilies": {
+        "paint": [
+          "P0300",
+          "P0475"
+        ],
+        "fabric": [
+          "FKSFU"
+        ],
+        "rim": null
+      },
+      "plannedCount": 3,
+      "configurations": [
+        {
+          "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+          "evidenceId": "alpine-white",
+          "seedOptions": [
+            "FKSFU",
+            "P0300",
+            "S0337",
+            "S043L"
+          ],
+          "selectionComplete": true,
+          "completeSelectedElements": [
+            "FKSFU",
+            "P0300",
+            "S0230",
+            "S02PA",
+            "S02VB",
+            "S02VD",
+            "S0302",
+            "S0337",
+            "S03DK",
+            "S03G9",
+            "S03M1",
+            "S0428",
+            "S043L",
+            "S0488",
+            "S0494",
+            "S04T2",
+            "S04U9",
+            "S04UR",
+            "S04V1",
+            "S0552",
+            "S05AS",
+            "S05AV",
+            "S05DM",
+            "S0654",
+            "S0674",
+            "S06AE",
+            "S06AF",
+            "S06AK",
+            "S06C4",
+            "S06NX",
+            "S06PA",
+            "S0704",
+            "S0710",
+            "S0760",
+            "S0775",
+            "S0812",
+            "S0853",
+            "S0880",
+            "S08R3",
+            "S08R9",
+            "S08SM",
+            "S08TF",
+            "S08TG",
+            "S08WM",
+            "S09QV",
+            "S09T1",
+            "S09T2",
+            "SE000001"
+          ],
+          "selectedAccessories": [
+            "SE000001"
+          ],
+          "evidence": {
+            "kind": "observed",
+            "source": "docs/gcsp/evidence/fucq-4/configuration-generation-native-2026-11-01.json",
+            "observedDate": "2026-11-01",
+            "confidence": "Three HTTP 200 constructible complete selections observed 1 November; reuse authorised 5 November in the separate decision record"
+          }
+        },
+        {
+          "configurationId": "VDVNSjpGS1NGVSxQMDQ3NSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+          "evidenceId": "black-sapphire",
+          "seedOptions": [
+            "FKSFU",
+            "P0475",
+            "S0337",
+            "S043L"
+          ],
+          "selectionComplete": true,
+          "completeSelectedElements": [
+            "FKSFU",
+            "P0475",
+            "S0230",
+            "S02PA",
+            "S02VB",
+            "S02VD",
+            "S0302",
+            "S0337",
+            "S03DK",
+            "S03G9",
+            "S03M1",
+            "S0428",
+            "S043L",
+            "S0488",
+            "S0494",
+            "S04T2",
+            "S04U9",
+            "S04UR",
+            "S04V1",
+            "S0552",
+            "S05AS",
+            "S05AV",
+            "S05DM",
+            "S0654",
+            "S0674",
+            "S06AE",
+            "S06AF",
+            "S06AK",
+            "S06C4",
+            "S06NX",
+            "S06PA",
+            "S0704",
+            "S0710",
+            "S0760",
+            "S0775",
+            "S0812",
+            "S0853",
+            "S0880",
+            "S08R3",
+            "S08R9",
+            "S08SM",
+            "S08TF",
+            "S08TG",
+            "S08WM",
+            "S09QV",
+            "S09T1",
+            "S09T2",
+            "SE000001"
+          ],
+          "selectedAccessories": [
+            "SE000001"
+          ],
+          "evidence": {
+            "kind": "observed",
+            "source": "docs/gcsp/evidence/fucq-4/configuration-generation-native-2026-11-01.json",
+            "observedDate": "2026-11-01",
+            "confidence": "Three HTTP 200 constructible complete selections observed 1 November; reuse authorised 5 November in the separate decision record"
+          }
+        },
+        {
+          "configurationId": "VDVNSjpGS1NGVSxQMDQ3NSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+          "evidenceId": "black-sapphire-towbar",
+          "seedOptions": [
+            "FKSFU",
+            "P0475",
+            "S0337",
+            "S03AC",
+            "S043L"
+          ],
+          "selectionComplete": true,
+          "completeSelectedElements": [
+            "FKSFU",
+            "P0475",
+            "S0230",
+            "S02PA",
+            "S02VB",
+            "S02VD",
+            "S0302",
+            "S0337",
+            "S03AC",
+            "S03DK",
+            "S03G9",
+            "S03M1",
+            "S0428",
+            "S043L",
+            "S0488",
+            "S0494",
+            "S04T2",
+            "S04U9",
+            "S04UR",
+            "S04V1",
+            "S0552",
+            "S05AS",
+            "S05AV",
+            "S05DM",
+            "S0654",
+            "S0674",
+            "S06AE",
+            "S06AF",
+            "S06AK",
+            "S06C4",
+            "S06NX",
+            "S06PA",
+            "S0704",
+            "S0710",
+            "S0760",
+            "S0775",
+            "S0812",
+            "S0853",
+            "S0880",
+            "S08R3",
+            "S08R9",
+            "S08SM",
+            "S08TF",
+            "S08TG",
+            "S08WM",
+            "S09QV",
+            "S09T1",
+            "S09T2",
+            "SE000001"
+          ],
+          "selectedAccessories": [
+            "SE000001"
+          ],
+          "evidence": {
+            "kind": "observed",
+            "source": "docs/gcsp/evidence/fucq-4/configuration-generation-native-2026-11-01.json",
+            "observedDate": "2026-11-01",
+            "confidence": "Three HTTP 200 constructible complete selections observed 1 November; reuse authorised 5 November in the separate decision record"
+          }
+        }
+      ],
+      "evidence": {
+        "kind": "observed",
+        "source": "docs/gcsp/evidence/fucq-4/configuration-generation-native-2026-11-01.json",
+        "observedDate": "2026-11-01",
+        "confidence": "Three HTTP 200 constructible complete selections observed 1 November; reuse authorised 5 November in the separate decision record"
+      },
+      "unknownFields": [
+        "modelYear",
+        "productionEra",
+        "productionDate",
+        "plant",
+        "VIN descriptor",
+        "compatible enabled GB RHD profile",
+        "complete rim family classification",
+        "verified fitted equipment"
+      ]
+    }
+  ],
+  "permissions": {
+    "sourceAccess": {
+      "kind": "observed",
+      "source": "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md",
+      "observedDate": "2026-11-05",
+      "confidence": "Recorded human authorisation; not an independently verified BMW API agreement",
+      "status": "approved",
+      "basis": "Gary Carter authorised read-only public BMW UK configurator collection on 5 November 2026"
+    },
+    "dataRetention": {
+      "kind": "observed",
+      "source": "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md",
+      "observedDate": "2026-11-05",
+      "confidence": "Recorded human authorisation; not an independently verified BMW API agreement",
+      "status": "approved",
+      "basis": "Gary reports BMW approval to retain project configuration data and images as long as needed"
+    },
+    "imageDisplay": {
+      "kind": "observed",
+      "source": "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md",
+      "observedDate": "2026-11-05",
+      "confidence": "Recorded human authorisation; not an independently verified BMW API agreement",
+      "status": "approved",
+      "basis": "Gary reports BMW approval to display project configuration data and images as long as needed"
+    }
+  },
+  "work": {
+    "candidateRequests": 4,
+    "solverCandidates": 3,
+    "otdConfigurations": 3,
+    "imageConfigurations": 1,
+    "viewsPerConfiguration": 1,
+    "imageBytesPerView": 2097152
+  },
+  "budgets": {
+    "requests": 12,
+    "imageRequests": 2,
+    "cacheEntries": 12,
+    "cacheBytes": 12582912,
+    "concurrency": 1,
+    "timeoutMs": 10000,
+    "durationMs": 120000
+  },
+  "cache": {
+    "policy": "cold",
+    "key": "full-context+complete-selection+provider-version",
+    "ttlMs": 86400000,
+    "entryBytes": 1048576,
+    "hits": {
+      "candidate": 0,
+      "solver": 0,
+      "otd": 0,
+      "image": 0
+    }
+  },
+  "retry": {
+    "maxRetries": 0,
+    "initialBackoffMs": 0,
+    "maxBackoffMs": 0,
+    "multiplier": 1,
+    "retryStatuses": []
+  },
+  "retention": {
+    "fields": [
+      "shared-type-codes",
+      "resolved-selections",
+      "sanitised-evidence",
+      "provenance",
+      "technical-facts",
+      "representative-images"
+    ],
+    "discardPrivateIdentifiers": true
+  },
+  "destinations": {
+    "evidence": {
+      "path": "docs/gcsp/evidence/fucq-58/authorised-pilot-2026-11-05/evidence",
+      "expectedBytes": 12582912,
+      "public": false,
+      "retention": "reusable-non-personal"
+    },
+    "images": {
+      "path": "docs/gcsp/evidence/fucq-58/authorised-pilot-2026-11-05/images",
+      "expectedBytes": 2097152,
+      "public": false,
+      "retention": "reusable-non-personal"
+    }
+  },
+  "stopConditions": [
+    "budget-exhausted",
+    "permission-revoked",
+    "identity-substitution",
+    "profile-mismatch",
+    "source-failure",
+    "retention-violation",
+    "destination-full"
+  ],
+  "pilot": {
+    "version": "fleet-pilot.v1",
+    "purpose": "source-qualification-only",
+    "authorisationSource": "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md",
+    "source": "public-bmw-uk-configurator",
+    "unsupportedProvider": true,
+    "readOnly": true,
+    "writeRequests": 0,
+    "familyId": "gb-i5-g61-t5mj-pilot",
+    "context": {
+      "market": "GB",
+      "steering": "RHD",
+      "locale": "en-GB",
+      "modelCode": "T5MJ",
+      "agModelCode": "72HH",
+      "modelRange": "G61E",
+      "generation": "G61",
+      "orderDate": "2026-11-01",
+      "effectDate": "2027-01-05",
+      "catalogueDate": "2026-11-01"
+    },
+    "bootstrap": {
+      "pageUrl": "https://configure.bmw.co.uk/en_GB/configure/G61E/T5MJ",
+      "settingsPattern": "^/en_GB/settings\\.[a-zA-Z0-9]+\\.json$"
+    },
+    "requests": {
+      "bootstrap": 2,
+      "catalogue": 2,
+      "solver": 3,
+      "otd": 3,
+      "manifest": 1,
+      "images": 1,
+      "total": 12
+    },
+    "bytes": {
+      "response": 1048576,
+      "image": 2097152,
+      "total": 16777216
+    },
+    "resources": {
+      "workers": 1,
+      "ramBytes": 268435456,
+      "scratchBytes": 33554432
+    },
+    "seeds": [
+      [
+        "FKSFU",
+        "P0300",
+        "S0337",
+        "S043L"
+      ],
+      [
+        "FKSFU",
+        "P0475",
+        "S0337",
+        "S043L"
+      ],
+      [
+        "FKSFU",
+        "P0475",
+        "S0337",
+        "S03AC",
+        "S043L"
+      ]
+    ],
+    "stopConditions": [
+      "budget-exhausted",
+      "permission-revoked",
+      "identity-substitution",
+      "profile-mismatch",
+      "source-failure",
+      "retention-violation",
+      "destination-full",
+      "response-too-large",
+      "download-limit",
+      "timeout",
+      "redirect",
+      "unexpected-payload",
+      "authentication-required"
+    ]
+  }
+}

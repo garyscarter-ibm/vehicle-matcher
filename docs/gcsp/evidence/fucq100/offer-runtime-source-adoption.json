@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "baseRevision": "1a1caa18bf04b62a38fc7355bd1bd1e3df01b2e5",
+  "status": "exact named leaf integration; actual composed product cases 2/2 pass; separate cleanup-only PASS; independent root review pending",
+  "paths": [
+    {
+      "path": "server/gcsp/offers/access.js",
+      "revision": "3a0860f1ee4c987d492c09086cde3b75f74bf9ef",
+      "sha256": "63fac0a89e50b8b4bd5c8bed581dd49bed42519c76b2b6232de155533d37fb3c",
+      "bytes": 29034,
+      "priorSha256": "134e9d39253e934618f6cf38b334bb7cf0f8912443ee159e6167b949d4fdb34a",
+      "changed": true
+    },
+    {
+      "path": "server/gcsp/offers/access-http.js",
+      "revision": "3a0860f1ee4c987d492c09086cde3b75f74bf9ef",
+      "sha256": "f37533eeb5309cb4eff6c6dcf0af5ab8a8819afdaa4d08b4baee0147d360e868",
+      "bytes": 4776,
+      "priorSha256": "f37533eeb5309cb4eff6c6dcf0af5ab8a8819afdaa4d08b4baee0147d360e868",
+      "changed": false
+    },
+    {
+      "path": "server/gcsp/offers/decision.js",
+      "revision": "b84a34a51a85486ce4339234765ca9f56cdfd289",
+      "sha256": "a934455a09beb13e3682c1f10ebea95f0549ff2fad8db03d54ff947e7ed7789a",
+      "bytes": 23307,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "server/gcsp/offers/decision-http.js",
+      "revision": "b84a34a51a85486ce4339234765ca9f56cdfd289",
+      "sha256": "223e3358569602145ecb2a5f967abf5a9e3ca78d688667d0e6c8bbb0c1779b96",
+      "bytes": 4782,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "server/gcsp/offers/followup.js",
+      "revision": "869d3947a810079577b5dee4c90310c3200ae0d3",
+      "sha256": "29a439ef9b14b84b43dbb3a5ac91e4e4421866d94ab03bf03c5e463fc8a72028",
+      "bytes": 18500,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "server/gcsp/offers/followup-http.js",
+      "revision": "869d3947a810079577b5dee4c90310c3200ae0d3",
+      "sha256": "b9c1f59fa083a658d0c801fc59c335cb84ddf7b454d3fc60636fcc85306375d0",
+      "bytes": 1420,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "server/gcsp/offers/followup-policy.js",
+      "revision": "869d3947a810079577b5dee4c90310c3200ae0d3",
+      "sha256": "d65f690d498c0c9c668e4969c2663245da24b47010c7daff9da5c4920163dc39",
+      "bytes": 16391,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "server/gcsp/offers/followup-comparison.js",
+      "revision": "869d3947a810079577b5dee4c90310c3200ae0d3",
+      "sha256": "8a7120e2f217b4a6842081e70d90cf0d170939ffa5b9e75ba1aec0330877395f",
+      "bytes": 2608,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "server/gcsp/offers/followup-policy-definitions.json",
+      "revision": "869d3947a810079577b5dee4c90310c3200ae0d3",
+      "sha256": "2b634e30a65f8fce6a3cfef67e10b04e9dff72ecb4fe296c51330e98efe86d5d",
+      "bytes": 3061,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "blocks/gcsp/offer-followup/followup-controller.js",
+      "revision": "869d3947a810079577b5dee4c90310c3200ae0d3",
+      "sha256": "038336ab02fa578cc487313e25bf37831d476669527f2b6f4e2fd391d00ffbad",
+      "bytes": 10128,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "blocks/gcsp/offer-followup/followup-view.js",
+      "revision": "869d3947a810079577b5dee4c90310c3200ae0d3",
+      "sha256": "c8d04d4c38e4011202295b23dff29836509fd02a8c5b5e77d74b8552b740ccd8",
+      "bytes": 11854,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "blocks/gcsp/offer-followup/gcsp-offer-followup.css",
+      "revision": "869d3947a810079577b5dee4c90310c3200ae0d3",
+      "sha256": "be31a68a28e64735ffa93a5a3037d7705d8fea25d0fc0caaff2c8815cd4b8d0d",
+      "bytes": 1350,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "blocks/gcsp/offer-followup/gcsp-offer-followup.js",
+      "revision": "869d3947a810079577b5dee4c90310c3200ae0d3",
+      "sha256": "4c7f57574a9869f664b3e044955df95dab3b505e3a1eeefa6b2753a20539daa6",
+      "bytes": 3880,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "blocks/gcsp/offer-followup/http-adapter.js",
+      "revision": "869d3947a810079577b5dee4c90310c3200ae0d3",
+      "sha256": "5482dfa819d857a07add85b85e4117a0cb24ecaf010c83c47be34b6ed7cc45c6",
+      "bytes": 2187,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "blocks/gcsp/offer/gcsp-offer.js",
+      "revision": "57611498d082f3251b363add57fb2d6aeec9ae88",
+      "sha256": "d4b30a6ce545bcfd1b732c35465abd9fce77c10cb39e79abd9c5e0f5debe8075",
+      "bytes": 4042,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "blocks/gcsp/offer/gcsp-offer.css",
+      "revision": "57611498d082f3251b363add57fb2d6aeec9ae88",
+      "sha256": "d5e0f0dae8adf3f6e25144f1a0bd2ffc28955b6b5749ac9f24ac686c1060d501",
+      "bytes": 735,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "blocks/gcsp/offer/offer-controller.js",
+      "revision": "57611498d082f3251b363add57fb2d6aeec9ae88",
+      "sha256": "6efd77fd935cd7ec2e8eb00f8c67ac07bd1f75dd3e8a1166ed89e38604ede037",
+      "bytes": 10527,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "blocks/gcsp/offer/offer-view.js",
+      "revision": "57611498d082f3251b363add57fb2d6aeec9ae88",
+      "sha256": "cb02f5e3f3836d86bebd58ca5db2920555dd47a1062c8c13c2bc93f3afdfb4c0",
+      "bytes": 13399,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "blocks/gcsp/offer/offer-projection.js",
+      "revision": "57611498d082f3251b363add57fb2d6aeec9ae88",
+      "sha256": "d07917ddf7d0e2b6ccaa7faaeb2e57a6e7d66d9e01ddba2618f9e2282f23c51d",
+      "bytes": 13481,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "blocks/gcsp/offer/http-adapter.js",
+      "revision": "57611498d082f3251b363add57fb2d6aeec9ae88",
+      "sha256": "7ed45f955e5bdb437cb94f62bef0dbb3b8ac9d5ad2a8c477f4fe91da5297fbc5",
+      "bytes": 8303,
+      "priorSha256": null,
+      "changed": true
+    },
+    {
+      "path": "blocks/gcsp/offer/followup-entry.js",
+      "revision": "57611498d082f3251b363add57fb2d6aeec9ae88",
+      "sha256": "c2e0d1fdb977e305f044d3dae984b5dbb846fefde159ed15289c6368bcf7ad68",
+      "bytes": 583,
+      "priorSha256": null,
+      "changed": true
+    }
+  ],
+  "missingDirectImports": [],
+  "claimAcceptanceChanged": false,
+  "validationPlanSHA256": "af9979d319b2a56d8a1f5b040d998c5e14a4b36d8d8630b1b252f206adac08d2"
+}

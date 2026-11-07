@@ -1,0 +1,64 @@
+{
+  "at": 1793927864.992548,
+  "grant": "fucq100-eligibility-f0e186d-0033",
+  "checkpoint": "f0e186dd01c4053cdaa4609d5720c871f39ef9e0",
+  "inner_receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/greg-eligibility-fa1861e27a054c62807ffa0b39902bad-receipt.json",
+  "outer_receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/greg-eligibility-targeted-1793927806023071000-receipt.json",
+  "counts": {
+    "cancelled": 0,
+    "fail": 2,
+    "pass": 0,
+    "skipped": 0,
+    "tests": 2,
+    "todo": 0
+  },
+  "business_cases_executed": 0,
+  "failure": "Invalid loader registration before either selected test module loaded",
+  "journal": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/greg-eligibility-fa1861e27a054c62807ffa0b39902bad-modules.jsonl",
+    "exists": false,
+    "reason": "registration refused before first admitted module"
+  },
+  "log": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/greg-eligibility-fa1861e27a054c62807ffa0b39902bad.log",
+    "bytes": 2460,
+    "sha256": "7b610b0413a3b64cfc347692e7cc6e76978cbed32303645d522e2e7bf676bc26"
+  },
+  "source_paths": 108,
+  "source_edges": 281,
+  "installed_files": 54,
+  "helpers": 8,
+  "sources_match": true,
+  "helpers_match": true,
+  "executables_match": true,
+  "installed_hashes_and_physical_identities_match": true,
+  "worktree_target_exists": true,
+  "worktree_realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060",
+  "owned_listeners": [],
+  "strict_ledger_valid": true,
+  "passed_cleanup": true,
+  "source_unchanged": true,
+  "result": "FAILED; no retry or edit",
+  "kind": "failed scoped execution; not business acceptance",
+  "expected_business_cases": 25,
+  "file_subtests": [
+    "server/test/gcsp-greg-demand.test.js",
+    "server/test/gcsp-greg-driver-eligibility.test.js"
+  ],
+  "independent_parent_audit": ".claude/test-runs/fucq100/parent-greg-eligibility-first-audit.json",
+  "manifests": [
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/ownership/1bbb76c6343f402d9fcd487f3ab98eb8.json",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/strict-greg-eligibility/ownership/ab174da347c64dc98353e4e370acf5ef.json"
+  ],
+  "strict_checkpoint": ".claude/test-runs/fucq100/strict-greg-eligibility/checkpoints/7432d4e8e5e325142da9a949d8fbd6b67afcdfb18b8a1dd7155220bf860387bc.json",
+  "catalogue_sha256": "65b63242b8548984ae418cc01e137b29721ee06510d728821d8d46e2cb493b95",
+  "supervisor_sha256": "45a0db9e93b534d00e14f8b82cce343ba2a33a3ece47041a800b35f984caa59e",
+  "stamp_sha256": "0f8525994aba6a60fce172be30e2bb6c02d964403f2e870fd02d1351b27f02e2",
+  "measured": {
+    "inner_wall_seconds": 0.35106475,
+    "inner_peak_rss_bytes": 2621440,
+    "inner_peak_scratch_bytes": 36864,
+    "outer_sampled_peak_rss_bytes": 50348032
+  },
+  "diagnosis": "Observed exact own URL/specifier/parent predicate refusal before record(). Static path-versus-URL hypothesis; rejected arguments not observed. No fix/retry."
+}
