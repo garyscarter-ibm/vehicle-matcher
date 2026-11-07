@@ -1,0 +1,171 @@
+{
+  "acceptance": "F59sixcomplete/twoblocked; publicAccepted0/admissionfalse/all74pending; thresholds8/200/592/20unchanged; F61/F27/F28held13November; HLD06/UIunchanged,visualreferenceN/A",
+  "agent": {
+    "descendants": 0,
+    "fallback": null,
+    "name": "Cecil Turtle",
+    "requestedEffort": "high",
+    "requestedModel": "gpt-6.1-sol",
+    "runtimeConfirmed": true,
+    "selectedEffort": "high",
+    "selectedModel": "gpt-6.1-sol"
+  },
+  "algorithm": "SHA256 of canonical JSON(path->SHA256), sorted keys, comma/colon separators",
+  "at": "2026-11-06T13:47:24.442702+00:00",
+  "base": "930e97283b86c749dd8b2af7ef85e8dfc97e0055",
+  "change": "Require typeof failedRole === string before own-key enum membership; no other production change.",
+  "changedCodePaths": [
+    "scripts/gcsp/settings-shape-report.mjs",
+    "server/test/gcsp-settings-shape-report.test.js"
+  ],
+  "codeTestIdentity": "9d63aa36a7bbbb29432d4a8b03f2cd585abfdd4e53d671919a8798f28f674a1b",
+  "diagnosis": "CODE round0 found Object.hasOwn(labels, failedRole) and indexed role lookup coerce an array into a string enum key. A resealed persisted checkpoint could reopen and export a non-enum failedRole.",
+  "externalOldLiveFilesAndSpentMarkerUnchanged": true,
+  "files": {
+    "scripts/gcsp/collect-fleet.mjs": "8bc059fcec47c46c6e209b8e64fc11c519083fd62fde1652d7229d7c5adc689b",
+    "scripts/gcsp/collection-session.mjs": "b2cd36ec77c2f63fd58795e83125ef135732e6b768a9e1492caf194c94b9248c",
+    "scripts/gcsp/public-bmw-source.mjs": "68f5104c3c9f303af89a91e2e3c8c2474b66956e03271bf61bf42e703155d30f",
+    "scripts/gcsp/settings-shape-report.mjs": "e6f4bade6186fc4b122052749fb2a0e518f889f68d771b17524a4e63cc2f0113",
+    "server/test/gcsp-fleet-collector.test.js": "d8c7c7315faa05c6bd328a9b7f8ada58fe31bf5c229a51c0e63106d920057ff9",
+    "server/test/gcsp-settings-shape-report.test.js": "f1ca4f0b7cccb7a657a987dc6d882f6a8eaec1458ab62b83e88669ae34be4115"
+  },
+  "frozenContractsUnchanged": 12,
+  "green": {
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "--experimental-test-coverage",
+      "server/test/gcsp-settings-shape-report.test.js"
+    ],
+    "coverage": [
+      "collect-fleet.mjs          |  27.97 |    82.14 |   37.50 | 24-45 49-54 56-72 74-90 94-113 116-154 158-233 235-272 333-348 351-354",
+      "collection-session.mjs     |  94.81 |    68.71 |   85.71 | 47 121-123 171-173 274 310-320",
+      "configuration-key.mjs      |  28.33 |   100.00 |   40.00 | 12-14 18-35 39-60",
+      "public-bmw-source.mjs      |  67.50 |    82.76 |   90.00 | 41-53 88-95 121 124 126-128 135 215-266 269-280",
+      "settings-shape-report.mjs  | 100.00 |    92.14 |  100.00 |"
+    ],
+    "logSha256": "17040e59752572e24f4fd015ce64c466726f069b76ca3c343e7be416265eb57f",
+    "removedLogBytes": 6068,
+    "supervisedSeconds": 3.1849499590025516,
+    "totals": {
+      "cancelled": 0,
+      "duration_ms": 2888.0965,
+      "fail": 0,
+      "pass": 33,
+      "skipped": 0,
+      "tests": 33,
+      "todo": 0
+    }
+  },
+  "historicalLiveEvidenceFilesUnchanged": 22,
+  "immutabilityAudit": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-report/round1/immutable-audit.json",
+  "priorBoundaryEvidence": {
+    "count": 21,
+    "dependencyEnvironment": "Prior21 check used the authorized existing DEV069 read-only link; correction dedicated suite uses native-only dependencies and no overlay.",
+    "node": "v26.7.0",
+    "planUnchanged": true,
+    "reason": "The earlier21 passes remain historical at930e9728. Current changed-validator proof is the dedicated33-case suite. Unchanged caller/plan/Node identities were checked, but the prior installed dependency tree lacks a retained complete environment fingerprint; do not claim current reuse or additional current passes.",
+    "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-report/receipt-nearest-with-overlay.json",
+    "reusedForCurrentValidation": false,
+    "unchangedFiles": [
+      "scripts/gcsp/collect-fleet.mjs",
+      "scripts/gcsp/collection-session.mjs",
+      "scripts/gcsp/public-bmw-source.mjs",
+      "server/test/gcsp-fleet-collector.test.js"
+    ]
+  },
+  "priorPublishedSettingsEvidenceUnchanged": 3,
+  "publication": false,
+  "red": {
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "--test-name-pattern=settings shape tampered role-array",
+      "server/test/gcsp-settings-shape-report.test.js"
+    ],
+    "expected": [
+      "settings-shape-report-invalid",
+      "settings-shape-report-invalid"
+    ],
+    "fail": 1,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-report/round1/logs/red/chunk-0001.log",
+    "logSha256": "c508d7e76a64d806c6ee85e2a8018713e8bf0edc4ff67f9da239dc7a48561dd6",
+    "observed": [
+      "resolved",
+      "resolved"
+    ],
+    "supervisedSeconds": 0.48753279200172983,
+    "tests": 1
+  },
+  "remainingGates": [
+    "Parent audit, authorized publication then independent CODE/SECURITY correction reviews.",
+    "Original source qualification/integration/publication gates remain unchanged; both prior live allowances consumed."
+  ],
+  "resources": {
+    "at": "2026-11-06T13:47:24.442702+00:00",
+    "chunks": [
+      {
+        "groups": [
+          40793
+        ],
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-report/round1/runs/ownership/da476f8088b64d7eb1575fc2aa855d02.json",
+        "ownerAbsent": true,
+        "ownerPid": 40771,
+        "reservationAbsent": true,
+        "root": "/private/tmp/test-stamp-shard-da476f8088b64d7eb1575fc2aa855d02",
+        "rootAbsent": true,
+        "sampledScratchRemovedBytes": 0,
+        "state": "removed"
+      },
+      {
+        "groups": [
+          40945
+        ],
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-report/round1/runs/ownership/f7ff04b7e6354374b645c9054ede8d72.json",
+        "ownerAbsent": true,
+        "ownerPid": 40931,
+        "reservationAbsent": true,
+        "root": "/private/tmp/test-stamp-shard-f7ff04b7e6354374b645c9054ede8d72",
+        "rootAbsent": true,
+        "sampledScratchRemovedBytes": 12512,
+        "state": "removed"
+      }
+    ],
+    "compatibilityException": null,
+    "dependencyPathAbsent": true,
+    "finalSwapUsedMiB": 2341.94,
+    "freeBytes": 60871430144,
+    "initialSwapUsedMiB": 2341.94,
+    "largeOutput": false,
+    "leftovers": [],
+    "measurementLimits": "Sampled RSS/scratch are not actual peaks; shared-host swap is not attributed. HostBudget own reservations are absent; no claim of continuous global ledger charging.",
+    "overlayCreated": false,
+    "retainedBoundedRedLog": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-report/round1/logs/red/chunk-0001.log",
+    "sampledMaximumRssBytes": 176619520,
+    "sampledScratchRemovedBytes": 12512,
+    "schemaVersion": "f59-settings-shape-round1-resource-audit.v1",
+    "successfulLogAbsent": true,
+    "successfulLogRemoved": {
+      "bytes": 6068,
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-report/round1/logs/green/chunk-0001.log",
+      "sha256": "17040e59752572e24f4fd015ce64c466726f069b76ca3c343e7be416265eb57f"
+    },
+    "swapDeltaMiB": 0.0
+  },
+  "reviewContext": {
+    "codeRound0": "failed: sole failedRole array-to-key coercion finding; reproduced before correction",
+    "parentReviewPaths": [
+      "pass-1341/f59-code-review-round0.json",
+      "pass-1341/f59-security-review-round0.json"
+    ],
+    "securityRound0": "passed for immutable930e9728; does not replace correction review"
+  },
+  "schemaVersion": "f59-settings-shape-correction-round1.v1",
+  "sharedImpactPath": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/f59-settings-shape-round1-9d63aa36a7bbbb29.json",
+  "sourceAllocation": 0,
+  "status": "ready for parent independent audit; uncommitted and unpublished"
+}

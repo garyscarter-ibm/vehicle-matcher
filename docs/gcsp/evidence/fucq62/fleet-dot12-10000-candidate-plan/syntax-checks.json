@@ -1,0 +1,50 @@
+{
+  "scope": "static preparation only",
+  "planSha256": "75001c8439d805546ecb73235cb745bdae47cd0050dbfda7f47a900d5459ddfb",
+  "sealedSelectionSha256": "216359c111a5169d15a98de1c476a5c62714a3b3a7ee71431c325a45c90f096f",
+  "checks": [
+    {
+      "check": "ast.parse supervise-candidate.py",
+      "status": "passed"
+    },
+    {
+      "check": "ast.parse group-proof.py",
+      "status": "passed"
+    },
+    {
+      "check": "ast.parse prepare-plan.py",
+      "status": "passed"
+    },
+    {
+      "check": "node --check source-registrations.mjs",
+      "status": "passed"
+    },
+    {
+      "check": "node --check prepare-candidate.mjs",
+      "status": "passed"
+    },
+    {
+      "check": "sealed metadata normalization,counts,old147codepins,baselinefiles,unchanged10000cap",
+      "status": "passed"
+    }
+  ],
+  "newSourceBytesCreated": 0,
+  "scratchAllocated": false,
+  "sourceCalls": 0,
+  "codePinCount": 152,
+  "acceptance": false,
+  "frozenPackets": [
+    {
+      "plan": "docs/gcsp/evidence/fucq62/fleet-dot11-8051-proof-plan/plan.json",
+      "planSha256": "53f75243e8be8c52be25e262aab3f896d1348773b1b9ea548ae545645afc8133",
+      "codePins": 160,
+      "status": "unchanged"
+    },
+    {
+      "plan": "docs/gcsp/evidence/fucq63/native-install-3-local-archives-2026-11-07/plan.json",
+      "planSha256": "5ec34f1dd790d091409b48fc214a82d53b1a9e971a2b3a5d8490b2a8c31eb73d",
+      "codePins": 170,
+      "status": "unchanged"
+    }
+  ]
+}

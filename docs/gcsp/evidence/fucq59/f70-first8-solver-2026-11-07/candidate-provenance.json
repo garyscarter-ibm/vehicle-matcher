@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "f70-first8-candidate-provenance.v1",
+  "actualOptionsPath": "docs/gcsp/evidence/fucq59/f70-options-qualification-2026-11-07/options.json",
+  "actualOptionsSha256": "565d9600b1387045fe9be1160b70e6221471be5bcf092326b7725fa27e0ffc11",
+  "actualOptionsResponseSha256": "f00d445fd9786479bdb9052ceb2c58fb1e69e224bcf9d8633586a968820699c0",
+  "actualOptionsObservedAt": "2026-11-07T01:46:03.274Z",
+  "fullContextPath": "docs/gcsp/evidence/fucq59/f70-options-qualification-2026-11-07/tree.json",
+  "fullContextSha256": "89f6d625535e65bb4b6a8397714967f7df50874e9be23cb80f5eb51245d08f0a",
+  "trimRelationshipsPath": "docs/gcsp/evidence/fucq59/f70-options-qualification-2026-11-07/trim-relationships.json",
+  "trimRelationshipsSha256": "d07f21ef0bf30b50ae577c3772a6081b8cbc2f88c350526ad4e080b10eaaf5f2",
+  "pools": {
+    "paint": [
+      "P0300",
+      "P0475"
+    ],
+    "fabric": [
+      "FKTNL",
+      "FKUSW"
+    ],
+    "rim": [
+      "S01H5",
+      "S01H8"
+    ]
+  },
+  "definitions": [
+    {
+      "code": "P0300",
+      "type": "paint",
+      "retainedPointer": "/report/candidates/0/definitions/227",
+      "sourcePointer": "/P0300"
+    },
+    {
+      "code": "P0475",
+      "type": "paint",
+      "retainedPointer": "/report/candidates/0/definitions/41",
+      "sourcePointer": "/P0475"
+    },
+    {
+      "code": "FKTNL",
+      "type": "fabric",
+      "retainedPointer": "/report/candidates/0/definitions/213",
+      "sourcePointer": "/FKTNL"
+    },
+    {
+      "code": "FKUSW",
+      "type": "fabric",
+      "retainedPointer": "/report/candidates/0/definitions/165",
+      "sourcePointer": "/FKUSW"
+    },
+    {
+      "code": "S01H5",
+      "type": "rim",
+      "retainedPointer": "/report/candidates/0/definitions/134",
+      "sourcePointer": "/S01H5"
+    },
+    {
+      "code": "S01H8",
+      "type": "rim",
+      "retainedPointer": "/report/candidates/0/definitions/135",
+      "sourcePointer": "/S01H8"
+    },
+    {
+      "code": "S0337",
+      "type": "package",
+      "retainedPointer": "/report/candidates/0/definitions/103",
+      "sourcePointer": "/S0337"
+    }
+  ],
+  "requestDigestExpression": "inputDigest({modelRegistration, request})",
+  "candidates": [
+    {
+      "candidateId": "candidate-195ee3460d374cc6fefc950d",
+      "requestDigest": "195ee3460d374cc6fefc950df55dd7eeb1ed9d732eb4c5f20aa1fd5d52e72c60"
+    },
+    {
+      "candidateId": "candidate-bb97d779c1650f80fc60ba2d",
+      "requestDigest": "bb97d779c1650f80fc60ba2d996480da691737bfd75244d802d7d36d9e4b7a8b"
+    },
+    {
+      "candidateId": "candidate-e3b627085ac3ffb715c8c2d1",
+      "requestDigest": "e3b627085ac3ffb715c8c2d1dcb121941234a3def132def6f3bcbd77b8ee1821"
+    },
+    {
+      "candidateId": "candidate-b256ae46b6729a4b072b6eaf",
+      "requestDigest": "b256ae46b6729a4b072b6eafd750e5d8db443f8a5d3f7ce53217f9f384bbccb1"
+    },
+    {
+      "candidateId": "candidate-b55d3b67fed63774920a2e20",
+      "requestDigest": "b55d3b67fed63774920a2e20e4d834f7bd7fe6e59b25daa625b57f7607987fac"
+    },
+    {
+      "candidateId": "candidate-436665b2406f842525f8068e",
+      "requestDigest": "436665b2406f842525f8068e8a1d5847433ca690c52a0ffe4db611ec9a388c1a"
+    },
+    {
+      "candidateId": "candidate-f6d498d0ebfed527bfb8e868",
+      "requestDigest": "f6d498d0ebfed527bfb8e86871368de3f2936d4ecae836494f8ac48ed75962e4"
+    },
+    {
+      "candidateId": "candidate-9fc75efe66effce25804cd76",
+      "requestDigest": "9fc75efe66effce25804cd76e94fd84a112ef9942420e2161a15b4e0e122c487"
+    }
+  ],
+  "cumulativeIndexInputs": [
+    {
+      "commit": "f90aaecfef3ca5bc370b4ad34752f5d45b6f50a7",
+      "path": "docs/gcsp/evidence/fucq59/continuation-live-proof-2026-11-07/final-canonical-index.json",
+      "sha256": "5f03107a20ce0681d66e0fe982852956bbb840cde696fb41b7ffb868b3afaba2",
+      "retainedCopy": "prior-canonical-index.json"
+    },
+    {
+      "commit": "f90aaecfef3ca5bc370b4ad34752f5d45b6f50a7",
+      "path": "docs/gcsp/evidence/fucq59/continuation-live-proof-2026-11-07/final-spent-request-index.json",
+      "sha256": "01c24c7b0b2c1c26fc92229e382f59cd8792aaa928fb248e23d61bbd6a06ed0e",
+      "retainedCopy": "spent-request-index.json"
+    }
+  ],
+  "priorCanonicalEntries": 344,
+  "priorAdmittedSourceConfigurations": 341,
+  "priorSpentSolverRequests": 407,
+  "boundary": "Exact finite requests from actual source types; constructibility, uniqueness and admission require durable new source solver evidence. No source traffic grant."
+}

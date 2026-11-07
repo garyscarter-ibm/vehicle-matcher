@@ -1,0 +1,25 @@
+{
+  "status": "proposals-unapplied-no-build-or-deployment-executed",
+  "exactRootBefore": {
+    "render": "6614efbf720758c80e61ee691a1733d4024899260fdf5164fabdb759bc144e8c",
+    "workflow": "504374d66caf99b96b90defd8741be73eefc42d43e8b9e77e0a700f4d5ec1362"
+  },
+  "proposedAfter": {
+    "render": "5eb0c88d23a6eda3291de1bf4d8945760cd7c39c760f1cb5a0bc9c3132f064e3",
+    "workflow": "f1af8cc5429fa2a63ebe119d20b3d90b041cc051e5b8628264d54a39bde71949"
+  },
+  "releaseId": "28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884",
+  "requires": [
+    "exact public release/package/anonymous restore receipts",
+    "root review of Linux and Render patch bytes",
+    "exact integrated target commit containing .9 descriptor and portable proof",
+    "root release before applying Render auto-deploy trigger",
+    "actual Linux run result retained before Linux claim",
+    "root-owned actual deploy status and health evidence before deployment claim"
+  ],
+  "localRuntimeEvidence": "Node26 Darwin arm64 local startup passed under448MiB; no Render OOM evidence; no heap changes proposed",
+  "liveState": "Root retained GCSP503 x-render-routing=hibernate-wake-error; retail200 same Linuxrunner; five GCSPhealthattempts already spent. This packet authorizes zero new live health GETs.",
+  "nativeDatabase": "No key/URL read, copied or connection attempted. F63 native repository/context/order UUID proof remains unrun/unmet.",
+  "browser": "background only; no browser used",
+  "acceptance": false
+}

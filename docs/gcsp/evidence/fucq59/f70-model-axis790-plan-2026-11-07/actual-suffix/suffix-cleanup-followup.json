@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "f70-model-axis790-cleanup-followup.v1",
+  "scope": "read-only exact owned PID/PGID reconciliation after preserved finalizer exit1; zero source replay or signals",
+  "originalExitCode": 1,
+  "originalError": "RuntimeError: phase cleanup has a named unresolved allocation; primary preserved",
+  "originalCleanupPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/suffix-cleanup.json",
+  "originalCleanupSha256": "913fddfe33e0ad806cbfa6a48fe270e783487ee2e13e57ca8593b9a5fcd3825a",
+  "originalProcessOwnershipSha256": "6f6d27a837f65e2a5961e8bb48a65b8f82c868eb303ac6b3a2f551110eef6ecd",
+  "originalGroupAbsenceReported": false,
+  "originalFailureCause": "unresolved: original finalizer did not retain the failing ps snapshot or distinguish live membership from an uncertain snapshot",
+  "outerChildGroups": 388,
+  "nestedChildGroups": 194,
+  "distinctOwnedPidAndGroupIds": 582,
+  "allOuterChildrenJoined": true,
+  "snapshots": [
+    {
+      "capturedAt": "2026-11-07T04:06:05.074426+00:00",
+      "command": [
+        "/bin/ps",
+        "-axo",
+        "pid=,ppid=,pgid=,stat=,lstart="
+      ],
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/suffix-process-followup-snapshot1.txt",
+      "sha256": "fc80bf855fa9eecde84f847f79402526ba3b6d288fe8ca2a462a59899fe61a0f",
+      "rows": 723,
+      "invalidRows": [],
+      "ownedProcessOrGroupRows": [],
+      "returncode": 0,
+      "stderr": ""
+    },
+    {
+      "capturedAt": "2026-11-07T04:06:05.103732+00:00",
+      "command": [
+        "/bin/ps",
+        "-axo",
+        "pid=,ppid=,pgid=,stat=,lstart="
+      ],
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/suffix-process-followup-snapshot2.txt",
+      "sha256": "0fcc34ccdffb895d9806ccaaf03daa6ba9b18ac285efae8582af0e890cc8aa80",
+      "rows": 723,
+      "invalidRows": [],
+      "ownedProcessOrGroupRows": [],
+      "returncode": 0,
+      "stderr": ""
+    }
+  ],
+  "currentlyAllOwnedProcessesAndGroupsAbsent": true,
+  "sourceAndRetainedScratchAbsent": true,
+  "dependencyLinkAbsent": true,
+  "signalsSent": 0,
+  "newSourceRequests": 0,
+  "originalFailurePreserved": true,
+  "diagnosticDefectSeverity": "Medium",
+  "diagnosticDefectStatus": "open; parent owns linked backlog Bug capture; no runtime repair made"
+}

@@ -1,0 +1,524 @@
+{
+  "schemaVersion": "1",
+  "planId": "f70-1f7e-first32-20261107",
+  "version": "1",
+  "seed": "f70-1f7e-actual-typed-first32",
+  "policyRead": {
+    "asOf": "2026-11-06T00:00:00.000Z",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "source": {
+    "id": "bmw-uk-public",
+    "version": "f59-batch-20261107.v1",
+    "kind": "public-bmw-uk"
+  },
+  "context": {
+    "catalogueDate": "2026-11-01",
+    "market": "GB",
+    "locale": "en-GB",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05"
+  },
+  "models": [
+    "1F7E"
+  ],
+  "target": 32,
+  "candidateCount": 32,
+  "captureVersion": "bmw-complete-selection.v1",
+  "qualificationDate": "2026-11-07",
+  "modelRegistration": {
+    "schemaVersion": "bmw-public-model-registration.v1",
+    "modelCode": "1F7E",
+    "agModelCode": "82GE",
+    "catalogueRangeKey": "F70",
+    "rawModelRange": "F70",
+    "aliases": [
+      "1"
+    ],
+    "market": "GB",
+    "locale": "en-GB",
+    "steering": "RL",
+    "catalogueDate": "2026-11-01",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05",
+    "optionsTrim": "S033B"
+  },
+  "candidateBaseElements": [],
+  "candidateDefinitionBasis": {
+    "path": "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/options.json",
+    "artifactSha256": "fab360cfec369b7ff19f3341e9bb6efb108a5d1bc70b1e657eea750ac67fe3ee",
+    "role": "actual typed definitions; every candidate still requires fresh full model and definition corroboration"
+  },
+  "limits": {
+    "maxCandidates": 32,
+    "requestBudgets": {
+      "page": 1,
+      "settings": 1,
+      "discover": 1,
+      "options": 1,
+      "solve": 32
+    },
+    "maxAttempts": 1,
+    "operationTimeoutMs": 10000,
+    "deadlineMs": 120000,
+    "retryDelayMs": 0,
+    "concurrency": 1,
+    "cacheEntries": 40,
+    "cacheRetentionMs": 86400000,
+    "checkpointBytes": 16777216,
+    "imageRequests": 0,
+    "sourceAttempts": 36,
+    "sourceBytes": 8388608,
+    "responseBytes": 1048576
+  },
+  "candidates": [
+    {
+      "candidateId": "candidate-000e533e828cefd2614aa826",
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C4W",
+          "S01H0",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-0286093206de85017d937fd2",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C4P",
+          "S01H8",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-02963a3b3b6499f6622220b0",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C5Y",
+          "S033B",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-036444ff169d1627dd25a49e",
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C5A",
+          "S01H8",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-0546fdc105d351d947cb3f7a",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0475",
+          "S01H8",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-089bf2c4dd43d22af1280a81",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C3Z",
+          "S01H8",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-08a07165df30a8c79681020f",
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C31",
+          "S01H8",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-0920b912a02cd003d1e0b3ef",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C5A",
+          "S033B",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-09881255d2a8a8004d0cd475",
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0C3Z",
+          "S033B",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-0a6e101c94b0b031dad9e869",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C3N",
+          "S01H8",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-0a8cca67b69ff171112afa10",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0475",
+          "S01H8",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-0b773b51d81bd8025796f7dd",
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C4P",
+          "S01H8",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-0b8b18f44e41fc10ac47464b",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C5A",
+          "S01H0",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-0c275c8eb88d40a0a4e56b19",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C68",
+          "S01H0",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-0f24f7740c65aa9d9916e7cc",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C68",
+          "S01H0",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-0f37d379ab6b89f3d4b3da89",
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0490",
+          "S01H8",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-112911a1f4b47b45c786f0d2",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C5A",
+          "S01H0",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-11536d62e3e7c770f61d6fef",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C31",
+          "S033B",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-1195248176b716959d8150ea",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C3Z",
+          "S01H0",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-1275e7475b0367500f6257b5",
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0300",
+          "S01H0",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-1323a56216532e1fca212539",
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0475",
+          "S01H0",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-1500dade9e6de4d01ba0e8dd",
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0C4P",
+          "S01H0",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-173f388e9c863aad3b651b9c",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C56",
+          "S01H0",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-1a40fd24925464d74cb7ecb2",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C4W",
+          "S01H0",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-1ab63325015384e5f580cbc2",
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C68",
+          "S01H8",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-1b32dd9576f15bcdaf4b6472",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C5A",
+          "S033B",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-1c1f820b18f55a6a67b66ff4",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0C4W",
+          "S033B",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-1d4e42d0d95dcd8ec2888e0b",
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0300",
+          "S01H8",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-2046d3f03e16a3487dfd4cc4",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0C5Y",
+          "S01H0",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-216106d64499670bc740a377",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C6R",
+          "S01H0",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-21a59c6199313d606a4c9794",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0475",
+          "S033B",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-2213c845ff64ab30707edc26",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0C3N",
+          "S01H8",
+          "S033B"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import { cp,readFile,writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { createSyntheticRegistry } from '../../../../../server/gcsp/vehicle-evidence/synthetic-registry.js';
+import { createVehicleEvidenceLookup } from '../../../../../server/gcsp/vehicle-evidence/vehicle-lookup.js';
+import { installFleetOfflineGuard } from '../../../../../scripts/gcsp/fleet-offline-guard.mjs';
+import { packet,hash,save } from './common.mjs';
+const p=await packet();const work=join(p.output,'rollback-scratch');const guard=installFleetOfflineGuard();assert.equal(guard.control(),'blocked');
+try {
+ await cp(p.store,work,{recursive:true,force:false,errorOnExist:true});const active=await readFile(join(work,'active.json'));const history=await readFile(join(work,'identity-inventory.json'));const manifestPath=join(work,'versions',p.receipt.candidateManifestDigest,'manifest.json');const original=await readFile(manifestPath);const cases={};
+ async function checkRecovery(name,changed){try{await writeFile(manifestPath,changed);const registry=createSyntheticRegistry({root:work,...p.options});const loaded=await registry.load();assert.equal(loaded.recovered,true);assert.equal(loaded.active.manifestDigest,p.candidate.baseline.manifestDigest);assert.equal(loaded.active.counts.sourceConfigurations,8051);const supplement=JSON.parse(await readFile(p.candidate.technicalSupplement.path));const source=registry.getConfiguration(supplement.configurationId);assert.ok(source.technicalSupplement);const dto=await createVehicleEvidenceLookup({registry}).resolve({kind:'configuration',id:supplement.configurationId});for(const [key,value] of Object.entries(supplement.facts))assert.deepEqual(dto.technical[key],value);assert.equal(dto.technical.bodyLength.state,'unknown');assert.deepEqual(await readFile(join(work,'active.json')),active);assert.deepEqual(await readFile(join(work,'identity-inventory.json')),history);cases[name]={recoveredManifestDigest:loaded.active.manifestDigest,sourceConfigurations:loaded.active.counts.sourceConfigurations,priorExactSupplementPreserved:true,bodyLengthUnknown:true,selectionAndHistoryUnchanged:true};}finally{await writeFile(manifestPath,original);}}
+ const corrupt=Buffer.from(original);corrupt[0]^=1;await checkRecovery('corruptCurrentManifest',corrupt);const changed=JSON.parse(original);changed.technicalSupplements[0].facts.seats.value=6;await checkRecovery('changedSupplementValue',JSON.stringify(changed)+'\n');
+ const restored=createSyntheticRegistry({root:work,...p.options});const loaded=await restored.load();assert.equal(loaded.active.manifestDigest,p.receipt.candidateManifestDigest);assert.equal(guard.calls.length,0);
+ await save(p.output,'rollback-receipt.json',{status:'owned-corrupt-current-rollback-to-dot11-and-fresh-restart-passed',manifestDigest:p.receipt.candidateManifestDigest,cases,exactCurrentManifestRestored:true,activeSha256:hash(active),historySha256:hash(history),externalCalls:0,disposableCloudRoot:work,ordinaryPublicationExecuted:false,publicUploadExecuted:false,acceptance:false});
+}finally{guard.restore();}

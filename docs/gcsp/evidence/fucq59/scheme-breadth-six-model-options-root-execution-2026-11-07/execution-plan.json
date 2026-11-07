@@ -1,0 +1,212 @@
+{
+  "schemaVersion": "scheme-breadth-six-model-options-root-execution.v1",
+  "id": "scheme-breadth-six-model-options-root-20261107-once",
+  "status": "prepared-unspent; separate exact parent release required",
+  "qualificationDate": "2026-11-07",
+  "baseCommit": "a641e77e85a97d696735ee3b822cfae899d45c4a",
+  "contextIds": [
+    "g21-t3mk",
+    "u11-x1m0",
+    "u11-ix1i",
+    "u10-x2ms",
+    "u10-ix24",
+    "g26e-i4mf"
+  ],
+  "planDigest": "2b690e37302294652921b48d8026ad27709c74ffe5b049a5436d2492fe379ad1",
+  "contextPlanDigests": {
+    "g21-t3mk": "2887acf2d7cc76f196b23acaa0c13dcb01c02cd8ef86197b1d580b6d3b561a69",
+    "u11-x1m0": "57019461283116778ea3022f007009a3f2ad982b20a0958c710a6da5aa474a8a",
+    "u11-ix1i": "20c6a1b86cfadd71607291ba7f98b5da8fced4789894958d11130fd9952d6bdb",
+    "u10-x2ms": "68350975997d0157f0769c5d5a68aa2ffb14c89bf6f6427731a0527ad415e923",
+    "u10-ix24": "2c2e322f2c6895a165c16129ab1bc2487b093020b59da005d3cf7ee9b260a7b7",
+    "g26e-i4mf": "364340e85f35d0575d482558045a0f98e851dcf1427c022ea2e8263a8465da8d"
+  },
+  "contextUrls": {
+    "g21-t3mk": {
+      "page": "https://configure.bmw.co.uk/en_GB/configure/G21/T3MK",
+      "discover": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G21&future-models=true&closest-fallback=true",
+      "options": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T3MK/options/languages/en?trim=S0337"
+    },
+    "u11-ix1i": {
+      "page": "https://configure.bmw.co.uk/en_GB/configure/U11/IX1I",
+      "discover": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=U11&future-models=true&closest-fallback=true",
+      "options": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/IX1I/options/languages/en?trim=S0337"
+    },
+    "u11-x1m0": {
+      "page": "https://configure.bmw.co.uk/en_GB/configure/U11/X1M0",
+      "discover": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=U11&future-models=true&closest-fallback=true",
+      "options": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/X1M0/options/languages/en?trim=S0337"
+    },
+    "u10-ix24": {
+      "page": "https://configure.bmw.co.uk/en_GB/configure/U10/IX24",
+      "discover": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=U10&future-models=true&closest-fallback=true",
+      "options": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/IX24/options/languages/en?trim=S0337"
+    },
+    "u10-x2ms": {
+      "page": "https://configure.bmw.co.uk/en_GB/configure/U10/X2MS",
+      "discover": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=U10&future-models=true&closest-fallback=true",
+      "options": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/X2MS/options/languages/en?trim=S0337"
+    },
+    "g26e-i4mf": {
+      "page": "https://configure.bmw.co.uk/en_GB/configure/G26E/I4MF",
+      "discover": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G26E&future-models=true&closest-fallback=true",
+      "options": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/I4MF/options/languages/en?trim=S0337"
+    }
+  },
+  "codePins": {
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/export-retained.py": "937fae284b00ca15f4bf55c81f420d1e7b91f11142c0387d4b5497e5ea58bc15",
+    "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/g21-t3mk/qualification-plan.json": "ece0b484c00b3debb36ac818c4c8a15f6a67b5ae09abdfdc89d671ff261acac8",
+    "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/g26e-i4mf/qualification-plan.json": "31bf9ba146afe56972cb1b7f9a5d1b8e1c9c14300211df5fd4a5048b7f2d35b2",
+    "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/prepare.py": "a52a8eefc8e00e2306c46e21e9dbc181153b19dd5c2385aeee08f1a6e599d7e3",
+    "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/prepared-check.test.mjs": "463a0323f3e6a2028747839da65db7cfe9ebd32f8f8e957a9b94cb7b0d29693b",
+    "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/run-live.mjs": "0c46417dc67b426ca4abf3cc87dc9e3f530c42a9ebb61953a120454fdc6477c8",
+    "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/source-basis.json": "f3a1b2f3469453e1ee552a551d009d9748a62c66a9db87065c682ccac2ead64d",
+    "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/supervise.py": "b91b9dee28bae854b038e8c8a686b98fd4898e0d453e4b3de0fab0b7b794ac38",
+    "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/u10-ix24/qualification-plan.json": "e0aa939818926799a7c0de2a143fdca6281b0d4b7872fb29faaf97364f8a0d0c",
+    "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/u10-x2ms/qualification-plan.json": "6d2942766662bb3463aed520e395cdc2ac981a56ec241ca2cdbf9cfa008e31ef",
+    "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/u11-ix1i/qualification-plan.json": "2a0a96d91d45158c89f14ec1518959bc80d651b84d2d791b8e25b0df75688e9d",
+    "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/u11-x1m0/qualification-plan.json": "c7fae156a4a3f8478b230681e5fd9a24160ce2a463783d4d5ba9109db7b18dd9",
+    "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/validate-prepared.py": "e7ebe6d85a292507ade7c1d10fbfd5cf5b13fd20b7d67139d1ee6b80d7ce4650",
+    "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/verify-actual.py": "5d97183a9f7e13a6fae612d666c3a33dc02267081dfc318b3f5a9e34bd3d05ed",
+    "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/verify-actual.test.mjs": "549ada8f3547b2048fbf047c30694a0f8209f7757d29ca46c6a8aadd0d3f3f93",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/g21/diagnostic.json": "83493194da9bbd27d0e0186f175907ddb14e27af93f3774868dbf988dcc37590",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/g21/live-validation.json": "3b7a25b735ed3ea4097c618ff8e3d600a9839ac2c4443a16d104a2f6ff32bd63",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/g26e/diagnostic.json": "ba82cee74dcca5fc713cdd23264017ee561c15a0c42c4dbad0dea2e0fdf88cd5",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/g26e/live-validation.json": "6d84b2a4253eb3f83594c20dcaeb176125214767de7059f43e6cc88161d2d307",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u10/diagnostic.json": "40ef6ac391372269b07908c52fcdddce301019dfabc8e6469bd932c753d62be5",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u10/live-validation.json": "e5277353ad63eb339b3c210e217751a8633bd7088393c007eec4041f4f019963",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u11/diagnostic.json": "6f9144a4f4e2a55f762c0b1b256fe37918c06a1799d38d11fa63042f8cea0920",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u11/live-validation.json": "48abe1c5f9ef5d8bb319e3134161a26ddc448ca27835b288bc3f9ef0d346d244",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/g21-t3be/qualification-plan.json": "587c074404acb01474aad1c6aae31b2b92ded9be330c5a8c7d1712c84179dafa",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/g21-t3mk/qualification-plan.json": "ece0b484c00b3debb36ac818c4c8a15f6a67b5ae09abdfdc89d671ff261acac8",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/g21-t3mr/qualification-plan.json": "5795e9c8455f133d6d5355d0bf0022dbefe1ab3b71d9a51b2398f4cc53754d18",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/g21-t3pf/qualification-plan.json": "d0297cd8222a7fab4890ca8cb6e7ddec37251fd5157a4b3cc33690d5ab56fe94",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/g21-t3pk/qualification-plan.json": "54642174246893a280df37716a9a24b8a82824fd44b6d6db92163440a1189ec0",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/g21-t3pr/qualification-plan.json": "073c5aa6aca465cd21e3da3b5abd7a6639066472c51b7b5089b156820c21902d",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/g26e-i4mf/qualification-plan.json": "31bf9ba146afe56972cb1b7f9a5d1b8e1c9c14300211df5fd4a5048b7f2d35b2",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/g26e-i4mg/qualification-plan.json": "ee1527b5b6d586435b646534cc1aa36675a93249a7917fb5ed6211334c60d1ad",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/g26e-i4pc/qualification-plan.json": "f392696f22f7fd280a61277b1ef72fb781404e5c246d16c164ad042dd4179ee5",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/pool.json": "e1199ee2ace13730c2e58ef18095fadbff765cbc48f45b93602d9ccf91f3ec3e",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u10-ix24/qualification-plan.json": "e0aa939818926799a7c0de2a143fdca6281b0d4b7872fb29faaf97364f8a0d0c",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u10-ix25/qualification-plan.json": "9ed17a7a1fa9437798695246f183046bd7bd90b11f53ac9053bac7880e36aa1a",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u10-x235/qualification-plan.json": "0a2963b8658f2e2da36c994a0d5c2dc9bffabd395e4dfc068eeb1b5a6f010ff5",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u10-x2ms/qualification-plan.json": "6d2942766662bb3463aed520e395cdc2ac981a56ec241ca2cdbf9cfa008e31ef",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u11-ix1h/qualification-plan.json": "23b364b0f1e3717afab4cf13d6c046db211e6580756fc4b572e426fd2b51a6a9",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u11-ix1i/qualification-plan.json": "2a0a96d91d45158c89f14ec1518959bc80d651b84d2d791b8e25b0df75688e9d",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u11-ix1k/qualification-plan.json": "52aec254e144a7e089210c9566e52ba566144199dab6939ae25009d48ae13143",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u11-ix1l/qualification-plan.json": "d3c490a3bebf162e1d7d9e9e735cef8b7240cc1ec2759ea425b6f15a6a199e96",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u11-x135/qualification-plan.json": "c66860aa609521de775251f7a12aa13464d9a3da3d0594a85bd03621c051dbbd",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u11-x1m0/qualification-plan.json": "c7fae156a4a3f8478b230681e5fd9a24160ce2a463783d4d5ba9109db7b18dd9",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u11-x1m1/qualification-plan.json": "43b4e644547f5b6d8a24c6fa9e2e1b6c20e6c0b8e13029c65f57ddbc171ffac7",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u11-x1m2/qualification-plan.json": "b053b0cfd39e8e8e604a787ef2da03a970e195acfb575624d63b9f151795bc86",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u11-x1m3/qualification-plan.json": "13fc6439cdcd982c9a0a569a898b5bed498749d444bc67b9318f0a9a15a5fc04",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u11-x1m6/qualification-plan.json": "0c3724cd63baa36021c8e878a9c60222bf4f97357a1ff68fefb47d48aa36cfd4",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u11-x1m7/qualification-plan.json": "ff88a10f6a2acaccf7acc87a8841ad4d5d0d356599b5c64205c2d5ae2a6ae317",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u11-x1x0/qualification-plan.json": "93078f25da896f5c70963e2b5cc92e5bf0597264fc665bd81523690c69fac758",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u11-x1x2/qualification-plan.json": "bfc0f16e983da1de389645c6db0dafbb554667a34a07d941eb1e5054dee9b578",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u11-x1x3/qualification-plan.json": "9c4f51a3b18f26ade94f0900304a3d36247db8a9e1f11cbaa976e3560905c10a",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u11-x1x6/qualification-plan.json": "f35afd59cee1a4d76061d3a28b73ad555367f5d006f5442587e383083e5c32af",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u11-x1x7/qualification-plan.json": "83c7e4a63397af83e7ac68eaff24bc0b6168bd45ca783e85c389ddbe5951273e",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u11-x1xl/qualification-plan.json": "f242dca3026fff26cb4fb959d5fb4e05f1ddd148c4b1a6c58a8ffcea4251662c",
+    "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+    "scripts/gcsp/bmw-public-registration.mjs": "b4eed688fff481af4d422f3612be71184df689ff943fef3d339dc9392a960460",
+    "scripts/gcsp/bmw-selection-binding.mjs": "480f1e3d1496bcb8d808ec75839634808a2923cdbf8411df61b0f819bdec3f38",
+    "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+    "scripts/gcsp/capture-bmw-selection.mjs": "14c255be3696d8d0512d9d4ddc03f24bae138d83f4d548bd813b07d1a5eb9892",
+    "scripts/gcsp/collect-fleet.mjs": "ba3864cee32f480facde57a2d2c9dbf944d571878bb2a9cece220955357ab1de",
+    "scripts/gcsp/collection-session.mjs": "bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/public-bmw-source.mjs": "14600d91932c33b691801197ea28812c98bb08ea9603f293829ffeff09b48235",
+    "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+    "server/gcsp/migrations/index.js": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f",
+    "server/gcsp/policy/activation.js": "4e79235b761e8daf94f3cf2744c4bc585146181b410b64497669bd353ee7c4d6",
+    "server/gcsp/policy/adoption.js": "a2cb9a74946cd9eda413d896a0abc2f4299b3b75880a77ddd510667a5187c870",
+    "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+    "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+    "server/gcsp/policy/memory-provider.js": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
+    "server/gcsp/policy/postgres-provider.js": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+    "server/gcsp/policy/publish.js": "c521e15966be7762a3348ad860403ef555dd8cbd48405e7d23d9a7c6d262a826",
+    "server/gcsp/policy/reviewed-definitions.js": "75518df649ba542ad32b876f8ee1b680e29b417c3b1f8dc90fcf1d4713a42cbb",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/repository/index.js": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16",
+    "server/gcsp/repository/memory.js": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866",
+    "server/gcsp/repository/postgres.js": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "90cf9187cb44dc6d17e6984a0fdc25dc13fc9078c23d3652d779a565cedc29a7",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+  },
+  "runtimePins": {
+    "/opt/homebrew/Cellar/node/26.7.0/bin/node": "1ef99ea25fe70c9b67e7efe768ef8ee22148d3cabc703db6131b57aeb617d040",
+    "/usr/bin/python3": "ed6f5284033aa2aae6a58427c25ba3ab119947b40365627b24e5d51a4b70a1cd"
+  },
+  "publicGetCeiling": 24,
+  "requestSequencePerSession": [
+    "page",
+    "settings",
+    "discover",
+    "options"
+  ],
+  "sessionDecodedBytes": 4194304,
+  "seriesDecodedBytes": 25165824,
+  "responseBytes": 1048576,
+  "sessionSourceSeconds": 90,
+  "sessionChildSeconds": 105,
+  "chunkSeconds": 120,
+  "seriesSeconds": 600,
+  "resources": {
+    "workers": 1,
+    "scratchBytes": 67108864,
+    "hostRamBytes": 536870912,
+    "childRamBytes": 469762048
+  },
+  "forecast": {
+    "aggregateDecodedBytes": 8388608,
+    "retainedBytes": 83886080,
+    "childRamBytes": 167772160,
+    "sessionSourceSeconds": 5,
+    "seriesSeconds": 40
+  },
+  "sourceBasisSha256": "f3a1b2f3469453e1ee552a551d009d9748a62c66a9db87065c682ccac2ead64d",
+  "retention": {
+    "primaryPerSession": "<range-model>/collector-checkpoint.json",
+    "retainedFromFirstWrite": true,
+    "exportBeforeScratchCleanup": true,
+    "exporter": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/export-retained.py",
+    "safeArtifacts": [
+      "tree.json",
+      "options.json",
+      "line-relationships.json"
+    ],
+    "excluded": [
+      "raw response bodies",
+      "settings/bootstrap headers",
+      "secret-bearing URLs",
+      "browser/session credentials"
+    ]
+  },
+  "supervisorOutput": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth-six-model-options-root/live",
+  "sourceGrantEnvironment": {
+    "BMW_BREADTH_OPTIONS_ROOT_SOURCE_GRANT": "scheme-breadth-six-model-options-root-20261107-once"
+  },
+  "commandAfterSeparateParentRelease": [
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/supervise.py",
+    "live"
+  ],
+  "stop": [
+    "first failed/incomplete context or source/access/privacy/shape refusal",
+    "code/input/runtime/date mismatch",
+    "budget/deadline/retention/cleanup failure"
+  ],
+  "replay": "Exclusive series/session markers; no replay or recovery GETs. Preserve actual prefix and obtain new exact allocation after interruption.",
+  "solverAllowance": 0,
+  "imageAllowance": 0,
+  "admissions": 0,
+  "sourceCapacityCredit": 0,
+  "productionInventoryBugFixed": false,
+  "acceptance": false,
+  "largeOutputExpected": false
+}

@@ -1,0 +1,29 @@
+@import "../employee/gcsp-employee.css";
+@import "../kit/form-controls.css";
+
+gcsp-manual-gallery { display: block; }
+.gcsp .gcsp-gallery-body { display: grid; gap: 24px; min-width: 0; width: 100%; overflow-wrap: anywhere; }
+.gcsp .gcsp-gallery-filters { display: grid; grid-template-columns: minmax(220px, 2fr) repeat(3, minmax(130px, 1fr)); gap: 16px; align-items: end; }
+.gcsp .gcsp-gallery-allowance { margin: 0; padding: 20px; background: var(--gcsp-accent-soft); border: 1px solid var(--gcsp-divider); font-weight: 700; }
+.gcsp .gcsp-gallery-results { display: grid; gap: 24px; min-width: 0; }
+.gcsp .gcsp-gallery-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: start; }
+.gcsp .gcsp-gallery-grid .vm-card { min-width: 0; height: 100%; }
+.gcsp .gcsp-gallery-grid .vm-card-actions { flex-wrap: wrap; }
+.gcsp .gcsp-gallery-grid .vm-card-actions .vm-btn { white-space: normal; }
+.gcsp .gcsp-gallery-detail { padding: 24px; display: grid; gap: 20px; min-width: 0; background: var(--gcsp-surface); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
+.gcsp .gcsp-gallery-detail[hidden], .gcsp .gcsp-gallery-results[hidden] { display: none; }
+.gcsp .gcsp-gallery-detail > .vm-card-media { max-height: 440px; }
+.gcsp .gcsp-gallery-detail .gcsp-h2:focus { outline: 2px solid var(--gcsp-focus); outline-offset: 6px; }
+.gcsp .gcsp-gallery-fact-section { border-top: 1px solid var(--gcsp-divider); padding-top: 16px; min-width: 0; }
+.gcsp .gcsp-gallery-fact-section > summary { cursor: pointer; padding: 8px 0; font-weight: 700; color: var(--gcsp-accent); }
+.gcsp .gcsp-gallery-claim { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.gcsp .gcsp-gallery-claim:has(p:empty) { display: none; }
+@media (max-width: 1100px) {
+  .gcsp .gcsp-gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gcsp .gcsp-gallery-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .gcsp .gcsp-gallery-grid, .gcsp .gcsp-gallery-filters { grid-template-columns: minmax(0, 1fr); }
+  .gcsp .gcsp-gallery-detail { padding: 16px; }
+  .gcsp .gcsp-gallery-grid .vm-card-actions .vm-btn { width: 100%; }
+}

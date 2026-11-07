@@ -1,0 +1,313 @@
+{
+  "status": "prepared-isolated-proved-ordinary-unchanged",
+  "version": "2026-11-07.5",
+  "candidateManifestDigest": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+  "counts": {
+    "configurations": 480,
+    "distinctConfigurations": 480,
+    "vinMappings": 1,
+    "images": 1,
+    "sourceConfigurations": 479,
+    "qualifyingCompleteDistinctSourceConfigurations": 479
+  },
+  "inputs": [
+    {
+      "path": "docs/gcsp/evidence/fucq59/f70-1f7e-first32-solver-2026-11-07/accepted.jsonl",
+      "sha256": "845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080",
+      "bytes": 409709,
+      "records": 19,
+      "registeredOrigin": "f70-1f7e-first32-2026-11-07.jsonl",
+      "overlapWithBaselineAndPriorInputs": 0,
+      "registeredSha256": "845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/f70-1f7e-core01-solver-2026-11-07/accepted.jsonl",
+      "sha256": "5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7",
+      "bytes": 689849,
+      "records": 32,
+      "registeredOrigin": "f70-1f7e-core01-2026-11-07.jsonl",
+      "overlapWithBaselineAndPriorInputs": 0,
+      "registeredSha256": "5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/f70-1f7e-core02-solver-2026-11-07/accepted.jsonl",
+      "sha256": "14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6",
+      "bytes": 689844,
+      "records": 32,
+      "registeredOrigin": "f70-1f7e-core02-2026-11-07.jsonl",
+      "overlapWithBaselineAndPriorInputs": 0,
+      "registeredSha256": "14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/f70-1f7e-core03-solver-2026-11-07/accepted.jsonl",
+      "sha256": "c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06",
+      "bytes": 689836,
+      "records": 32,
+      "registeredOrigin": "f70-1f7e-core03-2026-11-07.jsonl",
+      "overlapWithBaselineAndPriorInputs": 0,
+      "registeredSha256": "c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/f70-1f7e-core04-solver-2026-11-07/accepted.jsonl",
+      "sha256": "acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d",
+      "bytes": 323364,
+      "records": 15,
+      "registeredOrigin": "f70-1f7e-core04-2026-11-07.jsonl",
+      "overlapWithBaselineAndPriorInputs": 0,
+      "registeredSha256": "acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d"
+    }
+  ],
+  "novelConfigurationIds": {
+    "count": 130,
+    "algorithm": "SHA256(UTF8(sorted exact configurationId values joined with newline, plus final newline))",
+    "sha256": "7bd9b9d1f6ff842e577f5120e246b17d39a91f49403a191205949d677e8b33aa"
+  },
+  "canonicalIndex": {
+    "entries": 482,
+    "publishedUnion": 480,
+    "excludedPriorObservations": 2
+  },
+  "immutable": {
+    "priorConfigurationRowsByteIdentical": 350,
+    "vinBytesIdentical": true,
+    "priorHistoryConfigurationsUnchanged": 350,
+    "priorHistoryIdentitiesUnchanged": 1,
+    "priorHistoryDatasetsUnchanged": 5,
+    "isolatedAddedConfigurations": 130,
+    "isolatedAddedDatasets": 1,
+    "ordinaryStoreTreeUnchanged": true,
+    "ordinaryStoreFiles": 27
+  },
+  "image": {
+    "registration": "APPROVED_CORPUS_IMAGES[0]",
+    "asset": "assets/gcsp-vehicle-evidence/fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe.webp",
+    "sha256": "fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe",
+    "bytes": 82798,
+    "configurationIdSha256": "cec541411f1b512cdcef09d1013939c166c166385fadb1b3dbf089645102bb53",
+    "fidelity": "representative-configuration",
+    "distribution": "committed exact static asset in deployment checkout; one images.jsonl association in raw release",
+    "configurationRowRewrite": false
+  },
+  "audit": {
+    "status": "verified-active",
+    "targetMet": true,
+    "storyAcceptance": "not-established",
+    "requiredDistinct": 479,
+    "shortfall": 0,
+    "reason": null,
+    "manifest": {
+      "path": "/private/tmp/test-stamp-shard-31bd46ca11f04a05839ce62fca95a150/isolated-store/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/manifest.json",
+      "sha256": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+      "datasetId": "gcsp-source-fleet",
+      "version": "2026-11-07.5",
+      "schemaVersion": "1",
+      "signaturePolicyVersion": "gcsp-policy-v1",
+      "profileRegistryVersion": "vin-profiles.v1",
+      "generatorVersion": "synthetic-identities.sha256-v1"
+    },
+    "qualification": "bounded-fixture-or-partial-corpus",
+    "actual": {
+      "configurations": 480,
+      "distinctConfigurations": 480,
+      "images": 1,
+      "qualifyingCompleteDistinctSourceConfigurations": 479,
+      "sourceConfigurations": 479,
+      "vinMappings": 1,
+      "completeResolvedDistinct": 479,
+      "nonQualifyingConfigurations": 1,
+      "coverage": {
+        "markets": {
+          "GB": 479,
+          "US": 1
+        },
+        "models": {
+          "430i": 1,
+          "unknown": 479
+        },
+        "steering": {
+          "LHD": 1,
+          "unknown": 479
+        },
+        "wmis": {
+          "WBA": 1
+        }
+      },
+      "omittedCoverageCategories": {
+        "markets": 0,
+        "models": 0,
+        "steering": 0,
+        "wmis": 0
+      },
+      "completeness": {
+        "imagesMissing": 479,
+        "selectedOptions": {
+          "complete": 479,
+          "unknown": 1
+        },
+        "sourceKinds": {
+          "dated-snapshot": 479,
+          "north-american-reference": 1
+        }
+      },
+      "distributions": {
+        "model": {
+          "values": {
+            "430i": 1,
+            "unknown": 479
+          },
+          "omittedCategories": 0
+        },
+        "body": {
+          "values": {
+            "Convertible": 1,
+            "unknown": 479
+          },
+          "omittedCategories": 0
+        },
+        "powertrain": {
+          "values": {
+            "petrol": 1,
+            "unknown": 479
+          },
+          "omittedCategories": 0
+        },
+        "factoryOptionCount": {
+          "values": {
+            "1": 1,
+            "42": 8,
+            "47": 49,
+            "48": 73,
+            "49": 23,
+            "50": 23,
+            "51": 202,
+            "52": 44,
+            "53": 40,
+            "54": 9,
+            "56": 8
+          },
+          "omittedCategories": 0
+        },
+        "sourceKind": {
+          "values": {
+            "dated-snapshot": 479,
+            "north-american-reference": 1
+          },
+          "omittedCategories": 0
+        },
+        "unresolvedFacts": {
+          "values": {
+            "agModelCode": 1,
+            "body": 479,
+            "derivative": 479,
+            "drive": 479,
+            "engineCode": 480,
+            "exactEquipment": 1,
+            "exactTrim": 1,
+            "model": 479,
+            "modelYear": 479,
+            "plant": 479,
+            "powertrain": 479,
+            "productionDate": 480,
+            "productionEra": 479,
+            "region": 479,
+            "registrationDate": 1,
+            "steering": 479,
+            "transmission": 480,
+            "vgModelCode": 1
+          },
+          "omittedCategories": 0
+        },
+        "imageFidelity": {
+          "values": {
+            "representative-configuration": 1
+          },
+          "omittedCategories": 0
+        }
+      }
+    },
+    "planned": {
+      "provided": false,
+      "familyCount": 0,
+      "families": [],
+      "omittedFamilies": 0,
+      "exclusions": []
+    },
+    "limitations": [
+      "Compatible profile-family coverage is not inferred from configuration IDs or VIN spelling.",
+      "Staged verification does not establish source-operation budgets, collection replay or full story acceptance.",
+      "Unknown measurements, missing images and representative image fidelity remain explicit; no stock, eligibility or points facts are inferred."
+    ],
+    "activeStore": "/private/tmp/test-stamp-shard-31bd46ca11f04a05839ce62fca95a150/isolated-store",
+    "activation": {
+      "loaderStatus": "ok",
+      "recovered": false
+    },
+    "audit": {
+      "scope": "all-records",
+      "records": {
+        "configurations": 480,
+        "vinMappings": 1,
+        "stockReferences": 0
+      },
+      "checked": 481,
+      "errors": 0,
+      "elapsedMs": 826.098375,
+      "concurrency": 1,
+      "throughputPerSecond": 582.2551097500948,
+      "latencyMs": {
+        "count": 481,
+        "min": 1.5684580000001915,
+        "p50": 1.6876250000000255,
+        "p95": 1.84566599999971,
+        "p99": 2.179791000000023,
+        "max": 6.030249999999796
+      },
+      "environment": {
+        "node": "v26.7.0",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "stockScope": "not-supplied"
+    },
+    "http": {
+      "endpoint": "http://127.0.0.1:53225",
+      "scope": "all-records",
+      "requests": 481,
+      "totalRecords": 481,
+      "concurrency": 1,
+      "errors": 0,
+      "elapsedMs": 186.8592920000001,
+      "throughputPerSecond": 2574.1294149824766,
+      "latencyMs": {
+        "count": 481,
+        "min": 0.26254199999993943,
+        "p50": 0.363582999999835,
+        "p95": 0.46245900000030815,
+        "p99": 0.6177499999998872,
+        "max": 6.086207999999715
+      },
+      "serverClosed": true
+    },
+    "egress": {
+      "scope": "this-audit-process",
+      "externalCalls": 0,
+      "sourceCalls": 0,
+      "control": "blocked"
+    },
+    "acceptanceLimits": [
+      "Actual full-target source corpus and declared coverage remain required for story acceptance.",
+      "Stock references are supplied through the repository seam; no native PostgreSQL or stock generation proof is inferred.",
+      "Restart, activation interruption and rollback are tested in owned fixtures; this command does not mutate the active store."
+    ]
+  },
+  "egress": {
+    "preparationExternalCalls": 0,
+    "control": "blocked"
+  },
+  "ordinaryPublicationExecuted": false,
+  "publicUploadExecuted": false,
+  "renderChanged": false,
+  "candidateRetained": false,
+  "reprepareRequiresSameInputCodeEnvironmentIdentity": true,
+  "acceptance": "not-established"
+}

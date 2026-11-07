@@ -1,0 +1,18 @@
+{
+  "authorized": false,
+  "phase": "existing-cache-restore",
+  "planSha256": "COPY_REVIEWED_PLAN_SHA256",
+  "runtimeTarget": "b0f05852f93bad1de8c907b6090c56fc9982e4d8",
+  "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "networkRequests": 0,
+  "runtimeProjectionAllowed": true,
+  "runtimeProjection": {
+    "sourceModulesUnchanged": true,
+    "anchorRelativePath": "server/gcsp/vehicle-evidence/fleet-releases.json",
+    "anchorProjectedSha256": "e13a5f99167bea65cc9a04e6eae41cec56b55caaa229b640e0e47b20f44301e0",
+    "nodeModules": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules",
+    "diagnosticInstrumentation": false,
+    "onlyProjection": "Copy102exact reviewed runtime files and substitute exact code-owned .12anchor; no runtime source instrumentation."
+  },
+  "supervision": "Root reviews onecall; establishes512MiBcloudscratch/disk,1GiBhost,180s externalownership+mandatoryfinalizer beforeallocation. Newstore must be removed with owned scratch. No execution authorised by this example."
+}

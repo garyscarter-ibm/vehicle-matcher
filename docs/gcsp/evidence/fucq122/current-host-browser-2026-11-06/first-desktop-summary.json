@@ -1,0 +1,155 @@
+{
+  "state": "incomplete",
+  "scope": "one actual current-host desktop attempt",
+  "run": "journey-desktop-7d5a2217f4ac4669abe41a574931975a",
+  "sourcePlanSha256": "e6b0bdd451135965549841c0dd501cc2a2ffb8224317f7891cf5e8af907ccbec",
+  "productSource": "FUCQ-122 current HTTPS host; 293 selected F100 product/helper files byte-match current shared clone; no writes to F100.",
+  "receiptSha256": "2257108ad0aabb39e5771f72e00ca15806405bdad4adc8b134021b10cebfe2e9",
+  "checksPassed": [
+    "Rendered help and review are read-only; one explicit confirmation creates one case"
+  ],
+  "requestHelpPOSTs": 1,
+  "caseUpdatePOSTs": 0,
+  "errors": [
+    {
+      "kind": "request",
+      "path": "/api/gcsp/manual/account",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "kind": "request",
+      "path": "/api/gcsp/presenter/controls",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "kind": "scenario",
+      "message": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    {\n      caseId: 'renewal-f7fdee06fcfc68ad8044d2b8b15906204cbb0971',\n      createdAt: '2026-11-06T17:26:11.666Z',\n      dueAt: '2026-11-06T09:00:00.000Z',\n      employeeId: 'employee-paula',\n+     employeeName: 'Paula (fictional)',\n      fictional: true,\n      history: [\n        {\n          actorId: 'demo-paula',\n          actorRole: 'employee',\n\n    at runCaseJourney (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/scenario.mjs:166:12)\n    at async file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/browser-runner.mjs:52:17"
+    }
+  ],
+  "navigation": [
+    {
+      "path": "/gcsp-help.html",
+      "status": 200,
+      "authorityOnHtml": false
+    },
+    {
+      "path": "/gcsp-presenter.html",
+      "status": 200,
+      "authorityOnHtml": false
+    }
+  ],
+  "keyboardActions": 46,
+  "captures": [
+    {
+      "file": "01-paula-help.png",
+      "sha256": "271334259238d9cdee9be3d3b67872eda88e4792f019a0b1cfb7cb1a09fb8ac5",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "visible": true
+      },
+      "documentWidth": 1280
+    },
+    {
+      "file": "02-paula-confirmation.png",
+      "sha256": "fe2ce5464a63e2f5eaefe73cf51f9e3fbf71834c7648ed89114b442e8d11f3af",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "visible": true
+      },
+      "documentWidth": 1280
+    },
+    {
+      "file": "03-greg-actual-queue.png",
+      "sha256": "5657df588db3caccee7c68ea44801df8563a3c070cd3650e93984d4de4e58110",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-selection",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "visible": true
+      },
+      "documentWidth": 1280
+    }
+  ],
+  "budgets": {
+    "chromeInstances": 1,
+    "combinedBytes": 134217728,
+    "logBytes": 2097152,
+    "minimumRssBytes": 2147483648,
+    "requestedRssBytes": 2684354560,
+    "seconds": 120,
+    "workers": 1
+  },
+  "admitted": {
+    "disk": 134217728,
+    "ram": 2526117888
+  },
+  "peakRecursiveRssBytes": 1823391744,
+  "peakCombinedBytes": 10950008,
+  "removedScratchBytes": 10343608,
+  "cleanup": {
+    "ownedPidEntries": 18,
+    "ownedPidAbsent": true,
+    "processGroupsAbsent": true,
+    "profileArgumentProcessesAbsent": true,
+    "portsClosed": {
+      "49279": true,
+      "49284": true
+    },
+    "scratchAbsent": true,
+    "tokenAbsent": true,
+    "rawHostRows": 0,
+    "sourcePinsPreserved": true,
+    "noNarrowAllocated": true,
+    "cleanup": {
+      "dependencyLinks": [],
+      "groupsAbsent": true,
+      "liveIdentities": [],
+      "monitorJoined": true,
+      "openFilesAbsent": true,
+      "portsClosed": {
+        "49279": true,
+        "49284": true
+      },
+      "profilePathProcesses": [],
+      "readersJoined": true,
+      "reservationReleased": true,
+      "scratchAbsent": true
+    }
+  },
+  "separateBug": {
+    "key": "FUCQ-150",
+    "priority": "Medium",
+    "type": "Bug",
+    "status": "To Do",
+    "relatedStory": "FUCQ-122",
+    "attachment": {
+      "attachment_id": "937236",
+      "filename": "03-greg-actual-queue.png",
+      "mime_type": "image/png",
+      "size": 411408
+    }
+  },
+  "originalAcceptance": "Incomplete and unchanged. No narrow/native/full suite or completed Greg-update/Paula-reload claim."
+}

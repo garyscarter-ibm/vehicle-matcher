@@ -1,0 +1,22 @@
+{
+  "status": "prepared-only-active-unchanged",
+  "contractSha256": "3b88ebb11071e5e6797e6f6c65fe75043d09e9a97aa8bf17ec9b2fc423bf55f2",
+  "codePinsUnchanged": 82,
+  "inputPinsUnchanged": 27,
+  "registrationTests": {
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0
+  },
+  "registrationLogSha256": "f3a12042f7316bd4426934b4b405e79004ac5786c42a7e0d7b1ae46d69b17f1b",
+  "receiptHashes": {
+    "receipt.json": "a60a18466baf0260882cfaecb355179e86788f6d7c5991479fca4a24d1058996",
+    "result.json": "be00644481e4d163f906291c6edad746a572db7e30f1e7c83ffef9872a4f69a9",
+    "cleanup.json": "93852a5d3d57cad55cb14d42bdcec8622fa7ea8ccd8afa6b2aa0115aa0d3de0b",
+    "selection.json": "967789598adc1fdc39ea9ac53b382d77d9658d9676513a26f5f95b02be0f47f2"
+  },
+  "publicationExecuted": false,
+  "sourceCalls": 0,
+  "scratchAbsent": true,
+  "dependencyLinkAbsent": true
+}

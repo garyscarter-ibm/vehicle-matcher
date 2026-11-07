@@ -1,0 +1,255 @@
+{
+  "scope": "scoped v2 representative image preparation through existing provider/transport/enrichment; real source allocation unspent",
+  "allocationId": "f60-1f7e-one-webp-four-get-20261107.v1",
+  "allocationSha256": "d65d524e7f61983567edcc5736c6149bbd24154b37340656d1f5eb6dbfab7caa",
+  "planDigest": "75ed9dcb2078a1ad6ec90ce810e6432a8097c82347634513b1d2e1734a05714b",
+  "codePins": {
+    "server/vehicle-evidence/bmw-live-imagery.js": "40c9c7fd202e211034c540a5a4b7117ef9fd3f4a16b65ede59147bb1f5fe16ce",
+    "server/vehicle-evidence/bmw-image-adapter.js": "56753ac7e47e4790159e7d50fb4deafe1658730e803912f064e6ed09326774ef",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "90cf9187cb44dc6d17e6984a0fdc25dc13fc9078c23d3652d779a565cedc29a7",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56",
+    "scripts/gcsp/verify-live-imagery.mjs": "e0c6ce063dc44c0ba532741befcea2133deec5998349748eff8697bacb56b8ae",
+    "scripts/gcsp/bmw-public-registration.mjs": "965f1ccb0699ae75cbfdd74bb6f2855095bc6f66113158b08948d649eb384d2c",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/bmw-technical-qualification.mjs": "0d5f90b927c4aef72ac620664549fa61f09e556e12378e1f8ffd2c3dc201dbcc",
+    "scripts/gcsp/collection-session.mjs": "918512334fa3a350f9578548f622e1b4de903eec7091b7c7aac05dc5e5344b2e",
+    "scripts/gcsp/enrich-fleet.mjs": "0f77c577ddaf0cf91fdae00377f398723d38c77f30210976a1c94391944db7bd",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq60/v2-image-capture-2026-11-07/run-live.mjs": "ac3c826abc16d886ed3fd93c2b09edd96eff6ffa0b1b4cf28295030bfc78f6e0",
+    "docs/gcsp/evidence/fucq60/v2-image-capture-2026-11-07/supervise.py": "eb5e5f1692c1e81003b037a9362c24f0cb34a2c59487e55c5d369306b33ed0bc",
+    "docs/gcsp/evidence/fucq60/v2-image-capture-2026-11-07/image-plan.json": "17bc34abdb0dac18ce75bed3a8a0374190443c03be45b79c2fcf285d7b589969"
+  },
+  "selectedChecks": {
+    "newV2ImageAndIsolatedRunner": 5,
+    "finalTotal": 69,
+    "pass": 69,
+    "fail": 0,
+    "skipped": 0,
+    "boundaries": [
+      "existing bmw-live-imagery suite",
+      "existing retained additive-image suite",
+      "four-key qualifier",
+      "existing source-v2 enrichment",
+      "existing v1/v2 fleet enrichment"
+    ]
+  },
+  "red": "2 expected failures: v2 identity and provider path absent",
+  "intermediateChecks": "all green after implementation; final2 repeats selected boundaries after tightening pure output identity/variant projection validation",
+  "fullRunnerFixture": {
+    "requests": 4,
+    "binaryImages": 1,
+    "tuplePersistedBeforeAsset": true,
+    "knownMeasurements": 4,
+    "modelPaintFidelity": "unknown",
+    "absentGrantAndReplayAndPlanTamperRefused": true,
+    "liveCalls": 0
+  },
+  "phases": [
+    {
+      "phase": "image-red",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-red/command-0.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-red/ownership/e81cfe47d7734440af4b3094986dc44c.json",
+        "peak_rss": 2260992,
+        "peak_scratch": 0,
+        "rc": 1,
+        "wall": 0.246187625
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-red/ownership/e81cfe47d7734440af4b3094986dc44c.json",
+        "removedScratchBytes": 0,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-red/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-e81cfe47d7734440af4b3094986dc44c",
+        "scratchAbsent": true
+      }
+    },
+    {
+      "phase": "image-green",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-green/command-0.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-green/ownership/09a7545c0f5d4a54929d1d50b89030ea.json",
+        "peak_rss": 2260992,
+        "peak_scratch": 0,
+        "rc": 0,
+        "wall": 0.246589083
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-green/ownership/09a7545c0f5d4a54929d1d50b89030ea.json",
+        "removedScratchBytes": 0,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-green/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-09a7545c0f5d4a54929d1d50b89030ea",
+        "scratchAbsent": true
+      }
+    },
+    {
+      "phase": "image-green2",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-green2/command-0.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-green2/ownership/f9eb26f612424a759a1485400032f7e3.json",
+        "peak_rss": 2326528,
+        "peak_scratch": 0,
+        "rc": 0,
+        "wall": 0.245200041
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-green2/ownership/f9eb26f612424a759a1485400032f7e3.json",
+        "removedScratchBytes": 0,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-green2/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-f9eb26f612424a759a1485400032f7e3",
+        "scratchAbsent": true
+      }
+    },
+    {
+      "phase": "image-green3",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-green3/command-0.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-green3/ownership/e4252eda9647465e970d8a136dd65a34.json",
+        "peak_rss": 2260992,
+        "peak_scratch": 0,
+        "rc": 0,
+        "wall": 0.252941375
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-green3/ownership/e4252eda9647465e970d8a136dd65a34.json",
+        "removedScratchBytes": 0,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-green3/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-e4252eda9647465e970d8a136dd65a34",
+        "scratchAbsent": true
+      }
+    },
+    {
+      "phase": "image-boundary",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-boundary/command-0.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-boundary/ownership/91ce67b401204265854f55959ee6c345.json",
+        "peak_rss": 156860416,
+        "peak_scratch": 16672,
+        "rc": 0,
+        "wall": 0.972458167
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-boundary/ownership/91ce67b401204265854f55959ee6c345.json",
+        "removedScratchBytes": 16672,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-boundary/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-91ce67b401204265854f55959ee6c345",
+        "scratchAbsent": true
+      }
+    },
+    {
+      "phase": "image-runner",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-runner/command-0.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-runner/ownership/7a6e775c58924dfaa262c4595d861bdb.json",
+        "peak_rss": 192430080,
+        "peak_scratch": 833102,
+        "rc": 0,
+        "wall": 0.977621834
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-runner/ownership/7a6e775c58924dfaa262c4595d861bdb.json",
+        "removedScratchBytes": 833102,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-runner/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-7a6e775c58924dfaa262c4595d861bdb",
+        "scratchAbsent": true
+      }
+    },
+    {
+      "phase": "image-final",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-final/command-0.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-final/ownership/94fd1317482442938f211941e45c59fc.json",
+        "peak_rss": 197591040,
+        "peak_scratch": 677454,
+        "rc": 0,
+        "wall": 2.49334275
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-final/ownership/94fd1317482442938f211941e45c59fc.json",
+        "removedScratchBytes": 677454,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-final/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-94fd1317482442938f211941e45c59fc",
+        "scratchAbsent": true
+      }
+    },
+    {
+      "phase": "image-final2",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-final2/command-0.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-final2/ownership/70e0fa45beeb469fbf31efc16d5764fe.json",
+        "peak_rss": 198148096,
+        "peak_scratch": 603598,
+        "rc": 0,
+        "wall": 2.508918042
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-final2/ownership/70e0fa45beeb469fbf31efc16d5764fe.json",
+        "removedScratchBytes": 603598,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/image-final2/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-70e0fa45beeb469fbf31efc16d5764fe",
+        "scratchAbsent": true
+      }
+    }
+  ],
+  "removedScratchBytes": 2130826,
+  "coverageContexts": "not measured; selected explicit caller and fixture/retained-source boundaries",
+  "excluded": [
+    "full suite: bounded v2 provider/transport and pure enrichment branch only",
+    "unchanged source batches/replays",
+    "real image capture until root exact release",
+    "runtime image registration/publication requires actual captured hash and visual inspection",
+    "ordinary corpus mutation/deployment"
+  ],
+  "realAllocationUnspent": true,
+  "sourceCalls": 0,
+  "leftovers": [],
+  "compatibilityException": null
+}

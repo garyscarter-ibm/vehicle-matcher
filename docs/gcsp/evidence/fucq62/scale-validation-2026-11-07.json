@@ -1,0 +1,223 @@
+{
+  "status": "scoped-passing",
+  "distinctSelectedTests": 55,
+  "checkEvidence": {
+    "server/test/gcsp-indexed-jsonl.test.js": "source-boundary",
+    "server/test/gcsp-corpus-indexed.test.js": "source-boundary",
+    "server/test/gcsp-registered-catalogue-sources.test.js": "source-boundary",
+    "server/test/gcsp-vin-publication.test.js": "corpus-green",
+    "server/test/gcsp-vin-registry.test.js": "cli-final",
+    "server/test/gcsp-fleet-publication.test.js": "v2-verifier",
+    "server/test/gcsp-fleet-verifier.test.js": "v2-verifier",
+    "server/test/gcsp-vehicle-evidence-lookup.test.js": "v2-verifier",
+    "server/test/gcsp-vehicle-details-v2.test.js": "v2-verifier",
+    "server/test/gcsp-fleet-integration.test.js": "v2-verifier"
+  },
+  "fullNpmRun": false,
+  "productionStreamingLimitBytes": 67108864,
+  "legacyEagerLimitBytes": 67108864,
+  "largerThan64MiBResourceProof": "not-run; separate parent grant required",
+  "actualAggregatePublication": "not-run in this checkpoint",
+  "identity": {
+    "server/gcsp/vehicle-evidence/indexed-jsonl.js": "0f547126eaa18668e8cfcdb293361e75716bd607766b6b2680f2329d45aa7326",
+    "server/gcsp/vehicle-evidence/corpus-publisher.js": "8c9dfbe9760ed23c07ee5cab5019b0b1049516e5dbc6b85d5d979a1a14f1080d",
+    "server/gcsp/vehicle-evidence/synthetic-registry.js": "5ef11abfba62251fbec28eca1f4717e73ddf575bc642e264e7c190f7bc65b86e",
+    "server/gcsp/vehicle-evidence/registered-catalogue-sources.js": "c034e0355339b4e8e8c08fda2e26ec1d9b96fc68ce7ba8f895bc0867d8a3c289",
+    "server/scripts/publish-synthetic-vin-dataset.mjs": "7710dd9e726f6fcf4965f4fd35bad9e98c419149d5189414f2e61e0c6224c0c9",
+    "scripts/gcsp/verify-fleet.mjs": "af8f8e8985c8b5fdf259994c16603f48f03d9f5a2d5c333c0f5d6b340457ca4a",
+    "server/test/gcsp-indexed-jsonl.test.js": "0e379df1c8fc935d670f5d0ff9bd1af7d68bffd3b77232965e8232338f5824cd",
+    "server/test/gcsp-corpus-indexed.test.js": "468b84d3bf59d135b58225b8cd155d9c771e2118305f6c91d9faf363a74100c4",
+    "server/test/gcsp-registered-catalogue-sources.test.js": "4db355ce84edee92e62f6176d9c270310efb2ff4eabec7048398527e1383b188"
+  },
+  "runs": [
+    {
+      "id": "reader-red",
+      "command": [
+        "/opt/homebrew/bin/node",
+        "--max-old-space-size=256",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-indexed-jsonl.test.js"
+      ],
+      "exitCode": 1,
+      "expectedFailure": true,
+      "wallSeconds": 0.246864791,
+      "sampledPeakRssBytes": 2244608,
+      "sampledScratchBytesRemoved": 266336,
+      "cleanup": {
+        "rootAbsent": true,
+        "groupsAbsent": true,
+        "reservationAbsent": true,
+        "dependencyLinkAbsent": true,
+        "compatibilityException": null
+      },
+      "externalResult": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-narrow/reader-red/result.json",
+      "externalOwnershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-narrow/reader-red/ownership/fe2cdd63963f4e38ad920d0f11b415eb.json"
+    },
+    {
+      "id": "reader-green",
+      "command": [
+        "/opt/homebrew/bin/node",
+        "--max-old-space-size=256",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-indexed-jsonl.test.js"
+      ],
+      "exitCode": 0,
+      "expectedFailure": false,
+      "wallSeconds": 0.25025504200000004,
+      "sampledPeakRssBytes": 2342912,
+      "sampledScratchBytesRemoved": 364640,
+      "cleanup": {
+        "rootAbsent": true,
+        "groupsAbsent": true,
+        "reservationAbsent": true,
+        "dependencyLinkAbsent": true,
+        "compatibilityException": null
+      },
+      "externalResult": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-narrow/reader-green/result.json",
+      "externalOwnershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-narrow/reader-green/ownership/ac4354b412794f359bbbf9320aa89a79.json"
+    },
+    {
+      "id": "corpus-red",
+      "command": [
+        "/opt/homebrew/bin/node",
+        "--max-old-space-size=256",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-corpus-indexed.test.js"
+      ],
+      "exitCode": 1,
+      "expectedFailure": true,
+      "wallSeconds": 0.486935584,
+      "sampledPeakRssBytes": 165265408,
+      "sampledScratchBytesRemoved": 503904,
+      "cleanup": {
+        "rootAbsent": true,
+        "groupsAbsent": true,
+        "reservationAbsent": true,
+        "dependencyLinkAbsent": true,
+        "compatibilityException": null
+      },
+      "externalResult": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-narrow/corpus-red/result.json",
+      "externalOwnershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-narrow/corpus-red/ownership/f0c51733941a4ef59c75d4716ad1ebc1.json"
+    },
+    {
+      "id": "corpus-green",
+      "command": [
+        "/opt/homebrew/bin/node",
+        "--max-old-space-size=256",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-corpus-indexed.test.js",
+        "server/test/gcsp-vin-publication.test.js",
+        "server/test/gcsp-vin-registry.test.js"
+      ],
+      "exitCode": 0,
+      "expectedFailure": false,
+      "wallSeconds": 6.178886375,
+      "sampledPeakRssBytes": 262438912,
+      "sampledScratchBytesRemoved": 3436896,
+      "cleanup": {
+        "rootAbsent": true,
+        "groupsAbsent": true,
+        "reservationAbsent": true,
+        "dependencyLinkAbsent": true,
+        "compatibilityException": null
+      },
+      "externalResult": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-narrow/corpus-green/result.json",
+      "externalOwnershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-narrow/corpus-green/ownership/b2b05a1e87824f1e80a22cb89cb9ebf7.json"
+    },
+    {
+      "id": "v2-verifier",
+      "command": [
+        "/opt/homebrew/bin/node",
+        "--max-old-space-size=256",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-fleet-publication.test.js",
+        "server/test/gcsp-fleet-verifier.test.js",
+        "server/test/gcsp-vehicle-evidence-lookup.test.js",
+        "server/test/gcsp-vehicle-details-v2.test.js",
+        "server/test/gcsp-fleet-integration.test.js"
+      ],
+      "exitCode": 0,
+      "expectedFailure": false,
+      "wallSeconds": 4.5901587919999995,
+      "sampledPeakRssBytes": 302661632,
+      "sampledScratchBytesRemoved": 7913920,
+      "cleanup": {
+        "rootAbsent": true,
+        "groupsAbsent": true,
+        "reservationAbsent": true,
+        "dependencyLinkAbsent": true,
+        "compatibilityException": null
+      },
+      "externalResult": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-narrow/v2-verifier/result.json",
+      "externalOwnershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-narrow/v2-verifier/ownership/4bfbdcae0d424db9b2002a1d4a9a2cdd.json"
+    },
+    {
+      "id": "source-boundary",
+      "command": [
+        "/opt/homebrew/bin/node",
+        "--max-old-space-size=256",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-registered-catalogue-sources.test.js",
+        "server/test/gcsp-corpus-indexed.test.js",
+        "server/test/gcsp-indexed-jsonl.test.js"
+      ],
+      "exitCode": 0,
+      "expectedFailure": false,
+      "wallSeconds": 1.000567542,
+      "sampledPeakRssBytes": 163659776,
+      "sampledScratchBytesRemoved": 1523968,
+      "cleanup": {
+        "rootAbsent": true,
+        "groupsAbsent": true,
+        "reservationAbsent": true,
+        "dependencyLinkAbsent": true,
+        "compatibilityException": null
+      },
+      "externalResult": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-narrow/source-boundary/result.json",
+      "externalOwnershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-narrow/source-boundary/ownership/ce000df8542c42a6a75a10f3a8edb1dc.json"
+    },
+    {
+      "id": "cli-final",
+      "command": [
+        "/opt/homebrew/bin/node",
+        "--max-old-space-size=256",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-vin-registry.test.js"
+      ],
+      "exitCode": 0,
+      "expectedFailure": false,
+      "wallSeconds": 3.7675279159999997,
+      "sampledPeakRssBytes": 227475456,
+      "sampledScratchBytesRemoved": 2437408,
+      "cleanup": {
+        "rootAbsent": true,
+        "groupsAbsent": true,
+        "reservationAbsent": true,
+        "dependencyLinkAbsent": true,
+        "compatibilityException": null
+      },
+      "externalResult": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-narrow/cli-final/result.json",
+      "externalOwnershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-narrow/cli-final/ownership/d35fb9c56c254e8ea6482acff61c4317.json"
+    }
+  ],
+  "sampledScratchBytesRemoved": 16447072,
+  "leftovers": [],
+  "acceptance": "not-established; original source, numerical, VIN and full scheme coverage obligations remain open",
+  "agents": [
+    {
+      "name": "Charlie Dog",
+      "requested": "gpt-6.1-sol/high",
+      "selected": "gpt-6.1-sol/high",
+      "effective": "unverified",
+      "fallback": null,
+      "additionalAgents": 0
+    }
+  ]
+}

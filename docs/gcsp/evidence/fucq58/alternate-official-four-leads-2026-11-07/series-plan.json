@@ -1,0 +1,359 @@
+{
+  "schemaVersion": "f58-four-model-inventory-executable.v1",
+  "id": "f58-four-model-inventory-20261107-once",
+  "qualificationDate": "2026-11-07",
+  "preparedAt": "2026-11-07T08:25:30.202569+00:00",
+  "status": "prepared-unspent; separate exact root releases required",
+  "baseInputCommit": "38ab08ca",
+  "codePins": {
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/diagnostic.mjs": "c3610a8faa86d963a8843b5071f98472c5d6ea183d79bc1eb23ade95a61fc109",
+    "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/diagnostic.test.mjs": "593d35a52de356efedc014fb0c0793d5a8cf4e9b2fd5ea0938986697f706945a",
+    "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/export-retained.py": "4f9f2ed9ff2ae2dc45f27476c3a2dab369b4e02dc319f87e6aaf901b269631ef",
+    "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/prepare.py": "357c903b6a90578d1d3689620ebe19eccee409a2b30a662f45d2ee0408516f78",
+    "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/qualification-plan.json": "cc79b73c233215099a0fa2cd8e48f3e54c77a599050548b2a7dbafae2adb597b",
+    "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/run-live.mjs": "9374372d36130724eb6e8b0bb4d59144ae35eaedd2cddfa53314887de3b796f2",
+    "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/supervise.py": "1cd73b7b36094b48290af40d7a3f10148b8d012b048219af08d6b6aa3c27e606",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/audit-live.mjs": "255d729ee289529950fcfd2db28116234e409e822d7652dfae52aefbbdc5978c",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/audit-retained.mjs": "3fe4144b3340f8cdd4e1a0fb6bc340952a956d00b39106fe4e6a213d7f1beacc",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/contract-runner.mjs": "52ad8fa246bafbfc575a9ea24c750e4055dba0f7ad891dcfd75ecdf116cf0494",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/export-retained.py": "4f9f2ed9ff2ae2dc45f27476c3a2dab369b4e02dc319f87e6aaf901b269631ef",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/prepare.py": "c4da44ce348ac86a07bda1305532ed8c29f1af1224f667519827ded4a9e29b3c",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/prepared-check.test.mjs": "6b52f44f3a4bc2458fca2c92e5ae9c4fc4aed8684856e30da61cabe68270e047",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/run-live.mjs": "0ae55357f692951a67dbc9347a0f0e980b0e7bfb64cec4dfcc1b2df00d13046a",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/run-series.py": "b669e8c99139476bcb5608b81bc3362132a9e2be6640b6b5b5cb418c1119f5b1",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/supervise.py": "de05ecf94a3ac817da53fa8f4972b2377d0395de2848c96c4bb8c504353611d7",
+    "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+    "scripts/gcsp/bmw-public-registration.mjs": "3a9a1afcc128f8356bb296b063d118bc9b7c59531ef75823bb99f8e01f209291",
+    "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+    "scripts/gcsp/collection-session.mjs": "db5a1a1ca6037132eced521f1a9b19d73a4282a113da66480ebec70c0beac7ff",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/public-bmw-source.mjs": "4561e844cfe85383ad8ed27521bab157a10dae57f8d82ab29b8f41842bfc8336",
+    "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+    "server/test/gcsp-bmw-range-inventory.test.js": "cb9c6702f94749ccfb86e84545f8ee32e24013019cd94fed129ea90acd63ad5e",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/prepare.py": "f690f87eeaeb3b2572487458095306a649a71d23394d066c7a2ba184e3fb58fe",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/freeze-execution.py": "2e88d1b74e2f36e0694402cb773fdda28ac396ec8636475e0080ec294b1c9ca6",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/request-guard.mjs": "59129ee5ca816d1d942ef2d26e171bb727585c9f77e0d7626425e2c71199d67a",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/run-live.mjs": "9d3997f099761098532869e786b5562cbc471bfbd69aa58dfc42d56688b3bb16",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/audit-live.mjs": "af39f4cb34c39be5f429ed9f81f6367481eee19b4715217fc6269006d0720bfa",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/release.py": "8b71bd33209f2b9277f59970d3f960de7d48245779be13fe0bf085970ff8e26b",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/supervise.py": "829ab20c261d8868082c807973170f2f41ec0faaa444b54060dbf9c77ca3ceb8",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/run-series.py": "98a655a44a8de682c2f59e4d0bf8bb760ae88d5c2116e05c254c173a5cf6db5c",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/prepared-check.test.mjs": "9baf62e85e4dc4b90d40a730da2e18a1db7a819cbc649949c7d099a0149d33e4"
+  },
+  "sourcePins": {
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/leads.json": "b9d834e4329543f1833f8b5eb8e17002b1f8b7c753944288232868537bb4571d",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/inventory-proposal.json": "2acc5aa123562fcc8c6099b031dae6ea31a32b1e979934746f1d882fcdb84973",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/prior-exclusions.json": "67d56f3fce98c4196610213dd02cb831643429ea2c053e02168449ce59308702",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/validation.json": "79c79786bd723c7c7a59d08a3e316fc1f5bb678325b90fc1a902565429726ab6",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/u06/qualification-plan.json": "81c273efbc46c7fa99537b4784a97447677f94ebda9a50955c0b49809093051b",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/g20/qualification-plan.json": "611a40e2deb026166f6eb3875802db747bbe3395fe108636acfbe9b8a22b1da3",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/g22/qualification-plan.json": "0f13f9322e2aeb62cb2fe98ab0aa841d2a13e7790698152a2024000ddab95ad6",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/g23/qualification-plan.json": "62ae6d71b61b4a0eff18e31c64b1a5c438a14036b3d2cda4754b2c01c034872b"
+  },
+  "runtimePins": {
+    "/opt/homebrew/Cellar/node/26.7.0/bin/node": "1ef99ea25fe70c9b67e7efe768ef8ee22148d3cabc703db6131b57aeb617d040",
+    "/usr/bin/python3": "ed6f5284033aa2aae6a58427c25ba3ab119947b40365627b24e5d51a4b70a1cd"
+  },
+  "nodeRuntime": "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+  "outputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f58-four-model-inventory-20261107-once",
+  "supervisorRoot": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/four-model-inventory",
+  "contexts": [
+    {
+      "id": "u06",
+      "originalRow": "/coverage/schemeModelLines/3",
+      "target": "U06 Active Tourer",
+      "qualificationPlanPath": "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/u06/qualification-plan.json",
+      "qualificationPlanSha256": "81c273efbc46c7fa99537b4784a97447677f94ebda9a50955c0b49809093051b",
+      "registration": {
+        "schemaVersion": "bmw-public-range-inventory-registration.v1",
+        "market": "GB",
+        "locale": "en-GB",
+        "catalogueRangeKey": "U06",
+        "pageModelCode": "2DSA",
+        "treeEffectDate": "2026-11-07",
+        "treeOrderDate": "2026-11-07"
+      },
+      "literalLeadSha256": "634267bbab118e9da57232c0e47ba72b75b4d225a5339a7e17afe644e3840dc8",
+      "allocationId": "f58-four-model-inventory-20261107-once-u06",
+      "requests": {
+        "page": "https://configure.bmw.co.uk/en_GB/configure/U06/2DSA",
+        "discover": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-07/order-dates/2026-11-07?gfs-policy=none&cluster=default&model-ranges=U06&future-models=true&closest-fallback=true"
+      },
+      "requestIdentitySha256": {
+        "page": "1ead987c6e52624e393b031c8fa88149e309238a6104e0add16fef9a58f8f753",
+        "discover": "14d1691b25b3cd8fc0145ce5b209da1cdc1378dc0e32f7108485659f68181387"
+      },
+      "settingsRequest": {
+        "method": "GET",
+        "url": "unknown until this page identifies exactly one safe settings path",
+        "policy": "existing publicBmwInventoryOperations path grammar and configure.bmw.co.uk origin only; no guessed filename; one request counted; settings may be a shared bootstrap URL already observed in older contexts"
+      },
+      "phase": "first"
+    },
+    {
+      "id": "g20",
+      "originalRow": "/coverage/schemeModelLines/4",
+      "target": "G20 Saloon",
+      "qualificationPlanPath": "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/g20/qualification-plan.json",
+      "qualificationPlanSha256": "611a40e2deb026166f6eb3875802db747bbe3395fe108636acfbe9b8a22b1da3",
+      "registration": {
+        "schemaVersion": "bmw-public-range-inventory-registration.v1",
+        "market": "GB",
+        "locale": "en-GB",
+        "catalogueRangeKey": "G20",
+        "pageModelCode": "S3MK",
+        "treeEffectDate": "2026-11-07",
+        "treeOrderDate": "2026-11-07"
+      },
+      "literalLeadSha256": "8edfad14d944801f68ea64682adaf0bef0a0378ac7d728c9dd139116a74b1168",
+      "allocationId": "f58-four-model-inventory-20261107-once-g20",
+      "requests": {
+        "page": "https://configure.bmw.co.uk/en_GB/configure/G20/S3MK",
+        "discover": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-07/order-dates/2026-11-07?gfs-policy=none&cluster=default&model-ranges=G20&future-models=true&closest-fallback=true"
+      },
+      "requestIdentitySha256": {
+        "page": "72a61b1f6d0b1422993e47d156eaee9d615aa96ddd4a4e8727c114b5580a9e8a",
+        "discover": "c51d2d9dae460c66900185c2b71724fd1e45efae8e74752cb1f827db32e96474"
+      },
+      "settingsRequest": {
+        "method": "GET",
+        "url": "unknown until this page identifies exactly one safe settings path",
+        "policy": "existing publicBmwInventoryOperations path grammar and configure.bmw.co.uk origin only; no guessed filename; one request counted; settings may be a shared bootstrap URL already observed in older contexts"
+      },
+      "phase": "remaining"
+    },
+    {
+      "id": "g22",
+      "originalRow": "/coverage/schemeModelLines/6",
+      "target": "G22 Coupe",
+      "qualificationPlanPath": "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/g22/qualification-plan.json",
+      "qualificationPlanSha256": "0f13f9322e2aeb62cb2fe98ab0aa841d2a13e7790698152a2024000ddab95ad6",
+      "registration": {
+        "schemaVersion": "bmw-public-range-inventory-registration.v1",
+        "market": "GB",
+        "locale": "en-GB",
+        "catalogueRangeKey": "G22",
+        "pageModelCode": "C4MA",
+        "treeEffectDate": "2026-11-07",
+        "treeOrderDate": "2026-11-07"
+      },
+      "literalLeadSha256": "185dc37448daf6e0a46b5b061caf66f291504c840b0ce2814e57903c5c344c32",
+      "allocationId": "f58-four-model-inventory-20261107-once-g22",
+      "requests": {
+        "page": "https://configure.bmw.co.uk/en_GB/configure/G22/C4MA",
+        "discover": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-07/order-dates/2026-11-07?gfs-policy=none&cluster=default&model-ranges=G22&future-models=true&closest-fallback=true"
+      },
+      "requestIdentitySha256": {
+        "page": "8a093429452f6e43e4f4597a2bd34c8a6ee27d53693db808db374abf78662ebc",
+        "discover": "b38a0d54eb45186449fbf4f98bb59d6d0343d9a29d82a98516b83eedd55ec102"
+      },
+      "settingsRequest": {
+        "method": "GET",
+        "url": "unknown until this page identifies exactly one safe settings path",
+        "policy": "existing publicBmwInventoryOperations path grammar and configure.bmw.co.uk origin only; no guessed filename; one request counted; settings may be a shared bootstrap URL already observed in older contexts"
+      },
+      "phase": "remaining"
+    },
+    {
+      "id": "g23",
+      "originalRow": "/coverage/schemeModelLines/7",
+      "target": "G23 Convertible",
+      "qualificationPlanPath": "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/g23/qualification-plan.json",
+      "qualificationPlanSha256": "62ae6d71b61b4a0eff18e31c64b1a5c438a14036b3d2cda4754b2c01c034872b",
+      "registration": {
+        "schemaVersion": "bmw-public-range-inventory-registration.v1",
+        "market": "GB",
+        "locale": "en-GB",
+        "catalogueRangeKey": "G23",
+        "pageModelCode": "A4MA",
+        "treeEffectDate": "2026-11-07",
+        "treeOrderDate": "2026-11-07"
+      },
+      "literalLeadSha256": "0414b27684d0b3d9d2649f2dff330a595a85797b396d83ce99c8ce7c45443908",
+      "allocationId": "f58-four-model-inventory-20261107-once-g23",
+      "requests": {
+        "page": "https://configure.bmw.co.uk/en_GB/configure/G23/A4MA",
+        "discover": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-07/order-dates/2026-11-07?gfs-policy=none&cluster=default&model-ranges=G23&future-models=true&closest-fallback=true"
+      },
+      "requestIdentitySha256": {
+        "page": "d2ed61872811a44138c8c78c5bf86f4a2b7590a7d6ed94e89b1f56f307a051cc",
+        "discover": "2b02208f82d04c41f78d96ee8cbeccca78f9fb9fa778aea5378e9a8899f91616"
+      },
+      "settingsRequest": {
+        "method": "GET",
+        "url": "unknown until this page identifies exactly one safe settings path",
+        "policy": "existing publicBmwInventoryOperations path grammar and configure.bmw.co.uk origin only; no guessed filename; one request counted; settings may be a shared bootstrap URL already observed in older contexts"
+      },
+      "phase": "remaining"
+    }
+  ],
+  "phases": {
+    "first": {
+      "contexts": [
+        "u06"
+      ],
+      "getCeiling": 3,
+      "settingsBootstrapGET": 1,
+      "grantId": "f58-four-model-inventory-20261107-once-first",
+      "releaseFile": "parent-release-first.json",
+      "maximumWallSeconds": 150
+    },
+    "remaining": {
+      "contexts": [
+        "g20",
+        "g22",
+        "g23"
+      ],
+      "getCeiling": 9,
+      "settingsBootstrapGET": 3,
+      "grantId": "f58-four-model-inventory-20261107-once-remaining",
+      "releaseFile": "parent-release-remaining.json",
+      "maximumWallSeconds": 450
+    }
+  },
+  "resources": {
+    "GET": 12,
+    "perContextSequence": [
+      "page",
+      "freshly-discovered-settings",
+      "discover"
+    ],
+    "perContextGET": 3,
+    "workers": 1,
+    "responseBytes": 1048576,
+    "decodedBytesPerContext": 4194304,
+    "decodedBytesAggregate": 16777216,
+    "operationTimeoutMs": 10000,
+    "sourceDeadlineMs": 90000,
+    "childSeconds": 105,
+    "supervisorSecondsPerChunk": 120,
+    "seriesSeconds": 600,
+    "maxAttempts": 1,
+    "retryDelayMs": 0,
+    "redirects": 0,
+    "settingsSharedBootstrapGET": 4,
+    "options": 0,
+    "solver": 0,
+    "images": 0,
+    "browser": 0,
+    "sourceWrites": 0,
+    "hostRAMBytes": 536870912,
+    "childRAMBytes": 469762048,
+    "scratchBytesPerChunk": 67108864,
+    "retainedBudgetBytes": 8388608,
+    "expectedRetainedBytes": 2097152,
+    "expectedScratchBytes": 1048576,
+    "expectedRAMBytes": 134217728,
+    "expectedSeconds": 60,
+    "stageHostRAMBytes": 536870912,
+    "stageChildRAMBytes": 469762048,
+    "stageScratchBytes": 67108864,
+    "phaseHostRAMBytes": 603979776,
+    "phaseReservationDiskBytes": 83886080,
+    "phaseMinimumRAMBytes": 335544320,
+    "phaseMinimumDiskBytes": 25165824,
+    "stageMinimumRAMBytes": 268435456,
+    "stageMinimumDiskBytes": 16777216,
+    "phaseSupervisorHeadroomBytes": 67108864,
+    "phaseReservationPurpose": "Serial stage reservation inherits outer phase token; 64MiB phase supervisor RAM and 16MiB disk headroom are added to the original stage budget. No parallel workers. Host lock is held only for ledger updates."
+  },
+  "settingsRules": {
+    "sequence": [
+      "page",
+      "one-literal-discovered-settings",
+      "discover"
+    ],
+    "grammar": "https://configure.bmw.co.uk/en_GB/settings.[a-zA-Z0-9]+.json; no whitespace; actual safe page cache must match",
+    "unknownBeforePage": true,
+    "bootstrapGETMayReuseInfrastructureURL": true,
+    "countedBootstrapGET": 4,
+    "redirect": "manual; no follow; original transport rejects redirects",
+    "retention": "safe request URL/SHA only; no request headers, raw HTML or settings document"
+  },
+  "commands": {
+    "first": "BMW_F58_FOUR_MODEL_PHASE_GRANT=f58-four-model-inventory-20261107-once-first /usr/bin/python3 -I -B /Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/run-series.py first",
+    "remaining": "BMW_F58_FOUR_MODEL_PHASE_GRANT=f58-four-model-inventory-20261107-once-remaining /usr/bin/python3 -I -B /Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/run-series.py remaining"
+  },
+  "releaseTemplates": {
+    "first": {
+      "status": "released-once",
+      "phase": "first",
+      "allocationId": "f58-four-model-inventory-20261107-once",
+      "planSha256": "REPLACE_WITH_EXACT_SERIES_PLAN_SHA256",
+      "GET": 3,
+      "contexts": [
+        "u06"
+      ],
+      "settingsBootstrapGET": 1
+    },
+    "remaining": {
+      "status": "released-once",
+      "phase": "remaining",
+      "allocationId": "f58-four-model-inventory-20261107-once",
+      "planSha256": "REPLACE_WITH_EXACT_SERIES_PLAN_SHA256",
+      "GET": 9,
+      "contexts": [
+        "g20",
+        "g22",
+        "g23"
+      ],
+      "settingsBootstrapGET": 3,
+      "reviewedFirstProofSha256": "REPLACE_WITH_ACTUAL_REVIEWED_U06_PROOF_SHA256",
+      "reviewedFirstReceiptSha256": "REPLACE_WITH_ACTUAL_REVIEWED_FIRST_RECEIPT_SHA256"
+    }
+  },
+  "releasePreconditions": [
+    "freeze final runner/supervisor/export/auditor/metadata pins and review scoped offline lifecycle evidence; existing protocol checks reused only when identity matches",
+    "parent reviews exact canonical page/tree requests, derived page normalization from preserved literal route and explicit 7November query dates; these dates are not observed catalogue validity",
+    "parent reconciles fresh named exclusion snapshot against any outside or parallel allocations and explicitly approves counted shared settings bootstrap reads",
+    "parent writes exact release and environment grant; absent grant refuses before allocation/network; exclusive output/consumed markers prevent replay"
+  ],
+  "resourceLifecycle": {
+    "hostRAMBytes": 536870912,
+    "childRAMBytes": 469762048,
+    "scratchBytesPerChunk": 67108864,
+    "retainedBudgetBytes": 8388608,
+    "expectedRetainedBytes": 2097152,
+    "expectedScratchBytes": 1048576,
+    "expectedRAMBytes": 134217728,
+    "expectedSeconds": 60,
+    "outputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f58-four-model-inventory-20261107-once",
+    "supervisorRoot": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/four-model-inventory",
+    "chunks": [
+      "u06",
+      "g20",
+      "g22",
+      "g23"
+    ],
+    "ownership": "Before allocation create per-chunk absolute owned scratch and outside manifest, register parent supervisor finalizer and short-held shared host reservation; propagate TMPDIR/TMP/TEMP. First output write is retained primary in OneDrive. Do not touch either worktree dependency link.",
+    "checkpoint": "Consumed once marker per exact context and phase; retain actual request-start/header counts, safe primary, receipt and sealed projection on every outcome before scratch removal. Stop after first context for parent actual-size/shape/proof review before releasing the remaining nine GETs. Never replay a consumed failed allocation.",
+    "teardown": "Stop/join all owned children; independent group/scratch/reservation and immutable pin checks. Remove disposable scratch before next chunk; retain bounded summary and useful failure logs; report final actual retained bytes, removed allocation, compatibility exceptions and named leftovers. No source/compiler/browser-profile exception planned."
+  },
+  "claimBoundary": {
+    "preparer": "Charlie Dog /root/charlie_dog; requested Sol/high, effective runtime not independently confirmed; no descendants",
+    "worktree": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+    "branch": "dev/DEV-2026-11-04-035",
+    "existingWorkItem": "DEV-2026-11-04-035 / FUCQ-62 remains claimed by usget; preparation serves root-authorised FUCQ-58 coverage work; no claim/status/ownership changes",
+    "launcherResponsibility": "Root retains all existing claims, source release and resource lifecycle responsibility"
+  },
+  "excluded": [
+    "failed selector allocation missing20-selector-20261107-once",
+    "F44 prior empty/HTTP400 contexts",
+    "I20 diagnostic-alias-limit allocation",
+    "all existing source model/AG/alias assumptions",
+    "generation successors including G50 replacing G20",
+    "combustion/electric/body substitution",
+    "options/solver/candidate/image collection",
+    "real VIN/plate/serial sampling or retained raw HTML/settings/headers",
+    "production source grammar repair or dependency-link mutation"
+  ],
+  "sourceGrant": false,
+  "additionalSourceRequests": 0,
+  "admitted": 0,
+  "qualifiedSchemeJoins": 0,
+  "qualifiedPhysicalFacts": 0,
+  "acceptance": false
+}

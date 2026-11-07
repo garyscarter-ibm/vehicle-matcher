@@ -1,0 +1,210 @@
+{
+  "schemaVersion": "1",
+  "version": "1",
+  "policyRead": {
+    "asOf": "2026-11-06T00:00:00.000Z",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "captureVersion": "bmw-complete-selection.v1",
+  "planId": "g42-optional-axis-actual48-20261107-preparation-session066",
+  "seed": "g42-actual48-optional-axis-direct-product-20261107",
+  "source": {
+    "id": "bmw-uk-public",
+    "kind": "public-bmw-uk",
+    "version": "f59-model-axis-batch-20261107.v1"
+  },
+  "context": {
+    "catalogueDate": "2026-11-01",
+    "market": "GB",
+    "locale": "en-GB",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05"
+  },
+  "models": [
+    "2PBC"
+  ],
+  "target": 8,
+  "candidateCount": 8,
+  "qualificationDate": "2026-11-07",
+  "modelRegistration": {
+    "schemaVersion": "bmw-public-model-registration.v1",
+    "modelCode": "2PBC",
+    "agModelCode": "52FA",
+    "catalogueRangeKey": "G42",
+    "rawModelRange": "G42",
+    "aliases": [
+      "2"
+    ],
+    "market": "GB",
+    "locale": "en-GB",
+    "steering": "RL",
+    "catalogueDate": "2026-11-01",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05"
+  },
+  "lineRegistration": {
+    "lineKey": "S033B",
+    "defaultModel": {
+      "modelCode": "2PPA",
+      "agModelCode": "12CM"
+    },
+    "includedIndex": 2,
+    "optionsQuery": {
+      "kind": "trim",
+      "code": "S033B"
+    }
+  },
+  "candidateDefinitionBasis": {
+    "path": "docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2pbc/options.json",
+    "artifactSha256": "8a1c8c0f50e2a998b666863a2b93a1d7040dcaa2d87b93fce6a873b2ec368cab",
+    "role": "actual direct typed definitions; fresh model/line/definitions required before solver"
+  },
+  "limits": {
+    "maxCandidates": 8,
+    "requestBudgets": {
+      "page": 1,
+      "settings": 1,
+      "discover": 1,
+      "options": 1,
+      "solve": 8
+    },
+    "maxAttempts": 1,
+    "operationTimeoutMs": 10000,
+    "deadlineMs": 120000,
+    "retryDelayMs": 0,
+    "concurrency": 1,
+    "cacheEntries": 16,
+    "cacheRetentionMs": 86400000,
+    "checkpointBytes": 4194304,
+    "imageRequests": 0,
+    "sourceAttempts": 12,
+    "sourceBytes": 4194304,
+    "responseBytes": 1048576
+  },
+  "candidates": [
+    {
+      "candidateId": "candidate-f635cac0cdcaaa1424398cd6",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0475",
+          "S01HD",
+          "S033B",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-91ad5c1274092255d072d220",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0475",
+          "S01HD",
+          "S033B",
+          "S04H0",
+          "S07A2"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-fe87a06758506f55ee4eddbf",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0475",
+          "S01HD",
+          "S033B",
+          "S04H1",
+          "S07A2"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-f3f26a9e45f387219e5c3474",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0300",
+          "S01HC",
+          "S033B",
+          "S07A2"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-0eed1cba54f841a72384bee3",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0475",
+          "S01HC",
+          "S033B",
+          "S04LN",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-46e04832e8e7d7ba05d3e17a",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0300",
+          "S01HC",
+          "S033B",
+          "S04H0"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-4c448083d08f1f779a40a19f",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0475",
+          "S01HC",
+          "S033B",
+          "S04LN",
+          "S07A2"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-1d3b045950deee964df0b05b",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0475",
+          "S01HC",
+          "S033B",
+          "S04H1"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    }
+  ]
+}

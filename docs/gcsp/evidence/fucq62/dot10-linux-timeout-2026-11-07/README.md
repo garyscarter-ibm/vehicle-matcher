@@ -1,0 +1,9 @@
+# Linux scoped build timeout — diagnosis and proposal
+
+Actual run `42347409603`, job `128328033279`, exact code `e3fd747dab2765e314633908e99d3c0c31283606` failed with exit `124` on Node `v20.20.2`. Dependency installation succeeded in 492ms. The failure/cleanup occurred about 124.36 seconds later, reported 367,300KiB of owned scratch and confirmed its removal. The asset/restore output files were redirected into that scratch and not printed before deletion. The five-reference boundary and final assertions were not observed running.
+
+A roughly 64-second successful download followed by the 60-second offline cap fits the timestamps, but no retained phase marker or restore JSON proves that sequence. The exact timeout location remains unresolved; neither restore nor the scoped boundary is claimed passing.
+
+`ci.patch` and `ci-proposal.yml` are reviewable proposals against the actual root workflow. They change only the offline cap from 60 to 120 seconds and add bounded phase timing/exit markers plus the two already-sanitized production restore JSON results before cleanup. Individual command caps now sum to 570 seconds within the existing ten-minute job limit. Network/retry/reference budgets and all assertions are unchanged: 26 exact assets, five scoped references, two actual scoped consumer failures and 1,313 retained original consumer failures, acceptance false. No full 4,668-reference replay or full suite is added.
+
+The proposal has not been applied or executed. Validation is YAML/Bash/inline JavaScript syntax, exact before/after hashes and read-only patch application checking. The original failure log and diagnosis are retained. The finding is a Medium tooling issue linked in origin to FUCQ-62; a linked backlog Bug should be reused/created independently without expanding its acceptance criteria or waiving the unrun Linux evidence.

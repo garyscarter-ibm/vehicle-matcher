@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "typed-axis1024-retained-recovery-resume.v1",
+  "originalSeriesPlanSha256": "96ec8dc874241bfe9b2a2928d226d88a4b9cbb073a8ebddb05ac12c5efa694c2",
+  "originalFrozenCommit": "ddd1d846319d14acb39f25f6521259dd4402dea9",
+  "scope": "Retained-only diagnostic and continuation of exact original chunks04..32; no source replay or added requests",
+  "codePins": {
+    "resume-series.py": "9d9367a0c0cb0cf58f831112fe1f933e6fa86fd27b7956be37a594786db16c40",
+    "verify-retained-direct.py": "fc63264fecc82cd381c81ea81879eb340597d74c8ffa60f5331452a1724ed2c9"
+  },
+  "provedChunk03Pins": {
+    "live-validation.json": "6f50acf7739ad803345ff28c148422fff410243c91461f58b06d5fb0b7dc96ad",
+    "collector-checkpoint.json": "edf118ecf85b63f9ff35377ae72c108f418c05f8e70d2cdc0543fd381ea5ca6d",
+    "final-canonical-index.json": "08df739b99706f0d1e7022f8b3d907cdc709b64b73ab69a750d0c860fb167f80",
+    "final-spent-request-index.json": "ca6d13394d96c48daf437592da6f8eaae0f02dcc04e678440732008d46be84f7"
+  },
+  "failedRetainedAttempt": {
+    "resultPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-typed-axis1024-20261107-once/supervisor/chunk03/retained-result.json",
+    "resultSha256": "36ecc65de57188277fae86276c9e98b81b4c4e4e0c757b021218aa77465699fe",
+    "logPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-typed-axis1024-20261107-once/supervisor/chunk03/retained.log",
+    "logSha256": "477b12db6b6e57d4cd3d9ee40ce42cae8584c187518694e214704d3a3e546965",
+    "rc": 7,
+    "summary": {},
+    "cause": "Unknown abrupt isolated Node runner exit; no assertion failure or resource issue was reported. RAM cap not established."
+  },
+  "retainedDiagnostic": {
+    "resultPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-typed-axis1024-20261107-once/supervisor/chunk03/retained-diagnose01/retained-result.json",
+    "resultSha256": "ce90a3ffdd4bdaeb3515614e994a63f88952b3410ff0786b2bb33a9a2cc99b56",
+    "onlyCommandChange": "--test-isolation=none",
+    "summary": {
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "sourceTraffic": 0,
+    "peakRssBytes": 206405632,
+    "removedScratchBytes": 520288
+  },
+  "spentPrefix": {
+    "originalBaseline": 558,
+    "thisSeries": 96,
+    "currentTotal": 654,
+    "completedProvedChunks": [
+      1,
+      2,
+      3
+    ],
+    "actualGets": 108,
+    "decodedBytes": 3112626,
+    "newlyAccepted": 96,
+    "duplicates": 0,
+    "rejected": 0
+  },
+  "remaining": {
+    "chunks": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32
+    ],
+    "candidates": 928,
+    "maximumGets": 1044,
+    "requestIdentity": "Original pinned templates; exact no-overlap against current654spent; no previous output directory exists"
+  },
+  "bounds": {
+    "original1800SecondsSinceMarkerRemainBinding": true,
+    "totalGets": 1152,
+    "totalDecodedBytes": 268435456,
+    "responseBytes": 1048576,
+    "hostRamBytes": 536870912,
+    "childRamBytes": 469762048,
+    "scratchBytes": 67108864,
+    "retainedShardBytes": 33554432,
+    "retainedBudgetBytes": 1073741824,
+    "worker": 1,
+    "retries": 0
+  },
+  "preservation": "Original series receipt/checkpoint/cleanup/marker and failed log unchanged; resumed receipts and exclusive marker have separate names",
+  "acceptance": false
+}

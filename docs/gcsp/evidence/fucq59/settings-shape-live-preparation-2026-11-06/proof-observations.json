@@ -1,0 +1,18 @@
+[
+  {
+    "case": "response-overrun",
+    "thresholdBytes": 128,
+    "accountedBytes": 222,
+    "overrunBytes": 94,
+    "httpAttempts": 2,
+    "downstreamAttempts": 0
+  },
+  {
+    "case": "aggregate-overrun",
+    "thresholdBytes": 100,
+    "accountedBytes": 243,
+    "overrunBytes": 143,
+    "httpAttempts": 2,
+    "downstreamAttempts": 0
+  }
+]

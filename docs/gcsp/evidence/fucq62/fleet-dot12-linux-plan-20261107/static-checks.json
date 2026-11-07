@@ -1,0 +1,15 @@
+{
+  "scope": "static-only proposal review; no runtime/tests/network",
+  "planSha256": "5041c2445d62e0df299a080bf9b6a69f2cce627dac45a0ed67a70d5bb1e62f28",
+  "rootBeforeMatches": true,
+  "proposalMatches": true,
+  "gitApplyCheck": "PASS; unapplied",
+  "diagnosticBlockByteIdentical": true,
+  "coldPlanHashUnchanged": true,
+  "helperPinsUnchanged": true,
+  "publicReceiptHashMatches": true,
+  "phaseCeilingsSeconds": 570,
+  "newSourceRequests": 0,
+  "newRuntimeExecution": false,
+  "acceptance": false
+}

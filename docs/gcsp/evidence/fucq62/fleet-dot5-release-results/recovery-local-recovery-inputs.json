@@ -1,0 +1,10 @@
+{
+  "status": "exact-local-cache-ready-public-evidence-reused",
+  "releaseId": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+  "files": 20,
+  "bytes": 26096498,
+  "sourceStoreUnchanged": true,
+  "providerEgress": 0,
+  "publicNetworkRepeated": false,
+  "previousPublicReceipts": "../download/download-receipt.json and offline-restart-receipt.json"
+}

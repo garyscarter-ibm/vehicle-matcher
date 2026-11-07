@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-100",
+  "recordedAt": "2026-11-06T15:49:54.786034+00:00",
+  "scope": "Targeted current registry/reset two cases only",
+  "passed": true,
+  "grantConsumedOnce": true,
+  "testedHead": "6bd1f0ee1cb9fee3931582d39c07d212838eda0d",
+  "testedTree": "9564b8bffaa7d8770e63a9c24fe8e6905ccd6b50",
+  "codeKey": "be3ffac3920c8ec04e09b3931def490ad2c7eaf60045711469f723722304232b",
+  "testSHA256": "b6d4ee104056135d88b8ed99fe4d6c0bd0409bc0f0379a391359ae0fa2034ea7",
+  "plan": {
+    "path": "docs/gcsp/evidence/fucq100/composition-registry-reset-plan-2026-11-06.json",
+    "sha256": "5a4f537f7e1fa49273fb65c1b36d6f385a40e6565b5e241f6df1bd8586c24968"
+  },
+  "driverSHA256": "5c52dd32d30849547c764df8ce260b484297f0f49a5ae413ce63ff2ce611169a",
+  "sourceReviewSHA256": "5001e667f2ecc9bff0cce86c628dced58b7ba7b76493e4961c9a11fe2d92f0d5",
+  "executionAdmission": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/reviews/fucq100-registry-reset-execution-admission-1541.md",
+    "sha256": "688c83dd22a56f7324a618d203896924cd6c4c5f52c482aff73163b795aa5705"
+  },
+  "grant": {
+    "id": "fucq100-registry-reset-root-1541-20261106",
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/coordination/fucq100-registry-reset-execution-grant-1541.json",
+    "sha256": "8c2f4a1571a1bd710d018c25a6887ee7b61420455dad2c7f3d3348d621bcd23a"
+  },
+  "command": [
+    "/opt/homebrew/bin/node",
+    "--no-warnings",
+    "--require",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-preload.cjs",
+    "--experimental-loader",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/runtime-composition-loader.mjs",
+    "--test-concurrency=1",
+    "--test-reporter=tap",
+    "--test",
+    "--test-name-pattern=^(?:C1 release registry is preseal and memoized while ordinary startup releases nothing|C1 real mechanics reset rejects stale employee and refuses missing fresh run TEST profile)$",
+    "server/test/gcsp-runtime-composition.test.js"
+  ],
+  "commandSHA256": "27e4ef5c7caf32186cfe427240ccc326761553b3761bf54bb9fdaec86523abf0",
+  "titles": [
+    "C1 release registry is preseal and memoized while ordinary startup releases nothing",
+    "C1 real mechanics reset rejects stale employee and refuses missing fresh run TEST profile"
+  ],
+  "counts": {
+    "tests": 2,
+    "pass": 2,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "workerSeconds": 8.372299749999996,
+  "wholeSeconds": 108.228229,
+  "chargedPeakRssBytes": 716750848,
+  "completedDirectChildPeakRssBytes": 286326784,
+  "combinedOwnedDiskPeakBytes": 2412736,
+  "combinedLogsPeakBytes": 1469669,
+  "retainedArtifactBytes": 612990,
+  "limits": {
+    "workers": 1,
+    "workSeconds": 120,
+    "wholeSeconds": 180,
+    "ramBytes": 805306368,
+    "combinedDiskBytes": 134217728,
+    "combinedLogBytes": 2097152,
+    "combinedReceiptBytes": 262144,
+    "ramReserveBytes": 536870912,
+    "diskReserveBytes": 5368709120
+  },
+  "cleanup": {
+    "scratchAbsent": true,
+    "groupsAbsent": true,
+    "pidsAbsent": true,
+    "joined": true,
+    "openFilesAbsent": true,
+    "reservationAbsent": true
+  },
+  "cleanupErrors": [],
+  "removedScratch": {
+    "path": "/private/tmp/test-stamp-shard-ae68aaaf13f74cf3a6a2e7e979fa3765",
+    "device": 16777232,
+    "inode": 173652803,
+    "state": "removed"
+  },
+  "openFileProof": {
+    "executable": "/usr/sbin/lsof",
+    "returncode": 1,
+    "sha256": "28c36d6b6dfcce1f544717b0d1961aa03441ee0a736fee3e1eaeb215c0fbff4c",
+    "stderr_bytes": 0,
+    "stdout_bytes": 0
+  },
+  "launchKinds": {
+    "metadata-git": 34,
+    "selected-command": 1,
+    "open-file-probe": 1
+  },
+  "joinedLaunches": 36,
+  "observedPidHistories": 133,
+  "nullStartHistories": 93,
+  "reservationToken": "ae68aaaf13f74cf3a6a2e7e979fa3765",
+  "lockedLedgerReadback": {
+    "at": "2026-11-06T15:49:54.784402+00:00",
+    "path": "/Users/garycarter/.cache/agent-scaffolding/test-resources/reservations.json",
+    "allRowCount": 0,
+    "exactTokenAbsent": true,
+    "foreignRowsModified": false
+  },
+  "sourceUnchanged": true,
+  "moduleJournals": {
+    "esm-modules.jsonl": {
+      "rows": 2118,
+      "uniquePaths": 317,
+      "allAdmittedBytesMatch": true,
+      "sha256": "a5a50affc41907b4a6cb46188efe0ae1a2d0d78d109b5fe96da8df84e0950f11"
+    },
+    "cjs-modules.jsonl": {
+      "rows": 992,
+      "uniquePaths": 990,
+      "allAdmittedBytesMatch": true,
+      "sha256": "41973b082e398476fa132720db11beba6034ae96316b417c1a456ddf4ce913f5"
+    }
+  },
+  "environmentSHA256": "e4bdbc67858e4bb0e3a68b885e6cd10b318ec9f819171949b4ecb7a5ae6e86c8",
+  "records": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/composition-registry-2026-11-06/registry-reset",
+  "artifacts": {
+    "esm-modules.jsonl": {
+      "bytes": 403951,
+      "sha256": "a5a50affc41907b4a6cb46188efe0ae1a2d0d78d109b5fe96da8df84e0950f11"
+    },
+    "cjs-modules.jsonl": {
+      "bytes": 187875,
+      "sha256": "41973b082e398476fa132720db11beba6034ae96316b417c1a456ddf4ce913f5"
+    },
+    "raw.log": {
+      "bytes": 611,
+      "sha256": "6b26d67c1e68338b5a64a73db5e9e7f213eb3b30e9753b6c518dbde5e897f7c9"
+    },
+    "provisional.json": {
+      "bytes": 2616,
+      "sha256": "a01a4550c813fc554b1000c3049633d9abb0c0482a6632ae5ee3267f6872d1bb"
+    },
+    "execution.json": {
+      "bytes": 1749,
+      "sha256": "25e4694c1107fe0e6c081d03a3f1ef8586d13baacb853f8c1375b06b1efcfcfb"
+    },
+    "receipt.json": {
+      "bytes": 1849,
+      "sha256": "e3d811192e91672fed4f54394ffc0ab45ab868e0d334036dc9217437bbedc2a8"
+    },
+    "ownership/ae68aaaf13f74cf3a6a2e7e979fa3765.json": {
+      "bytes": 11290,
+      "sha256": "24310734dfc5c4632b5ac0c604b704fa835057341b1415e603d96f63d43c7cce"
+    },
+    "targeted/targeted-be3ffac3920c8ec04e09b3931def490ad2c7eaf60045711469f723722304232b-default-1793980120973536000.json": {
+      "bytes": 3049,
+      "sha256": "3ba91f696e95ef738225c3967eb51f9c64157cf3245e7cd14e97c143b6e749dc"
+    }
+  },
+  "coverageBoundary": "Observed module bytes and two selected TAP cases; function/branch coverage unknown. No browser, native database, live source or integrated full suite.",
+  "remainingAcceptance": [
+    "Original backend acceptance and affected changed interfaces mapped to current combined bytes",
+    "Actual Resume7 and rendered desktop/narrow/keyboard evidence",
+    "Authored repository contracts and integrated npm test"
+  ],
+  "nextIntegration": [
+    "Adopt exact FUCQ-71 acknowledgement correction 698887b55b134d4d6d4e95642cc93b9ea9603f73; do not merge whole branch",
+    "Adopt exact FUCQ-122 page repair aa64700fa5b20d7a95ab42b9dcc8cb236ce0b2cd",
+    "Extend existing HTTPS common host with bounded help/Greg/queue/presenter pages and existing trusted acting-session boundary; no new service"
+  ],
+  "preserved": "Source plan executionAuthorised:false remains immutable; separate grant was consumed once. Prior controllers, receipts, original1315 HOLD and pauses/foreign claims unchanged.",
+  "independentCollection": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq100-registry-reset-root-1541.json",
+    "sha256": "69f1d889f5ac723edfe3144d96eed55f1aeed68215df6e169e074026a437edca",
+    "passed": true,
+    "checks": 20,
+    "ownedPidsAbsent": 134,
+    "ownedGroupsAbsent": 37,
+    "queryChildrenJoined": true,
+    "lsofBoundary": "Root post-deletion lsof only confirms absent pathname. Pre-deletion open-file absence is proved by the controller manifest pinned lsof rc1 with zero stdout/stderr."
+  },
+  "outerSupervisor": {
+    "sessionId": 25863,
+    "exitCode": 0,
+    "joined": true
+  }
+}

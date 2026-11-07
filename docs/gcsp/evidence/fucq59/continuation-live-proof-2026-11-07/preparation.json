@@ -1,0 +1,221 @@
+{
+  "schemaVersion": "f59-continuation-live-proof-preparation.v1",
+  "status": "prepared only; no execution, allocation grant, marker or source traffic",
+  "date": "2026-11-07",
+  "reviewedHighFixCommit": "4f677f58ef49ed2def25ac32d805bdaa305ff267",
+  "collectorSha256": "e1f473486cefc55c9aea8a342c614e6beefd05594ec12e46584bf12af82103cb",
+  "planDigest": "df8dca826d812f65e972e5396f4305244eaf68154d7c9f40797b95c83b2eed71",
+  "planFileSha256": "067ff3523ba174789f37bceeb935f2067aa40d0fcd440315757f292d05bc890e",
+  "reservation": {
+    "path": "docs/gcsp/evidence/fucq61/continuation-candidate-reservation-2026-11-07.json",
+    "fileSha256": "2d84ec8a82d2b8b7a72ee694520b4e501a7f9dc1fdf312fb7684565f5c7bf99e",
+    "workingCopy": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+    "status": "Minnie committed/pushed reservation; root to integrate and revalidate current unspent claims before grant",
+    "commit": "7fdccb66491157c05fed98ea034b45a493adf265"
+  },
+  "sourceEvidence": {
+    "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/final-canonical-index.json": {
+      "fileSha256": "30321ec3074c044700b1c77b8f15322f7f18910fd4723cb041912b7d66b1671c",
+      "canonicalDigest": "f6a6fc378ebf01ecd4828c0f8d648192728b61a6ec57da8c37064fa4a2e34d40"
+    },
+    "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/final-spent-request-index.json": {
+      "fileSha256": "5125cbc694f93dc34138fec3c53a2f1eb3fe305ae859b3a617bf23e4a5610978",
+      "canonicalDigest": "4053cf5826ef9ac16d55b318cb34b8f38da58fc9b2ad01c5dea355c1a4b583ce"
+    },
+    "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk10/collection-plan.json": {
+      "fileSha256": "33e13fd625b8a43a09f68f00449d4efa30dc1959ad71b0c19009aae530f9b5fd",
+      "canonicalDigest": "8d7f6bdb011d4dc59d01ae9339684669e1e69ea741ffb2f19b49fd20a3a36ee7"
+    },
+    "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk10/tree.json": {
+      "fileSha256": "ae4150853d2fd05c7843a0df3a9b3a5d777e8fd8fc485568a31dfb3d5ed1d0fc",
+      "canonicalDigest": "29e3ce24a0a6e71f3a5c934b08e8edbbe8abd4c088569d6803702285af08485d"
+    },
+    "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk10/options.json": {
+      "fileSha256": "55a13acfe621cb96aafe635de9948fdccd15e52da10d814c41cfd52d1c94e1e3",
+      "canonicalDigest": "24710fa7b3138e8105d6812bff1e3a692a59ed59206541f119bca06cf219b37c"
+    }
+  },
+  "sourceContext": {
+    "source": {
+      "id": "bmw-uk-public",
+      "version": "f59-batch-20261107.v1",
+      "kind": "public-bmw-uk"
+    },
+    "modelRegistration": {
+      "schemaVersion": "bmw-public-model-registration.v1",
+      "modelCode": "T5MJ",
+      "agModelCode": "72HH",
+      "catalogueRangeKey": "G61E",
+      "rawModelRange": "G61",
+      "aliases": [
+        "5",
+        "I"
+      ],
+      "market": "GB",
+      "locale": "en-GB",
+      "steering": "RL",
+      "catalogueDate": "2026-11-01",
+      "orderDate": "2026-11-01",
+      "effectDate": "2027-01-05",
+      "optionsTrim": "S0337"
+    },
+    "qualificationDate": "2026-11-07",
+    "policyRead": {
+      "asOf": "2026-11-06T00:00:00.000Z",
+      "policyVersion": "gcsp-policy-v1"
+    }
+  },
+  "candidates": [
+    {
+      "candidateId": "candidate-e384e23e4375b5f677c65619",
+      "request": {
+        "includedElements": [
+          "FKSFU",
+          "P0300",
+          "S0337",
+          "S03G9",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "registeredRequestDigest": "e384e23e4375b5f677c656192cf1ea776c70847df4a0b47d9bfff52a6fad805a",
+      "registeredDigestBasis": "inputDigest({modelRegistration: plan.modelRegistration, request: candidate.request})",
+      "rawRequestDigest": "e76e9acb3ffb9a4b9282d226ffd54e0fecf370e179186106dd0c8fd2ec641812",
+      "solverUrl": "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/T5MJ?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKSFU%2CP0300%2CS0337%2CS03G9%2CS043L&mandatory-elements=S0337",
+      "canonicalConfigurationId": null
+    },
+    {
+      "candidateId": "candidate-c9eeb5c73605462a742f76bf",
+      "request": {
+        "includedElements": [
+          "FKSFU",
+          "P0300",
+          "S0337",
+          "S03GD",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "registeredRequestDigest": "c9eeb5c73605462a742f76bf8fc4447bc2f5f5e346f4ca8741c8933262ce6e20",
+      "registeredDigestBasis": "inputDigest({modelRegistration: plan.modelRegistration, request: candidate.request})",
+      "rawRequestDigest": "408935ca734f5fa15fcb6db0a313fbd00c2e4470ccff7744c424413939952e95",
+      "solverUrl": "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/T5MJ?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKSFU%2CP0300%2CS0337%2CS03GD%2CS043L&mandatory-elements=S0337",
+      "canonicalConfigurationId": null
+    }
+  ],
+  "priorIndex": {
+    "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/final-canonical-index.json",
+    "fileSha256": "30321ec3074c044700b1c77b8f15322f7f18910fd4723cb041912b7d66b1671c",
+    "entries": 343,
+    "priorSourceAdmitted": 340,
+    "requestIndexPath": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/final-spent-request-index.json",
+    "requestIndexFileSha256": "5125cbc694f93dc34138fec3c53a2f1eb3fe305ae859b3a617bf23e4a5610978",
+    "spentSolverRequests": 405
+  },
+  "batchBinding": {
+    "producerPins": {
+      "projectorSha256": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+      "qualifierSha256": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+      "sessionSha256": "1f22fe1cdf27d3e6f2be015e32b69b5ecc435c546fe9964396270e3db6e9421e",
+      "policyVersion": "gcsp-policy-v1"
+    },
+    "snapshotVersion": "bmw-gb-t5mj-continuation-proof-2026-11-07.v2",
+    "existingConfigurationIdsBasis": "Load exact configurationId values from the pinned343-entry canonical index; do not count reference/fixture entries as new source capacity."
+  },
+  "allocationA": {
+    "status": "not granted/not created/not spent",
+    "attempts": 5,
+    "bytes": 2097152,
+    "operationBudget": {
+      "page": 1,
+      "settings": 1,
+      "discover": 1,
+      "options": 1,
+      "solve": 2
+    },
+    "plannedTraffic": "page/settings/tree/options + candidate0; no retry",
+    "interrupt": "onPhase outcome-committed cursor1 throws designated process-interruption sentinel; runner exits and process B starts separately. If hook is missed, 5-attempt ceiling prevents candidate1.",
+    "expectedCheckpoint": {
+      "cursor": 1,
+      "halted": null,
+      "httpAttempts": 5
+    },
+    "qualification": "Need a source-bound complete selection; nonconstructible/refused/error path does not establish intended proof."
+  },
+  "allocationB": {
+    "status": "not granted/not created/not spent",
+    "attempts": 5,
+    "bytes": 2097152,
+    "limits": {
+      "maxCandidates": 2,
+      "requestBudgets": {
+        "page": 1,
+        "settings": 1,
+        "discover": 1,
+        "options": 1,
+        "solve": 1
+      },
+      "maxAttempts": 1,
+      "operationTimeoutMs": 10000,
+      "deadlineMs": 45000,
+      "retryDelayMs": 0,
+      "concurrency": 1,
+      "cacheEntries": 10,
+      "cacheRetentionMs": 86400000,
+      "checkpointBytes": 8388608,
+      "imageRequests": 0,
+      "sourceAttempts": 5,
+      "sourceBytes": 2097152,
+      "responseBytes": 1048576
+    },
+    "continuation": {
+      "checkpointPath": "exact absolute phase A checkpoint after root chooses owned run path",
+      "checkpointSha256": "derive exact bytes only after phase A; never prefill/rewrite"
+    },
+    "plannedTraffic": "fresh page/settings/tree/options + only candidate1; candidate0 solver must never repeat"
+  },
+  "combinedBounds": {
+    "bootstrapGets": 8,
+    "solverGets": 2,
+    "totalGets": 10,
+    "retries": 0,
+    "decodedBytes": 4194304,
+    "perResponseBytes": 1048576,
+    "concurrency": 1,
+    "images": 0,
+    "sourceWrites": 0,
+    "maximumPhaseWallSeconds": 45
+  },
+  "preflight": [
+    "Root integrates/reviews High fix and owns explicit fresh finite source grant; preparation itself grants no traffic.",
+    "Revalidate exact canonical/spent/reservation/plan/module hashes and no active source lane or overlapping candidate claim before any marker.",
+    "Both candidates must remain absent from latest spent index; compare registeredRequestDigest expression exactly. Reconcile any newer canonical IDs.",
+    "Require same qualification day and unchanged plan/source/policy/producer pins across both phases.",
+    "Create run-owned scratch and outside ownership manifest/supervisor; one worker64MiB scratch512MiB host448MiB child90s chunks, shared host reservation, ownedTMPDIR, useful bounded logs/checkpoints, join/cleanup evidence.",
+    "Preserve original+continuation spent markers; select exactly one successor due FUCQ-152; never reset markers or spend pilot320 allowances."
+  ],
+  "proofChecks": [
+    "Phase A has exactly4bootstrap+1solver; persisted cursor1 and unhalted interrupted state; retain exact checkpointSHA and configuration/capture bytes.",
+    "Phase B uses new allocation/statePath; fresh tree/options report+rawresponseSHA match phase A before candidate1 solver.",
+    "Combined operation counts are page2/settings2/discover2/options2/solve2 and HTTP10 if both phases complete; prior5+fresh5 shown explicitly.",
+    "Candidate0 solver URL occurs exactly once across both phases; phase B has only candidate1 solver URL.",
+    "Predecessor bytes/marker and prior accepted/duplicate/capture identities remain exact. Both returned captures strictly requalify through original binder and existing adapter.",
+    "Completed phase B restart performs zero calls. No publication, defaultstore edit, stock/VIN/profile/imagery claim."
+  ],
+  "stopRules": [
+    "Any401/403/429,source refusal,substitution,shape,sensitiveprojection or unknown halt is terminal for continuation; do not create phase B marker.",
+    "Changed source context/rawhash stops before new solver; no further allowance or retry follows.",
+    "If phase A cannot produce intended complete source-bound outcome or leaves partialbootstrap, record actual incomplete evidence and stop for root review.",
+    "If phaseB under-target due canonical overlap, preserve honest duplicate/admission counts; max2 requests cannot promise2 distinct new configurations."
+  ],
+  "knownDefect": {
+    "key": "FUCQ-152",
+    "severity": "Medium",
+    "limitation": "different allocation IDs can fork one predecessor; use one chosen successor; no repair in this proof"
+  },
+  "acceptance": "not established; no actual execution or network proof in preparation"
+}

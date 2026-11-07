@@ -1,0 +1,619 @@
+{
+  "schemaVersion": "scheme-line-breadth-target-ledger.v1",
+  "preparedDate": "2026-11-07",
+  "targetPath": "server/data/gcsp/vehicle-evidence/fleet-plan.json",
+  "targetSha256": "2b9d9799722f9f012dcac75d0a08003bb382acf7d077f871546eeb8f85bb1f9b",
+  "sourceTargetCount": 31,
+  "sourceTargetListRole": "October2024 eligibility only; all source facts require actual returned tree/typed evidence",
+  "entries": [
+    {
+      "index": 0,
+      "schemeModelLine": "F70 Sports Hatch",
+      "targetPointer": "/coverage/schemeModelLines/0",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [
+        "docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/final-stage1-receipt.json",
+        "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/series-receipt.json"
+      ],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "actual-source-model-evidence; scheme join incomplete",
+      "next": "Use retained actual complete source tree/typed evidence and cumulative solver outcomes; independently establish exact scheme join and remaining original coverage obligations."
+    },
+    {
+      "index": 1,
+      "schemeModelLine": "F44 Gran Coupe",
+      "targetPointer": "/coverage/schemeModelLines/1",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [
+        "docs/gcsp/evidence/fucq-58/scheme-catalogue-2026-11-05/observation.json",
+        "docs/gcsp/evidence/fucq-58/historical-f44-2026-11-05/observation.json"
+      ],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "explicit-unresolved-dated-F44-gap",
+      "next": "Retain dated HTTP200 empty object and separate historical HTTP400 as limited observations. Obtain an evidence-backed exact F44 discovery input; never substitute successor or infer discontinued/global-unavailable status."
+    },
+    {
+      "index": 2,
+      "schemeModelLine": "G42 Coupe",
+      "targetPointer": "/coverage/schemeModelLines/2",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [
+        "docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/typed-axes-index.json",
+        "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/execution-plan.json"
+      ],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "actual-source-six-model-options; solver allocation prepared",
+      "next": "Separately release exact typed pilot; count only actual distinct admitted records. Scheme join and original coverage remain incomplete."
+    },
+    {
+      "index": 3,
+      "schemeModelLine": "U06 Active Tourer",
+      "targetPointer": "/coverage/schemeModelLines/3",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "unresolved-no-retained-exact-page-seed",
+      "next": "Obtain a separately authorised evidence-backed exact discovery seed. Preserve the scheme label and generation gap; do not invent a seed, AG, range alias, model code or substitute generation."
+    },
+    {
+      "index": 4,
+      "schemeModelLine": "G20 Saloon",
+      "targetPointer": "/coverage/schemeModelLines/4",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "unresolved-no-retained-exact-page-seed",
+      "next": "Obtain a separately authorised evidence-backed exact discovery seed. Preserve the scheme label and generation gap; do not invent a seed, AG, range alias, model code or substitute generation."
+    },
+    {
+      "index": 5,
+      "schemeModelLine": "G21 Touring",
+      "targetPointer": "/coverage/schemeModelLines/5",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": {
+        "id": "g21",
+        "catalogueRangeKey": "G21",
+        "pageModelCode": "T3PF",
+        "targetRelevance": "candidate target only; no ICE/EV/body/alias join inferred"
+      },
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "historical-literal-seed; actual inventory unobserved",
+      "next": "Review and release bounded page/settings/tree inventory; derive all full model facts and complete aliases from actual returned trees before options qualification."
+    },
+    {
+      "index": 6,
+      "schemeModelLine": "G22 Coupe",
+      "targetPointer": "/coverage/schemeModelLines/6",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "unresolved-no-retained-exact-page-seed",
+      "next": "Obtain a separately authorised evidence-backed exact discovery seed. Preserve the scheme label and generation gap; do not invent a seed, AG, range alias, model code or substitute generation."
+    },
+    {
+      "index": 7,
+      "schemeModelLine": "G23 Convertible",
+      "targetPointer": "/coverage/schemeModelLines/7",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "unresolved-no-retained-exact-page-seed",
+      "next": "Obtain a separately authorised evidence-backed exact discovery seed. Preserve the scheme label and generation gap; do not invent a seed, AG, range alias, model code or substitute generation."
+    },
+    {
+      "index": 8,
+      "schemeModelLine": "G26 Gran Coupe",
+      "targetPointer": "/coverage/schemeModelLines/8",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "unresolved-no-retained-exact-page-seed",
+      "next": "Obtain a separately authorised evidence-backed exact discovery seed. Preserve the scheme label and generation gap; do not invent a seed, AG, range alias, model code or substitute generation."
+    },
+    {
+      "index": 9,
+      "schemeModelLine": "G60 Saloon",
+      "targetPointer": "/coverage/schemeModelLines/9",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "unresolved-no-retained-exact-page-seed",
+      "next": "Obtain a separately authorised evidence-backed exact discovery seed. Preserve the scheme label and generation gap; do not invent a seed, AG, range alias, model code or substitute generation."
+    },
+    {
+      "index": 10,
+      "schemeModelLine": "G61 Touring",
+      "targetPointer": "/coverage/schemeModelLines/10",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "unresolved-no-retained-exact-page-seed",
+      "next": "Obtain a separately authorised evidence-backed exact discovery seed. Preserve the scheme label and generation gap; do not invent a seed, AG, range alias, model code or substitute generation."
+    },
+    {
+      "index": 11,
+      "schemeModelLine": "G29 Z4",
+      "targetPointer": "/coverage/schemeModelLines/11",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "unresolved-no-retained-exact-page-seed",
+      "next": "Obtain a separately authorised evidence-backed exact discovery seed. Preserve the scheme label and generation gap; do not invent a seed, AG, range alias, model code or substitute generation."
+    },
+    {
+      "index": 12,
+      "schemeModelLine": "U11 X1",
+      "targetPointer": "/coverage/schemeModelLines/12",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": {
+        "id": "u11",
+        "catalogueRangeKey": "U11",
+        "pageModelCode": "X1S0",
+        "targetRelevance": "candidate target only; no ICE/EV/body/alias join inferred"
+      },
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "historical-literal-seed; actual inventory unobserved",
+      "next": "Review and release bounded page/settings/tree inventory; derive all full model facts and complete aliases from actual returned trees before options qualification."
+    },
+    {
+      "index": 13,
+      "schemeModelLine": "U10 X2",
+      "targetPointer": "/coverage/schemeModelLines/13",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": {
+        "id": "u10",
+        "catalogueRangeKey": "U10",
+        "pageModelCode": "IXS4",
+        "targetRelevance": "candidate target only; no ICE/EV/body/alias join inferred"
+      },
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "historical-literal-seed; actual inventory unobserved",
+      "next": "Review and release bounded page/settings/tree inventory; derive all full model facts and complete aliases from actual returned trees before options qualification."
+    },
+    {
+      "index": 14,
+      "schemeModelLine": "G01 X3",
+      "targetPointer": "/coverage/schemeModelLines/14",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "unresolved-no-retained-exact-page-seed",
+      "next": "Obtain a separately authorised evidence-backed exact discovery seed. Preserve the scheme label and generation gap; do not invent a seed, AG, range alias, model code or substitute generation."
+    },
+    {
+      "index": 15,
+      "schemeModelLine": "G02 X4",
+      "targetPointer": "/coverage/schemeModelLines/15",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "unresolved-no-retained-exact-page-seed",
+      "next": "Obtain a separately authorised evidence-backed exact discovery seed. Preserve the scheme label and generation gap; do not invent a seed, AG, range alias, model code or substitute generation."
+    },
+    {
+      "index": 16,
+      "schemeModelLine": "G05 X5",
+      "targetPointer": "/coverage/schemeModelLines/16",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "unresolved-no-retained-exact-page-seed",
+      "next": "Obtain a separately authorised evidence-backed exact discovery seed. Preserve the scheme label and generation gap; do not invent a seed, AG, range alias, model code or substitute generation."
+    },
+    {
+      "index": 17,
+      "schemeModelLine": "G06 X6",
+      "targetPointer": "/coverage/schemeModelLines/17",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "unresolved-no-retained-exact-page-seed",
+      "next": "Obtain a separately authorised evidence-backed exact discovery seed. Preserve the scheme label and generation gap; do not invent a seed, AG, range alias, model code or substitute generation."
+    },
+    {
+      "index": 18,
+      "schemeModelLine": "U11 iX1",
+      "targetPointer": "/coverage/schemeModelLines/18",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": {
+        "id": "u11",
+        "catalogueRangeKey": "U11",
+        "pageModelCode": "X1S0",
+        "targetRelevance": "candidate target only; no ICE/EV/body/alias join inferred"
+      },
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "historical-literal-seed; actual inventory unobserved",
+      "next": "Review and release bounded page/settings/tree inventory; derive all full model facts and complete aliases from actual returned trees before options qualification."
+    },
+    {
+      "index": 19,
+      "schemeModelLine": "U10 iX2",
+      "targetPointer": "/coverage/schemeModelLines/19",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": {
+        "id": "u10",
+        "catalogueRangeKey": "U10",
+        "pageModelCode": "IXS4",
+        "targetRelevance": "candidate target only; no ICE/EV/body/alias join inferred"
+      },
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "historical-literal-seed; actual inventory unobserved",
+      "next": "Review and release bounded page/settings/tree inventory; derive all full model facts and complete aliases from actual returned trees before options qualification."
+    },
+    {
+      "index": 20,
+      "schemeModelLine": "G26 i4",
+      "targetPointer": "/coverage/schemeModelLines/20",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": {
+        "id": "g26e",
+        "catalogueRangeKey": "G26E",
+        "pageModelCode": "I4PC",
+        "targetRelevance": "candidate target only; no ICE/EV/body/alias join inferred"
+      },
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "historical-literal-seed; actual inventory unobserved",
+      "next": "Review and release bounded page/settings/tree inventory; derive all full model facts and complete aliases from actual returned trees before options qualification."
+    },
+    {
+      "index": 21,
+      "schemeModelLine": "G60 i5",
+      "targetPointer": "/coverage/schemeModelLines/21",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "unresolved-no-retained-exact-page-seed",
+      "next": "Obtain a separately authorised evidence-backed exact discovery seed. Preserve the scheme label and generation gap; do not invent a seed, AG, range alias, model code or substitute generation."
+    },
+    {
+      "index": 22,
+      "schemeModelLine": "G61 i5",
+      "targetPointer": "/coverage/schemeModelLines/22",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [
+        "docs/gcsp/evidence/fucq59/canonical-source-live-2026-11-06/live-receipt.json",
+        "docs/gcsp/evidence/fucq59/continuation-live-proof-2026-11-07/final-receipt.json"
+      ],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "actual-source-G61E-T5MJ; scheme join incomplete",
+      "next": "Keep catalogue key G61E distinct from returned raw range G61; establish exact i5 scheme join and original coverage from actual retained evidence."
+    },
+    {
+      "index": 23,
+      "schemeModelLine": "i20 iX",
+      "targetPointer": "/coverage/schemeModelLines/23",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": {
+        "id": "i20",
+        "catalogueRangeKey": "I20",
+        "pageModelCode": "IXSC",
+        "targetRelevance": "candidate target only; no ICE/EV/body/alias join inferred"
+      },
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "historical-literal-seed; actual inventory unobserved",
+      "next": "Review and release bounded page/settings/tree inventory; derive all full model facts and complete aliases from actual returned trees before options qualification."
+    },
+    {
+      "index": 24,
+      "schemeModelLine": "M Power: M2",
+      "targetPointer": "/coverage/schemeModelLines/24",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "unresolved-no-retained-exact-page-seed",
+      "next": "Obtain a separately authorised evidence-backed exact discovery seed. Preserve the scheme label and generation gap; do not invent a seed, AG, range alias, model code or substitute generation."
+    },
+    {
+      "index": 25,
+      "schemeModelLine": "M Power: M3",
+      "targetPointer": "/coverage/schemeModelLines/25",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "unresolved-no-retained-exact-page-seed",
+      "next": "Obtain a separately authorised evidence-backed exact discovery seed. Preserve the scheme label and generation gap; do not invent a seed, AG, range alias, model code or substitute generation."
+    },
+    {
+      "index": 26,
+      "schemeModelLine": "M Power: M4",
+      "targetPointer": "/coverage/schemeModelLines/26",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "unresolved-no-retained-exact-page-seed",
+      "next": "Obtain a separately authorised evidence-backed exact discovery seed. Preserve the scheme label and generation gap; do not invent a seed, AG, range alias, model code or substitute generation."
+    },
+    {
+      "index": 27,
+      "schemeModelLine": "M Power: X3M",
+      "targetPointer": "/coverage/schemeModelLines/27",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "unresolved-no-retained-exact-page-seed",
+      "next": "Obtain a separately authorised evidence-backed exact discovery seed. Preserve the scheme label and generation gap; do not invent a seed, AG, range alias, model code or substitute generation."
+    },
+    {
+      "index": 28,
+      "schemeModelLine": "M Power: X4M",
+      "targetPointer": "/coverage/schemeModelLines/28",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "unresolved-no-retained-exact-page-seed",
+      "next": "Obtain a separately authorised evidence-backed exact discovery seed. Preserve the scheme label and generation gap; do not invent a seed, AG, range alias, model code or substitute generation."
+    },
+    {
+      "index": 29,
+      "schemeModelLine": "M Power: X5M",
+      "targetPointer": "/coverage/schemeModelLines/29",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "unresolved-no-retained-exact-page-seed",
+      "next": "Obtain a separately authorised evidence-backed exact discovery seed. Preserve the scheme label and generation gap; do not invent a seed, AG, range alias, model code or substitute generation."
+    },
+    {
+      "index": 30,
+      "schemeModelLine": "M Power: X6M",
+      "targetPointer": "/coverage/schemeModelLines/30",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "sourceEvidence": [],
+      "sourceSeed": null,
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "physicalProductionOrWmiInferred": false,
+      "state": "unresolved-no-retained-exact-page-seed",
+      "next": "Obtain a separately authorised evidence-backed exact discovery seed. Preserve the scheme label and generation gap; do not invent a seed, AG, range alias, model code or substitute generation."
+    }
+  ],
+  "fullyQualifiedSchemeLines": 0,
+  "additionalSourceRequests": 0,
+  "admissions": 0,
+  "acceptance": false
+}

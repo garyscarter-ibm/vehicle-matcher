@@ -1,0 +1,99 @@
+{
+  "actual": [
+    {
+      "kind": "configuration",
+      "id": "MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIQyxTMDIzMCxTMDJQQSxTMDJUNCxTMDJUQixTMDJWQixTMDJWRCxTMDJWTCxTMDMwMixTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzMSxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRHUSxTMDRNQyxTMDRVUixTMDUzNCxTMDU0NCxTMDU1MixTMDVBQyxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDY3NixTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxNSxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNVSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNQ==",
+      "expected": {
+        "requestKey": "d72c05557861bb646f57484e60d26c3f1f35df5c20b0dd18e01256188c7d0ca2",
+        "kind": "configuration",
+        "model": "2PBC",
+        "directStatus": "partial",
+        "directPassed": true,
+        "httpStatus": 200,
+        "httpPassed": true,
+        "consumerStatus": "partial",
+        "consumerPassed": true,
+        "consumerFailure": null,
+        "dtoSha256": "38b6c87f22a36b46bd380d3f9d45135389ced171cdf23990b6cddb82d4a065cb"
+      }
+    },
+    {
+      "kind": "configuration",
+      "id": "MUY3QTpGQkxBVCxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIMixTMDIzMCxTMDJQQSxTMDJURixTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDNETixTMDQyOCxTMDQzMCxTMDQzMSxTMDQzVSxTMDQ3OCxTMDQ5NCxTMDUzNCxTMDU1MixTMDVBQyxTMDVBUyxTMDVBVixTMDVETixTMDYxMCxTMDY1NCxTMDZBRSxTMDZBRixTMDZOWCxTMDZQQSxTMDc2MCxTMDdFVyxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURw==",
+      "expected": {
+        "requestKey": "3a64808d853643ae291f3e69e77b2a1e723923445e6b5f89d8514c161f070425",
+        "kind": "configuration",
+        "model": "1F7A",
+        "directStatus": "partial",
+        "directPassed": true,
+        "httpStatus": 200,
+        "httpPassed": true,
+        "consumerStatus": "source-unavailable",
+        "consumerPassed": false,
+        "consumerFailure": {
+          "code": "vehicle-source-unavailable",
+          "message": "The local vehicle source is unavailable. Restore or configure its validated published inputs and retry.",
+          "action": "retry-source",
+          "retryable": true
+        },
+        "dtoSha256": "06cc34f88e176921f020a6eae57ec1edd299956af3ccd5796b0bc83b701b2ab6"
+      }
+    },
+    {
+      "kind": "configuration",
+      "id": "MUY3QzpGS1ROTCxQMDMwMCxTMDFDQixTMDFERixTMDFINSxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDNNMSxTMDQyMCxTMDQyOCxTMDQzVSxTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZQQSxTMDc1NCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMixTMDlUQSxTMDlUQg==",
+      "expected": {
+        "requestKey": "32e1339ff3871fd258b28eb31b3ae08935819dcdbb69a7c40c12d4968cb78af4",
+        "kind": "configuration",
+        "model": "1F7C",
+        "directStatus": "partial",
+        "directPassed": true,
+        "httpStatus": 200,
+        "httpPassed": true,
+        "consumerStatus": "source-unavailable",
+        "consumerPassed": false,
+        "consumerFailure": {
+          "code": "vehicle-source-unavailable",
+          "message": "The local vehicle source is unavailable. Restore or configure its validated published inputs and retry.",
+          "action": "retry-source",
+          "retryable": true
+        },
+        "dtoSha256": "0fe2f91eae46411526fe922c936fb3f458289b881ceede4b83d5b3478af7e2c9"
+      }
+    },
+    {
+      "kind": "vin",
+      "id": "WBA33DB08TC426611",
+      "expected": {
+        "requestKey": "074dd7a2dd46606e3a4ccdf7925ef7c7872ce8f49e1e6d902c18bcd407f97544",
+        "kind": "vin",
+        "model": null,
+        "directStatus": "partial",
+        "directPassed": true,
+        "httpStatus": 200,
+        "httpPassed": true,
+        "consumerStatus": "partial",
+        "consumerPassed": true,
+        "consumerFailure": null,
+        "dtoSha256": "adf9ac09df68c210bf02167f497a3922b2067d7a415a49e815befb123be1e1a8"
+      }
+    },
+    {
+      "kind": "configuration",
+      "id": "MUY3RTpGS1VLUCxQMEM0UCxTMDFDQixTMDFDRSxTMDFERixTMDFIOCxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDMzNyxTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDRHUSxTMDUzNCxTMDU1MixTMDVBQyxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDcxMCxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNOSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMg==",
+      "expected": {
+        "requestKey": "829f1ce7363d903d87b2065f9070921fe36668789b0b0d8f55482b2db7db1067",
+        "kind": "configuration",
+        "model": "1F7E",
+        "directStatus": "partial",
+        "directPassed": true,
+        "httpStatus": 200,
+        "httpPassed": true,
+        "consumerStatus": "partial",
+        "consumerPassed": true,
+        "consumerFailure": null,
+        "dtoSha256": "fd1c6f9b75564bd760d044e5525e5b61c57455d690c9d528f287757d18ea8137"
+      }
+    }
+  ]
+}

@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "scope": "scoped administrative validation",
+  "changedPaths": [
+    "_dev/in-progress/DEV-2026-11-04-056.md",
+    "_dev/in-progress/DEV-2026-11-04-057.md",
+    ".product-map/work.json",
+    "docs/gcsp/README.md",
+    "docs/gcsp/fucq-61-downstream-impact-2026-11-07.md",
+    "docs/gcsp/evidence/f61-downstream-impact-2026-11-07/jira-import.json",
+    "docs/gcsp/evidence/f61-downstream-impact-2026-11-07/jira-readback.json",
+    "docs/gcsp/evidence/f61-downstream-impact-2026-11-07/validation.json"
+  ],
+  "regression": "Stale F77 acquisition approach and F77-to-F78 block despite an existing F61 configuration corpus",
+  "affectedCallersAndBoundaries": [
+    "Jira issue descriptions and Blocks relationship",
+    "claimed inbox records (ownership preserved)",
+    "GCSP decision index",
+    "product-map metadata import (other rows and slice/worker facts preserved)"
+  ],
+  "selectedChecks": [
+    "Fresh Jira title/description/link/status/assignee readback",
+    "Original acceptance areas and threshold preservation",
+    "Local story and Jira decision agreement",
+    "Exact local dependency removal and claim preservation",
+    "JSON parsing and product-map import preservation",
+    "New local Markdown link targets",
+    "Task-only git diff --check"
+  ],
+  "excludedAreas": {
+    "applicationTests": "No application code or executable contract changed",
+    "liveCollectionAndConfiguratorProof": "This task revises metadata; these remain F77 acceptance work",
+    "policyActivationTrainingAndReplays": "Audit only; distinct stories retain their own validation",
+    "nativeDatabaseAndBrowserJourneys": "No runtime/provider/UI change"
+  },
+  "mapImport": {
+    "changedStories": [
+      "FUCQ-77",
+      "FUCQ-78"
+    ],
+    "otherStoriesPreserved": 136,
+    "slicesAndWorkersPreserved": true,
+    "observedAt": "2026-11-07T12:59:41Z",
+    "rows": [
+      {
+        "id": "FUCQ-77",
+        "title": "Verify scheme coverage using the collected BMW configuration corpus",
+        "status": "In Progress",
+        "original_status": "In Progress",
+        "assignee": "Russell Gowers",
+        "type": "Story",
+        "observed_at": "2026-11-07T12:59:41Z",
+        "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-77"
+      },
+      {
+        "id": "FUCQ-78",
+        "title": "Shape synthetic scheme stock from real stock-locator aggregates",
+        "status": "In Progress",
+        "original_status": "In Progress",
+        "assignee": "Russell Gowers",
+        "type": "Story",
+        "observed_at": "2026-11-07T12:59:41Z",
+        "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-78"
+      }
+    ],
+    "helperOutput": ""
+  },
+  "resources": {
+    "scratchAllocationBytes": 0,
+    "removedBytes": 0,
+    "children": 0,
+    "compatibilityExceptions": [],
+    "ownedScratchLeftovers": [],
+    "retainedSummary": "docs/gcsp/fucq-61-downstream-impact-2026-11-07.md",
+    "retainedEvidenceDirectory": "docs/gcsp/evidence/f61-downstream-impact-2026-11-07",
+    "retainedAdministrativeEvidenceBytesAtInitialCheck": 87281
+  },
+  "verifiedAt": "2026-11-07 13:02:08 UTC",
+  "jiraReadback": {
+    "observedAt": "2026-11-07T12:54:29.652Z",
+    "checks": [
+      {
+        "assigneePreserved": true,
+        "descriptionMatches": true,
+        "key": "FUCQ-77",
+        "otherLinksPreserved": true,
+        "removedLinkAbsent": true,
+        "statusPreserved": true,
+        "summaryMatches": true
+      },
+      {
+        "assigneePreserved": true,
+        "descriptionMatches": true,
+        "key": "FUCQ-78",
+        "otherLinksPreserved": true,
+        "removedLinkAbsent": true,
+        "statusPreserved": true,
+        "summaryMatches": true
+      }
+    ]
+  },
+  "localValidation": {
+    "status": "passed",
+    "scope": "scoped administrative validation",
+    "codeIdentity": "693844ae9ffbb00763c2a1e50fe35f866176e164",
+    "checks": {
+      "f77SevenAcceptanceAreas": true,
+      "f77OriginalThresholdsAndSafety": true,
+      "f78AcceptanceUnchanged": true,
+      "claimedMetadataPreserved": true,
+      "exactLocalDependencyRemoval": true,
+      "retainedJiraReadbackPassed": true,
+      "localJiraMapAgreement": true,
+      "otherProductMapRowsPreserved": true,
+      "jsonValid": true,
+      "allNewLocalDocumentTargetsExist": true,
+      "taskWhitespaceClean": true,
+      "auditInventoryReconciles": true
+    },
+    "productMapChangedRows": [
+      "FUCQ-77",
+      "FUCQ-78"
+    ],
+    "documentTargetsChecked": [
+      "docs/gcsp/evidence/f61-downstream-impact-2026-11-07/jira-readback.json",
+      "docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/README.md",
+      "docs/gcsp/f58-63-morning-status-2026-11-07.md",
+      "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-run42372746118/README.md",
+      "docs/gcsp/hld-agreement-2026-11-04.md",
+      "docs/gcsp/technical-readiness-2026-11-05.md",
+      "docs/gcsp/evidence/f61-downstream-impact-2026-11-07/validation.json",
+      "docs/gcsp/fucq-61-downstream-impact-2026-11-07.md",
+      "docs/gcsp/bmw-interface-research.md"
+    ],
+    "hashes": {
+      "_dev/in-progress/DEV-2026-11-04-056.md": "a65119b6f8c1c4db8a1adb7f6c6bced721d6993dea6773177cea3b384b6dd092",
+      "_dev/in-progress/DEV-2026-11-04-057.md": "316a6b361ad46ed48ca015583802f784f4913461132c476225440caf6a75ad11",
+      ".product-map/work.json": "14d5d355ba03ae851b00c709a060aef1e4e78d69af005103b3feb40400197fa2",
+      "docs/gcsp/README.md": "c531134cfdc1ec1a1a053dd0cf707f1b45fc0a712d7a4860f70a590123593d4f",
+      "docs/gcsp/fucq-61-downstream-impact-2026-11-07.md": "b5eb76b60107a3313b738d9a01f6f26feaa4fc74c41030b62bc25fb2a6b64f78",
+      "docs/gcsp/evidence/f61-downstream-impact-2026-11-07/jira-import.json": "69fe50c390ed03ab373b1e239f08b521e0535ec0e0ad55d734d0d222b63f1f2f",
+      "docs/gcsp/evidence/f61-downstream-impact-2026-11-07/jira-readback.json": "b45908cead2886256f974dac839c9931ae7e4c8b523c79cb9737c3659a6b3f5b"
+    },
+    "retainedBytes": 87281
+  },
+  "additionalBrowserRecheck": {
+    "status": "unavailable",
+    "reason": "The previously available inactive Jira tab was no longer present; the subsequent browser tab listing contained one tab and zero Jira tabs. The successful immediate post-mutation readback is retained. No foreground tab was opened."
+  }
+}

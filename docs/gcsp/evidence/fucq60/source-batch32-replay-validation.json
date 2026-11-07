@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "f60-source32-replay-validation.v1",
+  "scope": "One prepared pinned actual28 offline integration proof; not full Story acceptance",
+  "command": [
+    "/opt/homebrew/bin/node",
+    "--max-old-space-size=256",
+    "docs/gcsp/evidence/fucq60/source-batch32-replay-proof.mjs",
+    "--source-directory",
+    "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-batch32-2026-11-07",
+    "--receipt",
+    "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/source32-replay/receipt.json"
+  ],
+  "result": {
+    "exitCode": 0,
+    "issue": null,
+    "seconds": 5.692236167
+  },
+  "testedIdentity": {
+    "docs/gcsp/evidence/fucq60/source-batch32-replay-plan.json": "ce6e761082b51134293a681a8349c2dede53d0cc5abcba1ca3a4af0041d8e68a",
+    "docs/gcsp/evidence/fucq60/source-batch32-replay-proof.mjs": "0cc3575444218907254ad5e42b61b5f495a24914aa7c05114f9d165177e1b6bc",
+    "scripts/gcsp/bmw-public-registration.mjs": "82de1dfa3389ac019d271cfb865af9a395c9c85d4246b09529577e03deb54244",
+    "scripts/gcsp/bmw-selection-binding.mjs": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+    "scripts/gcsp/collect-fleet.mjs": "5edbeb880115e52a2e1d0ffa21560cc2c9d3ba46c73c8cc880c15f57d196cb5a",
+    "scripts/gcsp/collection-session.mjs": "1f22fe1cdf27d3e6f2be015e32b69b5ecc435c546fe9964396270e3db6e9421e",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/enrich-fleet.mjs": "29301f1b077b0f5b171f103a82174bd9e7e430a5e800fb31c796a8fe698f0519",
+    "scripts/gcsp/public-bmw-source.mjs": "4f5c93505c7e558d0ff3cf3afadbfb97ef45bde9b615e9033c8d440628b75f24",
+    "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+    "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+    "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56",
+    "server/vehicle-evidence/bmw-image-adapter.js": "56753ac7e47e4790159e7d50fb4deafe1658730e803912f064e6ed09326774ef"
+  },
+  "actualRetainedSelections": 28,
+  "newSourceConfigurations": 0,
+  "offlineCatalogueCalls": 28,
+  "catalogueCacheHits": 1,
+  "sourceCalls": 0,
+  "imageCalls": 0,
+  "outbound": {
+    "fetch": 0,
+    "http": 0,
+    "https": 0,
+    "net": 0,
+    "tls": 0
+  },
+  "partialOutcomes": 28,
+  "rejectedOutcomes": 0,
+  "sourceFilesUnchanged": 36,
+  "testLane": "Root explicitly released after full npm/production audit, child returned lane after independently reconciled cleanup; no overlap claimed outside this grant.",
+  "resources": {
+    "scratchLimitBytes": 67108864,
+    "hostRamLimitBytes": 536870912,
+    "processRamLimitBytes": 469762048,
+    "secondsLimit": 90,
+    "removedSampledScratchBytes": 3857120,
+    "peakSampledRssBytes": 189906944,
+    "ownedRoot": "/tmp/vehicle-matcher-f58-63-20261106/f60-source32-replay",
+    "manifestState": "removed",
+    "groups": [
+      {
+        "pgid": 3254,
+        "absent": true
+      }
+    ],
+    "reservationAbsent": true,
+    "dependencyLinkAbsent": true,
+    "progressAbsent": true,
+    "stagingAbsent": true,
+    "compatibilityException": null,
+    "leftovers": []
+  },
+  "evidenceDirectory": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/source32-replay",
+  "impactMap": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/fucq60-source32-replay.json",
+  "coverage": "Bounded aggregate V8 function observations from the required proof; no per-test coverage claim. Raw coverage and session checkpoints removed with owned scratch. Successful log is only the compact outcome line.",
+  "excluded": "No production code or scale repair; no full npm by this child, browser/SQL/VIN/publication/source/image work. Original Story scope and AC unchanged; root full npm/HTTP evidence has separate code identities."
+}

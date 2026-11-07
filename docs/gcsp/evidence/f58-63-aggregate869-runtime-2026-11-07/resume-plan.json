@@ -1,0 +1,38 @@
+{
+  "changed_paths": [
+    "scripts/gcsp",
+    "server/gcsp/vehicle-evidence",
+    "server/vehicle-evidence",
+    "server/data/gcsp/vehicle-evidence"
+  ],
+  "command": [
+    "/opt/homebrew/bin/node",
+    "--max-old-space-size=256",
+    "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/f58-63-aggregate869-runtime-2026-11-07/resume-probe.mjs",
+    "d028839596158fcbc42a2969793dda881b385ab2",
+    "7615917737",
+    "421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d",
+    "869",
+    "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/aggregate869-ready/resume-audit/report.json",
+    "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/f58-63-aggregate869-runtime-2026-11-07/first-attempt-report.json"
+  ],
+  "coverage": "Bounded V8 function coverage during actualrequiredparity; no secondfullrun for mapping",
+  "discovered_test_files": [],
+  "excluded": "No live source, external native PostgreSQL credentials, browser or stock generation; actual skips will be reported",
+  "expected": {
+    "disk_mib": 16,
+    "duration_seconds": 45,
+    "ram_mib": 384
+  },
+  "head": "d028839596158fcbc42a2969793dda881b385ab2",
+  "limits": {
+    "ram_bytes": 536870912,
+    "scratch_bytes": 67108864,
+    "seconds": 120,
+    "workers": 1
+  },
+  "regression": "Scoped .6public/ordinary/Render changed-image and added-source deployment boundary at actual pushed code identity; originalfullacceptance remainsopen",
+  "run": "f58-63-869-live-parity-resume",
+  "scope": "actual Render deployment all871-record exact DTO parity;838 remaining GET max from original896;30s individualread/120s resumedchunk;56completedcomparisons excluded;originalTimeoutError preserved after retainedVIN returnedactual200 with exact .6manifest; priorfailedfirstDTO retained;0completedmatches rerun; no source traffic or mutation",
+  "selection": "Actual published source package crosses newF59/F62/F63 integration; enumerate815 remaining records from unchanged870configuration+oneVIN corpus and compare real HTTP DTOs, preserve10k shortfall. No stock/native acceptance claim."
+}

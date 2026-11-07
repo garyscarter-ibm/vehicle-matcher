@@ -1,0 +1,293 @@
+{
+  "schemaVersion": "bmw-selection-binding-validation.v1",
+  "scope": "scoped source binding and actual collector replay; corpus admission outstanding",
+  "changedPaths": [
+    "scripts/gcsp/bmw-selection-binding.mjs",
+    "scripts/gcsp/collect-fleet.mjs",
+    "server/vehicle-evidence/bmw-catalogue-v2.js",
+    "server/test/gcsp-bmw-selection-binding.test.js"
+  ],
+  "finalIdentity": {
+    "docs/gcsp/evidence/fucq-58/complete-selection-2026-11-07/binding-proof.json": "ffe809f8e1526ecacfeba27abaf839fcd211ec615d93c263d94efebd33e35b62",
+    "docs/gcsp/evidence/fucq-58/complete-selection-2026-11-07/bound-record.json": "490cf8f694a52f461ec252cedd59d4d831d3d36aff379fde3135985c18857bcf",
+    "scripts/gcsp/bmw-selection-binding.mjs": "22ae44e1b81875c444ec0e9866878392ef99826af2d15420d85056424af96abd",
+    "server/test/gcsp-bmw-selection-binding.test.js": "85cd24280e9d8173075ca7ac59a95506f92fcd60d9d9f38f8e14ff6767e69835"
+  },
+  "checks": {
+    "binding": {
+      "counts": {
+        "fail": 0,
+        "pass": 7
+      },
+      "identity": {
+        "scripts/gcsp/bmw-selection-binding.mjs": "d62b7c60ed91347ba574523ec5b0a6e060f7264d1ae7f39e1b90f51ee28e52b4",
+        "scripts/gcsp/collect-fleet.mjs": "fe90bf5684a525e3a73e80809c7ca7b8da77dea82a7754e255251834294e2701",
+        "server/test/bmw-catalogue-v2.test.js": "1433ec4c017c45765a43660ed42576711131cf726236f766ee41de8981515756",
+        "server/test/gcsp-bmw-selection-binding.test.js": "cfdd3d8c026952dd6fe128381a56bfa82f440eac1b951f416b816efb153f1f96",
+        "server/test/helpers/bmw-catalogue-v2-synthetic.js": "60e1ab5479bf8ccc945b5efc215f3cec8b2b0ad6914fdf18cabbe37c7c97694d",
+        "server/vehicle-evidence/bmw-catalogue-adapter.js": "b8e139087cca5f28c404c54f274d1ae61c4263bb4f2da77926422057e0caf4b6",
+        "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+      },
+      "peak_rss": 231374848,
+      "peak_scratch": 479328,
+      "rc": 0,
+      "wall": 0.9980519579999999
+    },
+    "v2": {
+      "counts": {
+        "fail": 0,
+        "pass": 12
+      },
+      "identity": {
+        "scripts/gcsp/bmw-selection-binding.mjs": "d62b7c60ed91347ba574523ec5b0a6e060f7264d1ae7f39e1b90f51ee28e52b4",
+        "scripts/gcsp/collect-fleet.mjs": "fe90bf5684a525e3a73e80809c7ca7b8da77dea82a7754e255251834294e2701",
+        "server/test/bmw-catalogue-v2.test.js": "1433ec4c017c45765a43660ed42576711131cf726236f766ee41de8981515756",
+        "server/test/gcsp-bmw-selection-binding.test.js": "cfdd3d8c026952dd6fe128381a56bfa82f440eac1b951f416b816efb153f1f96",
+        "server/test/helpers/bmw-catalogue-v2-synthetic.js": "60e1ab5479bf8ccc945b5efc215f3cec8b2b0ad6914fdf18cabbe37c7c97694d",
+        "server/vehicle-evidence/bmw-catalogue-adapter.js": "b8e139087cca5f28c404c54f274d1ae61c4263bb4f2da77926422057e0caf4b6",
+        "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+      },
+      "peak_rss": 266174464,
+      "peak_scratch": 774240,
+      "rc": 0,
+      "wall": 3.5044262500000003
+    },
+    "collector": {
+      "counts": {
+        "fail": 0,
+        "pass": 77
+      },
+      "identity": {
+        "scripts/gcsp/bmw-selection-binding.mjs": "d62b7c60ed91347ba574523ec5b0a6e060f7264d1ae7f39e1b90f51ee28e52b4",
+        "scripts/gcsp/collect-fleet.mjs": "fe90bf5684a525e3a73e80809c7ca7b8da77dea82a7754e255251834294e2701",
+        "server/test/bmw-catalogue-v2.test.js": "1433ec4c017c45765a43660ed42576711131cf726236f766ee41de8981515756",
+        "server/test/gcsp-bmw-selection-binding.test.js": "cfdd3d8c026952dd6fe128381a56bfa82f440eac1b951f416b816efb153f1f96",
+        "server/test/helpers/bmw-catalogue-v2-synthetic.js": "60e1ab5479bf8ccc945b5efc215f3cec8b2b0ad6914fdf18cabbe37c7c97694d",
+        "server/vehicle-evidence/bmw-catalogue-adapter.js": "b8e139087cca5f28c404c54f274d1ae61c4263bb4f2da77926422057e0caf4b6",
+        "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+      },
+      "peak_rss": 355631104,
+      "peak_scratch": 2015456,
+      "rc": 0,
+      "wall": 11.088033083
+    }
+  },
+  "finalCorrection": {
+    "change": "definitionClaims requires supporting options transportKind equal primary solver; mixed fixture/live regression",
+    "tests": {
+      "actual": {
+        "negative": {
+          "code": "source-selection-mismatch",
+          "mutation": "coherent deletion of S0230 with refreshed canonical key, all identities and binding digest",
+          "status": "invalid"
+        },
+        "outbound": 0,
+        "positive": "one exact source-qualified record",
+        "sourceCalls": 0
+      },
+      "binder": {
+        "fail": 0,
+        "pass": 8
+      },
+      "expected_red": {
+        "fail": 1,
+        "pass": 0,
+        "reason": "Missing expected exception"
+      }
+    },
+    "identity": {
+      "docs/gcsp/evidence/fucq-58/complete-selection-2026-11-07/binding-proof.json": "ffe809f8e1526ecacfeba27abaf839fcd211ec615d93c263d94efebd33e35b62",
+      "docs/gcsp/evidence/fucq-58/complete-selection-2026-11-07/bound-record.json": "490cf8f694a52f461ec252cedd59d4d831d3d36aff379fde3135985c18857bcf",
+      "scripts/gcsp/bmw-selection-binding.mjs": "22ae44e1b81875c444ec0e9866878392ef99826af2d15420d85056424af96abd",
+      "server/test/gcsp-bmw-selection-binding.test.js": "85cd24280e9d8173075ca7ac59a95506f92fcd60d9d9f38f8e14ff6767e69835"
+    },
+    "commands": {
+      "actual": [
+        "node",
+        "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/sally/actual-replay.mjs"
+      ],
+      "binder": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-bmw-selection-binding.test.js"
+      ]
+    },
+    "resources": {
+      "borrowed_link_absent": true,
+      "compatibility_exception": null,
+      "conservative_supervisor_ram_bytes": 67108864,
+      "groups": [
+        {
+          "group": 71111,
+          "no_live_members": true
+        },
+        {
+          "group": 71200,
+          "no_live_members": true
+        },
+        {
+          "group": 71139,
+          "no_live_members": true
+        }
+      ],
+      "leftovers": [],
+      "peak_chunk_scratch_bytes": 643168,
+      "peak_sampled_worker_rss_bytes": 229294080,
+      "removed_measured_allocation_sum": 1585440,
+      "reservation_tokens_absent": [
+        "2c896f510b944b96a364c5617e0366d3",
+        "95838e26a0454184ad03674144ae749c",
+        "6358decbbd7f49ed89c38c7519d55fd2"
+      ],
+      "root_absent": true,
+      "scratch_root": "/tmp/vehicle-matcher-f58-63-20261106/f58/sally-transport-review"
+    }
+  },
+  "reuseBoundary": "Initial7binder+12v2+77existingcollector passed before single transport-parity condition. Final8binder and actual replay rerun at current22ae44e1binder; unchanged v2/collector target boundary proof retained, no complete final-graph full-suite claim.",
+  "sourceCalls": 0,
+  "actualProof": {
+    "accepted": [],
+    "accessoryCodes": 1,
+    "accessoryQuantity": "unknown",
+    "admission": false,
+    "bindingDigest": "e02294a18642bc223ba5349c5729995fb501314ae143484c028e040af88383ff",
+    "canonicalSignature": "T5MJ:FKSFU,P0300,S0230,S02PA,S02VB,S02VD,S0302,S0337,S03DK,S03G9,S03M1,S0428,S043L,S0488,S0494,S04T2,S04U9,S04UR,S04V1,S0552,S05AS,S05AV,S05DM,S0654,S0674,S06AE,S06AF,S06AK,S06C4,S06NX,S06PA,S0704,S0710,S0760,S0775,S0812,S0853,S0880,S08R3,S08R9,S08SM,S08TF,S08TG,S08WM,S09QV,S09T1,S09T2",
+    "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+    "definitionArtifacts": {
+      "fieldReport": "23ef3385a05272cd8d8ebddd655e1c9a2617b6736739f16c0fa3ef3496134598",
+      "options": "6883be7544a6c03ef523aa6287a74c03fddd9b0e09b80127c25b72c1bec0061b"
+    },
+    "factoryCodes": 47,
+    "limitations": [
+      "No snapshot registration or F54 publication",
+      "No F60/application acceptance",
+      "No inferred trim, physical production date or image"
+    ],
+    "negative": {
+      "code": "source-selection-mismatch",
+      "mutation": "coherent deletion of S0230 with refreshed canonical key, all identities and binding digest",
+      "status": "invalid"
+    },
+    "observedDate": "2026-11-07",
+    "outbound": 0,
+    "paint": {
+      "code": "P0300",
+      "type": "paint"
+    },
+    "positive": "actual collector source replay produces one source-qualified record",
+    "primaryObservedAt": "2026-11-07T00:03:13.998Z",
+    "producerPins": {
+      "policyVersion": "gcsp-policy-v1",
+      "projectorSha256": "6c209b848c5360414c52e47f4eefaf81197e61f23d7ad0bab9115dd08bf3238a",
+      "qualifierSha256": "22ae44e1b81875c444ec0e9866878392ef99826af2d15420d85056424af96abd",
+      "sessionSha256": "db0b4b9ea4e8909c8d0e49cb9b6c36dbb2f23df85839f3f221600429e9668cdc"
+    },
+    "qualification": "source-selection-qualified-not-admitted",
+    "recordBytes": 21449,
+    "recordSha256": "490cf8f694a52f461ec252cedd59d4d831d3d36aff379fde3135985c18857bcf",
+    "replaySourceCalls": 0,
+    "retrievedDate": "2026-11-07",
+    "schemaVersion": "bmw-selection-binding-proof.v1",
+    "sourceArtifacts": {
+      "solver": "dc3157ca59fa1c4f23e86f94cf6540e5dc4ac386eb1f413ca156fe6ce0f21411",
+      "tree": "c78e90f7abd0a7f012738f7ccb8e349f7a54e056bff3be5cb9711ad91eed2eb7"
+    },
+    "sourceKind": "dated-snapshot",
+    "status": "complete",
+    "upholstery": {
+      "code": "FKSFU",
+      "type": "upholstery"
+    }
+  },
+  "reviews": {
+    "reviewer": "Lego Batman",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "selectedModel": "gpt-6.1-sol",
+    "selectedEffort": "high",
+    "fallback": null,
+    "code": "PASS",
+    "security": "PASS",
+    "findings": "No blocking or major findings; mixed fixture/live support concern corrected and re-reviewed.",
+    "reviewedManifestSha256": "42c80a9700949a8ebb3f56a4172b6d5b5bbb46bb1655afd28d62e9dfe67528d0",
+    "reviewerTests": 0,
+    "reviewerSourceCalls": 0,
+    "reviewerScratch": 0
+  },
+  "resources": {
+    "borrowed_link_absent": true,
+    "compatibility_exception": null,
+    "conservative_supervisor_ram_bytes": 67108864,
+    "groups": [
+      {
+        "group": 68893,
+        "no_live_members": true
+      },
+      {
+        "group": 68534,
+        "no_live_members": true
+      },
+      {
+        "group": 68144,
+        "no_live_members": true
+      },
+      {
+        "group": 68750,
+        "no_live_members": true
+      },
+      {
+        "group": 67569,
+        "no_live_members": true
+      },
+      {
+        "group": 68853,
+        "no_live_members": true
+      },
+      {
+        "group": 69019,
+        "no_live_members": true
+      },
+      {
+        "group": 68963,
+        "no_live_members": true
+      }
+    ],
+    "leftovers": [],
+    "peak_chunk_scratch_bytes": 2015456,
+    "peak_sampled_worker_rss_bytes": 355631104,
+    "removed_measured_allocation_sum": 5927808,
+    "reservation_tokens_absent": [
+      "2494297d8fe54bf1aa5e5e3fa6c4fb64",
+      "8f550e3fe5ad41f794d42f8a6604effd",
+      "ce0e6388209e4565a7c1cd3605d1ce82",
+      "06cb1d81634c45a8a54ee5e6045f2a75",
+      "d1fb68cf49b94e89a2d7b421d70f0d2f",
+      "801cc942c68243c0ba71d9ebfa721341",
+      "bcdc074832c24e6bb304796fc4349070",
+      "db70055e68424207a4f12f7782140d8e"
+    ],
+    "root_absent": true,
+    "scratch_root": "/tmp/vehicle-matcher-f58-63-20261106/f58/sally"
+  },
+  "agent": {
+    "descendants": [],
+    "effort": "medium",
+    "fallback": null,
+    "name": "Sally Carrera",
+    "requested_model": "gpt-6.1-sol",
+    "selected_model": "gpt-6.1-sol",
+    "title_confirmed": true
+  },
+  "limitations": [
+    "source-qualified record is separate from corpus admission, registration and application acceptance",
+    "server-owned artifact registration is the trust boundary; caller-supplied hashes do not authorize a new source",
+    "raw HTTP bodies remain unretained; reviewed capture projector binds safe complete report to original response hash",
+    "older supporting definitions retain retrievedAt:null because no explicit artifact retrieval time is available",
+    "Collector capture-replay currently returns records:[row] but accepted:[] and admission:false; persisted accepted ingress, adapter registration/default dispatch, F60 and F54/application acceptance remain executable work."
+  ],
+  "externalReceipts": [
+    "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/sally/binding-summary.json",
+    "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/sally/transport-review/summary.json"
+  ]
+}

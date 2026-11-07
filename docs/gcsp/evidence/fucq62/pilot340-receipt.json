@@ -1,0 +1,121 @@
+{
+  "status": "published-actual-partial",
+  "output": "server/data/gcsp/vehicle-evidence/fleet-source.v1",
+  "version": "2026-11-07.2",
+  "manifestDigest": "6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6",
+  "counts": {
+    "configurations": 341,
+    "distinctConfigurations": 341,
+    "images": 0,
+    "qualifyingCompleteDistinctSourceConfigurations": 340,
+    "sourceConfigurations": 340,
+    "vinMappings": 1
+  },
+  "acceptedSourceConfigurations": 340,
+  "pilotRowsAdded": 311,
+  "retainedConfigurationRowsUnchanged": 30,
+  "source1V1CollisionPreserved": true,
+  "previousVersion": {
+    "directory": "eaeda01c2121e35634ca932a0cc4bf640fae91239498e19edd362899234f6bf3",
+    "manifestDigest": "eaeda01c2121e35634ca932a0cc4bf640fae91239498e19edd362899234f6bf3"
+  },
+  "oldVersionFilesRehashedUnchanged": 9,
+  "previousVinBytesIdentical": true,
+  "newVinAllocations": 0,
+  "sourceRequests": 0,
+  "f60EnrichmentExecuted": false,
+  "registeredPilot": {
+    "path": "server/data/gcsp/vehicle-evidence/registered-sources/pilot311-2026-11-07.jsonl",
+    "sha256": "00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a",
+    "bytes": 6832119,
+    "records": 311
+  },
+  "sourceInputFilesRehashedUnchanged": 12,
+  "sourceInputBytes": 7456599,
+  "steps": [
+    {
+      "name": "prepare",
+      "status": "ok",
+      "idempotent": null,
+      "wallMs": 1766.318542,
+      "egress": {
+        "externalCalls": 0,
+        "control": "blocked"
+      }
+    },
+    {
+      "name": "publish",
+      "status": "ok",
+      "idempotent": false,
+      "wallMs": 3398.3580830000005,
+      "egress": {
+        "externalCalls": 0,
+        "control": "blocked"
+      }
+    },
+    {
+      "name": "validate",
+      "status": "ok",
+      "idempotent": null,
+      "wallMs": 1101.216708,
+      "egress": {
+        "externalCalls": 0,
+        "control": "blocked"
+      }
+    },
+    {
+      "name": "fresh-process-load",
+      "status": "ok",
+      "idempotent": null,
+      "wallMs": 1088.7123330000004,
+      "egress": {
+        "externalCalls": 0,
+        "control": "blocked"
+      }
+    },
+    {
+      "name": "idempotent-publish",
+      "status": "ok",
+      "idempotent": true,
+      "wallMs": 2089.536665999999,
+      "egress": {
+        "externalCalls": 0,
+        "control": "blocked"
+      }
+    }
+  ],
+  "measured": {
+    "node": "v26.7.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "configurationBytes": 6344025,
+    "coldLoadMs": 1148.9877500000002,
+    "lookupRuns": [
+      {
+        "name": "first-pass",
+        "configurations": 341,
+        "vinMappings": 1,
+        "totalMs": 26.189417000001413
+      },
+      {
+        "name": "repeated-pass",
+        "configurations": 341,
+        "vinMappings": 1,
+        "totalMs": 25.942791999999827
+      }
+    ]
+  },
+  "egress": {
+    "externalCalls": 0,
+    "control": "blocked"
+  },
+  "streamingLimitBytes": 67108864,
+  "acceptance": "not-established",
+  "limitations": [
+    "T5MJ/72HH/G61E GB/RL selections only; full scheme model coverage is not established",
+    "Configuration-only release; no new VIN allocation or physical profile inference",
+    "Direct admitted-envelope projection; F60 enrichment is not executed for the pilot rows",
+    "Original 10000 configuration/VIN and all original acceptance obligations remain open",
+    "No greater-than64MiB resource proof; streaming and eager caps stay64MiB"
+  ]
+}

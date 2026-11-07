@@ -1,0 +1,11 @@
+# Actual phase01c continuation result
+
+The one-time source process exited 0 after all 40 continuation sessions. It made 480 actual GETs and 320 solver requests, producing 238 new distinct admissions, 82 rejections and no duplicates. All 200 selected strict checks passed with no failed or skipped checks. Local cumulative evidence is 6,544 admitted configurations, 6,547 canonical entries and 8,396 spent solver requests. This is a standalone breadth chain; a fresh independent parent audit and actual F70 global union remain required before global counting.
+
+The original consumed marker and absolute deadline of 7 November 2026 at 06:16:57.228279 UTC remain unchanged. Continuation elapsed time was 294.666676 seconds; original phase elapsed time was 1,586.701569 seconds. Including the interrupted prefix, actual usage was 1,430 GETs and 952 solver requests, within the original 1,440/960 limits. The original failed session080 eight unsolved request digests remain excluded. Nothing was replayed.
+
+All 40 sessions exhausted their bounded queues and all strict retained-evidence proofs passed. Session019 retains an incomplete source-target status with zero admissions and eight rejections; this is preserved as actual source evidence rather than claimed capacity. No scheme-completeness, application-integration or F61 acceptance claim follows.
+
+`actual-completion-audit.json` records 20,207 read-only checks with no errors and no source or test replay. It pins every actual primary, receipt, event file, strict proof and index link and independently checks the source clock, original consumed marker, cumulative traffic and retention caps. Exact final canonical SHA-256: `f2397315ea7091676144b5ca2a51e5054a7a2308f0be102e8d4bec24fbcc915b`; spent SHA-256: `a385db44724946737df0b717a5e3aa0d96b6e120243d8b9104b1e51aecf546fc`.
+
+Cleanup independently proved all 80 owned source/proof roots, 240 process groups, 81 reservation tokens and the transient dependency link absent. Removed scratch allocation was 20,950,784 bytes. Actual source evidence retained directly in the declared OneDrive output is 573,107,645 logical bytes. No compatibility exception or leftovers were recorded. Large retained source evidence is outside Git; this packet keeps the concise audit and exact parent release.

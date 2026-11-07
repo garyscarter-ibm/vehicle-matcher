@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "native-first-install-failure-diagnosis.v1",
+  "severity": "Medium",
+  "relatedStory": "FUCQ-63",
+  "storyLinkBasis": "This bounded native PostgreSQL route supplies the separately scoped current-run stock order UUID proof for FUCQ63.",
+  "originalPlanSha256": "019c1db8d7b73f21a790f9224eca058297a0be6514a27d3055008e335d160d26",
+  "runPid": 26723,
+  "result": "rc1,no install,no native attempt",
+  "observed": {
+    "requests": 3,
+    "installed": [],
+    "wallSeconds": 3.4414899999974295,
+    "scratchRemovedBytes": 14811520,
+    "retainedOutputBytes": 174,
+    "failureStageLogCreated": false,
+    "catalogLogicalBytes": 14697562,
+    "firstBottleExpectedBytes": 109619
+  },
+  "evidence": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-install-first-failure-2026-11-07/actual-install-results.json",
+      "bytes": 1224,
+      "sha256": "916650e2815a47989f1e127736a150f3711df9ec7fc5cdeb7f6df75ffb83559e"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-install-first-failure-2026-11-07/actual-install-failure.json",
+      "bytes": 174,
+      "sha256": "d73468961d79320d581af19551d1246b6aedf873edd94870d275f2dcc61eb9a3"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-install-first-failure-2026-11-07/actual-command.log",
+      "bytes": 630,
+      "sha256": "a15bdb85ba2fe1d61b484b2ab2671ac531f2f3c22f70b42c56d8472299a7644d"
+    }
+  ],
+  "causeProved": false,
+  "narrowedBoundary": "After first public token/blob/CDN operations, before first Homebrew log is opened; candidate causes are archive size/hash, tar member/formula existence or embedded Ruby hash. The removed archive prevents distinguishing these from the retained evidence.",
+  "whyNoUnderlyingLog": "The catch overwrites the exception with RuntimeError(... ) from None and saves no stage or exception details. install-ca-certificates.log is not opened until all archive/member/formula checks pass. It therefore was never created on the observed route; cleanup removed source archive/catalog scratch as designed. No evidence shows an install log was deleted.",
+  "hypothesis": "A modern bottle may omit its embedded Ruby or have Ruby bytes different from current catalogue ruby_source_checksum; unproved until exact archive preflight. Do not remove checksum or embedded formula validation based on this hypothesis.",
+  "stateAfter": {
+    "aliases": {
+      "/opt/homebrew/opt/icu4c": {
+        "symlink": true,
+        "target": "../Cellar/icu4c@78/78.3",
+        "exists": true
+      },
+      "/opt/homebrew/opt/icu4c@79": {
+        "symlink": false,
+        "target": null,
+        "exists": false
+      },
+      "/opt/homebrew/opt/openssl": {
+        "symlink": true,
+        "target": "../Cellar/openssl@3/3.6.3",
+        "exists": true
+      },
+      "/opt/homebrew/opt/openssl@4": {
+        "symlink": false,
+        "target": null,
+        "exists": false
+      }
+    },
+    "packages": {
+      "ca-certificates": {
+        "exactKegExists": false,
+        "oldVersions": [
+          "2026-07-16",
+          "2026-08-13"
+        ]
+      },
+      "libunistring": {
+        "exactKegExists": false,
+        "oldVersions": [
+          "1.4.2"
+        ]
+      },
+      "readline": {
+        "exactKegExists": false,
+        "oldVersions": [
+          "8.3.3"
+        ]
+      },
+      "icu4c@79": {
+        "exactKegExists": false,
+        "oldVersions": []
+      },
+      "openssl@4": {
+        "exactKegExists": false,
+        "oldVersions": []
+      },
+      "krb5": {
+        "exactKegExists": false,
+        "oldVersions": []
+      },
+      "postgresql@16": {
+        "exactKegExists": false,
+        "oldVersions": []
+      }
+    },
+    "defaultClusterAbsent": true
+  },
+  "nextCheck": "Fresh separately granted install-2-preflight: first exact109619B bottle only, <=5new public requests, explicit stage checkpoints and actual size/hash/member/formula hashes retained; no package installer or native execution.",
+  "validation": "Read-only retained evidence, source control flow, current Homebrew keg/alias state. No consumedphase replay, archive download, install or native proof.",
+  "backlogBug": "Parent to reuse/create linked Medium tooling Bug; keep FUCQ63 acceptance unchanged.",
+  "acceptance": false
+}

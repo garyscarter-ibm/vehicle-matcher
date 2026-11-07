@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "bmw-selection-binding-proof.v1",
+  "status": "complete",
+  "qualification": "source-selection-qualified-not-admitted",
+  "sourceKind": "dated-snapshot",
+  "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+  "canonicalSignature": "T5MJ:FKSFU,P0300,S0230,S02PA,S02VB,S02VD,S0302,S0337,S03DK,S03G9,S03M1,S0428,S043L,S0488,S0494,S04T2,S04U9,S04UR,S04V1,S0552,S05AS,S05AV,S05DM,S0654,S0674,S06AE,S06AF,S06AK,S06C4,S06NX,S06PA,S0704,S0710,S0760,S0775,S0812,S0853,S0880,S08R3,S08R9,S08SM,S08TF,S08TG,S08WM,S09QV,S09T1,S09T2",
+  "bindingDigest": "e02294a18642bc223ba5349c5729995fb501314ae143484c028e040af88383ff",
+  "recordSha256": "490cf8f694a52f461ec252cedd59d4d831d3d36aff379fde3135985c18857bcf",
+  "recordBytes": 21449,
+  "factoryCodes": 47,
+  "accessoryCodes": 1,
+  "accessoryQuantity": "unknown",
+  "paint": {
+    "code": "P0300",
+    "type": "paint"
+  },
+  "upholstery": {
+    "code": "FKSFU",
+    "type": "upholstery"
+  },
+  "primaryObservedAt": "2026-11-07T00:03:13.998Z",
+  "observedDate": "2026-11-07",
+  "retrievedDate": "2026-11-07",
+  "producerPins": {
+    "projectorSha256": "6c209b848c5360414c52e47f4eefaf81197e61f23d7ad0bab9115dd08bf3238a",
+    "qualifierSha256": "22ae44e1b81875c444ec0e9866878392ef99826af2d15420d85056424af96abd",
+    "sessionSha256": "db0b4b9ea4e8909c8d0e49cb9b6c36dbb2f23df85839f3f221600429e9668cdc",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "sourceArtifacts": {
+    "tree": "c78e90f7abd0a7f012738f7ccb8e349f7a54e056bff3be5cb9711ad91eed2eb7",
+    "solver": "dc3157ca59fa1c4f23e86f94cf6540e5dc4ac386eb1f413ca156fe6ce0f21411"
+  },
+  "definitionArtifacts": {
+    "options": "6883be7544a6c03ef523aa6287a74c03fddd9b0e09b80127c25b72c1bec0061b",
+    "fieldReport": "23ef3385a05272cd8d8ebddd655e1c9a2617b6736739f16c0fa3ef3496134598"
+  },
+  "replaySourceCalls": 0,
+  "outbound": 0,
+  "admission": false,
+  "accepted": [],
+  "positive": "actual collector source replay produces one source-qualified record",
+  "negative": {
+    "mutation": "coherent deletion of S0230 with refreshed canonical key, all identities and binding digest",
+    "status": "invalid",
+    "code": "source-selection-mismatch"
+  },
+  "limitations": [
+    "No snapshot registration or F54 publication",
+    "No F60/application acceptance",
+    "No inferred trim, physical production date or image"
+  ]
+}

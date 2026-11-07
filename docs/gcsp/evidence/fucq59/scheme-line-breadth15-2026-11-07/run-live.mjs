@@ -1,0 +1,16 @@
+import { readFile } from 'node:fs/promises';
+import { dirname,join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
+import { runContext } from './contract-runner.mjs';
+const base=dirname(fileURLToPath(import.meta.url));const root=fileURLToPath(new URL('../../../../../',import.meta.url));
+if(!process.env.BMW_BREADTH15_CONTEXT_GRANT) throw new Error('explicit-root-context-grant-required');
+const series=JSON.parse(await readFile(join(base,'series-plan.json')));const entry=series.contexts.find(e=>e.id===process.argv[2]);
+if(!entry||process.env.BMW_BREADTH15_CONTEXT_GRANT!==entry.allocationId)throw new Error('explicit-root-context-grant-required');
+const sha=b=>createHash('sha256').update(b).digest('hex');
+for(const [path,hash] of Object.entries({...series.codePins,...series.sourcePins}))if(sha(await readFile(join(root,path)))!==hash)throw new Error('source-code-or-input-pin-mismatch');
+for(const [path,hash] of Object.entries(series.runtimePins))if(sha(await readFile(path))!==hash)throw new Error('source-runtime-pin-mismatch');
+if(series.qualificationDate!==new Date().toISOString().slice(0,10))throw new Error('source-observation-date-mismatch');
+const directory=join(series.outputRoot,entry.id);const plan=JSON.parse(await readFile(join(root,entry.qualificationPlanPath)));
+const receipt=await runContext({plan,directory,id:entry.allocationId,mode:'live',fetch:globalThis.fetch});
+console.log(JSON.stringify(receipt));if(receipt.reason!=='source-contract-diagnostic-observed')process.exitCode=1;

@@ -1,0 +1,45 @@
+{
+  "time": "2026-11-07T04:12:26.601831+00:00",
+  "decision": "released-once",
+  "basis": "User explicitly directs FUCQ58-63 completion while AFK; exact actual six-model qualification and scoped26protocolchecks plus3changed-basechecks passed; parent inspected runner/supervisor/plans and all71pins with0mismatch, fresh1923auditedbase, no markers. No authored acceptance changed.",
+  "allocationId": "g42-typed-pilot48-20261107-once",
+  "executionPlanSha256": "7ed4d8e5724ba184261139d3ce0187f2129835ef5e92acff5ce7f9d2a67d1d49",
+  "validationSha256": "053f01b33e29b83b826ee6593a70ddeed82b4e9e7481650db582b5fd06cf808d",
+  "sixPlanDigest": "29aab9bb015be0b3603f006d7e733ca199f217d79ca64534c095c1c244dd5b1b",
+  "parentBaseReviewSha256": "0ea5e936f9a8a497eff1207488ad6bbe2800f5da03305c01fe9e6843e1a0b16d",
+  "indexPins": {
+    "canonical": {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session101/final-canonical-index.json",
+      "sha256": "f79d51fdc0461b28cc9e3d4385f6b5ed8e8e12c82de594b6106be0476705cf35",
+      "digest": "438f77e87c3f1d75f19bf4e56bb9c3a2ef4c6ca77cea1fd6e7bba0db067196ee",
+      "entries": 1926
+    },
+    "spent": {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session101/final-spent-request-index.json",
+      "sha256": "697aa9e7f3864dee829dd8cfd5c033b75e6f2734b28ab0fd88e4a32684a41d1f",
+      "digest": "9ac50334390c3a8b8bceeef3b3925c91a10b9a93e3fb5ac31b5ddaadf21a1ff4",
+      "entries": 2636
+    }
+  },
+  "GET": 72,
+  "solver": 48,
+  "bootstrap": 24,
+  "decodedBytes": 25165824,
+  "responseBytes": 1048576,
+  "workers": 1,
+  "seriesSeconds": 600,
+  "sourceSecondsPerContext": 90,
+  "childSeconds": 105,
+  "chunkSeconds": 120,
+  "hostRamBytes": 536870912,
+  "childRamBytes": 469762048,
+  "scratchBytes": 67108864,
+  "expectedRetainedBytes": 16777216,
+  "sourceWrites": 0,
+  "images": 0,
+  "retries": 0,
+  "sourceCapacityCredit": 0,
+  "acceptance": false,
+  "scope": "Exactly six fresh fourGET bootstraps and eight explicit typedsolverrequests permodel; strictretainedbinding/canonicalcounts only. Stopfirstsource/access/shape/context/pin/budget/cleanupfailure; no replay. No continuation granted.",
+  "ownership": "Existing supervisor allocates externalmanifest+hostreservation+scratch percontext, exports/checks primaryafterjoinbeforecleanup; parentownsfinalreceipt. TMPDIR/TMP/TEMP inherited intoeverychild byresourceshelper. No credentials/rawsettingsretained."
+}

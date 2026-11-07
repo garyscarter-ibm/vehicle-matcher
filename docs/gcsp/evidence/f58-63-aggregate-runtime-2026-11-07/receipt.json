@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-live-partial-corpus",
+  "code": "f4481b711cfcc4a6f04d71486b64b2e2e9a1ee5e",
+  "deployment": 7614657680,
+  "deployedAt": "2026-11-07T01:25:36Z",
+  "environment": "gcsp-poc - gcsp-api",
+  "url": "https://gcsp-api.onrender.com",
+  "manifestDigest": "6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6",
+  "dataset": "fleet-source.v1",
+  "version": "2026-11-07.2",
+  "configurations": 341,
+  "sourceQualifiedDistinct": 340,
+  "vins": 1,
+  "images": 0,
+  "probe": {
+    "startedAt": "2026-11-07T01:26:48.473Z",
+    "finishedAt": "2026-11-07T01:27:08.026Z",
+    "requests": 343,
+    "decodedBytes": 3687707,
+    "limits": {
+      "GET": 512,
+      "decodedBytes": 16777216,
+      "responseBytes": 1048576,
+      "requestMs": 10000,
+      "wallMs": 90000,
+      "workers": 1,
+      "retries": 0
+    },
+    "compared": 342,
+    "expected": 342,
+    "errors": 0,
+    "failure": null,
+    "scope": "Every active configuration and retained VIN; exact JSON parity with the local loader. Read-only production GETs."
+  },
+  "resources": {
+    "wallSeconds": 19.6781875,
+    "peakRssBytes": 194707456,
+    "removedScratchBytes": 807008,
+    "scratchAbsent": true,
+    "groupsAbsent": true,
+    "reservationAbsent": true,
+    "dependencyLinkAbsent": true,
+    "compatibilityException": null,
+    "leftovers": []
+  },
+  "limits": [
+    "340 qualifying distinct configurations, below the 10000 target",
+    "No broadened model/profile/WMI or imagery acceptance",
+    "No native PostgreSQL or synthetic stock claim",
+    "Historical full npm test failures remain recorded independently; scoped evidence is not a new full suite"
+  ],
+  "evidenceHashes": {
+    "live-cleanup.json": "e197151e6a516eae17c32fd98408b1412e5f17496ab82513f59ea2d4dbe95acb",
+    "live-probe.mjs": "b114238712b37e48a675a688d027b009551ecf6f5ef42e3cf5c32d2d735a29b2",
+    "live-report.json": "5d3db4d46da347f549440bdc41b95126d114efd759d3aaa83453fc46e5d08bf3",
+    "live-result.json": "40751d407cd290fb489f9b8c564c2531911103c36adfb4c8c7ea2941c5b7cb6e"
+  }
+}
