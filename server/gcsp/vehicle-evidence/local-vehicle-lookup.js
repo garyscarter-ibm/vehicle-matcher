@@ -4,7 +4,7 @@ import { createPolicyService } from '../policy/index.js';
 import { createSyntheticRegistry } from './synthetic-registry.js';
 import { createVehicleEvidenceLookup } from './vehicle-lookup.js';
 
-export const DEFAULT_VEHICLE_CORPUS_ROOT = fileURLToPath(new URL('../../data/gcsp/vehicle-evidence/lookup-reference.v1', import.meta.url));
+export const DEFAULT_VEHICLE_CORPUS_ROOT = fileURLToPath(new URL('../../data/gcsp/vehicle-evidence/fleet-source.v1', import.meta.url));
 
 /** Only reads an already-published local store; there is no runtime publish/generator/transport capability. */
 export function createLocalVehicleEvidenceLookup({ root = DEFAULT_VEHICLE_CORPUS_ROOT, repository,

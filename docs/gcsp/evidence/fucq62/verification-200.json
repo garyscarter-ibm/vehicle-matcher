@@ -1,0 +1,143 @@
+{
+  "status": "shortfall",
+  "targetMet": false,
+  "storyAcceptance": "not-established",
+  "requiredDistinct": 200,
+  "shortfall": 171,
+  "reason": {
+    "code": "distinct-target-shortfall",
+    "message": "Complete resolved source configurations remain below the required distinct target."
+  },
+  "manifest": {
+    "path": "server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/eaeda01c2121e35634ca932a0cc4bf640fae91239498e19edd362899234f6bf3/manifest.json",
+    "sha256": "eaeda01c2121e35634ca932a0cc4bf640fae91239498e19edd362899234f6bf3",
+    "datasetId": "gcsp-source-fleet",
+    "version": "2026-11-07.1",
+    "schemaVersion": "1",
+    "signaturePolicyVersion": "gcsp-policy-v1",
+    "profileRegistryVersion": "vin-profiles.v1",
+    "generatorVersion": "synthetic-identities.sha256-v1"
+  },
+  "qualification": "bounded-fixture-or-partial-corpus",
+  "actual": {
+    "configurations": 30,
+    "distinctConfigurations": 30,
+    "images": 0,
+    "qualifyingCompleteDistinctSourceConfigurations": 29,
+    "sourceConfigurations": 29,
+    "vinMappings": 1,
+    "completeResolvedDistinct": 29,
+    "nonQualifyingConfigurations": 1,
+    "coverage": {
+      "markets": {
+        "GB": 29,
+        "US": 1
+      },
+      "models": {
+        "430i": 1,
+        "unknown": 29
+      },
+      "steering": {
+        "LHD": 1,
+        "unknown": 29
+      },
+      "wmis": {
+        "WBA": 1
+      }
+    },
+    "omittedCoverageCategories": {
+      "markets": 0,
+      "models": 0,
+      "steering": 0,
+      "wmis": 0
+    },
+    "completeness": {
+      "imagesMissing": 30,
+      "selectedOptions": {
+        "complete": 29,
+        "unknown": 1
+      },
+      "sourceKinds": {
+        "dated-snapshot": 29,
+        "north-american-reference": 1
+      }
+    },
+    "distributions": {
+      "model": {
+        "values": {
+          "430i": 1,
+          "unknown": 29
+        },
+        "omittedCategories": 0
+      },
+      "body": {
+        "values": {
+          "Convertible": 1,
+          "unknown": 29
+        },
+        "omittedCategories": 0
+      },
+      "powertrain": {
+        "values": {
+          "petrol": 1,
+          "unknown": 29
+        },
+        "omittedCategories": 0
+      },
+      "factoryOptionCount": {
+        "values": {
+          "1": 1,
+          "47": 23,
+          "52": 6
+        },
+        "omittedCategories": 0
+      },
+      "sourceKind": {
+        "values": {
+          "dated-snapshot": 29,
+          "north-american-reference": 1
+        },
+        "omittedCategories": 0
+      },
+      "unresolvedFacts": {
+        "values": {
+          "agModelCode": 1,
+          "body": 29,
+          "derivative": 29,
+          "drive": 29,
+          "engineCode": 30,
+          "exactEquipment": 1,
+          "exactTrim": 1,
+          "model": 29,
+          "modelYear": 29,
+          "plant": 29,
+          "powertrain": 29,
+          "productionDate": 30,
+          "productionEra": 29,
+          "region": 29,
+          "registrationDate": 1,
+          "steering": 29,
+          "transmission": 30,
+          "vgModelCode": 1
+        },
+        "omittedCategories": 0
+      },
+      "imageFidelity": {
+        "values": {},
+        "omittedCategories": 0
+      }
+    }
+  },
+  "planned": {
+    "provided": false,
+    "familyCount": 0,
+    "families": [],
+    "omittedFamilies": 0,
+    "exclusions": []
+  },
+  "limitations": [
+    "Compatible profile-family coverage is not inferred from configuration IDs or VIN spelling.",
+    "Staged verification does not establish source-operation budgets, collection replay or full story acceptance.",
+    "Unknown measurements, missing images and representative image fidelity remain explicit; no stock, eligibility or points facts are inferred."
+  ]
+}
