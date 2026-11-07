@@ -9,6 +9,11 @@ import { createSupplyService, createSyntheticProductionAdapter } from '../gcsp/s
 import { createSupplyRoutes } from '../gcsp/supply/http.js';
 import { createGcspHandler } from '../gcsp/identity/http.js';
 import { readFile } from 'node:fs/promises';
+import { createGcspRuntime } from '../gcsp/runtime.js';
+import { buildServer } from '../index.js';
+import { createDemoStockProvider, createDemoUpstream } from '../gcsp/stock/demo-provider.js';
+import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
+import { essential, preference } from './helpers/employee-recommendation.js';
 
 async function serviceFixture(options = {}) {
   const repository = createMemoryRepository({ store: createMemoryStore() }); await repository.open();
@@ -300,4 +305,80 @@ test('migration discovery and foundation snapshot include additive supply record
     assert.match(added.sql, new RegExp(`CREATE TABLE ${table}`));
   }
   assert.match(added.sql, /REFERENCES future_order_requests\(run_id,request_id\)/);
+});
+
+// The real runtime and routes with the demo upstream: a confirmed request is the only way its stock appears.
+test('allocation and demand update after a release from a confirmed request', async (t) => {
+  const good = (out) => { assert.equal(out?.status, 'ok', JSON.stringify(out)); return out.value; };
+  const upstream = createDemoUpstream();
+  const runtime = good(await createGcspRuntime({ mode: 'memory', stockProvider: createDemoStockProvider({ upstream }),
+    production: upstream.production, environmentId: 'orders-runtime-test', policyAsOf: '2026-11-05T09:00:00.000Z',
+    commandId: 'orders-bootstrap', sessionNow: () => '2026-11-06T00:00:00.000Z' }));
+  t.after(() => runtime.close());
+  assert.equal(runtime.dependencies.gcspSupply, runtime.supply);
+  good(await buildServer({ ...runtime.dependencies, gcspAllowedOrigins: ['https://orders.test'] }).gcspStartup);
+  const presenter = good(await runtime.identity.createPresenterSession('orders-presenter')).context;
+  const greg = good(await runtime.identity.switchPrincipal(presenter, 'demo-greg', 'orders-greg')).context;
+  const paula = good(await runtime.identity.switchPrincipal(presenter, 'demo-paula', 'orders-paula')).context;
+  good(await seedManualDemoContext({ repository: runtime.repository, identity: runtime.identity, clock: runtime.clock, context: paula }));
+  good(await runtime.brief.saveDraft(paula, { commandId: 'brief-draft', expectedBriefVersion: 0, expectedDraftVersion: 0,
+    brief: { schemaVersion: 1, preferences: { body: preference('estate') }, essentials: { seats: essential(5) } } }));
+  good(await runtime.brief.confirm(paula, { commandId: 'brief-confirm', expectedBriefVersion: 0, expectedDraftVersion: 1,
+    consent: { search: true, hold: true } }));
+  let ticks = 0;
+  const tick = async () => { const now = good(await runtime.clock.now(presenter)); ticks += 1;
+    return good(await runtime.clock.tick(presenter, { eventId: `orders-tick-${ticks}`, inputDigest: inputDigest(`orders-${ticks}`),
+      expectedClockVersion: now.clockVersion })); };
+  const advance = async (to) => good(await runtime.clock.advance(presenter, { commandId: `orders-advance-${to}`,
+    expectedClockVersion: good(await runtime.clock.now(presenter)).clockVersion, to }));
+  const outcome = (ticked, handlerId) => ticked.outcomes.find((row) => row.handlerId === handlerId).outcome.value;
+  const touring = async () => good(await runtime.greg.readDemand(greg)).stock.byModelLine.find((row) => row.key === 'G21 Touring')?.released.count;
+  const tracking = async () => good(await runtime.supply.readTracking(greg));
+
+  // Greg requests 3, production confirms 2, Greg queues: confirmed with a date and nothing released.
+  const view = await tracking();
+  assert.deepEqual(view.adapter.choices.map((c) => c.model), ['3 Series Saloon', '3 Series Touring', 'i5 Touring']);
+  const { request } = good(await runtime.supply.submit(greg, { commandId: 'orders-submit', model: '3 Series Touring', derivative: '320i',
+    quantity: 3, expectedPolicyVersion: view.versions.policy, expectedStockVersion: view.versions.stock }));
+  const { supply } = good(await runtime.supply.stepProduction(presenter, { commandId: 'orders-confirm', requestId: request.requestId,
+    expectedVersion: request.version, action: 'confirm', quantity: 2 }));
+  good(await runtime.supply.queueConfirmed(greg, { commandId: 'orders-queue', requestId: request.requestId }));
+  let row = (await tracking()).requests[0];
+  assert.equal(row.confirmedQuantity, 2); assert.equal(row.releasedQuantity, 0); assert.equal(row.outstandingQuantity, 1);
+  assert.deepEqual(row.supplies.map((s) => [s.supplyId, s.expectedAt, s.queued]), [[supply.supplyId, supply.expectedAt, true]]);
+  const ownStock = async () => (await runtime.repository.query(greg, 'stock')).value.filter((s) => s.release?.supplyId === supply.supplyId);
+
+  // Fixed demo windows drain, but the supply stays unreleased until its policy lead time has passed.
+  await advance(new Date(Date.parse(supply.expectedAt) - 86400000).toISOString());
+  for (let i = 0; i < 4; i += 1) assert.notEqual(outcome(await tick(), 'stock-release').supplyId, supply.supplyId);
+  assert.equal((await ownStock()).length, 0);
+  assert.equal((await tracking()).requests[0].releasedQuantity, 0);
+
+  // At expectedAt the tick releases exactly the confirmed 2 cars, never the unconfirmed third.
+  await advance(supply.expectedAt);
+  const before = await touring(); assert.equal(before.kind, 'band');
+  let ticked; let released;
+  for (let i = 0; i < 4 && !released; i += 1) {
+    ticked = await tick(); const value = outcome(ticked, 'stock-release');
+    if (value.supplyId === supply.supplyId) released = value;
+  }
+  assert.ok(released, 'the confirmed supply released on a tick');
+  assert.equal(released.orderUuids.length, 2);
+  const rows = await ownStock();
+  assert.deepEqual(rows.map((s) => s.orderUuid).sort(), [...released.orderUuids].sort());
+  assert.ok(rows.every((s) => s.state === 'released' && s.facts.facts.eligibilityModelKey.value === 'G21 Touring|320i'));
+  row = (await tracking()).requests[0];
+  assert.equal(row.releasedQuantity, 2); assert.equal(row.confirmedQuantity, 2); assert.equal(row.outstandingQuantity, 1);
+  assert.equal(row.stage, 'partly-released');
+
+  // Greg's demand sees the new stock (4 touring cars as a band, then 6 exact).
+  const after = await touring(); assert.deepEqual([after.kind, after.value], ['exact', 6]);
+
+  // The allocation stage ran on that release and weighed the new cars. The seeded employee holds none:
+  // the demo employee fails policy/allowance gates for them, so this asserts evaluation, not a hold.
+  const allocation = outcome(ticked, 'buddy-allocation').allocations.find((a) => a.event.eventType === 'stock-released'
+    && released.orderUuids.every((id) => a.inputVersions.stock.some((s) => s.orderUuid === id)));
+  assert.ok(allocation, 'allocation considered the released supply cars');
+  const decided = allocation.evaluations.find((e) => e.employeeId === paula.employeeId).decisions.map((d) => d.orderUuid);
+  for (const id of released.orderUuids) assert.ok(decided.includes(id));
 });

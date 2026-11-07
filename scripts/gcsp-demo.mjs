@@ -5,7 +5,7 @@ import { extname, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildServer } from '../server/index.js';
 import { createGcspRuntime } from '../server/gcsp/runtime.js';
-import { createDemoStockProvider } from '../server/gcsp/stock/demo-provider.js';
+import { createDemoStockProvider, createDemoUpstream } from '../server/gcsp/stock/demo-provider.js';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json',
@@ -91,7 +91,8 @@ export async function startGcspDemo({ runtime = {}, port = 0, root = ROOT, acces
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   const mode = process.env.GCSP_REPOSITORY_MODE || 'postgres';
   const connectionString = process.env.GCSP_DATABASE_URL;
-  const app = await startGcspDemo({ port: Number(process.env.PORT) || 3001, runtime: { mode, stockProvider: createDemoStockProvider(),
+  const upstream = createDemoUpstream();
+  const app = await startGcspDemo({ port: Number(process.env.PORT) || 3001, runtime: { mode, stockProvider: createDemoStockProvider({ upstream }), production: upstream.production,
     repositoryOptions: { connectionString }, environmentId: process.env.GCSP_ENVIRONMENT_ID || 'gcsp-local-functional',
     policyAsOf: new Date().toISOString(), commandId: 'local-bootstrap', adoptOfferJourney: true } });
   if (app.status !== 'ok') { console.error(`GCSP local startup: ${app.status}${app.code ? ` (${app.code})` : ''}`); process.exitCode = 1; }
