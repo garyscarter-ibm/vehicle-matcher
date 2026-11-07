@@ -44,3 +44,9 @@ BMW_BREADTH15_FIRST_PROOF_SHA256=ACTUAL_REVIEWED_FIRST_PROOF_SHA256 \
 ```
 
 All original 31 scheme-line joins remain open. The five leads are candidates for seven target rows; 20 targets still lack a retained exact page seed. The existing three evidence lanes remain scheme-join incomplete, and F44 remains an explicit dated source gap. The separate Medium production inventory defect remains open and unfixed. Distribution, downstream integration and original acceptance obligations remain open.
+
+## Actual first phase, 7 November 2026
+
+The parent released the exact first three GETs once. G21 completed all three with HTTP 200, 811,124 decoded bytes and a 15,738-byte sealed diagnostic. The phase took 2.381371792 seconds. It observed alias `3`, eight full model nodes and 80 literal relationships, with seed T3PF present. The original production refusal is `source-inventory-line-key` at `/3/modelRanges/G21/lines/BASIC_LINE`. This is retained evidence; the production defect remains unfixed.
+
+All five retained checks passed, including a copied-primary zero-fetch resume. First proof SHA-256 is `3b7a25b735ed3ea4097c618ff8e3d600a9839ac2c4443a16d104a2f6ff32bd63`; primary SHA-256 is `9a6d47820aa93ee6dafc41679a043680b31b077e0d379d1c0d432bfdf6ec4384`. `first-actual-validation.json` records both source/proof resource checks and the joined phase cleanup. Both roots, process groups, child reservations and phase reservation were independently verified absent; no scratch allocation remained. The retained first-phase output measured 57,042 bytes before this summary. Admissions, capacity credit and acceptance remain zero. The remaining 12 GETs require their separate release.
