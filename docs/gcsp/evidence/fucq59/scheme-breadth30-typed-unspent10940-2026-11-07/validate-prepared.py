@@ -3,7 +3,7 @@ import sys
 sys.dont_write_bytecode=True
 import atexit,hashlib,importlib.util,json,os,pathlib,re,subprocess
 BASE=pathlib.Path(__file__).resolve().parent;ROOT=BASE.parents[4]
-OUT=pathlib.Path('/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth30-unspent/preparation/attempt02')
+OUT=pathlib.Path('/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth30-unspent/preparation/attempt03-4666')
 spec=importlib.util.spec_from_file_location('resources',ROOT/'_tools/test_resources.py');R=importlib.util.module_from_spec(spec);spec.loader.exec_module(R)
 group_path=BASE.parent/'g42-unspent1304-series-2026-11-07/group-proof.py'
 spec=importlib.util.spec_from_file_location('groups',group_path);G=importlib.util.module_from_spec(spec);spec.loader.exec_module(G)
@@ -13,7 +13,7 @@ pool=R.read_json(BASE/'pool.json');sha=lambda p:hashlib.sha256(p.read_bytes()).h
 paths=[BASE/'pool.json',BASE/'prepare.py',BASE/'prepared-check.test.mjs',BASE/'validate-prepared.py',ROOT/'_tools/test_resources.py',group_path]
 paths += [ROOT/p for p in pool['sourcePins']]+[ROOT/c['templatePath']for c in pool['chunks']]
 paths += [ROOT/p for p in ['scripts/gcsp/bmw-public-registration.mjs','scripts/gcsp/configuration-key.mjs','server/gcsp/repository/core.js','server/gcsp/repository/schema.js']]
-paths += [pathlib.Path(pool['knownSpentBasis'][key]['path'])for key in ['parentGlobal4430Spent','actualPilot48Spent','parentAudit']]
+paths += [pathlib.Path(pool['knownSpentBasis'][key]['path'])for key in ['parentGlobal4666Spent','actualPilot48Spent','parentAudit']]
 identity={str(p.relative_to(ROOT))if ROOT in p.parents else str(p):sha(p)for p in paths}
 command=['/opt/homebrew/bin/node','--test','--test-concurrency=1',str(BASE/'prepared-check.test.mjs')]
 link=ROOT/'server/node_modules';link_before=link.lstat()if os.path.lexists(link)else None
@@ -47,8 +47,14 @@ atexit.register(finalize)
 with R.handled_termination():
  try:
   host.acquire(scratch.token,64*R.MIB,512*R.MIB,ROOT,root=scratch.root);reserved=True;scratch.__enter__();entered=True
-  result=R.run_process(command,ROOT,{'PATH':'/opt/homebrew/bin:/usr/bin:/bin','TZ':'UTC','LANG':'en_GB.UTF-8'},OUT/'check.log',scratch,policy,64*R.MIB,448*R.MIB,105,host)
+  result=R.run_process(command,ROOT,{'PATH':'/opt/homebrew/bin:/usr/bin:/bin','TZ':'UTC','LANG':'en_GB.UTF-8','NODE_V8_COVERAGE':str(scratch.root/'coverage')},OUT/'check.log',scratch,policy,64*R.MIB,448*R.MIB,105,host)
   content=(OUT/'check.log').read_text();result['testCounts']={key:int(m.group(1))for key in ['tests','pass','fail','skipped']if(m:=re.search(r'(?:#|ℹ) '+key+r' (\d+)',content))}
+  observed=[]
+  for coverage in (scratch.root/'coverage').glob('*.json'):
+   for script in R.read_json(coverage,{}).get('result',[]):
+    if any(script.get('url','').endswith('/'+name)for name in ['scripts/gcsp/bmw-public-registration.mjs','server/gcsp/repository/core.js']):
+     observed.append({'script':script['url'],'functions':[{'name':f['functionName'],'calls':f['ranges'][0]['count']}for f in script['functions']if f['functionName']and f['ranges']and f['ranges'][0]['count']>0]})
+  result['observedCoverage']=observed;result['coverageBoundary']='measured one-worker offline chunk; no per-test runtime context support in this Node V8 output'
   result['identity']=identity;result['identityUnchanged']=all(sha(ROOT/p)==h for p,h in identity.items())
   R.atomic_json(OUT/'result.json',result)
   if result['rc']or result['issue']:print(content[-12000:])

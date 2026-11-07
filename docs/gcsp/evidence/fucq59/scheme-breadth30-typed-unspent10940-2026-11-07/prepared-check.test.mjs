@@ -11,7 +11,7 @@ const base=dirname(fileURLToPath(import.meta.url)),root=fileURLToPath(new URL('.
 const read=async p=>JSON.parse(await readFile(p)),sha=b=>createHash('sha256').update(b).digest('hex');
 const pool=await read(join(base,'pool.json'));
 const plans=[];for(const chunk of pool.chunks)plans.push(await read(join(root,chunk.templatePath)));
-const spent=await read(pool.knownSpentBasis.parentGlobal4430Spent.path),used=new Set(spent.entries.map(r=>r.requestDigest));
+const spent=await read(pool.knownSpentBasis.parentGlobal4666Spent.path),used=new Set(spent.entries.map(r=>r.requestDigest));
 
 test('actual source copies, primary content and all194 source pins remain exact',async()=>{
   assert.equal(Object.keys(pool.sourcePins).length,194);
@@ -24,13 +24,13 @@ test('actual source copies, primary content and all194 source pins remain exact'
     const proof=await read(join(source,'actual-proof-result.json'));assert.equal(proof.rc,0);assert.equal(proof.issue,null);assert.equal(proof.identityUnchanged,true);assert.equal(proof.testCounts.fail,0);assert.equal(proof.testCounts.skipped,0);
   }
 });
-test('audited4430 spent base already contains exact actual48 including all16 rejects',async()=>{
-  const pin=pool.knownSpentBasis.parentGlobal4430Spent;assert.equal(sha(await readFile(pin.path)),pin.sha256);assert.equal(used.size,pin.entries);assert.equal(pin.entries,5828);
+test('audited4666 spent base already contains exact actual48 including all16 rejects',async()=>{
+  const pin=pool.knownSpentBasis.parentGlobal4666Spent;assert.equal(sha(await readFile(pin.path)),pin.sha256);assert.equal(used.size,pin.entries);assert.equal(pin.entries,6140);
   const audit=pool.knownSpentBasis.parentAudit;assert.equal(sha(await readFile(audit.path)),audit.sha256);
   const pilot=await read(pool.knownSpentBasis.actualPilot48Spent.path),delta=pilot.entries.slice(pool.knownSpentBasis.actualPilot48Spent.baseEntries),byDigest=new Map(spent.entries.map(r=>[r.requestDigest,r]));
   assert.equal(delta.length,48);assert.deepEqual(delta.reduce((a,r)=>(a[r.outcome]=(a[r.outcome]||0)+1,a),{}),{accepted:32,rejected:16});
   for(const row of delta)assert.deepEqual(byDigest.get(row.requestDigest),row);
-  assert.equal(pool.knownSpentBasis.knownUnionSpentEntries,5828);
+  assert.equal(pool.knownSpentBasis.knownUnionSpentEntries,6140);
 });
 test('30 literal typed Cartesian pools partition10988 requests into exact48 spent and10940 unspent',async()=>{
   const all=new Set(),remaining=new Set(),excluded=new Set();let total=0;

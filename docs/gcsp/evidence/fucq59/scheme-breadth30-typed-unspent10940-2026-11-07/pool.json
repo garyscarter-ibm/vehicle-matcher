@@ -1,7 +1,7 @@
 {
   "schemaVersion": "breadth30-actual-finite-unspent-pool.v1",
   "status": "concrete prepared inputs; no executable source campaign or grant",
-  "time": "2026-11-07T05:17:56.879614+00:00",
+  "time": "2026-11-07T05:21:26.665109+00:00",
   "contexts": [
     {
       "id": "t3mk",
@@ -197107,10 +197107,10 @@
     "docs/gcsp/evidence/fucq59/scheme-breadth-typed-pilot48-2026-11-07/reconciliation.json": "ef9e77300ff562074f3e73c0a504d45f5cc39d12dff99baa341af90598aa45f3"
   },
   "knownSpentBasis": {
-    "parentGlobal4430Spent": {
-      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/global-union4430-20261107/final-spent-request-index.json",
-      "sha256": "be9890b3a102b13d851f310903a48739cdfaafbcef603f16243096d411df125e",
-      "entries": 5828
+    "parentGlobal4666Spent": {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/global-union4666-20261107/final-spent-request-index.json",
+      "sha256": "1110cc201c789fb28648e5b9489a9e2eef9762245a97f7ea2d13ccca4985e567",
+      "entries": 6140
     },
     "actualPilot48Spent": {
       "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-typed-pilot48-2026-11-07/final-spent-request-index.json",
@@ -197118,10 +197118,10 @@
       "baseEntries": 3236,
       "actualDelta": 48
     },
-    "knownUnionSpentEntries": 5828,
+    "knownUnionSpentEntries": 6140,
     "parentAudit": {
-      "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/global-union4430-parent-audit.json",
-      "sha256": "3e10565f2d65e264ce74b0f58c739056d8e4a9979543a7f73af836035106ff84"
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/global-union4666-parent-audit.json",
+      "sha256": "7a9fa86e2b55cbc04510a29e30052971692f6ba75f836123c073cd48ac448951"
     },
     "activeG42F70FinalGlobalRefreshRequiredBeforeAnySource": true
   },

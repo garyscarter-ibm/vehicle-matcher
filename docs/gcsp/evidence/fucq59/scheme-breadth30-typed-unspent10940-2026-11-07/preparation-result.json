@@ -1,18 +1,18 @@
 {
   "schemaVersion": "breadth30-unspent-preparation-result.v1",
-  "time": "2026-11-07T05:20:09.690459+00:00",
+  "time": "2026-11-07T05:23:09.299650+00:00",
   "scope": "scoped concrete finite input preparation; no released source campaign",
-  "poolSha256": "60388ec1d1c8272d1bbf20dc904a3d93c6412ff01a62c89b373fbee80c9716cf",
-  "generatorSha256": "e74ca198de5ff881b169e5df8821b9f3080c822a7f8a6872daf3b4224148f2e6",
-  "proofSha256": "5d7653670f16496b6f8afaad3372b2063e8cd7cb5e8d0497badf70682f3de179",
+  "poolSha256": "51775a86b086e3ffc065fb91b32191fed0ce4f84296e65a41147aeb282652aab",
+  "generatorSha256": "c280f6bb20ffbd37baa72dcbe768d276324ebd2ed45b8b04799df801f1adc085",
+  "proofSha256": "a05d3af8dfc430610a88467e1950fc3dcf7838d17fee0143426efff0a4f0dacc",
   "proofTests": {
     "fail": 0,
     "pass": 7,
     "skipped": 0,
     "tests": 7
   },
-  "wallSeconds": 1.992829875,
-  "peakRssBytes": 204865536,
+  "wallSeconds": 3.015243458,
+  "peakRssBytes": 206258176,
   "sourcePins": 194,
   "contexts": 30,
   "actualTypedRequests": 10988,
@@ -33,8 +33,8 @@
     "independentScratchAbsent": true,
     "independentGroupsAbsent": true,
     "independentReservationAbsent": true,
-    "removedAllocationBytes": 0,
-    "retainedEvidenceBytes": 12565284,
+    "removedAllocationBytes": 364640,
+    "retainedEvidenceBytes": 13109395,
     "compatibilityException": null,
     "leftovers": []
   },
@@ -50,5 +50,100 @@
     "fresh parent-audited global canonical and spent base including current G42/F70 and actualbreadth32",
     "per-phase concrete runner/supervisors/reconciler/proof, all exactpins and resource/free-space checkpoint",
     "separate exact phase source grant; stop first incomplete outcome; preserve all spent history; no replay"
-  ]
+  ],
+  "knownSpentBasis": 6140,
+  "parentAuditAdmissions": 4666,
+  "observedCoverage": [
+    {
+      "functions": [
+        {
+          "calls": 1372,
+          "name": "isBmwBatchPlan"
+        },
+        {
+          "calls": 318691,
+          "name": "object"
+        },
+        {
+          "calls": 281753,
+          "name": "same"
+        },
+        {
+          "calls": 160062,
+          "name": "bounded"
+        },
+        {
+          "calls": 183636,
+          "name": "token"
+        },
+        {
+          "calls": 359698,
+          "name": "code"
+        },
+        {
+          "calls": 173710,
+          "name": "date"
+        },
+        {
+          "calls": 57446,
+          "name": "validateBmwModelRegistration"
+        },
+        {
+          "calls": 45135,
+          "name": "validateBmwModelOptionsRequestRegistration"
+        },
+        {
+          "calls": 10940,
+          "name": "bmwModelOptionsRequestUrls"
+        },
+        {
+          "calls": 21881,
+          "name": "candidateRequest"
+        },
+        {
+          "calls": 21881,
+          "name": "validateBmwModelBatchCandidateRequest"
+        },
+        {
+          "calls": 10940,
+          "name": "bmwModelBatchRequestUrls"
+        },
+        {
+          "calls": 10940,
+          "name": "bmwBatchPlanRequestUrls"
+        },
+        {
+          "calls": 10940,
+          "name": "bmwPublicRequestUrls"
+        },
+        {
+          "calls": 1374,
+          "name": "validateBmwBatchPlan"
+        }
+      ],
+      "script": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/scripts/gcsp/bmw-public-registration.mjs"
+    },
+    {
+      "functions": [
+        {
+          "calls": 2858964,
+          "name": "plain"
+        },
+        {
+          "calls": 3414911,
+          "name": "jsonValue"
+        },
+        {
+          "calls": 3414911,
+          "name": "canonical"
+        },
+        {
+          "calls": 630595,
+          "name": "inputDigest"
+        }
+      ],
+      "script": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/repository/core.js"
+    }
+  ],
+  "history4430": "cf3ef10c with original unchanged proof retained in history4430/"
 }
