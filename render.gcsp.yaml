@@ -27,7 +27,7 @@ services:
       --store "$PWD/data/gcsp/vehicle-evidence/fleet-source.v1"
       --cache "$PWD/data/gcsp/vehicle-evidence/fleet-artifacts.v1" --network download
     startCommand: cd server && npm start
-    healthCheckPath: /health
+    healthCheckPath: /health/vehicle-evidence
     autoDeployTrigger: commit
     buildFilter:           # API code plus its pinned source, image and operator artifacts
       paths:
