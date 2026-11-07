@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import { qualifyFleetPlan, qualifyPilotPlan, configurationKey } from '../../scripts/gcsp/fleet-plan.mjs';
 import { createVinProfileRegistry } from '../gcsp/vehicle-evidence/vin-profiles.js';
 
@@ -108,11 +109,18 @@ test('shipped evidence proves three real complete selections, never GB profile q
 });
 
 test('authorised finite pilot qualifies separately from full UK profile and scheme coverage', async () => {
+  const before = JSON.stringify(shipped);
   const report = qualifyPilotPlan(shipped);
   assert.equal(report.ready, true, report.errors.join(','));
   assert.equal(report.collectionQualified, false); assert.equal(report.outboundRequests, 0);
   assert.equal(report.profileStatus, 'unqualified'); assert.equal(report.activeShortfall, 197);
   assert.equal(report.requests.total, 12); assert.equal(report.bytes.total, 16 * 1024 * 1024);
+  for (const kind of ['evidence', 'images']) {
+    const leaf = `docs/gcsp/evidence/fucq-58/authorised-pilot-2026-11-05/${kind}`;
+    assert.equal(shipped.destinations[kind].path, leaf);
+    assert.equal(report.destinations[kind].path, fileURLToPath(new URL(leaf, root)));
+  }
+  assert.equal(JSON.stringify(shipped), before);
   const source = await readFile(new URL('docs/gcsp/sources/choices-eligibility-matrices-2024-10.md', root), 'utf8');
   const expected = new Set();
   for (const row of source.split('\n').filter((line) => /^\| (?:\d Series|Z Series|X Models|BMW i|M) \|/.test(line))) {
@@ -143,6 +151,8 @@ test('pilot refuses changed authority, source, context, seeds, limits and retent
     (p) => { p.pilot.stopConditions = []; },
     (p) => { p.destinations.images.public = true; },
     (p) => { p.destinations.evidence.path = '/tmp/other'; },
+    (p) => { p.destinations.evidence.path = '../docs/gcsp/evidence/fucq-58/authorised-pilot-2026-11-05/evidence'; },
+    (p) => { p.destinations.images.path = 'docs/gcsp/evidence/fucq-58/authorised-pilot-2026-11-05/evidence'; },
     (p) => { p.planVersion = 'other'; },
     (p) => { p.retention.discardPrivateIdentifiers = false; },
     (p) => { delete p.pilot; },

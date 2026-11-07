@@ -26,6 +26,8 @@ const FACTS = ['model', 'derivative', 'generation', 'body', 'powertrain', 'agMod
 const RETAIN = new Set(['shared-type-codes', 'resolved-selections', 'sanitised-evidence', 'provenance', 'technical-facts', 'representative-images']);
 const STOPS = ['budget-exhausted', 'permission-revoked', 'identity-substitution', 'profile-mismatch', 'source-failure', 'retention-violation', 'destination-full'];
 const ONEDRIVE = '/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/';
+const pilotDestination = (kind) => `docs/gcsp/evidence/fucq-58/authorised-pilot-2026-11-05/${kind}`;
+const destinationPath = (kind, value) => value === pilotDestination(kind) ? fileURLToPath(new URL(value, ROOT)) : value;
 
 /** Semantic corpus identity excludes dates, source aliases and stock/vehicle identities. */
 export function configurationKey(modelCode, completeSelectedElements, selectedAccessories = []) {
@@ -152,8 +154,8 @@ export function qualifyPilotPlan(plan) {
   const requiredStops = [...STOPS, 'response-too-large', 'download-limit', 'timeout', 'redirect', 'unexpected-payload', 'authentication-required'];
   if (!strings(p?.stopConditions) || requiredStops.some((stop) => !p.stopConditions.includes(stop))) add('missing-pilot-stop-conditions');
   for (const [name, expectedBytes] of [['evidence', 12582912], ['images', 2097152]]) {
-    const expectedPath = fileURLToPath(new URL(`docs/gcsp/evidence/fucq-58/authorised-pilot-2026-11-05/${name}`, ROOT));
-    if (plan.destinations?.[name]?.path !== expectedPath || plan.destinations[name].expectedBytes !== expectedBytes) add('invalid-pilot-destination');
+    const expectedPath = fileURLToPath(new URL(pilotDestination(name), ROOT));
+    if (destinationPath(name, plan.destinations?.[name]?.path) !== expectedPath || plan.destinations[name].expectedBytes !== expectedBytes) add('invalid-pilot-destination');
   }
   const operation = { coverage: { distinctProved: 3, synthetic: 0 }, projection: {} };
   validateRun(plan, operation, add);
@@ -161,6 +163,8 @@ export function qualifyPilotPlan(plan) {
   report.ready = errors.length === 0;
   if (report.ready) {
     report.source = p.source; report.context = p.context; report.requests = p.requests; report.bytes = p.bytes;
+    report.destinations = Object.fromEntries(['evidence', 'images'].map((kind) => [kind,
+      { ...plan.destinations[kind], path: destinationPath(kind, plan.destinations[kind].path) }]));
     report.profileStatus = 'unqualified'; report.activeShortfall = 197;
   }
   return report;
@@ -288,7 +292,8 @@ function validateRun(plan, report, add) {
   const retained = plan.retention;
   if (!strings(retained?.fields) || retained.fields.some((f) => !RETAIN.has(f)) || retained.discardPrivateIdentifiers !== true) add('invalid-retention');
   for (const kind of ['evidence', 'images']) {
-    const d = plan.destinations?.[kind];
+    const supplied = plan.destinations?.[kind];
+    const d = object(supplied) ? { ...supplied, path: destinationPath(kind, supplied.path) } : supplied;
     if (!object(d) || !text(d.path) || !path.isAbsolute(d.path) || path.normalize(d.path) !== d.path
       || !integer(d.expectedBytes) || d.public !== false || d.retention !== 'reusable-non-personal'
       || (d.expectedBytes >= 256 * 1024 * 1024 && !d.path.startsWith(ONEDRIVE))) add(`invalid-destination:${kind}`);
