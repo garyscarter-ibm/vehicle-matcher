@@ -1,4 +1,4 @@
-# Exact 1F7E shape observation — prepared, unspent
+# Exact 1F7E shape observation — executed once, consumed
 
 This adds a narrowly versioned observation capability to the existing collection session. It binds the accepted first 1F7E/82GE row and all 51 sorted factory codes, including typed paint/upholstery, without an inferred trim or production date. Accessories are empty. The accepted file and original line remain hash pinned.
 
@@ -10,4 +10,4 @@ Scoped offline validation passed 48/48 tests with no skips, including adjacent g
 
 Parent review must release the exact `execution-plan.json`, runner, supervisor and plan hashes before setting `F60_OBSERVATION_SOURCE_GRANT` to the allocation ID and invoking `supervise.py live` in this worktree. The runner checks the grant, date, plan/code/source pins and unspent primary before fsyncing a consumed marker. The retained primary is `observer-checkpoint.json` in this directory from its first write, outside scratch. The supervisor registers external ownership, budgets and teardown before execution; its environment is allowlisted. The allocation, primary and marker must never be reset to repeat calls. A handled stop retains safe observations and counters. Supervisor interruption preserves the primary for diagnosis and records its existence in cleanup.
 
-No live invocation has occurred. Source schema qualification, image fidelity, additive image association, runtime facts, capacity and the original F60 acceptance criteria remain open.
+Parent released the exact allocation once. Execution completed at 03:14:24 UTC on 7 November 2026: four GETs, 714,234 decoded bytes, 80 OTD technical keys and 79 COSY view entries. No failure, retry, binary image download, fact admission or runtime publication occurred. The consumed marker and primary remain preserved. See `receipt.json`, `live-review.json` and `next-boundary.md`. Source schema qualification, image fidelity, additive image association, runtime facts, capacity and the original F60 acceptance criteria remain open.
