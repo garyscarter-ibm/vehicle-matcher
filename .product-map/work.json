@@ -681,16 +681,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62"
     },
     {
-      "id": "FUCQ-63",
-      "title": "Prove full-corpus lookup and offline recovery through the port",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-63"
-    },
-    {
       "id": "FUCQ-64",
       "title": "Build the shared GCSP shell and review an employee body reference",
       "status": "In Review",
@@ -2063,6 +2053,62 @@
         }
       ],
       "unsliced": false
+    },
+    {
+      "id": "FUCQ-63",
+      "title": "Prove full-corpus lookup and offline recovery through the port",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-07T00:55:07Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-63",
+      "slices": [
+        {
+          "id": "active-reconciliation",
+          "status": "in-progress",
+          "title": "Reconcile loaded immutable corpus and all in-process records",
+          "observed_at": "2026-11-07T00:55:07Z",
+          "evidence": "Implementation and11 scoped integration/staged checks passed; exact actual F62 published v2 release audit remains pending root integration; full10000 unestablished"
+        },
+        {
+          "id": "http-parity",
+          "status": "in-progress",
+          "title": "Compare actual local HTTP and consuming port contracts",
+          "observed_at": "2026-11-07T00:55:07Z",
+          "evidence": "Real buildServer fixture parity and configured v2 consumer bridge pass; actual F62 active store HTTP audit pending root integration"
+        },
+        {
+          "id": "offline-recovery",
+          "status": "complete",
+          "title": "Instrument egress and verify reload restart invalid activation rollback",
+          "observed_at": "2026-11-07T00:55:07Z",
+          "evidence": "Actual tiny registry restart/idempotent reload/invalid interrupted activation/rollback and HTTP/egress boundaries16/16 passed; fixture scope only"
+        },
+        {
+          "id": "scale-evidence",
+          "status": "not-started",
+          "title": "Measure bounded correctness throughput and latency on actual corpus"
+        },
+        {
+          "id": "integration",
+          "status": "not-started",
+          "title": "Integrate actual published corpus and authored regression evidence"
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-04-036",
+      "workers": [
+        {
+          "name": "Mike Wazowski",
+          "role": "implementer; active-reconciliation http-parity offline-recovery fixture slices",
+          "harness": "codex",
+          "status": "scoped checkpoint complete; actual corpus audit and final authored integration pending root",
+          "source": "thread01a1b36c-bb11-7852-9691-6eab307a6c09 requested/selected gpt-6.1-sol/medium; effective unverified; no fallback/descendants",
+          "observed_at": "2026-11-07T00:55:07.671218+00:00",
+          "expires_at": "2026-11-07T00:55:07.671218+00:00"
+        }
+      ]
     }
   ]
 }
