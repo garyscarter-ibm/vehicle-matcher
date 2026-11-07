@@ -31,6 +31,7 @@ assert digest(plan) == allocation['planDigest']
 assert digest(prior) == allocation['priorIndexDigest']
 assert digest(spent) == allocation['spentIndexDigest']
 assert (directory / 'execution-once.json').is_file()
+assert read(directory / 'execution-once.json')['planDigest'] == allocation['planDigest']
 assert not (directory / 'checkpoint-export-failure.json').exists()
 assert not list(directory.glob('collector-checkpoint.json.writer-*.json'))
 assert all(cleanup[key] is True for key in ['scratch_absent', 'dependency_link_absent', 'groups_absent', 'reservation_absent', 'code_identity_unchanged', 'primaryExists'])
@@ -45,6 +46,7 @@ assert len(state['rejected']) == receipt['rejected']
 assert len(state['duplicates']) == receipt['duplicates']
 assert len(state['accepted']) + len(state['rejected']) + len(state['duplicates']) == state['cursor']
 assert state['counts'] == receipt['counts']
+assert all(state['counts'][key] == 0 for key in ['failures', 'timeouts', 'substitutions', 'cacheEvictions'])
 assert len(state['sourceCaptures']) == receipt['retainedSolverCaptures']
 for capture in state['sourceCaptures']:
     retained = (directory / 'solver' / (capture['candidateId'] + '.json')).read_bytes()
