@@ -303,7 +303,7 @@ test('guarded replacement reconciles draft, suppresses duplicate writes, emits e
   const listen = (event) => events.push(event);
   document.body.addEventListener('gcsp:journey-start', listen);
   try {
-    assert.deepEqual(calls.map((call) => call.url), ['/api/gcsp/manual/account', '/api/gcsp/manual/draft']);
+    assert.deepEqual(calls.map((call) => call.url), ['/api/gcsp/manual/account', '/api/gcsp/manual/draft', '/api/gcsp/offers/current']);
     blocked = true;
     const choose = findButton(root, 'Choose a replacement'); choose.click(); choose.click();
     assert.equal(root.querySelector('[aria-busy="true"]') != null, true);
@@ -446,4 +446,11 @@ test('default print exposes only the chosen complete record and cleans its tempo
     assert.equal(root.querySelector('.gcsp-account-print-record'), null);
     assert.equal(root.classList.contains('gcsp-account-printing'), false);
   } finally { window.print = original; destroy(); root.remove(); }
+});
+
+test('account shows a keyboard-operable link to the employee offer only when one is listed', async () => {
+  const withOffer = await domMount({ ...readOnlyAdapter(), readOffers: async () => ({ status: 'ok', value: { offers: [{ offerId: 'offer-1', runId: 'run-1' }] } }) });
+  const view = findButton(withOffer.root, 'View your offer'); assert.ok(view); assert.equal(view.tagName, 'BUTTON'); withOffer.destroy();
+  const without = await domMount({ ...readOnlyAdapter(), readOffers: async () => ({ status: 'unavailable' }) });
+  assert.equal(findButton(without.root, 'View your offer'), undefined); without.destroy();
 });

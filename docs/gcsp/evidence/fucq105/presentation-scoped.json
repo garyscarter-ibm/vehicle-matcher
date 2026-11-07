@@ -1,0 +1,74 @@
+{
+  "code": {
+    "COMPONENTS.md": "efd12f582a943082c437c03593e584c4c5129c830ef4ecd858bfdf1bc5fb9c7b",
+    "blocks/gcsp/offer/fixtures.js": "771447b5d2c821e3d198a5209e0304ffd7f67111d1efe1120ef6e10da5beb1f0",
+    "blocks/gcsp/offer/gcsp-offer.css": "b155ddc1bb4dd5aa412f8993561c51377d7b6a16dff4ef4f52e2d62fa364024f",
+    "blocks/gcsp/offer/gcsp-offer.js": "7475bc77012f75374b0cceea1315a35d0d2b2257c9965ea72b3b6d5ad5d8ed96",
+    "blocks/gcsp/offer/harness.js": "784e740dc93305d2d29fa12e8bb2f7439839d92e01cf26c8640a466e5bd05a6c",
+    "blocks/gcsp/offer/http-adapter.js": "01715998078aa5f276e65a57d9e30d79cd40c85120382c45739e51aeea5bb093",
+    "blocks/gcsp/offer/offer-controller.js": "cc99a9048c35e3577afe11560e9bfb76f4d761a21206bb6c6d8013c67a20b40e",
+    "blocks/gcsp/offer/offer-view.js": "dd02b6131aad2dad67cce26b6b4a90d833fa6a4d05106aebfd774e99bba36fef",
+    "blocks/gcsp/offer/preview.html": "ec555687573e54a005dfae3d05c1ca6af40a1457670363cd76ce7644569830e0",
+    "server/test/gcsp-offer-view-controller.test.js": "41daf6d6847aaf2f159eccb8ef86569c1f4163f9a054b46b47912990f74d81bd",
+    "server/test/gcsp-offer-view-http.test.js": "51d78ed8e30df1c4d0568f9005486c5f2f0429f0a910e0c8ab1f5164951c1f00",
+    "server/test/gcsp-offer-view-render.test.js": "405e0d4573ee2d15eb10dbb83ad1e447c01ae511db207222d08dce3a7ed69981",
+    "server/test/ui-ratchet.json": "d74cf7a0e9c0949a43624b6f3ac63b0f8af2d63c8687f24a85964fd9a54914d7"
+  },
+  "groups_absent": true,
+  "issue": null,
+  "issue_kind": null,
+  "log": "/private/tmp/test-stamp-shard-359766da043a4ea480a38ff1c6698926/check.log",
+  "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/ownership/359766da043a4ea480a38ff1c6698926.json",
+  "peak_rss": 27328512,
+  "peak_scratch": 8192,
+  "rc": 0,
+  "reservation_released": true,
+  "scratch_absent": true,
+  "summary": [
+    "# tests 80",
+    "# pass 80",
+    "# fail 0",
+    "# skipped 0",
+    "# duration_ms 1760.29925"
+  ],
+  "summary_tail": [
+    "# tests 80",
+    "# suites 0",
+    "# pass 80",
+    "# fail 0",
+    "# cancelled 0",
+    "# skipped 0",
+    "# todo 0",
+    "# duration_ms 1760.29925",
+    "  completed 1 unit(s), exit 0; scratch removed",
+    "OK (exit 0), wall 2.1s",
+    "logs: /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/logs/20261105-233128-aju9u053",
+    "recorded targeted evidence: /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/targeted-7f96b925447102847d84f8326469d3288ac21395ff966ad671c52be3bcea776c-default-1793921490794033000.json"
+  ],
+  "wall": 3.737397583,
+  "scope": "Scoped injected-port controller, jsdom composition, proposed secure HTTP transport, existing shared-kit contract and ratchet. No real producer/access/decision/host/browser/full-suite proof.",
+  "reference": {
+    "shell": [
+      "docs/gcsp/screens/00-employee-account.webp",
+      "docs/gcsp/screens/01-replace-vehicle.webp"
+    ],
+    "body": "docs/gcsp/evidence/fucq-6/README.md @ a7fc178",
+    "accessProposal": "9c124e7f51e8d207cb1847b3cdd64e5e82eddfe7",
+    "accessProposalSha256": "7a5b98ba217d5c5e502964a04fddc571eb93b013eeaf39dfcfd25407719aaf0d"
+  },
+  "nested_resources": {
+    "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/793c93eac5014a05b0da20be2926aa8b.json",
+    "peak_rss": 256688128,
+    "peak_scratch": 0,
+    "root_absent": true,
+    "groups_absent": true,
+    "state": "complete"
+  },
+  "code_commit": "5333d6bb69615c05a230c36ae89904371a31ffe2",
+  "publication": {
+    "initial_push": "rejected commit_refs_rules; no force or unchanged loop",
+    "root_recovery_shared_commit": "1a55d3a",
+    "exact_receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/publication.json",
+    "executable_source_unchanged": true
+  }
+}
