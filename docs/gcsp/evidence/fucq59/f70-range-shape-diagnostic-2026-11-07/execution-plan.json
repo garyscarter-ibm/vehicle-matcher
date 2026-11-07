@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "f70-one-context-range-shape-execution-plan.v1",
+  "id": "f70-1f7a-range-shape-20261107-once",
+  "status": "prepared-unspent; no traffic grant",
+  "codeCommit": "ad92507fd4091bc3bcbb5d00be093ce006171eaf",
+  "planDigest": "df0b77a4e6a779ef17c09f130858930400f67ae858110098a8bd316aa5fb18f9",
+  "sourceVersion": "f59-context-qualification-20261107.v1",
+  "codePins": {
+    "scripts/gcsp/bmw-public-registration.mjs": "c0f36030c0696afc51c5e44732064c126434fba5e9d14595833b1c8fc4eb27a2",
+    "scripts/gcsp/bmw-selection-binding.mjs": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+    "scripts/gcsp/capture-bmw-selection.mjs": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+    "scripts/gcsp/collect-fleet.mjs": "2c5882cc7e960dd56ec51825e8468642ad84f3284fcd8b16bc49d61fda95fceb",
+    "scripts/gcsp/collection-session.mjs": "104aed62df3a8934bcda5484e0297a7ab4d84cfd1231b81b921be61aedd31939",
+    "scripts/gcsp/public-bmw-source.mjs": "0e746b7d9addb56bfb3a7211616b6b8dfa2ff31469ef102aafa57ddfb11fc375",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+    "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+    "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+    "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+    "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+    "docs/gcsp/evidence/fucq59/f70-range-shape-diagnostic-2026-11-07/diagnostic-source.mjs": "b757e67a724ec1a2df245b31d873d4efed51333abaa8fe1ed597e325047728f4",
+    "docs/gcsp/evidence/fucq59/f70-range-shape-diagnostic-2026-11-07/run-live.mjs": "6978fce0716125f240f54b0882c6c5e2c4025ea508cdab2fc0e306bc24305115",
+    "docs/gcsp/evidence/fucq59/f70-range-shape-diagnostic-2026-11-07/supervise.py": "09f7aa32e11e0bf72c62e789af2a9880dcfd0bdf08aebba96cdccd05dd88ae0c",
+    "docs/gcsp/evidence/fucq59/f70-range-shape-diagnostic-2026-11-07/qualification-plan.json": "b12a2e705f0cdff139e24c73bed0efa8b52594e9e687c2fea504c6d161e2203e",
+    "docs/gcsp/evidence/fucq59/f70-range-shape-diagnostic-2026-11-07/retained-deliverables.json": "085766e1d83344af6bca51bd5ad5c5a3683e24c38231a834221bbc6e4499f172"
+  },
+  "preparerSha256": "c39ce3694635a2930bad9fd036450a4cb27ddd3a998cd8f3e660a347e708ad3d",
+  "actualSourceBasis": {
+    "priorContextProjection": "docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context01/tree.json",
+    "priorContextSha256": "33ef1c5dae8514df06292ad22d1cbbcb4e36fec3a29e42e0e60406fc692d35aa",
+    "historicalSiblingShape": "docs/gcsp/evidence/fucq-58/steering-diagnostic-2026-11-05/evidence/projection.json",
+    "historicalSiblingShapeSha256": "0da1ccbfed44b62f94000eb96e32022e3967a331f9bff9a2b4c9f92fda98dc8b",
+    "boundary": "Historical G61E lines/defaultModel shape motivates inspection only; it supplies no F70 trim or label."
+  },
+  "attempts": 3,
+  "requestSequence": [
+    "page",
+    "settings",
+    "discover"
+  ],
+  "optionsAllowance": 0,
+  "solverAllowance": 0,
+  "decodedBytes": 4194304,
+  "responseBytes": 1048576,
+  "projectionBytes": 98304,
+  "projectedRows": 768,
+  "projection": "Target1F7A full model nested structure and containing F70 range keys/types, known label/configuration containers only; other full model records and pricing/imagery/WLTP children excluded. Relevant primitive labels are source literals, never inferred trim.",
+  "forecast": {
+    "decodedBytes": 751668,
+    "retainedBytes": 2097152,
+    "childRamBytes": 134217728,
+    "sourceSeconds": 5
+  },
+  "sourceDeadlineSeconds": 90,
+  "supervisorChildSeconds": 105,
+  "supervisorChunkSeconds": 120,
+  "resources": {
+    "workers": 1,
+    "retries": 0,
+    "scratchBytes": 67108864,
+    "hostRamBytes": 536870912,
+    "childRamBytes": 469762048
+  },
+  "scratchRoot": "/tmp/vehicle-matcher-f58-63-20261106/f58/f70-range-shape",
+  "supervisorOutput": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/f70-range-shape",
+  "retainedPrimary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-range-shape-diagnostic-2026-11-07/collector-checkpoint.json",
+  "retainedDeliverables": {
+    "schemaVersion": "f70-shape-retained-deliverables.v1",
+    "primary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-range-shape-diagnostic-2026-11-07/collector-checkpoint.json",
+    "disposable": false,
+    "retainOnInterruption": true,
+    "exportBeforeScratchCleanup": true,
+    "exporter": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py",
+    "embeddedShape": "Primary retains the exact contextObservation/rangeShape artifacts even if standalone export is interrupted."
+  },
+  "oneShotMarker": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-range-shape-diagnostic-2026-11-07/execution-once.json",
+  "sourceCapacityCredit": 0,
+  "acceptance": false,
+  "commandAfterSeparateRelease": [
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-range-shape-diagnostic-2026-11-07/supervise.py",
+    "live"
+  ],
+  "stop": [
+    "access/rate/HTTP/shape/substitution/alias/date failure",
+    "projection/resource ceiling",
+    "identity mismatch",
+    "checkpoint export/cleanup failure"
+  ],
+  "laterWork": "Review exact source relationships before proposing any options route; no options or solver request is allocated here."
+}
