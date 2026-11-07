@@ -1,0 +1,35 @@
+{
+  "authorized": true,
+  "phase": "phase03",
+  "reviewedAt": "2026-11-07T06:40:07.038548+00:00",
+  "seriesSha256": "a2d5c1aafca767d15fee7034a538b3bbfa40e39890a411fce9a84efe28d63b56",
+  "candidateManifestSha256": "dbde2b4ee904087e32cb0dab2019d7521350b24199c192fafc43779fa6b710c3",
+  "pinsChecked": 373,
+  "codeReview": "pass; actualrun-series/prepare-sessiondiff; separatefreshfinite241-360; exactstrict85base; all5failedtemplatesexcluded; nofullpriorcompletiongate",
+  "securityReview": "pass; serialpublicboundedGET; no credentials/browser/images/writes;960uniqueunspent; disjointactiveF701156 and allfailed40requests",
+  "maximumGET": 1440,
+  "maximumSolver": 960,
+  "maximumWallSeconds": 1800,
+  "grantEnvironment": {
+    "BREADTH30_PHASE03_PHASE_GRANT": "scheme-breadth30-phase03-960-20261107-once-phase03"
+  },
+  "resources": {
+    "workers": 1,
+    "hostRamBytes": 536870912,
+    "childRamBytes": 469762048,
+    "scratchBytes": 67108864,
+    "perSessionSeconds": 120,
+    "sourceSeconds": 90,
+    "childSeconds": 105,
+    "retainedCheckSeconds": 30,
+    "perCohortSeconds": 600,
+    "expectedRetainedBytes": 2000000000,
+    "retainedBudgetBytes": 4294967296,
+    "perSessionRetainedShardBytes": 33554432,
+    "peakIncludingRetainedBudgetBytes": 4362076160,
+    "largeOutputThresholdBytes": 268435456,
+    "directOneDrive": true,
+    "scratchRootPolicy": "resource-helper-owned-default"
+  },
+  "acceptance": false
+}

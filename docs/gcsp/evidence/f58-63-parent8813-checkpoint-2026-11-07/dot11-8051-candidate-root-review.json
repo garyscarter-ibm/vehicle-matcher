@@ -1,0 +1,29 @@
+{
+  "scope": "scoped external8051 candidate",
+  "planSha256": "c75986da7a9d48797a879cc1fcf5fe4281470d09107e79d7edacf95d540ac757",
+  "time": "2026-11-07T06:37:06.529414+00:00",
+  "codePinsChecked": 144,
+  "inputPinsChecked": 684,
+  "codeReview": "PASS: original lines/hash shards; retains4667 byteidentical configs and VIN/images/supplement;256MiB explicit build limit; strict8050v2 registrations; future runtime descriptor separate",
+  "securityReview": "PASS: pinned readonly original inputs; deterministic content shards directlyOneDrive; zero source/public/native calls; ordinary history immutable; bounded supervisor/finalizer",
+  "limits": {
+    "workers": 1,
+    "nodeHeapMiB": 512,
+    "hostRamMiB": 1024,
+    "processGroupRamMiB": 896,
+    "cloudScratchMiB": 128,
+    "chunkSeconds": 240,
+    "diskReservationMiB": 768,
+    "expectedCandidateRetainedMiB": 256,
+    "maximumCandidatePeakMiB": 768,
+    "sourceShardMaxBytes": 33554432,
+    "candidateJsonlMaxBytes": 268435456,
+    "maxRowBytes": 1048576,
+    "maxRows": 100000,
+    "location": "All candidate/staging/source shards directly OneDrive; zero Git source/configuration copies"
+  },
+  "selectedChecks": "read-only exact144code/684input pins and complete isolated/ordinary history membership; no proof replay",
+  "sourceRequests": 0,
+  "scratchCreated": false,
+  "acceptance": false
+}
