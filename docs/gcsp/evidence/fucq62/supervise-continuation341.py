@@ -34,14 +34,14 @@ def run(mode,grant_path=None):
     def finish():
         nonlocal entered,reserved,finished,link_identity
         if finished:return
-        assert all(not R.group_has_live_members(pid) for pid in scratch.record['groups']),'owned group remains'
+        assert all(R.group_has_live_members(pid) is False for pid in scratch.record['groups']),'owned group remains'
         if link_identity is not None:
             st=link.lstat();assert link.is_symlink() and (st.st_dev,st.st_ino)==link_identity and link.resolve()==vendor
             link.unlink();link_identity=None
         if entered:scratch.__exit__(None,None,None);entered=False
         if reserved:host.release(scratch.token);reserved=False
         R.atomic_json(phase/'cleanup.json',{'scratch':str(scratch.root),'manifest':str(scratch.manifest),'scratchAbsent':not os.path.lexists(scratch.root),
-            'groupsAbsent':all(not R.group_has_live_members(pid) for pid in scratch.record['groups']),'reservationAbsent':scratch.token not in (R.read_json(host.path,{}) or {}),
+            'groupsAbsent':all(R.group_has_live_members(pid) is False for pid in scratch.record['groups']),'reservationAbsent':scratch.token not in (R.read_json(host.path,{}) or {}),
             'dependencyLinkAbsent':not os.path.lexists(link),'removedScratchBytes':scratch.record['peak'],'retainedOutputOwnership':str(phase/'retained-output-ownership.json'),'compatibilityException':None})
         finished=True
     atexit.register(finish)

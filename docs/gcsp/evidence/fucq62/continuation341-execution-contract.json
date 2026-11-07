@@ -7,7 +7,7 @@
     "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
     "docs/gcsp/evidence/fucq62/continuation341-release-plan.json": "6c76f58ac80d0a038672029559ad2254f1f2fd18e35a4870db49a2b4bdf9ed3b",
     "docs/gcsp/evidence/fucq62/reproduce-continuation341-release.mjs": "0b842a092112131a6edbc0b7c79443260711be22754ed91790f5a010844aa2f6",
-    "docs/gcsp/evidence/fucq62/supervise-continuation341.py": "66ef05be0987a2cc48f7767e9e2f0fa862000f2918725e2cdad301feb2142d4a",
+    "docs/gcsp/evidence/fucq62/supervise-continuation341.py": "48fc3c4f122dd4d1bed7fbde59464f0a4880f6ebc329525dcdeb9761ff602950",
     "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
     "scripts/gcsp/fleet-offline-guard.mjs": "881926639dfab681a917212696e50c6420a0a2b0dcd66dd1a126950283239e59",
     "scripts/gcsp/verify-fleet.mjs": "af8f8e8985c8b5fdf259994c16603f48f03d9f5a2d5c333c0f5d6b340457ca4a",
