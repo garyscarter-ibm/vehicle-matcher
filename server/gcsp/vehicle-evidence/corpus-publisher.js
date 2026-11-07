@@ -3,6 +3,7 @@ import { mkdir, open, readFile, rename, rm, stat } from 'node:fs/promises';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
 import { bmwCatalogueLookupIdentity, createBmwCatalogueAdapter } from '../../vehicle-evidence/bmw-catalogue-adapter.js';
 import { registeredCatalogueSources } from './registered-catalogue-sources.js';
+import { validateRegisteredCorpusImage } from './registered-corpus-images.js';
 import { inputDigest } from '../repository/core.js';
 import { indexJsonl, JsonlError, JSONL_MAX_BYTES } from './indexed-jsonl.js';
 import { createVinProfileRegistry, VIN_PROFILE_REGISTRY_VERSION } from './vin-profiles.js';
@@ -159,6 +160,8 @@ function summary(configurations, vins, images) {
   const coverage = { markets: {}, steering: {}, models: {}, wmis: {} };
   const completeness = { selectedOptions: {}, sourceKinds: {}, imagesMissing: 0 };
   const signatures = new Set(); const qualifying = new Set(); let observed = 0; let v2 = false;
+  const imagedConfigurations = new Set();
+  for (const image of images) imagedConfigurations.add(image.configurationId);
   const count = (values, key) => { values[key] = (values[key] || 0) + 1; };
   for (const row of configurations) {
     signatures.add(row.canonicalSignature); v2 ||= row.catalogue?.schemaVersion === '2';
@@ -172,7 +175,8 @@ function summary(configurations, vins, images) {
     count(coverage.markets, row.configuration.market); count(coverage.steering, row.configuration.steering ?? 'unknown');
     count(coverage.models, row.configuration.model ?? 'unknown');
     count(completeness.selectedOptions, row.sourceContext.selectedOptionCompleteness);
-    count(completeness.sourceKinds, row.sourceContext.sourceKind); if (!row.imageIds.length) completeness.imagesMissing++;
+    count(completeness.sourceKinds, row.sourceContext.sourceKind);
+    if (!row.imageIds.length && !imagedConfigurations.has(row.configurationId)) completeness.imagesMissing++;
   }
   for (const row of vins) count(coverage.wmis, row.vin17.slice(0, 3));
   counts.distinctConfigurations = signatures.size;
@@ -245,7 +249,13 @@ async function validateRows(configurations, vins, images, manifest, options) {
     requireValue(imageIds.has(imageId) && imageIds.get(imageId) === configurationId,
       'dangling-image', 'Every image reference must resolve to the same configuration.');
   }
-  for (const image of images) requireValue(ids.get(image.configurationId).imageIds.includes(image.imageId), 'dangling-image', 'Images need a reciprocal configuration reference.');
+  for (const image of images) {
+    if (ids.get(image.configurationId).imageIds.includes(image.imageId)) continue;
+    const row = typeof configurations.get === 'function' ? configurations.get(image.configurationId)
+      : configurations.find((configuration) => configuration.configurationId === image.configurationId);
+    requireValue(await validateRegisteredCorpusImage(image, row), 'dangling-image',
+      'An additive image association needs the exact registered source identity and verified published bytes.');
+  }
   const seen = new Set(); const physical = new Set(); const suffixes = new Set();
   for (const row of vins) {
     requireValue(keys(row, identityFields) && ['current-car', 'delivered-car'].includes(row.usage) && row.identityKind === 'synthetic'
